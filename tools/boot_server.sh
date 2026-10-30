@@ -22,7 +22,7 @@ ann() { # manda un texto como anotacion visible en GitHub (varias lineas)
   local t; t=$(tail -n "$2" "$3" | cut -c1-300 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
   echo "::error title=$1::${t}"
 }
-if [ $ok -ne 1 ]; then echo "ERROR: el servidor no llego a 'Done'"; tail -80 "$log"; ann "Servidor no arranco ($mod)" 35 "$log"; exit 1; fi
+if [ $ok -ne 1 ]; then echo "ERROR: el servidor no llego a 'Done'"; tail -80 "$log"; grep -nE "Caused by|Exception|Error|/ERROR\]|/FATAL\]|Invalid|Unable|Failed" "$log" | grep -vE "jarjar|PlatformDependent|setAccessible|server.properties|/DEBUG\]" | head -25 > "$log.why"; ann "Servidor no arranco ($mod)" 25 "$log.why"; exit 1; fi
 bad=$(grep -E "/(ERROR|FATAL)\]|Missing registry|Couldn't parse|Parsing error|Failed to load (recipe|advancement|loot|function|tag)|Exception in thread|Mod .* failed|Failed to start the minecraft server|Crash" "$log" \
   | grep -vE "server.properties|PlatformDependent|jarjar|ForgeGradle|Reflective setAccessible|/DEBUG\]" | head -30)
 if [ -n "$bad" ]; then echo "ERROR: hay errores en el registro del servidor:"; echo "$bad"; echo "$bad" > "$log.bad"; ann "Errores en el servidor ($mod)" 30 "$log.bad"; exit 1; fi
