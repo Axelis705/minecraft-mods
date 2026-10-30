@@ -64,5 +64,23 @@
    "casino:plinko_land"
   ],
   "subtitle": "subtitles.casino.plinko_land"
+ },
+ "slot_lever": {
+  "sounds": [
+   "casino:slot_lever"
+  ],
+  "subtitle": "subtitles.casino.slot_lever"
+ },
+ "slot_tick": {
+  "sounds": [
+   "casino:slot_tick"
+  ],
+  "subtitle": "subtitles.casino.slot_tick"
+ },
+ "slot_stop": {
+  "sounds": [
+   "casino:slot_stop"
+  ],
+  "subtitle": "subtitles.casino.slot_stop"
  }
 }

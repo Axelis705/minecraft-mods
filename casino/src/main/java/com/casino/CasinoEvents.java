@@ -7,6 +7,7 @@ import com.casino.net.WheelWinPacket;
 import net.minecraft.server.level.ServerPlayer;
 import com.casino.block.CashierBlock;
 import com.casino.block.LuckyWheelBlock;
+import com.casino.block.SlotBlock;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -39,7 +40,7 @@ public final class CasinoEvents {
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock e) {
         var block = e.getLevel().getBlockState(e.getPos()).getBlock();
-        if (block instanceof LuckyWheelBlock || block instanceof CashierBlock) {
+        if (block instanceof LuckyWheelBlock || block instanceof CashierBlock || block instanceof SlotBlock) {
             e.setUseBlock(Event.Result.ALLOW);
         }
     }

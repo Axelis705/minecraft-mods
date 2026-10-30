@@ -3,6 +3,7 @@ package com.casino.registry;
 import com.casino.Casino;
 import com.casino.block.LuckyWheelBE;
 import com.casino.block.PlinkoBE;
+import com.casino.block.SlotBE;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,6 +17,9 @@ public final class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<PlinkoBE>> PLINKO = TYPES.register("plinko",
             () -> BlockEntityType.Builder.of(PlinkoBE::new, ModBlocks.PLINKO.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<SlotBE>> SLOT = TYPES.register("slot",
+            () -> BlockEntityType.Builder.of(SlotBE::new, ModBlocks.SLOT.get()).build(null));
 
     private ModBlockEntities() {
     }

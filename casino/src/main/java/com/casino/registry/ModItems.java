@@ -24,6 +24,8 @@ public final class ModItems {
 
     public static final RegistryObject<Item> PLINKO = ITEMS.register("plinko",
             () -> new BlockItem(ModBlocks.PLINKO.get(), new Item.Properties()));
+    public static final RegistryObject<Item> SLOT = ITEMS.register("slot",
+            () -> new BlockItem(ModBlocks.SLOT.get(), new Item.Properties()));
 
     private ModItems() {
     }

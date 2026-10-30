@@ -34,6 +34,13 @@ public final class ModSounds {
     /** La bola cae en su casillero. */
     public static final RegistryObject<SoundEvent> PLINKO_LAND = reg("plinko_land");
 
+    /** Se tira de la palanca de la tragamonedas. */
+    public static final RegistryObject<SoundEvent> SLOT_LEVER = reg("slot_lever");
+    /** "Tic" de los carretes girando. */
+    public static final RegistryObject<SoundEvent> SLOT_TICK = reg("slot_tick");
+    /** Un carrete se detiene. */
+    public static final RegistryObject<SoundEvent> SLOT_STOP = reg("slot_stop");
+
     private ModSounds() {
     }
 

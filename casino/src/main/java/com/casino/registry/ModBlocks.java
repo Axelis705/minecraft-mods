@@ -4,6 +4,7 @@ import com.casino.Casino;
 import com.casino.block.CashierBlock;
 import com.casino.block.LuckyWheelBlock;
 import com.casino.block.PlinkoBlock;
+import com.casino.block.SlotBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -25,6 +26,10 @@ public final class ModBlocks {
 
     public static final RegistryObject<Block> PLINKO = BLOCKS.register("plinko", () -> new PlinkoBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
+                    .pushReaction(PushReaction.BLOCK).lightLevel(s -> 10)));
+
+    public static final RegistryObject<Block> SLOT = BLOCKS.register("slot", () -> new SlotBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 10)));
 
     private ModBlocks() {

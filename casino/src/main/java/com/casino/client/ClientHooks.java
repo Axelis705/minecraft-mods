@@ -17,6 +17,10 @@ public final class ClientHooks {
         Minecraft.getInstance().setScreen(new PlinkoScreen(pos));
     }
 
+    public static void openSlot(BlockPos pos) {
+        Minecraft.getInstance().setScreen(new SlotScreen(pos));
+    }
+
     public static void showWin(WheelWinPacket p) {
         WinBanner.start(p.title, p.items, p.xp, p.big);
     }

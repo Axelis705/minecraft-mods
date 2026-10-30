@@ -94,10 +94,14 @@ def render(rx, ry):
     ax, ay = math.radians(rx), math.radians(ry)
     Rx = np.array([[1,0,0],[0,math.cos(ax),-math.sin(ax)],[0,math.sin(ax),math.cos(ax)]])
     Ry = np.array([[math.cos(ay),0,math.sin(ay)],[0,1,0],[-math.sin(ay),0,math.cos(ay)]])
-    M = Rx @ Ry; sc = SIZE / 24.0
+    M = Rx @ Ry
+    allp = np.concatenate([((q[0] - 8) @ M.T)[:, :2] for q in quads]) if quads else np.zeros((1, 2))
+    lo, hi = allp.min(0), allp.max(0)
+    sc = min(SIZE * 0.9 / max(hi[0] - lo[0], 1e-6), SIZE * 0.9 / max(hi[1] - lo[1], 1e-6), SIZE / 24.0 * 2.2)
+    mid = (lo + hi) / 2
     for pts, uv, im, sh in quads:
         p = ((pts - 8) @ M.T)
-        scr = np.stack([SIZE/2 + p[:,0]*sc, SIZE/2 - p[:,1]*sc], 1); z = p[:,2]
+        scr = np.stack([SIZE/2 + (p[:,0]-mid[0])*sc, SIZE/2 - (p[:,1]-mid[1])*sc], 1); z = p[:,2]
         # descarta caras traseras
         n = np.cross(p[1]-p[0], p[2]-p[1])
         if n[2] <= 0: continue

@@ -17,6 +17,7 @@ public final class ClientModEvents {
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerBlockEntityRenderer(ModBlockEntities.LUCKY_WHEEL.get(), LuckyWheelRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.PLINKO.get(), PlinkoRenderer::new);
+        e.registerBlockEntityRenderer(ModBlockEntities.SLOT.get(), SlotRenderer::new);
     }
 
     @SubscribeEvent
