@@ -18,7 +18,11 @@ done
 echo "stop" >&3; sleep 8; exec 3>&-
 pkill -f "runServer" 2>/dev/null || true
 echo "===== resumen del arranque de $mod ====="
-if [ $ok -ne 1 ]; then echo "ERROR: el servidor no llego a 'Done'"; tail -80 "$log"; exit 1; fi
+ann() { # manda un texto como anotacion visible en GitHub (varias lineas)
+  local t; t=$(tail -n "$2" "$3" | cut -c1-300 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+  echo "::error title=$1::${t}"
+}
+if [ $ok -ne 1 ]; then echo "ERROR: el servidor no llego a 'Done'"; tail -80 "$log"; ann "Servidor no arranco ($mod)" 35 "$log"; exit 1; fi
 bad=$(grep -E "\[(Server thread|main)/(ERROR|FATAL)\]|Exception|Failed to load|Missing registry|Couldn't parse|Parsing error" "$log" | grep -v "ForgeGradle" | head -30)
-if [ -n "$bad" ]; then echo "ERROR: hay errores en el registro del servidor:"; echo "$bad"; exit 1; fi
+if [ -n "$bad" ]; then echo "ERROR: hay errores en el registro del servidor:"; echo "$bad"; echo "$bad" > "$log.bad"; ann "Errores en el servidor ($mod)" 30 "$log.bad"; exit 1; fi
 grep -E "Done \(" "$log"; echo "Arranque limpio"
