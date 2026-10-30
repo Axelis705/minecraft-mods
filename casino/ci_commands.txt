@@ -1,0 +1,10 @@
+# Pruebas en el servidor real: el crupier y la mesa de blackjack se crean sin errores
+summon casino:dealer 0 120 0
+setblock 2 119 2 casino:blackjack[facing=north,px=1]
+setblock 3 119 2 casino:blackjack[facing=north,px=0]
+execute if entity @e[type=casino:dealer] run say PRUEBA_CRUPIER_OK
+data get block 2 119 2
+setblock 2 119 2 minecraft:air
+kill @e[type=casino:dealer]
+#expect PRUEBA_CRUPIER_OK
+#expect has the following block data
