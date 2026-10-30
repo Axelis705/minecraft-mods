@@ -30,6 +30,9 @@ public final class ModItems {
     public static final RegistryObject<Item> BLACKJACK = ITEMS.register("blackjack",
             () -> new BlockItem(ModBlocks.BLACKJACK.get(), new Item.Properties()));
 
+    public static final RegistryObject<Item> ROULETTE = ITEMS.register("roulette",
+            () -> new BlockItem(ModBlocks.ROULETTE.get(), new Item.Properties()));
+
     private ModItems() {
     }
 

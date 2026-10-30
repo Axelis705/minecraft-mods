@@ -94,5 +94,29 @@
    "casino:card_flip"
   ],
   "subtitle": "subtitles.casino.card_flip"
+ },
+ "roulette_roll": {
+  "sounds": [
+   "casino:roulette_roll"
+  ],
+  "subtitle": "subtitles.casino.roulette_roll"
+ },
+ "roulette_tick": {
+  "sounds": [
+   "casino:roulette_tick"
+  ],
+  "subtitle": "subtitles.casino.roulette_tick"
+ },
+ "roulette_land": {
+  "sounds": [
+   "casino:roulette_land"
+  ],
+  "subtitle": "subtitles.casino.roulette_land"
+ },
+ "roulette_bell": {
+  "sounds": [
+   "casino:roulette_bell"
+  ],
+  "subtitle": "subtitles.casino.roulette_bell"
  }
 }

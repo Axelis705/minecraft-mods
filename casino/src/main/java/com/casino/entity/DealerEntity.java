@@ -2,6 +2,10 @@ package com.casino.entity;
 
 import com.casino.net.CasinoNet;
 import com.casino.net.OpenBlackjackPacket;
+import com.casino.net.OpenRoulettePacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +24,11 @@ import javax.annotation.Nullable;
  * (mueve el brazo). Al hacerle clic derecho se abre la mesa. Lo coloca la mesa sola y lo quita cuando se rompe la mesa.
  */
 public class DealerEntity extends Mob {
+    /** Qué mesa atiende: 0 = blackjack, 1 = ruleta (cambia la ropa y qué panel se abre). */
+    public static final int GAME_BLACKJACK = 0;
+    public static final int GAME_ROULETTE = 1;
+    private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
+
     @Nullable
     private BlockPos table;
 
@@ -28,6 +37,20 @@ public class DealerEntity extends Mob {
         setNoAi(true);
         setPersistenceRequired();
         setInvulnerable(true);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(GAME, GAME_BLACKJACK);
+    }
+
+    public int getGame() {
+        return this.entityData.get(GAME);
+    }
+
+    public void setGame(int game) {
+        this.entityData.set(GAME, game);
     }
 
     public void setTable(BlockPos pos) {
@@ -89,7 +112,11 @@ public class DealerEntity extends Mob {
             return InteractionResult.PASS;
         }
         if (!level().isClientSide && table != null && player instanceof ServerPlayer sp) {
-            CasinoNet.sendTo(sp, new OpenBlackjackPacket(table));
+            if (getGame() == GAME_ROULETTE) {
+                CasinoNet.sendTo(sp, new OpenRoulettePacket(table));
+            } else {
+                CasinoNet.sendTo(sp, new OpenBlackjackPacket(table));
+            }
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
     }
@@ -97,6 +124,7 @@ public class DealerEntity extends Mob {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putInt("Game", getGame());
         if (table != null) {
             tag.putIntArray("Table", new int[]{table.getX(), table.getY(), table.getZ()});
         }
@@ -105,6 +133,7 @@ public class DealerEntity extends Mob {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        setGame(tag.getInt("Game"));
         int[] t = tag.getIntArray("Table");
         table = t.length == 3 ? new BlockPos(t[0], t[1], t[2]) : null;
     }

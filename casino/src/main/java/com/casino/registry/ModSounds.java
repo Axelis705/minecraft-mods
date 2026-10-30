@@ -46,6 +46,15 @@ public final class ModSounds {
     /** Una carta se da vuelta. */
     public static final RegistryObject<SoundEvent> CARD_FLIP = reg("card_flip");
 
+    /** La bola corre por la pista de la ruleta. */
+    public static final RegistryObject<SoundEvent> ROULETTE_ROLL = reg("roulette_roll");
+    /** La bola salta entre las casillas de la ruleta. */
+    public static final RegistryObject<SoundEvent> ROULETTE_TICK = reg("roulette_tick");
+    /** La bola se queda quieta en su casilla. */
+    public static final RegistryObject<SoundEvent> ROULETTE_LAND = reg("roulette_land");
+    /** Campanilla de "no va más". */
+    public static final RegistryObject<SoundEvent> ROULETTE_BELL = reg("roulette_bell");
+
     private ModSounds() {
     }
 

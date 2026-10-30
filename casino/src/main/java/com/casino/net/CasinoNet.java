@@ -27,6 +27,8 @@ public final class CasinoNet {
         CHANNEL.registerMessage(3, SlotPacket.class, SlotPacket::encode, SlotPacket::decode, SlotPacket::handle);
         CHANNEL.registerMessage(4, BlackjackPacket.class, BlackjackPacket::encode, BlackjackPacket::decode, BlackjackPacket::handle);
         CHANNEL.registerMessage(5, OpenBlackjackPacket.class, OpenBlackjackPacket::encode, OpenBlackjackPacket::decode, OpenBlackjackPacket::handle);
+        CHANNEL.registerMessage(6, RoulettePacket.class, RoulettePacket::encode, RoulettePacket::decode, RoulettePacket::handle);
+        CHANNEL.registerMessage(7, OpenRoulettePacket.class, OpenRoulettePacket::encode, OpenRoulettePacket::decode, OpenRoulettePacket::handle);
     }
 
     public static void sendToServer(Object pkt) {

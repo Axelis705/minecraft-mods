@@ -1,0 +1,25 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "CCC",
+  "GDG",
+  "PPP"
+ ],
+ "key": {
+  "C": {
+   "item": "minecraft:red_carpet"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "D": {
+   "item": "minecraft:diamond"
+  },
+  "P": {
+   "item": "minecraft:polished_blackstone"
+  }
+ },
+ "result": {
+  "item": "casino:roulette"
+ }
+}

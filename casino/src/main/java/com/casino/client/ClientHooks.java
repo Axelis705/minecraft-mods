@@ -25,6 +25,10 @@ public final class ClientHooks {
         Minecraft.getInstance().setScreen(new BlackjackScreen(pos));
     }
 
+    public static void openRoulette(BlockPos pos) {
+        Minecraft.getInstance().setScreen(new RouletteScreen(pos));
+    }
+
     public static void showWin(WheelWinPacket p) {
         WinBanner.start(p.title, p.items, p.xp, p.big);
     }

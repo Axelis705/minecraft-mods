@@ -12,12 +12,14 @@ import net.minecraft.resources.ResourceLocation;
 public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<DealerEntity>> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(Casino.MODID, "textures/entity/dealer.png");
 
+    private static final ResourceLocation TEXTURE_ROULETTE = new ResourceLocation(Casino.MODID, "textures/entity/dealer_roulette.png");
+
     public DealerRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new PlayerModel<>(ctx.bakeLayer(ModelLayers.PLAYER), false), 0.45F);
     }
 
     @Override
     public ResourceLocation getTextureLocation(DealerEntity entity) {
-        return TEXTURE;
+        return entity.getGame() == DealerEntity.GAME_ROULETTE ? TEXTURE_ROULETTE : TEXTURE;
     }
 }
