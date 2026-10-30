@@ -267,7 +267,7 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
             col = 0xFF60E0A0;
         }
         ps.pushPose();
-        ps.translate(0, 1.055F, Z + 0.03F);
+        ps.translate(0, 0.9F, Z + 0.03F);
         float s = 0.0105F;
         ps.scale(s, -s, s);
         Matrix4f mat = ps.last().pose();

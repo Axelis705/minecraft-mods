@@ -161,12 +161,10 @@ public final class SlotScreen extends Screen {
 
         super.render(g, mx, my, pt);
 
-        // premio gordo actual (barra de arriba)
+        // premio gordo actual (a la derecha de "Apuesta", sin tocar el saldo de la barra de arriba)
         if (Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof SlotBE be) {
             Component jp = Component.translatable("casino.slot.jackpot_label", be.jackpot.getCount() + " x ", be.jackpot.getHoverName()).withStyle(ChatFormatting.LIGHT_PURPLE);
-            int jx = left + 112;
-            g.renderItem(be.jackpot, jx, top);
-            g.drawString(font, jp, jx + 18, top + 4, 0xFFFFFF, true);
+            g.drawString(font, jp, left + W - 10 - font.width(jp), top + 19, 0xFFFFFF, true);
         }
 
         // tabla de pagos: lo que da cada símbolo (tres iguales en una línea) con la apuesta actual
