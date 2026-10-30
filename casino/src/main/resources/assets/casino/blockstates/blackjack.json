@@ -1,52 +1,7 @@
 {
  "variants": {
-  "facing=north,px=0": {
-   "model": "casino:block/blackjack_l",
-   "y": 0
-  },
-  "facing=north,px=1": {
-   "model": "casino:block/blackjack_m",
-   "y": 0
-  },
-  "facing=north,px=2": {
-   "model": "casino:block/blackjack_r",
-   "y": 0
-  },
-  "facing=east,px=0": {
-   "model": "casino:block/blackjack_l",
-   "y": 90
-  },
-  "facing=east,px=1": {
-   "model": "casino:block/blackjack_m",
-   "y": 90
-  },
-  "facing=east,px=2": {
-   "model": "casino:block/blackjack_r",
-   "y": 90
-  },
-  "facing=south,px=0": {
-   "model": "casino:block/blackjack_l",
-   "y": 180
-  },
-  "facing=south,px=1": {
-   "model": "casino:block/blackjack_m",
-   "y": 180
-  },
-  "facing=south,px=2": {
-   "model": "casino:block/blackjack_r",
-   "y": 180
-  },
-  "facing=west,px=0": {
-   "model": "casino:block/blackjack_l",
-   "y": 270
-  },
-  "facing=west,px=1": {
-   "model": "casino:block/blackjack_m",
-   "y": 270
-  },
-  "facing=west,px=2": {
-   "model": "casino:block/blackjack_r",
-   "y": 270
+  "": {
+   "model": "casino:block/blackjack_none"
   }
  }
 }

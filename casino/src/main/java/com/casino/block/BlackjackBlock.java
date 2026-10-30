@@ -2,6 +2,7 @@ package com.casino.block;
 
 import com.casino.client.ClientHooks;
 import com.casino.entity.DealerEntity;
+import com.casino.game.BlackjackLayout;
 import com.casino.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -34,38 +37,45 @@ import net.minecraftforge.fml.DistExecutor;
 import javax.annotation.Nullable;
 
 /**
- * La Mesa de blackjack: 3 bloques de ancho. El bloque que se coloca es el del centro (ahí vive el bloque-entidad); los otros dos
- * son los extremos de la mesa. El crupier (una entidad) se queda de pie detrás del centro; el jugador se para enfrente.
+ * La Mesa de blackjack: una media luna de 13 bloques (5 de ancho, 3 de fondo). El bloque que se coloca es el del centro del lado recto
+ * (ahí vive el bloque-entidad); los demás solo dan forma y colisión. La mesa entera (fieltro, rieles, cartas, fichas) la dibuja un
+ * renderizador propio, por eso los bloques no tienen modelo. El crupier (una entidad) se para detrás del lado recto; los jugadores,
+ * del lado curvo (hasta 5 asientos).
  */
 public class BlackjackBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    /** 0 = izquierda, 1 = centro, 2 = derecha (mirando la mesa de frente, desde el lado del jugador). */
-    public static final IntegerProperty PX = IntegerProperty.create("px", 0, 2);
-    private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 14, 16);
+    /** Cuál de los 13 bloques de la mesa es (ver BlackjackLayout.CELLS). */
+    public static final IntegerProperty CELL = IntegerProperty.create("cell", 0, BlackjackLayout.CELLS.length - 1);
+    private static final double TABLE_TOP = 14.0 / 16.0;
+    private static final VoxelShape[][] SHAPES = new VoxelShape[4][BlackjackLayout.CELLS.length];
 
     public BlackjackBlock(Properties props) {
         super(props);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PX, 1));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(CELL, BlackjackLayout.MASTER));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
-        b.add(FACING, PX);
+        b.add(FACING, CELL);
     }
 
+    /** La derecha de quien juega mirando la mesa de frente. */
     private static Direction right(Direction facing) {
         return facing.getCounterClockWise();
     }
 
-    public static BlockPos cell(BlockPos master, Direction facing, int px) {
-        return master.relative(right(facing), px - 1);
+    public static BlockPos cellPos(BlockPos master, Direction facing, int cell) {
+        int[] c = BlackjackLayout.CELLS[cell];
+        return master.relative(right(facing), c[0]).relative(facing, c[1]);
     }
 
     public static BlockPos masterOf(BlockPos pos, BlockState st) {
-        return pos.relative(right(st.getValue(FACING)).getOpposite(), st.getValue(PX) - 1);
+        Direction f = st.getValue(FACING);
+        int[] c = BlackjackLayout.CELLS[st.getValue(CELL)];
+        return pos.relative(right(f).getOpposite(), c[0]).relative(f.getOpposite(), c[1]);
     }
 
-    /** Donde se para el crupier: el bloque de detrás del centro de la mesa. */
+    /** Donde se para el crupier: el bloque de detrás del centro del lado recto. */
     public static BlockPos dealerSpot(BlockPos master, Direction facing) {
         return master.relative(facing.getOpposite());
     }
@@ -73,12 +83,12 @@ public class BlackjackBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        Direction f = ctx.getHorizontalDirection().getOpposite(); // el frente de la mesa mira a quien la pone
+        Direction f = ctx.getHorizontalDirection().getOpposite(); // el lado curvo mira a quien la pone
         Level level = ctx.getLevel();
         BlockPos master = ctx.getClickedPos();
-        for (int x = 0; x < 3; x++) {
-            BlockPos p = cell(master, f, x);
-            if (!level.isInWorldBounds(p) || (x != 1 && !level.getBlockState(p).canBeReplaced(ctx))) {
+        for (int i = 0; i < BlackjackLayout.CELLS.length; i++) {
+            BlockPos p = cellPos(master, f, i);
+            if (!level.isInWorldBounds(p) || (i != BlackjackLayout.MASTER && !level.getBlockState(p).canBeReplaced(ctx))) {
                 return null;
             }
         }
@@ -86,15 +96,15 @@ public class BlackjackBlock extends Block implements EntityBlock {
         if (!level.getBlockState(back).getCollisionShape(level, back).isEmpty() || !level.getBlockState(back.above()).getCollisionShape(level, back.above()).isEmpty()) {
             return null; // no hay lugar para el crupier
         }
-        return defaultBlockState().setValue(FACING, f).setValue(PX, 1);
+        return defaultBlockState().setValue(FACING, f).setValue(CELL, BlackjackLayout.MASTER);
     }
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         Direction f = state.getValue(FACING);
-        for (int x = 0; x < 3; x++) {
-            if (x != 1) {
-                level.setBlock(cell(pos, f, x), defaultBlockState().setValue(FACING, f).setValue(PX, x), 3);
+        for (int i = 0; i < BlackjackLayout.CELLS.length; i++) {
+            if (i != BlackjackLayout.MASTER) {
+                level.setBlock(cellPos(pos, f, i), defaultBlockState().setValue(FACING, f).setValue(CELL, i), 3);
             }
         }
         if (level instanceof net.minecraft.server.level.ServerLevel sl && level.getBlockEntity(pos) instanceof BlackjackBE be) {
@@ -105,13 +115,13 @@ public class BlackjackBlock extends Block implements EntityBlock {
     private void removeOthers(Level level, BlockPos pos, BlockState state) {
         Direction f = state.getValue(FACING);
         BlockPos master = masterOf(pos, state);
-        for (int x = 0; x < 3; x++) {
-            BlockPos p = cell(master, f, x);
+        for (int i = 0; i < BlackjackLayout.CELLS.length; i++) {
+            BlockPos p = cellPos(master, f, i);
             if (p.equals(pos)) {
                 continue;
             }
             BlockState s = level.getBlockState(p);
-            if (s.is(this) && s.getValue(FACING) == f && s.getValue(PX) == x) {
+            if (s.is(this) && s.getValue(FACING) == f && s.getValue(CELL) == i) {
                 level.setBlock(p, Blocks.AIR.defaultBlockState(), 35);
             }
         }
@@ -143,9 +153,65 @@ public class BlackjackBlock extends Block implements EntityBlock {
         super.onRemove(state, level, pos, newState, moved);
     }
 
+    // ------------------------------------------------------------------ forma: solo la parte del bloque que está dentro de la media luna
+
+    private static VoxelShape computeShape(Direction f, int cell) {
+        int[] c = BlackjackLayout.CELLS[cell];
+        Direction r = right(f);
+        VoxelShape shape = Shapes.empty();
+        // 16 columnas de 1/16 de bloque a lo largo del eje de la mesa (x); en cada una, el tramo de z que cae dentro de la media luna
+        for (int i = 0; i < 16; i++) {
+            double x0 = c[0] - 0.5 + i / 16.0;
+            double x1 = x0 + 1.0 / 16.0;
+            double xm = (x0 + x1) / 2;
+            double zLo = c[1] - 0.5;
+            double zHi = c[1] + 0.5;
+            double lo = Math.max(zLo, BlackjackLayout.CZ);
+            double dx = xm - BlackjackLayout.CX;
+            double r2 = BlackjackLayout.RADIUS * BlackjackLayout.RADIUS - dx * dx;
+            if (r2 <= 0) {
+                continue;
+            }
+            double hi = Math.min(zHi, BlackjackLayout.CZ + Math.sqrt(r2));
+            if (hi - lo < 1e-6) {
+                continue;
+            }
+            // de coordenadas de la mesa (x derecha, z hacia los jugadores) a coordenadas del bloque (0..1) en el mundo
+            double[] ax = {x0 - c[0], x1 - c[0]};
+            double[] az = {lo - c[1], hi - c[1]};
+            double minX = 1e9, maxX = -1e9, minZ = 1e9, maxZ = -1e9;
+            for (double u : ax) {
+                for (double w : az) {
+                    double wx = 0.5 + u * r.getStepX() + w * f.getStepX();
+                    double wz = 0.5 + u * r.getStepZ() + w * f.getStepZ();
+                    minX = Math.min(minX, wx);
+                    maxX = Math.max(maxX, wx);
+                    minZ = Math.min(minZ, wz);
+                    maxZ = Math.max(maxZ, wz);
+                }
+            }
+            shape = Shapes.or(shape, Shapes.box(minX, 0, minZ, maxX, TABLE_TOP, maxZ));
+        }
+        return shape.isEmpty() ? Shapes.box(0.45, 0, 0.45, 0.55, TABLE_TOP, 0.55) : shape.optimize();
+    }
+
     @Override
     public VoxelShape getShape(BlockState s, BlockGetter g, BlockPos p, CollisionContext c) {
-        return SHAPE;
+        Direction f = s.getValue(FACING);
+        int cell = s.getValue(CELL);
+        int fi = f.get2DDataValue();
+        VoxelShape sh = SHAPES[fi][cell];
+        if (sh == null) {
+            sh = computeShape(f, cell);
+            SHAPES[fi][cell] = sh;
+        }
+        return sh;
+    }
+
+    /** Los bloques no tienen modelo: la mesa la dibuja el renderizador. */
+    @Override
+    public RenderShape getRenderShape(BlockState s) {
+        return RenderShape.INVISIBLE;
     }
 
     @Override
@@ -163,7 +229,7 @@ public class BlackjackBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return state.getValue(PX) == 1 ? new BlackjackBE(pos, state) : null;
+        return state.getValue(CELL) == BlackjackLayout.MASTER ? new BlackjackBE(pos, state) : null;
     }
 
     @Nullable

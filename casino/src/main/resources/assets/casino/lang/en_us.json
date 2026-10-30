@@ -106,7 +106,7 @@
  "casino.blackjack.rules": "Get to 21 without going over.",
  "casino.blackjack.rules2": "Blackjack pays 3 to 2. Dealer stands on 17.",
  "casino.blackjack.rules3": "Pick your bet and press DEAL.",
- "casino.blackjack.your_turn": "Your turn",
+ "casino.blackjack.your_turn": "Your turn (%ss)",
  "casino.blackjack.dealer_plays": "Dealer is playing...",
  "casino.blackjack.busy": "Table in use by %s",
  "casino.blackjack.bet_now": "Bet: %s chips",
@@ -124,5 +124,15 @@
  "casino.blackjack.banner_bj": "BLACKJACK!",
  "casino.blackjack.won_big": "%s won %s chips at blackjack",
  "subtitles.casino.card_deal": "Card dealt",
- "subtitles.casino.card_flip": "Card flipped"
+ "subtitles.casino.card_flip": "Card flipped",
+ "casino.blackjack.your_turn_bar": "It is your turn",
+ "casino.blackjack.turn_of": "%s's turn",
+ "casino.blackjack.betting": "Betting: %ss",
+ "casino.blackjack.start_now": "DEAL NOW",
+ "casino.blackjack.watching": "Watching the round...",
+ "casino.blackjack.result_title": "Results",
+ "casino.blackjack.place_bet": "Place your bet",
+ "casino.blackjack.round_running": "A round is in progress, please wait.",
+ "casino.blackjack.full": "The table is full.",
+ "casino.blackjack.felt_text": "BLACKJACK PAYS 3 TO 2"
 }

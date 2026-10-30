@@ -15,6 +15,8 @@ public final class BlackjackPacket {
     public static final int HIT = 1;
     public static final int STAND = 2;
     public static final int DOUBLE = 3;
+    /** Repartir ya, sin esperar a más jugadores. */
+    public static final int START = 4;
 
     public final BlockPos pos;
     public final int action;

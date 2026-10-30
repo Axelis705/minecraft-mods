@@ -106,7 +106,7 @@
  "casino.blackjack.rules": "Llega a 21 sin pasarte.",
  "casino.blackjack.rules2": "Blackjack paga 3 a 2. El crupier se planta en 17.",
  "casino.blackjack.rules3": "Elige tu apuesta y toca REPARTIR.",
- "casino.blackjack.your_turn": "Tu turno",
+ "casino.blackjack.your_turn": "Tu turno (%ss)",
  "casino.blackjack.dealer_plays": "Juega el crupier...",
  "casino.blackjack.busy": "Mesa ocupada por %s",
  "casino.blackjack.bet_now": "Apuesta: %s fichas",
@@ -124,5 +124,15 @@
  "casino.blackjack.banner_bj": "¡BLACKJACK!",
  "casino.blackjack.won_big": "%s ganó %s fichas en el blackjack",
  "subtitles.casino.card_deal": "Carta repartida",
- "subtitles.casino.card_flip": "Carta dada vuelta"
+ "subtitles.casino.card_flip": "Carta dada vuelta",
+ "casino.blackjack.your_turn_bar": "Es tu turno",
+ "casino.blackjack.turn_of": "Turno de %s",
+ "casino.blackjack.betting": "Apuestas: %ss",
+ "casino.blackjack.start_now": "REPARTIR YA",
+ "casino.blackjack.watching": "Mirando la ronda...",
+ "casino.blackjack.result_title": "Resultados",
+ "casino.blackjack.place_bet": "Haz tu apuesta",
+ "casino.blackjack.round_running": "Hay una ronda en marcha, espera un momento.",
+ "casino.blackjack.full": "La mesa está llena.",
+ "casino.blackjack.felt_text": "BLACKJACK PAGA 3 A 2"
 }
