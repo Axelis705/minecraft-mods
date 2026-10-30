@@ -317,8 +317,21 @@ public class RouletteBE extends BlockEntity {
                     return;
                 }
                 List<int[]> plan = new ArrayList<>();
+                int cost = 0;
                 for (int i = 0; i + 1 < last.length; i += 2) {
                     plan.add(new int[]{last[i], last[i + 1]});
+                    cost += last[i + 1];
+                }
+                // "repetir" reemplaza lo que ya tenías puesto (así no se duplica si se pulsa dos veces)
+                int current = table.slots[slot].total;
+                if (Chips.balance(p) + current < cost) {
+                    noChips(p, cost);
+                    releaseIfEmpty(slot);
+                    return;
+                }
+                if (current > 0) {
+                    table.clear(slot);
+                    Chips.give(p, current);
                 }
                 placeAll(p, slot, plan, now);
             }

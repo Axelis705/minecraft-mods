@@ -498,6 +498,9 @@ public final class RouletteScreen extends Screen {
             List<Component> tip = new ArrayList<>();
             tip.add(spotName(s).copy().withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD));
             tip.add(Component.translatable("casino.roulette.tip_payout", s.payout).withStyle(ChatFormatting.GOLD));
+            if (s.kind == RouletteBets.Kind.EVEN_MONEY) {
+                tip.add(Component.translatable("casino.roulette.tip_partage").withStyle(ChatFormatting.GRAY));
+            }
             if (mine != null && mine.stake[s.id] > 0) {
                 tip.add(Component.translatable("casino.roulette.tip_yours", mine.stake[s.id]).withStyle(ChatFormatting.YELLOW));
             }

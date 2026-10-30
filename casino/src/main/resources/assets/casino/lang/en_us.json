@@ -212,5 +212,6 @@
  "subtitles.casino.roulette_roll": "Ball rolling",
  "subtitles.casino.roulette_tick": "Ball hopping",
  "subtitles.casino.roulette_land": "Ball settles",
- "subtitles.casino.roulette_bell": "Dealer bell"
+ "subtitles.casino.roulette_bell": "Dealer bell",
+ "casino.roulette.tip_partage": "If 0 comes up you get half back (La Partage)"
 }
