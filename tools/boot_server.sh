@@ -23,6 +23,7 @@ ann() { # manda un texto como anotacion visible en GitHub (varias lineas)
   echo "::error title=$1::${t}"
 }
 if [ $ok -ne 1 ]; then echo "ERROR: el servidor no llego a 'Done'"; tail -80 "$log"; ann "Servidor no arranco ($mod)" 35 "$log"; exit 1; fi
-bad=$(grep -E "\[(Server thread|main)/(ERROR|FATAL)\]|Exception|Failed to load|Missing registry|Couldn't parse|Parsing error" "$log" | grep -v "ForgeGradle" | head -30)
+bad=$(grep -E "/(ERROR|FATAL)\]|Missing registry|Couldn't parse|Parsing error|Failed to load (recipe|advancement|loot|function|tag)|Exception in thread|Mod .* failed|Failed to start the minecraft server|Crash" "$log" \
+  | grep -vE "server.properties|PlatformDependent|jarjar|ForgeGradle|Reflective setAccessible|/DEBUG\]" | head -30)
 if [ -n "$bad" ]; then echo "ERROR: hay errores en el registro del servidor:"; echo "$bad"; echo "$bad" > "$log.bad"; ann "Errores en el servidor ($mod)" 30 "$log.bad"; exit 1; fi
 grep -E "Done \(" "$log"; echo "Arranque limpio"
