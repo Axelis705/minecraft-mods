@@ -82,5 +82,17 @@
    "casino:slot_stop"
   ],
   "subtitle": "subtitles.casino.slot_stop"
+ },
+ "card_deal": {
+  "sounds": [
+   "casino:card_deal"
+  ],
+  "subtitle": "subtitles.casino.card_deal"
+ },
+ "card_flip": {
+  "sounds": [
+   "casino:card_flip"
+  ],
+  "subtitle": "subtitles.casino.card_flip"
  }
 }

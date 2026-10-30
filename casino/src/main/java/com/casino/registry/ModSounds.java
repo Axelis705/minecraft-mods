@@ -41,6 +41,11 @@ public final class ModSounds {
     /** Un carrete se detiene. */
     public static final RegistryObject<SoundEvent> SLOT_STOP = reg("slot_stop");
 
+    /** Una carta se reparte sobre el fieltro. */
+    public static final RegistryObject<SoundEvent> CARD_DEAL = reg("card_deal");
+    /** Una carta se da vuelta. */
+    public static final RegistryObject<SoundEvent> CARD_FLIP = reg("card_flip");
+
     private ModSounds() {
     }
 

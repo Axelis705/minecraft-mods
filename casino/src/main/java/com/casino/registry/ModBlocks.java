@@ -1,6 +1,7 @@
 package com.casino.registry;
 
 import com.casino.Casino;
+import com.casino.block.BlackjackBlock;
 import com.casino.block.CashierBlock;
 import com.casino.block.LuckyWheelBlock;
 import com.casino.block.PlinkoBlock;
@@ -31,6 +32,10 @@ public final class ModBlocks {
     public static final RegistryObject<Block> SLOT = BLOCKS.register("slot", () -> new SlotBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 10)));
+
+    public static final RegistryObject<Block> BLACKJACK = BLOCKS.register("blackjack", () -> new BlackjackBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
+                    .pushReaction(PushReaction.BLOCK).lightLevel(s -> 6)));
 
     private ModBlocks() {
     }

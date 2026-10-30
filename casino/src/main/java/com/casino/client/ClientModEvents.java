@@ -2,6 +2,7 @@ package com.casino.client;
 
 import com.casino.Casino;
 import com.casino.registry.ModBlockEntities;
+import com.casino.registry.ModEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -18,6 +19,8 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(ModBlockEntities.LUCKY_WHEEL.get(), LuckyWheelRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.PLINKO.get(), PlinkoRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.SLOT.get(), SlotRenderer::new);
+        e.registerBlockEntityRenderer(ModBlockEntities.BLACKJACK.get(), BlackjackRenderer::new);
+        e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
     }
 
     @SubscribeEvent

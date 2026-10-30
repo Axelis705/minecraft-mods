@@ -1,6 +1,7 @@
 package com.casino.registry;
 
 import com.casino.Casino;
+import com.casino.block.BlackjackBE;
 import com.casino.block.LuckyWheelBE;
 import com.casino.block.PlinkoBE;
 import com.casino.block.SlotBE;
@@ -20,6 +21,9 @@ public final class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<SlotBE>> SLOT = TYPES.register("slot",
             () -> BlockEntityType.Builder.of(SlotBE::new, ModBlocks.SLOT.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<BlackjackBE>> BLACKJACK = TYPES.register("blackjack",
+            () -> BlockEntityType.Builder.of(BlackjackBE::new, ModBlocks.BLACKJACK.get()).build(null));
 
     private ModBlockEntities() {
     }
