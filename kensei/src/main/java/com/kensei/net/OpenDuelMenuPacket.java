@@ -1,7 +1,6 @@
 package com.kensei.net;
 
-import com.kensei.client.DuelMenuScreen;
-import net.minecraft.client.Minecraft;
+import com.kensei.client.ClientScreens;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -27,7 +26,7 @@ public class OpenDuelMenuPacket {
 
     public static void handle(OpenDuelMenuPacket m, Supplier<NetworkEvent.Context> ctx) {
         NetworkEvent.Context c = ctx.get();
-        c.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().setScreen(new DuelMenuScreen(m.targetId))));
+        c.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientScreens.openDuelMenu(m.targetId)));
         c.setPacketHandled(true);
     }
 }
