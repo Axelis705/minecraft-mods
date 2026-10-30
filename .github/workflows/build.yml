@@ -37,6 +37,8 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build --no-daemon --stacktrace
+      - name: Arrancar servidor con ${{ matrix.mod }}
+        run: bash tools/boot_server.sh ${{ matrix.mod }}
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.mod }}-jar
