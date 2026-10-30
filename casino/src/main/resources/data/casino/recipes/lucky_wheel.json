@@ -1,0 +1,25 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "GDG",
+  "GCG",
+  "OOO"
+ ],
+ "key": {
+  "G": {
+   "item": "minecraft:gold_block"
+  },
+  "D": {
+   "item": "minecraft:diamond"
+  },
+  "C": {
+   "item": "minecraft:clock"
+  },
+  "O": {
+   "item": "minecraft:obsidian"
+  }
+ },
+ "result": {
+  "item": "casino:lucky_wheel"
+ }
+}

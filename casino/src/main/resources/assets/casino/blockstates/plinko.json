@@ -1,0 +1,196 @@
+{
+ "variants": {
+  "facing=north,px=0,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 0
+  },
+  "facing=north,px=0,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=north,px=0,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=north,px=0,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=north,px=1,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 0
+  },
+  "facing=north,px=1,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=north,px=1,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=north,px=1,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=north,px=2,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 0
+  },
+  "facing=north,px=2,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=north,px=2,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=north,px=2,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 0
+  },
+  "facing=east,px=0,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 90
+  },
+  "facing=east,px=0,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=east,px=0,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=east,px=0,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=east,px=1,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 90
+  },
+  "facing=east,px=1,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=east,px=1,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=east,px=1,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=east,px=2,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 90
+  },
+  "facing=east,px=2,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=east,px=2,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=east,px=2,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 90
+  },
+  "facing=south,px=0,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 180
+  },
+  "facing=south,px=0,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=south,px=0,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=south,px=0,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=south,px=1,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 180
+  },
+  "facing=south,px=1,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=south,px=1,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=south,px=1,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=south,px=2,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 180
+  },
+  "facing=south,px=2,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=south,px=2,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=south,px=2,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 180
+  },
+  "facing=west,px=0,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 270
+  },
+  "facing=west,px=0,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  },
+  "facing=west,px=0,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  },
+  "facing=west,px=0,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  },
+  "facing=west,px=1,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 270
+  },
+  "facing=west,px=1,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  },
+  "facing=west,px=1,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  },
+  "facing=west,px=1,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  },
+  "facing=west,px=2,py=0": {
+   "model": "casino:block/plinko_base",
+   "y": 270
+  },
+  "facing=west,px=2,py=1": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  },
+  "facing=west,px=2,py=2": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  },
+  "facing=west,px=2,py=3": {
+   "model": "casino:block/wheel_empty",
+   "y": 270
+  }
+ }
+}

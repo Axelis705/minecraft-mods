@@ -1,0 +1,68 @@
+{
+ "wheel_tick": {
+  "sounds": [
+   "casino:wheel_tick"
+  ],
+  "subtitle": "subtitles.casino.wheel_tick"
+ },
+ "wheel_start": {
+  "sounds": [
+   "casino:wheel_start"
+  ],
+  "subtitle": "subtitles.casino.wheel_start"
+ },
+ "wheel_win": {
+  "sounds": [
+   "casino:wheel_win"
+  ],
+  "subtitle": "subtitles.casino.wheel_win"
+ },
+ "wheel_jackpot": {
+  "sounds": [
+   "casino:wheel_jackpot"
+  ],
+  "subtitle": "subtitles.casino.wheel_jackpot"
+ },
+ "coins": {
+  "sounds": [
+   "casino:coins"
+  ],
+  "subtitle": "subtitles.casino.coins"
+ },
+ "chip": {
+  "sounds": [
+   "casino:chip"
+  ],
+  "subtitle": "subtitles.casino.chip"
+ },
+ "denied": {
+  "sounds": [
+   "casino:denied"
+  ],
+  "subtitle": "subtitles.casino.denied"
+ },
+ "prize_set": {
+  "sounds": [
+   "casino:prize_set"
+  ],
+  "subtitle": "subtitles.casino.prize_set"
+ },
+ "plinko_peg": {
+  "sounds": [
+   "casino:plinko_peg"
+  ],
+  "subtitle": "subtitles.casino.plinko_peg"
+ },
+ "plinko_drop": {
+  "sounds": [
+   "casino:plinko_drop"
+  ],
+  "subtitle": "subtitles.casino.plinko_drop"
+ },
+ "plinko_land": {
+  "sounds": [
+   "casino:plinko_land"
+  ],
+  "subtitle": "subtitles.casino.plinko_land"
+ }
+}

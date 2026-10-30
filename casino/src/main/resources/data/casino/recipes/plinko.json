@@ -1,0 +1,28 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "GEG",
+  "IBI",
+  "PPP"
+ ],
+ "key": {
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "E": {
+   "item": "minecraft:emerald"
+  },
+  "I": {
+   "item": "minecraft:iron_ingot"
+  },
+  "B": {
+   "item": "minecraft:slime_ball"
+  },
+  "P": {
+   "item": "minecraft:polished_blackstone"
+  }
+ },
+ "result": {
+  "item": "casino:plinko"
+ }
+}

@@ -1,0 +1,8 @@
+{
+ "textures": {
+  "gold": "casino:block/gold",
+  "marble": "casino:block/marble",
+  "particle": "casino:block/marble"
+ },
+ "elements": []
+}

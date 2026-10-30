@@ -1,0 +1,23 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "ingredients": [
+  {
+   "item": "casino:chip_5"
+  },
+  {
+   "item": "casino:chip_5"
+  },
+  {
+   "item": "casino:chip_5"
+  },
+  {
+   "item": "casino:chip_5"
+  },
+  {
+   "item": "casino:chip_5"
+  }
+ ],
+ "result": {
+  "item": "casino:chip_25"
+ }
+}

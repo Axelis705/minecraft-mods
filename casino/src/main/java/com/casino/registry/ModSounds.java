@@ -1,0 +1,43 @@
+package com.casino.registry;
+
+import com.casino.Casino;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+public final class ModSounds {
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Casino.MODID);
+
+    /** El "tic" del puntero al pasar por cada casilla. */
+    public static final RegistryObject<SoundEvent> WHEEL_TICK = reg("wheel_tick");
+    /** Arranque del giro. */
+    public static final RegistryObject<SoundEvent> WHEEL_START = reg("wheel_start");
+    /** Fanfarria de premio normal. */
+    public static final RegistryObject<SoundEvent> WHEEL_WIN = reg("wheel_win");
+    /** Fanfarria larga de premio grande. */
+    public static final RegistryObject<SoundEvent> WHEEL_JACKPOT = reg("wheel_jackpot");
+    /** Monedas / fichas al comprar o canjear. */
+    public static final RegistryObject<SoundEvent> COINS = reg("coins");
+    /** Clic de ficha al apoyarla. */
+    public static final RegistryObject<SoundEvent> CHIP = reg("chip");
+    /** Algo no se pudo hacer. */
+    public static final RegistryObject<SoundEvent> DENIED = reg("denied");
+    /** Premio gordo cambiado en el podio. */
+    public static final RegistryObject<SoundEvent> PRIZE_SET = reg("prize_set");
+
+    /** La bola golpea una clavija del Plinko. */
+    public static final RegistryObject<SoundEvent> PLINKO_PEG = reg("plinko_peg");
+    /** Se suelta una bola. */
+    public static final RegistryObject<SoundEvent> PLINKO_DROP = reg("plinko_drop");
+    /** La bola cae en su casillero. */
+    public static final RegistryObject<SoundEvent> PLINKO_LAND = reg("plinko_land");
+
+    private ModSounds() {
+    }
+
+    private static RegistryObject<SoundEvent> reg(String name) {
+        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Casino.MODID, name)));
+    }
+}

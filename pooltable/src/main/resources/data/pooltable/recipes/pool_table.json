@@ -1,0 +1,22 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "CCC",
+  "PPP",
+  "LLL"
+ ],
+ "key": {
+  "C": {
+   "item": "minecraft:green_carpet"
+  },
+  "P": {
+   "item": "minecraft:dark_oak_planks"
+  },
+  "L": {
+   "item": "minecraft:dark_oak_log"
+  }
+ },
+ "result": {
+  "item": "pooltable:pool_table"
+ }
+}

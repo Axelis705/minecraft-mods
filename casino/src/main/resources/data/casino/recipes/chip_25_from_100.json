@@ -1,0 +1,12 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "ingredients": [
+  {
+   "item": "casino:chip_100"
+  }
+ ],
+ "result": {
+  "item": "casino:chip_25",
+  "count": 4
+ }
+}
