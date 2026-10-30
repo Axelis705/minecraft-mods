@@ -1,0 +1,54 @@
+{
+  "slash": {
+    "sounds": [
+      "kensei:slash1",
+      "kensei:slash2",
+      "kensei:slash3"
+    ],
+    "subtitle": "subtitles.kensei.slash"
+  },
+  "hit": {
+    "sounds": [
+      "kensei:hit1",
+      "kensei:hit2",
+      "kensei:hit3"
+    ],
+    "subtitle": "subtitles.kensei.hit"
+  },
+  "parry": {
+    "sounds": [
+      "kensei:parry"
+    ],
+    "subtitle": "subtitles.kensei.parry"
+  },
+  "dodge": {
+    "sounds": [
+      "kensei:dodge"
+    ],
+    "subtitle": "subtitles.kensei.dodge"
+  },
+  "heavy_charge": {
+    "sounds": [
+      "kensei:heavy_charge"
+    ],
+    "subtitle": "subtitles.kensei.heavy_charge"
+  },
+  "heavy_hit": {
+    "sounds": [
+      "kensei:heavy_hit"
+    ],
+    "subtitle": "subtitles.kensei.heavy_hit"
+  },
+  "guard_break": {
+    "sounds": [
+      "kensei:guard_break"
+    ],
+    "subtitle": "subtitles.kensei.guard_break"
+  },
+  "draw": {
+    "sounds": [
+      "kensei:draw"
+    ],
+    "subtitle": "subtitles.kensei.draw"
+  }
+}

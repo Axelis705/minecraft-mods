@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mod: [casino, pooltable]
+        mod: [casino, pooltable, kensei, scardax]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4

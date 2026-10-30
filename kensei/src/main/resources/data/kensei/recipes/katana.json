@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  N",
+    " NS",
+    "B  "
+  ],
+  "key": {
+    "N": { "item": "minecraft:netherite_ingot" },
+    "S": { "item": "minecraft:nether_star" },
+    "B": { "item": "minecraft:blaze_rod" }
+  },
+  "result": { "item": "kensei:katana", "count": 1 }
+}
