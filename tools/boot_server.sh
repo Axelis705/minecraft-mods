@@ -36,7 +36,7 @@ bad=$(grep -E "/(ERROR|FATAL)\]|Missing registry|Couldn't parse|Parsing error|Fa
 if [ -n "$bad" ]; then echo "ERROR: hay errores en el registro del servidor:"; echo "$bad"; echo "$bad" > "$log.bad"; ann "Errores en el servidor ($mod)" 30 "$log.bad"; exit 1; fi
 if [ -f ci_commands.txt ]; then
   while IFS= read -r line; do
-    case "$line" in '#expect '*) want="${line#\#expect }"; if ! grep -qF "$want" "$log"; then echo "ERROR: falta en el registro: $want"; echo "No salio '$want' (revisa ci_commands.txt)" > "$log.bad"; ann "Prueba de comandos fallo ($mod)" 5 "$log.bad"; exit 1; fi;; esac
+    case "$line" in '#expect '*) want="${line#\#expect }"; if ! grep -qF "$want" "$log"; then echo "ERROR: falta en el registro: $want"; { echo "No salio '$want'"; grep -nE "\[Server\]|Summoned|Unknown|Invalid|Incorrect|Could not|Expected|Failed|Unable|Found no|block data|Executed" "$log" | tail -14; } > "$log.bad"; ann "Prueba de comandos fallo ($mod)" 16 "$log.bad"; exit 1; fi;; esac
   done < ci_commands.txt
   echo "Comandos de prueba: bien"
 fi
