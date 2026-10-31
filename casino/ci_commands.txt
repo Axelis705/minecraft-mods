@@ -1,5 +1,6 @@
 # Pruebas en el servidor real: el crupier y la mesa de blackjack (13 bloques) se crean sin errores
-summon casino:dealer 0 120 0
+# (los crupieres de prueba flotan: si no, caen del y=120 y pueden morir antes de la comprobacion cuando el servidor del CI va lento)
+summon casino:dealer 0 120 0 {NoGravity:1b}
 setblock 2 119 2 casino:blackjack[facing=north,cell=2]
 setblock 0 119 2 casino:blackjack[facing=north,cell=0]
 setblock 4 119 2 casino:blackjack[facing=north,cell=12]
@@ -8,7 +9,7 @@ data get block 2 119 2
 setblock 2 119 2 minecraft:air
 kill @e[type=casino:dealer]
 # la mesa de ruleta (21 bloques) y su crupier
-summon casino:dealer 10 120 0
+summon casino:dealer 10 120 0 {NoGravity:1b}
 setblock 12 119 12 casino:roulette[facing=north,cell=10]
 setblock 9 119 11 casino:roulette[facing=north,cell=0]
 setblock 15 119 13 casino:roulette[facing=north,cell=20]
