@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
  */
 public final class ScratchScreen extends Screen {
     private static final int W = 270;
-    private static final int H = 236;
+    private static final int H = 252;
     private static final int CELL = 60;
     private static final int SUB = 4;
     private static final int N = CELL / SUB;

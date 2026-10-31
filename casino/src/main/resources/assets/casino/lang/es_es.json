@@ -306,10 +306,10 @@
  "casino.scratch.tip_partial": "Rascado: %s de %s casillas",
  "casino.scratch.tip_paid": "Cobrado: %s fichas",
  "casino.scratch.tip_lost": "Sin premio",
- "casino.scratch.buy_btn": "%s boleto(s) · %s",
+ "casino.scratch.buy_btn": "x%s · %s",
  "casino.scratch.rules": "Encuentra 3 símbolos iguales.",
  "casino.scratch.price": "Cada boleto cuesta %s fichas.",
  "casino.scratch.chance": "Uno de cada 4 boletos tiene premio (%s%%).",
- "casino.scratch.shop_hint": "Los boletos van a tu inventario: ábrelos con clic derecho.",
+ "casino.scratch.shop_hint": "Boletos al inventario. Clic derecho para rascar.",
  "casino.scratch.bought": "Compraste %s boleto(s) por %s fichas"
 }

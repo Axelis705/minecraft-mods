@@ -259,7 +259,7 @@ public final class PokerScreen extends Screen {
         }
 
         // fila de abajo: tus cartas
-        g.drawString(font, Component.translatable("casino.blackjack.you").withStyle(ChatFormatting.GRAY), hx, top + 82, 0xFFFFFF, false);
+        g.drawString(font, Component.translatable("casino.blackjack.you").withStyle(ChatFormatting.GRAY), hx, top + 83, 0xFFFFFF, false);
         if (me >= 0 && !t.seats[me].hole.isEmpty()) {
             Seat s = t.seats[me];
             for (int j = 0; j < s.hole.size(); j++) {
@@ -272,8 +272,8 @@ public final class PokerScreen extends Screen {
                 g.drawString(font, Component.translatable("casino.poker.hand_" + cat).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), hx + 2 * (CW + 2) + 4, top + 100, 0xFFFFFF, true);
             }
         } else if (!running) {
-            g.drawString(font, Component.translatable("casino.poker.rules").withStyle(ChatFormatting.AQUA), hx, top + 96, 0xFFFFFF, false);
-            g.drawString(font, Component.translatable("casino.poker.rules2").withStyle(ChatFormatting.AQUA), hx, top + 108, 0xFFFFFF, false);
+            g.drawString(font, Component.translatable("casino.poker.rules").withStyle(ChatFormatting.AQUA), hx, top + 94, 0xFFFFFF, false);
+            g.drawString(font, Component.translatable("casino.poker.rules2").withStyle(ChatFormatting.AQUA), hx, top + 104, 0xFFFFFF, false);
         } else if (me < 0) {
             g.drawString(font, Component.translatable("casino.blackjack.watching").withStyle(ChatFormatting.GRAY), hx, top + 96, 0xFFFFFF, false);
         }
@@ -288,10 +288,11 @@ public final class PokerScreen extends Screen {
                 case FOLD -> Component.translatable("casino.poker.res_fold", s.ante).withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
                 default -> Component.translatable("casino.poker.res_lose", spent).withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
             };
-            g.drawString(font, r, hx + 120, top + 114, 0xFFFFFF, true);
+            g.drawString(font, r, hx + 120, top + 112, 0xFFFFFF, true);
         } else if (me >= 0 && t.seats[me].ante > 0) {
             Seat s = t.seats[me];
-            g.drawString(font, Component.translatable("casino.poker.bet_now", s.ante, s.call).withStyle(ChatFormatting.GRAY), hx + 120, top + 114, 0xFFFFFF, false);
+            boolean cards = !s.hole.isEmpty();
+            g.drawString(font, Component.translatable("casino.poker.bet_now", s.ante, s.call).withStyle(ChatFormatting.GRAY), cards ? hx + 120 : hx, cards ? top + 112 : top + 118, 0xFFFFFF, false);
         }
 
         // columna de la derecha: estado y quién juega
@@ -338,7 +339,7 @@ public final class PokerScreen extends Screen {
         }
         if (m == Mode.BET) {
             int x0 = left + 10;
-            g.drawString(font, Component.translatable("casino.poker.ante").withStyle(ChatFormatting.GRAY), x0 + 160, top + 120, 0xFFFFFF, false);
+            g.drawString(font, Component.translatable("casino.poker.ante").withStyle(ChatFormatting.GRAY), x0 + 160, top + 123, 0xFFFFFF, false);
             g.fill(x0 + 182, top + 132, x0 + 230, top + 154, 0xFF0A0710);
             frame(g, x0 + 182, top + 132, x0 + 230, top + 154, 0xFF8A6A1E);
             int chipValue = ante() >= 500 ? 500 : ante() >= 100 ? 100 : ante() >= 25 ? 25 : 5;

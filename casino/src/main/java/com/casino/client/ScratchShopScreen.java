@@ -15,7 +15,7 @@ import net.minecraft.network.chat.Component;
 /** La tienda de la máquina de rasca y gana: se eligen cuántos boletos comprar (1, 5 o 10); los boletos llegan al inventario. */
 public final class ScratchShopScreen extends Screen {
     private static final int W = 270;
-    private static final int H = 170;
+    private static final int H = 176;
     private static final int[] COUNTS = {1, 5, 10};
 
     private final BlockPos pos;
@@ -90,7 +90,7 @@ public final class ScratchShopScreen extends Screen {
             g.renderItem(ScratchSymbols.stack(s), cx, cy);
             g.drawString(font, Component.literal(String.valueOf(ScratchCards.PRIZES[s])).withStyle(ChatFormatting.WHITE), cx + 19, cy + 4, 0xFFFFFF, true);
         }
-        g.drawString(font, Component.translatable("casino.scratch.shop_hint").withStyle(ChatFormatting.DARK_GRAY), left + 12, top + H - 22, 0xFFFFFF, false);
+        g.drawString(font, Component.translatable("casino.scratch.shop_hint").withStyle(ChatFormatting.DARK_GRAY), left + 12, top + 140, 0xFFFFFF, false);
         super.render(g, mx, my, pt);
     }
 }

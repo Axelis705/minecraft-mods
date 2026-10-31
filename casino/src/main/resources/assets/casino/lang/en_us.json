@@ -306,10 +306,10 @@
  "casino.scratch.tip_partial": "Scratched: %s of %s spots",
  "casino.scratch.tip_paid": "Paid out: %s chips",
  "casino.scratch.tip_lost": "No prize",
- "casino.scratch.buy_btn": "%s ticket(s) · %s",
+ "casino.scratch.buy_btn": "x%s · %s",
  "casino.scratch.rules": "Find 3 matching symbols.",
  "casino.scratch.price": "Each ticket costs %s chips.",
  "casino.scratch.chance": "About 1 in 4 tickets wins (%s%%).",
- "casino.scratch.shop_hint": "Tickets go to your inventory: open them with right-click.",
+ "casino.scratch.shop_hint": "Tickets go to inventory. Right-click to scratch.",
  "casino.scratch.bought": "You bought %s ticket(s) for %s chips"
 }
