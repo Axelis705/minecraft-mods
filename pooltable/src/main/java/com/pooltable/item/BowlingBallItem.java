@@ -1,6 +1,7 @@
 package com.pooltable.item;
 
 import com.pooltable.block.BowlingLaneBE;
+import com.pooltable.game.BowlingAim;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -12,10 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
-/** La bola de boliche: mantén el clic derecho para cargar la fuerza y suelta para lanzar por la pista en la dirección en que miras. */
+/** La bola de boliche: mantén el clic derecho (un indicador sube y baja por la barra) y suelta dentro de la zona verde para lanzar bien. */
 public class BowlingBallItem extends Item {
-    public static final int FULL_CHARGE = 22;
-
     public BowlingBallItem(Properties props) {
         super(props);
     }
@@ -51,6 +50,6 @@ public class BowlingBallItem extends Item {
             sp.displayClientMessage(Component.translatable("pooltable.bowling.not_on_lane"), true);
             return;
         }
-        lane.tryThrow(sp, Math.min(1.0, charge / (double) FULL_CHARGE));
+        lane.tryThrow(sp, BowlingAim.meter(charge));
     }
 }

@@ -114,8 +114,9 @@
   "pooltable.bowling.menu.practice": "Free practice (no scoreboard)",
   "pooltable.bowling.menu.waiting": "Waiting to start...",
   "pooltable.bowling.menu.help1": "Stand on the approach (before the line).",
-  "pooltable.bowling.menu.help2": "Hold right click with the ball to charge.",
-  "pooltable.bowling.menu.help3": "Release to throw where you are looking.",
+  "pooltable.bowling.menu.help2": "Hold right click: a mark moves up and down.",
+  "pooltable.bowling.menu.help3": "Release in the green zone: outside it the ball strays.",
   "pooltable.bowling.menu.help4": "Press A or D on release to add spin.",
-  "pooltable.bowling.menu.help5": "Where you stand sideways changes the start."
+  "pooltable.bowling.menu.help5": "Where you stand sideways changes the start.",
+  "pooltable.bowling.hud.release": "Release when the mark is in the green zone"
 }

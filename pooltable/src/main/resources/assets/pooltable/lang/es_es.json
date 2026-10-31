@@ -114,8 +114,9 @@
   "pooltable.bowling.menu.practice": "Práctica libre (sin marcador)",
   "pooltable.bowling.menu.waiting": "Esperando para empezar...",
   "pooltable.bowling.menu.help1": "Párate en la zona de salida (antes de la línea).",
-  "pooltable.bowling.menu.help2": "Mantén clic derecho con la bola para cargar.",
-  "pooltable.bowling.menu.help3": "Suelta para lanzar hacia donde miras.",
+  "pooltable.bowling.menu.help2": "Mantén clic derecho: una marca sube y baja.",
+  "pooltable.bowling.menu.help3": "Suelta en la zona verde: fuera de ella sale desviada.",
   "pooltable.bowling.menu.help4": "Pulsa A o D al soltar para dar efecto.",
-  "pooltable.bowling.menu.help5": "Tu posición a los lados cambia por dónde sale."
+  "pooltable.bowling.menu.help5": "Tu posición a los lados cambia por dónde sale.",
+  "pooltable.bowling.hud.release": "Suelta cuando la marca esté en la zona verde"
 }

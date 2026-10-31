@@ -1,6 +1,7 @@
 package com.pooltable.client;
 
 import com.pooltable.block.BowlingLaneBE;
+import com.pooltable.game.BowlingAim;
 import com.pooltable.game.BowlingGame;
 import com.pooltable.game.BowlingScore;
 import com.pooltable.item.BowlingBallItem;
@@ -10,7 +11,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 
 /** La barra de fuerza al cargar la bola y el marcador de la partida de la pista más cercana. */
@@ -44,20 +44,23 @@ public final class BowlingHud {
             g.drawCenteredString(mc.font, Component.translatable("pooltable.bowling.not_on_lane"), cx, y, 0xFFFF6060);
             return;
         }
-        float charge = Mth.clamp((p.getTicksUsingItem() + partial) / BowlingBallItem.FULL_CHARGE, 0.0F, 1.0F);
-        int bw = 100;
+        float ticks = p.getTicksUsingItem() + partial;
+        double m = BowlingAim.meter(ticks);
+        int bw = 120;
         int x0 = cx - bw / 2;
-        g.fill(x0 - 2, y - 2, x0 + bw + 2, y + 8, 0xC0101418);
-        g.fill(x0, y, x0 + bw, y + 6, 0xFF2A3038);
-        int fill = Math.round(bw * charge);
-        for (int i = 0; i < fill; i++) {
+        g.fill(x0 - 2, y - 2, x0 + bw + 2, y + 10, 0xC0101418);
+        g.fill(x0, y, x0 + bw, y + 8, 0xFF2A3038);
+        int zl = x0 + (int) Math.round(bw * BowlingAim.SWEET_LO);
+        int zh = x0 + (int) Math.round(bw * BowlingAim.SWEET_HI);
+        for (int i = 0; i < bw; i++) {
             float k = i / (float) bw;
-            int r = (int) (60 + 195 * k);
-            int gr = (int) (230 - 150 * k);
-            g.fill(x0 + i, y, x0 + i + 1, y + 6, 0xFF000000 | (r << 16) | (gr << 8) | 70);
+            g.fill(x0 + i, y, x0 + i + 1, y + 8, 0xFF000000 | ((int) (80 + 120 * k) << 16) | ((int) (150 - 90 * k) << 8) | 60);
         }
-        g.drawCenteredString(mc.font, Component.translatable("pooltable.hud.power"), cx, y - 12, 0xFFFFFFFF);
-        g.drawCenteredString(mc.font, Component.translatable("pooltable.bowling.hud.spin"), cx, y + 12, 0xFFB0B8C0);
+        g.fill(zl, y - 1, zh, y + 9, 0xFF3CDC5A);
+        int mx = x0 + (int) Math.round(bw * m);
+        g.fill(mx - 1, y - 4, mx + 2, y + 12, 0xFFFFFFFF);
+        g.drawCenteredString(mc.font, Component.translatable("pooltable.bowling.hud.release"), cx, y - 14, 0xFFFFFFFF);
+        g.drawCenteredString(mc.font, Component.translatable("pooltable.bowling.hud.spin"), cx, y + 15, 0xFFB0B8C0);
     }
 
     private static void drawBoard(GuiGraphics g, Font font, BowlingLaneBE lane, int screenW) {

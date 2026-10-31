@@ -24,7 +24,7 @@ public final class BowlingPhysics {
     public static final double PIN_R = 0.085;
     public static final double DOWN_R = 0.11;
 
-    public static final double BALL_MASS = 4.0;
+    public static final double BALL_MASS = 2.2;
     public static final double PIN_MASS = 1.0;
     /** Velocidad de choque mínima para tirar un pino que está de pie. */
     public static final double KNOCK = 0.22;

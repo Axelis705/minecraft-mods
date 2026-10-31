@@ -36,8 +36,8 @@ jobs:
         if: matrix.mod == 'pooltable'
         run: |
           mkdir out
-          javac -d out pooltable/src/main/java/com/pooltable/game/BowlingScore.java pooltable/src/main/java/com/pooltable/game/BowlingGame.java pooltable/src/main/java/com/pooltable/game/BowlingPhysics.java pooltable/tests/*.java
-          for t in BowlingScoreTest BowlingPhysicsTest; do java -cp out $t; done
+          javac -d out pooltable/src/main/java/com/pooltable/game/BowlingScore.java pooltable/src/main/java/com/pooltable/game/BowlingGame.java pooltable/src/main/java/com/pooltable/game/BowlingPhysics.java pooltable/src/main/java/com/pooltable/game/BowlingAim.java pooltable/tests/*.java
+          for t in BowlingScoreTest BowlingPhysicsTest BowlingTuneTest; do java -cp out $t; done
       - name: Compilar ${{ matrix.mod }}
         working-directory: ${{ matrix.mod }}
         run: |

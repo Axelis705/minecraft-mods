@@ -1,5 +1,6 @@
 package com.pooltable.block;
 
+import com.pooltable.game.BowlingAim;
 import com.pooltable.game.BowlingGame;
 import com.pooltable.game.BowlingPhysics;
 import com.pooltable.game.BowlingScore;
@@ -46,8 +47,6 @@ public class BowlingLaneBE extends BlockEntity {
     public static final int A_STOP = 3;
     /** Alto de la superficie de la pista sobre el bloque (2/16). */
     public static final double SURFACE_Y = 2.0 / 16.0;
-    public static final double MAX_SPEED = 8.0;
-    public static final double MIN_SPEED = 3.5;
     private static final int SETTLE_TICKS = 40;
     private static final int MAX_ROLL_TICKS = 20 * 25;
 
@@ -199,8 +198,8 @@ public class BowlingLaneBE extends BlockEntity {
         return playing && game != null && !game.over && game.current < pnames.size() ? pnames.get(game.current) : "";
     }
 
-    /** Un lanzamiento. power: de 0 a 1 según cuánto cargó. */
-    public void tryThrow(ServerPlayer sp, double power) {
+    /** Un lanzamiento. meter: dónde estaba el indicador al soltar (0 a 1); fuera de la zona verde el tiro sale peor y desviado. */
+    public void tryThrow(ServerPlayer sp, double meter) {
         if (phase != 0) {
             sp.displayClientMessage(Component.translatable("pooltable.bowling.busy"), true);
             return;
@@ -222,18 +221,19 @@ public class BowlingLaneBE extends BlockEntity {
         }
         standingBefore = ph.standingCount();
         freshBefore = !playing || game.freshRackForNext();
-        double v = Mth.clamp(lv[1], -0.55, 0.55);
+        BowlingAim aim = BowlingAim.shoot(meter, rnd);
+        double v = Mth.clamp(Mth.clamp(lv[1], -0.55, 0.55) + aim.lateralErr, -0.68, 0.68);
         float rel = Mth.wrapDegrees(sp.getYRot() - facing().toYRot());
-        double angle = Mth.clamp(rel, -10.0F, 10.0F);
-        double speed = MIN_SPEED + (MAX_SPEED - MIN_SPEED) * power;
+        double angle = Mth.clamp(Mth.clamp(rel, -10.0F, 10.0F) + aim.angleErr, -16.0, 16.0);
+        double speed = aim.speed;
         // el efecto sale de la tecla de lado (A o D) al soltar; al usar un objeto el movimiento se frena, por eso el factor
-        double spin = Mth.clamp(-sp.xxa * 5.0, -1.0, 1.0);
+        double spin = Mth.clamp(-sp.xxa * 5.0 + aim.spinErr, -1.0, 1.0);
         ph.launch(v, angle, speed, spin);
         phase = 1;
         rollTick = 0;
         wait = 0;
         Vec3 w = worldAt(BowlingPhysics.FOUL_U, v);
-        level.playSound(null, w.x, w.y, w.z, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 0.7F, 0.6F + 0.3F * (float) power);
+        level.playSound(null, w.x, w.y, w.z, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 0.7F, 0.6F + 0.3F * (float) meter);
         sendMoveSync();
     }
 
