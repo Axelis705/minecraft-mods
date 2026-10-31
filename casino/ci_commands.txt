@@ -17,6 +17,16 @@ execute if entity @e[type=casino:dealer] run say PRUEBA_RULETA_OK
 data get block 12 119 12
 setblock 12 119 12 minecraft:air
 kill @e[type=casino:dealer]
+# la mesa de poker (13 bloques) y su crupier
+summon casino:dealer 22 120 0 {NoGravity:1b,Game:2}
+setblock 24 119 2 casino:poker[facing=north,cell=2]
+setblock 22 119 2 casino:poker[facing=north,cell=0]
+setblock 26 119 2 casino:poker[facing=north,cell=12]
+execute if entity @e[type=casino:dealer,nbt={Game:2}] run say PRUEBA_POKER_OK
+data get block 24 119 2
+setblock 24 119 2 minecraft:air
+kill @e[type=casino:dealer]
+#expect PRUEBA_POKER_OK
 #expect PRUEBA_CRUPIER_OK
 #expect PRUEBA_RULETA_OK
 #expect has the following block data

@@ -27,6 +27,8 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
 
     private static final ResourceLocation TEXTURE_ROULETTE = new ResourceLocation(Casino.MODID, "textures/entity/dealer_roulette.png");
 
+    private static final ResourceLocation TEXTURE_POKER = new ResourceLocation(Casino.MODID, "textures/entity/dealer_poker.png");
+
     /** El modelo de jugador, pero con la mano derecha en alto mientras hay un consejo en el aire. */
     private static class DealerModel extends PlayerModel<DealerEntity> {
         DealerModel(ModelPart part) {
@@ -50,7 +52,11 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
 
     @Override
     public ResourceLocation getTextureLocation(DealerEntity entity) {
-        return entity.getGame() == DealerEntity.GAME_ROULETTE ? TEXTURE_ROULETTE : TEXTURE;
+        return switch (entity.getGame()) {
+            case DealerEntity.GAME_ROULETTE -> TEXTURE_ROULETTE;
+            case DealerEntity.GAME_POKER -> TEXTURE_POKER;
+            default -> TEXTURE;
+        };
     }
 
     @Override
@@ -63,7 +69,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     }
 
     private void drawBubble(DealerEntity e, int tip, PoseStack ps, MultiBufferSource buf) {
-        String key = (e.getGame() == DealerEntity.GAME_ROULETTE ? "casino.tip.roulette." : "casino.tip.blackjack.") + tip;
+        String key = (e.getGame() == DealerEntity.GAME_ROULETTE ? "casino.tip.roulette." : e.getGame() == DealerEntity.GAME_POKER ? "casino.tip.poker." : "casino.tip.blackjack.") + tip;
         Font font = getFont();
         List<FormattedCharSequence> lines = font.split(Component.translatable(key), 130);
         ps.pushPose();

@@ -20,6 +20,7 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(ModBlockEntities.PLINKO.get(), PlinkoRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.SLOT.get(), SlotRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.BLACKJACK.get(), BlackjackRenderer::new);
+        e.registerBlockEntityRenderer(ModBlockEntities.POKER.get(), PokerRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.ROULETTE.get(), RouletteRenderer::new);
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
     }

@@ -20,6 +20,7 @@ public final class ModCreativeTabs {
                 out.accept(ModItems.SLOT.get());
                 out.accept(ModItems.BLACKJACK.get());
                 out.accept(ModItems.ROULETTE.get());
+                out.accept(ModItems.POKER.get());
                 out.accept(ModItems.CASHIER.get());
                 out.accept(ModItems.CHIP_1.get());
                 out.accept(ModItems.CHIP_5.get());

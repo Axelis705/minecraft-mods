@@ -2,6 +2,7 @@ package com.casino.entity;
 
 import com.casino.net.CasinoNet;
 import com.casino.net.OpenBlackjackPacket;
+import com.casino.net.OpenPokerPacket;
 import com.casino.net.OpenRoulettePacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -27,12 +28,14 @@ public class DealerEntity extends Mob {
     /** Qué mesa atiende: 0 = blackjack, 1 = ruleta (cambia la ropa y qué panel se abre). */
     public static final int GAME_BLACKJACK = 0;
     public static final int GAME_ROULETTE = 1;
+    public static final int GAME_POKER = 2;
     private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
 
     /** Consejo que está diciendo ahora (-1 = ninguno): el crupier levanta la mano y sobre su cabeza sale un globo con el texto. */
     private static final EntityDataAccessor<Integer> TIP = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     public static final int TIPS_ROULETTE = 12;
     public static final int TIPS_BLACKJACK = 10;
+    public static final int TIPS_POKER = 10;
     private static final int TIP_TICKS = 180;
 
     @Nullable
@@ -74,7 +77,7 @@ public class DealerEntity extends Mob {
             nextTip = 200;
             return;
         }
-        int n = getGame() == GAME_ROULETTE ? TIPS_ROULETTE : TIPS_BLACKJACK;
+        int n = getGame() == GAME_ROULETTE ? TIPS_ROULETTE : getGame() == GAME_POKER ? TIPS_POKER : TIPS_BLACKJACK;
         this.entityData.set(TIP, random.nextInt(n));
         tipLeft = TIP_TICKS;
         level().playSound(null, getX(), getY() + 1.6, getZ(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, net.minecraft.sounds.SoundSource.NEUTRAL, 0.6F, 1.3F);
@@ -148,7 +151,9 @@ public class DealerEntity extends Mob {
             return InteractionResult.PASS;
         }
         if (!level().isClientSide && table != null && player instanceof ServerPlayer sp) {
-            if (getGame() == GAME_ROULETTE) {
+            if (getGame() == GAME_POKER) {
+                CasinoNet.sendTo(sp, new OpenPokerPacket(table));
+            } else if (getGame() == GAME_ROULETTE) {
                 CasinoNet.sendTo(sp, new OpenRoulettePacket(table));
             } else {
                 CasinoNet.sendTo(sp, new OpenBlackjackPacket(table));

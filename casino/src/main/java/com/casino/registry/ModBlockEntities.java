@@ -4,6 +4,7 @@ import com.casino.Casino;
 import com.casino.block.BlackjackBE;
 import com.casino.block.LuckyWheelBE;
 import com.casino.block.PlinkoBE;
+import com.casino.block.PokerBE;
 import com.casino.block.RouletteBE;
 import com.casino.block.SlotBE;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +26,9 @@ public final class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<BlackjackBE>> BLACKJACK = TYPES.register("blackjack",
             () -> BlockEntityType.Builder.of(BlackjackBE::new, ModBlocks.BLACKJACK.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<PokerBE>> POKER = TYPES.register("poker",
+            () -> BlockEntityType.Builder.of(PokerBE::new, ModBlocks.POKER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<RouletteBE>> ROULETTE = TYPES.register("roulette",
             () -> BlockEntityType.Builder.of(RouletteBE::new, ModBlocks.ROULETTE.get()).build(null));

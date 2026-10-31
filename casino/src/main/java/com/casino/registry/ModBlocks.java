@@ -5,6 +5,7 @@ import com.casino.block.BlackjackBlock;
 import com.casino.block.CashierBlock;
 import com.casino.block.LuckyWheelBlock;
 import com.casino.block.PlinkoBlock;
+import com.casino.block.PokerBlock;
 import com.casino.block.RouletteBlock;
 import com.casino.block.SlotBlock;
 import net.minecraft.world.level.block.Block;
@@ -40,6 +41,10 @@ public final class ModBlocks {
 
     public static final RegistryObject<Block> ROULETTE = BLOCKS.register("roulette", () -> new RouletteBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
+                    .pushReaction(PushReaction.BLOCK).lightLevel(s -> 6)));
+
+    public static final RegistryObject<Block> POKER = BLOCKS.register("poker", () -> new PokerBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 6)));
 
     private ModBlocks() {
