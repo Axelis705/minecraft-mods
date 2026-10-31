@@ -29,8 +29,16 @@ public class DealerEntity extends Mob {
     public static final int GAME_ROULETTE = 1;
     private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
 
+    /** Consejo que está diciendo ahora (-1 = ninguno): el crupier levanta la mano y sobre su cabeza sale un globo con el texto. */
+    private static final EntityDataAccessor<Integer> TIP = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
+    public static final int TIPS_ROULETTE = 12;
+    public static final int TIPS_BLACKJACK = 10;
+    private static final int TIP_TICKS = 180;
+
     @Nullable
     private BlockPos table;
+    private int tipLeft;
+    private int nextTip = 400 + (int) (Math.random() * 400);
 
     public DealerEntity(EntityType<? extends DealerEntity> type, Level level) {
         super(type, level);
@@ -43,6 +51,33 @@ public class DealerEntity extends Mob {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(GAME, GAME_BLACKJACK);
+        this.entityData.define(TIP, -1);
+    }
+
+    public int getTip() {
+        return this.entityData.get(TIP);
+    }
+
+    /** Cada tanto, si hay alguien cerca, dice un consejo al azar de su juego. */
+    private void tickTips() {
+        if (tipLeft > 0) {
+            if (--tipLeft == 0) {
+                this.entityData.set(TIP, -1);
+            }
+            return;
+        }
+        if (--nextTip > 0) {
+            return;
+        }
+        nextTip = 900 + random.nextInt(900); // entre 45 y 90 segundos
+        if (level().getNearestPlayer(this, 8.0) == null) {
+            nextTip = 200;
+            return;
+        }
+        int n = getGame() == GAME_ROULETTE ? TIPS_ROULETTE : TIPS_BLACKJACK;
+        this.entityData.set(TIP, random.nextInt(n));
+        tipLeft = TIP_TICKS;
+        level().playSound(null, getX(), getY() + 1.6, getZ(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, net.minecraft.sounds.SoundSource.NEUTRAL, 0.6F, 1.3F);
     }
 
     public int getGame() {
@@ -90,6 +125,7 @@ public class DealerEntity extends Mob {
         yBodyRot = base;
         yBodyRotO = base;
         if (!level().isClientSide) {
+            tickTips();
             Player p = level().getNearestPlayer(this, 7.0);
             if (p != null) {
                 double dx = p.getX() - getX();

@@ -32,8 +32,8 @@ public final class RouletteLayout {
     // ---- mesa
     public static final double HALF_LEN = 3.5;
     public static final double HALF_DEP = 1.5;
-    /** Alto del tablero (14/16) y del fieltro. */
-    public static final double Y_TOP = 14.0 / 16.0;
+    /** Alto del tablero (12/16) y del fieltro. */
+    public static final double Y_TOP = 12.0 / 16.0;
 
     // ---- rueda (centro y radios, en metros)
     public static final double WHEEL_X = -2.0;

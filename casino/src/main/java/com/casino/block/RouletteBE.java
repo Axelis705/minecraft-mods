@@ -159,12 +159,14 @@ public class RouletteBE extends BlockEntity {
     }
 
     private Vec3 center() {
-        return new Vec3(worldPosition.getX() + 0.5, worldPosition.getY() + 1.0, worldPosition.getZ() + 0.5);
+        // el centro de la rueda: de ahí salen todos los sonidos y efectos
+        return worldPos(RouletteLayout.WHEEL_X, RouletteLayout.WHEEL_Z, RouletteLayout.Y_TOP + 0.1);
     }
 
     private void sound(SoundEvent s, float vol, float pitch) {
         if (level != null) {
-            level.playSound(null, worldPosition, s, SoundSource.BLOCKS, vol, pitch);
+            Vec3 c = center();
+            level.playSound(null, c.x, c.y, c.z, s, SoundSource.BLOCKS, vol, pitch);
         }
     }
 

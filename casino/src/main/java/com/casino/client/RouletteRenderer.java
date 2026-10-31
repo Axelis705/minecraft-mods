@@ -411,13 +411,12 @@ public class RouletteRenderer implements BlockEntityRenderer<RouletteBE> {
         VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(WOOD));
         wallCyl(vc, p, light, ro, Y, Y + 0.075F, seg, true, 0xFFFFFF, 1);
         ringSlope(vc, p, light, ro, Y + 0.075F, rto + 0.03F, Y + 0.075F, 0, Math.PI * 2, seg, 0xC89058);
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(GOLD));
-        ringSlope(vc, p, light, rto + 0.03F, Y + 0.077F, rto, Y + 0.077F, 0, Math.PI * 2, seg, 0xFFFFFF);
-        wallCyl(vc, p, light, rto + 0.03F, Y + 0.075F, Y + 0.077F, seg, true, 0xFFFFFF, 1);
         vc = buf.getBuffer(RenderType.entityCutoutNoCull(WOOD));
+        ringSlope(vc, p, light, rto + 0.03F, Y + 0.077F, rto, Y + 0.077F, 0, Math.PI * 2, seg, 0x4A2E1A);
+        wallCyl(vc, p, light, rto + 0.03F, Y + 0.075F, Y + 0.077F, seg, true, 0x4A2E1A, 1);
         ringSlope(vc, p, light, rto, Y + 0.075F, rti, Y + 0.025F, 0, Math.PI * 2, seg, 0xA66E3C);
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(GOLD));
-        ringSlope(vc, p, light, rti, Y + 0.025F, rw, Y + 0.025F, 0, Math.PI * 2, seg, 0xFFFFFF);
+        vc = buf.getBuffer(RenderType.entityCutoutNoCull(WOOD));
+        ringSlope(vc, p, light, rti, Y + 0.025F, rw, Y + 0.025F, 0, Math.PI * 2, seg, 0x3A2416);
         // deflectores de la pista
         vc = buf.getBuffer(RenderType.entityCutoutNoCull(GOLD));
         for (int k = 0; k < 8; k++) {
