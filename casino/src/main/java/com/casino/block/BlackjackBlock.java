@@ -46,7 +46,7 @@ public class BlackjackBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     /** Cuál de los 13 bloques de la mesa es (ver BlackjackLayout.CELLS). */
     public static final IntegerProperty CELL = IntegerProperty.create("cell", 0, BlackjackLayout.CELLS.length - 1);
-    private static final double TABLE_TOP = 14.0 / 16.0;
+    private static final double TABLE_TOP = 12.0 / 16.0;
     private static final VoxelShape[][] SHAPES = new VoxelShape[4][BlackjackLayout.CELLS.length];
 
     public BlackjackBlock(Properties props) {

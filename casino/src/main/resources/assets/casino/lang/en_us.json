@@ -1,4 +1,12 @@
 {
+ "casino.blackjack.split": "SPLIT (P)",
+ "casino.blackjack.insure_btn": "INSURANCE (%s) [Y]",
+ "casino.blackjack.insure_no": "NO THANKS [N]",
+ "casino.blackjack.insurance_ask": "Insurance? Dealer shows an Ace (%ss)",
+ "casino.blackjack.insurance_wait": "Deciding insurance...",
+ "casino.blackjack.res_total_win": "You win %s chips!",
+ "casino.blackjack.res_total_even": "You break even",
+ "casino.blackjack.res_total_lose": "You lose %s chips",
  "itemGroup.casino": "Casino",
  "block.casino.cashier": "Casino Cashier",
  "block.casino.lucky_wheel": "Lucky Wheel",

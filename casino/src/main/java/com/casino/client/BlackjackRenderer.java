@@ -52,9 +52,9 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
     private static final float R_OUT = (float) BlackjackLayout.RADIUS;
     private static final float RAIL = 0.125F;
     private static final float R_IN = R_OUT - RAIL;
-    private static final float Y_FELT = 13.0F / 16.0F;
-    private static final float Y_RAIL = 14.0F / 16.0F;
-    private static final float Y_LIP = 11.0F / 16.0F;
+    private static final float Y_FELT = 11.0F / 16.0F;
+    private static final float Y_RAIL = 12.0F / 16.0F;
+    private static final float Y_LIP = 9.0F / 16.0F;
     private static final float TABLE_Y = Y_FELT + 0.006F;
     private static final float SHOE_X = 0.8F;
     private static final float SHOE_Z = -0.27F;
@@ -358,6 +358,41 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         }
     }
 
+    private static String tag(Result r) {
+        String key = switch (r) {
+            case BLACKJACK -> "casino.blackjack.tag_bj";
+            case WIN -> "casino.blackjack.tag_win";
+            case PUSH -> "casino.blackjack.tag_push";
+            case BUST -> "casino.blackjack.tag_bust";
+            default -> "casino.blackjack.tag_lose";
+        };
+        return Component.translatable(key).getString();
+    }
+
+    private static int tagColor(Result r) {
+        return switch (r) {
+            case BLACKJACK -> 0xFFD23C;
+            case WIN -> 0x66FF66;
+            case PUSH -> 0xFFFFFF;
+            default -> 0xFF5555;
+        };
+    }
+
+    /** Una pila de fichas con el valor dado, en el punto (x, z) de la mesa. */
+    private void drawChips(PoseStack ps, MultiBufferSource buf, Level level, int amount, double x, double z, int light, int seed) {
+        int layer = 0;
+        for (ItemStack st : Chips.stacksFor(amount)) {
+            for (int k = 0; k < Math.min(st.getCount(), 4) && layer < 9; k++, layer++) {
+                ps.pushPose();
+                ps.translate(x + ((layer * 5) % 3 - 1) * 0.008F, TABLE_Y + 0.012F + layer * 0.014F, z);
+                ps.mulPose(Axis.XP.rotationDegrees(-90));
+                ps.scale(0.17F, 0.17F, 0.17F);
+                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(st.getItem()), ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, ps, buf, level, layer + seed * 11);
+                ps.popPose();
+            }
+        }
+    }
+
     @Override
     public void render(BlackjackBE be, float partial, PoseStack ps, MultiBufferSource buf, int packedLight, int overlay) {
         Level level = be.getLevel();
@@ -401,45 +436,51 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
             float rot = (float) (90.0 - ang);
             double[] cp = BlackjackLayout.polar(CARD_R, ang);
             double[] bp = BlackjackLayout.polar(BET_R, ang);
-            // fichas apostadas
-            List<ItemStack> stacks = Chips.stacksFor(s.bet);
-            int layer = 0;
-            for (ItemStack st : stacks) {
-                for (int k = 0; k < Math.min(st.getCount(), 4) && layer < 9; k++, layer++) {
-                    ps.pushPose();
-                    ps.translate(bp[0] + ((layer * 5) % 3 - 1) * 0.008F, TABLE_Y + 0.012F + layer * 0.014F, bp[1]);
-                    ps.mulPose(Axis.XP.rotationDegrees(-90));
-                    ps.scale(0.17F, 0.17F, 0.17F);
-                    Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(st.getItem()), ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, ps, buf, level, layer + i * 11);
-                    ps.popPose();
-                }
+            double a = Math.toRadians(ang);
+            double tx = Math.sin(a);
+            double tz = -Math.cos(a);
+            int extra = Math.max(0, Math.max(s.cards.size(), s.cards2.size()) - 2);
+            double shift = s.split ? 0.17 + 0.03 * extra : 0.0;
+            // fichas apostadas (con separar: una pila por mano) y el seguro
+            drawChips(ps, buf, level, s.bet, bp[0] - tx * shift, bp[1] - tz * shift, light, i);
+            if (s.split) {
+                drawChips(ps, buf, level, s.bet2, bp[0] + tx * shift, bp[1] + tz * shift, light, i + 5);
+            }
+            if (s.insurance > 0) {
+                double[] ip = BlackjackLayout.polar(0.88, ang);
+                drawChips(ps, buf, level, s.insurance, ip[0], ip[1], light, i + 9);
             }
             if (s.cards.isEmpty()) {
                 continue;
             }
-            drawHand(be, ps, buf, s.cards, be.born[i], cp[0], cp[1], ang, false, time, light);
-            int n = Math.min(s.cards.size(), BlackjackBE.MAX_CARDS);
-            if (time >= be.born[i][n - 1] + 8) {
-                String pt = String.valueOf(s.total());
-                if (BlackjackGame.soft(s.cards) && s.total() > 11 && s.total() < 21) {
-                    pt = (s.total() - 10) + "/" + s.total();
+            drawHand(be, ps, buf, s.cards, be.born[i], cp[0] - tx * shift, cp[1] - tz * shift, ang, false, time, light);
+            if (s.split) {
+                drawHand(be, ps, buf, s.cards2, be.born2[i], cp[0] + tx * shift, cp[1] + tz * shift, ang, false, time, light);
+            }
+            double[] tp = BlackjackLayout.polar(TOTAL_R, ang);
+            for (int h = 0; h < (s.split ? 2 : 1); h++) {
+                List<Integer> hc = s.cards(h);
+                long[] bn = h == 0 ? be.born[i] : be.born2[i];
+                int n = Math.min(hc.size(), BlackjackBE.MAX_CARDS);
+                if (n > 0 && time >= bn[n - 1] + 8) {
+                    int tot = BlackjackGame.total(hc);
+                    String pt = String.valueOf(tot);
+                    if (BlackjackGame.soft(hc) && tot > 11 && tot < 21) {
+                        pt = (tot - 10) + "/" + tot;
+                    }
+                    double off = s.split ? (h == 0 ? -shift : shift) : 0.0;
+                    flatText(ps, buf, pt, tp[0] + tx * off, tp[1] + tz * off, rot, 0xFFE070, 0.02F, light);
                 }
-                double[] tp = BlackjackLayout.polar(TOTAL_R, ang);
-                flatText(ps, buf, pt, tp[0], tp[1], rot, 0xFFE070, 0.02F, light);
             }
             double[] np = BlackjackLayout.polar(NAME_R, ang);
             boolean showResult = t.phase == Phase.RESULT && time >= be.resultAt && s.result != Result.NONE;
             if (showResult) {
-                String key;
-                int col;
-                switch (s.result) {
-                    case BLACKJACK -> { key = "casino.blackjack.tag_bj"; col = 0xFFD23C; }
-                    case WIN -> { key = "casino.blackjack.tag_win"; col = 0x66FF66; }
-                    case PUSH -> { key = "casino.blackjack.tag_push"; col = 0xFFFFFF; }
-                    case BUST -> { key = "casino.blackjack.tag_bust"; col = 0xFF5555; }
-                    default -> { key = "casino.blackjack.tag_lose"; col = 0xFF5555; }
+                StringBuilder sb = new StringBuilder(tag(s.result));
+                if (s.split) {
+                    sb.append(" | ").append(tag(s.result2));
                 }
-                flatText(ps, buf, Component.translatable(key).getString(), np[0], np[1], rot, col, 0.013F, light);
+                int col = s.split || s.insurance > 0 ? 0xFFFFFF : tagColor(s.result);
+                flatText(ps, buf, sb.toString(), np[0], np[1], rot, col, 0.013F, light);
             } else if (!be.names[i].isEmpty()) {
                 flatText(ps, buf, be.names[i], np[0], np[1], rot, 0xCFCFCF, 0.01F, light);
             }

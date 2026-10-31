@@ -59,6 +59,8 @@ public class BlackjackBE extends BlockEntity {
     private static final int TURN_TICKS = 400;
     /** Cuánto se muestran los resultados antes de limpiar la mesa (6 s). */
     private static final int RESULT_TICKS = 120;
+    /** Tiempo para decidir el seguro (12 s). */
+    private static final int INSURANCE_TICKS = 240;
     /** Distancia a la que se considera que alguien "está en la mesa" para repartir sin esperar. */
     private static final double NEAR = 7.0;
     public static final int MAX_CARDS = 12;
@@ -75,10 +77,14 @@ public class BlackjackBE extends BlockEntity {
     private boolean paid = false;
     private boolean dealNow = false;
     private int lastTurnSeat = -1;
+    private int lastTurnHand = -1;
     private final Random rng = new Random();
 
     // ---- solo cliente: animación de las cartas
     public final long[][] born = new long[BlackjackTable.SEATS][MAX_CARDS];
+    public final long[][] born2 = new long[BlackjackTable.SEATS][MAX_CARDS];
+    private final int[] seenCards2 = new int[BlackjackTable.SEATS];
+    private final boolean[] seenSplit = new boolean[BlackjackTable.SEATS];
     public final long[] dBorn = new long[MAX_CARDS];
     public long revealAt = -1000;
     public long resultAt = -1000;
@@ -248,8 +254,9 @@ public class BlackjackBE extends BlockEntity {
                 if (seat < 0 || !table.canDouble(seat)) {
                     return;
                 }
-                if (!Chips.take(p, table.seats[seat].bet)) {
-                    msg(p, "casino.plinko.no_chips", ChatFormatting.RED, table.seats[seat].bet);
+                int extra = table.activeBet(seat);
+                if (!Chips.take(p, extra)) {
+                    msg(p, "casino.plinko.no_chips", ChatFormatting.RED, extra);
                     sound(ModSounds.DENIED.get(), 0.6F, 1.0F);
                     return;
                 }
@@ -259,8 +266,55 @@ public class BlackjackBE extends BlockEntity {
                 dealerSwing();
                 afterChange(now);
             }
+            case BlackjackPacket.SPLIT -> {
+                if (seat < 0 || !table.canSplit(seat)) {
+                    return;
+                }
+                int extra = table.activeBet(seat);
+                if (!Chips.take(p, extra)) {
+                    msg(p, "casino.plinko.no_chips", ChatFormatting.RED, extra);
+                    sound(ModSounds.DENIED.get(), 0.6F, 1.0F);
+                    return;
+                }
+                table.split(seat, rng);
+                sound(ModSounds.CHIP.get(), 0.8F, 0.9F);
+                sound(ModSounds.CARD_DEAL.get(), 0.8F, 1.0F);
+                dealerSwing();
+                afterChange(now);
+            }
+            case BlackjackPacket.INSURE -> {
+                if (seat < 0 || !table.canInsure(seat)) {
+                    return;
+                }
+                int cost = table.seats[seat].bet / 2;
+                if (!Chips.take(p, cost)) {
+                    msg(p, "casino.plinko.no_chips", ChatFormatting.RED, cost);
+                    sound(ModSounds.DENIED.get(), 0.6F, 1.0F);
+                    return;
+                }
+                table.insure(seat);
+                sound(ModSounds.CHIP.get(), 0.8F, 1.2F);
+                afterInsurance(now);
+            }
+            case BlackjackPacket.DECLINE -> {
+                if (seat < 0 || !table.canInsure(seat)) {
+                    return;
+                }
+                table.declineInsurance(seat);
+                afterInsurance(now);
+            }
             default -> {
             }
+        }
+    }
+
+    /** Cuando todos decidieron el seguro (o se acabó el tiempo) el crupier mira su carta. */
+    private void afterInsurance(long now) {
+        if (table.phase == Phase.INSURANCE && table.insuranceDone()) {
+            table.endInsurance();
+            afterChange(now);
+        } else {
+            sync();
         }
     }
 
@@ -269,6 +323,7 @@ public class BlackjackBE extends BlockEntity {
         Arrays.fill(players, null);
         Arrays.fill(names, "");
         lastTurnSeat = -1;
+        lastTurnHand = -1;
         nextStep = 0;
         readyAt = 0;
         dealNow = false;
@@ -295,15 +350,21 @@ public class BlackjackBE extends BlockEntity {
         dealNow = false;
         readyAt = 0;
         lastTurnSeat = -1;
+        lastTurnHand = -1;
         sound(ModSounds.CARD_DEAL.get(), 0.9F, 1.0F);
         dealerSwing();
+        if (table.phase == Phase.INSURANCE) {
+            phaseEnd = now + 50 + INSURANCE_TICKS;
+        }
         afterChange(now + 50); // el reparto inicial tarda en animarse: los tiempos arrancan un poco después
     }
 
     /** Después de cada cambio: programa el turno del crupier, avisa a quien le toca y paga cuando la ronda termina. */
     private void afterChange(long now) {
-        if (table.phase == Phase.TURNS && table.current != lastTurnSeat) {
+        int hand = table.current >= 0 ? table.seats[table.current].hand : -1;
+        if (table.phase == Phase.TURNS && (table.current != lastTurnSeat || hand != lastTurnHand)) {
             lastTurnSeat = table.current;
+            lastTurnHand = hand;
             phaseEnd = now + TURN_TICKS;
             ServerPlayer p = online(table.current);
             if (p != null) {
@@ -337,6 +398,12 @@ public class BlackjackBE extends BlockEntity {
                 }
                 if (dealNow || now >= phaseEnd || (readyAt != 0 && now >= readyAt)) {
                     startDeal(now);
+                }
+            }
+            case INSURANCE -> {
+                if (now >= phaseEnd) {
+                    table.endInsurance();
+                    afterChange(now);
                 }
             }
             case TURNS -> {
@@ -390,8 +457,10 @@ public class BlackjackBE extends BlockEntity {
             }
             ServerPlayer p = online(i);
             Result r = s.result;
-            int pay = s.payout;
-            int net = pay - s.bet;
+            int pay = s.totalPayout();
+            int stake = s.stake();
+            int net = pay - stake;
+            boolean combined = s.split || s.insurance > 0;
             if (pay > 0) {
                 List<ItemStack> items = new ArrayList<>(Chips.stacksFor(pay));
                 boolean big = r == Result.BLACKJACK || net >= 250;
@@ -406,7 +475,15 @@ public class BlackjackBE extends BlockEntity {
                     CasinoData.get(sl.getServer()).addPending(players[i], prize);
                 }
             }
-            if (p != null) {
+            if (p != null && combined) {
+                if (net > 0) {
+                    msg(p, "casino.blackjack.res_total_win", ChatFormatting.GREEN, net);
+                } else if (net == 0) {
+                    msg(p, "casino.blackjack.res_total_even", ChatFormatting.YELLOW);
+                } else {
+                    msg(p, "casino.blackjack.res_total_lose", ChatFormatting.RED, -net);
+                }
+            } else if (p != null) {
                 switch (r) {
                     case BLACKJACK -> msg(p, "casino.blackjack.res_bj", ChatFormatting.GOLD, pay);
                     case WIN -> msg(p, "casino.blackjack.res_win", ChatFormatting.GREEN, pay);
@@ -415,7 +492,7 @@ public class BlackjackBE extends BlockEntity {
                     default -> msg(p, "casino.blackjack.res_lose", ChatFormatting.RED, s.bet);
                 }
             }
-            anyWin |= pay > s.bet;
+            anyWin |= pay > stake;
             anyBJ |= r == Result.BLACKJACK;
             if (net >= 500) {
                 Component m = Component.translatable("casino.blackjack.won_big", Component.literal(names[i]).withStyle(ChatFormatting.YELLOW),
@@ -444,7 +521,10 @@ public class BlackjackBE extends BlockEntity {
             clientInit = true;
             for (int i = 0; i < BlackjackTable.SEATS; i++) {
                 seenCards[i] = table.seats[i].cards.size();
+                seenCards2[i] = table.seats[i].cards2.size();
+                seenSplit[i] = table.seats[i].split;
                 Arrays.fill(born[i], -1000);
+                Arrays.fill(born2[i], -1000);
             }
             seenD = table.dealer.size();
             Arrays.fill(dBorn, -1000);
@@ -461,11 +541,16 @@ public class BlackjackBE extends BlockEntity {
             }
             seenSeq = roundSeq;
             Arrays.fill(seenCards, 0);
+            Arrays.fill(seenCards2, 0);
+            Arrays.fill(seenSplit, false);
             seenD = 0;
             seenHole = false;
             revealAt = -1000;
             resultAt = -1000;
             for (long[] b : born) {
+                Arrays.fill(b, -1000);
+            }
+            for (long[] b : born2) {
                 Arrays.fill(b, -1000);
             }
             Arrays.fill(dBorn, -1000);
@@ -494,11 +579,26 @@ public class BlackjackBE extends BlockEntity {
             }
         }
         for (int i = 0; i < BlackjackTable.SEATS; i++) {
-            int n = table.seats[i].cards.size();
+            Seat s = table.seats[i];
+            if (s.split && !seenSplit[i]) {
+                // se acaba de separar: la segunda mano sale de la mesa con una carta vieja y una nueva; la primera recibe una nueva
+                seenSplit[i] = true;
+                born[i][1] = now;
+                born2[i][0] = -1000;
+                born2[i][1] = now + 6;
+                seenCards[i] = 2;
+                seenCards2[i] = 2;
+            }
+            int n = s.cards.size();
             for (int j = Math.max(2, seenCards[i]); j < n && j < MAX_CARDS; j++) {
                 born[i][j] = now;
             }
             seenCards[i] = Math.max(seenCards[i], n);
+            int n2 = s.cards2.size();
+            for (int j = Math.max(2, seenCards2[i]); j < n2 && j < MAX_CARDS; j++) {
+                born2[i][j] = now;
+            }
+            seenCards2[i] = Math.max(seenCards2[i], n2);
         }
         int nd = table.dealer.size();
         for (int j = Math.max(2, seenD); j < nd && j < MAX_CARDS; j++) {
@@ -518,7 +618,7 @@ public class BlackjackBE extends BlockEntity {
                 Seat s = table.seats[i];
                 if (s.result == Result.WIN || s.result == Result.BLACKJACK) {
                     double[] p = BlackjackLayout.polar(1.6, BlackjackLayout.seatAngle(i));
-                    Vec3 w = worldPos(p[0], p[1], 0.95);
+                    Vec3 w = worldPos(p[0], p[1], 0.8);
                     int n = s.result == Result.BLACKJACK ? 24 : 8;
                     for (int k = 0; k < n; k++) {
                         double a = level.random.nextDouble() * Math.PI * 2;
@@ -534,7 +634,7 @@ public class BlackjackBE extends BlockEntity {
         boolean card = false;
         for (int i = 0; i < BlackjackTable.SEATS && !card; i++) {
             for (int j = 0; j < MAX_CARDS; j++) {
-                if (born[i][j] == now) {
+                if (born[i][j] == now || born2[i][j] == now) {
                     card = true;
                     break;
                 }
@@ -606,6 +706,17 @@ public class BlackjackBE extends BlockEntity {
             t.putIntArray("cards", toArray(s.cards));
             t.putInt("bet", s.bet);
             t.putBoolean("doubled", s.doubled);
+            t.putIntArray("cards2", toArray(s.cards2));
+            t.putInt("bet2", s.bet2);
+            t.putBoolean("doubled2", s.doubled2);
+            t.putInt("state2", s.state2.ordinal());
+            t.putInt("result2", s.result2.ordinal());
+            t.putInt("payout2", s.payout2);
+            t.putBoolean("split", s.split);
+            t.putInt("hand", s.hand);
+            t.putInt("insurance", s.insurance);
+            t.putInt("insPayout", s.insPayout);
+            t.putBoolean("insDone", s.insDone);
             t.putInt("state", s.state.ordinal());
             t.putInt("result", s.result.ordinal());
             t.putInt("payout", s.payout);
@@ -644,6 +755,17 @@ public class BlackjackBE extends BlockEntity {
                 s.state = ss[Math.max(0, Math.min(ss.length - 1, t.getInt("state")))];
                 s.result = rs[Math.max(0, Math.min(rs.length - 1, t.getInt("result")))];
                 s.payout = t.getInt("payout");
+                fill(s.cards2, t.getIntArray("cards2"));
+                s.bet2 = t.getInt("bet2");
+                s.doubled2 = t.getBoolean("doubled2");
+                s.state2 = ss[Math.max(0, Math.min(ss.length - 1, t.getInt("state2")))];
+                s.result2 = rs[Math.max(0, Math.min(rs.length - 1, t.getInt("result2")))];
+                s.payout2 = t.getInt("payout2");
+                s.split = t.getBoolean("split");
+                s.hand = Math.max(0, Math.min(1, t.getInt("hand")));
+                s.insurance = t.getInt("insurance");
+                s.insPayout = t.getInt("insPayout");
+                s.insDone = t.getBoolean("insDone");
                 players[i] = t.hasUUID("player") ? t.getUUID("player") : null;
                 names[i] = t.getString("name");
             } else {
@@ -653,6 +775,17 @@ public class BlackjackBE extends BlockEntity {
                 s.state = SeatState.EMPTY;
                 s.result = Result.NONE;
                 s.payout = 0;
+                s.cards2.clear();
+                s.bet2 = 0;
+                s.doubled2 = false;
+                s.state2 = SeatState.EMPTY;
+                s.result2 = Result.NONE;
+                s.payout2 = 0;
+                s.split = false;
+                s.hand = 0;
+                s.insurance = 0;
+                s.insPayout = 0;
+                s.insDone = false;
                 players[i] = null;
                 names[i] = "";
             }

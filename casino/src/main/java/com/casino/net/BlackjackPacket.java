@@ -17,6 +17,11 @@ public final class BlackjackPacket {
     public static final int DOUBLE = 3;
     /** Repartir ya, sin esperar a más jugadores. */
     public static final int START = 4;
+    /** Separar un par en dos manos. */
+    public static final int SPLIT = 5;
+    /** Tomar el seguro (cuando el crupier muestra un As) / no tomarlo. */
+    public static final int INSURE = 6;
+    public static final int DECLINE = 7;
 
     public final BlockPos pos;
     public final int action;

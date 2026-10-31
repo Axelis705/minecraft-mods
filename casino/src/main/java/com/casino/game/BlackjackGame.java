@@ -29,6 +29,11 @@ public final class BlackjackGame {
         return card / 13;
     }
 
+    /** Valor de una carta para comparar al dividir (todas las de 10 valen igual). */
+    public static int value(int card) {
+        return pts(card);
+    }
+
     private static int pts(int card) {
         int r = rank(card);
         return r == 0 ? 11 : Math.min(10, r + 1);

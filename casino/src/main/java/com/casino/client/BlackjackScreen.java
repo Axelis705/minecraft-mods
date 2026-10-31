@@ -47,6 +47,9 @@ public final class BlackjackScreen extends Screen {
     private Button hitBtn;
     private Button standBtn;
     private Button doubleBtn;
+    private Button splitBtn;
+    private Button insureBtn;
+    private Button declineBtn;
 
     public BlackjackScreen(BlockPos pos) {
         super(Component.translatable("block.casino.blackjack"));
@@ -83,9 +86,12 @@ public final class BlackjackScreen extends Screen {
                 .bounds(x0, top + 122, 150, 22).build());
         startBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.start_now").withStyle(ChatFormatting.BOLD), b -> send(BlackjackPacket.START))
                 .bounds(x0, top + 122, 150, 22).build());
-        hitBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.hit"), b -> send(BlackjackPacket.HIT)).bounds(x0, top + 122, 100, 22).build());
-        standBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.stand"), b -> send(BlackjackPacket.STAND)).bounds(x0 + 104, top + 122, 100, 22).build());
-        doubleBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.double"), b -> send(BlackjackPacket.DOUBLE)).bounds(x0 + 208, top + 122, 100, 22).build());
+        hitBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.hit"), b -> send(BlackjackPacket.HIT)).bounds(x0, top + 122, 68, 22).build());
+        standBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.stand"), b -> send(BlackjackPacket.STAND)).bounds(x0 + 71, top + 122, 78, 22).build());
+        doubleBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.double"), b -> send(BlackjackPacket.DOUBLE)).bounds(x0 + 152, top + 122, 74, 22).build());
+        splitBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.split"), b -> send(BlackjackPacket.SPLIT)).bounds(x0 + 229, top + 122, 78, 22).build());
+        insureBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.insure_btn", 0), b -> send(BlackjackPacket.INSURE)).bounds(x0, top + 122, 150, 22).build());
+        declineBtn = addRenderableWidget(Button.builder(Component.translatable("casino.blackjack.insure_no"), b -> send(BlackjackPacket.DECLINE)).bounds(x0 + 156, top + 122, 110, 22).build());
         addRenderableWidget(Button.builder(Component.translatable("casino.cashier.close"), b -> onClose()).bounds(x0 + 322, top + 122, 38, 22).build());
         updateButtons();
     }
@@ -109,7 +115,7 @@ public final class BlackjackScreen extends Screen {
         return p == null ? 0 : Chips.balance(p);
     }
 
-    private enum Mode { BET, WAIT_BET, PLAY, WATCH, NONE }
+    private enum Mode { BET, WAIT_BET, PLAY, INSURE, WATCH, NONE }
 
     private Mode mode(BlackjackBE be) {
         BlackjackTable t = be.table;
@@ -121,6 +127,8 @@ public final class BlackjackScreen extends Screen {
                 return me >= 0 ? Mode.WAIT_BET : Mode.BET;
             case TURNS:
                 return me >= 0 && t.current == me ? Mode.PLAY : Mode.WATCH;
+            case INSURANCE:
+                return me >= 0 && t.canInsure(me) ? Mode.INSURE : Mode.WATCH;
             case RESULT:
                 return now() >= be.settledAt + 40 ? Mode.BET : Mode.WATCH;
             default:
@@ -138,12 +146,21 @@ public final class BlackjackScreen extends Screen {
         hitBtn.visible = m == Mode.PLAY;
         standBtn.visible = m == Mode.PLAY;
         doubleBtn.visible = m == Mode.PLAY;
+        splitBtn.visible = m == Mode.PLAY;
+        insureBtn.visible = m == Mode.INSURE;
+        declineBtn.visible = m == Mode.INSURE;
         betMinus.active = betIdx > 0;
         betPlus.active = betIdx < BlackjackGame.BETS.length - 1;
         betBtn.active = balance() >= bet();
         if (be != null) {
             int me = mySeat(be);
-            doubleBtn.active = me >= 0 && be.table.canDouble(me) && balance() >= be.table.seats[me].bet;
+            doubleBtn.active = me >= 0 && be.table.canDouble(me) && balance() >= be.table.activeBet(me);
+            splitBtn.active = me >= 0 && be.table.canSplit(me) && balance() >= be.table.activeBet(me);
+            if (me >= 0 && m == Mode.INSURE) {
+                int cost = be.table.seats[me].bet / 2;
+                insureBtn.setMessage(Component.translatable("casino.blackjack.insure_btn", cost));
+                insureBtn.active = balance() >= cost;
+            }
         }
     }
 
@@ -176,6 +193,19 @@ public final class BlackjackScreen extends Screen {
                 }
                 if (key == 68 && doubleBtn.active) { // D
                     send(BlackjackPacket.DOUBLE);
+                    return true;
+                }
+                if (key == 80 && splitBtn.active) { // P
+                    send(BlackjackPacket.SPLIT);
+                    return true;
+                }
+            } else if (m == Mode.INSURE) {
+                if (key == 89 && insureBtn.active) { // Y / S no hay: Y = sí
+                    send(BlackjackPacket.INSURE);
+                    return true;
+                }
+                if (key == 78) { // N
+                    send(BlackjackPacket.DECLINE);
                     return true;
                 }
             } else if (m == Mode.BET && (key == 32 || key == 257 || key == 335) && betBtn.active) {
@@ -218,6 +248,9 @@ public final class BlackjackScreen extends Screen {
         if (s.cards.isEmpty()) {
             return "";
         }
+        if (s.split) {
+            return s.total() + " | " + s.total2();
+        }
         String tot = String.valueOf(s.total());
         return switch (s.state) {
             case BUST -> tot + " ✖";
@@ -244,7 +277,7 @@ public final class BlackjackScreen extends Screen {
         Mode m = mode(be);
         int me = mySeat(be);
         long now = now();
-        boolean running = t.phase == Phase.TURNS || t.phase == Phase.DEALER || t.phase == Phase.RESULT;
+        boolean running = t.phase == Phase.TURNS || t.phase == Phase.DEALER || t.phase == Phase.RESULT || t.phase == Phase.INSURANCE;
 
         // manos: crupier arriba, jugador abajo
         int hx = left + 10;
@@ -260,12 +293,18 @@ public final class BlackjackScreen extends Screen {
         }
         if (me >= 0 && !t.seats[me].cards.isEmpty()) {
             Seat s = t.seats[me];
-            drawHand(g, hx, top + 78, s.cards, false);
-            String pt2 = String.valueOf(s.total());
-            if (BlackjackGame.soft(s.cards) && s.total() > 11 && s.total() < 21) {
-                pt2 = (s.total() - 10) + " / " + s.total();
+            for (int h = 0; h < (s.split ? 2 : 1); h++) {
+                List<Integer> hc = s.cards(h);
+                int hxx = hx + h * 120;
+                drawHand(g, hxx, top + 78, hc, false);
+                int tot = BlackjackGame.total(hc);
+                String pt2 = String.valueOf(tot);
+                if (BlackjackGame.soft(hc) && tot > 11 && tot < 21) {
+                    pt2 = (tot - 10) + " / " + tot;
+                }
+                boolean active = s.split && t.phase == Phase.TURNS && t.current == me && s.hand == h;
+                g.drawString(font, Component.literal((active ? "▶ " : "") + pt2).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), hxx + 30 + (hc.size() - 1) * (CW - 6) + CW - (active ? 10 : 0), top + 92, 0xFFFFFF, true);
             }
-            g.drawString(font, Component.literal(pt2).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), hx + 30 + (s.cards.size() - 1) * (CW - 6) + CW, top + 92, 0xFFFFFF, true);
         } else if (!running) {
             g.drawString(font, Component.translatable("casino.blackjack.rules3").withStyle(ChatFormatting.GREEN), hx, top + 84, 0xFFFFFF, false);
         } else if (me < 0) {
@@ -280,6 +319,9 @@ public final class BlackjackScreen extends Screen {
             case TURNS -> m == Mode.PLAY
                     ? Component.translatable("casino.blackjack.your_turn", Math.max(0, (int) Math.ceil((be.phaseEnd - now) / 20.0))).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD)
                     : Component.translatable("casino.blackjack.turn_of", t.current >= 0 ? be.names[t.current] : "").withStyle(ChatFormatting.YELLOW);
+            case INSURANCE -> m == Mode.INSURE
+                    ? Component.translatable("casino.blackjack.insurance_ask", Math.max(0, (int) Math.ceil((be.phaseEnd - now) / 20.0))).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD)
+                    : Component.translatable("casino.blackjack.insurance_wait").withStyle(ChatFormatting.YELLOW);
             case DEALER -> Component.translatable("casino.blackjack.dealer_plays").withStyle(ChatFormatting.AQUA);
             case RESULT -> Component.translatable("casino.blackjack.result_title").withStyle(ChatFormatting.GOLD);
             default -> Component.translatable("casino.blackjack.place_bet").withStyle(ChatFormatting.GRAY);
@@ -316,10 +358,18 @@ public final class BlackjackScreen extends Screen {
                 default -> ChatFormatting.RED;
             };
             int amount = s.result == BlackjackGame.Result.BUST || s.result == BlackjackGame.Result.LOSE ? s.bet : s.payout;
-            g.drawString(font, Component.translatable(key, amount).withStyle(col, ChatFormatting.BOLD), hx + 150, top + 96, 0xFFFFFF, true);
+            Component res = Component.translatable(key, amount).withStyle(col, ChatFormatting.BOLD);
+            if (s.split || s.insurance > 0) {
+                int net = s.totalPayout() - s.stake();
+                res = net > 0 ? Component.translatable("casino.blackjack.res_total_win", net).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD)
+                        : net == 0 ? Component.translatable("casino.blackjack.res_total_even").withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD)
+                        : Component.translatable("casino.blackjack.res_total_lose", -net).withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
+            }
+            g.drawString(font, res, hx + (s.split ? 250 : 150), top + 96, 0xFFFFFF, true);
         }
         if (me >= 0 && t.phase != Phase.RESULT && t.seats[me].bet > 0) {
-            g.drawString(font, Component.translatable("casino.blackjack.bet_now", t.seats[me].bet).withStyle(ChatFormatting.GRAY), hx + 150, top + 96, 0xFFFFFF, false);
+            Seat ms = t.seats[me];
+            g.drawString(font, Component.translatable("casino.blackjack.bet_now", ms.bet + ms.bet2 + ms.insurance).withStyle(ChatFormatting.GRAY), hx + (ms.split ? 250 : 150), top + 96, 0xFFFFFF, false);
         }
         if (m == Mode.BET) {
             int x0 = left + 10;
@@ -334,6 +384,10 @@ public final class BlackjackScreen extends Screen {
     }
 
     private static String resultShort(Seat s) {
+        if (s.split || s.insurance > 0) {
+            int net = s.totalPayout() - s.stake();
+            return net > 0 ? "+" + net : net == 0 ? "=" : "-" + (-net);
+        }
         return switch (s.result) {
             case BLACKJACK -> "BJ +" + (s.payout - s.bet);
             case WIN -> "+" + (s.payout - s.bet);
