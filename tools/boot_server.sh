@@ -38,7 +38,7 @@ bad=$(grep -E "/(ERROR|FATAL)\]|Missing registry|Couldn't parse|Parsing error|Fa
 if [ -n "$bad" ]; then echo "ERROR: hay errores en el registro del servidor:"; echo "$bad"; echo "$bad" > "$log.bad"; ann "Errores en el servidor ($mod)" 30 "$log.bad"; exit 1; fi
 if [ -f ci_commands.txt ]; then
   while IFS= read -r line; do
-    case "$line" in '#expect '*) want="${line#\#expect }"; if ! grep -qF "$want" "$log"; then echo "ERROR: falta en el registro: $want"; { echo "No salio '$want'"; sed -n '/Done (/,$p' "$log" | grep -E "MinecraftServer\]: " | sed 's/^.*MinecraftServer\]: //' | cut -c1-110 | head -70; } > "$log.bad"; ann "Prueba de comandos fallo ($mod)" 72 "$log.bad"; exit 1; fi;; esac
+    case "$line" in '#expect '*) want="${line#\#expect }"; if ! grep -qF "$want" "$log"; then echo "ERROR: falta en el registro: $want"; { echo "No salio '$want'"; sed -n '/Done (/,$p' "$log" | cut -c1-140 | grep -vE 'DEBUG|^\s*$' | head -70; } > "$log.bad"; ann "Prueba de comandos fallo ($mod)" 72 "$log.bad"; exit 1; fi;; esac
   done < ci_commands.txt
   echo "Comandos de prueba: bien"
 fi
