@@ -16,11 +16,13 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerBlockEntityRenderer(ModBlockEntities.POOL_TABLE.get(), PoolTableRenderer::new);
+        e.registerBlockEntityRenderer(ModBlockEntities.BOWLING_LANE.get(), BowlingLaneRenderer::new);
     }
 
     @SubscribeEvent
     public static void onOverlays(RegisterGuiOverlaysEvent e) {
         e.registerAboveAll("pool_power", PoolHud::render);
         e.registerAboveAll("pool_match", PoolMatchHud::render);
+        e.registerAboveAll("bowling_hud", BowlingHud::render);
     }
 }

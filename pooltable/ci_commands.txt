@@ -1,0 +1,13 @@
+# Pruebas en el servidor real: las partes de la pista de boliche se colocan, su bloque-entidad carga y guarda sin errores
+setblock 0 100 0 pooltable:bowling_lane[facing=east,u=0,v=0]
+setblock 5 100 0 pooltable:bowling_lane[facing=east,u=5,v=0]
+setblock 13 100 1 pooltable:bowling_lane[facing=east,u=13,v=1]
+execute if block 0 100 0 pooltable:bowling_lane run say PRUEBA_PISTA_OK
+execute if block 13 100 1 pooltable:bowling_lane run say PRUEBA_PISTA_FONDO_OK
+data get block 0 100 0
+setblock 0 100 0 minecraft:air
+setblock 5 100 0 minecraft:air
+setblock 13 100 1 minecraft:air
+#expect PRUEBA_PISTA_OK
+#expect PRUEBA_PISTA_FONDO_OK
+#expect has the following block data

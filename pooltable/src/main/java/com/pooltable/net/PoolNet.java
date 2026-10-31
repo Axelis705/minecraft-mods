@@ -24,6 +24,8 @@ public final class PoolNet {
         registered = true;
         CHANNEL.registerMessage(0, PoolSyncPacket.class, PoolSyncPacket::encode, PoolSyncPacket::decode, PoolSyncPacket::handle);
         CHANNEL.registerMessage(1, PoolActionPacket.class, PoolActionPacket::encode, PoolActionPacket::decode, PoolActionPacket::handle);
+        CHANNEL.registerMessage(2, BowlingActionPacket.class, BowlingActionPacket::encode, BowlingActionPacket::decode, BowlingActionPacket::handle);
+        CHANNEL.registerMessage(3, BowlingSyncPacket.class, BowlingSyncPacket::encode, BowlingSyncPacket::decode, BowlingSyncPacket::handle);
     }
 
     public static void sendToServer(Object pkt) {

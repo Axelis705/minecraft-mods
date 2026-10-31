@@ -17,6 +17,8 @@ public final class ModCreativeTabs {
             .displayItems((params, out) -> {
                 out.accept(ModItems.POOL_TABLE.get());
                 out.accept(ModItems.POOL_CUE.get());
+                out.accept(ModItems.BOWLING_LANE.get());
+                out.accept(ModItems.BOWLING_BALL.get());
             })
             .build());
 

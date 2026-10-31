@@ -1,0 +1,9 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [" C ", "CSC", " C "],
+ "key": {
+  "C": {"item": "minecraft:coal"},
+  "S": {"item": "minecraft:slime_ball"}
+ },
+ "result": {"item": "pooltable:bowling_ball"}
+}

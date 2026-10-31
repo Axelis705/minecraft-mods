@@ -32,6 +32,12 @@ jobs:
           mkdir out
           javac -d out casino/src/main/java/com/casino/game/WheelLayout.java casino/src/main/java/com/casino/game/PlinkoLayout.java casino/src/main/java/com/casino/game/SlotLayout.java casino/src/main/java/com/casino/game/BlackjackGame.java casino/src/main/java/com/casino/game/BlackjackTable.java casino/src/main/java/com/casino/game/BlackjackLayout.java casino/src/main/java/com/casino/game/RouletteBets.java casino/src/main/java/com/casino/game/RouletteLayout.java casino/src/main/java/com/casino/game/RouletteWheel.java casino/src/main/java/com/casino/game/RouletteTable.java casino/src/main/java/com/casino/game/PokerHands.java casino/src/main/java/com/casino/game/PokerTable.java casino/src/main/java/com/casino/game/ScratchCards.java casino/src/main/java/com/casino/game/CasinoPlan.java casino/tests/*.java
           for t in PlinkoTest WheelTest PegTest SlotTest BlackjackTest RouletteTest RouletteWheelTest PokerTest ScratchTest CasinoPlanTest; do java -cp out $t; done
+      - name: Pruebas de logica del boliche
+        if: matrix.mod == 'pooltable'
+        run: |
+          mkdir out
+          javac -d out pooltable/src/main/java/com/pooltable/game/BowlingScore.java pooltable/src/main/java/com/pooltable/game/BowlingGame.java pooltable/src/main/java/com/pooltable/game/BowlingPhysics.java pooltable/tests/*.java
+          for t in BowlingScoreTest BowlingPhysicsTest; do java -cp out $t; done
       - name: Compilar ${{ matrix.mod }}
         working-directory: ${{ matrix.mod }}
         run: |

@@ -1,6 +1,7 @@
 package com.pooltable.registry;
 
 import com.pooltable.PoolTable;
+import com.pooltable.item.BowlingBallItem;
 import com.pooltable.item.PoolCueItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -15,6 +16,11 @@ public final class ModItems {
             () -> new BlockItem(ModBlocks.POOL_TABLE.get(), new Item.Properties()));
     public static final RegistryObject<Item> POOL_CUE = ITEMS.register("pool_cue",
             () -> new PoolCueItem(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> BOWLING_LANE = ITEMS.register("bowling_lane",
+            () -> new BlockItem(ModBlocks.BOWLING_LANE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BOWLING_BALL = ITEMS.register("bowling_ball",
+            () -> new BowlingBallItem(new Item.Properties().stacksTo(1)));
 
     private ModItems() {
     }

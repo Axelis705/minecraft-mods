@@ -1,6 +1,7 @@
 package com.pooltable.registry;
 
 import com.pooltable.PoolTable;
+import com.pooltable.block.BowlingLaneBlock;
 import com.pooltable.block.PoolTableBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -16,6 +17,10 @@ public final class ModBlocks {
 
     public static final RegistryObject<Block> POOL_TABLE = BLOCKS.register("pool_table", () -> new PoolTableBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(2.0F, 6.0F).sound(SoundType.WOOD)
+                    .noOcclusion().pushReaction(PushReaction.BLOCK)));
+
+    public static final RegistryObject<Block> BOWLING_LANE = BLOCKS.register("bowling_lane", () -> new BowlingLaneBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.SAND).strength(2.0F, 6.0F).sound(SoundType.WOOD)
                     .noOcclusion().pushReaction(PushReaction.BLOCK)));
 
     private ModBlocks() {
