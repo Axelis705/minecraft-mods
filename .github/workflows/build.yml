@@ -30,8 +30,8 @@ jobs:
         if: matrix.mod == 'casino'
         run: |
           mkdir out
-          javac -d out casino/src/main/java/com/casino/game/WheelLayout.java casino/src/main/java/com/casino/game/PlinkoLayout.java casino/src/main/java/com/casino/game/SlotLayout.java casino/src/main/java/com/casino/game/BlackjackGame.java casino/src/main/java/com/casino/game/BlackjackTable.java casino/src/main/java/com/casino/game/BlackjackLayout.java casino/src/main/java/com/casino/game/RouletteBets.java casino/src/main/java/com/casino/game/RouletteLayout.java casino/src/main/java/com/casino/game/RouletteWheel.java casino/src/main/java/com/casino/game/RouletteTable.java casino/src/main/java/com/casino/game/PokerHands.java casino/src/main/java/com/casino/game/PokerTable.java casino/tests/*.java
-          for t in PlinkoTest WheelTest PegTest SlotTest BlackjackTest RouletteTest RouletteWheelTest PokerTest; do java -cp out $t; done
+          javac -d out casino/src/main/java/com/casino/game/WheelLayout.java casino/src/main/java/com/casino/game/PlinkoLayout.java casino/src/main/java/com/casino/game/SlotLayout.java casino/src/main/java/com/casino/game/BlackjackGame.java casino/src/main/java/com/casino/game/BlackjackTable.java casino/src/main/java/com/casino/game/BlackjackLayout.java casino/src/main/java/com/casino/game/RouletteBets.java casino/src/main/java/com/casino/game/RouletteLayout.java casino/src/main/java/com/casino/game/RouletteWheel.java casino/src/main/java/com/casino/game/RouletteTable.java casino/src/main/java/com/casino/game/PokerHands.java casino/src/main/java/com/casino/game/PokerTable.java casino/src/main/java/com/casino/game/ScratchCards.java casino/tests/*.java
+          for t in PlinkoTest WheelTest PegTest SlotTest BlackjackTest RouletteTest RouletteWheelTest PokerTest ScratchTest; do java -cp out $t; done
       - name: Compilar ${{ matrix.mod }}
         working-directory: ${{ matrix.mod }}
         run: |

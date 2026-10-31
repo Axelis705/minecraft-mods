@@ -7,6 +7,7 @@ import com.casino.block.LuckyWheelBlock;
 import com.casino.block.PlinkoBlock;
 import com.casino.block.PokerBlock;
 import com.casino.block.RouletteBlock;
+import com.casino.block.ScratchMachineBlock;
 import com.casino.block.SlotBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -46,6 +47,10 @@ public final class ModBlocks {
     public static final RegistryObject<Block> POKER = BLOCKS.register("poker", () -> new PokerBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 6)));
+
+    public static final RegistryObject<Block> SCRATCH_MACHINE = BLOCKS.register("scratch_machine", () -> new ScratchMachineBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
+                    .pushReaction(PushReaction.BLOCK).lightLevel(s -> 8)));
 
     private ModBlocks() {
     }

@@ -1,0 +1,120 @@
+{
+ "textures": {
+  "gold": "casino:block/gold",
+  "body": "casino:block/scratch_body",
+  "front_up": "casino:block/scratch_front_up",
+  "front_lo": "casino:block/scratch_front_lo",
+  "sign": "casino:block/scratch_sign",
+  "particle": "casino:block/scratch_body"
+ },
+ "elements": [
+  {
+   "from": [
+    1,
+    0,
+    2
+   ],
+   "to": [
+    15,
+    10,
+    15
+   ],
+   "faces": {
+    "north": {
+     "texture": "#front_up",
+     "uv": [
+      1,
+      0,
+      15,
+      10
+     ]
+    },
+    "south": {
+     "texture": "#body"
+    },
+    "east": {
+     "texture": "#body"
+    },
+    "west": {
+     "texture": "#body"
+    },
+    "up": {
+     "texture": "#body"
+    },
+    "down": {
+     "texture": "#body"
+    }
+   }
+  },
+  {
+   "from": [
+    0.5,
+    10,
+    1
+   ],
+   "to": [
+    15.5,
+    15,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#sign",
+     "uv": [
+      0,
+      0,
+      16,
+      5
+     ]
+    },
+    "south": {
+     "texture": "#body"
+    },
+    "east": {
+     "texture": "#body"
+    },
+    "west": {
+     "texture": "#body"
+    },
+    "up": {
+     "texture": "#gold"
+    },
+    "down": {
+     "texture": "#body"
+    }
+   }
+  },
+  {
+   "from": [
+    0.5,
+    15,
+    1
+   ],
+   "to": [
+    15.5,
+    16,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold"
+    },
+    "south": {
+     "texture": "#gold"
+    },
+    "east": {
+     "texture": "#gold"
+    },
+    "west": {
+     "texture": "#gold"
+    },
+    "up": {
+     "texture": "#gold"
+    },
+    "down": {
+     "texture": "#gold"
+    }
+   }
+  }
+ ]
+}

@@ -118,5 +118,11 @@
    "casino:roulette_bell"
   ],
   "subtitle": "subtitles.casino.roulette_bell"
+ },
+ "scratch": {
+  "sounds": [
+   "casino:scratch"
+  ],
+  "subtitle": "subtitles.casino.scratch"
  }
 }

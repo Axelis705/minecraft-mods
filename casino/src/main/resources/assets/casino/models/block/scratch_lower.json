@@ -1,0 +1,82 @@
+{
+ "textures": {
+  "gold": "casino:block/gold",
+  "body": "casino:block/scratch_body",
+  "front_up": "casino:block/scratch_front_up",
+  "front_lo": "casino:block/scratch_front_lo",
+  "sign": "casino:block/scratch_sign",
+  "particle": "casino:block/scratch_body"
+ },
+ "elements": [
+  {
+   "from": [
+    0.5,
+    0,
+    0.5
+   ],
+   "to": [
+    15.5,
+    2,
+    15.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold"
+    },
+    "south": {
+     "texture": "#gold"
+    },
+    "east": {
+     "texture": "#gold"
+    },
+    "west": {
+     "texture": "#gold"
+    },
+    "up": {
+     "texture": "#gold"
+    },
+    "down": {
+     "texture": "#gold"
+    }
+   }
+  },
+  {
+   "from": [
+    1,
+    2,
+    2
+   ],
+   "to": [
+    15,
+    16,
+    15
+   ],
+   "faces": {
+    "north": {
+     "texture": "#front_lo",
+     "uv": [
+      1,
+      0,
+      15,
+      14
+     ]
+    },
+    "south": {
+     "texture": "#body"
+    },
+    "east": {
+     "texture": "#body"
+    },
+    "west": {
+     "texture": "#body"
+    },
+    "up": {
+     "texture": "#body"
+    },
+    "down": {
+     "texture": "#body"
+    }
+   }
+  }
+ ]
+}

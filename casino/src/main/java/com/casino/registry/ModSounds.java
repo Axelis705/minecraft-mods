@@ -55,6 +55,9 @@ public final class ModSounds {
     /** Campanilla de "no va más". */
     public static final RegistryObject<SoundEvent> ROULETTE_BELL = reg("roulette_bell");
 
+    /** Se rasca un boleto de rasca y gana. */
+    public static final RegistryObject<SoundEvent> SCRATCH = reg("scratch");
+
     private ModSounds() {
     }
 

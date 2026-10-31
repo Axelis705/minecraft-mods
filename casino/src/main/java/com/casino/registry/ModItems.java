@@ -33,6 +33,12 @@ public final class ModItems {
     public static final RegistryObject<Item> POKER = ITEMS.register("poker",
             () -> new BlockItem(ModBlocks.POKER.get(), new Item.Properties()));
 
+    public static final RegistryObject<Item> SCRATCH_MACHINE = ITEMS.register("scratch_machine",
+            () -> new BlockItem(ModBlocks.SCRATCH_MACHINE.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> SCRATCH_CARD = ITEMS.register("scratch_card",
+            () -> new com.casino.item.ScratchCardItem(new Item.Properties().stacksTo(1)));
+
     public static final RegistryObject<Item> ROULETTE = ITEMS.register("roulette",
             () -> new BlockItem(ModBlocks.ROULETTE.get(), new Item.Properties()));
 

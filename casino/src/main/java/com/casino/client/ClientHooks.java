@@ -21,6 +21,14 @@ public final class ClientHooks {
         Minecraft.getInstance().setScreen(new SlotScreen(pos));
     }
 
+    public static void openScratchShop(BlockPos pos) {
+        Minecraft.getInstance().setScreen(new ScratchShopScreen(pos));
+    }
+
+    public static void openScratchCard(boolean offHand) {
+        Minecraft.getInstance().setScreen(new ScratchScreen(offHand));
+    }
+
     public static void openPoker(BlockPos pos) {
         Minecraft.getInstance().setScreen(new PokerScreen(pos));
     }
