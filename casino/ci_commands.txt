@@ -37,12 +37,12 @@ kill @e[type=item]
 # el edificio del casino: se construye con /casino build en dos giros y se comprueban bloques clave, tamano y crupieres
 casino build 40 100 40 0
 casino build 120 100 40 1
-execute if block 56 101 42 casino:lucky_wheel[facing=south,px=1,py=0] run say PRUEBA_CASINO_RUEDA
+execute if block 56 101 41 casino:lucky_wheel[facing=south,px=1,py=0] run say PRUEBA_CASINO_RUEDA
 execute if block 41 101 45 casino:slot[facing=east,half=lower] if block 41 102 45 casino:slot[half=upper] run say PRUEBA_CASINO_SLOT
 execute if block 51 101 71 casino:cashier[facing=north] run say PRUEBA_CASINO_CAJERO
 execute if block 63 101 53 casino:blackjack[facing=south,cell=2] if block 50 101 53 casino:roulette[facing=south,cell=10] if block 50 101 63 casino:poker[facing=south,cell=2] run say PRUEBA_CASINO_MESAS
 execute if block 56 103 72 minecraft:air if block 42 108 42 minecraft:glowstone if block 43 115 72 minecraft:gold_block run say PRUEBA_CASINO_EDIFICIO
-execute if block 154 101 56 casino:lucky_wheel[facing=west,px=1,py=0] if block 143 101 63 casino:blackjack[facing=west,cell=2] run say PRUEBA_CASINO_GIRO
+execute if block 155 101 56 casino:lucky_wheel[facing=west,px=1,py=0] if block 143 101 63 casino:blackjack[facing=west,cell=2] run say PRUEBA_CASINO_GIRO
 execute if entity @e[type=casino:dealer,x=63,y=101,z=52,distance=..3] if entity @e[type=casino:dealer,x=40,y=101,z=51,distance=..30] run say PRUEBA_CASINO_CRUPIERES
 data get block 63 101 53
 # la estructura natural (como se genera en el mundo) sobre un mundo plano: la alfombra queda en el centro del chunk, gire como gire
