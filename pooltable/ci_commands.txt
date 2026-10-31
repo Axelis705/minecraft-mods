@@ -1,4 +1,3 @@
-# Pruebas en el servidor real: las partes de la pista de boliche se colocan, su bloque-entidad carga y guarda sin errores
 setblock 0 100 0 pooltable:bowling_lane[facing=east,u=0,v=0]
 setblock 5 100 0 pooltable:bowling_lane[facing=east,u=5,v=0]
 setblock 13 100 1 pooltable:bowling_lane[facing=east,u=13,v=1]
