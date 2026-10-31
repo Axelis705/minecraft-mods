@@ -1,4 +1,5 @@
 {
+ "casino.cmd.build": "Casino built with its corner at %s %s %s",
  "casino.blackjack.split": "SPLIT (P)",
  "casino.blackjack.insure_btn": "INSURANCE (%s) [Y]",
  "casino.blackjack.insure_no": "NO THANKS [N]",

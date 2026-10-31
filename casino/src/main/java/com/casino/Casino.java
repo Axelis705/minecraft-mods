@@ -7,6 +7,7 @@ import com.casino.registry.ModCreativeTabs;
 import com.casino.registry.ModEntities;
 import com.casino.registry.ModItems;
 import com.casino.registry.ModSounds;
+import com.casino.registry.ModStructures;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -28,6 +29,8 @@ public class Casino {
         ModBlockEntities.TYPES.register(bus);
         ModSounds.SOUNDS.register(bus);
         ModCreativeTabs.TABS.register(bus);
+        ModStructures.TYPES.register(bus);
+        ModStructures.PIECES.register(bus);
         bus.addListener(this::commonSetup);
     }
 

@@ -4,6 +4,8 @@
 set -u
 mod="$1"; cd "$mod"
 mkdir -p run; echo "eula=true" > run/eula.txt
+# propiedades del servidor de prueba opcionales del mod (por ejemplo un mundo plano para probar estructuras)
+[ -f ci_server.properties ] && cp ci_server.properties run/server.properties
 log="$(mktemp)"; fifo="$(mktemp -u)"; mkfifo "$fifo"
 chmod +x gradlew
 # el fifo mantiene abierta la entrada del servidor; luego le mandamos "stop"
