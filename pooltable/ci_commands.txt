@@ -14,8 +14,15 @@ execute if block 22 100 1 pooltable:air_hockey run say PRUEBA_HOCKEY_FONDO_OK
 data get block 20 100 0
 setblock 20 100 0 minecraft:air
 setblock 22 100 1 minecraft:air
+execute positioned 0 100 0 run function pooltable:salon
+execute if block 16 100 3 pooltable:bowling_lane run say PRUEBA_SALON_PISTA_OK
+execute if block 8 100 10 pooltable:pool_table run say PRUEBA_SALON_BILLAR_OK
+execute if block 15 100 9 pooltable:air_hockey run say PRUEBA_SALON_HOCKEY_OK
 #expect PRUEBA_HOCKEY_OK
 #expect PRUEBA_HOCKEY_FONDO_OK
 #expect PRUEBA_PISTA_OK
 #expect PRUEBA_PISTA_FONDO_OK
 #expect has the following block data
+#expect PRUEBA_SALON_PISTA_OK
+#expect PRUEBA_SALON_BILLAR_OK
+#expect PRUEBA_SALON_HOCKEY_OK
