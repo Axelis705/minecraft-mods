@@ -7,6 +7,15 @@ data get block 0 100 0
 setblock 0 100 0 minecraft:air
 setblock 5 100 0 minecraft:air
 setblock 13 100 1 minecraft:air
+setblock 20 100 0 pooltable:air_hockey[facing=east,u=0,v=0]
+setblock 22 100 1 pooltable:air_hockey[facing=east,u=2,v=1]
+execute if block 20 100 0 pooltable:air_hockey run say PRUEBA_HOCKEY_OK
+execute if block 22 100 1 pooltable:air_hockey run say PRUEBA_HOCKEY_FONDO_OK
+data get block 20 100 0
+setblock 20 100 0 minecraft:air
+setblock 22 100 1 minecraft:air
+#expect PRUEBA_HOCKEY_OK
+#expect PRUEBA_HOCKEY_FONDO_OK
 #expect PRUEBA_PISTA_OK
 #expect PRUEBA_PISTA_FONDO_OK
 #expect has the following block data

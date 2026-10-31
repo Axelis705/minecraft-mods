@@ -22,6 +22,9 @@ public final class ModItems {
     public static final RegistryObject<Item> BOWLING_BALL = ITEMS.register("bowling_ball",
             () -> new BowlingBallItem(new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> AIR_HOCKEY = ITEMS.register("air_hockey",
+            () -> new BlockItem(ModBlocks.AIR_HOCKEY.get(), new Item.Properties()));
+
     private ModItems() {
     }
 }

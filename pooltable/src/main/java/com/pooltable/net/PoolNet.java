@@ -26,6 +26,9 @@ public final class PoolNet {
         CHANNEL.registerMessage(1, PoolActionPacket.class, PoolActionPacket::encode, PoolActionPacket::decode, PoolActionPacket::handle);
         CHANNEL.registerMessage(2, BowlingActionPacket.class, BowlingActionPacket::encode, BowlingActionPacket::decode, BowlingActionPacket::handle);
         CHANNEL.registerMessage(3, BowlingSyncPacket.class, BowlingSyncPacket::encode, BowlingSyncPacket::decode, BowlingSyncPacket::handle);
+        CHANNEL.registerMessage(4, HockeyActionPacket.class, HockeyActionPacket::encode, HockeyActionPacket::decode, HockeyActionPacket::handle);
+        CHANNEL.registerMessage(5, HockeyMovePacket.class, HockeyMovePacket::encode, HockeyMovePacket::decode, HockeyMovePacket::handle);
+        CHANNEL.registerMessage(6, HockeySyncPacket.class, HockeySyncPacket::encode, HockeySyncPacket::decode, HockeySyncPacket::handle);
     }
 
     public static void sendToServer(Object pkt) {

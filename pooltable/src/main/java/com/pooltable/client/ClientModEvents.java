@@ -17,6 +17,7 @@ public final class ClientModEvents {
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerBlockEntityRenderer(ModBlockEntities.POOL_TABLE.get(), PoolTableRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.BOWLING_LANE.get(), BowlingLaneRenderer::new);
+        e.registerBlockEntityRenderer(ModBlockEntities.AIR_HOCKEY.get(), AirHockeyRenderer::new);
     }
 
     @SubscribeEvent

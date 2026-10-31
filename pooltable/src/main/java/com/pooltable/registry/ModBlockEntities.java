@@ -1,6 +1,7 @@
 package com.pooltable.registry;
 
 import com.pooltable.PoolTable;
+import com.pooltable.block.AirHockeyBE;
 import com.pooltable.block.BowlingLaneBE;
 import com.pooltable.block.PoolTableBE;
 import net.minecraft.core.registries.Registries;
@@ -16,6 +17,9 @@ public final class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<BowlingLaneBE>> BOWLING_LANE = TYPES.register("bowling_lane",
             () -> BlockEntityType.Builder.of(BowlingLaneBE::new, ModBlocks.BOWLING_LANE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<AirHockeyBE>> AIR_HOCKEY = TYPES.register("air_hockey",
+            () -> BlockEntityType.Builder.of(AirHockeyBE::new, ModBlocks.AIR_HOCKEY.get()).build(null));
 
     private ModBlockEntities() {
     }
