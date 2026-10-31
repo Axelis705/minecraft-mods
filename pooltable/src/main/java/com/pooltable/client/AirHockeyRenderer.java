@@ -7,7 +7,11 @@ import com.pooltable.PoolTable;
 import com.pooltable.block.AirHockeyBE;
 import com.pooltable.game.HockeyMatch;
 import com.pooltable.game.HockeyPhysics;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -36,6 +40,7 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
     private static final float X1 = 2.8F;
     private static final float ZW = 0.7F;
     private static final float GOAL = (float) HockeyPhysics.GOAL_HALF;
+    private static final float LINE = 0.006F;
     private static final int SEGS = 18;
 
     private final double[] sx = {-0.9, 0.9};
@@ -57,11 +62,32 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
         Vec3 o = be.origin();
         BlockPos bp = be.getBlockPos();
         int light = LevelRenderer.getLightColor(be.getLevel(), bp.above());
+        if (!HockeyCam.active && be.match.state != HockeyMatch.State.IDLE) {
+            drawScore(be, ps, buf, light, bp);
+        }
         ps.pushPose();
         ps.translate(o.x - bp.getX(), o.y - bp.getY(), o.z - bp.getZ());
         ps.mulPose(Axis.YP.rotation((float) Math.atan2(-f.getStepZ(), f.getStepX())));
         drawCabinet(ps, buf, light);
         drawPlay(be, ps, buf, light);
+        ps.popPose();
+    }
+
+    /** El marcador flotando sobre la mesa, para quien mira desde fuera. */
+    private void drawScore(AirHockeyBE be, PoseStack ps, MultiBufferSource buf, int light, BlockPos bp) {
+        Minecraft mc = Minecraft.getInstance();
+        Vec3 c = be.center();
+        String a = be.pname[0].isEmpty() ? "-" : be.pname[0];
+        String b = be.pname[1].isEmpty() ? "-" : be.pname[1];
+        Component line = Component.literal(a).withStyle(ChatFormatting.RED)
+                .append(Component.literal("  " + be.match.scoreA + " : " + be.match.scoreB + "  ").withStyle(ChatFormatting.WHITE))
+                .append(Component.literal(b).withStyle(ChatFormatting.AQUA));
+        ps.pushPose();
+        ps.translate(c.x - bp.getX(), c.y - bp.getY() + 0.95, c.z - bp.getZ());
+        ps.mulPose(mc.getEntityRenderDispatcher().cameraOrientation());
+        ps.scale(-0.03F, -0.03F, 0.03F);
+        float w = mc.font.width(line);
+        mc.font.drawInBatch(line, -w / 2.0F, 0, 0xFFFFFFFF, true, ps.last().pose(), buf, Font.DisplayMode.NORMAL, 0x80000000, 0xF000F0);
         ps.popPose();
     }
 
@@ -105,6 +131,14 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
         wallZ(b, ps, light, 0, 3, 0, TOP, -1.0F, -1);
         wallX(b, ps, light, -1, 1, 0, TOP, 0.0F, -1);
         wallX(b, ps, light, -1, 1, 0, TOP, 3.0F, 1);
+        // el fondo cerrado (si no, desde abajo se ve el interior)
+        {
+            PoseStack.Pose p = ps.last();
+            vtx(b, p, 0, 0.002F, -1, 0, 0, light, 0, -1, 0);
+            vtx(b, p, 3, 0.002F, -1, 1, 0, light, 0, -1, 0);
+            vtx(b, p, 3, 0.002F, 1, 1, 1, light, 0, -1, 0);
+            vtx(b, p, 0, 0.002F, 1, 0, 1, light, 0, -1, 0);
+        }
         // borde superior: franjas a los lados y en los extremos (con el hueco de la portería)
         top(b, ps, light, 0, 3, -1.0F, -ZW, TOP);
         top(b, ps, light, 0, 3, ZW, 1.0F, TOP);
@@ -134,11 +168,11 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
         top(s, ps, light, X0, X1, -ZW, ZW, SURF);
         // líneas: la del centro y un aro en el centro, en rojo; las de cada portería, en azul
         VertexConsumer r = buf.getBuffer(RenderType.entityCutoutNoCull(RED));
-        top(r, ps, light, 1.5F - 0.012F, 1.5F + 0.012F, -ZW, ZW, SURF + 0.002F);
-        ringLine(r, ps, light, 1.5F, 0.0F, 0.28F, SURF + 0.002F);
+        top(r, ps, light, 1.5F - 0.012F, 1.5F + 0.012F, -ZW, ZW, SURF + LINE);
+        ringLine(r, ps, light, 1.5F, 0.0F, 0.28F, SURF + LINE);
         VertexConsumer bl = buf.getBuffer(RenderType.entityCutoutNoCull(BLUE));
-        ringLine(bl, ps, light, X0, 0.0F, 0.34F, SURF + 0.002F);
-        ringLine(bl, ps, light, X1, 0.0F, 0.34F, SURF + 0.002F);
+        ringLine(bl, ps, light, X0, 0.0F, 0.34F, SURF + LINE);
+        ringLine(bl, ps, light, X1, 0.0F, 0.34F, SURF + LINE);
     }
 
     /** Un aro fino (en el suelo de la cancha) hecho de tramos pequeños; solo la parte que cae dentro de la cancha. */
@@ -194,8 +228,15 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
         for (int s = 0; s < 2; s++) {
             double tx = live && be.clientInit ? be.cmx[s] : (s == 0 ? -0.9 : 0.9);
             double tz = live && be.clientInit ? be.cmz[s] : 0.0;
-            sx[s] += (tx - sx[s]) * 0.5;
-            sz[s] += (tz - sz[s]) * 0.5;
+            if (HockeyCam.active && s == AirHockeyBE.localRole && be.getBlockPos().equals(AirHockeyBE.localPos)) {
+                tx = AirHockeyBE.localX;
+                tz = AirHockeyBE.localZ;
+                sx[s] = tx;
+                sz[s] = tz;
+            } else {
+                sx[s] += (tx - sx[s]) * 0.5;
+                sz[s] += (tz - sz[s]) * 0.5;
+            }
             float ux = 1.5F + (float) sx[s];
             float uz = (float) sz[s];
             ResourceLocation col = s == 0 ? RED : BLUE;

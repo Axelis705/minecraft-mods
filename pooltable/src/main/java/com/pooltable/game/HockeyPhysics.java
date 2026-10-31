@@ -35,6 +35,8 @@ public final class HockeyPhysics {
     public int mallethits = 0;
     public double hitSpeed = 0;
     public int wallHits = 0;
+    /** Qué mazo dio el último golpe (0 = A, 1 = B). */
+    public int hitSide = 0;
     /** 0 = nada, 1 = gol del jugador A (entró en la portería de B), 2 = gol del B. */
     public int goal = 0;
 
@@ -150,6 +152,7 @@ public final class HockeyPhysics {
                 pvx += j * nx;
                 pvz += j * nz;
                 mallethits++;
+                hitSide = s;
                 hitSpeed = Math.max(hitSpeed, -rel);
             }
             px = mx[s] + nx * r;

@@ -42,6 +42,12 @@ public class AirHockeyBE extends BlockEntity {
     public final UUID[] pid = new UUID[2];
     public final String[] pname = {"", ""};
 
+    // ---- cliente: si este jugador maneja un mazo con el ratón capturado, su mazo se dibuja donde él lo mueve (al instante)
+    public static BlockPos localPos = null;
+    public static int localRole = -1;
+    public static double localX = 0;
+    public static double localZ = 0;
+
     // ---- cliente (dibujo suave)
     public boolean clientInit = false;
     public long recvNanos = 0L;
@@ -108,6 +114,23 @@ public class AirHockeyBE extends BlockEntity {
         level.playSound(null, c.x + r.x * x + side.x * z, c.y, c.z + r.z * x + side.z * z, ev, SoundSource.BLOCKS, vol, pitch);
     }
 
+    /** Lleva al jugador a su extremo de la mesa, mirando hacia ella, para que desde fuera se vea quién juega. */
+    private void placePlayer(ServerPlayer p, int role) {
+        Direction f = facing();
+        Direction look = role == 0 ? f : f.getOpposite();
+        double d = HockeyPhysics.HL + 0.7;
+        Vec3 c = center();
+        double sign = role == 0 ? -1.0 : 1.0;
+        double x = c.x + f.getStepX() * d * sign;
+        double z = c.z + f.getStepZ() * d * sign;
+        double y = worldPosition.getY();
+        net.minecraft.core.BlockPos feet = net.minecraft.core.BlockPos.containing(x, y, z);
+        if (!level.getBlockState(feet).getCollisionShape(level, feet).isEmpty() || !level.getBlockState(feet.above()).getCollisionShape(level, feet.above()).isEmpty()) {
+            return; // no cabe ahí: se queda donde está
+        }
+        p.connection.teleport(x, y, z, look.toYRot(), 20.0F);
+    }
+
     private static String diffName(int d) {
         return d == 0 ? "facil" : d == 1 ? "normal" : "dificil";
     }
@@ -139,6 +162,7 @@ public class AirHockeyBE extends BlockEntity {
                 pname[0] = p.getGameProfile().getName();
                 pname[1] = Component.translatable("pooltable.hockey.cpu." + diffName(d)).getString();
                 match.start(true, d);
+                placePlayer(p, 0);
             }
             case A_HOST -> {
                 if (match.state != HockeyMatch.State.IDLE) {
@@ -150,6 +174,7 @@ public class AirHockeyBE extends BlockEntity {
                 pname[0] = p.getGameProfile().getName();
                 pname[1] = "";
                 match.waitForRival();
+                placePlayer(p, 0);
             }
             case A_JOIN -> {
                 if (match.state != HockeyMatch.State.WAITING || id.equals(pid[0])) {
@@ -158,6 +183,7 @@ public class AirHockeyBE extends BlockEntity {
                 pid[1] = id;
                 pname[1] = p.getGameProfile().getName();
                 match.start(false, 1);
+                placePlayer(p, 1);
                 broadcast(Component.translatable("pooltable.hockey.started", pname[0], pname[1]), false);
             }
             case A_LEAVE -> {
@@ -208,6 +234,12 @@ public class AirHockeyBE extends BlockEntity {
         match.tick(0.05);
         HockeyPhysics ph = match.ph;
         if (ph.mallethits > 0) {
+            if (pid[ph.hitSide] != null) {
+                ServerPlayer hitter = sl.getServer().getPlayerList().getPlayer(pid[ph.hitSide]);
+                if (hitter != null) {
+                    hitter.swing(net.minecraft.world.InteractionHand.MAIN_HAND, true);
+                }
+            }
             float v = (float) Math.min(1.0, 0.25 + ph.hitSpeed / 6.0);
             sound(SoundEvents.BAMBOO_WOOD_HIT, ph.px, ph.pz, v, 1.3F);
         }

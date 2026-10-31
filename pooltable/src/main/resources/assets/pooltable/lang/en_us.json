@@ -142,5 +142,5 @@
   "pooltable.hockey.ui.waiting": "Waiting for rival...",
   "pooltable.hockey.ui.choose": "Choose how to play",
   "pooltable.hockey.ui.spectating": "You are watching the match",
-  "pooltable.hockey.ui.hint": "Move the mouse: your mallet follows (it can't cross the center). First to %s wins."
+  "pooltable.hockey.ui.hint": "Move the mouse to move your mallet (it can't cross the center). Esc to leave. First to %s wins."
 }
