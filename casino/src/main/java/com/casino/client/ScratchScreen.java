@@ -211,6 +211,9 @@ public final class ScratchScreen extends Screen {
             // símbolo (queda debajo de la pintura)
             drawSymbol(g, symbols[i], x + CELL / 2, y + CELL / 2, 2.6F);
             if (!isDone(i)) {
+                // los objetos se dibujan con profundidad (z ~150): la pintura va más adelante o se vería el símbolo a través
+                g.pose().pushPose();
+                g.pose().translate(0, 0, 300);
                 for (int a = 0; a < N; a++) {
                     for (int b = 0; b < N; b++) {
                         if (rev[i][a][b]) {
@@ -230,6 +233,7 @@ public final class ScratchScreen extends Screen {
                         g.fill(x + a * SUB, y + b * SUB, x + a * SUB + SUB, y + b * SUB + SUB, c);
                     }
                 }
+                g.pose().popPose();
             }
             if (winCell) {
                 float pulse = 0.5F + 0.5F * Mth.sin((age + pt) * 0.3F);
