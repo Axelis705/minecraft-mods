@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mod: [casino, pooltable, kensei, scardax]
+        mod: [casino, pooltable, kensei, scardax, estructuras]
     steps:
       - uses: actions/checkout@v4
       - name: Revisar recursos de ${{ matrix.mod }}
