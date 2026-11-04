@@ -3,6 +3,7 @@ name: Compilar mods
 # Compila cada mod con Gradle real cada vez que se sube un cambio. El .jar queda descargable en la pestaña Actions.
 on:
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
