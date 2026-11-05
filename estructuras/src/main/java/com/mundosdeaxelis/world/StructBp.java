@@ -205,13 +205,14 @@ public final class StructBp {
 
     // ------------------------------------------------------------------ bloques con orientación
 
-    /** Escalera que SUBE hacia {@code up}: "+z", "-z", "+x" o "-x". */
+    /** Escalera que SUBE hacia {@code up}: "+z", "-z", "+x" o "-x" (el lado alto queda en esa dirección). */
     public static String stair(String base, String up, boolean top) {
+        // en Minecraft, "facing" de una escalera apunta hacia el lado ALTO (hacia donde se sube)
         String f = switch (up) {
-            case "+z" -> "north";
-            case "-z" -> "south";
-            case "+x" -> "west";
-            default -> "east";
+            case "+z" -> "south";
+            case "-z" -> "north";
+            case "+x" -> "east";
+            default -> "west";
         };
         return base + "[facing=" + f + ",half=" + (top ? "top" : "bottom") + "]";
     }

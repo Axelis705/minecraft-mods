@@ -10,10 +10,10 @@ public final class StructDesigns {
 
     public static StructBp make(String kind) {
         return switch (kind) {
-            case "bosque" -> bosque();
-            case "forja" -> forja();
-            case "hielo" -> hielo();
-            default -> torre();
+            case "bosque" -> DesignBosque.make();
+            case "forja" -> DesignForja.make();
+            case "hielo" -> DesignHielo.make();
+            default -> DesignTorre.make();
         };
     }
 
