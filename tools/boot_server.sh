@@ -37,6 +37,10 @@ bad=$(grep -E "/(ERROR|FATAL)\]|Missing registry|Couldn't parse|Parsing error|Fa
   | grep -vE "server.properties|PlatformDependent|jarjar|ForgeGradle|Reflective setAccessible|/DEBUG\]" | head -30)
 if [ -n "$bad" ]; then echo "ERROR: hay errores en el registro del servidor:"; echo "$bad"; echo "$bad" > "$log.bad"; ann "Errores en el servidor ($mod)" 30 "$log.bad"; exit 1; fi
 if [ -f ci_commands.txt ]; then
+  # lo mas importante del registro del servidor, visible en el registro de la accion
+  echo "----- registro de las pruebas de comandos -----"
+  grep -E "construida|sin apoyo|DIAG_|has the following|PRUEBA_" "$log" | sed 's/^.*\] \[/[/' | cut -c1-400 | head -150
+  echo "-----"
   while IFS= read -r line; do
     case "$line" in '#expect '*) want="${line#\#expect }"; if ! grep -qF "$want" "$log"; then echo "ERROR: falta en el registro: $want"; { echo "No salio '$want'"; sed -n '/Done (/,$p' "$log" | cut -c1-140 | grep -vE 'DEBUG|^\s*$' | head -70; } > "$log.bad"; ann "Prueba de comandos fallo ($mod)" 72 "$log.bad"; exit 1; fi;; esac
   done < ci_commands.txt

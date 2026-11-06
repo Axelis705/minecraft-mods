@@ -181,6 +181,7 @@ public final class Estructuras {
     /** Quita (sin soltar objetos) los bloques colocados que no pueden sostenerse; repite por si al quitar uno otro se queda sin apoyo. */
     private static int dropUnsupported(ServerLevel level, List<BlockPos> placed) {
         int total = 0;
+        Map<String, Integer> byType = new java.util.TreeMap<>();
         for (int pass = 0; pass < 6; pass++) {
             int changed = 0;
             for (BlockPos p : placed) {
@@ -188,6 +189,7 @@ public final class Estructuras {
                 if (cur.isAir() || cur.canSurvive(level, p)) {
                     continue;
                 }
+                byType.merge(String.valueOf(ForgeRegistries.BLOCKS.getKey(cur.getBlock())), 1, Integer::sum);
                 level.setBlock(p, cur.getFluidState().createLegacyBlock(), FLAGS);
                 changed++;
             }
@@ -195,6 +197,9 @@ public final class Estructuras {
             if (changed == 0) {
                 break;
             }
+        }
+        if (total > 0) {
+            com.mojang.logging.LogUtils.getLogger().info("[Estructuras] sin apoyo quitados: {}", byType);
         }
         return total;
     }
