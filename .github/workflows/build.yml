@@ -43,7 +43,7 @@ jobs:
         run: |
           mkdir out
           W=estructuras/src/main/java/com/mundosdeaxelis/world
-          javac -d out $W/StructBp.java $W/Arq.java $W/Linker.java $W/StructKit.java $W/StructDesigns.java $W/Design*.java estructuras/tests/com/mundosdeaxelis/world/ConectividadTest.java
+          javac -d out $W/StructBp.java $W/Soporte.java $W/Arq.java $W/Linker.java $W/StructKit.java $W/StructDesigns.java $W/Design*.java estructuras/tests/com/mundosdeaxelis/world/ConectividadTest.java
           java -cp out com.mundosdeaxelis.world.ConectividadTest
       - name: Compilar ${{ matrix.mod }}
         working-directory: ${{ matrix.mod }}
