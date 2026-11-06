@@ -2,7 +2,7 @@
 
 ## Cómo usarlos
 
-1. En Flow elige **imagen** (no video), formato **vertical 2:3** (o 3:4 si no hay 2:3; yo recorto).
+1. En Flow elige **imagen** (no video), formato **vertical 3:4** (Flow no acepta 2:3; yo recorto).
 2. Pega primero el **ESTILO COMÚN** y justo después el texto de la carta. Así todas se parecen entre sí.
 3. Para las **cartas de skins**: sube la skin como imagen de referencia (la que ya está en `herramientas/skins/`) y usa el prompt de esa carta.
 4. Para los **jefes y enemigos de tu mod**: haz una captura en el juego del jefe/enemigo y súbela como referencia. Así Flow no inventa el diseño.
@@ -189,26 +189,6 @@ The Minecraft Ender Dragon flying majestically over the End island, wings spread
 eyes, the void sky full of stars behind it, End crystals beams glowing, dark purple palette.
 ```
 
-## ESPADAS
-
-**espada_hierro — Espada de Hierro (Común)**
-```
-A simple iron sword stuck in the ground on a grassy hill at sunrise, plain handle, light
-glint along the blade, soft warm light, Minecraft block style.
-```
-
-**espada_diamante — Espada de Diamante (Rara)**
-```
-A shining diamond sword floating in a dark cave filled with diamond ore, the blade emits a
-cyan glow lighting the cave, sparkles around, Minecraft block style.
-```
-
-**espada_netherita — Espada de Netherita (Épica)**
-```
-A dark netherite sword with glowing ancient gold accents, rising from lava in the nether,
-embers and sparks flying, dramatic red-orange backlight, Minecraft block style.
-```
-
 ## PERSONAJES
 
 **aldeano — Aldeano (Común)**
@@ -225,68 +205,76 @@ wart, swamp hut behind her, green and purple glow, floating bubbles.
 
 ---
 
-## CARTAS DE SKINS (sube la skin como referencia)
+## CARTAS DE SKINS (sube la imagen 3D del personaje como referencia)
 
-> Todas: **«Use the attached Minecraft skin as the exact character reference. Keep the same
-> clothes, hair and colors.»** Los personajes son tus amigos, así que cuida que se reconozcan
-> por la ropa.
+> Todas empiezan con: **«Use the attached Minecraft character as the exact reference. Keep the same
+> hair, clothes and colors.»**
+>
+> **Regla de equilibrio (versión 2):** todos los amigos llevan la MISMA fórmula para que ninguno
+> se vea menos épico: pose heroica de cuerpo completo desde un ángulo bajo, escala monumental,
+> aura brillante de su color, luz de contraluz dramática y un escenario enorme que representa
+> lo que lo hace único (no una actividad pequeña como minar). Axelis705 y Odette ya están listas.
 
-**axelis705 — Axelis705 (Épica)** — rubio, chaleco blanco, creador del mundo
+**jadiel — Jadiel (Épica)** — tryhard, competitivo, siempre a ganar; ya es papá
 ```
-Use the attached Minecraft skin as the exact character reference. A blond Minecraft hero with
-a white vest, standing proudly on a floating island at golden hour holding a glowing blocky
-map of worlds, small floating islands and portals around him, epic wide pose, warm light.
-```
-
-**jadiel — Jadiel (Épica)** — bandana roja cubriendo la cara
-```
-Use the attached Minecraft skin as the exact character reference. A Minecraft adventurer with
-a red bandana over his face, crouched ready on a rocky cliff over a jungle canyon, torn red
-bandana tails flying in the wind, sword on his back, sunset sky, dynamic action pose.
-```
-
-**marizux — Marizux (Épica)** — cabello rosa, mucha energía
-```
-Use the attached Minecraft skin as the exact character reference. A Minecraft girl with
-bright pink hair full of energy, jumping mid-air with a happy smile, pink sparkles and
-cherry blossom petals swirling around her, cherry grove background, pastel pink and gold light.
+Use the attached Minecraft character as the exact reference. Keep the same hair, clothes and
+colors. Epic low-angle full-body hero shot of a Minecraft champion with a red bandana over his
+face, standing victorious on top of a giant golden podium in a massive glowing arena, holding a
+huge golden trophy raised high, red and gold energy aura around him, thousands of blocky
+spectators cheering in the stands with light sticks, confetti and sparks falling, dramatic
+backlight, cinematic, monumental scale. A tiny blocky kid cheers proudly near his feet.
 ```
 
-**odette — Odette (Legendaria)** — ropa blanca y azul, "su luz acompaña cada aventura"
+**marizux — Marizux (Épica)** — la ternura del grupo, feliz, amable
 ```
-Use the attached Minecraft skin as the exact character reference. A Minecraft heroine in
-white and blue clothes standing under a night sky, holding a glowing lantern whose warm light
-lights the whole path, fireflies and stars around her, gentle and radiant, soft golden and
-blue glow, a legendary and emotional card feeling.
-```
-
-**pavi223 — Pavi223 (Épica)** — chaleco amarillo, siempre listo
-```
-Use the attached Minecraft skin as the exact character reference. A Minecraft adventurer in
-a yellow vest, backpack and pickaxe ready, standing at the entrance of a glowing mine tunnel
-with a torch, thumbs-up confident pose, warm yellow torch light, ore sparkles.
+Use the attached Minecraft character as the exact reference. Keep the same hair, clothes and
+colors. Epic low-angle full-body hero shot of a Minecraft girl with bright pink hair, smiling
+happily, standing on top of a giant floating cherry blossom island in the sky, holding a
+glowing heart-shaped magic staff, a huge swirl of pink petals and golden sparkles around her
+like an aura, cute fluffy animal friends gathering around, a giant sunrise behind her,
+dramatic soft backlight, cinematic, monumental scale, pink and gold palette.
 ```
 
-**rafa — Rafa (Épica)** — pantalón verde, compañero de mil aventuras
+**pavi223 — Pavi223 (Épica)** — tryhard del Pokémon, fan del amarillo
 ```
-Use the attached Minecraft skin as the exact character reference. A Minecraft explorer with
-green pants walking on an adventure road with a wooden sword over his shoulder, a small
-campfire and tent behind, rolling hills, friendly smile, warm sunset.
-```
-
-**scardax — Scardax (Épica)** — chamarra roja y ganas de pelear
-```
-Use the attached Minecraft skin as the exact character reference. A Minecraft fighter in a
-red jacket in a fierce fighting stance with an iron sword, facing a giant dark monster
-silhouette in the fog, red lightning in the sky, dramatic confrontation, red and black palette.
+Use the attached Minecraft character as the exact reference. Keep the same hair, clothes and
+colors. Epic low-angle full-body hero shot of a Minecraft trainer in a yellow vest standing in
+the center of a huge glowing battle stadium, one arm pointing forward commanding a gigantic
+legendary yellow lightning creature (original design, not any existing character) that roars
+behind him with a storm of golden lightning, yellow energy aura, thousands of cheering
+spectators, dramatic backlight, cinematic, monumental scale, yellow and electric blue palette.
 ```
 
-**chafet — Chafet (Épica)** — rubia, aventurera
+**rafa — Rafa (Épica)** — el gracioso, saca risas a todos
 ```
-Use the attached Minecraft skin as the exact character reference. A blonde Minecraft heroine
-adventurer standing on a mountaintop with the wind in her hair, holding a diamond sword
-toward the horizon at dawn, distant glowing castle, golden-pink sky, heroic pose.
+Use the attached Minecraft character as the exact reference. Keep the same hair, clothes and
+colors. Epic low-angle full-body hero shot of a Minecraft comedian with green pants standing
+alone in a huge golden spotlight on a giant theater stage, arms wide open after the perfect
+joke, a crowd of blocky creepers, zombies and skeletons laughing so hard they fall over, a
+creeper laughing instead of exploding, golden confetti and glowing laughter sparkles bursting
+everywhere, warm dramatic backlight, cinematic, monumental scale, gold and green palette.
 ```
+
+**scardax — Scardax (Épica)** — imponente, creador de series y eventos, siempre se cree mucho
+```
+Use the attached Minecraft character as the exact reference. Keep the same hair, clothes and
+colors. Epic low-angle full-body hero shot of an imposing Minecraft creator in a red jacket,
+arms crossed with a confident smirk, standing on a huge command stage in front of giant glowing
+screens showing episodes and live events, red energy aura and sparks, a crowd of fans cheering
+below, dramatic red and white backlight, cinematic, monumental scale, red and black palette.
+```
+
+**chafet — Chafet (Épica)** — mejor amigo, niño prodigio, gran puntería táctica
+```
+Use the attached Minecraft character as the exact reference. Keep the same hair, clothes and
+colors. Epic low-angle full-body hero shot of a blonde Minecraft prodigy standing on top of a
+futuristic skyscraper rooftop at sunset, calm and perfectly confident, holding a glowing
+energy blade with a precise tactical stance, a huge golden star-shaped aura behind the head,
+holographic targets and light trails around, golden city skyline, dramatic backlight,
+cinematic, monumental scale, gold and teal palette.
+```
+
+> Odette (`odette`) y Axelis705 (`axelis705`) ya tienen su ilustración y no hay que rehacerlas.
 
 ---
 

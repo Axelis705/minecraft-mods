@@ -660,11 +660,14 @@ public final class AlbumScreen extends Screen {
         String[] help = {
             "Agarra una carta del estante y suéltala en su hueco.",
             "Cada 5 %: +½ corazón. Categoría completa: +1.",
-            "Clic en una carta guardada para verla en grande."
+            "Clic en una carta para verla en grande."
         };
         float hs = 0.8f;
         for (String h : help) {
             for (var line : font.split(Component.literal(h), (int) ((PW - 28) / hs))) {
+                if (y + 8 > PAGE_Y + PH - 8) {
+                    break;
+                }
                 g.pose().pushPose();
                 g.pose().translate(px + 14, y, 0f);
                 g.pose().scale(hs, hs, 1f);
@@ -1028,7 +1031,9 @@ public final class AlbumScreen extends Screen {
         }
         l.add(Component.literal(d.rarity.label + " · " + cat.name).withStyle(rs));
         if (own) {
-            l.add(Component.literal(d.desc).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+            for (String line : Cards.wrap(d.desc, 38)) {
+                l.add(Component.literal(line).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+            }
         } else {
             l.add(Component.literal(holoTab(tab) ? "Todavía no tienes la versión holográfica." : "Todavía no la tienes.").withStyle(ChatFormatting.DARK_GRAY));
         }

@@ -22,28 +22,12 @@
    "color": "#4aa05a"
   },
   {
-   "id": "espadas",
-   "name": "Espadas",
-   "color": "#6fa8dc"
-  },
-  {
    "id": "personajes",
    "name": "Personajes",
    "color": "#b06ad9"
   }
  ],
  "cartas": [
-  {
-   "id": "guardian_musgo",
-   "name": "Guardián de Musgo",
-   "cat": "jefes",
-   "rar": "RARA",
-   "glyph": "golem",
-   "c1": "#7a9a6a",
-   "c2": "#5fbf4a",
-   "desc": "Mini-jefe del bosque. Golpea el suelo y llama a los Brotes.",
-   "scene": "forest"
-  },
   {
    "id": "rey_brote",
    "name": "Rey Brote",
@@ -54,17 +38,6 @@
    "c2": "#ffd84a",
    "desc": "El soberano del bosque. Su corona nunca se marchita.",
    "scene": "forest"
-  },
-  {
-   "id": "capataz",
-   "name": "Capataz",
-   "cat": "jefes",
-   "rar": "RARA",
-   "glyph": "helmet",
-   "c1": "#b0502a",
-   "c2": "#d9d9d9",
-   "desc": "Mini-jefe de la forja. Su martillo parte el suelo.",
-   "scene": "forge"
   },
   {
    "id": "gran_herrero",
@@ -87,6 +60,28 @@
    "c2": "#4a90d9",
    "desc": "Su aullido congela el aire y llama a la manada.",
    "scene": "ice"
+  },
+  {
+   "id": "guardian_musgo",
+   "name": "Guardián de Musgo",
+   "cat": "criaturas",
+   "rar": "RARA",
+   "glyph": "golem",
+   "c1": "#7a9a6a",
+   "c2": "#5fbf4a",
+   "desc": "Mini-jefe del bosque. Golpea el suelo y llama a los Brotes.",
+   "scene": "forest"
+  },
+  {
+   "id": "capataz",
+   "name": "Capataz",
+   "cat": "criaturas",
+   "rar": "RARA",
+   "glyph": "helmet",
+   "c1": "#b0502a",
+   "c2": "#d9d9d9",
+   "desc": "Mini-jefe de la forja. Su martillo parte el suelo.",
+   "scene": "forge"
   },
   {
    "id": "brote",
@@ -298,42 +293,9 @@
    "scene": "end"
   },
   {
-   "id": "espada_hierro",
-   "name": "Espada de Hierro",
-   "cat": "espadas",
-   "rar": "COMUN",
-   "glyph": "sword",
-   "c1": "#d9d9d9",
-   "c2": "#8a5a2a",
-   "desc": "Fiel y sin adornos.",
-   "scene": "plains"
-  },
-  {
-   "id": "espada_diamante",
-   "name": "Espada de Diamante",
-   "cat": "espadas",
-   "rar": "RARA",
-   "glyph": "sword",
-   "c1": "#5ae0e0",
-   "c2": "#8a5a2a",
-   "desc": "Brilla incluso en la oscuridad.",
-   "scene": "cave"
-  },
-  {
-   "id": "espada_netherita",
-   "name": "Espada de Netherita",
-   "cat": "espadas",
-   "rar": "EPICA",
-   "glyph": "sword",
-   "c1": "#4a3f4a",
-   "c2": "#c04a2a",
-   "desc": "Forjada en las profundidades.",
-   "scene": "nether"
-  },
-  {
    "id": "aldeano",
    "name": "Aldeano",
-   "cat": "personajes",
+   "cat": "minecraft",
    "rar": "COMUN",
    "glyph": "villager",
    "c1": "#c89a74",
@@ -344,7 +306,7 @@
   {
    "id": "bruja",
    "name": "Bruja",
-   "cat": "personajes",
+   "cat": "minecraft",
    "rar": "RARA",
    "glyph": "witchhat",
    "c1": "#7a3aa0",
@@ -360,7 +322,7 @@
    "glyph": "star",
    "c1": "#ffe27a",
    "c2": "#ffffff",
-   "desc": "(Descripción por escribir)",
+   "desc": "El creador de todo. Le dicen dios: si él se va, todos dejan de jugar. Es todo y más.",
    "skin": "skins/axelis705.png",
    "scene": "sky",
    "art": "arte/axelis705.png",
@@ -379,7 +341,7 @@
    "glyph": "star",
    "c1": "#c03030",
    "c2": "#ffffff",
-   "desc": "(Descripción por escribir)",
+   "desc": "Tryhard en todo: competitivo, juega para ganar. Y además, ya es padre de un hijo.",
    "skin": "skins/jadiel.png",
    "scene": "plains"
   },
@@ -391,7 +353,7 @@
    "glyph": "star",
    "c1": "#e88ab8",
    "c2": "#ffffff",
-   "desc": "(Descripción por escribir)",
+   "desc": "La ternura del grupo, la pequeña que todos queremos. Feliz, divertida, amable y cordial.",
    "skin": "skins/marizux.png",
    "scene": "cherry"
   },
@@ -403,7 +365,7 @@
    "glyph": "star",
    "c1": "#8ac8ff",
    "c2": "#ffffff",
-   "desc": "(Descripción por escribir)",
+   "desc": "Es el mundo entero de Axelis705. Donde ella está, todo tiene luz y sentido.",
    "skin": "skins/odette.png",
    "scene": "night",
    "art": "arte/odette.png",
@@ -422,7 +384,7 @@
    "glyph": "star",
    "c1": "#e0a020",
    "c2": "#ffffff",
-   "desc": "(Descripción por escribir)",
+   "desc": "Tryhard del Pokémon hasta la última batalla. Y si es amarillo, lo ama.",
    "skin": "skins/pavi223.png",
    "scene": "cave"
   },
@@ -434,7 +396,7 @@
    "glyph": "star",
    "c1": "#4a9a4a",
    "c2": "#ffffff",
-   "desc": "(Descripción por escribir)",
+   "desc": "El gracioso del grupo. Sus buenas bromas sacan risas siempre, al 100 %.",
    "skin": "skins/rafa.png",
    "scene": "forest"
   },
@@ -446,7 +408,7 @@
    "glyph": "star",
    "c1": "#d03030",
    "c2": "#ffffff",
-   "desc": "(Descripción por escribir)",
+   "desc": "Imponente. Juega, crea series y eventos, y siempre se cree mucho. Odia Roblox con toda el alma.",
    "skin": "skins/scardax.png",
    "scene": "nether"
   },
@@ -458,7 +420,7 @@
    "glyph": "star",
    "c1": "#f0d890",
    "c2": "#ffffff",
-   "desc": "(Descripción por escribir)",
+   "desc": "Mejor amigo de Axelis y niño prodigio del grupo. Gran habilidad en Valorant y siempre está ahí.",
    "skin": "skins/chafet.png",
    "scene": "sky"
   }

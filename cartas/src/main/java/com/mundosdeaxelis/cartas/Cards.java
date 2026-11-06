@@ -64,4 +64,24 @@ public final class Cards {
         }
         return n;
     }
+
+    /** Parte un texto largo en lineas de como mucho maxChars letras (corta por palabras). */
+    public static java.util.List<String> wrap(String text, int maxChars) {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        StringBuilder cur = new StringBuilder();
+        for (String w : text.split(" ")) {
+            if (cur.length() > 0 && cur.length() + 1 + w.length() > maxChars) {
+                out.add(cur.toString());
+                cur.setLength(0);
+            }
+            if (cur.length() > 0) {
+                cur.append(' ');
+            }
+            cur.append(w);
+        }
+        if (cur.length() > 0) {
+            out.add(cur.toString());
+        }
+        return out;
+    }
 }

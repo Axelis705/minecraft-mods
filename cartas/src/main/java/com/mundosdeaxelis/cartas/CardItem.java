@@ -54,7 +54,9 @@ public class CardItem extends Item {
         if (cat != null) {
             tip.add(Component.literal(cat.name).withStyle(Style.EMPTY.withColor(cat.color)));
         }
-        tip.add(Component.literal(def.desc).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        for (String line : Cards.wrap(def.desc, 38)) {
+            tip.add(Component.literal(line).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        }
         if (isHolo(stack)) {
             tip.add(Component.literal("Edición holográfica").withStyle(Style.EMPTY.withColor(0x7FE8FF)));
         }
