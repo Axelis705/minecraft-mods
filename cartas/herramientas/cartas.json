@@ -41,7 +41,8 @@
    "glyph": "golem",
    "c1": "#7a9a6a",
    "c2": "#5fbf4a",
-   "desc": "Mini-jefe del bosque. Golpea el suelo y llama a los Brotes."
+   "desc": "Mini-jefe del bosque. Golpea el suelo y llama a los Brotes.",
+   "scene": "forest"
   },
   {
    "id": "rey_brote",
@@ -51,7 +52,8 @@
    "glyph": "crown",
    "c1": "#5fbf4a",
    "c2": "#ffd84a",
-   "desc": "El soberano del bosque. Su corona nunca se marchita."
+   "desc": "El soberano del bosque. Su corona nunca se marchita.",
+   "scene": "forest"
   },
   {
    "id": "capataz",
@@ -61,7 +63,8 @@
    "glyph": "helmet",
    "c1": "#b0502a",
    "c2": "#d9d9d9",
-   "desc": "Mini-jefe de la forja. Su martillo parte el suelo."
+   "desc": "Mini-jefe de la forja. Su martillo parte el suelo.",
+   "scene": "forge"
   },
   {
    "id": "gran_herrero",
@@ -71,7 +74,8 @@
    "glyph": "hammer",
    "c1": "#e0733a",
    "c2": "#ffd84a",
-   "desc": "Forja con fuego que nunca se apaga."
+   "desc": "Forja con fuego que nunca se apaga.",
+   "scene": "forge"
   },
   {
    "id": "lobo_artico",
@@ -81,7 +85,8 @@
    "glyph": "wolf",
    "c1": "#bfe6ff",
    "c2": "#4a90d9",
-   "desc": "Su aullido congela el aire y llama a la manada."
+   "desc": "Su aullido congela el aire y llama a la manada.",
+   "scene": "ice"
   },
   {
    "id": "brote",
@@ -91,7 +96,8 @@
    "glyph": "tree",
    "c1": "#6fcf55",
    "c2": "#8a5a2a",
-   "desc": "Retoño del bosque. Corre hacia ti y no se rinde."
+   "desc": "Retoño del bosque. Corre hacia ti y no se rinde.",
+   "scene": "forest"
   },
   {
    "id": "espinoso",
@@ -101,7 +107,8 @@
    "glyph": "flower",
    "c1": "#4a9a3a",
    "c2": "#d9c04a",
-   "desc": "Flor carnívora. Abre los pétalos y dispara una espina."
+   "desc": "Flor carnívora. Abre los pétalos y dispara una espina.",
+   "scene": "forest"
   },
   {
    "id": "polinizador",
@@ -111,7 +118,8 @@
    "glyph": "bug",
    "c1": "#e0c040",
    "c2": "#7fe08a",
-   "desc": "Vuela en círculos y lanza esporas que ralentizan."
+   "desc": "Vuela en círculos y lanza esporas que ralentizan.",
+   "scene": "plains"
   },
   {
    "id": "raizal",
@@ -121,7 +129,8 @@
    "glyph": "golem",
    "c1": "#6a8a4a",
    "c2": "#8a5a2a",
-   "desc": "Gólem de raíces. Te deja inmóvil si no lo esquivas."
+   "desc": "Gólem de raíces. Te deja inmóvil si no lo esquivas.",
+   "scene": "swamp"
   },
   {
    "id": "raizal_anciano",
@@ -131,7 +140,8 @@
    "glyph": "golem",
    "c1": "#4a7a3a",
    "c2": "#c9a24a",
-   "desc": "Guardián élite de la Cámara de la Llave del bosque."
+   "desc": "Guardián élite de la Cámara de la Llave del bosque.",
+   "scene": "cave"
   },
   {
    "id": "escoria",
@@ -141,7 +151,8 @@
    "glyph": "golem",
    "c1": "#c85a2a",
    "c2": "#4a3a3a",
-   "desc": "Roca fundida con puños al rojo vivo."
+   "desc": "Roca fundida con puños al rojo vivo.",
+   "scene": "forge"
   },
   {
    "id": "chispero",
@@ -151,7 +162,8 @@
    "glyph": "flame",
    "c1": "#ff9a2a",
    "c2": "#ffe27a",
-   "desc": "Horno con patas. Escupe flechas de fuego."
+   "desc": "Horno con patas. Escupe flechas de fuego.",
+   "scene": "forge"
   },
   {
    "id": "ascua",
@@ -161,7 +173,8 @@
    "glyph": "ember",
    "c1": "#ff7a1a",
    "c2": "#ffe27a",
-   "desc": "Brasa viva que vuela y te deja débil."
+   "desc": "Brasa viva que vuela y te deja débil.",
+   "scene": "forge"
   },
   {
    "id": "fundidor",
@@ -171,7 +184,8 @@
    "glyph": "golem",
    "c1": "#9a9a9a",
    "c2": "#ff5a1a",
-   "desc": "Gólem de metal fundido. Hace erupción bajo tus pies."
+   "desc": "Gólem de metal fundido. Hace erupción bajo tus pies.",
+   "scene": "forge"
   },
   {
    "id": "fundidor_mayor",
@@ -181,7 +195,8 @@
    "glyph": "golem",
    "c1": "#7a6a6a",
    "c2": "#ff3a1a",
-   "desc": "Élite de la forja. Vigila la Cámara de la Llave."
+   "desc": "Élite de la forja. Vigila la Cámara de la Llave.",
+   "scene": "forge"
   },
   {
    "id": "lobo_escarcha",
@@ -191,27 +206,30 @@
    "glyph": "wolf",
    "c1": "#9ad0f0",
    "c2": "#ffffff",
-   "desc": "Caza en manada. Cada mordisco enfría."
+   "desc": "Caza en manada. Cada mordisco enfría.",
+   "scene": "ice"
   },
   {
    "id": "fosu",
    "name": "Fosu",
    "cat": "mascotas",
    "rar": "LEGENDARIA",
-   "glyph": "star",
+   "glyph": "butterfly",
    "c1": "#ffc0e8",
    "c2": "#ffffff",
-   "desc": "Una mariposa celestial."
+   "desc": "Una mariposa celestial.",
+   "scene": "night"
   },
   {
    "id": "cookie",
    "name": "Cookie",
    "cat": "mascotas",
    "rar": "LEGENDARIA",
-   "glyph": "paw",
+   "glyph": "ferret",
    "c1": "#b4bac6",
    "c2": "#3a3f4a",
-   "desc": "Hurón gris, ladrón de corazones."
+   "desc": "Hurón gris, ladrón de corazones.",
+   "scene": "plains"
   },
   {
    "id": "creeper",
@@ -221,7 +239,8 @@
    "glyph": "creeper",
    "c1": "#5fbf4a",
    "c2": "#1f3a1a",
-   "desc": "Ssssss..."
+   "desc": "Ssssss...",
+   "scene": "plains"
   },
   {
    "id": "zombi",
@@ -231,7 +250,8 @@
    "glyph": "skull",
    "c1": "#6a9a5a",
    "c2": "#2a3a4a",
-   "desc": "Camina hacia ti, siempre."
+   "desc": "Camina hacia ti, siempre.",
+   "scene": "night"
   },
   {
    "id": "esqueleto",
@@ -241,17 +261,19 @@
    "glyph": "skull",
    "c1": "#d9d9d9",
    "c2": "#4a4a4a",
-   "desc": "Tiene muy buena puntería."
+   "desc": "Tiene muy buena puntería.",
+   "scene": "night"
   },
   {
    "id": "enderman",
    "name": "Enderman",
    "cat": "minecraft",
    "rar": "RARA",
-   "glyph": "star",
-   "c1": "#8a3ad0",
-   "c2": "#1a0a2a",
-   "desc": "No lo mires a los ojos."
+   "glyph": "enderman",
+   "c1": "#241a34",
+   "c2": "#e070ff",
+   "desc": "No lo mires a los ojos.",
+   "scene": "end"
   },
   {
    "id": "wither",
@@ -261,7 +283,8 @@
    "glyph": "skull",
    "c1": "#3a3a4a",
    "c2": "#d9d9ff",
-   "desc": "Tres cabezas, ninguna amable."
+   "desc": "Tres cabezas, ninguna amable.",
+   "scene": "nether"
   },
   {
    "id": "ender_dragon",
@@ -271,7 +294,8 @@
    "glyph": "dragon",
    "c1": "#2a1a3a",
    "c2": "#c06aff",
-   "desc": "Reina del vacío."
+   "desc": "Reina del vacío.",
+   "scene": "end"
   },
   {
    "id": "espada_hierro",
@@ -281,7 +305,8 @@
    "glyph": "sword",
    "c1": "#d9d9d9",
    "c2": "#8a5a2a",
-   "desc": "Fiel y sin adornos."
+   "desc": "Fiel y sin adornos.",
+   "scene": "plains"
   },
   {
    "id": "espada_diamante",
@@ -291,7 +316,8 @@
    "glyph": "sword",
    "c1": "#5ae0e0",
    "c2": "#8a5a2a",
-   "desc": "Brilla incluso en la oscuridad."
+   "desc": "Brilla incluso en la oscuridad.",
+   "scene": "cave"
   },
   {
    "id": "espada_netherita",
@@ -301,27 +327,30 @@
    "glyph": "sword",
    "c1": "#4a3f4a",
    "c2": "#c04a2a",
-   "desc": "Forjada en las profundidades."
+   "desc": "Forjada en las profundidades.",
+   "scene": "nether"
   },
   {
    "id": "aldeano",
    "name": "Aldeano",
    "cat": "personajes",
    "rar": "COMUN",
-   "glyph": "heart",
-   "c1": "#c08a6a",
-   "c2": "#ffffff",
-   "desc": "Hmm."
+   "glyph": "villager",
+   "c1": "#c89a74",
+   "c2": "#6b4a2a",
+   "desc": "Hmm.",
+   "scene": "plains"
   },
   {
    "id": "bruja",
    "name": "Bruja",
    "cat": "personajes",
    "rar": "RARA",
-   "glyph": "star",
+   "glyph": "witchhat",
    "c1": "#7a3aa0",
    "c2": "#6ae05a",
-   "desc": "Sus pociones nunca salen igual dos veces."
+   "desc": "Sus pociones nunca salen igual dos veces.",
+   "scene": "swamp"
   },
   {
    "id": "axelis705",
@@ -332,7 +361,8 @@
    "c1": "#ffe27a",
    "c2": "#ffffff",
    "desc": "Creador de Mundos de Axelis.",
-   "skin": "skins/axelis705.png"
+   "skin": "skins/axelis705.png",
+   "scene": "sky"
   },
   {
    "id": "jadiel",
@@ -343,7 +373,8 @@
    "c1": "#c03030",
    "c2": "#ffffff",
    "desc": "Aventurero de la bandana roja.",
-   "skin": "skins/jadiel.png"
+   "skin": "skins/jadiel.png",
+   "scene": "plains"
   },
   {
    "id": "marizux",
@@ -354,7 +385,8 @@
    "c1": "#e88ab8",
    "c2": "#ffffff",
    "desc": "Cabello rosa y mucha energía.",
-   "skin": "skins/marizux.png"
+   "skin": "skins/marizux.png",
+   "scene": "cherry"
   },
   {
    "id": "odette",
@@ -365,7 +397,8 @@
    "c1": "#8ac8ff",
    "c2": "#ffffff",
    "desc": "Su luz acompaña cada aventura.",
-   "skin": "skins/odette.png"
+   "skin": "skins/odette.png",
+   "scene": "night"
   },
   {
    "id": "pavi223",
@@ -376,7 +409,8 @@
    "c1": "#e0a020",
    "c2": "#ffffff",
    "desc": "Siempre listo con su chaleco amarillo.",
-   "skin": "skins/pavi223.png"
+   "skin": "skins/pavi223.png",
+   "scene": "cave"
   },
   {
    "id": "rafa",
@@ -387,7 +421,8 @@
    "c1": "#4a9a4a",
    "c2": "#ffffff",
    "desc": "Compañero de mil aventuras.",
-   "skin": "skins/rafa.png"
+   "skin": "skins/rafa.png",
+   "scene": "forest"
   },
   {
    "id": "scardax",
@@ -398,7 +433,8 @@
    "c1": "#d03030",
    "c2": "#ffffff",
    "desc": "Chamarra roja y ganas de pelear.",
-   "skin": "skins/scardax.png"
+   "skin": "skins/scardax.png",
+   "scene": "nether"
   },
   {
    "id": "chafet",
@@ -409,7 +445,8 @@
    "c1": "#f0d890",
    "c2": "#ffffff",
    "desc": "Aventurera de Mundos de Axelis.",
-   "skin": "skins/chafet.png"
+   "skin": "skins/chafet.png",
+   "scene": "sky"
   }
  ],
  "sobres": [

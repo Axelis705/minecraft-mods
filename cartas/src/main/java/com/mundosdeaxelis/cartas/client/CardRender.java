@@ -12,6 +12,9 @@ final class CardRender {
     static final ResourceLocation BACK = new ResourceLocation(Cartas.MOD_ID, "textures/gui/cartas/reverso.png");
     static final int CW = 64;
     static final int CH = 96;
+    /** tamano real de las texturas de las cartas (el doble, para que se vean nitidas) */
+    static final int TW = 128;
+    static final int TH = 192;
 
     private CardRender() {
     }
@@ -34,7 +37,7 @@ final class CardRender {
         g.pose().scale(w / CW, h / CH, 1f);
         RenderSystem.enableBlend();
         g.setColor(1f, 1f, 1f, alpha);
-        g.blit(t, 0, 0, 0f, 0f, CW, CH, CW, CH);
+        g.blit(t, 0, 0, CW, CH, 0f, 0f, TW, TH, TW, TH);
         g.setColor(1f, 1f, 1f, 1f);
         g.pose().popPose();
     }
