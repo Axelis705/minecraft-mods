@@ -1,0 +1,54 @@
+{
+  "_nota": "Fuente unica de las cartas. Despues de cambiar algo: python3 herramientas/gen.py (regenera CardData.java, texturas, modelos y lang). Lista INICIAL DE EJEMPLO: los nombres, rarezas y categorias se ajustan cuando Axelis cuente sus ideas.",
+  "categorias": [
+    {"id": "jefes",      "name": "Jefes",      "color": "#d94a3a", "bonus": "+2 corazones máximos",          "attr": "MAX_HEALTH",     "amount": 4.0,  "op": "ADDITION"},
+    {"id": "criaturas",  "name": "Criaturas",  "color": "#7a8a3a", "bonus": "+1 de armadura",                "attr": "ARMOR",          "amount": 1.0,  "op": "ADDITION"},
+    {"id": "mascotas",   "name": "Mascotas",   "color": "#e8a13a", "bonus": "+5 % de velocidad",             "attr": "MOVEMENT_SPEED", "amount": 0.05, "op": "MULTIPLY_BASE"},
+    {"id": "minecraft",  "name": "Minecraft",  "color": "#4aa05a", "bonus": "+1 de suerte",                  "attr": "LUCK",           "amount": 1.0,  "op": "ADDITION"},
+    {"id": "espadas",    "name": "Espadas",    "color": "#6fa8dc", "bonus": "+1 de daño de ataque",          "attr": "ATTACK_DAMAGE",  "amount": 1.0,  "op": "ADDITION"},
+    {"id": "personajes", "name": "Personajes", "color": "#b06ad9", "bonus": "+1 corazón máximo",             "attr": "MAX_HEALTH",     "amount": 2.0,  "op": "ADDITION"}
+  ],
+  "cartas": [
+    {"id": "rey_brote",         "name": "Rey Brote",             "cat": "jefes",      "rar": "RARA",       "glyph": "crown",   "c1": "#5fbf4a", "c2": "#ffd84a", "desc": "El soberano del bosque. Su corona nunca se marchita."},
+    {"id": "gran_herrero",      "name": "Gran Herrero",          "cat": "jefes",      "rar": "EPICA",      "glyph": "hammer",  "c1": "#e0733a", "c2": "#ffd84a", "desc": "Forja con fuego que nunca se apaga."},
+    {"id": "lobo_artico",       "name": "Lobo Ártico",           "cat": "jefes",      "rar": "EPICA",      "glyph": "wolf",    "c1": "#bfe6ff", "c2": "#4a90d9", "desc": "Su aullido congela el aire."},
+    {"id": "archimago",         "name": "Archimago",             "cat": "jefes",      "rar": "LEGENDARIA", "glyph": "star",    "c1": "#b06ad9", "c2": "#ffe27a", "desc": "Guardián de la torre y de sus libros prohibidos."},
+
+    {"id": "brote",             "name": "Brote",                 "cat": "criaturas",  "rar": "COMUN",      "glyph": "tree",    "c1": "#6fcf55", "c2": "#8a5a2a", "desc": "Pequeño, verde y muy terco."},
+    {"id": "espinoso",          "name": "Espinoso",              "cat": "criaturas",  "rar": "COMUN",      "glyph": "tree",    "c1": "#4a9a3a", "c2": "#d9c04a", "desc": "Mejor no abrazarlo."},
+    {"id": "chispero",          "name": "Chispero",              "cat": "criaturas",  "rar": "COMUN",      "glyph": "flame",   "c1": "#ff9a2a", "c2": "#ffe27a", "desc": "Salta de la fragua con cada golpe."},
+    {"id": "fundidor",          "name": "Fundidor",              "cat": "criaturas",  "rar": "RARA",       "glyph": "hammer",  "c1": "#c85a2a", "c2": "#9aa0a6", "desc": "Derrite todo lo que toca."},
+    {"id": "capataz",           "name": "Capataz",               "cat": "criaturas",  "rar": "RARA",       "glyph": "helmet",  "c1": "#b0502a", "c2": "#d9d9d9", "desc": "Manda en la forja y no admite quejas."},
+    {"id": "lobo_escarcha",     "name": "Lobo de Escarcha",      "cat": "criaturas",  "rar": "RARA",       "glyph": "wolf",    "c1": "#9ad0f0", "c2": "#ffffff", "desc": "Caza en manada entre la nieve."},
+    {"id": "esbirro",           "name": "Esbirro del Archimago", "cat": "criaturas",  "rar": "COMUN",      "glyph": "skull",   "c1": "#8a5ac0", "c2": "#e8e0f0", "desc": "Obedece sin hacer preguntas."},
+    {"id": "libro_embrujado",   "name": "Libro Embrujado",       "cat": "criaturas",  "rar": "COMUN",      "glyph": "book",    "c1": "#a05ad0", "c2": "#ffe27a", "desc": "Vuela y no le gusta que lo lean."},
+    {"id": "armadura_encantada","name": "Armadura Encantada",    "cat": "criaturas",  "rar": "RARA",       "glyph": "helmet",  "c1": "#7a7fa0", "c2": "#b08aff", "desc": "Vacia por dentro, llena de magia."},
+
+    {"id": "espiritu_bosque",   "name": "Espíritu del Bosque",   "cat": "mascotas",   "rar": "RARA",       "glyph": "tree",    "c1": "#7fe08a", "c2": "#ffffff", "desc": "Te sigue entre las hojas."},
+    {"id": "golemcito",         "name": "Golemcito",             "cat": "mascotas",   "rar": "RARA",       "glyph": "blob",    "c1": "#d98a4a", "c2": "#ffd84a", "desc": "Pequeño, terco y de hierro."},
+    {"id": "fosu",              "name": "Fosu",                  "cat": "mascotas",   "rar": "LEGENDARIA", "glyph": "star",    "c1": "#ffc0e8", "c2": "#ffffff", "desc": "Una mariposa celestial."},
+    {"id": "cookie",            "name": "Cookie",                "cat": "mascotas",   "rar": "LEGENDARIA", "glyph": "paw",     "c1": "#b4bac6", "c2": "#3a3f4a", "desc": "Hurón gris, ladrón de corazones."},
+    {"id": "dragon_celestial",  "name": "Dragón Celestial",      "cat": "mascotas",   "rar": "MITICA",     "glyph": "dragon",  "c1": "#6ad0ff", "c2": "#ffe27a", "desc": "Nació de una estrella fugaz."},
+
+    {"id": "creeper",           "name": "Creeper",               "cat": "minecraft",  "rar": "COMUN",      "glyph": "creeper", "c1": "#5fbf4a", "c2": "#1f3a1a", "desc": "Ssssss..."},
+    {"id": "zombi",             "name": "Zombi",                 "cat": "minecraft",  "rar": "COMUN",      "glyph": "skull",   "c1": "#6a9a5a", "c2": "#2a3a4a", "desc": "Camina hacia ti, siempre."},
+    {"id": "esqueleto",         "name": "Esqueleto",             "cat": "minecraft",  "rar": "COMUN",      "glyph": "skull",   "c1": "#d9d9d9", "c2": "#4a4a4a", "desc": "Tiene muy buena puntería."},
+    {"id": "enderman",          "name": "Enderman",              "cat": "minecraft",  "rar": "RARA",       "glyph": "star",    "c1": "#8a3ad0", "c2": "#1a0a2a", "desc": "No lo mires a los ojos."},
+    {"id": "wither",            "name": "Wither",                "cat": "minecraft",  "rar": "EPICA",      "glyph": "skull",   "c1": "#3a3a4a", "c2": "#d9d9ff", "desc": "Tres cabezas, ninguna amable."},
+    {"id": "ender_dragon",      "name": "Dragón del End",        "cat": "minecraft",  "rar": "LEGENDARIA", "glyph": "dragon",  "c1": "#2a1a3a", "c2": "#c06aff", "desc": "Reina del vacío."},
+
+    {"id": "espada_hierro",     "name": "Espada de Hierro",      "cat": "espadas",    "rar": "COMUN",      "glyph": "sword",   "c1": "#d9d9d9", "c2": "#8a5a2a", "desc": "Fiel y sin adornos."},
+    {"id": "espada_diamante",   "name": "Espada de Diamante",    "cat": "espadas",    "rar": "RARA",       "glyph": "sword",   "c1": "#5ae0e0", "c2": "#8a5a2a", "desc": "Brilla incluso en la oscuridad."},
+    {"id": "espada_netherita",  "name": "Espada de Netherita",   "cat": "espadas",    "rar": "EPICA",      "glyph": "sword",   "c1": "#4a3f4a", "c2": "#c04a2a", "desc": "Forjada en las profundidades."},
+
+    {"id": "rey_slime",         "name": "Rey Slime",             "cat": "personajes", "rar": "EPICA",      "glyph": "blob",    "c1": "#6ae05a", "c2": "#ffd84a", "desc": "Gelatinoso, majestuoso e imposible de ignorar."},
+    {"id": "cronista",          "name": "Cronista de la Torre",  "cat": "personajes", "rar": "RARA",       "glyph": "book",    "c1": "#c0a060", "c2": "#4a2a1a", "desc": "Lo ha escrito todo, y sabe más de lo que cuenta."},
+    {"id": "aldeano",           "name": "Aldeano",               "cat": "personajes", "rar": "COMUN",      "glyph": "heart",   "c1": "#c08a6a", "c2": "#ffffff", "desc": "Hmm."},
+    {"id": "bruja",             "name": "Bruja",                 "cat": "personajes", "rar": "RARA",       "glyph": "star",    "c1": "#7a3aa0", "c2": "#6ae05a", "desc": "Sus pociones nunca salen igual dos veces."}
+  ],
+  "sobres": [
+    {"id": "basico", "name": "Sobre Básico", "color": "#9aa0a6", "cartas": 4, "min": "COMUN",      "odds": {"COMUN": 70.0, "RARA": 24.0, "EPICA": 5.0,  "LEGENDARIA": 0.95, "MITICA": 0.05}},
+    {"id": "plata",  "name": "Sobre de Plata", "color": "#6fa8dc", "cartas": 5, "min": "RARA",    "odds": {"COMUN": 45.0, "RARA": 38.0, "EPICA": 13.0, "LEGENDARIA": 3.5,  "MITICA": 0.5}},
+    {"id": "oro",    "name": "Sobre de Oro",   "color": "#ffb21e", "cartas": 6, "min": "EPICA",   "odds": {"COMUN": 20.0, "RARA": 40.0, "EPICA": 28.0, "LEGENDARIA": 10.0, "MITICA": 2.0}}
+  ]
+}
