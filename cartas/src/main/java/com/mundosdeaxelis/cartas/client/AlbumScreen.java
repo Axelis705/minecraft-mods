@@ -135,6 +135,10 @@ public final class AlbumScreen extends Screen {
     private float heldDownX;
     private float heldDownY;
     private float edgeTimer;
+    private CardDef zoom;
+    private boolean zoomHolo;
+    private float zoomT;
+    private int[] clickSlot;
     private int badPage = -1;
     private int badK;
     private float badT;
@@ -472,6 +476,7 @@ public final class AlbumScreen extends Screen {
         shake = Math.max(0f, shake - dt);
         bonusShow = Math.max(0f, bonusShow - dt);
         badT = Math.min(1f, badT + dt * 2.5f);
+        zoomT = zoom != null ? Math.min(1f, zoomT + dt * 6f) : 0f;
         refreshTray();
         tickPlacing(dt);
         updateLeaf(dt);
@@ -509,11 +514,11 @@ public final class AlbumScreen extends Screen {
 
         drawBook(g);
         List<Component> tip = null;
-        if (mode == Mode.IDLE && held == null && placing == null) {
+        if (mode == Mode.IDLE && held == null && placing == null && zoom == null) {
             tip = hoverTooltip(vx, vy);
         }
         drawTray(g, vx, vy);
-        if (tip == null && held == null && mode == Mode.IDLE) {
+        if (tip == null && held == null && mode == Mode.IDLE && zoom == null) {
             Entry e = trayAt(vx, vy);
             if (e != null) {
                 tip = trayTooltip(e);
@@ -523,6 +528,7 @@ public final class AlbumScreen extends Screen {
         drawFx(g);
         drawPlacing(g);
         drawHeld(g);
+        drawZoom(g);
         g.pose().popPose();
 
         if (tip != null) {
@@ -871,6 +877,80 @@ public final class AlbumScreen extends Screen {
         g.pose().popPose();
     }
 
+    private void openZoom(CardDef d, boolean holo) {
+        zoom = d;
+        zoomHolo = holo;
+        zoomT = 0f;
+        CartasClient.play(SoundEvents.BOOK_PAGE_TURN, 1.7f, 0.5f);
+    }
+
+    private void closeZoom() {
+        zoom = null;
+        CartasClient.play(SoundEvents.BOOK_PUT, 1.8f, 0.25f);
+    }
+
+    private void drawZoom(GuiGraphics g) {
+        if (zoom == null) {
+            return;
+        }
+        float e = 1f - (float) Math.pow(1f - zoomT, 3);
+        g.pose().pushPose();
+        g.pose().translate(0f, 0f, 400f);
+        g.fill(0, 0, VW, VH, ((int) (e * 190) << 24));
+        CardDef d = zoom;
+        int rc = zoomHolo ? 0x7FE8FF : d.rarity.color;
+        float cw = 124f;
+        float ch = cw * CARD_H / CARD_W;
+        float cx = 112f;
+        float cy = VH / 2f - 4f;
+        float s = Mth.lerp(e, 0.55f, 1f);
+        float tilt = Mth.clamp((mvx - cx) / 160f, -1f, 1f) * 5f;
+        g.pose().pushPose();
+        g.pose().translate(cx, cy, 0f);
+        g.pose().mulPose(Axis.ZP.rotationDegrees(tilt * 0.6f));
+        g.pose().scale(s, s, 1f);
+        CardRender.glow(g, -cw / 2, -ch / 2, cw, ch, rc, 0.9f + 0.2f * Mth.sin(time * 3f));
+        CardRender.face(g, d, -cw / 2, -ch / 2, cw, ch);
+        if (zoomHolo) {
+            CardRender.holo(g, -cw / 2, -ch / 2, cw, ch, time, (d.index * 0.137f) % 1f);
+        }
+        g.pose().popPose();
+        // textos
+        float a = Mth.clamp((zoomT - 0.3f) / 0.7f, 0f, 1f);
+        int alpha = (int) (a * 255) << 24;
+        if (a > 0.05f) {
+            int x = 196;
+            int y = 70;
+            CardCategory cat = Cards.category(d.category);
+            g.pose().pushPose();
+            g.pose().translate(x, y, 0f);
+            g.pose().scale(1.5f, 1.5f, 1f);
+            g.drawString(font, d.name, 0, 0, alpha | d.rarity.color, true);
+            g.pose().popPose();
+            y += 20;
+            g.drawString(font, d.rarity.label + " · " + (zoomHolo ? "Holográfica" : cat.name), x, y, alpha | rc, true);
+            y += 16;
+            for (var line : font.split(Component.literal(d.desc), 140)) {
+                g.drawString(font, line, x, y, alpha | 0xC8C0B0, true);
+                y += 11;
+            }
+            y += 8;
+            if (!zoomHolo && CartasClient.ALBUM.holo.contains(d.id)) {
+                g.drawString(font, "✦ También tienes la holográfica", x, y, alpha | 0x7FE8FF, true);
+                y += 12;
+            }
+            y += 4;
+            g.drawString(font, "Probabilidad por sobre:", x, y, alpha | 0x8AA0A8, true);
+            y += 11;
+            for (PackDef p : Cards.PACKS) {
+                g.drawString(font, p.name + ": " + String.format("%.1f %%", PackRoller.chanceInPack(p, d) * 100.0), x, y, alpha | 0xA8B8C0, true);
+                y += 10;
+            }
+            g.drawCenteredString(font, "Clic para cerrar", VW / 2, VH - 14, ((int) (a * 160) << 24) | 0xE8DCC8);
+        }
+        g.pose().popPose();
+    }
+
     private void drawPlacing(GuiGraphics g) {
         if (placing == null) {
             return;
@@ -959,6 +1039,10 @@ public final class AlbumScreen extends Screen {
     public boolean mouseClicked(double mx, double my, int button) {
         float vx = (float) ((mx - ox) / sc);
         float vy = (float) ((my - oy) / sc);
+        if (zoom != null) {
+            closeZoom();
+            return true;
+        }
         if (button != 0 || placing != null) {
             return super.mouseClicked(mx, my, button);
         }
@@ -982,6 +1066,7 @@ public final class AlbumScreen extends Screen {
         }
         if (mode == Mode.IDLE && vy >= PAGE_Y && vy < PAGE_Y + PH && vx >= 6 && vx < VW - 6) {
             int dir = vx >= SPINE ? 1 : -1;
+            clickSlot = slotAt(vx, vy);
             if ((dir > 0 && cur + 1 < spreads()) || (dir < 0 && cur > 0)) {
                 startLeaf(dir, Mode.DRAG);
                 dragVx = vx;
@@ -1018,6 +1103,20 @@ public final class AlbumScreen extends Screen {
             }
             return true;
         }
+        if (mode == Mode.DRAG && button == 0 && !moved && clickSlot != null) {
+            // un clic sin arrastrar sobre una carta guardada: se ve en grande en vez de pasar de pagina
+            PageDef pd = pages.get(clickSlot[0]);
+            CardDef d = tabCards(pd.tab).get(pd.first + clickSlot[1]);
+            if (owned(pd.tab, d)) {
+                mode = Mode.IDLE;
+                fromDrag = false;
+                target = cur;
+                theta = 0f;
+                vel = 0f;
+                openZoom(d, holoTab(pd.tab));
+                return true;
+            }
+        }
         if (mode == Mode.DRAG && button == 0) {
             mode = Mode.SETTLE;
             if (!moved) {
@@ -1037,7 +1136,7 @@ public final class AlbumScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mx, double my, double delta) {
-        if (delta == 0) {
+        if (delta == 0 || zoom != null) {
             return false;
         }
         float vy = (float) ((my - oy) / sc);
@@ -1051,6 +1150,10 @@ public final class AlbumScreen extends Screen {
 
     @Override
     public boolean keyPressed(int key, int scan, int mods) {
+        if (zoom != null && (key == GLFW.GLFW_KEY_ESCAPE || CartasKeys.OPEN.matches(key, scan))) {
+            closeZoom();
+            return true;
+        }
         if (key == GLFW.GLFW_KEY_ESCAPE && held != null) {
             held = null;
             heldSticky = false;
