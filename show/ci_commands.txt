@@ -1,0 +1,13 @@
+# Pruebas en el servidor real: los bancos cargan, el motor del show corre y el estudio se construye sin errores
+show probar
+show construir 0 100 0 south
+execute if block 0 100 0 minecraft:black_concrete if block 0 102 15 minecraft:blue_concrete run say PRUEBA_SHOW_ESTUDIO_0
+execute if entity @e[type=show_de_axelis:spectator] run say PRUEBA_SHOW_PUBLICO
+show construir 100 100 100 east
+execute if block 100 100 100 minecraft:black_concrete run say PRUEBA_SHOW_ESTUDIO_1
+show publico
+show parar
+#expect PRUEBA_SHOW_OK
+#expect PRUEBA_SHOW_ESTUDIO_0
+#expect PRUEBA_SHOW_PUBLICO
+#expect PRUEBA_SHOW_ESTUDIO_1

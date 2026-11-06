@@ -1,0 +1,162 @@
+{
+ "show_start": [
+  "Damas y caballeros, y también las frutas del público, bienvenidos al Show de Axelis. Soy un locutor invisible y estoy contratado por horas.",
+  "Buenas noches, buenos días o lo que sea que sea. Estás en el mejor programa de televisión de este grupo de amigos. No me cuestionen.",
+  "¡Se enciende la luz roja! O verde. Alguien conectó mal las luces. Comencemos."
+ ],
+ "round_start": [
+  "Primera pregunta, primer error probable. Comencemos.",
+  "Atención, concursantes: respiren, piensen y luego hagan lo contrario.",
+  "Va una ronda más. El público no pidió esto pero aquí estamos.",
+  "Se abre la pregunta. Los nervios son gratis."
+ ],
+ "buzz": [
+  "¡{player} tocó el timbre! Con firmeza. Con ganas. Con ruido.",
+  "{player} se lanzó al timbre como si fuera lo último en el mundo.",
+  "¡Timbre de {player}! Ojalá sepa lo que va a decir."
+ ],
+ "dup": [
+  "Eso ya estaba arriba, pero qué bonito entusiasmo.",
+  "Ya lo dijeron, {player}. Pero gracias por confirmar que el tablero existe.",
+  "Repetida. El público ya lo había visto."
+ ],
+ "reveal": [
+  "¡Está en el tablero! Ahora todos fingen que lo sabían.",
+  "¡Respuesta correcta! Los jueces han dejado de dormir.",
+  "¡Ahí está! Aplausos fingidos, por favor.",
+  "Eso valía {text}. Bueno, valía puntos."
+ ],
+ "wrong": [
+  "Respuesta incorrecta. Estamos tristes y también un poquito felices.",
+  "Eso no está en el tablero, ni cerca, ni en otro tablero.",
+  "Mmm. No."
+ ],
+ "strike": [
+  "¡Una X! Qué atrevimiento equivocarse en televisión nacional.",
+  "¡X para {side}! Duele más cuando hay público.",
+  "Error. Gran error. Error de los que se recuerdan.",
+  "¡Equis! Como la del trabajo cuando no llegas."
+ ],
+ "steal": [
+  "¡Tres errores! ¡El banco está libre y el rival respira de felicidad!",
+  "¡Robo! Una palabra que da miedo y emoción al mismo tiempo.",
+  "Se abre la oportunidad de robar. En televisión es legal."
+ ],
+ "steal_ok": [
+  "¡Robo exitoso! Nadie vio nada, todos aplauden.",
+  "¡Se lo llevaron! El equipo contrario guarda un minuto de silencio.",
+  "¡Qué atraco tan elegante, {player}!"
+ ],
+ "steal_fail": [
+  "Intento de robo fallido. La seguridad del programa está orgullosa.",
+  "El robo no salió. Lo más cercano a un robo fue la pregunta.",
+  "Fallaste, pero la intención es lo que cuenta. Y también los puntos."
+ ],
+ "control": [
+  "¡El control es de {side}! Úsenlo con sabiduría o al menos con ritmo.",
+  "Tienen el control. Por favor, no lo pierdan, es el único que tenemos.",
+  "{side} toma el mando. Ya era hora de que alguien lo hiciera."
+ ],
+ "face_none": [
+  "Nadie acertó. Cinco segundos de silencio incómodo y seguimos.",
+  "Una pregunta tan difícil que hasta el público se rió de nervios.",
+  "Los grillos del estudio piden más participación."
+ ],
+ "round_win": [
+  "¡{side} se lleva {pts} puntos! Un fuerte aplauso o por lo menos uno discreto.",
+  "¡Ronda para {side}! Los demás tendrán que conformarse con la dignidad.",
+  "¡{pts} puntos para {side}! Eso es mucho. Es bastante, la verdad."
+ ],
+ "round_none": [
+  "Nadie se llevó nada. Es histórico, pero por malas razones."
+ ],
+ "trivia_start": [
+  "Pregunta de trivia. Tienen un tiempo limitado, como los programas de televisión.",
+  "A contestar rápido: el que acierta primero, gana más. Es la ley del show.",
+  "Atención, es una pregunta con trampa. O sin trampa. Ya verán."
+ ],
+ "trivia_reveal": [
+  "Y la respuesta correcta es... ¡esa!",
+  "Se acabó el tiempo. Los que acertaron, felicidades; los demás, mejor suerte en su otra vida.",
+  "Veamos quién estudió y quién solo vino por la comida."
+ ],
+ "trivia_none": [
+  "Nadie acertó. Increíble. Se pasará a la siguiente pregunta con luto.",
+  "Cero aciertos. Los jueces recomiendan leer más libros y ver menos videos."
+ ],
+ "imp_start": [
+  "¡Hay un impostor entre ustedes! Yo sé quién es. No les voy a decir. Soy muy profesional.",
+  "Todos tienen una palabra secreta... menos uno. Que disimule, que disimule.",
+  "Comienza El Impostor. Confíen en todos. O en nadie. Da igual."
+ ],
+ "imp_discuss": [
+  "Se acabaron las pistas. Ahora discutan, acusen y mientan con elegancia.",
+  "Hora de la charla. Cualquier parecido con una reunión de trabajo es pura coincidencia."
+ ],
+ "imp_vote": [
+  "¡A votar! Escriban en el chat el número o el nombre del sospechoso.",
+  "Redoble de tambores: voten a quien crean impostor. O a quien les caiga mal."
+ ],
+ "imp_caught": [
+  "¡{player} era el impostor! Pero todavía puede adivinar la palabra y salvarse.",
+  "¡Lo atraparon! Aunque aún le queda una oportunidad para lucirse."
+ ],
+ "imp_escaped": [
+  "¡El impostor era {player} y se salió con la suya! Qué talento actoral.",
+  "Nadie acusó al correcto. {player} era el impostor. Qué escalofrío."
+ ],
+ "imp_end": [
+  "Y así termina esta ronda de mentiras elegantes. La palabra era {text}.",
+  "Fin del juego. La palabra era {text}. Algunos lo sospechaban, otros mentían muy bien."
+ ],
+ "taboo_start": [
+  "{player} debe describir una palabra sin decir las prohibidas. Suerte y sin trampa.",
+  "Atención, {side}: {player} describe y ustedes adivinan. Cualquier cosa menos la palabra, claro."
+ ],
+ "taboo_bad": [
+  "¡Dijiste una palabra prohibida, {player}! Los jueces se tapan los oídos.",
+  "¡Prohibido! Esa palabra estaba en la lista. Te leímos."
+ ],
+ "taboo_fail": [
+  "Fin de la ronda. La palabra se quedó sin descubrir y los jueces sin paciencia.",
+  "No se adivinó. La palabra era {text}. Cosa fácil, dicen algunos."
+ ],
+ "taboo_solved": [
+  "¡Adivinada! {player} se lleva {pts} puntos y la admiración de su equipo.",
+  "¡Eso es! La palabra era {text}. Qué momento, qué elegancia."
+ ],
+ "final": [
+  "Y el ganador del Show de Axelis es... ¡{side}! Los demás recibirán un abrazo imaginario.",
+  "¡Felicidades, {side}! Han ganado un premio increíble y totalmente distinto al anunciado."
+ ],
+ "final_tie": [
+  "¡Empate! Los jueces han decidido que todos ganaron, pero algunos ganaron un poco más.",
+  "No hay ganador claro. Se resolverá con piedra, papel o tijera detrás de cámaras."
+ ],
+ "techdiff": [
+  "Estamos experimentando dificultades técnicas. Por favor, no se muevan, no respiren y no cambien de canal.",
+  "Mil disculpas. Alguien tropezó con el cable de la imaginación. Volvemos enseguida.",
+  "Se interrumpe la transmisión por causas ajenas a nuestra voluntad y también a la lógica."
+ ],
+ "chiste": [
+  "¿Qué hace una abeja en el gimnasio? ¡Zum-ba!",
+  "¿Cuál es el colmo de un electricista? Que su esposa se llame Luz y sus hijos le sigan la corriente.",
+  "Me dijeron que había un público muy exigente. Entonces vine con frutas.",
+  "¿Por qué el libro de matemáticas estaba triste? Porque tenía muchos problemas.",
+  "Dicen que la televisión te vuelve tonto. Yo no, yo ya vine así."
+ ],
+ "premios": [
+  "una caja vacía de zapatos",
+  "un abrazo de una sandía",
+  "un cupón para otro cupón",
+  "el primer lugar en un concurso que nadie recuerda",
+  "un cuarto de kilo de aplausos congelados",
+  "una silla con aire acondicionado imaginario",
+  "una excursión a la tienda de la esquina",
+  "un diploma con tu nombre mal escrito",
+  "un coche (de juguete, pero es tuyo)",
+  "un año de suscripción gratis a nada",
+  "un dragón... pero de dibujo",
+  "la llave del cielo (no abre ninguna puerta)"
+ ]
+}

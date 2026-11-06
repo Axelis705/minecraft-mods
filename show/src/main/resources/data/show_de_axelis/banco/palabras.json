@@ -1,0 +1,138 @@
+[
+ {
+  "cat": "Comida",
+  "palabras": [
+   "tacos",
+   "pizza",
+   "hamburguesa",
+   "sushi",
+   "helado",
+   "pozole",
+   "sopa",
+   "pastel",
+   "tamal",
+   "ensalada",
+   "palomitas",
+   "chocolate"
+  ]
+ },
+ {
+  "cat": "Animales",
+  "palabras": [
+   "perro",
+   "gato",
+   "elefante",
+   "tiburón",
+   "jirafa",
+   "pingüino",
+   "caballo",
+   "mariposa",
+   "pulpo",
+   "búho",
+   "tortuga",
+   "conejo"
+  ]
+ },
+ {
+  "cat": "Lugares",
+  "palabras": [
+   "playa",
+   "escuela",
+   "hospital",
+   "cine",
+   "aeropuerto",
+   "biblioteca",
+   "parque",
+   "estadio",
+   "panadería",
+   "circo",
+   "museo",
+   "cueva"
+  ]
+ },
+ {
+  "cat": "Objetos de casa",
+  "palabras": [
+   "refrigerador",
+   "sofá",
+   "espejo",
+   "lámpara",
+   "cuchara",
+   "almohada",
+   "microondas",
+   "escoba",
+   "reloj",
+   "cortina",
+   "tijeras",
+   "llave"
+  ]
+ },
+ {
+  "cat": "Minecraft",
+  "palabras": [
+   "creeper",
+   "diamante",
+   "antorcha",
+   "pico",
+   "aldeano",
+   "portal",
+   "cofre",
+   "zombi",
+   "cama",
+   "obsidiana",
+   "pepita",
+   "elytra"
+  ]
+ },
+ {
+  "cat": "Profesiones",
+  "palabras": [
+   "doctor",
+   "bombero",
+   "maestro",
+   "piloto",
+   "cocinero",
+   "policía",
+   "payaso",
+   "astronauta",
+   "cantante",
+   "mecánico",
+   "dentista",
+   "futbolista"
+  ]
+ },
+ {
+  "cat": "Cosas absurdas",
+  "palabras": [
+   "calcetín suelto",
+   "wifi lento",
+   "tarea perdida",
+   "lunes",
+   "sueño",
+   "chancla",
+   "piñata",
+   "alarma",
+   "resaca",
+   "dieta",
+   "karaoke",
+   "fantasma"
+  ]
+ },
+ {
+  "cat": "Deportes",
+  "palabras": [
+   "fútbol",
+   "natación",
+   "boxeo",
+   "basquetbol",
+   "tenis",
+   "ciclismo",
+   "ajedrez",
+   "surf",
+   "voleibol",
+   "golf",
+   "esgrima",
+   "béisbol"
+  ]
+ }
+]

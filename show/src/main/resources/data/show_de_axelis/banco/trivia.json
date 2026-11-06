@@ -1,0 +1,1410 @@
+[
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos estados tiene México, sin contar la Ciudad de México?",
+  "op": [
+   "29",
+   "30",
+   "31",
+   "32"
+  ],
+  "ok": 2,
+  "nota": "31 estados y la CDMX suman 32 entidades.",
+  "id": "t000"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué animal aparece en el escudo nacional de México?",
+  "op": [
+   "Un jaguar",
+   "Un águila",
+   "Un quetzal",
+   "Un lobo"
+  ],
+  "ok": 1,
+  "nota": "Un águila parada sobre un nopal devorando una serpiente.",
+  "id": "t001"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿De qué color es la franja del centro de la bandera de México?",
+  "op": [
+   "Verde",
+   "Roja",
+   "Blanca",
+   "Azul"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t002"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿En qué estado nació el tequila?",
+  "op": [
+   "Veracruz",
+   "Jalisco",
+   "Oaxaca",
+   "Sonora"
+  ],
+  "ok": 1,
+  "nota": "En Jalisco, en el pueblo de Tequila.",
+  "id": "t003"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿En qué año empezó la Independencia de México (el Grito de Dolores)?",
+  "op": [
+   "1521",
+   "1810",
+   "1857",
+   "1910"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t004"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿En qué estado está Chichén Itzá?",
+  "op": [
+   "Chiapas",
+   "Yucatán",
+   "Campeche",
+   "Oaxaca"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t005"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué ingrediente es la base del guacamole?",
+  "op": [
+   "Tomate",
+   "Pepino",
+   "Aguacate",
+   "Chile"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t006"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es el volcán más alto de México?",
+  "op": [
+   "Popocatépetl",
+   "Pico de Orizaba",
+   "Iztaccíhuatl",
+   "Nevado de Toluca"
+  ],
+  "ok": 1,
+  "nota": "El Pico de Orizaba, con unos 5,600 metros.",
+  "id": "t007"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿De qué ciudad es el mole poblano?",
+  "op": [
+   "Puebla",
+   "Mérida",
+   "Monterrey",
+   "Tijuana"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t008"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿En cuántos Mundiales de fútbol ha sido sede México, contando el de 2026?",
+  "op": [
+   "Uno",
+   "Dos",
+   "Tres",
+   "Cuatro"
+  ],
+  "ok": 2,
+  "nota": "1970, 1986 y 2026 (este último compartido con Estados Unidos y Canadá).",
+  "id": "t009"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Con qué se construye el portal al Nether?",
+  "op": [
+   "Diamante",
+   "Bedrock",
+   "Hierro",
+   "Obsidiana"
+  ],
+  "ok": 3,
+  "nota": "",
+  "id": "t010"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos corazones de vida tiene el jugador de Minecraft?",
+  "op": [
+   "5",
+   "10",
+   "20",
+   "3"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t011"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿En qué dimensión vive el Ender Dragon?",
+  "op": [
+   "El Nether",
+   "El Overworld",
+   "El End",
+   "La Aurora"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t012"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Con qué se doma a un lobo en Minecraft?",
+  "op": [
+   "Huesos",
+   "Manzanas",
+   "Trigo",
+   "Pescado"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t013"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos marcos tiene un portal del End completo?",
+  "op": [
+   "8",
+   "10",
+   "12",
+   "16"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t014"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Quién creó Minecraft?",
+  "op": [
+   "Notch",
+   "Shigeru Miyamoto",
+   "Gabe Newell",
+   "Steve Jobs"
+  ],
+  "ok": 0,
+  "nota": "Markus \"Notch\" Persson.",
+  "id": "t015"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué mob suelta perlas de ender?",
+  "op": [
+   "Creeper",
+   "Enderman",
+   "Ghast",
+   "Bruja"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t016"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos planetas tiene el Sistema Solar?",
+  "op": [
+   "7",
+   "8",
+   "9",
+   "10"
+  ],
+  "ok": 1,
+  "nota": "Plutón ya no cuenta, pobrecito.",
+  "id": "t017"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es el océano más grande del mundo?",
+  "op": [
+   "Atlántico",
+   "Índico",
+   "Pacífico",
+   "Ártico"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t018"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos huesos tiene un adulto?",
+  "op": [
+   "106",
+   "206",
+   "306",
+   "406"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t019"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué gas es el más abundante en el aire que respiramos?",
+  "op": [
+   "Oxígeno",
+   "Nitrógeno",
+   "Dióxido de carbono",
+   "Helio"
+  ],
+  "ok": 1,
+  "nota": "El nitrógeno, casi el 78%. El oxígeno es solo el 21%.",
+  "id": "t020"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es el animal terrestre más rápido?",
+  "op": [
+   "Guepardo",
+   "León",
+   "Caballo",
+   "Avestruz"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t021"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es el país más grande del mundo?",
+  "op": [
+   "China",
+   "Canadá",
+   "Estados Unidos",
+   "Rusia"
+  ],
+  "ok": 3,
+  "nota": "",
+  "id": "t022"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿En qué año pisó el ser humano la Luna por primera vez?",
+  "op": [
+   "1959",
+   "1969",
+   "1979",
+   "1989"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t023"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué metal es líquido a temperatura ambiente?",
+  "op": [
+   "Plomo",
+   "Mercurio",
+   "Estaño",
+   "Cobre"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t024"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es la capital de Japón?",
+  "op": [
+   "Kioto",
+   "Osaka",
+   "Tokio",
+   "Nagoya"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t025"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es el animal más grande del planeta?",
+  "op": [
+   "Elefante",
+   "Tiburón ballena",
+   "Ballena azul",
+   "Calamar gigante"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t026"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es el símbolo químico del oro?",
+  "op": [
+   "Or",
+   "Au",
+   "Ag",
+   "Go"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t027"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Quién escribió Don Quijote de la Mancha?",
+  "op": [
+   "Cervantes",
+   "Lope de Vega",
+   "Neruda",
+   "García Márquez"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t028"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es el hueso más largo del cuerpo humano?",
+  "op": [
+   "Húmero",
+   "Fémur",
+   "Tibia",
+   "Columna"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t029"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué planeta es conocido como el planeta rojo?",
+  "op": [
+   "Venus",
+   "Júpiter",
+   "Marte",
+   "Mercurio"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t030"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿De qué compañía es el personaje Mario?",
+  "op": [
+   "Sega",
+   "Nintendo",
+   "Sony",
+   "Atari"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t031"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué número tiene Pikachu en la Pokédex?",
+  "op": [
+   "1",
+   "25",
+   "100",
+   "150"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t032"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cómo se llama la princesa que Mario siempre rescata?",
+  "op": [
+   "Zelda",
+   "Daisy",
+   "Peach",
+   "Rosalina"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t033"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos meses tienen 28 días?",
+  "op": [
+   "Uno",
+   "Seis",
+   "Los doce",
+   "Ninguno"
+  ],
+  "ok": 2,
+  "nota": "Todos tienen al menos 28 días. Sí, es una trampa.",
+  "id": "t034"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "Un gallo pone un huevo en la punta de un techo. ¿Hacia dónde cae el huevo?",
+  "op": [
+   "A la izquierda",
+   "A la derecha",
+   "Hacia el frente",
+   "Los gallos no ponen huevos"
+  ],
+  "ok": 3,
+  "nota": "",
+  "id": "t035"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuánto es 1 + 1 × 0?",
+  "op": [
+   "0",
+   "1",
+   "2",
+   "Depende de tu humor"
+  ],
+  "ok": 1,
+  "nota": "Primero se multiplica: 1 + 0 = 1.",
+  "id": "t036"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué pesa más: un kilo de plumas o un kilo de plomo?",
+  "op": [
+   "Las plumas",
+   "El plomo",
+   "Pesan lo mismo",
+   "Depende de la gravedad"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t037"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿De qué color era el caballo blanco de Napoleón?",
+  "op": [
+   "Negro",
+   "Gris",
+   "Café",
+   "Blanco"
+  ],
+  "ok": 3,
+  "nota": "Lo dice la pregunta, pero nadie lee.",
+  "id": "t038"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos animales de cada especie metió Moisés al arca?",
+  "op": [
+   "Dos",
+   "Siete",
+   "Ninguno, fue Noé",
+   "Cuarenta"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t039"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "Un avión se estrella justo en la frontera entre dos países. ¿Dónde entierran a los sobrevivientes?",
+  "op": [
+   "En un país",
+   "En el otro",
+   "En el medio",
+   "En ninguno: están vivos"
+  ],
+  "ok": 3,
+  "nota": "",
+  "id": "t040"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué letra hay en medio del mar?",
+  "op": [
+   "La A",
+   "La R",
+   "La M",
+   "La Z"
+  ],
+  "ok": 0,
+  "nota": "M-A-R. La A. Gracias por jugar.",
+  "id": "t041"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuál es el mejor programa de televisión de la historia?",
+  "op": [
+   "Este",
+   "Este también",
+   "Obviamente este",
+   "Todas las anteriores"
+  ],
+  "ok": 3,
+  "nota": "Respuesta correcta, aunque nadie lo discute.",
+  "id": "t042"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos minutos faltan para que acabe el show?",
+  "op": [
+   "Pocos",
+   "Muchos",
+   "Depende del público",
+   "Sí"
+  ],
+  "ok": 3,
+  "nota": "Sí.",
+  "id": "t043"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué fruta es la que más vitamina C tiene entre estas?",
+  "op": [
+   "Plátano",
+   "Manzana",
+   "Guayaba",
+   "Pera"
+  ],
+  "ok": 2,
+  "nota": "La guayaba supera incluso a la naranja.",
+  "id": "t044"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántas patas tiene una araña?",
+  "op": [
+   "6",
+   "8",
+   "10",
+   "12"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t045"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos lados tiene un hexágono?",
+  "op": [
+   "5",
+   "6",
+   "7",
+   "8"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t046"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Qué instrumento tiene teclas blancas y negras?",
+  "op": [
+   "Guitarra",
+   "Violín",
+   "Piano",
+   "Flauta"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t047"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿En qué continente está Egipto?",
+  "op": [
+   "Asia",
+   "Europa",
+   "África",
+   "Oceanía"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t048"
+ },
+ {
+  "cat": "Trivia",
+  "pregunta": "¿Cuántos jugadores de cada equipo juegan en la cancha en un partido de fútbol?",
+  "op": [
+   "9",
+   "10",
+   "11",
+   "12"
+  ],
+  "ok": 2,
+  "nota": "",
+  "id": "t049"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Los pulpos tienen tres corazones.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t050"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "El Sol es una estrella.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t051"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Los murciélagos son ciegos.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "Ven bastante bien; además usan eco.",
+  "id": "t052"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "El tomate es una fruta.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "Botánicamente sí, aunque nadie lo pone en la ensalada de frutas.",
+  "id": "t053"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Usamos solo el 10% del cerebro.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "Es un mito: usamos todo el cerebro.",
+  "id": "t054"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "En Minecraft, un cerdo golpeado por un rayo se convierte en piglin zombificado.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t055"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Los avestruces esconden la cabeza bajo tierra cuando tienen miedo.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t056"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "La Gran Muralla China se ve a simple vista desde la Luna.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t057"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "La abeja melífera muere después de picar.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t058"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "México reconoce más de 60 lenguas indígenas como lenguas nacionales.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "Son 68 en total.",
+  "id": "t059"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Los gatos siempre caen de pie.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "Casi siempre, pero no siempre.",
+  "id": "t060"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "El chile pica por una sustancia llamada capsaicina.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t061"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Un rayo nunca cae dos veces en el mismo lugar.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t062"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Los delfines son peces.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "Son mamíferos.",
+  "id": "t063"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "El creeper nació de un error al intentar hacer un cerdo en Minecraft.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t064"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "El diamante es uno de los materiales naturales más duros que existen.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t065"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "El corazón de un camarón está en su cabeza.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t066"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Napoleón era extremadamente bajito.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "Medía lo normal para su época.",
+  "id": "t067"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Comer zanahorias mejora la vista en la oscuridad.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "Es propaganda de la Segunda Guerra Mundial.",
+  "id": "t068"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "El tequila se hace con agave.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t069"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "La Torre Eiffel crece unos centímetros en verano.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "El calor dilata el metal.",
+  "id": "t070"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Los pingüinos viven en el Polo Norte.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "Viven en el sur; en el Polo Norte hay osos.",
+  "id": "t071"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Un día en Venus dura más que un año en Venus.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 0,
+  "nota": "Gira tan lento que sí.",
+  "id": "t072"
+ },
+ {
+  "cat": "True o Fake",
+  "pregunta": "Los humanos tenemos exactamente cinco sentidos.",
+  "op": [
+   "Verdadero",
+   "Falso"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t073"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Taco",
+   "Enchilada",
+   "Pozole",
+   "Sushi"
+  ],
+  "ok": 3,
+  "nota": "El sushi no es mexicano.",
+  "id": "t074"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Creeper",
+   "Zombi",
+   "Esqueleto",
+   "Vaca"
+  ],
+  "ok": 3,
+  "nota": "La vaca no es hostil.",
+  "id": "t075"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Rojo",
+   "Azul",
+   "Verde",
+   "Lunes"
+  ],
+  "ok": 3,
+  "nota": "El lunes no es un color (aunque lo parezca).",
+  "id": "t076"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Guitarra",
+   "Violín",
+   "Arpa",
+   "Martillo"
+  ],
+  "ok": 3,
+  "nota": "El martillo no es un instrumento musical.",
+  "id": "t077"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Mario",
+   "Luigi",
+   "Peach",
+   "Sonic"
+  ],
+  "ok": 3,
+  "nota": "Sonic es de Sega, no del mundo de Mario.",
+  "id": "t078"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Perro",
+   "Gato",
+   "Hámster",
+   "Tiburón"
+  ],
+  "ok": 3,
+  "nota": "Nadie tiene un tiburón de mascota.",
+  "id": "t079"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Manzana",
+   "Plátano",
+   "Zanahoria",
+   "Uva"
+  ],
+  "ok": 2,
+  "nota": "La zanahoria es verdura.",
+  "id": "t080"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Oro",
+   "Plata",
+   "Cobre",
+   "Madera"
+  ],
+  "ok": 3,
+  "nota": "La madera no es un metal.",
+  "id": "t081"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Lunes",
+   "Martes",
+   "Jueves",
+   "Enero"
+  ],
+  "ok": 3,
+  "nota": "Enero es un mes, no un día.",
+  "id": "t082"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Tokio",
+   "París",
+   "Lima",
+   "Brasil"
+  ],
+  "ok": 3,
+  "nota": "Brasil es un país, las demás son ciudades.",
+  "id": "t083"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Pikachu",
+   "Charmander",
+   "Squirtle",
+   "Mickey"
+  ],
+  "ok": 3,
+  "nota": "Mickey no es un Pokémon.",
+  "id": "t084"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Rey",
+   "Reina",
+   "Alfil",
+   "Dado"
+  ],
+  "ok": 3,
+  "nota": "El dado no se usa en el ajedrez.",
+  "id": "t085"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Spider-Man",
+   "Batman",
+   "Superman",
+   "Gandalf"
+  ],
+  "ok": 3,
+  "nota": "Gandalf es mago, no superhéroe.",
+  "id": "t086"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Minecraft",
+   "Terraria",
+   "Fortnite",
+   "Excel"
+  ],
+  "ok": 3,
+  "nota": "Excel no es un videojuego (aunque algunos lo juegan).",
+  "id": "t087"
+ },
+ {
+  "cat": "Algo no cuadra",
+  "pregunta": "¿Cuál NO pertenece al grupo?",
+  "op": [
+   "Aguacate",
+   "Tomate",
+   "Cebolla",
+   "Zapato"
+  ],
+  "ok": 3,
+  "nota": "El zapato no va en el guacamole.",
+  "id": "t088"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"Ssssssss...\"  ¿Quién lo dice?",
+  "op": [
+   "Un creeper",
+   "Un aldeano",
+   "Un cerdo",
+   "Steve"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t089"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"Hrmmmm.\"  ¿Quién lo dice?",
+  "op": [
+   "Una oveja",
+   "Un aldeano",
+   "Un lobo",
+   "Una gallina"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t090"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"Hasta la vista, baby.\"  ¿Quién lo dice?",
+  "op": [
+   "Terminator",
+   "Rambo",
+   "Shrek",
+   "Goku"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t091"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"Yo soy tu padre.\"  ¿Quién lo dice?",
+  "op": [
+   "Darth Vader",
+   "Gru",
+   "Homero",
+   "Gandalf"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t092"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"Hakuna Matata.\"  ¿Quién lo dice?",
+  "op": [
+   "Timón y Pumba",
+   "Woody y Buzz",
+   "Shrek y Burro",
+   "Tom y Jerry"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t093"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"¡Cowabunga!\"  ¿Quién lo dice?",
+  "op": [
+   "Las Tortugas Ninja",
+   "Los Simpson",
+   "Pokémon",
+   "Bob Esponja"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t094"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"¡Ay, caramba!\"  ¿Quién lo dice?",
+  "op": [
+   "Bart Simpson",
+   "Bob Esponja",
+   "El Chavo",
+   "Goku"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t095"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"Fue sin querer queriendo.\"  ¿Quién lo dice?",
+  "op": [
+   "El Chavo del 8",
+   "El Chapulín",
+   "Mickey",
+   "Don Gato"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t096"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"¡Bazinga!\"  ¿Quién lo dice?",
+  "op": [
+   "Sheldon Cooper",
+   "Tony Stark",
+   "Walter White",
+   "Harry Potter"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t097"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"Houston, tenemos un problema.\"  ¿Quién lo dice?",
+  "op": [
+   "Un astronauta",
+   "Un mesero",
+   "Un futbolista",
+   "Un aldeano"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t098"
+ },
+ {
+  "cat": "¿Quién habla?",
+  "pregunta": "\"Yo soy Groot.\"  ¿Quién lo dice?",
+  "op": [
+   "Groot",
+   "Hulk",
+   "Thor",
+   "Un árbol cualquiera"
+  ],
+  "ok": 0,
+  "nota": "Dijo lo único que sabe decir.",
+  "id": "t099"
+ },
+ {
+  "cat": "Ejemplo (no se usa)",
+  "pregunta": "\"[Escribe aquí una frase típica de tu amigo]\"  ¿Quién lo dice?",
+  "op": [
+   "Amigo 1",
+   "Amigo 2",
+   "Amigo 3",
+   "Amigo 4"
+  ],
+  "ok": 0,
+  "nota": "EDITA ESTO: copia este bloque, cambia la frase y los nombres, y pon cat: \"¿Quién habla?\" para que salga en el show.",
+  "id": "t100"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué es más alto?",
+  "op": [
+   "Torre Eiffel",
+   "Estatua de la Libertad"
+  ],
+  "ok": 0,
+  "nota": "330 m contra 93 m.",
+  "id": "t101"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué país tiene más habitantes?",
+  "op": [
+   "México",
+   "España"
+  ],
+  "ok": 0,
+  "nota": "Unos 130 millones contra unos 48.",
+  "id": "t102"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué planeta es más grande?",
+  "op": [
+   "Júpiter",
+   "Saturno"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t103"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué es más antiguo?",
+  "op": [
+   "Chichén Itzá",
+   "Torre Eiffel"
+  ],
+  "ok": 0,
+  "nota": "Chichén Itzá tiene más de mil años.",
+  "id": "t104"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué pesa más?",
+  "op": [
+   "Elefante africano",
+   "Ballena azul"
+  ],
+  "ok": 1,
+  "nota": "",
+  "id": "t105"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué es más largo?",
+  "op": [
+   "Río Amazonas",
+   "Río Támesis"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t106"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Quién tiene más estados?",
+  "op": [
+   "México",
+   "Estados Unidos"
+  ],
+  "ok": 1,
+  "nota": "México tiene 31 estados; Estados Unidos, 50.",
+  "id": "t107"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Quién es más rápido?",
+  "op": [
+   "Guepardo",
+   "Caballo de carreras"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t108"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué es más alto en Minecraft?",
+  "op": [
+   "El Overworld",
+   "El Nether"
+  ],
+  "ok": 0,
+  "nota": "El Overworld mide 384 bloques de alto; el Nether, 256.",
+  "id": "t109"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué está más caliente?",
+  "op": [
+   "La superficie del Sol",
+   "Un rayo"
+  ],
+  "ok": 1,
+  "nota": "Un rayo llega a unos 30,000 °C; la superficie del Sol, a unos 5,500 °C.",
+  "id": "t110"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Quién tiene más vida en Minecraft Java?",
+  "op": [
+   "Ender Dragon",
+   "Wither"
+  ],
+  "ok": 1,
+  "nota": "El Wither tiene 300 de vida y el Dragón 200.",
+  "id": "t111"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué palabra tiene más letras?",
+  "op": [
+   "Hipopótamo",
+   "Elefante"
+  ],
+  "ok": 0,
+  "nota": "",
+  "id": "t112"
+ },
+ {
+  "cat": "Mayor o menor",
+  "pregunta": "¿Qué tiene más patas?",
+  "op": [
+   "Una araña",
+   "Una hormiga"
+  ],
+  "ok": 0,
+  "nota": "8 contra 6.",
+  "id": "t113"
+ }
+]

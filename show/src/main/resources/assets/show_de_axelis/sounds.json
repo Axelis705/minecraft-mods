@@ -1,0 +1,142 @@
+{
+ "intro": {
+  "sounds": [
+   "show_de_axelis:intro"
+  ]
+ },
+ "applause": {
+  "sounds": [
+   "show_de_axelis:applause"
+  ]
+ },
+ "applause_big": {
+  "sounds": [
+   "show_de_axelis:applause_big"
+  ]
+ },
+ "cheer": {
+  "sounds": [
+   "show_de_axelis:cheer"
+  ]
+ },
+ "boo": {
+  "sounds": [
+   "show_de_axelis:boo"
+  ]
+ },
+ "laugh": {
+  "sounds": [
+   "show_de_axelis:laugh"
+  ]
+ },
+ "correct": {
+  "sounds": [
+   "show_de_axelis:correct"
+  ]
+ },
+ "reveal": {
+  "sounds": [
+   "show_de_axelis:reveal"
+  ]
+ },
+ "strike": {
+  "sounds": [
+   "show_de_axelis:strike"
+  ]
+ },
+ "buzzer": {
+  "sounds": [
+   "show_de_axelis:buzzer"
+  ]
+ },
+ "tick": {
+  "sounds": [
+   "show_de_axelis:tick"
+  ]
+ },
+ "time_up": {
+  "sounds": [
+   "show_de_axelis:time_up"
+  ]
+ },
+ "drumroll": {
+  "sounds": [
+   "show_de_axelis:drumroll"
+  ]
+ },
+ "fanfare": {
+  "sounds": [
+   "show_de_axelis:fanfare"
+  ]
+ },
+ "trombone": {
+  "sounds": [
+   "show_de_axelis:trombone"
+  ]
+ },
+ "glitch": {
+  "sounds": [
+   "show_de_axelis:glitch"
+  ]
+ },
+ "blip": {
+  "sounds": [
+   "show_de_axelis:blip"
+  ]
+ },
+ "whoosh": {
+  "sounds": [
+   "show_de_axelis:whoosh"
+  ]
+ },
+ "pop": {
+  "sounds": [
+   "show_de_axelis:pop"
+  ]
+ },
+ "whistle_up": {
+  "sounds": [
+   "show_de_axelis:whistle_up"
+  ]
+ },
+ "whistle_down": {
+  "sounds": [
+   "show_de_axelis:whistle_down"
+  ]
+ },
+ "rimshot": {
+  "sounds": [
+   "show_de_axelis:rimshot"
+  ]
+ },
+ "suspense": {
+  "sounds": [
+   "show_de_axelis:suspense"
+  ]
+ },
+ "round_start": {
+  "sounds": [
+   "show_de_axelis:round_start"
+  ]
+ },
+ "vote": {
+  "sounds": [
+   "show_de_axelis:vote"
+  ]
+ },
+ "ding": {
+  "sounds": [
+   "show_de_axelis:ding"
+  ]
+ },
+ "crickets": {
+  "sounds": [
+   "show_de_axelis:crickets"
+  ]
+ },
+ "airhorn": {
+  "sounds": [
+   "show_de_axelis:airhorn"
+  ]
+ }
+}

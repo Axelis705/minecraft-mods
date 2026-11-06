@@ -1,0 +1,2032 @@
+[
+ {
+  "id": "m000",
+  "pregunta": "Menciona una comida mexicana",
+  "respuestas": [
+   {
+    "t": "Tacos",
+    "p": 38,
+    "alias": [
+     "taco",
+     "tacos al pastor"
+    ]
+   },
+   {
+    "t": "Tamales",
+    "p": 18,
+    "alias": [
+     "tamal"
+    ]
+   },
+   {
+    "t": "Pozole",
+    "p": 14,
+    "alias": []
+   },
+   {
+    "t": "Enchiladas",
+    "p": 12,
+    "alias": [
+     "enchilada"
+    ]
+   },
+   {
+    "t": "Chilaquiles",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Mole",
+    "p": 8,
+    "alias": [
+     "mole poblano"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m001",
+  "pregunta": "Algo que lleva un taco",
+  "respuestas": [
+   {
+    "t": "Tortilla",
+    "p": 25,
+    "alias": []
+   },
+   {
+    "t": "Carne",
+    "p": 24,
+    "alias": [
+     "bistec",
+     "pastor",
+     "suadero"
+    ]
+   },
+   {
+    "t": "Salsa",
+    "p": 18,
+    "alias": [
+     "salsa verde",
+     "salsa roja"
+    ]
+   },
+   {
+    "t": "Cebolla",
+    "p": 14,
+    "alias": []
+   },
+   {
+    "t": "Cilantro",
+    "p": 11,
+    "alias": []
+   },
+   {
+    "t": "Limón",
+    "p": 8,
+    "alias": [
+     "limon"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m002",
+  "pregunta": "Una fruta que se come con chile",
+  "respuestas": [
+   {
+    "t": "Mango",
+    "p": 34,
+    "alias": []
+   },
+   {
+    "t": "Sandía",
+    "p": 22,
+    "alias": [
+     "sandia"
+    ]
+   },
+   {
+    "t": "Jícama",
+    "p": 16,
+    "alias": [
+     "jicama"
+    ]
+   },
+   {
+    "t": "Piña",
+    "p": 12,
+    "alias": [
+     "pina"
+    ]
+   },
+   {
+    "t": "Naranja",
+    "p": 9,
+    "alias": []
+   },
+   {
+    "t": "Papaya",
+    "p": 7,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m003",
+  "pregunta": "Algo que se hace en un cumpleaños",
+  "respuestas": [
+   {
+    "t": "Comer pastel",
+    "p": 30,
+    "alias": [
+     "pastel",
+     "partir el pastel"
+    ]
+   },
+   {
+    "t": "Cantar las mañanitas",
+    "p": 26,
+    "alias": [
+     "mañanitas",
+     "cantar",
+     "cantar cumpleaños"
+    ]
+   },
+   {
+    "t": "Fiesta",
+    "p": 18,
+    "alias": [
+     "hacer fiesta"
+    ]
+   },
+   {
+    "t": "Romper la piñata",
+    "p": 12,
+    "alias": [
+     "piñata",
+     "pinata"
+    ]
+   },
+   {
+    "t": "Recibir regalos",
+    "p": 8,
+    "alias": [
+     "regalos"
+    ]
+   },
+   {
+    "t": "Apagar las velitas",
+    "p": 6,
+    "alias": [
+     "velitas",
+     "soplar las velas"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m004",
+  "pregunta": "Una caricatura que veías de niño",
+  "respuestas": [
+   {
+    "t": "Dragon Ball",
+    "p": 28,
+    "alias": [
+     "dragon ball z",
+     "dbz",
+     "goku"
+    ]
+   },
+   {
+    "t": "Los Simpson",
+    "p": 20,
+    "alias": [
+     "simpsons",
+     "simpson"
+    ]
+   },
+   {
+    "t": "Bob Esponja",
+    "p": 18,
+    "alias": [
+     "bob esponja"
+    ]
+   },
+   {
+    "t": "Pokémon",
+    "p": 14,
+    "alias": [
+     "pokemon"
+    ]
+   },
+   {
+    "t": "El Chavo del 8",
+    "p": 12,
+    "alias": [
+     "el chavo",
+     "chavo"
+    ]
+   },
+   {
+    "t": "Tom y Jerry",
+    "p": 8,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m005",
+  "pregunta": "Algo que se te olvida al salir de casa",
+  "respuestas": [
+   {
+    "t": "Llaves",
+    "p": 34,
+    "alias": [
+     "las llaves"
+    ]
+   },
+   {
+    "t": "Celular",
+    "p": 26,
+    "alias": [
+     "telefono",
+     "teléfono",
+     "cel"
+    ]
+   },
+   {
+    "t": "Cartera",
+    "p": 20,
+    "alias": [
+     "billetera"
+    ]
+   },
+   {
+    "t": "Cargador",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Paraguas",
+    "p": 6,
+    "alias": [
+     "sombrilla"
+    ]
+   },
+   {
+    "t": "Cubrebocas",
+    "p": 4,
+    "alias": [
+     "tapabocas"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m006",
+  "pregunta": "Un lugar donde te da miedo estar solo",
+  "respuestas": [
+   {
+    "t": "Cementerio",
+    "p": 30,
+    "alias": [
+     "panteon",
+     "panteón"
+    ]
+   },
+   {
+    "t": "Casa abandonada",
+    "p": 22,
+    "alias": [
+     "casa vieja",
+     "casa embrujada"
+    ]
+   },
+   {
+    "t": "Bosque",
+    "p": 16,
+    "alias": [
+     "bosque oscuro"
+    ]
+   },
+   {
+    "t": "Sótano",
+    "p": 12,
+    "alias": [
+     "sotano"
+    ]
+   },
+   {
+    "t": "Elevador",
+    "p": 12,
+    "alias": [
+     "ascensor"
+    ]
+   },
+   {
+    "t": "Baño de noche",
+    "p": 8,
+    "alias": [
+     "baño",
+     "bano"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m007",
+  "pregunta": "Algo que se come en Navidad",
+  "respuestas": [
+   {
+    "t": "Pavo",
+    "p": 28,
+    "alias": [
+     "guajolote"
+    ]
+   },
+   {
+    "t": "Buñuelos",
+    "p": 16,
+    "alias": [
+     "bunuelos"
+    ]
+   },
+   {
+    "t": "Ponche",
+    "p": 16,
+    "alias": []
+   },
+   {
+    "t": "Romeritos",
+    "p": 14,
+    "alias": []
+   },
+   {
+    "t": "Tamales",
+    "p": 14,
+    "alias": [
+     "tamal"
+    ]
+   },
+   {
+    "t": "Bacalao",
+    "p": 12,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m008",
+  "pregunta": "Una marca de refresco",
+  "respuestas": [
+   {
+    "t": "Coca-Cola",
+    "p": 40,
+    "alias": [
+     "coca cola",
+     "coca"
+    ]
+   },
+   {
+    "t": "Pepsi",
+    "p": 22,
+    "alias": []
+   },
+   {
+    "t": "Sprite",
+    "p": 12,
+    "alias": []
+   },
+   {
+    "t": "Fanta",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Jarritos",
+    "p": 9,
+    "alias": []
+   },
+   {
+    "t": "Fresca",
+    "p": 7,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m009",
+  "pregunta": "Un videojuego famoso",
+  "respuestas": [
+   {
+    "t": "Minecraft",
+    "p": 34,
+    "alias": []
+   },
+   {
+    "t": "Mario",
+    "p": 18,
+    "alias": [
+     "super mario",
+     "mario bros"
+    ]
+   },
+   {
+    "t": "Fortnite",
+    "p": 16,
+    "alias": []
+   },
+   {
+    "t": "Zelda",
+    "p": 12,
+    "alias": [
+     "the legend of zelda"
+    ]
+   },
+   {
+    "t": "FIFA",
+    "p": 10,
+    "alias": [
+     "fifa 23",
+     "ea fc"
+    ]
+   },
+   {
+    "t": "GTA",
+    "p": 10,
+    "alias": [
+     "gta v",
+     "grand theft auto"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m010",
+  "pregunta": "Algo que haces cuando no hay internet",
+  "respuestas": [
+   {
+    "t": "Reiniciar el módem",
+    "p": 26,
+    "alias": [
+     "reiniciar el modem",
+     "modem",
+     "módem",
+     "reiniciar router",
+     "router"
+    ]
+   },
+   {
+    "t": "Dormir",
+    "p": 20,
+    "alias": [
+     "dormirme"
+    ]
+   },
+   {
+    "t": "Ver la tele",
+    "p": 18,
+    "alias": [
+     "television",
+     "televisión",
+     "tele"
+    ]
+   },
+   {
+    "t": "Quejarte",
+    "p": 14,
+    "alias": [
+     "quejarse",
+     "enojarme",
+     "enojarse"
+    ]
+   },
+   {
+    "t": "Usar datos",
+    "p": 12,
+    "alias": [
+     "datos del celular",
+     "datos"
+    ]
+   },
+   {
+    "t": "Leer",
+    "p": 10,
+    "alias": [
+     "leer un libro"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m011",
+  "pregunta": "Una mascota común",
+  "respuestas": [
+   {
+    "t": "Perro",
+    "p": 45,
+    "alias": [
+     "perrito"
+    ]
+   },
+   {
+    "t": "Gato",
+    "p": 30,
+    "alias": [
+     "gatito"
+    ]
+   },
+   {
+    "t": "Pez",
+    "p": 10,
+    "alias": [
+     "pescado",
+     "pecesito"
+    ]
+   },
+   {
+    "t": "Hámster",
+    "p": 6,
+    "alias": [
+     "hamster"
+    ]
+   },
+   {
+    "t": "Pájaro",
+    "p": 5,
+    "alias": [
+     "pajaro",
+     "perico",
+     "canario"
+    ]
+   },
+   {
+    "t": "Tortuga",
+    "p": 4,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m012",
+  "pregunta": "Algo que no puede faltar en una fiesta",
+  "respuestas": [
+   {
+    "t": "Música",
+    "p": 28,
+    "alias": [
+     "musica"
+    ]
+   },
+   {
+    "t": "Pastel",
+    "p": 20,
+    "alias": [
+     "comida"
+    ]
+   },
+   {
+    "t": "Globos",
+    "p": 18,
+    "alias": [
+     "globo"
+    ]
+   },
+   {
+    "t": "Piñata",
+    "p": 14,
+    "alias": [
+     "pinata"
+    ]
+   },
+   {
+    "t": "Botana",
+    "p": 12,
+    "alias": [
+     "botanas"
+    ]
+   },
+   {
+    "t": "Bebidas",
+    "p": 8,
+    "alias": [
+     "alcohol",
+     "chelas",
+     "cerveza",
+     "refresco"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m013",
+  "pregunta": "Una excusa para llegar tarde",
+  "respuestas": [
+   {
+    "t": "Tráfico",
+    "p": 42,
+    "alias": [
+     "trafico",
+     "transito",
+     "tránsito"
+    ]
+   },
+   {
+    "t": "Me quedé dormido",
+    "p": 24,
+    "alias": [
+     "me dormi",
+     "me quede dormido",
+     "se me hizo tarde"
+    ]
+   },
+   {
+    "t": "No sonó la alarma",
+    "p": 14,
+    "alias": [
+     "la alarma",
+     "alarma"
+    ]
+   },
+   {
+    "t": "Se ponchó la llanta",
+    "p": 8,
+    "alias": [
+     "llanta ponchada",
+     "ponchadura"
+    ]
+   },
+   {
+    "t": "Falló el transporte",
+    "p": 7,
+    "alias": [
+     "no pasaba el camion",
+     "camion",
+     "metro"
+    ]
+   },
+   {
+    "t": "Mi perro se comió mi tarea",
+    "p": 5,
+    "alias": [
+     "perro"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m014",
+  "pregunta": "Qué querías ser de grande cuando eras niño",
+  "respuestas": [
+   {
+    "t": "Futbolista",
+    "p": 28,
+    "alias": [
+     "jugador de futbol",
+     "futbolista profesional"
+    ]
+   },
+   {
+    "t": "Doctor",
+    "p": 22,
+    "alias": [
+     "médico",
+     "medico"
+    ]
+   },
+   {
+    "t": "Bombero",
+    "p": 18,
+    "alias": []
+   },
+   {
+    "t": "Astronauta",
+    "p": 14,
+    "alias": []
+   },
+   {
+    "t": "Youtuber",
+    "p": 10,
+    "alias": [
+     "streamer"
+    ]
+   },
+   {
+    "t": "Policía",
+    "p": 8,
+    "alias": [
+     "policia"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m015",
+  "pregunta": "Algo que se rompe fácil",
+  "respuestas": [
+   {
+    "t": "Vidrio",
+    "p": 30,
+    "alias": [
+     "cristal",
+     "un vaso",
+     "vaso"
+    ]
+   },
+   {
+    "t": "Corazón",
+    "p": 22,
+    "alias": [
+     "corazon"
+    ]
+   },
+   {
+    "t": "Pantalla del celular",
+    "p": 16,
+    "alias": [
+     "celular",
+     "pantalla"
+    ]
+   },
+   {
+    "t": "Huevo",
+    "p": 14,
+    "alias": [
+     "huevos"
+    ]
+   },
+   {
+    "t": "Promesas",
+    "p": 10,
+    "alias": [
+     "una promesa"
+    ]
+   },
+   {
+    "t": "Plato",
+    "p": 8,
+    "alias": [
+     "platos"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m016",
+  "pregunta": "Un sabor de helado",
+  "respuestas": [
+   {
+    "t": "Chocolate",
+    "p": 34,
+    "alias": []
+   },
+   {
+    "t": "Vainilla",
+    "p": 30,
+    "alias": []
+   },
+   {
+    "t": "Fresa",
+    "p": 20,
+    "alias": []
+   },
+   {
+    "t": "Limón",
+    "p": 8,
+    "alias": [
+     "limon"
+    ]
+   },
+   {
+    "t": "Mango",
+    "p": 5,
+    "alias": []
+   },
+   {
+    "t": "Café",
+    "p": 3,
+    "alias": [
+     "cafe"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m017",
+  "pregunta": "Algo que llevas a la playa",
+  "respuestas": [
+   {
+    "t": "Bloqueador",
+    "p": 26,
+    "alias": [
+     "protector solar",
+     "bronceador"
+    ]
+   },
+   {
+    "t": "Toalla",
+    "p": 24,
+    "alias": []
+   },
+   {
+    "t": "Sombrilla",
+    "p": 16,
+    "alias": [
+     "parasol"
+    ]
+   },
+   {
+    "t": "Lentes de sol",
+    "p": 14,
+    "alias": [
+     "lentes",
+     "gafas"
+    ]
+   },
+   {
+    "t": "Traje de baño",
+    "p": 12,
+    "alias": [
+     "bañador",
+     "short"
+    ]
+   },
+   {
+    "t": "Hielera",
+    "p": 8,
+    "alias": [
+     "nevera"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m018",
+  "pregunta": "Un país que quisieras visitar",
+  "respuestas": [
+   {
+    "t": "Japón",
+    "p": 30,
+    "alias": [
+     "japon"
+    ]
+   },
+   {
+    "t": "Francia",
+    "p": 16,
+    "alias": [
+     "paris",
+     "parís"
+    ]
+   },
+   {
+    "t": "España",
+    "p": 14,
+    "alias": [
+     "espana"
+    ]
+   },
+   {
+    "t": "Italia",
+    "p": 14,
+    "alias": []
+   },
+   {
+    "t": "Estados Unidos",
+    "p": 14,
+    "alias": [
+     "eeuu",
+     "usa"
+    ]
+   },
+   {
+    "t": "Corea",
+    "p": 12,
+    "alias": [
+     "corea del sur"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m019",
+  "pregunta": "Algo que haces en la regadera",
+  "respuestas": [
+   {
+    "t": "Cantar",
+    "p": 44,
+    "alias": []
+   },
+   {
+    "t": "Pensar",
+    "p": 20,
+    "alias": []
+   },
+   {
+    "t": "Lavarte el cabello",
+    "p": 12,
+    "alias": [
+     "lavarme el pelo",
+     "shampoo",
+     "champú",
+     "champu"
+    ]
+   },
+   {
+    "t": "Hacer pipí",
+    "p": 12,
+    "alias": [
+     "orinar",
+     "pipi",
+     "pipí"
+    ]
+   },
+   {
+    "t": "Rascarte",
+    "p": 6,
+    "alias": []
+   },
+   {
+    "t": "Llorar",
+    "p": 6,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m020",
+  "pregunta": "Un deporte",
+  "respuestas": [
+   {
+    "t": "Fútbol",
+    "p": 46,
+    "alias": [
+     "futbol"
+    ]
+   },
+   {
+    "t": "Basquetbol",
+    "p": 18,
+    "alias": [
+     "baloncesto",
+     "basket"
+    ]
+   },
+   {
+    "t": "Béisbol",
+    "p": 12,
+    "alias": [
+     "beisbol"
+    ]
+   },
+   {
+    "t": "Natación",
+    "p": 8,
+    "alias": [
+     "natacion"
+    ]
+   },
+   {
+    "t": "Box",
+    "p": 8,
+    "alias": [
+     "boxeo"
+    ]
+   },
+   {
+    "t": "Tenis",
+    "p": 8,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m021",
+  "pregunta": "Algo que da miedo",
+  "respuestas": [
+   {
+    "t": "Arañas",
+    "p": 26,
+    "alias": [
+     "aranas",
+     "araña"
+    ]
+   },
+   {
+    "t": "La oscuridad",
+    "p": 22,
+    "alias": [
+     "oscuridad",
+     "la obscuridad"
+    ]
+   },
+   {
+    "t": "Payasos",
+    "p": 16,
+    "alias": [
+     "payaso"
+    ]
+   },
+   {
+    "t": "Fantasmas",
+    "p": 14,
+    "alias": [
+     "fantasma"
+    ]
+   },
+   {
+    "t": "Las alturas",
+    "p": 12,
+    "alias": [
+     "alturas"
+    ]
+   },
+   {
+    "t": "Cucarachas",
+    "p": 10,
+    "alias": [
+     "cucaracha"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m022",
+  "pregunta": "Algo que hay en un altar de muertos",
+  "respuestas": [
+   {
+    "t": "Cempasúchil",
+    "p": 30,
+    "alias": [
+     "cempasuchil",
+     "flores de cempasuchil",
+     "flores"
+    ]
+   },
+   {
+    "t": "Pan de muerto",
+    "p": 26,
+    "alias": [
+     "pan"
+    ]
+   },
+   {
+    "t": "Fotos",
+    "p": 14,
+    "alias": [
+     "fotografias",
+     "fotografías",
+     "foto"
+    ]
+   },
+   {
+    "t": "Veladoras",
+    "p": 14,
+    "alias": [
+     "velas",
+     "veladora"
+    ]
+   },
+   {
+    "t": "Calaveritas",
+    "p": 10,
+    "alias": [
+     "calaveras",
+     "calavera de azucar"
+    ]
+   },
+   {
+    "t": "Agua",
+    "p": 6,
+    "alias": [
+     "vaso de agua"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m023",
+  "pregunta": "Una app de tu celular",
+  "respuestas": [
+   {
+    "t": "WhatsApp",
+    "p": 36,
+    "alias": [
+     "whats",
+     "wasap"
+    ]
+   },
+   {
+    "t": "TikTok",
+    "p": 18,
+    "alias": [
+     "tiktok",
+     "tik tok"
+    ]
+   },
+   {
+    "t": "Instagram",
+    "p": 16,
+    "alias": [
+     "insta"
+    ]
+   },
+   {
+    "t": "YouTube",
+    "p": 12,
+    "alias": [
+     "you tube"
+    ]
+   },
+   {
+    "t": "Spotify",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Facebook",
+    "p": 8,
+    "alias": [
+     "face"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m024",
+  "pregunta": "Un instrumento musical",
+  "respuestas": [
+   {
+    "t": "Guitarra",
+    "p": 34,
+    "alias": []
+   },
+   {
+    "t": "Piano",
+    "p": 20,
+    "alias": []
+   },
+   {
+    "t": "Batería",
+    "p": 16,
+    "alias": [
+     "bateria"
+    ]
+   },
+   {
+    "t": "Violín",
+    "p": 12,
+    "alias": [
+     "violin"
+    ]
+   },
+   {
+    "t": "Flauta",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Trompeta",
+    "p": 8,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m025",
+  "pregunta": "Algo que hay en una escuela",
+  "respuestas": [
+   {
+    "t": "Pizarrón",
+    "p": 24,
+    "alias": [
+     "pizarron",
+     "pizarra"
+    ]
+   },
+   {
+    "t": "Maestros",
+    "p": 22,
+    "alias": [
+     "maestro",
+     "profesores",
+     "profesor"
+    ]
+   },
+   {
+    "t": "Pupitres",
+    "p": 16,
+    "alias": [
+     "pupitre",
+     "bancas",
+     "butacas"
+    ]
+   },
+   {
+    "t": "Patio",
+    "p": 14,
+    "alias": [
+     "cancha"
+    ]
+   },
+   {
+    "t": "Tienda",
+    "p": 12,
+    "alias": [
+     "cooperativa",
+     "tiendita"
+    ]
+   },
+   {
+    "t": "Biblioteca",
+    "p": 12,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m026",
+  "pregunta": "Algo que haces cuando juega México en el Mundial",
+  "respuestas": [
+   {
+    "t": "Gritar gol",
+    "p": 28,
+    "alias": [
+     "gritar",
+     "gritar goool"
+    ]
+   },
+   {
+    "t": "Ver el partido con amigos",
+    "p": 24,
+    "alias": [
+     "ver el partido",
+     "ver con amigos"
+    ]
+   },
+   {
+    "t": "Comer botana",
+    "p": 20,
+    "alias": [
+     "botana",
+     "comer"
+    ]
+   },
+   {
+    "t": "Pintarte la cara",
+    "p": 12,
+    "alias": [
+     "pintarse la cara"
+    ]
+   },
+   {
+    "t": "Llorar",
+    "p": 10,
+    "alias": [
+     "sufrir"
+    ]
+   },
+   {
+    "t": "Ponerte la playera",
+    "p": 6,
+    "alias": [
+     "playera",
+     "camiseta"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m027",
+  "pregunta": "Un superhéroe",
+  "respuestas": [
+   {
+    "t": "Spider-Man",
+    "p": 30,
+    "alias": [
+     "spiderman",
+     "hombre araña",
+     "hombre arana"
+    ]
+   },
+   {
+    "t": "Batman",
+    "p": 26,
+    "alias": []
+   },
+   {
+    "t": "Superman",
+    "p": 20,
+    "alias": []
+   },
+   {
+    "t": "Hulk",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Iron Man",
+    "p": 8,
+    "alias": [
+     "ironman"
+    ]
+   },
+   {
+    "t": "Thor",
+    "p": 6,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m028",
+  "pregunta": "Algo que dice un presentador de televisión",
+  "respuestas": [
+   {
+    "t": "Bienvenidos",
+    "p": 30,
+    "alias": [
+     "bienvenidos al programa",
+     "bienvenidos al show"
+    ]
+   },
+   {
+    "t": "Volvemos después de los comerciales",
+    "p": 26,
+    "alias": [
+     "volvemos",
+     "comerciales",
+     "ya regresamos"
+    ]
+   },
+   {
+    "t": "Un aplauso",
+    "p": 18,
+    "alias": [
+     "aplausos",
+     "un fuerte aplauso"
+    ]
+   },
+   {
+    "t": "Gracias por ver",
+    "p": 14,
+    "alias": [
+     "gracias por vernos"
+    ]
+   },
+   {
+    "t": "Quédense con nosotros",
+    "p": 12,
+    "alias": [
+     "no se vayan",
+     "quedense"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m029",
+  "pregunta": "Algo que compras en el súper sin planearlo",
+  "respuestas": [
+   {
+    "t": "Dulces",
+    "p": 24,
+    "alias": [
+     "dulce"
+    ]
+   },
+   {
+    "t": "Papas",
+    "p": 20,
+    "alias": [
+     "papitas",
+     "botanas"
+    ]
+   },
+   {
+    "t": "Refresco",
+    "p": 18,
+    "alias": [
+     "soda"
+    ]
+   },
+   {
+    "t": "Helado",
+    "p": 14,
+    "alias": []
+   },
+   {
+    "t": "Galletas",
+    "p": 14,
+    "alias": [
+     "galleta"
+    ]
+   },
+   {
+    "t": "Chicles",
+    "p": 10,
+    "alias": [
+     "chicle"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m030",
+  "pregunta": "Un lugar para ir de vacaciones",
+  "respuestas": [
+   {
+    "t": "La playa",
+    "p": 36,
+    "alias": [
+     "playa"
+    ]
+   },
+   {
+    "t": "Cancún",
+    "p": 18,
+    "alias": [
+     "cancun"
+    ]
+   },
+   {
+    "t": "La montaña",
+    "p": 14,
+    "alias": [
+     "montaña",
+     "montana"
+    ]
+   },
+   {
+    "t": "Disneylandia",
+    "p": 14,
+    "alias": [
+     "disney"
+    ]
+   },
+   {
+    "t": "Un pueblo mágico",
+    "p": 10,
+    "alias": [
+     "pueblo magico",
+     "pueblo"
+    ]
+   },
+   {
+    "t": "La casa de la abuela",
+    "p": 8,
+    "alias": [
+     "casa de la abuela",
+     "con la abuela"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m031",
+  "pregunta": "Algo que tiene ruedas",
+  "respuestas": [
+   {
+    "t": "Carro",
+    "p": 30,
+    "alias": [
+     "coche",
+     "auto",
+     "automovil"
+    ]
+   },
+   {
+    "t": "Bicicleta",
+    "p": 26,
+    "alias": [
+     "bici"
+    ]
+   },
+   {
+    "t": "Patineta",
+    "p": 14,
+    "alias": [
+     "skate",
+     "monopatin"
+    ]
+   },
+   {
+    "t": "Moto",
+    "p": 12,
+    "alias": [
+     "motocicleta"
+    ]
+   },
+   {
+    "t": "Carrito del súper",
+    "p": 10,
+    "alias": [
+     "carrito",
+     "carrito del super"
+    ]
+   },
+   {
+    "t": "Patines",
+    "p": 8,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m032",
+  "pregunta": "Algo que dice una mamá mexicana",
+  "respuestas": [
+   {
+    "t": "Ponte un suéter",
+    "p": 26,
+    "alias": [
+     "ponte un sueter",
+     "abrigate",
+     "suéter"
+    ]
+   },
+   {
+    "t": "Ya te dije que no",
+    "p": 22,
+    "alias": [
+     "que no",
+     "no"
+    ]
+   },
+   {
+    "t": "Cómete todo",
+    "p": 20,
+    "alias": [
+     "comete todo",
+     "terminate la comida"
+    ]
+   },
+   {
+    "t": "Apaga la luz",
+    "p": 14,
+    "alias": []
+   },
+   {
+    "t": "¿Ya hiciste tu tarea?",
+    "p": 12,
+    "alias": [
+     "la tarea",
+     "ya hiciste la tarea"
+    ]
+   },
+   {
+    "t": "Te voy a dar con la chancla",
+    "p": 6,
+    "alias": [
+     "chancla",
+     "la chancla"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m033",
+  "pregunta": "Una película de Disney",
+  "respuestas": [
+   {
+    "t": "El Rey León",
+    "p": 28,
+    "alias": [
+     "rey leon",
+     "el rey leon"
+    ]
+   },
+   {
+    "t": "Frozen",
+    "p": 20,
+    "alias": []
+   },
+   {
+    "t": "Toy Story",
+    "p": 18,
+    "alias": []
+   },
+   {
+    "t": "Coco",
+    "p": 16,
+    "alias": []
+   },
+   {
+    "t": "Moana",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Aladdín",
+    "p": 8,
+    "alias": [
+     "aladdin"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m034",
+  "pregunta": "Algo que haces cuando te da sueño",
+  "respuestas": [
+   {
+    "t": "Bostezar",
+    "p": 34,
+    "alias": []
+   },
+   {
+    "t": "Tomar café",
+    "p": 24,
+    "alias": [
+     "cafe",
+     "tomar cafe"
+    ]
+   },
+   {
+    "t": "Dormir",
+    "p": 20,
+    "alias": [
+     "tomar una siesta",
+     "siesta"
+    ]
+   },
+   {
+    "t": "Cerrar los ojos",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Lavarte la cara",
+    "p": 6,
+    "alias": []
+   },
+   {
+    "t": "Ver videos",
+    "p": 6,
+    "alias": [
+     "tiktok"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m035",
+  "pregunta": "Una parte de la casa",
+  "respuestas": [
+   {
+    "t": "Cocina",
+    "p": 28,
+    "alias": []
+   },
+   {
+    "t": "Sala",
+    "p": 24,
+    "alias": []
+   },
+   {
+    "t": "Recámara",
+    "p": 22,
+    "alias": [
+     "recamara",
+     "cuarto",
+     "habitacion"
+    ]
+   },
+   {
+    "t": "Baño",
+    "p": 16,
+    "alias": [
+     "bano"
+    ]
+   },
+   {
+    "t": "Patio",
+    "p": 6,
+    "alias": []
+   },
+   {
+    "t": "Cochera",
+    "p": 4,
+    "alias": [
+     "garage",
+     "garaje"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m036",
+  "pregunta": "Un color",
+  "respuestas": [
+   {
+    "t": "Azul",
+    "p": 30,
+    "alias": []
+   },
+   {
+    "t": "Rojo",
+    "p": 26,
+    "alias": []
+   },
+   {
+    "t": "Verde",
+    "p": 16,
+    "alias": []
+   },
+   {
+    "t": "Negro",
+    "p": 12,
+    "alias": []
+   },
+   {
+    "t": "Amarillo",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Rosa",
+    "p": 6,
+    "alias": [
+     "rosado"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m037",
+  "pregunta": "Algo que siempre se pierde",
+  "respuestas": [
+   {
+    "t": "Calcetines",
+    "p": 28,
+    "alias": [
+     "calcetin",
+     "calcetín",
+     "un calcetin",
+     "calcetas"
+    ]
+   },
+   {
+    "t": "Llaves",
+    "p": 22,
+    "alias": []
+   },
+   {
+    "t": "Control remoto",
+    "p": 20,
+    "alias": [
+     "el control",
+     "control"
+    ]
+   },
+   {
+    "t": "Paciencia",
+    "p": 12,
+    "alias": [
+     "la paciencia"
+    ]
+   },
+   {
+    "t": "Cargador",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "La noción del tiempo",
+    "p": 8,
+    "alias": [
+     "el tiempo",
+     "nocion del tiempo"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m038",
+  "pregunta": "Algo que se hace en Minecraft",
+  "respuestas": [
+   {
+    "t": "Minar",
+    "p": 32,
+    "alias": [
+     "picar",
+     "excavar"
+    ]
+   },
+   {
+    "t": "Construir",
+    "p": 28,
+    "alias": [
+     "casas",
+     "hacer casas"
+    ]
+   },
+   {
+    "t": "Pelear con creepers",
+    "p": 14,
+    "alias": [
+     "pelear",
+     "matar mobs",
+     "luchar"
+    ]
+   },
+   {
+    "t": "Sobrevivir",
+    "p": 12,
+    "alias": []
+   },
+   {
+    "t": "Explorar",
+    "p": 8,
+    "alias": []
+   },
+   {
+    "t": "Pescar",
+    "p": 6,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m039",
+  "pregunta": "Algo que hay en el Nether",
+  "respuestas": [
+   {
+    "t": "Lava",
+    "p": 28,
+    "alias": []
+   },
+   {
+    "t": "Ghasts",
+    "p": 18,
+    "alias": [
+     "ghast"
+    ]
+   },
+   {
+    "t": "Piglins",
+    "p": 16,
+    "alias": [
+     "piglin",
+     "cerdos"
+    ]
+   },
+   {
+    "t": "Fortaleza",
+    "p": 14,
+    "alias": [
+     "fortaleza del nether"
+    ]
+   },
+   {
+    "t": "Netherrack",
+    "p": 14,
+    "alias": [
+     "roca del nether"
+    ]
+   },
+   {
+    "t": "Esqueletos wither",
+    "p": 10,
+    "alias": [
+     "esqueleto wither",
+     "wither",
+     "esqueletos"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m040",
+  "pregunta": "Algo que da miedo en Minecraft",
+  "respuestas": [
+   {
+    "t": "Creeper",
+    "p": 40,
+    "alias": [
+     "creepers"
+    ]
+   },
+   {
+    "t": "Wither",
+    "p": 18,
+    "alias": []
+   },
+   {
+    "t": "Enderman",
+    "p": 14,
+    "alias": [
+     "endermans"
+    ]
+   },
+   {
+    "t": "Warden",
+    "p": 14,
+    "alias": []
+   },
+   {
+    "t": "Las cuevas",
+    "p": 8,
+    "alias": [
+     "cuevas",
+     "cueva"
+    ]
+   },
+   {
+    "t": "Esqueletos",
+    "p": 6,
+    "alias": [
+     "esqueleto"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "m041",
+  "pregunta": "Un animal de la granja",
+  "respuestas": [
+   {
+    "t": "Vaca",
+    "p": 30,
+    "alias": []
+   },
+   {
+    "t": "Gallina",
+    "p": 22,
+    "alias": [
+     "gallo",
+     "pollo"
+    ]
+   },
+   {
+    "t": "Cerdo",
+    "p": 18,
+    "alias": [
+     "puerco",
+     "marrano"
+    ]
+   },
+   {
+    "t": "Caballo",
+    "p": 12,
+    "alias": []
+   },
+   {
+    "t": "Oveja",
+    "p": 10,
+    "alias": []
+   },
+   {
+    "t": "Burro",
+    "p": 8,
+    "alias": []
+   }
+  ]
+ },
+ {
+  "id": "m042",
+  "pregunta": "Una cosa que se hace en el cine",
+  "respuestas": [
+   {
+    "t": "Comer palomitas",
+    "p": 40,
+    "alias": [
+     "palomitas",
+     "comer"
+    ]
+   },
+   {
+    "t": "Ver una película",
+    "p": 20,
+    "alias": [
+     "ver peliculas",
+     "ver pelicula"
+    ]
+   },
+   {
+    "t": "Apagar el celular",
+    "p": 12,
+    "alias": []
+   },
+   {
+    "t": "Dormirse",
+    "p": 12,
+    "alias": [
+     "dormir"
+    ]
+   },
+   {
+    "t": "Pelear por el reposabrazos",
+    "p": 8,
+    "alias": [
+     "reposabrazos"
+    ]
+   },
+   {
+    "t": "Llorar",
+    "p": 8,
+    "alias": []
+   }
+  ]
+ }
+]

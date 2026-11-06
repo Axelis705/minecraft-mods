@@ -1,0 +1,11 @@
+{
+ "entity.show_de_axelis.spectator": "Spectator",
+ "key.categories.show_de_axelis": "Show de Axelis",
+ "key.show_de_axelis.panel": "Open the show panel",
+ "key.show_de_axelis.buzz": "Buzzer (face-off)",
+ "key.show_de_axelis.tv": "TV camera",
+ "key.show_de_axelis.ans_a": "Answer A",
+ "key.show_de_axelis.ans_b": "Answer B",
+ "key.show_de_axelis.ans_c": "Answer C",
+ "key.show_de_axelis.ans_d": "Answer D"
+}

@@ -1,0 +1,11 @@
+{
+ "entity.show_de_axelis.spectator": "Espectador",
+ "key.categories.show_de_axelis": "Show de Axelis",
+ "key.show_de_axelis.panel": "Abrir el panel del show",
+ "key.show_de_axelis.buzz": "Timbre (cara a cara)",
+ "key.show_de_axelis.tv": "Camara de TV",
+ "key.show_de_axelis.ans_a": "Contestar A",
+ "key.show_de_axelis.ans_b": "Contestar B",
+ "key.show_de_axelis.ans_c": "Contestar C",
+ "key.show_de_axelis.ans_d": "Contestar D"
+}
