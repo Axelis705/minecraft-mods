@@ -360,7 +360,7 @@
    "glyph": "star",
    "c1": "#ffe27a",
    "c2": "#ffffff",
-   "desc": "Creador de Mundos de Axelis.",
+   "desc": "(Descripción por escribir)",
    "skin": "skins/axelis705.png",
    "scene": "sky",
    "art": "arte/axelis705.png",
@@ -379,7 +379,7 @@
    "glyph": "star",
    "c1": "#c03030",
    "c2": "#ffffff",
-   "desc": "Aventurero de la bandana roja.",
+   "desc": "(Descripción por escribir)",
    "skin": "skins/jadiel.png",
    "scene": "plains"
   },
@@ -391,7 +391,7 @@
    "glyph": "star",
    "c1": "#e88ab8",
    "c2": "#ffffff",
-   "desc": "Cabello rosa y mucha energía.",
+   "desc": "(Descripción por escribir)",
    "skin": "skins/marizux.png",
    "scene": "cherry"
   },
@@ -403,7 +403,7 @@
    "glyph": "star",
    "c1": "#8ac8ff",
    "c2": "#ffffff",
-   "desc": "Su luz acompaña cada aventura.",
+   "desc": "(Descripción por escribir)",
    "skin": "skins/odette.png",
    "scene": "night",
    "art": "arte/odette.png",
@@ -422,7 +422,7 @@
    "glyph": "star",
    "c1": "#e0a020",
    "c2": "#ffffff",
-   "desc": "Siempre listo con su chaleco amarillo.",
+   "desc": "(Descripción por escribir)",
    "skin": "skins/pavi223.png",
    "scene": "cave"
   },
@@ -434,7 +434,7 @@
    "glyph": "star",
    "c1": "#4a9a4a",
    "c2": "#ffffff",
-   "desc": "Compañero de mil aventuras.",
+   "desc": "(Descripción por escribir)",
    "skin": "skins/rafa.png",
    "scene": "forest"
   },
@@ -446,7 +446,7 @@
    "glyph": "star",
    "c1": "#d03030",
    "c2": "#ffffff",
-   "desc": "Chamarra roja y ganas de pelear.",
+   "desc": "(Descripción por escribir)",
    "skin": "skins/scardax.png",
    "scene": "nether"
   },
@@ -458,7 +458,7 @@
    "glyph": "star",
    "c1": "#f0d890",
    "c2": "#ffffff",
-   "desc": "Aventurera de Mundos de Axelis.",
+   "desc": "(Descripción por escribir)",
    "skin": "skins/chafet.png",
    "scene": "sky"
   }

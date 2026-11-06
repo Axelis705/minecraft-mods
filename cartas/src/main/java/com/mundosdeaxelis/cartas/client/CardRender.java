@@ -24,20 +24,25 @@ final class CardRender {
     }
 
     static void face(GuiGraphics g, CardDef d, float x, float y, float w, float h) {
-        tex(g, art(d.id), x, y, w, h, 1f);
+        tex(g, art(d.id), x, y, w, h, 1f, TW, TH);
+    }
+
+    /** la misma carta en alta calidad (256 x 384), para la vista grande */
+    static void faceHd(GuiGraphics g, CardDef d, float x, float y, float w, float h) {
+        tex(g, new ResourceLocation(Cartas.MOD_ID, "textures/gui/cartas/hd/" + d.id + ".png"), x, y, w, h, 1f, TW * 2, TH * 2);
     }
 
     static void back(GuiGraphics g, float x, float y, float w, float h, float alpha) {
-        tex(g, BACK, x, y, w, h, alpha);
+        tex(g, BACK, x, y, w, h, alpha, TW, TH);
     }
 
-    private static void tex(GuiGraphics g, ResourceLocation t, float x, float y, float w, float h, float alpha) {
+    private static void tex(GuiGraphics g, ResourceLocation t, float x, float y, float w, float h, float alpha, int tw, int th) {
         g.pose().pushPose();
         g.pose().translate(x, y, 0f);
         g.pose().scale(w / CW, h / CH, 1f);
         RenderSystem.enableBlend();
         g.setColor(1f, 1f, 1f, alpha);
-        g.blit(t, 0, 0, CW, CH, 0f, 0f, TW, TH, TW, TH);
+        g.blit(t, 0, 0, CW, CH, 0f, 0f, tw, th, tw, th);
         g.setColor(1f, 1f, 1f, 1f);
         g.pose().popPose();
     }

@@ -46,14 +46,14 @@ final class CardData {
         {"espada_netherita", "Espada de Netherita", "espadas", "EPICA", "Forjada en las profundidades.", "#4a3f4a", "#c04a2a"},
         {"aldeano", "Aldeano", "personajes", "COMUN", "Hmm.", "#c89a74", "#6b4a2a"},
         {"bruja", "Bruja", "personajes", "RARA", "Sus pociones nunca salen igual dos veces.", "#7a3aa0", "#6ae05a"},
-        {"axelis705", "Axelis705", "personajes", "EPICA", "Creador de Mundos de Axelis.", "#ffe27a", "#ffffff"},
-        {"jadiel", "Jadiel", "personajes", "EPICA", "Aventurero de la bandana roja.", "#c03030", "#ffffff"},
-        {"marizux", "Marizux", "personajes", "EPICA", "Cabello rosa y mucha energ\u00eda.", "#e88ab8", "#ffffff"},
-        {"odette", "Odette", "personajes", "LEGENDARIA", "Su luz acompa\u00f1a cada aventura.", "#8ac8ff", "#ffffff"},
-        {"pavi223", "Pavi223", "personajes", "EPICA", "Siempre listo con su chaleco amarillo.", "#e0a020", "#ffffff"},
-        {"rafa", "Rafa", "personajes", "EPICA", "Compa\u00f1ero de mil aventuras.", "#4a9a4a", "#ffffff"},
-        {"scardax", "Scardax", "personajes", "EPICA", "Chamarra roja y ganas de pelear.", "#d03030", "#ffffff"},
-        {"chafet", "Chafet", "personajes", "EPICA", "Aventurera de Mundos de Axelis.", "#f0d890", "#ffffff"},
+        {"axelis705", "Axelis705", "personajes", "EPICA", "(Descripci\u00f3n por escribir)", "#ffe27a", "#ffffff"},
+        {"jadiel", "Jadiel", "personajes", "EPICA", "(Descripci\u00f3n por escribir)", "#c03030", "#ffffff"},
+        {"marizux", "Marizux", "personajes", "EPICA", "(Descripci\u00f3n por escribir)", "#e88ab8", "#ffffff"},
+        {"odette", "Odette", "personajes", "LEGENDARIA", "(Descripci\u00f3n por escribir)", "#8ac8ff", "#ffffff"},
+        {"pavi223", "Pavi223", "personajes", "EPICA", "(Descripci\u00f3n por escribir)", "#e0a020", "#ffffff"},
+        {"rafa", "Rafa", "personajes", "EPICA", "(Descripci\u00f3n por escribir)", "#4a9a4a", "#ffffff"},
+        {"scardax", "Scardax", "personajes", "EPICA", "(Descripci\u00f3n por escribir)", "#d03030", "#ffffff"},
+        {"chafet", "Chafet", "personajes", "EPICA", "(Descripci\u00f3n por escribir)", "#f0d890", "#ffffff"},
     };
 
     /** id, nombre, color, cartas, rareza minima garantizada, prob. holografica */

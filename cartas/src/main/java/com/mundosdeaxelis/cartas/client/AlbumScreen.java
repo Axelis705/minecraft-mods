@@ -653,20 +653,24 @@ public final class AlbumScreen extends Screen {
             g.drawString(font, name, px + 25, y, 0xFF4A2E1A, false);
             String right = have + "/" + tabCards(t).size() + "  p." + firstPageOf(t);
             g.drawString(font, right, px + PW - 14 - font.width(right), y, 0xFF8A6A42, false);
-            y += 14;
+            y += 13;
         }
         g.fill(px + 12, y + 2, px + PW - 12, y + 3, 0x60A88A5A);
         y += 10;
         String[] help = {
-            "Las cartas nuevas que llevas aparecen en el estante de abajo: agárralas y suéltalas en su hueco.",
-            "Cada 5 % del álbum: +½ corazón.",
-            "Categoría completa: +1 corazón.",
+            "Agarra una carta del estante y suéltala en su hueco.",
+            "Cada 5 %: +½ corazón. Categoría completa: +1.",
             "Clic en una carta guardada para verla en grande."
         };
+        float hs = 0.8f;
         for (String h : help) {
-            for (var line : font.split(Component.literal(h), PW - 28)) {
-                g.drawString(font, line, px + 14, y, 0xFF6B4A2A, false);
-                y += 10;
+            for (var line : font.split(Component.literal(h), (int) ((PW - 28) / hs))) {
+                g.pose().pushPose();
+                g.pose().translate(px + 14, y, 0f);
+                g.pose().scale(hs, hs, 1f);
+                g.drawString(font, line, 0, 0, 0xFF6B4A2A, false);
+                g.pose().popPose();
+                y += 8;
             }
             y += 3;
         }
@@ -911,7 +915,7 @@ public final class AlbumScreen extends Screen {
         float e = 1f - (float) Math.pow(1f - zoomT, 3);
         g.pose().pushPose();
         g.pose().translate(0f, 0f, 400f);
-        g.fill(0, 0, VW, VH, ((int) (e * 190) << 24));
+        g.fill(0, 0, VW, VH, ((int) (e * 228) << 24));
         CardDef d = zoom;
         int rc = zoomHolo ? 0x7FE8FF : d.rarity.color;
         float cw = 124f;
@@ -925,7 +929,7 @@ public final class AlbumScreen extends Screen {
         g.pose().mulPose(Axis.ZP.rotationDegrees(tilt * 0.6f));
         g.pose().scale(s, s, 1f);
         CardRender.glow(g, -cw / 2, -ch / 2, cw, ch, rc, 0.9f + 0.2f * Mth.sin(time * 3f));
-        CardRender.face(g, d, -cw / 2, -ch / 2, cw, ch);
+        CardRender.faceHd(g, d, -cw / 2, -ch / 2, cw, ch);
         if (zoomHolo) {
             CardRender.holo(g, -cw / 2, -ch / 2, cw, ch, time, (d.index * 0.137f) % 1f);
         }

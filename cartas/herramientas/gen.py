@@ -11,9 +11,10 @@ JAVA = os.path.join(ROOT, "src/main/java/com/mundosdeaxelis/cartas/CardData.java
 RES = os.path.join(ROOT, "src/main/resources/assets/mundos_de_axelis")
 T_ITEM = os.path.join(RES, "textures/item")
 T_GUI = os.path.join(RES, "textures/gui/cartas")
+T_HD = os.path.join(RES, "textures/gui/cartas/hd")
 M_ITEM = os.path.join(RES, "models/item")
 LANG = os.path.join(RES, "lang")
-for d in (T_ITEM, T_GUI, M_ITEM, LANG, os.path.dirname(JAVA)):
+for d in (T_ITEM, T_GUI, T_HD, M_ITEM, LANG, os.path.dirname(JAVA)):
     os.makedirs(d, exist_ok=True)
 
 data = json.load(open(SRC, encoding="utf-8"))
@@ -368,7 +369,7 @@ def hero_sprite(card, scale_glyph=8):
     return sprite_img(card["glyph"], card["c1"], card["c2"], scale_glyph)
 
 
-def make_illustration(card):
+def make_illustration(card, m=1):
     if card.get("art"):
         src = Image.open(os.path.join(ROOT, "herramientas", card["art"])).convert("RGBA")
         if card.get("art_box"):  # recorte manual en fracciones [x0, y0, x1, y1]; se ajusta a la proporcion de la zona
@@ -379,14 +380,14 @@ def make_illustration(card):
             cy = (y0 + y1) / 2 * H0
             top = min(max(0, cy - bh / 2), H0 - bh)
             left = x0 * W0
-            src = src.crop((round(left), round(top), round(left + bw), round(top + bh))).resize((IW, IH), Image.LANCZOS)
+            src = src.crop((round(left), round(top), round(left + bw), round(top + bh))).resize((IW * m, IH * m), Image.LANCZOS)
             return src.filter(ImageFilter.UnsharpMask(radius=1.0, percent=60, threshold=2))
         # recorte "cover": llena la zona sin deformar (el sujeto va centrado y arriba)
         r = max(IW / src.size[0], IH / src.size[1])
         nw, nh = max(IW, round(src.size[0] * r)), max(IH, round(src.size[1] * r))
         src = src.resize((nw, nh), Image.LANCZOS)
         left, topy = (nw - IW) // 2, 0
-        out = src.crop((left, topy, left + IW, topy + IH))
+        out = src.crop((left, topy, left + IW, topy + IH)).resize((IW * m, IH * m), Image.LANCZOS)
         return out.filter(ImageFilter.UnsharpMask(radius=1.2, percent=70, threshold=2))
     theme = card.get("scene", "plains")
     im = scene_image(theme, card["id"])
@@ -415,6 +416,8 @@ def make_illustration(card):
     ol.putalpha(mask)
     im.alpha_composite(ol, (sx, sy))
     im.alpha_composite(sp, (sx, sy))
+    if m > 1:
+        im = im.resize((IW * m, IH * m), Image.NEAREST)
     return im
 
 
@@ -449,10 +452,11 @@ def make_chrome(card):
 CARD_W, CARD_H = 128, 192   # tamaño real de la textura de cada carta
 
 
-def make_art(card):
-    base = Image.new("RGBA", (CARD_W, CARD_H), (8, 8, 16, 255))
-    base.paste(make_illustration(card), (4, 4))
-    base.alpha_composite(make_chrome(card).resize((CARD_W, CARD_H), Image.NEAREST))
+def make_art(card, m=1):
+    """m=1: 128x192 (album, estante); m=2: 256x384 (vista grande)."""
+    base = Image.new("RGBA", (CARD_W * m, CARD_H * m), (8, 8, 16, 255))
+    base.paste(make_illustration(card, m), (4 * m, 4 * m))
+    base.alpha_composite(make_chrome(card).resize((CARD_W * m, CARD_H * m), Image.NEAREST))
     return base
 
 
@@ -554,6 +558,7 @@ def main():
     for c in cards:
         make_icon(c).save(os.path.join(T_ITEM, "carta_%s.png" % c["id"]))
         make_art(c).save(os.path.join(T_GUI, "%s.png" % c["id"]))
+        make_art(c, 2).save(os.path.join(T_HD, "%s.png" % c["id"]))
         open(os.path.join(M_ITEM, "carta_%s.json" % c["id"]), "w").write(model("carta_" + c["id"]))
     make_back().resize((CARD_W, CARD_H), Image.NEAREST).save(os.path.join(T_GUI, "reverso.png"))
     for p in packs:
