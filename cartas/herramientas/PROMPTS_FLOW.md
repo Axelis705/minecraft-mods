@@ -106,26 +106,35 @@ over a flower meadow in soft sunlight.
 the player, in a dark forest with green mist.
 ```
 
-**raizal_anciano — Raizal Anciano (Épica)** ⚠ versión élite
-```
-[Cláusula de referencia] The elite version, standing in a mossy stone key chamber with a glowing
-vault lock behind it and teal light.
-```
-
 ## CRIATURAS DE LA FORJA (⚠ = mándame captura)
 
-**capataz — Capataz (Rara)** ⚠ mini-jefe, golpe al suelo
+**chispero — Chispero (Común)** ⚠ (necesita tu captura)
 ```
-[Cláusula de referencia] Mid ground-slam with a crack of lava breaking the floor, in a dark brick
-forge with chains and stone anvils and braziers.
+Use the attached in-game screenshot as the EXACT reference for the creature: same shape, same
+proportions, same colors, same face. Do NOT redesign it. Do NOT add arms, legs, armor, weapons or
+any part the screenshot does not show. Keep it blocky. Only improve the lighting, add depth,
+atmosphere and a detailed background. The creature is firing a flaming arrow toward the camera,
+inside a dark brick forge room with chains, stone anvils and glowing braziers, sparks and smoke
+in the air, warm orange rim light.
 ```
 
-**escoria — Escoria (Común)** ⚠ · **chispero — Chispero (Común)** ⚠ · **ascua — Ascua (Común)** ⚠ (flota, fragmentos orbitando) · **fundidor — Fundidor (Rara)** ⚠ (erupciones) · **fundidor_mayor — Fundidor Mayor (Épica)** ⚠
+**ascua — Ascua (Común)** ⚠ (necesita tu captura)
 ```
-[Cláusula de referencia] + escena: forja oscura de ladrillo, braseros, calderos de lava, chispas,
-luz naranja de contraluz. (Chispero: lanzando su flecha. Ascua: flotando con los fragmentos
-girando a su alrededor. Fundidor: con una erupción de lava a sus pies. Fundidor Mayor: junto a
-una puerta de cámara con cerradura.)
+Use the attached in-game screenshot as the EXACT reference for the creature: same shape, same
+proportions, same colors, same face. Do NOT redesign it. Do NOT add arms, legs, armor, weapons or
+any part the screenshot does not show. Keep it blocky. Only improve the lighting, add depth,
+atmosphere and a detailed background. The creature is floating in the air with small glowing
+fragments orbiting around it and a trail of sparks, in a dark smoky brick forge with lava glow
+in the background, red and orange palette.
+```
+
+**fundidor — Fundidor (Rara)** ⚠ (necesita tu captura)
+```
+Use the attached in-game screenshot as the EXACT reference for the creature: same shape, same
+proportions, same colors, same face. Do NOT redesign it. Do NOT add arms, legs, armor, weapons or
+any part the screenshot does not show. Keep it blocky. Only improve the lighting, add depth,
+atmosphere and a detailed background. A lava eruption bursts from the floor right in front of the
+creature, with heat haze and flying embers, inside a dark brick forge with glowing rivers of lava.
 ```
 
 ## CRIATURAS DE HIELO

@@ -191,17 +191,6 @@
    ]
   },
   {
-   "id": "raizal_anciano",
-   "name": "Raizal Anciano",
-   "cat": "criaturas",
-   "rar": "EPICA",
-   "glyph": "golem",
-   "c1": "#4a7a3a",
-   "c2": "#c9a24a",
-   "desc": "Guardián élite de la Cámara de la Llave del bosque.",
-   "scene": "cave"
-  },
-  {
    "id": "escoria",
    "name": "Escoria",
    "cat": "criaturas",
@@ -210,7 +199,14 @@
    "c1": "#c85a2a",
    "c2": "#4a3a3a",
    "desc": "Roca fundida con puños al rojo vivo.",
-   "scene": "forge"
+   "scene": "forge",
+   "art": "arte/escoria.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    1
+   ]
   },
   {
    "id": "chispero",
@@ -243,17 +239,6 @@
    "c1": "#9a9a9a",
    "c2": "#ff5a1a",
    "desc": "Gólem de metal fundido. Hace erupción bajo tus pies.",
-   "scene": "forge"
-  },
-  {
-   "id": "fundidor_mayor",
-   "name": "Fundidor Mayor",
-   "cat": "criaturas",
-   "rar": "EPICA",
-   "glyph": "golem",
-   "c1": "#7a6a6a",
-   "c2": "#ff3a1a",
-   "desc": "Élite de la forja. Vigila la Cámara de la Llave.",
    "scene": "forge"
   },
   {
