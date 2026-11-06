@@ -30,6 +30,11 @@ public final class EstIds {
     public static final String ESTANTERIA = "mundos_de_axelis:est_estanteria";
     public static final String ESTATUA_CABALLERO = "mundos_de_axelis:est_estatua_caballero";
     public static final String PEDESTAL_RUNICO = "mundos_de_axelis:est_pedestal_runico";
+    public static final String MESA_EXTREMO = "mundos_de_axelis:est_mesa_extremo";
+    public static final String MESA_CENTRO = "mundos_de_axelis:est_mesa_centro";
+    public static final String MESA_SOLA = "mundos_de_axelis:est_mesa_sola";
+    public static final String ORO_ADORNO = "mundos_de_axelis:est_oro_adorno";
+    public static final String LAPIS_ADORNO = "mundos_de_axelis:est_lapis_adorno";
 
     /** Tipo de apoyo: "wall" (necesita muro detras), "soft" (tapiz: no necesita), "hang" (techo), "floor" (suelo), "" si no es de estas. */
     public static String support(String name) {
@@ -62,6 +67,11 @@ public final class EstIds {
             case "est_estanteria" -> "floor";
             case "est_estatua_caballero" -> "floor";
             case "est_pedestal_runico" -> "floor";
+            case "est_mesa_extremo" -> "floor";
+            case "est_mesa_centro" -> "floor";
+            case "est_mesa_sola" -> "floor";
+            case "est_oro_adorno" -> "soft";
+            case "est_lapis_adorno" -> "soft";
             default -> "";
         };
     }

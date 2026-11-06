@@ -24,5 +24,10 @@
  "block.mundos_estructuras.est_esfera_armilar": "Armillary sphere",
  "block.mundos_estructuras.est_estanteria": "Tall bookshelf",
  "block.mundos_estructuras.est_estatua_caballero": "Knight armor statue",
- "block.mundos_estructuras.est_pedestal_runico": "Runic pedestal"
+ "block.mundos_estructuras.est_pedestal_runico": "Runic pedestal",
+ "block.mundos_estructuras.est_mesa_extremo": "Study table (end)",
+ "block.mundos_estructuras.est_mesa_centro": "Study table (middle)",
+ "block.mundos_estructuras.est_mesa_sola": "Study table (single)",
+ "block.mundos_estructuras.est_oro_adorno": "Decorative gold",
+ "block.mundos_estructuras.est_lapis_adorno": "Decorative lapis"
 }

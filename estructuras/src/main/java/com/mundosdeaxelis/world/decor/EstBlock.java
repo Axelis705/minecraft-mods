@@ -48,7 +48,7 @@ public class EstBlock extends HorizontalDirectionalBlock {
 
     /** El bloque se crea con subclases pequeñas porque las propiedades se declaran durante el constructor de Block. */
     static Block create(EstDecor.Def d) {
-        BlockBehaviour.Properties p = BlockBehaviour.Properties.of().strength(d.kind().equals("wall") ? 0.4f : 1.2f).noOcclusion()
+        BlockBehaviour.Properties p = BlockBehaviour.Properties.of().strength(d.kind().equals("wall") ? 0.4f : d.kind().equals("cube") ? 2.0f : 1.2f)
                 .sound(switch (d.sound()) {
                     case "metal" -> SoundType.METAL;
                     case "stone" -> SoundType.STONE;
@@ -58,13 +58,16 @@ public class EstBlock extends HorizontalDirectionalBlock {
                     case "glass" -> SoundType.GLASS;
                     default -> SoundType.WOOD;
                 }).lightLevel(s -> d.light());
+        if (!d.kind().equals("cube")) {
+            p = p.noOcclusion(); // el bloque entero (oro de adorno...) sí tapa a sus vecinos
+        }
         if (!d.collide()) {
             p = p.noCollission();
         }
         if (d.tall()) {
             return new Tall(p, d);
         }
-        return d.kind().equals("plain") ? new Plain(p, d) : new Facing(p, d);
+        return d.kind().equals("plain") || d.kind().equals("cube") ? new Plain(p, d) : new Facing(p, d);
     }
 
     private EstBlock(BlockBehaviour.Properties p, EstDecor.Def d) {
@@ -157,6 +160,8 @@ public class EstBlock extends HorizontalDirectionalBlock {
             }
             case "hang":
                 return Block.canSupportCenter(l, p.above(), Direction.DOWN);
+            case "cube":
+                return true; // bloque entero: no necesita apoyo
             default:
                 return !l.getBlockState(p.below()).isAir();
         }

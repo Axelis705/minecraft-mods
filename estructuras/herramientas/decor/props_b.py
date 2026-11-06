@@ -329,8 +329,10 @@ def pila_libros():
 
 
 def reloj():
+    # Reloj de pie GRANDE: tres bloques de alto en total (los dos del bloque + la corona, que sobresale por arriba; el modelo puede
+    # salirse del bloque hasta 16 px, y la colision sigue siendo la de dos bloques).
     p = Prop('reloj', 'Reloj de pie', 'Grandfather clock', 'floor', tall=True, sound='wood',
-             shape=[(2, 0, 4, 14, 16, 15)], shape_upper=[(2.5, 0, 4.5, 13.5, 16, 15.5)])
+             shape=[(1, 0, 3, 15, 16, 16)], shape_upper=[(2, 0, 3.5, 14, 16, 15.5)])
     dw = wood(DWOOD, 'v', 2.0, 0, 5)
     br = metal(BRASS, 0.55, 3, 0.07)
     dial = Image.new('RGBA', (8, 8), _hex('#3f2a17') + (255,))
@@ -340,21 +342,81 @@ def reloj():
         dial.putpixel((x, y), _hex('#8a6a30') + (255,))
     for (x, y) in ((3, 3), (3, 2), (3, 1), (4, 4), (5, 4)):
         dial.putpixel((x, y), _hex('#2a1a0a') + (255,))
+    iron = metal(IRON, 0.4, 5, 0.0)
     p.at('lower')
-    p.box(2, 0, 4, 14, 3, 15, dw, bevel=.12, skip=['down'])
-    p.box(3, 3, 5, 13, 16, 15, dw, bevel=.1)
-    p.box(4.5, 4, 4.7, 11.5, 15, 5.1, metal(IRON, 0.4, 5, 0.0))
-    p.box(7.6, 3.8, 5.3, 8.4, 12.5, 5.9, br)
-    p.box(5.8, 3.3, 5.3, 10.2, 6, 5.9, br, bevel=.15)
-    p.box(4.5, 4, 4.5, 11.5, 15, 4.7, glassy('#cfe0e8'))
+    p.box(1, 0, 3, 15, 3, 16, dw, bevel=.12, skip=['down'])
+    p.box(2, 3, 3.5, 14, 5, 15.5, dw, bevel=.12)
+    p.box(3, 5, 4.5, 13, 16, 15, dw, bevel=.1)
+    p.box(4.5, 6, 4.1, 11.5, 16, 4.5, glassy('#cfe0e8'))
+    p.box(4.5, 6, 4.5, 11.5, 16, 5, iron)
+    p.box(7.6, 6, 5.1, 8.4, 16, 5.7, br)
+    p.box(5.6, 6, 5.1, 10.4, 8.6, 5.7, br, bevel=.15)
     p.at('upper')
-    p.box(3, 0, 5, 13, 10, 15, dw, bevel=.1)
-    p.box(4, 1.5, 4.6, 12, 9.5, 5, image_mat(dial))
-    p.box(3.5, 1, 4.5, 12.5, 1.6, 5.2, br)
-    p.box(3.5, 9.4, 4.5, 12.5, 10, 5.2, br)
-    p.box(2.5, 10, 4.5, 13.5, 12, 15.5, dw, bevel=.12)
-    p.box(3.5, 12, 5.5, 12.5, 14, 14.5, dw, bevel=.12)
-    p.box(7, 14, 9, 9, 16, 11, br, bevel=.15)
+    p.box(3, 0, 4.5, 13, 4, 15, dw, bevel=.1)
+    p.box(4.5, 0, 4.1, 11.5, 4, 4.5, glassy('#cfe0e8'))
+    p.box(4.5, 0, 4.5, 11.5, 4, 5, iron)
+    p.box(7.6, 0, 5.1, 8.4, 3, 5.7, br)
+    p.box(2, 4, 3.5, 14, 15, 15.5, dw, bevel=.12)
+    p.box(4, 5.5, 3.1, 12, 13.5, 3.5, image_mat(dial))
+    p.box(3.4, 5, 3.0, 12.6, 5.5, 3.6, br)
+    p.box(3.4, 13.5, 3.0, 12.6, 14, 3.6, br)
+    p.box(3.4, 5, 3.0, 4, 14, 3.6, br)
+    p.box(12, 5, 3.0, 12.6, 14, 3.6, br)
+    # corona (sobresale por arriba del segundo bloque)
+    p.box(1, 15, 3, 15, 17.5, 16, dw, bevel=.12)
+    p.box(2.5, 17.5, 4, 13.5, 21, 15, dw, bevel=.12)
+    p.box(4.5, 21, 5.5, 11.5, 23, 13.5, dw, bevel=.12)
+    p.box(7, 23, 8, 9, 26, 10, br, bevel=.15)
+    p.box(6.4, 25.5, 7.4, 9.6, 28.5, 10.6, br, bevel=.2)
+    return p
+
+
+def _mesa(pid, es, en, legs_n, legs_s):
+    """Mesa de estudio de 14 px de alto (los sillones van al lado, no debajo). El eje largo es norte-sur; las patas van en el extremo
+    norte (legs_n) y/o sur (legs_s); sin patas, la pieza es de enlace y se junta con la de al lado."""
+    p = Prop(pid, es, en, 'floor', sound='wood', shape=[(0, 8, 0, 16, 14, 16)], render='solid')
+    top = wood(OAK if False else DWOOD, 'h', 2.4, 0, 6)
+    dark = wood(DWOOD, 'h', 1.6, 0, 8)
+    p.box(0, 11.5, 0, 16, 14, 16, top, bevel=.1)
+    p.box(1, 8.5, 0, 15, 11.5, 16, dark)
+    p.box(5, 14, 0, 11, 14.25, 16, cloth('#7a1f2a', 0.12, 6), shade=False)
+    legs = []
+    if legs_n:
+        legs += [(0.6, 0.6), (12.4, 0.6)]
+    if legs_s:
+        legs += [(0.6, 12.4), (12.4, 12.4)]
+    for (x, z) in legs:
+        p.box(x, 0, z, x + 3, 8.5, z + 3, dark, bevel=.15, skip=['down'])
+        p.box(x - 0.4, 6.5, z - 0.4, x + 3.4, 8.5, z + 3.4, top, bevel=.1)
+    return p
+
+
+def mesa_extremo():
+    return _mesa('mesa_extremo', 'Mesa de estudio (extremo)', 'Study table (end)', True, False)
+
+
+def mesa_centro():
+    return _mesa('mesa_centro', 'Mesa de estudio (centro)', 'Study table (middle)', False, False)
+
+
+def mesa_sola():
+    return _mesa('mesa_sola', 'Mesa de estudio (sola)', 'Study table (single)', True, True)
+
+
+GOLDR = Ramp('#c08a14', '#e6b02a', '#f8d23e', '#ffe96a', '#fff8b8')
+LAPISR = Ramp('#10215a', '#1a3590', '#2448b8', '#3a66d8', '#6a8cf0')
+
+
+def oro_adorno():
+    """Bloque entero que imita el oro pero NO suelta nada al romperlo (el jugador puede venir a picar)."""
+    p = Prop('oro_adorno', 'Oro de adorno', 'Decorative gold', 'cube', sound='metal', shape=[(0, 0, 0, 16, 16, 16)], render='solid', drops=False)
+    p.box(0, 0, 0, 16, 16, 16, metal(GOLDR, 0.22, 7, 0.22), bevel=.9)
+    return p
+
+
+def lapis_adorno():
+    p = Prop('lapis_adorno', 'Lapislázuli de adorno', 'Decorative lapis', 'cube', sound='stone', shape=[(0, 0, 0, 16, 16, 16)], render='solid', drops=False)
+    p.box(0, 0, 0, 16, 16, 16, stone(LAPISR, 1.6, 5, 0.0), bevel=.6)
     return p
 
 
@@ -628,4 +690,5 @@ def all_b():
         tapiz('tapiz_mapa', 'Tapiz de mapa', 'Map tapestry', paint_mapa),
         trono(), sillon(), pila_libros(), reloj(), gargola(), cristal_mana(), candelero_pared(), monton_oro(), jaula(), grilletes(),
         caldero_magico(), esfera_armilar(), estanteria(), estatua_caballero(), pedestal_runico(),
+        mesa_extremo(), mesa_centro(), mesa_sola(), oro_adorno(), lapis_adorno(),
     ]

@@ -504,12 +504,12 @@
    "sound": "wood",
    "shape": [
     [
-     2,
+     1,
      0,
-     4,
-     14,
+     3,
+     15,
      16,
-     15
+     16
     ]
    ],
    "particles": [],
@@ -518,10 +518,10 @@
    "soft": false,
    "shape_upper": [
     [
-     2.5,
+     2,
      0,
-     4.5,
-     13.5,
+     3.5,
+     14,
      16,
      15.5
     ]
@@ -898,6 +898,116 @@
    ],
    "es": "Pedestal rúnico",
    "en": "Runic pedestal",
+   "soft": false
+  },
+  {
+   "id": "est_mesa_extremo",
+   "kind": "floor",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     8,
+     0,
+     16,
+     14,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Mesa de estudio (extremo)",
+   "en": "Study table (end)",
+   "soft": false
+  },
+  {
+   "id": "est_mesa_centro",
+   "kind": "floor",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     8,
+     0,
+     16,
+     14,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Mesa de estudio (centro)",
+   "en": "Study table (middle)",
+   "soft": false
+  },
+  {
+   "id": "est_mesa_sola",
+   "kind": "floor",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     8,
+     0,
+     16,
+     14,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Mesa de estudio (sola)",
+   "en": "Study table (single)",
+   "soft": false
+  },
+  {
+   "id": "est_oro_adorno",
+   "kind": "cube",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     0,
+     0,
+     0,
+     16,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Oro de adorno",
+   "en": "Decorative gold",
+   "soft": false
+  },
+  {
+   "id": "est_lapis_adorno",
+   "kind": "cube",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "stone",
+   "shape": [
+    [
+     0,
+     0,
+     0,
+     16,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Lapislázuli de adorno",
+   "en": "Decorative lapis",
    "soft": false
   }
  ]

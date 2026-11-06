@@ -24,7 +24,7 @@ final class TorreInterior {
     static final String PPS = "purpur_stairs";
     static final String AM = "amethyst_block";
     static final String PB = "polished_blackstone";
-    static final String GOLD = "gold_block";
+    static final String GOLD = EstIds.ORO_ADORNO; // imita el oro pero no suelta nada al picarlo (el jugador puede venir a picar)
     static final String CHAIN = "chain[axis=y]";
     static final String SL = "soul_lantern";
 
@@ -143,6 +143,71 @@ final class TorreInterior {
         } else {
             skip(id, x, y, z);
         }
+    }
+
+    /** Como {@link #est} pero sin pasar por la paleta de la sala (para piezas que forman un mueble: la mesa, lo que va encima...). */
+    static void estF(StructBp b, int x, int y, int z, String id, String face) {
+        if (free(b, x, y, z)) {
+            b.set(x, y, z, id + "[facing=" + face + "]");
+        } else {
+            skip(id, x, y, z);
+        }
+    }
+
+    /** Mesa de estudio hecha con piezas propias (14 px de alto): extremos con patas y piezas de enlace. axis 'x' o 'z'. */
+    static void mesa(StructBp b, int x, int y, int z, char axis, int len) {
+        for (int i = 0; i < len; i++) {
+            int px = axis == 'x' ? x + i : x;
+            int pz = axis == 'z' ? z + i : z;
+            if (len == 1) {
+                estF(b, px, y, pz, EstIds.MESA_SOLA, "north");
+            } else if (i == 0) {
+                estF(b, px, y, pz, EstIds.MESA_EXTREMO, axis == 'z' ? "north" : "west");
+            } else if (i == len - 1) {
+                estF(b, px, y, pz, EstIds.MESA_EXTREMO, axis == 'z' ? "south" : "east");
+            } else {
+                estF(b, px, y, pz, EstIds.MESA_CENTRO, axis == 'z' ? "north" : "east");
+            }
+        }
+    }
+
+    private static boolean solidish(String g) {
+        return g != null && !g.equals("air") && !g.startsWith("mundos_de_axelis:est_") && !g.endsWith("_carpet") && !g.contains("pane") && !g.contains("chain")
+                && !g.contains("torch") && !g.contains("candle") && !g.contains("lantern") && !g.contains("bars") && !g.contains("banner") && !g.equals("water")
+                && !g.contains("vine") && !g.contains("fence") && !g.contains("cobweb");
+    }
+
+    /** Rellena los huecos de una sola casilla con 5 caras de piedra (muescas sueltas que se veían como "partes que faltan" en la pared). */
+    static void tidy(StructBp b) {
+        java.util.List<int[]> fill = new java.util.ArrayList<>();
+        int[][] ds = {{1, 0, 0}, {-1, 0, 0}, {0, 0, 1}, {0, 0, -1}, {0, 1, 0}, {0, -1, 0}};
+        for (int y = 3; y <= 75; y++) {
+            for (int x = -16; x <= 16; x++) {
+                for (int z = 15; z <= 53; z++) {
+                    String g = b.get(x, y, z);
+                    if (g != null && !g.equals("air")) {
+                        continue;
+                    }
+                    int sol = 0;
+                    int air = 0;
+                    for (int[] d : ds) {
+                        String n = b.get(x + d[0], y + d[1], z + d[2]);
+                        if (n == null || n.equals("air")) {
+                            air++;
+                        } else if (solidish(n)) {
+                            sol++;
+                        }
+                    }
+                    if (sol >= 5 && air >= 1) {
+                        fill.add(new int[]{x, y, z});
+                    }
+                }
+            }
+        }
+        for (int[] c : fill) {
+            b.set(c[0], c[1], c[2], DB);
+        }
+        System.err.println("[TorreInterior] muescas rellenadas: " + fill.size());
     }
 
     /** Decoración nueva de dos bloques de alto. */
@@ -769,14 +834,14 @@ final class TorreInterior {
         estHang(b, -5, top, CZ + 1, 3, EstIds.ARANA);
         // ---- SCRIPTORIUM (este): mesas de copista con velas, sillones y un gran reloj
         for (int[] t : new int[][]{{-6, 5}, {2, 5}}) {
-            table(b, 7, f, CZ + t[0], 'z', t[1], "spruce_slab", "spruce_fence");
+            mesa(b, 7, f, CZ + t[0], 'z', t[1]);
             for (int dz = t[0] + 1; dz < t[0] + t[1] - 1; dz += 2) {
                 est(b, 6, f, CZ + dz, EstIds.SILLON, "east");
                 est(b, 8, f, CZ + dz, EstIds.SILLON, "west");
             }
-            candles(b, 7, f + 2, CZ + t[0], 3);
-            candles(b, 7, f + 2, CZ + t[0] + t[1] - 1, 2);
-            est(b, 7, f + 2, CZ + t[0] + 2, EstIds.PILA_LIBROS, "west");
+            estF(b, 7, f + 1, CZ + t[0], EstIds.CANDELABRO, "west");
+            estF(b, 7, f + 1, CZ + t[0] + t[1] - 1, EstIds.CANDELABRO, "west");
+            estF(b, 7, f + 1, CZ + t[0] + 2, EstIds.PILA_LIBROS, "west");
         }
         estTall(b, 9, f, CZ, EstIds.RELOJ, "west");
         estTall(b, 9, f, CZ - 3, EstIds.TAPIZ_ARBOL, "west");
@@ -1017,7 +1082,7 @@ final class TorreInterior {
         floor(b, i, f, (x, dz) -> {
             double d = Math.hypot(x, dz);
             if (d >= 5.5 && d < 6.4) {
-                return "lapis_block";
+                return EstIds.LAPIS_ADORNO;
             }
             long h = (x * 73856093L) ^ (dz * 19349663L);
             if (Math.floorMod(h, 7) == 0) {
@@ -1072,18 +1137,18 @@ final class TorreInterior {
     // ================================================================== APOSENTOS DEL ARCHIMAGO (piso 7): sala del trono, dormitorio, estudio y tesoro
 
     static void chambers(StructBp b) {
-        pal(false, "trono", "tapiz_real", "estatua_caballero", "estanteria", "pila_libros", "sillon", "caldero_magico", "globo", "monton_oro", "pedestal_runico", "cristal_mana", "jaula", "reloj", "arana/2", "candelabro/2");
+        pal(false, "tapiz_real", "estatua_caballero", "estanteria", "pila_libros", "sillon", "caldero_magico", "globo", "monton_oro", "pedestal_runico", "cristal_mana", "jaula", "reloj", "arana/2", "candelabro/2");
         final int f = 59;
         final int top = f + 6;
         final int i = 7;
         floor(b, i, f, (x, dz) -> {
             if (Math.abs(x) <= 2) {
-                return dz < 0 ? (((x + dz) & 1) == 0 ? PB : DT) : (((x + dz) & 1) == 0 ? "gold_block" : PD);
+                return dz < 0 ? (((x + dz) & 1) == 0 ? PB : DT) : (((x + dz) & 1) == 0 ? GOLD : PD);
             }
             return x < 0 ? (((x + dz) & 1) == 0 ? "dark_oak_planks" : "spruce_planks") : (((x + dz) & 1) == 0 ? "deepslate_tiles" : "polished_deepslate");
         });
         cove(b, top, -7, -7, 7, 7, DBS);
-        // ---- SALA DEL TRONO (norte)
+        // ---- SALA DEL CONSEJO (norte): el trono está en el Gran Salón; aquí el foco de poder del archimago
         for (int dz = -7; dz <= -3; dz++) {
             for (int x = -1; x <= 1; x++) {
                 carpet(b, x, f, CZ + dz, x == 0 ? "red_carpet" : "purple_carpet");
@@ -1092,7 +1157,7 @@ final class TorreInterior {
         b.set(0, f, CZ - 6, PD);
         b.set(-1, f, CZ - 6, PD);
         b.set(1, f, CZ - 6, PD);
-        estTall(b, 0, f + 1, CZ - 6, EstIds.TRONO, "south");
+        est(b, 0, f + 1, CZ - 6, EstIds.PEDESTAL_RUNICO, "south");
         estTall(b, 0, f, CZ - 7, EstIds.TAPIZ_REAL, "south");
         estTall(b, -1, f, CZ - 7, EstIds.TAPIZ_ESTRELLAS, "south");
         estTall(b, 1, f, CZ - 7, EstIds.TAPIZ_ESTRELLAS, "south");
@@ -1121,10 +1186,10 @@ final class TorreInterior {
         estTall(b, -7, f, CZ, EstIds.TAPIZ_ARBOL, "east");
         estHang(b, -5, top, CZ, 3, EstIds.ARANA);
         // ---- ESTUDIO (este): escritorio, atril, estantes y el caldero del archimago
-        table(b, 6, f, CZ - 3, 'z', 4, "dark_oak_slab", "dark_oak_fence");
-        est(b, 5, f, CZ - 2, EstIds.SILLON, "east");
-        candles(b, 6, f + 2, CZ - 3, 3);
-        est(b, 6, f + 2, CZ - 1, EstIds.PILA_LIBROS, "west");
+        mesa(b, 6, f, CZ - 3, 'z', 4);
+        estF(b, 5, f, CZ - 2, EstIds.SILLON, "east");
+        estF(b, 6, f + 1, CZ - 3, EstIds.CANDELABRO, "west");
+        estF(b, 6, f + 1, CZ - 1, EstIds.PILA_LIBROS, "west");
         b.set(7, f, CZ + 1, "lectern[facing=west]");
         b.set(7, f, CZ + 2, "brewing_stand[has_bottle_0=true,has_bottle_1=true,has_bottle_2=false]");
         est(b, 6, f, CZ + 3, EstIds.CALDERO_MAGICO, "west");

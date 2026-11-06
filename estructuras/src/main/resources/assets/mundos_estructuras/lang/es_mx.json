@@ -24,5 +24,10 @@
  "block.mundos_estructuras.est_esfera_armilar": "Esfera armilar",
  "block.mundos_estructuras.est_estanteria": "Estantería alta",
  "block.mundos_estructuras.est_estatua_caballero": "Armadura de caballero",
- "block.mundos_estructuras.est_pedestal_runico": "Pedestal rúnico"
+ "block.mundos_estructuras.est_pedestal_runico": "Pedestal rúnico",
+ "block.mundos_estructuras.est_mesa_extremo": "Mesa de estudio (extremo)",
+ "block.mundos_estructuras.est_mesa_centro": "Mesa de estudio (centro)",
+ "block.mundos_estructuras.est_mesa_sola": "Mesa de estudio (sola)",
+ "block.mundos_estructuras.est_oro_adorno": "Oro de adorno",
+ "block.mundos_estructuras.est_lapis_adorno": "Lapislázuli de adorno"
 }

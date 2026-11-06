@@ -263,8 +263,8 @@ class Box:
 
 class Prop:
     def __init__(self, pid, es, en, kind='floor', light=0, shape=None, collide=True, particles=None, tall=False, desc_es='', desc_en='',
-                 render='cutout', seed=1, sound='wood', shape_upper=None, soft=False):
-        """kind: floor (de pie), wall (en la pared), hang (cuelga del techo), plain (sin orientacion). tall = dos bloques de alto."""
+                 render='cutout', seed=1, sound='wood', shape_upper=None, soft=False, drops=True):
+        """kind: floor (de pie), wall (en la pared), hang (cuelga del techo), plain (sin orientacion), cube (bloque entero que no necesita apoyo). tall = dos bloques de alto."""
         self.id = pid
         self.es, self.en = es, en
         self.kind = kind
@@ -277,6 +277,7 @@ class Prop:
         self.seed = seed
         self.sound = sound
         self.shape_upper = shape_upper
+        self.drops = drops          # False: al romperlo no suelta nada (bloques de adorno que imitan oro, lapislazuli...)
         self.soft = soft            # solo 'wall': no necesita muro detras (para tapices que tapan pasadizos secretos)
         self.boxes = []             # (parte, Box); parte = 'lower' | 'upper' | None
         self.part = None
@@ -443,7 +444,7 @@ def write_prop(prop, root):
     # estado de bloque
     variants = {}
     rot = {'north': 0, 'east': 90, 'south': 180, 'west': 270}
-    if prop.kind == 'plain' and not prop.tall:
+    if prop.kind in ('plain', 'cube') and not prop.tall:
         variants[''] = {'model': mnames[None]}
     elif prop.tall:
         for part in ('lower', 'upper'):
@@ -465,6 +466,8 @@ def write_prop(prop, root):
     os.makedirs(ld, exist_ok=True)
     pools = [{'rolls': 1, 'entries': [{'type': 'minecraft:item', 'name': f'{NS}:{name}'}],
               'conditions': [{'condition': 'minecraft:survives_explosion'}]}]
+    if not prop.drops:
+        pools = []
     if prop.tall:
         pools[0]['conditions'] = [{'condition': 'minecraft:block_state_property', 'block': f'{NS}:{name}', 'properties': {'half': 'lower'}},
                                   {'condition': 'minecraft:survives_explosion'}]

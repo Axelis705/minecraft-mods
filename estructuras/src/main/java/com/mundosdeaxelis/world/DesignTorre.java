@@ -60,6 +60,23 @@ final class DesignTorre {
         return ax <= r - 2 && az <= r - 2 && ax + az <= sum(r) - 3;
     }
 
+    /** Huecos de 4 de profundidad entre el balcón y los contrafuertes (se veían como "hoyos a los lados"): se rellenan hasta el suelo. */
+    private static void gapsBalcony(StructBp b) {
+        int[][] cells = {{8, -13}, {7, -12}};
+        for (int[] c : cells) {
+            for (int sx = -1; sx <= 1; sx += 2) {
+                int x = c[0] * sx;
+                int z = CZ + c[1];
+                for (int y = 6; y <= 10; y++) {
+                    String g = b.get(x, y, z);
+                    if (g == null || g.equals("air")) {
+                        b.set(x, y, z, y == 10 ? PD : DB);
+                    }
+                }
+            }
+        }
+    }
+
     static StructBp make() {
         StructBp b = new StructBp(7117);
         Arq a = new Arq(b);
@@ -92,6 +109,8 @@ final class DesignTorre {
         shaftDecor(b);
         topOfDome(b);
         a.seed(0, fy(8), CZ - 3);
+        gapsBalcony(b);
+        TorreInterior.tidy(b);
         // Todas las plantas están hechas a mano y las revisa ConectividadTest (salas sin acceso / trampas),
         // así que no se llama a Arq.repair: quitaría muebles diseñados (mesas de encantamiento, estanterías, el estanque...).
         for (String p : a.check()) {

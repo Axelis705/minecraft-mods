@@ -40,7 +40,7 @@ if len(sys.argv) <= 1:
     L += ['', '    /** Tipo de apoyo: "wall" (necesita muro detras), "soft" (tapiz: no necesita), "hang" (techo), "floor" (suelo), "" si no es de estas. */',
           '    public static String support(String name) {', '        if (name.startsWith("mundos_de_axelis:")) {', '            name = name.substring(17);', '        }', '        return switch (name) {']
     for f in ficha:
-        kind = 'soft' if f.get('soft') else ('wall' if f['kind'] == 'wall' else ('hang' if f['kind'] == 'hang' else 'floor'))
+        kind = 'soft' if (f.get('soft') or f['kind'] == 'cube') else ('wall' if f['kind'] == 'wall' else ('hang' if f['kind'] == 'hang' else 'floor'))
         L.append('            case "%s" -> "%s";' % (f['id'], kind))
     L += ['            default -> "";', '        };', '    }', '', '    /** true si se puede atravesar (tapices, farolillos, jaulas colgantes...): el recorrido de comprobacion lo cuenta como aire. */',
           '    public static boolean passable(String name) {', '        if (name.startsWith("mundos_de_axelis:")) {', '            name = name.substring(17);', '        }', '        return switch (name) {']
