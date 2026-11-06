@@ -42,9 +42,12 @@ execute unless entity @e[type=minecraft:item] run say PRUEBA_HIELO_SIN_OBJETOS_O
 kill @e[type=minecraft:item]
 execute positioned 0 -48 0 rotated 90 0 run mundos estructura torre
 execute if block -50 40 0 minecraft:lightning_rod run say PRUEBA_TORRE_OK
-execute if block -44 -52 0 minecraft:soul_campfire run say PRUEBA_TORRE_BAJO_OK
-execute if block -43 -37 0 minecraft:lectern run say PRUEBA_TORRE_BIBLIOTECA_OK
-execute if block -45 -13 0 minecraft:enchanting_table run say PRUEBA_TORRE_ENCANTAMIENTO_OK
+execute if block -43 -52 0 minecraft:soul_campfire run say PRUEBA_TORRE_BAJO_OK
+execute if block -50 -19 -9 minecraft:bookshelf run say PRUEBA_TORRE_BIBLIOTECA_OK
+execute if block -51 11 7 minecraft:lectern run say PRUEBA_TORRE_ESTUDIO_OK
+execute if block -44 12 0 mundos_de_axelis:est_trono run say PRUEBA_TORRE_TRONO_OK
+execute if block -64 -53 -2 mundos_de_axelis:est_monton_oro run say PRUEBA_TORRE_TESORERIA_OK
+execute if block -44 -13 0 minecraft:enchanting_table run say PRUEBA_TORRE_ENCANTAMIENTO_OK
 execute if block -49 -45 1 minecraft:purpur_stairs[facing=west,half=bottom] run say PRUEBA_TORRE_ESCALERA_OK
 say ESPERANDO_TORRE_1
 say ESPERANDO_TORRE_2
@@ -54,7 +57,7 @@ execute as @e[type=minecraft:item,limit=8] run data get entity @s Pos
 execute unless entity @e[type=minecraft:item] run say PRUEBA_TORRE_SIN_OBJETOS_OK
 kill @e[type=minecraft:item]
 mundos estructura deshacer 3
-execute if block -44 -52 0 minecraft:air run say PRUEBA_TODO_DESHECHO_OK
+execute if block -43 -52 0 minecraft:air run say PRUEBA_TODO_DESHECHO_OK
 execute if block 26 -48 57 minecraft:air run say PRUEBA_FORJA_DESHECHA_OK
 execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
 #expect PRUEBA_DECOR_OK
@@ -73,6 +76,9 @@ execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
 #expect PRUEBA_HIELO_BAJO_OK
 #expect PRUEBA_TORRE_OK
 #expect PRUEBA_TORRE_SIN_OBJETOS_OK
+#expect PRUEBA_TORRE_ESTUDIO_OK
+#expect PRUEBA_TORRE_TRONO_OK
+#expect PRUEBA_TORRE_TESORERIA_OK
 #expect PRUEBA_TORRE_BAJO_OK
 #expect PRUEBA_TORRE_BIBLIOTECA_OK
 #expect PRUEBA_TORRE_ENCANTAMIENTO_OK

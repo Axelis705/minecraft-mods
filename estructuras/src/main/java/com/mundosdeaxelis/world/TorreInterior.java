@@ -736,4 +736,337 @@ final class TorreInterior {
         }
         estHang(b, 0, top, CZ + 6, 3, EstIds.ARANA);
     }
+
+    // ================================================================== ENCANTAMIENTO (piso 4): cuatro mesas con sus estantes, círculo rúnico y cristales
+
+    private static final int[][] DIRS = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+
+    static void enchanting(StructBp b) {
+        final int f = 35;
+        final int top = f + 6;
+        final int i = 4;
+        floor(b, i, f, (x, dz) -> {
+            double d = Math.hypot(x, dz);
+            double ang = Math.atan2(dz, x);
+            double k = Math.round(ang / (Math.PI / 4));
+            double off = Math.abs(ang - k * Math.PI / 4) * d;
+            if (d >= 3.6 && d < 4.6) {
+                return GOLD;
+            }
+            if (d >= 4.6 && d < 7.2 && off < 0.55) {
+                return "amethyst_block";
+            }
+            if (d >= 7.2) {
+                return "crying_obsidian";
+            }
+            return ((x + dz) & 1) == 0 ? PB : "blackstone";
+        });
+        cove(b, top, -8, -8, 8, 8, DBS);
+        // ---- cuatro mesas de encantamiento (con estantes a dos casillas, como manda el juego), una por muro recto
+        for (int q = 0; q < 4; q++) {
+            int[] d = DIRS[q]; // hacia el muro
+            int tx = d[0] * 6;
+            int tz = d[1] * 6;
+            int px = -d[1]; // perpendicular
+            int pz = d[0];
+            String toWall = d[0] == 0 ? (d[1] < 0 ? "north" : "south") : (d[0] < 0 ? "west" : "east");
+            String toRoom = d[0] == 0 ? (d[1] < 0 ? "south" : "north") : (d[0] < 0 ? "east" : "west");
+            b.set(tx, f, CZ + tz, "enchanting_table");
+            for (int s = -2; s <= 2; s += 4) {
+                for (int k = -1; k <= 1; k++) {
+                    int sx = tx + px * s + d[0] * k;
+                    int sz = tz + pz * s + d[1] * k;
+                    // los estantes laterales (a dos casillas de la mesa)
+                    if (free(b, sx, f, CZ + sz) && in(i, sx, sz)) {
+                        b.set(sx, f, CZ + sz, k == 0 ? "bookshelf" : "bookshelf");
+                        b.set(sx, f + 1, CZ + sz, "bookshelf");
+                    }
+                }
+                est(b, tx + px * (s / 2), f, CZ + tz + pz * (s / 2) + d[1], EstIds.CANDELABRO, toRoom);
+            }
+            // el muro detrás: estantes hasta el techo con un tapiz arcano en medio
+            for (int k = -3; k <= 3; k++) {
+                int wx = d[0] * 8 + px * k;
+                int wz = d[1] * 8 + pz * k;
+                if (!in(i, wx, wz)) {
+                    continue;
+                }
+                if (k == 0) {
+                    estTall(b, wx, f, CZ + wz, EstIds.TAPIZ_ARCANO, toRoom);
+                    estTall(b, wx, f + 2, CZ + wz, EstIds.TAPIZ_ESTRELLAS, toRoom);
+                } else {
+                    for (int h = 0; h < 6; h++) {
+                        if (free(b, wx, f + h, CZ + wz)) {
+                            b.set(wx, f + h, CZ + wz, h == 4 && Math.abs(k) % 2 == 1 ? "chiseled_bookshelf[facing=" + toRoom + "]" : "bookshelf");
+                        }
+                    }
+                }
+            }
+            est(b, tx + d[0] * 1, f + 0, CZ + tz + d[1] * 1, EstIds.CRISTAL_MANA, toRoom);
+            estHang(b, tx - d[0] * 2 + px, top, CZ + tz - d[1] * 2 + pz, 3, EstIds.ARANA);
+        }
+        // ---- las cuatro esquinas: pedestales rúnicos con su cristal
+        for (int sx = -1; sx <= 1; sx += 2) {
+            for (int sz = -1; sz <= 1; sz += 2) {
+                est(b, 5 * sx, f, CZ + 5 * sz, EstIds.PEDESTAL_RUNICO, "north");
+                est(b, 5 * sx, f + 1, CZ + 5 * sz, EstIds.CRISTAL_MANA, "north");
+                estHang(b, 4 * sx, top, CZ + 4 * sz, 2, EstIds.ARANA);
+            }
+        }
+    }
+
+    // ================================================================== INVERNADERO (piso 5): jardín de musgo, jardín de flores, estanque y entrada
+
+    static void greenhouse(StructBp b) {
+        final int f = 43;
+        final int top = f + 6;
+        final int i = 5;
+        // suelos: cada sala con su tierra
+        floor(b, i, f, (x, dz) -> {
+            if (Math.abs(x) <= 2) {
+                return dz < 0 ? (((x + dz) & 1) == 0 ? "stone_bricks" : "mossy_stone_bricks") : "clay";
+            }
+            return x < 0 ? (((x * 7 + dz * 3) & 3) == 0 ? "rooted_dirt" : "moss_block") : (((x + dz * 5) & 3) == 0 ? "podzol" : "grass_block");
+        });
+        cove(b, top, -8, -8, 8, 8, "mossy_stone_brick_stairs");
+        // ---- JARDÍN DE MUSGO Y HONGOS (oeste): azaleas, hojas de gota, líquenes y lianas con bayas de luz
+        String[] west = {"azalea", "flowering_azalea", "fern", "big_dripleaf[facing=east,tilt=none]", "grass", "fern", "flowering_azalea"};
+        int n = 0;
+        for (int x = -8; x <= -4; x++) {
+            for (int dz = -8; dz <= 8; dz++) {
+                if (in(i, x, dz) && free(b, x, f, CZ + dz) && b.get(x, f, CZ + dz) != null && "air".equals(b.get(x, f, CZ + dz)) && (x * 5 + dz * 3 + 40) % 3 == 0 && !(x == -4 && Math.abs(dz) >= 5) && !(x == -8 && Math.abs(dz) == 3)) {
+                    String pl = west[(n++) % west.length];
+                    if (!pl.startsWith("big_dripleaf") || "moss_block".equals(b.get(x, f - 1, CZ + dz))) {
+                        b.set(x, f, CZ + dz, pl);
+                    }
+                }
+            }
+        }
+        for (int dz = -6; dz <= 6; dz += 3) {
+            b.set(-9, f, CZ + dz, "air"); // (pared: no se toca)
+        }
+        for (int dz = -5; dz <= 5; dz += 2) {
+            for (int x : new int[]{-7, -5}) {
+                if (in(i, x, dz) && "air".equals(b.get(x, top, CZ + dz))) {
+                    b.set(x, top, CZ + dz, "cave_vines[age=10,berries=true]");
+                    if ("air".equals(b.get(x, top - 1, CZ + dz)) && dz % 4 != 1) {
+                        b.set(x, top - 1, CZ + dz, "cave_vines_plant[berries=true]");
+                    }
+                }
+            }
+        }
+        // un arbolito de azalea en el rincón del fondo
+        b.set(-7, f, CZ + 5, "oak_log[axis=y]");
+        b.set(-7, f + 1, CZ + 5, "oak_log[axis=y]");
+        b.set(-7, f + 2, CZ + 5, "oak_log[axis=y]");
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                for (int dy = 2; dy <= 4; dy++) {
+                    if (Math.abs(dx) + Math.abs(dz) + (dy == 4 ? 2 : 0) <= 2 && "air".equals(b.get(-7 + dx, f + dy, CZ + 5 + dz)) && in(i, -7 + dx, 5 + dz)) {
+                        b.set(-7 + dx, f + dy, CZ + 5 + dz, (dx + dz + dy) % 2 == 0 ? "flowering_azalea_leaves[persistent=true]" : "azalea_leaves[persistent=true]");
+                    }
+                }
+            }
+        }
+        estTall(b, -8, f, CZ - 3, EstIds.TAPIZ_ARBOL, "east");
+        estHang(b, -6, top, CZ, 3, EstIds.ARANA);
+        // ---- JARDÍN DE FLORES (este): parterres con flores y arbustos
+        String[] east = {"poppy", "dandelion", "cornflower", "allium", "azure_bluet", "oxeye_daisy", "lily_of_the_valley", "flowering_azalea", "orange_tulip", "pink_tulip", "red_tulip", "white_tulip"};
+        n = 0;
+        for (int x = 4; x <= 8; x++) {
+            for (int dz = -8; dz <= 8; dz++) {
+                if (in(i, x, dz) && "air".equals(b.get(x, f, CZ + dz)) && (x * 3 + dz * 5 + 80) % 4 != 0 && !(x == 4 && Math.abs(dz) >= 5) && !(x <= 5 && Math.abs(dz) <= 1) && !(x == 8 && Math.abs(dz) == 3) && !(x == 7 && dz == 0)) {
+                    b.set(x, f, CZ + dz, east[(n++ * 7) % east.length]);
+                }
+            }
+        }
+        // senda de piedra para llegar a la puerta del este
+        for (int x = 4; x <= 8; x++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                if (in(i, x, dz)) {
+                    b.set(x, f - 1, CZ + dz, "stone_bricks");
+                    if (!"air".equals(b.get(x, f, CZ + dz))) {
+                        b.set(x, f, CZ + dz, "air");
+                    }
+                }
+            }
+        }
+        estTall(b, 8, f, CZ - 3, EstIds.TAPIZ_ARBOL, "west");
+        estTall(b, 8, f, CZ + 3, EstIds.TAPIZ_ARBOL, "west");
+        est(b, 7, f, CZ, EstIds.GLOBO, "west");
+        estHang(b, 6, top, CZ - 3, 3, EstIds.ARANA);
+        estHang(b, 6, top, CZ + 3, 3, EstIds.ARANA);
+        // ---- ESTANQUE (sur): una poza con nenúfares y un cristal luminoso en el centro, rodeada de piedra
+        for (int x = -2; x <= 2; x++) {
+            for (int dz = 4; dz <= 8; dz++) {
+                if (!in(i, x, dz) || !"air".equals(b.get(x, f, CZ + dz))) {
+                    continue;
+                }
+                boolean edge = Math.abs(x) == 2 || dz == 4 || dz == 8;
+                if (edge) {
+                    b.set(x, f, CZ + dz, Math.abs(x) == 2 && dz % 2 == 0 ? "mossy_stone_brick_slab[type=top]" : "mossy_stone_brick_wall");
+                } else {
+                    b.set(x, f - 1, CZ + dz, "clay");
+                    b.set(x, f, CZ + dz, "water");
+                    if ((x + dz) % 2 == 0 && "water".equals(b.get(x, f, CZ + dz))) {
+                        b.set(x, f + 1, CZ + dz, "lily_pad");
+                    }
+                }
+            }
+        }
+        b.set(0, f - 1, CZ + 6, "sea_lantern");
+        // ---- ENTRADA (norte): senda de piedra, arco con enredadera y dos caballeros de musgo
+        for (int s = -1; s <= 1; s += 2) {
+            estTall(b, 2 * s, f, CZ - 7, EstIds.ESTATUA_CABALLERO, "south");
+            est(b, 2 * s, f, CZ - 5, EstIds.CANDELABRO, "south");
+        }
+        estTall(b, 0, f, CZ - 8, EstIds.TAPIZ_ARBOL, "south");
+        estHang(b, 0, top, CZ - 5, 3, EstIds.ARANA);
+        // luces: shroomlights incrustadas en el techo
+        for (int[] p : new int[][]{{-6, -4}, {-6, 4}, {6, -5}, {6, 5}, {0, 6}}) {
+            if (in(i, p[0], p[1]) && "air".equals(b.get(p[0], top, CZ + p[1]))) {
+                b.set(p[0], top, CZ + p[1], "shroomlight");
+            }
+        }
+    }
+
+    // ================================================================== SALA DE LAS ESTRELLAS (piso 6): astronomía y cartografía
+
+    static void stars(StructBp b) {
+        final int f = 51;
+        final int top = f + 6;
+        final int i = 6;
+        floor(b, i, f, (x, dz) -> {
+            double d = Math.hypot(x, dz);
+            if (d >= 5.5 && d < 6.4) {
+                return "lapis_block";
+            }
+            long h = (x * 73856093L) ^ (dz * 19349663L);
+            if (Math.floorMod(h, 7) == 0) {
+                return GOLD;
+            }
+            return ((x + dz) & 1) == 0 ? PB : "blackstone";
+        });
+        cove(b, top, -7, -7, 7, 7, DBS);
+        // ---- bóveda estrellada: faroles marinos incrustados en el techo del piso
+        for (int x = -6; x <= 6; x++) {
+            for (int dz = -6; dz <= 6; dz++) {
+                long h = (x * 31L) ^ (dz * 17L) ^ (x * dz * 5L);
+                if (in(i, x, dz) && !core(x, dz) && Math.floorMod(h, 9) == 0 && "air".equals(b.get(x, top, CZ + dz))) {
+                    b.set(x, top + 1, CZ + dz, "sea_lantern");
+                }
+            }
+        }
+        // ---- muro norte: cartografía (tapices de mapa y mesas de cartógrafo)
+        for (int x = -3; x <= 3; x += 2) {
+            estTall(b, x, f, CZ - 7, EstIds.TAPIZ_MAPA, "south");
+        }
+        for (int s = -1; s <= 1; s += 2) {
+            b.set(3 * s, f, CZ - 6, "cartography_table");
+            est(b, 3 * s, f + 1, CZ - 6, EstIds.PILA_LIBROS, "south");
+            est(b, 2 * s, f, CZ - 6, EstIds.SILLON, "north");
+        }
+        b.set(0, f, CZ - 6, PD);
+        est(b, 0, f + 1, CZ - 6, EstIds.GLOBO, "south");
+        // ---- muro sur: telescopios apuntando al cielo
+        for (int s = -1; s <= 1; s += 2) {
+            est(b, 3 * s, f, CZ + 6, EstIds.TELESCOPIO, "south");
+            est(b, 2 * s, f, CZ + 7, EstIds.CANDELABRO, "south");
+        }
+        estTall(b, 0, f, CZ + 7, EstIds.TAPIZ_ESTRELLAS, "north");
+        estTall(b, -1, f, CZ + 7, EstIds.TAPIZ_ARCANO, "north");
+        estTall(b, 1, f, CZ + 7, EstIds.TAPIZ_ARCANO, "north");
+        // ---- oeste y este: esferas armilares sobre pedestales de piedra pulida
+        for (int s = -1; s <= 1; s += 2) {
+            b.set(5 * s, f, CZ, PD);
+            est(b, 5 * s, f + 1, CZ, EstIds.ESFERA_ARMILAR, "north");
+            est(b, 5 * s, f, CZ - 2, EstIds.CANDELABRO, "north");
+            est(b, 5 * s, f, CZ + 2, EstIds.CANDELABRO, "north");
+            estTall(b, 7 * s, f, CZ - 2, EstIds.TAPIZ_MAPA, s < 0 ? "east" : "west");
+            estTall(b, 7 * s, f, CZ + 2, EstIds.TAPIZ_MAPA, s < 0 ? "east" : "west");
+            estHang(b, 4 * s, top, CZ + 4, 3, EstIds.ARANA);
+            estHang(b, 4 * s, top, CZ - 4, 3, EstIds.ARANA);
+        }
+        estHang(b, 0, top, CZ - 4, 2, EstIds.ARANA);
+        estHang(b, 0, top, CZ + 4, 2, EstIds.ARANA);
+    }
+
+    // ================================================================== APOSENTOS DEL ARCHIMAGO (piso 7): sala del trono, dormitorio, estudio y tesoro
+
+    static void chambers(StructBp b) {
+        final int f = 59;
+        final int top = f + 6;
+        final int i = 7;
+        floor(b, i, f, (x, dz) -> {
+            if (Math.abs(x) <= 2) {
+                return dz < 0 ? (((x + dz) & 1) == 0 ? PB : DT) : (((x + dz) & 1) == 0 ? "gold_block" : PD);
+            }
+            return x < 0 ? (((x + dz) & 1) == 0 ? "dark_oak_planks" : "spruce_planks") : (((x + dz) & 1) == 0 ? "deepslate_tiles" : "polished_deepslate");
+        });
+        cove(b, top, -7, -7, 7, 7, DBS);
+        // ---- SALA DEL TRONO (norte)
+        for (int dz = -7; dz <= -3; dz++) {
+            for (int x = -1; x <= 1; x++) {
+                carpet(b, x, f, CZ + dz, x == 0 ? "red_carpet" : "purple_carpet");
+            }
+        }
+        b.set(0, f, CZ - 6, PD);
+        b.set(-1, f, CZ - 6, PD);
+        b.set(1, f, CZ - 6, PD);
+        estTall(b, 0, f + 1, CZ - 6, EstIds.TRONO, "south");
+        estTall(b, 0, f, CZ - 7, EstIds.TAPIZ_REAL, "south");
+        estTall(b, -1, f, CZ - 7, EstIds.TAPIZ_ESTRELLAS, "south");
+        estTall(b, 1, f, CZ - 7, EstIds.TAPIZ_ESTRELLAS, "south");
+        for (int s = -1; s <= 1; s += 2) {
+            estTall(b, 2 * s, f, CZ - 6, EstIds.ESTATUA_CABALLERO, "south");
+            est(b, 2 * s, f, CZ - 4, EstIds.CANDELABRO, "south");
+        }
+        estHang(b, 0, top, CZ - 5, 2, EstIds.ARANA);
+        // ---- DORMITORIO (oeste)
+        b.set(-6, f, CZ - 1, "purple_bed[facing=west,part=foot]");
+        b.set(-7, f, CZ - 1, "purple_bed[facing=west,part=head]");
+        est(b, -7, f, CZ - 3, EstIds.PILA_LIBROS, "east");
+        est(b, -7, f, CZ + 1, EstIds.CANDELABRO, "east");
+        for (int dz = 2; dz <= 3; dz++) {
+            estTall(b, -7, f, CZ + dz, EstIds.ESTANTERIA, "east");
+        }
+        est(b, -5, f, CZ + 5, EstIds.SILLON, "north");
+        b.set(-6, f, CZ + 5, "barrel[facing=up]");
+        for (int dz = -2; dz <= 2; dz++) {
+            for (int x = -5; x <= -4; x++) {
+                if (in(i, x, dz) && "air".equals(b.get(x, f, CZ + dz))) {
+                    b.set(x, f, CZ + dz, "purple_carpet");
+                }
+            }
+        }
+        estTall(b, -7, f, CZ, EstIds.TAPIZ_ARBOL, "east");
+        estHang(b, -5, top, CZ, 3, EstIds.ARANA);
+        // ---- ESTUDIO (este): escritorio, atril, estantes y el caldero del archimago
+        table(b, 6, f, CZ - 3, 'z', 4, "dark_oak_slab", "dark_oak_fence");
+        est(b, 5, f, CZ - 2, EstIds.SILLON, "east");
+        candles(b, 6, f + 2, CZ - 3, 3);
+        est(b, 6, f + 2, CZ - 1, EstIds.PILA_LIBROS, "west");
+        b.set(7, f, CZ + 1, "lectern[facing=west]");
+        b.set(7, f, CZ + 2, "brewing_stand[has_bottle_0=true,has_bottle_1=true,has_bottle_2=false]");
+        est(b, 6, f, CZ + 3, EstIds.CALDERO_MAGICO, "west");
+        est(b, 5, f, CZ - 5, EstIds.GLOBO, "west");
+        for (int dz = -1; dz <= 0; dz++) {
+            estTall(b, 7, f, CZ + dz, EstIds.ESTANTERIA, "west");
+        }
+        estHang(b, 5, top, CZ, 3, EstIds.ARANA);
+        // ---- TESORO (sur): montones de oro, un reloj y un pedestal con el cristal
+        for (int x = -2; x <= 2; x++) {
+            for (int dz = 4; dz <= 7; dz++) {
+                if (in(i, x, dz) && (Math.abs(x) == 2 || dz == 7 && x != 0) && "air".equals(b.get(x, f, CZ + dz))) {
+                    est(b, x, f, CZ + dz, EstIds.MONTON_ORO, dz == 7 ? "north" : (x < 0 ? "east" : "west"));
+                }
+            }
+        }
+        est(b, 0, f, CZ + 6, EstIds.PEDESTAL_RUNICO, "north");
+        est(b, 0, f + 1, CZ + 6, EstIds.CRISTAL_MANA, "north");
+        estHang(b, -1, top, CZ + 5, 3, EstIds.JAULA);
+        estHang(b, 1, top, CZ + 5, 4, EstIds.JAULA);
+        estTall(b, 0, f, CZ + 7, EstIds.RELOJ, "north");
+        estHang(b, 0, top, CZ + 4, 2, EstIds.ARANA);
+    }
 }
