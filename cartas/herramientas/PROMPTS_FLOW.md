@@ -5,7 +5,7 @@
 1. En Flow elige **imagen** (no video), formato **vertical 3:4** (Flow no acepta 2:3; yo recorto).
 2. Pega primero el **ESTILO COMÚN** y justo después el texto de la carta. Así todas se parecen entre sí.
 3. Para las **cartas de skins**: sube la skin como imagen de referencia (la que ya está en `herramientas/skins/`) y usa el prompt de esa carta.
-4. Para los **jefes y enemigos de tu mod**: haz una captura en el juego del jefe/enemigo y súbela como referencia. Así Flow no inventa el diseño.
+4. Para los **jefes, enemigos y mascotas de tu mod**: la captura del juego es OBLIGATORIA (ver "Cláusula de referencia" abajo). Sin captura, Flow inventa el diseño (así salió el Rey Brote como árbol de madera, que no es).
 5. Déjame las imágenes con el **nombre de la carta** (`rey_brote.png`, `odette.png`...). Yo les pongo el marco de rareza, el nombre, el brillo holográfico y las meto en el mod.
 
 Regla de composición (importante): **deja vacío el 20 % de abajo** — ahí va el nombre de la carta. El personaje o criatura va centrado, en el 80 % de arriba.
@@ -25,182 +25,133 @@ Si añade texto o marcos añade: `absolutely no text, no frame, no card border`.
 
 ---
 
+## CLÁUSULA DE REFERENCIA (para todo lo de TU mod)
+
+Sube la captura del juego y pega esto ANTES del texto de la carta:
+
+```
+Use the attached in-game screenshot as the EXACT reference for the creature: same shape,
+same proportions, same colors, same face, same accessories. Do NOT redesign it. Do NOT add arms,
+legs, armor, weapons, wings or any part that the screenshot does not show. Keep it blocky. Only
+improve the lighting, add depth, atmosphere and a detailed background around it.
+```
+
+Cómo sacar la captura: huevo de aparición del modo creativo (o los comandos de prueba), **F1** para ocultar el HUD, **F2** para la captura, de frente, de cuerpo entero, con fondo simple (césped o bloque liso), de día y con buena luz.
+Marcados con ✔ = datos confirmados en mis notas del mod. Marcados con ⚠ = no tengo el aspecto exacto: necesito tu captura para describirlo bien (por eso el texto es corto).
+
+---
+
 ## JEFES
 
-**guardian_musgo — Guardián de Musgo (Rara)**
+**rey_brote — Rey Brote (Épica)** ✔ (cubo de gelatina, NO es un golem de madera)
 ```
-A massive stone-and-moss golem guardian standing in a misty forest clearing, body made of
-mossy cobblestone blocks with glowing green eyes, fists slamming the ground sending small green
-sprouts and cracks outward, tiny sprout creatures running around its feet. Soft green god rays
-through the trees.
-```
-
-**rey_brote — Rey Brote (Épica)**
-```
-A towering forest king made of living wood and leaves, a huge crown of blooming flowers and
-branches on his head that never wilts, glowing golden-green eyes, bark armor with moss cape,
-standing on a throne of roots in a magical forest at golden hour, fireflies and petals floating.
+The creature is a giant cube of translucent green slime jelly, wider than tall, with a friendly
+face (two big eyes and a small mouth) visible inside the jelly. On top of its head sits a small
+golden crown with a green emerald in the front, and from the crown grows a small tree sapling with
+a few branches and leaves. Small flowers and moss decorate the body and a glowing green seed shines
+inside the jelly. It has NO arms and NO legs and is NOT a wooden golem and NOT humanoid. It sits huge
+in a sunlit forest arena: a circular clearing with tall mossy stone cliffs behind, white and yellow
+flowers in the grass, golden god rays through the tree canopy, little green slime droplets and
+fireflies floating. Low camera angle to make it monumental.
 ```
 
-**capataz — Capataz (Rara)**
+**gran_herrero — Gran Herrero de Brasas (Épica)** ✔ coloso de hierro y lava, martillo y yunque a la espalda
 ```
-A hulking foreman golem of the forge, dark iron body with glowing orange cracks, carrying a
-gigantic war hammer, the hammer has just struck the ground breaking it open with lava glow,
-sparks flying, dark underground forge background with chains and anvils.
-```
-
-**gran_herrero — Gran Herrero (Épica)**
-```
-The Great Blacksmith, a colossal armored smith made of black iron and molten metal, holding a
-glowing red-hot sword on a huge anvil, hammer raised, rivers of lava behind him, flames that
-never go out, sparks like orange stars, intense orange and black palette.
+A colossal blocky smith golem made of black iron plates with glowing molten orange cracks, a huge
+hammer in one hand and a big anvil carried on his back, fire immune, glowing eyes. He rises from a
+circular lake of lava in a dark underground forge arena. Long iron chains hang from the ceiling and
+are stuck into the lava, black rock spikes with magma tips surround the lake, sparks and embers
+float up, intense orange and black palette. Low camera angle, monumental scale.
 ```
 
-**lobo_artico — Lobo Ártico (Legendaria)**
+**lobo_artico — Lobo Ártico (Legendaria)** ✔ (no es un lobo normal: hombre lobo con capucha y guadañas)
 ```
-A giant white arctic wolf with ice-blue glowing eyes, howling at an aurora borealis sky on a
-snowy frozen cliff, frost crystals forming in the air from its breath, small ice wolves
-silhouettes of its pack in the distance, cold cyan and white palette, blocky fur.
-```
-
-## CRIATURAS DEL BOSQUE
-
-**brote — Brote (Común)**
-```
-A small cute angry sprout creature, a walking seedling with two leaves on its head and tiny
-root legs, running toward the camera in a sunny forest floor, grass blocks and mushrooms.
+A huge werewolf warrior wearing a black hood and black cape (no ears visible), blue-white frosted
+fur, ice crystals growing on his shoulders and back, small skulls hanging with chains from his belt,
+and two big scythes of frost with glowing blades, runes and ice spikes, a skull at the tip of each
+scythe. Narrow glowing ice-blue eyes inside the shadow of the hood. He stands in a circular snow
+arena in the sky with a wall of ice, four eternal braziers burning, a giant moon behind him, a
+snowstorm and frost crystals in the air. Blocky style, cold cyan and white palette, low angle.
 ```
 
-**espinoso — Espinoso (Común)**
+## CRIATURAS DEL BOSQUE (⚠ = mándame captura)
+
+**guardian_musgo — Guardián de Musgo (Rara)** ⚠ mini-jefe, golpe al suelo avisado, invoca Raizales
 ```
-A carnivorous flower creature with a big open mouth of petals, about to shoot a long thorn
-toward the camera, vines as legs, bright red-pink petals, lush jungle floor, playful menace.
+[Cláusula de referencia] A mini-boss guardian of the forest, shown mid ground-slam with a warning
+ring of green light on the floor, inside a mossy stone chamber with iron bars and vines.
 ```
 
-**polinizador — Polinizador (Común)**
+**brote — Brote (Común)** ⚠ el enemigo corredor del bosque
 ```
-A floating pollen creature like a big fuzzy flower-bee flying in circles, releasing glowing
-yellow spores that slow everything down, trails of golden dust, flower meadow background.
-```
-
-**raizal — Raizal (Rara)**
-```
-A root golem made of tangled thick roots and vines, glowing amber eyes, one huge root fist
-reaching forward, standing in a dark forest with roots coming out of the ground to trap,
-mysterious green mist.
+[Cláusula de referencia] A small sprout creature running fast toward the camera across a sunny forest
+floor with grass, mushrooms and ferns.
 ```
 
-**raizal_anciano — Raizal Anciano (Épica)**
+**espinoso — Espinoso (Común)** ⚠ planta que abre pétalos y dispara espinas
 ```
-An ancient elite root golem guardian, bigger and older, covered in glowing runes and old
-moss, wearing a crown of thorns, guarding a stone chamber with a glowing green key floating
-behind it, ancient ruins with vines, mystical teal light.
-```
-
-## CRIATURAS DE LA FORJA
-
-**escoria — Escoria (Común)**
-```
-A rock creature made of cooling molten slag, dark stone body with red-hot glowing fists,
-cracks leaking orange light, walking in a dim forge cave with lava pools.
+[Cláusula de referencia] A thorn plant with its petals open wide, shooting a thorn toward the
+camera, in a dark mossy nursery room with mossy pots and azaleas.
 ```
 
-**chispero — Chispero (Común)**
+**polinizador — Polinizador (Común)** ⚠
 ```
-A walking furnace creature with legs, a glowing furnace mouth spitting a flaming arrow,
-sparks and smoke from a chimney on its head, dark forge background, warm orange rim light.
-```
-
-**ascua — Ascua (Común)**
-```
-A living flying ember, a floating glowing coal with a small angry face and tiny flames as
-wings, leaving a trail of sparks, dark smoky background, red-orange glow.
+[Cláusula de referencia] Floating in the air releasing golden pollen spores that slow things down,
+over a flower meadow in soft sunlight.
 ```
 
-**fundidor — Fundidor (Rara)**
+**raizal — Raizal (Rara)** ⚠ gigante de raíces; ataque de raíz
 ```
-A molten metal golem made of liquid orange metal and dark iron plates, a lava eruption
-bursting under the ground in front of it, heat haze, forge cave with glowing rivers.
-```
-
-**fundidor_mayor — Fundidor Mayor (Épica)**
-```
-An elite larger molten golem in heavy glowing armor with a lava crown, guarding a forge
-vault door with a golden key glowing behind it, flaming braziers, gold and red palette.
+[Cláusula de referencia] A root creature attacking: roots burst from the ground around it to trap
+the player, in a dark forest with green mist.
 ```
 
-**lobo_escarcha — Lobo de Escarcha (Rara)**
+**raizal_anciano — Raizal Anciano (Épica)** ⚠ versión élite
 ```
-An icy frost wolf with pale blue fur and frozen breath, snarling, with a second wolf behind
-it as a pack, snowy pine forest at night, blue moonlight, snow particles.
-```
-
-## MASCOTAS
-
-**fosu — Fosu (Legendaria)**
-```
-A celestial butterfly with huge glowing wings made of galaxy and stardust, soft aqua and
-violet colors, floating over a calm night sky full of stars, tiny stars falling from its
-wings, elegant and magical, blocky voxel style.
+[Cláusula de referencia] The elite version, standing in a mossy stone key chamber with a glowing
+vault lock behind it and teal light.
 ```
 
-**cookie — Cookie (Legendaria)**
+## CRIATURAS DE LA FORJA (⚠ = mándame captura)
+
+**capataz — Capataz (Rara)** ⚠ mini-jefe, golpe al suelo
 ```
-A cute gray ferret with a big mischievous smile, holding a stolen glowing red pixel heart in
-its tiny paws, sitting on a pile of hearts, warm cozy light, little sparkles, blocky voxel
-style.
+[Cláusula de referencia] Mid ground-slam with a crack of lava breaking the floor, in a dark brick
+forge with chains and stone anvils and braziers.
 ```
 
-## MINECRAFT
-
-**creeper — Creeper (Común)**
+**escoria — Escoria (Común)** ⚠ · **chispero — Chispero (Común)** ⚠ · **ascua — Ascua (Común)** ⚠ (flota, fragmentos orbitando) · **fundidor — Fundidor (Rara)** ⚠ (erupciones) · **fundidor_mayor — Fundidor Mayor (Épica)** ⚠
 ```
-A Minecraft creeper right in front of the camera about to explode, fuse sparking, green
-pixelated skin, grass plains at sunset, dramatic low angle.
-```
-
-**zombi — Zombi (Común)**
-```
-A Minecraft zombie walking toward the camera with arms stretched out at dusk, torn clothes,
-teal skin, a village in the distance, foggy atmosphere.
+[Cláusula de referencia] + escena: forja oscura de ladrillo, braseros, calderos de lava, chispas,
+luz naranja de contraluz. (Chispero: lanzando su flecha. Ascua: flotando con los fragmentos
+girando a su alrededor. Fundidor: con una erupción de lava a sus pies. Fundidor Mayor: junto a
+una puerta de cámara con cerradura.)
 ```
 
-**esqueleto — Esqueleto (Común)**
+## CRIATURAS DE HIELO
+
+**lobo_escarcha — Lobo de Escarcha (Rara)** ✔ lobezno de 4 patas con cristales en el lomo, su mordisco enfría
 ```
-A Minecraft skeleton aiming a bow with perfect precision at the camera, moonlit dark forest
-edge, bone white with cold blue moonlight.
+Use the attached screenshot as the exact reference. A small four-legged frost wolf cub with
+pale blue-white fur and glowing blue ice crystals growing along its back, snarling with cold breath
+mist, in the snowy ice arena at night with a huge moon and blue light, snow particles, the big
+hooded werewolf boss as a dark silhouette far behind.
 ```
 
-**enderman — Enderman (Rara)**
+## MASCOTAS (no son entidades: sube la captura del ícono 3D o de la figurita)
+
+**fosu — Fosu, la Mariposa de Luz (Legendaria)** ✔ alas de polvo azul con lunares
 ```
-A tall black Enderman with glowing purple eyes staring at the camera, purple particles
-swirling around, standing in a dark flat landscape with a huge moon, eerie and calm.
+Use the attached image as the exact reference of the butterfly. Keep the wings of blue dust with
+dots and the soft glow. A celestial luminous butterfly flying over a calm night sky full of stars,
+glowing trails of light and wishes, tiny stars falling from the wings.
 ```
 
-**wither — Wither (Épica)**
+**cookie — Cookie, el Hurón (Legendaria)** ✔ pelaje gris plateado, cara casi blanca, antifaz carbón, nariz rosa
 ```
-The Minecraft Wither with three skull heads, floating in a dark stormy sky above the nether
-wastes, black and gray skeleton body, glowing dark blue trails and explosion particles.
-```
-
-**ender_dragon — Dragón del End (Legendaria)**
-```
-The Minecraft Ender Dragon flying majestically over the End island, wings spread, purple
-eyes, the void sky full of stars behind it, End crystals beams glowing, dark purple palette.
-```
-
-## PERSONAJES
-
-**aldeano — Aldeano (Común)**
-```
-A Minecraft villager with a big nose standing in front of a cozy village house, hands
-together under his robe, warm afternoon light, curious "Hmm" expression.
-```
-
-**bruja — Bruja (Rara)**
-```
-A Minecraft witch holding a bubbling purple potion, hat with a buckle, crooked nose with a
-wart, swamp hut behind her, green and purple glow, floating bubbles.
+Use the attached image as the exact reference of the ferret. Keep the silver-gray fur, the almost
+white face with a charcoal mask and the pink nose, smooth rounded shapes, small bead-like shiny
+eyes. A happy mischievous ferret doing its war dance in a cozy warm room full of sparkles.
 ```
 
 ---
