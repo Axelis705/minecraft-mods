@@ -54,7 +54,18 @@ public final class ShowClient {
             TvCamera.release();
         }
         HostScreen.stateChanged();
+        // al empezar su ronda de dibujo, al dibujante se le abre solo el lienzo
+        if (active() && state.getString("phase").equals("DRAW") && state.getCompound("dr").getBoolean("iDraw")
+                && !state.getCompound("dr").getBoolean("over") && state.getCompound("dr").getInt("round") != drawOpenedRound) {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player != null && (mc.screen == null || mc.screen instanceof HostScreen)) {
+                drawOpenedRound = state.getCompound("dr").getInt("round");
+                DrawScreen.open();
+            }
+        }
     }
+
+    private static int drawOpenedRound = -1;
 
     public static void play(String name, float pitch) {
         SoundEvent se = ModSounds.get(name);
@@ -162,6 +173,9 @@ public final class ShowClient {
         long age = clientTick - stateStamp;
         if (state.contains("t", 10) && !state.getCompound("t").getBoolean("rev")) {
             return (int) Math.max(0, state.getCompound("t").getInt("left") - age);
+        }
+        if (state.contains("dr", 10) && state.getString("phase").equals("DRAW") && !state.getCompound("dr").getBoolean("over")) {
+            return (int) Math.max(0, state.getCompound("dr").getInt("left") - age);
         }
         if (state.contains("tb", 10) && !state.getCompound("tb").getBoolean("over")) {
             return (int) Math.max(0, state.getCompound("tb").getInt("left") - age);

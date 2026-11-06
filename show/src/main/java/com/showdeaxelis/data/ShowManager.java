@@ -1,5 +1,6 @@
 package com.showdeaxelis.data;
 
+import com.showdeaxelis.game.DrawGame;
 import com.showdeaxelis.game.Ev;
 import com.showdeaxelis.game.Format;
 import com.showdeaxelis.game.ImpostorGame;
@@ -105,6 +106,7 @@ public final class ShowManager {
         }
         StageData.Info st = StageData.get(server).info();
         ShowNet.toPlayer(sp, new ShowNet.State(show == null ? ShowSync.empty() : ShowSync.build(show, sp.getUUID(), now, st)));
+        replayDraw(sp);
     }
 
     public static void tick(MinecraftServer srv) {
@@ -114,8 +116,10 @@ public final class ShowManager {
             return;
         }
         show.tick(now);
+        Bots.tick(show, now);
         boolean timed = show.phase == Phase.TRIVIA && show.t != null && !show.t.revealed
-                || show.phase == Phase.TABOO && show.taboo != null && !show.taboo.over;
+                || show.phase == Phase.TABOO && show.taboo != null && !show.taboo.over
+                || show.phase == Phase.DRAW && show.draw != null && !show.draw.over;
         List<Ev> evs = show.drain();
         for (Ev e : evs) {
             onEvent(e);
@@ -287,6 +291,38 @@ public final class ShowManager {
                 Studio.crowd(server, 2, 100);
                 line("taboo_solved", e);
             }
+            case "draw_start" -> {
+                snd("round_start");
+                cue("title", "ADIVINA EL DIBUJO", 0, 0);
+                cue("cam", "board", 0, 0);
+                ShowNet.toAll(new ShowNet.Draw(1, 0, 0, new int[0]));
+                line("draw_start", e);
+            }
+            case "draw_guess" -> snd("pop");
+            case "draw_bad" -> {
+                snd("buzzer");
+                line("draw_bad", e);
+            }
+            case "draw_solved" -> {
+                snd("correct");
+                cue("popup", "+" + e.a(), e.side(), 0);
+                Studio.crowd(server, 1, 40);
+                line("draw_solved", e);
+            }
+            case "draw_over" -> {
+                if (e.b() == 1) {
+                    snd("applause_big");
+                    cue("fx", "confetti", 0, 0);
+                    Studio.crowd(server, 2, 100);
+                    line("draw_all", e);
+                } else if (e.a() == 0) {
+                    snd("trombone");
+                    Studio.crowd(server, 4, 60);
+                    line("draw_none", e);
+                } else {
+                    snd("time_up");
+                }
+            }
             case "final" -> {
                 snd("drumroll");
                 snd("fanfare");
@@ -372,6 +408,10 @@ public final class ShowManager {
                 }
             }
             case TABOO -> hide = show.tabooSay(id, text, now) == 2;
+            case DRAW -> {
+                int r = show.drawSay(id, text, now);
+                hide = r == 2 || r == 3;
+            }
             default -> {
             }
         }
@@ -439,6 +479,7 @@ public final class ShowManager {
             Banks.load();
             show = new Show(id, sp.getName().getString(), s.equals("player"));
             used.clear();
+            Bots.reset();
             if (show.hostPlays) {
                 show.assign(id, show.hostName, 0);
             }
@@ -552,6 +593,7 @@ public final class ShowManager {
             }
             case "reset" -> {
                 show = null;
+                Bots.reset();
                 Studio.crowd(server, 0, 1);
             }
             case "end" -> sh.finishShow();
@@ -594,6 +636,7 @@ public final class ShowManager {
                     case TRIVIA -> sh.finishTrivia();
                     case IMPOSTOR -> sh.finishImpostor();
                     case TABOO -> sh.finishTaboo();
+                    case DRAW -> sh.finishDraw();
                     default -> {
                     }
                 }
@@ -639,6 +682,16 @@ public final class ShowManager {
                     }
                 }
             }
+            // --- adivina el dibujo
+            case "draw" -> startDraw(sp, s, n);
+            // --- jugadores de mentira para probar solo
+            case "bot" -> {
+                if (!Bots.add(sh, n)) {
+                    msg(sp, "No cabe otro bot (o el show ya empezo).");
+                }
+            }
+            case "botsfill" -> msg(sp, "Se agregaron " + Bots.fill(sh) + " bots.");
+            case "botsclear" -> Bots.removeAll(sh);
             // --- puntos, efectos y camaras
             case "score" -> sh.addScore(n, parseInt(s, 0));
             case "cue" -> hostCue(s);
@@ -656,6 +709,94 @@ public final class ShowManager {
                             : "La palabra secreta es: " + w + ". Da pistas sin decirla.");
                 }
             }
+        }
+    }
+
+    private static void startDraw(ServerPlayer sp, String drawerName, int seconds) {
+        List<String> free = new ArrayList<>();
+        for (String w : Banks.DIBUJOS) {
+            if (!used.contains("d:" + w)) {
+                free.add(w);
+            }
+        }
+        if (free.isEmpty()) {
+            for (String w : Banks.DIBUJOS) {
+                used.remove("d:" + w);
+            }
+            free.addAll(Banks.DIBUJOS);
+        }
+        if (free.isEmpty()) {
+            msg(sp, "No hay palabras para dibujar.");
+            return;
+        }
+        UUID who = null;
+        if (!drawerName.isBlank()) {
+            for (Participant p : show.players) {
+                if (p.name.equalsIgnoreCase(drawerName.trim())) {
+                    who = p.id;
+                }
+            }
+        }
+        String word = free.get(RND.nextInt(free.size()));
+        if (!show.startDraw(word, seconds > 0 ? seconds : 90, now, who)) {
+            msg(sp, "Termina primero lo que esta en curso (hacen falta 2 jugadores).");
+            return;
+        }
+        used.add("d:" + word);
+        ServerPlayer d = server.getPlayerList().getPlayer(show.draw.drawer);
+        if (d != null) {
+            msg(d, "Te toca dibujar: " + word + ". Abre el lienzo con la tecla J (o se abre solo). No digas la palabra.");
+        }
+    }
+
+    // ------------------------------------------------------------ dibujo y bots
+
+    /** Un trazo o un borrado que llega del dibujante: se guarda y se reenvia a todos los demas. */
+    public static void onDraw(ServerPlayer sp, int op, int color, int size, int[] pts) {
+        if (show == null || show.phase != Phase.DRAW || show.draw == null) {
+            return;
+        }
+        UUID id = sp.getUUID();
+        if (op == 1) {
+            if (show.clearCanvas(id)) {
+                for (ServerPlayer o : server.getPlayerList().getPlayers()) {
+                    if (o != sp) {
+                        ShowNet.toPlayer(o, new ShowNet.Draw(1, 0, 0, new int[0]));
+                    }
+                }
+            }
+        } else if (op == 0 && pts.length <= ShowNet.MAX_PTS * 2 && show.addStroke(id, color, size, pts)) {
+            broadcastStroke(color, size, pts, sp);
+        }
+    }
+
+    public static void broadcastStroke(int color, int size, int[] pts, ServerPlayer except) {
+        if (server == null) {
+            return;
+        }
+        ShowNet.Draw d = new ShowNet.Draw(0, color, size, pts);
+        for (ServerPlayer o : server.getPlayerList().getPlayers()) {
+            if (o != except) {
+                ShowNet.toPlayer(o, d);
+            }
+        }
+    }
+
+    /** Un jugador que entra tarde recibe el dibujo que ya se hizo. */
+    private static void replayDraw(ServerPlayer sp) {
+        if (show == null || show.phase != Phase.DRAW || show.draw == null) {
+            return;
+        }
+        ShowNet.toPlayer(sp, new ShowNet.Draw(1, 0, 0, new int[0]));
+        for (DrawGame.Stroke st : show.draw.strokes) {
+            ShowNet.toPlayer(sp, new ShowNet.Draw(0, st.color(), st.size(), st.pts()));
+        }
+    }
+
+    /** Lo que dice un bot, como si lo escribiera en el chat. */
+    public static void botChat(String name, String text) {
+        if (server != null) {
+            server.getPlayerList().broadcastSystemMessage(Component.literal("<" + name + "> " + text), false);
         }
     }
 

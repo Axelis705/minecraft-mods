@@ -188,6 +188,44 @@ public class ShowTest {
         s.tick(40 + 30 * 20);
         ok(s.taboo.over, "se acabo el tiempo");
 
+
+        // ---- Adivina el dibujo
+        s = twoTeams();
+        s.start();
+        ok(s.startDraw("Casa grande", 60, 0, null), "empezar dibujo");
+        UUID dr = s.draw.drawer;
+        UUID g1 = u(0).equals(dr) ? u(1) : u(0);
+        UUID g2 = u(2).equals(dr) ? u(3) : u(2);
+        ok(s.draw.mask(0).equals("_ _ _ _   _ _ _ _ _ _"), "mascara " + s.draw.mask(0));
+        ok(s.draw.mask(60 * 20 * 3 / 4).chars().filter(Character::isLetter).count() == 2, "pista de letras");
+        ok(s.addStroke(dr, 3, 2, new int[] {0, 0, 300, 300}), "trazo del dibujante");
+        ok(s.draw.strokes.get(0).pts()[2] == DrawGame.W - 1, "recorta al lienzo");
+        ok(!s.addStroke(g1, 3, 2, new int[] {1, 1, 2, 2}), "otro no dibuja");
+        ok(!s.clearCanvas(g1) && s.clearCanvas(dr) && s.draw.strokes.isEmpty() && s.draw.clearCount == 1, "borrar lienzo");
+        ok(s.drawSay(dr, "es una CASA", 5) == 2, "el dibujante no puede decir la palabra");
+        ok(s.drawSay(g1, "perro", 10) == 1, "intento fallido");
+        ok(s.drawSay(g1, "casa grande", 20) == 3, "acierta");
+        ok(s.drawSay(g1, "casa grande", 21) == 0, "no acierta dos veces");
+        ok(s.byId(g1).points == 10 && s.byId(dr).points == 3, "puntos del primero y del dibujante");
+        ok(!s.draw.over, "faltan por adivinar");
+        ok(s.drawSay(g2, "Casa Grande", 30) == 3 && s.byId(g2).points == 8, "segundo puntaje");
+        s.tick(40);
+        ok(!s.draw.over, "aun faltan");
+        UUID g3 = null;
+        for (Participant pp : s.players) {
+            if (!pp.id.equals(dr) && !pp.id.equals(g1) && !pp.id.equals(g2)) {
+                g3 = pp.id;
+            }
+        }
+        ok(s.drawSay(g3, "casa grande", 50) == 3 && s.draw.over, "todos acertaron: termina");
+        ok(s.startDraw("Luna", 30, 60, null), "siguiente ronda");
+        ok(!s.draw.drawer.equals(dr), "cambia quien dibuja");
+        s.tick(60 + 30 * 20);
+        ok(s.draw.over, "tiempo agotado");
+        ok(s.draw.mask(0).equals("L U N A"), "al terminar se ve la palabra");
+        s.finishDraw();
+        ok(s.phase == Phase.IDLE, "vuelve a esperar");
+
         // ---- final
         s.finishShow();
         ok(s.phase == Phase.FINAL, "final");

@@ -110,6 +110,9 @@ public final class HostScreen extends Screen {
         if (st.contains("tb", 10)) {
             s.append("b").append(st.getCompound("tb").getBoolean("over"));
         }
+        if (st.contains("dr", 10)) {
+            s.append("d").append(st.getCompound("dr").getBoolean("over")).append(st.getCompound("dr").getInt("round"));
+        }
         s.append(st.getList("sides", 10).size());
         ListTag pl = st.getList("players", 10);
         for (int i = 0; i < pl.size(); i++) {
@@ -189,6 +192,9 @@ public final class HostScreen extends Screen {
         full("Formato: " + fmt.label, () -> act("format", "", (fmt.ordinal() + 1) % Format.values().length));
         full("Yo juego: " + (st.getBoolean("hostPlays") ? "SI" : "NO"), () -> act("hostplays"));
         full("Repartir al azar a los conectados", () -> act("auto"));
+        half("+ Bot (prueba)", () -> act("bot", "", -1));
+        half("Llenar con bots", () -> act("botsfill"));
+        full("Quitar los bots", () -> act("botsclear"));
         ListTag sides = st.getList("sides", 10);
         ListTag pl = st.getList("players", 10);
         List<String> online = new ArrayList<>();
@@ -238,6 +244,7 @@ public final class HostScreen extends Screen {
             case "TRIVIA" -> buildTrivia(st);
             case "IMPOSTOR" -> buildImpostor(st);
             case "TABOO" -> buildTaboo(st);
+            case "DRAW" -> buildDraw(st);
             default -> {
                 note("El show termino.");
                 full("Cerrar y empezar de nuevo", () -> act("reset"));
@@ -256,6 +263,7 @@ public final class HostScreen extends Screen {
         half("Mayor o menor", () -> act("trivia", "Mayor o menor", 12));
         half("El Impostor", () -> act("imp", "", 0));
         half("Adivina palabra", () -> act("taboo", "", 60));
+        half("Adivina el dibujo", () -> act("draw", "", 90));
         half("Reto absurdo", () -> act("reto"));
         nextRow();
         full("Llevar jugadores a sus podios", () -> act("tp"));
@@ -359,6 +367,16 @@ public final class HostScreen extends Screen {
         note("Palabra: " + tb.getString("word"));
         if (tb.getBoolean("over")) {
             full("Otra palabra", () -> act("taboo", "", 60));
+        }
+        full("Volver al menu", () -> act("finish"));
+    }
+
+    private void buildDraw(CompoundTag st) {
+        CompoundTag d = st.getCompound("dr");
+        note("Dibuja " + cut(d.getString("drawer"), 12) + ": " + cut(d.getString("word"), 20));
+        note("Acertaron: " + d.getList("solved", 8).size());
+        if (d.getBoolean("over")) {
+            full("Otro dibujo", () -> act("draw", "", 90));
         }
         full("Volver al menu", () -> act("finish"));
     }

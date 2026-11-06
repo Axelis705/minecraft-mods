@@ -28,7 +28,9 @@ public final class Show {
     public TriviaRound t;
     public ImpostorGame imp;
     public TabooGame taboo;
+    public DrawGame draw;
     private int tabooTurn;
+    private int drawTurn;
     public final List<Ev> events = new ArrayList<>();
 
     public Show(UUID host, String hostName, boolean hostPlays) {
@@ -236,6 +238,7 @@ public final class Show {
             case TRIVIA -> t != null && t.revealed;
             case IMPOSTOR -> imp != null && imp.stage == ImpostorGame.Stage.DONE;
             case TABOO -> taboo != null && taboo.over;
+            case DRAW -> draw != null && draw.over;
             default -> false;
         };
     }
@@ -248,6 +251,7 @@ public final class Show {
         t = null;
         imp = null;
         taboo = null;
+        draw = null;
     }
 
     public boolean start100(Question100 q, int mult) {
@@ -588,6 +592,7 @@ public final class Show {
     /** Llamar cada tick: cierra la ronda al acabarse el tiempo. */
     public void tick(int nowTick) {
         tickTaboo(nowTick);
+        tickDraw(nowTick);
         if (phase == Phase.TRIVIA && t != null && !t.revealed && nowTick >= t.deadlineTick) {
             revealTrivia();
         }
@@ -893,6 +898,120 @@ public final class Show {
         if (phase == Phase.TABOO) {
             if (taboo != null) {
                 taboo.over = true;
+            }
+            phase = Phase.IDLE;
+        }
+    }
+
+
+    // ------------------------------------------------------------ adivina el dibujo
+
+    /** Empieza una ronda de dibujo. {@code drawerId} puede ser null: entonces dibuja el siguiente en turno. */
+    public boolean startDraw(String word, int seconds, int nowTick, UUID drawerId) {
+        if (!segmentFree() || players.size() < 2) {
+            return false;
+        }
+        Participant d = drawerId == null ? null : byId(drawerId);
+        if (d == null) {
+            d = players.get(drawTurn % players.size());
+            drawTurn++;
+        }
+        clearSegments();
+        draw = new DrawGame(word, d.id, nowTick, nowTick + Math.max(15, seconds) * 20);
+        phase = Phase.DRAW;
+        roundNo++;
+        events.add(new Ev("draw_start", Math.max(0, sideOf(d)), d.name, "", seconds, 0));
+        return true;
+    }
+
+    public boolean isDrawer(UUID id) {
+        return phase == Phase.DRAW && draw != null && !draw.over && id.equals(draw.drawer);
+    }
+
+    /** Agrega un trazo del dibujante. Devuelve false si no vale (no es quien dibuja o ya acabo). */
+    public boolean addStroke(UUID id, int color, int size, int[] pts) {
+        if (!isDrawer(id) || pts.length < 2 || pts.length % 2 != 0 || draw.strokes.size() >= DrawGame.MAX_STROKES) {
+            return false;
+        }
+        int[] c = new int[pts.length];
+        for (int i = 0; i < pts.length; i += 2) {
+            c[i] = Math.max(0, Math.min(DrawGame.W - 1, pts[i]));
+            c[i + 1] = Math.max(0, Math.min(DrawGame.H - 1, pts[i + 1]));
+        }
+        draw.strokes.add(new DrawGame.Stroke(Math.max(0, Math.min(15, color)), Math.max(1, Math.min(6, size)), c));
+        return true;
+    }
+
+    public boolean clearCanvas(UUID id) {
+        if (!isDrawer(id)) {
+            return false;
+        }
+        draw.strokes.clear();
+        draw.clearCount++;
+        return true;
+    }
+
+    /** Puede adivinar: juega, no es quien dibuja, no ha acertado ya. */
+    public boolean isDrawGuesser(UUID id) {
+        return phase == Phase.DRAW && draw != null && !draw.over && !id.equals(draw.drawer) && byId(id) != null && !draw.solved.contains(id);
+    }
+
+    /** Resultado de lo que escribio alguien: 0 no es del juego, 1 intento fallido, 2 ocultar (el dibujante soltando la palabra), 3 acerto. */
+    public int drawSay(UUID id, String text, int nowTick) {
+        if (phase != Phase.DRAW || draw == null || draw.over || text == null || text.isBlank()) {
+            return 0;
+        }
+        Participant p = byId(id);
+        if (p == null) {
+            return 0;
+        }
+        if (id.equals(draw.drawer)) {
+            boolean bad = Matcher.same(text, draw.word) || Matcher.containsWord(text, draw.word);
+            for (String part : draw.word.split("\\s+")) {
+                bad |= part.length() >= 4 && Matcher.containsWord(text, part);
+            }
+            if (bad) {
+                events.add(new Ev("draw_bad", sideOf(p), p.name, text, 0, 0));
+                return 2;
+            }
+            return 0;
+        }
+        if (!isDrawGuesser(id)) {
+            return 0;
+        }
+        if (Matcher.same(text, draw.word) || Matcher.containsWord(text, draw.word)) {
+            int rank = draw.solved.size();
+            int pts = RANK_POINTS[Math.min(rank, RANK_POINTS.length - 1)];
+            draw.solved.add(id);
+            givePoints(p, pts);
+            Participant d = byId(draw.drawer);
+            if (d != null) {
+                givePoints(d, 3);
+            }
+            events.add(new Ev("draw_solved", sideOf(p), p.name, draw.word, pts, rank + 1));
+            int guessers = players.size() - 1;
+            if (draw.solved.size() >= guessers) {
+                draw.over = true;
+                events.add(new Ev("draw_over", sideOf(d), d == null ? "" : d.name, draw.word, draw.solved.size(), 1));
+            }
+            return 3;
+        }
+        events.add(new Ev("draw_guess", sideOf(p), p.name, text.trim(), 0, 0));
+        return 1;
+    }
+
+    public void tickDraw(int nowTick) {
+        if (phase == Phase.DRAW && draw != null && !draw.over && nowTick >= draw.deadlineTick) {
+            draw.over = true;
+            Participant d = byId(draw.drawer);
+            events.add(new Ev("draw_over", d == null ? -1 : sideOf(d), d == null ? "" : d.name, draw.word, draw.solved.size(), 0));
+        }
+    }
+
+    public void finishDraw() {
+        if (phase == Phase.DRAW) {
+            if (draw != null) {
+                draw.over = true;
             }
             phase = Phase.IDLE;
         }

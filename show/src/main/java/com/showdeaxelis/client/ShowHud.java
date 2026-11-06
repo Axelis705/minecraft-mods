@@ -87,6 +87,8 @@ public final class ShowHud {
             drawImpostor(g, f, st, W, H);
         } else if (phase.equals("TABOO") && st.contains("tb", 10)) {
             drawTaboo(g, f, st, sides, W, H, you);
+        } else if (phase.equals("DRAW") && st.contains("dr", 10)) {
+            drawDraw(g, f, st, sides, W, H);
         } else if (phase.equals("FINAL")) {
             drawFinal(g, f, sides, W, H);
         }
@@ -111,6 +113,7 @@ public final class ShowHud {
             case "TRIVIA" -> st.getCompound("t").getString("cat").toUpperCase(java.util.Locale.ROOT);
             case "IMPOSTOR" -> "EL IMPOSTOR";
             case "TABOO" -> "ADIVINA LA PALABRA";
+            case "DRAW" -> "ADIVINA EL DIBUJO";
             case "FINAL" -> "FINAL";
             default -> "SHOW DE AXELIS";
         };
@@ -383,6 +386,43 @@ public final class ShowHud {
             g.fill(x, y, x + bw, y + 13, 0xB0000000);
             g.drawString(f, l, x + 4, y + 3, 0xFFFFFFFF, false);
             y += 14;
+        }
+    }
+
+    private static void drawDraw(GuiGraphics g, Font f, CompoundTag st, ListTag sides, int W, int H) {
+        CompoundTag d = st.getCompound("dr");
+        boolean over = d.getBoolean("over");
+        int bw = Math.min(360, W - 40);
+        int x = (W - bw) / 2;
+        int y = 8;
+        panel(g, x, y, bw, 34, 0xFF1E88E5);
+        boolean sees = d.contains("word") && !over;
+        if (sees) {
+            g.drawCenteredString(f, d.getString("drawer") + " dibuja:", W / 2, y + 4, 0xFFB3E5FC);
+            text(g, f, d.getString("word").toUpperCase(java.util.Locale.ROOT), W / 2f, y + 16, 0xFFFFFFFF, 1.6f, true);
+        } else if (over) {
+            text(g, f, d.getString("word").toUpperCase(java.util.Locale.ROOT), W / 2f, y + 9, 0xFFFFE082, 2.0f, true);
+        } else {
+            g.drawCenteredString(f, d.getString("drawer") + " dibuja... escribe en el chat lo que ves", W / 2, y + 4, 0xFFB3E5FC);
+            text(g, f, d.getString("mask"), W / 2f, y + 16, 0xFFFFFFFF, 1.6f, true);
+        }
+        int top = y + 40;
+        int ch = Math.max(60, Math.min(H - top - 62, (int) (bw * 0.75f)));
+        int cw = ch * 4 / 3;
+        if (cw > W - 30) {
+            cw = W - 30;
+            ch = cw * 3 / 4;
+        }
+        DrawCanvas.render(g, (W - cw) / 2, top, cw, ch);
+        int by = top + ch + 6;
+        if (!over) {
+            drawTimer(g, (W - cw) / 2, by, cw, d.getInt("left"), d.getInt("total"));
+        }
+        ListTag solved = d.getList("solved", 8);
+        String sv = solved.isEmpty() ? "Todavia nadie acierta" : "Acertaron: " + String.join(", ", strs(solved));
+        g.drawCenteredString(f, sv, W / 2, by + 10, over ? 0xFFFFE082 : 0xFF69F0AE);
+        if (d.getBoolean("iDraw") && !over) {
+            g.drawCenteredString(f, "J: abrir el lienzo para dibujar", W / 2, by + 22, 0xFFCCCCCC);
         }
     }
 

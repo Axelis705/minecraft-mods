@@ -13,6 +13,8 @@ public enum Phase {
     IMPOSTOR,
     /** Adivina la palabra sin decir las prohibidas. */
     TABOO,
+    /** Adivina el dibujo. */
+    DRAW,
     /** Terminado: se muestran los ganadores. */
     FINAL
 }

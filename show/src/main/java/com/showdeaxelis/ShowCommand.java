@@ -92,9 +92,100 @@ public final class ShowCommand {
             boolean imp = s.startImpostor("Prueba", "Palabra", ids, 1);
             s.finishImpostor();
             boolean tb = !Banks.TABOO.isEmpty() && s.startTaboo(Banks.TABOO.get(0).word(), Banks.TABOO.get(0).forbidden(), 30, 0);
-            boolean good = started && r100 && tr && imp && tb && s.phase == Phase.TABOO;
+            s.finishTaboo();
+            boolean dw = !Banks.DIBUJOS.isEmpty() && s.startDraw(Banks.DIBUJOS.get(0), 30, 0, null);
+            boolean good = started && r100 && tr && imp && tb && dw && s.phase == Phase.DRAW;
             return ok(c.getSource(), (good ? "PRUEBA_SHOW_OK " : "PRUEBA_SHOW_FALLO ") + r);
         }));
+        root.then(Commands.literal("probarbots").executes(c -> {
+            Banks.load();
+            return ok(c.getSource(), testBots());
+        }));
         d.register(root);
+    }
+
+    /** Juega solo, en silencio, con bots: trivia, dibujo, impostor, adivina la palabra y 100 mexicanos. Devuelve PRUEBA_BOTS_OK o lo que fallo. */
+    private static String testBots() {
+        com.showdeaxelis.data.Bots.quiet = true;
+        com.showdeaxelis.data.Bots.reset();
+        StringBuilder bad = new StringBuilder();
+        try {
+            Show s = new Show(new UUID(0, 98), "Host", false);
+            s.setFormat(Format.FFA);
+            if (com.showdeaxelis.data.Bots.fill(s) < 4 || !s.start()) {
+                return "PRUEBA_BOTS_FALLO no se pudo armar el show";
+            }
+            int t = 0;
+            // trivia
+            s.startTrivia(Banks.TRIVIA.get(0), 20, t);
+            for (int i = 0; i < 500 && !s.t.revealed; i++, t++) {
+                com.showdeaxelis.data.Bots.tick(s, t);
+                s.tick(t);
+            }
+            if (!s.t.revealed || s.t.answers.isEmpty()) {
+                bad.append(" trivia");
+            }
+            s.finishTrivia();
+            // dibujo
+            s.startDraw("casa", 20, t, null);
+            for (int i = 0; i < 600 && !s.draw.over; i++, t++) {
+                com.showdeaxelis.data.Bots.tick(s, t);
+                s.tick(t);
+            }
+            if (!s.draw.over || s.draw.strokes.isEmpty()) {
+                bad.append(" dibujo");
+            }
+            s.finishDraw();
+            // impostor
+            java.util.List<UUID> ids = new java.util.ArrayList<>();
+            for (var p : s.players) {
+                ids.add(p.id);
+            }
+            s.startImpostor("Prueba", "Palabra", ids, 0);
+            for (int i = 0; i < 4000 && s.imp.stage == com.showdeaxelis.game.ImpostorGame.Stage.CLUES; i++, t++) {
+                com.showdeaxelis.data.Bots.tick(s, t);
+            }
+            s.impostorStartVote();
+            for (int i = 0; i < 1000 && s.imp.votes.size() < s.players.size(); i++, t++) {
+                com.showdeaxelis.data.Bots.tick(s, t);
+            }
+            if (s.imp.votes.size() < s.players.size()) {
+                bad.append(" impostor");
+            }
+            s.impostorTally();
+            for (int i = 0; i < 600 && s.imp.stage == com.showdeaxelis.game.ImpostorGame.Stage.GUESS; i++, t++) {
+                com.showdeaxelis.data.Bots.tick(s, t);
+            }
+            s.finishImpostor();
+            // adivina la palabra
+            s.startTaboo("Playa", java.util.List.of("mar"), 30, t);
+            for (int i = 0; i < 700 && !s.taboo.over; i++, t++) {
+                com.showdeaxelis.data.Bots.tick(s, t);
+                s.tick(t);
+            }
+            if (!s.taboo.over) {
+                bad.append(" taboo");
+            }
+            s.finishTaboo();
+            // 100 mexicanos
+            s.start100(Banks.Q100.get(0), 1);
+            boolean buzzed = false;
+            for (int i = 0; i < 1500; i++, t++) {
+                com.showdeaxelis.data.Bots.tick(s, t);
+                s.tick(t);
+                for (var e : s.drain()) {
+                    buzzed |= e.type().equals("buzz");
+                }
+            }
+            if (!buzzed) {
+                bad.append(" 100mex");
+            }
+        } catch (Throwable e) {
+            bad.append(" excepcion:").append(e);
+        } finally {
+            com.showdeaxelis.data.Bots.quiet = false;
+            com.showdeaxelis.data.Bots.reset();
+        }
+        return bad.length() == 0 ? "PRUEBA_BOTS_OK" : "PRUEBA_BOTS_FALLO" + bad;
     }
 }

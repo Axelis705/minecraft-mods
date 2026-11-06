@@ -246,6 +246,11 @@ L = {
  "imp_caught": ["¡{player} era el impostor! Pero todavía puede adivinar la palabra y salvarse.", "¡Lo atraparon! Aunque aún le queda una oportunidad para lucirse."],
  "imp_escaped": ["¡El impostor era {player} y se salió con la suya! Qué talento actoral.", "Nadie acusó al correcto. {player} era el impostor. Qué escalofrío."],
  "imp_end": ["Y así termina esta ronda de mentiras elegantes. La palabra era {text}.", "Fin del juego. La palabra era {text}. Algunos lo sospechaban, otros mentían muy bien."],
+ "draw_start": ["{player} pasa al lienzo. Tiene {a} segundos para convertir una palabra en arte. O en algo parecido.", "Atención: {player} dibuja y los demás adivinan. Se aceptan garabatos, lágrimas y excusas.", "Se abre el museo. {player} es el artista de hoy y su pincel es un ratón."],
+ "draw_solved": ["¡{player} lo adivinó! Se lleva {pts} puntos. Alguien entiende de arte moderno.", "¡Correcto, {player}! +{pts}. El dibujante respira aliviado.", "{player} acertó. Nadie sabe cómo, pero acertó."],
+ "draw_bad": ["{player}, no se puede decir la palabra. Esto es un dibujo, no una conferencia.", "¡Trampa! {player} intentó soltar la palabra. El museo lo vio todo."],
+ "draw_none": ["Se acabó el tiempo y nadie adivinó. La palabra era {text}. El dibujo era una declaración de intenciones.", "Nadie acertó. Era {text}. Se rumora que el dibujante dijo que estaba inspirado."],
+ "draw_all": ["¡Todos adivinaron! Era {text}. Eso o el dibujo estaba muy claro o el público muy listo.", "Palabra descubierta por todos: {text}. Un aplauso para el pincel."],
  "taboo_start": ["{player} debe describir una palabra sin decir las prohibidas. Suerte y sin trampa.", "Atención, {side}: {player} describe y ustedes adivinan. Cualquier cosa menos la palabra, claro."],
  "taboo_bad": ["¡Dijiste una palabra prohibida, {player}! Los jueces se tapan los oídos.", "¡Prohibido! Esa palabra estaba en la lista. Te leímos."],
  "taboo_fail": ["Fin de la ronda. La palabra se quedó sin descubrir y los jueces sin paciencia.", "No se adivinó. La palabra era {text}. Cosa fácil, dicen algunos."],
@@ -281,6 +286,17 @@ RETOS = [
  "defiende con total seriedad por qué los lunes deberían ser opcionales.",
 ]
 
+DIBUJOS = [
+ "casa", "perro", "gato", "sol", "luna", "árbol", "carro", "avión", "barco", "bicicleta", "pizza", "taco", "hamburguesa", "helado", "sandía", "banana",
+ "manzana", "pulpo", "tiburón", "dinosaurio", "araña", "mariposa", "pingüino", "elefante", "jirafa", "serpiente", "robot", "cohete", "fantasma", "corona",
+ "castillo", "guitarra", "pastel de cumpleaños", "paraguas", "reloj", "teléfono", "computadora", "televisión", "escalera", "montaña", "playa", "volcán",
+ "arcoíris", "lluvia", "payaso", "pirata", "dragón", "creeper", "espada", "diamante", "cama", "zapato", "sombrero", "lentes", "llave", "bomba",
+ "el lunes", "el wifi", "la tarea", "una resaca", "un mal chiste", "un ventilador triste", "una cuchara con miedo", "un pato con traje",
+ "un tiburón en la regadera", "mi abuela en moto", "un taco volador", "un oso en el supermercado", "un calcetín perdido", "una nube enojada",
+ "un pulpo cocinando", "un astronauta en la tienda", "un perro presidente", "el último pedazo de pizza", "un fantasma con pereza", "un árbol de Navidad en verano",
+ "una sandía con lentes", "un gato millonario", "una jirafa en el elevador", "el examen sorpresa",
+]
+
 def w(name, data):
     with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
@@ -291,6 +307,7 @@ w("palabras.json", words)
 w("prohibidas.json", taboo)
 w("anuncios.json", L)
 w("retos.json", RETOS)
+w("dibujos.json", DIBUJOS)
 for i, (q, rs) in enumerate(Q):
     s = sum(p for _, p, _ in rs)
     assert 85 <= s <= 105, (q, s)

@@ -19,6 +19,7 @@ public final class ShowKeys {
     public static final KeyMapping PANEL = new KeyMapping("key.show_de_axelis.panel", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Y, CAT);
     public static final KeyMapping BUZZ = new KeyMapping("key.show_de_axelis.buzz", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_G, CAT);
     public static final KeyMapping TV = new KeyMapping("key.show_de_axelis.tv", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_H, CAT);
+    public static final KeyMapping DRAW = new KeyMapping("key.show_de_axelis.draw", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_J, CAT);
     public static final KeyMapping[] ANS = {
         new KeyMapping("key.show_de_axelis.ans_a", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Z, CAT),
         new KeyMapping("key.show_de_axelis.ans_b", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, CAT),
@@ -36,6 +37,7 @@ public final class ShowKeys {
             e.register(PANEL);
             e.register(BUZZ);
             e.register(TV);
+            e.register(DRAW);
             for (KeyMapping k : ANS) {
                 e.register(k);
             }
@@ -68,6 +70,12 @@ public final class ShowKeys {
             }
             while (TV.consumeClick()) {
                 TvCamera.toggle();
+            }
+            while (DRAW.consumeClick()) {
+                if (ShowClient.active() && ShowClient.state.getString("phase").equals("DRAW")
+                        && ShowClient.state.getCompound("dr").getBoolean("iDraw")) {
+                    DrawScreen.open();
+                }
             }
             while (BUZZ.consumeClick()) {
                 ShowClient.send("buzz");

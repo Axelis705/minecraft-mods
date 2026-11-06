@@ -109,6 +109,28 @@
   "Y así termina esta ronda de mentiras elegantes. La palabra era {text}.",
   "Fin del juego. La palabra era {text}. Algunos lo sospechaban, otros mentían muy bien."
  ],
+ "draw_start": [
+  "{player} pasa al lienzo. Tiene {a} segundos para convertir una palabra en arte. O en algo parecido.",
+  "Atención: {player} dibuja y los demás adivinan. Se aceptan garabatos, lágrimas y excusas.",
+  "Se abre el museo. {player} es el artista de hoy y su pincel es un ratón."
+ ],
+ "draw_solved": [
+  "¡{player} lo adivinó! Se lleva {pts} puntos. Alguien entiende de arte moderno.",
+  "¡Correcto, {player}! +{pts}. El dibujante respira aliviado.",
+  "{player} acertó. Nadie sabe cómo, pero acertó."
+ ],
+ "draw_bad": [
+  "{player}, no se puede decir la palabra. Esto es un dibujo, no una conferencia.",
+  "¡Trampa! {player} intentó soltar la palabra. El museo lo vio todo."
+ ],
+ "draw_none": [
+  "Se acabó el tiempo y nadie adivinó. La palabra era {text}. El dibujo era una declaración de intenciones.",
+  "Nadie acertó. Era {text}. Se rumora que el dibujante dijo que estaba inspirado."
+ ],
+ "draw_all": [
+  "¡Todos adivinaron! Era {text}. Eso o el dibujo estaba muy claro o el público muy listo.",
+  "Palabra descubierta por todos: {text}. Un aplauso para el pincel."
+ ],
  "taboo_start": [
   "{player} debe describir una palabra sin decir las prohibidas. Suerte y sin trampa.",
   "Atención, {side}: {player} describe y ustedes adivinan. Cualquier cosa menos la palabra, claro."

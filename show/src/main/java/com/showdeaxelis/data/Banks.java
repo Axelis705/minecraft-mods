@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class Banks {
     private static final Logger LOG = LogManager.getLogger("show_de_axelis");
-    public static final String[] FILES = {"100mexicanos.json", "trivia.json", "palabras.json", "prohibidas.json", "anuncios.json", "retos.json"};
+    public static final String[] FILES = {"100mexicanos.json", "trivia.json", "palabras.json", "prohibidas.json", "anuncios.json", "retos.json", "dibujos.json"};
 
     public record Taboo(String word, List<String> forbidden) {
     }
@@ -37,6 +37,7 @@ public final class Banks {
     public static final Map<String, List<String>> LINES = new LinkedHashMap<>();
     public static final List<String> PRIZES = new ArrayList<>();
     public static final List<String> RETOS = new ArrayList<>();
+    public static final List<String> DIBUJOS = new ArrayList<>();
 
     private Banks() {
     }
@@ -101,6 +102,7 @@ public final class Banks {
         LINES.clear();
         PRIZES.clear();
         RETOS.clear();
+        DIBUJOS.clear();
         try {
             int i = 0;
             for (JsonElement e : read("100mexicanos.json").getAsJsonArray()) {
@@ -131,7 +133,16 @@ public final class Banks {
             for (JsonElement e : read("retos.json").getAsJsonArray()) {
                 RETOS.add(e.getAsString());
             }
+            for (JsonElement e : read("dibujos.json").getAsJsonArray()) {
+                DIBUJOS.add(e.getAsString());
+            }
             JsonObject l = read("anuncios.json").getAsJsonObject();
+            // frases nuevas de fabrica que el archivo editado todavia no tiene
+            for (Map.Entry<String, JsonElement> en : JsonParser.parseString(jar("anuncios.json")).getAsJsonObject().entrySet()) {
+                if (!l.has(en.getKey())) {
+                    l.add(en.getKey(), en.getValue());
+                }
+            }
             for (Map.Entry<String, JsonElement> en : l.entrySet()) {
                 if (en.getValue().isJsonArray()) {
                     List<String> ls = new ArrayList<>();
@@ -150,6 +161,6 @@ public final class Banks {
             return "Error leyendo los bancos: " + e.getMessage();
         }
         return Q100.size() + " preguntas de 100 mexicanos, " + TRIVIA.size() + " de trivia, " + WORDS.size() + " categorias de impostor, "
-                + TABOO.size() + " palabras prohibidas";
+                + TABOO.size() + " palabras prohibidas, " + DIBUJOS.size() + " dibujos";
     }
 }

@@ -208,6 +208,28 @@ public final class ShowSync {
             c.put("lines", strings(g.lines.size() > 6 ? g.lines.subList(g.lines.size() - 6, g.lines.size()) : g.lines));
             t.put("tb", c);
         }
+        if (s.phase == Phase.DRAW && s.draw != null) {
+            var g = s.draw;
+            CompoundTag c = new CompoundTag();
+            c.putString("drawer", name(s, g.drawer));
+            c.putInt("side", Math.max(0, s.sideOf(s.byId(g.drawer))));
+            c.putInt("left", Math.max(0, g.deadlineTick - now));
+            c.putInt("total", g.deadlineTick - g.startTick);
+            c.putBoolean("over", g.over);
+            c.putBoolean("iDraw", viewer.equals(g.drawer));
+            c.putString("mask", g.mask(now));
+            c.putInt("round", s.roundNo);
+            ListTag solved = new ListTag();
+            for (UUID id : g.solved) {
+                solved.add(StringTag.valueOf(name(s, id)));
+            }
+            c.put("solved", solved);
+            c.putBoolean("iSolved", g.solved.contains(viewer));
+            if (host || viewer.equals(g.drawer) || g.over) {
+                c.putString("word", g.word);
+            }
+            t.put("dr", c);
+        }
         return t;
     }
 }

@@ -35,6 +35,12 @@ public final class ShowNet {
     public record Cue(String type, String text, int a, int b) {
     }
 
+    /** Un trazo del dibujo (op 0) o borrar el lienzo (op 1). Va del dibujante al servidor y del servidor a todos los demas. */
+    public record Draw(int op, int color, int size, int[] pts) {
+    }
+
+    public static final int MAX_PTS = 80;
+
     public static void init() {
         int id = 0;
         CHANNEL.registerMessage(id++, Action.class, (m, b) -> {
@@ -50,6 +56,32 @@ public final class ShowNet {
             b.writeVarInt(m.a());
             b.writeVarInt(m.b());
         }, b -> new Cue(b.readUtf(32), b.readUtf(512), b.readVarInt(), b.readVarInt()), (m, c) -> client(c, () -> () -> ShowClient.onCue(m)));
+        CHANNEL.registerMessage(id++, Draw.class, (m, b) -> {
+            b.writeVarInt(m.op());
+            b.writeVarInt(m.color());
+            b.writeVarInt(m.size());
+            b.writeVarInt(m.pts().length);
+            for (int v : m.pts()) {
+                b.writeVarInt(v);
+            }
+        }, b -> {
+            int op = b.readVarInt();
+            int color = b.readVarInt();
+            int size = b.readVarInt();
+            int n = Math.min(b.readVarInt(), MAX_PTS * 2);
+            int[] pts = new int[n];
+            for (int i = 0; i < n; i++) {
+                pts[i] = b.readVarInt();
+            }
+            return new Draw(op, color, size, pts);
+        }, (m, c) -> {
+            NetworkEvent.Context ctx = c.get();
+            if (ctx.getDirection().getReceptionSide().isServer()) {
+                server(c, sp -> ShowManager.onDraw(sp, m.op(), m.color(), m.size(), m.pts()));
+            } else {
+                client(c, () -> () -> com.showdeaxelis.client.DrawCanvas.onPacket(m.op(), m.color(), m.size(), m.pts()));
+            }
+        });
     }
 
     public static void toPlayer(ServerPlayer sp, Object msg) {
