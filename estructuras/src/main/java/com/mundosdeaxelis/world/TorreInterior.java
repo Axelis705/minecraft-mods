@@ -102,7 +102,8 @@ final class TorreInterior {
 
     /** Araña de luces o jaula colgada de una cadena: la cadena sale del techo (yTop) y baja {@code drop} bloques. */
     static void estHang(StructBp b, int x, int yTop, int z, int drop, String id) {
-        if (!free(b, x, yTop, z)) {
+        String top = b.get(x, yTop, z);
+        if (!free(b, x, yTop, z) && !(top != null && top.contains("_log"))) { // se puede colgar de una viga
             skip(id, x, yTop, z);
             return;
         }
@@ -510,5 +511,229 @@ final class TorreInterior {
             est(b, -3, f + 2, CZ + dz, EstIds.CANDELERO_PARED, "east");
             est(b, 3, f + 2, CZ + dz, EstIds.CANDELERO_PARED, "west");
         }
+    }
+
+    // ================================================================== ALQUIMIA (piso 2): círculo de transmutación, calderos en las esquinas, muros de estanterías
+
+    static void alchemy(StructBp b) {
+        final int f = 19;
+        final int top = f + 6;
+        final int i = 2;
+        // ---- suelo: damero con el círculo de transmutación alrededor del macizo
+        for (int x = -9; x <= 9; x++) {
+            for (int dz = -9; dz <= 9; dz++) {
+                if (!in(i, x, dz) || core(x, dz) || !"air".equals(b.get(x, f, CZ + dz))) {
+                    continue;
+                }
+                double d = Math.hypot(x, dz);
+                double ang = Math.atan2(dz, x);
+                double k = Math.round(ang / (Math.PI / 4));
+                double off = Math.abs(ang - k * Math.PI / 4) * d; // distancia al radio más cercano (de 8)
+                String m = ((x + dz) & 1) == 0 ? PB : DT;
+                if (d >= 4.4 && d < 5.6) {
+                    m = GOLD;
+                } else if (d >= 5.6 && d < 7.4 && off < 0.55) {
+                    m = "amethyst_block";
+                } else if (d >= 7.4 && d < 8.4) {
+                    m = "waxed_oxidized_cut_copper";
+                }
+                b.set(x, f - 1, CZ + dz, m);
+            }
+        }
+        cove(b, top, -9, -9, 9, 9, DBS);
+        // ---- vigas de madera oscura cruzando la sala (las arañas cuelgan de ellas)
+        for (int dzz : new int[]{-6, 6}) {
+            for (int x = -8; x <= 8; x++) {
+                if (in(i, x, dzz) && "air".equals(b.get(x, top, CZ + dzz))) {
+                    b.set(x, top, CZ + dzz, "stripped_dark_oak_log[axis=x]");
+                }
+            }
+        }
+        for (int xx : new int[]{-6, 6}) {
+            for (int dz = -8; dz <= 8; dz++) {
+                if (in(i, xx, dz) && "air".equals(b.get(xx, top, CZ + dz))) {
+                    b.set(xx, top, CZ + dz, "stripped_dark_oak_log[axis=z]");
+                }
+            }
+        }
+        // ---- cuatro calderos en los chaflanes: caldero mágico entre un brasero y un alambique de pociones
+        for (int sx = -1; sx <= 1; sx += 2) {
+            for (int sz = -1; sz <= 1; sz += 2) {
+                int cx = 6 * sx;
+                int cz = 7 * sz;
+                est(b, cx, f, CZ + cz, EstIds.CALDERO_MAGICO, "north");
+                b.set(cx - sx, f, CZ + cz - 2 * sz, PD);
+                b.set(cx - sx, f + 1, CZ + cz - 2 * sz, "brewing_stand[has_bottle_0=true,has_bottle_1=false,has_bottle_2=true]");
+                b.set(cx - 2 * sx, f, CZ + cz - sz, PD);
+                b.set(cx - 2 * sx, f + 1, CZ + cz - sz, "brewing_stand[has_bottle_0=false,has_bottle_1=true,has_bottle_2=true]");
+                estHang(b, cx, top, CZ + 6 * sz, 3, EstIds.ARANA);
+            }
+        }
+        // ---- los cuatro muros rectos (9 casillas cada uno)
+        // norte: gran estantería de grimorios con un tapiz arcano en el centro
+        for (int x = -4; x <= 4; x++) {
+            if (x == 0) {
+                estTall(b, 0, f + 1, CZ - 9, EstIds.TAPIZ_ARCANO, "south");
+                estTall(b, 0, f + 3, CZ - 9, EstIds.TAPIZ_ESTRELLAS, "south");
+            } else {
+                estTall(b, x, f, CZ - 9, EstIds.ESTANTERIA, "south");
+                b.set(x, f + 2, CZ - 9, "bookshelf");
+                b.set(x, f + 3, CZ - 9, "bookshelf");
+                b.set(x, f + 4, CZ - 9, Math.abs(x) % 2 == 0 ? "chiseled_bookshelf[facing=south]" : "bookshelf");
+                b.set(x, f + 5, CZ - 9, "bookshelf");
+            }
+        }
+        // sur: mesa de preparación con candelabros y tapices
+        for (int s = -1; s <= 1; s += 2) {
+            estTall(b, 3 * s, f, CZ + 9, EstIds.TAPIZ_ARCANO, "north");
+            estTall(b, 3 * s, f + 2, CZ + 9, EstIds.TAPIZ_ESTRELLAS, "north");
+            est(b, 2 * s, f, CZ + 9, EstIds.CANDELABRO, "north");
+            estTall(b, 4 * s, f, CZ + 9, EstIds.ESTATUA_CABALLERO, "north");
+        }
+        est(b, 0, f, CZ + 8, EstIds.MESA_ALQUIMIA, "north");
+        est(b, -1, f, CZ + 8, EstIds.PILA_LIBROS, "north");
+        est(b, 1, f, CZ + 8, EstIds.PILA_LIBROS, "north");
+        for (int x = -1; x <= 1; x++) {
+            b.set(x, f, CZ + 9, "barrel[facing=up]");
+        }
+        b.set(0, f + 1, CZ + 9, "lectern[facing=north]");
+        // oeste: despensa de ingredientes: estanterías, barriles y macetas
+        for (int dz = -4; dz <= 4; dz++) {
+            if (dz % 3 == 0) {
+                estTall(b, -9, f, CZ + dz, EstIds.TAPIZ_ARBOL, "east");
+                continue;
+            }
+            estTall(b, -9, f, CZ + dz, EstIds.ESTANTERIA, "east");
+            b.set(-9, f + 2, CZ + dz, "bookshelf");
+            b.set(-9, f + 3, CZ + dz, "bookshelf");
+        }
+        for (int dz : new int[]{-3, 3}) {
+            b.set(-8, f, CZ + dz, "barrel[facing=up]");
+            b.set(-8, f + 1, CZ + dz, dz < 0 ? "potted_red_mushroom" : "potted_brown_mushroom");
+        }
+        // este: el gran alambique: caldero grande en un estrado de cobre con tubos de cristal
+        for (int dz = -2; dz <= 2; dz++) {
+            for (int x = 7; x <= 9; x++) {
+                if (in(i, x, dz)) {
+                    b.set(x, f, CZ + dz, x == 7 ? "cut_copper_stairs[facing=west,half=bottom]" : "waxed_cut_copper");
+                }
+            }
+        }
+        est(b, 9, f + 1, CZ, EstIds.CALDERO_MAGICO, "west");
+        est(b, 9, f + 1, CZ - 2, EstIds.CRISTAL_MANA, "west");
+        est(b, 9, f + 1, CZ + 2, EstIds.CRISTAL_MANA, "west");
+        est(b, 8, f + 1, CZ, EstIds.GLOBO, "west");
+        for (int dz = -4; dz <= 4; dz += 8) {
+            estTall(b, 9, f, CZ + dz, EstIds.TAPIZ_ESTRELLAS, "west");
+        }
+        for (int h = 2; h <= 5; h++) {
+            b.set(9, f + h, CZ, "glass");
+        }
+        // luces
+        for (int s = -1; s <= 1; s += 2) {
+            estHang(b, 0, top, CZ + 5 * s, 3, EstIds.ARANA);
+            estHang(b, 5 * s, top, CZ, 3, EstIds.ARANA);
+        }
+    }
+
+    // ================================================================== utilidades de pisos
+
+    interface Mat {
+        String at(int x, int dz);
+    }
+
+    /** Suelo (capa f-1) de todas las casillas interiores libres de un piso. */
+    static void floor(StructBp b, int i, int f, Mat m) {
+        int r = DesignTorre.rad(i) - 2;
+        for (int x = -r; x <= r; x++) {
+            for (int dz = -r; dz <= r; dz++) {
+                if (!in(i, x, dz) || core(x, dz) || !"air".equals(b.get(x, f, CZ + dz))) {
+                    continue;
+                }
+                String g = m.at(x, dz);
+                if (g != null) {
+                    b.set(x, f - 1, CZ + dz, g);
+                }
+            }
+        }
+    }
+
+    /** Estantería alta: el bloque nuevo abajo y libros hasta la altura h (en bloques desde f). */
+    static void stack(StructBp b, int x, int f, int z, int h, String face) {
+        if (free(b, x, f, z) && free(b, x, f + 1, z)) {
+            estTall(b, x, f, z, EstIds.ESTANTERIA, face);
+            for (int k = 2; k < h; k++) {
+                if (free(b, x, f + k, z)) {
+                    b.set(x, f + k, z, k == h - 1 && (x + z) % 3 == 0 ? "chiseled_bookshelf[facing=" + face + "]" : "bookshelf");
+                }
+            }
+        }
+    }
+
+    // ================================================================== BIBLIOTECA (piso 3): archivo, scriptorium, vestíbulo y cámara del saber
+
+    static void library(StructBp b) {
+        final int f = 27;
+        final int top = f + 6;
+        final int i = 3;
+        floor(b, i, f, (x, dz) -> ((x + dz) & 1) == 0 ? "dark_oak_planks" : "spruce_planks");
+        cove(b, top, -9, -9, 9, 9, DBS);
+        // ---- ARCHIVO (oeste): estanterías en el muro y dos hileras de estantes de doble cara
+        for (int dz = -4; dz <= 4; dz++) {
+            stack(b, -9, f, CZ + dz, 5, "east");
+        }
+        for (int dz : new int[]{-6, -5, -4, -3, 3, 4, 5, 6}) {
+            stack(b, -7, f, CZ + dz, 4, "west");
+            stack(b, -6, f, CZ + dz, 4, "east");
+        }
+        est(b, -8, f, CZ - 5, EstIds.CANDELABRO, "east");
+        est(b, -8, f, CZ + 5, EstIds.CANDELABRO, "east");
+        est(b, -5, f, CZ, EstIds.PILA_LIBROS, "east");
+        estHang(b, -5, top, CZ - 1, 3, EstIds.ARANA);
+        estHang(b, -5, top, CZ + 1, 3, EstIds.ARANA);
+        // ---- SCRIPTORIUM (este): mesas de copista con velas, sillones y un gran reloj
+        for (int[] t : new int[][]{{-6, 5}, {2, 5}}) {
+            table(b, 7, f, CZ + t[0], 'z', t[1], "spruce_slab", "spruce_fence");
+            for (int dz = t[0] + 1; dz < t[0] + t[1] - 1; dz += 2) {
+                est(b, 6, f, CZ + dz, EstIds.SILLON, "east");
+                est(b, 8, f, CZ + dz, EstIds.SILLON, "west");
+            }
+            candles(b, 7, f + 2, CZ + t[0], 3);
+            candles(b, 7, f + 2, CZ + t[0] + t[1] - 1, 2);
+            est(b, 7, f + 2, CZ + t[0] + 2, EstIds.PILA_LIBROS, "west");
+        }
+        estTall(b, 9, f, CZ, EstIds.RELOJ, "west");
+        estTall(b, 9, f, CZ - 3, EstIds.TAPIZ_ARBOL, "west");
+        estTall(b, 9, f, CZ + 3, EstIds.TAPIZ_ARBOL, "west");
+        estHang(b, 6, top, CZ, 3, EstIds.ARANA);
+        // ---- VESTÍBULO (norte): alfombra, guardianes y el tapiz del reino
+        for (int dz = -9; dz <= -3; dz++) {
+            for (int x = -1; x <= 1; x++) {
+                carpet(b, x, f, CZ + dz, x == 0 ? "red_carpet" : "yellow_carpet");
+            }
+        }
+        for (int s = -1; s <= 1; s += 2) {
+            estTall(b, 2 * s, f, CZ - 8, EstIds.ESTATUA_CABALLERO, "south");
+            est(b, s, f, CZ - 9, EstIds.CANDELABRO, "south");
+        }
+        estTall(b, 0, f, CZ - 9, EstIds.TAPIZ_REAL, "south");
+        estTall(b, 0, f + 2, CZ - 9, EstIds.TAPIZ_ESTRELLAS, "south");
+        estHang(b, 0, top, CZ - 6, 3, EstIds.ARANA);
+        // ---- CÁMARA DEL SABER (sur): globo, esfera armilar y telescopio sobre un dibujo de estrella en el suelo
+        for (int x = -2; x <= 2; x++) {
+            for (int dz = 4; dz <= 9; dz++) {
+                if (Math.abs(x) + Math.abs(dz - 7) <= 2 && in(i, x, dz)) {
+                    b.set(x, f - 1, CZ + dz, ((x + dz) & 1) == 0 ? GOLD : "amethyst_block");
+                }
+            }
+        }
+        est(b, -1, f, CZ + 7, EstIds.GLOBO, "north");
+        est(b, 1, f, CZ + 7, EstIds.ESFERA_ARMILAR, "north");
+        est(b, 0, f, CZ + 9, EstIds.TELESCOPIO, "north");
+        for (int s = -1; s <= 1; s += 2) {
+            estTall(b, s, f, CZ + 9, EstIds.TAPIZ_MAPA, "north");
+            est(b, 2 * s, f, CZ + 9, EstIds.CANDELABRO, "north");
+        }
+        estHang(b, 0, top, CZ + 6, 3, EstIds.ARANA);
     }
 }

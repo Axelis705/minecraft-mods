@@ -728,8 +728,8 @@ final class DesignTorre {
             case 0 -> TorreInterior.hall(b);
             case 1 -> {
             }
-            case 2 -> alchemy(b, a, rs[0], f);
-            case 3 -> quarters(b, a, rs, f);
+            case 2 -> TorreInterior.alchemy(b);
+            case 3 -> TorreInterior.library(b);
             case 4 -> enchanting(b, a, rs[0], f);
             case 5 -> greenhouse(b, a, rs, f);
             case 6 -> mapRoom(b, a, rs[0], f);
