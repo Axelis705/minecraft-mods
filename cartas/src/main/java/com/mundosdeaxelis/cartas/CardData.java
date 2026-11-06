@@ -48,7 +48,7 @@ final class CardData {
         {"odette", "Odette", "personajes", "LEGENDARIA", "Es el mundo de Axelis705. Su luz ilumina cada rinc\u00f3n, y a su lado hasta la noche m\u00e1s larga se siente en calma.", "#8ac8ff", "#ffffff"},
         {"pavi223", "Pavi223", "personajes", "EPICA", "Entrena a su equipo sin descanso y no pierde una batalla por falta de ganas. Si algo es amarillo, ya es su favorito.", "#e0a020", "#ffffff"},
         {"rafa", "Rafa", "personajes", "EPICA", "Su chiste llega justo cuando nadie lo espera. Hasta un creeper lo pensar\u00eda dos veces antes de explotar en medio de la risa.", "#4a9a4a", "#ffffff"},
-        {"scardax", "Scardax", "personajes", "EPICA", "Imponente y siempre seguro de s\u00ed mismo: se cree el mejor en todo. Eso s\u00ed, ni le menciones Roblox, que lo odia con toda su alma.", "#d03030", "#ffffff"},
+        {"scardax", "Scardax", "personajes", "EPICA", "Imponente: su presencia se nota apenas aparece. Juega, crea y siempre va a por m\u00e1s, pero ni le menciones Roblox, que lo odia con toda su alma.", "#d03030", "#ffffff"},
         {"chafet", "Chafet", "personajes", "EPICA", "Joven, tranquilo y de punter\u00eda certera, apunta con calma de veterano. Siempre aparece justo cuando el equipo lo necesita.", "#f0d890", "#ffffff"},
     };
 
