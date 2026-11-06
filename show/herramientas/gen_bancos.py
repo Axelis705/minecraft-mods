@@ -258,6 +258,29 @@ L = {
              "una excursión a la tienda de la esquina", "un diploma con tu nombre mal escrito", "un coche (de juguete, pero es tuyo)", "un año de suscripción gratis a nada", "un dragón... pero de dibujo", "la llave del cielo (no abre ninguna puerta)"],
 }
 
+RETOS = [
+ "imita a una gallina convencida de que es un avión durante diez segundos.",
+ "habla como presentador de noticias deportivas mientras describes lo que ves en la pantalla.",
+ "di tu nombre completo al revés, con mucha seriedad.",
+ "cuenta un chiste tan malo que el público tenga que abuchearte con cariño.",
+ "haz tu mejor cara de sorpresa y mantenla hasta que el locutor diga basta.",
+ "canta el principio de una canción inventada sobre la sandía.",
+ "baila como si estuviera sonando música de ascensor.",
+ "describe el sabor del color azul sin usar la palabra azul.",
+ "presenta a tu compañero como si fuera la persona más famosa del universo.",
+ "da un discurso de agradecimiento por ganar un premio que no existe.",
+ "habla en cámara lenta durante quince segundos.",
+ "haz un anuncio de televisión de una cuchara.",
+ "imita a un creeper que se acaba de enterar de un secreto.",
+ "di un trabalenguas con la boca llena de aire.",
+ "actúa como si fueras un aldeano pidiendo un descuento en una tienda.",
+ "narra un día normal de un calcetín perdido.",
+ "inventa un eslogan para este programa en menos de diez segundos.",
+ "haz sonidos de animal de granja hasta que alguien adivine cuál es.",
+ "recita el abecedario con voz de villano de caricatura.",
+ "defiende con total seriedad por qué los lunes deberían ser opcionales.",
+]
+
 def w(name, data):
     with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
@@ -267,6 +290,7 @@ w("trivia.json", T)
 w("palabras.json", words)
 w("prohibidas.json", taboo)
 w("anuncios.json", L)
+w("retos.json", RETOS)
 for i, (q, rs) in enumerate(Q):
     s = sum(p for _, p, _ in rs)
     assert 85 <= s <= 105, (q, s)

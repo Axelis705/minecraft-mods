@@ -256,6 +256,7 @@ public final class HostScreen extends Screen {
         half("Mayor o menor", () -> act("trivia", "Mayor o menor", 12));
         half("El Impostor", () -> act("imp", "", 0));
         half("Adivina palabra", () -> act("taboo", "", 60));
+        half("Reto absurdo", () -> act("reto"));
         nextRow();
         full("Llevar jugadores a sus podios", () -> act("tp"));
         full("Terminar el show (final)", () -> act("end"));

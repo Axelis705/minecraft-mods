@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
  */
 public final class Banks {
     private static final Logger LOG = LogManager.getLogger("show_de_axelis");
-    public static final String[] FILES = {"100mexicanos.json", "trivia.json", "palabras.json", "prohibidas.json", "anuncios.json"};
+    public static final String[] FILES = {"100mexicanos.json", "trivia.json", "palabras.json", "prohibidas.json", "anuncios.json", "retos.json"};
 
     public record Taboo(String word, List<String> forbidden) {
     }
@@ -36,6 +36,7 @@ public final class Banks {
     public static final List<Taboo> TABOO = new ArrayList<>();
     public static final Map<String, List<String>> LINES = new LinkedHashMap<>();
     public static final List<String> PRIZES = new ArrayList<>();
+    public static final List<String> RETOS = new ArrayList<>();
 
     private Banks() {
     }
@@ -99,6 +100,7 @@ public final class Banks {
         TABOO.clear();
         LINES.clear();
         PRIZES.clear();
+        RETOS.clear();
         try {
             int i = 0;
             for (JsonElement e : read("100mexicanos.json").getAsJsonArray()) {
@@ -125,6 +127,9 @@ public final class Banks {
             for (JsonElement e : read("prohibidas.json").getAsJsonArray()) {
                 JsonObject o = e.getAsJsonObject();
                 TABOO.add(new Taboo(str(o, "palabra", "?"), strs(o, "no")));
+            }
+            for (JsonElement e : read("retos.json").getAsJsonArray()) {
+                RETOS.add(e.getAsString());
             }
             JsonObject l = read("anuncios.json").getAsJsonObject();
             for (Map.Entry<String, JsonElement> en : l.entrySet()) {

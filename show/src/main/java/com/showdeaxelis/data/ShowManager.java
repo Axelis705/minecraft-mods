@@ -610,6 +610,18 @@ public final class ShowManager {
                 }
             }
             case "treveal" -> sh.revealTrivia();
+            case "reto" -> {
+                if (Banks.RETOS.isEmpty() || sh.players.isEmpty()) {
+                    msg(sp, "No hay retos o jugadores.");
+                } else {
+                    Participant who = sh.players.get(RND.nextInt(sh.players.size()));
+                    String reto = Banks.RETOS.get(RND.nextInt(Banks.RETOS.size()));
+                    snd("round_start");
+                    cue("title", "RETO ABSURDO", 0, 0);
+                    cue("cam", "pod" + Math.max(0, sh.sideOf(who)), 0, 0);
+                    say(who.name + ", tu reto: " + reto);
+                }
+            }
             // --- impostor
             case "imp" -> startImpostor(sp, s);
             case "impskip" -> sh.impostorSkip();

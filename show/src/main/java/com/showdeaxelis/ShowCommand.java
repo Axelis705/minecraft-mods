@@ -50,7 +50,7 @@ public final class ShowCommand {
         }));
         root.then(Commands.literal("construir").then(Commands.argument("pos", BlockPosArgument.blockPos())
                 .then(Commands.argument("dir", StringArgumentType.word()).executes(c -> {
-                    BlockPos pos = BlockPosArgument.getLoadedBlockPos(c, "pos");
+                    BlockPos pos = BlockPosArgument.getBlockPos(c, "pos");
                     Direction f = Direction.byName(StringArgumentType.getString(c, "dir"));
                     if (f == null || f.getAxis().isVertical()) {
                         f = Direction.SOUTH;

@@ -224,7 +224,7 @@ public final class Studio {
         if (sh.host != null && sh.byId(sh.host) == null) {
             ServerPlayer hp = server.getPlayerList().getPlayer(sh.host);
             if (hp != null) {
-                double[] pos = atD(st, 11.5, 3, 13.8);
+                double[] pos = atD(st, 11.5, 2, 14.6);
                 hp.teleportTo(lv, pos[0], pos[1], pos[2], yaw + 90f, 0f);
             }
         }
