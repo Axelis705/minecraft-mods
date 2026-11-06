@@ -405,7 +405,14 @@
    "c2": "#ffffff",
    "desc": "Su luz acompaña cada aventura.",
    "skin": "skins/odette.png",
-   "scene": "night"
+   "scene": "night",
+   "art": "arte/odette.png",
+   "art_box": [
+    0.05,
+    0.0,
+    1.0,
+    0.958
+   ]
   },
   {
    "id": "pavi223",
