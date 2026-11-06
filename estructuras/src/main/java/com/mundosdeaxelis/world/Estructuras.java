@@ -44,7 +44,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 public final class Estructuras {
     private static final String MOD = "mundos_de_axelis";
     private static final int MAX_UNDO = 12;
-    private static final int FLAGS = 2;
+    /**
+     * Solo avisa a los jugadores: sin avisar a los vecinos (16) y sin soltar objetos (32). Con solo "2", cada bloque que se coloca
+     * revisa a sus vecinos y las antorchas, farolas, alfombras o trampillas que todavía no tenían su apoyo se rompían y dejaban
+     * objetos tirados por todo el suelo.
+     */
+    private static final int FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_SUPPRESS_DROPS;
     private static final Map<UUID, Deque<Undo>> UNDO = new HashMap<>();
 
     private Estructuras() {

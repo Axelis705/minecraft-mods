@@ -1,17 +1,24 @@
+summon minecraft:item 0 -60 0 {Item:{id:"minecraft:stone",Count:1b}}
+execute if entity @e[type=minecraft:item] run say PRUEBA_SELECTOR_VE_OBJETOS_OK
+kill @e[type=minecraft:item]
 execute positioned 0 -48 0 rotated 0 0 run mundos estructura bosque
 execute if block -13 -48 51 minecraft:lectern run say PRUEBA_BOSQUE_OK
+execute unless entity @e[type=minecraft:item] run say PRUEBA_BOSQUE_SIN_OBJETOS_OK
 execute if block 0 -56 49 minecraft:soul_campfire run say PRUEBA_BOSQUE_BAJO_OK
 mundos estructura deshacer
 execute if block -13 -48 51 minecraft:air run say PRUEBA_BOSQUE_DESHECHO_OK
 execute if block 0 -61 20 minecraft:grass_block run say PRUEBA_SUELO_OK
 execute positioned 0 -48 0 rotated 0 0 run mundos estructura forja
 execute if block 26 -48 57 minecraft:smoker run say PRUEBA_FORJA_OK
+execute unless entity @e[type=minecraft:item] run say PRUEBA_FORJA_SIN_OBJETOS_OK
 execute if block 0 -58 75 minecraft:soul_campfire run say PRUEBA_FORJA_BAJO_OK
 execute positioned 0 -48 0 rotated 0 0 run mundos estructura hielo
 execute if block 17 -48 58 minecraft:cauldron run say PRUEBA_HIELO_OK
+execute unless entity @e[type=minecraft:item] run say PRUEBA_HIELO_SIN_OBJETOS_OK
 execute if block 12 -59 57 minecraft:grindstone run say PRUEBA_HIELO_BAJO_OK
 execute positioned 0 -48 0 rotated 90 0 run mundos estructura torre
 execute if block -50 40 0 minecraft:lightning_rod run say PRUEBA_TORRE_OK
+execute unless entity @e[type=minecraft:item] run say PRUEBA_TORRE_SIN_OBJETOS_OK
 execute if block -44 -52 0 minecraft:soul_campfire run say PRUEBA_TORRE_BAJO_OK
 execute if block -43 -37 0 minecraft:lectern run say PRUEBA_TORRE_BIBLIOTECA_OK
 execute if block -45 -13 0 minecraft:enchanting_table run say PRUEBA_TORRE_ENCANTAMIENTO_OK
@@ -20,15 +27,20 @@ mundos estructura deshacer 3
 execute if block -44 -52 0 minecraft:air run say PRUEBA_TODO_DESHECHO_OK
 execute if block 26 -48 57 minecraft:air run say PRUEBA_FORJA_DESHECHA_OK
 execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
+#expect PRUEBA_SELECTOR_VE_OBJETOS_OK
 #expect PRUEBA_BOSQUE_OK
+#expect PRUEBA_BOSQUE_SIN_OBJETOS_OK
 #expect PRUEBA_BOSQUE_BAJO_OK
 #expect PRUEBA_BOSQUE_DESHECHO_OK
 #expect PRUEBA_SUELO_OK
 #expect PRUEBA_FORJA_OK
+#expect PRUEBA_FORJA_SIN_OBJETOS_OK
 #expect PRUEBA_FORJA_BAJO_OK
 #expect PRUEBA_HIELO_OK
+#expect PRUEBA_HIELO_SIN_OBJETOS_OK
 #expect PRUEBA_HIELO_BAJO_OK
 #expect PRUEBA_TORRE_OK
+#expect PRUEBA_TORRE_SIN_OBJETOS_OK
 #expect PRUEBA_TORRE_BAJO_OK
 #expect PRUEBA_TORRE_BIBLIOTECA_OK
 #expect PRUEBA_TORRE_ENCANTAMIENTO_OK
