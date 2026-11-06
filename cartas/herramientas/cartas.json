@@ -235,7 +235,14 @@
    "c1": "#5fbf4a",
    "c2": "#1f3a1a",
    "desc": "Ssssss...",
-   "scene": "plains"
+   "scene": "plains",
+   "art": "arte/creeper.png",
+   "art_box": [
+    0,
+    0.02,
+    1,
+    0.9
+   ]
   },
   {
    "id": "zombi",
@@ -246,7 +253,14 @@
    "c1": "#6a9a5a",
    "c2": "#2a3a4a",
    "desc": "Camina hacia ti, siempre.",
-   "scene": "night"
+   "scene": "night",
+   "art": "arte/zombi.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "esqueleto",
@@ -257,7 +271,14 @@
    "c1": "#d9d9d9",
    "c2": "#4a4a4a",
    "desc": "Tiene muy buena puntería.",
-   "scene": "night"
+   "scene": "night",
+   "art": "arte/esqueleto.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.92
+   ]
   },
   {
    "id": "enderman",
@@ -268,7 +289,14 @@
    "c1": "#241a34",
    "c2": "#e070ff",
    "desc": "No lo mires a los ojos.",
-   "scene": "end"
+   "scene": "end",
+   "art": "arte/enderman.png",
+   "art_box": [
+    0,
+    0.0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "wither",
@@ -279,7 +307,14 @@
    "c1": "#3a3a4a",
    "c2": "#d9d9ff",
    "desc": "Tres cabezas, ninguna amable.",
-   "scene": "nether"
+   "scene": "nether",
+   "art": "arte/wither.png",
+   "art_box": [
+    0,
+    0.0,
+    1,
+    0.88
+   ]
   },
   {
    "id": "ender_dragon",
