@@ -42,29 +42,17 @@ execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
 #expect PRUEBA_SELECTOR_VE_OBJETOS_OK
 #expect PRUEBA_BOSQUE_OK
 #expect PRUEBA_BOSQUE_SIN_OBJETOS_OK
-execute as @e[type=minecraft:item,limit=8] run say DIAG_BOSQUE_OBJETO @s
-data get entity @e[type=minecraft:item,limit=1] Pos
-data get entity @e[type=minecraft:item,limit=1] Item
 #expect PRUEBA_BOSQUE_BAJO_OK
 #expect PRUEBA_BOSQUE_DESHECHO_OK
 #expect PRUEBA_SUELO_OK
 #expect PRUEBA_FORJA_OK
 #expect PRUEBA_FORJA_SIN_OBJETOS_OK
-execute as @e[type=minecraft:item,limit=8] run say DIAG_FORJA_OBJETO @s
-data get entity @e[type=minecraft:item,limit=1] Pos
-data get entity @e[type=minecraft:item,limit=1] Item
 #expect PRUEBA_FORJA_BAJO_OK
 #expect PRUEBA_HIELO_OK
 #expect PRUEBA_HIELO_SIN_OBJETOS_OK
-execute as @e[type=minecraft:item,limit=8] run say DIAG_HIELO_OBJETO @s
-data get entity @e[type=minecraft:item,limit=1] Pos
-data get entity @e[type=minecraft:item,limit=1] Item
 #expect PRUEBA_HIELO_BAJO_OK
 #expect PRUEBA_TORRE_OK
 #expect PRUEBA_TORRE_SIN_OBJETOS_OK
-execute as @e[type=minecraft:item,limit=8] run say DIAG_TORRE_OBJETO @s
-data get entity @e[type=minecraft:item,limit=1] Pos
-data get entity @e[type=minecraft:item,limit=1] Item
 #expect PRUEBA_TORRE_BAJO_OK
 #expect PRUEBA_TORRE_BIBLIOTECA_OK
 #expect PRUEBA_TORRE_ENCANTAMIENTO_OK
