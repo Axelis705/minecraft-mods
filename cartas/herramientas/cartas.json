@@ -322,6 +322,94 @@
    "c1": "#7a3aa0",
    "c2": "#6ae05a",
    "desc": "Sus pociones nunca salen igual dos veces."
+  },
+  {
+   "id": "jugador1",
+   "name": "Jugador 1",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#d9b88a",
+   "c2": "#ffffff",
+   "desc": "Un jugador de Mundos de Axelis.",
+   "skin": "skins/jugador1.png"
+  },
+  {
+   "id": "jugador2",
+   "name": "Jugador 2",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#6a7a8a",
+   "c2": "#ffffff",
+   "desc": "Un jugador de Mundos de Axelis.",
+   "skin": "skins/jugador2.png"
+  },
+  {
+   "id": "jugador3",
+   "name": "Jugador 3",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#e88ab8",
+   "c2": "#ffffff",
+   "desc": "Un jugador de Mundos de Axelis.",
+   "skin": "skins/jugador3.png"
+  },
+  {
+   "id": "jugador4",
+   "name": "Jugador 4",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#8a8ac8",
+   "c2": "#ffffff",
+   "desc": "Un jugador de Mundos de Axelis.",
+   "skin": "skins/jugador4.png"
+  },
+  {
+   "id": "jugador5",
+   "name": "Jugador 5",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#e0a020",
+   "c2": "#ffffff",
+   "desc": "Un jugador de Mundos de Axelis.",
+   "skin": "skins/jugador5.png"
+  },
+  {
+   "id": "jugador6",
+   "name": "Jugador 6",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#8a5a3a",
+   "c2": "#ffffff",
+   "desc": "Un jugador de Mundos de Axelis.",
+   "skin": "skins/jugador6.png"
+  },
+  {
+   "id": "jugador7",
+   "name": "Jugador 7",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#c03030",
+   "c2": "#ffffff",
+   "desc": "Un jugador de Mundos de Axelis.",
+   "skin": "skins/jugador7.png"
+  },
+  {
+   "id": "jugador8",
+   "name": "Jugador 8",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#e8c8a0",
+   "c2": "#ffffff",
+   "desc": "Un jugador de Mundos de Axelis.",
+   "skin": "skins/jugador8.png"
   }
  ],
  "sobres": [

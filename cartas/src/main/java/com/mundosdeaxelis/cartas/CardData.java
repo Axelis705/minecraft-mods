@@ -46,6 +46,14 @@ final class CardData {
         {"espada_netherita", "Espada de Netherita", "espadas", "EPICA", "Forjada en las profundidades.", "#4a3f4a", "#c04a2a"},
         {"aldeano", "Aldeano", "personajes", "COMUN", "Hmm.", "#c08a6a", "#ffffff"},
         {"bruja", "Bruja", "personajes", "RARA", "Sus pociones nunca salen igual dos veces.", "#7a3aa0", "#6ae05a"},
+        {"jugador1", "Jugador 1", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#d9b88a", "#ffffff"},
+        {"jugador2", "Jugador 2", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#6a7a8a", "#ffffff"},
+        {"jugador3", "Jugador 3", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#e88ab8", "#ffffff"},
+        {"jugador4", "Jugador 4", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#8a8ac8", "#ffffff"},
+        {"jugador5", "Jugador 5", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#e0a020", "#ffffff"},
+        {"jugador6", "Jugador 6", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#8a5a3a", "#ffffff"},
+        {"jugador7", "Jugador 7", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#c03030", "#ffffff"},
+        {"jugador8", "Jugador 8", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#e8c8a0", "#ffffff"},
     };
 
     /** id, nombre, color, cartas, rareza minima garantizada, prob. holografica */
