@@ -324,92 +324,92 @@
    "desc": "Sus pociones nunca salen igual dos veces."
   },
   {
-   "id": "jugador1",
-   "name": "Jugador 1",
+   "id": "axelis705",
+   "name": "Axelis705",
    "cat": "personajes",
-   "rar": "EPICA",
+   "rar": "LEGENDARIA",
    "glyph": "star",
-   "c1": "#d9b88a",
+   "c1": "#ffe27a",
    "c2": "#ffffff",
-   "desc": "Un jugador de Mundos de Axelis.",
-   "skin": "skins/jugador1.png"
+   "desc": "Creador de Mundos de Axelis.",
+   "skin": "skins/axelis705.png"
   },
   {
-   "id": "jugador2",
-   "name": "Jugador 2",
-   "cat": "personajes",
-   "rar": "EPICA",
-   "glyph": "star",
-   "c1": "#6a7a8a",
-   "c2": "#ffffff",
-   "desc": "Un jugador de Mundos de Axelis.",
-   "skin": "skins/jugador2.png"
-  },
-  {
-   "id": "jugador3",
-   "name": "Jugador 3",
-   "cat": "personajes",
-   "rar": "EPICA",
-   "glyph": "star",
-   "c1": "#e88ab8",
-   "c2": "#ffffff",
-   "desc": "Un jugador de Mundos de Axelis.",
-   "skin": "skins/jugador3.png"
-  },
-  {
-   "id": "jugador4",
-   "name": "Jugador 4",
-   "cat": "personajes",
-   "rar": "EPICA",
-   "glyph": "star",
-   "c1": "#8a8ac8",
-   "c2": "#ffffff",
-   "desc": "Un jugador de Mundos de Axelis.",
-   "skin": "skins/jugador4.png"
-  },
-  {
-   "id": "jugador5",
-   "name": "Jugador 5",
-   "cat": "personajes",
-   "rar": "EPICA",
-   "glyph": "star",
-   "c1": "#e0a020",
-   "c2": "#ffffff",
-   "desc": "Un jugador de Mundos de Axelis.",
-   "skin": "skins/jugador5.png"
-  },
-  {
-   "id": "jugador6",
-   "name": "Jugador 6",
-   "cat": "personajes",
-   "rar": "EPICA",
-   "glyph": "star",
-   "c1": "#8a5a3a",
-   "c2": "#ffffff",
-   "desc": "Un jugador de Mundos de Axelis.",
-   "skin": "skins/jugador6.png"
-  },
-  {
-   "id": "jugador7",
-   "name": "Jugador 7",
+   "id": "jadiel",
+   "name": "Jadiel",
    "cat": "personajes",
    "rar": "EPICA",
    "glyph": "star",
    "c1": "#c03030",
    "c2": "#ffffff",
-   "desc": "Un jugador de Mundos de Axelis.",
-   "skin": "skins/jugador7.png"
+   "desc": "Aventurero de la bandana roja.",
+   "skin": "skins/jadiel.png"
   },
   {
-   "id": "jugador8",
-   "name": "Jugador 8",
+   "id": "marizux",
+   "name": "Marizux",
    "cat": "personajes",
    "rar": "EPICA",
    "glyph": "star",
-   "c1": "#e8c8a0",
+   "c1": "#e88ab8",
    "c2": "#ffffff",
-   "desc": "Un jugador de Mundos de Axelis.",
-   "skin": "skins/jugador8.png"
+   "desc": "Cabello rosa y mucha energía.",
+   "skin": "skins/marizux.png"
+  },
+  {
+   "id": "odette",
+   "name": "Odette",
+   "cat": "personajes",
+   "rar": "LEGENDARIA",
+   "glyph": "star",
+   "c1": "#8ac8ff",
+   "c2": "#ffffff",
+   "desc": "Su luz acompaña cada aventura.",
+   "skin": "skins/odette.png"
+  },
+  {
+   "id": "pavi223",
+   "name": "Pavi223",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#e0a020",
+   "c2": "#ffffff",
+   "desc": "Siempre listo con su chaleco amarillo.",
+   "skin": "skins/pavi223.png"
+  },
+  {
+   "id": "rafa",
+   "name": "Rafa",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#4a9a4a",
+   "c2": "#ffffff",
+   "desc": "Compañero de mil aventuras.",
+   "skin": "skins/rafa.png"
+  },
+  {
+   "id": "scardax",
+   "name": "Scardax",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#d03030",
+   "c2": "#ffffff",
+   "desc": "Chamarra roja y ganas de pelear.",
+   "skin": "skins/scardax.png"
+  },
+  {
+   "id": "chafet",
+   "name": "Chafet",
+   "cat": "personajes",
+   "rar": "EPICA",
+   "glyph": "star",
+   "c1": "#f0d890",
+   "c2": "#ffffff",
+   "desc": "Aventurera de Mundos de Axelis.",
+   "skin": "skins/chafet.png"
   }
  ],
  "sobres": [

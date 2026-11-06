@@ -46,14 +46,14 @@ final class CardData {
         {"espada_netherita", "Espada de Netherita", "espadas", "EPICA", "Forjada en las profundidades.", "#4a3f4a", "#c04a2a"},
         {"aldeano", "Aldeano", "personajes", "COMUN", "Hmm.", "#c08a6a", "#ffffff"},
         {"bruja", "Bruja", "personajes", "RARA", "Sus pociones nunca salen igual dos veces.", "#7a3aa0", "#6ae05a"},
-        {"jugador1", "Jugador 1", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#d9b88a", "#ffffff"},
-        {"jugador2", "Jugador 2", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#6a7a8a", "#ffffff"},
-        {"jugador3", "Jugador 3", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#e88ab8", "#ffffff"},
-        {"jugador4", "Jugador 4", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#8a8ac8", "#ffffff"},
-        {"jugador5", "Jugador 5", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#e0a020", "#ffffff"},
-        {"jugador6", "Jugador 6", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#8a5a3a", "#ffffff"},
-        {"jugador7", "Jugador 7", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#c03030", "#ffffff"},
-        {"jugador8", "Jugador 8", "personajes", "EPICA", "Un jugador de Mundos de Axelis.", "#e8c8a0", "#ffffff"},
+        {"axelis705", "Axelis705", "personajes", "LEGENDARIA", "Creador de Mundos de Axelis.", "#ffe27a", "#ffffff"},
+        {"jadiel", "Jadiel", "personajes", "EPICA", "Aventurero de la bandana roja.", "#c03030", "#ffffff"},
+        {"marizux", "Marizux", "personajes", "EPICA", "Cabello rosa y mucha energ\u00eda.", "#e88ab8", "#ffffff"},
+        {"odette", "Odette", "personajes", "LEGENDARIA", "Su luz acompa\u00f1a cada aventura.", "#8ac8ff", "#ffffff"},
+        {"pavi223", "Pavi223", "personajes", "EPICA", "Siempre listo con su chaleco amarillo.", "#e0a020", "#ffffff"},
+        {"rafa", "Rafa", "personajes", "EPICA", "Compa\u00f1ero de mil aventuras.", "#4a9a4a", "#ffffff"},
+        {"scardax", "Scardax", "personajes", "EPICA", "Chamarra roja y ganas de pelear.", "#d03030", "#ffffff"},
+        {"chafet", "Chafet", "personajes", "EPICA", "Aventurera de Mundos de Axelis.", "#f0d890", "#ffffff"},
     };
 
     /** id, nombre, color, cartas, rareza minima garantizada, prob. holografica */
