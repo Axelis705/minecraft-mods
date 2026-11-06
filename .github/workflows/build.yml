@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mod: [casino, pooltable, kensei, scardax, estructuras]
+        mod: [casino, pooltable, kensei, scardax, estructuras, cartas]
     steps:
       - uses: actions/checkout@v4
       - name: Revisar recursos de ${{ matrix.mod }}
@@ -45,6 +45,13 @@ jobs:
           W=estructuras/src/main/java/com/mundosdeaxelis/world
           javac -d out $W/StructBp.java $W/EstIds.java $W/Soporte.java $W/Arq.java $W/Linker.java $W/StructKit.java $W/StructDesigns.java $W/Design*.java $W/TorreInterior.java estructuras/tests/com/mundosdeaxelis/world/ConectividadTest.java
           java -cp out com.mundosdeaxelis.world.ConectividadTest
+      - name: Pruebas de logica de las cartas
+        if: matrix.mod == 'cartas'
+        run: |
+          mkdir out
+          C=cartas/src/main/java/com/mundosdeaxelis/cartas
+          javac -encoding UTF-8 -d out $C/CardData.java $C/CardRarity.java $C/CardDef.java $C/CardCategory.java $C/PackDef.java $C/Cards.java $C/PackRoller.java $C/AlbumLogic.java cartas/tests/PackRollerTest.java
+          java -cp out PackRollerTest
       - name: Compilar ${{ matrix.mod }}
         working-directory: ${{ matrix.mod }}
         run: |
