@@ -92,9 +92,8 @@ final class DesignTorre {
         shaftDecor(b);
         topOfDome(b);
         a.seed(0, fy(8), CZ - 3);
-        for (int i = -1; i <= 8; i++) {
-            a.repair(fy(i));
-        }
+        // Todas las plantas están hechas a mano y las revisa ConectividadTest (salas sin acceso / trampas),
+        // así que no se llama a Arq.repair: quitaría muebles diseñados (mesas de encantamiento, estanterías, el estanque...).
         for (String p : a.check()) {
             System.err.println("[Torre] " + p);
         }
@@ -671,7 +670,7 @@ final class DesignTorre {
             case -1 -> TorreInterior.crypt(b);
             case 0 -> {
                 TorreInterior.hall(b);
-                TorreInterior.secrets(b);
+                TorreInterior.secrets(b, a);
             }
             case 1 -> {
             }

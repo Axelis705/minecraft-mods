@@ -311,9 +311,6 @@ final class Arq {
         }
         int k = s.indexOf('[');
         String n = k < 0 ? s : s.substring(0, k);
-        if (n.startsWith("mundos_de_axelis:est_")) {
-            return EstIds.passable(n); // tapices, arañas de luces, jaulas colgantes: se pueden cruzar
-        }
         return n.equals("air") || n.endsWith("_carpet") || n.equals("candle") || n.endsWith("torch") || n.endsWith("banner") || n.equals("fern")
                 || n.equals("grass") || n.endsWith("tulip") || n.equals("allium") || n.equals("cornflower") || n.equals("azure_bluet") || n.equals("lily_of_the_valley")
                 || n.endsWith("skull") || n.equals("cobweb") || n.equals("lantern") || n.equals("soul_lantern") || n.equals("chain") || n.equals("end_rod")
@@ -410,6 +407,9 @@ final class Arq {
                 }
                 int[] pick = best != null ? best : any1;
                 if (pick != null) {
+                    if (Boolean.getBoolean("linker.debug")) {
+                        System.err.println("[Arq.repair] piso " + f + ": quita mueble en " + pick[0] + "," + pick[1] + " (" + b.get(pick[0], f, pick[1]) + ") por la casilla aislada " + u[0] + "," + u[1]);
+                    }
                     for (int y = f; y <= f + 3; y++) {
                         String g = b.get(pick[0], y, pick[1]);
                         if (g != null && !wallLike(g)) {

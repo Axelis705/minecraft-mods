@@ -1073,7 +1073,7 @@ final class TorreInterior {
     // ================================================================== SECRETOS: cuatro cámaras ocultas en los torreones del Gran Salón
 
     /** Convierte la casilla relativa al centro del torreón (u a lo ancho, v a lo largo) en x / dz de plano. */
-    private static void secretRoom(StructBp b, int sx, int sz, int kind) {
+    private static void secretRoom(StructBp b, Arq a, int sx, int sz, int kind) {
         final int f = 3;
         int cx = 10 * sx;
         int cz = 10 * sz;
@@ -1087,6 +1087,7 @@ final class TorreInterior {
             b.set(t[0], f + 2, CZ + t[1], DB);
         }
         estTall(b, 9 * sx, f, CZ + 6 * sz, sx < 0 ? EstIds.TAPIZ_ARCANO : EstIds.TAPIZ_ESTRELLAS, sx < 0 ? "east" : "west");
+        a.seed(10 * sx, f, CZ + 6 * sz); // el túnel (detrás del tapiz) cuenta como alcanzable para la reparación de muebles
         // ---- cámara redonda (radio 2,2, 5 de alto)
         for (int u = -2; u <= 2; u++) {
             for (int v = -2; v <= 2; v++) {
@@ -1140,10 +1141,10 @@ final class TorreInterior {
         hangLantern(b, cx, f + 4, CZ + cz, 1, "lantern");
     }
 
-    static void secrets(StructBp b) {
-        secretRoom(b, -1, 1, 0);   // armería (fondo izquierda)
-        secretRoom(b, 1, 1, 1);    // archivo (fondo derecha)
-        secretRoom(b, -1, -1, 2);  // capilla (entrada izquierda)
-        secretRoom(b, 1, -1, 3);   // reloj y trofeos (entrada derecha)
+    static void secrets(StructBp b, Arq a) {
+        secretRoom(b, a, -1, 1, 0);   // armería (fondo izquierda)
+        secretRoom(b, a, 1, 1, 1);    // archivo (fondo derecha)
+        secretRoom(b, a, -1, -1, 2);  // capilla (entrada izquierda)
+        secretRoom(b, a, 1, -1, 3);   // reloj y trofeos (entrada derecha)
     }
 }
