@@ -290,7 +290,14 @@
    "c1": "#2a1a3a",
    "c2": "#c06aff",
    "desc": "Reina del vacío.",
-   "scene": "end"
+   "scene": "end",
+   "art": "arte/ender_dragon.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.88
+   ]
   },
   {
    "id": "aldeano",
@@ -301,7 +308,14 @@
    "c1": "#c89a74",
    "c2": "#6b4a2a",
    "desc": "Hmm.",
-   "scene": "plains"
+   "scene": "plains",
+   "art": "arte/aldeano.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "bruja",
@@ -312,7 +326,14 @@
    "c1": "#7a3aa0",
    "c2": "#6ae05a",
    "desc": "Sus pociones nunca salen igual dos veces.",
-   "scene": "swamp"
+   "scene": "swamp",
+   "art": "arte/bruja.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.88
+   ]
   },
   {
    "id": "axelis705",
@@ -322,7 +343,7 @@
    "glyph": "star",
    "c1": "#ffe27a",
    "c2": "#ffffff",
-   "desc": "El creador de todo. Le dicen dios: si él se va, todos dejan de jugar. Es todo y más.",
+   "desc": "Donde otros ven un mundo vacío, él ve todo lo que falta por construir. Cuando se desconecta, el servidor entero se queda en silencio.",
    "skin": "skins/axelis705.png",
    "scene": "sky",
    "art": "arte/axelis705.png",
@@ -341,7 +362,7 @@
    "glyph": "star",
    "c1": "#c03030",
    "c2": "#ffffff",
-   "desc": "Tryhard en todo: competitivo, juega para ganar. Y además, ya es padre de un hijo.",
+   "desc": "Para él cada partida es una final y quiere llevarse el trofeo. Ahora, además, entrena a su pequeño heredero.",
    "skin": "skins/jadiel.png",
    "scene": "plains",
    "art": "arte/jadiel.png",
@@ -360,7 +381,7 @@
    "glyph": "star",
    "c1": "#e88ab8",
    "c2": "#ffffff",
-   "desc": "La ternura del grupo, la pequeña que todos queremos. Feliz, divertida, amable y cordial.",
+   "desc": "Su risa suaviza hasta el día más pesado. Pequeña, amable y siempre contenta: con ella el grupo se siente como en casa.",
    "skin": "skins/marizux.png",
    "scene": "cherry",
    "art": "arte/marizux.png",
@@ -379,7 +400,7 @@
    "glyph": "star",
    "c1": "#8ac8ff",
    "c2": "#ffffff",
-   "desc": "Es el mundo entero de Axelis705. Donde ella está, todo tiene luz y sentido.",
+   "desc": "La luz que ilumina cada rincón de su mundo. A su lado, hasta la noche más larga se siente en calma.",
    "skin": "skins/odette.png",
    "scene": "night",
    "art": "arte/odette.png",
@@ -398,7 +419,7 @@
    "glyph": "star",
    "c1": "#e0a020",
    "c2": "#ffffff",
-   "desc": "Tryhard del Pokémon hasta la última batalla. Y si es amarillo, lo ama.",
+   "desc": "Entrena a su equipo sin descanso y no pierde una batalla por falta de ganas. Si algo es amarillo, ya es su favorito.",
    "skin": "skins/pavi223.png",
    "scene": "cave",
    "art": "arte/pavi223.png",
@@ -417,7 +438,7 @@
    "glyph": "star",
    "c1": "#4a9a4a",
    "c2": "#ffffff",
-   "desc": "El gracioso del grupo. Sus buenas bromas sacan risas siempre, al 100 %.",
+   "desc": "Su chiste llega justo cuando nadie lo espera. Hasta un creeper lo pensaría dos veces antes de explotar en medio de la risa.",
    "skin": "skins/rafa.png",
    "scene": "forest",
    "art": "arte/rafa.png",
@@ -436,7 +457,7 @@
    "glyph": "star",
    "c1": "#d03030",
    "c2": "#ffffff",
-   "desc": "Imponente. Juega, crea series y eventos, y siempre se cree mucho. Odia Roblox con toda el alma.",
+   "desc": "Entra a escena como si el servidor fuera suyo: series, eventos y mucha confianza. Eso sí, ni se te ocurra nombrarle cierto juego de bloques rival.",
    "skin": "skins/scardax.png",
    "scene": "nether",
    "art": "arte/scardax.png",
@@ -455,7 +476,7 @@
    "glyph": "star",
    "c1": "#f0d890",
    "c2": "#ffffff",
-   "desc": "Mejor amigo de Axelis y niño prodigio del grupo. Gran habilidad en Valorant y siempre está ahí.",
+   "desc": "Joven, tranquilo y de puntería certera, apunta con calma de veterano. Siempre aparece justo cuando el equipo lo necesita.",
    "skin": "skins/chafet.png",
    "scene": "sky",
    "art": "arte/chafet.png",

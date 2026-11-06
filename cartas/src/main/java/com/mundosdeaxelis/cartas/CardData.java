@@ -42,14 +42,14 @@ final class CardData {
         {"ender_dragon", "Drag\u00f3n del End", "minecraft", "LEGENDARIA", "Reina del vac\u00edo.", "#2a1a3a", "#c06aff"},
         {"aldeano", "Aldeano", "minecraft", "COMUN", "Hmm.", "#c89a74", "#6b4a2a"},
         {"bruja", "Bruja", "minecraft", "RARA", "Sus pociones nunca salen igual dos veces.", "#7a3aa0", "#6ae05a"},
-        {"axelis705", "Axelis705", "personajes", "EPICA", "El creador de todo. Le dicen dios: si \u00e9l se va, todos dejan de jugar. Es todo y m\u00e1s.", "#ffe27a", "#ffffff"},
-        {"jadiel", "Jadiel", "personajes", "EPICA", "Tryhard en todo: competitivo, juega para ganar. Y adem\u00e1s, ya es padre de un hijo.", "#c03030", "#ffffff"},
-        {"marizux", "Marizux", "personajes", "EPICA", "La ternura del grupo, la peque\u00f1a que todos queremos. Feliz, divertida, amable y cordial.", "#e88ab8", "#ffffff"},
-        {"odette", "Odette", "personajes", "LEGENDARIA", "Es el mundo entero de Axelis705. Donde ella est\u00e1, todo tiene luz y sentido.", "#8ac8ff", "#ffffff"},
-        {"pavi223", "Pavi223", "personajes", "EPICA", "Tryhard del Pok\u00e9mon hasta la \u00faltima batalla. Y si es amarillo, lo ama.", "#e0a020", "#ffffff"},
-        {"rafa", "Rafa", "personajes", "EPICA", "El gracioso del grupo. Sus buenas bromas sacan risas siempre, al 100 %.", "#4a9a4a", "#ffffff"},
-        {"scardax", "Scardax", "personajes", "EPICA", "Imponente. Juega, crea series y eventos, y siempre se cree mucho. Odia Roblox con toda el alma.", "#d03030", "#ffffff"},
-        {"chafet", "Chafet", "personajes", "EPICA", "Mejor amigo de Axelis y ni\u00f1o prodigio del grupo. Gran habilidad en Valorant y siempre est\u00e1 ah\u00ed.", "#f0d890", "#ffffff"},
+        {"axelis705", "Axelis705", "personajes", "EPICA", "Donde otros ven un mundo vac\u00edo, \u00e9l ve todo lo que falta por construir. Cuando se desconecta, el servidor entero se queda en silencio.", "#ffe27a", "#ffffff"},
+        {"jadiel", "Jadiel", "personajes", "EPICA", "Para \u00e9l cada partida es una final y quiere llevarse el trofeo. Ahora, adem\u00e1s, entrena a su peque\u00f1o heredero.", "#c03030", "#ffffff"},
+        {"marizux", "Marizux", "personajes", "EPICA", "Su risa suaviza hasta el d\u00eda m\u00e1s pesado. Peque\u00f1a, amable y siempre contenta: con ella el grupo se siente como en casa.", "#e88ab8", "#ffffff"},
+        {"odette", "Odette", "personajes", "LEGENDARIA", "La luz que ilumina cada rinc\u00f3n de su mundo. A su lado, hasta la noche m\u00e1s larga se siente en calma.", "#8ac8ff", "#ffffff"},
+        {"pavi223", "Pavi223", "personajes", "EPICA", "Entrena a su equipo sin descanso y no pierde una batalla por falta de ganas. Si algo es amarillo, ya es su favorito.", "#e0a020", "#ffffff"},
+        {"rafa", "Rafa", "personajes", "EPICA", "Su chiste llega justo cuando nadie lo espera. Hasta un creeper lo pensar\u00eda dos veces antes de explotar en medio de la risa.", "#4a9a4a", "#ffffff"},
+        {"scardax", "Scardax", "personajes", "EPICA", "Entra a escena como si el servidor fuera suyo: series, eventos y mucha confianza. Eso s\u00ed, ni se te ocurra nombrarle cierto juego de bloques rival.", "#d03030", "#ffffff"},
+        {"chafet", "Chafet", "personajes", "EPICA", "Joven, tranquilo y de punter\u00eda certera, apunta con calma de veterano. Siempre aparece justo cuando el equipo lo necesita.", "#f0d890", "#ffffff"},
     };
 
     /** id, nombre, color, cartas, rareza minima garantizada, prob. holografica */
