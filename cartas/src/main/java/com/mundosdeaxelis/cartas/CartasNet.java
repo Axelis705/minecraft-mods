@@ -18,7 +18,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 /** Comunicacion cliente <-> servidor del sistema de cartas. El servidor decide todo; el cliente solo muestra. */
 public final class CartasNet {
-    private static final String VERSION = "1";
+    private static final String VERSION = "2";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Cartas.MOD_ID, "cartas"), () -> VERSION, VERSION::equals, VERSION::equals);
 
@@ -31,8 +31,8 @@ public final class CartasNet {
     public record OpenRequest() {
     }
 
-    /** Cliente -> servidor: mete mis cartas nuevas en el album. */
-    public record InsertRequest() {
+    /** Cliente -> servidor: pongo esta carta en su hueco del album. */
+    public record PlaceRequest(String id, boolean holo) {
     }
 
     /** Servidor -> cliente: abre el album con este contenido. */
@@ -53,8 +53,10 @@ public final class CartasNet {
         int id = 0;
         CHANNEL.registerMessage(id++, OpenRequest.class, (m, b) -> {
         }, b -> new OpenRequest(), (m, c) -> server(c, sp -> openAlbum(sp)));
-        CHANNEL.registerMessage(id++, InsertRequest.class, (m, b) -> {
-        }, b -> new InsertRequest(), (m, c) -> server(c, AlbumInsert::run));
+        CHANNEL.registerMessage(id++, PlaceRequest.class, (m, b) -> {
+            b.writeUtf(m.id());
+            b.writeBoolean(m.holo());
+        }, b -> new PlaceRequest(b.readUtf(), b.readBoolean()), (m, c) -> server(c, sp -> AlbumInsert.place(sp, m.id(), m.holo())));
         CHANNEL.registerMessage(id++, AlbumOpen.class, (m, b) -> {
             writeSet(b, m.normal());
             writeSet(b, m.holo());

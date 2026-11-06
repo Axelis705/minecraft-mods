@@ -4,17 +4,20 @@ import com.mojang.math.Axis;
 import com.mundosdeaxelis.cartas.AlbumLogic;
 import com.mundosdeaxelis.cartas.CardCategory;
 import com.mundosdeaxelis.cartas.CardDef;
+import com.mundosdeaxelis.cartas.CardItem;
 import com.mundosdeaxelis.cartas.CardRarity;
 import com.mundosdeaxelis.cartas.Cards;
 import com.mundosdeaxelis.cartas.CartasNet;
 import com.mundosdeaxelis.cartas.PackDef;
 import com.mundosdeaxelis.cartas.PackRoller;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -22,39 +25,69 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
 /**
- * El album: un libro abierto con pestanas. Las paginas se arrastran con el raton (con fisica de resorte),
- * y al guardar cartas vuelan una a una hasta su hueco con sonido y chispas.
- * Todo el dibujo usa una pantalla virtual de 360 x 250 que se escala a la ventana.
+ * El album: un libro abierto SIN pestanas. Las paginas se arrastran con el raton (con fisica de resorte).
+ * Las cartas nuevas que lleva el jugador aparecen en un estante abajo: se agarran y se sueltan en su hueco.
+ * Todo el dibujo usa una pantalla virtual de 360 x 258 que se escala a la ventana.
  */
 public final class AlbumScreen extends Screen {
     private static final int VW = 360;
-    private static final int VH = 250;
+    private static final int VH = 258;
     private static final int SPINE = 180;
     private static final int PW = 172;
-    private static final int PAGE_Y = 22;
-    private static final int PH = 208;
+    private static final int PAGE_Y = 4;
+    private static final int PH = 200;
     private static final int PER_PAGE = 6;
     private static final int CARD_W = 44;
     private static final int CARD_H = 66;
+    private static final int TRAY_Y = 222;
+    private static final int TRAY_CELL = 26;
+    private static final int TRAY_X = 18;
+    private static final int TRAY_COUNT = 12;
     private static final float K = 190f;
     private static final float D = 21f;
 
     private enum Mode { IDLE, DRAG, SETTLE }
 
-    private static final class Fly {
+    /** una pagina del libro: tab -1 es el indice */
+    private static final class PageDef {
+        final int tab;
+        final int first;
+        final int count;
+
+        PageDef(int tab, int first, int count) {
+            this.tab = tab;
+            this.first = first;
+            this.count = count;
+        }
+    }
+
+    /** una carta nueva en el estante */
+    private static final class Entry {
         final String id;
         final boolean holo;
-        float t;
-        float dur;
-        boolean started;
+        int count;
 
-        Fly(String id, boolean holo) {
+        Entry(String id, boolean holo) {
             this.id = id;
             this.holo = holo;
         }
+    }
+
+    /** la carta que se esta guardando: vuela del raton a su hueco mientras el servidor confirma */
+    private static final class Placing {
+        String id;
+        boolean holo;
+        int page;
+        int k;
+        float fx;
+        float fy;
+        float t;
+        boolean confirmed;
+        boolean rejected;
     }
 
     private static final class Spark {
@@ -69,10 +102,11 @@ public final class AlbumScreen extends Screen {
     }
 
     private final Random rnd = new Random();
-    private int tab;
+    private final List<PageDef> pages = new ArrayList<>();
     private int cur;
     private int target;
     private Mode mode = Mode.IDLE;
+    private boolean fromDrag;
     private int leafL;
     private int flipDir;
     private float theta;
@@ -82,12 +116,9 @@ public final class AlbumScreen extends Screen {
     private float dragVx;
     private float dragStartVx;
     private boolean moved;
-    private float tabFade = 1f;
 
-    private final ArrayDeque<Fly> queue = new ArrayDeque<>();
     private final Set<String> pending = new HashSet<>();
-    private Fly flying;
-    private int flyTotal;
+    private Placing placing;
     private float bonusBefore;
     private float bonusAfter;
     private float bonusShow;
@@ -95,14 +126,36 @@ public final class AlbumScreen extends Screen {
     private final List<Spark> sparks = new ArrayList<>();
     private final List<Ring> rings = new ArrayList<>();
 
+    private List<Entry> tray = new ArrayList<>();
+    private int trayScroll;
+    private Entry held;
+    private boolean heldSticky;
+    private float heldX;
+    private float heldY;
+    private float heldDownX;
+    private float heldDownY;
+    private float edgeTimer;
+    private int badPage = -1;
+    private int badK;
+    private float badT;
+
     private long lastNs = System.nanoTime();
     private float time;
     private float sc = 1f;
     private float ox;
     private float oy;
+    private float mvx;
+    private float mvy;
 
     public AlbumScreen() {
         super(Component.translatable("item.mundos_de_axelis.album_cartas"));
+        pages.add(new PageDef(-1, 0, 0));
+        for (int t = 0; t < tabCount(); t++) {
+            int n = tabCards(t).size();
+            for (int f = 0; f < n; f += PER_PAGE) {
+                pages.add(new PageDef(t, f, Math.min(PER_PAGE, n - f)));
+            }
+        }
     }
 
     public void refresh() {
@@ -120,12 +173,17 @@ public final class AlbumScreen extends Screen {
         return holoTab(t) ? Cards.ALL : Cards.CATEGORIES.get(t).cards;
     }
 
-    private int pagesIn(int t) {
-        return Math.max(1, (tabCards(t).size() + PER_PAGE - 1) / PER_PAGE);
+    private int spreads() {
+        return (pages.size() + 1) / 2;
     }
 
-    private int spreadsIn(int t) {
-        return (pagesIn(t) + 1) / 2;
+    private int firstPageOf(int t) {
+        for (int i = 0; i < pages.size(); i++) {
+            if (pages.get(i).tab == t) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private boolean owned(int t, CardDef d) {
@@ -138,61 +196,6 @@ public final class AlbumScreen extends Screen {
         return id + (holo ? "|h" : "|n");
     }
 
-    // ------------------------------------------------------------------ insercion
-
-    public void onInserted(CartasNet.InsertResult m) {
-        if (m.ids().isEmpty()) {
-            CartasClient.play(SoundEvents.VILLAGER_NO, 1.2f, 0.5f);
-            bonusShow = 0f;
-            return;
-        }
-        if (queue.isEmpty() && flying == null) {
-            bonusBefore = m.before();
-        }
-        bonusAfter = m.after();
-        for (int i = 0; i < m.ids().size(); i++) {
-            pending.add(key(m.ids().get(i), m.holo().get(i)));
-            queue.add(new Fly(m.ids().get(i), m.holo().get(i)));
-        }
-        flyTotal = queue.size() + (flying != null ? 1 : 0);
-        CartasClient.play(SoundEvents.BOOK_PUT, 0.9f, 0.8f);
-    }
-
-    private void tickInsertion(float dt) {
-        if (flying == null && !queue.isEmpty()) {
-            flying = queue.poll();
-            flying.dur = flyTotal <= 6 ? 0.85f : flyTotal <= 16 ? 0.5f : 0.3f;
-        }
-        if (flying == null) {
-            return;
-        }
-        int wantTab = flying.holo ? Cards.CATEGORIES.size() : categoryIndex(flying.id);
-        int idx = tabCards(wantTab).indexOf(Cards.get(flying.id));
-        int wantSpread = Math.max(0, (idx / PER_PAGE) / 2);
-        if (tab != wantTab) {
-            if (mode == Mode.IDLE) {
-                selectTab(wantTab, false);
-            }
-            return;
-        }
-        if (cur != wantSpread || mode != Mode.IDLE) {
-            target = wantSpread;
-            return;
-        }
-        if (!flying.started) {
-            flying.started = true;
-            CartasClient.play(SoundEvents.BOOK_PAGE_TURN, 1.5f, 0.35f);
-        }
-        flying.t += dt / flying.dur;
-        if (flying.t >= 1f) {
-            land(flying, wantTab, idx);
-            flying = null;
-            if (queue.isEmpty()) {
-                bonusShow = 4.5f;
-            }
-        }
-    }
-
     private int categoryIndex(String id) {
         CardDef d = Cards.get(id);
         for (int i = 0; i < Cards.CATEGORIES.size(); i++) {
@@ -203,10 +206,143 @@ public final class AlbumScreen extends Screen {
         return 0;
     }
 
-    private void land(Fly f, int t, int idx) {
+    /** pagina del libro donde va esta carta */
+    private int pageOf(String id, boolean holo) {
+        int t = holo ? Cards.CATEGORIES.size() : categoryIndex(id);
+        int idx = tabCards(t).indexOf(Cards.get(id));
+        return firstPageOf(t) + idx / PER_PAGE;
+    }
+
+    // ------------------------------------------------------------------ estante y colocacion
+
+    private void refreshTray() {
+        Minecraft mc = Minecraft.getInstance();
+        Map<String, Entry> m = new LinkedHashMap<>();
+        if (mc.player != null) {
+            List<ItemStack> all = new ArrayList<>(mc.player.getInventory().items);
+            all.addAll(mc.player.getInventory().offhand);
+            for (ItemStack s : all) {
+                if (s.isEmpty() || !(s.getItem() instanceof CardItem ci)) {
+                    continue;
+                }
+                boolean h = CardItem.isHolo(s);
+                AlbumLogic a = CartasClient.ALBUM;
+                if ((h ? a.holo : a.normal).contains(ci.def.id) || pending.contains(key(ci.def.id, h))) {
+                    continue;
+                }
+                m.computeIfAbsent(key(ci.def.id, h), k -> new Entry(ci.def.id, h)).count += s.getCount();
+            }
+        }
+        List<Entry> l = new ArrayList<>();
+        for (int pass = 0; pass < 2; pass++) {
+            for (CardDef d : Cards.ALL) {
+                Entry e = m.get(key(d.id, pass == 1));
+                if (e != null) {
+                    l.add(e);
+                }
+            }
+        }
+        tray = l;
+        trayScroll = Mth.clamp(trayScroll, 0, Math.max(0, tray.size() - TRAY_COUNT));
+    }
+
+    private Entry trayAt(float vx, float vy) {
+        if (vy < TRAY_Y || vy >= TRAY_Y + 34) {
+            return null;
+        }
+        int i = (int) Math.floor((vx - TRAY_X) / TRAY_CELL);
+        if (vx < TRAY_X || i < 0 || i >= TRAY_COUNT || i + trayScroll >= tray.size()) {
+            return null;
+        }
+        return tray.get(i + trayScroll);
+    }
+
+    /** el hueco que hay bajo el raton en las dos paginas visibles: {pagina, k} o null */
+    private int[] slotAt(float vx, float vy) {
+        if (mode != Mode.IDLE) {
+            return null;
+        }
+        for (int pg = cur * 2; pg <= cur * 2 + 1; pg++) {
+            if (pg >= pages.size() || pages.get(pg).tab < 0) {
+                continue;
+            }
+            PageDef pd = pages.get(pg);
+            for (int k = 0; k < pd.count; k++) {
+                float[] pos = slotPos(pg, k);
+                if (vx >= pos[0] - 3 && vx < pos[0] + CARD_W + 3 && vy >= pos[1] - 3 && vy < pos[1] + CARD_H + 3) {
+                    return new int[] {pg, k};
+                }
+            }
+        }
+        return null;
+    }
+
+    private void drop(float vx, float vy) {
+        Entry e = held;
+        held = null;
+        heldSticky = false;
+        if (e == null) {
+            return;
+        }
+        int[] s = slotAt(vx, vy);
+        if (s != null) {
+            PageDef pd = pages.get(s[0]);
+            CardDef d = tabCards(pd.tab).get(pd.first + s[1]);
+            if (d.id.equals(e.id) && holoTab(pd.tab) == e.holo) {
+                Placing p = new Placing();
+                p.id = e.id;
+                p.holo = e.holo;
+                p.page = s[0];
+                p.k = s[1];
+                p.fx = vx;
+                p.fy = vy;
+                placing = p;
+                CartasNet.CHANNEL.sendToServer(new CartasNet.PlaceRequest(e.id, e.holo));
+                CartasClient.play(SoundEvents.BOOK_PAGE_TURN, 1.6f, 0.3f);
+                return;
+            }
+            badPage = s[0];
+            badK = s[1];
+            badT = 0f;
+            CartasClient.play(SoundEvents.VILLAGER_NO, 1.3f, 0.45f);
+        }
+    }
+
+    /** respuesta del servidor a la colocacion */
+    public void onInserted(CartasNet.InsertResult m) {
+        if (placing == null) {
+            return;
+        }
+        if (m.ids().isEmpty()) {
+            placing.rejected = true;
+            return;
+        }
+        placing.confirmed = true;
+        pending.add(key(placing.id, placing.holo));
+        bonusBefore = m.before();
+        bonusAfter = m.after();
+    }
+
+    private void tickPlacing(float dt) {
+        if (placing == null) {
+            return;
+        }
+        placing.t = Math.min(1f, placing.t + dt / 0.26f);
+        if (placing.rejected) {
+            CartasClient.play(SoundEvents.VILLAGER_NO, 1.2f, 0.5f);
+            placing = null;
+            return;
+        }
+        if (placing.confirmed && placing.t >= 1f) {
+            land(placing);
+            placing = null;
+        }
+    }
+
+    private void land(Placing f) {
         pending.remove(key(f.id, f.holo));
         CardDef d = Cards.get(f.id);
-        float[] c = slotCenter(idx);
+        float[] c = slotCenter(f.page, f.k);
         shake = f.holo || d.rarity.atLeast(CardRarity.LEGENDARIA) ? 0.45f : 0.22f;
         CartasClient.play(SoundEvents.BOOK_PUT, 0.75f + rnd.nextFloat() * 0.2f, 0.9f);
         int n = 10 + d.rarity.ordinal() * 8 + (f.holo ? 30 : 0);
@@ -240,27 +376,13 @@ public final class AlbumScreen extends Screen {
         if (f.holo) {
             CartasClient.play(SoundEvents.AMETHYST_BLOCK_RESONATE, 1.3f, 0.9f);
         }
+        bonusShow = 4.5f;
     }
 
     // ------------------------------------------------------------------ paginas
 
-    private void selectTab(int t, boolean sound) {
-        if (t < 0 || t >= tabCount() || (t == tab && mode == Mode.IDLE)) {
-            return;
-        }
-        if (mode != Mode.IDLE) {
-            return;
-        }
-        tab = t;
-        cur = 0;
-        target = 0;
-        tabFade = 0f;
-        if (sound) {
-            CartasClient.play(SoundEvents.BOOK_PAGE_TURN, 1.3f, 0.5f);
-        }
-    }
-
     private void startLeaf(int dir, Mode m) {
+        fromDrag = m == Mode.DRAG;
         flipDir = dir;
         leafL = dir > 0 ? cur : cur - 1;
         theta = dir > 0 ? 0f : Mth.PI;
@@ -290,8 +412,12 @@ public final class AlbumScreen extends Screen {
         }
         int sub = 4;
         float h = dt / sub;
+        // si hay que cruzar varias paginas, el resorte es mas rapido
+        float kMul = mode == Mode.SETTLE && Math.abs(target - cur) > 1 ? 2.4f : 1f;
+        float kk = K * kMul;
+        float dd = D * (float) Math.sqrt(kMul);
         for (int i = 0; i < sub; i++) {
-            float acc = K * (goal - theta) - D * vel;
+            float acc = kk * (goal - theta) - dd * vel;
             vel += acc * h;
             theta += vel * h;
             if (theta < 0f) {
@@ -314,18 +440,20 @@ public final class AlbumScreen extends Screen {
 
     private void finishLeaf() {
         cur = dest > Mth.HALF_PI ? leafL + 1 : leafL;
-        target = cur;
+        if (fromDrag) {
+            target = cur;
+        }
+        fromDrag = false;
         mode = Mode.IDLE;
         crossed = false;
         CartasClient.play(SoundEvents.BOOK_PUT, 1.6f, 0.18f);
     }
 
     private void flip(int dir) {
-        if (mode != Mode.IDLE || flying != null) {
+        if (mode != Mode.IDLE) {
             return;
         }
-        int t = Mth.clamp(target + dir, 0, spreadsIn(tab) - 1);
-        target = t;
+        target = Mth.clamp(target + dir, 0, spreads() - 1);
     }
 
     // ------------------------------------------------------------------ dibujo
@@ -341,10 +469,11 @@ public final class AlbumScreen extends Screen {
         float dt = Mth.clamp((now - lastNs) / 1e9f, 0.0001f, 0.05f);
         lastNs = now;
         time += dt;
-        tabFade = Math.min(1f, tabFade + dt * 4f);
         shake = Math.max(0f, shake - dt);
         bonusShow = Math.max(0f, bonusShow - dt);
-        tickInsertion(dt);
+        badT = Math.min(1f, badT + dt * 2.5f);
+        refreshTray();
+        tickPlacing(dt);
         updateLeaf(dt);
         tickFx(dt);
 
@@ -354,6 +483,22 @@ public final class AlbumScreen extends Screen {
         oy = (height - VH * sc) / 2f;
         float vx = (mx - ox) / sc;
         float vy = (my - oy) / sc;
+        mvx = vx;
+        mvy = vy;
+        if (held != null) {
+            heldX = vx;
+            heldY = vy;
+            // al acercar la carta al borde, el libro pasa de pagina solo
+            if (mode == Mode.IDLE && (vx < 26f || vx > VW - 26f) && vy < TRAY_Y) {
+                edgeTimer += dt;
+                if (edgeTimer > 0.55f) {
+                    edgeTimer = 0f;
+                    flip(vx < 26f ? -1 : 1);
+                }
+            } else {
+                edgeTimer = 0f;
+            }
+        }
 
         g.pose().pushPose();
         g.pose().translate(ox, oy, 0f);
@@ -364,13 +509,20 @@ public final class AlbumScreen extends Screen {
 
         drawBook(g);
         List<Component> tip = null;
-        if (mode == Mode.IDLE && flying == null) {
+        if (mode == Mode.IDLE && held == null && placing == null) {
             tip = hoverTooltip(vx, vy);
         }
-        drawTabs(g, vx, vy);
+        drawTray(g, vx, vy);
+        if (tip == null && held == null && mode == Mode.IDLE) {
+            Entry e = trayAt(vx, vy);
+            if (e != null) {
+                tip = trayTooltip(e);
+            }
+        }
         drawFooter(g);
         drawFx(g);
-        drawFlying(g);
+        drawPlacing(g);
+        drawHeld(g);
         g.pose().popPose();
 
         if (tip != null) {
@@ -380,9 +532,9 @@ public final class AlbumScreen extends Screen {
 
     private void drawBook(GuiGraphics g) {
         // tapa
-        g.fill(2, PAGE_Y - 4, VW - 2, PAGE_Y + PH + 4, 0xFF4A2E1A);
-        g.fill(4, PAGE_Y - 2, VW - 4, PAGE_Y + PH + 2, 0xFF6B4528);
-        CardRender.border(g, 2, PAGE_Y - 4, VW - 4, PH + 8, 0xFF2E1C0F);
+        g.fill(2, PAGE_Y - 2, VW - 2, PAGE_Y + PH + 4, 0xFF4A2E1A);
+        g.fill(4, PAGE_Y, VW - 4, PAGE_Y + PH + 2, 0xFF6B4528);
+        CardRender.border(g, 2, PAGE_Y - 2, VW - 4, PH + 6, 0xFF2E1C0F);
 
         int leftPage;
         int rightPage;
@@ -405,9 +557,6 @@ public final class AlbumScreen extends Screen {
             g.fill(SPINE + i, PAGE_Y, SPINE + i + 1, PAGE_Y + PH, a << 24);
         }
         g.fill(SPINE - 1, PAGE_Y, SPINE + 1, PAGE_Y + PH, 0x66000000);
-        if (tabFade < 1f) {
-            g.fill(6, PAGE_Y, VW - 6, PAGE_Y + PH, ((int) ((1f - tabFade) * 200) << 24));
-        }
     }
 
     private void drawLeaf(GuiGraphics g) {
@@ -447,32 +596,71 @@ public final class AlbumScreen extends Screen {
             int xx = left ? px + PW - 1 - i : px + i;
             g.fill(xx, PAGE_Y, xx + 1, PAGE_Y + PH, a << 24);
         }
-        List<CardDef> cards = tabCards(tab);
-        int pages = pagesIn(tab);
-        if (page < 0 || page >= pages) {
-            // pagina vacia con un adorno
+        if (page < 0 || page >= pages.size()) {
             g.drawCenteredString(font, "✦", px + PW / 2, PAGE_Y + PH / 2 - 4, 0x30A88A5A);
             return;
         }
-        boolean holo = holoTab(tab);
-        int tabColor = holo ? 0x4FC3E8 : Cards.CATEGORIES.get(tab).color;
-        // titulo
+        PageDef pd = pages.get(page);
+        if (pd.tab < 0) {
+            drawIndex(g, px);
+            return;
+        }
+        int t = pd.tab;
+        List<CardDef> cards = tabCards(t);
+        boolean holo = holoTab(t);
+        int tabColor = holo ? 0x4FC3E8 : Cards.CATEGORIES.get(t).color;
         int have = 0;
         for (CardDef d : cards) {
-            if (owned(tab, d)) {
+            if (owned(t, d)) {
                 have++;
             }
         }
-        String title = holo ? "✦ Holográficas" : Cards.CATEGORIES.get(tab).name;
+        String title = holo ? "✦ Holográficas" : Cards.CATEGORIES.get(t).name;
+        if (pd.first > 0) {
+            title += " (cont.)";
+        }
         g.drawString(font, title, px + 12, PAGE_Y + 10, 0xFF000000 | darker(tabColor), false);
         String cnt = have + "/" + cards.size();
         g.drawString(font, cnt, px + PW - 12 - font.width(cnt), PAGE_Y + 10, 0xFF6B4A2A, false);
         g.fill(px + 12, PAGE_Y + 22, px + PW - 12, PAGE_Y + 23, 0xFF000000 | tabColor);
-        // cartas
-        for (int i = page * PER_PAGE; i < Math.min(cards.size(), (page + 1) * PER_PAGE); i++) {
-            drawSlot(g, tab, cards.get(i), i, px, false);
+        for (int k = 0; k < pd.count; k++) {
+            drawSlot(g, page, k);
         }
-        g.drawCenteredString(font, String.valueOf(page + 1), px + PW / 2, PAGE_Y + PH - 14, 0xFF8A6A42);
+        g.drawCenteredString(font, String.valueOf(page), px + PW / 2, PAGE_Y + PH - 14, 0xFF8A6A42);
+    }
+
+    private void drawIndex(GuiGraphics g, int px) {
+        g.drawString(font, "Álbum de Cartas", px + 12, PAGE_Y + 10, 0xFF5A3A1E, false);
+        g.fill(px + 12, PAGE_Y + 22, px + PW - 12, PAGE_Y + 23, 0xFF8A6A42);
+        int y = PAGE_Y + 32;
+        for (int t = 0; t < tabCount(); t++) {
+            boolean holo = holoTab(t);
+            int col = holo ? 0x4FC3E8 : Cards.CATEGORIES.get(t).color;
+            int have = 0;
+            for (CardDef d : tabCards(t)) {
+                if (owned(t, d)) {
+                    have++;
+                }
+            }
+            g.fill(px + 14, y + 1, px + 20, y + 7, 0xFF000000 | col);
+            String name = holo ? "✦ Holográficas" : Cards.CATEGORIES.get(t).name;
+            g.drawString(font, name, px + 26, y, 0xFF4A2E1A, false);
+            String pg = "pág. " + firstPageOf(t);
+            g.drawString(font, pg, px + PW - 14 - font.width(pg), y, 0xFF8A6A42, false);
+            g.drawString(font, have + "/" + tabCards(t).size(), px + 26, y + 10, 0xFF6B4A2A, false);
+            y += 24;
+        }
+        g.fill(px + 12, y + 2, px + PW - 12, y + 3, 0x60A88A5A);
+        String[] help = {
+            "Las cartas nuevas que llevas",
+            "aparecen en el estante de abajo.",
+            "Agárrala y suéltala en su hueco.",
+            "Cada 5 % del álbum: +½ corazón.",
+            "Categoría completa: +1 corazón."
+        };
+        for (int i = 0; i < help.length; i++) {
+            g.drawString(font, help[i], px + 14, y + 8 + i * 10, 0xFF6B4A2A, false);
+        }
     }
 
     private static int darker(int rgb) {
@@ -482,29 +670,33 @@ public final class AlbumScreen extends Screen {
         return r << 16 | gg << 8 | b;
     }
 
-    private float[] slotPos(int idx) {
-        int p = idx / PER_PAGE;
-        boolean right = p % 2 == 1;
-        int px = right ? SPINE : SPINE - PW;
-        int k = idx % PER_PAGE;
+    private float[] slotPos(int page, int k) {
+        int px = page % 2 == 1 ? SPINE : SPINE - PW;
         float x = px + 11 + (k % 3) * (CARD_W + 10);
         float y = PAGE_Y + 34 + (k / 3) * (CARD_H + 14);
         return new float[] {x, y};
     }
 
-    private float[] slotCenter(int idx) {
-        float[] p = slotPos(idx);
+    private float[] slotCenter(int page, int k) {
+        float[] p = slotPos(page, k);
         return new float[] {p[0] + CARD_W / 2f, p[1] + CARD_H / 2f};
     }
 
-    private int hoverIdx = -1;
+    private int hoverPage = -1;
+    private int hoverK = -1;
 
-    private void drawSlot(GuiGraphics g, int t, CardDef d, int idx, int px, boolean unused) {
-        int k = idx % PER_PAGE;
-        float x = px + 11 + (k % 3) * (CARD_W + 10);
-        float y = PAGE_Y + 34 + (k / 3) * (CARD_H + 14);
+    private void drawSlot(GuiGraphics g, int page, int k) {
+        PageDef pd = pages.get(page);
+        int t = pd.tab;
+        CardDef d = tabCards(t).get(pd.first + k);
+        float[] pos = slotPos(page, k);
+        float x = pos[0];
+        float y = pos[1];
+        if (page == badPage && k == badK && badT < 1f) {
+            x += Mth.sin(badT * 40f) * 3f * (1f - badT);
+        }
         boolean own = owned(t, d);
-        boolean hov = idx == hoverIdx && mode == Mode.IDLE && flying == null;
+        boolean hov = page == hoverPage && k == hoverK && mode == Mode.IDLE && held == null;
         int rc = d.rarity.color;
         // hueco
         g.fill((int) x - 2, (int) y - 2, (int) x + CARD_W + 2, (int) y + CARD_H + 2, 0x30301808);
@@ -529,42 +721,86 @@ public final class AlbumScreen extends Screen {
             g.fill((int) cx, (int) cy, (int) (cx + w), (int) (cy + h), 0x70101018);
             g.drawCenteredString(font, "?", (int) (cx + w / 2), (int) (cy + h / 2 - 4), 0xFFB8A888);
             g.fill((int) (cx + w / 2) - 3, (int) (cy + h) - 8, (int) (cx + w / 2) + 3, (int) (cy + h) - 5, 0xFF000000 | rc);
+            // si llevas en la mano la carta de este hueco, el hueco late
+            if (held != null && placing == null && d.id.equals(held.id) && holoTab(t) == held.holo) {
+                int a = (int) (110 + 120 * (0.5f + 0.5f * Mth.sin(time * 7f)));
+                CardRender.border(g, (int) x - 3, (int) y - 3, CARD_W + 6, CARD_H + 6, (a << 24) | 0xFFFFFF);
+                CardRender.border(g, (int) x - 2, (int) y - 2, CARD_W + 4, CARD_H + 4, (a << 24) | rc);
+            }
         }
     }
 
-    private void drawTabs(GuiGraphics g, float vx, float vy) {
-        int n = tabCount();
-        int tw = Math.min(52, (VW - 8) / n);
-        int x0 = (VW - tw * n) / 2;
-        for (int i = 0; i < n; i++) {
-            boolean sel = i == tab;
-            boolean hov = vy >= 0 && vy < 20 && vx >= x0 + i * tw && vx < x0 + (i + 1) * tw;
-            int col = holoTab(i) ? 0x4FC3E8 : Cards.CATEGORIES.get(i).color;
-            int top = sel ? 0 : (hov ? 3 : 6);
-            g.fill(x0 + i * tw + 1, top, x0 + (i + 1) * tw - 1, PAGE_Y, 0xFF000000 | (sel ? col : darker(col)));
-            CardRender.border(g, x0 + i * tw + 1, top, tw - 2, PAGE_Y - top, 0xFF2E1C0F);
-            String name = holoTab(i) ? "✦ Holo" : Cards.CATEGORIES.get(i).name;
-            g.pose().pushPose();
-            float s = font.width(name) > tw - 6 ? (tw - 6f) / font.width(name) : 1f;
-            g.pose().translate(x0 + i * tw + tw / 2f, top + (PAGE_Y - top) / 2f - 4f * s + 1f, 0f);
-            g.pose().scale(s, s, 1f);
-            g.drawString(font, name, -font.width(name) / 2, 0, sel ? 0xFFFFFFFF : 0xFFE8DCC8, true);
-            g.pose().popPose();
+    private void drawTray(GuiGraphics g, float vx, float vy) {
+        // estante de madera
+        g.fill(2, TRAY_Y - 2, VW - 2, VH - 2, 0xFF3A2414);
+        g.fill(4, TRAY_Y, VW - 4, VH - 4, 0xFF5A3A1E);
+        g.fill(4, TRAY_Y, VW - 4, TRAY_Y + 1, 0xFF7A5230);
+        CardRender.border(g, 2, TRAY_Y - 2, VW - 4, VH - TRAY_Y, 0xFF2E1C0F);
+        if (tray.isEmpty()) {
+            g.drawCenteredString(font, "No llevas cartas nuevas · abre sobres o derrota jefes", VW / 2, TRAY_Y + 14, 0xFFB8A888);
+            return;
+        }
+        if (trayScroll > 0) {
+            g.drawString(font, "◀", 7, TRAY_Y + 14, 0xFFE8DCC8, true);
+        }
+        if (trayScroll + TRAY_COUNT < tray.size()) {
+            g.drawString(font, "▶", VW - 14, TRAY_Y + 14, 0xFFE8DCC8, true);
+        }
+        Entry hovE = held == null && mode == Mode.IDLE ? trayAt(vx, vy) : null;
+        for (int i = 0; i < TRAY_COUNT && i + trayScroll < tray.size(); i++) {
+            Entry e = tray.get(i + trayScroll);
+            CardDef d = Cards.get(e.id);
+            float x = TRAY_X + i * TRAY_CELL + 1;
+            float y = TRAY_Y + 3 + (e == hovE ? -2f : 0f);
+            g.fill((int) x - 1, TRAY_Y + 2, (int) x + 21, TRAY_Y + 34, 0x40000000);
+            if (e == held) {
+                g.fill((int) x, TRAY_Y + 3, (int) x + 20, TRAY_Y + 33, 0x60000000);
+                continue;
+            }
+            if (e == hovE) {
+                CardRender.glow(g, x, y, 20, 30, e.holo ? 0x7FE8FF : d.rarity.color, 0.6f);
+            }
+            CardRender.face(g, d, x, y, 20, 30);
+            if (e.holo) {
+                CardRender.holo(g, x, y, 20, 30, time, (d.index * 0.137f) % 1f);
+            }
+            if (e.count > 1) {
+                String c = "x" + e.count;
+                g.pose().pushPose();
+                g.pose().translate(x + 20 - font.width(c) * 0.7f, y + 22, 200f);
+                g.pose().scale(0.7f, 0.7f, 1f);
+                g.drawString(font, c, 0, 0, 0xFFFFFFFF, true);
+                g.pose().popPose();
+            }
         }
     }
 
     private void drawFooter(GuiGraphics g) {
         AlbumLogic a = CartasClient.ALBUM;
-        int shown = a.filled() - pendingCount();
-        double pct = 100.0 * shown / Math.max(1, AlbumLogic.totalSlots());
-        String left = String.format("Álbum %.0f %%  (%d/%d)   Vida extra: +%.1f corazones", pct, shown, AlbumLogic.totalSlots(), a.bonusHealth() / 2.0);
-        if (flying != null || !queue.isEmpty()) {
-            left = String.format("Álbum %.0f %%  (%d/%d)", pct, shown, AlbumLogic.totalSlots());
+        int shown = a.filled();
+        for (String k : pending) {
+            boolean h = k.endsWith("|h");
+            if ((h ? a.holo : a.normal).contains(k.substring(0, k.length() - 2))) {
+                shown--;
+            }
         }
-        g.drawString(font, left, 8, PAGE_Y + PH + 8, 0xFFE8DCC8, true);
-        String key = CartasKeys.INSERT.getTranslatedKeyMessage().getString();
-        String hint = "Arrastra las páginas · [" + key + "] guardar cartas";
-        g.drawString(font, hint, VW - 8 - font.width(hint), PAGE_Y + PH + 8, 0xFFB8A888, true);
+        double pct = 100.0 * shown / Math.max(1, AlbumLogic.totalSlots());
+        String left = String.format("Álbum %.0f %%  (%d/%d)", pct, shown, AlbumLogic.totalSlots());
+        if (placing == null) {
+            left += String.format("   Vida extra: +%.1f corazones", a.bonusHealth() / 2.0);
+        }
+        g.drawString(font, left, 8, PAGE_Y + PH + 9, 0xFFE8DCC8, true);
+        String hint;
+        int hintCol = 0xFFB8A888;
+        if (held != null) {
+            CardDef d = Cards.get(held.id);
+            int pg = pageOf(held.id, held.holo);
+            hint = "Va en " + (held.holo ? "Holográficas" : Cards.category(d.category).name) + ", pág. " + pg;
+            hintCol = 0xFF000000 | d.rarity.color;
+        } else {
+            hint = "Arrastra las páginas · agarra una carta del estante";
+        }
+        g.drawString(font, hint, VW - 8 - font.width(hint), PAGE_Y + PH + 9, hintCol, true);
         if (bonusShow > 0f && bonusAfter > bonusBefore) {
             float al = Math.min(1f, bonusShow);
             float rise = (4.5f - bonusShow) * 2f;
@@ -572,10 +808,6 @@ public final class AlbumScreen extends Screen {
             int a2 = (int) (al * 255);
             g.drawCenteredString(font, txt, VW / 2, (int) (PAGE_Y + PH - 26 - rise), (a2 << 24) | 0xFF6A8A);
         }
-    }
-
-    private int pendingCount() {
-        return pending.size();
     }
 
     // ------------------------------------------------------------------ efectos
@@ -624,56 +856,67 @@ public final class AlbumScreen extends Screen {
         }
     }
 
-    private void drawFlying(GuiGraphics g) {
-        if (flying == null || !flying.started) {
-            return;
-        }
-        CardDef d = Cards.get(flying.id);
-        int wantTab = flying.holo ? Cards.CATEGORIES.size() : categoryIndex(flying.id);
-        int idx = tabCards(wantTab).indexOf(d);
-        float[] end = slotCenter(idx);
-        float e = 1f - (float) Math.pow(1f - Mth.clamp(flying.t, 0f, 1f), 3);
-        float sx = VW / 2f + (end[0] - VW / 2f) * 0.2f;
-        float sy = VH + 70f;
-        float x = Mth.lerp(e, sx, end[0]);
-        float y = Mth.lerp(e, sy, end[1]) - Mth.sin(e * Mth.PI) * 36f;
-        float scale = Mth.lerp(e, 1.8f, 1.0f);
-        float rot = Mth.lerp(e, (d.index % 2 == 0 ? -16f : 16f), 0f);
+    private void drawCardAt(GuiGraphics g, CardDef d, boolean holo, float x, float y, float scale, float rot, float glow) {
         g.pose().pushPose();
-        g.pose().translate(x, y, 0f);
+        g.pose().translate(x, y, 300f);
         g.pose().mulPose(Axis.ZP.rotationDegrees(rot));
         g.pose().scale(scale, scale, 1f);
         float w = CARD_W;
         float h = CARD_H;
-        CardRender.glow(g, -w / 2, -h / 2, w, h, flying.holo ? 0x7FE8FF : d.rarity.color, 0.7f + e * 0.4f);
+        CardRender.glow(g, -w / 2, -h / 2, w, h, holo ? 0x7FE8FF : d.rarity.color, glow);
         CardRender.face(g, d, -w / 2, -h / 2, w, h);
-        if (flying.holo) {
+        if (holo) {
             CardRender.holo(g, -w / 2, -h / 2, w, h, time, 0.3f);
         }
         g.pose().popPose();
     }
 
+    private void drawPlacing(GuiGraphics g) {
+        if (placing == null) {
+            return;
+        }
+        CardDef d = Cards.get(placing.id);
+        float[] end = slotCenter(placing.page, placing.k);
+        float e = 1f - (float) Math.pow(1f - Mth.clamp(placing.t, 0f, 1f), 3);
+        drawCardAt(g, d, placing.holo, Mth.lerp(e, placing.fx, end[0]), Mth.lerp(e, placing.fy, end[1]), Mth.lerp(e, 0.9f, 1.0f), 0f, 0.5f + e * 0.4f);
+    }
+
+    private void drawHeld(GuiGraphics g) {
+        if (held == null) {
+            return;
+        }
+        CardDef d = Cards.get(held.id);
+        float sway = Mth.sin(time * 5f) * 3f;
+        drawCardAt(g, d, held.holo, heldX, heldY, 0.9f, sway, 0.75f);
+    }
+
     // ------------------------------------------------------------------ tooltip
 
     private List<Component> hoverTooltip(float vx, float vy) {
-        hoverIdx = -1;
-        List<CardDef> cards = tabCards(tab);
-        int pages = pagesIn(tab);
-        for (int i = 0; i < cards.size(); i++) {
-            int p = i / PER_PAGE;
-            if (p / 2 != cur || p >= pages) {
-                continue;
-            }
-            float[] pos = slotPos(i);
-            if (vx >= pos[0] && vx < pos[0] + CARD_W && vy >= pos[1] && vy < pos[1] + CARD_H) {
-                hoverIdx = i;
-                return tooltip(cards.get(i));
-            }
+        hoverPage = -1;
+        hoverK = -1;
+        int[] s = slotAt(vx, vy);
+        if (s == null) {
+            return null;
         }
-        return null;
+        PageDef pd = pages.get(s[0]);
+        hoverPage = s[0];
+        hoverK = s[1];
+        return tooltip(pd.tab, tabCards(pd.tab).get(pd.first + s[1]));
     }
 
-    private List<Component> tooltip(CardDef d) {
+    private List<Component> trayTooltip(Entry e) {
+        CardDef d = Cards.get(e.id);
+        Style rs = Style.EMPTY.withColor(d.rarity.color);
+        List<Component> l = new ArrayList<>();
+        l.add(Component.literal((e.holo ? "✦ " : "") + d.name).withStyle(rs.withBold(true)));
+        l.add(Component.literal(d.rarity.label + " · " + (e.holo ? "Holográfica" : Cards.category(d.category).name)).withStyle(rs));
+        l.add(Component.literal("Agárrala y suéltala en su hueco").withStyle(ChatFormatting.GRAY));
+        l.add(Component.literal("Va en la pág. " + pageOf(e.id, e.holo)).withStyle(ChatFormatting.DARK_AQUA));
+        return l;
+    }
+
+    private List<Component> tooltip(int tab, CardDef d) {
         List<Component> l = new ArrayList<>();
         boolean own = owned(tab, d);
         CardCategory cat = Cards.category(d.category);
@@ -716,22 +959,30 @@ public final class AlbumScreen extends Screen {
     public boolean mouseClicked(double mx, double my, int button) {
         float vx = (float) ((mx - ox) / sc);
         float vy = (float) ((my - oy) / sc);
-        if (button != 0 || flying != null || !queue.isEmpty()) {
+        if (button != 0 || placing != null) {
             return super.mouseClicked(mx, my, button);
         }
-        if (vy >= 0 && vy < PAGE_Y) {
-            int n = tabCount();
-            int tw = Math.min(52, (VW - 8) / n);
-            int x0 = (VW - tw * n) / 2;
-            int i = (int) Math.floor((vx - x0) / tw);
-            if (i >= 0 && i < n) {
-                selectTab(i, true);
+        if (held != null) {
+            // carta "pegada" al raton: este clic la suelta
+            drop(vx, vy);
+            return true;
+        }
+        if (mode == Mode.IDLE) {
+            Entry e = trayAt(vx, vy);
+            if (e != null) {
+                held = e;
+                heldSticky = false;
+                heldX = vx;
+                heldY = vy;
+                heldDownX = vx;
+                heldDownY = vy;
+                CartasClient.play(SoundEvents.BOOK_PAGE_TURN, 1.9f, 0.3f);
                 return true;
             }
         }
         if (mode == Mode.IDLE && vy >= PAGE_Y && vy < PAGE_Y + PH && vx >= 6 && vx < VW - 6) {
             int dir = vx >= SPINE ? 1 : -1;
-            if ((dir > 0 && cur + 1 < spreadsIn(tab)) || (dir < 0 && cur > 0)) {
+            if ((dir > 0 && cur + 1 < spreads()) || (dir < 0 && cur > 0)) {
                 startLeaf(dir, Mode.DRAG);
                 dragVx = vx;
                 dragStartVx = vx;
@@ -756,6 +1007,17 @@ public final class AlbumScreen extends Screen {
 
     @Override
     public boolean mouseReleased(double mx, double my, int button) {
+        float vx = (float) ((mx - ox) / sc);
+        float vy = (float) ((my - oy) / sc);
+        if (held != null && !heldSticky && button == 0) {
+            float dist = Math.max(Math.abs(vx - heldDownX), Math.abs(vy - heldDownY));
+            if (dist < 5f) {
+                heldSticky = true;
+            } else {
+                drop(vx, vy);
+            }
+            return true;
+        }
         if (mode == Mode.DRAG && button == 0) {
             mode = Mode.SETTLE;
             if (!moved) {
@@ -775,23 +1037,27 @@ public final class AlbumScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mx, double my, double delta) {
-        if (delta != 0) {
-            flip(delta < 0 ? 1 : -1);
+        if (delta == 0) {
+            return false;
+        }
+        float vy = (float) ((my - oy) / sc);
+        if (vy >= TRAY_Y && held == null) {
+            trayScroll = Mth.clamp(trayScroll + (delta < 0 ? 1 : -1), 0, Math.max(0, tray.size() - TRAY_COUNT));
             return true;
         }
-        return false;
+        flip(delta < 0 ? 1 : -1);
+        return true;
     }
 
     @Override
     public boolean keyPressed(int key, int scan, int mods) {
-        if (CartasKeys.OPEN.matches(key, scan)) {
-            onClose();
+        if (key == GLFW.GLFW_KEY_ESCAPE && held != null) {
+            held = null;
+            heldSticky = false;
             return true;
         }
-        if (CartasKeys.INSERT.matches(key, scan)) {
-            if (flying == null && queue.isEmpty()) {
-                CartasNet.CHANNEL.sendToServer(new CartasNet.InsertRequest());
-            }
+        if (CartasKeys.OPEN.matches(key, scan)) {
+            onClose();
             return true;
         }
         if (key == GLFW.GLFW_KEY_RIGHT || key == GLFW.GLFW_KEY_D) {
@@ -800,10 +1066,6 @@ public final class AlbumScreen extends Screen {
         }
         if (key == GLFW.GLFW_KEY_LEFT || key == GLFW.GLFW_KEY_A) {
             flip(-1);
-            return true;
-        }
-        if (key >= GLFW.GLFW_KEY_1 && key < GLFW.GLFW_KEY_1 + tabCount() && flying == null) {
-            selectTab(key - GLFW.GLFW_KEY_1, true);
             return true;
         }
         return super.keyPressed(key, scan, mods);

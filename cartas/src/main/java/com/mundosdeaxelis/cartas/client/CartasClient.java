@@ -32,22 +32,9 @@ public final class CartasClient {
 
     public static void onInsertResult(CartasNet.InsertResult m) {
         Minecraft mc = Minecraft.getInstance();
-        AlbumScreen s;
-        if (mc.screen instanceof AlbumScreen cur) {
-            s = cur;
-        } else {
-            // el album todavia no estaba abierto: se abre con el estado de ANTES y se anima cada carta
-            AlbumLogic before = new AlbumLogic();
-            before.normal.addAll(m.normal());
-            before.holo.addAll(m.holoAll());
-            for (int i = 0; i < m.ids().size(); i++) {
-                (m.holo().get(i) ? before.holo : before.normal).remove(m.ids().get(i));
-            }
-            setAlbum(before.normal, before.holo);
-            s = new AlbumScreen();
-            mc.setScreen(s);
+        if (mc.screen instanceof AlbumScreen s) {
+            s.onInserted(m);
         }
-        s.onInserted(m);
         setAlbum(m.normal(), m.holoAll());
     }
 

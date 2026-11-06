@@ -1,42 +1,46 @@
 package com.mundosdeaxelis.cartas;
 
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
-/** Mete en el album las cartas nuevas que el jugador lleva encima (una de cada; las repetidas se quedan en el inventario). */
+/** El jugador coloca UNA carta en su hueco del album. El servidor comprueba que la lleve encima y que el hueco este libre. */
 public final class AlbumInsert {
     private AlbumInsert() {
     }
 
-    public static void run(ServerPlayer sp) {
+    public static void place(ServerPlayer sp, String id, boolean holo) {
         AlbumCap cap = AlbumCaps.of(sp);
         double before = cap.bonusHealth();
-        List<String> ids = new ArrayList<>();
-        List<Boolean> holo = new ArrayList<>();
-        // las normales primero, luego las holograficas; en el orden del album
-        for (int pass = 0; pass < 2; pass++) {
-            boolean h = pass == 1;
-            for (CardDef d : Cards.ALL) {
-                if (cap.has(d.id, h)) {
-                    continue;
-                }
-                for (ItemStack s : sp.getInventory().items) {
-                    if (!s.isEmpty() && s.getItem() == CartasItems.CARDS.get(d.id).get() && CardItem.isHolo(s) == h) {
-                        s.shrink(1);
-                        cap.add(d.id, h);
-                        ids.add(d.id);
-                        holo.add(h);
-                        break;
-                    }
-                }
+        boolean ok = false;
+        CardDef d = Cards.get(id);
+        if (d != null && !cap.has(id, holo)) {
+            ItemStack s = find(sp, d, holo);
+            if (s != null) {
+                s.shrink(1);
+                cap.add(id, holo);
+                sp.getInventory().setChanged();
+                AlbumBonuses.apply(sp);
+                ok = true;
             }
         }
-        if (!ids.isEmpty()) {
-            sp.getInventory().setChanged();
-            AlbumBonuses.apply(sp);
+        List<String> ids = ok ? List.of(id) : List.of();
+        List<Boolean> hs = ok ? List.of(holo) : List.of();
+        CartasNet.toPlayer(sp, new CartasNet.InsertResult(ids, hs, cap.normal, cap.holo, (float) before, (float) cap.bonusHealth()));
+    }
+
+    private static ItemStack find(ServerPlayer sp, CardDef d, boolean holo) {
+        net.minecraft.world.item.Item item = CartasItems.CARDS.get(d.id).get();
+        for (ItemStack s : sp.getInventory().items) {
+            if (!s.isEmpty() && s.getItem() == item && CardItem.isHolo(s) == holo) {
+                return s;
+            }
         }
-        CartasNet.toPlayer(sp, new CartasNet.InsertResult(ids, holo, cap.normal, cap.holo, (float) before, (float) cap.bonusHealth()));
+        for (ItemStack s : sp.getInventory().offhand) {
+            if (!s.isEmpty() && s.getItem() == item && CardItem.isHolo(s) == holo) {
+                return s;
+            }
+        }
+        return null;
     }
 }

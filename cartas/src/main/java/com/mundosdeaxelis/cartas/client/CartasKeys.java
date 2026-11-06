@@ -12,9 +12,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 
-/** Teclas del album: K guarda las cartas nuevas, B abre el album (se pueden cambiar en Controles). */
+/** Teclas del album: B abre el album (se pueden cambiar en Controles). */
 public final class CartasKeys {
-    public static final KeyMapping INSERT = new KeyMapping("key.mundos_de_axelis.cartas.insertar", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_K, "key.categories.mundos_de_axelis_cartas");
     public static final KeyMapping OPEN = new KeyMapping("key.mundos_de_axelis.cartas.abrir", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_B, "key.categories.mundos_de_axelis_cartas");
 
     private CartasKeys() {
@@ -24,7 +23,6 @@ public final class CartasKeys {
     public static final class ModBus {
         @SubscribeEvent
         public static void keys(RegisterKeyMappingsEvent e) {
-            e.register(INSERT);
             e.register(OPEN);
         }
     }
@@ -39,9 +37,6 @@ public final class CartasKeys {
             Minecraft mc = Minecraft.getInstance();
             if (mc.player == null || mc.screen != null) {
                 return;
-            }
-            while (INSERT.consumeClick()) {
-                CartasNet.CHANNEL.sendToServer(new CartasNet.InsertRequest());
             }
             while (OPEN.consumeClick()) {
                 CartasNet.CHANNEL.sendToServer(new CartasNet.OpenRequest());

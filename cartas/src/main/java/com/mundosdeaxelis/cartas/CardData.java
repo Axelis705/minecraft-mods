@@ -46,7 +46,7 @@ final class CardData {
         {"espada_netherita", "Espada de Netherita", "espadas", "EPICA", "Forjada en las profundidades.", "#4a3f4a", "#c04a2a"},
         {"aldeano", "Aldeano", "personajes", "COMUN", "Hmm.", "#c08a6a", "#ffffff"},
         {"bruja", "Bruja", "personajes", "RARA", "Sus pociones nunca salen igual dos veces.", "#7a3aa0", "#6ae05a"},
-        {"axelis705", "Axelis705", "personajes", "LEGENDARIA", "Creador de Mundos de Axelis.", "#ffe27a", "#ffffff"},
+        {"axelis705", "Axelis705", "personajes", "EPICA", "Creador de Mundos de Axelis.", "#ffe27a", "#ffffff"},
         {"jadiel", "Jadiel", "personajes", "EPICA", "Aventurero de la bandana roja.", "#c03030", "#ffffff"},
         {"marizux", "Marizux", "personajes", "EPICA", "Cabello rosa y mucha energ\u00eda.", "#e88ab8", "#ffffff"},
         {"odette", "Odette", "personajes", "LEGENDARIA", "Su luz acompa\u00f1a cada aventura.", "#8ac8ff", "#ffffff"},

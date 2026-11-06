@@ -356,11 +356,15 @@ public final class PackOpenScreen extends Screen {
             if (done[i]) {
                 g.pose().pushPose();
                 g.pose().translate(x + CW / 2f, y + CH + 5f, 0f);
-                g.pose().scale(0.8f, 0.8f, 1f);
+                // el nombre se encoge para caber bajo su carta y no pisar al de al lado
+                float lw = CW + GAP - 2f;
+                int wide = Math.max(font.width(d.name), Math.max(font.width(d.rarity.label), h ? font.width("✦ Holo") : 0));
+                float ls = Math.min(0.8f, lw / Math.max(1, wide));
+                g.pose().scale(ls, ls, 1f);
                 g.drawCenteredString(font, d.name, 0, 0, 0xFF000000 | d.rarity.color);
                 g.drawCenteredString(font, d.rarity.label, 0, 10, 0xFFB8B8C0);
                 if (h) {
-                    g.drawCenteredString(font, "✦ Holográfica", 0, 20, 0xFF7FE8FF);
+                    g.drawCenteredString(font, "✦ Holo", 0, 20, 0xFF7FE8FF);
                 }
                 g.pose().popPose();
                 if (isNew.get(i)) {

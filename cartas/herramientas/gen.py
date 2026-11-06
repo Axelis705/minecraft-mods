@@ -406,7 +406,6 @@ def main():
     lang = {
         "itemGroup.mundos_de_axelis.cartas": "Mundos de Axelis: Cartas",
         "key.categories.mundos_de_axelis_cartas": "Mundos de Axelis: Cartas",
-        "key.mundos_de_axelis.cartas.insertar": "Guardar cartas en el álbum",
         "key.mundos_de_axelis.cartas.abrir": "Abrir el álbum",
         "item.mundos_de_axelis.album_cartas": "Álbum de Cartas",
     }
