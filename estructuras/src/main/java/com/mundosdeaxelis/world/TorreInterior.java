@@ -904,7 +904,7 @@ final class TorreInterior {
                 }
                 boolean edge = Math.abs(x) == 2 || dz == 4 || dz == 8;
                 if (edge) {
-                    b.set(x, f, CZ + dz, Math.abs(x) == 2 && dz % 2 == 0 ? "mossy_stone_brick_slab[type=top]" : "mossy_stone_brick_wall");
+                    b.set(x, f, CZ + dz, "mossy_stone_bricks"); // borde de bloques enteros: el agua se escaparía por una losa o un muro
                 } else {
                     b.set(x, f - 1, CZ + dz, "clay");
                     b.set(x, f, CZ + dz, "water");
