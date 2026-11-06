@@ -19,11 +19,11 @@ import net.minecraft.network.chat.Component;
 public final class HostScreen extends Screen {
     private static HostScreen current;
     private static int tab;
-    private static final String[] TABS = {"Juego", "Efectos", "Camaras", "Puntos", "Mas"};
-    private static final int PW = 196;
+    private static final String[] TABS = {"Juego", "Efectos", "Cámara", "Puntos", "Más"};
+    public static final int PW = 196;
 
     private final List<int[]> notes = new ArrayList<>();
-    private final List<String> noteText = new ArrayList<>();
+    private final List<net.minecraft.util.FormattedCharSequence> noteText = new ArrayList<>();
     private int cx;
     private int cy;
     private int col;
@@ -70,13 +70,21 @@ public final class HostScreen extends Screen {
             buildLobby(st);
             return;
         }
+        int tx = cx;
+        int totalW = 0;
+        for (String t : TABS) {
+            totalW += font.width(t) + 10;
+        }
+        int gap = Math.max(0, Math.min(2, (PW - totalW) / (TABS.length - 1)));
         for (int i = 0; i < TABS.length; i++) {
             final int t = i;
-            Button b = Button.builder(Component.literal(i == tab ? "[" + TABS[i] + "]" : TABS[i]), x -> {
+            int w = font.width(TABS[i]) + 10;
+            Component lab = i == tab ? Component.literal(TABS[i]).withStyle(net.minecraft.ChatFormatting.YELLOW) : Component.literal(TABS[i]);
+            addRenderableWidget(Button.builder(lab, x -> {
                 tab = t;
                 rebuildWidgets();
-            }).bounds(cx + i * 39, cy, 38, 16).build();
-            addRenderableWidget(b);
+            }).bounds(tx, cy, w, 16).build());
+            tx += w + gap;
         }
         cy += 20;
         switch (tab) {
@@ -92,7 +100,7 @@ public final class HostScreen extends Screen {
         CompoundTag st = ShowClient.state;
         StringBuilder s = new StringBuilder();
         s.append(st.getBoolean("active")).append(st.getString("phase")).append(st.getInt("format")).append(st.getBoolean("hostPlays")).append(tab);
-        s.append(st.getBoolean("autoWrong"));
+        s.append(st.getBoolean("autoWrong")).append(st.getBoolean("voice")).append(st.getBoolean("hideSecrets"));
         if (st.contains("r", 10)) {
             CompoundTag r = st.getCompound("r");
             s.append("r").append(r.getInt("stage")).append(r.getString("pending")).append(r.getString("ans")).append(r.getInt("strikes"));
@@ -143,9 +151,16 @@ public final class HostScreen extends Screen {
 
     private void note(String s) {
         nextRow();
-        noteText.add(s);
-        notes.add(new int[] {cx, cy});
-        cy += 12;
+        if (s.isEmpty()) {
+            cy += 6;
+            return;
+        }
+        for (net.minecraft.util.FormattedCharSequence l : font.split(Component.literal(s), PW)) {
+            noteText.add(l);
+            notes.add(new int[] {cx, cy});
+            cy += 11;
+        }
+        cy += 1;
     }
 
     private void full(String label, Runnable r) {
@@ -191,6 +206,10 @@ public final class HostScreen extends Screen {
         note("PREPARACION  (max 6 jugadores)");
         full("Formato: " + fmt.label, () -> act("format", "", (fmt.ordinal() + 1) % Format.values().length));
         full("Yo juego: " + (st.getBoolean("hostPlays") ? "SI" : "NO"), () -> act("hostplays"));
+        full("Modo voz (Discord): " + (st.getBoolean("voice") ? "SI" : "NO"), () -> act("voice"));
+        if (st.getBoolean("hostPlays")) {
+            full("Ocultarme los secretos: " + (st.getBoolean("hideSecrets") ? "SI" : "NO"), () -> act("hidesecrets"));
+        }
         full("Repartir al azar a los conectados", () -> act("auto"));
         half("+ Bot (prueba)", () -> act("bot", "", -1));
         half("Llenar con bots", () -> act("botsfill"));
@@ -204,6 +223,13 @@ public final class HostScreen extends Screen {
             }
         }
         java.util.Collections.sort(online);
+        // los que ya estan en el show y no estan conectados (los bots) tambien se listan, para poder cambiarlos de equipo
+        for (int i = 0; i < pl.size(); i++) {
+            String n = pl.getCompound(i).getString("n");
+            if (!online.contains(n)) {
+                online.add(n);
+            }
+        }
         for (String name : online) {
             int side = -2;
             for (int i = 0; i < pl.size(); i++) {
@@ -212,7 +238,7 @@ public final class HostScreen extends Screen {
                 }
             }
             nextRow();
-            noteText.add(cut(name, 14) + (side >= -1 && side != -2 ? "  (dentro)" : ""));
+            noteText.add(Component.literal(cut(name, 14) + (side >= -1 && side != -2 ? "  (dentro)" : "")).getVisualOrderText());
             notes.add(new int[] {cx, cy + 5});
             int bx = cx + 100;
             int teams = Math.max(1, fmt.teams);
@@ -285,7 +311,11 @@ public final class HostScreen extends Screen {
             full("Volver al menu", () -> act("finish"));
             return;
         }
-        if (!pending.isEmpty()) {
+        boolean blind = !st.getBoolean("sees");
+        if (blind) {
+            note("Estas jugando: no ves las respuestas del tablero (se destapan solas).");
+        }
+        if (!pending.isEmpty() && !blind) {
             note("Escribio: " + cut(pending, 24));
             for (int i = 0; i < as.size(); i++) {
                 CompoundTag a = as.getCompound(i);
@@ -299,7 +329,10 @@ public final class HostScreen extends Screen {
             return;
         }
         note(stage == 0 ? "Cara a cara" : stage == 1 ? "Turno de " + cut(r.getString("ans"), 16) : "Robo");
-        for (int i = 0; i < as.size(); i++) {
+        if (st.getBoolean("voice") && !blind) {
+            note("Modo voz: oye la respuesta y destapa el # que corresponde.");
+        }
+        for (int i = 0; i < as.size() && !blind; i++) {
             CompoundTag a = as.getCompound(i);
             if (!a.getBoolean("rev")) {
                 final int idx = i;
@@ -332,7 +365,9 @@ public final class HostScreen extends Screen {
     private void buildTrivia(CompoundTag st) {
         CompoundTag t = st.getCompound("t");
         boolean rev = t.getBoolean("rev");
-        note("Correcta: " + (char) ('A' + t.getInt("ok")));
+        if (t.contains("ok")) {
+            note("Correcta: " + (char) ('A' + t.getInt("ok")));
+        }
         if (!rev) {
             full("Revelar ya", () -> act("treveal"));
         } else {
@@ -345,11 +380,19 @@ public final class HostScreen extends Screen {
     private void buildImpostor(CompoundTag st) {
         CompoundTag im = st.getCompound("imp");
         String stage = im.getString("stage");
-        note("Impostor: " + im.getString("imp"));
-        note("Palabra: " + im.getString("word"));
+        if (im.contains("imp")) {
+            note("Impostor: " + im.getString("imp"));
+        }
+        if (im.contains("word")) {
+            note("Palabra: " + im.getString("word"));
+        }
         switch (stage) {
             case "CLUES" -> {
-                full("Saltar el turno de " + cut(im.getString("turn"), 10), () -> act("impskip"));
+                if (st.getBoolean("voice")) {
+                    full("Siguiente turno (ya hablo " + cut(im.getString("turn"), 8) + ")", () -> act("impskip"));
+                } else {
+                    full("Saltar el turno de " + cut(im.getString("turn"), 10), () -> act("impskip"));
+                }
                 full("Ir directo a votar", () -> act("impvote"));
             }
             case "DISCUSS" -> full("Abrir la votacion", () -> act("impvote"));
@@ -364,7 +407,28 @@ public final class HostScreen extends Screen {
 
     private void buildTaboo(CompoundTag st) {
         CompoundTag tb = st.getCompound("tb");
-        note("Palabra: " + tb.getString("word"));
+        if (tb.contains("word")) {
+            note("Palabra: " + tb.getString("word"));
+        }
+        if (st.getBoolean("voice") && !tb.getBoolean("over")) {
+            note("Modo voz: marca quien acierta o si dijo una prohibida.");
+            ListTag sides = st.getList("sides", 10);
+            int ds = tb.getInt("side");
+            boolean teamGuess = ds >= 0 && ds < sides.size() && sides.getCompound(ds).getList("m", 8).size() > 1;
+            ListTag pl = st.getList("players", 10);
+            for (int i = 0; i < pl.size(); i++) {
+                String n = pl.getCompound(i).getString("n");
+                if (n.equals(tb.getString("desc"))) {
+                    continue;
+                }
+                if (teamGuess && pl.getCompound(i).getInt("side") != ds) {
+                    continue;
+                }
+                half("Acerto " + cut(n, 9), () -> act("tsolve", n, 0));
+            }
+            nextRow();
+            full("Dijo una prohibida (X)", () -> act("tstrike"));
+        }
         if (tb.getBoolean("over")) {
             full("Otra palabra", () -> act("taboo", "", 60));
         }
@@ -373,8 +437,27 @@ public final class HostScreen extends Screen {
 
     private void buildDraw(CompoundTag st) {
         CompoundTag d = st.getCompound("dr");
-        note("Dibuja " + cut(d.getString("drawer"), 12) + ": " + cut(d.getString("word"), 20));
+        if (d.contains("word")) {
+            note("Dibuja " + cut(d.getString("drawer"), 12) + ": " + cut(d.getString("word"), 20));
+        } else {
+            note("Dibuja " + cut(d.getString("drawer"), 12));
+        }
         note("Acertaron: " + d.getList("solved", 8).size());
+        if (st.getBoolean("voice") && !d.getBoolean("over")) {
+            note("Modo voz: marca quien acierta.");
+            ListTag pl = st.getList("players", 10);
+            java.util.Set<String> done = new java.util.HashSet<>();
+            for (int i = 0; i < d.getList("solved", 8).size(); i++) {
+                done.add(d.getList("solved", 8).getString(i));
+            }
+            for (int i = 0; i < pl.size(); i++) {
+                String n = pl.getCompound(i).getString("n");
+                if (!n.equals(d.getString("drawer")) && !done.contains(n)) {
+                    half("Acerto " + cut(n, 9), () -> act("dsolve", n, 0));
+                }
+            }
+            nextRow();
+        }
         if (d.getBoolean("over")) {
             full("Otro dibujo", () -> act("draw", "", 90));
         }
@@ -443,6 +526,10 @@ public final class HostScreen extends Screen {
 
     private void buildMore(CompoundTag st) {
         full("Locutor: " + "alternar", () -> act("announcer"));
+        full("Modo voz (Discord): " + (st.getBoolean("voice") ? "SI" : "NO"), () -> act("voice"));
+        if (st.getBoolean("hostPlays")) {
+            full("Ocultarme los secretos: " + (st.getBoolean("hideSecrets") ? "SI" : "NO"), () -> act("hidesecrets"));
+        }
         full("Respuesta mala sin preguntar: " + (st.getBoolean("autoWrong") ? "SI" : "NO"), () -> act("autowrong"));
         full("Recargar bancos de preguntas", () -> act("reload"));
         full("Llevar jugadores a sus podios", () -> act("tp"));
@@ -454,8 +541,9 @@ public final class HostScreen extends Screen {
 
     @Override
     public void render(GuiGraphics g, int mx, int my, float pt) {
-        g.fill(cxLeft() - 4, 0, width, height, 0xB0000000);
-        g.drawString(font, "SHOW DE AXELIS - PRESENTADOR", cxLeft(), 0, 0xFFFFC107, false);
+        g.fill(cxLeft() - 4, 0, width, height, 0xC8101018);
+        g.fill(cxLeft() - 4, 0, cxLeft() - 3, height, 0xFFFFC107);
+        g.drawString(font, "PRESENTADOR - Show de Axelis", cxLeft(), 2, 0xFFFFC107, false);
         for (int i = 0; i < noteText.size(); i++) {
             g.drawString(font, noteText.get(i), notes.get(i)[0], notes.get(i)[1], 0xFFFFFFFF, true);
         }

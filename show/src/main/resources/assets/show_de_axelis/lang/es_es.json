@@ -1,6 +1,8 @@
 {
  "entity.show_de_axelis.spectator": "Espectador",
  "key.categories.show_de_axelis": "Show de Axelis",
+ "key.show_de_axelis.vote": "Votar al impostor (modo voz)",
+ "key.show_de_axelis.hud": "Interfaz del show (auto / compacta / completa)",
  "key.show_de_axelis.panel": "Abrir el panel del show",
  "key.show_de_axelis.buzz": "Timbre (cara a cara)",
  "key.show_de_axelis.draw": "Dibujar (Adivina el dibujo)",

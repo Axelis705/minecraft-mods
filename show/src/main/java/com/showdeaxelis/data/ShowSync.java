@@ -44,6 +44,8 @@ public final class ShowSync {
         t.putBoolean("active", true);
         boolean host = viewer.equals(s.host);
         Participant me = s.byId(viewer);
+        // el presentador que tambien juega no ve secretos (si lo prefiere asi): ve lo mismo que un jugador
+        boolean sees = host && !(s.hostPlays && s.hideSecrets);
         CompoundTag you = new CompoundTag();
         you.putBoolean("host", host);
         you.putBoolean("player", me != null);
@@ -54,6 +56,9 @@ public final class ShowSync {
         t.putString("hostName", s.hostName);
         t.putBoolean("hostPlays", s.hostPlays);
         t.putBoolean("autoWrong", s.autoWrong);
+        t.putBoolean("voice", s.voice);
+        t.putBoolean("hideSecrets", s.hideSecrets);
+        t.putBoolean("sees", sees);
         t.putBoolean("canStart", s.canStart());
         t.putInt("round", s.roundNo);
         if (stage != null) {
@@ -108,7 +113,7 @@ public final class ShowSync {
                 CompoundTag ac = new CompoundTag();
                 boolean show = r.revealed[i];
                 ac.putBoolean("rev", show);
-                if (show || host) {
+                if (show || sees) {
                     ac.putString("t", a.text());
                     ac.putInt("p", a.points());
                 }
@@ -125,7 +130,7 @@ public final class ShowSync {
             c.putInt("left", Math.max(0, s.t.deadlineTick - now));
             c.putInt("total", s.t.deadlineTick - s.t.startTick);
             c.putBoolean("rev", s.t.revealed);
-            if (s.t.revealed || host) {
+            if (s.t.revealed || sees) {
                 c.putInt("ok", s.t.q.correct());
                 c.putString("note", s.t.q.note());
             }
@@ -172,11 +177,11 @@ public final class ShowSync {
             boolean isImp = viewer.equals(g.impostor);
             c.putBoolean("isImp", isImp);
             if (!isImp || done) {
-                if (me != null || host || done) {
+                if (me != null || sees || done) {
                     c.putString("word", g.word);
                 }
             }
-            if (host || done) {
+            if (sees || done) {
                 c.putString("imp", name(s, g.impostor));
             }
             c.putString("guess", g.impostorGuess);
@@ -198,10 +203,11 @@ public final class ShowSync {
             c.putInt("strikes", g.strikes);
             c.putBoolean("over", g.over);
             c.putBoolean("solved", g.solved);
+            c.putBoolean("iGuess", s.isGuesser(viewer));
             c.putInt("gained", g.gained);
             c.putString("solver", name(s, g.solver));
-            boolean sees = host || viewer.equals(g.describer) || g.over;
-            if (sees) {
+            boolean sees2 = sees || viewer.equals(g.describer) || g.over;
+            if (sees2) {
                 c.putString("word", g.word);
                 c.put("no", strings(g.forbidden));
             }
@@ -225,7 +231,7 @@ public final class ShowSync {
             }
             c.put("solved", solved);
             c.putBoolean("iSolved", g.solved.contains(viewer));
-            if (host || viewer.equals(g.drawer) || g.over) {
+            if (sees || viewer.equals(g.drawer) || g.over) {
                 c.putString("word", g.word);
             }
             t.put("dr", c);

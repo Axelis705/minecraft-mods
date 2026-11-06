@@ -226,6 +226,41 @@ public class ShowTest {
         s.finishDraw();
         ok(s.phase == Phase.IDLE, "vuelve a esperar");
 
+        // ---- modo voz: el presentador marca aciertos con botones
+        s = twoTeams();
+        s.start();
+        s.voice = true;
+        ok(s.startDraw("Perro", 60, 0, null), "dibujo en modo voz");
+        UUID vd = s.draw.drawer;
+        UUID vg = u(0).equals(vd) ? u(1) : u(0);
+        ok(!s.hostDrawSolve(vd), "el dibujante no puede ser marcado");
+        ok(s.hostDrawSolve(vg) && s.draw.solved.contains(vg) && s.byId(vg).points == 10, "el presentador marca acierto");
+        ok(!s.hostDrawSolve(vg), "no se marca dos veces");
+        s.finishDraw();
+        ok(s.startTaboo("Luna", List.of("noche"), 30, 100), "palabra en modo voz");
+        UUID td = s.taboo.describer;
+        ok(s.hostTabooStrike() && s.taboo.strikes == 1, "presentador marca prohibida");
+        UUID tg = null;
+        for (Participant pp : s.players) {
+            if (s.isGuesser(pp.id)) {
+                tg = pp.id;
+            }
+        }
+        ok(tg != null && s.hostTabooSolve(tg, 200) && s.taboo.solved && s.taboo.over, "presentador marca que adivino");
+        s.finishTaboo();
+        // impostor: saltar turno en voz deja constancia
+        List<UUID> ids = new java.util.ArrayList<>();
+        for (Participant pp : s.players) {
+            ids.add(pp.id);
+        }
+        ok(s.startImpostor("Animales", "Perro", ids, 0), "impostor en modo voz");
+        ok(s.impostorSkip() && s.imp.clues.get(0)[1].contains("voz"), "turno de pista hablada");
+        s.finishImpostor();
+
+        // ---- el presentador que juega no responde por su cuenta si no ve las respuestas
+        Show hs = new Show(u(0), "Host", true);
+        ok(hs.hideSecrets && hs.hostPlays, "oculta secretos por defecto");
+
         // ---- final
         s.finishShow();
         ok(s.phase == Phase.FINAL, "final");

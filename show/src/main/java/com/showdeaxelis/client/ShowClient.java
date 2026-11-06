@@ -63,9 +63,24 @@ public final class ShowClient {
                 DrawScreen.open();
             }
         }
+        // en modo voz, a quien le toca votar se le abre la ventana de votos
+        CompoundTag im = state.getCompound("imp");
+        boolean voting = active() && state.getString("phase").equals("IMPOSTOR") && im.getString("stage").equals("VOTE");
+        if (!voting) {
+            voteOpened = false;
+        } else if (!voteOpened && state.getBoolean("voice") && state.getCompound("you").getBoolean("player") && !im.getBoolean("iVoted")) {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player != null && (mc.screen == null || mc.screen instanceof HostScreen)) {
+                voteOpened = true;
+                VoteScreen.open();
+            }
+        }
     }
 
     private static int drawOpenedRound = -1;
+    private static boolean voteOpened;
+    /** Como se dibuja el HUD: 0 automatico (compacto si estas dentro del estudio), 1 compacto, 2 completo. */
+    public static int hudMode;
 
     public static void play(String name, float pitch) {
         SoundEvent se = ModSounds.get(name);

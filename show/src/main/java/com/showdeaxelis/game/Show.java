@@ -21,6 +21,10 @@ public final class Show {
     public String hostName = "";
     public boolean hostPlays;
     public boolean autoWrong;
+    /** Modo voz: se juega hablando (Discord o similar); el presentador valida con botones y los votos van por pantalla. */
+    public boolean voice;
+    /** Si el presentador juega, no ve respuestas ni secretos (los ve solo quien le toca). */
+    public boolean hideSecrets = true;
     public int roundNo;
     public final List<Participant> players = new ArrayList<>();
     public final List<Side> sides = new ArrayList<>();
@@ -321,7 +325,7 @@ public final class Show {
             resolve(idx);
         } else if (idx == -2) {
             events.add(new Ev("dup", sideOf(p), p.name, text, 0, 0));
-        } else if (autoWrong) {
+        } else if (autoWrong || hostPlays && hideSecrets) {
             resolve(-1);
         } else {
             r.pending = text;
@@ -696,7 +700,7 @@ public final class Show {
         if (phase != Phase.IMPOSTOR || imp == null || imp.current() == null) {
             return false;
         }
-        imp.clues.add(new String[] {byId(imp.current()).name, "..."});
+        imp.clues.add(new String[] {byId(imp.current()).name, voice ? "(la dijo en voz alta)" : "..."});
         imp.step++;
         if (imp.step >= imp.totalClues()) {
             imp.stage = ImpostorGame.Stage.DISCUSS;
@@ -867,24 +871,52 @@ public final class Show {
             return 0;
         }
         if (Matcher.same(text, taboo.word) || Matcher.containsWord(text, taboo.word)) {
-            taboo.solved = true;
-            taboo.over = true;
-            taboo.solver = id;
-            int left = Math.max(0, (taboo.deadlineTick - nowTick) / 20);
-            taboo.gained = 4 + left / 10 - taboo.strikes;
-            taboo.gained = Math.max(1, taboo.gained);
-            givePoints(p, taboo.gained);
-            Participant d = byId(taboo.describer);
-            if (d != null && sideOf(d) != sideOf(p)) {
-                givePoints(d, taboo.gained);
-            } else if (d != null) {
-                d.points += taboo.gained;
-            }
-            events.add(new Ev("taboo_solved", sideOf(p), p.name, taboo.word, taboo.gained, left));
+            tabooSolve(p, nowTick);
             return 3;
         }
         events.add(new Ev("taboo_guess", sideOf(p), p.name, text.trim(), 0, 0));
         return 1;
+    }
+
+    private void tabooSolve(Participant p, int nowTick) {
+        taboo.solved = true;
+        taboo.over = true;
+        taboo.solver = p.id;
+        int left = Math.max(0, (taboo.deadlineTick - nowTick) / 20);
+        taboo.gained = 4 + left / 10 - taboo.strikes;
+        taboo.gained = Math.max(1, taboo.gained);
+        givePoints(p, taboo.gained);
+        Participant d = byId(taboo.describer);
+        if (d != null && sideOf(d) != sideOf(p)) {
+            givePoints(d, taboo.gained);
+        } else if (d != null) {
+            d.points += taboo.gained;
+        }
+        events.add(new Ev("taboo_solved", sideOf(p), p.name, taboo.word, taboo.gained, left));
+    }
+
+    /** Modo voz: el presentador marca que alguien adivino la palabra. */
+    public boolean hostTabooSolve(UUID id, int nowTick) {
+        if (phase != Phase.TABOO || taboo == null || taboo.over || !isGuesser(id)) {
+            return false;
+        }
+        tabooSolve(byId(id), nowTick);
+        return true;
+    }
+
+    /** Modo voz: el presentador marca que el que describe dijo una palabra prohibida. */
+    public boolean hostTabooStrike() {
+        if (phase != Phase.TABOO || taboo == null || taboo.over) {
+            return false;
+        }
+        Participant d = byId(taboo.describer);
+        taboo.strikes++;
+        events.add(new Ev("taboo_bad", taboo.side, d == null ? "" : d.name, "", taboo.strikes, 0));
+        if (taboo.strikes >= 3) {
+            taboo.over = true;
+            events.add(new Ev("taboo_fail", taboo.side, d == null ? "" : d.name, taboo.word, 0, 0));
+        }
+        return true;
     }
 
     public void tickTaboo(int nowTick) {
@@ -980,24 +1012,37 @@ public final class Show {
             return 0;
         }
         if (Matcher.same(text, draw.word) || Matcher.containsWord(text, draw.word)) {
-            int rank = draw.solved.size();
-            int pts = RANK_POINTS[Math.min(rank, RANK_POINTS.length - 1)];
-            draw.solved.add(id);
-            givePoints(p, pts);
-            Participant d = byId(draw.drawer);
-            if (d != null) {
-                givePoints(d, 3);
-            }
-            events.add(new Ev("draw_solved", sideOf(p), p.name, draw.word, pts, rank + 1));
-            int guessers = players.size() - 1;
-            if (draw.solved.size() >= guessers) {
-                draw.over = true;
-                events.add(new Ev("draw_over", sideOf(d), d == null ? "" : d.name, draw.word, draw.solved.size(), 1));
-            }
+            drawSolve(p);
             return 3;
         }
         events.add(new Ev("draw_guess", sideOf(p), p.name, text.trim(), 0, 0));
         return 1;
+    }
+
+    private void drawSolve(Participant p) {
+        int rank = draw.solved.size();
+        int pts = RANK_POINTS[Math.min(rank, RANK_POINTS.length - 1)];
+        draw.solved.add(p.id);
+        givePoints(p, pts);
+        Participant d = byId(draw.drawer);
+        if (d != null) {
+            givePoints(d, 3);
+        }
+        events.add(new Ev("draw_solved", sideOf(p), p.name, draw.word, pts, rank + 1));
+        int guessers = players.size() - 1;
+        if (draw.solved.size() >= guessers) {
+            draw.over = true;
+            events.add(new Ev("draw_over", sideOf(d), d == null ? "" : d.name, draw.word, draw.solved.size(), 1));
+        }
+    }
+
+    /** Modo voz: el presentador marca que alguien adivino el dibujo. */
+    public boolean hostDrawSolve(UUID id) {
+        if (!isDrawGuesser(id)) {
+            return false;
+        }
+        drawSolve(byId(id));
+        return true;
     }
 
     public void tickDraw(int nowTick) {

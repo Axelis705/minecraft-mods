@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.showdeaxelis.data.Banks;
+import com.showdeaxelis.data.Displays;
 import com.showdeaxelis.data.ShowManager;
 import com.showdeaxelis.data.StageData;
 import com.showdeaxelis.data.Studio;
@@ -45,6 +46,7 @@ public final class ShowCommand {
             ServerPlayer p = c.getSource().getPlayerOrException();
             Direction f = p.getDirection();
             Studio.build(p.serverLevel(), p.blockPosition().below(), f);
+            ShowManager.screensNow(p.getServer());
             ShowManager.sync();
             return ok(c.getSource(), "Estudio construido delante de ti, mirando hacia donde miras. Puedes volver a usarlo en otro lugar.");
         }));
@@ -56,6 +58,7 @@ public final class ShowCommand {
                         f = Direction.SOUTH;
                     }
                     Studio.build(c.getSource().getLevel(), pos, f);
+                    ShowManager.screensNow(c.getSource().getServer());
                     return ok(c.getSource(), "Estudio construido en " + pos.toShortString());
                 }))));
         root.then(Commands.literal("publico").executes(c -> {
@@ -66,6 +69,11 @@ public final class ShowCommand {
             Studio.spawnCrowd(c.getSource().getServer().overworld(), st);
             return ok(c.getSource(), "Publico nuevo en las gradas.");
         }));
+        root.then(Commands.literal("pantalla").then(Commands.literal("girar").executes(c -> {
+            Displays.flip = !Displays.flip;
+            Displays.refresh();
+            return ok(c.getSource(), "Pantalla del estudio volteada. Si el texto se veia al reves o de espaldas, ahora deberia verse bien.");
+        })));
         root.then(Commands.literal("recargar").executes(c -> ok(c.getSource(), "Bancos recargados: " + Banks.load())));
         root.then(Commands.literal("restaurar").executes(c -> {
             Banks.install(true);

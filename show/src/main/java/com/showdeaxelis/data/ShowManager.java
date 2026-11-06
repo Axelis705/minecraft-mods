@@ -89,6 +89,47 @@ public final class ShowManager {
 
     // ------------------------------------------------------------ envio del estado
 
+    private static String podSig = "";
+
+    /** Repinta los escritorios de los podios con el color de quien juega ahi, si cambio quien juega donde. */
+    private static void podiums(StageData.Info st) {
+        if (st == null) {
+            return;
+        }
+        StringBuilder sb = new StringBuilder().append(Studio.version).append(':');
+        if (show != null) {
+            sb.append(show.format.ordinal());
+            for (var sd : show.sides) {
+                sb.append('|').append(sd.index).append('=').append(sd.members.size());
+            }
+        }
+        String sig = sb.toString();
+        if (!sig.equals(podSig)) {
+            podSig = sig;
+            Studio.paintPodiums(server.overworld(), st, show);
+        }
+    }
+
+    /** Redibuja ya la pantalla del estudio (por ejemplo justo despues de construirlo). */
+    public static void screensNow(MinecraftServer srv) {
+        server = srv;
+        now = srv.getTickCount();
+        screens();
+    }
+
+    /** Actualiza la pantalla gigante y los letreros del estudio. */
+    private static void screens() {
+        if (server == null) {
+            return;
+        }
+        StageData.Info st = StageData.get(server).info();
+        if (st == null) {
+            return;
+        }
+        podiums(st);
+        Displays.update(server.overworld(), st, show == null ? null : ShowSync.build(show, new UUID(0L, 0L), now, st));
+    }
+
     public static void sync() {
         dirty = false;
         if (server == null) {
@@ -113,6 +154,9 @@ public final class ShowManager {
         server = srv;
         now = srv.getTickCount();
         if (show == null) {
+            if (now % 20 == 0) {
+                screens();
+            }
             return;
         }
         show.tick(now);
@@ -124,8 +168,12 @@ public final class ShowManager {
         for (Ev e : evs) {
             onEvent(e);
         }
-        if (!evs.isEmpty() || dirty || timed && now % 10 == 0) {
+        boolean changed = !evs.isEmpty() || dirty;
+        if (changed || timed && now % 10 == 0) {
             sync();
+        }
+        if (changed || now % 10 == 0) {
+            screens();
         }
     }
 
@@ -598,6 +646,23 @@ public final class ShowManager {
             }
             case "end" -> sh.finishShow();
             case "autowrong" -> sh.autoWrong = !sh.autoWrong;
+            case "voice" -> sh.voice = !sh.voice;
+            case "hidesecrets" -> sh.hideSecrets = !sh.hideSecrets;
+            case "tsolve" -> {
+                for (Participant q : sh.players) {
+                    if (q.name.equalsIgnoreCase(s)) {
+                        sh.hostTabooSolve(q.id, now);
+                    }
+                }
+            }
+            case "tstrike" -> sh.hostTabooStrike();
+            case "dsolve" -> {
+                for (Participant q : sh.players) {
+                    if (q.name.equalsIgnoreCase(s)) {
+                        sh.hostDrawSolve(q.id);
+                    }
+                }
+            }
             case "announcer" -> announcerOn = !announcerOn;
             case "reload" -> msg(sp, "Bancos recargados: " + Banks.load());
             case "tp" -> Studio.teleportToPodiums(server, sh);

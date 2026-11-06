@@ -1,6 +1,8 @@
 {
  "entity.show_de_axelis.spectator": "Spectator",
  "key.categories.show_de_axelis": "Show de Axelis",
+ "key.show_de_axelis.vote": "Vote for the impostor (voice mode)",
+ "key.show_de_axelis.hud": "Show interface (auto / compact / full)",
  "key.show_de_axelis.panel": "Open the show panel",
  "key.show_de_axelis.buzz": "Buzzer (face-off)",
  "key.show_de_axelis.draw": "Draw (Guess the drawing)",

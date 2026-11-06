@@ -86,7 +86,6 @@ public final class TvCamera {
             return null;
         }
         com.showdeaxelis.data.StageData.Info info = new com.showdeaxelis.data.StageData.Info(st.getInt("x"), st.getInt("y"), st.getInt("z"), st.getInt("d"));
-        double px = 0;
         double[] p;
         double[] l;
         if (name.startsWith("pod")) {
@@ -95,31 +94,31 @@ public final class TvCamera {
                 side = Integer.parseInt(name.substring(3));
             } catch (NumberFormatException ignored) {
             }
-            px = podiumX(side);
-            p = Studio.atD(info, px, 4.4, 10.5);
-            l = Studio.atD(info, px, 3.8, 17.5);
+            double px = podiumX(side);
+            p = Studio.atD(info, px, 4.9, 47);
+            l = Studio.atD(info, px, 4.3, 34.6);
             targetFov = 38f;
         } else {
             switch (name) {
                 case "host" -> {
-                    p = Studio.atD(info, 5, 4.4, 8);
-                    l = Studio.atD(info, 11.5, 3.7, 14.5);
-                    targetFov = 42f;
+                    p = Studio.atD(info, 14, 4.9, 46);
+                    l = Studio.atD(info, 21, 3.8, 33);
+                    targetFov = 40f;
                 }
                 case "board" -> {
-                    p = Studio.atD(info, 0, 6, 12);
-                    l = Studio.atD(info, 0, 7, 24);
-                    targetFov = 60f;
+                    p = Studio.atD(info, 0, 9, 34);
+                    l = Studio.atD(info, 0, 11.5, 60);
+                    targetFov = 62f;
                 }
                 case "audience" -> {
-                    p = Studio.atD(info, 0, 5, 14);
-                    l = Studio.atD(info, 0, 4.2, 3);
+                    p = Studio.atD(info, 0, 6.5, 43);
+                    l = Studio.atD(info, 0, 4, 12);
                     targetFov = 72f;
                 }
                 default -> {
-                    p = Studio.atD(info, 0, 8.5, 3);
-                    l = Studio.atD(info, 0, 4, 17);
-                    targetFov = 70f;
+                    p = Studio.atD(info, 0, 9, 1);
+                    l = Studio.atD(info, 0, 8.5, 45);
+                    targetFov = 75f;
                 }
             }
         }
@@ -130,17 +129,11 @@ public final class TvCamera {
         return new Vec3[] {new Vec3(p[0] + r.getStepX() * sway, p[1], p[2] + r.getStepZ() * sway), new Vec3(l[0], l[1], l[2])};
     }
 
-    private static int podiumX(int side) {
-        int fmt = ShowClient.state.getInt("format");
-        int pod;
-        if (fmt == 1) {
-            pod = side == 0 ? 0 : 2;
-        } else if (fmt == 2) {
-            pod = side;
-        } else {
-            pod = side / 2;
-        }
-        return Studio.PODIUM_X[Math.max(0, Math.min(2, pod))];
+    /** Donde (x local) esta el lado indicado, segun el formato de la partida. */
+    private static double podiumX(int side) {
+        int[] pm = Studio.podiumOfSide(com.showdeaxelis.game.Format.byOrdinal(ShowClient.state.getInt("format")), side);
+        int cx = Studio.podiumCenter(pm[0]);
+        return pm[1] == 2 ? cx : cx + (pm[1] == 0 ? -2.0 : 2.0);
     }
 
     @SubscribeEvent

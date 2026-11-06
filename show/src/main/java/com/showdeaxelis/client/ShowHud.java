@@ -65,6 +65,26 @@ public final class ShowHud {
         return Math.max(1, f.split(Component.literal(s), w).size()) * 10;
     }
 
+    /** Donde empieza el contenido de cada juego (justo debajo del aviso de arriba). */
+    private static int top = 8;
+    private static boolean compact;
+
+    private static boolean isCompact(Minecraft mc, CompoundTag st) {
+        if (ShowClient.hudMode == 1) {
+            return true;
+        }
+        if (ShowClient.hudMode == 2) {
+            return false;
+        }
+        CompoundTag stage = st.getCompound("stage");
+        if (!stage.contains("x") || mc.player == null) {
+            return false;
+        }
+        double dx = mc.player.getX() - stage.getInt("x");
+        double dz = mc.player.getZ() - stage.getInt("z");
+        return dx * dx + dz * dz < 90.0 * 90.0 && Math.abs(mc.player.getY() - stage.getInt("y")) < 40;
+    }
+
     public static void render(ForgeGui gui, GuiGraphics g, float pt, int W, int H) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.options.hideGui || !ShowClient.active()) {
@@ -75,11 +95,19 @@ public final class ShowHud {
         String phase = st.getString("phase");
         ListTag sides = st.getList("sides", 10);
         CompoundTag you = st.getCompound("you");
-
-        if (!phase.equals("LOBBY")) {
-            drawTag(g, f, st, phase);
+        // si el panel del presentador esta abierto, el HUD se corre a la izquierda para no taparse
+        if (mc.screen instanceof HostScreen) {
+            W -= HostScreen.PW + 14;
         }
-        if (phase.equals("R100") && st.contains("r", 10)) {
+        compact = isCompact(mc, st);
+
+        top = drawBanner(g, f, st, phase, W) + 6;
+        top = drawSay(g, f, W, top) + 4;
+        if (phase.equals("DRAW") && st.contains("dr", 10)) {
+            drawDraw(g, f, st, sides, W, H);
+        } else if (compact) {
+            drawCompact(g, f, st, phase, W, H);
+        } else if (phase.equals("R100") && st.contains("r", 10)) {
             drawBoard(g, f, st, sides, W, H);
         } else if (phase.equals("TRIVIA") && st.contains("t", 10)) {
             drawTrivia(g, f, st, W, H);
@@ -87,41 +115,146 @@ public final class ShowHud {
             drawImpostor(g, f, st, W, H);
         } else if (phase.equals("TABOO") && st.contains("tb", 10)) {
             drawTaboo(g, f, st, sides, W, H, you);
-        } else if (phase.equals("DRAW") && st.contains("dr", 10)) {
-            drawDraw(g, f, st, sides, W, H);
         } else if (phase.equals("FINAL")) {
             drawFinal(g, f, sides, W, H);
         }
         if (!phase.equals("LOBBY")) {
             drawScores(g, f, st, sides, W, H);
         }
-        drawSay(g, f, W, H);
         drawTitle(g, f, W, H);
         drawStrike(g, f, W, H);
         drawPopups(g, f, sides, W, H);
-        drawFx(g, W, H);
-        if (you.getBoolean("player") && (phase.equals("R100") || phase.equals("TRIVIA"))) {
-            g.drawString(f, "G: timbre   Z X C V: contestar", 6, H - 12, 0xFFAAAAAA, true);
-        }
+        drawFx(g, mc.getWindow().getGuiScaledWidth(), H);
     }
 
     // ------------------------------------------------------------ piezas
 
-    private static void drawTag(GuiGraphics g, Font f, CompoundTag st, String phase) {
-        String label = switch (phase) {
+    private static String phaseLabel(CompoundTag st, String phase) {
+        return switch (phase) {
             case "R100" -> "100 MEXICANOS DIJERON";
             case "TRIVIA" -> st.getCompound("t").getString("cat").toUpperCase(java.util.Locale.ROOT);
             case "IMPOSTOR" -> "EL IMPOSTOR";
             case "TABOO" -> "ADIVINA LA PALABRA";
             case "DRAW" -> "ADIVINA EL DIBUJO";
             case "FINAL" -> "FINAL";
+            case "LOBBY" -> "PREPARACION";
             default -> "SHOW DE AXELIS";
         };
-        int w = Math.max(110, f.width(label) * 3 / 2 + 20);
-        g.fill(6, 6, 6 + w, 40, 0xFF1B1B3A);
-        g.fill(6, 6, 10, 40, 0xFFFFC107);
-        text(g, f, label, 16, 11, 0xFFFFFFFF, 1.5f, false);
-        g.drawString(f, "Ronda " + st.getInt("round"), 16, 28, 0xFFB0B0D0, false);
+    }
+
+    /** El aviso de arriba: en que juego estamos, que esta pasando y que tienes que hacer tu. Devuelve donde termina. */
+    private static int drawBanner(GuiGraphics g, Font f, CompoundTag st, String phase, int W) {
+        Guide.Tip tip = Guide.tip(st);
+        int bw = Math.min(440, W - 16);
+        int x = (W - bw) / 2;
+        int y = 6;
+        int inner = bw - 16;
+        List<FormattedCharSequence> what = f.split(Component.literal(tip.what()), inner);
+        List<FormattedCharSequence> todo = tip.todo().isEmpty() ? List.of() : f.split(Component.literal(tip.todo()), inner);
+        int h = 14 + Math.min(2, what.size()) * 10 + 3 + Math.min(2, todo.size()) * 10 + 4;
+        boolean pulse = tip.mine() && (ShowClient.clientTick / 10) % 2 == 0;
+        int border = tip.mine() ? (pulse ? 0xFF69F0AE : 0xFF2E9E5B) : 0xFFFFC107;
+        g.fill(x - 2, y - 2, x + bw + 2, y + h + 2, border);
+        g.fill(x, y, x + bw, y + h, 0xE8101018);
+        String label = phaseLabel(st, phase) + (st.getInt("round") > 0 && !phase.equals("LOBBY") ? "  -  Ronda " + st.getInt("round") : "");
+        g.drawString(f, label, x + 8, y + 3, 0xFFB0B0D0, false);
+        if (st.getBoolean("voice")) {
+            String v = "MODO VOZ";
+            g.drawString(f, v, x + bw - 8 - f.width(v), y + 3, 0xFF80DEEA, false);
+        }
+        int yy = y + 14;
+        for (int i = 0; i < Math.min(2, what.size()); i++) {
+            g.drawString(f, what.get(i), x + 8, yy, 0xFFFFFFFF, true);
+            yy += 10;
+        }
+        yy += 3;
+        for (int i = 0; i < Math.min(2, todo.size()); i++) {
+            g.drawString(f, todo.get(i), x + 8, yy, tip.mine() ? 0xFFB9F6CA : 0xFFFFE082, true);
+            yy += 10;
+        }
+        return y + h + 2;
+    }
+
+    /** Version chica del HUD para quien esta dentro del estudio: lo importante se ve en la pantalla gigante. */
+    private static void drawCompact(GuiGraphics g, Font f, CompoundTag st, String phase, int W, int H) {
+        CompoundTag you = st.getCompound("you");
+        int bw = Math.min(440, W - 16);
+        int x = (W - bw) / 2;
+        int y = top;
+        switch (phase) {
+            case "TRIVIA" -> {
+                CompoundTag t = st.getCompound("t");
+                List<String> ops = strs(t.getList("op", 8));
+                boolean rev = t.getBoolean("rev");
+                int ok = t.contains("ok") ? t.getInt("ok") : -1;
+                int mine = t.getInt("mine");
+                int cw = (bw - 3 * 4) / Math.max(1, ops.size());
+                for (int i = 0; i < ops.size(); i++) {
+                    int c = ops.size() == 2 ? (i == 0 ? 0x43A047 : 0xE53935) : OPT_COLORS[i % 4];
+                    int cx = x + i * (cw + 4);
+                    boolean sel = !rev && mine == i || rev && i == ok;
+                    if (sel) {
+                        g.fill(cx - 2, y - 2, cx + cw + 2, y + 22, 0xFFFFFFFF);
+                    }
+                    g.fill(cx, y, cx + cw, y + 20, rev && ok >= 0 && i != ok ? dark(c, 0.3f) : argb(c));
+                    int tc = c == 0xFDD835 ? 0xFF222222 : 0xFFFFFFFF;
+                    String label = (char) ('A' + i) + (you.getBoolean("player") ? "  (" + KEYS[i] + ")" : "");
+                    g.drawString(f, label, cx + (cw - f.width(label)) / 2, y + 6, tc, false);
+                }
+                y += 26;
+                if (!rev) {
+                    drawTimer(g, x, y, bw, t.getInt("left"), t.getInt("total"));
+                }
+            }
+            case "IMPOSTOR" -> {
+                CompoundTag im = st.getCompound("imp");
+                String stage = im.getString("stage");
+                String line = null;
+                int color = 0xFFFFFFFF;
+                if (you.getBoolean("player") || you.getBoolean("host")) {
+                    if (im.getBoolean("isImp") && !stage.equals("DONE")) {
+                        line = "ERES EL IMPOSTOR  -  categoria: " + im.getString("cat");
+                        color = 0xFFFF5252;
+                    } else if (im.contains("word")) {
+                        line = "Palabra secreta: " + im.getString("word") + "  (" + im.getString("cat") + ")";
+                        color = 0xFF69F0AE;
+                    }
+                }
+                if (line != null) {
+                    g.fill(x, y, x + bw, y + 16, 0xE0101018);
+                    g.drawCenteredString(f, line, x + bw / 2, y + 4, color);
+                    y += 20;
+                }
+                if (you.getBoolean("host") && im.contains("imp") && !stage.equals("DONE")) {
+                    g.drawCenteredString(f, "Impostor: " + im.getString("imp"), x + bw / 2, y, 0xFFFFD54F);
+                }
+            }
+            case "TABOO" -> {
+                CompoundTag tb = st.getCompound("tb");
+                if (tb.contains("word") && !tb.getBoolean("over")) {
+                    g.fill(x, y, x + bw, y + 36, 0xE0101018);
+                    text(g, f, tb.getString("word").toUpperCase(java.util.Locale.ROOT), x + bw / 2f, y + 4, 0xFFFFFFFF, 1.8f, true);
+                    g.drawCenteredString(f, "Prohibido: " + String.join(", ", strs(tb.getList("no", 8))), x + bw / 2, y + 24, 0xFFFF8A80);
+                    y += 40;
+                }
+                if (!tb.getBoolean("over")) {
+                    drawTimer(g, x, y, bw, tb.getInt("left"), tb.getInt("total"));
+                }
+            }
+            case "R100" -> {
+                CompoundTag r = st.getCompound("r");
+                if (you.getBoolean("host") && !r.getString("pending").isEmpty()) {
+                    String s = "Escribio: \"" + r.getString("pending") + "\"";
+                    g.drawCenteredString(f, s, x + bw / 2, y, 0xFFFFD54F);
+                }
+            }
+            default -> {
+            }
+        }
+    }
+
+    private static int scoreChipW(int n, int W) {
+        return Math.max(54, Math.min(92, (W - 20) / Math.max(1, n) - 6));
     }
 
     private static void drawScores(GuiGraphics g, Font f, CompoundTag st, ListTag sides, int W, int H) {
@@ -134,10 +267,10 @@ public final class ShowHud {
         if (n == 0) {
             return;
         }
-        int bw = Math.min(96, (W - 30) / n);
+        int bw = scoreChipW(n, W);
         int total = bw * n + 6 * (n - 1);
-        int x = (W - total) / 2;
-        int y = H - 44;
+        int x = W - total - 8;
+        int y = H - 22 - 6 - 30;
         CompoundTag r = st.getCompound("r");
         int control = st.contains("r", 10) ? r.getInt("control") : -1;
         for (int i = 0; i < sides.size(); i++) {
@@ -147,15 +280,15 @@ public final class ShowHud {
             }
             int c = s.getInt("c");
             boolean hot = i == control;
-            g.fill(x - 2, y - 2, x + bw + 2, y + 34, hot ? 0xFFFFFFFF : dark(c, 0.45f));
-            g.fill(x, y, x + bw, y + 32, argb(c));
-            g.fill(x, y + 20, x + bw, y + 32, dark(c, 0.6f));
+            g.fill(x - 2, y - 2, x + bw + 2, y + 30, hot ? 0xFFFFFFFF : dark(c, 0.45f));
+            g.fill(x, y, x + bw, y + 28, argb(c));
+            g.fill(x, y + 16, x + bw, y + 28, dark(c, 0.6f));
             String name = s.getString("n");
             boolean light = c == 0xFDD835;
             int tc = light ? 0xFF222222 : 0xFFFFFFFF;
             String shown = f.width(name) > bw - 4 ? f.plainSubstrByWidth(name, bw - 4) : name;
-            g.drawString(f, shown, x + (bw - f.width(shown)) / 2, y + 3, tc, false);
-            text(g, f, String.valueOf(s.getInt("s")), x + bw / 2f, y + 10, tc, 1.6f, true);
+            g.drawString(f, shown, x + (bw - f.width(shown)) / 2, y + 2, tc, false);
+            text(g, f, String.valueOf(s.getInt("s")), x + bw / 2f, y + 8, tc, 1.5f, true);
             x += bw + 6;
         }
     }
@@ -166,7 +299,7 @@ public final class ShowHud {
         ListTag as = r.getList("a", 10);
         int bw = Math.min(330, W - 120);
         int x = (W - bw) / 2;
-        int y = 8;
+        int y = top;
         int qh = wrappedHeight(f, r.getString("q"), bw - 12) + 8;
         panel(g, x, y, bw, qh, 0xFFFFC107);
         wrapped(g, f, r.getString("q"), x + 6, y + 4, bw - 12, 0xFFFFFFFF, true);
@@ -233,8 +366,7 @@ public final class ShowHud {
         List<String> ops = strs(t.getList("op", 8));
         int bw = Math.min(380, W - 40);
         int x = (W - bw) / 2;
-        int y = H - 44 - 18 - 36 - ((ops.size() + 1) / 2) * 24 - wrappedHeight(f, t.getString("q"), bw - 12) - 20;
-        y = Math.max(46, y);
+        int y = top;
         int qh = wrappedHeight(f, t.getString("q"), bw - 12) + 8;
         panel(g, x, y, bw, qh, 0xFFFFFFFF);
         wrapped(g, f, t.getString("q"), x + 6, y + 4, bw - 12, 0xFFFFFFFF, true);
@@ -294,7 +426,7 @@ public final class ShowHud {
         boolean player = st.getCompound("you").getBoolean("player");
         int bw = Math.min(360, W - 40);
         int x = (W - bw) / 2;
-        int y = 8;
+        int y = top;
         panel(g, x, y, bw, 40, 0xFFE53935);
         String top;
         int topColor = 0xFFFFFFFF;
@@ -358,7 +490,7 @@ public final class ShowHud {
         CompoundTag tb = st.getCompound("tb");
         int bw = Math.min(360, W - 40);
         int x = (W - bw) / 2;
-        int y = 8;
+        int y = top;
         boolean sees = tb.contains("word");
         panel(g, x, y, bw, sees ? 52 : 30, 0xFF8E24AA);
         if (sees) {
@@ -394,7 +526,7 @@ public final class ShowHud {
         boolean over = d.getBoolean("over");
         int bw = Math.min(360, W - 40);
         int x = (W - bw) / 2;
-        int y = 8;
+        int y = top;
         panel(g, x, y, bw, 34, 0xFF1E88E5);
         boolean sees = d.contains("word") && !over;
         if (sees) {
@@ -407,7 +539,7 @@ public final class ShowHud {
             text(g, f, d.getString("mask"), W / 2f, y + 16, 0xFFFFFFFF, 1.6f, true);
         }
         int top = y + 40;
-        int ch = Math.max(60, Math.min(H - top - 62, (int) (bw * 0.75f)));
+        int ch = Math.max(60, Math.min(H - top - 94, (int) (bw * 0.75f)));
         int cw = ch * 4 / 3;
         if (cw > W - 30) {
             cw = W - 30;
@@ -447,19 +579,20 @@ public final class ShowHud {
         text(g, f, w.toString(), W / 2f, 96, 0xFFFFFFFF, 2.2f, true);
     }
 
-    private static void drawSay(GuiGraphics g, Font f, int W, int H) {
+    /** El locutor: una burbuja debajo del aviso. Devuelve donde termina (o {@code y} si no hay nada). */
+    private static int drawSay(GuiGraphics g, Font f, int W, int y) {
         if (ShowClient.sayText.isEmpty()) {
-            return;
+            return y;
         }
         int shown = Math.min(ShowClient.sayText.length(), ShowClient.sayTick / 2);
         String s = ShowClient.sayText.substring(0, shown);
-        int bw = Math.min(420, W - 40);
+        int bw = Math.min(440, W - 16);
         int h = wrappedHeight(f, ShowClient.sayText, bw - 16) + 8;
         int x = (W - bw) / 2;
-        int y = H - 44 - 8 - h;
-        g.fill(x - 2, y - 2, x + bw + 2, y + h + 2, 0xFFFFC107);
+        g.fill(x - 2, y - 2, x + bw + 2, y + h + 2, 0xFF7E57C2);
         g.fill(x, y, x + bw, y + h, 0xF0201030);
         wrapped(g, f, s, x + 8, y + 4, bw - 16, 0xFFFFFFFF, false);
+        return y + h + 2;
     }
 
     private static void drawTitle(GuiGraphics g, Font f, int W, int H) {
@@ -507,7 +640,7 @@ public final class ShowHud {
         if (n == 0) {
             return;
         }
-        int bw = Math.min(96, (W - 30) / n);
+        int bw = scoreChipW(n, W);
         int total = bw * n + 6 * (n - 1);
         for (ShowClient.Popup p : ShowClient.popups) {
             int idx = 0;
@@ -517,9 +650,9 @@ public final class ShowHud {
                 }
             }
             int age = ShowClient.clientTick - p.born();
-            float cx = (W - total) / 2f + idx * (bw + 6) + bw / 2f;
+            float cx = W - total - 8 + idx * (bw + 6) + bw / 2f;
             int a = Math.max(0, 255 - age * 5);
-            text(g, f, p.text(), cx, H - 50 - age * 1.2f, (a << 24) | 0xFFEB3B, 2f, true);
+            text(g, f, p.text(), cx, H - 66 - age * 1.2f, (a << 24) | 0xFFEB3B, 2f, true);
         }
     }
 
