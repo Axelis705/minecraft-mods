@@ -77,12 +77,67 @@ final class TorreInterior {
         return "air".equals(g) || g != null && g.endsWith("_carpet");
     }
 
+
+    // ---------------------------------------------------------------- paleta de decoración por sala
+    private static final java.util.Map<String, int[]> PAL = new java.util.HashMap<>(); // id -> {máximo, cada cuántas, contador}
+    private static boolean palOn = false;
+    private static boolean vanillaShelves = false;
+
+    /**
+     * Cada sala tiene su propia paleta: solo se colocan los bloques {@code est_*} que aparecen aquí (el resto se omite). Formato de cada
+     * entrada: {@code "nombre"} (todos), {@code "nombre:3"} (como mucho 3) o {@code "nombre/2"} (uno de cada 2). Con {@code vanilla} las
+     * estanterías de la sala son todas de libros normales (nunca se mezclan con las pequeñas).
+     */
+    static void pal(boolean vanilla, String... spec) {
+        PAL.clear();
+        palOn = true;
+        vanillaShelves = vanilla;
+        for (String sp : spec) {
+            int max = Integer.MAX_VALUE;
+            int every = 1;
+            String name = sp;
+            int k = sp.indexOf(':');
+            if (k >= 0) {
+                max = Integer.parseInt(sp.substring(k + 1));
+                name = sp.substring(0, k);
+            }
+            k = name.indexOf('/');
+            if (k >= 0) {
+                every = Integer.parseInt(name.substring(k + 1));
+                name = name.substring(0, k);
+            }
+            PAL.put("mundos_de_axelis:est_" + name, new int[]{max, every, 0});
+        }
+    }
+
+    /** Sin paleta (todo permitido): para las cámaras secretas. */
+    static void palAll(boolean vanilla) {
+        PAL.clear();
+        palOn = false;
+        vanillaShelves = vanilla;
+    }
+
+    private static boolean permit(String id) {
+        if (!palOn) {
+            return true;
+        }
+        int[] e = PAL.get(id);
+        if (e == null) {
+            return false;
+        }
+        int n = e[2]++;
+        return n % e[1] == 0 && n / e[1] < e[0];
+    }
+
     private static void skip(String id, int x, int y, int z) {
         System.err.println("[TorreInterior] sin sitio: " + id.replace("mundos_de_axelis:est_", "") + " en " + x + "," + y + "," + z);
     }
 
     /** Decoración nueva con orientación. face: north, south, east, west (hacia dónde mira el frente). Si la casilla no está libre, no se pone. */
     static void est(StructBp b, int x, int y, int z, String id, String face) {
+        if (!permit(id)) {
+            return;
+        }
         if (free(b, x, y, z)) {
             b.set(x, y, z, id + "[facing=" + face + "]");
         } else {
@@ -92,6 +147,16 @@ final class TorreInterior {
 
     /** Decoración nueva de dos bloques de alto. */
     static void estTall(StructBp b, int x, int y, int z, String id, String face) {
+        if (id.equals(EstIds.ESTANTERIA) && vanillaShelves) {
+            if (free(b, x, y, z) && free(b, x, y + 1, z)) {
+                b.set(x, y, z, "bookshelf");
+                b.set(x, y + 1, z, "bookshelf");
+            }
+            return;
+        }
+        if (!permit(id)) {
+            return;
+        }
         if (free(b, x, y, z) && free(b, x, y + 1, z)) {
             b.set(x, y, z, id + "[facing=" + face + ",half=lower]");
             b.set(x, y + 1, z, id + "[facing=" + face + ",half=upper]");
@@ -102,6 +167,9 @@ final class TorreInterior {
 
     /** Araña de luces o jaula colgada de una cadena: la cadena sale del techo (yTop) y baja {@code drop} bloques. */
     static void estHang(StructBp b, int x, int yTop, int z, int drop, String id) {
+        if (!permit(id)) {
+            return;
+        }
         String top = b.get(x, yTop, z);
         if (!free(b, x, yTop, z) && !(top != null && top.contains("_log"))) { // se puede colgar de una viga
             skip(id, x, yTop, z);
@@ -147,6 +215,7 @@ final class TorreInterior {
      * El piso de arriba es una galería en forma de U (biblioteca) que da al salón; un puente la une con la escalera.
      */
     static void hall(StructBp b) {
+        pal(false, "trono", "tapiz_real", "tapiz_arbol", "estatua_caballero", "gargola", "candelabro/3", "arana:4");
         final int f = 3;
         final int g = 10; // losa de la galería
         final int top = 17;
@@ -309,7 +378,8 @@ final class TorreInterior {
         estHang(b, 7, top, CZ - 2, 6, EstIds.JAULA);
         estHang(b, 7, top, CZ + 2, 7, EstIds.JAULA);
         est(b, 9, f, CZ, EstIds.MONTON_ORO, "west");
-        // ---- galería de lectura: estanterías altas contra el muro y rincones de lectura
+        // ---- galería de lectura: estanterías (todas de libros normales) y rincones de lectura
+        pal(true, "candelabro/2", "pila_libros");
         for (int x = -10; x <= 10; x++) {
             for (int dz = -10; dz <= 6; dz++) {
                 if (!in(0, x, dz) || cheb(x, dz) != 10) {
@@ -320,18 +390,24 @@ final class TorreInterior {
                 if (sideWindow || gate) {
                     continue;
                 }
-                String face = Math.abs(x) == 10 ? (x > 0 ? "west" : "east") : "south";
+                if (Math.abs(x) == 10) {
+                    // en las alas el pasillo mide 2 de ancho: los libros van embutidos en el muro, no ocupan suelo
+                    int ox = x > 0 ? 11 : -11;
+                    for (int y = g + 1; y <= g + 4; y++) {
+                        if (mass(b.get(ox, y, CZ + dz))) {
+                            b.set(ox, y, CZ + dz, "bookshelf");
+                        }
+                    }
+                    continue;
+                }
+                String face = "south";
                 estTall(b, x, g + 1, CZ + dz, EstIds.ESTANTERIA, face);
                 b.set(x, g + 3, CZ + dz, "bookshelf");
                 b.set(x, g + 4, CZ + dz, "bookshelf");
             }
         }
-        // rincones de lectura en los dos alas (el pasillo de la barandilla queda libre) y candelabros sobre los postes de las esquinas
+        // candelabros sobre los postes de las esquinas
         for (int s = -1; s <= 1; s += 2) {
-            String toHall = s < 0 ? "east" : "west";
-            est(b, 10 * s, g + 1, CZ - 1, EstIds.SILLON, toHall);
-            est(b, 10 * s, g + 1, CZ, EstIds.PILA_LIBROS, toHall);
-            est(b, 10 * s, g + 1, CZ + 1, EstIds.SILLON, toHall);
             for (int sz = -1; sz <= 1; sz += 2) {
                 est(b, 6 * s, g + 2, CZ + 6 * sz, EstIds.CANDELABRO, "north");
             }
@@ -371,6 +447,7 @@ final class TorreInterior {
     // ================================================================== CRIPTA (piso -1): antecámara, galería de sarcófagos, mazmorra y santuario
 
     static void crypt(StructBp b) {
+        pal(false, "estatua_caballero", "gargola", "cristal_mana", "candelero_pared", "monton_oro", "jaula", "grilletes", "pedestal_runico", "tapiz_arcano:2", "tapiz_real:1", "candelabro/2");
         final int f = -5;
         final int top = f + 6;
         final String BRK = "polished_blackstone_bricks";
@@ -516,6 +593,7 @@ final class TorreInterior {
     // ================================================================== ALQUIMIA (piso 2): círculo de transmutación, calderos en las esquinas, muros de estanterías
 
     static void alchemy(StructBp b) {
+        pal(true, "caldero_magico", "mesa_alquimia", "cristal_mana", "globo:1", "pila_libros:2", "arana/4", "tapiz_arcano:3", "candelabro:2");
         final int f = 19;
         final int top = f + 6;
         final int i = 2;
@@ -673,6 +751,7 @@ final class TorreInterior {
     // ================================================================== BIBLIOTECA (piso 3): archivo, scriptorium, vestíbulo y cámara del saber
 
     static void library(StructBp b) {
+        pal(true, "reloj", "sillon", "pila_libros", "candelabro/2", "arana/2", "tapiz_mapa", "globo", "esfera_armilar", "telescopio", "estatua_caballero:2");
         final int f = 27;
         final int top = f + 6;
         final int i = 3;
@@ -683,12 +762,12 @@ final class TorreInterior {
             stack(b, -9, f, CZ + dz, 5, "east");
         }
         for (int dz : new int[]{-6, -5, -4, -3, 3, 4, 5, 6}) {
-            stack(b, -7, f, CZ + dz, 4, "west");
-            stack(b, -6, f, CZ + dz, 4, "east");
+            stack(b, -6, f, CZ + dz, 4, "west");   // hilera doble de estantes: pasillos de 2 de ancho a cada lado
+            stack(b, -5, f, CZ + dz, 4, "east");
         }
         est(b, -8, f, CZ - 5, EstIds.CANDELABRO, "east");
         est(b, -8, f, CZ + 5, EstIds.CANDELABRO, "east");
-        est(b, -5, f, CZ, EstIds.PILA_LIBROS, "east");
+        est(b, -6, f, CZ, EstIds.PILA_LIBROS, "east");
         estHang(b, -5, top, CZ - 1, 3, EstIds.ARANA);
         estHang(b, -5, top, CZ + 1, 3, EstIds.ARANA);
         // ---- SCRIPTORIUM (este): mesas de copista con velas, sillones y un gran reloj
@@ -742,6 +821,7 @@ final class TorreInterior {
     private static final int[][] DIRS = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
     static void enchanting(StructBp b) {
+        pal(true, "tapiz_arcano", "cristal_mana", "pedestal_runico", "candelabro/3", "arana/3");
         final int f = 35;
         final int top = f + 6;
         final int i = 4;
@@ -818,6 +898,7 @@ final class TorreInterior {
     // ================================================================== INVERNADERO (piso 5): jardín de musgo, jardín de flores, estanque y entrada
 
     static void greenhouse(StructBp b) {
+        pal(false, "tapiz_arbol", "estatua_caballero", "arana/2");
         final int f = 43;
         final int top = f + 6;
         final int i = 5;
@@ -898,11 +979,11 @@ final class TorreInterior {
         estHang(b, 6, top, CZ + 3, 3, EstIds.ARANA);
         // ---- ESTANQUE (sur): una poza con nenúfares y un cristal luminoso en el centro, rodeada de piedra
         for (int x = -2; x <= 2; x++) {
-            for (int dz = 4; dz <= 8; dz++) {
+            for (int dz = 5; dz <= 8; dz++) {
                 if (!in(i, x, dz) || !"air".equals(b.get(x, f, CZ + dz))) {
                     continue;
                 }
-                boolean edge = Math.abs(x) == 2 || dz == 4 || dz == 8;
+                boolean edge = Math.abs(x) == 2 || dz == 5 || dz == 8;
                 if (edge) {
                     b.set(x, f, CZ + dz, "mossy_stone_bricks"); // borde de bloques enteros: el agua se escaparía por una losa o un muro
                 } else {
@@ -933,6 +1014,7 @@ final class TorreInterior {
     // ================================================================== SALA DE LAS ESTRELLAS (piso 6): astronomía y cartografía
 
     static void stars(StructBp b) {
+        pal(false, "tapiz_mapa", "telescopio", "esfera_armilar", "globo", "pila_libros", "sillon", "tapiz_estrellas:2", "arana/2", "candelabro/3");
         final int f = 51;
         final int top = f + 6;
         final int i = 6;
@@ -994,6 +1076,7 @@ final class TorreInterior {
     // ================================================================== APOSENTOS DEL ARCHIMAGO (piso 7): sala del trono, dormitorio, estudio y tesoro
 
     static void chambers(StructBp b) {
+        pal(false, "trono", "tapiz_real", "estatua_caballero", "estanteria", "pila_libros", "sillon", "caldero_magico", "globo", "monton_oro", "pedestal_runico", "cristal_mana", "jaula", "reloj", "arana/2", "candelabro/2");
         final int f = 59;
         final int top = f + 6;
         final int i = 7;
@@ -1074,6 +1157,7 @@ final class TorreInterior {
 
     /** Convierte la casilla relativa al centro del torreón (u a lo ancho, v a lo largo) en x / dz de plano. */
     private static void secretRoom(StructBp b, Arq a, int sx, int sz, int kind) {
+        palAll(false);
         final int f = 3;
         int cx = 10 * sx;
         int cz = 10 * sz;

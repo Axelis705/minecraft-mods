@@ -245,17 +245,23 @@ final class Arq {
         b.box(cx, y0 - 1, cz, cx, top - 1, cz, pillar);
         // suelo de la base
         b.box(cx - 1, y0 - 1, cz - 1, cx + 1, y0 - 1, cz + 1, landing);
+        // Caracol "de rampa suave": cada casilla del anillo sube MEDIO bloque (losa / bloque entero alternados), así se sube y se baja
+        // andando sin saltar y sin atascarse en las esquinas. Un piso (8 bloques) son dos vueltas al anillo de 8 casillas (16 pasos);
+        // las dos vueltas quedan 4 bloques una sobre otra, de sobra para pasar de pie.
+        String slab = stair.replace("_stairs", "_slab") + "[type=bottom]";
+        String full = stair.startsWith("purpur") ? "purpur_block" : landing;
         for (int n = 0; n < climbs; n++) {
-            int yBase = y0 + 8 * n;
-            for (int j = 1; j <= 7; j++) {
-                int[] c = ring[j];
-                int[] nx = ring[(j + 1) % 8];
-                String up = dirName(nx[0] - c[0], nx[1] - c[1]);
-                // un escalón de 1 por casilla: 7 escaleras (alturas 0..6 sobre el piso) y la casilla 0 sube al siguiente piso (+7 = bloque de suelo)
-                b.set(cx + c[0], yBase + j - 1, cz + c[1], st(stair, up));
+            int f = y0 + 8 * n; // superficie del piso n (el bloque de suelo está en f-1)
+            for (int st = 1; st <= 16; st++) {
+                int[] c = ring[st % 8];
+                if (st == 16) {
+                    b.set(cx + c[0], f + 7, cz + c[1], landing); // llegada al piso siguiente
+                } else if (st % 2 == 0) {
+                    b.set(cx + c[0], f + st / 2 - 1, cz + c[1], full);
+                } else {
+                    b.set(cx + c[0], f + (st - 1) / 2, cz + c[1], slab);
+                }
             }
-            // suelo del piso siguiente en la casilla de la puerta
-            b.set(cx + ring[0][0], yBase + 7, cz + ring[0][1], landing);
         }
         return s;
     }

@@ -342,15 +342,13 @@ final class DesignTorre {
                 }
             }
         }
-        // la boca de la escalera se tapa salvo los dos últimos peldaños
         int[][] ring = {{0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}};
-        for (int k = 1; k <= 4; k++) {
-            b.set(ring[k][0], f - 1, CZ + ring[k][1], PD);
-        }
-        // las casillas 5, 6 y 7 del caracol siguen abiertas (necesitan altura libre para subir): es por donde se llega
-        for (int k = 5; k <= 7; k++) {
+        // la boca de la escalera se tapa solo en la casilla 1; el resto queda abierto porque la rampa necesita altura libre para subir
+        b.set(ring[1][0], f - 1, CZ + ring[1][1], PD);
+        for (int k = 2; k <= 6; k++) {
             b.set(ring[k][0], f - 1, CZ + ring[k][1], "air");
         }
+        b.set(ring[7][0], f - 1, CZ + ring[7][1], "purpur_slab[type=bottom]"); // último escalón antes del piso del observatorio
         b.set(-2, f, CZ - 1, DBW);
         b.set(-2, f, CZ, DBW);
         b.set(-2, f, CZ + 1, DBW);
@@ -652,13 +650,12 @@ final class DesignTorre {
     // ================================================================== escalera
 
     private static void shaftDecor(StructBp b) {
+        // antorchas en el pilar, a la altura del hueco entre las dos vueltas de la rampa
         for (int n = -1; n <= 7; n++) {
             int y = fy(n);
-            soulTorch(b, 1, y + 5, CZ, "-x");
-            soulTorch(b, -1, y + 2, CZ, "+x");
-            if (n < 7) {
-                soulTorch(b, 0, y + 7, CZ + 1, "-z");
-            }
+            soulTorch(b, 1, y + 3, CZ, "-x");
+            soulTorch(b, -1, y + 5, CZ, "+x");
+            soulTorch(b, 0, y + 4, CZ + 1, "-z");
         }
     }
 
