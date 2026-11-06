@@ -45,7 +45,9 @@ execute if block -50 40 0 minecraft:lightning_rod run say PRUEBA_TORRE_OK
 execute if block -43 -52 0 minecraft:soul_campfire run say PRUEBA_TORRE_BAJO_OK
 execute if block -50 -19 -9 minecraft:bookshelf run say PRUEBA_TORRE_BIBLIOTECA_OK
 execute if block -51 11 7 minecraft:lectern run say PRUEBA_TORRE_ESTUDIO_OK
-execute if block -44 12 0 mundos_de_axelis:est_trono run say PRUEBA_TORRE_TRONO_OK
+execute if block -60 -43 0 mundos_de_axelis:est_trono run say PRUEBA_TORRE_TRONO_OK
+execute if block -44 12 0 mundos_de_axelis:est_pedestal_runico run say PRUEBA_TORRE_CONSEJO_OK
+execute if block -45 -21 7 mundos_de_axelis:est_mesa_centro run say PRUEBA_TORRE_MESA_OK
 execute if block -64 -53 -2 mundos_de_axelis:est_monton_oro run say PRUEBA_TORRE_TESORERIA_OK
 execute if block -44 -13 0 minecraft:enchanting_table run say PRUEBA_TORRE_ENCANTAMIENTO_OK
 execute if block -49 -45 1 minecraft:purpur_slab[type=bottom] run say PRUEBA_TORRE_ESCALERA_OK
@@ -78,6 +80,8 @@ execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
 #expect PRUEBA_TORRE_SIN_OBJETOS_OK
 #expect PRUEBA_TORRE_ESTUDIO_OK
 #expect PRUEBA_TORRE_TRONO_OK
+#expect PRUEBA_TORRE_CONSEJO_OK
+#expect PRUEBA_TORRE_MESA_OK
 #expect PRUEBA_TORRE_TESORERIA_OK
 #expect PRUEBA_TORRE_BAJO_OK
 #expect PRUEBA_TORRE_BIBLIOTECA_OK
