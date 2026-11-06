@@ -343,7 +343,14 @@
    "c2": "#ffffff",
    "desc": "Tryhard en todo: competitivo, juega para ganar. Y además, ya es padre de un hijo.",
    "skin": "skins/jadiel.png",
-   "scene": "plains"
+   "scene": "plains",
+   "art": "arte/jadiel.png",
+   "art_box": [
+    0.0,
+    0.0,
+    1.0,
+    0.87
+   ]
   },
   {
    "id": "marizux",
@@ -355,7 +362,14 @@
    "c2": "#ffffff",
    "desc": "La ternura del grupo, la pequeña que todos queremos. Feliz, divertida, amable y cordial.",
    "skin": "skins/marizux.png",
-   "scene": "cherry"
+   "scene": "cherry",
+   "art": "arte/marizux.png",
+   "art_box": [
+    0.0,
+    0.05,
+    1.0,
+    0.86
+   ]
   },
   {
    "id": "odette",
@@ -386,7 +400,14 @@
    "c2": "#ffffff",
    "desc": "Tryhard del Pokémon hasta la última batalla. Y si es amarillo, lo ama.",
    "skin": "skins/pavi223.png",
-   "scene": "cave"
+   "scene": "cave",
+   "art": "arte/pavi223.png",
+   "art_box": [
+    0.17,
+    0.0,
+    0.83,
+    1.0
+   ]
   },
   {
    "id": "rafa",
@@ -398,7 +419,14 @@
    "c2": "#ffffff",
    "desc": "El gracioso del grupo. Sus buenas bromas sacan risas siempre, al 100 %.",
    "skin": "skins/rafa.png",
-   "scene": "forest"
+   "scene": "forest",
+   "art": "arte/rafa.png",
+   "art_box": [
+    0.0,
+    0.05,
+    1.0,
+    0.88
+   ]
   },
   {
    "id": "scardax",
@@ -410,7 +438,14 @@
    "c2": "#ffffff",
    "desc": "Imponente. Juega, crea series y eventos, y siempre se cree mucho. Odia Roblox con toda el alma.",
    "skin": "skins/scardax.png",
-   "scene": "nether"
+   "scene": "nether",
+   "art": "arte/scardax.png",
+   "art_box": [
+    0.0,
+    0.05,
+    1.0,
+    0.88
+   ]
   },
   {
    "id": "chafet",
@@ -422,7 +457,14 @@
    "c2": "#ffffff",
    "desc": "Mejor amigo de Axelis y niño prodigio del grupo. Gran habilidad en Valorant y siempre está ahí.",
    "skin": "skins/chafet.png",
-   "scene": "sky"
+   "scene": "sky",
+   "art": "arte/chafet.png",
+   "art_box": [
+    0.0,
+    0.1,
+    1.0,
+    0.99
+   ]
   }
  ],
  "sobres": [
