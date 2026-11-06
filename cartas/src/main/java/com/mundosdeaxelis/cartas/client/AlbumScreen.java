@@ -649,23 +649,26 @@ public final class AlbumScreen extends Screen {
                 }
             }
             g.fill(px + 14, y + 1, px + 20, y + 7, 0xFF000000 | col);
-            String name = holo ? "✦ Holográficas" : Cards.CATEGORIES.get(t).name;
-            g.drawString(font, name, px + 26, y, 0xFF4A2E1A, false);
-            String pg = "pág. " + firstPageOf(t);
-            g.drawString(font, pg, px + PW - 14 - font.width(pg), y, 0xFF8A6A42, false);
-            g.drawString(font, have + "/" + tabCards(t).size(), px + 26, y + 10, 0xFF6B4A2A, false);
-            y += 24;
+            String name = holo ? "Holográficas" : Cards.CATEGORIES.get(t).name;
+            g.drawString(font, name, px + 25, y, 0xFF4A2E1A, false);
+            String right = have + "/" + tabCards(t).size() + "  p." + firstPageOf(t);
+            g.drawString(font, right, px + PW - 14 - font.width(right), y, 0xFF8A6A42, false);
+            y += 14;
         }
         g.fill(px + 12, y + 2, px + PW - 12, y + 3, 0x60A88A5A);
+        y += 10;
         String[] help = {
-            "Las cartas nuevas que llevas",
-            "aparecen en el estante de abajo.",
-            "Agárrala y suéltala en su hueco.",
+            "Las cartas nuevas que llevas aparecen en el estante de abajo: agárralas y suéltalas en su hueco.",
             "Cada 5 % del álbum: +½ corazón.",
-            "Categoría completa: +1 corazón."
+            "Categoría completa: +1 corazón.",
+            "Clic en una carta guardada para verla en grande."
         };
-        for (int i = 0; i < help.length; i++) {
-            g.drawString(font, help[i], px + 14, y + 8 + i * 10, 0xFF6B4A2A, false);
+        for (String h : help) {
+            for (var line : font.split(Component.literal(h), PW - 28)) {
+                g.drawString(font, line, px + 14, y, 0xFF6B4A2A, false);
+                y += 10;
+            }
+            y += 3;
         }
     }
 
@@ -743,7 +746,7 @@ public final class AlbumScreen extends Screen {
         g.fill(4, TRAY_Y, VW - 4, TRAY_Y + 1, 0xFF7A5230);
         CardRender.border(g, 2, TRAY_Y - 2, VW - 4, VH - TRAY_Y, 0xFF2E1C0F);
         if (tray.isEmpty()) {
-            g.drawCenteredString(font, "No llevas cartas nuevas · abre sobres o derrota jefes", VW / 2, TRAY_Y + 14, 0xFFB8A888);
+            g.drawCenteredString(font, "No llevas cartas nuevas. Abre sobres o derrota jefes.", VW / 2, TRAY_Y + 14, 0xFFB8A888);
             return;
         }
         if (trayScroll > 0) {
@@ -791,11 +794,10 @@ public final class AlbumScreen extends Screen {
             }
         }
         double pct = 100.0 * shown / Math.max(1, AlbumLogic.totalSlots());
-        String left = String.format("Álbum %.0f %%  (%d/%d)", pct, shown, AlbumLogic.totalSlots());
+        String left = String.format("Álbum %.0f %% (%d/%d)", pct, shown, AlbumLogic.totalSlots());
         if (placing == null) {
-            left += String.format("   Vida extra: +%.1f corazones", a.bonusHealth() / 2.0);
+            left += String.format(" · +%.1f corazones", a.bonusHealth() / 2.0);
         }
-        g.drawString(font, left, 8, PAGE_Y + PH + 9, 0xFFE8DCC8, true);
         String hint;
         int hintCol = 0xFFB8A888;
         if (held != null) {
@@ -804,9 +806,22 @@ public final class AlbumScreen extends Screen {
             hint = "Va en " + (held.holo ? "Holográficas" : Cards.category(d.category).name) + ", pág. " + pg;
             hintCol = 0xFF000000 | d.rarity.color;
         } else {
-            hint = "Arrastra las páginas · agarra una carta del estante";
+            hint = "Arrastra las páginas";
         }
-        g.drawString(font, hint, VW - 8 - font.width(hint), PAGE_Y + PH + 9, hintCol, true);
+        // los dos textos comparten la linea: si no caben, se encogen juntos
+        float need = font.width(left) + font.width(hint) + 14f;
+        float fs = Math.min(1f, (VW - 16f) / need);
+        int fy = PAGE_Y + PH + 7;
+        g.pose().pushPose();
+        g.pose().translate(8f, fy, 0f);
+        g.pose().scale(fs, fs, 1f);
+        g.drawString(font, left, 0, 0, 0xFFE8DCC8, true);
+        g.pose().popPose();
+        g.pose().pushPose();
+        g.pose().translate(VW - 8f - font.width(hint) * fs, fy, 0f);
+        g.pose().scale(fs, fs, 1f);
+        g.drawString(font, hint, 0, 0, hintCol, true);
+        g.pose().popPose();
         if (bonusShow > 0f && bonusAfter > bonusBefore) {
             float al = Math.min(1f, bonusShow);
             float rise = (4.5f - bonusShow) * 2f;
@@ -924,7 +939,8 @@ public final class AlbumScreen extends Screen {
             CardCategory cat = Cards.category(d.category);
             g.pose().pushPose();
             g.pose().translate(x, y, 0f);
-            g.pose().scale(1.5f, 1.5f, 1f);
+            float ns = Math.min(1.5f, (VW - x - 8f) / Math.max(1, font.width(d.name)));
+            g.pose().scale(ns, ns, 1f);
             g.drawString(font, d.name, 0, 0, alpha | d.rarity.color, true);
             g.pose().popPose();
             y += 20;
