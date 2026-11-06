@@ -7,7 +7,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /** Mod de comprobacion: registra /mundos estructura ... igual que lo hace Mundos de Axelis, para probar el codigo en un servidor real. */
-@Mod("estructuras")
+@Mod("mundos_de_axelis")
 @Mod.EventBusSubscriber
 public final class CheckMod {
     @SubscribeEvent

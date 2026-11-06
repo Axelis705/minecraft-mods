@@ -1,6 +1,12 @@
 summon minecraft:item 0 -60 0 {Item:{id:"minecraft:stone",Count:1b}}
 execute if entity @e[type=minecraft:item] run say PRUEBA_SELECTOR_VE_OBJETOS_OK
 kill @e[type=minecraft:item]
+setblock 5 -60 5 mundos_de_axelis:est_candelabro[facing=east]
+execute if block 5 -60 5 mundos_de_axelis:est_candelabro[facing=east] run say PRUEBA_DECOR_OK
+summon minecraft:item 6 -60 5 {Item:{id:"mundos_de_axelis:est_candelabro",Count:1b}}
+execute if entity @e[type=minecraft:item,nbt={Item:{id:"mundos_de_axelis:est_candelabro"}}] run say PRUEBA_DECOR_OBJETO_OK
+kill @e[type=minecraft:item]
+setblock 5 -60 5 minecraft:air
 execute positioned 0 -48 0 rotated 0 0 run mundos estructura bosque
 execute if block -13 -48 51 minecraft:lectern run say PRUEBA_BOSQUE_OK
 execute if block 0 -56 49 minecraft:soul_campfire run say PRUEBA_BOSQUE_BAJO_OK
@@ -47,6 +53,8 @@ mundos estructura deshacer 3
 execute if block -44 -52 0 minecraft:air run say PRUEBA_TODO_DESHECHO_OK
 execute if block 26 -48 57 minecraft:air run say PRUEBA_FORJA_DESHECHA_OK
 execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
+#expect PRUEBA_DECOR_OK
+#expect PRUEBA_DECOR_OBJETO_OK
 #expect PRUEBA_SELECTOR_VE_OBJETOS_OK
 #expect PRUEBA_BOSQUE_OK
 #expect PRUEBA_BOSQUE_SIN_OBJETOS_OK

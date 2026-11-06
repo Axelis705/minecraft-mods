@@ -12,6 +12,7 @@ from PIL import Image
 ap = sys.argv[1:]
 DUMP, OUT = ap[0], ap[1]
 ASSETS = '/tmp/mcassets/assets/minecraft'
+EXTRA = os.environ.get('EXTRA_ASSETS', '/tmp/decor_out')   # recursos propios (decoracion nueva): <EXTRA>/assets/<espacio>/...
 SKY = 0.28  # noche; con --day sube
 BOX = None
 i = 2
@@ -56,6 +57,9 @@ class Mdl:
         name = name.replace('minecraft:', '')
         if name in Mdl.cache: return Mdl.cache[name]
         p = f'{ASSETS}/models/{name}.json'
+        if ':' in name:
+            ns, path = name.split(':', 1)
+            p = f'{EXTRA}/assets/{ns}/models/{path}.json'
         if not os.path.exists(p):
             Mdl.cache[name] = None; return None
         j = jl(p)
@@ -82,6 +86,9 @@ class BS:
     def load(n):
         if n in BS.cache: return BS.cache[n]
         p = f'{ASSETS}/blockstates/{n}.json'
+        if ':' in n:
+            ns, path = n.split(':', 1)
+            p = f'{EXTRA}/assets/{ns}/blockstates/{path}.json'
         BS.cache[n] = jl(p) if os.path.exists(p) else None
         return BS.cache[n]
 
@@ -200,7 +207,9 @@ def model_quads(var):
             a = [verts[1][i] - verts[0][i] for i in range(3)]; b = [verts[2][i] - verts[0][i] for i in range(3)]
             nrm = (a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0])
             if abs(nrm[0]) + abs(nrm[1]) + abs(nrm[2]) < 1e-6: continue
-            qs.append((verts, [(u / 16.0, v / 16.0) for u, v in uvs], tx, cf, fd.get('tintindex', -1), nearest_dir(nrm), el.get('shade', True)))
+            fdat = fd.get('forge_data', el.get('forge_data', {}))
+            em = fdat.get('block_light', 0) > 0
+            qs.append((verts, [(u / 16.0, v / 16.0) for u, v in uvs], tx, cf, fd.get('tintindex', -1), nearest_dir(nrm), el.get('shade', True), em))
     return qs
 
 _full = {}
@@ -284,8 +293,21 @@ def finish_props(n, props, x, y, z):
             p['up'] = 'true' if (not straight or up or len(cs) != 2) else 'false'
     return p
 
+# luces de la decoracion nueva (manifiesto est_decor.json)
+_decor_light = None
+def decor_light(n):
+    global _decor_light
+    if _decor_light is None:
+        _decor_light = {}
+        for mp in __import__('glob').glob(f'{EXTRA}/data/*/est_decor.json'):
+            ns = mp.split('/data/')[1].split('/')[0]
+            for b in jl(mp)['blocks']:
+                _decor_light[f"{ns}:{b['id']}"] = b['light']
+    return _decor_light.get(n, 0)
+
 # luces emitidas
 def emit(n, p):
+    if ':' in n: return decor_light(n)
     if n in ('torch', 'wall_torch', 'end_rod'): return 14
     if n in ('soul_torch', 'soul_wall_torch'): return 10
     if n in ('lantern',): return 15
@@ -451,7 +473,7 @@ def box_var_quads(spec):
     qs = []
     for fname in FACES:
         verts = [(f[0] + (e[0] - f[0]) * a, f[1] + (e[1] - f[1]) * b, f[2] + (e[2] - f[2]) * c) for (a, b, c) in FACES[fname]]
-        qs.append((verts, [(0, 0), (0, 1), (1, 1), (1, 0)], 'block/' + t, None, -1, fname, True))
+        qs.append((verts, [(0, 0), (0, 1), (1, 1), (1, 0)], 'block/' + t, None, -1, fname, True, False))
     return qs
 
 def face_light(x, y, z, nrm, verts_w):
@@ -471,7 +493,7 @@ def emit_cell(x, y, z, n, p):
             if d == 'up': hgt = 14 if top_free else 16
             else: hgt = 16
             verts = [(vv[0] * 16, vv[1] * (hgt if True else 16), vv[2] * 16) for vv in FACES[d]]
-            faces.append((verts, [(0, 0), (0, 1), (1, 1), (1, 0)], 'block/water_still' if is_water(n) else 'block/lava_still', None, 0 if is_water(n) else -1, d, True))
+            faces.append((verts, [(0, 0), (0, 1), (1, 1), (1, 0)], 'block/water_still' if is_water(n) else 'block/lava_still', None, 0 if is_water(n) else -1, d, True, False))
         return faces, True, is_lava(n)
     vs = models_for(n, p, rng)
     qs = []
@@ -495,7 +517,7 @@ for (x, y, z) in cand:
     n, p = info[(x, y, z)]
     qs, fluid, hot = emit_cell(x, y, z, n, p)
     tint = tint_for(n)
-    for (verts, uvs, tx, cf, ti, ndir, shade) in qs:
+    for (verts, uvs, tx, cf, ti, ndir, shade, qemit) in qs:
         if cf:
             v = DIRV[cf]
             a, b = nm(x + v[0], y + v[1], z + v[2])
@@ -512,6 +534,7 @@ for (x, y, z) in cand:
         if n in ('lava', 'torch', 'wall_torch', 'soul_torch', 'soul_wall_torch', 'lantern', 'soul_lantern', 'glowstone', 'sea_lantern', 'shroomlight', 'jack_o_lantern', 'campfire', 'soul_campfire', 'end_rod', 'fire', 'soul_fire', 'ochre_froglight', 'verdant_froglight', 'pearlescent_froglight', 'magma_block') or (n.endswith('candle') and p.get('lit') == 'true') or (n in ('furnace', 'smoker', 'blast_furnace') and p.get('lit') == 'true' and tx.endswith('_on')):
             sh = 1.0; emis = True
         else: emis = False
+        if qemit: sh = 1.0; emis = True
         for k in range(4):
             vx, vy, vz = verts[k]
             if onboundary:
@@ -540,7 +563,7 @@ for (x, y, z) in cand:
                 # a media casilla si es opaca (cara interior): usa la vecina en la normal
                 if is_opq(x, y, z): bl, sk = light_at(x + nv[0], y + nv[1], z + nv[2])
                 aoc = 1.0
-            if emis: bl = max(bl, 13)
+            if emis: bl = 15 if qemit else max(bl, 13)
             c = color_of(bl, sk)
             m = sh * aoc
             tt = tint if ti >= 0 else (1, 1, 1)
@@ -555,10 +578,16 @@ names = sorted(tex_names, key=lambda k: tex_names[k])
 side = 1
 while side * side < len(names): side *= 2
 TS = 16
+for name in tex_names:
+    pth = f'{ASSETS}/textures/{name}.png' if ':' not in name else f"{EXTRA}/assets/{name.split(':',1)[0]}/textures/{name.split(':',1)[1]}.png"
+    if os.path.exists(pth):
+        im0 = Image.open(pth)
+        TS = max(TS, min(im0.width, 64))
+TS = max(16, TS)
 atlas = Image.new('RGBA', (side * TS, side * TS), (255, 0, 255, 255))
 alpha_kind = {}
 for name, idx in tex_names.items():
-    p = f'{ASSETS}/textures/{name}.png'
+    p = f'{ASSETS}/textures/{name}.png' if ':' not in name else f"{EXTRA}/assets/{name.split(':',1)[0]}/textures/{name.split(':',1)[1]}.png"
     if not os.path.exists(p):
         print('FALTA textura', name)
         continue

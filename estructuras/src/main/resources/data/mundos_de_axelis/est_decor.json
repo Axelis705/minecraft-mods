@@ -1,0 +1,78 @@
+{
+ "blocks": [
+  {
+   "id": "est_candelabro",
+   "kind": "floor",
+   "tall": false,
+   "light": 14,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     2,
+     13
+    ],
+    [
+     6,
+     2,
+     6,
+     10,
+     16,
+     10
+    ],
+    [
+     1,
+     8,
+     6.5,
+     15,
+     16,
+     9.5
+    ]
+   ],
+   "particles": [
+    {
+     "type": "flame",
+     "pos": [
+      8,
+      16.3,
+      8
+     ],
+     "rate": 0.35
+    },
+    {
+     "type": "flame",
+     "pos": [
+      2.5,
+      15.3,
+      8
+     ],
+     "rate": 0.25
+    },
+    {
+     "type": "flame",
+     "pos": [
+      13.5,
+      15.3,
+      8
+     ],
+     "rate": 0.25
+    },
+    {
+     "type": "small_flame",
+     "pos": [
+      8,
+      16.5,
+      8
+     ],
+     "rate": 0.2
+    }
+   ],
+   "es": "Candelabro de pie",
+   "en": "Standing candelabra"
+  }
+ ]
+}
