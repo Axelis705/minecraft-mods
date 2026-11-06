@@ -91,7 +91,14 @@
    "c1": "#7a9a6a",
    "c2": "#5fbf4a",
    "desc": "Mini-jefe del bosque. Golpea el suelo y llama a los Brotes.",
-   "scene": "forest"
+   "scene": "forest",
+   "art": "arte/guardian_musgo.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "capataz",
@@ -102,7 +109,14 @@
    "c1": "#b0502a",
    "c2": "#d9d9d9",
    "desc": "Mini-jefe de la forja. Su martillo parte el suelo.",
-   "scene": "forge"
+   "scene": "forge",
+   "art": "arte/capataz.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "brote",
@@ -113,7 +127,14 @@
    "c1": "#6fcf55",
    "c2": "#8a5a2a",
    "desc": "Retoño del bosque. Corre hacia ti y no se rinde.",
-   "scene": "forest"
+   "scene": "forest",
+   "art": "arte/brote.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "espinoso",
@@ -124,7 +145,14 @@
    "c1": "#4a9a3a",
    "c2": "#d9c04a",
    "desc": "Flor carnívora. Abre los pétalos y dispara una espina.",
-   "scene": "forest"
+   "scene": "forest",
+   "art": "arte/espinoso.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "polinizador",
@@ -135,7 +163,14 @@
    "c1": "#e0c040",
    "c2": "#7fe08a",
    "desc": "Vuela en círculos y lanza esporas que ralentizan.",
-   "scene": "plains"
+   "scene": "plains",
+   "art": "arte/polinizador.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "raizal",
@@ -146,7 +181,14 @@
    "c1": "#6a8a4a",
    "c2": "#8a5a2a",
    "desc": "Gólem de raíces. Te deja inmóvil si no lo esquivas.",
-   "scene": "swamp"
+   "scene": "swamp",
+   "art": "arte/raizal.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "raizal_anciano",
@@ -223,7 +265,14 @@
    "c1": "#9ad0f0",
    "c2": "#ffffff",
    "desc": "Caza en manada. Cada mordisco enfría.",
-   "scene": "ice"
+   "scene": "ice",
+   "art": "arte/lobo_escarcha.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "fosu",
