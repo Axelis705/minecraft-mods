@@ -13,7 +13,7 @@ Regla de composición (importante): **deja vacío el 20 % de abajo** — ahí va
 ## ESTILO COMÚN (pégalo siempre)
 
 ```
-Collectible trading card illustration, vertical 2:3. Stylized Minecraft-inspired blocky voxel
+Collectible trading card illustration, vertical 3:4. Stylized Minecraft-inspired blocky voxel
 look with rich painterly lighting, crisp shapes, slightly cartoon proportions. Subject centered
 in the upper 80% of the image, the bottom 20% is calm empty ground or soft shadow (no objects).
 Cinematic dramatic lighting, strong rim light, depth of field, vivid saturated colors, clean
