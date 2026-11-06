@@ -217,7 +217,14 @@
    "c1": "#ff9a2a",
    "c2": "#ffe27a",
    "desc": "Horno con patas. Escupe flechas de fuego.",
-   "scene": "forge"
+   "scene": "forge",
+   "art": "arte/chispero.png",
+   "art_box": [
+    0.29,
+    0.0,
+    0.718,
+    0.9
+   ]
   },
   {
    "id": "ascua",
