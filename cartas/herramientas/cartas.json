@@ -37,7 +37,14 @@
    "c1": "#5fbf4a",
    "c2": "#ffd84a",
    "desc": "El soberano del bosque. Su corona nunca se marchita.",
-   "scene": "forest"
+   "scene": "forest",
+   "art": "arte/rey_brote.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.88
+   ]
   },
   {
    "id": "gran_herrero",
@@ -48,7 +55,14 @@
    "c1": "#e0733a",
    "c2": "#ffd84a",
    "desc": "Forja con fuego que nunca se apaga.",
-   "scene": "forge"
+   "scene": "forge",
+   "art": "arte/gran_herrero.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.9
+   ]
   },
   {
    "id": "lobo_artico",
@@ -59,7 +73,14 @@
    "c1": "#bfe6ff",
    "c2": "#4a90d9",
    "desc": "Su aullido congela el aire y llama a la manada.",
-   "scene": "ice"
+   "scene": "ice",
+   "art": "arte/lobo_artico.png",
+   "art_box": [
+    0,
+    0,
+    1,
+    0.88
+   ]
   },
   {
    "id": "guardian_musgo",
@@ -392,7 +413,7 @@
    "glyph": "star",
    "c1": "#ffe27a",
    "c2": "#ffffff",
-   "desc": "Donde otros ven un mundo vacío, él ve todo lo que falta por construir. Cuando se desconecta, el servidor entero se queda en silencio.",
+   "desc": "Donde otros ven un mundo vacío, él ve todo lo que falta por construir. Todo empezó con una idea suya, y todavía le quedan mil más.",
    "skin": "skins/axelis705.png",
    "scene": "sky",
    "art": "arte/axelis705.png",
@@ -449,7 +470,7 @@
    "glyph": "star",
    "c1": "#8ac8ff",
    "c2": "#ffffff",
-   "desc": "La luz que ilumina cada rincón de su mundo. A su lado, hasta la noche más larga se siente en calma.",
+   "desc": "Es el mundo de Axelis705. Su luz ilumina cada rincón, y a su lado hasta la noche más larga se siente en calma.",
    "skin": "skins/odette.png",
    "scene": "night",
    "art": "arte/odette.png",
@@ -506,7 +527,7 @@
    "glyph": "star",
    "c1": "#d03030",
    "c2": "#ffffff",
-   "desc": "Entra a escena como si el servidor fuera suyo: series, eventos y mucha confianza. Eso sí, ni se te ocurra nombrarle cierto juego de bloques rival.",
+   "desc": "Imponente y siempre seguro de sí mismo: se cree el mejor en todo. Eso sí, ni le menciones Roblox, que lo odia con toda su alma.",
    "skin": "skins/scardax.png",
    "scene": "nether",
    "art": "arte/scardax.png",
