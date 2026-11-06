@@ -44,6 +44,7 @@ final class DesignForja {
         yardBuildings(b);
         basement(b);
         finishing(b);
+        Linker.link(b, 0, 0, -3, 10, PBB, PBS);
         return b;
     }
 
@@ -204,7 +205,7 @@ final class DesignForja {
         }
         ring(b, cx - r - 1, cz - r - 1, cx + r + 1, cz + r + 1, top, PBS, true);
         b.box(cx - r - 1, top + 1, cz - r - 1, cx + r + 1, top + 1, cz + r + 1, DT);
-        hipRoof(b, cx - r, cz - r, cx + r, cz + r, top + 2, 2, CUS, CU, CUL, 1);
+        hipRoof(b, cx - r, cz - r, cx + r, cz + r, top + 2, 2, CUS, CU, CUL, 2);
         int peak = top + 2 + r + 2;
         for (int i = 0; i < 9; i++) {
             b.set(cx, peak + 1 + i, cz, i < 6 ? "chain[axis=y]" : (i == 6 ? GB : (i == 7 ? "lantern[hanging=false]" : "lightning_rod[facing=up]")));
@@ -244,7 +245,7 @@ final class DesignForja {
         }
         openZ(b, 0, 0, 15, 20, 4, 11, 2, CPB, null);
         for (int x = -4; x <= 4; x++) {
-            for (int y = 1; y <= 10; y++) {
+            for (int y = 6; y <= 10; y++) { // rastrillo levantado: se pasa por debajo
                 if (Math.abs(x) <= 4 - (y > 7 ? y - 7 : 0)) {
                     b.set(x, y, 17, "iron_bars");
                 }
@@ -306,7 +307,7 @@ final class DesignForja {
         // portón principal en la fachada, a eje con la entrada
         openZ(b, 0, 0, 31, 33, 5, 16, 2, CPB, null);
         for (int x = -5; x <= 5; x++) {
-            for (int y = 1; y <= 12; y++) {
+            for (int y = 8; y <= 12; y++) { // rastrillo levantado
                 if (Math.abs(x) <= 5 - (y > 8 ? (y - 8) : 0)) {
                     b.set(x, y, 32, "iron_bars");
                 }

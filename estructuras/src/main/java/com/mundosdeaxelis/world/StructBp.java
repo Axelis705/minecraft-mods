@@ -18,6 +18,8 @@ public final class StructBp {
     public final Map<Long, String> m = new LinkedHashMap<>();
     public final List<Found> found = new ArrayList<>();
     public final Random r;
+    /** Salas planificadas (nombre -> cajas x0,y0,z0,x1,y1,z1) solo para revisar el plano fuera del juego. */
+    public final Map<String, List<int[]>> rooms = new LinkedHashMap<>();
 
     public StructBp(long seed) {
         r = new Random(seed);

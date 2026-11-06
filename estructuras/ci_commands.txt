@@ -11,12 +11,13 @@ execute positioned 0 -48 0 rotated 0 0 run mundos estructura hielo
 execute if block 17 -48 58 minecraft:cauldron run say PRUEBA_HIELO_OK
 execute if block 12 -59 57 minecraft:grindstone run say PRUEBA_HIELO_BAJO_OK
 execute positioned 0 -48 0 rotated 90 0 run mundos estructura torre
-execute if block -78 -48 0 minecraft:campfire run say PRUEBA_TORRE_OK
-execute if block -85 -58 0 minecraft:soul_campfire run say PRUEBA_TORRE_BAJO_OK
-execute if block -52 -60 7 minecraft:lectern run say PRUEBA_TORRE_BIBLIOTECA_OK
-execute if block -78 -49 -11 minecraft:stone_brick_stairs[facing=west] run say PRUEBA_TORRE_ESCALERA_OK
+execute if block -50 40 0 minecraft:lightning_rod run say PRUEBA_TORRE_OK
+execute if block -44 -52 0 minecraft:soul_campfire run say PRUEBA_TORRE_BAJO_OK
+execute if block -43 -37 0 minecraft:lectern run say PRUEBA_TORRE_BIBLIOTECA_OK
+execute if block -45 -13 0 minecraft:enchanting_table run say PRUEBA_TORRE_ENCANTAMIENTO_OK
+execute if block -49 -45 1 minecraft:purpur_stairs[facing=west,half=bottom] run say PRUEBA_TORRE_ESCALERA_OK
 mundos estructura deshacer 3
-execute if block -78 -48 0 minecraft:air run say PRUEBA_TODO_DESHECHO_OK
+execute if block -44 -52 0 minecraft:air run say PRUEBA_TODO_DESHECHO_OK
 execute if block 26 -48 57 minecraft:air run say PRUEBA_FORJA_DESHECHA_OK
 execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
 #expect PRUEBA_BOSQUE_OK
@@ -30,6 +31,7 @@ execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
 #expect PRUEBA_TORRE_OK
 #expect PRUEBA_TORRE_BAJO_OK
 #expect PRUEBA_TORRE_BIBLIOTECA_OK
+#expect PRUEBA_TORRE_ENCANTAMIENTO_OK
 #expect PRUEBA_TORRE_ESCALERA_OK
 #expect PRUEBA_TODO_DESHECHO_OK
 #expect PRUEBA_FORJA_DESHECHA_OK

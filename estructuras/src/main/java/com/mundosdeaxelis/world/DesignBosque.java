@@ -55,6 +55,7 @@ final class DesignBosque {
         basement(b);
         shrine(b);
         finishing(b);
+        Linker.link(b, 0, 0, -3, 10, SB, SBS);
         return b;
     }
 
@@ -568,7 +569,7 @@ final class DesignBosque {
                 }
                 b.set(xa, y, r.z1 - 5, y <= 5 ? "stone_bricks" : "air");
             }
-            ironDoor(b, xa + 1, 0, r.z1 - 5, "+z", false);
+            ironDoor(b, xa + 1, 0, r.z1 - 5, "+z", true);
             b.set(xb - 1, 0, r.z1 - 1, "hay_block[axis=x]");
             b.set(xb - 1, 1, r.z1 - 1, "skeleton_skull[rotation=" + (4 + i * 3) + "]");
             b.set(xa, 0, r.z1 - 1, "bone_block[axis=x]");

@@ -42,6 +42,7 @@ final class DesignHielo {
         fountain(b);
         dungeon(b);
         finishing(b);
+        Linker.link(b, 0, 0, -3, 10, Q, QS);
         return b;
     }
 
@@ -322,7 +323,7 @@ final class DesignHielo {
             }
             ring(b, x0 - 1, 27, x1 + 1, 38, 36, QS, true);
             b.box(x0, 37, 28, x1, 38, 37, SQ);
-            hipRoof(b, x0, 28, x1, 37, 39, 1, PBS, PB, PBL, 1);
+            hipRoof(b, x0, 28, x1, 37, 39, 1, PBS, PB, PBL, 2);
             int cx = (x0 + x1) / 2;
             for (int i = 0; i < 12; i++) {
                 b.set(cx, 46 + i, 32 + 1, i == 11 ? "end_rod[facing=up]" : (i % 4 == 3 ? "sea_lantern" : BI));
@@ -659,7 +660,7 @@ final class DesignHielo {
                         b.set(gx, y, zz, "iron_bars");
                     }
                 }
-                ironDoor(b, gx, fy + 1, z + 2, s > 0 ? "-x" : "+x", false);
+                ironDoor(b, gx, fy + 1, z + 2, s > 0 ? "-x" : "+x", true);
                 int px = s > 0 ? 11 : -11;
                 // prisionero congelado: cubo de hielo con una calavera dentro
                 b.box(px - 1, fy + 1, z + 1, px + 1, fy + 3, z + 3, "ice");
