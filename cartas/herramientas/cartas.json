@@ -213,7 +213,14 @@
    "c1": "#ffc0e8",
    "c2": "#ffffff",
    "desc": "Una mariposa celestial.",
-   "scene": "night"
+   "scene": "night",
+   "art": "arte/fosu.png",
+   "art_box": [
+    0,
+    0.0,
+    1,
+    0.88
+   ]
   },
   {
    "id": "cookie",
@@ -224,7 +231,14 @@
    "c1": "#b4bac6",
    "c2": "#3a3f4a",
    "desc": "Hurón gris, ladrón de corazones.",
-   "scene": "plains"
+   "scene": "plains",
+   "art": "arte/cookie.png",
+   "art_box": [
+    0,
+    0.05,
+    1,
+    0.93
+   ]
   },
   {
    "id": "creeper",
