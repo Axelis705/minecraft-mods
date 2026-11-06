@@ -371,6 +371,16 @@ def hero_sprite(card, scale_glyph=8):
 def make_illustration(card):
     if card.get("art"):
         src = Image.open(os.path.join(ROOT, "herramientas", card["art"])).convert("RGBA")
+        if card.get("art_box"):  # recorte manual en fracciones [x0, y0, x1, y1]; se ajusta a la proporcion de la zona
+            x0, y0, x1, y1 = card["art_box"]
+            W0, H0 = src.size
+            bw = (x1 - x0) * W0
+            bh = bw * IH / IW
+            cy = (y0 + y1) / 2 * H0
+            top = min(max(0, cy - bh / 2), H0 - bh)
+            left = x0 * W0
+            src = src.crop((round(left), round(top), round(left + bw), round(top + bh))).resize((IW, IH), Image.LANCZOS)
+            return src.filter(ImageFilter.UnsharpMask(radius=1.0, percent=60, threshold=2))
         # recorte "cover": llena la zona sin deformar (el sujeto va centrado y arriba)
         r = max(IW / src.size[0], IH / src.size[1])
         nw, nh = max(IW, round(src.size[0] * r)), max(IH, round(src.size[1] * r))

@@ -362,7 +362,14 @@
    "c2": "#ffffff",
    "desc": "Creador de Mundos de Axelis.",
    "skin": "skins/axelis705.png",
-   "scene": "sky"
+   "scene": "sky",
+   "art": "arte/axelis705.png",
+   "art_box": [
+    0.04,
+    0.115,
+    0.96,
+    0.893
+   ]
   },
   {
    "id": "jadiel",
