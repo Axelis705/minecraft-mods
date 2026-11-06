@@ -20,6 +20,8 @@ public final class StructBp {
     public final Random r;
     /** Salas planificadas (nombre -> cajas x0,y0,z0,x1,y1,z1) solo para revisar el plano fuera del juego. */
     public final Map<String, List<int[]>> rooms = new LinkedHashMap<>();
+    /** Lo que {@link Soporte#prune} quitó por no poder sostenerse (tipo -> cantidad); vacío si el diseño no tenía nada así. */
+    public Map<String, Integer> unsupported = new java.util.TreeMap<>();
 
     public StructBp(long seed) {
         r = new Random(seed);

@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style></head>
+<body><script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+const W=1280,H=720;
+const renderer=new THREE.WebGLRenderer({antialias:false,preserveDrawingBuffer:true});
+renderer.setSize(W,H);document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x02030a);
+const cam=new THREE.PerspectiveCamera(70,W/H,0.05,600);
+async function f32(u){return new Float32Array(await (await fetch(u)).arrayBuffer());}
+async function u8(u){return new Uint8Array(await (await fetch(u)).arrayBuffer());}
+const dir=new URLSearchParams(location.search).get('d')||'out';
+const meta=await (await fetch(dir+'/meta.json')).json();
+const tex=await new Promise(r=>new THREE.TextureLoader().load(dir+'/atlas.png',r));
+tex.magFilter=THREE.NearestFilter;tex.minFilter=THREE.NearestFilter;tex.generateMipmaps=false;tex.colorSpace=THREE.NoColorSpace;
+async function build(name,n,transparent){
+  if(!n)return;
+  const pos=await f32(`${dir}/${name}_pos.bin`),uv=await f32(`${dir}/${name}_uv.bin`),col=await f32(`${dir}/${name}_col.bin`),kind=await u8(`${dir}/${name}_kind.bin`);
+  // separar opacos y recortados (alfa 0/1) del translucido (2)
+  const groups={0:[],1:[],2:[]};
+  for(let i=0;i<n;i++)groups[kind[i]].push(i);
+  for(const k of [0,1,2]){
+    const q=groups[k];if(!q.length)continue;
+    const P=new Float32Array(q.length*12),U=new Float32Array(q.length*8),C=new Float32Array(q.length*12),I=new Uint32Array(q.length*6);
+    q.forEach((i,j)=>{
+      P.set(pos.subarray(i*12,i*12+12),j*12);U.set(uv.subarray(i*8,i*8+8),j*8);C.set(col.subarray(i*12,i*12+12),j*12);
+      const b=j*4;I.set([b,b+1,b+2,b,b+2,b+3],j*6);
+    });
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(P,3));g.setAttribute('uv',new THREE.BufferAttribute(U,2));g.setAttribute('color',new THREE.BufferAttribute(C,3));g.setIndex(new THREE.BufferAttribute(I,1));
+    const m=new THREE.MeshBasicMaterial({map:tex,vertexColors:true,side:THREE.DoubleSide,alphaTest:k==1?0.5:(k==2?0.02:0),transparent:k==2||transparent,opacity:1});
+    scene.add(new THREE.Mesh(g,m));
+  }
+}
+await build('solid',meta.solid,false);await build('trans',meta.trans,true);
+window.shot=(x,y,z,yaw,pitch,fov)=>{
+  cam.fov=fov||70;cam.updateProjectionMatrix();cam.position.set(x,y,z);
+  const yw=yaw*Math.PI/180,pt=pitch*Math.PI/180;
+  cam.lookAt(x-Math.sin(yw)*Math.cos(pt),y-Math.sin(pt),z+Math.cos(yw)*Math.cos(pt));
+  renderer.render(scene,cam);return renderer.domElement.toDataURL('image/png');
+};
+window.ready=true;
+</script></body></html>

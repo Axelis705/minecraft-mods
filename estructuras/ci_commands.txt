@@ -68,3 +68,7 @@ execute if block 17 -48 58 minecraft:air run say PRUEBA_HIELO_DESHECHO_OK
 #expect PRUEBA_TODO_DESHECHO_OK
 #expect PRUEBA_FORJA_DESHECHA_OK
 #expect PRUEBA_HIELO_DESHECHO_OK
+#expect Gran templo del bosque construida [apoyo ok]
+#expect Gran fundición de la forja construida [apoyo ok]
+#expect Ciudadela de cristal construida [apoyo ok]
+#expect Fortaleza en ruinas construida [apoyo ok]

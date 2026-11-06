@@ -502,10 +502,11 @@ public final class StructKit {
             b.set(x, y, z, "chain[axis=y]");
         }
         b.set(x, yb + 1, z, "chain[axis=y]");
-        b.set(x - 1, yb + 1, z, "chain[axis=x]");
-        b.set(x + 1, yb + 1, z, "chain[axis=x]");
-        b.set(x, yb + 1, z - 1, "chain[axis=z]");
-        b.set(x, yb + 1, z + 1, "chain[axis=z]");
+        // los brazos son barrotes: una cadena acostada no sostiene farolas (solo la vertical), unos barrotes sí
+        b.set(x - 1, yb + 1, z, "iron_bars");
+        b.set(x + 1, yb + 1, z, "iron_bars");
+        b.set(x, yb + 1, z - 1, "iron_bars");
+        b.set(x, yb + 1, z + 1, "iron_bars");
         b.set(x, yb, z, lantern + "[hanging=true]");
         b.set(x - 1, yb, z, lantern + "[hanging=true]");
         b.set(x + 1, yb, z, lantern + "[hanging=true]");

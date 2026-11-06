@@ -9,12 +9,16 @@ public final class StructDesigns {
     }
 
     public static StructBp make(String kind) {
-        return switch (kind) {
+        StructBp bp = switch (kind) {
             case "bosque" -> DesignBosque.make();
             case "forja" -> DesignForja.make();
             case "hielo" -> DesignHielo.make();
             default -> DesignTorre.make();
         };
+        // lo que el juego rompería solo (antorcha sin muro, farola en el aire...) se quita del plano: así lo revisado es lo construido
+        Soporte.fix(bp);
+        bp.unsupported = Soporte.prune(bp);
+        return bp;
     }
 
     // ================================================================== utilidades comunes

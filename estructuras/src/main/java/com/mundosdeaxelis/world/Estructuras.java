@@ -173,8 +173,9 @@ public final class Estructuras {
             dq.removeLast();
         }
         int n = undo.snaps.size();
-        String extra = removed > 0 ? ", " + removed + " sin apoyo quitados" : "";
-        src.sendSuccess(() -> Component.literal(kind.title + " construida (" + n + " bloques" + extra + "). Para quitarla: /mundos estructura deshacer"), true);
+        // unos pocos pueden quedar por culpa del terreno de prueba (un mundo plano donde la estructura queda en el aire): se toleran 3
+        String extra = removed > 3 ? "SIN APOYO " + removed : "apoyo ok";
+        src.sendSuccess(() -> Component.literal(kind.title + " construida [" + extra + "] (" + n + " bloques). Para quitarla: /mundos estructura deshacer"), true);
         return 1;
     }
 

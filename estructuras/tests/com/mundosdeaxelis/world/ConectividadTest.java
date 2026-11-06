@@ -14,6 +14,9 @@ public class ConectividadTest {
         int fails = 0;
         for (int i = 0; i < kinds.length; i++) {
             StructBp bp = StructDesigns.make(kinds[i]);
+            if (!bp.unsupported.isEmpty()) {
+                System.out.println(kinds[i] + ": bloques sin apoyo quitados del plano " + bp.unsupported);
+            }
             int[] r = Linker.audit(bp, 0, 0, -3, 10);
             boolean ok = r[2] == 0 && r[0] <= maxRooms[i] && r[1] <= maxTraps[i];
             System.out.println(kinds[i] + ": salas sin acceso " + r[0] + " (tope " + maxRooms[i] + "), trampas " + r[1] + " (tope " + maxTraps[i] + "), entrada "
