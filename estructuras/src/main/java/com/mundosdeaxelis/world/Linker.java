@@ -112,7 +112,24 @@ final class Linker {
         for (int i = 0; i < n; i++) {
             l.bad[i] = l.stand[i] && l.ceil[i] && l.reach[i] && !l.back[i];
         }
-        int traps = l.isolated(minRoom, new HashSet<>()).size();
+        List<List<Integer>> ts = l.isolated(minRoom, new HashSet<>());
+        int traps = ts.size();
+        if (DEBUG) {
+            for (List<Integer> c : ts) {
+                int i = c.get(0);
+                int ax = 9999, bx = -9999, ay = 9999, by = -9999, az = 9999, bz = -9999;
+                for (int q : c) {
+                    ax = Math.min(ax, l.cx(q));
+                    bx = Math.max(bx, l.cx(q));
+                    ay = Math.min(ay, l.cy(q));
+                    by = Math.max(by, l.cy(q));
+                    az = Math.min(az, l.cz(q));
+                    bz = Math.max(bz, l.cz(q));
+                }
+                System.err.println("[Linker] trampa (se llega pero no se vuelve) cerca de " + l.cx(i) + "," + l.cy(i) + "," + l.cz(i) + " (" + c.size() + " casillas) caja x "
+                        + ax + ".." + bx + " y " + ay + ".." + by + " z " + az + ".." + bz);
+            }
+        }
         return new int[]{rooms, traps, l.startIdx < 0 ? 1 : 0};
     }
 

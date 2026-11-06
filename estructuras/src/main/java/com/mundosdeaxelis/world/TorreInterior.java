@@ -26,6 +26,7 @@ final class TorreInterior {
     static final String PB = "polished_blackstone";
     static final String GOLD = "gold_block";
     static final String CHAIN = "chain[axis=y]";
+    static final String SL = "soul_lantern";
 
     // ------------------------------------------------------------------ ayudas
 
@@ -333,6 +334,181 @@ final class TorreInterior {
             for (int sz = -1; sz <= 1; sz += 2) {
                 est(b, 6 * s, g + 2, CZ + 6 * sz, EstIds.CANDELABRO, "north");
             }
+        }
+    }
+
+    // ================================================================== utilidades de sala
+
+    /** Bloque de muro de la torre (para saber si una casilla es pared). */
+    static boolean mass(String g) {
+        return g != null && (g.startsWith("deepslate") || g.startsWith("polished_deepslate") || g.startsWith("chiseled_deepslate")
+                || g.startsWith("cracked_deepslate") || g.startsWith("purpur_pillar") || g.startsWith("amethyst_block") || g.startsWith("polished_blackstone"));
+    }
+
+    /** Cornisa: escaleras boca abajo en la capa de arriba junto a cada muro (abovedan el techo). */
+    static void cove(StructBp b, int yTop, int x0, int dz0, int x1, int dz1, String stair) {
+        String[] dirs = {"+x", "-x", "+z", "-z"};
+        java.util.List<int[]> todo = new java.util.ArrayList<>();
+        for (int x = x0; x <= x1; x++) {
+            for (int dz = dz0; dz <= dz1; dz++) {
+                if (core(x, dz) || !"air".equals(b.get(x, yTop, CZ + dz))) {
+                    continue; // el hueco de la escalera central no se toca
+                }
+                for (int k = 0; k < 4; k++) {
+                    if (mass(b.get(x + dx(dirs[k]), yTop, CZ + dz + dz(dirs[k])))) {
+                        todo.add(new int[]{x, dz, k});
+                        break;
+                    }
+                }
+            }
+        }
+        for (int[] t : todo) {
+            b.set(t[0], yTop, CZ + t[1], sti(stair, dirs[t[2]]));
+        }
+    }
+
+    // ================================================================== CRIPTA (piso -1): antecámara, galería de sarcófagos, mazmorra y santuario
+
+    static void crypt(StructBp b) {
+        final int f = -5;
+        final int top = f + 6;
+        final String BRK = "polished_blackstone_bricks";
+        // ---- suelos
+        for (int x = -10; x <= 10; x++) {
+            for (int dz = -10; dz <= 10; dz++) {
+                if (!in(-1, x, dz) || core(x, dz) || !"air".equals(b.get(x, f, CZ + dz))) {
+                    continue;
+                }
+                boolean centre = Math.abs(x) <= 2;
+                String m = centre ? (((x + dz) & 1) == 0 ? PB : DT) : (((x + dz) & 1) == 0 ? DT : DB);
+                if (x >= 4) {
+                    m = ((x * 3 + dz) % 4 == 0) ? CR : DB; // la mazmorra: suelo resquebrajado
+                }
+                b.set(x, f - 1, CZ + dz, m);
+            }
+        }
+        cove(b, top, -10, -10, 10, 10, DBS);
+        // ---- ANTECÁMARA DEL SILENCIO (x -2..2, dz -10..-3): un brasero de almas entre dos caballeros
+        for (int x = -1; x <= 1; x++) {
+            b.set(x, f - 1, CZ - 7, GOLD);
+        }
+        for (int dz = -8; dz <= -6; dz++) {
+            b.set(0, f - 1, CZ + dz, GOLD);
+        }
+        b.set(0, f, CZ - 7, PD);
+        b.set(0, f + 1, CZ - 7, "soul_campfire");
+        for (int s = -1; s <= 1; s += 2) {
+            estTall(b, 2 * s, f, CZ - 9, EstIds.ESTATUA_CABALLERO, s < 0 ? "east" : "west");
+            estTall(b, 2 * s, f, CZ - 5, EstIds.ESTATUA_CABALLERO, s < 0 ? "east" : "west");
+            soulTorch(b, 2 * s, f + 3, CZ - 7 + 3, s < 0 ? "+x" : "-x");
+        }
+        estTall(b, -1, f, CZ - 10, EstIds.TAPIZ_ARCANO, "south");
+        estTall(b, 1, f, CZ - 10, EstIds.TAPIZ_ARCANO, "south");
+        estTall(b, 0, f + 2, CZ - 10, EstIds.TAPIZ_ESTRELLAS, "south");
+        chandelier(b, 0, top, CZ - 7, 3, SL);
+        // ---- GALERÍA DE LOS SARCÓFAGOS (x -10..-4): dos tumbas contra el muro, arcada de columnas y alfombra azul
+        for (int dz = -8; dz <= 8; dz++) {
+            for (int x = -7; x <= -6; x++) {
+                if (in(-1, x, dz)) {
+                    carpet(b, x, f, CZ + dz, (x == -7) ? "blue_carpet" : "cyan_carpet");
+                }
+            }
+        }
+        sarcophagus(b, -10, f, CZ - 4, 'z', 4, BRK, "polished_blackstone_brick_slab", "polished_blackstone_brick_stairs");
+        sarcophagus(b, -10, f, CZ + 1, 'z', 4, BRK, "polished_blackstone_brick_slab", "polished_blackstone_brick_stairs");
+        est(b, -10, f, CZ, EstIds.GARGOLA, "east");
+        est(b, -9, f, CZ, EstIds.CRISTAL_MANA, "east");
+        for (int dzz : new int[]{-6, -2, 2, 6}) {
+            pillar(b, -8, CZ + dzz, f, f + 5);
+        }
+        for (int dzz : new int[]{-4, 4}) {
+            chandelier(b, -7, top, CZ + dzz, 3, SL);
+            for (int s = -1; s <= 1; s += 2) {
+                soulTorch(b, -4, f + 3, CZ + 2 * s * dzz / Math.abs(dzz) * 1, "-x");
+            }
+        }
+        // ---- MAZMORRA (x 4..10): celdas con barrotes junto al muro, jaulas colgadas en el pasillo
+        for (int dz = -4; dz <= 4; dz++) {
+            if (in(-1, 7, dz)) {
+                // barrotes hasta el techo (si no, su borde superior sería una cornisa a la que no se puede subir)
+                for (int h = (dz == -2 || dz == 2) ? 2 : 0; h <= 6; h++) {
+                    b.set(7, f + h, CZ + dz, "iron_bars");
+                }
+            }
+        }
+        for (int x = 8; x <= 10; x++) {
+            for (int h = 0; h <= 6; h++) {
+                b.set(x, f + h, CZ, "iron_bars");
+            }
+        }
+        for (int dzz : new int[]{-2, 2}) {
+            est(b, 10, f + 1, CZ + dzz, EstIds.GRILLETES, "west");
+            b.set(10, f, CZ + dzz, "hay_block[axis=x]");
+            b.set(9, f, CZ + dzz, "bone_block[axis=y]");
+            skull(b, 9, f + 1, CZ + dzz, 4);
+        }
+        b.set(8, f, CZ - 3, "cobweb");
+        b.set(8, f, CZ + 3, "cobweb");
+        estHang(b, 5, top, CZ - 5, 3, EstIds.JAULA);
+        estHang(b, 5, top, CZ + 5, 4, EstIds.JAULA);
+        estHang(b, 5, top, CZ, 2, EstIds.JAULA);
+        for (int dzz : new int[]{-6, 6}) {
+            wallTorch(b, 4, f + 3, CZ + dzz, "+x");
+        }
+        b.set(6, f, CZ - 8, "bone_block[axis=y]");
+        skull(b, 6, f + 1, CZ - 8, 12);
+        // ---- SANTUARIO DEL CRISTAL (x -2..2, dz 3..10): pedestal rúnico con el cristal, cuatro braseros y un tapiz que esconde una puerta
+        for (int x = -2; x <= 2; x++) {
+            for (int dz = 4; dz <= 10; dz++) {
+                double d = Math.hypot(x, dz - 7);
+                if (d <= 1.6) {
+                    b.set(x, f - 1, CZ + dz, AM);
+                } else if (d <= 2.6) {
+                    b.set(x, f - 1, CZ + dz, GOLD);
+                }
+            }
+        }
+        est(b, 0, f, CZ + 7, EstIds.PEDESTAL_RUNICO, "north");
+        est(b, 0, f + 1, CZ + 7, EstIds.CRISTAL_MANA, "north");
+        for (int s = -1; s <= 1; s += 2) {
+            for (int dz : new int[]{4, 10}) {
+                b.set(2 * s, f, CZ + dz, PD);
+                b.set(2 * s, f + 1, CZ + dz, "soul_campfire");
+            }
+        }
+        estTall(b, -1, f, CZ + 10, EstIds.TAPIZ_ESTRELLAS, "north");
+        estTall(b, 1, f, CZ + 10, EstIds.TAPIZ_ESTRELLAS, "north");
+        estTall(b, 0, f, CZ + 10, EstIds.TAPIZ_ARCANO, "north");
+        chandelier(b, 0, top, CZ + 7, 2, SL);
+        // ---- TESORERÍA SECRETA: un túnel detrás del tapiz del fondo, bajo la plataforma
+        b.box(-4, f - 1, CZ + 11, 4, f + 5, CZ + 19, DB);
+        for (int dz = 11; dz <= 12; dz++) {
+            for (int h = 0; h <= 1; h++) {
+                b.set(0, f + h, CZ + dz, "air");
+            }
+        }
+        b.box(-3, f, CZ + 13, 3, f + 3, CZ + 18, "air");
+        for (int x = -3; x <= 3; x++) {
+            for (int dz = 13; dz <= 18; dz++) {
+                b.set(x, f - 1, CZ + dz, ((x + dz) & 1) == 0 ? GOLD : PD);
+                if (Math.abs(x) == 3 && (dz == 13 || dz == 18) || Math.abs(x) == 3 && dz % 2 == 0) {
+                    b.set(x, f + 3, CZ + dz, "air");
+                }
+            }
+        }
+        for (int s = -1; s <= 1; s += 2) {
+            est(b, 2 * s, f, CZ + 14, EstIds.MONTON_ORO, s < 0 ? "east" : "west");
+            est(b, 2 * s, f, CZ + 17, EstIds.MONTON_ORO, s < 0 ? "east" : "west");
+            est(b, 3 * s, f, CZ + 16, EstIds.CANDELABRO, "north");
+            b.set(2 * s, f, CZ + 16, "air");
+        }
+        est(b, 0, f, CZ + 17, EstIds.PEDESTAL_RUNICO, "north");
+        est(b, 0, f + 1, CZ + 17, EstIds.CRISTAL_MANA, "north");
+        hangLantern(b, 0, f + 3, CZ + 15, 1, SL);
+        estTall(b, 0, f, CZ + 18, EstIds.TAPIZ_REAL, "north");
+        for (int dz = 14; dz <= 17; dz += 3) {
+            est(b, -3, f + 2, CZ + dz, EstIds.CANDELERO_PARED, "east");
+            est(b, 3, f + 2, CZ + dz, EstIds.CANDELERO_PARED, "west");
         }
     }
 }

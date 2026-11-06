@@ -83,8 +83,11 @@ final class DesignTorre {
         a.join(rooms[1][0], rooms[2][0]);
         a.join(rooms[1][0], rooms[2][1]);
         a.door(core, rooms[2][1], fy(1), 0, 3, 3, true);
+        String skip = System.getProperty("torre.skip", "");
         for (int i = -1; i <= 7; i++) {
-            dress(b, a, rooms[i + 1], i);
+            if (!("," + skip + ",").contains("," + i + ",")) {
+                dress(b, a, rooms[i + 1], i);
+            }
         }
         shaftDecor(b);
         topOfDome(b);
@@ -721,7 +724,7 @@ final class DesignTorre {
     private static void dress(StructBp b, Arq a, Arq.Sp[] rs, int i) {
         int f = fy(i);
         switch (i) {
-            case -1 -> crypt(b, a, rs, f);
+            case -1 -> TorreInterior.crypt(b);
             case 0 -> TorreInterior.hall(b);
             case 1 -> {
             }
