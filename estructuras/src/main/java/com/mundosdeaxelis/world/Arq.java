@@ -311,6 +311,9 @@ final class Arq {
         }
         int k = s.indexOf('[');
         String n = k < 0 ? s : s.substring(0, k);
+        if (n.startsWith("mundos_de_axelis:est_")) {
+            return EstIds.passable(n); // tapices, arañas de luces, jaulas colgantes: se pueden cruzar
+        }
         return n.equals("air") || n.endsWith("_carpet") || n.equals("candle") || n.endsWith("torch") || n.endsWith("banner") || n.equals("fern")
                 || n.equals("grass") || n.endsWith("tulip") || n.equals("allium") || n.equals("cornflower") || n.equals("azure_bluet") || n.equals("lily_of_the_valley")
                 || n.endsWith("skull") || n.equals("cobweb") || n.equals("lantern") || n.equals("soul_lantern") || n.equals("chain") || n.equals("end_rod")

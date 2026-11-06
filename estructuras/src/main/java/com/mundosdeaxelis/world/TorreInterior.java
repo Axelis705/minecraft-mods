@@ -1069,4 +1069,81 @@ final class TorreInterior {
         estTall(b, 0, f, CZ + 7, EstIds.RELOJ, "north");
         estHang(b, 0, top, CZ + 4, 2, EstIds.ARANA);
     }
+
+    // ================================================================== SECRETOS: cuatro cámaras ocultas en los torreones del Gran Salón
+
+    /** Convierte la casilla relativa al centro del torreón (u a lo ancho, v a lo largo) en x / dz de plano. */
+    private static void secretRoom(StructBp b, int sx, int sz, int kind) {
+        final int f = 3;
+        int cx = 10 * sx;
+        int cz = 10 * sz;
+        // ---- túnel desde el salón (casilla (8sx, 6sz)) a través del muro, tapado por un tapiz
+        int[][] tun = {{9 * sx, 6 * sz}, {10 * sx, 6 * sz}, {10 * sx, 7 * sz}};
+        for (int[] t : tun) {
+            for (int h = 0; h <= 1; h++) {
+                b.set(t[0], f + h, CZ + t[1], "air");
+            }
+            b.set(t[0], f - 1, CZ + t[1], PD);
+            b.set(t[0], f + 2, CZ + t[1], DB);
+        }
+        estTall(b, 9 * sx, f, CZ + 6 * sz, sx < 0 ? EstIds.TAPIZ_ARCANO : EstIds.TAPIZ_ESTRELLAS, sx < 0 ? "east" : "west");
+        // ---- cámara redonda (radio 2,2, 5 de alto)
+        for (int u = -2; u <= 2; u++) {
+            for (int v = -2; v <= 2; v++) {
+                if (Math.hypot(u, v) <= 2.25) {
+                    for (int h = 0; h <= 4; h++) {
+                        b.set(cx + u, f + h, CZ + cz + v, "air");
+                    }
+                    b.set(cx + u, f - 1, CZ + cz + v, ((u + v) & 1) == 0 ? PD : DT);
+                }
+            }
+        }
+        String towardCentreX = sx < 0 ? "east" : "west";
+        String toHall = sz < 0 ? "south" : "north";
+        switch (kind) {
+            case 0 -> { // armería
+                estTall(b, cx - 2, f, CZ + cz, EstIds.ESTATUA_CABALLERO, "east");
+                estTall(b, cx + 2, f, CZ + cz, EstIds.ESTATUA_CABALLERO, "west");
+                b.set(cx, f, CZ + cz + sz, "anvil[facing=east]");
+                b.set(cx + 1, f, CZ + cz + sz, "grindstone[face=floor,facing=north]");
+                est(b, cx, f, CZ + cz + 2 * sz, EstIds.PEDESTAL_RUNICO, toHall);
+                est(b, cx + 1, f, CZ + cz - sz, EstIds.CANDELABRO, toHall);
+                est(b, cx - 1, f, CZ + cz - sz, EstIds.CANDELABRO, toHall);
+            }
+            case 1 -> { // archivo
+                for (int u : new int[]{-2, 2}) {
+                    estTall(b, cx + u, f, CZ + cz, EstIds.ESTANTERIA, u < 0 ? "east" : "west");
+                }
+                b.set(cx, f, CZ + cz + sz, "lectern[facing=" + toHall + "]");
+                est(b, cx, f, CZ + cz + 2 * sz, EstIds.GLOBO, toHall);
+                est(b, cx + 1, f, CZ + cz + sz, EstIds.PILA_LIBROS, toHall);
+                est(b, cx - 1, f, CZ + cz - sz, EstIds.CANDELABRO, toHall);
+                est(b, cx + 1, f, CZ + cz - sz, EstIds.CANDELABRO, toHall);
+            }
+            case 2 -> { // capilla del guardián
+                est(b, cx - 2, f, CZ + cz, EstIds.GARGOLA, "east");
+                est(b, cx + 2, f, CZ + cz, EstIds.GARGOLA, "west");
+                est(b, cx, f, CZ + cz + 2 * sz, EstIds.PEDESTAL_RUNICO, toHall);
+                est(b, cx, f + 1, CZ + cz + 2 * sz, EstIds.CRISTAL_MANA, toHall);
+                est(b, cx - 1, f, CZ + cz + sz, EstIds.CANDELABRO, toHall);
+                est(b, cx + 1, f, CZ + cz + sz, EstIds.CANDELABRO, toHall);
+            }
+            default -> { // cámara del reloj y los trofeos
+                estTall(b, cx, f, CZ + cz + 2 * sz, EstIds.RELOJ, toHall);
+                est(b, cx - 2, f, CZ + cz, EstIds.MONTON_ORO, "east");
+                est(b, cx + 2, f, CZ + cz, EstIds.MONTON_ORO, "west");
+                est(b, cx - 1, f, CZ + cz + sz, EstIds.MONTON_ORO, "east");
+                est(b, cx + 1, f, CZ + cz + sz, EstIds.CANDELABRO, toHall);
+            }
+        }
+        b.set(cx, f + 4, CZ + cz, "air");
+        hangLantern(b, cx, f + 4, CZ + cz, 1, "lantern");
+    }
+
+    static void secrets(StructBp b) {
+        secretRoom(b, -1, 1, 0);   // armería (fondo izquierda)
+        secretRoom(b, 1, 1, 1);    // archivo (fondo derecha)
+        secretRoom(b, -1, -1, 2);  // capilla (entrada izquierda)
+        secretRoom(b, 1, -1, 3);   // reloj y trofeos (entrada derecha)
+    }
 }

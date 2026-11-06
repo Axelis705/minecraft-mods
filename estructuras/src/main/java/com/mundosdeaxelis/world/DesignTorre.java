@@ -669,7 +669,10 @@ final class DesignTorre {
         int f = fy(i);
         switch (i) {
             case -1 -> TorreInterior.crypt(b);
-            case 0 -> TorreInterior.hall(b);
+            case 0 -> {
+                TorreInterior.hall(b);
+                TorreInterior.secrets(b);
+            }
             case 1 -> {
             }
             case 2 -> TorreInterior.alchemy(b);
