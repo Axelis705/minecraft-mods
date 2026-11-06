@@ -608,8 +608,14 @@ final class DesignBosque {
         b.set(0, fy + 2, 56, "flowering_azalea");
         b.set(1, fy + 2, 56, "fern");
         b.set(-1, fy + 2, 57, "azalea");
+        // los nenúfares van ENCIMA del agua (fy + 2), nunca sobre la isla
         for (int i = 0; i < 6; i++) {
-            b.set(-4 + b.r.nextInt(9), fy + 1, 52 + b.r.nextInt(9), b.chance(0.5) ? "lily_pad" : "air");
+            int lx = -4 + b.r.nextInt(9);
+            int lz = 52 + b.r.nextInt(9);
+            boolean island = lx >= -1 && lx <= 1 && lz >= 55 && lz <= 57;
+            if (!island && b.chance(0.5) && String.valueOf(b.get(lx, fy + 1, lz)).startsWith("water")) {
+                b.set(lx, fy + 2, lz, "lily_pad");
+            }
         }
         // columnas
         for (int z = 40; z <= 68; z += 7) {

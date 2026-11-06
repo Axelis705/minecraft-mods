@@ -1026,7 +1026,7 @@ final class DesignTorre {
                 for (int x = bx[0]; x <= bx[3]; x++) {
                     for (int z = bx[2]; z <= bx[5]; z++) {
                         if (ok(b, a, x, f, z) && b.chance(0.35)) {
-                            b.set(x, f, z, b.pick("azalea", "flowering_azalea", "fern", "grass", "brown_mushroom", "red_mushroom", "moss_carpet", "lily_of_the_valley"));
+                            b.set(x, f, z, b.pick("azalea", "flowering_azalea", "fern", "grass", "moss_carpet", "lily_of_the_valley"));
                         }
                     }
                 }

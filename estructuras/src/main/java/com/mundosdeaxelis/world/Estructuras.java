@@ -136,6 +136,7 @@ public final class Estructuras {
         List<Map.Entry<Long, String>> entries = new ArrayList<>(bp.m.entrySet());
         entries.sort((a1, b1) -> Integer.compare(StructBp.ky(a1.getKey()), StructBp.ky(b1.getKey())));
         List<BlockPos> reshape = new ArrayList<>();
+        List<BlockPos> placed = new ArrayList<>(entries.size());
         for (Map.Entry<Long, String> e : entries) {
             long key = e.getKey();
             BlockPos local = new BlockPos(StructBp.kx(key), StructBp.ky(key), StructBp.kz(key));
@@ -149,6 +150,7 @@ public final class Estructuras {
             }
             BlockState st = st0.rotate(r);
             put(level, undo, p, st);
+            placed.add(p);
             Block b = st.getBlock();
             if (b instanceof StairBlock || b instanceof FenceBlock || b instanceof WallBlock || b instanceof IronBarsBlock) {
                 reshape.add(p);
@@ -162,14 +164,39 @@ public final class Estructuras {
                 level.setBlock(p, fixed, FLAGS);
             }
         }
+        // red de seguridad: lo que no pueda sostenerse (nenúfar sin agua, antorcha sin muro, alfombra en el aire...) se quita ahora,
+        // en silencio; si no, más tarde se rompería solo y dejaría el objeto tirado en el suelo
+        int removed = dropUnsupported(level, placed);
         Deque<Undo> dq = UNDO.computeIfAbsent(key(src), k -> new ArrayDeque<>());
         dq.push(undo);
         while (dq.size() > MAX_UNDO) {
             dq.removeLast();
         }
         int n = undo.snaps.size();
-        src.sendSuccess(() -> Component.literal(kind.title + " construida (" + n + " bloques). Para quitarla: /mundos estructura deshacer"), true);
+        String extra = removed > 0 ? ", " + removed + " sin apoyo quitados" : "";
+        src.sendSuccess(() -> Component.literal(kind.title + " construida (" + n + " bloques" + extra + "). Para quitarla: /mundos estructura deshacer"), true);
         return 1;
+    }
+
+    /** Quita (sin soltar objetos) los bloques colocados que no pueden sostenerse; repite por si al quitar uno otro se queda sin apoyo. */
+    private static int dropUnsupported(ServerLevel level, List<BlockPos> placed) {
+        int total = 0;
+        for (int pass = 0; pass < 6; pass++) {
+            int changed = 0;
+            for (BlockPos p : placed) {
+                BlockState cur = level.getBlockState(p);
+                if (cur.isAir() || cur.canSurvive(level, p)) {
+                    continue;
+                }
+                level.setBlock(p, cur.getFluidState().createLegacyBlock(), FLAGS);
+                changed++;
+            }
+            total += changed;
+            if (changed == 0) {
+                break;
+            }
+        }
+        return total;
     }
 
     /** Pone un bloque guardando antes lo que había (y su entidad de bloque, si tenía). */
