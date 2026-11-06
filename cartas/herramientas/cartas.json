@@ -1,5 +1,5 @@
 {
- "_nota": "Fuente unica de las cartas. Despues de cambiar algo: python3 herramientas/gen.py (regenera CardData.java, texturas, modelos y lang). Lista INICIAL DE EJEMPLO. Bonus del album: ver AlbumBonuses.java (medio corazon cada 5 % + 1 corazon por categoria).",
+ "_nota": "Fuente unica de las cartas. Despues de cambiar algo: python3 herramientas/gen.py (regenera CardData.java, texturas, modelos y lang). Cartas con skin: poner el PNG en herramientas/skins/ y agregar \"skin\": \"skins/nombre.png\" a la carta. Bonus del album: ver AlbumLogic (HEALTH_PER_*).",
  "categorias": [
   {
    "id": "jefes",
@@ -34,14 +34,34 @@
  ],
  "cartas": [
   {
+   "id": "guardian_musgo",
+   "name": "Guardián de Musgo",
+   "cat": "jefes",
+   "rar": "RARA",
+   "glyph": "golem",
+   "c1": "#7a9a6a",
+   "c2": "#5fbf4a",
+   "desc": "Mini-jefe del bosque. Golpea el suelo y llama a los Brotes."
+  },
+  {
    "id": "rey_brote",
    "name": "Rey Brote",
    "cat": "jefes",
-   "rar": "RARA",
+   "rar": "EPICA",
    "glyph": "crown",
    "c1": "#5fbf4a",
    "c2": "#ffd84a",
    "desc": "El soberano del bosque. Su corona nunca se marchita."
+  },
+  {
+   "id": "capataz",
+   "name": "Capataz",
+   "cat": "jefes",
+   "rar": "RARA",
+   "glyph": "helmet",
+   "c1": "#b0502a",
+   "c2": "#d9d9d9",
+   "desc": "Mini-jefe de la forja. Su martillo parte el suelo."
   },
   {
    "id": "gran_herrero",
@@ -57,21 +77,11 @@
    "id": "lobo_artico",
    "name": "Lobo Ártico",
    "cat": "jefes",
-   "rar": "EPICA",
+   "rar": "LEGENDARIA",
    "glyph": "wolf",
    "c1": "#bfe6ff",
    "c2": "#4a90d9",
-   "desc": "Su aullido congela el aire."
-  },
-  {
-   "id": "archimago",
-   "name": "Archimago",
-   "cat": "jefes",
-   "rar": "LEGENDARIA",
-   "glyph": "star",
-   "c1": "#b06ad9",
-   "c2": "#ffe27a",
-   "desc": "Guardián de la torre y de sus libros prohibidos."
+   "desc": "Su aullido congela el aire y llama a la manada."
   },
   {
    "id": "brote",
@@ -81,17 +91,57 @@
    "glyph": "tree",
    "c1": "#6fcf55",
    "c2": "#8a5a2a",
-   "desc": "Pequeño, verde y muy terco."
+   "desc": "Retoño del bosque. Corre hacia ti y no se rinde."
   },
   {
    "id": "espinoso",
    "name": "Espinoso",
    "cat": "criaturas",
    "rar": "COMUN",
-   "glyph": "tree",
+   "glyph": "flower",
    "c1": "#4a9a3a",
    "c2": "#d9c04a",
-   "desc": "Mejor no abrazarlo."
+   "desc": "Flor carnívora. Abre los pétalos y dispara una espina."
+  },
+  {
+   "id": "polinizador",
+   "name": "Polinizador",
+   "cat": "criaturas",
+   "rar": "COMUN",
+   "glyph": "bug",
+   "c1": "#e0c040",
+   "c2": "#7fe08a",
+   "desc": "Vuela en círculos y lanza esporas que ralentizan."
+  },
+  {
+   "id": "raizal",
+   "name": "Raizal",
+   "cat": "criaturas",
+   "rar": "RARA",
+   "glyph": "golem",
+   "c1": "#6a8a4a",
+   "c2": "#8a5a2a",
+   "desc": "Gólem de raíces. Te deja inmóvil si no lo esquivas."
+  },
+  {
+   "id": "raizal_anciano",
+   "name": "Raizal Anciano",
+   "cat": "criaturas",
+   "rar": "EPICA",
+   "glyph": "golem",
+   "c1": "#4a7a3a",
+   "c2": "#c9a24a",
+   "desc": "Guardián élite de la Cámara de la Llave del bosque."
+  },
+  {
+   "id": "escoria",
+   "name": "Escoria",
+   "cat": "criaturas",
+   "rar": "COMUN",
+   "glyph": "golem",
+   "c1": "#c85a2a",
+   "c2": "#4a3a3a",
+   "desc": "Roca fundida con puños al rojo vivo."
   },
   {
    "id": "chispero",
@@ -101,27 +151,37 @@
    "glyph": "flame",
    "c1": "#ff9a2a",
    "c2": "#ffe27a",
-   "desc": "Salta de la fragua con cada golpe."
+   "desc": "Horno con patas. Escupe flechas de fuego."
+  },
+  {
+   "id": "ascua",
+   "name": "Ascua",
+   "cat": "criaturas",
+   "rar": "COMUN",
+   "glyph": "ember",
+   "c1": "#ff7a1a",
+   "c2": "#ffe27a",
+   "desc": "Brasa viva que vuela y te deja débil."
   },
   {
    "id": "fundidor",
    "name": "Fundidor",
    "cat": "criaturas",
    "rar": "RARA",
-   "glyph": "hammer",
-   "c1": "#c85a2a",
-   "c2": "#9aa0a6",
-   "desc": "Derrite todo lo que toca."
+   "glyph": "golem",
+   "c1": "#9a9a9a",
+   "c2": "#ff5a1a",
+   "desc": "Gólem de metal fundido. Hace erupción bajo tus pies."
   },
   {
-   "id": "capataz",
-   "name": "Capataz",
+   "id": "fundidor_mayor",
+   "name": "Fundidor Mayor",
    "cat": "criaturas",
-   "rar": "RARA",
-   "glyph": "helmet",
-   "c1": "#b0502a",
-   "c2": "#d9d9d9",
-   "desc": "Manda en la forja y no admite quejas."
+   "rar": "EPICA",
+   "glyph": "golem",
+   "c1": "#7a6a6a",
+   "c2": "#ff3a1a",
+   "desc": "Élite de la forja. Vigila la Cámara de la Llave."
   },
   {
    "id": "lobo_escarcha",
@@ -131,57 +191,7 @@
    "glyph": "wolf",
    "c1": "#9ad0f0",
    "c2": "#ffffff",
-   "desc": "Caza en manada entre la nieve."
-  },
-  {
-   "id": "esbirro",
-   "name": "Esbirro del Archimago",
-   "cat": "criaturas",
-   "rar": "COMUN",
-   "glyph": "skull",
-   "c1": "#8a5ac0",
-   "c2": "#e8e0f0",
-   "desc": "Obedece sin hacer preguntas."
-  },
-  {
-   "id": "libro_embrujado",
-   "name": "Libro Embrujado",
-   "cat": "criaturas",
-   "rar": "COMUN",
-   "glyph": "book",
-   "c1": "#a05ad0",
-   "c2": "#ffe27a",
-   "desc": "Vuela y no le gusta que lo lean."
-  },
-  {
-   "id": "armadura_encantada",
-   "name": "Armadura Encantada",
-   "cat": "criaturas",
-   "rar": "RARA",
-   "glyph": "helmet",
-   "c1": "#7a7fa0",
-   "c2": "#b08aff",
-   "desc": "Vacia por dentro, llena de magia."
-  },
-  {
-   "id": "espiritu_bosque",
-   "name": "Espíritu del Bosque",
-   "cat": "mascotas",
-   "rar": "RARA",
-   "glyph": "tree",
-   "c1": "#7fe08a",
-   "c2": "#ffffff",
-   "desc": "Te sigue entre las hojas."
-  },
-  {
-   "id": "golemcito",
-   "name": "Golemcito",
-   "cat": "mascotas",
-   "rar": "RARA",
-   "glyph": "blob",
-   "c1": "#d98a4a",
-   "c2": "#ffd84a",
-   "desc": "Pequeño, terco y de hierro."
+   "desc": "Caza en manada. Cada mordisco enfría."
   },
   {
    "id": "fosu",
@@ -202,16 +212,6 @@
    "c1": "#b4bac6",
    "c2": "#3a3f4a",
    "desc": "Hurón gris, ladrón de corazones."
-  },
-  {
-   "id": "dragon_celestial",
-   "name": "Dragón Celestial",
-   "cat": "mascotas",
-   "rar": "MITICA",
-   "glyph": "dragon",
-   "c1": "#6ad0ff",
-   "c2": "#ffe27a",
-   "desc": "Nació de una estrella fugaz."
   },
   {
    "id": "creeper",
@@ -302,26 +302,6 @@
    "c1": "#4a3f4a",
    "c2": "#c04a2a",
    "desc": "Forjada en las profundidades."
-  },
-  {
-   "id": "rey_slime",
-   "name": "Rey Slime",
-   "cat": "personajes",
-   "rar": "EPICA",
-   "glyph": "blob",
-   "c1": "#6ae05a",
-   "c2": "#ffd84a",
-   "desc": "Gelatinoso, majestuoso e imposible de ignorar."
-  },
-  {
-   "id": "cronista",
-   "name": "Cronista de la Torre",
-   "cat": "personajes",
-   "rar": "RARA",
-   "glyph": "book",
-   "c1": "#c0a060",
-   "c2": "#4a2a1a",
-   "desc": "Lo ha escrito todo, y sabe más de lo que cuenta."
   },
   {
    "id": "aldeano",

@@ -54,10 +54,93 @@ S = {
     "book": ["............", ".OOOOOOOOOO.", ".OAAAAAAAAO.", ".OABBBBBBAO.", ".OAAAAAAAAO.", ".OAAWAAAAAO.", ".OAAAAAAAAO.", ".OAAAAAAAAO.", ".OAAAAAAAAO.", ".OOOOOOOOOO.", ".OWWWWWWWWO.", ".OOOOOOOOOO."],
     "dragon": ["O..........O", "OO...OO...OO", "OAO.OAAO.OAO", "OAAOAAAAOAAO", ".OAAAAAAAAO.", ".OAABAABAAO.", "..OAAAAAAO..", "..OAAAAAAO..", "...OAOOAO...", "....OAAO....", ".....OO.....", "............"],
     "creeper": ["............", ".OOOOOOOOOO.", ".OAAAAAAAAO.", ".OADDAADDAO.", ".OADDAADDAO.", ".OAAAAAAAAO.", ".OAAADDAAAO.", ".OAADDDDAAO.", ".OAADDDDAAO.", ".OAADAADAAO.", ".OOOOOOOOOO.", "............"],
+    "flower": ["............", ".OO......OO.", "OAAO....OAAO", "OAAAOOOOAAAO", ".OAAADDAAAO.", "..OAADDAAO..", "...OODDOO...", "....OBBO....", "..OO.OBO.OO.", ".OBBOOBOOBBO", "..OOOOBOOOO.", "............"],
+    "golem": ["............", "...OOOOOO...", "..OAAAAAAO..", "..OADAADAO..", "..OAAAAAAO..", ".OOOAAAAOOO.", "OAAOBBBBOAAO", "OAAOBBBBOAAO", ".OO.OBBO.OO.", "...OAAAAO...", "...OAOOAO...", "..OOO..OOO.."],
+    "bug": ["............", "..OOO..OOO..", ".OBBBOOBBBO.", ".OBWBBBBWBO.", "..OOOAAOOO..", "....OAAO....", "...OADDAO...", "...OAAAAO...", "....OAAO....", ".....OAO....", "......O.....", "............"],
+    "ember": [".....OO.....", "....OAAO....", "...OAWWAO...", "..OAAWBAAO..", ".OAAWBBBAAO.", "OAAABBBBAAAO", ".OAAABBBAAO.", "..OAAABBAO..", "...OAAAAO...", "....OAAO....", ".....OO.....", "............"],
     "heart": ["............", "..OOO..OOO..", ".OAAAOOAAAO.", "OAAWAAAAAAAO", "OAAAAAAAAAAO", "OAAAAAAAAAAO", ".OAAAAAAAAO.", "..OAAAAAAO..", "...OAAAAO...", "....OAAO....", ".....OO.....", "............"],
 }
 for k, v in S.items():
     assert len(v) == 12 and all(len(r) == 12 for r in v), k
+
+
+# ------------------------------------------------------------------ texto en pixeles (fuente 3x5)
+F35 = {
+    "A": ["010", "101", "111", "101", "101"], "B": ["110", "101", "110", "101", "110"], "C": ["011", "100", "100", "100", "011"],
+    "D": ["110", "101", "101", "101", "110"], "E": ["111", "100", "110", "100", "111"], "F": ["111", "100", "110", "100", "100"],
+    "G": ["011", "100", "101", "101", "011"], "H": ["101", "101", "111", "101", "101"], "I": ["111", "010", "010", "010", "111"],
+    "J": ["001", "001", "001", "101", "010"], "K": ["101", "101", "110", "101", "101"], "L": ["100", "100", "100", "100", "111"],
+    "M": ["101", "111", "111", "101", "101"], "N": ["110", "101", "101", "101", "101"], "O": ["010", "101", "101", "101", "010"],
+    "P": ["110", "101", "110", "100", "100"], "Q": ["010", "101", "101", "110", "011"], "R": ["110", "101", "110", "101", "101"],
+    "S": ["011", "100", "010", "001", "110"], "T": ["111", "010", "010", "010", "010"], "U": ["101", "101", "101", "101", "111"],
+    "V": ["101", "101", "101", "101", "010"], "W": ["101", "101", "111", "111", "101"], "X": ["101", "101", "010", "101", "101"],
+    "Y": ["101", "101", "010", "010", "010"], "Z": ["111", "001", "010", "100", "111"],
+    "0": ["111", "101", "101", "101", "111"], "1": ["010", "110", "010", "010", "111"], "2": ["110", "001", "010", "100", "111"],
+    "3": ["110", "001", "010", "001", "110"], "4": ["101", "101", "111", "001", "001"], "5": ["111", "100", "110", "001", "110"],
+    "6": ["011", "100", "111", "101", "111"], "7": ["111", "001", "010", "010", "010"], "8": ["111", "101", "111", "101", "111"],
+    "9": ["111", "101", "111", "001", "110"], "-": ["000", "000", "111", "000", "000"], ".": ["000", "000", "000", "000", "010"],
+    "'": ["010", "010", "000", "000", "000"], " ": ["000", "000", "000", "000", "000"],
+}
+ACC = str.maketrans("ÁÉÍÓÚÜÑáéíóúüñ", "AEIOUUNaeiouun")
+
+
+def text_w(t):
+    return 4 * len(t) - 1
+
+
+def draw_text(im, x, y, t, col):
+    px = im.load()
+    for ch in t.upper().translate(ACC):
+        g = F35.get(ch, F35[" "])
+        for yy, row in enumerate(g):
+            for xx, bit in enumerate(row):
+                if bit == "1" and 0 <= x + xx < im.size[0] and 0 <= y + yy < im.size[1]:
+                    px[x + xx, y + yy] = col + (255,)
+        x += 4
+
+
+def name_lines(name, maxw=56):
+    words = name.split()
+    lines, cur = [], ""
+    for w in words:
+        t = (cur + " " + w).strip()
+        if text_w(t) <= maxw:
+            cur = t
+        else:
+            if cur:
+                lines.append(cur)
+            cur = w
+    if cur:
+        lines.append(cur)
+    return lines[:2]
+
+
+# ------------------------------------------------------------------ skins de jugadores
+def load_skin(path):
+    sk = Image.open(os.path.join(ROOT, "herramientas", path)).convert("RGBA")
+    if sk.size[1] == 32:  # skin antigua 64x32: el brazo izquierdo es el derecho volteado
+        full = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
+        full.paste(sk, (0, 0))
+        full.paste(sk.crop((44, 16, 48, 32)).transpose(Image.FLIP_LEFT_RIGHT), (36, 48))
+        sk = full
+    return sk
+
+
+def skin_bust(path, scale):
+    """Busto del jugador (cabeza, torso y brazos) sacado de su skin de Minecraft, 16 x 14 pixeles de skin."""
+    sk = load_skin(path)
+
+    def part(box, over):
+        a = sk.crop(box)
+        b = sk.crop(over)
+        a.alpha_composite(b)
+        return a
+    bust = Image.new("RGBA", (16, 14), (0, 0, 0, 0))
+    bust.alpha_composite(part((8, 8, 16, 16), (40, 8, 48, 16)), (4, 0))
+    bust.alpha_composite(part((20, 20, 28, 26), (20, 36, 28, 42)), (4, 8))
+    bust.alpha_composite(part((44, 20, 48, 26), (44, 36, 48, 42)), (0, 8))
+    bust.alpha_composite(part((36, 52, 40, 58), (52, 52, 56, 58)), (12, 8))
+    return bust.resize((16 * scale, 14 * scale), Image.NEAREST)
 
 
 def palette(c1, c2):
@@ -91,6 +174,15 @@ def make_icon(card):
     d.rectangle([4, 1, 11, 14], fill=rc + (255,))
     d.rectangle([5, 2, 10, 13], fill=dark(c1, 0.35) + (255,))
     d.rectangle([5, 12, 10, 13], fill=dark(rc, 0.7) + (255,))
+    if card.get("skin"):
+        head = skin_bust(card["skin"], 1).crop((4, 0, 12, 8))
+        for y in range(6):
+            for x in range(6):
+                p = head.getpixel((min(7, round(x * 7 / 5)), min(7, round(y * 7 / 5))))
+                if p[3]:
+                    im.putpixel((5 + x, 3 + y), p)
+        im.putpixel((4, 1), light(rc, 0.7) + (255,))
+        return im
     big = sprite_img(card["glyph"], card["c1"], card["c2"], 1)
     px = big.load()
     for y in range(6):
@@ -135,18 +227,27 @@ def make_art(card):
         px[x, y] = light(c1, 0.8) + (255,)
     d = ImageDraw.Draw(im)
     # sprite con sombra
-    sp = sprite_img(card["glyph"], card["c1"], card["c2"], 4)
+    if card.get("skin"):
+        sp = skin_bust(card["skin"], 3)
+        off = ((W - sp.size[0]) // 2 - 2, 15 + (48 - sp.size[1]) // 2)
+    else:
+        sp = sprite_img(card["glyph"], card["c1"], card["c2"], 4)
+        off = (8, 14)
     sh = Image.new("RGBA", sp.size, (0, 0, 0, 0))
     spx, shx = sp.load(), sh.load()
     for y in range(sp.size[1]):
         for x in range(sp.size[0]):
             if spx[x, y][3]:
                 shx[x, y] = (0, 0, 0, 110)
-    im.alpha_composite(sh, (10, 18))
-    im.alpha_composite(sp, (8, 14))
+    im.alpha_composite(sh, (off[0] + 2, off[1] + 4))
+    im.alpha_composite(sp, off)
     # banda del nombre
     d.rectangle([3, 70, W - 4, H - 4], fill=(10, 10, 18, 235))
     d.rectangle([3, 70, W - 4, 71], fill=rc + (255,))
+    lines = name_lines(card["name"])
+    y0 = 73 + (18 - (len(lines) * 5 + (len(lines) - 1) * 2)) // 2
+    for i, ln in enumerate(lines):
+        draw_text(im, (W - text_w(ln)) // 2, y0 + i * 7, ln, light(rc, 0.75))
     # marco
     d.rectangle([0, 0, W - 1, H - 1], outline=dark(rc, 0.5) + (255,))
     d.rectangle([1, 1, W - 2, H - 2], outline=rc + (255,))
