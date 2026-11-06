@@ -111,7 +111,7 @@ final class Soporte {
     }
 
     private static boolean isFull(String n) {
-        if (NOT_FULL.contains(n) || n.startsWith("potted_")) {
+        if (NOT_FULL.contains(n) || n.startsWith("potted_") || n.indexOf(':') >= 0) { // los bloques propios (decoracion) nunca son cubos completos
             return false;
         }
         for (String s : NOT_FULL_SUFFIX) {
@@ -167,7 +167,7 @@ final class Soporte {
 
     private static boolean solidMaterial(B c) {
         String n = c.n;
-        return !(n.endsWith("_carpet") || n.endsWith("_candle") || n.endsWith("_banner") || n.endsWith("_sign") || isBush(n) || n.equals("torch")
+        return !(n.endsWith("_carpet") || n.equals("candle") || n.endsWith("_candle") || n.endsWith("_banner") || n.endsWith("_sign") || isBush(n) || n.equals("torch")
                 || n.equals("wall_torch") || n.equals("vine") || n.equals("lantern") || n.equals("chain") || n.equals("moss_carpet"));
     }
 
@@ -200,6 +200,9 @@ final class Soporte {
         String n = c.n;
         B below = at(x, y - 1, z);
         B above = at(x, y + 1, z);
+        if (n.startsWith("mundos_de_axelis:est_")) {
+            return estSurvives(x, y, z, c, below, above);
+        }
         switch (n) {
             case "torch", "soul_torch", "redstone_torch":
                 return center(below, "up");
@@ -256,7 +259,7 @@ final class Soporte {
             }
             return DIRT_TAG.contains(below.n);
         }
-        if (n.endsWith("_candle")) {
+        if (n.equals("candle") || n.endsWith("_candle")) {
             return center(below, "up");
         }
         if (n.endsWith("_wall_banner")) {
@@ -281,6 +284,26 @@ final class Soporte {
             return sturdy(nb(x, y, z, opp(f)), f);
         }
         return true;
+    }
+
+    /** Misma regla que EstBlock.canSurvive para la decoración nueva (ver EstIds.support). */
+    private boolean estSurvives(int x, int y, int z, B c, B below, B above) {
+        boolean tall = EstIds.isTall(c.n);
+        if (tall && c.prop("half", "lower").equals("upper")) {
+            return below.n.equals(c.n) && below.prop("half", "lower").equals("lower");
+        }
+        switch (EstIds.support(c.n)) {
+            case "soft":
+                return true;
+            case "wall": {
+                String f = c.prop("facing", "north");
+                return sturdy(nb(x, y, z, opp(f)), f);
+            }
+            case "hang":
+                return center(above, "down");
+            default:
+                return !(below.n.equals("air") || below.n.equals("cave_air") || below.n.equals("void_air"));
+        }
     }
 
     private static final String[] HOR = {"north", "south", "west", "east"};
@@ -328,7 +351,7 @@ final class Soporte {
                 if (isFull(below.n) && !below.n.equals("air") && !below.n.equals("water") && !below.n.endsWith("_leaves")) {
                     bp.m.put(StructBp.key(x, y - 1, z), "moss_block");
                 }
-            } else if (n.endsWith("_candle")) {
+            } else if (n.equals("candle") || n.endsWith("_candle")) {
                 String below = bp.get(x, y - 1, z);
                 if (below != null && below.contains("_slab") && !below.contains("double")) {
                     String nb2 = below.contains("[") ? below.replaceAll("type=(top|bottom)", "type=double") : below + "[type=double]";

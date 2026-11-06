@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/est_candelero_pared"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/est_candelero_pared",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/est_candelero_pared",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/est_candelero_pared",
+   "y": 270
+  }
+ }
+}

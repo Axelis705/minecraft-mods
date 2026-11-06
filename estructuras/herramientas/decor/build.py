@@ -30,4 +30,22 @@ ld = os.path.join(root, 'assets', 'mundos_estructuras', 'lang')
 os.makedirs(ld, exist_ok=True)
 for code, d in (('es_es', lang_es), ('es_mx', lang_es), ('es_ar', lang_es), ('es_cl', lang_es), ('es_ve', lang_es), ('es_uy', lang_es), ('en_us', lang_en), ('en_gb', lang_en)):
     json.dump(d, open(os.path.join(ld, code + '.json'), 'w'), indent=1, ensure_ascii=False)
+# constantes en Java para los disenos (evitan errores de escritura) y para que Soporte conozca las reglas de apoyo de cada bloque
+java = os.path.join(root, '..', 'java', 'com', 'mundosdeaxelis', 'world', 'EstIds.java')
+if len(sys.argv) <= 1:
+    L = ['package com.mundosdeaxelis.world;', '', '/** GENERADO por herramientas/decor/build.py - no editar a mano. Nombres de la decoracion nueva de las estructuras y sus reglas de apoyo. */',
+         'public final class EstIds {', '    private EstIds() {', '    }', '']
+    for f in ficha:
+        L.append('    public static final String %s = "mundos_de_axelis:%s";' % (f['id'][4:].upper(), f['id']))
+    L += ['', '    /** Tipo de apoyo: "wall" (necesita muro detras), "soft" (tapiz: no necesita), "hang" (techo), "floor" (suelo), "" si no es de estas. */',
+          '    public static String support(String name) {', '        if (name.startsWith("mundos_de_axelis:")) {', '            name = name.substring(17);', '        }', '        return switch (name) {']
+    for f in ficha:
+        kind = 'soft' if f.get('soft') else ('wall' if f['kind'] == 'wall' else ('hang' if f['kind'] == 'hang' else 'floor'))
+        L.append('            case "%s" -> "%s";' % (f['id'], kind))
+    L += ['            default -> "";', '        };', '    }', '', '    public static boolean isTall(String name) {', '        if (name.startsWith("mundos_de_axelis:")) {',
+          '            name = name.substring(17);', '        }', '        return switch (name) {']
+    tall = [f['id'] for f in ficha if f['tall']]
+    L.append('            case ' + ', '.join('"%s"' % t for t in tall) + ' -> true;')
+    L += ['            default -> false;', '        };', '    }', '}', '']
+    open(os.path.abspath(java), 'w').write('\n'.join(L))
 print(len(ficha), 'decoraciones ->', root)

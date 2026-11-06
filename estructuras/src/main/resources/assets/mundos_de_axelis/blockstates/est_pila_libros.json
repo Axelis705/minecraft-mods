@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/est_pila_libros"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/est_pila_libros",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/est_pila_libros",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/est_pila_libros",
+   "y": 270
+  }
+ }
+}

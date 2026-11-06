@@ -1,0 +1,34 @@
+{
+ "variants": {
+  "facing=north,half=lower": {
+   "model": "mundos_de_axelis:block/est_tapiz_real_lower"
+  },
+  "facing=east,half=lower": {
+   "model": "mundos_de_axelis:block/est_tapiz_real_lower",
+   "y": 90
+  },
+  "facing=south,half=lower": {
+   "model": "mundos_de_axelis:block/est_tapiz_real_lower",
+   "y": 180
+  },
+  "facing=west,half=lower": {
+   "model": "mundos_de_axelis:block/est_tapiz_real_lower",
+   "y": 270
+  },
+  "facing=north,half=upper": {
+   "model": "mundos_de_axelis:block/est_tapiz_real_upper"
+  },
+  "facing=east,half=upper": {
+   "model": "mundos_de_axelis:block/est_tapiz_real_upper",
+   "y": 90
+  },
+  "facing=south,half=upper": {
+   "model": "mundos_de_axelis:block/est_tapiz_real_upper",
+   "y": 180
+  },
+  "facing=west,half=upper": {
+   "model": "mundos_de_axelis:block/est_tapiz_real_upper",
+   "y": 270
+  }
+ }
+}

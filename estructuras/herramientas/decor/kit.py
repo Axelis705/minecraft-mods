@@ -263,7 +263,7 @@ class Box:
 
 class Prop:
     def __init__(self, pid, es, en, kind='floor', light=0, shape=None, collide=True, particles=None, tall=False, desc_es='', desc_en='',
-                 render='cutout', seed=1, sound='wood', shape_upper=None):
+                 render='cutout', seed=1, sound='wood', shape_upper=None, soft=False):
         """kind: floor (de pie), wall (en la pared), hang (cuelga del techo), plain (sin orientacion). tall = dos bloques de alto."""
         self.id = pid
         self.es, self.en = es, en
@@ -277,6 +277,7 @@ class Prop:
         self.seed = seed
         self.sound = sound
         self.shape_upper = shape_upper
+        self.soft = soft            # solo 'wall': no necesita muro detras (para tapices que tapan pasadizos secretos)
         self.boxes = []             # (parte, Box); parte = 'lower' | 'upper' | None
         self.part = None
 
@@ -477,7 +478,7 @@ def write_prop(prop, root):
             if part in (None, 'lower') and not b.emit and not b.rot:
                 shape.append(list(b.f) + list(b.t))
     out = {'id': name, 'kind': prop.kind, 'tall': prop.tall, 'light': prop.light, 'collide': prop.collide, 'sound': prop.sound, 'shape': shape,
-           'particles': prop.particles, 'es': prop.es, 'en': prop.en}
+           'particles': prop.particles, 'es': prop.es, 'en': prop.en, 'soft': prop.soft}
     if prop.tall:
         if prop.shape_upper is not None:
             out['shape_upper'] = [list(s) for s in prop.shape_upper]

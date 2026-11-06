@@ -14,6 +14,7 @@ say ESPERANDO_BOSQUE_1
 say ESPERANDO_BOSQUE_2
 say ESPERANDO_BOSQUE_3
 execute as @e[type=minecraft:item,limit=8] run say DIAG_BOSQUE_OBJETO @s
+execute as @e[type=minecraft:item,limit=8] run data get entity @s Pos
 execute unless entity @e[type=minecraft:item] run say PRUEBA_BOSQUE_SIN_OBJETOS_OK
 kill @e[type=minecraft:item]
 mundos estructura deshacer
@@ -26,6 +27,7 @@ say ESPERANDO_FORJA_1
 say ESPERANDO_FORJA_2
 say ESPERANDO_FORJA_3
 execute as @e[type=minecraft:item,limit=8] run say DIAG_FORJA_OBJETO @s
+execute as @e[type=minecraft:item,limit=8] run data get entity @s Pos
 execute unless entity @e[type=minecraft:item] run say PRUEBA_FORJA_SIN_OBJETOS_OK
 kill @e[type=minecraft:item]
 execute positioned 0 -48 0 rotated 0 0 run mundos estructura hielo
@@ -35,6 +37,7 @@ say ESPERANDO_HIELO_1
 say ESPERANDO_HIELO_2
 say ESPERANDO_HIELO_3
 execute as @e[type=minecraft:item,limit=8] run say DIAG_HIELO_OBJETO @s
+execute as @e[type=minecraft:item,limit=8] run data get entity @s Pos
 execute unless entity @e[type=minecraft:item] run say PRUEBA_HIELO_SIN_OBJETOS_OK
 kill @e[type=minecraft:item]
 execute positioned 0 -48 0 rotated 90 0 run mundos estructura torre
@@ -47,6 +50,7 @@ say ESPERANDO_TORRE_1
 say ESPERANDO_TORRE_2
 say ESPERANDO_TORRE_3
 execute as @e[type=minecraft:item,limit=8] run say DIAG_TORRE_OBJETO @s
+execute as @e[type=minecraft:item,limit=8] run data get entity @s Pos
 execute unless entity @e[type=minecraft:item] run say PRUEBA_TORRE_SIN_OBJETOS_OK
 kill @e[type=minecraft:item]
 mundos estructura deshacer 3

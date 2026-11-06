@@ -36,7 +36,7 @@ public final class EstDecor {
 
     /** Ficha de una decoración tal como la escribe el generador. */
     public record Def(String id, String kind, boolean tall, int light, boolean collide, String sound, List<double[]> shape, List<double[]> shapeUpper,
-                      List<Particle> particles) {
+                      List<Particle> particles, boolean soft) {
     }
 
     public record Particle(String type, double x, double y, double z, double rate) {
@@ -70,7 +70,8 @@ public final class EstDecor {
                 }
                 out.add(new Def(o.get("id").getAsString(), o.get("kind").getAsString(), o.get("tall").getAsBoolean(), o.get("light").getAsInt(),
                         o.get("collide").getAsBoolean(), o.has("sound") ? o.get("sound").getAsString() : "wood", boxes(o.getAsJsonArray("shape")),
-                        o.has("shape_upper") ? boxes(o.getAsJsonArray("shape_upper")) : List.of(), ps));
+                        o.has("shape_upper") ? boxes(o.getAsJsonArray("shape_upper")) : List.of(), ps,
+                        o.has("soft") && o.get("soft").getAsBoolean()));
             }
         } catch (Exception e) {
             throw new IllegalStateException("No se pudo leer " + MANIFEST, e);

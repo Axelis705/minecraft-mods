@@ -72,7 +72,833 @@
     }
    ],
    "es": "Candelabro de pie",
-   "en": "Standing candelabra"
+   "en": "Standing candelabra",
+   "soft": false
+  },
+  {
+   "id": "est_arana",
+   "kind": "hang",
+   "tall": false,
+   "light": 15,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     2,
+     3,
+     2,
+     14,
+     16,
+     14
+    ]
+   ],
+   "particles": [
+    {
+     "type": "flame",
+     "pos": [
+      14.4,
+      11.3,
+      8
+     ],
+     "rate": 0.12
+    },
+    {
+     "type": "flame",
+     "pos": [
+      1.6,
+      11.3,
+      8
+     ],
+     "rate": 0.12
+    },
+    {
+     "type": "flame",
+     "pos": [
+      8,
+      11.3,
+      14.4
+     ],
+     "rate": 0.12
+    },
+    {
+     "type": "flame",
+     "pos": [
+      8,
+      11.3,
+      1.6
+     ],
+     "rate": 0.12
+    }
+   ],
+   "es": "Araña de luces",
+   "en": "Chandelier",
+   "soft": false
+  },
+  {
+   "id": "est_globo",
+   "kind": "floor",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     15,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Globo terráqueo",
+   "en": "Terrestrial globe",
+   "soft": false
+  },
+  {
+   "id": "est_telescopio",
+   "kind": "floor",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     16,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Telescopio de latón",
+   "en": "Brass telescope",
+   "soft": false
+  },
+  {
+   "id": "est_mesa_alquimia",
+   "kind": "floor",
+   "tall": false,
+   "light": 9,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     0,
+     0,
+     16,
+     12.5,
+     16
+    ]
+   ],
+   "particles": [
+    {
+     "type": "witch",
+     "pos": [
+      4.5,
+      16,
+      4.5
+     ],
+     "rate": 0.08
+    },
+    {
+     "type": "happy_villager",
+     "pos": [
+      11.5,
+      16.5,
+      4.5
+     ],
+     "rate": 0.05
+    }
+   ],
+   "es": "Mesa de alquimia",
+   "en": "Alchemy table",
+   "soft": false
+  },
+  {
+   "id": "est_tapiz_estrellas",
+   "kind": "wall",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Tapiz de estrellas",
+   "en": "Starry tapestry",
+   "soft": true,
+   "shape_upper": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ]
+  },
+  {
+   "id": "est_tapiz_arcano",
+   "kind": "wall",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Tapiz arcano",
+   "en": "Arcane tapestry",
+   "soft": true,
+   "shape_upper": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ]
+  },
+  {
+   "id": "est_tapiz_real",
+   "kind": "wall",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Tapiz real",
+   "en": "Royal tapestry",
+   "soft": true,
+   "shape_upper": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ]
+  },
+  {
+   "id": "est_tapiz_arbol",
+   "kind": "wall",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Tapiz del árbol",
+   "en": "Tree tapestry",
+   "soft": true,
+   "shape_upper": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ]
+  },
+  {
+   "id": "est_tapiz_mapa",
+   "kind": "wall",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Tapiz de mapa",
+   "en": "Map tapestry",
+   "soft": true,
+   "shape_upper": [
+    [
+     1,
+     0,
+     14,
+     15,
+     16,
+     16
+    ]
+   ]
+  },
+  {
+   "id": "est_trono",
+   "kind": "floor",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     0,
+     0,
+     16,
+     1.5,
+     16
+    ],
+    [
+     1,
+     1.5,
+     2,
+     15,
+     8,
+     15
+    ],
+    [
+     0.8,
+     8,
+     3,
+     3,
+     12,
+     15
+    ],
+    [
+     13,
+     8,
+     3,
+     15.2,
+     12,
+     15
+    ],
+    [
+     2,
+     8,
+     12,
+     14,
+     16,
+     15.5
+    ]
+   ],
+   "particles": [],
+   "es": "Trono real",
+   "en": "Royal throne",
+   "soft": false,
+   "shape_upper": [
+    [
+     2,
+     0,
+     11,
+     14,
+     16,
+     15.5
+    ]
+   ]
+  },
+  {
+   "id": "est_sillon",
+   "kind": "floor",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     1,
+     0,
+     1,
+     15,
+     8,
+     15
+    ],
+    [
+     1,
+     8,
+     11,
+     15,
+     16,
+     15
+    ]
+   ],
+   "particles": [],
+   "es": "Sillón de lectura",
+   "en": "Reading armchair",
+   "soft": false
+  },
+  {
+   "id": "est_pila_libros",
+   "kind": "floor",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     2,
+     0,
+     2,
+     14,
+     10,
+     14
+    ]
+   ],
+   "particles": [],
+   "es": "Pila de libros",
+   "en": "Stack of books",
+   "soft": false
+  },
+  {
+   "id": "est_reloj",
+   "kind": "floor",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     2,
+     0,
+     4,
+     14,
+     16,
+     15
+    ]
+   ],
+   "particles": [],
+   "es": "Reloj de pie",
+   "en": "Grandfather clock",
+   "soft": false,
+   "shape_upper": [
+    [
+     2.5,
+     0,
+     4.5,
+     13.5,
+     16,
+     15.5
+    ]
+   ]
+  },
+  {
+   "id": "est_gargola",
+   "kind": "floor",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "stone",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     14,
+     15
+    ]
+   ],
+   "particles": [],
+   "es": "Gárgola",
+   "en": "Gargoyle",
+   "soft": false
+  },
+  {
+   "id": "est_cristal_mana",
+   "kind": "floor",
+   "tall": false,
+   "light": 14,
+   "collide": true,
+   "sound": "amethyst",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     15,
+     13
+    ]
+   ],
+   "particles": [
+    {
+     "type": "end_rod",
+     "pos": [
+      8,
+      11,
+      8
+     ],
+     "rate": 0.12
+    },
+    {
+     "type": "witch",
+     "pos": [
+      8,
+      10,
+      8
+     ],
+     "rate": 0.15
+    }
+   ],
+   "es": "Cristal de maná",
+   "en": "Mana crystal",
+   "soft": false
+  },
+  {
+   "id": "est_candelero_pared",
+   "kind": "wall",
+   "tall": false,
+   "light": 13,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     5.5,
+     4,
+     10,
+     10.5,
+     14,
+     16
+    ]
+   ],
+   "particles": [
+    {
+     "type": "flame",
+     "pos": [
+      8,
+      12.4,
+      11.5
+     ],
+     "rate": 0.3
+    },
+    {
+     "type": "small_flame",
+     "pos": [
+      8,
+      12.2,
+      11.5
+     ],
+     "rate": 0.2
+    }
+   ],
+   "es": "Candelero de pared",
+   "en": "Wall sconce",
+   "soft": false
+  },
+  {
+   "id": "est_monton_oro",
+   "kind": "floor",
+   "tall": false,
+   "light": 4,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     1,
+     0,
+     1,
+     15,
+     2,
+     15
+    ],
+    [
+     2,
+     2,
+     2,
+     14,
+     4,
+     14
+    ],
+    [
+     4,
+     4,
+     4,
+     12,
+     6,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Montón de oro",
+   "en": "Gold hoard",
+   "soft": false
+  },
+  {
+   "id": "est_jaula",
+   "kind": "hang",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "chain",
+   "shape": [
+    [
+     3.5,
+     2,
+     3.5,
+     12.5,
+     16,
+     12.5
+    ]
+   ],
+   "particles": [],
+   "es": "Jaula colgante",
+   "en": "Hanging cage",
+   "soft": false
+  },
+  {
+   "id": "est_grilletes",
+   "kind": "wall",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "chain",
+   "shape": [
+    [
+     2,
+     3,
+     13.5,
+     14,
+     15,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Grilletes de pared",
+   "en": "Wall shackles",
+   "soft": false
+  },
+  {
+   "id": "est_caldero_magico",
+   "kind": "floor",
+   "tall": false,
+   "light": 11,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     2,
+     0,
+     2,
+     14,
+     11.5,
+     14
+    ]
+   ],
+   "particles": [
+    {
+     "type": "happy_villager",
+     "pos": [
+      8,
+      11,
+      8
+     ],
+     "rate": 0.15
+    },
+    {
+     "type": "witch",
+     "pos": [
+      8,
+      12,
+      8
+     ],
+     "rate": 0.1
+    },
+    {
+     "type": "flame",
+     "pos": [
+      8,
+      1.5,
+      8
+     ],
+     "rate": 0.25
+    }
+   ],
+   "es": "Caldero mágico",
+   "en": "Magic cauldron",
+   "soft": false
+  },
+  {
+   "id": "est_esfera_armilar",
+   "kind": "floor",
+   "tall": false,
+   "light": 9,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     15,
+     13
+    ]
+   ],
+   "particles": [
+    {
+     "type": "end_rod",
+     "pos": [
+      8,
+      9.5,
+      8
+     ],
+     "rate": 0.08
+    }
+   ],
+   "es": "Esfera armilar",
+   "en": "Armillary sphere",
+   "soft": false
+  },
+  {
+   "id": "est_estanteria",
+   "kind": "floor",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     0,
+     8,
+     16,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Estantería alta",
+   "en": "Tall bookshelf",
+   "soft": false,
+   "shape_upper": [
+    [
+     0,
+     0,
+     8,
+     16,
+     16,
+     16
+    ]
+   ]
+  },
+  {
+   "id": "est_estatua_caballero",
+   "kind": "floor",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     16,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Armadura de caballero",
+   "en": "Knight armor statue",
+   "soft": false,
+   "shape_upper": [
+    [
+     2,
+     0,
+     3,
+     14,
+     16,
+     14
+    ]
+   ]
+  },
+  {
+   "id": "est_pedestal_runico",
+   "kind": "floor",
+   "tall": false,
+   "light": 12,
+   "collide": true,
+   "sound": "stone",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     11,
+     12
+    ]
+   ],
+   "particles": [
+    {
+     "type": "enchant",
+     "pos": [
+      8,
+      12,
+      8
+     ],
+     "rate": 0.5
+    },
+    {
+     "type": "end_rod",
+     "pos": [
+      8,
+      14,
+      8
+     ],
+     "rate": 0.06
+    }
+   ],
+   "es": "Pedestal rúnico",
+   "en": "Runic pedestal",
+   "soft": false
   }
  ]
 }

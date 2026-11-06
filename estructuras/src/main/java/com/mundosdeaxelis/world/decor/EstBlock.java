@@ -52,7 +52,9 @@ public class EstBlock extends HorizontalDirectionalBlock {
                 .sound(switch (d.sound()) {
                     case "metal" -> SoundType.METAL;
                     case "stone" -> SoundType.STONE;
-                    case "cloth" -> SoundType.WOOL;
+                    case "cloth", "wool" -> SoundType.WOOL;
+                    case "chain" -> SoundType.CHAIN;
+                    case "amethyst" -> SoundType.AMETHYST_CLUSTER;
                     case "glass" -> SoundType.GLASS;
                     default -> SoundType.WOOD;
                 }).lightLevel(s -> d.light());
@@ -146,6 +148,9 @@ public class EstBlock extends HorizontalDirectionalBlock {
         }
         switch (def.kind()) {
             case "wall": {
+                if (def.soft()) {
+                    return true; // tapiz que tapa un pasadizo: no necesita muro detras
+                }
                 Direction f = s.getValue(FACING);
                 BlockPos b = p.relative(f.getOpposite());
                 return l.getBlockState(b).isFaceSturdy(l, b, f);
