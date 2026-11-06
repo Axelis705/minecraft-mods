@@ -115,7 +115,7 @@ public class EstBlock extends HorizontalDirectionalBlock {
     }
 
     boolean directional() {
-        return !def.kind().equals("plain");
+        return !def.kind().equals("plain") && !def.kind().equals("cube");
     }
 
     private int turnsOf(BlockState s) {
