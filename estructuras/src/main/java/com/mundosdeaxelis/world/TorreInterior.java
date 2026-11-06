@@ -546,8 +546,7 @@ final class TorreInterior {
                 }
             }
         }
-        est(b, 0, f, CZ + 7, EstIds.PEDESTAL_RUNICO, "north");
-        est(b, 0, f + 1, CZ + 7, EstIds.CRISTAL_MANA, "north");
+        est(b, 0, f, CZ + 7, EstIds.CRISTAL_MANA, "north"); // centro del círculo de transmutación
         for (int s = -1; s <= 1; s += 2) {
             for (int dz : new int[]{4, 10}) {
                 b.set(2 * s, f, CZ + dz, PD);
@@ -581,7 +580,6 @@ final class TorreInterior {
             b.set(2 * s, f, CZ + 16, "air");
         }
         est(b, 0, f, CZ + 17, EstIds.PEDESTAL_RUNICO, "north");
-        est(b, 0, f + 1, CZ + 17, EstIds.CRISTAL_MANA, "north");
         hangLantern(b, 0, f + 3, CZ + 15, 1, SL);
         estTall(b, 0, f, CZ + 18, EstIds.TAPIZ_REAL, "north");
         for (int dz = 14; dz <= 17; dz += 3) {
@@ -593,7 +591,7 @@ final class TorreInterior {
     // ================================================================== ALQUIMIA (piso 2): círculo de transmutación, calderos en las esquinas, muros de estanterías
 
     static void alchemy(StructBp b) {
-        pal(true, "caldero_magico", "mesa_alquimia", "cristal_mana", "globo:1", "pila_libros:2", "arana/4", "tapiz_arcano:3", "candelabro:2");
+        pal(true, "caldero_magico", "mesa_alquimia", "cristal_mana", "pila_libros:2", "arana/4", "tapiz_arcano:3", "candelabro:2");
         final int f = 19;
         final int top = f + 6;
         final int i = 2;
@@ -700,7 +698,6 @@ final class TorreInterior {
         est(b, 9, f + 1, CZ, EstIds.CALDERO_MAGICO, "west");
         est(b, 9, f + 1, CZ - 2, EstIds.CRISTAL_MANA, "west");
         est(b, 9, f + 1, CZ + 2, EstIds.CRISTAL_MANA, "west");
-        est(b, 8, f + 1, CZ, EstIds.GLOBO, "west");
         for (int dz = -4; dz <= 4; dz += 8) {
             estTall(b, 9, f, CZ + dz, EstIds.TAPIZ_ESTRELLAS, "west");
         }
@@ -889,7 +886,6 @@ final class TorreInterior {
         for (int sx = -1; sx <= 1; sx += 2) {
             for (int sz = -1; sz <= 1; sz += 2) {
                 est(b, 5 * sx, f, CZ + 5 * sz, EstIds.PEDESTAL_RUNICO, "north");
-                est(b, 5 * sx, f + 1, CZ + 5 * sz, EstIds.CRISTAL_MANA, "north");
                 estHang(b, 4 * sx, top, CZ + 4 * sz, 2, EstIds.ARANA);
             }
         }
@@ -1146,7 +1142,6 @@ final class TorreInterior {
             }
         }
         est(b, 0, f, CZ + 6, EstIds.PEDESTAL_RUNICO, "north");
-        est(b, 0, f + 1, CZ + 6, EstIds.CRISTAL_MANA, "north");
         estHang(b, -1, top, CZ + 5, 3, EstIds.JAULA);
         estHang(b, 1, top, CZ + 5, 4, EstIds.JAULA);
         estTall(b, 0, f, CZ + 7, EstIds.RELOJ, "north");
@@ -1200,7 +1195,7 @@ final class TorreInterior {
                     estTall(b, cx + u, f, CZ + cz, EstIds.ESTANTERIA, u < 0 ? "east" : "west");
                 }
                 b.set(cx, f, CZ + cz + sz, "lectern[facing=" + toHall + "]");
-                est(b, cx, f, CZ + cz + 2 * sz, EstIds.GLOBO, toHall);
+                estTall(b, cx, f, CZ + cz + 2 * sz, EstIds.TAPIZ_MAPA, toHall);
                 est(b, cx + 1, f, CZ + cz + sz, EstIds.PILA_LIBROS, toHall);
                 est(b, cx - 1, f, CZ + cz - sz, EstIds.CANDELABRO, toHall);
                 est(b, cx + 1, f, CZ + cz - sz, EstIds.CANDELABRO, toHall);
@@ -1209,7 +1204,6 @@ final class TorreInterior {
                 est(b, cx - 2, f, CZ + cz, EstIds.GARGOLA, "east");
                 est(b, cx + 2, f, CZ + cz, EstIds.GARGOLA, "west");
                 est(b, cx, f, CZ + cz + 2 * sz, EstIds.PEDESTAL_RUNICO, toHall);
-                est(b, cx, f + 1, CZ + cz + 2 * sz, EstIds.CRISTAL_MANA, toHall);
                 est(b, cx - 1, f, CZ + cz + sz, EstIds.CANDELABRO, toHall);
                 est(b, cx + 1, f, CZ + cz + sz, EstIds.CANDELABRO, toHall);
             }

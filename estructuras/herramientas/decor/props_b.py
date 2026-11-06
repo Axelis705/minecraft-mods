@@ -309,21 +309,22 @@ def pila_libros():
     p = Prop('pila_libros', 'Pila de libros', 'Stack of books', 'floor', shape=[(2, 0, 2, 14, 10, 14)])
 
     def bk(x, y, z, w, d, h, color, ang=0):
+        # Un libro = tapa de abajo + tapa de arriba + lomo + paginas, SIN cajas que se pisen (antes las caras coincidian y las texturas
+        # se mezclaban): las paginas van entre las tapas, algo metidas hacia dentro, y asoman por tres lados.
         cov = cloth(color, 0.0, 5)
         pg = parchment(0.5)
         c = (x + w / 2, y + h / 2, z + d / 2)
         kw = {'rot': ('y', ang, c)} if ang else {}
-        p.box(x, y, z, x + w, y + h, z + d, pg, **kw)
-        p.box(x, y, z, x + w, y + 0.6, z + d, cov, **kw)
-        p.box(x, y + h - 0.6, z, x + w, y + h, z + d, cov, **kw)
-        p.box(x, y, z, x + 0.9, y + h, z + d, cov, **kw)
+        t = 0.8
+        p.box(x, y, z, x + w, y + t, z + d, cov, **kw)
+        p.box(x, y + h - t, z, x + w, y + h, z + d, cov, **kw)
+        p.box(x, y + t, z, x + 1.0, y + h - t, z + d, cov, **kw)
+        p.box(x + 1.0, y + t, z + 0.4, x + w - 0.3, y + h - t, z + d - 0.4, pg, **kw)
 
+    # tres libros apilados de verdad (cada uno justo encima del anterior, sin solaparse) y girados poco
     bk(2, 0, 3, 12, 9, 3, '#7a1f1f')
-    bk(3, 3, 3.5, 11, 8.5, 2.5, '#1f3f7a', 22.5)
-    bk(2.5, 5.5, 4, 10, 8, 2, '#2d5a2a', -22.5)
-    bk(4, 7.5, 4, 8, 7, 1.8, '#6a3a1a')
-    # vela
-    p.box(10.5, 0, 10.5, 12.5, 1, 12.5, metal(BRASS, 0.5, 3, 0.05), bevel=.15)
+    bk(2.5, 3, 3.5, 11, 8.5, 2.6, '#1f3f7a', 10)
+    bk(3, 5.6, 4, 10, 8, 2.2, '#2d5a2a', -9)
     return p
 
 
