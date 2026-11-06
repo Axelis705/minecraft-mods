@@ -73,7 +73,11 @@ public final class Guide {
                     if (t.getInt("mine") >= 0) {
                         return new Tip(what, "Elegiste " + (char) ('A' + t.getInt("mine")) + ". Esperando a los demas (" + done + "/" + total + ")", false);
                     }
-                    return new Tip(what, "Elige con Z X C V (A B C D). Contestaron " + done + "/" + total, true);
+                    return new Tip(what, "Elige con las teclas " + ShowKeys.keyList() + " (A B C D). Contestaron " + done + "/" + total, true);
+                }
+                if (host && st.getBoolean("manual")) {
+                    boolean over = t.getInt("left") <= 0;
+                    return new Tip(what, over ? "Se acabo el tiempo: pulsa Revelar en el panel (Y)" : "Contestaron " + done + "/" + total + ". Revela cuando quieras en el panel (Y)", over);
                 }
                 return new Tip(what, host ? "Los jugadores eligen solos; puedes revelar antes en el panel (Y)" : "Contestaron " + done + " de " + total, false);
             }
@@ -138,6 +142,21 @@ public final class Guide {
         String todo;
         boolean mine = false;
         switch (stage) {
+            case 4 -> {
+                what = "Van a pasar los representantes al frente";
+                todo = host ? "Pulsa ¡Que pasen los representantes! en el panel (Y)" : "Espera: el presentador llama a los representantes";
+                mine = host;
+            }
+            case 5 -> {
+                String w = sideName(sides, r.getInt("fw"));
+                what = "Gano el cara a cara: " + w;
+                if (host) {
+                    todo = "Elige JUGAR o PASAR en el panel (Y)";
+                    mine = true;
+                } else {
+                    todo = player && mySide == r.getInt("fw") ? "Tu equipo decide con el presentador: ¿juegan o pasan?" : "El presentador decide si juegan o pasan";
+                }
+            }
             case 0 -> {
                 StringBuilder sb = new StringBuilder("Cara a cara: ");
                 int n = 0;
@@ -153,17 +172,25 @@ public final class Guide {
                 }
                 what = sb.toString();
                 String myRep = mySide >= 0 && mySide < sides.size() ? sides.getCompound(mySide).getString("rep") : "";
+                boolean qs = r.getBoolean("qs");
                 if (iAnswer) {
-                    todo = "¡Te toca! " + talk + (voice ? " (el presentador la valida)" : "");
+                    todo = "¡Te toca! Di tu respuesta en voz alta";
                     mine = true;
                 } else if (player && myRep.equals(me())) {
-                    todo = "Tu das la cara: pulsa G para tocar el timbre";
-                    mine = true;
+                    todo = qs ? "Tu das la cara: ¡toca la campana (clic derecho o G)!" : "Tu das la cara: ponte junto a la campana y espera la pregunta";
+                    mine = qs;
                 } else if (player) {
-                    todo = "Da la cara " + myRep + ": espera tu turno y animalo";
+                    todo = "Tu representante es " + myRep + ": animalo";
                 } else if (host) {
-                    todo = ans.isEmpty() ? "Esperando que toquen el timbre (G)" : "Contesta " + ans + ": " + (voice ? "valida con los botones (Y)" : "mira lo que escribe");
-                    mine = !ans.isEmpty();
+                    if (!qs) {
+                        todo = "Anuncia la pregunta en el panel (Y) para abrir la campana";
+                        mine = true;
+                    } else if (ans.isEmpty()) {
+                        todo = "Esperando la campana: el primero contesta";
+                    } else {
+                        todo = ans + " contesta: escribe lo que dice en el panel (Y)";
+                        mine = true;
+                    }
                 } else {
                     todo = "Mira el cara a cara";
                 }
@@ -171,14 +198,14 @@ public final class Guide {
             case 1 -> {
                 what = "Juega " + sideName(sides, control) + (ans.isEmpty() ? "" : "  -  contesta " + ans);
                 if (iAnswer) {
-                    todo = "¡Tu turno! " + talk;
+                    todo = "¡Tu turno! " + (st.getBoolean("manual") ? "Di tu respuesta en voz alta" : talk);
                     mine = true;
                 } else if (player && mySide == control) {
                     todo = "Tu equipo juega: ayuda a " + (ans.isEmpty() ? "tu companero" : ans);
                 } else if (player) {
                     todo = "Espera: juega " + sideName(sides, control) + ". Si fallan 3 veces puedes robar";
                 } else if (host) {
-                    todo = voice ? "Valida lo que dice " + ans + " con los botones (Y)" : "Revisa lo que escribe " + ans;
+                    todo = st.getBoolean("manual") ? "Escribe en el panel (Y) lo que dice " + ans : voice ? "Valida lo que dice " + ans + " con los botones (Y)" : "Revisa lo que escribe " + ans;
                     mine = !ans.isEmpty();
                 } else {
                     todo = "Mira la ronda";
@@ -187,11 +214,10 @@ public final class Guide {
             case 2 -> {
                 what = "¡Robo! " + (ans.isEmpty() ? "El otro equipo" : ans) + " puede robar el banco";
                 if (iAnswer) {
-                    todo = "Una sola oportunidad: " + talk;
+                    todo = "Una sola oportunidad: " + (st.getBoolean("manual") ? "di tu respuesta en voz alta" : talk);
                     mine = true;
                 } else if (player && ans.isEmpty() && mySide != control) {
-                    todo = "Quien da la cara pulsa G para robar";
-                    mine = true;
+                    todo = "Tu equipo intenta el robo: prepárense";
                 } else {
                     todo = host ? "Valida el robo (Y)" : "Espera el resultado del robo";
                 }

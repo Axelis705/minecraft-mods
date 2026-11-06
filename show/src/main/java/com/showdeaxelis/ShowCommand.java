@@ -119,6 +119,7 @@ public final class ShowCommand {
         StringBuilder bad = new StringBuilder();
         try {
             Show s = new Show(new UUID(0, 98), "Host", false);
+            s.manual = false;
             s.setFormat(Format.FFA);
             if (com.showdeaxelis.data.Bots.fill(s) < 4 || !s.start()) {
                 return "PRUEBA_BOTS_FALLO no se pudo armar el show";
@@ -175,18 +176,38 @@ public final class ShowCommand {
                 bad.append(" taboo");
             }
             s.finishTaboo();
-            // 100 mexicanos
-            s.start100(Banks.Q100.get(0), 1);
-            boolean buzzed = false;
-            for (int i = 0; i < 1500; i++, t++) {
-                com.showdeaxelis.data.Bots.tick(s, t);
-                s.tick(t);
-                for (var e : s.drain()) {
-                    buzzed |= e.type().equals("buzz");
+            // 100 mexicanos (2 equipos de bots): representantes, campana, cara a cara, jugar
+            Show h = new Show(new UUID(0, 97), "Host", false);
+            h.manual = false;
+            h.autoWrong = true;
+            h.setFormat(Format.TWO_TEAMS);
+            com.showdeaxelis.data.Bots.reset();
+            if (com.showdeaxelis.data.Bots.fill(h) < 4 || !h.start() || !h.start100(Banks.Q100.get(0), 1)) {
+                bad.append(" 100mex-inicio");
+            } else {
+                boolean buzzed = false;
+                boolean chose = false;
+                h.callReps();
+                h.announceQuestion();
+                for (int i = 0; i < 3000 && !chose; i++, t++) {
+                    com.showdeaxelis.data.Bots.tick(h, t);
+                    h.tick(t);
+                    for (var e : h.drain()) {
+                        buzzed |= e.type().equals("buzz");
+                    }
+                    if (h.r.stage == com.showdeaxelis.game.Round100.CHOOSE) {
+                        chose = true;
+                        h.choosePlay(true);
+                    }
                 }
-            }
-            if (!buzzed) {
-                bad.append(" 100mex");
+                for (int i = 0; i < 3000 && h.r.stage != com.showdeaxelis.game.Round100.END; i++, t++) {
+                    com.showdeaxelis.data.Bots.tick(h, t);
+                    h.tick(t);
+                    h.drain();
+                }
+                if (!buzzed || !chose || h.r.stage != com.showdeaxelis.game.Round100.END) {
+                    bad.append(" 100mex(buzz=").append(buzzed).append(",cara=").append(chose).append(",etapa=").append(h.r.stage).append(")");
+                }
             }
         } catch (Throwable e) {
             bad.append(" excepcion:").append(e);

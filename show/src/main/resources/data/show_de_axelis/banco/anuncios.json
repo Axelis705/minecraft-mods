@@ -180,5 +180,29 @@
   "un año de suscripción gratis a nada",
   "un dragón... pero de dibujo",
   "la llave del cielo (no abre ninguna puerta)"
+ ],
+ "reps_called": [
+  "¡Que pasen los representantes! Un paso al frente, con dignidad.",
+  "Representantes al frente. El público les pide que no se tropiecen.",
+  "Pasen los representantes de cada equipo. La campana los espera, y también las cámaras."
+ ],
+ "q_announced": [
+  "Atención, representantes: la campana está abierta. ¡El más rápido contesta!",
+  "Se abre la pregunta. Primero el reflejo, después la sabiduría.",
+  "¡Escuchen la pregunta y toquen la campana cuando estén listos!"
+ ],
+ "face_won": [
+  "¡{side} se queda con el cara a cara! Ahora a decidir: ¿jugar o pasar?",
+  "El cara a cara es para {side}. El otro equipo mira con admiración y rencor.",
+  "¡Punto para {side}! Ahora toca estrategia, o intuición."
+ ],
+ "chose_play": [
+  "{side} decide jugar. ¡Valientes!",
+  "¡A jugar! {side} toma el tablero.",
+  "{side} no se rinde y juega la ronda."
+ ],
+ "chose_pass": [
+  "{side} pasa el turno. Estrategia pura, o miedo elegante.",
+  "¡{side} le pasa el tablero al rival! Qué generosidad tan sospechosa."
  ]
 }

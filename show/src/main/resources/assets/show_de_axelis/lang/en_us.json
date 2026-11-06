@@ -7,8 +7,8 @@
  "key.show_de_axelis.buzz": "Buzzer (face-off)",
  "key.show_de_axelis.draw": "Draw (Guess the drawing)",
  "key.show_de_axelis.tv": "TV camera",
- "key.show_de_axelis.ans_a": "Answer A",
- "key.show_de_axelis.ans_b": "Answer B",
- "key.show_de_axelis.ans_c": "Answer C",
- "key.show_de_axelis.ans_d": "Answer D"
+ "key.show_de_axelis.answer_1": "Answer A",
+ "key.show_de_axelis.answer_2": "Answer B",
+ "key.show_de_axelis.answer_3": "Answer C",
+ "key.show_de_axelis.answer_4": "Answer D"
 }

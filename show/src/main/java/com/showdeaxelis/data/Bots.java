@@ -168,28 +168,43 @@ public final class Bots {
             return;
         }
         if (r.answerer == null) {
-            if (r.stage == Round100.FACE || r.stage == Round100.STEAL) {
+            // solo suena la campana cuando la pregunta ya se anuncio
+            if (r.stage == Round100.FACE && r.open && r.qShown) {
                 for (Side sd : s.sides) {
                     Participant rep = sd.rep();
-                    if (rep != null && isBot(rep.id) && due(rep.id, "buzz" + r.stage + r.faceTry, s, now, 20, 80)) {
+                    if (rep != null && isBot(rep.id) && due(rep.id, "buzz" + r.stage + r.faceTry, s, now, 30, 110)) {
                         s.buzz(rep.id);
                     }
                 }
             }
             return;
         }
-        if (isBot(r.answerer) && r.pending == null && due(r.answerer, "ans" + r.strikes + r.stage + countRevealed(r), s, now, 50, 130)) {
-            List<String> hidden = new ArrayList<>();
-            for (int i = 0; i < r.revealed.length; i++) {
-                if (!r.revealed[i]) {
-                    hidden.add(r.q.answers().get(i).text());
-                }
-            }
-            String say = !hidden.isEmpty() && RND.nextInt(100) < 65 ? hidden.get(RND.nextInt(hidden.size())) : pickWrongAnswer();
-            String name = s.byId(r.answerer).name;
-            chat(name, say);
-            s.answer(r.answerer, say);
+        // en modo presentador los bots no hablan solos: el presentador los hace hablar (o escribe lo que dicen)
+        if (!s.manual && isBot(r.answerer) && r.pending == null && due(r.answerer, "ans" + r.strikes + r.stage + countRevealed(r), s, now, 70, 160)) {
+            say100(s);
         }
+    }
+
+    /** El presentador pide que el bot que tiene la palabra conteste ahora (modo presentador). */
+    public static void sayNow(Show s, int now) {
+        Round100 r = s.r;
+        if (s.phase == Phase.R100 && r != null && r.answerer != null && isBot(r.answerer) && r.pending == null && r.stage != Round100.END) {
+            say100(s);
+        }
+    }
+
+    private static void say100(Show s) {
+        Round100 r = s.r;
+        List<String> hidden = new ArrayList<>();
+        for (int i = 0; i < r.revealed.length; i++) {
+            if (!r.revealed[i]) {
+                hidden.add(r.q.answers().get(i).text());
+            }
+        }
+        String say = !hidden.isEmpty() && RND.nextInt(100) < 65 ? hidden.get(RND.nextInt(hidden.size())) : pickWrongAnswer();
+        String name = s.byId(r.answerer).name;
+        chat(name, say);
+        s.answer(r.answerer, say);
     }
 
     private static int countRevealed(Round100 r) {

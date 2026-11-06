@@ -37,6 +37,9 @@ public final class Studio {
     public static final int PODIUM_Z = 36;
     /** Altura de la superficie donde pisan los jugadores en su podio. */
     public static final int PODIUM_FLOOR = 3;
+    /** La campana de los representantes, sobre una mesita al frente del escenario. */
+    public static final int BELL_X = 0;
+    public static final int BELL_Z = 31;
     /** Se sube cada vez que se construye el estudio (para que el director sepa que hay que repintar los podios). */
     public static int version;
     private static final Direction[] HORIZ = {Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST};
@@ -185,6 +188,11 @@ public final class Studio {
                         .setValue(net.minecraft.world.level.block.ButtonBlock.FACE, net.minecraft.world.level.block.state.properties.AttachFace.FLOOR));
             }
         }
+        // la mesita de la campana (100 mexicanos): los dos representantes se paran a los lados
+        fill(lv, st, BELL_X - 1, 2, BELL_Z, BELL_X + 1, 2, BELL_Z, Blocks.QUARTZ_BLOCK);
+        put(lv, st, BELL_X, 3, BELL_Z, Blocks.BELL.defaultBlockState()
+                .setValue(net.minecraft.world.level.block.BellBlock.FACING, Direction.NORTH)
+                .setValue(net.minecraft.world.level.block.BellBlock.ATTACHMENT, net.minecraft.world.level.block.state.properties.BellAttachType.FLOOR));
         // el escritorio del presentador, a la derecha de los podios (tambien mira a la pantalla)
         fill(lv, st, 19, 2, 34, 23, 2, 35, Blocks.QUARTZ_BLOCK);
         fill(lv, st, 18, 1, 31, 24, 1, 31, Blocks.SEA_LANTERN);
@@ -374,6 +382,51 @@ public final class Studio {
             if (hp != null) {
                 double[] pos = atD(st, 21, 2, 32.6);
                 hp.teleportTo(lv, pos[0], pos[1], pos[2], yaw, 0f);
+            }
+        }
+    }
+
+    public static BlockPos bellPos(StageData.Info st) {
+        return at(st, BELL_X, 3, BELL_Z);
+    }
+
+    public static boolean isStudioBell(MinecraftServer server, BlockPos pos) {
+        StageData.Info st = StageData.get(server).info();
+        return st != null && bellPos(st).equals(pos);
+    }
+
+    /** Hace sonar la campana del escenario (sonido normal de campana del juego). */
+    public static void ringBell(MinecraftServer server) {
+        StageData.Info st = StageData.get(server).info();
+        if (st == null) {
+            return;
+        }
+        ServerLevel lv = server.overworld();
+        BlockPos pos = bellPos(st);
+        BlockState bs = lv.getBlockState(pos);
+        if (bs.getBlock() instanceof net.minecraft.world.level.block.BellBlock bell) {
+            bell.attemptToRing(lv, pos, null);
+        }
+    }
+
+    /** Los dos representantes pasan al frente, uno a cada lado de la campana, mirando a la pantalla. */
+    public static void teleportReps(MinecraftServer server, Show sh) {
+        StageData.Info st = StageData.get(server).info();
+        if (st == null) {
+            return;
+        }
+        ServerLevel lv = server.overworld();
+        Direction f = dirOf(st.dir());
+        float yaw = (float) Math.toDegrees(Math.atan2(-f.getStepX(), f.getStepZ()));
+        for (Side sd : sh.sides) {
+            Participant p = sd.rep();
+            if (p == null) {
+                continue;
+            }
+            double[] pos = atD(st, BELL_X + (sd.index == 0 ? -2.6 : 2.6), 2, BELL_Z - 1.6);
+            ServerPlayer sp = server.getPlayerList().getPlayer(p.id);
+            if (sp != null) {
+                sp.teleportTo(lv, pos[0], pos[1], pos[2], yaw, 25f);
             }
         }
     }

@@ -23,6 +23,8 @@ public final class Show {
     public boolean autoWrong;
     /** Modo voz: se juega hablando (Discord o similar); el presentador valida con botones y los votos van por pantalla. */
     public boolean voice;
+    /** Modo presentador: el presentador escribe las respuestas y decide el ritmo (los jugadores no escriben en el chat). */
+    public boolean manual = true;
     /** Si el presentador juega, no ve respuestas ni secretos (los ve solo quien le toca). */
     public boolean hideSecrets = true;
     public int roundNo;
@@ -258,8 +260,22 @@ public final class Show {
         draw = null;
     }
 
+    /** 100 mexicanos es de 2 equipos: dos lados con gente. */
+    public boolean canPlay100() {
+        if (format != Format.TWO_TEAMS) {
+            return false;
+        }
+        int live = 0;
+        for (Side sd : sides) {
+            if (!sd.members.isEmpty()) {
+                live++;
+            }
+        }
+        return live == 2;
+    }
+
     public boolean start100(Question100 q, int mult) {
-        if (!segmentFree()) {
+        if (!segmentFree() || !canPlay100()) {
             return false;
         }
         clearSegments();
@@ -280,9 +296,37 @@ public final class Show {
         return r != null && r.stage == Round100.STEAL && side != r.control && sides.get(side).rep() != null;
     }
 
-    /** Un jugador toca el timbre. Solo cuenta si es quien da la cara de su lado en ese momento. */
+    /** El presentador llama a los representantes al frente: la pregunta todavia no se ve. */
+    public boolean callReps() {
+        if (phase != Phase.R100 || r == null || (r.stage != Round100.CALL && r.stage != Round100.FACE)) {
+            return false;
+        }
+        r.stage = Round100.FACE;
+        r.qShown = false;
+        r.open = false;
+        r.answerer = null;
+        r.faceDone.clear();
+        r.faceGuess.clear();
+        events.add(new Ev("reps_called", -1, "", "", 0, 0));
+        return true;
+    }
+
+    /** El presentador anuncia la pregunta y abre la campana: el primer representante que la toque contesta. */
+    public boolean announceQuestion() {
+        if (phase != Phase.R100 || r == null || (r.stage != Round100.CALL && r.stage != Round100.FACE)) {
+            return false;
+        }
+        r.stage = Round100.FACE;
+        r.qShown = true;
+        r.open = true;
+        r.answerer = null;
+        events.add(new Ev("q_announced", -1, "", r.q.text(), 0, 0));
+        return true;
+    }
+
+    /** Un jugador toca la campana (o el timbre). Solo cuenta si es quien da la cara de su lado, con la campana abierta. */
     public boolean buzz(UUID id) {
-        if (phase != Phase.R100 || r == null || r.answerer != null) {
+        if (phase != Phase.R100 || r == null || r.answerer != null || r.stage != Round100.FACE || !r.open || !r.qShown) {
             return false;
         }
         Participant p = byId(id);
@@ -290,21 +334,24 @@ public final class Show {
             return false;
         }
         int side = sideOf(p);
-        if (side < 0) {
-            return false;
-        }
-        if (r.stage == Round100.FACE) {
-            if (r.faceDone.contains(side) || sides.get(side).rep() != p) {
-                return false;
-            }
-        } else if (r.stage == Round100.STEAL) {
-            if (!isStealCandidate(side) || sides.get(side).rep() != p) {
-                return false;
-            }
-        } else {
+        if (side < 0 || r.faceDone.contains(side) || sides.get(side).rep() != p) {
             return false;
         }
         r.answerer = id;
+        events.add(new Ev("buzz", side, p.name, "", 0, 0));
+        return true;
+    }
+
+    /** El presentador da la campana a un lado (por si nadie la toca o para probar solo). */
+    public boolean hostGiveBell(int side) {
+        if (phase != Phase.R100 || r == null || r.stage != Round100.FACE || r.answerer != null || side < 0 || side >= sides.size()
+                || r.faceDone.contains(side) || sides.get(side).rep() == null) {
+            return false;
+        }
+        r.qShown = true;
+        r.open = true;
+        Participant p = sides.get(side).rep();
+        r.answerer = p.id;
         events.add(new Ev("buzz", side, p.name, "", 0, 0));
         return true;
     }
@@ -315,9 +362,34 @@ public final class Show {
 
     /** El jugador que contesta escribio algo. Devuelve true si se consumio como respuesta. */
     public boolean answer(UUID id, String text) {
-        if (!isAnswerer(id)) {
+        if (!isAnswerer(id) || !r.open) {
             return false;
         }
+        return answerCore(id, text);
+    }
+
+    /** El presentador escribe lo que dijo el equipo {@code side} (en el cara a cara elige cual; despues contesta quien tenga el turno). */
+    public boolean hostAnswer(int side, String text) {
+        if (phase != Phase.R100 || r == null || text == null || text.isBlank()) {
+            return false;
+        }
+        if (r.stage == Round100.FACE && r.qShown) {
+            if (side < 0 || side >= sides.size() || r.faceDone.contains(side) || sides.get(side).rep() == null) {
+                return false;
+            }
+            r.answerer = sides.get(side).rep().id;
+            r.pending = null;
+        } else if (r.stage == Round100.PLAY || r.stage == Round100.STEAL) {
+            if (r.answerer == null) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return answerCore(r.answerer, text.trim());
+    }
+
+    private boolean answerCore(UUID id, String text) {
         Participant p = byId(id);
         events.add(new Ev("said", sideOf(p), p.name, text, 0, 0));
         int idx = Matcher.find(text, r.q, r.revealed);
@@ -373,9 +445,17 @@ public final class Show {
                 }
                 r.faceGuess.put(side, pts);
                 if (idx == 0) {
-                    takeControl(side);
-                } else if (r.faceDone.size() >= sides.size()) {
+                    faceWon(side);
+                } else if (r.faceDone.size() >= 2) {
                     closeFace();
+                } else {
+                    // le toca al otro representante, sin campana
+                    for (Side o : sides) {
+                        if (o.index != side && !o.members.isEmpty()) {
+                            r.answerer = o.rep().id;
+                            events.add(new Ev("face_other", o.index, o.rep().name, "", 0, 0));
+                        }
+                    }
                 }
             }
             case Round100.PLAY -> {
@@ -411,7 +491,7 @@ public final class Show {
         }
     }
 
-    /** Cierra el cara a cara: gana el control quien dio la respuesta mas alta. Si nadie acerto, se repite. */
+    /** Cierra el cara a cara: gana quien dio la respuesta mas alta. Si nadie acerto, se repite con la campana. */
     public void closeFace() {
         if (phase != Phase.R100 || r == null || r.stage != Round100.FACE) {
             return;
@@ -425,14 +505,43 @@ public final class Show {
             }
         }
         if (best >= 0) {
-            takeControl(best);
+            faceWon(best);
         } else {
             r.faceDone.clear();
             r.faceGuess.clear();
             r.faceTry++;
             r.answerer = null;
+            r.open = true;
             events.add(new Ev("face_none", -1, "", "", r.faceTry, 0));
         }
+    }
+
+    private void faceWon(int side) {
+        r.faceWinner = side;
+        r.stage = Round100.CHOOSE;
+        r.answerer = null;
+        r.pending = null;
+        r.open = false;
+        events.add(new Ev("face_won", side, "", "", 0, 0));
+        if (r.allRevealed()) {
+            endRound(side);
+        }
+    }
+
+    /** El presentador decide: el ganador del cara a cara juega o pasa el turno al otro equipo. */
+    public boolean choosePlay(boolean play) {
+        if (phase != Phase.R100 || r == null || r.stage != Round100.CHOOSE || r.faceWinner < 0) {
+            return false;
+        }
+        int other = r.faceWinner;
+        for (Side o : sides) {
+            if (o.index != r.faceWinner && !o.members.isEmpty()) {
+                other = o.index;
+            }
+        }
+        takeControl(play ? r.faceWinner : other);
+        events.add(new Ev(play ? "chose_play" : "chose_pass", r.control, "", "", 0, 0));
+        return true;
     }
 
     public void takeControl(int side) {
@@ -442,6 +551,8 @@ public final class Show {
         r.control = side;
         r.stage = Round100.PLAY;
         r.strikes = 0;
+        r.open = true;
+        r.qShown = true;
         Side s = sides.get(side);
         r.turn = s.members.size() > 1 ? Math.floorMod(s.repCursor + 1, s.members.size()) : 0;
         r.answerer = s.members.isEmpty() ? null : s.members.get(r.turn).id;
@@ -464,6 +575,7 @@ public final class Show {
 
     private void beginSteal() {
         r.stage = Round100.STEAL;
+        r.open = true;
         r.answerer = null;
         List<Integer> cand = new ArrayList<>();
         for (Side s : sides) {
@@ -597,7 +709,7 @@ public final class Show {
     public void tick(int nowTick) {
         tickTaboo(nowTick);
         tickDraw(nowTick);
-        if (phase == Phase.TRIVIA && t != null && !t.revealed && nowTick >= t.deadlineTick) {
+        if (!manual && phase == Phase.TRIVIA && t != null && !t.revealed && nowTick >= t.deadlineTick) {
             revealTrivia();
         }
     }

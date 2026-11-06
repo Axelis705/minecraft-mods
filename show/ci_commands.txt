@@ -3,6 +3,7 @@ show probar
 show probarbots
 show construir 0 100 0 south
 execute if block 0 100 0 minecraft:black_concrete if block 13 103 36 minecraft:red_concrete if block 18 113 60 minecraft:blue_concrete run say PRUEBA_SHOW_ESTUDIO_0
+execute if block 0 103 31 minecraft:bell run say PRUEBA_SHOW_CAMPANA
 execute if entity @e[type=minecraft:text_display,tag=show_disp_title] if entity @e[type=minecraft:text_display,tag=show_disp_foot] run say PRUEBA_SHOW_PANTALLA
 execute if entity @e[type=show_de_axelis:spectator] run say PRUEBA_SHOW_PUBLICO
 show construir 100 100 100 east
@@ -12,6 +13,7 @@ show parar
 #expect PRUEBA_SHOW_OK
 #expect PRUEBA_BOTS_OK
 #expect PRUEBA_SHOW_ESTUDIO_0
+#expect PRUEBA_SHOW_CAMPANA
 #expect PRUEBA_SHOW_PANTALLA
 #expect PRUEBA_SHOW_PUBLICO
 #expect PRUEBA_SHOW_ESTUDIO_1

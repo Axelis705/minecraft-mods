@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.nbt.CompoundTag;
@@ -100,10 +101,10 @@ public final class HostScreen extends Screen {
         CompoundTag st = ShowClient.state;
         StringBuilder s = new StringBuilder();
         s.append(st.getBoolean("active")).append(st.getString("phase")).append(st.getInt("format")).append(st.getBoolean("hostPlays")).append(tab);
-        s.append(st.getBoolean("autoWrong")).append(st.getBoolean("voice")).append(st.getBoolean("hideSecrets"));
+        s.append(st.getBoolean("autoWrong")).append(st.getBoolean("voice")).append(st.getBoolean("hideSecrets")).append(st.getBoolean("manual"));
         if (st.contains("r", 10)) {
             CompoundTag r = st.getCompound("r");
-            s.append("r").append(r.getInt("stage")).append(r.getString("pending")).append(r.getString("ans")).append(r.getInt("strikes"));
+            s.append("r").append(r.getBoolean("qs")).append(r.getInt("fw")).append(r.getInt("stage")).append(r.getString("pending")).append(r.getString("ans")).append(r.getInt("strikes"));
             ListTag a = r.getList("a", 10);
             for (int i = 0; i < a.size(); i++) {
                 s.append(a.getCompound(i).getBoolean("rev") ? '1' : '0');
@@ -207,6 +208,7 @@ public final class HostScreen extends Screen {
         full("Formato: " + fmt.label, () -> act("format", "", (fmt.ordinal() + 1) % Format.values().length));
         full("Yo juego: " + (st.getBoolean("hostPlays") ? "SI" : "NO"), () -> act("hostplays"));
         full("Modo voz (Discord): " + (st.getBoolean("voice") ? "SI" : "NO"), () -> act("voice"));
+        full("Presentador manual: " + (st.getBoolean("manual") ? "SI" : "NO"), () -> act("manual"));
         if (st.getBoolean("hostPlays")) {
             full("Ocultarme los secretos: " + (st.getBoolean("hideSecrets") ? "SI" : "NO"), () -> act("hidesecrets"));
         }
@@ -282,6 +284,9 @@ public final class HostScreen extends Screen {
         note("Elige el siguiente segmento:");
         half("100 mexicanos", () -> act("r100", "", 1));
         half("100 mex. x2", () -> act("r100", "", 2));
+        if (st.getInt("format") != Format.TWO_TEAMS.ordinal()) {
+            note("(100 mexicanos solo va con 2 equipos)");
+        }
         half("Trivia", () -> act("trivia", "Trivia", 20));
         half("True o Fake", () -> act("trivia", "True o Fake", 12));
         half("Algo no cuadra", () -> act("trivia", "Algo no cuadra", 20));
@@ -296,12 +301,62 @@ public final class HostScreen extends Screen {
         full("Terminar el show (final)", () -> act("end"));
     }
 
+    /** Lo que el presentador esta escribiendo (se conserva aunque el panel se reconstruya). */
+    private static String draft = "";
+    private EditBox box;
+    private Runnable sendAction;
+
+    private static String sideLabel(ListTag sides, int i) {
+        return cut(sides.getCompound(i).getString("n"), 10);
+    }
+
+    private static boolean live(ListTag sides, int i) {
+        return !sides.getCompound(i).getList("m", 8).isEmpty();
+    }
+
+    /** Caja para escribir lo que dijo el equipo; {@code send} recibe el texto. */
+    private void answerBox(Runnable defaultSend) {
+        nextRow();
+        box = new EditBox(font, cx, cy, PW, 18, Component.literal("Lo que dicen"));
+        box.setMaxLength(60);
+        box.setValue(draft);
+        box.setResponder(t -> draft = t);
+        box.setHint(Component.literal("Escribe lo que dijeron...").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+        addRenderableWidget(box);
+        setFocused(box);
+        box.setFocused(true);
+        sendAction = defaultSend;
+        cy += 22;
+    }
+
+    private static void sendText(int side) {
+        String t = draft.trim();
+        if (!t.isEmpty()) {
+            act("hans", t, side);
+            draft = "";
+        }
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if ((keyCode == 257 || keyCode == 335) && box != null && box.isFocused() && sendAction != null) {
+            sendAction.run();
+            rebuildWidgets();
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
     private void build100(CompoundTag st) {
         CompoundTag r = st.getCompound("r");
         ListTag as = r.getList("a", 10);
         ListTag sides = st.getList("sides", 10);
         int stage = r.getInt("stage");
         String pending = r.getString("pending");
+        String ans = r.getString("ans");
+        boolean manual = st.getBoolean("manual");
+        box = null;
+        sendAction = null;
         if (stage == 3) {
             note("Ronda terminada.");
             half("Otra pregunta", () -> act("r100", "", 1));
@@ -312,11 +367,9 @@ public final class HostScreen extends Screen {
             return;
         }
         boolean blind = !st.getBoolean("sees");
-        if (blind) {
-            note("Estas jugando: no ves las respuestas del tablero (se destapan solas).");
-        }
+        note("Pregunta: " + r.getString("q"));
         if (!pending.isEmpty() && !blind) {
-            note("Escribio: " + cut(pending, 24));
+            note("Dijeron: " + cut(pending, 24) + "  (" + cut(ans, 14) + ")");
             for (int i = 0; i < as.size(); i++) {
                 CompoundTag a = as.getCompound(i);
                 if (!a.getBoolean("rev")) {
@@ -328,9 +381,82 @@ public final class HostScreen extends Screen {
             full("No esta en el tablero (X)", () -> act("reject"));
             return;
         }
-        note(stage == 0 ? "Cara a cara" : stage == 1 ? "Turno de " + cut(r.getString("ans"), 16) : "Robo");
-        if (st.getBoolean("voice") && !blind) {
+        switch (stage) {
+            case 4 -> {
+                note("1) Llama a los representantes al frente.");
+                full("¡Que pasen los representantes!", () -> act("callreps"));
+                full("Anunciar la pregunta (abre la campana)", () -> act("announce"));
+                nextRow();
+                full("Terminar segmento", () -> act("finish"));
+                return;
+            }
+            case 5 -> {
+                int fw = r.getInt("fw");
+                note("Gano el cara a cara: " + (fw >= 0 && fw < sides.size() ? sides.getCompound(fw).getString("n") : "?"));
+                note("¿Juegan o pasan?");
+                full("JUGAR", () -> act("choose", "", 1));
+                full("PASAR el turno al otro equipo", () -> act("choose", "", 0));
+                nextRow();
+                full("Terminar segmento", () -> act("finish"));
+                return;
+            }
+            default -> {
+            }
+        }
+        boolean face = stage == 0;
+        if (face && !r.getBoolean("qs")) {
+            note("Representantes al frente. Lee la pregunta y abre la campana.");
+            full("Anunciar la pregunta (abre la campana)", () -> act("announce"));
+            full("Llamar de nuevo a los representantes", () -> act("callreps"));
+        } else if (face) {
+            note(ans.isEmpty() ? "Campana abierta: espera al primero (o dala tu)." : "Contesta: " + cut(ans, 16));
+            if (ans.isEmpty()) {
+                for (int i = 0; i < sides.size(); i++) {
+                    if (live(sides, i)) {
+                        final int idx = i;
+                        half("Campana: " + sideLabel(sides, i), () -> act("bell", "", idx));
+                    }
+                }
+                nextRow();
+            }
+        } else {
+            note(stage == 1 ? "Turno de " + cut(ans, 16) + " (equipo en juego)" : "ROBO: contesta " + cut(ans, 16));
+        }
+        if (manual) {
+            // el presentador escribe lo que dice el equipo
+            if (face && r.getBoolean("qs")) {
+                answerBox(() -> {
+                    // Enter: responde por quien tiene la campana (o el primer equipo)
+                    int target = 0;
+                    for (int i = 0; i < sides.size(); i++) {
+                        if (live(sides, i) && sides.getCompound(i).getString("rep").equals(ans)) {
+                            target = i;
+                        }
+                    }
+                    sendText(target);
+                });
+                for (int i = 0; i < sides.size(); i++) {
+                    if (live(sides, i)) {
+                        final int idx = i;
+                        half("Dice " + sideLabel(sides, i), () -> {
+                            sendText(idx);
+                            rebuildWidgets();
+                        });
+                    }
+                }
+                nextRow();
+            } else if (!face) {
+                answerBox(() -> sendText(0));
+                full("Enviar lo que dice " + cut(ans, 12), () -> {
+                    sendText(0);
+                    rebuildWidgets();
+                });
+            }
+        } else if (st.getBoolean("voice") && !blind) {
             note("Modo voz: oye la respuesta y destapa el # que corresponde.");
+        }
+        if (!ans.isEmpty()) {
+            full("Que conteste el bot (prueba)", () -> act("botsay"));
         }
         for (int i = 0; i < as.size() && !blind; i++) {
             CompoundTag a = as.getCompound(i);
@@ -341,18 +467,18 @@ public final class HostScreen extends Screen {
         }
         nextRow();
         full("Poner X (respuesta mala)", () -> act("strike"));
-        if (stage == 0) {
+        if (face) {
             for (int i = 0; i < sides.size(); i++) {
-                if (!sides.getCompound(i).getList("m", 8).isEmpty()) {
+                if (live(sides, i)) {
                     final int idx = i;
-                    half("Control: " + cut(sides.getCompound(i).getString("n"), 10), () -> act("control", "", idx));
+                    half("Gana: " + sideLabel(sides, i), () -> act("control", "", idx));
                 }
             }
             nextRow();
             full("Cerrar cara a cara", () -> act("closeface"));
         } else {
             for (int i = 0; i < sides.size(); i++) {
-                if (!sides.getCompound(i).getList("m", 8).isEmpty()) {
+                if (live(sides, i)) {
                     final int idx = i;
                     half("Banco a " + cut(sides.getCompound(i).getString("n"), 8), () -> act("award", "", idx));
                 }
@@ -527,6 +653,7 @@ public final class HostScreen extends Screen {
     private void buildMore(CompoundTag st) {
         full("Locutor: " + "alternar", () -> act("announcer"));
         full("Modo voz (Discord): " + (st.getBoolean("voice") ? "SI" : "NO"), () -> act("voice"));
+        full("Presentador manual: " + (st.getBoolean("manual") ? "SI" : "NO"), () -> act("manual"));
         if (st.getBoolean("hostPlays")) {
             full("Ocultarme los secretos: " + (st.getBoolean("hideSecrets") ? "SI" : "NO"), () -> act("hidesecrets"));
         }

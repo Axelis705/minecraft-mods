@@ -13,7 +13,6 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 /** Todo lo que se dibuja en pantalla durante el show: marcador, rotulos, preguntas, tablero, locutor, confeti. */
 public final class ShowHud {
     private static final int[] OPT_COLORS = {0xE53935, 0x1E88E5, 0xFDD835, 0x43A047};
-    private static final String[] KEYS = {"Z", "X", "C", "V"};
 
     private ShowHud() {
     }
@@ -103,10 +102,14 @@ public final class ShowHud {
 
         top = drawBanner(g, f, st, phase, W) + 6;
         top = drawSay(g, f, W, top) + 4;
+        boolean mini = (phase.equals("R100") || phase.equals("TRIVIA")) && screenOutOfSight(mc, st);
         if (phase.equals("DRAW") && st.contains("dr", 10)) {
             drawDraw(g, f, st, sides, W, H);
         } else if (compact) {
             drawCompact(g, f, st, phase, W, H);
+            if (mini) {
+                drawMini(g, f, st, phase, sides, W, H, phase.equals("TRIVIA") ? 30 : 0);
+            }
         } else if (phase.equals("R100") && st.contains("r", 10)) {
             drawBoard(g, f, st, sides, W, H);
         } else if (phase.equals("TRIVIA") && st.contains("t", 10)) {
@@ -175,6 +178,39 @@ public final class ShowHud {
         return y + h + 2;
     }
 
+    /** True si la pantalla gigante no se esta viendo (camara de TV en otro plano, o mirando a otro lado dentro del estudio). */
+    private static boolean screenOutOfSight(Minecraft mc, CompoundTag st) {
+        if (TvCamera.active()) {
+            return !TvCamera.currentShot().equals("board");
+        }
+        CompoundTag stage = st.getCompound("stage");
+        if (!compact || !stage.contains("x") || mc.player == null) {
+            return false;
+        }
+        com.showdeaxelis.data.StageData.Info info = new com.showdeaxelis.data.StageData.Info(stage.getInt("x"), stage.getInt("y"), stage.getInt("z"), stage.getInt("d"));
+        double[] c = com.showdeaxelis.data.Studio.atD(info, 0, 11.5, com.showdeaxelis.data.Studio.BACK_Z);
+        net.minecraft.world.phys.Vec3 to = new net.minecraft.world.phys.Vec3(c[0], c[1], c[2]).subtract(mc.player.getEyePosition()).normalize();
+        return mc.player.getLookAngle().dot(to) < Math.cos(Math.toRadians(40));
+    }
+
+    /** La pantalla en chiquito, en una esquina, para no perder la pregunta ni las respuestas cuando no la estas mirando. */
+    private static void drawMini(GuiGraphics g, Font f, CompoundTag st, String phase, ListTag sides, int W, int H, int extraTop) {
+        float k = 0.6f;
+        int vw = 380;
+        int savedTop = top;
+        top = 4;
+        g.pose().pushPose();
+        g.pose().translate(W - vw * k - 6, savedTop + extraTop, 0);
+        g.pose().scale(k, k, 1f);
+        if (phase.equals("R100") && st.contains("r", 10)) {
+            drawBoard(g, f, st, sides, vw, H);
+        } else if (phase.equals("TRIVIA") && st.contains("t", 10)) {
+            drawTrivia(g, f, st, vw, H);
+        }
+        g.pose().popPose();
+        top = savedTop;
+    }
+
     /** Version chica del HUD para quien esta dentro del estudio: lo importante se ve en la pantalla gigante. */
     private static void drawCompact(GuiGraphics g, Font f, CompoundTag st, String phase, int W, int H) {
         CompoundTag you = st.getCompound("you");
@@ -198,7 +234,7 @@ public final class ShowHud {
                     }
                     g.fill(cx, y, cx + cw, y + 20, rev && ok >= 0 && i != ok ? dark(c, 0.3f) : argb(c));
                     int tc = c == 0xFDD835 ? 0xFF222222 : 0xFFFFFFFF;
-                    String label = (char) ('A' + i) + (you.getBoolean("player") ? "  (" + KEYS[i] + ")" : "");
+                    String label = (char) ('A' + i) + (you.getBoolean("player") ? "  (" + ShowKeys.keyName(i) + ")" : "");
                     g.drawString(f, label, cx + (cw - f.width(label)) / 2, y + 6, tc, false);
                 }
                 y += 26;
@@ -300,9 +336,10 @@ public final class ShowHud {
         int bw = Math.min(330, W - 120);
         int x = (W - bw) / 2;
         int y = top;
-        int qh = wrappedHeight(f, r.getString("q"), bw - 12) + 8;
+        String qtxt = r.getString("q").isEmpty() ? "¡Que pasen los representantes!" : r.getString("q");
+        int qh = wrappedHeight(f, qtxt, bw - 12) + 8;
         panel(g, x, y, bw, qh, 0xFFFFC107);
-        wrapped(g, f, r.getString("q"), x + 6, y + 4, bw - 12, 0xFFFFFFFF, true);
+        wrapped(g, f, qtxt, x + 6, y + 4, bw - 12, 0xFFFFFFFF, true);
         y += qh + 8;
         int rows = (as.size() + 1) / 2;
         int bh = rows * 17 + 8;
@@ -328,7 +365,9 @@ public final class ShowHud {
         }
         y += bh + 6;
         String info = switch (r.getInt("stage")) {
-            case 0 -> "CARA A CARA - toca el timbre quien da la cara de cada equipo";
+            case 4 -> "Pasan los representantes al frente";
+            case 5 -> "Gano " + sideName(sides, r.getInt("fw")) + ": ¿juega o pasa?";
+            case 0 -> r.getBoolean("qs") ? "CARA A CARA - ¡toca la campana!" : "CARA A CARA - los representantes se preparan";
             case 1 -> "Juega " + sideName(sides, r.getInt("control")) + (r.getString("ans").isEmpty() ? "" : "  -  responde " + r.getString("ans"));
             case 2 -> "ROBO: " + (r.getString("ans").isEmpty() ? "el equipo contrario" : r.getString("ans")) + " puede robar el banco";
             default -> "Ronda terminada";

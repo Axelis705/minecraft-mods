@@ -2,9 +2,14 @@ package com.showdeaxelis;
 
 import com.showdeaxelis.data.Banks;
 import com.showdeaxelis.data.ShowManager;
+import com.showdeaxelis.data.StageData;
+import com.showdeaxelis.data.Studio;
 import com.showdeaxelis.entity.SpectatorEntity;
 import com.showdeaxelis.registry.ModEntities;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.ambient.Bat;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -39,6 +44,29 @@ public final class ShowEvents {
             if (e.phase == TickEvent.Phase.END) {
                 ShowManager.tick(e.getServer());
             }
+        }
+
+        /** Sin murcielagos en el estudio ni alrededor (el estudio es cerrado y los murcielagos salen en lugares oscuros). */
+        @SubscribeEvent
+        public static void join(EntityJoinLevelEvent e) {
+            if (e.getLevel().isClientSide() || !(e.getEntity() instanceof Bat) || ShowManager.server == null) {
+                return;
+            }
+            StageData.Info st = StageData.get(ShowManager.server).info();
+            if (st != null && Studio.studioArea(st).inflate(48).contains(e.getEntity().position())) {
+                e.setCanceled(true);
+            }
+        }
+
+        /** Tocar la campana del escenario: cuenta como timbre en el cara a cara de 100 mexicanos. */
+        @SubscribeEvent
+        public static void bell(PlayerInteractEvent.RightClickBlock e) {
+            if (e.getLevel().isClientSide() || !(e.getEntity() instanceof ServerPlayer sp) || ShowManager.server == null
+                    || !Studio.isStudioBell(ShowManager.server, e.getPos())) {
+                return;
+            }
+            e.setCanceled(true);
+            ShowManager.act(sp, "buzz", "", 0);
         }
 
         @SubscribeEvent

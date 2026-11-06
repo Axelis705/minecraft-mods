@@ -12,11 +12,21 @@ public final class Round100 {
     public static final int PLAY = 1;
     public static final int STEAL = 2;
     public static final int END = 3;
+    /** Antes de todo: el presentador llama a los representantes (la pregunta todavia no se ve). */
+    public static final int CALL = 4;
+    /** Ya hay ganador del cara a cara: el presentador decide si juegan o pasan. */
+    public static final int CHOOSE = 5;
 
     public final Question100 q;
     public final boolean[] revealed;
     public final int mult;
-    public int stage = FACE;
+    public int stage = CALL;
+    /** La pregunta ya se anuncio (hasta entonces solo la ve el presentador). */
+    public boolean qShown;
+    /** La campana esta abierta (en el cara a cara) o se puede contestar. */
+    public boolean open;
+    /** Quien gano el cara a cara (antes de elegir jugar o pasar). */
+    public int faceWinner = -1;
     public int bank;
     public int control = -1;
     public int strikes;

@@ -1,0 +1,8 @@
+Sonidos del Show de Axelis
+
+Aplausos, festejo, intro, fanfarria, campanitas, la X, clics, pops, whoosh y suspenso:
+  armados a partir de "SFX Kit" de wyzowl (https://github.com/wyzowl/sfx-kit), licencia CC0 1.0 (dominio publico).
+  Receta: herramientas/sonidos_cc0.py
+
+Abucheo, risas, grillos, corneta, trombon, redoble, platillos, silbatos y timbre:
+  sintetizados por codigo propio: herramientas/gen_sonidos.py

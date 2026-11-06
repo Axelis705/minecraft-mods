@@ -57,6 +57,7 @@ public final class ShowSync {
         t.putBoolean("hostPlays", s.hostPlays);
         t.putBoolean("autoWrong", s.autoWrong);
         t.putBoolean("voice", s.voice);
+        t.putBoolean("manual", s.manual);
         t.putBoolean("hideSecrets", s.hideSecrets);
         t.putBoolean("sees", sees);
         t.putBoolean("canStart", s.canStart());
@@ -98,7 +99,10 @@ public final class ShowSync {
         if (s.phase == Phase.R100 && s.r != null) {
             Round100 r = s.r;
             CompoundTag c = new CompoundTag();
-            c.putString("q", r.q.text());
+            c.putString("q", host || r.qShown ? r.q.text() : "");
+            c.putBoolean("qs", r.qShown);
+            c.putBoolean("open", r.open);
+            c.putInt("fw", r.faceWinner);
             c.putInt("stage", r.stage);
             c.putInt("bank", r.bank);
             c.putInt("mult", r.mult);

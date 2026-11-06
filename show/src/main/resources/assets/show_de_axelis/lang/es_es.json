@@ -7,8 +7,8 @@
  "key.show_de_axelis.buzz": "Timbre (cara a cara)",
  "key.show_de_axelis.draw": "Dibujar (Adivina el dibujo)",
  "key.show_de_axelis.tv": "Camara de TV",
- "key.show_de_axelis.ans_a": "Contestar A",
- "key.show_de_axelis.ans_b": "Contestar B",
- "key.show_de_axelis.ans_c": "Contestar C",
- "key.show_de_axelis.ans_d": "Contestar D"
+ "key.show_de_axelis.answer_1": "Contestar A",
+ "key.show_de_axelis.answer_2": "Contestar B",
+ "key.show_de_axelis.answer_3": "Contestar C",
+ "key.show_de_axelis.answer_4": "Contestar D"
 }

@@ -76,38 +76,63 @@ public class ShowTest {
         ok(Matcher.containsWord("creo que es pizza jaja", "Pizza"), "contiene palabra");
         ok(!Matcher.containsWord("pizzas", "pizza"), "palabra completa");
 
-        // ---- 100 mexicanos con 2 equipos: cara a cara gana el control quien pone la mas alta
+        // ---- 100 mexicanos (solo 2 equipos): llamar representantes, campana, cara a cara, jugar o pasar
+        Show three = new Show(u(99), "Host", false);
+        three.setFormat(Format.THREE_TEAMS);
+        for (int i = 0; i < 6; i++) {
+            three.assign(u(i), "T" + i, i % 3);
+        }
+        three.start();
+        ok(!three.start100(q(), 1), "100 mexicanos no va con 3 equipos");
         s = twoTeams();
         ok(s.canStart() && s.start(), "empezar");
         ok(s.start100(q(), 1), "empezar ronda");
+        ok(s.r.stage == Round100.CALL && !s.r.qShown, "primero se llama a los representantes");
+        ok(!s.buzz(u(0)), "sin pregunta anunciada no suena la campana");
+        ok(s.callReps() && s.r.stage == Round100.FACE, "pasan los representantes");
+        ok(!s.buzz(u(0)), "la campana sigue cerrada");
+        ok(s.announceQuestion() && s.r.qShown && s.r.open, "se anuncia la pregunta");
         ok(!s.buzz(u(2)), "J2 no es el representante (es J0 del equipo 0)");
-        ok(s.buzz(u(0)), "J0 toca el timbre");
-        ok(s.answer(u(0), "pizza"), "J0 contesta");
+        ok(s.buzz(u(0)), "J0 toca la campana");
+        ok(!s.buzz(u(1)), "ya hay quien contesta");
+        s.manual = true;
+        ok(s.hostAnswer(0, "pizza"), "el presentador escribe lo que dijo el equipo 0");
         ok(s.r.stage == Round100.FACE, "sigue el cara a cara");
-        ok(s.buzz(u(1)), "J1 (equipo 1) toca");
-        ok(s.answer(u(1), "tacos"), "J1 contesta la mejor");
-        ok(s.r.stage == Round100.PLAY && s.r.control == 1, "equipo 1 tiene el control");
+        ok(s.r.answerer != null && s.sideOf(s.byId(s.r.answerer)) == 1, "le toca al otro representante");
+        ok(s.hostAnswer(1, "tacos"), "el equipo 1 dice la mejor");
+        ok(s.r.stage == Round100.CHOOSE && s.r.faceWinner == 1, "gano el equipo 1, decide jugar o pasar");
         ok(s.r.bank == 65, "banco 65 = " + s.r.bank);
+        ok(s.choosePlay(false) && s.r.control == 0 && s.r.stage == Round100.PLAY, "el equipo 1 pasa: juega el 0");
         // 3 errores y robo
         UUID a = s.r.answerer;
-        ok(a != null, "alguien contesta");
-        ok(s.answer(a, "paella"), "respuesta mala (pendiente)");
+        ok(a != null && s.sideOf(s.byId(a)) == 0, "contesta alguien del equipo 0");
+        ok(s.hostAnswer(0, "paella"), "respuesta mala (pendiente)");
         ok(s.r.pending != null, "queda pendiente para el presentador");
         ok(s.hostRejectPending(), "el presentador la rechaza");
         ok(s.r.strikes == 1, "primer strike");
         s.autoWrong = true;
-        s.answer(s.r.answerer, "lasana");
-        s.answer(s.r.answerer, "ensalada");
+        s.hostAnswer(0, "lasana");
+        s.hostAnswer(0, "ensalada");
         ok(s.r.stage == Round100.STEAL, "3 strikes -> robo, etapa " + s.r.stage);
-        ok(s.r.answerer != null && s.sideOf(s.byId(s.r.answerer)) == 0, "roba el equipo 0");
-        ok(s.answer(s.r.answerer, "burger"), "roba bien");
-        ok(s.r.stage == Round100.END && s.r.winner == 0, "gana el que roba");
-        ok(s.sides.get(0).score == 65 + 15, "puntos al ganador: " + s.sides.get(0).score);
+        ok(s.r.answerer != null && s.sideOf(s.byId(s.r.answerer)) == 1, "roba el equipo 1");
+        ok(s.hostAnswer(1, "burger"), "roba bien");
+        ok(s.r.stage == Round100.END && s.r.winner == 1, "gana el que roba");
+        ok(s.sides.get(1).score == 65 + 15, "puntos al ganador: " + s.sides.get(1).score);
 
-        // multiplicador y robo fallido
+        // cara a cara sin aciertos se repite; con jugar
         ok(s.start100(q(), 2), "segunda ronda doble");
-        ok(s.r.stage == Round100.FACE, "otra vez cara a cara");
-        ok(s.buzz(u(2)) || s.buzz(u(3)), "el siguiente representante toca"); // rotan los representantes
+        ok(s.r.stage == Round100.CALL, "otra vez se llama a los representantes");
+        s.autoWrong = true;
+        s.announceQuestion();
+        ok(s.hostGiveBell(1), "el presentador da la campana al equipo 1");
+        s.hostAnswer(1, "nada");
+        s.hostAnswer(0, "nada2");
+        ok(s.r.stage == Round100.FACE && s.r.faceTry == 1 && s.r.open, "nadie acerto: se repite");
+        s.hostAnswer(0, "sushi");
+        s.hostAnswer(1, "pozole");
+        ok(s.r.stage == Round100.CHOOSE && s.r.faceWinner == 0, "gana el que dijo la respuesta mas alta (sushi 10 > pozole 6)");
+        ok(s.choosePlay(true) && s.r.control == 0, "juegan los ganadores");
+        // el chat no contesta si es el presentador quien escribe (manual): answer() de jugador sigue disponible para el chat clasico
         s.finish100();
         ok(s.phase == Phase.IDLE, "vuelve al menu");
 
@@ -121,6 +146,10 @@ public class ShowTest {
         ok(!s.triviaAnswer(u(0), 1, 113), "no se puede cambiar");
         ok(s.triviaAnswer(u(2), 0, 120), "J2 acierta segundo");
         ok(s.t.revealed == false, "falta J3");
+        s.manual = true;
+        s.tick(100 + 15 * 20);
+        ok(!s.t.revealed, "en modo presentador no se revela solo");
+        s.manual = false;
         s.tick(100 + 15 * 20);
         ok(s.t.revealed, "se acabo el tiempo");
         ok(s.byId(u(0)).points == 10 && s.byId(u(2)).points == 8, "10 y 8 puntos");

@@ -116,7 +116,7 @@ public final class ShowClient {
                     glitchTick = 60;
                 }
             }
-            case "cam" -> TvCamera.shot(c.text());
+            case "cam" -> TvCamera.shot(c.text(), c.b() == 1);
             case "tv" -> TvCamera.forced(c.a() == 1);
             default -> {
             }

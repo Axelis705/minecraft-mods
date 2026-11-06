@@ -238,7 +238,11 @@ public final class Displays {
     private static void r100(List<Spec> out, CompoundTag pub, int round) {
         CompoundTag r = pub.getCompound("r");
         band(out, "title", 18.0, 6.0, List.of(line(b("100 MEXICANOS DIJERON", GOLD), s("   Ronda " + round, GRAY))));
-        questionBand(out, r.getString("q"));
+        String qtxt = r.getString("q");
+        if (qtxt.isEmpty()) {
+            qtxt = "¡Que pasen los representantes!";
+        }
+        questionBand(out, qtxt);
         ListTag as = r.getList("a", 10);
         for (int i = 0; i < as.size() && i < 8; i++) {
             CompoundTag a = as.getCompound(i);
@@ -255,7 +259,9 @@ public final class Displays {
         int control = r.getInt("control");
         String ctl = control >= 0 && control < pub.getList("sides", 10).size() ? sideTag(pub, control).getString("n") : "";
         String who = switch (stage) {
-            case 0 -> "Cara a cara: ¡pulsen G!";
+            case 4 -> "Pasan los representantes al frente";
+            case 5 -> "Ganó " + (r.getInt("fw") >= 0 && r.getInt("fw") < pub.getList("sides", 10).size() ? sideTag(pub, r.getInt("fw")).getString("n") : "?") + ": ¿juega o pasa?";
+            case 0 -> r.getBoolean("qs") ? "¡A la campana! El más rápido contesta" : "Los representantes se preparan";
             case 1 -> "Juega: " + ctl + (r.getString("ans").isEmpty() ? "" : "  (contesta " + r.getString("ans") + ")");
             case 2 -> "¡Robo! Contesta " + (r.getString("ans").isEmpty() ? "el otro equipo" : r.getString("ans"));
             default -> "Ronda terminada";
@@ -292,7 +298,7 @@ public final class Displays {
         if (!rev) {
             slot(out, 2, 0, line(b("Tiempo  " + clock(t.getInt("left")), t.getInt("left") < 200 ? RED : WHITE)), 14);
             slot(out, 2, 1, line(s("Contestaron  " + done + "/" + total, WHITE)), 16);
-            band(out, "foot", 6.0, 3.2, List.of(line(s("Jugadores: Z X C V para elegir A B C D", GRAY))));
+            band(out, "foot", 6.0, 3.2, List.of(line(s("Jugadores: elijan A, B, C o D con su teclado", GRAY))));
         } else {
             String note = t.getString("note");
             ListTag g = t.getList("gained", 8);

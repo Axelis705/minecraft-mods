@@ -25,11 +25,22 @@ public final class ShowKeys {
     public static final KeyMapping VOTE = new KeyMapping("key.show_de_axelis.vote", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_N, CAT);
     public static final KeyMapping HUD = new KeyMapping("key.show_de_axelis.hud", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_K, CAT);
     public static final KeyMapping[] ANS = {
-        new KeyMapping("key.show_de_axelis.ans_a", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_Z, CAT),
-        new KeyMapping("key.show_de_axelis.ans_b", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, CAT),
-        new KeyMapping("key.show_de_axelis.ans_c", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_C, CAT),
-        new KeyMapping("key.show_de_axelis.ans_d", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, CAT)
+        new KeyMapping("key.show_de_axelis.answer_1", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_1, CAT),
+        new KeyMapping("key.show_de_axelis.answer_2", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_2, CAT),
+        new KeyMapping("key.show_de_axelis.answer_3", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_3, CAT),
+        new KeyMapping("key.show_de_axelis.answer_4", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_4, CAT)
     };
+
+    private static int lastSlot = -1;
+
+    /** El nombre de la tecla de cada respuesta (A a D), como la tenga puesta cada quien. */
+    public static String keyName(int i) {
+        return ANS[Math.max(0, Math.min(3, i))].getTranslatedKeyMessage().getString();
+    }
+
+    public static String keyList() {
+        return keyName(0) + " " + keyName(1) + " " + keyName(2) + " " + keyName(3);
+    }
 
     private ShowKeys() {
     }
@@ -97,11 +108,19 @@ public final class ShowKeys {
             while (BUZZ.consumeClick()) {
                 ShowClient.send("buzz");
             }
+            int keepSlot = mc.player.getInventory().selected;
+            boolean picked = false;
             for (int i = 0; i < ANS.length; i++) {
                 while (ANS[i].consumeClick()) {
                     ShowClient.send("ans", "", i);
+                    picked = true;
                 }
             }
+            // las teclas 1-4 tambien cambian la ranura de la barra: durante el show se deja donde estaba
+            if (picked && ShowClient.active() && ShowClient.state.getString("phase").equals("TRIVIA")) {
+                mc.player.getInventory().selected = lastSlot >= 0 ? lastSlot : keepSlot;
+            }
+            lastSlot = mc.player.getInventory().selected;
         }
     }
 }

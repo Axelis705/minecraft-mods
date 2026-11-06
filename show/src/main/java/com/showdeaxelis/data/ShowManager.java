@@ -189,21 +189,41 @@ public final class ShowManager {
                 snd("intro");
                 cue("title", "SHOW DE AXELIS", 0, 0);
                 cue("fx", "confetti", 0, 0);
-                cue("cam", "wide", 0, 0);
+                cue("cam", "wide", 0, 1);
                 Studio.crowd(server, 2, 100);
                 line("show_start", e);
             }
             case "round_start" -> {
                 snd("round_start");
                 cue("title", "100 MEXICANOS DIJERON", e.b(), 0);
-                cue("cam", "wide", 0, 0);
+                cue("cam", "wide", 0, 1);
                 line("round_start", e);
             }
+            case "reps_called" -> {
+                snd("whistle_up");
+                Studio.teleportReps(server, show);
+                cue("cam", "face", 0, 1);
+                line("reps_called", e);
+            }
+            case "q_announced" -> {
+                snd("round_start");
+                cue("cam", "face", 0, 1);
+                line("q_announced", e);
+            }
             case "buzz" -> {
-                snd("buzzer");
-                cue("cam", "pod" + e.side(), 0, 0);
+                Studio.ringBell(server);
+                cue("cam", "pod" + e.side(), 0, 1);
                 line("buzz", e);
             }
+            case "face_other" -> cue("cam", "pod" + e.side(), 0, 1);
+            case "face_won" -> {
+                snd("correct");
+                snd("applause");
+                Studio.crowd(server, 1, 60);
+                cue("cam", "pod" + e.side(), 0, 1);
+                line("face_won", e);
+            }
+            case "chose_play", "chose_pass" -> line(e.type(), e);
             case "dup" -> {
                 snd("whistle_down");
                 line("dup", e);
@@ -230,7 +250,7 @@ public final class ShowManager {
             }
             case "steal" -> {
                 snd("drumroll");
-                cue("cam", "pod" + e.side(), 0, 0);
+                cue("cam", "pod" + e.side(), 0, 1);
                 line("steal", e);
             }
             case "steal_ok" -> {
@@ -245,7 +265,8 @@ public final class ShowManager {
             }
             case "control" -> {
                 snd("whistle_up");
-                cue("cam", "pod" + e.side(), 0, 0);
+                Studio.teleportToPodiums(server, show);
+                cue("cam", "pod" + e.side(), 0, 1);
                 line("control", e);
             }
             case "face_none" -> {
@@ -257,14 +278,14 @@ public final class ShowManager {
                 snd("fanfare");
                 snd("applause_big");
                 cue("fx", "confetti", 0, 0);
-                cue("cam", "wide", 0, 0);
+                cue("cam", "wide", 0, 1);
                 Studio.crowd(server, 2, 120);
                 line(e.side() >= 0 ? "round_win" : "round_none", e);
             }
             case "trivia_start" -> {
                 snd("round_start");
                 cue("title", e.text().isEmpty() ? "TRIVIA" : triviaLabel(), 0, 0);
-                cue("cam", "wide", 0, 0);
+                cue("cam", "wide", 0, 1);
                 line("trivia_start", e);
             }
             case "trivia_answer" -> snd("pop");
@@ -284,7 +305,7 @@ public final class ShowManager {
             case "imp_start" -> {
                 snd("suspense");
                 cue("title", "EL IMPOSTOR", 0, 0);
-                cue("cam", "wide", 0, 0);
+                cue("cam", "wide", 0, 1);
                 line("imp_start", e);
             }
             case "imp_clue" -> snd("pop");
@@ -319,7 +340,7 @@ public final class ShowManager {
             case "taboo_start" -> {
                 snd("round_start");
                 cue("title", "ADIVINA LA PALABRA", 0, 0);
-                cue("cam", "pod" + e.side(), 0, 0);
+                cue("cam", "pod" + e.side(), 0, 1);
                 line("taboo_start", e);
             }
             case "taboo_bad" -> {
@@ -342,7 +363,7 @@ public final class ShowManager {
             case "draw_start" -> {
                 snd("round_start");
                 cue("title", "ADIVINA EL DIBUJO", 0, 0);
-                cue("cam", "board", 0, 0);
+                cue("cam", "board", 0, 1);
                 ShowNet.toAll(new ShowNet.Draw(1, 0, 0, new int[0]));
                 line("draw_start", e);
             }
@@ -377,7 +398,7 @@ public final class ShowManager {
                 snd("applause_big");
                 cue("title", "FINAL", 0, 0);
                 cue("fx", "confetti", 0, 0);
-                cue("cam", "wide", 0, 0);
+                cue("cam", "wide", 0, 1);
                 Studio.crowd(server, 2, 200);
                 line(e.side() >= 0 ? "final" : "final_tie", e);
                 if (e.side() >= 0) {
@@ -430,7 +451,11 @@ public final class ShowManager {
         UUID id = sp.getUUID();
         boolean hide = false;
         switch (show.phase) {
-            case R100 -> show.answer(id, text);
+            case R100 -> {
+                if (!show.manual) {
+                    show.answer(id, text);
+                }
+            }
             case TRIVIA -> {
                 if (show.t != null && !show.t.revealed && show.byId(id) != null) {
                     int c = letter(text, show.t.q.options().size());
@@ -482,7 +507,7 @@ public final class ShowManager {
 
     // ------------------------------------------------------------ acciones
 
-    private static final String[] SHOTS = {"wide", "host", "board", "audience", "pod0", "pod1", "pod2", "pod3", "pod4", "pod5"};
+    private static final String[] SHOTS = {"wide", "host", "board", "face", "audience", "pod0", "pod1", "pod2", "pod3", "pod4", "pod5"};
 
     public static void act(ServerPlayer sp, String act, String s, int n) {
         server = sp.getServer();
@@ -671,12 +696,21 @@ public final class ShowManager {
                 Question100 q = pick100(s);
                 if (q == null) {
                     msg(sp, "No hay preguntas de 100 mexicanos.");
+                } else if (!sh.canPlay100() && sh.segmentFree()) {
+                    msg(sp, "100 mexicanos dijeron es solo para 2 equipos con gente (elige el formato 2 equipos).");
                 } else if (sh.start100(q, Math.max(1, n))) {
                     used.add(q.id());
                 } else {
                     msg(sp, "Termina primero lo que esta en curso.");
                 }
             }
+            case "callreps" -> sh.callReps();
+            case "announce" -> sh.announceQuestion();
+            case "bell" -> sh.hostGiveBell(n);
+            case "hans" -> sh.hostAnswer(n, s);
+            case "botsay" -> Bots.sayNow(sh, now);
+            case "choose" -> sh.choosePlay(n == 1);
+            case "manual" -> sh.manual = !sh.manual;
             case "reveal" -> sh.hostReveal(n);
             case "strike" -> sh.hostStrike();
             case "control" -> sh.takeControl(n);
@@ -726,7 +760,7 @@ public final class ShowManager {
                     String reto = Banks.RETOS.get(RND.nextInt(Banks.RETOS.size()));
                     snd("round_start");
                     cue("title", "RETO ABSURDO", 0, 0);
-                    cue("cam", "pod" + Math.max(0, sh.sideOf(who)), 0, 0);
+                    cue("cam", "pod" + Math.max(0, sh.sideOf(who)), 0, 1);
                     say(who.name + ", tu reto: " + reto);
                 }
             }

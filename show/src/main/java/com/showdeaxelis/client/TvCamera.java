@@ -34,6 +34,7 @@ public final class TvCamera {
     private static float fov = 70f;
     private static float targetFov = 70f;
     private static int shotAge;
+    private static boolean autoShot;
 
     private TvCamera() {
     }
@@ -61,9 +62,15 @@ public final class TvCamera {
         }
     }
 
-    public static void shot(String name) {
+    /** Cambia el plano. Si es automatico (lo pidio un evento del show), a los 4 segundos vuelve a la pantalla. */
+    public static void shot(String name, boolean auto) {
         current = name;
         shotAge = 0;
+        autoShot = auto && !name.equals("board");
+    }
+
+    public static String currentShot() {
+        return current;
     }
 
     public static void release() {
@@ -88,6 +95,10 @@ public final class TvCamera {
         com.showdeaxelis.data.StageData.Info info = new com.showdeaxelis.data.StageData.Info(st.getInt("x"), st.getInt("y"), st.getInt("z"), st.getInt("d"));
         double[] p;
         double[] l;
+        Vec3[] follow = followShot(name);
+        if (follow != null) {
+            return follow;
+        }
         if (name.startsWith("pod")) {
             int side = 0;
             try {
@@ -104,6 +115,11 @@ public final class TvCamera {
                     p = Studio.atD(info, 14, 4.9, 46);
                     l = Studio.atD(info, 21, 3.8, 33);
                     targetFov = 40f;
+                }
+                case "face" -> {
+                    p = Studio.atD(info, 0, 5.2, 21);
+                    l = Studio.atD(info, 0, 3.4, 31);
+                    targetFov = 52f;
                 }
                 case "board" -> {
                     p = Studio.atD(info, 0, 9, 34);
@@ -127,6 +143,48 @@ public final class TvCamera {
         Direction f = Studio.dirOf(info.dir());
         Direction r = f.getClockWise();
         return new Vec3[] {new Vec3(p[0] + r.getStepX() * sway, p[1], p[2] + r.getStepZ() * sway), new Vec3(l[0], l[1], l[2])};
+    }
+
+    private static net.minecraft.world.entity.player.Player findPlayer(String name) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null || name == null || name.isEmpty()) {
+            return null;
+        }
+        for (net.minecraft.world.entity.player.Player p : mc.level.players()) {
+            if (p.getName().getString().equals(name)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    /** Plano de frente a una persona de verdad (el presentador o quien da la cara de un lado). Null si no esta cerca. */
+    private static Vec3[] followShot(String name) {
+        String who = "";
+        if (name.equals("host")) {
+            who = ShowClient.state.getString("hostName");
+        } else if (name.startsWith("pod")) {
+            try {
+                var sd = ShowClient.state.getList("sides", 10).getCompound(Integer.parseInt(name.substring(3)));
+                who = sd.getString("rep");
+                if (who.isEmpty() && !sd.getList("m", 8).isEmpty()) {
+                    who = sd.getList("m", 8).getString(0);
+                }
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        var pl = findPlayer(who);
+        if (pl == null) {
+            return null;
+        }
+        Vec3 eye = pl.getEyePosition();
+        double yaw = Math.toRadians(pl.getYRot());
+        Vec3 front = new Vec3(-Math.sin(yaw), 0, Math.cos(yaw));
+        targetFov = name.equals("host") ? 45f : 40f;
+        double sway = Math.sin(ShowClient.clientTick * 0.03) * 0.3;
+        Vec3 side = new Vec3(front.z, 0, -front.x);
+        Vec3 pos = eye.add(front.scale(3.8)).add(side.scale(sway)).add(0, 0.25, 0);
+        return new Vec3[] {pos, eye.add(0, -0.05, 0)};
     }
 
     /** Donde (x local) esta el lado indicado, segun el formato de la partida. */
@@ -183,6 +241,11 @@ public final class TvCamera {
             mc.setCameraEntity(cam);
         }
         shotAge++;
+        if (autoShot && shotAge > 90) {
+            current = "board";
+            autoShot = false;
+            shotAge = 0;
+        }
         Vec3 d = pl[1].subtract(pl[0]);
         float yaw = (float) Math.toDegrees(Math.atan2(-d.x, d.z));
         float pitch = (float) -Math.toDegrees(Math.atan2(d.y, Math.hypot(d.x, d.z)));
