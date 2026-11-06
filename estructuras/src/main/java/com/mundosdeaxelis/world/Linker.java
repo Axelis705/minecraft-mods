@@ -119,6 +119,9 @@ final class Linker {
     private static boolean passName(String s) {
         int k = s.indexOf('[');
         String n = k < 0 ? s : s.substring(0, k);
+        if (n.startsWith("mundos_de_axelis:est_")) {
+            return EstIds.passable(n);
+        }
         if (PASS.contains(n)) {
             return true;
         }

@@ -42,7 +42,11 @@ if len(sys.argv) <= 1:
     for f in ficha:
         kind = 'soft' if f.get('soft') else ('wall' if f['kind'] == 'wall' else ('hang' if f['kind'] == 'hang' else 'floor'))
         L.append('            case "%s" -> "%s";' % (f['id'], kind))
-    L += ['            default -> "";', '        };', '    }', '', '    public static boolean isTall(String name) {', '        if (name.startsWith("mundos_de_axelis:")) {',
+    L += ['            default -> "";', '        };', '    }', '', '    /** true si se puede atravesar (tapices, farolillos, jaulas colgantes...): el recorrido de comprobacion lo cuenta como aire. */',
+          '    public static boolean passable(String name) {', '        if (name.startsWith("mundos_de_axelis:")) {', '            name = name.substring(17);', '        }', '        return switch (name) {']
+    nc = [f['id'] for f in ficha if not f['collide']]
+    L.append('            case ' + ', '.join('"%s"' % t for t in nc) + ' -> true;')
+    L += ['            default -> false;', '        };', '    }', '', '    public static boolean isTall(String name) {', '        if (name.startsWith("mundos_de_axelis:")) {',
           '            name = name.substring(17);', '        }', '        return switch (name) {']
     tall = [f['id'] for f in ficha if f['tall']]
     L.append('            case ' + ', '.join('"%s"' % t for t in tall) + ' -> true;')

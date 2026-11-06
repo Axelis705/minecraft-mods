@@ -80,6 +80,9 @@ final class DesignTorre {
         exterior(b, a);
         a.door(out, rooms[1][0], fy(0), 0, 5, 6, true);
         a.door(balcon, rooms[2][0], fy(1), 0, 3, 3, true);
+        a.join(rooms[1][0], rooms[2][0]);
+        a.join(rooms[1][0], rooms[2][1]);
+        a.door(core, rooms[2][1], fy(1), 0, 3, 3, true);
         for (int i = -1; i <= 7; i++) {
             dress(b, a, rooms[i + 1], i);
         }
@@ -285,6 +288,23 @@ final class DesignTorre {
     private static Arq.Sp[] rooms(StructBp b, Arq a, Arq.Sp core, int i) {
         int y = fy(i);
         int h = rad(i) - 2;
+        if (i == 0) {
+            // Gran Salón: el piso 0 y el piso 1 son una sola nave de 15 bloques de alto (la galería del piso 1 se construye en TorreInterior)
+            Arq.Sp hall = a.room("salon", -h, CZ - h, h, CZ - 3, y, 15);
+            a.add(hall, -h, CZ + 3, h, CZ + h, y, 15);
+            a.add(hall, -h, CZ - 2, -3, CZ + 2, y, 15);
+            a.add(hall, 3, CZ - 2, h, CZ + 2, y, 15);
+            trim(b, 0);
+            trim(b, 1);
+            a.door(core, hall);
+            return new Arq.Sp[]{hall};
+        }
+        if (i == 1) {
+            Arq.Sp gal = a.ghost("galeria", -h, CZ - h, h, CZ - h + 2, y, 7);
+            Arq.Sp bridge = a.ghost("puente", -2, CZ - 7, 2, CZ - 3, y, 7);
+            a.join(gal, bridge);
+            return new Arq.Sp[]{gal, bridge};
+        }
         if (i >= 0 && i % 2 == 0) {
             Arq.Sp ring = a.room("anillo" + i, -h, CZ - h, h, CZ - 3, y, 7);
             a.add(ring, -h, CZ + 3, h, CZ + h, y, 7);
@@ -702,8 +722,9 @@ final class DesignTorre {
         int f = fy(i);
         switch (i) {
             case -1 -> crypt(b, a, rs, f);
-            case 0 -> vestibule(b, a, rs[0], f);
-            case 1 -> library(b, a, rs, f);
+            case 0 -> TorreInterior.hall(b);
+            case 1 -> {
+            }
             case 2 -> alchemy(b, a, rs[0], f);
             case 3 -> quarters(b, a, rs, f);
             case 4 -> enchanting(b, a, rs[0], f);

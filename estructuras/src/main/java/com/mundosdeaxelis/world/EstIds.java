@@ -66,6 +66,17 @@ public final class EstIds {
         };
     }
 
+    /** true si se puede atravesar (tapices, farolillos, jaulas colgantes...): el recorrido de comprobacion lo cuenta como aire. */
+    public static boolean passable(String name) {
+        if (name.startsWith("mundos_de_axelis:")) {
+            name = name.substring(17);
+        }
+        return switch (name) {
+            case "est_arana", "est_tapiz_estrellas", "est_tapiz_arcano", "est_tapiz_real", "est_tapiz_arbol", "est_tapiz_mapa", "est_jaula", "est_grilletes" -> true;
+            default -> false;
+        };
+    }
+
     public static boolean isTall(String name) {
         if (name.startsWith("mundos_de_axelis:")) {
             name = name.substring(17);

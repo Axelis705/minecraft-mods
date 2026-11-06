@@ -4,12 +4,12 @@ package com.mundosdeaxelis.world;
  * Recorre cada estructura como lo haría un jugador desde la entrada (camina, salta 1 bloque, baja hasta 3, usa escaleras de mano)
  * y falla si queda alguna sala cerrada sin acceso o una zona a la que se llega y de la que no se puede volver.
  * Los topes de las tres estructuras antiguas son lo que queda de cornisas y azoteas que el unificador no puede (ni debe) abrir;
- * la torre nueva está planificada sala por sala: solo se tolera el borde superior de una estantería de cuatro bloques (un adorno, no una sala).
+ * la torre nueva está planificada sala por sala: no se tolera ninguna sala sin acceso ni ninguna trampa.
  */
 public class ConectividadTest {
     public static void main(String[] args) {
         String[] kinds = {"bosque", "forja", "hielo", "torre"};
-        int[] maxRooms = {3, 16, 2, 1};
+        int[] maxRooms = {3, 16, 2, 0};
         int[] maxTraps = {2, 3, 2, 0};
         int fails = 0;
         for (int i = 0; i < kinds.length; i++) {
