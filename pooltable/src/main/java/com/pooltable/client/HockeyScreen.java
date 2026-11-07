@@ -206,11 +206,47 @@ public final class HockeyScreen extends Screen {
         AirHockeyBE.localZ = Math.max(-HockeyPhysics.HW + HockeyPhysics.MALLET_R, Math.min(HockeyPhysics.HW - HockeyPhysics.MALLET_R, nz));
     }
 
+    /** Un rectángulo con las esquinas redondeadas (a base de rectángulos). */
+    private static void round(GuiGraphics g, int x, int y, int w, int h, int color) {
+        g.fill(x + 3, y, x + w - 3, y + h, color);
+        g.fill(x + 1, y + 1, x + w - 1, y + h - 1, color);
+        g.fill(x, y + 3, x + w, y + h - 3, color);
+    }
+
+    /** El marcador tipo píldora: tu lado en lima, el rival en magenta, el marcador en el centro. */
+    private void drawPill(GuiGraphics g, int cx, int y, String nameA, String nameB, int sa, int sb) {
+        int wTotal = 260;
+        int h = 28;
+        int x = cx - wTotal / 2;
+        round(g, x - 2, y - 2, wTotal + 4, h + 4, 0xAAFFFFFF);
+        round(g, x, y, wTotal, h, 0xFF16405E);
+        round(g, x + 3, y + 3, wTotal / 2 - 3 - 22, h - 6, 0xFF7AB82A);
+        round(g, x + wTotal / 2 + 22, y + 3, wTotal / 2 - 3 - 22, h - 6, 0xFFB02A86);
+        round(g, cx - 22, y + 2, 44, h - 4, 0xFFEAF6FF);
+        g.fill(x + 6, y + 4, x + wTotal / 2 - 24, y + 7, 0x55FFFFFF);
+        g.fill(x + wTotal / 2 + 24, y + 4, x + wTotal - 6, y + 7, 0x55FFFFFF);
+        String a = font.plainSubstrByWidth(nameA, 90);
+        String b = font.plainSubstrByWidth(nameB, 90);
+        g.drawString(font, a, x + 10, y + 10, 0xFFFFFFFF, true);
+        g.drawString(font, b, x + wTotal - 10 - font.width(b), y + 10, 0xFFFFFFFF, true);
+        String score = sa + " - " + sb;
+        g.pose().pushPose();
+        g.pose().translate(cx, y + 5, 0);
+        g.pose().scale(1.5F, 1.5F, 1.0F);
+        g.drawString(font, score, -font.width(score) / 2, 0, 0xFF16405E, false);
+        g.pose().popPose();
+        String first = Component.translatable("pooltable.hockey.ui.first", HockeyMatch.WIN).getString();
+        g.pose().pushPose();
+        g.pose().translate(cx, y + h - 6, 0);
+        g.pose().scale(0.5F, 0.5F, 1.0F);
+        g.drawString(font, first, -font.width(first) / 2, 0, 0xFF5E86A4, false);
+        g.pose().popPose();
+    }
+
     @Override
     public void render(GuiGraphics g, int mx, int my, float pt) {
         AirHockeyBE t = table();
         int cx = width / 2;
-        g.fill(0, 0, width, 30, 0x66000000);
         if (t == null) {
             super.render(g, mx, my, pt);
             return;
@@ -218,31 +254,42 @@ public final class HockeyScreen extends Screen {
         int role = role();
         String nameA = t.pname[0].isEmpty() ? "-" : t.pname[0];
         String nameB = t.pname[1].isEmpty() ? "-" : t.pname[1];
-        Component sa = Component.literal(nameA + (role == 0 ? " " + Component.translatable("pooltable.hockey.ui.you").getString() : "")).withStyle(ChatFormatting.RED);
-        Component sb = Component.literal(nameB + (role == 1 ? " " + Component.translatable("pooltable.hockey.ui.you").getString() : "")).withStyle(ChatFormatting.AQUA);
-        g.drawString(font, sa, 10, 11, 0xFFFFFF, true);
-        g.drawString(font, sb, width - 10 - font.width(sb), 11, 0xFFFFFF, true);
-        g.pose().pushPose();
-        g.pose().translate(cx, 6, 0);
-        g.pose().scale(2.4F, 2.4F, 1.0F);
-        String score = t.match.scoreA + " : " + t.match.scoreB;
-        g.drawString(font, score, -font.width(score) / 2, 0, 0xFFFFFF, true);
-        g.pose().popPose();
+        String you = Component.translatable("pooltable.hockey.ui.you").getString();
+        drawPill(g, cx, 6, nameA + (role == 0 ? " " + you : ""), nameB + (role == 1 ? " " + you : ""), t.match.scoreA, t.match.scoreB);
 
         Component big = null;
+        int bigColor = 0xFFFFD84A;
         switch (t.match.state) {
-            case COUNTDOWN -> big = Component.literal(String.valueOf(Math.max(1, (int) Math.ceil(t.timer)))).withStyle(ChatFormatting.GOLD);
-            case GOAL -> big = Component.translatable("pooltable.hockey.ui.goal").withStyle(ChatFormatting.GOLD);
-            case OVER -> big = Component.translatable("pooltable.hockey.ui.wins", t.match.scoreA > t.match.scoreB ? nameA : nameB).withStyle(ChatFormatting.GREEN);
-            case WAITING -> big = Component.translatable("pooltable.hockey.ui.waiting").withStyle(ChatFormatting.YELLOW);
+            case COUNTDOWN -> big = Component.literal(String.valueOf(Math.max(1, (int) Math.ceil(t.timer))));
+            case GOAL -> {
+                big = Component.translatable("pooltable.hockey.ui.goal");
+                bigColor = 0xFFB4F03C;
+            }
+            case OVER -> {
+                big = Component.translatable("pooltable.hockey.ui.wins", t.match.scoreA > t.match.scoreB ? nameA : nameB);
+                bigColor = 0xFF7CFFB0;
+            }
+            case WAITING -> big = Component.translatable("pooltable.hockey.ui.waiting");
             default -> {
             }
         }
         if (big != null) {
+            // el texto "salta" al aparecer: crece pasando de su tamaño y se asienta
+            double el = t.match.state == HockeyMatch.State.GOAL ? Math.max(0, 1.6 - t.timer) : t.match.state == HockeyMatch.State.COUNTDOWN ? 1.0 - (t.timer - Math.floor(t.timer)) : 1.0;
+            float k = (float) Math.min(1.0, el / 0.35);
+            float c1 = 1.70158F;
+            float pop = 1.0F + (c1 + 1.0F) * (float) Math.pow(k - 1.0F, 3) + c1 * (float) Math.pow(k - 1.0F, 2);
+            float sc = 3.2F * Math.max(0.2F, pop);
             g.pose().pushPose();
-            g.pose().translate(cx, 44, 0);
-            g.pose().scale(3.0F, 3.0F, 1.0F);
-            g.drawString(font, big, -font.width(big) / 2, 0, 0xFFFFFF, true);
+            g.pose().translate(cx, 52, 0);
+            g.pose().scale(sc, sc, 1.0F);
+            String str = big.getString();
+            int w2 = font.width(str);
+            int x0 = -w2 / 2;
+            for (int[] d : new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {1, 1}}) {
+                g.drawString(font, str, x0 + d[0], d[1], 0xFF123A5C, false);
+            }
+            g.drawString(font, str, x0, 0, bigColor, false);
             g.pose().popPose();
         }
         Component hint;

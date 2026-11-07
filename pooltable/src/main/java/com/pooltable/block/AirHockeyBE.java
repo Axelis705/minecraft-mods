@@ -131,6 +131,18 @@ public class AirHockeyBE extends BlockEntity {
         p.connection.teleport(x, y, z, look.toYRot(), 20.0F);
     }
 
+    /** Un chorro de partículas en un punto de la cancha (x a lo largo, z a lo ancho, en el marco de la mesa). */
+    private void burst(net.minecraft.core.particles.ParticleOptions type, double x, double z, double up, int count, double spread, double speed) {
+        if (!(level instanceof ServerLevel sl)) {
+            return;
+        }
+        Vec3 c = center();
+        Direction f = facing();
+        double wx = c.x + f.getStepX() * x - f.getStepZ() * z;
+        double wz = c.z + f.getStepZ() * x + f.getStepX() * z;
+        sl.sendParticles(type, wx, c.y + up, wz, count, spread, spread * 0.6, spread, speed);
+    }
+
     private static String diffName(int d) {
         return d == 0 ? "facil" : d == 1 ? "normal" : "dificil";
     }
@@ -242,6 +254,11 @@ public class AirHockeyBE extends BlockEntity {
             }
             float v = (float) Math.min(1.0, 0.25 + ph.hitSpeed / 6.0);
             sound(SoundEvents.BAMBOO_WOOD_HIT, ph.px, ph.pz, v, 1.3F);
+            burst(net.minecraft.core.particles.ParticleTypes.CRIT, ph.px, ph.pz, 0.06, 4 + (int) (ph.hitSpeed * 2), 0.05, 0.25);
+            burst(net.minecraft.core.particles.ParticleTypes.END_ROD, ph.px, ph.pz, 0.08, 2, 0.03, 0.02);
+        }
+        if (match.state == HockeyMatch.State.PLAYING && Math.hypot(ph.pvx, ph.pvz) > 3.0 && (level.getGameTime() & 1L) == 0L) {
+            burst(net.minecraft.core.particles.ParticleTypes.END_ROD, ph.px, ph.pz, 0.04, 1, 0.01, 0.0);
         }
         if (ph.wallHits > 0) {
             sound(SoundEvents.WOOD_HIT, ph.px, ph.pz, 0.5F, 1.5F);
@@ -250,6 +267,10 @@ public class AirHockeyBE extends BlockEntity {
             int g = match.goalEvent;
             String who = pname[g == 1 ? 0 : 1];
             sound(SoundEvents.PLAYER_LEVELUP, 0, 0, 0.8F, 1.2F);
+            double gx = g == 1 ? HockeyPhysics.HL : -HockeyPhysics.HL; // la portería donde entró el disco
+            burst(net.minecraft.core.particles.ParticleTypes.FIREWORK, gx, 0, 0.15, 40, 0.18, 0.12);
+            burst(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, gx, 0, 0.2, 14, 0.25, 0.0);
+            sound(SoundEvents.FIREWORK_ROCKET_TWINKLE, gx, 0, 0.9F, 1.0F);
             if (match.state == HockeyMatch.State.OVER) {
                 broadcast(Component.translatable("pooltable.hockey.win", pname[match.winner], match.scoreA, match.scoreB), false);
             } else {

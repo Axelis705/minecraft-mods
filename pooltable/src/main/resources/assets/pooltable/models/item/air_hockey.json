@@ -4,7 +4,7 @@
     "surface": "pooltable:block/hockey_surface",
     "black": "pooltable:block/hockey_black",
     "red": "pooltable:block/hockey_red",
-    "blue": "pooltable:block/hockey_blue",
+    "blue": "pooltable:block/hockey_lime",
     "particle": "pooltable:block/hockey_body"
   },
   "elements": [

@@ -11,6 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -33,6 +34,12 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
     private static final ResourceLocation BLUE = tex("block/hockey_blue");
     private static final ResourceLocation BLACK = tex("block/hockey_black");
     private static final ResourceLocation WHITE = tex("block/hockey_white");
+    private static final ResourceLocation RAIL = tex("block/hockey_rail");
+    private static final ResourceLocation LIME = tex("block/hockey_lime");
+    private static final ResourceLocation PUCK = tex("block/hockey_puck");
+    private static final ResourceLocation GLASS_LIME = tex("block/hockey_glass_lime");
+    private static final ResourceLocation GLASS_MAGENTA = tex("block/hockey_glass_magenta");
+    private static final int FULL = LightTexture.FULL_BRIGHT;
 
     private static final float TOP = 0.875F;
     private static final float SURF = 0.80F;
@@ -139,20 +146,21 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
             vtx(b, p, 3, 0.002F, 1, 1, 1, light, 0, -1, 0);
             vtx(b, p, 0, 0.002F, 1, 0, 1, light, 0, -1, 0);
         }
-        // borde superior: franjas a los lados y en los extremos (con el hueco de la portería)
-        top(b, ps, light, 0, 3, -1.0F, -ZW, TOP);
-        top(b, ps, light, 0, 3, ZW, 1.0F, TOP);
-        top(b, ps, light, 0, X0, -ZW, -GOAL, TOP);
-        top(b, ps, light, 0, X0, GOAL, ZW, TOP);
-        top(b, ps, light, X1, 3, -ZW, -GOAL, TOP);
-        top(b, ps, light, X1, 3, GOAL, ZW, TOP);
+        // borde superior: franjas a los lados y en los extremos (con el hueco de la portería), cian y brillante
+        VertexConsumer rail = buf.getBuffer(RenderType.entityCutoutNoCull(RAIL));
+        top(rail, ps, FULL, 0, 3, -1.0F, -ZW, TOP);
+        top(rail, ps, FULL, 0, 3, ZW, 1.0F, TOP);
+        top(rail, ps, FULL, 0, X0, -ZW, -GOAL, TOP);
+        top(rail, ps, FULL, 0, X0, GOAL, ZW, TOP);
+        top(rail, ps, FULL, X1, 3, -ZW, -GOAL, TOP);
+        top(rail, ps, FULL, X1, 3, GOAL, ZW, TOP);
         // paredes interiores del borde
-        wallZ(b, ps, light, X0, X1, SURF, TOP, ZW, -1);
-        wallZ(b, ps, light, X0, X1, SURF, TOP, -ZW, 1);
-        wallX(b, ps, light, GOAL, ZW, SURF, TOP, X0, 1);
-        wallX(b, ps, light, -ZW, -GOAL, SURF, TOP, X0, 1);
-        wallX(b, ps, light, GOAL, ZW, SURF, TOP, X1, -1);
-        wallX(b, ps, light, -ZW, -GOAL, SURF, TOP, X1, -1);
+        wallZ(rail, ps, FULL, X0, X1, SURF, TOP, ZW, -1);
+        wallZ(rail, ps, FULL, X0, X1, SURF, TOP, -ZW, 1);
+        wallX(rail, ps, FULL, GOAL, ZW, SURF, TOP, X0, 1);
+        wallX(rail, ps, FULL, -ZW, -GOAL, SURF, TOP, X0, 1);
+        wallX(rail, ps, FULL, GOAL, ZW, SURF, TOP, X1, -1);
+        wallX(rail, ps, FULL, -ZW, -GOAL, SURF, TOP, X1, -1);
         // las porterías: un pozo oscuro detrás de cada hueco
         VertexConsumer k = buf.getBuffer(RenderType.entityCutoutNoCull(BLACK));
         top(k, ps, light, 0, X0, -GOAL, GOAL, 0.6F);
@@ -166,11 +174,10 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
         // la superficie de juego
         VertexConsumer s = buf.getBuffer(RenderType.entityCutoutNoCull(SURFACE));
         top(s, ps, light, X0, X1, -ZW, ZW, SURF);
-        // líneas: la del centro y un aro en el centro, en rojo; las de cada portería, en azul
-        VertexConsumer r = buf.getBuffer(RenderType.entityCutoutNoCull(RED));
-        top(r, ps, light, 1.5F - 0.012F, 1.5F + 0.012F, -ZW, ZW, SURF + LINE);
-        ringLine(r, ps, light, 1.5F, 0.0F, 0.28F, SURF + LINE);
+        // líneas cian: la del centro, el aro central y el arco de cada portería
         VertexConsumer bl = buf.getBuffer(RenderType.entityCutoutNoCull(BLUE));
+        top(bl, ps, light, 1.5F - 0.012F, 1.5F + 0.012F, -ZW, ZW, SURF + LINE);
+        ringLine(bl, ps, light, 1.5F, 0.0F, 0.28F, SURF + LINE);
         ringLine(bl, ps, light, X0, 0.0F, 0.34F, SURF + LINE);
         ringLine(bl, ps, light, X1, 0.0F, 0.34F, SURF + LINE);
     }
@@ -216,14 +223,15 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
             vtx(vc, p, cx + c0 * r, y1, cz + s0 * r, 0, 1, light, nx, 0, nz);
             // tapa: un triángulo (el centro se repite)
             vtx(vc, p, cx, y1, cz, 0.5F, 0.5F, light, 0, 1, 0);
-            vtx(vc, p, cx + c1 * r, y1, cz + s1 * r, 1, 0, light, 0, 1, 0);
-            vtx(vc, p, cx + c0 * r, y1, cz + s0 * r, 0, 0, light, 0, 1, 0);
+            vtx(vc, p, cx + c1 * r, y1, cz + s1 * r, 0.5F + c1 * 0.5F, 0.5F + s1 * 0.5F, light, 0, 1, 0);
+            vtx(vc, p, cx + c0 * r, y1, cz + s0 * r, 0.5F + c0 * 0.5F, 0.5F + s0 * 0.5F, light, 0, 1, 0);
             vtx(vc, p, cx, y1, cz, 0.5F, 0.5F, light, 0, 1, 0);
         }
     }
 
     private void drawPlay(AirHockeyBE be, PoseStack ps, MultiBufferSource buf, int light) {
         boolean live = be.match.state != HockeyMatch.State.IDLE;
+        java.util.List<float[]> glass = new java.util.ArrayList<>(2);
         // los mazos siempre se ven (en reposo, cada uno en su sitio); se suavizan hacia lo que manda el servidor
         for (int s = 0; s < 2; s++) {
             double tx = live && be.clientInit ? be.cmx[s] : (s == 0 ? -0.9 : 0.9);
@@ -239,16 +247,32 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
             }
             float ux = 1.5F + (float) sx[s];
             float uz = (float) sz[s];
-            ResourceLocation col = s == 0 ? RED : BLUE;
-            cylinder(buf.getBuffer(RenderType.entityCutoutNoCull(col)), ps, light, ux, uz, (float) HockeyPhysics.MALLET_R, SURF, SURF + 0.025F);
-            cylinder(buf.getBuffer(RenderType.entityCutoutNoCull(WHITE)), ps, light, ux, uz, 0.035F, SURF + 0.025F, SURF + 0.075F);
+            float mr = (float) HockeyPhysics.MALLET_R;
+            // base de color + tallo + esfera de vidrio translúcido (se dibuja al final por ser translúcida)
+            cylinder(buf.getBuffer(RenderType.entityCutoutNoCull(s == 0 ? LIME : RED)), ps, light, ux, uz, mr, SURF, SURF + 0.022F);
+            cylinder(buf.getBuffer(RenderType.entityCutoutNoCull(WHITE)), ps, light, ux, uz, 0.03F, SURF + 0.022F, SURF + 0.05F);
+            glass.add(new float[] {ux, uz, s});
         }
         if (live && be.clientInit && be.match.state != HockeyMatch.State.WAITING) {
             double[] pk = be.puckNow();
-            cylinder(buf.getBuffer(RenderType.entityCutoutNoCull(BLACK)), ps, light, 1.5F + (float) pk[0], (float) pk[1], (float) HockeyPhysics.PUCK_R, SURF, SURF + 0.02F);
+            puck(buf, ps, 1.5F + (float) pk[0], (float) pk[1]);
         } else if (!live) {
-            cylinder(buf.getBuffer(RenderType.entityCutoutNoCull(BLACK)), ps, light, 1.5F, 0.0F, (float) HockeyPhysics.PUCK_R, SURF, SURF + 0.02F);
+            puck(buf, ps, 1.5F, 0.0F);
         }
+        for (float[] g : glass) {
+            VertexConsumer gv = buf.getBuffer(RenderType.entityTranslucent(g[2] == 0 ? GLASS_LIME : GLASS_MAGENTA));
+            float rad = 0.075F;
+            ps.pushPose();
+            ps.translate(g[0], SURF + 0.03F + rad, g[1]);
+            ps.scale(rad, rad, rad);
+            BallMesh.draw(ps, gv, FULL);
+            ps.popPose();
+        }
+    }
+
+    /** El disco: lima con aro oscuro, y un brillo propio para que se vea bien desde la cámara. */
+    private static void puck(MultiBufferSource buf, PoseStack ps, float x, float z) {
+        cylinder(buf.getBuffer(RenderType.entityCutoutNoCull(PUCK)), ps, FULL, x, z, (float) HockeyPhysics.PUCK_R, SURF, SURF + 0.02F);
     }
 
     @Override

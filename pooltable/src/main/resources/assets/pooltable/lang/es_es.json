@@ -142,5 +142,6 @@
   "pooltable.hockey.ui.waiting": "Esperando rival...",
   "pooltable.hockey.ui.choose": "Elige cómo jugar",
   "pooltable.hockey.ui.spectating": "Estás mirando la partida",
-  "pooltable.hockey.ui.hint": "Mueve el ratón para mover tu mazo (no pasa del centro). Esc para salir. Gana el primero a %s."
+  "pooltable.hockey.ui.hint": "Mueve el ratón para mover tu mazo (no pasa del centro). Esc para salir. Gana el primero a %s.",
+  "pooltable.hockey.ui.first": "primero a %s"
 }
