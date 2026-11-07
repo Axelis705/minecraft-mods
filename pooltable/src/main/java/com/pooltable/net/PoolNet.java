@@ -9,7 +9,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class PoolNet {
-    private static final String PROTOCOL = "1";
+    private static final String PROTOCOL = "2";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(PoolTable.MODID, "main"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     private static boolean registered = false;
@@ -29,6 +29,9 @@ public final class PoolNet {
         CHANNEL.registerMessage(4, HockeyActionPacket.class, HockeyActionPacket::encode, HockeyActionPacket::decode, HockeyActionPacket::handle);
         CHANNEL.registerMessage(5, HockeyMovePacket.class, HockeyMovePacket::encode, HockeyMovePacket::decode, HockeyMovePacket::handle);
         CHANNEL.registerMessage(6, HockeySyncPacket.class, HockeySyncPacket::encode, HockeySyncPacket::decode, HockeySyncPacket::handle);
+        CHANNEL.registerMessage(7, VolleySyncPacket.class, VolleySyncPacket::encode, VolleySyncPacket::decode, VolleySyncPacket::handle);
+        CHANNEL.registerMessage(8, VolleyMenuPacket.class, VolleyMenuPacket::encode, VolleyMenuPacket::decode, VolleyMenuPacket::handle);
+        CHANNEL.registerMessage(9, VolleyHitPacket.class, VolleyHitPacket::encode, VolleyHitPacket::decode, VolleyHitPacket::handle);
     }
 
     public static void sendToServer(Object pkt) {

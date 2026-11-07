@@ -4,6 +4,7 @@ import com.pooltable.PoolTable;
 import com.pooltable.block.AirHockeyBlock;
 import com.pooltable.block.BowlingLaneBlock;
 import com.pooltable.block.PoolTableBlock;
+import com.pooltable.block.VolleyCourtBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -26,6 +27,10 @@ public final class ModBlocks {
 
     public static final RegistryObject<Block> AIR_HOCKEY = BLOCKS.register("air_hockey", () -> new AirHockeyBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(2.0F, 6.0F).sound(SoundType.METAL)
+                    .noOcclusion().pushReaction(PushReaction.BLOCK)));
+
+    public static final RegistryObject<Block> VOLLEY_COURT = BLOCKS.register("volley_court", () -> new VolleyCourtBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.5F, 6.0F).sound(SoundType.WOOL)
                     .noOcclusion().pushReaction(PushReaction.BLOCK)));
 
     private ModBlocks() {

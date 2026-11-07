@@ -18,6 +18,7 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(ModBlockEntities.POOL_TABLE.get(), PoolTableRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.BOWLING_LANE.get(), BowlingLaneRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.AIR_HOCKEY.get(), AirHockeyRenderer::new);
+        e.registerBlockEntityRenderer(ModBlockEntities.VOLLEY_COURT.get(), VolleyRenderer::new);
     }
 
     @SubscribeEvent
@@ -25,5 +26,6 @@ public final class ClientModEvents {
         e.registerAboveAll("pool_power", PoolHud::render);
         e.registerAboveAll("pool_match", PoolMatchHud::render);
         e.registerAboveAll("bowling_hud", BowlingHud::render);
+        e.registerAboveAll("volley_hud", VolleyHud::render);
     }
 }

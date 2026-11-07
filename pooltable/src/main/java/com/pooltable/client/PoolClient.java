@@ -61,4 +61,22 @@ public final class PoolClient {
             mc.setScreen(new PoolMenuScreen(pos));
         }
     }
+
+    public static void onVolleySync(com.pooltable.net.VolleySyncPacket m) {
+        if (Minecraft.getInstance().level == null) {
+            return;
+        }
+        BlockEntity be = Minecraft.getInstance().level.getBlockEntity(m.pos);
+        if (be instanceof com.pooltable.block.VolleyCourtBE t) {
+            t.clientReceive(m);
+            VolleyClient.onSync(t, m);
+        }
+    }
+
+    public static void openVolley(net.minecraft.core.BlockPos pos) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level != null && mc.level.getBlockEntity(pos) instanceof com.pooltable.block.VolleyCourtBE) {
+            mc.setScreen(new VolleyMenuScreen(pos));
+        }
+    }
 }

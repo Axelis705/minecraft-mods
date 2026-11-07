@@ -4,6 +4,7 @@ import com.pooltable.PoolTable;
 import com.pooltable.block.AirHockeyBE;
 import com.pooltable.block.BowlingLaneBE;
 import com.pooltable.block.PoolTableBE;
+import com.pooltable.block.VolleyCourtBE;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,6 +21,9 @@ public final class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<AirHockeyBE>> AIR_HOCKEY = TYPES.register("air_hockey",
             () -> BlockEntityType.Builder.of(AirHockeyBE::new, ModBlocks.AIR_HOCKEY.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<VolleyCourtBE>> VOLLEY_COURT = TYPES.register("volley_court",
+            () -> BlockEntityType.Builder.of(VolleyCourtBE::new, ModBlocks.VOLLEY_COURT.get()).build(null));
 
     private ModBlockEntities() {
     }

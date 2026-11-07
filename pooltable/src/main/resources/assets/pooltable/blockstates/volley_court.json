@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=east": {
+   "model": "pooltable:block/volley_court"
+  },
+  "facing=south": {
+   "model": "pooltable:block/volley_court",
+   "y": 90
+  },
+  "facing=west": {
+   "model": "pooltable:block/volley_court",
+   "y": 180
+  },
+  "facing=north": {
+   "model": "pooltable:block/volley_court",
+   "y": 270
+  }
+ }
+}

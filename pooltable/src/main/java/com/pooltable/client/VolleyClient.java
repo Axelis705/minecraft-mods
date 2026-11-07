@@ -1,0 +1,294 @@
+package com.pooltable.client;
+
+import com.pooltable.PoolTable;
+import com.pooltable.block.VolleyCourtBE;
+import com.pooltable.game.VolleyMatch;
+import com.pooltable.net.PoolNet;
+import com.pooltable.net.VolleyHitPacket;
+import com.pooltable.net.VolleySyncPacket;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+/**
+ * Todo lo del lado del jugador en una partida de voleibol: saber que estoy jugando (el servidor manda mi id de entidad), la cámara de cancha
+ * (detrás de tu línea de fondo, mirando a la red), mover y apuntar con WASD según esa cámara, y los clics (izquierdo = golpear, derecho = colocar).
+ * Con la tecla C se vuelve a la cámara normal; entonces WASD sigue la vista normal.
+ */
+@Mod.EventBusSubscriber(modid = PoolTable.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+public final class VolleyClient {
+    /** La cancha donde estoy jugando (o null). */
+    public static VolleyCourtBE court = null;
+    public static int myIdx = -1;
+    public static int myTeam = -1;
+    public static boolean arcade = true;
+    /** Hacia dónde apunto ahora (de WASD): adelante = profundo, a la derecha. */
+    public static float aimFwd = 0;
+    public static float aimRight = 0;
+
+    private static long lastSync = 0;
+    private static Entity cam = null;
+    private static boolean camActive = false;
+    private static boolean failed = false;
+
+    private VolleyClient() {
+    }
+
+    public static boolean playing() {
+        return court != null && myIdx >= 0;
+    }
+
+    public static boolean camOn() {
+        return camActive;
+    }
+
+    // ------------------------------------------------------------------ estado
+
+    public static void onSync(VolleyCourtBE be, VolleySyncPacket m) {
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer me = mc.player;
+        if (me == null) {
+            return;
+        }
+        int found = -1;
+        if (m.state != VolleyMatch.State.IDLE.ordinal()) {
+            for (int i = 0; i < m.count; i++) {
+                if (m.eid[i] == me.getId()) {
+                    found = i;
+                }
+            }
+        }
+        if (found >= 0) {
+            boolean first = court != be;
+            court = be;
+            myIdx = found;
+            myTeam = m.team[found];
+            lastSync = System.nanoTime();
+            if (first) {
+                arcade = true;
+            }
+            if (arcade && !camActive) {
+                engage();
+            }
+        } else if (court == be) {
+            leave();
+        }
+    }
+
+    public static void leave() {
+        court = null;
+        myIdx = -1;
+        myTeam = -1;
+        aimFwd = 0;
+        aimRight = 0;
+        release();
+    }
+
+    // ------------------------------------------------------------------ cámara
+
+    private static void engage() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null || mc.player == null || failed || camActive) {
+            return;
+        }
+        try {
+            cam = EntityType.MARKER.create(mc.level);
+            if (cam == null) {
+                return;
+            }
+            Vec3 start = mc.player.getEyePosition();
+            cam.moveTo(start.x, start.y, start.z, mc.player.getYRot(), mc.player.getXRot());
+            cam.setOldPosAndRot();
+            mc.setCameraEntity(cam);
+            camActive = true;
+        } catch (Throwable t) {
+            failed = true;
+            release();
+        }
+    }
+
+    private static void release() {
+        Minecraft mc = Minecraft.getInstance();
+        if (camActive && mc.player != null) {
+            mc.setCameraEntity(mc.player);
+        }
+        camActive = false;
+        cam = null;
+    }
+
+    /** Hacia dónde mira mi equipo (la dirección del mundo del lado del rival). */
+    private static Direction teamDir() {
+        Direction f = court.facing();
+        return myTeam == 0 ? f : f.getOpposite();
+    }
+
+    @SubscribeEvent
+    public static void onTick(TickEvent.ClientTickEvent e) {
+        if (e.phase != TickEvent.Phase.END) {
+            return;
+        }
+        Minecraft mc = Minecraft.getInstance();
+        if (court == null) {
+            return;
+        }
+        if (mc.level == null || mc.player == null || court.isRemoved() || (System.nanoTime() - lastSync) > 1_500_000_000L) {
+            leave();
+            return;
+        }
+        while (VolleyKeys.CAM.consumeClick()) {
+            arcade = !arcade;
+            if (arcade) {
+                engage();
+            } else {
+                release();
+            }
+        }
+        if (!camActive) {
+            return;
+        }
+        if (mc.getCameraEntity() != cam) {
+            mc.setCameraEntity(cam);
+        }
+        int n = court.cN;
+        double hl = VolleyMatch.HL[Math.max(0, Math.min(2, n - 1))];
+        double own = myTeam == 0 ? -1.0 : 1.0;
+        double h = 5.5 + hl * 0.55;
+        double u = own * (hl + 2.6);
+        Vec3 t = court.world(u, h, 0.0);
+        double lookU = -own * hl * 0.2;
+        double dist = Math.abs(lookU - u);
+        float yaw = teamDir().toYRot();
+        float pitch = (float) Math.toDegrees(Math.atan2(h - 0.7, dist));
+        cam.setOldPosAndRot();
+        double k = 0.25;
+        cam.setPos(cam.getX() + (t.x - cam.getX()) * k, cam.getY() + (t.y - cam.getY()) * k, cam.getZ() + (t.z - cam.getZ()) * k);
+        cam.setYRot(Mth.rotLerp((float) k, cam.getYRot(), yaw));
+        cam.setXRot(cam.getXRot() + (pitch - cam.getXRot()) * (float) k);
+    }
+
+    @SubscribeEvent
+    public static void onFov(ViewportEvent.ComputeFov e) {
+        if (camActive) {
+            e.setFOV(70.0);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onHand(RenderHandEvent e) {
+        if (camActive) {
+            e.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onOverlay(RenderGuiOverlayEvent.Pre e) {
+        if (!playing()) {
+            return;
+        }
+        var id = e.getOverlay().id();
+        if (id.equals(VanillaGuiOverlay.CROSSHAIR.id()) || id.equals(VanillaGuiOverlay.HOTBAR.id())
+                || id.equals(VanillaGuiOverlay.ITEM_NAME.id()) || id.equals(VanillaGuiOverlay.EXPERIENCE_BAR.id())) {
+            e.setCanceled(true);
+        }
+    }
+
+    /** Mientras juego mi cuerpo mira hacia la red (el ratón no lo hace girar) y, si la cámara es la de cancha, el jugador se dibuja a mano. */
+    @SubscribeEvent
+    public static void onStage(RenderLevelStageEvent e) {
+        Minecraft mc = Minecraft.getInstance();
+        LocalPlayer p = mc.player;
+        if (!playing() || p == null) {
+            return;
+        }
+        if (e.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY && camActive) {
+            float yaw = teamDir().toYRot();
+            p.setYRot(yaw);
+            p.yRotO = yaw;
+            p.yBodyRot = yaw;
+            p.yBodyRotO = yaw;
+            p.yHeadRot = yaw;
+            p.yHeadRotO = yaw;
+            p.setXRot(8.0F);
+            p.xRotO = 8.0F;
+        }
+        if (e.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES && camActive && mc.getCameraEntity() != p) {
+            try {
+                var disp = mc.getEntityRenderDispatcher();
+                float pt = e.getPartialTick();
+                Vec3 cp = e.getCamera().getPosition();
+                double x = Mth.lerp(pt, p.xo, p.getX()) - cp.x;
+                double y = Mth.lerp(pt, p.yo, p.getY()) - cp.y;
+                double z = Mth.lerp(pt, p.zo, p.getZ()) - cp.z;
+                var src = mc.renderBuffers().bufferSource();
+                disp.render(p, x, y, z, Mth.lerp(pt, p.yRotO, p.getYRot()), pt, e.getPoseStack(), src, disp.getPackedLightCoords(p, pt));
+                src.endBatch();
+            } catch (Throwable t) {
+                // si falla el dibujo del jugador, simplemente no se ve
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------ movimiento y puntería
+
+    /** WASD se interpreta con la cámara de cancha (W = hacia la red, A = a la izquierda de la cámara); la puntería sale de lo mismo. */
+    @SubscribeEvent
+    public static void onMove(MovementInputUpdateEvent e) {
+        if (!playing()) {
+            return;
+        }
+        var in = e.getInput();
+        float fwd = in.forwardImpulse;
+        float left = in.leftImpulse;
+        double base = camActive ? teamDir().toYRot() : e.getEntity().getYRot();
+        double bc = Math.toRadians(base);
+        double wx = fwd * -Math.sin(bc) + left * Math.cos(bc);
+        double wz = fwd * Math.cos(bc) + left * Math.sin(bc);
+        // puntería respecto a mi equipo
+        double tc = Math.toRadians(teamDir().toYRot());
+        double tfx = -Math.sin(tc);
+        double tfz = Math.cos(tc);
+        double trx = -Math.cos(tc);
+        double trz = -Math.sin(tc);
+        double len = Math.hypot(wx, wz);
+        double nx = len > 1.0 ? wx / len : wx;
+        double nz = len > 1.0 ? wz / len : wz;
+        aimFwd = (float) Mth.clamp(nx * tfx + nz * tfz, -1.0, 1.0);
+        aimRight = (float) Mth.clamp(nx * trx + nz * trz, -1.0, 1.0);
+        if (camActive) {
+            // lo que mandé con WASD (visto desde la cámara) se convierte a lo que el jugador entiende según hacia dónde mira
+            double pc = Math.toRadians(e.getEntity().getYRot());
+            in.forwardImpulse = (float) (wx * -Math.sin(pc) + wz * Math.cos(pc));
+            in.leftImpulse = (float) (wx * Math.cos(pc) + wz * Math.sin(pc));
+        }
+    }
+
+    /** Los clics son del voleibol, no de picar o poner bloques. */
+    @SubscribeEvent
+    public static void onClick(InputEvent.InteractionKeyMappingTriggered e) {
+        if (!playing()) {
+            return;
+        }
+        if (e.isAttack() || e.isUseItem()) {
+            e.setCanceled(true);
+            e.setSwingHand(false);
+            BlockPos pos = court.getBlockPos();
+            PoolNet.sendToServer(new VolleyHitPacket(pos, e.isUseItem() ? 1 : 0, aimFwd, aimRight, VolleyKeys.DIVE.isDown()));
+        }
+    }
+}

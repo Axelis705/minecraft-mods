@@ -1,0 +1,22 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "WWW",
+  "SBS",
+  "SSS"
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:white_wool"
+  },
+  "S": {
+   "item": "minecraft:string"
+  },
+  "B": {
+   "item": "minecraft:slime_ball"
+  }
+ },
+ "result": {
+  "item": "pooltable:volley_court"
+ }
+}

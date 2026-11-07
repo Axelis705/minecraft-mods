@@ -25,6 +25,9 @@ public final class ModItems {
     public static final RegistryObject<Item> AIR_HOCKEY = ITEMS.register("air_hockey",
             () -> new BlockItem(ModBlocks.AIR_HOCKEY.get(), new Item.Properties()));
 
+    public static final RegistryObject<Item> VOLLEY_COURT = ITEMS.register("volley_court",
+            () -> new BlockItem(ModBlocks.VOLLEY_COURT.get(), new Item.Properties()));
+
     private ModItems() {
     }
 }

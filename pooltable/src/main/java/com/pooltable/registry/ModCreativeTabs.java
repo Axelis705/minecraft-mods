@@ -20,6 +20,7 @@ public final class ModCreativeTabs {
                 out.accept(ModItems.BOWLING_LANE.get());
                 out.accept(ModItems.BOWLING_BALL.get());
                 out.accept(ModItems.AIR_HOCKEY.get());
+                out.accept(ModItems.VOLLEY_COURT.get());
             })
             .build());
 

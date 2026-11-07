@@ -36,8 +36,8 @@ jobs:
         if: matrix.mod == 'pooltable'
         run: |
           mkdir out
-          javac -d out pooltable/src/main/java/com/pooltable/game/BowlingScore.java pooltable/src/main/java/com/pooltable/game/BowlingGame.java pooltable/src/main/java/com/pooltable/game/BowlingPhysics.java pooltable/src/main/java/com/pooltable/game/BowlingAim.java pooltable/src/main/java/com/pooltable/game/HockeyPhysics.java pooltable/src/main/java/com/pooltable/game/HockeyAI.java pooltable/src/main/java/com/pooltable/game/HockeyMatch.java pooltable/tests/*.java
-          for t in BowlingScoreTest BowlingPhysicsTest BowlingTuneTest HockeyTest; do java -cp out $t; done
+          javac -d out pooltable/src/main/java/com/pooltable/game/BowlingScore.java pooltable/src/main/java/com/pooltable/game/BowlingGame.java pooltable/src/main/java/com/pooltable/game/BowlingPhysics.java pooltable/src/main/java/com/pooltable/game/BowlingAim.java pooltable/src/main/java/com/pooltable/game/HockeyPhysics.java pooltable/src/main/java/com/pooltable/game/HockeyAI.java pooltable/src/main/java/com/pooltable/game/HockeyMatch.java pooltable/src/main/java/com/pooltable/game/VolleyMatch.java pooltable/src/main/java/com/pooltable/game/VolleyAI.java pooltable/tests/*.java
+          for t in BowlingScoreTest BowlingPhysicsTest BowlingTuneTest HockeyTest VolleyTest; do java -cp out $t; done
       - name: Pruebas de conectividad de las estructuras
         if: matrix.mod == 'estructuras'
         run: |

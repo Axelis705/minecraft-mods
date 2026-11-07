@@ -26,3 +26,10 @@ execute if block 15 100 9 pooltable:air_hockey run say PRUEBA_SALON_HOCKEY_OK
 #expect PRUEBA_SALON_PISTA_OK
 #expect PRUEBA_SALON_BILLAR_OK
 #expect PRUEBA_SALON_HOCKEY_OK
+setblock 30 100 0 pooltable:volley_court[facing=north]
+execute if block 30 100 0 pooltable:volley_court run say PRUEBA_VOLEY_BLOQUE_OK
+data get block 30 100 0
+setblock 30 100 0 minecraft:air
+voley probar 34 100 0
+#expect PRUEBA_VOLEY_BLOQUE_OK
+#expect PRUEBA_VOLEY_OK
