@@ -69,7 +69,7 @@ public final class HockeyCam {
     private static final double HEIGHT = 1.7;
     private static final double BACK = 0.75;
 
-    /** Cada jugador ve la mesa desde su propio extremo, mirando hacia el rival (quien solo mira, la ve desde el extremo del jugador 1). */
+    /** Cada jugador ve la mesa desde su propio extremo, mirando hacia el rival (quien solo mira, la ve desde el extremo del jugador 0). */
     private static Vec3 target(AirHockeyBE be, int role) {
         Direction f = be.facing();
         Vec3 c = be.center();
