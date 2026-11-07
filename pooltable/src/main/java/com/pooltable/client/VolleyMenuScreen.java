@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 /** Menú de la cancha: elegir equipo, tamaño (auto, 1 contra 1, 2 contra 2, 3 contra 3), nivel de los bots, empezar o terminar. */
 public final class VolleyMenuScreen extends Screen {
     private static final int W = 280;
-    private static final int H = 214;
+    private static final int H = 240;
     private final BlockPos pos;
     private int left;
     private int top;
@@ -21,6 +21,7 @@ public final class VolleyMenuScreen extends Screen {
     private Button teamB;
     private Button sizeBtn;
     private Button diffBtn;
+    private Button formatBtn;
     private Button startBtn;
     private Button stopBtn;
     private Button leaveBtn;
@@ -59,15 +60,21 @@ public final class VolleyMenuScreen extends Screen {
                 send(VolleyCourtBE.A_DIFF, (t.diffSetting + 1) % 3);
             }
         }).bounds(left + 142, top + 118, 130, 20).build());
+        formatBtn = addRenderableWidget(Button.builder(Component.empty(), b -> {
+            VolleyCourtBE t = be();
+            if (t != null) {
+                send(VolleyCourtBE.A_FORMAT, t.formatSetting == 0 ? 1 : 0);
+            }
+        }).bounds(left + 8, top + 144, 264, 20).build());
         startBtn = addRenderableWidget(Button.builder(Component.translatable("pooltable.voley.menu.start"), b -> {
             send(VolleyCourtBE.A_START, 0);
             onClose();
-        }).bounds(left + 8, top + 144, 130, 20).build());
+        }).bounds(left + 8, top + 170, 130, 20).build());
         stopBtn = addRenderableWidget(Button.builder(Component.translatable("pooltable.voley.menu.stop"), b -> send(VolleyCourtBE.A_STOP, 0))
-                .bounds(left + 142, top + 144, 130, 20).build());
+                .bounds(left + 142, top + 170, 130, 20).build());
         leaveBtn = addRenderableWidget(Button.builder(Component.translatable("pooltable.voley.menu.leave"), b -> send(VolleyCourtBE.A_LEAVE, 0))
-                .bounds(left + 8, top + 170, 130, 20).build());
-        addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose()).bounds(left + 142, top + 170, 130, 20).build());
+                .bounds(left + 8, top + 196, 130, 20).build());
+        addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose()).bounds(left + 142, top + 196, 130, 20).build());
     }
 
     @Override
@@ -100,6 +107,8 @@ public final class VolleyMenuScreen extends Screen {
         String[] sizes = {"auto", "1", "2", "3"};
         sizeBtn.setMessage(Component.translatable("pooltable.voley.menu.size", Component.translatable("pooltable.voley.menu.size." + sizes[t.sizeSetting])));
         diffBtn.setMessage(Component.translatable("pooltable.voley.menu.diff", Component.translatable("pooltable.voley.menu.diff." + t.diffSetting)));
+        formatBtn.setMessage(Component.translatable("pooltable.voley.menu.format", Component.translatable("pooltable.voley.menu.format." + t.formatSetting)));
+        formatBtn.active = in && !playing;
         sizeBtn.active = in && !playing;
         diffBtn.active = in && !playing;
         startBtn.active = in && t.phase == VolleyCourtBE.LOBBY;
@@ -135,7 +144,7 @@ public final class VolleyMenuScreen extends Screen {
             });
             g.drawCenteredString(font, st, left + W / 2, top + 100, 0xFFFFFF);
         }
-        g.drawCenteredString(font, Component.translatable("pooltable.voley.menu.help"), left + W / 2, top + 196, 0xFF9FB8CC);
+        g.drawCenteredString(font, Component.translatable("pooltable.voley.menu.help"), left + W / 2, top + 222, 0xFF9FB8CC);
         super.render(g, mx, my, pt);
     }
 }

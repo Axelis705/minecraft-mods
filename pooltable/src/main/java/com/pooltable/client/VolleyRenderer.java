@@ -40,8 +40,8 @@ public class VolleyRenderer implements BlockEntityRenderer<VolleyCourtBE> {
     private static final int[] TEAM_RGB = {0x2D8CFF, 0xFF8A1E};
 
     private static final float MAT = 0.035F;
-    private static final float LINE_Y = 0.045F;
-    private static final float LINE_W = 0.07F;
+    private static final float LINE_Y = 0.06F;
+    private static final float LINE_W = 0.12F;
     private static final float OUT_W = 2.2F;
     private static final int SEGS = 20;
 
@@ -77,7 +77,7 @@ public class VolleyRenderer implements BlockEntityRenderer<VolleyCourtBE> {
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
         ps.mulPose(Axis.YP.rotation((float) Math.atan2(-f.getStepZ(), f.getStepX())));
-        drawCourt(ps, buf, light, (float) hl, (float) hw);
+        drawCourt(ps, buf, light, (float) hl, (float) hw, (float) VolleyMatch.ATK[n - 1]);
         drawNet(ps, buf, light, (float) hw);
         if (live) {
             drawActors(be, ps, buf, light, hl, hw);
@@ -163,7 +163,7 @@ public class VolleyRenderer implements BlockEntityRenderer<VolleyCourtBE> {
 
     // ------------------------------------------------------------------ cancha y red
 
-    private void drawCourt(PoseStack ps, MultiBufferSource buf, int light, float hl, float hw) {
+    private void drawCourt(PoseStack ps, MultiBufferSource buf, int light, float hl, float hw, float atk) {
         // zona de afuera (arena), con su borde para que no se vea hueco bajo el piso
         VertexConsumer out = buf.getBuffer(RenderType.entityCutoutNoCull(OUT));
         float ox = hl + OUT_W;
@@ -179,11 +179,16 @@ public class VolleyRenderer implements BlockEntityRenderer<VolleyCourtBE> {
         // líneas blancas
         VertexConsumer ln = buf.getBuffer(RenderType.entityCutoutNoCull(LINE));
         float w = LINE_W;
-        flat(ln, ps, light, -hl - w, hl + w, -hw - w, -hw, LINE_Y);
-        flat(ln, ps, light, -hl - w, hl + w, hw, hw + w, LINE_Y);
-        flat(ln, ps, light, -hl - w, -hl, -hw - w, hw + w, LINE_Y);
-        flat(ln, ps, light, hl, hl + w, -hw - w, hw + w, LINE_Y);
-        flat(ln, ps, light, -w / 2, w / 2, -hw, hw, LINE_Y);
+        int fb = LightTexture.FULL_BRIGHT;
+        // borde (las líneas son parte de la cancha: la pelota que cae sobre ellas es buena)
+        flat(ln, ps, fb, -hl - w, hl + w, -hw - w, -hw + w, LINE_Y);
+        flat(ln, ps, fb, -hl - w, hl + w, hw - w, hw + w, LINE_Y);
+        flat(ln, ps, fb, -hl - w, -hl + w, -hw - w, hw + w, LINE_Y);
+        flat(ln, ps, fb, hl - w, hl + w, -hw - w, hw + w, LINE_Y);
+        // línea central (bajo la red) y líneas de ataque a 3 m de la red
+        flat(ln, ps, fb, -w, w, -hw, hw, LINE_Y);
+        flat(ln, ps, fb, -atk - w / 2, -atk + w / 2, -hw, hw, LINE_Y);
+        flat(ln, ps, fb, atk - w / 2, atk + w / 2, -hw, hw, LINE_Y);
     }
 
     private void drawNet(PoseStack ps, MultiBufferSource buf, int light, float hw) {

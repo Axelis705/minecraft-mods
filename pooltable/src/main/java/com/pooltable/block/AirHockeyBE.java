@@ -254,11 +254,7 @@ public class AirHockeyBE extends BlockEntity {
             }
             float v = (float) Math.min(1.0, 0.25 + ph.hitSpeed / 6.0);
             sound(SoundEvents.BAMBOO_WOOD_HIT, ph.px, ph.pz, v, 1.3F);
-            burst(net.minecraft.core.particles.ParticleTypes.CRIT, ph.px, ph.pz, 0.06, 4 + (int) (ph.hitSpeed * 2), 0.05, 0.25);
-            burst(net.minecraft.core.particles.ParticleTypes.END_ROD, ph.px, ph.pz, 0.08, 2, 0.03, 0.02);
-        }
-        if (match.state == HockeyMatch.State.PLAYING && Math.hypot(ph.pvx, ph.pvz) > 3.0 && (level.getGameTime() & 1L) == 0L) {
-            burst(net.minecraft.core.particles.ParticleTypes.END_ROD, ph.px, ph.pz, 0.04, 1, 0.01, 0.0);
+            burst(net.minecraft.core.particles.ParticleTypes.CRIT, ph.px, ph.pz, 0.06, 2 + (int) Math.min(3, ph.hitSpeed * 0.5), 0.03, 0.12);
         }
         if (ph.wallHits > 0) {
             sound(SoundEvents.WOOD_HIT, ph.px, ph.pz, 0.5F, 1.5F);
@@ -268,9 +264,8 @@ public class AirHockeyBE extends BlockEntity {
             String who = pname[g == 1 ? 0 : 1];
             sound(SoundEvents.PLAYER_LEVELUP, 0, 0, 0.8F, 1.2F);
             double gx = g == 1 ? HockeyPhysics.HL : -HockeyPhysics.HL; // la portería donde entró el disco
-            burst(net.minecraft.core.particles.ParticleTypes.FIREWORK, gx, 0, 0.15, 40, 0.18, 0.12);
-            burst(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, gx, 0, 0.2, 14, 0.25, 0.0);
-            sound(SoundEvents.FIREWORK_ROCKET_TWINKLE, gx, 0, 0.9F, 1.0F);
+            burst(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, gx, 0, 0.15, 6, 0.15, 0.0);
+            sound(SoundEvents.FIREWORK_ROCKET_TWINKLE, gx, 0, 0.7F, 1.0F);
             if (match.state == HockeyMatch.State.OVER) {
                 broadcast(Component.translatable("pooltable.hockey.win", pname[match.winner], match.scoreA, match.scoreB), false);
             } else {

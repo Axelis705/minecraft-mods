@@ -2,6 +2,7 @@ package com.pooltable.client;
 
 import com.pooltable.PoolTable;
 import com.pooltable.block.AirHockeyBE;
+import com.pooltable.game.HockeyPhysics;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -64,11 +65,16 @@ public final class HockeyCam {
         prev = null;
     }
 
-    private static Vec3 target(AirHockeyBE be) {
+    /** Altura de la cámara sobre la mesa y cuánto se echa hacia atrás de tu extremo. */
+    private static final double HEIGHT = 1.7;
+    private static final double BACK = 0.75;
+
+    /** Cada jugador ve la mesa desde su propio extremo, mirando hacia el rival (quien solo mira, la ve desde el extremo del jugador 1). */
+    private static Vec3 target(AirHockeyBE be, int role) {
         Direction f = be.facing();
-        Direction r = f.getClockWise();
         Vec3 c = be.center();
-        return new Vec3(c.x + r.getStepX() * 1.0, c.y + 1.8, c.z + r.getStepZ() * 1.0);
+        double d = (HockeyPhysics.HL + BACK) * (role == 1 ? 1.0 : -1.0);
+        return new Vec3(c.x + f.getStepX() * d, c.y + HEIGHT, c.z + f.getStepZ() * d);
     }
 
     @SubscribeEvent
@@ -87,10 +93,11 @@ public final class HockeyCam {
         if (mc.getCameraEntity() != cam) {
             mc.setCameraEntity(cam);
         }
-        Vec3 t = target(be);
-        Direction r = be.facing().getClockWise();
-        float yaw = (float) Math.toDegrees(Math.atan2(r.getStepX(), -r.getStepZ()));
-        float pitch = (float) Math.toDegrees(Math.atan2(1.8, 1.0));
+        int role = Math.max(0, HockeyScreen.current.roleNow());
+        Vec3 t = target(be, role);
+        Direction look = role == 1 ? be.facing().getOpposite() : be.facing();
+        float yaw = look.toYRot();
+        float pitch = (float) Math.toDegrees(Math.atan2(HEIGHT, HockeyPhysics.HL + BACK + 0.15));
         cam.setOldPosAndRot();
         double k = 0.3;
         cam.setPos(cam.getX() + (t.x - cam.getX()) * k, cam.getY() + (t.y - cam.getY()) * k, cam.getZ() + (t.z - cam.getZ()) * k);
@@ -129,6 +136,10 @@ public final class HockeyCam {
     /** El juego no dibuja al jugador propio cuando la cámara es otra; lo dibujamos nosotros para que se vea en su extremo de la mesa. */
     @SubscribeEvent
     public static void onStage(RenderLevelStageEvent e) {
+        if (true) {
+            // la cámara está justo en tu cabeza, detrás de tu extremo: tu cuerpo taparía la mesa, así que no se dibuja
+            return;
+        }
         if (!active || e.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
             return;
         }

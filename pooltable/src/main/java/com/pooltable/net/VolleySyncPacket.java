@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 
 /** Servidor -> cliente: la partida de voleibol en este tick (marcador, pelota, jugadores y lo que acaba de pasar). */
 public final class VolleySyncPacket {
-    public static final String[] POPUPS = {"", "spike", "block", "net", "out", "point"};
+    public static final String[] POPUPS = {"", "spike", "block", "net", "out", "point", "fault"};
 
     public final BlockPos pos;
     public final byte state;
@@ -31,6 +31,14 @@ public final class VolleySyncPacket {
     public final byte diff;
     public final byte serverIdx;
     public final byte popupCode;
+    public byte setsA;
+    public byte setsB;
+    public byte setNo;
+    public byte bestOf = 3;
+    public byte target = 15;
+    /** Calidad del último golpe (0 = ninguno, 1 mal, 2 bien, 3 perfecto) y quién lo dio. */
+    public byte quality;
+    public byte qualityBy = -1;
     public final float timer;
     public final float[] ball = new float[6];
     public final int count;
@@ -79,11 +87,20 @@ public final class VolleySyncPacket {
             }
         }
         if (m.evPoint != 0) {
-            popup = m.evOut ? 4 : 5;
+            popup = !m.evFault.isEmpty() ? 6 : (m.evOut ? 4 : 5);
         }
         int cnt = Math.min(6, m.players.size());
         VolleySyncPacket p = new VolleySyncPacket(pos, (byte) m.state.ordinal(), (byte) m.scoreA, (byte) m.scoreB, (byte) m.serving, (byte) m.touches,
                 (byte) m.touchTeam, (byte) m.n, (byte) m.diff, (byte) m.serverIdx, (byte) popup, (float) m.timer, cnt);
+        p.setsA = (byte) m.setsA;
+        p.setsB = (byte) m.setsB;
+        p.setNo = (byte) m.setNo;
+        p.bestOf = (byte) m.bestOf;
+        p.target = (byte) m.target();
+        if (m.evQuality >= 0 && m.evQualityBy >= 0) {
+            p.quality = (byte) (m.evQuality >= 0.8 ? 3 : (m.evQuality >= 0.5 ? 2 : 1));
+            p.qualityBy = (byte) m.evQualityBy;
+        }
         for (int i = 0; i < 3; i++) {
             p.ball[i] = (float) m.ball[i];
             p.ball[3 + i] = (float) m.vel[i];
@@ -122,6 +139,13 @@ public final class VolleySyncPacket {
         b.writeByte(m.serverIdx);
         b.writeByte(m.popupCode);
         b.writeFloat(m.timer);
+        b.writeByte(m.setsA);
+        b.writeByte(m.setsB);
+        b.writeByte(m.setNo);
+        b.writeByte(m.bestOf);
+        b.writeByte(m.target);
+        b.writeByte(m.quality);
+        b.writeByte(m.qualityBy);
         for (int i = 0; i < 6; i++) {
             b.writeFloat(m.ball[i]);
         }
@@ -151,6 +175,13 @@ public final class VolleySyncPacket {
         byte serverIdx = b.readByte();
         byte popup = b.readByte();
         float timer = b.readFloat();
+        byte setsA = b.readByte();
+        byte setsB = b.readByte();
+        byte setNo = b.readByte();
+        byte bestOf = b.readByte();
+        byte target = b.readByte();
+        byte quality = b.readByte();
+        byte qualityBy = b.readByte();
         float[] ball = new float[6];
         for (int i = 0; i < 6; i++) {
             ball[i] = b.readFloat();
@@ -158,6 +189,13 @@ public final class VolleySyncPacket {
         int count = Math.max(0, Math.min(6, b.readByte()));
         VolleySyncPacket p = new VolleySyncPacket(pos, state, sa, sb, serving, touches, touchTeam, n, diff, serverIdx, popup, timer, count);
         System.arraycopy(ball, 0, p.ball, 0, 6);
+        p.setsA = setsA;
+        p.setsB = setsB;
+        p.setNo = setNo;
+        p.bestOf = bestOf;
+        p.target = target;
+        p.quality = quality;
+        p.qualityBy = qualityBy;
         for (int i = 0; i < count; i++) {
             p.team[i] = b.readByte();
             p.flags[i] = b.readByte();

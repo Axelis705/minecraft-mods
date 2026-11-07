@@ -7,9 +7,9 @@ import com.pooltable.game.VolleyMatch.P;
  * qué tan seguido rematan y bloquean. Juegan igual que una persona: reciben (toque 1), colocan (toque 2) y rematan o mandan la pelota por encima (toque 3).
  */
 public final class VolleyAI {
-    public static final double[] SPEED = {3.0, 3.8, 4.8};
+    public static final double[] SPEED = {3.4, 4.2, 5.2};
     public static final double[] REACT = {0.3, 0.18, 0.1};
-    public static final double[] ERR = {0.6, 0.45, 0.3};
+    public static final double[] ERR = {0.45, 0.3, 0.12};
     public static final double[] PRED = {2.0, 1.5, 0.8};
     public static final double[] REACH_SCALE = {0.8, 0.95, 1.05};
     public static final double[] SERVE_ERR = {0.8, 0.5, 0.28};

@@ -169,8 +169,9 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
         wallZ(k, ps, light, 0, X0, 0.6F, TOP, -GOAL, 1);
         wallZ(k, ps, light, X1, 3, 0.6F, TOP, GOAL, -1);
         wallZ(k, ps, light, X1, 3, 0.6F, TOP, -GOAL, 1);
-        wallX(k, ps, light, -GOAL, GOAL, 0.6F, TOP, 0.0F, 1);
-        wallX(k, ps, light, -GOAL, GOAL, 0.6F, TOP, 3.0F, -1);
+        // (un poquito hacia adentro: si no, quedan encimadas con la pared del gabinete y se ven dos texturas peleándose)
+        wallX(k, ps, light, -GOAL, GOAL, 0.6F, TOP, 0.004F, 1);
+        wallX(k, ps, light, -GOAL, GOAL, 0.6F, TOP, 2.996F, -1);
         // la superficie de juego
         VertexConsumer s = buf.getBuffer(RenderType.entityCutoutNoCull(SURFACE));
         top(s, ps, light, X0, X1, -ZW, ZW, SURF);

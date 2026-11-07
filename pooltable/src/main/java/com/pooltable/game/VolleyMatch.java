@@ -10,16 +10,27 @@ import java.util.Random;
  *
  * Los jugadores humanos son los de verdad de Minecraft: el servidor copia su posición real a {@link P#x}, {@link P#z}, {@link P#y} en cada tick y manda
  * sus golpes con {@link #humanAct}. Los demás jugadores son bots ({@link VolleyAI}). La pelota es virtual: aquí se calcula su vuelo, la red, los toques
- * (máximo 3 por equipo, sin tocarla dos veces seguidas la misma persona en equipos de más de uno), el saque y los puntos (a 11, con 2 de ventaja).
+ * (máximo 3 por equipo, sin tocarla dos veces seguidas la misma persona en equipos de más de uno), el saque (desde detrás de la línea de fondo, con
+ * barra de fuerza), la rotación de quien saca, los puntos por jugada y los sets (al mejor de 3: dos sets a 15 y el tercero a 11, con 2 de ventaja).
+ *
+ * Cada golpe tiene una calidad de 0 a 1 que depende de qué tan cerca, a qué altura, qué tan quieto y qué tan en el momento se golpeó la pelota: un golpe
+ * mal hecho sale impreciso, un remate malo se va a la red y un buen pase deja a un compañero listo para atacar.
  */
 public final class VolleyMatch {
     public static final double G = 13.0;
     public static final double R = 0.22;
     public static final double NET_TOP = 2.25;
-    public static final int WIN = 11;
-    public static final int CAP = 13;
-    public static final double[] HL = {4.2, 5.2, 6.2};
-    public static final double[] HW = {2.6, 3.6, 4.6};
+    /** Puntos de un set normal, del set decisivo, y cuántos puntos más se aceptan para ganar por 2 antes de cortar. */
+    public static final int SET_TO = 15;
+    public static final int DECIDER_TO = 11;
+    public static final int CAP_EXTRA = 3;
+    /** Medio largo y medio ancho de la cancha (como las de verdad: 3 contra 3 mide 18 x 9) y distancia de la línea de ataque a la red. */
+    public static final double[] HL = {6.5, 8.0, 9.0};
+    public static final double[] HW = {3.2, 4.0, 4.5};
+    public static final double[] ATK = {2.2, 2.7, 3.0};
+    /** Zona de fuerza buena del saque (de 0 a 1). */
+    public static final double SERVE_LO = 0.55;
+    public static final double SERVE_HI = 0.85;
     public static final double REACH = 1.55;
     public static final double JUMP_V = 8.0;
     public static final double JUMP_G = 28.0;
@@ -35,7 +46,7 @@ public final class VolleyMatch {
     /** Un jugador (humano o bot). */
     public static final class P {
         public final int team;
-        public final int slot;
+        public int slot;
         public final boolean human;
         public String name = "";
         public double x;
@@ -56,6 +67,7 @@ public final class VolleyMatch {
         public double pendFwd;
         public double pendRight;
         public boolean pendDive;
+        public double pendPower;
         // IA
         public double aiWait = -1;
         public double jumpIn = -1;
@@ -95,7 +107,22 @@ public final class VolleyMatch {
     public double lastHitTime;
     public int winner = -1;
     public int pointWinner = -1;
-    private final int[] serveCount = new int[2];
+    /** Quién saca dentro de cada equipo (se pasa al siguiente cada vez que el equipo recupera el saque). */
+    private final int[] serveIdx = new int[2];
+    /** Sets: al mejor de bestOf (1 o 3), set actual (desde 1) y sets ganados. */
+    public int bestOf = 3;
+    public int setNo = 1;
+    public int setsA;
+    public int setsB;
+    private boolean setPending;
+    /** Calidad (0 a 1) del último golpe y quién lo dio (para dar ánimo o avisar en pantalla). */
+    public double evQuality = -1;
+    public int evQualityBy = -1;
+    /** Falta ("saque", "tiempo") del último tick; el equipo contrario se lleva el punto. */
+    public String evFault = "";
+    public int evSetWon;
+    public boolean evNewSet;
+    public int evRotate;
 
     // eventos del último tick (los borra clearEvents)
     public Act evAct = Act.NONE;
@@ -126,6 +153,11 @@ public final class VolleyMatch {
         return team == 0 ? 1.0 : -1.0;
     }
 
+    /** Puntos que hay que llegar en el set actual. */
+    public int target() {
+        return bestOf > 1 && setNo == bestOf ? DECIDER_TO : SET_TO;
+    }
+
     public int score(int team) {
         return team == 0 ? scoreA : scoreB;
     }
@@ -145,14 +177,23 @@ public final class VolleyMatch {
 
     /** Reparte lugares de inicio y empieza el partido. Los jugadores ya deben estar agregados (n por equipo). */
     public void start(int teamSize, int difficulty) {
+        start(teamSize, difficulty, 3);
+    }
+
+    public void start(int teamSize, int difficulty, int sets) {
         n = Math.max(1, Math.min(3, teamSize));
         diff = Math.max(0, Math.min(2, difficulty));
+        bestOf = sets >= 3 ? 3 : 1;
+        setNo = 1;
+        setsA = 0;
+        setsB = 0;
+        setPending = false;
         scoreA = 0;
         scoreB = 0;
         winner = -1;
         pointWinner = -1;
-        serveCount[0] = 0;
-        serveCount[1] = 0;
+        serveIdx[0] = 0;
+        serveIdx[1] = 0;
         int[] slotOf = new int[2];
         for (P p : players) {
             // los lugares se asignan en orden de llegada dentro de cada equipo
@@ -185,6 +226,10 @@ public final class VolleyMatch {
         state = State.IDLE;
         scoreA = 0;
         scoreB = 0;
+        setsA = 0;
+        setsB = 0;
+        setNo = 1;
+        setPending = false;
         winner = -1;
         touches = 0;
         touchTeam = -1;
@@ -210,6 +255,12 @@ public final class VolleyMatch {
         evServeStart = false;
         evReject = "";
         evRejectBy = -1;
+        evQuality = -1;
+        evQualityBy = -1;
+        evFault = "";
+        evSetWon = 0;
+        evNewSet = false;
+        evRotate = 0;
         hits.clear();
     }
 
@@ -256,8 +307,7 @@ public final class VolleyMatch {
         if (idx.isEmpty()) {
             return null;
         }
-        int pick = idx.get(serveCount[team] % idx.size());
-        serveCount[team]++;
+        int pick = idx.get(serveIdx[team] % idx.size());
         serverIdx = pick;
         return players.get(pick);
     }
@@ -302,9 +352,30 @@ public final class VolleyMatch {
             s.x = sp[0];
             s.z = sp[1];
         }
-        timer = s.human ? 25.0 : 1.1 + rnd.nextDouble() * 0.8;
+        timer = s.human ? 20.0 : 1.1 + rnd.nextDouble() * 0.8;
         evServeStart = true;
         holdBall(s);
+    }
+
+    /** Rotación: el equipo que recupera el saque pasa al siguiente jugador y los bots se mueven un puesto. */
+    private void rotate(int team) {
+        serveIdx[team]++;
+        evRotate = team + 1;
+        if (n > 1) {
+            for (P p : players) {
+                if (p.team == team) {
+                    p.slot = (p.slot + 1) % n;
+                    setHome(p);
+                }
+            }
+        }
+    }
+
+    /** Falta del que saca: la pelota no sale y el punto es del otro equipo. */
+    private void fault(String why, int team) {
+        evFault = why;
+        holdBall(players.get(serverIdx));
+        awardPoint(1 - team);
     }
 
     private void holdBall(P s) {
@@ -340,7 +411,21 @@ public final class VolleyMatch {
                 }
                 timer -= dt;
                 if (timer <= 0) {
-                    serving = pointWinner;
+                    if (setPending) {
+                        // empieza el siguiente set: saca primero el equipo que no sacó al inicio del anterior
+                        setPending = false;
+                        setNo++;
+                        scoreA = 0;
+                        scoreB = 0;
+                        serving = (setNo % 2 == 1) ? 0 : 1;
+                        evNewSet = true;
+                    } else {
+                        boolean sideOut = pointWinner != serving;
+                        serving = pointWinner;
+                        if (sideOut) {
+                            rotate(serving);
+                        }
+                    }
                     startServe();
                 }
             }
@@ -373,13 +458,13 @@ public final class VolleyMatch {
             int kind = s.pend;
             s.pend = -1;
             if (kind == HIT) {
-                doServe(s, s.pendFwd, s.pendRight);
+                doServe(s, s.pendFwd, s.pendRight, s.pendPower);
                 return;
             }
         }
         if (timer <= 0) {
             if (s.human) {
-                doServe(s, 0.0, 0.0);
+                fault("tiempo", s.team);
             } else {
                 VolleyAI.serve(this, s);
             }
@@ -487,12 +572,30 @@ public final class VolleyMatch {
         } else {
             scoreB++;
         }
+        int tgt = target();
         int a = Math.max(scoreA, scoreB);
         int b = Math.min(scoreA, scoreB);
-        if (a >= WIN && a - b >= 2 || a >= CAP) {
-            winner = scoreA > scoreB ? 0 : 1;
-            state = State.OVER;
-            timer = 6.0;
+        vel[0] = 0;
+        vel[1] = 0;
+        vel[2] = 0;
+        if (a >= tgt && a - b >= 2 || a >= tgt + CAP_EXTRA) {
+            int w = scoreA > scoreB ? 0 : 1;
+            if (w == 0) {
+                setsA++;
+            } else {
+                setsB++;
+            }
+            evSetWon = w + 1;
+            int need = bestOf / 2 + 1;
+            if (setsA >= need || setsB >= need) {
+                winner = w;
+                state = State.OVER;
+                timer = 6.0;
+            } else {
+                setPending = true;
+                state = State.POINT;
+                timer = 4.5;
+            }
         } else {
             state = State.POINT;
             timer = 2.2;
@@ -513,6 +616,11 @@ public final class VolleyMatch {
 
     /** Un humano pide golpear: kind = HIT o SET; aimFwd (+1 = adelante/profundo, -1 = corto) y aimRight (+1 = a su derecha) vienen de WASD. */
     public void humanAct(int idx, int kind, double aimFwd, double aimRight, boolean dive) {
+        humanAct(idx, kind, aimFwd, aimRight, dive, 0.7);
+    }
+
+    /** Igual, con la fuerza (0 a 1) que eligió con la barra al sacar. */
+    public void humanAct(int idx, int kind, double aimFwd, double aimRight, boolean dive, double power) {
         if (idx < 0 || idx >= players.size()) {
             return;
         }
@@ -524,10 +632,12 @@ public final class VolleyMatch {
             return;
         }
         p.pend = kind;
-        p.pendT = 0.3;
+        // un instante de margen: hay que pulsar cuando la pelota ya está a la mano, no antes
+        p.pendT = 0.12;
         p.pendFwd = clamp(aimFwd, -1, 1);
         p.pendRight = clamp(aimRight, -1, 1);
         p.pendDive = dive;
+        p.pendPower = clamp(power, 0, 1);
         if (state == State.RALLY && reachable(p, dive)) {
             p.pend = -1;
             perform(idx, p, kind, p.pendFwd, p.pendRight, dive);
@@ -541,6 +651,54 @@ public final class VolleyMatch {
             return Act.NONE;
         }
         return perform(idx, p, kind, aimFwd, aimRight, dive);
+    }
+
+    /**
+     * Qué tan bien se golpeó (0 a 1): cerca de la pelota, a la altura buena para ese golpe (pase abajo, colocación arriba de la cabeza, remate en lo alto),
+     * quieto (para recibir hay que frenar), con una pelota no muy rápida y, en el remate, cerca de lo más alto del salto.
+     */
+    private double quality(P p, Act act, double d, boolean dive) {
+        double reach = REACH * p.reachScale + (dive ? 0.8 : 0.0);
+        double sweet = 0.6;
+        double qd = d <= sweet ? 1.0 : 1.0 - (d - sweet) / Math.max(0.1, reach - sweet) * 0.8;
+        qd = clamp(qd, 0.2, 1.0);
+        double lo;
+        double hi;
+        switch (act) {
+            case SET -> {
+                lo = 1.6;
+                hi = 2.4;
+            }
+            case SPIKE -> {
+                lo = 2.6;
+                hi = 3.6;
+            }
+            case BLOCK -> {
+                lo = NET_TOP - 0.2;
+                hi = 3.4;
+            }
+            default -> {
+                lo = 0.35;
+                hi = 1.3;
+            }
+        }
+        double dh = ball[1] < lo ? lo - ball[1] : Math.max(0.0, ball[1] - hi);
+        double qh = 1.0 - Math.min(1.0, dh / 0.8) * 0.9;
+        double q;
+        if (act == Act.SPIKE || act == Act.BLOCK) {
+            double qt = 1.0 - clamp((Math.abs(p.vy) - 1.0) / 5.0, 0.0, 0.7);
+            q = 0.4 * qd + 0.35 * qh + 0.25 * qt;
+        } else {
+            double speed = Math.hypot(p.vx, p.vz);
+            double qm = 1.0 - clamp((speed - 1.2) / 6.0, 0.0, 0.45);
+            double incoming = Math.sqrt(vel[0] * vel[0] + vel[1] * vel[1] + vel[2] * vel[2]);
+            double qs = 1.0 - clamp((incoming - 11.0) / 14.0, 0.0, 0.4);
+            q = 0.35 * qd + 0.3 * qh + 0.2 * qm + 0.15 * qs;
+        }
+        if (dive) {
+            q *= 0.75;
+        }
+        return clamp(q, 0.05, 1.0);
     }
 
     private Act perform(int idx, P p, int kind, double aimFwd, double aimRight, boolean dive) {
@@ -570,67 +728,82 @@ public final class VolleyMatch {
         double hw = hw();
         double hl = hl();
         double d = Math.hypot(ball[0] - p.x, ball[2] - p.z);
-        double rel = Math.min(1.0, d / (REACH + (dive ? 0.8 : 0)));
         double sigma;
         double tx;
         double tz;
         double flight;
+        boolean cross = false;
         Act act;
         if (block) {
             act = Act.BLOCK;
-            double bs = ball[0] < 0 ? -1 : 1;
-            tx = bs * (1.4 + rnd.nextDouble() * 1.6);
-            tz = clamp(ball[2] * 0.6, -hw + 0.4, hw - 0.4);
-            flight = 0.5;
-            sigma = 0.2;
         } else if (kind == SET) {
             act = Act.SET;
-            double[] mate = mateSpot(p, idx);
-            tx = mate[0];
-            tz = mate[1];
-            flight = 1.15 + 0.1 * rel;
-            sigma = 0.12 + 0.12 * rel + (dive ? 0.3 : 0);
-            nextHitter = (int) mate[2];
-        } else if (p.y > 0.3 && ball[1] >= 2.2 && Math.abs(ball[0]) < 2.6) {
+        } else if (p.y > 0.3 && ball[1] >= 2.2 && Math.abs(ball[0]) < ATK[n - 1] + 0.8) {
             act = Act.SPIKE;
-            tx = s * (hl * 0.35 + hl * 0.55 * (aimFwd + 1.0) / 2.0);
-            tz = clamp(aimRight * s * hw * 0.8, -hw + 0.35, hw - 0.35);
-            flight = 0.45;
-            sigma = 0.25 + 0.1 * rel;
-            nextHitter = -1;
         } else if (touchTeam != p.team || touches == 0) {
-            if (aimFwd > 0.6) {
-                act = Act.FREE;
-                tx = s * (hl * 0.3 + hl * 0.6 * (aimFwd + 1.0) / 2.0);
-                tz = clamp(aimRight * s * hw * 0.75, -hw + 0.4, hw - 0.4);
-                flight = 1.55;
-                sigma = 0.3 + 0.2 * rel + (dive ? 0.4 : 0);
-                nextHitter = -1;
-            } else {
-                act = Act.BUMP;
+            act = aimFwd > 0.6 ? Act.FREE : Act.BUMP;
+        } else {
+            act = Act.FREE;
+        }
+        double q = quality(p, act, d, dive);
+        double bad = 1.0 - q;
+        switch (act) {
+            case BLOCK -> {
+                double bs = ball[0] < 0 ? -1 : 1;
+                tx = bs * (1.4 + rnd.nextDouble() * 1.6);
+                tz = clamp(ball[2] * 0.6, -hw + 0.4, hw - 0.4);
+                flight = 0.5;
+                sigma = 0.2 + bad * 0.8;
+            }
+            case SET -> {
                 double[] mate = mateSpot(p, idx);
                 tx = mate[0];
                 tz = mate[1];
-                flight = 1.3 + 0.1 * rel;
-                sigma = 0.18 + 0.15 * rel + (dive ? 0.4 : 0);
+                flight = 1.15 + 0.2 * bad;
+                sigma = 0.1 + bad * 1.0;
                 nextHitter = (int) mate[2];
             }
-        } else {
-            act = Act.FREE;
-            tx = s * (hl * 0.3 + hl * 0.6 * (aimFwd + 1.0) / 2.0);
-            tz = clamp(aimRight * s * hw * 0.75, -hw + 0.4, hw - 0.4);
-            flight = p.human ? 1.55 : 1.1;
-            sigma = 0.25 + 0.15 * rel + (dive ? 0.4 : 0);
-            nextHitter = -1;
+            case SPIKE -> {
+                tx = s * (hl * 0.35 + hl * 0.55 * (aimFwd + 1.0) / 2.0);
+                tz = clamp(aimRight * s * hw * 0.8, -hw + 0.35, hw - 0.35);
+                flight = 0.45 + bad * 0.4;
+                sigma = 0.2 + bad * 1.6;
+                nextHitter = -1;
+                if (q < 0.35 && rnd.nextDouble() < (0.35 - q) * 2.0) {
+                    // remate mal pegado: se queda en la red / en tu lado
+                    tx = -s * (0.3 + rnd.nextDouble() * 0.6);
+                    flight = 0.4;
+                }
+            }
+            case BUMP -> {
+                double[] mate = mateSpot(p, idx);
+                tx = mate[0];
+                tz = mate[1];
+                flight = 1.3 + 0.15 * bad;
+                sigma = 0.15 + bad * 1.5;
+                nextHitter = (int) mate[2];
+            }
+            default -> {
+                tx = s * (hl * 0.3 + hl * 0.6 * (aimFwd + 1.0) / 2.0);
+                tz = clamp(aimRight * s * hw * 0.75, -hw + 0.4, hw - 0.4);
+                flight = p.human ? 1.55 : 1.1;
+                sigma = 0.25 + bad * 1.4;
+                nextHitter = -1;
+            }
         }
         if (!p.human) {
             sigma += VolleyAI.ERR[diff];
         }
-        sigma += 0.15 * Math.max(0, rallyTouches - 5);
+        sigma += 0.08 * Math.max(0, rallyTouches - 6);
         rallyTouches++;
         tx += rnd.nextGaussian() * sigma;
         tz += rnd.nextGaussian() * sigma;
-        boolean cross = Math.signum(tx) != Math.signum(ball[0]);
+        if (q < 0.3 && act != Act.SPIKE && act != Act.BLOCK) {
+            // pelota "chueca": se va lejos de donde se quería
+            tx += rnd.nextGaussian() * 1.5;
+            tz += rnd.nextGaussian() * 1.5;
+        }
+        cross = Math.signum(tx) != Math.signum(ball[0]);
         launch(tx, tz, flight, cross && act != Act.BLOCK);
         // anotar el toque
         if (act == Act.BLOCK) {
@@ -650,23 +823,52 @@ public final class VolleyMatch {
         lastHitTime = time;
         evAct = act;
         evBy = idx;
+        evQuality = q;
+        evQualityBy = idx;
         hits.add(new int[] {act.ordinal(), idx});
         return act;
     }
 
-    /** Saque del jugador del turno (el humano lo pide con un clic, el bot por IA). */
+    /** Saque con fuerza por defecto (para los bots: la que sacan según su nivel). */
     public void doServe(P s, double aimFwd, double aimRight) {
+        double power = 0.7;
+        if (!s.human) {
+            power = clamp(0.7 + rnd.nextGaussian() * VolleyAI.SERVE_ERR[diff] * 0.25, 0.05, 1.0);
+        }
+        doServe(s, aimFwd, aimRight, power);
+    }
+
+    /**
+     * Saque del jugador del turno (el humano lo pide con un clic mantenido y la barra de fuerza, el bot por IA). Hay que sacar desde detrás de la línea de
+     * fondo; la fuerza buena es de {@link #SERVE_LO} a {@link #SERVE_HI}: más flojo se queda corto o en la red, más fuerte se pasa de la línea.
+     */
+    public void doServe(P s, double aimFwd, double aimRight, double power) {
         double d = dir(s.team);
         double hl = hl();
         double hw = hw();
-        double tx = d * (hl * 0.3 + hl * 0.55 * (clamp(aimFwd, -1, 1) + 1.0) / 2.0);
-        double tz = clamp(clamp(aimRight, -1, 1) * d * hw * 0.7, -hw + 0.4, hw - 0.4);
-        double sigma = s.human ? 0.12 : VolleyAI.SERVE_ERR[diff];
+        if (s.human && s.x * (-d) < hl - 0.1) {
+            fault("saque", s.team);
+            return;
+        }
+        double pw = clamp(power, 0.0, 1.0);
+        double depth = 0.25 + 0.8 * pw + 0.16 * clamp(aimFwd, -1, 1);
+        double tx = d * hl * depth;
+        double tz = clamp(clamp(aimRight, -1, 1) * d * hw * 0.7, -hw + 0.3, hw - 0.3);
+        double off = pw < SERVE_LO ? SERVE_LO - pw : Math.max(0.0, pw - SERVE_HI);
+        double sigma = 0.15 + 1.8 * off;
         tx += rnd.nextGaussian() * sigma;
-        tz += rnd.nextGaussian() * sigma;
+        tz += rnd.nextGaussian() * sigma * 0.6;
+        double fl = 1.45;
+        boolean cross = true;
+        if (pw < 0.3 && rnd.nextDouble() < (0.3 - pw) * 3.3) {
+            // saque muy flojo: se queda en la red
+            tx = d * 0.5;
+            fl = 0.8;
+            cross = false;
+        }
         state = State.RALLY;
         holdBall(s);
-        launch(tx, tz, 1.45, true);
+        launch(tx, tz, fl, cross);
         touchTeam = s.team;
         touches = 1;
         lastToucher = serverIdx;
@@ -676,13 +878,15 @@ public final class VolleyMatch {
         lastHitTime = time;
         evAct = Act.SERVE;
         evBy = serverIdx;
+        evQuality = pw >= SERVE_LO && pw <= SERVE_HI ? 1.0 : (off < 0.15 ? 0.6 : 0.2);
+        evQualityBy = serverIdx;
         hits.add(new int[] {Act.SERVE.ordinal(), serverIdx});
     }
 
     /** Dónde mandar un pase: cerca de la red, donde está el compañero más adelantado (o el propio jugador si juega solo). */
     private double[] mateSpot(P p, int idx) {
         double own = -dir(p.team);
-        double nearX = own * 1.5;
+        double nearX = own * Math.max(1.5, hl() * 0.2);
         double hw = hw();
         int best = -1;
         double bestD = 1e9;

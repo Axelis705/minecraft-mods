@@ -48,6 +48,10 @@ public final class HockeyScreen extends Screen {
         return mc.level != null && mc.level.getBlockEntity(pos) instanceof AirHockeyBE t ? t : null;
     }
 
+    public int roleNow() {
+        return role();
+    }
+
     private int role() {
         AirHockeyBE t = table();
         var p = Minecraft.getInstance().player;
@@ -199,9 +203,9 @@ public final class HockeyScreen extends Screen {
         double dy = Math.max(-300, Math.min(300, (y - lastY) * scale));
         lastX = x;
         lastY = y;
-        // la cámara mira la mesa desde un lado: derecha de la pantalla = hacia el lado B, abajo = hacia el jugador
-        double nx = AirHockeyBE.localX + dx * SENS;
-        double nz = AirHockeyBE.localZ + dy * SENS;
+        // la cámara mira desde tu extremo hacia el rival: derecha = a tu derecha, arriba = hacia el rival (el lado 1 mira al revés que el 0)
+        double nx = AirHockeyBE.localX + (role == 0 ? -dy : dy) * SENS;
+        double nz = AirHockeyBE.localZ + (role == 0 ? dx : -dx) * SENS;
         AirHockeyBE.localX = Math.max(HockeyPhysics.minX(role), Math.min(HockeyPhysics.maxX(role), nx));
         AirHockeyBE.localZ = Math.max(-HockeyPhysics.HW + HockeyPhysics.MALLET_R, Math.min(HockeyPhysics.HW - HockeyPhysics.MALLET_R, nz));
     }
@@ -214,14 +218,14 @@ public final class HockeyScreen extends Screen {
     }
 
     /** El marcador tipo píldora: tu lado en lima, el rival en magenta, el marcador en el centro. */
-    private void drawPill(GuiGraphics g, int cx, int y, String nameA, String nameB, int sa, int sb) {
+    private void drawPill(GuiGraphics g, int cx, int y, String nameA, String nameB, int sa, int sb, int colA, int colB) {
         int wTotal = 260;
         int h = 28;
         int x = cx - wTotal / 2;
         round(g, x - 2, y - 2, wTotal + 4, h + 4, 0xAAFFFFFF);
         round(g, x, y, wTotal, h, 0xFF16405E);
-        round(g, x + 3, y + 3, wTotal / 2 - 3 - 22, h - 6, 0xFF7AB82A);
-        round(g, x + wTotal / 2 + 22, y + 3, wTotal / 2 - 3 - 22, h - 6, 0xFFB02A86);
+        round(g, x + 3, y + 3, wTotal / 2 - 3 - 22, h - 6, colA);
+        round(g, x + wTotal / 2 + 22, y + 3, wTotal / 2 - 3 - 22, h - 6, colB);
         round(g, cx - 22, y + 2, 44, h - 4, 0xFFEAF6FF);
         g.fill(x + 6, y + 4, x + wTotal / 2 - 24, y + 7, 0x55FFFFFF);
         g.fill(x + wTotal / 2 + 24, y + 4, x + wTotal - 6, y + 7, 0x55FFFFFF);
@@ -255,7 +259,12 @@ public final class HockeyScreen extends Screen {
         String nameA = t.pname[0].isEmpty() ? "-" : t.pname[0];
         String nameB = t.pname[1].isEmpty() ? "-" : t.pname[1];
         String you = Component.translatable("pooltable.hockey.ui.you").getString();
-        drawPill(g, cx, 6, nameA + (role == 0 ? " " + you : ""), nameB + (role == 1 ? " " + you : ""), t.match.scoreA, t.match.scoreB);
+        if (role == 1) {
+            // quien juega del lado 1 se ve a sí mismo a la izquierda del marcador
+            drawPill(g, cx, 6, nameB + " " + you, nameA, t.match.scoreB, t.match.scoreA, 0xFFB02A86, 0xFF7AB82A);
+        } else {
+            drawPill(g, cx, 6, nameA + (role == 0 ? " " + you : ""), nameB, t.match.scoreA, t.match.scoreB, 0xFF7AB82A, 0xFFB02A86);
+        }
 
         Component big = null;
         int bigColor = 0xFFFFD84A;

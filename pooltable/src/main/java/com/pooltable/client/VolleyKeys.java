@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 public final class VolleyKeys {
     public static final KeyMapping DIVE = new KeyMapping("key.pooltable.voley_dive", InputConstants.KEY_V, "key.categories.pooltable");
     public static final KeyMapping CAM = new KeyMapping("key.pooltable.voley_cam", InputConstants.KEY_C, "key.categories.pooltable");
+    public static final KeyMapping MENU = new KeyMapping("key.pooltable.voley_menu", InputConstants.KEY_M, "key.categories.pooltable");
 
     private VolleyKeys() {
     }
@@ -21,5 +22,6 @@ public final class VolleyKeys {
     public static void onKeys(RegisterKeyMappingsEvent e) {
         e.register(DIVE);
         e.register(CAM);
+        e.register(MENU);
     }
 }

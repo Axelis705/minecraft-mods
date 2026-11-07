@@ -45,6 +45,7 @@ public class VolleyCourtBE extends BlockEntity {
     public static final int A_DIFF = 3;
     public static final int A_START = 4;
     public static final int A_STOP = 5;
+    public static final int A_FORMAT = 6;
 
     public static final int FREE = 0;
     public static final int LOBBY = 1;
@@ -76,6 +77,8 @@ public class VolleyCourtBE extends BlockEntity {
     public int phase = FREE;
     public int sizeSetting = 0;
     public int diffSetting = 1;
+    /** 0 = un solo set a 15, 1 = al mejor de 3 sets. */
+    public int formatSetting = 1;
     public final List<String> lobbyNames = new ArrayList<>();
     public final List<Integer> lobbyTeams = new ArrayList<>();
 
@@ -90,6 +93,14 @@ public class VolleyCourtBE extends BlockEntity {
     public int cTouchTeam = -1;
     public int cN = 2;
     public int cDiff = 1;
+    public int cSetsA;
+    public int cSetsB;
+    public int cSetNo = 1;
+    public int cBestOf = 3;
+    public int cTarget = 15;
+    public int cQuality;
+    public long qualityAt;
+    public int cQualityBy = -1;
     public int cServerIdx = -1;
     public float cTimer;
     public final float[] cBall = new float[6];
@@ -241,6 +252,12 @@ public class VolleyCourtBE extends BlockEntity {
                     sync();
                 }
             }
+            case A_FORMAT -> {
+                if (me != null && phase != PLAYING) {
+                    formatSetting = arg == 0 ? 0 : 1;
+                    sync();
+                }
+            }
             case A_START -> {
                 if (me != null && phase == LOBBY) {
                     startMatch();
@@ -331,7 +348,7 @@ public class VolleyCourtBE extends BlockEntity {
             }
         }
         injectPositions();
-        match.start(n, diffSetting);
+        match.start(n, diffSetting, formatSetting == 0 ? 1 : 3);
         phase = PLAYING;
         announcedEnd = false;
         // todos los humanos a su lugar de inicio, mirando a la red
@@ -410,7 +427,7 @@ public class VolleyCourtBE extends BlockEntity {
     }
 
     /** Un golpe de un humano (clic izquierdo = 0, derecho = 1). */
-    public void humanHit(ServerPlayer sp, int kind, double fwd, double right, boolean dive) {
+    public void humanHit(ServerPlayer sp, int kind, double fwd, double right, boolean dive, double power) {
         if (phase != PLAYING || !(level instanceof ServerLevel sl)) {
             return;
         }
@@ -435,7 +452,7 @@ public class VolleyCourtBE extends BlockEntity {
             }
         }
         injectPositions();
-        match.humanAct(idx, kind, fwd, right, dive);
+        match.humanAct(idx, kind, fwd, right, dive, power);
     }
 
     private void sound(SoundEvent ev, double u, double y, double v, float vol, float pitch) {
@@ -555,18 +572,37 @@ public class VolleyCourtBE extends BlockEntity {
             sound(SoundEvents.SAND_BREAK, bu, 0.2, bv, 1.0F, 0.8F);
             burst(ParticleTypes.CLOUD, bu, 0.15, bv, 6, 0.2, 0.02);
         }
+        if (match.evQuality >= 0.8 && match.evQualityBy >= 0 && match.players.get(match.evQualityBy).human) {
+            sound(SoundEvents.EXPERIENCE_ORB_PICKUP, bu, by, bv, 0.6F, 1.6F);
+            burst(ParticleTypes.CRIT, bu, by, bv, 4, 0.1, 0.1);
+        }
         if (match.evPoint != 0) {
             int team = match.evPoint - 1;
             sound(SoundEvents.PLAYER_LEVELUP, 0, 1.5, 0, 0.7F, 1.3F);
-            burst(ParticleTypes.FIREWORK, bu, 0.4, bv, 24, 0.3, 0.12);
+            burst(ParticleTypes.HAPPY_VILLAGER, bu, 0.4, bv, 8, 0.3, 0.1);
             Component who = Component.translatable("pooltable.voley.team." + team);
-            Component msg = Component.translatable(match.evOut ? "pooltable.voley.point.out" : "pooltable.voley.point", who, match.scoreA, match.scoreB);
+            Component msg;
+            if (!match.evFault.isEmpty()) {
+                msg = Component.translatable("pooltable.voley.fault." + match.evFault, who, match.scoreA, match.scoreB);
+            } else {
+                msg = Component.translatable(match.evOut ? "pooltable.voley.point.out" : "pooltable.voley.point", who, match.scoreA, match.scoreB);
+            }
+            Vec3 c = world(0, 1, 0);
             for (ServerPlayer p : sl.players()) {
-                Vec3 c = world(0, 1, 0);
                 if (p.distanceToSqr(c.x, c.y, c.z) <= 40 * 40) {
                     p.displayClientMessage(msg, true);
                 }
             }
+        }
+        if (match.evSetWon != 0 && match.state != VolleyMatch.State.OVER) {
+            sound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 0, 1.5, 0, 0.8F, 1.2F);
+            broadcast(Component.translatable("pooltable.voley.setwin", Component.translatable("pooltable.voley.team." + (match.evSetWon - 1)), match.setsA, match.setsB));
+        }
+        if (match.evNewSet) {
+            broadcast(Component.translatable("pooltable.voley.newset", match.setNo, match.target()));
+        }
+        if (match.evRotate != 0 && match.serverIdx >= 0 && match.serverIdx < match.players.size()) {
+            broadcast(Component.translatable("pooltable.voley.rotate", match.players.get(match.serverIdx).name));
         }
         if (match.evRejectBy >= 0 && !match.evReject.isEmpty()) {
             ServerPlayer sp = humanAt(sl, match.evRejectBy);
@@ -585,7 +621,7 @@ public class VolleyCourtBE extends BlockEntity {
         if (match.state == VolleyMatch.State.OVER && !announcedEnd) {
             announcedEnd = true;
             sound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 0, 1.5, 0, 1.0F, 1.0F);
-            broadcast(Component.translatable("pooltable.voley.win", Component.translatable("pooltable.voley.team." + match.winner), match.scoreA, match.scoreB));
+            broadcast(Component.translatable("pooltable.voley.win", Component.translatable("pooltable.voley.team." + match.winner), match.setsA, match.setsB));
         }
     }
 
@@ -602,7 +638,7 @@ public class VolleyCourtBE extends BlockEntity {
                 match.addPlayer(t, false, "bot");
             }
         }
-        match.start(2, 2);
+        match.start(2, 2, 1);
         phase = PLAYING;
         int hits = 0;
         for (int i = 0; i < ticks && match.state != VolleyMatch.State.IDLE; i++) {
@@ -650,6 +686,16 @@ public class VolleyCourtBE extends BlockEntity {
         cDiff = m.diff;
         cServerIdx = m.serverIdx;
         cTimer = m.timer;
+        cSetsA = m.setsA;
+        cSetsB = m.setsB;
+        cSetNo = m.setNo;
+        cBestOf = m.bestOf;
+        cTarget = m.target;
+        if (m.quality > 0) {
+            cQuality = m.quality;
+            cQualityBy = m.qualityBy;
+            qualityAt = System.nanoTime();
+        }
         System.arraycopy(m.ball, 0, cBall, 0, 6);
         cCount = Math.min(6, m.count);
         for (int i = 0; i < cCount; i++) {
@@ -689,6 +735,7 @@ public class VolleyCourtBE extends BlockEntity {
         tag.putInt("phase", phase);
         tag.putInt("size", sizeSetting);
         tag.putInt("diff", diffSetting);
+        tag.putInt("format", formatSetting);
         ListTag names = new ListTag();
         for (String s : lobbyNames) {
             names.add(StringTag.valueOf(s));
@@ -707,6 +754,7 @@ public class VolleyCourtBE extends BlockEntity {
         phase = tag.getInt("phase");
         sizeSetting = tag.getInt("size");
         diffSetting = tag.getInt("diff");
+        formatSetting = tag.contains("format") ? tag.getInt("format") : 1;
         lobbyNames.clear();
         lobbyTeams.clear();
         ListTag names = tag.getList("names", 8);
@@ -744,6 +792,6 @@ public class VolleyCourtBE extends BlockEntity {
 
     @Override
     public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition).inflate(12.0, 10.0, 12.0);
+        return new AABB(worldPosition).inflate(16.0, 10.0, 16.0);
     }
 }

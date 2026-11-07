@@ -42,6 +42,9 @@ public final class VolleyClient {
     public static float aimFwd = 0;
     public static float aimRight = 0;
 
+    /** Barra de fuerza del saque: se llena y vacía mientras mantienes el clic izquierdo. */
+    private static boolean charging = false;
+    private static long chargeStart = 0;
     private static long lastSync = 0;
     private static Entity cam = null;
     private static boolean camActive = false;
@@ -52,6 +55,21 @@ public final class VolleyClient {
 
     public static boolean playing() {
         return court != null && myIdx >= 0;
+    }
+
+    /** Fuerza (0 a 1) de la barra si estás cargando el saque, o -1. */
+    public static float chargeNow() {
+        if (!charging) {
+            return -1.0F;
+        }
+        double t = (System.nanoTime() - chargeStart) / 1.0e9 / 1.3;
+        double ph = t - Math.floor(t / 2.0) * 2.0;
+        return (float) (ph < 1.0 ? ph : 2.0 - ph);
+    }
+
+    /** ¿Me toca sacar ahora? */
+    public static boolean iServe() {
+        return court != null && court.cState == VolleyMatch.State.SERVE.ordinal() && court.cServerIdx == myIdx;
     }
 
     public static boolean camOn() {
@@ -92,6 +110,7 @@ public final class VolleyClient {
     }
 
     public static void leave() {
+        charging = false;
         court = null;
         myIdx = -1;
         myTeam = -1;
@@ -150,6 +169,19 @@ public final class VolleyClient {
         if (mc.level == null || mc.player == null || court.isRemoved() || (System.nanoTime() - lastSync) > 1_500_000_000L) {
             leave();
             return;
+        }
+        while (VolleyKeys.MENU.consumeClick()) {
+            PoolClient.openVolley(court.getBlockPos());
+        }
+        if (charging) {
+            // se suelta el clic: sale el saque con la fuerza de ese instante
+            if (!mc.options.keyAttack.isDown() || !iServe()) {
+                float power = chargeNow();
+                charging = false;
+                if (iServe()) {
+                    PoolNet.sendToServer(new VolleyHitPacket(court.getBlockPos(), 0, aimFwd, aimRight, false, Math.max(0.0F, power)));
+                }
+            }
         }
         while (VolleyKeys.CAM.consumeClick()) {
             arcade = !arcade;
@@ -288,6 +320,14 @@ public final class VolleyClient {
             e.setCanceled(true);
             e.setSwingHand(false);
             BlockPos pos = court.getBlockPos();
+            if (e.isAttack() && iServe()) {
+                // al sacar, el clic mantenido llena la barra (se suelta en la zona verde)
+                if (!charging) {
+                    charging = true;
+                    chargeStart = System.nanoTime();
+                }
+                return;
+            }
             PoolNet.sendToServer(new VolleyHitPacket(pos, e.isUseItem() ? 1 : 0, aimFwd, aimRight, VolleyKeys.DIVE.isDown()));
         }
     }
