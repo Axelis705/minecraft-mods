@@ -181,7 +181,7 @@ public final class CartasCommand {
             Random r = new Random(7);
             for (int i = 0; i < 2000; i++) {
                 List<PackRoller.Pull> l = PackRoller.roll(p, r);
-                if (l.size() != p.count || !l.get(l.size() - 1).card().rarity.atLeast(p.min)) {
+                if (l.size() != p.count || l.stream().noneMatch(x -> x.card().rarity.atLeast(p.min))) {
                     errors.add("sobre " + p.id + " mal sorteado");
                     break;
                 }
