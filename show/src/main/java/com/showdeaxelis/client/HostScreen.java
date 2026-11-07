@@ -164,14 +164,22 @@ public final class HostScreen extends Screen {
         cy += 1;
     }
 
+    /** Recorta el texto con puntos suspensivos para que nunca se salga del boton. */
+    private String fit(String label, int maxW) {
+        if (font.width(label) <= maxW) {
+            return label;
+        }
+        return font.plainSubstrByWidth(label, maxW - font.width("...")) + "...";
+    }
+
     private void full(String label, Runnable r) {
         nextRow();
-        addRenderableWidget(Button.builder(Component.literal(label), b -> r.run()).bounds(cx, cy, PW, 20).build());
+        addRenderableWidget(Button.builder(Component.literal(fit(label, PW - 8)), b -> r.run()).bounds(cx, cy, PW, 20).build());
         cy += 22;
     }
 
     private void half(String label, Runnable r) {
-        addRenderableWidget(Button.builder(Component.literal(label), b -> r.run()).bounds(cx + col * (PW / 2 + 2), cy, PW / 2 - 2, 20).build());
+        addRenderableWidget(Button.builder(Component.literal(fit(label, PW / 2 - 10)), b -> r.run()).bounds(cx + col * (PW / 2 + 2), cy, PW / 2 - 2, 20).build());
         col++;
         if (col == 2) {
             col = 0;
@@ -385,7 +393,7 @@ public final class HostScreen extends Screen {
             case 4 -> {
                 note("1) Llama a los representantes al frente.");
                 full("¡Que pasen los representantes!", () -> act("callreps"));
-                full("Anunciar la pregunta (abre la campana)", () -> act("announce"));
+                full("Anunciar pregunta (abre campana)", () -> act("announce"));
                 nextRow();
                 full("Terminar segmento", () -> act("finish"));
                 return;
@@ -406,8 +414,8 @@ public final class HostScreen extends Screen {
         boolean face = stage == 0;
         if (face && !r.getBoolean("qs")) {
             note("Representantes al frente. Lee la pregunta y abre la campana.");
-            full("Anunciar la pregunta (abre la campana)", () -> act("announce"));
-            full("Llamar de nuevo a los representantes", () -> act("callreps"));
+            full("Anunciar pregunta (abre campana)", () -> act("announce"));
+            full("Llamar otra vez a los reps", () -> act("callreps"));
         } else if (face) {
             note(ans.isEmpty() ? "Campana abierta: espera al primero (o dala tu)." : "Contesta: " + cut(ans, 16));
             if (ans.isEmpty()) {

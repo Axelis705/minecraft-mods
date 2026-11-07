@@ -316,6 +316,9 @@ public final class Show {
         if (phase != Phase.R100 || r == null || (r.stage != Round100.CALL && r.stage != Round100.FACE)) {
             return false;
         }
+        if (r.stage == Round100.CALL) {
+            events.add(new Ev("reps_called", -1, "", "", 0, 0));
+        }
         r.stage = Round100.FACE;
         r.qShown = true;
         r.open = true;

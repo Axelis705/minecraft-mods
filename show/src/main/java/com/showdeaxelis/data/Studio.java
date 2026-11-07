@@ -189,10 +189,7 @@ public final class Studio {
             }
         }
         // la mesita de la campana (100 mexicanos): los dos representantes se paran a los lados
-        fill(lv, st, BELL_X - 1, 2, BELL_Z, BELL_X + 1, 2, BELL_Z, Blocks.QUARTZ_BLOCK);
-        put(lv, st, BELL_X, 3, BELL_Z, Blocks.BELL.defaultBlockState()
-                .setValue(net.minecraft.world.level.block.BellBlock.FACING, Direction.NORTH)
-                .setValue(net.minecraft.world.level.block.BellBlock.ATTACHMENT, net.minecraft.world.level.block.state.properties.BellAttachType.FLOOR));
+        placeBellDesk(lv, st);
         // el escritorio del presentador, a la derecha de los podios (tambien mira a la pantalla)
         fill(lv, st, 19, 2, 34, 23, 2, 35, Blocks.QUARTZ_BLOCK);
         fill(lv, st, 18, 1, 31, 24, 1, 31, Blocks.SEA_LANTERN);
@@ -428,6 +425,76 @@ public final class Studio {
             if (sp != null) {
                 sp.teleportTo(lv, pos[0], pos[1], pos[2], yaw, 25f);
             }
+        }
+    }
+
+    private static void placeBellDesk(ServerLevel lv, StageData.Info st) {
+        fill(lv, st, BELL_X - 1, 2, BELL_Z, BELL_X + 1, 2, BELL_Z, Blocks.QUARTZ_BLOCK);
+        put(lv, st, BELL_X, 3, BELL_Z, Blocks.BELL.defaultBlockState()
+                .setValue(net.minecraft.world.level.block.BellBlock.FACING, Direction.NORTH)
+                .setValue(net.minecraft.world.level.block.BellBlock.ATTACHMENT, net.minecraft.world.level.block.state.properties.BellAttachType.FLOOR));
+    }
+
+    /** Si el estudio es de antes de la campana, le pone la mesita y la campana sin reconstruir todo. */
+    public static void ensureBell(ServerLevel lv, StageData.Info st) {
+        BlockPos pos = bellPos(st);
+        if (lv.isLoaded(pos) && !(lv.getBlockState(pos).getBlock() instanceof net.minecraft.world.level.block.BellBlock)) {
+            placeBellDesk(lv, st);
+        }
+    }
+
+    /**
+     * Los bots no son jugadores de verdad: les pone un cuerpo (una figura con su nombre) en su podio, y en 100 mexicanos al
+     * representante lo lleva junto a la campana. Se llama seguido; solo mueve lo que cambio.
+     */
+    public static void syncBots(ServerLevel lv, StageData.Info st, Show sh) {
+        java.util.Map<String, double[]> want = new java.util.HashMap<>();
+        java.util.Map<String, Participant> who = new java.util.HashMap<>();
+        if (sh != null) {
+            Direction f0 = dirOf(st.dir());
+            boolean repsOut = sh.phase == com.showdeaxelis.game.Phase.R100 && sh.r != null
+                    && (sh.r.stage == com.showdeaxelis.game.Round100.FACE || sh.r.stage == com.showdeaxelis.game.Round100.CHOOSE);
+            for (Side sd : sh.sides) {
+                int k = 0;
+                for (Participant p : sd.members) {
+                    if (Bots.isBot(p.id)) {
+                        String tag = "show_bot_" + p.id;
+                        double[] pos = repsOut && sd.rep() == p
+                                ? atD(st, BELL_X + (sd.index == 0 ? -2.6 : 2.6), 2, BELL_Z - 1.6)
+                                : atD(st, slotX(sh, p, sd, k), PODIUM_FLOOR, PODIUM_Z - 1.4);
+                        want.put(tag, pos);
+                        who.put(tag, p);
+                    }
+                    k++;
+                }
+            }
+        }
+        Direction f = dirOf(st.dir());
+        float yaw = (float) Math.toDegrees(Math.atan2(-f.getStepX(), f.getStepZ()));
+        for (SpectatorEntity e : lv.getEntitiesOfClass(SpectatorEntity.class, area(st))) {
+            String tag = e.getTags().stream().filter(t -> t.startsWith("show_bot_")).findFirst().orElse(null);
+            if (tag == null) {
+                continue;
+            }
+            double[] pos = want.remove(tag);
+            if (pos == null) {
+                e.discard();
+            } else if (e.distanceToSqr(pos[0], pos[1], pos[2]) > 0.04) {
+                e.moveTo(pos[0], pos[1], pos[2], yaw, 0);
+            }
+        }
+        for (var en : want.entrySet()) {
+            Participant p = who.get(en.getKey());
+            double[] pos = en.getValue();
+            SpectatorEntity e = new SpectatorEntity(lv);
+            e.moveTo(pos[0], pos[1], pos[2], yaw, 0);
+            e.setYHeadRot(yaw);
+            e.setYBodyRot(yaw);
+            e.setSkin(Math.floorMod(p.id.hashCode(), SpectatorEntity.SKINS));
+            e.addTag(en.getKey());
+            e.setCustomName(net.minecraft.network.chat.Component.literal(p.name));
+            e.setCustomNameVisible(true);
+            lv.addFreshEntity(e);
         }
     }
 }

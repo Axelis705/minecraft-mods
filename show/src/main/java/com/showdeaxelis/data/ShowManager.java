@@ -127,6 +127,10 @@ public final class ShowManager {
             return;
         }
         podiums(st);
+        if (show != null) {
+            Studio.ensureBell(server.overworld(), st);
+        }
+        Studio.syncBots(server.overworld(), st, show);
         Displays.update(server.overworld(), st, show == null ? null : ShowSync.build(show, new UUID(0L, 0L), now, st));
     }
 
