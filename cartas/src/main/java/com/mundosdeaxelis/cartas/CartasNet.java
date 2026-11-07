@@ -18,7 +18,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 /** Comunicacion cliente <-> servidor del sistema de cartas. El servidor decide todo; el cliente solo muestra. */
 public final class CartasNet {
-    private static final String VERSION = "2";
+    private static final String VERSION = "3";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(Cartas.MOD_ID, "cartas"), () -> VERSION, VERSION::equals, VERSION::equals);
 
@@ -35,6 +35,10 @@ public final class CartasNet {
     public record PlaceRequest(String id, boolean holo) {
     }
 
+    /** Cliente -> servidor: termine de abrir el sobre, entregame las cartas. */
+    public record ClaimPack() {
+    }
+
     /** Servidor -> cliente: abre el album con este contenido. */
     public record AlbumOpen(Set<String> normal, Set<String> holo) {
     }
@@ -43,7 +47,7 @@ public final class CartasNet {
     public record InsertResult(List<String> ids, List<Boolean> holo, Set<String> normal, Set<String> holoAll, float before, float after) {
     }
 
-    /** Servidor -> cliente: se abrio un sobre; estas son las cartas (ya estan en el inventario). */
+    /** Servidor -> cliente: se abrio un sobre; estas son las cartas (se entregan cuando termina la animacion). */
     public record PackOpen(String pack, List<String> ids, List<Boolean> holo, List<Boolean> isNew) {
     }
 
@@ -57,6 +61,8 @@ public final class CartasNet {
             b.writeUtf(m.id());
             b.writeBoolean(m.holo());
         }, b -> new PlaceRequest(b.readUtf(), b.readBoolean()), (m, c) -> server(c, sp -> AlbumInsert.place(sp, m.id(), m.holo())));
+        CHANNEL.registerMessage(id++, ClaimPack.class, (m, b) -> {
+        }, b -> new ClaimPack(), (m, c) -> server(c, sp -> PackDelivery.deliver(sp)));
         CHANNEL.registerMessage(id++, AlbumOpen.class, (m, b) -> {
             writeSet(b, m.normal());
             writeSet(b, m.holo());

@@ -16,6 +16,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -61,6 +62,19 @@ public final class CartasCommand {
         root.then(Commands.literal("simular").then(Commands.argument("sobre", StringArgumentType.word()).suggests(PACK_IDS)
                 .then(Commands.argument("cantidad", IntegerArgumentType.integer(1, 200000))
                         .executes(c -> simulate(c.getSource(), StringArgumentType.getString(c, "sobre"), IntegerArgumentType.getInteger(c, "cantidad"))))));
+        root.then(Commands.literal("cabana").then(Commands.literal("probar").executes(c -> {
+            ServerLevel lv = c.getSource().getServer().overworld();
+            net.minecraft.core.BlockPos at = new net.minecraft.core.BlockPos(300, 90, 300);
+            Cabana.build(lv, at, net.minecraft.core.Direction.SOUTH, null);
+            String bad = Cabana.check(lv, at, net.minecraft.core.Direction.SOUTH);
+            c.getSource().sendSuccess(() -> Component.literal(bad.isEmpty() ? "PRUEBA_CABANA_OK" : "PRUEBA_CABANA_FALLA: " + bad), false);
+            return bad.isEmpty() ? 1 : 0;
+        })).executes(c -> {
+            ServerPlayer sp = c.getSource().getPlayerOrException();
+            String msg = Cabana.build(sp);
+            c.getSource().sendSuccess(() -> Component.literal(msg), true);
+            return 1;
+        }));
         root.then(Commands.literal("probar").executes(c -> selfTest(c.getSource())));
         d.register(root);
     }

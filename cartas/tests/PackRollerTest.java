@@ -23,6 +23,8 @@ public class PackRollerTest {
             int n = 40000;
             long[] byR = new long[CardRarity.values().length];
             long total = 0, holo = 0;
+            int unsorted = 0;
+            int bestNotLast = 0; // cuantas veces la ultima carta es de la rareza maxima del sobre
             int minOk = 0;
             for (int i = 0; i < n; i++) {
                 List<PackRoller.Pull> l = PackRoller.roll(p, rnd);
@@ -38,15 +40,25 @@ public class PackRollerTest {
                     if (x.card().rarity.atLeast(p.min)) {
                         has = true;
                     }
-                    if (prev != null) {
-                        check(prev.card().rarity.ordinal() <= x.card().rarity.ordinal(), "orden por rareza");
+                    if (prev != null && prev.card().rarity.ordinal() > x.card().rarity.ordinal()) {
+                        unsorted++;
                     }
                     prev = x;
                 }
                 if (has) {
                     minOk++;
                 }
+                int max = 0;
+                for (PackRoller.Pull x : l) {
+                    max = Math.max(max, x.card().rarity.ordinal());
+                }
+                if (l.get(l.size() - 1).card().rarity.ordinal() == max) {
+                    bestNotLast++;
+                }
             }
+            // el orden es al azar: la mejor carta no sale siempre al final y hay sobres desordenados
+            check(unsorted > n / 4, "orden al azar en " + p.id + " (desordenados: " + unsorted + ")");
+            check(bestNotLast < n * 0.7, "la mejor no siempre al final en " + p.id + " (al final: " + bestNotLast + ")");
             check(minOk == n, "rareza minima garantizada en " + p.id + " (" + minOk + "/" + n + ")");
             double hp = (double) holo / total;
             check(Math.abs(hp - p.holo) < 0.01, "probabilidad holografica " + p.id + " esperada " + p.holo + " real " + hp);

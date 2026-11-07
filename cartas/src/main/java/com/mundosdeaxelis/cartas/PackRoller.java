@@ -63,7 +63,7 @@ public final class PackRoller {
         return pool.get(rnd.nextInt(pool.size()));
     }
 
-    /** Las cartas del sobre, de la menos rara a la mas rara (lo mejor se revela al final). La ultima cumple la rareza minima del sobre. */
+    /** Las cartas del sobre, en orden al azar. Al menos una cumple la rareza minima del sobre. */
     public static List<Pull> roll(PackDef p, Random rnd) {
         double[] normal = rarityProbs(p, CardRarity.COMUN);
         double[] guaranteed = rarityProbs(p, p.min);
@@ -79,7 +79,8 @@ public final class PackRoller {
             }
             out.add(new Pull(pickCard(r, rnd), rnd.nextDouble() < p.holo));
         }
-        out.sort((a, b) -> Integer.compare(a.card().rarity.ordinal(), b.card().rarity.ordinal()));
+        // en desorden: la mejor carta puede salir en cualquier lugar del sobre
+        java.util.Collections.shuffle(out, rnd);
         return out;
     }
 

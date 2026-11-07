@@ -19,7 +19,8 @@ import org.lwjgl.glfw.GLFW;
 
 /**
  * Apertura de un sobre: se mantiene el clic para rasgarlo, estalla en luz y las cartas se voltean una a una
- * (las mejores al final). Las cartas ya estan en el inventario; esto es solo el espectaculo.
+ * (en el orden en que salieron, al azar). Las cartas llegan al inventario cuando termina la apertura: al voltear la
+ * ultima carta (o al cerrar la pantalla antes) se le pide al servidor que las entregue.
  */
 public final class PackOpenScreen extends Screen {
     private static final int VW = 360;
@@ -199,6 +200,9 @@ public final class PackOpenScreen extends Screen {
                         if (flip[i] >= 1f) {
                             done[i] = true;
                             landed(i);
+                            if (allDone()) {
+                                claim();
+                            }
                         }
                     }
                 }
@@ -256,6 +260,23 @@ public final class PackOpenScreen extends Screen {
             s.rainbow = rainbow;
             sparks.add(s);
         }
+    }
+
+    private boolean claimed;
+
+    /** Pide al servidor las cartas del sobre (una sola vez). */
+    private void claim() {
+        if (!claimed) {
+            claimed = true;
+            CartasNet.CHANNEL.sendToServer(new CartasNet.ClaimPack());
+        }
+    }
+
+    @Override
+    public void removed() {
+        // si cierran la pantalla antes de terminar, las cartas se entregan igual
+        claim();
+        super.removed();
     }
 
     private boolean allDone() {

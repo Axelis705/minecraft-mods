@@ -2,3 +2,5 @@ cartas probar
 #expect PRUEBA_CARTAS_OK
 cartas simular basico 20000
 cartas simular oro 20000
+cartas cabana probar
+#expect PRUEBA_CABANA_OK

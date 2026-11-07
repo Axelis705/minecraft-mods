@@ -16,7 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-/** Un sobre de cartas: clic derecho para abrirlo. Las cartas se entregan al instante; la animacion es solo vista. */
+/** Un sobre de cartas: clic derecho para abrirlo. Las cartas llegan al inventario al terminar la animacion (PackDelivery). */
 public class PackItem extends Item {
     public final PackDef def;
 
@@ -42,7 +42,7 @@ public class PackItem extends Item {
         return InteractionResultHolder.sidedSuccess(st, level.isClientSide);
     }
 
-    /** Sortea, entrega y manda la animacion al cliente. */
+    /** Sortea, guarda las cartas para entregarlas al terminar y manda la animacion al cliente. */
     public static List<PackRoller.Pull> open(ServerPlayer sp, PackDef def, Random rnd) {
         List<PackRoller.Pull> pulls = PackRoller.roll(def, rnd);
         AlbumCap cap = AlbumCaps.of(sp);
@@ -57,11 +57,9 @@ public class PackItem extends Item {
             ids.add(p.card().id);
             holo.add(p.holo());
             isNew.add(nuevo);
-            ItemStack stack = CartasItems.stack(p.card(), p.holo(), 1);
-            if (!sp.getInventory().add(stack)) {
-                sp.drop(stack, false);
-            }
         }
+        // las cartas se entregan cuando el jugador termina de abrir el sobre (ver PackDelivery)
+        PackDelivery.hold(sp, pulls);
         CartasNet.toPlayer(sp, new CartasNet.PackOpen(def.id, ids, holo, isNew));
         return pulls;
     }
