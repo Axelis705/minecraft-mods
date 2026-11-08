@@ -65,8 +65,19 @@ public final class HockeyPhysics {
         mvz[side] = 0;
     }
 
+    /** Paso máximo interno: con 1/240 s ni el disco ni los mazos avanzan más de 5 cm por paso (el disco y el mazo miden 14,5 cm juntos), así no se atraviesan. */
+    private static final double SUB = 1.0 / 240.0;
+
     /** Mueve los mazos hacia sus objetivos (y los guarda en su mitad). Con {@code puck} = false el disco no se mueve (cuenta atrás, tras un gol). */
     public void step(double dt, boolean puck) {
+        int n = Math.max(1, (int) Math.ceil(dt / SUB - 1e-9));
+        double h = dt / n;
+        for (int i = 0; i < n; i++) {
+            substep(h, puck);
+        }
+    }
+
+    private void substep(double dt, boolean puck) {
         for (int s = 0; s < 2; s++) {
             double gx = Math.max(minX(s), Math.min(maxX(s), tx[s]));
             double gz = Math.max(-HW + MALLET_R, Math.min(HW - MALLET_R, tz[s]));

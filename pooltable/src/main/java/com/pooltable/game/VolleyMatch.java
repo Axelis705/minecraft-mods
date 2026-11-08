@@ -38,6 +38,9 @@ public final class VolleyMatch {
 
     public static final int HIT = 0;
     public static final int SET = 1;
+    /** Orientación del jugador (radianes): hasta FACE_OK no pasa nada; pasado FACE_MAX no puede golpear. */
+    public static final double FACE_OK = Math.toRadians(50);
+    public static final double FACE_MAX = Math.toRadians(100);
 
     public enum State { IDLE, SERVE, RALLY, POINT, OVER }
 
@@ -67,6 +70,7 @@ public final class VolleyMatch {
         public double pendFwd;
         public double pendRight;
         public boolean pendDive;
+        public boolean pendBack;
         public double pendPower;
         // IA
         public double aiWait = -1;
@@ -458,6 +462,12 @@ public final class VolleyMatch {
             int kind = s.pend;
             s.pend = -1;
             if (kind == HIT) {
+                if (angDiff(s.face, s.team == 0 ? 0.0 : Math.PI) > FACE_MAX) {
+                    // sacar de espaldas a la red no vale: la pelota se queda en la mano
+                    evReject = "espalda";
+                    evRejectBy = serverIdx;
+                    return;
+                }
                 doServe(s, s.pendFwd, s.pendRight, s.pendPower);
                 return;
             }
@@ -477,12 +487,19 @@ public final class VolleyMatch {
             P p = players.get(i);
             if (p.human && p.pend >= 0) {
                 p.pendT -= dt;
-                if (reachable(p, p.pendDive)) {
+                if (reachable(p, p.pendDive) && !turnedAway(p)) {
                     int kind = p.pend;
                     p.pend = -1;
                     perform(i, p, kind, p.pendFwd, p.pendRight, p.pendDive);
                 } else if (p.pendT <= 0) {
+                    if (p.pendBack || (reachable(p, p.pendDive) && turnedAway(p))) {
+                        evReject = "espalda";
+                        evRejectBy = i;
+                    }
                     p.pend = -1;
+                    p.pendBack = false;
+                } else if (reachable(p, p.pendDive)) {
+                    p.pendBack = true;
                 }
             }
         }
@@ -614,6 +631,40 @@ public final class VolleyMatch {
         return h <= reach && ball[1] >= p.y - 0.15 && ball[1] <= top;
     }
 
+    /** Diferencia entre dos ángulos, siempre de 0 a pi. */
+    private static double angDiff(double a, double b) {
+        double d = (a - b) % (2 * Math.PI);
+        if (d > Math.PI) {
+            d -= 2 * Math.PI;
+        } else if (d < -Math.PI) {
+            d += 2 * Math.PI;
+        }
+        return Math.abs(d);
+    }
+
+    /** Cuánto se desvía un humano de estar bien orientado: el mayor entre "mirar a la pelota" y "mirar hacia la red" (en radianes). */
+    private double faceError(P p) {
+        double toBall = Math.atan2(ball[2] - p.z, ball[0] - p.x);
+        double toNet = p.team == 0 ? 0.0 : Math.PI;
+        double h = Math.hypot(ball[0] - p.x, ball[2] - p.z);
+        double eb = h < 0.4 ? 0.0 : angDiff(p.face, toBall);
+        return Math.max(eb, angDiff(p.face, toNet));
+    }
+
+    /** Un humano de espaldas (a la pelota o a la red) no puede golpear: ni siquiera la ve. */
+    public boolean turnedAway(P p) {
+        return p.human && faceError(p) > FACE_MAX;
+    }
+
+    /** Factor (0.45 a 1) por mala orientación: de frente no se pierde nada; de lado se pierde algo y casi de espaldas mucho. */
+    private double faceFactor(P p) {
+        if (!p.human) {
+            return 1.0;
+        }
+        double e = faceError(p);
+        return 1.0 - 0.55 * clamp((e - FACE_OK) / (FACE_MAX - FACE_OK), 0.0, 1.0);
+    }
+
     /** Un humano pide golpear: kind = HIT o SET; aimFwd (+1 = adelante/profundo, -1 = corto) y aimRight (+1 = a su derecha) vienen de WASD. */
     public void humanAct(int idx, int kind, double aimFwd, double aimRight, boolean dive) {
         humanAct(idx, kind, aimFwd, aimRight, dive, 0.7);
@@ -632,6 +683,7 @@ public final class VolleyMatch {
             return;
         }
         p.pend = kind;
+        p.pendBack = false;
         // un instante de margen: hay que pulsar cuando la pelota ya está a la mano, no antes
         p.pendT = 0.12;
         p.pendFwd = clamp(aimFwd, -1, 1);
@@ -639,8 +691,13 @@ public final class VolleyMatch {
         p.pendDive = dive;
         p.pendPower = clamp(power, 0, 1);
         if (state == State.RALLY && reachable(p, dive)) {
-            p.pend = -1;
-            perform(idx, p, kind, p.pendFwd, p.pendRight, dive);
+            if (turnedAway(p)) {
+                // está al alcance pero de espaldas: se queda pendiente un instante por si se gira a tiempo
+                p.pendBack = true;
+            } else {
+                p.pend = -1;
+                perform(idx, p, kind, p.pendFwd, p.pendRight, dive);
+            }
         }
     }
 
@@ -698,6 +755,7 @@ public final class VolleyMatch {
         if (dive) {
             q *= 0.75;
         }
+        q *= faceFactor(p);
         return clamp(q, 0.05, 1.0);
     }
 
@@ -793,6 +851,9 @@ public final class VolleyMatch {
         }
         if (!p.human) {
             sigma += VolleyAI.ERR[diff];
+        } else if (act != Act.BLOCK) {
+            // la pelota sale hacia donde apunta el cuerpo: si estás girado, se va de lado
+            tz += Math.sin(p.face) * hw * 0.6;
         }
         sigma += 0.08 * Math.max(0, rallyTouches - 6);
         rallyTouches++;

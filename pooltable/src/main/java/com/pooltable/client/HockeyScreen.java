@@ -37,6 +37,7 @@ public final class HockeyScreen extends Screen {
     private Button bHost;
     private Button bJoin;
     private Button bLeave;
+    private Button bClose;
 
     public HockeyScreen(BlockPos pos) {
         super(Component.translatable("block.pooltable.air_hockey"));
@@ -77,7 +78,7 @@ public final class HockeyScreen extends Screen {
         bHost = addRenderableWidget(Button.builder(Component.translatable("pooltable.hockey.ui.host"), b -> send(AirHockeyBE.A_HOST, 0)).bounds(cx - 155, by + 24, 150, 20).build());
         bJoin = addRenderableWidget(Button.builder(Component.translatable("pooltable.hockey.ui.join"), b -> send(AirHockeyBE.A_JOIN, 0)).bounds(cx - 155, by + 24, 150, 20).build());
         bLeave = addRenderableWidget(Button.builder(Component.translatable("pooltable.hockey.ui.leave"), b -> leave()).bounds(cx - 155, by + 24, 150, 20).build());
-        addRenderableWidget(Button.builder(Component.translatable("pooltable.hockey.ui.close"), b -> onClose()).bounds(cx + 5, by + 24, 150, 20).build());
+        bClose = addRenderableWidget(Button.builder(Component.translatable("pooltable.hockey.ui.close"), b -> onClose()).bounds(cx + 5, by + 24, 150, 20).build());
         updateButtons();
     }
 
@@ -101,7 +102,10 @@ public final class HockeyScreen extends Screen {
         bHard.visible = idle;
         bHost.visible = idle;
         bJoin.visible = waiting && role < 0;
-        bLeave.visible = role >= 0;
+        // mientras se juega los botones no tapan la mesa (con Esc se abandona)
+        boolean busy = role >= 0 && (t.match.state == HockeyMatch.State.COUNTDOWN || t.match.state == HockeyMatch.State.PLAYING || t.match.state == HockeyMatch.State.GOAL);
+        bLeave.visible = role >= 0 && !busy;
+        bClose.visible = !busy;
         bLeave.setMessage(Component.translatable(waiting ? "pooltable.hockey.ui.cancel" : "pooltable.hockey.ui.leave"));
     }
 

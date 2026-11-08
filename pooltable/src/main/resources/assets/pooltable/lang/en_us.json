@@ -160,6 +160,7 @@
   "pooltable.voley.team.1": "Orange",
   "pooltable.voley.rej.toques": "Max 3 touches per team!",
   "pooltable.voley.rej.doble": "You can't touch it twice in a row!",
+  "pooltable.voley.rej.espalda": "You're turned away! Face the ball and the net to hit it.",
   "pooltable.voley.rej.lado": "That ball is on the other team's side.",
   "pooltable.voley.popup.spike": "SPIKE!",
   "pooltable.voley.popup.block": "BLOCK!",

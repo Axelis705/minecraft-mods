@@ -8,6 +8,8 @@ import java.util.Random;
  * objetivos de sus mazos en {@code ph.tx[]} y {@code ph.tz[]}.
  */
 public final class HockeyMatch {
+    /** Velocidad máxima del mazo de una persona (bloques por segundo); el cliente usa la misma para predecir. */
+    public static final double HUMAN_SPEED = 11.0;
     public static final int WIN = 7;
 
     public enum State { IDLE, WAITING, COUNTDOWN, PLAYING, GOAL, OVER }
@@ -58,8 +60,8 @@ public final class HockeyMatch {
         reset();
         this.vsCpu = vsCpu;
         this.diff = Math.max(0, Math.min(2, diff));
-        ph.maxSpeed[0] = 5.0;
-        ph.maxSpeed[1] = vsCpu ? HockeyAI.SPEED[this.diff] : 5.0;
+        ph.maxSpeed[0] = HUMAN_SPEED;
+        ph.maxSpeed[1] = vsCpu ? HockeyAI.SPEED[this.diff] : HUMAN_SPEED;
         serve(rnd.nextInt(2));
         state = State.COUNTDOWN;
         timer = 3.0;

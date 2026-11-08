@@ -13,6 +13,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
@@ -66,8 +67,10 @@ public final class HockeyCam {
     }
 
     /** Altura de la cámara sobre la mesa y cuánto se echa hacia atrás de tu extremo. */
-    private static final double HEIGHT = 1.7;
-    private static final double BACK = 0.75;
+    private static final double HEIGHT = 1.55;
+    private static final double BACK = 0.45;
+    /** Ángulo hacia abajo: con esto la mesa llena casi toda la pantalla, de tu extremo (abajo) al del rival (arriba). */
+    private static final float PITCH = 47.0F;
 
     /** Cada jugador ve la mesa desde su propio extremo, mirando hacia el rival (quien solo mira, la ve desde el extremo del jugador 0). */
     private static Vec3 target(AirHockeyBE be, int role) {
@@ -97,7 +100,7 @@ public final class HockeyCam {
         Vec3 t = target(be, role);
         Direction look = role == 1 ? be.facing().getOpposite() : be.facing();
         float yaw = look.toYRot();
-        float pitch = (float) Math.toDegrees(Math.atan2(HEIGHT, HockeyPhysics.HL + BACK + 0.15));
+        float pitch = PITCH;
         cam.setOldPosAndRot();
         double k = 0.3;
         cam.setPos(cam.getX() + (t.x - cam.getX()) * k, cam.getY() + (t.y - cam.getY()) * k, cam.getZ() + (t.z - cam.getZ()) * k);
@@ -129,6 +132,15 @@ public final class HockeyCam {
                 || id.equals(VanillaGuiOverlay.PLAYER_HEALTH.id()) || id.equals(VanillaGuiOverlay.ARMOR_LEVEL.id())
                 || id.equals(VanillaGuiOverlay.FOOD_LEVEL.id()) || id.equals(VanillaGuiOverlay.AIR_LEVEL.id())
                 || id.equals(VanillaGuiOverlay.EXPERIENCE_BAR.id()) || id.equals(VanillaGuiOverlay.ITEM_NAME.id())) {
+            e.setCanceled(true);
+        }
+    }
+
+    /** La cámara está pegada a tu cabeza: tu cuerpo taparía la mesa, así que no se dibuja mientras juegas. */
+    @SubscribeEvent
+    public static void onPlayer(RenderPlayerEvent.Pre e) {
+        Minecraft mc = Minecraft.getInstance();
+        if (active && e.getEntity() == mc.player) {
             e.setCanceled(true);
         }
     }

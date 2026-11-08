@@ -45,7 +45,47 @@ public class HockeyTest {
         return new double[]{m.winner, m.scoreA, m.scoreB, t};
     }
 
+    /** Un mazo rápido (11 b/s) no atraviesa el disco: se prueba a pasos de 50 ms como en el servidor, sin y con el disco quieto o llegando de frente. */
+    static void tunneling() {
+        java.util.Random r = new java.util.Random(11);
+        int through = 0;
+        int trials = 3000;
+        for (int i = 0; i < trials; i++) {
+            HockeyPhysics ph = new HockeyPhysics();
+            ph.maxSpeed[0] = 11.0;
+            ph.putMallet(0, -1.1 + r.nextDouble() * 0.3, (r.nextDouble() - 0.5) * 0.8);
+            double px = -0.75 + r.nextDouble() * 0.5;
+            double pz = ph.mz[0] + (r.nextDouble() - 0.5) * 0.16;
+            ph.placePuck(px, pz);
+            if (r.nextBoolean()) {
+                ph.pvx = -1 - r.nextDouble() * 5;
+                ph.pvz = (r.nextDouble() - 0.5) * 2;
+            }
+            // el mazo se lanza hacia (y más allá de) el disco
+            ph.tx[0] = -0.04;
+            ph.tz[0] = pz + (r.nextDouble() - 0.5) * 0.1;
+            boolean hit = false;
+            double startMx = ph.mx[0];
+            for (int t = 0; t < 12; t++) {
+                for (int k = 0; k < 8; k++) {
+                    ph.step(0.05 / 8, true);
+                }
+                if (ph.mallethits > 0) {
+                    hit = true;
+                }
+                ph.clearEvents();
+            }
+            // si el mazo acabó más allá de donde estaba el disco sin haberlo tocado, lo atravesó
+            if (!hit && ph.mx[0] > px + 0.1 && Math.abs(ph.mz[0] - pz) < 0.1 && ph.px > -1.1 && ph.px < ph.mx[0] - 0.0 && startMx < px) {
+                through++;
+            }
+        }
+        check(through == 0, "el mazo no atraviesa el disco (" + through + "/" + trials + ")");
+        System.out.println("atravesar: " + through + "/" + trials);
+    }
+
     public static void main(String[] a) {
+        tunneling();
         // un golpe de mazo de frente manda el disco hacia el otro lado
         HockeyPhysics ph = new HockeyPhysics();
         ph.placePuck(-0.5, 0);

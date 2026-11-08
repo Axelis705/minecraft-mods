@@ -234,17 +234,14 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
         boolean live = be.match.state != HockeyMatch.State.IDLE;
         java.util.List<float[]> glass = new java.util.ArrayList<>(2);
         // los mazos siempre se ven (en reposo, cada uno en su sitio); se suavizan hacia lo que manda el servidor
+        be.simUpdate();
         for (int s = 0; s < 2; s++) {
-            double tx = live && be.clientInit ? be.cmx[s] : (s == 0 ? -0.9 : 0.9);
-            double tz = live && be.clientInit ? be.cmz[s] : 0.0;
-            if (HockeyCam.active && s == AirHockeyBE.localRole && be.getBlockPos().equals(AirHockeyBE.localPos)) {
-                tx = AirHockeyBE.localX;
-                tz = AirHockeyBE.localZ;
-                sx[s] = tx;
-                sz[s] = tz;
+            if (live && be.clientInit) {
+                sx[s] = be.sim.mx[s];
+                sz[s] = be.sim.mz[s];
             } else {
-                sx[s] += (tx - sx[s]) * 0.5;
-                sz[s] += (tz - sz[s]) * 0.5;
+                sx[s] = s == 0 ? -0.9 : 0.9;
+                sz[s] = 0.0;
             }
             float ux = 1.5F + (float) sx[s];
             float uz = (float) sz[s];
@@ -255,8 +252,7 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
             glass.add(new float[] {ux, uz, s});
         }
         if (live && be.clientInit && be.match.state != HockeyMatch.State.WAITING) {
-            double[] pk = be.puckNow();
-            puck(buf, ps, 1.5F + (float) pk[0], (float) pk[1]);
+            puck(buf, ps, 1.5F + (float) be.sim.px, (float) be.sim.pz);
         } else if (!live) {
             puck(buf, ps, 1.5F, 0.0F);
         }

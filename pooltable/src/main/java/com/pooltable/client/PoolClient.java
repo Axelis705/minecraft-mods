@@ -43,7 +43,22 @@ public final class PoolClient {
         }
         BlockEntity be = Minecraft.getInstance().level.getBlockEntity(m.pos);
         if (be instanceof com.pooltable.block.AirHockeyBE t) {
+            t.netDelay = oneWayDelay();
             t.clientReceive(m.state, m.scoreA, m.scoreB, m.timer, m.px, m.pz, m.vx, m.vz, m.ax, m.az, m.bx, m.bz);
+        }
+    }
+
+    /** Lo que tarda un mensaje en llegar del servidor (la mitad del ping; en un mundo de un jugador es 0). */
+    private static double oneWayDelay() {
+        try {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player == null || mc.getConnection() == null) {
+                return 0.0;
+            }
+            var info = mc.getConnection().getPlayerInfo(mc.player.getUUID());
+            return info == null ? 0.0 : info.getLatency() / 2000.0;
+        } catch (Throwable t) {
+            return 0.0;
         }
     }
 

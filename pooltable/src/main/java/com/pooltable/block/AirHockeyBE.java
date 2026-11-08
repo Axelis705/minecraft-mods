@@ -58,6 +58,15 @@ public class AirHockeyBE extends BlockEntity {
     public double cvz;
     public final double[] cmx = {-0.9, 0.9};
     public final double[] cmz = {0.0, 0.0};
+    /** Retraso de ida del servidor al cliente (segundos), lo pone el cliente antes de recibir cada estado. */
+    public double netDelay = 0.0;
+    /**
+     * Predicción en el cliente: se calcula aquí mismo, con la misma física del servidor, el movimiento del disco y los mazos, así el mazo propio y el
+     * disco se ven siempre coherentes (sin esperar a la red). Cada estado que llega del servidor corrige poco a poco las diferencias.
+     */
+    public final HockeyPhysics sim = new HockeyPhysics();
+    private boolean simValid = false;
+    private long simLast = 0L;
 
     public AirHockeyBE(BlockPos pos, BlockState state) {
         super(ModBlockEntities.AIR_HOCKEY.get(), pos, state);
@@ -326,6 +335,83 @@ public class AirHockeyBE extends BlockEntity {
         cmz[1] = bz;
         recvNanos = System.nanoTime();
         clientInit = true;
+        reconcile();
+    }
+
+    /** El estado del servidor ya tiene un retraso de red: se adelanta ese tiempo antes de comparar con lo que se calculó aquí. */
+    private void reconcile() {
+        if (match.state != HockeyMatch.State.PLAYING || !simValid) {
+            simValid = false;
+            return;
+        }
+        double d = Math.max(0.0, Math.min(0.2, netDelay));
+        double lim = HockeyPhysics.HL + HockeyPhysics.PUCK_R;
+        double sx = Math.max(-lim, Math.min(lim, cpx + cvx * d));
+        double sz = Math.max(-HockeyPhysics.HW + HockeyPhysics.PUCK_R, Math.min(HockeyPhysics.HW - HockeyPhysics.PUCK_R, cpz + cvz * d));
+        double ex = sx - sim.px;
+        double ez = sz - sim.pz;
+        if (Math.hypot(ex, ez) > 0.4) {
+            sim.px = sx;
+            sim.pz = sz;
+            sim.pvx = cvx;
+            sim.pvz = cvz;
+        } else {
+            sim.px += ex * 0.25;
+            sim.pz += ez * 0.25;
+            sim.pvx += (cvx - sim.pvx) * 0.25;
+            sim.pvz += (cvz - sim.pvz) * 0.25;
+        }
+    }
+
+    /** ¿Este jugador maneja ahora el mazo {@code s} de esta mesa con el ratón? */
+    private boolean mine(int s) {
+        return localRole == s && worldPosition.equals(localPos);
+    }
+
+    /** Avanza la predicción del cliente hasta este momento (se llama al dibujar). */
+    public void simUpdate() {
+        long now = System.nanoTime();
+        double dt = simLast == 0L ? 0.0 : Math.min(0.05, (now - simLast) / 1.0e9);
+        simLast = now;
+        if (!clientInit) {
+            return;
+        }
+        boolean playing = match.state == HockeyMatch.State.PLAYING;
+        if (!playing || !simValid) {
+            // sin juego (cuenta atrás, gol, espera) todo se ve tal como lo manda el servidor
+            sim.px = cpx;
+            sim.pz = cpz;
+            sim.pvx = playing ? cvx : 0;
+            sim.pvz = playing ? cvz : 0;
+            for (int s = 0; s < 2; s++) {
+                double x = mine(s) ? localX : cmx[s];
+                double z = mine(s) ? localZ : cmz[s];
+                sim.putMallet(s, x, z);
+            }
+            simValid = playing;
+            return;
+        }
+        for (int s = 0; s < 2; s++) {
+            sim.tx[s] = mine(s) ? localX : cmx[s];
+            sim.tz[s] = mine(s) ? localZ : cmz[s];
+            // el mazo propio sigue al ratón con el mismo límite de velocidad que tiene en el servidor
+            if (mine(s)) {
+                sim.maxSpeed[s] = HockeyMatch.HUMAN_SPEED;
+            } else {
+                // el rival llega suave a donde dice el servidor (en unos 60 ms) en vez de dar saltos cada tick
+                double dd = Math.hypot(sim.tx[s] - sim.mx[s], sim.tz[s] - sim.mz[s]);
+                sim.maxSpeed[s] = Math.max(0.5, Math.min(30.0, dd / 0.06));
+            }
+        }
+        sim.step(dt, true);
+        if (sim.goal != 0) {
+            // metió gol (en el cliente): el disco se queda en la portería hasta que el servidor confirme
+            sim.goal = 0;
+            sim.pvx = 0;
+            sim.pvz = 0;
+            sim.px = Math.max(-HockeyPhysics.HL - 0.12, Math.min(HockeyPhysics.HL + 0.12, sim.px));
+        }
+        sim.clearEvents();
     }
 
     /** Posición del disco para dibujar: la última recibida más lo que avanzó desde entonces (sin pasar de las bandas). */

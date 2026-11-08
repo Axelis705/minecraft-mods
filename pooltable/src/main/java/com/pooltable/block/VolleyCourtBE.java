@@ -422,7 +422,11 @@ public class VolleyCourtBE extends BlockEntity {
             p.vx = (mv.x * f.getStepX() + mv.z * f.getStepZ()) * 20.0;
             p.vz = (mv.x * r.getStepX() + mv.z * r.getStepZ()) * 20.0;
             p.vy = mv.y * 20.0;
-            p.face = Math.toRadians(sp.getYRot());
+            // hacia dónde mira el jugador, en el marco de la cancha (0 = hacia +u, el lado del equipo 1)
+            double yw = Math.toRadians(sp.getYRot());
+            double lx = -Math.sin(yw);
+            double lz = Math.cos(yw);
+            p.face = Math.atan2(lx * r.getStepX() + lz * r.getStepZ(), lx * f.getStepX() + lz * f.getStepZ());
         }
     }
 

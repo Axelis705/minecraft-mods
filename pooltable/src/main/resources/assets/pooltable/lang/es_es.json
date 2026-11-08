@@ -160,6 +160,7 @@
   "pooltable.voley.team.1": "Naranja",
   "pooltable.voley.rej.toques": "¡Máximo 3 toques por equipo!",
   "pooltable.voley.rej.doble": "¡No puedes tocarla dos veces seguidas!",
+  "pooltable.voley.rej.espalda": "¡Estás de espaldas! Mira hacia la pelota y la red para golpear.",
   "pooltable.voley.rej.lado": "Esa pelota está en el lado del otro equipo.",
   "pooltable.voley.popup.spike": "¡REMATE!",
   "pooltable.voley.popup.block": "¡BLOQUEO!",

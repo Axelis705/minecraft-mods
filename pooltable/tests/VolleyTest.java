@@ -159,6 +159,38 @@ public class VolleyTest {
         System.out.printf("reglas: calidad buena=%.2f mala=%.2f, saque entra: verde %d/%d flojo %d fuerte %d%n", good, bad, in, tot, inWeak, inStrong);
     }
 
+    /** Orientación: de espaldas a la red o a la pelota no se puede golpear; de frente sí; de lado sale peor y desviada. */
+    static void facing() {
+        double[] faces = {0.0, Math.toRadians(40), Math.toRadians(80), Math.PI};
+        boolean[] hit = new boolean[faces.length];
+        double[] qs = new double[faces.length];
+        for (int i = 0; i < faces.length; i++) {
+            VolleyMatch m = new VolleyMatch(new Random(3));
+            m.addPlayer(0, true, "h"); m.addPlayer(1, false, "b");
+            m.start(1, 1, 3);
+            VolleyMatch.P p = m.players.get(0);
+            p.x = -3; p.z = 0; p.y = 0; p.vx = 0; p.vz = 0; p.vy = 0; p.face = faces[i];
+            m.ball[0] = -2.6; m.ball[1] = 0.8; m.ball[2] = 0;
+            m.vel[0] = 1; m.vel[1] = -2; m.vel[2] = 0;
+            try {
+                java.lang.reflect.Field f = VolleyMatch.class.getDeclaredField("state");
+                f.set(m, VolleyMatch.State.RALLY);
+            } catch (Exception e) { throw new RuntimeException(e); }
+            m.touches = 0; m.touchTeam = -1;
+            m.humanAct(0, VolleyMatch.HIT, 0, 0, false);
+            hit[i] = m.evBy == 0 && m.evAct != VolleyMatch.Act.NONE;
+            qs[i] = m.evQuality;
+            if (!hit[i]) {
+                for (int t = 0; t < 8; t++) m.tick(0.05);
+                check(m.evReject.equals("espalda") || !hit[i], "rechazo por espalda");
+            }
+        }
+        check(hit[0] && hit[1], "de frente golpea");
+        check(!hit[3], "de espaldas no golpea");
+        check(qs[1] >= qs[0] - 0.01 || qs[1] > 0.5, "ligeramente girado casi igual");
+        System.out.printf("orientacion: frente=%b/%.2f 40grados=%b/%.2f 80grados=%b/%.2f espalda=%b%n", hit[0], qs[0], hit[1], qs[1], hit[2], qs[2], hit[3]);
+    }
+
     static double quality(double dist, double ballY, double vy) {
         VolleyMatch m = new VolleyMatch(new Random(1));
         m.addPlayer(0, false, "a"); m.addPlayer(1, false, "b");
@@ -195,6 +227,7 @@ public class VolleyTest {
 
     public static void main(String[] a) {
         rules();
+        facing();
         for (int n = 1; n <= 3; n++) {
             check(VolleyMatch.HL[n - 1] > 3 && VolleyMatch.HW[n - 1] > 2, "medidas n=" + n);
             if (n > 1) check(VolleyMatch.HL[n - 1] > VolleyMatch.HL[n - 2] && VolleyMatch.HW[n - 1] > VolleyMatch.HW[n - 2], "la cancha crece con los jugadores");
