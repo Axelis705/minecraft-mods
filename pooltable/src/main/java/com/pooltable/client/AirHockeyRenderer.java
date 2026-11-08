@@ -252,7 +252,7 @@ public class AirHockeyRenderer implements BlockEntityRenderer<AirHockeyBE> {
             glass.add(new float[] {ux, uz, s});
         }
         if (live && be.clientInit && be.match.state != HockeyMatch.State.WAITING) {
-            puck(buf, ps, 1.5F + (float) be.sim.px, (float) be.sim.pz);
+            puck(buf, ps, 1.5F + (float) (be.sim.px + be.offX), (float) (be.sim.pz + be.offZ));
         } else if (!live) {
             puck(buf, ps, 1.5F, 0.0F);
         }

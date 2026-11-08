@@ -10,12 +10,13 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 /**
- * Cliente -> servidor: el jugador golpea la pelota (clic izquierdo = golpear, derecho = colocar). Lleva hacia dónde apuntaba con WASD en el momento
- * (adelante = profundo, atrás = corto, a los lados = ángulos) y si usaba la tecla de lanzarse.
+ * Cliente -> servidor: el jugador golpea la pelota (clic izquierdo = golpear, derecho = colocar). Lleva el punto al que apuntaba con el ratón (metros más allá
+ * de la red y metros a su derecha, respecto a su equipo) y si usaba la tecla de lanzarse.
  */
 public final class VolleyHitPacket {
     public final BlockPos pos;
     public final int kind;
+    /** Profundidad del punto apuntado (metros más allá de la red; negativo = en tu campo). */
     public final float fwd;
     public final float right;
     public final boolean dive;

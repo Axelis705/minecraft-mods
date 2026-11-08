@@ -431,7 +431,11 @@ public class VolleyCourtBE extends BlockEntity {
     }
 
     /** Un golpe de un humano (clic izquierdo = 0, derecho = 1). */
-    public void humanHit(ServerPlayer sp, int kind, double fwd, double right, boolean dive, double power) {
+    /**
+     * Un golpe de un humano. {@code depth} y {@code right} son el punto al que apunta, respecto a su equipo: metros más allá de la red (negativo = en su
+     * propio campo) y metros a su derecha.
+     */
+    public void humanHit(ServerPlayer sp, int kind, double depth, double right, boolean dive, double power) {
         if (phase != PLAYING || !(level instanceof ServerLevel sl)) {
             return;
         }
@@ -456,7 +460,8 @@ public class VolleyCourtBE extends BlockEntity {
             }
         }
         injectPositions();
-        match.humanAct(idx, kind, fwd, right, dive, power);
+        double sd = VolleyMatch.dir(match.players.get(idx).team);
+        match.humanAim(idx, kind, sd * depth, sd * right, dive, power);
     }
 
     private void sound(SoundEvent ev, double u, double y, double v, float vol, float pitch) {

@@ -171,7 +171,7 @@
   "pooltable.voley.ui.win": "%s wins!",
   "pooltable.voley.ui.serve.mine": "Your team serves!",
   "pooltable.voley.ui.serve.other": "Opponent serves",
-  "pooltable.voley.ui.hints": "WASD move and aim · Left click hit · Right click set · Space jump · %s dive · %s camera · %s menu",
+  "pooltable.voley.ui.hints": "WASD move · Mouse aim (red mark = out) · Left click hit · Right click set · Space jump · %s dive · %s camera · %s menu",
   "pooltable.voley.menu.join.0": "Join Blue team",
   "pooltable.voley.menu.join.1": "Join Orange team",
   "pooltable.voley.menu.size": "Size: %s",

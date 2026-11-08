@@ -6,13 +6,13 @@ import com.pooltable.game.VolleyMatch;
 import com.pooltable.net.PoolNet;
 import com.pooltable.net.VolleyHitPacket;
 import com.pooltable.net.VolleySyncPacket;
-import net.minecraft.client.Camera;
-import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -38,21 +38,28 @@ public final class VolleyClient {
     public static int myIdx = -1;
     public static int myTeam = -1;
     public static boolean arcade = true;
-    /** Hacia dónde apunto ahora (de WASD): adelante = profundo, a la derecha. */
-    public static float aimFwd = 0;
+    /**
+     * El punto al que apunto, respecto a mi equipo: metros más allá de la red (negativo = en mi campo) y metros a mi derecha. Con la cámara de cancha el
+     * ratón mueve la marca por el suelo; con la cámara normal es el punto del suelo al que miras.
+     */
+    public static float aimDepth = 5.0F;
     public static float aimRight = 0;
+    /** Grados de ratón -> metros de la marca. */
+    private static final float AIM_YAW = 0.05F;
+    private static final float AIM_PITCH = 0.12F;
 
     /** Barra de fuerza del saque: se llena y vacía mientras mantienes el clic izquierdo. */
     private static boolean charging = false;
     private static long chargeStart = 0;
     private static long lastSync = 0;
+    private static Entity cam = null;
     private static boolean camActive = false;
+    private static boolean swapped = false;
     private static boolean failed = false;
-    /** Posición de la cámara de cancha (suavizada en cada tick y repartida entre ticks al dibujar). */
-    private static Vec3 camPos = null;
-    private static Vec3 camOld = null;
-    private static CameraType prevType = null;
-    private static java.lang.reflect.Method setPosMethod = null;
+    /** Lo último que se le puso al cuerpo: lo que el ratón movió desde entonces es lo que mueve la marca. */
+    private static float baseYaw = 0;
+    private static float basePitch = 0;
+    private static boolean baseValid = false;
 
     private VolleyClient() {
     }
@@ -104,6 +111,8 @@ public final class VolleyClient {
             lastSync = System.nanoTime();
             if (first) {
                 arcade = true;
+                aimDepth = (float) (VolleyMatch.HL[Math.max(0, Math.min(2, be.cN - 1))] * 0.55);
+                aimRight = 0;
             }
             if (arcade && !camActive) {
                 engage();
@@ -118,7 +127,7 @@ public final class VolleyClient {
         court = null;
         myIdx = -1;
         myTeam = -1;
-        aimFwd = 0;
+        aimDepth = 5.0F;
         aimRight = 0;
         release();
     }
@@ -126,8 +135,9 @@ public final class VolleyClient {
     // ------------------------------------------------------------------ cámara
 
     /**
-     * La cámara de cancha NO cambia la entidad de cámara del juego (si fuera otra entidad, Minecraft dejaría de moverte y de mandar tu posición
-     * al servidor). Tú sigues siendo la cámara, en tercera persona, y en cada fotograma la colocamos nosotros arriba y detrás de tu línea de fondo.
+     * La cámara de cancha es una entidad aparte (un Marker) que se coloca arriba y detrás de tu línea de fondo. Para que Minecraft siga moviéndote y
+     * mandando tu posición al servidor, la entidad de cámara es el propio jugador en cada tick del juego y solo es el Marker mientras se dibuja cada
+     * fotograma ({@link #onRenderTick}).
      */
     private static void engage() {
         Minecraft mc = Minecraft.getInstance();
@@ -135,51 +145,49 @@ public final class VolleyClient {
             return;
         }
         try {
-            if (!findSetPos()) {
-                failed = true;
+            cam = EntityType.MARKER.create(mc.level);
+            if (cam == null) {
                 return;
             }
-            prevType = mc.options.getCameraType();
-            mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);
-            Vec3 start = mc.gameRenderer.getMainCamera().getPosition();
-            camPos = start;
-            camOld = start;
+            Vec3 start = mc.player.getEyePosition();
+            cam.moveTo(start.x, start.y, start.z, mc.player.getYRot(), mc.player.getXRot());
+            cam.setOldPosAndRot();
             camActive = true;
+            baseValid = false;
         } catch (Throwable t) {
             failed = true;
             release();
         }
     }
 
-    private static boolean findSetPos() {
-        if (setPosMethod != null) {
-            return true;
-        }
-        // el método de Camera que recibe un Vec3 (es protegido y su nombre cambia entre el desarrollo y el juego, así que se busca por su forma)
-        for (java.lang.reflect.Method m : Camera.class.getDeclaredMethods()) {
-            if (m.getParameterCount() == 1 && m.getParameterTypes()[0] == Vec3.class && m.getReturnType() == void.class
-                    && !java.lang.reflect.Modifier.isStatic(m.getModifiers())) {
-                try {
-                    m.setAccessible(true);
-                    setPosMethod = m;
-                    return true;
-                } catch (Throwable t) {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-
     private static void release() {
         Minecraft mc = Minecraft.getInstance();
-        if (camActive && prevType != null) {
-            mc.options.setCameraType(prevType);
+        if (swapped || (camActive && mc.player != null)) {
+            if (mc.player != null) {
+                mc.setCameraEntity(mc.player);
+            }
         }
+        swapped = false;
         camActive = false;
-        camPos = null;
-        camOld = null;
-        prevType = null;
+        baseValid = false;
+        cam = null;
+    }
+
+    /** Durante el dibujado de cada fotograma la cámara es el Marker; el resto del tiempo, el jugador. */
+    @SubscribeEvent
+    public static void onRenderTick(TickEvent.RenderTickEvent e) {
+        Minecraft mc = Minecraft.getInstance();
+        if (e.phase == TickEvent.Phase.START) {
+            if (camActive && cam != null && mc.player != null && mc.level != null && mc.getCameraEntity() == mc.player) {
+                mc.setCameraEntity(cam);
+                swapped = true;
+            }
+        } else if (swapped) {
+            swapped = false;
+            if (mc.player != null) {
+                mc.setCameraEntity(mc.player);
+            }
+        }
     }
 
     /** Hacia dónde mira mi equipo (la dirección del mundo del lado del rival). */
@@ -210,7 +218,7 @@ public final class VolleyClient {
                 float power = chargeNow();
                 charging = false;
                 if (iServe()) {
-                    PoolNet.sendToServer(new VolleyHitPacket(court.getBlockPos(), 0, aimFwd, aimRight, false, Math.max(0.0F, power)));
+                    PoolNet.sendToServer(new VolleyHitPacket(court.getBlockPos(), 0, aimDepth, aimRight, false, Math.max(0.0F, power)));
                 }
             }
         }
@@ -223,62 +231,115 @@ public final class VolleyClient {
             }
         }
         if (!camActive) {
+            aimFromLook(mc.player);
             return;
         }
-        if (mc.options.getCameraType() != CameraType.THIRD_PERSON_BACK) {
-            mc.options.setCameraType(CameraType.THIRD_PERSON_BACK);
-        }
-        // el cuerpo mira siempre hacia la red mientras se usa la cámara de cancha (también aquí, para que el servidor lo sepa)
-        float fy = teamDir().toYRot();
-        mc.player.setYRot(fy);
-        mc.player.yHeadRot = fy;
-        mc.player.yBodyRot = fy;
-        Vec3 t = camTarget();
-        camOld = camPos;
-        double k = 0.25;
-        camPos = new Vec3(camPos.x + (t.x - camPos.x) * k, camPos.y + (t.y - camPos.y) * k, camPos.z + (t.z - camPos.z) * k);
-    }
-
-    private static Vec3 camTarget() {
+        applyBody(mc.player);
         int n = court.cN;
         double hl = VolleyMatch.HL[Math.max(0, Math.min(2, n - 1))];
         double own = myTeam == 0 ? -1.0 : 1.0;
         double h = 5.5 + hl * 0.55;
         double u = own * (hl + 2.6);
-        return court.world(u, h, 0.0);
-    }
-
-    /** Ángulo hacia abajo de la cámara de cancha. */
-    private static float camPitch() {
-        int n = court.cN;
-        double hl = VolleyMatch.HL[Math.max(0, Math.min(2, n - 1))];
-        double own = myTeam == 0 ? -1.0 : 1.0;
-        double h = 5.5 + hl * 0.55;
-        double u = own * (hl + 2.6);
+        Vec3 t = court.world(u, h, 0.0);
         double lookU = -own * hl * 0.2;
-        return (float) Math.toDegrees(Math.atan2(h - 0.7, Math.abs(lookU - u)));
+        double dist = Math.abs(lookU - u);
+        float yaw = teamDir().toYRot();
+        float pitch = (float) Math.toDegrees(Math.atan2(h - 0.7, dist));
+        cam.setOldPosAndRot();
+        double k = 0.25;
+        cam.setPos(cam.getX() + (t.x - cam.getX()) * k, cam.getY() + (t.y - cam.getY()) * k, cam.getZ() + (t.z - cam.getZ()) * k);
+        cam.setYRot(Mth.rotLerp((float) k, cam.getYRot(), yaw));
+        cam.setXRot(cam.getXRot() + (pitch - cam.getXRot()) * (float) k);
     }
 
-    /** Cada fotograma, después de que el juego coloque la cámara en tu cabeza, la llevamos a la posición de la cancha. */
-    @SubscribeEvent
-    public static void onCameraAngles(ViewportEvent.ComputeCameraAngles e) {
-        if (!camActive || court == null || camPos == null || setPosMethod == null) {
+    // ------------------------------------------------------------------ puntería
+
+    private static double aimMaxDepth() {
+        return VolleyMatch.HL[Math.max(0, Math.min(2, court.cN - 1))] + VolleyMatch.AIM_MARGIN;
+    }
+
+    private static double aimMaxRight() {
+        return VolleyMatch.HW[Math.max(0, Math.min(2, court.cN - 1))] + VolleyMatch.AIM_MARGIN;
+    }
+
+    private static void clampAim() {
+        aimDepth = (float) Mth.clamp(aimDepth, -aimMaxDepth(), aimMaxDepth());
+        aimRight = (float) Mth.clamp(aimRight, -aimMaxRight(), aimMaxRight());
+    }
+
+    /** Punto de la marca en el marco de la cancha (u a lo largo, v a lo ancho). */
+    public static double aimU() {
+        return VolleyMatch.dir(Math.max(0, myTeam)) * aimDepth;
+    }
+
+    public static double aimV() {
+        return VolleyMatch.dir(Math.max(0, myTeam)) * aimRight;
+    }
+
+    /** ¿La marca está dentro de las líneas? */
+    public static boolean aimInside() {
+        if (court == null) {
+            return true;
+        }
+        int i = Math.max(0, Math.min(2, court.cN - 1));
+        return Math.abs(aimU()) <= VolleyMatch.HL[i] && Math.abs(aimV()) <= VolleyMatch.HW[i];
+    }
+
+    /**
+     * Con la cámara de cancha el cuerpo queda mirando hacia la marca (hasta 80 grados a cada lado de la red) y lo que el ratón giró desde el último
+     * fotograma mueve la marca: derecha/izquierda = a los lados, arriba/abajo = más lejos/más cerca.
+     */
+    private static void applyBody(LocalPlayer p) {
+        if (baseValid) {
+            float dy = Mth.wrapDegrees(p.getYRot() - baseYaw);
+            float dp = p.getXRot() - basePitch;
+            aimRight += dy * AIM_YAW;
+            aimDepth -= dp * AIM_PITCH;
+            clampAim();
+        }
+        float team = teamDir().toYRot();
+        Vec3 w = court.world(aimU(), 0, aimV());
+        double dx = w.x - p.getX();
+        double dz = w.z - p.getZ();
+        float yaw = team;
+        if (Math.hypot(dx, dz) > 0.6) {
+            float toAim = (float) Math.toDegrees(Math.atan2(-dx, dz));
+            yaw = team + Mth.clamp(Mth.wrapDegrees(toAim - team), -80.0F, 80.0F);
+        }
+        float pitch = 8.0F;
+        p.setYRot(yaw);
+        p.yRotO = yaw;
+        p.yBodyRot = yaw;
+        p.yBodyRotO = yaw;
+        p.yHeadRot = yaw;
+        p.yHeadRotO = yaw;
+        p.setXRot(pitch);
+        p.xRotO = pitch;
+        baseYaw = yaw;
+        basePitch = pitch;
+        baseValid = true;
+    }
+
+    /** Con la cámara normal la marca está donde miras: el punto del suelo en esa dirección (lejos si miras al frente). */
+    private static void aimFromLook(LocalPlayer p) {
+        if (court == null || p == null) {
             return;
         }
-        try {
-            double pt = e.getPartialTick();
-            Vec3 o = camOld == null ? camPos : camOld;
-            Vec3 v = new Vec3(Mth.lerp(pt, o.x, camPos.x), Mth.lerp(pt, o.y, camPos.y), Mth.lerp(pt, o.z, camPos.z));
-            setPosMethod.invoke(e.getCamera(), v);
-            e.setYaw(teamDir().toYRot());
-            e.setPitch(camPitch());
-            e.setRoll(0.0F);
-        } catch (Throwable t) {
-            // si no se puede colocar la cámara, se vuelve a la vista normal para no dejar al jugador con una vista rara
-            failed = true;
-            arcade = false;
-            release();
-        }
+        double yaw = Math.toRadians(p.getYRot());
+        double pitch = p.getXRot();
+        double dist = pitch > 5.0 ? Math.min(16.0, Math.max(2.0, p.getEyeHeight() / Math.tan(Math.toRadians(pitch)))) : 16.0;
+        double wx = p.getX() - Math.sin(yaw) * dist;
+        double wz = p.getZ() + Math.cos(yaw) * dist;
+        Direction f = court.facing();
+        Direction r = f.getClockWise();
+        double dx = wx - (court.getBlockPos().getX() + 0.5);
+        double dz = wz - (court.getBlockPos().getZ() + 0.5);
+        double u = dx * f.getStepX() + dz * f.getStepZ();
+        double v = dx * r.getStepX() + dz * r.getStepZ();
+        double sd = VolleyMatch.dir(Math.max(0, myTeam));
+        aimDepth = (float) (sd * u);
+        aimRight = (float) (sd * v);
+        clampAim();
     }
 
     @SubscribeEvent
@@ -307,30 +368,22 @@ public final class VolleyClient {
         }
     }
 
-    /** Con la cámara de cancha mi cuerpo mira siempre hacia la red (el ratón no lo hace girar). */
+    /** Cada fotograma (antes de dibujar a los jugadores) el cuerpo se pone mirando a la marca y el ratón mueve la marca. */
     @SubscribeEvent
     public static void onStage(RenderLevelStageEvent e) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer p = mc.player;
-        if (!playing() || p == null) {
+        if (!playing() || p == null || !camActive) {
             return;
         }
-        if (e.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY && camActive) {
-            float yaw = teamDir().toYRot();
-            p.setYRot(yaw);
-            p.yRotO = yaw;
-            p.yBodyRot = yaw;
-            p.yBodyRotO = yaw;
-            p.yHeadRot = yaw;
-            p.yHeadRotO = yaw;
-            p.setXRot(8.0F);
-            p.xRotO = 8.0F;
+        if (e.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            applyBody(p);
         }
     }
 
     // ------------------------------------------------------------------ movimiento y puntería
 
-    /** WASD se interpreta con la cámara de cancha (W = hacia la red, A = a la izquierda de la cámara); la puntería sale de lo mismo. */
+    /** WASD solo mueve: con la cámara de cancha, W = hacia la red y A = a la izquierda de la cámara. */
     @SubscribeEvent
     public static void onMove(MovementInputUpdateEvent e) {
         if (!playing()) {
@@ -343,17 +396,6 @@ public final class VolleyClient {
         double bc = Math.toRadians(base);
         double wx = fwd * -Math.sin(bc) + left * Math.cos(bc);
         double wz = fwd * Math.cos(bc) + left * Math.sin(bc);
-        // puntería respecto a mi equipo
-        double tc = Math.toRadians(teamDir().toYRot());
-        double tfx = -Math.sin(tc);
-        double tfz = Math.cos(tc);
-        double trx = -Math.cos(tc);
-        double trz = -Math.sin(tc);
-        double len = Math.hypot(wx, wz);
-        double nx = len > 1.0 ? wx / len : wx;
-        double nz = len > 1.0 ? wz / len : wz;
-        aimFwd = (float) Mth.clamp(nx * tfx + nz * tfz, -1.0, 1.0);
-        aimRight = (float) Mth.clamp(nx * trx + nz * trz, -1.0, 1.0);
         if (camActive) {
             // lo que mandé con WASD (visto desde la cámara) se convierte a lo que el jugador entiende según hacia dónde mira
             double pc = Math.toRadians(e.getEntity().getYRot());
@@ -380,7 +422,7 @@ public final class VolleyClient {
                 }
                 return;
             }
-            PoolNet.sendToServer(new VolleyHitPacket(pos, e.isUseItem() ? 1 : 0, aimFwd, aimRight, VolleyKeys.DIVE.isDown()));
+            PoolNet.sendToServer(new VolleyHitPacket(pos, e.isUseItem() ? 1 : 0, aimDepth, aimRight, VolleyKeys.DIVE.isDown()));
         }
     }
 }

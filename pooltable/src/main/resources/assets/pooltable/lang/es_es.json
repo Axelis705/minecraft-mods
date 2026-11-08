@@ -171,7 +171,7 @@
   "pooltable.voley.ui.win": "¡Gana %s!",
   "pooltable.voley.ui.serve.mine": "¡Tu equipo saca!",
   "pooltable.voley.ui.serve.other": "Saca el rival",
-  "pooltable.voley.ui.hints": "WASD mover y apuntar · Clic izq. golpear · Clic der. colocar · Espacio saltar · %s lanzarse · %s cámara · %s menú",
+  "pooltable.voley.ui.hints": "WASD mover · Ratón apuntar (marca roja = fuera) · Clic izq. golpear · Clic der. colocar · Espacio saltar · %s lanzarse · %s cámara · %s menú",
   "pooltable.voley.menu.join.0": "Unirme al equipo Azul",
   "pooltable.voley.menu.join.1": "Unirme al equipo Naranja",
   "pooltable.voley.menu.size": "Tamaño: %s",

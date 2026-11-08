@@ -41,6 +41,8 @@ public final class VolleyMatch {
     /** Orientación del jugador (radianes): hasta FACE_OK no pasa nada; pasado FACE_MAX no puede golpear. */
     public static final double FACE_OK = Math.toRadians(50);
     public static final double FACE_MAX = Math.toRadians(100);
+    /** Cuánto se puede apuntar más allá de las líneas (metros). */
+    public static final double AIM_MARGIN = 2.5;
 
     public enum State { IDLE, SERVE, RALLY, POINT, OVER }
 
@@ -71,6 +73,10 @@ public final class VolleyMatch {
         public double pendRight;
         public boolean pendDive;
         public boolean pendBack;
+        /** Golpe con puntería: dónde quiere que caiga la pelota (u a lo largo de la cancha, v a lo ancho, metros desde el centro de la red). */
+        public boolean pendAim;
+        public double pendU;
+        public double pendV;
         public double pendPower;
         // IA
         public double aiWait = -1;
@@ -468,7 +474,11 @@ public final class VolleyMatch {
                     evRejectBy = serverIdx;
                     return;
                 }
-                doServe(s, s.pendFwd, s.pendRight, s.pendPower);
+                if (s.pendAim) {
+                    doServeAim(s, s.pendU, s.pendV, s.pendPower);
+                } else {
+                    doServe(s, s.pendFwd, s.pendRight, s.pendPower);
+                }
                 return;
             }
         }
@@ -672,6 +682,18 @@ public final class VolleyMatch {
 
     /** Igual, con la fuerza (0 a 1) que eligió con la barra al sacar. */
     public void humanAct(int idx, int kind, double aimFwd, double aimRight, boolean dive, double power) {
+        queueHit(idx, kind, aimFwd, aimRight, dive, power, false, 0, 0);
+    }
+
+    /**
+     * Golpe de un humano con puntería: (aimU, aimV) es el punto de la cancha donde quiere que caiga la pelota (puede ser fuera de las líneas). Dónde acaba de
+     * verdad depende de cómo le pegue: posición, altura, si va corriendo, hacia dónde mira.
+     */
+    public void humanAim(int idx, int kind, double aimU, double aimV, boolean dive, double power) {
+        queueHit(idx, kind, 0, 0, dive, power, true, aimU, aimV);
+    }
+
+    private void queueHit(int idx, int kind, double aimFwd, double aimRight, boolean dive, double power, boolean aim, double aimU, double aimV) {
         if (idx < 0 || idx >= players.size()) {
             return;
         }
@@ -688,6 +710,9 @@ public final class VolleyMatch {
         p.pendT = 0.12;
         p.pendFwd = clamp(aimFwd, -1, 1);
         p.pendRight = clamp(aimRight, -1, 1);
+        p.pendAim = aim;
+        p.pendU = clamp(aimU, -hl() - AIM_MARGIN, hl() + AIM_MARGIN);
+        p.pendV = clamp(aimV, -hw() - AIM_MARGIN, hw() + AIM_MARGIN);
         p.pendDive = dive;
         p.pendPower = clamp(power, 0, 1);
         if (state == State.RALLY && reachable(p, dive)) {
@@ -798,6 +823,9 @@ public final class VolleyMatch {
             act = Act.SET;
         } else if (p.y > 0.3 && ball[1] >= 2.2 && Math.abs(ball[0]) < ATK[n - 1] + 0.8) {
             act = Act.SPIKE;
+        } else if (p.human && p.pendAim) {
+            // con puntería: si apuntas al campo rival mandas la pelota al otro lado; si apuntas a tu campo, es un pase
+            act = p.pendU * s > 0 ? Act.FREE : Act.BUMP;
         } else if (touchTeam != p.team || touches == 0) {
             act = aimFwd > 0.6 ? Act.FREE : Act.BUMP;
         } else {
@@ -805,6 +833,9 @@ public final class VolleyMatch {
         }
         double q = quality(p, act, d, dive);
         double bad = 1.0 - q;
+        if (p.human && p.pendAim && act != Act.BLOCK) {
+            return performAimed(idx, p, act, q, d, dive);
+        }
         switch (act) {
             case BLOCK -> {
                 double bs = ball[0] < 0 ? -1 : 1;
@@ -888,6 +919,190 @@ public final class VolleyMatch {
         evQualityBy = idx;
         hits.add(new int[] {act.ordinal(), idx});
         return act;
+    }
+
+    /** Desviación de la pelota según cómo se le pegó: fuera de línea (de lado o muy adelante) y mal orientado, aparte del azar por la calidad. */
+    private double[] contactError(P p, double tu, double tv, double sigma) {
+        double dxp = ball[0] - p.x;
+        double dzp = ball[2] - p.z;
+        double fx = Math.cos(p.face);
+        double fz = Math.sin(p.face);
+        double rx = -fz;
+        double rz = fx;
+        double fwdOff = dxp * fx + dzp * fz;
+        double latOff = dxp * rx + dzp * rz;
+        // la pelota a un lado del cuerpo sale hacia ese lado; muy adelantada sale larga
+        double eu = rx * latOff * 1.6 + fx * (fwdOff - 0.5) * 1.3;
+        double ev = rz * latOff * 1.6 + fz * (fwdOff - 0.5) * 1.3;
+        // mal orientado hacia donde apunta: más imprecisión
+        double toT = Math.atan2(tv - p.z, tu - p.x);
+        double dl = angDiff(p.face, toT);
+        double extra = Math.max(0.0, dl - Math.toRadians(50)) * 1.4;
+        double sg = sigma + extra;
+        return new double[] {eu + rnd.nextGaussian() * sg, ev + rnd.nextGaussian() * sg};
+    }
+
+    /** El compañero (no yo) más cerca de un punto, o -1 si juego solo. */
+    private int nearestMate(int idx, P p, double u, double v) {
+        int best = -1;
+        double bd = 1e9;
+        for (int i = 0; i < players.size(); i++) {
+            P m = players.get(i);
+            if (i != idx && m.team == p.team) {
+                double dd = Math.hypot(m.x - u, m.z - v);
+                if (dd < bd) {
+                    bd = dd;
+                    best = i;
+                }
+            }
+        }
+        return best;
+    }
+
+    /** Golpe de un humano que apuntó a un punto: la pelota va hacia allí con el error que le toque por su golpe. Puede irse fuera o a la red. */
+    private Act performAimed(int idx, P p, Act act, double q, double d, boolean dive) {
+        double s = dir(p.team);
+        double hl = hl();
+        double hw = hw();
+        double au = p.pendU;
+        double av = p.pendV;
+        double dist = Math.hypot(au - ball[0], av - ball[2]);
+        double base;
+        double kq;
+        double flight;
+        boolean set = false;
+        nextHitter = -1;
+        switch (act) {
+            case SET -> {
+                set = true;
+                if (au * s < 0) {
+                    flight = clamp(0.8 + dist * 0.12, 1.0, 1.8);
+                } else {
+                    // apuntaste al rival con un toque de colocación: se coloca al compañero más cercano a la red
+                    double[] mate = mateSpot(p, idx);
+                    au = mate[0];
+                    av = mate[1];
+                    nextHitter = (int) mate[2];
+                    flight = 1.2;
+                }
+                if (au * s < 0 && nextHitter < 0) {
+                    nextHitter = nearestMate(idx, p, au, av);
+                }
+                base = 0.25;
+                kq = 2.2;
+            }
+            case SPIKE -> {
+                flight = clamp(0.36 + dist * 0.03, 0.4, 0.85) + (1.0 - q) * 0.15;
+                base = 0.35;
+                kq = 3.8;
+            }
+            case BUMP -> {
+                flight = clamp(0.9 + dist * 0.1, 1.2, 2.2);
+                base = 0.35;
+                kq = 3.2;
+            }
+            default -> {
+                flight = clamp(0.8 + dist * 0.065, 1.0, 1.9);
+                base = 0.4;
+                kq = 3.0;
+            }
+        }
+        double sigma = (base + (1.0 - q) * kq) * (1.0 + 0.03 * dist);
+        sigma += 0.08 * Math.max(0, rallyTouches - 6);
+        double[] err = contactError(p, au, av, sigma);
+        double tx = au + err[0];
+        double tz = av + err[1];
+        if (!set && act != Act.SPIKE) {
+            nextHitter = -1;
+            if (act == Act.BUMP) {
+                nextHitter = nearestMate(idx, p, au, av);
+            }
+        } else if (act == Act.SPIKE) {
+            nextHitter = -1;
+            if (q < 0.35 && rnd.nextDouble() < (0.35 - q) * 2.0) {
+                // remate mal pegado: se queda en la red / en tu lado
+                tx = -s * (0.3 + rnd.nextDouble() * 0.6);
+                flight = 0.4;
+            }
+        }
+        rallyTouches++;
+        if (q < 0.3 && act != Act.SPIKE) {
+            tx += rnd.nextGaussian() * 1.2;
+            tz += rnd.nextGaussian() * 1.2;
+        }
+        boolean cross = Math.signum(tx) != Math.signum(ball[0]);
+        launch(tx, tz, flight, cross);
+        if (touchTeam != p.team) {
+            touchTeam = p.team;
+            touches = 1;
+        } else {
+            touches++;
+        }
+        lastToucher = idx;
+        p.cool = 0.35;
+        p.swing = 0.35;
+        p.lastAct = act;
+        p.pend = -1;
+        p.pendAim = false;
+        lastHitTime = time;
+        evAct = act;
+        evBy = idx;
+        evQuality = q;
+        evQualityBy = idx;
+        hits.add(new int[] {act.ordinal(), idx});
+        return act;
+    }
+
+    /**
+     * Saque con puntería de un humano: la pelota va hacia (aimU, aimV); con la fuerza dentro de la zona verde sale casi donde apuntas, más floja se queda
+     * corta (o en la red) y más fuerte se pasa.
+     */
+    public void doServeAim(P s, double aimU, double aimV, double power) {
+        double d = dir(s.team);
+        double hl = hl();
+        double hw = hw();
+        if (s.human && s.x * (-d) < hl - 0.1) {
+            fault("saque", s.team);
+            return;
+        }
+        double pw = clamp(power, 0.0, 1.0);
+        double au = clamp(aimU, -hl - AIM_MARGIN, hl + AIM_MARGIN);
+        double av = clamp(aimV, -hw - AIM_MARGIN, hw + AIM_MARGIN);
+        double off = pw < SERVE_LO ? SERVE_LO - pw : Math.max(0.0, pw - SERVE_HI);
+        // fuerza mala: la pelota se queda corta (floja) o se pasa (fuerte), y además sale más imprecisa
+        double dep = pw < SERVE_LO ? -1.0 : 1.0;
+        double tx = au + d * dep * off * hl * 1.3;
+        double sigma = 0.3 + 2.4 * off;
+        tx += rnd.nextGaussian() * sigma;
+        double tz = av + rnd.nextGaussian() * sigma * 0.8;
+        double dist = Math.hypot(tx - ball[0], tz - ball[2]);
+        double fl = clamp(0.9 + dist * 0.06, 1.2, 2.0);
+        boolean cross = true;
+        if (pw < 0.3 && rnd.nextDouble() < (0.3 - pw) * 3.3) {
+            tx = d * 0.5;
+            fl = 0.8;
+            cross = false;
+        }
+        finishServe(s, tx, tz, fl, cross, pw >= SERVE_LO && pw <= SERVE_HI ? 1.0 : (off < 0.15 ? 0.6 : 0.2));
+    }
+
+    private void finishServe(P s, double tx, double tz, double fl, boolean cross, double quality) {
+        state = State.RALLY;
+        holdBall(s);
+        launch(tx, tz, fl, cross);
+        touchTeam = s.team;
+        touches = 1;
+        lastToucher = serverIdx;
+        nextHitter = -1;
+        s.swing = 0.4;
+        s.lastAct = Act.SERVE;
+        s.pendAim = false;
+        lastHitTime = time;
+        evAct = Act.SERVE;
+        evBy = serverIdx;
+        evQuality = quality;
+        evQualityBy = serverIdx;
+        hits.add(new int[] {Act.SERVE.ordinal(), serverIdx});
     }
 
     /** Saque con fuerza por defecto (para los bots: la que sacan según su nivel). */

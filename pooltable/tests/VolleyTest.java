@@ -81,7 +81,7 @@ public class VolleyTest {
                 if (m.state == VolleyMatch.State.SERVE && m.serverIdx == i) {
                     double[] sp = m.serveSpot(0);
                     p.x = sp[0]; p.z = sp[1];
-                    m.humanAct(i, VolleyMatch.HIT, 0.5, 0.0, false);
+                    m.humanAim(i, VolleyMatch.HIT, VolleyMatch.HL[Math.max(0, n - 1)] * 0.6, 0.0, false, 0.7);
                 }
                 if (m.state == VolleyMatch.State.RALLY) {
                     double tl = Math.max(0, m.timeToHeight(1.2));
@@ -103,7 +103,7 @@ public class VolleyTest {
                     if (p.y > 0) { p.y += p.vy * 0.05; p.vy -= 28 * 0.05; if (p.y <= 0) { p.y = 0; p.vy = 0; } }
                     if (myTurn && mine && m.reachable(p, false)) {
                         int kind = (m.touchTeam == 0 && m.touches == 1) ? VolleyMatch.SET : VolleyMatch.HIT;
-                        m.humanAct(i, kind, 0.4, 0.3, false);
+                        m.humanAim(i, kind, kind == VolleyMatch.SET ? -1.5 : VolleyMatch.HL[Math.max(0, n - 1)] * 0.55, kind == VolleyMatch.SET ? 0.0 : 1.0, false, 0.7);
                     }
                 } else if (p.y > 0) { p.y = 0; p.vy = 0; }
             }
@@ -157,6 +157,66 @@ public class VolleyTest {
         check(in > tot * 0.7, "saque en zona verde entra " + in + "/" + tot);
         check(inWeak < tot * 0.5 && inStrong < tot * 0.6, "saque flojo o muy fuerte falla: flojo " + inWeak + " fuerte " + inStrong);
         System.out.printf("reglas: calidad buena=%.2f mala=%.2f, saque entra: verde %d/%d flojo %d fuerte %d%n", good, bad, in, tot, inWeak, inStrong);
+    }
+
+    /** Resultado de un golpe con puntería: [aterrizaje u, aterrizaje v, calidad]. El jugador (equipo 0) mira a la red; la pelota está donde se indica. */
+    static double[] aimedHit(long seed, double aimU, double aimV, double fwdOff, double latOff, double ballY, double speed, double p_vx, int kind) {
+        VolleyMatch m = new VolleyMatch(new Random(seed));
+        m.addPlayer(0, true, "h"); m.addPlayer(1, false, "b");
+        m.start(1, 1, 3);
+        VolleyMatch.P p = m.players.get(0);
+        p.x = -3; p.z = 0; p.y = 0; p.vx = p_vx; p.vz = 0; p.vy = 0; p.face = 0;
+        m.ball[0] = -3 + fwdOff; m.ball[1] = ballY; m.ball[2] = latOff;
+        m.vel[0] = 1; m.vel[1] = -speed; m.vel[2] = 0;
+        try {
+            java.lang.reflect.Field f = VolleyMatch.class.getDeclaredField("state");
+            f.set(m, VolleyMatch.State.RALLY);
+        } catch (Exception e) { throw new RuntimeException(e); }
+        m.touches = 0; m.touchTeam = -1;
+        m.humanAim(0, kind, aimU, aimV, false, 0.7);
+        if (m.evAct == VolleyMatch.Act.NONE) return null;
+        double t = m.timeToHeight(VolleyMatch.R);
+        if (t < 0) return null;
+        return new double[] {m.ball[0] + m.vel[0] * t, m.ball[2] + m.vel[2] * t, m.evQuality};
+    }
+
+    static boolean inOpp(double[] r) {
+        return r[0] > 0 && r[0] < VolleyMatch.HL[0] && Math.abs(r[1]) < VolleyMatch.HW[0];
+    }
+
+    /** La pelota va a donde apuntas: un buen golpe cae donde dices (también fuera si apuntas fuera); de lado se desvía; un mal golpe falla. */
+    static void aiming() {
+        int n = 300;
+        int inGood = 0, outAim = 0, inBad = 0, ownPass = 0, nGood = 0, nOut = 0, nBad = 0, nPass = 0;
+        double meanLat = 0, meanLatCentered = 0;
+        double hl = VolleyMatch.HL[0], hw = VolleyMatch.HW[0];
+        for (int i = 0; i < n; i++) {
+            // buen golpe: pelota delante, a la altura buena, el jugador quieto; apunta al centro del campo rival
+            double[] r = aimedHit(100 + i, hl * 0.55, 0.0, 0.5, 0.0, 0.8, 2.0, 0, VolleyMatch.HIT);
+            if (r != null) { nGood++; if (inOpp(r)) inGood++; }
+            // apunta fuera de la línea de fondo
+            r = aimedHit(500 + i, hl + 2.2, 0.0, 0.5, 0.0, 0.8, 2.0, 0, VolleyMatch.HIT);
+            if (r != null) { nOut++; if (!inOpp(r)) outAim++; }
+            // mal golpe: pelota lejos de las manos, muy alta para pasar, y yendo a toda prisa
+            r = aimedHit(900 + i, hl * 0.55, 0.0, 0.5, 1.2, 1.9, 8.0, 5.0, VolleyMatch.HIT);
+            if (r != null) { nBad++; if (inOpp(r)) inBad++; }
+            // pelota a la derecha del cuerpo (lado +v): sale hacia ese lado
+            r = aimedHit(1300 + i, hl * 0.55, 0.0, 0.5, 1.0, 0.8, 2.0, 0, VolleyMatch.HIT);
+            if (r != null) meanLat += r[1];
+            r = aimedHit(1700 + i, hl * 0.55, 0.0, 0.5, 0.0, 0.8, 2.0, 0, VolleyMatch.HIT);
+            if (r != null) meanLatCentered += r[1];
+            // pase a tu propio campo
+            r = aimedHit(2100 + i, -hl * 0.3, 0.0, 0.5, 0.0, 0.8, 2.0, 0, VolleyMatch.HIT);
+            if (r != null) { nPass++; if (r[0] < 0) ownPass++; }
+        }
+        double pGood = inGood / (double) Math.max(1, nGood), pOut = outAim / (double) Math.max(1, nOut), pBad = inBad / (double) Math.max(1, nBad), pPass = ownPass / (double) Math.max(1, nPass);
+        System.out.printf("puntería: buen golpe al centro entra %.0f%%, apuntando fuera sale %.0f%%, mal golpe entra %.0f%%, pase al propio campo %.0f%%, desvío lateral %.2f m%n",
+                pGood * 100, pOut * 100, pBad * 100, pPass * 100, (meanLat - meanLatCentered) / n);
+        check(pGood > 0.9, "un buen golpe al centro entra casi siempre " + pGood);
+        check(pOut > 0.85, "apuntando fuera, un buen golpe sale " + pOut);
+        check(pBad < 0.65, "un mal golpe falla muy seguido " + pBad);
+        check(pPass > 0.9, "el pase a tu campo se queda en tu campo " + pPass);
+        check((meanLat - meanLatCentered) / n > 0.8, "la pelota a un lado sale hacia ese lado");
     }
 
     /** Orientación: de espaldas a la red o a la pelota no se puede golpear; de frente sí; de lado sale peor y desviada. */
@@ -228,6 +288,7 @@ public class VolleyTest {
     public static void main(String[] a) {
         rules();
         facing();
+        aiming();
         for (int n = 1; n <= 3; n++) {
             check(VolleyMatch.HL[n - 1] > 3 && VolleyMatch.HW[n - 1] > 2, "medidas n=" + n);
             if (n > 1) check(VolleyMatch.HL[n - 1] > VolleyMatch.HL[n - 2] && VolleyMatch.HW[n - 1] > VolleyMatch.HW[n - 2], "la cancha crece con los jugadores");

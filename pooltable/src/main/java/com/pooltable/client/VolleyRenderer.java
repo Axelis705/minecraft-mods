@@ -283,6 +283,16 @@ public class VolleyRenderer implements BlockEntityRenderer<VolleyCourtBE> {
                 ring(tr, ps, light, (float) lx, (float) lz, 0.0F, (float) Math.max(0.05, 0.5 - left * 0.25), LINE_Y + 0.005F, rgb, 90);
             }
         }
+        // la marca de puntería del jugador de este equipo: verde si cae dentro de las líneas, roja si apunta fuera
+        if (VolleyClient.court == be && VolleyClient.playing()) {
+            float au = (float) VolleyClient.aimU();
+            float av = (float) VolleyClient.aimV();
+            int rgb = VolleyClient.aimInside() ? 0x3CFF6A : 0xFF4040;
+            float pulse = (float) (0.5 + 0.05 * Math.sin(time * 7.0));
+            ring(tr, ps, light, au, av, pulse - 0.1F, pulse, LINE_Y + 0.012F, rgb, 235);
+            ring(tr, ps, light, au, av, 0.0F, 0.13F, LINE_Y + 0.012F, rgb, 235);
+            ring(tr, ps, light, au, av, pulse + 0.05F, pulse + 0.09F, LINE_Y + 0.011F, 0xFFFFFF, 170);
+        }
         // aros de equipo bajo cada jugador
         Player me = mc.player;
         for (int i = 0; i < be.cCount; i++) {

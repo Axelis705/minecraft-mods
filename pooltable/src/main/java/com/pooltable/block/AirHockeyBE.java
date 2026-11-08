@@ -67,6 +67,11 @@ public class AirHockeyBE extends BlockEntity {
     public final HockeyPhysics sim = new HockeyPhysics();
     private boolean simValid = false;
     private long simLast = 0L;
+    /** Lo que se corrige al disco desde el servidor no se aplica de golpe: se guarda aquí y se va deshaciendo en ~0,1 s para que el movimiento no dé saltos. */
+    public double offX = 0;
+    public double offZ = 0;
+    /** Tras un golpe mío se confía en lo calculado aquí hasta esta hora (el servidor todavía no ha visto mi golpe). */
+    private long holdUntil = 0L;
 
     public AirHockeyBE(BlockPos pos, BlockState state) {
         super(ModBlockEntities.AIR_HOCKEY.get(), pos, state);
@@ -342,6 +347,8 @@ public class AirHockeyBE extends BlockEntity {
     private void reconcile() {
         if (match.state != HockeyMatch.State.PLAYING || !simValid) {
             simValid = false;
+            offX = 0;
+            offZ = 0;
             return;
         }
         double d = Math.max(0.0, Math.min(0.2, netDelay));
@@ -350,17 +357,24 @@ public class AirHockeyBE extends BlockEntity {
         double sz = Math.max(-HockeyPhysics.HW + HockeyPhysics.PUCK_R, Math.min(HockeyPhysics.HW - HockeyPhysics.PUCK_R, cpz + cvz * d));
         double ex = sx - sim.px;
         double ez = sz - sim.pz;
-        if (Math.hypot(ex, ez) > 0.4) {
-            sim.px = sx;
-            sim.pz = sz;
-            sim.pvx = cvx;
-            sim.pvz = cvz;
+        double err = Math.hypot(ex, ez);
+        boolean holding = System.nanoTime() < holdUntil;
+        double k;
+        if (err > 0.9 || (!holding && err > 0.45)) {
+            k = 1.0;
+        } else if (holding) {
+            // acabo de golpear: el servidor aún no sabe de mi golpe, así que su disco va "atrasado"; se confía en el cálculo propio
+            return;
         } else {
-            sim.px += ex * 0.25;
-            sim.pz += ez * 0.25;
-            sim.pvx += (cvx - sim.pvx) * 0.25;
-            sim.pvz += (cvz - sim.pvz) * 0.25;
+            k = 0.35;
         }
+        sim.px += ex * k;
+        sim.pz += ez * k;
+        // el cambio de posición se reparte en el tiempo: lo que se ve no salta
+        offX -= ex * k;
+        offZ -= ez * k;
+        sim.pvx += (cvx - sim.pvx) * (k >= 1.0 ? 1.0 : 0.5);
+        sim.pvz += (cvz - sim.pvz) * (k >= 1.0 ? 1.0 : 0.5);
     }
 
     /** ¿Este jugador maneja ahora el mazo {@code s} de esta mesa con el ratón? */
@@ -389,6 +403,8 @@ public class AirHockeyBE extends BlockEntity {
                 sim.putMallet(s, x, z);
             }
             simValid = playing;
+            offX = 0;
+            offZ = 0;
             return;
         }
         for (int s = 0; s < 2; s++) {
@@ -404,6 +420,12 @@ public class AirHockeyBE extends BlockEntity {
             }
         }
         sim.step(dt, true);
+        if (sim.mallethits > 0 && mine(sim.hitSide)) {
+            holdUntil = now + 300_000_000L;
+        }
+        double decay = Math.exp(-dt / 0.1);
+        offX *= decay;
+        offZ *= decay;
         if (sim.goal != 0) {
             // metió gol (en el cliente): el disco se queda en la portería hasta que el servidor confirme
             sim.goal = 0;
