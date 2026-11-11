@@ -1,5 +1,7 @@
 # Pruebas en el servidor real: la máquina (dos mitades) y la vitrina se colocan y sus entidades de bloque existen
+forceload add 0 0 15 15
 setblock 0 99 0 minecraft:stone
+setblock 3 99 0 minecraft:stone
 setblock 0 100 0 autos_coleccion:maquina_expendedora[facing=south,half=lower]
 setblock 0 101 0 autos_coleccion:maquina_expendedora[facing=south,half=upper]
 execute if block 0 100 0 autos_coleccion:maquina_expendedora[half=lower] if block 0 101 0 autos_coleccion:maquina_expendedora[half=upper] run say PRUEBA_AUTOS_MAQUINA
