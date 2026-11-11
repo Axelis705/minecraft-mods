@@ -29,7 +29,7 @@ public final class Unboxing {
         if (!sp.getAbilities().instabuild) {
             held.shrink(1);
         }
-        int car = Boxes.roll(box, sp.getRandom());
+        int car = Boxes.roll(box, new java.util.Random(sp.getRandom().nextLong()));
         boolean isNew = !AutosData.has(sp, car);
         AutosData.setPending(sp, car, box);
         AutosData.countOpened(sp);

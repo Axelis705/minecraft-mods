@@ -1,0 +1,150 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "body": "autos_coleccion:block/maquina_cuerpo",
+    "front": "autos_coleccion:block/maquina_frente",
+    "panel": "autos_coleccion:block/maquina_panel",
+    "inside": "autos_coleccion:block/maquina_interior",
+    "sign": "autos_coleccion:block/maquina_letrero",
+    "particle": "autos_coleccion:block/maquina_cuerpo"
+  },
+  "elements": [
+    {
+      "from": [
+        0.5,
+        0,
+        1.5
+      ],
+      "to": [
+        15.5,
+        1,
+        15.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#body"
+        },
+        "south": {
+          "texture": "#body"
+        },
+        "east": {
+          "texture": "#body"
+        },
+        "west": {
+          "texture": "#body"
+        },
+        "up": {
+          "texture": "#body"
+        },
+        "down": {
+          "texture": "#body"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        1,
+        2
+      ],
+      "to": [
+        15,
+        16,
+        15
+      ],
+      "faces": {
+        "south": {
+          "texture": "#body"
+        },
+        "east": {
+          "texture": "#body"
+        },
+        "west": {
+          "texture": "#body"
+        },
+        "up": {
+          "texture": "#body"
+        },
+        "down": {
+          "texture": "#body"
+        },
+        "north": {
+          "texture": "#front",
+          "uv": [
+            0,
+            0,
+            16,
+            15
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        8.5,
+        8,
+        1.5
+      ],
+      "to": [
+        13.5,
+        13,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#panel",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#panel"
+        },
+        "west": {
+          "texture": "#panel"
+        },
+        "up": {
+          "texture": "#panel"
+        },
+        "down": {
+          "texture": "#panel"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        1.5,
+        1.2
+      ],
+      "to": [
+        13,
+        2.3,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#panel"
+        },
+        "south": {
+          "texture": "#panel"
+        },
+        "east": {
+          "texture": "#panel"
+        },
+        "west": {
+          "texture": "#panel"
+        },
+        "up": {
+          "texture": "#panel"
+        },
+        "down": {
+          "texture": "#panel"
+        }
+      }
+    }
+  ]
+}

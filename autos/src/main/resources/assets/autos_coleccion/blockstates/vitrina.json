@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "autos_coleccion:block/vitrina"
+    },
+    "facing=east": {
+      "model": "autos_coleccion:block/vitrina",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "autos_coleccion:block/vitrina",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "autos_coleccion:block/vitrina",
+      "y": 270
+    }
+  }
+}

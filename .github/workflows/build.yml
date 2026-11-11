@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mod: [casino, pooltable, kensei, scardax, estructuras, cartas, show]
+        mod: [casino, pooltable, kensei, scardax, estructuras, cartas, show, autos]
     steps:
       - uses: actions/checkout@v4
       - name: Revisar recursos de ${{ matrix.mod }}
@@ -58,6 +58,12 @@ jobs:
           mkdir out
           javac -encoding UTF-8 -d out show/src/main/java/com/showdeaxelis/game/*.java show/tests/ShowTest.java
           java -cp out ShowTest
+      - name: Pruebas de logica de los autos
+        if: matrix.mod == 'autos'
+        run: |
+          mkdir out
+          javac -encoding UTF-8 -d out autos/src/main/java/com/autoscoleccion/game/*.java autos/tests/com/autoscoleccion/game/AutosTest.java
+          java -cp out com.autoscoleccion.game.AutosTest
       - name: Compilar ${{ matrix.mod }}
         working-directory: ${{ matrix.mod }}
         run: |

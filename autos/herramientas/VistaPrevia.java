@@ -17,12 +17,13 @@ import java.util.List;
  * luz difusa parecida a la del juego) en una hoja de 6 x 5. Uso: java VistaPrevia salida.png [yaw] [pitch]
  */
 public class VistaPrevia {
-    static final int CELL = 240;
+    static final int CELL = Integer.getInteger("cell", 240);
 
     public static void main(String[] a) throws Exception {
         String out = a.length > 0 ? a[0] : "autos.png";
         double yaw = a.length > 1 ? Math.toRadians(Double.parseDouble(a[1])) : Math.toRadians(-35);
         double pitch = a.length > 2 ? Math.toRadians(Double.parseDouble(a[2])) : Math.toRadians(24);
+        String only = a.length > 3 ? a[3] : null;
         int cols = 6;
         int rows = 5;
         BufferedImage img = new BufferedImage(cols * CELL, rows * (CELL + 30), BufferedImage.TYPE_INT_RGB);
@@ -31,8 +32,12 @@ public class VistaPrevia {
         g.fillRect(0, 0, img.getWidth(), img.getHeight());
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setFont(new Font("SansSerif", Font.BOLD, 13));
+        int i = -1;
         for (CarDef c : Cars.all()) {
-            int i = c.index();
+            if (only != null && !only.contains("," + c.number + ",")) {
+                continue;
+            }
+            i++;
             int ox = (i % cols) * CELL;
             int oy = (i / cols) * (CELL + 30);
             draw(img, c, ox, oy, yaw, pitch);
@@ -43,15 +48,18 @@ public class VistaPrevia {
         System.out.println("ok " + out);
     }
 
+    static int mode = 0;
+
     static void draw(BufferedImage img, CarDef c, int ox, int oy, double yaw, double pitch) {
         List<float[][]> quads = new ArrayList<>();
         List<int[]> info = new ArrayList<>();
-        CarMesh.build(c.style, (p0, p1, p2, p3, rgb, em) -> {
+        CarMesh.build(c.style, (p0, p1, p2, p3, c0, c1, c2, c3, em) -> {
             quads.add(new float[][] {p0.clone(), p1.clone(), p2.clone(), p3.clone()});
-            info.add(new int[] {rgb, em ? 1 : 0});
-        }, 3.0F, CarMesh.MODE_NORMAL);
+            info.add(new int[] {c0, c1, c2, c3, em ? 1 : 0});
+        }, 3.0F, mode);
         double cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
         double scale = CELL / 21.0;
+        if (Boolean.getBoolean("sil")) { mode = 1; }
         float[] zbuf = new float[CELL * CELL];
         java.util.Arrays.fill(zbuf, Float.NEGATIVE_INFINITY);
         // luz como la de Minecraft (dos direcciones) + ambiente
@@ -76,18 +84,23 @@ public class VistaPrevia {
                 continue;
             }
             n = norm(n[0], n[1], n[2]);
-            double lit = info.get(q)[1] == 1 ? 1.0 : Math.min(1.0, 0.4 + 0.6 * (Math.max(0, dot(n, l1)) + Math.max(0, dot(n, l2))) * 0.75);
-            int rgb = info.get(q)[0];
-            int r = (int) Math.min(255, ((rgb >> 16) & 255) * lit);
-            int gg = (int) Math.min(255, ((rgb >> 8) & 255) * lit);
-            int b = (int) Math.min(255, (rgb & 255) * lit);
-            int col = (r << 16) | (gg << 8) | b;
-            tri(img, zbuf, ox, oy, v[0], v[1], v[2], col);
-            tri(img, zbuf, ox, oy, v[0], v[2], v[3], col);
+            int[] in = info.get(q);
+            // sin descartar caras traseras: si la normal mira lejos de la cámara se usa la de la otra cara (como NoCull)
+            double lit = in[4] == 1 ? 1.0 : Math.min(1.0, 0.4 + 0.6 * (Math.max(0, dot(n, l1)) + Math.max(0, dot(n, l2))) * 0.75);
+            int[] col = new int[4];
+            for (int k = 0; k < 4; k++) {
+                int rgb = in[k];
+                int r = (int) Math.min(255, ((rgb >> 16) & 255) * lit);
+                int gg = (int) Math.min(255, ((rgb >> 8) & 255) * lit);
+                int b = (int) Math.min(255, (rgb & 255) * lit);
+                col[k] = (r << 16) | (gg << 8) | b;
+            }
+            tri(img, zbuf, ox, oy, v[0], v[1], v[2], col[0], col[1], col[2]);
+            tri(img, zbuf, ox, oy, v[0], v[2], v[3], col[0], col[2], col[3]);
         }
     }
 
-    static void tri(BufferedImage img, float[] zb, int ox, int oy, double[] a, double[] b, double[] c, int col) {
+    static void tri(BufferedImage img, float[] zb, int ox, int oy, double[] a, double[] b, double[] c, int ca, int cb, int cc) {
         int minX = (int) Math.max(0, Math.floor(Math.min(a[0], Math.min(b[0], c[0]))));
         int maxX = (int) Math.min(CELL - 1, Math.ceil(Math.max(a[0], Math.max(b[0], c[0]))));
         int minY = (int) Math.max(0, Math.floor(Math.min(a[1], Math.min(b[1], c[1]))));
@@ -109,7 +122,10 @@ public class VistaPrevia {
                 int i = y * CELL + x;
                 if (z > zb[i]) {
                     zb[i] = z;
-                    img.setRGB(ox + x, oy + y, col);
+                    int r = (int) (w0 * ((ca >> 16) & 255) + w1 * ((cb >> 16) & 255) + w2 * ((cc >> 16) & 255));
+                    int g = (int) (w0 * ((ca >> 8) & 255) + w1 * ((cb >> 8) & 255) + w2 * ((cc >> 8) & 255));
+                    int bl = (int) (w0 * (ca & 255) + w1 * (cb & 255) + w2 * (cc & 255));
+                    img.setRGB(ox + x, oy + y, (Math.min(255, Math.max(0, r)) << 16) | (Math.min(255, Math.max(0, g)) << 8) | Math.min(255, Math.max(0, bl)));
                 }
             }
         }

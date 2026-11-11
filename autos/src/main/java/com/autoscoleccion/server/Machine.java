@@ -76,7 +76,7 @@ public final class Machine {
         long real = System.currentTimeMillis() - s.startMs + 1500L;
         int end = (int) Math.min(Math.min(endT, real), proto.maxDuration());
         double score = SkillGame.replay(s.type, s.seed, inputs, end);
-        int box = Boxes.rollBox(score, sp.getRandom());
+        int box = Boxes.rollBox(score, new java.util.Random(sp.getRandom().nextLong()));
         double[] odds = Boxes.odds(score);
         AutosNet.toPlayer(sp, new GameOutcomePacket(sessionId, (float) score, box, (float) odds[0], (float) odds[1], (float) odds[2]));
         dispense(sp, s, box);

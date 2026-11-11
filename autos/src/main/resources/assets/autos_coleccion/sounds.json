@@ -1,0 +1,170 @@
+{
+  "coin": {
+    "sounds": [
+      "autos_coleccion:coin"
+    ],
+    "subtitle": "subtitles.autos_coleccion.coin"
+  },
+  "machine_start": {
+    "sounds": [
+      "autos_coleccion:machine_start"
+    ],
+    "subtitle": "subtitles.autos_coleccion.machine_start"
+  },
+  "count": {
+    "sounds": [
+      "autos_coleccion:count"
+    ],
+    "subtitle": "subtitles.autos_coleccion.count"
+  },
+  "go": {
+    "sounds": [
+      "autos_coleccion:go"
+    ],
+    "subtitle": "subtitles.autos_coleccion.go"
+  },
+  "perfect": {
+    "sounds": [
+      "autos_coleccion:perfect"
+    ],
+    "subtitle": "subtitles.autos_coleccion.perfect"
+  },
+  "good": {
+    "sounds": [
+      "autos_coleccion:good"
+    ],
+    "subtitle": "subtitles.autos_coleccion.good"
+  },
+  "miss": {
+    "sounds": [
+      "autos_coleccion:miss"
+    ],
+    "subtitle": "subtitles.autos_coleccion.miss"
+  },
+  "rev": {
+    "sounds": [
+      "autos_coleccion:rev"
+    ],
+    "subtitle": "subtitles.autos_coleccion.rev"
+  },
+  "shift": {
+    "sounds": [
+      "autos_coleccion:shift"
+    ],
+    "subtitle": "subtitles.autos_coleccion.shift"
+  },
+  "nitro": {
+    "sounds": [
+      "autos_coleccion:nitro"
+    ],
+    "subtitle": "subtitles.autos_coleccion.nitro"
+  },
+  "note": {
+    "sounds": [
+      "autos_coleccion:note"
+    ],
+    "subtitle": "subtitles.autos_coleccion.note"
+  },
+  "key": {
+    "sounds": [
+      "autos_coleccion:key"
+    ],
+    "subtitle": "subtitles.autos_coleccion.key"
+  },
+  "error": {
+    "sounds": [
+      "autos_coleccion:error"
+    ],
+    "subtitle": "subtitles.autos_coleccion.error"
+  },
+  "tally": {
+    "sounds": [
+      "autos_coleccion:tally"
+    ],
+    "subtitle": "subtitles.autos_coleccion.tally"
+  },
+  "result": {
+    "sounds": [
+      "autos_coleccion:result"
+    ],
+    "subtitle": "subtitles.autos_coleccion.result"
+  },
+  "box_drop": {
+    "sounds": [
+      "autos_coleccion:box_drop"
+    ],
+    "subtitle": "subtitles.autos_coleccion.box_drop"
+  },
+  "box_shake": {
+    "sounds": [
+      "autos_coleccion:box_shake"
+    ],
+    "subtitle": "subtitles.autos_coleccion.box_shake"
+  },
+  "tape": {
+    "sounds": [
+      "autos_coleccion:tape"
+    ],
+    "subtitle": "subtitles.autos_coleccion.tape"
+  },
+  "flaps": {
+    "sounds": [
+      "autos_coleccion:flaps"
+    ],
+    "subtitle": "subtitles.autos_coleccion.flaps"
+  },
+  "reveal_common": {
+    "sounds": [
+      "autos_coleccion:reveal_common"
+    ],
+    "subtitle": "subtitles.autos_coleccion.reveal_common"
+  },
+  "reveal_rare": {
+    "sounds": [
+      "autos_coleccion:reveal_rare"
+    ],
+    "subtitle": "subtitles.autos_coleccion.reveal_rare"
+  },
+  "reveal_epic": {
+    "sounds": [
+      "autos_coleccion:reveal_epic"
+    ],
+    "subtitle": "subtitles.autos_coleccion.reveal_epic"
+  },
+  "reveal_legend": {
+    "sounds": [
+      "autos_coleccion:reveal_legend"
+    ],
+    "subtitle": "subtitles.autos_coleccion.reveal_legend"
+  },
+  "sparkle": {
+    "sounds": [
+      "autos_coleccion:sparkle"
+    ],
+    "subtitle": "subtitles.autos_coleccion.sparkle"
+  },
+  "place": {
+    "sounds": [
+      "autos_coleccion:place"
+    ],
+    "subtitle": "subtitles.autos_coleccion.place"
+  },
+  "garage": {
+    "sounds": [
+      "autos_coleccion:garage"
+    ],
+    "subtitle": "subtitles.autos_coleccion.garage"
+  },
+  "whoosh": {
+    "sounds": [
+      "autos_coleccion:whoosh"
+    ],
+    "subtitle": "subtitles.autos_coleccion.whoosh"
+  },
+  "new_car": {
+    "sounds": [
+      "autos_coleccion:new_car"
+    ],
+    "subtitle": "subtitles.autos_coleccion.new_car"
+  }
+}
