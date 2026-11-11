@@ -2,6 +2,7 @@ package com.autoscoleccion.client;
 
 import com.autoscoleccion.AutosMod;
 import com.autoscoleccion.registry.ModBlockEntities;
+import com.autoscoleccion.registry.ModEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,5 +18,6 @@ public final class ClientSetup {
     public static void renderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerBlockEntityRenderer(ModBlockEntities.VENDING_MACHINE.get(), VendingMachineRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.DISPLAY_CASE.get(), DisplayCaseRenderer::new);
+        e.registerEntityRenderer(ModEntities.RC_CAR.get(), RcCarRenderer::new);
     }
 }

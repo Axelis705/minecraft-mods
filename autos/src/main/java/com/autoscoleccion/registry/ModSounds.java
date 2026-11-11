@@ -18,7 +18,7 @@ public final class ModSounds {
     public static final String[] NAMES = {
         "coin", "machine_start", "count", "go", "perfect", "good", "miss", "rev", "shift", "nitro", "note", "key", "error",
         "tally", "result", "box_drop", "box_shake", "tape", "flaps", "reveal_common", "reveal_rare", "reveal_epic", "reveal_legend",
-        "sparkle", "place", "garage", "whoosh", "new_car"
+        "sparkle", "place", "garage", "whoosh", "new_car", "engine", "bump", "skid"
     };
 
     static {

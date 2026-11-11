@@ -270,7 +270,11 @@ public class UnboxScreen extends Screen {
 
         // ---- tarjeta con el nombre
         if (revealed) {
+            // la tarjeta va por delante del auto (el auto se dibuja en 3D y tapaba el nombre)
+            g.pose().pushPose();
+            g.pose().translate(0, 0, 900);
             card(g, now, e);
+            g.pose().popPose();
         }
 
         // ---- textos de ayuda

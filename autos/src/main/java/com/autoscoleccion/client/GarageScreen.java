@@ -4,6 +4,8 @@ import com.autoscoleccion.game.Boxes;
 import com.autoscoleccion.game.CarDef;
 import com.autoscoleccion.game.CarMesh;
 import com.autoscoleccion.game.Cars;
+import com.autoscoleccion.net.AutosNet;
+import com.autoscoleccion.net.DrivePacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -28,6 +30,9 @@ public class GarageScreen extends Screen {
     // geometría calculada en render (para los clics)
     private float px, py, pw, ph, gridX, gridY, cellW, cellH;
     private final float[] tabX = new float[4];
+    /** Botón de manejar: rectángulo y a qué auto corresponde (-1 = no hay botón). */
+    private float bx0, by0, bx1, by1;
+    private int driveCar = -1;
     private float tabY;
 
     public GarageScreen() {
@@ -61,6 +66,12 @@ public class GarageScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
+        if (driveCar >= 0 && mx >= bx0 && mx <= bx1 && my >= by0 && my <= by1) {
+            Sfx.play("whoosh", 1.0F, 0.7F);
+            AutosNet.toServer(new DrivePacket(driveCar));
+            onClose();
+            return true;
+        }
         if (my >= tabY && my <= tabY + 16) {
             for (int i = 0; i < 3; i++) {
                 if (mx >= tabX[i] && mx < tabX[i + 1] - 4) {
@@ -218,14 +229,15 @@ public class GarageScreen extends Screen {
         }
 
         // panel de detalle
-        int show = hov >= 0 ? list.get(hov).index() : selected;
+        int show = selected >= 0 ? selected : hov >= 0 ? list.get(hov).index() : -1;
+        driveCar = -1;
         float dx = px + pw - detailW - 10, dy = gridY;
         float dh = py + ph - 10 - dy;
         Gfx.begin(g, false);
         Gfx.round(dx, dy, dx + detailW, dy + dh, 6, 0xFF13131F);
         Gfx.end();
         if (show < 0) {
-            List<FormattedCharSequence> lines = font.split(Component.literal("Pasa el mouse sobre un auto para verlo en grande. "
+            List<FormattedCharSequence> lines = font.split(Component.literal("Haz clic en un auto para verlo en grande y manejarlo. "
                     + "Consigue cajas en la máquina expendedora (con un lingote de oro) y exhíbelos en una vitrina."), (int) ((detailW - 14) / 0.75F));
             float ly = dy + 12;
             for (FormattedCharSequence l : lines) {
@@ -264,6 +276,25 @@ public class GarageScreen extends Screen {
                     ly += 8;
                 }
                 ly += 3;
+            }
+            // botón para manejarlo a control remoto
+            driveCar = own ? c.index() : -1;
+            if (own) {
+                bx0 = dx + 10;
+                bx1 = dx + detailW - 10;
+                by1 = dy + dh - 8;
+                by0 = by1 - 18;
+                boolean hb = mx >= bx0 && mx <= bx1 && my >= by0 && my <= by1;
+                Gfx.begin(g, false);
+                Gfx.round(bx0, by0 + 2, bx1, by1 + 2, 5, 0xFF07080C);
+                Gfx.round(bx0, by0 + (hb ? 1 : 0), bx1, by1 + (hb ? 1 : 0), 5, hb ? 0xFF4CFF8F : 0xFF1BA854);
+                Gfx.end();
+                if (hb) {
+                    Gfx.begin(g, true);
+                    Gfx.glow(bx0, by0, bx1, by1, 0x804CFF8F, 6);
+                    Gfx.end();
+                }
+                Gfx.text(g, font, "▶ MANEJAR", (bx0 + bx1) / 2, by0 + 5 + (hb ? 1 : 0), 1.0F, 0xFF0B2014);
             }
             Gfx.textL(g, font, "Sale en:", dx + 7, ly, 0.7F, 0xFF9A9AC0);
             ly += 9;

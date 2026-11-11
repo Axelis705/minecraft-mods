@@ -15,11 +15,11 @@ public abstract class SkillGame {
     public static final int COMBO = 2;
     public static final int SEQUENCE = 3;
     public static final int TYPES = 4;
-    public static final String[] NAME = {"Cambios perfectos", "Ritmo de teclas", "Arrancón total", "Secuencia relámpago"};
+    public static final String[] NAME = {"Cambios perfectos", "Ritmo de teclas", "Control de motor", "Secuencia relámpago"};
     public static final String[] HOWTO = {
             "Pulsa la tecla que aparece justo cuando la aguja esté en la franja verde. ¡Seis marchas, cada vez más rápido!",
             "Pulsa D F J K cuando cada nota cruce la línea. Al final llegan dobles.",
-            "Mantén W para tener la aguja en verde, haz 4 cambios con la tecla que salga y termina con el nitro de flechas.",
+            "Mantén W para subir la aguja y suéltala para bajarla. Tiene inercia y el motor da tirones: tenla en la franja verde, que se mueve y se achica.",
             "Repite la secuencia de teclas antes de que se acabe el tiempo. Cada ronda es más larga y más corta de tiempo."};
 
     // teclas (códigos de GLFW, iguales en el cliente)

@@ -3,6 +3,7 @@ package com.autoscoleccion;
 import com.autoscoleccion.net.AutosNet;
 import com.autoscoleccion.registry.ModBlockEntities;
 import com.autoscoleccion.registry.ModBlocks;
+import com.autoscoleccion.registry.ModEntities;
 import com.autoscoleccion.registry.ModItems;
 import com.autoscoleccion.registry.ModSounds;
 import com.autoscoleccion.registry.ModTabs;
@@ -24,6 +25,7 @@ public final class AutosMod {
         ModBlocks.BLOCKS.register(bus);
         ModItems.ITEMS.register(bus);
         ModBlockEntities.BLOCK_ENTITIES.register(bus);
+        ModEntities.ENTITIES.register(bus);
         ModSounds.SOUNDS.register(bus);
         ModTabs.TABS.register(bus);
         AutosNet.register();

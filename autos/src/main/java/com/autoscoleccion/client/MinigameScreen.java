@@ -265,7 +265,7 @@ public class MinigameScreen extends Screen {
                 Sfx.play("perfect", 1.0F, 0.8F);
                 burst(width / 2.0F, height / 2.0F, 0xFFE066, 18);
             } else {
-                Sfx.play(game instanceof ComboGame && ((ComboGame) game).phase() >= ComboGame.PHASE_NITRO ? "nitro" : "shift", 1.0F, 0.7F);
+                Sfx.play(game instanceof ComboGame ? "good" : "shift", 1.0F, 0.7F);
                 burst(width / 2.0F, height / 2.0F, 0x5BFF8A, 8);
             }
         }
@@ -555,63 +555,40 @@ public class MinigameScreen extends Screen {
     // ---------------------------------------------------------------------------------------------------------- 3) arrancón
 
     private void drawCombo(GuiGraphics g, ComboGame cg, float gx, float gy, float gw, float gh, long now) {
-        int phase = cg.phase();
-        Gfx.text(g, font, phase == ComboGame.PHASE_LAUNCH ? "1. SALIDA" : phase == ComboGame.PHASE_SHIFT ? "2. CAMBIOS" : phase == ComboGame.PHASE_NITRO
-                ? "3. ¡NITRO!" : "¡META!", gx + 4 + 30, gy + 2, 0.9F, 0xFFFF7AE0);
-        if (phase == ComboGame.PHASE_LAUNCH) {
-            float bx0 = gx + gw * 0.08F, bx1 = gx + gw * 0.92F, by = gy + gh * 0.4F, bh = 22;
-            double v = cg.launchRpm();
-            Gfx.begin(g, false);
-            Gfx.round(bx0 - 3, by - 3, bx1 + 3, by + bh + 3, 5, 0xFF0B0B14);
-            Gfx.hgrad(bx0, by, bx1, by + bh, 0xFF22223A, 0xFF34345A);
-            float z0 = bx0 + (bx1 - bx0) * (float) ComboGame.BAND_LO, z1 = bx0 + (bx1 - bx0) * (float) ComboGame.BAND_HI;
-            Gfx.vgrad(z0, by - 2, z1, by + bh + 2, 0xFF4CFF8F, 0xFF1BA854);
-            Gfx.rect(bx0 + (bx1 - bx0) * 0.9F, by, bx1, by + bh, 0xFFE02040);
-            float nx = bx0 + (bx1 - bx0) * (float) Math.min(1, v);
-            Gfx.rect(nx - 2, by - 6, nx + 2, by + bh + 6, 0xFFFFE8C8);
-            Gfx.end();
-            Gfx.begin(g, true);
-            Gfx.blob(nx, by + bh / 2, 16, v >= ComboGame.BAND_LO && v <= ComboGame.BAND_HI ? 0x904CFF8F : 0x90FF7A2A);
-            Gfx.end();
-            keycap(g, gx + gw / 2 - 22, by + bh + 14, 44, "W", 0x2A2F4A, 0x3FE0FF, held.contains(SkillGame.K_W), 2.4F);
-            Gfx.text(g, font, "MANTÉN W", gx + gw / 2, by + bh + 64, 0.9F, 0xFF4CFF8F);
-            Gfx.text(g, font, String.format(Locale.ROOT, "En verde: %d%%", Math.round(cg.launchSoFar() * 100)), gx + gw * 0.2F, by - 14, 0.8F,
-                    0xFFFFFFFF);
-            Gfx.begin(g, false);
-            Gfx.rect(gx + gw * 0.62F, by - 12, gx + gw * 0.92F, by - 8, 0xFF22223A);
-            Gfx.rect(gx + gw * 0.62F, by - 12, gx + gw * (0.62F + 0.3F * (float) cg.launchProgress()), by - 8, 0xFFFF7AE0);
-            Gfx.end();
-        } else if (phase == ComboGame.PHASE_SHIFT) {
-            float R = Math.min(gh * 0.46F, gw * 0.25F);
-            tach(g, gx + gw * 0.34F, gy + gh * 0.6F, R, cg.shiftRpm(), cg.center(), cg.width(), !cg.waiting());
-            keyArea(g, gx + gw * 0.74F, gy + gh * 0.18F, cg.shownKey(), now, "ESPERA...");
-            Gfx.text(g, font, "CAMBIO " + Math.min(ComboGame.SHIFTS, cg.gear() + 1) + "/" + ComboGame.SHIFTS, gx + gw * 0.74F, gy + gh * 0.18F + 66, 1.0F,
-                    0xFFB9A6FF);
-        } else if (phase == ComboGame.PHASE_NITRO) {
-            int[] keys = cg.nitroKeys();
-            float s = 36, gap = 8;
-            float x0 = gx + gw / 2 - (keys.length * (s + gap) - gap) / 2;
-            float y = gy + gh * 0.32F;
-            Gfx.begin(g, true);
-            for (int i = 0; i < 8; i++) {
-                float fx0 = gx + gw * (0.1F + 0.1F * i) + (float) Math.sin(now / 90.0 + i) * 4;
-                Gfx.blob(fx0, gy + gh, 26 + (float) Math.sin(now / 70.0 + i * 2) * 6, 0x70FF7A2A);
-                Gfx.blob(fx0, gy + gh - 6, 14, 0x903FE0FF);
-            }
-            Gfx.end();
-            for (int i = 0; i < keys.length; i++) {
-                boolean done = i < cg.nitroPos();
-                boolean cur = i == cg.nitroPos() && !cg.nitroFailed();
-                int face = cg.nitroFailed() && i == cg.nitroPos() ? 0x7A1A2A : done ? 0x1E7A44 : cur ? 0x3A3F66 : 0x22263A;
-                float bob = cur ? (float) Math.sin(now / 80.0) * 2 : 0;
-                keycap(g, x0 + i * (s + gap), y + bob, s, SkillGame.keyName(keys[i]), face, cur ? 0x3FE0FF : 0x34345A, done, 1.8F);
-            }
-            float tl = (float) cg.nitroTimeLeft();
-            Gfx.begin(g, false);
-            Gfx.rect(gx + gw * 0.2F, y + s + 18, gx + gw * 0.8F, y + s + 24, 0xFF22223A);
-            Gfx.rect(gx + gw * 0.2F, y + s + 18, gx + gw * (0.2F + 0.6F * tl), y + s + 24, Gfx.mix(0xFF3050, 0x3FE0FF, tl) | 0xFF000000);
-            Gfx.end();
+        // medidor vertical grande a la izquierda y tecla W a la derecha
+        float mx0 = gx + gw * 0.3F, mx1 = mx0 + 46, my0 = gy + 8, my1 = gy + gh - 6;
+        double v = cg.launchRpm();
+        double lo = Math.max(0, cg.bandLo()), hi = Math.min(1, cg.bandHi());
+        boolean in = v >= lo && v <= hi;
+        float yLo = my1 - (my1 - my0) * (float) lo, yHi = my1 - (my1 - my0) * (float) hi;
+        float ny = my1 - (my1 - my0) * (float) Math.min(1, v);
+        Gfx.begin(g, false);
+        Gfx.round(mx0 - 4, my0 - 4, mx1 + 4, my1 + 4, 6, 0xFF0B0B14);
+        Gfx.vgrad(mx0, my0, mx1, my1, 0xFF3A1830, 0xFF181830);
+        for (int i = 1; i < 10; i++) {
+            float y = my1 - (my1 - my0) * i / 10.0F;
+            Gfx.rect(mx0, y, mx0 + (i % 5 == 0 ? 14 : 8), y + 1, 0x60FFFFFF);
         }
+        Gfx.vgrad(mx0 + 2, yHi, mx1 - 2, yLo, 0xFF4CFF8F, 0xFF1BA854);
+        Gfx.rect(mx0 - 8, ny - 2, mx1 + 8, ny + 2, 0xFFFFE8C8);
+        Gfx.end();
+        Gfx.begin(g, true);
+        Gfx.glow(mx0 + 2, yHi, mx1 - 2, yLo, in ? 0x804CFF8F : 0x304CFF8F, in ? 8 : 4);
+        Gfx.blob(mx0 + 23, ny, 22, in ? 0xA04CFF8F : 0xA0FF7A2A);
+        Gfx.end();
+        Gfx.text(g, font, String.valueOf((int) Math.round(v * 9000)), mx0 + 23, my1 + 8, 0.9F, 0xFFFFFFFF);
+        // tecla W y textos
+        float kx = gx + gw * 0.7F;
+        boolean down = cg.holding();
+        keycap(g, kx - 26, gy + gh * 0.18F, 52, "W", down ? 0x3A5F46 : 0x2A2F4A, down ? 0x4CFF8F : 0x3FE0FF, down, 2.6F);
+        Gfx.text(g, font, down ? "ACELERANDO" : "SUELTA = BAJA", kx, gy + gh * 0.18F + 62, 0.85F, down ? 0xFF4CFF8F : 0xFFFF9A4A);
+        Gfx.text(g, font, String.format(Locale.ROOT, "En verde: %d%%", Math.round(cg.launchSoFar() * 100)), kx, gy + gh * 0.18F + 76, 0.85F,
+                0xFFFFFFFF);
+        Gfx.begin(g, false);
+        float px0 = kx - 50, px1 = kx + 50, py = gy + gh * 0.18F + 92;
+        Gfx.round(px0, py, px1, py + 5, 2, 0xFF22223A);
+        Gfx.round(px0, py, px0 + (px1 - px0) * (float) cg.launchProgress(), py + 5, 2, 0xFFFF7AE0);
+        Gfx.end();
     }
 
     // ---------------------------------------------------------------------------------------------------------- 4) secuencia

@@ -63,5 +63,9 @@
   "subtitles.autos_coleccion.place": "Car displayed",
   "subtitles.autos_coleccion.garage": "Garage",
   "subtitles.autos_coleccion.whoosh": "Whoosh",
-  "subtitles.autos_coleccion.new_car": "New car!"
+  "subtitles.autos_coleccion.new_car": "New car!",
+  "subtitles.autos_coleccion.engine": "RC car engine",
+  "subtitles.autos_coleccion.bump": "Crash",
+  "subtitles.autos_coleccion.skid": "Skid",
+  "entity.autos_coleccion.auto_rc": "RC car"
 }

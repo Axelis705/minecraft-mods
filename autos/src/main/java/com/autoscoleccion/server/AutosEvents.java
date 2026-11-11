@@ -27,6 +27,15 @@ public final class AutosEvents {
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent e) {
         if (e.getEntity() instanceof ServerPlayer sp) {
             Machine.cancel(sp);
+            Driving.stop(sp);
+            Driving.forget(sp.getUUID());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onDimension(PlayerEvent.PlayerChangedDimensionEvent e) {
+        if (e.getEntity() instanceof ServerPlayer sp) {
+            Driving.forget(sp.getUUID());
         }
     }
 

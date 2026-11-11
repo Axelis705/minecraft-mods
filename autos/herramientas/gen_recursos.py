@@ -24,19 +24,19 @@ CAR_NAMES = ["Brisa Compacto", "Taxi Ciudad Sol", "Pickup Ranchera", "Aurora Fam
              "Solaris Concept", "Titán Hiper", "Corona de Oro"]
 SOUNDS = ["coin", "machine_start", "count", "go", "perfect", "good", "miss", "rev", "shift", "nitro", "note", "key", "error",
           "tally", "result", "box_drop", "box_shake", "tape", "flaps", "reveal_common", "reveal_rare", "reveal_epic", "reveal_legend",
-          "sparkle", "place", "garage", "whoosh", "new_car"]
+          "sparkle", "place", "garage", "whoosh", "new_car", "engine", "bump", "skid"]
 SUB_ES = {"coin": "Moneda", "machine_start": "Máquina se enciende", "count": "Cuenta regresiva", "go": "¡Ya!", "perfect": "¡Perfecto!",
           "good": "Bien", "miss": "Fallo", "rev": "Motor acelera", "shift": "Cambio de marcha", "nitro": "Nitro", "note": "Nota",
           "key": "Tecla", "error": "Error", "tally": "Puntos", "result": "Resultado", "box_drop": "Cae una caja", "box_shake": "Caja se sacude",
           "tape": "Cinta se rompe", "flaps": "Caja se abre", "reveal_common": "Auto revelado", "reveal_rare": "Auto raro revelado",
           "reveal_epic": "Auto épico revelado", "reveal_legend": "¡Auto legendario!", "sparkle": "Destello", "place": "Auto en vitrina",
-          "garage": "Garaje", "whoosh": "Zumbido", "new_car": "¡Auto nuevo!"}
+          "garage": "Garaje", "whoosh": "Zumbido", "new_car": "¡Auto nuevo!", "engine": "Motor de auto RC", "bump": "Choque", "skid": "Derrape"}
 SUB_EN = {"coin": "Coin", "machine_start": "Machine powers up", "count": "Countdown", "go": "Go!", "perfect": "Perfect!", "good": "Good",
           "miss": "Miss", "rev": "Engine revs", "shift": "Gear shift", "nitro": "Nitro", "note": "Note", "key": "Key", "error": "Error",
           "tally": "Points", "result": "Result", "box_drop": "Box drops", "box_shake": "Box shakes", "tape": "Tape rips", "flaps": "Box opens",
           "reveal_common": "Car revealed", "reveal_rare": "Rare car revealed", "reveal_epic": "Epic car revealed",
           "reveal_legend": "Legendary car!", "sparkle": "Sparkle", "place": "Car displayed", "garage": "Garage", "whoosh": "Whoosh",
-          "new_car": "New car!"}
+          "new_car": "New car!", "engine": "RC car engine", "bump": "Crash", "skid": "Skid"}
 
 
 def wjson(path, obj):
@@ -314,6 +314,7 @@ def lang():
             L[f"item.{MOD}.auto_{c}"] = n
         for s in SOUNDS:
             L[f"subtitles.{MOD}.{s}"] = SUB_ES[s] if es else SUB_EN[s]
+        L[f"entity.{MOD}.auto_rc"] = "Auto a control remoto" if es else "RC car"
         wjson(f"{A}/lang/{code}.json", L)
 
 

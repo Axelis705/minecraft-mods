@@ -9,9 +9,9 @@ import java.util.List;
  */
 public final class RhythmGame extends SkillGame {
     public static final int[] LANES = {'D', 'F', 'J', 'K'};
-    public static final int PERFECT = 32;
-    public static final int GREAT = 65;
-    public static final int GOOD = 115;
+    public static final int PERFECT = 22;
+    public static final int GREAT = 55;
+    public static final int GOOD = 125;
     public static final int START = 1600;
 
     /** Una nota: tiempo en que cruza la línea, carril y resultado (-1 = pendiente). */
@@ -126,7 +126,7 @@ public final class RhythmGame extends SkillGame {
             pop("¡Sin nota!", 0.0);
             return;
         }
-        double v = bd <= PERFECT ? 1.0 : bd <= GREAT ? 0.6 : 0.25;
+        double v = bd <= PERFECT ? 1.0 : bd <= GREAT ? 0.55 : 0.25;
         best.result = v;
         combo++;
         bestCombo = Math.max(bestCombo, combo);

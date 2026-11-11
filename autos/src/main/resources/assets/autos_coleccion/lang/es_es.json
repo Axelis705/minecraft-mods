@@ -63,5 +63,9 @@
   "subtitles.autos_coleccion.place": "Auto en vitrina",
   "subtitles.autos_coleccion.garage": "Garaje",
   "subtitles.autos_coleccion.whoosh": "Zumbido",
-  "subtitles.autos_coleccion.new_car": "¡Auto nuevo!"
+  "subtitles.autos_coleccion.new_car": "¡Auto nuevo!",
+  "subtitles.autos_coleccion.engine": "Motor de auto RC",
+  "subtitles.autos_coleccion.bump": "Choque",
+  "subtitles.autos_coleccion.skid": "Derrape",
+  "entity.autos_coleccion.auto_rc": "Auto a control remoto"
 }

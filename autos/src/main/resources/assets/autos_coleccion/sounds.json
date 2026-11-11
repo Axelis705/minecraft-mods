@@ -166,5 +166,23 @@
       "autos_coleccion:new_car"
     ],
     "subtitle": "subtitles.autos_coleccion.new_car"
+  },
+  "engine": {
+    "sounds": [
+      "autos_coleccion:engine"
+    ],
+    "subtitle": "subtitles.autos_coleccion.engine"
+  },
+  "bump": {
+    "sounds": [
+      "autos_coleccion:bump"
+    ],
+    "subtitle": "subtitles.autos_coleccion.bump"
+  },
+  "skid": {
+    "sounds": [
+      "autos_coleccion:skid"
+    ],
+    "subtitle": "subtitles.autos_coleccion.skid"
   }
 }

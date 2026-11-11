@@ -1,87 +1,48 @@
 package com.autoscoleccion.game;
 
 /**
- * Arrancón total, en tres partes:
- * <ol>
- *   <li><b>Arranque</b> (3,2 s): manteniendo W la aguja sube, soltándola baja, y además tiembla. Hay que mantenerla en la franja verde.</li>
- *   <li><b>Cambios</b>: cuatro marchas como en "Cambios perfectos", más rápidas.</li>
- *   <li><b>Nitro</b>: cinco flechas que hay que teclear en orden en 1,6 s.</li>
- * </ol>
- * Vale 30 % el arranque, 45 % los cambios y 25 % el nitro.
+ * Control de motor (antes "Arrancón total"): una sola prueba de 10 segundos. Manteniendo W el motor acelera y la aguja sube; al
+ * soltarla baja. La aguja tiene inercia (sigue subiendo un poco después de soltar) y el motor da tirones solos, así que hay que
+ * anticiparse. La franja verde se mueve y se hace cada vez más angosta. El puntaje es el tiempo que la aguja estuvo en verde (cerca
+ * de la franja vale una parte).
  */
 public final class ComboGame extends SkillGame {
     public static final int PHASE_LAUNCH = 0;
-    public static final int PHASE_SHIFT = 1;
-    public static final int PHASE_NITRO = 2;
     public static final int PHASE_END = 3;
 
-    static final int STEP = 10;
+    static final int STEP = 5;
     public static final int LAUNCH_START = 900;
-    public static final int LAUNCH_LEN = 3200;
-    /** El tiempo en verde cuenta a partir de aquí (deja 0,6 s para subir la aguja). */
-    static final int LAUNCH_COUNT = 600;
-    public static final double BAND_LO = 0.60;
-    public static final double BAND_HI = 0.72;
-
-    public static final int SHIFTS = 4;
-    static final int[] POOL = {'Q', 'E', 'R', 'A', 'S', 'D', 'F', 'J', 'K', 'L'};
-    public static final int NITRO_LEN = 5;
-    public static final int NITRO_TIME = 1600;
-    static final int[] ARROWS = {K_LEFT, K_RIGHT, K_UP, K_DOWN};
+    public static final int LAUNCH_LEN = 10000;
+    /** El tiempo en verde cuenta a partir de aquí (deja 0,8 s para subir la aguja la primera vez). */
+    static final int LAUNCH_COUNT = 800;
+    /** Cada cuánto sale un aviso con lo bien que vas (ms). */
+    static final int SEGMENT = 2000;
 
     int phase = PHASE_LAUNCH;
-    // arranque
     double rpm;
+    double vel;
     boolean hold;
     int simT = LAUNCH_START;
-    int inBand;
+    double got;
     int counted;
-    final double w1;
-    final double w2;
-    final double ph1;
-    final double ph2;
-    double launchScore;
-    // cambios
-    final int[] dur = new int[SHIFTS];
-    final double[] center = new double[SHIFTS];
-    final double[] width = new double[SHIFTS];
-    final int[] key = new int[SHIFTS];
-    final double[] result = new double[SHIFTS];
-    int gear;
-    int gearStart;
-    boolean waiting;
-    int waitUntil;
-    // nitro
-    final int[] nitro = new int[NITRO_LEN];
-    int nitroStart;
-    int nitroPos;
-    boolean nitroFail;
-    int nitroEnd = -1;
-    double nitroScore;
+    double segGot;
+    int segCount;
+    final double w1, w2, w3, ph1, ph2, ph3;
+    final double c1, c2, cp1, cp2;
     int finishT = -1;
 
     public ComboGame(long seed) {
         super(seed);
-        w1 = 2.0 + rnd.nextDouble() * 1.4;
-        w2 = 4.6 + rnd.nextDouble() * 2.0;
+        w1 = 1.7 + rnd.nextDouble() * 1.1;
+        w2 = 3.9 + rnd.nextDouble() * 1.8;
+        w3 = 0.6 + rnd.nextDouble() * 0.5;
         ph1 = rnd.nextDouble() * 6.28;
         ph2 = rnd.nextDouble() * 6.28;
-        int prev = -1;
-        for (int i = 0; i < SHIFTS; i++) {
-            dur[i] = 1150 - 90 * i;
-            width[i] = 0.14 - 0.017 * i;
-            center[i] = 0.64 + rnd.nextDouble() * 0.24;
-            int k;
-            do {
-                k = POOL[rnd.nextInt(POOL.length)];
-            } while (k == prev);
-            key[i] = k;
-            prev = k;
-            result[i] = -1;
-        }
-        for (int i = 0; i < NITRO_LEN; i++) {
-            nitro[i] = ARROWS[rnd.nextInt(4)];
-        }
+        ph3 = rnd.nextDouble() * 6.28;
+        c1 = 0.55 + rnd.nextDouble() * 0.35;
+        c2 = 1.3 + rnd.nextDouble() * 0.6;
+        cp1 = rnd.nextDouble() * 6.28;
+        cp2 = rnd.nextDouble() * 6.28;
     }
 
     @Override
@@ -97,73 +58,43 @@ public final class ComboGame extends SkillGame {
         return rpm;
     }
 
-    /** Fracción del arranque que lleva en verde (de lo que se ha contado). */
+    /** Fracción del tiempo que lleva en verde (de lo que se ha contado). */
     public double launchSoFar() {
-        return counted == 0 ? 0.0 : inBand / (double) counted;
+        return counted == 0 ? 0.0 : got / counted;
     }
 
     public double launchProgress() {
         return Math.max(0.0, Math.min(1.0, (now - LAUNCH_START) / (double) LAUNCH_LEN));
     }
 
-    public int gear() {
-        return gear;
+    /** Centro de la franja verde en el tiempo t: se pasea entre 0,35 y 0,8. */
+    public double bandCenter(int t) {
+        double s = Math.max(0, t - LAUNCH_START) / 1000.0;
+        return 0.575 + 0.15 * Math.sin(s * c1 + cp1) + 0.075 * Math.sin(s * c2 + cp2);
     }
 
-    public boolean waiting() {
-        return waiting;
+    /** Ancho de la franja: de 0,17 a 0,09. */
+    public double bandWidth(int t) {
+        double k = Math.max(0.0, Math.min(1.0, (t - LAUNCH_START) / (double) LAUNCH_LEN));
+        return 0.15 - 0.075 * k;
     }
 
-    public double shiftRpm() {
-        if (phase != PHASE_SHIFT || waiting) {
-            return 0.0;
-        }
-        double x = Math.max(0.0, (now - gearStart) / (double) dur[gear]);
-        return Math.min(1.0, Math.pow(x, 1.35));
+    public double bandLo() {
+        return bandCenter(now) - bandWidth(now) / 2;
     }
 
-    public double center() {
-        return center[Math.min(gear, SHIFTS - 1)];
+    public double bandHi() {
+        return bandCenter(now) + bandWidth(now) / 2;
     }
 
-    public double width() {
-        return width[Math.min(gear, SHIFTS - 1)];
+    public boolean holding() {
+        return hold;
     }
 
-    public int shownKey() {
-        if (phase != PHASE_SHIFT || waiting || shiftRpm() < ShiftGame.REVEAL) {
-            return 0;
-        }
-        return key[gear];
-    }
-
-    public int[] nitroKeys() {
-        return nitro;
-    }
-
-    public int nitroPos() {
-        return nitroPos;
-    }
-
-    public boolean nitroFailed() {
-        return nitroFail;
-    }
-
-    public double nitroTimeLeft() {
-        if (phase != PHASE_NITRO) {
-            return 0.0;
-        }
-        return Math.max(0.0, 1.0 - (now - nitroStart) / (double) NITRO_TIME);
-    }
-
-    public double launchScore() {
-        return launchScore;
-    }
-
-    /** Valor de la aguja que se suma al temblor del arranque. */
-    private double wobble(int t) {
+    /** Tirones del motor (aceleración extra que no controlas). */
+    private double kick(int t) {
         double s = t / 1000.0;
-        return 0.55 * Math.sin(s * w1 + ph1) + 0.35 * Math.sin(s * w2 + ph2);
+        return 0.9 * Math.sin(s * w1 + ph1) + 0.55 * Math.sin(s * w2 + ph2) + 0.5 * Math.sin(s * w3 + ph3);
     }
 
     @Override
@@ -172,120 +103,51 @@ public final class ComboGame extends SkillGame {
             return;
         }
         now = t;
-        while (true) {
-            if (phase == PHASE_LAUNCH) {
-                int end = LAUNCH_START + LAUNCH_LEN;
-                while (simT + STEP <= Math.min(now, end)) {
-                    simT += STEP;
-                    double dt = STEP / 1000.0;
-                    rpm += (hold ? 0.95 : -0.75) * dt + wobble(simT) * dt * 0.9;
-                    rpm = Math.max(0.0, Math.min(1.0, rpm));
-                    if (simT - LAUNCH_START >= LAUNCH_COUNT) {
-                        counted++;
-                        if (rpm >= BAND_LO && rpm <= BAND_HI) {
-                            inBand++;
-                        }
-                    }
-                }
-                if (now >= end) {
-                    launchScore = counted == 0 ? 0.0 : Math.min(1.0, inBand / (double) counted / 0.85);
-                    pops.add(new Pop(end, judge(launchScore), launchScore));
-                    phase = PHASE_SHIFT;
-                    waiting = true;
-                    waitUntil = end + 500;
-                    continue;
-                }
-                return;
-            }
-            if (phase == PHASE_SHIFT) {
-                if (waiting) {
-                    if (now >= waitUntil) {
-                        waiting = false;
-                        gearStart = waitUntil;
-                    } else {
-                        return;
-                    }
-                }
-                if (now >= gearStart + dur[gear]) {
-                    int endT = gearStart + dur[gear];
-                    result[gear] = 0.0;
-                    pops.add(new Pop(endT, "¡Al rojo!", 0.0));
-                    nextGear(endT);
-                    continue;
-                }
-                return;
-            }
-            if (phase == PHASE_NITRO) {
-                if (nitroEnd < 0 && now >= nitroStart + NITRO_TIME) {
-                    nitroEnd = nitroStart + NITRO_TIME;
-                    finishNitro(nitroEnd);
-                    continue;
-                }
-                if (nitroEnd >= 0 && now >= nitroEnd + 700) {
-                    phase = PHASE_END;
-                    finishT = nitroEnd + 700;
-                }
-                return;
-            }
+        if (phase != PHASE_LAUNCH) {
             return;
         }
-    }
-
-    private void nextGear(int t) {
-        gear++;
-        if (gear >= SHIFTS) {
-            phase = PHASE_NITRO;
-            nitroStart = t + 700;
-            return;
+        int end = LAUNCH_START + LAUNCH_LEN;
+        while (simT + STEP <= Math.min(now, end)) {
+            simT += STEP;
+            double dt = STEP / 1000.0;
+            vel += ((hold ? 2.6 : -2.4) + kick(simT) * 1.3) * dt;
+            vel *= Math.pow(0.12, dt);
+            rpm += vel * dt;
+            if (rpm < 0) {
+                rpm = 0;
+                vel = Math.max(0, vel);
+            } else if (rpm > 1) {
+                rpm = 1;
+                vel = Math.min(0, vel);
+            }
+            if (simT - LAUNCH_START >= LAUNCH_COUNT) {
+                double half = bandWidth(simT) / 2;
+                double d = Math.abs(rpm - bandCenter(simT));
+                double v = d <= half ? 1.0 : d <= half * 1.6 ? 0.35 * (1.0 - (d - half) / (half * 0.6)) : 0.0;
+                got += v;
+                counted++;
+                segGot += v;
+                segCount++;
+                if ((simT - LAUNCH_START) % SEGMENT == 0 && segCount > 0) {
+                    double sv = segGot / segCount;
+                    pops.add(new Pop(simT, sv >= 0.92 ? "¡PERFECTO!" : sv >= 0.7 ? "¡Genial!" : sv >= 0.4 ? "Bien" : sv > 0.1 ? "Justo" : "¡Fuera!",
+                            sv));
+                    segGot = 0;
+                    segCount = 0;
+                }
+            }
         }
-        waiting = true;
-        waitUntil = t + 450;
-    }
-
-    private void finishNitro(int t) {
-        nitroScore = nitroPos / (double) NITRO_LEN;
-        pops.add(new Pop(t, nitroPos >= NITRO_LEN ? "¡NITRO!" : nitroFail ? "Se apagó el nitro" : "Sin tiempo", nitroScore));
+        if (now >= end) {
+            phase = PHASE_END;
+            finishT = end;
+        }
     }
 
     @Override
     public void input(int t, int k, boolean down) {
         update(t);
-        if (phase == PHASE_LAUNCH) {
-            if (k == K_W) {
-                hold = down;
-            }
-            return;
-        }
-        if (!down) {
-            return;
-        }
-        if (phase == PHASE_SHIFT && !waiting) {
-            double r = shiftRpm();
-            if (r < ShiftGame.REVEAL || k != key[gear]) {
-                result[gear] = 0.0;
-                pop(r < ShiftGame.REVEAL ? "¡Muy pronto!" : "Tecla equivocada", 0.0);
-            } else {
-                double half = width[gear] / 2.0;
-                double d = Math.abs(r - center[gear]);
-                double v = d <= half ? 1.0 - 0.6 * Math.pow(d / half, 1.5) : d <= width[gear] ? 0.25 * (1.0 - (d - half) / half) : 0.0;
-                result[gear] = v;
-                pop(judge(v), v);
-            }
-            nextGear(t);
-            return;
-        }
-        if (phase == PHASE_NITRO && nitroEnd < 0 && t >= nitroStart) {
-            if (k == nitro[nitroPos]) {
-                nitroPos++;
-                if (nitroPos >= NITRO_LEN) {
-                    nitroEnd = t;
-                    finishNitro(t);
-                }
-            } else if (k == K_LEFT || k == K_RIGHT || k == K_UP || k == K_DOWN) {
-                nitroFail = true;
-                nitroEnd = t;
-                finishNitro(t);
-            }
+        if (phase == PHASE_LAUNCH && k == K_W) {
+            hold = down;
         }
     }
 
@@ -296,37 +158,15 @@ public final class ComboGame extends SkillGame {
 
     @Override
     public double score() {
-        double sh = 0.0;
-        for (double r : result) {
-            sh += Math.max(0.0, r);
+        if (counted == 0) {
+            return 0.0;
         }
-        sh /= SHIFTS;
-        return 0.30 * launchScore + 0.45 * sh + 0.25 * nitroScore;
+        double f = got / counted;
+        return Math.max(0.0, Math.min(1.0, Math.pow(f, 1.25)));
     }
 
     @Override
     public int maxDuration() {
-        int t = LAUNCH_START + LAUNCH_LEN + 500;
-        for (int d : dur) {
-            t += d + 450;
-        }
-        return t + 700 + NITRO_TIME + 900;
-    }
-
-    // para las pruebas
-    double shiftCenter(int g) {
-        return center[g];
-    }
-
-    int shiftDur(int g) {
-        return dur[g];
-    }
-
-    int shiftKey(int g) {
-        return key[g];
-    }
-
-    int gearStart() {
-        return gearStart;
+        return LAUNCH_START + LAUNCH_LEN + 300;
     }
 }

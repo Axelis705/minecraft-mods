@@ -8,8 +8,42 @@ package com.autoscoleccion.game;
 public final class CarStyle {
     /** Siluetas base. */
     public enum Shape {
-        HATCH, SEDAN, PICKUP, VAN, CLASSIC, MINI, LOWRIDER, COUPE, MUSCLE, WEDGE, GT, HYPER, PROTO, FORMULA, RALLY
+        HATCH, SEDAN, PICKUP, VAN, CLASSIC, MINI, LOWRIDER, COUPE, MUSCLE, WEDGE, GT, HYPER, PROTO, FORMULA, RALLY, SUV, WAGON, ROADSTER, BOXVAN
     }
+
+    // estilos de faros delanteros
+    public static final int HEAD_ROUND = 0, HEAD_QUAD = 1, HEAD_SLIM = 2, HEAD_RECT = 3, HEAD_POPUP = 4, HEAD_BAR = 5, HEAD_ANGULAR = 6;
+    // estilos de calaveras
+    public static final int TAIL_BAR = 0, TAIL_ROUND2 = 1, TAIL_RECT = 2, TAIL_SLIM = 3, TAIL_ROUND1 = 4, TAIL_VERT = 5, TAIL_C = 6;
+    // estilos de rin
+    public static final int RIM_TWIN5 = 0, RIM_MULTI = 1, RIM_MESH = 2, RIM_DISH = 3, RIM_HUB = 4, RIM_WIRE = 5, RIM_Y = 6, RIM_TURBINE = 7,
+            RIM_STEEL = 8, RIM_SIX = 9, RIM_SEVEN = 10;
+
+    // detalles (se combinan, en {@link #detail})
+    public static final int D_SIDE_INTAKE = 1;
+    public static final int D_HOOD_VENTS = 1 << 1;
+    public static final int D_LOUVERS = 1 << 2;
+    public static final int D_DIFFUSER = 1 << 3;
+    public static final int D_SPLITTER = 1 << 4;
+    public static final int D_SKIRTS = 1 << 5;
+    public static final int D_ROOF_SCOOP = 1 << 6;
+    public static final int D_BIG_GRILLE = 1 << 7;
+    public static final int D_OVAL_GRILLE = 1 << 8;
+    public static final int D_SNORKEL = 1 << 9;
+    public static final int D_SPARE = 1 << 10;
+    public static final int D_ENGINE_GLASS = 1 << 11;
+    public static final int D_C_LINE = 1 << 12;
+    public static final int D_FOG = 1 << 13;
+    public static final int D_WIPERS = 1 << 14;
+    public static final int D_RAILS = 1 << 15;
+    public static final int D_QUAD_EXH = 1 << 16;
+    public static final int D_CENTER_EXH = 1 << 17;
+    public static final int D_SIDE_EXH = 1 << 18;
+    public static final int D_HOOD_LINES = 1 << 19;
+    public static final int D_LIGHT_BAR = 1 << 20;
+    public static final int D_GUARDS = 1 << 21;
+    public static final int D_RACE_DECALS = 1 << 22;
+    public static final int D_CHROME_TRIM = 1 << 23;
 
     // extras (se combinan)
     public static final int SPOILER = 1;
@@ -59,6 +93,29 @@ public final class CarStyle {
     /** Ancho de vía: cuánto salen las ruedas del costado (0 = al ras). */
     public float track = 0.0F;
     public int extras;
+    public int detail;
+    /** Redondez general (1 = normal, menos = más cuadrado, más = más curvo). */
+    public float round = 1.0F;
+    /** Cintura de avispa: cuánto se angosta en las puertas. */
+    public float waist = 0.0F;
+    /** La línea de cintura sube hacia atrás (cuña) o baja (negativo). */
+    public float beltRise = 0.0F;
+    /** Colita levantada al final de la cajuela. */
+    public float ducktail = 0.0F;
+    /** Guardabarros delantero y trasero (-1 = el de la silueta). */
+    public float flareF = -1.0F;
+    public float flareR = -1.0F;
+    /** Curva del techo (-1 = la normal). */
+    public float crown = -1.0F;
+    /** Cuánto se mete la cabina respecto al costado. */
+    public float cabInset = 0.42F;
+    /** Parte de abajo de las ventanas que es carrocería (ventanas más bajitas). */
+    public float glassLow = 0.0F;
+    public int head = -1;
+    public int tail = -1;
+    public int rimStyle = -1;
+    /** Color de los calipers (-1 = el automático). */
+    public int caliper = -1;
     // colores
     public int body = 0xD0D0D0;
     public int accent = 0x202020;
@@ -124,6 +181,23 @@ public final class CarStyle {
                 len = 16; wid = 3.2F; ride = 0.7F; bodyH = 1.6F; cabFront = 1.0F; cabRear = -2.0F; roofH = 0.0F; noseSlope = 4.0F; tailSlope = 0.6F;
                 wheelR = 1.6F; wheelW = 1.7F; wheelFront = 5.2F; wheelRear = -4.8F; track = 2.4F;
             }
+            case SUV -> {
+                len = 14; wid = 7.0F; ride = 1.9F; bodyH = 3.0F; cabFront = 2.6F; cabRear = -6.2F; roofH = 3.0F; wsInset = 0.9F; rearInset = 0.2F;
+                sideInset = 0.15F; noseSlope = 0.4F; tailSlope = 0.0F; wheelR = 1.7F; wheelW = 1.4F; wheelFront = 4.4F; wheelRear = -4.3F; track = 0.25F;
+                round = 0.35F;
+            }
+            case WAGON -> {
+                len = 15; wid = 6.6F; ride = 1.1F; bodyH = 2.5F; cabFront = 2.4F; cabRear = -6.6F; roofH = 2.2F; wsInset = 1.6F; rearInset = 0.5F;
+                noseSlope = 1.4F; tailSlope = 0.2F; wheelFront = 4.8F; wheelRear = -4.6F;
+            }
+            case ROADSTER -> {
+                len = 12.5F; wid = 6.4F; ride = 0.9F; bodyH = 2.4F; cabFront = 0.8F; cabRear = -2.6F; roofH = 1.6F; wsInset = 1.4F; rearInset = 0.0F;
+                noseSlope = 2.0F; tailSlope = 0.8F; wheelFront = 4.0F; wheelRear = -3.9F; track = 0.15F;
+            }
+            case BOXVAN -> {
+                len = 14.5F; wid = 7.0F; ride = 1.5F; bodyH = 2.6F; cabFront = 4.4F; cabRear = -7.1F; roofH = 4.2F; wsInset = 0.8F; rearInset = 0.0F;
+                sideInset = 0.0F; noseSlope = 0.8F; tailSlope = 0.0F; wheelR = 1.5F; wheelFront = 4.6F; wheelRear = -4.4F; round = 0.3F;
+            }
             case RALLY -> {
                 len = 13; ride = 1.6F; bodyH = 2.5F; cabFront = 1.6F; cabRear = -4.4F; roofH = 2.3F; wsInset = 1.6F; rearInset = 0.8F; noseSlope = 1.4F;
                 tailSlope = 0.4F; wheelR = 1.5F; wheelW = 1.3F; wheelFront = 4.1F; wheelRear = -4.1F; track = 0.2F;
@@ -164,6 +238,94 @@ public final class CarStyle {
 
     public boolean has(int flag) {
         return (extras & flag) != 0;
+    }
+
+    /** Largo, ancho, altura del piso y alto de la carrocería. */
+    public CarStyle dims(float len, float wid, float ride, float bodyH) {
+        this.len = len;
+        this.wid = wid;
+        this.ride = ride;
+        this.bodyH = bodyH;
+        return this;
+    }
+
+    /** Cabina: dónde empieza el parabrisas, dónde termina atrás y altura del techo. */
+    public CarStyle cab(float front, float rear, float roofH) {
+        this.cabFront = front;
+        this.cabRear = rear;
+        this.roofH = roofH;
+        return this;
+    }
+
+    /** Inclinación del parabrisas, del vidrio trasero y estrechez de la cabina arriba. */
+    public CarStyle glassSlope(float ws, float rear, float side) {
+        this.wsInset = ws;
+        this.rearInset = rear;
+        this.sideInset = side;
+        return this;
+    }
+
+    /** Caída del cofre (morro) y de la cajuela. */
+    public CarStyle slopes(float nose, float tail) {
+        this.noseSlope = nose;
+        this.tailSlope = tail;
+        return this;
+    }
+
+    public CarStyle wheels(float r, float w, float front, float rear, float track) {
+        this.wheelR = r;
+        this.wheelW = w;
+        this.wheelFront = front;
+        this.wheelRear = rear;
+        this.track = track;
+        return this;
+    }
+
+    public CarStyle form(float round, float waist, float beltRise, float ducktail) {
+        this.round = round;
+        this.waist = waist;
+        this.beltRise = beltRise;
+        this.ducktail = ducktail;
+        return this;
+    }
+
+    public CarStyle flares(float front, float rear) {
+        this.flareF = front;
+        this.flareR = rear;
+        return this;
+    }
+
+    public CarStyle roof(float crown, float cabInset, float glassLow) {
+        this.crown = crown;
+        this.cabInset = cabInset;
+        this.glassLow = glassLow;
+        return this;
+    }
+
+    public CarStyle lights(int head, int tail) {
+        this.head = head;
+        this.tail = tail;
+        return this;
+    }
+
+    public CarStyle rims(int style, int color) {
+        this.rimStyle = style;
+        this.rim = color;
+        return this;
+    }
+
+    public CarStyle details(int flags) {
+        this.detail |= flags;
+        return this;
+    }
+
+    public CarStyle caliper(int c) {
+        this.caliper = c;
+        return this;
+    }
+
+    public boolean hasD(int flag) {
+        return (detail & flag) != 0;
     }
 
     public CarStyle size(float len, float wid) {

@@ -10,3 +10,6 @@ data merge block 3 100 0 {car:{id:"autos_coleccion:auto_corona_oro",Count:1b},sp
 execute if data block 3 100 0 car run say PRUEBA_AUTOS_VITRINA
 #expect PRUEBA_AUTOS_MAQUINA
 #expect PRUEBA_AUTOS_VITRINA
+summon autos_coleccion:auto_rc 0 100 5
+execute if entity @e[type=autos_coleccion:auto_rc] run say PRUEBA_AUTOS_RC_EXISTE
+#expect PRUEBA_AUTOS_RC_EXISTE

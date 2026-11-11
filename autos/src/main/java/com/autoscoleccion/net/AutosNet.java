@@ -2,7 +2,9 @@ package com.autoscoleccion.net;
 
 import com.autoscoleccion.AutosMod;
 import com.autoscoleccion.client.AutosClient;
+import com.autoscoleccion.client.RcDriving;
 import com.autoscoleccion.game.SkillGame;
+import com.autoscoleccion.server.Driving;
 import com.autoscoleccion.server.Machine;
 import com.autoscoleccion.server.Unboxing;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +23,7 @@ import java.util.function.Supplier;
 
 /** Comunicación cliente <-> servidor. El servidor decide todo (puntaje, caja, auto); el cliente juega, anima y muestra. */
 public final class AutosNet {
-    private static final String VERSION = "1";
+    private static final String VERSION = "2";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(AutosMod.MODID, "main"), () -> VERSION,
             VERSION::equals, VERSION::equals);
     /** Máximo de teclas que se aceptan de una partida (sobra para cualquier prueba). */
@@ -87,6 +89,28 @@ public final class AutosNet {
             b.writeVarIntArray(m.counts());
             b.writeBoolean(m.open());
         }, b -> new CollectionPacket(b.readVarIntArray(64), b.readBoolean()), (m, c) -> client(c, () -> () -> AutosClient.onCollection(m)));
+        registerDriving(id);
+    }
+
+    private static void registerDriving(int id) {
+        CHANNEL.registerMessage(id++, DrivePacket.class, (m, b) -> b.writeVarInt(m.car()), b -> new DrivePacket(b.readVarInt()), (m, c) -> server(c, sp -> {
+            if (m.car() >= 0) {
+                Driving.start(sp, m.car());
+            } else {
+                Driving.stop(sp);
+            }
+        }));
+        CHANNEL.registerMessage(id++, DriveStartPacket.class, (m, b) -> b.writeVarInt(m.entityId()), b -> new DriveStartPacket(b.readVarInt()),
+                (m, c) -> client(c, () -> () -> RcDriving.onStart(m.entityId())));
+        CHANNEL.registerMessage(id++, CarMovePacket.class, (m, b) -> {
+            b.writeVarInt(m.entityId());
+            b.writeDouble(m.x());
+            b.writeDouble(m.y());
+            b.writeDouble(m.z());
+            b.writeFloat(m.yaw());
+            b.writeFloat(m.steer());
+        }, b -> new CarMovePacket(b.readVarInt(), b.readDouble(), b.readDouble(), b.readDouble(), b.readFloat(), b.readFloat()),
+                (m, c) -> server(c, sp -> Driving.move(sp, m.entityId(), m.x(), m.y(), m.z(), m.yaw(), m.steer())));
     }
 
     private static void server(Supplier<NetworkEvent.Context> c, Consumer<ServerPlayer> run) {

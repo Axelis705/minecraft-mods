@@ -36,7 +36,7 @@ public final class SequenceGame extends SkillGame {
                 seq[r][i] = k;
                 prev = k;
             }
-            limit[r] = 3300 - 260 * r;
+            limit[r] = 2500 - 220 * r;
             result[r] = -1;
         }
         between = true;
@@ -104,7 +104,7 @@ public final class SequenceGame extends SkillGame {
             }
             int deadline = roundStart + PREVIEW + limit[round];
             if (now >= deadline) {
-                result[round] = 0.6 * pos / seq[round].length;
+                result[round] = 0.38 * pos / seq[round].length;
                 pops.add(new Pop(deadline, "¡Sin tiempo!", result[round]));
                 endRound(deadline);
                 continue;
@@ -135,13 +135,13 @@ public final class SequenceGame extends SkillGame {
             pos++;
             if (pos >= s.length) {
                 double used = (t - roundStart - PREVIEW) / (double) limit[round];
-                result[round] = 0.7 + 0.3 * Math.max(0.0, 1.0 - used);
+                result[round] = 0.72 + 0.3 * Math.max(0.0, 1.0 - used);
                 pop(judge(result[round]), result[round]);
                 endRound(t);
             }
         } else {
             failed = true;
-            result[round] = 0.6 * pos / s.length;
+            result[round] = 0.38 * pos / s.length;
             pop("¡Error!", result[round]);
             endRound(t);
         }

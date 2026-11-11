@@ -78,10 +78,11 @@ def norm(x, peak=0.85):
 
 def save(name, x):
     x = norm(x)
-    # fundido corto para evitar clics
+    # fundido corto para evitar clics (menos en el motor, que se repite en bucle)
     f = int(0.004 * SR)
-    x[:f] *= np.linspace(0, 1, f)
-    x[-f:] *= np.linspace(1, 0, f)
+    if name != "engine":
+        x[:f] *= np.linspace(0, 1, f)
+        x[-f:] *= np.linspace(1, 0, f)
     wav = os.path.join(OUT, name + ".wav")
     with wave.open(wav, "wb") as w:
         w.setnchannels(1)
@@ -159,6 +160,16 @@ S["garage"] = mix([(0, engine(50, 90, 0.8, 0.4) * env(int(SR * 0.8), 0.05, 0.7, 
                    (0.1, arpeggio([392, 523, 659], 0.08, "sine", 0.3), 0.5)], 0.9)
 S["whoosh"] = bandpass(noise(0.45), 300, 3000) * np.sin(np.linspace(0, np.pi, int(SR * 0.45))) ** 2
 S["new_car"] = mix([(0, arpeggio([1047, 1319, 1568, 2093, 2637], 0.05, "square", 0.2), 0.8), (0.3, chord([1047, 1319, 1568, 2093], 0.6, "sine"), 0.5)], 1.0)
+
+# motor en bucle: 1 s exacto con frecuencias que dan vueltas enteras (sin clic al repetirse)
+_n = SR
+_tt = np.arange(_n) / SR
+_e = 0.5 * np.sign(np.sin(2 * np.pi * 90 * _tt)) + 0.35 * np.sin(2 * np.pi * 180 * _tt) + 0.25 * np.sin(2 * np.pi * 45 * _tt)
+_e += 0.15 * np.sin(2 * np.pi * 270 * _tt) * (1 + 0.5 * np.sin(2 * np.pi * 15 * _tt))
+S["engine"] = _e * (0.85 + 0.15 * np.sin(2 * np.pi * 6 * _tt))
+S["bump"] = mix([(0, sine(90, 0.18) * np.exp(-np.linspace(0, 9, int(SR * 0.18))), 1.0),
+                 (0, bandpass(noise(0.12), 400, 3000) * np.exp(-np.linspace(0, 10, int(SR * 0.12))), 0.7)], 0.2)
+S["skid"] = bandpass(noise(0.35), 1800, 5000) * np.sin(np.linspace(0, np.pi, int(SR * 0.35))) * (0.7 + 0.3 * np.sin(2 * np.pi * 60 * t(0.35)))
 
 if __name__ == "__main__":
     for k, v in S.items():

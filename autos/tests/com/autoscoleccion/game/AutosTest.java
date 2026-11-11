@@ -162,53 +162,26 @@ public class AutosTest {
         ComboGame g = new ComboGame(seed);
         log = new ArrayList<>();
         boolean hold = false;
-        // historial de la aguja para reaccionar con retraso
         double[] hist = new double[20000];
-        int plan = -1;
-        int planGear = -1;
-        int nextNitro = -1;
-        int nitroIdx = 0;
+        double[] histV = new double[20000];
+        double aim = 0;
         for (int t = 0; t < g.maxDuration() && !g.done(); t++) {
             g.update(t);
-            hist[t] = g.launchRpm();
-            if (g.phase() == ComboGame.PHASE_LAUNCH && t >= ComboGame.LAUNCH_START && t % 10 == 0) {
-                double seen = hist[Math.max(0, t - s.react() / 2)];
-                double target = (ComboGame.BAND_LO + ComboGame.BAND_HI) / 2 + r.nextGaussian() * s.sigma() / 1500.0;
-                boolean want = seen < target;
+            hist[t] = g.rpm;
+            histV[t] = g.vel;
+            if (t >= ComboGame.LAUNCH_START && t % 10 == 0) {
+                int d = s.react() / 2;
+                double seen = hist[Math.max(0, t - d)];
+                double sv = histV[Math.max(0, t - d)];
+                if (t % 250 == 0) {
+                    aim = r.nextGaussian() * s.sigma() / 1100.0;
+                }
+                double pred = seen + sv * (0.13 + d / 1000.0);
+                double target = g.bandCenter(t) + aim;
+                boolean want = pred < target;
                 if (want != hold) {
                     hold = want;
                     press(g, t, SkillGame.K_W, hold);
-                }
-            } else if (g.phase() == ComboGame.PHASE_SHIFT) {
-                if (hold) {
-                    hold = false;
-                    press(g, t, SkillGame.K_W, false);
-                }
-                if (!g.waiting() && planGear != g.gear()) {
-                    planGear = g.gear();
-                    double v = g.shiftCenter(g.gear());
-                    plan = g.gearStart() + (int) Math.round(Math.pow(v, 1 / 1.35) * g.shiftDur(g.gear())) + (int) Math.round(r.nextGaussian() * s.sigma());
-                }
-                if (!g.waiting() && planGear == g.gear() && t >= plan) {
-                    int k = g.shiftKey(g.gear());
-                    if (r.nextDouble() < s.wrong()) {
-                        k = other(k, r, ComboGame.POOL);
-                    }
-                    press(g, t, k, true);
-                    planGear = -2;
-                }
-            } else if (g.phase() == ComboGame.PHASE_NITRO && !g.nitroFailed() && g.nitroPos() < ComboGame.NITRO_LEN) {
-                if (nextNitro < 0) {
-                    nextNitro = g.nitroStart + s.react() + (int) Math.abs(r.nextGaussian() * 40);
-                }
-                if (t >= nextNitro && t >= g.nitroStart && nitroIdx < ComboGame.NITRO_LEN) {
-                    int k = g.nitroKeys()[nitroIdx];
-                    if (r.nextDouble() < s.wrong()) {
-                        k = other(k, r, ComboGame.ARROWS);
-                    }
-                    press(g, t, k, true);
-                    nitroIdx++;
-                    nextNitro = t + (int) Math.max(60, s.typeGap() * 0.8 + r.nextGaussian() * 30);
                 }
             }
         }

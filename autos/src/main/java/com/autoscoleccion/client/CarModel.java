@@ -55,6 +55,8 @@ public final class CarModel {
     }
 
     private static final Map<CarStyle, Baked[]> CACHE = new IdentityHashMap<>();
+    /** Carrocería sin llantas y las dos llantas sueltas (izquierda, derecha), para manejar. */
+    private static final Map<CarStyle, Baked[]> DRIVE = new IdentityHashMap<>();
 
     private CarModel() {
     }
@@ -79,6 +81,71 @@ public final class CarModel {
             return null;
         }
         return new float[] {nx / l, ny / l, nz / l};
+    }
+
+    private interface Builder {
+        void build(CarMesh.Sink sink);
+    }
+
+    private static Baked bake(Builder b) {
+        List<float[]> p = new ArrayList<>();
+        List<int[]> c = new ArrayList<>();
+        b.build((a, bb, cc, d, c0, c1, c2, c3, em) -> {
+            float[] n = normalOf(a, bb, cc, d);
+            if (n == null) {
+                return;
+            }
+            p.add(new float[] {a[0], a[1], a[2], bb[0], bb[1], bb[2], cc[0], cc[1], cc[2], d[0], d[1], d[2], n[0], n[1], n[2]});
+            c.add(new int[] {c0, c1, c2, c3, em ? 1 : 0});
+        });
+        return new Baked(p, c);
+    }
+
+    private static void draw(VertexConsumer vc, PoseStack ps, Baked b, int light) {
+        Matrix4f pose = ps.last().pose();
+        Matrix3f normal = ps.last().normal();
+        for (int i = 0; i < b.n; i++) {
+            int lt = b.em[i] ? FULL : light;
+            int o = i * 12;
+            float nx = b.nrm[i * 3], ny = b.nrm[i * 3 + 1], nz = b.nrm[i * 3 + 2];
+            for (int k = 0; k < 4; k++) {
+                vertex(vc, pose, normal, b.pos[o + k * 3], b.pos[o + k * 3 + 1], b.pos[o + k * 3 + 2], b.col[i * 4 + k], lt, nx, ny, nz, 255);
+            }
+        }
+    }
+
+    /**
+     * Dibuja el auto para manejarlo: la carrocería fija y cada llanta girando ({@code spin} en radianes) y las de adelante dobladas
+     * {@code steerDeg} grados.
+     */
+    public static void renderDriving(CarStyle s, PoseStack ps, MultiBufferSource buf, int light, float time, float spin, float steerDeg) {
+        Baked[] arr = DRIVE.computeIfAbsent(s, k -> new Baked[] {bake(sink -> CarMesh.buildBody(s, sink, 0)),
+                bake(sink -> CarMesh.buildWheel(s, sink, 0, -1)), bake(sink -> CarMesh.buildWheel(s, sink, 0, 1))});
+        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
+        draw(vc, ps, arr[0], light);
+        for (float[] m : CarMesh.wheelMounts(s)) {
+            ps.pushPose();
+            ps.translate(m[0], m[1], m[2]);
+            if (m[4] > 0) {
+                ps.mulPose(Axis.YP.rotationDegrees(-steerDeg));
+            }
+            ps.mulPose(Axis.ZP.rotation(-spin));
+            draw(vc, ps, arr[m[3] < 0 ? 1 : 2], light);
+            ps.popPose();
+        }
+        CarMesh.buildAnimated(s, (a, bb, c, d, c0, c1, c2, c3, em) -> {
+            float[] n = normalOf(a, bb, c, d);
+            if (n == null) {
+                return;
+            }
+            int lt = em ? FULL : light;
+            Matrix4f pose = ps.last().pose();
+            Matrix3f normal = ps.last().normal();
+            vertex(vc, pose, normal, a[0], a[1], a[2], c0, lt, n[0], n[1], n[2], 255);
+            vertex(vc, pose, normal, bb[0], bb[1], bb[2], c1, lt, n[0], n[1], n[2], 255);
+            vertex(vc, pose, normal, c[0], c[1], c[2], c2, lt, n[0], n[1], n[2], 255);
+            vertex(vc, pose, normal, d[0], d[1], d[2], c3, lt, n[0], n[1], n[2], 255);
+        }, time, 0);
     }
 
     private static Baked baked(CarStyle s, int mode) {
