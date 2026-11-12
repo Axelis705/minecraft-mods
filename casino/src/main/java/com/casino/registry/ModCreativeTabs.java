@@ -15,6 +15,7 @@ public final class ModCreativeTabs {
             .title(Component.translatable("itemGroup.casino"))
             .icon(() -> new ItemStack(ModItems.CHIP_500.get()))
             .displayItems((params, out) -> {
+                out.accept(ModItems.CASINO_GUIDE.get());
                 out.accept(ModItems.LUCKY_WHEEL.get());
                 out.accept(ModItems.PLINKO.get());
                 out.accept(ModItems.SLOT.get());

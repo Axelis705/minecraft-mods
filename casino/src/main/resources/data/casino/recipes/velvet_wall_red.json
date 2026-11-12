@@ -1,0 +1,17 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "WW",
+  "WW"
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:red_wool"
+  }
+ },
+ "result": {
+  "item": "casino:velvet_wall_red",
+  "count": 4
+ }
+}

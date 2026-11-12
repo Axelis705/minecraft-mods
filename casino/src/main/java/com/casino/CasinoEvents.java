@@ -34,6 +34,15 @@ public final class CasinoEvents {
                 pz.deliver(p);
                 CasinoNet.sendTo(p, new WheelWinPacket(pz));
             }
+            // la primera vez que entra, recibe la Guía del Casino
+            net.minecraft.nbt.CompoundTag data = p.getPersistentData();
+            if (!com.casino.plat.Nbt.b(data, "casino_guide_given")) {
+                data.putBoolean("casino_guide_given", true);
+                net.minecraftforge.items.ItemHandlerHelper.giveItemToPlayer(p,
+                        new net.minecraft.world.item.ItemStack(com.casino.registry.ModItems.CASINO_GUIDE.get()));
+                Plat.msg(p, net.minecraft.network.chat.Component.translatable("casino.guide.given")
+                        .withStyle(net.minecraft.ChatFormatting.GOLD), false);
+            }
         }
     }
 

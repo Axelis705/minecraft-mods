@@ -1,0 +1,18 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "B  ",
+  "BB ",
+  "BBB"
+ ],
+ "key": {
+  "B": {
+   "item": "casino:marble"
+  }
+ },
+ "result": {
+  "item": "casino:marble_stairs",
+  "count": 4
+ }
+}

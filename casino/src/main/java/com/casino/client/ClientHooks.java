@@ -56,4 +56,8 @@ public final class ClientHooks {
     public static void openNeon(BlockPos pos) {
         open(new NeonScreen(pos));
     }
+
+    public static void openGuide() {
+        open(new GuideScreen());
+    }
 }

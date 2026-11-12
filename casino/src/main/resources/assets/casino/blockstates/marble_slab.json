@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "casino:block/decor/marble_slab"
+  },
+  "type=top": {
+   "model": "casino:block/decor/marble_slab_top"
+  },
+  "type=double": {
+   "model": "casino:block/decor/marble"
+  }
+ }
+}

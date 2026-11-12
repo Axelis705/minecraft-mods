@@ -1,0 +1,26 @@
+{
+ "replace": false,
+ "values": [
+  "casino:marble",
+  "casino:marble_black",
+  "casino:marble_stairs",
+  "casino:marble_black_stairs",
+  "casino:marble_slab",
+  "casino:marble_black_slab",
+  "casino:gold_trim",
+  "casino:cocktail_table",
+  "casino:cocktail_table_black",
+  "casino:chandelier",
+  "casino:wall_screen",
+  "casino:neon_letter",
+  "casino:neon_sign",
+  "casino:rope_post_red",
+  "casino:rope_post_black",
+  "casino:rope_post_purple",
+  "casino:rope_post_blue",
+  "casino:bar_stool_red",
+  "casino:bar_stool_black",
+  "casino:bar_stool_purple",
+  "casino:bar_stool_blue"
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "PGP",
+  "PNP",
+  "PRP"
+ ],
+ "key": {
+  "P": {
+   "item": "minecraft:dark_oak_planks"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "N": {
+   "item": "minecraft:note_block"
+  },
+  "R": {
+   "item": "minecraft:redstone"
+  }
+ },
+ "result": {
+  "item": "casino:speaker",
+  "count": 1
+ }
+}

@@ -40,6 +40,9 @@ public final class ModItems {
     public static final RegistryObject<Item> SCRATCH_CARD = ITEMS.register("scratch_card",
             () -> new com.casino.item.ScratchCardItem(Reg.item("scratch_card").stacksTo(1).rarity(net.minecraft.world.item.Rarity.UNCOMMON)));
 
+    public static final RegistryObject<Item> CASINO_GUIDE = ITEMS.register("casino_guide",
+            () -> new com.casino.item.GuideItem(Reg.item("casino_guide").stacksTo(1)));
+
     public static final RegistryObject<Item> ROULETTE = ITEMS.register("roulette",
             () -> new BlockItem(ModBlocks.ROULETTE.get(), Reg.blockItem("roulette")));
 

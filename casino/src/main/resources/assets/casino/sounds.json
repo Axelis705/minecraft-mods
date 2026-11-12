@@ -124,5 +124,14 @@
    "casino:scratch"
   ],
   "subtitle": "subtitles.casino.scratch"
+ },
+ "music_lounge": {
+  "sounds": [
+   {
+    "name": "casino:music/lounge",
+    "stream": true
+   }
+  ],
+  "subtitle": "subtitles.casino.music_lounge"
  }
 }

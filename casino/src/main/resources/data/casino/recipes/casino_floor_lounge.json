@@ -1,0 +1,20 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "WW",
+  "WE"
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:blue_wool"
+  },
+  "E": {
+   "item": "minecraft:red_dye"
+  }
+ },
+ "result": {
+  "item": "casino:casino_floor_lounge",
+  "count": 4
+ }
+}

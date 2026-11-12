@@ -116,7 +116,7 @@ def gen():
     dm.item("chandelier", "chandelier", dm.DISPLAY)
     dm.names("chandelier", "Candelabro de cristal", "Crystal Chandelier")
     dm.loot("chandelier")
-    dm.recipe("chandelier", [" C ", "GLG", "QQQ"], {"C": "minecraft:chain", "G": "minecraft:gold_ingot", "L": "minecraft:glowstone",
+    dm.recipe("chandelier", [" C ", "GLG", "QQQ"], {"C": "minecraft:iron_bars", "G": "minecraft:gold_ingot", "L": "minecraft:glowstone",
                                                     "Q": "minecraft:glass_pane"})
 
     # --------------------------------------------------------------------------------------- poste con cordón

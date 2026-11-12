@@ -11,6 +11,9 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Casino.MODID);
 
+    /** Música de jazz de las bocinas (pista larga, se transmite). */
+    public static final RegistryObject<SoundEvent> MUSIC_LOUNGE = reg("music_lounge");
+
     /** El "tic" del puntero al pasar por cada casilla. */
     public static final RegistryObject<SoundEvent> WHEEL_TICK = reg("wheel_tick");
     /** Arranque del giro. */

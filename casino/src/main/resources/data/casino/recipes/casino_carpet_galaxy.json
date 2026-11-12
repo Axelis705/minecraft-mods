@@ -1,0 +1,16 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "BB"
+ ],
+ "key": {
+  "B": {
+   "item": "casino:casino_floor_galaxy"
+  }
+ },
+ "result": {
+  "item": "casino:casino_carpet_galaxy",
+  "count": 3
+ }
+}

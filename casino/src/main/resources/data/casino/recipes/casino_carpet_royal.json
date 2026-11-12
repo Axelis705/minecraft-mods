@@ -1,0 +1,16 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "BB"
+ ],
+ "key": {
+  "B": {
+   "item": "casino:casino_floor_royal"
+  }
+ },
+ "result": {
+  "item": "casino:casino_carpet_royal",
+  "count": 3
+ }
+}

@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/outer_stairs",
+ "textures": {
+  "bottom": "casino:block/decor/marble",
+  "top": "casino:block/decor/marble",
+  "side": "casino:block/decor/marble"
+ }
+}

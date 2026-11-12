@@ -235,3 +235,99 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# ------------------------------------------------------------------ alfombras de casino (se repiten sin cortes)
+def carpet(name, base, c1, c2, kind):
+    rnd = random.Random(name)
+    im = img()
+    for y in range(N):
+        for x in range(N):
+            put(im, x, y, shade(base, 0.9 + rnd.uniform(-0.06, 0.06)))
+    if kind == "royal":
+        # rombos dorados con flor en el centro
+        for y in range(N):
+            for x in range(N):
+                u, v = (x + y) % 16, (x - y) % 16
+                if u == 0 or v == 0:
+                    put(im, x, y, c1)
+        for cx, cy in ((8, 0), (24, 16), (8, 16), (24, 0)):
+            for dx, dy in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):
+                put(im, (cx + dx) % N, (cy + dy + 8) % N, c2)
+            put(im, cx % N, (cy + 8) % N, c1)
+    elif kind == "galaxy":
+        for (cx, cy, r) in ((8, 8, 5), (24, 24, 5)):
+            for y in range(N):
+                for x in range(N):
+                    dx, dy = min(abs(x - cx), N - abs(x - cx)), min(abs(y - cy), N - abs(y - cy))
+                    if r - 0.6 <= math.hypot(dx, dy) <= r + 0.4:
+                        put(im, x, y, c1)
+        for (sx, sy) in ((24, 7), (7, 24), (16, 16), (0, 0)):
+            for dx, dy in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1), (2, 0), (-2, 0), (0, 2), (0, -2)):
+                put(im, (sx + dx) % N, (sy + dy) % N, c2)
+        for _ in range(10):
+            put(im, rnd.randrange(N), rnd.randrange(N), c2)
+    elif kind == "deco":
+        # abanicos art déco
+        for oy in (0, 16):
+            for ox in (0, 16):
+                sx = ox + (8 if oy == 16 else 0)
+                for y in range(16):
+                    for x in range(16):
+                        d = math.hypot(x - 8, y - 15)
+                        if d < 8 and (int(d) % 3 == 0 or (abs(math.atan2(x - 8, 15 - y)) * 10) % 3 < 0.5):
+                            put(im, (sx + x) % N, (oy + y) % N, c1 if int(d) % 3 == 0 else c2)
+    elif kind == "lounge":
+        for y in range(N):
+            for x in range(N):
+                if x % 16 in (0, 1) or y % 16 in (0, 1):
+                    put(im, x, y, c1)
+                elif 5 <= x % 16 <= 10 and 5 <= y % 16 <= 10:
+                    put(im, x, y, c2 if (x % 16 in (5, 10) or y % 16 in (5, 10)) else shade(c2, 0.7))
+    save(im, f"carpet_{name}")
+
+
+def panels():
+    carpet("royal", (110, 14, 24), (214, 168, 58), (250, 220, 120), "royal")
+    carpet("galaxy", (52, 16, 70), (40, 190, 190), (250, 210, 90), "galaxy")
+    carpet("deco", (18, 16, 22), (212, 168, 58), (140, 100, 30), "deco")
+    carpet("lounge", (16, 26, 70), (190, 30, 40), (214, 168, 58), "lounge")
+    # moldura dorada (bloque de remate)
+    im = img()
+    for y in range(N):
+        for x in range(N):
+            s = 0.6 + 0.4 * math.sin(y / N * math.pi * 3)
+            put(im, x, y, mix((120, 82, 20), (255, 230, 140), s))
+    for x in range(N):
+        for y in (0, 15, 16, 31):
+            put(im, x, y, (90, 60, 14))
+    save(im, "gold_trim")
+
+
+if __name__ == "__main__":
+    panels()
+
+
+def speaker():
+    rnd = random.Random("spk")
+    im = img()
+    for y in range(N):
+        for x in range(N):
+            weave = 0.85 + 0.15 * ((x + y) % 2) + rnd.uniform(-0.05, 0.05)
+            put(im, x, y, shade((62, 44, 30), weave))
+    for (cx, cy, r) in ((16, 9, 5), (16, 22, 8)):
+        for y in range(N):
+            for x in range(N):
+                d = math.hypot(x - cx + 0.5, y - cy + 0.5)
+                if d < r:
+                    c = mix((30, 22, 18), (70, 52, 38), 0.5 + 0.5 * math.cos(d * 1.4))
+                    if d < 1.6:
+                        c = (150, 120, 60)
+                    put(im, x, y, c)
+                elif d < r + 1:
+                    put(im, x, y, (196, 156, 60))
+    save(im, "speaker_grille")
+
+
+if __name__ == "__main__":
+    speaker()

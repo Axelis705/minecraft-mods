@@ -90,6 +90,48 @@ public final class ModDecor {
         }
     }
 
+    // ronda 3: pisos y paredes
+    public static final String[] PATTERNS = {"royal", "galaxy", "deco", "lounge"};
+
+    static {
+        for (String pat : PATTERNS) {
+            block("casino_floor_" + pat, p -> new Block(p.mapColor(MapColor.COLOR_RED).strength(0.8F).sound(SoundType.WOOL)));
+            block("casino_carpet_" + pat, p -> new net.minecraft.world.level.block.CarpetBlock(p.mapColor(MapColor.COLOR_RED).strength(0.1F)
+                    .sound(SoundType.WOOL)));
+        }
+    }
+
+    public static final RegistryObject<Block> MARBLE = block("marble", p -> new Block(p.mapColor(MapColor.QUARTZ).strength(1.5F, 6.0F)
+            .sound(SoundType.STONE).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> MARBLE_BLACK = block("marble_black", p -> new Block(p.mapColor(MapColor.COLOR_BLACK)
+            .strength(1.5F, 6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> MARBLE_STAIRS = block("marble_stairs", p -> new net.minecraft.world.level.block.StairBlock(
+            MARBLE.get().defaultBlockState(), p.mapColor(MapColor.QUARTZ).strength(1.5F, 6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> MARBLE_BLACK_STAIRS = block("marble_black_stairs", p -> new net.minecraft.world.level.block.StairBlock(
+            MARBLE_BLACK.get().defaultBlockState(), p.mapColor(MapColor.COLOR_BLACK).strength(1.5F, 6.0F).sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> MARBLE_SLAB = block("marble_slab", p -> new net.minecraft.world.level.block.SlabBlock(
+            p.mapColor(MapColor.QUARTZ).strength(1.5F, 6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> MARBLE_BLACK_SLAB = block("marble_black_slab", p -> new net.minecraft.world.level.block.SlabBlock(
+            p.mapColor(MapColor.COLOR_BLACK).strength(1.5F, 6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
+    public static final RegistryObject<Block> MAHOGANY_PANEL = block("mahogany_panel", p -> new Block(p.mapColor(MapColor.TERRACOTTA_BROWN)
+            .strength(2.0F, 3.0F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> GOLD_TRIM = block("gold_trim", p -> new Block(p.mapColor(MapColor.GOLD).strength(3.0F, 6.0F)
+            .sound(SoundType.METAL)));
+
+    static {
+        for (int i = 0; i < COLORS.length; i++) {
+            MapColor mc = MAP[i];
+            block("velvet_wall_" + COLORS[i], p -> new Block(p.mapColor(mc).strength(0.8F).sound(SoundType.WOOL)));
+        }
+    }
+
+    // bocina con música
+    public static final RegistryObject<Block> SPEAKER = block("speaker", p -> new com.casino.decor.SpeakerBlock(
+            p.mapColor(MapColor.TERRACOTTA_BROWN).strength(1.5F).sound(SoundType.WOOD).noOcclusion()));
+    public static final RegistryObject<net.minecraft.world.level.block.entity.BlockEntityType<com.casino.decor.SpeakerBlock.Be>> SPEAKER_BE =
+            ModBlockEntities.TYPES.register("speaker", () -> Reg.blockEntity(com.casino.decor.SpeakerBlock.Be::new, SPEAKER.get()));
+
     public static final RegistryObject<CreativeModeTab> TAB = ModCreativeTabs.TABS.register("decor", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.casino.decor"))
             .icon(() -> new ItemStack(CHAIRS.get(0).get()))
