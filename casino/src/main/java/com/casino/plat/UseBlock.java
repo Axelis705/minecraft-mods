@@ -78,4 +78,37 @@ public abstract class UseBlock extends Block {
         return onNeighbor(super.updateShape(state, dir, neighbor, level, pos, neighborPos), dir, neighbor, level, pos, neighborPos);
     }
     //#endif
+
+    /** Girar con las plantillas de estructura: la dirección del frente y los lados unidos (norte/este/sur/oeste). */
+    @Override
+    public BlockState rotate(BlockState s, net.minecraft.world.level.block.Rotation r) {
+        if (s.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING)) {
+            var f = net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+            s = s.setValue(f, r.rotate(s.getValue(f)));
+        }
+        if (s.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.NORTH)) {
+            net.minecraft.world.level.block.state.properties.BooleanProperty[] p = {
+                    net.minecraft.world.level.block.state.properties.BlockStateProperties.NORTH,
+                    net.minecraft.world.level.block.state.properties.BlockStateProperties.EAST,
+                    net.minecraft.world.level.block.state.properties.BlockStateProperties.SOUTH,
+                    net.minecraft.world.level.block.state.properties.BlockStateProperties.WEST};
+            boolean[] v = new boolean[4];
+            for (int i = 0; i < 4; i++) {
+                v[i] = s.getValue(p[i]);
+            }
+            int n = r.ordinal(); // NONE, CLOCKWISE_90, CLOCKWISE_180, COUNTERCLOCKWISE_90 = 0, 1, 2, 3 cuartos de vuelta
+            for (int i = 0; i < 4; i++) {
+                s = s.setValue(p[(i + n) & 3], v[i]);
+            }
+        }
+        return s;
+    }
+
+    @Override
+    public BlockState mirror(BlockState s, net.minecraft.world.level.block.Mirror m) {
+        if (s.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING)) {
+            return rotate(s, m.getRotation(s.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING)));
+        }
+        return s;
+    }
 }

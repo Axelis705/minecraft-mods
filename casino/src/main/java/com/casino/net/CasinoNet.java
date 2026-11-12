@@ -28,6 +28,11 @@ public final class CasinoNet {
         Net.register(10, ScratchBuyPacket.class, ScratchBuyPacket::encode, ScratchBuyPacket::decode, ScratchBuyPacket::handle);
         Net.register(11, ScratchCardPacket.class, ScratchCardPacket::encode, ScratchCardPacket::decode, ScratchCardPacket::handle);
         Net.register(12, NeonPacket.class, NeonPacket::encode, NeonPacket::decode, NeonPacket::handle);
+        Net.register(13, com.casino.diamond.OpenElevatorPacket.class, com.casino.diamond.OpenElevatorPacket::encode, com.casino.diamond.OpenElevatorPacket::decode, com.casino.diamond.OpenElevatorPacket::handle);
+        Net.register(14, com.casino.diamond.ElevatorGoPacket.class, com.casino.diamond.ElevatorGoPacket::encode, com.casino.diamond.ElevatorGoPacket::decode, com.casino.diamond.ElevatorGoPacket::handle);
+        Net.register(15, com.casino.diamond.ShopPacket.Open.class, com.casino.diamond.ShopPacket.Open::encode, com.casino.diamond.ShopPacket.Open::decode, com.casino.diamond.ShopPacket.Open::handle);
+        Net.register(16, com.casino.diamond.ShopPacket.Buy.class, com.casino.diamond.ShopPacket.Buy::encode, com.casino.diamond.ShopPacket.Buy::decode, com.casino.diamond.ShopPacket.Buy::handle);
+        Net.register(17, com.casino.diamond.ShopPacket.Edit.class, com.casino.diamond.ShopPacket.Edit::encode, com.casino.diamond.ShopPacket.Edit::decode, com.casino.diamond.ShopPacket.Edit::handle);
         Net.done();
     }
 

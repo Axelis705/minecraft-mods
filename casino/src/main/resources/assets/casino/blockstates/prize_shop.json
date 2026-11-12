@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "casino:block/decor/prize_shop"
+  },
+  "facing=east": {
+   "model": "casino:block/decor/prize_shop",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "casino:block/decor/prize_shop",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "casino:block/decor/prize_shop",
+   "y": 270
+  }
+ }
+}

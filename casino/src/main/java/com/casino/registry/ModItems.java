@@ -46,6 +46,11 @@ public final class ModItems {
     public static final RegistryObject<Item> ROULETTE = ITEMS.register("roulette",
             () -> new BlockItem(ModBlocks.ROULETTE.get(), Reg.blockItem("roulette")));
 
+    public static final RegistryObject<Item> VIP_SILVER = ITEMS.register("vip_card_silver",
+            () -> new com.casino.item.VipCardItem(Reg.item("vip_card_silver").stacksTo(1).rarity(net.minecraft.world.item.Rarity.RARE), 1));
+    public static final RegistryObject<Item> VIP_GOLD = ITEMS.register("vip_card_gold",
+            () -> new com.casino.item.VipCardItem(Reg.item("vip_card_gold").stacksTo(1).rarity(net.minecraft.world.item.Rarity.EPIC), 2));
+
     private ModItems() {
     }
 

@@ -52,17 +52,20 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     private static final ResourceLocation TEXTURE = Ids.rl(Casino.MODID, "textures/entity/dealer.png");
     private static final ResourceLocation TEXTURE_ROULETTE = Ids.rl(Casino.MODID, "textures/entity/dealer_roulette.png");
     private static final ResourceLocation TEXTURE_POKER = Ids.rl(Casino.MODID, "textures/entity/dealer_poker.png");
+    private static final ResourceLocation TEXTURE_GUARD = Ids.rl(Casino.MODID, "textures/entity/dealer_guard.png");
 
     private static ResourceLocation texture(int game) {
         return switch (game) {
             case DealerEntity.GAME_ROULETTE -> TEXTURE_ROULETTE;
             case DealerEntity.GAME_POKER -> TEXTURE_POKER;
+            case DealerEntity.GAME_GUARD -> TEXTURE_GUARD;
             default -> TEXTURE;
         };
     }
 
     private static String tipKey(int game, int tip) {
         return (game == DealerEntity.GAME_ROULETTE ? "casino.tip.roulette." : game == DealerEntity.GAME_POKER ? "casino.tip.poker."
+                : game == DealerEntity.GAME_GUARD ? "casino.tip.guard."
                 : "casino.tip.blackjack.") + tip;
     }
 

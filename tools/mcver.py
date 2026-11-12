@@ -176,7 +176,8 @@ def recipe(obj, mc):
 
 RENAMES_121 = [("/recipes/", "/recipe/"), ("/loot_tables/", "/loot_table/"), ("/advancements/", "/advancement/"),
                ("/tags/blocks/", "/tags/block/"), ("/tags/items/", "/tags/item/"), ("/tags/entity_types/", "/tags/entity_type/"),
-               ("/tags/worldgen/structure/", "/tags/worldgen/structure/")]
+               ("/tags/worldgen/structure/", "/tags/worldgen/structure/"),
+               ("/structures/", "/structure/")]
 
 
 def res_path(rel, mc):

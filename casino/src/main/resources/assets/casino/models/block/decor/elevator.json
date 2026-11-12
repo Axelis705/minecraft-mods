@@ -1,0 +1,77 @@
+{
+ "parent": "block/block",
+ "textures": {
+  "brass": "casino:block/decor/brass",
+  "panel": "casino:block/decor/elevator_panel",
+  "particle": "casino:block/decor/brass"
+ },
+ "elements": [
+  {
+   "from": [
+    3,
+    2,
+    15
+   ],
+   "to": [
+    13,
+    14,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#brass"
+    },
+    "south": {
+     "texture": "#brass"
+    },
+    "east": {
+     "texture": "#brass"
+    },
+    "west": {
+     "texture": "#brass"
+    },
+    "up": {
+     "texture": "#brass"
+    },
+    "down": {
+     "texture": "#brass"
+    }
+   }
+  },
+  {
+   "from": [
+    3.5,
+    2.5,
+    14.4
+   ],
+   "to": [
+    12.5,
+    13.5,
+    15
+   ],
+   "faces": {
+    "north": {
+     "texture": "#panel",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    },
+    "east": {
+     "texture": "#brass"
+    },
+    "west": {
+     "texture": "#brass"
+    },
+    "up": {
+     "texture": "#brass"
+    },
+    "down": {
+     "texture": "#brass"
+    }
+   }
+  }
+ ]
+}

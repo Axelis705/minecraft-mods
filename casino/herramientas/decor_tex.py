@@ -126,22 +126,45 @@ def wood(name, dark, light, panel=False):
 
 
 # ------------------------------------------------------------------ mármol
-def marble(name, base, vein, vein2):
-    rnd = random.Random(name)
+def _tile_noise(rnd, g):
+    """Ruido suave que se repite en los bordes (para que el bloque no tenga costuras)."""
+    grid = [[rnd.random() for _ in range(g)] for _ in range(g)]
+
+    def f(x, y):
+        gx, gy = x / N * g, y / N * g
+        x0, y0 = int(gx) % g, int(gy) % g
+        x1, y1 = (x0 + 1) % g, (y0 + 1) % g
+        tx, ty = gx - int(gx), gy - int(gy)
+        tx, ty = tx * tx * (3 - 2 * tx), ty * ty * (3 - 2 * ty)
+        a = grid[y0][x0] * (1 - tx) + grid[y0][x1] * tx
+        b = grid[y1][x0] * (1 - tx) + grid[y1][x1] * tx
+        return a * (1 - ty) + b * ty
+    return f
+
+
+def marble(name, base, dark, vein, vein2, vein_alpha=0.85, fine_alpha=0.45):
+    """Mármol con vetas naturales: una veta principal ondulada (seno + turbulencia) y otras finas más tenues."""
+    rnd = random.Random(name + "_v2")
+    octs = [(_tile_noise(rnd, g), w) for g, w in ((2, 0.6), (4, 0.4))]
+    grain = _tile_noise(rnd, 16)
+
+    def turb(x, y):
+        return sum(f(x, y) * w for f, w in octs)
     im = img()
     for y in range(N):
         for x in range(N):
-            put(im, x, y, mix(base, shade(base, 0.93), rnd.random() * 0.6))
-    for _ in range(3):
-        x, y = rnd.uniform(0, N), rnd.uniform(0, N)
-        ang = rnd.uniform(0, math.pi)
-        for _ in range(70):
-            ang += rnd.uniform(-0.5, 0.5)
-            x = (x + math.cos(ang)) % N
-            y = (y + math.sin(ang)) % N
-            put(im, int(x), int(y), vein)
-            if rnd.random() < 0.4:
-                put(im, int(x) + 1, int(y), vein2)
+            t = turb(x, y)
+            c = mix(base, dark, max(0.0, min(1.0, (t - 0.3) * 1.2 + (grain(x, y) - 0.5) * 0.5)))
+            # veta principal (diagonal, se repite justo en el borde)
+            m = math.sin(2 * math.pi * (x + y) / N + t * 9.0)
+            v = max(0.0, 1 - abs(m) / 0.3) ** 1.6
+            # vetas finas
+            m2 = math.sin(2 * math.pi * (x - 2 * y) / N + t * 12.0 + 1.3)
+            v2 = max(0.0, 1 - abs(m2) / 0.16) ** 1.6
+            c = mix(c, vein2, v2 * fine_alpha)
+            c = mix(c, vein, v * vein_alpha)
+            c = shade(c, 0.97 + rnd.random() * 0.05)
+            put(im, x, y, c)
     save(im, name)
 
 
@@ -211,8 +234,8 @@ def main():
     metal("brass", (180, 140, 60), (240, 210, 130), (90, 62, 24), bands=False)
     wood("mahogany", (46, 18, 12), (110, 46, 28))
     wood("mahogany_panel", (52, 20, 14), (118, 50, 30), panel=True)
-    marble("marble", (236, 230, 218), (176, 160, 140), (204, 190, 170))
-    marble("marble_black", (30, 28, 32), (196, 160, 80), (120, 100, 60))
+    marble("marble", (238, 235, 228), (214, 210, 202), (150, 148, 150), (190, 186, 182))
+    marble("marble_black", (26, 26, 30), (14, 14, 18), (196, 162, 88), (92, 92, 104), 0.75, 0.5)
     lacquer("lacquer")
     glass("glass", (210, 232, 240))
     bottle("bottle_green", (30, 92, 40), (238, 226, 196))
@@ -287,21 +310,30 @@ def carpet(name, base, c1, c2, kind):
     save(im, f"carpet_{name}")
 
 
+def gold_trim():
+    """Moldura dorada art déco: oro acanalado (estrías verticales) con remates biselados arriba y abajo."""
+    rnd = random.Random("gold_trim_v2")
+    dark, mid, hi = (112, 74, 14), (214, 164, 44), (255, 236, 150)
+    im = img()
+    for y in range(N):
+        for x in range(N):
+            s = 0.5 + 0.5 * math.cos(2 * math.pi * (x + 2) / 8)        # 4 estrías por bloque
+            c = mix(mix(dark, mid, 0.55), hi, s * 0.85)
+            if y < 4 or y >= N - 4:                                    # remates
+                k = y if y < 4 else N - 1 - y
+                c = [hi, mid, shade(mid, 0.8), dark][k]
+            c = shade(c, 0.96 + rnd.random() * 0.06)
+            put(im, x, y, c)
+    save(im, "gold_trim")
+
+
 def panels():
     carpet("royal", (110, 14, 24), (214, 168, 58), (250, 220, 120), "royal")
     carpet("galaxy", (52, 16, 70), (40, 190, 190), (250, 210, 90), "galaxy")
     carpet("deco", (18, 16, 22), (212, 168, 58), (140, 100, 30), "deco")
     carpet("lounge", (16, 26, 70), (190, 30, 40), (214, 168, 58), "lounge")
-    # moldura dorada (bloque de remate)
-    im = img()
-    for y in range(N):
-        for x in range(N):
-            s = 0.6 + 0.4 * math.sin(y / N * math.pi * 3)
-            put(im, x, y, mix((120, 82, 20), (255, 230, 140), s))
-    for x in range(N):
-        for y in (0, 15, 16, 31):
-            put(im, x, y, (90, 60, 14))
-    save(im, "gold_trim")
+    gold_trim()
+
 
 
 if __name__ == "__main__":

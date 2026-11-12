@@ -79,6 +79,29 @@ setblock 84 120 0 casino:rope_post_red
 setblock 85 120 0 casino:rope_post_blue
 execute if block 80 120 0 casino:neon_letter[glyph=2,color=3] if block 81 120 0 casino:neon_sign[design=5] if block 82 120 0 casino:wall_screen if block 83 120 0 casino:chandelier run say PRUEBA_NEON_OK
 execute if block 84 120 0 casino:rope_post_red[east=true] run say PRUEBA_CORDON_UNE
+# THE DIAMOND (plantilla .nbt): se construye en dos giros con el comando y se genera como estructura natural
+forceload add 30 130 110 220
+forceload add 130 130 215 210
+forceload add -48 350 48 450
+casino build 40 100 140 0 diamond
+casino build 140 100 140 1 diamond
+execute if block 70 102 167 casino:lucky_wheel[facing=south,px=1,py=0] run say PRUEBA_DIAMOND_RUEDA
+execute if block 70 102 152 casino:elevator[facing=south] if block 70 114 152 casino:elevator if block 70 148 152 casino:elevator if block 70 156 152 casino:elevator run say PRUEBA_DIAMOND_ELEVADOR
+execute if block 85 101 185 casino:prize_shop[facing=north] if block 49 101 185 casino:cashier[facing=north] run say PRUEBA_DIAMOND_TIENDA
+execute if block 81 101 167 casino:slot[facing=north,half=lower] if block 53 101 168 casino:roulette[facing=south,cell=10] if block 70 113 162 casino:poker[facing=south,cell=2] run say PRUEBA_DIAMOND_MESAS
+execute if entity @e[type=casino:dealer,nbt={Game:3},x=66,y=101,z=157,distance=..2] run say PRUEBA_DIAMOND_GUARDIA
+execute if block 76 113 192 casino:neon_letter[glyph=3,facing=south] run say PRUEBA_DIAMOND_NEON
+execute if block 184 102 170 casino:lucky_wheel[facing=west,px=1,py=0] if block 199 102 170 casino:elevator[facing=west] run say PRUEBA_DIAMOND_GIRO
+execute if block 70 102 167 casino:lucky_wheel run say DIAG_DIAMOND_RUEDA
+execute if block 70 102 152 casino:elevator run say DIAG_DIAMOND_ELEV
+execute if block 85 101 185 casino:prize_shop run say DIAG_DIAMOND_TIENDA
+execute if block 81 101 167 casino:slot run say DIAG_DIAMOND_SLOT
+execute if block 76 113 192 casino:neon_letter run say DIAG_DIAMOND_NEON
+execute if entity @e[type=casino:dealer,nbt={Game:3}] run say DIAG_DIAMOND_HAY_GUARDIA
+data get block 70 114 152
+data get block 85 101 185
+place structure casino:the_diamond 0 -60 400
+execute if entity @e[type=casino:dealer,nbt={Game:3},x=0,y=-60,z=400,distance=..60] run say PRUEBA_DIAMOND_ESTRUCTURA
 #expect PRUEBA_RASCA_OK
 #expect PRUEBA_POKER_OK
 #expect PRUEBA_CRUPIER_OK
@@ -99,3 +122,11 @@ execute if block 84 120 0 casino:rope_post_red[east=true] run say PRUEBA_CORDON_
 #expect PRUEBA_NEON_OK
 #expect PRUEBA_CORDON_UNE
 #expect PRUEBA_CASINO_DECOR
+#expect PRUEBA_DIAMOND_RUEDA
+#expect PRUEBA_DIAMOND_ELEVADOR
+#expect PRUEBA_DIAMOND_TIENDA
+#expect PRUEBA_DIAMOND_MESAS
+#expect PRUEBA_DIAMOND_GUARDIA
+#expect PRUEBA_DIAMOND_NEON
+#expect PRUEBA_DIAMOND_GIRO
+#expect PRUEBA_DIAMOND_ESTRUCTURA

@@ -1,16 +1,17 @@
 {
- "replace": false,
- "values": [
-  "casino:mahogany_panel",
-  "casino:bar_counter",
-  "casino:bottle_shelf",
-  "casino:casino_chair_red",
-  "casino:casino_chair_black",
-  "casino:casino_chair_purple",
-  "casino:casino_chair_blue",
-  "casino:sofa_red",
-  "casino:sofa_black",
-  "casino:sofa_purple",
-  "casino:sofa_blue"
- ]
+  "replace": false,
+  "values": [
+    "casino:mahogany_panel",
+    "casino:bar_counter",
+    "casino:bottle_shelf",
+    "casino:casino_chair_red",
+    "casino:casino_chair_black",
+    "casino:casino_chair_purple",
+    "casino:casino_chair_blue",
+    "casino:sofa_red",
+    "casino:sofa_black",
+    "casino:sofa_purple",
+    "casino:sofa_blue",
+    "casino:prize_shop"
+  ]
 }

@@ -55,7 +55,9 @@ public final class CasinoCommands {
                         .then(Commands.argument("pos", BlockPosArgument.blockPos())
                                 .executes(c -> build(c.getSource(), BlockPosArgument.getBlockPos(c, "pos"), 0))
                                 .then(Commands.argument("rot", IntegerArgumentType.integer(0, 3))
-                                        .executes(c -> build(c.getSource(), BlockPosArgument.getBlockPos(c, "pos"), IntegerArgumentType.getInteger(c, "rot"))))))
+                                        .executes(c -> build(c.getSource(), BlockPosArgument.getBlockPos(c, "pos"), IntegerArgumentType.getInteger(c, "rot")))
+                                        .then(Commands.literal("diamond").executes(c -> buildTemplate(c.getSource(), "the_diamond",
+                                                BlockPosArgument.getBlockPos(c, "pos"), IntegerArgumentType.getInteger(c, "rot")))))))
                 .then(Commands.literal("chips")
                         .then(Commands.argument("players", EntityArgument.players())
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(1, 1_000_000)).executes(c -> {
@@ -69,6 +71,12 @@ public final class CasinoCommands {
                                     c.getSource().sendSuccess(() -> Component.translatable("casino.cmd.chips", amount, count), true);
                                     return n;
                                 })))));
+    }
+
+    private static int buildTemplate(CommandSourceStack src, String name, BlockPos pos, int rot) {
+        var box = com.casino.worldgen.TemplateCasinoPiece.buildNow(src.getLevel(), name, pos, net.minecraft.world.level.block.Rotation.values()[rot & 3]);
+        src.sendSuccess(() -> Component.translatable("casino.cmd.build_tpl", name, box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ()), true);
+        return 1;
     }
 
     private static int build(CommandSourceStack src, BlockPos pos, int rot) {

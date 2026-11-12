@@ -1,11 +1,14 @@
 {
   "structures": [
-    { "structure": "casino:casino", "weight": 1 }
+    {
+      "structure": "casino:the_diamond",
+      "weight": 1
+    }
   ],
   "placement": {
     "type": "minecraft:random_spread",
-    "spacing": 34,
-    "separation": 12,
+    "spacing": 96,
+    "separation": 48,
     "salt": 1740394821
   }
 }

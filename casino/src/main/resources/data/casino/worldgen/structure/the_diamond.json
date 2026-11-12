@@ -1,0 +1,9 @@
+{
+  "type": "casino:template",
+  "biomes": "#casino:has_structure/the_diamond",
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "spawn_overrides": {},
+  "template": "the_diamond",
+  "max_slope": 10
+}

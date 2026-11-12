@@ -91,4 +91,25 @@ public final class Cashier {
         }
         p.level().playSound(null, p.blockPosition(), ModSounds.COINS.get(), SoundSource.BLOCKS, 0.7F, 1.0F);
     }
+
+    /** Tarjetas VIP: 0 = Plata (zona VIP), 1 = Oro (VIP + penthouse y azotea). */
+    public static final int[] VIP_PRICE = {5000, 25000};
+
+    public static void buyVip(ServerPlayer p, int tier) {
+        if (tier < 0 || tier > 1) {
+            return;
+        }
+        if (com.casino.item.VipCardItem.tier(p) >= tier + 1) {
+            deny(p, "casino.vip.already");
+            return;
+        }
+        if (!Chips.take(p, VIP_PRICE[tier])) {
+            deny(p, "casino.cashier.no_chips");
+            return;
+        }
+        ItemStack card = new ItemStack(tier == 0 ? com.casino.registry.ModItems.VIP_SILVER.get() : com.casino.registry.ModItems.VIP_GOLD.get());
+        ItemHandlerHelper.giveItemToPlayer(p, card);
+        Plat.msg(p, Component.translatable(tier == 0 ? "casino.vip.bought_silver" : "casino.vip.bought_gold").withStyle(ChatFormatting.GOLD), true);
+        p.level().playSound(null, p.blockPosition(), net.minecraft.sounds.SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 1.4F);
+    }
 }

@@ -28,6 +28,7 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(ModBlockEntities.BLACKJACK.get(), BlackjackRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.POKER.get(), PokerRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.ROULETTE.get(), RouletteRenderer::new);
+        e.registerBlockEntityRenderer(com.casino.diamond.DiamondReg.SHOP_BE.get(), PrizeShopRenderer::new);
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
         e.registerEntityRenderer(com.casino.registry.ModDecor.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }

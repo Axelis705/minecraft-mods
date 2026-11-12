@@ -31,6 +31,8 @@ public class DealerEntity extends Mob {
     public static final int GAME_BLACKJACK = 0;
     public static final int GAME_ROULETTE = 1;
     public static final int GAME_POKER = 2;
+    /** No atiende mesa: es el guardia de la zona VIP (junto al elevador). */
+    public static final int GAME_GUARD = 3;
     private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
 
     /** Consejo que está diciendo ahora (-1 = ninguno): el crupier levanta la mano y sobre su cabeza sale un globo con el texto. */
@@ -38,6 +40,7 @@ public class DealerEntity extends Mob {
     public static final int TIPS_ROULETTE = 12;
     public static final int TIPS_BLACKJACK = 10;
     public static final int TIPS_POKER = 10;
+    public static final int TIPS_GUARD = 6;
     private static final int TIP_TICKS = 180;
 
     @Nullable
@@ -88,7 +91,7 @@ public class DealerEntity extends Mob {
             nextTip = 200;
             return;
         }
-        int n = getGame() == GAME_ROULETTE ? TIPS_ROULETTE : getGame() == GAME_POKER ? TIPS_POKER : TIPS_BLACKJACK;
+        int n = getGame() == GAME_ROULETTE ? TIPS_ROULETTE : getGame() == GAME_POKER ? TIPS_POKER : getGame() == GAME_GUARD ? TIPS_GUARD : TIPS_BLACKJACK;
         this.entityData.set(TIP, random.nextInt(n));
         tipLeft = TIP_TICKS;
         level().playSound(null, getX(), getY() + 1.6, getZ(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, net.minecraft.sounds.SoundSource.NEUTRAL, 0.6F, 1.3F);
@@ -160,6 +163,12 @@ public class DealerEntity extends Mob {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
+        }
+        if (!level().isClientSide() && getGame() == GAME_GUARD && player instanceof ServerPlayer sp) {
+            int tier = com.casino.item.VipCardItem.tier(sp);
+            Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.guard.say_" + Math.min(2, tier)).withStyle(net.minecraft.ChatFormatting.GOLD), false);
+            Plat.swing(this);
+            return Plat.ok(false);
         }
         if (!level().isClientSide() && table != null && player instanceof ServerPlayer sp) {
             if (getGame() == GAME_POKER) {

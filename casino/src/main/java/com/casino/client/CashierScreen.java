@@ -24,7 +24,7 @@ import net.minecraft.world.item.ItemStack;
  */
 public final class CashierScreen extends CasinoScreen {
     private static final int W = 300;
-    private static final int H = 250;
+    private static final int H = 278;
     private static final int CARD_W = 140;
     private static final int CARD_H = 44;
     private static final int CARD_Y = 104;
@@ -70,6 +70,14 @@ public final class CashierScreen extends CasinoScreen {
 
         confirm = addRenderableWidget(Button.builder(Component.translatable("casino.cashier.confirm").withStyle(ChatFormatting.BOLD), b -> send())
                 .bounds(left + 8, top + H - 28, 180, 20).build());
+        for (int t = 0; t < 2; t++) {
+            int tier = t;
+            int bw = (W - 20) / 2;
+            addRenderableWidget(Button.builder(Component.translatable(t == 0 ? "casino.vip.buy_silver" : "casino.vip.buy_gold",
+                    String.format("%,d", Cashier.VIP_PRICE[t])).withStyle(t == 0 ? ChatFormatting.WHITE : ChatFormatting.GOLD),
+                    b -> CasinoNet.sendToServer(new CashierPacket(pos, 100 + tier, false, 1)))
+                    .bounds(left + 8 + t * (bw + 4), top + H - 54, bw, 20).build());
+        }
         addRenderableWidget(Button.builder(Component.translatable("casino.cashier.close"), b -> onClose())
                 .bounds(left + 8 + 180 + 4, top + H - 28, W - 16 - 184, 20).build());
         clamp();
