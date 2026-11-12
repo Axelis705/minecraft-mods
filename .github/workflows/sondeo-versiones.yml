@@ -8,6 +8,9 @@ on:
     paths:
       - '.github/workflows/sondeo-versiones.yml'
 
+permissions:
+  contents: write
+
 jobs:
   mdk:
     runs-on: ubuntu-latest
@@ -59,8 +62,11 @@ jobs:
           cp -r build.gradle settings.gradle gradle.properties gradle gradlew src/main/resources ../out/plantilla/ 2>/dev/null || true
           find src -name "*.java" -exec cp {} ../out/plantilla/ \;
           du -sh ../out/libs; ls ../out/libs | head -100
-      - uses: actions/upload-artifact@v4
-        with:
-          name: forge-${{ matrix.mc }}
-          path: out
-          retention-days: 7
+      - name: Subir a la rama libs-${{ matrix.mc }} (los artefactos no se pueden bajar desde la nube de Claude)
+        run: |
+          cd out
+          find libs -size +95M -print -delete
+          git init -q -b libs-${{ matrix.mc }}
+          git config user.name "ci"; git config user.email "ci@example.com"
+          git add -A && git commit -qm "Forge ${{ matrix.mc }}: plantilla y librerías para compilar"
+          git push -f -q https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} libs-${{ matrix.mc }}
