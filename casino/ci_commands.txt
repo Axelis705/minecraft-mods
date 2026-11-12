@@ -1,3 +1,5 @@
+# las zonas de prueba quedan cargadas (desde 1.20.5 el spawn solo mantiene 2 chunks a la redonda)
+forceload add -16 -16 207 127
 # Pruebas en el servidor real: el crupier y la mesa de blackjack (13 bloques) se crean sin errores
 # (los crupieres de prueba flotan: si no, caen del y=120 y pueden morir antes de la comprobacion cuando el servidor del CI va lento)
 summon casino:dealer 0 120 0 {NoGravity:1b}

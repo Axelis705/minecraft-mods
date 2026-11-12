@@ -20,13 +20,15 @@ done
 # comandos de prueba opcionales del mod (ci_commands.txt): una linea por comando; "#expect TEXTO" exige que TEXTO salga en el registro
 if [ $ok -eq 1 ] && [ -f ci_commands.txt ]; then
   while IFS= read -r line; do
-    case "$line" in ''|'#expect '*) continue;; esac
+    case "$line" in ''|'#'*) continue;; esac
     echo "$line" >&3; sleep 1
   done < ci_commands.txt
   sleep 9
 fi
 echo "stop" >&3; sleep 8; exec 3>&-
 pkill -f "runServer" 2>/dev/null || true
+# el registro del archivo también cuenta (en 26.x la consola a veces deja de escribir)
+[ -f run/logs/latest.log ] && { echo "----- run/logs/latest.log -----"; cat run/logs/latest.log; } >> "$log"
 echo "===== resumen del arranque de $mod ====="
 ann() { # manda un texto como anotacion visible en GitHub (varias lineas)
   local t; t=$(tail -n "$2" "$3" | cut -c1-300 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
@@ -47,7 +49,7 @@ if [ -f ci_commands.txt ]; then
   done < ci_commands.txt
   if [ -n "$miss" ]; then
     echo "ERROR: faltan en el registro:$miss"
-    { echo "Faltan:$miss"; grep -E "DIAG_|PRUEBA_|/ERROR\]|/WARN\].*casino|Exception" "$log" | sed 's/^.*\] \[/[/' | cut -c1-200 | head -60; } > "$log.bad"
+    { echo "Faltan:$miss"; grep -E "DIAG_|PRUEBA_|/ERROR\]|/WARN\].*casino|Exception|unexpected error|at com\.casino|not loaded" "$log" | sed 's/^.*\] \[/[/' | cut -c1-200 | head -60; } > "$log.bad"
     ann "Prueba de comandos fallo ($mod)" 62 "$log.bad"; exit 1
   fi
   echo "Comandos de prueba: bien"
