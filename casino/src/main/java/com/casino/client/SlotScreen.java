@@ -1,5 +1,7 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoScreen;
+import com.casino.plat.client.G;
 import com.casino.plat.Ids;
 import com.casino.block.SlotBE;
 import com.casino.chip.Chips;
@@ -8,7 +10,6 @@ import com.casino.net.CasinoNet;
 import com.casino.net.SlotPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -20,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
  * Panel de apuestas de la tragamonedas. Va pegado abajo y sin oscurecer la pantalla, para ver girar los carretes mientras se apuesta.
  * Eliges apuesta, ves lo que paga cada símbolo y tiras de la palanca (con clic, con Espacio o en automático).
  */
-public final class SlotScreen extends Screen {
+public final class SlotScreen extends CasinoScreen {
     public static final ResourceLocation SYMBOLS = Ids.rl("casino", "textures/entity/slot_symbols.png");
     public static final int SYM = 32;
     private static final int W = 330;
@@ -121,12 +122,12 @@ public final class SlotScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int key, int scan, int mods) {
+    protected boolean onKey(int key, int scan, int mods) {
         if (key == 32 || key == 257 || key == 335) { // Espacio o Enter
             spin();
             return true;
         }
-        return super.keyPressed(key, scan, mods);
+        return superKey(key, scan, mods);
     }
 
     @Override
@@ -134,7 +135,7 @@ public final class SlotScreen extends Screen {
         return false;
     }
 
-    private void frame(GuiGraphics g, int x0, int y0, int x1, int y1, int color) {
+    private void frame(G g, int x0, int y0, int x1, int y1, int color) {
         g.fill(x0, y0, x1, y0 + 1, color);
         g.fill(x0, y1 - 1, x1, y1, color);
         g.fill(x0, y0, x0 + 1, y1, color);
@@ -142,7 +143,7 @@ public final class SlotScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
+    protected void draw(G g, int mx, int my, float pt) {
         // sin renderBackground: la máquina tiene que verse
         g.fill(left - 2, top - 2, left + W + 2, top + H + 2, 0xFF8A6A1E);
         g.fill(left, top, left + W, top + H, 0xE0120C1A);
@@ -160,7 +161,7 @@ public final class SlotScreen extends Screen {
         g.drawString(font, Component.translatable("casino.plinko.bet").withStyle(ChatFormatting.GRAY), x0, top + 19, 0xFFFFFF, false);
         g.drawString(font, Component.translatable("casino.slot.per_line", bet() / SlotLayout.LINES).withStyle(ChatFormatting.GRAY), x0 + 132, top + 34, 0xFFFFFF, false);
 
-        super.render(g, mx, my, pt);
+        drawWidgets(g, mx, my, pt);
 
         // premio gordo actual (a la derecha de "Apuesta", sin tocar el saldo de la barra de arriba)
         if (Minecraft.getInstance().level != null && Minecraft.getInstance().level.getBlockEntity(pos) instanceof SlotBE be) {

@@ -5,3 +5,5 @@ run-data/
 .idea/
 *.iml
 out/
+__pycache__/
+gen/

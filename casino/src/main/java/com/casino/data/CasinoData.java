@@ -1,5 +1,6 @@
 package com.casino.data;
 
+import com.casino.plat.Nbt;
 import com.casino.game.Prize;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -21,8 +22,21 @@ public final class CasinoData extends SavedData {
     private final Map<UUID, Long> lastSpin = new HashMap<>();
     private final Map<UUID, List<CompoundTag>> pending = new HashMap<>();
 
+    //#if MC >= 1.21.5
+    //$$ private static final net.minecraft.world.level.saveddata.SavedDataType<CasinoData> TYPE = new net.minecraft.world.level.saveddata.SavedDataType<>(
+    //$$         com.casino.plat.Ids.casino("casino_data"), CasinoData::new,
+    //$$         CompoundTag.CODEC.xmap(CasinoData::load, d -> d.save(new CompoundTag())), null);
+    //#endif
+
     public static CasinoData get(MinecraftServer server) {
+        //#if MC >= 1.21.5
+        //$$ return server.overworld().getDataStorage().computeIfAbsent(TYPE);
+        //#elif MC >= 1.20.5
+        //$$ return server.overworld().getDataStorage().computeIfAbsent(new SavedData.Factory<>(CasinoData::new, (t, reg) -> load(t), null),
+        //$$         "casino_data");
+        //#else
         return server.overworld().getDataStorage().computeIfAbsent(CasinoData::load, CasinoData::new, "casino_data");
+        //#endif
     }
 
     /** El día de hoy (reloj del servidor); la ruleta se reinicia a medianoche. */
@@ -71,22 +85,22 @@ public final class CasinoData extends SavedData {
 
     public static CasinoData load(CompoundTag tag) {
         CasinoData d = new CasinoData();
-        CompoundTag ls = tag.getCompound("last");
+        CompoundTag ls = Nbt.c(tag, "last");
         for (String k : ls.getAllKeys()) {
             try {
-                d.lastSpin.put(UUID.fromString(k), ls.getLong(k));
+                d.lastSpin.put(UUID.fromString(k), Nbt.l(ls, k));
             } catch (IllegalArgumentException ignored) {
                 // clave dañada: se ignora
             }
         }
-        CompoundTag pd = tag.getCompound("pending");
+        CompoundTag pd = Nbt.c(tag, "pending");
         for (String k : pd.getAllKeys()) {
             try {
                 UUID id = UUID.fromString(k);
-                ListTag l = pd.getList(k, Tag.TAG_COMPOUND);
+                ListTag l = Nbt.list(pd, k);
                 List<CompoundTag> out = new ArrayList<>();
                 for (int i = 0; i < l.size(); i++) {
-                    out.add(l.getCompound(i));
+                    out.add(Nbt.at(l, i));
                 }
                 d.pending.put(id, out);
             } catch (IllegalArgumentException ignored) {
@@ -96,7 +110,16 @@ public final class CasinoData extends SavedData {
         return d;
     }
 
+    //#if MC >= 1.20.5 && MC < 1.21.5
+    //$$ @Override
+    //$$ public CompoundTag save(CompoundTag tag, net.minecraft.core.HolderLookup.Provider reg) {
+    //$$     return save(tag);
+    //$$ }
+    //#endif
+
+    //#if MC < 1.20.5
     @Override
+    //#endif
     public CompoundTag save(CompoundTag tag) {
         CompoundTag ls = new CompoundTag();
         lastSpin.forEach((k, v) -> ls.putLong(k.toString(), v));

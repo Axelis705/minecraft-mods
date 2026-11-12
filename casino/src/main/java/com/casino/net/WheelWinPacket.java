@@ -1,17 +1,16 @@
 package com.casino.net;
 
+import com.casino.plat.Ser;
+import com.casino.plat.Net;
+import net.minecraft.server.level.ServerPlayer;
 import com.casino.client.ClientHooks;
 import com.casino.game.Prize;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 /** Servidor -> ganador: lo que ganó, para el cartel de premio en pantalla. */
 public final class WheelWinPacket {
@@ -32,27 +31,26 @@ public final class WheelWinPacket {
     }
 
     public static void encode(WheelWinPacket m, FriendlyByteBuf b) {
-        b.writeComponent(m.title);
+        Ser.writeText(b, m.title);
         b.writeVarInt(Math.min(8, m.items.size()));
         for (int i = 0; i < Math.min(8, m.items.size()); i++) {
-            b.writeItem(m.items.get(i));
+            Ser.writeItem(b, m.items.get(i));
         }
         b.writeVarInt(m.xp);
         b.writeBoolean(m.big);
     }
 
     public static WheelWinPacket decode(FriendlyByteBuf b) {
-        Component t = b.readComponent();
+        Component t = Ser.readText(b);
         int n = b.readVarInt();
         List<ItemStack> items = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            items.add(b.readItem());
+            items.add(Ser.readItem(b));
         }
         return new WheelWinPacket(t, items, b.readVarInt(), b.readBoolean());
     }
 
-    public static void handle(WheelWinPacket m, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHooks.showWin(m)));
-        ctx.get().setPacketHandled(true);
+    public static void handle(WheelWinPacket m, ServerPlayer p) {
+        Net.onClient(() -> ClientHooks.showWin(m));
     }
 }

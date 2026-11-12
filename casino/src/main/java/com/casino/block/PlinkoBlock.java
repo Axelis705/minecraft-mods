@@ -1,5 +1,6 @@
 package com.casino.block;
 
+import com.casino.plat.Plat;
 import com.casino.client.ClientHooks;
 import com.casino.registry.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -13,8 +14,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 
@@ -32,17 +31,48 @@ public class PlinkoBlock extends LuckyWheelBlock {
         return s.getValue(PY) == 0 ? RenderShape.MODEL : RenderShape.INVISIBLE;
     }
 
-    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    /** Clic derecho (igual en todas las versiones; abajo se conecta con la de cada una). */
+    protected InteractionResult onUse(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             BlockPos master = masterOf(pos, state);
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHooks.openPlinko(master));
+            com.casino.plat.Net.onClient(() -> ClientHooks.openPlinko(master));
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return Plat.ok(level.isClientSide());
     }
+
+    //#if MC >= 1.21.2
+    //$$ @Override
+    //$$ protected InteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+    //$$         InteractionHand hand, BlockHitResult hit) {
+    //$$     return onUse(state, level, pos, player, hand, hit);
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    //$$     return onUse(state, level, pos, player, InteractionHand.MAIN_HAND, hit);
+    //$$ }
+    //#elif MC >= 1.20.5
+    //$$ @Override
+    //$$ protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos,
+    //$$         Player player, InteractionHand hand, BlockHitResult hit) {
+    //$$     InteractionResult r = onUse(state, level, pos, player, hand, hit);
+    //$$     return r == InteractionResult.PASS ? net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
+    //$$             : r.consumesAction() ? net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide()) : net.minecraft.world.ItemInteractionResult.FAIL;
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    //$$     return onUse(state, level, pos, player, InteractionHand.MAIN_HAND, hit);
+    //$$ }
+    //#else
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return onUse(state, level, pos, player, hand, hit);
+    }
+    //#endif
 
     @Nullable
     @Override
@@ -56,7 +86,7 @@ public class PlinkoBlock extends LuckyWheelBlock {
         if (type != ModBlockEntities.PLINKO.get()) {
             return null;
         }
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return (lvl, p, st, be) -> ((PlinkoBE) be).clientTick();
         }
         return (lvl, p, st, be) -> ((PlinkoBE) be).serverTick();

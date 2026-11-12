@@ -1,5 +1,8 @@
 package com.casino.block;
 
+import com.casino.plat.Plat;
+import com.casino.plat.CasinoBE;
+import com.casino.plat.Nbt;
 import com.casino.chip.Chips;
 import com.casino.data.CasinoData;
 import com.casino.entity.DealerEntity;
@@ -52,7 +55,7 @@ import java.util.UUID;
  * Hasta 5 jugadores a la vez: cada uno apuesta (se sienta en el asiento más cercano a donde está parado), se reparte, juegan por turnos,
  * el crupier juega su mano y paga a cada uno.
  */
-public class BlackjackBE extends BlockEntity {
+public class BlackjackBE extends CasinoBE {
     /** Tiempo para apostar desde la primera apuesta (10 s). Si todos los que están cerca ya apostaron, se reparte antes. */
     private static final int BET_TICKS = 200;
     /** Tiempo para jugar cada turno (20 s); si se pasa, el crupier planta al jugador. */
@@ -141,7 +144,7 @@ public class BlackjackBE extends BlockEntity {
         }
         Direction f = facing();
         BlockPos spot = BlackjackBlock.dealerSpot(worldPosition, f);
-        DealerEntity d = ModEntities.DEALER.get().create(sl);
+        DealerEntity d = Plat.create(ModEntities.DEALER.get(), sl);
         if (d == null) {
             return;
         }
@@ -154,7 +157,7 @@ public class BlackjackBE extends BlockEntity {
 
     private void dealerSwing() {
         for (DealerEntity d : dealers()) {
-            d.swing(InteractionHand.MAIN_HAND);
+            Plat.swing(d);
         }
     }
 
@@ -169,7 +172,7 @@ public class BlackjackBE extends BlockEntity {
     }
 
     private void msg(ServerPlayer p, String key, ChatFormatting color, Object... args) {
-        p.displayClientMessage(Component.translatable(key, args).withStyle(color), true);
+        Plat.msg(p, Component.translatable(key, args).withStyle(color), true);
     }
 
     @Nullable
@@ -180,7 +183,7 @@ public class BlackjackBE extends BlockEntity {
     // ------------------------------------------------------------------ jugadas (servidor)
 
     public void act(ServerPlayer p, int action, int betChips) {
-        if (level == null || level.isClientSide) {
+        if (level == null || level.isClientSide()) {
             return;
         }
         long now = level.getGameTime();
@@ -621,8 +624,8 @@ public class BlackjackBE extends BlockEntity {
                     Vec3 w = worldPos(p[0], p[1], 0.8);
                     int n = s.result == Result.BLACKJACK ? 24 : 8;
                     for (int k = 0; k < n; k++) {
-                        double a = level.random.nextDouble() * Math.PI * 2;
-                        double sp = 0.03 + level.random.nextDouble() * 0.08;
+                        double a = level.getRandom().nextDouble() * Math.PI * 2;
+                        double sp = 0.03 + level.getRandom().nextDouble() * 0.08;
                         level.addParticle(s.result == Result.BLACKJACK && k % 3 == 0 ? ParticleTypes.TOTEM_OF_UNDYING : ParticleTypes.HAPPY_VILLAGER,
                                 w.x, w.y, w.z, Math.cos(a) * sp, Math.abs(Math.sin(a)) * sp + 0.03, Math.sin(a) * sp);
                     }
@@ -655,33 +658,18 @@ public class BlackjackBE extends BlockEntity {
 
     public void sync() {
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
 
     @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-3, 0, -3), worldPosition.offset(4, 3, 5));
+    protected AABB renderBox() {
+        return box(worldPosition.offset(-3, 0, -3), worldPosition.offset(4, 3, 5));
     }
 
-    @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
-    }
 
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
 
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag t = pkt.getTag();
-        if (t != null) {
-            load(t);
-        }
-    }
 
     private static int[] toArray(List<Integer> l) {
         return l.stream().mapToInt(Integer::intValue).toArray();
@@ -697,8 +685,7 @@ public class BlackjackBE extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void writeData(CompoundTag tag) {
         ListTag seats = new ListTag();
         for (int i = 0; i < BlackjackTable.SEATS; i++) {
             Seat s = table.seats[i];
@@ -721,7 +708,7 @@ public class BlackjackBE extends BlockEntity {
             t.putInt("result", s.result.ordinal());
             t.putInt("payout", s.payout);
             if (players[i] != null) {
-                t.putUUID("player", players[i]);
+                Nbt.putUuid(t, "player", players[i]);
             }
             t.putString("name", names[i]);
             seats.add(t);
@@ -739,35 +726,34 @@ public class BlackjackBE extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        ListTag seats = tag.getList("seats", Tag.TAG_COMPOUND);
+    protected void readData(CompoundTag tag) {
+        ListTag seats = Nbt.list(tag, "seats");
         BlackjackTable.Phase[] ph = Phase.values();
         SeatState[] ss = SeatState.values();
         Result[] rs = Result.values();
         for (int i = 0; i < BlackjackTable.SEATS; i++) {
             Seat s = table.seats[i];
             if (i < seats.size()) {
-                CompoundTag t = seats.getCompound(i);
-                fill(s.cards, t.getIntArray("cards"));
-                s.bet = t.getInt("bet");
-                s.doubled = t.getBoolean("doubled");
-                s.state = ss[Math.max(0, Math.min(ss.length - 1, t.getInt("state")))];
-                s.result = rs[Math.max(0, Math.min(rs.length - 1, t.getInt("result")))];
-                s.payout = t.getInt("payout");
-                fill(s.cards2, t.getIntArray("cards2"));
-                s.bet2 = t.getInt("bet2");
-                s.doubled2 = t.getBoolean("doubled2");
-                s.state2 = ss[Math.max(0, Math.min(ss.length - 1, t.getInt("state2")))];
-                s.result2 = rs[Math.max(0, Math.min(rs.length - 1, t.getInt("result2")))];
-                s.payout2 = t.getInt("payout2");
-                s.split = t.getBoolean("split");
-                s.hand = Math.max(0, Math.min(1, t.getInt("hand")));
-                s.insurance = t.getInt("insurance");
-                s.insPayout = t.getInt("insPayout");
-                s.insDone = t.getBoolean("insDone");
-                players[i] = t.hasUUID("player") ? t.getUUID("player") : null;
-                names[i] = t.getString("name");
+                CompoundTag t = Nbt.at(seats, i);
+                fill(s.cards, Nbt.ia(t, "cards"));
+                s.bet = Nbt.i(t, "bet");
+                s.doubled = Nbt.b(t, "doubled");
+                s.state = ss[Math.max(0, Math.min(ss.length - 1, Nbt.i(t, "state")))];
+                s.result = rs[Math.max(0, Math.min(rs.length - 1, Nbt.i(t, "result")))];
+                s.payout = Nbt.i(t, "payout");
+                fill(s.cards2, Nbt.ia(t, "cards2"));
+                s.bet2 = Nbt.i(t, "bet2");
+                s.doubled2 = Nbt.b(t, "doubled2");
+                s.state2 = ss[Math.max(0, Math.min(ss.length - 1, Nbt.i(t, "state2")))];
+                s.result2 = rs[Math.max(0, Math.min(rs.length - 1, Nbt.i(t, "result2")))];
+                s.payout2 = Nbt.i(t, "payout2");
+                s.split = Nbt.b(t, "split");
+                s.hand = Math.max(0, Math.min(1, Nbt.i(t, "hand")));
+                s.insurance = Nbt.i(t, "insurance");
+                s.insPayout = Nbt.i(t, "insPayout");
+                s.insDone = Nbt.b(t, "insDone");
+                players[i] = Nbt.hasUuid(t, "player") ? Nbt.uuid(t, "player") : null;
+                names[i] = Nbt.s(t, "name");
             } else {
                 s.cards.clear();
                 s.bet = 0;
@@ -790,14 +776,14 @@ public class BlackjackBE extends BlockEntity {
                 names[i] = "";
             }
         }
-        fill(table.dealer, tag.getIntArray("dealer"));
-        table.phase = ph[Math.max(0, Math.min(ph.length - 1, tag.getInt("phase")))];
-        table.holeRevealed = tag.getBoolean("hole");
-        table.current = tag.getInt("current");
-        roundSeq = tag.getInt("roundSeq");
-        phaseEnd = tag.getLong("phaseEnd");
-        nextStep = tag.getLong("nextStep");
-        settledAt = tag.getLong("settledAt");
-        paid = tag.getBoolean("paid");
+        fill(table.dealer, Nbt.ia(tag, "dealer"));
+        table.phase = ph[Math.max(0, Math.min(ph.length - 1, Nbt.i(tag, "phase")))];
+        table.holeRevealed = Nbt.b(tag, "hole");
+        table.current = Nbt.i(tag, "current");
+        roundSeq = Nbt.i(tag, "roundSeq");
+        phaseEnd = Nbt.l(tag, "phaseEnd");
+        nextStep = Nbt.l(tag, "nextStep");
+        settledAt = Nbt.l(tag, "settledAt");
+        paid = Nbt.b(tag, "paid");
     }
 }

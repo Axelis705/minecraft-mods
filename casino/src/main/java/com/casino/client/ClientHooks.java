@@ -9,36 +9,44 @@ public final class ClientHooks {
     private ClientHooks() {
     }
 
+    public static void open(net.minecraft.client.gui.screens.Screen s) {
+        //#if MC >= 26.2
+        //$$ Minecraft.getInstance().gui.setScreen(s);
+        //#else
+        Minecraft.getInstance().setScreen(s);
+        //#endif
+    }
+
     public static void openCashier(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new CashierScreen(pos));
+        open(new CashierScreen(pos));
     }
 
     public static void openPlinko(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new PlinkoScreen(pos));
+        open(new PlinkoScreen(pos));
     }
 
     public static void openSlot(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new SlotScreen(pos));
+        open(new SlotScreen(pos));
     }
 
     public static void openScratchShop(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new ScratchShopScreen(pos));
+        open(new ScratchShopScreen(pos));
     }
 
     public static void openScratchCard(boolean offHand) {
-        Minecraft.getInstance().setScreen(new ScratchScreen(offHand));
+        open(new ScratchScreen(offHand));
     }
 
     public static void openPoker(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new PokerScreen(pos));
+        open(new PokerScreen(pos));
     }
 
     public static void openBlackjack(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new BlackjackScreen(pos));
+        open(new BlackjackScreen(pos));
     }
 
     public static void openRoulette(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new RouletteScreen(pos));
+        open(new RouletteScreen(pos));
     }
 
     public static void showWin(WheelWinPacket p) {

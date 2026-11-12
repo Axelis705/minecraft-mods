@@ -1,5 +1,6 @@
 package com.casino.registry;
 
+import com.casino.plat.Reg;
 import com.casino.Casino;
 import com.casino.block.BlackjackBE;
 import com.casino.block.LuckyWheelBE;
@@ -16,22 +17,22 @@ public final class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Casino.MODID);
 
     public static final RegistryObject<BlockEntityType<LuckyWheelBE>> LUCKY_WHEEL = TYPES.register("lucky_wheel",
-            () -> BlockEntityType.Builder.of(LuckyWheelBE::new, ModBlocks.LUCKY_WHEEL.get()).build(null));
+            () -> Reg.blockEntity(LuckyWheelBE::new, ModBlocks.LUCKY_WHEEL.get()));
 
     public static final RegistryObject<BlockEntityType<PlinkoBE>> PLINKO = TYPES.register("plinko",
-            () -> BlockEntityType.Builder.of(PlinkoBE::new, ModBlocks.PLINKO.get()).build(null));
+            () -> Reg.blockEntity(PlinkoBE::new, ModBlocks.PLINKO.get()));
 
     public static final RegistryObject<BlockEntityType<SlotBE>> SLOT = TYPES.register("slot",
-            () -> BlockEntityType.Builder.of(SlotBE::new, ModBlocks.SLOT.get()).build(null));
+            () -> Reg.blockEntity(SlotBE::new, ModBlocks.SLOT.get()));
 
     public static final RegistryObject<BlockEntityType<BlackjackBE>> BLACKJACK = TYPES.register("blackjack",
-            () -> BlockEntityType.Builder.of(BlackjackBE::new, ModBlocks.BLACKJACK.get()).build(null));
+            () -> Reg.blockEntity(BlackjackBE::new, ModBlocks.BLACKJACK.get()));
 
     public static final RegistryObject<BlockEntityType<PokerBE>> POKER = TYPES.register("poker",
-            () -> BlockEntityType.Builder.of(PokerBE::new, ModBlocks.POKER.get()).build(null));
+            () -> Reg.blockEntity(PokerBE::new, ModBlocks.POKER.get()));
 
     public static final RegistryObject<BlockEntityType<RouletteBE>> ROULETTE = TYPES.register("roulette",
-            () -> BlockEntityType.Builder.of(RouletteBE::new, ModBlocks.ROULETTE.get()).build(null));
+            () -> Reg.blockEntity(RouletteBE::new, ModBlocks.ROULETTE.get()));
 
     private ModBlockEntities() {
     }

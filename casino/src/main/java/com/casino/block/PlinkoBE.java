@@ -1,5 +1,8 @@
 package com.casino.block;
 
+import com.casino.plat.Plat;
+import com.casino.plat.CasinoBE;
+import com.casino.plat.Nbt;
 import com.casino.chip.Chips;
 import com.casino.data.CasinoData;
 import com.casino.game.PlinkoLayout;
@@ -39,7 +42,7 @@ import java.util.UUID;
  * El corazón de la mesa de Plinko. El servidor cobra la apuesta, sortea el camino de la bola en el momento de soltarla y paga cuando
  * llega al casillero. El cliente solo anima las bolas con el reloj del juego (así todos ven lo mismo y siempre acaba donde el servidor decidió).
  */
-public class PlinkoBE extends BlockEntity {
+public class PlinkoBE extends CasinoBE {
     public static final int MAX_BALLS = 8;
     /** Cuánto se ve el resplandor del casillero y el cartel del multiplicador después de caer. */
     public static final int LANDING_SHOW = 70;
@@ -102,11 +105,11 @@ public class PlinkoBE extends BlockEntity {
             return;
         }
         if (balls.size() >= MAX_BALLS) {
-            p.displayClientMessage(Component.translatable("casino.plinko.busy").withStyle(ChatFormatting.YELLOW), true);
+            Plat.msg(p, Component.translatable("casino.plinko.busy").withStyle(ChatFormatting.YELLOW), true);
             return;
         }
         if (!Chips.take(p, bet)) {
-            p.displayClientMessage(Component.translatable("casino.plinko.no_chips", bet).withStyle(ChatFormatting.RED), true);
+            Plat.msg(p, Component.translatable("casino.plinko.no_chips", bet).withStyle(ChatFormatting.RED), true);
             level.playSound(null, worldPosition, ModSounds.DENIED.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
             return;
         }
@@ -114,12 +117,12 @@ public class PlinkoBE extends BlockEntity {
         b.player = p.getUUID();
         b.name = p.getGameProfile().getName();
         b.start = level.getGameTime();
-        b.path = level.random.nextInt(1 << PlinkoLayout.ROWS);
+        b.path = level.getRandom().nextInt(1 << PlinkoLayout.ROWS);
         b.risk = risk;
         b.bet = bet;
         balls.add(b);
         shownRisk = risk;
-        level.playSound(null, worldPosition, ModSounds.PLINKO_DROP.get(), SoundSource.BLOCKS, 0.8F, 0.95F + level.random.nextFloat() * 0.1F);
+        level.playSound(null, worldPosition, ModSounds.PLINKO_DROP.get(), SoundSource.BLOCKS, 0.8F, 0.95F + level.getRandom().nextFloat() * 0.1F);
         sync();
     }
 
@@ -168,7 +171,7 @@ public class PlinkoBE extends BlockEntity {
         ServerPlayer p = sl.getServer().getPlayerList().getPlayer(b.player);
         if (p != null) {
             prize.deliver(p);
-            p.displayClientMessage(Component.translatable(win ? "casino.plinko.win" : "casino.plinko.back", payout, mult)
+            Plat.msg(p, Component.translatable(win ? "casino.plinko.win" : "casino.plinko.back", payout, mult)
                     .withStyle(win ? ChatFormatting.GREEN : ChatFormatting.GRAY), true);
             if (m10 >= 50) {
                 CasinoNet.sendTo(p, new WheelWinPacket(prize));
@@ -194,7 +197,7 @@ public class PlinkoBE extends BlockEntity {
         if (level == null) {
             return;
         }
-        RandomSource r = level.random;
+        RandomSource r = level.getRandom();
         long now = level.getGameTime();
         if (!clientInit) {
             clientInit = true;
@@ -246,44 +249,28 @@ public class PlinkoBE extends BlockEntity {
 
     public void sync() {
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
 
     @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-3, -1, -3), worldPosition.offset(4, 6, 4));
+    protected AABB renderBox() {
+        return box(worldPosition.offset(-3, -1, -3), worldPosition.offset(4, 6, 4));
     }
 
-    @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
-    }
+
+
 
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag t = pkt.getTag();
-        if (t != null) {
-            load(t);
-        }
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void writeData(CompoundTag tag) {
         tag.putInt("shownRisk", shownRisk);
         tag.putInt("landSeq", landSeq);
         ListTag bl = new ListTag();
         for (Ball b : balls) {
             CompoundTag t = new CompoundTag();
             if (b.player != null) {
-                t.putUUID("player", b.player);
+                Nbt.putUuid(t, "player", b.player);
             }
             t.putString("name", b.name);
             t.putLong("start", b.start);
@@ -308,23 +295,22 @@ public class PlinkoBE extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        shownRisk = Math.max(0, Math.min(PlinkoLayout.RISKS - 1, tag.contains("shownRisk") ? tag.getInt("shownRisk") : 1));
-        landSeq = tag.getInt("landSeq");
+    protected void readData(CompoundTag tag) {
+        shownRisk = Math.max(0, Math.min(PlinkoLayout.RISKS - 1, tag.contains("shownRisk") ? Nbt.i(tag, "shownRisk") : 1));
+        landSeq = Nbt.i(tag, "landSeq");
         // las bolas que ya estaban (cliente) conservan su estado de sonido
         List<Ball> old = new ArrayList<>(balls);
         balls.clear();
-        ListTag bl = tag.getList("balls", Tag.TAG_COMPOUND);
+        ListTag bl = Nbt.list(tag, "balls");
         for (int i = 0; i < bl.size(); i++) {
-            CompoundTag t = bl.getCompound(i);
+            CompoundTag t = Nbt.at(bl, i);
             Ball b = new Ball();
-            b.player = t.hasUUID("player") ? t.getUUID("player") : null;
-            b.name = t.getString("name");
-            b.start = t.getLong("start");
-            b.path = t.getInt("path");
-            b.risk = t.getInt("risk");
-            b.bet = t.getInt("bet");
+            b.player = Nbt.hasUuid(t, "player") ? Nbt.uuid(t, "player") : null;
+            b.name = Nbt.s(t, "name");
+            b.start = Nbt.l(t, "start");
+            b.path = Nbt.i(t, "path");
+            b.risk = Nbt.i(t, "risk");
+            b.bet = Nbt.i(t, "bet");
             for (Ball o : old) {
                 if (o.start == b.start && o.path == b.path && java.util.Objects.equals(o.player, b.player)) {
                     b.lastHit = o.lastHit;
@@ -333,16 +319,16 @@ public class PlinkoBE extends BlockEntity {
             balls.add(b);
         }
         landings.clear();
-        ListTag ll = tag.getList("landings", Tag.TAG_COMPOUND);
+        ListTag ll = Nbt.list(tag, "landings");
         for (int i = 0; i < ll.size(); i++) {
-            CompoundTag t = ll.getCompound(i);
+            CompoundTag t = Nbt.at(ll, i);
             Landing l = new Landing();
-            l.time = t.getLong("time");
-            l.bucket = t.getInt("bucket");
-            l.risk = t.getInt("risk");
-            l.bet = t.getInt("bet");
-            l.m10 = t.getInt("m10");
-            l.payout = t.getInt("payout");
+            l.time = Nbt.l(t, "time");
+            l.bucket = Nbt.i(t, "bucket");
+            l.risk = Nbt.i(t, "risk");
+            l.bet = Nbt.i(t, "bet");
+            l.m10 = Nbt.i(t, "m10");
+            l.payout = Nbt.i(t, "payout");
             landings.add(l);
         }
     }

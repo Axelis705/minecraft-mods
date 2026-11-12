@@ -1,5 +1,6 @@
 package com.casino.command;
 
+import com.casino.plat.Plat;
 import com.casino.Casino;
 import com.casino.chip.Chips;
 import com.casino.data.CasinoData;
@@ -32,7 +33,7 @@ public final class CasinoCommands {
     @SubscribeEvent
     public static void register(RegisterCommandsEvent e) {
         CommandDispatcher<CommandSourceStack> d = e.getDispatcher();
-        d.register(Commands.literal("casino").requires(s -> s.hasPermission(2))
+        d.register(Commands.literal("casino").requires(s -> Plat.isOp(s))
                 .then(Commands.literal("resetwheel")
                         .executes(c -> {
                             ServerPlayer p = c.getSource().getPlayerOrException();

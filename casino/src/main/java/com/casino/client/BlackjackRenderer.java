@@ -1,5 +1,8 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoBER;
+import com.casino.plat.client.Draw;
+import com.casino.plat.client.VB;
 import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.BlackjackBE;
@@ -12,13 +15,11 @@ import com.casino.game.BlackjackTable.Phase;
 import com.casino.game.BlackjackTable.Seat;
 import com.casino.game.BlackjackTable.SeatState;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -38,7 +39,7 @@ import java.util.List;
  * y del crupier (con animación de reparto y de giro de la carta tapada), las fichas apostadas, los círculos de cada asiento, el zapato,
  * los totales y los resultados. Marco local: origen en el centro del bloque del medio del lado recto, +z hacia los jugadores, +x a su derecha.
  */
-public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
+public class BlackjackRenderer extends CasinoBER<BlackjackBE> {
     private static final ResourceLocation CARDS = Ids.rl(Casino.MODID, "textures/entity/cards.png");
     private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/plinko_white.png");
     private static final ResourceLocation FELT = Ids.rl(Casino.MODID, "textures/block/bj_felt.png");
@@ -69,14 +70,13 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
     private final Font font;
 
     public BlackjackRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.font = ctx.getFont();
+        this.font = Draw.font();
     }
 
     // ------------------------------------------------------------------ vértices
 
-    private static void v(VertexConsumer vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz, int rgb) {
-        vc.vertex(p.pose(), x, y, z).color((rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255, 255).uv(u, w).overlayCoords(OverlayTexture.NO_OVERLAY)
-                .uv2(light).normal(p.normal(), nx, ny, nz).endVertex();
+    private static void v(VB vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz, int rgb) {
+        vc.v(p, x, y, z, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255, 255, u, w, OverlayTexture.NO_OVERLAY, light, nx, ny, nz);
     }
 
     private static int scale(int rgb, float k) {
@@ -95,7 +95,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
     }
 
     /** Pared curva (de 0 a 180 grados) a radio r entre dos alturas, con el frente hacia afuera (o hacia adentro). */
-    private static void wallArc(VertexConsumer vc, PoseStack.Pose p, int light, float r, float y0, float y1, boolean inward, int rgb, float vScale) {
+    private static void wallArc(VB vc, PoseStack.Pose p, int light, float r, float y0, float y1, boolean inward, int rgb, float vScale) {
         for (int i = 0; i < SEG; i++) {
             double a0 = 180.0 * i / SEG;
             double a1 = 180.0 * (i + 1) / SEG;
@@ -112,7 +112,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
     }
 
     /** Pared recta del lado del crupier (z = centro), de x = -r a x = r. */
-    private static void wallFlat(VertexConsumer vc, PoseStack.Pose p, int light, float r, float y0, float y1, float z, boolean towardPlayers, int rgb, float vScale) {
+    private static void wallFlat(VB vc, PoseStack.Pose p, int light, float r, float y0, float y1, float z, boolean towardPlayers, int rgb, float vScale) {
         float nz = towardPlayers ? 1 : -1;
         v(vc, p, -r, y0, z, -r * 2, (1 - y0) * 2 * vScale, light, 0, 0, nz, rgb);
         v(vc, p, r, y0, z, r * 2, (1 - y0) * 2 * vScale, light, 0, 0, nz, rgb);
@@ -121,7 +121,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
     }
 
     /** Anillo horizontal entre dos radios (cara hacia arriba). El ángulo puede recortarse (a0..a1). */
-    private static void ringTop(VertexConsumer vc, PoseStack.Pose p, int light, double rIn, double rOut, float y, double a0, double a1, int n, int rgb, boolean clampFlat) {
+    private static void ringTop(VB vc, PoseStack.Pose p, int light, double rIn, double rOut, float y, double a0, double a1, int n, int rgb, boolean clampFlat) {
         for (int i = 0; i < n; i++) {
             double s0 = a0 + (a1 - a0) * i / n;
             double s1 = a0 + (a1 - a0) * (i + 1) / n;
@@ -139,7 +139,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
     }
 
     /** Un segmento plano finito sobre el fieltro (para líneas del dibujo de la mesa). */
-    private static void line(VertexConsumer vc, PoseStack.Pose p, int light, float x0, float z0, float x1, float z1, float w, float y, int rgb) {
+    private static void line(VB vc, PoseStack.Pose p, int light, float x0, float z0, float x1, float z1, float w, float y, int rgb) {
         float dx = x1 - x0;
         float dz = z1 - z0;
         float len = (float) Math.sqrt(dx * dx + dz * dz);
@@ -154,7 +154,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         v(vc, p, x1 - nx, y, z1 - nz, 1, 0, light, 0, 1, 0, rgb);
     }
 
-    private static void arcLine(VertexConsumer vc, PoseStack.Pose p, int light, double r, double a0, double a1, float w, float y, int rgb) {
+    private static void arcLine(VB vc, PoseStack.Pose p, int light, double r, double a0, double a1, float w, float y, int rgb) {
         int n = 40;
         for (int i = 0; i < n; i++) {
             double s0 = a0 + (a1 - a0) * i / n;
@@ -163,7 +163,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         }
     }
 
-    private static void ring(VertexConsumer vc, PoseStack.Pose p, int light, float cx, float cz, float r0, float r1, float y, int rgb) {
+    private static void ring(VB vc, PoseStack.Pose p, int light, float cx, float cz, float r0, float r1, float y, int rgb) {
         int n = 20;
         for (int i = 0; i < n; i++) {
             double s0 = Math.PI * 2 * i / n;
@@ -175,7 +175,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         }
     }
 
-    private static void box(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float z0, float x1, float y1, float z1, int rgb, int light) {
+    private static void box(VB vc, PoseStack.Pose p, float x0, float y0, float z0, float x1, float y1, float z1, int rgb, int light) {
         v(vc, p, x0, y1, z0, 0, 0, light, 0, 1, 0, rgb); v(vc, p, x0, y1, z1, 0, 1, light, 0, 1, 0, rgb);
         v(vc, p, x1, y1, z1, 1, 1, light, 0, 1, 0, rgb); v(vc, p, x1, y1, z0, 1, 0, light, 0, 1, 0, rgb);
         v(vc, p, x0, y0, z1, 0, 0, light, 0, 0, 1, scale(rgb, 0.8F)); v(vc, p, x1, y0, z1, 1, 0, light, 0, 0, 1, scale(rgb, 0.8F));
@@ -188,14 +188,14 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         v(vc, p, x1, y1, z0, 1, 1, light, 1, 0, 0, scale(rgb, 0.65F)); v(vc, p, x1, y1, z1, 0, 1, light, 1, 0, 0, scale(rgb, 0.65F));
     }
 
-    private static void quadUV(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, int light) {
+    private static void quadUV(VB vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, int light) {
         v(vc, p, x0, y0, 0, u0, v1, light, 0, 0, 1, 0xFFFFFF);
         v(vc, p, x1, y0, 0, u1, v1, light, 0, 0, 1, 0xFFFFFF);
         v(vc, p, x1, y1, 0, u1, v0, light, 0, 0, 1, 0xFFFFFF);
         v(vc, p, x0, y1, 0, u0, v0, light, 0, 0, 1, 0xFFFFFF);
     }
 
-    private static void cardQuad(VertexConsumer vc, PoseStack.Pose p, float halfW, int card, int light) {
+    private static void cardQuad(VB vc, PoseStack.Pose p, float halfW, int card, int light) {
         float u0;
         float v0;
         if (card < 0) {
@@ -210,24 +210,24 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
 
     // ------------------------------------------------------------------ la mesa
 
-    private void drawTable(PoseStack ps, MultiBufferSource buf, int light) {
+    private void drawTable(PoseStack ps, Draw d, int light) {
         PoseStack.Pose p = ps.last();
         float flat = (float) CZ;
         // zócalo dorado y cuerpo de madera
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(GOLD));
+        VB vc = d.cutout(GOLD);
         wallArc(vc, p, light, R_OUT - 0.02F, 0, 0.09F, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT - 0.02F, 0, 0.09F, flat, false, 0xFFFFFF, 1);
         ringTop(vc, p, light, R_OUT - 0.08F, R_OUT - 0.02F, 0.09F, 0, 180, SEG, 0xFFFFFF, false);
         wallArc(vc, p, light, R_OUT - 0.07F, 0.50F, 0.57F, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT - 0.07F, 0.50F, 0.57F, flat - 0.001F, false, 0xFFFFFF, 1);
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(WOOD));
+        vc = d.cutout(WOOD);
         wallArc(vc, p, light, R_OUT - 0.08F, 0.09F, Y_LIP, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT - 0.08F, 0.09F, Y_LIP, flat, false, 0xFFFFFF, 1);
         wallArc(vc, p, light, R_OUT, Y_LIP, Y_FELT, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT, Y_LIP, Y_FELT, flat, false, 0xFFFFFF, 1);
         ringTop(vc, p, light, R_OUT - 0.08F, R_OUT, Y_LIP, 0, 180, SEG, 0xBBBBBB, false);
         // riel acolchado
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(LEATHER));
+        vc = d.cutout(LEATHER);
         wallArc(vc, p, light, R_OUT, Y_FELT, Y_RAIL, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT, Y_FELT, Y_RAIL, flat, false, 0xFFFFFF, 1);
         wallArc(vc, p, light, R_IN, Y_FELT, Y_RAIL, true, 0xC8C8C8, 1);
@@ -240,7 +240,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         v(vc, p, R_IN, Y_RAIL, zi, R_IN * 2, zi * 2, light, 0, 1, 0, 0xFFFFFF);
         v(vc, p, R_OUT, Y_RAIL, flat, R_OUT * 2, flat * 2, light, 0, 1, 0, 0xFFFFFF);
         // fieltro: abanico desde el borde recto
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(FELT));
+        vc = d.cutout(FELT);
         float fz = flat + RAIL;
         double th0 = Math.toDegrees(Math.asin(RAIL / R_IN));
         int n = SEG;
@@ -254,15 +254,15 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
             v(vc, p, 0, Y_FELT, fz, 0, fz * 2, light, 0, 1, 0, 0xFFFFFF);
         }
         // filo dorado sobre el riel
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(GOLD));
+        vc = d.cutout(GOLD);
         ringTop(vc, p, light, R_OUT - 0.085F, R_OUT - 0.05F, Y_RAIL + 0.002F, 0, 180, SEG, 0xFFFFFF, false);
     }
 
     /** El dibujo del fieltro: líneas doradas, carriles de cartas y círculos de apuesta. */
-    private void drawDecor(BlackjackBE be, PoseStack ps, MultiBufferSource buf, int light, float time) {
+    private void drawDecor(BlackjackBE be, PoseStack ps, Draw d, int light, float time) {
         PoseStack.Pose p = ps.last();
         float y = Y_FELT + 0.003F;
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
+        VB vc = d.cutout(WHITE);
         int gold = 0xD9AE38;
         arcLine(vc, p, light, 1.32, 16, 164, 0.014F, y, gold);
         arcLine(vc, p, light, 1.80, 16, 164, 0.014F, y, gold);
@@ -291,7 +291,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         }
     }
 
-    private void flatText(PoseStack ps, MultiBufferSource buf, String text, double x, double z, float yaw, int color, float s, int light) {
+    private void flatText(PoseStack ps, Draw d, String text, double x, double z, float yaw, int color, float s, int light) {
         ps.pushPose();
         ps.translate(x, TABLE_Y + 0.002F, z);
         ps.mulPose(Axis.YP.rotationDegrees(yaw));
@@ -299,23 +299,23 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         ps.scale(s, -s, s);
         float w = font.width(text);
         Matrix4f m = ps.last().pose();
-        font.drawInBatch(text, -w / 2.0F, -font.lineHeight / 2.0F + 1, color, false, m, buf, Font.DisplayMode.NORMAL, 0, light);
+        d.text(ps, text, -w / 2.0F, -font.lineHeight / 2.0F + 1, color, 0, light);
         ps.popPose();
     }
 
     /** Texto curvo a lo largo de un arco (se lee desde el lado de los jugadores). */
-    private void arcText(PoseStack ps, MultiBufferSource buf, String text, double r, double centerDeg, double stepDeg, int color, float s, int light) {
+    private void arcText(PoseStack ps, Draw d, String text, double r, double centerDeg, double stepDeg, int color, float s, int light) {
         int n = text.length();
         for (int k = 0; k < n; k++) {
             double a = centerDeg + (n - 1) / 2.0 * stepDeg - k * stepDeg;
             double[] c = BlackjackLayout.polar(r, a);
-            flatText(ps, buf, String.valueOf(text.charAt(k)), c[0], c[1], (float) (90.0 - a), color, s, light);
+            flatText(ps, d, String.valueOf(text.charAt(k)), c[0], c[1], (float) (90.0 - a), color, s, light);
         }
     }
 
     // ------------------------------------------------------------------ cartas
 
-    private void drawHand(BlackjackBE be, PoseStack ps, MultiBufferSource buf, List<Integer> hand, long[] born, double cx, double cz, double angDeg, boolean dealer,
+    private void drawHand(BlackjackBE be, PoseStack ps, Draw d, List<Integer> hand, long[] born, double cx, double cz, double angDeg, boolean dealer,
                           float time, int light) {
         int n = Math.min(hand.size(), BlackjackBE.MAX_CARDS);
         double a = Math.toRadians(angDeg);
@@ -353,7 +353,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
             ps.translate(x, y, zz);
             ps.mulPose(Axis.YP.rotationDegrees(yaw));
             ps.mulPose(Axis.XP.rotationDegrees(-90));
-            VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(CARDS));
+            VB vc = d.cutout(CARDS);
             cardQuad(vc, ps.last(), half, faceDown ? -1 : hand.get(i), light);
             ps.popPose();
         }
@@ -380,7 +380,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
     }
 
     /** Una pila de fichas con el valor dado, en el punto (x, z) de la mesa. */
-    private void drawChips(PoseStack ps, MultiBufferSource buf, Level level, int amount, double x, double z, int light, int seed) {
+    private void drawChips(PoseStack ps, Draw d, Level level, int amount, double x, double z, int light, int seed) {
         int layer = 0;
         for (ItemStack st : Chips.stacksFor(amount)) {
             for (int k = 0; k < Math.min(st.getCount(), 4) && layer < 9; k++, layer++) {
@@ -388,14 +388,14 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
                 ps.translate(x + ((layer * 5) % 3 - 1) * 0.008F, TABLE_Y + 0.012F + layer * 0.014F, z);
                 ps.mulPose(Axis.XP.rotationDegrees(-90));
                 ps.scale(0.17F, 0.17F, 0.17F);
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(st.getItem()), ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, ps, buf, level, layer + seed * 11);
+                d.item(new ItemStack(st.getItem()), ItemDisplayContext.FIXED, ps, light, level, layer + seed * 11);
                 ps.popPose();
             }
         }
     }
 
     @Override
-    public void render(BlackjackBE be, float partial, PoseStack ps, MultiBufferSource buf, int packedLight, int overlay) {
+    protected void draw(BlackjackBE be, float partial, PoseStack ps, Draw d, int packedLight, int overlay) {
         Level level = be.getLevel();
         if (level == null) {
             return;
@@ -409,23 +409,23 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
         ps.translate(0.5, 0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(-be.facing().toYRot()));
 
-        drawTable(ps, buf, light);
-        drawDecor(be, ps, buf, light, time);
+        drawTable(ps, d, light);
+        drawDecor(be, ps, d, light, time);
 
         // zapato de cartas
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
+        VB vc = d.cutout(WHITE);
         box(vc, ps.last(), SHOE_X - 0.1F, Y_FELT, SHOE_Z - 0.1F, SHOE_X + 0.1F, Y_FELT + 0.075F, SHOE_Z + 0.1F, 0x2A1810, light);
         box(vc, ps.last(), SHOE_X - 0.085F, Y_FELT + 0.075F, SHOE_Z - 0.085F, SHOE_X + 0.085F, Y_FELT + 0.083F, SHOE_Z + 0.085F, 0xD8B040, light);
 
         // texto del paño
-        arcText(ps, buf, Component.translatable("casino.blackjack.felt_text").getString(), 0.66, 90, 7.2, 0xE8C14A, 0.011F, light);
+        arcText(ps, d, Component.translatable("casino.blackjack.felt_text").getString(), 0.66, 90, 7.2, 0xE8C14A, 0.011F, light);
 
         // cartas del crupier
-        drawHand(be, ps, buf, t.dealer, be.dBorn, 0.0, -0.2, 90, true, time, light);
+        drawHand(be, ps, d, t.dealer, be.dBorn, 0.0, -0.2, 90, true, time, light);
         boolean dealerShown = !t.dealer.isEmpty() && time >= be.dBorn[0] + 8;
         if (dealerShown) {
             String dt = t.holeRevealed && time >= be.revealAt + 10 ? String.valueOf(BlackjackGame.total(t.dealer)) : t.dealerShownTotal() + "+?";
-            flatText(ps, buf, dt, -0.8, -0.2, 0, 0xFFFFFF, 0.02F, light);
+            flatText(ps, d, dt, -0.8, -0.2, 0, 0xFFFFFF, 0.02F, light);
         }
 
         for (int i = 0; i < BlackjackLayout.SEATS; i++) {
@@ -443,20 +443,20 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
             int extra = Math.max(0, Math.max(s.cards.size(), s.cards2.size()) - 2);
             double shift = s.split ? 0.17 + 0.03 * extra : 0.0;
             // fichas apostadas (con separar: una pila por mano) y el seguro
-            drawChips(ps, buf, level, s.bet, bp[0] - tx * shift, bp[1] - tz * shift, light, i);
+            drawChips(ps, d, level, s.bet, bp[0] - tx * shift, bp[1] - tz * shift, light, i);
             if (s.split) {
-                drawChips(ps, buf, level, s.bet2, bp[0] + tx * shift, bp[1] + tz * shift, light, i + 5);
+                drawChips(ps, d, level, s.bet2, bp[0] + tx * shift, bp[1] + tz * shift, light, i + 5);
             }
             if (s.insurance > 0) {
                 double[] ip = BlackjackLayout.polar(0.88, ang);
-                drawChips(ps, buf, level, s.insurance, ip[0], ip[1], light, i + 9);
+                drawChips(ps, d, level, s.insurance, ip[0], ip[1], light, i + 9);
             }
             if (s.cards.isEmpty()) {
                 continue;
             }
-            drawHand(be, ps, buf, s.cards, be.born[i], cp[0] - tx * shift, cp[1] - tz * shift, ang, false, time, light);
+            drawHand(be, ps, d, s.cards, be.born[i], cp[0] - tx * shift, cp[1] - tz * shift, ang, false, time, light);
             if (s.split) {
-                drawHand(be, ps, buf, s.cards2, be.born2[i], cp[0] + tx * shift, cp[1] + tz * shift, ang, false, time, light);
+                drawHand(be, ps, d, s.cards2, be.born2[i], cp[0] + tx * shift, cp[1] + tz * shift, ang, false, time, light);
             }
             double[] tp = BlackjackLayout.polar(TOTAL_R, ang);
             for (int h = 0; h < (s.split ? 2 : 1); h++) {
@@ -470,7 +470,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
                         pt = (tot - 10) + "/" + tot;
                     }
                     double off = s.split ? (h == 0 ? -shift : shift) : 0.0;
-                    flatText(ps, buf, pt, tp[0] + tx * off, tp[1] + tz * off, rot, 0xFFE070, 0.02F, light);
+                    flatText(ps, d, pt, tp[0] + tx * off, tp[1] + tz * off, rot, 0xFFE070, 0.02F, light);
                 }
             }
             double[] np = BlackjackLayout.polar(NAME_R, ang);
@@ -481,9 +481,9 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
                     sb.append(" | ").append(tag(s.result2));
                 }
                 int col = s.split || s.insurance > 0 ? 0xFFFFFF : tagColor(s.result);
-                flatText(ps, buf, sb.toString(), np[0], np[1], rot, col, 0.013F, light);
+                flatText(ps, d, sb.toString(), np[0], np[1], rot, col, 0.013F, light);
             } else if (!be.names[i].isEmpty()) {
-                flatText(ps, buf, be.names[i], np[0], np[1], rot, 0xCFCFCF, 0.01F, light);
+                flatText(ps, d, be.names[i], np[0], np[1], rot, 0xCFCFCF, 0.01F, light);
             }
         }
         // asientos que apostaron pero todavía no tienen cartas: se ve su nombre
@@ -491,7 +491,7 @@ public class BlackjackRenderer implements BlockEntityRenderer<BlackjackBE> {
             Seat s = t.seats[i];
             if (s.bet > 0 && s.cards.isEmpty() && !be.names[i].isEmpty()) {
                 double[] np = BlackjackLayout.polar(NAME_R, BlackjackLayout.seatAngle(i));
-                flatText(ps, buf, be.names[i], np[0], np[1], (float) (90.0 - BlackjackLayout.seatAngle(i)), 0xCFCFCF, 0.01F, light);
+                flatText(ps, d, be.names[i], np[0], np[1], (float) (90.0 - BlackjackLayout.seatAngle(i)), 0xCFCFCF, 0.01F, light);
             }
         }
         ps.popPose();

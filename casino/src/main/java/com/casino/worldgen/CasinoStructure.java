@@ -17,7 +17,11 @@ import java.util.Optional;
  * Es raro, como un pueblo: hay uno cada varios cientos de bloques en biomas de planicie, bosque, desierto y sabana.
  */
 public class CasinoStructure extends Structure {
+    //#if MC >= 1.20.5
+    //$$ public static final com.mojang.serialization.MapCodec<CasinoStructure> CODEC = simpleCodec(CasinoStructure::new);
+    //#else
     public static final Codec<CasinoStructure> CODEC = simpleCodec(CasinoStructure::new);
+    //#endif
 
     public CasinoStructure(Structure.StructureSettings settings) {
         super(settings);

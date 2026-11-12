@@ -1,5 +1,7 @@
 package com.casino.game;
 
+import com.casino.plat.Ser;
+import com.casino.plat.Nbt;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -38,10 +40,10 @@ public final class Prize {
 
     public CompoundTag save() {
         CompoundTag t = new CompoundTag();
-        t.putString("title", Component.Serializer.toJson(title));
+        t.put("title", Ser.text(title));
         ListTag l = new ListTag();
         for (ItemStack s : items) {
-            l.add(s.save(new CompoundTag()));
+            l.add(Ser.item(s));
         }
         t.put("items", l);
         t.putInt("xp", xpLevels);
@@ -52,14 +54,14 @@ public final class Prize {
 
     public static Prize load(CompoundTag t) {
         List<ItemStack> items = new ArrayList<>();
-        ListTag l = t.getList("items", Tag.TAG_COMPOUND);
+        ListTag l = Nbt.list(t, "items");
         for (int i = 0; i < l.size(); i++) {
-            ItemStack s = ItemStack.of(l.getCompound(i));
+            ItemStack s = Ser.item(Nbt.at(l, i));
             if (!s.isEmpty()) {
                 items.add(s);
             }
         }
-        Component title = Component.Serializer.fromJson(t.getString("title"));
-        return new Prize(title == null ? Component.empty() : title, items, t.getInt("xp"), t.getInt("slice"), t.getBoolean("big"));
+        Component title = Ser.text(t.get("title"));
+        return new Prize(title, items, Nbt.i(t, "xp"), Nbt.i(t, "slice"), Nbt.b(t, "big"));
     }
 }

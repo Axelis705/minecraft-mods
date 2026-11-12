@@ -1,0 +1,41 @@
+// Proyecto generado por tools/mkproject.py para Minecraft @MC@ (no editar: se crea de nuevo en cada compilación).
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle' version '@FG@'
+}
+
+version = '@MODVER@+@MC@'
+group = '@GROUP@'
+base { archivesName = '@MODID@' }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(@JAVA@)
+
+minecraft {
+@MAPPINGS@
+    runs {
+        configureEach {
+            workingDir = layout.projectDirectory.dir('run')
+@STRICT@
+        }
+        register('client')
+        register('server') {
+            args '--nogui'
+        }
+    }
+}
+
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+    mavenCentral()
+}
+
+dependencies {
+    implementation minecraft.dependency('net.minecraftforge:forge:@MC@-@FORGE@')
+@VALIDATOR@
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

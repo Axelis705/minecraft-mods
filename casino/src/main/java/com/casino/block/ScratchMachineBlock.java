@@ -1,5 +1,6 @@
 package com.casino.block;
 
+import com.casino.plat.Plat;
 import com.casino.client.ClientHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,8 +23,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 
@@ -72,38 +71,85 @@ public class ScratchMachineBlock extends Block {
     }
 
     @Override
+    //#if MC >= 1.20.2
+    //$$ public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    //#else
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide) {
+    //#endif
+        if (!level.isClientSide()) {
             removeOther(level, pos, state);
             if (!player.isCreative()) {
                 Block.popResource(level, masterOf(pos, state), new ItemStack(asItem()));
             }
         }
+        //#if MC >= 1.20.2
+        //$$ return super.playerWillDestroy(level, pos, state, player);
+        //#else
         super.playerWillDestroy(level, pos, state, player);
+        //#endif
     }
 
+    //#if MC >= 1.21.5
+    //$$ @Override
+    //$$ protected void affectNeighborsAfterRemoval(BlockState state, net.minecraft.server.level.ServerLevel level, BlockPos pos, boolean moved) {
+    //$$     removeOther(level, pos, state);
+    //$$     super.affectNeighborsAfterRemoval(state, level, pos, moved);
+    //$$ }
+    //#else
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moved) {
-        if (!state.is(newState.getBlock()) && !level.isClientSide) {
+        if (!state.is(newState.getBlock()) && !level.isClientSide()) {
             removeOther(level, pos, state);
         }
         super.onRemove(state, level, pos, newState, moved);
     }
+    //#endif
 
     @Override
     public VoxelShape getShape(BlockState s, BlockGetter g, BlockPos p, CollisionContext c) {
         return SHAPE;
     }
 
-    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    /** Clic derecho (igual en todas las versiones; abajo se conecta con la de cada una). */
+    protected InteractionResult onUse(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
         BlockPos master = masterOf(pos, state);
-        if (level.isClientSide) {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHooks.openScratchShop(master));
+        if (level.isClientSide()) {
+            com.casino.plat.Net.onClient(() -> ClientHooks.openScratchShop(master));
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return Plat.ok(level.isClientSide());
     }
+
+    //#if MC >= 1.21.2
+    //$$ @Override
+    //$$ protected InteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+    //$$         InteractionHand hand, BlockHitResult hit) {
+    //$$     return onUse(state, level, pos, player, hand, hit);
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    //$$     return onUse(state, level, pos, player, InteractionHand.MAIN_HAND, hit);
+    //$$ }
+    //#elif MC >= 1.20.5
+    //$$ @Override
+    //$$ protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos,
+    //$$         Player player, InteractionHand hand, BlockHitResult hit) {
+    //$$     InteractionResult r = onUse(state, level, pos, player, hand, hit);
+    //$$     return r == InteractionResult.PASS ? net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION
+    //$$             : r.consumesAction() ? net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide()) : net.minecraft.world.ItemInteractionResult.FAIL;
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    //$$     return onUse(state, level, pos, player, InteractionHand.MAIN_HAND, hit);
+    //$$ }
+    //#else
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return onUse(state, level, pos, player, hand, hit);
+    }
+    //#endif
 }

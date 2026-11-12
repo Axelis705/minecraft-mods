@@ -1,16 +1,17 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoBER;
+import com.casino.plat.client.Draw;
+import com.casino.plat.client.VB;
 import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.PlinkoBE;
 import com.casino.game.PlinkoLayout;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -24,7 +25,7 @@ import org.joml.Matrix4f;
  * Dibuja la mesa de Plinko: tablero con clavijas, casilleros con su multiplicador, marco con luces, cartel y las bolas cayendo
  * (con estela). Las posiciones salen de {@link PlinkoLayout} y del reloj del juego, igual para todos los jugadores.
  */
-public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
+public class PlinkoRenderer extends CasinoBER<PlinkoBE> {
     private static final ResourceLocation BOARD = tex("plinko_board");
     private static final ResourceLocation HEADER = tex("plinko_header");
     private static final ResourceLocation WHITE = tex("plinko_white");
@@ -43,20 +44,20 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
     private final Font font;
 
     public PlinkoRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.font = ctx.getFont();
+        this.font = Draw.font();
     }
 
     private static ResourceLocation tex(String n) {
         return Ids.rl(Casino.MODID, "textures/entity/" + n + ".png");
     }
 
-    private static void v(VertexConsumer vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz,
+    private static void v(VB vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz,
                           int r, int g, int b, int a) {
-        vc.vertex(p.pose(), x, y, z).color(r, g, b, a).uv(u, w).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(p.normal(), nx, ny, nz).endVertex();
+        vc.v(p, x, y, z, r, g, b, a, u, w, OverlayTexture.NO_OVERLAY, light, nx, ny, nz);
     }
 
     /** Rectángulo de cara al frente; la textura entra entera, con el arriba arriba. */
-    private static void quad(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float z, int light, int rgb, int a) {
+    private static void quad(VB vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float z, int light, int rgb, int a) {
         int r = (rgb >> 16) & 255;
         int g = (rgb >> 8) & 255;
         int b = rgb & 255;
@@ -67,14 +68,14 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
     }
 
     /** Pared lateral (mira hacia los lados) entre z0 y z1. */
-    private static void sideQuad(VertexConsumer vc, PoseStack.Pose p, float x, float y0, float y1, float z0, float z1, float nx, int light) {
+    private static void sideQuad(VB vc, PoseStack.Pose p, float x, float y0, float y1, float z0, float z1, float nx, int light) {
         v(vc, p, x, y0, z0, 0, 1, light, nx, 0, 0, 255, 255, 255, 255);
         v(vc, p, x, y1, z0, 0, 0, light, nx, 0, 0, 255, 255, 255, 255);
         v(vc, p, x, y1, z1, 1, 0, light, nx, 0, 0, 255, 255, 255, 255);
         v(vc, p, x, y0, z1, 1, 1, light, nx, 0, 0, 255, 255, 255, 255);
     }
 
-    private static void disc(VertexConsumer vc, PoseStack.Pose p, float cx, float cy, float z, float r, int seg, int light, int rgb) {
+    private static void disc(VB vc, PoseStack.Pose p, float cx, float cy, float z, float r, int seg, int light, int rgb) {
         int cr = (rgb >> 16) & 255;
         int cg = (rgb >> 8) & 255;
         int cb = rgb & 255;
@@ -100,7 +101,7 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
     }
 
     @Override
-    public void render(PlinkoBE be, float partial, PoseStack ps, MultiBufferSource buf, int packedLight, int overlay) {
+    protected void draw(PlinkoBE be, float partial, PoseStack ps, Draw d, int packedLight, int overlay) {
         Level level = be.getLevel();
         if (level == null) {
             return;
@@ -119,11 +120,11 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
         // OJO: cada pasada pide su "pincel" justo antes de usarlo y no lo guarda. Al pedir otro tipo de dibujo, Minecraft termina el anterior
         // y comparte el mismo almacén; si se reutilizara un pincel viejo, los dibujos saldrían con la textura equivocada.
         // ---- fondo del tablero
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(BOARD));
+        VB vc = d.cutout(BOARD);
         quad(vc, pose, -HALF_W, BOARD_BOTTOM, HALF_W, HEADER_BOTTOM + 0.02F, 0.0F, lit, 0xFFFFFF, 255);
 
         // ---- casilleros: fondo de color según lo que pagan
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
+        vc = d.cutout(WHITE);
         for (int b = 0; b < PlinkoLayout.BUCKETS; b++) {
             int col = PlinkoLayout.colorFor(PlinkoLayout.mult10(risk, b));
             float cx = bucketX(b);
@@ -142,7 +143,7 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
         }
 
         // ---- divisiones doradas, postes y base
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(GOLD));
+        vc = d.cutout(GOLD);
         for (int i = 0; i <= PlinkoLayout.BUCKETS; i++) {
             float x = (float) ((i - PlinkoLayout.BUCKETS / 2.0) * PlinkoLayout.DX);
             quad(vc, pose, x - 0.011F, BOARD_BOTTOM, x + 0.011F, BUCKET_TOP + 0.02F, 0.02F, lit, 0xFFFFFF, 255);
@@ -156,12 +157,12 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
         quad(vc, pose, -HALF_W - POST_W, BOARD_BOTTOM - 0.1F, HALF_W + POST_W, BOARD_BOTTOM, 0.07F, lit, 0xFFFFFF, 255);
 
         // ---- cartel
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(HEADER));
+        vc = d.cutout(HEADER);
         quad(vc, pose, -HALF_W - POST_W, HEADER_BOTTOM, HALF_W + POST_W, TOP, 0.075F, FULL, 0xFFFFFF, 255);
 
         // ---- luces que corren por los postes (brillan solas)
         boolean busy = !be.balls.isEmpty();
-        vc = buf.getBuffer(RenderType.eyes(GLOW));
+        vc = d.glow(GLOW);
         for (int side = -1; side <= 1; side += 2) {
             float bx = side * (HALF_W + POST_W / 2);
             for (int i = 0; i < 15; i++) {
@@ -174,7 +175,7 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
         }
 
         // ---- brillo de las bolas (estela + halo) y de los casilleros que acaban de ganar
-        vc = buf.getBuffer(RenderType.eyes(GLOW));
+        vc = d.glow(GLOW);
         for (PlinkoBE.Ball ball : be.balls) {
             double t = time - ball.start;
             if (t < 0) {
@@ -203,7 +204,7 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
         }
 
         // ---- cuerpo de las bolas (las que caen y las que descansan en su casillero)
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(BALL));
+        vc = d.cutout(BALL);
         for (PlinkoBE.Ball ball : be.balls) {
             double t = time - ball.start;
             if (t < 0) {
@@ -230,7 +231,7 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
             ps.scale(0.0118F, -0.0118F, 0.0118F);
             mat = ps.last().pose();
             Component c = Component.literal(PlinkoLayout.format(m10));
-            font.drawInBatch(c, -font.width(c) / 2.0F, -4, 0xFF000000 | PlinkoLayout.colorFor(m10), false, mat, buf, Font.DisplayMode.NORMAL, 0, FULL);
+            d.text(ps, c, -font.width(c) / 2.0F, -4, 0xFF000000 | PlinkoLayout.colorFor(m10), 0, FULL);
             ps.popPose();
         }
 
@@ -252,17 +253,13 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
                 ps.scale(s, -s, s);
                 mat = ps.last().pose();
                 Component c = Component.literal("x" + PlinkoLayout.format(l.m10));
-                font.drawInBatch(c, -font.width(c) / 2.0F, -4, (alpha << 24) | col, false, mat, buf, Font.DisplayMode.NORMAL, 0, FULL);
+                d.text(ps, c, -font.width(c) / 2.0F, -4, (alpha << 24) | col, 0, FULL);
                 ps.popPose();
             }
         }
         ps.popPose();
     }
 
-    @Override
-    public boolean shouldRenderOffScreen(PlinkoBE be) {
-        return true;
-    }
 
     @Override
     public int getViewDistance() {

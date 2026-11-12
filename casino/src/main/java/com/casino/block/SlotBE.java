@@ -1,5 +1,9 @@
 package com.casino.block;
 
+import com.casino.plat.Plat;
+import com.casino.plat.Ser;
+import com.casino.plat.CasinoBE;
+import com.casino.plat.Nbt;
 import com.casino.chip.Chips;
 import com.casino.data.CasinoData;
 import com.casino.game.Prize;
@@ -38,7 +42,7 @@ import java.util.UUID;
  * El corazón de la tragamonedas (mitad de abajo). El servidor cobra la apuesta y sortea en qué posición se detiene cada carrete en el
  * momento de tirar de la palanca; paga al terminar la animación. El cliente solo anima con el reloj del juego.
  */
-public class SlotBE extends BlockEntity {
+public class SlotBE extends CasinoBE {
     /** Premio gordo (tres coronas en una línea), cambiable agachado + clic con un objeto en la mano. */
     public ItemStack jackpot = new ItemStack(Items.DIAMOND_BLOCK, 2);
 
@@ -83,7 +87,7 @@ public class SlotBE extends BlockEntity {
     // ------------------------------------------------------------------ servidor
 
     private boolean canEditJackpot(ServerPlayer p) {
-        return p.hasPermissions(2) || p.isCreative() || (p.getServer() != null && p.getServer().isSingleplayerOwner(p.getGameProfile()));
+        return Plat.isOp(p) || p.isCreative() || Plat.isHost(p);
     }
 
     /** Agachado: con un objeto en la mano lo pone de premio gordo; con la mano vacía muestra el premio actual. */
@@ -91,19 +95,19 @@ public class SlotBE extends BlockEntity {
         ItemStack held = p.getMainHandItem();
         if (!held.isEmpty()) {
             if (spinning) {
-                p.displayClientMessage(Component.translatable("casino.slot.busy").withStyle(ChatFormatting.RED), true);
+                Plat.msg(p, Component.translatable("casino.slot.busy").withStyle(ChatFormatting.RED), true);
             } else if (canEditJackpot(p)) {
                 ItemStack s = held.copy();
                 s.setCount(Math.min(held.getCount(), s.getMaxStackSize()));
                 jackpot = s;
                 sync();
                 level.playSound(null, worldPosition, ModSounds.PRIZE_SET.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                p.displayClientMessage(Component.translatable("casino.slot.prize_set", s.getCount() + " x ", s.getHoverName()).withStyle(ChatFormatting.GOLD), true);
+                Plat.msg(p, Component.translatable("casino.slot.prize_set", s.getCount() + " x ", s.getHoverName()).withStyle(ChatFormatting.GOLD), true);
             } else {
-                p.displayClientMessage(Component.translatable("casino.wheel.no_permission").withStyle(ChatFormatting.RED), true);
+                Plat.msg(p, Component.translatable("casino.wheel.no_permission").withStyle(ChatFormatting.RED), true);
             }
         } else {
-            p.displayClientMessage(Component.translatable("casino.slot.prize_info", jackpot.getCount() + " x ", jackpot.getHoverName()).withStyle(ChatFormatting.GOLD), true);
+            Plat.msg(p, Component.translatable("casino.slot.prize_info", jackpot.getCount() + " x ", jackpot.getHoverName()).withStyle(ChatFormatting.GOLD), true);
         }
     }
 
@@ -113,16 +117,16 @@ public class SlotBE extends BlockEntity {
             return;
         }
         if (spinning) {
-            p.displayClientMessage(Component.translatable("casino.slot.busy").withStyle(ChatFormatting.YELLOW), true);
+            Plat.msg(p, Component.translatable("casino.slot.busy").withStyle(ChatFormatting.YELLOW), true);
             return;
         }
         if (!Chips.take(p, betChips)) {
-            p.displayClientMessage(Component.translatable("casino.plinko.no_chips", betChips).withStyle(ChatFormatting.RED), true);
+            Plat.msg(p, Component.translatable("casino.plinko.no_chips", betChips).withStyle(ChatFormatting.RED), true);
             level.playSound(null, worldPosition, ModSounds.DENIED.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
             return;
         }
         for (int i = 0; i < SlotLayout.REELS; i++) {
-            stops[i] = level.random.nextInt(SlotLayout.STRIP);
+            stops[i] = level.getRandom().nextInt(SlotLayout.STRIP);
         }
         SlotLayout.Result r = SlotLayout.evaluate(stops);
         bet = betChips;
@@ -169,7 +173,7 @@ public class SlotBE extends BlockEntity {
                 ServerPlayer p = sl.getServer().getPlayerList().getPlayer(spinner);
                 if (p != null) {
                     prize.deliver(p);
-                    p.displayClientMessage(Component.translatable("casino.slot.win", payout).withStyle(ChatFormatting.GREEN), true);
+                    Plat.msg(p, Component.translatable("casino.slot.win", payout).withStyle(ChatFormatting.GREEN), true);
                     if (units >= 32 || jackpotHit) {
                         CasinoNet.sendTo(p, new WheelWinPacket(prize));
                     }
@@ -200,7 +204,7 @@ public class SlotBE extends BlockEntity {
         if (level == null) {
             return;
         }
-        RandomSource r = level.random;
+        RandomSource r = level.getRandom();
         long now = level.getGameTime();
         if (!clientInit) {
             clientInit = true;
@@ -250,38 +254,22 @@ public class SlotBE extends BlockEntity {
 
     public void sync() {
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
 
     @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-1, 0, -1), worldPosition.offset(2, 3, 2));
+    protected AABB renderBox() {
+        return box(worldPosition.offset(-1, 0, -1), worldPosition.offset(2, 3, 2));
     }
 
-    @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
-    }
+
+
 
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag t = pkt.getTag();
-        if (t != null) {
-            load(t);
-        }
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("jackpot", jackpot.save(new CompoundTag()));
+    protected void writeData(CompoundTag tag) {
+        tag.put("jackpot", Ser.item(jackpot));
         tag.putBoolean("spinning", spinning);
         tag.putLong("spinStart", spinStart);
         tag.putIntArray("stops", stops);
@@ -290,7 +278,7 @@ public class SlotBE extends BlockEntity {
         tag.putInt("lineMask", lineMask);
         tag.putBoolean("jackpotHit", jackpotHit);
         if (spinner != null) {
-            tag.putUUID("spinner", spinner);
+            Nbt.putUuid(tag, "spinner", spinner);
         }
         tag.putString("spinnerName", spinnerName);
         tag.putLong("flashEnd", flashEnd);
@@ -301,26 +289,25 @@ public class SlotBE extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        ItemStack j = tag.contains("jackpot") ? ItemStack.of(tag.getCompound("jackpot")) : ItemStack.EMPTY;
+    protected void readData(CompoundTag tag) {
+        ItemStack j = tag.contains("jackpot") ? Ser.item(tag.get("jackpot")) : ItemStack.EMPTY;
         jackpot = j.isEmpty() ? new ItemStack(Items.DIAMOND_BLOCK, 2) : j;
-        spinning = tag.getBoolean("spinning");
-        spinStart = tag.getLong("spinStart");
-        int[] s = tag.getIntArray("stops");
+        spinning = Nbt.b(tag, "spinning");
+        spinStart = Nbt.l(tag, "spinStart");
+        int[] s = Nbt.ia(tag, "stops");
         for (int i = 0; i < 3; i++) {
             stops[i] = i < s.length ? SlotLayout.mod(s[i]) : 0;
         }
-        bet = tag.getInt("bet");
-        units = tag.getInt("units");
-        lineMask = tag.getInt("lineMask");
-        jackpotHit = tag.getBoolean("jackpotHit");
-        spinner = tag.hasUUID("spinner") ? tag.getUUID("spinner") : null;
-        spinnerName = tag.getString("spinnerName");
-        flashEnd = tag.getLong("flashEnd");
-        flashMask = tag.getInt("flashMask");
-        flashPayout = tag.getInt("flashPayout");
-        spinSeq = tag.getInt("spinSeq");
-        endSeq = tag.getInt("endSeq");
+        bet = Nbt.i(tag, "bet");
+        units = Nbt.i(tag, "units");
+        lineMask = Nbt.i(tag, "lineMask");
+        jackpotHit = Nbt.b(tag, "jackpotHit");
+        spinner = Nbt.hasUuid(tag, "spinner") ? Nbt.uuid(tag, "spinner") : null;
+        spinnerName = Nbt.s(tag, "spinnerName");
+        flashEnd = Nbt.l(tag, "flashEnd");
+        flashMask = Nbt.i(tag, "flashMask");
+        flashPayout = Nbt.i(tag, "flashPayout");
+        spinSeq = Nbt.i(tag, "spinSeq");
+        endSeq = Nbt.i(tag, "endSeq");
     }
 }

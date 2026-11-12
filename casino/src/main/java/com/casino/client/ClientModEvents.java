@@ -5,7 +5,13 @@ import com.casino.registry.ModBlockEntities;
 import com.casino.registry.ModEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+//#if MC >= 1.20.5
+//$$ import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
+//#else
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+//#endif
+import com.casino.plat.Ids;
+import com.casino.plat.client.G;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,8 +31,15 @@ public final class ClientModEvents {
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
     }
 
+    //#if MC >= 1.20.5
+    //$$ @SubscribeEvent
+    //$$ public static void onOverlays(AddGuiOverlayLayersEvent e) {
+    //$$     e.getLayeredDraw().add(Ids.casino("win_banner"), (gg, delta) -> WinBanner.render(new G(gg), gg.guiWidth(), gg.guiHeight()));
+    //$$ }
+    //#else
     @SubscribeEvent
     public static void onOverlays(RegisterGuiOverlaysEvent e) {
-        e.registerAboveAll("win_banner", WinBanner::render);
+        e.registerAboveAll("win_banner", (gui, gg, pt, w, h) -> WinBanner.render(new G(gg), w, h));
     }
+    //#endif
 }

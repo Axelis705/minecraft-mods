@@ -1,11 +1,15 @@
 package com.casino.item;
 
+import com.casino.plat.Net;
+import com.casino.plat.Nbt;
+import com.casino.plat.ItemTag;
 import com.casino.client.ClientHooks;
 import com.casino.game.ScratchCards;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +19,6 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -44,71 +47,108 @@ public class ScratchCardItem extends Item {
     }
 
     public static void init(ItemStack st, Random rnd) {
-        CompoundTag t = st.getOrCreateTag();
-        t.putIntArray(SYM, ScratchCards.generate(rnd));
-        t.putInt(MASK, 0);
-        t.putBoolean(CLAIMED, false);
+        int[] sym = ScratchCards.generate(rnd);
+        ItemTag.edit(st, t -> {
+            t.putIntArray(SYM, sym);
+            t.putInt(MASK, 0);
+            t.putBoolean(CLAIMED, false);
+        });
     }
 
     public static boolean hasCard(ItemStack st) {
-        return st.hasTag() && st.getTag().getIntArray(SYM).length == ScratchCards.SPOTS;
+        return Nbt.ia(ItemTag.get(st), SYM).length == ScratchCards.SPOTS;
     }
 
     public static int[] symbols(ItemStack st) {
-        int[] s = hasCard(st) ? st.getTag().getIntArray(SYM) : new int[ScratchCards.SPOTS];
+        int[] s = hasCard(st) ? Nbt.ia(ItemTag.get(st), SYM) : new int[ScratchCards.SPOTS];
         return s.clone();
     }
 
     public static int mask(ItemStack st) {
-        return st.hasTag() ? st.getTag().getInt(MASK) & ALL : 0;
+        return Nbt.i(ItemTag.get(st), MASK) & ALL;
     }
 
     public static boolean claimed(ItemStack st) {
-        return st.hasTag() && st.getTag().getBoolean(CLAIMED);
+        return Nbt.b(ItemTag.get(st), CLAIMED);
     }
 
-    @Override
-    public int getMaxStackSize(ItemStack stack) {
-        return 1;
-    }
-
+    //#if MC < 1.20.5
     @Override
     public Rarity getRarity(ItemStack stack) {
         return claimed(stack) ? Rarity.COMMON : Rarity.UNCOMMON;
     }
+    //#endif
 
+    // un boleto sacado del menú creativo todavía no tiene resultado: se sortea la primera vez que está en un inventario
+    //#if MC >= 1.21.5
+    //$$ @Override
+    //$$ public void inventoryTick(ItemStack stack, net.minecraft.server.level.ServerLevel level, Entity entity, net.minecraft.world.entity.EquipmentSlot slot) {
+    //$$     if (!hasCard(stack)) {
+    //$$         init(stack, new Random());
+    //$$     }
+    //$$ }
+    //#else
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean selected) {
-        // un boleto sacado del menú creativo todavía no tiene resultado: se sortea la primera vez que está en un inventario
-        if (!level.isClientSide && !hasCard(stack)) {
+        if (!level.isClientSide() && !hasCard(stack)) {
             init(stack, new Random());
         }
     }
+    //#endif
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    private void openCard(Level level, Player player, InteractionHand hand) {
         ItemStack st = player.getItemInHand(hand);
-        if (level.isClientSide && hasCard(st)) {
+        if (level.isClientSide() && hasCard(st)) {
             boolean off = hand == InteractionHand.OFF_HAND;
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientHooks.openScratchCard(off));
+            Net.onClient(() -> ClientHooks.openScratchCard(off));
         }
-        return InteractionResultHolder.sidedSuccess(st, level.isClientSide);
     }
 
+    //#if MC >= 1.21.2
+    //$$ @Override
+    //$$ public InteractionResult use(Level level, Player player, InteractionHand hand) {
+    //$$     openCard(level, player, hand);
+    //$$     return InteractionResult.SUCCESS;
+    //$$ }
+    //#else
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        openCard(level, player, hand);
+        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide());
+    }
+    //#endif
+
+    //#if MC >= 1.21.5
+    //$$ @Override
+    //$$ public void appendHoverText(ItemStack stack, Item.TooltipContext ctx, net.minecraft.world.item.component.TooltipDisplay display,
+    //$$         java.util.function.Consumer<Component> add, TooltipFlag flag) {
+    //$$     tips(stack, add);
+    //$$ }
+    //#elif MC >= 1.20.5
+    //$$ @Override
+    //$$ public void appendHoverText(ItemStack stack, Item.TooltipContext ctx, List<Component> tip, TooltipFlag flag) {
+    //$$     tips(stack, tip::add);
+    //$$ }
+    //#else
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tip, TooltipFlag flag) {
+        tips(stack, tip::add);
+    }
+    //#endif
+
+    private static void tips(ItemStack stack, java.util.function.Consumer<Component> tip) {
         if (!hasCard(stack)) {
-            tip.add(Component.translatable("casino.scratch.tip_new").withStyle(ChatFormatting.GRAY));
+            tip.accept(Component.translatable("casino.scratch.tip_new").withStyle(ChatFormatting.GRAY));
             return;
         }
         if (claimed(stack)) {
             int prize = ScratchCards.prizeOf(symbols(stack));
-            tip.add(Component.translatable(prize > 0 ? "casino.scratch.tip_paid" : "casino.scratch.tip_lost", prize).withStyle(prize > 0 ? ChatFormatting.GREEN : ChatFormatting.GRAY));
+            tip.accept(Component.translatable(prize > 0 ? "casino.scratch.tip_paid" : "casino.scratch.tip_lost", prize).withStyle(prize > 0 ? ChatFormatting.GREEN : ChatFormatting.GRAY));
         } else if (mask(stack) == 0) {
-            tip.add(Component.translatable("casino.scratch.tip_unscratched").withStyle(ChatFormatting.YELLOW));
-            tip.add(Component.translatable("casino.scratch.tip_use").withStyle(ChatFormatting.GRAY));
+            tip.accept(Component.translatable("casino.scratch.tip_unscratched").withStyle(ChatFormatting.YELLOW));
+            tip.accept(Component.translatable("casino.scratch.tip_use").withStyle(ChatFormatting.GRAY));
         } else {
-            tip.add(Component.translatable("casino.scratch.tip_partial", Integer.bitCount(mask(stack)), ScratchCards.SPOTS).withStyle(ChatFormatting.YELLOW));
+            tip.accept(Component.translatable("casino.scratch.tip_partial", Integer.bitCount(mask(stack)), ScratchCards.SPOTS).withStyle(ChatFormatting.YELLOW));
         }
     }
 }

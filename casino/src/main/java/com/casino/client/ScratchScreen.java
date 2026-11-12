@@ -1,5 +1,7 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoScreen;
+import com.casino.plat.client.G;
 import com.casino.game.ScratchCards;
 import com.casino.item.ScratchCardItem;
 import com.casino.net.CasinoNet;
@@ -8,7 +10,6 @@ import com.casino.registry.ModSounds;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
  * El boleto abierto: 6 casillas tapadas con pintura plateada que se rascan con el ratón (mantén el clic y arrastra). Al descubrir
  * más de la mitad de una casilla se destapa entera y se avisa al servidor; con las 6 descubiertas el servidor paga el premio.
  */
-public final class ScratchScreen extends Screen {
+public final class ScratchScreen extends CasinoScreen {
     private static final int W = 270;
     private static final int H = 252;
     private static final int CELL = 60;
@@ -140,53 +141,52 @@ public final class ScratchScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mx, double my, int button) {
+    protected boolean onClick(double mx, double my, int button) {
         if (button == 0) {
             lastX = mx;
             lastY = my;
             scratchAt(mx, my);
             return true;
         }
-        return super.mouseClicked(mx, my, button);
+        return superClick(mx, my, button);
     }
 
     @Override
-    public boolean mouseDragged(double mx, double my, int button, double dx, double dy) {
+    protected boolean onDrag(double mx, double my, int button, double dx, double dy) {
         if (button == 0) {
             scratchLine(lastX, lastY, mx, my);
             lastX = mx;
             lastY = my;
             return true;
         }
-        return super.mouseDragged(mx, my, button, dx, dy);
+        return superDrag(mx, my, button, dx, dy);
     }
 
     @Override
-    public boolean mouseReleased(double mx, double my, int button) {
+    protected boolean onRelease(double mx, double my, int button) {
         lastX = Double.NaN;
         lastY = Double.NaN;
-        return super.mouseReleased(mx, my, button);
+        return superRelease(mx, my, button);
     }
 
-    private void frame(GuiGraphics g, int x0, int y0, int x1, int y1, int color) {
+    private void frame(G g, int x0, int y0, int x1, int y1, int color) {
         g.fill(x0, y0, x1, y0 + 1, color);
         g.fill(x0, y1 - 1, x1, y1, color);
         g.fill(x0, y0, x0 + 1, y1, color);
         g.fill(x1 - 1, y0, x1, y1, color);
     }
 
-    private void drawSymbol(GuiGraphics g, int symbol, int cx, int cy, float scale) {
-        PoseStack ps = g.pose();
-        ps.pushPose();
-        ps.translate(cx, cy, 0);
-        ps.scale(scale, scale, 1.0F);
+    private void drawSymbol(G g, int symbol, int cx, int cy, float scale) {
+        g.push();
+        g.translate(cx, cy, 0);
+        g.scale(scale, scale, 1.0F);
         g.renderItem(ScratchSymbols.stack(symbol), -8, -8);
-        ps.popPose();
+        g.pop();
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
-        renderBackground(g);
+    protected void draw(G g, int mx, int my, float pt) {
+        drawBackground(g, mx, my, pt);
         // el boleto: marco dorado, fondo rojo oscuro con franja
         g.fill(left - 3, top - 3, left + W + 3, top + H + 3, 0xFFD9AE38);
         g.fill(left, top, left + W, top + H, 0xFF6E0F1C);
@@ -212,8 +212,8 @@ public final class ScratchScreen extends Screen {
             drawSymbol(g, symbols[i], x + CELL / 2, y + CELL / 2, 2.6F);
             if (!isDone(i)) {
                 // los objetos se dibujan con profundidad (z ~150): la pintura va más adelante o se vería el símbolo a través
-                g.pose().pushPose();
-                g.pose().translate(0, 0, 300);
+                g.push();
+                g.translate(0, 0, 300);
                 for (int a = 0; a < N; a++) {
                     for (int b = 0; b < N; b++) {
                         if (rev[i][a][b]) {
@@ -233,7 +233,7 @@ public final class ScratchScreen extends Screen {
                         g.fill(x + a * SUB, y + b * SUB, x + a * SUB + SUB, y + b * SUB + SUB, c);
                     }
                 }
-                g.pose().popPose();
+                g.pop();
             }
             if (winCell) {
                 float pulse = 0.5F + 0.5F * Mth.sin((age + pt) * 0.3F);
@@ -259,6 +259,6 @@ public final class ScratchScreen extends Screen {
             g.drawString(font, Component.literal(String.valueOf(ScratchCards.PRIZES[s])).withStyle(mine ? ChatFormatting.GOLD : ChatFormatting.WHITE), cx + 19, cy + 4, 0xFFFFFF, true);
         }
         g.drawString(font, Component.translatable("casino.scratch.close_hint").withStyle(ChatFormatting.DARK_GRAY), left + 12, top + H - 11, 0xFFFFFF, false);
-        super.render(g, mx, my, pt);
+        drawWidgets(g, mx, my, pt);
     }
 }

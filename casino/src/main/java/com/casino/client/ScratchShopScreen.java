@@ -1,19 +1,20 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoScreen;
+import com.casino.plat.client.G;
 import com.casino.chip.Chips;
 import com.casino.game.ScratchCards;
 import com.casino.net.CasinoNet;
 import com.casino.net.ScratchBuyPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 
 /** La tienda de la máquina de rasca y gana: se eligen cuántos boletos comprar (1, 5 o 10); los boletos llegan al inventario. */
-public final class ScratchShopScreen extends Screen {
+public final class ScratchShopScreen extends CasinoScreen {
     private static final int W = 270;
     private static final int H = 176;
     private static final int[] COUNTS = {1, 5, 10};
@@ -71,8 +72,8 @@ public final class ScratchShopScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
-        renderBackground(g);
+    protected void draw(G g, int mx, int my, float pt) {
+        drawBackground(g, mx, my, pt);
         g.fill(left - 2, top - 2, left + W + 2, top + H + 2, 0xFFD9AE38);
         g.fill(left, top, left + W, top + H, 0xFF3A0810);
         g.fill(left, top, left + W, top + 18, 0xFF6E0F1C);
@@ -91,6 +92,6 @@ public final class ScratchShopScreen extends Screen {
             g.drawString(font, Component.literal(String.valueOf(ScratchCards.PRIZES[s])).withStyle(ChatFormatting.WHITE), cx + 19, cy + 4, 0xFFFFFF, true);
         }
         g.drawString(font, Component.translatable("casino.scratch.shop_hint").withStyle(ChatFormatting.DARK_GRAY), left + 12, top + 140, 0xFFFFFF, false);
-        super.render(g, mx, my, pt);
+        drawWidgets(g, mx, my, pt);
     }
 }

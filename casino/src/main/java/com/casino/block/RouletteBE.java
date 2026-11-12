@@ -1,5 +1,8 @@
 package com.casino.block;
 
+import com.casino.plat.Plat;
+import com.casino.plat.CasinoBE;
+import com.casino.plat.Nbt;
 import com.casino.chip.Chips;
 import com.casino.data.CasinoData;
 import com.casino.entity.DealerEntity;
@@ -57,7 +60,7 @@ import java.util.UUID;
  * apostar (30 s) o se tira antes si todos los apostadores avisan que están listos. El crupier dice "no va más" y lanza la bola; cuando
  * se detiene se paga a todos y, unos segundos después, se limpia la mesa.
  */
-public class RouletteBE extends BlockEntity {
+public class RouletteBE extends CasinoBE {
     private static final int BET_TICKS = 600;
     private static final int START_DELAY = 24;
     private static final int RESULT_TICKS = 200;
@@ -140,7 +143,7 @@ public class RouletteBE extends BlockEntity {
         }
         Direction f = facing();
         BlockPos spot = RouletteBlock.dealerSpot(worldPosition, f);
-        DealerEntity d = ModEntities.DEALER.get().create(sl);
+        DealerEntity d = Plat.create(ModEntities.DEALER.get(), sl);
         if (d == null) {
             return;
         }
@@ -154,7 +157,7 @@ public class RouletteBE extends BlockEntity {
 
     private void dealerSwing() {
         for (DealerEntity d : dealers()) {
-            d.swing(InteractionHand.MAIN_HAND);
+            Plat.swing(d);
         }
     }
 
@@ -171,7 +174,7 @@ public class RouletteBE extends BlockEntity {
     }
 
     private void msg(ServerPlayer p, String key, ChatFormatting color, Object... args) {
-        p.displayClientMessage(Component.translatable(key, args).withStyle(color), true);
+        Plat.msg(p, Component.translatable(key, args).withStyle(color), true);
     }
 
     @Nullable
@@ -259,7 +262,7 @@ public class RouletteBE extends BlockEntity {
     }
 
     public void act(ServerPlayer p, int action, int arg1, int arg2) {
-        if (level == null || level.isClientSide) {
+        if (level == null || level.isClientSide()) {
             return;
         }
         long now = level.getGameTime();
@@ -671,7 +674,7 @@ public class RouletteBE extends BlockEntity {
                 if (b.phase == 1) {
                     double idx = Math.floor(b.rel / RouletteWheel.POCKET);
                     if (!Double.isNaN(lastRelIdx) && idx != lastRelIdx) {
-                        level.playLocalSound(c.x, c.y, c.z, ModSounds.ROULETTE_TICK.get(), SoundSource.BLOCKS, 0.45F, 0.85F + (float) level.random.nextDouble() * 0.35F, false);
+                        level.playLocalSound(c.x, c.y, c.z, ModSounds.ROULETTE_TICK.get(), SoundSource.BLOCKS, 0.45F, 0.85F + (float) level.getRandom().nextDouble() * 0.35F, false);
                     }
                     lastRelIdx = idx;
                 }
@@ -688,8 +691,8 @@ public class RouletteBE extends BlockEntity {
             double[] gc = RouletteBets.numberCenter(win);
             Vec3 w = worldPos(RouletteLayout.feltX(gc[0]), RouletteLayout.feltZ(gc[1]), RouletteLayout.Y_TOP + 0.1);
             for (int k = 0; k < 14; k++) {
-                double a = level.random.nextDouble() * Math.PI * 2;
-                double sp = 0.02 + level.random.nextDouble() * 0.05;
+                double a = level.getRandom().nextDouble() * Math.PI * 2;
+                double sp = 0.02 + level.getRandom().nextDouble() * 0.05;
                 level.addParticle(k % 3 == 0 ? ParticleTypes.TOTEM_OF_UNDYING : ParticleTypes.HAPPY_VILLAGER, w.x, w.y, w.z, Math.cos(a) * sp,
                         Math.abs(Math.sin(a)) * sp + 0.03, Math.sin(a) * sp);
             }
@@ -700,33 +703,18 @@ public class RouletteBE extends BlockEntity {
 
     public void sync() {
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
 
     @Override
-    public AABB getRenderBoundingBox() {
+    protected AABB renderBox() {
         return new AABB(worldPosition).inflate(4.6, 3.0, 4.6);
     }
 
-    @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
-    }
 
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
 
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag t = pkt.getTag();
-        if (t != null) {
-            load(t);
-        }
-    }
 
     private static int[] sparse(int[] stake) {
         int n = 0;
@@ -747,8 +735,7 @@ public class RouletteBE extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void writeData(CompoundTag tag) {
         ListTag list = new ListTag();
         for (int i = 0; i < RouletteTable.MAX_PLAYERS; i++) {
             Slot s = table.slots[i];
@@ -758,7 +745,7 @@ public class RouletteBE extends BlockEntity {
             t.putInt("payout", s.payout);
             t.putInt("net", s.net);
             if (players[i] != null) {
-                t.putUUID("player", players[i]);
+                Nbt.putUuid(t, "player", players[i]);
             }
             t.putString("name", names[i]);
             list.add(t);
@@ -777,7 +764,7 @@ public class RouletteBE extends BlockEntity {
         ListTag lb = new ListTag();
         for (Map.Entry<UUID, int[]> e : lastBets.entrySet()) {
             CompoundTag t = new CompoundTag();
-            t.putUUID("id", e.getKey());
+            Nbt.putUuid(t, "id", e.getKey());
             t.putIntArray("bets", e.getValue());
             lb.add(t);
         }
@@ -785,27 +772,26 @@ public class RouletteBE extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        ListTag list = tag.getList("slots", Tag.TAG_COMPOUND);
+    protected void readData(CompoundTag tag) {
+        ListTag list = Nbt.list(tag, "slots");
         for (int i = 0; i < RouletteTable.MAX_PLAYERS; i++) {
             Slot s = table.slots[i];
             Arrays.fill(s.stake, 0);
             s.total = 0;
             if (i < list.size()) {
-                CompoundTag t = list.getCompound(i);
-                int[] st = t.getIntArray("stakes");
+                CompoundTag t = Nbt.at(list, i);
+                int[] st = Nbt.ia(t, "stakes");
                 for (int k = 0; k + 1 < st.length; k += 2) {
                     if (st[k] >= 0 && st[k] < s.stake.length) {
                         s.stake[st[k]] = st[k + 1];
                         s.total += st[k + 1];
                     }
                 }
-                s.ready = t.getBoolean("ready");
-                s.payout = t.getInt("payout");
-                s.net = t.getInt("net");
-                players[i] = t.hasUUID("player") ? t.getUUID("player") : null;
-                names[i] = t.getString("name");
+                s.ready = Nbt.b(t, "ready");
+                s.payout = Nbt.i(t, "payout");
+                s.net = Nbt.i(t, "net");
+                players[i] = Nbt.hasUuid(t, "player") ? Nbt.uuid(t, "player") : null;
+                names[i] = Nbt.s(t, "name");
             } else {
                 s.ready = false;
                 s.payout = 0;
@@ -815,27 +801,27 @@ public class RouletteBE extends BlockEntity {
             }
         }
         Phase[] ph = Phase.values();
-        table.phase = ph[Math.max(0, Math.min(ph.length - 1, tag.getInt("phase")))];
-        table.winning = tag.getInt("winning");
+        table.phase = ph[Math.max(0, Math.min(ph.length - 1, Nbt.i(tag, "phase")))];
+        table.winning = Nbt.i(tag, "winning");
         table.past.clear();
-        for (int v : tag.getIntArray("past")) {
+        for (int v : Nbt.ia(tag, "past")) {
             if (v >= 0 && v <= 36 && table.past.size() < RouletteTable.HISTORY) {
                 table.past.add(v);
             }
         }
-        phaseEnd = tag.getLong("phaseEnd");
-        spinStart = tag.contains("spinStart") ? tag.getLong("spinStart") : -1;
-        spinSeq = tag.getInt("spinSeq");
-        spinNumber = Math.max(0, Math.min(36, tag.getInt("spinNumber")));
-        spinSeed = tag.getInt("spinSeed");
-        settledAt = tag.getLong("settledAt");
-        paid = tag.getBoolean("paid");
+        phaseEnd = Nbt.l(tag, "phaseEnd");
+        spinStart = tag.contains("spinStart") ? Nbt.l(tag, "spinStart") : -1;
+        spinSeq = Nbt.i(tag, "spinSeq");
+        spinNumber = Math.max(0, Math.min(36, Nbt.i(tag, "spinNumber")));
+        spinSeed = Nbt.i(tag, "spinSeed");
+        settledAt = Nbt.l(tag, "settledAt");
+        paid = Nbt.b(tag, "paid");
         lastBets.clear();
-        ListTag lb = tag.getList("lastBets", Tag.TAG_COMPOUND);
+        ListTag lb = Nbt.list(tag, "lastBets");
         for (int i = 0; i < lb.size(); i++) {
-            CompoundTag t = lb.getCompound(i);
-            if (t.hasUUID("id")) {
-                lastBets.put(t.getUUID("id"), t.getIntArray("bets"));
+            CompoundTag t = Nbt.at(lb, i);
+            if (Nbt.hasUuid(t, "id")) {
+                lastBets.put(Nbt.uuid(t, "id"), Nbt.ia(t, "bets"));
             }
         }
     }

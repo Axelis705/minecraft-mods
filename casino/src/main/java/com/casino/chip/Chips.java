@@ -1,5 +1,6 @@
 package com.casino.chip;
 
+import com.casino.plat.Plat;
 import com.casino.item.ChipItem;
 import com.casino.registry.ModItems;
 import net.minecraft.world.entity.player.Inventory;
@@ -40,8 +41,7 @@ public final class Chips {
 
     private static List<ItemStack> slots(Player p) {
         Inventory inv = p.getInventory();
-        List<ItemStack> all = new ArrayList<>(inv.items);
-        all.addAll(inv.offhand);
+        List<ItemStack> all = Plat.mainAndOffhand(inv);
         return all;
     }
 

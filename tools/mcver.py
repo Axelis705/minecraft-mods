@@ -53,6 +53,44 @@ DIRECTIVE = re.compile(r"^(\s*)//#(if|elif|else|endif)\b(.*)$")
 COMMENTED = re.compile(r"^(\s*)//\$\$ ?(.*)$")
 
 
+def _color_block(m):
+    """26.x: Blocks.RED_CONCRETE -> Blocks.CONCRETE.red() (los bloques de colores ahora vienen en grupo)."""
+    parts = m.group(1).lower().split("_")
+    color = parts[0] + "".join(w.capitalize() for w in parts[1:])
+    return f"Blocks.{m.group(2)}.{color}()"
+
+
+# Nombres que solo cambiaron de nombre o de paquete: se reemplazan solos en el código generado (desde esa versión).
+REMAP = [
+    ((1, 21, 2), [("import net.minecraft.world.level.block.state.properties.DirectionProperty;",
+                   "import net.minecraft.world.level.block.state.properties.EnumProperty;"),
+                  (r"\bDirectionProperty\b", "EnumProperty<Direction>"),
+                  ("import net.minecraft.world.InteractionResultHolder;\n", "")]),
+    ((26, 1), [("net.minecraft.resources.ResourceLocation", "net.minecraft.resources.Identifier"), (r"\bResourceLocation\b", "Identifier"),
+               ("net.minecraftforge.eventbus.api.SubscribeEvent", "net.minecraftforge.eventbus.api.listener.SubscribeEvent"),
+               ("net.minecraft.client.renderer.RenderType;", "net.minecraft.client.renderer.rendertype.RenderType;"),
+               ("import net.minecraft.client.renderer.LightTexture;\n", ""),
+               (r"\bLevelRenderer\.getLightColor\(", "net.minecraft.util.LightCoordsUtil.getLightCoords("),
+               (r"\bLightTexture\.", "net.minecraft.util.LightCoordsUtil."),
+               (r"\bBlocks\.([A-Z_]+?)_(CONCRETE|CARPET|STAINED_GLASS|WOOL|TERRACOTTA)\b", _color_block),
+               ("import net.minecraft.Util;", "import net.minecraft.util.Util;"), (r"\bnet\.minecraft\.Util\.", "net.minecraft.util.Util."),
+               (r"\.moveTo\(", ".snapTo("),
+               ("getGameProfile().getName()", "getGameProfile().name()"),
+               (r"\.getAllKeys\(\)", ".keySet()")]),
+    ((26, 3), [("PushReaction.BLOCK", "PushReaction.IMMOVEABLE"),
+               (r"\.mulPose\(", ".rotate(")]),
+]
+
+
+def remap(text, mc):
+    m = vkey(mc)
+    for since, pairs in REMAP:
+        if m >= since:
+            for a, b in pairs:
+                text = re.sub(a, b, text) if a.startswith("\\") or callable(b) else text.replace(a, b)
+    return text
+
+
 def process(lines, mc, path="?"):
     out = []
     # pila de (rama_ya_tomada, activa_ahora, padre_activo)
@@ -211,7 +249,7 @@ def gen(mod, mc, out):
             with open(full, encoding="utf-8") as fh:
                 lines = fh.readlines()
             with open(dst, "w", encoding="utf-8") as fh:
-                fh.writelines(process(lines, mc, rel))
+                fh.write(remap("".join(process(lines, mc, rel)), mc))
     modid = mod_id(base)
     gen_resources(os.path.join(src, "resources"), os.path.join(out, "src", "main", "resources"), mc, modid)
 

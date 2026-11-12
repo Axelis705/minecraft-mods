@@ -1,5 +1,6 @@
 package com.casino.block;
 
+import com.casino.plat.Plat;
 import com.casino.chip.Chips;
 import com.casino.registry.ModSounds;
 import net.minecraft.ChatFormatting;
@@ -25,7 +26,7 @@ public final class Cashier {
 
     public static int count(ServerPlayer p, Item item) {
         int n = 0;
-        for (ItemStack s : p.getInventory().items) {
+        for (ItemStack s : Plat.mainItems(p.getInventory())) {
             if (s.is(item)) {
                 n += s.getCount();
             }
@@ -35,7 +36,7 @@ public final class Cashier {
 
     private static void remove(ServerPlayer p, Item item, int amount) {
         int left = amount;
-        for (ItemStack s : p.getInventory().items) {
+        for (ItemStack s : Plat.mainItems(p.getInventory())) {
             if (left > 0 && s.is(item)) {
                 int t = Math.min(left, s.getCount());
                 s.shrink(t);
@@ -45,7 +46,7 @@ public final class Cashier {
     }
 
     private static void deny(ServerPlayer p, String key) {
-        p.displayClientMessage(Component.translatable(key).withStyle(ChatFormatting.RED), true);
+        Plat.msg(p, Component.translatable(key).withStyle(ChatFormatting.RED), true);
         p.level().playSound(null, p.blockPosition(), ModSounds.DENIED.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
     }
 
@@ -72,7 +73,7 @@ public final class Cashier {
             }
             remove(p, item, n);
             Chips.give(p, n * BUY[kind]);
-            p.displayClientMessage(Component.translatable("casino.cashier.bought", n * BUY[kind]).withStyle(ChatFormatting.GREEN), true);
+            Plat.msg(p, Component.translatable("casino.cashier.bought", n * BUY[kind]).withStyle(ChatFormatting.GREEN), true);
         } else {
             int n = Math.min(amount, maxSell(p, kind));
             if (n <= 0) {
@@ -86,7 +87,7 @@ public final class Cashier {
                 ItemHandlerHelper.giveItemToPlayer(p, new ItemStack(item, c));
                 left -= c;
             }
-            p.displayClientMessage(Component.translatable("casino.cashier.sold", n * SELL[kind], n).withStyle(ChatFormatting.GREEN), true);
+            Plat.msg(p, Component.translatable("casino.cashier.sold", n * SELL[kind], n).withStyle(ChatFormatting.GREEN), true);
         }
         p.level().playSound(null, p.blockPosition(), ModSounds.COINS.get(), SoundSource.BLOCKS, 0.7F, 1.0F);
     }

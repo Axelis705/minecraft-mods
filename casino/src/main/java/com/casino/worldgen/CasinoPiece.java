@@ -1,5 +1,7 @@
 package com.casino.worldgen;
 
+import com.casino.plat.Plat;
+import com.casino.plat.Nbt;
 import com.casino.block.BlackjackBlock;
 import com.casino.block.CashierBlock;
 import com.casino.block.LuckyWheelBlock;
@@ -49,8 +51,8 @@ public class CasinoPiece extends StructurePiece {
 
     public CasinoPiece(CompoundTag tag) {
         super(ModStructures.CASINO_PIECE.get(), tag);
-        this.rot = tag.getInt("Rot");
-        this.y0 = tag.getInt("Y0");
+        this.rot = Nbt.i(tag, "Rot");
+        this.y0 = Nbt.i(tag, "Y0");
     }
 
     @Override
@@ -78,12 +80,10 @@ public class CasinoPiece extends StructurePiece {
         int sz = odd ? CasinoPlan.W : CasinoPlan.D;
         BoundingBox box = new BoundingBox(corner.getX(), corner.getY() - FOUNDATION, corner.getZ(), corner.getX() + sx - 1, corner.getY() + CasinoPlan.TOP_Y, corner.getZ() + sz - 1);
         CasinoPiece piece = new CasinoPiece(rot, corner.getY(), box);
-        ChunkPos a = new ChunkPos(box.minX() >> 4, box.minZ() >> 4);
-        ChunkPos z = new ChunkPos(box.maxX() >> 4, box.maxZ() >> 4);
-        for (int cx = a.x; cx <= z.x; cx++) {
-            for (int cz = a.z; cz <= z.z; cz++) {
+        for (int cx = box.minX() >> 4; cx <= box.maxX() >> 4; cx++) {
+            for (int cz = box.minZ() >> 4; cz <= box.maxZ() >> 4; cz++) {
                 level.getChunk(cx, cz);
-                BoundingBox cb = new BoundingBox(cx << 4, level.getMinBuildHeight(), cz << 4, (cx << 4) + 15, level.getMaxBuildHeight(), (cz << 4) + 15);
+                BoundingBox cb = new BoundingBox(cx << 4, Plat.minY(level), cz << 4, (cx << 4) + 15, Plat.maxY(level), (cz << 4) + 15);
                 piece.postProcess(level, level.structureManager(), level.getChunkSource().getGenerator(), level.getRandom(), cb, new ChunkPos(cx, cz), BlockPos.ZERO);
             }
         }

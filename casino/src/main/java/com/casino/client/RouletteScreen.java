@@ -1,5 +1,7 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoScreen;
+import com.casino.plat.client.G;
 import com.casino.block.RouletteBE;
 import com.casino.chip.Chips;
 import com.casino.game.RouletteBets;
@@ -12,7 +14,6 @@ import com.casino.net.CasinoNet;
 import com.casino.net.RoulettePacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
@@ -29,7 +30,7 @@ import java.util.List;
  * la vez (caballo, calle, cuadro, seisena). Shift = 5 fichas de una vez. Teclas: 1-5 elegir ficha, Z deshacer, C borrar, R repetir,
  * D doblar, Espacio listo.
  */
-public final class RouletteScreen extends Screen {
+public final class RouletteScreen extends CasinoScreen {
     private static final int W = 424;
     private static final int H = 226;
     private static final int UW = 28;
@@ -193,14 +194,14 @@ public final class RouletteScreen extends Screen {
     // ------------------------------------------------------------------ entrada
 
     @Override
-    public boolean mouseClicked(double mx, double my, int button) {
-        if (super.mouseClicked(mx, my, button)) {
+    protected boolean onClick(double mx, double my, int button) {
+        if (superClick(mx, my, button)) {
             return true;
         }
         RouletteBE be = table();
         int spot = spotAt(mx, my);
         if (be != null && spot >= 0 && open(be)) {
-            int mult = hasShiftDown() ? 5 : 1;
+            int mult = shift() ? 5 : 1;
             if (button == 0) {
                 send(RoulettePacket.PLACE, spot, chip() * mult);
                 return true;
@@ -214,14 +215,14 @@ public final class RouletteScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mx, double my, double delta) {
+    protected boolean onScroll(double mx, double my, double delta) {
         chipIdx = Math.max(0, Math.min(RouletteTable.CHIPS.length - 1, chipIdx + (delta > 0 ? 1 : -1)));
         lastChip = chipIdx;
         return true;
     }
 
     @Override
-    public boolean keyPressed(int key, int scan, int mods) {
+    protected boolean onKey(int key, int scan, int mods) {
         if (key >= 49 && key <= 53) { // 1..5
             chipIdx = key - 49;
             lastChip = chipIdx;
@@ -247,7 +248,7 @@ public final class RouletteScreen extends Screen {
             send(RoulettePacket.READY, 0, 0);
             return true;
         }
-        return super.keyPressed(key, scan, mods);
+        return superKey(key, scan, mods);
     }
 
     // ------------------------------------------------------------------ dibujo
@@ -260,31 +261,31 @@ public final class RouletteScreen extends Screen {
         };
     }
 
-    private void box(GuiGraphics g, int x0, int y0, int x1, int y1, int color) {
+    private void box(G g, int x0, int y0, int x1, int y1, int color) {
         g.fill(x0, y0, x1, y1, color);
     }
 
-    private void outline(GuiGraphics g, int x0, int y0, int x1, int y1, int color) {
+    private void outline(G g, int x0, int y0, int x1, int y1, int color) {
         g.fill(x0, y0, x1, y0 + 1, color);
         g.fill(x0, y1 - 1, x1, y1, color);
         g.fill(x0, y0, x0 + 1, y1, color);
         g.fill(x1 - 1, y0, x1, y1, color);
     }
 
-    private void cell(GuiGraphics g, double gx0, double gy0, double gx1, double gy1, int fill, int border) {
+    private void cell(G g, double gx0, double gy0, double gx1, double gy1, int fill, int border) {
         int x0 = sx(gx0), y0 = sy(gy0), x1 = sx(gx1), y1 = sy(gy1);
         box(g, x0, y0, x1, y1, fill);
         outline(g, x0, y0, x1, y1, border);
     }
 
-    private void centered(GuiGraphics g, String s, double gx0, double gy0, double gx1, double gy1, int color, float scale) {
+    private void centered(G g, String s, double gx0, double gy0, double gx1, double gy1, int color, float scale) {
         int x0 = sx(gx0), y0 = sy(gy0), x1 = sx(gx1), y1 = sy(gy1);
-        g.pose().pushPose();
+        g.push();
         float cx = (x0 + x1) / 2.0F, cy = (y0 + y1) / 2.0F;
-        g.pose().translate(cx, cy, 0);
-        g.pose().scale(scale, scale, 1);
+        g.translate(cx, cy, 0);
+        g.scale(scale, scale, 1);
         g.drawString(font, s, -font.width(s) / 2, -font.lineHeight / 2 + 1, color, false);
-        g.pose().popPose();
+        g.pop();
     }
 
     private Component spotName(Spot s) {
@@ -322,7 +323,7 @@ public final class RouletteScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
+    protected void draw(G g, int mx, int my, float pt) {
         RouletteBE be = table();
         g.fill(left - 2, top - 2, left + W + 2, top + H + 2, 0xFF8A6A1E);
         g.fill(left, top, left + W, top + H, 0xE0102A18);
@@ -331,7 +332,7 @@ public final class RouletteScreen extends Screen {
         Component bal = Component.translatable("casino.cashier.balance", balance()).withStyle(ChatFormatting.YELLOW);
         g.drawString(font, bal, left + W - 8 - font.width(bal), top + 4, 0xFFFFFF, true);
         if (be == null) {
-            super.render(g, mx, my, pt);
+            drawWidgets(g, mx, my, pt);
             return;
         }
         RouletteTable t = be.table;
@@ -443,17 +444,17 @@ public final class RouletteScreen extends Screen {
                         break;
                     }
                 }
-                g.pose().pushPose();
-                g.pose().translate(px - 5, py - 5, 0);
-                g.pose().scale(0.62F, 0.62F, 1);
+                g.push();
+                g.translate(px - 5, py - 5, 0);
+                g.scale(0.62F, 0.62F, 1);
                 g.renderItem(new ItemStack(Chips.itemFor(v).get()), 0, 0);
-                g.pose().popPose();
+                g.pop();
                 String a = String.valueOf(mineAmt);
-                g.pose().pushPose();
-                g.pose().translate(px, py + 2, 200);
-                g.pose().scale(0.6F, 0.6F, 1);
+                g.push();
+                g.translate(px, py + 2, 200);
+                g.scale(0.6F, 0.6F, 1);
                 g.drawString(font, a, -font.width(a) / 2, 0, 0xFFFFFFFF, true);
-                g.pose().popPose();
+                g.pop();
             }
         }
 
@@ -492,7 +493,7 @@ public final class RouletteScreen extends Screen {
                 rx -= w + 12;
             }
         }
-        super.render(g, mx, my, pt);
+        drawWidgets(g, mx, my, pt);
         if (hover >= 0) {
             Spot s = RouletteBets.SPOTS.get(hover);
             List<Component> tip = new ArrayList<>();
@@ -504,7 +505,7 @@ public final class RouletteScreen extends Screen {
             if (mine != null && mine.stake[s.id] > 0) {
                 tip.add(Component.translatable("casino.roulette.tip_yours", mine.stake[s.id]).withStyle(ChatFormatting.YELLOW));
             }
-            g.renderTooltip(font, tip, java.util.Optional.empty(), mx, my);
+            g.renderTooltip(font, tip, mx, my);
         }
     }
 

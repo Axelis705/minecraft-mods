@@ -1,5 +1,7 @@
 package com.casino.entity;
 
+import com.casino.plat.Plat;
+import com.casino.plat.Nbt;
 import com.casino.net.CasinoNet;
 import com.casino.net.OpenBlackjackPacket;
 import com.casino.net.OpenPokerPacket;
@@ -47,15 +49,24 @@ public class DealerEntity extends Mob {
         super(type, level);
         setNoAi(true);
         setPersistenceRequired();
-        setInvulnerable(true);
+        Plat.invulnerable(this);
     }
 
+    //#if MC >= 1.20.5
+    //$$ @Override
+    //$$ protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder b) {
+    //$$     super.defineSynchedData(b);
+    //$$     b.define(GAME, GAME_BLACKJACK);
+    //$$     b.define(TIP, -1);
+    //$$ }
+    //#else
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(GAME, GAME_BLACKJACK);
         this.entityData.define(TIP, -1);
     }
+    //#endif
 
     public int getTip() {
         return this.entityData.get(TIP);
@@ -127,7 +138,7 @@ public class DealerEntity extends Mob {
         float base = getYRot();
         yBodyRot = base;
         yBodyRotO = base;
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             tickTips();
             Player p = level().getNearestPlayer(this, 7.0);
             if (p != null) {
@@ -150,7 +161,7 @@ public class DealerEntity extends Mob {
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
-        if (!level().isClientSide && table != null && player instanceof ServerPlayer sp) {
+        if (!level().isClientSide() && table != null && player instanceof ServerPlayer sp) {
             if (getGame() == GAME_POKER) {
                 CasinoNet.sendTo(sp, new OpenPokerPacket(table));
             } else if (getGame() == GAME_ROULETTE) {
@@ -159,9 +170,27 @@ public class DealerEntity extends Mob {
                 CasinoNet.sendTo(sp, new OpenBlackjackPacket(table));
             }
         }
-        return InteractionResult.sidedSuccess(level().isClientSide);
+        return Plat.ok(level().isClientSide());
     }
 
+    //#if MC >= 1.21.6
+    //$$ @Override
+    //$$ protected void addAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput out) {
+    //$$     super.addAdditionalSaveData(out);
+    //$$     out.putInt("Game", getGame());
+    //$$     if (table != null) {
+    //$$         out.putIntArray("Table", new int[]{table.getX(), table.getY(), table.getZ()});
+    //$$     }
+    //$$ }
+    //$$
+    //$$ @Override
+    //$$ protected void readAdditionalSaveData(net.minecraft.world.level.storage.ValueInput in) {
+    //$$     super.readAdditionalSaveData(in);
+    //$$     setGame(in.getIntOr("Game", 0));
+    //$$     int[] t = in.getIntArray("Table").orElse(new int[0]);
+    //$$     table = t.length == 3 ? new BlockPos(t[0], t[1], t[2]) : null;
+    //$$ }
+    //#else
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -174,8 +203,9 @@ public class DealerEntity extends Mob {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        setGame(tag.getInt("Game"));
-        int[] t = tag.getIntArray("Table");
+        setGame(Nbt.i(tag, "Game"));
+        int[] t = Nbt.ia(tag, "Table");
         table = t.length == 3 ? new BlockPos(t[0], t[1], t[2]) : null;
     }
+    //#endif
 }

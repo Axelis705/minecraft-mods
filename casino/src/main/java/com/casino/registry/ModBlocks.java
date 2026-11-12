@@ -1,5 +1,6 @@
 package com.casino.registry;
 
+import com.casino.plat.Reg;
 import com.casino.Casino;
 import com.casino.block.BlackjackBlock;
 import com.casino.block.CashierBlock;
@@ -22,34 +23,34 @@ public final class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Casino.MODID);
 
     public static final RegistryObject<Block> CASHIER = BLOCKS.register("cashier", () -> new CashierBlock(
-            BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
+            Reg.block("cashier").mapColor(MapColor.GOLD).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
                     .lightLevel(s -> 8)));
     public static final RegistryObject<Block> LUCKY_WHEEL = BLOCKS.register("lucky_wheel", () -> new LuckyWheelBlock(
-            BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
+            Reg.block("lucky_wheel").mapColor(MapColor.GOLD).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 10)));
 
     public static final RegistryObject<Block> PLINKO = BLOCKS.register("plinko", () -> new PlinkoBlock(
-            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
+            Reg.block("plinko").mapColor(MapColor.COLOR_PURPLE).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 10)));
 
     public static final RegistryObject<Block> SLOT = BLOCKS.register("slot", () -> new SlotBlock(
-            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
+            Reg.block("slot").mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 10)));
 
     public static final RegistryObject<Block> BLACKJACK = BLOCKS.register("blackjack", () -> new BlackjackBlock(
-            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
+            Reg.block("blackjack").mapColor(MapColor.COLOR_GREEN).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 6)));
 
     public static final RegistryObject<Block> ROULETTE = BLOCKS.register("roulette", () -> new RouletteBlock(
-            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
+            Reg.block("roulette").mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 6)));
 
     public static final RegistryObject<Block> POKER = BLOCKS.register("poker", () -> new PokerBlock(
-            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
+            Reg.block("poker").mapColor(MapColor.COLOR_BLUE).strength(3.0F, 8.0F).sound(SoundType.WOOD).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 6)));
 
     public static final RegistryObject<Block> SCRATCH_MACHINE = BLOCKS.register("scratch_machine", () -> new ScratchMachineBlock(
-            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
+            Reg.block("scratch_machine").mapColor(MapColor.COLOR_RED).strength(3.0F, 8.0F).sound(SoundType.METAL).noOcclusion()
                     .pushReaction(PushReaction.BLOCK).lightLevel(s -> 8)));
 
     private ModBlocks() {

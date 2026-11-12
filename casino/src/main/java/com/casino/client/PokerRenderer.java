@@ -1,5 +1,8 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoBER;
+import com.casino.plat.client.Draw;
+import com.casino.plat.client.VB;
 import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.PokerBE;
@@ -12,13 +15,11 @@ import com.casino.game.PokerTable.Result;
 import com.casino.game.PokerTable.Seat;
 import com.casino.game.PokerTable.SeatState;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -38,7 +39,7 @@ import java.util.List;
  * y del crupier (con animación de reparto y de giro de la carta tapada), las fichas apostadas, los círculos de cada asiento, el zapato,
  * los totales y los resultados. Marco local: origen en el centro del bloque del medio del lado recto, +z hacia los jugadores, +x a su derecha.
  */
-public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
+public class PokerRenderer extends CasinoBER<PokerBE> {
     private static final ResourceLocation CARDS = Ids.rl(Casino.MODID, "textures/entity/cards.png");
     private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/plinko_white.png");
     private static final ResourceLocation FELT = Ids.rl(Casino.MODID, "textures/block/poker_felt.png");
@@ -71,14 +72,13 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
     private final Font font;
 
     public PokerRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.font = ctx.getFont();
+        this.font = Draw.font();
     }
 
     // ------------------------------------------------------------------ vértices
 
-    private static void v(VertexConsumer vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz, int rgb) {
-        vc.vertex(p.pose(), x, y, z).color((rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255, 255).uv(u, w).overlayCoords(OverlayTexture.NO_OVERLAY)
-                .uv2(light).normal(p.normal(), nx, ny, nz).endVertex();
+    private static void v(VB vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz, int rgb) {
+        vc.v(p, x, y, z, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255, 255, u, w, OverlayTexture.NO_OVERLAY, light, nx, ny, nz);
     }
 
     private static int scale(int rgb, float k) {
@@ -97,7 +97,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
     }
 
     /** Pared curva (de 0 a 180 grados) a radio r entre dos alturas, con el frente hacia afuera (o hacia adentro). */
-    private static void wallArc(VertexConsumer vc, PoseStack.Pose p, int light, float r, float y0, float y1, boolean inward, int rgb, float vScale) {
+    private static void wallArc(VB vc, PoseStack.Pose p, int light, float r, float y0, float y1, boolean inward, int rgb, float vScale) {
         for (int i = 0; i < SEG; i++) {
             double a0 = 180.0 * i / SEG;
             double a1 = 180.0 * (i + 1) / SEG;
@@ -114,7 +114,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
     }
 
     /** Pared recta del lado del crupier (z = centro), de x = -r a x = r. */
-    private static void wallFlat(VertexConsumer vc, PoseStack.Pose p, int light, float r, float y0, float y1, float z, boolean towardPlayers, int rgb, float vScale) {
+    private static void wallFlat(VB vc, PoseStack.Pose p, int light, float r, float y0, float y1, float z, boolean towardPlayers, int rgb, float vScale) {
         float nz = towardPlayers ? 1 : -1;
         v(vc, p, -r, y0, z, -r * 2, (1 - y0) * 2 * vScale, light, 0, 0, nz, rgb);
         v(vc, p, r, y0, z, r * 2, (1 - y0) * 2 * vScale, light, 0, 0, nz, rgb);
@@ -123,7 +123,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
     }
 
     /** Anillo horizontal entre dos radios (cara hacia arriba). El ángulo puede recortarse (a0..a1). */
-    private static void ringTop(VertexConsumer vc, PoseStack.Pose p, int light, double rIn, double rOut, float y, double a0, double a1, int n, int rgb, boolean clampFlat) {
+    private static void ringTop(VB vc, PoseStack.Pose p, int light, double rIn, double rOut, float y, double a0, double a1, int n, int rgb, boolean clampFlat) {
         for (int i = 0; i < n; i++) {
             double s0 = a0 + (a1 - a0) * i / n;
             double s1 = a0 + (a1 - a0) * (i + 1) / n;
@@ -141,7 +141,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
     }
 
     /** Un segmento plano finito sobre el fieltro (para líneas del dibujo de la mesa). */
-    private static void line(VertexConsumer vc, PoseStack.Pose p, int light, float x0, float z0, float x1, float z1, float w, float y, int rgb) {
+    private static void line(VB vc, PoseStack.Pose p, int light, float x0, float z0, float x1, float z1, float w, float y, int rgb) {
         float dx = x1 - x0;
         float dz = z1 - z0;
         float len = (float) Math.sqrt(dx * dx + dz * dz);
@@ -156,7 +156,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         v(vc, p, x1 - nx, y, z1 - nz, 1, 0, light, 0, 1, 0, rgb);
     }
 
-    private static void arcLine(VertexConsumer vc, PoseStack.Pose p, int light, double r, double a0, double a1, float w, float y, int rgb) {
+    private static void arcLine(VB vc, PoseStack.Pose p, int light, double r, double a0, double a1, float w, float y, int rgb) {
         int n = 40;
         for (int i = 0; i < n; i++) {
             double s0 = a0 + (a1 - a0) * i / n;
@@ -165,7 +165,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         }
     }
 
-    private static void ring(VertexConsumer vc, PoseStack.Pose p, int light, float cx, float cz, float r0, float r1, float y, int rgb) {
+    private static void ring(VB vc, PoseStack.Pose p, int light, float cx, float cz, float r0, float r1, float y, int rgb) {
         int n = 20;
         for (int i = 0; i < n; i++) {
             double s0 = Math.PI * 2 * i / n;
@@ -177,7 +177,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         }
     }
 
-    private static void box(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float z0, float x1, float y1, float z1, int rgb, int light) {
+    private static void box(VB vc, PoseStack.Pose p, float x0, float y0, float z0, float x1, float y1, float z1, int rgb, int light) {
         v(vc, p, x0, y1, z0, 0, 0, light, 0, 1, 0, rgb); v(vc, p, x0, y1, z1, 0, 1, light, 0, 1, 0, rgb);
         v(vc, p, x1, y1, z1, 1, 1, light, 0, 1, 0, rgb); v(vc, p, x1, y1, z0, 1, 0, light, 0, 1, 0, rgb);
         v(vc, p, x0, y0, z1, 0, 0, light, 0, 0, 1, scale(rgb, 0.8F)); v(vc, p, x1, y0, z1, 1, 0, light, 0, 0, 1, scale(rgb, 0.8F));
@@ -190,14 +190,14 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         v(vc, p, x1, y1, z0, 1, 1, light, 1, 0, 0, scale(rgb, 0.65F)); v(vc, p, x1, y1, z1, 0, 1, light, 1, 0, 0, scale(rgb, 0.65F));
     }
 
-    private static void quadUV(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, int light) {
+    private static void quadUV(VB vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, int light) {
         v(vc, p, x0, y0, 0, u0, v1, light, 0, 0, 1, 0xFFFFFF);
         v(vc, p, x1, y0, 0, u1, v1, light, 0, 0, 1, 0xFFFFFF);
         v(vc, p, x1, y1, 0, u1, v0, light, 0, 0, 1, 0xFFFFFF);
         v(vc, p, x0, y1, 0, u0, v0, light, 0, 0, 1, 0xFFFFFF);
     }
 
-    private static void cardQuad(VertexConsumer vc, PoseStack.Pose p, float halfW, int card, int light) {
+    private static void cardQuad(VB vc, PoseStack.Pose p, float halfW, int card, int light) {
         float u0;
         float v0;
         if (card < 0) {
@@ -212,24 +212,24 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
 
     // ------------------------------------------------------------------ la mesa
 
-    private void drawTable(PoseStack ps, MultiBufferSource buf, int light) {
+    private void drawTable(PoseStack ps, Draw d, int light) {
         PoseStack.Pose p = ps.last();
         float flat = (float) CZ;
         // zócalo dorado y cuerpo de madera
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(GOLD));
+        VB vc = d.cutout(GOLD);
         wallArc(vc, p, light, R_OUT - 0.02F, 0, 0.09F, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT - 0.02F, 0, 0.09F, flat, false, 0xFFFFFF, 1);
         ringTop(vc, p, light, R_OUT - 0.08F, R_OUT - 0.02F, 0.09F, 0, 180, SEG, 0xFFFFFF, false);
         wallArc(vc, p, light, R_OUT - 0.07F, 0.50F, 0.57F, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT - 0.07F, 0.50F, 0.57F, flat - 0.001F, false, 0xFFFFFF, 1);
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(WOOD));
+        vc = d.cutout(WOOD);
         wallArc(vc, p, light, R_OUT - 0.08F, 0.09F, Y_LIP, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT - 0.08F, 0.09F, Y_LIP, flat, false, 0xFFFFFF, 1);
         wallArc(vc, p, light, R_OUT, Y_LIP, Y_FELT, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT, Y_LIP, Y_FELT, flat, false, 0xFFFFFF, 1);
         ringTop(vc, p, light, R_OUT - 0.08F, R_OUT, Y_LIP, 0, 180, SEG, 0xBBBBBB, false);
         // riel acolchado
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(LEATHER));
+        vc = d.cutout(LEATHER);
         wallArc(vc, p, light, R_OUT, Y_FELT, Y_RAIL, false, 0xFFFFFF, 1);
         wallFlat(vc, p, light, R_OUT, Y_FELT, Y_RAIL, flat, false, 0xFFFFFF, 1);
         wallArc(vc, p, light, R_IN, Y_FELT, Y_RAIL, true, 0xC8C8C8, 1);
@@ -242,7 +242,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         v(vc, p, R_IN, Y_RAIL, zi, R_IN * 2, zi * 2, light, 0, 1, 0, 0xFFFFFF);
         v(vc, p, R_OUT, Y_RAIL, flat, R_OUT * 2, flat * 2, light, 0, 1, 0, 0xFFFFFF);
         // fieltro: abanico desde el borde recto
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(FELT));
+        vc = d.cutout(FELT);
         float fz = flat + RAIL;
         double th0 = Math.toDegrees(Math.asin(RAIL / R_IN));
         int n = SEG;
@@ -256,15 +256,15 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
             v(vc, p, 0, Y_FELT, fz, 0, fz * 2, light, 0, 1, 0, 0xFFFFFF);
         }
         // filo dorado sobre el riel
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(GOLD));
+        vc = d.cutout(GOLD);
         ringTop(vc, p, light, R_OUT - 0.085F, R_OUT - 0.05F, Y_RAIL + 0.002F, 0, 180, SEG, 0xFFFFFF, false);
     }
 
     /** El dibujo del fieltro: líneas doradas, carriles de cartas, círculos de ANTE e IGUALAR de cada asiento y el espacio de las cartas comunes. */
-    private void drawDecor(PokerBE be, PoseStack ps, MultiBufferSource buf, int light, float time) {
+    private void drawDecor(PokerBE be, PoseStack ps, Draw d, int light, float time) {
         PoseStack.Pose p = ps.last();
         float y = Y_FELT + 0.003F;
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
+        VB vc = d.cutout(WHITE);
         int gold = 0xD9AE38;
         arcLine(vc, p, light, 1.38, 16, 164, 0.014F, y, gold);
         arcLine(vc, p, light, 1.88, 16, 164, 0.014F, y, gold);
@@ -302,7 +302,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         }
     }
 
-    private void flatText(PoseStack ps, MultiBufferSource buf, String text, double x, double z, float yaw, int color, float s, int light) {
+    private void flatText(PoseStack ps, Draw d, String text, double x, double z, float yaw, int color, float s, int light) {
         ps.pushPose();
         ps.translate(x, TABLE_Y + 0.002F, z);
         ps.mulPose(Axis.YP.rotationDegrees(yaw));
@@ -310,24 +310,24 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         ps.scale(s, -s, s);
         float w = font.width(text);
         Matrix4f m = ps.last().pose();
-        font.drawInBatch(text, -w / 2.0F, -font.lineHeight / 2.0F + 1, color, false, m, buf, Font.DisplayMode.NORMAL, 0, light);
+        d.text(ps, text, -w / 2.0F, -font.lineHeight / 2.0F + 1, color, 0, light);
         ps.popPose();
     }
 
     /** Texto curvo a lo largo de un arco (se lee desde el lado de los jugadores). */
-    private void arcText(PoseStack ps, MultiBufferSource buf, String text, double r, double centerDeg, double stepDeg, int color, float s, int light) {
+    private void arcText(PoseStack ps, Draw d, String text, double r, double centerDeg, double stepDeg, int color, float s, int light) {
         int n = text.length();
         for (int k = 0; k < n; k++) {
             double a = centerDeg + (n - 1) / 2.0 * stepDeg - k * stepDeg;
             double[] c = BlackjackLayout.polar(r, a);
-            flatText(ps, buf, String.valueOf(text.charAt(k)), c[0], c[1], (float) (90.0 - a), color, s, light);
+            flatText(ps, d, String.valueOf(text.charAt(k)), c[0], c[1], (float) (90.0 - a), color, s, light);
         }
     }
 
     // ------------------------------------------------------------------ cartas
 
     /** Dibuja una carta en el paño: llega volando del zapato hasta (x, z) y, si hace falta, se voltea. */
-    private void drawCard(PoseStack ps, MultiBufferSource buf, int card, boolean faceDown, double flipT, float x, float z, float rotDeg, float born, float time, float stackY, int light) {
+    private void drawCard(PoseStack ps, Draw d, int card, boolean faceDown, double flipT, float x, float z, float rotDeg, float born, float time, float stackY, int light) {
         float age = time - born;
         if (age < 0) {
             return;
@@ -350,12 +350,12 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         ps.translate(cx, y, cz);
         ps.mulPose(Axis.YP.rotationDegrees(yaw));
         ps.mulPose(Axis.XP.rotationDegrees(-90));
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(CARDS));
+        VB vc = d.cutout(CARDS);
         cardQuad(vc, ps.last(), half, back ? -1 : card, light);
         ps.popPose();
     }
 
-    private void chipStack(PokerBE be, PoseStack ps, MultiBufferSource buf, Level level, int amount, double[] pos, int seed, int light) {
+    private void chipStack(PokerBE be, PoseStack ps, Draw d, Level level, int amount, double[] pos, int seed, int light) {
         List<ItemStack> stacks = Chips.stacksFor(amount);
         int layer = 0;
         for (ItemStack st : stacks) {
@@ -364,14 +364,14 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
                 ps.translate(pos[0] + ((layer * 5) % 3 - 1) * 0.008F, TABLE_Y + 0.012F + layer * 0.014F, pos[1]);
                 ps.mulPose(Axis.XP.rotationDegrees(-90));
                 ps.scale(0.17F, 0.17F, 0.17F);
-                Minecraft.getInstance().getItemRenderer().renderStatic(new ItemStack(st.getItem()), ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, ps, buf, level, layer + seed);
+                d.item(new ItemStack(st.getItem()), ItemDisplayContext.FIXED, ps, light, level, layer + seed);
                 ps.popPose();
             }
         }
     }
 
     @Override
-    public void render(PokerBE be, float partial, PoseStack ps, MultiBufferSource buf, int packedLight, int overlay) {
+    protected void draw(PokerBE be, float partial, PoseStack ps, Draw d, int packedLight, int overlay) {
         Level level = be.getLevel();
         if (level == null) {
             return;
@@ -385,32 +385,32 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
         ps.translate(0.5, 0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(-be.facing().toYRot()));
 
-        drawTable(ps, buf, light);
-        drawDecor(be, ps, buf, light, time);
+        drawTable(ps, d, light);
+        drawDecor(be, ps, d, light, time);
 
         // zapato de cartas
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
+        VB vc = d.cutout(WHITE);
         box(vc, ps.last(), SHOE_X - 0.1F, Y_FELT, SHOE_Z - 0.1F, SHOE_X + 0.1F, Y_FELT + 0.075F, SHOE_Z + 0.1F, 0x2A1810, light);
         box(vc, ps.last(), SHOE_X - 0.085F, Y_FELT + 0.075F, SHOE_Z - 0.085F, SHOE_X + 0.085F, Y_FELT + 0.083F, SHOE_Z + 0.085F, 0xD8B040, light);
 
         // texto del paño
-        arcText(ps, buf, Component.translatable("casino.poker.felt_text").getString(), 0.78, 90, 6.0, 0xE8C14A, 0.0105F, light);
+        arcText(ps, d, Component.translatable("casino.poker.felt_text").getString(), 0.78, 90, 6.0, 0xE8C14A, 0.0105F, light);
 
         // cartas comunes
         for (int j = 0; j < Math.min(5, t.board.size()); j++) {
-            drawCard(ps, buf, t.board.get(j), false, -1, (j - 2) * 0.2F, BOARD_Z, 90, be.bornBoard[j], time, 0.0025F * j, light);
+            drawCard(ps, d, t.board.get(j), false, -1, (j - 2) * 0.2F, BOARD_Z, 90, be.bornBoard[j], time, 0.0025F * j, light);
         }
         // cartas del crupier: tapadas hasta que las muestra
         int dn = Math.min(2, Math.max(be.dealerCount, t.dealer.size()));
         for (int j = 0; j < dn; j++) {
             boolean shown = t.dealerRevealed && t.dealer.size() > j;
             double flip = shown ? (time - be.revealAt - j * 4) / 10.0 : -1;
-            drawCard(ps, buf, shown ? t.dealer.get(j) : -1, !shown, flip, (j - 0.5F) * 0.2F, -0.2F, 90, be.bornDealer[j], time, 0.0025F * j, light);
+            drawCard(ps, d, shown ? t.dealer.get(j) : -1, !shown, flip, (j - 0.5F) * 0.2F, -0.2F, 90, be.bornDealer[j], time, 0.0025F * j, light);
         }
         if (t.dealerRevealed && t.dealerCat >= 0 && time >= be.revealAt + 14) {
             String name = Component.translatable("casino.poker.hand_" + t.dealerCat).getString();
-            flatText(ps, buf, name, -0.9, -0.2, 0, 0xFFFFFF, 0.017F, light);
-            flatText(ps, buf, Component.translatable(t.dealerQualified ? "casino.poker.qualifies" : "casino.poker.not_qualifies").getString(), 0.9, -0.2, 0,
+            flatText(ps, d, name, -0.9, -0.2, 0, 0xFFFFFF, 0.017F, light);
+            flatText(ps, d, Component.translatable(t.dealerQualified ? "casino.poker.qualifies" : "casino.poker.not_qualifies").getString(), 0.9, -0.2, 0,
                     t.dealerQualified ? 0xFFE070 : 0xFF8888, 0.014F, light);
         }
 
@@ -424,9 +424,9 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
             double[] cp = BlackjackLayout.polar(CARD_R, ang);
             double[] ap = BlackjackLayout.polar(ANTE_R, ang);
             double[] kp = BlackjackLayout.polar(CALL_R, ang);
-            chipStack(be, ps, buf, level, s.ante, ap, i * 11, light);
+            chipStack(be, ps, d, level, s.ante, ap, i * 11, light);
             if (s.call > 0) {
-                chipStack(be, ps, buf, level, s.call, kp, i * 11 + 5, light);
+                chipStack(be, ps, d, level, s.call, kp, i * 11 + 5, light);
             }
             double[] np = BlackjackLayout.polar(NAME_R, ang);
             // las dos cartas del jugador, boca arriba y abiertas en abanico
@@ -437,7 +437,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
             for (int j = 0; j < Math.min(2, s.hole.size()); j++) {
                 double off = (j - 0.5) * 0.17;
                 float jitter = (j == 0 ? -4 : 4) + ((i * 7) % 5 - 2);
-                drawCard(ps, buf, s.hole.get(j), false, -1, (float) (cp[0] + tx * off), (float) (cp[1] + tz * off), rot + jitter, be.bornHole[i][j], time,
+                drawCard(ps, d, s.hole.get(j), false, -1, (float) (cp[0] + tx * off), (float) (cp[1] + tz * off), rot + jitter, be.bornHole[i][j], time,
                         0.0025F * j - (folded ? 0.0F : 0.0F), folded ? scaleLight(light) : light);
             }
             boolean cardsIn = s.hole.size() == 2 && time >= be.bornHole[i][1] + 8;
@@ -447,7 +447,7 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
                 all.addAll(t.board);
                 int cat = PokerHands.category(PokerHands.best(all));
                 double[] tp = BlackjackLayout.polar(TOTAL_R, ang);
-                flatText(ps, buf, Component.translatable("casino.poker.hand_" + cat).getString(), tp[0], tp[1], rot, 0xFFE070, 0.0125F, light);
+                flatText(ps, d, Component.translatable("casino.poker.hand_" + cat).getString(), tp[0], tp[1], rot, 0xFFE070, 0.0125F, light);
             }
             boolean showResult = t.phase == Phase.RESULT && time >= be.resultAt && s.result != Result.NONE;
             if (showResult) {
@@ -460,11 +460,11 @@ public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
                     case FOLD -> { key = "casino.poker.tag_fold"; col = 0xAAAAAA; }
                     default -> { key = "casino.poker.tag_lose"; col = 0xFF5555; }
                 }
-                flatText(ps, buf, Component.translatable(key).getString(), np[0], np[1], rot, col, 0.013F, light);
+                flatText(ps, d, Component.translatable(key).getString(), np[0], np[1], rot, col, 0.013F, light);
             } else if (folded) {
-                flatText(ps, buf, Component.translatable("casino.poker.tag_fold").getString(), np[0], np[1], rot, 0xAAAAAA, 0.012F, light);
+                flatText(ps, d, Component.translatable("casino.poker.tag_fold").getString(), np[0], np[1], rot, 0xAAAAAA, 0.012F, light);
             } else if (!be.names[i].isEmpty()) {
-                flatText(ps, buf, be.names[i], np[0], np[1], rot, 0xCFCFCF, 0.01F, light);
+                flatText(ps, d, be.names[i], np[0], np[1], rot, 0xCFCFCF, 0.01F, light);
             }
         }
         ps.popPose();

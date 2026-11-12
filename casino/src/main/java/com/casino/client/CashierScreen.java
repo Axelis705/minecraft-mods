@@ -1,12 +1,14 @@
 package com.casino.client;
 
+import com.casino.plat.Plat;
+import com.casino.plat.client.CasinoScreen;
+import com.casino.plat.client.G;
 import com.casino.block.Cashier;
 import com.casino.chip.Chips;
 import com.casino.net.CashierPacket;
 import com.casino.net.CasinoNet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -20,7 +22,7 @@ import net.minecraft.world.item.ItemStack;
  * y abajo ves exactamente lo que entregas y lo que recibes antes de pulsar CONFIRMAR.
  * Solo manda una petición; el servidor la comprueba.
  */
-public final class CashierScreen extends Screen {
+public final class CashierScreen extends CasinoScreen {
     private static final int W = 300;
     private static final int H = 250;
     private static final int CARD_W = 140;
@@ -97,7 +99,7 @@ public final class CashierScreen extends Screen {
         int n = 0;
         var p = Minecraft.getInstance().player;
         if (p != null) {
-            for (ItemStack s : p.getInventory().items) {
+            for (ItemStack s : Plat.mainItems(p.getInventory())) {
                 if (s.is(item)) {
                     n += s.getCount();
                 }
@@ -155,7 +157,7 @@ public final class CashierScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mx, double my, int button) {
+    protected boolean onClick(double mx, double my, int button) {
         if (button == 0) {
             for (int i = 0; i < 2; i++) {
                 int cx = cardX(i);
@@ -172,27 +174,27 @@ public final class CashierScreen extends Screen {
                 }
             }
         }
-        return super.mouseClicked(mx, my, button);
+        return superClick(mx, my, button);
     }
 
-    private void frame(GuiGraphics g, int x0, int y0, int x1, int y1, int color) {
+    private void frame(G g, int x0, int y0, int x1, int y1, int color) {
         g.fill(x0, y0, x1, y0 + 2, color);
         g.fill(x0, y1 - 2, x1, y1, color);
         g.fill(x0, y0, x0 + 2, y1, color);
         g.fill(x1 - 2, y0, x1, y1, color);
     }
 
-    private void bigItem(GuiGraphics g, ItemStack s, int x, int y, float scale) {
-        g.pose().pushPose();
-        g.pose().translate(x, y, 0);
-        g.pose().scale(scale, scale, 1);
+    private void bigItem(G g, ItemStack s, int x, int y, float scale) {
+        g.push();
+        g.translate(x, y, 0);
+        g.scale(scale, scale, 1);
         g.renderItem(s, 0, 0);
-        g.pose().popPose();
+        g.pop();
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
-        renderBackground(g);
+    protected void draw(G g, int mx, int my, float pt) {
+        drawBackground(g, mx, my, pt);
         g.fill(left - 2, top - 2, left + W + 2, top + H + 2, 0xFF8A6A1E);
         g.fill(left, top, left + W, top + H, 0xF0140F1A);
         g.fill(left, top, left + W, top + 22, 0xFF3A2410);
@@ -209,7 +211,7 @@ public final class CashierScreen extends Screen {
         g.drawString(font, Component.translatable("casino.cashier.balance", bal).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), x + 8, top + 33, 0xFFFFFF, true);
 
         // pestañas (la elegida queda marcada con un marco dorado)
-        super.render(g, mx, my, pt);
+        drawWidgets(g, mx, my, pt);
         Button sel = buy ? tabBuy : tabSell;
         frame(g, sel.getX() - 1, sel.getY() - 1, sel.getX() + sel.getWidth() + 1, sel.getY() + sel.getHeight() + 1, 0xFFFFD34D);
         g.drawCenteredString(font, Component.translatable(buy ? "casino.cashier.help_buy" : "casino.cashier.help_sell").withStyle(ChatFormatting.GRAY), left + W / 2, top + 78, 0xFFFFFF);

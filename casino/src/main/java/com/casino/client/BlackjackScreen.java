@@ -1,5 +1,7 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoScreen;
+import com.casino.plat.client.G;
 import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.BlackjackBE;
@@ -13,7 +15,6 @@ import com.casino.net.BlackjackPacket;
 import com.casino.net.CasinoNet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ import java.util.List;
  * Muestra la mano del crupier y la tuya (con las cartas del atlas), quién más juega, y los botones según el momento:
  * apostar, esperar / repartir ya, o pedir / plantarse / doblar en tu turno.
  */
-public final class BlackjackScreen extends Screen {
+public final class BlackjackScreen extends CasinoScreen {
     private static final ResourceLocation CARDS = Ids.rl(Casino.MODID, "textures/entity/cards.png");
     private static final int W = 380;
     private static final int H = 150;
@@ -179,7 +180,7 @@ public final class BlackjackScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int key, int scan, int mods) {
+    protected boolean onKey(int key, int scan, int mods) {
         BlackjackBE be = table();
         if (be != null) {
             Mode m = mode(be);
@@ -217,7 +218,7 @@ public final class BlackjackScreen extends Screen {
                 return true;
             }
         }
-        return super.keyPressed(key, scan, mods);
+        return superKey(key, scan, mods);
     }
 
     @Override
@@ -225,20 +226,20 @@ public final class BlackjackScreen extends Screen {
         return false;
     }
 
-    private void frame(GuiGraphics g, int x0, int y0, int x1, int y1, int color) {
+    private void frame(G g, int x0, int y0, int x1, int y1, int color) {
         g.fill(x0, y0, x1, y0 + 1, color);
         g.fill(x0, y1 - 1, x1, y1, color);
         g.fill(x0, y0, x0 + 1, y1, color);
         g.fill(x1 - 1, y0, x1, y1, color);
     }
 
-    private void drawCard(GuiGraphics g, int x, int y, int card) {
+    private void drawCard(G g, int x, int y, int card) {
         int col = card < 0 ? 0 : BlackjackGame.rank(card);
         int row = card < 0 ? 4 : BlackjackGame.suit(card);
         g.blit(CARDS, x, y, CW, CH, col * 32, row * 48, 32, 48, 416, 240);
     }
 
-    private void drawHand(GuiGraphics g, int x, int y, List<Integer> hand, boolean hideSecond) {
+    private void drawHand(G g, int x, int y, List<Integer> hand, boolean hideSecond) {
         for (int i = 0; i < hand.size(); i++) {
             drawCard(g, x + i * (CW - 6), y, hideSecond && i == 1 ? -1 : hand.get(i));
         }
@@ -262,7 +263,7 @@ public final class BlackjackScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
+    protected void draw(G g, int mx, int my, float pt) {
         BlackjackBE be = table();
         g.fill(left - 2, top - 2, left + W + 2, top + H + 2, 0xFF8A6A1E);
         g.fill(left, top, left + W, top + H, 0xE0102A18);
@@ -271,7 +272,7 @@ public final class BlackjackScreen extends Screen {
         Component bal = Component.translatable("casino.cashier.balance", balance()).withStyle(ChatFormatting.YELLOW);
         g.drawString(font, bal, left + W - 8 - font.width(bal), top + 4, 0xFFFFFF, true);
         if (be == null) {
-            super.render(g, mx, my, pt);
+            drawWidgets(g, mx, my, pt);
             return;
         }
         BlackjackTable t = be.table;
@@ -381,7 +382,7 @@ public final class BlackjackScreen extends Screen {
             g.renderItem(new ItemStack(Chips.itemFor(chipValue).get()), x0 + 184, top + 125);
             g.drawString(font, Component.literal(String.valueOf(bet())).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), x0 + 202, top + 129, 0xFFFFFF, true);
         }
-        super.render(g, mx, my, pt);
+        drawWidgets(g, mx, my, pt);
     }
 
     private static String resultShort(Seat s) {

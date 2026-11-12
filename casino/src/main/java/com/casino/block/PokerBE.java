@@ -1,5 +1,8 @@
 package com.casino.block;
 
+import com.casino.plat.Plat;
+import com.casino.plat.CasinoBE;
+import com.casino.plat.Nbt;
 import com.casino.chip.Chips;
 import com.casino.data.CasinoData;
 import com.casino.entity.DealerEntity;
@@ -53,7 +56,7 @@ import java.util.UUID;
  * Hasta 5 jugadores: apuestan (ante), se reparte, todos deciden a la vez (igualar o retirarse), salen las cartas comunes que faltan, el
  * crupier muestra y paga.
  */
-public class PokerBE extends BlockEntity {
+public class PokerBE extends CasinoBE {
     private static final int BET_TICKS = 240;
     /** Tiempo para decidir después del reparto (25 s); quien no decide se retira. */
     private static final int DECIDE_TICKS = 500;
@@ -136,7 +139,7 @@ public class PokerBE extends BlockEntity {
         }
         Direction f = facing();
         BlockPos spot = PokerBlock.dealerSpot(worldPosition, f);
-        DealerEntity d = ModEntities.DEALER.get().create(sl);
+        DealerEntity d = Plat.create(ModEntities.DEALER.get(), sl);
         if (d == null) {
             return;
         }
@@ -150,7 +153,7 @@ public class PokerBE extends BlockEntity {
 
     private void dealerSwing() {
         for (DealerEntity d : dealers()) {
-            d.swing(InteractionHand.MAIN_HAND);
+            Plat.swing(d);
         }
     }
 
@@ -165,7 +168,7 @@ public class PokerBE extends BlockEntity {
     }
 
     private void msg(ServerPlayer p, String key, ChatFormatting color, Object... args) {
-        p.displayClientMessage(Component.translatable(key, args).withStyle(color), true);
+        Plat.msg(p, Component.translatable(key, args).withStyle(color), true);
     }
 
     @Nullable
@@ -176,7 +179,7 @@ public class PokerBE extends BlockEntity {
     // ------------------------------------------------------------------ jugadas (servidor)
 
     public void act(ServerPlayer p, int action, int betChips) {
-        if (level == null || level.isClientSide) {
+        if (level == null || level.isClientSide()) {
             return;
         }
         long now = level.getGameTime();
@@ -535,8 +538,8 @@ public class PokerBE extends BlockEntity {
                     Vec3 w = worldPos(p[0], p[1], 0.95);
                     int n = s.handCat >= PokerHands.FULL_HOUSE ? 26 : 8;
                     for (int k = 0; k < n; k++) {
-                        double a = level.random.nextDouble() * Math.PI * 2;
-                        double sp = 0.03 + level.random.nextDouble() * 0.08;
+                        double a = level.getRandom().nextDouble() * Math.PI * 2;
+                        double sp = 0.03 + level.getRandom().nextDouble() * 0.08;
                         level.addParticle(s.handCat >= PokerHands.FULL_HOUSE && k % 3 == 0 ? ParticleTypes.TOTEM_OF_UNDYING : ParticleTypes.HAPPY_VILLAGER,
                                 w.x, w.y, w.z, Math.cos(a) * sp, Math.abs(Math.sin(a)) * sp + 0.03, Math.sin(a) * sp);
                     }
@@ -564,20 +567,19 @@ public class PokerBE extends BlockEntity {
 
     public void sync() {
         setChanged();
-        if (level != null && !level.isClientSide) {
+        if (level != null && !level.isClientSide()) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
 
     @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(worldPosition.offset(-3, 0, -3), worldPosition.offset(4, 3, 5));
+    protected AABB renderBox() {
+        return box(worldPosition.offset(-3, 0, -3), worldPosition.offset(4, 3, 5));
     }
 
     /** Lo que ven los clientes: sin las cartas del crupier (hasta que las muestre) ni las comunes que faltan. */
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag t = saveWithoutMetadata();
+    protected CompoundTag syncTag(CompoundTag t) {
         if (!table.dealerRevealed) {
             t.remove("dealer");
         }
@@ -586,18 +588,7 @@ public class PokerBE extends BlockEntity {
         return t;
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
 
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        CompoundTag t = pkt.getTag();
-        if (t != null) {
-            load(t);
-        }
-    }
 
     private static int[] toArray(List<Integer> l) {
         return l.stream().mapToInt(Integer::intValue).toArray();
@@ -613,8 +604,7 @@ public class PokerBE extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
+    protected void writeData(CompoundTag tag) {
         ListTag seats = new ListTag();
         for (int i = 0; i < PokerTable.SEATS; i++) {
             Seat s = table.seats[i];
@@ -627,7 +617,7 @@ public class PokerBE extends BlockEntity {
             t.putInt("payout", s.payout);
             t.putInt("handCat", s.handCat);
             if (players[i] != null) {
-                t.putUUID("player", players[i]);
+                Nbt.putUuid(t, "player", players[i]);
             }
             t.putString("name", names[i]);
             seats.add(t);
@@ -649,25 +639,24 @@ public class PokerBE extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        ListTag seats = tag.getList("seats", Tag.TAG_COMPOUND);
+    protected void readData(CompoundTag tag) {
+        ListTag seats = Nbt.list(tag, "seats");
         Phase[] ph = Phase.values();
         SeatState[] ss = SeatState.values();
         Result[] rs = Result.values();
         for (int i = 0; i < PokerTable.SEATS; i++) {
             Seat s = table.seats[i];
             if (i < seats.size()) {
-                CompoundTag t = seats.getCompound(i);
-                fill(s.hole, t.getIntArray("hole"));
-                s.ante = t.getInt("ante");
-                s.call = t.getInt("call");
-                s.state = ss[Math.max(0, Math.min(ss.length - 1, t.getInt("state")))];
-                s.result = rs[Math.max(0, Math.min(rs.length - 1, t.getInt("result")))];
-                s.payout = t.getInt("payout");
-                s.handCat = t.getInt("handCat");
-                players[i] = t.hasUUID("player") ? t.getUUID("player") : null;
-                names[i] = t.getString("name");
+                CompoundTag t = Nbt.at(seats, i);
+                fill(s.hole, Nbt.ia(t, "hole"));
+                s.ante = Nbt.i(t, "ante");
+                s.call = Nbt.i(t, "call");
+                s.state = ss[Math.max(0, Math.min(ss.length - 1, Nbt.i(t, "state")))];
+                s.result = rs[Math.max(0, Math.min(rs.length - 1, Nbt.i(t, "result")))];
+                s.payout = Nbt.i(t, "payout");
+                s.handCat = Nbt.i(t, "handCat");
+                players[i] = Nbt.hasUuid(t, "player") ? Nbt.uuid(t, "player") : null;
+                names[i] = Nbt.s(t, "name");
             } else {
                 s.hole.clear();
                 s.ante = 0;
@@ -680,19 +669,19 @@ public class PokerBE extends BlockEntity {
                 names[i] = "";
             }
         }
-        fill(table.board, tag.getIntArray("board"));
-        fill(table.dealer, tag.getIntArray("dealer"));
-        fill(table.future, tag.getIntArray("future"));
-        table.phase = ph[Math.max(0, Math.min(ph.length - 1, tag.getInt("phase")))];
-        table.dealerRevealed = tag.getBoolean("revealed");
-        table.dealerQualified = tag.getBoolean("dealerQ");
-        table.dealerCat = tag.contains("dealerCat") ? tag.getInt("dealerCat") : -1;
-        dealerCount = tag.contains("dealerN") ? tag.getInt("dealerN") : table.dealer.size();
-        roundSeq = tag.getInt("roundSeq");
-        phaseEnd = tag.getLong("phaseEnd");
-        nextStep = tag.getLong("nextStep");
-        settledAt = tag.getLong("settledAt");
-        actFrom = tag.getLong("actFrom");
-        paid = tag.getBoolean("paid");
+        fill(table.board, Nbt.ia(tag, "board"));
+        fill(table.dealer, Nbt.ia(tag, "dealer"));
+        fill(table.future, Nbt.ia(tag, "future"));
+        table.phase = ph[Math.max(0, Math.min(ph.length - 1, Nbt.i(tag, "phase")))];
+        table.dealerRevealed = Nbt.b(tag, "revealed");
+        table.dealerQualified = Nbt.b(tag, "dealerQ");
+        table.dealerCat = tag.contains("dealerCat") ? Nbt.i(tag, "dealerCat") : -1;
+        dealerCount = tag.contains("dealerN") ? Nbt.i(tag, "dealerN") : table.dealer.size();
+        roundSeq = Nbt.i(tag, "roundSeq");
+        phaseEnd = Nbt.l(tag, "phaseEnd");
+        nextStep = Nbt.l(tag, "nextStep");
+        settledAt = Nbt.l(tag, "settledAt");
+        actFrom = Nbt.l(tag, "actFrom");
+        paid = Nbt.b(tag, "paid");
     }
 }

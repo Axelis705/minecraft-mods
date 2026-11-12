@@ -5,9 +5,7 @@ import com.casino.block.RouletteBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
 
 /**
  * Cliente -> servidor: una jugada en una mesa de ruleta. El servidor comprueba todo (distancia, fase, fichas, límites).
@@ -46,23 +44,18 @@ public final class RoulettePacket {
         return new RoulettePacket(b.readBlockPos(), b.readVarInt(), b.readVarInt(), b.readVarInt());
     }
 
-    public static void handle(RoulettePacket m, Supplier<NetworkEvent.Context> ctx) {
-        NetworkEvent.Context c = ctx.get();
-        c.enqueueWork(() -> {
-            ServerPlayer p = c.getSender();
-            if (p == null || !p.level().isLoaded(m.pos)) {
-                return;
-            }
-            var st = p.level().getBlockState(m.pos);
-            if (!(st.getBlock() instanceof RouletteBlock)) {
-                return;
-            }
-            BlockPos master = RouletteBlock.masterOf(m.pos, st);
-            if (p.distanceToSqr(master.getX() + 0.5, master.getY() + 1.0, master.getZ() + 0.5) <= 14 * 14
-                    && p.level().getBlockEntity(master) instanceof RouletteBE be) {
-                be.act(p, m.action, m.arg1, m.arg2);
-            }
-        });
-        c.setPacketHandled(true);
+    public static void handle(RoulettePacket m, ServerPlayer p) {
+        if (p == null || !p.level().isLoaded(m.pos)) {
+            return;
+        }
+        var st = p.level().getBlockState(m.pos);
+        if (!(st.getBlock() instanceof RouletteBlock)) {
+            return;
+        }
+        BlockPos master = RouletteBlock.masterOf(m.pos, st);
+        if (p.distanceToSqr(master.getX() + 0.5, master.getY() + 1.0, master.getZ() + 0.5) <= 14 * 14
+                && p.level().getBlockEntity(master) instanceof RouletteBE be) {
+            be.act(p, m.action, m.arg1, m.arg2);
+        }
     }
 }

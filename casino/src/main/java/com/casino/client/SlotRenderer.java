@@ -1,16 +1,17 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoBER;
+import com.casino.plat.client.Draw;
+import com.casino.plat.client.VB;
 import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.SlotBE;
 import com.casino.game.SlotLayout;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -24,7 +25,7 @@ import org.joml.Matrix4f;
  * Dibuja lo que se mueve de la tragamonedas: los 3 carretes (con el giro y el frenado), las líneas ganadoras, las luces del marco,
  * la palanca y el marcador. El cuerpo de la máquina es un modelo normal (json). Todo sale de {@link SlotLayout} y del reloj del juego.
  */
-public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
+public class SlotRenderer extends CasinoBER<SlotBE> {
     private static final ResourceLocation WHITE = tex("plinko_white");
     private static final ResourceLocation SYMBOLS = tex("slot_symbols");
     private static final ResourceLocation GLOW = tex("glow");
@@ -40,19 +41,19 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
     private final Font font;
 
     public SlotRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.font = ctx.getFont();
+        this.font = Draw.font();
     }
 
     private static ResourceLocation tex(String n) {
         return Ids.rl(Casino.MODID, "textures/entity/" + n + ".png");
     }
 
-    private static void v(VertexConsumer vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz,
+    private static void v(VB vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz,
                           int r, int g, int b, int a) {
-        vc.vertex(p.pose(), x, y, z).color(r, g, b, a).uv(u, w).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(p.normal(), nx, ny, nz).endVertex();
+        vc.v(p, x, y, z, r, g, b, a, u, w, OverlayTexture.NO_OVERLAY, light, nx, ny, nz);
     }
 
-    private static void quadUV(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float z, float u0, float v0, float u1, float v1,
+    private static void quadUV(VB vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float z, float u0, float v0, float u1, float v1,
                                int light, int rgb, int a) {
         int r = (rgb >> 16) & 255;
         int g = (rgb >> 8) & 255;
@@ -63,12 +64,12 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
         v(vc, p, x0, y1, z, u0, v0, light, 0, 0, 1, r, g, b, a);
     }
 
-    private static void quad(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float z, int light, int rgb, int a) {
+    private static void quad(VB vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float z, int light, int rgb, int a) {
         quadUV(vc, p, x0, y0, x1, y1, z, 0, 0, 1, 1, light, rgb, a);
     }
 
     /** Barra delgada entre dos puntos (para las líneas de pago en diagonal). */
-    private static void segment(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float w, float z, int light, int rgb, int a) {
+    private static void segment(VB vc, PoseStack.Pose p, float x0, float y0, float x1, float y1, float w, float z, int light, int rgb, int a) {
         float dx = x1 - x0;
         float dy = y1 - y0;
         float len = (float) Math.sqrt(dx * dx + dy * dy);
@@ -91,7 +92,7 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
     }
 
     /** Caja de color liso (la palanca). */
-    private static void box(VertexConsumer vc, PoseStack.Pose p, float x0, float y0, float z0, float x1, float y1, float z1, int rgb, int light) {
+    private static void box(VB vc, PoseStack.Pose p, float x0, float y0, float z0, float x1, float y1, float z1, int rgb, int light) {
         int fr = scale(rgb, 0.85F);
         int sd = scale(rgb, 0.65F);
         int tp = rgb;
@@ -133,7 +134,7 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
     }
 
     @Override
-    public void render(SlotBE be, float partial, PoseStack ps, MultiBufferSource buf, int packedLight, int overlay) {
+    protected void draw(SlotBE be, float partial, PoseStack ps, Draw d, int packedLight, int overlay) {
         Level level = be.getLevel();
         if (level == null) {
             return;
@@ -154,7 +155,7 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
 
         // OJO: cada pasada pide su "pincel" justo antes de usarlo y no lo guarda (ver PlinkoRenderer).
         // ---- fondo de los carretes (crema) y separadores
-        VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
+        VB vc = d.cutout(WHITE);
         quad(vc, pose, WIN_L, WIN_B, WIN_L + CELL * 3, WIN_T, Z, FULL, 0xFFF1D2, 255);
         for (int i = 0; i <= SlotLayout.REELS; i++) {
             float x = reelX(i);
@@ -165,7 +166,7 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
         quad(vc, pose, WIN_L, WIN_B, WIN_L + CELL * 3, WIN_B + 0.05F, Z + 0.0012F, FULL, 0xB8A27C, 255);
 
         // ---- símbolos de cada carrete
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(SYMBOLS));
+        vc = d.cutout(SYMBOLS);
         for (int reel = 0; reel < SlotLayout.REELS; reel++) {
             double o = spinning || flashing || gt < be.spinStart + SlotLayout.END_TICK + 8
                     ? SlotLayout.offset(reel, be.stops[reel], spinning ? spinT : SlotLayout.END_TICK + 20) : be.stops[reel];
@@ -201,7 +202,7 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
             pull = spinT < 6 ? spinT / 6.0F : 1.0F - (spinT - 6) / 12.0F;
             pull = Math.max(0, Math.min(1, pull));
         }
-        vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
+        vc = d.cutout(WHITE);
         ps.pushPose();
         ps.translate(0.4375F, 0.72F, 0.0F);
         ps.mulPose(Axis.ZP.rotationDegrees(-30 - pull * 100));
@@ -213,7 +214,7 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
         // ---- líneas ganadoras (parpadean) y casillas que ganaron
         if (flashing) {
             float blink = 0.55F + 0.45F * (float) Math.sin(time * 0.55F);
-            vc = buf.getBuffer(RenderType.eyes(GLOW));
+            vc = d.glow(GLOW);
             for (int l = 0; l < SlotLayout.LINES; l++) {
                 if ((be.flashMask & (1 << l)) == 0) {
                     continue;
@@ -240,7 +241,7 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
         }
 
         // ---- luces que corren por el marco (brillan solas)
-        vc = buf.getBuffer(RenderType.eyes(GLOW));
+        vc = d.glow(GLOW);
         boolean fiesta = flashing;
         float speed = spinning ? 0.9F : fiesta ? 1.2F : 0.22F;
         int idx = 0;
@@ -272,13 +273,13 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
         float s = 0.0105F;
         ps.scale(s, -s, s);
         Matrix4f mat = ps.last().pose();
-        font.drawInBatch(msg, -font.width(msg) / 2.0F, -4, col, false, mat, buf, Font.DisplayMode.NORMAL, 0, FULL);
+        d.text(ps, msg, -font.width(msg) / 2.0F, -4, col, 0, FULL);
         ps.popPose();
 
         ps.popPose();
     }
 
-    private int bulb(VertexConsumer vc, PoseStack.Pose pose, float x, float y, int idx, float time, float speed, boolean spinning, boolean fiesta, boolean jackpot) {
+    private int bulb(VB vc, PoseStack.Pose pose, float x, float y, int idx, float time, float speed, boolean spinning, boolean fiesta, boolean jackpot) {
         float ph = ((idx - time * speed) % 5 + 5) % 5;
         float bright = ph < 1.3F ? 1.0F : 0.2F;
         int rgb = jackpot && fiesta ? (idx % 2 == 0 ? 0xD070FF : 0xFFE040) : spinning ? 0xFF60D0 : fiesta ? 0xFFE040 : 0xFFB020;
@@ -286,10 +287,6 @@ public class SlotRenderer implements BlockEntityRenderer<SlotBE> {
         return idx + 1;
     }
 
-    @Override
-    public boolean shouldRenderOffScreen(SlotBE be) {
-        return true;
-    }
 
     @Override
     public int getViewDistance() {

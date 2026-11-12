@@ -1,13 +1,12 @@
 package com.casino.client;
 
+import com.casino.plat.client.G;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public final class WinBanner {
         return 1 + c3 * p * p * p + c1 * p * p;
     }
 
-    public static void render(ForgeGui gui, GuiGraphics g, float partial, int sw, int sh) {
+    public static void render(G g, int sw, int sh) {
         if (startMs < 0) {
             return;
         }
@@ -81,10 +80,10 @@ public final class WinBanner {
             }
         }
 
-        g.pose().pushPose();
-        g.pose().translate(cx, top + ph / 2.0F, 0);
-        g.pose().scale(pop, pop, 1);
-        g.pose().translate(-cx, -(top + ph / 2.0F), 0);
+        g.push();
+        g.translate(cx, top + ph / 2.0F, 0);
+        g.scale(pop, pop, 1);
+        g.translate(-cx, -(top + ph / 2.0F), 0);
         int a = (int) (fadeOut * 255);
         int x0 = cx - pw / 2;
         // marco dorado + fondo
@@ -105,12 +104,12 @@ public final class WinBanner {
         }
         // texto
         float pulse = 1.0F + 0.06F * (float) Math.sin(t * 8);
-        g.pose().pushPose();
-        g.pose().translate(cx, top + 8, 0);
-        g.pose().scale(2.0F * pulse, 2.0F * pulse, 1);
+        g.push();
+        g.translate(cx, top + 8, 0);
+        g.scale(2.0F * pulse, 2.0F * pulse, 1);
         Component head = Component.translatable(big ? "casino.win.big" : "casino.win.normal").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD);
         g.drawString(font, head, -font.width(head) / 2, 0, 0xFFFFFF, true);
-        g.pose().popPose();
+        g.pop();
         g.drawCenteredString(font, title, cx, top + 32, 0xFFFFFF);
         int y = top + 46;
         if (xp > 0) {
@@ -126,6 +125,6 @@ public final class WinBanner {
                 g.renderItemDecorations(font, items.get(i), ix + i * 22, (int) (y + bob) + (xp > 0 ? 14 : 0));
             }
         }
-        g.pose().popPose();
+        g.pop();
     }
 }

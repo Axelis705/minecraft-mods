@@ -1,5 +1,7 @@
 package com.casino.client;
 
+import com.casino.plat.client.CasinoScreen;
+import com.casino.plat.client.G;
 import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.PokerBE;
@@ -13,7 +15,6 @@ import com.casino.net.CasinoNet;
 import com.casino.net.PokerPacket;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -28,7 +29,7 @@ import java.util.List;
  * Panel de la mesa de póker (Texas Hold'em contra el crupier). Va pegado abajo y sin oscurecer. Muestra las cartas del crupier, las comunes y
  * las tuyas, quién más juega y los botones según el momento: poner el ante, esperar / repartir ya, o IGUALAR / RETIRARSE.
  */
-public final class PokerScreen extends Screen {
+public final class PokerScreen extends CasinoScreen {
     private static final ResourceLocation CARDS = Ids.rl(Casino.MODID, "textures/entity/cards.png");
     private static final int W = 380;
     private static final int H = 160;
@@ -164,7 +165,7 @@ public final class PokerScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int key, int scan, int mods) {
+    protected boolean onKey(int key, int scan, int mods) {
         PokerBE be = table();
         if (be != null) {
             Mode m = mode(be);
@@ -185,7 +186,7 @@ public final class PokerScreen extends Screen {
                 return true;
             }
         }
-        return super.keyPressed(key, scan, mods);
+        return superKey(key, scan, mods);
     }
 
     @Override
@@ -193,20 +194,20 @@ public final class PokerScreen extends Screen {
         return false;
     }
 
-    private void frame(GuiGraphics g, int x0, int y0, int x1, int y1, int color) {
+    private void frame(G g, int x0, int y0, int x1, int y1, int color) {
         g.fill(x0, y0, x1, y0 + 1, color);
         g.fill(x0, y1 - 1, x1, y1, color);
         g.fill(x0, y0, x0 + 1, y1, color);
         g.fill(x1 - 1, y0, x1, y1, color);
     }
 
-    private void drawCard(GuiGraphics g, int x, int y, int card) {
+    private void drawCard(G g, int x, int y, int card) {
         int col = card < 0 ? 0 : card % 13;
         int row = card < 0 ? 4 : PokerHands.suit(card);
         g.blit(CARDS, x, y, CW, CH, col * 32, row * 48, 32, 48, 416, 240);
     }
 
-    private void slot(GuiGraphics g, int x, int y) {
+    private void slot(G g, int x, int y) {
         g.fill(x, y, x + CW, y + CH, 0x40000000);
         frame(g, x, y, x + CW, y + CH, 0xFF5A4A1A);
     }
@@ -216,7 +217,7 @@ public final class PokerScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
+    protected void draw(G g, int mx, int my, float pt) {
         PokerBE be = table();
         g.fill(left - 2, top - 2, left + W + 2, top + H + 2, 0xFF8A6A1E);
         g.fill(left, top, left + W, top + H, 0xE00F1E3A);
@@ -225,7 +226,7 @@ public final class PokerScreen extends Screen {
         Component bal = Component.translatable("casino.cashier.balance", balance()).withStyle(ChatFormatting.YELLOW);
         g.drawString(font, bal, left + W - 8 - font.width(bal), top + 4, 0xFFFFFF, true);
         if (be == null) {
-            super.render(g, mx, my, pt);
+            drawWidgets(g, mx, my, pt);
             return;
         }
         PokerTable t = be.table;
@@ -347,6 +348,6 @@ public final class PokerScreen extends Screen {
             g.renderItem(new ItemStack(Chips.itemFor(chipValue).get()), x0 + 184, top + 135);
             g.drawString(font, Component.literal(String.valueOf(ante())).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), x0 + 202, top + 139, 0xFFFFFF, true);
         }
-        super.render(g, mx, my, pt);
+        drawWidgets(g, mx, my, pt);
     }
 }
