@@ -1,5 +1,6 @@
 package com.casino.client;
 
+import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.BlackjackBE;
 import com.casino.chip.Chips;
@@ -28,7 +29,7 @@ import java.util.List;
  * apostar, esperar / repartir ya, o pedir / plantarse / doblar en tu turno.
  */
 public final class BlackjackScreen extends Screen {
-    private static final ResourceLocation CARDS = new ResourceLocation(Casino.MODID, "textures/entity/cards.png");
+    private static final ResourceLocation CARDS = Ids.rl(Casino.MODID, "textures/entity/cards.png");
     private static final int W = 380;
     private static final int H = 150;
     private static final int CW = 24;

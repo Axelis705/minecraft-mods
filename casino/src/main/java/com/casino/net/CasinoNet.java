@@ -1,5 +1,6 @@
 package com.casino.net;
 
+import com.casino.plat.Ids;
 import com.casino.Casino;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,7 +11,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 public final class CasinoNet {
     private static final String PROTOCOL = "1";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(Casino.MODID, "main"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
+            Ids.rl(Casino.MODID, "main"), () -> PROTOCOL, PROTOCOL::equals, PROTOCOL::equals);
     private static boolean registered = false;
 
     private CasinoNet() {

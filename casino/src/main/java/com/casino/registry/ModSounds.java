@@ -1,5 +1,6 @@
 package com.casino.registry;
 
+import com.casino.plat.Ids;
 import com.casino.Casino;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -62,6 +63,6 @@ public final class ModSounds {
     }
 
     private static RegistryObject<SoundEvent> reg(String name) {
-        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Casino.MODID, name)));
+        return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(Ids.rl(Casino.MODID, name)));
     }
 }

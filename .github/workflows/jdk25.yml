@@ -1,0 +1,29 @@
+name: JDK 25 para la nube de Claude
+
+# Sube un JDK 25 (en pedazos de 90 MB) a la rama libs-jdk25 para poder compilar las versiones 26.x sin bajar nada de afuera.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/jdk25.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  jdk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Empaquetar y subir
+        run: |
+          mkdir out && cd out
+          tar -C "$JAVA_HOME" --exclude='lib/src.zip' --exclude='jmods' -czf - . | split -b 90m - jdk25.tgz.part-
+          ls -la
+          git init -q -b libs-jdk25
+          git config user.name "ci"; git config user.email "ci@example.com"
+          git add -A && git commit -qm "JDK 25"
+          git push -f -q https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} libs-jdk25

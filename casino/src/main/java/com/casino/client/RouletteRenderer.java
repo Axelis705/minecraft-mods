@@ -1,5 +1,6 @@
 package com.casino.client;
 
+import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.RouletteBE;
 import com.casino.game.RouletteBets;
@@ -33,11 +34,11 @@ import org.joml.Matrix4f;
  * Marco local: origen en el centro del bloque del medio, +z hacia los jugadores, +x a su derecha.
  */
 public class RouletteRenderer implements BlockEntityRenderer<RouletteBE> {
-    private static final ResourceLocation WHITE = new ResourceLocation(Casino.MODID, "textures/entity/plinko_white.png");
-    private static final ResourceLocation FELT = new ResourceLocation(Casino.MODID, "textures/block/bj_felt.png");
-    private static final ResourceLocation WOOD = new ResourceLocation(Casino.MODID, "textures/block/bj_wood.png");
-    private static final ResourceLocation LEATHER = new ResourceLocation(Casino.MODID, "textures/block/bj_leather.png");
-    private static final ResourceLocation GOLD = new ResourceLocation(Casino.MODID, "textures/block/gold.png");
+    private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/plinko_white.png");
+    private static final ResourceLocation FELT = Ids.rl(Casino.MODID, "textures/block/bj_felt.png");
+    private static final ResourceLocation WOOD = Ids.rl(Casino.MODID, "textures/block/bj_wood.png");
+    private static final ResourceLocation LEATHER = Ids.rl(Casino.MODID, "textures/block/bj_leather.png");
+    private static final ResourceLocation GOLD = Ids.rl(Casino.MODID, "textures/block/gold.png");
 
     private static final float Y = (float) RouletteLayout.Y_TOP;
     private static final float Y_FELT = Y + 0.004F;

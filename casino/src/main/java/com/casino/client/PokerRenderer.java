@@ -1,5 +1,6 @@
 package com.casino.client;
 
+import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.PokerBE;
 import com.casino.chip.Chips;
@@ -38,12 +39,12 @@ import java.util.List;
  * los totales y los resultados. Marco local: origen en el centro del bloque del medio del lado recto, +z hacia los jugadores, +x a su derecha.
  */
 public class PokerRenderer implements BlockEntityRenderer<PokerBE> {
-    private static final ResourceLocation CARDS = new ResourceLocation(Casino.MODID, "textures/entity/cards.png");
-    private static final ResourceLocation WHITE = new ResourceLocation(Casino.MODID, "textures/entity/plinko_white.png");
-    private static final ResourceLocation FELT = new ResourceLocation(Casino.MODID, "textures/block/poker_felt.png");
-    private static final ResourceLocation WOOD = new ResourceLocation(Casino.MODID, "textures/block/bj_wood.png");
-    private static final ResourceLocation LEATHER = new ResourceLocation(Casino.MODID, "textures/block/bj_leather.png");
-    private static final ResourceLocation GOLD = new ResourceLocation(Casino.MODID, "textures/block/gold.png");
+    private static final ResourceLocation CARDS = Ids.rl(Casino.MODID, "textures/entity/cards.png");
+    private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/plinko_white.png");
+    private static final ResourceLocation FELT = Ids.rl(Casino.MODID, "textures/block/poker_felt.png");
+    private static final ResourceLocation WOOD = Ids.rl(Casino.MODID, "textures/block/bj_wood.png");
+    private static final ResourceLocation LEATHER = Ids.rl(Casino.MODID, "textures/block/bj_leather.png");
+    private static final ResourceLocation GOLD = Ids.rl(Casino.MODID, "textures/block/gold.png");
 
     private static final float CARD_W = 0.17F;
     private static final float CARD_H = 0.255F;

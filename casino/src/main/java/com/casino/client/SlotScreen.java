@@ -1,5 +1,6 @@
 package com.casino.client;
 
+import com.casino.plat.Ids;
 import com.casino.block.SlotBE;
 import com.casino.chip.Chips;
 import com.casino.game.SlotLayout;
@@ -20,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
  * Eliges apuesta, ves lo que paga cada símbolo y tiras de la palanca (con clic, con Espacio o en automático).
  */
 public final class SlotScreen extends Screen {
-    public static final ResourceLocation SYMBOLS = new ResourceLocation("casino", "textures/entity/slot_symbols.png");
+    public static final ResourceLocation SYMBOLS = Ids.rl("casino", "textures/entity/slot_symbols.png");
     public static final int SYM = 32;
     private static final int W = 330;
     private static final int H = 116;

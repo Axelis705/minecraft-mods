@@ -1,5 +1,6 @@
 package com.casino.client;
 
+import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.PokerBE;
 import com.casino.chip.Chips;
@@ -28,7 +29,7 @@ import java.util.List;
  * las tuyas, quién más juega y los botones según el momento: poner el ante, esperar / repartir ya, o IGUALAR / RETIRARSE.
  */
 public final class PokerScreen extends Screen {
-    private static final ResourceLocation CARDS = new ResourceLocation(Casino.MODID, "textures/entity/cards.png");
+    private static final ResourceLocation CARDS = Ids.rl(Casino.MODID, "textures/entity/cards.png");
     private static final int W = 380;
     private static final int H = 160;
     private static final int CW = 24;

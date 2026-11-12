@@ -1,5 +1,6 @@
 package com.casino.client;
 
+import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.block.PlinkoBE;
 import com.casino.game.PlinkoLayout;
@@ -46,7 +47,7 @@ public class PlinkoRenderer implements BlockEntityRenderer<PlinkoBE> {
     }
 
     private static ResourceLocation tex(String n) {
-        return new ResourceLocation(Casino.MODID, "textures/entity/" + n + ".png");
+        return Ids.rl(Casino.MODID, "textures/entity/" + n + ".png");
     }
 
     private static void v(VertexConsumer vc, PoseStack.Pose p, float x, float y, float z, float u, float w, int light, float nx, float ny, float nz,

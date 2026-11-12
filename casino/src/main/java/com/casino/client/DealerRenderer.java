@@ -1,5 +1,6 @@
 package com.casino.client;
 
+import com.casino.plat.Ids;
 import com.casino.Casino;
 import com.casino.entity.DealerEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,11 +24,11 @@ import java.util.List;
  * cabeza aparece un globo de texto.
  */
 public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<DealerEntity>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Casino.MODID, "textures/entity/dealer.png");
+    private static final ResourceLocation TEXTURE = Ids.rl(Casino.MODID, "textures/entity/dealer.png");
 
-    private static final ResourceLocation TEXTURE_ROULETTE = new ResourceLocation(Casino.MODID, "textures/entity/dealer_roulette.png");
+    private static final ResourceLocation TEXTURE_ROULETTE = Ids.rl(Casino.MODID, "textures/entity/dealer_roulette.png");
 
-    private static final ResourceLocation TEXTURE_POKER = new ResourceLocation(Casino.MODID, "textures/entity/dealer_poker.png");
+    private static final ResourceLocation TEXTURE_POKER = Ids.rl(Casino.MODID, "textures/entity/dealer_poker.png");
 
     /** El modelo de jugador, pero con la mano derecha en alto mientras hay un consejo en el aire. */
     private static class DealerModel extends PlayerModel<DealerEntity> {
