@@ -100,7 +100,7 @@ for x in range(4, W - 4):
     for z in range(PZ1 + 6, D - 3):
         inner = 12 <= x <= W - 13 and PZ1 + 9 <= z <= D - 7
         if not inner:
-            o.set(x, 0, z, 'minecraft:gray_concrete' if (x + z) % 7 else 'minecraft:light_gray_concrete')
+            o.set(x, 0, z, 'minecraft:gray_concrete' if (abs(x - CX) + z) % 7 else 'minecraft:light_gray_concrete')
 for x in range(4, W - 4):
     o.set(x, 0, PZ1 + 5, 'minecraft:polished_andesite'); o.set(x, 0, D - 3, 'minecraft:polished_andesite')
 # isla central con la fuente
@@ -264,9 +264,10 @@ for x in range(IX0, IX1 + 1):
         o.set(x, Y_ROOF - 1, z, GT if grid else 'minecraft:smooth_quartz')
         if not grid and (x + z) % 2 == 0:
             o.set(x, Y_ROOF - 1, z, 'minecraft:smooth_quartz')
-for x in range(IX0 + 2, IX1, 6):
+for x in range(IX0, IX1 + 1):
     for z in range(IZ0 + 3, IZ1, 6):
-        o.set(x + 1, Y_ROOF - 1, z, 'minecraft:ochre_froglight')
+        if (x - CX) % 6 == 3:
+            o.set(x, Y_ROOF - 1, z, 'minecraft:ochre_froglight')
 light_grid(IX0 + 1, IX1 - 1, IZ0 + 1, IZ1 - 1, Y_ROOF - 2, 4)
 light_grid(IX0 + 2, IX1 - 1, IZ0 + 2, IZ1 - 1, 3, 6, LIGHT_S)
 # piso base: mármol blanco con rombos negros
@@ -665,7 +666,7 @@ def tower_body(y0, y1, x0, x1, z0, z1):
                 if not (edge_x or edge_z):
                     if lvl == 0:
                         o.set(x, y, z, SQ)
-                    elif lvl == 2 and (x + z) % 5 == 0 and R.random() < 0.6:
+                    elif lvl == 2 and (abs(x - CX) + z) % 5 == 0:
                         o.set(x, y, z, LIGHT)
                     else:
                         o.set(x, y, z, AIR)
@@ -677,17 +678,19 @@ def tower_body(y0, y1, x0, x1, z0, z1):
                     o.set(x, y, z, QB)
                 elif abs(along - mid) == 1 and edge_z:
                     o.set(x, y, z, GT)          # aletas doradas del eje central
-                elif (along - (x0 if edge_z else z0)) % 3 == 0:
-                    o.set(x, y, z, QP)          # pilastras blancas continuas
+                elif (abs(along - mid) % 3 == 0 if edge_z else min(along - z0, z1 - along) % 3 == 0):
+                    o.set(x, y, z, QP)          # pilastras blancas continuas (simétricas desde el eje)
                 elif lvl == 0:
                     o.set(x, y, z, SQ)          # antepecho blanco
                 else:
                     o.set(x, y, z, GLASS)       # ventana oscura
+    # ventanas encendidas al azar, pero iguales en los dos lados de la torre
     for y in range(y0 + 1, y1 + 1, 4):
-        for x in range(x0 + 1, x1):
+        for x in range(x0 + 1, CX + 1):
             for z in range(z0 + 1, z1):
                 if (x in (x0 + 1, x1 - 1) or z in (z0 + 1, z1 - 1)) and R.random() < 0.25:
-                    o.set(x, y + 1, z, 'minecraft:ochre_froglight' if R.random() < 0.5 else SEA)
+                    st = 'minecraft:ochre_froglight' if R.random() < 0.5 else SEA
+                    o.set(x, y + 1, z, st); o.set(2 * CX - x, y + 1, z, st)
 tower_body(Y_VIP_TOP, Y_PH - 1, TX0, TX1, TZ0, TZ1)
 shaft(Y_VIP_TOP + 1, Y_PH - 1, 0)
 # retranqueos art déco en las esquinas a partir de y 38
@@ -1037,6 +1040,190 @@ for x in range(41, 53):
 for x in (39, 54):
     o.set(x, YB + 1, QZ0 + 1, 'minecraft:potted_azalea_bush')
 light_grid(39, 54, 11, 15, YB + 5, 4, 'minecraft:light[level=13]')
+
+
+# ================================================================== PULIDO: techos artesonados y paredes con pilastras, sala por sala
+# Todo se reparte simétrico desde el centro de cada sala: vigas cada 4, casetones con panel de luz al centro y pilastras alineadas
+# con las vigas. El techo de la planta baja baja a y=10 (macizo), así la alberca de arriba nunca gotea dentro.
+WALLMAT = ('casino:mahogany_panel', 'casino:velvet_wall', 'casino:gold_trim', 'minecraft:quartz_pillar', 'minecraft:polished_blackstone_bricks',
+           'minecraft:smooth_quartz', 'minecraft:red_wool')
+SOFT = ('minecraft:air', 'minecraft:light', 'casino:gold_trim', 'minecraft:smooth_quartz', 'minecraft:ochre_froglight', 'casino:chandelier',
+        'minecraft:sea_lantern', 'minecraft:end_rod')
+
+def _soft(st):
+    return any(st.startswith(k) for k in SOFT)
+
+def lines(a, b, step=4):
+    """Posiciones de vigas en [a, b], simétricas respecto al centro (a+b)/2."""
+    out = []
+    for p in range(a, b + 1):
+        d2 = abs(2 * p - (a + b))
+        if (a + b) % 2 == 0:
+            if d2 % (2 * step) == step: out.append(p)
+        else:
+            if d2 % (2 * step) == step - 1: out.append(p)
+    return out
+
+def centers(a, b, beams):
+    """Celdas del centro de cada casetón (entre vigas y paredes)."""
+    edges = [a - 1] + beams + [b + 1]
+    out = []
+    for e0, e1 in zip(edges, edges[1:]):
+        lo, hi = e0 + 1, e1 - 1
+        if lo > hi: continue
+        m2 = lo + hi
+        out += [m2 // 2] if m2 % 2 == 0 else [m2 // 2, m2 // 2 + 1]
+    return out
+
+SHAFT = {(x, z) for x in range(28, 33) for z in range(11, 16)}
+
+def ceiling(x0, x1, z0, z1, cy, panel, beam, glow, chand='ring', extra=None):
+    bx, bz = lines(x0, x1), lines(z0, z1)
+    cx_, cz_ = centers(x0, x1, bx), centers(z0, z1, bz)
+    mx2, mz2 = x0 + x1, z0 + z1
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            if (x, z) in SHAFT: continue
+            o.set(x, cy, z, panel)
+            below = o.get(x, cy - 1, z)
+            if x in bx or z in bz:
+                if _soft(below): o.set(x, cy - 1, z, beam)
+            else:
+                if _soft(below): o.set(x, cy - 1, z, AIR)
+                if x in cx_ and z in cz_:
+                    o.set(x, cy, z, glow)
+    # candelabros en los casetones (simétricos)
+    if chand:
+        for x in cx_:
+            for z in cz_:
+                if (x, z) in SHAFT: continue
+                ix = abs(2 * x - mx2); iz = abs(2 * z - mz2)
+                ok = (chand == 'all') or (chand == 'ring' and (ix // 8 + iz // 8) % 2 == 0) or (chand == 'center' and ix <= 2 and iz <= 2)
+                if ok and o.get(x, cy - 1, z) == AIR:
+                    o.set(x, cy - 1, z, CHAND)
+    if extra: extra(bx, bz, cx_, cz_)
+
+def dress_wall(cells, inward, y0, ytop, pil, panel='casino:velvet_wall_purple', base=MAH, sconce=True):
+    """cells: [(x, z, t)] a lo largo del muro (t = coordenada a lo largo); pil: posiciones t de pilastras."""
+    ts = [c[2] for c in cells]
+    doorish = set()
+    for (x, z, t) in cells:
+        if o.get(x, y0 + 1, z) == AIR:
+            doorish |= {t - 1, t, t + 1}
+    for (x, z, t) in cells:
+        if t in doorish: continue
+        cur = [o.get(x, y, z) for y in range(y0 + 1, ytop + 1)]
+        if not all(any(c.startswith(w) for w in WALLMAT) for c in cur): continue
+        for y in range(y0 + 1, ytop + 1):
+            h = y - y0
+            if t in pil:
+                st = GB if h == 1 else (CQ if y == ytop - 1 else (GT if y == ytop else QP))
+            elif h <= 3:
+                st = base
+            elif h == 4 or y == ytop:
+                st = GT
+            else:
+                st = panel
+            o.set(x, y, z, st)
+    if sconce:
+        # apliques: a media altura en el centro de cada paño entre pilastras
+        for c in centers(min(ts), max(ts), sorted(p for p in pil if min(ts) <= p <= max(ts))):
+            for (x, z, t) in cells:
+                if t != c or t in doorish: continue
+                ix, iz = x + inward[0], z + inward[1]
+                y = y0 + 6
+                if o.get(ix, y, iz) == AIR and any(o.get(x, y, z).startswith(w) for w in WALLMAT):
+                    f = {(1, 0): 'east', (-1, 0): 'west', (0, 1): 'south', (0, -1): 'north'}[inward]
+                    o.set(ix, y, iz, f'minecraft:end_rod[facing={f}]')
+
+def room_walls(x0, x1, z0, z1, y0, ytop, panel='casino:velvet_wall_purple', base=MAH):
+    px, pz = lines(x0, x1), lines(z0, z1)
+    dress_wall([(x, z0 - 1, x) for x in range(x0, x1 + 1)], (0, 1), y0, ytop, px, panel, base)
+    dress_wall([(x, z1 + 1, x) for x in range(x0, x1 + 1)], (0, -1), y0, ytop, px, panel, base)
+    dress_wall([(x0 - 1, z, z) for z in range(z0, z1 + 1)], (1, 0), y0, ytop, pz, panel, base)
+    dress_wall([(x1 + 1, z, z) for z in range(z0, z1 + 1)], (-1, 0), y0, ytop, pz, panel, base)
+
+PEARL = 'minecraft:pearlescent_froglight'
+OCHRE = 'minecraft:ochre_froglight'
+CY = Y_ROOF - 2          # techo de la planta baja (macizo)
+# --- planta baja: paredes (mismo estilo en todas: caoba, moldura dorada, terciopelo morado y pilastras de cuarzo)
+for (a, b, c, d) in ((6, 54, 42, 49), (23, 37, 10, 41), (6, 21, 24, 40), (39, 54, 24, 40), (6, 21, 10, 22), (39, 54, 10, 22)):
+    room_walls(a, b, c, d, 0, CY - 1)
+# --- planta baja: techos por sala
+ceiling(6, 54, 42, 49, CY, SQ, GT, PEARL, 'ring')                                  # vestíbulo
+def _axis(bx, bz, cx_, cz_):
+    # medallón dorado sobre la rueda: anillo de oro en el techo y candelabro grande al centro
+    for x in range(23, 38):
+        for z in range(22, 37):
+            d = ((x - WX) ** 2 + (z - (WZ + 2)) ** 2) ** 0.5
+            if 4.5 <= d < 5.5: o.set(x, CY, z, GB)
+ceiling(23, 37, 10, 41, CY, SQ, GT, PEARL, 'ring', _axis)                          # eje central (rueda y elevador)
+def _bar(bx, bz, cx_, cz_):
+    for x in range(BX0, BX1 + 1, 2):                                              # lámparas colgantes sobre la barra
+        for z in (BZ0, BZ1):
+            if o.get(x, CY - 1, z) == AIR or o.get(x, CY - 1, z).startswith('minecraft:stripped'):
+                o.set(x, CY - 1, z, 'minecraft:lantern[hanging=true]')
+ceiling(6, 21, 24, 40, CY, 'minecraft:dark_oak_planks', 'minecraft:stripped_dark_oak_wood', OCHRE, None, _bar)   # bar
+def _slots(bx, bz, cx_, cz_):
+    for x in range(39, 55):                                                        # franja de luz sobre el pasillo
+        o.set(x, CY, 32, PEARL)
+ceiling(39, 54, 24, 40, CY, 'minecraft:black_concrete', GT, 'minecraft:magenta_stained_glass', 'center', _slots)  # tragamonedas
+def _show(bx, bz, cx_, cz_):
+    for x in range(7, 16, 2):                                                      # reflectores sobre el escenario
+        o.set(x, CY - 1, 15, 'minecraft:end_rod[facing=down]')
+ceiling(6, 21, 10, 22, CY, 'casino:velvet_wall_red', 'minecraft:black_concrete', OCHRE, None, _show)               # espectáculo
+def _plinko(bx, bz, cx_, cz_):
+    rs = random.Random(11)
+    for x in range(39, 47):                                                        # cielo estrellado espejado
+        for z in range(10, 23):
+            if rs.random() < 0.12 and x not in bx and z not in bz:
+                o.set(x, CY, z, SEA); o.set(93 - x, CY, z, SEA)
+ceiling(39, 54, 10, 22, CY, 'minecraft:black_concrete', 'minecraft:purple_concrete', 'minecraft:amethyst_block', None, _plinko)  # plinko
+# --- primer piso (salón de mesas): techo de cuarzo con casetones y candelabros
+ceiling(TX0 + 1, TX1 - 1, TZ0 + 1, TZ1 - 1, Y_VIP_TOP - 1, SQ, GT, PEARL, 'ring')
+# --- sótano: salón VIP (terciopelo negro) y carreras (cielo oscuro con luces de cine)
+room_walls(QX0 + 1, 37, QZ0 + 1, QZ1 - 1, YB, -3, 'casino:velvet_wall_black')
+ceiling(QX0 + 1, 37, QZ0 + 1, QZ1 - 1, -2, 'minecraft:black_concrete', GT, OCHRE, 'ring')
+ceiling(39, 54, QZ0 + 1, QZ1 - 1, -2, 'minecraft:black_concrete', GT, SEA, None)
+
+# --- ningún letrero de neón puede quedar tapado por una viga o un panel
+_D = {'south': (0, 1), 'north': (0, -1), 'east': (1, 0), 'west': (-1, 0)}
+for (x, y, z), st in list(o.b.items()):
+    if 'neon_letter' in st:
+        dx, dz = _D[st.split('facing=')[1].split(',')[0].split(']')[0]]
+        ly = y - o.oy
+        fr = o.get(x + dx, ly, z + dz)
+        if not (fr.startswith('minecraft:air') or fr.startswith('minecraft:light')):
+            o.set(x + dx, ly, z + dz, AIR)
+
+# ================================================================== FACHADA TRASERA (antes era un muro liso)
+def facade_back():
+    z = PZ0
+    for x in range(PX0, PX1 + 1):
+        rel = (x - PX0) % 4
+        for y in range(2, Y_ROOF):
+            if rel == 0:
+                o.set(x, y, z, QP if y < Y_ROOF - 2 else (GT if y == Y_ROOF - 2 else CQ))
+            elif 4 <= y <= 8:
+                o.set(x, y, z, TINT)
+            elif y == 2:
+                o.set(x, y, z, BM)
+            else:
+                o.set(x, y, z, SQ)
+    for x in range(PX0 - 1, PX1 + 2):
+        o.set(x, Y_ROOF, z - 1, stairs('minecraft:smooth_quartz_stairs', 'south', 'top'))
+    # faroles en las pilastras
+    for x in range(PX0 + 4, PX1, 8):
+        o.set(x, 5, z - 1, 'minecraft:lantern[hanging=false]') if o.get(x, 4, z - 1) != AIR else None
+facade_back()
+# cornisa también en los lados
+for z in range(PZ0, PZ1 + 1):
+    o.set(PX0 - 1, Y_ROOF, z, stairs('minecraft:smooth_quartz_stairs', 'east', 'top'))
+    o.set(PX1 + 1, Y_ROOF, z, stairs('minecraft:smooth_quartz_stairs', 'west', 'top'))
+# farolas en el patio trasero, simétricas
+for x in (PX0 + 6, PX1 - 6, CX - 8, CX + 8):
+    o.set(x, 1, 3, 'minecraft:polished_blackstone_wall'); o.set(x, 2, 3, 'minecraft:polished_blackstone_wall')
+    o.set(x, 3, 3, GB); o.set(x, 4, 3, 'minecraft:lantern')
 
 if __name__ == '__main__':
     out = sys.argv[1] if len(sys.argv) > 1 else 'the_diamond.nbt'
