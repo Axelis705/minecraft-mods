@@ -128,7 +128,11 @@
  "music_lounge": {
   "sounds": [
    {
-    "name": "casino:music/lounge",
+    "name": "casino:music/after_hours",
+    "stream": true
+   },
+   {
+    "name": "casino:music/midnight",
     "stream": true
    }
   ],
