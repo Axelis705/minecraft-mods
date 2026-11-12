@@ -1,0 +1,3147 @@
+{
+ "textures": {
+  "gold": "casino:block/decor/gold",
+  "crystal": "casino:block/decor/crystal",
+  "bulb": "casino:block/decor/bulb",
+  "particle": "casino:block/decor/gold"
+ },
+ "elements": [
+  {
+   "from": [
+    6,
+    15.4,
+    6
+   ],
+   "to": [
+    10,
+    16,
+    10
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      6,
+      0,
+      10,
+      0.6
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      6,
+      0,
+      10,
+      0.6
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      6,
+      0,
+      10,
+      0.6
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      6,
+      0,
+      10,
+      0.6
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    7.6,
+    12,
+    7.6
+   ],
+   "to": [
+    8.4,
+    15.4,
+    8.4
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      0.6,
+      8.4,
+      4
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      0.6,
+      8.4,
+      4
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      0.6,
+      8.4,
+      4
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      0.6,
+      8.4,
+      4
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      7.6,
+      8.4,
+      8.4
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      7.6,
+      8.4,
+      8.4
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    5.5,
+    11.4,
+    5.5
+   ],
+   "to": [
+    10.5,
+    12,
+    10.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      5.5,
+      4,
+      10.5,
+      4.6
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      5.5,
+      4,
+      10.5,
+      4.6
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      5.5,
+      4,
+      10.5,
+      4.6
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      5.5,
+      4,
+      10.5,
+      4.6
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      5.5,
+      5.5,
+      10.5,
+      10.5
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      5.5,
+      5.5,
+      10.5,
+      10.5
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    5.0,
+    8.6,
+    6.14
+   ],
+   "to": [
+    11.0,
+    11.4,
+    9.86
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      5.0,
+      4.6,
+      11.0,
+      7.4
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      5.0,
+      4.6,
+      11.0,
+      7.4
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      6.14,
+      4.6,
+      9.86,
+      7.4
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      6.14,
+      4.6,
+      9.86,
+      7.4
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      5.0,
+      6.14,
+      11.0,
+      9.86
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      5.0,
+      6.14,
+      11.0,
+      9.86
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    6.14,
+    8.62,
+    5.0
+   ],
+   "to": [
+    9.86,
+    11.38,
+    11.0
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      6.14,
+      4.62,
+      9.86,
+      7.38
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      6.14,
+      4.62,
+      9.86,
+      7.38
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      5.0,
+      4.62,
+      11.0,
+      7.38
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      5.0,
+      4.62,
+      11.0,
+      7.38
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      6.14,
+      5.0,
+      9.86,
+      11.0
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      6.14,
+      5.0,
+      9.86,
+      11.0
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    5.42,
+    8.64,
+    5.42
+   ],
+   "to": [
+    10.58,
+    11.36,
+    10.58
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      5.42,
+      4.64,
+      10.58,
+      7.36
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      5.42,
+      4.64,
+      10.58,
+      7.36
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      5.42,
+      4.64,
+      10.58,
+      7.36
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      5.42,
+      4.64,
+      10.58,
+      7.36
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      5.42,
+      5.42,
+      10.58,
+      10.58
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      5.42,
+      5.42,
+      10.58,
+      10.58
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    4.4,
+    8.1,
+    5.768
+   ],
+   "to": [
+    11.6,
+    8.6,
+    10.232
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      4.4,
+      7.4,
+      11.6,
+      7.9
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      4.4,
+      7.4,
+      11.6,
+      7.9
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      5.768,
+      7.4,
+      10.232,
+      7.9
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      5.768,
+      7.4,
+      10.232,
+      7.9
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      4.4,
+      5.768,
+      11.6,
+      10.232
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      4.4,
+      5.768,
+      11.6,
+      10.232
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    5.768,
+    8.12,
+    4.4
+   ],
+   "to": [
+    10.232,
+    8.58,
+    11.6
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      5.768,
+      7.42,
+      10.232,
+      7.88
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      5.768,
+      7.42,
+      10.232,
+      7.88
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      4.4,
+      7.42,
+      11.6,
+      7.88
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      4.4,
+      7.42,
+      11.6,
+      7.88
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      5.768,
+      4.4,
+      10.232,
+      11.6
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      5.768,
+      4.4,
+      10.232,
+      11.6
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    4.904,
+    8.14,
+    4.904
+   ],
+   "to": [
+    11.096,
+    8.56,
+    11.096
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      4.904,
+      7.44,
+      11.096,
+      7.86
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      4.904,
+      7.44,
+      11.096,
+      7.86
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      4.904,
+      7.44,
+      11.096,
+      7.86
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      4.904,
+      7.44,
+      11.096,
+      7.86
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      4.904,
+      4.904,
+      11.096,
+      11.096
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      4.904,
+      4.904,
+      11.096,
+      11.096
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    6,
+    6,
+    6
+   ],
+   "to": [
+    10,
+    8.1,
+    10
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      6,
+      7.9,
+      10,
+      10
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      6,
+      7.9,
+      10,
+      10
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      6,
+      7.9,
+      10,
+      10
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      6,
+      7.9,
+      10,
+      10
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7,
+    4.4,
+    7
+   ],
+   "to": [
+    9,
+    6,
+    9
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      7,
+      10,
+      9,
+      11.6
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      7,
+      10,
+      9,
+      11.6
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      7,
+      10,
+      9,
+      11.6
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      7,
+      10,
+      9,
+      11.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.6,
+    3.6,
+    7.6
+   ],
+   "to": [
+    8.4,
+    4.4,
+    8.4
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      11.6,
+      8.4,
+      12.4
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      11.6,
+      8.4,
+      12.4
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      11.6,
+      8.4,
+      12.4
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      11.6,
+      8.4,
+      12.4
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      7.6,
+      8.4,
+      8.4
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      7.6,
+      8.4,
+      8.4
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    1.4,
+    8.6,
+    7.6
+   ],
+   "to": [
+    4.4,
+    9.1,
+    8.4
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      11.6,
+      6.9,
+      14.6,
+      7.4
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      1.4,
+      6.9,
+      4.4,
+      7.4
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      6.9,
+      8.4,
+      7.4
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      6.9,
+      8.4,
+      7.4
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      1.4,
+      7.6,
+      4.4,
+      8.4
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      1.4,
+      7.6,
+      4.4,
+      8.4
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    0.8,
+    9.1,
+    7.1
+   ],
+   "to": [
+    2.8,
+    9.6,
+    8.9
+   ],
+   "faces": {
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      13.2,
+      6.4,
+      15.2,
+      6.9
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      0.8,
+      6.4,
+      2.8,
+      6.9
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      6.4,
+      8.9,
+      6.9
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      6.4,
+      8.9,
+      6.9
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      0.8,
+      7.1,
+      2.8,
+      8.9
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      0.8,
+      7.1,
+      2.8,
+      8.9
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    1.2,
+    9.6,
+    7.5
+   ],
+   "to": [
+    2.4,
+    11.6,
+    8.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#bulb",
+     "uv": [
+      13.6,
+      4.4,
+      14.8,
+      6.4
+     ]
+    },
+    "south": {
+     "texture": "#bulb",
+     "uv": [
+      1.2,
+      4.4,
+      2.4,
+      6.4
+     ]
+    },
+    "west": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      4.4,
+      8.5,
+      6.4
+     ]
+    },
+    "east": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      4.4,
+      8.5,
+      6.4
+     ]
+    },
+    "up": {
+     "texture": "#bulb",
+     "uv": [
+      1.2,
+      7.5,
+      2.4,
+      8.5
+     ]
+    },
+    "down": {
+     "texture": "#bulb",
+     "uv": [
+      1.2,
+      7.5,
+      2.4,
+      8.5
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    1.5,
+    5.6,
+    7.75
+   ],
+   "to": [
+    2.1,
+    9.1,
+    8.25
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      13.9,
+      6.9,
+      14.5,
+      10.4
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      1.5,
+      6.9,
+      2.1,
+      10.4
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      6.9,
+      8.25,
+      10.4
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      6.9,
+      8.25,
+      10.4
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      1.5,
+      7.75,
+      2.1,
+      8.25
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      1.5,
+      7.75,
+      2.1,
+      8.25
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    3.3,
+    6.4,
+    7.75
+   ],
+   "to": [
+    3.9,
+    8.6,
+    8.25
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      12.1,
+      7.4,
+      12.7,
+      9.6
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      3.3,
+      7.4,
+      3.9,
+      9.6
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      7.4,
+      8.25,
+      9.6
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      7.4,
+      8.25,
+      9.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      3.3,
+      7.75,
+      3.9,
+      8.25
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      3.3,
+      7.75,
+      3.9,
+      8.25
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    1.4,
+    5.0,
+    7.65
+   ],
+   "to": [
+    2.2,
+    5.6,
+    8.35
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      13.8,
+      10.4,
+      14.6,
+      11.0
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      1.4,
+      10.4,
+      2.2,
+      11.0
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      10.4,
+      8.35,
+      11.0
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      10.4,
+      8.35,
+      11.0
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      1.4,
+      7.65,
+      2.2,
+      8.35
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      1.4,
+      7.65,
+      2.2,
+      8.35
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.6,
+    8.6,
+    1.4
+   ],
+   "to": [
+    8.4,
+    9.1,
+    4.4
+   ],
+   "faces": {
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      11.6,
+      6.9,
+      14.6,
+      7.4
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      1.4,
+      6.9,
+      4.4,
+      7.4
+     ]
+    },
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      6.9,
+      8.4,
+      7.4
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      6.9,
+      8.4,
+      7.4
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      1.4,
+      8.4,
+      4.4
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      11.6,
+      8.4,
+      14.6
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    7.1,
+    9.1,
+    0.8
+   ],
+   "to": [
+    8.9,
+    9.6,
+    2.8
+   ],
+   "faces": {
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      13.2,
+      6.4,
+      15.2,
+      6.9
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      0.8,
+      6.4,
+      2.8,
+      6.9
+     ]
+    },
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      6.4,
+      8.9,
+      6.9
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      6.4,
+      8.9,
+      6.9
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      0.8,
+      8.9,
+      2.8
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      13.2,
+      8.9,
+      15.2
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    7.5,
+    9.6,
+    1.2
+   ],
+   "to": [
+    8.5,
+    11.6,
+    2.4
+   ],
+   "faces": {
+    "east": {
+     "texture": "#bulb",
+     "uv": [
+      13.6,
+      4.4,
+      14.8,
+      6.4
+     ]
+    },
+    "west": {
+     "texture": "#bulb",
+     "uv": [
+      1.2,
+      4.4,
+      2.4,
+      6.4
+     ]
+    },
+    "north": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      4.4,
+      8.5,
+      6.4
+     ]
+    },
+    "south": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      4.4,
+      8.5,
+      6.4
+     ]
+    },
+    "up": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      1.2,
+      8.5,
+      2.4
+     ]
+    },
+    "down": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      13.6,
+      8.5,
+      14.8
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.75,
+    5.6,
+    1.5
+   ],
+   "to": [
+    8.25,
+    9.1,
+    2.1
+   ],
+   "faces": {
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      13.9,
+      6.9,
+      14.5,
+      10.4
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      1.5,
+      6.9,
+      2.1,
+      10.4
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      6.9,
+      8.25,
+      10.4
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      6.9,
+      8.25,
+      10.4
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      1.5,
+      8.25,
+      2.1
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      13.9,
+      8.25,
+      14.5
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.75,
+    6.4,
+    3.3
+   ],
+   "to": [
+    8.25,
+    8.6,
+    3.9
+   ],
+   "faces": {
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      12.1,
+      7.4,
+      12.7,
+      9.6
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      3.3,
+      7.4,
+      3.9,
+      9.6
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      7.4,
+      8.25,
+      9.6
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      7.4,
+      8.25,
+      9.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      3.3,
+      8.25,
+      3.9
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      12.1,
+      8.25,
+      12.7
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.65,
+    5.0,
+    1.4
+   ],
+   "to": [
+    8.35,
+    5.6,
+    2.2
+   ],
+   "faces": {
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      13.8,
+      10.4,
+      14.6,
+      11.0
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      1.4,
+      10.4,
+      2.2,
+      11.0
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      10.4,
+      8.35,
+      11.0
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      10.4,
+      8.35,
+      11.0
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      1.4,
+      8.35,
+      2.2
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      13.8,
+      8.35,
+      14.6
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    11.6,
+    8.6,
+    7.6
+   ],
+   "to": [
+    14.6,
+    9.1,
+    8.4
+   ],
+   "faces": {
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      11.6,
+      6.9,
+      14.6,
+      7.4
+     ]
+    },
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      1.4,
+      6.9,
+      4.4,
+      7.4
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      6.9,
+      8.4,
+      7.4
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      6.9,
+      8.4,
+      7.4
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      11.6,
+      7.6,
+      14.6,
+      8.4
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      11.6,
+      7.6,
+      14.6,
+      8.4
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    13.2,
+    9.1,
+    7.1
+   ],
+   "to": [
+    15.2,
+    9.6,
+    8.9
+   ],
+   "faces": {
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      13.2,
+      6.4,
+      15.2,
+      6.9
+     ]
+    },
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      0.8,
+      6.4,
+      2.8,
+      6.9
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      6.4,
+      8.9,
+      6.9
+     ]
+    },
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      6.4,
+      8.9,
+      6.9
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      13.2,
+      7.1,
+      15.2,
+      8.9
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      13.2,
+      7.1,
+      15.2,
+      8.9
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    13.6,
+    9.6,
+    7.5
+   ],
+   "to": [
+    14.8,
+    11.6,
+    8.5
+   ],
+   "faces": {
+    "south": {
+     "texture": "#bulb",
+     "uv": [
+      13.6,
+      4.4,
+      14.8,
+      6.4
+     ]
+    },
+    "north": {
+     "texture": "#bulb",
+     "uv": [
+      1.2,
+      4.4,
+      2.4,
+      6.4
+     ]
+    },
+    "east": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      4.4,
+      8.5,
+      6.4
+     ]
+    },
+    "west": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      4.4,
+      8.5,
+      6.4
+     ]
+    },
+    "up": {
+     "texture": "#bulb",
+     "uv": [
+      13.6,
+      7.5,
+      14.8,
+      8.5
+     ]
+    },
+    "down": {
+     "texture": "#bulb",
+     "uv": [
+      13.6,
+      7.5,
+      14.8,
+      8.5
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    13.9,
+    5.6,
+    7.75
+   ],
+   "to": [
+    14.5,
+    9.1,
+    8.25
+   ],
+   "faces": {
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      13.9,
+      6.9,
+      14.5,
+      10.4
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      1.5,
+      6.9,
+      2.1,
+      10.4
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      6.9,
+      8.25,
+      10.4
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      6.9,
+      8.25,
+      10.4
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      13.9,
+      7.75,
+      14.5,
+      8.25
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      13.9,
+      7.75,
+      14.5,
+      8.25
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    12.1,
+    6.4,
+    7.75
+   ],
+   "to": [
+    12.7,
+    8.6,
+    8.25
+   ],
+   "faces": {
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      12.1,
+      7.4,
+      12.7,
+      9.6
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      3.3,
+      7.4,
+      3.9,
+      9.6
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      7.4,
+      8.25,
+      9.6
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      7.4,
+      8.25,
+      9.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      12.1,
+      7.75,
+      12.7,
+      8.25
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      12.1,
+      7.75,
+      12.7,
+      8.25
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    13.8,
+    5.0,
+    7.65
+   ],
+   "to": [
+    14.6,
+    5.6,
+    8.35
+   ],
+   "faces": {
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      13.8,
+      10.4,
+      14.6,
+      11.0
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      1.4,
+      10.4,
+      2.2,
+      11.0
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      10.4,
+      8.35,
+      11.0
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      10.4,
+      8.35,
+      11.0
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      13.8,
+      7.65,
+      14.6,
+      8.35
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      13.8,
+      7.65,
+      14.6,
+      8.35
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.6,
+    8.6,
+    11.6
+   ],
+   "to": [
+    8.4,
+    9.1,
+    14.6
+   ],
+   "faces": {
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      11.6,
+      6.9,
+      14.6,
+      7.4
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      1.4,
+      6.9,
+      4.4,
+      7.4
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      6.9,
+      8.4,
+      7.4
+     ]
+    },
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      6.9,
+      8.4,
+      7.4
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      11.6,
+      8.4,
+      14.6
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      7.6,
+      1.4,
+      8.4,
+      4.4
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    7.1,
+    9.1,
+    13.2
+   ],
+   "to": [
+    8.9,
+    9.6,
+    15.2
+   ],
+   "faces": {
+    "west": {
+     "texture": "#gold",
+     "uv": [
+      13.2,
+      6.4,
+      15.2,
+      6.9
+     ]
+    },
+    "east": {
+     "texture": "#gold",
+     "uv": [
+      0.8,
+      6.4,
+      2.8,
+      6.9
+     ]
+    },
+    "south": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      6.4,
+      8.9,
+      6.9
+     ]
+    },
+    "north": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      6.4,
+      8.9,
+      6.9
+     ]
+    },
+    "up": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      13.2,
+      8.9,
+      15.2
+     ]
+    },
+    "down": {
+     "texture": "#gold",
+     "uv": [
+      7.1,
+      0.8,
+      8.9,
+      2.8
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    7.5,
+    9.6,
+    13.6
+   ],
+   "to": [
+    8.5,
+    11.6,
+    14.8
+   ],
+   "faces": {
+    "west": {
+     "texture": "#bulb",
+     "uv": [
+      13.6,
+      4.4,
+      14.8,
+      6.4
+     ]
+    },
+    "east": {
+     "texture": "#bulb",
+     "uv": [
+      1.2,
+      4.4,
+      2.4,
+      6.4
+     ]
+    },
+    "south": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      4.4,
+      8.5,
+      6.4
+     ]
+    },
+    "north": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      4.4,
+      8.5,
+      6.4
+     ]
+    },
+    "up": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      13.6,
+      8.5,
+      14.8
+     ]
+    },
+    "down": {
+     "texture": "#bulb",
+     "uv": [
+      7.5,
+      1.2,
+      8.5,
+      2.4
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.75,
+    5.6,
+    13.9
+   ],
+   "to": [
+    8.25,
+    9.1,
+    14.5
+   ],
+   "faces": {
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      13.9,
+      6.9,
+      14.5,
+      10.4
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      1.5,
+      6.9,
+      2.1,
+      10.4
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      6.9,
+      8.25,
+      10.4
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      6.9,
+      8.25,
+      10.4
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      13.9,
+      8.25,
+      14.5
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      1.5,
+      8.25,
+      2.1
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.75,
+    6.4,
+    12.1
+   ],
+   "to": [
+    8.25,
+    8.6,
+    12.7
+   ],
+   "faces": {
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      12.1,
+      7.4,
+      12.7,
+      9.6
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      3.3,
+      7.4,
+      3.9,
+      9.6
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      7.4,
+      8.25,
+      9.6
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      7.4,
+      8.25,
+      9.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      12.1,
+      8.25,
+      12.7
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      7.75,
+      3.3,
+      8.25,
+      3.9
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    7.65,
+    5.0,
+    13.8
+   ],
+   "to": [
+    8.35,
+    5.6,
+    14.6
+   ],
+   "faces": {
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      13.8,
+      10.4,
+      14.6,
+      11.0
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      1.4,
+      10.4,
+      2.2,
+      11.0
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      10.4,
+      8.35,
+      11.0
+     ]
+    },
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      10.4,
+      8.35,
+      11.0
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      13.8,
+      8.35,
+      14.6
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      7.65,
+      1.4,
+      8.35,
+      2.2
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    4.6,
+    6.0,
+    4.6
+   ],
+   "to": [
+    5.2,
+    8.1,
+    5.2
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      7.9,
+      11.4,
+      10.0
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      7.9,
+      5.2,
+      10.0
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      7.9,
+      5.2,
+      10.0
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      7.9,
+      11.4,
+      10.0
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      4.6,
+      5.2,
+      5.2
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      10.8,
+      5.2,
+      11.4
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    4.5,
+    5.4,
+    4.5
+   ],
+   "to": [
+    5.3,
+    6.0,
+    5.3
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.0,
+      11.5,
+      10.6
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.0,
+      5.3,
+      10.6
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.0,
+      5.3,
+      10.6
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.0,
+      11.5,
+      10.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      4.5,
+      5.3,
+      5.3
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.7,
+      5.3,
+      11.5
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    10.8,
+    6.0,
+    4.6
+   ],
+   "to": [
+    11.4,
+    8.1,
+    5.2
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      7.9,
+      5.2,
+      10.0
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      7.9,
+      11.4,
+      10.0
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      7.9,
+      5.2,
+      10.0
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      7.9,
+      11.4,
+      10.0
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      4.6,
+      11.4,
+      5.2
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      10.8,
+      11.4,
+      11.4
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    10.7,
+    5.4,
+    4.5
+   ],
+   "to": [
+    11.5,
+    6.0,
+    5.3
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.0,
+      5.3,
+      10.6
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.0,
+      11.5,
+      10.6
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.0,
+      5.3,
+      10.6
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.0,
+      11.5,
+      10.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      4.5,
+      11.5,
+      5.3
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.7,
+      11.5,
+      11.5
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    4.6,
+    6.0,
+    10.8
+   ],
+   "to": [
+    5.2,
+    8.1,
+    11.4
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      7.9,
+      11.4,
+      10.0
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      7.9,
+      5.2,
+      10.0
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      7.9,
+      11.4,
+      10.0
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      7.9,
+      5.2,
+      10.0
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      10.8,
+      5.2,
+      11.4
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      4.6,
+      5.2,
+      5.2
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    4.5,
+    5.4,
+    10.7
+   ],
+   "to": [
+    5.3,
+    6.0,
+    11.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.0,
+      11.5,
+      10.6
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.0,
+      5.3,
+      10.6
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.0,
+      11.5,
+      10.6
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.0,
+      5.3,
+      10.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.7,
+      5.3,
+      11.5
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      4.5,
+      5.3,
+      5.3
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    10.8,
+    6.0,
+    10.8
+   ],
+   "to": [
+    11.4,
+    8.1,
+    11.4
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      7.9,
+      5.2,
+      10.0
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      7.9,
+      11.4,
+      10.0
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      7.9,
+      11.4,
+      10.0
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      4.6,
+      7.9,
+      5.2,
+      10.0
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      10.8,
+      11.4,
+      11.4
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      10.8,
+      4.6,
+      11.4,
+      5.2
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  },
+  {
+   "from": [
+    10.7,
+    5.4,
+    10.7
+   ],
+   "to": [
+    11.5,
+    6.0,
+    11.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.0,
+      5.3,
+      10.6
+     ]
+    },
+    "south": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.0,
+      11.5,
+      10.6
+     ]
+    },
+    "west": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.0,
+      11.5,
+      10.6
+     ]
+    },
+    "east": {
+     "texture": "#crystal",
+     "uv": [
+      4.5,
+      10.0,
+      5.3,
+      10.6
+     ]
+    },
+    "up": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      10.7,
+      11.5,
+      11.5
+     ]
+    },
+    "down": {
+     "texture": "#crystal",
+     "uv": [
+      10.7,
+      4.5,
+      11.5,
+      5.3
+     ]
+    }
+   },
+   "forge_data": {
+    "block_light": 15,
+    "sky_light": 15
+   },
+   "light_emission": 15
+  }
+ ]
+}

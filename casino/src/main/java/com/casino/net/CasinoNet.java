@@ -27,6 +27,7 @@ public final class CasinoNet {
         Net.register(9, OpenPokerPacket.class, OpenPokerPacket::encode, OpenPokerPacket::decode, OpenPokerPacket::handle);
         Net.register(10, ScratchBuyPacket.class, ScratchBuyPacket::encode, ScratchBuyPacket::decode, ScratchBuyPacket::handle);
         Net.register(11, ScratchCardPacket.class, ScratchCardPacket::encode, ScratchCardPacket::decode, ScratchCardPacket::handle);
+        Net.register(12, NeonPacket.class, NeonPacket::encode, NeonPacket::decode, NeonPacket::handle);
         Net.done();
     }
 

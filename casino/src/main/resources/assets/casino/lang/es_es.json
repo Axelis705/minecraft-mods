@@ -339,5 +339,17 @@
   "block.casino.bottle_shelf": "Estante con botellas",
   "block.casino.drinks": "Bebidas",
   "casino.decor.seat_taken": "Ese asiento está ocupado.",
-  "itemGroup.casino.decor": "Casino: decoración"
+  "itemGroup.casino.decor": "Casino: decoración",
+  "block.casino.neon_letter": "Letra de neón",
+  "block.casino.neon_sign": "Letrero de neón",
+  "block.casino.wall_screen": "Pantalla de casino",
+  "block.casino.chandelier": "Candelabro de cristal",
+  "block.casino.rope_post_red": "Poste con cordón rojo",
+  "block.casino.rope_post_black": "Poste con cordón negro",
+  "block.casino.rope_post_purple": "Poste con cordón morado",
+  "block.casino.rope_post_blue": "Poste con cordón azul",
+  "casino.neon.title": "Letra de neón",
+  "casino.neon.help": "Elige una letra y un color. Escribe con el teclado para llenar varias letras seguidas.",
+  "casino.neon.color": "Color",
+  "casino.neon.done": "Listo"
 }

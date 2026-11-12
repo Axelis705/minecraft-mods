@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "BBB",
+  "BGB",
+  "BRB"
+ ],
+ "key": {
+  "B": {
+   "item": "minecraft:blackstone"
+  },
+  "G": {
+   "item": "minecraft:glass_pane"
+  },
+  "R": {
+   "item": "minecraft:redstone"
+  }
+ },
+ "result": {
+  "item": "casino:wall_screen",
+  "count": 1
+ }
+}

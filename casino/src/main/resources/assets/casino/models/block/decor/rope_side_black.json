@@ -1,0 +1,6 @@
+{
+ "parent": "casino:block/decor/rope_side",
+ "textures": {
+  "v": "casino:block/decor/velvet_black"
+ }
+}

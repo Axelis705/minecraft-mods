@@ -1,0 +1,6 @@
+{
+ "parent": "casino:block/decor/wall_screen_base",
+ "textures": {
+  "glow": "casino:block/decor/screen_jackpot"
+ }
+}

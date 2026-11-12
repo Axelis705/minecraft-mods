@@ -1,0 +1,6 @@
+{
+ "parent": "casino:block/decor/neon_panel",
+ "textures": {
+  "glow": "casino:block/decor/neon/cyan_dash"
+ }
+}

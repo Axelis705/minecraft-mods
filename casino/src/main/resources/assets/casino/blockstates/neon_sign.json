@@ -1,0 +1,196 @@
+{
+ "variants": {
+  "design=0,facing=north": {
+   "model": "casino:block/decor/neon_sign_cherry",
+   "y": 0
+  },
+  "design=0,facing=east": {
+   "model": "casino:block/decor/neon_sign_cherry",
+   "y": 90
+  },
+  "design=0,facing=south": {
+   "model": "casino:block/decor/neon_sign_cherry",
+   "y": 180
+  },
+  "design=0,facing=west": {
+   "model": "casino:block/decor/neon_sign_cherry",
+   "y": 270
+  },
+  "design=1,facing=north": {
+   "model": "casino:block/decor/neon_sign_sevens",
+   "y": 0
+  },
+  "design=1,facing=east": {
+   "model": "casino:block/decor/neon_sign_sevens",
+   "y": 90
+  },
+  "design=1,facing=south": {
+   "model": "casino:block/decor/neon_sign_sevens",
+   "y": 180
+  },
+  "design=1,facing=west": {
+   "model": "casino:block/decor/neon_sign_sevens",
+   "y": 270
+  },
+  "design=2,facing=north": {
+   "model": "casino:block/decor/neon_sign_cocktail",
+   "y": 0
+  },
+  "design=2,facing=east": {
+   "model": "casino:block/decor/neon_sign_cocktail",
+   "y": 90
+  },
+  "design=2,facing=south": {
+   "model": "casino:block/decor/neon_sign_cocktail",
+   "y": 180
+  },
+  "design=2,facing=west": {
+   "model": "casino:block/decor/neon_sign_cocktail",
+   "y": 270
+  },
+  "design=3,facing=north": {
+   "model": "casino:block/decor/neon_sign_dice",
+   "y": 0
+  },
+  "design=3,facing=east": {
+   "model": "casino:block/decor/neon_sign_dice",
+   "y": 90
+  },
+  "design=3,facing=south": {
+   "model": "casino:block/decor/neon_sign_dice",
+   "y": 180
+  },
+  "design=3,facing=west": {
+   "model": "casino:block/decor/neon_sign_dice",
+   "y": 270
+  },
+  "design=4,facing=north": {
+   "model": "casino:block/decor/neon_sign_crown",
+   "y": 0
+  },
+  "design=4,facing=east": {
+   "model": "casino:block/decor/neon_sign_crown",
+   "y": 90
+  },
+  "design=4,facing=south": {
+   "model": "casino:block/decor/neon_sign_crown",
+   "y": 180
+  },
+  "design=4,facing=west": {
+   "model": "casino:block/decor/neon_sign_crown",
+   "y": 270
+  },
+  "design=5,facing=north": {
+   "model": "casino:block/decor/neon_sign_star",
+   "y": 0
+  },
+  "design=5,facing=east": {
+   "model": "casino:block/decor/neon_sign_star",
+   "y": 90
+  },
+  "design=5,facing=south": {
+   "model": "casino:block/decor/neon_sign_star",
+   "y": 180
+  },
+  "design=5,facing=west": {
+   "model": "casino:block/decor/neon_sign_star",
+   "y": 270
+  },
+  "design=6,facing=north": {
+   "model": "casino:block/decor/neon_sign_dollar",
+   "y": 0
+  },
+  "design=6,facing=east": {
+   "model": "casino:block/decor/neon_sign_dollar",
+   "y": 90
+  },
+  "design=6,facing=south": {
+   "model": "casino:block/decor/neon_sign_dollar",
+   "y": 180
+  },
+  "design=6,facing=west": {
+   "model": "casino:block/decor/neon_sign_dollar",
+   "y": 270
+  },
+  "design=7,facing=north": {
+   "model": "casino:block/decor/neon_sign_suits",
+   "y": 0
+  },
+  "design=7,facing=east": {
+   "model": "casino:block/decor/neon_sign_suits",
+   "y": 90
+  },
+  "design=7,facing=south": {
+   "model": "casino:block/decor/neon_sign_suits",
+   "y": 180
+  },
+  "design=7,facing=west": {
+   "model": "casino:block/decor/neon_sign_suits",
+   "y": 270
+  },
+  "design=8,facing=north": {
+   "model": "casino:block/decor/neon_sign_bar",
+   "y": 0
+  },
+  "design=8,facing=east": {
+   "model": "casino:block/decor/neon_sign_bar",
+   "y": 90
+  },
+  "design=8,facing=south": {
+   "model": "casino:block/decor/neon_sign_bar",
+   "y": 180
+  },
+  "design=8,facing=west": {
+   "model": "casino:block/decor/neon_sign_bar",
+   "y": 270
+  },
+  "design=9,facing=north": {
+   "model": "casino:block/decor/neon_sign_vip",
+   "y": 0
+  },
+  "design=9,facing=east": {
+   "model": "casino:block/decor/neon_sign_vip",
+   "y": 90
+  },
+  "design=9,facing=south": {
+   "model": "casino:block/decor/neon_sign_vip",
+   "y": 180
+  },
+  "design=9,facing=west": {
+   "model": "casino:block/decor/neon_sign_vip",
+   "y": 270
+  },
+  "design=10,facing=north": {
+   "model": "casino:block/decor/neon_sign_arrow",
+   "y": 0
+  },
+  "design=10,facing=east": {
+   "model": "casino:block/decor/neon_sign_arrow",
+   "y": 90
+  },
+  "design=10,facing=south": {
+   "model": "casino:block/decor/neon_sign_arrow",
+   "y": 180
+  },
+  "design=10,facing=west": {
+   "model": "casino:block/decor/neon_sign_arrow",
+   "y": 270
+  },
+  "design=11,facing=north": {
+   "model": "casino:block/decor/neon_sign_chip",
+   "y": 0
+  },
+  "design=11,facing=east": {
+   "model": "casino:block/decor/neon_sign_chip",
+   "y": 90
+  },
+  "design=11,facing=south": {
+   "model": "casino:block/decor/neon_sign_chip",
+   "y": 180
+  },
+  "design=11,facing=west": {
+   "model": "casino:block/decor/neon_sign_chip",
+   "y": 270
+  }
+ }
+}

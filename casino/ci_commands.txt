@@ -61,13 +61,22 @@ setblock 70 120 0 casino:bar_counter[facing=north]
 setblock 70 120 1 casino:bar_counter[facing=west]
 execute if block 70 120 0 casino:bar_counter[shape=outer_left] run say PRUEBA_BARRA_ESQUINA
 summon casino:seat 64 121 4
-execute if entity @e[type=casino:seat] run say DIAG_ASIENTO_CREADO
-execute unless entity @e[type=casino:seat] run say PRUEBA_ASIENTO_SE_BORRA
+execute if entity @e[type=casino:seat] run say PRUEBA_ASIENTO_CREADO
+kill @e[type=casino:seat]
 setblock 66 120 0 casino:casino_chair_purple[facing=south]
 setblock 67 120 0 casino:bottle_shelf[facing=east]
 setblock 68 120 0 casino:cocktail_table_black
 setblock 68 121 0 casino:drinks[drinks=4]
 execute if block 68 121 0 casino:drinks[drinks=4] if block 66 120 0 casino:casino_chair_purple run say PRUEBA_DECOR_OK
+# decoracion 2: letras de neon, letrero, pantalla, candelabro y postes con cordon que se unen
+setblock 80 120 0 casino:neon_letter[facing=north,glyph=2,color=3]
+setblock 81 120 0 casino:neon_sign[facing=north,design=5]
+setblock 82 120 0 casino:wall_screen[facing=north,design=1]
+setblock 83 120 0 casino:chandelier
+setblock 84 120 0 casino:rope_post_red
+setblock 85 120 0 casino:rope_post_blue
+execute if block 80 120 0 casino:neon_letter[glyph=2,color=3] if block 81 120 0 casino:neon_sign[design=5] if block 82 120 0 casino:wall_screen if block 83 120 0 casino:chandelier run say PRUEBA_NEON_OK
+execute if block 84 120 0 casino:rope_post_red[east=true] run say PRUEBA_CORDON_UNE
 #expect PRUEBA_RASCA_OK
 #expect PRUEBA_POKER_OK
 #expect PRUEBA_CRUPIER_OK
@@ -83,5 +92,7 @@ execute if block 68 121 0 casino:drinks[drinks=4] if block 66 120 0 casino:casin
 #expect PRUEBA_CASINO_ESTRUCTURA
 #expect PRUEBA_SOFA_UNE
 #expect PRUEBA_BARRA_ESQUINA
-#expect PRUEBA_ASIENTO_SE_BORRA
 #expect PRUEBA_DECOR_OK
+#expect PRUEBA_ASIENTO_CREADO
+#expect PRUEBA_NEON_OK
+#expect PRUEBA_CORDON_UNE

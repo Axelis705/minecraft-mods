@@ -1,0 +1,45 @@
+{
+ "multipart": [
+  {
+   "apply": {
+    "model": "casino:block/decor/rope_post"
+   }
+  },
+  {
+   "when": {
+    "north": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/rope_side_red",
+    "y": 0
+   }
+  },
+  {
+   "when": {
+    "east": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/rope_side_red",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "south": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/rope_side_red",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "west": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/rope_side_red",
+    "y": 270
+   }
+  }
+ ]
+}

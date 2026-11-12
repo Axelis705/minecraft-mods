@@ -71,6 +71,25 @@ public final class ModDecor {
     public static final RegistryObject<Block> DRINKS = block("drinks", p -> new DrinksBlock(
             p.mapColor(MapColor.NONE).strength(0.3F).sound(SoundType.GLASS).noOcclusion()));
 
+    // ronda 2: luces y señales
+    public static final RegistryObject<Block> NEON_LETTER = block("neon_letter", p -> new com.casino.decor.NeonLetterBlock(
+            p.mapColor(MapColor.COLOR_BLACK).strength(1.0F).sound(SoundType.GLASS).noOcclusion().lightLevel(s -> 10)));
+    public static final RegistryObject<Block> NEON_SIGN = block("neon_sign", p -> new com.casino.decor.WallDecorBlock.Sign(
+            p.mapColor(MapColor.COLOR_BLACK).strength(1.0F).sound(SoundType.GLASS).noOcclusion().lightLevel(s -> 10)));
+    public static final RegistryObject<Block> WALL_SCREEN = block("wall_screen", p -> new com.casino.decor.WallDecorBlock.Screen(
+            p.mapColor(MapColor.COLOR_BLACK).strength(1.5F).sound(SoundType.METAL).noOcclusion().lightLevel(s -> 8)));
+    public static final RegistryObject<Block> CHANDELIER = block("chandelier", p -> new DecorBlock(
+            p.mapColor(MapColor.GOLD).strength(1.0F).sound(SoundType.GLASS).noOcclusion().lightLevel(s -> 15), false,
+            new double[]{1, 3.6, 1, 15, 16, 15}));
+    public static final List<RegistryObject<Block>> ROPE_POSTS = new ArrayList<>();
+
+    static {
+        for (int i = 0; i < COLORS.length; i++) {
+            ROPE_POSTS.add(block("rope_post_" + COLORS[i], p -> new com.casino.decor.RopePostBlock(
+                    p.mapColor(MapColor.GOLD).strength(1.5F).sound(SoundType.METAL).noOcclusion())));
+        }
+    }
+
     public static final RegistryObject<CreativeModeTab> TAB = ModCreativeTabs.TABS.register("decor", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.casino.decor"))
             .icon(() -> new ItemStack(CHAIRS.get(0).get()))

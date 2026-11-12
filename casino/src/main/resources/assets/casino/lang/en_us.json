@@ -339,5 +339,17 @@
   "block.casino.bottle_shelf": "Bottle Shelf",
   "block.casino.drinks": "Drinks",
   "casino.decor.seat_taken": "That seat is taken.",
-  "itemGroup.casino.decor": "Casino: Decoration"
+  "itemGroup.casino.decor": "Casino: Decoration",
+  "block.casino.neon_letter": "Neon Letter",
+  "block.casino.neon_sign": "Neon Sign",
+  "block.casino.wall_screen": "Casino Screen",
+  "block.casino.chandelier": "Crystal Chandelier",
+  "block.casino.rope_post_red": "Red Rope Post",
+  "block.casino.rope_post_black": "Black Rope Post",
+  "block.casino.rope_post_purple": "Purple Rope Post",
+  "block.casino.rope_post_blue": "Blue Rope Post",
+  "casino.neon.title": "Neon Letter",
+  "casino.neon.help": "Pick a letter and a color. Type on your keyboard to fill several letters in a row.",
+  "casino.neon.color": "Color",
+  "casino.neon.done": "Done"
 }

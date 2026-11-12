@@ -1,0 +1,68 @@
+{
+ "variants": {
+  "design=0,facing=north": {
+   "model": "casino:block/decor/wall_screen_jackpot",
+   "y": 0
+  },
+  "design=0,facing=east": {
+   "model": "casino:block/decor/wall_screen_jackpot",
+   "y": 90
+  },
+  "design=0,facing=south": {
+   "model": "casino:block/decor/wall_screen_jackpot",
+   "y": 180
+  },
+  "design=0,facing=west": {
+   "model": "casino:block/decor/wall_screen_jackpot",
+   "y": 270
+  },
+  "design=1,facing=north": {
+   "model": "casino:block/decor/wall_screen_reels",
+   "y": 0
+  },
+  "design=1,facing=east": {
+   "model": "casino:block/decor/wall_screen_reels",
+   "y": 90
+  },
+  "design=1,facing=south": {
+   "model": "casino:block/decor/wall_screen_reels",
+   "y": 180
+  },
+  "design=1,facing=west": {
+   "model": "casino:block/decor/wall_screen_reels",
+   "y": 270
+  },
+  "design=2,facing=north": {
+   "model": "casino:block/decor/wall_screen_roulette",
+   "y": 0
+  },
+  "design=2,facing=east": {
+   "model": "casino:block/decor/wall_screen_roulette",
+   "y": 90
+  },
+  "design=2,facing=south": {
+   "model": "casino:block/decor/wall_screen_roulette",
+   "y": 180
+  },
+  "design=2,facing=west": {
+   "model": "casino:block/decor/wall_screen_roulette",
+   "y": 270
+  },
+  "design=3,facing=north": {
+   "model": "casino:block/decor/wall_screen_cards",
+   "y": 0
+  },
+  "design=3,facing=east": {
+   "model": "casino:block/decor/wall_screen_cards",
+   "y": 90
+  },
+  "design=3,facing=south": {
+   "model": "casino:block/decor/wall_screen_cards",
+   "y": 180
+  },
+  "design=3,facing=west": {
+   "model": "casino:block/decor/wall_screen_cards",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,4516 @@
+{
+ "variants": {
+  "color=0,facing=north,glyph=0": {
+   "model": "casino:block/decor/neon_red_a",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=0": {
+   "model": "casino:block/decor/neon_red_a",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=0": {
+   "model": "casino:block/decor/neon_red_a",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=0": {
+   "model": "casino:block/decor/neon_red_a",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=1": {
+   "model": "casino:block/decor/neon_red_b",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=1": {
+   "model": "casino:block/decor/neon_red_b",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=1": {
+   "model": "casino:block/decor/neon_red_b",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=1": {
+   "model": "casino:block/decor/neon_red_b",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=2": {
+   "model": "casino:block/decor/neon_red_c",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=2": {
+   "model": "casino:block/decor/neon_red_c",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=2": {
+   "model": "casino:block/decor/neon_red_c",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=2": {
+   "model": "casino:block/decor/neon_red_c",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=3": {
+   "model": "casino:block/decor/neon_red_d",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=3": {
+   "model": "casino:block/decor/neon_red_d",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=3": {
+   "model": "casino:block/decor/neon_red_d",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=3": {
+   "model": "casino:block/decor/neon_red_d",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=4": {
+   "model": "casino:block/decor/neon_red_e",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=4": {
+   "model": "casino:block/decor/neon_red_e",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=4": {
+   "model": "casino:block/decor/neon_red_e",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=4": {
+   "model": "casino:block/decor/neon_red_e",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=5": {
+   "model": "casino:block/decor/neon_red_f",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=5": {
+   "model": "casino:block/decor/neon_red_f",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=5": {
+   "model": "casino:block/decor/neon_red_f",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=5": {
+   "model": "casino:block/decor/neon_red_f",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=6": {
+   "model": "casino:block/decor/neon_red_g",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=6": {
+   "model": "casino:block/decor/neon_red_g",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=6": {
+   "model": "casino:block/decor/neon_red_g",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=6": {
+   "model": "casino:block/decor/neon_red_g",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=7": {
+   "model": "casino:block/decor/neon_red_h",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=7": {
+   "model": "casino:block/decor/neon_red_h",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=7": {
+   "model": "casino:block/decor/neon_red_h",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=7": {
+   "model": "casino:block/decor/neon_red_h",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=8": {
+   "model": "casino:block/decor/neon_red_i",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=8": {
+   "model": "casino:block/decor/neon_red_i",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=8": {
+   "model": "casino:block/decor/neon_red_i",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=8": {
+   "model": "casino:block/decor/neon_red_i",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=9": {
+   "model": "casino:block/decor/neon_red_j",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=9": {
+   "model": "casino:block/decor/neon_red_j",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=9": {
+   "model": "casino:block/decor/neon_red_j",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=9": {
+   "model": "casino:block/decor/neon_red_j",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=10": {
+   "model": "casino:block/decor/neon_red_k",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=10": {
+   "model": "casino:block/decor/neon_red_k",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=10": {
+   "model": "casino:block/decor/neon_red_k",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=10": {
+   "model": "casino:block/decor/neon_red_k",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=11": {
+   "model": "casino:block/decor/neon_red_l",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=11": {
+   "model": "casino:block/decor/neon_red_l",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=11": {
+   "model": "casino:block/decor/neon_red_l",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=11": {
+   "model": "casino:block/decor/neon_red_l",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=12": {
+   "model": "casino:block/decor/neon_red_m",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=12": {
+   "model": "casino:block/decor/neon_red_m",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=12": {
+   "model": "casino:block/decor/neon_red_m",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=12": {
+   "model": "casino:block/decor/neon_red_m",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=13": {
+   "model": "casino:block/decor/neon_red_n",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=13": {
+   "model": "casino:block/decor/neon_red_n",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=13": {
+   "model": "casino:block/decor/neon_red_n",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=13": {
+   "model": "casino:block/decor/neon_red_n",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=14": {
+   "model": "casino:block/decor/neon_red_o",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=14": {
+   "model": "casino:block/decor/neon_red_o",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=14": {
+   "model": "casino:block/decor/neon_red_o",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=14": {
+   "model": "casino:block/decor/neon_red_o",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=15": {
+   "model": "casino:block/decor/neon_red_p",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=15": {
+   "model": "casino:block/decor/neon_red_p",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=15": {
+   "model": "casino:block/decor/neon_red_p",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=15": {
+   "model": "casino:block/decor/neon_red_p",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=16": {
+   "model": "casino:block/decor/neon_red_q",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=16": {
+   "model": "casino:block/decor/neon_red_q",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=16": {
+   "model": "casino:block/decor/neon_red_q",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=16": {
+   "model": "casino:block/decor/neon_red_q",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=17": {
+   "model": "casino:block/decor/neon_red_r",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=17": {
+   "model": "casino:block/decor/neon_red_r",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=17": {
+   "model": "casino:block/decor/neon_red_r",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=17": {
+   "model": "casino:block/decor/neon_red_r",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=18": {
+   "model": "casino:block/decor/neon_red_s",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=18": {
+   "model": "casino:block/decor/neon_red_s",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=18": {
+   "model": "casino:block/decor/neon_red_s",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=18": {
+   "model": "casino:block/decor/neon_red_s",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=19": {
+   "model": "casino:block/decor/neon_red_t",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=19": {
+   "model": "casino:block/decor/neon_red_t",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=19": {
+   "model": "casino:block/decor/neon_red_t",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=19": {
+   "model": "casino:block/decor/neon_red_t",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=20": {
+   "model": "casino:block/decor/neon_red_u",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=20": {
+   "model": "casino:block/decor/neon_red_u",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=20": {
+   "model": "casino:block/decor/neon_red_u",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=20": {
+   "model": "casino:block/decor/neon_red_u",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=21": {
+   "model": "casino:block/decor/neon_red_v",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=21": {
+   "model": "casino:block/decor/neon_red_v",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=21": {
+   "model": "casino:block/decor/neon_red_v",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=21": {
+   "model": "casino:block/decor/neon_red_v",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=22": {
+   "model": "casino:block/decor/neon_red_w",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=22": {
+   "model": "casino:block/decor/neon_red_w",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=22": {
+   "model": "casino:block/decor/neon_red_w",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=22": {
+   "model": "casino:block/decor/neon_red_w",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=23": {
+   "model": "casino:block/decor/neon_red_x",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=23": {
+   "model": "casino:block/decor/neon_red_x",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=23": {
+   "model": "casino:block/decor/neon_red_x",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=23": {
+   "model": "casino:block/decor/neon_red_x",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=24": {
+   "model": "casino:block/decor/neon_red_y",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=24": {
+   "model": "casino:block/decor/neon_red_y",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=24": {
+   "model": "casino:block/decor/neon_red_y",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=24": {
+   "model": "casino:block/decor/neon_red_y",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=25": {
+   "model": "casino:block/decor/neon_red_z",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=25": {
+   "model": "casino:block/decor/neon_red_z",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=25": {
+   "model": "casino:block/decor/neon_red_z",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=25": {
+   "model": "casino:block/decor/neon_red_z",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=26": {
+   "model": "casino:block/decor/neon_red_0",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=26": {
+   "model": "casino:block/decor/neon_red_0",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=26": {
+   "model": "casino:block/decor/neon_red_0",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=26": {
+   "model": "casino:block/decor/neon_red_0",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=27": {
+   "model": "casino:block/decor/neon_red_1",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=27": {
+   "model": "casino:block/decor/neon_red_1",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=27": {
+   "model": "casino:block/decor/neon_red_1",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=27": {
+   "model": "casino:block/decor/neon_red_1",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=28": {
+   "model": "casino:block/decor/neon_red_2",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=28": {
+   "model": "casino:block/decor/neon_red_2",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=28": {
+   "model": "casino:block/decor/neon_red_2",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=28": {
+   "model": "casino:block/decor/neon_red_2",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=29": {
+   "model": "casino:block/decor/neon_red_3",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=29": {
+   "model": "casino:block/decor/neon_red_3",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=29": {
+   "model": "casino:block/decor/neon_red_3",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=29": {
+   "model": "casino:block/decor/neon_red_3",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=30": {
+   "model": "casino:block/decor/neon_red_4",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=30": {
+   "model": "casino:block/decor/neon_red_4",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=30": {
+   "model": "casino:block/decor/neon_red_4",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=30": {
+   "model": "casino:block/decor/neon_red_4",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=31": {
+   "model": "casino:block/decor/neon_red_5",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=31": {
+   "model": "casino:block/decor/neon_red_5",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=31": {
+   "model": "casino:block/decor/neon_red_5",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=31": {
+   "model": "casino:block/decor/neon_red_5",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=32": {
+   "model": "casino:block/decor/neon_red_6",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=32": {
+   "model": "casino:block/decor/neon_red_6",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=32": {
+   "model": "casino:block/decor/neon_red_6",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=32": {
+   "model": "casino:block/decor/neon_red_6",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=33": {
+   "model": "casino:block/decor/neon_red_7",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=33": {
+   "model": "casino:block/decor/neon_red_7",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=33": {
+   "model": "casino:block/decor/neon_red_7",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=33": {
+   "model": "casino:block/decor/neon_red_7",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=34": {
+   "model": "casino:block/decor/neon_red_8",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=34": {
+   "model": "casino:block/decor/neon_red_8",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=34": {
+   "model": "casino:block/decor/neon_red_8",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=34": {
+   "model": "casino:block/decor/neon_red_8",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=35": {
+   "model": "casino:block/decor/neon_red_9",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=35": {
+   "model": "casino:block/decor/neon_red_9",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=35": {
+   "model": "casino:block/decor/neon_red_9",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=35": {
+   "model": "casino:block/decor/neon_red_9",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=36": {
+   "model": "casino:block/decor/neon_red_excl",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=36": {
+   "model": "casino:block/decor/neon_red_excl",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=36": {
+   "model": "casino:block/decor/neon_red_excl",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=36": {
+   "model": "casino:block/decor/neon_red_excl",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=37": {
+   "model": "casino:block/decor/neon_red_quest",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=37": {
+   "model": "casino:block/decor/neon_red_quest",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=37": {
+   "model": "casino:block/decor/neon_red_quest",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=37": {
+   "model": "casino:block/decor/neon_red_quest",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=38": {
+   "model": "casino:block/decor/neon_red_dollar",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=38": {
+   "model": "casino:block/decor/neon_red_dollar",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=38": {
+   "model": "casino:block/decor/neon_red_dollar",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=38": {
+   "model": "casino:block/decor/neon_red_dollar",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=39": {
+   "model": "casino:block/decor/neon_red_and",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=39": {
+   "model": "casino:block/decor/neon_red_and",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=39": {
+   "model": "casino:block/decor/neon_red_and",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=39": {
+   "model": "casino:block/decor/neon_red_and",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=40": {
+   "model": "casino:block/decor/neon_red_heart",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=40": {
+   "model": "casino:block/decor/neon_red_heart",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=40": {
+   "model": "casino:block/decor/neon_red_heart",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=40": {
+   "model": "casino:block/decor/neon_red_heart",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=41": {
+   "model": "casino:block/decor/neon_red_spade",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=41": {
+   "model": "casino:block/decor/neon_red_spade",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=41": {
+   "model": "casino:block/decor/neon_red_spade",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=41": {
+   "model": "casino:block/decor/neon_red_spade",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=42": {
+   "model": "casino:block/decor/neon_red_diamond",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=42": {
+   "model": "casino:block/decor/neon_red_diamond",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=42": {
+   "model": "casino:block/decor/neon_red_diamond",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=42": {
+   "model": "casino:block/decor/neon_red_diamond",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=43": {
+   "model": "casino:block/decor/neon_red_club",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=43": {
+   "model": "casino:block/decor/neon_red_club",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=43": {
+   "model": "casino:block/decor/neon_red_club",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=43": {
+   "model": "casino:block/decor/neon_red_club",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=44": {
+   "model": "casino:block/decor/neon_red_star",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=44": {
+   "model": "casino:block/decor/neon_red_star",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=44": {
+   "model": "casino:block/decor/neon_red_star",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=44": {
+   "model": "casino:block/decor/neon_red_star",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=45": {
+   "model": "casino:block/decor/neon_red_dash",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=45": {
+   "model": "casino:block/decor/neon_red_dash",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=45": {
+   "model": "casino:block/decor/neon_red_dash",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=45": {
+   "model": "casino:block/decor/neon_red_dash",
+   "y": 270
+  },
+  "color=0,facing=north,glyph=46": {
+   "model": "casino:block/decor/neon_red_space",
+   "y": 0
+  },
+  "color=0,facing=east,glyph=46": {
+   "model": "casino:block/decor/neon_red_space",
+   "y": 90
+  },
+  "color=0,facing=south,glyph=46": {
+   "model": "casino:block/decor/neon_red_space",
+   "y": 180
+  },
+  "color=0,facing=west,glyph=46": {
+   "model": "casino:block/decor/neon_red_space",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=0": {
+   "model": "casino:block/decor/neon_pink_a",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=0": {
+   "model": "casino:block/decor/neon_pink_a",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=0": {
+   "model": "casino:block/decor/neon_pink_a",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=0": {
+   "model": "casino:block/decor/neon_pink_a",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=1": {
+   "model": "casino:block/decor/neon_pink_b",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=1": {
+   "model": "casino:block/decor/neon_pink_b",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=1": {
+   "model": "casino:block/decor/neon_pink_b",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=1": {
+   "model": "casino:block/decor/neon_pink_b",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=2": {
+   "model": "casino:block/decor/neon_pink_c",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=2": {
+   "model": "casino:block/decor/neon_pink_c",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=2": {
+   "model": "casino:block/decor/neon_pink_c",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=2": {
+   "model": "casino:block/decor/neon_pink_c",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=3": {
+   "model": "casino:block/decor/neon_pink_d",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=3": {
+   "model": "casino:block/decor/neon_pink_d",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=3": {
+   "model": "casino:block/decor/neon_pink_d",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=3": {
+   "model": "casino:block/decor/neon_pink_d",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=4": {
+   "model": "casino:block/decor/neon_pink_e",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=4": {
+   "model": "casino:block/decor/neon_pink_e",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=4": {
+   "model": "casino:block/decor/neon_pink_e",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=4": {
+   "model": "casino:block/decor/neon_pink_e",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=5": {
+   "model": "casino:block/decor/neon_pink_f",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=5": {
+   "model": "casino:block/decor/neon_pink_f",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=5": {
+   "model": "casino:block/decor/neon_pink_f",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=5": {
+   "model": "casino:block/decor/neon_pink_f",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=6": {
+   "model": "casino:block/decor/neon_pink_g",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=6": {
+   "model": "casino:block/decor/neon_pink_g",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=6": {
+   "model": "casino:block/decor/neon_pink_g",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=6": {
+   "model": "casino:block/decor/neon_pink_g",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=7": {
+   "model": "casino:block/decor/neon_pink_h",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=7": {
+   "model": "casino:block/decor/neon_pink_h",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=7": {
+   "model": "casino:block/decor/neon_pink_h",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=7": {
+   "model": "casino:block/decor/neon_pink_h",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=8": {
+   "model": "casino:block/decor/neon_pink_i",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=8": {
+   "model": "casino:block/decor/neon_pink_i",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=8": {
+   "model": "casino:block/decor/neon_pink_i",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=8": {
+   "model": "casino:block/decor/neon_pink_i",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=9": {
+   "model": "casino:block/decor/neon_pink_j",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=9": {
+   "model": "casino:block/decor/neon_pink_j",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=9": {
+   "model": "casino:block/decor/neon_pink_j",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=9": {
+   "model": "casino:block/decor/neon_pink_j",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=10": {
+   "model": "casino:block/decor/neon_pink_k",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=10": {
+   "model": "casino:block/decor/neon_pink_k",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=10": {
+   "model": "casino:block/decor/neon_pink_k",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=10": {
+   "model": "casino:block/decor/neon_pink_k",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=11": {
+   "model": "casino:block/decor/neon_pink_l",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=11": {
+   "model": "casino:block/decor/neon_pink_l",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=11": {
+   "model": "casino:block/decor/neon_pink_l",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=11": {
+   "model": "casino:block/decor/neon_pink_l",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=12": {
+   "model": "casino:block/decor/neon_pink_m",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=12": {
+   "model": "casino:block/decor/neon_pink_m",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=12": {
+   "model": "casino:block/decor/neon_pink_m",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=12": {
+   "model": "casino:block/decor/neon_pink_m",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=13": {
+   "model": "casino:block/decor/neon_pink_n",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=13": {
+   "model": "casino:block/decor/neon_pink_n",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=13": {
+   "model": "casino:block/decor/neon_pink_n",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=13": {
+   "model": "casino:block/decor/neon_pink_n",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=14": {
+   "model": "casino:block/decor/neon_pink_o",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=14": {
+   "model": "casino:block/decor/neon_pink_o",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=14": {
+   "model": "casino:block/decor/neon_pink_o",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=14": {
+   "model": "casino:block/decor/neon_pink_o",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=15": {
+   "model": "casino:block/decor/neon_pink_p",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=15": {
+   "model": "casino:block/decor/neon_pink_p",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=15": {
+   "model": "casino:block/decor/neon_pink_p",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=15": {
+   "model": "casino:block/decor/neon_pink_p",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=16": {
+   "model": "casino:block/decor/neon_pink_q",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=16": {
+   "model": "casino:block/decor/neon_pink_q",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=16": {
+   "model": "casino:block/decor/neon_pink_q",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=16": {
+   "model": "casino:block/decor/neon_pink_q",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=17": {
+   "model": "casino:block/decor/neon_pink_r",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=17": {
+   "model": "casino:block/decor/neon_pink_r",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=17": {
+   "model": "casino:block/decor/neon_pink_r",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=17": {
+   "model": "casino:block/decor/neon_pink_r",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=18": {
+   "model": "casino:block/decor/neon_pink_s",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=18": {
+   "model": "casino:block/decor/neon_pink_s",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=18": {
+   "model": "casino:block/decor/neon_pink_s",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=18": {
+   "model": "casino:block/decor/neon_pink_s",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=19": {
+   "model": "casino:block/decor/neon_pink_t",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=19": {
+   "model": "casino:block/decor/neon_pink_t",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=19": {
+   "model": "casino:block/decor/neon_pink_t",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=19": {
+   "model": "casino:block/decor/neon_pink_t",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=20": {
+   "model": "casino:block/decor/neon_pink_u",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=20": {
+   "model": "casino:block/decor/neon_pink_u",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=20": {
+   "model": "casino:block/decor/neon_pink_u",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=20": {
+   "model": "casino:block/decor/neon_pink_u",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=21": {
+   "model": "casino:block/decor/neon_pink_v",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=21": {
+   "model": "casino:block/decor/neon_pink_v",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=21": {
+   "model": "casino:block/decor/neon_pink_v",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=21": {
+   "model": "casino:block/decor/neon_pink_v",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=22": {
+   "model": "casino:block/decor/neon_pink_w",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=22": {
+   "model": "casino:block/decor/neon_pink_w",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=22": {
+   "model": "casino:block/decor/neon_pink_w",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=22": {
+   "model": "casino:block/decor/neon_pink_w",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=23": {
+   "model": "casino:block/decor/neon_pink_x",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=23": {
+   "model": "casino:block/decor/neon_pink_x",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=23": {
+   "model": "casino:block/decor/neon_pink_x",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=23": {
+   "model": "casino:block/decor/neon_pink_x",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=24": {
+   "model": "casino:block/decor/neon_pink_y",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=24": {
+   "model": "casino:block/decor/neon_pink_y",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=24": {
+   "model": "casino:block/decor/neon_pink_y",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=24": {
+   "model": "casino:block/decor/neon_pink_y",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=25": {
+   "model": "casino:block/decor/neon_pink_z",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=25": {
+   "model": "casino:block/decor/neon_pink_z",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=25": {
+   "model": "casino:block/decor/neon_pink_z",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=25": {
+   "model": "casino:block/decor/neon_pink_z",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=26": {
+   "model": "casino:block/decor/neon_pink_0",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=26": {
+   "model": "casino:block/decor/neon_pink_0",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=26": {
+   "model": "casino:block/decor/neon_pink_0",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=26": {
+   "model": "casino:block/decor/neon_pink_0",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=27": {
+   "model": "casino:block/decor/neon_pink_1",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=27": {
+   "model": "casino:block/decor/neon_pink_1",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=27": {
+   "model": "casino:block/decor/neon_pink_1",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=27": {
+   "model": "casino:block/decor/neon_pink_1",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=28": {
+   "model": "casino:block/decor/neon_pink_2",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=28": {
+   "model": "casino:block/decor/neon_pink_2",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=28": {
+   "model": "casino:block/decor/neon_pink_2",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=28": {
+   "model": "casino:block/decor/neon_pink_2",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=29": {
+   "model": "casino:block/decor/neon_pink_3",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=29": {
+   "model": "casino:block/decor/neon_pink_3",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=29": {
+   "model": "casino:block/decor/neon_pink_3",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=29": {
+   "model": "casino:block/decor/neon_pink_3",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=30": {
+   "model": "casino:block/decor/neon_pink_4",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=30": {
+   "model": "casino:block/decor/neon_pink_4",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=30": {
+   "model": "casino:block/decor/neon_pink_4",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=30": {
+   "model": "casino:block/decor/neon_pink_4",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=31": {
+   "model": "casino:block/decor/neon_pink_5",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=31": {
+   "model": "casino:block/decor/neon_pink_5",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=31": {
+   "model": "casino:block/decor/neon_pink_5",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=31": {
+   "model": "casino:block/decor/neon_pink_5",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=32": {
+   "model": "casino:block/decor/neon_pink_6",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=32": {
+   "model": "casino:block/decor/neon_pink_6",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=32": {
+   "model": "casino:block/decor/neon_pink_6",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=32": {
+   "model": "casino:block/decor/neon_pink_6",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=33": {
+   "model": "casino:block/decor/neon_pink_7",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=33": {
+   "model": "casino:block/decor/neon_pink_7",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=33": {
+   "model": "casino:block/decor/neon_pink_7",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=33": {
+   "model": "casino:block/decor/neon_pink_7",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=34": {
+   "model": "casino:block/decor/neon_pink_8",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=34": {
+   "model": "casino:block/decor/neon_pink_8",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=34": {
+   "model": "casino:block/decor/neon_pink_8",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=34": {
+   "model": "casino:block/decor/neon_pink_8",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=35": {
+   "model": "casino:block/decor/neon_pink_9",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=35": {
+   "model": "casino:block/decor/neon_pink_9",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=35": {
+   "model": "casino:block/decor/neon_pink_9",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=35": {
+   "model": "casino:block/decor/neon_pink_9",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=36": {
+   "model": "casino:block/decor/neon_pink_excl",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=36": {
+   "model": "casino:block/decor/neon_pink_excl",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=36": {
+   "model": "casino:block/decor/neon_pink_excl",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=36": {
+   "model": "casino:block/decor/neon_pink_excl",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=37": {
+   "model": "casino:block/decor/neon_pink_quest",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=37": {
+   "model": "casino:block/decor/neon_pink_quest",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=37": {
+   "model": "casino:block/decor/neon_pink_quest",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=37": {
+   "model": "casino:block/decor/neon_pink_quest",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=38": {
+   "model": "casino:block/decor/neon_pink_dollar",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=38": {
+   "model": "casino:block/decor/neon_pink_dollar",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=38": {
+   "model": "casino:block/decor/neon_pink_dollar",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=38": {
+   "model": "casino:block/decor/neon_pink_dollar",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=39": {
+   "model": "casino:block/decor/neon_pink_and",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=39": {
+   "model": "casino:block/decor/neon_pink_and",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=39": {
+   "model": "casino:block/decor/neon_pink_and",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=39": {
+   "model": "casino:block/decor/neon_pink_and",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=40": {
+   "model": "casino:block/decor/neon_pink_heart",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=40": {
+   "model": "casino:block/decor/neon_pink_heart",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=40": {
+   "model": "casino:block/decor/neon_pink_heart",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=40": {
+   "model": "casino:block/decor/neon_pink_heart",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=41": {
+   "model": "casino:block/decor/neon_pink_spade",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=41": {
+   "model": "casino:block/decor/neon_pink_spade",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=41": {
+   "model": "casino:block/decor/neon_pink_spade",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=41": {
+   "model": "casino:block/decor/neon_pink_spade",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=42": {
+   "model": "casino:block/decor/neon_pink_diamond",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=42": {
+   "model": "casino:block/decor/neon_pink_diamond",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=42": {
+   "model": "casino:block/decor/neon_pink_diamond",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=42": {
+   "model": "casino:block/decor/neon_pink_diamond",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=43": {
+   "model": "casino:block/decor/neon_pink_club",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=43": {
+   "model": "casino:block/decor/neon_pink_club",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=43": {
+   "model": "casino:block/decor/neon_pink_club",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=43": {
+   "model": "casino:block/decor/neon_pink_club",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=44": {
+   "model": "casino:block/decor/neon_pink_star",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=44": {
+   "model": "casino:block/decor/neon_pink_star",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=44": {
+   "model": "casino:block/decor/neon_pink_star",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=44": {
+   "model": "casino:block/decor/neon_pink_star",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=45": {
+   "model": "casino:block/decor/neon_pink_dash",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=45": {
+   "model": "casino:block/decor/neon_pink_dash",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=45": {
+   "model": "casino:block/decor/neon_pink_dash",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=45": {
+   "model": "casino:block/decor/neon_pink_dash",
+   "y": 270
+  },
+  "color=1,facing=north,glyph=46": {
+   "model": "casino:block/decor/neon_pink_space",
+   "y": 0
+  },
+  "color=1,facing=east,glyph=46": {
+   "model": "casino:block/decor/neon_pink_space",
+   "y": 90
+  },
+  "color=1,facing=south,glyph=46": {
+   "model": "casino:block/decor/neon_pink_space",
+   "y": 180
+  },
+  "color=1,facing=west,glyph=46": {
+   "model": "casino:block/decor/neon_pink_space",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=0": {
+   "model": "casino:block/decor/neon_gold_a",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=0": {
+   "model": "casino:block/decor/neon_gold_a",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=0": {
+   "model": "casino:block/decor/neon_gold_a",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=0": {
+   "model": "casino:block/decor/neon_gold_a",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=1": {
+   "model": "casino:block/decor/neon_gold_b",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=1": {
+   "model": "casino:block/decor/neon_gold_b",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=1": {
+   "model": "casino:block/decor/neon_gold_b",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=1": {
+   "model": "casino:block/decor/neon_gold_b",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=2": {
+   "model": "casino:block/decor/neon_gold_c",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=2": {
+   "model": "casino:block/decor/neon_gold_c",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=2": {
+   "model": "casino:block/decor/neon_gold_c",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=2": {
+   "model": "casino:block/decor/neon_gold_c",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=3": {
+   "model": "casino:block/decor/neon_gold_d",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=3": {
+   "model": "casino:block/decor/neon_gold_d",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=3": {
+   "model": "casino:block/decor/neon_gold_d",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=3": {
+   "model": "casino:block/decor/neon_gold_d",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=4": {
+   "model": "casino:block/decor/neon_gold_e",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=4": {
+   "model": "casino:block/decor/neon_gold_e",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=4": {
+   "model": "casino:block/decor/neon_gold_e",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=4": {
+   "model": "casino:block/decor/neon_gold_e",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=5": {
+   "model": "casino:block/decor/neon_gold_f",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=5": {
+   "model": "casino:block/decor/neon_gold_f",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=5": {
+   "model": "casino:block/decor/neon_gold_f",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=5": {
+   "model": "casino:block/decor/neon_gold_f",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=6": {
+   "model": "casino:block/decor/neon_gold_g",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=6": {
+   "model": "casino:block/decor/neon_gold_g",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=6": {
+   "model": "casino:block/decor/neon_gold_g",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=6": {
+   "model": "casino:block/decor/neon_gold_g",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=7": {
+   "model": "casino:block/decor/neon_gold_h",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=7": {
+   "model": "casino:block/decor/neon_gold_h",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=7": {
+   "model": "casino:block/decor/neon_gold_h",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=7": {
+   "model": "casino:block/decor/neon_gold_h",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=8": {
+   "model": "casino:block/decor/neon_gold_i",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=8": {
+   "model": "casino:block/decor/neon_gold_i",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=8": {
+   "model": "casino:block/decor/neon_gold_i",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=8": {
+   "model": "casino:block/decor/neon_gold_i",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=9": {
+   "model": "casino:block/decor/neon_gold_j",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=9": {
+   "model": "casino:block/decor/neon_gold_j",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=9": {
+   "model": "casino:block/decor/neon_gold_j",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=9": {
+   "model": "casino:block/decor/neon_gold_j",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=10": {
+   "model": "casino:block/decor/neon_gold_k",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=10": {
+   "model": "casino:block/decor/neon_gold_k",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=10": {
+   "model": "casino:block/decor/neon_gold_k",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=10": {
+   "model": "casino:block/decor/neon_gold_k",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=11": {
+   "model": "casino:block/decor/neon_gold_l",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=11": {
+   "model": "casino:block/decor/neon_gold_l",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=11": {
+   "model": "casino:block/decor/neon_gold_l",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=11": {
+   "model": "casino:block/decor/neon_gold_l",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=12": {
+   "model": "casino:block/decor/neon_gold_m",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=12": {
+   "model": "casino:block/decor/neon_gold_m",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=12": {
+   "model": "casino:block/decor/neon_gold_m",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=12": {
+   "model": "casino:block/decor/neon_gold_m",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=13": {
+   "model": "casino:block/decor/neon_gold_n",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=13": {
+   "model": "casino:block/decor/neon_gold_n",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=13": {
+   "model": "casino:block/decor/neon_gold_n",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=13": {
+   "model": "casino:block/decor/neon_gold_n",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=14": {
+   "model": "casino:block/decor/neon_gold_o",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=14": {
+   "model": "casino:block/decor/neon_gold_o",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=14": {
+   "model": "casino:block/decor/neon_gold_o",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=14": {
+   "model": "casino:block/decor/neon_gold_o",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=15": {
+   "model": "casino:block/decor/neon_gold_p",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=15": {
+   "model": "casino:block/decor/neon_gold_p",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=15": {
+   "model": "casino:block/decor/neon_gold_p",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=15": {
+   "model": "casino:block/decor/neon_gold_p",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=16": {
+   "model": "casino:block/decor/neon_gold_q",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=16": {
+   "model": "casino:block/decor/neon_gold_q",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=16": {
+   "model": "casino:block/decor/neon_gold_q",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=16": {
+   "model": "casino:block/decor/neon_gold_q",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=17": {
+   "model": "casino:block/decor/neon_gold_r",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=17": {
+   "model": "casino:block/decor/neon_gold_r",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=17": {
+   "model": "casino:block/decor/neon_gold_r",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=17": {
+   "model": "casino:block/decor/neon_gold_r",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=18": {
+   "model": "casino:block/decor/neon_gold_s",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=18": {
+   "model": "casino:block/decor/neon_gold_s",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=18": {
+   "model": "casino:block/decor/neon_gold_s",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=18": {
+   "model": "casino:block/decor/neon_gold_s",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=19": {
+   "model": "casino:block/decor/neon_gold_t",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=19": {
+   "model": "casino:block/decor/neon_gold_t",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=19": {
+   "model": "casino:block/decor/neon_gold_t",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=19": {
+   "model": "casino:block/decor/neon_gold_t",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=20": {
+   "model": "casino:block/decor/neon_gold_u",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=20": {
+   "model": "casino:block/decor/neon_gold_u",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=20": {
+   "model": "casino:block/decor/neon_gold_u",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=20": {
+   "model": "casino:block/decor/neon_gold_u",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=21": {
+   "model": "casino:block/decor/neon_gold_v",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=21": {
+   "model": "casino:block/decor/neon_gold_v",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=21": {
+   "model": "casino:block/decor/neon_gold_v",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=21": {
+   "model": "casino:block/decor/neon_gold_v",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=22": {
+   "model": "casino:block/decor/neon_gold_w",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=22": {
+   "model": "casino:block/decor/neon_gold_w",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=22": {
+   "model": "casino:block/decor/neon_gold_w",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=22": {
+   "model": "casino:block/decor/neon_gold_w",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=23": {
+   "model": "casino:block/decor/neon_gold_x",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=23": {
+   "model": "casino:block/decor/neon_gold_x",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=23": {
+   "model": "casino:block/decor/neon_gold_x",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=23": {
+   "model": "casino:block/decor/neon_gold_x",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=24": {
+   "model": "casino:block/decor/neon_gold_y",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=24": {
+   "model": "casino:block/decor/neon_gold_y",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=24": {
+   "model": "casino:block/decor/neon_gold_y",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=24": {
+   "model": "casino:block/decor/neon_gold_y",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=25": {
+   "model": "casino:block/decor/neon_gold_z",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=25": {
+   "model": "casino:block/decor/neon_gold_z",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=25": {
+   "model": "casino:block/decor/neon_gold_z",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=25": {
+   "model": "casino:block/decor/neon_gold_z",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=26": {
+   "model": "casino:block/decor/neon_gold_0",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=26": {
+   "model": "casino:block/decor/neon_gold_0",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=26": {
+   "model": "casino:block/decor/neon_gold_0",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=26": {
+   "model": "casino:block/decor/neon_gold_0",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=27": {
+   "model": "casino:block/decor/neon_gold_1",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=27": {
+   "model": "casino:block/decor/neon_gold_1",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=27": {
+   "model": "casino:block/decor/neon_gold_1",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=27": {
+   "model": "casino:block/decor/neon_gold_1",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=28": {
+   "model": "casino:block/decor/neon_gold_2",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=28": {
+   "model": "casino:block/decor/neon_gold_2",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=28": {
+   "model": "casino:block/decor/neon_gold_2",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=28": {
+   "model": "casino:block/decor/neon_gold_2",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=29": {
+   "model": "casino:block/decor/neon_gold_3",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=29": {
+   "model": "casino:block/decor/neon_gold_3",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=29": {
+   "model": "casino:block/decor/neon_gold_3",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=29": {
+   "model": "casino:block/decor/neon_gold_3",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=30": {
+   "model": "casino:block/decor/neon_gold_4",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=30": {
+   "model": "casino:block/decor/neon_gold_4",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=30": {
+   "model": "casino:block/decor/neon_gold_4",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=30": {
+   "model": "casino:block/decor/neon_gold_4",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=31": {
+   "model": "casino:block/decor/neon_gold_5",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=31": {
+   "model": "casino:block/decor/neon_gold_5",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=31": {
+   "model": "casino:block/decor/neon_gold_5",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=31": {
+   "model": "casino:block/decor/neon_gold_5",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=32": {
+   "model": "casino:block/decor/neon_gold_6",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=32": {
+   "model": "casino:block/decor/neon_gold_6",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=32": {
+   "model": "casino:block/decor/neon_gold_6",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=32": {
+   "model": "casino:block/decor/neon_gold_6",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=33": {
+   "model": "casino:block/decor/neon_gold_7",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=33": {
+   "model": "casino:block/decor/neon_gold_7",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=33": {
+   "model": "casino:block/decor/neon_gold_7",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=33": {
+   "model": "casino:block/decor/neon_gold_7",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=34": {
+   "model": "casino:block/decor/neon_gold_8",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=34": {
+   "model": "casino:block/decor/neon_gold_8",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=34": {
+   "model": "casino:block/decor/neon_gold_8",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=34": {
+   "model": "casino:block/decor/neon_gold_8",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=35": {
+   "model": "casino:block/decor/neon_gold_9",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=35": {
+   "model": "casino:block/decor/neon_gold_9",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=35": {
+   "model": "casino:block/decor/neon_gold_9",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=35": {
+   "model": "casino:block/decor/neon_gold_9",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=36": {
+   "model": "casino:block/decor/neon_gold_excl",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=36": {
+   "model": "casino:block/decor/neon_gold_excl",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=36": {
+   "model": "casino:block/decor/neon_gold_excl",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=36": {
+   "model": "casino:block/decor/neon_gold_excl",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=37": {
+   "model": "casino:block/decor/neon_gold_quest",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=37": {
+   "model": "casino:block/decor/neon_gold_quest",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=37": {
+   "model": "casino:block/decor/neon_gold_quest",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=37": {
+   "model": "casino:block/decor/neon_gold_quest",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=38": {
+   "model": "casino:block/decor/neon_gold_dollar",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=38": {
+   "model": "casino:block/decor/neon_gold_dollar",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=38": {
+   "model": "casino:block/decor/neon_gold_dollar",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=38": {
+   "model": "casino:block/decor/neon_gold_dollar",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=39": {
+   "model": "casino:block/decor/neon_gold_and",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=39": {
+   "model": "casino:block/decor/neon_gold_and",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=39": {
+   "model": "casino:block/decor/neon_gold_and",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=39": {
+   "model": "casino:block/decor/neon_gold_and",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=40": {
+   "model": "casino:block/decor/neon_gold_heart",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=40": {
+   "model": "casino:block/decor/neon_gold_heart",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=40": {
+   "model": "casino:block/decor/neon_gold_heart",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=40": {
+   "model": "casino:block/decor/neon_gold_heart",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=41": {
+   "model": "casino:block/decor/neon_gold_spade",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=41": {
+   "model": "casino:block/decor/neon_gold_spade",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=41": {
+   "model": "casino:block/decor/neon_gold_spade",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=41": {
+   "model": "casino:block/decor/neon_gold_spade",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=42": {
+   "model": "casino:block/decor/neon_gold_diamond",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=42": {
+   "model": "casino:block/decor/neon_gold_diamond",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=42": {
+   "model": "casino:block/decor/neon_gold_diamond",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=42": {
+   "model": "casino:block/decor/neon_gold_diamond",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=43": {
+   "model": "casino:block/decor/neon_gold_club",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=43": {
+   "model": "casino:block/decor/neon_gold_club",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=43": {
+   "model": "casino:block/decor/neon_gold_club",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=43": {
+   "model": "casino:block/decor/neon_gold_club",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=44": {
+   "model": "casino:block/decor/neon_gold_star",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=44": {
+   "model": "casino:block/decor/neon_gold_star",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=44": {
+   "model": "casino:block/decor/neon_gold_star",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=44": {
+   "model": "casino:block/decor/neon_gold_star",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=45": {
+   "model": "casino:block/decor/neon_gold_dash",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=45": {
+   "model": "casino:block/decor/neon_gold_dash",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=45": {
+   "model": "casino:block/decor/neon_gold_dash",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=45": {
+   "model": "casino:block/decor/neon_gold_dash",
+   "y": 270
+  },
+  "color=2,facing=north,glyph=46": {
+   "model": "casino:block/decor/neon_gold_space",
+   "y": 0
+  },
+  "color=2,facing=east,glyph=46": {
+   "model": "casino:block/decor/neon_gold_space",
+   "y": 90
+  },
+  "color=2,facing=south,glyph=46": {
+   "model": "casino:block/decor/neon_gold_space",
+   "y": 180
+  },
+  "color=2,facing=west,glyph=46": {
+   "model": "casino:block/decor/neon_gold_space",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=0": {
+   "model": "casino:block/decor/neon_green_a",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=0": {
+   "model": "casino:block/decor/neon_green_a",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=0": {
+   "model": "casino:block/decor/neon_green_a",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=0": {
+   "model": "casino:block/decor/neon_green_a",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=1": {
+   "model": "casino:block/decor/neon_green_b",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=1": {
+   "model": "casino:block/decor/neon_green_b",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=1": {
+   "model": "casino:block/decor/neon_green_b",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=1": {
+   "model": "casino:block/decor/neon_green_b",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=2": {
+   "model": "casino:block/decor/neon_green_c",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=2": {
+   "model": "casino:block/decor/neon_green_c",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=2": {
+   "model": "casino:block/decor/neon_green_c",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=2": {
+   "model": "casino:block/decor/neon_green_c",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=3": {
+   "model": "casino:block/decor/neon_green_d",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=3": {
+   "model": "casino:block/decor/neon_green_d",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=3": {
+   "model": "casino:block/decor/neon_green_d",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=3": {
+   "model": "casino:block/decor/neon_green_d",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=4": {
+   "model": "casino:block/decor/neon_green_e",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=4": {
+   "model": "casino:block/decor/neon_green_e",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=4": {
+   "model": "casino:block/decor/neon_green_e",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=4": {
+   "model": "casino:block/decor/neon_green_e",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=5": {
+   "model": "casino:block/decor/neon_green_f",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=5": {
+   "model": "casino:block/decor/neon_green_f",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=5": {
+   "model": "casino:block/decor/neon_green_f",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=5": {
+   "model": "casino:block/decor/neon_green_f",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=6": {
+   "model": "casino:block/decor/neon_green_g",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=6": {
+   "model": "casino:block/decor/neon_green_g",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=6": {
+   "model": "casino:block/decor/neon_green_g",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=6": {
+   "model": "casino:block/decor/neon_green_g",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=7": {
+   "model": "casino:block/decor/neon_green_h",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=7": {
+   "model": "casino:block/decor/neon_green_h",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=7": {
+   "model": "casino:block/decor/neon_green_h",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=7": {
+   "model": "casino:block/decor/neon_green_h",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=8": {
+   "model": "casino:block/decor/neon_green_i",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=8": {
+   "model": "casino:block/decor/neon_green_i",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=8": {
+   "model": "casino:block/decor/neon_green_i",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=8": {
+   "model": "casino:block/decor/neon_green_i",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=9": {
+   "model": "casino:block/decor/neon_green_j",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=9": {
+   "model": "casino:block/decor/neon_green_j",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=9": {
+   "model": "casino:block/decor/neon_green_j",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=9": {
+   "model": "casino:block/decor/neon_green_j",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=10": {
+   "model": "casino:block/decor/neon_green_k",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=10": {
+   "model": "casino:block/decor/neon_green_k",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=10": {
+   "model": "casino:block/decor/neon_green_k",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=10": {
+   "model": "casino:block/decor/neon_green_k",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=11": {
+   "model": "casino:block/decor/neon_green_l",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=11": {
+   "model": "casino:block/decor/neon_green_l",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=11": {
+   "model": "casino:block/decor/neon_green_l",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=11": {
+   "model": "casino:block/decor/neon_green_l",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=12": {
+   "model": "casino:block/decor/neon_green_m",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=12": {
+   "model": "casino:block/decor/neon_green_m",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=12": {
+   "model": "casino:block/decor/neon_green_m",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=12": {
+   "model": "casino:block/decor/neon_green_m",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=13": {
+   "model": "casino:block/decor/neon_green_n",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=13": {
+   "model": "casino:block/decor/neon_green_n",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=13": {
+   "model": "casino:block/decor/neon_green_n",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=13": {
+   "model": "casino:block/decor/neon_green_n",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=14": {
+   "model": "casino:block/decor/neon_green_o",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=14": {
+   "model": "casino:block/decor/neon_green_o",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=14": {
+   "model": "casino:block/decor/neon_green_o",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=14": {
+   "model": "casino:block/decor/neon_green_o",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=15": {
+   "model": "casino:block/decor/neon_green_p",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=15": {
+   "model": "casino:block/decor/neon_green_p",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=15": {
+   "model": "casino:block/decor/neon_green_p",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=15": {
+   "model": "casino:block/decor/neon_green_p",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=16": {
+   "model": "casino:block/decor/neon_green_q",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=16": {
+   "model": "casino:block/decor/neon_green_q",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=16": {
+   "model": "casino:block/decor/neon_green_q",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=16": {
+   "model": "casino:block/decor/neon_green_q",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=17": {
+   "model": "casino:block/decor/neon_green_r",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=17": {
+   "model": "casino:block/decor/neon_green_r",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=17": {
+   "model": "casino:block/decor/neon_green_r",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=17": {
+   "model": "casino:block/decor/neon_green_r",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=18": {
+   "model": "casino:block/decor/neon_green_s",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=18": {
+   "model": "casino:block/decor/neon_green_s",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=18": {
+   "model": "casino:block/decor/neon_green_s",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=18": {
+   "model": "casino:block/decor/neon_green_s",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=19": {
+   "model": "casino:block/decor/neon_green_t",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=19": {
+   "model": "casino:block/decor/neon_green_t",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=19": {
+   "model": "casino:block/decor/neon_green_t",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=19": {
+   "model": "casino:block/decor/neon_green_t",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=20": {
+   "model": "casino:block/decor/neon_green_u",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=20": {
+   "model": "casino:block/decor/neon_green_u",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=20": {
+   "model": "casino:block/decor/neon_green_u",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=20": {
+   "model": "casino:block/decor/neon_green_u",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=21": {
+   "model": "casino:block/decor/neon_green_v",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=21": {
+   "model": "casino:block/decor/neon_green_v",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=21": {
+   "model": "casino:block/decor/neon_green_v",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=21": {
+   "model": "casino:block/decor/neon_green_v",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=22": {
+   "model": "casino:block/decor/neon_green_w",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=22": {
+   "model": "casino:block/decor/neon_green_w",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=22": {
+   "model": "casino:block/decor/neon_green_w",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=22": {
+   "model": "casino:block/decor/neon_green_w",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=23": {
+   "model": "casino:block/decor/neon_green_x",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=23": {
+   "model": "casino:block/decor/neon_green_x",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=23": {
+   "model": "casino:block/decor/neon_green_x",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=23": {
+   "model": "casino:block/decor/neon_green_x",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=24": {
+   "model": "casino:block/decor/neon_green_y",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=24": {
+   "model": "casino:block/decor/neon_green_y",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=24": {
+   "model": "casino:block/decor/neon_green_y",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=24": {
+   "model": "casino:block/decor/neon_green_y",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=25": {
+   "model": "casino:block/decor/neon_green_z",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=25": {
+   "model": "casino:block/decor/neon_green_z",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=25": {
+   "model": "casino:block/decor/neon_green_z",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=25": {
+   "model": "casino:block/decor/neon_green_z",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=26": {
+   "model": "casino:block/decor/neon_green_0",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=26": {
+   "model": "casino:block/decor/neon_green_0",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=26": {
+   "model": "casino:block/decor/neon_green_0",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=26": {
+   "model": "casino:block/decor/neon_green_0",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=27": {
+   "model": "casino:block/decor/neon_green_1",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=27": {
+   "model": "casino:block/decor/neon_green_1",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=27": {
+   "model": "casino:block/decor/neon_green_1",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=27": {
+   "model": "casino:block/decor/neon_green_1",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=28": {
+   "model": "casino:block/decor/neon_green_2",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=28": {
+   "model": "casino:block/decor/neon_green_2",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=28": {
+   "model": "casino:block/decor/neon_green_2",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=28": {
+   "model": "casino:block/decor/neon_green_2",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=29": {
+   "model": "casino:block/decor/neon_green_3",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=29": {
+   "model": "casino:block/decor/neon_green_3",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=29": {
+   "model": "casino:block/decor/neon_green_3",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=29": {
+   "model": "casino:block/decor/neon_green_3",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=30": {
+   "model": "casino:block/decor/neon_green_4",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=30": {
+   "model": "casino:block/decor/neon_green_4",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=30": {
+   "model": "casino:block/decor/neon_green_4",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=30": {
+   "model": "casino:block/decor/neon_green_4",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=31": {
+   "model": "casino:block/decor/neon_green_5",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=31": {
+   "model": "casino:block/decor/neon_green_5",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=31": {
+   "model": "casino:block/decor/neon_green_5",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=31": {
+   "model": "casino:block/decor/neon_green_5",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=32": {
+   "model": "casino:block/decor/neon_green_6",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=32": {
+   "model": "casino:block/decor/neon_green_6",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=32": {
+   "model": "casino:block/decor/neon_green_6",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=32": {
+   "model": "casino:block/decor/neon_green_6",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=33": {
+   "model": "casino:block/decor/neon_green_7",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=33": {
+   "model": "casino:block/decor/neon_green_7",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=33": {
+   "model": "casino:block/decor/neon_green_7",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=33": {
+   "model": "casino:block/decor/neon_green_7",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=34": {
+   "model": "casino:block/decor/neon_green_8",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=34": {
+   "model": "casino:block/decor/neon_green_8",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=34": {
+   "model": "casino:block/decor/neon_green_8",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=34": {
+   "model": "casino:block/decor/neon_green_8",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=35": {
+   "model": "casino:block/decor/neon_green_9",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=35": {
+   "model": "casino:block/decor/neon_green_9",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=35": {
+   "model": "casino:block/decor/neon_green_9",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=35": {
+   "model": "casino:block/decor/neon_green_9",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=36": {
+   "model": "casino:block/decor/neon_green_excl",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=36": {
+   "model": "casino:block/decor/neon_green_excl",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=36": {
+   "model": "casino:block/decor/neon_green_excl",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=36": {
+   "model": "casino:block/decor/neon_green_excl",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=37": {
+   "model": "casino:block/decor/neon_green_quest",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=37": {
+   "model": "casino:block/decor/neon_green_quest",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=37": {
+   "model": "casino:block/decor/neon_green_quest",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=37": {
+   "model": "casino:block/decor/neon_green_quest",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=38": {
+   "model": "casino:block/decor/neon_green_dollar",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=38": {
+   "model": "casino:block/decor/neon_green_dollar",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=38": {
+   "model": "casino:block/decor/neon_green_dollar",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=38": {
+   "model": "casino:block/decor/neon_green_dollar",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=39": {
+   "model": "casino:block/decor/neon_green_and",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=39": {
+   "model": "casino:block/decor/neon_green_and",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=39": {
+   "model": "casino:block/decor/neon_green_and",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=39": {
+   "model": "casino:block/decor/neon_green_and",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=40": {
+   "model": "casino:block/decor/neon_green_heart",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=40": {
+   "model": "casino:block/decor/neon_green_heart",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=40": {
+   "model": "casino:block/decor/neon_green_heart",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=40": {
+   "model": "casino:block/decor/neon_green_heart",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=41": {
+   "model": "casino:block/decor/neon_green_spade",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=41": {
+   "model": "casino:block/decor/neon_green_spade",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=41": {
+   "model": "casino:block/decor/neon_green_spade",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=41": {
+   "model": "casino:block/decor/neon_green_spade",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=42": {
+   "model": "casino:block/decor/neon_green_diamond",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=42": {
+   "model": "casino:block/decor/neon_green_diamond",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=42": {
+   "model": "casino:block/decor/neon_green_diamond",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=42": {
+   "model": "casino:block/decor/neon_green_diamond",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=43": {
+   "model": "casino:block/decor/neon_green_club",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=43": {
+   "model": "casino:block/decor/neon_green_club",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=43": {
+   "model": "casino:block/decor/neon_green_club",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=43": {
+   "model": "casino:block/decor/neon_green_club",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=44": {
+   "model": "casino:block/decor/neon_green_star",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=44": {
+   "model": "casino:block/decor/neon_green_star",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=44": {
+   "model": "casino:block/decor/neon_green_star",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=44": {
+   "model": "casino:block/decor/neon_green_star",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=45": {
+   "model": "casino:block/decor/neon_green_dash",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=45": {
+   "model": "casino:block/decor/neon_green_dash",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=45": {
+   "model": "casino:block/decor/neon_green_dash",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=45": {
+   "model": "casino:block/decor/neon_green_dash",
+   "y": 270
+  },
+  "color=3,facing=north,glyph=46": {
+   "model": "casino:block/decor/neon_green_space",
+   "y": 0
+  },
+  "color=3,facing=east,glyph=46": {
+   "model": "casino:block/decor/neon_green_space",
+   "y": 90
+  },
+  "color=3,facing=south,glyph=46": {
+   "model": "casino:block/decor/neon_green_space",
+   "y": 180
+  },
+  "color=3,facing=west,glyph=46": {
+   "model": "casino:block/decor/neon_green_space",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=0": {
+   "model": "casino:block/decor/neon_cyan_a",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=0": {
+   "model": "casino:block/decor/neon_cyan_a",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=0": {
+   "model": "casino:block/decor/neon_cyan_a",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=0": {
+   "model": "casino:block/decor/neon_cyan_a",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=1": {
+   "model": "casino:block/decor/neon_cyan_b",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=1": {
+   "model": "casino:block/decor/neon_cyan_b",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=1": {
+   "model": "casino:block/decor/neon_cyan_b",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=1": {
+   "model": "casino:block/decor/neon_cyan_b",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=2": {
+   "model": "casino:block/decor/neon_cyan_c",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=2": {
+   "model": "casino:block/decor/neon_cyan_c",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=2": {
+   "model": "casino:block/decor/neon_cyan_c",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=2": {
+   "model": "casino:block/decor/neon_cyan_c",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=3": {
+   "model": "casino:block/decor/neon_cyan_d",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=3": {
+   "model": "casino:block/decor/neon_cyan_d",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=3": {
+   "model": "casino:block/decor/neon_cyan_d",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=3": {
+   "model": "casino:block/decor/neon_cyan_d",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=4": {
+   "model": "casino:block/decor/neon_cyan_e",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=4": {
+   "model": "casino:block/decor/neon_cyan_e",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=4": {
+   "model": "casino:block/decor/neon_cyan_e",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=4": {
+   "model": "casino:block/decor/neon_cyan_e",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=5": {
+   "model": "casino:block/decor/neon_cyan_f",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=5": {
+   "model": "casino:block/decor/neon_cyan_f",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=5": {
+   "model": "casino:block/decor/neon_cyan_f",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=5": {
+   "model": "casino:block/decor/neon_cyan_f",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=6": {
+   "model": "casino:block/decor/neon_cyan_g",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=6": {
+   "model": "casino:block/decor/neon_cyan_g",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=6": {
+   "model": "casino:block/decor/neon_cyan_g",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=6": {
+   "model": "casino:block/decor/neon_cyan_g",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=7": {
+   "model": "casino:block/decor/neon_cyan_h",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=7": {
+   "model": "casino:block/decor/neon_cyan_h",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=7": {
+   "model": "casino:block/decor/neon_cyan_h",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=7": {
+   "model": "casino:block/decor/neon_cyan_h",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=8": {
+   "model": "casino:block/decor/neon_cyan_i",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=8": {
+   "model": "casino:block/decor/neon_cyan_i",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=8": {
+   "model": "casino:block/decor/neon_cyan_i",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=8": {
+   "model": "casino:block/decor/neon_cyan_i",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=9": {
+   "model": "casino:block/decor/neon_cyan_j",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=9": {
+   "model": "casino:block/decor/neon_cyan_j",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=9": {
+   "model": "casino:block/decor/neon_cyan_j",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=9": {
+   "model": "casino:block/decor/neon_cyan_j",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=10": {
+   "model": "casino:block/decor/neon_cyan_k",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=10": {
+   "model": "casino:block/decor/neon_cyan_k",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=10": {
+   "model": "casino:block/decor/neon_cyan_k",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=10": {
+   "model": "casino:block/decor/neon_cyan_k",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=11": {
+   "model": "casino:block/decor/neon_cyan_l",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=11": {
+   "model": "casino:block/decor/neon_cyan_l",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=11": {
+   "model": "casino:block/decor/neon_cyan_l",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=11": {
+   "model": "casino:block/decor/neon_cyan_l",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=12": {
+   "model": "casino:block/decor/neon_cyan_m",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=12": {
+   "model": "casino:block/decor/neon_cyan_m",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=12": {
+   "model": "casino:block/decor/neon_cyan_m",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=12": {
+   "model": "casino:block/decor/neon_cyan_m",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=13": {
+   "model": "casino:block/decor/neon_cyan_n",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=13": {
+   "model": "casino:block/decor/neon_cyan_n",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=13": {
+   "model": "casino:block/decor/neon_cyan_n",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=13": {
+   "model": "casino:block/decor/neon_cyan_n",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=14": {
+   "model": "casino:block/decor/neon_cyan_o",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=14": {
+   "model": "casino:block/decor/neon_cyan_o",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=14": {
+   "model": "casino:block/decor/neon_cyan_o",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=14": {
+   "model": "casino:block/decor/neon_cyan_o",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=15": {
+   "model": "casino:block/decor/neon_cyan_p",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=15": {
+   "model": "casino:block/decor/neon_cyan_p",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=15": {
+   "model": "casino:block/decor/neon_cyan_p",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=15": {
+   "model": "casino:block/decor/neon_cyan_p",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=16": {
+   "model": "casino:block/decor/neon_cyan_q",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=16": {
+   "model": "casino:block/decor/neon_cyan_q",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=16": {
+   "model": "casino:block/decor/neon_cyan_q",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=16": {
+   "model": "casino:block/decor/neon_cyan_q",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=17": {
+   "model": "casino:block/decor/neon_cyan_r",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=17": {
+   "model": "casino:block/decor/neon_cyan_r",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=17": {
+   "model": "casino:block/decor/neon_cyan_r",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=17": {
+   "model": "casino:block/decor/neon_cyan_r",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=18": {
+   "model": "casino:block/decor/neon_cyan_s",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=18": {
+   "model": "casino:block/decor/neon_cyan_s",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=18": {
+   "model": "casino:block/decor/neon_cyan_s",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=18": {
+   "model": "casino:block/decor/neon_cyan_s",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=19": {
+   "model": "casino:block/decor/neon_cyan_t",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=19": {
+   "model": "casino:block/decor/neon_cyan_t",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=19": {
+   "model": "casino:block/decor/neon_cyan_t",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=19": {
+   "model": "casino:block/decor/neon_cyan_t",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=20": {
+   "model": "casino:block/decor/neon_cyan_u",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=20": {
+   "model": "casino:block/decor/neon_cyan_u",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=20": {
+   "model": "casino:block/decor/neon_cyan_u",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=20": {
+   "model": "casino:block/decor/neon_cyan_u",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=21": {
+   "model": "casino:block/decor/neon_cyan_v",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=21": {
+   "model": "casino:block/decor/neon_cyan_v",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=21": {
+   "model": "casino:block/decor/neon_cyan_v",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=21": {
+   "model": "casino:block/decor/neon_cyan_v",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=22": {
+   "model": "casino:block/decor/neon_cyan_w",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=22": {
+   "model": "casino:block/decor/neon_cyan_w",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=22": {
+   "model": "casino:block/decor/neon_cyan_w",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=22": {
+   "model": "casino:block/decor/neon_cyan_w",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=23": {
+   "model": "casino:block/decor/neon_cyan_x",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=23": {
+   "model": "casino:block/decor/neon_cyan_x",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=23": {
+   "model": "casino:block/decor/neon_cyan_x",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=23": {
+   "model": "casino:block/decor/neon_cyan_x",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=24": {
+   "model": "casino:block/decor/neon_cyan_y",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=24": {
+   "model": "casino:block/decor/neon_cyan_y",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=24": {
+   "model": "casino:block/decor/neon_cyan_y",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=24": {
+   "model": "casino:block/decor/neon_cyan_y",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=25": {
+   "model": "casino:block/decor/neon_cyan_z",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=25": {
+   "model": "casino:block/decor/neon_cyan_z",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=25": {
+   "model": "casino:block/decor/neon_cyan_z",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=25": {
+   "model": "casino:block/decor/neon_cyan_z",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=26": {
+   "model": "casino:block/decor/neon_cyan_0",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=26": {
+   "model": "casino:block/decor/neon_cyan_0",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=26": {
+   "model": "casino:block/decor/neon_cyan_0",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=26": {
+   "model": "casino:block/decor/neon_cyan_0",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=27": {
+   "model": "casino:block/decor/neon_cyan_1",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=27": {
+   "model": "casino:block/decor/neon_cyan_1",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=27": {
+   "model": "casino:block/decor/neon_cyan_1",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=27": {
+   "model": "casino:block/decor/neon_cyan_1",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=28": {
+   "model": "casino:block/decor/neon_cyan_2",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=28": {
+   "model": "casino:block/decor/neon_cyan_2",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=28": {
+   "model": "casino:block/decor/neon_cyan_2",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=28": {
+   "model": "casino:block/decor/neon_cyan_2",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=29": {
+   "model": "casino:block/decor/neon_cyan_3",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=29": {
+   "model": "casino:block/decor/neon_cyan_3",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=29": {
+   "model": "casino:block/decor/neon_cyan_3",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=29": {
+   "model": "casino:block/decor/neon_cyan_3",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=30": {
+   "model": "casino:block/decor/neon_cyan_4",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=30": {
+   "model": "casino:block/decor/neon_cyan_4",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=30": {
+   "model": "casino:block/decor/neon_cyan_4",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=30": {
+   "model": "casino:block/decor/neon_cyan_4",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=31": {
+   "model": "casino:block/decor/neon_cyan_5",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=31": {
+   "model": "casino:block/decor/neon_cyan_5",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=31": {
+   "model": "casino:block/decor/neon_cyan_5",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=31": {
+   "model": "casino:block/decor/neon_cyan_5",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=32": {
+   "model": "casino:block/decor/neon_cyan_6",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=32": {
+   "model": "casino:block/decor/neon_cyan_6",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=32": {
+   "model": "casino:block/decor/neon_cyan_6",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=32": {
+   "model": "casino:block/decor/neon_cyan_6",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=33": {
+   "model": "casino:block/decor/neon_cyan_7",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=33": {
+   "model": "casino:block/decor/neon_cyan_7",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=33": {
+   "model": "casino:block/decor/neon_cyan_7",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=33": {
+   "model": "casino:block/decor/neon_cyan_7",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=34": {
+   "model": "casino:block/decor/neon_cyan_8",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=34": {
+   "model": "casino:block/decor/neon_cyan_8",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=34": {
+   "model": "casino:block/decor/neon_cyan_8",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=34": {
+   "model": "casino:block/decor/neon_cyan_8",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=35": {
+   "model": "casino:block/decor/neon_cyan_9",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=35": {
+   "model": "casino:block/decor/neon_cyan_9",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=35": {
+   "model": "casino:block/decor/neon_cyan_9",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=35": {
+   "model": "casino:block/decor/neon_cyan_9",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=36": {
+   "model": "casino:block/decor/neon_cyan_excl",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=36": {
+   "model": "casino:block/decor/neon_cyan_excl",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=36": {
+   "model": "casino:block/decor/neon_cyan_excl",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=36": {
+   "model": "casino:block/decor/neon_cyan_excl",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=37": {
+   "model": "casino:block/decor/neon_cyan_quest",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=37": {
+   "model": "casino:block/decor/neon_cyan_quest",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=37": {
+   "model": "casino:block/decor/neon_cyan_quest",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=37": {
+   "model": "casino:block/decor/neon_cyan_quest",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=38": {
+   "model": "casino:block/decor/neon_cyan_dollar",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=38": {
+   "model": "casino:block/decor/neon_cyan_dollar",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=38": {
+   "model": "casino:block/decor/neon_cyan_dollar",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=38": {
+   "model": "casino:block/decor/neon_cyan_dollar",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=39": {
+   "model": "casino:block/decor/neon_cyan_and",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=39": {
+   "model": "casino:block/decor/neon_cyan_and",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=39": {
+   "model": "casino:block/decor/neon_cyan_and",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=39": {
+   "model": "casino:block/decor/neon_cyan_and",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=40": {
+   "model": "casino:block/decor/neon_cyan_heart",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=40": {
+   "model": "casino:block/decor/neon_cyan_heart",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=40": {
+   "model": "casino:block/decor/neon_cyan_heart",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=40": {
+   "model": "casino:block/decor/neon_cyan_heart",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=41": {
+   "model": "casino:block/decor/neon_cyan_spade",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=41": {
+   "model": "casino:block/decor/neon_cyan_spade",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=41": {
+   "model": "casino:block/decor/neon_cyan_spade",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=41": {
+   "model": "casino:block/decor/neon_cyan_spade",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=42": {
+   "model": "casino:block/decor/neon_cyan_diamond",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=42": {
+   "model": "casino:block/decor/neon_cyan_diamond",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=42": {
+   "model": "casino:block/decor/neon_cyan_diamond",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=42": {
+   "model": "casino:block/decor/neon_cyan_diamond",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=43": {
+   "model": "casino:block/decor/neon_cyan_club",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=43": {
+   "model": "casino:block/decor/neon_cyan_club",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=43": {
+   "model": "casino:block/decor/neon_cyan_club",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=43": {
+   "model": "casino:block/decor/neon_cyan_club",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=44": {
+   "model": "casino:block/decor/neon_cyan_star",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=44": {
+   "model": "casino:block/decor/neon_cyan_star",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=44": {
+   "model": "casino:block/decor/neon_cyan_star",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=44": {
+   "model": "casino:block/decor/neon_cyan_star",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=45": {
+   "model": "casino:block/decor/neon_cyan_dash",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=45": {
+   "model": "casino:block/decor/neon_cyan_dash",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=45": {
+   "model": "casino:block/decor/neon_cyan_dash",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=45": {
+   "model": "casino:block/decor/neon_cyan_dash",
+   "y": 270
+  },
+  "color=4,facing=north,glyph=46": {
+   "model": "casino:block/decor/neon_cyan_space",
+   "y": 0
+  },
+  "color=4,facing=east,glyph=46": {
+   "model": "casino:block/decor/neon_cyan_space",
+   "y": 90
+  },
+  "color=4,facing=south,glyph=46": {
+   "model": "casino:block/decor/neon_cyan_space",
+   "y": 180
+  },
+  "color=4,facing=west,glyph=46": {
+   "model": "casino:block/decor/neon_cyan_space",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=0": {
+   "model": "casino:block/decor/neon_white_a",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=0": {
+   "model": "casino:block/decor/neon_white_a",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=0": {
+   "model": "casino:block/decor/neon_white_a",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=0": {
+   "model": "casino:block/decor/neon_white_a",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=1": {
+   "model": "casino:block/decor/neon_white_b",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=1": {
+   "model": "casino:block/decor/neon_white_b",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=1": {
+   "model": "casino:block/decor/neon_white_b",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=1": {
+   "model": "casino:block/decor/neon_white_b",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=2": {
+   "model": "casino:block/decor/neon_white_c",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=2": {
+   "model": "casino:block/decor/neon_white_c",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=2": {
+   "model": "casino:block/decor/neon_white_c",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=2": {
+   "model": "casino:block/decor/neon_white_c",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=3": {
+   "model": "casino:block/decor/neon_white_d",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=3": {
+   "model": "casino:block/decor/neon_white_d",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=3": {
+   "model": "casino:block/decor/neon_white_d",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=3": {
+   "model": "casino:block/decor/neon_white_d",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=4": {
+   "model": "casino:block/decor/neon_white_e",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=4": {
+   "model": "casino:block/decor/neon_white_e",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=4": {
+   "model": "casino:block/decor/neon_white_e",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=4": {
+   "model": "casino:block/decor/neon_white_e",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=5": {
+   "model": "casino:block/decor/neon_white_f",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=5": {
+   "model": "casino:block/decor/neon_white_f",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=5": {
+   "model": "casino:block/decor/neon_white_f",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=5": {
+   "model": "casino:block/decor/neon_white_f",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=6": {
+   "model": "casino:block/decor/neon_white_g",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=6": {
+   "model": "casino:block/decor/neon_white_g",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=6": {
+   "model": "casino:block/decor/neon_white_g",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=6": {
+   "model": "casino:block/decor/neon_white_g",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=7": {
+   "model": "casino:block/decor/neon_white_h",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=7": {
+   "model": "casino:block/decor/neon_white_h",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=7": {
+   "model": "casino:block/decor/neon_white_h",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=7": {
+   "model": "casino:block/decor/neon_white_h",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=8": {
+   "model": "casino:block/decor/neon_white_i",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=8": {
+   "model": "casino:block/decor/neon_white_i",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=8": {
+   "model": "casino:block/decor/neon_white_i",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=8": {
+   "model": "casino:block/decor/neon_white_i",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=9": {
+   "model": "casino:block/decor/neon_white_j",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=9": {
+   "model": "casino:block/decor/neon_white_j",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=9": {
+   "model": "casino:block/decor/neon_white_j",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=9": {
+   "model": "casino:block/decor/neon_white_j",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=10": {
+   "model": "casino:block/decor/neon_white_k",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=10": {
+   "model": "casino:block/decor/neon_white_k",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=10": {
+   "model": "casino:block/decor/neon_white_k",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=10": {
+   "model": "casino:block/decor/neon_white_k",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=11": {
+   "model": "casino:block/decor/neon_white_l",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=11": {
+   "model": "casino:block/decor/neon_white_l",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=11": {
+   "model": "casino:block/decor/neon_white_l",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=11": {
+   "model": "casino:block/decor/neon_white_l",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=12": {
+   "model": "casino:block/decor/neon_white_m",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=12": {
+   "model": "casino:block/decor/neon_white_m",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=12": {
+   "model": "casino:block/decor/neon_white_m",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=12": {
+   "model": "casino:block/decor/neon_white_m",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=13": {
+   "model": "casino:block/decor/neon_white_n",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=13": {
+   "model": "casino:block/decor/neon_white_n",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=13": {
+   "model": "casino:block/decor/neon_white_n",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=13": {
+   "model": "casino:block/decor/neon_white_n",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=14": {
+   "model": "casino:block/decor/neon_white_o",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=14": {
+   "model": "casino:block/decor/neon_white_o",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=14": {
+   "model": "casino:block/decor/neon_white_o",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=14": {
+   "model": "casino:block/decor/neon_white_o",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=15": {
+   "model": "casino:block/decor/neon_white_p",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=15": {
+   "model": "casino:block/decor/neon_white_p",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=15": {
+   "model": "casino:block/decor/neon_white_p",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=15": {
+   "model": "casino:block/decor/neon_white_p",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=16": {
+   "model": "casino:block/decor/neon_white_q",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=16": {
+   "model": "casino:block/decor/neon_white_q",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=16": {
+   "model": "casino:block/decor/neon_white_q",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=16": {
+   "model": "casino:block/decor/neon_white_q",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=17": {
+   "model": "casino:block/decor/neon_white_r",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=17": {
+   "model": "casino:block/decor/neon_white_r",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=17": {
+   "model": "casino:block/decor/neon_white_r",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=17": {
+   "model": "casino:block/decor/neon_white_r",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=18": {
+   "model": "casino:block/decor/neon_white_s",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=18": {
+   "model": "casino:block/decor/neon_white_s",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=18": {
+   "model": "casino:block/decor/neon_white_s",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=18": {
+   "model": "casino:block/decor/neon_white_s",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=19": {
+   "model": "casino:block/decor/neon_white_t",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=19": {
+   "model": "casino:block/decor/neon_white_t",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=19": {
+   "model": "casino:block/decor/neon_white_t",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=19": {
+   "model": "casino:block/decor/neon_white_t",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=20": {
+   "model": "casino:block/decor/neon_white_u",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=20": {
+   "model": "casino:block/decor/neon_white_u",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=20": {
+   "model": "casino:block/decor/neon_white_u",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=20": {
+   "model": "casino:block/decor/neon_white_u",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=21": {
+   "model": "casino:block/decor/neon_white_v",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=21": {
+   "model": "casino:block/decor/neon_white_v",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=21": {
+   "model": "casino:block/decor/neon_white_v",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=21": {
+   "model": "casino:block/decor/neon_white_v",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=22": {
+   "model": "casino:block/decor/neon_white_w",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=22": {
+   "model": "casino:block/decor/neon_white_w",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=22": {
+   "model": "casino:block/decor/neon_white_w",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=22": {
+   "model": "casino:block/decor/neon_white_w",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=23": {
+   "model": "casino:block/decor/neon_white_x",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=23": {
+   "model": "casino:block/decor/neon_white_x",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=23": {
+   "model": "casino:block/decor/neon_white_x",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=23": {
+   "model": "casino:block/decor/neon_white_x",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=24": {
+   "model": "casino:block/decor/neon_white_y",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=24": {
+   "model": "casino:block/decor/neon_white_y",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=24": {
+   "model": "casino:block/decor/neon_white_y",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=24": {
+   "model": "casino:block/decor/neon_white_y",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=25": {
+   "model": "casino:block/decor/neon_white_z",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=25": {
+   "model": "casino:block/decor/neon_white_z",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=25": {
+   "model": "casino:block/decor/neon_white_z",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=25": {
+   "model": "casino:block/decor/neon_white_z",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=26": {
+   "model": "casino:block/decor/neon_white_0",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=26": {
+   "model": "casino:block/decor/neon_white_0",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=26": {
+   "model": "casino:block/decor/neon_white_0",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=26": {
+   "model": "casino:block/decor/neon_white_0",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=27": {
+   "model": "casino:block/decor/neon_white_1",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=27": {
+   "model": "casino:block/decor/neon_white_1",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=27": {
+   "model": "casino:block/decor/neon_white_1",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=27": {
+   "model": "casino:block/decor/neon_white_1",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=28": {
+   "model": "casino:block/decor/neon_white_2",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=28": {
+   "model": "casino:block/decor/neon_white_2",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=28": {
+   "model": "casino:block/decor/neon_white_2",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=28": {
+   "model": "casino:block/decor/neon_white_2",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=29": {
+   "model": "casino:block/decor/neon_white_3",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=29": {
+   "model": "casino:block/decor/neon_white_3",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=29": {
+   "model": "casino:block/decor/neon_white_3",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=29": {
+   "model": "casino:block/decor/neon_white_3",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=30": {
+   "model": "casino:block/decor/neon_white_4",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=30": {
+   "model": "casino:block/decor/neon_white_4",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=30": {
+   "model": "casino:block/decor/neon_white_4",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=30": {
+   "model": "casino:block/decor/neon_white_4",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=31": {
+   "model": "casino:block/decor/neon_white_5",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=31": {
+   "model": "casino:block/decor/neon_white_5",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=31": {
+   "model": "casino:block/decor/neon_white_5",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=31": {
+   "model": "casino:block/decor/neon_white_5",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=32": {
+   "model": "casino:block/decor/neon_white_6",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=32": {
+   "model": "casino:block/decor/neon_white_6",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=32": {
+   "model": "casino:block/decor/neon_white_6",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=32": {
+   "model": "casino:block/decor/neon_white_6",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=33": {
+   "model": "casino:block/decor/neon_white_7",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=33": {
+   "model": "casino:block/decor/neon_white_7",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=33": {
+   "model": "casino:block/decor/neon_white_7",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=33": {
+   "model": "casino:block/decor/neon_white_7",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=34": {
+   "model": "casino:block/decor/neon_white_8",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=34": {
+   "model": "casino:block/decor/neon_white_8",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=34": {
+   "model": "casino:block/decor/neon_white_8",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=34": {
+   "model": "casino:block/decor/neon_white_8",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=35": {
+   "model": "casino:block/decor/neon_white_9",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=35": {
+   "model": "casino:block/decor/neon_white_9",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=35": {
+   "model": "casino:block/decor/neon_white_9",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=35": {
+   "model": "casino:block/decor/neon_white_9",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=36": {
+   "model": "casino:block/decor/neon_white_excl",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=36": {
+   "model": "casino:block/decor/neon_white_excl",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=36": {
+   "model": "casino:block/decor/neon_white_excl",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=36": {
+   "model": "casino:block/decor/neon_white_excl",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=37": {
+   "model": "casino:block/decor/neon_white_quest",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=37": {
+   "model": "casino:block/decor/neon_white_quest",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=37": {
+   "model": "casino:block/decor/neon_white_quest",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=37": {
+   "model": "casino:block/decor/neon_white_quest",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=38": {
+   "model": "casino:block/decor/neon_white_dollar",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=38": {
+   "model": "casino:block/decor/neon_white_dollar",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=38": {
+   "model": "casino:block/decor/neon_white_dollar",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=38": {
+   "model": "casino:block/decor/neon_white_dollar",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=39": {
+   "model": "casino:block/decor/neon_white_and",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=39": {
+   "model": "casino:block/decor/neon_white_and",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=39": {
+   "model": "casino:block/decor/neon_white_and",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=39": {
+   "model": "casino:block/decor/neon_white_and",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=40": {
+   "model": "casino:block/decor/neon_white_heart",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=40": {
+   "model": "casino:block/decor/neon_white_heart",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=40": {
+   "model": "casino:block/decor/neon_white_heart",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=40": {
+   "model": "casino:block/decor/neon_white_heart",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=41": {
+   "model": "casino:block/decor/neon_white_spade",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=41": {
+   "model": "casino:block/decor/neon_white_spade",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=41": {
+   "model": "casino:block/decor/neon_white_spade",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=41": {
+   "model": "casino:block/decor/neon_white_spade",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=42": {
+   "model": "casino:block/decor/neon_white_diamond",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=42": {
+   "model": "casino:block/decor/neon_white_diamond",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=42": {
+   "model": "casino:block/decor/neon_white_diamond",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=42": {
+   "model": "casino:block/decor/neon_white_diamond",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=43": {
+   "model": "casino:block/decor/neon_white_club",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=43": {
+   "model": "casino:block/decor/neon_white_club",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=43": {
+   "model": "casino:block/decor/neon_white_club",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=43": {
+   "model": "casino:block/decor/neon_white_club",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=44": {
+   "model": "casino:block/decor/neon_white_star",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=44": {
+   "model": "casino:block/decor/neon_white_star",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=44": {
+   "model": "casino:block/decor/neon_white_star",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=44": {
+   "model": "casino:block/decor/neon_white_star",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=45": {
+   "model": "casino:block/decor/neon_white_dash",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=45": {
+   "model": "casino:block/decor/neon_white_dash",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=45": {
+   "model": "casino:block/decor/neon_white_dash",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=45": {
+   "model": "casino:block/decor/neon_white_dash",
+   "y": 270
+  },
+  "color=5,facing=north,glyph=46": {
+   "model": "casino:block/decor/neon_white_space",
+   "y": 0
+  },
+  "color=5,facing=east,glyph=46": {
+   "model": "casino:block/decor/neon_white_space",
+   "y": 90
+  },
+  "color=5,facing=south,glyph=46": {
+   "model": "casino:block/decor/neon_white_space",
+   "y": 180
+  },
+  "color=5,facing=west,glyph=46": {
+   "model": "casino:block/decor/neon_white_space",
+   "y": 270
+  }
+ }
+}

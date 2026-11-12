@@ -52,4 +52,8 @@ public final class ClientHooks {
     public static void showWin(WheelWinPacket p) {
         WinBanner.start(p.title, p.items, p.xp, p.big);
     }
+
+    public static void openNeon(BlockPos pos) {
+        open(new NeonScreen(pos));
+    }
 }

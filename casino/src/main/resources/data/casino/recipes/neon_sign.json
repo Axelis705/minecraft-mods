@@ -1,0 +1,27 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "GRG",
+  "RDR",
+  "PPP"
+ ],
+ "key": {
+  "G": {
+   "item": "minecraft:glass_pane"
+  },
+  "R": {
+   "item": "minecraft:glowstone_dust"
+  },
+  "D": {
+   "item": "minecraft:redstone"
+  },
+  "P": {
+   "item": "minecraft:blackstone_slab"
+  }
+ },
+ "result": {
+  "item": "casino:neon_sign",
+  "count": 2
+ }
+}

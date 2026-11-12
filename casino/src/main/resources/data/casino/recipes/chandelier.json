@@ -1,0 +1,27 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  " C ",
+  "GLG",
+  "QQQ"
+ ],
+ "key": {
+  "C": {
+   "item": "minecraft:chain"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "L": {
+   "item": "minecraft:glowstone"
+  },
+  "Q": {
+   "item": "minecraft:glass_pane"
+  }
+ },
+ "result": {
+  "item": "casino:chandelier",
+  "count": 1
+ }
+}
