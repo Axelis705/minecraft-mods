@@ -128,6 +128,7 @@ public final class AutosNet {
         CHANNEL.registerMessage(id++, TrackInfoPacket.class, (m, b) -> {
             b.writeBlockPos(m.pos());
             b.writeBoolean(m.built());
+            b.writeVarInt(m.theme());
             b.writeVarInt(m.laps());
             b.writeVarInt(m.bots());
             b.writeBoolean(m.running());
@@ -137,6 +138,7 @@ public final class AutosNet {
         }, b -> {
             BlockPos pos = b.readBlockPos();
             boolean built = b.readBoolean();
+            int theme = b.readVarInt();
             int laps = b.readVarInt(), bots = b.readVarInt();
             boolean running = b.readBoolean();
             int n = Math.min(b.readVarInt(), 32);
@@ -144,7 +146,7 @@ public final class AutosNet {
             for (int i = 0; i < n; i++) {
                 names.add(b.readUtf(64));
             }
-            return new TrackInfoPacket(pos, built, laps, bots, running, names, b.readBoolean());
+            return new TrackInfoPacket(pos, built, theme, laps, bots, running, names, b.readBoolean());
         }, (m, c) -> client(c, () -> () -> RaceClient.onTrackInfo(m)));
         CHANNEL.registerMessage(id++, RaceStatePacket.class, (m, b) -> {
             b.writeVarInt(m.phase() + 1);

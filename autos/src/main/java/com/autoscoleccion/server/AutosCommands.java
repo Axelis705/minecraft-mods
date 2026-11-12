@@ -68,7 +68,7 @@ public final class AutosCommands {
             src.sendFailure(Component.literal("Ahí no hay un bloque de mini pista."));
             return 0;
         }
-        int n = TrackBuilder.build(level, pos, st.getValue(TrackBlock.FACING));
+        int n = TrackBuilder.build(level, pos, st.getValue(TrackBlock.FACING), st.getValue(TrackBlock.THEME));
         level.setBlock(pos, st.setValue(TrackBlock.BUILT, true), 3);
         src.sendSuccess(() -> Component.literal("Mini pista construida (" + n + " bloques)."), true);
         return 1;

@@ -170,7 +170,7 @@ public final class RcDriving {
             if (car.drifting && mc.level.getGameTime() % 6 == 0) {
                 Sfx.play("skid", 0.9F + mc.level.random.nextFloat() * 0.2F, 0.35F);
             }
-            if (mc.player.distanceToSqr(car) > 62 * 62) {
+            if (mc.player.distanceToSqr(car) > 94 * 94) {
                 mc.player.displayClientMessage(net.minecraft.network.chat.Component.literal("§eEl auto se alejó demasiado y volvió al garaje."), true);
                 end(true);
             }

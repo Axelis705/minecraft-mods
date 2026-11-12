@@ -99,6 +99,21 @@ public class UnboxScreen extends Screen {
         Sfx.play(name, pitch, volume * 0.45F);
     }
 
+    /** El mouse en coordenadas de la caja (sobre el plano z = 0, donde corre la cinta). */
+    private float[] mouseInBox() {
+        if (!boxMatSet) {
+            return null;
+        }
+        float[] o = project(0, 0, 0), ax = project(1, 0, 0), ay = project(0, 1, 0);
+        float a = ax[0] - o[0], c = ay[0] - o[0], b = ax[1] - o[1], d = ay[1] - o[1];
+        float det = a * d - b * c;
+        if (Math.abs(det) < 1e-6F) {
+            return null;
+        }
+        float rx = (float) mouseX - o[0], ry = (float) mouseY - o[1];
+        return new float[] {(rx * d - ry * c) / det, (a * ry - b * rx) / det};
+    }
+
     private float[] project(float x, float y, float z) {
         org.joml.Vector4f v = new org.joml.Vector4f(x, y, z, 1).mul(boxMat);
         return new float[] {v.x, v.y};
@@ -327,7 +342,7 @@ public class UnboxScreen extends Screen {
         boxMatSet = true;
         Lighting.setupForEntityInInventory();
         MultiBufferSource.BufferSource buf = g.bufferSource();
-        BoxModel.render(m.box(), ps, buf, CarModel.FULL, open, tape, light, glowK);
+        BoxModel.render(m.box(), ps, buf, CarModel.FULL, open, tape, light, glowK, grabbing && openAt < 0 ? mouseInBox() : null);
         buf.endBatch();
         Lighting.setupFor3DItems();
         ps.popPose();
@@ -375,31 +390,10 @@ public class UnboxScreen extends Screen {
             g.pose().popPose();
         }
 
-        // ---- la cinta despegada (en 2D, de la orilla pegada hasta el mouse) y papelitos
+        // ---- aro que indica dónde agarrar la cinta (la tira despegada se dibuja en 3D en BoxModel) y papelitos
         if (openAt < 0 && boxMatSet && age > DROP) {
             float[][] tp = tapePoints();
             float ex = tp[1][0] + (tp[2][0] - tp[1][0]) * peel, ey = tp[1][1] + (tp[2][1] - tp[1][1]) * peel;
-            float tw = Math.max(3, S * 0.75F);
-            Gfx.begin(g, false);
-            if (grabbing) {
-                float hx = (float) mouseX, hy = (float) mouseY;
-                // curva suave: del borde pegado sube un poco y luego va a la mano
-                float px = ex, py = ey;
-                for (int i = 1; i <= 10; i++) {
-                    float t = i / 10.0F;
-                    float qx = ex + (hx - ex) * t, qy = ey + (hy - ey) * t - (float) Math.sin(t * Math.PI) * tw * 1.5F;
-                    int col = 0xFF000000 | Gfx.mix(0xE9DCB8, 0xFFF6DE, t);
-                    Gfx.line(px, py, qx, qy, tw, col);
-                    px = qx;
-                    py = qy;
-                }
-                Gfx.circle(hx, hy, tw * 0.75F, 0xFFFFF6DE);
-            } else if (peel > 0) {
-                // colita enrollada que quedó levantada
-                Gfx.line(ex, ey, ex - tw * 1.2F, ey - tw * 2.2F, tw, 0xFFE9DCB8);
-                Gfx.circle(ex - tw * 1.2F, ey - tw * 2.2F, tw * 0.7F, 0xFFFFF6DE);
-            }
-            Gfx.end();
             if (!grabbing) {
                 // aro que late donde hay que agarrar
                 float gx = peel <= 0 ? tp[0][0] : ex, gy = peel <= 0 ? tp[0][1] : ey;

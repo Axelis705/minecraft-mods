@@ -334,10 +334,11 @@ def blockstates():
     for f, y in (("north", 0), ("east", 90), ("south", 180), ("west", 270)):
         for built in ("false", "true"):
             for lit in ("false", "true"):
-                e = {"model": f"{MOD}:block/mini_pista" + ("_on" if lit == "true" else "")}
-                if y:
-                    e["y"] = y
-                v[f"construida={built},facing={f},lit={lit}"] = e
+                for tema in range(5):
+                    e = {"model": f"{MOD}:block/mini_pista" + ("_on" if lit == "true" else "")}
+                    if y:
+                        e["y"] = y
+                    v[f"construida={built},facing={f},lit={lit},tema={tema}"] = e
     wjson(f"{A}/blockstates/mini_pista.json", {"variants": v})
 
 

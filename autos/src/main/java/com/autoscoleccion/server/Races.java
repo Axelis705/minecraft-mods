@@ -91,15 +91,17 @@ public final class Races {
     static final class Race {
         final Lobby lobby;
         final Direction facing;
+        final TrackLayout layout;
         final List<Racer> racers = new ArrayList<>();
         int phase;
         int timer = COUNTDOWN;
         int ticks;
         int firstFinish = -1;
 
-        Race(Lobby lobby, Direction facing) {
+        Race(Lobby lobby, Direction facing, TrackLayout layout) {
             this.lobby = lobby;
             this.facing = facing;
+            this.layout = layout;
         }
     }
 
@@ -130,7 +132,7 @@ public final class Races {
                 names.add(p.getGameProfile().getName() + " · " + Cars.get(car).name);
             }
         });
-        AutosNet.toPlayer(sp, new TrackInfoPacket(pos, st.getValue(TrackBlock.BUILT), l.laps, l.bots, l.race != null, names, open));
+        AutosNet.toPlayer(sp, new TrackInfoPacket(pos, st.getValue(TrackBlock.BUILT), st.getValue(TrackBlock.THEME), l.laps, l.bots, l.race != null, names, open));
     }
 
     /** Avisa a los que están cerca (por si tienen la pantalla abierta). */
@@ -152,7 +154,7 @@ public final class Races {
         switch (action) {
             case RaceActionPacket.BUILD -> {
                 if (!st.getValue(TrackBlock.BUILT) && sp.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 12 * 12) {
-                    int n = TrackBuilder.build(level, pos, st.getValue(TrackBlock.FACING));
+                    int n = TrackBuilder.build(level, pos, st.getValue(TrackBlock.FACING), st.getValue(TrackBlock.THEME));
                     level.setBlock(pos, st.setValue(TrackBlock.BUILT, true), 3);
                     level.playSound(null, pos, ModSounds.get("result"), SoundSource.BLOCKS, 0.8F, 1.0F);
                     sp.sendSystemMessage(Component.literal("§a¡Mini pista lista! §7(" + n + " bloques)"));
@@ -163,6 +165,11 @@ public final class Races {
                     sp.displayClientMessage(Component.literal("§eYa hay una carrera en curso."), true);
                 } else if (arg >= 0 && arg < Cars.COUNT && AutosData.has(sp, arg)) {
                     l.joined.put(sp.getUUID(), arg);
+                }
+            }
+            case RaceActionPacket.THEME -> {
+                if (!st.getValue(TrackBlock.BUILT)) {
+                    level.setBlock(pos, st.setValue(TrackBlock.THEME, Mth.clamp(arg, 0, TrackLayout.ALL.length - 1)), 3);
                 }
             }
             case RaceActionPacket.LEAVE -> l.joined.remove(sp.getUUID());
@@ -190,8 +197,7 @@ public final class Races {
     // -------------------------------------------------------------------------------------------------------------- salida
 
     /** Punto de la parrilla número i: x, z (mundo), rumbo. */
-    private static double[] gridSlot(Lobby l, Direction facing, int i) {
-        TrackLayout t = TrackLayout.MAIN;
+    private static double[] gridSlot(Lobby l, Direction facing, TrackLayout t, int i) {
         float s = -2.2F - (i / 2) * 2.4F;
         float lat = (i % 2 == 0 ? -1.2F : 1.2F);
         float[] a = t.at(s);
@@ -214,7 +220,7 @@ public final class Races {
             return;
         }
         Direction facing = st.getValue(TrackBlock.FACING);
-        Race race = new Race(l, facing);
+        Race race = new Race(l, facing, TrackLayout.ALL[st.getValue(TrackBlock.THEME)]);
         int slot = 0;
         double y = l.pos.getY() + 0.05;
         for (Map.Entry<UUID, Integer> e : l.joined.entrySet()) {
@@ -222,7 +228,7 @@ public final class Races {
             if (p == null || p.level() != level || p.distanceToSqr(l.pos.getX(), l.pos.getY(), l.pos.getZ()) > 24 * 24) {
                 continue;
             }
-            double[] g = gridSlot(l, facing, slot);
+            double[] g = gridSlot(l, facing, race.layout, slot);
             RcCarEntity car = Driving.startAt(p, e.getValue(), g[0], y, g[1], (float) g[2]);
             if (car == null) {
                 continue;
@@ -233,7 +239,7 @@ public final class Races {
             r.car = e.getValue();
             r.entity = car.getId();
             r.progress = (float) g[3];
-            r.lastS = TrackLayout.MAIN.length + (float) g[3];
+            r.lastS = race.layout.length + (float) g[3];
             race.racers.add(r);
             slot++;
         }
@@ -243,7 +249,7 @@ public final class Races {
         }
         RandomSource rnd = level.getRandom();
         for (int b = 0; b < l.bots; b++) {
-            double[] g = gridSlot(l, facing, slot);
+            double[] g = gridSlot(l, facing, race.layout, slot);
             RcCarEntity car = ModEntities.RC_CAR.get().create(level);
             if (car == null) {
                 break;
@@ -264,7 +270,7 @@ public final class Races {
             r.car = pick;
             r.entity = car.getId();
             r.progress = (float) g[3];
-            r.lastS = TrackLayout.MAIN.length + (float) g[3];
+            r.lastS = race.layout.length + (float) g[3];
             r.offset = (rnd.nextFloat() - 0.5F) * 1.6F;
             race.racers.add(r);
             slot++;
@@ -302,7 +308,7 @@ public final class Races {
     }
 
     private static void tick(ServerLevel level, Race race) {
-        TrackLayout t = TrackLayout.MAIN;
+        TrackLayout t = race.layout;
         race.ticks++;
         if (race.phase == 0) {
             race.timer--;
@@ -387,7 +393,7 @@ public final class Races {
 
     /** El bot mira un punto más adelante en la pista y gira hacia él; frena antes de las curvas cerradas. */
     private static void botDrive(Race race, Racer r, RcCarEntity car, float s, float[] loc) {
-        TrackLayout t = TrackLayout.MAIN;
+        TrackLayout t = race.layout;
         if (race.phase != 1 || r.finishTick >= 0) {
             car.throttle = 0;
             car.steerIn = 0;

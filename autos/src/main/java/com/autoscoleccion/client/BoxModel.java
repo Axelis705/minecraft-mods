@@ -27,8 +27,9 @@ public final class BoxModel {
      * @param open  0 = cerrada, 1 = solapas abiertas del todo
      * @param tape  cuánto de la cinta ya se despegó (0 = nada, 1 = toda)
      * @param glow  color de la luz que sale de adentro (-1 = nada) y su fuerza
+     * @param pull  dónde está la mano que jala la cinta (x, y en la caja) o null
      */
-    public static void render(int box, PoseStack ps, MultiBufferSource buf, int light, float open, float tape, int glow, float glowK) {
+    public static void render(int box, PoseStack ps, MultiBufferSource buf, int light, float open, float tape, int glow, float glowK, float[] pull) {
         VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(CarModel.WHITE));
         int main = Boxes.COLOR[box];
         int second = Boxes.COLOR2[box];
@@ -92,23 +93,102 @@ public final class BoxModel {
             CarModel.quad(vc, ps, p(x0, H + 0.05F, hz), p(x1, H + 0.05F, hz), p(x1, ty + 0.05F, tz), p(x0, ty + 0.05F, tz), main, 255, light);
             CarModel.quad(vc, ps, p(x0, H + 0.12F, hz), p(x1, H + 0.12F, hz), p(x1, ty + 0.12F, tz), p(x0, ty + 0.12F, tz), shade(second, 1.0F), 255, light);
             if (side == 1 && tape < 0.995F && o2 < 0.02F) {
-                // cinta pegada: desde donde ya se despegó (peel) hasta la otra punta, y la colita que cuelga en cada extremo
-                float tw = 0.9F;
-                float xs = x0 + W * Math.max(0, tape);
-                CarModel.quad(vc, ps, p(xs, H + 0.16F, -tw), p(x1, H + 0.16F, -tw), p(x1, H + 0.16F, tw), p(xs, H + 0.16F, tw), 0xF2E6C6, 255, light);
-                CarModel.quad(vc, ps, p(x1 + 0.02F, H - 2.0F, tw), p(x1 + 0.02F, H + 0.16F, tw), p(x1 + 0.02F, H + 0.16F, -tw), p(x1 + 0.02F, H - 2.0F, -tw),
-                        0xF2E6C6, 255, light);
-                if (tape <= 0.0F) {
-                    CarModel.quad(vc, ps, p(x0 - 0.02F, H - 2.0F, -tw), p(x0 - 0.02F, H + 0.16F, -tw), p(x0 - 0.02F, H + 0.16F, tw), p(x0 - 0.02F, H - 2.0F, tw),
-                            0xF2E6C6, 255, light);
-                    // pestaña doblada para agarrarla
-                    CarModel.quad(vc, ps, p(x0 - 0.04F, H - 2.0F, -tw), p(x0 - 0.04F, H - 1.5F, -tw), p(x0 - 0.6F, H - 2.3F, -tw * 0.8F),
-                            p(x0 - 0.6F, H - 2.6F, -tw * 0.8F), 0xFFF4D8, 255, CarModel.FULL);
-                    CarModel.quad(vc, ps, p(x0 - 0.04F, H - 2.0F, tw), p(x0 - 0.6F, H - 2.6F, tw * 0.8F), p(x0 - 0.6F, H - 2.3F, tw * 0.8F),
-                            p(x0 - 0.04F, H - 1.5F, tw), 0xFFF4D8, 255, CarModel.FULL);
-                }
+                tape(vc, ps, light, box, tape, pull);
             }
         }
+    }
+
+    private static final int TAPE = 0xF1E4C2, TAPE_EDGE = 0xD8C79C, TAPE_STICKY = 0xC9B78C, TAPE_TAB = 0xFFF6DE;
+
+    /**
+     * La cinta: la parte que sigue pegada (con orillas, brillo y la marca de la serie impresa) y la parte despegada, que es una tira
+     * curva de verdad: si el jugador la está jalando va hacia su mano ({@code pull}, en coordenadas de la caja), si la soltó queda
+     * enroscada hacia atrás.
+     */
+    private static void tape(VertexConsumer vc, PoseStack ps, int light, int box, float tape, float[] pull) {
+        float tw = 0.9F;
+        float x0 = -W / 2, x1 = W / 2;
+        float y = H + 0.16F;
+        float xs = x0 + W * Math.max(0, tape);
+        // pegada arriba
+        if (xs < x1) {
+            CarModel.quad(vc, ps, p(xs, y, -tw), p(x1, y, -tw), p(x1, y, tw), p(xs, y, tw), TAPE, 255, light);
+            CarModel.quad(vc, ps, p(xs, y + 0.01F, -tw), p(x1, y + 0.01F, -tw), p(x1, y + 0.01F, -tw + 0.1F), p(xs, y + 0.01F, -tw + 0.1F), TAPE_EDGE, 255, light);
+            CarModel.quad(vc, ps, p(xs, y + 0.01F, tw - 0.1F), p(x1, y + 0.01F, tw - 0.1F), p(x1, y + 0.01F, tw), p(xs, y + 0.01F, tw), TAPE_EDGE, 255, light);
+            CarModel.quad(vc, ps, p(xs, y + 0.012F, -0.18F), p(x1, y + 0.012F, -0.18F), p(x1, y + 0.012F, -0.06F), p(xs, y + 0.012F, -0.06F), 0xFFFAEC, 255,
+                    light);
+            // marcas impresas del color de la serie
+            for (float mx = x0 + 0.6F; mx < x1 - 0.5F; mx += 1.6F) {
+                if (mx < xs + 0.1F) {
+                    continue;
+                }
+                float mx1 = Math.min(x1 - 0.2F, mx + 0.7F);
+                CarModel.quad(vc, ps, p(mx, y + 0.015F, -0.4F), p(mx1, y + 0.015F, -0.4F), p(mx1, y + 0.015F, 0.4F), p(mx, y + 0.015F, 0.4F),
+                        Boxes.COLOR[box], 255, light);
+            }
+        }
+        // colita que baja por el costado de enfrente (x1)
+        CarModel.quad(vc, ps, p(x1 + 0.02F, H - 2.0F, tw), p(x1 + 0.02F, y, tw), p(x1 + 0.02F, y, -tw), p(x1 + 0.02F, H - 2.0F, -tw), TAPE, 255, light);
+        if (tape <= 0.0F && pull == null) {
+            // aún sin tocar: colita en x0 con la pestaña doblada para agarrarla
+            CarModel.quad(vc, ps, p(x0 - 0.02F, H - 2.0F, -tw), p(x0 - 0.02F, y, -tw), p(x0 - 0.02F, y, tw), p(x0 - 0.02F, H - 2.0F, tw), TAPE, 255, light);
+            CarModel.quad(vc, ps, p(x0 - 0.04F, H - 2.0F, -tw), p(x0 - 0.04F, H - 1.5F, -tw), p(x0 - 0.6F, H - 2.3F, -tw * 0.8F),
+                    p(x0 - 0.6F, H - 2.6F, -tw * 0.8F), TAPE_TAB, 255, CarModel.FULL);
+            CarModel.quad(vc, ps, p(x0 - 0.04F, H - 2.0F, tw), p(x0 - 0.6F, H - 2.6F, tw * 0.8F), p(x0 - 0.6F, H - 2.3F, tw * 0.8F), p(x0 - 0.04F, H - 1.5F, tw),
+                    TAPE_TAB, 255, CarModel.FULL);
+            return;
+        }
+        // la tira despegada: curva de Bézier desde donde sigue pegada hasta la punta
+        float len = W * Math.max(0, tape) + 2.2F;
+        float ex, ey, cx, cy;
+        if (pull != null) {
+            ex = pull[0];
+            ey = pull[1];
+            float dx = ex - xs, dy = ey - y;
+            float d = (float) Math.sqrt(dx * dx + dy * dy);
+            float max = len + 1.0F;
+            if (d > max) {
+                ex = xs + dx / d * max;
+                ey = y + dy / d * max;
+            }
+            ey = Math.max(ey, y + 0.3F);
+            cx = xs + (ex - xs) * 0.15F;
+            cy = Math.max(y, ey) + 0.6F + Math.abs(ex - xs) * 0.12F;
+        } else {
+            // suelta: se enrosca hacia atrás sobre la parte ya despegada
+            float l = Math.min(3.2F, 0.8F + len * 0.25F);
+            ex = xs - l;
+            ey = y + l * 0.55F;
+            cx = xs + 0.2F;
+            cy = y + l * 0.9F;
+        }
+        int n = 16;
+        float[] px = new float[n + 1], py = new float[n + 1];
+        for (int i = 0; i <= n; i++) {
+            float t = i / (float) n, u = 1 - t;
+            px[i] = u * u * xs + 2 * u * t * cx + t * t * ex;
+            py[i] = u * u * y + 2 * u * t * cy + t * t * ey;
+        }
+        for (int i = 0; i < n; i++) {
+            float tx = px[i + 1] - px[i], ty = py[i + 1] - py[i];
+            float l = (float) Math.sqrt(tx * tx + ty * ty);
+            if (l < 1e-4F) {
+                continue;
+            }
+            float nx = -ty / l * 0.02F, ny = tx / l * 0.02F;
+            float w0 = tw * (1 - 0.12F * i / n), w1 = tw * (1 - 0.12F * (i + 1) / n);
+            // cara de afuera (lisa) y cara de adentro (pegajosa, más opaca)
+            CarModel.quad(vc, ps, p(px[i] + nx, py[i] + ny, -w0), p(px[i + 1] + nx, py[i + 1] + ny, -w1), p(px[i + 1] + nx, py[i + 1] + ny, w1),
+                    p(px[i] + nx, py[i] + ny, w0), i % 4 == 1 ? 0xFFF8E6 : TAPE, 255, light);
+            CarModel.quad(vc, ps, p(px[i] - nx, py[i] - ny, w0), p(px[i + 1] - nx, py[i + 1] - ny, w1), p(px[i + 1] - nx, py[i + 1] - ny, -w1),
+                    p(px[i] - nx, py[i] - ny, -w0), TAPE_STICKY, 255, light);
+        }
+        // pestaña en la punta
+        float tx = ex - px[n - 2], ty = ey - py[n - 2];
+        float l = Math.max(1e-4F, (float) Math.sqrt(tx * tx + ty * ty));
+        float fx = ex + tx / l * 0.45F, fy = ey + ty / l * 0.45F;
+        float w = tw * 0.88F;
+        CarModel.quad(vc, ps, p(ex, ey, -w), p(fx, fy, -w * 0.8F), p(fx, fy, w * 0.8F), p(ex, ey, w), TAPE_TAB, 255, CarModel.FULL);
     }
 
     private static float clamp(float v) {

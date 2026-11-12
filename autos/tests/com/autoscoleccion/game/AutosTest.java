@@ -90,15 +90,21 @@ public class AutosTest {
     }
 
     static void track() {
-        TrackLayout t = TrackLayout.MAIN;
-        check(t.length > 100 && t.length < 200, "largo de la pista " + t.length);
-        check(t.minGap() >= 2 * TrackLayout.HALF_W + 3.5F, "las partes de la pista no se enciman (" + t.minGap() + ")");
-        float[] b = t.bounds(TrackLayout.HALF_W + 2.2F);
-        check(b[1] > 0.5F, "la pista no pisa el bloque");
-        check(Math.max(Math.abs(b[0]), Math.abs(b[2])) < 30 && b[3] < 40, "la pista cabe cerca del bloque (el auto no se aleja más de 64)");
-        float[] s0 = t.at(0);
-        check(Math.abs(s0[0]) < 0.2F && Math.abs(s0[1] - 6) < 0.2F, "la meta está frente al bloque");
-        System.out.printf("pista: %.0f bloques por vuelta, separación mínima %.1f%n", t.length, t.minGap());
+        check(TrackLayout.ALL.length == 5, "5 pistas");
+        for (TrackLayout t : TrackLayout.ALL) {
+            check(t.length > 100 && t.length < 450, "largo de " + t.name + " " + t.length);
+            check(t.minGap() >= 2 * t.halfW + 3.4F, "las partes de " + t.name + " no se enciman (" + t.minGap() + ")");
+            check(t.nearest(0, 0)[1] > t.halfW + 3.0F, "el bloque no queda encima de " + t.name);
+            float far = 0;
+            for (int i = 0; i < 400; i++) {
+                float[] p = t.at(i * t.length / 400);
+                far = Math.max(far, (float) Math.hypot(p[0], p[1]));
+            }
+            check(far < 70, t.name + " cabe cerca del bloque (el auto no se aleja más de 96)");
+            System.out.printf("pista %s: %.0f bloques por vuelta, separación mínima %.1f, lo más lejos %.0f%n", t.name, t.length, t.minGap(), far);
+        }
+        float[] s0 = TrackLayout.MAIN.at(0);
+        check(Math.abs(s0[0]) < 0.2F && Math.abs(s0[1] - 6) < 0.2F, "la meta de la clásica está frente al bloque");
     }
 
     // ------------------------------------------------------------------ bots

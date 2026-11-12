@@ -6,28 +6,53 @@ package com.autoscoleccion.game;
  * curva amplia, chicana, horquilla y regreso. La línea de meta está en s = 0 y se corre en el sentido de la recta (hacia +x).
  */
 public final class TrackLayout {
-    /** Mitad del ancho del asfalto (bloques). */
+    /** Mitad del ancho del asfalto de la pista clásica (bloques). */
     public static final float HALF_W = 2.6F;
-    /** Puntos de control (x, z). */
-    private static final float[] PTS = {
-            0, 6, 12, 6, 19, 8.5F, 22, 14, 19, 19, 16.5F, 22.5F, 19, 27, 16, 32, 8, 32, 3, 26.5F, -2, 32, -12, 32, -19, 28.5F, -16, 22,
-            -21, 17, -21, 10, -15, 6};
     private static final float STEP = 0.5F;
 
-    public static final TrackLayout MAIN = new TrackLayout();
+    /** Las pistas, en el orden del tema guardado en el bloque. */
+    public static final TrackLayout[] ALL = {
+            // 0 Clásica: chiquita, delante del bloque
+            new TrackLayout("Circuito Clásico", "Asfalto, pianos rojo y blanco. La original.", 2.6F,
+                    0, 6, 12, 6, 19, 8.5F, 22, 14, 19, 19, 16.5F, 22.5F, 19, 27, 16, 32, 8, 32, 3, 26.5F, -2, 32, -12, 32, -19, 28.5F, -16, 22,
+                    -21, 17, -21, 10, -15, 6),
+            // 1 Desierto: grande, curvas rápidas alrededor del bloque
+            new TrackLayout("Desierto Dorado", "Arenisca y terracota, cactus y una recta larguísima.", 3.0F,
+                    0, -26, 20, -26, 36, -21, 43, -8, 36, 4, 42, 17, 35, 31, 18, 36, 8, 26, -4, 36, -22, 36, -38, 28, -44, 12, -36, 0, -43, -14,
+                    -30, -25, -14, -27),
+            // 2 Ciudad neón: esquinas como cuadras, de noche
+            new TrackLayout("Ciudad Neón", "Asfalto negro, líneas amarillas y faroles de neón.", 3.0F,
+                    0, -30, 22, -30, 34, -28, 38, -16, 38, -2, 28, 0, 20, 10, 32, 22, 38, 30, 32, 40, 16, 42, -4, 42, -20, 40, -26, 30, -12, 19,
+                    -30, 8, -40, 0, -42, -16, -36, -28, -18, -30),
+            // 3 Nieve: subidas y bajadas de montaña, horquillas
+            new TrackLayout("Pico Nevado", "Hielo compacto, nieve y pinos. Horquillas cerradas.", 3.0F,
+                    0, -28, 18, -28, 34, -22, 40, -8, 30, 2, 14, 2, 8, 12, 18, 22, 34, 22, 42, 32, 34, 44, 14, 44, -2, 36, -14, 44, -32, 44,
+                    -42, 32, -34, 20, -42, 6, -40, -14, -26, -26, -12, -28),
+            // 4 Volcán: la más larga, roca negra y magma
+            new TrackLayout("Volcán Infierno", "Roca negra, magma y la pista más larga de todas.", 3.0F,
+                    0, -34, 26, -34, 44, -26, 48, -10, 38, -2, 22, -6, 12, 2, 16, 14, 32, 14, 46, 24, 44, 42, 28, 52, 10, 48, 0, 38, -10, 48,
+                    -28, 52, -44, 42, -48, 24, -36, 14, -46, 0, -44, -20, -30, -32, -14, -34)};
+    public static final TrackLayout MAIN = ALL[0];
+
+    public final String name;
+    public final String blurb;
+    public final float halfW;
 
     /** Muestras a lo largo de la pista: x, z, tangente x, tangente z (cada STEP bloques). */
     private final float[] xs, zs, txs, tzs;
     public final int n;
     public final float length;
 
-    private TrackLayout() {
+    private TrackLayout(String name, String blurb, float halfW, float... PTS) {
+        this.name = name;
+        this.blurb = blurb;
+        this.halfW = halfW;
         int k = PTS.length / 2;
         int fine = 400;
         float[] fx = new float[k * fine + 1], fz = new float[k * fine + 1];
         int m = 0;
         for (int i = 0; i < k; i++) {
-            float[] p0 = pt(i - 1, k), p1 = pt(i, k), p2 = pt(i + 1, k), p3 = pt(i + 2, k);
+            float[] p0 = pt(PTS, i - 1, k), p1 = pt(PTS, i, k), p2 = pt(PTS, i + 1, k), p3 = pt(PTS, i + 2, k);
             for (int j = 0; j < fine; j++) {
                 float t = j / (float) fine;
                 fx[m] = cr(p0[0], p1[0], p2[0], p3[0], t);
@@ -67,7 +92,7 @@ public final class TrackLayout {
         }
     }
 
-    private static float[] pt(int i, int k) {
+    private static float[] pt(float[] PTS, int i, int k) {
         int q = ((i % k) + k) % k;
         return new float[] {PTS[q * 2], PTS[q * 2 + 1]};
     }
@@ -127,7 +152,7 @@ public final class TrackLayout {
     /** Distancia mínima entre partes de la pista que no son vecinas (para que entren el asfalto y los muros). */
     public float minGap() {
         float min = Float.MAX_VALUE;
-        int far = (int) (14 / STEP);
+        int far = (int) ((halfW * 2 + 9) / STEP);
         for (int i = 0; i < n; i++) {
             for (int j = i + far; j < n; j++) {
                 if (n - (j - i) < far) {

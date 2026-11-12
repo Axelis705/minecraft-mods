@@ -57,12 +57,17 @@ public class TrackScreen extends Screen {
     private void rebuild() {
         clearWidgets();
         pw = Math.min(340, width - 20);
-        ph = Math.min(230, height - 20);
+        ph = Math.min(info.built() ? 230 : 270, height - 20);
         px = (width - pw) / 2;
         py = (height - ph) / 2;
         int bx = px + pw / 2;
         if (!info.built()) {
-            addRenderableWidget(Button.builder(Component.literal("Construir la pista aquí"), b -> send(RaceActionPacket.BUILD, 0))
+            int n = TrackLayout.ALL.length;
+            addRenderableWidget(Button.builder(Component.literal("<"), b -> send(RaceActionPacket.THEME, (info.theme() + n - 1) % n))
+                    .bounds(px + 10, py + 30, 20, 20).build());
+            addRenderableWidget(Button.builder(Component.literal(">"), b -> send(RaceActionPacket.THEME, (info.theme() + 1) % n))
+                    .bounds(px + pw - 30, py + 30, 20, 20).build());
+            addRenderableWidget(Button.builder(Component.literal("Construir esta pista"), b -> send(RaceActionPacket.BUILD, 0))
                     .bounds(bx - 80, py + ph - 52, 160, 20).build());
             addRenderableWidget(Button.builder(Component.literal("Cerrar"), b -> onClose()).bounds(bx - 40, py + ph - 26, 80, 18).build());
             return;
@@ -118,16 +123,19 @@ public class TrackScreen extends Screen {
         Gfx.round(px + 2, py + 2, px + pw - 2, py + 22, 6, 0xFF1C2236);
         Gfx.end();
         Gfx.text(g, font, "Mini pista de carreras", px + pw / 2.0F, py + 8, 1.2F, 0xFFFFD34D);
+        TrackLayout lay = TrackLayout.ALL[Math.max(0, Math.min(TrackLayout.ALL.length - 1, info.theme()))];
         if (!info.built()) {
-            String[] lines = {"Aquí se construye una mini pista para correr con tus", "autos contra tus amigos o contra bots.", "",
-                    "Se hace hacia donde mira el bloque (unos " + size() + " bloques).", "Reemplaza el terreno de esa zona: ¡revisa que no haya",
-                    "nada importante enfrente!"};
-            for (int i = 0; i < lines.length; i++) {
-                Gfx.text(g, font, lines[i], px + pw / 2.0F, py + 40 + i * 12, 0.9F, i >= 4 ? 0xFFFFB04D : 0xFFE6E6F0);
-            }
+            Gfx.text(g, font, lay.name, px + pw / 2.0F, py + 32, 1.3F, THEME_COL[info.theme() % THEME_COL.length]);
+            Gfx.text(g, font, lay.blurb, px + pw / 2.0F, py + 46, 0.75F, 0xFFE6E6F0);
+            miniMap(g, lay, px + pw / 2.0F, py + 58, pw - 60, ph - 140);
+            Gfx.text(g, font, "Tamaño: " + size(lay) + " bloques · " + Math.round(lay.length) + " bloques por vuelta", px + pw / 2.0F, py + ph - 78, 0.7F,
+                    0xFFE6E6F0);
+            Gfx.text(g, font, "Se construye hacia donde mira el bloque y reemplaza el terreno: ¡revisa que no haya nada importante!",
+                    px + pw / 2.0F, py + ph - 66, 0.6F, 0xFFFFB04D);
             super.render(g, mx, my, pt);
             return;
         }
+        Gfx.text(g, font, lay.name, px + pw / 2.0F, py + 28, 0.8F, THEME_COL[info.theme() % THEME_COL.length]);
         int right = px + pw - 150;
         Gfx.text(g, font, info.laps() + (info.laps() == 1 ? " vuelta" : " vueltas"), right + 70, py + 45, 1.0F, 0xFFFFFFFF);
         Gfx.text(g, font, info.bots() == 0 ? "sin bots" : info.bots() + (info.bots() == 1 ? " bot" : " bots"), right + 70, py + 69, 1.0F, 0xFFFFFFFF);
@@ -140,7 +148,7 @@ public class TrackScreen extends Screen {
             Gfx.textL(g, font, names.get(i), right, py + 104 + i * 10, 0.75F, 0xFFE6E6F0);
         }
         if (info.running()) {
-            Gfx.text(g, font, "¡Carrera en curso!", px + pw / 2.0F, py + 28, 0.9F, 0xFF6CFF8A);
+            Gfx.text(g, font, "¡Carrera en curso!", px + pw / 2.0F, py + 38, 0.9F, 0xFF6CFF8A);
         }
         int lx = px + 12;
         Gfx.textL(g, font, "Tu auto:", lx, py + 32, 0.85F, 0xFF9AE6FF);
@@ -158,9 +166,38 @@ public class TrackScreen extends Screen {
         super.render(g, mx, my, pt);
     }
 
-    private static String size() {
-        float[] b = TrackLayout.MAIN.bounds(TrackLayout.HALF_W + 2.2F);
+    private static final int[] THEME_COL = {0xFFFFFFFF, 0xFFFFC66B, 0xFFFF6CE0, 0xFF9AE6FF, 0xFFFF7A3A};
+    private static final int[] ROAD_COL = {0xFF55575E, 0xFFE3CF94, 0xFF1D1D22, 0xFFB9D8F2, 0xFF2A2730};
+    private static final int[] EDGE_COL = {0xFFD7263D, 0xFFE07A2E, 0xFFFF3FD0, 0xFF3A6BD8, 0xFFFF6A1A};
+
+    private static String size(TrackLayout t) {
+        float[] b = t.bounds(t.halfW + 2.2F);
         return Math.round(b[2] - b[0]) + " × " + Math.round(b[3] - b[1]);
+    }
+
+    /** Dibujo de la pista vista desde arriba, con el bloque (punto amarillo) y la meta. */
+    private void miniMap(GuiGraphics g, TrackLayout t, float cx, float top, float w, float h) {
+        float[] b = t.bounds(t.halfW + 2);
+        float bx0 = Math.min(b[0], -2), bx1 = Math.max(b[2], 2), bz0 = Math.min(b[1], -2), bz1 = Math.max(b[3], 2);
+        float k = Math.min(w / (bx1 - bx0), h / (bz1 - bz0));
+        float ox = cx - (bx0 + bx1) / 2 * k, oy = top + h / 2 + (bz0 + bz1) / 2 * k;
+        int ti = info.theme() % ROAD_COL.length;
+        Gfx.begin(g, false);
+        Gfx.round(cx - w / 2 - 6, top - 4, cx + w / 2 + 6, top + h + 4, 6, 0xFF0B0E16);
+        int n = 160;
+        for (int pass = 0; pass < 2; pass++) {
+            float lw = (pass == 0 ? t.halfW + 1.2F : t.halfW) * 2 * k;
+            for (int i = 0; i < n; i++) {
+                float[] a = t.at(i * t.length / n), c = t.at((i + 1) * t.length / n);
+                Gfx.line(ox + a[0] * k, oy - a[1] * k, ox + c[0] * k, oy - c[1] * k, Math.max(1.5F, lw),
+                        pass == 0 ? EDGE_COL[ti] : ROAD_COL[ti]);
+            }
+        }
+        float[] s0 = t.at(0);
+        Gfx.line(ox + (s0[0] + s0[3] * t.halfW) * k, oy - (s0[1] - s0[2] * t.halfW) * k, ox + (s0[0] - s0[3] * t.halfW) * k,
+                oy - (s0[1] + s0[2] * t.halfW) * k, 2, 0xFFFFFFFF);
+        Gfx.circle(ox, oy, 3, 0xFFFFD34D);
+        Gfx.end();
     }
 
     @Override

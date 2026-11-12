@@ -19,6 +19,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import com.autoscoleccion.game.TrackLayout;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -31,16 +33,18 @@ public class TrackBlock extends Block {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty BUILT = BooleanProperty.create("construida");
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    /** Qué pista es (ver TrackLayout.ALL). */
+    public static final IntegerProperty THEME = IntegerProperty.create("tema", 0, TrackLayout.ALL.length - 1);
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 16, 13);
 
     public TrackBlock(Properties props) {
         super(props);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BUILT, false).setValue(LIT, false));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BUILT, false).setValue(LIT, false).setValue(THEME, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
-        b.add(FACING, BUILT, LIT);
+        b.add(FACING, BUILT, LIT, THEME);
     }
 
     @Override

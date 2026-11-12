@@ -20,7 +20,7 @@ import java.util.UUID;
 /** Los autos a control remoto que hay en el mundo: uno por jugador como máximo. */
 public final class Driving {
     /** Distancia máxima entre el jugador y su auto (bloques). */
-    public static final double RANGE = 64.0;
+    public static final double RANGE = 96.0;
     private static final Map<UUID, Integer> ACTIVE = new HashMap<>();
 
     private Driving() {
