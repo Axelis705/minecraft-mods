@@ -15,6 +15,11 @@ import net.minecraft.client.gui.GuiGraphics;
  * la forma de cada versión. El fondo oscuro solo se pone si la pantalla lo pide con {@link #drawBackground}.
  */
 public abstract class CasinoScreen extends Screen {
+    /** ¿Está apretado el botón izquierdo del mouse ahora mismo? */
+    public static boolean leftDown() {
+        return net.minecraft.client.Minecraft.getInstance().mouseHandler.isLeftPressed();
+    }
+
     /** ¿Está apretado Shift? */
     public static boolean shift() {
         //#if MC >= 26.1

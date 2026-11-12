@@ -101,6 +101,15 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     super.extractRenderState(e, s, partial);
     //$$     s.tip = e.getTip();
     //$$     s.game = e.getGame();
+    //#if MC >= 26.1
+    //$$     // la ropa del crupier está en la capa exterior de la piel (chaqueta, mangas, sombrero): en 26.x viene apagada
+    //$$     s.showHat = true;
+    //$$     s.showJacket = true;
+    //$$     s.showLeftSleeve = true;
+    //$$     s.showRightSleeve = true;
+    //$$     s.showLeftPants = true;
+    //$$     s.showRightPants = true;
+    //#endif
     //$$ }
     //$$
     //$$ @Override

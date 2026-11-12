@@ -37,6 +37,10 @@ public final class VB {
         }
         Vector4f pos = new Vector4f(x, y, z, 1).mul(p.pose());
         Vector3f nor = new Vector3f(nx, ny, nz).mul(p.normal());
+        // igual que hace Minecraft al escribir la normal: si la pose está escalada, la normal se acorta y la luz sale más oscura
+        if (nor.lengthSquared() > 1.0E-8F) {
+            nor.normalize();
+        }
         if (n == f.length / 8) {
             int cap = Math.max(64, n * 2);
             f = Arrays.copyOf(f, cap * 8);

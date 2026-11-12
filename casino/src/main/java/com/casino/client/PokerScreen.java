@@ -255,9 +255,12 @@ public final class PokerScreen extends CasinoScreen {
             }
         }
         if (t.dealerRevealed && t.dealerCat >= 0) {
-            g.drawString(font, Component.translatable("casino.poker.hand_" + t.dealerCat).withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD), dx, top + 69, 0xFFFFFF, true);
+            Component dh = Component.translatable("casino.poker.hand_" + t.dealerCat).withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD);
+            g.drawString(font, dh, dx, top + 69, 0xFFFFFF, true);
+            // el nombre de la mano puede ser largo (p. ej. "Doble pareja" o en otros idiomas): el aviso va después, sin pisarlo
+            int qx = Math.max(bx + 2, dx + font.width(dh) + 8);
             g.drawString(font, Component.translatable(t.dealerQualified ? "casino.poker.qualifies" : "casino.poker.not_qualifies")
-                    .withStyle(t.dealerQualified ? ChatFormatting.YELLOW : ChatFormatting.RED), bx + 2, top + 69, 0xFFFFFF, true);
+                    .withStyle(t.dealerQualified ? ChatFormatting.YELLOW : ChatFormatting.RED), qx, top + 69, 0xFFFFFF, true);
         }
 
         // fila de abajo: tus cartas

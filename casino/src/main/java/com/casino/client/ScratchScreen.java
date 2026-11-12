@@ -140,9 +140,13 @@ public final class ScratchScreen extends CasinoScreen {
         }
     }
 
+    /** Botón izquierdo apretado (se rasca también desde draw: en 26.x el arrastre no siempre llega a la pantalla). */
+    private boolean held;
+
     @Override
     protected boolean onClick(double mx, double my, int button) {
         if (button == 0) {
+            held = true;
             lastX = mx;
             lastY = my;
             scratchAt(mx, my);
@@ -164,6 +168,9 @@ public final class ScratchScreen extends CasinoScreen {
 
     @Override
     protected boolean onRelease(double mx, double my, int button) {
+        if (button == 0) {
+            held = false;
+        }
         lastX = Double.NaN;
         lastY = Double.NaN;
         return superRelease(mx, my, button);
@@ -186,6 +193,15 @@ public final class ScratchScreen extends CasinoScreen {
 
     @Override
     protected void draw(G g, int mx, int my, float pt) {
+        if (held && (mx != lastX || my != lastY)) {
+            if (!leftDown()) {
+                held = false; // se soltó fuera de la pantalla
+            } else {
+                scratchLine(lastX, lastY, mx, my);
+                lastX = mx;
+                lastY = my;
+            }
+        }
         drawBackground(g, mx, my, pt);
         // el boleto: marco dorado, fondo rojo oscuro con franja
         g.fill(left - 3, top - 3, left + W + 3, top + H + 3, 0xFFD9AE38);
