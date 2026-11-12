@@ -29,19 +29,31 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(ModBlockEntities.POKER.get(), PokerRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.ROULETTE.get(), RouletteRenderer::new);
         e.registerBlockEntityRenderer(com.casino.diamond.DiamondReg.SHOP_BE.get(), PrizeShopRenderer::new);
+        e.registerBlockEntityRenderer(com.casino.diamond.DiamondReg.RACE_BE.get(), RaceScreenRenderer::new);
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
         e.registerEntityRenderer(com.casino.registry.ModDecor.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void onKeys(net.minecraftforge.client.event.RegisterKeyMappingsEvent e) {
+        e.register(RaceClient.BET);
     }
 
     //#if MC >= 1.20.5
     //$$ @SubscribeEvent
     //$$ public static void onOverlays(AddGuiOverlayLayersEvent e) {
-    //$$     e.getLayeredDraw().add(Ids.casino("win_banner"), (gg, delta) -> WinBanner.render(new G(gg), gg.guiWidth(), gg.guiHeight()));
+    //$$     e.getLayeredDraw().add(Ids.casino("win_banner"), (gg, delta) -> {
+    //$$         RaceHud.render(new G(gg), gg.guiWidth(), gg.guiHeight());
+    //$$         WinBanner.render(new G(gg), gg.guiWidth(), gg.guiHeight());
+    //$$     });
     //$$ }
     //#else
     @SubscribeEvent
     public static void onOverlays(RegisterGuiOverlaysEvent e) {
-        e.registerAboveAll("win_banner", (gui, gg, pt, w, h) -> WinBanner.render(new G(gg), w, h));
+        e.registerAboveAll("win_banner", (gui, gg, pt, w, h) -> {
+            RaceHud.render(new G(gg), w, h);
+            WinBanner.render(new G(gg), w, h);
+        });
     }
     //#endif
 }

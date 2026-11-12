@@ -105,6 +105,19 @@ public final class G {
         //#endif
     }
 
+    /** Igual que blit pero teñido con un color ARGB (para las sedas de los jinetes, el pelaje de los caballos, etc.). */
+    public void blitTint(ResourceLocation tex, int x, int y, int w, int h, float u, float v, int uw, int vh, int texW, int texH, int argb) {
+        //#if MC >= 26.1
+        //$$ raw.blit(RenderPipelines.GUI_TEXTURED, tex, x, y, u, v, w, h, uw, vh, texW, texH, argb);
+        //#elif MC >= 1.21.2
+        //$$ raw.blit(net.minecraft.client.renderer.RenderType::guiTextured, tex, x, y, u, v, w, h, uw, vh, texW, texH, argb);
+        //#else
+        raw.setColor(((argb >> 16) & 255) / 255F, ((argb >> 8) & 255) / 255F, (argb & 255) / 255F, ((argb >>> 24) & 255) / 255F);
+        raw.blit(tex, x, y, w, h, u, v, uw, vh, texW, texH);
+        raw.setColor(1F, 1F, 1F, 1F);
+        //#endif
+    }
+
     public void renderItem(ItemStack st, int x, int y) {
         //#if MC >= 26.1
         //$$ raw.item(st, x, y);

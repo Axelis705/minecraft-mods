@@ -33,6 +33,7 @@ public final class CasinoNet {
         Net.register(15, com.casino.diamond.ShopPacket.Open.class, com.casino.diamond.ShopPacket.Open::encode, com.casino.diamond.ShopPacket.Open::decode, com.casino.diamond.ShopPacket.Open::handle);
         Net.register(16, com.casino.diamond.ShopPacket.Buy.class, com.casino.diamond.ShopPacket.Buy::encode, com.casino.diamond.ShopPacket.Buy::decode, com.casino.diamond.ShopPacket.Buy::handle);
         Net.register(17, com.casino.diamond.ShopPacket.Edit.class, com.casino.diamond.ShopPacket.Edit::encode, com.casino.diamond.ShopPacket.Edit::decode, com.casino.diamond.ShopPacket.Edit::handle);
+        Net.register(18, com.casino.diamond.RaceBetPacket.class, com.casino.diamond.RaceBetPacket::encode, com.casino.diamond.RaceBetPacket::decode, com.casino.diamond.RaceBetPacket::handle);
         Net.done();
     }
 

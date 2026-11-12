@@ -62,6 +62,12 @@ public final class ModSounds {
     /** Se rasca un boleto de rasca y gana. */
     public static final RegistryObject<SoundEvent> SCRATCH = reg("scratch");
 
+    /** Carreras de caballos: clarín de llamada, apertura de cajones, ovación y galope. */
+    public static final RegistryObject<SoundEvent> RACE_BUGLE = reg("race_bugle");
+    public static final RegistryObject<SoundEvent> RACE_GATE = reg("race_gate");
+    public static final RegistryObject<SoundEvent> RACE_CROWD = reg("race_crowd");
+    public static final RegistryObject<SoundEvent> RACE_GALLOP = reg("race_gallop");
+
     private ModSounds() {
     }
 

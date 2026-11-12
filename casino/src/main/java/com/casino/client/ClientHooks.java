@@ -65,6 +65,10 @@ public final class ClientHooks {
         ShopScreen.show(m);
     }
 
+    public static void raceSeen(com.casino.diamond.RaceBE be) {
+        RaceClient.seen(be);
+    }
+
     public static void openGuide() {
         open(new GuideScreen());
     }

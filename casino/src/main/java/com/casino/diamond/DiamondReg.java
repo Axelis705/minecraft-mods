@@ -37,6 +37,12 @@ public final class DiamondReg {
     public static final RegistryObject<BlockEntityType<PrizeShopBE>> SHOP_BE = ModBlockEntities.TYPES.register("prize_shop",
             () -> Reg.blockEntity(PrizeShopBE::new, PRIZE_SHOP.get()));
 
+    public static final RegistryObject<Block> RACE_SCREEN = ModBlocks.BLOCKS.register("race_screen",
+            () -> new RaceScreenBlock(Reg.block("race_screen").mapColor(MapColor.COLOR_BLACK).strength(-1.0F, 3_600_000.0F).sound(SoundType.GLASS)
+                    .noOcclusion().noLootTable().lightLevel(s -> 10)));
+    public static final RegistryObject<BlockEntityType<RaceBE>> RACE_BE = ModBlockEntities.TYPES.register("race_screen",
+            () -> Reg.blockEntity(RaceBE::new, RACE_SCREEN.get()));
+
     private DiamondReg() {
     }
 
@@ -80,21 +86,18 @@ public final class DiamondReg {
             g.setYBodyRot(f.toYRot());
             level.addFreshEntityWithPassengers(g);
         });
-        // pantalla gigante (por ahora, pantallas animadas; luego las carreras de caballos)
+        // pantalla gigante de las carreras de caballos: un bloque con la entidad; la imagen cubre ancho × alto bloques
         TemplateCasinoPiece.Extra.register("tv", (a, pos, level, rot, box, dir) -> {
+            if (!box.isInside(pos)) {
+                return;
+            }
             Direction f = rot.rotate(Machines.DIRS[dir & 3]);
-            Direction right = f.getCounterClockWise();
-            int w = a.length > 2 ? parse(a[2]) : 4;
-            int h = a.length > 3 ? parse(a[3]) : 3;
-            Block screen = com.casino.registry.ModDecor.WALL_SCREEN.get();
-            for (int i = 0; i < w; i++) {
-                for (int j = 0; j < h; j++) {
-                    BlockPos p = pos.relative(right, i - w / 2 + 1).above(j);
-                    if (box.isInside(p)) {
-                        level.setBlock(p, screen.defaultBlockState().setValue(com.casino.decor.WallDecorBlock.Screen.DESIGN, (i + j) & 3)
-                                .setValue(com.casino.decor.WallDecorBlock.FACING, f), 2);
-                    }
-                }
+            level.setBlock(pos, RACE_SCREEN.get().defaultBlockState().setValue(RaceScreenBlock.FACING, f), 2);
+            if (level.getBlockEntity(pos) instanceof RaceBE be) {
+                be.width = a.length > 2 ? Math.max(2, parse(a[2])) : 12;
+                be.height = a.length > 3 ? Math.max(2, parse(a[3])) : 6;
+                be.left = -(be.width / 2 - 1);
+                be.setChanged();
             }
         });
     }

@@ -142,5 +142,29 @@
       }
     ],
     "subtitle": "subtitles.casino.music_lounge"
+  },
+  "race_bugle": {
+    "sounds": [
+      "casino:race_bugle"
+    ],
+    "subtitle": "subtitles.casino.race_bugle"
+  },
+  "race_gate": {
+    "sounds": [
+      "casino:race_gate"
+    ],
+    "subtitle": "subtitles.casino.race_gate"
+  },
+  "race_crowd": {
+    "sounds": [
+      "casino:race_crowd"
+    ],
+    "subtitle": "subtitles.casino.race_crowd"
+  },
+  "race_gallop": {
+    "sounds": [
+      "casino:race_gallop"
+    ],
+    "subtitle": "subtitles.casino.race_gallop"
   }
 }
