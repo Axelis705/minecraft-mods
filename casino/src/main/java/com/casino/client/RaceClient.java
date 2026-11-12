@@ -81,7 +81,8 @@ public final class RaceClient {
             }
         }
         boolean seated = pl.getVehicle() instanceof SeatEntity;
-        if (best != null && seated && bd < RaceBE.RANGE * RaceBE.RANGE) {
+        // sentado en la misma sala (no en el piso de arriba ni al otro lado del casino)
+        if (best != null && seated && bd < 24 * 24 && Math.abs(pl.getY() - best.center().y) < 8) {
             active = best;
         }
         boolean pressed = false;

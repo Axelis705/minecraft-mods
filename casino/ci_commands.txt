@@ -104,6 +104,9 @@ data get block 86 103 150
 data get block 85 101 185
 place structure casino:the_diamond 0 -60 400
 execute if entity @e[type=casino:dealer,nbt={Game:3},x=0,y=-60,z=400,distance=..60] run say PRUEBA_DIAMOND_ESTRUCTURA
+# la pantalla de carreras ya empezó su ciclo (semilla y hora de inicio puestas por el servidor)
+execute unless data block 86 103 150 {Start:0L} unless data block 86 103 150 {casino:{Start:0L}} run say PRUEBA_DIAMOND_CARRERA_CORRE
+data get block 86 103 150
 #expect PRUEBA_RASCA_OK
 #expect PRUEBA_POKER_OK
 #expect PRUEBA_CRUPIER_OK
@@ -133,3 +136,4 @@ execute if entity @e[type=casino:dealer,nbt={Game:3},x=0,y=-60,z=400,distance=..
 #expect PRUEBA_DIAMOND_GIRO
 #expect PRUEBA_DIAMOND_ESTRUCTURA
 #expect PRUEBA_DIAMOND_CARRERAS
+#expect PRUEBA_DIAMOND_CARRERA_CORRE
