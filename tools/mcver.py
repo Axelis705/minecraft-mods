@@ -76,7 +76,9 @@ REMAP = [
                ("import net.minecraft.Util;", "import net.minecraft.util.Util;"), (r"\bnet\.minecraft\.Util\.", "net.minecraft.util.Util."),
                (r"\.moveTo\(", ".snapTo("),
                ("getGameProfile().getName()", "getGameProfile().name()"),
-               (r"\.getAllKeys\(\)", ".keySet()")]),
+               (r"\.getAllKeys\(\)", ".keySet()"),
+               # en 26.x los eventos que usamos (atributos, renderers, capas del HUD) viven en el bus normal, no en el del mod
+               (", bus = Mod.EventBusSubscriber.Bus.MOD", "")]),
     ((26, 3), [("PushReaction.BLOCK", "PushReaction.IMMOVEABLE"),
                (r"\.mulPose\(", ".rotate(")]),
 ]

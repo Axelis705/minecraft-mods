@@ -41,9 +41,15 @@ if [ -f ci_commands.txt ]; then
   echo "----- registro de las pruebas de comandos -----"
   grep -E "construida|sin apoyo|DIAG_|has the following|PRUEBA_" "$log" | sed 's/^.*\] \[/[/' | cut -c1-400 | head -150
   echo "-----"
+  miss=""
   while IFS= read -r line; do
-    case "$line" in '#expect '*) want="${line#\#expect }"; if ! grep -qF "$want" "$log"; then echo "ERROR: falta en el registro: $want"; { echo "No salio '$want'"; sed -n '/Done (/,$p' "$log" | cut -c1-140 | grep -vE 'DEBUG|^\s*$' | head -70; } > "$log.bad"; ann "Prueba de comandos fallo ($mod)" 72 "$log.bad"; exit 1; fi;; esac
+    case "$line" in '#expect '*) want="${line#\#expect }"; grep -qF "$want" "$log" || miss="$miss $want";; esac
   done < ci_commands.txt
+  if [ -n "$miss" ]; then
+    echo "ERROR: faltan en el registro:$miss"
+    { echo "Faltan:$miss"; grep -E "DIAG_|PRUEBA_|/ERROR\]|/WARN\].*casino|Exception" "$log" | sed 's/^.*\] \[/[/' | cut -c1-200 | head -60; } > "$log.bad"
+    ann "Prueba de comandos fallo ($mod)" 62 "$log.bad"; exit 1
+  fi
   echo "Comandos de prueba: bien"
 fi
 grep -E "Done \(" "$log"; echo "Arranque limpio"
