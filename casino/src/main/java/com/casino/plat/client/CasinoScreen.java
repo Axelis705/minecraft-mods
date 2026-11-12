@@ -80,19 +80,29 @@ public abstract class CasinoScreen extends Screen {
     //$$ @Override
     //$$ public boolean mouseClicked(MouseButtonEvent e, boolean dbl) {
     //$$     lastMouse = e;
-    //$$     return onClick(e.x(), e.y(), e.button());
+    //$$     return onClick(e.x(), e.y(), btn(e));
+    //$$ }
+    //$$
+    //$$ /** Botón con la numeración de siempre (0 izquierdo, 1 derecho, 2 central). En 26.3 Minecraft cuenta desde 1: izquierdo 1, central 2, derecho 3. */
+    //$$ private static int btn(MouseButtonEvent e) {
+    //$$     int b = e.button();
+    //#if MC >= 26.3
+    //$$     return b == 1 ? 0 : b == 3 ? 1 : b == 2 ? 2 : b - 1;
+    //#else
+    //$$     return b;
+    //#endif
     //$$ }
     //$$
     //$$ @Override
     //$$ public boolean mouseReleased(MouseButtonEvent e) {
     //$$     lastMouse = e;
-    //$$     return onRelease(e.x(), e.y(), e.button());
+    //$$     return onRelease(e.x(), e.y(), btn(e));
     //$$ }
     //$$
     //$$ @Override
     //$$ public boolean mouseDragged(MouseButtonEvent e, double dx, double dy) {
     //$$     lastMouse = e;
-    //$$     return onDrag(e.x(), e.y(), e.button(), dx, dy);
+    //$$     return onDrag(e.x(), e.y(), btn(e), dx, dy);
     //$$ }
     //$$
     //$$ @Override
