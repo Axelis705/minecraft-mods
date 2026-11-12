@@ -42,7 +42,7 @@ casino build 120 100 40 1
 execute if block 56 101 41 casino:lucky_wheel[facing=south,px=1,py=0] run say PRUEBA_CASINO_RUEDA
 execute if block 41 101 45 casino:slot[facing=east,half=lower] if block 41 102 45 casino:slot[half=upper] run say PRUEBA_CASINO_SLOT
 execute if block 51 101 71 casino:cashier[facing=north] run say PRUEBA_CASINO_CAJERO
-execute if block 59 107 71 casino:neon_letter[glyph=2,facing=north] if block 41 101 58 casino:sofa_red[facing=east,left=true,right=false] if block 54 101 74 casino:rope_post_red[north=false,south=true] run say PRUEBA_CASINO_DECOR
+execute if block 59 107 71 casino:neon_letter[glyph=2,facing=north] if block 41 101 58 casino:sofa_red[facing=east,left=true,right=false] if block 54 101 73 casino:rope_post_red[north=false,south=true] run say PRUEBA_CASINO_DECOR
 execute if block 51 101 71 casino:cashier run say DIAG_CAJERO_HAY_CAJERO
 execute if block 51 101 71 minecraft:air run say DIAG_CAJERO_AIRE
 execute if block 41 101 71 casino:cashier run say DIAG_CAJERO2_HAY
