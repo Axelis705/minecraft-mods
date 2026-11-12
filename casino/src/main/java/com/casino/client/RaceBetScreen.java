@@ -294,8 +294,10 @@ public final class RaceBetScreen extends CasinoScreen {
             if (mine != null && mine.horse() == i) {
                 Component tag = Component.translatable("casino.race.your_bet_tag");
                 int tw = font.width(tag) + 6;
-                g.fill(cx + 160 - tw, cy + 20, cx + 160, cy + 30, 0xFF2E9A52);
-                g.drawString(font, tag, cx + 163 - tw, cy + 21, 0xFFFFFFFF, false);
+                // a la derecha de las estrellas, sin taparlas
+                int tx = cx + 116;
+                g.fill(tx, cy + 18, tx + tw, cy + 28, 0xFF2E9A52);
+                g.drawString(font, tag, tx + 3, cy + 19, 0xFFFFFFFF, false);
             }
         }
 
@@ -313,10 +315,10 @@ public final class RaceBetScreen extends CasinoScreen {
         // barra de probabilidad
         int bw = 120;
         int bx = rx + 18;
-        int byy = top + 130;
+        int byy = top + 127;
         g.fill(bx, byy, bx + bw, byy + 6, 0xFF2A2634);
         g.fill(bx, byy, bx + (int) (bw * Math.min(1, r.p[sel] * 1.6)), byy + 6, 0xFF5AC870);
-        g.drawCenteredString(font, Component.translatable("casino.race.chance", Math.round(r.p[sel] * 100)), rx + 78, byy + 9, 0xFF9890B0);
+        g.drawCenteredString(font, Component.translatable("casino.race.chance", Math.round(r.p[sel] * 100)), rx + 78, byy + 8, 0xFF9890B0);
         // cantidad
         String amt = String.format("%,d", amount);
         g.fill(rx + 56, top + 158, rx + 100, top + 174, 0xFF000000);
@@ -325,10 +327,10 @@ public final class RaceBetScreen extends CasinoScreen {
         long pay = r.payout(sel, amount);
         g.drawCenteredString(font, Component.translatable("casino.race.would_pay", String.format("%,d", pay)), rx + 78, top + 200, 0xFF70FF9A);
         if (!open()) {
-            g.drawCenteredString(font, Component.translatable("casino.race.closed").withStyle(ChatFormatting.RED), rx + 78, top + 146, 0xFFFFFFFF);
+            g.drawCenteredString(font, Component.translatable("casino.race.closed").withStyle(ChatFormatting.RED), rx + 78, top + 147, 0xFFFFFFFF);
         } else if (mine != null) {
             g.drawCenteredString(font, Component.translatable("casino.race.current_bet", mine.horse() + 1, String.format("%,d", mine.amount())), rx + 78,
-                    top + 146, 0xFFB0E8C0);
+                    top + 147, 0xFFB0E8C0);
         }
         for (Btn b : buttons) {
             b.draw(g, mx, my);
