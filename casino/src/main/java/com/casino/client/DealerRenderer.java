@@ -15,9 +15,9 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 //#if MC >= 26.1
-//$$ import net.minecraft.client.model.player.PlayerModel;
+//$$ import net.minecraft.client.model.HumanoidModel;
 //$$ import net.minecraft.client.renderer.SubmitNodeCollector;
-//$$ import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+//$$ import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 //$$ import net.minecraft.client.renderer.state.level.CameraRenderState;
 //#elif MC >= 1.21.2
 //$$ import net.minecraft.client.model.PlayerModel;
@@ -35,8 +35,9 @@ import java.util.List;
  * cabeza aparece un globo de texto. Desde 1.21.2 Minecraft dibuja a partir de un "estado" copiado de la entidad; desde 26.x lo entrega.
  */
 //#if MC >= 26.1
+//$$ // En 26.x el estado NO puede ser AvatarRenderState: Minecraft manda esos estados al dibujante de jugadores (piel de Steve).
 //$$ public class DealerRenderer extends MobRenderer<DealerEntity, DealerRenderer.State, DealerRenderer.DealerModel> {
-//$$     public static class State extends AvatarRenderState {
+//$$     public static class State extends HumanoidRenderState {
 //$$         int tip = -1;
 //$$         int game;
 //$$     }
@@ -69,7 +70,24 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
                 : "casino.tip.blackjack.") + tip;
     }
 
-    //#if MC >= 1.21.2
+    //#if MC >= 26.1
+    //$$ /** Modelo humano con la malla del jugador (mangas, chaqueta y pantalón son hijos de cada extremidad); mano en alto con consejo. */
+    //$$ public static class DealerModel extends HumanoidModel<State> {
+    //$$     DealerModel(ModelPart part) {
+    //$$         super(part);
+    //$$     }
+    //$$
+    //$$     @Override
+    //$$     public void setupAnim(State s) {
+    //$$         super.setupAnim(s);
+    //$$         if (s.tip >= 0) {
+    //$$             this.rightArm.xRot = -2.85F + Mth.sin(s.ageInTicks * 0.25F) * 0.1F;
+    //$$             this.rightArm.zRot = 0.15F + Mth.sin(s.ageInTicks * 0.5F) * 0.08F;
+    //$$         }
+    //$$     }
+    //$$ }
+    //$$
+    //#elif MC >= 1.21.2
     //$$ /** El modelo de jugador, pero con la mano derecha en alto mientras hay un consejo en el aire. */
     //$$ public static class DealerModel extends PlayerModel {
     //$$     DealerModel(ModelPart part) {
@@ -77,11 +95,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     }
     //$$
     //$$     @Override
-    //#if MC >= 26.1
-    //$$     public void setupAnim(AvatarRenderState s) {
-    //#else
     //$$     public void setupAnim(PlayerRenderState s) {
-    //#endif
     //$$         super.setupAnim(s);
     //$$         if (s instanceof State d && d.tip >= 0) {
     //$$             this.rightArm.xRot = -2.85F + Mth.sin(s.ageInTicks * 0.25F) * 0.1F;
@@ -90,6 +104,8 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     }
     //$$ }
     //$$
+    //#endif
+    //#if MC >= 1.21.2
     //$$ public DealerRenderer(EntityRendererProvider.Context ctx) {
     //$$     super(ctx, new DealerModel(ctx.bakeLayer(ModelLayers.PLAYER)), 0.45F);
     //$$ }
@@ -104,15 +120,6 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     super.extractRenderState(e, s, partial);
     //$$     s.tip = e.getTip();
     //$$     s.game = e.getGame();
-    //#if MC >= 26.1
-    //$$     // la ropa del crupier está en la capa exterior de la piel (chaqueta, mangas, sombrero): en 26.x viene apagada
-    //$$     s.showHat = true;
-    //$$     s.showJacket = true;
-    //$$     s.showLeftSleeve = true;
-    //$$     s.showRightSleeve = true;
-    //$$     s.showLeftPants = true;
-    //$$     s.showRightPants = true;
-    //#endif
     //$$ }
     //$$
     //$$ @Override

@@ -176,3 +176,7 @@ def gen():
 
 if __name__ == "__main__":
     gen()
+
+# sin parpadeo: separa caras encimadas de todos los modelos (ver zfix.py)
+import zfix as _zf, os as _os
+_zf.run(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "src/main/resources/assets/casino/models"))

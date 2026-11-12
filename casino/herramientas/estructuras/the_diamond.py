@@ -345,10 +345,9 @@ for x in range(WX - 2, WX + 3):
     for z in range(WZ - 1, WZ + 1):
         o.set(x, 1, z, slab(BMS))
 mq.place(o, 'wheel', WX, 2, WZ, 2)
-for dx in (-3, 3):
-    for y in range(1, 6):
-        o.set(WX + dx, y, WZ, GB if y in (1, 5) else QP)
-    o.set(WX + dx, 6, WZ, 'minecraft:end_rod[facing=up]')
+# (sin columnas a los lados: tapaban la rueda; solo dos faroles bajos detrás de la tarima)
+for dx in (-4, 4):
+    o.set(WX + dx, 1, WZ - 2, GB); o.set(WX + dx, 2, WZ - 2, 'minecraft:end_rod[facing=up]')
 for x, z in ((WX - 5, 31), (WX + 5, 31), (WX, 36), (WX - 5, 38), (WX + 5, 38)):
     o.set(x, Y_ROOF - 2, z, CHAND)
 for x, z in ((WX - 2, 34), (WX + 2, 34)):
