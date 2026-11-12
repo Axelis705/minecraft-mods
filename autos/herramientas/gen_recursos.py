@@ -9,19 +9,23 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "src/main/resources")
 A = os.path.join(ROOT, "assets", MOD)
 DATA = os.path.join(ROOT, "data", MOD)
 
-BOX_IDS = ["caja_ruta_urbana", "caja_pista_nocturna", "caja_leyendas"]
-BOX_NAMES = ["Ruta Urbana", "Pista Nocturna", "Leyendas del Circuito"]
-BOX_COL = [0xF2A93B, 0x8A3FFC, 0xE8C15A]
-BOX_COL2 = [0x2D6CDF, 0x16F2E0, 0x1A1A1A]
+BOX_IDS = ["caja_ruta_urbana", "caja_pista_nocturna", "caja_leyendas", "caja_exclusiva"]
+BOX_NAMES = ["Ruta Urbana", "Pista Nocturna", "Leyendas del Circuito", "Exclusivos de Cine"]
+BOX_COL = [0xF2A93B, 0x8A3FFC, 0xE8C15A, 0xFF3B6B]
+BOX_COL2 = [0x2D6CDF, 0x16F2E0, 0x1A1A1A, 0x14141C]
 CARS = ["brisa_compacto", "taxi_sol", "ranchera", "aurora_familiar", "mini_rayo", "bolita_68", "combi_viajera", "patrulla",
         "helados_paletin", "lowrider_dorado", "kaze_r", "neon_sprint", "drift_kitsune", "tormenta_gt", "mamba_negra", "shogun_rs",
         "rally_lince", "aurora_turbo", "fantasma_nocturno", "dragon_turbo_x", "falcone_rosso", "vortex_v12", "imperial_gt",
-        "cometa_plata", "hyperion_e", "resistencia_24", "monoplaza_astra", "solaris_concept", "titan_hiper", "corona_oro"]
+        "cometa_plata", "hyperion_e", "resistencia_24", "monoplaza_astra", "solaris_concept", "titan_hiper", "corona_oro",
+        "centella_77", "buggy_duna", "rover_selene", "hotrod_llamarada", "monstruo_rugido", "dragster_infernal", "tiburon_acero",
+        "interceptor_sombra", "cohete_salar", "nebula_hover"]
 CAR_NAMES = ["Brisa Compacto", "Taxi Ciudad Sol", "Pickup Ranchera", "Aurora Familiar", "Mini Rayo", "Bolita '68", "Combi Viajera",
              "Patrulla Urbana", "Helados Paletín", "Lowrider Dorado", "Kaze R", "Neón Sprint", "Drift Kitsune", "Tormenta GT",
              "Mamba Negra", "Shogun RS", "Rally Lince", "Aurora Boreal Turbo", "Fantasma Nocturno", "Dragón Turbo X", "Falcone Rosso",
              "Vortex V12", "Imperial GT", "Cometa Plata", "Hyperion E", "Prototipo Resistencia 24", "Monoplaza Astra",
-             "Solaris Concept", "Titán Hiper", "Corona de Oro"]
+             "Solaris Concept", "Titán Hiper", "Corona de Oro",
+             "Centella 77", "Buggy Duna", "Rover Selene", "Hot Rod Llamarada", "Monstruo Rugido", "Dragster Infernal",
+             "Tiburón de Acero", "Interceptor Sombra", "Cohete Salar", "Nebula Hover"]
 SOUNDS = ["coin", "machine_start", "count", "go", "perfect", "good", "miss", "rev", "shift", "nitro", "note", "key", "error",
           "tally", "result", "box_drop", "box_shake", "tape", "flaps", "reveal_common", "reveal_rare", "reveal_epic", "reveal_legend",
           "sparkle", "place", "garage", "whoosh", "new_car", "engine", "bump", "skid"]
@@ -136,7 +140,7 @@ def textures():
     d.line([(5, 13), (12, 6)], fill=(255, 255, 255, 70))
     tex("block/vitrina_vidrio", im)
     # cajas (frente, lado y tapa)
-    for b in range(3):
+    for b in range(len(BOX_IDS)):
         c1, c2 = rgb(BOX_COL[b]), rgb(BOX_COL2[b])
         im = Image.new("RGBA", (32, 24))
         noise_fill(im, c1, 5, 10 + b)
@@ -308,7 +312,7 @@ def lang():
             f"block.{MOD}.vitrina": "Vitrina de colección" if es else "Display Case",
             f"item.{MOD}.garaje": "Garaje de colección" if es else "Collection Garage",
         }
-        for b in range(3):
+        for b in range(len(BOX_IDS)):
             L[f"item.{MOD}.{BOX_IDS[b]}"] = ("Caja " + BOX_NAMES[b]) if es else (BOX_NAMES[b] + " Box")
         for c, n in zip(CARS, CAR_NAMES):
             L[f"item.{MOD}.auto_{c}"] = n

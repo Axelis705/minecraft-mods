@@ -36,8 +36,16 @@ public class UnboxScreen extends Screen {
     private final CarDef car;
     private final long t0 = System.currentTimeMillis();
     private final int hadBefore;
-    private int clicks;
+    /** Cuánto de la cinta ya se despegó (0 a 1). */
+    private float peel;
+    private float lastRip;
+    private boolean grabbing;
+    private double mouseX, mouseY;
     private long lastClick = -10000;
+    /** Transformación de la caja en pantalla (para saber dónde está la cinta). */
+    private final org.joml.Matrix4f boxMat = new org.joml.Matrix4f();
+    private boolean boxMatSet;
+    private final List<float[]> scraps = new ArrayList<>();
     private long openAt = -1;
     private boolean claimed;
     private boolean landed;
@@ -69,14 +77,8 @@ public class UnboxScreen extends Screen {
             return;
         }
         if (openAt < 0) {
-            clicks++;
-            lastClick = now;
-            Sfx.play("box_shake", 0.9F + clicks * 0.1F, 0.8F);
-            Sfx.play("tape", 0.8F + clicks * 0.15F, 0.7F);
-            if (clicks >= 3) {
-                openAt = now;
-                Sfx.play("flaps", 1.0F, 0.9F);
-            }
+            // con teclado: despega un buen pedazo de cinta de golpe
+            tearTo(Math.min(1, peel + 0.34F));
             return;
         }
         long e = now - openAt;
@@ -90,10 +92,99 @@ public class UnboxScreen extends Screen {
         }
     }
 
+    // ---------------------------------------------------------------------------------------------------- la cinta
+
+    private float[] project(float x, float y, float z) {
+        org.joml.Vector4f v = new org.joml.Vector4f(x, y, z, 1).mul(boxMat);
+        return new float[] {v.x, v.y};
+    }
+
+    /** Punta de la cinta para agarrarla y el principio/fin del tramo de arriba, en pantalla. */
+    private float[][] tapePoints() {
+        float x0 = -BoxModel.W / 2, x1 = BoxModel.W / 2, h = BoxModel.H + 0.16F;
+        return new float[][] {project(x0 - 0.3F, BoxModel.H - 2.2F, 0), project(x0, h, 0), project(x1, h, 0)};
+    }
+
+    /** Despega la cinta hasta {@code to}: sonido de rasgado, papelitos y, al final, se abre la caja. */
+    private void tearTo(float to) {
+        if (to <= peel || openAt >= 0) {
+            return;
+        }
+        long now = System.currentTimeMillis();
+        float old = peel;
+        peel = to;
+        if (peel - lastRip > 0.05F || old == 0) {
+            lastRip = peel;
+            Sfx.play("tape", 0.75F + peel * 0.6F, 0.55F);
+            lastClick = now;
+        }
+        if (boxMatSet) {
+            float[][] tp = tapePoints();
+            float sx = tp[1][0] + (tp[2][0] - tp[1][0]) * peel, sy = tp[1][1] + (tp[2][1] - tp[1][1]) * peel;
+            for (int i = 0; i < 3; i++) {
+                scraps.add(new float[] {sx, sy, (rnd.nextFloat() - 0.5F) * 80, -40 - rnd.nextFloat() * 60, 1.0F, rnd.nextFloat() * 6.28F});
+            }
+        }
+        if (peel >= 0.97F) {
+            peel = 1;
+            grabbing = false;
+            openAt = now;
+            Sfx.play("box_shake", 1.1F, 0.8F);
+            Sfx.play("flaps", 1.0F, 0.9F);
+        }
+    }
+
     @Override
     public boolean mouseClicked(double x, double y, int button) {
+        mouseX = x;
+        mouseY = y;
+        if (openAt < 0) {
+            if (System.currentTimeMillis() - t0 < DROP || !boxMatSet) {
+                return true;
+            }
+            float[][] tp = tapePoints();
+            // se agarra la pestaña (al principio) o la orilla de lo que ya se despegó
+            float gx = peel <= 0 ? tp[0][0] : tp[1][0] + (tp[2][0] - tp[1][0]) * peel;
+            float gy = peel <= 0 ? tp[0][1] : tp[1][1] + (tp[2][1] - tp[1][1]) * peel;
+            float r = Math.max(14, Math.min(width, height) / 18.0F);
+            if ((x - gx) * (x - gx) + (y - gy) * (y - gy) <= r * r) {
+                grabbing = true;
+                Sfx.play("key", 0.8F, 0.5F);
+            }
+            return true;
+        }
         advance();
         return true;
+    }
+
+    @Override
+    public boolean mouseDragged(double x, double y, int button, double dx, double dy) {
+        mouseX = x;
+        mouseY = y;
+        if (grabbing && openAt < 0 && boxMatSet) {
+            float[][] tp = tapePoints();
+            float ax = tp[1][0], ay = tp[1][1], bx = tp[2][0], by = tp[2][1];
+            float vx = bx - ax, vy = by - ay;
+            float t = (float) (((x - ax) * vx + (y - ay) * vy) / Math.max(1e-3, vx * vx + vy * vy));
+            // al principio basta con jalar la pestaña hacia arriba
+            if (peel <= 0 && y < tp[0][1] - 6) {
+                t = Math.max(t, 0.02F);
+            }
+            tearTo(Math.max(0, Math.min(1, t)));
+        }
+        return true;
+    }
+
+    @Override
+    public boolean mouseReleased(double x, double y, int button) {
+        grabbing = false;
+        return true;
+    }
+
+    @Override
+    public void mouseMoved(double x, double y) {
+        mouseX = x;
+        mouseY = y;
     }
 
     @Override
@@ -217,8 +308,8 @@ public class UnboxScreen extends Screen {
             wob = (float) Math.sin(now / 160.0) * 1.2F;
         }
         float open = e < 0 ? 0 : Math.min(1, e / (float) OPEN);
-        float tape = openAt >= 0 ? 0 : 1 - clicks / 3.0F;
-        float glowK = e < 0 ? 0.08F * clicks : Math.min(1, e / 500.0F);
+        float tape = openAt >= 0 ? 1 : peel;
+        float glowK = e < 0 ? 0.25F * peel : Math.min(1, e / 500.0F);
         g.flush();
         PoseStack ps = g.pose();
         ps.pushPose();
@@ -227,6 +318,8 @@ public class UnboxScreen extends Screen {
         ps.mulPose(Axis.ZP.rotationDegrees(180 + wob));
         ps.mulPose(Axis.XP.rotationDegrees(-24));
         ps.mulPose(Axis.YP.rotationDegrees(-28 + (float) Math.sin(now / 1400.0) * 6));
+        boxMat.set(ps.last().pose());
+        boxMatSet = true;
         Lighting.setupForEntityInInventory();
         MultiBufferSource.BufferSource buf = g.bufferSource();
         BoxModel.render(m.box(), ps, buf, CarModel.FULL, open, tape, light, glowK);
@@ -277,11 +370,68 @@ public class UnboxScreen extends Screen {
             g.pose().popPose();
         }
 
+        // ---- la cinta despegada (en 2D, de la orilla pegada hasta el mouse) y papelitos
+        if (openAt < 0 && boxMatSet && age > DROP) {
+            float[][] tp = tapePoints();
+            float ex = tp[1][0] + (tp[2][0] - tp[1][0]) * peel, ey = tp[1][1] + (tp[2][1] - tp[1][1]) * peel;
+            float tw = Math.max(3, S * 0.75F);
+            Gfx.begin(g, false);
+            if (grabbing) {
+                float hx = (float) mouseX, hy = (float) mouseY;
+                // curva suave: del borde pegado sube un poco y luego va a la mano
+                float px = ex, py = ey;
+                for (int i = 1; i <= 10; i++) {
+                    float t = i / 10.0F;
+                    float qx = ex + (hx - ex) * t, qy = ey + (hy - ey) * t - (float) Math.sin(t * Math.PI) * tw * 1.5F;
+                    int col = 0xFF000000 | Gfx.mix(0xE9DCB8, 0xFFF6DE, t);
+                    Gfx.line(px, py, qx, qy, tw, col);
+                    px = qx;
+                    py = qy;
+                }
+                Gfx.circle(hx, hy, tw * 0.75F, 0xFFFFF6DE);
+            } else if (peel > 0) {
+                // colita enrollada que quedó levantada
+                Gfx.line(ex, ey, ex - tw * 1.2F, ey - tw * 2.2F, tw, 0xFFE9DCB8);
+                Gfx.circle(ex - tw * 1.2F, ey - tw * 2.2F, tw * 0.7F, 0xFFFFF6DE);
+            }
+            Gfx.end();
+            if (!grabbing) {
+                // aro que late donde hay que agarrar
+                float gx = peel <= 0 ? tp[0][0] : ex, gy = peel <= 0 ? tp[0][1] : ey;
+                float pulse = (now % 1100) / 1100.0F;
+                Gfx.begin(g, true);
+                Gfx.arc(gx, gy, 6 + pulse * 14, 8 + pulse * 14, 0, Math.PI * 2, Gfx.argb(0xFFFFFF, 0.8F * (1 - pulse)), Gfx.argb(0xFFFFFF, 0), 28);
+                Gfx.blob(gx, gy, 10, Gfx.argb(0xFFF4D8, 0.35F));
+                Gfx.end();
+            }
+        }
+        if (!scraps.isEmpty()) {
+            Gfx.begin(g, false);
+            for (int i = scraps.size() - 1; i >= 0; i--) {
+                float[] p = scraps.get(i);
+                p[3] += 260 * dt;
+                p[0] += p[2] * dt;
+                p[1] += p[3] * dt;
+                p[4] -= dt * 1.2F;
+                p[5] += dt * 8;
+                if (p[4] <= 0) {
+                    scraps.remove(i);
+                    continue;
+                }
+                float c = (float) Math.cos(p[5]) * 2.2F, sn = (float) Math.sin(p[5]) * 1.4F;
+                int col = Gfx.argb(0xF2E6C6, Math.min(1, p[4]));
+                Gfx.quad(p[0] - c, p[1] - sn, col, p[0] + sn, p[1] - c, col, p[0] + c, p[1] + sn, col, p[0] - sn, p[1] + c, col);
+            }
+            Gfx.end();
+        }
+
         // ---- textos de ayuda
         if (openAt < 0) {
             if (age > DROP) {
                 float k = 0.6F + 0.4F * (float) Math.sin(now / 200.0);
-                Gfx.text(g, font, "¡Haz clic para romper la cinta!  " + clicks + "/3", cx, H - 34, 1.2F, Gfx.argb(0xFFFFFF, k));
+                String msg = grabbing ? "¡Sigue jalando!  " + Math.round(peel * 100) + "%" : peel > 0 ? "¡Agarra la cinta y sigue jalando!" : "¡Agarra la punta de la cinta y arrástrala!";
+                Gfx.text(g, font, msg, cx, H - 34, 1.2F, Gfx.argb(0xFFFFFF, k));
+                Gfx.text(g, font, "(o pulsa Espacio)", cx, H - 20, 0.7F, 0x70FFFFFF);
             }
             Gfx.text(g, font, "Caja " + Boxes.NAME[m.box()], cx, 16, 1.6F, 0xFF000000 | boxCol);
             Gfx.text(g, font, Boxes.TAGLINE[m.box()], cx, 34, 0.9F, 0xC0FFFFFF);

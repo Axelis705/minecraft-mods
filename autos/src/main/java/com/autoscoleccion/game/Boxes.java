@@ -8,13 +8,15 @@ import java.util.Random;
  * La máquina expendedora decide qué caja sale según el puntaje (0 a 1) de la prueba de habilidad.
  */
 public final class Boxes {
-    public static final int COUNT = 3;
-    public static final String[] ID = {"caja_ruta_urbana", "caja_pista_nocturna", "caja_leyendas"};
-    public static final String[] NAME = {"Ruta Urbana", "Pista Nocturna", "Leyendas del Circuito"};
-    public static final String[] TAGLINE = {"Autos de la calle", "Tuneados y neón", "Superautos y prototipos"};
+    public static final int COUNT = 4;
+    /** La caja exclusiva: solo trae los 10 autos exclusivos. */
+    public static final int EXCLUSIVE = 3;
+    public static final String[] ID = {"caja_ruta_urbana", "caja_pista_nocturna", "caja_leyendas", "caja_exclusiva"};
+    public static final String[] NAME = {"Ruta Urbana", "Pista Nocturna", "Leyendas del Circuito", "Exclusivos de Cine"};
+    public static final String[] TAGLINE = {"Autos de la calle", "Tuneados y neón", "Superautos y prototipos", "Autos únicos, de otro mundo"};
     /** Color principal y secundario del empaque. */
-    public static final int[] COLOR = {0xF2A93B, 0x8A3FFC, 0xE8C15A};
-    public static final int[] COLOR2 = {0x2D6CDF, 0x16F2E0, 0x1A1A1A};
+    public static final int[] COLOR = {0xF2A93B, 0x8A3FFC, 0xE8C15A, 0xFF3B6B};
+    public static final int[] COLOR2 = {0x2D6CDF, 0x16F2E0, 0x1A1A1A, 0x14141C};
     /** En las cajas nuevas, los autos de líneas anteriores pesan esto por cada línea de diferencia. */
     public static final double OLD_FACTOR = 0.5;
 
@@ -23,6 +25,9 @@ public final class Boxes {
 
     /** Peso del auto dentro de la caja {@code box} (0 si no puede salir en ella). */
     public static double weight(CarDef c, int box) {
+        if (box == EXCLUSIVE) {
+            return c.line == EXCLUSIVE ? c.rarity.weight : 0.0;
+        }
         if (c.line > box) {
             return 0.0;
         }
@@ -68,7 +73,7 @@ public final class Boxes {
     public static int size(int box) {
         int n = 0;
         for (CarDef d : Cars.all()) {
-            if (d.line <= box) {
+            if (weight(d, box) > 0) {
                 n++;
             }
         }
@@ -85,18 +90,21 @@ public final class Boxes {
         double s = Math.max(0.0, Math.min(1.0, score));
         double legend = 0.01 + 0.34 * Math.pow(s, 2.2);
         double night = 0.10 + 0.50 * Math.pow(s, 1.1);
-        double urban = Math.max(0.0, 1.0 - legend - night);
-        return new double[] {urban, night, legend};
+        // la exclusiva solo puede salir con 80 % o más, y con un puntaje perfecto ronda el 13 %
+        double exclusive = s >= 0.8 ? 0.01 + 0.14 * Math.pow((s - 0.8) / 0.2, 1.5) : 0.0;
+        double urban = Math.max(0.03, 1.0 - legend - night - exclusive);
+        double sum = urban + night + legend + exclusive;
+        return new double[] {urban / sum, night / sum, legend / sum, exclusive / sum};
     }
 
     public static int rollBox(double score, Random rnd) {
         double[] o = odds(score);
         double x = rnd.nextDouble();
-        if (x < o[2]) {
-            return 2;
-        }
-        if (x < o[2] + o[1]) {
-            return 1;
+        for (int b = COUNT - 1; b > 0; b--) {
+            if (x < o[b]) {
+                return b;
+            }
+            x -= o[b];
         }
         return 0;
     }

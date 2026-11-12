@@ -29,7 +29,8 @@ public class GarageScreen extends Screen {
 
     // geometría calculada en render (para los clics)
     private float px, py, pw, ph, gridX, gridY, cellW, cellH;
-    private final float[] tabX = new float[4];
+    private final float[] tabX = new float[Boxes.COUNT + 1];
+    private static final String[] SHORT = {"Urbana", "Nocturna", "Leyendas", "Exclusivos"};
     /** Botón de manejar: rectángulo y a qué auto corresponde (-1 = no hay botón). */
     private float bx0, by0, bx1, by1;
     private int driveCar = -1;
@@ -73,7 +74,7 @@ public class GarageScreen extends Screen {
             return true;
         }
         if (my >= tabY && my <= tabY + 16) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < Boxes.COUNT; i++) {
                 if (mx >= tabX[i] && mx < tabX[i + 1] - 4) {
                     if (tab != i) {
                         tab = i;
@@ -95,12 +96,12 @@ public class GarageScreen extends Screen {
     @Override
     public boolean keyPressed(int key, int scan, int mods) {
         if (key == GLFW.GLFW_KEY_RIGHT || key == GLFW.GLFW_KEY_D) {
-            tab = (tab + 1) % 3;
+            tab = (tab + 1) % Boxes.COUNT;
             selected = -1;
             return true;
         }
         if (key == GLFW.GLFW_KEY_LEFT || key == GLFW.GLFW_KEY_A) {
-            tab = (tab + 2) % 3;
+            tab = (tab + Boxes.COUNT - 1) % Boxes.COUNT;
             selected = -1;
             return true;
         }
@@ -157,22 +158,22 @@ public class GarageScreen extends Screen {
         String prog = total + "/" + Cars.COUNT + " autos";
         Gfx.textL(g, font, prog, px + pw - 12 - font.width(prog) * 0.9F, py + 8, 0.9F, 0xFFFFFFFF);
         Gfx.begin(g, false);
-        float bx0 = px + pw - 132, bx1 = px + pw - 12;
-        Gfx.round(bx0, py + 19, bx1, py + 25, 3, 0xFF22223A);
-        Gfx.round(bx0, py + 19, bx0 + (bx1 - bx0) * total / (float) Cars.COUNT * appear, py + 25, 3, 0xFFFFD23F);
+        float pb0 = px + pw - 132, pb1 = px + pw - 12;
+        Gfx.round(pb0, py + 19, pb1, py + 25, 3, 0xFF22223A);
+        Gfx.round(pb0, py + 19, pb0 + (pb1 - pb0) * total / (float) Cars.COUNT * appear, py + 25, 3, 0xFFFFD23F);
         Gfx.end();
 
         // pestañas
         tabY = py + 32;
         float tx = px + 12;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < Boxes.COUNT; i++) {
             int have = 0;
             for (CarDef c : Cars.all()) {
                 if (c.line == i && owned(c)) {
                     have++;
                 }
             }
-            String label = Boxes.NAME[i] + "  " + have + "/10";
+            String label = SHORT[i] + " " + have + "/10";
             float tw = font.width(label) * 0.8F + 16;
             tabX[i] = tx;
             boolean on = tab == i;
@@ -182,7 +183,7 @@ public class GarageScreen extends Screen {
             Gfx.textL(g, font, label, tx + 8, tabY + 5, 0.8F, on ? 0xFF101018 : 0xFF000000 | Boxes.COLOR[i]);
             tx += tw + 4;
         }
-        tabX[3] = tx;
+        tabX[Boxes.COUNT] = tx;
 
         // cuadrícula de 5 x 2
         float detailW = Math.min(150, pw * 0.34F);
@@ -280,21 +281,28 @@ public class GarageScreen extends Screen {
             // botón para manejarlo a control remoto
             driveCar = own ? c.index() : -1;
             if (own) {
-                bx0 = dx + 10;
-                bx1 = dx + detailW - 10;
-                by1 = dy + dh - 8;
-                by0 = by1 - 18;
+                bx0 = dx + 12;
+                bx1 = dx + detailW - 12;
+                by1 = dy + dh - 9;
+                by0 = by1 - 16;
                 boolean hb = mx >= bx0 && mx <= bx1 && my >= by0 && my <= by1;
-                Gfx.begin(g, false);
-                Gfx.round(bx0, by0 + 2, bx1, by1 + 2, 5, 0xFF07080C);
-                Gfx.round(bx0, by0 + (hb ? 1 : 0), bx1, by1 + (hb ? 1 : 0), 5, hb ? 0xFF4CFF8F : 0xFF1BA854);
+                int rc2 = c.rarity.rgb;
+                float pulse = 0.5F + 0.5F * (float) Math.sin(System.currentTimeMillis() / 350.0);
+                Gfx.begin(g, true);
+                Gfx.glow(bx0, by0, bx1, by1, Gfx.argb(rc2, hb ? 0.7F : 0.25F + 0.2F * pulse), hb ? 7 : 4);
                 Gfx.end();
-                if (hb) {
-                    Gfx.begin(g, true);
-                    Gfx.glow(bx0, by0, bx1, by1, 0x804CFF8F, 6);
-                    Gfx.end();
-                }
-                Gfx.text(g, font, "▶ MANEJAR", (bx0 + bx1) / 2, by0 + 5 + (hb ? 1 : 0), 1.0F, 0xFF0B2014);
+                Gfx.begin(g, false);
+                Gfx.round(bx0, by0, bx1, by1, 8, 0xFF000000 | Gfx.mix(rc2, 0x101018, hb ? 0.15F : 0.55F));
+                Gfx.round(bx0 + 1, by0 + 1, bx1 - 1, by1 - 1, 7, hb ? 0xFF000000 | Gfx.mix(rc2, 0xFFFFFF, 0.1F) : 0xF0141420);
+                Gfx.vgrad(bx0 + 3, by0 + 2, bx1 - 3, by0 + 7, 0x30FFFFFF, 0x00FFFFFF);
+                // volante pequeño a la izquierda del texto
+                float wx = bx0 + 12, wy = (by0 + by1) / 2;
+                int wc = hb ? 0xFF101018 : 0xFF000000 | rc2;
+                Gfx.arc(wx, wy, 3.6F, 5.0F, 0, Math.PI * 2, wc, wc, 16);
+                Gfx.rect(wx - 4, wy - 0.6F, wx + 4, wy + 0.6F, wc);
+                Gfx.rect(wx - 0.6F, wy, wx + 0.6F, wy + 4, wc);
+                Gfx.end();
+                Gfx.text(g, font, "MANEJAR", (bx0 + bx1) / 2 + 6, by0 + 4.5F, 0.85F, hb ? 0xFF101018 : 0xFF000000 | rc2);
             }
             Gfx.textL(g, font, "Sale en:", dx + 7, ly, 0.7F, 0xFF9A9AC0);
             ly += 9;

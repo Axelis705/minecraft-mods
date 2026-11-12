@@ -78,7 +78,7 @@ public final class Machine {
         double score = SkillGame.replay(s.type, s.seed, inputs, end);
         int box = Boxes.rollBox(score, new java.util.Random(sp.getRandom().nextLong()));
         double[] odds = Boxes.odds(score);
-        AutosNet.toPlayer(sp, new GameOutcomePacket(sessionId, (float) score, box, (float) odds[0], (float) odds[1], (float) odds[2]));
+        AutosNet.toPlayer(sp, new GameOutcomePacket(sessionId, (float) score, box, (float) odds[0], (float) odds[1], (float) odds[2], (float) odds[3]));
         dispense(sp, s, box);
     }
 

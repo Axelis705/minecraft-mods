@@ -119,18 +119,27 @@ public final class CarModel {
      * {@code steerDeg} grados.
      */
     public static void renderDriving(CarStyle s, PoseStack ps, MultiBufferSource buf, int light, float time, float spin, float steerDeg) {
-        Baked[] arr = DRIVE.computeIfAbsent(s, k -> new Baked[] {bake(sink -> CarMesh.buildBody(s, sink, 0)),
-                bake(sink -> CarMesh.buildWheel(s, sink, 0, -1)), bake(sink -> CarMesh.buildWheel(s, sink, 0, 1))});
+        float[][] mounts = CarMesh.wheelMounts(s);
+        Baked[] arr = DRIVE.computeIfAbsent(s, k -> {
+            Baked[] b = new Baked[1 + mounts.length];
+            b[0] = bake(sink -> CarMesh.buildBody(s, sink, 0));
+            for (int i = 0; i < mounts.length; i++) {
+                float[] m = mounts[i];
+                b[1 + i] = bake(sink -> CarMesh.buildWheel(s, sink, 0, (int) m[3], m[1], m[5]));
+            }
+            return b;
+        });
         VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(WHITE));
         draw(vc, ps, arr[0], light);
-        for (float[] m : CarMesh.wheelMounts(s)) {
+        for (int i = 0; i < mounts.length; i++) {
+            float[] m = mounts[i];
             ps.pushPose();
             ps.translate(m[0], m[1], m[2]);
             if (m[4] > 0) {
                 ps.mulPose(Axis.YP.rotationDegrees(-steerDeg));
             }
-            ps.mulPose(Axis.ZP.rotation(-spin));
-            draw(vc, ps, arr[m[3] < 0 ? 1 : 2], light);
+            ps.mulPose(Axis.ZP.rotation(-spin * s.wheelR / m[1]));
+            draw(vc, ps, arr[1 + i], light);
             ps.popPose();
         }
         CarMesh.buildAnimated(s, (a, bb, c, d, c0, c1, c2, c3, em) -> {

@@ -8,7 +8,9 @@ package com.autoscoleccion.game;
 public final class CarStyle {
     /** Siluetas base. */
     public enum Shape {
-        HATCH, SEDAN, PICKUP, VAN, CLASSIC, MINI, LOWRIDER, COUPE, MUSCLE, WEDGE, GT, HYPER, PROTO, FORMULA, RALLY, SUV, WAGON, ROADSTER, BOXVAN
+        HATCH, SEDAN, PICKUP, VAN, CLASSIC, MINI, LOWRIDER, COUPE, MUSCLE, WEDGE, GT, HYPER, PROTO, FORMULA, RALLY, SUV, WAGON, ROADSTER, BOXVAN,
+        // exclusivos
+        HOTROD, MONSTER, DRAGSTER, BUGGY, KART, ROCKET, ROVER, HOVER, SHARK
     }
 
     // estilos de faros delanteros
@@ -44,6 +46,14 @@ public final class CarStyle {
     public static final int D_GUARDS = 1 << 21;
     public static final int D_RACE_DECALS = 1 << 22;
     public static final int D_CHROME_TRIM = 1 << 23;
+    public static final int D_ENGINE_OUT = 1 << 24;
+    public static final int D_FLAMES = 1 << 25;
+    public static final int D_CAGE = 1 << 26;
+    public static final int D_HOVER = 1 << 27;
+    public static final int D_JET = 1 << 28;
+    public static final int D_SHARK = 1 << 29;
+    public static final int D_ARMOR = 1 << 30;
+    public static final int D_DISH = 1 << 31;
 
     // extras (se combinan)
     public static final int SPOILER = 1;
@@ -111,6 +121,44 @@ public final class CarStyle {
     public float cabInset = 0.42F;
     /** Parte de abajo de las ventanas que es carrocería (ventanas más bajitas). */
     public float glassLow = 0.0F;
+    /** Jorobas de los guardabarros sobre las ruedas (-1 = lo justo para cubrir la rueda). */
+    public float humpF = -1.0F;
+    public float humpR = -1.0F;
+    /** Cuánto sube el centro del cofre respecto a su orilla. */
+    public float dome = 0.08F;
+    /** Ancho de la punta del morro y de la cola respecto al ancho del auto (-1 = el de la silueta) y largo de ese afilado. */
+    public float noseW = -1.0F;
+    public float tailW = -1.0F;
+    public float noseLen = 3.2F;
+    public float tailLen = 2.6F;
+    /** La cabina se angosta hacia atrás (forma de gota). */
+    public float cabTaper = 0.0F;
+    /** Tamaño del rin respecto a la llanta (-1 = el de la silueta). */
+    public float rimFrac = -1.0F;
+    /** Radio y ancho de las ruedas delanteras si son distintas (-1 = iguales a las traseras). */
+    public float wheelRF = -1.0F;
+    public float wheelWF = -1.0F;
+    /** Un tercer eje en medio (NaN = no hay). */
+    public float axleMid = Float.NaN;
+    /** Ruedas al aire, por fuera de la carrocería (sin pasos de rueda). */
+    public boolean openWheels;
+    /** El piso sube atrás (difusor). */
+    public float tailLift = 0.0F;
+    /** Pintura que cambia de color con el tiempo. */
+    public boolean chroma;
+    /** Color de la parte baja de la carrocería (-1 = igual). */
+    public int belly = -1;
+    /** Perfil hecho a mano: línea de arriba de la carrocería (cofre, cintura, cajuela) en pares x, y (de atrás hacia adelante). */
+    public float[] sideTop;
+    /** Línea de abajo (piso) en pares x, y. */
+    public float[] sideBot;
+    /** Planta hecha a mano: pares x, medio ancho. */
+    public float[] plan;
+    /** Techo hecho a mano: pares x, y desde la base del vidrio de atrás hasta la base del parabrisas. */
+    public float[] roofLine;
+    /** Índices (de punto) donde empieza y termina el techo en {@link #roofLine}. */
+    public int roofA = 1;
+    public int roofB = 2;
     public int head = -1;
     public int tail = -1;
     public int rimStyle = -1;
@@ -286,6 +334,94 @@ public final class CarStyle {
         this.waist = waist;
         this.beltRise = beltRise;
         this.ducktail = ducktail;
+        return this;
+    }
+
+    /** Línea de arriba de la carrocería, pares x, y de atrás hacia adelante. */
+    public CarStyle top(float... xy) {
+        this.sideTop = xy;
+        return this;
+    }
+
+    public CarStyle bottom(float... xy) {
+        this.sideBot = xy;
+        return this;
+    }
+
+    /** Medio ancho a lo largo del auto, pares x, w de atrás hacia adelante. */
+    public CarStyle plan(float... xw) {
+        this.plan = xw;
+        return this;
+    }
+
+    /** Techo: pares x, y desde la base trasera hasta la base del parabrisas; a y b marcan dónde empieza y termina el techo. */
+    public CarStyle roofLine(int a, int b, float... xy) {
+        this.roofLine = xy;
+        this.roofA = a;
+        this.roofB = b;
+        this.cabRear = xy[0];
+        this.cabFront = xy[xy.length - 2];
+        float hi = 0;
+        for (int i = 1; i < xy.length; i += 2) {
+            hi = Math.max(hi, xy[i]);
+        }
+        this.roofH = Math.max(0.5F, hi - ride - bodyH);
+        return this;
+    }
+
+    public CarStyle humps(float front, float rear) {
+        this.humpF = front;
+        this.humpR = rear;
+        return this;
+    }
+
+    /** Punta del morro y de la cola: ancho (fracción) y largo del afilado. */
+    public CarStyle taper(float noseW, float noseLen, float tailW, float tailLen) {
+        this.noseW = noseW;
+        this.noseLen = noseLen;
+        this.tailW = tailW;
+        this.tailLen = tailLen;
+        return this;
+    }
+
+    public CarStyle teardrop(float cabTaper) {
+        this.cabTaper = cabTaper;
+        return this;
+    }
+
+    public CarStyle dome(float d) {
+        this.dome = d;
+        return this;
+    }
+
+    public CarStyle frontWheels(float r, float w) {
+        this.wheelRF = r;
+        this.wheelWF = w;
+        return this;
+    }
+
+    public CarStyle open() {
+        this.openWheels = true;
+        return this;
+    }
+
+    public CarStyle tailLift(float v) {
+        this.tailLift = v;
+        return this;
+    }
+
+    public CarStyle rimFrac(float f) {
+        this.rimFrac = f;
+        return this;
+    }
+
+    public CarStyle belly(int c) {
+        this.belly = c;
+        return this;
+    }
+
+    public CarStyle chroma() {
+        this.chroma = true;
         return this;
     }
 

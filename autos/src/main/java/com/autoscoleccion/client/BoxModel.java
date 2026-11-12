@@ -25,7 +25,7 @@ public final class BoxModel {
 
     /**
      * @param open  0 = cerrada, 1 = solapas abiertas del todo
-     * @param tape  cuánto queda de cinta (1 = entera, 0 = rota)
+     * @param tape  cuánto de la cinta ya se despegó (0 = nada, 1 = toda)
      * @param glow  color de la luz que sale de adentro (-1 = nada) y su fuerza
      */
     public static void render(int box, PoseStack ps, MultiBufferSource buf, int light, float open, float tape, int glow, float glowK) {
@@ -91,16 +91,21 @@ public final class BoxModel {
             float tz = hz - side * len * c, ty = H + len * s;
             CarModel.quad(vc, ps, p(x0, H + 0.05F, hz), p(x1, H + 0.05F, hz), p(x1, ty + 0.05F, tz), p(x0, ty + 0.05F, tz), main, 255, light);
             CarModel.quad(vc, ps, p(x0, H + 0.12F, hz), p(x1, H + 0.12F, hz), p(x1, ty + 0.12F, tz), p(x0, ty + 0.12F, tz), shade(second, 1.0F), 255, light);
-            if (tape > 0.01F && o2 < 0.02F) {
-                // cinta a lo largo del borde donde se juntan
-                float tl = W * tape;
+            if (side == 1 && tape < 0.995F && o2 < 0.02F) {
+                // cinta pegada: desde donde ya se despegó (peel) hasta la otra punta, y la colita que cuelga en cada extremo
                 float tw = 0.9F;
-                CarModel.quad(vc, ps, p(x0, H + 0.16F, -tw), p(x0 + tl, H + 0.16F, -tw), p(x0 + tl, H + 0.16F, tw), p(x0, H + 0.16F, tw), 0xF2E6C6, 255, light);
-                CarModel.quad(vc, ps, p(x0 - 0.02F, H - 2.0F, -tw), p(x0 - 0.02F, H + 0.16F, -tw), p(x0 - 0.02F, H + 0.16F, tw), p(x0 - 0.02F, H - 2.0F, tw),
+                float xs = x0 + W * Math.max(0, tape);
+                CarModel.quad(vc, ps, p(xs, H + 0.16F, -tw), p(x1, H + 0.16F, -tw), p(x1, H + 0.16F, tw), p(xs, H + 0.16F, tw), 0xF2E6C6, 255, light);
+                CarModel.quad(vc, ps, p(x1 + 0.02F, H - 2.0F, tw), p(x1 + 0.02F, H + 0.16F, tw), p(x1 + 0.02F, H + 0.16F, -tw), p(x1 + 0.02F, H - 2.0F, -tw),
                         0xF2E6C6, 255, light);
-                if (tape > 0.99F) {
-                    CarModel.quad(vc, ps, p(x1 + 0.02F, H - 2.0F, tw), p(x1 + 0.02F, H + 0.16F, tw), p(x1 + 0.02F, H + 0.16F, -tw), p(x1 + 0.02F, H - 2.0F, -tw),
+                if (tape <= 0.0F) {
+                    CarModel.quad(vc, ps, p(x0 - 0.02F, H - 2.0F, -tw), p(x0 - 0.02F, H + 0.16F, -tw), p(x0 - 0.02F, H + 0.16F, tw), p(x0 - 0.02F, H - 2.0F, tw),
                             0xF2E6C6, 255, light);
+                    // pestaña doblada para agarrarla
+                    CarModel.quad(vc, ps, p(x0 - 0.04F, H - 2.0F, -tw), p(x0 - 0.04F, H - 1.5F, -tw), p(x0 - 0.6F, H - 2.3F, -tw * 0.8F),
+                            p(x0 - 0.6F, H - 2.6F, -tw * 0.8F), 0xFFF4D8, 255, CarModel.FULL);
+                    CarModel.quad(vc, ps, p(x0 - 0.04F, H - 2.0F, tw), p(x0 - 0.6F, H - 2.6F, tw * 0.8F), p(x0 - 0.6F, H - 2.3F, tw * 0.8F),
+                            p(x0 - 0.04F, H - 1.5F, tw), 0xFFF4D8, 255, CarModel.FULL);
                 }
             }
         }

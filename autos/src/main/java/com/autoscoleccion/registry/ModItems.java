@@ -27,15 +27,15 @@ public final class ModItems {
     public static final RegistryObject<Item> GARAGE_BOOK = ITEMS.register("garaje",
             () -> new GarageBookItem(new Item.Properties().stacksTo(1)));
 
-    /** Las tres cajas, en el orden de {@link Boxes}. */
+    /** Las cuatro cajas, en el orden de {@link Boxes}. */
     public static final List<RegistryObject<Item>> BOXES = new ArrayList<>();
-    /** Los 30 autos, en el orden de {@link Cars} (índice 0 = auto nº 1). */
+    /** Los 40 autos, en el orden de {@link Cars} (índice 0 = auto nº 1). */
     public static final List<RegistryObject<Item>> CARS = new ArrayList<>();
 
     static {
         for (int b = 0; b < Boxes.COUNT; b++) {
             final int box = b;
-            Rarity r = b == 0 ? Rarity.COMMON : b == 1 ? Rarity.RARE : Rarity.EPIC;
+            Rarity r = b == 0 ? Rarity.COMMON : b == 1 ? Rarity.UNCOMMON : b == 2 ? Rarity.RARE : Rarity.EPIC;
             BOXES.add(ITEMS.register(Boxes.ID[b], () -> new BoxItem(box, new Item.Properties().stacksTo(16).rarity(r))));
         }
         for (CarDef c : Cars.all()) {

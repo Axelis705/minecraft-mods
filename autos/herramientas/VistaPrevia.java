@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Vista previa de los 30 cochecitos sin abrir Minecraft: dibuja la misma geometría de CarMesh con un rasterizador sencillo (z-buffer,
+ * Vista previa de los cochecitos sin abrir Minecraft: dibuja la misma geometría de CarMesh con un rasterizador sencillo (z-buffer,
  * luz difusa parecida a la del juego) en una hoja de 6 x 5. Uso: java VistaPrevia salida.png [yaw] [pitch]
  */
 public class VistaPrevia {
@@ -24,8 +24,13 @@ public class VistaPrevia {
         double yaw = a.length > 1 ? Math.toRadians(Double.parseDouble(a[1])) : Math.toRadians(-35);
         double pitch = a.length > 2 ? Math.toRadians(Double.parseDouble(a[2])) : Math.toRadians(24);
         String only = a.length > 3 ? a[3] : null;
+        String views = System.getProperty("views");
+        if (views != null) {
+            vistas(out, only, views.split(","), pitch);
+            return;
+        }
         int cols = 6;
-        int rows = 5;
+        int rows = (Cars.all().size() + cols - 1) / cols;
         BufferedImage img = new BufferedImage(cols * CELL, rows * (CELL + 30), BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
         g.setColor(new Color(24, 26, 34));
@@ -49,6 +54,32 @@ public class VistaPrevia {
     }
 
     static int mode = 0;
+
+    /** Una fila por auto con varias vistas (yaw en grados). */
+    static void vistas(String out, String only, String[] yaws, double pitch) throws Exception {
+        List<CarDef> cars = new ArrayList<>();
+        for (CarDef c : Cars.all()) {
+            if (only == null || only.contains("," + c.number + ",")) {
+                cars.add(c);
+            }
+        }
+        BufferedImage img = new BufferedImage(yaws.length * CELL, cars.size() * (CELL + 24), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = img.createGraphics();
+        g.setColor(new Color(24, 26, 34));
+        g.fillRect(0, 0, img.getWidth(), img.getHeight());
+        g.setFont(new Font("SansSerif", Font.BOLD, 14));
+        for (int r = 0; r < cars.size(); r++) {
+            CarDef c = cars.get(r);
+            for (int k = 0; k < yaws.length; k++) {
+                double py = yaws[k].equals("90") || yaws[k].equals("-90") ? Math.toRadians(4) : pitch;
+                draw(img, c, k * CELL, r * (CELL + 24), Math.toRadians(Double.parseDouble(yaws[k])), py);
+            }
+            g.setColor(new Color(c.rarity.rgb));
+            g.drawString(c.number + ". " + c.name + " (" + c.rarity.label + ")", 8, r * (CELL + 24) + CELL + 16);
+        }
+        ImageIO.write(img, "png", new File(out));
+        System.out.println("ok " + out);
+    }
 
     static void draw(BufferedImage img, CarDef c, int ox, int oy, double yaw, double pitch) {
         List<float[][]> quads = new ArrayList<>();

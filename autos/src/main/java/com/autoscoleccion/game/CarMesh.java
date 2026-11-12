@@ -170,6 +170,42 @@ public final class CarMesh {
         return new float[] {ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx};
     }
 
+    /** Curva suave (Catmull-Rom) que pasa por los pares x, y dados (x de menor a mayor). */
+    static float curve(float[] p, float x) {
+        int n = p.length / 2;
+        if (x <= p[0]) {
+            return p[1];
+        }
+        if (x >= p[(n - 1) * 2]) {
+            return p[(n - 1) * 2 + 1];
+        }
+        int i = 0;
+        while (i < n - 2 && x > p[(i + 1) * 2]) {
+            i++;
+        }
+        float x0 = p[i * 2], x1 = p[(i + 1) * 2];
+        float t = (x - x0) / Math.max(1e-5F, x1 - x0);
+        float y0 = p[Math.max(0, i - 1) * 2 + 1], y1 = p[i * 2 + 1], y2 = p[(i + 1) * 2 + 1], y3 = p[Math.min(n - 1, i + 2) * 2 + 1];
+        // tangentes de Catmull-Rom con cuidado de no pasarse (monótono)
+        float m1 = (y2 - y0) * 0.5F, m2 = (y3 - y1) * 0.5F;
+        float d = y2 - y1;
+        if (d == 0) {
+            m1 = 0;
+            m2 = 0;
+        } else {
+            if (Math.signum(m1) != Math.signum(d)) {
+                m1 = 0;
+            }
+            if (Math.signum(m2) != Math.signum(d)) {
+                m2 = 0;
+            }
+            m1 = Math.signum(m1) * Math.min(Math.abs(m1), 3 * Math.abs(d));
+            m2 = Math.signum(m2) * Math.min(Math.abs(m2), 3 * Math.abs(d));
+        }
+        float t2 = t * t, t3 = t2 * t;
+        return (2 * t3 - 3 * t2 + 1) * y1 + (t3 - 2 * t2 + t) * m1 + (-2 * t3 + 3 * t2) * y2 + (t3 - t2) * m2;
+    }
+
     static int shade(int rgb, float k) {
         int r = Math.min(255, Math.max(0, Math.round(((rgb >> 16) & 255) * k)));
         int g = Math.min(255, Math.max(0, Math.round(((rgb >> 8) & 255) * k)));
@@ -302,8 +338,26 @@ public final class CarMesh {
                 }
                 return base;
             }
+            if (s.plan != null) {
+                float w = curve(s.plan, x);
+                if (s.waist > 0) {
+                    float d = Math.abs(x - midX) / 3.2F;
+                    if (d < 1) {
+                        w -= s.waist * (float) (0.5 * (1 + Math.cos(Math.PI * d)));
+                    }
+                }
+                return Math.max(0.2F, w);
+            }
             float e = Math.min(x + hx, hx - x);
             float w = wb;
+            if (s.noseW >= 0 && x > hx - s.noseLen) {
+                float u = (x - (hx - s.noseLen)) / s.noseLen;
+                w *= lerp(1, s.noseW, u * u * (3 - 2 * u));
+            }
+            if (s.tailW >= 0 && x < -hx + s.tailLen) {
+                float u = ((-hx + s.tailLen) - x) / s.tailLen;
+                w *= lerp(1, s.tailW, u * u * (3 - 2 * u));
+            }
             if (e < rc) {
                 float d = rc - Math.max(0, e);
                 w = wb - rc + (float) Math.sqrt(Math.max(0, rc * rc - d * d));
@@ -322,6 +376,9 @@ public final class CarMesh {
         }
 
         float top(float x) {
+            if (s.sideTop != null) {
+                return curve(s.sideTop, x);
+            }
             float t = y1;
             float cf = s.cabFront;
             float cr = s.cabRear;
@@ -356,7 +413,14 @@ public final class CarMesh {
         }
 
         float bot(float x) {
+            if (s.sideBot != null) {
+                return curve(s.sideBot, x);
+            }
             float b = y0;
+            if (s.tailLift > 0 && x < -hx + 3.0F) {
+                float u = ((-hx + 3.0F) - x) / 3.0F;
+                b += s.tailLift * u * u;
+            }
             float e = Math.min(hx - x, x + hx);
             if (e < 1.1F) {
                 float u = 1 - Math.max(0, e) / 1.1F;
@@ -375,16 +439,20 @@ public final class CarMesh {
             float ct = Math.min(Math.min(ctB, hgt * 0.45F), w * 0.45F);
             float yA = clamp(b + hgt * bandLo, b + cb + 0.01F, t - ct - 0.02F);
             float yB = clamp(b + hgt * bandHi, yA + 0.01F, t - ct - 0.01F);
-            float s1 = Math.max(0.02F, Math.min(0.85F, w - ct - 0.02F));
+            float s1 = Math.max(0.02F, Math.min(Math.max(0.85F, w * 0.5F), w - ct - 0.02F));
             float s0 = Math.max(0.01F, Math.min(0.25F, s1 - 0.02F));
-            return new float[][] {{0, b}, {w - cb, b}, {w, b + cb}, {w + sh, yA}, {w + sh, yB}, {w, t - ct}, {w - ct, t}, {s1, t}, {s0, t},
-                    {0, t}};
+            // guardabarros esculpidos: la orilla sube sobre las ruedas y el centro del cofre se abomba un poco
+            float hump = Math.max(0, s.humpF) * bump(x, s.wheelFront) + Math.max(0, s.humpR) * bump(x, s.wheelRear);
+            float dome = s.dome;
+            return new float[][] {{0, b}, {w - cb, b}, {w, b + cb}, {w + sh, yA}, {w + sh, yB}, {w, t - ct + hump * 0.6F}, {w - ct, t + hump},
+                    {s1, t + hump * 0.35F + dome * 0.6F}, {s0, t + dome}, {0, t + dome}};
         }
 
         /** Dónde está la superficie del costado derecho a la altura y (-1 si no hay carrocería ahí). */
         float surfZ(float x, float y) {
             float[][] p = section(x);
-            if (y < p[0][1] || y > p[9][1]) {
+            float ymax = Math.max(p[9][1], Math.max(p[6][1], p[7][1]));
+            if (y < p[0][1] || y > ymax) {
                 return -1;
             }
             if (y <= p[1][1]) {
@@ -441,8 +509,8 @@ public final class CarMesh {
         Painter p = new Painter(sink, mode);
         for (float[] m : wheelMounts(s)) {
             int side = (int) m[3];
-            float hw = s.wheelW / 2;
-            wheel(p, s, m[0], m[1], s.wheelR, m[2] + side * hw, m[2] - side * hw, side, s.has(GOLD_SPARKLE));
+            float hw = m[5] / 2;
+            wheel(p, s, m[0], m[1], m[1], m[2] + side * hw, m[2] - side * hw, side, s.has(GOLD_SPARKLE));
         }
     }
 
@@ -462,7 +530,7 @@ public final class CarMesh {
             cab = new Cabin(bd);
             cab.build(p, upper);
         }
-        if (s.shape == Shape.PICKUP) {
+        if (s.shape == Shape.PICKUP || s.shape == Shape.MONSTER) {
             float bx1 = s.cabRear - 0.3F;
             float bt = bd.top(-1) - 0.02F;
             float ww = bd.wb - 0.05F;
@@ -479,18 +547,61 @@ public final class CarMesh {
             doors(p, bd, cab, upper);
             details(p, bd, cab);
         }
+        special(p, bd, cab);
         arches(p, bd);
         extras(p, bd, cab, chrome, dark);
     }
 
     /** Lo que se mueve o parpadea: torreta, neón del piso y destellos del oro. */
     public static void buildAnimated(CarStyle s, Sink sink, float time, int mode) {
-        if (mode != MODE_NORMAL || !(s.has(SIREN) || s.has(NEON) || s.has(GOLD_SPARKLE))) {
+        if (mode != MODE_NORMAL || !(s.has(SIREN) || s.has(NEON) || s.has(GOLD_SPARKLE) || s.hasD(D_HOVER) || s.hasD(D_JET))) {
             return;
         }
         Painter p = new Painter(sink, mode);
         Body bd = new Body(s);
         float hx = bd.hx, hz = bd.hz;
+        if (s.hasD(D_HOVER)) {
+            float pulse = 0.75F + 0.25F * (float) Math.sin(time * 0.3F);
+            for (float x : new float[] {s.wheelFront, s.wheelRear}) {
+                for (int side = -1; side <= 1; side += 2) {
+                    float z = side * (bd.w0(x) - 1.1F);
+                    float y = bd.bot(x) - 0.08F;
+                    for (int k = 0; k < 3; k++) {
+                        float r = 0.9F - k * 0.25F;
+                        int c = shade(s.neon, pulse * (0.6F + 0.2F * k));
+                        int n = 14;
+                        for (int i = 0; i < n; i++) {
+                            double a0 = i * 2 * Math.PI / n, a1 = (i + 1) * 2 * Math.PI / n;
+                            float yy = y - k * 0.02F;
+                            p.face(new float[] {x, yy, z}, new float[] {x + (float) Math.cos(a0) * r, yy, z + (float) Math.sin(a0) * r},
+                                    new float[] {x + (float) Math.cos(a1) * r, yy, z + (float) Math.sin(a1) * r}, new float[] {x, yy, z}, c, true, 0, -1, 0);
+                        }
+                    }
+                    float gy = 0.03F;
+                    float rr = 1.0F + 0.2F * pulse;
+                    p.face(new float[] {x - rr, gy, z - rr}, new float[] {x + rr, gy, z - rr}, new float[] {x + rr, gy, z + rr}, new float[] {x - rr, gy, z + rr},
+                            shade(s.neon, 0.35F * pulse), true, 0, 1, 0);
+                }
+            }
+        }
+        if (s.hasD(D_JET)) {
+            float y = lerp(bd.bot(-hx), bd.top(-hx + 1), 0.55F);
+            float flick = 0.8F + 0.2F * (float) Math.sin(time * 1.7F) + 0.1F * (float) Math.sin(time * 3.1F);
+            float len = 1.8F * flick;
+            int n = 10;
+            for (int layer = 0; layer < 2; layer++) {
+                float r = layer == 0 ? 0.62F : 0.35F;
+                float L = layer == 0 ? len : len * 1.4F;
+                int c = layer == 0 ? 0xFF7A1A : 0xFFF1B0;
+                for (int i = 0; i < n; i++) {
+                    double a0 = i * 2 * Math.PI / n, a1 = (i + 1) * 2 * Math.PI / n;
+                    float xb = -hx - 1.06F - layer * 0.01F;
+                    p.face(new float[] {xb, y + (float) Math.cos(a0) * r, (float) Math.sin(a0) * r}, new float[] {xb, y + (float) Math.cos(a1) * r,
+                            (float) Math.sin(a1) * r}, new float[] {xb - L, y, 0}, new float[] {xb - L, y, 0}, c, true, (float) -Math.cos((a0 + a1) / 2) * 0
+                            - 1, 0, 0);
+                }
+            }
+        }
         if (s.has(SIREN) && s.roofH > 0.01F) {
             float[] rr = Cabin.roofRect(bd);
             float cx = (rr[0] + rr[1]) / 2.0F;
@@ -566,6 +677,11 @@ public final class CarMesh {
         if (s.has(STRIPES)) {
             segCol[7] = s.accent;
         }
+        if (s.belly >= 0) {
+            segCol[1] = s.belly;
+            segCol[2] = s.belly;
+            segEm[1] = segEm[2] = false;
+        }
         for (int i = 0; i < n - 1; i++) {
             float xa = bd.xs[i], xb = bd.xs[i + 1];
             for (int k = 0; k < 9; k++) {
@@ -615,9 +731,12 @@ public final class CarMesh {
         final Body bd;
         /** Por estación: x, y de la base, y del techo, medio ancho abajo, medio ancho arriba, radio de la esquina. */
         final float[][] st;
-        final int roofStart = 2;
-        final int roofEnd = 4;
+        final int roofStart;
+        final int roofEnd;
         final float rr, rf, yt;
+        /** Alto de la cabina (para el degradado del vidrio y la estrechez de arriba). */
+        final float rh;
+        final float xr0, xf0;
 
         Cabin(Body bd) {
             this.bd = bd;
@@ -626,6 +745,31 @@ public final class CarMesh {
             rr = r[0];
             rf = r[1];
             yt = r[3];
+            if (s.roofLine != null) {
+                float[] q = s.roofLine;
+                int n = q.length / 2;
+                xr0 = q[0];
+                xf0 = q[(n - 1) * 2];
+                float h = 0.3F;
+                for (int i = 0; i < n; i++) {
+                    h = Math.max(h, q[i * 2 + 1] - bd.top(q[i * 2]));
+                }
+                rh = h;
+                roofStart = s.roofA;
+                roofEnd = s.roofB;
+                st = new float[n][];
+                for (int i = 0; i < n; i++) {
+                    float x = q[i * 2];
+                    float yb = bd.top(x);
+                    st[i] = station(x, yb, i == 0 || i == n - 1 ? yb : q[i * 2 + 1]);
+                }
+                return;
+            }
+            rh = s.roofH;
+            roofStart = 2;
+            roofEnd = 4;
+            xr0 = s.cabRear;
+            xf0 = s.cabFront;
             float cf = s.cabFront, cr = s.cabRear;
             float ri = rr - cr, wi = cf - rf;
             float ybR = bd.top(cr), ybF = bd.top(cf);
@@ -644,12 +788,33 @@ public final class CarMesh {
         }
 
         static boolean open(CarStyle s) {
-            return s.shape == Shape.ROADSTER;
+            return switch (s.shape) {
+                case ROADSTER, HOTROD, BUGGY, DRAGSTER, ROVER, KART -> true;
+                default -> false;
+            };
+        }
+
+        /** Sin parabrisas (buggy, rover, dragster, kart). */
+        static boolean noGlass(CarStyle s) {
+            return switch (s.shape) {
+                case BUGGY, DRAGSTER, ROVER, KART -> true;
+                default -> false;
+            };
         }
 
         /** {roof rear x, roof front x, medio ancho del techo, y del techo}. */
         static float[] roofRect(Body bd) {
             CarStyle s = bd.s;
+            if (s.roofLine != null) {
+                float[] q = s.roofLine;
+                float xa = q[s.roofA * 2], xb = q[s.roofB * 2];
+                float y = 0;
+                for (int i = s.roofA; i <= s.roofB; i++) {
+                    y = Math.max(y, q[i * 2 + 1]);
+                }
+                float gb = bd.w0((xa + xb) / 2) - s.cabInset;
+                return new float[] {xa, xb, gb - s.sideInset, y};
+            }
             float cf = s.cabFront, cr = s.cabRear;
             float ws = s.wsInset, ri = s.rearInset;
             float room = (cf - cr) - 0.8F;
@@ -666,8 +831,12 @@ public final class CarMesh {
         private float[] station(float x, float yb, float ytop) {
             CarStyle s = bd.s;
             yb -= 0.02F;
-            float hf = clamp((ytop - yb) / Math.max(0.3F, s.roofH), 0, 1);
+            float hf = clamp((ytop - yb) / Math.max(0.3F, s.roofLine != null ? rh : s.roofH), 0, 1);
             float gb = bd.w0(x) - s.cabInset;
+            if (s.cabTaper > 0) {
+                float cf = s.cabFront, cr = s.cabRear;
+                gb -= s.cabTaper * clamp((cf - x) / Math.max(0.5F, cf - cr), 0, 1);
+            }
             float gt = gb - s.sideInset * hf;
             float r = Math.min(0.5F, s.roofH * 0.28F);
             return new float[] {x, yb, Math.max(ytop, yb), gb, gt, r, hf};
@@ -706,8 +875,12 @@ public final class CarMesh {
                 case HATCH, VAN, MINI, PICKUP -> false;
                 default -> true;
             };
-            float hgt = s.roofH;
+            float hgt = rh;
             boolean open = open(s);
+            if (noGlass(s)) {
+                openCockpit(p, upper);
+                return;
+            }
             for (int j = open ? roofEnd : 0; j < st.length - 1; j++) {
                 float[][] a = sec(st[j]);
                 float[][] b = sec(st[j + 1]);
@@ -1178,6 +1351,134 @@ public final class CarMesh {
         }
     }
 
+    /** Piezas de los autos exclusivos: motor al aire, flamas, jaula, suspensión, aleta de tiburón, blindaje, antena... */
+    private static void special(Painter p, Body bd, Cabin cab) {
+        CarStyle s = bd.s;
+        float hx = bd.hx;
+        int chromeC = 0xDDE3EA;
+        int dark = 0x16171A;
+        if (s.openWheels && !bd.formula) {
+            // brazos de suspensión desde la carrocería hasta cada llanta
+            for (float[] m : wheelMounts(s)) {
+                float zb = (float) Math.copySign(Math.max(0.3F, bd.w0(m[0]) - 0.3F), m[3]);
+                float zw = m[2];
+                float y = m[1];
+                float yb = Math.max(bd.bot(m[0]) + 0.2F, y - 0.1F);
+                p.box(m[0] - 0.12F, m[0] + 0.12F, Math.min(y, yb) - 0.08F, Math.max(y, yb) + 0.08F, Math.min(zb, zw), Math.max(zb, zw), 0x2A2C30, false);
+                p.box(m[0] - 0.3F, m[0] + 0.3F, y + m[1] * 0.4F, y + m[1] * 0.4F + 0.14F, Math.min(zb, zw) + 0.1F, Math.max(zb, zw) - 0.1F,
+                        s.has(CHROME) ? chromeC : 0xC0281E, false);
+            }
+        }
+        if (s.hasD(D_ENGINE_OUT)) {
+            // motor V8 al aire con sobrealimentador, toma de aire y escapes de tubo
+            float ex = s.cabFront + 1.4F;
+            float ey = bd.top(ex);
+            float bw = 0.9F;
+            p.box(ex - 1.2F, ex + 1.2F, ey - 0.2F, ey + 0.7F, -bw, bw, 0x3A3D44, false);
+            p.box(ex - 1.1F, ex + 1.1F, ey + 0.7F, ey + 1.1F, -0.55F, 0.55F, chromeC, false);
+            p.box(ex - 0.5F, ex + 0.5F, ey + 1.1F, ey + 1.7F, -0.45F, 0.45F, chromeC, false);
+            p.box(ex - 0.4F, ex + 0.4F, ey + 1.7F, ey + 1.8F, -0.35F, 0.35F, 0x111214, false);
+            for (int side = -1; side <= 1; side += 2) {
+                for (int i = 0; i < 4; i++) {
+                    float x = ex - 0.9F + i * 0.6F;
+                    float z = side * (bw + 0.2F);
+                    p.tubeX(x, x + 0.01F, ey + 0.3F, z, 0.01F, 4, chromeC, chromeC, false);
+                    p.box(x - 0.1F, x + 0.1F, ey + 0.15F, ey + 0.35F, Math.min(z, side * bw), Math.max(z, side * bw), chromeC, false);
+                    p.box(x - 0.1F, x + 0.1F, ey + 0.15F, ey + 1.0F, z - 0.1F, z + 0.1F, chromeC, false);
+                    p.box(x - 0.08F, x + 0.08F, ey + 0.98F, ey + 1.02F, z - 0.08F, z + 0.08F, 0x2A1208, false);
+                }
+            }
+        }
+        if (s.hasD(D_FLAMES)) {
+            int[] cols = {0xFFD23F, 0xFF8A1F, 0xE8331B};
+            float x0 = hx - 0.8F;
+            for (int k = 0; k < 3; k++) {
+                for (int i = 0; i < 5; i++) {
+                    float y = lerp(bd.bot(x0) + 0.3F, bd.top(x0) - 0.25F, (i + 0.5F) / 5.0F);
+                    float len = 2.6F + (i % 2) * 1.4F + (i == 2 ? 1.2F : 0) - k * 0.6F;
+                    float hh = 0.22F - k * 0.05F;
+                    sideDecal(p, bd, new float[][] {{x0 - k * 0.2F, y - hh}, {x0 - k * 0.2F, y + hh}, {x0 - len - k * 0.2F, y + hh * 0.2F}}, cols[k], false,
+                            0.03F + k * 0.005F);
+                }
+            }
+        }
+        if (s.hasD(D_CAGE) && cab != null) {
+            // jaula de tubos sobre la cabina abierta
+            float cf = s.cabFront, cr = s.cabRear;
+            float y = bd.top((cf + cr) / 2);
+            float h = Math.max(1.6F, s.roofH + 0.6F);
+            float zw = bd.w0((cf + cr) / 2) - 0.45F;
+            int tube = s.hasD(D_DISH) ? 0xDADDE2 : 0x2A2C30;
+            for (int side = -1; side <= 1; side += 2) {
+                float z = side * zw;
+                p.hexa(cf - 0.15F, cf + 0.05F, z - 0.08F, z + 0.08F, y, cf - 0.9F, cf - 0.7F, z - 0.08F, z + 0.08F, y + h, tube, false);
+                p.box(cr, cr + 0.2F, y, y + h, z - 0.08F, z + 0.08F, tube, false);
+                p.box(cr, cf - 0.7F, y + h - 0.1F, y + h + 0.06F, z - 0.08F, z + 0.08F, tube, false);
+            }
+            p.box(cr, cr + 0.2F, y + h - 0.1F, y + h + 0.06F, -zw, zw, tube, false);
+            p.box(cf - 0.9F, cf - 0.7F, y + h - 0.1F, y + h + 0.06F, -zw, zw, tube, false);
+            if (s.hasD(D_DISH)) {
+                // antena de plato y bandera
+                float ax = cr + 0.1F;
+                p.box(ax - 0.05F, ax + 0.05F, y + h, y + h + 1.4F, -0.05F, 0.05F, tube, false);
+                p.ringX(ax - 0.06F, y + h + 1.6F, 0, 0, 0.9F, 14, 0xEDEDED, false, -1);
+                p.ringX(ax - 0.04F, y + h + 1.6F, 0, 0, 0.9F, 14, 0xC9CCD2, false, 1);
+                p.box(ax - 0.3F, ax - 0.06F, y + h + 1.55F, y + h + 1.65F, -0.05F, 0.05F, tube, false);
+                float fx = s.cabFront - 0.2F;
+                p.box(fx, fx + 0.04F, y, y + h + 1.8F, zw - 0.04F, zw, 0xDADDE2, false);
+                p.box(fx - 1.0F, fx, y + h + 1.2F, y + h + 1.8F, zw - 0.03F, zw - 0.01F, s.accent, false);
+            }
+        }
+        if (s.hasD(D_JET)) {
+            // tobera de cohete atrás (la llama se anima)
+            float y = lerp(bd.bot(-hx), bd.top(-hx + 1), 0.55F);
+            p.tubeX(-hx + 0.3F, -hx - 1.0F, y, 0, 0.75F, 14, 0x3A3D44, 0x1A0A06, false);
+            p.tubeX(-hx - 0.9F, -hx - 1.05F, y, 0, 0.85F, 14, 0x9AA0A8, 0x1A0A06, false);
+        }
+        if (s.hasD(D_SHARK)) {
+            // aleta dorsal, branquias y dientes
+            float fx = cab != null ? (cab.rr + cab.rf) / 2 : 0;
+            float fy = cab != null ? cab.yt + 0.05F : bd.y1;
+            p.hexa(fx - 1.4F, fx + 0.6F, -0.12F, 0.12F, fy - 0.1F, fx - 1.6F, fx - 0.9F, -0.06F, 0.06F, fy + 2.2F, shade(s.body, 0.9F), false);
+            for (int i = 0; i < 3; i++) {
+                float gx = s.cabFront + 1.0F + i * 0.55F;
+                float yb = lerp(bd.bot(gx), bd.top(gx), 0.3F), yt = lerp(bd.bot(gx), bd.top(gx), 0.8F);
+                sideDecal(p, bd, new float[][] {{gx, yb}, {gx + 0.12F, yb}, {gx + 0.32F, yt}, {gx + 0.2F, yt}}, dark, false, 0.03F);
+            }
+            float xq = hx - 0.5F;
+            float bq = bd.bot(xq), tq = bd.top(xq);
+            float wq = bd.w0(xq);
+            float ym = lerp(bq, tq, 0.35F);
+            frontDecal(p, bd, -wq * 0.7F, wq * 0.7F, ym - 0.35F, ym + 0.35F, 0x1A0B0E, false, true, 6, 0.02F);
+            for (int i = 0; i < 7; i++) {
+                float z = lerp(-wq * 0.6F, wq * 0.6F, i / 6.0F);
+                slantDecal(p, bd, z - 0.14F, ym + 0.35F, z, ym + 0.05F, 0.0F, 0xF4F4F0, false, true, 0.03F);
+                frontDecal(p, bd, z - 0.12F, z + 0.12F, ym + 0.12F, ym + 0.35F, 0xF4F4F0, false, true, 1, 0.035F);
+                frontDecal(p, bd, z - 0.1F, z + 0.1F, ym - 0.35F, ym - 0.14F, 0xF4F4F0, false, true, 1, 0.035F);
+            }
+        }
+        if (s.hasD(D_ARMOR)) {
+            // placas de blindaje en los costados con remaches y rejilla frontal
+            for (int k = 0; k < 3; k++) {
+                float x0 = lerp(-hx + 1.2F, hx - 1.4F, k / 3.0F) + 0.15F, x1 = lerp(-hx + 1.2F, hx - 1.4F, (k + 1) / 3.0F) - 0.15F;
+                float yb = lerp(bd.bot(x0), bd.top(x0), 0.2F), yt = lerp(bd.bot(x0), bd.top(x0), 0.62F);
+                sideDecal(p, bd, new float[][] {{x0, yb}, {x1, yb}, {x1 - 0.2F, yt}, {x0 + 0.2F, yt}}, shade(s.body, 1.35F), false, 0.04F);
+                for (int r = 0; r < 2; r++) {
+                    float rx = r == 0 ? x0 + 0.25F : x1 - 0.25F;
+                    sideDecal(p, bd, new float[][] {{rx - 0.06F, yb + 0.1F}, {rx + 0.06F, yb + 0.1F}, {rx + 0.06F, yb + 0.22F}, {rx - 0.06F, yb + 0.22F}},
+                            0x8A8F98, false, 0.05F);
+                }
+            }
+            float xq = hx - 0.5F;
+            float wq = bd.w0(xq);
+            float yq = lerp(bd.bot(xq), bd.top(xq), 0.3F);
+            for (int i = 0; i < 5; i++) {
+                float y = yq + i * 0.14F;
+                frontDecal(p, bd, -wq * 0.55F, wq * 0.55F, y, y + 0.06F, 0x3A3D44, false, true, 4, 0.03F);
+            }
+        }
+    }
+
     /** Detalles extra de cada modelo (tomas laterales, rejillas, difusor, faldones, snorkel, llanta de refacción...). */
     private static void details(Painter p, Body bd, Cabin cab) {
         CarStyle s = bd.s;
@@ -1380,20 +1681,50 @@ public final class CarMesh {
             zin = bd.w(mx) - 0.2F;
             zout = bd.w(mx) + 0.4F;
         }
+        if (s.hasD(D_ARMOR) || Cabin.open(s)) {
+            return;
+        }
+        int mc = paint(bd, upper, yb + 0.5F);
         for (int side = -1; side <= 1; side += 2) {
-            float z0 = side < 0 ? -zout : zin, z1 = side < 0 ? -zin : zout;
-            p.box(mx - 0.12F, mx + 0.05F, yb, yb + 0.25F, z0, z1, 0x1A1B1F, false);
-            float zh0 = side < 0 ? -zout : zout - 0.42F, zh1 = side < 0 ? -zout + 0.42F : zout;
-            p.box(mx - 0.42F, mx + 0.05F, yb + 0.18F, yb + 0.58F, zh0, zh1, paint(bd, upper, yb + 0.5F), false);
-            float zg = side < 0 ? -zout + 0.02F : zout - 0.02F;
-            p.box(mx - 0.45F, mx - 0.41F, yb + 0.22F, yb + 0.54F, Math.min(zg, zg - side * 0.36F), Math.max(zg, zg - side * 0.36F), 0x9FB4C8, false);
+            // brazo delgado que sale de la base de la ventana
+            float za = side * zin, zb = side * (zout - 0.3F);
+            p.hexa(mx - 0.1F, mx + 0.08F, Math.min(za, zb), Math.max(za, zb), yb + 0.02F, mx - 0.06F, mx + 0.04F, Math.min(za, zb), Math.max(za, zb),
+                    yb + 0.16F, 0x1A1B1F, false);
+            // carcasa en forma de gota: más delgada adelante, con el espejo atrás
+            float zo = side * zout, zi = side * (zout - 0.48F);
+            p.hexa(mx - 0.32F, mx + 0.12F, Math.min(zo, zi), Math.max(zo, zi), yb + 0.08F, mx - 0.3F, mx - 0.02F, Math.min(zo, zi) + 0.04F,
+                    Math.max(zo, zi) - 0.04F, yb + 0.42F, mc, false);
+            p.face(new float[] {mx - 0.33F, yb + 0.12F, zo - side * 0.04F}, new float[] {mx - 0.33F, yb + 0.12F, zi + side * 0.04F},
+                    new float[] {mx - 0.31F, yb + 0.38F, zi + side * 0.06F}, new float[] {mx - 0.31F, yb + 0.38F, zo - side * 0.06F}, 0xA9C0D6, false, -1, 0,
+                    0);
         }
     }
 
     // ------------------------------------------------------------------------------------------------------------- ruedas
 
+    /** Radio y ancho de la llanta en el eje x (las de adelante pueden ser distintas). */
+    static float radiusAt(CarStyle s, float wx) {
+        return wx == s.wheelFront && s.wheelRF > 0 ? s.wheelRF : s.wheelR;
+    }
+
+    static float widthAt(CarStyle s, float wx) {
+        return wx == s.wheelFront && s.wheelWF > 0 ? s.wheelWF : s.wheelW;
+    }
+
+    /** Los ejes del auto (adelante, atrás y, si tiene, uno en medio). */
+    static float[] axles(CarStyle s) {
+        if (s.hasD(D_HOVER)) {
+            return new float[0];
+        }
+        return Float.isNaN(s.axleMid) ? new float[] {s.wheelFront, s.wheelRear} : new float[] {s.wheelFront, s.axleMid, s.wheelRear};
+    }
+
+    private static boolean openWheels(Body bd) {
+        return bd.formula || bd.s.openWheels;
+    }
+
     private static float archZ(Body bd, float wx) {
-        float ra = bd.s.wheelR + 0.3F;
+        float ra = radiusAt(bd.s, wx) + 0.3F;
         float m = 0;
         for (int i = 0; i <= 8; i++) {
             float x = wx - ra + 2 * ra * i / 8.0F;
@@ -1405,41 +1736,45 @@ public final class CarMesh {
     /** z de la cara de afuera de la llanta que va en wx. */
     private static float wheelOuter(Body bd, float wx) {
         CarStyle s = bd.s;
-        if (bd.formula) {
+        if (openWheels(bd)) {
             return bd.hz + s.track + 0.05F;
         }
         return Math.max(bd.hz + s.track + 0.05F, archZ(bd, wx) + 0.1F);
     }
 
-    /** Dónde van las 4 llantas: {x del eje, y del centro, z del centro de la llanta, lado (-1/1), 1 si es delantera}. */
+    /**
+     * Dónde van las llantas: {x del eje, y del centro (= radio), z del centro de la llanta, lado (-1/1), 1 si es delantera, ancho}.
+     */
     public static float[][] wheelMounts(CarStyle s) {
         Body bd = new Body(s);
-        float[][] out = new float[4][];
+        float[] ax = axles(s);
+        float[][] out = new float[ax.length * 2][];
         int i = 0;
-        for (float wx : new float[] {s.wheelFront, s.wheelRear}) {
+        for (float wx : ax) {
+            float R = radiusAt(s, wx), W = widthAt(s, wx);
             float outer = wheelOuter(bd, wx);
             for (int side = -1; side <= 1; side += 2) {
-                out[i++] = new float[] {wx, s.wheelR, side * (outer - s.wheelW / 2), side, wx == s.wheelFront ? 1 : 0};
+                out[i++] = new float[] {wx, R, side * (outer - W / 2), side, wx == s.wheelFront ? 1 : 0, W};
             }
         }
         return out;
     }
 
     /** Una llanta suelta con el centro en el origen (para hacerla girar y doblar mientras se maneja). */
-    public static void buildWheel(CarStyle s, Sink sink, int mode, int side) {
+    public static void buildWheel(CarStyle s, Sink sink, int mode, int side, float R, float W) {
         Painter p = new Painter(sink, mode);
-        float hw = s.wheelW / 2;
-        wheel(p, s, 0, 0, s.wheelR, side * hw, -side * hw, side, s.has(GOLD_SPARKLE));
+        float hw = W / 2;
+        wheel(p, s, 0, 0, R, side * hw, -side * hw, side, s.has(GOLD_SPARKLE));
     }
 
     /** Pasos de rueda oscuros con su borde, y los calipers de freno (que no giran con la llanta). */
     private static void arches(Painter p, Body bd) {
         CarStyle s = bd.s;
         Shape sh = s.shape;
-        float R = s.wheelR;
         boolean gold = s.has(GOLD_SPARKLE);
         boolean sportBrake = sporty(sh) || sh == Shape.RALLY || sh == Shape.MUSCLE || sh == Shape.FORMULA || s.caliper >= 0;
-        for (float wx : new float[] {s.wheelFront, s.wheelRear}) {
+        for (float wx : axles(s)) {
+            float R = radiusAt(s, wx);
             float outer = wheelOuter(bd, wx);
             if (sportBrake) {
                 int cal = s.caliper >= 0 ? s.caliper : gold ? 0xFFD34D : s.has(NEON) ? s.neon : 0xD7262E;
@@ -1449,7 +1784,7 @@ public final class CarMesh {
                     p.box(wx - R * 0.42F, wx - R * 0.16F, R + R * 0.12F, R + R * 0.52F, Math.min(ca0, ca1), Math.max(ca0, ca1), cal, false);
                 }
             }
-            if (bd.formula) {
+            if (openWheels(bd)) {
                 continue;
             }
             float az = archZ(bd, wx);

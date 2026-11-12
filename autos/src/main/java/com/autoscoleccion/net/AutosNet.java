@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 
 /** Comunicación cliente <-> servidor. El servidor decide todo (puntaje, caja, auto); el cliente juega, anima y muestra. */
 public final class AutosNet {
-    private static final String VERSION = "2";
+    private static final String VERSION = "3";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(AutosMod.MODID, "main"), () -> VERSION,
             VERSION::equals, VERSION::equals);
     /** Máximo de teclas que se aceptan de una partida (sobra para cualquier prueba). */
@@ -70,7 +70,8 @@ public final class AutosNet {
             b.writeFloat(m.o0());
             b.writeFloat(m.o1());
             b.writeFloat(m.o2());
-        }, b -> new GameOutcomePacket(b.readVarInt(), b.readFloat(), b.readVarInt(), b.readFloat(), b.readFloat(), b.readFloat()),
+            b.writeFloat(m.o3());
+        }, b -> new GameOutcomePacket(b.readVarInt(), b.readFloat(), b.readVarInt(), b.readFloat(), b.readFloat(), b.readFloat(), b.readFloat()),
                 (m, c) -> client(c, () -> () -> AutosClient.onOutcome(m)));
         CHANNEL.registerMessage(id++, UnboxPacket.class, (m, b) -> {
             b.writeVarInt(m.box());

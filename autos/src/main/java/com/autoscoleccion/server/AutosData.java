@@ -26,12 +26,17 @@ public final class AutosData {
         return r;
     }
 
-    /** Cuántas veces consiguió cada auto (30 números). */
+    /** Cuántas veces consiguió cada auto (uno por auto). */
     public static int[] counts(Player p) {
         int[] c = root(p).getIntArray("counts");
         int[] out = new int[Cars.COUNT];
         System.arraycopy(c, 0, out, 0, Math.min(c.length, out.length));
         return out;
+    }
+
+    /** Reemplaza toda la colección (comandos). */
+    public static void setCounts(Player p, int[] c) {
+        root(p).putIntArray("counts", c);
     }
 
     /** Suma un auto a la colección; devuelve true si es la primera vez que lo consigue. */

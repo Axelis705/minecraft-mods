@@ -50,6 +50,7 @@ public class MinigameScreen extends Screen {
     private int lastKeyShown;
     private long keyShownAt;
     private long[] rouletteAt;
+    private int[] avail = {0, 1, 2};
     private int rouletteSeen;
     private int tallySeen;
     private boolean revealed;
@@ -159,7 +160,21 @@ public class MinigameScreen extends Screen {
     public void outcome(GameOutcomePacket m) {
         outcome = m;
         outcomeAt = System.currentTimeMillis();
-        int steps = 13 + m.box();
+        // la ruleta solo pasa por las cajas que podían salir, y termina en la que salió
+        float[] o = {m.o0(), m.o1(), m.o2(), m.o3()};
+        int n = 0;
+        int[] av = new int[4];
+        int pos = 0;
+        for (int b = 0; b < 4; b++) {
+            if (o[b] > 0.0005F || b == m.box()) {
+                if (b == m.box()) {
+                    pos = n;
+                }
+                av[n++] = b;
+            }
+        }
+        avail = java.util.Arrays.copyOf(av, n);
+        int steps = n * 4 + pos + 1;
         rouletteAt = new long[steps];
         long acc = 2500;
         for (int i = 0; i < steps; i++) {
@@ -283,8 +298,8 @@ public class MinigameScreen extends Screen {
             }
             if (!revealed && rouletteSeen == rouletteAt.length && e >= rouletteAt[rouletteAt.length - 1] + 250) {
                 revealed = true;
-                Sfx.play(outcome.box() == 2 ? "reveal_legend" : outcome.box() == 1 ? "reveal_epic" : "reveal_rare", 1.0F, 0.9F);
-                burst(width / 2.0F, height / 2.0F, Boxes.COLOR[outcome.box()], outcome.box() == 2 ? 60 : 30);
+                Sfx.play(outcome.box() >= 2 ? "reveal_legend" : outcome.box() == 1 ? "reveal_epic" : "reveal_rare", 1.0F, 0.9F);
+                burst(width / 2.0F, height / 2.0F, Boxes.COLOR[outcome.box()], outcome.box() >= 2 ? 60 : 30);
             }
         }
     }
@@ -668,17 +683,17 @@ public class MinigameScreen extends Screen {
             float k = Gfx.back(Math.min(1, (e - 1200) / 300.0F));
             Gfx.text(g, font, grade(outcome.score()), cx, py + 58, 1.3F * k, 0xFFFFE066);
         }
-        // tres cajas con su probabilidad y la ruleta
-        float cw = Math.min(110, (pw - 40) / 3.0F), chh = 112;
+        // las cuatro cajas con su probabilidad y la ruleta
+        float cw = Math.min(96, (pw - 46) / 4.0F), chh = 112;
         float y0 = py + 78;
-        float[] odds = {outcome.o0(), outcome.o1(), outcome.o2()};
+        float[] odds = {outcome.o0(), outcome.o1(), outcome.o2(), outcome.o3()};
         int hi = -1;
         if (e >= 2500) {
-            hi = rouletteSeen > 0 ? (rouletteSeen - 1) % 3 : 0;
+            hi = avail[rouletteSeen > 0 ? (rouletteSeen - 1) % avail.length : 0];
         }
         boolean done = revealed;
-        for (int b = 0; b < 3; b++) {
-            float x = cx - 1.5F * cw - 10 + b * (cw + 10);
+        for (int b = 0; b < 4; b++) {
+            float x = cx - 2.0F * cw - 15 + b * (cw + 10);
             float appear = Gfx.back(Math.min(1, Math.max(0, (e - 300 - b * 120) / 350.0F)));
             if (appear <= 0) {
                 continue;

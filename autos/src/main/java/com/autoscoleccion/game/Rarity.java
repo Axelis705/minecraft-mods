@@ -6,7 +6,8 @@ public enum Rarity {
     POCO_COMUN("Poco común", 0x5BE38A, 2, 22),
     RARO("Raro", 0x4FB4FF, 3, 11),
     EPICO("Épico", 0xC46BFF, 4, 4.5),
-    LEGENDARIO("Legendario", 0xFFC23D, 5, 1.4);
+    LEGENDARIO("Legendario", 0xFFC23D, 5, 1.4),
+    MITICO("Mítico", 0xFF3B6B, 5, 0.7);
 
     public final String label;
     public final int rgb;

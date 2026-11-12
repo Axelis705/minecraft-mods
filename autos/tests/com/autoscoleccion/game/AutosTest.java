@@ -24,24 +24,25 @@ public class AutosTest {
     // ------------------------------------------------------------------ catálogo y cajas
 
     static void catalog() {
-        check(Cars.all().size() == 30, "30 autos");
+        check(Cars.all().size() == 40, "40 autos");
         Set<String> ids = new HashSet<>();
-        int[] perLine = new int[3];
+        int[] perLine = new int[Boxes.COUNT];
         for (CarDef c : Cars.all()) {
             check(ids.add(c.id), "id repetido " + c.id);
             check(c.id.matches("[a-z0-9_]+"), "id válido " + c.id);
             perLine[c.line]++;
             check(c.style != null, "estilo de " + c.id);
         }
-        check(perLine[0] == 10 && perLine[1] == 10 && perLine[2] == 10, "10 autos por línea");
-        check(Boxes.size(0) == 10 && Boxes.size(1) == 20 && Boxes.size(2) == 30, "cajas de 10, 20 y 30");
+        check(perLine[0] == 10 && perLine[1] == 10 && perLine[2] == 10 && perLine[3] == 10, "10 autos por línea");
+        check(Boxes.size(0) == 10 && Boxes.size(1) == 20 && Boxes.size(2) == 30 && Boxes.size(3) == 10, "cajas de 10, 20, 30 y 10");
         for (CarDef c : Cars.all()) {
-            for (int b = 0; b < 3; b++) {
-                check((Boxes.weight(c, b) > 0) == (c.line <= b), "contenido de la caja " + b + " (" + c.id + ")");
+            for (int b = 0; b < Boxes.COUNT; b++) {
+                boolean in = b == Boxes.EXCLUSIVE ? c.line == Boxes.EXCLUSIVE : c.line <= b;
+                check((Boxes.weight(c, b) > 0) == in, "contenido de la caja " + b + " (" + c.id + ")");
             }
         }
         // probabilidades dentro de cada caja: no todas iguales, la más rara sale poco
-        for (int b = 0; b < 3; b++) {
+        for (int b = 0; b < Boxes.COUNT; b++) {
             double min = 1, max = 0, sum = 0;
             for (CarDef c : Cars.all()) {
                 double p = Boxes.chance(c, b);
@@ -52,20 +53,20 @@ public class AutosTest {
                 }
             }
             check(Math.abs(sum - 1.0) < 1e-9, "suma 100 % caja " + b);
-            check(max / min > 8, "diferencia entre común y raro en la caja " + b);
+            check(max / min > (b == Boxes.EXCLUSIVE ? 3 : 8), "diferencia entre común y raro en la caja " + b);
             System.out.printf("caja %d (%s): el más común %.1f %%, el más raro %.2f %%%n", b, Boxes.NAME[b], max * 100, min * 100);
         }
         // tirada real
         Random r = new Random(1);
-        int[][] hits = new int[3][30];
-        for (int b = 0; b < 3; b++) {
+        int[][] hits = new int[Boxes.COUNT][Cars.COUNT];
+        for (int b = 0; b < Boxes.COUNT; b++) {
             for (int i = 0; i < 200000; i++) {
                 hits[b][Boxes.roll(b, r)]++;
             }
             for (CarDef c : Cars.all()) {
                 double p = hits[b][c.index()] / 200000.0;
                 check(Math.abs(p - Boxes.chance(c, b)) < 0.004, "tirada caja " + b + " " + c.id);
-                if (c.line > b) {
+                if (Boxes.weight(c, b) == 0) {
                     check(hits[b][c.index()] == 0, "no sale de otra línea");
                 }
             }
@@ -77,12 +78,15 @@ public class AutosTest {
         double[] mid = Boxes.odds(0.5);
         double[] hi = Boxes.odds(1.0);
         for (double[] o : new double[][] {lo, mid, hi}) {
-            check(Math.abs(o[0] + o[1] + o[2] - 1.0) < 1e-9 && o[0] >= 0, "probabilidades válidas");
+            check(Math.abs(o[0] + o[1] + o[2] + o[3] - 1.0) < 1e-9 && o[0] >= 0, "probabilidades válidas");
         }
         check(hi[2] > mid[2] && mid[2] > lo[2], "más puntaje = más Leyendas");
         check(hi[0] < lo[0], "más puntaje = menos Ruta Urbana");
+        check(lo[3] == 0 && mid[3] == 0 && hi[3] > 0.1, "Exclusivos solo con puntaje muy alto");
         System.out.printf("puntaje 0: %.0f/%.0f/%.0f %%   0.5: %.0f/%.0f/%.0f %%   1: %.0f/%.0f/%.0f %%%n",
                 lo[0] * 100, lo[1] * 100, lo[2] * 100, mid[0] * 100, mid[1] * 100, mid[2] * 100, hi[0] * 100, hi[1] * 100, hi[2] * 100);
+        double[] top = Boxes.odds(0.9);
+        System.out.printf("Exclusivos de Cine: puntaje 0.9 = %.1f %%, puntaje 1 = %.1f %%%n", top[3] * 100, hi[3] * 100);
     }
 
     // ------------------------------------------------------------------ bots
