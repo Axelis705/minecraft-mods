@@ -607,7 +607,7 @@ for (x, z) in ((TX0 + 2, TZ0 + 2), (TX1 - 2, TZ0 + 2), (TX0 + 2, TZ1 - 2), (TX1 
 for z in range(17, 31, 2):
     o.set(TX0 + 1, Y_VIP + 1, z, sofa('purple', 'east')) if z not in (19, 27) else None
 for i, ch in enumerate('MESAS'):
-    o.set(CX - 2 + i, Y_VIP + 7, TZ0 + 1, neon(ch, 'south', 2))
+    o.set(CX - 2 + i, Y_VIP + 6, 16, neon(ch, 'south', 2))
 o.set(TX0 + 1, Y_VIP + 4, 20, sign(11, 'east')); o.set(TX1 - 1, Y_VIP + 4, 20, sign(9, 'west'))
 o.set(TX0 + 2, Y_VIP + 1, TZ1 - 2, speaker('north'))
 
@@ -985,24 +985,25 @@ for i, ch in enumerate('VIP'):
     o.set(CX + 1 - i, YB + 6, QZ1, neon(ch, 'north', 2))
 o.set(QX0 + 1, YB + 5, 27, speaker('east'))
 
-# ---- sala de carreras (x 38..54), como un cine: se entra por delante (junto al elevador), al lado de la pantalla, y las gradas
+# ---- sala de carreras (x 39..54, 16 de ancho: todo simétrico alrededor de x=46.5), como un cine: se entra por delante (junto al elevador), al lado de la pantalla, y las gradas
 #      suben hacia el fondo con pasillos laterales y central con escalones
-DZ0, DZ1 = 12, 16                         # puerta en el muro x=37 (frente al vestíbulo del elevador)
+WR = 38                                   # muro entre el salón VIP y la sala
+DZ0, DZ1 = 12, 16                         # puerta en el muro x=WR (frente al vestíbulo del elevador)
 for z in range(QZ0 + 1, QZ1):
     for y in range(YB + 1, -2):
         if DZ0 <= z <= DZ1 and y <= YB + 4:
-            o.set(37, y, z, AIR)
+            o.set(WR, y, z, AIR)
         elif DZ0 - 1 <= z <= DZ1 + 1 and y <= YB + 5:
-            o.set(37, y, z, GB if y in (YB + 1, YB + 5) or z in (DZ0 - 1, DZ1 + 1) else GT)
+            o.set(WR, y, z, GB if y in (YB + 1, YB + 5) or z in (DZ0 - 1, DZ1 + 1) else GT)
         else:
-            o.set(37, y, z, MAH if y <= YB + 3 else ('casino:velvet_wall_black' if y < -3 else GT))
+            o.set(WR, y, z, MAH if y <= YB + 3 else ('casino:velvet_wall_black' if y < -3 else GT))
 for i, ch in enumerate('CARRERAS'):
-    o.set(36, YB + 7, 10 + i, neon(ch, 'west', 2))
+    o.set(WR - 1, YB + 7, 10 + i, neon(ch, 'west', 2))
 # alfombra que guía de la puerta del elevador a la sala
 for x in range(33, 46):
     for z in range(DZ0 + 1, DZ1):
         o.set(x, YB, z, 'casino:casino_floor_royal')
-for x in range(38, QX1):
+for x in range(WR + 1, QX1):
     for z in range(QZ0 + 1, QZ1):
         if not (x < 46 and DZ0 + 1 <= z < DZ1):
             o.set(x, YB, z, 'casino:casino_floor_galaxy')
@@ -1012,22 +1013,22 @@ for x in range(40, 54):
         o.set(x, y, QZ0, GB if x in (40, 53) or y in (YB + 2, YB + 9) else 'minecraft:black_concrete')
 o.marker(46, YB + 3, QZ0 + 1, 'tv 2 12 6', [(dx, dy, 0, screen((dx + dy) % 4, 'south')) for dx in range(-5, 7) for dy in range(0, 6)])
 for i, ch in enumerate('CARRERAS'):
-    o.set(43 + i, YB + 10, QZ0 + 1, neon(ch, 'south', 2))
-# gradas: 5 filas que suben 1 bloque cada una; pasillos: oeste (x 38-40), centro (x 46-47) y este (x 53-54)
-AISLES = (38, 39, 40, 46, 47, 53, 54)
+    o.set(43 + i, YB + 9, QZ0 + 1, neon(ch, 'south', 2))
+# gradas: 5 filas que suben 1 bloque cada una; pasillos: oeste (x 39-40), centro (x 46-47) y este (x 53-54)
+AISLES = (39, 40, 46, 47, 53, 54)
 for k in range(5):
     zr = 18 + 3 * k
     for z in range(zr - 1, QZ1):
-        for x in range(38, QX1):
+        for x in range(WR + 1, QX1):
             o.set(x, YB + k, z, 'minecraft:dark_oak_planks' if z == zr - 1 else 'casino:casino_floor_galaxy')
-    for x in range(38, QX1):
+    for x in range(WR + 1, QX1):
         if x in AISLES:
             if k:
                 o.set(x, YB + k, zr - 1, stairs('minecraft:dark_oak_stairs', 'south'))
             continue
         o.set(x, YB + k + 1, zr, chair('blue' if k % 2 else 'black', 'north'))
     # luz suave en los escalones de los pasillos
-    for x in (38, 54):
+    for x in (39, 54):
         o.set(x, YB + k + 3, zr, 'minecraft:light[level=12]')
 # barandal de cordón delante de la primera fila y luces del frente
 for x in range(41, 53):
