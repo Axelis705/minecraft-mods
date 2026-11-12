@@ -1,0 +1,68 @@
+{
+ "variants": {
+  "facing=north,drinks=1": {
+   "model": "casino:block/decor/drinks_1",
+   "y": 0
+  },
+  "facing=north,drinks=2": {
+   "model": "casino:block/decor/drinks_2",
+   "y": 0
+  },
+  "facing=north,drinks=3": {
+   "model": "casino:block/decor/drinks_3",
+   "y": 0
+  },
+  "facing=north,drinks=4": {
+   "model": "casino:block/decor/drinks_4",
+   "y": 0
+  },
+  "facing=east,drinks=1": {
+   "model": "casino:block/decor/drinks_1",
+   "y": 90
+  },
+  "facing=east,drinks=2": {
+   "model": "casino:block/decor/drinks_2",
+   "y": 90
+  },
+  "facing=east,drinks=3": {
+   "model": "casino:block/decor/drinks_3",
+   "y": 90
+  },
+  "facing=east,drinks=4": {
+   "model": "casino:block/decor/drinks_4",
+   "y": 90
+  },
+  "facing=south,drinks=1": {
+   "model": "casino:block/decor/drinks_1",
+   "y": 180
+  },
+  "facing=south,drinks=2": {
+   "model": "casino:block/decor/drinks_2",
+   "y": 180
+  },
+  "facing=south,drinks=3": {
+   "model": "casino:block/decor/drinks_3",
+   "y": 180
+  },
+  "facing=south,drinks=4": {
+   "model": "casino:block/decor/drinks_4",
+   "y": 180
+  },
+  "facing=west,drinks=1": {
+   "model": "casino:block/decor/drinks_1",
+   "y": 270
+  },
+  "facing=west,drinks=2": {
+   "model": "casino:block/decor/drinks_2",
+   "y": 270
+  },
+  "facing=west,drinks=3": {
+   "model": "casino:block/decor/drinks_3",
+   "y": 270
+  },
+  "facing=west,drinks=4": {
+   "model": "casino:block/decor/drinks_4",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "  W",
+  "WWW",
+  "GIG"
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:red_wool"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "I": {
+   "item": "minecraft:iron_ingot"
+  }
+ },
+ "result": {
+  "item": "casino:casino_chair_red",
+  "count": 2
+ }
+}

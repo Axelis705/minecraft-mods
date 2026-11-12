@@ -1,0 +1,120 @@
+{
+ "multipart": [
+  {
+   "when": {
+    "facing": "north"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_base_purple",
+    "y": 0
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "left": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_arm_left_purple",
+    "y": 0
+   }
+  },
+  {
+   "when": {
+    "facing": "north",
+    "right": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_arm_right_purple",
+    "y": 0
+   }
+  },
+  {
+   "when": {
+    "facing": "east"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_base_purple",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "left": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_arm_left_purple",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "east",
+    "right": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_arm_right_purple",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "facing": "south"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_base_purple",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "left": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_arm_left_purple",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "south",
+    "right": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_arm_right_purple",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "facing": "west"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_base_purple",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "left": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_arm_left_purple",
+    "y": 270
+   }
+  },
+  {
+   "when": {
+    "facing": "west",
+    "right": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/sofa_arm_right_purple",
+    "y": 270
+   }
+  }
+ ]
+}

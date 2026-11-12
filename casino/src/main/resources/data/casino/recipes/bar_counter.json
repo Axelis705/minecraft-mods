@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "QQQ",
+  "PGP",
+  "PPP"
+ ],
+ "key": {
+  "Q": {
+   "item": "minecraft:quartz_slab"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "P": {
+   "item": "minecraft:dark_oak_planks"
+  }
+ },
+ "result": {
+  "item": "casino:bar_counter",
+  "count": 3
+ }
+}

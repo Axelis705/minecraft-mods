@@ -1,0 +1,7 @@
+{
+ "parent": "casino:block/decor/bar_stool",
+ "textures": {
+  "v": "casino:block/decor/velvet_purple",
+  "vt": "casino:block/decor/velvet_purple_tufted"
+ }
+}

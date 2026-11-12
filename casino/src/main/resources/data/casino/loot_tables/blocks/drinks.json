@@ -1,0 +1,61 @@
+{
+ "type": "minecraft:block",
+ "pools": [
+  {
+   "rolls": 1,
+   "entries": [
+    {
+     "type": "minecraft:item",
+     "name": "casino:drinks",
+     "functions": [
+      {
+       "function": "minecraft:set_count",
+       "count": 2.0,
+       "add": false,
+       "conditions": [
+        {
+         "condition": "minecraft:block_state_property",
+         "block": "casino:drinks",
+         "properties": {
+          "drinks": "2"
+         }
+        }
+       ]
+      },
+      {
+       "function": "minecraft:set_count",
+       "count": 3.0,
+       "add": false,
+       "conditions": [
+        {
+         "condition": "minecraft:block_state_property",
+         "block": "casino:drinks",
+         "properties": {
+          "drinks": "3"
+         }
+        }
+       ]
+      },
+      {
+       "function": "minecraft:set_count",
+       "count": 4.0,
+       "add": false,
+       "conditions": [
+        {
+         "condition": "minecraft:block_state_property",
+         "block": "casino:drinks",
+         "properties": {
+          "drinks": "4"
+         }
+        }
+       ]
+      },
+      {
+       "function": "minecraft:explosion_decay"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

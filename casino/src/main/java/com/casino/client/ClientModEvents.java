@@ -29,6 +29,7 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(ModBlockEntities.POKER.get(), PokerRenderer::new);
         e.registerBlockEntityRenderer(ModBlockEntities.ROULETTE.get(), RouletteRenderer::new);
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
+        e.registerEntityRenderer(com.casino.registry.ModDecor.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
 
     //#if MC >= 1.20.5

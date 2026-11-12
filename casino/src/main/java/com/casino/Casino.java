@@ -31,6 +31,7 @@ public class Casino {
         //#else
         IEventBus bus = context.getModEventBus();
         //#endif
+        com.casino.registry.ModDecor.init();
         ModBlocks.BLOCKS.register(bus);
         ModItems.ITEMS.register(bus);
         ModEntities.ENTITIES.register(bus);

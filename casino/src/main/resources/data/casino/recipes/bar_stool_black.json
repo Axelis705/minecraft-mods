@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "WWW",
+  " I ",
+  "GGG"
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:black_wool"
+  },
+  "G": {
+   "item": "minecraft:gold_nugget"
+  },
+  "I": {
+   "item": "minecraft:iron_ingot"
+  }
+ },
+ "result": {
+  "item": "casino:bar_stool_black",
+  "count": 2
+ }
+}

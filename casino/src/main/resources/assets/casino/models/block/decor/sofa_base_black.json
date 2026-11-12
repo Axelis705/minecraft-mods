@@ -1,0 +1,7 @@
+{
+ "parent": "casino:block/decor/sofa_base",
+ "textures": {
+  "v": "casino:block/decor/velvet_black",
+  "vt": "casino:block/decor/velvet_black_tufted"
+ }
+}

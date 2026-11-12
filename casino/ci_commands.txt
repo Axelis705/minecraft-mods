@@ -53,6 +53,21 @@ data get block 63 101 53
 # la estructura natural (como se genera en el mundo) sobre un mundo plano: la alfombra queda en el centro del chunk, gire como gire
 place structure casino:casino 0 -60 100
 execute if block 8 -60 104 minecraft:red_carpet run say PRUEBA_CASINO_ESTRUCTURA
+# decoracion: el sofa se une con el de al lado, la barra hace esquina y el asiento vacio se borra solo
+setblock 60 120 0 casino:sofa_red[facing=north]
+setblock 61 120 0 casino:sofa_red[facing=north]
+execute if block 60 120 0 casino:sofa_red[right=false,left=true] if block 61 120 0 casino:sofa_red[right=true] run say PRUEBA_SOFA_UNE
+setblock 70 120 0 casino:bar_counter[facing=north]
+setblock 70 120 1 casino:bar_counter[facing=west]
+execute if block 70 120 0 casino:bar_counter[shape=outer_left] run say PRUEBA_BARRA_ESQUINA
+summon casino:seat 64 121 4
+execute if entity @e[type=casino:seat] run say DIAG_ASIENTO_CREADO
+execute unless entity @e[type=casino:seat] run say PRUEBA_ASIENTO_SE_BORRA
+setblock 66 120 0 casino:casino_chair_purple[facing=south]
+setblock 67 120 0 casino:bottle_shelf[facing=east]
+setblock 68 120 0 casino:cocktail_table_black
+setblock 68 121 0 casino:drinks[drinks=4]
+execute if block 68 121 0 casino:drinks[drinks=4] if block 66 120 0 casino:casino_chair_purple run say PRUEBA_DECOR_OK
 #expect PRUEBA_RASCA_OK
 #expect PRUEBA_POKER_OK
 #expect PRUEBA_CRUPIER_OK
@@ -66,3 +81,7 @@ execute if block 8 -60 104 minecraft:red_carpet run say PRUEBA_CASINO_ESTRUCTURA
 #expect PRUEBA_CASINO_GIRO
 #expect PRUEBA_CASINO_CRUPIERES
 #expect PRUEBA_CASINO_ESTRUCTURA
+#expect PRUEBA_SOFA_UNE
+#expect PRUEBA_BARRA_ESQUINA
+#expect PRUEBA_ASIENTO_SE_BORRA
+#expect PRUEBA_DECOR_OK

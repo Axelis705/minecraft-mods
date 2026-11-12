@@ -1,0 +1,21 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "QQQ",
+  " G ",
+  " G "
+ ],
+ "key": {
+  "Q": {
+   "item": "minecraft:polished_blackstone"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  }
+ },
+ "result": {
+  "item": "casino:cocktail_table_black",
+  "count": 1
+ }
+}
