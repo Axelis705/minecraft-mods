@@ -223,6 +223,11 @@ public class LuckyWheelRenderer extends CasinoBER<LuckyWheelBE> {
         v(glow, hp, hs, -hs, 0, 1, 1, FULL, 0, 0, 1, c, (int) (c * 0.78F), (int) (c * 0.25F), 255);
         v(glow, hp, hs, hs, 0, 1, 0, FULL, 0, 0, 1, c, (int) (c * 0.78F), (int) (c * 0.25F), 255);
         v(glow, hp, -hs, hs, 0, 0, 0, FULL, 0, 0, 1, c, (int) (c * 0.78F), (int) (c * 0.25F), 255);
+        // la otra cara (según la versión la cámara mira desde un lado u otro)
+        v(glow, hp, -hs, hs, 0, 0, 0, FULL, 0, 0, -1, c, (int) (c * 0.78F), (int) (c * 0.25F), 255);
+        v(glow, hp, hs, hs, 0, 1, 0, FULL, 0, 0, -1, c, (int) (c * 0.78F), (int) (c * 0.25F), 255);
+        v(glow, hp, hs, -hs, 0, 1, 1, FULL, 0, 0, -1, c, (int) (c * 0.78F), (int) (c * 0.25F), 255);
+        v(glow, hp, -hs, -hs, 0, 0, 1, FULL, 0, 0, -1, c, (int) (c * 0.78F), (int) (c * 0.25F), 255);
         ps.popPose();
 
         // objeto
@@ -239,7 +244,7 @@ public class LuckyWheelRenderer extends CasinoBER<LuckyWheelBE> {
             ps.pushPose();
             ps.translate(0, 0.95, 0);
             ps.mulPose(Draw.camRot());
-            ps.scale(-0.022F, -0.022F, 0.022F);
+            ps.scale(0.022F * Draw.camFlipX(), -0.022F, 0.022F);
             Matrix4f mat = ps.last().pose();
             Component l1 = Component.translatable("casino.wheel.label").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD);
             Component l2 = Component.literal(be.podium.getCount() + " x ").append(be.podium.getHoverName()).withStyle(ChatFormatting.WHITE);

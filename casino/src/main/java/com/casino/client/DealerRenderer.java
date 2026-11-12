@@ -188,7 +188,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         ps.pushPose();
         ps.translate(0.0, height + 0.55, 0.0);
         ps.mulPose(camera);
-        ps.scale(-0.02F, -0.02F, 0.02F);
+        ps.scale(0.02F * com.casino.plat.client.Draw.camFlipX(), -0.02F, 0.02F);
         int n = lines.size();
         Component title = Component.translatable("casino.tip.title").withStyle(net.minecraft.ChatFormatting.GOLD, net.minecraft.ChatFormatting.BOLD);
         int bg = 0xF0FFF6DC;

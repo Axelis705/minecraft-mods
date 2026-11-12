@@ -132,6 +132,18 @@ public final class Draw {
         //#endif
     }
 
+    /**
+     * Signo de la escala en x para textos y carteles que miran a la cámara (después de girar con {@link #camRot}): en 1.20 Minecraft
+     * usa -1 y desde 1.21 usa +1 (si no, el texto queda de espaldas y no se ve).
+     */
+    public static float camFlipX() {
+        //#if MC >= 1.21
+        //$$ return 1F;
+        //#else
+        return -1F;
+        //#endif
+    }
+
     /** Posición de la cámara en el mundo. */
     public static net.minecraft.world.phys.Vec3 camPos() {
         //#if MC >= 26.1

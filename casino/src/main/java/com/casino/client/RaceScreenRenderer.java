@@ -67,7 +67,7 @@ public class RaceScreenRenderer extends CasinoBER<RaceBE> {
         ps.pushPose();
         ps.translate(0.5, 0, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(-be.facing().toYRot()));
-        ps.translate(-0.5 + be.left, 0, -0.5);
+        ps.translate(-0.5 + be.left, 0, -0.5 + 0.066);
         PoseStack.Pose pose = ps.last();
 
         float time = (now % 24000L) + partial;

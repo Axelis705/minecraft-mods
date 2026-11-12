@@ -276,6 +276,14 @@ for y in range(1, Y_ROOF - 1):
         o.set(x, y, IZ0, lining(y)); o.set(x, y, IZ1, lining(y))
     for z in range(IZ0, IZ1 + 1):
         o.set(IX0, y, z, lining(y)); o.set(IX1, y, z, lining(y))
+# el forro no puede tapar la entrada (portal de 7 de ancho y 7 de alto)
+for x in range(CX - 3, CX + 4):
+    for y in range(1, 8):
+        o.set(x, y, IZ1, AIR)
+for y in range(1, 9):
+    o.set(CX - 4, y, IZ1, GB if y % 2 else GT); o.set(CX + 4, y, IZ1, GB if y % 2 else GT)
+for x in range(CX - 4, CX + 5):
+    o.set(x, 8, IZ1, GB)
 IX0, IX1, IZ0, IZ1 = IX0 + 1, IX1 - 1, IZ0 + 1, IZ1 - 1   # 6..54, 10..49 (espacio útil)
 # columnas que dividen las zonas (cada 6 a lo largo de x=22 y x=38)
 COLS = [(22, 24), (22, 42), (38, 24), (38, 42), (22, 33), (38, 33)]
@@ -394,7 +402,7 @@ for x in range(IX0, 23):
 # escenario elevado contra la pared norte
 for x in range(6, 17):
     for z in range(IZ0, IZ0 + 5):
-        o.set(x, 1, z, 'minecraft:dark_oak_planks' if z < IZ0 + 4 else stairs('minecraft:dark_oak_stairs', 'south'))
+        o.set(x, 1, z, 'minecraft:dark_oak_planks' if z < IZ0 + 4 else stairs('minecraft:dark_oak_stairs', 'north'))
 for x in range(6, 17):
     for y in range(2, 9):
         o.set(x, y, IZ0 - 1, 'casino:velvet_wall_red')
@@ -575,7 +583,12 @@ for x in range(CX - 9, CX + 10):
         if not edge:
             o.set(x, Y_ROOF - 1, z, 'minecraft:light_blue_concrete')
             if (x + z) % 5 == 0: o.set(x, Y_ROOF - 1, z, SEA)
-# ojo: debajo de la alberca está el techo del casino (y=11), el agua no se sale
+# debajo de la alberca: techo doble (sin luces ni candelabros) para que no se vean gotas dentro del casino
+for x in range(CX - 10, CX + 11):
+    for z in range(TER_Z0 + 4, TER_Z0 + 14):
+        o.set(x, Y_ROOF - 2, z, 'minecraft:smooth_quartz')
+        if (x + z) % 4 == 0:
+            o.set(x, Y_ROOF - 3, z, LIGHT)
 for x in range(CX - 9, CX + 10, 3):
     o.set(x, Y_ROOF + 1, TER_Z0 + 14, sofa('blue', 'north'))
 for x in (CX - 13, CX + 13):
@@ -736,7 +749,7 @@ for x in range(29, 32):
     o.set(x, P, 29, 'minecraft:black_concrete')
 o.set(29, P + 1, 29, 'minecraft:black_carpet'); o.set(30, P + 1, 29, 'minecraft:white_carpet'); o.set(31, P + 1, 29, 'minecraft:black_carpet')
 o.set(30, P, 30, 'minecraft:note_block')
-o.set(30, P, 28, 'minecraft:dark_oak_stairs[facing=south]')
+o.set(30, P, 28, 'minecraft:dark_oak_stairs[facing=north]')
 # --- bar privado (este)
 for z in range(22, 29):
     o.set(37, P, z, counter('west'))
@@ -784,15 +797,17 @@ for x in range(CX - 5, CX + 6):
 for x in range(CX - 6, CX + 7):
     for z in (20, 29):
         o.set(x, Y_PH_TOP, z, GT)
-# cabina del DJ con bocinas (al sur de la corona)
+# cabina del DJ al fondo (sur), mirando a la pista; la salida del elevador queda libre
+for x in range(CX - 4, CX + 5):
+    for y in range(A, A + 4):
+        o.set(x, y, SZ1, BM if y < A + 3 else GT)
 for x in range(CX - 3, CX + 4):
-    o.set(x, A, 19, counter('south'))
-for x in (CX - 4, CX + 4):
-    o.set(x, A, 19, speaker('south')); o.set(x, A + 1, 19, speaker('south'))
-for x in (CX - 1, CX + 1):
-    o.set(x, A + 1, 19, 'minecraft:jukebox' if x < CX else 'minecraft:note_block')
+    o.set(x, A, SZ1 - 2, counter('north'))
+for x in (CX - 5, CX + 5):
+    o.set(x, A, SZ1 - 1, speaker('north')); o.set(x, A + 1, SZ1 - 1, speaker('north'))
+o.set(CX - 1, A + 1, SZ1 - 2, 'minecraft:jukebox'); o.set(CX + 1, A + 1, SZ1 - 2, 'minecraft:note_block')
 for i, ch in enumerate('DISCO'):
-    o.set(CX - 2 + i, A + 4, 19, neon(ch, 'south', 1))
+    o.set(CX - 2 + i, A + 2, SZ1 - 1, neon(ch, 'north', 1))
 # bar y sillones de la azotea
 for z in range(21, 29):
     o.set(SX0 + 2, A, z, counter('east'))
@@ -804,7 +819,7 @@ for z in range(21, 29):
 o.set(SX1 - 3, A, 23, TABLE_B); o.set(SX1 - 3, A + 1, 23, drinks(3))
 o.set(SX1 - 3, A, 27, TABLE_B); o.set(SX1 - 3, A + 1, 27, drinks(2))
 # luces de fiesta: postes con barras de luz y faroles
-for x in range(SX0 + 2, SX1 - 1, 4):
+for x in [v for v in range(SX0 + 2, SX1 - 1, 4) if abs(v - CX) > 6]:
     o.set(x, A, SZ1 - 1, 'minecraft:end_rod[facing=up]'); o.set(x, A + 1, SZ1 - 1, 'minecraft:end_rod[facing=up]')
 for (x, z) in ((SX0 + 1, SZ1 - 1), (SX1 - 1, SZ1 - 1)):
     o.set(x, A, z, 'minecraft:polished_blackstone_wall'); o.set(x, A + 1, z, 'minecraft:polished_blackstone_wall'); o.set(x, A + 2, z, 'minecraft:sea_lantern')
