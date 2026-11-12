@@ -130,7 +130,7 @@ public class TemplateCasinoPiece extends TemplateStructurePiece {
             if (a.length < 2) {
                 return;
             }
-            int dir = parse(a[a.length > 2 ? 2 : 1]);
+            int dir = parse(a[0].equals("m") && a.length > 2 ? a[2] : a[1]); // "m tipo dir" / "otro dir ..."
             switch (a[0]) {
                 case "m" -> {
                     Mach k = Mach.valueOf(a[1].toUpperCase(Locale.ROOT));

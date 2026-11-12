@@ -180,7 +180,7 @@ def facade_south():
             if rel == 0:
                 o.set(x, y, z, QP if y < Y_ROOF - 2 else (GT if y == Y_ROOF - 2 else CQ))
             elif 3 <= y <= 8:
-                o.set(x, y, z, GLASS)
+                o.set(x, y, z, TINT)
             elif y == 2:
                 o.set(x, y, z, BM)
             else:
@@ -198,7 +198,7 @@ def facade_side(x, f):
             if rel == 0:
                 o.set(x, y, z, QP if y < Y_ROOF - 2 else GT)
             elif 3 <= y <= 8 and PZ0 + 2 <= z <= PZ1 - 2:
-                o.set(x, y, z, GLASS)
+                o.set(x, y, z, TINT)
             elif y == 2:
                 o.set(x, y, z, BM)
             else:
