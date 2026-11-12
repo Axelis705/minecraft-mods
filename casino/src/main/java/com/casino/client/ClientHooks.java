@@ -57,6 +57,14 @@ public final class ClientHooks {
         open(new NeonScreen(pos));
     }
 
+    public static void openElevator(com.casino.diamond.OpenElevatorPacket m) {
+        open(new ElevatorScreen(m));
+    }
+
+    public static void showShop(com.casino.diamond.ShopPacket.Open m) {
+        ShopScreen.show(m);
+    }
+
     public static void openGuide() {
         open(new GuideScreen());
     }

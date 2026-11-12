@@ -65,6 +65,6 @@ public final class OpenElevatorPacket {
     }
 
     public static void handle(OpenElevatorPacket m, ServerPlayer p) {
-        Net.onClient(() -> com.casino.client.ClientHooks.open(new com.casino.client.ElevatorScreen(m)));
+        Net.onClient(() -> com.casino.client.ClientHooks.openElevator(m));
     }
 }

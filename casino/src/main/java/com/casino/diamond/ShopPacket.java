@@ -49,7 +49,7 @@ public final class ShopPacket {
         }
 
         public static void handle(Open m, ServerPlayer p) {
-            Net.onClient(() -> com.casino.client.ShopScreen.show(m));
+            Net.onClient(() -> com.casino.client.ClientHooks.showShop(m));
         }
     }
 
