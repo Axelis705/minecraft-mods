@@ -20,7 +20,7 @@ done
 # comandos de prueba opcionales del mod (ci_commands.txt): una linea por comando; "#expect TEXTO" exige que TEXTO salga en el registro
 if [ $ok -eq 1 ] && [ -f ci_commands.txt ]; then
   while IFS= read -r line; do
-    case "$line" in ''|'#'*) continue;; esac
+    case "$line" in ''|'#expect '*) continue;; esac
     echo "$line" >&3; sleep 1
   done < ci_commands.txt
   sleep 9
