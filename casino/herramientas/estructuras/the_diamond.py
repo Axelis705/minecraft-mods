@@ -339,7 +339,7 @@ for (x, z) in ((CX - 4, 44), (CX + 4, 44)):
 WX, WZ = CX, 27
 for x in range(WX - 6, WX + 7):
     for z in range(WZ - 4, WZ + 9):
-        d = ((x - WX) / 6.5) ** 2 + ((z - (WZ + 2)) / 6.5) ** 2
+        d = ((x - WX) / 4.6) ** 2 + ((z - (WZ + 2)) / 4.6) ** 2
         if d <= 1.0:
             o.set(x, 0, z, BM if d > 0.75 else ('casino:casino_floor_deco'))
         if 0.85 < d <= 1.0 and z > WZ:
@@ -353,8 +353,6 @@ for dx in (-4, 4):
     o.set(WX + dx, 1, WZ - 2, GB); o.set(WX + dx, 2, WZ - 2, 'minecraft:end_rod[facing=up]')
 for x, z in ((WX - 5, 31), (WX + 5, 31), (WX, 36), (WX - 5, 38), (WX + 5, 38)):
     o.set(x, Y_ROOF - 2, z, CHAND)
-for x, z in ((WX - 2, 34), (WX + 2, 34)):
-    o.set(x, 1, z, TABLE_B); o.set(x, 2, z, drinks(1))
 
 # ---------------- ala oeste (x 6..21, z 24..40): BAR con barra-isla al centro, taburetes alrededor y mesitas
 for x in range(IX0, 22):
@@ -405,18 +403,19 @@ for x in range(39, IX1 + 1):
         o.set(x, 0, z, 'casino:casino_floor_lounge')
 for x in range(39, IX1 + 1):
     o.set(x, 0, 23, GT); o.set(x, 0, 43, GT)
-for row_z in (27, 33):
+for row_z in (26, 37):
     for x in range(41, 54, 2):
         mq.place(o, 'slot', x, 1, row_z, 0)        # miran al norte
         mq.place(o, 'slot', x, 1, row_z + 1, 2)    # espalda con espalda, miran al sur
     for x in range(41, 54):
         o.set(x, 3, row_z, 'minecraft:light[level=8]') if o.get(x, 3, row_z) == AIR else None
 for x in range(42, 54, 2):
-    o.set(x, 1, 27, GT); o.set(x, 1, 28, GT); o.set(x, 2, 27, 'minecraft:end_rod[facing=up]'); o.set(x, 2, 28, 'minecraft:end_rod[facing=up]')
-    o.set(x, 1, 33, GT); o.set(x, 1, 34, GT); o.set(x, 2, 33, 'minecraft:end_rod[facing=up]'); o.set(x, 2, 34, 'minecraft:end_rod[facing=up]')
-for x in range(41, 54, 2):
-    mq.place(o, 'slot', x, 1, 39, 0)               # tercera hilera contra la pared de la sala, mirando al norte
-    o.set(x + 1, 1, 39, 'minecraft:potted_bamboo') if x < 53 else None
+    for z in (26, 27, 37, 38):
+        o.set(x, 1, z, GT); o.set(x, 2, z, 'minecraft:end_rod[facing=up]')
+# pasillo central de la sala (de la puerta al fondo): alfombra real
+for x in range(39, IX1 + 1):
+    for z in range(30, 35):
+        o.set(x, 0, z, 'casino:casino_floor_royal')
 for x in (44, 50):
     o.set(x, Y_ROOF - 2, 30, CHAND)
 o.set(IX1, 6, 30, sign(0, 'west')); o.set(IX1, 6, 36, sign(3, 'west'))
@@ -452,9 +451,8 @@ for z in (19, 21):
 for x in (9, 13):
     o.set(x, 1, 17, TABLE_B); o.set(x, 2, 17, drinks(2))
 for x in (18, 20):
-    for z in (13, 17):
-        o.set(x, 1, z, TABLE_W); o.set(x, 2, z, drinks(3))
-        o.set(x, 1, z + 1, chair('black', 'north'))
+    o.set(x, 1, 11, TABLE_W); o.set(x, 2, 11, drinks(3))
+    o.set(x, 1, 12, chair('black', 'north'))
 o.set(12, Y_ROOF - 2, 18, CHAND)
 
 # ---------------- centro fondo: vestíbulo del elevador
@@ -518,11 +516,9 @@ mq.place(o, 'plinko', 44, 1, IZ0, 2)
 mq.place(o, 'plinko', 49, 1, IZ0, 2)
 mq.place(o, 'scratch', IX1, 1, 15, 3)
 mq.place(o, 'scratch', IX1, 1, 18, 3)
-for x in (41, 46, 47, 52):
-    o.set(x, 1, 13, rope('purple'))
 for i, ch in enumerate('PLINKO'):
     o.set(43 + i, 7, IZ0, neon(ch, 'south', 3))
-for (x, z) in ((42, 18), (47, 18)):
+for (x, z) in ((46, 21), (51, 21)):
     o.set(x, 1, z, TABLE_W); o.set(x, 2, z, drinks(1))
     o.set(x - 1, 1, z, chair('blue', 'east')); o.set(x + 1, 1, z, chair('blue', 'west'))
 o.set(46, Y_ROOF - 2, 16, CHAND)
@@ -548,10 +544,10 @@ def wall_z(z, x0, x1, gap0, gap1):
                 o.set(x, y, z, MAH if y <= 3 else ('casino:velvet_wall_purple' if y < Y_ROOF - 2 else GT))
 wall_x(22, 23, 41, 30, 36)        # bar | salón central
 wall_x(38, 23, 41, 30, 36)        # salón central | tragamonedas
-wall_z(23, IX0, 21, 11, 17)       # escenario | bar
-wall_z(23, 39, IX1, 44, 50)       # plinko | tragamonedas
-wall_z(41, IX0, 21, 11, 17)       # bar | vestíbulo
-wall_z(41, 39, IX1, 44, 50)       # tragamonedas | vestíbulo
+wall_z(23, IX0, 21, -99, -99)     # escenario | bar (sin puerta)
+wall_z(23, 39, IX1, -99, -99)     # plinko | tragamonedas (sin puerta)
+wall_z(41, IX0, 21, -99, -99)     # bar | vestíbulo (sin puerta)
+wall_z(41, 39, IX1, -99, -99)     # tragamonedas | vestíbulo (sin puerta)
 wall_x(22, IZ0, 22, 15, 19)       # escenario | elevador
 wall_x(38, IZ0, 22, 15, 19)       # elevador | plinko
 # letreros de neón sobre los arcos (hacia el salón central y el vestíbulo)
@@ -559,12 +555,10 @@ for i, ch in enumerate('BAR'):
     o.set(22 + 1, 8, 34 - i, neon(ch, 'east', 1))
 for i, ch in enumerate('SLOTS'):
     o.set(38 - 1, 8, 31 + i, neon(ch, 'west', 0))
-for i, ch in enumerate('BAR'):
-    o.set(13 + i, 8, 41 + 1, neon(ch, 'south', 1))
-for i, ch in enumerate('SLOTS'):
-    o.set(45 + i, 8, 41 + 1, neon(ch, 'south', 0))
 for i, ch in enumerate('SHOW'):
-    o.set(12 + i, 8, 23 + 1, neon(ch, 'south', 2))
+    o.set(22 + 1, 7, 19 - i, neon(ch, 'east', 2))
+for i, ch in enumerate('PLINKO'):
+    o.set(38 - 1, 7, 14 + i, neon(ch, 'west', 3))
 
 # ================================================================== PISO VIP (y 12..22) y terraza con alberca
 for y in range(Y_VIP + 1, Y_VIP_TOP):
@@ -606,8 +600,7 @@ mq.place(o, 'roulette', 22, Y_VIP + 1, 19, 1)
 mq.place(o, 'roulette', 22, Y_VIP + 1, 28, 1)
 mq.place(o, 'blackjack', 38, Y_VIP + 1, 19, 3)
 mq.place(o, 'blackjack', 38, Y_VIP + 1, 27, 3)
-mq.place(o, 'blackjack', CX, Y_VIP + 1, 29, 0)
-for x, z in ((CX, 21), (22, 19), (22, 28), (37, 19), (37, 27), (CX, 28)):
+for x, z in ((CX, 21), (22, 19), (22, 28), (37, 19), (37, 27)):
     o.set(x, Y_VIP_TOP - 2, z, CHAND)
 for (x, z) in ((TX0 + 2, TZ0 + 2), (TX1 - 2, TZ0 + 2), (TX0 + 2, TZ1 - 2), (TX1 - 2, TZ1 - 2)):
     o.set(x, Y_VIP + 1, z, 'minecraft:potted_azalea_bush')
@@ -986,28 +979,33 @@ for (cx0, cz0) in ((15, 14), (15, 25), (22, 20), (22, 29)):
         o.set(cx0 + dx, YB + 1, cz0 + 2, sofa('black', 'north'))
     o.set(cx0, YB + 1, cz0, TABLE_B); o.set(cx0, YB + 2, cz0, drinks(3))
     o.set(cx0, -3, cz0, CHAND)
-for (x, z) in ((13, 31), (25, 12), (35, 31), (35, 12)):
+for (x, z) in ((13, 31), (25, 12), (35, 31), (35, 10)):
     o.set(x, YB + 1, z, 'minecraft:potted_azalea_bush')
 for i, ch in enumerate('VIP'):
     o.set(CX + 1 - i, YB + 6, QZ1, neon(ch, 'north', 2))
 o.set(QX0 + 1, YB + 5, 27, speaker('east'))
 
-# ---- sala de carreras (x 38..54): pantalla gigante al norte y gradas que suben hacia el sur
-wall_ok = True
+# ---- sala de carreras (x 38..54), como un cine: se entra por delante (junto al elevador), al lado de la pantalla, y las gradas
+#      suben hacia el fondo con pasillos laterales y central con escalones
+DZ0, DZ1 = 12, 16                         # puerta en el muro x=37 (frente al vestíbulo del elevador)
 for z in range(QZ0 + 1, QZ1):
     for y in range(YB + 1, -2):
-        gap = 20 <= z <= 24 and y <= YB + 5
-        if gap:
+        if DZ0 <= z <= DZ1 and y <= YB + 4:
             o.set(37, y, z, AIR)
-        elif 19 <= z <= 25 and y <= YB + 6:
-            o.set(37, y, z, GB if y in (YB + 1, YB + 6) or z in (19, 25) else GT)
+        elif DZ0 - 1 <= z <= DZ1 + 1 and y <= YB + 5:
+            o.set(37, y, z, GB if y in (YB + 1, YB + 5) or z in (DZ0 - 1, DZ1 + 1) else GT)
         else:
             o.set(37, y, z, MAH if y <= YB + 3 else ('casino:velvet_wall_black' if y < -3 else GT))
 for i, ch in enumerate('CARRERAS'):
-    o.set(36, YB + 8, 19 + i, neon(ch, 'west', 2))
+    o.set(36, YB + 7, 10 + i, neon(ch, 'west', 2))
+# alfombra que guía de la puerta del elevador a la sala
+for x in range(33, 46):
+    for z in range(DZ0 + 1, DZ1):
+        o.set(x, YB, z, 'casino:casino_floor_royal')
 for x in range(38, QX1):
     for z in range(QZ0 + 1, QZ1):
-        o.set(x, YB, z, 'casino:casino_floor_galaxy')
+        if not (x < 46 and DZ0 + 1 <= z < DZ1):
+            o.set(x, YB, z, 'casino:casino_floor_galaxy')
 # pantalla (12 x 6) con marco dorado en la pared norte
 for x in range(40, 54):
     for y in range(YB + 2, YB + 10):
@@ -1015,27 +1013,29 @@ for x in range(40, 54):
 o.marker(46, YB + 3, QZ0 + 1, 'tv 2 12 6', [(dx, dy, 0, screen((dx + dy) % 4, 'south')) for dx in range(-5, 7) for dy in range(0, 6)])
 for i, ch in enumerate('CARRERAS'):
     o.set(43 + i, YB + 10, QZ0 + 1, neon(ch, 'south', 2))
-# gradas: 5 filas, cada una 1 bloque más alta, con pasillo al centro (x 46-47)
+# gradas: 5 filas que suben 1 bloque cada una; pasillos: oeste (x 38-40), centro (x 46-47) y este (x 53-54)
+AISLES = (38, 39, 40, 46, 47, 53, 54)
 for k in range(5):
-    zr = 17 + 3 * k
+    zr = 18 + 3 * k
     for z in range(zr - 1, QZ1):
-        for x in range(39, QX1):
+        for x in range(38, QX1):
             o.set(x, YB + k, z, 'minecraft:dark_oak_planks' if z == zr - 1 else 'casino:casino_floor_galaxy')
-    for x in range(39, QX1):
-        if x in (46, 47):
+    for x in range(38, QX1):
+        if x in AISLES:
             if k:
                 o.set(x, YB + k, zr - 1, stairs('minecraft:dark_oak_stairs', 'south'))
             continue
         o.set(x, YB + k + 1, zr, chair('blue' if k % 2 else 'black', 'north'))
-    for x in (39, QX1 - 1):
-        o.set(x, YB + k + 2, zr + 1, 'minecraft:light[level=11]')
-# luces bajas en el pasillo y a los lados de la pantalla
-for z in range(17, QZ1, 3):
-    o.set(QX1 - 1, YB + 5, z, 'minecraft:light[level=13]')
+    # luz suave en los escalones de los pasillos
+    for x in (38, 54):
+        o.set(x, YB + k + 3, zr, 'minecraft:light[level=12]')
+# barandal de cordón delante de la primera fila y luces del frente
+for x in range(41, 53):
+    if x not in (46, 47):
+        o.set(x, YB + 1, 16, rope('purple'))
 for x in (39, 54):
-    o.set(x, YB + 1, QZ0 + 2, 'minecraft:potted_azalea_bush')
-for z in range(QZ0 + 2, 16):
-    o.set(39, YB + 1, z, rope('purple')) if z % 3 == 0 else None
+    o.set(x, YB + 1, QZ0 + 1, 'minecraft:potted_azalea_bush')
+light_grid(39, 54, 11, 15, YB + 5, 4, 'minecraft:light[level=13]')
 
 if __name__ == '__main__':
     out = sys.argv[1] if len(sys.argv) > 1 else 'the_diamond.nbt'
