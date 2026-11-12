@@ -1,6 +1,7 @@
 name: Sondeo de versiones Forge
 
-# Prueba que el MDK oficial de Forge de cada versión compile en GitHub (para llevar el casino a varias versiones).
+# Baja el MDK oficial de Forge de cada versión, lo compila y guarda su plantilla y las librerías para compilar (classpath),
+# para poder llevar el casino a varias versiones.
 on:
   workflow_dispatch:
   push:
@@ -8,19 +9,20 @@ on:
       - '.github/workflows/sondeo-versiones.yml'
 
 jobs:
-  promos:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Versiones de Forge disponibles
-        run: |
-          curl -sS https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json -o promos.json
-          python3 -c "import json;d=json.load(open('promos.json'))['promos'];[print(k,v) for k,v in d.items() if k.startswith(('1.20','1.21','26'))]"
   mdk:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        mc: ['1.20.1', '1.21.1', '1.21.4', '1.21.11', '26.1.2', '26.2', '26.3']
+        include:
+          - mc: '1.21.1'
+            java: '21'
+          - mc: '1.21.4'
+            java: '21'
+          - mc: '26.2'
+            java: '25'
+          - mc: '26.3'
+            java: '25'
     steps:
       - name: Buscar la versión de Forge
         id: v
@@ -28,23 +30,36 @@ jobs:
           curl -sS https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json -o promos.json
           V=$(python3 -c "import json;d=json.load(open('promos.json'))['promos'];print(d.get('${{ matrix.mc }}-recommended') or d.get('${{ matrix.mc }}-latest') or '')")
           echo "forge=$V" >> $GITHUB_OUTPUT
-          echo "Forge para ${{ matrix.mc }}: $V"
       - name: Bajar el MDK
         run: |
           F=${{ matrix.mc }}-${{ steps.v.outputs.forge }}
           curl -sSfL https://maven.minecraftforge.net/net/minecraftforge/forge/$F/forge-$F-mdk.zip -o mdk.zip
-          mkdir mdk && cd mdk && unzip -q ../mdk.zip && ls
-          grep -h -E "net.minecraftforge.gradle|languageVersion|minecraft_version|forge_version|gradle-" build.gradle gradle.properties gradle/wrapper/gradle-wrapper.properties || true
+          mkdir mdk && cd mdk && unzip -q ../mdk.zip
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: |
-            17
-            21
-            25
-      - name: Compilar el MDK
+          java-version: ${{ matrix.java }}
+      - name: Compilar y sacar el classpath
         working-directory: mdk
         run: |
           chmod +x gradlew
-          ./gradlew build --no-daemon -q 2>&1 | tail -30
-          ls build/libs
+          cat >> build.gradle <<'G'
+
+          tasks.register('printCp') {
+              doLast {
+                  def f = file('cp.txt')
+                  f.text = sourceSets.main.compileClasspath.files.join('\n')
+              }
+          }
+          G
+          ./gradlew build printCp --no-daemon -q 2>&1 | tail -20
+          mkdir -p ../out/libs ../out/plantilla
+          while read j; do [ -f "$j" ] && cp "$j" ../out/libs/; done < cp.txt
+          cp -r build.gradle settings.gradle gradle.properties gradle gradlew src/main/resources ../out/plantilla/ 2>/dev/null || true
+          find src -name "*.java" -exec cp {} ../out/plantilla/ \;
+          du -sh ../out/libs; ls ../out/libs | head -100
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forge-${{ matrix.mc }}
+          path: out
+          retention-days: 7
