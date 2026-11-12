@@ -47,6 +47,7 @@ def main(mod, mc, out):
     shutil.copytree(os.path.join(tpl, "gradle"), os.path.join(out, "gradle"), dirs_exist_ok=True)
     shutil.copy(os.path.join(tpl, "gradlew"), os.path.join(out, "gradlew"))
     os.chmod(os.path.join(out, "gradlew"), 0o755)
+    shutil.copy(os.path.join(tpl, "gradlew.bat"), os.path.join(out, "gradlew.bat"))
     with open(os.path.join(out, "gradle", "wrapper", "gradle-wrapper.properties"), "w") as fh:
         fh.write("distributionBase=GRADLE_USER_HOME\ndistributionPath=wrapper/dists\n"
                  f"distributionUrl=https\\://services.gradle.org/distributions/gradle-{cfg['gradle']}-bin.zip\n"
