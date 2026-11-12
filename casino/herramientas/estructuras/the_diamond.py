@@ -300,34 +300,51 @@ floor_pattern(IX0, IX1, 44, IZ1, 0, WM, BM, 'diamond', CX, 47)
 for z in range(44, IZ1 + 1):
     for x in range(CX - 2, CX + 3):
         o.set(x, 0, z, 'casino:casino_floor_royal')
-# cajero: mostrador de mármol negro con 3 cajeros y vitrina
-for x in range(7, 19):
-    o.set(x, 1, 45, counter('north'))   # (los cajeros se ponen encima de esta línea)
-for x in (9, 12, 15):
-    mq.place(o, 'cashier', x, 1, 45, 0)        # en la línea del mostrador, mirando al salón
-for x in range(7, 19):
-    o.set(x, 0, 43, MAH); o.set(x, 0, 44, MAH)
-o.set(6, 1, 45, counter('north', 'outer_left')); o.set(19, 1, 45, counter('north', 'outer_right'))
-for x in range(6, 20):
-    o.set(x, 5, 42, 'casino:velvet_wall_red')
-for i, ch in enumerate('CAJA'):
-    o.set(11 + i, 6, 43, neon(ch, 'south', 2))
-o.set(8, 2, 45, 'minecraft:light[level=10]')
-# tienda de premios: mostrador + vitrinas de vidrio con oro y diamantes de adorno
-for x in range(42, 54):
-    o.set(x, 1, 45, counter('north'))
-for x in (45, 48, 51):
-    o.marker(x, 1, 45, 'shop 0', [(0, 0, 0, 'casino:prize_shop[facing=north]')])
-for x in range(42, 54):
-    o.set(x, 0, 43, MAH); o.set(x, 0, 44, MAH)
-for i, ch in enumerate('PREMIOS'):
-    o.set(44 + i, 6, 43, neon(ch, 'south', 1))
-for x in range(41, 55):
-    o.set(x, 5, 42, 'casino:velvet_wall_red')
-for x in (42, 53):
-    for z in (47, 49):
-        o.set(x, 1, z, 'minecraft:glass'); o.set(x, 2, z, 'minecraft:glass')
-o.set(42, 1, 47, GB); o.set(53, 1, 47, 'minecraft:diamond_block')
+# CAJA (oeste, x 7..18) y PREMIOS (este, x 42..53): dos casetas gemelas, una espejo de la otra (eje x=30).
+# Mostrador en z=44 mirando al vestíbulo (el jugador se para en z 45+), detrás el área del personal (z 42..43) contra el muro.
+def booth(x0, x1, word, color, kind):
+    c = (x0 + x1) / 2
+    for x in range(x0 - 1, x1 + 2):
+        for z in range(42, 45):
+            o.set(x, 0, z, 'casino:casino_floor_royal' if x0 <= x <= x1 else GB)
+        for y in range(1, Y_ROOF - 2):
+            o.set(x, y, 42, GT if y in (1, 4) else ('casino:velvet_wall_red' if y < 8 else GT))  # fondo de la caseta
+    # mostrador al frente con remates
+    for x in range(x0, x1 + 1):
+        o.set(x, 1, 44, counter('south'))
+    o.set(x0 - 1, 1, 44, counter('south', 'outer_right')); o.set(x1 + 1, 1, 44, counter('south', 'outer_left'))
+    for z in (42, 43):
+        o.set(x0 - 1, 1, z, counter('west')); o.set(x1 + 1, 1, z, counter('east'))
+    # columnas de las esquinas y marquesina dorada con luces
+    for x in (x0 - 1, x1 + 1):
+        for y in range(2, 6):
+            o.set(x, y, 44, QP if y < 5 else GB)
+    for x in range(x0 - 1, x1 + 2):
+        o.set(x, 5, 44, GB); o.set(x, 5, 45, stairs('minecraft:smooth_quartz_stairs', 'north', 'top'))
+        o.set(x, 6, 44, 'minecraft:black_concrete'); o.set(x, 7, 44, 'minecraft:black_concrete'); o.set(x, 8, 44, GB)
+        o.set(x, 6, 43, GT); o.set(x, 7, 43, GT)
+        if (abs(2 * x - (x0 + x1)) // 2) % 2 == 1:
+            o.set(x, 4, 45, 'minecraft:lantern[hanging=true]')
+    # letrero de neón centrado sobre la marquesina
+    st = int(c - (len(word) - 1) / 2)
+    for i, ch in enumerate(word):
+        o.set(st + i, 7, 45, neon(ch, 'south', color)) if ch != ' ' else None
+    # fondo: vitrinas iluminadas
+    for x in range(x0, x1 + 1):
+        d = abs(2 * x - (x0 + x1))
+        if kind == 'caja':
+            o.set(x, 2, 42, 'minecraft:iron_block' if d % 4 == 1 else GB)
+            o.set(x, 3, 42, 'minecraft:glass')
+        else:
+            o.set(x, 2, 42, ('minecraft:diamond_block', 'minecraft:emerald_block', GB)[(d // 2) % 3])
+            o.set(x, 3, 42, 'minecraft:glass')
+        o.set(x, 1, 43, 'minecraft:light[level=12]')
+booth(7, 18, '♦CAJA♦', 2, 'caja')
+booth(42, 53, 'PREMIOS!', 1, 'premios')
+for x in (8, 11, 14, 17):
+    mq.place(o, 'cashier', x, 1, 44, 2)        # 4 cajeros mirando al vestíbulo
+for x in (43, 46, 49, 52):
+    o.marker(x, 1, 44, 'shop 2', [(0, 0, 0, 'casino:prize_shop[facing=south]')])
 # sofás de espera en el vestíbulo
 for z in (47, 48, 49):
     o.set(22, 1, z, sofa('red', 'east')); o.set(38, 1, z, sofa('red', 'west'))
@@ -371,20 +388,20 @@ for z in range(BZ0 + 1, BZ1):
 for x in range(BX0 + 1, BX1):
     for z in range(BZ0 + 1, BZ1):
         o.set(x, 0, z, 'minecraft:dark_oak_planks')
-for x in range(BX0 + 2, BX1 - 1):
+for x in range(BX0 + 1, BX1):
     o.set(x, 1, BZ0 + 2, shelf('north')); o.set(x, 2, BZ0 + 2, shelf('north'))
     o.set(x, 1, BZ1 - 2, shelf('south')); o.set(x, 2, BZ1 - 2, shelf('south'))
     o.set(x, 1, 32, GB); o.set(x, 2, 32, GT); o.set(x, 3, 32, GB)
-for x in range(BX0 + 2, BX1 - 1):
+for x in range(BX0 + 1, BX1):
     for y in range(4, 10):
         o.set(x, y, 32, GT if y in (4, 9) else 'casino:velvet_wall_red')
-for i, ch in enumerate('BAR'):
-    o.set(14 - i, 7, 31, neon(ch, 'north', 1)); o.set(13 + i, 7, 33, neon(ch, 'south', 1))
-for x in range(BX0, BX1 + 1, 3):
-    o.set(x, 2, BZ0, drinks(1 + x % 3, 'north')); o.set(x + 1, 2, BZ1, drinks(1 + (x + 1) % 3, 'south'))
+for i, ch in enumerate('TRAGOS'):
+    o.set(16 - i, 7, 31, neon(ch, 'north', 1)); o.set(11 + i, 7, 33, neon(ch, 'south', 1))
+for x in (11, 16):
+    o.set(x, 2, BZ0, drinks(2, 'north')); o.set(x, 2, BZ1, drinks(3, 'south'))
 # taburetes alrededor de la barra
-for x in range(BX0, BX1 + 1, 2):
-    o.set(x, 1, BZ0 - 1, stool('black', 'south')); o.set(x + 1, 1, BZ1 + 1, stool('black', 'north'))
+for x in (10, 12, 15, 17):
+    o.set(x, 1, BZ0 - 1, stool('black', 'south')); o.set(x, 1, BZ1 + 1, stool('black', 'north'))
 for z in range(BZ0 + 1, BZ1, 2):
     o.set(BX0 - 1, 1, z, stool('black', 'east')); o.set(BX1 + 1, 1, z, stool('black', 'west'))
 # mesitas en las esquinas del bar
@@ -393,34 +410,28 @@ for (x, z) in ((8, 26), (19, 26), (8, 38), (19, 38)):
     o.set(x - 1, 1, z, chair('red', 'east')); o.set(x + 1, 1, z, chair('red', 'west'))
 for (x, z) in ((10, 26), (17, 26), (10, 38), (17, 38)):
     o.set(x, 1, z, 'minecraft:potted_azalea_bush')
-for (x, z) in ((BX0 + 3, BZ0 - 2), (BX1 - 3, BZ1 + 2)):
-    o.set(x, Y_ROOF - 2, z, CHAND)
-o.set(13, Y_ROOF - 2, 26, CHAND); o.set(14, Y_ROOF - 2, 38, CHAND)
 o.set(IX0, 5, 28, speaker('east')); o.set(IX0, 5, 36, speaker('east'))
 
 # ---------------- ala este: tragamonedas en hileras + plinko
 for x in range(39, IX1 + 1):
     for z in range(24, 41):
         o.set(x, 0, z, 'casino:casino_floor_lounge')
-for x in range(39, IX1 + 1):
-    o.set(x, 0, 23, GT); o.set(x, 0, 43, GT)
+SLOT_X = (41, 43, 45, 48, 50, 52)        # espejo: 41<->52, 43<->50, 45<->48; paso libre en x 46-47
 for row_z in (26, 37):
-    for x in range(41, 54, 2):
+    for x in SLOT_X:
         mq.place(o, 'slot', x, 1, row_z, 0)        # miran al norte
         mq.place(o, 'slot', x, 1, row_z + 1, 2)    # espalda con espalda, miran al sur
-    for x in range(41, 54):
+    for x in range(40, 54):
         o.set(x, 3, row_z, 'minecraft:light[level=8]') if o.get(x, 3, row_z) == AIR else None
-for x in range(42, 54, 2):
+for x in (40, 42, 44, 49, 51, 53):
     for z in (26, 27, 37, 38):
         o.set(x, 1, z, GT); o.set(x, 2, z, 'minecraft:end_rod[facing=up]')
 # pasillo central de la sala (de la puerta al fondo): alfombra real
 for x in range(39, IX1 + 1):
     for z in range(30, 35):
         o.set(x, 0, z, 'casino:casino_floor_royal')
-for x in (44, 50):
-    o.set(x, Y_ROOF - 2, 30, CHAND)
-o.set(IX1, 6, 30, sign(0, 'west')); o.set(IX1, 6, 36, sign(3, 'west'))
-o.set(IX0, 6, 30, sign(5, 'east')); o.set(IX0, 6, 36, sign(7, 'east'))
+o.set(IX1, 6, 29, sign(0, 'west')); o.set(IX1, 6, 35, sign(3, 'west'))
+o.set(IX0, 6, 29, sign(5, 'east')); o.set(IX0, 6, 35, sign(7, 'east'))
 
 # ---------------- fondo oeste: bar y escenario
 for x in range(IX0, 23):
@@ -513,16 +524,27 @@ for x in (24, 36):
 for x in range(39, IX1 + 1):
     for z in range(IZ0, 23):
         o.set(x, 0, z, 'casino:casino_floor_galaxy')
-mq.place(o, 'plinko', 44, 1, IZ0, 2)
-mq.place(o, 'plinko', 49, 1, IZ0, 2)
-mq.place(o, 'scratch', IX1, 1, 15, 3)
-mq.place(o, 'scratch', IX1, 1, 18, 3)
+# sala simétrica respecto a x=46.5: 4 plinko (2 al norte, 2 al sur), 4 rasca y gana (2 por lado) y el premio mayor al centro
+for x in (43, 50):
+    mq.place(o, 'plinko', x, 1, IZ0, 2)          # contra la pared norte, mirando al sur
+    mq.place(o, 'plinko', x, 1, 22, 0)           # contra la pared sur, mirando al norte
+for z in (12, 20):
+    mq.place(o, 'scratch', IX1, 1, z, 3)
+    mq.place(o, 'scratch', 39, 1, z, 1)
 for i, ch in enumerate('PLINKO'):
-    o.set(43 + i, 7, IZ0, neon(ch, 'south', 3))
-for (x, z) in ((46, 21), (51, 21)):
-    o.set(x, 1, z, TABLE_W); o.set(x, 2, z, drinks(1))
-    o.set(x - 1, 1, z, chair('blue', 'east')); o.set(x + 1, 1, z, chair('blue', 'west'))
-o.set(46, Y_ROOF - 2, 16, CHAND)
+    o.set(44 + i, 7, IZ0, neon(ch, 'south', 3))
+# pedestal del premio mayor: piso dorado, columna de cuarzo y oro con amatista arriba y postes con cordón
+for x in range(44, 50):
+    for z in range(13, 20):
+        edge = x in (44, 49) or z in (13, 19)
+        o.set(x, 0, z, GB if edge else 'casino:casino_floor_deco')
+for x in (46, 47):
+    for z in (15, 16, 17):
+        o.set(x, 1, z, CQ)
+    o.set(x, 2, 16, GB); o.set(x, 3, 16, 'minecraft:amethyst_block'); o.set(x, 4, 16, 'minecraft:amethyst_cluster[facing=up]')
+    o.set(x, 2, 15, 'minecraft:glass'); o.set(x, 2, 17, 'minecraft:glass')
+for (x, z) in ((44, 13), (49, 13), (44, 19), (49, 19)):
+    o.set(x, 1, z, rope('purple'))
 
 # ---------------- salas: muros con arcos dorados entre las zonas (oeste/este del salón central y frente a las alas)
 def wall_x(x, z0, z1, gap0, gap1):
@@ -1053,7 +1075,7 @@ SOFT = ('minecraft:air', 'minecraft:light', 'casino:gold_trim', 'minecraft:smoot
 def _soft(st):
     return any(st.startswith(k) for k in SOFT)
 
-def lines(a, b, step=4):
+def lines(a, b, step=6):
     """Posiciones de vigas en [a, b], simétricas respecto al centro (a+b)/2."""
     out = []
     for p in range(a, b + 1):
@@ -1075,11 +1097,22 @@ def centers(a, b, beams):
         out += [m2 // 2] if m2 % 2 == 0 else [m2 // 2, m2 // 2 + 1]
     return out
 
+def glows(a, b, beams):
+    """Panel de luz grande en cada casetón: todo menos el borde (un marco de 1 alrededor)."""
+    edges = [a - 1] + beams + [b + 1]
+    out = []
+    for e0, e1 in zip(edges, edges[1:]):
+        lo, hi = e0 + 1, e1 - 1
+        if lo > hi: continue
+        out += list(range(lo + 1, hi)) if hi - lo + 1 >= 4 else list(range(lo, hi + 1))
+    return out
+
 SHAFT = {(x, z) for x in range(28, 33) for z in range(11, 16)}
 
 def ceiling(x0, x1, z0, z1, cy, panel, beam, glow, chand='ring', extra=None):
     bx, bz = lines(x0, x1), lines(z0, z1)
     cx_, cz_ = centers(x0, x1, bx), centers(z0, z1, bz)
+    gx_, gz_ = glows(x0, x1, bx), glows(z0, z1, bz)
     mx2, mz2 = x0 + x1, z0 + z1
     for x in range(x0, x1 + 1):
         for z in range(z0, z1 + 1):
@@ -1090,8 +1123,10 @@ def ceiling(x0, x1, z0, z1, cy, panel, beam, glow, chand='ring', extra=None):
                 if _soft(below): o.set(x, cy - 1, z, beam)
             else:
                 if _soft(below): o.set(x, cy - 1, z, AIR)
-                if x in cx_ and z in cz_:
+                if x in gx_ and z in gz_:
                     o.set(x, cy, z, glow)
+                elif (x in gx_) != (z in gz_) and (x not in bx and z not in bz):
+                    pass
     # candelabros en los casetones (simétricos)
     if chand:
         for x in cx_:
@@ -1159,7 +1194,7 @@ def _axis(bx, bz, cx_, cz_):
             if 4.5 <= d < 5.5: o.set(x, CY, z, GB)
 ceiling(23, 37, 10, 41, CY, SQ, GT, PEARL, 'ring', _axis)                          # eje central (rueda y elevador)
 def _bar(bx, bz, cx_, cz_):
-    for x in range(BX0, BX1 + 1, 2):                                              # lámparas colgantes sobre la barra
+    for x in (10, 12, 15, 17):                                                    # lámparas colgantes sobre la barra
         for z in (BZ0, BZ1):
             if o.get(x, CY - 1, z) == AIR or o.get(x, CY - 1, z).startswith('minecraft:stripped'):
                 o.set(x, CY - 1, z, 'minecraft:lantern[hanging=true]')

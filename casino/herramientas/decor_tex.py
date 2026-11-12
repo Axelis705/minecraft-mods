@@ -48,30 +48,33 @@ def save(im, name):
 
 # ------------------------------------------------------------------ terciopelo
 def velvet(name, cols, tufted):
+    """Terciopelo. Todo el brillo es periódico en 32 px (frecuencias enteras), así los bloques empalman sin línea."""
     dark, mid, hi = cols
     rnd = random.Random(name)
     im = img()
+    T = 2 * math.pi / N
     for y in range(N):
         for x in range(N):
-            # brillo suave de tela (ondas diagonales) + grano
-            s = 0.5 + 0.22 * math.sin((x + y * 0.6) / 5.0) + 0.12 * math.sin((x * 0.7 - y) / 3.1)
-            s += rnd.uniform(-0.09, 0.09)
+            s = 0.55 + 0.14 * math.sin(T * (x + y)) + 0.08 * math.sin(T * (2 * x - y) + 1.3)
+            if tufted:
+                # cada rombo es un cojín: centro claro, pliegues oscuros (periodo 16, cabe dos veces en 32)
+                u = ((x + y) % 16) / 16.0
+                v = ((x - y) % 16) / 16.0
+                s = 0.25 + 0.75 * math.sin(math.pi * u) * math.sin(math.pi * v) + 0.06 * math.sin(T * (x + y))
+            s += rnd.uniform(-0.05, 0.05)
             c = mix(dark, mid, min(1, max(0, s))) if s < 1 else mix(mid, hi, s - 1)
             if s > 0.86:
                 c = mix(c, hi, (s - 0.86) * 1.6)
             put(im, x, y, c)
     if tufted:
-        # capitoné: rombos con pliegues oscuros y un botón dorado en cada cruce
         for y in range(N):
             for x in range(N):
                 u = (x + y) % 16
                 v = (x - y) % 16
                 if u == 0 or v == 0:
-                    put(im, x, y, shade(dark, 0.75))
-                elif u == 1 or v == 1:
-                    put(im, x, y, mix(dark, mid, 0.35))
+                    put(im, x, y, shade(dark, 0.7))
                 elif u == 15 or v == 15:
-                    put(im, x, y, mix(mid, hi, 0.45))
+                    put(im, x, y, mix(dark, mid, 0.25))
         for (bx, by) in [(0, 0), (16, 0), (8, 8), (24, 8), (0, 16), (16, 16), (8, 24), (24, 24)]:
             for dx, dy, c in [(0, 0, (240, 205, 90)), (1, 0, (190, 140, 40)), (0, 1, (190, 140, 40)), (1, 1, (120, 84, 20))]:
                 put(im, (bx + dx) % N, (by + dy) % N, c)
