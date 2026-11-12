@@ -1,0 +1,50 @@
+name: Sondeo de versiones Forge
+
+# Prueba que el MDK oficial de Forge de cada versión compile en GitHub (para llevar el casino a varias versiones).
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/sondeo-versiones.yml'
+
+jobs:
+  promos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Versiones de Forge disponibles
+        run: |
+          curl -sS https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json -o promos.json
+          python3 -c "import json;d=json.load(open('promos.json'))['promos'];[print(k,v) for k,v in d.items() if k.startswith(('1.20','1.21','26'))]"
+  mdk:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mc: ['1.20.1', '1.21.1', '1.21.4', '1.21.11', '26.1.2', '26.2', '26.3']
+    steps:
+      - name: Buscar la versión de Forge
+        id: v
+        run: |
+          curl -sS https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json -o promos.json
+          V=$(python3 -c "import json;d=json.load(open('promos.json'))['promos'];print(d.get('${{ matrix.mc }}-recommended') or d.get('${{ matrix.mc }}-latest') or '')")
+          echo "forge=$V" >> $GITHUB_OUTPUT
+          echo "Forge para ${{ matrix.mc }}: $V"
+      - name: Bajar el MDK
+        run: |
+          F=${{ matrix.mc }}-${{ steps.v.outputs.forge }}
+          curl -sSfL https://maven.minecraftforge.net/net/minecraftforge/forge/$F/forge-$F-mdk.zip -o mdk.zip
+          mkdir mdk && cd mdk && unzip -q ../mdk.zip && ls
+          grep -h -E "net.minecraftforge.gradle|languageVersion|minecraft_version|forge_version|gradle-" build.gradle gradle.properties gradle/wrapper/gradle-wrapper.properties || true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+            25
+      - name: Compilar el MDK
+        working-directory: mdk
+        run: |
+          chmod +x gradlew
+          ./gradlew build --no-daemon -q 2>&1 | tail -30
+          ls build/libs
