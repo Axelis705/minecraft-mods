@@ -179,7 +179,48 @@ public class CasinoPiece extends StructurePiece {
             public void machine(Mach k, int x, int y, int z, int dir) {
                 place(level, chunkBox, k, x, y, z, dir);
             }
+
+            @Override
+            public void decor(CasinoPlan.Deco d, int x, int y, int z, int dir, int extra) {
+                BlockPos pos = world(x, y, z);
+                if (chunkBox.isInside(pos) && b.isInside(pos)) {
+                    level.setBlock(pos, decorState(d, dir, extra), 2);
+                }
+            }
         });
+    }
+
+    /** El bloque de decoración ya girado y unido (en la generación no hay avisos de vecinos, así que se arma completo aquí). */
+    private BlockState decorState(CasinoPlan.Deco d, int dir, int extra) {
+        Direction f = DIRS[(dir + rot) & 3];
+        return switch (d) {
+            case SOFA -> com.casino.registry.ModDecor.SOFAS.get(0).get().defaultBlockState()
+                    .setValue(com.casino.decor.SofaBlock.FACING, f)
+                    .setValue(com.casino.decor.SofaBlock.LEFT, (extra & 1) != 0)
+                    .setValue(com.casino.decor.SofaBlock.RIGHT, (extra & 2) != 0);
+            case TABLE -> com.casino.registry.ModDecor.COCKTAIL_TABLE_BLACK.get().defaultBlockState();
+            case DRINKS -> com.casino.registry.ModDecor.DRINKS.get().defaultBlockState()
+                    .setValue(com.casino.decor.DrinksBlock.FACING, f)
+                    .setValue(com.casino.decor.DrinksBlock.DRINKS, Math.max(1, Math.min(4, extra)));
+            case CHANDELIER -> com.casino.registry.ModDecor.CHANDELIER.get().defaultBlockState();
+            case NEON -> com.casino.registry.ModDecor.NEON_LETTER.get().defaultBlockState()
+                    .setValue(com.casino.decor.NeonLetterBlock.FACING, f)
+                    .setValue(com.casino.decor.NeonLetterBlock.GLYPH, extra)
+                    .setValue(com.casino.decor.NeonLetterBlock.COLOR, 2);
+            case SPEAKER -> com.casino.registry.ModDecor.SPEAKER.get().defaultBlockState()
+                    .setValue(com.casino.decor.SpeakerBlock.FACING, f);
+            case ROPE -> {
+                BlockState st = com.casino.registry.ModDecor.ROPE_POSTS.get(0).get().defaultBlockState();
+                net.minecraft.world.level.block.state.properties.BooleanProperty[] props = {com.casino.decor.RopePostBlock.NORTH,
+                        com.casino.decor.RopePostBlock.EAST, com.casino.decor.RopePostBlock.SOUTH, com.casino.decor.RopePostBlock.WEST};
+                for (int i = 0; i < 4; i++) {
+                    if ((extra & (1 << i)) != 0) {
+                        st = st.setValue(props[(i + rot) & 3], true);
+                    }
+                }
+                yield st;
+            }
+        };
     }
 
     private void place(WorldGenLevel level, BoundingBox chunkBox, Mach k, int x, int y, int z, int dir) {

@@ -24,11 +24,21 @@ public final class CasinoPlan {
 
     public enum Mach { BLACKJACK, POKER, ROULETTE, SLOT, SCRATCH, CASHIER, WHEEL, PLINKO }
 
+    /** Decoración del salón (un bloque cada una). */
+    public enum Deco { SOFA, TABLE, DRINKS, CHANDELIER, NEON, ROPE, SPEAKER }
+
     public interface Sink {
         void mat(int x, int y, int z, Mat m);
 
         /** (x, y, z) es el bloque principal de la máquina y dir hacia donde mira su frente. */
         void machine(Mach k, int x, int y, int z, int dir);
+
+        /**
+         * Un mueble. dir = hacia donde mira su frente. extra: SOFA = brazos (1 izquierdo, 2 derecho); DRINKS = vasos (1-4);
+         * NEON = letra (índice en NeonLetterBlock.CHARS); ROPE = cordones (1 norte, 2 este, 4 sur, 8 oeste).
+         */
+        default void decor(Deco d, int x, int y, int z, int dir, int extra) {
+        }
     }
 
     private CasinoPlan() {
@@ -199,6 +209,44 @@ public final class CasinoPlan {
         }
         for (Object[] m : MACHINES) {
             s.machine((Mach) m[0], (int) m[1], 1, (int) m[2], (int) m[3]);
+        }
+        decor(s);
+    }
+
+    /** Lugares de la decoración (todos fuera del paso: rincones de descanso junto a las paredes, techo y patio). */
+    public static void decor(Sink s) {
+        // candelabros colgando del techo, entre las lámparas
+        for (int[] c : new int[][]{{8, 8}, {24, 8}, {16, 12}, {8, 19}, {24, 19}, {16, 27}}) {
+            s.decor(Deco.CHANDELIER, c[0], ROOF_Y - 1, c[1], 0, 0);
+        }
+        // letrero de neón "CASINO" sobre la puerta, por dentro
+        String word = "CASINO";
+        for (int i = 0; i < word.length(); i++) {
+            int glyph = word.charAt(i) - 'A';
+            // quien lo lee desde el salón mira al sur: su izquierda es +x, así que las letras van de x = 19 a x = 14
+            s.decor(Deco.NEON, DOOR_X1 + 1 - i, 7, BUILDING_Z - 2, 0, glyph);
+        }
+        // salas de descanso a los lados: sofá de 4 contra la pared, dos mesas con bebidas y una bocina
+        for (int side = 0; side < 2; side++) {
+            int wallX = side == 0 ? 1 : W - 2;
+            int tableX = side == 0 ? 3 : W - 4;
+            int dir = side == 0 ? 1 : 3;
+            for (int z = 18; z <= 21; z++) {
+                int arms = (z == 18 ? (side == 0 ? 1 : 2) : 0) | (z == 21 ? (side == 0 ? 2 : 1) : 0);
+                s.decor(Deco.SOFA, wallX, 1, z, dir, arms);
+            }
+            for (int z : new int[]{18, 21}) {
+                s.decor(Deco.TABLE, tableX, 1, z, 0, 0);
+                s.decor(Deco.DRINKS, tableX, 2, z, (z + side) & 3, z == 18 ? 2 : 3);
+            }
+            s.decor(Deco.SPEAKER, wallX, 1, 23, dir, 0);
+        }
+        // postes con cordón a los lados de la alfombra del patio
+        for (int x : new int[]{DOOR_X0, DOOR_X1}) {
+            for (int z = BUILDING_Z + 1; z < D; z++) {
+                int links = (z > BUILDING_Z + 1 ? 1 : 0) | (z < D - 1 ? 4 : 0);
+                s.decor(Deco.ROPE, x, 1, z, 0, links);
+            }
         }
     }
 

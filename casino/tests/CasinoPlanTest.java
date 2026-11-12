@@ -25,6 +25,7 @@ public class CasinoPlanTest {
     public static void main(String[] args) {
         Map<String, Mat> mats = new HashMap<>();
         List<Mc> machines = new ArrayList<>();
+        List<int[]> decor = new ArrayList<>();
         CasinoPlan.build(new CasinoPlan.Sink() {
             public void mat(int x, int y, int z, Mat m) {
                 check(x >= 0 && x < CasinoPlan.W && z >= 0 && z < CasinoPlan.D && y >= 0 && y <= CasinoPlan.TOP_Y, "bloque fuera del plano " + x + "," + y + "," + z);
@@ -33,6 +34,10 @@ public class CasinoPlanTest {
 
             public void machine(Mach k, int x, int y, int z, int dir) {
                 machines.add(new Mc(k, x, y, z, dir));
+            }
+
+            public void decor(CasinoPlan.Deco d, int x, int y, int z, int dir, int extra) {
+                decor.add(new int[]{d.ordinal(), x, y, z});
             }
         });
         int tables = 0, slots = 0, cashiers = 0, scratch = 0, wheels = 0, plinkos = 0;
@@ -71,6 +76,21 @@ public class CasinoPlanTest {
             String[] p = d.split(",");
             check(!occ.containsKey(p[0] + ",1," + p[1]) && !occ.containsKey(p[0] + ",2," + p[1]), "el crupier en " + d + " esta dentro de otra maquina");
         }
+        // la decoración no se pisa con las máquinas ni con otra decoración, y no tapa el frente de ninguna máquina
+        Set<String> deco = new HashSet<>();
+        for (int[] d : decor) {
+            String key = d[1] + "," + d[2] + "," + d[3];
+            check(!occ.containsKey(key), "decoracion " + CasinoPlan.Deco.values()[d[0]] + " se pisa con " + occ.get(key) + " en " + key);
+            check(deco.add(key), "dos decoraciones en " + key);
+        }
+        for (Mc m : machines) {
+            int[] f = CasinoPlan.frontCell(m.k, m.x, m.z, m.dir);
+            check(!deco.contains(f[0] + ",1," + f[1]), "la decoracion tapa el frente de " + m.k + " en " + m.x + "," + m.z);
+        }
+        for (String d : dealers) {
+            check(!deco.contains(d.split(",")[0] + ",1," + d.split(",")[1]), "la decoracion pisa al crupier en " + d);
+        }
+        check(decor.size() >= 20, "falta decoracion: " + decor.size());
         check(dealers.size() == 4, "cuatro crupieres");
 
         // caminar: BFS desde el patio
