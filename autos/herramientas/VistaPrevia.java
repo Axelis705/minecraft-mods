@@ -96,7 +96,22 @@ public class VistaPrevia {
         // luz como la de Minecraft (dos direcciones) + ambiente
         double[] l1 = norm(0.2, 1.0, -0.7);
         double[] l2 = norm(-0.2, 1.0, 0.7);
+        List<float[]> flat = new ArrayList<>();
+        List<float[]> fns = new ArrayList<>();
+        List<Integer> keep = new ArrayList<>();
         for (int q = 0; q < quads.size(); q++) {
+            float[][] p = quads.get(q);
+            float[] f = {p[0][0], p[0][1], p[0][2], p[1][0], p[1][1], p[1][2], p[2][0], p[2][1], p[2][2], p[3][0], p[3][1], p[3][2]};
+            float[] fn = com.autoscoleccion.game.Smooth.faceNormal(f);
+            if (fn != null) {
+                flat.add(f);
+                fns.add(fn);
+                keep.add(q);
+            }
+        }
+        float[] vn = Boolean.getBoolean("flat") ? null : com.autoscoleccion.game.Smooth.vertexNormals(flat, fns);
+        for (int qi = 0; qi < keep.size(); qi++) {
+            int q = keep.get(qi);
             float[][] p = quads.get(q);
             double[][] v = new double[4][];
             for (int k = 0; k < 4; k++) {
@@ -117,9 +132,10 @@ public class VistaPrevia {
             n = norm(n[0], n[1], n[2]);
             int[] in = info.get(q);
             // sin descartar caras traseras: si la normal mira lejos de la cámara se usa la de la otra cara (como NoCull)
-            double lit = in[4] == 1 ? 1.0 : Math.min(1.0, 0.4 + 0.6 * (Math.max(0, dot(n, l1)) + Math.max(0, dot(n, l2))) * 0.75);
             int[] col = new int[4];
             for (int k = 0; k < 4; k++) {
+                double[] nk = vn == null ? n : new double[] {vn[qi * 12 + k * 3], vn[qi * 12 + k * 3 + 1], vn[qi * 12 + k * 3 + 2]};
+                double lit = in[4] == 1 ? 1.0 : Math.min(1.0, 0.4 + 0.6 * (Math.max(0, dot(nk, l1)) + Math.max(0, dot(nk, l2))) * 0.75);
                 int rgb = in[k];
                 int r = (int) Math.min(255, ((rgb >> 16) & 255) * lit);
                 int gg = (int) Math.min(255, ((rgb >> 8) & 255) * lit);

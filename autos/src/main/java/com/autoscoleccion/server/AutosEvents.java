@@ -29,6 +29,7 @@ public final class AutosEvents {
             Machine.cancel(sp);
             Driving.stop(sp);
             Driving.forget(sp.getUUID());
+            Races.forget(sp.getUUID());
         }
     }
 

@@ -100,7 +100,7 @@ public final class Machine {
         } else if (!sp.getInventory().add(stack)) {
             sp.drop(stack, false);
         }
-        level.playSound(null, s.pos, ModSounds.get("box_drop"), SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, s.pos, ModSounds.get("box_drop"), SoundSource.BLOCKS, 0.5F, 1.0F);
         level.sendParticles(box == 2 ? ParticleTypes.TOTEM_OF_UNDYING : box == 1 ? ParticleTypes.END_ROD : ParticleTypes.HAPPY_VILLAGER,
                 front.x, front.y + 0.3, front.z, box == 2 ? 40 : 14, 0.3, 0.3, 0.3, box == 2 ? 0.25 : 0.05);
         level.blockEvent(s.pos, level.getBlockState(s.pos).getBlock(), 1, box);

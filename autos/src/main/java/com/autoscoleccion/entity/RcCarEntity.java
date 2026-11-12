@@ -4,7 +4,9 @@ import com.autoscoleccion.game.CarDef;
 import com.autoscoleccion.game.CarStats;
 import com.autoscoleccion.game.Cars;
 import com.autoscoleccion.server.Driving;
-import net.minecraft.core.particles.ParticleTypes;
+import com.autoscoleccion.server.Races;
+import net.minecraft.core.particles.DustParticleOptions;
+import org.joml.Vector3f;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -25,12 +27,18 @@ import java.util.UUID;
  * posición al servidor, que la reparte a los demás. No se guarda en el mundo: al salir, alejarse o desconectarse vuelve al garaje.
  */
 public class RcCarEntity extends Entity {
+    private static final DustParticleOptions EXHAUST = new DustParticleOptions(new Vector3f(0.35F, 0.35F, 0.38F), 0.45F);
+    private static final DustParticleOptions TIRE_SMOKE = new DustParticleOptions(new Vector3f(0.86F, 0.86F, 0.88F), 0.7F);
     private static final EntityDataAccessor<Integer> CAR = SynchedEntityData.defineId(RcCarEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Optional<UUID>> OWNER = SynchedEntityData.defineId(RcCarEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Float> STEER = SynchedEntityData.defineId(RcCarEntity.class, EntityDataSerializers.FLOAT);
 
     /** true en el cliente del dueño mientras maneja. */
     public boolean local;
+    /** Auto manejado por la computadora en una carrera (solo en el servidor). */
+    public boolean bot;
+    /** Los bots van un poco más lento que el máximo (cada uno distinto). */
+    public float topMul = 1.0F;
     // lo que pide el jugador (lo pone el cliente antes de cada tick)
     public float throttle;
     public float steerIn;
@@ -149,6 +157,13 @@ public class RcCarEntity extends Entity {
             double fwd = -Math.sin(yr) * dx + Math.cos(yr) * dz;
             float radius = def().style.wheelR / 16.0F * 0.9F;
             spin += (float) (fwd / Math.max(0.02F, radius));
+        } else if (bot) {
+            if (!Races.botAlive(this)) {
+                discard();
+                return;
+            }
+            drive();
+            setSyncedSteer(steer);
         } else if (tickCount % 10 == 0 && !Driving.keep(this)) {
             discard();
         }
@@ -157,9 +172,9 @@ public class RcCarEntity extends Entity {
     /** La física del auto (solo en el cliente del dueño). */
     private void drive() {
         CarStats st = CarStats.of(def());
-        float top = st.top;
+        float top = st.top * topMul;
         if (throttle > 0) {
-            speed += st.accel * (speed < 0 ? 2.5F : 1.0F) * (1.0F - Math.max(0, speed) / top * 0.6F);
+            speed += st.accel * topMul * (speed < 0 ? 2.5F : 1.0F) * (1.0F - Math.max(0, speed) / top * 0.6F);
         } else if (throttle < 0) {
             speed -= speed > 0 ? st.accel * 2.6F : st.accel * 0.8F;
         } else {
@@ -201,10 +216,14 @@ public class RcCarEntity extends Entity {
         // humo del escape y del derrape
         if (throttle > 0 && tickCount % 3 == 0) {
             double bx = getX() + Math.sin(yr) * 0.55, bz = getZ() - Math.cos(yr) * 0.55;
-            level().addParticle(ParticleTypes.SMOKE, bx, getY() + 0.12, bz, Math.sin(yr) * 0.02, 0.01, -Math.cos(yr) * 0.02);
+            // humo chiquito (las partículas normales de Minecraft eran enormes junto al auto)
+            level().addParticle(EXHAUST, bx, getY() + 0.1, bz, Math.sin(yr) * 0.02, 0.01, -Math.cos(yr) * 0.02);
         }
-        if (drifting && tickCount % 2 == 0) {
-            level().addParticle(ParticleTypes.CLOUD, getX(), getY() + 0.05, getZ(), 0, 0.01, 0);
+        if (drifting) {
+            for (int side = -1; side <= 1; side += 2) {
+                double rx = getX() + Math.sin(yr) * 0.4 + Math.cos(yr) * 0.22 * side, rz = getZ() - Math.cos(yr) * 0.4 + Math.sin(yr) * 0.22 * side;
+                level().addParticle(TIRE_SMOKE, rx, getY() + 0.04, rz, 0, 0.005, 0);
+            }
         }
     }
 

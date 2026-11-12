@@ -89,6 +89,18 @@ public class AutosTest {
         System.out.printf("Exclusivos de Cine: puntaje 0.9 = %.1f %%, puntaje 1 = %.1f %%%n", top[3] * 100, hi[3] * 100);
     }
 
+    static void track() {
+        TrackLayout t = TrackLayout.MAIN;
+        check(t.length > 100 && t.length < 200, "largo de la pista " + t.length);
+        check(t.minGap() >= 2 * TrackLayout.HALF_W + 3.5F, "las partes de la pista no se enciman (" + t.minGap() + ")");
+        float[] b = t.bounds(TrackLayout.HALF_W + 2.2F);
+        check(b[1] > 0.5F, "la pista no pisa el bloque");
+        check(Math.max(Math.abs(b[0]), Math.abs(b[2])) < 30 && b[3] < 40, "la pista cabe cerca del bloque (el auto no se aleja más de 64)");
+        float[] s0 = t.at(0);
+        check(Math.abs(s0[0]) < 0.2F && Math.abs(s0[1] - 6) < 0.2F, "la meta está frente al bloque");
+        System.out.printf("pista: %.0f bloques por vuelta, separación mínima %.1f%n", t.length, t.minGap());
+    }
+
     // ------------------------------------------------------------------ bots
 
     /** Un jugador simulado: error de tiempo (ms), tiempo entre teclas (ms) y probabilidad de equivocarse de tecla. */
@@ -286,6 +298,7 @@ public class AutosTest {
     public static void main(String[] a) {
         catalog();
         odds();
+        track();
         games();
         System.out.println(fails == 0 ? "AutosTest: todo bien" : "AutosTest: " + fails + " fallos");
         if (fails > 0) {

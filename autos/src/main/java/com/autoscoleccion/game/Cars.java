@@ -150,7 +150,7 @@ public final class Cars {
                         .plan(-7.5F, 2.9F, -6.8F, 3.3F, -4.4F, 3.45F, 0F, 3.3F, 4.6F, 3.45F, 6.9F, 3.2F, 7.5F, 2.8F)
                         .roofLine(2, 3, -4.8F, 0, -3.6F, 4.1F, -2.0F, 4.65F, 0.2F, 4.65F, 1.8F, 0)
                         .roof(-1, 0.55F, 0).glassSlope(0, 0, 0.45F).humps(0.15F, 0.2F).dome(0.06F).form(0.55F, 0, 0, 0)
-                        .colors(0x23262E, 0x6CF2FF).glass(0x101418).lights(HEAD_ANGULAR, TAIL_ROUND2).rims(RIM_MULTI, 0x15171C).neon(0x6CF2FF)
+                        .colors(0x343A48, 0x6CF2FF).glass(0x101418).lights(HEAD_ANGULAR, TAIL_ROUND2).rims(RIM_MULTI, 0x15171C).neon(0x6CF2FF)
                         .with(SIDE_STRIPE | SPOILER).details(D_QUAD_EXH | D_HOOD_LINES | D_DIFFUSER | D_SIDE_INTAKE | D_WIPERS));
         add("dragon_turbo_x", "Dragón Turbo X", 1, Rarity.LEGENDARIO, "Cuña ochentera de puro ángulo: faros escondidos, tomas enormes y alas de dragón.",
                 of(Shape.WEDGE).dims(14.4F, 7.0F, 0.65F, 1.6F).wheels(1.4F, 1.6F, 4.6F, -4.3F, 0.3F)
@@ -307,7 +307,7 @@ public final class Cars {
                         .plan(-8.2F, 3.0F, -7.2F, 3.6F, -4.4F, 3.7F, 0F, 3.4F, 4.6F, 3.6F, 7.0F, 3.2F, 8.2F, 2.2F)
                         .roofLine(1, 2, -3.6F, 0, -1.6F, 4.1F, 0.4F, 4.1F, 3.4F, 0)
                         .roof(-1, 0.9F, 0).glassSlope(0, 0, 0.7F).humps(0.2F, 0.25F).dome(0).form(0.12F, 0, 0, 0)
-                        .colors(0x141518, 0xD7263D).glass(0x0A0A0C).lights(HEAD_SLIM, TAIL_BAR).rims(RIM_TURBINE, 0x0E0E10).caliper(0xD7263D)
+                        .colors(0x2A2D35, 0xD7263D).glass(0x0E1014).lights(HEAD_SLIM, TAIL_BAR).rims(RIM_TURBINE, 0x0E0E10).caliper(0xD7263D)
                         .details(D_ARMOR | D_CENTER_EXH | D_DIFFUSER | D_SPLITTER));
         add("cohete_salar", "Cohete Salar", 3, Rarity.MITICO, "Bólido de récord de velocidad con motor de cohete: más rápido que el sonido.",
                 of(Shape.ROCKET).dims(19.0F, 4.0F, 0.9F, 2.1F).wheels(1.0F, 0.8F, 6.4F, -6.8F, 0.5F).open()

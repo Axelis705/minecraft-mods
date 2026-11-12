@@ -5,6 +5,9 @@ import com.autoscoleccion.client.AutosClient;
 import com.autoscoleccion.client.RcDriving;
 import com.autoscoleccion.game.SkillGame;
 import com.autoscoleccion.server.Driving;
+import com.autoscoleccion.server.Races;
+import com.autoscoleccion.client.RaceClient;
+import net.minecraft.core.BlockPos;
 import com.autoscoleccion.server.Machine;
 import com.autoscoleccion.server.Unboxing;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +26,7 @@ import java.util.function.Supplier;
 
 /** Comunicación cliente <-> servidor. El servidor decide todo (puntaje, caja, auto); el cliente juega, anima y muestra. */
 public final class AutosNet {
-    private static final String VERSION = "3";
+    private static final String VERSION = "4";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(AutosMod.MODID, "main"), () -> VERSION,
             VERSION::equals, VERSION::equals);
     /** Máximo de teclas que se aceptan de una partida (sobra para cualquier prueba). */
@@ -112,6 +115,60 @@ public final class AutosNet {
             b.writeFloat(m.steer());
         }, b -> new CarMovePacket(b.readVarInt(), b.readDouble(), b.readDouble(), b.readDouble(), b.readFloat(), b.readFloat()),
                 (m, c) -> server(c, sp -> Driving.move(sp, m.entityId(), m.x(), m.y(), m.z(), m.yaw(), m.steer())));
+        registerRaces(id);
+    }
+
+    private static void registerRaces(int id) {
+        CHANNEL.registerMessage(id++, RaceActionPacket.class, (m, b) -> {
+            b.writeBlockPos(m.pos());
+            b.writeVarInt(m.action());
+            b.writeVarInt(m.arg());
+        }, b -> new RaceActionPacket(b.readBlockPos(), b.readVarInt(), b.readVarInt()),
+                (m, c) -> server(c, sp -> Races.action(sp, m.pos(), m.action(), m.arg())));
+        CHANNEL.registerMessage(id++, TrackInfoPacket.class, (m, b) -> {
+            b.writeBlockPos(m.pos());
+            b.writeBoolean(m.built());
+            b.writeVarInt(m.laps());
+            b.writeVarInt(m.bots());
+            b.writeBoolean(m.running());
+            b.writeVarInt(m.names().size());
+            m.names().forEach(n -> b.writeUtf(n, 64));
+            b.writeBoolean(m.open());
+        }, b -> {
+            BlockPos pos = b.readBlockPos();
+            boolean built = b.readBoolean();
+            int laps = b.readVarInt(), bots = b.readVarInt();
+            boolean running = b.readBoolean();
+            int n = Math.min(b.readVarInt(), 32);
+            List<String> names = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                names.add(b.readUtf(64));
+            }
+            return new TrackInfoPacket(pos, built, laps, bots, running, names, b.readBoolean());
+        }, (m, c) -> client(c, () -> () -> RaceClient.onTrackInfo(m)));
+        CHANNEL.registerMessage(id++, RaceStatePacket.class, (m, b) -> {
+            b.writeVarInt(m.phase() + 1);
+            b.writeVarInt(m.timer());
+            b.writeVarInt(m.lap());
+            b.writeVarInt(m.laps());
+            b.writeVarInt(m.place());
+            b.writeVarInt(m.total());
+            b.writeVarInt(m.timeMs());
+            b.writeBoolean(m.finished());
+            b.writeVarInt(m.board().size());
+            m.board().forEach(n -> b.writeUtf(n, 80));
+            b.writeVarInt(m.me() + 1);
+        }, b -> {
+            int phase = b.readVarInt() - 1, timer = b.readVarInt(), lap = b.readVarInt(), laps = b.readVarInt(), place = b.readVarInt();
+            int total = b.readVarInt(), time = b.readVarInt();
+            boolean fin = b.readBoolean();
+            int n = Math.min(b.readVarInt(), 16);
+            List<String> board = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                board.add(b.readUtf(80));
+            }
+            return new RaceStatePacket(phase, timer, lap, laps, place, total, time, fin, board, b.readVarInt() - 1);
+        }, (m, c) -> client(c, () -> () -> RaceClient.onState(m)));
     }
 
     private static void server(Supplier<NetworkEvent.Context> c, Consumer<ServerPlayer> run) {

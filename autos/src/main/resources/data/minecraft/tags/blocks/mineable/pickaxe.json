@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "autos_coleccion:maquina_expendedora",
-    "autos_coleccion:vitrina"
+    "autos_coleccion:vitrina",
+    "autos_coleccion:mini_pista"
   ]
 }

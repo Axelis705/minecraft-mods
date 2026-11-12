@@ -24,6 +24,8 @@ public final class ModItems {
             () -> new BlockItem(ModBlocks.VENDING_MACHINE.get(), new Item.Properties()));
     public static final RegistryObject<Item> DISPLAY_CASE = ITEMS.register("vitrina",
             () -> new BlockItem(ModBlocks.DISPLAY_CASE.get(), new Item.Properties()));
+    public static final RegistryObject<Item> TRACK = ITEMS.register("mini_pista",
+            () -> new BlockItem(ModBlocks.TRACK.get(), new Item.Properties()));
     public static final RegistryObject<Item> GARAGE_BOOK = ITEMS.register("garaje",
             () -> new GarageBookItem(new Item.Properties().stacksTo(1)));
 

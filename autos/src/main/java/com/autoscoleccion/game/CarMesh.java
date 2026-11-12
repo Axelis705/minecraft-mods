@@ -577,10 +577,6 @@ public final class CarMesh {
                                     new float[] {x + (float) Math.cos(a1) * r, yy, z + (float) Math.sin(a1) * r}, new float[] {x, yy, z}, c, true, 0, -1, 0);
                         }
                     }
-                    float gy = 0.03F;
-                    float rr = 1.0F + 0.2F * pulse;
-                    p.face(new float[] {x - rr, gy, z - rr}, new float[] {x + rr, gy, z - rr}, new float[] {x + rr, gy, z + rr}, new float[] {x - rr, gy, z + rr},
-                            shade(s.neon, 0.35F * pulse), true, 0, 1, 0);
                 }
             }
         }
@@ -612,8 +608,12 @@ public final class CarMesh {
         }
         if (s.has(NEON)) {
             float pulse = 0.8F + 0.2F * (float) Math.sin(time * 0.25F);
-            p.face(new float[] {-hx + 1.0F, 0.03F, -hz + 0.3F}, new float[] {hx - 1.0F, 0.03F, -hz + 0.3F}, new float[] {hx - 1.0F, 0.03F, hz - 0.3F},
-                    new float[] {-hx + 1.0F, 0.03F, hz - 0.3F}, shade(s.neon, pulse), true, 0, 1, 0);
+            // tubos de neón bajo los estribos (ya no hay "alfombra" brillante en el piso, que se veía plana)
+            for (int side = -1; side <= 1; side += 2) {
+                float zz = side * (hz - 0.55F);
+                p.box(-hx + 1.4F, hx - 1.4F, bd.y0 - 0.16F, bd.y0 - 0.04F, Math.min(zz, zz + side * 0.14F), Math.max(zz, zz + side * 0.14F),
+                        shade(s.neon, pulse), true);
+            }
             p.box(-hx + 1.5F, hx - 1.5F, bd.y0 - 0.3F, bd.y0 - 0.22F, -hz + 0.5F, hz - 0.5F, s.neon, true);
         }
         if (s.has(GOLD_SPARKLE)) {
@@ -1605,8 +1605,8 @@ public final class CarMesh {
             float y = lerp(bd.y0, bd.y1, 0.22F);
             sideDecal(p, bd, new float[][] {{x1, y}, {x0, y}, {x0, y + 0.2F}, {x1, y + 0.2F}}, s.accent, false, 0.03F);
             float xs = lerp(x1, x0, 0.25F);
-            sideDecal(p, bd, new float[][] {{xs, y + 0.35F}, {xs + 1.2F, y + 0.35F}, {xs + 1.2F, y + 0.7F}, {xs, y + 0.7F}}, 0xF4F4F4, false, 0.03F);
-            sideDecal(p, bd, new float[][] {{xs + 0.15F, y + 0.43F}, {xs + 1.05F, y + 0.43F}, {xs + 1.05F, y + 0.62F}, {xs + 0.15F, y + 0.62F}}, 0xD7263D,
+            if (!s.has(NUMBER_DISC)) sideDecal(p, bd, new float[][] {{xs, y + 0.35F}, {xs + 1.2F, y + 0.35F}, {xs + 1.2F, y + 0.7F}, {xs, y + 0.7F}}, 0xF4F4F4, false, 0.03F);
+            if (!s.has(NUMBER_DISC)) sideDecal(p, bd, new float[][] {{xs + 0.15F, y + 0.43F}, {xs + 1.05F, y + 0.43F}, {xs + 1.05F, y + 0.62F}, {xs + 0.15F, y + 0.62F}}, 0xD7263D,
                     false, 0.04F);
         }
         // tapa de gasolina (lado derecho, sobre la rueda de atrás)
@@ -1845,15 +1845,23 @@ public final class CarMesh {
 
     private static void wheel(Painter p, CarStyle s, float cx, float cy, float R, float zo, float zi, int side, boolean gold) {
         Shape sh = s.shape;
-        int n = 16;
+        int n = 24;
         float rot = (float) (Math.PI / n);
         int tire = 0x17181B;
         int wall = 0x24252A;
         int rim = s.rim;
         float zs = side;
-        p.tubeZ(cx, cy, zi, zo - zs * 0.16F, R, R, n, rot, tire, false);
-        p.tubeZ(cx, cy, zo - zs * 0.16F, zo, R, R * 0.9F, n, rot, wall, false);
-        p.ringZ(cx, cy, zi, 0, R, n, rot, tire, false, -side);
+        // goma con hombros redondeados: banda de rodadura y los dos cantos que bajan al costado
+        float sh0 = Math.min(0.16F, Math.abs(zo - zi) * 0.22F);
+        p.tubeZ(cx, cy, zi, zi + zs * sh0 * 0.5F, R * 0.9F, R * 0.975F, n, rot, wall, false);
+        p.tubeZ(cx, cy, zi + zs * sh0 * 0.5F, zi + zs * sh0, R * 0.975F, R, n, rot, tire, false);
+        p.tubeZ(cx, cy, zi + zs * sh0, zo - zs * 0.16F, R, R, n, rot, tire, false);
+        // ranuras de la banda (dos líneas un poco más oscuras)
+        float gz = (zi + zo) / 2;
+        p.tubeZ(cx, cy, gz - 0.03F, gz + 0.03F, R * 1.003F, R * 1.003F, n, rot, 0x0E0F11, false);
+        p.tubeZ(cx, cy, zo - zs * 0.16F, zo - zs * 0.07F, R, R * 0.975F, n, rot, tire, false);
+        p.tubeZ(cx, cy, zo - zs * 0.07F, zo, R * 0.975F, R * 0.9F, n, rot, wall, false);
+        p.ringZ(cx, cy, zi, 0, R * 0.9F, n, rot, tire, false, -side);
         p.ringZ(cx, cy, zo, R * 0.7F, R * 0.9F, n, rot, wall, false, side);
         // letras blancas en la llanta (deportivos y muscle) o banda blanca (clásicos)
         if (sh == Shape.CLASSIC || sh == Shape.LOWRIDER) {
@@ -2025,16 +2033,46 @@ public final class CarMesh {
             }
         }
         if (s.has(NUMBER_DISC)) {
+            // círculo blanco con el número pegado a la curva de la puerta (cada punto sigue la superficie)
             float dx = (s.cabFront + s.cabRear) / 2.0F - 0.2F;
-            float dy = lerp(bd.bot(dx), bd.top(dx), 0.52F);
+            float dy = lerp(bd.bot(dx), bd.top(dx), 0.5F);
+            float rr = Math.min(0.8F, (bd.top(dx) - bd.bot(dx)) * 0.36F);
             for (int side = -1; side <= 1; side += 2) {
-                float zf = side * (bd.surfZ(dx, dy) + 0.03F);
-                p.ringZ(dx, dy, zf, 0, 0.85F, 14, 0, 0xF8F8F8, false, side);
-                float zn = zf + side * 0.01F;
-                p.face(new float[] {dx - 0.12F, dy - 0.5F, zn}, new float[] {dx + 0.12F, dy - 0.5F, zn}, new float[] {dx + 0.12F, dy + 0.5F, zn},
-                        new float[] {dx - 0.12F, dy + 0.5F, zn}, s.accent, false, 0, 0, side);
-                p.face(new float[] {dx - 0.4F, dy + 0.25F, zn}, new float[] {dx - 0.12F, dy + 0.25F, zn}, new float[] {dx - 0.12F, dy + 0.5F, zn},
-                        new float[] {dx - 0.4F, dy + 0.42F, zn}, s.accent, false, 0, 0, side);
+                // plano pegado al punto más saliente de esa zona (así no se esconde dentro de la puerta)
+                float zmax = 0;
+                for (int gx = -2; gx <= 2; gx++) {
+                    for (int gy = -2; gy <= 2; gy++) {
+                        zmax = Math.max(zmax, bd.surfZ(dx + gx * rr * 0.55F, dy + gy * rr * 0.55F));
+                    }
+                }
+                final float zc = side * (zmax + 0.05F);
+                java.util.function.BiFunction<Float, Float, float[]> on = (x, y) -> new float[] {x, y, zc};
+                int n = 18;
+                for (int i = 0; i < n; i++) {
+                    double a0 = i * 2 * Math.PI / n, a1 = (i + 1) * 2 * Math.PI / n;
+                    float[] c0 = on.apply(dx, dy);
+                    float[] e0 = on.apply(dx + (float) Math.cos(a0) * rr, dy + (float) Math.sin(a0) * rr);
+                    float[] e1 = on.apply(dx + (float) Math.cos(a1) * rr, dy + (float) Math.sin(a1) * rr);
+                    float[] o0 = on.apply(dx + (float) Math.cos(a0) * (rr + 0.1F), dy + (float) Math.sin(a0) * (rr + 0.1F));
+                    float[] o1 = on.apply(dx + (float) Math.cos(a1) * (rr + 0.1F), dy + (float) Math.sin(a1) * (rr + 0.1F));
+                    p.face(c0, e0, e1, e1, 0xF8F8F8, false, 0, 0, side);
+                    p.face(e0, o0, o1, e1, s.accent, false, 0, 0, side);
+                }
+                // un "1" limpio: palo, pico y base
+                float u = rr * 0.62F;
+                float m = side;
+                float[][][] parts = {
+                        {{dx - u * 0.14F, dy - u}, {dx + u * 0.14F, dy + u}},
+                        {{dx - m * u * 0.5F, dy + u * 0.55F}, {dx - m * u * 0.14F, dy + u}},
+                        {{dx - u * 0.45F, dy - u}, {dx + u * 0.45F, dy - u * 0.76F}}};
+                for (float[][] r : parts) {
+                    float x0 = r[0][0], y0 = r[0][1], x1 = r[1][0], y1 = r[1][1];
+                    float[] q0 = on.apply(x0, y0), q1 = on.apply(x1, y0), q2 = on.apply(x1, y1), q3 = on.apply(x0, y1);
+                    for (float[] q : new float[][] {q0, q1, q2, q3}) {
+                        q[2] += side * 0.015F;
+                    }
+                    p.face(q0, q1, q2, q3, 0x15161A, false, 0, 0, side);
+                }
             }
         }
         if (s.has(HOOD_SCOOP)) {

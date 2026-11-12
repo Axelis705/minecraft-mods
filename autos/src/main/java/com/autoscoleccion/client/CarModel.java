@@ -3,6 +3,7 @@ package com.autoscoleccion.client;
 import com.autoscoleccion.AutosMod;
 import com.autoscoleccion.game.CarMesh;
 import com.autoscoleccion.game.CarStyle;
+import com.autoscoleccion.game.Smooth;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -40,13 +41,17 @@ public final class CarModel {
         Baked(List<float[]> p, List<int[]> c) {
             n = p.size();
             pos = new float[n * 12];
-            nrm = new float[n * 3];
             col = new int[n * 4];
             em = new boolean[n];
+            List<float[]> fn = new ArrayList<>(n);
             for (int i = 0; i < n; i++) {
                 float[] q = p.get(i);
                 System.arraycopy(q, 0, pos, i * 12, 12);
-                System.arraycopy(q, 12, nrm, i * 3, 3);
+                fn.add(new float[] {q[12], q[13], q[14], q[15]});
+            }
+            // normales suaves por esquina (las curvas se ven redondas)
+            nrm = Smooth.vertexNormals(p, fn);
+            for (int i = 0; i < n; i++) {
                 int[] cc = c.get(i);
                 System.arraycopy(cc, 0, col, i * 4, 4);
                 em[i] = cc[4] != 0;
@@ -91,11 +96,12 @@ public final class CarModel {
         List<float[]> p = new ArrayList<>();
         List<int[]> c = new ArrayList<>();
         b.build((a, bb, cc, d, c0, c1, c2, c3, em) -> {
-            float[] n = normalOf(a, bb, cc, d);
+            float[] q = {a[0], a[1], a[2], bb[0], bb[1], bb[2], cc[0], cc[1], cc[2], d[0], d[1], d[2]};
+            float[] n = Smooth.faceNormal(q);
             if (n == null) {
                 return;
             }
-            p.add(new float[] {a[0], a[1], a[2], bb[0], bb[1], bb[2], cc[0], cc[1], cc[2], d[0], d[1], d[2], n[0], n[1], n[2]});
+            p.add(new float[] {q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7], q[8], q[9], q[10], q[11], n[0], n[1], n[2], n[3]});
             c.add(new int[] {c0, c1, c2, c3, em ? 1 : 0});
         });
         return new Baked(p, c);
@@ -107,9 +113,9 @@ public final class CarModel {
         for (int i = 0; i < b.n; i++) {
             int lt = b.em[i] ? FULL : light;
             int o = i * 12;
-            float nx = b.nrm[i * 3], ny = b.nrm[i * 3 + 1], nz = b.nrm[i * 3 + 2];
             for (int k = 0; k < 4; k++) {
-                vertex(vc, pose, normal, b.pos[o + k * 3], b.pos[o + k * 3 + 1], b.pos[o + k * 3 + 2], b.col[i * 4 + k], lt, nx, ny, nz, 255);
+                vertex(vc, pose, normal, b.pos[o + k * 3], b.pos[o + k * 3 + 1], b.pos[o + k * 3 + 2], b.col[i * 4 + k], lt, b.nrm[o + k * 3],
+                        b.nrm[o + k * 3 + 1], b.nrm[o + k * 3 + 2], 255);
             }
         }
     }
@@ -163,11 +169,12 @@ public final class CarModel {
             List<float[]> p = new ArrayList<>();
             List<int[]> c = new ArrayList<>();
             CarMesh.buildStatic(s, (a, b, cc, d, c0, c1, c2, c3, em) -> {
-                float[] n = normalOf(a, b, cc, d);
+                float[] q = {a[0], a[1], a[2], b[0], b[1], b[2], cc[0], cc[1], cc[2], d[0], d[1], d[2]};
+                float[] n = Smooth.faceNormal(q);
                 if (n == null) {
                     return;
                 }
-                p.add(new float[] {a[0], a[1], a[2], b[0], b[1], b[2], cc[0], cc[1], cc[2], d[0], d[1], d[2], n[0], n[1], n[2]});
+                p.add(new float[] {q[0], q[1], q[2], q[3], q[4], q[5], q[6], q[7], q[8], q[9], q[10], q[11], n[0], n[1], n[2], n[3]});
                 c.add(new int[] {c0, c1, c2, c3, em ? 1 : 0});
             }, mode);
             arr[mode] = new Baked(p, c);
@@ -190,9 +197,9 @@ public final class CarModel {
         for (int i = 0; i < b.n; i++) {
             int lt = b.em[i] ? FULL : light;
             int o = i * 12;
-            float nx = b.nrm[i * 3], ny = b.nrm[i * 3 + 1], nz = b.nrm[i * 3 + 2];
             for (int k = 0; k < 4; k++) {
-                vertex(vc, pose, normal, b.pos[o + k * 3], b.pos[o + k * 3 + 1], b.pos[o + k * 3 + 2], b.col[i * 4 + k], lt, nx, ny, nz, 255);
+                vertex(vc, pose, normal, b.pos[o + k * 3], b.pos[o + k * 3 + 1], b.pos[o + k * 3 + 2], b.col[i * 4 + k], lt, b.nrm[o + k * 3],
+                        b.nrm[o + k * 3 + 1], b.nrm[o + k * 3 + 2], 255);
             }
         }
         CarMesh.buildAnimated(s, (a, bb, c, d, c0, c1, c2, c3, em) -> {

@@ -94,6 +94,11 @@ public class UnboxScreen extends Screen {
 
     // ---------------------------------------------------------------------------------------------------- la cinta
 
+    /** Los sonidos de la caja van más bajitos (antes se oían muy fuerte). */
+    private static void sfx(String name, float pitch, float volume) {
+        Sfx.play(name, pitch, volume * 0.45F);
+    }
+
     private float[] project(float x, float y, float z) {
         org.joml.Vector4f v = new org.joml.Vector4f(x, y, z, 1).mul(boxMat);
         return new float[] {v.x, v.y};
@@ -115,7 +120,7 @@ public class UnboxScreen extends Screen {
         peel = to;
         if (peel - lastRip > 0.05F || old == 0) {
             lastRip = peel;
-            Sfx.play("tape", 0.75F + peel * 0.6F, 0.55F);
+            sfx("tape", 0.75F + peel * 0.6F, 0.55F);
             lastClick = now;
         }
         if (boxMatSet) {
@@ -129,8 +134,8 @@ public class UnboxScreen extends Screen {
             peel = 1;
             grabbing = false;
             openAt = now;
-            Sfx.play("box_shake", 1.1F, 0.8F);
-            Sfx.play("flaps", 1.0F, 0.9F);
+            sfx("box_shake", 1.1F, 0.8F);
+            sfx("flaps", 1.0F, 0.9F);
         }
     }
 
@@ -149,7 +154,7 @@ public class UnboxScreen extends Screen {
             float r = Math.max(14, Math.min(width, height) / 18.0F);
             if ((x - gx) * (x - gx) + (y - gy) * (y - gy) <= r * r) {
                 grabbing = true;
-                Sfx.play("key", 0.8F, 0.5F);
+                sfx("key", 0.8F, 0.5F);
             }
             return true;
         }
@@ -225,7 +230,7 @@ public class UnboxScreen extends Screen {
         // sonidos de la línea de tiempo
         if (!landed && age >= DROP * 0.62F) {
             landed = true;
-            Sfx.play("box_drop", 1.0F, 0.9F);
+            sfx("box_drop", 1.0F, 0.9F);
         }
         if (e >= 0) {
             int want = (int) Math.max(0, Math.min(r.stars, (e - 900) / 260 + 1));
@@ -234,20 +239,20 @@ public class UnboxScreen extends Screen {
             }
             while (starsShown < want) {
                 starsShown++;
-                Sfx.play("sparkle", 0.8F + starsShown * 0.12F, 0.8F);
+                sfx("sparkle", 0.8F + starsShown * 0.12F, 0.8F);
             }
             if (revealed && !revealedSfx) {
                 revealedSfx = true;
-                Sfx.play(switch (r) {
-                    case LEGENDARIO -> "reveal_legend";
+                sfx(switch (r) {
+                    case LEGENDARIO, MITICO -> "reveal_legend";
                     case EPICO -> "reveal_epic";
                     case RARO -> "reveal_rare";
                     default -> "reveal_common";
                 }, 1.0F, 1.0F);
                 if (m.isNew()) {
-                    Sfx.play("new_car", 1.0F, 0.9F);
+                    sfx("new_car", 1.0F, 0.9F);
                 }
-                int n = r == Rarity.LEGENDARIO ? 160 : r == Rarity.EPICO ? 90 : r == Rarity.RARO ? 40 : 18;
+                int n = r.ordinal() >= Rarity.LEGENDARIO.ordinal() ? 160 : r == Rarity.EPICO ? 90 : r == Rarity.RARO ? 40 : 18;
                 for (int i = 0; i < n; i++) {
                     double a = -Math.PI / 2 + (rnd.nextDouble() - 0.5) * 2.4;
                     float sp = 120 + rnd.nextFloat() * 260;
@@ -275,7 +280,7 @@ public class UnboxScreen extends Screen {
         // rayos de luz que giran
         if (e > 250) {
             float k = Math.min(1, (e - 250) / 900.0F) * (revealed ? 1.0F : 0.7F);
-            int rays = r == Rarity.LEGENDARIO ? 18 : r == Rarity.EPICO ? 14 : 10;
+            int rays = r.ordinal() >= Rarity.LEGENDARIO.ordinal() ? 18 : r == Rarity.EPICO ? 14 : 10;
             float len = Math.max(W, H) * 0.8F;
             for (int layer = 0; layer < (r.stars >= 4 ? 2 : 1); layer++) {
                 double rot = (now / (layer == 0 ? 2600.0 : -3900.0));

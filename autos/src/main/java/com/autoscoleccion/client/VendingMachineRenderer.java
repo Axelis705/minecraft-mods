@@ -28,7 +28,7 @@ public class VendingMachineRenderer implements BlockEntityRenderer<VendingMachin
 
     static {
         for (CarDef c : Cars.all()) {
-            if (c.rarity == Rarity.LEGENDARIO || c.rarity == Rarity.EPICO) {
+            if (c.rarity.stars >= 4) {
                 SHOWCASE.add(c);
             }
         }

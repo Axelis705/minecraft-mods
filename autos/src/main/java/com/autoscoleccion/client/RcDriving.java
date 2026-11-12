@@ -145,9 +145,13 @@ public final class RcDriving {
             if (!open && mc.options.keyLeft.isDown()) {
                 st -= 1;
             }
+            if (RaceClient.frozen()) {
+                // cuenta regresiva de la carrera: el auto espera en la parrilla
+                th = 0;
+            }
             car.throttle = th;
             car.steerIn = st;
-            car.handbrake = !open && mc.options.keyJump.isDown();
+            car.handbrake = RaceClient.frozen() || (!open && mc.options.keyJump.isDown());
             if (!open && mc.options.keyShift.isDown()) {
                 end(true);
             }
@@ -208,19 +212,20 @@ public final class RcDriving {
             camYaw += Mth.wrapDegrees(yaw - camYaw) * Math.min(1.0F, dt * 5.0F);
             double yr = Math.toRadians(camYaw);
             float spd = Math.abs(car.speed);
-            double back = 1.7 + spd * 1.2;
-            double tx = x + Math.sin(yr) * back, tz = z - Math.cos(yr) * back, ty = y + 0.75;
+            // cerca del auto (es chiquito) y un poco más arriba al ir rápido
+            double back = 1.05 + spd * 0.55;
+            double tx = x + Math.sin(yr) * back, tz = z - Math.cos(yr) * back, ty = y + 0.5 + spd * 0.15;
             if (!camInit) {
                 camX = tx;
                 camY = ty;
                 camZ = tz;
                 camInit = true;
             }
-            float k = Math.min(1.0F, dt * 9.0F);
+            float k = Math.min(1.0F, dt * 16.0F);
             camX += (tx - camX) * k;
             camY += (ty - camY) * k;
             camZ += (tz - camZ) * k;
-            float pitch = 16.0F;
+            float pitch = 11.0F;
             cam.setPos(camX, camY, camZ);
             cam.xo = cam.xOld = camX;
             cam.yo = cam.yOld = camY;
@@ -242,7 +247,16 @@ public final class RcDriving {
     @SubscribeEvent
     public static void onFov(ViewportEvent.ComputeFov e) {
         if (car != null) {
-            e.setFOV(e.getFOV() + Math.abs(car.speed) * 18.0);
+            e.setFOV(e.getFOV() + Math.min(1.0F, Math.abs(car.speed) / CarStats.of(car.def()).top) * 7.0);
+        }
+    }
+
+    /** Si la cámara pasa por donde está el jugador, no se dibuja su cuerpo (tapaba toda la pantalla). */
+    @SubscribeEvent
+    public static void onRenderPlayer(net.minecraftforge.client.event.RenderPlayerEvent.Pre e) {
+        Minecraft mc = Minecraft.getInstance();
+        if (car != null && cam != null && e.getEntity() == mc.player && mc.player.distanceToSqr(camX, camY - 1.0, camZ) < 2.2 * 2.2) {
+            e.setCanceled(true);
         }
     }
 

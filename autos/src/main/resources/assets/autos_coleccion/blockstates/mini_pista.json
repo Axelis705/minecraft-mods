@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "construida=false,facing=north,lit=false": {
+      "model": "autos_coleccion:block/mini_pista"
+    },
+    "construida=false,facing=north,lit=true": {
+      "model": "autos_coleccion:block/mini_pista_on"
+    },
+    "construida=true,facing=north,lit=false": {
+      "model": "autos_coleccion:block/mini_pista"
+    },
+    "construida=true,facing=north,lit=true": {
+      "model": "autos_coleccion:block/mini_pista_on"
+    },
+    "construida=false,facing=east,lit=false": {
+      "model": "autos_coleccion:block/mini_pista",
+      "y": 90
+    },
+    "construida=false,facing=east,lit=true": {
+      "model": "autos_coleccion:block/mini_pista_on",
+      "y": 90
+    },
+    "construida=true,facing=east,lit=false": {
+      "model": "autos_coleccion:block/mini_pista",
+      "y": 90
+    },
+    "construida=true,facing=east,lit=true": {
+      "model": "autos_coleccion:block/mini_pista_on",
+      "y": 90
+    },
+    "construida=false,facing=south,lit=false": {
+      "model": "autos_coleccion:block/mini_pista",
+      "y": 180
+    },
+    "construida=false,facing=south,lit=true": {
+      "model": "autos_coleccion:block/mini_pista_on",
+      "y": 180
+    },
+    "construida=true,facing=south,lit=false": {
+      "model": "autos_coleccion:block/mini_pista",
+      "y": 180
+    },
+    "construida=true,facing=south,lit=true": {
+      "model": "autos_coleccion:block/mini_pista_on",
+      "y": 180
+    },
+    "construida=false,facing=west,lit=false": {
+      "model": "autos_coleccion:block/mini_pista",
+      "y": 270
+    },
+    "construida=false,facing=west,lit=true": {
+      "model": "autos_coleccion:block/mini_pista_on",
+      "y": 270
+    },
+    "construida=true,facing=west,lit=false": {
+      "model": "autos_coleccion:block/mini_pista",
+      "y": 270
+    },
+    "construida=true,facing=west,lit=true": {
+      "model": "autos_coleccion:block/mini_pista_on",
+      "y": 270
+    }
+  }
+}

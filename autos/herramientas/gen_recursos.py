@@ -139,6 +139,27 @@ def textures():
     d.line([(3, 12), (10, 5)], fill=(255, 255, 255, 120))
     d.line([(5, 13), (12, 6)], fill=(255, 255, 255, 70))
     tex("block/vitrina_vidrio", im)
+    # mini pista: poste de semáforo de carreras (apagado y encendido) y tapa a cuadros
+    for on in (False, True):
+        im = Image.new("RGBA", (16, 16))
+        noise_fill(im, (46, 48, 56), 4, 70)
+        d = ImageDraw.Draw(im)
+        d.rectangle([3, 1, 12, 14], fill=(22, 23, 28, 255), outline=(70, 72, 82, 255))
+        cols = [(255, 70, 60), (255, 200, 60), (90, 255, 120)]
+        for i, c in enumerate(cols):
+            lit = on and i == 2 or (not on and i == 0)
+            cc = c if lit else tuple(int(v * 0.28) for v in c)
+            d.ellipse([5, 2 + i * 4, 10, 6 + i * 4], fill=cc + (255,))
+            if lit:
+                d.point([(6, 3 + i * 4)], fill=(255, 255, 255, 255))
+        d.rectangle([0, 15, 15, 15], fill=(30, 30, 34, 255))
+        tex("block/mini_pista_lado" + ("_on" if on else ""), im)
+    im = Image.new("RGBA", (16, 16))
+    d = ImageDraw.Draw(im)
+    for x in range(4):
+        for y in range(4):
+            d.rectangle([x * 4, y * 4, x * 4 + 3, y * 4 + 3], fill=(240, 240, 240, 255) if (x + y) % 2 == 0 else (25, 25, 28, 255))
+    tex("block/mini_pista_tapa", im)
     # cajas (frente, lado y tapa)
     for b in range(len(BOX_IDS)):
         c1, c2 = rgb(BOX_COL[b]), rgb(BOX_COL2[b])
@@ -257,6 +278,13 @@ def models():
             el([14.6, 3, 1.8], [14.8, 15, 14.2], {"east": {"texture": "#glass"}, "west": {"texture": "#glass"}})]
     wjson(f"{A}/models/block/vitrina.json", {"parent": "block/block", "render_type": "minecraft:translucent", "textures": vt, "elements": els})
     wjson(f"{A}/models/item/vitrina.json", {"parent": f"{MOD}:block/vitrina"})
+    for on in ("", "_on"):
+        t = {"side": f"{MOD}:block/mini_pista_lado{on}", "top": f"{MOD}:block/mini_pista_tapa", "particle": f"{MOD}:block/mini_pista_lado{on}"}
+        faces = {"north": {"texture": "#side"}, "south": {"texture": "#side"}, "east": {"texture": "#side"}, "west": {"texture": "#side"},
+                 "up": {"texture": "#top"}, "down": {"texture": "#top"}}
+        wjson(f"{A}/models/block/mini_pista{on}.json", {"parent": "block/block", "textures": t,
+              "elements": [el([3, 0, 3], [13, 16, 13], faces)]})
+    wjson(f"{A}/models/item/mini_pista.json", {"parent": f"{MOD}:block/mini_pista_on"})
     # cajas
     for b, bid in enumerate(BOX_IDS):
         t = {"front": f"{MOD}:item/{bid}_frente", "side": f"{MOD}:item/{bid}_lado", "top": f"{MOD}:item/{bid}_tapa",
@@ -302,6 +330,15 @@ def blockstates():
             e["y"] = y
         v[f"facing={f}"] = e
     wjson(f"{A}/blockstates/vitrina.json", {"variants": v})
+    v = {}
+    for f, y in (("north", 0), ("east", 90), ("south", 180), ("west", 270)):
+        for built in ("false", "true"):
+            for lit in ("false", "true"):
+                e = {"model": f"{MOD}:block/mini_pista" + ("_on" if lit == "true" else "")}
+                if y:
+                    e["y"] = y
+                v[f"construida={built},facing={f},lit={lit}"] = e
+    wjson(f"{A}/blockstates/mini_pista.json", {"variants": v})
 
 
 def lang():
@@ -311,6 +348,7 @@ def lang():
             f"block.{MOD}.maquina_expendedora": "Máquina expendedora de autos" if es else "Car Vending Machine",
             f"block.{MOD}.vitrina": "Vitrina de colección" if es else "Display Case",
             f"item.{MOD}.garaje": "Garaje de colección" if es else "Collection Garage",
+            f"block.{MOD}.mini_pista": "Mini pista de carreras" if es else "Mini Race Track",
         }
         for b in range(len(BOX_IDS)):
             L[f"item.{MOD}.{BOX_IDS[b]}"] = ("Caja " + BOX_NAMES[b]) if es else (BOX_NAMES[b] + " Box")
@@ -352,8 +390,18 @@ def data():
         "type": "minecraft:block",
         "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": f"{MOD}:vitrina"}],
                    "conditions": [{"condition": "minecraft:survives_explosion"}]}]})
+    wjson(f"{DATA}/recipes/mini_pista.json", {
+        "type": "minecraft:crafting_shaped", "category": "misc",
+        "pattern": ["RYG", " I ", "CCC"],
+        "key": {"R": {"item": "minecraft:red_dye"}, "Y": {"item": "minecraft:yellow_dye"}, "G": {"item": "minecraft:lime_dye"},
+                "I": {"item": "minecraft:iron_ingot"}, "C": {"item": "minecraft:gray_concrete"}},
+        "result": {"item": f"{MOD}:mini_pista"}})
+    wjson(f"{DATA}/loot_tables/blocks/mini_pista.json", {
+        "type": "minecraft:block",
+        "pools": [{"rolls": 1, "entries": [{"type": "minecraft:item", "name": f"{MOD}:mini_pista"}],
+                   "conditions": [{"condition": "minecraft:survives_explosion"}]}]})
     wjson(os.path.join(ROOT, "data/minecraft/tags/blocks/mineable/pickaxe.json"),
-          {"replace": False, "values": [f"{MOD}:maquina_expendedora", f"{MOD}:vitrina"]})
+          {"replace": False, "values": [f"{MOD}:maquina_expendedora", f"{MOD}:vitrina", f"{MOD}:mini_pista"]})
 
 
 if __name__ == "__main__":

@@ -12,6 +12,11 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import com.autoscoleccion.block.TrackBlock;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +29,8 @@ import java.util.List;
 
 /**
  * Comandos (para operadores): /autos desbloquear [jugadores] llena todo el álbum, /autos reiniciar [jugadores] lo vacía y
- * /autos caja &lt;0-3&gt; [cantidad] da cajas (0 Ruta Urbana, 1 Pista Nocturna, 2 Leyendas, 3 Exclusivos).
+ * /autos caja &lt;0-3&gt; [cantidad] da cajas (0 Ruta Urbana, 1 Pista Nocturna, 2 Leyendas, 3 Exclusivos) y /autos pista &lt;x y z&gt;
+ * construye la mini pista de ese bloque.
  */
 @Mod.EventBusSubscriber(modid = AutosMod.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class AutosCommands {
@@ -48,7 +54,24 @@ public final class AutosCommands {
                                 .executes(c -> box(c.getSource(), IntegerArgumentType.getInteger(c, "tipo"), 1))
                                 .then(Commands.argument("cantidad", IntegerArgumentType.integer(1, 64))
                                         .executes(c -> box(c.getSource(), IntegerArgumentType.getInteger(c, "tipo"),
-                                                IntegerArgumentType.getInteger(c, "cantidad")))))));
+                                                IntegerArgumentType.getInteger(c, "cantidad"))))))
+                .then(Commands.literal("pista")
+                        .then(Commands.argument("bloque", BlockPosArgument.blockPos())
+                                .executes(c -> track(c.getSource(), BlockPosArgument.getLoadedBlockPos(c, "bloque"))))));
+    }
+
+    /** Construye la mini pista de un bloque de pista (lo mismo que el botón de su pantalla). */
+    private static int track(CommandSourceStack src, BlockPos pos) {
+        ServerLevel level = src.getLevel();
+        BlockState st = level.getBlockState(pos);
+        if (!(st.getBlock() instanceof TrackBlock)) {
+            src.sendFailure(Component.literal("Ahí no hay un bloque de mini pista."));
+            return 0;
+        }
+        int n = TrackBuilder.build(level, pos, st.getValue(TrackBlock.FACING));
+        level.setBlock(pos, st.setValue(TrackBlock.BUILT, true), 3);
+        src.sendSuccess(() -> Component.literal("Mini pista construida (" + n + " bloques)."), true);
+        return 1;
     }
 
     private static int unlock(CommandSourceStack src, Collection<ServerPlayer> players, boolean all) {

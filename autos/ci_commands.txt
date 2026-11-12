@@ -12,3 +12,9 @@ execute if data block 3 100 0 car run say PRUEBA_AUTOS_VITRINA
 #expect PRUEBA_AUTOS_VITRINA
 execute positioned 0 100 5 summon autos_coleccion:auto_rc run say PRUEBA_AUTOS_RC_EXISTE
 #expect PRUEBA_AUTOS_RC_EXISTE
+forceload add -10 -5 50 45
+setblock 20 99 0 minecraft:stone
+setblock 20 100 0 autos_coleccion:mini_pista[facing=south]
+autos pista 20 100 0
+execute if block 20 99 6 minecraft:white_concrete if block 20 100 0 autos_coleccion:mini_pista[construida=true] run say PRUEBA_AUTOS_PISTA
+#expect PRUEBA_AUTOS_PISTA

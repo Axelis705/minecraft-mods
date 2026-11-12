@@ -17,6 +17,7 @@ public final class ModTabs {
             .displayItems((params, out) -> {
                 out.accept(ModItems.VENDING_MACHINE.get());
                 out.accept(ModItems.DISPLAY_CASE.get());
+                out.accept(ModItems.TRACK.get());
                 out.accept(ModItems.GARAGE_BOOK.get());
                 ModItems.BOXES.forEach(b -> out.accept(b.get()));
                 ModItems.CARS.forEach(c -> out.accept(c.get()));
