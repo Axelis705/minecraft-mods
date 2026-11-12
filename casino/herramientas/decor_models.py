@@ -27,6 +27,7 @@ TEX = {
     "b_red": "casino:block/decor/bottle_red", "b_blue": "casino:block/decor/bottle_blue",
     "whiskey": "casino:block/decor/drink_whiskey", "cocktail": "casino:block/decor/drink_cocktail",
     "champagne": "casino:block/decor/drink_champagne", "bluedrink": "casino:block/decor/drink_blue", "garnish": "casino:block/decor/garnish",
+    "vred_t": "casino:block/decor/velvet_red_tufted", "vblack": "casino:block/decor/velvet_black", "bulb": "casino:block/decor/bulb",
 }
 FACES = ["north", "south", "west", "east", "up", "down"]
 
@@ -297,15 +298,22 @@ def stool():
 
 
 def table(name, top):
+    """Mesa de cóctel art déco: base escalonada con 4 patas en cruz, columna con anillos, cubierta con canto dorado y lamparita."""
     e = []
-    e += octagon([3, 0, 3], [13, 1, 13], "gold")
-    e += [box([5, 1, 5], [11, 1.6, 11], "gold"),
-          box([7, 1.6, 7], [9, 12.2, 9], "gold"),
-          box([6.4, 6, 6.4], [9.6, 7, 9.6], "chrome"),
+    e += octagon([3, 0, 3], [13, 0.8, 13], "gold")
+    e += [box([5, 0.8, 5], [11, 1.6, 11], "lac")]
+    for k in range(4):
+        e += rot90([box([7.2, 0, 1.2], [8.8, 1.2, 4.2], "gold")], k)            # patas en cruz
+    e += [box([7, 1.6, 7], [9, 12.2, 9], "gold"),
+          box([6.4, 3.4, 6.4], [9.6, 4.2, 9.6], "chrome"),
+          box([6.2, 6.6, 6.2], [9.8, 7.6, 9.8], "lac"),
+          box([6.4, 7.6, 6.4], [9.6, 8.2, 9.6], "chrome"),
           box([6.6, 11.2, 6.6], [9.4, 12.2, 9.4], "chrome")]
     e += octagon([5, 12.2, 5], [11, 13, 11], "gold")
-    e += octagon([0.8, 13, 0.8], [15.2, 13.6, 15.2], "gold")
-    e += octagon([1, 13.6, 1], [15, 14.6, 15], top)
+    e += octagon([0.6, 13, 0.6], [15.4, 13.7, 15.4], "gold")
+    e += octagon([1, 13.7, 1], [15, 14.6, 15], top)
+    e += [box([7.2, 14.6, 7.2], [8.8, 15.0, 8.8], "gold"),                      # lamparita del centro
+          box([7.6, 15.0, 7.6], [8.4, 15.9, 8.4], "bulb")]
     model(name, e, particle=TEX[top])
 
 
@@ -331,22 +339,24 @@ def sofa():
 
 
 def counter():
-    s = [box([0, 0, 3], [16, 14, 16], "mah"),
-         box([0, 0, 2.4], [16, 1.5, 3], "lac"),
-         box([1, 2, 2.5], [7.5, 12.5, 3], "mahp"),
-         box([8.5, 2, 2.5], [15, 12.5, 3], "mahp"),
-         box([7.75, 1.5, 2.4], [8.25, 13.5, 2.6], "gold"),
-         box([0, 13.4, 2.2], [16, 14, 3], "gold"),
-         box([0, 14, 1.5], [16, 15.4, 16], "mar"),
-         box([0, 14.5, 1.3], [16, 15.1, 1.5], "gold", faces=["north", "up", "down"]),
-         box([0, 2.6, 0.6], [16, 3.4, 1.4], "brass"),
-         box([3, 2.4, 1.4], [4, 3.6, 2.4], "brass"),
-         box([12, 2.4, 1.4], [13, 3.6, 2.4], "brass")]
+    """Barra de bar: cuerpo de caoba, frente acolchado capitoné con molduras doradas, cubierta de mármol que sobresale hacia
+    los clientes con un borde acolchado negro (el apoyabrazos de las barras), y reposapiés de latón sobre soportes."""
+    s = [box([0, 0, 4], [16, 14, 16], "mah"),
+         box([0, 0, 3.4], [16, 1.8, 4], "lac"),                                   # zócalo
+         box([0, 1.8, 3.4], [16, 13, 4], "vred_t", uv="full"),                     # frente acolchado
+         box([0, 1.8, 3.2], [0.8, 13, 3.4], "gold"), box([15.2, 1.8, 3.2], [16, 13, 3.4], "gold"),
+         box([0, 12.6, 3.0], [16, 13.4, 4], "gold"),                               # moldura bajo la cubierta
+         box([0, 13.4, 0.8], [16, 14.6, 16], "mar"),                               # cubierta de mármol (sobresale)
+         box([0, 13.0, 0.2], [16, 15.4, 1.8], "vblack"),                           # borde acolchado (apoyabrazos)
+         box([0, 14.6, 13.5], [16, 15.0, 16], "gold"),                             # canal de bebidas del lado del barman
+         box([0, 2.6, 0.6], [16, 3.4, 1.4], "brass"),                              # reposapiés
+         box([3, 2.4, 1.4], [4, 3.6, 3.4], "brass"),
+         box([12, 2.4, 1.4], [13, 3.6, 3.4], "brass")]
     model("bar_counter_straight", s, particle=TEX["mah"])
     sw = rot90(s, 3)  # frente al oeste
     # esquina hacia afuera: frentes norte y oeste, cuerpo en x>=3, z>=3
     outer = clip(s, x=(3, 16)) + clip(sw, x=(0, 3), z=(3, 16)) + [
-        box([1.5, 14, 1.5], [3, 15.4, 3], "mar"),
+        box([0.2, 13, 0.2], [1.8, 15.4, 1.8], "vblack"),
         box([0, 0, 2.4], [3, 1.5, 3], "lac"), box([2.4, 0, 0], [3, 1.5, 2.4], "lac"),
         box([0.6, 2.6, 0.6], [3, 3.4, 1.4], "brass")]
     model("bar_counter_outer_left", outer, particle=TEX["mah"])
