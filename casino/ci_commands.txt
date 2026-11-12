@@ -94,6 +94,13 @@ execute if block 76 113 192 casino:neon_letter[glyph=3,facing=south] run say PRU
 execute if block 184 102 170 casino:lucky_wheel[facing=west,px=1,py=0] if block 199 102 170 casino:elevator[facing=west] run say PRUEBA_DIAMOND_GIRO
 execute if block 70 102 167 casino:lucky_wheel run say DIAG_DIAMOND_RUEDA
 execute if block 70 102 152 casino:elevator run say DIAG_DIAMOND_ELEV
+execute if block 70 114 152 casino:elevator run say DIAG_DIAMOND_ELEV_VIP
+execute if block 70 148 152 casino:elevator run say DIAG_DIAMOND_ELEV_PH
+execute if block 70 156 152 casino:elevator run say DIAG_DIAMOND_ELEV_AZ
+execute if block 70 114 152 minecraft:air run say DIAG_DIAMOND_ELEV_VIP_AIRE
+execute if block 70 114 152 minecraft:structure_block run say DIAG_DIAMOND_ELEV_VIP_SB
+execute if block 184 102 170 casino:lucky_wheel run say DIAG_DIAMOND_GIRO_RUEDA
+execute if block 199 102 170 casino:elevator run say DIAG_DIAMOND_GIRO_ELEV
 execute if block 85 101 185 casino:prize_shop run say DIAG_DIAMOND_TIENDA
 execute if block 81 101 167 casino:slot run say DIAG_DIAMOND_SLOT
 execute if block 76 113 192 casino:neon_letter run say DIAG_DIAMOND_NEON
