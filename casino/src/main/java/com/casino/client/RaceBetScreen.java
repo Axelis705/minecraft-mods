@@ -272,10 +272,18 @@ public final class RaceBetScreen extends CasinoScreen {
             g.fill(cx, cy, cx + 3, cy + 32, RaceArt.silkA(r, i));
             RaceArt.badge(g, font, r, i, cx + 7, cy + 9, 14);
             RaceArt.gui(g, r, i, s ? (int) (now / 2) : 6, cx + 24, cy + 3, 38, 26);
-            String name = font.plainSubstrByWidth(RaceBE.horseName(r, i).getString(), 98);
+            String odds = r.oddsText(i);
+            // el nombre (en negrita) no puede pisar la cuota: se corta con "…" si no cabe
+            int room = 214 - (int) (font.width(odds) * 1.5F) - 6 - 66;
+            String name = RaceBE.horseName(r, i).getString();
+            if (font.width(Component.literal(name).withStyle(ChatFormatting.BOLD)) > room) {
+                while (name.length() > 1 && font.width(Component.literal(name + "…").withStyle(ChatFormatting.BOLD)) > room) {
+                    name = name.substring(0, name.length() - 1);
+                }
+                name = name.trim() + "…";
+            }
             g.drawString(font, Component.literal(name).withStyle(ChatFormatting.BOLD), cx + 66, cy + 6, 0xFFF4F0FF, true);
             g.drawString(font, RaceArt.stars(r.form[i]), cx + 66, cy + 18, 0xFFE8C050, false);
-            String odds = r.oddsText(i);
             g.push();
             g.translate(cx + 214 - font.width(odds) * 1.5F, cy + 5, 0);
             g.scale(1.5F, 1.5F, 1);

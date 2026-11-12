@@ -72,8 +72,10 @@ OPP = {'north': 'south', 'south': 'north', 'east': 'west', 'west': 'east'}
 DIR_I = {d: i for i, d in enumerate(DIRS)}
 
 class Obra:
-    def __init__(self, W, H, D, fill=AIR):
+    def __init__(self, W, H, D, fill=AIR, oy=0):
+        """oy: bloques de sótano. Las coordenadas que se usan siguen con y=0 en la planta baja; y negativas = sótano."""
         self.W, self.H, self.D = W, H, D
+        self.oy = oy
         self.b = {}
         self.markers = {}
         self.base = fill
@@ -82,13 +84,14 @@ class Obra:
         return 0 <= x < self.W and 0 <= y < self.H and 0 <= z < self.D
 
     def set(self, x, y, z, st):
+        y += self.oy
         if not self.inside(x, y, z): return
         if st is None: self.b.pop((x, y, z), None); return
         self.b[(x, y, z)] = norm(st)
         self.markers.pop((x, y, z), None)
 
     def get(self, x, y, z):
-        return self.b.get((x, y, z), self.base)
+        return self.b.get((x, y + self.oy, z), self.base)
 
     def fill(self, x0, y0, z0, x1, y1, z1, st):
         for x in range(min(x0, x1), max(x0, x1) + 1):
@@ -106,6 +109,7 @@ class Obra:
 
     def marker(self, x, y, z, meta, preview=None):
         """Marcador de datos (máquinas, elevador...). preview = bloque que se muestra en el visor."""
+        y += self.oy
         self.b[(x, y, z)] = 'minecraft:structure_block[mode=data]'
         self.markers[(x, y, z)] = (meta, preview)
 

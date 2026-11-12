@@ -22,15 +22,34 @@ public class VipCardItem extends Item {
         this.level = level;
     }
 
-    /** El nivel VIP más alto que lleva el jugador (0 = ninguno). Operadores y modo creativo pasan siempre. */
+    /** Dato guardado en el jugador: el nivel VIP comprado (queda para siempre, aunque pierda la tarjeta). */
+    public static final String KEY = "casino_vip";
+
+    /**
+     * El nivel VIP del jugador (0 = ninguno): el comprado (guardado en el jugador) o el de una tarjeta que lleve encima. Si lleva una
+     * tarjeta mejor que lo guardado (por ejemplo, de antes de este cambio, o regalada), se registra.
+     */
     public static int tier(Player p) {
-        int best = 0;
+        net.minecraft.nbt.CompoundTag data = p.getPersistentData();
+        int saved = com.casino.plat.Nbt.i(data, KEY);
+        int best = saved;
         for (ItemStack s : Plat.mainAndOffhand(p.getInventory())) {
             if (s.getItem() instanceof VipCardItem c) {
                 best = Math.max(best, c.level);
             }
         }
+        if (best > saved && !p.level().isClientSide()) {
+            data.putInt(KEY, best);
+        }
         return best;
+    }
+
+    /** Registra que el jugador compró este nivel. */
+    public static void grant(Player p, int level) {
+        net.minecraft.nbt.CompoundTag data = p.getPersistentData();
+        if (com.casino.plat.Nbt.i(data, KEY) < level) {
+            data.putInt(KEY, level);
+        }
     }
 
     public static boolean canEnter(Player p, int need) {

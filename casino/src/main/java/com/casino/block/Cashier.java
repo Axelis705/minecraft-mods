@@ -107,6 +107,7 @@ public final class Cashier {
             deny(p, "casino.cashier.no_chips");
             return;
         }
+        com.casino.item.VipCardItem.grant(p, tier + 1);
         ItemStack card = new ItemStack(tier == 0 ? com.casino.registry.ModItems.VIP_SILVER.get() : com.casino.registry.ModItems.VIP_GOLD.get());
         ItemHandlerHelper.giveItemToPlayer(p, card);
         Plat.msg(p, Component.translatable(tier == 0 ? "casino.vip.bought_silver" : "casino.vip.bought_gold").withStyle(ChatFormatting.GOLD), true);

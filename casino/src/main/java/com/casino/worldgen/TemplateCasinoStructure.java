@@ -35,6 +35,11 @@ public class TemplateCasinoStructure extends Structure {
     public final String template;
     public final int maxSlope;
 
+    /** Cuántos bloques de la plantilla quedan bajo el suelo (sótanos). El piso de la planta baja queda al nivel del terreno. */
+    public static int sink(String template) {
+        return "the_diamond".equals(template) ? 12 : 0;
+    }
+
     public TemplateCasinoStructure(Structure.StructureSettings settings, String template, int maxSlope) {
         super(settings);
         this.template = template;
@@ -74,7 +79,7 @@ public class TemplateCasinoStructure extends Structure {
                 }
             }
         }
-        int y0 = hFront - 1;
+        int y0 = hFront - 1 - sink(template);
         BlockPos pos = new BlockPos(x0 - box0.minX(), y0, z0 - box0.minZ());
         return Optional.of(new Structure.GenerationStub(new BlockPos(cp.getMiddleBlockX(), y0, cp.getMiddleBlockZ()),
                 builder -> builder.addPiece(new TemplateCasinoPiece(ctx.structureTemplateManager(), id, pos, rot))));

@@ -74,6 +74,8 @@ public final class CasinoCommands {
     }
 
     private static int buildTemplate(CommandSourceStack src, String name, BlockPos pos, int rot) {
+        // pos = piso de la planta baja; los sótanos de la plantilla quedan debajo
+        pos = pos.below(com.casino.worldgen.TemplateCasinoStructure.sink(name));
         var box = com.casino.worldgen.TemplateCasinoPiece.buildNow(src.getLevel(), name, pos, net.minecraft.world.level.block.Rotation.values()[rot & 3]);
         src.sendSuccess(() -> Component.translatable("casino.cmd.build_tpl", name, box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ()), true);
         return 1;
