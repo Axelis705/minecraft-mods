@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Candelabro grande de techo (casino:grand_chandelier): mide casi 3 bloques de ancho y cuelga casi 2 bloques.
+"""Candelabro grande de techo (casino:grand_chandelier): mide casi 3 bloques de ancho; el bloque va 1 bajo el techo y una vara sube hasta él.
 
 El bloque va pegado al techo, al centro del casetón. Si el casetón tiene ancho par, el centro cae entre dos bloques: el estado
 "shift" corre el dibujo medio bloque (1 = hacia "facing", 2 = hacia "facing" y su derecha) y en ese caso mide 2 bloques de ancho
@@ -45,8 +45,12 @@ def ring(cx, cz, r, y0, y1, th, tex):
 def chandelier(cx, cz, R):
     e = []
     # florón del techo y vástago con dos nudos
-    e += oct_(cx, cz, 0.3 * R, 15.2, 16, "gold")
-    e += oct_(cx, cz, 0.17 * R, 14.2, 15.2, "gold")
+    # florón pegado al techo (un bloque más arriba: el candelabro cuelga de una vara) y la vara
+    e += oct_(cx, cz, 0.3 * R, 31.2, 32, "gold")
+    e += oct_(cx, cz, 0.17 * R, 30.2, 31.2, "gold")
+    e += [box([cx - 0.35, 16, cz - 0.35], [cx + 0.35, 30.2, cz + 0.35], "gold")]
+    e += oct_(cx, cz, 0.9, 22.6, 23.4, "gold")
+    e += oct_(cx, cz, 0.17 * R, 14.2, 16, "gold")
     e += [box([cx - 0.45, 3.6, cz - 0.45], [cx + 0.45, 14.2, cz + 0.45], "gold")]
     e += oct_(cx, cz, 1.3, 10.2, 11.2, "gold")
     e += oct_(cx, cz, 1.0, 7.0, 7.8, "gold")

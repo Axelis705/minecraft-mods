@@ -40,6 +40,42 @@
     "model": "casino:block/decor/rope_side_black",
     "y": 270
    }
+  },
+  {
+   "when": {
+    "ne": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/rope_diag_black",
+    "y": 0
+   }
+  },
+  {
+   "when": {
+    "se": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/rope_diag_black",
+    "y": 90
+   }
+  },
+  {
+   "when": {
+    "sw": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/rope_diag_black",
+    "y": 180
+   }
+  },
+  {
+   "when": {
+    "nw": "true"
+   },
+   "apply": {
+    "model": "casino:block/decor/rope_diag_black",
+    "y": 270
+   }
   }
  ]
 }

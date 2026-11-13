@@ -1,0 +1,6 @@
+{
+ "parent": "casino:block/decor/rope_diag",
+ "textures": {
+  "v": "casino:block/decor/velvet_purple"
+ }
+}

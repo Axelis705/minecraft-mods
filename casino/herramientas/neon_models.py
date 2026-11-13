@@ -137,12 +137,22 @@ def gen():
             box([7.2, 9.5, 5.6], [8.8, 10.9, 6.6], "#v"),
             box([7.0, 9.3, 6.6], [9.0, 10.7, 7.0], "gold")]
     dm.model("rope_side", rope, particle="#v")
+    # cordón en diagonal (hacia el noreste): el mismo cordón estirado √2 y girado 45° alrededor del poste
+    k = 2 ** 0.5
+    diag = []
+    for e in rope:
+        (x1, y1, z1), (x2, y2, z2) = e["from"], e["to"]
+        diag.append(box([x1, y1, 8 - (8 - z1) * k], [x2, y2, 8 - (8 - z2) * k], e["tex"], rot=("y", -45, [8, 9, 8])))
+    dm.model("rope_diag", diag, particle="#v")
     for c in dm.COLORS:
         tx = {"v": f"casino:block/decor/velvet_{c}"}
         dm.child(f"rope_side_{c}", "rope_side", tx)
+        dm.child(f"rope_diag_{c}", "rope_diag", tx)
         mp = [{"apply": {"model": "casino:block/decor/rope_post"}}]
         for f, y in DIRS:
             mp.append({"when": {f: "true"}, "apply": {"model": f"casino:block/decor/rope_side_{c}", "y": y}})
+        for d, y in (("ne", 0), ("se", 90), ("sw", 180), ("nw", 270)):
+            mp.append({"when": {d: "true"}, "apply": {"model": f"casino:block/decor/rope_diag_{c}", "y": y}})
         name = f"rope_post_{c}"
         write(os.path.join(A, "blockstates", name + ".json"), {"multipart": mp})
         # objeto: poste con dos cordones (para que se vea el color)
