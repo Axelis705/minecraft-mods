@@ -1366,6 +1366,20 @@ for x in (PX0 + 6, PX1 - 6, CX - 8, CX + 8):
     o.set(x, 1, 3, 'minecraft:polished_blackstone_wall'); o.set(x, 2, 3, 'minecraft:polished_blackstone_wall')
     o.set(x, 3, 3, GB); o.set(x, 4, 3, 'minecraft:lantern')
 
+# ================================================================== CORDONES: uniones ya calculadas en la plantilla (rectas y en diagonal)
+def _ropes():
+    posts = {k: v for k, v in o.b.items() if v.startswith('casino:rope_post')}
+    isp = lambda x, y, z: (x, y, z) in posts
+    for (x, y, z), st in posts.items():
+        base = st.split('[')[0]
+        n, e, s_, w = isp(x, y, z - 1), isp(x + 1, y, z), isp(x, y, z + 1), isp(x - 1, y, z)
+        d = {}
+        for name, dx, dz in (('ne', 1, -1), ('se', 1, 1), ('sw', -1, 1), ('nw', -1, -1)):
+            d[name] = isp(x + dx, y, z + dz) and not isp(x + dx, y, z) and not isp(x, y, z + dz)
+        props = dict(north=n, east=e, south=s_, west=w, **d)
+        o.b[(x, y, z)] = base + '[' + ','.join(f'{k}={str(v).lower()}' for k, v in props.items()) + ']'
+_ropes()
+
 if __name__ == '__main__':
     out = sys.argv[1] if len(sys.argv) > 1 else 'the_diamond.nbt'
     pal, n = o.save(out)
