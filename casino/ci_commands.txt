@@ -89,7 +89,7 @@ execute if block 70 102 167 casino:lucky_wheel[facing=south,px=1,py=0] run say P
 execute if block 70 102 152 casino:elevator[facing=south] if block 70 114 152 casino:elevator if block 70 148 152 casino:elevator if block 70 156 152 casino:elevator if block 70 90 152 casino:elevator run say PRUEBA_DIAMOND_ELEVADOR
 execute if block 91 101 183 casino:prize_shop[facing=west] if block 49 101 183 casino:cashier[facing=east] run say PRUEBA_DIAMOND_TIENDA
 execute if block 81 101 166 casino:slot[facing=north,half=lower] if block 62 113 168 casino:roulette if block 78 113 159 casino:blackjack if block 70 113 162 casino:poker[facing=south,cell=2] run say PRUEBA_DIAMOND_MESAS
-execute if entity @e[type=casino:dealer,nbt={Game:3},x=66,y=101,z=157,distance=..2] run say PRUEBA_DIAMOND_GUARDIA
+execute if entity @e[type=casino:dealer,nbt={Game:3},x=68,y=101,z=157,distance=..2] run say PRUEBA_DIAMOND_GUARDIA
 execute if block 76 113 192 casino:neon_letter[glyph=3,facing=south] run say PRUEBA_DIAMOND_NEON
 execute if block 184 102 170 casino:lucky_wheel[facing=west,px=1,py=0] if block 199 102 170 casino:elevator[facing=west] run say PRUEBA_DIAMOND_GIRO
 execute if block 70 102 167 casino:lucky_wheel run say DIAG_DIAMOND_RUEDA
