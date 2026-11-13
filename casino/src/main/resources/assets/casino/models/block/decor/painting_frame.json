@@ -2,6 +2,7 @@
  "textures": {
   "lac": "casino:block/decor/lacquer",
   "gold": "casino:block/decor/gold",
+  "art": "casino:block/decor/painting_diamond",
   "particle": "casino:block/decor/gold"
  },
  "elements": [
