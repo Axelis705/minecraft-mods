@@ -74,6 +74,16 @@ public class RopePostBlock extends UseBlock {
         return s;
     }
 
+    private static void refreshSelf(net.minecraft.world.level.Level level, BlockPos pos) {
+        BlockState st = level.getBlockState(pos);
+        if (st.getBlock() instanceof RopePostBlock) {
+            BlockState ns = diagonals(st, level, pos);
+            if (ns != st) {
+                level.setBlock(pos, ns, 2);
+            }
+        }
+    }
+
     /** Los postes en diagonal no reciben aviso de Minecraft cuando se pone o se quita uno: se actualizan aquí. */
     private static void refreshCorners(net.minecraft.world.level.Level level, BlockPos pos) {
         if (level.isClientSide()) {
@@ -95,7 +105,8 @@ public class RopePostBlock extends UseBlock {
     //$$ @Override
     //$$ protected void onPlace(BlockState state, net.minecraft.world.level.Level level, BlockPos pos, BlockState old, boolean moved) {
     //$$     super.onPlace(state, level, pos, old, moved);
-    //$$     if (!(old.getBlock() instanceof RopePostBlock)) {
+    //$$     if (!level.isClientSide()) {
+    //$$         refreshSelf(level, pos);
     //$$         refreshCorners(level, pos);
     //$$     }
     //$$ }
@@ -103,7 +114,8 @@ public class RopePostBlock extends UseBlock {
     @Override
     public void onPlace(BlockState state, net.minecraft.world.level.Level level, BlockPos pos, BlockState old, boolean moved) {
         super.onPlace(state, level, pos, old, moved);
-        if (!(old.getBlock() instanceof RopePostBlock)) {
+        if (!level.isClientSide()) {
+            refreshSelf(level, pos);
             refreshCorners(level, pos);
         }
     }
@@ -147,8 +159,13 @@ public class RopePostBlock extends UseBlock {
     @Override
     protected BlockState onNeighbor(BlockState state, Direction dir, BlockState neighbor, BlockGetter level, BlockPos pos, BlockPos neighborPos) {
         BooleanProperty p = PROPS.get(dir);
-        BlockState s = p == null ? state : state.setValue(p, neighbor.getBlock() instanceof RopePostBlock);
-        return diagonals(s, level, pos);
+        boolean now = neighbor.getBlock() instanceof RopePostBlock;
+        if (p == null || state.getValue(p) == now) {
+            // nada cambió de este lado: las diagonales se quedan como están (al construir una plantilla los postes van llegando en
+            // desorden y aquí todavía puede faltar el de la esquina)
+            return state;
+        }
+        return diagonals(state.setValue(p, now), level, pos);
     }
 
     private static VoxelShape shape(BlockState s, Map<Direction, VoxelShape> rope) {
