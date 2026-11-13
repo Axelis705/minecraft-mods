@@ -671,6 +671,32 @@ for x in (CX - 11, CX + 11):
 for x, z in ((PX0 + 3, TER_Z0 + 2), (PX1 - 3, TER_Z0 + 2), (PX0 + 3, PZ1 - 3), (PX1 - 3, PZ1 - 3)):
     o.set(x, Y_ROOF + 1, z, 'minecraft:polished_blackstone_wall'); o.set(x, Y_ROOF + 2, z, 'minecraft:polished_blackstone_wall')
     o.set(x, Y_ROOF + 3, z, 'minecraft:lantern')
+for x in (22, 24, 26, 34, 36, 38):
+    o.set(x, Y_ROOF + 1, TER_Z0 + 3, sofa('blue', 'south'))        # camastros al norte de la alberca, mirándola
+for x in (25, 35):                                                  # sombrillas
+    o.set(x, Y_ROOF + 1, TER_Z0 + 2, 'minecraft:spruce_fence'); o.set(x, Y_ROOF + 2, TER_Z0 + 2, 'minecraft:spruce_fence')
+    for dx in (-1, 0, 1):
+        for dz in (-1, 0, 1):
+            o.set(x + dx, Y_ROOF + 3, TER_Z0 + 2 + dz, 'minecraft:white_wool' if (dx + dz) % 2 == 0 else 'minecraft:red_wool')
+def cabana(x0, x1):
+    z0, z1 = TER_Z0 + 4, TER_Z0 + 10
+    for x in (x0, x1):
+        for z in (z0, z1):
+            for y in range(Y_ROOF + 1, Y_ROOF + 4):
+                o.set(x, y, z, 'minecraft:dark_oak_fence')
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            o.set(x, Y_ROOF + 4, z, slab('minecraft:dark_oak_slab'))
+            o.set(x, Y_ROOF, z, 'casino:casino_floor_royal')
+    for z in range(z0 + 1, z1):
+        o.set(x0, Y_ROOF + 3, z, 'minecraft:white_wool'); o.set(x1, Y_ROOF + 3, z, 'minecraft:white_wool')
+    cx_ = (x0 + x1) // 2
+    for z in (z0 + 2, z0 + 3, z0 + 4):
+        o.set(x0 + 1, Y_ROOF + 1, z, sofa('red', 'east')); o.set(x1 - 1, Y_ROOF + 1, z, sofa('red', 'west'))
+    o.set(cx_, Y_ROOF + 1, z0 + 3, TABLE_W); o.set(cx_, Y_ROOF + 2, z0 + 3, drinks(3))
+    o.set(cx_, Y_ROOF + 3, z0 + 3, 'minecraft:lantern[hanging=true]')
+cabana(7, 13)
+cabana(47, 53)                                                       # espejo de la otra (7+53 = 60)
 # alas laterales del techo (fuera de la torre): jardín
 for x in list(range(PX0 + 2, TX0 - 1)) + list(range(TX1 + 2, PX1 - 1)):
     for z in range(PZ0 + 2, TER_Z0):
@@ -997,7 +1023,7 @@ for z in range(12, 31):
 o.set(9, YB + 1, 11, counter('east', 'outer_left')); o.set(9, YB + 1, 31, counter('east', 'outer_right'))
 for i, ch in enumerate('VIP BAR'):
     o.set(QX0, YB + 5, 24 - i, neon(ch, 'east', 2)) if ch != ' ' else None
-for (cx0, cz0) in ((15, 14), (15, 25), (22, 20), (22, 29)):
+for (cx0, cz0) in ((17, 22), (31, 22), (17, 29), (31, 29)):     # espejo respecto a x=24 (zona libre x 11..37)
     for dx in range(-1, 2):
         o.set(cx0 + dx, YB + 1, cz0 - 2, sofa('purple', 'south'))
         o.set(cx0 + dx, YB + 1, cz0 + 2, sofa('black', 'north'))
@@ -1005,8 +1031,26 @@ for (cx0, cz0) in ((15, 14), (15, 25), (22, 20), (22, 29)):
     o.set(cx0, -3, cz0, CHAND)
 for (x, z) in ((13, 31), (25, 12), (35, 31), (35, 10)):
     o.set(x, YB + 1, z, 'minecraft:potted_azalea_bush')
+# chimenea al centro de la pared sur (x 22..26), con repisa dorada y el letrero VIP encima
+for x in range(22, 27):
+    for y in range(YB + 1, YB + 5):
+        edge = x in (22, 26) or y == YB + 4
+        o.set(x, y, QZ1 - 1, 'minecraft:polished_blackstone_bricks' if edge else AIR)
+    o.set(x, YB + 5, QZ1 - 1, GT)
+    o.set(x, YB, QZ1 - 1, 'minecraft:polished_blackstone')
+for x in (23, 24, 25):
+    o.set(x, YB + 1, QZ1 - 1, 'minecraft:campfire[lit=true,signal_fire=false]')
+    o.set(x, YB, QZ1 - 2, GB)
+for x in (21, 27):
+    o.set(x, YB + 1, QZ1 - 1, 'minecraft:potted_azalea_bush')
 for i, ch in enumerate('VIP'):
-    o.set(CX + 1 - i, YB + 6, QZ1, neon(ch, 'north', 2))
+    o.set(25 - i, YB + 7, QZ1 - 1, neon(ch, 'north', 2))
+# alfombra frente a la chimenea y sillones mirándola
+for x in range(21, 28):
+    for z in range(27, 32):
+        o.set(x, YB, z, 'casino:casino_floor_deco') if o.get(x, YB, z).startswith('casino:casino_floor') else None
+for x in (23, 24, 25):
+    o.set(x, YB + 1, 28, sofa('purple', 'south'))
 o.set(QX0 + 1, YB + 5, 27, speaker('east'))
 
 # ---- sala de carreras (x 39..54, 16 de ancho: todo simétrico alrededor de x=46.5), como un cine: se entra por delante (junto al elevador), al lado de la pantalla, y las gradas
