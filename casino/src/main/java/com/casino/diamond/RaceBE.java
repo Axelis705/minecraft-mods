@@ -201,7 +201,7 @@ public class RaceBE extends CasinoBE {
         Direction right = f.getCounterClockWise();
         double fwd = d.x * f.getStepX() + d.z * f.getStepZ();
         double lat = d.x * right.getStepX() + d.z * right.getStepZ() - (left + width / 2.0 - 0.5);
-        return fwd > -1.5 && fwd < 26 && Math.abs(lat) < width / 2.0 + 4 && d.y > -6 && d.y < 10;
+        return fwd > -1.5 && fwd < 26 && Math.abs(lat) < width / 2.0 + 4 && d.y > -6 && d.y < 8;
     }
 
     private void sound(ServerLevel level, SoundEvent ev, float pitch) {

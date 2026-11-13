@@ -1411,8 +1411,9 @@ for (x, y, z), st in list(o.b.items()):
         o.set(30, CY - 2, 18, AIR); o.set(30, CY - 3, 18, st); o.set(30, CY - 1, 18, GT)
 # sillas de tragamonedas frente a cada máquina (la silla de casino queda para las carreras)
 for x in SLOT_X:
-    o.set(x, 1, 25, 'casino:slot_chair[facing=north]'); o.set(x, 1, 28, 'casino:slot_chair[facing=south]')
-    o.set(x, 1, 36, 'casino:slot_chair[facing=north]'); o.set(x, 1, 39, 'casino:slot_chair[facing=south]')
+    # la silla mira hacia la máquina (quien se sienta mira hacia "facing")
+    o.set(x, 1, 25, 'casino:slot_chair[facing=south]'); o.set(x, 1, 28, 'casino:slot_chair[facing=north]')
+    o.set(x, 1, 36, 'casino:slot_chair[facing=south]'); o.set(x, 1, 39, 'casino:slot_chair[facing=north]')
 
 # ================================================================== CORDONES: uniones ya calculadas en la plantilla (rectas y en diagonal)
 def _ropes():
