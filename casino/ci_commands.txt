@@ -87,7 +87,7 @@ casino build 40 100 140 0 diamond
 casino build 140 100 140 1 diamond
 execute if block 70 102 167 casino:lucky_wheel[facing=south,px=1,py=0] run say PRUEBA_DIAMOND_RUEDA
 execute if block 70 102 152 casino:elevator[facing=south] if block 70 114 152 casino:elevator if block 70 148 152 casino:elevator if block 70 156 152 casino:elevator if block 70 90 152 casino:elevator run say PRUEBA_DIAMOND_ELEVADOR
-execute if block 83 101 184 casino:prize_shop[facing=south] if block 48 101 184 casino:cashier[facing=south] run say PRUEBA_DIAMOND_TIENDA
+execute if block 91 101 183 casino:prize_shop[facing=west] if block 49 101 183 casino:cashier[facing=east] run say PRUEBA_DIAMOND_TIENDA
 execute if block 81 101 166 casino:slot[facing=north,half=lower] if block 62 113 168 casino:roulette if block 78 113 159 casino:blackjack if block 70 113 162 casino:poker[facing=south,cell=2] run say PRUEBA_DIAMOND_MESAS
 execute if entity @e[type=casino:dealer,nbt={Game:3},x=66,y=101,z=157,distance=..2] run say PRUEBA_DIAMOND_GUARDIA
 execute if block 76 113 192 casino:neon_letter[glyph=3,facing=south] run say PRUEBA_DIAMOND_NEON
@@ -96,19 +96,19 @@ execute if block 70 102 167 casino:lucky_wheel run say DIAG_DIAMOND_RUEDA
 execute if block 62 113 168 casino:roulette run say DIAG_DIAMOND_RULETA_PISO1
 execute if block 70 90 152 casino:elevator run say DIAG_DIAMOND_ELEV_SOTANO
 execute if block 70 102 152 casino:elevator run say DIAG_DIAMOND_ELEV
-execute if block 83 101 184 casino:prize_shop run say DIAG_DIAMOND_TIENDA
+execute if block 91 101 183 casino:prize_shop run say DIAG_DIAMOND_TIENDA
 execute if block 81 101 166 casino:slot run say DIAG_DIAMOND_SLOT
 execute if block 76 113 192 casino:neon_letter run say DIAG_DIAMOND_NEON
 execute if entity @e[type=casino:dealer,nbt={Game:3}] run say DIAG_DIAMOND_HAY_GUARDIA
 data get block 70 114 152
-execute if block 86 91 150 casino:race_screen[facing=south] run say PRUEBA_DIAMOND_CARRERAS
-data get block 86 91 150
-data get block 83 101 184
+execute if block 87 91 173 casino:race_screen[facing=north] run say PRUEBA_DIAMOND_CARRERAS
+data get block 87 91 173
+data get block 91 101 183
 place structure casino:the_diamond 0 -60 400
 execute if entity @e[type=casino:dealer,nbt={Game:3},x=0,y=-60,z=400,distance=..60] run say PRUEBA_DIAMOND_ESTRUCTURA
 # la pantalla de carreras ya empezó su ciclo (semilla y hora de inicio puestas por el servidor)
-execute unless data block 86 91 150 {Start:0L} unless data block 86 91 150 {casino:{Start:0L}} run say PRUEBA_DIAMOND_CARRERA_CORRE
-data get block 86 91 150
+execute unless data block 87 91 173 {Start:0L} unless data block 87 91 173 {casino:{Start:0L}} run say PRUEBA_DIAMOND_CARRERA_CORRE
+data get block 87 91 173
 #expect PRUEBA_RASCA_OK
 #expect PRUEBA_POKER_OK
 #expect PRUEBA_CRUPIER_OK

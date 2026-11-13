@@ -1,0 +1,49 @@
+{
+ "variants": {
+  "facing=north,shift=0": {
+   "model": "casino:block/decor/grand_chandelier"
+  },
+  "facing=north,shift=1": {
+   "model": "casino:block/decor/grand_chandelier_edge"
+  },
+  "facing=north,shift=2": {
+   "model": "casino:block/decor/grand_chandelier_corner"
+  },
+  "facing=east,shift=0": {
+   "model": "casino:block/decor/grand_chandelier",
+   "y": 90
+  },
+  "facing=east,shift=1": {
+   "model": "casino:block/decor/grand_chandelier_edge",
+   "y": 90
+  },
+  "facing=east,shift=2": {
+   "model": "casino:block/decor/grand_chandelier_corner",
+   "y": 90
+  },
+  "facing=south,shift=0": {
+   "model": "casino:block/decor/grand_chandelier",
+   "y": 180
+  },
+  "facing=south,shift=1": {
+   "model": "casino:block/decor/grand_chandelier_edge",
+   "y": 180
+  },
+  "facing=south,shift=2": {
+   "model": "casino:block/decor/grand_chandelier_corner",
+   "y": 180
+  },
+  "facing=west,shift=0": {
+   "model": "casino:block/decor/grand_chandelier",
+   "y": 270
+  },
+  "facing=west,shift=1": {
+   "model": "casino:block/decor/grand_chandelier_edge",
+   "y": 270
+  },
+  "facing=west,shift=2": {
+   "model": "casino:block/decor/grand_chandelier_corner",
+   "y": 270
+  }
+ }
+}

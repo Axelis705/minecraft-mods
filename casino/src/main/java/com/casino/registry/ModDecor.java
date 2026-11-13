@@ -81,6 +81,8 @@ public final class ModDecor {
     public static final RegistryObject<Block> CHANDELIER = block("chandelier", p -> new DecorBlock(
             p.mapColor(MapColor.GOLD).strength(1.0F).sound(SoundType.GLASS).noOcclusion().lightLevel(s -> 15), false,
             new double[]{1, 3.6, 1, 15, 16, 15}));
+    public static final RegistryObject<Block> GRAND_CHANDELIER = block("grand_chandelier", p -> new com.casino.decor.GrandChandelierBlock(
+            p.mapColor(MapColor.GOLD).strength(1.0F).sound(SoundType.GLASS).noOcclusion().lightLevel(s -> 15)));
     public static final List<RegistryObject<Block>> ROPE_POSTS = new ArrayList<>();
 
     static {

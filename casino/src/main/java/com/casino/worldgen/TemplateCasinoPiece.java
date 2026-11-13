@@ -59,6 +59,8 @@ public class TemplateCasinoPiece extends TemplateStructurePiece {
     public void postProcess(WorldGenLevel level, StructureManager structures, ChunkGenerator gen, RandomSource random, BoundingBox chunkBox, ChunkPos chunkPos, BlockPos pivot) {
         foundation(level, chunkBox);
         super.postProcess(level, structures, gen, random, chunkBox, chunkPos, pivot);
+        net.minecraft.server.level.ServerLevel sl = level.getLevel();
+        com.casino.Protection.protect(sl.getServer(), sl, getBoundingBox());
     }
 
     /** Rellena debajo del piso de la plantilla hasta tocar suelo firme (en laderas o huecos). */

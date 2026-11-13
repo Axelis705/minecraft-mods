@@ -65,6 +65,31 @@ public final class CasinoData extends SavedData {
         setDirty();
     }
 
+    /** Zonas protegidas (casinos construidos): en supervivencia no se pueden romper bloques ahí. dim -> [x0,y0,z0,x1,y1,z1]. */
+    private final List<String> zoneDims = new ArrayList<>();
+    private final List<int[]> zones = new ArrayList<>();
+
+    public void addZone(String dim, int[] b) {
+        for (int i = 0; i < zones.size(); i++) {
+            if (zoneDims.get(i).equals(dim) && java.util.Arrays.equals(zones.get(i), b)) {
+                return;
+            }
+        }
+        zoneDims.add(dim);
+        zones.add(b.clone());
+        setDirty();
+    }
+
+    public boolean inZone(String dim, int x, int y, int z) {
+        for (int i = 0; i < zones.size(); i++) {
+            int[] b = zones.get(i);
+            if (x >= b[0] && y >= b[1] && z >= b[2] && x <= b[3] && y <= b[4] && z <= b[5] && zoneDims.get(i).equals(dim)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addPending(UUID id, Prize prize) {
         pending.computeIfAbsent(id, k -> new ArrayList<>()).add(prize.save());
         setDirty();
@@ -107,6 +132,15 @@ public final class CasinoData extends SavedData {
                 // clave dañada: se ignora
             }
         }
+        ListTag zl = Nbt.list(tag, "zones");
+        for (int i = 0; i < zl.size(); i++) {
+            CompoundTag z = Nbt.at(zl, i);
+            int[] b = Nbt.ia(z, "b");
+            if (b.length == 6) {
+                d.zoneDims.add(Nbt.s(z, "d"));
+                d.zones.add(b);
+            }
+        }
         return d;
     }
 
@@ -131,6 +165,14 @@ public final class CasinoData extends SavedData {
             pd.put(k.toString(), l);
         });
         tag.put("pending", pd);
+        ListTag zl = new ListTag();
+        for (int i = 0; i < zones.size(); i++) {
+            CompoundTag z = new CompoundTag();
+            z.putString("d", zoneDims.get(i));
+            z.putIntArray("b", zones.get(i));
+            zl.add(z);
+        }
+        tag.put("zones", zl);
         return tag;
     }
 }

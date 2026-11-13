@@ -547,5 +547,6 @@
   "casino.horse.name.38": "Sea Breeze",
   "casino.horse.name.39": "Thoroughbred",
   "casino.elevator.floor.mesas": "Table Games",
-  "casino.elevator.floor.sotano": "VIP Basement · Races"
+  "casino.elevator.floor.sotano": "VIP Basement · Races",
+  "block.casino.grand_chandelier": "Grand Chandelier"
 }
