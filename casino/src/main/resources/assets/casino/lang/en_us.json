@@ -548,5 +548,6 @@
   "casino.horse.name.39": "Thoroughbred",
   "casino.elevator.floor.mesas": "Table Games",
   "casino.elevator.floor.sotano": "VIP Basement · Races",
-  "block.casino.grand_chandelier": "Grand Chandelier"
+  "block.casino.grand_chandelier": "Grand Chandelier",
+  "block.casino.slot_chair": "Slot Chair"
 }

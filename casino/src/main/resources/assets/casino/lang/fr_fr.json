@@ -548,5 +548,6 @@
   "casino.horse.name.39": "Thoroughbred",
   "casino.elevator.floor.mesas": "Tables de jeu",
   "casino.elevator.floor.sotano": "Sous-sol VIP · Courses",
-  "block.casino.grand_chandelier": "Grand lustre"
+  "block.casino.grand_chandelier": "Grand lustre",
+  "block.casino.slot_chair": "Chaise de machine à sous"
 }

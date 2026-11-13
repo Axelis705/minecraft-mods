@@ -548,5 +548,6 @@
   "casino.horse.name.39": "Thoroughbred",
   "casino.elevator.floor.mesas": "Игровые столы",
   "casino.elevator.floor.sotano": "VIP-подвал · Скачки",
-  "block.casino.grand_chandelier": "Большая люстра"
+  "block.casino.grand_chandelier": "Большая люстра",
+  "block.casino.slot_chair": "Стул для игровых автоматов"
 }

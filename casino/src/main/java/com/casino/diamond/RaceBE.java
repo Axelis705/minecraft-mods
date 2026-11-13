@@ -186,13 +186,22 @@ public class RaceBE extends CasinoBE {
     }
 
     private boolean playersNear(Level level) {
-        Vec3 c = center();
         for (Player p : level.players()) {
-            if (!p.isSpectator() && p.distanceToSqr(c) < 48 * 48) {
+            if (!p.isSpectator() && inHall(p)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /** ¿El jugador está en la sala, frente a la pantalla? (hasta 26 bloques al frente, el ancho de la pantalla más 4 a cada lado). */
+    public boolean inHall(Player p) {
+        Vec3 d = p.position().subtract(Vec3.atCenterOf(worldPosition));
+        Direction f = facing();
+        Direction right = f.getCounterClockWise();
+        double fwd = d.x * f.getStepX() + d.z * f.getStepZ();
+        double lat = d.x * right.getStepX() + d.z * right.getStepZ() - (left + width / 2.0 - 0.5);
+        return fwd > -1.5 && fwd < 26 && Math.abs(lat) < width / 2.0 + 4 && d.y > -6 && d.y < 10;
     }
 
     private void sound(ServerLevel level, SoundEvent ev, float pitch) {
@@ -213,9 +222,9 @@ public class RaceBE extends CasinoBE {
         int w = r.order[0];
         sound(level, ModSounds.RACE_CROWD.get(), 1.0F);
         Component winLine = Component.translatable("casino.race.winner", w + 1, horseName(r, w), r.oddsText(w)).withStyle(ChatFormatting.GOLD);
-        Vec3 c = center();
+        // el resultado solo se avisa a quien está en la sala de la pantalla (antes llenaba el chat de todo el casino)
         for (ServerPlayer p : level.players()) {
-            if (p.distanceToSqr(c) < 48 * 48) {
+            if (inHall(p)) {
                 Plat.msg(p, winLine, false);
             }
         }

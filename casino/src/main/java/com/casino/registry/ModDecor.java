@@ -81,6 +81,9 @@ public final class ModDecor {
     public static final RegistryObject<Block> CHANDELIER = block("chandelier", p -> new DecorBlock(
             p.mapColor(MapColor.GOLD).strength(1.0F).sound(SoundType.GLASS).noOcclusion().lightLevel(s -> 15), false,
             new double[]{1, 3.6, 1, 15, 16, 15}));
+    /** Silla para jugar en las tragamonedas (la silla de casino queda para las carreras). */
+    public static final RegistryObject<Block> SLOT_CHAIR = block("slot_chair", p -> new SeatBlock(p.mapColor(MapColor.COLOR_RED).strength(1.5F)
+            .sound(SoundType.WOOL).noOcclusion(), 0.78, new double[]{3, 0, 3, 13, 13, 13}, new double[]{3, 12.2, 12.4, 13, 21.5, 14.6}));
     public static final RegistryObject<Block> GRAND_CHANDELIER = block("grand_chandelier", p -> new com.casino.decor.GrandChandelierBlock(
             p.mapColor(MapColor.GOLD).strength(1.0F).sound(SoundType.GLASS).noOcclusion().lightLevel(s -> 15)));
     public static final List<RegistryObject<Block>> ROPE_POSTS = new ArrayList<>();

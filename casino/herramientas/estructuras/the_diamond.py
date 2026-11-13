@@ -328,8 +328,6 @@ def side_room(east, word, color, kind):
     for z in range(LZ0, LZ1 + 1):
         o.set(X(9), 5, z, GB); o.set(X(9), 6, z, 'minecraft:black_concrete'); o.set(X(9), 7, z, 'minecraft:black_concrete'); o.set(X(9), 8, z, GB)
         o.set(X(10), 5, z, stairs('minecraft:smooth_quartz_stairs', back, 'top'))
-        if z in (42, 44, 47, 49):
-            o.set(X(10), 4, z, 'minecraft:lantern[hanging=true]')
     for i, ch in enumerate(word):
         z = (LZ0 + i) if east else (48 - i)      # mirando al oeste se lee con z ascendente; mirando al este, descendente
         o.set(X(10), 7, z, neon(ch, face, color)) if ch != ' ' else None
@@ -415,7 +413,7 @@ for z in range(BZ0 + 1, BZ1, 2):
 # mesitas en las esquinas del bar
 for (x, z) in ((8, 26), (19, 26), (8, 38), (19, 38)):
     o.set(x, 1, z, TABLE_B); o.set(x, 2, z, drinks(2))
-    o.set(x - 1, 1, z, chair('red', 'east')); o.set(x + 1, 1, z, chair('red', 'west'))
+    o.set(x - 1, 1, z, stool('black', 'east')); o.set(x + 1, 1, z, stool('black', 'west'))
 for (x, z) in ((10, 26), (17, 26), (10, 38), (17, 38)):
     o.set(x, 1, z, 'minecraft:potted_azalea_bush')
 o.set(IX0, 5, 28, speaker('east')); o.set(IX0, 5, 36, speaker('east'))
@@ -467,8 +465,9 @@ o.set(8, 2, 15, 'minecraft:jukebox'); o.set(8, 2, 16, 'minecraft:jukebox')
 for x in range(12, 15):                                             # pista frente al escenario
     for z in range(11, 21):
         o.set(x, 0, z, BM if (x + abs(2 * z - 31) // 2) % 2 else 'casino:marble')
-for z in (12, 19):
-    o.set(14, 1, z, TABLE_B); o.set(14, 2, z, drinks(2))
+for (x, z) in ((14, 10), (17, 10), (14, 21), (17, 21)):
+    o.set(x, 1, z, TABLE_B); o.set(x, 2, z, drinks(3 if x == 14 else 2, 'south'))
+o.set(6, 1, 10, 'casino:velvet_wall_red'); o.set(6, 1, 21, 'casino:velvet_wall_red')   # el telón llega al piso en las esquinas
 for z in list(range(11, 15)) + list(range(17, 21)):
     o.set(15, 1, z, sofa('red', 'west'))
 for z in list(range(11, 14)) + list(range(18, 21)):
@@ -838,7 +837,7 @@ for x in range(30, 35):
     o.set(x, P, 24, 'minecraft:dark_oak_slab[type=top]') if False else None
 o.set(31, P, 25, TABLE_W); o.set(33, P, 25, TABLE_W)
 for x in (31, 33):
-    o.set(x, P, 24, chair('red', 'south')); o.set(x, P, 26, chair('red', 'north'))
+    o.set(x, P, 24, stool('red', 'south')); o.set(x, P, 26, stool('red', 'north'))
     o.set(x, P + 1, 25, drinks(2))
 o.set(32, Y_PH_TOP - 1, 25, CHAND)
 # piano de cola (bloques negros con teclas)
@@ -872,7 +871,7 @@ o.set(36, P + 1, 19, 'minecraft:potted_fern'); o.set(38, P + 1, 19, 'minecraft:p
 o.set(37, Y_PH_TOP - 1, 16, 'minecraft:sea_lantern')
 # camastros frente al ventanal sur
 for x in (21, 39):
-    o.set(x, P, PJ1, chair('purple', 'south'))
+    o.set(x, P, PJ1, sofa('purple', 'south'))
 o.set(PI0 + 1, P + 3, 21, sign(3, 'east')) if False else None
 
 # ================================================================== AZOTEA: discoteca (y 54..)
@@ -1120,8 +1119,8 @@ def runner(x0, x1, z0, z1, fy, edge=True, mat='casino:casino_floor_royal'):
 
 # planta baja: entrada -> vestíbulo -> dos carriles alrededor de la rueda -> vestíbulo del elevador
 runner(27, 33, 41, IZ1, 0)                 # de la puerta al salón (7 de ancho)
-runner(23, 25, 18, 40, 0)                  # carril oeste (pasa por la puerta del bar y la del espectáculo)
-runner(35, 37, 18, 40, 0)                  # carril este (tragamonedas y plinko)
+# (los carriles con alfombra a los lados de la rueda se quitaron: ahí sigue el mármol del salón)
+
 runner(23, 37, 16, 21, 0, False)           # rellano frente al elevador
 runner(23, 27, 14, 15, 0, False)           # la alfombra llega completa a la puerta del espectáculo (z 14..17)
 runner(33, 37, 14, 15, 0, False)           # y a la del plinko
@@ -1365,6 +1364,55 @@ for z in range(PZ0, PZ1 + 1):
 for x in (PX0 + 6, PX1 - 6, CX - 8, CX + 8):
     o.set(x, 1, 3, 'minecraft:polished_blackstone_wall'); o.set(x, 2, 3, 'minecraft:polished_blackstone_wall')
     o.set(x, 3, 3, GB); o.set(x, 4, 3, 'minecraft:lantern')
+
+# ================================================================== AJUSTES (13 nov, del video de Axelis): umbrales, sala junto al elevador, tarima
+# umbral dorado en cada puerta de los arcos (alternando bloque de oro y moldura), igual de los dos lados
+def threshold(x, z0, z1, pattern):
+    for i, z in enumerate(range(z0, z1 + 1)):
+        o.set(x, 0, z, GB if pattern[i] == 'B' else GT)
+for x in (22, 38):
+    threshold(x, 14, 17, 'TBBT')            # espectáculo / plinko
+    threshold(x, 29, 35, 'BTBTBTB')         # bar / tragamonedas
+    threshold(x, 44, 47, 'TBBT')            # caja / premios
+for x in range(27, 34):                     # entrada principal
+    o.set(x, 0, 50, GB if x in (27, 33) else 'casino:casino_floor_royal')
+for x in list(range(23, 26)) + list(range(35, 38)):
+    o.set(x, 0, 22, GB)                     # cierre dorado del rellano hacia el salón
+o.set(27, 0, 23, BM); o.set(33, 0, 23, BM)
+# salita a los lados del elevador: alfombra, sofás contra la pared y mesitas
+for (sx, side) in ((23, 1), (37, -1)):
+    for k in range(5):
+        x = sx + side * k
+        for z in range(10, 14):
+            o.set(x, 0, z, 'casino:casino_floor_royal')
+    for k in range(4):
+        o.set(sx + side * k, 1, 10, sofa('red', 'south'))
+    for z in (11, 12, 13):
+        o.set(sx + side * 4, 1, z, sofa('red', 'west' if side == 1 else 'east'))
+    for k in (1, 2):
+        for z in (12, 13):
+            o.set(sx + side * k, 1, z, TABLE_B)
+# tarima de la rueda: también la fila de atrás (z 25) en mármol negro, con oro en las puntas
+for x in range(27, 34):
+    o.set(x, 1, 25, BM)
+o.set(26, 1, 25, GB); o.set(34, 1, 25, GB)
+# moldura dorada arriba de los muros (y 9) también sobre las puertas, en el telón del show y sobre las marquesinas de caja/premios
+for x in (22, 38):
+    for z in range(IZ0, IZ1 + 1):
+        if o.get(x, CY - 1, z).startswith('casino:velvet_wall'):
+            o.set(x, CY - 1, z, GT)
+for z in range(10, 22):
+    o.set(6, CY - 1, z, GT)
+for z in range(LZ0, LZ1 + 1):
+    o.set(9, CY - 1, z, GT); o.set(51, CY - 1, z, GT)
+# el candelabro frente al elevador chocaba con el letrero VIP: un bloque más abajo, colgado de una moldura
+for (x, y, z), st in list(o.b.items()):
+    if 'grand_chandelier' in st and y - o.oy == CY - 2 and (x, z) == (30, 18):
+        o.set(30, CY - 2, 18, AIR); o.set(30, CY - 3, 18, st); o.set(30, CY - 1, 18, GT)
+# sillas de tragamonedas frente a cada máquina (la silla de casino queda para las carreras)
+for x in SLOT_X:
+    o.set(x, 1, 25, 'casino:slot_chair[facing=north]'); o.set(x, 1, 28, 'casino:slot_chair[facing=south]')
+    o.set(x, 1, 36, 'casino:slot_chair[facing=north]'); o.set(x, 1, 39, 'casino:slot_chair[facing=south]')
 
 # ================================================================== CORDONES: uniones ya calculadas en la plantilla (rectas y en diagonal)
 def _ropes():
