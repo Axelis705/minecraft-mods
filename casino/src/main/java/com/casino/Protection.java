@@ -44,9 +44,12 @@ public final class Protection {
     }
 
     //#if MC >= 26.1
+    //$$ // En 26.x Forge no mira si el evento se canceló: decide con el resultado (DENY = no se rompe)
     //$$ @SubscribeEvent
-    //$$ public static boolean onBreak(BlockEvent.BreakEvent e) {
-    //$$     return e.getLevel() instanceof Level l && blocks(l, e.getPos(), e.getPlayer());
+    //$$ public static void onBreak(BlockEvent.BreakEvent e) {
+    //$$     if (e.getLevel() instanceof Level l && blocks(l, e.getPos(), e.getPlayer())) {
+    //$$         e.setResult(net.minecraftforge.common.util.Result.DENY);
+    //$$     }
     //$$ }
     //#else
     @SubscribeEvent
