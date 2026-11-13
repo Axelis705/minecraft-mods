@@ -423,7 +423,7 @@ for row_z in (26, 37):
         mq.place(o, 'slot', x, 1, row_z + 1, 2)    # espalda con espalda, miran al sur
     for x in range(40, 54):
         o.set(x, 3, row_z, 'minecraft:light[level=8]') if o.get(x, 3, row_z) == AIR else None
-for x in (40, 42, 44, 49, 51, 53):
+for x in (42, 44, 49, 51):
     for z in (26, 27, 37, 38):
         o.set(x, 1, z, GT); o.set(x, 2, z, 'minecraft:end_rod[facing=up]')
 # pasillo central de la sala (de la puerta al fondo): alfombra real
@@ -457,9 +457,9 @@ o.set(10, 2, IZ0 + 1, 'minecraft:note_block'); o.set(12, 2, IZ0 + 1, 'minecraft:
 for x in range(7, 16):
     for z in range(IZ0 + 5, IZ0 + 8):
         o.set(x, 0, z, BM if (x + z) % 2 else 'casino:marble')
-for z in (19, 21):
+for z in (18, 20):
     for x in range(7, 16):
-        o.set(x, 1, z, sofa('red' if z == 19 else 'purple', 'north'))
+        o.set(x, 1, z, sofa('red' if z == 18 else 'purple', 'north'))
 for x in (9, 13):
     o.set(x, 1, 17, TABLE_B); o.set(x, 2, 17, drinks(2))
 for x in (18, 20):
@@ -660,7 +660,7 @@ for x in range(CX - 10, CX + 11):
         if (x + z) % 4 == 0:
             o.set(x, Y_ROOF - 3, z, LIGHT)
 for x in range(CX - 9, CX + 10, 3):
-    o.set(x, Y_ROOF + 1, TER_Z0 + 14, sofa('blue', 'north'))
+    o.set(x, Y_ROOF + 1, TER_Z0 + 15, sofa('blue', 'north'))
 for x in (CX - 13, CX + 13):
     for z in range(TER_Z0 + 2, TER_Z0 + 15, 3):
         o.set(x, Y_ROOF + 1, z, 'minecraft:spruce_leaves[persistent=true]')
@@ -1023,7 +1023,7 @@ for z in range(12, 31):
 o.set(9, YB + 1, 11, counter('east', 'outer_left')); o.set(9, YB + 1, 31, counter('east', 'outer_right'))
 for i, ch in enumerate('VIP BAR'):
     o.set(QX0, YB + 5, 24 - i, neon(ch, 'east', 2)) if ch != ' ' else None
-for (cx0, cz0) in ((17, 22), (31, 22), (17, 29), (31, 29)):     # espejo respecto a x=24 (zona libre x 11..37)
+for (cx0, cz0) in ((15, 22), (33, 22), (15, 29), (33, 29)):     # espejo respecto a x=24; la salida del elevador (x 29..31) queda libre
     for dx in range(-1, 2):
         o.set(cx0 + dx, YB + 1, cz0 - 2, sofa('purple', 'south'))
         o.set(cx0 + dx, YB + 1, cz0 + 2, sofa('black', 'north'))
@@ -1106,6 +1106,39 @@ for x in (39, 54):
     o.set(x, YB + 1, QZ0 + 1, 'minecraft:potted_azalea_bush')
 light_grid(39, 54, 11, 15, YB + 5, 4, 'minecraft:light[level=13]')
 
+
+
+# ================================================================== PASILLOS: alfombras con orilla dorada en las rutas principales
+def runner(x0, x1, z0, z1, fy, edge=True, mat='casino:casino_floor_royal'):
+    """Alfombra en el piso (fy) de x0..x1, z0..z1; con orilla de oro en los lados largos. No pisa bases de máquinas ni muros."""
+    long_x = (x1 - x0) >= (z1 - z0)
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            above = o.get(x, fy + 1, z)
+            if not (above == AIR or above.startswith('minecraft:light')): continue
+            side = (z in (z0, z1)) if long_x else (x in (x0, x1))
+            o.set(x, fy, z, GB if (edge and side and (x1 - x0 >= 2 and z1 - z0 >= 2)) else mat)
+
+# planta baja: entrada -> vestíbulo -> dos carriles alrededor de la rueda -> vestíbulo del elevador
+runner(27, 33, 41, IZ1, 0)                 # de la puerta al salón (7 de ancho)
+runner(23, 26, 18, 40, 0)                  # carril oeste (pasa por la puerta del bar y la del espectáculo)
+runner(34, 37, 18, 40, 0)                  # carril este (tragamonedas y plinko)
+runner(23, 37, 16, 21, 0)                  # rellano frente al elevador
+runner(18, 21, 31, 35, 0, False)           # tapete de entrada al bar
+runner(18, 21, 15, 19, 0, False)           # tapete de entrada al espectáculo
+runner(39, 42, 15, 19, 0, False)           # tapete de entrada al plinko
+# franja muerta detrás del hueco del elevador: se cierra
+for x in range(27, 34):
+    for y in range(1, Y_ROOF - 2):
+        o.set(x, y, IZ0, MAH if y <= 3 else ('casino:velvet_wall_purple' if y < Y_ROOF - 3 else GT))
+# primer piso: rellano del elevador, carriles a los lados del póker y salida a la terraza
+runner(25, 35, 16, 19, Y_VIP)
+runner(25, 27, 16, 32, Y_VIP)
+runner(33, 35, 16, 32, Y_VIP)
+runner(28, 32, 28, 32, Y_VIP, False)
+# sótano: de la salida del elevador a la chimenea (y la alfombra a carreras ya existe)
+runner(29, 31, 16, 26, YB)
+runner(21, 31, 25, 26, YB, False)
 
 # ================================================================== PULIDO: techos artesonados y paredes con pilastras, sala por sala
 # Todo se reparte simétrico desde el centro de cada sala: vigas cada 4, casetones con panel de luz al centro y pilastras alineadas
