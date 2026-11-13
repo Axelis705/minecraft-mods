@@ -860,12 +860,11 @@ for x in range(SX0, SX1 + 1):
 for x in range(SX0 + 1, SX1):
     for z in range(SZ0 + 1, SZ1):
         o.set(x, Y_PH_TOP, z, BM if (x + z) % 2 else 'casino:marble_black')
-# pista de baile iluminada (cuadros de colores con luz debajo)
-COLS_DANCE = ['minecraft:magenta_stained_glass', 'minecraft:cyan_stained_glass', 'minecraft:yellow_stained_glass', 'minecraft:lime_stained_glass']
+# pista de baile iluminada: cuadros de 2x2 de luz de colores (froglights), simétrica respecto al eje
+COLS_DANCE = ['minecraft:pearlescent_froglight', 'minecraft:verdant_froglight', 'minecraft:ochre_froglight', 'minecraft:sea_lantern']
 for x in range(CX - 5, CX + 6):
     for z in range(21, 29):
-        o.set(x, Y_PH_TOP, z, COLS_DANCE[(x // 2 + z // 2) % 4])
-        o.set(x, Y_PH_TOP - 1, z, SEA)
+        o.set(x, Y_PH_TOP, z, COLS_DANCE[((abs(x - CX) + 1) // 2 + (z - 21) // 2) % 4])
 for x in range(CX - 6, CX + 7):
     for z in (20, 29):
         o.set(x, Y_PH_TOP, z, GT)
@@ -879,7 +878,7 @@ for x in (CX - 5, CX + 5):
     o.set(x, A, SZ1 - 1, speaker('north')); o.set(x, A + 1, SZ1 - 1, speaker('north'))
 o.set(CX - 1, A + 1, SZ1 - 2, 'minecraft:jukebox'); o.set(CX + 1, A + 1, SZ1 - 2, 'minecraft:note_block')
 for i, ch in enumerate('DISCO'):
-    o.set(CX - 2 + i, A + 2, SZ1 - 1, neon(ch, 'north', 1))
+    o.set(CX + 2 - i, A + 2, SZ1 - 1, neon(ch, 'north', 1))      # mirando al norte: se escribe de este a oeste
 # bar y sillones de la azotea
 for z in range(21, 29):
     o.set(SX0 + 2, A, z, counter('east'))
@@ -1214,6 +1213,8 @@ def _plinko(bx, bz, cx_, cz_):
             if rs.random() < 0.12 and x not in bx and z not in bz:
                 o.set(x, CY, z, SEA); o.set(93 - x, CY, z, SEA)
 ceiling(39, 54, 10, 22, CY, 'minecraft:black_concrete', 'minecraft:purple_concrete', 'minecraft:amethyst_block', None, _plinko)  # plinko
+# --- penthouse: casetones dorados con candelabros
+ceiling(PI0, PI1, PJ0, PJ1, Y_PH_TOP - 1, SQ, GT, PEARL, 'ring')
 # --- primer piso (salón de mesas): techo de cuarzo con casetones y candelabros
 ceiling(TX0 + 1, TX1 - 1, TZ0 + 1, TZ1 - 1, Y_VIP_TOP - 1, SQ, GT, PEARL, 'ring')
 # --- sótano: salón VIP (terciopelo negro) y carreras (cielo oscuro con luces de cine)
