@@ -64,6 +64,12 @@ for ns in sorted(os.listdir(assets)):
                     on, op = split(mm, "minecraft")
                     if on != "minecraft" and not exists_model(on, op):
                         E(f"{rel(p)}: override modelo '{mm}' no existe")
+            # Minecraft no carga un modelo con cajas fuera de -16..32 (el bloque falta en el juego)
+            for el in m.get("elements", []) or []:
+                for k in ("from", "to"):
+                    if any(v < -16 or v > 32 for v in el.get(k, [])):
+                        E(f"{rel(p)}: '{k}' {el[k]} se sale de -16..32")
+                        break
             # texturas usadas por elementos pero no definidas
             used = set()
             for el in m.get("elements", []) or []:

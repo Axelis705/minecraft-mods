@@ -310,7 +310,7 @@ def models():
          box([-6, 29.4, 14.4], [22, 30, 14.9], "gold"), box([-6, 2, 14.4], [22, 2.6, 14.9], "gold"),
          box([-6, 2.6, 14.4], [-5.4, 29.4, 14.9], "gold"), box([21.4, 2.6, 14.4], [22, 29.4, 14.9], "gold")]
     for (x, y) in ((-8, 0), (22, 0), (-8, 30), (22, 30)):
-        e.append(box([x - 0.4, y - 0.4 if y == 0 else y, 13.5], [x + 2.4, y + 2 if y == 0 else y + 2.4, 14.0], "gold"))
+        e.append(box([x - 0.4, 0 if y == 0 else y - 0.4, 13.5], [x + 2.4, 2.4 if y == 0 else 31.9, 14.0], "gold"))   # sin salir de -16..32 (zfix puede sumar 0.01)
     dm.model("painting_frame", e, textures={"art": "casino:block/decor/painting_diamond"}, particle="casino:block/decor/gold")
     variants = {}
     for i, n in enumerate(NAMES):
