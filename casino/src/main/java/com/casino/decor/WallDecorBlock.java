@@ -74,6 +74,20 @@ public abstract class WallDecorBlock extends UseBlock {
         }
     }
 
+    /** Cuadros del casino (8 pinturas de 2x2 con marco dorado). */
+    public static class Painting extends WallDecorBlock {
+        public static final IntegerProperty DESIGN = IntegerProperty.create("design", 0, 7);
+
+        public Painting(Properties p) {
+            super(p, 2);
+        }
+
+        @Override
+        protected IntegerProperty design() {
+            return DESIGN;
+        }
+    }
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         return defaultBlockState().setValue(FACING, wallFacing(ctx));

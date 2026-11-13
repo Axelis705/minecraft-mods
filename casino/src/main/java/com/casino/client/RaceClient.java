@@ -61,6 +61,15 @@ public final class RaceClient {
         tick(mc, now);
     }
 
+    private static boolean raceChair(net.minecraft.world.level.block.state.BlockState st) {
+        for (var c : com.casino.registry.ModDecor.CHAIRS) {
+            if (st.is(c.get())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void tick(Minecraft mc, long now) {
         var pl = mc.player;
         SEEN.values().removeIf(t -> now - t > 40);
@@ -80,7 +89,8 @@ public final class RaceClient {
                 }
             }
         }
-        boolean seated = pl.getVehicle() instanceof SeatEntity;
+        // solo en las sillas de carreras (las de casino); en sofás, taburetes o sillas de tragamonedas no sale el aviso de apostar
+        boolean seated = pl.getVehicle() instanceof SeatEntity seat && raceChair(mc.level.getBlockState(net.minecraft.core.BlockPos.containing(seat.position().add(0, 0.5, 0))));
         // sentado en la misma sala (no en el piso de arriba ni al otro lado del casino)
         if (best != null && seated && best.inHall(pl)) {
             active = best;

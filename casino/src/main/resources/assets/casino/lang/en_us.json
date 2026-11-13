@@ -549,5 +549,6 @@
   "casino.elevator.floor.mesas": "Table Games",
   "casino.elevator.floor.sotano": "VIP Basement · Races",
   "block.casino.grand_chandelier": "Grand Chandelier",
-  "block.casino.slot_chair": "Slot Chair"
+  "block.casino.slot_chair": "Slot Chair",
+  "block.casino.casino_painting": "Casino Painting"
 }

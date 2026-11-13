@@ -59,10 +59,10 @@ public final class ModDecor {
 
     public static final RegistryObject<Block> COCKTAIL_TABLE = block("cocktail_table", p -> new DecorBlock(
             p.mapColor(MapColor.QUARTZ).strength(2.0F).sound(SoundType.STONE).noOcclusion(), false,
-            new double[]{3, 0, 3, 13, 1.6, 13}, new double[]{6.5, 1.6, 6.5, 9.5, 13, 9.5}, new double[]{0.8, 13, 0.8, 15.2, 14.6, 15.2}));
+            new double[]{3, 0, 3, 13, 1.6, 13}, new double[]{6.5, 1.6, 6.5, 9.5, 14.4, 9.5}, new double[]{0.8, 14.4, 0.8, 15.2, 16, 15.2}));
     public static final RegistryObject<Block> COCKTAIL_TABLE_BLACK = block("cocktail_table_black", p -> new DecorBlock(
             p.mapColor(MapColor.COLOR_BLACK).strength(2.0F).sound(SoundType.STONE).noOcclusion(), false,
-            new double[]{3, 0, 3, 13, 1.6, 13}, new double[]{6.5, 1.6, 6.5, 9.5, 13, 9.5}, new double[]{0.8, 13, 0.8, 15.2, 14.6, 15.2}));
+            new double[]{3, 0, 3, 13, 1.6, 13}, new double[]{6.5, 1.6, 6.5, 9.5, 14.4, 9.5}, new double[]{0.8, 14.4, 0.8, 15.2, 16, 15.2}));
     public static final RegistryObject<Block> BAR_COUNTER = block("bar_counter", p -> new CounterBlock(
             p.mapColor(MapColor.TERRACOTTA_BROWN).strength(2.5F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Block> BOTTLE_SHELF = block("bottle_shelf", p -> new DecorBlock(
@@ -84,6 +84,8 @@ public final class ModDecor {
     /** Silla para jugar en las tragamonedas (la silla de casino queda para las carreras). */
     public static final RegistryObject<Block> SLOT_CHAIR = block("slot_chair", p -> new SeatBlock(p.mapColor(MapColor.COLOR_RED).strength(1.5F)
             .sound(SoundType.WOOL).noOcclusion(), 0.78, new double[]{3, 0, 3, 13, 13, 13}, new double[]{3, 12.2, 12.4, 13, 21.5, 14.6}));
+    public static final RegistryObject<Block> CASINO_PAINTING = block("casino_painting", p -> new com.casino.decor.WallDecorBlock.Painting(
+            p.mapColor(MapColor.GOLD).strength(1.0F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Block> GRAND_CHANDELIER = block("grand_chandelier", p -> new com.casino.decor.GrandChandelierBlock(
             p.mapColor(MapColor.GOLD).strength(1.0F).sound(SoundType.GLASS).noOcclusion().lightLevel(s -> 15)));
     public static final List<RegistryObject<Block>> ROPE_POSTS = new ArrayList<>();

@@ -549,5 +549,6 @@
   "casino.elevator.floor.mesas": "Tavoli da gioco",
   "casino.elevator.floor.sotano": "Seminterrato VIP · Corse",
   "block.casino.grand_chandelier": "Grande lampadario",
-  "block.casino.slot_chair": "Sedia da slot"
+  "block.casino.slot_chair": "Sedia da slot",
+  "block.casino.casino_painting": "Quadro del casinò"
 }

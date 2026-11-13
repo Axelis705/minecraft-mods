@@ -549,5 +549,6 @@
   "casino.elevator.floor.mesas": "Salón de mesas",
   "casino.elevator.floor.sotano": "Sótano VIP · Carreras",
   "block.casino.grand_chandelier": "Candelabro grande",
-  "block.casino.slot_chair": "Silla de tragamonedas"
+  "block.casino.slot_chair": "Silla de tragamonedas",
+  "block.casino.casino_painting": "Cuadro del casino"
 }

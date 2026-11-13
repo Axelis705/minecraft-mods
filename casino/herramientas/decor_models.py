@@ -304,16 +304,15 @@ def table(name, top):
     e += [box([5, 0.8, 5], [11, 1.6, 11], "lac")]
     for k in range(4):
         e += rot90([box([7.2, 0, 1.2], [8.8, 1.2, 4.2], "gold")], k)            # patas en cruz
-    e += [box([7, 1.6, 7], [9, 12.2, 9], "gold"),
+    # la cubierta llega justo al borde del bloque (y=16): lo que se ponga encima (bebidas, macetas, velas) queda apoyado, no flotando
+    e += [box([7, 1.6, 7], [9, 13.6, 9], "gold"),
           box([6.4, 3.4, 6.4], [9.6, 4.2, 9.6], "chrome"),
           box([6.2, 6.6, 6.2], [9.8, 7.6, 9.8], "lac"),
           box([6.4, 7.6, 6.4], [9.6, 8.2, 9.6], "chrome"),
-          box([6.6, 11.2, 6.6], [9.4, 12.2, 9.4], "chrome")]
-    e += octagon([5, 12.2, 5], [11, 13, 11], "gold")
-    e += octagon([0.6, 13, 0.6], [15.4, 13.7, 15.4], "gold")
-    e += octagon([1, 13.7, 1], [15, 14.6, 15], top)
-    e += [box([7.2, 14.6, 7.2], [8.8, 15.0, 8.8], "gold"),                      # lamparita del centro
-          box([7.6, 15.0, 7.6], [8.4, 15.9, 8.4], "bulb")]
+          box([6.6, 12.6, 6.6], [9.4, 13.6, 9.4], "chrome")]
+    e += octagon([5, 13.6, 5], [11, 14.4, 11], "gold")
+    e += octagon([0.6, 14.4, 0.6], [15.4, 15.1, 15.4], "gold")
+    e += octagon([1, 15.1, 1], [15, 16, 15], top)
     model(name, e, particle=TEX[top])
 
 

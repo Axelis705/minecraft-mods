@@ -549,5 +549,6 @@
   "casino.elevator.floor.mesas": "Mesas de jogo",
   "casino.elevator.floor.sotano": "Subsolo VIP · Corridas",
   "block.casino.grand_chandelier": "Grande lustre",
-  "block.casino.slot_chair": "Cadeira de caça-níquel"
+  "block.casino.slot_chair": "Cadeira de caça-níquel",
+  "block.casino.casino_painting": "Quadro de cassino"
 }

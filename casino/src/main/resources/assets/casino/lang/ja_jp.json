@@ -549,5 +549,6 @@
   "casino.elevator.floor.mesas": "テーブルゲーム",
   "casino.elevator.floor.sotano": "VIP地下・競馬",
   "block.casino.grand_chandelier": "大シャンデリア",
-  "block.casino.slot_chair": "スロット用チェア"
+  "block.casino.slot_chair": "スロット用チェア",
+  "block.casino.casino_painting": "カジノの絵画"
 }

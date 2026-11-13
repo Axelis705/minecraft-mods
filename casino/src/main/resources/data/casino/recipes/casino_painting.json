@@ -1,0 +1,21 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "GGG",
+  "GPG",
+  "GGG"
+ ],
+ "key": {
+  "G": {
+   "item": "minecraft:gold_nugget"
+  },
+  "P": {
+   "item": "minecraft:painting"
+  }
+ },
+ "result": {
+  "item": "casino:casino_painting",
+  "count": 1
+ }
+}

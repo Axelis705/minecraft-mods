@@ -1,0 +1,124 @@
+{
+ "variants": {
+  "design=0,facing=north": {
+   "model": "casino:block/decor/painting_diamond"
+  },
+  "design=0,facing=east": {
+   "model": "casino:block/decor/painting_diamond",
+   "y": 90
+  },
+  "design=0,facing=south": {
+   "model": "casino:block/decor/painting_diamond",
+   "y": 180
+  },
+  "design=0,facing=west": {
+   "model": "casino:block/decor/painting_diamond",
+   "y": 270
+  },
+  "design=1,facing=north": {
+   "model": "casino:block/decor/painting_derby"
+  },
+  "design=1,facing=east": {
+   "model": "casino:block/decor/painting_derby",
+   "y": 90
+  },
+  "design=1,facing=south": {
+   "model": "casino:block/decor/painting_derby",
+   "y": 180
+  },
+  "design=1,facing=west": {
+   "model": "casino:block/decor/painting_derby",
+   "y": 270
+  },
+  "design=2,facing=north": {
+   "model": "casino:block/decor/painting_roulette"
+  },
+  "design=2,facing=east": {
+   "model": "casino:block/decor/painting_roulette",
+   "y": 90
+  },
+  "design=2,facing=south": {
+   "model": "casino:block/decor/painting_roulette",
+   "y": 180
+  },
+  "design=2,facing=west": {
+   "model": "casino:block/decor/painting_roulette",
+   "y": 270
+  },
+  "design=3,facing=north": {
+   "model": "casino:block/decor/painting_royal_flush"
+  },
+  "design=3,facing=east": {
+   "model": "casino:block/decor/painting_royal_flush",
+   "y": 90
+  },
+  "design=3,facing=south": {
+   "model": "casino:block/decor/painting_royal_flush",
+   "y": 180
+  },
+  "design=3,facing=west": {
+   "model": "casino:block/decor/painting_royal_flush",
+   "y": 270
+  },
+  "design=4,facing=north": {
+   "model": "casino:block/decor/painting_dice"
+  },
+  "design=4,facing=east": {
+   "model": "casino:block/decor/painting_dice",
+   "y": 90
+  },
+  "design=4,facing=south": {
+   "model": "casino:block/decor/painting_dice",
+   "y": 180
+  },
+  "design=4,facing=west": {
+   "model": "casino:block/decor/painting_dice",
+   "y": 270
+  },
+  "design=5,facing=north": {
+   "model": "casino:block/decor/painting_chips"
+  },
+  "design=5,facing=east": {
+   "model": "casino:block/decor/painting_chips",
+   "y": 90
+  },
+  "design=5,facing=south": {
+   "model": "casino:block/decor/painting_chips",
+   "y": 180
+  },
+  "design=5,facing=west": {
+   "model": "casino:block/decor/painting_chips",
+   "y": 270
+  },
+  "design=6,facing=north": {
+   "model": "casino:block/decor/painting_vegas"
+  },
+  "design=6,facing=east": {
+   "model": "casino:block/decor/painting_vegas",
+   "y": 90
+  },
+  "design=6,facing=south": {
+   "model": "casino:block/decor/painting_vegas",
+   "y": 180
+  },
+  "design=6,facing=west": {
+   "model": "casino:block/decor/painting_vegas",
+   "y": 270
+  },
+  "design=7,facing=north": {
+   "model": "casino:block/decor/painting_cocktail"
+  },
+  "design=7,facing=east": {
+   "model": "casino:block/decor/painting_cocktail",
+   "y": 90
+  },
+  "design=7,facing=south": {
+   "model": "casino:block/decor/painting_cocktail",
+   "y": 180
+  },
+  "design=7,facing=west": {
+   "model": "casino:block/decor/painting_cocktail",
+   "y": 270
+  }
+ }
+}

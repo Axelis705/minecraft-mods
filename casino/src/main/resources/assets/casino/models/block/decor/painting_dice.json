@@ -1,0 +1,6 @@
+{
+ "parent": "casino:block/decor/painting_frame",
+ "textures": {
+  "art": "casino:block/decor/painting_dice"
+ }
+}
