@@ -795,9 +795,6 @@ for x in range(PI0, 27):
     for z in range(PJ0, 20):
         o.set(x, Y_PH, z, 'casino:casino_carpet_royal' if False else 'casino:casino_floor_royal')
 # cama doble con cabecera de terciopelo y burós
-for x in (22, 23):
-    o.set(x, P, PJ0 + 1, f'minecraft:red_bed[facing=south,part=head]')
-    o.set(x, P, PJ0 + 2, f'minecraft:red_bed[facing=south,part=foot]')
 for x in range(21, 25):
     o.set(x, P, PJ0, 'casino:velvet_wall_red'); o.set(x, P + 1, PJ0, 'casino:velvet_wall_red'); o.set(x, P + 2, PJ0, GT)
 for x in (21, 24):
@@ -1017,33 +1014,42 @@ o.set(9, YB + 1, 11, counter('east', 'outer_left')); o.set(9, YB + 1, 31, counte
 for i, ch in enumerate('VIP BAR'):
     o.set(QX0, YB + 5, 24 - i, neon(ch, 'east', 2)) if ch != ' ' else None
 for (cx0, cz0) in ((15, 22), (35, 22), (15, 29)):          # (el de x=33, z=29 se quitó: ahí pasa la alfombra a carreras)     # espejo respecto a x=24; la salida del elevador (x 29..31) queda libre
+    col = 'purple' if cz0 == 29 else 'black'
     for dx in range(-1, 2):
-        o.set(cx0 + dx, YB + 1, cz0 - 2, sofa('purple', 'south'))
-        o.set(cx0 + dx, YB + 1, cz0 + 2, sofa('black', 'north'))
+        o.set(cx0 + dx, YB + 1, cz0 - 2, sofa(col, 'south'))
+        o.set(cx0 + dx, YB + 1, cz0 + 2, sofa(col, 'north'))
     o.set(cx0, YB + 1, cz0, TABLE_B); o.set(cx0, YB + 2, cz0, drinks(3))
     o.set(cx0, -3, cz0, CHAND)
-for (x, z) in ((13, 31), (25, 12), (36, 33)):
+for (x, z) in ((25, 12), (36, 33)):
     o.set(x, YB + 1, z, 'minecraft:potted_azalea_bush')
-# chimenea al centro de la pared sur (x 22..26), con repisa dorada y el letrero VIP encima
-for x in range(22, 27):
-    for y in range(YB + 1, YB + 5):
-        edge = x in (22, 26) or y == YB + 4
-        o.set(x, y, QZ1 - 1, 'minecraft:polished_blackstone_bricks' if edge else AIR)
-    o.set(x, YB + 5, QZ1 - 1, GT)
-    o.set(x, YB, QZ1 - 1, 'minecraft:polished_blackstone')
+# chimenea al centro de la pared sur (x 21..27): columnas de cuarzo, marco de mármol negro, repisa dorada, un cuadro encima y el
+# letrero VIP arriba; enfrente una alfombra con dos sillones frente a frente y una mesita (así se ve el fuego desde el salón)
+FZ = QZ1 - 1
+for y in range(YB + 1, YB + 6):
+    for x in (21, 27):
+        o.set(x, y, FZ, GB if y == YB + 1 else (CQ if y == YB + 5 else QP))
+for y in range(YB + 1, YB + 4):
+    o.set(22, y, FZ, BM); o.set(26, y, FZ, BM)
 for x in (23, 24, 25):
-    o.set(x, YB + 1, QZ1 - 1, 'minecraft:campfire[lit=true,signal_fire=false]')
-    o.set(x, YB, QZ1 - 2, GB)
-for x in (21, 27):
-    o.set(x, YB + 1, QZ1 - 1, 'minecraft:potted_azalea_bush')
+    o.set(x, YB + 1, FZ, 'minecraft:campfire[lit=true,signal_fire=false]')
+    o.set(x, YB + 2, FZ, AIR)
+    o.set(x, YB + 3, FZ, BM)
+    o.set(x, YB, FZ, 'minecraft:polished_blackstone')
+for x in range(22, 27):
+    o.set(x, YB + 4, FZ, GT)
+    o.set(x, YB, FZ - 1, GB)
+for x in range(21, 28):
+    for y in range(YB + 5, YB + 9):
+        if 22 <= x <= 26:
+            o.set(x, y, FZ, AIR)
 for i, ch in enumerate('VIP'):
-    o.set(25 - i, YB + 7, QZ1 - 1, neon(ch, 'north', 2))
-# alfombra frente a la chimenea y sillones mirándola
+    o.set(25 - i, YB + 8, FZ, neon(ch, 'north', 2))
 for x in range(21, 28):
     for z in range(27, 32):
         o.set(x, YB, z, 'casino:casino_floor_deco') if o.get(x, YB, z).startswith('casino:casino_floor') else None
-for x in (23, 24, 25):
-    o.set(x, YB + 1, 28, sofa('purple', 'south'))
+for z in (28, 29, 30):
+    o.set(21, YB + 1, z, sofa('purple', 'east')); o.set(27, YB + 1, z, sofa('purple', 'west'))
+o.set(24, YB + 1, 29, TABLE_B); o.set(24, YB + 2, 29, drinks(3, 'south'))
 o.set(QX0 + 1, YB + 5, 27, speaker('east'))
 
 # ---- sala de carreras (x 39..54, 16 de ancho: todo simétrico alrededor de x=46.5), como un cine. La pantalla está al SUR y la puerta
@@ -1121,7 +1127,7 @@ runner(23, 27, 14, 15, 0, False)           # la alfombra llega completa a la pue
 runner(33, 37, 14, 15, 0, False)           # y a la del plinko
 runner(18, 21, 30, 34, 0, False)           # tapete de entrada al bar
 runner(19, 21, 14, 17, 0, False)           # tapete de entrada al espectáculo
-runner(39, IX1, 14, 17, 0)                 # pasillo del plinko, de la puerta al fondo
+runner(39, 46, 14, 17, 0)                  # pasillo del plinko (la mitad de atrás queda con el piso de galaxia, frente a la pantalla)
 # franja muerta detrás del hueco del elevador: se cierra
 for x in range(27, 34):
     for y in range(1, Y_ROOF - 2):
@@ -1452,16 +1458,69 @@ def painting(x, y, z, facing, art):
             o.set(cx_, cy_, cz_, AIR)
     o.set(x, y, z, f'casino:casino_painting[design={PAINT[art]},facing={facing}]')
     PAINTINGS_OK.append((x, y, z))
-painting(6, 5, 32, 'east', 'cocktail')          # bar, pared del fondo
-painting(54, 5, 32, 'west', 'chips')            # tragamonedas, pared del fondo
-painting(15, 5, 42, 'south', 'royal_flush')     # caja
-painting(15, 5, 49, 'north', 'diamond')
-painting(45, 5, 42, 'south', 'roulette')        # premios (espejo)
-painting(45, 5, 49, 'north', 'dice')
-painting(23, 5, 39, 'east', 'vegas')            # salón de la rueda, entre las puertas del bar y la caja
-painting(37, 5, 39, 'west', 'vegas')
-painting(15, YB + 5, 10, 'south', 'derby')      # sótano VIP, pared norte sobre los sofás
-painting(35, YB + 5, 10, 'south', 'derby')
+# ---- ajustes que Axelis hizo a mano (pilastras del sótano, letrero VIP BAR con luz, apliques, techo junto al elevador...)
+from ajustes_axelis import AXELIS_PATCH
+for (x, y, z, st) in AXELIS_PATCH:
+    o.set(x, y, z, st)
+# los apliques que quitó en la planta baja se quitan en todo el casino por igual (lado espejo incluido)
+for (x, y, z, st) in AXELIS_PATCH:
+    if y > 0 and st == 'minecraft:air' and o.get(60 - x, y, z).startswith('minecraft:end_rod'):
+        o.set(60 - x, y, z, AIR)
+for x in (21, 39):          # y en el bar y los slots, también del otro lado del espejo (z 26 = espejo de z 38)
+    if o.get(x, 6, 38) == AIR and o.get(x, 6, 26).startswith('minecraft:end_rod'):
+        o.set(x, 6, 26, AIR)
+
+# ---- planta baja: cuadros un bloque más arriba (y 6), en pares simétricos
+painting(6, 6, 32, 'east', 'cocktail')          # bar, pared del fondo
+painting(54, 6, 32, 'west', 'chips')            # tragamonedas, pared del fondo
+painting(15, 6, 42, 'south', 'royal_flush')     # caja
+painting(15, 6, 49, 'north', 'diamond')
+painting(45, 6, 42, 'south', 'roulette')        # premios (espejo)
+painting(45, 6, 49, 'north', 'dice')
+painting(23, 6, 23, 'east', 'vegas')            # salón de la rueda: entre el show y el bar / el plinko y los slots
+painting(37, 6, 23, 'west', 'vegas')
+painting(23, 6, 39, 'east', 'diamond')          # entre el bar y la caja / los slots y premios
+painting(37, 6, 39, 'west', 'diamond')
+# ---- detrás de la rueda, a los lados: dos marcos dorados con pantalla
+for (x0, scr) in ((26, 0), (32, 0)):
+    for x in range(x0, x0 + 3):
+        for y in (2, 3, 4):
+            edge_x = x in (x0, x0 + 2); edge_y = y in (2, 4)
+            st = GB if (edge_x and edge_y) else (GT if (edge_x or edge_y) else f'casino:wall_screen[design={scr},facing=south]')
+            o.set(x, y, 25, st)
+    o.set(x0 + 1, 5, 25, 'minecraft:end_rod[facing=up]')
+# ---- plinko: al fondo del pasillo, la pantalla del premio (4 x 3) con marco dorado; macetones en las esquinas y bancas al centro
+for z in range(14, 18):
+    for x in range(47, IX1 + 1):
+        o.set(x, 0, z, 'casino:casino_floor_galaxy')
+    o.set(IX1, 1, z, GB); o.set(IX1, 5, z, GT)
+    for y in (2, 3, 4):
+        o.set(IX1, y, z, f'casino:wall_screen[design={0 if y == 3 else 1},facing=west]')
+for z in (13, 18):
+    for y in range(1, 6):
+        o.set(IX1, y, z, GB if y in (1, 5) else QP)
+for (x, z) in ((39, 10), (IX1, 10), (39, 21), (IX1, 21)):
+    o.set(x, 1, z, GB); o.set(x, 2, z, 'minecraft:flowering_azalea_leaves[persistent=true,distance=1]')
+for (x, z) in ((40, 10), (39, 11), (53, 10), (IX1, 11), (40, 21), (39, 20), (53, 21), (IX1, 20)):
+    o.set(x, 1, z, 'minecraft:potted_fern')
+for x in (46, 47):
+    o.set(x, 1, 10, sofa('purple', 'south')); o.set(x, 1, 21, sofa('purple', 'north'))
+# ---- sótano: mesa privada de blackjack para VIP entre el bar y el elevador, y vitrina del diamante con cordones en rombo
+mq.place(o, 'blackjack', 23, YB + 1, 13, 2)
+for (x, z) in ((34, 12), (36, 12), (35, 11), (35, 13)):
+    o.set(x, YB + 1, z, rope('purple'))
+o.set(35, YB + 1, 12, GB); o.set(35, YB + 2, 12, 'minecraft:diamond_block')
+for x in (33, 37):
+    o.set(x, YB + 1, 10, 'minecraft:potted_azalea_bush')
+for x in range(15, 18):
+    o.set(x, YB + 1, 10, sofa('purple', 'south'))     # sofá contra la pared norte, centrado bajo el cuadro
+# ---- sótano: cuadros
+painting(16, YB + 4, 10, 'south', 'derby')     # sobre el sofá de la pared norte
+painting(30, YB + 6, 16, 'south', 'diamond')   # sobre la puerta del elevador
+painting(37, YB + 6, 22, 'west', 'derby')      # pared de la sala de carreras, del lado del salón
+for (x, art) in ((41, 'derby'), (44, 'vegas'), (48, 'vegas'), (51, 'derby')):   # sala de carreras, pared del fondo (espejo en 46.5)
+    painting(x, YB + 6, QZ0 + 1, 'south', art)
+painting(24, YB + 5, FZ, 'north', 'roulette')   # sobre la chimenea
 
 # ================================================================== CORDONES: uniones ya calculadas en la plantilla (rectas y en diagonal)
 def _ropes():
