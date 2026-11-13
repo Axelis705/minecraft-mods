@@ -516,9 +516,6 @@ for x in range(27, 34):
 for i, ch in enumerate('VIP'):
     o.set(29 + i, 9, 16, neon(ch, 'south', 2))
 o.set(24, 6, IZ0, sign(9, 'south')); o.set(36, 6, IZ0, sign(10, 'south'))
-for x in (24, 36):
-    for y in range(1, 9):
-        o.set(x, y, 21, QP if y < 8 else GB)
 
 # ---------------- fondo este (x 39..54, z 10..22): plinko y rasca y gana
 for x in range(39, IX1 + 1):
@@ -1121,8 +1118,8 @@ def runner(x0, x1, z0, z1, fy, edge=True, mat='casino:casino_floor_royal'):
 
 # planta baja: entrada -> vestíbulo -> dos carriles alrededor de la rueda -> vestíbulo del elevador
 runner(27, 33, 41, IZ1, 0)                 # de la puerta al salón (7 de ancho)
-runner(23, 26, 18, 40, 0)                  # carril oeste (pasa por la puerta del bar y la del espectáculo)
-runner(34, 37, 18, 40, 0)                  # carril este (tragamonedas y plinko)
+runner(23, 25, 18, 40, 0)                  # carril oeste (pasa por la puerta del bar y la del espectáculo)
+runner(35, 37, 18, 40, 0)                  # carril este (tragamonedas y plinko)
 runner(23, 37, 16, 21, 0)                  # rellano frente al elevador
 runner(18, 21, 31, 35, 0, False)           # tapete de entrada al bar
 runner(18, 21, 15, 19, 0, False)           # tapete de entrada al espectáculo
