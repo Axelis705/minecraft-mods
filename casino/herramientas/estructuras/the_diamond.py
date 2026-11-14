@@ -514,6 +514,9 @@ SX0, SX1, SZ0, SZ1 = 19, 41, 12, 31    # penthouse/azotea (retranqueo)
 shaft(1, Y_PH_TOP + 3, 1)
 elevator_stop(0, 0, 'casino')
 
+# bartenders: dos en la barra-isla del bar, uno por cada lado y al centro de la isla (el del bar VIP está con el sótano)
+o.marker(13, 1, 30, 'bartender 0 x', [(0, 0, 0, 'minecraft:purple_wool'), (0, 1, 0, 'minecraft:purple_wool')])
+o.marker(13, 1, 34, 'bartender 2 x', [(0, 0, 0, 'minecraft:purple_wool'), (0, 1, 0, 'minecraft:purple_wool')])
 # guardia junto al elevador
 o.marker(28, 1, 17, 'guard 2', [(0, 0, 0, 'minecraft:black_wool'), (0, 1, 0, 'minecraft:black_wool')])
 o.set(26, 1, 16, rope('black')); o.set(34, 1, 16, rope('black'))
@@ -1011,6 +1014,7 @@ for z in range(12, 31):
     if z % 4 == 1:
         o.set(9, YB + 2, z, drinks(1 + z % 3, 'east'))
 o.set(9, YB + 1, 11, counter('east', 'outer_left')); o.set(9, YB + 1, 31, counter('east', 'outer_right'))
+o.marker(8, YB + 1, 21, 'bartender 1', [(0, 0, 0, 'minecraft:purple_wool'), (0, 1, 0, 'minecraft:purple_wool')])   # bartender del bar VIP
 for i, ch in enumerate('VIP BAR'):
     o.set(QX0, YB + 5, 24 - i, neon(ch, 'east', 2)) if ch != ' ' else None
 for (cx0, cz0) in ((15, 22), (35, 22), (15, 29)):          # (el de x=33, z=29 se quitó: ahí pasa la alfombra a carreras)     # espejo respecto a x=24; la salida del elevador (x 29..31) queda libre

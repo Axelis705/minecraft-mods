@@ -33,6 +33,8 @@ public class DealerEntity extends Mob {
     public static final int GAME_POKER = 2;
     /** No atiende mesa: es el guardia de la zona VIP (junto al elevador). */
     public static final int GAME_GUARD = 3;
+    /** No atiende mesa: es el bartender de la barra. Con clic derecho te sirve un cóctel de la casa (da Suerte un rato). */
+    public static final int GAME_BARTENDER = 4;
     private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
 
     /** Consejo que está diciendo ahora (-1 = ninguno): el crupier levanta la mano y sobre su cabeza sale un globo con el texto. */
@@ -41,7 +43,19 @@ public class DealerEntity extends Mob {
     public static final int TIPS_BLACKJACK = 10;
     public static final int TIPS_POKER = 10;
     public static final int TIPS_GUARD = 6;
-    private static final int TIP_TICKS = 180;
+    public static final int TIPS_BARTENDER = 10;
+    /** Lo que dice al hablarle (no es un consejo al azar): el número es 100 + la frase ("say_N" en los textos). */
+    public static final int SAY = 100;
+    /** Cuánto dura el globo en el aire (el cliente lo usa para desvanecerlo al final). */
+    public static final int TIP_TICKS = 180;
+    /** Cóctel de la casa: Suerte por 3 minutos, uno por jugador cada 60 segundos. */
+    private static final int DRINK_TICKS = 3600;
+    private static final int DRINK_COOLDOWN = 1200;
+    private final java.util.Map<java.util.UUID, Long> served = new java.util.HashMap<>();
+
+    /** Solo en el cliente: ticks desde que empezó el globo actual (para escribir el texto letra por letra y animarlo). */
+    public int tipAge;
+    private int lastTip = -1;
 
     @Nullable
     private BlockPos table;
@@ -75,6 +89,14 @@ public class DealerEntity extends Mob {
         return this.entityData.get(TIP);
     }
 
+    /** Dice algo ahora mismo (consejo o respuesta), con el sonidito y el globo. */
+    public void say(int tip) {
+        this.entityData.set(TIP, tip);
+        tipLeft = TIP_TICKS;
+        nextTip = Math.max(nextTip, 600);
+        level().playSound(null, getX(), getY() + 1.6, getZ(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, net.minecraft.sounds.SoundSource.NEUTRAL, 0.6F, 1.3F);
+    }
+
     /** Cada tanto, si hay alguien cerca, dice un consejo al azar de su juego. */
     private void tickTips() {
         if (tipLeft > 0) {
@@ -91,10 +113,12 @@ public class DealerEntity extends Mob {
             nextTip = 200;
             return;
         }
-        int n = getGame() == GAME_ROULETTE ? TIPS_ROULETTE : getGame() == GAME_POKER ? TIPS_POKER : getGame() == GAME_GUARD ? TIPS_GUARD : TIPS_BLACKJACK;
-        this.entityData.set(TIP, random.nextInt(n));
-        tipLeft = TIP_TICKS;
-        level().playSound(null, getX(), getY() + 1.6, getZ(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, net.minecraft.sounds.SoundSource.NEUTRAL, 0.6F, 1.3F);
+        int g = getGame();
+        int n = g == GAME_ROULETTE ? TIPS_ROULETTE : g == GAME_POKER ? TIPS_POKER : g == GAME_GUARD ? TIPS_GUARD
+                : g == GAME_BARTENDER ? TIPS_BARTENDER : TIPS_BLACKJACK;
+        int t = random.nextInt(n);
+        say(t);
+        nextTip = 900 + random.nextInt(900);
     }
 
     public int getGame() {
@@ -141,7 +165,15 @@ public class DealerEntity extends Mob {
         float base = getYRot();
         yBodyRot = base;
         yBodyRotO = base;
-        if (!level().isClientSide()) {
+        if (level().isClientSide()) {
+            int t = getTip();
+            if (t != lastTip) {
+                lastTip = t;
+                tipAge = 0;
+            } else {
+                tipAge++;
+            }
+        } else {
             tickTips();
             Player p = level().getNearestPlayer(this, 7.0);
             if (p != null) {
@@ -168,7 +200,15 @@ public class DealerEntity extends Mob {
             int tier = com.casino.item.VipCardItem.tier(sp);
             Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.guard.say_" + Math.min(2, tier)).withStyle(net.minecraft.ChatFormatting.GOLD), false);
             Plat.swing(this);
+            say(SAY + Math.min(2, tier));
             return Plat.ok(false);
+        }
+        if (!level().isClientSide() && getGame() == GAME_BARTENDER && player instanceof ServerPlayer sp) {
+            serve(sp);
+            return Plat.ok(false);
+        }
+        if (getGame() == GAME_BARTENDER || getGame() == GAME_GUARD) {
+            return Plat.ok(true);
         }
         if (!level().isClientSide() && table != null && player instanceof ServerPlayer sp) {
             if (getGame() == GAME_POKER) {
@@ -180,6 +220,26 @@ public class DealerEntity extends Mob {
             }
         }
         return Plat.ok(level().isClientSide());
+    }
+
+    /** El bartender te sirve el cóctel de la casa: Suerte por 3 minutos (uno cada minuto por jugador). */
+    private void serve(ServerPlayer sp) {
+        long now = level().getGameTime();
+        Long last = served.get(sp.getUUID());
+        Plat.swing(this);
+        if (last != null && now - last < DRINK_COOLDOWN) {
+            say(SAY + 3);
+            return;
+        }
+        served.put(sp.getUUID(), now);
+        sp.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.LUCK, DRINK_TICKS, 0));
+        //#if MC >= 1.21.2
+        //$$ level().playSound(null, sp.getX(), sp.getY(), sp.getZ(), net.minecraft.sounds.SoundEvents.GENERIC_DRINK.value(), net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.0F);
+        //#else
+        level().playSound(null, sp.getX(), sp.getY(), sp.getZ(), net.minecraft.sounds.SoundEvents.GENERIC_DRINK, net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.0F);
+        //#endif
+        Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.bartender.served").withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE), true);
+        say(SAY + random.nextInt(3));
     }
 
     //#if MC >= 1.21.6

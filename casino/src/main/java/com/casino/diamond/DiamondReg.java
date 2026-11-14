@@ -71,21 +71,9 @@ public final class DiamondReg {
                 be.setChanged();
             }
         });
-        TemplateCasinoPiece.Extra.register("guard", (a, pos, level, rot, box, dir) -> {
-            if (!box.isInside(pos)) {
-                return;
-            }
-            DealerEntity g = Plat.create(ModEntities.DEALER.get(), level.getLevel());
-            if (g == null) {
-                return;
-            }
-            Direction f = rot.rotate(Machines.DIRS[dir & 3]);
-            g.setGame(DealerEntity.GAME_GUARD);
-            g.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, f.toYRot(), 0.0F);
-            g.setYHeadRot(f.toYRot());
-            g.setYBodyRot(f.toYRot());
-            level.addFreshEntityWithPassengers(g);
-        });
+        TemplateCasinoPiece.Extra.register("guard", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_GUARD, a, pos, level, rot, box, dir));
+        // bartender detrás de la barra: "bartender dir [x|z|xz]" (x / z = correrlo medio bloque en esa dirección de la plantilla)
+        TemplateCasinoPiece.Extra.register("bartender", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_BARTENDER, a, pos, level, rot, box, dir));
         // pantalla gigante de las carreras de caballos: un bloque con la entidad; la imagen cubre ancho × alto bloques
         TemplateCasinoPiece.Extra.register("tv", (a, pos, level, rot, box, dir) -> {
             if (!box.isInside(pos)) {
@@ -100,6 +88,36 @@ public final class DiamondReg {
                 be.setChanged();
             }
         });
+    }
+
+    /** Pone un personaje fijo (guardia, bartender) mirando hacia dir, opcionalmente corrido medio bloque. */
+    private static void npc(int game, String[] a, BlockPos pos, net.minecraft.world.level.ServerLevelAccessor level, net.minecraft.world.level.block.Rotation rot,
+            net.minecraft.world.level.levelgen.structure.BoundingBox box, int dir) {
+        if (!box.isInside(pos)) {
+            return;
+        }
+        DealerEntity g = Plat.create(ModEntities.DEALER.get(), level.getLevel());
+        if (g == null) {
+            return;
+        }
+        Direction f = rot.rotate(Machines.DIRS[dir & 3]);
+        double x = pos.getX() + 0.5, z = pos.getZ() + 0.5;
+        String shift = a.length > 2 ? a[2] : "";
+        if (shift.contains("x")) {
+            Direction e = rot.rotate(Direction.EAST);
+            x += e.getStepX() * 0.5;
+            z += e.getStepZ() * 0.5;
+        }
+        if (shift.contains("z")) {
+            Direction s = rot.rotate(Direction.SOUTH);
+            x += s.getStepX() * 0.5;
+            z += s.getStepZ() * 0.5;
+        }
+        g.setGame(game);
+        g.moveTo(x, pos.getY(), z, f.toYRot(), 0.0F);
+        g.setYHeadRot(f.toYRot());
+        g.setYBodyRot(f.toYRot());
+        level.addFreshEntityWithPassengers(g);
     }
 
     static int parse(String s) {
