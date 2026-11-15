@@ -134,11 +134,13 @@ jobs:
       - name: Diagnóstico de clases de Minecraft (celular 26.x)
         if: always() && matrix.mod == 'celular' && startsWith(matrix.mc, '26')
         env:
-          DIAG_METODO: "net.minecraft.client.Minecraft#renderFrame"
+          DIAG_METODO: "net.minecraft.client.renderer.GameRenderer#extract net.minecraft.client.gui.Gui#extractRenderState net.minecraft.client.KeyboardHandler#keyPress"
+          DIAG_PRIVADOS: "net.minecraft.client.renderer.state.GameRenderState:gui net.minecraft.client.gui.Hud:hid net.minecraft.client.gui.Gui:hud"
         run: |
-          bash tools/javap_diag.sh gen/${{ matrix.mod }}-${{ matrix.mc }} | grep -iE "JAR|=====|render|extract|gui|screen" | head -120
-          jar=$(bash tools/javap_diag.sh gen/${{ matrix.mod }}-${{ matrix.mc }} | sed -n 's/^JAR: //p')
-          [ -n "$jar" ] && python3 tools/find_symbol.py "$jar" hideGui toggleGui guiHidden hudHidden hideHud isHudHidden hudVisible || true
+          bash tools/javap_diag.sh gen/${{ matrix.mod }}-${{ matrix.mc }} | grep -iE "JAR|=====|hud|hid|gui|screen|extract|toggle|putfield" | head -150
+          for j in $(find "$HOME/.gradle" -name '*.jar' 2>/dev/null | grep -i forge); do
+            if unzip -l "$j" 2>/dev/null | grep -q 'client/event/RenderLevelStageEvent'; then echo "EVENTO EN: $j"; javap -cp "$j" -public 'net.minecraftforge.client.event.RenderLevelStageEvent' 'net.minecraftforge.client.event.RenderLevelStageEvent$Stage' 2>&1 | head -40; break; fi
+          done || true
       - name: Arrancar servidor ${{ matrix.mc }} con ${{ matrix.mod }}
         run: bash tools/boot_server.sh gen/${{ matrix.mod }}-${{ matrix.mc }}
       - uses: actions/upload-artifact@v4
