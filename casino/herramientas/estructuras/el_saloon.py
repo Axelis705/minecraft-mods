@@ -651,11 +651,16 @@ for (x, y, z, d, s) in [(24, 1, 29, 2, 0), (35, 1, 29, 2, 1), (21, 1, 18, 1, 2),
     o.marker(x, y, z, f'wpatron {d} {s}', [(0, 0, 0, 'minecraft:light_blue_wool')])
 
 # ================================================================== LUZ ESCONDIDA (sin monstruos) y uniones de cercas
-for x in range(SX0 + 2, SX1 - 1, 5):
-    for z in range(SZ0 + 2, SZ1 - 1, 5):
+# (probado en el juego: con rejilla de 5 y nivel 11 había rincones con luz 6-9; ahora rejilla de 4 y nivel 13)
+for x in range(SX0 + 2, SX1 - 1, 4):
+    for z in range(SZ0 + 2, SZ1 - 1, 4):
         for y in (1, Y2 + 1):
             if o.get(x, y, z) == AIR and o.get(x, y + 1, z) == AIR:
-                o.set(x, y + 1, z, 'minecraft:light[level=11]')
+                o.set(x, y + 1, z, 'minecraft:light[level=13]')
+# rincón de la pianola: luz extra para que se vea el teclado
+for x, z in ((19, 32), (19, 34)):
+    if o.get(x, 3, z) == AIR:
+        o.set(x, 3, z, 'minecraft:light[level=14]')
 for x in range(RX0 + 2, RX1, 5):
     for z in range(RZ0 + 2, SZ1, 5):
         if o.get(x, 2, z) == AIR:
