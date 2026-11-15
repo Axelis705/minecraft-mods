@@ -98,7 +98,9 @@ public final class Tex {
 
     /** Captura lo que se ve en pantalla. En las versiones nuevas llega un poco después; quien la recibe debe cerrarla. */
     public static void screenshot(Consumer<NativeImage> cb) {
-        //#if MC >= 1.21.5
+        //#if MC >= 26.3
+        //$$ Screenshot.takeScreenshot(Minecraft.getInstance().gameRenderer.mainRenderTarget(), cb);
+        //#elif MC >= 1.21.5
         //$$ Screenshot.takeScreenshot(Minecraft.getInstance().getMainRenderTarget(), cb);
         //#else
         cb.accept(Screenshot.takeScreenshot(Minecraft.getInstance().getMainRenderTarget()));

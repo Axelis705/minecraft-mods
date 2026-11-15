@@ -12,4 +12,12 @@ for c in "$@"; do
   echo "===== $c"
   javap -cp "$jar" -public "$c" 2>&1 | head -150
 done
+# orden de llamadas dentro de un método: DIAG_METODO=Clase#metodo
+if [ -n "${DIAG_METODO:-}" ]; then
+  for cm in $DIAG_METODO; do
+    c="${cm%%#*}"; m="${cm##*#}"
+    echo "===== orden en $c.$m()"
+    javap -cp "$jar" -c -p "$c" 2>/dev/null | awk -v m="$m" '$0 ~ " "m"\(" && /\(/ {on=1} on && /invoke/ {print} on && /^$/ {if (on) exit}' | sed 's/^ *//' | cut -c1-200 | head -80
+  done
+fi
 exit 0

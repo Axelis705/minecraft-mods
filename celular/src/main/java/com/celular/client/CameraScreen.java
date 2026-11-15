@@ -26,8 +26,11 @@ public class CameraScreen extends BaseScreen {
     //#if MC < 26.1
     private boolean hideBefore;
     //#endif
-    /** Se pidió una foto: se toma al empezar el siguiente cuadro (ya sin el HUD de Minecraft). */
-    private boolean pending;
+    /**
+     * Se pidió una foto. 1: se toma al empezar el siguiente cuadro (ya sin el HUD). 2 (en 26.x): primero un cuadro sin el visor, porque
+     * ahí la imagen puede venir del cuadro anterior.
+     */
+    private int pending;
     private long flashAt;
     private Path last;
     private double dragged;
@@ -103,10 +106,14 @@ public class CameraScreen extends BaseScreen {
     // ------------------------------------------------------------------ foto
 
     private void shoot() {
-        if (pending || System.currentTimeMillis() - openedAt < 300) {
+        if (pending > 0 || System.currentTimeMillis() - openedAt < 300) {
             return;
         }
-        pending = true;
+        //#if MC >= 26.1
+        //$$ pending = 2;
+        //#else
+        pending = 1;
+        //#endif
     }
 
     private void capture() {
@@ -135,8 +142,12 @@ public class CameraScreen extends BaseScreen {
 
     @Override
     protected void draw(G g, int mx, int my, float pt) {
-        if (pending) {
-            pending = false;
+        if (pending == 2) {
+            pending = 1;
+            return; // un cuadro limpio, sin el visor
+        }
+        if (pending == 1) {
+            pending = 0;
             capture(); // antes de dibujar nada encima
         }
         Minecraft mc = Minecraft.getInstance();
