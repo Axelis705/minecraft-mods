@@ -13,6 +13,10 @@ public final class ModSounds {
 
     /** Música de jazz de las bocinas (pista larga, se transmite). */
     public static final RegistryObject<SoundEvent> MUSIC_LOUNGE = reg("music_lounge");
+    /** Pianola del saloon (ragtime del Oeste; varias pistas). */
+    public static final RegistryObject<SoundEvent> MUSIC_PIANO = reg("music_piano");
+    /** Rechinido de la puerta batiente del saloon. */
+    public static final RegistryObject<SoundEvent> SALOON_DOOR = reg("saloon_door");
 
     /** El "tic" del puntero al pasar por cada casilla. */
     public static final RegistryObject<SoundEvent> WHEEL_TICK = reg("wheel_tick");

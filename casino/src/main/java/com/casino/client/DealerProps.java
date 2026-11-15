@@ -124,6 +124,81 @@ public final class DealerProps {
         ps.popPose();
     }
 
+    // ------------------------------------------------------------------ sombreros del Viejo Oeste
+
+    public static final int HAT_NONE = 0, HAT_COWBOY = 1, HAT_SHERIFF = 2, HAT_VISOR = 3, HAT_BOWLER = 4, HAT_STRAW = 5;
+    /** Sombrero de cada vaquero del saloon (variante WEST + n): tipo y color. */
+    private static final int[][] WEST_PATRON_HATS = {
+            {HAT_COWBOY, 0x6B4423}, {HAT_COWBOY, 0xC8A878}, {HAT_COWBOY, 0x24201C}, {HAT_COWBOY, 0x7A7468},
+            {HAT_COWBOY, 0x9E2A2A}, {HAT_BOWLER, 0x1E1C1A}, {HAT_NONE, 0}, {HAT_STRAW, 0xD8C080}};
+
+    /** Qué sombrero lleva este personaje: {tipo, color} ({0, 0} = ninguno). */
+    public static int[] hat(int game, int variant) {
+        if (variant < com.casino.entity.DealerEntity.WEST) {
+            return new int[]{HAT_NONE, 0};
+        }
+        return switch (game) {
+            case com.casino.entity.DealerEntity.GAME_GUARD -> new int[]{HAT_SHERIFF, 0x3A2A1E};
+            case com.casino.entity.DealerEntity.GAME_BARTENDER -> new int[]{HAT_NONE, 0};
+            case com.casino.entity.DealerEntity.GAME_WHEEL -> new int[]{HAT_BOWLER, 0x5A1414};
+            case com.casino.entity.DealerEntity.GAME_PATRON -> WEST_PATRON_HATS[Math.floorMod(variant - com.casino.entity.DealerEntity.WEST,
+                    WEST_PATRON_HATS.length)];
+            default -> new int[]{HAT_VISOR, 0x2E8B57};
+        };
+    }
+
+    private static int shade(int c, float k) {
+        int r = Math.min(255, (int) (((c >> 16) & 255) * k)), g = Math.min(255, (int) (((c >> 8) & 255) * k)), b = Math.min(255, (int) ((c & 255) * k));
+        return r << 16 | g << 8 | b;
+    }
+
+    /** Dibuja el sombrero sobre la cabeza (head ya trae su giro de este cuadro). En el modelo, "arriba" es -y y el frente es -z. */
+    public static void drawHat(Draw d, PoseStack ps, ModelPart head, int[] hat, int light) {
+        if (hat[0] == HAT_NONE) {
+            return;
+        }
+        ps.pushPose();
+        head.translateAndRotate(ps);
+        B b = new B(d.cutout(WHITE), ps.last(), light);
+        int c = hat[1], band = shade(c, 0.55F), light2 = shade(c, 1.18F);
+        switch (hat[0]) {
+            case HAT_COWBOY, HAT_SHERIFF, HAT_STRAW -> {
+                boolean sheriff = hat[0] == HAT_SHERIFF;
+                double bw = sheriff ? 0.47 : 0.44, bd = 0.41, y = -0.44;
+                // ala ancha con las orillas de los lados levantadas
+                b.box(-bw + 0.07, y, -bd, bw - 0.07, y - 0.025, bd, c);
+                b.box(-bw, y - 0.02, -bd + 0.05, -bw + 0.07, y - 0.075, bd - 0.05, light2);
+                b.box(bw - 0.07, y - 0.02, -bd + 0.05, bw, y - 0.075, bd - 0.05, light2);
+                // copa con el pellizco arriba
+                b.box(-0.27, y - 0.02, -0.27, 0.27, y - 0.2, 0.27, c);
+                b.box(-0.27, y - 0.2, -0.27, -0.06, y - 0.27, 0.27, c);
+                b.box(0.06, y - 0.2, -0.27, 0.27, y - 0.27, 0.27, c);
+                b.box(-0.06, y - 0.2, -0.2, 0.06, y - 0.23, 0.2, shade(c, 0.85F));
+                // cinta
+                b.box(-0.278, y - 0.025, -0.278, 0.278, y - 0.075, 0.278, hat[0] == HAT_STRAW ? 0x7A3A1E : sheriff ? 0xB89A60 : band);
+                if (sheriff) {
+                    b.box(-0.05, y - 0.03, -0.285, 0.05, y - 0.07, -0.279, 0xE8C34A);   // estrellita en la cinta
+                }
+            }
+            case HAT_BOWLER -> {
+                double y = -0.45;
+                b.box(-0.33, y, -0.33, 0.33, y - 0.025, 0.33, c);
+                b.box(-0.255, y - 0.02, -0.255, 0.255, y - 0.17, 0.255, c);
+                b.box(-0.2, y - 0.17, -0.2, 0.2, y - 0.22, 0.2, c);
+                b.box(-0.262, y - 0.025, -0.262, 0.262, y - 0.06, 0.262, band);
+            }
+            case HAT_VISOR -> {
+                // visera verde de crupier: banda alrededor y la visera al frente
+                double y = -0.36;
+                b.box(-0.262, y, -0.262, 0.262, y - 0.045, 0.262, 0x1E1E1E);
+                b.box(-0.26, y - 0.01, -0.46, 0.26, y - 0.035, -0.262, c);
+            }
+            default -> {
+            }
+        }
+        ps.popPose();
+    }
+
     /** Cajitas de color con su luz (las caras miran hacia afuera). */
     private static final class B {
         private final VB vb;

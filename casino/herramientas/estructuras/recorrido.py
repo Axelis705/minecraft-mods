@@ -16,7 +16,8 @@ spec.loader.exec_module(m)
 o = m.o
 
 PASS = ('minecraft:air', 'minecraft:light', 'minecraft:cave_air', 'minecraft:structure_void')
-SOFT = ('carpet', 'minecraft:light[', 'casino:drinks', 'end_rod', 'pressure_plate')
+SOFT = ('carpet', 'minecraft:light[', 'casino:drinks', 'end_rod', 'pressure_plate', 'saloon_door', 'vip_gate', 'wanted_poster',
+        'painted_letter', 'dead_bush')
 
 
 def passable(st):
@@ -71,7 +72,7 @@ def bfs(starts):
 
 # paradas del elevador: el jugador aparece delante del panel (panel mira al sur: z+1, y-1)
 stops = sorted([(k, v[0]) for k, v in o.markers.items() if v[0].startswith('elev')], key=lambda t: t[0][1])
-start = (m.CX, 1, o.D - 3)
+start = (int(m.CX), 1, o.D - 3)
 reach = bfs([start])
 for (p, meta) in stops:
     stand = (p[0], p[1] - 1, p[2] + 1)
@@ -97,7 +98,7 @@ for p, (meta, _) in o.markers.items():
         problems.append(meta + ' ' + str(p))
         print('MAL  ' + meta, p)
 # zonas importantes por piso
-floors = {'casino': 1, 'vip': m.Y_VIP + 1, 'penthouse': m.Y_PH + 1, 'azotea': m.Y_PH_TOP + 1}
+floors = getattr(m, 'FLOORS', None) or {'casino': 1, 'vip': m.Y_VIP + 1, 'penthouse': m.Y_PH + 1, 'azotea': m.Y_PH_TOP + 1}
 for fname, fy in floors.items():
     n = sum(1 for r in reach if r[1] == fy)
     print(f'{fname}: {n} bloques caminables')

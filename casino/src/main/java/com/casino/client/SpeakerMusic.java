@@ -12,40 +12,51 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/** Una sola pista de jazz para todas las bocinas cercanas: el volumen depende de la bocina más cercana. */
+/**
+ * Una sola pista para todas las fuentes cercanas de un mismo tipo (bocinas de jazz o pianolas del saloon): el volumen depende de la
+ * más cercana.
+ */
 public final class SpeakerMusic {
+    public static final int LOUNGE = 0, PIANO = 1;
     /** Hasta dónde se oye (bloques). */
     private static final double RANGE = 22.0;
-    private static final Map<BlockPos, Long> SEEN = new HashMap<>();
-    private static Lounge current;
+    @SuppressWarnings("unchecked")
+    private static final Map<BlockPos, Long>[] SEEN = new Map[]{new HashMap<>(), new HashMap<>()};
+    private static final Lounge[] CURRENT = new Lounge[2];
 
     private SpeakerMusic() {
     }
 
     /** Lo llama cada bocina prendida, cada tick. */
     public static void seen(BlockPos pos) {
+        seen(pos, LOUNGE);
+    }
+
+    /** Lo llama cada fuente de música prendida (bocina o pianola), cada tick. */
+    public static void seen(BlockPos pos, int kind) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || mc.player == null) {
             return;
         }
-        SEEN.put(pos.immutable(), mc.level.getGameTime());
+        SEEN[kind].put(pos.immutable(), mc.level.getGameTime());
+        Lounge current = CURRENT[kind];
         if (current == null || current.isStopped() || !mc.getSoundManager().isActive(current)) {
-            if (nearest() < RANGE) {
-                current = new Lounge();
-                mc.getSoundManager().play(current);
+            if (nearest(kind) < RANGE) {
+                CURRENT[kind] = new Lounge(kind);
+                mc.getSoundManager().play(CURRENT[kind]);
             }
         }
     }
 
-    /** Distancia a la bocina más cercana que avisó hace poco (y limpia las viejas). */
-    private static double nearest() {
+    /** Distancia a la fuente más cercana que avisó hace poco (y limpia las viejas). */
+    private static double nearest(int kind) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null || mc.player == null) {
             return Double.MAX_VALUE;
         }
         long now = mc.level.getGameTime();
         double best = Double.MAX_VALUE;
-        for (Iterator<Map.Entry<BlockPos, Long>> it = SEEN.entrySet().iterator(); it.hasNext(); ) {
+        for (Iterator<Map.Entry<BlockPos, Long>> it = SEEN[kind].entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<BlockPos, Long> e = it.next();
             if (now - e.getValue() > 5 || now < e.getValue()) {
                 it.remove();
@@ -60,9 +71,11 @@ public final class SpeakerMusic {
 
     private static final class Lounge extends AbstractTickableSoundInstance {
         private float target;
+        private final int kind;
 
-        Lounge() {
-            super(ModSounds.MUSIC_LOUNGE.get(), SoundSource.RECORDS, RandomSource.create());
+        Lounge(int kind) {
+            super(kind == PIANO ? ModSounds.MUSIC_PIANO.get() : ModSounds.MUSIC_LOUNGE.get(), SoundSource.RECORDS, RandomSource.create());
+            this.kind = kind;
             this.looping = true;
             this.delay = 0;
             this.relative = true;
@@ -72,7 +85,7 @@ public final class SpeakerMusic {
 
         @Override
         public void tick() {
-            double d = nearest();
+            double d = nearest(kind);
             if (d >= RANGE) {
                 volume = Math.max(0.0F, volume - 0.05F);
                 if (volume <= 0.0F) {

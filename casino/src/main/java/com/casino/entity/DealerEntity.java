@@ -64,6 +64,10 @@ public class DealerEntity extends Mob {
     public static final int TIPS_BARTENDER = 10;
     public static final int TIPS_WHEEL = 8;
     public static final int TIPS_PATRON = 12;
+    /** Variante "Viejo Oeste": a partir de este número (cliente vaquero n = WEST + n). */
+    public static final int WEST = 64;
+    /** Pieles de vaqueros y vaqueras del saloon. */
+    public static final int WEST_PATRON_SKINS = 8;
     /** Lo que dice al hablarle (no es un consejo al azar): el número es 100 + la frase ("say_N" en los textos). */
     public static final int SAY = 100;
     /** Cuánto dura el globo en el aire (el cliente lo usa para desvanecerlo al final). */
@@ -332,7 +336,13 @@ public class DealerEntity extends Mob {
     }
 
     public void setVariant(int v) {
-        this.entityData.set(VARIANT, Math.floorMod(v, PATRON_SKINS));
+        // los del Oeste llevan WEST (64) más su número; los demás, su piel de cliente
+        this.entityData.set(VARIANT, v >= WEST ? WEST + Math.floorMod(v - WEST, Math.max(WEST_PATRON_SKINS, 1)) : Math.floorMod(v, PATRON_SKINS));
+    }
+
+    /** ¿Va vestido del Viejo Oeste? */
+    public boolean isWest() {
+        return getVariant() >= WEST;
     }
 
     /** Cliente: de dónde no se aleja. */

@@ -34,6 +34,9 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(com.casino.heist.HeistReg.CAMERA_BE.get(), HeistRenderers.Camera::new);
         e.registerBlockEntityRenderer(com.casino.heist.HeistReg.LASER_BE.get(), HeistRenderers.Laser::new);
         e.registerBlockEntityRenderer(com.casino.heist.HeistReg.VAULT_BE.get(), HeistRenderers.VaultDoor::new);
+        e.registerBlockEntityRenderer(com.casino.west.WestReg.DOOR_BE.get(), WestRenderers.Door::new);
+        e.registerBlockEntityRenderer(com.casino.west.WestReg.GATE_BE.get(), WestRenderers.Door::new);
+        e.registerBlockEntityRenderer(com.casino.west.WestReg.PIANO_BE.get(), WestRenderers.Piano::new);
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
         e.registerEntityRenderer(com.casino.registry.ModDecor.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }

@@ -34,6 +34,7 @@ public class Casino {
         com.casino.registry.ModDecor.init();
         com.casino.diamond.DiamondReg.init();
         com.casino.heist.HeistReg.init();
+        com.casino.west.WestReg.init();
         ModBlocks.BLOCKS.register(bus);
         ModItems.ITEMS.register(bus);
         ModEntities.ENTITIES.register(bus);

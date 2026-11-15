@@ -124,6 +124,18 @@ execute if entity @e[type=casino:dealer,nbt={Game:3},x=0,y=-60,z=400,distance=..
 # la pantalla de carreras ya empezó su ciclo (semilla y hora de inicio puestas por el servidor)
 execute unless data block 87 91 173 {Start:0L} unless data block 87 91 173 {casino:{Start:0L}} run say PRUEBA_DIAMOND_CARRERA_CORRE
 data get block 87 91 173
+# EL SALOON (casino del Viejo Oeste): se construye con el comando y se genera como estructura natural
+forceload add 290 130 365 195
+forceload add -48 550 48 650
+casino build 300 100 140 0 saloon
+execute if block 329 101 178 casino:saloon_door[facing=north,hinge=left] if block 330 101 178 casino:saloon_door[facing=north,hinge=right] if block 329 101 159 casino:vip_gate[access=1] run say PRUEBA_SALOON_PUERTAS
+execute if block 317 101 173 casino:player_piano[facing=east] if block 327 119 179 casino:painted_letter[glyph=18,facing=south] run say PRUEBA_SALOON_DECOR
+execute if block 326 101 162 casino:blackjack if block 333 101 162 casino:blackjack if block 322 109 153 casino:blackjack if block 342 101 159 casino:lucky_wheel[facing=west,px=1,py=0] if block 339 101 172 casino:cashier run say PRUEBA_SALOON_MESAS
+execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=327.5,y=101,z=159.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=332.5,y=101,z=159.5,distance=..1.5] run say PRUEBA_SALOON_SHERIFF
+execute if entity @e[type=casino:dealer,nbt={Game:4,Variant:64},x=318.5,y=101,z=155.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:0,Variant:64},x=326.5,y=101,z=161.5,distance=..2] run say PRUEBA_SALOON_PERSONAL
+execute if entity @e[type=casino:dealer,nbt={Game:6,Variant:69},x=317,y=109,z=151,distance=..14] run say PRUEBA_SALOON_VAQUEROS
+place structure casino:el_saloon 0 -60 600
+execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=0,y=-60,z=600,distance=..60] run say PRUEBA_SALOON_ESTRUCTURA
 #expect PRUEBA_RASCA_OK
 #expect PRUEBA_POKER_OK
 #expect PRUEBA_CRUPIER_OK
@@ -165,3 +177,10 @@ data get block 87 91 173
 #expect PRUEBA_DIAMOND_ESTRUCTURA
 #expect PRUEBA_DIAMOND_CARRERAS
 #expect PRUEBA_DIAMOND_CARRERA_CORRE
+#expect PRUEBA_SALOON_PUERTAS
+#expect PRUEBA_SALOON_DECOR
+#expect PRUEBA_SALOON_MESAS
+#expect PRUEBA_SALOON_SHERIFF
+#expect PRUEBA_SALOON_PERSONAL
+#expect PRUEBA_SALOON_VAQUEROS
+#expect PRUEBA_SALOON_ESTRUCTURA

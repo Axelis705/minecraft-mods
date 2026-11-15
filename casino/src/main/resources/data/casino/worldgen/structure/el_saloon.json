@@ -1,0 +1,9 @@
+{
+  "type": "casino:template",
+  "biomes": "#casino:has_structure/el_saloon",
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "spawn_overrides": {},
+  "template": "el_saloon",
+  "max_slope": 6
+}

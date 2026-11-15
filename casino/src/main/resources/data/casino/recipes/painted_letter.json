@@ -1,0 +1,20 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  " D ",
+  "PPP"
+ ],
+ "key": {
+  "D": {
+   "item": "minecraft:red_dye"
+  },
+  "P": {
+   "item": "minecraft:birch_planks"
+  }
+ },
+ "result": {
+  "item": "casino:painted_letter",
+  "count": 6
+ }
+}

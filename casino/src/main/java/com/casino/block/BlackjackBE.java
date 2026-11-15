@@ -138,6 +138,9 @@ public class BlackjackBE extends CasinoBE {
         return level.getEntitiesOfClass(DealerEntity.class, box, d -> worldPosition.equals(d.getTable()));
     }
 
+    /** Estilo de la mesa: 0 casino normal, 1 Viejo Oeste (el crupier sale con chaleco y visera). */
+    public int theme;
+
     public void spawnDealer(ServerLevel sl) {
         if (!dealers().isEmpty()) {
             return;
@@ -152,6 +155,9 @@ public class BlackjackBE extends CasinoBE {
         d.setYHeadRot(f.toYRot());
         d.setYBodyRot(f.toYRot());
         d.setTable(worldPosition);
+        if (theme == 1) {
+            d.setVariant(DealerEntity.WEST);
+        }
         sl.addFreshEntity(d);
     }
 
@@ -693,6 +699,7 @@ public class BlackjackBE extends CasinoBE {
 
     @Override
     protected void writeData(CompoundTag tag) {
+        tag.putInt("Theme", theme);
         ListTag seats = new ListTag();
         for (int i = 0; i < BlackjackTable.SEATS; i++) {
             Seat s = table.seats[i];
@@ -734,6 +741,7 @@ public class BlackjackBE extends CasinoBE {
 
     @Override
     protected void readData(CompoundTag tag) {
+        theme = Nbt.i(tag, "Theme");
         ListTag seats = Nbt.list(tag, "seats");
         BlackjackTable.Phase[] ph = Phase.values();
         SeatState[] ss = SeatState.values();

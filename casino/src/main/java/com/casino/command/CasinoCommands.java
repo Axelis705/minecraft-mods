@@ -57,6 +57,8 @@ public final class CasinoCommands {
                                 .then(Commands.argument("rot", IntegerArgumentType.integer(0, 3))
                                         .executes(c -> build(c.getSource(), BlockPosArgument.getBlockPos(c, "pos"), IntegerArgumentType.getInteger(c, "rot")))
                                         .then(Commands.literal("diamond").executes(c -> buildTemplate(c.getSource(), "the_diamond",
+                                                BlockPosArgument.getBlockPos(c, "pos"), IntegerArgumentType.getInteger(c, "rot"))))
+                                        .then(Commands.literal("saloon").executes(c -> buildTemplate(c.getSource(), "el_saloon",
                                                 BlockPosArgument.getBlockPos(c, "pos"), IntegerArgumentType.getInteger(c, "rot")))))))
                 .then(Commands.literal("chips")
                         .then(Commands.argument("players", EntityArgument.players())

@@ -3,6 +3,10 @@
     {
       "structure": "casino:the_diamond",
       "weight": 1
+    },
+    {
+      "structure": "casino:el_saloon",
+      "weight": 1
     }
   ],
   "placement": {

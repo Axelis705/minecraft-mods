@@ -137,6 +137,12 @@ public class TemplateCasinoPiece extends TemplateStructurePiece {
                 case "m" -> {
                     Mach k = Mach.valueOf(a[1].toUpperCase(Locale.ROOT));
                     Machines.place(level, box, k, parse(a[2]), rot, pos);
+                    // "m tipo dir w": la mesa es del Viejo Oeste (su crupier sale con chaleco y visera)
+                    if (a.length > 3 && a[3].contains("w") && box.isInside(pos)
+                            && level.getBlockEntity(pos) instanceof com.casino.block.BlackjackBE bj) {
+                        bj.theme = 1;
+                        bj.setChanged();
+                    }
                 }
                 default -> Extra.apply(a, pos, level, rot, box, dir);
             }

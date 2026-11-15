@@ -75,6 +75,11 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/bubble.png");
 
     private static final ResourceLocation[] TEXTURE_PATRON = new ResourceLocation[DealerEntity.PATRON_SKINS];
+    private static final ResourceLocation TEXTURE_SHERIFF = Ids.rl(Casino.MODID, "textures/entity/dealer_west_sheriff.png");
+    private static final ResourceLocation TEXTURE_WEST_BARTENDER = Ids.rl(Casino.MODID, "textures/entity/dealer_west_bartender.png");
+    private static final ResourceLocation TEXTURE_WEST_DEALER = Ids.rl(Casino.MODID, "textures/entity/dealer_west_dealer.png");
+    private static final ResourceLocation TEXTURE_WEST_HOST = Ids.rl(Casino.MODID, "textures/entity/dealer_west_host.png");
+    private static final ResourceLocation[] TEXTURE_WEST_PATRON = new ResourceLocation[DealerEntity.WEST_PATRON_SKINS];
 
     static {
         for (int i = 0; i < TEXTURE_PATRON.length; i++) {
@@ -83,6 +88,21 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     }
 
     private static ResourceLocation texture(int game, int variant) {
+        if (variant >= DealerEntity.WEST) {
+            return switch (game) {
+                case DealerEntity.GAME_GUARD -> TEXTURE_SHERIFF;
+                case DealerEntity.GAME_BARTENDER -> TEXTURE_WEST_BARTENDER;
+                case DealerEntity.GAME_WHEEL -> TEXTURE_WEST_HOST;
+                case DealerEntity.GAME_PATRON -> {
+                    int i = Math.floorMod(variant - DealerEntity.WEST, TEXTURE_WEST_PATRON.length);
+                    if (TEXTURE_WEST_PATRON[i] == null) {
+                        TEXTURE_WEST_PATRON[i] = Ids.rl(Casino.MODID, "textures/entity/dealer_west_patron_" + i + ".png");
+                    }
+                    yield TEXTURE_WEST_PATRON[i];
+                }
+                default -> TEXTURE_WEST_DEALER;
+            };
+        }
         if (game == DealerEntity.GAME_FIXER) {
             return TEXTURE_FIXER;
         }
@@ -118,6 +138,25 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
 
     private static String tipKey(int game, int tip) {
         return "casino.tip." + role(game) + "." + (tip >= DealerEntity.SAY ? "say_" + (tip - DealerEntity.SAY) : String.valueOf(tip));
+    }
+
+    /** En el saloon los personajes tienen sus propias frases ("casino.tip.guard_west.3"...); si falta alguna, usan la normal. */
+    private static String tipKey(int game, int variant, int tip) {
+        if (variant >= DealerEntity.WEST) {
+            String k = "casino.tip." + role(game) + "_west." + (tip >= DealerEntity.SAY ? "say_" + (tip - DealerEntity.SAY) : String.valueOf(tip));
+            if (net.minecraft.client.resources.language.I18n.exists(k)) {
+                return k;
+            }
+        }
+        return tipKey(game, tip);
+    }
+
+    private static String nameKey(int game, int variant) {
+        if (game == DealerEntity.GAME_PATRON) {
+            return "casino.npc.patron_" + variant;
+        }
+        String k = "casino.npc." + role(game) + (variant >= DealerEntity.WEST ? "_west" : "");
+        return net.minecraft.client.resources.language.I18n.exists(k) ? k : "casino.npc." + role(game);
     }
 
     /** Color de la franja de arriba del globo, según quién habla. */
@@ -196,23 +235,31 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //#if MC >= 26.1
     //$$     @Override
     //$$     public void submit(PoseStack ps, SubmitNodeCollector out, int light, State s, float yRot, float xRot) {
-    //$$         if (s.motion == null || s.motion.propR == 0 && s.motion.propL == 0) {
+    //$$         int[] hat = DealerProps.hat(s.game, s.variant);
+    //$$         if (hat[0] == 0 && (s.motion == null || s.motion.propR == 0 && s.motion.propL == 0)) {
     //$$             return;
     //$$         }
     //$$         com.casino.plat.client.Draw d = new com.casino.plat.client.Draw(out);
-    //$$         DealerProps.draw(d, ps, getParentModel().rightArm, true, s.motion.propR, s.motion.tiltR, light);
-    //$$         DealerProps.draw(d, ps, getParentModel().leftArm, false, s.motion.propL, 0, light);
+    //$$         if (s.motion != null) {
+    //$$             DealerProps.draw(d, ps, getParentModel().rightArm, true, s.motion.propR, s.motion.tiltR, light);
+    //$$             DealerProps.draw(d, ps, getParentModel().leftArm, false, s.motion.propL, 0, light);
+    //$$         }
+    //$$         DealerProps.drawHat(d, ps, getParentModel().head, hat, light);
     //$$         d.flush();
     //$$     }
     //#else
     //$$     @Override
     //$$     public void render(PoseStack ps, MultiBufferSource buf, int light, State s, float yRot, float xRot) {
-    //$$         if (s.motion == null || s.motion.propR == 0 && s.motion.propL == 0) {
+    //$$         int[] hat = DealerProps.hat(s.game, s.variant);
+    //$$         if (hat[0] == 0 && (s.motion == null || s.motion.propR == 0 && s.motion.propL == 0)) {
     //$$             return;
     //$$         }
     //$$         com.casino.plat.client.Draw d = new com.casino.plat.client.Draw(buf);
-    //$$         DealerProps.draw(d, ps, getParentModel().rightArm, true, s.motion.propR, s.motion.tiltR, light);
-    //$$         DealerProps.draw(d, ps, getParentModel().leftArm, false, s.motion.propL, 0, light);
+    //$$         if (s.motion != null) {
+    //$$             DealerProps.draw(d, ps, getParentModel().rightArm, true, s.motion.propR, s.motion.tiltR, light);
+    //$$             DealerProps.draw(d, ps, getParentModel().leftArm, false, s.motion.propL, 0, light);
+    //$$         }
+    //$$         DealerProps.drawHat(d, ps, getParentModel().head, hat, light);
     //$$     }
     //#endif
     //$$ }
@@ -280,12 +327,17 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         @Override
         public void render(PoseStack ps, MultiBufferSource buf, int light, DealerEntity e, float limb, float limbAmount, float partial, float age,
                 float yaw, float pitch) {
-            if (!(e.clientMotion instanceof DealerMotion m) || m.propR == 0 && m.propL == 0) {
+            int[] hat = DealerProps.hat(e.getGame(), e.getVariant());
+            DealerMotion m = e.clientMotion instanceof DealerMotion mm ? mm : null;
+            if (hat[0] == 0 && (m == null || m.propR == 0 && m.propL == 0)) {
                 return;
             }
             com.casino.plat.client.Draw d = new com.casino.plat.client.Draw(buf);
-            DealerProps.draw(d, ps, getParentModel().rightArm, true, m.propR, m.tiltR, light);
-            DealerProps.draw(d, ps, getParentModel().leftArm, false, m.propL, 0, light);
+            if (m != null) {
+                DealerProps.draw(d, ps, getParentModel().rightArm, true, m.propR, m.tiltR, light);
+                DealerProps.draw(d, ps, getParentModel().leftArm, false, m.propL, 0, light);
+            }
+            DealerProps.drawHat(d, ps, getParentModel().head, hat, light);
         }
     }
 
@@ -353,9 +405,9 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
      */
     private static void bubble(com.casino.plat.client.Draw d, int game, int variant, int tip, float age, float height, Quaternionf camera, PoseStack ps) {
         Font font = net.minecraft.client.Minecraft.getInstance().font;
-        String text = Component.translatable(tipKey(game, tip)).getString();
+        String text = Component.translatable(tipKey(game, variant, tip)).getString();
         List<String> lines = wrap(font, text, WRAP);
-        String name = icon(game) + " " + Component.translatable(game == DealerEntity.GAME_PATRON ? "casino.npc.patron_" + variant : "casino.npc." + role(game)).getString();
+        String name = icon(game) + " " + Component.translatable(nameKey(game, variant)).getString();
         boolean isTip = tip < DealerEntity.SAY;
         String tag = isTip ? Component.translatable("casino.tip.title").getString() : "";
         int textW = 0;

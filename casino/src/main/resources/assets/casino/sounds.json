@@ -1,170 +1,193 @@
 {
-  "wheel_tick": {
-    "sounds": [
-      "casino:wheel_tick"
-    ],
-    "subtitle": "subtitles.casino.wheel_tick"
-  },
-  "wheel_start": {
-    "sounds": [
-      "casino:wheel_start"
-    ],
-    "subtitle": "subtitles.casino.wheel_start"
-  },
-  "wheel_win": {
-    "sounds": [
-      "casino:wheel_win"
-    ],
-    "subtitle": "subtitles.casino.wheel_win"
-  },
-  "wheel_jackpot": {
-    "sounds": [
-      "casino:wheel_jackpot"
-    ],
-    "subtitle": "subtitles.casino.wheel_jackpot"
-  },
-  "coins": {
-    "sounds": [
-      "casino:coins"
-    ],
-    "subtitle": "subtitles.casino.coins"
-  },
-  "chip": {
-    "sounds": [
-      "casino:chip"
-    ],
-    "subtitle": "subtitles.casino.chip"
-  },
-  "denied": {
-    "sounds": [
-      "casino:denied"
-    ],
-    "subtitle": "subtitles.casino.denied"
-  },
-  "prize_set": {
-    "sounds": [
-      "casino:prize_set"
-    ],
-    "subtitle": "subtitles.casino.prize_set"
-  },
-  "plinko_peg": {
-    "sounds": [
-      "casino:plinko_peg"
-    ],
-    "subtitle": "subtitles.casino.plinko_peg"
-  },
-  "plinko_drop": {
-    "sounds": [
-      "casino:plinko_drop"
-    ],
-    "subtitle": "subtitles.casino.plinko_drop"
-  },
-  "plinko_land": {
-    "sounds": [
-      "casino:plinko_land"
-    ],
-    "subtitle": "subtitles.casino.plinko_land"
-  },
-  "slot_lever": {
-    "sounds": [
-      "casino:slot_lever"
-    ],
-    "subtitle": "subtitles.casino.slot_lever"
-  },
-  "slot_tick": {
-    "sounds": [
-      "casino:slot_tick"
-    ],
-    "subtitle": "subtitles.casino.slot_tick"
-  },
-  "slot_stop": {
-    "sounds": [
-      "casino:slot_stop"
-    ],
-    "subtitle": "subtitles.casino.slot_stop"
-  },
-  "card_deal": {
-    "sounds": [
-      "casino:card_deal"
-    ],
-    "subtitle": "subtitles.casino.card_deal"
-  },
-  "card_flip": {
-    "sounds": [
-      "casino:card_flip"
-    ],
-    "subtitle": "subtitles.casino.card_flip"
-  },
-  "roulette_roll": {
-    "sounds": [
-      "casino:roulette_roll"
-    ],
-    "subtitle": "subtitles.casino.roulette_roll"
-  },
-  "roulette_tick": {
-    "sounds": [
-      "casino:roulette_tick"
-    ],
-    "subtitle": "subtitles.casino.roulette_tick"
-  },
-  "roulette_land": {
-    "sounds": [
-      "casino:roulette_land"
-    ],
-    "subtitle": "subtitles.casino.roulette_land"
-  },
-  "roulette_bell": {
-    "sounds": [
-      "casino:roulette_bell"
-    ],
-    "subtitle": "subtitles.casino.roulette_bell"
-  },
-  "scratch": {
-    "sounds": [
-      "casino:scratch"
-    ],
-    "subtitle": "subtitles.casino.scratch"
-  },
-  "music_lounge": {
-    "sounds": [
-      {
-        "name": "casino:music/lounge",
-        "stream": true,
-        "weight": 2
-      },
-      {
-        "name": "casino:music/after_hours",
-        "stream": true
-      },
-      {
-        "name": "casino:music/midnight",
-        "stream": true
-      }
-    ],
-    "subtitle": "subtitles.casino.music_lounge"
-  },
-  "race_bugle": {
-    "sounds": [
-      "casino:race_bugle"
-    ],
-    "subtitle": "subtitles.casino.race_bugle"
-  },
-  "race_gate": {
-    "sounds": [
-      "casino:race_gate"
-    ],
-    "subtitle": "subtitles.casino.race_gate"
-  },
-  "race_crowd": {
-    "sounds": [
-      "casino:race_crowd"
-    ],
-    "subtitle": "subtitles.casino.race_crowd"
-  },
-  "race_gallop": {
-    "sounds": [
-      "casino:race_gallop"
-    ],
-    "subtitle": "subtitles.casino.race_gallop"
-  }
+ "wheel_tick": {
+  "sounds": [
+   "casino:wheel_tick"
+  ],
+  "subtitle": "subtitles.casino.wheel_tick"
+ },
+ "wheel_start": {
+  "sounds": [
+   "casino:wheel_start"
+  ],
+  "subtitle": "subtitles.casino.wheel_start"
+ },
+ "wheel_win": {
+  "sounds": [
+   "casino:wheel_win"
+  ],
+  "subtitle": "subtitles.casino.wheel_win"
+ },
+ "wheel_jackpot": {
+  "sounds": [
+   "casino:wheel_jackpot"
+  ],
+  "subtitle": "subtitles.casino.wheel_jackpot"
+ },
+ "coins": {
+  "sounds": [
+   "casino:coins"
+  ],
+  "subtitle": "subtitles.casino.coins"
+ },
+ "chip": {
+  "sounds": [
+   "casino:chip"
+  ],
+  "subtitle": "subtitles.casino.chip"
+ },
+ "denied": {
+  "sounds": [
+   "casino:denied"
+  ],
+  "subtitle": "subtitles.casino.denied"
+ },
+ "prize_set": {
+  "sounds": [
+   "casino:prize_set"
+  ],
+  "subtitle": "subtitles.casino.prize_set"
+ },
+ "plinko_peg": {
+  "sounds": [
+   "casino:plinko_peg"
+  ],
+  "subtitle": "subtitles.casino.plinko_peg"
+ },
+ "plinko_drop": {
+  "sounds": [
+   "casino:plinko_drop"
+  ],
+  "subtitle": "subtitles.casino.plinko_drop"
+ },
+ "plinko_land": {
+  "sounds": [
+   "casino:plinko_land"
+  ],
+  "subtitle": "subtitles.casino.plinko_land"
+ },
+ "slot_lever": {
+  "sounds": [
+   "casino:slot_lever"
+  ],
+  "subtitle": "subtitles.casino.slot_lever"
+ },
+ "slot_tick": {
+  "sounds": [
+   "casino:slot_tick"
+  ],
+  "subtitle": "subtitles.casino.slot_tick"
+ },
+ "slot_stop": {
+  "sounds": [
+   "casino:slot_stop"
+  ],
+  "subtitle": "subtitles.casino.slot_stop"
+ },
+ "card_deal": {
+  "sounds": [
+   "casino:card_deal"
+  ],
+  "subtitle": "subtitles.casino.card_deal"
+ },
+ "card_flip": {
+  "sounds": [
+   "casino:card_flip"
+  ],
+  "subtitle": "subtitles.casino.card_flip"
+ },
+ "roulette_roll": {
+  "sounds": [
+   "casino:roulette_roll"
+  ],
+  "subtitle": "subtitles.casino.roulette_roll"
+ },
+ "roulette_tick": {
+  "sounds": [
+   "casino:roulette_tick"
+  ],
+  "subtitle": "subtitles.casino.roulette_tick"
+ },
+ "roulette_land": {
+  "sounds": [
+   "casino:roulette_land"
+  ],
+  "subtitle": "subtitles.casino.roulette_land"
+ },
+ "roulette_bell": {
+  "sounds": [
+   "casino:roulette_bell"
+  ],
+  "subtitle": "subtitles.casino.roulette_bell"
+ },
+ "scratch": {
+  "sounds": [
+   "casino:scratch"
+  ],
+  "subtitle": "subtitles.casino.scratch"
+ },
+ "music_lounge": {
+  "sounds": [
+   {
+    "name": "casino:music/lounge",
+    "stream": true,
+    "weight": 2
+   },
+   {
+    "name": "casino:music/after_hours",
+    "stream": true
+   },
+   {
+    "name": "casino:music/midnight",
+    "stream": true
+   }
+  ],
+  "subtitle": "subtitles.casino.music_lounge"
+ },
+ "race_bugle": {
+  "sounds": [
+   "casino:race_bugle"
+  ],
+  "subtitle": "subtitles.casino.race_bugle"
+ },
+ "race_gate": {
+  "sounds": [
+   "casino:race_gate"
+  ],
+  "subtitle": "subtitles.casino.race_gate"
+ },
+ "race_crowd": {
+  "sounds": [
+   "casino:race_crowd"
+  ],
+  "subtitle": "subtitles.casino.race_crowd"
+ },
+ "race_gallop": {
+  "sounds": [
+   "casino:race_gallop"
+  ],
+  "subtitle": "subtitles.casino.race_gallop"
+ },
+ "music_piano": {
+  "sounds": [
+   {
+    "name": "casino:music/saloon_rag",
+    "stream": true
+   },
+   {
+    "name": "casino:music/dusty_trail",
+    "stream": true
+   },
+   {
+    "name": "casino:music/gold_rush",
+    "stream": true
+   }
+  ],
+  "subtitle": "subtitles.casino.music_piano"
+ },
+ "saloon_door": {
+  "sounds": [
+   "casino:saloon_door"
+  ],
+  "subtitle": "subtitles.casino.saloon_door"
+ }
 }

@@ -1,0 +1,7 @@
+{
+ "parent": "casino:block/west/letter_base",
+ "textures": {
+  "paint": "casino:block/west/letter/cyan_i",
+  "particle": "casino:block/west/letter/cyan_i"
+ }
+}

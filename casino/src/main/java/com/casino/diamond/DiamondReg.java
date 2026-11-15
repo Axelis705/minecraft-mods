@@ -111,7 +111,7 @@ public final class DiamondReg {
     }
 
     /** Pone un personaje fijo (guardia, bartender) mirando hacia dir, opcionalmente corrido medio bloque. */
-    private static DealerEntity npc(int game, String[] a, BlockPos pos, net.minecraft.world.level.ServerLevelAccessor level, net.minecraft.world.level.block.Rotation rot,
+    public static DealerEntity npc(int game, String[] a, BlockPos pos, net.minecraft.world.level.ServerLevelAccessor level, net.minecraft.world.level.block.Rotation rot,
             net.minecraft.world.level.levelgen.structure.BoundingBox box, int dir) {
         if (!box.isInside(pos)) {
             return null;
@@ -134,6 +134,9 @@ public final class DiamondReg {
             z += s.getStepZ() * 0.5;
         }
         g.setGame(game);
+        if (shift.contains("w")) {
+            g.setVariant(DealerEntity.WEST); // vestido del Viejo Oeste (sheriff, cantinero, crupier con visera)
+        }
         g.moveTo(x, pos.getY(), z, f.toYRot(), 0.0F);
         g.setYHeadRot(f.toYRot());
         g.setYBodyRot(f.toYRot());
@@ -141,7 +144,7 @@ public final class DiamondReg {
         return g;
     }
 
-    static int parse(String s) {
+    public static int parse(String s) {
         try {
             return Integer.parseInt(s);
         } catch (NumberFormatException e) {

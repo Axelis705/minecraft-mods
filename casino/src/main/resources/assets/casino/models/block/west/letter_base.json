@@ -1,0 +1,32 @@
+{
+ "textures": {
+  "paint": "casino:block/west/letter/red_a",
+  "particle": "casino:block/west/letter/red_a"
+ },
+ "elements": [
+  {
+   "from": [
+    0,
+    0,
+    15.75
+   ],
+   "to": [
+    16,
+    16,
+    15.76
+   ],
+   "faces": {
+    "north": {
+     "texture": "#paint",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    }
+   }
+  }
+ ],
+ "render_type": "minecraft:cutout"
+}

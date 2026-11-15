@@ -1,0 +1,81 @@
+{
+ "textures": {
+  "p": "casino:block/west/wanted_1",
+  "particle": "casino:block/west/wanted_1"
+ },
+ "elements": [
+  {
+   "from": [
+    1,
+    1,
+    15.6
+   ],
+   "to": [
+    15,
+    15,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#p",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    1,
+    1,
+    15.6
+   ],
+   "to": [
+    15,
+    15,
+    16
+   ],
+   "faces": {
+    "west": {
+     "texture": "#p",
+     "uv": [
+      0,
+      0,
+      1,
+      16
+     ]
+    },
+    "east": {
+     "texture": "#p",
+     "uv": [
+      0,
+      0,
+      1,
+      16
+     ]
+    },
+    "up": {
+     "texture": "#p",
+     "uv": [
+      0,
+      0,
+      16,
+      1
+     ]
+    },
+    "down": {
+     "texture": "#p",
+     "uv": [
+      0,
+      0,
+      16,
+      1
+     ]
+    }
+   }
+  }
+ ]
+}
