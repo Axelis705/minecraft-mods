@@ -281,7 +281,12 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         float sx = 0.02F * com.casino.plat.client.Draw.camFlipX();
         float sy = -0.02F;
         org.joml.Vector3f up = new org.joml.Quaternionf(camera).conjugate().transform(new org.joml.Vector3f(0, 1, 0));
-        Box b = new Box(d.translucent(WHITE), ps.last(), sx, sy, up, fade);
+        // ¿hacia dónde queda "atrás" (lejos de la cámara)? Se mide en vez de suponerlo: la cámara está en el origen de esta pose
+        org.joml.Matrix4f m = ps.last().pose();
+        float near0 = m.transformPosition(0, 0, 0, new org.joml.Vector3f()).length();
+        float near1 = m.transformPosition(0, 0, 1, new org.joml.Vector3f()).length();
+        float back = near1 < near0 ? -0.02F : 0.02F;
+        Box b = new Box(d.translucent(WHITE), ps.last(), sx, sy, up, fade, back);
         int x0 = -w / 2, x1 = w - w / 2, y0 = -h, y1 = 0;
         int ink = 0x2A1C0E, gold = 0xD9A93A, paper = 0xFFF7E4, band = headerColor(game);
         // sombra
@@ -341,10 +346,11 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     private static final class Box {
         private final com.casino.plat.client.VB vb;
         private final PoseStack.Pose pose;
-        private final float sx, sy, fade;
+        private final float sx, sy, fade, back;
         private final org.joml.Vector3f n;
 
-        Box(com.casino.plat.client.VB vb, PoseStack.Pose pose, float sx, float sy, org.joml.Vector3f up, float fade) {
+        Box(com.casino.plat.client.VB vb, PoseStack.Pose pose, float sx, float sy, org.joml.Vector3f up, float fade, float back) {
+            this.back = back;
             this.vb = vb;
             this.pose = pose;
             this.sx = sx;
@@ -356,7 +362,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         /** z: qué tan atrás del texto (más grande = más atrás). */
         void rect(float x0, float y0, float x1, float y1, int rgb, float alpha, float z) {
             int r = (rgb >> 16) & 255, g = (rgb >> 8) & 255, b = rgb & 255, a = (int) (255 * alpha * fade);
-            float zz = z * 0.02F;
+            float zz = z * back;
             int ov = net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY;
             int light = 0xF000F0;
             vb.v(pose, x0 * sx, y0 * sy, zz, r, g, b, a, 0.25F, 0.25F, ov, light, n.x, n.y, n.z);
