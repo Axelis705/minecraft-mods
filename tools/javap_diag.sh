@@ -12,12 +12,18 @@ for c in "$@"; do
   echo "===== $c"
   javap -cp "$jar" -public "$c" 2>&1 | head -150
 done
+# miembros privados que contengan un texto: DIAG_PRIVADOS="Clase:texto Clase:texto"
+for ct in ${DIAG_PRIVADOS:-}; do
+  c="${ct%%:*}"; t="${ct##*:}"
+  echo "===== privados de $c con '$t'"
+  javap -cp "$jar" -p "$c" 2>/dev/null | grep -i "$t" | head -20
+done
 # orden de llamadas dentro de un método: DIAG_METODO=Clase#metodo
 if [ -n "${DIAG_METODO:-}" ]; then
   for cm in $DIAG_METODO; do
     c="${cm%%#*}"; m="${cm##*#}"
     echo "===== orden en $c.$m()"
-    javap -cp "$jar" -c -p "$c" 2>/dev/null | awk -v m="$m" '$0 ~ " "m"\(" && /\(/ {on=1} on && /invoke/ {print} on && /^$/ {if (on) exit}' | sed 's/^ *//' | cut -c1-200 | head -80
+    javap -cp "$jar" -c -p "$c" 2>/dev/null | awk -v m="$m" 'index($0, " " m "(") && index($0, ")") && !index($0, "invoke") {on=1; next} on && /invoke/ {print} on && /^$/ {exit}' | sed 's/^ *//; s/.*\/\/ //' | cut -c1-160 | head -120
   done
 fi
 exit 0
