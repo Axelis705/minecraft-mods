@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "  W",
+  "SSS",
+  "I I"
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:white_wool"
+  },
+  "S": {
+   "item": "minecraft:stripped_jungle_log"
+  },
+  "I": {
+   "item": "minecraft:iron_ingot"
+  }
+ },
+ "result": {
+  "item": "casino:sun_lounger",
+  "count": 1
+ }
+}

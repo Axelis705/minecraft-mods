@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "Bitte schön. Möge der Tisch dir hold sein!",
   "casino.tip.bartender.say_2": "Aufs Haus. Prost und eine gute Glückssträhne!",
   "casino.tip.bartender.say_3": "Langsam, Champion. Der nächste in einer Minute.",
-  "casino.bartender.served": "Diamant-Cocktail: Glück für 3 Minuten"
+  "casino.bartender.served": "Diamant-Cocktail: Glück für 3 Minuten",
+  "block.casino.sun_lounger": "Sonnenliege",
+  "block.casino.parasol": "Sonnenschirm"
 }

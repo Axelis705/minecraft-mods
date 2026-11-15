@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "Aqui está. Que a mesa sorria para você!",
   "casino.tip.bartender.say_2": "Por conta da casa. Saúde e boa maré!",
   "casino.tip.bartender.say_3": "Calma, campeão. O próximo em um minuto.",
-  "casino.bartender.served": "Coquetel Diamante: Sorte por 3 minutos"
+  "casino.bartender.served": "Coquetel Diamante: Sorte por 3 minutos",
+  "block.casino.sun_lounger": "Espreguiçadeira",
+  "block.casino.parasol": "Guarda-sol"
 }

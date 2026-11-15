@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "Aquí tienes. ¡Que te sonría la mesa!",
   "casino.tip.bartender.say_2": "Uno de la casa. ¡Salud y buena racha!",
   "casino.tip.bartender.say_3": "Despacio, campeón. El próximo en un minuto.",
-  "casino.bartender.served": "Cóctel Diamante: Suerte por 3 minutos"
+  "casino.bartender.served": "Cóctel Diamante: Suerte por 3 minutos",
+  "block.casino.sun_lounger": "Camastro",
+  "block.casino.parasol": "Sombrilla"
 }

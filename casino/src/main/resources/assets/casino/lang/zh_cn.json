@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "请慢用。愿牌桌对你微笑!",
   "casino.tip.bartender.say_2": "本店请客。干杯,连赢不停!",
   "casino.tip.bartender.say_3": "慢点,冠军。下一杯一分钟后。",
-  "casino.bartender.served": "钻石鸡尾酒:幸运 3 分钟"
+  "casino.bartender.served": "钻石鸡尾酒:幸运 3 分钟",
+  "block.casino.sun_lounger": "躺椅",
+  "block.casino.parasol": "遮阳伞"
 }

@@ -1,0 +1,27 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "WBW",
+  " S ",
+  " I "
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:white_wool"
+  },
+  "B": {
+   "item": "minecraft:blue_wool"
+  },
+  "S": {
+   "item": "minecraft:stick"
+  },
+  "I": {
+   "item": "minecraft:iron_ingot"
+  }
+ },
+ "result": {
+  "item": "casino:parasol",
+  "count": 1
+ }
+}

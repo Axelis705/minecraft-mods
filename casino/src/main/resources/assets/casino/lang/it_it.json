@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "Ecco qua. Che il tavolo ti sorrida!",
   "casino.tip.bartender.say_2": "Offre la casa. Salute e buona serie!",
   "casino.tip.bartender.say_3": "Piano, campione. Il prossimo tra un minuto.",
-  "casino.bartender.served": "Cocktail Diamante: Fortuna per 3 minuti"
+  "casino.bartender.served": "Cocktail Diamante: Fortuna per 3 minuti",
+  "block.casino.sun_lounger": "Lettino",
+  "block.casino.parasol": "Ombrellone"
 }

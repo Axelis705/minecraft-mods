@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "Here you go. May the table smile on you!",
   "casino.tip.bartender.say_2": "On the house. Cheers, and good streak!",
   "casino.tip.bartender.say_3": "Easy, champ. Next one in a minute.",
-  "casino.bartender.served": "Diamond cocktail: Luck for 3 minutes"
+  "casino.bartender.served": "Diamond cocktail: Luck for 3 minutes",
+  "block.casino.sun_lounger": "Sun Lounger",
+  "block.casino.parasol": "Parasol"
 }

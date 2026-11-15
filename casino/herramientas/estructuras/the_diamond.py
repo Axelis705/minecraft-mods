@@ -588,11 +588,17 @@ for y in range(Y_VIP + 1, Y_VIP_TOP):
         o.set(x, y, TZ0, BSB); o.set(x, y, TZ1, BSB)
     for z in range(TZ0, TZ1 + 1):
         o.set(TX0, y, z, BSB); o.set(TX1, y, z, BSB)
+# piso del salón de mesas: mármol negro con incrustaciones doradas justo debajo de las vigas del techo (mismo reparto que el techo),
+# una alfombra azul con orilla dorada debajo de cada mesa y los pasillos rojos (más abajo, con runner)
 o.fill(TX0 + 1, Y_VIP, TZ0 + 1, TX1 - 1, Y_VIP, TZ1 - 1, BM)
-floor_pattern(TX0 + 1, TX1 - 1, TZ0 + 1, TZ1 - 1, Y_VIP, BM, GT, 'border')
-for x in range(TX0 + 2, TX1 - 1):
-    for z in range(TZ0 + 2, TZ1 - 1):
-        o.set(x, Y_VIP, z, BM if (abs(x - CX) + abs(z - 22)) % 5 else 'casino:marble')
+def table_rug(x0, x1, z0, z1):
+    for x in range(x0, x1 + 1):
+        for z in range(z0, z1 + 1):
+            o.set(x, Y_VIP, z, GT if x in (x0, x1) or z in (z0, z1) else 'casino:casino_floor_lounge')
+for (x0, x1) in ((19, 24), (36, 41)):                 # ruleta (arriba) y blackjack (abajo) a cada lado, en espejo
+    table_rug(x0, x1, 15, 23)
+    table_rug(x0, x1, 25, 31)
+table_rug(28, 32, 20, 26)                             # póker al centro
 o.fill(TX0, Y_VIP_TOP, TZ0, TX1, Y_VIP_TOP, TZ1, SQ)
 for x in range(TX0 + 1, TX1):
     for z in range(TZ0 + 1, TZ1):
@@ -614,24 +620,45 @@ for y in range(Y_VIP + 1, Y_VIP_TOP):
 for x in range(CX - 2, CX + 3):
     for y in range(Y_VIP + 1, Y_VIP + 4):
         o.set(x, y, TZ1, AIR)
+# marco dorado de la puerta, toldo a rayas afuera con faroles y letrero TERRAZA encima
+for y in range(Y_VIP + 1, Y_VIP + 5):
+    o.set(CX - 3, y, TZ1, GB); o.set(CX + 3, y, TZ1, GB)
+for x in range(CX - 2, CX + 3):
+    o.set(x, Y_VIP + 4, TZ1, GT)
+for x in range(CX - 3, CX + 4):
+    for z in (TZ1 + 1, TZ1 + 2):
+        o.set(x, Y_VIP + 5, z, 'minecraft:white_wool' if x % 2 else 'minecraft:blue_wool')
+    o.set(x, Y_VIP + 5, TZ1 + 3, slab('minecraft:smooth_quartz_slab', 'top'))
+for x in (CX - 3, CX + 3):
+    o.set(x, Y_VIP + 4, TZ1 + 1, 'minecraft:lantern[hanging=true]')
+for i, ch in enumerate('TERRAZA'):
+    o.set(CX - 3 + i, Y_VIP + 7, TZ1 + 1, neon(ch, 'south', 4))
 shaft(Y_VIP + 1, Y_VIP_TOP - 1, Y_VIP)
 elevator_stop(Y_VIP, 0, 'mesas')
-# salón de mesas: 2 ruletas (oeste), 3 blackjack (este y sur) y el póker al centro
+# salón de mesas, simétrico respecto a x=30: a cada lado una ruleta (al norte) y un blackjack (al sur), mirando al centro, y el
+# póker en medio. Los candelabros grandes los pone el techo (más abajo).
 mq.place(o, 'poker', CX, Y_VIP + 1, 22, 2)
 mq.place(o, 'roulette', 22, Y_VIP + 1, 19, 1)
-mq.place(o, 'roulette', 22, Y_VIP + 1, 28, 1)
-mq.place(o, 'blackjack', 38, Y_VIP + 1, 19, 3)
-mq.place(o, 'blackjack', 38, Y_VIP + 1, 27, 3)
-for x, z in ((CX, 21), (22, 19), (22, 28), (37, 19), (37, 27)):
-    o.set(x, Y_VIP_TOP - 2, z, CHAND)
-for (x, z) in ((TX0 + 2, TZ0 + 2), (TX1 - 2, TZ0 + 2), (TX0 + 2, TZ1 - 2), (TX1 - 2, TZ1 - 2)):
-    o.set(x, Y_VIP + 1, z, 'minecraft:potted_azalea_bush')
-for z in range(17, 31, 2):
-    o.set(TX0 + 1, Y_VIP + 1, z, sofa('purple', 'east')) if z not in (19, 27) else None
+mq.place(o, 'roulette', 38, Y_VIP + 1, 19, 3)
+mq.place(o, 'blackjack', 22, Y_VIP + 1, 28, 1)
+mq.place(o, 'blackjack', 38, Y_VIP + 1, 28, 3)
 for i, ch in enumerate('MESAS'):
     o.set(CX - 2 + i, Y_VIP + 6, 16, neon(ch, 'south', 2))
-o.set(TX0 + 1, Y_VIP + 4, 20, sign(11, 'east')); o.set(TX1 - 1, Y_VIP + 4, 20, sign(9, 'west'))
-o.set(TX0 + 2, Y_VIP + 1, TZ1 - 2, speaker('north'))
+o.set(TX0 + 1, Y_VIP + 4, 20, sign(11, 'east')); o.set(TX1 - 1, Y_VIP + 4, 20, sign(11, 'west'))
+# salitas en las 4 esquinas (sofás en L, mesita con bebidas y planta) y sofás para mirar las mesas junto a las ventanas
+def corner_lounge(xw, zn, sx, sz):
+    """xw, zn: la esquina; sx, sz: hacia dónde queda el salón (+1/-1)."""
+    side = 'east' if sx > 0 else 'west'
+    front = 'south' if sz > 0 else 'north'
+    o.set(xw, Y_VIP + 1, zn, 'minecraft:potted_azalea_bush')
+    for k in (1, 2):
+        o.set(xw, Y_VIP + 1, zn + sz * k, sofa('black', side))
+        o.set(xw + sx * k, Y_VIP + 1, zn, sofa('black', front))
+    o.set(xw + sx, Y_VIP + 1, zn + sz, TABLE_B); o.set(xw + sx, Y_VIP + 2, zn + sz, drinks(2, front))
+corner_lounge(TX0 + 1, TZ0 + 1, 1, 1); corner_lounge(TX1 - 1, TZ0 + 1, -1, 1)
+corner_lounge(TX0 + 1, TZ1 - 1, 1, -1); corner_lounge(TX1 - 1, TZ1 - 1, -1, -1)
+for z in (16, 17, 25, 26):
+    o.set(TX0 + 1, Y_VIP + 1, z, sofa('purple', 'east')); o.set(TX1 - 1, Y_VIP + 1, z, sofa('purple', 'west'))
 
 # terraza sobre el techo del casino: alberca, camastros, setos y barandal de vidrio
 TER_Z0 = TZ1 + 1
@@ -658,25 +685,73 @@ for x in range(CX - 10, CX + 11):
         o.set(x, Y_ROOF - 2, z, 'minecraft:smooth_quartz')
         if (x + z) % 4 == 0 and o.get(x, Y_ROOF - 3, z) == AIR:      # (nunca dentro de un muro: dejaría un hueco)
             o.set(x, Y_ROOF - 3, z, LIGHT)
-for x in range(CX - 9, CX + 10, 3):
-    o.set(x, Y_ROOF + 1, TER_Z0 + 15, sofa('blue', 'north'))
-for x in (CX - 13, CX + 13):
-    for z in range(TER_Z0 + 2, TER_Z0 + 15, 3):
-        o.set(x, Y_ROOF + 1, z, 'minecraft:spruce_leaves[persistent=true]')
-        o.set(x, Y_ROOF + 2, z, 'minecraft:spruce_leaves[persistent=true]')
-for x in (CX - 11, CX + 11):
-    o.set(x, Y_ROOF + 1, TER_Z0 + 3, TABLE_W); o.set(x, Y_ROOF + 2, TER_Z0 + 3, drinks(2))
-    for y in range(Y_ROOF + 2, Y_ROOF + 4): pass
-for x, z in ((PX0 + 3, TER_Z0 + 2), (PX1 - 3, TER_Z0 + 2), (PX0 + 3, PZ1 - 3), (PX1 - 3, PZ1 - 3)):
+LOUNGER, PARASOL = 'casino:sun_lounger', 'casino:parasol'
+def lounger(x, z, f): o.set(x, Y_ROOF + 1, z, f'{LOUNGER}[facing={f}]')
+def parasol(x, z): o.set(x, Y_ROOF + 1, z, f'{PARASOL}[facing=north]')
+# camastros con sombrilla en medio, en grupos de 3, todo en espejo respecto a x=30: al norte de la alberca mirándola (dejando libre la
+# salida de la puerta, x 27..33) y al sur, a los lados del bar
+for (xa, xb) in ((20, 22), (24, 26), (34, 36), (38, 40)):
+    lounger(xa, TER_Z0 + 3, 'south'); parasol(xa + 1, TER_Z0 + 3); lounger(xb, TER_Z0 + 3, 'south')
+for (xa, xb) in ((20, 22), (38, 40)):
+    lounger(xa, TER_Z0 + 14, 'north'); parasol(xa + 1, TER_Z0 + 14); lounger(xb, TER_Z0 + 14, 'north')
+# bar de la alberca al sur, al centro: barra mirando a la alberca con taburetes, toldo a rayas y bartender
+for x in range(CX - 3, CX + 4):
+    o.set(x, Y_ROOF + 1, TER_Z0 + 14, counter('north'))
+    o.set(x, Y_ROOF + 1, TER_Z0 + 13, stool('blue', 'south')) if x % 2 == 0 else None
+    o.set(x, Y_ROOF + 4, TER_Z0 + 14, 'minecraft:white_wool' if x % 2 else 'minecraft:blue_wool')
+    o.set(x, Y_ROOF + 4, TER_Z0 + 15, 'minecraft:white_wool' if x % 2 else 'minecraft:blue_wool')
+o.set(CX - 3, Y_ROOF + 2, TER_Z0 + 14, drinks(3)); o.set(CX + 3, Y_ROOF + 2, TER_Z0 + 14, drinks(3))
+for x in (CX - 4, CX + 4):
+    for y in range(Y_ROOF + 1, Y_ROOF + 4):
+        o.set(x, y, TER_Z0 + 15, 'minecraft:stripped_jungle_log[axis=y]')
+    o.set(x, Y_ROOF + 4, TER_Z0 + 15, GB)
+    o.set(x, Y_ROOF + 3, TER_Z0 + 14, 'minecraft:lantern[hanging=true]')
+for x in (CX - 2, CX + 2):
+    o.set(x, Y_ROOF + 1, TER_Z0 + 15, shelf('north'))
+o.marker(CX, Y_ROOF + 1, TER_Z0 + 15, 'bartender 0', [(0, 0, 0, 'minecraft:purple_wool'), (0, 1, 0, 'minecraft:purple_wool')])
+# jacuzzis redondos a los lados de la alberca: borde de cuarzo, agua con burbujas (arena de almas abajo) y escalón
+def jacuzzi(cx_, cz_):
+    for dx in range(-2, 3):
+        for dz in range(-2, 3):
+            if abs(dx) == 2 and abs(dz) == 2: continue
+            x, z = cx_ + dx, cz_ + dz
+            if abs(dx) <= 1 and abs(dz) <= 1:
+                o.set(x, Y_ROOF, z, 'minecraft:soul_sand' if dx == 0 and dz == 0 else 'minecraft:prismarine_bricks')
+                o.set(x, Y_ROOF + 1, z, 'minecraft:water')
+            else:
+                o.set(x, Y_ROOF + 1, z, 'minecraft:smooth_quartz_slab[type=bottom]' if dz == 2 * (1 if cz_ < 0 else 1) and dx == 0 else SQ)
+    for (dx, dz) in ((-2, -2), (2, -2), (-2, 2), (2, 2)):
+        o.set(cx_ + dx, Y_ROOF + 1, cz_ + dz, 'minecraft:potted_fern')
+jacuzzi(17, TER_Z0 + 8); jacuzzi(43, TER_Z0 + 8)
+# palmeras en las 4 esquinas de la zona de la alberca (tronco de jungla y copa en estrella)
+def palm(x, z, lean):
+    o.set(x, Y_ROOF + 1, z, GB)
+    top = Y_ROOF + 6
+    for y in range(Y_ROOF + 2, top + 1):
+        o.set(x + (lean if y >= top - 1 else 0), y, z, 'minecraft:jungle_log[axis=y]')
+    px = x + lean
+    leaf = 'minecraft:jungle_leaves[persistent=true]'
+    o.set(px, top + 1, z, leaf)
+    for (dx, dz) in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+        o.set(px + dx, top + 1, z + dz, leaf)
+        o.set(px + dx * 2, top, z + dz * 2, leaf)
+        o.set(px + dx * 3, top - 1, z + dz * 3, leaf)
+    for (dx, dz) in ((1, 1), (-1, 1), (1, -1), (-1, -1)):
+        o.set(px + dx, top, z + dz, leaf)
+        o.set(px + dx * 2, top - 1, z + dz * 2, leaf)
+    o.set(px, top, z + 1, 'minecraft:cocoa[facing=north,age=2]')
+    o.set(px, top, z - 1, 'minecraft:cocoa[facing=south,age=2]')
+for (x, z) in ((18, TER_Z0 + 3), (42, TER_Z0 + 3), (18, TER_Z0 + 12), (42, TER_Z0 + 12)):    # (lejos del muro del salón y del barandal)
+    palm(x, z, 1 if x < CX else -1)
+# postes con farol en las esquinas de la alberca y en las esquinas de la terraza
+for (x, z) in ((PX0 + 3, TER_Z0 + 2), (PX1 - 3, TER_Z0 + 2), (PX0 + 3, PZ1 - 3), (PX1 - 3, PZ1 - 3)):
     o.set(x, Y_ROOF + 1, z, 'minecraft:polished_blackstone_wall'); o.set(x, Y_ROOF + 2, z, 'minecraft:polished_blackstone_wall')
     o.set(x, Y_ROOF + 3, z, 'minecraft:lantern')
-for x in (22, 24, 26, 34, 36, 38):
-    o.set(x, Y_ROOF + 1, TER_Z0 + 3, sofa('blue', 'south'))        # camastros al norte de la alberca, mirándola
-for x in (25, 35):                                                  # sombrillas
-    o.set(x, Y_ROOF + 1, TER_Z0 + 2, 'minecraft:spruce_fence'); o.set(x, Y_ROOF + 2, TER_Z0 + 2, 'minecraft:spruce_fence')
-    for dx in (-1, 0, 1):
-        for dz in (-1, 0, 1):
-            o.set(x + dx, Y_ROOF + 3, TER_Z0 + 2 + dz, 'minecraft:white_wool' if (dx + dz) % 2 == 0 else 'minecraft:red_wool')
+for x in (CX - 10, CX + 10):
+    for z in (TER_Z0 + 5, TER_Z0 + 12):
+        o.set(x, Y_ROOF + 1, z, 'minecraft:polished_blackstone_wall')
+        o.set(x, Y_ROOF + 2, z, 'minecraft:polished_blackstone_wall')
+        o.set(x, Y_ROOF + 3, z, 'minecraft:lantern')
 def cabana(x0, x1):
     z0, z1 = TER_Z0 + 4, TER_Z0 + 10
     for x in (x0, x1):
@@ -696,11 +771,70 @@ def cabana(x0, x1):
     o.set(cx_, Y_ROOF + 3, z0 + 3, 'minecraft:lantern[hanging=true]')
 cabana(7, 13)
 cabana(47, 53)                                                       # espejo de la otra (7+53 = 60)
-# alas laterales del techo (fuera de la torre): jardín
-for x in list(range(PX0 + 2, TX0 - 1)) + list(range(TX1 + 2, PX1 - 1)):
-    for z in range(PZ0 + 2, TER_Z0):
-        o.set(x, Y_ROOF, z, 'minecraft:moss_block' if (x + z) % 4 else 'minecraft:grass_block')
-        if (x * 7 + z * 3) % 11 == 0: o.set(x, Y_ROOF + 1, z, 'minecraft:azalea_leaves[persistent=true]')
+# alas laterales del techo (fuera de la torre): jardines en espejo (x -> 60 - x) con un camino de grava clara desde la terraza, una
+# fuente redonda al centro, bancas alrededor, faroles, setos recortados contra los muros y arriates de flores
+GZ0, GZ1 = PZ0 + 2, TER_Z0 - 1          # z 10..33
+GCZ = (GZ0 + GZ1) // 2                   # centro de la fuente
+def garden(sx):
+    """sx = +1 jardín oeste (x 6..15), -1 el del este (se dibuja en espejo)."""
+    X = (lambda x: x) if sx > 0 else (lambda x: 60 - x)
+    side = lambda f: f if sx > 0 else {'east': 'west', 'west': 'east'}.get(f, f)
+    for x in range(PX0 + 2, TX0 - 1):
+        for z in range(GZ0, GZ1 + 1):
+            o.set(X(x), Y_ROOF, z, 'minecraft:grass_block' if (x + z) % 3 else 'minecraft:moss_block')
+            o.set(X(x), Y_ROOF + 1, z, AIR)
+    gx = (PX0 + 2 + TX0 - 2) // 2         # x 10 / 50: eje del jardín
+    # camino: de la terraza a la fuente y alrededor de ella
+    for z in range(GZ0 + 2, GZ1 + 1):
+        for x in (gx, gx + 1):
+            o.set(X(x), Y_ROOF, z, 'minecraft:mud_bricks' if z % 4 == 0 else 'minecraft:packed_mud')
+    for dx in range(-3, 5):
+        for dz in range(-3, 4):
+            if abs(dx - 0.5) + abs(dz) <= 5.5:
+                o.set(X(gx + dx), Y_ROOF, GCZ + dz, 'minecraft:packed_mud' if (dx + dz) % 3 else 'minecraft:mud_bricks')
+    # fuente: pila de 4 x 4 con orilla de cuarzo y columna al centro de la que cae el agua
+    for dx in range(-1, 3):
+        for dz in range(-1, 3):
+            edge = dx in (-1, 2) or dz in (-1, 2)
+            x, z = X(gx + dx), GCZ + dz - 1 + 1
+            if edge:
+                o.set(x, Y_ROOF + 1, z, 'minecraft:smooth_quartz_slab[type=bottom]' if (dx in (-1, 2)) != (dz in (-1, 2)) else 'minecraft:chiseled_quartz_block')
+            else:
+                o.set(x, Y_ROOF, z, 'minecraft:prismarine_bricks')
+                o.set(x, Y_ROOF + 1, z, 'minecraft:water')
+    # (la columna no: el agua que cae se regaría fuera de una pila tan chica; mejor un remate dorado con luz en cada esquina)
+    for (dx, dz) in ((-1, -1), (2, -1), (-1, 2), (2, 2)):
+        o.set(X(gx + dx), Y_ROOF + 2, GCZ + dz, 'minecraft:end_rod[facing=up]')
+    # bancas mirando a la fuente (sofás blancos no hay: negros, como en el salón)
+    for dz in (0, 1):
+        o.set(X(gx - 3), Y_ROOF + 1, GCZ + dz, sofa('black', side('east')))
+        o.set(X(gx + 4), Y_ROOF + 1, GCZ + dz, sofa('black', side('west')))
+    for dx in (0, 1):
+        o.set(X(gx + dx), Y_ROOF + 1, GCZ - 4, sofa('black', 'south'))
+    # faroles a los lados del camino y en la entrada desde la terraza
+    for z in (GZ0 + 3, GCZ + 5, GZ1 - 1):
+        for x in (gx - 1, gx + 2):
+            o.set(X(x), Y_ROOF + 1, z, 'minecraft:polished_blackstone_wall')
+            o.set(X(x), Y_ROOF + 2, z, 'minecraft:lantern')
+    # setos recortados contra el barandal y contra el muro del salón, con arriates de flores entre ellos
+    for z in range(GZ0, GZ1 + 1):
+        for x in (PX0 + 2, TX0 - 2):
+            o.set(X(x), Y_ROOF + 1, z, 'minecraft:azalea_leaves[persistent=true]' if z % 4 else 'minecraft:flowering_azalea_leaves[persistent=true]')
+    flowers = ('minecraft:red_tulip', 'minecraft:white_tulip', 'minecraft:allium', 'minecraft:oxeye_daisy', 'minecraft:blue_orchid')
+    for z in range(GZ0 + 1, GZ1):
+        if abs(z - GCZ) <= 5: continue
+        for x in (PX0 + 3, TX0 - 3):
+            if o.get(X(x), Y_ROOF + 1, z) == AIR:
+                o.set(X(x), Y_ROOF + 1, z, flowers[(z + (0 if x == PX0 + 3 else 2)) % len(flowers)])
+    # árboles: azaleas en flor en las 4 esquinas del jardín
+    for (x, z) in ((PX0 + 4, GZ0 + 2), (TX0 - 4, GZ0 + 2), (PX0 + 4, GZ1 - 3), (TX0 - 4, GZ1 - 3)):
+        o.set(X(x), Y_ROOF + 1, z, 'minecraft:oak_log[axis=y]')
+        o.set(X(x), Y_ROOF + 2, z, 'minecraft:oak_log[axis=y]')
+        for dx in (-1, 0, 1):
+            for dz in (-1, 0, 1):
+                o.set(X(x + dx), Y_ROOF + 3, z + dz, 'minecraft:flowering_azalea_leaves[persistent=true]')
+        o.set(X(x), Y_ROOF + 4, z, 'minecraft:flowering_azalea_leaves[persistent=true]')
+garden(1); garden(-1)
 
 # ================================================================== CUERPO DE LA TORRE (habitaciones, y 22..46)
 def tower_body(y0, y1, x0, x1, z0, z1):
@@ -1323,7 +1457,13 @@ def _plinko(bx, bz, cx_, cz_):
 ceiling(39, 54, 10, 21, CY, 'minecraft:black_concrete', 'minecraft:purple_concrete', 'minecraft:amethyst_block', None, _plinko)  # plinko
 # --- penthouse: casetones dorados con candelabros
 ceiling(PI0, PI1, PJ0, PJ1, Y_PH_TOP - 1, SQ, GT, PEARL, 'ring')
-# --- primer piso (salón de mesas): techo de cuarzo con casetones y candelabros
+# --- primer piso (salón de mesas): pared norte vestida (caoba, terciopelo negro y pilastras alineadas con las vigas), incrustaciones
+# doradas en el piso justo debajo de las vigas y techo de cuarzo con casetones y candelabros grandes
+dress_wall([(x, TZ0, x) for x in range(TX0 + 1, TX1)], (0, 1), Y_VIP, Y_VIP_TOP - 2, lines(TX0 + 1, TX1 - 1), 'casino:velvet_wall_black')
+for x in range(TX0 + 1, TX1):
+    for z in range(TZ0 + 1, TZ1):
+        if (x in lines(TX0 + 1, TX1 - 1) or z in lines(TZ0 + 1, TZ1 - 1)) and o.get(x, Y_VIP, z) == BM:
+            o.set(x, Y_VIP, z, GT)
 ceiling(TX0 + 1, TX1 - 1, TZ0 + 1, TZ1 - 1, Y_VIP_TOP - 1, SQ, GT, PEARL, 'ring')
 # --- sótano: salón VIP (terciopelo negro) y carreras (cielo oscuro con luces de cine)
 room_walls(QX0 + 1, 37, QZ0 + 1, QZ1 - 1, YB, -3, 'casino:velvet_wall_black')
@@ -1518,6 +1658,9 @@ for x in (33, 37):
     o.set(x, YB + 1, 10, 'minecraft:potted_azalea_bush')
 for x in range(15, 18):
     o.set(x, YB + 1, 10, sofa('purple', 'south'))     # sofá contra la pared norte, centrado bajo el cuadro
+# ---- primer piso: cuadros en la pared norte, a los lados del elevador
+painting(24, Y_VIP + 5, TZ0 + 1, 'south', 'royal_flush')
+painting(36, Y_VIP + 5, TZ0 + 1, 'south', 'roulette')
 # ---- sótano: cuadros
 painting(16, YB + 4, 10, 'south', 'derby')     # sobre el sofá de la pared norte
 painting(30, YB + 6, 16, 'south', 'diamond')   # sobre la puerta del elevador

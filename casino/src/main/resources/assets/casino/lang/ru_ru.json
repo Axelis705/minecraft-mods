@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "Держи. Пусть стол тебе улыбнётся!",
   "casino.tip.bartender.say_2": "За счёт заведения. Удачной серии!",
   "casino.tip.bartender.say_3": "Не спеши, чемпион. Следующий через минуту.",
-  "casino.bartender.served": "Коктейль «Бриллиант»: Удача на 3 минуты"
+  "casino.bartender.served": "Коктейль «Бриллиант»: Удача на 3 минуты",
+  "block.casino.sun_lounger": "Шезлонг",
+  "block.casino.parasol": "Пляжный зонт"
 }

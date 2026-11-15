@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "Et voilà. Que la table vous sourie !",
   "casino.tip.bartender.say_2": "Offert par la maison. Santé et bonne série !",
   "casino.tip.bartender.say_3": "Doucement, champion. Le prochain dans une minute.",
-  "casino.bartender.served": "Cocktail Diamant : Chance pendant 3 minutes"
+  "casino.bartender.served": "Cocktail Diamant : Chance pendant 3 minutes",
+  "block.casino.sun_lounger": "Transat",
+  "block.casino.parasol": "Parasol"
 }

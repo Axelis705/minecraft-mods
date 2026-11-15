@@ -573,5 +573,7 @@
   "casino.tip.bartender.say_1": "どうぞ。テーブルがあなたに微笑みますように!",
   "casino.tip.bartender.say_2": "店のおごりです。乾杯、そして良い連勝を!",
   "casino.tip.bartender.say_3": "ゆっくりね、チャンピオン。次は1分後に。",
-  "casino.bartender.served": "ダイヤモンド・カクテル:3分間の幸運"
+  "casino.bartender.served": "ダイヤモンド・カクテル:3分間の幸運",
+  "block.casino.sun_lounger": "サンラウンジャー",
+  "block.casino.parasol": "パラソル"
 }
