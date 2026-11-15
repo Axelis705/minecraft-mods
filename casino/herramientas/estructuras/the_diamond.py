@@ -698,14 +698,15 @@ for (xa, xb) in ((20, 22), (38, 40)):
 for x in range(CX - 3, CX + 4):
     o.set(x, Y_ROOF + 1, TER_Z0 + 14, counter('north'))
     o.set(x, Y_ROOF + 1, TER_Z0 + 13, stool('blue', 'south')) if x % 2 == 0 else None
-    o.set(x, Y_ROOF + 4, TER_Z0 + 14, 'minecraft:white_wool' if x % 2 else 'minecraft:blue_wool')
-    o.set(x, Y_ROOF + 4, TER_Z0 + 15, 'minecraft:white_wool' if x % 2 else 'minecraft:blue_wool')
+    o.set(x, Y_ROOF + 5, TER_Z0 + 14, 'minecraft:white_wool' if x % 2 else 'minecraft:blue_wool')     # (alto: que no tape el
+    o.set(x, Y_ROOF + 5, TER_Z0 + 15, 'minecraft:white_wool' if x % 2 else 'minecraft:blue_wool')     #  globo del bartender)
 o.set(CX - 3, Y_ROOF + 2, TER_Z0 + 14, drinks(3)); o.set(CX + 3, Y_ROOF + 2, TER_Z0 + 14, drinks(3))
 for x in (CX - 4, CX + 4):
-    for y in range(Y_ROOF + 1, Y_ROOF + 4):
+    for y in range(Y_ROOF + 1, Y_ROOF + 5):
         o.set(x, y, TER_Z0 + 15, 'minecraft:stripped_jungle_log[axis=y]')
-    o.set(x, Y_ROOF + 4, TER_Z0 + 15, GB)
-    o.set(x, Y_ROOF + 3, TER_Z0 + 14, 'minecraft:lantern[hanging=true]')
+    o.set(x, Y_ROOF + 5, TER_Z0 + 15, GB)
+for x in (CX - 3, CX + 3):
+    o.set(x, Y_ROOF + 4, TER_Z0 + 14, 'minecraft:lantern[hanging=true]')     # colgados del toldo
 for x in (CX - 2, CX + 2):
     o.set(x, Y_ROOF + 1, TER_Z0 + 15, shelf('north'))
 o.marker(CX, Y_ROOF + 1, TER_Z0 + 15, 'bartender 0', [(0, 0, 0, 'minecraft:purple_wool'), (0, 1, 0, 'minecraft:purple_wool')])
