@@ -56,6 +56,14 @@ public final class PatronAI {
         return null;
     }
 
+    /**
+     * Caminar hasta un punto. Va escrito ". moveTo" con un espacio a propósito: el preprocesador cambia ".moveTo(" por ".snapTo(" en 26.x
+     * (eso es para teletransportar entidades) y aquí es el camino del navegador, que en 26.x sigue llamándose moveTo.
+     */
+    private static boolean walk(DealerEntity e, double x, double y, double z) {
+        return e.getNavigation(). moveTo(x, y, z, SPEED);
+    }
+
     private static boolean nearHome(DealerEntity e, BlockPos p) {
         BlockPos h = e.home();
         return h == null || p.distSqr(h) <= RANGE * RANGE && Math.abs(p.getY() - h.getY()) <= 3;
@@ -81,7 +89,7 @@ public final class PatronAI {
                 double x = h.getX() + 0.5 + (e.getRandom().nextDouble() * 2 - 1) * (RANGE - 2);
                 double z = h.getZ() + 0.5 + (e.getRandom().nextDouble() * 2 - 1) * (RANGE - 2);
                 BlockPos p = ground(e.level(), x, z, h.getY());
-                if (p != null && nearHome(e, p) && e.getNavigation().moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, SPEED)) {
+                if (p != null && nearHome(e, p) && walk(e, p.getX() + 0.5, p.getY(), p.getZ() + 0.5)) {
                     return true;
                 }
             }
@@ -134,7 +142,7 @@ public final class PatronAI {
             seat = found.get(e.getRandom().nextInt(found.size()));
             walk = 200;
             left = 0;
-            return e.getNavigation().moveTo(seat.getX() + 0.5, seat.getY(), seat.getZ() + 0.5, SPEED);
+            return walk(e, seat.getX() + 0.5, seat.getY(), seat.getZ() + 0.5);
         }
 
         @Override
@@ -162,7 +170,7 @@ public final class PatronAI {
                     seat = null;
                 }
             } else if (e.getNavigation().isDone()) {
-                e.getNavigation().moveTo(c.x, c.y, c.z, SPEED);
+                walk(e, c.x, c.y, c.z);
             }
         }
 
@@ -215,7 +223,7 @@ public final class PatronAI {
                 double a = e.getRandom().nextDouble() * Math.PI * 2;
                 double r = 2.6 + e.getRandom().nextDouble();
                 BlockPos p = ground(level, g.getX() + 0.5 + Math.cos(a) * r, g.getZ() + 0.5 + Math.sin(a) * r, g.getY());
-                if (p != null && nearHome(e, p) && e.getNavigation().moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, SPEED)) {
+                if (p != null && nearHome(e, p) && walk(e, p.getX() + 0.5, p.getY(), p.getZ() + 0.5)) {
                     look = Vec3.atCenterOf(g).add(0, 0.4, 0);
                     left = 300 + e.getRandom().nextInt(500);
                     return true;

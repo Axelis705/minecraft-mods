@@ -415,7 +415,7 @@ public class DealerEntity extends Mob {
         double z = hub.z + r.getStepZ() * 1.95 * side;
         if (Math.abs(x - getX()) + Math.abs(z - getZ()) < 1.5) {
             float yaw = f.toYRot();
-            moveTo(x, getY(), z, yaw, 0.0F);
+            this.moveTo(x, getY(), z, yaw, 0.0F);
             setYHeadRot(yaw);
             setYBodyRot(yaw);
         }
