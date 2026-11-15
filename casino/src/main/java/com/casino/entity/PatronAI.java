@@ -40,9 +40,25 @@ public final class PatronAI {
         goals.addGoal(5, new RandomLookAroundGoal(e));
     }
 
+    private static boolean solid(Level level, BlockPos p) {
+        return !level.getBlockState(p).getCollisionShape(level, p).isEmpty();
+    }
+
+    /** Un lugar donde pararse: libre, con piso, sin agua y lejos de orillas (alrededor hay piso o pared, nunca un hueco). */
     private static boolean standable(Level level, BlockPos p) {
-        return level.getBlockState(p).getCollisionShape(level, p).isEmpty() && level.getBlockState(p.above()).getCollisionShape(level, p.above()).isEmpty()
-                && !level.getBlockState(p.below()).getCollisionShape(level, p.below()).isEmpty() && level.getFluidState(p).isEmpty();
+        if (solid(level, p) || solid(level, p.above()) || !solid(level, p.below()) || !level.getFluidState(p).isEmpty()) {
+            return false;
+        }
+        for (net.minecraft.core.Direction d : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+            BlockPos n = p.relative(d);
+            if (!solid(level, n) && !solid(level, n.below())) {
+                return false; // orilla: de ese lado hay un hueco
+            }
+            if (!level.getFluidState(n).isEmpty() || !level.getFluidState(n.below()).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Un lugar donde pararse cerca de (x, z), buscando el piso de arriba hacia abajo. */
@@ -61,7 +77,12 @@ public final class PatronAI {
      * (eso es para teletransportar entidades) y aquí es el camino del navegador, que en 26.x sigue llamándose moveTo.
      */
     private static boolean walk(DealerEntity e, double x, double y, double z) {
-        return e.getNavigation(). moveTo(x, y, z, SPEED);
+        // solo si hay camino completo hasta allá (si no, se queda intentando y brincando contra una pared)
+        net.minecraft.world.level.pathfinder.Path path = e.getNavigation().createPath(BlockPos.containing(x, y, z), 0);
+        if (path == null || !path.canReach()) {
+            return false;
+        }
+        return e.getNavigation(). moveTo(path, SPEED);
     }
 
     private static boolean nearHome(DealerEntity e, BlockPos p) {

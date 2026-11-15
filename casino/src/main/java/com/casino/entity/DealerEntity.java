@@ -260,6 +260,53 @@ public class DealerEntity extends Mob {
         super.die(src);
     }
 
+    private double lastX;
+    private double lastZ;
+    private int stuck;
+
+    /**
+     * Clientes y guardias: si llevan rato "caminando" sin avanzar (brincando contra algo), se rinden; si cayeron al agua, salen a la
+     * orilla más cercana (normalmente el agua les está prohibida para no meterse a la alberca).
+     */
+    private void unstick() {
+        if (tickCount % 20 != 0) {
+            return;
+        }
+        boolean wet = isInWater();
+        //#if MC >= 1.20.5
+        //$$ setPathfindingMalus(net.minecraft.world.level.pathfinder.PathType.WATER, wet ? 8.0F : -1.0F);
+        //#else
+        setPathfindingMalus(net.minecraft.world.level.pathfinder.BlockPathTypes.WATER, wet ? 8.0F : -1.0F);
+        //#endif
+        if (wet && getNavigation().isDone()) {
+            BlockPos c = blockPosition();
+            BlockPos best = null;
+            for (BlockPos q : BlockPos.betweenClosed(c.offset(-8, -2, -8), c.offset(8, 3, 8))) {
+                if (level().getFluidState(q).isEmpty() && level().getFluidState(q.below()).isEmpty()
+                        && level().getBlockState(q).getCollisionShape(level(), q).isEmpty()
+                        && level().getBlockState(q.above()).getCollisionShape(level(), q.above()).isEmpty()
+                        && !level().getBlockState(q.below()).getCollisionShape(level(), q.below()).isEmpty()
+                        && (best == null || q.distSqr(c) < best.distSqr(c))) {
+                    best = q.immutable();
+                }
+            }
+            if (best != null) {
+                getNavigation(). moveTo(best.getX() + 0.5, best.getY(), best.getZ() + 0.5, 0.5);
+            }
+        }
+        double moved = (getX() - lastX) * (getX() - lastX) + (getZ() - lastZ) * (getZ() - lastZ);
+        lastX = getX();
+        lastZ = getZ();
+        if (!getNavigation().isDone() && moved < 0.04 && !isPassenger()) {
+            if (++stuck >= 3) {
+                getNavigation().stop();
+                stuck = 0;
+            }
+        } else {
+            stuck = 0;
+        }
+    }
+
     /** Guardia (servidor): ve hacia donde mira; con alarma se puede pelear con él, si no es invulnerable como los demás. */
     private void tickSecurity() {
         com.casino.heist.HeistManager.Heist h = com.casino.heist.HeistManager.at(level(), blockPosition());
@@ -397,6 +444,9 @@ public class DealerEntity extends Mob {
             }
             if (isSecurity()) {
                 tickSecurity();
+            }
+            if (isPatron() || isSecurity()) {
+                unstick();
             }
             Player p = isPatron() || isSecurity() ? null : level().getNearestPlayer(this, 7.0);
             if (isPatron() || isSecurity()) {

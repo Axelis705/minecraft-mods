@@ -13,6 +13,7 @@ public final class ModCommonEvents {
 
     @SubscribeEvent
     public static void onAttributes(EntityAttributeCreationEvent e) {
-        e.put(ModEntities.DEALER.get(), Mob.createMobAttributes().build());
+        // alcance para buscar caminos largos (las rondas de los guardias miden hasta 40 bloques)
+        e.put(ModEntities.DEALER.get(), Mob.createMobAttributes().add(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE, 48.0).build());
     }
 }

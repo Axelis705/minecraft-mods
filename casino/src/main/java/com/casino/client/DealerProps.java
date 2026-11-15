@@ -75,12 +75,13 @@ public final class DealerProps {
                 }
             }
             case GLASS_EMPTY, GLASS_FULL -> {
-                b.box(-0.04, 0.07, -0.04, 0.04, 0.06, 0.04, 0xD8E8EE);
-                b.box(-0.008, 0.06, -0.008, 0.008, -0.03, 0.008, 0xD8E8EE);
-                b.box(-0.025, -0.03, -0.025, 0.025, -0.06, 0.025, 0xCFE4EC);
-                b.box(-0.05, -0.06, -0.05, 0.05, -0.1, 0.05, 0xCFE4EC);
+                // piezas separadas por un pelito: si dos caras quedan en el mismo plano, parpadean
+                b.box(-0.04, 0.07, -0.04, 0.04, 0.061, 0.04, 0xD8E8EE);
+                b.box(-0.008, 0.06, -0.008, 0.008, -0.029, 0.008, 0xD8E8EE);
+                b.box(-0.025, -0.031, -0.025, 0.025, -0.059, 0.025, 0xCFE4EC);
+                b.box(-0.05, -0.061, -0.05, 0.05, -0.1, 0.05, 0xCFE4EC);
                 if (prop == GLASS_FULL) {
-                    b.box(-0.044, -0.065, -0.044, 0.044, -0.102, 0.044, 0xE0457A);
+                    b.box(-0.044, -0.065, -0.044, 0.044, -0.112, 0.044, 0xE0457A);
                     b.box(-0.012, -0.102, 0.015, 0.012, -0.126, 0.039, 0xC8102E);
                     b.box(-0.002, -0.126, 0.025, 0.002, -0.15, 0.029, 0x2E6B2A);
                 }
@@ -156,11 +157,13 @@ public final class DealerProps {
             vb.v(p, bx, by, bz, rr, gg, bb, 255, 0.6F, 0.4F, OverlayTexture.NO_OVERLAY, light, nx, ny, nz);
             vb.v(p, cx, cy, cz, rr, gg, bb, 255, 0.6F, 0.6F, OverlayTexture.NO_OVERLAY, light, nx, ny, nz);
             vb.v(p, dx, dy, dz, rr, gg, bb, 255, 0.4F, 0.6F, OverlayTexture.NO_OVERLAY, light, nx, ny, nz);
-            // y del otro lado, por si el giro la deja al revés (sin "caras invisibles")
-            vb.v(p, dx, dy, dz, rr, gg, bb, 255, 0.4F, 0.6F, OverlayTexture.NO_OVERLAY, light, -nx, -ny, -nz);
-            vb.v(p, cx, cy, cz, rr, gg, bb, 255, 0.6F, 0.6F, OverlayTexture.NO_OVERLAY, light, -nx, -ny, -nz);
-            vb.v(p, bx, by, bz, rr, gg, bb, 255, 0.6F, 0.4F, OverlayTexture.NO_OVERLAY, light, -nx, -ny, -nz);
-            vb.v(p, ax, ay, az, rr, gg, bb, 255, 0.4F, 0.4F, OverlayTexture.NO_OVERLAY, light, -nx, -ny, -nz);
+            //#if MC >= 26.1
+            //$$ // y del otro lado (en 26.x el pincel oculta las caras de atrás; antes se dibujan las dos y repetirla parpadea)
+            //$$ vb.v(p, dx, dy, dz, rr, gg, bb, 255, 0.4F, 0.6F, OverlayTexture.NO_OVERLAY, light, -nx, -ny, -nz);
+            //$$ vb.v(p, cx, cy, cz, rr, gg, bb, 255, 0.6F, 0.6F, OverlayTexture.NO_OVERLAY, light, -nx, -ny, -nz);
+            //$$ vb.v(p, bx, by, bz, rr, gg, bb, 255, 0.6F, 0.4F, OverlayTexture.NO_OVERLAY, light, -nx, -ny, -nz);
+            //$$ vb.v(p, ax, ay, az, rr, gg, bb, 255, 0.4F, 0.4F, OverlayTexture.NO_OVERLAY, light, -nx, -ny, -nz);
+            //#endif
         }
     }
 }

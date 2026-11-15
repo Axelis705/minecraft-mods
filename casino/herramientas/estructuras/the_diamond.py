@@ -1692,7 +1692,7 @@ painting(36, Y_VIP + 5, TZ0 + 1, 'south', 'roulette')
 painting_at(17.0, 10, YB + 4, 'south', 'derby')   # sobre el sofá de la pared norte (paño x 14..19)
 painting(30, YB + 6, 16, 'south', 'diamond')   # sobre la puerta del elevador
 painting_at(22.0, 37, YB + 6, 'west', 'derby')   # pared de la sala de carreras, del lado del salón (paño z 20..23)
-for (x, art) in ((40, 'derby'), (44, 'vegas'), (48, 'vegas'), (52, 'derby')):   # sala de carreras, pared del fondo: espejo en 46.5 y cada 4
+for (x, art) in ((40, 'derby'), (44, 'vegas'), (49, 'vegas'), (53, 'derby')):   # sala de carreras, pared del fondo: espejo en 46.5 (x <-> 93 - x)
     painting(x, YB + 6, QZ0 + 1, 'south', art)
 painting(24, YB + 5, FZ, 'north', 'roulette')   # sobre la chimenea
 

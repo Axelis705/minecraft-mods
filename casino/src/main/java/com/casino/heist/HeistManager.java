@@ -284,6 +284,9 @@ public final class HeistManager {
     // ================================================================== veto (1 día de Minecraft)
 
     public static boolean banned(Player p) {
+        if (Plat.isOp(p)) {
+            return false; // los operadores pueden probar el robo las veces que quieran
+        }
         long until = Nbt.l(p.getPersistentData(), BAN_KEY);
         return until > 0 && p.level().getGameTime() < until;
     }
@@ -314,7 +317,7 @@ public final class HeistManager {
             reason = 1;
         } else if (byVault(level, vault.getBlockPos()) != null) {
             reason = 3;
-        } else if (!vault.ready(level)) {
+        } else if (!vault.ready(level) && !Plat.isOp(p)) {
             reason = 4;
         }
         List<String> crew = new ArrayList<>();
@@ -337,7 +340,7 @@ public final class HeistManager {
         VaultDoorBE vault = VaultDoorBE.find(level, npcPos);
         CasinoStats.Entry e = CasinoStats.get(Plat.server(leader)).entry(leader.getUUID());
         if (vault == null || banned(leader) || (e == null || e.level() < 4) && !Plat.isOp(leader) || byVault(level, vault.getBlockPos()) != null
-                || !vault.ready(level)) {
+                || !vault.ready(level) && !Plat.isOp(leader)) {
             return;
         }
         Heist h = new Heist(level.dimension().toString(), vault.getBlockPos(), zoneOf(level, vault.getBlockPos()));

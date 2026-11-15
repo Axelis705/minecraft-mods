@@ -250,6 +250,9 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
 
         @Override
         public void setupAnim(DealerEntity e, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch) {
+            // en 1.20 Minecraft no regresa el giro de lado de la cabeza (zRot) a 0 en cada cuadro: sin esto se iba acumulando
+            this.head.zRot = 0F;
+            this.body.xRot = 0F;
             super.setupAnim(e, limbSwing, limbSwingAmount, age, yaw, pitch);
             float frac = age - e.tickCount;
             DealerMotion m = DealerMotion.compute(e, frac);
