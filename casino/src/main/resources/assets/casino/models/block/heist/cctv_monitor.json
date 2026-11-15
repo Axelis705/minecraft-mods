@@ -1,0 +1,100 @@
+{
+ "textures": {
+  "h_black": "casino:block/heist/black",
+  "h_cctv": "casino:block/heist/cctv",
+  "particle": "casino:block/heist/black"
+ },
+ "elements": [
+  {
+   "from": [
+    0,
+    0,
+    10
+   ],
+   "to": [
+    16,
+    16,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_black",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    },
+    "south": {
+     "texture": "#h_black",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    },
+    "west": {
+     "texture": "#h_black",
+     "uv": [
+      10,
+      0,
+      16,
+      16
+     ]
+    },
+    "east": {
+     "texture": "#h_black",
+     "uv": [
+      0,
+      0,
+      6,
+      16
+     ]
+    },
+    "up": {
+     "texture": "#h_black",
+     "uv": [
+      0,
+      10,
+      16,
+      16
+     ]
+    },
+    "down": {
+     "texture": "#h_black",
+     "uv": [
+      0,
+      0,
+      16,
+      6
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    1,
+    1,
+    9.9
+   ],
+   "to": [
+    15,
+    15,
+    10
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_cctv",
+     "uv": [
+      1,
+      1,
+      15,
+      15
+     ]
+    }
+   }
+  }
+ ]
+}

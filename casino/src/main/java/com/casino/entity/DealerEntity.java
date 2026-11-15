@@ -41,6 +41,13 @@ public class DealerEntity extends Mob {
     /** Cliente del casino: pasea, se sienta, ve las mesas y platica. Tiene una de {@link #PATRON_SKINS} pieles (y su nombre). */
     public static final int GAME_PATRON = 6;
     public static final int PATRON_SKINS = 12;
+    /** Guardia del robo a la bóveda (variante 0: táser y porra; 1: pistola). Hace su ronda; ver {@link com.casino.heist.GuardAI}. */
+    public static final int GAME_SECURITY = 7;
+    /** El contacto del salón VIP: a los socios Diamante les ofrece el robo a la bóveda. */
+    public static final int GAME_FIXER = 8;
+    public static final int TIPS_FIXER = 5;
+    /** Guardia: 0 tranquilo, 1 en alerta (persigue), 2 apuntando (sincronizado para el dibujo). */
+    private static final EntityDataAccessor<Integer> COMBAT = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     /** Animación que está haciendo: (número de vez × 100) + cuál (ver {@link DealerAnim}); así el cliente nota cuando empieza otra igual. */
@@ -116,6 +123,7 @@ public class DealerEntity extends Mob {
     //$$     b.define(ANIM, 0);
     //$$     b.define(TABLE, BlockPos.ZERO);
     //$$     b.define(VARIANT, 0);
+    //$$     b.define(COMBAT, 0);
     //$$ }
     //#else
     @Override
@@ -126,6 +134,7 @@ public class DealerEntity extends Mob {
         this.entityData.define(ANIM, 0);
         this.entityData.define(TABLE, BlockPos.ZERO);
         this.entityData.define(VARIANT, 0);
+        this.entityData.define(COMBAT, 0);
     }
     //#endif
 
@@ -176,7 +185,11 @@ public class DealerEntity extends Mob {
         }
         int g = getGame();
         int n = g == GAME_ROULETTE ? TIPS_ROULETTE : g == GAME_POKER ? TIPS_POKER : g == GAME_GUARD ? TIPS_GUARD
-                : g == GAME_BARTENDER ? TIPS_BARTENDER : g == GAME_WHEEL ? TIPS_WHEEL : g == GAME_PATRON ? TIPS_PATRON : TIPS_BLACKJACK;
+                : g == GAME_BARTENDER ? TIPS_BARTENDER : g == GAME_WHEEL ? TIPS_WHEEL : g == GAME_PATRON ? TIPS_PATRON
+                : g == GAME_FIXER ? TIPS_FIXER : g == GAME_SECURITY ? 0 : TIPS_BLACKJACK;
+        if (n <= 0) {
+            return;
+        }
         int t = random.nextInt(n);
         say(t);
         nextTip = 900 + random.nextInt(900);
@@ -188,8 +201,79 @@ public class DealerEntity extends Mob {
 
     public void setGame(int game) {
         this.entityData.set(GAME, game);
-        // los clientes caminan; los demás se quedan en su lugar
-        setNoAi(game != GAME_PATRON);
+        // los clientes y los guardias del robo caminan; los demás se quedan en su lugar
+        setNoAi(game != GAME_PATRON && game != GAME_SECURITY);
+    }
+
+    public boolean isSecurity() {
+        return getGame() == GAME_SECURITY;
+    }
+
+    /** Guardia: 0 táser y porra, 1 pistola. */
+    public int guardKind() {
+        return getVariant() == 1 ? 1 : 0;
+    }
+
+    public int combat() {
+        return this.entityData.get(COMBAT);
+    }
+
+    public void setCombat(int c) {
+        if (combat() != c) {
+            this.entityData.set(COMBAT, c);
+        }
+    }
+
+    private int patrolDx;
+    private int patrolDz;
+    @Nullable
+    private net.minecraft.world.phys.Vec3 investigating;
+    private boolean vulnerable;
+
+    public int patrolDx() {
+        return patrolDx;
+    }
+
+    public int patrolDz() {
+        return patrolDz;
+    }
+
+    public void setPatrol(int dx, int dz) {
+        patrolDx = dx;
+        patrolDz = dz;
+    }
+
+    @Nullable
+    public net.minecraft.world.phys.Vec3 investigating() {
+        return investigating;
+    }
+
+    public void investigate(@Nullable net.minecraft.world.phys.Vec3 p) {
+        investigating = p;
+    }
+
+    @Override
+    public void die(net.minecraft.world.damagesource.DamageSource src) {
+        if (!level().isClientSide() && isSecurity()) {
+            com.casino.heist.HeistManager.guardDied(this);
+        }
+        super.die(src);
+    }
+
+    /** Guardia (servidor): ve hacia donde mira; con alarma se puede pelear con él, si no es invulnerable como los demás. */
+    private void tickSecurity() {
+        com.casino.heist.HeistManager.Heist h = com.casino.heist.HeistManager.at(level(), blockPosition());
+        boolean fight = h != null && h.hostile();
+        if (fight != vulnerable) {
+            vulnerable = fight;
+            Plat.invulnerable(this, !fight);
+        }
+        if (tickCount % 5 == 0 && !fight) {
+            ServerPlayer seen = com.casino.heist.GuardAI.look(this);
+            if (seen != null) {
+                investigate(seen.position());
+            }
+        }
     }
 
     public boolean isPatron() {
@@ -225,6 +309,7 @@ public class DealerEntity extends Mob {
     @Override
     protected void registerGoals() {
         PatronAI.register(this, this.goalSelector);
+        com.casino.heist.GuardAI.register(this, this.goalSelector);
     }
 
     public void setTable(BlockPos pos) {
@@ -246,7 +331,7 @@ public class DealerEntity extends Mob {
 
     @Override
     public boolean isPushable() {
-        return isPatron();
+        return isPatron() || isSecurity();
     }
 
     @Override
@@ -269,7 +354,7 @@ public class DealerEntity extends Mob {
         super.tick();
         // El cuerpo siempre mira hacia donde mira la mesa; solo la cabeza sigue al jugador más cercano.
         float base = getYRot();
-        if (!isPatron()) {
+        if (!isPatron() && !isSecurity()) {
             yBodyRot = base;
             yBodyRotO = base;
         }
@@ -310,8 +395,11 @@ public class DealerEntity extends Mob {
             if (serveFor != null && tickCount >= serveAt) {
                 handOver();
             }
-            Player p = isPatron() ? null : level().getNearestPlayer(this, 7.0);
-            if (isPatron()) {
+            if (isSecurity()) {
+                tickSecurity();
+            }
+            Player p = isPatron() || isSecurity() ? null : level().getNearestPlayer(this, 7.0);
+            if (isPatron() || isSecurity()) {
                 // el cuerpo y la cabeza los manejan sus ganas de pasear y de mirar
             } else if (p != null) {
                 double dx = p.getX() - getX();
@@ -475,6 +563,26 @@ public class DealerEntity extends Mob {
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
+        if (getGame() == GAME_FIXER) {
+            if (!level().isClientSide() && player instanceof ServerPlayer sp) {
+                getLookControl().setLookAt(player, 30.0F, 30.0F);
+                anim(DealerAnim.NOD);
+                com.casino.heist.HeistManager.contact(sp, this);
+            }
+            return Plat.ok(level().isClientSide());
+        }
+        if (isSecurity()) {
+            if (!level().isClientSide() && combat() == 0) {
+                say(SAY + random.nextInt(2));
+                anim(DealerAnim.STOP);
+            }
+            return Plat.ok(level().isClientSide());
+        }
+        if (!level().isClientSide() && player instanceof ServerPlayer sp && com.casino.heist.HeistManager.banned(sp) && getGame() != GAME_PATRON) {
+            Plat.msg(sp, com.casino.heist.HeistManager.banText(sp), false);
+            anim(DealerAnim.STOP);
+            return Plat.ok(false);
+        }
         if (getGame() == GAME_WHEEL) {
             if (!level().isClientSide() && player instanceof ServerPlayer sp) {
                 talkHost(sp);
@@ -567,6 +675,8 @@ public class DealerEntity extends Mob {
     //$$     super.addAdditionalSaveData(out);
     //$$     out.putInt("Game", getGame());
     //$$     out.putInt("Variant", getVariant());
+    //$$     out.putInt("PDX", patrolDx);
+    //$$     out.putInt("PDZ", patrolDz);
     //$$     if (home != null) {
     //$$         out.putIntArray("Home", new int[]{home.getX(), home.getY(), home.getZ()});
     //$$     }
@@ -580,6 +690,8 @@ public class DealerEntity extends Mob {
     //$$     super.readAdditionalSaveData(in);
     //$$     setGame(in.getIntOr("Game", 0));
     //$$     setVariant(in.getIntOr("Variant", 0));
+    //$$     patrolDx = in.getIntOr("PDX", 0);
+    //$$     patrolDz = in.getIntOr("PDZ", 0);
     //$$     int[] hm = in.getIntArray("Home").orElse(new int[0]);
     //$$     home = hm.length == 3 ? new BlockPos(hm[0], hm[1], hm[2]) : null;
     //$$     int[] t = in.getIntArray("Table").orElse(new int[0]);
@@ -591,6 +703,8 @@ public class DealerEntity extends Mob {
         super.addAdditionalSaveData(tag);
         tag.putInt("Game", getGame());
         tag.putInt("Variant", getVariant());
+        tag.putInt("PDX", patrolDx);
+        tag.putInt("PDZ", patrolDz);
         if (home != null) {
             tag.putIntArray("Home", new int[]{home.getX(), home.getY(), home.getZ()});
         }
@@ -604,6 +718,8 @@ public class DealerEntity extends Mob {
         super.readAdditionalSaveData(tag);
         setGame(Nbt.i(tag, "Game"));
         setVariant(Nbt.i(tag, "Variant"));
+        patrolDx = Nbt.i(tag, "PDX");
+        patrolDz = Nbt.i(tag, "PDZ");
         int[] hm = Nbt.ia(tag, "Home");
         home = hm.length == 3 ? new BlockPos(hm[0], hm[1], hm[2]) : null;
         int[] t = Nbt.ia(tag, "Table");

@@ -135,6 +135,7 @@ public final class CasinoStats extends SavedData {
     }
 
     private void add(MinecraftServer server, UUID id, String name, int game, long stake, long count, long payout) {
+        Tournament.bet(server, id, name, game, stake, count, payout);
         long today = CasinoData.today();
         Entry e = players.computeIfAbsent(id, k -> new Entry());
         if (name != null && !name.isEmpty()) {

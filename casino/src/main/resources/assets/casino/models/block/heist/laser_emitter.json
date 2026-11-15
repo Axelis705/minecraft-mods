@@ -1,0 +1,214 @@
+{
+ "textures": {
+  "h_dark": "casino:block/heist/steel_dark",
+  "h_black": "casino:block/heist/black",
+  "h_steel": "casino:block/heist/steel",
+  "particle": "casino:block/heist/steel_dark"
+ },
+ "elements": [
+  {
+   "from": [
+    5,
+    5,
+    14
+   ],
+   "to": [
+    11,
+    11,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_dark",
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ]
+    },
+    "south": {
+     "texture": "#h_dark",
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ]
+    },
+    "west": {
+     "texture": "#h_dark",
+     "uv": [
+      14,
+      5,
+      16,
+      11
+     ]
+    },
+    "east": {
+     "texture": "#h_dark",
+     "uv": [
+      0,
+      5,
+      2,
+      11
+     ]
+    },
+    "up": {
+     "texture": "#h_dark",
+     "uv": [
+      5,
+      14,
+      11,
+      16
+     ]
+    },
+    "down": {
+     "texture": "#h_dark",
+     "uv": [
+      5,
+      0,
+      11,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    6,
+    6,
+    13
+   ],
+   "to": [
+    10,
+    10,
+    14
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_black",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    },
+    "south": {
+     "texture": "#h_black",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    },
+    "west": {
+     "texture": "#h_black",
+     "uv": [
+      13,
+      6,
+      14,
+      10
+     ]
+    },
+    "east": {
+     "texture": "#h_black",
+     "uv": [
+      2,
+      6,
+      3,
+      10
+     ]
+    },
+    "up": {
+     "texture": "#h_black",
+     "uv": [
+      6,
+      13,
+      10,
+      14
+     ]
+    },
+    "down": {
+     "texture": "#h_black",
+     "uv": [
+      6,
+      2,
+      10,
+      3
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    7,
+    9,
+    12.5
+   ],
+   "to": [
+    9,
+    10.6,
+    13
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_steel",
+     "uv": [
+      7,
+      5.4,
+      9,
+      7
+     ]
+    },
+    "south": {
+     "texture": "#h_steel",
+     "uv": [
+      7,
+      5.4,
+      9,
+      7
+     ]
+    },
+    "west": {
+     "texture": "#h_steel",
+     "uv": [
+      12.5,
+      5.4,
+      13,
+      7
+     ]
+    },
+    "east": {
+     "texture": "#h_steel",
+     "uv": [
+      3,
+      5.4,
+      3.5,
+      7
+     ]
+    },
+    "up": {
+     "texture": "#h_steel",
+     "uv": [
+      7,
+      12.5,
+      9,
+      13
+     ]
+    },
+    "down": {
+     "texture": "#h_steel",
+     "uv": [
+      7,
+      3,
+      9,
+      3.5
+     ]
+    }
+   }
+  }
+ ]
+}

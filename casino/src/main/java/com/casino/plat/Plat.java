@@ -126,6 +126,14 @@ public final class Plat {
     }
 
     /** No recibe daño nunca. */
+    public static void invulnerable(Entity e, boolean v) {
+        //#if MC >= 26.3
+        //$$ e.setPermanentlyInvulnerable(v);
+        //#else
+        e.setInvulnerable(v);
+        //#endif
+    }
+
     public static void invulnerable(Entity e) {
         //#if MC >= 26.3
         //$$ e.setPermanentlyInvulnerable(true);

@@ -1,0 +1,282 @@
+{
+ "textures": {
+  "h_steel": "casino:block/heist/steel",
+  "h_black": "casino:block/heist/black",
+  "h_dark": "casino:block/heist/steel_dark",
+  "particle": "casino:block/heist/steel"
+ },
+ "elements": [
+  {
+   "from": [
+    6,
+    6,
+    4
+   ],
+   "to": [
+    10,
+    10,
+    12
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_steel",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    },
+    "south": {
+     "texture": "#h_steel",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    },
+    "west": {
+     "texture": "#h_steel",
+     "uv": [
+      4,
+      6,
+      12,
+      10
+     ]
+    },
+    "east": {
+     "texture": "#h_steel",
+     "uv": [
+      4,
+      6,
+      12,
+      10
+     ]
+    },
+    "up": {
+     "texture": "#h_steel",
+     "uv": [
+      6,
+      4,
+      10,
+      12
+     ]
+    },
+    "down": {
+     "texture": "#h_steel",
+     "uv": [
+      6,
+      4,
+      10,
+      12
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    7,
+    7,
+    3
+   ],
+   "to": [
+    9,
+    9,
+    4
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_black",
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ]
+    },
+    "south": {
+     "texture": "#h_black",
+     "uv": [
+      7,
+      7,
+      9,
+      9
+     ]
+    },
+    "west": {
+     "texture": "#h_black",
+     "uv": [
+      3,
+      7,
+      4,
+      9
+     ]
+    },
+    "east": {
+     "texture": "#h_black",
+     "uv": [
+      12,
+      7,
+      13,
+      9
+     ]
+    },
+    "up": {
+     "texture": "#h_black",
+     "uv": [
+      7,
+      3,
+      9,
+      4
+     ]
+    },
+    "down": {
+     "texture": "#h_black",
+     "uv": [
+      7,
+      12,
+      9,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    7,
+    4,
+    10
+   ],
+   "to": [
+    9,
+    6,
+    14
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_dark",
+     "uv": [
+      7,
+      10,
+      9,
+      12
+     ]
+    },
+    "south": {
+     "texture": "#h_dark",
+     "uv": [
+      7,
+      10,
+      9,
+      12
+     ]
+    },
+    "west": {
+     "texture": "#h_dark",
+     "uv": [
+      10,
+      10,
+      14,
+      12
+     ]
+    },
+    "east": {
+     "texture": "#h_dark",
+     "uv": [
+      2,
+      10,
+      6,
+      12
+     ]
+    },
+    "up": {
+     "texture": "#h_dark",
+     "uv": [
+      7,
+      10,
+      9,
+      14
+     ]
+    },
+    "down": {
+     "texture": "#h_dark",
+     "uv": [
+      7,
+      2,
+      9,
+      6
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    5,
+    3,
+    13
+   ],
+   "to": [
+    11,
+    7,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_dark",
+     "uv": [
+      5,
+      9,
+      11,
+      13
+     ]
+    },
+    "south": {
+     "texture": "#h_dark",
+     "uv": [
+      5,
+      9,
+      11,
+      13
+     ]
+    },
+    "west": {
+     "texture": "#h_dark",
+     "uv": [
+      13,
+      9,
+      16,
+      13
+     ]
+    },
+    "east": {
+     "texture": "#h_dark",
+     "uv": [
+      0,
+      9,
+      3,
+      13
+     ]
+    },
+    "up": {
+     "texture": "#h_dark",
+     "uv": [
+      5,
+      13,
+      11,
+      16
+     ]
+    },
+    "down": {
+     "texture": "#h_dark",
+     "uv": [
+      5,
+      0,
+      11,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}

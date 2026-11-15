@@ -201,6 +201,7 @@ public class LuckyWheelBE extends CasinoBE {
     // ------------------------------------------------------------------ ticks
 
     public void serverTick() {
+        com.casino.data.Tournament.tick(level.getServer());
         if (spinning && level.getGameTime() >= spinStart + SPIN_TICKS) {
             finish();
         }

@@ -41,6 +41,17 @@ public final class CasinoNet {
         Net.register(23, MemberPacket.Claim.class, MemberPacket.Claim::encode, MemberPacket.Claim::decode, MemberPacket.Claim::handle);
         Net.register(24, MemberSyncPacket.class, MemberSyncPacket::encode, MemberSyncPacket::decode, MemberSyncPacket::handle);
         Net.register(25, LevelChestPacket.class, LevelChestPacket::encode, LevelChestPacket::decode, LevelChestPacket::handle);
+        Net.register(26, com.casino.heist.HeistPlanPacket.class, com.casino.heist.HeistPlanPacket::encode, com.casino.heist.HeistPlanPacket::decode,
+                com.casino.heist.HeistPlanPacket::handle);
+        Net.register(27, com.casino.heist.HeistGamePacket.class, com.casino.heist.HeistGamePacket::encode, com.casino.heist.HeistGamePacket::decode,
+                com.casino.heist.HeistGamePacket::handle);
+        Net.register(28, com.casino.heist.HeistActionPacket.class, com.casino.heist.HeistActionPacket::encode, com.casino.heist.HeistActionPacket::decode,
+                com.casino.heist.HeistActionPacket::handle);
+        Net.register(29, com.casino.heist.HeistSyncPacket.class, com.casino.heist.HeistSyncPacket::encode, com.casino.heist.HeistSyncPacket::decode,
+                com.casino.heist.HeistSyncPacket::handle);
+        Net.register(30, com.casino.heist.HeistOfferPacket.class, com.casino.heist.HeistOfferPacket::encode, com.casino.heist.HeistOfferPacket::decode,
+                com.casino.heist.HeistOfferPacket::handle);
+        Net.register(31, TournamentPacket.class, TournamentPacket::encode, TournamentPacket::decode, TournamentPacket::handle);
         Net.done();
     }
 

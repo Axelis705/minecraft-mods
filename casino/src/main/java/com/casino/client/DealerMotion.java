@@ -163,6 +163,7 @@ public final class DealerMotion {
                 }
                 case DealerEntity.GAME_BARTENDER -> m.bartender(e, time, partial);
                 case DealerEntity.GAME_PATRON -> m.patron(e, partial);
+                case DealerEntity.GAME_SECURITY -> m.security(e, partial);
                 default -> {
                 }
             }
@@ -408,6 +409,28 @@ public final class DealerMotion {
             }
         } else if (e.getVariant() % 3 == 1) {
             propR = DealerProps.CHIPS;
+        }
+    }
+
+    // ------------------------------------------------------------------ guardias del robo
+
+    /** Guardias: tranquilos, manos libres; en alerta sacan la porra (o la pistola); apuntando, el brazo al frente (con pistola, a dos manos). */
+    private void security(DealerEntity e, float partial) {
+        int c = e.combat();
+        if (c == 0) {
+            return;
+        }
+        boolean armed = e.guardKind() == 1;
+        propR = armed ? DealerProps.PISTOL : c == 2 ? DealerProps.TASER : DealerProps.BATON;
+        if (c == 2) {
+            double yaw = Math.toRadians(Mth.lerp(partial, e.yHeadRotO, e.yHeadRot));
+            double pitch = Math.toRadians(e.getXRot());
+            Vec3 fwd = new Vec3(-Math.sin(yaw) * Math.cos(pitch), -Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch));
+            Vec3 aim = new Vec3(ex, ey + 1.38, ez).add(fwd.scale(1.6));
+            armR(aim, 1);
+            if (armed) {
+                armL(aim.add(-rxv * 0.12, 0, -rzv * 0.12), 0.9F);
+            }
         }
     }
 

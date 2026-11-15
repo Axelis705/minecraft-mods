@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/cube_bottom_top",
+ "textures": {
+  "bottom": "casino:block/heist/grate",
+  "side": "casino:block/heist/steel",
+  "top": "casino:block/heist/steel"
+ }
+}

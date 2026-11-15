@@ -28,6 +28,13 @@ public final class MemberHud {
     /** Cofre de nivel que llegó con una pantalla abierta: se abre cuando la cierres. */
     public static com.casino.net.LevelChestPacket pendingChest;
     private static MemberSyncPacket data;
+    private static com.casino.net.TournamentPacket tour;
+    private static long tourAt;
+
+    public static void tournament(com.casino.net.TournamentPacket m) {
+        tour = m.active ? m : null;
+        tourAt = System.currentTimeMillis();
+    }
     private static boolean hidden;
     private static float slide;
     private static long lastFrame;
@@ -215,5 +222,36 @@ public final class MemberHud {
         // tecla para ocultar, muy discreta, debajo
         Component key = Component.translatable("casino.hud.hide", TOGGLE.getTranslatedKeyMessage());
         g.drawString(font, key, x + 2, y + h + 4, 0x90A0A0B0, false);
+        if (tour != null) {
+            drawTournament(g, font, x, y + h + 16, w, ms);
+        }
+    }
+
+    /** El torneo de esta noche, debajo de la tarjeta. */
+    private static void drawTournament(G g, Font font, int x, int y, int w, long ms) {
+        com.casino.net.TournamentPacket t = tour;
+        int h = 62;
+        boolean pulse = (ms / 600) % 2 == 0;
+        g.fill(x - 1, y - 1, x + w + 1, y + h + 1, pulse ? 0xFFFFD45A : 0xFFC9A227);
+        g.fillGradient(x, y, x + w, y + h, 0xE8201206, 0xE8100A04);
+        Component title = Component.translatable("casino.tournament.hud_title", Component.translatable("casino.records.game_" + t.game))
+                .withStyle(ChatFormatting.BOLD);
+        g.drawString(font, font.plainSubstrByWidth(title.getString(), w - 10), x + 5, y + 4, 0xFFFFD45A, true);
+        int left = Math.max(0, t.ticksLeft - (int) ((ms - tourAt) / 50));
+        String tm = String.format(Locale.ROOT, "%d:%02d", left / 20 / 60, left / 20 % 60);
+        g.drawString(font, Component.translatable("casino.tournament.hud_left", tm), x + 5, y + 15, 0xFFE8E4F0, false);
+        int[] medal = {0xFFF6CB3A, 0xFFC9D1DB, 0xFFD08A4E};
+        for (int i = 0; i < 3; i++) {
+            if (t.top[i] == null || t.top[i].isEmpty()) {
+                continue;
+            }
+            String n = font.plainSubstrByWidth((i + 1) + ". " + t.top[i], w - 60);
+            g.drawString(font, n, x + 5, y + 26 + i * 9, medal[i], false);
+            String sc = (t.topScore[i] >= 0 ? "+" : "") + fmt(t.topScore[i]);
+            g.drawString(font, sc, x + w - 5 - font.width(sc), y + 26 + i * 9, t.topScore[i] >= 0 ? 0xFF7CFF9A : 0xFFFF7070, false);
+        }
+        Component me = t.rank >= 0 ? Component.translatable("casino.tournament.hud_me", t.rank + 1, (t.mine >= 0 ? "+" : "") + fmt(t.mine))
+                : Component.translatable("casino.tournament.hud_join");
+        g.drawString(font, font.plainSubstrByWidth(me.getString(), w - 10), x + 5, y + 53, 0xFF80E0FF, false);
     }
 }

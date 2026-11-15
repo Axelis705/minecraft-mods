@@ -1,0 +1,10 @@
+{
+ "variants": {
+  "gas=false": {
+   "model": "casino:block/heist/gas_vent"
+  },
+  "gas=true": {
+   "model": "casino:block/heist/gas_vent"
+  }
+ }
+}

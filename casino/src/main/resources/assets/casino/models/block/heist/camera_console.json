@@ -1,0 +1,213 @@
+{
+ "textures": {
+  "h_dark": "casino:block/heist/steel_dark",
+  "h_console": "casino:block/heist/console",
+  "particle": "casino:block/heist/steel_dark"
+ },
+ "elements": [
+  {
+   "from": [
+    1,
+    0,
+    6
+   ],
+   "to": [
+    15,
+    4,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_dark",
+     "uv": [
+      1,
+      12,
+      15,
+      16
+     ]
+    },
+    "south": {
+     "texture": "#h_dark",
+     "uv": [
+      1,
+      12,
+      15,
+      16
+     ]
+    },
+    "west": {
+     "texture": "#h_dark",
+     "uv": [
+      6,
+      12,
+      16,
+      16
+     ]
+    },
+    "east": {
+     "texture": "#h_dark",
+     "uv": [
+      0,
+      12,
+      10,
+      16
+     ]
+    },
+    "up": {
+     "texture": "#h_dark",
+     "uv": [
+      1,
+      6,
+      15,
+      16
+     ]
+    },
+    "down": {
+     "texture": "#h_dark",
+     "uv": [
+      1,
+      0,
+      15,
+      10
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    1,
+    4,
+    9
+   ],
+   "to": [
+    15,
+    6,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_console",
+     "uv": [
+      1,
+      10,
+      15,
+      12
+     ]
+    },
+    "south": {
+     "texture": "#h_console",
+     "uv": [
+      1,
+      10,
+      15,
+      12
+     ]
+    },
+    "west": {
+     "texture": "#h_console",
+     "uv": [
+      9,
+      10,
+      16,
+      12
+     ]
+    },
+    "east": {
+     "texture": "#h_console",
+     "uv": [
+      0,
+      10,
+      7,
+      12
+     ]
+    },
+    "up": {
+     "texture": "#h_console",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    },
+    "down": {
+     "texture": "#h_console",
+     "uv": [
+      1,
+      0,
+      15,
+      7
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    2,
+    4,
+    6
+   ],
+   "to": [
+    14,
+    4.5,
+    9
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_console",
+     "uv": [
+      2,
+      11.5,
+      14,
+      12
+     ]
+    },
+    "south": {
+     "texture": "#h_console",
+     "uv": [
+      2,
+      11.5,
+      14,
+      12
+     ]
+    },
+    "west": {
+     "texture": "#h_console",
+     "uv": [
+      6,
+      11.5,
+      9,
+      12
+     ]
+    },
+    "east": {
+     "texture": "#h_console",
+     "uv": [
+      7,
+      11.5,
+      10,
+      12
+     ]
+    },
+    "up": {
+     "texture": "#h_console",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    },
+    "down": {
+     "texture": "#h_console",
+     "uv": [
+      2,
+      7,
+      14,
+      10
+     ]
+    }
+   }
+  }
+ ]
+}

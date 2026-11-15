@@ -144,6 +144,9 @@ public class SlotBE extends CasinoBE {
     }
 
     public void serverTick() {
+        if (level != null) {
+            com.casino.data.Tournament.tick(level.getServer());
+        }
         if (level == null || !spinning) {
             return;
         }

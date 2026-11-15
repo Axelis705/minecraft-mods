@@ -107,6 +107,7 @@ public class RecordScreenBE extends CasinoBE {
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState st, RecordScreenBE be) {
+        com.casino.data.Tournament.tick(level.getServer());
         long now = level.getGameTime();
         if ((now + (pos.asLong() & 63)) % 60 != 0 || !isAnchor(level, pos, be.facing())) {
             return;

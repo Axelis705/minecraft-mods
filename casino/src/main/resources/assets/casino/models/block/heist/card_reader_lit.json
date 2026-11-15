@@ -1,0 +1,169 @@
+{
+ "textures": {
+  "h_black": "casino:block/heist/black",
+  "h_steel": "casino:block/heist/steel",
+  "screen": "casino:block/heist/screen_green",
+  "particle": "casino:block/heist/steel_dark"
+ },
+ "elements": [
+  {
+   "from": [
+    5,
+    3,
+    14
+   ],
+   "to": [
+    11,
+    13,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_black",
+     "uv": [
+      5,
+      3,
+      11,
+      13
+     ]
+    },
+    "south": {
+     "texture": "#h_black",
+     "uv": [
+      5,
+      3,
+      11,
+      13
+     ]
+    },
+    "west": {
+     "texture": "#h_black",
+     "uv": [
+      14,
+      3,
+      16,
+      13
+     ]
+    },
+    "east": {
+     "texture": "#h_black",
+     "uv": [
+      0,
+      3,
+      2,
+      13
+     ]
+    },
+    "up": {
+     "texture": "#h_black",
+     "uv": [
+      5,
+      14,
+      11,
+      16
+     ]
+    },
+    "down": {
+     "texture": "#h_black",
+     "uv": [
+      5,
+      0,
+      11,
+      2
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    6,
+    8,
+    13.8
+   ],
+   "to": [
+    10,
+    12,
+    14
+   ],
+   "faces": {
+    "north": {
+     "texture": "#screen",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    6,
+    4,
+    13.5
+   ],
+   "to": [
+    10,
+    5,
+    14
+   ],
+   "faces": {
+    "north": {
+     "texture": "#h_steel",
+     "uv": [
+      6,
+      11,
+      10,
+      12
+     ]
+    },
+    "south": {
+     "texture": "#h_steel",
+     "uv": [
+      6,
+      11,
+      10,
+      12
+     ]
+    },
+    "west": {
+     "texture": "#h_steel",
+     "uv": [
+      13.5,
+      11,
+      14,
+      12
+     ]
+    },
+    "east": {
+     "texture": "#h_steel",
+     "uv": [
+      2,
+      11,
+      2.5,
+      12
+     ]
+    },
+    "up": {
+     "texture": "#h_steel",
+     "uv": [
+      6,
+      13.5,
+      10,
+      14
+     ]
+    },
+    "down": {
+     "texture": "#h_steel",
+     "uv": [
+      6,
+      2,
+      10,
+      2.5
+     ]
+    }
+   }
+  }
+ ]
+}

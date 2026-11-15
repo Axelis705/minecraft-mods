@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/orientable",
+ "textures": {
+  "front": "casino:block/heist/deposit_front",
+  "side": "casino:block/heist/steel",
+  "top": "casino:block/heist/steel"
+ }
+}

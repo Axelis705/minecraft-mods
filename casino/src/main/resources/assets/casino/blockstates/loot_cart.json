@@ -1,0 +1,260 @@
+{
+ "variants": {
+  "facing=north,kind=cash,left=0": {
+   "model": "casino:block/heist/loot_cart_cash_0",
+   "y": 0
+  },
+  "facing=north,kind=cash,left=1": {
+   "model": "casino:block/heist/loot_cart_cash_1",
+   "y": 0
+  },
+  "facing=north,kind=cash,left=2": {
+   "model": "casino:block/heist/loot_cart_cash_2",
+   "y": 0
+  },
+  "facing=north,kind=cash,left=3": {
+   "model": "casino:block/heist/loot_cart_cash_3",
+   "y": 0
+  },
+  "facing=north,kind=gold,left=0": {
+   "model": "casino:block/heist/loot_cart_gold_0",
+   "y": 0
+  },
+  "facing=north,kind=gold,left=1": {
+   "model": "casino:block/heist/loot_cart_gold_1",
+   "y": 0
+  },
+  "facing=north,kind=gold,left=2": {
+   "model": "casino:block/heist/loot_cart_gold_2",
+   "y": 0
+  },
+  "facing=north,kind=gold,left=3": {
+   "model": "casino:block/heist/loot_cart_gold_3",
+   "y": 0
+  },
+  "facing=north,kind=diamond,left=0": {
+   "model": "casino:block/heist/loot_cart_diamond_0",
+   "y": 0
+  },
+  "facing=north,kind=diamond,left=1": {
+   "model": "casino:block/heist/loot_cart_diamond_1",
+   "y": 0
+  },
+  "facing=north,kind=diamond,left=2": {
+   "model": "casino:block/heist/loot_cart_diamond_2",
+   "y": 0
+  },
+  "facing=north,kind=diamond,left=3": {
+   "model": "casino:block/heist/loot_cart_diamond_3",
+   "y": 0
+  },
+  "facing=north,kind=chips,left=0": {
+   "model": "casino:block/heist/loot_cart_chips_0",
+   "y": 0
+  },
+  "facing=north,kind=chips,left=1": {
+   "model": "casino:block/heist/loot_cart_chips_1",
+   "y": 0
+  },
+  "facing=north,kind=chips,left=2": {
+   "model": "casino:block/heist/loot_cart_chips_2",
+   "y": 0
+  },
+  "facing=north,kind=chips,left=3": {
+   "model": "casino:block/heist/loot_cart_chips_3",
+   "y": 0
+  },
+  "facing=east,kind=cash,left=0": {
+   "model": "casino:block/heist/loot_cart_cash_0",
+   "y": 90
+  },
+  "facing=east,kind=cash,left=1": {
+   "model": "casino:block/heist/loot_cart_cash_1",
+   "y": 90
+  },
+  "facing=east,kind=cash,left=2": {
+   "model": "casino:block/heist/loot_cart_cash_2",
+   "y": 90
+  },
+  "facing=east,kind=cash,left=3": {
+   "model": "casino:block/heist/loot_cart_cash_3",
+   "y": 90
+  },
+  "facing=east,kind=gold,left=0": {
+   "model": "casino:block/heist/loot_cart_gold_0",
+   "y": 90
+  },
+  "facing=east,kind=gold,left=1": {
+   "model": "casino:block/heist/loot_cart_gold_1",
+   "y": 90
+  },
+  "facing=east,kind=gold,left=2": {
+   "model": "casino:block/heist/loot_cart_gold_2",
+   "y": 90
+  },
+  "facing=east,kind=gold,left=3": {
+   "model": "casino:block/heist/loot_cart_gold_3",
+   "y": 90
+  },
+  "facing=east,kind=diamond,left=0": {
+   "model": "casino:block/heist/loot_cart_diamond_0",
+   "y": 90
+  },
+  "facing=east,kind=diamond,left=1": {
+   "model": "casino:block/heist/loot_cart_diamond_1",
+   "y": 90
+  },
+  "facing=east,kind=diamond,left=2": {
+   "model": "casino:block/heist/loot_cart_diamond_2",
+   "y": 90
+  },
+  "facing=east,kind=diamond,left=3": {
+   "model": "casino:block/heist/loot_cart_diamond_3",
+   "y": 90
+  },
+  "facing=east,kind=chips,left=0": {
+   "model": "casino:block/heist/loot_cart_chips_0",
+   "y": 90
+  },
+  "facing=east,kind=chips,left=1": {
+   "model": "casino:block/heist/loot_cart_chips_1",
+   "y": 90
+  },
+  "facing=east,kind=chips,left=2": {
+   "model": "casino:block/heist/loot_cart_chips_2",
+   "y": 90
+  },
+  "facing=east,kind=chips,left=3": {
+   "model": "casino:block/heist/loot_cart_chips_3",
+   "y": 90
+  },
+  "facing=south,kind=cash,left=0": {
+   "model": "casino:block/heist/loot_cart_cash_0",
+   "y": 180
+  },
+  "facing=south,kind=cash,left=1": {
+   "model": "casino:block/heist/loot_cart_cash_1",
+   "y": 180
+  },
+  "facing=south,kind=cash,left=2": {
+   "model": "casino:block/heist/loot_cart_cash_2",
+   "y": 180
+  },
+  "facing=south,kind=cash,left=3": {
+   "model": "casino:block/heist/loot_cart_cash_3",
+   "y": 180
+  },
+  "facing=south,kind=gold,left=0": {
+   "model": "casino:block/heist/loot_cart_gold_0",
+   "y": 180
+  },
+  "facing=south,kind=gold,left=1": {
+   "model": "casino:block/heist/loot_cart_gold_1",
+   "y": 180
+  },
+  "facing=south,kind=gold,left=2": {
+   "model": "casino:block/heist/loot_cart_gold_2",
+   "y": 180
+  },
+  "facing=south,kind=gold,left=3": {
+   "model": "casino:block/heist/loot_cart_gold_3",
+   "y": 180
+  },
+  "facing=south,kind=diamond,left=0": {
+   "model": "casino:block/heist/loot_cart_diamond_0",
+   "y": 180
+  },
+  "facing=south,kind=diamond,left=1": {
+   "model": "casino:block/heist/loot_cart_diamond_1",
+   "y": 180
+  },
+  "facing=south,kind=diamond,left=2": {
+   "model": "casino:block/heist/loot_cart_diamond_2",
+   "y": 180
+  },
+  "facing=south,kind=diamond,left=3": {
+   "model": "casino:block/heist/loot_cart_diamond_3",
+   "y": 180
+  },
+  "facing=south,kind=chips,left=0": {
+   "model": "casino:block/heist/loot_cart_chips_0",
+   "y": 180
+  },
+  "facing=south,kind=chips,left=1": {
+   "model": "casino:block/heist/loot_cart_chips_1",
+   "y": 180
+  },
+  "facing=south,kind=chips,left=2": {
+   "model": "casino:block/heist/loot_cart_chips_2",
+   "y": 180
+  },
+  "facing=south,kind=chips,left=3": {
+   "model": "casino:block/heist/loot_cart_chips_3",
+   "y": 180
+  },
+  "facing=west,kind=cash,left=0": {
+   "model": "casino:block/heist/loot_cart_cash_0",
+   "y": 270
+  },
+  "facing=west,kind=cash,left=1": {
+   "model": "casino:block/heist/loot_cart_cash_1",
+   "y": 270
+  },
+  "facing=west,kind=cash,left=2": {
+   "model": "casino:block/heist/loot_cart_cash_2",
+   "y": 270
+  },
+  "facing=west,kind=cash,left=3": {
+   "model": "casino:block/heist/loot_cart_cash_3",
+   "y": 270
+  },
+  "facing=west,kind=gold,left=0": {
+   "model": "casino:block/heist/loot_cart_gold_0",
+   "y": 270
+  },
+  "facing=west,kind=gold,left=1": {
+   "model": "casino:block/heist/loot_cart_gold_1",
+   "y": 270
+  },
+  "facing=west,kind=gold,left=2": {
+   "model": "casino:block/heist/loot_cart_gold_2",
+   "y": 270
+  },
+  "facing=west,kind=gold,left=3": {
+   "model": "casino:block/heist/loot_cart_gold_3",
+   "y": 270
+  },
+  "facing=west,kind=diamond,left=0": {
+   "model": "casino:block/heist/loot_cart_diamond_0",
+   "y": 270
+  },
+  "facing=west,kind=diamond,left=1": {
+   "model": "casino:block/heist/loot_cart_diamond_1",
+   "y": 270
+  },
+  "facing=west,kind=diamond,left=2": {
+   "model": "casino:block/heist/loot_cart_diamond_2",
+   "y": 270
+  },
+  "facing=west,kind=diamond,left=3": {
+   "model": "casino:block/heist/loot_cart_diamond_3",
+   "y": 270
+  },
+  "facing=west,kind=chips,left=0": {
+   "model": "casino:block/heist/loot_cart_chips_0",
+   "y": 270
+  },
+  "facing=west,kind=chips,left=1": {
+   "model": "casino:block/heist/loot_cart_chips_1",
+   "y": 270
+  },
+  "facing=west,kind=chips,left=2": {
+   "model": "casino:block/heist/loot_cart_chips_2",
+   "y": 270
+  },
+  "facing=west,kind=chips,left=3": {
+   "model": "casino:block/heist/loot_cart_chips_3",
+   "y": 270
+  }
+ }
+}

@@ -30,6 +30,7 @@ public final class CasinoEvents {
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (e.getEntity() instanceof ServerPlayer p && Plat.server(p) != null) {
             com.casino.net.MemberSyncPacket.send(p);
+            com.casino.heist.HeistManager.onLogin(p);
             com.casino.data.CasinoStats.Entry me = com.casino.data.CasinoStats.get(Plat.server(p)).entry(p.getUUID());
             if (me != null && me.cardGiven) {
                 com.casino.data.MemberRewards.title(Plat.server(p), p, me.level());
@@ -58,6 +59,23 @@ public final class CasinoEvents {
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock e) {
         var block = e.getLevel().getBlockState(e.getPos()).getBlock();
+        if (!e.getLevel().isClientSide() && e.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND
+                && e.getEntity() instanceof net.minecraft.server.level.ServerPlayer sp) {
+            if (block == net.minecraft.world.level.block.Blocks.IRON_DOOR) {
+                com.casino.heist.HeistManager.useIronDoor(sp, e.getPos());
+            } else if (com.casino.heist.HeistManager.banned(sp) && (block instanceof LuckyWheelBlock || block instanceof CashierBlock || block instanceof SlotBlock
+                    || block instanceof BlackjackBlock || block instanceof PokerBlock || block instanceof ScratchMachineBlock || block instanceof RouletteBlock
+                    || block instanceof com.casino.block.PlinkoBlock || block instanceof com.casino.diamond.ElevatorBlock
+                    || block instanceof com.casino.diamond.PrizeShopBlock)) {
+                Plat.msg(sp, com.casino.heist.HeistManager.banText(sp), true);
+                //#if MC >= 26.1
+                //$$ e.setUseBlock(net.minecraftforge.common.util.Result.DENY);
+                //#else
+                e.setUseBlock(net.minecraftforge.eventbus.api.Event.Result.DENY);
+                //#endif
+                return;
+            }
+        }
         if (block instanceof LuckyWheelBlock || block instanceof CashierBlock || block instanceof SlotBlock || block instanceof BlackjackBlock || block instanceof PokerBlock || block instanceof ScratchMachineBlock || block instanceof RouletteBlock) {
             //#if MC >= 26.1
             //$$ e.setUseBlock(net.minecraftforge.common.util.Result.ALLOW);

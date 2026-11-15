@@ -25,6 +25,9 @@ public final class DealerProps {
     public static final int RAG = 6;
     public static final int SHAKER = 7;
     public static final int CHIPS = 8;
+    public static final int BATON = 9;
+    public static final int TASER = 10;
+    public static final int PISTOL = 11;
 
     private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/bubble.png");
 
@@ -88,6 +91,20 @@ public final class DealerProps {
                     b.box(-0.05, y0, -0.05, 0.05, y0 - 0.016, 0.05, c[i]);
                     b.box(-0.052, y0 - 0.006, -0.02, 0.052, y0 - 0.01, 0.02, 0xF0F0F0);
                 }
+            }
+            case BATON -> {
+                b.box(-0.025, 0.06, -0.025, 0.025, -0.5, 0.025, 0x16161A);
+                b.box(-0.032, 0.06, -0.032, 0.032, -0.06, 0.032, 0x2E2E34);
+            }
+            case TASER -> {
+                b.box(-0.035, -0.03, -0.22, 0.035, 0.05, 0.02, 0xE8C21E);
+                b.box(-0.036, -0.032, -0.23, 0.036, 0.0, -0.19, 0x18181C);
+                b.box(-0.03, 0.0, -0.02, 0.03, 0.13, 0.04, 0x18181C);
+            }
+            case PISTOL -> {
+                b.box(-0.03, -0.04, -0.26, 0.03, 0.03, 0.03, 0x26282C);
+                b.box(-0.02, -0.03, -0.27, 0.02, 0.0, -0.26, 0x101012);
+                b.box(-0.028, 0.0, -0.02, 0.028, 0.14, 0.05, 0x1A1B1E);
             }
             default -> {
             }

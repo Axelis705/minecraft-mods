@@ -69,6 +69,8 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     private static final ResourceLocation TEXTURE_GUARD = Ids.rl(Casino.MODID, "textures/entity/dealer_guard.png");
     private static final ResourceLocation TEXTURE_BARTENDER = Ids.rl(Casino.MODID, "textures/entity/dealer_bartender.png");
     private static final ResourceLocation TEXTURE_WHEEL = Ids.rl(Casino.MODID, "textures/entity/dealer_wheel.png");
+    private static final ResourceLocation TEXTURE_SWAT = Ids.rl(Casino.MODID, "textures/entity/dealer_swat.png");
+    private static final ResourceLocation TEXTURE_FIXER = Ids.rl(Casino.MODID, "textures/entity/dealer_fixer.png");
     /** Textura blanca lisa: el globo se arma con rectángulos de colores encima. */
     private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/bubble.png");
 
@@ -81,8 +83,14 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     }
 
     private static ResourceLocation texture(int game, int variant) {
+        if (game == DealerEntity.GAME_FIXER) {
+            return TEXTURE_FIXER;
+        }
         if (game == DealerEntity.GAME_PATRON) {
             return TEXTURE_PATRON[Math.floorMod(variant, TEXTURE_PATRON.length)];
+        }
+        if (game == DealerEntity.GAME_SECURITY) {
+            return variant == 1 ? TEXTURE_SWAT : TEXTURE_GUARD;
         }
         return switch (game) {
             case DealerEntity.GAME_ROULETTE -> TEXTURE_ROULETTE;
@@ -102,6 +110,8 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_BARTENDER -> "bartender";
             case DealerEntity.GAME_WHEEL -> "wheel";
             case DealerEntity.GAME_PATRON -> "patron";
+            case DealerEntity.GAME_SECURITY -> "security";
+            case DealerEntity.GAME_FIXER -> "fixer";
             default -> "blackjack";
         };
     }
@@ -119,6 +129,8 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_BARTENDER -> 0x5A2A86;
             case DealerEntity.GAME_WHEEL -> 0xA8326B;
             case DealerEntity.GAME_PATRON -> 0x23707E;
+            case DealerEntity.GAME_SECURITY -> 0x2A2A30;
+            case DealerEntity.GAME_FIXER -> 0x4A3A22;
             default -> 0x1E6B3A;
         };
     }
@@ -132,6 +144,8 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_BARTENDER -> "\u2665";
             case DealerEntity.GAME_WHEEL -> "\u2726";
             case DealerEntity.GAME_PATRON -> "\u266A";
+            case DealerEntity.GAME_SECURITY -> "\u2605";
+            case DealerEntity.GAME_FIXER -> "\u2620";
             default -> "\u2660";
         };
     }
