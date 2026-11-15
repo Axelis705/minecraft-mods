@@ -130,6 +130,16 @@ public class LuckyWheelBE extends CasinoBE {
             }
             return;
         }
+        com.casino.entity.DealerEntity h = host();
+        if (h != null) {
+            // con anfitrión, la ruleta solo la gira él: hay que hablarle
+            Plat.msg(p, Component.translatable("casino.wheel.ask_host").withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            if (!h.animBusy()) {
+                h.anim(com.casino.entity.DealerAnim.WAVE);
+                h.say(com.casino.entity.DealerEntity.SAY + 7);
+            }
+            return;
+        }
         if (spinning) {
             Plat.msg(p, Component.translatable("casino.wheel.busy").withStyle(ChatFormatting.YELLOW), true);
             return;
@@ -143,6 +153,30 @@ public class LuckyWheelBE extends CasinoBE {
             return;
         }
         data.markSpin(p.getUUID());
+        startSpin(p);
+    }
+
+    /** El anfitrión de esta ruleta (si tiene): un crupier de ruleta de la suerte a menos de 8 bloques que la atiende. */
+    @Nullable
+    public com.casino.entity.DealerEntity host() {
+        if (level == null) {
+            return null;
+        }
+        java.util.List<com.casino.entity.DealerEntity> l = level.getEntitiesOfClass(com.casino.entity.DealerEntity.class, new AABB(worldPosition).inflate(8),
+                d -> d.getGame() == com.casino.entity.DealerEntity.GAME_WHEEL && d.isAlive());
+        for (com.casino.entity.DealerEntity d : l) {
+            if (worldPosition.equals(d.getTable())) {
+                return d;
+            }
+        }
+        return l.isEmpty() ? null : l.get(0);
+    }
+
+    /** Giro pedido por el anfitrión (él ya revisó y anotó que este jugador giró hoy). */
+    public void hostSpin(ServerPlayer p) {
+        if (spinning || level == null) {
+            return;
+        }
         startSpin(p);
     }
 
@@ -178,6 +212,10 @@ public class LuckyWheelBE extends CasinoBE {
         flashEnd = level.getGameTime() + 140;
         Prize prize = pending;
         pending = null;
+        com.casino.entity.DealerEntity host = host();
+        if (host != null && prize != null) {
+            host.hostCelebrate(prize.big);
+        }
         if (prize != null && level instanceof ServerLevel sl && spinner != null) {
             ServerPlayer p = sl.getServer().getPlayerList().getPlayer(spinner);
             if (p != null) {

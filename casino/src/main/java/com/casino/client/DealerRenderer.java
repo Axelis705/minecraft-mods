@@ -42,6 +42,9 @@ import java.util.List;
 //$$         int tip = -1;
 //$$         int game;
 //$$         float age;
+//$$         int anim;
+//$$         float animT;
+//$$         float talk = -1;
 //$$     }
 //#elif MC >= 1.21.2
 //$$ public class DealerRenderer extends MobRenderer<DealerEntity, DealerRenderer.State, DealerRenderer.DealerModel> {
@@ -49,6 +52,9 @@ import java.util.List;
 //$$         int tip = -1;
 //$$         int game;
 //$$         float age;
+//$$         int anim;
+//$$         float animT;
+//$$         float talk = -1;
 //$$     }
 //#else
 public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<DealerEntity>> {
@@ -58,6 +64,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     private static final ResourceLocation TEXTURE_POKER = Ids.rl(Casino.MODID, "textures/entity/dealer_poker.png");
     private static final ResourceLocation TEXTURE_GUARD = Ids.rl(Casino.MODID, "textures/entity/dealer_guard.png");
     private static final ResourceLocation TEXTURE_BARTENDER = Ids.rl(Casino.MODID, "textures/entity/dealer_bartender.png");
+    private static final ResourceLocation TEXTURE_WHEEL = Ids.rl(Casino.MODID, "textures/entity/dealer_wheel.png");
     /** Textura blanca lisa: el globo se arma con rectángulos de colores encima. */
     private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/bubble.png");
 
@@ -67,6 +74,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_POKER -> TEXTURE_POKER;
             case DealerEntity.GAME_GUARD -> TEXTURE_GUARD;
             case DealerEntity.GAME_BARTENDER -> TEXTURE_BARTENDER;
+            case DealerEntity.GAME_WHEEL -> TEXTURE_WHEEL;
             default -> TEXTURE;
         };
     }
@@ -77,6 +85,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_POKER -> "poker";
             case DealerEntity.GAME_GUARD -> "guard";
             case DealerEntity.GAME_BARTENDER -> "bartender";
+            case DealerEntity.GAME_WHEEL -> "wheel";
             default -> "blackjack";
         };
     }
@@ -92,6 +101,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_POKER -> 0x223C8A;
             case DealerEntity.GAME_GUARD -> 0x1C1C26;
             case DealerEntity.GAME_BARTENDER -> 0x5A2A86;
+            case DealerEntity.GAME_WHEEL -> 0xA8326B;
             default -> 0x1E6B3A;
         };
     }
@@ -103,6 +113,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_POKER -> "\u2663";
             case DealerEntity.GAME_GUARD -> "\u2605";
             case DealerEntity.GAME_BARTENDER -> "\u2665";
+            case DealerEntity.GAME_WHEEL -> "\u2726";
             default -> "\u2660";
         };
     }
@@ -117,10 +128,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     @Override
     //$$     public void setupAnim(State s) {
     //$$         super.setupAnim(s);
-    //$$         if (s.tip >= 0) {
-    //$$             this.rightArm.xRot = -2.85F + Mth.sin(s.ageInTicks * 0.25F) * 0.1F;
-    //$$             this.rightArm.zRot = 0.15F + Mth.sin(s.ageInTicks * 0.5F) * 0.08F;
-    //$$         }
+    //$$         DealerAnimator.apply(s.game, s.anim, s.animT, s.ageInTicks, s.talk, this.head, this.rightArm, this.leftArm);
     //$$     }
     //$$ }
     //$$
@@ -134,9 +142,8 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     @Override
     //$$     public void setupAnim(PlayerRenderState s) {
     //$$         super.setupAnim(s);
-    //$$         if (s instanceof State d && d.tip >= 0) {
-    //$$             this.rightArm.xRot = -2.85F + Mth.sin(s.ageInTicks * 0.25F) * 0.1F;
-    //$$             this.rightArm.zRot = 0.15F + Mth.sin(s.ageInTicks * 0.5F) * 0.08F;
+    //$$         if (s instanceof State d) {
+    //$$             DealerAnimator.apply(d.game, d.anim, d.animT, s.ageInTicks, d.talk, this.head, this.rightArm, this.leftArm);
     //$$         }
     //$$     }
     //$$ }
@@ -158,6 +165,9 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     s.tip = e.getTip();
     //$$     s.game = e.getGame();
     //$$     s.age = e.tipAge + partial;
+    //$$     s.anim = e.animId;
+    //$$     s.animT = e.tickCount - e.animStart + partial;
+    //$$     s.talk = e.getTip() >= 0 ? e.tipAge + partial : -1F;
     //$$ }
     //$$
     //$$ @Override
@@ -174,11 +184,12 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         @Override
         public void setupAnim(DealerEntity e, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch) {
             super.setupAnim(e, limbSwing, limbSwingAmount, age, yaw, pitch);
-            if (e.getTip() >= 0) {
-                this.rightArm.xRot = -2.85F + Mth.sin(age * 0.25F) * 0.1F;
-                this.rightArm.zRot = 0.15F + Mth.sin(age * 0.5F) * 0.08F;
-                this.rightSleeve.copyFrom(this.rightArm);
-            }
+            float frac = age - e.tickCount;
+            DealerAnimator.apply(e.getGame(), e.animId, age - e.animStart, age, e.getTip() >= 0 ? e.tipAge + frac : -1F, this.head, this.rightArm,
+                    this.leftArm);
+            this.rightSleeve.copyFrom(this.rightArm);
+            this.leftSleeve.copyFrom(this.leftArm);
+            this.hat.copyFrom(this.head);
         }
     }
 

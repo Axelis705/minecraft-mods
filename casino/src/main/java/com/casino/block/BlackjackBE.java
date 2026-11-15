@@ -168,6 +168,7 @@ public class BlackjackBE extends CasinoBE {
     private void sound(SoundEvent s, float vol, float pitch) {
         if (level != null) {
             level.playSound(null, worldPosition, s, SoundSource.BLOCKS, vol, pitch);
+            com.casino.entity.DealerAnim.onSound(dealers(), s);
         }
     }
 
@@ -463,6 +464,7 @@ public class BlackjackBE extends CasinoBE {
             int pay = s.totalPayout();
             int stake = s.stake();
             int net = pay - stake;
+            com.casino.data.CasinoStats.play(sl.getServer(), players[i], names[i], com.casino.data.CasinoStats.BLACKJACK, stake, pay);
             boolean combined = s.split || s.insurance > 0;
             if (pay > 0) {
                 List<ItemStack> items = new ArrayList<>(Chips.stacksFor(pay));

@@ -170,6 +170,7 @@ public class RouletteBE extends CasinoBE {
         if (level != null) {
             Vec3 c = center();
             level.playSound(null, c.x, c.y, c.z, s, SoundSource.BLOCKS, vol, pitch);
+            com.casino.entity.DealerAnim.onSound(dealers(), s);
         }
     }
 
@@ -585,6 +586,7 @@ public class RouletteBE extends CasinoBE {
             }
             ServerPlayer p = online(i);
             int pay = s.payout;
+            com.casino.data.CasinoStats.play(sl.getServer(), players[i], names[i], com.casino.data.CasinoStats.ROULETTE, s.total, pay);
             if (pay > 0) {
                 boolean straight = s.stake[win] > 0;
                 boolean big = s.net >= 500 || straight;
@@ -622,6 +624,8 @@ public class RouletteBE extends CasinoBE {
         }
         if (anyWin) {
             sound(ModSounds.COINS.get(), 0.9F, 1.0F);
+        } else {
+            com.casino.entity.DealerAnim.play(dealers(), com.casino.entity.DealerAnim.COLLECT);
         }
     }
 

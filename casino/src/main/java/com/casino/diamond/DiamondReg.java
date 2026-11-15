@@ -43,6 +43,15 @@ public final class DiamondReg {
     public static final RegistryObject<BlockEntityType<RaceBE>> RACE_BE = ModBlockEntities.TYPES.register("race_screen",
             () -> Reg.blockEntity(RaceBE::new, RACE_SCREEN.get()));
 
+    /** Pantalla de récords: varias juntas forman una grande. */
+    public static final RegistryObject<Block> RECORD_SCREEN = ModBlocks.BLOCKS.register("record_screen",
+            () -> new RecordScreenBlock(Reg.block("record_screen").mapColor(MapColor.COLOR_BLACK).strength(1.5F, 1200.0F).sound(SoundType.GLASS)
+                    .noOcclusion().lightLevel(s -> 7)));
+    public static final RegistryObject<Item> RECORD_SCREEN_ITEM = ModItems.ITEMS.register("record_screen",
+            () -> new BlockItem(RECORD_SCREEN.get(), Reg.blockItem("record_screen")));
+    public static final RegistryObject<BlockEntityType<RecordScreenBE>> RECORD_BE = ModBlockEntities.TYPES.register("record_screen",
+            () -> Reg.blockEntity(RecordScreenBE::new, RECORD_SCREEN.get()));
+
     private DiamondReg() {
     }
 
@@ -72,6 +81,8 @@ public final class DiamondReg {
             }
         });
         TemplateCasinoPiece.Extra.register("guard", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_GUARD, a, pos, level, rot, box, dir));
+        // anfitrión de la ruleta de la suerte: "wheelhost dir [x|z]" (busca solo la ruleta que tiene cerca)
+        TemplateCasinoPiece.Extra.register("wheelhost", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_WHEEL, a, pos, level, rot, box, dir));
         // bartender detrás de la barra: "bartender dir [x|z|xz]" (x / z = correrlo medio bloque en esa dirección de la plantilla)
         TemplateCasinoPiece.Extra.register("bartender", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_BARTENDER, a, pos, level, rot, box, dir));
         // pantalla gigante de las carreras de caballos: un bloque con la entidad; la imagen cubre ancho × alto bloques

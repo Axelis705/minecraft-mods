@@ -30,6 +30,7 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(ModBlockEntities.ROULETTE.get(), RouletteRenderer::new);
         e.registerBlockEntityRenderer(com.casino.diamond.DiamondReg.SHOP_BE.get(), PrizeShopRenderer::new);
         e.registerBlockEntityRenderer(com.casino.diamond.DiamondReg.RACE_BE.get(), RaceScreenRenderer::new);
+        e.registerBlockEntityRenderer(com.casino.diamond.DiamondReg.RECORD_BE.get(), RecordScreenRenderer::new);
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
         e.registerEntityRenderer(com.casino.registry.ModDecor.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }

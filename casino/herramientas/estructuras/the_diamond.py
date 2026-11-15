@@ -372,6 +372,8 @@ for x in range(WX - 3, WX + 4):                  # escalón de losas alrededor d
 for z in (WZ - 1, WZ):
     o.set(WX - 3, 1, z, slab(BMS)); o.set(WX + 3, 1, z, slab(BMS))
 mq.place(o, 'wheel', WX, 2, WZ, 2)
+# anfitrión de la ruleta: parado en la tarima, a la derecha de la rueda (vista de frente), mirando al público
+o.marker(WX + 2, 2, WZ, 'wheelhost 2', [(0, 0, 0, 'minecraft:red_wool')])
 # (sin columnas a los lados: tapaban la rueda; solo dos faroles bajos detrás de la tarima)
 for dx in (-4, 4):
     o.set(WX + dx, 1, WZ - 2, GB); o.set(WX + dx, 2, WZ - 2, 'minecraft:end_rod[facing=up]')
@@ -1691,6 +1693,23 @@ painting_at(22.0, 37, YB + 6, 'west', 'derby')   # pared de la sala de carreras,
 for (x, art) in ((40, 'derby'), (44, 'vegas'), (48, 'vegas'), (52, 'derby')):   # sala de carreras, pared del fondo: espejo en 46.5 y cada 4
     painting(x, YB + 6, QZ0 + 1, 'south', art)
 painting(24, YB + 5, FZ, 'north', 'roulette')   # sobre la chimenea
+
+# ================================================================== PANTALLAS DE RÉCORDS (casino:record_screen)
+# Varias juntas forman una pantalla grande que va cambiando de canal (los que más ganan, apuestan, pierden...).
+def record_screen(x0, x1, y0, y1, z, facing):
+    for x in range(x0, x1 + 1):
+        for y in range(y0, y1 + 1):
+            o.set(x, y, z, f'casino:record_screen[facing={facing}]')
+# planta baja: sobre la puerta del elevador, de frente a la entrada (se ve al entrar, por encima de la ruleta). El candelabro grande
+# que colgaba enfrente la tapaba: en su lugar va uno chico pegado al techo, más arriba que la vista hacia la pantalla.
+for (x, y, z), st in list(o.b.items()):
+    if 'grand_chandelier' in st and (x, z) == (30, 18) and y - o.oy < Y_ROOF:
+        o.set(30, y - o.oy, 18, AIR)
+o.set(30, CY - 1, 18, CHAND)
+record_screen(28, 32, 6, 8, 16, 'south')
+# piso de las mesas y penthouse: sobre la puerta del elevador, arriba del letrero
+record_screen(28, 32, Y_VIP + 7, Y_VIP + 8, 16, 'south')
+record_screen(28, 32, Y_PH + 5, Y_PH + 6, 16, 'south')
 
 # ================================================================== CORDONES: uniones ya calculadas en la plantilla (rectas y en diagonal)
 def _ropes():

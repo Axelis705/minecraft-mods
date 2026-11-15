@@ -35,7 +35,11 @@ public class DealerEntity extends Mob {
     public static final int GAME_GUARD = 3;
     /** No atiende mesa: es el bartender de la barra. Con clic derecho te sirve un cóctel de la casa (da Suerte un rato). */
     public static final int GAME_BARTENDER = 4;
+    /** No atiende mesa: es el anfitrión de la ruleta de la suerte. Al hablarle te pregunta si quieres girar y la gira por ti. */
+    public static final int GAME_WHEEL = 5;
     private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
+    /** Animación que está haciendo: (número de vez × 100) + cuál (ver {@link DealerAnim}); así el cliente nota cuando empieza otra igual. */
+    private static final EntityDataAccessor<Integer> ANIM = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
 
     /** Consejo que está diciendo ahora (-1 = ninguno): el crupier levanta la mano y sobre su cabeza sale un globo con el texto. */
     private static final EntityDataAccessor<Integer> TIP = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
@@ -44,6 +48,7 @@ public class DealerEntity extends Mob {
     public static final int TIPS_POKER = 10;
     public static final int TIPS_GUARD = 6;
     public static final int TIPS_BARTENDER = 10;
+    public static final int TIPS_WHEEL = 8;
     /** Lo que dice al hablarle (no es un consejo al azar): el número es 100 + la frase ("say_N" en los textos). */
     public static final int SAY = 100;
     /** Cuánto dura el globo en el aire (el cliente lo usa para desvanecerlo al final). */
@@ -56,6 +61,19 @@ public class DealerEntity extends Mob {
     /** Solo en el cliente: ticks desde que empezó el globo actual (para escribir el texto letra por letra y animarlo). */
     public int tipAge;
     private int lastTip = -1;
+    /** Solo en el cliente: la animación actual y cuándo empezó (tickCount). */
+    public int animId;
+    public int animStart;
+    private int lastAnim;
+    // servidor: contador de animaciones, hasta cuándo dura la actual y a quién ya saludó (para no saludar a cada rato)
+    private int animSeq;
+    private int animUntil;
+    private int nextFidget = 300 + (int) (Math.random() * 600);
+    private final java.util.Map<java.util.UUID, Integer> greeted = new java.util.HashMap<>();
+    /** Anfitrión: a quién le va a girar la ruleta y en qué tick (cuando baja el brazo). */
+    @Nullable
+    private java.util.UUID spinFor;
+    private int spinAt;
 
     @Nullable
     private BlockPos table;
@@ -75,6 +93,7 @@ public class DealerEntity extends Mob {
     //$$     super.defineSynchedData(b);
     //$$     b.define(GAME, GAME_BLACKJACK);
     //$$     b.define(TIP, -1);
+    //$$     b.define(ANIM, 0);
     //$$ }
     //#else
     @Override
@@ -82,8 +101,21 @@ public class DealerEntity extends Mob {
         super.defineSynchedData();
         this.entityData.define(GAME, GAME_BLACKJACK);
         this.entityData.define(TIP, -1);
+        this.entityData.define(ANIM, 0);
     }
     //#endif
+
+    /** Empieza una animación (servidor). */
+    public void anim(int a) {
+        animSeq = (animSeq + 1) % 20000;
+        this.entityData.set(ANIM, animSeq * 100 + a);
+        animUntil = tickCount + DealerAnim.duration(a);
+    }
+
+    /** ¿Está a la mitad de una animación? (servidor) */
+    public boolean animBusy() {
+        return tickCount < animUntil;
+    }
 
     public int getTip() {
         return this.entityData.get(TIP);
@@ -115,7 +147,7 @@ public class DealerEntity extends Mob {
         }
         int g = getGame();
         int n = g == GAME_ROULETTE ? TIPS_ROULETTE : g == GAME_POKER ? TIPS_POKER : g == GAME_GUARD ? TIPS_GUARD
-                : g == GAME_BARTENDER ? TIPS_BARTENDER : TIPS_BLACKJACK;
+                : g == GAME_BARTENDER ? TIPS_BARTENDER : g == GAME_WHEEL ? TIPS_WHEEL : TIPS_BLACKJACK;
         int t = random.nextInt(n);
         say(t);
         nextTip = 900 + random.nextInt(900);
@@ -173,8 +205,24 @@ public class DealerEntity extends Mob {
             } else {
                 tipAge++;
             }
+            int a = this.entityData.get(ANIM);
+            if (a != lastAnim) {
+                lastAnim = a;
+                animId = a % 100;
+                animStart = tickCount;
+            }
+            if (animId != 0 && tickCount - animStart > DealerAnim.duration(animId)) {
+                animId = 0;
+            }
         } else {
             tickTips();
+            if (tickCount % 10 == 0) {
+                greet();
+            }
+            fidget();
+            if (getGame() == GAME_WHEEL) {
+                tickHost();
+            }
             Player p = level().getNearestPlayer(this, 7.0);
             if (p != null) {
                 double dx = p.getX() - getX();
@@ -191,16 +239,142 @@ public class DealerEntity extends Mob {
         }
     }
 
+    /** De vez en cuando, sin que nadie le pida nada, hace algo de su oficio (barajar, acomodar fichas, secar un vaso...). */
+    private void fidget() {
+        if (--nextFidget > 0) {
+            return;
+        }
+        nextFidget = 400 + random.nextInt(800);
+        if (animBusy() || getTip() >= 0 || level().getNearestPlayer(this, 16.0) == null) {
+            return;
+        }
+        int a = switch (getGame()) {
+            case GAME_BLACKJACK, GAME_POKER -> random.nextInt(3) == 0 ? DealerAnim.CHIP : DealerAnim.SHUFFLE;
+            case GAME_ROULETTE -> DealerAnim.CHIP;
+            case GAME_BARTENDER -> DealerAnim.POUR;
+            case GAME_WHEEL -> DealerAnim.PRESENT;
+            default -> DealerAnim.NONE;
+        };
+        if (a != DealerAnim.NONE) {
+            anim(a);
+        }
+    }
+
+    /** Saluda con la mano a quien llega (si no lo había visto en los últimos 2 minutos). */
+    private void greet() {
+        Player p = level().getNearestPlayer(this, 4.5);
+        if (p == null) {
+            return;
+        }
+        if (greeted.size() > 64) {
+            greeted.clear();
+        }
+        Integer last = greeted.put(p.getUUID(), tickCount);
+        if (last != null && tickCount - last < 2400 || animBusy()) {
+            return;
+        }
+        anim(getGame() == GAME_GUARD ? DealerAnim.NOD : DealerAnim.WAVE);
+        if (getGame() == GAME_WHEEL && getTip() < 0) {
+            say(SAY + 5);
+        }
+    }
+
+    // ------------------------------------------------------------------ anfitrión de la ruleta de la suerte
+
+    @Nullable
+    private com.casino.block.LuckyWheelBE wheel() {
+        if (table != null && level().getBlockEntity(table) instanceof com.casino.block.LuckyWheelBE w) {
+            return w;
+        }
+        return null;
+    }
+
+    private void tickHost() {
+        if (table == null && tickCount % 40 == 5) {
+            // la plantilla lo pone junto a la ruleta: la busca alrededor y se queda con su bloque principal
+            BlockPos c = blockPosition();
+            for (BlockPos q : BlockPos.betweenClosed(c.offset(-6, -3, -6), c.offset(6, 4, 6))) {
+                if (level().getBlockEntity(q) instanceof com.casino.block.LuckyWheelBE) {
+                    table = q.immutable();
+                    break;
+                }
+            }
+        }
+        if (spinFor != null && tickCount >= spinAt) {
+            com.casino.block.LuckyWheelBE w = wheel();
+            ServerPlayer p = level().getServer() == null ? null : level().getServer().getPlayerList().getPlayer(spinFor);
+            spinFor = null;
+            if (w != null && p != null) {
+                w.hostSpin(p);
+            }
+        }
+    }
+
+    /** Lo que el anfitrión contesta al hablarle: 0 = ¿quieres girar?, 1 = ya giraste hoy, 2 = la ruleta está girando. */
+    public int hostMode(ServerPlayer p) {
+        com.casino.block.LuckyWheelBE w = wheel();
+        if (w == null || w.spinning || spinFor != null) {
+            return 2;
+        }
+        return com.casino.data.CasinoData.get(Plat.server(p)).canSpin(p.getUUID()) ? 0 : 1;
+    }
+
+    private void talkHost(ServerPlayer p) {
+        int mode = hostMode(p);
+        java.time.Duration d = com.casino.data.CasinoData.untilReset();
+        com.casino.block.LuckyWheelBE w = wheel();
+        String prize = w == null ? "" : w.podium.getCount() + " x " + w.podium.getHoverName().getString();
+        CasinoNet.sendTo(p, new com.casino.net.WheelDialogPacket(getId(), mode, (int) d.toHours(), d.toMinutesPart(), prize));
+        if (mode == 0) {
+            anim(DealerAnim.PRESENT);
+            say(SAY);
+        } else if (mode == 1) {
+            anim(DealerAnim.SHAKE);
+            say(SAY + 2);
+        } else {
+            anim(DealerAnim.STOP);
+            say(SAY + 6);
+        }
+    }
+
+    /** El jugador dijo que sí: el anfitrión levanta el brazo y al bajarlo (medio segundo después) la ruleta empieza a girar. */
+    public void hostAccept(ServerPlayer p) {
+        if (hostMode(p) != 0 || p.distanceToSqr(this) > 10 * 10) {
+            if (hostMode(p) == 1) {
+                anim(DealerAnim.SHAKE);
+                say(SAY + 2);
+            }
+            return;
+        }
+        com.casino.data.CasinoData.get(Plat.server(p)).markSpin(p.getUUID());
+        spinFor = p.getUUID();
+        spinAt = tickCount + 14;
+        anim(DealerAnim.PULL);
+        say(SAY + 1);
+    }
+
+    /** La ruleta se detuvo: festeja con el jugador. */
+    public void hostCelebrate(boolean big) {
+        anim(big ? DealerAnim.CHEER : DealerAnim.CLAP);
+        say(SAY + (big ? 3 : 4));
+    }
+
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
+        if (getGame() == GAME_WHEEL) {
+            if (!level().isClientSide() && player instanceof ServerPlayer sp) {
+                talkHost(sp);
+            }
+            return Plat.ok(level().isClientSide());
+        }
         if (!level().isClientSide() && getGame() == GAME_GUARD && player instanceof ServerPlayer sp) {
             int tier = com.casino.item.VipCardItem.tier(sp);
             Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.guard.say_" + Math.min(2, tier)).withStyle(net.minecraft.ChatFormatting.GOLD), false);
-            Plat.swing(this);
             say(SAY + Math.min(2, tier));
+            anim(tier > 0 ? DealerAnim.PRESENT : DealerAnim.STOP);
             return Plat.ok(false);
         }
         if (!level().isClientSide() && getGame() == GAME_BARTENDER && player instanceof ServerPlayer sp) {
@@ -211,6 +385,9 @@ public class DealerEntity extends Mob {
             return Plat.ok(true);
         }
         if (!level().isClientSide() && table != null && player instanceof ServerPlayer sp) {
+            if (!animBusy()) {
+                anim(DealerAnim.NOD);
+            }
             if (getGame() == GAME_POKER) {
                 CasinoNet.sendTo(sp, new OpenPokerPacket(table));
             } else if (getGame() == GAME_ROULETTE) {
@@ -226,11 +403,12 @@ public class DealerEntity extends Mob {
     private void serve(ServerPlayer sp) {
         long now = level().getGameTime();
         Long last = served.get(sp.getUUID());
-        Plat.swing(this);
         if (last != null && now - last < DRINK_COOLDOWN) {
             say(SAY + 3);
+            anim(DealerAnim.SHAKE);
             return;
         }
+        anim(DealerAnim.POUR);
         served.put(sp.getUUID(), now);
         sp.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.LUCK, DRINK_TICKS, 0));
         //#if MC >= 1.21.2

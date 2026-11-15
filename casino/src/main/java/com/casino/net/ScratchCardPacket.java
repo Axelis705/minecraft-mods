@@ -55,6 +55,9 @@ public final class ScratchCardPacket {
         ItemTag.edit(st, t -> t.putBoolean(ScratchCardItem.CLAIMED, true));
         int prize = ScratchCards.prizeOf(ScratchCardItem.symbols(st));
         if (prize > 0) {
+            com.casino.data.CasinoStats.play(p, com.casino.data.CasinoStats.SCRATCH, 0, prize);
+        }
+        if (prize > 0) {
             boolean big = prize >= 250;
             Prize pr = new Prize(Component.translatable("casino.blackjack.banner", prize), new ArrayList<>(Chips.stacksFor(prize)), 0, -1, big);
             pr.deliver(p);

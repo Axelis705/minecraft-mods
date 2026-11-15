@@ -57,6 +57,10 @@ public final class ClientHooks {
         open(new NeonScreen(pos));
     }
 
+    public static void openWheelDialog(com.casino.net.WheelDialogPacket m) {
+        open(new WheelDialogScreen(m));
+    }
+
     public static void openElevator(com.casino.diamond.OpenElevatorPacket m) {
         open(new ElevatorScreen(m));
     }

@@ -1,0 +1,20 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "casino:block/decor/record_screen",
+   "y": 0
+  },
+  "facing=east": {
+   "model": "casino:block/decor/record_screen",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "casino:block/decor/record_screen",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "casino:block/decor/record_screen",
+   "y": 270
+  }
+ }
+}

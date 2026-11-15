@@ -50,6 +50,7 @@ public final class ScratchBuyPacket {
             p.level().playSound(null, m.pos, ModSounds.DENIED.get(), SoundSource.BLOCKS, 0.6F, 1.0F);
             return;
         }
+        com.casino.data.CasinoStats.buy(p, com.casino.data.CasinoStats.SCRATCH, cost, m.count);
         Random rnd = new Random();
         for (int i = 0; i < m.count; i++) {
             ItemStack card = ScratchCardItem.create(ModItems.SCRATCH_CARD.get(), rnd);

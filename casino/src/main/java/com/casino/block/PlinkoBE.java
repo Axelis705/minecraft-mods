@@ -165,6 +165,7 @@ public class PlinkoBE extends CasinoBE {
         if (!(level instanceof ServerLevel sl)) {
             return;
         }
+        com.casino.data.CasinoStats.play(sl.getServer(), b.player, b.name, com.casino.data.CasinoStats.PLINKO, b.bet, payout);
         String mult = PlinkoLayout.format(m10);
         boolean win = payout > b.bet;
         Prize prize = new Prize(Component.translatable("casino.plinko.banner", mult), Chips.stacksFor(payout), 0, -1, m10 >= 100);

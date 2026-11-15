@@ -101,6 +101,8 @@ execute if entity @e[type=casino:dealer,nbt={Game:4},x=48.5,y=89,z=161.5,distanc
 execute if entity @e[type=casino:dealer,nbt={Game:4},x=70.5,y=113,z=189.5,distance=..1] run say PRUEBA_DIAMOND_BARTENDER_ALBERCA
 execute if block 60 113 177 casino:sun_lounger[facing=south] if block 61 113 177 casino:parasol[half=lower] if block 61 114 177 casino:parasol[half=upper] if block 80 113 177 casino:sun_lounger[facing=south] if block 67 113 173 minecraft:gold_block run say PRUEBA_DIAMOND_TERRAZA
 execute if block 76 113 192 casino:neon_letter[glyph=3,facing=south] run say PRUEBA_DIAMOND_NEON
+execute if block 68 106 156 casino:record_screen[facing=south] if block 72 108 156 casino:record_screen[facing=south] if block 70 119 156 casino:record_screen[facing=south] if block 72 152 156 casino:record_screen[facing=south] run say PRUEBA_DIAMOND_PANTALLAS
+execute if entity @e[type=casino:dealer,nbt={Game:5},x=72.5,y=102,z=167.5,distance=..1] run say PRUEBA_DIAMOND_ANFITRION
 execute if block 184 102 170 casino:lucky_wheel[facing=west,px=1,py=0] if block 199 102 170 casino:elevator[facing=west] run say PRUEBA_DIAMOND_GIRO
 execute if block 70 102 167 casino:lucky_wheel run say DIAG_DIAMOND_RUEDA
 execute if block 62 113 168 casino:roulette run say DIAG_DIAMOND_RULETA_PISO1
@@ -151,6 +153,8 @@ data get block 87 91 173
 #expect PRUEBA_DIAMOND_BARTENDER_ALBERCA
 #expect PRUEBA_DIAMOND_TERRAZA
 #expect PRUEBA_DIAMOND_NEON
+#expect PRUEBA_DIAMOND_PANTALLAS
+#expect PRUEBA_DIAMOND_ANFITRION
 #expect PRUEBA_DIAMOND_GIRO
 #expect PRUEBA_DIAMOND_ESTRUCTURA
 #expect PRUEBA_DIAMOND_CARRERAS

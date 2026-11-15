@@ -164,6 +164,7 @@ public class PokerBE extends CasinoBE {
     private void sound(SoundEvent s, float vol, float pitch) {
         if (level != null) {
             level.playSound(null, worldPosition, s, SoundSource.BLOCKS, vol, pitch);
+            com.casino.entity.DealerAnim.onSound(dealers(), s);
         }
     }
 
@@ -408,6 +409,7 @@ public class PokerBE extends CasinoBE {
             int pay = s.payout;
             int spent = s.ante + s.call;
             int net = pay - spent;
+            com.casino.data.CasinoStats.play(sl.getServer(), players[i], names[i], com.casino.data.CasinoStats.POKER, spent, pay);
             boolean bigHand = s.result == Result.WIN && s.handCat >= PokerHands.FULL_HOUSE;
             if (pay > 0) {
                 List<ItemStack> items = new ArrayList<>(Chips.stacksFor(pay));
