@@ -25,6 +25,8 @@ public class CameraScreen extends BaseScreen {
     private CameraType before;
     //#if MC < 26.1
     private boolean hideBefore;
+    //#elif MC >= 26.3
+    //$$ private boolean hudBefore;
     //#endif
     /**
      * Se pidió una foto. 1: se toma al empezar el siguiente cuadro (ya sin el HUD). 2 (en 26.x): primero un cuadro sin el visor, porque
@@ -49,6 +51,8 @@ public class CameraScreen extends BaseScreen {
             before = mc.options.getCameraType();
             //#if MC < 26.1
             hideBefore = mc.options.hideGui;
+            //#elif MC >= 26.3
+            //$$ hudBefore = mc.gui.hud.isHidden();
             //#endif
             openedAt = System.currentTimeMillis();
             List<Path> g = Photos.gallery();
@@ -56,6 +60,8 @@ public class CameraScreen extends BaseScreen {
         }
         //#if MC < 26.1
         mc.options.hideGui = true;
+        //#elif MC >= 26.3
+        //$$ hud(true);
         //#endif
         applyMode();
     }
@@ -72,9 +78,23 @@ public class CameraScreen extends BaseScreen {
         }
         //#if MC < 26.1
         mc.options.hideGui = hideBefore;
+        //#elif MC >= 26.3
+        //$$ hud(hudBefore);
         //#endif
         super.removed();
     }
+
+    //#if MC >= 26.3
+    //$$ /** En 26.3 el HUD (barra de objetos, mira) se oculta en Hud.isHidden, que no tiene "set": se cambia por reflexión. */
+    //$$ private static void hud(boolean hidden) {
+    //$$     try {
+    //$$         net.minecraftforge.fml.util.ObfuscationReflectionHelper.setPrivateValue(net.minecraft.client.gui.Hud.class,
+    //$$                 Minecraft.getInstance().gui.hud, hidden, "isHidden");
+    //$$     } catch (Exception ex) {
+    //$$         com.celular.Celular.LOGGER.debug("No se pudo ocultar el HUD", ex);
+    //$$     }
+    //$$ }
+    //#endif
 
     @Override
     public boolean isPauseScreen() {
