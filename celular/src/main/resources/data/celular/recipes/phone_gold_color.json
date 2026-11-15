@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "celular_color",
+  "ingredients": [
+    {
+      "tag": "celular:phones"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "result": {
+    "item": "celular:phone_gold",
+    "count": 1
+  }
+}

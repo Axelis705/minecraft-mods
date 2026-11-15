@@ -29,11 +29,13 @@ repositories {
     maven fg.forgeMaven
     maven fg.minecraftLibsMaven
     mavenCentral()
+@EXTRA_REPOS@
 }
 
 dependencies {
     implementation minecraft.dependency('net.minecraftforge:forge:@MC@-@FORGE@')
 @VALIDATOR@
+@EXTRA_DEPS@
 }
 
 tasks.withType(JavaCompile).configureEach {

@@ -1,0 +1,6 @@
+celular patreon lista
+#expect lista de Patreon: Odette
+celular patreon agregar Prueba CI
+#expect Patreon agregar 'Prueba CI' -> true
+celular instacraft total
+#expect Instacraft tiene 0 publicaciones

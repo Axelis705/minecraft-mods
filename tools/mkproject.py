@@ -58,6 +58,9 @@ def main(mod, mc, out):
         "@MAPPINGS@": f"    mappings channel: 'official', version: '{mc}'" if mc.startswith("1.") else "",
         "@STRICT@": "            systemProperty 'eventbus.api.strictRuntimeChecks', 'true'" if cfg["validator"] else "",
         "@VALIDATOR@": f"    annotationProcessor 'net.minecraftforge:eventbus-validator:{cfg['validator']}'" if cfg["validator"] else "",
+        # dependencias opcionales del mod (gradle.properties: extra_maven=url1,url2 y extra_compile_only=grupo:artefacto:version,...)
+        "@EXTRA_REPOS@": "\n".join(f"    maven {{ url = '{u.strip()}' }}" for u in p.get("extra_maven", "").split(",") if u.strip()),
+        "@EXTRA_DEPS@": "\n".join(f"    compileOnly '{d.strip()}'" for d in p.get("extra_compile_only", "").split(",") if d.strip()),
     }
     for f in ("build.gradle", "settings.gradle", "gradle.properties"):
         with open(os.path.join(tpl, f), encoding="utf-8") as fh:

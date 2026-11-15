@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "celular:phone",
+    "celular:phone_white",
+    "celular:phone_pink",
+    "celular:phone_blue",
+    "celular:phone_green",
+    "celular:phone_purple",
+    "celular:phone_gold",
+    "celular:phone_red"
+  ]
+}

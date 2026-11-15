@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "celular_color",
+  "ingredients": [
+    {
+      "tag": "celular:phones"
+    },
+    {
+      "item": "minecraft:blue_dye"
+    }
+  ],
+  "result": {
+    "item": "celular:phone_blue",
+    "count": 1
+  }
+}

@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mod: [casino, pooltable, kensei, scardax, estructuras, cartas, show, autos]
+        mod: [casino, pooltable, kensei, scardax, estructuras, cartas, show, autos, celular]
     steps:
       - uses: actions/checkout@v4
       - name: Revisar recursos de ${{ matrix.mod }}
@@ -66,6 +66,12 @@ jobs:
           mkdir out
           javac -encoding UTF-8 -d out autos/src/main/java/com/autoscoleccion/game/*.java autos/tests/com/autoscoleccion/game/AutosTest.java
           java -cp out com.autoscoleccion.game.AutosTest
+      - name: Pruebas del celular
+        if: matrix.mod == 'celular'
+        run: |
+          mkdir out
+          javac -encoding UTF-8 -d out celular/src/main/java/com/celular/voice/PhoneFilter.java celular/tests/PhoneFilterTest.java
+          java -cp out PhoneFilterTest
       - name: Compilar ${{ matrix.mod }}
         working-directory: ${{ matrix.mod }}
         run: |
@@ -77,11 +83,11 @@ jobs:
         with:
           name: ${{ matrix.mod }}-jar
           path: ${{ matrix.mod }}/build/libs/*.jar
-      - name: Guardar el jar del casino 1.20.1 en una rama (la nube de Claude no puede bajar artefactos)
-        if: matrix.mod == 'casino' && github.ref == 'refs/heads/main'
-        run: bash tools/push_jar.sh casino 1.20.1 casino/build/libs ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.sha }}
+      - name: Guardar el jar 1.20.1 en una rama (la nube de Claude no puede bajar artefactos)
+        if: (matrix.mod == 'casino' || matrix.mod == 'celular') && github.ref == 'refs/heads/main'
+        run: bash tools/push_jar.sh ${{ matrix.mod }} 1.20.1 ${{ matrix.mod }}/build/libs ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.sha }}
 
-  # El mismo código del casino, generado y compilado para las otras versiones de Minecraft (tools/mcver.py + tools/mkproject.py)
+  # El mismo código, generado y compilado para las otras versiones de Minecraft (tools/mcver.py + tools/mkproject.py)
   casino-versiones:
     runs-on: ubuntu-latest
     permissions:
@@ -90,35 +96,48 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mc: '1.21.1'
+          - mod: casino
+            mc: '1.21.1'
             java: '21'
-          - mc: '1.21.4'
+          - mod: casino
+            mc: '1.21.4'
             java: '21'
-          - mc: '26.2'
+          - mod: casino
+            mc: '26.2'
             java: '25'
-          - mc: '26.3'
+          - mod: casino
+            mc: '26.3'
+            java: '25'
+          - mod: celular
+            mc: '1.21.1'
+            java: '21'
+          - mod: celular
+            mc: '1.21.4'
+            java: '21'
+          - mod: celular
+            mc: '26.3'
             java: '25'
     steps:
       - uses: actions/checkout@v4
       - name: Revisar marcas de versión
-        run: python3 tools/mcver.py --check casino
-      - name: Generar el proyecto de ${{ matrix.mc }}
-        run: python3 tools/mkproject.py casino ${{ matrix.mc }} gen/casino-${{ matrix.mc }}
+        run: python3 tools/mcver.py --check ${{ matrix.mod }}
+      - name: Generar el proyecto de ${{ matrix.mod }} ${{ matrix.mc }}
+        run: python3 tools/mkproject.py ${{ matrix.mod }} ${{ matrix.mc }} gen/${{ matrix.mod }}-${{ matrix.mc }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: ${{ matrix.java }}
       - uses: gradle/actions/setup-gradle@v4
-      - name: Compilar casino ${{ matrix.mc }}
-        working-directory: gen/casino-${{ matrix.mc }}
+      - name: Compilar ${{ matrix.mod }} ${{ matrix.mc }}
+        working-directory: gen/${{ matrix.mod }}-${{ matrix.mc }}
         run: ./gradlew build --no-daemon --stacktrace
-      - name: Arrancar servidor ${{ matrix.mc }} con el casino
-        run: bash tools/boot_server.sh gen/casino-${{ matrix.mc }}
+      - name: Arrancar servidor ${{ matrix.mc }} con ${{ matrix.mod }}
+        run: bash tools/boot_server.sh gen/${{ matrix.mod }}-${{ matrix.mc }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: casino-${{ matrix.mc }}-jar
-          path: gen/casino-${{ matrix.mc }}/build/libs/*.jar
+          name: ${{ matrix.mod }}-${{ matrix.mc }}-jar
+          path: gen/${{ matrix.mod }}-${{ matrix.mc }}/build/libs/*.jar
       - name: Guardar el jar en una rama
         if: github.ref == 'refs/heads/main'
-        run: bash tools/push_jar.sh casino ${{ matrix.mc }} gen/casino-${{ matrix.mc }}/build/libs ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.sha }}
+        run: bash tools/push_jar.sh ${{ matrix.mod }} ${{ matrix.mc }} gen/${{ matrix.mod }}-${{ matrix.mc }}/build/libs ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.sha }}

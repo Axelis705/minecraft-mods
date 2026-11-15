@@ -1,0 +1,50 @@
+{
+  "shutter": {
+    "sounds": [
+      "celular:shutter"
+    ],
+    "subtitle": "subtitles.celular.shutter"
+  },
+  "ringtone": {
+    "sounds": [
+      "celular:ringtone"
+    ],
+    "subtitle": "subtitles.celular.ringtone"
+  },
+  "ringback": {
+    "sounds": [
+      "celular:ringback"
+    ],
+    "subtitle": "subtitles.celular.ringback"
+  },
+  "notify": {
+    "sounds": [
+      "celular:notify"
+    ],
+    "subtitle": "subtitles.celular.notify"
+  },
+  "like": {
+    "sounds": [
+      "celular:like"
+    ],
+    "subtitle": "subtitles.celular.like"
+  },
+  "hangup": {
+    "sounds": [
+      "celular:hangup"
+    ],
+    "subtitle": "subtitles.celular.hangup"
+  },
+  "tap": {
+    "sounds": [
+      "celular:tap"
+    ],
+    "subtitle": "subtitles.celular.tap"
+  },
+  "unlock": {
+    "sounds": [
+      "celular:unlock"
+    ],
+    "subtitle": "subtitles.celular.unlock"
+  }
+}
