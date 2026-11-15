@@ -826,11 +826,11 @@
   "casino.heist.hud.obj_1": "組み合わせのメモを3枚探せ",
   "casino.heist.hud.obj_2": "支配人室の金庫を開けろ",
   "casino.heist.hud.obj_3": "階段のリーダーにカードを通せ",
-  "casino.heist.hud.obj_4": "下へ行き、レーザーを越え、2台のリーダーに通せ",
-  "casino.heist.hud.obj_5": "金庫が開いていく…",
-  "casino.heist.hud.obj_6": "閉まる前にカートを略奪しろ!",
-  "casino.heist.hud.obj_7": "逃げろ!生きてカジノを出ろ",
-  "casino.heist.hud.obj_8": "光る強盗を捕まえろ(残り%s人)",
+  "casino.heist.hud.obj_4": "ゲートの制御盤をハッキング(警備室)",
+  "casino.heist.hud.obj_5": "下へ、レーザー(即死!)を越え、2台のリーダーに通せ",
+  "casino.heist.hud.obj_6": "金庫が開いていく…",
+  "casino.heist.hud.obj_7": "閉まる前にカートを略奪しろ!",
+  "casino.heist.hud.obj_8": "逃げろ!生きてカジノを出ろ",
   "casino.heist.hud.suspicion": "疑念",
   "casino.heist.hud.combo": "組み合わせ:%s",
   "casino.heist.hud.vault_time": "金庫:%s",
@@ -878,5 +878,10 @@
   "casino.tournament.hud_title": "トーナメント:%s",
   "casino.tournament.hud_left": "残り%s",
   "casino.tournament.hud_me": "あなた:%s位(%s)",
-  "casino.tournament.hud_join": "プレイしてランクインしよう!"
+  "casino.tournament.hud_join": "プレイしてランクインしよう!",
+  "casino.heist.hud.obj_9": "光る強盗を捕まえろ(残り%s人)",
+  "casino.heist.laser_kill": "レーザーで消し飛んだ!",
+  "casino.heist.gate_idle": "ゲートの制御盤。ロックされている。",
+  "casino.heist.gate_already": "ゲートはもう開いている。",
+  "casino.heist.gate_open": "ゲートが開いた!下にレーザーと金庫がある。"
 }

@@ -106,6 +106,7 @@ public final class HeistManager {
         public boolean serviceOpen;
         public boolean safeOpen;
         public boolean stairsOpen;
+        public boolean gateOpen;
         public long camerasOffUntil;
         public long phaseAt;
         public long vaultEnd;
@@ -374,13 +375,21 @@ public final class HeistManager {
         }
     }
 
+    /** Tocar un láser es la muerte (y si nadie había dado la alarma, suena). */
     public static void laser(Heist h, ServerPlayer p, BlockPos pos) {
         Level level = p.level();
+        if (p.isCreative() || p.isSpectator()) {
+            return;
+        }
+        sound(level, pos, SoundEvents.NOTE_BLOCK_PLING.value(), 1F, 2F);
+        level.playSound(null, p.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.HOSTILE, 1F, 1.6F);
+        if (level instanceof ServerLevel sl) {
+            sl.sendParticles(ParticleTypes.FLAME, p.getX(), p.getY() + 1, p.getZ(), 20, 0.3, 0.6, 0.3, 0.02);
+        }
+        bar(p, t("laser_kill").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+        hurtPct(p, level.damageSources().magic(), 100F);
         if (h.phase == Phase.STEALTH && !h.alarm) {
-            sound(level, pos, SoundEvents.NOTE_BLOCK_PLING.value(), 1F, 2F);
             alarm(level, h, "alarm.laser");
-        } else if (level.getGameTime() % 10 == 0) {
-            hurtPct(p, level.damageSources().inFire(), 0.04F);
         }
     }
 
@@ -499,8 +508,19 @@ public final class HeistManager {
 
     public static void useConsole(ServerPlayer p, BlockPos pos) {
         Heist h = at(p.level(), pos);
+        BlockPos gate = doorNear(p.level(), pos);
         if (h == null || !h.isCrew(p)) {
-            bar(p, t("console_idle").withStyle(ChatFormatting.GRAY));
+            bar(p, t(gate != null ? "gate_idle" : "console_idle").withStyle(ChatFormatting.GRAY));
+            return;
+        }
+        if (gate != null) {
+            // consola de la compuerta: se hackea para abrir la puerta de hierro de al lado
+            if (p.level().getBlockState(gate).getValue(DoorBlock.OPEN)) {
+                bar(p, t("gate_already").withStyle(ChatFormatting.GREEN));
+                return;
+            }
+            h.pendingGame.put(p.getUUID(), pos);
+            CasinoNet.sendTo(p, new HeistGamePacket(HeistGamePacket.HACK, pos, new int[]{1}));
             return;
         }
         if (h.camerasOff(p.level().getGameTime())) {
@@ -662,7 +682,15 @@ public final class HeistManager {
                 if (!pos.equals(h.pendingGame.remove(p.getUUID()))) {
                     return;
                 }
-                if (v.length > 0 && v[0] == 1) {
+                BlockPos gate = doorNear(level, pos);
+                if (v.length > 0 && v[0] == 1 && gate != null) {
+                    setDoor(level, gate, true);
+                    h.gateOpen = true;
+                    for (ServerPlayer o : h.crewOnline(level)) {
+                        msg(o, t("gate_open").withStyle(ChatFormatting.GREEN));
+                    }
+                    sound(level, pos, SoundEvents.BEACON_ACTIVATE, 1F, 1.4F);
+                } else if (v.length > 0 && v[0] == 1) {
                     h.camerasOffUntil = now + CAMERAS_OFF;
                     for (ServerPlayer o : h.crewOnline(level)) {
                         msg(o, t("cams_off", CAMERAS_OFF / 20).withStyle(ChatFormatting.GREEN));
@@ -1024,9 +1052,9 @@ public final class HeistManager {
         }
         int obj;
         if (h.phase == Phase.STEALTH) {
-            obj = !h.serviceOpen ? 0 : !h.safeOpen ? (Integer.bitCount(h.clues) < 3 ? 1 : 2) : !h.stairsOpen ? 3 : 4;
+            obj = !h.serviceOpen ? 0 : !h.safeOpen ? (Integer.bitCount(h.clues) < 3 ? 1 : 2) : !h.stairsOpen ? 3 : !h.gateOpen ? 4 : 5;
         } else {
-            obj = h.phase == Phase.OPENING ? 5 : h.phase == Phase.VAULT ? 6 : 7;
+            obj = h.phase == Phase.OPENING ? 6 : h.phase == Phase.VAULT ? 7 : 8;
         }
         int timer = h.phase == Phase.VAULT ? (int) Math.max(0, h.vaultEnd - now)
                 : h.camerasOff(now) ? -(int) (h.camerasOffUntil - now) : 0;
@@ -1040,7 +1068,7 @@ public final class HeistManager {
         for (UUID c : h.cops) {
             ServerPlayer p = server.getPlayerList().getPlayer(c);
             if (p != null) {
-                CasinoNet.sendTo(p, new HeistSyncPacket(2, h.phase.ordinal(), 8, 0, true, 0, new int[]{-1, -1, -1}, 0, 0, 0, h.aliveCount()));
+                CasinoNet.sendTo(p, new HeistSyncPacket(2, h.phase.ordinal(), 9, 0, true, 0, new int[]{-1, -1, -1}, 0, 0, 0, h.aliveCount()));
             }
         }
     }

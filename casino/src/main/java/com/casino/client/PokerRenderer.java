@@ -332,7 +332,7 @@ public class PokerRenderer extends CasinoBER<PokerBE> {
         if (age < 0) {
             return;
         }
-        float t = Mth.clamp(age / 8.0F, 0, 1);
+        float t = Mth.clamp(age / (float) com.casino.game.CardTiming.FLY, 0, 1);
         float e = 1 - (1 - t) * (1 - t);
         float cx = Mth.lerp(e, SHOE_X, x);
         float cz = Mth.lerp(e, SHOE_Z, z);

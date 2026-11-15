@@ -577,13 +577,13 @@ public class BlackjackBE extends CasinoBE {
                 Seat s = table.seats[i];
                 if (s.bet > 0) {
                     if (round < s.cards.size() && round >= seenCards[i] && round < MAX_CARDS) {
-                        born[i][round] = now + (fresh ? (round * (participants + 1) + k) * 4L : 0);
+                        born[i][round] = now + (fresh ? (round * (participants + 1) + k) * (long) com.casino.game.CardTiming.GAP : 0);
                     }
                     k++;
                 }
             }
             if (round < table.dealer.size() && round >= seenD && round < MAX_CARDS) {
-                dBorn[round] = now + (fresh ? (round * (participants + 1) + k) * 4L : 0);
+                dBorn[round] = now + (fresh ? (round * (participants + 1) + k) * (long) com.casino.game.CardTiming.GAP : 0);
             }
         }
         for (int i = 0; i < BlackjackTable.SEATS; i++) {
@@ -593,28 +593,30 @@ public class BlackjackBE extends CasinoBE {
                 seenSplit[i] = true;
                 born[i][1] = now;
                 born2[i][0] = -1000;
-                born2[i][1] = now + 6;
+                born2[i][1] = now + com.casino.game.CardTiming.GAP;
                 seenCards[i] = 2;
                 seenCards2[i] = 2;
             }
             int n = s.cards.size();
             for (int j = Math.max(2, seenCards[i]); j < n && j < MAX_CARDS; j++) {
-                born[i][j] = now;
+                born[i][j] = now + (long) (j - Math.max(2, seenCards[i])) * com.casino.game.CardTiming.GAP;
             }
             seenCards[i] = Math.max(seenCards[i], n);
             int n2 = s.cards2.size();
             for (int j = Math.max(2, seenCards2[i]); j < n2 && j < MAX_CARDS; j++) {
-                born2[i][j] = now;
+                born2[i][j] = now + (long) (j - Math.max(2, seenCards2[i])) * com.casino.game.CardTiming.GAP;
             }
             seenCards2[i] = Math.max(seenCards2[i], n2);
         }
         int nd = table.dealer.size();
+        // el crupier pide sus cartas una tras otra (y si se acaba de voltear la tapada, después de eso)
+        long dStart = now + (table.holeRevealed && !seenHole ? (fresh ? (2L * (participants + 1)) * com.casino.game.CardTiming.GAP + 24 : 22) : 0);
         for (int j = Math.max(2, seenD); j < nd && j < MAX_CARDS; j++) {
-            dBorn[j] = now;
+            dBorn[j] = dStart + (long) (j - Math.max(2, seenD)) * com.casino.game.CardTiming.GAP;
         }
         seenD = Math.max(seenD, nd);
         if (table.holeRevealed && !seenHole) {
-            revealAt = now + (fresh ? 30 : 0);
+            revealAt = now + (fresh ? (2L * (participants + 1)) * com.casino.game.CardTiming.GAP + 10 : 0);
         }
         seenHole = table.holeRevealed;
         if (table.phase == Phase.RESULT && seenPhase != Phase.RESULT) {

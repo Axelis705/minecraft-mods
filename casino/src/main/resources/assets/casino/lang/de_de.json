@@ -826,11 +826,11 @@
   "casino.heist.hud.obj_1": "Finde die 3 Zettel mit der Kombination",
   "casino.heist.hud.obj_2": "Öffne den Tresor im Büro des Managers",
   "casino.heist.hud.obj_3": "Benutze die Karte am Leser der Treppe",
-  "casino.heist.hud.obj_4": "Runter, Laser überwinden, beide Leser benutzen",
-  "casino.heist.hud.obj_5": "Der Tresor öffnet sich...",
-  "casino.heist.hud.obj_6": "Plündere die Wagen, bevor er schließt!",
-  "casino.heist.hud.obj_7": "Flieh! Verlass das Casino lebend",
-  "casino.heist.hud.obj_8": "Fang die leuchtenden Räuber (%s übrig)",
+  "casino.heist.hud.obj_4": "Hacke die Torkonsole (Wachraum)",
+  "casino.heist.hud.obj_5": "Runter, Laser überwinden (tödlich!), beide Leser benutzen",
+  "casino.heist.hud.obj_6": "Der Tresor öffnet sich...",
+  "casino.heist.hud.obj_7": "Plündere die Wagen, bevor er schließt!",
+  "casino.heist.hud.obj_8": "Flieh! Verlass das Casino lebend",
   "casino.heist.hud.suspicion": "Verdacht",
   "casino.heist.hud.combo": "Kombination: %s",
   "casino.heist.hud.vault_time": "Tresor: %s",
@@ -878,5 +878,10 @@
   "casino.tournament.hud_title": "TURNIER: %s",
   "casino.tournament.hud_left": "Endet in %s",
   "casino.tournament.hud_me": "Du: #%s (%s)",
-  "casino.tournament.hud_join": "Spiel, um auf die Liste zu kommen!"
+  "casino.tournament.hud_join": "Spiel, um auf die Liste zu kommen!",
+  "casino.heist.hud.obj_9": "Fang die leuchtenden Räuber (%s übrig)",
+  "casino.heist.laser_kill": "Ein Laser hat dich aufgelöst!",
+  "casino.heist.gate_idle": "Die Torkonsole. Gesperrt.",
+  "casino.heist.gate_already": "Das Tor ist schon offen.",
+  "casino.heist.gate_open": "Tor offen! Unten warten Laser und Tresor."
 }

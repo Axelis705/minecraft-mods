@@ -20,7 +20,7 @@ import maquinas as mq
 
 R = random.Random(7)
 W, H, D = 61, 84, 72
-B = 26   # bloques bajo la planta baja: sótano VIP (y -12) y bóveda (y -24) (TemplateCasinoStructure.sink("the_diamond") debe valer lo mismo)
+B = 38   # bloques bajo la planta baja: sótano VIP (y -12), sala de guardias (y -24) y bóveda (y -36) (TemplateCasinoStructure.sink("the_diamond") debe valer lo mismo)
 o = Obra(W, H + B, D, oy=B)
 CX = 30  # eje central
 
@@ -1906,71 +1906,144 @@ for i, z in enumerate((34, 36, 38)):
 for z in (33, 40):
     o.set(30, -19, z, 'minecraft:sea_lantern')
 
-# ---- antesala (x 18..42, z 22..32, 6 de alto): mármol, pilastras doradas, guardias armados y dos lectores
-carve(room(18, 42, 22, 32, -23, -18), BSB, WM)
-floor_pattern(18, 42, 22, 32, YV, WM, BM, 'diamond', 30, 27)
-for x in range(18, 43):
-    o.set(x, -17, 22, GT); o.set(x, -17, 32, GT)
-for z in range(22, 33):
-    o.set(17, -23, z, MAH); o.set(43, -23, z, MAH)
+# ---- dos salas iguales una encima de la otra (x 18..42, z 22..32, 6 de alto): mármol, pilastras doradas y cámaras.
+#   y -24: SALA DE GUARDIAS (guardias armados; la compuerta del oeste se abre hackeando su consola)
+#   y -36: ANTESALA de la bóveda (dos lectores y la puerta redonda en el muro norte)
+YV2 = -36
+def hall(fy, south_gap):
+    carve(room(18, 42, 22, 32, fy + 1, fy + 6), BSB, WM)
+    floor_pattern(18, 42, 22, 32, fy, WM, BM, 'diamond', 30, 27)
+    for x in range(18, 43):
+        o.set(x, fy + 7, 22, GT); o.set(x, fy + 7, 32, GT)
+    for z in range(22, 33):
+        o.set(17, fy + 1, z, MAH); o.set(43, fy + 1, z, MAH)
+    for x in range(17, 44):
+        if not (south_gap and 29 <= x <= 31):
+            o.set(x, fy + 1, 33, MAH)
+    for px in (18, 24, 36, 42):                                 # pilastras de cuarzo
+        for y in range(fy + 1, fy + 7):
+            o.set(px, y, 32, QP)
+    for x in range(20, 42, 4):
+        for z in (24, 30):
+            o.set(x, fy + 7, z, 'minecraft:sea_lantern')
+    cam(19, fy + 5, 32, 'north') if False else None
+    cam(18, fy + 5, 31, 'east'); cam(42, fy + 5, 31, 'west'); cam(18, fy + 5, 23, 'east'); cam(42, fy + 5, 23, 'west')
+
+hall(YV, True)
+# compuerta del oeste (puerta de hierro) con su consola: hay que hackearla para bajar
+door(17, YV + 1, 27, 'west')
+o.set(18, YV + 1, 25, 'casino:camera_console[facing=east]')
+o.set(18, YV + 4, 27, neon('!', 'east', 1)) if False else None
+# escalera al oeste (x 16..6, baja 11) hasta un descanso (x 3..5, z 26..32) en y -36
+cells = []
+for k in range(11):
+    x = 16 - k
+    for z in range(26, 29):
+        for y in range(YV - k, YV - k + 4):
+            cells.append((x, y, z))
+for x in range(3, 6):
+    for z in range(26, 33):
+        for y in range(YV2 + 1, YV2 + 5):
+            cells.append((x, y, z))
+# pasillo de láseres de abajo (x 6..17, z 30..32) hasta la antesala
+for x in range(6, 18):
+    for z in range(30, 33):
+        for y in range(YV2 + 1, YV2 + 5):
+            cells.append((x, y, z))
+carve(cells, CONC_L, TILES)
+for k in range(11):
+    for z in range(26, 29):
+        o.set(16 - k, YV - 1 - k, z, stairs('minecraft:polished_deepslate_stairs', 'east'))
+for x in range(3, 6):
+    for z in range(26, 33):
+        o.set(x, YV2, z, TILES)
+for x in range(6, 18):
+    for z in range(30, 33):
+        o.set(x, YV2, z, 'minecraft:polished_blackstone_bricks' if z == 31 else TILES)
+    o.set(x, YV2 + 3, 29, STEEL); o.set(x, YV2 + 3, 33, STEEL)
+o.set(4, YV2 + 5, 29, 'minecraft:sea_lantern'); o.set(11, YV2 + 5, 26, 'minecraft:sea_lantern')
+for i, x in enumerate((7, 9, 11, 13, 15)):
+    o.set(x, YV2 + 1, 29, f'casino:laser_emitter[facing=south,pattern={i % 4}]')
+    o.set(x, YV2 + 2, 29, f'casino:laser_emitter[facing=south,pattern={(i + 2) % 4}]')
+cam(6, YV2 + 4, 32, 'east')
+
+hall(YV2, False)
+for z in range(30, 33):                                         # entrada desde el pasillo de láseres
+    for y in range(YV2 + 1, YV2 + 5):
+        o.set(17, y, z, AIR)
+# muro de la bóveda (z 20..21, acero) y la puerta redonda al centro
 for x in range(17, 44):
-    o.set(x, -23, 33, MAH) if not (29 <= x <= 31) else None
-for px in (18, 24, 36, 42):                                     # pilastras de cuarzo
-    for y in range(-23, -17):
-        o.set(px, y, 32, QP) if not (29 <= px <= 31) else None
-for x in range(20, 42, 4):
-    for z in (24, 30):
-        o.set(x, -17, z, LIGHT) if False else o.set(x, -17, z, 'minecraft:sea_lantern')
-# muro de la bóveda (z 20..21, acero) y la puerta redonda al centro (x 28..32, y -23..-19)
-for x in range(17, 44):
-    for y in range(-24, -16):
+    for y in range(YV2, YV2 + 8):
         for z in (20, 21):
             o.set(x, y, z, STEEL if (x + y) % 2 == 0 else 'minecraft:smooth_stone')
+DY = YV2 + 3                                                     # centro de la puerta
 for x in range(28, 33):
-    for y in range(-23, -18):
+    for y in range(DY - 2, DY + 3):
         o.set(x, y, 21, 'casino:vault_seal'); o.set(x, y, 20, 'casino:vault_seal')
-o.set(30, -21, 21, 'casino:vault_door[facing=south,open=false]')
-o.set(24, -22, 22, 'casino:card_reader[facing=south,lit=false]')
-o.set(36, -22, 22, 'casino:card_reader[facing=south,lit=false]')
+o.set(30, DY, 21, 'casino:vault_door[facing=south,open=false]')
+o.set(24, YV2 + 2, 22, 'casino:card_reader[facing=south,lit=false]')
+o.set(36, YV2 + 2, 22, 'casino:card_reader[facing=south,lit=false]')
 for x in (24, 36):
-    o.set(x, -17, 23, 'minecraft:sea_lantern')
-cam(19, -19, 31, 'north'); cam(41, -19, 31, 'north'); cam(19, -19, 23, 'south'); cam(41, -19, 23, 'south')
+    o.set(x, YV2 + 7, 23, 'minecraft:sea_lantern')
 
-# ---- bóveda (x 20..40, z 8..19): carritos de botín, lingotes tras rejas, cajas de seguridad y ductos de gas
-carve(room(20, 40, 8, 19, -23, -19), STEEL, TILES)
+# ---- bóveda (x 20..40, z 8..19, y -36): carritos de botín, lingotes, cajas de seguridad y ductos de gas
+carve(room(20, 40, 8, 19, YV2 + 1, YV2 + 5), STEEL, TILES)
 for x in range(20, 41):
     for z in range(8, 20):
-        o.set(x, YV, z, TILES if (x + z) % 2 else 'minecraft:polished_deepslate')
-        o.set(x, -18, z, STEEL)
-for x in range(20, 41):                                         # lingotes al fondo tras las rejas
-    o.set(x, -23, 8, GB); o.set(x, -22, 8, GB) if x % 2 else None
-    o.set(x, -21, 8, 'minecraft:iron_bars') if False else None
-for z in range(9, 19):                                          # cajas de seguridad en los muros laterales
-    for y in range(-23, -19):
-        o.set(19, y, z, 'minecraft:iron_trapdoor[facing=east,half=bottom,open=true]') if False else None
+        o.set(x, YV2, z, TILES if (x + z) % 2 else 'minecraft:polished_deepslate')
+        o.set(x, YV2 + 6, z, STEEL)
+for x in range(20, 41):                                         # lingotes al fondo
+    o.set(x, YV2 + 1, 8, GB); o.set(x, YV2 + 2, 8, GB) if x % 2 else None
 for z in range(9, 19):
-    for y in range(-22, -19):
+    for y in range(YV2 + 2, YV2 + 5):
         o.set(20, y, z, 'casino:deposit_boxes[facing=east]'); o.set(40, y, z, 'casino:deposit_boxes[facing=west]')
 KINDS = ('cash', 'gold', 'diamond', 'chips')
 i = 0
 for z in (11, 14, 17):
     for x in (23, 26, 34, 37):
-        o.set(x, -23, z, f'casino:loot_cart[facing=south,kind={KINDS[i % 4]},left=3]')
+        o.set(x, YV2 + 1, z, f'casino:loot_cart[facing=south,kind={KINDS[i % 4]},left=3]')
         i += 1
 for x in (24, 30, 36):
     for z in (10, 16):
-        o.set(x, -18, z, 'casino:gas_vent')
-for x in (22, 38):
-    for z in (13,):
-        o.set(x, -18, z, 'minecraft:sea_lantern')
-o.set(30, -18, 13, 'minecraft:sea_lantern')
+        o.set(x, YV2 + 6, z, 'casino:gas_vent')
+for x in (22, 38, 30):
+    o.set(x, YV2 + 6, 13, 'minecraft:sea_lantern')
 
-# ---- gente del robo: guardias (con táser arriba, armados abajo) y el contacto en el salón VIP
-#   "heistguard tipo dir dx dz": patrulla entre su lugar y su lugar + (dx, dz); tipo 0 táser y porra, 1 pistola
+# ---- callejón detrás del casino (x 50..55, z 1..6): el contacto espera escondido entre botes de basura y cajas
+for x in range(50, 56):
+    for z in range(0, 8):
+        o.set(x, 0, z, 'minecraft:gray_concrete' if (x + z) % 3 else 'minecraft:cobblestone')
+for x in range(50, 56):                                          # muro del fondo y techito
+    for y in range(1, 5):
+        o.set(x, y, 0, BSB)
+    o.set(x, 5, 0, slab('minecraft:polished_blackstone_brick_slab'))
+for z in range(0, 5):                                            # muro oeste (tapa la vista desde el patio)
+    for y in range(1, 5):
+        o.set(50, y, z, BSB)
+for x in range(51, 56):
+    for z in range(1, 4):
+        o.set(x, 4, z, 'minecraft:dark_oak_slab[type=top]')
+o.set(51, 1, 1, 'minecraft:barrel[facing=up]'); o.set(51, 2, 1, 'minecraft:barrel[facing=up]'); o.set(52, 1, 1, 'minecraft:barrel[facing=up]')
+o.set(51, 1, 3, 'minecraft:green_shulker_box') if False else o.set(51, 1, 3, 'minecraft:composter')
+o.set(55, 1, 1, 'minecraft:spruce_trapdoor[facing=south,half=bottom,open=false]') if False else None
+o.set(53, 3, 1, 'minecraft:lantern[hanging=false]') if False else o.set(53, 3, 1, 'minecraft:soul_lantern[hanging=false]')
+o.set(55, 1, 5, 'minecraft:cobweb') if False else None
+
+# ---- gente del robo: guardias (con táser arriba, armados abajo) y el contacto en el callejón
+#   "heistguard dir tipo dx dz": patrulla entre su lugar y su lugar + (dx, dz); tipo 0 táser y porra, 1 pistola
 for (x, y, z, kind, d, dx, dz) in ((10, -11, 38, 0, 3, 40, 0), (58, -11, 20, 0, 0, 0, 16), (50, -11, 45, 0, 2, 0, 0),
-                                   (21, -23, 27, 1, 3, 0, 4), (39, -23, 27, 1, 1, 0, 4), (30, -23, 41, 1, 2, 0, 0)):
+                                   (21, YV + 1, 27, 1, 3, 0, 4), (39, YV + 1, 27, 1, 1, 0, 4), (30, YV + 1, 24, 1, 2, 0, 0),
+                                   (21, YV2 + 1, 27, 1, 3, 0, 4), (39, YV2 + 1, 27, 1, 1, 0, 4), (30, YV2 + 1, 30, 1, 0, 0, 0)):
     o.marker(x, y, z, f'heistguard {d} {kind} {dx} {dz}', [(0, 0, 0, 'minecraft:black_wool'), (0, 1, 0, 'minecraft:black_wool')])
-o.marker(12, YB + 1, 32, 'heistboss 1', [(0, 0, 0, 'minecraft:gray_wool'), (0, 1, 0, 'minecraft:gray_wool')])
+o.marker(54, 1, 2, 'heistboss 2', [(0, 0, 0, 'minecraft:gray_wool'), (0, 1, 0, 'minecraft:gray_wool')])
+
+# ---- luces escondidas (invisibles) en todo lo subterráneo para que no aparezcan monstruos en lo oscuro
+for x in range(0, W, 6):
+    for z in range(0, D, 6):
+        for y in range(-B + 1, 0):
+            if o.get(x, y, z) == AIR and o.get(x, y + 1, z) not in (AIR, None) and not o.get(x, y + 1, z).startswith('minecraft:light'):
+                o.set(x, y, z, 'minecraft:light[level=11]')
+
 
 # ================================================================== CLIENTES (gente que pasea, se sienta, ve las mesas y platica)
 # Cada uno se queda a menos de 11 bloques de donde aparece (no cambian de piso). "patron dir piel".

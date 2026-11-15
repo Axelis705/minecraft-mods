@@ -826,11 +826,11 @@
   "casino.heist.hud.obj_1": "找到3张写有密码的便条",
   "casino.heist.hud.obj_2": "打开经理办公室的保险箱",
   "casino.heist.hud.obj_3": "在楼梯读卡器上刷卡",
-  "casino.heist.hud.obj_4": "下去,穿过激光,在两台读卡器上刷卡",
-  "casino.heist.hud.obj_5": "金库正在打开……",
-  "casino.heist.hud.obj_6": "在关门前洗劫推车!",
-  "casino.heist.hud.obj_7": "快逃!活着离开赌场",
-  "casino.heist.hud.obj_8": "抓住发光的劫匪(剩余%s人)",
+  "casino.heist.hud.obj_4": "黑入闸门控制台(警卫室)",
+  "casino.heist.hud.obj_5": "下去,穿过激光(致命!),在两台读卡器上刷卡",
+  "casino.heist.hud.obj_6": "金库正在打开……",
+  "casino.heist.hud.obj_7": "在关门前洗劫推车!",
+  "casino.heist.hud.obj_8": "快逃!活着离开赌场",
   "casino.heist.hud.suspicion": "怀疑",
   "casino.heist.hud.combo": "密码:%s",
   "casino.heist.hud.vault_time": "金库:%s",
@@ -878,5 +878,10 @@
   "casino.tournament.hud_title": "锦标赛:%s",
   "casino.tournament.hud_left": "剩余%s",
   "casino.tournament.hud_me": "你:第%s名(%s)",
-  "casino.tournament.hud_join": "参与游戏即可上榜!"
+  "casino.tournament.hud_join": "参与游戏即可上榜!",
+  "casino.heist.hud.obj_9": "抓住发光的劫匪(剩余%s人)",
+  "casino.heist.laser_kill": "你被激光汽化了!",
+  "casino.heist.gate_idle": "闸门控制台,已锁定。",
+  "casino.heist.gate_already": "闸门已经开了。",
+  "casino.heist.gate_open": "闸门开了!下面是激光和金库。"
 }

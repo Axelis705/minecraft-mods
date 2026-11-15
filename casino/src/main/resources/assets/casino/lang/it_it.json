@@ -826,11 +826,11 @@
   "casino.heist.hud.obj_1": "Trova i 3 biglietti con la combinazione",
   "casino.heist.hud.obj_2": "Apri la cassaforte nell'ufficio del direttore",
   "casino.heist.hud.obj_3": "Usa la tessera sul lettore delle scale",
-  "casino.heist.hud.obj_4": "Scendi, supera i laser e usa i 2 lettori",
-  "casino.heist.hud.obj_5": "Il caveau si sta aprendo...",
-  "casino.heist.hud.obj_6": "Saccheggia i carrelli prima che si chiuda!",
-  "casino.heist.hud.obj_7": "Scappa! Esci vivo dal casinò",
-  "casino.heist.hud.obj_8": "Prendi i ladri che brillano (ne restano %s)",
+  "casino.heist.hud.obj_4": "Hackera la console del cancello (sala guardie)",
+  "casino.heist.hud.obj_5": "Scendi, supera i laser (letali!) e usa i 2 lettori",
+  "casino.heist.hud.obj_6": "Il caveau si sta aprendo...",
+  "casino.heist.hud.obj_7": "Saccheggia i carrelli prima che si chiuda!",
+  "casino.heist.hud.obj_8": "Scappa! Esci vivo dal casinò",
   "casino.heist.hud.suspicion": "Sospetto",
   "casino.heist.hud.combo": "Combinazione: %s",
   "casino.heist.hud.vault_time": "Caveau: %s",
@@ -878,5 +878,10 @@
   "casino.tournament.hud_title": "TORNEO: %s",
   "casino.tournament.hud_left": "Finisce tra %s",
   "casino.tournament.hud_me": "Tu: #%s (%s)",
-  "casino.tournament.hud_join": "Gioca per entrare in classifica!"
+  "casino.tournament.hud_join": "Gioca per entrare in classifica!",
+  "casino.heist.hud.obj_9": "Prendi i ladri che brillano (ne restano %s)",
+  "casino.heist.laser_kill": "Un laser ti ha disintegrato!",
+  "casino.heist.gate_idle": "La console del cancello. È bloccata.",
+  "casino.heist.gate_already": "Il cancello è già aperto.",
+  "casino.heist.gate_open": "Cancello aperto! Sotto ci sono i laser e il caveau."
 }

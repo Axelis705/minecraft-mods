@@ -510,15 +510,15 @@ public class PokerBE extends CasinoBE {
                 int k = 0;
                 for (int i = 0; i < PokerTable.SEATS; i++) {
                     if (table.seats[i].ante > 0) {
-                        bornHole[i][round] = now + (round * (participants + 1) + k) * 4L;
+                        bornHole[i][round] = now + (round * (participants + 1) + k) * (long) com.casino.game.CardTiming.GAP;
                         k++;
                     }
                 }
-                bornDealer[round] = now + (round * (participants + 1) + k) * 4L;
+                bornDealer[round] = now + (round * (participants + 1) + k) * (long) com.casino.game.CardTiming.GAP;
             }
-            long flopAt = now + (2 * (participants + 1)) * 4L + 6;
+            long flopAt = now + (2 * (participants + 1)) * (long) com.casino.game.CardTiming.GAP + 10;
             for (int j = 0; j < Math.min(3, table.board.size()); j++) {
-                bornBoard[j] = flopAt + j * 6L;
+                bornBoard[j] = flopAt + j * (long) com.casino.game.CardTiming.GAP;
             }
             seenBoard = Math.min(3, table.board.size());
             for (int i = 0; i < PokerTable.SEATS; i++) {

@@ -826,11 +826,11 @@
   "casino.heist.hud.obj_1": "Найди 3 записки с кодом",
   "casino.heist.hud.obj_2": "Открой сейф в кабинете управляющего",
   "casino.heist.hud.obj_3": "Приложи карту к считывателю у лестницы",
-  "casino.heist.hud.obj_4": "Спустись, пройди лазеры и приложи карты к 2 считывателям",
-  "casino.heist.hud.obj_5": "Хранилище открывается...",
-  "casino.heist.hud.obj_6": "Обчисти тележки, пока не закрылось!",
-  "casino.heist.hud.obj_7": "Беги! Выберись из казино живым",
-  "casino.heist.hud.obj_8": "Поймай светящихся грабителей (осталось %s)",
+  "casino.heist.hud.obj_4": "Взломай пульт ворот (комната охраны)",
+  "casino.heist.hud.obj_5": "Спустись, пройди лазеры (смертельно!) и приложи карты к 2 считывателям",
+  "casino.heist.hud.obj_6": "Хранилище открывается...",
+  "casino.heist.hud.obj_7": "Обчисти тележки, пока не закрылось!",
+  "casino.heist.hud.obj_8": "Беги! Выберись из казино живым",
   "casino.heist.hud.suspicion": "Подозрение",
   "casino.heist.hud.combo": "Код: %s",
   "casino.heist.hud.vault_time": "Хранилище: %s",
@@ -878,5 +878,10 @@
   "casino.tournament.hud_title": "ТУРНИР: %s",
   "casino.tournament.hud_left": "До конца %s",
   "casino.tournament.hud_me": "Ты: #%s (%s)",
-  "casino.tournament.hud_join": "Играй, чтобы попасть в таблицу!"
+  "casino.tournament.hud_join": "Играй, чтобы попасть в таблицу!",
+  "casino.heist.hud.obj_9": "Поймай светящихся грабителей (осталось %s)",
+  "casino.heist.laser_kill": "Лазер испепелил тебя!",
+  "casino.heist.gate_idle": "Пульт ворот. Заблокирован.",
+  "casino.heist.gate_already": "Ворота уже открыты.",
+  "casino.heist.gate_open": "Ворота открыты! Внизу лазеры и хранилище."
 }

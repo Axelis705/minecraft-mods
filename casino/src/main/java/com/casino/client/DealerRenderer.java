@@ -233,6 +233,8 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     s.talk = e.getTip() >= 0 ? e.tipAge + partial : -1F;
     //$$     s.motion = DealerMotion.compute(e, partial);
     //$$     s.variant = e.getVariant();
+    //$$     // sentado de verdad (piernas al frente): MobRenderer no llena esto como el dibujante de humanos
+    //$$     s.isPassenger = e.isPassenger();
     //$$ }
     //$$
     //$$ @Override

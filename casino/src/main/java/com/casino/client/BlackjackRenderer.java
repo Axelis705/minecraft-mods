@@ -330,7 +330,7 @@ public class BlackjackRenderer extends CasinoBER<BlackjackBE> {
             double off = (i - (n - 1) / 2.0) * SPACING;
             float ty = TABLE_Y + 0.0025F * i;
             float jitter = ((i * 37 + (dealer ? 11 : (int) (angDeg))) % 9 - 4) * 1.4F;
-            float t = Mth.clamp(age / 8.0F, 0, 1);
+            float t = Mth.clamp(age / (float) com.casino.game.CardTiming.FLY, 0, 1);
             float e = 1 - (1 - t) * (1 - t);
             float x = Mth.lerp(e, SHOE_X, (float) (cx + tx * off));
             float zz = Mth.lerp(e, SHOE_Z, (float) (cz + tz * off));

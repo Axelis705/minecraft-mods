@@ -17,8 +17,8 @@ import java.util.List;
  * reglas (tiempo en la bóveda, mochila, veto si te atrapan) y el botón para empezar. Si no se puede, dice por qué.
  */
 public final class HeistPlanScreen extends CasinoScreen {
-    private static final int W = 340;
-    private static final int H = 224;
+    private static final int W = 360;
+    private static final int H = 262;
     private final HeistPlanPacket d;
     private int left;
     private int top;
@@ -36,7 +36,7 @@ public final class HeistPlanScreen extends CasinoScreen {
         Button go = Button.builder(Component.translatable("casino.heist.plan.go").withStyle(ChatFormatting.BOLD), b -> {
             CasinoNet.sendToServer(new HeistActionPacket(HeistActionPacket.START, d.npc));
             onClose();
-        }).bounds(left + W - 150, top + H - 28, 90, 20).build();
+        }).bounds(left + W - 152, top + H - 28, 90, 20).build();
         go.active = d.reason == 0;
         addRenderableWidget(go);
         addRenderableWidget(Button.builder(Component.translatable("casino.cashier.close"), b -> onClose()).bounds(left + W - 56, top + H - 28, 48, 20).build());
@@ -76,41 +76,53 @@ public final class HeistPlanScreen extends CasinoScreen {
         int nx = x0 + 12, ny = y0 + 32;
         int[][] at = new int[6][];
         for (int i = 0; i < 6; i++) {
-            int cx = nx + (i % 3) * 102, cy = ny + (i / 3) * 56;
+            int cx = nx + (i % 3) * 114, cy = ny + (i / 3) * 64;
             at[i] = new int[]{cx, cy};
         }
         for (int i = 0; i < 5; i++) {
-            line(g, at[i][0] + 48, at[i][1] + 4, at[i + 1][0] + 48, at[i + 1][1] + 4, 0xFFC02020);
+            line(g, at[i][0] + 53, at[i][1] + 3, at[i + 1][0] + 53, at[i + 1][1] + 3, 0xFFC02020);
         }
         for (int i = 0; i < 6; i++) {
             int cx = at[i][0], cy = at[i][1];
             float tilt = (i % 2 == 0 ? -1 : 1);
-            g.fill(cx + 2, cy + 2, cx + 98, cy + 50, 0x40000000);
-            g.fill(cx, cy, cx + 96, cy + 48, i == 5 ? 0xFFF7E58A : 0xFFFBF7E8);
-            g.fill(cx + 46, cy + 1, cx + 50, cy + 5, 0xFFD02020);
+            g.fill(cx + 2, cy + 2, cx + 108, cy + 58, 0x40000000);
+            g.fill(cx, cy, cx + 106, cy + 56, i == 5 ? 0xFFF7E58A : 0xFFFBF7E8);
+            g.fill(cx + 51, cy + 1, cx + 55, cy + 5, 0xFFD02020);
             g.drawString(font, Component.literal(String.valueOf(i + 1)).withStyle(ChatFormatting.BOLD), cx + 4, cy + 4, 0xFFB02020, false);
-            List<FormattedCharSequence> lines = font.split(Component.translatable("casino.heist.plan.step_" + i), 88);
+            List<FormattedCharSequence> lines = font.split(Component.translatable("casino.heist.plan.step_" + i), 98);
             for (int l = 0; l < Math.min(4, lines.size()); l++) {
-                g.drawString(font, lines.get(l), cx + 4, cy + 14 + l * 9, 0xFF2A2A30, false);
+                g.drawString(font, lines.get(l), cx + 4, cy + 15 + l * 9, 0xFF2A2A30, false);
             }
             if (tilt > 2) {
                 break;
             }
         }
-        // equipo y reglas
-        int ry = y0 + 148;
-        g.fill(x0 + 10, ry, x0 + 160, y1 - 8, 0xFFFBF7E8);
-        g.drawString(font, Component.translatable("casino.heist.plan.crew").withStyle(ChatFormatting.BOLD), x0 + 14, ry + 4, 0xFF2A2A30, false);
-        for (int i = 0; i < Math.min(5, d.crew.size()); i++) {
-            g.drawString(font, (i == 0 ? "★ " : "• ") + d.crew.get(i), x0 + 16, ry + 15 + i * 9, 0xFF303040, false);
+        // equipo (a la izquierda) y reglas (a la derecha), cada uno en su papel
+        int ry = y0 + 166;
+        int cw = 130;
+        g.fill(x0 + 10, ry, x0 + 10 + cw, y1 - 8, 0xFFFBF7E8);
+        List<FormattedCharSequence> ct = font.split(Component.translatable("casino.heist.plan.crew").withStyle(ChatFormatting.BOLD), cw - 8);
+        int cy = ry + 4;
+        for (FormattedCharSequence l : ct) {
+            g.drawString(font, l, x0 + 14, cy, 0xFF2A2A30, false);
+            cy += 9;
         }
-        List<FormattedCharSequence> rules = font.split(Component.translatable("casino.heist.plan.rules"), W - 182);
+        cy += 2;
+        for (int i = 0; i < Math.min(5, d.crew.size()); i++) {
+            g.drawString(font, font.plainSubstrByWidth((i == 0 ? "★ " : "• ") + d.crew.get(i), cw - 10), x0 + 16, cy + i * 9, 0xFF303040, false);
+        }
+        int rx = x0 + 20 + cw, rw = x1 - 10 - rx;
+        g.fill(rx - 4, ry, x1 - 8, y1 - 34, 0xFFF4EED8);
+        List<FormattedCharSequence> rules = font.split(Component.translatable("casino.heist.plan.rules"), rw - 4);
         for (int l = 0; l < Math.min(4, rules.size()); l++) {
-            g.drawString(font, rules.get(l), x0 + 168, ry + 2 + l * 9, 0xFF2A1A10, false);
+            g.drawString(font, rules.get(l), rx, ry + 4 + l * 9, 0xFF2A1A10, false);
         }
         if (d.reason != 0) {
             Component why = Component.translatable("casino.heist.plan.no_" + d.reason).withStyle(ChatFormatting.BOLD);
-            g.drawString(font, font.plainSubstrByWidth(why.getString(), W - 180), x0 + 168, y1 - 44, 0xFFB01818, false);
+            List<FormattedCharSequence> wl = font.split(why, rw - 4);
+            for (int l = 0; l < Math.min(2, wl.size()); l++) {
+                g.drawString(font, wl.get(l), rx, ry + 42 + l * 9, 0xFFB01818, false);
+            }
         }
         drawWidgets(g, mx, my, pt);
     }

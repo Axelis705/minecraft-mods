@@ -377,7 +377,7 @@ public class DealerEntity extends Mob {
             }
             // el chorrito al servir: cae de la botella al vaso
             int st = tickCount - animStart;
-            if (animId == DealerAnim.SERVE && st >= 23 && st <= 35 && st % 2 == 0) {
+            if (false && animId == DealerAnim.SERVE && st >= 23 && st <= 35 && st % 2 == 0) {
                 double yaw = Math.toRadians(yBodyRot);
                 double fx = -Math.sin(yaw), fz = Math.cos(yaw), rx = -Math.cos(yaw), rz = -Math.sin(yaw);
                 double px = getX() + fx * 0.45 - rx * 0.06, pz = getZ() + fz * 0.45 - rz * 0.06;

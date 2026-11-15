@@ -826,11 +826,11 @@
   "casino.heist.hud.obj_1": "Encontre os 3 bilhetes com a combinação",
   "casino.heist.hud.obj_2": "Abra o cofre do escritório do gerente",
   "casino.heist.hud.obj_3": "Use o cartão no leitor da escada",
-  "casino.heist.hud.obj_4": "Desça, passe os lasers e use os 2 leitores",
-  "casino.heist.hud.obj_5": "O cofre está abrindo...",
-  "casino.heist.hud.obj_6": "Saqueie os carrinhos antes que feche!",
-  "casino.heist.hud.obj_7": "Fuja! Saia do cassino com vida",
-  "casino.heist.hud.obj_8": "Pegue os ladrões brilhando (%s restantes)",
+  "casino.heist.hud.obj_4": "Hackeie o console do portão (sala dos guardas)",
+  "casino.heist.hud.obj_5": "Desça, passe os lasers (mortais!) e use os 2 leitores",
+  "casino.heist.hud.obj_6": "O cofre está abrindo...",
+  "casino.heist.hud.obj_7": "Saqueie os carrinhos antes que feche!",
+  "casino.heist.hud.obj_8": "Fuja! Saia do cassino com vida",
   "casino.heist.hud.suspicion": "Suspeita",
   "casino.heist.hud.combo": "Combinação: %s",
   "casino.heist.hud.vault_time": "Cofre: %s",
@@ -878,5 +878,10 @@
   "casino.tournament.hud_title": "TORNEIO: %s",
   "casino.tournament.hud_left": "Termina em %s",
   "casino.tournament.hud_me": "Você: #%s (%s)",
-  "casino.tournament.hud_join": "Jogue para entrar na tabela!"
+  "casino.tournament.hud_join": "Jogue para entrar na tabela!",
+  "casino.heist.hud.obj_9": "Pegue os ladrões brilhando (%s restantes)",
+  "casino.heist.laser_kill": "Um laser te desintegrou!",
+  "casino.heist.gate_idle": "O console do portão. Está travado.",
+  "casino.heist.gate_already": "O portão já está aberto.",
+  "casino.heist.gate_open": "Portão aberto! Lá embaixo: lasers e o cofre."
 }

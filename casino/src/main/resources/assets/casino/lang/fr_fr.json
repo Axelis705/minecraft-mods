@@ -826,11 +826,11 @@
   "casino.heist.hud.obj_1": "Trouve les 3 notes avec la combinaison",
   "casino.heist.hud.obj_2": "Ouvre le coffre du bureau du directeur",
   "casino.heist.hud.obj_3": "Utilise la carte sur le lecteur de l'escalier",
-  "casino.heist.hud.obj_4": "Descends, passe les lasers et passe les 2 lecteurs",
-  "casino.heist.hud.obj_5": "La chambre forte s'ouvre...",
-  "casino.heist.hud.obj_6": "Pille les chariots avant la fermeture !",
-  "casino.heist.hud.obj_7": "Fuis ! Sors du casino vivant",
-  "casino.heist.hud.obj_8": "Attrape les voleurs qui brillent (%s restants)",
+  "casino.heist.hud.obj_4": "Pirate la console de la grille (salle des gardes)",
+  "casino.heist.hud.obj_5": "Descends, passe les lasers (mortels !) et les 2 lecteurs",
+  "casino.heist.hud.obj_6": "La chambre forte s'ouvre...",
+  "casino.heist.hud.obj_7": "Pille les chariots avant la fermeture !",
+  "casino.heist.hud.obj_8": "Fuis ! Sors du casino vivant",
   "casino.heist.hud.suspicion": "Soupçon",
   "casino.heist.hud.combo": "Combinaison : %s",
   "casino.heist.hud.vault_time": "Chambre forte : %s",
@@ -878,5 +878,10 @@
   "casino.tournament.hud_title": "TOURNOI : %s",
   "casino.tournament.hud_left": "Fin dans %s",
   "casino.tournament.hud_me": "Toi : #%s (%s)",
-  "casino.tournament.hud_join": "Joue pour entrer au classement !"
+  "casino.tournament.hud_join": "Joue pour entrer au classement !",
+  "casino.heist.hud.obj_9": "Attrape les voleurs qui brillent (%s restants)",
+  "casino.heist.laser_kill": "Un laser t'a désintégré !",
+  "casino.heist.gate_idle": "La console de la grille. Verrouillée.",
+  "casino.heist.gate_already": "La grille est déjà ouverte.",
+  "casino.heist.gate_open": "Grille ouverte ! En bas : lasers et chambre forte."
 }

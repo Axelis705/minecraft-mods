@@ -62,6 +62,17 @@ public final class DealerProps {
                 b.box(-0.032, -0.17, -0.032, 0.032, -0.2, 0.032, 0x1F4A2A);
                 b.box(-0.018, -0.2, -0.018, 0.018, -0.3, 0.018, 0x24552F);
                 b.box(-0.021, -0.3, -0.021, 0.021, -0.325, 0.021, 0xD9A93A);
+                if (tilt > 0.55F) {
+                    // el chorro: sale de la boca y cae derecho al vaso (se deshace la inclinación para que baje vertical)
+                    ps.pushPose();
+                    ps.translate(0, -0.325, 0);
+                    ps.mulPose(new Quaternionf().rotationZ(-(right ? 1 : -1) * tilt * 1.9F));
+                    B s = new B(d.cutout(WHITE), ps.last(), light);
+                    float len = 0.19F * Math.min(1F, (tilt - 0.55F) / 0.3F);
+                    s.box(-0.011, 0.0, -0.011, 0.011, len, 0.011, 0xC8102E);
+                    s.box(-0.006, 0.0, -0.016, 0.006, len * 0.9, -0.011, 0xE0457A);
+                    ps.popPose();
+                }
             }
             case GLASS_EMPTY, GLASS_FULL -> {
                 b.box(-0.04, 0.07, -0.04, 0.04, 0.06, 0.04, 0xD8E8EE);

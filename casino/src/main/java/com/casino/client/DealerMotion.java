@@ -230,43 +230,46 @@ public final class DealerMotion {
         Vec3 shoe = local(o, f, shoeX, TABLE_Y + 0.12, SHOE_Z);
         double[] cur = null;
         double[] prev = null;
+        // cada carta: la toma del zapato (PICK ticks antes), la desliza sobre la mesa con la mano hasta HOLD del camino (la carta de la
+        // mesa va justo bajo la palma: mismo camino y misma curva que en el dibujo de la mesa) y la suelta; luego vuelve por la siguiente
+        double fly = com.casino.game.CardTiming.FLY, pick = com.casino.game.CardTiming.PICK, hold = com.casino.game.CardTiming.HOLD * fly;
         for (double[] d : deals) {
             double p = time - d[0];
-            if (p >= -5 && p <= 3.5 && (cur == null || d[0] > cur[0])) {
+            if (p >= -pick && p <= hold && (cur == null || d[0] > cur[0])) {
                 cur = d;
             }
         }
         if (cur == null) {
             for (double[] d : deals) {
                 double p = time - d[0];
-                if (p > 3.5 && p <= 10 && (cur == null || d[0] > cur[0])) {
+                if (p > hold && p <= hold + 9 && (cur == null || d[0] > cur[0])) {
                     cur = d;
                 }
             }
         }
         if (cur != null) {
             for (double[] d : deals) {
-                if (d[0] < cur[0] && cur[0] - d[0] <= 6 && (prev == null || d[0] > prev[0])) {
+                if (d[0] < cur[0] && cur[0] - d[0] <= com.casino.game.CardTiming.GAP + 2 && (prev == null || d[0] > prev[0])) {
                     prev = d;
                 }
             }
             double p = time - cur[0];
-            Vec3 tgt = lerp(shoe, local(o, f, cur[1], TABLE_Y + 0.08, cur[2]), 0.5);
+            Vec3 dest = local(o, f, cur[1], TABLE_Y + 0.08, cur[2]);
             Vec3 hand;
             float w;
             if (p < 0) {
-                Vec3 from = prev != null ? lerp(shoe, local(o, f, prev[1], TABLE_Y + 0.08, prev[2]), 0.5) : shoe;
-                hand = lerp(from, shoe, smooth((p + 5) / 4));
-                w = prev != null ? 1 : smooth((p + 5) / 4);
-                if (p > -2) {
+                Vec3 from = prev != null ? cardAt(shoe, local(o, f, prev[1], TABLE_Y + 0.08, prev[2]), com.casino.game.CardTiming.HOLD) : shoe;
+                hand = lerp(from, shoe, smooth((p + pick) / (pick - 1)));
+                w = prev != null ? 1 : smooth((p + pick) / 4);
+                if (p > -3) {
                     propL = DealerProps.CARD; // la carta en la mano, saliendo del zapato
                 }
-            } else if (p <= 3.5) {
-                hand = lerp(shoe, tgt, smooth(p / 3.5));
+            } else if (p <= hold) {
+                hand = cardAt(shoe, dest, p / fly).add(0, 0.03, 0);
                 w = 1;
             } else {
-                hand = tgt;
-                w = 1 - smooth((p - 3.5) / 6.5);
+                hand = cardAt(shoe, dest, com.casino.game.CardTiming.HOLD).add(0, 0.03 + 0.08 * smooth((p - hold) / 5), 0);
+                w = 1 - smooth((p - hold) / 9);
             }
             armL(hand, w);
             look(hand, 0.55F * w);
@@ -283,6 +286,13 @@ public final class DealerMotion {
             rz = (float) (q > 0 && q < 8 ? -1.2 * Math.sin(Math.PI * q / 8) : 0);
             look(card, 0.7F * w);
         }
+    }
+
+    /** Dónde va la carta que se desliza (t de 0 a 1), con la misma curva que la mesa: frena al llegar y se eleva un poco a la mitad. */
+    private static Vec3 cardAt(Vec3 shoe, Vec3 dest, double t) {
+        t = Math.max(0, Math.min(1, t));
+        double e = 1 - (1 - t) * (1 - t);
+        return lerp(shoe, dest, e).add(0, Math.sin(Math.PI * t) * 0.12, 0);
     }
 
     // ------------------------------------------------------------------ ruleta
@@ -445,7 +455,7 @@ public final class DealerMotion {
             Vec3 shelf = back ? new Vec3(ex - fx * 0.9 + rxv * 0.35, ey + 1.45, ez - fz * 0.9 + rzv * 0.35)
                     : new Vec3(ex + fx * 0.35 + rxv * 0.2, ey + 0.55, ez + fz * 0.35 + rzv * 0.2);
             Vec3 under = new Vec3(ex + fx * 0.35 - rxv * 0.25, ey + 0.6, ez + fz * 0.35 - rzv * 0.25);
-            Vec3 pour = glass.add(rxv * 0.12, 0.32, rzv * 0.12);
+            Vec3 pour = glass.add(rxv * 0.28, 0.36, rzv * 0.28);   // así la boca de la botella inclinada queda justo sobre el vaso
             Player p = Minecraft.getInstance().player;
             Vec3 give = p != null && p.distanceToSqr(ex, ey, ez) < 49 ? p.position().add(0, 1.15, 0) : front.add(fx * 0.8, 1.2, fz * 0.8);
             // mano derecha: botella

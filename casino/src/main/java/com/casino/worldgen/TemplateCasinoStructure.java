@@ -37,7 +37,7 @@ public class TemplateCasinoStructure extends Structure {
 
     /** Cuántos bloques de la plantilla quedan bajo el suelo (sótanos). El piso de la planta baja queda al nivel del terreno. */
     public static int sink(String template) {
-        return "the_diamond".equals(template) ? 26 : 0;
+        return "the_diamond".equals(template) ? 38 : 0;
     }
 
     public TemplateCasinoStructure(Structure.StructureSettings settings, String template, int maxSlope) {
