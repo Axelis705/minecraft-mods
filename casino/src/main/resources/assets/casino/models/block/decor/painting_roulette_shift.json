@@ -1,0 +1,6 @@
+{
+ "parent": "casino:block/decor/painting_frame_shift",
+ "textures": {
+  "art": "casino:block/decor/painting_roulette"
+ }
+}

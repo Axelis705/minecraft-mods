@@ -91,10 +91,9 @@ public final class ModDecor {
     /** Camastro de la terraza: te sientas mirando hacia su frente (las piernas). */
     public static final RegistryObject<Block> SUN_LOUNGER = block("sun_lounger", p -> new SeatBlock(p.mapColor(MapColor.SNOW).strength(1.5F)
             .sound(SoundType.WOOD).noOcclusion(), 0.42, new double[]{1.2, 0, 0, 14.8, 7.6, 16}, new double[]{2.8, 7.6, 10, 13.2, 15, 16}));
-    /** Sombrilla de alberca: solo el mástil y la base chocan; la lona (casi 3x3) queda arriba, a casi dos bloques del piso. */
-    public static final RegistryObject<Block> PARASOL = block("parasol", p -> new DecorBlock(
-            p.mapColor(MapColor.COLOR_BLUE).strength(1.0F).sound(SoundType.WOOL).noOcclusion(), true,
-            new double[]{3.5, 0, 3.5, 12.5, 2.4, 12.5}, new double[]{7.3, 2.4, 7.3, 8.7, 16, 8.7}));
+    /** Sombrilla de alberca: dos bloques de alto; solo el mástil y la base chocan; la lona (casi 3x3) queda a dos bloques y medio. */
+    public static final RegistryObject<Block> PARASOL = block("parasol", p -> new com.casino.decor.ParasolBlock(
+            p.mapColor(MapColor.COLOR_BLUE).strength(1.0F).sound(SoundType.WOOL).noOcclusion()));
     public static final List<RegistryObject<Block>> ROPE_POSTS = new ArrayList<>();
 
     static {

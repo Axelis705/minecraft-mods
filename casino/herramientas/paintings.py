@@ -301,25 +301,36 @@ def textures():
         small.save(os.path.join(OUT, f"painting_{name}.png"))
 
 
-def models():
-    # marco de 2x2 bloques centrado en el bloque (de -8 a 24 de ancho, de 0 a 32 de alto); el cuadro mira al norte, pegado a la pared sur
-    e = [box([-8, 0, 15.2], [24, 32, 16], "lac", faces=["north", "south", "up", "down", "west", "east"]),
-         box([-6, 2, 14.9], [22, 30, 15.2], "#art", faces=["north"], uv={"north": [0, 0, 16, 16]}),
-         box([-8, 30, 13.9], [24, 32, 15.2], "gold"), box([-8, 0, 13.9], [24, 2, 15.2], "gold"),
-         box([-8, 2, 13.9], [-6, 30, 15.2], "gold"), box([22, 2, 13.9], [24, 30, 15.2], "gold"),
-         box([-6, 29.4, 14.4], [22, 30, 14.9], "gold"), box([-6, 2, 14.4], [22, 2.6, 14.9], "gold"),
-         box([-6, 2.6, 14.4], [-5.4, 29.4, 14.9], "gold"), box([21.4, 2.6, 14.4], [22, 29.4, 14.9], "gold")]
+def frame(dx=0):
+    """Marco de 2x2 bloques; con dx=8 queda corrido medio bloque (de 0 a 32 en vez de -8 a 24)."""
+    X = lambda v: v + dx
+    e = [box([X(-8), 0, 15.2], [X(24), 32, 16], "lac", faces=["north", "south", "up", "down", "west", "east"]),
+         box([X(-6), 2, 14.9], [X(22), 30, 15.2], "#art", faces=["north"], uv={"north": [0, 0, 16, 16]}),
+         box([X(-8), 30, 13.9], [X(24), 32, 15.2], "gold"), box([X(-8), 0, 13.9], [X(24), 2, 15.2], "gold"),
+         box([X(-8), 2, 13.9], [X(-6), 30, 15.2], "gold"), box([X(22), 2, 13.9], [X(24), 30, 15.2], "gold"),
+         box([X(-6), 29.4, 14.4], [X(22), 30, 14.9], "gold"), box([X(-6), 2, 14.4], [X(22), 2.6, 14.9], "gold"),
+         box([X(-6), 2.6, 14.4], [X(-5.4), 29.4, 14.9], "gold"), box([X(21.4), 2.6, 14.4], [X(22), 29.4, 14.9], "gold")]
     for (x, y) in ((-8, 0), (22, 0), (-8, 30), (22, 30)):
-        e.append(box([x - 0.4, 0 if y == 0 else y - 0.4, 13.5], [x + 2.4, 2.4 if y == 0 else 31.9, 14.0], "gold"))   # sin salir de -16..32 (zfix puede sumar 0.01)
-    dm.model("painting_frame", e, textures={"art": "casino:block/decor/painting_diamond"}, particle="casino:block/decor/gold")
+        x0, x1 = max(-15.9, X(x) - 0.4), min(31.9, X(x) + 2.4)        # sin salir de -16..32 (zfix puede sumar 0.01)
+        e.append(box([x0, 0 if y == 0 else y - 0.4, 13.5], [x1, 2.4 if y == 0 else 31.9, 14.0], "gold"))
+    return e
+
+
+def models():
+    # marco de 2x2 bloques centrado en el bloque (de -8 a 24 de ancho, de 0 a 32 de alto); el cuadro mira al norte, pegado a la pared sur.
+    # La variante "shift" lo corre medio bloque hacia +x (para centrarlo en un paño de ancho par).
+    dm.model("painting_frame", frame(0), textures={"art": "casino:block/decor/painting_diamond"}, particle="casino:block/decor/gold")
+    dm.model("painting_frame_shift", frame(8), textures={"art": "casino:block/decor/painting_diamond"}, particle="casino:block/decor/gold")
     variants = {}
     for i, n in enumerate(NAMES):
         dm.child(f"painting_{n}", "painting_frame", {"art": f"casino:block/decor/painting_{n}"})
+        dm.child(f"painting_{n}_shift", "painting_frame_shift", {"art": f"casino:block/decor/painting_{n}"})
         for f, y in (("north", 0), ("east", 90), ("south", 180), ("west", 270)):
-            v = {"model": f"casino:block/decor/painting_{n}"}
-            if y:
-                v["y"] = y
-            variants[f"design={i},facing={f}"] = v
+            for sh in ("false", "true"):
+                v = {"model": f"casino:block/decor/painting_{n}" + ("_shift" if sh == "true" else "")}
+                if y:
+                    v["y"] = y
+                variants[f"design={i},facing={f},shift={sh}"] = v
     write(os.path.join(A, "blockstates", "casino_painting.json"), {"variants": variants})
     disp = {"gui": {"rotation": [0, 180, 0], "translation": [-2, -2, 0], "scale": [0.42, 0.42, 0.42]},
             "ground": {"translation": [0, 3, 0], "scale": [0.2, 0.2, 0.2]},

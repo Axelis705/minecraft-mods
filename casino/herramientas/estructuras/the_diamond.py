@@ -637,7 +637,7 @@ shaft(Y_VIP + 1, Y_VIP_TOP - 1, Y_VIP)
 elevator_stop(Y_VIP, 0, 'mesas')
 # salón de mesas, simétrico respecto a x=30: a cada lado una ruleta (al norte) y un blackjack (al sur), mirando al centro, y el
 # póker en medio. Los candelabros grandes los pone el techo (más abajo).
-mq.place(o, 'poker', CX, Y_VIP + 1, 22, 2)
+mq.place(o, 'poker', CX, Y_VIP + 1, 24, 0)       # mira al elevador: el crupier queda del lado de la terraza
 mq.place(o, 'roulette', 22, Y_VIP + 1, 19, 1)
 mq.place(o, 'roulette', 38, Y_VIP + 1, 19, 3)
 mq.place(o, 'blackjack', 22, Y_VIP + 1, 28, 1)
@@ -687,7 +687,9 @@ for x in range(CX - 10, CX + 11):
             o.set(x, Y_ROOF - 3, z, LIGHT)
 LOUNGER, PARASOL = 'casino:sun_lounger', 'casino:parasol'
 def lounger(x, z, f): o.set(x, Y_ROOF + 1, z, f'{LOUNGER}[facing={f}]')
-def parasol(x, z): o.set(x, Y_ROOF + 1, z, f'{PARASOL}[facing=north]')
+def parasol(x, z, y=None):
+    y = Y_ROOF + 1 if y is None else y
+    o.set(x, y, z, f'{PARASOL}[facing=north,half=lower]'); o.set(x, y + 1, z, f'{PARASOL}[facing=north,half=upper]')
 # camastros con sombrilla en medio, en grupos de 3, todo en espejo respecto a x=30: al norte de la alberca mirándola (dejando libre la
 # salida de la puerta, x 27..33) y al sur, a los lados del bar
 for (xa, xb) in ((20, 22), (24, 26), (34, 36), (38, 40)):
@@ -710,20 +712,11 @@ for x in (CX - 3, CX + 3):
 for x in (CX - 2, CX + 2):
     o.set(x, Y_ROOF + 1, TER_Z0 + 15, shelf('north'))
 o.marker(CX, Y_ROOF + 1, TER_Z0 + 15, 'bartender 0', [(0, 0, 0, 'minecraft:purple_wool'), (0, 1, 0, 'minecraft:purple_wool')])
-# jacuzzis redondos a los lados de la alberca: borde de cuarzo, agua con burbujas (arena de almas abajo) y escalón
-def jacuzzi(cx_, cz_):
-    for dx in range(-2, 3):
-        for dz in range(-2, 3):
-            if abs(dx) == 2 and abs(dz) == 2: continue
-            x, z = cx_ + dx, cz_ + dz
-            if abs(dx) <= 1 and abs(dz) <= 1:
-                o.set(x, Y_ROOF, z, 'minecraft:soul_sand' if dx == 0 and dz == 0 else 'minecraft:prismarine_bricks')
-                o.set(x, Y_ROOF + 1, z, 'minecraft:water')
-            else:
-                o.set(x, Y_ROOF + 1, z, 'minecraft:smooth_quartz_slab[type=bottom]' if dz == 2 * (1 if cz_ < 0 else 1) and dx == 0 else SQ)
-    for (dx, dz) in ((-2, -2), (2, -2), (-2, 2), (2, 2)):
-        o.set(cx_ + dx, Y_ROOF + 1, cz_ + dz, 'minecraft:potted_fern')
-jacuzzi(17, TER_Z0 + 8); jacuzzi(43, TER_Z0 + 8)
+# a los lados de la alberca (donde iban los jacuzzis): camastros mirando a la alberca, sombrilla en medio y macetas
+for (x, f) in ((17, 'east'), (43, 'west')):
+    lounger(x, TER_Z0 + 7, f); parasol(x, TER_Z0 + 8); lounger(x, TER_Z0 + 9, f)
+    for z in (TER_Z0 + 6, TER_Z0 + 10):
+        o.set(x, Y_ROOF + 1, z, 'minecraft:potted_azalea_bush')
 # palmeras en las 4 esquinas de la zona de la alberca (tronco de jungla y copa en estrella)
 def palm(x, z, lean):
     o.set(x, Y_ROOF + 1, z, GB)
@@ -793,20 +786,8 @@ def garden(sx):
         for dz in range(-3, 4):
             if abs(dx - 0.5) + abs(dz) <= 5.5:
                 o.set(X(gx + dx), Y_ROOF, GCZ + dz, 'minecraft:packed_mud' if (dx + dz) % 3 else 'minecraft:mud_bricks')
-    # fuente: pila de 4 x 4 con orilla de cuarzo y columna al centro de la que cae el agua
-    for dx in range(-1, 3):
-        for dz in range(-1, 3):
-            edge = dx in (-1, 2) or dz in (-1, 2)
-            x, z = X(gx + dx), GCZ + dz - 1 + 1
-            if edge:
-                o.set(x, Y_ROOF + 1, z, 'minecraft:smooth_quartz_slab[type=bottom]' if (dx in (-1, 2)) != (dz in (-1, 2)) else 'minecraft:chiseled_quartz_block')
-            else:
-                o.set(x, Y_ROOF, z, 'minecraft:prismarine_bricks')
-                o.set(x, Y_ROOF + 1, z, 'minecraft:water')
-    # (la columna no: el agua que cae se regaría fuera de una pila tan chica; mejor un remate dorado con luz en cada esquina)
-    for (dx, dz) in ((-1, -1), (2, -1), (-1, 2), (2, 2)):
-        o.set(X(gx + dx), Y_ROOF + 2, GCZ + dz, 'minecraft:end_rod[facing=up]')
-    # bancas mirando a la fuente (sofás blancos no hay: negros, como en el salón)
+    # (Axelis quitó la fuente: la plaza queda libre, de lodo compactado)
+    # bancas alrededor de la plaza (negras, como en el salón)
     for dz in (0, 1):
         o.set(X(gx - 3), Y_ROOF + 1, GCZ + dz, sofa('black', side('east')))
         o.set(X(gx + 4), Y_ROOF + 1, GCZ + dz, sofa('black', side('west')))
@@ -1586,11 +1567,19 @@ for x in SLOT_X:
 PAINT = {'diamond': 0, 'derby': 1, 'roulette': 2, 'royal_flush': 3, 'dice': 4, 'chips': 5, 'vegas': 6, 'cocktail': 7}
 _FD = {'north': (0, -1), 'south': (0, 1), 'east': (1, 0), 'west': (-1, 0)}
 PAINTINGS_OK = []
-def painting(x, y, z, facing, art):
-    """Cuelga un cuadro mirando a 'facing' (hacia la sala), pegado a la pared de atrás. Quita apliques que estorben."""
+# hacia dónde corre el cuadro la variante "shift" (el +x del modelo, girado según hacia dónde mira)
+_SHIFT_DIR = {'north': (1, 0), 'south': (-1, 0), 'east': (0, 1), 'west': (0, -1)}
+def painting(x, y, z, facing, art, shift=False):
+    """Cuelga un cuadro mirando a 'facing' (hacia la sala), pegado a la pared de atrás. Quita apliques que estorben (también el de
+    justo encima). Con shift el cuadro queda corrido medio bloque (ver painting_at)."""
     dx, dz = _FD[facing]
     lx, lz = (1, 0) if dx == 0 else (0, 1)
-    cells = [(x + lx * k, yy, z + lz * k) for k in (-1, 0, 1) for yy in (y, y + 1)]
+    if shift:
+        sx_, sz_ = _SHIFT_DIR[facing]
+        ks = (0, 1) if (sx_ + sz_) > 0 else (-1, 0)
+    else:
+        ks = (-1, 0, 1)
+    cells = [(x + lx * k, yy, z + lz * k) for k in ks for yy in (y, y + 1)]
     for (cx_, cy_, cz_) in cells:
         st = o.get(cx_, cy_, cz_)
         if not (st == AIR or st.startswith('minecraft:light') or st.startswith('minecraft:end_rod')):
@@ -1598,15 +1587,48 @@ def painting(x, y, z, facing, art):
         wall = o.get(cx_ - dx, cy_, cz_ - dz)
         if wall == AIR:
             raise SystemExit(f'cuadro en {x},{y},{z}: no hay pared detrás en {cx_ - dx},{cy_},{cz_ - dz}')
-    for (cx_, cy_, cz_) in cells:
+    for (cx_, cy_, cz_) in cells + [(a, b + 2, c) for (a, b, c) in cells]:
         if o.get(cx_, cy_, cz_).startswith('minecraft:end_rod'):
             o.set(cx_, cy_, cz_, AIR)
-    o.set(x, y, z, f'casino:casino_painting[design={PAINT[art]},facing={facing}]')
+    o.set(x, y, z, f'casino:casino_painting[design={PAINT[art]},facing={facing},shift={"true" if shift else "false"}]')
     PAINTINGS_OK.append((x, y, z))
+
+def painting_at(c, other, y, facing, art):
+    """Cuadro centrado en la coordenada c a lo largo de la pared (c = n + 0.5 es el centro del bloque n; un número entero es la
+    junta entre dos bloques, y entonces se usa la variante corrida medio bloque). other = la otra coordenada (z o x)."""
+    along_x = facing in ('north', 'south')
+    if abs(c - round(c)) == 0.5:
+        p, sh = int(c - 0.5), False
+    else:
+        sx_, sz_ = _SHIFT_DIR[facing]
+        p, sh = (int(c) - 1 if (sx_ + sz_) > 0 else int(c)), True
+    if along_x:
+        painting(p, y, other, facing, art, sh)
+    else:
+        painting(other, y, p, facing, art, sh)
 # ---- ajustes que Axelis hizo a mano (pilastras del sótano, letrero VIP BAR con luz, apliques, techo junto al elevador...)
-from ajustes_axelis import AXELIS_PATCH
+from ajustes_axelis import AXELIS_PATCH, AXELIS_PATCH_PH
 for (x, y, z, st) in AXELIS_PATCH:
     o.set(x, y, z, st)
+# ---- penthouse y azotea con los cambios del 15 nov (ver ajustes_axelis.py)
+for (x, y, z, st) in AXELIS_PATCH_PH:
+    o.set(x, y, z, st)
+for z in (21, 23, 25, 27):
+    o.set(SX0 + 1, Y_PH_TOP + 1, z, stool('purple', 'east'))           # taburetes del lado de la pared, mirando a la barra
+for x in (CX - 6, CX + 6):
+    o.set(x, Y_PH_TOP, 29, 'casino:marble_black')                       # la orilla dorada de la pista, igual de corta en los dos lados
+# donde estaba la recámara (noroeste): un rincón chico para platicar, en espejo con el jacuzzi del otro lado: tapete de 5 x 5 con
+# orilla dorada, dos sofás frente a frente, mesita con bebidas, lámparas de pie y plantas
+RX, RZ = 23, 16
+for x in range(RX - 2, RX + 3):
+    for z in range(RZ - 2, RZ + 3):
+        o.set(x, Y_PH, z, GT if abs(x - RX) == 2 or abs(z - RZ) == 2 else 'casino:casino_floor_lounge')
+for x in range(RX - 1, RX + 2):
+    o.set(x, P, RZ - 2, sofa('purple', 'south')); o.set(x, P, RZ + 2, sofa('purple', 'north'))
+o.set(RX, P, RZ, TABLE_B); o.set(RX, P + 1, RZ, drinks(2))
+for x in (RX - 2, RX + 2):
+    o.set(x, P, RZ - 2, 'minecraft:potted_azalea_bush'); o.set(x, P, RZ + 2, 'minecraft:potted_azalea_bush')
+    o.set(x, P, RZ, 'minecraft:dark_oak_fence'); o.set(x, P + 1, RZ, 'minecraft:end_rod[facing=up]')
 # los apliques que quitó en la planta baja se quitan en todo el casino por igual (lado espejo incluido)
 for (x, y, z, st) in AXELIS_PATCH:
     if y > 0 and st == 'minecraft:air' and o.get(60 - x, y, z).startswith('minecraft:end_rod'):
@@ -1618,14 +1640,14 @@ for x in (21, 39):          # y en el bar y los slots, también del otro lado de
 # ---- planta baja: cuadros un bloque más arriba (y 6), en pares simétricos
 painting(6, 6, 32, 'east', 'cocktail')          # bar, pared del fondo
 painting(54, 6, 32, 'west', 'chips')            # tragamonedas, pared del fondo
-painting(15, 6, 42, 'south', 'royal_flush')     # caja
-painting(15, 6, 49, 'north', 'diamond')
-painting(45, 6, 42, 'south', 'roulette')        # premios (espejo)
-painting(45, 6, 49, 'north', 'dice')
+painting_at(14.0, 42, 6, 'south', 'royal_flush')   # caja (centrado en su paño, x 12..15)
+painting_at(14.0, 49, 6, 'north', 'diamond')
+painting_at(47.0, 42, 6, 'south', 'roulette')      # premios (espejo: x 45..48)
+painting_at(47.0, 49, 6, 'north', 'dice')
 painting(23, 6, 23, 'east', 'vegas')            # salón de la rueda: entre el show y el bar / el plinko y los slots
 painting(37, 6, 23, 'west', 'vegas')
-painting(23, 6, 39, 'east', 'diamond')          # entre el bar y la caja / los slots y premios
-painting(37, 6, 39, 'west', 'diamond')
+painting_at(40.0, 23, 6, 'east', 'diamond')       # entre el bar y la caja / los slots y premios (paño z 37..42)
+painting_at(40.0, 37, 6, 'west', 'diamond')
 # ---- detrás de la rueda, a los lados: dos marcos dorados con pantalla
 for (x0, scr) in ((26, 0), (32, 0)):
     for x in range(x0, x0 + 3):
@@ -1650,23 +1672,23 @@ for (x, z) in ((40, 10), (39, 11), (53, 10), (IX1, 11), (40, 21), (39, 20), (53,
     o.set(x, 1, z, 'minecraft:potted_fern')
 for x in (46, 47):
     o.set(x, 1, 10, sofa('purple', 'south')); o.set(x, 1, 21, sofa('purple', 'north'))
-# ---- sótano: mesa privada de blackjack para VIP entre el bar y el elevador, y vitrina del diamante con cordones en rombo
-mq.place(o, 'blackjack', 23, YB + 1, 13, 2)
+# ---- sótano: mesa privada de póker para VIP entre el bar y el elevador, y vitrina del diamante con cordones en rombo
+mq.place(o, 'poker', 23, YB + 1, 13, 2)
 for (x, z) in ((34, 12), (36, 12), (35, 11), (35, 13)):
     o.set(x, YB + 1, z, rope('purple'))
 o.set(35, YB + 1, 12, GB); o.set(35, YB + 2, 12, 'minecraft:diamond_block')
 for x in (33, 37):
     o.set(x, YB + 1, 10, 'minecraft:potted_azalea_bush')
-for x in range(15, 18):
-    o.set(x, YB + 1, 10, sofa('purple', 'south'))     # sofá contra la pared norte, centrado bajo el cuadro
+for x in range(15, 19):
+    o.set(x, YB + 1, 10, sofa('purple', 'south'))     # sofá contra la pared norte, centrado bajo el cuadro (x 15..18)
 # ---- primer piso: cuadros en la pared norte, a los lados del elevador
 painting(24, Y_VIP + 5, TZ0 + 1, 'south', 'royal_flush')
 painting(36, Y_VIP + 5, TZ0 + 1, 'south', 'roulette')
 # ---- sótano: cuadros
-painting(16, YB + 4, 10, 'south', 'derby')     # sobre el sofá de la pared norte
+painting_at(17.0, 10, YB + 4, 'south', 'derby')   # sobre el sofá de la pared norte (paño x 14..19)
 painting(30, YB + 6, 16, 'south', 'diamond')   # sobre la puerta del elevador
-painting(37, YB + 6, 22, 'west', 'derby')      # pared de la sala de carreras, del lado del salón
-for (x, art) in ((41, 'derby'), (44, 'vegas'), (48, 'vegas'), (51, 'derby')):   # sala de carreras, pared del fondo (espejo en 46.5)
+painting_at(22.0, 37, YB + 6, 'west', 'derby')   # pared de la sala de carreras, del lado del salón (paño z 20..23)
+for (x, art) in ((40, 'derby'), (44, 'vegas'), (48, 'vegas'), (52, 'derby')):   # sala de carreras, pared del fondo: espejo en 46.5 y cada 4
     painting(x, YB + 6, QZ0 + 1, 'south', art)
 painting(24, YB + 5, FZ, 'north', 'roulette')   # sobre la chimenea
 

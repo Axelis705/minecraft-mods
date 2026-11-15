@@ -1,19 +1,33 @@
 {
  "variants": {
-  "facing=north": {
-   "model": "casino:block/decor/parasol",
-   "y": 0
+  "facing=north,half=lower": {
+   "model": "casino:block/decor/parasol_lower"
   },
-  "facing=east": {
-   "model": "casino:block/decor/parasol",
+  "facing=north,half=upper": {
+   "model": "casino:block/decor/parasol_upper"
+  },
+  "facing=east,half=lower": {
+   "model": "casino:block/decor/parasol_lower",
    "y": 90
   },
-  "facing=south": {
-   "model": "casino:block/decor/parasol",
+  "facing=east,half=upper": {
+   "model": "casino:block/decor/parasol_upper",
+   "y": 90
+  },
+  "facing=south,half=lower": {
+   "model": "casino:block/decor/parasol_lower",
    "y": 180
   },
-  "facing=west": {
-   "model": "casino:block/decor/parasol",
+  "facing=south,half=upper": {
+   "model": "casino:block/decor/parasol_upper",
+   "y": 180
+  },
+  "facing=west,half=lower": {
+   "model": "casino:block/decor/parasol_lower",
+   "y": 270
+  },
+  "facing=west,half=upper": {
+   "model": "casino:block/decor/parasol_upper",
    "y": 270
   }
  }

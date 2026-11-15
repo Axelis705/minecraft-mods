@@ -77,9 +77,19 @@ public abstract class WallDecorBlock extends UseBlock {
     /** Cuadros del casino (8 pinturas de 2x2 con marco dorado). */
     public static class Painting extends WallDecorBlock {
         public static final IntegerProperty DESIGN = IntegerProperty.create("design", 0, 7);
+        /** Corre el cuadro medio bloque hacia un lado, para centrarlo en paños de ancho par (lo usa la plantilla). */
+        public static final net.minecraft.world.level.block.state.properties.BooleanProperty SHIFT =
+                net.minecraft.world.level.block.state.properties.BooleanProperty.create("shift");
 
         public Painting(Properties p) {
             super(p, 2);
+            registerDefaultState(defaultBlockState().setValue(SHIFT, false));
+        }
+
+        @Override
+        protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
+            super.createBlockStateDefinition(b);
+            b.add(SHIFT);
         }
 
         @Override
