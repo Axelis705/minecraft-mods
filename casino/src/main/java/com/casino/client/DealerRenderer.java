@@ -286,6 +286,17 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
 
         ps.pushPose();
         ps.translate(0.0, height + 0.42 + bob, 0.0);
+        // el globo se acerca a la cámara (hasta 1.4 bloques) para quedar delante de lo que tiene alrededor (la rueda, repisas,
+        // columnas); se agranda en la misma proporción, así en pantalla se ve igual pero ya no lo tapan
+        org.joml.Matrix4f pm = ps.last().pose();
+        org.joml.Vector3f at = pm.transformPosition(0, 0, 0, new org.joml.Vector3f());
+        float dist = at.length();
+        float pull = Math.min(1.4F, Math.max(0F, (dist - 1.2F) * 0.5F));
+        if (pull > 0.01F) {
+            org.joml.Vector3f toCam = new org.joml.Matrix4f(pm).invert().transformDirection(new org.joml.Vector3f(at).negate().normalize());
+            ps.translate(toCam.x * pull, toCam.y * pull, toCam.z * pull);
+            scale *= (dist - pull) / dist;
+        }
         ps.mulPose(camera);
         ps.scale(scale, scale, scale);
         // el globo: rectángulos sin escalar (en bloques) para que la luz sea pareja; se dibujan un poco detrás del texto

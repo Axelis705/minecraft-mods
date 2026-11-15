@@ -653,7 +653,7 @@
     13.8
    ],
    "rotation": {
-    "angle": -22.5,
+    "angle": 22.5,
     "axis": "x",
     "origin": [
      8,
@@ -730,7 +730,7 @@
     12.4
    ],
    "rotation": {
-    "angle": -22.5,
+    "angle": 22.5,
     "axis": "x",
     "origin": [
      8,
@@ -807,7 +807,7 @@
     10.8
    ],
    "rotation": {
-    "angle": -22.5,
+    "angle": 22.5,
     "axis": "x",
     "origin": [
      8,

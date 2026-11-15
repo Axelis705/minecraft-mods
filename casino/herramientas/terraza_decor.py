@@ -69,9 +69,9 @@ def lounger():
           box([3.3, 6.8, -5.3], [12.7, 7.1, 10.9], "#canvas", faces=["up"])]
     # respaldo inclinado hacia atrás, detrás de la espalda, con colchoneta y almohada
     piv = [8, 5.2, 12.6]
-    e += [box([2.8, 5.2, 12.4], [13.2, 18.0, 13.8], "#teak", rot=("x", -22.5, piv)),
-          box([3, 5.6, 10.8], [13, 17.6, 12.4], "#canvas", rot=("x", -22.5, piv)),
-          box([4.5, 14.8, 9.4], [11.5, 17.4, 10.8], "#canvas", rot=("x", -22.5, piv))]
+    e += [box([2.8, 5.2, 12.4], [13.2, 18.0, 13.8], "#teak", rot=("x", 22.5, piv)),
+          box([3, 5.6, 10.8], [13, 17.6, 12.4], "#canvas", rot=("x", 22.5, piv)),
+          box([4.5, 14.8, 9.4], [11.5, 17.4, 10.8], "#canvas", rot=("x", 22.5, piv))]
     model("sun_lounger", e, textures={"canvas": "casino:block/decor/canvas_white", "teak": "casino:block/decor/teak"},
           particle="casino:block/decor/canvas_white")
 
