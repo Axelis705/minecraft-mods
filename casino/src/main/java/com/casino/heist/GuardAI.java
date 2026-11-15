@@ -334,7 +334,9 @@ public final class GuardAI {
         HeistManager.hurtPct(t, g.level().damageSources().mobAttack(g), pct);
         Vec3 k = t.position().subtract(g.position()).normalize().scale(0.45);
         t.push(k.x, 0.18, k.z);
+        //#if MC < 26.3
         t.hurtMarked = true;
+        //#endif
         g.level().playSound(null, t.blockPosition(), SoundEvents.PLAYER_ATTACK_STRONG, SoundSource.HOSTILE, 1F, 0.8F);
     }
 

@@ -72,7 +72,7 @@ public final class Tournament {
             return;
         }
         lastTick = now;
-        long dt = ow.getDayTime();
+        long dt = Plat.dayTime(ow);
         long d = dt / 24000L;
         long t = dt % 24000L;
         if (d != day) {

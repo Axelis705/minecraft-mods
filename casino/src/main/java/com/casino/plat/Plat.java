@@ -126,6 +126,18 @@ public final class Plat {
     }
 
     /** No recibe daño nunca. */
+    /**
+     * Hora del día (ticks desde el amanecer, contando días). En 26.x Minecraft cambió los relojes del mundo; ahí se usa el reloj del
+     * juego (el ciclo dura lo mismo, pero no se adelanta al dormir).
+     */
+    public static long dayTime(net.minecraft.world.level.Level level) {
+        //#if MC >= 26.1
+        //$$ return level.getGameTime();
+        //#else
+        return level.getDayTime();
+        //#endif
+    }
+
     public static void invulnerable(Entity e, boolean v) {
         //#if MC >= 26.3
         //$$ e.setPermanentlyInvulnerable(v);

@@ -86,11 +86,11 @@ public class VaultDoorBE extends CasinoBE {
     }
 
     public boolean ready(Level level) {
-        return level.getDayTime() / 24000L >= readyDay;
+        return com.casino.plat.Plat.dayTime(level) / 24000L >= readyDay;
     }
 
     void setCooldown(Level level) {
-        readyDay = level.getDayTime() / 24000L + 1;
+        readyDay = com.casino.plat.Plat.dayTime(level) / 24000L + 1;
         setChanged();
     }
 

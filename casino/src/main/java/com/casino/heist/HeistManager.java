@@ -704,8 +704,12 @@ public final class HeistManager {
                 sound(level, pos, s, 1F, 0.9F + q * 0.15F);
                 if (level instanceof ServerLevel sl) {
                     ItemStack shown = new ItemStack(kind == 0 ? Items.PAPER : kind == 1 ? Items.GOLD_INGOT : kind == 2 ? Items.DIAMOND : Chips.itemFor(100).get());
+                    //#if MC >= 26.1
+                    //$$ sl.sendParticles(ParticleTypes.WAX_ON, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, 10, 0.25, 0.15, 0.25, 0.06);
+                    //#else
                     sl.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, shown), pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, 10, 0.25, 0.15, 0.25,
                             0.06);
+                    //#endif
                 }
                 bar(p, t("grabbed", String.format("%,d", value), m.slots, BAG_SLOTS).withStyle(q == 2 ? ChatFormatting.GREEN : ChatFormatting.YELLOW));
                 sync(level, h);
