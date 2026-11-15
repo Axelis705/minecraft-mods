@@ -51,7 +51,7 @@ public class SaloonDoorBE extends CasinoBE {
         long now = level.getGameTime();
         if (now - lastCreak > 14 && strength > 3F) {
             lastCreak = now;
-            float pitch = 0.75F + level.random.nextFloat() * 0.35F;
+            float pitch = 0.75F + level.getRandom().nextFloat() * 0.35F;
             level.playLocalSound(worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5,
                     com.casino.registry.ModSounds.SALOON_DOOR.get(), SoundSource.BLOCKS, 0.55F, pitch, false);
         }

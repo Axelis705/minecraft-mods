@@ -26,7 +26,7 @@ public final class WestReg {
     }
 
     public static final RegistryObject<Block> SALOON_DOOR = block("saloon_door", () -> new WestBlocks.SaloonDoor(Reg.block("saloon_door")
-            .mapColor(MapColor.WOOD).strength(1.0F).sound(SoundType.WOOD).noOcclusion().noCollission()));
+            .mapColor(MapColor.WOOD).strength(1.0F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Block> VIP_GATE = block("vip_gate", () -> new WestBlocks.VipGate(Reg.block("vip_gate")
             .mapColor(MapColor.COLOR_RED).strength(-1.0F, 3_600_000.0F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Block> PIANO = block("player_piano", () -> new WestBlocks.Piano(Reg.block("player_piano")
@@ -34,7 +34,7 @@ public final class WestReg {
     public static final RegistryObject<Block> PAINTED_LETTER = block("painted_letter", () -> new WestBlocks.PaintedLetter(Reg.block("painted_letter")
             .mapColor(MapColor.WOOD).strength(0.8F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Block> WANTED = block("wanted_poster", () -> new WestBlocks.Wanted(Reg.block("wanted_poster")
-            .mapColor(MapColor.SAND).strength(0.3F).sound(SoundType.WOOL).noOcclusion().noCollission()));
+            .mapColor(MapColor.SAND).strength(0.3F).sound(SoundType.WOOL).noOcclusion()));
 
     public static final RegistryObject<BlockEntityType<SaloonDoorBE>> DOOR_BE = ModBlockEntities.TYPES.register("saloon_door",
             () -> Reg.blockEntity(SaloonDoorBE::new, SALOON_DOOR.get()));

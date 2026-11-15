@@ -144,7 +144,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     private static String tipKey(int game, int variant, int tip) {
         if (variant >= DealerEntity.WEST) {
             String k = "casino.tip." + role(game) + "_west." + (tip >= DealerEntity.SAY ? "say_" + (tip - DealerEntity.SAY) : String.valueOf(tip));
-            if (net.minecraft.client.resources.language.I18n.exists(k)) {
+            if (net.minecraft.locale.Language.getInstance().has(k)) {
                 return k;
             }
         }
@@ -156,7 +156,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             return "casino.npc.patron_" + variant;
         }
         String k = "casino.npc." + role(game) + (variant >= DealerEntity.WEST ? "_west" : "");
-        return net.minecraft.client.resources.language.I18n.exists(k) ? k : "casino.npc." + role(game);
+        return net.minecraft.locale.Language.getInstance().has(k) ? k : "casino.npc." + role(game);
     }
 
     /** Color de la franja de arriba del globo, según quién habla. */
