@@ -43,8 +43,18 @@ public final class DealerAnim {
     public static final int PRESENT = 15;
     /** Festeja con los brazos arriba. */
     public static final int CHEER = 16;
+    /** Bartender: saca la botella (de abajo de la barra o de la repisa de atrás), toma un vaso, sirve y te lo da. */
+    public static final int SERVE = 17;
+    /** Bartender: agita la coctelera arriba del hombro. */
+    public static final int SHAKER = 18;
+    /** Guardia: se toca el auricular y habla por él. */
+    public static final int EARPIECE = 19;
+    /** Cliente: toma un trago de su copa. */
+    public static final int SIP = 20;
+    /** Momento del servicio en que el vaso llega a la mano del jugador (ahí se da el efecto). */
+    public static final int SERVE_HANDOVER = 56;
 
-    private static final int[] TICKS = {0, 18, 36, 14, 16, 26, 24, 20, 26, 30, 20, 16, 40, 22, 34, 30, 32};
+    private static final int[] TICKS = {0, 18, 36, 14, 16, 26, 24, 20, 26, 30, 20, 16, 40, 22, 34, 30, 32, 66, 36, 40, 30};
 
     private DealerAnim() {
     }
@@ -78,7 +88,7 @@ public final class DealerAnim {
             return CLAP;
         }
         if (s == ModSounds.ROULETTE_BELL.get()) {
-            return SPIN;
+            return NONE; // el lanzamiento de la bola lo sigue el cliente con la hora de la mesa (DealerMotion)
         }
         if (s == ModSounds.DENIED.get()) {
             return SHAKE;

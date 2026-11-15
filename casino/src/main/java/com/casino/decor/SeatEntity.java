@@ -33,7 +33,12 @@ public class SeatEntity extends Entity {
         List<SeatEntity> seats = level.getEntitiesOfClass(SeatEntity.class, new net.minecraft.world.phys.AABB(pos));
         for (SeatEntity s : seats) {
             if (s.isVehicle()) {
-                return false;
+                // un cliente del casino le cede el lugar a un jugador
+                boolean patron = s.getFirstPassenger() instanceof com.casino.entity.DealerEntity d && d.isPatron();
+                if (!(patron && who instanceof net.minecraft.world.entity.player.Player)) {
+                    return false;
+                }
+                s.ejectPassengers();
             }
             s.discard();
         }

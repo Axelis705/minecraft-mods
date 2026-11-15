@@ -1711,6 +1711,17 @@ record_screen(28, 32, 6, 8, 16, 'south')
 record_screen(28, 32, Y_VIP + 7, Y_VIP + 8, 16, 'south')
 record_screen(28, 32, Y_PH + 5, Y_PH + 6, 16, 'south')
 
+# ================================================================== CLIENTES (gente que pasea, se sienta, ve las mesas y platica)
+# Cada uno se queda a menos de 11 bloques de donde aparece (no cambian de piso). "patron dir piel".
+PATRONS = [(26, 1, 36), (34, 1, 36), (26, 1, 21), (12, 1, 26), (18, 1, 37), (46, 1, 30), (46, 1, 19), (14, 1, 19), (30, 1, 45),
+           (21, 1, 47), (39, 1, 47),                                   # planta baja (salón, bar, slots, plinko, show, caja y premios)
+           (26, 13, 22), (34, 13, 26), (30, 13, 31),                   # piso de mesas
+           (21, 13, 47), (39, 13, 47), (22, 13, 36),                   # terraza
+           (25, 47, 24), (35, 47, 28),                                 # penthouse
+           (20, -11, 24), (14, -11, 16), (44, -11, 28)]                # sótano (salón VIP y carreras)
+for i, (x, y, z) in enumerate(PATRONS):
+    o.marker(x, y, z, f'patron {i % 4} {(i * 5) % 12}', [(0, 0, 0, 'minecraft:light_blue_wool')])
+
 # ================================================================== CORDONES: uniones ya calculadas en la plantilla (rectas y en diagonal)
 def _ropes():
     posts = {k: v for k, v in o.b.items() if v.startswith('casino:rope_post')}

@@ -52,6 +52,11 @@ public class SeatBlock extends UseBlock implements SeatEntity.Seat {
         return shapes.get(s.getValue(FACING));
     }
 
+    /** Altura del asiento en bloques (para sentar también a los clientes del casino). */
+    public double seatHeight() {
+        return seatHeight;
+    }
+
     @Override
     public Direction front(BlockState state) {
         return state.getValue(FACING);

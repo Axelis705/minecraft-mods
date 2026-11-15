@@ -22,6 +22,15 @@ public final class DealerAnimator {
      * @param talkAge ticks desde que empezó a hablar (o -1 si no habla)
      */
     public static void apply(int game, int anim, float t, float age, float talkAge, ModelPart head, ModelPart rArm, ModelPart lArm) {
+        apply(game, anim, t, age, talkAge, head, null, rArm, lArm, null);
+    }
+
+    /**
+     * Igual, más lo que pasa en la mesa ({@link DealerMotion}): brazos que apuntan a la carta, la bola, la rueda o el vaso, la cabeza
+     * que los sigue y el torso que gira un poco hacia donde trabaja.
+     */
+    public static void apply(int game, int anim, float t, float age, float talkAge, ModelPart head, ModelPart body, ModelPart rArm, ModelPart lArm,
+            DealerMotion m) {
         float[] r = {rArm.xRot, rArm.yRot, rArm.zRot};
         float[] l = {lArm.xRot, lArm.yRot, lArm.zRot};
         float[] h = {0, 0, 0};
@@ -46,6 +55,29 @@ public final class DealerAnimator {
             lerp(r, ar, k);
             lerp(l, al, k);
             lerp(h, ah, k);
+        }
+        if (m != null) {
+            if (body != null && m.twist != 0) {
+                // giro del torso como el de vanilla al golpear: los hombros se mueven con él
+                body.yRot += m.twist;
+                rArm.z = Mth.sin(m.twist) * 5.0F;
+                rArm.x = -Mth.cos(m.twist) * 5.0F;
+                lArm.z = -Mth.sin(m.twist) * 5.0F;
+                lArm.x = Mth.cos(m.twist) * 5.0F;
+                r[1] += m.twist;
+                l[1] += m.twist;
+            }
+            if (m.rw > 0) {
+                lerp(r, new float[]{m.rx, m.ry, m.rz}, Math.min(1F, m.rw));
+            }
+            if (m.lw > 0) {
+                lerp(l, new float[]{m.lx, m.ly, m.lz}, Math.min(1F, m.lw));
+            }
+            if (m.hw > 0) {
+                float k = Math.min(1F, m.hw);
+                head.xRot += (m.hx - head.xRot) * k;
+                head.yRot += (m.hy - head.yRot) * k;
+            }
         }
         rArm.xRot = r[0];
         rArm.yRot = r[1];
@@ -187,6 +219,21 @@ public final class DealerAnimator {
                 set(r, -0.55F * a, 0.0F, 1.0F * a);
                 set(l, -0.55F * a, 0.0F, -1.0F * a);
                 h[0] = -0.1F;
+            }
+            case DealerAnim.SHAKER -> {
+                // coctelera arriba del hombro derecho, con las dos manos, agitando
+                float s = Mth.sin(t * 1.7F) * 0.22F;
+                float in = smooth(Mth.clamp(t / 5F, 0, 1)) * (1 - smooth(Mth.clamp((t - 30) / 6F, 0, 1)));
+                set(r, -2.35F * in + s * in, -0.35F, 0.25F);
+                set(l, -2.15F * in + s * in, 0.75F, -0.15F);
+                h[0] = -0.1F;
+                h[2] = 0.08F * Mth.sin(t * 0.6F);
+            }
+            case DealerAnim.EARPIECE -> {
+                // se toca el auricular y "escucha", mirando a los lados
+                set(r, -2.55F, -0.25F, -0.5F);
+                h[1] = 0.35F * Mth.sin(t * 0.18F);
+                h[2] = -0.12F;
             }
             case DealerAnim.CHEER -> {
                 float b = Mth.sin(t * 0.9F) * 0.15F;

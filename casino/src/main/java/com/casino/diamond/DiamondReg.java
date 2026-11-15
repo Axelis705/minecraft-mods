@@ -82,6 +82,15 @@ public final class DiamondReg {
         });
         TemplateCasinoPiece.Extra.register("guard", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_GUARD, a, pos, level, rot, box, dir));
         // anfitrión de la ruleta de la suerte: "wheelhost dir [x|z]" (busca solo la ruleta que tiene cerca)
+        // clientes del casino: "patron dir [piel]" (sin piel = una al azar); pasean cerca de donde aparecen
+        TemplateCasinoPiece.Extra.register("patron", (a, pos, level, rot, box, dir) -> {
+            DealerEntity p = npc(DealerEntity.GAME_PATRON, a, pos, level, rot, box, dir);
+            if (p != null) {
+                int v = a.length > 2 ? parse(a[2]) : level.getRandom().nextInt(DealerEntity.PATRON_SKINS);
+                p.setVariant(v);
+                p.setHome(pos);
+            }
+        });
         TemplateCasinoPiece.Extra.register("wheelhost", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_WHEEL, a, pos, level, rot, box, dir));
         // bartender detrás de la barra: "bartender dir [x|z|xz]" (x / z = correrlo medio bloque en esa dirección de la plantilla)
         TemplateCasinoPiece.Extra.register("bartender", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_BARTENDER, a, pos, level, rot, box, dir));
@@ -102,14 +111,14 @@ public final class DiamondReg {
     }
 
     /** Pone un personaje fijo (guardia, bartender) mirando hacia dir, opcionalmente corrido medio bloque. */
-    private static void npc(int game, String[] a, BlockPos pos, net.minecraft.world.level.ServerLevelAccessor level, net.minecraft.world.level.block.Rotation rot,
+    private static DealerEntity npc(int game, String[] a, BlockPos pos, net.minecraft.world.level.ServerLevelAccessor level, net.minecraft.world.level.block.Rotation rot,
             net.minecraft.world.level.levelgen.structure.BoundingBox box, int dir) {
         if (!box.isInside(pos)) {
-            return;
+            return null;
         }
         DealerEntity g = Plat.create(ModEntities.DEALER.get(), level.getLevel());
         if (g == null) {
-            return;
+            return null;
         }
         Direction f = rot.rotate(Machines.DIRS[dir & 3]);
         double x = pos.getX() + 0.5, z = pos.getZ() + 0.5;
@@ -129,6 +138,7 @@ public final class DiamondReg {
         g.setYHeadRot(f.toYRot());
         g.setYBodyRot(f.toYRot());
         level.addFreshEntityWithPassengers(g);
+        return g;
     }
 
     static int parse(String s) {

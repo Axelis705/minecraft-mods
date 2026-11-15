@@ -29,7 +29,7 @@ public class RecordScreenBE extends CasinoBE {
     public boolean anchor;
     public int width = 1;
     public int height = 1;
-    private long checked = Long.MIN_VALUE;
+    private long checked = -100000L;
 
     public RecordScreenBE(BlockPos pos, BlockState state) {
         super(DiamondReg.RECORD_BE.get(), pos, state);

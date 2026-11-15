@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -37,9 +38,15 @@ public class DealerEntity extends Mob {
     public static final int GAME_BARTENDER = 4;
     /** No atiende mesa: es el anfitrión de la ruleta de la suerte. Al hablarle te pregunta si quieres girar y la gira por ti. */
     public static final int GAME_WHEEL = 5;
+    /** Cliente del casino: pasea, se sienta, ve las mesas y platica. Tiene una de {@link #PATRON_SKINS} pieles (y su nombre). */
+    public static final int GAME_PATRON = 6;
+    public static final int PATRON_SKINS = 12;
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     /** Animación que está haciendo: (número de vez × 100) + cuál (ver {@link DealerAnim}); así el cliente nota cuando empieza otra igual. */
     private static final EntityDataAccessor<Integer> ANIM = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
+    /** La mesa (o ruleta) que atiende, también en el cliente: las animaciones siguen las cartas, la bola y la rueda de verdad. */
+    private static final EntityDataAccessor<BlockPos> TABLE = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.BLOCK_POS);
 
     /** Consejo que está diciendo ahora (-1 = ninguno): el crupier levanta la mano y sobre su cabeza sale un globo con el texto. */
     private static final EntityDataAccessor<Integer> TIP = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
@@ -49,6 +56,7 @@ public class DealerEntity extends Mob {
     public static final int TIPS_GUARD = 6;
     public static final int TIPS_BARTENDER = 10;
     public static final int TIPS_WHEEL = 8;
+    public static final int TIPS_PATRON = 12;
     /** Lo que dice al hablarle (no es un consejo al azar): el número es 100 + la frase ("say_N" en los textos). */
     public static final int SAY = 100;
     /** Cuánto dura el globo en el aire (el cliente lo usa para desvanecerlo al final). */
@@ -64,6 +72,8 @@ public class DealerEntity extends Mob {
     /** Solo en el cliente: la animación actual y cuándo empezó (tickCount). */
     public int animId;
     public int animStart;
+    /** Solo en el cliente (1.20/1.21.1): lo último que calculó el dibujante para las manos (DealerMotion). */
+    public Object clientMotion;
     private int lastAnim;
     // servidor: contador de animaciones, hasta cuándo dura la actual y a quién ya saludó (para no saludar a cada rato)
     private int animSeq;
@@ -74,6 +84,10 @@ public class DealerEntity extends Mob {
     @Nullable
     private java.util.UUID spinFor;
     private int spinAt;
+    /** Bartender: a quién le está sirviendo y en qué tick le llega el vaso. */
+    @Nullable
+    private java.util.UUID serveFor;
+    private int serveAt;
 
     @Nullable
     private BlockPos table;
@@ -84,6 +98,12 @@ public class DealerEntity extends Mob {
         super(type, level);
         setNoAi(true);
         setPersistenceRequired();
+        // los clientes no se meten a la alberca
+        //#if MC >= 1.20.5
+        //$$ setPathfindingMalus(net.minecraft.world.level.pathfinder.PathType.WATER, -1.0F);
+        //#else
+        setPathfindingMalus(net.minecraft.world.level.pathfinder.BlockPathTypes.WATER, -1.0F);
+        //#endif
         Plat.invulnerable(this);
     }
 
@@ -94,6 +114,8 @@ public class DealerEntity extends Mob {
     //$$     b.define(GAME, GAME_BLACKJACK);
     //$$     b.define(TIP, -1);
     //$$     b.define(ANIM, 0);
+    //$$     b.define(TABLE, BlockPos.ZERO);
+    //$$     b.define(VARIANT, 0);
     //$$ }
     //#else
     @Override
@@ -102,8 +124,15 @@ public class DealerEntity extends Mob {
         this.entityData.define(GAME, GAME_BLACKJACK);
         this.entityData.define(TIP, -1);
         this.entityData.define(ANIM, 0);
+        this.entityData.define(TABLE, BlockPos.ZERO);
+        this.entityData.define(VARIANT, 0);
     }
     //#endif
+
+    /** Número de vez de la animación actual (cliente): sirve para variar (por ejemplo, de dónde saca la botella el bartender). */
+    public int animSeq() {
+        return lastAnim / 100;
+    }
 
     /** Empieza una animación (servidor). */
     public void anim(int a) {
@@ -147,7 +176,7 @@ public class DealerEntity extends Mob {
         }
         int g = getGame();
         int n = g == GAME_ROULETTE ? TIPS_ROULETTE : g == GAME_POKER ? TIPS_POKER : g == GAME_GUARD ? TIPS_GUARD
-                : g == GAME_BARTENDER ? TIPS_BARTENDER : g == GAME_WHEEL ? TIPS_WHEEL : TIPS_BLACKJACK;
+                : g == GAME_BARTENDER ? TIPS_BARTENDER : g == GAME_WHEEL ? TIPS_WHEEL : g == GAME_PATRON ? TIPS_PATRON : TIPS_BLACKJACK;
         int t = random.nextInt(n);
         say(t);
         nextTip = 900 + random.nextInt(900);
@@ -159,10 +188,55 @@ public class DealerEntity extends Mob {
 
     public void setGame(int game) {
         this.entityData.set(GAME, game);
+        // los clientes caminan; los demás se quedan en su lugar
+        setNoAi(game != GAME_PATRON);
+    }
+
+    public boolean isPatron() {
+        return getGame() == GAME_PATRON;
+    }
+
+    public int getVariant() {
+        return this.entityData.get(VARIANT);
+    }
+
+    public void setVariant(int v) {
+        this.entityData.set(VARIANT, Math.floorMod(v, PATRON_SKINS));
+    }
+
+    /** Cliente: de dónde no se aleja. */
+    @Nullable
+    private BlockPos home;
+
+    @Nullable
+    public BlockPos home() {
+        return home;
+    }
+
+    public void setHome(BlockPos p) {
+        home = p;
+    }
+
+    /** Cliente con copa en la mano (uno de cada tres). */
+    public boolean holdsDrink() {
+        return isPatron() && getVariant() % 3 == 0;
+    }
+
+    @Override
+    protected void registerGoals() {
+        PatronAI.register(this, this.goalSelector);
     }
 
     public void setTable(BlockPos pos) {
         this.table = pos;
+        this.entityData.set(TABLE, pos == null ? BlockPos.ZERO : pos);
+    }
+
+    /** La mesa que atiende, vista desde el cliente (null si no tiene). */
+    @Nullable
+    public BlockPos clientTable() {
+        BlockPos p = this.entityData.get(TABLE);
+        return BlockPos.ZERO.equals(p) ? null : p;
     }
 
     @Nullable
@@ -172,7 +246,7 @@ public class DealerEntity extends Mob {
 
     @Override
     public boolean isPushable() {
-        return false;
+        return isPatron();
     }
 
     @Override
@@ -195,8 +269,10 @@ public class DealerEntity extends Mob {
         super.tick();
         // El cuerpo siempre mira hacia donde mira la mesa; solo la cabeza sigue al jugador más cercano.
         float base = getYRot();
-        yBodyRot = base;
-        yBodyRotO = base;
+        if (!isPatron()) {
+            yBodyRot = base;
+            yBodyRotO = base;
+        }
         if (level().isClientSide()) {
             int t = getTip();
             if (t != lastTip) {
@@ -214,6 +290,14 @@ public class DealerEntity extends Mob {
             if (animId != 0 && tickCount - animStart > DealerAnim.duration(animId)) {
                 animId = 0;
             }
+            // el chorrito al servir: cae de la botella al vaso
+            int st = tickCount - animStart;
+            if (animId == DealerAnim.SERVE && st >= 23 && st <= 35 && st % 2 == 0) {
+                double yaw = Math.toRadians(yBodyRot);
+                double fx = -Math.sin(yaw), fz = Math.cos(yaw), rx = -Math.cos(yaw), rz = -Math.sin(yaw);
+                double px = getX() + fx * 0.45 - rx * 0.06, pz = getZ() + fz * 0.45 - rz * 0.06;
+                level().addParticle(net.minecraft.core.particles.ParticleTypes.FALLING_HONEY, px, getY() + 1.36, pz, 0, -0.05, 0);
+            }
         } else {
             tickTips();
             if (tickCount % 10 == 0) {
@@ -223,8 +307,13 @@ public class DealerEntity extends Mob {
             if (getGame() == GAME_WHEEL) {
                 tickHost();
             }
-            Player p = level().getNearestPlayer(this, 7.0);
-            if (p != null) {
+            if (serveFor != null && tickCount >= serveAt) {
+                handOver();
+            }
+            Player p = isPatron() ? null : level().getNearestPlayer(this, 7.0);
+            if (isPatron()) {
+                // el cuerpo y la cabeza los manejan sus ganas de pasear y de mirar
+            } else if (p != null) {
                 double dx = p.getX() - getX();
                 double dz = p.getZ() - getZ();
                 double dy = p.getEyeY() - getEyeY();
@@ -251,8 +340,10 @@ public class DealerEntity extends Mob {
         int a = switch (getGame()) {
             case GAME_BLACKJACK, GAME_POKER -> random.nextInt(3) == 0 ? DealerAnim.CHIP : DealerAnim.SHUFFLE;
             case GAME_ROULETTE -> DealerAnim.CHIP;
-            case GAME_BARTENDER -> DealerAnim.POUR;
+            case GAME_BARTENDER -> DealerAnim.SHAKER;
             case GAME_WHEEL -> DealerAnim.PRESENT;
+            case GAME_GUARD -> DealerAnim.EARPIECE;
+            case GAME_PATRON -> holdsDrink() ? DealerAnim.SIP : random.nextInt(3) == 0 ? DealerAnim.NOD : DealerAnim.NONE;
             default -> DealerAnim.NONE;
         };
         if (a != DealerAnim.NONE) {
@@ -272,6 +363,9 @@ public class DealerEntity extends Mob {
         Integer last = greeted.put(p.getUUID(), tickCount);
         if (last != null && tickCount - last < 2400 || animBusy()) {
             return;
+        }
+        if (isPatron() && random.nextInt(3) != 0) {
+            return; // los clientes no saludan a todo el que pasa
         }
         anim(getGame() == GAME_GUARD ? DealerAnim.NOD : DealerAnim.WAVE);
         if (getGame() == GAME_WHEEL && getTip() < 0) {
@@ -294,8 +388,9 @@ public class DealerEntity extends Mob {
             // la plantilla lo pone junto a la ruleta: la busca alrededor y se queda con su bloque principal
             BlockPos c = blockPosition();
             for (BlockPos q : BlockPos.betweenClosed(c.offset(-6, -3, -6), c.offset(6, 4, 6))) {
-                if (level().getBlockEntity(q) instanceof com.casino.block.LuckyWheelBE) {
-                    table = q.immutable();
+                if (level().getBlockEntity(q) instanceof com.casino.block.LuckyWheelBE w) {
+                    setTable(q.immutable());
+                    standByWheel(w);
                     break;
                 }
             }
@@ -307,6 +402,22 @@ public class DealerEntity extends Mob {
             if (w != null && p != null) {
                 w.hostSpin(p);
             }
+        }
+    }
+
+    /** Se para pegado a la orilla de la rueda (del lado donde está), para alcanzarla con la mano al jalarla. */
+    private void standByWheel(com.casino.block.LuckyWheelBE w) {
+        net.minecraft.world.phys.Vec3 hub = w.hub();
+        Direction f = w.facing();
+        Direction r = f.getCounterClockWise();
+        double side = (getX() - hub.x) * r.getStepX() + (getZ() - hub.z) * r.getStepZ() >= 0 ? 1 : -1;
+        double x = hub.x + r.getStepX() * 1.95 * side;
+        double z = hub.z + r.getStepZ() * 1.95 * side;
+        if (Math.abs(x - getX()) + Math.abs(z - getZ()) < 1.5) {
+            float yaw = f.toYRot();
+            moveTo(x, getY(), z, yaw, 0.0F);
+            setYHeadRot(yaw);
+            setYBodyRot(yaw);
         }
     }
 
@@ -370,6 +481,16 @@ public class DealerEntity extends Mob {
             }
             return Plat.ok(level().isClientSide());
         }
+        if (isPatron()) {
+            if (!level().isClientSide()) {
+                // voltea a verte y te dice algo
+                getNavigation().stop();
+                getLookControl().setLookAt(player, 30.0F, 30.0F);
+                say(SAY + random.nextInt(4));
+                anim(random.nextBoolean() ? DealerAnim.WAVE : DealerAnim.NOD);
+            }
+            return Plat.ok(level().isClientSide());
+        }
         if (!level().isClientSide() && getGame() == GAME_GUARD && player instanceof ServerPlayer sp) {
             int tier = com.casino.item.VipCardItem.tier(sp);
             Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.guard.say_" + Math.min(2, tier)).withStyle(net.minecraft.ChatFormatting.GOLD), false);
@@ -408,8 +529,28 @@ public class DealerEntity extends Mob {
             anim(DealerAnim.SHAKE);
             return;
         }
-        anim(DealerAnim.POUR);
+
+        if (serveFor != null) {
+            say(SAY + 3);
+            return;
+        }
         served.put(sp.getUUID(), now);
+        // primero lo prepara (saca botella y vaso, sirve) y el efecto llega cuando te da el vaso
+        anim(DealerAnim.SERVE);
+        serveFor = sp.getUUID();
+        serveAt = tickCount + DealerAnim.SERVE_HANDOVER;
+        level().playSound(null, getX(), getY() + 1, getZ(), net.minecraft.sounds.SoundEvents.BOTTLE_FILL, net.minecraft.sounds.SoundSource.NEUTRAL, 0.5F, 1.2F);
+        say(SAY + random.nextInt(3));
+    }
+
+    /** Termina el servicio: el vaso llega a la mano del jugador. */
+    private void handOver() {
+        java.util.UUID id = serveFor;
+        serveFor = null;
+        ServerPlayer sp = level().getServer() == null || id == null ? null : level().getServer().getPlayerList().getPlayer(id);
+        if (sp == null || sp.distanceToSqr(this) > 8 * 8) {
+            return;
+        }
         sp.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.LUCK, DRINK_TICKS, 0));
         //#if MC >= 1.21.2
         //$$ level().playSound(null, sp.getX(), sp.getY(), sp.getZ(), net.minecraft.sounds.SoundEvents.GENERIC_DRINK.value(), net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.0F);
@@ -417,7 +558,6 @@ public class DealerEntity extends Mob {
         level().playSound(null, sp.getX(), sp.getY(), sp.getZ(), net.minecraft.sounds.SoundEvents.GENERIC_DRINK, net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.0F);
         //#endif
         Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.bartender.served").withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE), true);
-        say(SAY + random.nextInt(3));
     }
 
     //#if MC >= 1.21.6
@@ -425,6 +565,10 @@ public class DealerEntity extends Mob {
     //$$ protected void addAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput out) {
     //$$     super.addAdditionalSaveData(out);
     //$$     out.putInt("Game", getGame());
+    //$$     out.putInt("Variant", getVariant());
+    //$$     if (home != null) {
+    //$$         out.putIntArray("Home", new int[]{home.getX(), home.getY(), home.getZ()});
+    //$$     }
     //$$     if (table != null) {
     //$$         out.putIntArray("Table", new int[]{table.getX(), table.getY(), table.getZ()});
     //$$     }
@@ -434,14 +578,21 @@ public class DealerEntity extends Mob {
     //$$ protected void readAdditionalSaveData(net.minecraft.world.level.storage.ValueInput in) {
     //$$     super.readAdditionalSaveData(in);
     //$$     setGame(in.getIntOr("Game", 0));
+    //$$     setVariant(in.getIntOr("Variant", 0));
+    //$$     int[] hm = in.getIntArray("Home").orElse(new int[0]);
+    //$$     home = hm.length == 3 ? new BlockPos(hm[0], hm[1], hm[2]) : null;
     //$$     int[] t = in.getIntArray("Table").orElse(new int[0]);
-    //$$     table = t.length == 3 ? new BlockPos(t[0], t[1], t[2]) : null;
+    //$$     setTable(t.length == 3 ? new BlockPos(t[0], t[1], t[2]) : null);
     //$$ }
     //#else
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("Game", getGame());
+        tag.putInt("Variant", getVariant());
+        if (home != null) {
+            tag.putIntArray("Home", new int[]{home.getX(), home.getY(), home.getZ()});
+        }
         if (table != null) {
             tag.putIntArray("Table", new int[]{table.getX(), table.getY(), table.getZ()});
         }
@@ -451,8 +602,11 @@ public class DealerEntity extends Mob {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setGame(Nbt.i(tag, "Game"));
+        setVariant(Nbt.i(tag, "Variant"));
+        int[] hm = Nbt.ia(tag, "Home");
+        home = hm.length == 3 ? new BlockPos(hm[0], hm[1], hm[2]) : null;
         int[] t = Nbt.ia(tag, "Table");
-        table = t.length == 3 ? new BlockPos(t[0], t[1], t[2]) : null;
+        setTable(t.length == 3 ? new BlockPos(t[0], t[1], t[2]) : null);
     }
     //#endif
 }

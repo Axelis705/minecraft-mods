@@ -495,6 +495,11 @@ public class RouletteRenderer extends CasinoBER<RouletteBE> {
             float bx = rad * (float) Math.cos(b.angle), bz = rad * (float) Math.sin(b.angle);
             vc = d.cutout(WHITE);
             sphere(vc, ps.last(), light, bx, surf + 0.032F + (float) b.height, bz, 0.032F, 0xF6F1E4);
+        } else if (be.spinSeq > 0 && time >= be.spinStart - DealerMotion.FLIGHT_TICKS) {
+            // la bola en el aire: de la mano del crupier a la pista (él la acaba de soltar)
+            double[] fb = DealerMotion.tossLocal(be, time);
+            vc = d.cutout(WHITE);
+            sphere(vc, ps.last(), light, (float) (fb[0] - RouletteLayout.WHEEL_X), (float) fb[1], (float) (fb[2] - RouletteLayout.WHEEL_Z), 0.032F, 0xF6F1E4);
         }
         ps.popPose();
     }

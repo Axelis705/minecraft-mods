@@ -45,6 +45,8 @@ import java.util.List;
 //$$         int anim;
 //$$         float animT;
 //$$         float talk = -1;
+//$$         DealerMotion motion;
+//$$         int variant;
 //$$     }
 //#elif MC >= 1.21.2
 //$$ public class DealerRenderer extends MobRenderer<DealerEntity, DealerRenderer.State, DealerRenderer.DealerModel> {
@@ -55,6 +57,8 @@ import java.util.List;
 //$$         int anim;
 //$$         float animT;
 //$$         float talk = -1;
+//$$         DealerMotion motion;
+//$$         int variant;
 //$$     }
 //#else
 public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<DealerEntity>> {
@@ -68,7 +72,18 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     /** Textura blanca lisa: el globo se arma con rectángulos de colores encima. */
     private static final ResourceLocation WHITE = Ids.rl(Casino.MODID, "textures/entity/bubble.png");
 
-    private static ResourceLocation texture(int game) {
+    private static final ResourceLocation[] TEXTURE_PATRON = new ResourceLocation[DealerEntity.PATRON_SKINS];
+
+    static {
+        for (int i = 0; i < TEXTURE_PATRON.length; i++) {
+            TEXTURE_PATRON[i] = Ids.rl(Casino.MODID, "textures/entity/dealer_patron_" + i + ".png");
+        }
+    }
+
+    private static ResourceLocation texture(int game, int variant) {
+        if (game == DealerEntity.GAME_PATRON) {
+            return TEXTURE_PATRON[Math.floorMod(variant, TEXTURE_PATRON.length)];
+        }
         return switch (game) {
             case DealerEntity.GAME_ROULETTE -> TEXTURE_ROULETTE;
             case DealerEntity.GAME_POKER -> TEXTURE_POKER;
@@ -86,6 +101,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_GUARD -> "guard";
             case DealerEntity.GAME_BARTENDER -> "bartender";
             case DealerEntity.GAME_WHEEL -> "wheel";
+            case DealerEntity.GAME_PATRON -> "patron";
             default -> "blackjack";
         };
     }
@@ -102,6 +118,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_GUARD -> 0x1C1C26;
             case DealerEntity.GAME_BARTENDER -> 0x5A2A86;
             case DealerEntity.GAME_WHEEL -> 0xA8326B;
+            case DealerEntity.GAME_PATRON -> 0x23707E;
             default -> 0x1E6B3A;
         };
     }
@@ -114,6 +131,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_GUARD -> "\u2605";
             case DealerEntity.GAME_BARTENDER -> "\u2665";
             case DealerEntity.GAME_WHEEL -> "\u2726";
+            case DealerEntity.GAME_PATRON -> "\u266A";
             default -> "\u2660";
         };
     }
@@ -128,7 +146,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     @Override
     //$$     public void setupAnim(State s) {
     //$$         super.setupAnim(s);
-    //$$         DealerAnimator.apply(s.game, s.anim, s.animT, s.ageInTicks, s.talk, this.head, this.rightArm, this.leftArm);
+    //$$         DealerAnimator.apply(s.game, s.anim, s.animT, s.ageInTicks, s.talk, this.head, this.body, this.rightArm, this.leftArm, s.motion);
     //$$     }
     //$$ }
     //$$
@@ -143,7 +161,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     public void setupAnim(PlayerRenderState s) {
     //$$         super.setupAnim(s);
     //$$         if (s instanceof State d) {
-    //$$             DealerAnimator.apply(d.game, d.anim, d.animT, s.ageInTicks, d.talk, this.head, this.rightArm, this.leftArm);
+    //$$             DealerAnimator.apply(d.game, d.anim, d.animT, s.ageInTicks, d.talk, this.head, this.body, this.rightArm, this.leftArm, d.motion);
     //$$         }
     //$$     }
     //$$ }
@@ -152,6 +170,37 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //#if MC >= 1.21.2
     //$$ public DealerRenderer(EntityRendererProvider.Context ctx) {
     //$$     super(ctx, new DealerModel(ctx.bakeLayer(ModelLayers.PLAYER)), 0.45F);
+    //$$     addLayer(new PropLayer(this));
+    //$$ }
+    //$$
+    //$$ /** Lo que tiene en las manos (carta, bola, botella, vaso...), pegado a la palma. */
+    //$$ private static final class PropLayer extends net.minecraft.client.renderer.entity.layers.RenderLayer<State, DealerModel> {
+    //$$     PropLayer(net.minecraft.client.renderer.entity.RenderLayerParent<State, DealerModel> p) {
+    //$$         super(p);
+    //$$     }
+    //$$
+    //#if MC >= 26.1
+    //$$     @Override
+    //$$     public void submit(PoseStack ps, SubmitNodeCollector out, int light, State s, float yRot, float xRot) {
+    //$$         if (s.motion == null || s.motion.propR == 0 && s.motion.propL == 0) {
+    //$$             return;
+    //$$         }
+    //$$         com.casino.plat.client.Draw d = new com.casino.plat.client.Draw(out);
+    //$$         DealerProps.draw(d, ps, getParentModel().rightArm, true, s.motion.propR, s.motion.tiltR, light);
+    //$$         DealerProps.draw(d, ps, getParentModel().leftArm, false, s.motion.propL, 0, light);
+    //$$         d.flush();
+    //$$     }
+    //#else
+    //$$     @Override
+    //$$     public void render(PoseStack ps, MultiBufferSource buf, int light, State s, float yRot, float xRot) {
+    //$$         if (s.motion == null || s.motion.propR == 0 && s.motion.propL == 0) {
+    //$$             return;
+    //$$         }
+    //$$         com.casino.plat.client.Draw d = new com.casino.plat.client.Draw(buf);
+    //$$         DealerProps.draw(d, ps, getParentModel().rightArm, true, s.motion.propR, s.motion.tiltR, light);
+    //$$         DealerProps.draw(d, ps, getParentModel().leftArm, false, s.motion.propL, 0, light);
+    //$$     }
+    //#endif
     //$$ }
     //$$
     //$$ @Override
@@ -168,11 +217,13 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     s.anim = e.animId;
     //$$     s.animT = e.tickCount - e.animStart + partial;
     //$$     s.talk = e.getTip() >= 0 ? e.tipAge + partial : -1F;
+    //$$     s.motion = DealerMotion.compute(e, partial);
+    //$$     s.variant = e.getVariant();
     //$$ }
     //$$
     //$$ @Override
     //$$ public ResourceLocation getTextureLocation(State s) {
-    //$$     return texture(s.game);
+    //$$     return texture(s.game, s.variant);
     //$$ }
     //#else
     /** El modelo de jugador, pero con la mano derecha en alto mientras hay un consejo en el aire. */
@@ -185,21 +236,43 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         public void setupAnim(DealerEntity e, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch) {
             super.setupAnim(e, limbSwing, limbSwingAmount, age, yaw, pitch);
             float frac = age - e.tickCount;
-            DealerAnimator.apply(e.getGame(), e.animId, age - e.animStart, age, e.getTip() >= 0 ? e.tipAge + frac : -1F, this.head, this.rightArm,
-                    this.leftArm);
+            DealerMotion m = DealerMotion.compute(e, frac);
+            e.clientMotion = m;
+            DealerAnimator.apply(e.getGame(), e.animId, age - e.animStart, age, e.getTip() >= 0 ? e.tipAge + frac : -1F, this.head, this.body,
+                    this.rightArm, this.leftArm, m);
             this.rightSleeve.copyFrom(this.rightArm);
             this.leftSleeve.copyFrom(this.leftArm);
             this.hat.copyFrom(this.head);
+            this.jacket.copyFrom(this.body);
         }
     }
 
     public DealerRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new DealerModel(ctx.bakeLayer(ModelLayers.PLAYER)), 0.45F);
+        addLayer(new PropLayer(this));
+    }
+
+    /** Lo que tiene en las manos (carta, bola, botella, vaso...), pegado a la palma. */
+    private static final class PropLayer extends net.minecraft.client.renderer.entity.layers.RenderLayer<DealerEntity, PlayerModel<DealerEntity>> {
+        PropLayer(net.minecraft.client.renderer.entity.RenderLayerParent<DealerEntity, PlayerModel<DealerEntity>> p) {
+            super(p);
+        }
+
+        @Override
+        public void render(PoseStack ps, MultiBufferSource buf, int light, DealerEntity e, float limb, float limbAmount, float partial, float age,
+                float yaw, float pitch) {
+            if (!(e.clientMotion instanceof DealerMotion m) || m.propR == 0 && m.propL == 0) {
+                return;
+            }
+            com.casino.plat.client.Draw d = new com.casino.plat.client.Draw(buf);
+            DealerProps.draw(d, ps, getParentModel().rightArm, true, m.propR, m.tiltR, light);
+            DealerProps.draw(d, ps, getParentModel().leftArm, false, m.propL, 0, light);
+        }
     }
 
     @Override
     public ResourceLocation getTextureLocation(DealerEntity entity) {
-        return texture(entity.getGame());
+        return texture(entity.getGame(), entity.getVariant());
     }
     //#endif
 
@@ -209,7 +282,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     super.submit(s, ps, out, cam);
     //$$     if (s.tip >= 0) {
     //$$         com.casino.plat.client.Draw d = new com.casino.plat.client.Draw(out);
-    //$$         bubble(d, s.game, s.tip, s.age, s.boundingBoxHeight, cam.orientation, ps);
+    //$$         bubble(d, s.game, s.variant, s.tip, s.age, s.boundingBoxHeight, cam.orientation, ps);
     //$$         d.flush();
     //$$     }
     //$$ }
@@ -218,7 +291,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$ public void render(State s, PoseStack ps, MultiBufferSource buf, int light) {
     //$$     super.render(s, ps, buf, light);
     //$$     if (s.tip >= 0) {
-    //$$         bubble(new com.casino.plat.client.Draw(buf), s.game, s.tip, s.age, s.boundingBoxHeight, this.entityRenderDispatcher.cameraOrientation(), ps);
+    //$$         bubble(new com.casino.plat.client.Draw(buf), s.game, s.variant, s.tip, s.age, s.boundingBoxHeight, this.entityRenderDispatcher.cameraOrientation(), ps);
     //$$     }
     //$$ }
     //#else
@@ -227,7 +300,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         super.render(e, yaw, partial, ps, buf, light);
         int tip = e.getTip();
         if (tip >= 0) {
-            bubble(new com.casino.plat.client.Draw(buf), e.getGame(), tip, e.tipAge + partial, e.getBbHeight(), this.entityRenderDispatcher.cameraOrientation(), ps);
+            bubble(new com.casino.plat.client.Draw(buf), e.getGame(), e.getVariant(), tip, e.tipAge + partial, e.getBbHeight(), this.entityRenderDispatcher.cameraOrientation(), ps);
         }
     }
     //#endif
@@ -259,11 +332,11 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
      * nombre de quien habla (y "Consejo" a la derecha si es un consejo), el texto que se va escribiendo letra por letra y una colita que
      * apunta a la cabeza. Aparece con un pequeño salto, flota suave y se desvanece al final. Siempre mira a la cámara.
      */
-    private static void bubble(com.casino.plat.client.Draw d, int game, int tip, float age, float height, Quaternionf camera, PoseStack ps) {
+    private static void bubble(com.casino.plat.client.Draw d, int game, int variant, int tip, float age, float height, Quaternionf camera, PoseStack ps) {
         Font font = net.minecraft.client.Minecraft.getInstance().font;
         String text = Component.translatable(tipKey(game, tip)).getString();
         List<String> lines = wrap(font, text, WRAP);
-        String name = icon(game) + " " + Component.translatable("casino.npc." + role(game)).getString();
+        String name = icon(game) + " " + Component.translatable(game == DealerEntity.GAME_PATRON ? "casino.npc.patron_" + variant : "casino.npc." + role(game)).getString();
         boolean isTip = tip < DealerEntity.SAY;
         String tag = isTip ? Component.translatable("casino.tip.title").getString() : "";
         int textW = 0;

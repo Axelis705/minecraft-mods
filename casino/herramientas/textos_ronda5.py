@@ -178,6 +178,67 @@ k("casino.wheel.dialog.yes", "¡Sí, gírala!", "Yes, spin it!", "Ja, dreh es!",
 k("casino.wheel.dialog.no", "Ahora no", "Not now", "Jetzt nicht", "Pas maintenant", "Non ora", "Agora não", "Не сейчас", "今はいい", "以后再说")
 k("casino.wheel.dialog.ok", "Entendido", "Got it", "Verstanden", "D'accord", "Capito", "Entendi", "Понятно", "わかった", "知道了")
 
+# ---- ronda 6: clientes del casino
+for i, n in enumerate(["Sofía", "Don Ramiro", "Valentina", "Mateo", "Lucía", "Carlos", "Isabela", "Fernando", "Camila", "Diego", "Elena", "Ricardo"]):
+    k(f"casino.npc.patron_{i}", n, n, n, n, n, n, n, n, n)
+k("casino.npc.patron", "Cliente", "Guest", "Gast", "Client", "Cliente", "Cliente", "Гость", "お客さん", "客人")
+PATRON_TIPS = [
+    ("¡Hoy siento que es mi noche de suerte!", "I feel like tonight is my lucky night!", "Heute ist meine Glücksnacht, das spüre ich!",
+     "Je sens que c'est ma nuit de chance !", "Sento che stasera è la mia notte fortunata!", "Sinto que hoje é minha noite de sorte!",
+     "Чувствую, сегодня моя счастливая ночь!", "今夜はツイてる気がする!", "我感觉今晚是我的幸运夜!"),
+    ("¿Viste la ruleta? Cayó tres veces seguidas en rojo.", "Did you see the roulette? Red came up three times in a row.",
+     "Hast du das Roulette gesehen? Dreimal hintereinander Rot.", "T'as vu la roulette ? Trois fois rouge d'affilée.",
+     "Hai visto la roulette? Rosso tre volte di fila.", "Viu a roleta? Deu vermelho três vezes seguidas.",
+     "Видел рулетку? Три раза подряд красное.", "ルーレット見た?3回連続で赤だよ。", "看到轮盘了吗?连续三次红色。"),
+    ("Ese crupier de blackjack reparte rapidísimo.", "That blackjack dealer deals super fast.", "Der Blackjack-Croupier teilt blitzschnell aus.",
+     "Ce croupier de blackjack distribue à toute vitesse.", "Quel croupier del blackjack distribuisce velocissimo.",
+     "Aquele crupiê de blackjack distribui rapidíssimo.", "Этот крупье в блэкджек раздаёт молниеносно.", "あのブラックジャックのディーラー、配るのが速い!", "那个二十一点荷官发牌超快。"),
+    ("Pedí el cóctel Diamante... ¡y gané dos manos seguidas!", "I ordered the Diamond cocktail... and won two hands in a row!",
+     "Ich hab den Diamant-Cocktail bestellt ... und zwei Runden gewonnen!", "J'ai pris le cocktail Diamant... et gagné deux mains de suite !",
+     "Ho preso il cocktail Diamante... e ho vinto due mani di fila!", "Pedi o coquetel Diamante... e ganhei duas mãos seguidas!",
+     "Заказал коктейль «Бриллиант»... и выиграл две раздачи подряд!", "ダイヤモンドカクテルを頼んだら…2連勝!", "我点了钻石鸡尾酒……然后连赢两局!"),
+    ("Dicen que en el sótano hay carreras de caballos.", "They say there are horse races in the basement.", "Im Keller soll es Pferderennen geben.",
+     "Il paraît qu'il y a des courses de chevaux au sous-sol.", "Dicono che nel seminterrato ci siano le corse dei cavalli.",
+     "Dizem que no porão tem corrida de cavalos.", "Говорят, в подвале проходят скачки.", "地下で競馬をやってるらしいよ。", "听说地下室有赛马。"),
+    ("No le digas a nadie, pero ya perdí la mitad de mis fichas.", "Don't tell anyone, but I've already lost half my chips.",
+     "Sag's keinem, aber ich hab schon die Hälfte meiner Chips verloren.", "Ne le dis à personne, mais j'ai déjà perdu la moitié de mes jetons.",
+     "Non dirlo a nessuno, ma ho già perso metà delle fiches.", "Não conta pra ninguém, mas já perdi metade das fichas.",
+     "Никому не говори, но я уже проиграл половину фишек.", "内緒だけど、もうチップの半分なくしちゃった。", "别告诉别人,我已经输掉一半筹码了。"),
+    ("Me encanta la música de este lugar.", "I love the music in this place.", "Ich liebe die Musik hier.", "J'adore la musique ici.",
+     "Adoro la musica di questo posto.", "Adoro a música deste lugar.", "Обожаю здешнюю музыку.", "ここの音楽、大好き。", "我超喜欢这里的音乐。"),
+    ("Desde la terraza se ve toda la ciudad.", "You can see the whole city from the terrace.", "Von der Terrasse sieht man die ganze Stadt.",
+     "De la terrasse, on voit toute la ville.", "Dalla terrazza si vede tutta la città.", "Da varanda dá pra ver a cidade inteira.",
+     "С террасы видно весь город.", "テラスから街全体が見えるよ。", "从露台能看到整座城市。"),
+    ("¡Mi nombre va a salir en la pantalla de récords!", "My name is going to be on the record screen!", "Mein Name kommt auf den Rekordbildschirm!",
+     "Mon nom va apparaître sur l'écran des records !", "Il mio nome finirà sullo schermo dei record!", "Meu nome vai aparecer na tela de recordes!",
+     "Моё имя появится на экране рекордов!", "記録スクリーンに名前を載せてやる!", "我的名字要上纪录屏幕了!"),
+    ("Una vuelta más a la ruleta y me voy... bueno, dos.", "One more spin and I'm leaving... well, two.", "Noch eine Runde und ich geh ... na gut, zwei.",
+     "Encore un tour et je m'en vais... bon, deux.", "Un altro giro e me ne vado... vabbè, due.", "Mais uma rodada e vou embora... tá, duas.",
+     "Ещё один круг и ухожу... ну ладно, два.", "あと1回回したら帰る…やっぱり2回。", "再转一次我就走……好吧,两次。"),
+    ("¿Ya probaste el rasca y gana? A mi amiga le salió el premio mayor.", "Tried the scratch cards? My friend hit the jackpot.",
+     "Schon die Rubbellose probiert? Meine Freundin hat den Hauptgewinn!", "T'as essayé le grattage ? Mon amie a touché le gros lot.",
+     "Hai provato il gratta e vinci? La mia amica ha vinto il premio grosso.", "Já tentou a raspadinha? Minha amiga ganhou o prêmio máximo.",
+     "Пробовал лотерею? Моя подруга сорвала джекпот.", "スクラッチやった?友達が大当たり出したよ。", "你玩过刮刮乐吗?我朋友中了头奖。"),
+    ("El penthouse es solo para VIP... algún día.", "The penthouse is VIP only... someday.", "Das Penthouse ist nur für VIPs ... eines Tages.",
+     "Le penthouse est réservé aux VIP... un jour.", "L'attico è solo per i VIP... un giorno.", "A cobertura é só para VIP... um dia.",
+     "Пентхаус только для VIP... когда-нибудь.", "ペントハウスはVIP専用…いつかきっと。", "顶层套房只限VIP……总有一天。"),
+]
+for i, t in enumerate(PATRON_TIPS):
+    k(f"casino.tip.patron.{i}", *t)
+PATRON_SAYS = [
+    ("¡Hola! ¿Vienes a probar suerte?", "Hi! Here to try your luck?", "Hallo! Willst du dein Glück versuchen?", "Salut ! Tu viens tenter ta chance ?",
+     "Ciao! Vieni a tentare la fortuna?", "Oi! Veio testar a sorte?", "Привет! Пришёл испытать удачу?", "やあ!運試しに来たの?", "嗨!来试试运气吗?"),
+    ("¡Suerte en las mesas!", "Good luck at the tables!", "Viel Glück an den Tischen!", "Bonne chance aux tables !", "Buona fortuna ai tavoli!",
+     "Boa sorte nas mesas!", "Удачи за столами!", "テーブルで幸運を!", "祝你牌桌好运!"),
+    ("¡Qué ambiente tan increíble hay hoy!", "What an amazing vibe tonight!", "Was für eine tolle Stimmung heute!", "Quelle ambiance incroyable ce soir !",
+     "Che atmosfera incredibile stasera!", "Que clima incrível hoje!", "Какая сегодня потрясающая атмосфера!", "今日はすごく盛り上がってるね!", "今晚气氛太棒了!"),
+    ("Shh... estoy contando cartas. ¡Es broma!", "Shh... I'm counting cards. Just kidding!", "Psst ... ich zähle Karten. Nur Spaß!",
+     "Chut... je compte les cartes. Je rigole !", "Shh... sto contando le carte. Scherzo!", "Psiu... tô contando cartas. Brincadeira!",
+     "Тсс... я считаю карты. Шучу!", "シーッ…カードを数えてるんだ。冗談だよ!", "嘘……我在算牌。开玩笑的!"),
+]
+for i, t in enumerate(PATRON_SAYS):
+    k(f"casino.tip.patron.say_{i}", *t)
+
 
 def main():
     for fn in sorted(os.listdir(L)):
