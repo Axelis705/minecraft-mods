@@ -212,6 +212,9 @@ public class LuckyWheelBE extends CasinoBE {
         flashEnd = level.getGameTime() + 140;
         Prize prize = pending;
         pending = null;
+        if (level instanceof ServerLevel wsl && spinner != null) {
+            com.casino.data.CasinoStats.wheelSpun(wsl.getServer(), spinner, spinnerName);
+        }
         com.casino.entity.DealerEntity host = host();
         if (host != null && prize != null) {
             host.hostCelebrate(prize.big);

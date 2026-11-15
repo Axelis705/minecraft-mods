@@ -56,6 +56,9 @@ public final class ScratchCardPacket {
         int prize = ScratchCards.prizeOf(ScratchCardItem.symbols(st));
         if (prize > 0) {
             com.casino.data.CasinoStats.play(p, com.casino.data.CasinoStats.SCRATCH, 0, prize);
+            if (prize >= 1000) {
+                com.casino.data.CasinoStats.achieve(p, com.casino.data.Membership.SCRATCH_BIG);
+            }
         }
         if (prize > 0) {
             boolean big = prize >= 250;

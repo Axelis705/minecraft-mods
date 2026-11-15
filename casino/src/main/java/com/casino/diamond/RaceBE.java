@@ -234,6 +234,9 @@ public class RaceBE extends CasinoBE {
             ServerPlayer p = server.getPlayerList().getPlayer(e.getKey());
             com.casino.data.CasinoStats.play(server, e.getKey(), b.name(), com.casino.data.CasinoStats.RACE, b.amount(), b.horse() == w ? r.payout(w, b.amount()) : 0);
             if (b.horse() == w) {
+                com.casino.data.CasinoStats.achieve(server, e.getKey(), com.casino.data.Membership.RACE_WIN);
+            }
+            if (b.horse() == w) {
                 long pay = r.payout(w, b.amount());
                 if (p != null) {
                     pay(p, (int) Math.min(Integer.MAX_VALUE, pay), r, w, b.amount());

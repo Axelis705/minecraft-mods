@@ -465,6 +465,9 @@ public class BlackjackBE extends CasinoBE {
             int stake = s.stake();
             int net = pay - stake;
             com.casino.data.CasinoStats.play(sl.getServer(), players[i], names[i], com.casino.data.CasinoStats.BLACKJACK, stake, pay);
+            if (r == Result.BLACKJACK) {
+                com.casino.data.CasinoStats.achieve(sl.getServer(), players[i], com.casino.data.Membership.NATURAL);
+            }
             boolean combined = s.split || s.insurance > 0;
             if (pay > 0) {
                 List<ItemStack> items = new ArrayList<>(Chips.stacksFor(pay));

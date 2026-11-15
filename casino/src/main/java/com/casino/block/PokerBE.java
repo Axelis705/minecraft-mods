@@ -410,6 +410,12 @@ public class PokerBE extends CasinoBE {
             int spent = s.ante + s.call;
             int net = pay - spent;
             com.casino.data.CasinoStats.play(sl.getServer(), players[i], names[i], com.casino.data.CasinoStats.POKER, spent, pay);
+            if (s.result == Result.WIN && s.handCat >= PokerHands.FULL_HOUSE) {
+                com.casino.data.CasinoStats.achieve(sl.getServer(), players[i], com.casino.data.Membership.POKER_FULL);
+            }
+            if (s.result == Result.WIN && s.handCat >= PokerHands.STRAIGHT_FLUSH) {
+                com.casino.data.CasinoStats.achieve(sl.getServer(), players[i], com.casino.data.Membership.ROYAL);
+            }
             boolean bigHand = s.result == Result.WIN && s.handCat >= PokerHands.FULL_HOUSE;
             if (pay > 0) {
                 List<ItemStack> items = new ArrayList<>(Chips.stacksFor(pay));

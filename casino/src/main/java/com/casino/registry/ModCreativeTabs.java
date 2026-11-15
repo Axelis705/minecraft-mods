@@ -27,6 +27,7 @@ public final class ModCreativeTabs {
                 out.accept(ModItems.CASHIER.get());
                 out.accept(ModItems.VIP_SILVER.get());
                 out.accept(ModItems.VIP_GOLD.get());
+                out.accept(ModItems.MEMBER_CARD.get());
                 out.accept(com.casino.diamond.DiamondReg.ELEVATOR_ITEM.get());
                 out.accept(com.casino.diamond.DiamondReg.PRIZE_SHOP_ITEM.get());
                 out.accept(com.casino.diamond.DiamondReg.RECORD_SCREEN_ITEM.get());

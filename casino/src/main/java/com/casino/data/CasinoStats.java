@@ -42,6 +42,22 @@ public final class CasinoStats extends SavedData {
         public long dBets;
         public long dWon;
         public long dBiggest;
+        /** Tarjeta de socio: logros (un bit cada uno), juegos que ya probó, ruletas de la suerte, cócteles, último bono y nivel premiado. */
+        public long achievements;
+        public int gamesMask;
+        public int wheelSpins;
+        public int drinks;
+        public long lastBonus = -1;
+        public int levelGiven;
+        public boolean cardGiven;
+
+        public int level() {
+            return Membership.level(wagered);
+        }
+
+        public boolean has(int ach) {
+            return (achievements & (1L << ach)) != 0;
+        }
 
         public long net() {
             return won - wagered;
@@ -105,7 +121,7 @@ public final class CasinoStats extends SavedData {
         if (server == null || id == null || (stake <= 0 && payout <= 0)) {
             return;
         }
-        get(server).add(id, name, game, stake, stake > 0 ? 1 : 0, payout);
+        get(server).add(server, id, name, game, stake, stake > 0 ? 1 : 0, payout);
     }
 
     public static void play(ServerPlayer p, int game, long stake, long payout) {
@@ -114,10 +130,11 @@ public final class CasinoStats extends SavedData {
 
     /** Compra de varias jugadas de una vez (rasca y gana: cada boleto cuenta como una apuesta). */
     public static void buy(ServerPlayer p, int game, long cost, int count) {
-        get(com.casino.plat.Plat.server(p)).add(p.getUUID(), p.getGameProfile().getName(), game, cost, Math.max(1, count), 0);
+        MinecraftServer server = com.casino.plat.Plat.server(p);
+        get(server).add(server, p.getUUID(), p.getGameProfile().getName(), game, cost, Math.max(1, count), 0);
     }
 
-    private void add(UUID id, String name, int game, long stake, long count, long payout) {
+    private void add(MinecraftServer server, UUID id, String name, int game, long stake, long count, long payout) {
         long today = CasinoData.today();
         Entry e = players.computeIfAbsent(id, k -> new Entry());
         if (name != null && !name.isEmpty()) {
@@ -133,6 +150,9 @@ public final class CasinoStats extends SavedData {
         e.dWon += payout;
         e.dBiggest = Math.max(e.dBiggest, payout);
         if (game >= 0 && game < GAMES) {
+            if (count > 0) {
+                e.gamesMask |= 1 << game;
+            }
             gameBets[game] += count;
             gameWagered[game] += stake;
             gamePaid[game] += payout;
@@ -145,6 +165,172 @@ public final class CasinoStats extends SavedData {
         }
         rev++;
         setDirty();
+        checkAll(server, id, e, stake, payout);
+    }
+
+    // ------------------------------------------------------------------ socio y logros
+
+    @javax.annotation.Nullable
+    public Entry entry(UUID id) {
+        return players.get(id);
+    }
+
+    public Entry entryOrNew(UUID id, String name) {
+        Entry e = players.computeIfAbsent(id, k -> new Entry());
+        if (name != null && !name.isEmpty() && "?".equals(e.name)) {
+            e.name = name;
+        }
+        return e;
+    }
+
+    /** Revisa los logros que dependen de las cuentas y si subió de nivel (después de cada jugada). */
+    private void checkAll(MinecraftServer server, UUID id, Entry e, long stake, long payout) {
+        ServerPlayer p = server.getPlayerList().getPlayer(id);
+        if (p != null && !e.cardGiven) {
+            // la primera vez que apuesta le damos su tarjeta de socio
+            e.cardGiven = true;
+            net.minecraftforge.items.ItemHandlerHelper.giveItemToPlayer(p, new net.minecraft.world.item.ItemStack(com.casino.registry.ModItems.MEMBER_CARD.get()));
+            com.casino.plat.Plat.msg(p, net.minecraft.network.chat.Component.translatable("casino.member.welcome").withStyle(net.minecraft.ChatFormatting.GOLD), false);
+        }
+        if (e.bets >= 1) {
+            unlock(server, id, e, Membership.FIRST_BET);
+        }
+        if (stake >= 1000) {
+            unlock(server, id, e, Membership.HIGH_ROLLER);
+        }
+        if (payout >= 1000) {
+            unlock(server, id, e, Membership.BIG_WIN);
+        }
+        if (payout >= 10000) {
+            unlock(server, id, e, Membership.JACKPOT);
+        }
+        if (e.gamesMask == (1 << GAMES) - 1) {
+            unlock(server, id, e, Membership.ALL_GAMES);
+        }
+        if (e.bets >= 100) {
+            unlock(server, id, e, Membership.REGULAR);
+        }
+        if (e.bets >= 1000) {
+            unlock(server, id, e, Membership.VETERAN);
+        }
+        if (e.net() >= 10000) {
+            unlock(server, id, e, Membership.NET_10K);
+        }
+        if (p != null && com.casino.item.VipCardItem.tier(p) >= 2) {
+            unlock(server, id, e, Membership.VIP_GOLD);
+        }
+        int lvl = e.level();
+        if (lvl > e.levelGiven) {
+            for (int l = e.levelGiven + 1; l <= lvl; l++) {
+                levelUp(server, id, l);
+            }
+            e.levelGiven = lvl;
+            setDirty();
+        }
+        if (lvl >= 4) {
+            unlock(server, id, e, Membership.DIAMOND);
+        }
+    }
+
+    /** Un logro especial (blackjack natural, escalera real...): lo llaman los juegos. */
+    public static void achieve(ServerPlayer p, int ach) {
+        MinecraftServer server = com.casino.plat.Plat.server(p);
+        CasinoStats s = get(server);
+        s.unlock(server, p.getUUID(), s.entryOrNew(p.getUUID(), p.getGameProfile().getName()), ach);
+    }
+
+    public static void achieve(MinecraftServer server, UUID id, int ach) {
+        if (server == null || id == null) {
+            return;
+        }
+        CasinoStats s = get(server);
+        Entry e = s.players.get(id);
+        if (e != null) {
+            s.unlock(server, id, e, ach);
+        }
+    }
+
+    /** Una ruleta de la suerte más (para el logro de 7). */
+    public static void wheelSpun(MinecraftServer server, UUID id, String name) {
+        CasinoStats s = get(server);
+        Entry e = s.entryOrNew(id, name);
+        e.wheelSpins++;
+        s.setDirty();
+        if (e.wheelSpins >= Membership.WHEEL_NEEDED) {
+            s.unlock(server, id, e, Membership.WHEEL_FAN);
+        }
+    }
+
+    /** Un cóctel más (para el logro de 10). */
+    public static void drank(ServerPlayer p) {
+        MinecraftServer server = com.casino.plat.Plat.server(p);
+        CasinoStats s = get(server);
+        Entry e = s.entryOrNew(p.getUUID(), p.getGameProfile().getName());
+        e.drinks++;
+        s.setDirty();
+        if (e.drinks >= Membership.DRINKS_NEEDED) {
+            s.unlock(server, p.getUUID(), e, Membership.COCKTAILS);
+        }
+    }
+
+    private void unlock(MinecraftServer server, UUID id, Entry e, int ach) {
+        if (e.has(ach)) {
+            return;
+        }
+        e.achievements |= 1L << ach;
+        setDirty();
+        int chips = Membership.REWARD[ach];
+        ServerPlayer p = server.getPlayerList().getPlayer(id);
+        net.minecraft.network.chat.Component name = net.minecraft.network.chat.Component.translatable("casino.ach." + ach);
+        java.util.List<net.minecraft.world.item.ItemStack> items = new java.util.ArrayList<>(com.casino.chip.Chips.stacksFor(chips));
+        com.casino.game.Prize prize = new com.casino.game.Prize(net.minecraft.network.chat.Component.translatable("casino.member.ach_prize", name), items, 0, -1, false);
+        if (p != null) {
+            prize.deliver(p);
+            p.sendSystemMessage(net.minecraft.network.chat.Component.translatable("casino.member.unlocked",
+                    name.copy().withStyle(net.minecraft.ChatFormatting.YELLOW), chips).withStyle(net.minecraft.ChatFormatting.GOLD));
+            //#if MC >= 1.21.2
+            //$$ p.level().playSound(null, p.getX(), p.getY(), p.getZ(), net.minecraft.sounds.SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, net.minecraft.sounds.SoundSource.PLAYERS, 0.6F, 1.0F);
+            //#else
+            p.level().playSound(null, p.getX(), p.getY(), p.getZ(), net.minecraft.sounds.SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, net.minecraft.sounds.SoundSource.PLAYERS, 0.6F, 1.0F);
+            //#endif
+        } else {
+            CasinoData.get(server).addPending(id, prize);
+        }
+    }
+
+    /** Subió de nivel de socio: banner, fichas de regalo (y un bloque de diamante al llegar a Diamante). */
+    private void levelUp(MinecraftServer server, UUID id, int level) {
+        java.util.List<net.minecraft.world.item.ItemStack> items = new java.util.ArrayList<>(com.casino.chip.Chips.stacksFor(Membership.LEVEL_REWARD[level]));
+        if (level >= 4) {
+            items.add(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_BLOCK));
+        }
+        net.minecraft.network.chat.Component lv = net.minecraft.network.chat.Component.translatable("casino.member.level_" + Membership.LEVELS[level]);
+        com.casino.game.Prize prize = new com.casino.game.Prize(net.minecraft.network.chat.Component.translatable("casino.member.level_up", lv), items, 0, -1, true);
+        ServerPlayer p = server.getPlayerList().getPlayer(id);
+        if (p != null) {
+            prize.deliver(p);
+            com.casino.net.CasinoNet.sendTo(p, new com.casino.net.WheelWinPacket(prize));
+            p.sendSystemMessage(net.minecraft.network.chat.Component.translatable("casino.member.level_up_chat", lv.copy().withStyle(net.minecraft.ChatFormatting.AQUA))
+                    .withStyle(net.minecraft.ChatFormatting.GOLD));
+        } else {
+            CasinoData.get(server).addPending(id, prize);
+        }
+    }
+
+    /** Bono diario de socio: devuelve las fichas dadas (0 si ya lo cobró hoy). */
+    public static int claimDaily(ServerPlayer p) {
+        MinecraftServer server = com.casino.plat.Plat.server(p);
+        CasinoStats s = get(server);
+        Entry e = s.entryOrNew(p.getUUID(), p.getGameProfile().getName());
+        long today = CasinoData.today();
+        if (e.lastBonus >= today) {
+            return 0;
+        }
+        e.lastBonus = today;
+        int amount = Membership.DAILY[e.level()];
+        com.casino.chip.Chips.give(p, amount);
+        s.setDirty();
+        return amount;
     }
 
     // ------------------------------------------------------------------ leer
@@ -217,6 +403,13 @@ public final class CasinoStats extends SavedData {
                 e.dBets = Nbt.l(t, "db");
                 e.dWon = Nbt.l(t, "dp");
                 e.dBiggest = Nbt.l(t, "dx");
+                e.achievements = Nbt.l(t, "ach");
+                e.gamesMask = Nbt.i(t, "gm");
+                e.wheelSpins = Nbt.i(t, "ws");
+                e.drinks = Nbt.i(t, "dr");
+                e.lastBonus = Nbt.has(t, "lb") ? Nbt.l(t, "lb") : -1;
+                e.levelGiven = Nbt.has(t, "lg") ? Nbt.i(t, "lg") : Membership.level(e.wagered);
+                e.cardGiven = Nbt.b(t, "card");
                 d.players.put(id, e);
             } catch (IllegalArgumentException ignored) {
                 // clave dañada: se ignora
@@ -260,6 +453,13 @@ public final class CasinoStats extends SavedData {
             t.putLong("db", e.dBets);
             t.putLong("dp", e.dWon);
             t.putLong("dx", e.dBiggest);
+            t.putLong("ach", e.achievements);
+            t.putInt("gm", e.gamesMask);
+            t.putInt("ws", e.wheelSpins);
+            t.putInt("dr", e.drinks);
+            t.putLong("lb", e.lastBonus);
+            t.putInt("lg", e.levelGiven);
+            t.putBoolean("card", e.cardGiven);
             pl.put(k.toString(), t);
         });
         tag.put("players", pl);

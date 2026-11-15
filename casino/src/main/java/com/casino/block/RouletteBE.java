@@ -587,6 +587,9 @@ public class RouletteBE extends CasinoBE {
             ServerPlayer p = online(i);
             int pay = s.payout;
             com.casino.data.CasinoStats.play(sl.getServer(), players[i], names[i], com.casino.data.CasinoStats.ROULETTE, s.total, pay);
+            if (pay > 0 && s.stake[win] > 0) {
+                com.casino.data.CasinoStats.achieve(sl.getServer(), players[i], com.casino.data.Membership.STRAIGHT_UP);
+            }
             if (pay > 0) {
                 boolean straight = s.stake[win] > 0;
                 boolean big = s.net >= 500 || straight;

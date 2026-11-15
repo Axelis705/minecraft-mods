@@ -552,6 +552,7 @@ public class DealerEntity extends Mob {
             return;
         }
         sp.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.LUCK, DRINK_TICKS, 0));
+        com.casino.data.CasinoStats.drank(sp);
         //#if MC >= 1.21.2
         //$$ level().playSound(null, sp.getX(), sp.getY(), sp.getZ(), net.minecraft.sounds.SoundEvents.GENERIC_DRINK.value(), net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.0F);
         //#else

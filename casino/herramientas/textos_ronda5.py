@@ -240,6 +240,126 @@ for i, t in enumerate(PATRON_SAYS):
     k(f"casino.tip.patron.say_{i}", *t)
 
 
+# ---- ronda 7: tarjeta de socio y logros
+k("item.casino.member_card", "Tarjeta de socio", "Member Card", "Mitgliedskarte", "Carte de membre", "Tessera socio", "Cartão de sócio",
+  "Карта участника", "会員カード", "会员卡")
+k("casino.member.tooltip", "Clic derecho: tu nivel, tus logros y tu bono diario", "Right-click: your level, achievements and daily bonus",
+  "Rechtsklick: Stufe, Erfolge und Tagesbonus", "Clic droit : ton niveau, tes succès et ton bonus du jour", "Clic destro: livello, obiettivi e bonus giornaliero",
+  "Clique direito: seu nível, conquistas e bônus diário", "ПКМ: уровень, достижения и ежедневный бонус", "右クリック:レベル・実績・デイリーボーナス", "右键:等级、成就和每日奖励")
+k("casino.member.welcome", "¡Bienvenido al club! Te dimos tu Tarjeta de socio: úsala para ver tu nivel, tus logros y cobrar tu bono diario.",
+  "Welcome to the club! Here's your Member Card: use it to see your level, achievements and claim your daily bonus.",
+  "Willkommen im Club! Hier ist deine Mitgliedskarte: Stufe, Erfolge und Tagesbonus.", "Bienvenue au club ! Voici ta carte de membre : niveau, succès et bonus du jour.",
+  "Benvenuto nel club! Ecco la tua tessera socio: livello, obiettivi e bonus giornaliero.", "Bem-vindo ao clube! Aqui está seu cartão de sócio: nível, conquistas e bônus diário.",
+  "Добро пожаловать в клуб! Вот твоя карта участника: уровень, достижения и ежедневный бонус.", "クラブへようこそ!会員カードをどうぞ。レベル・実績・デイリーボーナスを確認できます。",
+  "欢迎加入俱乐部!这是你的会员卡:查看等级、成就并领取每日奖励。")
+k("casino.member.card_title", "Socio del casino", "Casino member", "Casino-Mitglied", "Membre du casino", "Socio del casinò", "Sócio do cassino",
+  "Участник казино", "カジノ会員", "赌场会员")
+for lv, names in (("bronze", ("Bronce", "Bronze", "Bronze", "Bronze", "Bronzo", "Bronze", "Бронза", "ブロンズ", "青铜")),
+                  ("silver", ("Plata", "Silver", "Silber", "Argent", "Argento", "Prata", "Серебро", "シルバー", "白银")),
+                  ("gold", ("Oro", "Gold", "Gold", "Or", "Oro", "Ouro", "Золото", "ゴールド", "黄金")),
+                  ("platinum", ("Platino", "Platinum", "Platin", "Platine", "Platino", "Platina", "Платина", "プラチナ", "铂金")),
+                  ("diamond", ("Diamante", "Diamond", "Diamant", "Diamant", "Diamante", "Diamante", "Бриллиант", "ダイヤモンド", "钻石"))):
+    k("casino.member.level_" + lv, *names)
+k("casino.member.level_up", "¡Nuevo nivel: %s!", "New level: %s!", "Neue Stufe: %s!", "Nouveau niveau : %s !", "Nuovo livello: %s!", "Novo nível: %s!",
+  "Новый уровень: %s!", "新レベル:%s!", "新等级:%s!")
+k("casino.member.level_up_chat", "¡Subiste de nivel de socio! Ahora eres %s. Tu bono diario y tus premios crecen.",
+  "Member level up! You are now %s. Your daily bonus and rewards grow.", "Mitgliedsstufe aufgestiegen! Du bist jetzt %s.",
+  "Niveau de membre supérieur ! Tu es maintenant %s.", "Livello socio aumentato! Ora sei %s.", "Subiu de nível de sócio! Agora você é %s.",
+  "Новый уровень участника! Теперь ты %s.", "会員レベルアップ!あなたは%sになりました。", "会员等级提升!你现在是%s。")
+k("casino.member.next", "Siguiente nivel: %s", "Next level: %s", "Nächste Stufe: %s", "Niveau suivant : %s", "Prossimo livello: %s", "Próximo nível: %s",
+  "Следующий уровень: %s", "次のレベル:%s", "下一等级:%s")
+k("casino.member.max", "¡Nivel máximo alcanzado!", "Maximum level reached!", "Höchste Stufe erreicht!", "Niveau maximum atteint !", "Livello massimo raggiunto!",
+  "Nível máximo alcançado!", "Достигнут максимальный уровень!", "最高レベル達成!", "已达最高等级!")
+k("casino.member.won", "Ganado", "Won", "Gewonnen", "Gagné", "Vinto", "Ganho", "Выиграно", "獲得", "赢得")
+k("casino.member.net", "Ganancia neta", "Net profit", "Nettogewinn", "Gain net", "Guadagno netto", "Lucro líquido", "Чистая прибыль", "純利益", "净收益")
+k("casino.member.achievements", "Logros %s/%s", "Achievements %s/%s", "Erfolge %s/%s", "Succès %s/%s", "Obiettivi %s/%s", "Conquistas %s/%s",
+  "Достижения %s/%s", "実績 %s/%s", "成就 %s/%s")
+k("casino.member.reward", "Premio: %s fichas", "Reward: %s chips", "Belohnung: %s Chips", "Récompense : %s jetons", "Premio: %s fiches", "Prêmio: %s fichas",
+  "Награда: %s фишек", "報酬:%sチップ", "奖励:%s筹码")
+k("casino.member.done", "¡Conseguido!", "Unlocked!", "Freigeschaltet!", "Débloqué !", "Sbloccato!", "Desbloqueado!", "Получено!", "達成!", "已解锁!")
+k("casino.member.locked", "Todavía no", "Not yet", "Noch nicht", "Pas encore", "Non ancora", "Ainda não", "Ещё нет", "未達成", "尚未达成")
+k("casino.member.bonus", "Cobrar bono diario (+%s)", "Claim daily bonus (+%s)", "Tagesbonus holen (+%s)", "Bonus du jour (+%s)", "Ritira bonus (+%s)",
+  "Pegar bônus diário (+%s)", "Забрать бонус (+%s)", "デイリーボーナス(+%s)", "领取每日奖励(+%s)")
+k("casino.member.bonus_wait", "Bono cobrado: vuelve mañana", "Bonus claimed: come back tomorrow", "Bonus abgeholt: morgen wieder", "Bonus pris : reviens demain",
+  "Bonus ritirato: torna domani", "Bônus pego: volte amanhã", "Бонус получен: приходи завтра", "受取済み:また明日", "已领取:明天再来")
+k("casino.member.bonus_got", "Bono diario de socio: +%s fichas", "Member daily bonus: +%s chips", "Mitglieds-Tagesbonus: +%s Chips",
+  "Bonus du jour : +%s jetons", "Bonus giornaliero: +%s fiches", "Bônus diário: +%s fichas", "Ежедневный бонус: +%s фишек", "デイリーボーナス:+%sチップ", "每日奖励:+%s筹码")
+k("casino.member.bonus_done", "Ya cobraste tu bono de hoy.", "You already claimed today's bonus.", "Den heutigen Bonus hast du schon.",
+  "Tu as déjà pris le bonus du jour.", "Hai già ritirato il bonus di oggi.", "Você já pegou o bônus de hoje.", "Сегодняшний бонус уже получен.", "今日のボーナスは受取済みです。", "今天的奖励已领取。")
+k("casino.member.daily_info", "Tu bono diario: %s fichas", "Your daily bonus: %s chips", "Dein Tagesbonus: %s Chips", "Ton bonus du jour : %s jetons",
+  "Il tuo bonus: %s fiches", "Seu bônus diário: %s fichas", "Твой бонус: %s фишек", "デイリー:%sチップ", "每日奖励:%s筹码")
+k("casino.member.unlocked", "★ ¡Logro desbloqueado! %s (+%s fichas)", "★ Achievement unlocked! %s (+%s chips)", "★ Erfolg freigeschaltet! %s (+%s Chips)",
+  "★ Succès débloqué ! %s (+%s jetons)", "★ Obiettivo sbloccato! %s (+%s fiches)", "★ Conquista desbloqueada! %s (+%s fichas)",
+  "★ Достижение получено! %s (+%s фишек)", "★ 実績解除!%s(+%sチップ)", "★ 成就解锁!%s(+%s筹码)")
+k("casino.member.ach_prize", "Logro: %s", "Achievement: %s", "Erfolg: %s", "Succès : %s", "Obiettivo: %s", "Conquista: %s", "Достижение: %s", "実績:%s", "成就:%s")
+ACH = [
+    (("Primera apuesta", "First bet", "Erste Wette", "Premier pari", "Prima scommessa", "Primeira aposta", "Первая ставка", "初ベット", "第一次下注"),
+     ("Haz tu primera apuesta en el casino.", "Place your first bet in the casino.", "Platziere deine erste Wette.", "Fais ton premier pari.", "Fai la tua prima puntata.",
+      "Faça sua primeira aposta.", "Сделай первую ставку.", "カジノで初めて賭ける。", "在赌场第一次下注。")),
+    (("Apostador de altura", "High roller", "High Roller", "Gros joueur", "Giocatore d'azzardo", "Apostador de elite", "Хайроллер", "ハイローラー", "豪赌客"),
+     ("Apuesta 1,000 fichas o más de una sola vez.", "Bet 1,000 chips or more at once.", "Setze 1.000 Chips oder mehr auf einmal.", "Mise 1 000 jetons ou plus d'un coup.",
+      "Punta 1.000 fiches o più in una volta.", "Aposte 1.000 fichas ou mais de uma vez.", "Поставь 1000 фишек или больше за раз.", "一度に1,000チップ以上賭ける。", "一次下注1000筹码以上。")),
+    (("Gran ganador", "Big winner", "Großer Gewinner", "Grand gagnant", "Grande vincitore", "Grande vencedor", "Крупный выигрыш", "大勝利", "大赢家"),
+     ("Gana 1,000 fichas o más en una jugada.", "Win 1,000 chips or more in one play.", "Gewinne 1.000 Chips oder mehr in einem Spiel.", "Gagne 1 000 jetons ou plus en un coup.",
+      "Vinci 1.000 fiches o più in una giocata.", "Ganhe 1.000 fichas ou mais numa jogada.", "Выиграй 1000 фишек или больше за раз.", "一度に1,000チップ以上勝つ。", "一次赢得1000筹码以上。")),
+    (("¡Premio gordo!", "Jackpot!", "Jackpot!", "Jackpot !", "Jackpot!", "Jackpot!", "Джекпот!", "ジャックポット!", "头奖!"),
+     ("Gana 10,000 fichas o más en una jugada.", "Win 10,000 chips or more in one play.", "Gewinne 10.000 Chips oder mehr in einem Spiel.", "Gagne 10 000 jetons ou plus en un coup.",
+      "Vinci 10.000 fiches o più in una giocata.", "Ganhe 10.000 fichas ou mais numa jogada.", "Выиграй 10 000 фишек за раз.", "一度に10,000チップ以上勝つ。", "一次赢得10000筹码以上。")),
+    (("Conocedor", "Connoisseur", "Kenner", "Connaisseur", "Intenditore", "Conhecedor", "Знаток", "目利き", "行家"),
+     ("Juega los 7 juegos del casino.", "Play all 7 casino games.", "Spiele alle 7 Casinospiele.", "Joue aux 7 jeux du casino.", "Gioca a tutti i 7 giochi.",
+      "Jogue os 7 jogos do cassino.", "Сыграй во все 7 игр казино.", "カジノの7種類のゲームを遊ぶ。", "玩遍赌场的7种游戏。")),
+    (("Cliente frecuente", "Regular", "Stammgast", "Habitué", "Cliente abituale", "Cliente frequente", "Завсегдатай", "常連", "常客"),
+     ("Haz 100 apuestas.", "Place 100 bets.", "Platziere 100 Wetten.", "Fais 100 paris.", "Fai 100 puntate.", "Faça 100 apostas.", "Сделай 100 ставок.", "100回賭ける。", "下注100次。")),
+    (("Veterano", "Veteran", "Veteran", "Vétéran", "Veterano", "Veterano", "Ветеран", "ベテラン", "老手"),
+     ("Haz 1,000 apuestas.", "Place 1,000 bets.", "Platziere 1.000 Wetten.", "Fais 1 000 paris.", "Fai 1.000 puntate.", "Faça 1.000 apostas.", "Сделай 1000 ставок.", "1,000回賭ける。", "下注1000次。")),
+    (("¡Blackjack!", "Natural Blackjack", "Natürlicher Blackjack", "Blackjack naturel", "Blackjack naturale", "Blackjack natural", "Натуральный блэкджек", "ナチュラル・ブラックジャック", "天生二十一点"),
+     ("Saca 21 con tus dos primeras cartas.", "Get 21 with your first two cards.", "Erziele 21 mit den ersten zwei Karten.", "Fais 21 avec tes deux premières cartes.",
+      "Fai 21 con le prime due carte.", "Faça 21 com as duas primeiras cartas.", "Набери 21 первыми двумя картами.", "最初の2枚で21を出す。", "用前两张牌拿到21点。")),
+    (("Casa llena", "Full house", "Full House", "Full", "Full", "Full house", "Фулл-хаус", "フルハウス", "葫芦"),
+     ("Gana al póker con full o mejor.", "Win at poker with a full house or better.", "Gewinne beim Poker mit Full House oder besser.", "Gagne au poker avec un full ou mieux.",
+      "Vinci a poker con un full o meglio.", "Ganhe no pôquer com full house ou melhor.", "Выиграй в покер с фулл-хаусом или лучше.", "フルハウス以上でポーカーに勝つ。", "用葫芦或更好的牌赢得扑克。")),
+    (("Escalera de color", "Straight flush", "Straight Flush", "Quinte flush", "Scala colore", "Straight flush", "Стрит-флеш", "ストレートフラッシュ", "同花顺"),
+     ("Gana al póker con escalera de color o escalera real.", "Win at poker with a straight flush or royal flush.", "Gewinne mit Straight Flush oder Royal Flush.",
+      "Gagne avec une quinte flush ou une quinte flush royale.", "Vinci con scala colore o scala reale.", "Ganhe com straight flush ou royal flush.",
+      "Выиграй со стрит-флешем или роял-флешем.", "ストレートフラッシュ以上で勝つ。", "用同花顺或皇家同花顺获胜。")),
+    (("Pleno", "Straight up", "Plein", "Plein", "Pieno", "Pleno", "Прямая ставка", "ストレートアップ", "单号命中"),
+     ("Acierta un número exacto en la ruleta.", "Hit a single number at roulette.", "Triff eine einzelne Zahl beim Roulette.", "Touche un numéro plein à la roulette.",
+      "Centra un numero secco alla roulette.", "Acerte um número exato na roleta.", "Угадай точное число в рулетке.", "ルーレットで1つの数字を当てる。", "在轮盘押中单个号码。")),
+    (("Tres sietes", "Triple seven", "Dreifache Sieben", "Triple sept", "Tre sette", "Três setes", "Три семёрки", "トリプルセブン", "三个七"),
+     ("Saca el premio mayor de una tragamonedas.", "Hit a slot machine jackpot.", "Knacke den Jackpot am Spielautomaten.", "Décroche le jackpot d'une machine à sous.",
+      "Vinci il jackpot di una slot.", "Ganhe o jackpot de um caça-níqueis.", "Сорви джекпот на слоте.", "スロットでジャックポットを当てる。", "在老虎机中头奖。")),
+    (("Al borde", "On the edge", "Am Rand", "Au bord", "Sul bordo", "Na beirada", "На краю", "ふちギリギリ", "边缘大奖"),
+     ("Cae en un casillero de 22x o más en el plinko.", "Land a 22x or better slot in plinko.", "Lande beim Plinko auf 22x oder mehr.", "Tombe sur une case 22x ou plus au plinko.",
+      "Atterra su 22x o più al plinko.", "Caia numa casa de 22x ou mais no plinko.", "Попади в ячейку 22x или выше в плинко.", "プリンコで22倍以上に入れる。", "弹珠台落入22倍以上。")),
+    (("Ojo de jinete", "Horse sense", "Pferdeverstand", "Œil du turfiste", "Occhio da fantino", "Olho de jóquei", "Чутьё на лошадей", "馬を見る目", "慧眼识马"),
+     ("Gana una apuesta en las carreras de caballos.", "Win a bet at the horse races.", "Gewinne eine Wette beim Pferderennen.", "Gagne un pari aux courses.",
+      "Vinci una scommessa alle corse.", "Ganhe uma aposta nas corridas.", "Выиграй ставку на скачках.", "競馬で賭けに勝つ。", "在赛马中赢得一次下注。")),
+    (("Rasca la suerte", "Lucky scratch", "Glückslos", "Grattage gagnant", "Gratta fortunato", "Raspadinha da sorte", "Счастливый билет", "ラッキースクラッチ", "幸运刮刮乐"),
+     ("Gana 1,000 fichas o más con un rasca y gana.", "Win 1,000 chips or more on a scratch card.", "Gewinne 1.000 Chips oder mehr mit einem Rubbellos.",
+      "Gagne 1 000 jetons ou plus au grattage.", "Vinci 1.000 fiches o più con un gratta e vinci.", "Ganhe 1.000 fichas ou mais numa raspadinha.",
+      "Выиграй 1000 фишек или больше в лотерее.", "スクラッチで1,000チップ以上当てる。", "刮刮乐赢得1000筹码以上。")),
+    (("Fiel a la ruleta", "Wheel devotee", "Glücksrad-Fan", "Fidèle de la roue", "Fedele alla ruota", "Fiel à roleta", "Поклонник колеса", "ルーレットの常連", "幸运轮粉丝"),
+     ("Gira la Ruleta de la Suerte 7 veces (una por día).", "Spin the Wheel of Fortune 7 times (once a day).", "Drehe das Glücksrad 7-mal (einmal pro Tag).",
+      "Tourne la roue de la fortune 7 fois (une par jour).", "Gira la ruota della fortuna 7 volte (una al giorno).", "Gire a roleta da sorte 7 vezes (uma por dia).",
+      "Крути колесо удачи 7 раз (раз в день).", "幸運のルーレットを7回回す(1日1回)。", "转动幸运轮7次(每天一次)。")),
+    (("Cliente del bar", "Bar regular", "Barstammgast", "Habitué du bar", "Cliente del bar", "Cliente do bar", "Завсегдатай бара", "バーの常連", "酒吧常客"),
+     ("Tómate 10 cócteles Diamante.", "Drink 10 Diamond cocktails.", "Trinke 10 Diamant-Cocktails.", "Bois 10 cocktails Diamant.", "Bevi 10 cocktail Diamante.",
+      "Beba 10 coquetéis Diamante.", "Выпей 10 коктейлей «Бриллиант».", "ダイヤモンドカクテルを10杯飲む。", "喝10杯钻石鸡尾酒。")),
+    (("VIP de oro", "Gold VIP", "Gold-VIP", "VIP or", "VIP oro", "VIP ouro", "Золотой VIP", "ゴールドVIP", "金卡VIP"),
+     ("Juega con la tarjeta VIP de oro.", "Play with the gold VIP card.", "Spiele mit der goldenen VIP-Karte.", "Joue avec la carte VIP or.", "Gioca con la tessera VIP oro.",
+      "Jogue com o cartão VIP de ouro.", "Играй с золотой VIP-картой.", "ゴールドVIPカードで遊ぶ。", "持金卡VIP游玩。")),
+    (("Socio Diamante", "Diamond member", "Diamant-Mitglied", "Membre Diamant", "Socio Diamante", "Sócio Diamante", "Бриллиантовый участник", "ダイヤモンド会員", "钻石会员"),
+     ("Llega al nivel de socio Diamante.", "Reach Diamond member level.", "Erreiche die Diamant-Stufe.", "Atteins le niveau Diamant.", "Raggiungi il livello Diamante.",
+      "Chegue ao nível Diamante.", "Достигни уровня «Бриллиант».", "ダイヤモンド会員になる。", "达到钻石会员等级。")),
+    (("Rompe la banca", "Break the bank", "Die Bank sprengen", "Faire sauter la banque", "Sbanca il banco", "Quebre a banca", "Сорви банк", "胴元を破る", "赢垮庄家"),
+     ("Lleva 10,000 fichas de ganancia neta.", "Reach 10,000 chips of net profit.", "Erreiche 10.000 Chips Nettogewinn.", "Atteins 10 000 jetons de gain net.",
+      "Raggiungi 10.000 fiches di guadagno netto.", "Chegue a 10.000 fichas de lucro líquido.", "Набери 10 000 фишек чистой прибыли.", "純利益10,000チップを達成。", "净收益达到10000筹码。")),
+]
+for i, (name, desc) in enumerate(ACH):
+    k(f"casino.ach.{i}", *name)
+    k(f"casino.ach.{i}.desc", *desc)
+
+
 def main():
     for fn in sorted(os.listdir(L)):
         if not fn.endswith(".json"):

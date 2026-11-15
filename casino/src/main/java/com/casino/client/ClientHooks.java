@@ -57,6 +57,10 @@ public final class ClientHooks {
         open(new NeonScreen(pos));
     }
 
+    public static void openMember(com.casino.net.MemberPacket.Open m) {
+        open(new MemberScreen(m));
+    }
+
     public static void openWheelDialog(com.casino.net.WheelDialogPacket m) {
         open(new WheelDialogScreen(m));
     }

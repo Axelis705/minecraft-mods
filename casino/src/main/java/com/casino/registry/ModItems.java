@@ -51,6 +51,10 @@ public final class ModItems {
     public static final RegistryObject<Item> VIP_GOLD = ITEMS.register("vip_card_gold",
             () -> new com.casino.item.VipCardItem(Reg.item("vip_card_gold").stacksTo(1).rarity(net.minecraft.world.item.Rarity.EPIC), 2));
 
+    /** Tarjeta de socio (niveles, logros y bono diario). */
+    public static final RegistryObject<Item> MEMBER_CARD = ITEMS.register("member_card",
+            () -> new com.casino.item.MemberCardItem(Reg.item("member_card").stacksTo(1).rarity(net.minecraft.world.item.Rarity.RARE)));
+
     private ModItems() {
     }
 

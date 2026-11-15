@@ -162,6 +162,9 @@ public class SlotBE extends CasinoBE {
         endSeq++;
         if (level instanceof ServerLevel sl && spinner != null) {
             com.casino.data.CasinoStats.play(sl.getServer(), spinner, spinnerName, com.casino.data.CasinoStats.SLOT, bet, payout);
+            if (jackpotHit) {
+                com.casino.data.CasinoStats.achieve(sl.getServer(), spinner, com.casino.data.Membership.SLOT_JACKPOT);
+            }
             boolean won = payout > 0 || jackpotHit;
             if (won) {
                 List<ItemStack> items = new ArrayList<>(Chips.stacksFor(payout));
