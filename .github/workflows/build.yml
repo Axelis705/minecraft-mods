@@ -134,9 +134,11 @@ jobs:
       - name: Diagnóstico de clases de Minecraft (celular 26.x)
         if: always() && matrix.mod == 'celular' && startsWith(matrix.mc, '26')
         env:
-          DIAG_METODO: "net.minecraft.client.renderer.GameRenderer#render"
-          DIAG_PRIVADOS: "net.minecraft.client.gui.Gui:hid net.minecraft.client.Options:hid net.minecraft.client.Minecraft:hid net.minecraft.client.gui.Gui:visible"
-        run: bash tools/javap_diag.sh gen/${{ matrix.mod }}-${{ matrix.mc }} | head -220
+          DIAG_METODO: "net.minecraft.client.Minecraft#renderFrame"
+        run: |
+          bash tools/javap_diag.sh gen/${{ matrix.mod }}-${{ matrix.mc }} | grep -iE "JAR|=====|render|extract|gui|screen" | head -120
+          jar=$(bash tools/javap_diag.sh gen/${{ matrix.mod }}-${{ matrix.mc }} | sed -n 's/^JAR: //p')
+          [ -n "$jar" ] && python3 tools/find_symbol.py "$jar" hideGui toggleGui guiHidden hudHidden hideHud isHudHidden hudVisible || true
       - name: Arrancar servidor ${{ matrix.mc }} con ${{ matrix.mod }}
         run: bash tools/boot_server.sh gen/${{ matrix.mod }}-${{ matrix.mc }}
       - uses: actions/upload-artifact@v4
