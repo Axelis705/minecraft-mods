@@ -168,6 +168,15 @@ public final class G {
         //#endif
     }
 
+    /** Girar en el plano de la pantalla (radianes, en el sentido del reloj). */
+    public void rotate(float rad) {
+        //#if MC >= 26.1
+        //$$ raw.pose().rotate(rad);
+        //#else
+        raw.pose().mulPose(com.mojang.math.Axis.ZP.rotation(rad));
+        //#endif
+    }
+
     public void scale(float x, float y, float z) {
         //#if MC >= 26.1
         //$$ raw.pose().scale(x, y);

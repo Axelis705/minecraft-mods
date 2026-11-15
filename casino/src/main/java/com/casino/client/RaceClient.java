@@ -23,7 +23,8 @@ import java.util.Map;
  */
 public final class RaceClient {
     //#if MC >= 26.1
-    //$$ public static final KeyMapping BET = new KeyMapping("key.casino.race_bet", 66, KeyMapping.Category.register(Ids.casino("main")));
+    //$$ public static final KeyMapping.Category CAT = KeyMapping.Category.register(Ids.casino("main"));
+    //$$ public static final KeyMapping BET = new KeyMapping("key.casino.race_bet", 66, CAT);
     //#else
     public static final KeyMapping BET = new KeyMapping("key.casino.race_bet", 66, "key.categories.casino");
     //#endif

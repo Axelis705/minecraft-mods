@@ -80,6 +80,15 @@ public final class CasinoData extends SavedData {
         setDirty();
     }
 
+    /** Las zonas de casino (para que el cliente sepa cuándo estás dentro de uno). */
+    public List<String> zoneDims() {
+        return zoneDims;
+    }
+
+    public List<int[]> zoneBoxes() {
+        return zones;
+    }
+
     public boolean inZone(String dim, int x, int y, int z) {
         for (int i = 0; i < zones.size(); i++) {
             int[] b = zones.get(i);

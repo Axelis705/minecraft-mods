@@ -29,6 +29,11 @@ public final class CasinoEvents {
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (e.getEntity() instanceof ServerPlayer p && Plat.server(p) != null) {
+            com.casino.net.MemberSyncPacket.send(p);
+            com.casino.data.CasinoStats.Entry me = com.casino.data.CasinoStats.get(Plat.server(p)).entry(p.getUUID());
+            if (me != null && me.cardGiven) {
+                com.casino.data.MemberRewards.title(Plat.server(p), p, me.level());
+            }
             List<Prize> list = CasinoData.get(Plat.server(p)).takePending(p.getUUID());
             for (Prize pz : list) {
                 pz.deliver(p);

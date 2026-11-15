@@ -94,6 +94,17 @@ public final class ModDecor {
     /** Sombrilla de alberca: dos bloques de alto; solo el mástil y la base chocan; la lona (casi 3x3) queda a dos bloques y medio. */
     public static final RegistryObject<Block> PARASOL = block("parasol", p -> new com.casino.decor.ParasolBlock(
             p.mapColor(MapColor.COLOR_BLUE).strength(1.0F).sound(SoundType.WOOL).noOcclusion()));
+    /** Trofeos de socio (Bronce, Plata, Oro, Platino, Diamante): vienen en el cofre al subir de nivel. */
+    public static final List<RegistryObject<Block>> TROPHIES = new ArrayList<>();
+
+    static {
+        for (String lv : com.casino.data.Membership.LEVELS) {
+            TROPHIES.add(block("trophy_" + lv, p -> new DecorBlock(p.mapColor(MapColor.GOLD).strength(1.0F).sound(SoundType.METAL).noOcclusion()
+                    .lightLevel(s -> lv.equals("diamond") ? 7 : 0), true,
+                    new double[]{4, 0, 4, 12, 3.5, 12}, new double[]{6.5, 3.5, 6.5, 9.5, 7, 9.5}, new double[]{3.5, 7, 3.5, 12.5, 12.5, 12.5})));
+        }
+    }
+
     public static final List<RegistryObject<Block>> ROPE_POSTS = new ArrayList<>();
 
     static {

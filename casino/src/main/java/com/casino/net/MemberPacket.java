@@ -17,6 +17,7 @@ public final class MemberPacket {
 
     /** Manda al jugador su tarjeta (y se abre la pantalla). */
     public static void open(ServerPlayer p) {
+        CasinoStats.recheck(p);
         CasinoStats s = CasinoStats.get(Plat.server(p));
         CasinoStats.Entry e = s.entryOrNew(p.getUUID(), p.getGameProfile().getName());
         CasinoNet.sendTo(p, new Open(p.getGameProfile().getName(), e.wagered, e.won, e.bets, e.biggest, e.achievements, e.gamesMask, e.wheelSpins,

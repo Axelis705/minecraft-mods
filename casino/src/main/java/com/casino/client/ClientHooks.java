@@ -57,6 +57,15 @@ public final class ClientHooks {
         open(new NeonScreen(pos));
     }
 
+    /** El cofre de nivel: si estás en medio de un juego (con su pantalla abierta) espera a que la cierres. */
+    public static void openLevelChest(com.casino.net.LevelChestPacket m) {
+        if (ClientScreens.none()) {
+            open(new LevelChestScreen(m));
+        } else {
+            MemberHud.pendingChest = m;
+        }
+    }
+
     public static void openMember(com.casino.net.MemberPacket.Open m) {
         open(new MemberScreen(m));
     }

@@ -55,6 +55,17 @@ public final class ModItems {
     public static final RegistryObject<Item> MEMBER_CARD = ITEMS.register("member_card",
             () -> new com.casino.item.MemberCardItem(Reg.item("member_card").stacksTo(1).rarity(net.minecraft.world.item.Rarity.RARE)));
 
+    /** Fichas de colección de cada nivel de socio (no se apuestan: son un recuerdo). */
+    public static final java.util.List<RegistryObject<Item>> MEMBER_CHIPS = new java.util.ArrayList<>();
+
+    static {
+        for (String lv : com.casino.data.Membership.LEVELS) {
+            String n = "member_chip_" + lv;
+            MEMBER_CHIPS.add(ITEMS.register(n, () -> new com.casino.item.MemberChipItem(Reg.item(n).stacksTo(16)
+                    .rarity(lv.equals("diamond") || lv.equals("platinum") ? net.minecraft.world.item.Rarity.EPIC : net.minecraft.world.item.Rarity.RARE), lv)));
+        }
+    }
+
     private ModItems() {
     }
 

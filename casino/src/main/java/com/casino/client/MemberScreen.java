@@ -142,7 +142,7 @@ public final class MemberScreen extends CasinoScreen {
         }
         // ---- números
         int sy = by + 36;
-        String[][] rows = {{"casino.records.bets", fmt(d.bets)}, {"casino.member.won", fmt(d.won)}, {"casino.records.ch_4", fmt(d.biggest)},
+        String[][] rows = {{"casino.records.bets", fmt(d.bets)}, {"casino.member.won", fmt(d.won)}, {"casino.member.biggest", fmt(d.biggest)},
                 {"casino.member.net", (d.won - d.wagered >= 0 ? "+" : "") + fmt(d.won - d.wagered)}};
         for (int i = 0; i < rows.length; i++) {
             Component k = Component.translatable(rows[i][0]);

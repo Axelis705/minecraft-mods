@@ -28,6 +28,12 @@ public final class ModCreativeTabs {
                 out.accept(ModItems.VIP_SILVER.get());
                 out.accept(ModItems.VIP_GOLD.get());
                 out.accept(ModItems.MEMBER_CARD.get());
+                for (var t : ModDecor.TROPHIES) {
+                    out.accept(t.get());
+                }
+                for (var c : ModItems.MEMBER_CHIPS) {
+                    out.accept(c.get());
+                }
                 out.accept(com.casino.diamond.DiamondReg.ELEVATOR_ITEM.get());
                 out.accept(com.casino.diamond.DiamondReg.PRIZE_SHOP_ITEM.get());
                 out.accept(com.casino.diamond.DiamondReg.RECORD_SCREEN_ITEM.get());

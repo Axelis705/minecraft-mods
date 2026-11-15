@@ -39,6 +39,8 @@ public final class CasinoNet {
         Net.register(21, WheelSpinPacket.class, WheelSpinPacket::encode, WheelSpinPacket::decode, WheelSpinPacket::handle);
         Net.register(22, MemberPacket.Open.class, MemberPacket.Open::encode, MemberPacket.Open::decode, MemberPacket.Open::handle);
         Net.register(23, MemberPacket.Claim.class, MemberPacket.Claim::encode, MemberPacket.Claim::decode, MemberPacket.Claim::handle);
+        Net.register(24, MemberSyncPacket.class, MemberSyncPacket::encode, MemberSyncPacket::decode, MemberSyncPacket::handle);
+        Net.register(25, LevelChestPacket.class, LevelChestPacket::encode, LevelChestPacket::decode, LevelChestPacket::handle);
         Net.done();
     }
 

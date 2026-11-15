@@ -28,6 +28,7 @@ public final class Protection {
     public static void protect(MinecraftServer server, Level level, BoundingBox b) {
         if (server != null) {
             CasinoData.get(server).addZone(dim(level), new int[]{b.minX(), b.minY(), b.minZ(), b.maxX(), b.maxY(), b.maxZ()});
+            com.casino.net.MemberSyncPacket.sendAll(server);
         }
     }
 

@@ -191,6 +191,7 @@ public final class CasinoStats extends SavedData {
             e.cardGiven = true;
             net.minecraftforge.items.ItemHandlerHelper.giveItemToPlayer(p, new net.minecraft.world.item.ItemStack(com.casino.registry.ModItems.MEMBER_CARD.get()));
             com.casino.plat.Plat.msg(p, net.minecraft.network.chat.Component.translatable("casino.member.welcome").withStyle(net.minecraft.ChatFormatting.GOLD), false);
+            MemberRewards.title(server, p, e.level());
         }
         if (e.bets >= 1) {
             unlock(server, id, e, Membership.FIRST_BET);
@@ -229,6 +230,19 @@ public final class CasinoStats extends SavedData {
         }
         if (lvl >= 4) {
             unlock(server, id, e, Membership.DIAMOND);
+        }
+        if (p != null) {
+            com.casino.net.MemberSyncPacket.send(p);
+        }
+    }
+
+    /** Vuelve a revisar logros y nivel con lo que ya tiene (para quien jugó antes de que existieran los logros). */
+    public static void recheck(ServerPlayer p) {
+        MinecraftServer server = com.casino.plat.Plat.server(p);
+        CasinoStats s = get(server);
+        Entry e = s.entry(p.getUUID());
+        if (e != null && e.bets > 0) {
+            s.checkAll(server, p.getUUID(), e, 0, e.biggest);
         }
     }
 
@@ -300,16 +314,19 @@ public final class CasinoStats extends SavedData {
 
     /** Subió de nivel de socio: banner, fichas de regalo (y un bloque de diamante al llegar a Diamante). */
     private void levelUp(MinecraftServer server, UUID id, int level) {
-        java.util.List<net.minecraft.world.item.ItemStack> items = new java.util.ArrayList<>(com.casino.chip.Chips.stacksFor(Membership.LEVEL_REWARD[level]));
-        if (level >= 4) {
-            items.add(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_BLOCK));
-        }
+        java.util.List<net.minecraft.world.item.ItemStack> items = MemberRewards.chest(level, server.overworld().getRandom());
         net.minecraft.network.chat.Component lv = net.minecraft.network.chat.Component.translatable("casino.member.level_" + Membership.LEVELS[level]);
         com.casino.game.Prize prize = new com.casino.game.Prize(net.minecraft.network.chat.Component.translatable("casino.member.level_up", lv), items, 0, -1, true);
         ServerPlayer p = server.getPlayerList().getPlayer(id);
         if (p != null) {
+            java.util.List<net.minecraft.world.item.ItemStack> shown = new java.util.ArrayList<>();
+            for (net.minecraft.world.item.ItemStack st : items) {
+                shown.add(st.copy());
+            }
             prize.deliver(p);
-            com.casino.net.CasinoNet.sendTo(p, new com.casino.net.WheelWinPacket(prize));
+            // el cofre animado (lo de adentro ya está en el inventario) y el título nuevo sobre la cabeza
+            com.casino.net.CasinoNet.sendTo(p, new com.casino.net.LevelChestPacket(level, shown));
+            MemberRewards.title(server, p, level);
             p.sendSystemMessage(net.minecraft.network.chat.Component.translatable("casino.member.level_up_chat", lv.copy().withStyle(net.minecraft.ChatFormatting.AQUA))
                     .withStyle(net.minecraft.ChatFormatting.GOLD));
         } else {
@@ -330,6 +347,7 @@ public final class CasinoStats extends SavedData {
         int amount = Membership.DAILY[e.level()];
         com.casino.chip.Chips.give(p, amount);
         s.setDirty();
+        com.casino.net.MemberSyncPacket.send(p);
         return amount;
     }
 

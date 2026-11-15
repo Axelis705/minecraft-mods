@@ -360,6 +360,52 @@ for i, (name, desc) in enumerate(ACH):
     k(f"casino.ach.{i}.desc", *desc)
 
 
+# ---- ronda 8: mini tarjeta de socio, cofre de nivel, trofeos y fichas de colección
+LV8 = (("bronze", ("Bronce", "Bronze", "Bronze", "Bronze", "Bronzo", "Bronze", "Бронза", "ブロンズ", "青铜")),
+       ("silver", ("Plata", "Silver", "Silber", "Argent", "Argento", "Prata", "Серебро", "シルバー", "白银")),
+       ("gold", ("Oro", "Gold", "Gold", "Or", "Oro", "Ouro", "Золото", "ゴールド", "黄金")),
+       ("platinum", ("Platino", "Platinum", "Platin", "Platine", "Platino", "Platina", "Платина", "プラチナ", "铂金")),
+       ("diamond", ("Diamante", "Diamond", "Diamant", "Diamant", "Diamante", "Diamante", "Бриллиант", "ダイヤモンド", "钻石")))
+for lv, (es, en, de, fr, it, pt, ru, ja, zh) in LV8:
+    k("block.casino.trophy_" + lv, f"Trofeo de socio {es}", f"{en} Member Trophy", f"Mitgliedstrophäe {de}", f"Trophée de membre {fr}",
+      f"Trofeo socio {it}", f"Troféu de sócio {pt}", f"Трофей участника ({ru})", f"{ja}会員トロフィー", f"{zh}会员奖杯")
+    k("item.casino.member_chip_" + lv, f"Ficha de colección {es}", f"{en} Collector Chip", f"Sammlerjeton {de}", f"Jeton de collection {fr}",
+      f"Fiche da collezione {it}", f"Ficha de coleção {pt}", f"Коллекционная фишка ({ru})", f"{ja}記念チップ", f"{zh}纪念筹码")
+k("casino.member.chip_tooltip", "Recuerdo de cuando llegaste a %s (no sirve para apostar)", "A keepsake from reaching %s (can't be bet)",
+  "Andenken an das Erreichen von %s (nicht setzbar)", "Souvenir de ton passage au niveau %s (ne se mise pas)", "Ricordo del livello %s (non si punta)",
+  "Lembrança de quando chegou a %s (não serve para apostar)", "Память о достижении уровня %s (нельзя ставить)", "%s到達の記念品(賭けには使えません)",
+  "达到%s的纪念品(不能下注)")
+k("casino.member.biggest", "Premio más grande", "Biggest prize", "Größter Gewinn", "Plus gros gain", "Vincita più grande", "Maior prêmio",
+  "Самый большой выигрыш", "最大の賞金", "最大奖金")
+k("casino.hud.join", "Haz tu primera apuesta para recibir tu tarjeta de socio", "Place your first bet to get your member card",
+  "Platziere deine erste Wette, um deine Mitgliedskarte zu erhalten", "Fais ton premier pari pour recevoir ta carte de membre",
+  "Fai la tua prima puntata per ricevere la tessera socio", "Faça sua primeira aposta para receber seu cartão de sócio",
+  "Сделай первую ставку, чтобы получить карту участника", "最初のベットで会員カードがもらえます", "下第一注即可获得会员卡")
+k("casino.hud.left", "Faltan %s para %s", "%s to go for %s", "Noch %s bis %s", "Encore %s pour %s", "Mancano %s per %s", "Faltam %s para %s",
+  "До уровня %2$s: %1$s", "%2$sまであと%1$s", "距离%2$s还差%1$s")
+k("casino.hud.reward", "Al subir: cofre + %s fichas", "Next up: chest + %s chips", "Aufstieg: Truhe + %s Jetons", "Au prochain : coffre + %s jetons",
+  "Al prossimo: forziere + %s fiche", "Ao subir: baú + %s fichas", "Награда: сундук + %s фишек", "昇格で:宝箱+%sチップ", "升级奖励:宝箱+%s筹码")
+k("casino.hud.total", "Total apostado: %s", "Total wagered: %s", "Insgesamt gesetzt: %s", "Total misé : %s", "Totale puntato: %s",
+  "Total apostado: %s", "Всего поставлено: %s", "累計ベット:%s", "累计下注:%s")
+k("casino.hud.ach", "Logros %s/%s", "Achievements %s/%s", "Erfolge %s/%s", "Succès %s/%s", "Obiettivi %s/%s", "Conquistas %s/%s",
+  "Достижения %s/%s", "実績 %s/%s", "成就 %s/%s")
+k("casino.hud.bonus", "¡Bono listo!", "Bonus ready!", "Bonus bereit!", "Bonus prêt !", "Bonus pronto!", "Bônus pronto!", "Бонус готов!",
+  "ボーナス受取可!", "奖励可领取!")
+k("casino.hud.hide", "%s: ocultar", "%s: hide", "%s: ausblenden", "%s : masquer", "%s: nascondi", "%s: ocultar", "%s: скрыть", "%s:隠す", "%s:隐藏")
+k("key.casino.member_hud", "Mostrar/ocultar tarjeta de socio", "Show/hide member card", "Mitgliedskarte ein-/ausblenden",
+  "Afficher/masquer la carte de membre", "Mostra/nascondi tessera socio", "Mostrar/ocultar cartão de sócio", "Показать/скрыть карту участника",
+  "会員カードの表示切替", "显示/隐藏会员卡")
+k("casino.chest.title", "Cofre de socio", "Member chest", "Mitgliedstruhe", "Coffre de membre", "Forziere socio", "Baú de sócio", "Сундук участника",
+  "会員の宝箱", "会员宝箱")
+k("casino.chest.level", "¡NIVEL %s!", "%s LEVEL!", "STUFE %s!", "NIVEAU %s !", "LIVELLO %s!", "NÍVEL %s!", "УРОВЕНЬ %s!", "%sレベル!", "%s等级!")
+k("casino.chest.sub", "Tu premio por subir de nivel (ya está en tu inventario)", "Your level-up reward (already in your inventory)",
+  "Deine Belohnung für den Aufstieg (schon im Inventar)", "Ta récompense de niveau (déjà dans ton inventaire)",
+  "Il tuo premio di livello (già nell'inventario)", "Seu prêmio por subir de nível (já está no inventário)",
+  "Награда за новый уровень (уже в инвентаре)", "レベルアップの報酬(すでにインベントリにあります)", "升级奖励(已放入背包)")
+k("casino.chest.close", "Haz clic para cerrar", "Click to close", "Klicken zum Schließen", "Clique pour fermer", "Clicca per chiudere",
+  "Clique para fechar", "Нажми, чтобы закрыть", "クリックで閉じる", "点击关闭")
+
+
 def main():
     for fn in sorted(os.listdir(L)):
         if not fn.endswith(".json"):

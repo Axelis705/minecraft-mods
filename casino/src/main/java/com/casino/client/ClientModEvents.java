@@ -38,12 +38,14 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void onKeys(net.minecraftforge.client.event.RegisterKeyMappingsEvent e) {
         e.register(RaceClient.BET);
+        e.register(MemberHud.TOGGLE);
     }
 
     //#if MC >= 1.20.5
     //$$ @SubscribeEvent
     //$$ public static void onOverlays(AddGuiOverlayLayersEvent e) {
     //$$     e.getLayeredDraw().add(Ids.casino("win_banner"), (gg, delta) -> {
+    //$$         MemberHud.render(new G(gg), gg.guiWidth(), gg.guiHeight());
     //$$         RaceHud.render(new G(gg), gg.guiWidth(), gg.guiHeight());
     //$$         WinBanner.render(new G(gg), gg.guiWidth(), gg.guiHeight());
     //$$     });
@@ -52,6 +54,7 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void onOverlays(RegisterGuiOverlaysEvent e) {
         e.registerAboveAll("win_banner", (gui, gg, pt, w, h) -> {
+            MemberHud.render(new G(gg), w, h);
             RaceHud.render(new G(gg), w, h);
             WinBanner.render(new G(gg), w, h);
         });
