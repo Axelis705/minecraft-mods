@@ -374,7 +374,7 @@ public class PhoneScreen extends BaseScreen {
             App done = animApp;
             animApp = null;
             if (animOpening && done instanceof CameraApp) {
-                Minecraft.getInstance().setScreen(new CameraScreen(color));
+                ClientHooks.open(new CameraScreen(color));
             }
             return;
         }

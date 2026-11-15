@@ -70,12 +70,12 @@ public final class PhoneHud {
 
     private static void keys(Minecraft mc) {
         while (OPEN.consumeClick()) {
-            if (mc.player != null && mc.screen == null) {
+            if (mc.player != null && ClientHooks.screen() == null) {
                 int c = CelularReg.phoneColor(mc.player);
                 if (c >= 0) {
                     ClientHooks.openPhone(c);
                 } else {
-                    mc.player.displayClientMessage(Component.translatable("celular.no_phone").withStyle(ChatFormatting.GRAY), true);
+                    com.celular.plat.Plat.msg(mc.player, Component.translatable("celular.no_phone").withStyle(ChatFormatting.GRAY), true);
                 }
             }
         }
@@ -110,11 +110,11 @@ public final class PhoneHud {
             lastRingback = now;
             ClientHooks.play(CelularReg.RINGBACK.get(), 1.0F, 0.5F);
         }
-        if (mc.screen instanceof CameraScreen) {
+        if (ClientHooks.screen() instanceof CameraScreen) {
             return; // nada encima de las fotos
         }
         Font font = mc.font;
-        boolean phoneOpen = mc.screen instanceof PhoneScreen;
+        boolean phoneOpen = ClientHooks.screen() instanceof PhoneScreen;
         if (!phoneOpen) {
             if (st.state == CallState.INCOMING) {
                 incoming(g, font, sw, now, st);

@@ -221,7 +221,7 @@ public class CameraScreen extends BaseScreen {
         }
         if (b == 0 && x >= sx - 61 && x <= sx - 35 && Math.abs(y - sy) <= 13) {
             ClientHooks.tap();
-            Minecraft.getInstance().setScreen(new PhoneScreen(color, "gallery"));
+            ClientHooks.open(new PhoneScreen(color, "gallery"));
             return true;
         }
         if (b == 1) {
@@ -270,7 +270,7 @@ public class CameraScreen extends BaseScreen {
             return true;
         }
         if (key == 256) { // escape: de vuelta al celular
-            Minecraft.getInstance().setScreen(new PhoneScreen(color, null));
+            ClientHooks.open(new PhoneScreen(color, null));
             return true;
         }
         return super.onKey(key, scan, mods);

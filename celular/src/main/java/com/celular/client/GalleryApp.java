@@ -179,7 +179,7 @@ final class GalleryApp extends App {
         }
         if (s.in(x, y, s.dx1 - 18, s.cy0, s.dx1, s.cy0 + 18) || (photos.isEmpty() && s.in(x, y, s.dx0 + 16, s.cy0 + 19 + 92, s.dx1 - 16, s.cy0 + 19 + 108))) {
             ClientHooks.tap();
-            Minecraft.getInstance().setScreen(new CameraScreen(s.color));
+            ClientHooks.open(new CameraScreen(s.color));
             return true;
         }
         int top = s.cy0 + 19, c = cell();

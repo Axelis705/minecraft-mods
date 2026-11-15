@@ -59,7 +59,25 @@ public final class ClientHooks {
 
     public static void openPhone(int color) {
         lastColor = color;
-        Minecraft.getInstance().setScreen(new PhoneScreen(color, null));
+        open(new PhoneScreen(color, null));
+    }
+
+    /** Abre una pantalla (en 26.2+ las pantallas viven en gui). */
+    public static void open(net.minecraft.client.gui.screens.Screen s) {
+        //#if MC >= 26.2
+        //$$ Minecraft.getInstance().gui.setScreen(s);
+        //#else
+        Minecraft.getInstance().setScreen(s);
+        //#endif
+    }
+
+    /** La pantalla abierta ahora (o null). */
+    public static net.minecraft.client.gui.screens.Screen screen() {
+        //#if MC >= 26.2
+        //$$ return Minecraft.getInstance().gui.screen();
+        //#else
+        return Minecraft.getInstance().screen;
+        //#endif
     }
 
     public static void play(SoundEvent s, float pitch, float vol) {
@@ -124,7 +142,7 @@ public final class ClientHooks {
             callStart = System.currentTimeMillis() - m.seconds * 1000L;
         }
         if (m.state == CallState.INCOMING) {
-            if (mc.screen instanceof PhoneScreen ps) {
+            if (screen() instanceof PhoneScreen ps) {
                 ps.openCall();
             }
         }
