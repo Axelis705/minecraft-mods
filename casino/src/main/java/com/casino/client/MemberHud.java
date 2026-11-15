@@ -103,7 +103,11 @@ public final class MemberHud {
         long ms = System.currentTimeMillis();
         float dt = lastFrame == 0 ? 0 : Math.min(0.1F, (ms - lastFrame) / 1000F);
         lastFrame = ms;
+        //#if MC >= 26.1
+        //$$ boolean show = !hidden && ClientScreens.none() && inside(mc);
+        //#else
         boolean show = !hidden && !mc.options.hideGui && ClientScreens.none() && inside(mc);
+        //#endif
         slide = Math.max(0, Math.min(1, slide + (show ? dt * 4 : -dt * 4)));
         flash = Math.max(0, flash - dt * 0.8F);
         if (slide <= 0 || data == null || mc.player == null) {

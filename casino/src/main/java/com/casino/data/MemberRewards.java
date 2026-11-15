@@ -81,7 +81,9 @@ public final class MemberRewards {
         Component prefix = Component.literal(stars + " ").append(Component.translatable("casino.member.level_" + Membership.LEVELS[level]))
                 .append(Component.literal(" ")).withStyle(s -> s.withColor(TextColor.fromRgb(Membership.COLOR[level])));
         t.setPlayerPrefix(prefix);
+        //#if MC < 26.1
         t.setColor(level >= 4 ? ChatFormatting.AQUA : level >= 2 ? ChatFormatting.YELLOW : ChatFormatting.WHITE);
+        //#endif
         if (cur != t) {
             sb.addPlayerToTeam(who, t);
         }
