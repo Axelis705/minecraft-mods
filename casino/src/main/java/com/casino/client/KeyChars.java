@@ -1,12 +1,32 @@
 package com.casino.client;
 
-import org.lwjgl.glfw.GLFW;
+import java.lang.reflect.Method;
 
 /**
  * Qué letra o número es una tecla. Se acepta la tecla por su lugar (teclado de EE. UU.) o por lo que dice en el teclado del jugador
  * (así funciona igual con teclados en español, francés o alemán).
  */
 final class KeyChars {
+    /** GLFW se llama por reflexión: en algunas versiones del juego no está en el classpath de compilación (sí al jugar). */
+    private static final Method KEY_NAME;
+    private static final Method CONTEXT;
+    private static final Method GET_KEY;
+
+    static {
+        Method a = null, b = null, c = null;
+        try {
+            Class<?> g = Class.forName("org.lwjgl.glfw.GLFW");
+            a = g.getMethod("glfwGetKeyName", int.class, int.class);
+            b = g.getMethod("glfwGetCurrentContext");
+            c = g.getMethod("glfwGetKey", long.class, int.class);
+        } catch (Throwable ignored) {
+            // sin GLFW: solo por el lugar de la tecla
+        }
+        KEY_NAME = a;
+        CONTEXT = b;
+        GET_KEY = c;
+    }
+
     private KeyChars() {
     }
 
@@ -24,7 +44,10 @@ final class KeyChars {
     /** Letra o número según la distribución del teclado del jugador (0 si no es una o no se sabe). */
     static char byName(int key, int scan) {
         try {
-            String n = GLFW.glfwGetKeyName(key, scan);
+            if (KEY_NAME == null) {
+                return 0;
+            }
+            String n = (String) KEY_NAME.invoke(null, key, scan);
             if (n != null && n.length() == 1) {
                 char c = Character.toUpperCase(n.charAt(0));
                 if ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
@@ -50,7 +73,7 @@ final class KeyChars {
     /** La ventana del juego (0 si no se puede saber). */
     static long window() {
         try {
-            return GLFW.glfwGetCurrentContext();
+            return CONTEXT == null ? 0 : (Long) CONTEXT.invoke(null);
         } catch (Throwable t) {
             return 0;
         }
@@ -58,11 +81,11 @@ final class KeyChars {
 
     /** ¿Está apretada ahora mismo? (false si no se puede saber) */
     static boolean down(long window, int key) {
-        if (window == 0) {
+        if (window == 0 || GET_KEY == null) {
             return false;
         }
         try {
-            return GLFW.glfwGetKey(window, key) == GLFW.GLFW_PRESS;
+            return (Integer) GET_KEY.invoke(null, window, key) == 1;   // GLFW_PRESS
         } catch (Throwable t) {
             return false;
         }
