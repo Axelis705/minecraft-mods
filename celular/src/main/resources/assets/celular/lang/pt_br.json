@@ -140,6 +140,7 @@
   "celular.music.error_file": "Couldn't read the song (damaged file or odd format?)",
   "celular.music.error_audio": "Couldn't use the computer's audio output",
   "celular.music.folder_error": "Couldn't open the folder. It's at: %s",
+  "celular.music.phone_gone": "Your phone isn't nearby anymore: the music was paused",
   "celular.weather.nether": "Hellish heat: it never rains here",
   "celular.weather.end": "No day or night in the End",
   "celular.weather.storm": "Tempestade",

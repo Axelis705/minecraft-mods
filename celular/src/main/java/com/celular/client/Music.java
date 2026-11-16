@@ -2,8 +2,12 @@ package com.celular.client;
 
 import com.celular.music.MusicPlayer;
 import com.celular.music.Track;
+import com.celular.PhoneItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
@@ -14,6 +18,13 @@ public final class Music {
     private static volatile float gameVolume = 1;
     private static long lastMute;
     private static boolean ready;
+    /** Distancia a la que el celular tirado deja de oírse. */
+    private static final double HEAR = 24.0;
+    /** El celular tirado que hace de bocina: su entidad y el último sitio donde se vio (null = el celular está contigo). */
+    private static int speakerId = -1;
+    private static Vec3 speakerPos;
+    /** Desde cuándo no se encuentra el celular (0 = sí se encuentra). */
+    private static long lostSince;
 
     private Music() {
     }
@@ -51,6 +62,7 @@ public final class Music {
         init();
         Minecraft mc = Minecraft.getInstance();
         gameVolume = readGameVolume(mc);
+        speaker(mc);
         if (MusicPlayer.playing && Prefs.muteGameMusic) {
             long now = System.currentTimeMillis();
             if (now - lastMute > 1500) {
@@ -71,6 +83,82 @@ public final class Music {
             MusicPlayer.error = "";
             PhoneHud.toastQuiet(D.APP_MUSIC, "celular.app.music", Component.translatable(err));
         }
+    }
+
+    /** ¿Tiene el jugador un celular (en el inventario o agarrado con el ratón)? */
+    private static boolean holdsPhone(Minecraft mc) {
+        return ClientHooks.hasPhone() || mc.player.containerMenu.getCarried().getItem() instanceof PhoneItem;
+    }
+
+    private static ItemEntity phoneNear(Minecraft mc, Vec3 at, double r) {
+        ItemEntity best = null;
+        double bd = r * r;
+        for (ItemEntity e : mc.level.getEntitiesOfClass(ItemEntity.class, new AABB(at, at).inflate(r))) {
+            double d = e.distanceToSqr(at);
+            if (e.isAlive() && e.getItem().getItem() instanceof PhoneItem && d <= bd) {
+                best = e;
+                bd = d;
+            }
+        }
+        return best;
+    }
+
+    /**
+     * Modo bocina: si el celular está tirado en el suelo, la música sale desde ahí (más bajo con la distancia y hacia el lado en que
+     * queda). Si el celular desaparece cerca de ti (alguien lo recogió, se quemó o lo guardaste en un cofre), la música se pausa.
+     */
+    private static void speaker(Minecraft mc) {
+        if (mc.player == null || mc.level == null || holdsPhone(mc)) {
+            speakerId = -1;
+            speakerPos = null;
+            lostSince = 0;
+            MusicPlayer.spatialL = 1F;
+            MusicPlayer.spatialR = 1F;
+            return;
+        }
+        long now = System.currentTimeMillis();
+        net.minecraft.world.entity.Entity e = speakerId >= 0 ? mc.level.getEntity(speakerId) : null;
+        ItemEntity phone = e instanceof ItemEntity it && it.isAlive() && it.getItem().getItem() instanceof PhoneItem ? it : null;
+        if (phone == null) {
+            phone = phoneNear(mc, speakerPos != null ? speakerPos : mc.player.position(), 6.0);
+        }
+        if (phone != null) {
+            speakerId = phone.getId();
+            speakerPos = phone.position();
+            lostSince = 0;
+        } else {
+            if (lostSince == 0) {
+                lostSince = now;
+            }
+            boolean near = speakerPos == null || speakerPos.distanceTo(mc.player.position()) < 20.0;
+            if (near && now - lostSince > 1500) {
+                // el celular ya no está (en un cofre, lo recogió otro, se quemó...): se pausa
+                if (MusicPlayer.playing) {
+                    MusicPlayer.toggle();
+                    mc.player.displayClientMessage(Component.translatable("celular.music.phone_gone"), true);
+                }
+                speakerPos = null;
+                speakerId = -1;
+            }
+            if (speakerPos == null) {
+                // un momento de gracia (el celular recién tirado aún no aparece en el mundo): se oye normal
+                MusicPlayer.spatialL = 1F;
+                MusicPlayer.spatialR = 1F;
+                return;
+            }
+        }
+        Vec3 ear = mc.player.getEyePosition();
+        Vec3 to = speakerPos.add(0, 0.25, 0).subtract(ear);
+        double d = to.length();
+        double att = d <= 2.0 ? 1.0 : Math.max(0.0, 1.0 - (d - 2.0) / (HEAR - 2.0));
+        att = att * att;
+        // hacia qué lado queda: derecha positiva
+        double yaw = Math.toRadians(mc.player.getYRot());
+        double rx = -Math.cos(yaw), rz = -Math.sin(yaw);
+        double flat = Math.hypot(to.x, to.z);
+        double pan = flat < 0.3 ? 0.0 : (to.x * rx + to.z * rz) / flat;
+        MusicPlayer.spatialL = (float) (att * (1.0 - 0.65 * Math.max(0.0, pan)));
+        MusicPlayer.spatialR = (float) (att * (1.0 - 0.65 * Math.max(0.0, -pan)));
     }
 
     private static float readGameVolume(Minecraft mc) {

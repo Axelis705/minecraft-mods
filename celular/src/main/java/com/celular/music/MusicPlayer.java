@@ -47,6 +47,11 @@ public final class MusicPlayer {
     /** ¿El usuario la quiere sonando? */
     public static volatile boolean playing;
     public static volatile float volume = 0.8F;
+    /**
+     * Volumen de cada lado (izquierda, derecha) que pone el juego: con el celular tirado en el suelo la música suena desde donde
+     * está (más bajo con la distancia y hacia el lado en que queda). 1 = normal.
+     */
+    public static volatile float spatialL = 1F, spatialR = 1F;
     public static volatile boolean shuffle;
     /** 0 = no repetir, 1 = repetir la lista, 2 = repetir la canción. */
     public static volatile int repeat;
@@ -520,7 +525,11 @@ public final class MusicPlayer {
                     }
                     spectrum.feed(buf, n, f.getChannels(), fed);
                     fed += n / fb;
-                    gain(buf, n, volume * volume * (host == null ? 1 : host.gameVolume()));
+                    float g = volume * volume * (host == null ? 1 : host.gameVolume());
+                    float tl = g * spatialL, tr = g * spatialR;
+                    gain(buf, n, f.getChannels(), lastL < 0 ? tl : lastL, lastR < 0 ? tr : lastR, tl, tr);
+                    lastL = tl;
+                    lastR = tr;
                     l.write(buf, 0, n);
                 }
                 return true;
@@ -544,15 +553,28 @@ public final class MusicPlayer {
             return b != null && a.getSampleRate() == b.getSampleRate() && a.getChannels() == b.getChannels();
         }
 
-        private static void gain(byte[] b, int n, float g) {
-            if (g >= 0.999F) {
+        /** Último volumen aplicado a cada lado (-1 = aún ninguno): el cambio se reparte en todo el trozo para que no chasquee. */
+        private float lastL = -1F, lastR = -1F;
+
+        /** Aplica el volumen (de {@code l0,r0} a {@code l1,r1} a lo largo del trozo) a muestras de 16 bits. */
+        private static void gain(byte[] b, int n, int ch, float l0, float r0, float l1, float r1) {
+            if (l0 >= 0.999F && r0 >= 0.999F && l1 >= 0.999F && r1 >= 0.999F) {
                 return;
             }
-            for (int i = 0; i + 1 < n; i += 2) {
-                int s = (short) ((b[i] & 255) | b[i + 1] << 8);
-                s = Math.round(s * g);
-                b[i] = (byte) s;
-                b[i + 1] = (byte) (s >> 8);
+            int fb = Math.max(1, ch) * 2;
+            int frames = n / fb;
+            for (int fi = 0; fi < frames; fi++) {
+                float k = frames <= 1 ? 1F : (float) fi / (frames - 1);
+                float gl = l0 + (l1 - l0) * k;
+                float gr = r0 + (r1 - r0) * k;
+                for (int c = 0; c < ch; c++) {
+                    int i = fi * fb + c * 2;
+                    float g = ch == 1 || c > 1 ? (gl + gr) * 0.5F : c == 0 ? gl : gr;
+                    int s = Math.round((short) ((b[i] & 255) | b[i + 1] << 8) * g);
+                    s = Math.max(-32768, Math.min(32767, s));
+                    b[i] = (byte) s;
+                    b[i + 1] = (byte) (s >> 8);
+                }
             }
         }
     }
