@@ -9,6 +9,7 @@ done
 [ -z "$jar" ] && { echo "no encontré el jar de Minecraft"; exit 0; }
 echo "JAR: $jar"
 for c in "$@"; do
+  c="${c//%/\$}"   # en el flujo manual se escribe Clase%Interna (el $ lo come bash)
   echo "===== $c"
   javap -cp "$jar" -public "$c" 2>&1 | head -150
 done
