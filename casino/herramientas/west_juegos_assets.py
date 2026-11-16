@@ -243,6 +243,27 @@ def gallery_block():
     dm.write(os.path.join(A, "models", "item", "shooting_gallery.json"), {"parent": "casino:block/west/shooting_gallery", "display": dm.DISPLAY_SMALL})
 
 
+def duel_bell():
+    """Poste con campana y letrero (frente al norte: la calle queda al oeste, x pequeña). El texto del letrero lo pone el renderizador."""
+    dm.TEX.update({"w_walnut": T("walnut"), "w_dark": T("walnut_dark"), "w_brass": T("brass"), "w_board": "minecraft:block/birch_planks",
+                   "g_steel": T("gun_steel")})
+    els = [box([4, 0, 4], [12, 2, 12], "w_walnut"),
+           box([6, 2, 6], [10, 30, 10], "w_dark"),
+           box([1, 27, 7], [6, 29, 9], "w_dark"),                         # brazo hacia la calle
+           box([2.75, 24, 7.75], [3.25, 27, 8.25], "g_steel"),            # cadenita
+           box([1.6, 20.5, 6.6], [4.4, 24, 9.4], "w_brass"),              # campana
+           box([1.1, 19.6, 6.1], [4.9, 20.6, 9.9], "w_brass"),            # boca
+           box([2.6, 18.8, 7.6], [3.4, 19.7, 8.4], "g_steel"),            # badajo
+           box([5, 13, 3], [6, 19, 13], "w_board"),                       # letrero
+           box([5.2, 12.5, 2.5], [6, 13, 13.5], "w_dark"), box([5.2, 19, 2.5], [6, 19.5, 13.5], "w_dark"),
+           box([5.2, 13, 2.5], [6, 19, 3], "w_dark"), box([5.2, 13, 13], [6, 19, 13.5], "w_dark")]
+    m = dm.emit(els, {}, T("walnut_dark"))
+    dm.write(os.path.join(A, "models", "block", "west", "duel_bell.json"), m)
+    v = {f"facing={f}": {"model": "casino:block/west/duel_bell", "y": y} for f, y in DIRS}
+    dm.write(os.path.join(A, "blockstates", "duel_bell.json"), {"variants": v})
+    dm.write(os.path.join(A, "models", "item", "duel_bell.json"), {"parent": "casino:block/west/duel_bell", "display": dm.DISPLAY_TALL})
+
+
 def bull_block():
     # el toro entero lo dibuja el renderizador; el bloque no tiene modelo propio
     v = {f"facing={f}": {"model": "casino:block/heist/empty", "y": y} for f, y in DIRS}
@@ -257,7 +278,8 @@ if __name__ == "__main__":
     revolver()
     gallery_block()
     bull_block()
-    for n in ("mechanical_bull", "shooting_gallery"):
+    duel_bell()
+    for n in ("mechanical_bull", "shooting_gallery", "duel_bell"):
         dm.loot(n)
     if "--preview" in sys.argv:
         out = sys.argv[sys.argv.index("--preview") + 1]

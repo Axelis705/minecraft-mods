@@ -408,8 +408,8 @@ casino.guide.p12.title = Luzes e placas
 casino.guide.p12.body = LETRAS DE NEON: coloque várias juntas e clique direito para escrever com o teclado (pula sozinho para a próxima letra). Escolha entre 6 cores; a cor vale para a placa toda.\nPLACAS e TELAS: clique direito troca o desenho (agachado, volta).\nPEDESTAIS COM CORDÃO: o cordão se estica sozinho entre pedestais vizinhos e ninguém consegue passar.
 casino.guide.p13.title = Ambiente
 casino.guide.p13.body = A CAIXA DE SOM DE JAZZ toca música de cassino; clique direito liga ou desliga. Mesmo com várias, toca uma só faixa, mais alta perto delas.\nO LUSTRE de cristal ilumina como uma lâmpada de pedra luminosa.\nPisos de carpete em 4 desenhos, mármore branco e preto (bloco, escadas e lajes), painel de mogno, moldura dourada e paredes de veludo.
-casino.guide.p16.title = Jogue com a cabeça
-casino.guide.p16.body = As fichas são de mentira, mas as esmeraldas e os diamantes não.\nEm todos os jogos a casa ganha um pouquinho no longo prazo: se estiver perdendo, levante e vá sentar no bar.\nBoa sorte!
+casino.guide.p17.title = Jogue com a cabeça
+casino.guide.p17.body = As fichas são de mentira, mas as esmeraldas e os diamantes não.\nEm todos os jogos a casa ganha um pouquinho no longo prazo: se estiver perdendo, levante e vá sentar no bar.\nBoa sorte!
 
 # THE DIAMOND (ronda 2)
 block.casino.elevator = Painel do elevador

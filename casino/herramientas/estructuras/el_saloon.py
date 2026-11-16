@@ -659,6 +659,16 @@ for x, z in ((2, 14), (12, 2), (33, 2), (46, 12), (58, 15), (1, 44), (58, 46)):
         o.set(x, y, z, 'minecraft:cactus')
 o.marker(26, 1, 6, 'wpatron 0 7', [(0, 0, 0, 'minecraft:light_blue_wool')])
 
+# ================================================================== DUELO AL MEDIODÍA
+# campana a la orilla de la calle (mira hacia donde aparece el pistolero); las X de gis (la tuya en (22,47) y la del pistolero en
+# (38,47), justo frente a las puertas del saloon) las dibuja la propia campana. Sin matas en la línea del duelo.
+for x in range(18, 43):
+    for z in (46, 47, 48):
+        if o.get(x, 1, z) == 'minecraft:dead_bush':
+            o.set(x, 1, z, AIR)
+            o.set(x, 0, z, 'minecraft:coarse_dirt')
+o.set(22, 1, 49, 'casino:duel_bell[facing=east]')
+
 # ================================================================== CLIENTES DEL SALOON
 for (x, y, z, d, s) in [(24, 1, 29, 2, 0), (35, 1, 29, 2, 1), (21, 1, 18, 1, 2), (38, 1, 16, 3, 4), (28, 1, 34, 2, 6),
                         (31, 1, 26, 0, 3), (22, 1, 34, 3, 5)]:

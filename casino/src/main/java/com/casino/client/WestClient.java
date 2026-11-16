@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 public final class WestClient {
     public static final int BULL = 0;
     public static final int GALLERY = 1;
+    public static final int DUEL = 2;
 
     private static int lastInput;
     private static int sendAgain;
@@ -68,18 +69,51 @@ public final class WestClient {
         return gallery;
     }
 
-    /** Patada del revólver: la mira sube un poquito. */
+    /** Patada del revólver: la mira sube un poquito (al ritmo al que el servidor deja disparar). */
     public static void recoil(Player p) {
         Minecraft mc = Minecraft.getInstance();
+        if (p != mc.player || mc.level == null) {
+            return;
+        }
         GalleryBE g = gallery();
-        if (p != mc.player || g == null || mc.level == null) {
+        com.casino.west.DuelBE d = duel();
+        if (g == null && d == null) {
+            return;
+        }
+        if (g != null && (g.time(0) < 0 || g.shots() <= 0)) {
+            return;
+        }
+        if (d != null && !d.drawn(0)) {
             return;
         }
         long now = mc.level.getGameTime();
-        if (now - lastRecoil < com.casino.game.GalleryPlan.COOLDOWN || g.time(0) < 0 || g.shots() <= 0) {
+        if (now - lastRecoil < com.casino.game.GalleryPlan.COOLDOWN) {
             return;
         }
         lastRecoil = now;
         p.setXRot(p.getXRot() - 2.2F);
+    }
+
+    // ------------------------------------------------------------------ duelo
+
+    private static com.casino.west.DuelBE duel;
+    private static long duelSeenAt;
+
+    public static void duelSeen(com.casino.west.DuelBE be) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null && be.isShooter(mc.player.getUUID())) {
+            duel = be;
+            duelSeenAt = mc.level == null ? 0 : mc.level.getGameTime();
+        }
+    }
+
+    /** El duelo en el que estoy (o null). */
+    public static com.casino.west.DuelBE duel() {
+        Minecraft mc = Minecraft.getInstance();
+        if (duel == null || mc.level == null || mc.player == null || duel.isRemoved() || duel.getLevel() != mc.level
+                || mc.level.getGameTime() - duelSeenAt > 5 || !duel.isShooter(mc.player.getUUID())) {
+            duel = null;
+        }
+        return duel;
     }
 }

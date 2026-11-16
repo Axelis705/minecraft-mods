@@ -407,8 +407,8 @@ casino.guide.p12.title = Luci e insegne
 casino.guide.p12.body = LETTERE AL NEON: mettine diverse in fila e fai clic destro per scrivere con la tastiera (passa da sola alla lettera successiva). 6 colori a scelta; il colore vale per tutta l'insegna.\nINSEGNE e SCHERMI: il clic destro cambia il disegno (accovacciato, all'indietro).\nCOLONNINE CON CORDONE: il cordone si tende da solo tra colonnine vicine e nessuno può passare.
 casino.guide.p13.title = Atmosfera
 casino.guide.p13.body = La CASSA JAZZ suona musica da casinò; clic destro la accende o la spegne. Anche con più casse suona un solo brano, più forte vicino a loro.\nIl LAMPADARIO di cristallo illumina come una lampada di pietra luminosa.\nMoquette in 4 disegni, marmo bianco e nero (blocco, scale e lastre), pannello di mogano, cornice dorata e pareti di velluto.
-casino.guide.p16.title = Gioca con la testa
-casino.guide.p16.body = Le fiche sono finte, ma smeraldi e diamanti no.\nIn tutti i giochi il banco vince un po' alla lunga: se stai perdendo, alzati e vai a sederti al bar.\nBuona fortuna!
+casino.guide.p17.title = Gioca con la testa
+casino.guide.p17.body = Le fiche sono finte, ma smeraldi e diamanti no.\nIn tutti i giochi il banco vince un po' alla lunga: se stai perdendo, alzati e vai a sederti al bar.\nBuona fortuna!
 
 # THE DIAMOND (ronda 2)
 block.casino.elevator = Pannello dell'ascensore

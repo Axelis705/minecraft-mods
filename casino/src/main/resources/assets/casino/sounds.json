@@ -225,5 +225,17 @@
    "casino:west/bull_motor"
   ],
   "subtitle": "subtitles.casino.bull_motor"
+ },
+ "duel_theme": {
+  "sounds": [
+   "casino:west/duel_theme"
+  ],
+  "subtitle": "subtitles.casino.duel_theme"
+ },
+ "duel_draw": {
+  "sounds": [
+   "casino:west/duel_draw"
+  ],
+  "subtitle": "subtitles.casino.duel_draw"
  }
 }

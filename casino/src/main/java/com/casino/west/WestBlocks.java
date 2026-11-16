@@ -399,4 +399,64 @@ public final class WestBlocks {
             return level.isClientSide() ? (lvl, p, st, be) -> ((GalleryBE) be).clientTick() : (lvl, p, st, be) -> ((GalleryBE) be).serverTick();
         }
     }
+
+    /**
+     * Campana del duelo al mediodía: un poste con campana a la orilla de la calle. Clic → eliges pistolero y apuesta. FACING = hacia donde
+     * aparece el pistolero; las dos X (la tuya y la suya) las dibuja {@code WestRenderers.Duel}. Reglas en {@link com.casino.game.DuelRules}.
+     */
+    public static class DuelBell extends UseBlock implements EntityBlock {
+        private static final VoxelShape SHAPE = net.minecraft.world.level.block.Block.box(5, 0, 5, 11, 24, 11);
+
+        public DuelBell(Properties p) {
+            super(p);
+            registerDefaultState(stateDefinition.any().setValue(FACING, Direction.EAST));
+        }
+
+        @Override
+        protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
+            b.add(FACING);
+        }
+
+        /** Al ponerla, el pistolero queda a la derecha de quien la pone (la calle queda enfrente). */
+        @Override
+        public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+            return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getClockWise());
+        }
+
+        @Override
+        public VoxelShape getShape(BlockState s, BlockGetter g, BlockPos p, CollisionContext c) {
+            return SHAPE;
+        }
+
+        @Override
+        protected InteractionResult onUse(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+            if (hand != InteractionHand.MAIN_HAND || !(level.getBlockEntity(pos) instanceof DuelBE be)) {
+                return InteractionResult.PASS;
+            }
+            if (player.getMainHandItem().getItem() instanceof RevolverItem) {
+                return InteractionResult.PASS;
+            }
+            if (level.isClientSide()) {
+                if (be.phase() == DuelBE.IDLE) {
+                    com.casino.plat.Net.onClient(() -> com.casino.client.WestClient.openBet(pos, com.casino.client.WestClient.DUEL));
+                }
+            } else if (be.phase() != DuelBE.IDLE) {
+                Plat.msg(player, Component.translatable("casino.duel.busy").withStyle(ChatFormatting.YELLOW), true);
+            }
+            return Plat.ok(level.isClientSide());
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new DuelBE(pos, state);
+        }
+
+        @Override
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            if (type != WestReg.DUEL_BE.get()) {
+                return null;
+            }
+            return level.isClientSide() ? (lvl, p, st, be) -> ((DuelBE) be).clientTick() : (lvl, p, st, be) -> ((DuelBE) be).serverTick();
+        }
+    }
 }

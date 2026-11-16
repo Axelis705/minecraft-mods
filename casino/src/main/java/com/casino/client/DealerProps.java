@@ -141,7 +141,7 @@ public final class DealerProps {
             case com.casino.entity.DealerEntity.GAME_GUARD -> new int[]{HAT_SHERIFF, 0x3A2A1E};
             case com.casino.entity.DealerEntity.GAME_BARTENDER -> new int[]{HAT_NONE, 0};
             case com.casino.entity.DealerEntity.GAME_WHEEL -> new int[]{HAT_BOWLER, 0x5A1414};
-            case com.casino.entity.DealerEntity.GAME_PATRON -> WEST_PATRON_HATS[Math.floorMod(variant - com.casino.entity.DealerEntity.WEST,
+            case com.casino.entity.DealerEntity.GAME_PATRON, com.casino.entity.DealerEntity.GAME_DUELIST -> WEST_PATRON_HATS[Math.floorMod(variant - com.casino.entity.DealerEntity.WEST,
                     WEST_PATRON_HATS.length)];
             default -> new int[]{HAT_VISOR, 0x2E8B57};
         };

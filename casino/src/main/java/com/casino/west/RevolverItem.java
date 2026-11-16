@@ -22,7 +22,7 @@ import net.minecraft.world.InteractionResultHolder;
 //#endif
 
 /**
- * Revólver de feria: lo presta la galería de tiro mientras juegas. Clic derecho = disparo (lo revisa el servidor). Fuera de una
+ * Revólver de feria: lo prestan la galería de tiro y el duelo mientras juegas. Clic derecho = disparo (lo revisa el servidor). Fuera de una
  * partida no sirve y se devuelve solo.
  */
 public class RevolverItem extends Item {
@@ -47,7 +47,7 @@ public class RevolverItem extends Item {
         if (!(player instanceof ServerPlayer sp)) {
             return;
         }
-        if (pos != null && level.isLoaded(pos) && level.getBlockEntity(pos) instanceof GalleryBE be && be.isShooter(sp.getUUID())) {
+        if (pos != null && level.isLoaded(pos) && level.getBlockEntity(pos) instanceof GunGame be && be.isShooter(sp.getUUID())) {
             be.shoot(sp);
         } else {
             st.setCount(0);

@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 /** La Guía del Casino: un libro abierto de dos páginas. Los textos están en los archivos de idioma (casino.guide.pN.*). */
 public final class GuideScreen extends CasinoScreen {
-    public static final int PAGES = 17;
+    public static final int PAGES = 18;
     private static final int PW = 150;
     private static final int PH = 196;
     private static final int TEXT = 0xFF3A2614;
@@ -50,6 +50,7 @@ public final class GuideScreen extends CasinoScreen {
         l.add(() -> ModDecor.SPEAKER.get().asItem());
         l.add(() -> com.casino.west.WestReg.BULL_ITEM.get());
         l.add(() -> com.casino.west.WestReg.GALLERY_ITEM.get());
+        l.add(() -> com.casino.west.WestReg.DUEL_BELL_ITEM.get());
         l.add(() -> ModItems.CHIP_1.get());
         return l;
     }

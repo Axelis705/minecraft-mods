@@ -16,6 +16,8 @@ public final class WestPacket {
     public static final int BULL_BET = 0;
     public static final int GALLERY_BET = 1;
     public static final int BULL_INPUT = 2;
+    /** value = pistolero * 100000 + apuesta */
+    public static final int DUEL_BET = 3;
 
     public final int action;
     public final BlockPos pos;
@@ -65,6 +67,14 @@ public final class WestPacket {
             }
             if (!BullRideEntity.start(p, m.pos, m.value)) {
                 Chips.give(p, m.value);
+            }
+        } else if (m.action == DUEL_BET) {
+            if (p.level().getBlockEntity(m.pos) instanceof DuelBE be) {
+                if (be.phase() != DuelBE.IDLE) {
+                    Plat.msg(p, Component.translatable("casino.duel.busy").withStyle(ChatFormatting.YELLOW), true);
+                } else {
+                    be.begin(p, m.value / 100000, m.value % 100000);
+                }
             }
         } else if (m.action == GALLERY_BET) {
             if (p.level().getBlockEntity(m.pos) instanceof GalleryBE be) {

@@ -49,6 +49,10 @@ public final class WestReg {
             .mapColor(MapColor.WOOD).strength(-1.0F, 3_600_000.0F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Item> GALLERY_ITEM = ModItems.ITEMS.register("shooting_gallery",
             () -> new BlockItem(GALLERY.get(), Reg.blockItem("shooting_gallery")));
+    public static final RegistryObject<Block> DUEL_BELL = ModBlocks.BLOCKS.register("duel_bell", () -> new WestBlocks.DuelBell(Reg.block("duel_bell")
+            .mapColor(MapColor.WOOD).strength(-1.0F, 3_600_000.0F).sound(SoundType.WOOD).noOcclusion()));
+    public static final RegistryObject<Item> DUEL_BELL_ITEM = ModItems.ITEMS.register("duel_bell",
+            () -> new BlockItem(DUEL_BELL.get(), Reg.blockItem("duel_bell")));
     public static final RegistryObject<Item> REVOLVER = ModItems.ITEMS.register("gallery_revolver",
             () -> new RevolverItem(Reg.item("gallery_revolver").stacksTo(1)));
 
@@ -63,6 +67,8 @@ public final class WestReg {
             () -> Reg.blockEntity(BullBE::new, BULL.get()));
     public static final RegistryObject<BlockEntityType<GalleryBE>> GALLERY_BE = ModBlockEntities.TYPES.register("shooting_gallery",
             () -> Reg.blockEntity(GalleryBE::new, GALLERY.get()));
+    public static final RegistryObject<BlockEntityType<DuelBE>> DUEL_BE = ModBlockEntities.TYPES.register("duel_bell",
+            () -> Reg.blockEntity(DuelBE::new, DUEL_BELL.get()));
     public static final RegistryObject<EntityType<BullRideEntity>> BULL_RIDE = ModEntities.ENTITIES.register("bull_ride",
             () -> Reg.entity("bull_ride", EntityType.Builder.<BullRideEntity>of(BullRideEntity::new, MobCategory.MISC).sized(0.001F, 0.001F)
                     .clientTrackingRange(8).updateInterval(1)));

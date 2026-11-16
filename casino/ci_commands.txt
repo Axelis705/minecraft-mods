@@ -140,6 +140,9 @@ execute if data block 309 101 169 BestTicks run say PRUEBA_SALOON_TORO_DATOS
 execute if data block 309 101 169 casino.BestTicks run say PRUEBA_SALOON_TORO_DATOS
 execute if data block 350 102 170 BestScore run say PRUEBA_SALOON_GALERIA_DATOS
 execute if data block 350 102 170 casino.BestScore run say PRUEBA_SALOON_GALERIA_DATOS
+# campana del duelo al mediodía a la orilla de la calle, con sus datos
+execute if block 322 101 189 casino:duel_bell[facing=east] if data block 322 101 189 Phase run say PRUEBA_SALOON_DUELO
+execute if block 322 101 189 casino:duel_bell[facing=east] if data block 322 101 189 casino.Phase run say PRUEBA_SALOON_DUELO
 place structure casino:el_saloon 0 -60 600
 execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=0,y=-60,z=600,distance=..60] run say PRUEBA_SALOON_ESTRUCTURA
 #expect PRUEBA_RASCA_OK
@@ -193,3 +196,4 @@ execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=0,y=-60,z=600,
 #expect PRUEBA_SALOON_JUEGOS
 #expect PRUEBA_SALOON_TORO_DATOS
 #expect PRUEBA_SALOON_GALERIA_DATOS
+#expect PRUEBA_SALOON_DUELO

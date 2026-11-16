@@ -93,7 +93,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
                 case DealerEntity.GAME_GUARD -> TEXTURE_SHERIFF;
                 case DealerEntity.GAME_BARTENDER -> TEXTURE_WEST_BARTENDER;
                 case DealerEntity.GAME_WHEEL -> TEXTURE_WEST_HOST;
-                case DealerEntity.GAME_PATRON -> {
+                case DealerEntity.GAME_PATRON, DealerEntity.GAME_DUELIST -> {
                     int i = Math.floorMod(variant - DealerEntity.WEST, TEXTURE_WEST_PATRON.length);
                     if (TEXTURE_WEST_PATRON[i] == null) {
                         TEXTURE_WEST_PATRON[i] = Ids.rl(Casino.MODID, "textures/entity/dealer_west_patron_" + i + ".png");
@@ -132,6 +132,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_PATRON -> "patron";
             case DealerEntity.GAME_SECURITY -> "security";
             case DealerEntity.GAME_FIXER -> "fixer";
+            case DealerEntity.GAME_DUELIST -> "duelist";
             default -> "blackjack";
         };
     }
@@ -152,6 +153,9 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     }
 
     private static String nameKey(int game, int variant) {
+        if (game == DealerEntity.GAME_DUELIST) {
+            return "casino.npc.duelist_" + variant;
+        }
         if (game == DealerEntity.GAME_PATRON) {
             return "casino.npc.patron_" + variant;
         }
@@ -170,6 +174,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_PATRON -> 0x23707E;
             case DealerEntity.GAME_SECURITY -> 0x2A2A30;
             case DealerEntity.GAME_FIXER -> 0x4A3A22;
+            case DealerEntity.GAME_DUELIST -> 0x7A3A14;
             default -> 0x1E6B3A;
         };
     }
@@ -185,6 +190,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
             case DealerEntity.GAME_PATRON -> "\u266A";
             case DealerEntity.GAME_SECURITY -> "\u2605";
             case DealerEntity.GAME_FIXER -> "\u2620";
+            case DealerEntity.GAME_DUELIST -> "\u2605";
             default -> "\u2660";
         };
     }

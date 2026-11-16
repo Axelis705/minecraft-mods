@@ -24,6 +24,9 @@ public final class ModSounds {
     public static final RegistryObject<SoundEvent> GALLERY_BUZZ = reg("gallery_buzz");
     public static final RegistryObject<SoundEvent> BULL_BELL = reg("bull_bell");
     public static final RegistryObject<SoundEvent> BULL_MOTOR = reg("bull_motor");
+    /** Duelo: silbido del enfrentamiento y el golpe metálico de "¡desenfunda!". */
+    public static final RegistryObject<SoundEvent> DUEL_THEME = reg("duel_theme");
+    public static final RegistryObject<SoundEvent> DUEL_DRAW = reg("duel_draw");
 
     /** El "tic" del puntero al pasar por cada casilla. */
     public static final RegistryObject<SoundEvent> WHEEL_TICK = reg("wheel_tick");

@@ -437,4 +437,45 @@ public final class WestRenderers {
             vb.v(p, (float) c[0][0], (float) c[0][1], (float) c[0][2], 120, 100, 80, 255, 0, 1, OverlayTexture.NO_OVERLAY, lt, -nx, -ny, -nz);
         }
     }
+
+    // ------------------------------------------------------------------ duelo al mediodía
+
+    public static class Duel extends CasinoBER<com.casino.west.DuelBE> {
+        public Duel(BlockEntityRendererProvider.Context ctx) {
+        }
+
+        @Override
+        protected void draw(com.casino.west.DuelBE be, float partial, PoseStack ps, Draw d, int light, int overlay) {
+            if (be.getLevel() == null) {
+                return;
+            }
+            net.minecraft.core.BlockPos o = be.getBlockPos();
+            Box3 b = new Box3(d.cutout(Box3.WHITE), ps.last(), light);
+            // las dos X de gis en la calle (la tuya y la del pistolero)
+            for (net.minecraft.core.BlockPos m : new net.minecraft.core.BlockPos[]{be.playerMark(), be.npcMark()}) {
+                double x = m.getX() - o.getX() + 0.5, y = m.getY() - o.getY() + 0.012, z = m.getZ() - o.getZ() + 0.5;
+                for (int k = -5; k <= 5; k++) {
+                    double s = k * 0.07;
+                    b.box(x + s - 0.045, y, z + s - 0.045, x + s + 0.045, y + 0.01, z + s + 0.045, 0xEAE4D4);
+                    b.box(x + s - 0.045, y, z - s - 0.045, x + s + 0.045, y + 0.01, z - s + 0.045, 0xEAE4D4);
+                }
+            }
+            // letrero en el poste: el más rápido del pueblo
+            Direction f = be.facing();
+            ps.pushPose();
+            ps.translate(0.5, 0, 0.5);
+            // el letrero mira hacia la calle (la izquierda de FACING)
+            ps.mulPose(Axis.YP.rotationDegrees(-f.getCounterClockWise().toYRot()));
+            ps.translate(0, 0, 0.19);
+            label(ps, d, Component.translatable("casino.duel.board_title"), 0, 1.08F, 0.0F, 0.065F, 0xFF7A2010, light);
+            if (be.bestTicks() > 0) {
+                label(ps, d, Component.literal(be.bestName()), 0, 0.98F, 0.0F, 0.055F, 0xFF2A1A0A, light);
+                label(ps, d, Component.literal(String.format(java.util.Locale.ROOT, "%.2f s", be.bestTicks() / 20.0)), 0, 0.86F, 0.0F, 0.065F,
+                        0xFF1A4A1A, light);
+            } else {
+                label(ps, d, Component.translatable("casino.duel.board_empty"), 0, 0.92F, 0.0F, 0.05F, 0xFF2A1A0A, light);
+            }
+            ps.popPose();
+        }
+    }
 }

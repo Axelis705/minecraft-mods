@@ -10,6 +10,8 @@ Salen en casino/src/main/resources/assets/casino/sounds/west/:
   gallery_buzz  zumbido de error (le diste a la señorita)
   bull_bell     cencerro (cada premio que alcanzas en el toro)
   bull_motor    resoplido mecánico del toro (pistón y motor)
+  duel_theme    silbido del enfrentamiento con guitarra (duelo al mediodía)
+  duel_draw     golpe metálico de "¡desenfunda!"
 """
 import os
 import sys
@@ -110,9 +112,66 @@ def motor():
     return norm(s, 0.7)
 
 
+def whistle_note(f0, dur, glide=0.0, vib=5.5):
+    t = np.arange(int(dur * SR)) / SR
+    f = f0 * (1 + glide * np.minimum(1, t / 0.12)) * (1 + 0.012 * np.sin(2 * np.pi * vib * t) * np.minimum(1, t / 0.25))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    s = np.sin(ph) + 0.08 * np.sin(2 * ph)
+    breath = lowpass(np.random.default_rng(int(f0)).standard_normal(len(t)), 3) * 0.05
+    return (s + breath) * np.minimum(1, t / 0.04) * np.minimum(1, (dur - t) / 0.08).clip(0, 1)
+
+
+def pluck(f0, dur, rnd):
+    n = int(dur * SR)
+    p = int(SR / f0)
+    buf = rnd.uniform(-1, 1, p)
+    out = np.zeros(n)
+    for i in range(n):
+        out[i] = buf[i % p]
+        buf[i % p] = 0.5 * (buf[i % p] + buf[(i + 1) % p]) * 0.996
+    return out
+
+
+def duel_theme():
+    """Silbido del enfrentamiento (motivo original): dos llamadas que suben, una respuesta que baja y una guitarra grave."""
+    rnd = np.random.default_rng(21)
+    total = 3.4
+    buf = np.zeros(int(total * SR))
+
+    def put(sig, at, gain=1.0):
+        i = int(at * SR)
+        j = min(len(buf), i + len(sig))
+        buf[i:j] += sig[:j - i] * gain
+
+    # E5 -> B5 (sube), E5 -> B5, y G5 - F#5 - E5 largo
+    put(whistle_note(659, 0.42, glide=0.5), 0.05, 0.5)
+    put(whistle_note(659, 0.42, glide=0.5), 0.70, 0.5)
+    put(whistle_note(784, 0.30), 1.35, 0.5)
+    put(whistle_note(740, 0.30), 1.68, 0.5)
+    put(whistle_note(659, 1.10), 2.00, 0.55)
+    # guitarra: E2 y B2 punteados
+    for at, f in ((0.05, 82.4), (0.70, 82.4), (1.35, 123.5), (2.00, 82.4)):
+        put(pluck(f, 1.3, rnd), at, 0.35)
+    # eco del cañón
+    d = int(0.28 * SR)
+    buf[d:] += buf[:-d] * 0.3
+    return norm(buf, 0.8)
+
+
+def duel_draw():
+    """Golpe metálico seco con zumbido: "¡desenfunda!"."""
+    dur = 1.0
+    t = np.arange(int(dur * SR)) / SR
+    s = np.zeros_like(t)
+    for r, a, dd in ((1.0, 1.0, 0.35), (2.41, 0.6, 0.2), (3.98, 0.35, 0.1), (6.2, 0.2, 0.05)):
+        s += a * np.sin(2 * np.pi * 980 * r * t) * env(t, 0.0005, dd)
+    whoosh = lowpass(np.random.default_rng(5).standard_normal(len(t)), 8) * np.exp(-((t - 0.05) / 0.06) ** 2) * 0.6
+    return norm(s + whoosh, 0.85)
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     for name, fn in (("gallery_shot", shot), ("gallery_ding", ding), ("gallery_quack", quack), ("gallery_buzz", buzz),
-                     ("bull_bell", cowbell), ("bull_motor", motor)):
+                     ("bull_bell", cowbell), ("bull_motor", motor), ("duel_theme", duel_theme), ("duel_draw", duel_draw)):
         write(os.path.join(OUT, name + ".ogg"), fn(), q=5)
         print("listo", name)

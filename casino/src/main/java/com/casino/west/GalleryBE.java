@@ -4,7 +4,6 @@ import com.casino.chip.Chips;
 import com.casino.data.CasinoStats;
 import com.casino.game.GalleryPlan;
 import com.casino.plat.CasinoBE;
-import com.casino.plat.ItemTag;
 import com.casino.plat.Nbt;
 import com.casino.plat.Plat;
 import com.casino.registry.ModSounds;
@@ -18,8 +17,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -31,7 +28,7 @@ import java.util.UUID;
  * La galería de tiro: quién está tirando, la semilla de los blancos (el cliente dibuja lo mismo), balas, puntos y qué blancos ya
  * cayeron. El servidor revisa cada disparo con el rayo de la mirada del jugador. También guarda el récord para el marcador.
  */
-public class GalleryBE extends CasinoBE {
+public class GalleryBE extends CasinoBE implements GunGame {
     /** Cuánto se puede alejar el tirador del mostrador antes de que se acabe su partida. */
     private static final double LEASH = 5.0;
 
@@ -68,6 +65,7 @@ public class GalleryBE extends CasinoBE {
         return shooter != null;
     }
 
+    @Override
     public boolean isShooter(UUID id) {
         return shooter != null && shooter.equals(id);
     }
@@ -171,24 +169,14 @@ public class GalleryBE extends CasinoBE {
         hitAt = new int[0];
         lastShot = -100;
         resultUntil = 0;
-        ItemStack gun = new ItemStack(WestReg.REVOLVER.get());
-        ItemTag.edit(gun, t -> {
-            t.putInt("GalleryX", worldPosition.getX());
-            t.putInt("GalleryY", worldPosition.getY());
-            t.putInt("GalleryZ", worldPosition.getZ());
-        });
-        if (p.getMainHandItem().isEmpty()) {
-            p.setItemInHand(InteractionHand.MAIN_HAND, gun);
-        } else {
-            net.minecraftforge.items.ItemHandlerHelper.giveItemToPlayer(p, gun);
-            Plat.msg(p, Component.translatable("casino.gallery.gun_inventory").withStyle(ChatFormatting.YELLOW), false);
-        }
+        GunGame.lend(p, worldPosition);
         Plat.msg(p, Component.translatable("casino.gallery.start", GalleryPlan.SHOTS, GalleryPlan.DURATION / 20).withStyle(ChatFormatting.GOLD), false);
         level.playSound(null, worldPosition, SoundEvents.CHAIN_PLACE, SoundSource.PLAYERS, 0.8F, 1.0F);
         sync();
     }
 
     /** Un disparo del tirador (servidor). */
+    @Override
     public void shoot(ServerPlayer p) {
         if (level == null || !isShooter(p.getUUID()) || shots <= 0) {
             return;
@@ -291,7 +279,7 @@ public class GalleryBE extends CasinoBE {
                 Chips.give(p, (int) pay);
             }
             CasinoStats.play(p, CasinoStats.GALLERY, bet, pay);
-            takeGuns(p);
+            GunGame.takeBack(p);
             Component tail = pay > 0 ? Component.translatable("casino.gallery.won", pay).withStyle(ChatFormatting.GREEN)
                     : Component.translatable("casino.gallery.lost", bet).withStyle(ChatFormatting.RED);
             Plat.msg(p, Component.translatable(left ? "casino.gallery.left" : "casino.gallery.end", pts).withStyle(ChatFormatting.GOLD)
@@ -311,15 +299,6 @@ public class GalleryBE extends CasinoBE {
         shooterName = "";
         setChanged();
         sync();
-    }
-
-    /** Recoge los revólveres prestados. */
-    public static void takeGuns(ServerPlayer p) {
-        for (ItemStack s : Plat.mainAndOffhand(p.getInventory())) {
-            if (s.getItem() instanceof RevolverItem) {
-                s.setCount(0);
-            }
-        }
     }
 
     public void clientTick() {

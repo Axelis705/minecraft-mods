@@ -407,8 +407,8 @@ casino.guide.p12.title = Lichter und Schilder
 casino.guide.p12.body = NEONBUCHSTABEN: Setz mehrere nebeneinander und schreib per Rechtsklick mit der Tastatur (es geht von selbst zum nächsten Buchstaben). 6 Farben zur Wahl; die Farbe gilt für das ganze Schild.\nSCHILDER und BILDSCHIRME: Rechtsklick wechselt das Motiv (beim Schleichen rückwärts).\nABSPERRPFOSTEN: Das Samtseil spannt sich von selbst zwischen benachbarten Pfosten, niemand kommt durch.
 casino.guide.p13.title = Atmosphäre
 casino.guide.p13.body = Der JAZZ-LAUTSPRECHER spielt Casinomusik; Rechtsklick schaltet ihn an oder aus. Auch bei mehreren läuft nur ein Stück, lauter in ihrer Nähe.\nDer KRISTALLKRONLEUCHTER leuchtet wie eine Leuchtsteinlampe.\nTeppichböden in 4 Mustern, weißer und schwarzer Marmor (Block, Treppen und Stufen), Mahagonipaneel, Goldleiste und Samtwände.
-casino.guide.p16.title = Spiel mit Köpfchen
-casino.guide.p16.body = Die Chips sind Spielgeld, Smaragde und Diamanten aber nicht.\nIn jedem Spiel gewinnt das Haus auf Dauer ein bisschen: Wenn du verlierst, steh auf und setz dich an die Bar.\nViel Glück!
+casino.guide.p17.title = Spiel mit Köpfchen
+casino.guide.p17.body = Die Chips sind Spielgeld, Smaragde und Diamanten aber nicht.\nIn jedem Spiel gewinnt das Haus auf Dauer ein bisschen: Wenn du verlierst, steh auf und setz dich an die Bar.\nViel Glück!
 
 # THE DIAMOND (ronda 2)
 block.casino.elevator = Aufzugspanel

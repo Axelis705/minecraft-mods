@@ -164,6 +164,7 @@ public final class DealerMotion {
                 case DealerEntity.GAME_BARTENDER -> m.bartender(e, time, partial);
                 case DealerEntity.GAME_PATRON -> m.patron(e, partial);
                 case DealerEntity.GAME_SECURITY -> m.security(e, partial);
+                case DealerEntity.GAME_DUELIST -> m.duelist(e, partial);
                 default -> {
                 }
             }
@@ -441,6 +442,34 @@ public final class DealerMotion {
             if (armed) {
                 armL(aim.add(-rxv * 0.12, 0, -rzv * 0.12), 0.9F);
             }
+        }
+    }
+
+    // ------------------------------------------------------------------ pistolero del duelo
+
+    /**
+     * Pistolero: 0 = manos sueltas; 1 = mano en la cacha (revólver a la cadera); 2 = apuntando con el brazo estirado; 3 = perdió:
+     * manos arriba ("me rindo").
+     */
+    private void duelist(DealerEntity e, float partial) {
+        int c = e.combat();
+        Vec3 hip = new Vec3(ex + fx * 0.12 + rxv * 0.34, ey + 0.82, ez + fz * 0.12 + rzv * 0.34);
+        switch (c) {
+            case 1 -> {
+                propR = DealerProps.PISTOL;
+                armR(hip, 1);
+            }
+            case 2 -> {
+                propR = DealerProps.PISTOL;
+                double yaw = Math.toRadians(Mth.lerp(partial, e.yHeadRotO, e.yHeadRot));
+                Vec3 fwd = new Vec3(-Math.sin(yaw), 0, Math.cos(yaw));
+                armR(new Vec3(ex, ey + 1.38, ez).add(fwd.scale(1.6)), 1);
+            }
+            case 3 -> {
+                armR(new Vec3(ex + rxv * 0.3, ey + 2.3, ez + rzv * 0.3), 1);
+                armL(new Vec3(ex - rxv * 0.3, ey + 2.3, ez - rzv * 0.3), 1);
+            }
+            default -> armR(hip.add(fx * 0.05, 0.05, fz * 0.05), 0.5F);
         }
     }
 

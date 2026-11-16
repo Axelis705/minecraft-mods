@@ -45,6 +45,8 @@ public class DealerEntity extends Mob {
     public static final int GAME_SECURITY = 7;
     /** El contacto del salón VIP: a los socios Diamante les ofrece el robo a la bóveda. */
     public static final int GAME_FIXER = 8;
+    /** Pistolero del duelo al mediodía (no dice consejos sueltos; lo maneja la campana del duelo). */
+    public static final int GAME_DUELIST = 9;
     public static final int TIPS_FIXER = 5;
     /** Guardia: 0 tranquilo, 1 en alerta (persigue), 2 apuntando (sincronizado para el dibujo). */
     private static final EntityDataAccessor<Integer> COMBAT = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
@@ -190,7 +192,7 @@ public class DealerEntity extends Mob {
         int g = getGame();
         int n = g == GAME_ROULETTE ? TIPS_ROULETTE : g == GAME_POKER ? TIPS_POKER : g == GAME_GUARD ? TIPS_GUARD
                 : g == GAME_BARTENDER ? TIPS_BARTENDER : g == GAME_WHEEL ? TIPS_WHEEL : g == GAME_PATRON ? TIPS_PATRON
-                : g == GAME_FIXER ? TIPS_FIXER : g == GAME_SECURITY ? 0 : TIPS_BLACKJACK;
+                : g == GAME_FIXER ? TIPS_FIXER : g == GAME_SECURITY || g == GAME_DUELIST ? 0 : TIPS_BLACKJACK;
         if (n <= 0) {
             return;
         }
