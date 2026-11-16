@@ -40,6 +40,7 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(com.casino.west.WestReg.BULL_BE.get(), WestRenderers.Bull::new);
         e.registerBlockEntityRenderer(com.casino.west.WestReg.GALLERY_BE.get(), WestRenderers.Gallery::new);
         e.registerBlockEntityRenderer(com.casino.west.WestReg.DUEL_BE.get(), WestRenderers.Duel::new);
+        e.registerBlockEntityRenderer(com.casino.west.WestReg.DICE_BE.get(), WestRenderers.Dice::new);
         e.registerEntityRenderer(com.casino.west.WestReg.BULL_RIDE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
         e.registerEntityRenderer(com.casino.registry.ModDecor.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);

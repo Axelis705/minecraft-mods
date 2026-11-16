@@ -407,8 +407,8 @@ casino.guide.p12.title = Lumières et enseignes
 casino.guide.p12.body = LETTRES NÉON : posez-en plusieurs à la suite et faites un clic droit pour écrire au clavier (on passe tout seul à la lettre suivante). 6 couleurs au choix ; la couleur s'applique à toute l'enseigne.\nENSEIGNES et ÉCRANS : le clic droit change le dessin (accroupi, en arrière).\nPOTEAUX À CORDON : le cordon se tend tout seul entre poteaux voisins et personne ne peut le franchir.
 casino.guide.p13.title = Ambiance
 casino.guide.p13.body = L'ENCEINTE JAZZ joue de la musique de casino ; clic droit pour l'allumer ou l'éteindre. Même avec plusieurs, une seule piste joue, plus fort près d'elles.\nLe LUSTRE en cristal éclaire comme une lampe en pierre lumineuse.\nMoquettes en 4 motifs, marbre blanc et noir (bloc, escaliers et dalles), panneau en acajou, moulure dorée et murs en velours.
-casino.guide.p17.title = Jouez malin
-casino.guide.p17.body = Les jetons sont fictifs, mais les émeraudes et les diamants, non.\nDans tous les jeux, la banque gagne un peu à la longue : si vous perdez, levez-vous et allez vous asseoir au bar.\nBonne chance !
+casino.guide.p18.title = Jouez malin
+casino.guide.p18.body = Les jetons sont fictifs, mais les émeraudes et les diamants, non.\nDans tous les jeux, la banque gagne un peu à la longue : si vous perdez, levez-vous et allez vous asseoir au bar.\nBonne chance !
 
 # THE DIAMOND (ronda 2)
 block.casino.elevator = Panneau d'ascenseur

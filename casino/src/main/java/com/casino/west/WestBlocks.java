@@ -459,4 +459,61 @@ public final class WestBlocks {
             return level.isClientSide() ? (lvl, p, st, be) -> ((DuelBE) be).clientTick() : (lvl, p, st, be) -> ((DuelBE) be).serverTick();
         }
     }
+
+    /**
+     * Charola de dados del mentiroso (dos cubiletes de cuero sobre fieltro) para poner sobre una mesa. Clic → pantalla del juego.
+     * FACING = hacia el jugador; el tahúr se sienta enfrente. Reglas en {@link com.casino.game.LiarsDice}.
+     */
+    public static class Dice extends UseBlock implements EntityBlock {
+        private static final Map<Direction, VoxelShape> SHAPES = Shapes.rotated(new double[]{0, 0, 0, 16, 4, 16});
+
+        public Dice(Properties p) {
+            super(p);
+            registerDefaultState(stateDefinition.any().setValue(FACING, Direction.SOUTH));
+        }
+
+        @Override
+        protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
+            b.add(FACING);
+        }
+
+        @Override
+        public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+            return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+        }
+
+        @Override
+        public VoxelShape getShape(BlockState s, BlockGetter g, BlockPos p, CollisionContext c) {
+            return SHAPES.get(s.getValue(FACING));
+        }
+
+        @Override
+        protected InteractionResult onUse(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+            if (hand != InteractionHand.MAIN_HAND || !(level.getBlockEntity(pos) instanceof DiceBE be)) {
+                return InteractionResult.PASS;
+            }
+            boolean mine = be.isPlayer(player.getUUID());
+            if (level.isClientSide()) {
+                if (be.phase() == DiceBE.IDLE || mine) {
+                    com.casino.plat.Net.onClient(() -> com.casino.client.WestClient.openDice(pos));
+                }
+            } else if (be.phase() != DiceBE.IDLE && !mine) {
+                Plat.msg(player, Component.translatable("casino.dice.busy", be.playerName()).withStyle(ChatFormatting.YELLOW), true);
+            }
+            return Plat.ok(level.isClientSide());
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new DiceBE(pos, state);
+        }
+
+        @Override
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            if (type != WestReg.DICE_BE.get()) {
+                return null;
+            }
+            return level.isClientSide() ? (lvl, p, st, be) -> ((DiceBE) be).clientTick() : (lvl, p, st, be) -> ((DiceBE) be).serverTick();
+        }
+    }
 }

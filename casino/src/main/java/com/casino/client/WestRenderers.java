@@ -478,4 +478,57 @@ public final class WestRenderers {
             ps.popPose();
         }
     }
+
+    // ------------------------------------------------------------------ dados del mentiroso
+
+    public static class Dice extends CasinoBER<com.casino.west.DiceBE> {
+        public Dice(BlockEntityRendererProvider.Context ctx) {
+        }
+
+        private static final int[][] SPOTS = {{}, {4}, {0, 8}, {0, 4, 8}, {0, 2, 6, 8}, {0, 2, 4, 6, 8}, {0, 2, 3, 5, 6, 8}};
+
+        private static void die(Box3 b, double x, double z, int v, boolean hi) {
+            double s = 0.035, y = 0.15;
+            b.box(x - s, y, z - s, x + s, y + 2 * s, z + s, hi ? 0xFFE070 : 0xF4EEE0);
+            if (v < 1 || v > 6) {
+                return;
+            }
+            for (int k : SPOTS[v]) {
+                double px = x + (k % 3 - 1) * 0.022, pz = z + (k / 3 - 1) * 0.022;
+                b.box(px - 0.007, y + 2 * s, pz - 0.007, px + 0.007, y + 2 * s + 0.002, pz + 0.007, 0x1A1010);
+            }
+        }
+
+        private static void cup(Box3 b, double x, double z, boolean up) {
+            double r = 0.09, y = 0.15, h = 0.2;
+            b.box(x - r, y, z - r, x + r, y + h, z + r, 0x5A3018);
+            b.box(x - r - 0.01, up ? y + h - 0.03 : y, z - r - 0.01, x + r + 0.01, up ? y + h : y + 0.03, z + r + 0.01, 0x3A1E0E);
+            b.box(x - r + 0.02, y + h * 0.45, z - r - 0.003, x + r - 0.02, y + h * 0.55, z - r, 0xC8A040);
+        }
+
+        @Override
+        protected void draw(com.casino.west.DiceBE be, float partial, PoseStack ps, Draw d, int light, int overlay) {
+            Direction f = be.facing();
+            ps.pushPose();
+            ps.translate(0.5, 0, 0.5);
+            ps.mulPose(Axis.YP.rotationDegrees(-f.toYRot()));   // z = hacia el jugador
+            Box3 b = new Box3(d.cutout(Box3.WHITE), ps.last(), light);
+            if (be.phase() == com.casino.west.DiceBE.REVEAL) {
+                int[] bids = be.bids();
+                int hiFace = bids.length > 0 ? bids[bids.length - 1] % 10 : -1;
+                int[] pd = be.playerDice(), nd = be.npcDice();
+                for (int i = 0; i < pd.length; i++) {
+                    double x = -0.18 + i * 0.09;
+                    die(b, x, 0.2, pd[i], hiFace > 0 && (pd[i] == hiFace || pd[i] == 1));
+                    die(b, x, -0.2, nd[i], hiFace > 0 && (nd[i] == hiFace || nd[i] == 1));
+                }
+                cup(b, 0.38, 0.3, true);
+                cup(b, -0.38, -0.3, true);
+            } else {
+                cup(b, 0, 0.26, false);
+                cup(b, 0, -0.26, false);
+            }
+            ps.popPose();
+        }
+    }
 }

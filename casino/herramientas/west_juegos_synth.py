@@ -169,9 +169,30 @@ def duel_draw():
     return norm(s + whoosh, 0.85)
 
 
+def dice_shake():
+    """Dados sonando dentro de un cubilete de cuero y el golpe al ponerlo en la mesa."""
+    rnd = np.random.default_rng(31)
+    dur = 0.9
+    n = int(dur * SR)
+    s = np.zeros(n)
+    for k in range(26):
+        at = int((0.02 + 0.6 * rnd.random()) * SR)
+        m = int(0.012 * SR)
+        t = np.arange(m) / SR
+        f = rnd.uniform(2500, 4800)
+        click = np.sin(2 * np.pi * f * t) * np.exp(-t / 0.003) + rnd.standard_normal(m) * np.exp(-t / 0.002) * 0.5
+        s[at:at + m] += click[:max(0, min(m, n - at))] * rnd.uniform(0.3, 1.0)
+    s = lowpass(s, 3) * 0.7
+    thud_at = int(0.7 * SR)
+    t = np.arange(n - thud_at) / SR
+    s[thud_at:] += (np.sin(2 * np.pi * 140 * t) * np.exp(-t / 0.04) + lowpass(rnd.standard_normal(len(t)), 10) * np.exp(-t / 0.02)) * 0.9
+    return norm(s, 0.8)
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     for name, fn in (("gallery_shot", shot), ("gallery_ding", ding), ("gallery_quack", quack), ("gallery_buzz", buzz),
-                     ("bull_bell", cowbell), ("bull_motor", motor), ("duel_theme", duel_theme), ("duel_draw", duel_draw)):
+                     ("bull_bell", cowbell), ("bull_motor", motor), ("duel_theme", duel_theme), ("duel_draw", duel_draw),
+                     ("dice_shake", dice_shake)):
         write(os.path.join(OUT, name + ".ogg"), fn(), q=5)
         print("listo", name)

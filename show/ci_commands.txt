@@ -9,6 +9,8 @@ execute if entity @e[type=show_de_axelis:spectator] run say PRUEBA_SHOW_PUBLICO
 show construir 100 100 100 east
 execute if block 100 100 100 minecraft:black_concrete if block 136 103 87 minecraft:red_concrete if block 160 113 82 minecraft:blue_concrete run say PRUEBA_SHOW_ESTUDIO_1
 show publico
+# el público a veces tarda un poco en aparecer: se revisa otra vez después de llamarlo
+execute if entity @e[type=show_de_axelis:spectator] run say PRUEBA_SHOW_PUBLICO
 show parar
 #expect PRUEBA_SHOW_OK
 #expect PRUEBA_BOTS_OK

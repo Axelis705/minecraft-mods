@@ -94,6 +94,33 @@ public final class WestClient {
         p.setXRot(p.getXRot() - 2.2F);
     }
 
+    // ------------------------------------------------------------------ dados del mentiroso
+
+    private static com.casino.west.DiceBE dice;
+    private static long diceSeenAt;
+
+    public static void openDice(BlockPos pos) {
+        ClientHooks.open(new DiceScreen(pos));
+    }
+
+    public static void diceSeen(com.casino.west.DiceBE be) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null && be.isPlayer(mc.player.getUUID())) {
+            dice = be;
+            diceSeenAt = mc.level == null ? 0 : mc.level.getGameTime();
+        }
+    }
+
+    /** La mesa de dados donde estoy jugando (o null). */
+    public static com.casino.west.DiceBE dice() {
+        Minecraft mc = Minecraft.getInstance();
+        if (dice == null || mc.level == null || mc.player == null || dice.isRemoved() || dice.getLevel() != mc.level
+                || mc.level.getGameTime() - diceSeenAt > 5 || !dice.isPlayer(mc.player.getUUID())) {
+            dice = null;
+        }
+        return dice;
+    }
+
     // ------------------------------------------------------------------ duelo
 
     private static com.casino.west.DuelBE duel;

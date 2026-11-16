@@ -18,6 +18,10 @@ public final class WestPacket {
     public static final int BULL_INPUT = 2;
     /** value = pistolero * 100000 + apuesta */
     public static final int DUEL_BET = 3;
+    /** Dados del mentiroso: apostar para empezar, subir (value = cantidad * 10 + cara) y gritar "¡mentiroso!". */
+    public static final int DICE_BET = 4;
+    public static final int DICE_BID = 5;
+    public static final int DICE_CALL = 6;
 
     public final int action;
     public final BlockPos pos;
@@ -67,6 +71,20 @@ public final class WestPacket {
             }
             if (!BullRideEntity.start(p, m.pos, m.value)) {
                 Chips.give(p, m.value);
+            }
+        } else if (m.action == DICE_BET || m.action == DICE_BID || m.action == DICE_CALL) {
+            if (p.level().getBlockEntity(m.pos) instanceof DiceBE be) {
+                if (m.action == DICE_BET) {
+                    if (be.phase() != DiceBE.IDLE) {
+                        Plat.msg(p, Component.translatable("casino.dice.busy", be.playerName()).withStyle(ChatFormatting.YELLOW), true);
+                    } else {
+                        be.begin(p, m.value);
+                    }
+                } else if (m.action == DICE_BID) {
+                    be.playerBid(p, m.value / 10, m.value % 10);
+                } else {
+                    be.playerCall(p);
+                }
             }
         } else if (m.action == DUEL_BET) {
             if (p.level().getBlockEntity(m.pos) instanceof DuelBE be) {

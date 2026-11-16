@@ -53,6 +53,10 @@ public final class WestReg {
             .mapColor(MapColor.WOOD).strength(-1.0F, 3_600_000.0F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Item> DUEL_BELL_ITEM = ModItems.ITEMS.register("duel_bell",
             () -> new BlockItem(DUEL_BELL.get(), Reg.blockItem("duel_bell")));
+    public static final RegistryObject<Block> DICE = ModBlocks.BLOCKS.register("liars_dice", () -> new WestBlocks.Dice(Reg.block("liars_dice")
+            .mapColor(MapColor.COLOR_GREEN).strength(-1.0F, 3_600_000.0F).sound(SoundType.WOOL).noOcclusion()));
+    public static final RegistryObject<Item> DICE_ITEM = ModItems.ITEMS.register("liars_dice",
+            () -> new BlockItem(DICE.get(), Reg.blockItem("liars_dice")));
     public static final RegistryObject<Item> REVOLVER = ModItems.ITEMS.register("gallery_revolver",
             () -> new RevolverItem(Reg.item("gallery_revolver").stacksTo(1)));
 
@@ -69,6 +73,8 @@ public final class WestReg {
             () -> Reg.blockEntity(GalleryBE::new, GALLERY.get()));
     public static final RegistryObject<BlockEntityType<DuelBE>> DUEL_BE = ModBlockEntities.TYPES.register("duel_bell",
             () -> Reg.blockEntity(DuelBE::new, DUEL_BELL.get()));
+    public static final RegistryObject<BlockEntityType<DiceBE>> DICE_BE = ModBlockEntities.TYPES.register("liars_dice",
+            () -> Reg.blockEntity(DiceBE::new, DICE.get()));
     public static final RegistryObject<EntityType<BullRideEntity>> BULL_RIDE = ModEntities.ENTITIES.register("bull_ride",
             () -> Reg.entity("bull_ride", EntityType.Builder.<BullRideEntity>of(BullRideEntity::new, MobCategory.MISC).sized(0.001F, 0.001F)
                     .clientTrackingRange(8).updateInterval(1)));
@@ -78,6 +84,13 @@ public final class WestReg {
 
     /** Llamar en el constructor del mod: carga la clase a tiempo y conecta los marcadores. */
     public static void init() {
+        // el tahúr de los dados del mentiroso: "dicer dir [piel]" (por defecto el viejo Hank)
+        TemplateCasinoPiece.Extra.register("dicer", (a, pos, level, rot, box, dir) -> {
+            DealerEntity d = DiamondReg.npc(DealerEntity.GAME_DUELIST, new String[]{a[0], a[1], "w"}, pos, level, rot, box, dir);
+            if (d != null) {
+                d.setVariant(DealerEntity.WEST + (a.length > 2 ? DiamondReg.parse(a[2]) : 3));
+            }
+        });
         // vaqueros y vaqueras que pasean por el saloon: "wpatron dir [piel]"
         TemplateCasinoPiece.Extra.register("wpatron", (a, pos, level, rot, box, dir) -> {
             DealerEntity p = DiamondReg.npc(DealerEntity.GAME_PATRON, new String[]{a[0], a[1], "w"}, pos, level, rot, box, dir);

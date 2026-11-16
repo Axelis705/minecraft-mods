@@ -264,6 +264,20 @@ def duel_bell():
     dm.write(os.path.join(A, "models", "item", "duel_bell.json"), {"parent": "casino:block/west/duel_bell", "display": dm.DISPLAY_TALL})
 
 
+def dice_table():
+    """Cubierta de mesa con fieltro verde (va sobre una pata de cerca); los cubiletes y los dados los dibuja el renderizador."""
+    dm.TEX.update({"v_spruce": "minecraft:block/spruce_planks", "v_felt": "minecraft:block/green_wool", "w_dark": T("walnut_dark")})
+    els = [box([0, 0, 0], [16, 2, 16], "v_spruce"),
+           box([1.5, 2, 1.5], [14.5, 2.4, 14.5], "v_felt"),
+           box([0, 2, 0], [16, 2.8, 1], "w_dark"), box([0, 2, 15], [16, 2.8, 16], "w_dark"),
+           box([0, 2, 1], [1, 2.8, 15], "w_dark"), box([15, 2, 1], [16, 2.8, 15], "w_dark")]
+    m = dm.emit(els, {}, "minecraft:block/spruce_planks")
+    dm.write(os.path.join(A, "models", "block", "west", "liars_dice.json"), m)
+    v = {f"facing={f}": {"model": "casino:block/west/liars_dice", "y": y} for f, y in DIRS}
+    dm.write(os.path.join(A, "blockstates", "liars_dice.json"), {"variants": v})
+    dm.write(os.path.join(A, "models", "item", "liars_dice.json"), {"parent": "casino:block/west/liars_dice", "display": dm.DISPLAY})
+
+
 def bull_block():
     # el toro entero lo dibuja el renderizador; el bloque no tiene modelo propio
     v = {f"facing={f}": {"model": "casino:block/heist/empty", "y": y} for f, y in DIRS}
@@ -279,7 +293,8 @@ if __name__ == "__main__":
     gallery_block()
     bull_block()
     duel_bell()
-    for n in ("mechanical_bull", "shooting_gallery", "duel_bell"):
+    dice_table()
+    for n in ("mechanical_bull", "shooting_gallery", "duel_bell", "liars_dice"):
         dm.loot(n)
     if "--preview" in sys.argv:
         out = sys.argv[sys.argv.index("--preview") + 1]

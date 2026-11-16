@@ -8,7 +8,7 @@ Frente al sur (z máxima): calle de tierra, banqueta de tablones con techito y p
   - detrás, la torre de agua, la letrina, barriles y cactus.
 Planta baja del saloon: barra larga con espejo y botellas (cantinero), pianola, 2 mesas de 21, ruleta de la suerte entre
 tragamonedas, caja con rejas y tienda de premios; escalera al centro del fondo con puertitas VIP y dos sheriffs.
-Primer piso (tarjeta Plata): sala de cartas con 2 mesas de alto riesgo, galería con barandal alrededor del salón, cuartos al frente
+Primer piso (tarjeta Plata): sala de cartas con una mesa de 21 de alto riesgo y la mesa de dados del mentiroso, galería con barandal alrededor del salón, cuartos al frente
 y el palco del dueño (tarjeta Oro) con salida al balcón.
 """
 import sys, os, random
@@ -432,10 +432,17 @@ for x in range(IX0, IX1 + 1):
     for z in range(IZ0, IZ1 + 1, 3):
         o.set(x, YR, z, BEAM)
 # sala de cartas del fondo (z 9..17): 2 mesas de alto riesgo, aparador y retratos
-for x in (22, 37):
+for x in (22,):
     mq.place(o, 'blackjack', x, Y2 + 1, 13, 2)
     meta, pv = o.markers[(x, Y2 + 1, 13)]
     o.markers[(x, Y2 + 1, 13)] = (meta + ' w', pv)
+# mesa de dados del mentiroso: el viejo Hank del lado norte, la silla del jugador al sur
+o.set(37, Y2 + 1, 13, 'minecraft:spruce_fence')
+o.set(37, Y2 + 2, 13, 'casino:liars_dice[facing=south]')
+o.set(37, Y2 + 1, 14, 'casino:casino_chair_black[facing=north]')
+for x, f in ((36, 'east'), (38, 'west')):
+    o.set(x, Y2 + 1, 13, f'casino:casino_chair_black[facing={f}]')
+o.marker(37, Y2 + 1, 12, 'dicer 2', [(0, 0, 0, 'minecraft:orange_wool'), (0, 1, 0, 'minecraft:orange_wool')])
 for x in range(IX0, IX1 + 1):
     if x not in (28, 29, 30, 31):
         o.set(x, Y2 + 1, IZ0, 'minecraft:spruce_slab[type=top]' if x % 2 else 'minecraft:barrel[facing=south]')

@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 /** La Guía del Casino: un libro abierto de dos páginas. Los textos están en los archivos de idioma (casino.guide.pN.*). */
 public final class GuideScreen extends CasinoScreen {
-    public static final int PAGES = 18;
+    public static final int PAGES = 19;
     private static final int PW = 150;
     private static final int PH = 196;
     private static final int TEXT = 0xFF3A2614;
@@ -51,6 +51,7 @@ public final class GuideScreen extends CasinoScreen {
         l.add(() -> com.casino.west.WestReg.BULL_ITEM.get());
         l.add(() -> com.casino.west.WestReg.GALLERY_ITEM.get());
         l.add(() -> com.casino.west.WestReg.DUEL_BELL_ITEM.get());
+        l.add(() -> com.casino.west.WestReg.DICE_ITEM.get());
         l.add(() -> ModItems.CHIP_1.get());
         return l;
     }
@@ -97,12 +98,12 @@ public final class GuideScreen extends CasinoScreen {
             int x = left + PW + 8 + 12;
             int y = top + 34;
             for (int i = 2; i < PAGES; i++) {
-                if (mx >= x && mx < x + PW - 24 && my >= y && my < y + 11) {
+                if (mx >= x && mx < x + PW - 24 && my >= y && my < y + 9) {
                     spread = i / 2;
                     remembered = spread;
                     return true;
                 }
-                y += 10;
+                y += 9;
             }
         }
         return super.onClick(mx, my, button);
@@ -147,10 +148,10 @@ public final class GuideScreen extends CasinoScreen {
             if (i == 1) {
                 int y = top + 34;
                 for (int k = 2; k < PAGES; k++) {
-                    boolean hover = mx >= x + 12 && mx < x + PW - 12 && my >= y && my < y + 11;
+                    boolean hover = mx >= x + 12 && mx < x + PW - 12 && my >= y && my < y + 9;
                     g.drawString(font, Component.literal((k + 1) + ". ").append(Component.translatable("casino.guide.p" + k + ".title")),
                             x + 12, y, hover ? 0xFFB01020 : TEXT, false);
-                    y += 10;
+                    y += 9;
                 }
             } else {
                 text(g, Component.translatable("casino.guide.p" + i + ".body").getString(), x + 10, top + 28, PW - 20, PH - 46);

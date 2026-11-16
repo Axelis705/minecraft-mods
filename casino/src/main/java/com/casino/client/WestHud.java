@@ -44,6 +44,15 @@ public final class WestHud {
             bull(g, mc.font, e, sw, sh, pt);
             return;
         }
+        com.casino.west.DiceBE dc = WestClient.dice();
+        if (dc != null && ClientScreens.none() && dc.phase() == com.casino.west.DiceBE.PLAY) {
+            Component npc = Component.translatable("casino.npc.duelist_" + (com.casino.entity.DealerEntity.WEST + 3));
+            Component c = dc.turn() == com.casino.game.LiarsDice.PLAYER ? Component.translatable("casino.dice.hud_turn").withStyle(ChatFormatting.GREEN)
+                    : Component.translatable("casino.dice.hud_wait", npc).withStyle(ChatFormatting.YELLOW);
+            int w = mc.font.width(c) + 12;
+            g.fill(sw / 2 - w / 2, 6, sw / 2 + w / 2, 22, 0xC0201008);
+            g.drawCenteredString(mc.font, c, sw / 2, 10, 0xFFFFFFFF);
+        }
         com.casino.west.DuelBE db = WestClient.duel();
         if (db != null) {
             duel(g, mc, db, sw, sh, pt);

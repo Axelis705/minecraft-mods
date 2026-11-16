@@ -237,5 +237,11 @@
    "casino:west/duel_draw"
   ],
   "subtitle": "subtitles.casino.duel_draw"
+ },
+ "dice_shake": {
+  "sounds": [
+   "casino:west/dice_shake"
+  ],
+  "subtitle": "subtitles.casino.dice_shake"
  }
 }
