@@ -51,6 +51,8 @@ public final class ModCreativeTabs {
                 out.accept(ModItems.CHIP_25.get());
                 out.accept(ModItems.CHIP_100.get());
                 out.accept(ModItems.CHIP_500.get());
+                out.accept(ModItems.ARCADE_COIN.get());
+                out.accept(ModItems.ARCADE_TICKET.get());
             })
             .build());
 

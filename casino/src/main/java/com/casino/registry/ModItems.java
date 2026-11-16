@@ -51,6 +51,13 @@ public final class ModItems {
     public static final RegistryObject<Item> VIP_GOLD = ITEMS.register("vip_card_gold",
             () -> new com.casino.item.VipCardItem(Reg.item("vip_card_gold").stacksTo(1).rarity(net.minecraft.world.item.Rarity.EPIC), 2));
 
+    /** Sala recreativa (casino Divertido): monedas para jugar y boletos que sueltan las máquinas. Valen lo que dice game/Exchange. */
+    public static final RegistryObject<Item> ARCADE_COIN = ITEMS.register("arcade_coin", () -> new com.casino.item.ArcadeItem(
+            Reg.item("arcade_coin").rarity(net.minecraft.world.item.Rarity.UNCOMMON), "casino.arcade.coin_tip",
+            com.casino.game.Exchange.VALUE[com.casino.game.Exchange.COINS]));
+    public static final RegistryObject<Item> ARCADE_TICKET = ITEMS.register("arcade_ticket", () -> new com.casino.item.ArcadeItem(
+            Reg.item("arcade_ticket"), "casino.arcade.ticket_tip", com.casino.game.Exchange.VALUE[com.casino.game.Exchange.TICKETS]));
+
     /** Tarjeta de socio (niveles, logros y bono diario). */
     public static final RegistryObject<Item> MEMBER_CARD = ITEMS.register("member_card",
             () -> new com.casino.item.MemberCardItem(Reg.item("member_card").stacksTo(1).rarity(net.minecraft.world.item.Rarity.RARE)));

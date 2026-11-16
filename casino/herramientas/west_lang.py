@@ -182,6 +182,8 @@ if __name__ == "__main__":
         extra_es, extra_en = more.ES, more.EN
     except ImportError:
         pass
+    import cajero_lang as caja  # caja nueva (Cambio / VIP), monedas arcade y boletos
+    extra_es, extra_en = {**extra_es, **caja.ES}, {**extra_en, **caja.EN}
     merge("es_es", {**ES, **extra_es})
     merge("en_us", {**EN, **extra_en})
     print("textos del Oeste listos")

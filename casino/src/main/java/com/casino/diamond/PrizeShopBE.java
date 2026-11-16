@@ -33,9 +33,12 @@ public class PrizeShopBE extends CasinoBE {
     }
 
     /** Lista inicial (precios pensados para que no convenga comprar aquí y vender en el cajero: un diamante cuesta 80 fichas allá). */
+    /** El diamante vale lo mismo que en el cajero (antes la tienda lo daba en 100 y el cajero en 80: no encajaba). */
+    public static final int DIAMOND_PRICE = com.casino.game.Exchange.VALUE[com.casino.game.Exchange.DIAMOND];
+
     public void stockDefaults() {
         offers.clear();
-        offers.add(new Offer(new ItemStack(Items.DIAMOND), 100));
+        offers.add(new Offer(new ItemStack(Items.DIAMOND), DIAMOND_PRICE));
         offers.add(new Offer(new ItemStack(Items.GOLDEN_APPLE, 2), 120));
         offers.add(new Offer(new ItemStack(Items.EXPERIENCE_BOTTLE, 16), 250));
         offers.add(new Offer(new ItemStack(Items.NETHERITE_INGOT), 3000));
@@ -72,7 +75,11 @@ public class PrizeShopBE extends CasinoBE {
             CompoundTag t = Nbt.at(l, i);
             ItemStack s = Ser.item(t.get("Item"));
             if (!s.isEmpty()) {
-                offers.add(new Offer(s, Math.max(1, Nbt.i(t, "Price"))));
+                int price = Math.max(1, Nbt.i(t, "Price"));
+                if (s.is(Items.DIAMOND) && s.getCount() == 1 && price == 100) {
+                    price = DIAMOND_PRICE;                     // tiendas de antes con el precio viejo
+                }
+                offers.add(new Offer(s, price));
             }
         }
         stocked = Nbt.b(tag, "Stocked");

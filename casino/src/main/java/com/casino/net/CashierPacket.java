@@ -38,7 +38,9 @@ public final class CashierPacket {
         }
         // el servidor comprueba que el jugador esté cerca del cajero
         if (p.distanceToSqr(m.pos.getX() + 0.5, m.pos.getY() + 0.5, m.pos.getZ() + 0.5) <= 10 * 10) {
-            if (m.kind >= 100) {
+            if (m.kind >= 1000) {                       // cambio nuevo: 1000 + de * 10 + a, cantidad = lotes
+                Cashier.convert(p, (m.kind - 1000) / 10, (m.kind - 1000) % 10, m.amount);
+            } else if (m.kind >= 100) {
                 Cashier.buyVip(p, m.kind - 100);
             } else {
                 Cashier.exchange(p, m.kind, m.buy, m.amount);
