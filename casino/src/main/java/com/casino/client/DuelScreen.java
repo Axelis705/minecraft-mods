@@ -28,6 +28,7 @@ public final class DuelScreen extends CasinoScreen {
     private long keySeenNanos;
     private char keySeen;
     private int myMs = -1;
+    private long firedAt;
     private boolean sentEarly;
     private long lockUntil;
     private long wrongAt;
@@ -117,7 +118,9 @@ public final class DuelScreen extends CasinoScreen {
         if (!KeyChars.letterOrDigit(key, scan)) {
             return true;   // las demás teclas no hacen nada durante el duelo
         }
-        if (d == null || s < 0 || d.phase() != MatchBE.RUNNING || myMs >= 0 || (key >= 0 && key < held.length && held[key])) {
+        // ya disparé (si el servidor no lo registró en 0.6 s, se puede volver a intentar)
+        boolean fired = myMs >= 0 && d != null && s >= 0 && (d.ms(s) >= 0 || now - firedAt < 600_000_000L);
+        if (d == null || s < 0 || d.phase() != MatchBE.RUNNING || fired || (key >= 0 && key < held.length && held[key])) {
             return true;
         }
         char want = d.key();
@@ -144,6 +147,7 @@ public final class DuelScreen extends CasinoScreen {
                 keySeen = want;
             }
             myMs = (int) Math.max(1, Math.min(9999, (now - keySeenNanos) / 1_000_000L));
+            firedAt = now;
             CasinoNet.sendToServer(new WestPacket(WestPacket.DUEL_KEY, pos, myMs * 256 + want));
         } else {
             lockUntil = now + DuelRules.WRONG_LOCK_MS * 1_000_000L;

@@ -30,6 +30,8 @@ public class DuelBE extends MatchBE {
     private char key;
     /** Tiempo de cada lado en ms (-1 = no ha disparado). */
     private final int[] ms = {-1, -1};
+    /** Hasta qué tick está trabado el revólver de cada lado (por apretar una tecla equivocada). */
+    private final long[] jamUntil = new long[2];
     private long firstAt = -1;
     private int npcMs;
     private boolean noon;
@@ -124,6 +126,7 @@ public class DuelBE extends MatchBE {
         drawTick = DuelRules.drawTick(level.getRandom().nextDouble());
         key = 0;
         ms[0] = ms[1] = -1;
+        jamUntil[0] = jamUntil[1] = 0;
         firstAt = -1;
         npcMs = DuelRules.npcMs(opp, level.getRandom().nextGaussian());
         noon = mode == NPC && DuelRules.noon(Plat.dayTime(level));
@@ -185,8 +188,13 @@ public class DuelBE extends MatchBE {
             finish(1 - s, R_EARLY);
             return;
         }
+        if (t < jamUntil[s]) {
+            return;
+        }
         if (c != key) {
-            return;   // tecla equivocada: el revólver se traba un momento (lo controla su pantalla)
+            // tecla equivocada: el revólver se traba (aquí un poco menos que en la pantalla, por lo que tarda la red)
+            jamUntil[s] = t + DuelRules.WRONG_LOCK_MS / 50 - 4;
+            return;
         }
         long elapsed = Math.max(0, (t - drawTick) * 50);
         int m = clientMs;
