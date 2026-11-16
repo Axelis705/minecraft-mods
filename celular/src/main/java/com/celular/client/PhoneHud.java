@@ -6,6 +6,7 @@ import com.celular.net.CelularNet.CallState;
 import com.celular.plat.Net;
 import com.celular.plat.client.G;
 import net.minecraft.ChatFormatting;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -26,19 +27,19 @@ import java.util.List;
 public final class PhoneHud {
     //#if MC >= 26.1
     //$$ public static final KeyMapping.Category CAT = KeyMapping.Category.register(Ids.mod("main"));
-    //$$ public static final KeyMapping OPEN = new KeyMapping("key.celular.open", 75, CAT);
-    //$$ public static final KeyMapping ANSWER = new KeyMapping("key.celular.answer", 89, CAT);
-    //$$ public static final KeyMapping HANGUP = new KeyMapping("key.celular.hangup", 85, CAT);
-    //$$ public static final KeyMapping MUSIC_TOGGLE = new KeyMapping("key.celular.music_toggle", -1, CAT);
-    //$$ public static final KeyMapping MUSIC_NEXT = new KeyMapping("key.celular.music_next", -1, CAT);
-    //$$ public static final KeyMapping MUSIC_PREV = new KeyMapping("key.celular.music_prev", -1, CAT);
+    //$$ public static final KeyMapping OPEN = new SafeKey("key.celular.open", InputConstants.KEY_K, CAT);
+    //$$ public static final KeyMapping ANSWER = new SafeKey("key.celular.answer", InputConstants.KEY_Y, CAT);
+    //$$ public static final KeyMapping HANGUP = new SafeKey("key.celular.hangup", InputConstants.KEY_U, CAT);
+    //$$ public static final KeyMapping MUSIC_TOGGLE = new SafeKey("key.celular.music_toggle", InputConstants.UNKNOWN.getValue(), CAT);
+    //$$ public static final KeyMapping MUSIC_NEXT = new SafeKey("key.celular.music_next", InputConstants.UNKNOWN.getValue(), CAT);
+    //$$ public static final KeyMapping MUSIC_PREV = new SafeKey("key.celular.music_prev", InputConstants.UNKNOWN.getValue(), CAT);
     //#else
-    public static final KeyMapping OPEN = new KeyMapping("key.celular.open", 75, "key.categories.celular");
-    public static final KeyMapping ANSWER = new KeyMapping("key.celular.answer", 89, "key.categories.celular");
-    public static final KeyMapping HANGUP = new KeyMapping("key.celular.hangup", 85, "key.categories.celular");
-    public static final KeyMapping MUSIC_TOGGLE = new KeyMapping("key.celular.music_toggle", -1, "key.categories.celular");
-    public static final KeyMapping MUSIC_NEXT = new KeyMapping("key.celular.music_next", -1, "key.categories.celular");
-    public static final KeyMapping MUSIC_PREV = new KeyMapping("key.celular.music_prev", -1, "key.categories.celular");
+    public static final KeyMapping OPEN = new SafeKey("key.celular.open", InputConstants.KEY_K, "key.categories.celular");
+    public static final KeyMapping ANSWER = new SafeKey("key.celular.answer", InputConstants.KEY_Y, "key.categories.celular");
+    public static final KeyMapping HANGUP = new SafeKey("key.celular.hangup", InputConstants.KEY_U, "key.categories.celular");
+    public static final KeyMapping MUSIC_TOGGLE = new SafeKey("key.celular.music_toggle", InputConstants.UNKNOWN.getValue(), "key.categories.celular");
+    public static final KeyMapping MUSIC_NEXT = new SafeKey("key.celular.music_next", InputConstants.UNKNOWN.getValue(), "key.categories.celular");
+    public static final KeyMapping MUSIC_PREV = new SafeKey("key.celular.music_prev", InputConstants.UNKNOWN.getValue(), "key.categories.celular");
     //#endif
 
     private static final class Toast {

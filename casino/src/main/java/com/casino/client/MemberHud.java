@@ -20,9 +20,9 @@ import java.util.Locale;
  */
 public final class MemberHud {
     //#if MC >= 26.1
-    //$$ public static final KeyMapping TOGGLE = new KeyMapping("key.casino.member_hud", 74, RaceClient.CAT);
+    //$$ public static final KeyMapping TOGGLE = new KeyMapping("key.casino.member_hud", com.mojang.blaze3d.platform.InputConstants.KEY_J, RaceClient.CAT);
     //#else
-    public static final KeyMapping TOGGLE = new KeyMapping("key.casino.member_hud", 74, "key.categories.casino");
+    public static final KeyMapping TOGGLE = new KeyMapping("key.casino.member_hud", com.mojang.blaze3d.platform.InputConstants.KEY_J, "key.categories.casino");
     //#endif
 
     /** Cofre de nivel que llegó con una pantalla abierta: se abre cuando la cierres. */

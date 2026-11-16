@@ -109,7 +109,7 @@ public abstract class BaseScreen extends Screen {
     //$$ public boolean keyPressed(KeyEvent e) {
     //$$     lastKey = e;
     //#if MC >= 26.3
-    //$$     return onKey(e.key(), e.keycode(), e.modifiers());
+    //$$     return onKey(Keys.glfw(e.key()), e.keycode(), e.modifiers()); // 26.3: SDL -> códigos de siempre
     //#else
     //$$     return onKey(e.key(), e.scancode(), e.modifiers());
     //#endif

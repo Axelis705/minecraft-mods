@@ -24,9 +24,9 @@ import java.util.Map;
 public final class RaceClient {
     //#if MC >= 26.1
     //$$ public static final KeyMapping.Category CAT = KeyMapping.Category.register(Ids.casino("main"));
-    //$$ public static final KeyMapping BET = new KeyMapping("key.casino.race_bet", 66, CAT);
+    //$$ public static final KeyMapping BET = new KeyMapping("key.casino.race_bet", com.mojang.blaze3d.platform.InputConstants.KEY_B, CAT);
     //#else
-    public static final KeyMapping BET = new KeyMapping("key.casino.race_bet", 66, "key.categories.casino");
+    public static final KeyMapping BET = new KeyMapping("key.casino.race_bet", com.mojang.blaze3d.platform.InputConstants.KEY_B, "key.categories.casino");
     //#endif
 
     /** Pantallas vistas hace poco (posición → último tick en que se vio). */

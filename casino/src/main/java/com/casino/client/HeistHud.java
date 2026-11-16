@@ -20,9 +20,9 @@ import java.util.Locale;
  */
 public final class HeistHud {
     //#if MC >= 26.1
-    //$$ public static final KeyMapping HELP = new KeyMapping("key.casino.heist_help", 72, RaceClient.CAT);
+    //$$ public static final KeyMapping HELP = new KeyMapping("key.casino.heist_help", com.mojang.blaze3d.platform.InputConstants.KEY_H, RaceClient.CAT);
     //#else
-    public static final KeyMapping HELP = new KeyMapping("key.casino.heist_help", 72, "key.categories.casino");
+    public static final KeyMapping HELP = new KeyMapping("key.casino.heist_help", com.mojang.blaze3d.platform.InputConstants.KEY_H, "key.categories.casino");
     //#endif
 
     private static HeistSyncPacket data;
