@@ -1,6 +1,9 @@
 # Pruebas en el servidor real: los bancos cargan, el motor del show corre y el estudio se construye sin errores
 show probar
 show probarbots
+# las zonas de los dos estudios se mantienen cargadas: si no, el público y las pantallas pueden quedar en chunks sin cargar
+forceload add -48 -16 48 80
+forceload add 84 40 180 160
 show construir 0 100 0 south
 execute if block 0 100 0 minecraft:black_concrete if block 13 103 36 minecraft:red_concrete if block 18 113 60 minecraft:blue_concrete run say PRUEBA_SHOW_ESTUDIO_0
 execute if block 0 103 31 minecraft:bell run say PRUEBA_SHOW_CAMPANA
