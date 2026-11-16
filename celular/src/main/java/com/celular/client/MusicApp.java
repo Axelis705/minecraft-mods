@@ -213,6 +213,7 @@ final class MusicApp extends App {
         int discR = cs / 2;
         int discX = cx + (MusicPlayer.playing ? cs / 5 : cs / 10);
         int discY = coverY + cs / 2;
+        g.scissor(s.dx0, s.dy0, s.dx1, s.dy1);         // el disco no se sale de la pantalla del celular
         D.circle(g, discX, discY, discR, 0xFF111111);
         for (int r = discR - 2; r > discR / 3; r -= 3) {
             D.rrLine(g, discX - r, discY - r, discX + r, discY + r, r, 0xFF262626);
@@ -226,6 +227,7 @@ final class MusicApp extends App {
         }
         D.circle(g, discX, discY, discR / 3, D.hsv(hue, 0.7F, 0.9F));
         D.circle(g, discX, discY, 2, 0xFF111111);
+        g.noScissor();
         // portada (crece un poquito con los graves)
         int grow = MusicPlayer.playing ? (int) (bass * 3) : 0;
         int cvx = cx - cs / 2 - cs / 6 - grow, cvy = coverY - grow, csz = cs + grow * 2;
@@ -299,7 +301,7 @@ final class MusicApp extends App {
         y += 10;
         // ecualizador
         int eqBottom = s.cy1 - 2;
-        int eqTop = Math.max(y + 2, eqBottom - 24);
+        int eqTop = Math.max(y + 4, eqBottom - 44);
         if (eqBottom - eqTop >= 6) {
             int n = Spectrum.BANDS;
             int bw = Math.max(2, (s.dw() - 16) / n - 1);

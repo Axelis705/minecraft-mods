@@ -44,7 +44,7 @@ final class WeatherApp extends App {
             return null;
         }
         Info i = new Info();
-        long dt = lv.getDayTime();
+        long dt = dayTime(lv);
         long t = Math.floorMod(dt, 24000L);
         i.day = dt / 24000L + 1;
         i.moon = (int) Math.floorMod(dt / 24000L, 8L);
@@ -95,6 +95,15 @@ final class WeatherApp extends App {
         i.minutesToChange = (int) Math.ceil((target - t) / 1200.0);
         i.line = i.overworld ? Component.translatable("celular.weather.widget", i.state, i.day) : i.state;
         return i;
+    }
+
+    /** Hora del mundo en ticks (en 26.x el día lo lleva el "reloj" de la dimensión). */
+    static long dayTime(ClientLevel lv) {
+        //#if MC >= 26.1
+        //$$ return lv.getDefaultClockTime();
+        //#else
+        return lv.getDayTime();
+        //#endif
     }
 
     /** "ResourceKey[minecraft:worldgen/biome / minecraft:dark_forest]" → nombre traducido del bioma. */
@@ -209,7 +218,7 @@ final class WeatherApp extends App {
         D.circle(g, cx, cy, r + 2, 0x60000000);
         D.circle(g, cx, cy, r, 0xFF1A1F3D);
         // mitad de día: un semicírculo que gira según la hora (arriba al mediodía)
-        long t = Math.floorMod(Minecraft.getInstance().level.getDayTime(), 24000L);
+        long t = Math.floorMod(dayTime(Minecraft.getInstance().level), 24000L);
         double ang = (t - 6000) / 24000.0 * 2 * Math.PI;   // 0 = mediodía arriba
         for (int yy = -r; yy <= r; yy++) {
             for (int xx = -r; xx <= r; xx++) {

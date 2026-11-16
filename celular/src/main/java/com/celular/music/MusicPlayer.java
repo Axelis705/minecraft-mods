@@ -194,6 +194,7 @@ public final class MusicPlayer {
             return;
         }
         if (playing) {
+            pausedAt = position();
             playing = false;
             if (worker != null) {
                 worker.paused = true;
@@ -287,11 +288,13 @@ public final class MusicPlayer {
         if (worker != null) {
             worker.kill();
         }
+        if (t != current) {
+            announce = t;
+        }
         current = t;
         playing = true;
         error = "";
         pausedAt = sec;
-        announce = t;
         worker = new Worker(t, sec);
         worker.start();
     }
