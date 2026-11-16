@@ -1,0 +1,45 @@
+name: Diagnóstico de clases (manual)
+# Compila un mod en otras versiones y muestra con javap los métodos de las clases de Minecraft que se piden
+# (la nube de Claude no puede bajar Minecraft). Uso: gh workflow run diag.yml -f mod=celular -f clases="a.B c.D"
+on:
+  workflow_dispatch:
+    inputs:
+      mod:
+        required: true
+      clases:
+        required: true
+      privados:
+        required: false
+        default: ""
+      metodo:
+        required: false
+        default: ""
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mc: '1.21.1'
+            java: '21'
+          - mc: '1.21.4'
+            java: '21'
+          - mc: '26.3'
+            java: '25'
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/mkproject.py ${{ github.event.inputs.mod }} ${{ matrix.mc }} gen/p
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Compilar (solo para bajar Minecraft)
+        working-directory: gen/p
+        run: ./gradlew compileJava --no-daemon || true
+      - name: javap
+        env:
+          DIAG_PRIVADOS: ${{ github.event.inputs.privados }}
+          DIAG_METODO: ${{ github.event.inputs.metodo }}
+        run: bash tools/javap_diag.sh gen/p ${{ github.event.inputs.clases }}
