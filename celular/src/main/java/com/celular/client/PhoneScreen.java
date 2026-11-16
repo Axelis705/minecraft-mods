@@ -43,6 +43,9 @@ public class PhoneScreen extends BaseScreen {
     private int animIx, animIy, animIs;
     private long openedAt;
     private EditBox box;
+    /** Pantalla de bloqueo: activa y cuándo empezó a quitarse. */
+    private boolean locked;
+    private long unlockAt;
 
     public PhoneScreen(int color, String startApp) {
         super(Component.translatable("item.celular.phone"));
@@ -50,7 +53,8 @@ public class PhoneScreen extends BaseScreen {
         this.startApp = startApp;
         Prefs.load();
         apps = new App[]{new InstaApp(this), new CameraApp(this), new GalleryApp(this), new PhoneApp(this), new PatreonApp(this),
-                new SettingsApp(this)};
+                new SettingsApp(this), new MusicApp(this), new WeatherApp(this), new CompassApp(this), new CalcApp(this)};
+        Music.init();
     }
 
     @Override
@@ -67,7 +71,10 @@ public class PhoneScreen extends BaseScreen {
         cy1 = dy1 - 9;
         if (openedAt == 0) {
             openedAt = System.currentTimeMillis();
-            ClientHooks.play(CelularReg.UNLOCK.get(), 1.0F, 0.4F);
+            locked = Prefs.lockScreen && startApp == null && ClientHooks.call.state == CallState.IDLE;
+            if (!locked) {
+                ClientHooks.play(CelularReg.UNLOCK.get(), 1.0F, 0.4F);
+            }
             if (ClientHooks.call.state != CallState.IDLE) {
                 app = apps[3];
                 app.enter();
@@ -145,6 +152,10 @@ public class PhoneScreen extends BaseScreen {
         setFocused(box);
         box.setFocused(true);
         return box;
+    }
+
+    String boxValue() {
+        return box == null ? "" : box.getValue();
     }
 
     void removeBox() {
@@ -227,27 +238,66 @@ public class PhoneScreen extends BaseScreen {
 
     // ------------------------------------------------------------------ inicio
 
+    /** Las apps de abajo (el "dock"): Teléfono, Instacraft, Cámara y Música. Las demás van en la cuadrícula. */
+    private static final int[] DOCK = {3, 0, 1, 6};
+    /** Orden de la cuadrícula. */
+    private static final int[] GRID = {2, 7, 8, 9, 4, 5};
+
     private int cols() {
-        return 3;
+        return 4;
     }
 
     private int iconSize() {
-        return Math.max(22, Math.min(30, dw() / 4 - 4));
+        return Math.max(20, Math.min(28, dw() / 4 - 8));
+    }
+
+    private int dockIndex(int app) {
+        for (int k = 0; k < DOCK.length; k++) {
+            if (DOCK[k] == app) {
+                return k;
+            }
+        }
+        return -1;
     }
 
     /** x, y, tamaño del icono de la app i en el inicio. */
     int[] iconRect(int i) {
         int is = iconSize(), cols = cols();
         int cell = dw() / cols;
-        int top = gridTop();
-        int col = i % cols, row = i / cols;
+        int d = dockIndex(i);
+        if (d >= 0) {
+            int x = dx0 + d * cell + cell / 2 - is / 2;
+            return new int[]{x, dockTop() + (dockH() - is) / 2, is};
+        }
+        int g = 0;
+        for (int k = 0; k < GRID.length; k++) {
+            if (GRID[k] == i) {
+                g = k;
+            }
+        }
+        int col = g % cols, row = g / cols;
         int x = dx0 + col * cell + cell / 2 - is / 2;
-        int y = top + row * (is + 18);
+        int y = gridTop() + row * (is + 16);
         return new int[]{x, y, is};
     }
 
+    private int dockH() {
+        return iconSize() + 12;
+    }
+
+    private int dockTop() {
+        return cy1 - dockH() - 4;
+    }
+
     private int gridTop() {
-        return cy0 + Math.max(58, (cy1 - cy0) / 3);
+        int rows = (GRID.length + cols() - 1) / cols();
+        return dockTop() - 8 - rows * (iconSize() + 16);
+    }
+
+    /** Recuadro del widget (música o clima) entre el reloj y las apps. */
+    private int[] widgetRect() {
+        int y0 = cy0 + 58, y1 = Math.min(y0 + 40, gridTop() - 8);
+        return new int[]{dx0 + 7, y0, dx1 - 7, y1};
     }
 
     private void drawWallpaper(G g) {
@@ -282,6 +332,10 @@ public class PhoneScreen extends BaseScreen {
         }
     }
 
+    private int badge(int i) {
+        return i == 0 ? ClientHooks.badgeInsta : i == 3 ? ClientHooks.badgeCalls : 0;
+    }
+
     private void drawHome(G g, int mx, int my, boolean interactive) {
         drawWallpaper(g);
         Font font = Minecraft.getInstance().font;
@@ -298,38 +352,188 @@ public class PhoneScreen extends BaseScreen {
         g.scale(sc, sc, 1);
         g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
         g.pop();
-        // apps
-        int[] badges = {ClientHooks.badgeInsta, 0, 0, ClientHooks.badgeCalls, 0, 0};
+        drawWidget(g, mx, my, interactive);
+        // dock con fondo de vidrio
+        int dt = dockTop();
+        D.rr(g, dx0 + 4, dt, dx1 - 4, dt + dockH(), 10, 0x55FFFFFF);
+        D.rrLine(g, dx0 + 4, dt, dx1 - 4, dt + dockH(), 10, 0x40FFFFFF);
+        long t = System.currentTimeMillis();
         for (int i = 0; i < apps.length; i++) {
             int[] r = iconRect(i);
             boolean hov = interactive && in(mx, my, r[0], r[1], r[0] + r[2], r[1] + r[2]);
-            int lift = hov ? 1 : 0;
             if (animApp == apps[i] && animOpening) {
                 continue; // está saliendo de aquí
             }
+            int lift = hov ? 1 : 0;
+            if (hov) {
+                D.rr(g, r[0] - 2, r[1] - 2 - lift, r[0] + r[2] + 2, r[1] + r[2] + 2 - lift, r[2] / 4 + 2, 0x30FFFFFF);
+            }
             D.rr(g, r[0] + 1, r[1] + 2, r[0] + r[2] + 1, r[1] + r[2] + 2, r[2] / 4, 0x50000000);
             D.app(g, apps[i].icon, r[0], r[1] - lift, r[2]);
-            if (badges[i] > 0) {
-                String b = badges[i] > 9 ? "9+" : Integer.toString(badges[i]);
+            // la app de música "late" mientras suena
+            if (i == 6 && com.celular.music.MusicPlayer.playing) {
+                float p = (float) (0.5 + 0.5 * Math.sin(t / 220.0));
+                D.circle(g, r[0] + r[2] - 1, r[1] + 1, 3, D.mix(0xFFFF2D55, 0xFFFFFFFF, p * 0.4F));
+            }
+            int bdg = badge(i);
+            if (bdg > 0) {
+                String b = bdg > 9 ? "9+" : Integer.toString(bdg);
                 int bw = Math.max(9, font.width(b) + 4);
                 D.rr(g, r[0] + r[2] - bw + 3, r[1] - 3, r[0] + r[2] + 3, r[1] + 6, 4, 0xFFFF3B30);
                 g.drawString(font, b, r[0] + r[2] + 3 - bw / 2 - font.width(b) / 2, r[1] - 2, 0xFFFFFFFF, false);
             }
-            Component label = Component.translatable("celular.app." + apps[i].key);
-            g.push();
-            g.translate(r[0] + r[2] / 2F, r[1] + r[2] + 3, 0);
-            g.scale(0.75F, 0.75F, 1);
-            String ls = D.cut(font, label.getString(), (int) ((dw() / cols() - 2) / 0.75F));
-            g.drawString(font, ls, -font.width(ls) / 2, 0, 0xFFFFFFFF, true);
-            g.pop();
+            if (dockIndex(i) < 0) {
+                Component label = Component.translatable("celular.app." + apps[i].key);
+                g.push();
+                g.translate(r[0] + r[2] / 2F, r[1] + r[2] + 3, 0);
+                g.scale(0.7F, 0.7F, 1);
+                String ls = D.cut(font, label.getString(), (int) ((dw() / cols() - 1) / 0.7F));
+                g.drawString(font, ls, -font.width(ls) / 2, 0, 0xFFFFFFFF, true);
+                g.pop();
+            }
         }
-        // acceso rápido abajo: nombre de quien te apoya en Patreon
-        Component hint = Component.translatable("celular.home.hint");
+    }
+
+    /** Widget del inicio: la canción que suena (con botones) o el clima y la hora de Minecraft. */
+    private void drawWidget(G g, int mx, int my, boolean interactive) {
+        int[] w = widgetRect();
+        if (w[3] - w[1] < 26) {
+            return;
+        }
+        Font font = Minecraft.getInstance().font;
+        boolean hov = interactive && in(mx, my, w[0], w[1], w[2], w[3]);
+        D.rr(g, w[0], w[1], w[2], w[3], 9, hov ? 0x70000000 : 0x55000000);
+        D.rrLine(g, w[0], w[1], w[2], w[3], 9, 0x30FFFFFF);
+        int h = w[3] - w[1];
+        com.celular.music.Track tr = com.celular.music.MusicPlayer.current;
+        if (tr != null) {
+            int cs = h - 10;
+            D.cover(g, tr.hue(), w[0] + 5, w[1] + 5, cs, 4);
+            int tx = w[0] + cs + 10, tw = w[2] - tx - 34;
+            g.drawString(font, D.cut(font, tr.title, tw), tx, w[1] + h / 2 - 9, 0xFFFFFFFF, false);
+            g.push();
+            g.translate(tx, w[1] + h / 2 + 2, 0);
+            g.scale(0.7F, 0.7F, 1);
+            g.drawString(font, D.cut(font, tr.artist.isEmpty() ? "♪" : tr.artist, (int) (tw / 0.7F)), 0, 0, 0xC0FFFFFF, false);
+            g.pop();
+            boolean hp = interactive && in(mx, my, w[2] - 32, w[1], w[2] - 17, w[3]), hn = interactive && in(mx, my, w[2] - 17, w[1], w[2], w[3]);
+            D.icon(g, com.celular.music.MusicPlayer.playing ? D.PAUSE : D.PLAY, w[2] - 30, w[1] + h / 2 - 6, 12, hp ? 0xFFFF2D55 : 0xFFFFFFFF);
+            D.icon(g, D.SKIP, w[2] - 15, w[1] + h / 2 - 6, 12, hn ? 0xFFFF2D55 : 0xFFFFFFFF);
+            return;
+        }
+        WeatherApp.Info info = WeatherApp.info();
+        if (info == null) {
+            return;
+        }
+        int is = Math.min(22, h - 10);
+        D.icon(g, info.icon, w[0] + 7, w[1] + (h - is) / 2, is, info.iconColor);
+        int tx = w[0] + is + 14;
+        g.drawString(font, info.time, tx, w[1] + h / 2 - 9, 0xFFFFFFFF, false);
         g.push();
-        g.translate(cx, cy1 - 12, 0);
-        g.scale(0.75F, 0.75F, 1);
-        g.drawString(font, hint, -font.width(hint) / 2, 0, 0xC0FFFFFF, true);
+        g.translate(tx, w[1] + h / 2 + 2, 0);
+        g.scale(0.7F, 0.7F, 1);
+        g.drawString(font, D.cut(font, info.line.getString(), (int) ((w[2] - tx - 6) / 0.7F)), 0, 0, 0xC0FFFFFF, false);
         g.pop();
+    }
+
+    /** Pantalla de bloqueo: reloj grande, fecha, avisos y la canción; se quita con un clic o deslizando hacia arriba. */
+    private void drawLock(G g, int mx, int my, long now) {
+        float k = unlockAt == 0 ? 0 : D.easeOut((now - unlockAt) / 260F);
+        if (k >= 1) {
+            locked = false;
+            return;
+        }
+        int lift = (int) (k * (dy1 - dy0));
+        g.scissor(dx0, dy0, dx1, dy1 - lift);
+        g.push();
+        g.translate(0, -lift, 0);
+        drawWallpaper(g);
+        g.fillGradient(dx0, dy0, dx1, dy1, 0x30000000, 0x90000000);
+        Font font = Minecraft.getInstance().font;
+        int cx = (dx0 + dx1) / 2;
+        D.icon(g, D.LOCK, cx - 5, cy0 + 2, 10, 0xFFFFFFFF);
+        LocalDateTime t = LocalDateTime.now();
+        Component date = Component.translatable("celular.date", Component.translatable("celular.day." + t.getDayOfWeek().getValue()),
+                t.getDayOfMonth(), Component.translatable("celular.month." + t.getMonthValue()));
+        g.drawCenteredString(font, date, cx, cy0 + 18, 0xE0FFFFFF);
+        String time = String.format(java.util.Locale.ROOT, "%d:%02d", t.getHour(), t.getMinute());
+        g.push();
+        g.translate(cx, cy0 + 30, 0);
+        g.scale(4.0F, 4.0F, 1);
+        g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
+        g.pop();
+        // avisos pendientes
+        int y = cy0 + 74;
+        if (ClientHooks.badgeCalls > 0) {
+            y = lockCard(g, font, y, D.APP_PHONE, Component.translatable("celular.lock.missed", ClientHooks.badgeCalls));
+        }
+        if (ClientHooks.badgeInsta > 0) {
+            y = lockCard(g, font, y, D.APP_INSTA, Component.translatable("celular.lock.likes", ClientHooks.badgeInsta));
+        }
+        com.celular.music.Track tr = com.celular.music.MusicPlayer.current;
+        if (tr != null) {
+            int x0 = dx0 + 7, x1 = dx1 - 7, y1 = y + 30;
+            D.rr(g, x0, y, x1, y1, 8, 0x70000000);
+            D.cover(g, tr.hue(), x0 + 4, y + 4, 22, 4);
+            g.drawString(font, D.cut(font, tr.title, x1 - x0 - 64), x0 + 30, y + 6, 0xFFFFFFFF, false);
+            g.push();
+            g.translate(x0 + 30, y + 17, 0);
+            g.scale(0.7F, 0.7F, 1);
+            g.drawString(font, D.cut(font, tr.artist, (int) ((x1 - x0 - 64) / 0.7F)), 0, 0, 0xC0FFFFFF, false);
+            g.pop();
+            boolean hp = in(mx, my, x1 - 32, y, x1 - 17, y1), hn = in(mx, my, x1 - 17, y, x1, y1);
+            D.icon(g, com.celular.music.MusicPlayer.playing ? D.PAUSE : D.PLAY, x1 - 30, y + 9, 12, hp ? 0xFFFF2D55 : 0xFFFFFFFF);
+            D.icon(g, D.SKIP, x1 - 15, y + 9, 12, hn ? 0xFFFF2D55 : 0xFFFFFFFF);
+        }
+        // "desliza para abrir" que sube y baja
+        float bob = (float) Math.sin(now / 300.0) * 2;
+        Component hint = Component.translatable("celular.lock.hint");
+        g.push();
+        g.translate(cx, cy1 - 18 + bob, 0);
+        g.scale(0.75F, 0.75F, 1);
+        g.drawString(font, hint, -font.width(hint) / 2, 0, 0xD0FFFFFF, true);
+        g.pop();
+        g.pop();
+        g.noScissor();
+    }
+
+    private int lockCard(G g, Font font, int y, int app, Component text) {
+        int x0 = dx0 + 7, x1 = dx1 - 7;
+        D.rr(g, x0, y, x1, y + 20, 8, 0x70000000);
+        D.app(g, app, x0 + 4, y + 3, 14);
+        g.push();
+        g.translate(x0 + 22, y + 7, 0);
+        g.scale(0.75F, 0.75F, 1);
+        g.drawString(font, D.cut(font, text.getString(), (int) ((x1 - x0 - 26) / 0.75F)), 0, 0, 0xFFFFFFFF, false);
+        g.pop();
+        return y + 24;
+    }
+
+    private void unlock() {
+        if (locked && unlockAt == 0) {
+            unlockAt = System.currentTimeMillis();
+            ClientHooks.play(CelularReg.UNLOCK.get(), 1.0F, 0.4F);
+        }
+    }
+
+    /** ¿El clic en la pantalla de bloqueo fue en los botones de la música? (no desbloquea) */
+    private boolean lockMusicClick(double x, double y) {
+        if (com.celular.music.MusicPlayer.current == null) {
+            return false;
+        }
+        int yy = cy0 + 74 + (ClientHooks.badgeCalls > 0 ? 24 : 0) + (ClientHooks.badgeInsta > 0 ? 24 : 0);
+        int x1 = dx1 - 7;
+        if (in(x, y, x1 - 32, yy, x1 - 17, yy + 30)) {
+            com.celular.music.MusicPlayer.toggle();
+            ClientHooks.tap();
+            return true;
+        }
+        if (in(x, y, x1 - 17, yy, x1, yy + 30)) {
+            com.celular.music.MusicPlayer.next();
+            ClientHooks.tap();
+            return true;
+        }
+        return false;
     }
 
     // ------------------------------------------------------------------ dibujo
@@ -348,13 +552,17 @@ public class PhoneScreen extends BaseScreen {
         drawBody(g);
         // pantalla
         g.fill(dx0, dy0, dx1, dy1, 0xFF000000);
+        Music.frame();
         if (app != null && animApp == null) {
             app.draw(g, mxx, myy, pt);
         } else {
-            drawHome(g, mxx, myy, interactive);
+            drawHome(g, locked ? -999 : mxx, locked ? -999 : myy, interactive && !locked);
             if (animApp != null) {
                 drawAppAnim(g, now, mxx, myy, pt);
             }
+        }
+        if (locked) {
+            drawLock(g, mxx, myy, now);
         }
         drawStatusBar(g, font, now);
         // barrita de inicio
@@ -443,6 +651,17 @@ public class PhoneScreen extends BaseScreen {
             g.scale(0.75F, 0.75F, 1);
             g.drawString(font, s, 0, 0, 0xFF30D158, false);
             g.pop();
+        } else if (com.celular.music.MusicPlayer.current != null && com.celular.music.MusicPlayer.playing) {
+            // la isla muestra la canción: portada a la izquierda y barritas a la derecha
+            com.celular.music.Track tr = com.celular.music.MusicPlayer.current;
+            D.rr(g, cx - 22, dy0 + 2, cx + 22, dy0 + 11, 4, 0xFF000000);
+            D.rr(g, cx - 20, dy0 + 3, cx - 13, dy0 + 10, 2, D.hsv(tr.hue(), 0.65F, 0.95F));
+            float[] lv = com.celular.music.MusicPlayer.levels();
+            for (int i = 0; i < 4; i++) {
+                float v = lv == null ? 0.2F : Math.max(0.2F, lv[2 + i * 3]);
+                int bh = 1 + (int) (v * 6);
+                g.fill(cx + 10 + i * 3, dy0 + 10 - bh, cx + 12 + i * 3, dy0 + 10, 0xFFFF2D55);
+            }
         } else {
             D.rr(g, cx - 13, dy0 + 2, cx + 13, dy0 + 10, 4, 0xFF000000);
         }
@@ -465,6 +684,16 @@ public class PhoneScreen extends BaseScreen {
         if (box != null) {
             box.setFocused(false);
         }
+        if (locked) {
+            if (in(x, y, px, py, px + pw, py + ph)) {
+                if (!lockMusicClick(x, y)) {
+                    unlock();
+                }
+            } else {
+                onClose();
+            }
+            return true;
+        }
         // barrita de inicio
         if (app != null && in(x, y, (dx0 + dx1) / 2 - 24, dy1 - 9, (dx0 + dx1) / 2 + 24, dy1)) {
             goHome();
@@ -483,6 +712,23 @@ public class PhoneScreen extends BaseScreen {
                 return true;
             }
         }
+        int[] w = widgetRect();
+        if (w[3] - w[1] >= 26 && in(x, y, w[0], w[1], w[2], w[3])) {
+            if (com.celular.music.MusicPlayer.current != null) {
+                if (in(x, y, w[2] - 32, w[1], w[2] - 17, w[3])) {
+                    com.celular.music.MusicPlayer.toggle();
+                    ClientHooks.tap();
+                } else if (in(x, y, w[2] - 17, w[1], w[2], w[3])) {
+                    com.celular.music.MusicPlayer.next();
+                    ClientHooks.tap();
+                } else {
+                    openApp("music");
+                }
+            } else {
+                openApp("weather");
+            }
+            return true;
+        }
         if (!in(x, y, px, py, px + pw, py + ph)) {
             onClose();
         }
@@ -499,6 +745,12 @@ public class PhoneScreen extends BaseScreen {
 
     @Override
     protected boolean onDrag(double x, double y, int b, double dx, double dy) {
+        if (locked) {
+            if (dy < -2) {
+                unlock();
+            }
+            return true;
+        }
         if (app != null && !busy()) {
             return app.drag(x, y, dx, dy);
         }
@@ -512,6 +764,10 @@ public class PhoneScreen extends BaseScreen {
 
     @Override
     protected boolean onKey(int key, int scan, int mods) {
+        if (locked && key != 256) {
+            unlock();
+            return true;
+        }
         if (key == 256) { // escape
             if (box != null && box.isFocused()) {
                 box.setFocused(false);

@@ -19,6 +19,14 @@ public final class Prefs {
     public static boolean dark = true;
     public static boolean shutterSound = true;
     public static boolean grid = true;
+    /** Música: volumen (0..1), aleatorio, repetir (0 no, 1 lista, 2 canción), callar la música de Minecraft, aviso al cambiar. */
+    public static float musicVolume = 0.8F;
+    public static boolean shuffle;
+    public static int repeat;
+    public static boolean muteGameMusic = true;
+    public static boolean musicToasts = true;
+    /** Pantalla de bloqueo al sacar el celular. */
+    public static boolean lockScreen = true;
     private static boolean loaded;
 
     private Prefs() {
@@ -46,6 +54,12 @@ public final class Prefs {
             dark = Boolean.parseBoolean(p.getProperty("modo_oscuro", "true"));
             shutterSound = Boolean.parseBoolean(p.getProperty("sonido_camara", "true"));
             grid = Boolean.parseBoolean(p.getProperty("cuadricula", "true"));
+            musicVolume = Math.max(0, Math.min(1, Float.parseFloat(p.getProperty("musica_volumen", "0.8"))));
+            shuffle = Boolean.parseBoolean(p.getProperty("musica_aleatorio", "false"));
+            repeat = Math.floorMod(Integer.parseInt(p.getProperty("musica_repetir", "0")), 3);
+            muteGameMusic = Boolean.parseBoolean(p.getProperty("musica_callar_minecraft", "true"));
+            musicToasts = Boolean.parseBoolean(p.getProperty("musica_avisos", "true"));
+            lockScreen = Boolean.parseBoolean(p.getProperty("pantalla_bloqueo", "true"));
         } catch (Exception ignored) {
         }
     }
@@ -58,6 +72,12 @@ public final class Prefs {
         p.setProperty("modo_oscuro", Boolean.toString(dark));
         p.setProperty("sonido_camara", Boolean.toString(shutterSound));
         p.setProperty("cuadricula", Boolean.toString(grid));
+        p.setProperty("musica_volumen", Float.toString(musicVolume));
+        p.setProperty("musica_aleatorio", Boolean.toString(shuffle));
+        p.setProperty("musica_repetir", Integer.toString(repeat));
+        p.setProperty("musica_callar_minecraft", Boolean.toString(muteGameMusic));
+        p.setProperty("musica_avisos", Boolean.toString(musicToasts));
+        p.setProperty("pantalla_bloqueo", Boolean.toString(lockScreen));
         try {
             Files.createDirectories(file().getParent());
             try (Writer w = Files.newBufferedWriter(file(), StandardCharsets.UTF_8)) {

@@ -248,6 +248,74 @@ def icon_settings():
     return finish(big)
 
 
+def note(d, x, y, s, fill):
+    """Nota musical doble (corchea unida) en (x, y) de tamaño s."""
+    w = s * 0.11
+    d.ellipse((x, y + s * 0.70, x + s * 0.34, y + s * 0.96), fill=fill)
+    d.ellipse((x + s * 0.56, y + s * 0.58, x + s * 0.90, y + s * 0.84), fill=fill)
+    d.rectangle((x + s * 0.34 - w, y + s * 0.18, x + s * 0.34, y + s * 0.84), fill=fill)
+    d.rectangle((x + s * 0.90 - w, y + s * 0.06, x + s * 0.90, y + s * 0.72), fill=fill)
+    d.polygon([(x + s * 0.34 - w, y + s * 0.18), (x + s * 0.90, y + s * 0.04), (x + s * 0.90, y + s * 0.20), (x + s * 0.34 - w, y + s * 0.34)],
+              fill=fill)
+
+
+def icon_music():
+    big = app_base([(0, hexc("#ff5e7e")), (0.55, hexc("#fa233b")), (1, hexc("#b5179e"))], 135)
+    d = ImageDraw.Draw(big)
+    note(d, U(15), U(13), U(34), (255, 255, 255, 255))
+    return finish(big)
+
+
+def cloud(d, x, y, s, fill):
+    d.ellipse((x, y + s * 0.30, x + s * 0.50, y + s * 0.80), fill=fill)
+    d.ellipse((x + s * 0.22, y, x + s * 0.80, y + s * 0.62), fill=fill)
+    d.ellipse((x + s * 0.55, y + s * 0.22, x + s, y + s * 0.80), fill=fill)
+    d.rounded_rectangle((x + s * 0.20, y + s * 0.45, x + s * 0.85, y + s * 0.80), s * 0.15, fill=fill)
+
+
+def icon_weather():
+    big = app_base([(0, hexc("#56ccf2")), (1, hexc("#1d6fd6"))])
+    d = ImageDraw.Draw(big)
+    d.ellipse((U(26), U(10), U(52), U(36)), fill=hexc("#ffd23f"))
+    for i in range(8):
+        a = math.radians(i * 45)
+        d.line([(U(39 + math.cos(a) * 16), U(23 + math.sin(a) * 16)), (U(39 + math.cos(a) * 20), U(23 + math.sin(a) * 20))],
+               fill=hexc("#ffd23f"), width=U(2.4))
+    cloud(d, U(9), U(26), U(40), (255, 255, 255, 255))
+    return finish(big)
+
+
+def icon_compass():
+    big = app_base([(0, hexc("#3a3d46")), (1, hexc("#14161b"))])
+    d = ImageDraw.Draw(big)
+    d.ellipse((U(10), U(10), U(54), U(54)), outline=(235, 235, 240, 255), width=U(2.5))
+    for i in range(12):
+        a = math.radians(i * 30)
+        r0 = 18 if i % 3 else 15
+        d.line([(U(32 + math.cos(a) * r0), U(32 + math.sin(a) * r0)), (U(32 + math.cos(a) * 20), U(32 + math.sin(a) * 20))],
+               fill=(200, 200, 208, 255), width=U(1.4))
+    d.polygon([(U(32), U(13)), (U(37), U(32)), (U(27), U(32))], fill=hexc("#ff3b30"))
+    d.polygon([(U(32), U(51)), (U(37), U(32)), (U(27), U(32))], fill=(240, 240, 244, 255))
+    d.ellipse((U(29.5), U(29.5), U(34.5), U(34.5)), fill=hexc("#14161b"))
+    return finish(big)
+
+
+def icon_calc():
+    big = app_base([(0, hexc("#4a4a50")), (1, hexc("#1e1e22"))])
+    d = ImageDraw.Draw(big)
+    for r in range(3):
+        for c in range(3):
+            col = hexc("#ff9f0a") if c == 2 else hexc("#a5a5ab")
+            x, y = U(13 + c * 14), U(13 + r * 14)
+            d.ellipse((x, y, x + U(11), y + U(11)), fill=col)
+    W2 = (255, 255, 255, 255)
+    d.line([(U(44.5), U(16)), (U(44.5), U(21))], fill=W2, width=U(1.6))
+    d.line([(U(42), U(18.5)), (U(47), U(18.5))], fill=W2, width=U(1.6))
+    d.line([(U(42), U(46)), (U(47), U(46))], fill=W2, width=U(1.6))
+    d.line([(U(42), U(48.5)), (U(47), U(48.5))], fill=W2, width=U(1.6))
+    return finish(big)
+
+
 # =====================================================================================================================
 #  Iconos pequeños de la interfaz (24 × 24, blancos; el juego los pinta del color que toque)
 # =====================================================================================================================
@@ -410,10 +478,150 @@ def g_wallpaper(d, u):
     d.ellipse((u(12.5), u(5), u(15.5), u(8)), fill=W)
 
 
+def g_play(d, u):
+    d.polygon([(u(6), u(3.5)), (u(20.5), u(12)), (u(6), u(20.5))], fill=W)
+
+
+def g_pause(d, u):
+    d.rounded_rectangle((u(5), u(3.5), u(10), u(20.5)), u(1.2), fill=W)
+    d.rounded_rectangle((u(14), u(3.5), u(19), u(20.5)), u(1.2), fill=W)
+
+
+def g_prev(d, u):
+    d.rectangle((u(3.5), u(5), u(6.5), u(19)), fill=W)
+    d.polygon([(u(13), u(5)), (u(6.5), u(12)), (u(13), u(19))], fill=W)
+    d.polygon([(u(20.5), u(5)), (u(14), u(12)), (u(20.5), u(19))], fill=W)
+
+
+def g_skip(d, u):
+    d.rectangle((u(17.5), u(5), u(20.5), u(19)), fill=W)
+    d.polygon([(u(11), u(5)), (u(17.5), u(12)), (u(11), u(19))], fill=W)
+    d.polygon([(u(3.5), u(5)), (u(10), u(12)), (u(3.5), u(19))], fill=W)
+
+
+def g_shuffle(d, u):
+    w = int(u(2.2))
+    d.line([(u(2.5), u(7)), (u(8), u(7)), (u(15), u(17)), (u(19), u(17))], fill=W, width=w, joint="curve")
+    d.line([(u(2.5), u(17)), (u(8), u(17)), (u(15), u(7)), (u(19), u(7))], fill=W, width=w, joint="curve")
+    d.polygon([(u(18), u(3.5)), (u(22.5), u(7)), (u(18), u(10.5))], fill=W)
+    d.polygon([(u(18), u(13.5)), (u(22.5), u(17)), (u(18), u(20.5))], fill=W)
+
+
+def g_repeat(d, u):
+    w = int(u(2.2))
+    d.line([(u(4), u(13)), (u(4), u(8)), (u(18), u(8))], fill=W, width=w, joint="curve")
+    d.line([(u(20), u(11)), (u(20), u(16)), (u(6), u(16))], fill=W, width=w, joint="curve")
+    d.polygon([(u(17), u(4.5)), (u(21.5), u(8)), (u(17), u(11.5))], fill=W)
+    d.polygon([(u(7), u(12.5)), (u(2.5), u(16)), (u(7), u(19.5))], fill=W)
+
+
+def g_repeat1(d, u):
+    g_repeat(d, u)
+    d.rectangle((u(11), u(9.5), u(13.2), u(14.5)), fill=W)
+    d.polygon([(u(9.5), u(11)), (u(11), u(9.5)), (u(11), u(11.5))], fill=W)
+
+
+def g_folder(d, u):
+    d.polygon([(u(2.5), u(5)), (u(9.5), u(5)), (u(11.5), u(7.5)), (u(21.5), u(7.5)), (u(21.5), u(19.5)), (u(2.5), u(19.5))], fill=W)
+
+
+def g_note(d, u):
+    note(d, u(3), u(3), u(18), W)
+
+
+def speaker(d, u):
+    d.polygon([(u(2.5), u(9)), (u(7), u(9)), (u(12), u(4.5)), (u(12), u(19.5)), (u(7), u(15)), (u(2.5), u(15))], fill=W)
+
+
+def g_vol_low(d, u):
+    speaker(d, u)
+    d.arc((u(9), u(8), u(17), u(16)), -55, 55, fill=W, width=int(u(2)))
+
+
+def g_vol_high(d, u):
+    speaker(d, u)
+    d.arc((u(9), u(8), u(17), u(16)), -55, 55, fill=W, width=int(u(2)))
+    d.arc((u(9), u(4.5), u(21.5), u(19.5)), -55, 55, fill=W, width=int(u(2)))
+
+
+def g_refresh(d, u):
+    d.arc((u(4), u(4), u(20), u(20)), 40, 330, fill=W, width=int(u(2.4)))
+    d.polygon([(u(14.5), u(2.5)), (u(21.5), u(5)), (u(16), u(10))], fill=W)
+
+
+def g_down(d, u):
+    d.line([(u(4), u(9)), (u(12), u(16)), (u(20), u(9))], fill=W, width=int(u(2.8)), joint="curve")
+
+
+def g_sun(d, u):
+    d.ellipse((u(7), u(7), u(17), u(17)), fill=W)
+    for i in range(8):
+        a = math.radians(i * 45)
+        d.line([(u(12 + math.cos(a) * 7.5), u(12 + math.sin(a) * 7.5)), (u(12 + math.cos(a) * 10.5), u(12 + math.sin(a) * 10.5))],
+               fill=W, width=int(u(2)))
+
+
+def g_moon(d, u):
+    big = Image.new("L", (int(u(24)), int(u(24))), 0)
+    dd = ImageDraw.Draw(big)
+    dd.ellipse((u(3), u(3), u(21), u(21)), fill=255)
+    dd.ellipse((u(9), u(0), u(25), u(16)), fill=0)
+    d.bitmap((0, 0), big, fill=W)
+
+
+def g_cloud(d, u):
+    cloud(d, u(2), u(5), u(20), W)
+
+
+def g_rain(d, u):
+    cloud(d, u(2), u(2), u(20), W)
+    for x in (7, 12, 17):
+        d.line([(u(x), u(17)), (u(x - 1.5), u(21.5))], fill=W, width=int(u(1.8)))
+
+
+def g_storm(d, u):
+    cloud(d, u(2), u(1.5), u(20), W)
+    d.polygon([(u(12.5), u(14)), (u(8.5), u(19)), (u(11.5), u(19)), (u(10), u(23)), (u(15.5), u(17)), (u(12.5), u(17))], fill=W)
+
+
+def g_pin(d, u):
+    d.pieslice((u(5), u(2.5), u(19), u(16.5)), 150, 390, fill=W)
+    d.polygon([(u(6.2), u(13)), (u(12), u(22)), (u(17.8), u(13))], fill=W)
+    d.ellipse((u(9.5), u(7), u(14.5), u(12)), fill=(0, 0, 0, 0))
+
+
+def g_nav(d, u):
+    d.polygon([(u(12), u(2.5)), (u(20), u(21)), (u(12), u(16.5)), (u(4), u(21))], fill=W)
+
+
+def g_skull(d, u):
+    d.ellipse((u(4), u(2.5), u(20), u(17)), fill=W)
+    d.rectangle((u(7.5), u(14), u(16.5), u(20.5)), fill=W)
+    d.ellipse((u(7), u(8), u(11), u(12)), fill=(0, 0, 0, 0))
+    d.ellipse((u(13), u(8), u(17), u(12)), fill=(0, 0, 0, 0))
+    d.rectangle((u(10.5), u(17.5), u(11.3), u(20.5)), fill=(0, 0, 0, 0))
+    d.rectangle((u(12.7), u(17.5), u(13.5), u(20.5)), fill=(0, 0, 0, 0))
+
+
+def g_lock(d, u):
+    d.rounded_rectangle((u(4.5), u(10.5), u(19.5), u(21.5)), u(2), fill=W)
+    d.arc((u(7), u(3), u(17), u(15)), 180, 360, fill=W, width=int(u(2.4)))
+    d.line([(u(7.6), u(8.5)), (u(7.6), u(11))], fill=W, width=int(u(2.4)))
+    d.line([(u(16.4), u(8.5)), (u(16.4), u(11))], fill=W, width=int(u(2.4)))
+
+
+def g_sliders(d, u):
+    for y, k in ((6, 15), (12, 8), (18, 13)):
+        d.line([(u(3), u(y)), (u(21), u(y))], fill=W, width=int(u(2)))
+        d.ellipse((u(k - 2.8), u(y - 2.8), u(k + 2.8), u(y + 2.8)), fill=W)
+
+
 GLYPHS = [g_heart, g_heart_full, g_home, g_plus, g_user, g_call, g_hangup, g_camera,
           g_switch, g_trash, g_back, g_send, g_star, g_wifi, g_battery, g_signal,
           g_gallery, g_gear, g_mic, g_bell, g_clock, g_people, g_close, g_wallpaper,
-          g_next]
+          g_next, g_play, g_pause, g_prev, g_skip, g_shuffle, g_repeat, g_repeat1,
+          g_folder, g_note, g_vol_low, g_vol_high, g_refresh, g_down, g_sun, g_moon,
+          g_rain, g_storm, g_cloud, g_pin, g_nav, g_skull, g_lock, g_sliders]
 
 
 # =====================================================================================================================
@@ -521,19 +729,68 @@ def wall_forest():
     return img
 
 
+def wall_synthwave():
+    img = grad(WW, WH, [(0, hexc("#0d0221")), (0.45, hexc("#541388")), (0.62, hexc("#ff3c8e")), (0.63, hexc("#1a0633")), (1, hexc("#0d0221"))])
+    d = ImageDraw.Draw(img)
+    # sol con rayas
+    for y in range(150, 245):
+        dy = (y - 200) / 48
+        if abs(dy) > 1:
+            continue
+        if y > 205 and (y // 6) % 2 == 0:
+            continue
+        w = math.sqrt(1 - dy * dy) * 48
+        t = (y - 150) / 95
+        d.line([(90 - w, y), (90 + w, y)], fill=lerp(hexc("#ffe66d"), hexc("#ff3c8e"), t))
+    # cuadrícula del piso
+    for i in range(-12, 13):
+        d.line([(90 + i * 8, 246), (90 + i * 40, WH)], fill=hexc("#ff3cf5", 170), width=1)
+    y, k = 247, 2
+    while y < WH:
+        d.line([(0, y), (WW, y)], fill=hexc("#ff3cf5", 170), width=1)
+        y += k
+        k += 2
+    rnd = random.Random(31)
+    for _ in range(50):
+        x, yy = rnd.randrange(WW), rnd.randrange(140)
+        d.point((x, yy), fill=(255, 255, 255, rnd.randrange(90, 230)))
+    return img
+
+
+def wall_galaxy():
+    img = grad(WW, WH, [(0, hexc("#05010f")), (1, hexc("#0a0322"))])
+    over = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(over)
+    for (x, y, r, c) in [(60, 140, 90, "#7b2ff7"), (130, 230, 80, "#f107a3"), (80, 300, 70, "#00d4ff")]:
+        d.ellipse((x - r, y - r, x + r, y + r), fill=hexc(c, 110))
+    over = over.filter(ImageFilter.GaussianBlur(30))
+    img = Image.alpha_composite(img, over)
+    d = ImageDraw.Draw(img)
+    rnd = random.Random(44)
+    for _ in range(220):
+        x, y = rnd.randrange(WW), rnd.randrange(WH)
+        b = rnd.randrange(110, 255)
+        d.point((x, y), fill=(b, b, 255, 255))
+    for _ in range(10):
+        x, y = rnd.randrange(WW), rnd.randrange(WH)
+        d.rectangle((x, y, x + 1, y + 1), fill=(255, 255, 255, 255))
+    return img
+
+
 def main():
     for name, (b, l, dk) in CASES.items():
         phone_item(name, b, l, dk)
-    apps = [icon_insta(), icon_camera(), icon_gallery(), icon_phone(), icon_patreon(), icon_settings()]
-    atlas = Image.new("RGBA", (S * 6, S), (0, 0, 0, 0))
+    apps = [icon_insta(), icon_camera(), icon_gallery(), icon_phone(), icon_patreon(), icon_settings(), icon_music(), icon_weather(),
+            icon_compass(), icon_calc()]
+    atlas = Image.new("RGBA", (S * len(apps), S), (0, 0, 0, 0))
     for i, a in enumerate(apps):
         atlas.paste(a, (i * S, 0))
     save(atlas, "gui/apps.png", blur=True)
-    ui = Image.new("RGBA", (G * 8, G * 4), (0, 0, 0, 0))
+    ui = Image.new("RGBA", (G * 8, G * 6), (0, 0, 0, 0))
     for i, fn in enumerate(GLYPHS):
         ui.paste(glyph(fn), ((i % 8) * G, (i // 8) * G))
     save(ui, "gui/ui.png", blur=True)
-    walls = [wall_sunset(), wall_night(), wall_ocean(), wall_aurora(), wall_pastel(), wall_forest()]
+    walls = [wall_sunset(), wall_night(), wall_ocean(), wall_aurora(), wall_pastel(), wall_forest(), wall_synthwave(), wall_galaxy()]
     wa = Image.new("RGBA", (WW * len(walls), WH), (0, 0, 0, 255))
     for i, w in enumerate(walls):
         wa.paste(w.convert("RGBA"), (i * WW, 0))

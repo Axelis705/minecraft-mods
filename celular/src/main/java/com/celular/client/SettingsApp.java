@@ -18,23 +18,29 @@ final class SettingsApp extends App {
         walls = false;
     }
 
-    private static final String[] TOGGLES = {"dark", "notifications", "shutter", "grid"};
+    private static final String[] TOGGLES = {"dark", "lock", "notifications", "shutter", "grid", "music_mute", "music_toasts"};
 
     private boolean value(int i) {
         return switch (i) {
             case 0 -> Prefs.dark;
-            case 1 -> Prefs.notifications;
-            case 2 -> Prefs.shutterSound;
-            default -> Prefs.grid;
+            case 1 -> Prefs.lockScreen;
+            case 2 -> Prefs.notifications;
+            case 3 -> Prefs.shutterSound;
+            case 4 -> Prefs.grid;
+            case 5 -> Prefs.muteGameMusic;
+            default -> Prefs.musicToasts;
         };
     }
 
     private void flip(int i) {
         switch (i) {
             case 0 -> Prefs.dark = !Prefs.dark;
-            case 1 -> Prefs.notifications = !Prefs.notifications;
-            case 2 -> Prefs.shutterSound = !Prefs.shutterSound;
-            default -> Prefs.grid = !Prefs.grid;
+            case 1 -> Prefs.lockScreen = !Prefs.lockScreen;
+            case 2 -> Prefs.notifications = !Prefs.notifications;
+            case 3 -> Prefs.shutterSound = !Prefs.shutterSound;
+            case 4 -> Prefs.grid = !Prefs.grid;
+            case 5 -> Prefs.muteGameMusic = !Prefs.muteGameMusic;
+            default -> Prefs.musicToasts = !Prefs.musicToasts;
         }
         Prefs.save();
     }
@@ -57,8 +63,8 @@ final class SettingsApp extends App {
         g.drawString(f, Component.translatable("celular.settings.wallpaper"), x0 + 23, y + 7, hw ? s.accent() : s.fg(), false);
         D.icon(g, D.NEXT, x1 - 12, y + 6, 10, s.sub());
         y += 28;
-        int[] colors = {0xFF636366, 0xFFFF3B30, 0xFFFF9F0A, 0xFF34C759};
-        int[] icons = {D.GEAR, D.CHECK, D.CAMERA, D.GALLERY};
+        int[] colors = {0xFF636366, 0xFF5856D6, 0xFFFF3B30, 0xFFFF9F0A, 0xFF34C759, 0xFFFA233B, 0xFFFF2D55};
+        int[] icons = {D.MOON, D.LOCK, D.CHECK, D.CAMERA, D.GALLERY, D.NOTE, D.NOTE};
         D.rr(g, x0, y, x1, y + TOGGLES.length * 22, 6, s.card());
         for (int i = 0; i < TOGGLES.length; i++) {
             int ry = y + i * 22;
@@ -92,9 +98,15 @@ final class SettingsApp extends App {
         return (s.dw() - 16) / 3;
     }
 
+    /** Alto de cada fondo en la lista (más bajitos si no caben las 3 filas). */
+    private int wallH(int c) {
+        int rows = (D.WALL_COUNT + 2) / 3;
+        return Math.min((int) (c * 1.9F), (s.cy1 - s.cy0 - 60) / rows - 6);
+    }
+
     private void drawWalls(G g, int mx, int my) {
         int top = header(g, "celular.settings.wallpaper", true, mx, my) + 6;
-        int c = wallCell(), ch = (int) (c * 1.9F);
+        int c = wallCell(), ch = wallH(c);
         for (int i = 0; i < D.WALL_COUNT; i++) {
             int x = s.dx0 + 5 + (i % 3) * (c + 3), y = top + (i / 3) * (ch + 6);
             boolean sel = Prefs.wallpaper == i;
@@ -107,7 +119,7 @@ final class SettingsApp extends App {
                 g.fill(x, y, x + c, y + ch, 0x30FFFFFF);
             }
         }
-        int y = top + 2 * (ch + 6) + 4;
+        int y = top + (D.WALL_COUNT + 2) / 3 * (ch + 6) + 4;
         centered(g, Component.translatable("celular.settings.wallpaper_photo"), y, s.sub());
     }
 
@@ -120,7 +132,7 @@ final class SettingsApp extends App {
                 return true;
             }
             int top = s.cy0 + 19 + 6;
-            int c = wallCell(), ch = (int) (c * 1.9F);
+            int c = wallCell(), ch = wallH(c);
             for (int i = 0; i < D.WALL_COUNT; i++) {
                 int wx = s.dx0 + 5 + (i % 3) * (c + 3), wy = top + (i / 3) * (ch + 6);
                 if (s.in(x, y, wx, wy, wx + c, wy + ch)) {

@@ -17,15 +17,19 @@ public final class D {
     public static final ResourceLocation UI = Ids.mod("textures/gui/ui.png");
     public static final ResourceLocation WALLS = Ids.mod("textures/gui/wallpapers.png");
     /** Cuántos fondos trae el celular (en wallpapers.png, uno al lado del otro, de 180 × 390). */
-    public static final int WALL_COUNT = 6;
+    public static final int WALL_COUNT = 8;
     public static final int WALL_W = 180, WALL_H = 390;
 
     // iconos de ui.png (24 × 24 cada uno, 8 por fila, 4 filas)
     public static final int HEART = 0, HEART_FULL = 1, HOME = 2, PLUS = 3, USER = 4, CALL = 5, HANGUP = 6, CAMERA = 7, SWITCH = 8,
             TRASH = 9, BACK = 10, SEND = 11, STAR = 12, WIFI = 13, BATTERY = 14, SIGNAL = 15, GALLERY = 16, GEAR = 17, MIC = 18,
-            CHECK = 19, CLOCK = 20, PEOPLE = 21, CLOSE = 22, WALLPAPER = 23, NEXT = 24;
+            CHECK = 19, CLOCK = 20, PEOPLE = 21, CLOSE = 22, WALLPAPER = 23, NEXT = 24, PLAY = 25, PAUSE = 26, PREV = 27, SKIP = 28,
+            SHUFFLE = 29, REPEAT = 30, REPEAT1 = 31, FOLDER = 32, NOTE = 33, VOL_LOW = 34, VOL_HIGH = 35, REFRESH = 36, DOWN = 37, SUN = 38,
+            MOON = 39, RAIN = 40, STORM = 41, CLOUD = 42, PIN = 43, NAV = 44, SKULL = 45, LOCK = 46, SLIDERS = 47;
     // apps de apps.png (64 × 64 cada una)
-    public static final int APP_INSTA = 0, APP_CAMERA = 1, APP_GALLERY = 2, APP_PHONE = 3, APP_PATREON = 4, APP_SETTINGS = 5;
+    public static final int APP_INSTA = 0, APP_CAMERA = 1, APP_GALLERY = 2, APP_PHONE = 3, APP_PATREON = 4, APP_SETTINGS = 5, APP_MUSIC = 6,
+            APP_WEATHER = 7, APP_COMPASS = 8, APP_CALC = 9;
+    private static final int APP_COUNT = 10;
 
     private D() {
     }
@@ -73,11 +77,11 @@ public final class D {
     }
 
     public static void icon(G g, int idx, int x, int y, int size, int argb) {
-        g.blitTint(UI, x, y, size, size, (idx % 8) * 24, (idx / 8) * 24, 24, 24, 192, 96, argb);
+        g.blitTint(UI, x, y, size, size, (idx % 8) * 24, (idx / 8) * 24, 24, 24, 192, 144, argb);
     }
 
     public static void app(G g, int idx, int x, int y, int size) {
-        g.blit(APPS, x, y, size, size, idx * 64, 0, 64, 64, 384, 64);
+        g.blit(APPS, x, y, size, size, idx * 64, 0, 64, 64, 64 * APP_COUNT, 64);
     }
 
     public static ResourceLocation skin(UUID id) {
@@ -148,6 +152,35 @@ public final class D {
             return net.minecraft.network.chat.Component.translatable("celular.time.hour", s / 3600);
         }
         return net.minecraft.network.chat.Component.translatable("celular.time.day", s / 86400);
+    }
+
+    /** Color HSV (h en grados, s y v de 0 a 1) a ARGB opaco. */
+    public static int hsv(float h, float sat, float v) {
+        float c = v * sat, x = c * (1 - Math.abs((h / 60F) % 2 - 1)), m = v - c;
+        float r, g, b;
+        int k = (int) Math.floor(Math.floorMod((int) h, 360) / 60F);
+        switch (k) {
+            case 0 -> { r = c; g = x; b = 0; }
+            case 1 -> { r = x; g = c; b = 0; }
+            case 2 -> { r = 0; g = c; b = x; }
+            case 3 -> { r = 0; g = x; b = c; }
+            case 4 -> { r = x; g = 0; b = c; }
+            default -> { r = c; g = 0; b = x; }
+        }
+        return 0xFF000000 | Math.round((r + m) * 255) << 16 | Math.round((g + m) * 255) << 8 | Math.round((b + m) * 255);
+    }
+
+    /** Portada de una canción: degradado de su color con una nota (las canciones de la carpeta no traen imagen). */
+    public static void cover(G g, int hue, int x, int y, int size, int r) {
+        int a = hsv(hue, 0.65F, 0.95F), b = hsv(hue + 40, 0.75F, 0.55F);
+        if (r > 0) {
+            rr(g, x, y, x + size, y + size, r, b);
+            rr(g, x + 1, y + 1, x + size - 1, y + size * 2 / 3, Math.max(1, r - 1), mix(a, b, 0.25F));
+        } else {
+            g.fillGradient(x, y, x + size, y + size, a, b);
+        }
+        int is = Math.max(6, size * 5 / 9);
+        icon(g, NOTE, x + (size - is) / 2, y + (size - is) / 2, is, 0xE6FFFFFF);
     }
 
     public static String clock(int secs) {

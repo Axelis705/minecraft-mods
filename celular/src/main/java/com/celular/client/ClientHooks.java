@@ -231,5 +231,6 @@ public final class ClientHooks {
         call = new CallState(CallState.IDLE, 0, null, "", 0, false);
         badgeInsta = 0;
         Photos.clearAll();
+        com.celular.music.MusicPlayer.stop();          // al salir del mundo se calla la música
     }
 }

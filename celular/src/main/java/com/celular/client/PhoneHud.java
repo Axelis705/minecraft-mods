@@ -29,10 +29,16 @@ public final class PhoneHud {
     //$$ public static final KeyMapping OPEN = new KeyMapping("key.celular.open", 75, CAT);
     //$$ public static final KeyMapping ANSWER = new KeyMapping("key.celular.answer", 89, CAT);
     //$$ public static final KeyMapping HANGUP = new KeyMapping("key.celular.hangup", 85, CAT);
+    //$$ public static final KeyMapping MUSIC_TOGGLE = new KeyMapping("key.celular.music_toggle", -1, CAT);
+    //$$ public static final KeyMapping MUSIC_NEXT = new KeyMapping("key.celular.music_next", -1, CAT);
+    //$$ public static final KeyMapping MUSIC_PREV = new KeyMapping("key.celular.music_prev", -1, CAT);
     //#else
     public static final KeyMapping OPEN = new KeyMapping("key.celular.open", 75, "key.categories.celular");
     public static final KeyMapping ANSWER = new KeyMapping("key.celular.answer", 89, "key.categories.celular");
     public static final KeyMapping HANGUP = new KeyMapping("key.celular.hangup", 85, "key.categories.celular");
+    public static final KeyMapping MUSIC_TOGGLE = new KeyMapping("key.celular.music_toggle", -1, "key.categories.celular");
+    public static final KeyMapping MUSIC_NEXT = new KeyMapping("key.celular.music_next", -1, "key.categories.celular");
+    public static final KeyMapping MUSIC_PREV = new KeyMapping("key.celular.music_prev", -1, "key.categories.celular");
     //#endif
 
     private static final class Toast {
@@ -57,15 +63,26 @@ public final class PhoneHud {
     }
 
     public static void toast(int app, String titleKey, Component text) {
+        if (add(app, titleKey, text)) {
+            ClientHooks.play(CelularReg.NOTIFY.get(), 1.0F, 0.5F);
+        }
+    }
+
+    /** Aviso sin sonido (por ejemplo "ahora suena" de la música). */
+    public static void toastQuiet(int app, String titleKey, Component text) {
+        add(app, titleKey, text);
+    }
+
+    private static boolean add(int app, String titleKey, Component text) {
         Prefs.load();
         if (!Prefs.notifications || !ClientHooks.hasPhone()) {
-            return;
+            return false;
         }
         TOASTS.add(new Toast(app, titleKey, text));
         while (TOASTS.size() > 3) {
             TOASTS.remove(0);
         }
-        ClientHooks.play(CelularReg.NOTIFY.get(), 1.0F, 0.5F);
+        return true;
     }
 
     private static void keys(Minecraft mc) {
@@ -78,6 +95,15 @@ public final class PhoneHud {
                     com.celular.plat.Plat.msg(mc.player, Component.translatable("celular.no_phone").withStyle(ChatFormatting.GRAY), true);
                 }
             }
+        }
+        while (MUSIC_TOGGLE.consumeClick()) {
+            com.celular.music.MusicPlayer.toggle();
+        }
+        while (MUSIC_NEXT.consumeClick()) {
+            com.celular.music.MusicPlayer.next();
+        }
+        while (MUSIC_PREV.consumeClick()) {
+            com.celular.music.MusicPlayer.prev();
         }
         CallState st = ClientHooks.call;
         while (ANSWER.consumeClick()) {
@@ -103,6 +129,8 @@ public final class PhoneHud {
             return;
         }
         keys(mc);
+        Music.frame();
+        CompassApp.watchDeath();
         long now = System.currentTimeMillis();
         CallState st = ClientHooks.call;
         // tono de "está sonando" para quien llama

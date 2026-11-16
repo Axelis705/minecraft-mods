@@ -22,6 +22,9 @@ public final class ClientModEvents {
         e.register(PhoneHud.OPEN);
         e.register(PhoneHud.ANSWER);
         e.register(PhoneHud.HANGUP);
+        e.register(PhoneHud.MUSIC_TOGGLE);
+        e.register(PhoneHud.MUSIC_NEXT);
+        e.register(PhoneHud.MUSIC_PREV);
     }
 
     //#if MC >= 1.20.5
