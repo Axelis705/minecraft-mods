@@ -58,13 +58,14 @@ public final class Brawl {
     /** Busca dos vaqueros cerca de la pianola y arma la pelea (o null si no hay con quién). */
     static Brawl start(ServerLevel level, BlockPos piano) {
         List<DealerEntity> pool = new ArrayList<>();
-        for (DealerEntity d : level.getEntitiesOfClass(DealerEntity.class, new AABB(piano).inflate(14, 3, 14))) {
-            if (d.isPatron() && d.getVariant() >= DealerEntity.WEST && !d.isPassenger() && !BY_FIGHTER.containsKey(d.getUUID())
-                    && Math.abs(d.getY() - piano.getY()) < 1.5) {
+        for (DealerEntity d : level.getEntitiesOfClass(DealerEntity.class, new AABB(piano).inflate(16, 3, 16))) {
+            if (d.isPatron() && d.getVariant() >= DealerEntity.WEST && !BY_FIGHTER.containsKey(d.getUUID())
+                    && Math.abs(d.getY() - piano.getY()) < 2.5) {
                 pool.add(d);
             }
         }
         if (pool.size() < 2) {
+            com.casino.Casino.LOGGER.warn("[casino] pelea de cantina: solo hay {} vaqueros cerca de la pianola en {}", pool.size(), piano);
             return null;
         }
         DealerEntity a = pool.get(level.getRandom().nextInt(pool.size()));
@@ -77,7 +78,8 @@ public final class Brawl {
                 b = d;
             }
         }
-        if (b == null || best > 12 * 12) {
+        if (b == null || best > 16 * 16) {
+            com.casino.Casino.LOGGER.warn("[casino] pelea de cantina: los vaqueros están muy lejos entre sí ({} bloques)", Math.sqrt(best));
             return null;
         }
         Brawl w = new Brawl(level, piano, a, b);
@@ -88,6 +90,9 @@ public final class Brawl {
         w.spot[1] = mid.add(dir.scale(0.75));
         for (int i = 0; i < 2; i++) {
             DealerEntity d = w.f[i];
+            if (d.isPassenger()) {
+                d.stopRiding();     // si estaba sentado, se levanta para pelear
+            }
             d.getNavigation().stop();
             d.setNoAi(true);
             d.setCombat(4);
