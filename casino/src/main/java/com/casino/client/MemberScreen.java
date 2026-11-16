@@ -195,6 +195,8 @@ public final class MemberScreen extends CasinoScreen {
         }
         // bono por nivel (una línea abajo de los logros)
         g.drawString(font, Component.translatable("casino.member.daily_info", Membership.DAILY[lvl]), ax, ay + 14 + 4 * slot + 4, 0xFF9EA4C0);
+        g.drawString(font, Component.translatable("casino.member.drink_info", Membership.DRINK_SECONDS[lvl], Membership.DRINK_WAIT_MINUTES[lvl]),
+                ax, ay + 14 + 4 * slot + 15, 0xFF9EA4C0);
         drawWidgets(g, mx, my, pt);
         if (tip != null) {
             g.renderTooltip(font, tip, mx, my);

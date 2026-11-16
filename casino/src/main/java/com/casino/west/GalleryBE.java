@@ -248,6 +248,15 @@ public class GalleryBE extends CasinoBE implements GunGame {
     }
 
     public void serverTick() {
+        if (level != null && WestRecords.due(level, worldPosition)) {
+            WestRecords.Rec r = WestRecords.pull(level, WestRecords.GALLERY, bestScore, bestName);
+            if (r.value() != bestScore || !r.name().equals(bestName)) {
+                bestScore = r.value();
+                bestName = r.name();
+                setChanged();
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+        }
         if (level == null || shooter == null) {
             return;
         }
@@ -285,7 +294,7 @@ public class GalleryBE extends CasinoBE implements GunGame {
             Plat.msg(p, Component.translatable(left ? "casino.gallery.left" : "casino.gallery.end", pts).withStyle(ChatFormatting.GOLD)
                     .append(" ").append(tail), false);
             Plat.msg(p, tail, true);
-            if (pts > bestScore) {
+            if (WestRecords.offer(level, WestRecords.GALLERY, pts, p.getGameProfile().getName())) {
                 bestScore = pts;
                 bestName = p.getGameProfile().getName();
                 Plat.msg(p, Component.translatable("casino.gallery.record", pts).withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD), false);

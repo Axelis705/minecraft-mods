@@ -572,8 +572,8 @@
   "casino.tip.bartender.say_0": "¡Marchando un Diamante! Con suerte extra, como te gusta.",
   "casino.tip.bartender.say_1": "Aquí tienes. ¡Que te sonría la mesa!",
   "casino.tip.bartender.say_2": "Uno de la casa. ¡Salud y buena racha!",
-  "casino.tip.bartender.say_3": "Despacio, campeón. El próximo en un minuto.",
-  "casino.bartender.served": "Cóctel Diamante: Suerte por 3 minutos",
+  "casino.tip.bartender.say_3": "Despacio, campeón. Todavía no te toca otro.",
+  "casino.bartender.served": "Cóctel de la casa: Suerte por %s segundos (el próximo en %s min)",
   "block.casino.sun_lounger": "Camastro",
   "block.casino.parasol": "Sombrilla",
   "block.casino.record_screen": "Pantalla de récords",
@@ -929,7 +929,7 @@
   "casino.tip.bartender_west.say_0": "¡Ahí va un whisky de la casa! Con suerte de minero.",
   "casino.tip.bartender_west.say_1": "Ahí tienes, vaquero. ¡Que te sonría la baraja!",
   "casino.tip.bartender_west.say_2": "Este va por la casa. ¡Salud, forastero!",
-  "casino.tip.bartender_west.say_3": "Despacio, vaquero. El próximo en un minuto.",
+  "casino.tip.bartender_west.say_3": "Despacio, vaquero. Todavía no te toca otro.",
   "casino.tip.blackjack_west.0": "Acérquese, socio. Aquí el 21 se juega como en Tombstone.",
   "casino.tip.blackjack_west.1": "Haga su apuesta antes de que salga la primera carta.",
   "casino.tip.blackjack_west.2": "Con 21 en dos cartas cobra tres a dos.",
@@ -1198,5 +1198,8 @@
   "block.casino.saloon_table": "Mesa de saloon",
   "block.casino.poker_table": "Mesa de póker",
   "block.casino.saloon_bench": "Banca de saloon",
-  "block.casino.wheel_chandelier": "Candil de rueda de carreta"
+  "block.casino.wheel_chandelier": "Candil de rueda de carreta",
+  "casino.bartender.wait": "Tu próximo trago en %s",
+  "casino.member.drink_info": "Cóctel: %s s, cada %s min",
+  "block.casino.saloon_desk": "Escritorio del saloon"
 }

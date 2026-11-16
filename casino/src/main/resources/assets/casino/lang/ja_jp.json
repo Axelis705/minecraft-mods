@@ -572,8 +572,8 @@
   "casino.tip.bartender.say_0": "One Diamond coming up! Extra luck, just how you like it.",
   "casino.tip.bartender.say_1": "Here you go. May the table smile on you!",
   "casino.tip.bartender.say_2": "On the house. Cheers, and good streak!",
-  "casino.tip.bartender.say_3": "Easy, champ. Next one in a minute.",
-  "casino.bartender.served": "Diamond cocktail: Luck for 3 minutes",
+  "casino.tip.bartender.say_3": "Easy, champ. Not your turn yet.",
+  "casino.bartender.served": "House cocktail: Luck for %s seconds (next one in %s min)",
   "block.casino.sun_lounger": "Sun Lounger",
   "block.casino.parasol": "Parasol",
   "block.casino.record_screen": "Record Screen",
@@ -929,7 +929,7 @@
   "casino.tip.bartender_west.say_0": "One whiskey on the house! With a miner's luck.",
   "casino.tip.bartender_west.say_1": "There you go, cowboy. May the deck smile on you!",
   "casino.tip.bartender_west.say_2": "This one's on the house. Cheers, stranger!",
-  "casino.tip.bartender_west.say_3": "Easy, cowboy. Next one in a minute.",
+  "casino.tip.bartender_west.say_3": "Easy, cowboy. Not your turn yet.",
   "casino.tip.blackjack_west.0": "Step right up, partner. We play twenty-one like in Tombstone.",
   "casino.tip.blackjack_west.1": "Place your bet before the first card falls.",
   "casino.tip.blackjack_west.2": "Blackjack pays three to two.",
@@ -1198,5 +1198,8 @@
   "block.casino.saloon_table": "Saloon Table",
   "block.casino.poker_table": "Poker Table",
   "block.casino.saloon_bench": "Saloon Bench",
-  "block.casino.wheel_chandelier": "Wagon Wheel Chandelier"
+  "block.casino.wheel_chandelier": "Wagon Wheel Chandelier",
+  "casino.bartender.wait": "Your next drink in %s",
+  "casino.member.drink_info": "Cocktail: %s s, every %s min",
+  "block.casino.saloon_desk": "Saloon Desk"
 }

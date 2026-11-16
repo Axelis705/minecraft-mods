@@ -75,9 +75,6 @@ public class DealerEntity extends Mob {
     /** Cuánto dura el globo en el aire (el cliente lo usa para desvanecerlo al final). */
     public static final int TIP_TICKS = 180;
     /** Cóctel de la casa: Suerte por 3 minutos, uno por jugador cada 60 segundos. */
-    private static final int DRINK_TICKS = 3600;
-    private static final int DRINK_COOLDOWN = 1200;
-    private final java.util.Map<java.util.UUID, Long> served = new java.util.HashMap<>();
 
     /** Solo en el cliente: ticks desde que empezó el globo actual (para escribir el texto letra por letra y animarlo). */
     public int tipAge;
@@ -693,21 +690,30 @@ public class DealerEntity extends Mob {
         return Plat.ok(level().isClientSide());
     }
 
-    /** El bartender te sirve el cóctel de la casa: Suerte por 3 minutos (uno cada minuto por jugador). */
+    /**
+     * El bartender te sirve el cóctel de la casa (Suerte). El efecto dura poco y hay que esperar para el siguiente; con más nivel de
+     * socio dura más y se espera menos ({@link com.casino.data.Membership#DRINK_SECONDS}). La espera es del jugador, no del bartender.
+     */
     private void serve(ServerPlayer sp) {
-        long now = level().getGameTime();
-        Long last = served.get(sp.getUUID());
-        if (last != null && now - last < DRINK_COOLDOWN) {
+        net.minecraft.server.MinecraftServer server = Plat.server(sp);
+        com.casino.data.CasinoStats stats = com.casino.data.CasinoStats.get(server);
+        com.casino.data.CasinoStats.Entry e = stats.entryOrNew(sp.getUUID(), sp.getGameProfile().getName());
+        long now = server.overworld().getGameTime();
+        long wait = com.casino.data.Membership.DRINK_WAIT_MINUTES[e.level()] * 1200L;
+        if (e.lastDrink >= 0 && now >= e.lastDrink && now - e.lastDrink < wait) {
             say(SAY + 3);
             anim(DealerAnim.SHAKE);
+            long left = (wait - (now - e.lastDrink) + 19) / 20;
+            Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.bartender.wait",
+                    String.format(java.util.Locale.ROOT, "%d:%02d", left / 60, left % 60)).withStyle(net.minecraft.ChatFormatting.GRAY), true);
             return;
         }
-
         if (serveFor != null) {
             say(SAY + 3);
             return;
         }
-        served.put(sp.getUUID(), now);
+        e.lastDrink = now;
+        stats.setDirty();
         // primero lo prepara (saca botella y vaso, sirve) y el efecto llega cuando te da el vaso
         anim(DealerAnim.SERVE);
         serveFor = sp.getUUID();
@@ -724,14 +730,17 @@ public class DealerEntity extends Mob {
         if (sp == null || sp.distanceToSqr(this) > 8 * 8) {
             return;
         }
-        sp.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.LUCK, DRINK_TICKS, 0));
+        int lv = com.casino.data.CasinoStats.get(Plat.server(sp)).entryOrNew(sp.getUUID(), sp.getGameProfile().getName()).level();
+        int secs = com.casino.data.Membership.DRINK_SECONDS[lv];
+        sp.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.LUCK, secs * 20, 0));
         com.casino.data.CasinoStats.drank(sp);
         //#if MC >= 1.21.2
         //$$ level().playSound(null, sp.getX(), sp.getY(), sp.getZ(), net.minecraft.sounds.SoundEvents.GENERIC_DRINK.value(), net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.0F);
         //#else
         level().playSound(null, sp.getX(), sp.getY(), sp.getZ(), net.minecraft.sounds.SoundEvents.GENERIC_DRINK, net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.0F);
         //#endif
-        Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.bartender.served").withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE), true);
+        Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.bartender.served", secs,
+                com.casino.data.Membership.DRINK_WAIT_MINUTES[lv]).withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE), true);
     }
 
     //#if MC >= 1.21.6

@@ -199,11 +199,21 @@ public class ArmBE extends MatchBE {
             }
         }
         int t = (int) (level.getGameTime() - start) - ArmRules.COUNTDOWN;
-        if (winP != null && why == R_BEAT && (bestTicks <= 0 || t < bestTicks)) {
+        if (winP != null && why == R_BEAT && t > 0 && WestRecords.offer(level, WestRecords.ARM, t, winP.getGameProfile().getName())) {
             bestTicks = t;
             bestName = winP.getGameProfile().getName();
             Plat.msg(winP, Component.translatable("casino.arm.record", String.format(java.util.Locale.ROOT, "%.1f", t / 20.0))
                     .withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD), false);
+        }
+    }
+
+    @Override
+    protected void refreshRecord() {
+        WestRecords.Rec r = WestRecords.pull(level, WestRecords.ARM, bestTicks, bestName);
+        if (r.value() != bestTicks || !r.name().equals(bestName)) {
+            bestTicks = r.value();
+            bestName = r.name();
+            sync();
         }
     }
 

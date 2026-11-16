@@ -65,6 +65,25 @@ public final class CasinoData extends SavedData {
         setDirty();
     }
 
+    /** Récords del Oeste de todo el mundo (toro, tiro, duelo, vencidas, dados): todos los carteles muestran el mismo. */
+    public static final String[] WEST_GAMES = {"bull", "gallery", "duel", "arm", "dice"};
+    private final Map<String, Integer> westValue = new HashMap<>();
+    private final Map<String, String> westName = new HashMap<>();
+
+    public int westRecord(String game) {
+        return westValue.getOrDefault(game, 0);
+    }
+
+    public String westRecordName(String game) {
+        return westName.getOrDefault(game, "");
+    }
+
+    public void setWestRecord(String game, int value, String name) {
+        westValue.put(game, value);
+        westName.put(game, name);
+        setDirty();
+    }
+
     /** Zonas protegidas (casinos construidos): en supervivencia no se pueden romper bloques ahí. dim -> [x0,y0,z0,x1,y1,z1]. */
     private final List<String> zoneDims = new ArrayList<>();
     private final List<int[]> zones = new ArrayList<>();
@@ -141,6 +160,15 @@ public final class CasinoData extends SavedData {
                 // clave dañada: se ignora
             }
         }
+        CompoundTag w = Nbt.c(tag, "west");
+        for (String g : WEST_GAMES) {
+            CompoundTag r = Nbt.c(w, g);
+            int v = Nbt.i(r, "v");
+            if (v > 0) {
+                d.westValue.put(g, v);
+                d.westName.put(g, Nbt.s(r, "n"));
+            }
+        }
         ListTag zl = Nbt.list(tag, "zones");
         for (int i = 0; i < zl.size(); i++) {
             CompoundTag z = Nbt.at(zl, i);
@@ -182,6 +210,16 @@ public final class CasinoData extends SavedData {
             zl.add(z);
         }
         tag.put("zones", zl);
+        CompoundTag w = new CompoundTag();
+        for (String g : WEST_GAMES) {
+            if (westRecord(g) > 0) {
+                CompoundTag r = new CompoundTag();
+                r.putInt("v", westRecord(g));
+                r.putString("n", westRecordName(g));
+                w.put(g, r);
+            }
+        }
+        tag.put("west", w);
         return tag;
     }
 }

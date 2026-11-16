@@ -396,15 +396,20 @@ o.marker(18, 1, 23, 'bartender 1 w', [(0, 0, 0, 'minecraft:purple_wool'), (0, 1,
 for z in (12, 19, 26):
     lantern(18, Y2, z, 1)
 
-# ---- pianola en la esquina del frente-oeste y mesas de cartas
+# ================================================================== ORDEN DE LA PLANTA BAJA (de la puerta hacia el fondo)
+#   pasillo del centro (x 28..31, alfombra roja) de la puerta a la escalera, sin nada en medio
+#   oeste: la cantina (barra larga, pianola y mesas para sentarse)       centro: las dos mesas de 21 bajo los candiles
+#   este: las máquinas en la pared (tragamonedas, ruleta, rasca y gana)   frente-este: la caja y la tienda, y el rincón de las vencidas
+for z in range(20, SZ1):
+    o.set(29, 1, z, 'minecraft:red_carpet'); o.set(30, 1, z, 'minecraft:red_carpet')
+
+# ---- la cantina: pianola en la esquina del frente-oeste y mesas redondas entre la barra y el pasillo
 o.set(17, 1, 33, 'casino:player_piano[facing=east,lit=true]')
 o.set(17, 1, 32, stairs('minecraft:dark_oak_stairs', 'east')); o.set(17, 2, 33, AIR)
 o.set(18, 1, 33, 'casino:saloon_stool[facing=west]')                # banquito del pianista
-# mesas redondas con sillas de madera (las del frente-oeste junto a la pianola) y una de póker del lado este
-table(21, 31, drinks=2); table(21, 35, drinks=3); table(25, 34, chairs='nswe')
-table(34, 34, kind='poker_table'); table(35, 30, drinks=1, chairs='sw')
+table(23, 31, drinks=2, chairs='nse'); table(23, 35, drinks=3, chairs='nwe'); table(26, 33, chairs='nswe', drinks=1)
 
-# ---- caja con rejas (frente-este) y tienda de premios; entre las dos queda el paso a la galería de tiro (z 30-31)
+# ---- caja con rejas (frente-este): los cajeros miran al salón y la tienda de premios al pasillo que lleva al TIRO (z 30-31)
 for z in range(32, 37):
     o.set(39, 1, z, 'minecraft:spruce_planks'); o.set(39, 2, z, 'minecraft:iron_bars'); o.set(39, 3, z, 'minecraft:iron_bars')
     o.set(39, 4, z, TRIM)
@@ -420,28 +425,30 @@ o.set(39, 2, 33, AIR); o.set(39, 2, 35, AIR)
 for i, ch in enumerate("CAJA"):
     o.set(38, 4, 33 + i, letter(ch, 'west', 2))
 o.set(42, 1, 34, 'minecraft:chest[facing=west]'); o.set(43, 1, 33, 'minecraft:barrel[facing=up]')
-o.marker(42, 1, 28, 'shop 0', [(0, 0, 0, 'casino:prize_shop[facing=north]')])
-o.marker(40, 1, 28, 'shop 0', [(0, 0, 0, 'casino:prize_shop[facing=north]')])
+o.marker(40, 1, 32, 'shop 0', [(0, 0, 0, 'casino:prize_shop[facing=north]')])
+o.marker(42, 1, 32, 'shop 0', [(0, 0, 0, 'casino:prize_shop[facing=north]')])
 
-# ---- mesa de vencidas en el salón (de pie; el retador del lado este, el forzudo o el otro jugador del lado oeste)
-o.set(26, 1, 28, 'casino:arm_table[facing=east]')
+# ---- rincón de las vencidas (frente-este, junto a la caja): la mesa y una banca para los mirones
+o.set(34, 1, 33, 'casino:arm_table[facing=east]')
+for x in range(32, 37):
+    o.set(x, 1, 36, 'casino:saloon_bench[facing=north]')
 
-# ---- pared este: ruleta de la suerte entre tragamonedas
+# ---- pared este: ruleta de la suerte entre tragamonedas y, al final, las de rasca y gana
 mq.place(o, 'wheel', IX1, 1, 19, 3)
 o.marker(41, 1, 21, 'wheelhost 3 w', [(0, 0, 0, 'minecraft:red_wool'), (0, 1, 0, 'minecraft:red_wool')])
-for z in (11, 13, 15, 23, 25, 27):
+for z in (11, 13, 15, 23, 25):
     mq.place(o, 'slot', IX1, 1, z, 3)
     o.set(IX1 - 1, 1, z, 'casino:saloon_stool[facing=east]')
-for z in (12, 14, 16, 22, 24, 26):
+mq.place(o, 'scratch', IX1, 1, 27, 3)
+mq.place(o, 'scratch', IX1, 1, 29, 3)
+for z in (12, 14, 16, 22, 24):
     o.set(IX1, 3, z, 'minecraft:lantern')
 
-# ---- dos mesas de 21 (crupier del Oeste) en el centro
-for x in (26, 33):
+# ---- dos mesas de 21 (crupier del Oeste) en el centro, una a cada lado del pasillo
+for x in (24, 35):
     mq.place(o, 'blackjack', x, 1, 22, 2)
     meta, pv = o.markers[(x, 1, 22)]
     o.markers[(x, 1, 22)] = (meta + ' w', pv)
-mq.place(o, 'scratch', 22, 1, 26, 1)
-mq.place(o, 'scratch', 37, 1, 26, 3)
 
 for i, ch in enumerate("RODEO"):
     o.set(SX0 + 2, 5, 33 - i, letter(ch, 'east', 0))
@@ -449,13 +456,13 @@ for i, ch in enumerate("TIRO"):
     o.set(SX1 - 2, 5, 29 + i, letter(ch, 'west', 0))
 
 # ---- candiles de rueda sobre el salón alto y faroles bajo la galería
-for x in (26, 33):
+for x in (24, 35):
     for z in (21, 26):
         chandelier(x, YR - 3, z)
 for x in (18, 41):
     for z in (31, 35):
         lantern(x, Y2, z, 1)
-for x in (24, 35):
+for x in (25, 34):
     lantern(x, Y2, 32, 1)
 # cuadros: carteles de "Se busca" en las paredes
 o.set(SX1 - 2, 4, 33, 'casino:wanted_poster[design=0,facing=west]')
@@ -496,7 +503,7 @@ o.set(37, Y2 + 2, 13, 'casino:liars_dice[facing=south]')
 o.set(37, Y2 + 1, 14, 'casino:saloon_chair[facing=north]')
 for x, f in ((36, 'east'), (38, 'west')):
     o.set(x, Y2 + 1, 13, f'casino:saloon_chair[facing={f}]')
-table(33, 12, y=Y2 + 1, kind='poker_table')
+table(41, 13, y=Y2 + 1, kind='poker_table')
 o.marker(37, Y2 + 1, 12, 'dicer 2', [(0, 0, 0, 'minecraft:orange_wool'), (0, 1, 0, 'minecraft:orange_wool')])
 for x in range(IX0, IX1 + 1):
     if x not in (28, 29, 30, 31):
@@ -522,21 +529,28 @@ o.set(17, Y2 + 1, 33, 'minecraft:chest[facing=east]')
 lantern(20, YR, 34, 1)
 table(40, 34, y=Y2 + 1, kind='poker_table', chairs='nswe')
 lantern(39, YR, 34, 1)
-# palco del dueño (tarjeta Oro): sillones de piel, mesa de cartas, aparador de whisky; sale al balcón
-for x in (25, 34):
-    o.set(x, Y2 + 1, 36, f'casino:sofa_black[facing={"east" if x < CX else "west"}]')
-    o.set(x, Y2 + 1, 35, f'casino:sofa_black[facing={"east" if x < CX else "west"}]')
-o.set(29, Y2 + 1, 34, 'casino:poker_table'); o.set(30, Y2 + 1, 34, 'casino:poker_table')
-o.set(29, Y2 + 2, 34, 'casino:drinks[facing=north,drinks=3]')
-for x in (29, 30):
-    o.set(x, Y2 + 1, 35, 'casino:saloon_chair[facing=north]')
-for x in (28, 31):
-    o.set(x, Y2 + 1, 34, f'casino:saloon_chair[facing={"east" if x < CX else "west"}]')
-for x in (24, 35):
-    o.set(x, Y2 + 1, 33, 'casino:bottle_shelf[facing=south]' if False else 'minecraft:bookshelf')
+# palco del dueño (tarjeta Oro). Al entrar por la puertita del centro queda libre el camino (alfombra) hasta el balcón:
+#   este: el escritorio del jefe mirando a la entrada, su sillón detrás y dos sillas para las visitas; libreros a los lados
+#   oeste: la sala, con sillones de piel contra la pared, mesita con whisky y un sillón enfrente
+Y = Y2 + 1
+for z in range(33, 37):
+    o.set(29, Y, z, 'minecraft:red_carpet'); o.set(30, Y, z, 'minecraft:red_carpet')
+for z in (34, 35):
+    o.set(33, Y, z, 'casino:saloon_desk[facing=west]')
+    o.set(32, Y, z, 'casino:saloon_chair[facing=east]')
+o.set(34, Y, 34, 'casino:casino_chair_black[facing=west]')
+o.set(33, Y + 1, 34, 'minecraft:lantern'); o.set(33, Y + 1, 35, 'casino:drinks[facing=west,drinks=1]')
+for z in (33, 36):
+    o.set(35, Y, z, 'minecraft:bookshelf'); o.set(35, Y + 1, z, 'minecraft:bookshelf')
+o.set(35, Y, 35, 'minecraft:chest[facing=west]')
+for z in (34, 35, 36):
+    o.set(24, Y, z, 'casino:sofa_black[facing=east]')
+o.set(26, Y, 35, 'casino:saloon_table'); o.set(26, Y + 1, 35, 'casino:drinks[facing=north,drinks=3]')
+o.set(27, Y, 35, 'casino:casino_chair_black[facing=west]')
+o.set(24, Y, 33, 'minecraft:bookshelf'); o.set(24, Y + 1, 33, 'minecraft:bookshelf')
 o.set(26, Y2 + 3, 36, 'casino:wanted_poster[design=0,facing=north]')
 o.set(33, Y2 + 3, 36, 'casino:wanted_poster[design=3,facing=north]')
-lantern(29, YR, 35, 1); lantern(30, YR, 35, 1)
+chandelier(29, YR - 2, 34, chain=1)
 
 # ================================================================== ANEXO OESTE: RODEO (toro mecánico)
 RX0, RX1, RZ0 = 3, SX0, 20
@@ -771,8 +785,8 @@ for x in range(18, 43):
 o.set(22, 1, 49, 'casino:duel_bell[facing=east]')
 
 # ================================================================== CLIENTES DEL SALOON
-for (x, y, z, d, s) in [(24, 1, 29, 2, 0), (35, 1, 29, 2, 1), (21, 1, 18, 1, 2), (38, 1, 16, 3, 4), (28, 1, 34, 2, 6),
-                        (31, 1, 26, 0, 3), (22, 1, 34, 3, 5)]:
+for (x, y, z, d, s) in [(24, 1, 29, 2, 0), (35, 1, 29, 2, 1), (21, 1, 18, 1, 2), (38, 1, 16, 3, 4), (21, 1, 33, 1, 6),
+                        (33, 1, 27, 0, 3), (22, 1, 34, 3, 5)]:
     o.marker(x, y, z, f'wpatron {d} {s}', [(0, 0, 0, 'minecraft:light_blue_wool')])
 
 # ================================================================== UMBRALES: bajo los muros (y sus puertas) va madera, no tierra

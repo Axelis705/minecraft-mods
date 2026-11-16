@@ -130,9 +130,9 @@ forceload add -48 550 48 650
 casino build 300 100 140 0 saloon
 execute if block 329 101 178 casino:saloon_door[facing=north,hinge=left] if block 330 101 178 casino:saloon_door[facing=north,hinge=right] if block 329 101 159 casino:vip_gate[access=1] run say PRUEBA_SALOON_PUERTAS
 execute if block 317 101 173 casino:player_piano[facing=east] if block 327 119 179 casino:painted_letter[glyph=18,facing=south] run say PRUEBA_SALOON_DECOR
-execute if block 326 101 162 casino:blackjack if block 333 101 162 casino:blackjack if block 322 109 153 casino:blackjack if block 342 101 159 casino:lucky_wheel[facing=west,px=1,py=0] if block 339 101 173 casino:cashier run say PRUEBA_SALOON_MESAS
+execute if block 324 101 162 casino:blackjack if block 335 101 162 casino:blackjack if block 322 109 153 casino:blackjack if block 342 101 159 casino:lucky_wheel[facing=west,px=1,py=0] if block 339 101 173 casino:cashier run say PRUEBA_SALOON_MESAS
 execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=327.5,y=101,z=159.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=332.5,y=101,z=159.5,distance=..1.5] run say PRUEBA_SALOON_SHERIFF
-execute if entity @e[type=casino:dealer,nbt={Game:4,Variant:64},x=318.5,y=101,z=155.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:0,Variant:64},x=326.5,y=101,z=161.5,distance=..2] run say PRUEBA_SALOON_PERSONAL
+execute if entity @e[type=casino:dealer,nbt={Game:4,Variant:64},x=318.5,y=101,z=155.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:0,Variant:64},x=324.5,y=101,z=161.5,distance=..2] run say PRUEBA_SALOON_PERSONAL
 execute if entity @e[type=casino:dealer,nbt={Game:6,Variant:69},x=317,y=109,z=151,distance=..14] run say PRUEBA_SALOON_VAQUEROS
 # juegos del saloon: toro mecánico en el ruedo y la caja de la galería de tiro en el mostrador, con sus datos
 execute if block 309 101 169 casino:mechanical_bull[facing=south] if block 350 102 170 casino:shooting_gallery[facing=south] run say PRUEBA_SALOON_JUEGOS
@@ -144,8 +144,8 @@ execute if data block 350 102 170 casino.BestScore run say PRUEBA_SALOON_GALERIA
 execute if block 322 101 189 casino:duel_bell[facing=east] if data block 322 101 189 Phase run say PRUEBA_SALOON_DUELO
 execute if block 322 101 189 casino:duel_bell[facing=east] if data block 322 101 189 casino.Phase run say PRUEBA_SALOON_DUELO
 # mesa de vencidas en el salón, con sus datos
-execute if block 326 101 168 casino:arm_table[facing=east] if data block 326 101 168 Phase run say PRUEBA_SALOON_VENCIDAS
-execute if block 326 101 168 casino:arm_table[facing=east] if data block 326 101 168 casino.Phase run say PRUEBA_SALOON_VENCIDAS
+execute if block 334 101 173 casino:arm_table[facing=east] if data block 334 101 173 Phase run say PRUEBA_SALOON_VENCIDAS
+execute if block 334 101 173 casino:arm_table[facing=east] if data block 334 101 173 casino.Phase run say PRUEBA_SALOON_VENCIDAS
 # mesa de dados del mentiroso arriba, con el viejo Hank enfrente
 execute if block 337 110 153 casino:liars_dice[facing=south] if entity @e[type=casino:dealer,nbt={Game:9,Variant:67},x=337.5,y=109,z=152.5,distance=..1.5] run say PRUEBA_SALOON_DADOS
 # pelea de cantina: la pianola del saloon la arranca con dos vaqueros (los peleadores quedan en modo pelea)

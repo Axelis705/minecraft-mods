@@ -186,7 +186,9 @@
  },
  "saloon_door": {
   "sounds": [
-   "casino:saloon_door"
+   "casino:west/saloon_door_1",
+   "casino:west/saloon_door_2",
+   "casino:west/saloon_door_3"
   ],
   "subtitle": "subtitles.casino.saloon_door"
  },
@@ -249,5 +251,12 @@
    "casino:west/arm_slam"
   ],
   "subtitle": "subtitles.casino.arm_slam"
+ },
+ "saloon_door_flap": {
+  "sounds": [
+   "casino:west/saloon_door_flap_1",
+   "casino:west/saloon_door_flap_2",
+   "casino:west/saloon_door_flap_3"
+  ]
  }
 }

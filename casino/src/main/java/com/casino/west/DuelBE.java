@@ -248,7 +248,7 @@ public class DuelBE extends MatchBE {
             level.playSound(null, loseP.getX(), loseP.getY() + 1, loseP.getZ(), SoundEvents.PLAYER_HURT, SoundSource.PLAYERS, 0.8F, 1.0F);
         }
         // récord del pueblo: el disparo ganador más rápido de un jugador
-        if (winP != null && why == R_BEAT && ms[w] > 0 && (bestMs <= 0 || ms[w] < bestMs)) {
+        if (winP != null && why == R_BEAT && ms[w] > 0 && WestRecords.offer(level, WestRecords.DUEL, ms[w], winP.getGameProfile().getName())) {
             bestMs = ms[w];
             bestName = winP.getGameProfile().getName();
             Plat.msg(winP, Component.translatable("casino.duel.record", String.format(java.util.Locale.ROOT, "%.3f", ms[w] / 1000.0))
@@ -257,6 +257,16 @@ public class DuelBE extends MatchBE {
         if (winP != null && why == R_BEAT && ms[w] > 0) {
             Plat.msg(winP, Component.translatable("casino.duel.your_time", String.format(java.util.Locale.ROOT, "%.3f", ms[w] / 1000.0))
                     .withStyle(ChatFormatting.GOLD), false);
+        }
+    }
+
+    @Override
+    protected void refreshRecord() {
+        WestRecords.Rec r = WestRecords.pull(level, WestRecords.DUEL, bestMs, bestName);
+        if (r.value() != bestMs || !r.name().equals(bestName)) {
+            bestMs = r.value();
+            bestName = r.name();
+            sync();
         }
     }
 

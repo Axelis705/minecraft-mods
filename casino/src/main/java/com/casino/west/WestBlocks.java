@@ -338,6 +338,14 @@ public final class WestBlocks {
         public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
             return new BullBE(pos, state);
         }
+
+        @Override
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            if (type != WestReg.BULL_BE.get() || level.isClientSide()) {
+                return null;
+            }
+            return (lvl, p, st, be) -> ((BullBE) be).serverTick();
+        }
     }
 
     /**

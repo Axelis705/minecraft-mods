@@ -184,4 +184,4 @@ if __name__ == "__main__":
     song("saloon_rag", 60, 196, A1, B1, 11)
     song("dusty_trail", 65, 178, A2, B2, 23)
     song("gold_rush", 67, 210, B1, A2, 37)
-    creak()
+    # el rechinido de la puerta ahora sale de grabaciones CC0: west_puerta_sonido.py

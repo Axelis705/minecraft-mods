@@ -157,6 +157,25 @@ def chandelier():
     model("wheel_chandelier", e, "w_dark")
 
 
+# ================================================================================================ ESCRITORIO
+def desk():
+    """Escritorio del dueño (mira al norte = el lado de las visitas, cerrado; del otro lado, los cajones y el hueco para las piernas).
+    Dos juntos se ven como un escritorio largo."""
+    e = [box([0, 14, 0], [16, 16, 2], "w_dark"), box([0, 14, 14], [16, 16, 16], "w_dark"),
+         box([0, 14, 2], [2, 16, 14], "w_dark"), box([14, 14, 2], [16, 16, 14], "w_dark"),
+         box([2, 14, 2], [14, 15.6, 14], "felt")]                                         # cubierta con cuero verde
+    e += [box([0.6, 0.5, 0.6], [15.4, 14, 1.6], "w_spruce"),                              # panel de enfrente
+          box([0.4, 0, 0.4], [15.6, 0.6, 1.8], "w_dark"),
+          box([0.6, 0, 1.6], [5.2, 14, 15.4], "w_spruce"), box([10.8, 0, 1.6], [15.4, 14, 15.4], "w_spruce")]   # cajoneras
+    for x1, x2 in ((1.2, 4.6), (11.4, 14.8)):
+        for y1 in (1.5, 5.5, 9.5):
+            e += [box([x1, y1, 15.4], [x2, y1 + 3.2, 15.8], "w_dark"),
+                  box([(x1 + x2) / 2 - 0.6, y1 + 1.2, 15.8], [(x1 + x2) / 2 + 0.6, y1 + 2, 16.1], "brass")]
+    for x1, x2 in ((2, 7), (9, 14)):                                                        # molduras del panel
+        e.append(box([x1, 3, 0.3], [x2, 11, 0.6], "w_dark", faces=["north", "west", "east", "up", "down"]))
+    model("saloon_desk", e, "w_spruce")
+
+
 def main():
     chair()
     stool()
@@ -164,7 +183,8 @@ def main():
     poker_table()
     bench()
     chandelier()
-    for name in ("saloon_chair", "saloon_stool", "saloon_bench"):
+    desk()
+    for name in ("saloon_chair", "saloon_stool", "saloon_bench", "saloon_desk"):
         facing_states(name)
     for name in ("saloon_table", "poker_table", "wheel_chandelier"):
         any_facing_states(name)
@@ -174,12 +194,14 @@ def main():
     item("poker_table", dm.DISPLAY)
     item("saloon_bench", dm.DISPLAY)
     item("wheel_chandelier", DISPLAY_CHANDELIER)
-    for name in ("saloon_chair", "saloon_stool", "saloon_table", "poker_table", "saloon_bench", "wheel_chandelier"):
+    item("saloon_desk", dm.DISPLAY)
+    for name in ("saloon_chair", "saloon_stool", "saloon_table", "poker_table", "saloon_bench", "wheel_chandelier", "saloon_desk"):
         dm.loot(name)
     dm.recipe("saloon_chair", ["P  ", "PPP", "S S"], {"P": "minecraft:spruce_planks", "S": "minecraft:stick"}, 2)
     dm.recipe("saloon_stool", ["PPP", "S S"], {"P": "minecraft:spruce_slab", "S": "minecraft:stick"}, 2)
     dm.recipe("saloon_table", ["PPP", " L ", " L "], {"P": "minecraft:spruce_slab", "L": "minecraft:dark_oak_log"})
     dm.recipe("poker_table", ["WWW", "PPP", "S S"], {"W": "minecraft:green_wool", "P": "minecraft:dark_oak_planks", "S": "minecraft:stick"})
+    dm.recipe("saloon_desk", ["WWW", "PCP", "P P"], {"W": "minecraft:green_wool", "P": "minecraft:spruce_planks", "C": "minecraft:chest"})
     dm.recipe("saloon_bench", ["P  ", "PPP", "S S"], {"P": "minecraft:spruce_slab", "S": "minecraft:stick"}, 3)
     dm.recipe("wheel_chandelier", [" C ", "TWT", " T "], {"C": "minecraft:iron_nugget", "T": "minecraft:candle", "W": "minecraft:dark_oak_planks"})
     print("muebles del Oeste listos")

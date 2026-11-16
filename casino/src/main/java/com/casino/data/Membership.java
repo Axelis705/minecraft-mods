@@ -20,6 +20,10 @@ public final class Membership {
     /** Color de cada nivel (tarjeta, títulos). */
     public static final int[] COLOR = {0xCD7F32, 0xC9D1DB, 0xF2C230, 0x8FD8E8, 0x7EF0FF};
 
+    /** El cóctel de la casa: cuánto dura su efecto (segundos) y cuánto hay que esperar para el siguiente (minutos), según el nivel. */
+    public static final int[] DRINK_SECONDS = {30, 45, 60, 90, 120};
+    public static final int[] DRINK_WAIT_MINUTES = {10, 8, 6, 5, 4};
+
     public static int level(long wagered) {
         int l = 0;
         for (int i = 0; i < AT.length; i++) {

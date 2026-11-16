@@ -234,7 +234,7 @@ public class DiceBE extends CasinoBE {
                 Chips.give(p, (int) pay);
                 level.playSound(null, worldPosition, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 1.2F);
                 streak++;
-                if (streak > bestStreak) {
+                if (WestRecords.offer(level, WestRecords.DICE, streak, playerName)) {
                     bestStreak = streak;
                     bestName = playerName;
                 }
@@ -253,6 +253,14 @@ public class DiceBE extends CasinoBE {
     }
 
     public void serverTick() {
+        if (level != null && WestRecords.due(level, worldPosition)) {
+            WestRecords.Rec r = WestRecords.pull(level, WestRecords.DICE, bestStreak, bestName);
+            if (r.value() != bestStreak || !r.name().equals(bestName)) {
+                bestStreak = r.value();
+                bestName = r.name();
+                sync();
+            }
+        }
         if (level == null || phase == IDLE) {
             return;
         }

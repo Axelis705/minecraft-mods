@@ -24,6 +24,7 @@ public class SaloonDoorBE extends CasinoBE {
     private float target;
     private int holdTicks;
     private long lastCreak;
+    private long lastFlap;
 
     public SaloonDoorBE(BlockPos pos, BlockState state) {
         this(WestReg.DOOR_BE.get(), pos, state);
@@ -44,17 +45,54 @@ public class SaloonDoorBE extends CasinoBE {
         creak(Math.abs(strength));
     }
 
+    /**
+     * ¿Esta hoja es la que suena? En una puerta de dos hojas solo suena la de la bisagra izquierda (antes sonaban las dos a la vez,
+     * cada una con otro tono, y se oía feo). Una hoja sola siempre suena.
+     */
+    private boolean lead() {
+        BlockState s = getBlockState();
+        if (level == null || !s.hasProperty(WestBlocks.HINGE) || s.getValue(WestBlocks.HINGE) == net.minecraft.world.level.block.state.properties.DoorHingeSide.LEFT) {
+            return true;
+        }
+        Direction f = facing();
+        for (Direction d : new Direction[]{f.getClockWise(), f.getCounterClockWise()}) {
+            BlockState o = level.getBlockState(worldPosition.relative(d));
+            if (o.getBlock() == s.getBlock() && o.hasProperty(WestBlocks.HINGE) && o.getValue(WestBlocks.HINGE)
+                    == net.minecraft.world.level.block.state.properties.DoorHingeSide.LEFT && o.getValue(WestBlocks.FACING) == f) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Rechinido de la bisagra al empujarla (una vez por empujón). */
     private void creak(float strength) {
-        if (level == null) {
+        if (level == null || !lead()) {
             return;
         }
         long now = level.getGameTime();
-        if (now - lastCreak > 14 && strength > 3F) {
+        if (now - lastCreak > 20 && strength > 3F) {
             lastCreak = now;
-            float pitch = 0.75F + level.getRandom().nextFloat() * 0.35F;
+            float pitch = 0.94F + level.getRandom().nextFloat() * 0.12F;
             level.playLocalSound(worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5,
-                    com.casino.registry.ModSounds.SALOON_DOOR.get(), SoundSource.BLOCKS, 0.55F, pitch, false);
+                    com.casino.registry.ModSounds.SALOON_DOOR.get(), SoundSource.BLOCKS, 0.6F, pitch, false);
         }
+    }
+
+    /** Golpecito de la hoja al pasar por el centro: más fuerte cuanto más rápido va (así se oye el vaivén que se apaga). */
+    private void flap(float speed) {
+        if (level == null || !lead()) {
+            return;
+        }
+        long now = level.getGameTime();
+        if (now - lastFlap < 4) {
+            return;
+        }
+        lastFlap = now;
+        float vol = Math.min(0.45F, 0.08F + speed * 0.025F);
+        float pitch = 0.9F + level.getRandom().nextFloat() * 0.2F;
+        level.playLocalSound(worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5,
+                com.casino.registry.ModSounds.SALOON_DOOR_FLAP.get(), SoundSource.BLOCKS, vol, pitch, false);
     }
 
     public void clientTick() {
@@ -107,9 +145,9 @@ public class SaloonDoorBE extends CasinoBE {
             angle = 0;
             vel = 0;
         }
-        // al cruzar el centro rápido, rechina
-        if (Math.signum(prevAngle) != Math.signum(angle) && Math.abs(vel) > 4F) {
-            creak(Math.abs(vel));
+        // al cruzar el centro se oye el golpecito de la madera (el rechinido es solo al empujar)
+        if (Math.signum(prevAngle) != Math.signum(angle) && Math.abs(vel) > 2.5F) {
+            flap(Math.abs(vel));
         }
     }
 

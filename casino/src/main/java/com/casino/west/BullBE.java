@@ -45,7 +45,7 @@ public class BullBE extends CasinoBE {
 
     /** Al terminar una montada: ¿nuevo récord? */
     public void offer(ServerPlayer p, int ticks) {
-        if (ticks <= bestTicks || ticks < 20) {
+        if (ticks < 20 || level == null || !WestRecords.offer(level, WestRecords.BULL, ticks, p.getGameProfile().getName())) {
             return;
         }
         bestTicks = ticks;
@@ -56,6 +56,20 @@ public class BullBE extends CasinoBE {
         }
         Plat.msg(p, Component.translatable("casino.bull.record", String.format(java.util.Locale.ROOT, "%.1f", ticks / 20.0))
                 .withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD), false);
+    }
+
+    /** El cartel muestra el récord de todo el mundo (lo revisa cada 2 segundos). */
+    public void serverTick() {
+        if (level == null || !WestRecords.due(level, worldPosition)) {
+            return;
+        }
+        WestRecords.Rec r = WestRecords.pull(level, WestRecords.BULL, bestTicks, bestName);
+        if (r.value() != bestTicks || !r.name().equals(bestName)) {
+            bestTicks = r.value();
+            bestName = r.name();
+            setChanged();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 
     @Override

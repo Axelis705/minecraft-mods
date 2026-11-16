@@ -56,6 +56,8 @@ public final class CasinoStats extends SavedData {
         public int gamesMask;
         public int wheelSpins;
         public int drinks;
+        /** Tick del mundo en que tomó su último cóctel (-1 = nunca). */
+        public long lastDrink = -1;
         public long lastBonus = -1;
         public int levelGiven;
         public boolean cardGiven;
@@ -435,6 +437,7 @@ public final class CasinoStats extends SavedData {
                 e.gamesMask = Nbt.i(t, "gm");
                 e.wheelSpins = Nbt.i(t, "ws");
                 e.drinks = Nbt.i(t, "dr");
+                e.lastDrink = Nbt.has(t, "ld") ? Nbt.l(t, "ld") : -1;
                 e.lastBonus = Nbt.has(t, "lb") ? Nbt.l(t, "lb") : -1;
                 e.levelGiven = Nbt.has(t, "lg") ? Nbt.i(t, "lg") : Membership.level(e.wagered);
                 e.cardGiven = Nbt.b(t, "card");
@@ -485,6 +488,7 @@ public final class CasinoStats extends SavedData {
             t.putInt("gm", e.gamesMask);
             t.putInt("ws", e.wheelSpins);
             t.putInt("dr", e.drinks);
+            t.putLong("ld", e.lastDrink);
             t.putLong("lb", e.lastBonus);
             t.putInt("lg", e.levelGiven);
             t.putBoolean("card", e.cardGiven);

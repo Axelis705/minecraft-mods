@@ -116,6 +116,9 @@ public final class ModDecor {
             .sound(SoundType.WOOD).noOcclusion(), false, new double[]{1.4, 0, 1.4, 14.6, 14, 14.6}, new double[]{0, 14, 0, 16, 16, 16}));
     public static final RegistryObject<Block> SALOON_BENCH = block("saloon_bench", p -> new SeatBlock(p.mapColor(MapColor.WOOD).strength(1.5F)
             .sound(SoundType.WOOD).noOcclusion(), 0.5, new double[]{0, 0, 2.5, 16, 8.5, 12.5}, new double[]{0, 8.5, 11.9, 16, 16, 13.6}));
+    /** Escritorio del dueño (el frente, cerrado, mira hacia quien lo pone; los cajones quedan atrás). */
+    public static final RegistryObject<Block> SALOON_DESK = block("saloon_desk", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(2.0F)
+            .sound(SoundType.WOOD).noOcclusion(), true, new double[]{0, 0, 0, 16, 16, 16}));
     /** Rueda de carreta con velas (se cuelga de una cadena); casi dos bloques de ancho, pero solo choca la maza. */
     public static final RegistryObject<Block> WHEEL_CHANDELIER = block("wheel_chandelier", p -> new DecorBlock(p.mapColor(MapColor.WOOD)
             .strength(1.0F).sound(SoundType.WOOD).noOcclusion().lightLevel(s -> 15), false, new double[]{5.5, 2.5, 5.5, 10.5, 16, 10.5}));

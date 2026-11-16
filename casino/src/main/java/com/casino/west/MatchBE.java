@@ -339,9 +339,16 @@ public abstract class MatchBE extends CasinoBE {
 
     // ------------------------------------------------------------------ cada tick
 
+    /** Copia el récord del mundo al cartel (cada juego sabe cuál es el suyo). */
+    protected void refreshRecord() {
+    }
+
     public void serverTick() {
         if (level == null) {
             return;
+        }
+        if (WestRecords.due(level, worldPosition)) {
+            refreshRecord();
         }
         long now = level.getGameTime();
         switch (phase) {

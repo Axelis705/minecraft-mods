@@ -17,6 +17,7 @@ public final class ModSounds {
     public static final RegistryObject<SoundEvent> MUSIC_PIANO = reg("music_piano");
     /** Rechinido de la puerta batiente del saloon. */
     public static final RegistryObject<SoundEvent> SALOON_DOOR = reg("saloon_door");
+    public static final RegistryObject<SoundEvent> SALOON_DOOR_FLAP = reg("saloon_door_flap");
     /** Galería de tiro: disparo, campanita de blanco derribado, patito, error (señorita) y toro mecánico: cencerro y motor. */
     public static final RegistryObject<SoundEvent> GALLERY_SHOT = reg("gallery_shot");
     public static final RegistryObject<SoundEvent> GALLERY_DING = reg("gallery_ding");
