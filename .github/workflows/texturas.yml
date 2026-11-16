@@ -1,0 +1,24 @@
+name: Texturas de Minecraft (para vistas previas)
+# Baja el jar del cliente 1.20.1 y guarda sus modelos, estados y texturas de bloques como artefacto.
+# Sirve para dibujar vistas previas de las estructuras sin abrir el juego.
+on:
+  workflow_dispatch:
+
+jobs:
+  texturas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bajar el cliente 1.20.1
+        run: |
+          url=$(curl -s https://piston-meta.mojang.com/mc/game/version_manifest_v2.json | jq -r '.versions[] | select(.id=="1.20.1") | .url')
+          jar=$(curl -s "$url" | jq -r '.downloads.client.url')
+          curl -s -o client.jar "$jar"
+          mkdir out
+          unzip -q client.jar 'assets/minecraft/textures/block/*' 'assets/minecraft/textures/entity/chest/*' 'assets/minecraft/models/block/*' \
+            'assets/minecraft/blockstates/*' 'assets/minecraft/textures/colormap/*' -d out
+          ls out/assets/minecraft
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mc-1.20.1-bloques
+          path: out
+          retention-days: 7
