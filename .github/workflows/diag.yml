@@ -42,4 +42,5 @@ jobs:
         env:
           DIAG_PRIVADOS: ${{ github.event.inputs.privados }}
           DIAG_METODO: ${{ github.event.inputs.metodo }}
+          DIAG_MC: ${{ matrix.mc }}
         run: bash tools/javap_diag.sh gen/p ${{ github.event.inputs.clases }}

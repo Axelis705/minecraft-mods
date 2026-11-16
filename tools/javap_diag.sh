@@ -3,7 +3,10 @@
 # Uso: tools/javap_diag.sh <carpeta-del-proyecto> <clase> [<clase> ...]   (después de compilar con gradle)
 dir="$1"; shift
 jar=""
-for j in $(find "$HOME/.gradle" "$HOME/.m2" "$HOME/.mavenizer" "$dir" -name '*.jar' -size +8M 2>/dev/null); do
+# con DIAG_MC=<versión> se prefieren los jar de esa versión (la caché de gradle puede traer los de otras)
+cands=$(find "$HOME/.gradle" "$HOME/.m2" "$HOME/.mavenizer" "$dir" -name '*.jar' -size +8M 2>/dev/null)
+[ -n "${DIAG_MC:-}" ] && cands="$(echo "$cands" | grep -F -- "${DIAG_MC}") $(echo "$cands" | grep -vF -- "${DIAG_MC}")"
+for j in $cands; do
   if unzip -l "$j" 2>/dev/null | grep -q 'net/minecraft/client/Minecraft.class'; then jar="$j"; break; fi
 done
 [ -z "$jar" ] && { echo "no encontré el jar de Minecraft"; exit 0; }
