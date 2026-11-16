@@ -181,7 +181,7 @@ def main():
     dm.recipe("saloon_table", ["PPP", " L ", " L "], {"P": "minecraft:spruce_slab", "L": "minecraft:dark_oak_log"})
     dm.recipe("poker_table", ["WWW", "PPP", "S S"], {"W": "minecraft:green_wool", "P": "minecraft:dark_oak_planks", "S": "minecraft:stick"})
     dm.recipe("saloon_bench", ["P  ", "PPP", "S S"], {"P": "minecraft:spruce_slab", "S": "minecraft:stick"}, 3)
-    dm.recipe("wheel_chandelier", [" C ", "TWT", " T "], {"C": "minecraft:chain", "T": "minecraft:candle", "W": "minecraft:dark_oak_planks"})
+    dm.recipe("wheel_chandelier", [" C ", "TWT", " T "], {"C": "minecraft:iron_nugget", "T": "minecraft:candle", "W": "minecraft:dark_oak_planks"})
     print("muebles del Oeste listos")
 
 
