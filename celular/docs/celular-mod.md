@@ -33,6 +33,7 @@ Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas per
 - `music/Meta`: título y artista (ID3v2/ID3v1, comentarios Vorbis o "Artista - Título.mp3"), duración (cuenta cuadros del MP3 o usa la cabecera Xing; última página del OGG). Solo MP3 MPEG-1 (los MPEG-2 se marcan "no se puede tocar").
 - `music/Spectrum`: FFT de 1024 cuadros → 16 bandas (50 Hz a 15 kHz) guardadas con su número de cuadro para mostrar las del momento.
 - Volumen: el de la app × Volumen general × Discos de Minecraft. Teclas sin asignar: pausar/seguir, siguiente y anterior (en Controles).
+- **Modo bocina** (17-nov): si el celular no está en tu inventario (ni agarrado con el ratón) pero está tirado en el suelo, la música sale desde ahí: volumen según la distancia (normal hasta 2 bloques, silencio a 24) y más fuerte del lado en que queda (`MusicPlayer.spatialL/R`, el cambio se reparte dentro de cada trozo para que no chasquee). Si el celular desaparece cerca de ti (lo recogió otro, se quemó, lo guardaste en un cofre) la música se pausa con el aviso `celular.music.phone_gone`. Si te alejas mucho (o mueres y reapareces lejos) solo queda en silencio hasta que vuelvas. Solo lo escucha quien tiene las canciones (son archivos de su PC).
 - `client/Music`: une el reproductor con el juego (carpeta, volumen, pausa, callar la música de Minecraft, avisos, abrir la carpeta con explorer/open/xdg-open).
 - Prueba `celular/tests/MusicTest.java` (en el CI): etiquetas, duración, decodificar, salto, barras y WAV.
 
@@ -57,6 +58,7 @@ Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas per
 - Pantallas en 26.2+: `mc.gui.setScreen(...)` / `mc.gui.screen()` (en `ClientHooks.open/screen`). Imagen principal en 26.3: `mc.gameRenderer.mainRenderTarget()`.
 - Caras de jugadores: `getSkinLocation()` (1.20.1) / `getSkin().texture()` / `getSkin().body().texturePath()` (26.x).
 - Categoría de teclas: `KeyMapping.Category.register` en 26.x.
+- **Teclado en 26.3 (SDL)**: los códigos de tecla son *scancodes* de SDL (K = 14, Esc = 41, Enter = 40) y "sin asignar" ya no es -1 (un -1 se guardaba como `key.keyboard.-1` y el juego caía al entrar al mundo en `KeyMapping.setAll`). Las teclas se crean con `InputConstants.KEY_*` / `InputConstants.UNKNOWN` (constantes que cada versión compila con su valor) y `SafeKey` ignora códigos negativos guardados. En las pantallas, `plat/client/Keys.glfw` traduce el scancode a los códigos de siempre (GLFW) para que las apps sigan comparando con 256/257/259/flechas. Lo mismo en el casino (`CasinoScreen`, teclas B/J/H). La 26.2 sigue con GLFW.
 
 ## Herramientas de diagnóstico (para versiones nuevas)
 - Flujo manual `.github/workflows/diag.yml`: `gh api -X POST .../actions/workflows/diag.yml/dispatches -f ref=main -f inputs[mod]=celular -f "inputs[clases]=a.B c.D%Interna" [-f inputs[privados]=Clase:texto] [-f inputs[metodo]=Clase#metodo]` compila en 1.21.1, 1.21.4 y 26.3 y muestra las clases (usa `DIAG_MC` para tomar el jar de la versión correcta).
