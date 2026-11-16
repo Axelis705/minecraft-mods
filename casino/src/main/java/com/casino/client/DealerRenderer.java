@@ -47,6 +47,7 @@ import java.util.List;
 //$$         float talk = -1;
 //$$         DealerMotion motion;
 //$$         int variant;
+//$$         int name;
 //$$     }
 //#elif MC >= 1.21.2
 //$$ public class DealerRenderer extends MobRenderer<DealerEntity, DealerRenderer.State, DealerRenderer.DealerModel> {
@@ -59,6 +60,7 @@ import java.util.List;
 //$$         float talk = -1;
 //$$         DealerMotion motion;
 //$$         int variant;
+//$$         int name;
 //$$     }
 //#else
 public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<DealerEntity>> {
@@ -152,12 +154,13 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         return tipKey(game, tip);
     }
 
-    private static String nameKey(int game, int variant) {
+    private static String nameKey(int game, int variant, int nameIdx) {
         if (game == DealerEntity.GAME_DUELIST) {
             return "casino.npc.duelist_" + variant;
         }
         if (game == DealerEntity.GAME_PATRON) {
-            return "casino.npc.patron_" + variant;
+            // los del Oeste tienen nombre fijo por piel; los del Diamond, uno de la lista de su piel (señor, señora, don, doña)
+            return variant >= DealerEntity.WEST ? "casino.npc.patron_" + variant : DealerEntity.patronNameKey(variant, nameIdx);
         }
         String k = "casino.npc." + role(game) + (variant >= DealerEntity.WEST ? "_west" : "");
         return net.minecraft.locale.Language.getInstance().has(k) ? k : "casino.npc." + role(game);
@@ -286,6 +289,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     s.talk = e.getTip() >= 0 ? e.tipAge + partial : -1F;
     //$$     s.motion = DealerMotion.compute(e, partial);
     //$$     s.variant = e.getVariant();
+    //$$     s.name = e.getNameIndex();
     //$$     // sentado de verdad (piernas al frente): MobRenderer no llena esto como el dibujante de humanos
     //$$     s.isPassenger = e.isPassenger();
     //$$ }
@@ -359,7 +363,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$     super.submit(s, ps, out, cam);
     //$$     if (s.tip >= 0) {
     //$$         com.casino.plat.client.Draw d = new com.casino.plat.client.Draw(out);
-    //$$         bubble(d, s.game, s.variant, s.tip, s.age, s.boundingBoxHeight, cam.orientation, ps);
+    //$$         bubble(d, s.game, s.variant, s.name, s.tip, s.age, s.boundingBoxHeight, cam.orientation, ps);
     //$$         d.flush();
     //$$     }
     //$$ }
@@ -368,7 +372,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
     //$$ public void render(State s, PoseStack ps, MultiBufferSource buf, int light) {
     //$$     super.render(s, ps, buf, light);
     //$$     if (s.tip >= 0) {
-    //$$         bubble(new com.casino.plat.client.Draw(buf), s.game, s.variant, s.tip, s.age, s.boundingBoxHeight, this.entityRenderDispatcher.cameraOrientation(), ps);
+    //$$         bubble(new com.casino.plat.client.Draw(buf), s.game, s.variant, s.name, s.tip, s.age, s.boundingBoxHeight, this.entityRenderDispatcher.cameraOrientation(), ps);
     //$$     }
     //$$ }
     //#else
@@ -377,7 +381,7 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
         super.render(e, yaw, partial, ps, buf, light);
         int tip = e.getTip();
         if (tip >= 0) {
-            bubble(new com.casino.plat.client.Draw(buf), e.getGame(), e.getVariant(), tip, e.tipAge + partial, e.getBbHeight(), this.entityRenderDispatcher.cameraOrientation(), ps);
+            bubble(new com.casino.plat.client.Draw(buf), e.getGame(), e.getVariant(), e.getNameIndex(), tip, e.tipAge + partial, e.getBbHeight(), this.entityRenderDispatcher.cameraOrientation(), ps);
         }
     }
     //#endif
@@ -409,11 +413,11 @@ public class DealerRenderer extends MobRenderer<DealerEntity, PlayerModel<Dealer
      * nombre de quien habla (y "Consejo" a la derecha si es un consejo), el texto que se va escribiendo letra por letra y una colita que
      * apunta a la cabeza. Aparece con un pequeño salto, flota suave y se desvanece al final. Siempre mira a la cámara.
      */
-    private static void bubble(com.casino.plat.client.Draw d, int game, int variant, int tip, float age, float height, Quaternionf camera, PoseStack ps) {
+    private static void bubble(com.casino.plat.client.Draw d, int game, int variant, int nameIdx, int tip, float age, float height, Quaternionf camera, PoseStack ps) {
         Font font = net.minecraft.client.Minecraft.getInstance().font;
         String text = Component.translatable(tipKey(game, variant, tip)).getString();
         List<String> lines = wrap(font, text, WRAP);
-        String name = icon(game) + " " + Component.translatable(nameKey(game, variant)).getString();
+        String name = icon(game) + " " + Component.translatable(nameKey(game, variant, nameIdx)).getString();
         boolean isTip = tip < DealerEntity.SAY;
         String tag = isTip ? Component.translatable("casino.tip.title").getString() : "";
         int textW = 0;

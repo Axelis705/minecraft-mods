@@ -1,0 +1,20 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "SSS",
+  "L L"
+ ],
+ "key": {
+  "S": {
+   "item": "minecraft:stick"
+  },
+  "L": {
+   "item": "minecraft:stripped_spruce_log"
+  }
+ },
+ "result": {
+  "item": "casino:hitching_post",
+  "count": 2
+ }
+}

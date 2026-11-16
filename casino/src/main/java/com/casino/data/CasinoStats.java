@@ -58,6 +58,9 @@ public final class CasinoStats extends SavedData {
         public int drinks;
         /** Tick del mundo en que tomó su último cóctel (-1 = nunca). */
         public long lastDrink = -1;
+        /** Suerte del cóctel: hasta qué tick vale y cuántas fichas de suerte le quedan de ese cóctel. */
+        public long luckUntil = -1;
+        public int luckLeft;
         public long lastBonus = -1;
         public int levelGiven;
         public boolean cardGiven;
@@ -132,7 +135,68 @@ public final class CasinoStats extends SavedData {
         if (server == null || id == null || (stake <= 0 && payout <= 0)) {
             return;
         }
-        get(server).add(server, id, name, game, stake, stake > 0 ? 1 : 0, payout);
+        CasinoStats s = get(server);
+        s.add(server, id, name, game, stake, stake > 0 ? 1 : 0, payout);
+        s.luck(server, id, stake, payout);
+    }
+
+    /** Empieza la suerte de un cóctel: dura lo que el efecto y trae un tope de fichas según el nivel de socio. */
+    public static void luckStart(ServerPlayer p, int ticks) {
+        MinecraftServer server = com.casino.plat.Plat.server(p);
+        CasinoStats s = get(server);
+        Entry e = s.entryOrNew(p.getUUID(), p.getGameProfile().getName());
+        e.luckUntil = server.overworld().getGameTime() + ticks;
+        e.luckLeft = Membership.LUCK_CAP[e.level()];
+        s.setDirty();
+    }
+
+    /**
+     * La Suerte del cóctel sí cuenta en el casino: si el jugador la tiene (y es la del bartender, dentro de su tiempo), un premio paga
+     * un extra de la ganancia y una apuesta perdida a veces devuelve la mitad. Las fichas salen aparte, hasta el tope del cóctel.
+     */
+    private void luck(MinecraftServer server, UUID id, long stake, long payout) {
+        Entry e = players.get(id);
+        if (e == null || e.luckLeft <= 0 || e.luckUntil < 0) {
+            return;
+        }
+        if (server.overworld().getGameTime() > e.luckUntil) {
+            e.luckLeft = 0;
+            setDirty();
+            return;
+        }
+        ServerPlayer p = server.getPlayerList().getPlayer(id);
+        if (p == null || !p.hasEffect(net.minecraft.world.effect.MobEffects.LUCK)) {
+            return;
+        }
+        int lv = e.level();
+        long bonus;
+        boolean save;
+        if (payout > stake) {
+            bonus = Math.max(1, (payout - stake) * Membership.LUCK_BONUS_PCT[lv] / 100);
+            save = false;
+        } else if (payout <= 0 && stake >= 2 && p.getRandom().nextInt(100) < Membership.LUCK_SAVE_PCT[lv]) {
+            bonus = stake / 2;
+            save = true;
+        } else {
+            return;
+        }
+        bonus = Math.min(bonus, e.luckLeft);
+        if (bonus <= 0) {
+            return;
+        }
+        e.luckLeft -= (int) bonus;
+        e.won += bonus;
+        e.dWon += bonus;
+        rev++;
+        setDirty();
+        com.casino.chip.Chips.give(p, (int) bonus);
+        com.casino.plat.Plat.msg(p, net.minecraft.network.chat.Component.translatable(save ? "casino.luck.save" : "casino.luck.bonus", bonus, e.luckLeft)
+                .withStyle(net.minecraft.ChatFormatting.GREEN), false);
+        p.level().playSound(null, p.getX(), p.getY(), p.getZ(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME,
+                net.minecraft.sounds.SoundSource.PLAYERS, 0.9F, save ? 1.0F : 1.5F);
+        if (p.level() instanceof net.minecraft.server.level.ServerLevel sl) {
+            sl.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, p.getX(), p.getY() + 1.2, p.getZ(), 10, 0.4, 0.5, 0.4, 0.02);
+        }
     }
 
     public static void play(ServerPlayer p, int game, long stake, long payout) {
@@ -438,6 +502,8 @@ public final class CasinoStats extends SavedData {
                 e.wheelSpins = Nbt.i(t, "ws");
                 e.drinks = Nbt.i(t, "dr");
                 e.lastDrink = Nbt.has(t, "ld") ? Nbt.l(t, "ld") : -1;
+                e.luckUntil = Nbt.has(t, "lu") ? Nbt.l(t, "lu") : -1;
+                e.luckLeft = Nbt.i(t, "ll");
                 e.lastBonus = Nbt.has(t, "lb") ? Nbt.l(t, "lb") : -1;
                 e.levelGiven = Nbt.has(t, "lg") ? Nbt.i(t, "lg") : Membership.level(e.wagered);
                 e.cardGiven = Nbt.b(t, "card");
@@ -489,6 +555,8 @@ public final class CasinoStats extends SavedData {
             t.putInt("ws", e.wheelSpins);
             t.putInt("dr", e.drinks);
             t.putLong("ld", e.lastDrink);
+            t.putLong("lu", e.luckUntil);
+            t.putInt("ll", e.luckLeft);
             t.putLong("lb", e.lastBonus);
             t.putInt("lg", e.levelGiven);
             t.putBoolean("card", e.cardGiven);

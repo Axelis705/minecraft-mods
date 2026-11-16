@@ -256,13 +256,13 @@ for x in (15, 19, 23, 27, 32, 36, 40, 44):
 # faroles del porche y del balcón
 for x in (21, 25, 34, 38):
     o.set(x, Y2 - 1, 40, 'minecraft:lantern[hanging=true]')
-# barandas para amarrar caballos y bebederos frente al saloon
+# postes para amarrar caballos y abrevaderos frente al saloon; ruedas de carreta recargadas en la fachada y escupideras en el porche
 for x in list(range(17, 22)) + list(range(38, 43)):
-    o.set(x, 1, 44, 'minecraft:spruce_fence')
-for x in (17, 21, 38, 42):
-    o.set(x, 1, 44, 'minecraft:stripped_spruce_wood[axis=y]')
+    o.set(x, 1, 44, 'casino:hitching_post[facing=south]')
 for x in (23, 24, 35, 36):
-    o.set(x, 1, 44, 'minecraft:water_cauldron[level=3]')
+    o.set(x, 1, 44, 'casino:water_trough[facing=south]')
+o.set(17, 1, 39, 'casino:wagon_wheel[facing=south]'); o.set(42, 1, 39, 'casino:wagon_wheel[facing=south]')
+o.set(27, 1, 39, 'casino:spittoon[facing=south]'); o.set(32, 1, 39, 'casino:spittoon[facing=south]')
 
 # ---- techo: dos aguas bajas detrás del frontón (cumbrera al centro)
 for x in range(SX0, SX1 + 1):
@@ -469,7 +469,20 @@ o.set(SX1 - 2, 4, 33, 'casino:wanted_poster[design=0,facing=west]')
 o.set(SX0 + 2, 4, 33, 'casino:wanted_poster[design=1,facing=east]')
 o.set(24, 4, IZ0, 'casino:wanted_poster[design=2,facing=south]')
 o.set(35, 4, IZ0, 'casino:wanted_poster[design=3,facing=south]')
-# cornamenta (cráneo de toro) sobre la escalera
+# ---- objetos del Oeste: cráneo de res sobre el letrero WHISKEY, caja registradora y lámparas en la barra, escupideras al pie de la
+#      barra, barriles de whisky en el rincón de la pianola, herraduras de la suerte a los lados de la puerta, perchero a la entrada
+#      y armeros junto a los sheriffs de la escalera
+o.set(SX0 + 2, 7, 19, 'casino:longhorn_skull[facing=east]')
+o.set(BAR_X, 2, 20, 'casino:cash_register[facing=west]')
+for z in (14, 24):
+    o.set(BAR_X, 2, z, 'casino:oil_lamp')
+for z in (16, 26):
+    o.set(BAR_X + 1, 1, z, 'casino:spittoon[facing=east]')
+for z in (35, 36):
+    o.set(17, 1, z, 'casino:whiskey_barrel[facing=east]')
+o.set(28, 3, 36, 'casino:horseshoe[facing=north]'); o.set(31, 3, 36, 'casino:horseshoe[facing=north]')
+o.set(27, 1, 36, 'casino:coat_rack')
+o.set(27, 2, 16, 'casino:rifle_rack[facing=west]'); o.set(32, 2, 16, 'casino:rifle_rack[facing=east]')
 
 # ================================================================== PRIMER PISO (tarjeta Plata)
 # muros interiores de los cuartos del frente (z 32..37) y su pasillo (z 30..31)
@@ -539,7 +552,7 @@ for z in (34, 35):
     o.set(33, Y, z, 'casino:saloon_desk[facing=west]')
     o.set(32, Y, z, 'casino:saloon_chair[facing=east]')
 o.set(34, Y, 34, 'casino:casino_chair_black[facing=west]')
-o.set(33, Y + 1, 34, 'minecraft:lantern'); o.set(33, Y + 1, 35, 'casino:drinks[facing=west,drinks=1]')
+o.set(33, Y + 1, 34, 'casino:oil_lamp'); o.set(33, Y + 1, 35, 'casino:drinks[facing=west,drinks=1]')
 for z in (33, 36):
     o.set(35, Y, z, 'minecraft:bookshelf'); o.set(35, Y + 1, z, 'minecraft:bookshelf')
 o.set(35, Y, 35, 'minecraft:chest[facing=west]')
@@ -551,6 +564,10 @@ o.set(24, Y, 33, 'minecraft:bookshelf'); o.set(24, Y + 1, 33, 'minecraft:bookshe
 o.set(26, Y2 + 3, 36, 'casino:wanted_poster[design=0,facing=north]')
 o.set(33, Y2 + 3, 36, 'casino:wanted_poster[design=3,facing=north]')
 chandelier(29, YR - 2, 34, chain=1)
+o.set(35, Y + 2, 34, 'casino:longhorn_skull[facing=west]')          # sobre el sillón del jefe
+o.set(24, Y + 2, 35, 'casino:rifle_rack[facing=east]')              # sobre los sillones
+o.set(28, Y, 33, 'casino:coat_rack')                                 # perchero a la entrada
+o.set(21, Y + 1, 35, 'casino:oil_lamp')                              # cuarto del oeste: lámpara en la mesita
 
 # ================================================================== ANEXO OESTE: RODEO (toro mecánico)
 RX0, RX1, RZ0 = 3, SX0, 20
@@ -628,6 +645,10 @@ o.set(13, 1, 34, 'minecraft:barrel[facing=up]'); o.set(13, 2, 34, 'casino:drinks
 o.set(6, 1, 26, 'minecraft:barrel[facing=up]'); o.set(12, 1, 26, 'minecraft:barrel[facing=up]')
 o.set(RX0 + 2, 4, 30, 'casino:wanted_poster[design=1,facing=east]'); o.set(SX0 - 2, 4, 28, 'casino:wanted_poster[design=2,facing=west]')
 chandelier(RCX, 5, RCZ, chain=0)
+o.set(RCX, 4, RZ0 + 2, 'casino:longhorn_skull[facing=south]')        # cráneo sobre las gradas
+o.set(6, 1, 36, 'casino:saddle_stand[facing=north]'); o.set(12, 1, 36, 'casino:saddle_stand[facing=north]')
+o.set(RX0 + 2, 1, 24, 'casino:wagon_wheel[facing=east]'); o.set(SX0 - 2, 1, 24, 'casino:wagon_wheel[facing=west]')
+o.set(RCX, 4, SZ1 - 2, 'casino:horseshoe[facing=north]')             # herradura sobre la entrada de la calle
 for z in (24, 34):
     lantern(RCX, 6, z, 1)
 o.marker(5, 1, 33, 'wpatron 1 0', [(0, 0, 0, 'minecraft:light_blue_wool')])
@@ -724,6 +745,7 @@ for x in range(52, 56):
     o.set(x, 1, 36, 'casino:saloon_bench[facing=north]')
 for z in (33, 35):
     o.set(TX1 - 2, 3, z, f'casino:wanted_poster[design={z % 4},facing=west]')
+o.set(TX1 - 2, 3, 34, 'casino:rifle_rack[facing=west]'); o.set(TX0 + 2, 3, 34, 'casino:rifle_rack[facing=east]')
 
 # ================================================================== PATIO TRASERO: torre de agua, letrina, barriles
 WTX, WTZ = 51, 6

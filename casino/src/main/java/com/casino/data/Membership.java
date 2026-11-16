@@ -23,6 +23,13 @@ public final class Membership {
     /** El cóctel de la casa: cuánto dura su efecto (segundos) y cuánto hay que esperar para el siguiente (minutos), según el nivel. */
     public static final int[] DRINK_SECONDS = {30, 45, 60, 90, 120};
     public static final int[] DRINK_WAIT_MINUTES = {10, 8, 6, 5, 4};
+    /**
+     * Suerte del cóctel (la de verdad, en los juegos): mientras dura, cada premio paga este porcentaje más de la ganancia, y al perder
+     * hay esta probabilidad (%) de que te devuelvan la mitad de lo apostado. Todo con un tope de fichas por cóctel.
+     */
+    public static final int[] LUCK_BONUS_PCT = {10, 12, 15, 18, 20};
+    public static final int[] LUCK_SAVE_PCT = {15, 18, 20, 22, 25};
+    public static final int[] LUCK_CAP = {100, 200, 400, 700, 1_000};
 
     public static int level(long wagered) {
         int l = 0;

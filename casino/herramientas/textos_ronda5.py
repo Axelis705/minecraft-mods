@@ -179,8 +179,19 @@ k("casino.wheel.dialog.no", "Ahora no", "Not now", "Jetzt nicht", "Pas maintenan
 k("casino.wheel.dialog.ok", "Entendido", "Got it", "Verstanden", "D'accord", "Capito", "Entendi", "Понятно", "わかった", "知道了")
 
 # ---- ronda 6: clientes del casino
-for i, n in enumerate(["Sofía", "Don Ramiro", "Valentina", "Mateo", "Lucía", "Carlos", "Isabela", "Fernando", "Camila", "Diego", "Elena", "Ricardo"]):
+# nombres viejos (uno por piel; las pares son señores y las nones señoras): se quedan por si algo los usa
+for i, n in enumerate(["Carlos", "Valentina", "Mateo", "Sofía", "Don Ramiro", "Isabela", "Fernando", "Camila", "Ricardo", "Lucía", "Diego",
+                       "Doña Elena"]):
     k(f"casino.npc.patron_{i}", n, n, n, n, n, n, n, n, n)
+# nombres de los clientes del Diamond (DealerEntity.patronNameKey): señores, señoras, y don / doña para los de pelo cano
+for pool, names in (("m", ["Mateo", "Carlos", "Fernando", "Ricardo", "Diego", "Andrés", "Javier", "Emilio", "Rodrigo", "Gabriel", "Tomás",
+                           "Joaquín", "Sebastián", "Marco", "Rafael"]),
+                    ("f", ["Sofía", "Valentina", "Lucía", "Isabela", "Camila", "Elena", "Mariana", "Renata", "Victoria", "Paula", "Ximena",
+                           "Daniela", "Regina", "Natalia", "Adriana"]),
+                    ("om", ["Don Ramiro", "Don Arturo", "Don Ernesto", "Don Alfonso", "Don Héctor", "Don Gustavo"]),
+                    ("of", ["Doña Carmen", "Doña Elena", "Doña Rosa", "Doña Beatriz", "Doña Teresa", "Doña Pilar"])):
+    for i, n in enumerate(names):
+        k(f"casino.npc.patron_{pool}_{i}", n, n, n, n, n, n, n, n, n)
 k("casino.npc.patron", "Cliente", "Guest", "Gast", "Client", "Cliente", "Cliente", "Гость", "お客さん", "客人")
 PATRON_TIPS = [
     ("¡Hoy siento que es mi noche de suerte!", "I feel like tonight is my lucky night!", "Heute ist meine Glücksnacht, das spüre ich!",

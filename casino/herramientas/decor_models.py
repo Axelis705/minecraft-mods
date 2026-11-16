@@ -152,7 +152,9 @@ def emit(els, textures, particle, ao=True):
             if e["uv"] == "full":
                 fd["uv"] = [0, 0, 16, 16]
             elif isinstance(e["uv"], dict) and f in e["uv"]:
-                fd["uv"] = e["uv"][f]
+                fd["uv"] = list(e["uv"][f][:4])
+                if len(e["uv"][f]) > 4:                     # quinto número: giro de la textura en esa cara (0/90/180/270)
+                    fd["rotation"] = e["uv"][f][4]
             else:
                 fd["uv"] = auto_uv(f, el["from"], el["to"])
             faces[f] = fd

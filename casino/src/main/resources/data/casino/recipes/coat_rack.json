@@ -1,0 +1,21 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  " W ",
+  " S ",
+  "SSS"
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:brown_wool"
+  },
+  "S": {
+   "item": "minecraft:stick"
+  }
+ },
+ "result": {
+  "item": "casino:coat_rack",
+  "count": 1
+ }
+}

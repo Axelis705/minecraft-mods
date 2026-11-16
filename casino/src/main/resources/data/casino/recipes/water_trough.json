@@ -1,0 +1,20 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "PWP",
+  "PPP"
+ ],
+ "key": {
+  "P": {
+   "item": "minecraft:spruce_planks"
+  },
+  "W": {
+   "item": "minecraft:water_bucket"
+  }
+ },
+ "result": {
+  "item": "casino:water_trough",
+  "count": 1
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "CCC",
+  "CRC",
+  "PPP"
+ ],
+ "key": {
+  "C": {
+   "item": "minecraft:copper_ingot"
+  },
+  "R": {
+   "item": "minecraft:redstone"
+  },
+  "P": {
+   "item": "minecraft:dark_oak_planks"
+  }
+ },
+ "result": {
+  "item": "casino:cash_register",
+  "count": 1
+ }
+}

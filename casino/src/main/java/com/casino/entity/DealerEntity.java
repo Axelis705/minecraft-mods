@@ -51,6 +51,8 @@ public class DealerEntity extends Mob {
     /** Guardia: 0 tranquilo, 1 en alerta (persigue), 2 apuntando (sincronizado para el dibujo). */
     private static final EntityDataAccessor<Integer> COMBAT = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
+    /** Cuál nombre lleva un cliente (-1 = sale de su UUID). Ver {@link #patronNameKey}. */
+    private static final EntityDataAccessor<Integer> NAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GAME = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
     /** Animación que está haciendo: (número de vez × 100) + cuál (ver {@link DealerAnim}); así el cliente nota cuando empieza otra igual. */
     private static final EntityDataAccessor<Integer> ANIM = SynchedEntityData.defineId(DealerEntity.class, EntityDataSerializers.INT);
@@ -126,6 +128,7 @@ public class DealerEntity extends Mob {
     //$$     b.define(ANIM, 0);
     //$$     b.define(TABLE, BlockPos.ZERO);
     //$$     b.define(VARIANT, 0);
+    //$$     b.define(NAME, -1);
     //$$     b.define(COMBAT, 0);
     //$$ }
     //#else
@@ -137,6 +140,7 @@ public class DealerEntity extends Mob {
         this.entityData.define(ANIM, 0);
         this.entityData.define(TABLE, BlockPos.ZERO);
         this.entityData.define(VARIANT, 0);
+        this.entityData.define(NAME, -1);
         this.entityData.define(COMBAT, 0);
     }
     //#endif
@@ -337,6 +341,36 @@ public class DealerEntity extends Mob {
     public void setVariant(int v) {
         // los del Oeste llevan WEST (64) más su número; los demás, su piel de cliente
         this.entityData.set(VARIANT, v >= WEST ? WEST + Math.floorMod(v - WEST, Math.max(WEST_PATRON_SKINS, 1)) : Math.floorMod(v, PATRON_SKINS));
+    }
+
+    public int getNameIndex() {
+        int n = this.entityData.get(NAME);
+        return n >= 0 ? n : Math.floorMod(getUUID().hashCode(), 997);
+    }
+
+    public void setNameIndex(int n) {
+        this.entityData.set(NAME, n);
+    }
+
+    /** Nombres de los clientes del Diamond: las pieles pares son señores y las nones señoras; la 4 y la 11 (pelo cano), "Don" y "Doña". */
+    public static final int PATRON_NAMES_M = 15, PATRON_NAMES_F = 15, PATRON_NAMES_OLD = 6;
+
+    public static boolean patronIsMan(int variant) {
+        return Math.floorMod(variant, PATRON_SKINS) % 2 == 0;
+    }
+
+    public static boolean patronIsOld(int variant) {
+        int s = Math.floorMod(variant, PATRON_SKINS);
+        return s == 4 || s == 11;
+    }
+
+    /** Clave del nombre de un cliente del Diamond según su piel (hombre o mujer, joven o mayor) y su número de nombre. */
+    public static String patronNameKey(int variant, int name) {
+        boolean man = patronIsMan(variant);
+        if (patronIsOld(variant)) {
+            return "casino.npc.patron_o" + (man ? "m_" : "f_") + Math.floorMod(name, PATRON_NAMES_OLD);
+        }
+        return "casino.npc.patron_" + (man ? "m_" : "f_") + Math.floorMod(name, man ? PATRON_NAMES_M : PATRON_NAMES_F);
     }
 
     /** ¿Va vestido del Viejo Oeste? */
@@ -734,6 +768,7 @@ public class DealerEntity extends Mob {
         int secs = com.casino.data.Membership.DRINK_SECONDS[lv];
         sp.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.LUCK, secs * 20, 0));
         com.casino.data.CasinoStats.drank(sp);
+        com.casino.data.CasinoStats.luckStart(sp, secs * 20);
         //#if MC >= 1.21.2
         //$$ level().playSound(null, sp.getX(), sp.getY(), sp.getZ(), net.minecraft.sounds.SoundEvents.GENERIC_DRINK.value(), net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.0F);
         //#else
@@ -741,6 +776,9 @@ public class DealerEntity extends Mob {
         //#endif
         Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.bartender.served", secs,
                 com.casino.data.Membership.DRINK_WAIT_MINUTES[lv]).withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE), true);
+        // en el chat, qué hace la suerte (para que se note que sí sirve)
+        Plat.msg(sp, net.minecraft.network.chat.Component.translatable("casino.luck.info", com.casino.data.Membership.LUCK_BONUS_PCT[lv],
+                com.casino.data.Membership.LUCK_SAVE_PCT[lv], com.casino.data.Membership.LUCK_CAP[lv]).withStyle(net.minecraft.ChatFormatting.GREEN), false);
     }
 
     //#if MC >= 1.21.6
@@ -749,6 +787,7 @@ public class DealerEntity extends Mob {
     //$$     super.addAdditionalSaveData(out);
     //$$     out.putInt("Game", getGame());
     //$$     out.putInt("Variant", getVariant());
+    //$$     out.putInt("PName", this.entityData.get(NAME));
     //$$     out.putInt("PDX", patrolDx);
     //$$     out.putInt("PDZ", patrolDz);
     //$$     if (home != null) {
@@ -764,6 +803,7 @@ public class DealerEntity extends Mob {
     //$$     super.readAdditionalSaveData(in);
     //$$     setGame(in.getIntOr("Game", 0));
     //$$     setVariant(in.getIntOr("Variant", 0));
+    //$$     setNameIndex(in.getIntOr("PName", -1));
     //$$     patrolDx = in.getIntOr("PDX", 0);
     //$$     patrolDz = in.getIntOr("PDZ", 0);
     //$$     int[] hm = in.getIntArray("Home").orElse(new int[0]);
@@ -777,6 +817,7 @@ public class DealerEntity extends Mob {
         super.addAdditionalSaveData(tag);
         tag.putInt("Game", getGame());
         tag.putInt("Variant", getVariant());
+        tag.putInt("PName", this.entityData.get(NAME));
         tag.putInt("PDX", patrolDx);
         tag.putInt("PDZ", patrolDz);
         if (home != null) {
@@ -792,6 +833,7 @@ public class DealerEntity extends Mob {
         super.readAdditionalSaveData(tag);
         setGame(Nbt.i(tag, "Game"));
         setVariant(Nbt.i(tag, "Variant"));
+        setNameIndex(Nbt.has(tag, "PName") ? Nbt.i(tag, "PName") : -1);
         patrolDx = Nbt.i(tag, "PDX");
         patrolDz = Nbt.i(tag, "PDZ");
         int[] hm = Nbt.ia(tag, "Home");

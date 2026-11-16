@@ -195,8 +195,17 @@ public final class MemberScreen extends CasinoScreen {
         }
         // bono por nivel (una línea abajo de los logros)
         g.drawString(font, Component.translatable("casino.member.daily_info", Membership.DAILY[lvl]), ax, ay + 14 + 4 * slot + 4, 0xFF9EA4C0);
-        g.drawString(font, Component.translatable("casino.member.drink_info", Membership.DRINK_SECONDS[lvl], Membership.DRINK_WAIT_MINUTES[lvl]),
-                ax, ay + 14 + 4 * slot + 15, 0xFF9EA4C0);
+        Component drink = Component.translatable("casino.member.drink_info", Membership.DRINK_SECONDS[lvl], Membership.DRINK_WAIT_MINUTES[lvl]);
+        int dy = ay + 14 + 4 * slot + 15;
+        g.drawString(font, drink, ax, dy, 0xFF9EA4C0);
+        // al pasar el ratón por el cóctel: qué hace su suerte en los juegos
+        if (tip == null && mx >= ax && mx < ax + font.width(drink) && my >= dy - 2 && my < dy + 10) {
+            tip = new ArrayList<>();
+            tip.add(Component.translatable("casino.member.luck_title").withStyle(ChatFormatting.GREEN));
+            tip.add(Component.translatable("casino.member.luck_bonus", Membership.LUCK_BONUS_PCT[lvl]).withStyle(ChatFormatting.GRAY));
+            tip.add(Component.translatable("casino.member.luck_save", Membership.LUCK_SAVE_PCT[lvl]).withStyle(ChatFormatting.GRAY));
+            tip.add(Component.translatable("casino.member.luck_cap", Membership.LUCK_CAP[lvl]).withStyle(ChatFormatting.YELLOW));
+        }
         drawWidgets(g, mx, my, pt);
         if (tip != null) {
             g.renderTooltip(font, tip, mx, my);

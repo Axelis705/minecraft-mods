@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "casino:block/west/coat_rack"
+  },
+  "facing=east": {
+   "model": "casino:block/west/coat_rack"
+  },
+  "facing=south": {
+   "model": "casino:block/west/coat_rack"
+  },
+  "facing=west": {
+   "model": "casino:block/west/coat_rack"
+  }
+ }
+}

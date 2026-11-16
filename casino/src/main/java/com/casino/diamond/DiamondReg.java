@@ -82,12 +82,13 @@ public final class DiamondReg {
         });
         TemplateCasinoPiece.Extra.register("guard", (a, pos, level, rot, box, dir) -> npc(DealerEntity.GAME_GUARD, a, pos, level, rot, box, dir));
         // anfitrión de la ruleta de la suerte: "wheelhost dir [x|z]" (busca solo la ruleta que tiene cerca)
-        // clientes del casino: "patron dir [piel]" (sin piel = una al azar); pasean cerca de donde aparecen
+        // clientes del casino: "patron dir [piel [nombre]]" (sin piel o sin nombre = al azar); pasean cerca de donde aparecen
         TemplateCasinoPiece.Extra.register("patron", (a, pos, level, rot, box, dir) -> {
             DealerEntity p = npc(DealerEntity.GAME_PATRON, a, pos, level, rot, box, dir);
             if (p != null) {
                 int v = a.length > 2 ? parse(a[2]) : level.getRandom().nextInt(DealerEntity.PATRON_SKINS);
                 p.setVariant(v);
+                p.setNameIndex(a.length > 3 ? parse(a[3]) : level.getRandom().nextInt(997));
                 p.setHome(pos);
             }
         });

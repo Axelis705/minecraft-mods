@@ -2053,8 +2053,16 @@ PATRONS = [(26, 1, 36), (34, 1, 36), (26, 1, 21), (12, 1, 26), (18, 1, 37), (46,
            (21, 13, 47), (39, 13, 47), (22, 13, 36),                   # terraza
            (25, 47, 24), (35, 47, 28),                                 # penthouse
            (20, -11, 24), (14, -11, 16), (44, -11, 28)]                # sótano (salón VIP y carreras)
+# Nombre de cada uno (último número): las pieles pares son señores y las nones señoras; la 4 y la 11 son don y doña. Se reparten en
+# orden dentro de cada lista para que en un mismo casino no se repita ningún nombre (ver DealerEntity.patronNameKey).
+_names = {}
 for i, (x, y, z) in enumerate(PATRONS):
-    o.marker(x, y, z, f'patron {i % 4} {(i * 5) % 12}', [(0, 0, 0, 'minecraft:light_blue_wool')])
+    skin = (i * 5) % 12
+    pool = ('o' if skin in (4, 11) else '') + ('m' if skin % 2 == 0 else 'f')
+    n = _names.get(pool, 0)
+    _names[pool] = n + 1
+    o.marker(x, y, z, f'patron {i % 4} {skin} {n}', [(0, 0, 0, 'minecraft:light_blue_wool')])
+assert _names.get('m', 0) <= 15 and _names.get('f', 0) <= 15 and _names.get('om', 0) <= 6 and _names.get('of', 0) <= 6, _names
 
 # ================================================================== CORDONES: uniones ya calculadas en la plantilla (rectas y en diagonal)
 def _ropes():

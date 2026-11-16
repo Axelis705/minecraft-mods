@@ -1,0 +1,23 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  " N ",
+  "SBS"
+ ],
+ "key": {
+  "N": {
+   "item": "minecraft:iron_nugget"
+  },
+  "S": {
+   "item": "minecraft:stick"
+  },
+  "B": {
+   "item": "minecraft:barrel"
+  }
+ },
+ "result": {
+  "item": "casino:whiskey_barrel",
+  "count": 1
+ }
+}

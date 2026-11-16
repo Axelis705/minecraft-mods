@@ -123,6 +123,32 @@ public final class ModDecor {
     public static final RegistryObject<Block> WHEEL_CHANDELIER = block("wheel_chandelier", p -> new DecorBlock(p.mapColor(MapColor.WOOD)
             .strength(1.0F).sound(SoundType.WOOD).noOcclusion().lightLevel(s -> 15), false, new double[]{5.5, 2.5, 5.5, 10.5, 16, 10.5}));
 
+    // segunda tanda del Oeste: objetos sueltos (los de pared se ponen apuntando a la pared y quedan pegados a ella)
+    public static final RegistryObject<Block> SPITTOON = block("spittoon", p -> new DecorBlock(p.mapColor(MapColor.GOLD).strength(1.0F)
+            .sound(SoundType.METAL).noOcclusion(), true, new double[]{3, 0, 3, 13, 7, 13}));
+    public static final RegistryObject<Block> LONGHORN_SKULL = block("longhorn_skull", p -> new DecorBlock(p.mapColor(MapColor.SAND).strength(1.0F)
+            .sound(SoundType.BONE_BLOCK).noOcclusion(), true, new double[]{4, 1, 11.5, 12, 14, 16}));
+    public static final RegistryObject<Block> HORSESHOE = block("horseshoe", p -> new DecorBlock(p.mapColor(MapColor.METAL).strength(1.0F)
+            .sound(SoundType.METAL).noOcclusion(), true, new double[]{4, 3.5, 14, 12, 12.7, 16}));
+    public static final RegistryObject<Block> WAGON_WHEEL = block("wagon_wheel", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(1.5F)
+            .sound(SoundType.WOOD).noOcclusion(), true, new double[]{0, 0, 12, 16, 16, 16}));
+    public static final RegistryObject<Block> OIL_LAMP = block("oil_lamp", p -> new DecorBlock(p.mapColor(MapColor.GOLD).strength(0.5F)
+            .sound(SoundType.LANTERN).noOcclusion().lightLevel(s -> 14), false, new double[]{5, 0, 5, 11, 12.6, 11}));
+    public static final RegistryObject<Block> WHISKEY_BARREL = block("whiskey_barrel", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(2.0F)
+            .sound(SoundType.WOOD).noOcclusion(), true, new double[]{0.8, 0, 1, 15.2, 15.8, 15.4}));
+    public static final RegistryObject<Block> SADDLE_STAND = block("saddle_stand", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(1.5F)
+            .sound(SoundType.WOOD).noOcclusion(), true, new double[]{1, 0, 3, 15, 16, 13}));
+    public static final RegistryObject<Block> WATER_TROUGH = block("water_trough", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(2.0F)
+            .sound(SoundType.WOOD).noOcclusion(), true, new double[]{0, 0, 1.7, 16, 10.2, 14.3}));
+    public static final RegistryObject<Block> HITCHING_POST = block("hitching_post", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(2.0F)
+            .sound(SoundType.WOOD).noOcclusion(), true, new double[]{0, 0, 6.4, 16, 14.8, 9.6}));
+    public static final RegistryObject<Block> COAT_RACK = block("coat_rack", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(1.0F)
+            .sound(SoundType.WOOD).noOcclusion(), false, new double[]{6.6, 0, 6.6, 9.4, 16, 9.4}));
+    public static final RegistryObject<Block> CASH_REGISTER = block("cash_register", p -> new DecorBlock(p.mapColor(MapColor.GOLD).strength(1.5F)
+            .sound(SoundType.METAL).noOcclusion(), true, new double[]{1.5, 0, 2, 14.5, 14.2, 14}));
+    public static final RegistryObject<Block> RIFLE_RACK = block("rifle_rack", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(1.5F)
+            .sound(SoundType.WOOD).noOcclusion(), true, new double[]{0.6, 1.6, 12, 15.4, 14.4, 16}));
+
     public static final List<RegistryObject<Block>> ROPE_POSTS = new ArrayList<>();
 
     static {

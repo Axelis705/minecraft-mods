@@ -1,0 +1,17 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "C C",
+  " C "
+ ],
+ "key": {
+  "C": {
+   "item": "minecraft:copper_ingot"
+  }
+ },
+ "result": {
+  "item": "casino:spittoon",
+  "count": 1
+ }
+}

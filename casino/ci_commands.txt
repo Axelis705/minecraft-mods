@@ -107,6 +107,7 @@ execute if entity @e[type=casino:dealer,nbt={Game:6},x=70,y=101,z=170,distance=.
 execute if block 70 67 161 casino:vault_door[facing=south,open=false] if block 64 66 162 casino:card_reader[facing=south,lit=false] if block 46 90 184 casino:wall_safe[facing=east,open=false] if block 68 77 174 casino:laser_emitter if block 47 65 169 casino:laser_emitter if block 63 65 151 casino:loot_cart if block 58 81 163 casino:security_camera if block 96 101 143 minecraft:iron_door if block 57 77 167 minecraft:iron_door if block 58 77 165 casino:camera_console if block 70 69 161 casino:vault_seal run say PRUEBA_BOVEDA_BLOQUES
 execute if entity @e[type=casino:dealer,nbt={Game:7},x=61,y=77,z=167,distance=..6] if entity @e[type=casino:dealer,nbt={Game:7},x=61,y=65,z=167,distance=..6] if entity @e[type=casino:dealer,nbt={Game:7},x=50,y=89,z=178,distance=..30] if entity @e[type=casino:dealer,nbt={Game:8},x=94.5,y=101,z=142.5,distance=..2] run say PRUEBA_BOVEDA_GENTE
 execute if block 184 102 170 casino:lucky_wheel[facing=west,px=1,py=0] if block 199 102 170 casino:elevator[facing=west] run say PRUEBA_DIAMOND_GIRO
+execute if entity @e[type=casino:dealer,nbt={Game:6,Variant:5,PName:0}] if entity @e[type=casino:dealer,nbt={Game:6,Variant:4,PName:0}] run say PRUEBA_DIAMOND_NOMBRES
 execute if block 70 102 167 casino:lucky_wheel run say DIAG_DIAMOND_RUEDA
 execute if block 62 113 168 casino:roulette run say DIAG_DIAMOND_RULETA_PISO1
 execute if block 70 90 152 casino:elevator run say DIAG_DIAMOND_ELEV_SOTANO
@@ -131,6 +132,7 @@ casino build 300 100 140 0 saloon
 execute if block 329 101 178 casino:saloon_door[facing=north,hinge=left] if block 330 101 178 casino:saloon_door[facing=north,hinge=right] if block 329 101 159 casino:vip_gate[access=1] run say PRUEBA_SALOON_PUERTAS
 execute if block 317 101 173 casino:player_piano[facing=east] if block 327 119 179 casino:painted_letter[glyph=18,facing=south] run say PRUEBA_SALOON_DECOR
 execute if block 324 101 162 casino:blackjack if block 335 101 162 casino:blackjack if block 322 109 153 casino:blackjack if block 342 101 159 casino:lucky_wheel[facing=west,px=1,py=0] if block 339 101 173 casino:cashier run say PRUEBA_SALOON_MESAS
+execute if block 319 102 160 casino:cash_register[facing=west] if block 317 107 159 casino:longhorn_skull[facing=east] if block 317 101 184 casino:hitching_post[facing=south] if block 319 102 154 casino:oil_lamp if block 327 101 176 casino:coat_rack run say PRUEBA_SALOON_OBJETOS
 execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=327.5,y=101,z=159.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=332.5,y=101,z=159.5,distance=..1.5] run say PRUEBA_SALOON_SHERIFF
 execute if entity @e[type=casino:dealer,nbt={Game:4,Variant:64},x=318.5,y=101,z=155.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:0,Variant:64},x=324.5,y=101,z=161.5,distance=..2] run say PRUEBA_SALOON_PERSONAL
 execute if entity @e[type=casino:dealer,nbt={Game:6,Variant:69},x=317,y=109,z=151,distance=..14] run say PRUEBA_SALOON_VAQUEROS
@@ -192,12 +194,14 @@ execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=0,y=-60,z=600,
 #expect PRUEBA_BOVEDA_BLOQUES
 #expect PRUEBA_BOVEDA_GENTE
 #expect PRUEBA_DIAMOND_GIRO
+#expect PRUEBA_DIAMOND_NOMBRES
 #expect PRUEBA_DIAMOND_ESTRUCTURA
 #expect PRUEBA_DIAMOND_CARRERAS
 #expect PRUEBA_DIAMOND_CARRERA_CORRE
 #expect PRUEBA_SALOON_PUERTAS
 #expect PRUEBA_SALOON_DECOR
 #expect PRUEBA_SALOON_MESAS
+#expect PRUEBA_SALOON_OBJETOS
 #expect PRUEBA_SALOON_SHERIFF
 #expect PRUEBA_SALOON_PERSONAL
 #expect PRUEBA_SALOON_VAQUEROS

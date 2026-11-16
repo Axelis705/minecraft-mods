@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "casino:block/west/oil_lamp"
+  },
+  "facing=east": {
+   "model": "casino:block/west/oil_lamp"
+  },
+  "facing=south": {
+   "model": "casino:block/west/oil_lamp"
+  },
+  "facing=west": {
+   "model": "casino:block/west/oil_lamp"
+  }
+ }
+}
