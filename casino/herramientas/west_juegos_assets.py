@@ -278,6 +278,27 @@ def dice_table():
     dm.write(os.path.join(A, "models", "item", "liars_dice.json"), {"parent": "casino:block/west/liars_dice", "display": dm.DISPLAY})
 
 
+def arm_table():
+    """Mesa alta de vencidas (se juega de pie): cubierta gruesa de nogal con raya de latón al centro, patas fuertes y travesaños.
+    Los cojines de los codos, las agarraderas y los brazos los dibuja el renderizador."""
+    dm.TEX.update({"w_walnut": T("walnut"), "w_dark": T("walnut_dark"), "w_brass": T("brass"), "v_felt": "minecraft:block/green_wool"})
+    els = [box([1, 12, 1], [15, 14, 15], "w_walnut"),                      # cubierta
+           box([0.6, 11.4, 0.6], [15.4, 12, 15.4], "w_dark"),              # moldura de abajo
+           box([2.5, 14, 2.5], [13.5, 14.15, 13.5], "v_felt"),             # tapete
+           box([2.5, 14.15, 7.8], [13.5, 14.3, 8.2], "w_brass"),           # raya del centro
+           box([2, 0, 2], [4.5, 11.4, 4.5], "w_dark"), box([11.5, 0, 2], [14, 11.4, 4.5], "w_dark"),
+           box([2, 0, 11.5], [4.5, 11.4, 14], "w_dark"), box([11.5, 0, 11.5], [14, 11.4, 14], "w_dark"),
+           box([4.5, 3, 2.75], [11.5, 4.5, 3.75], "w_walnut"), box([4.5, 3, 12.25], [11.5, 4.5, 13.25], "w_walnut"),
+           box([2.75, 3, 4.5], [3.75, 4.5, 11.5], "w_walnut"), box([12.25, 3, 4.5], [13.25, 4.5, 11.5], "w_walnut"),
+           box([1.6, 0, 1.6], [4.9, 0.6, 4.9], "w_brass"), box([11.1, 0, 1.6], [14.4, 0.6, 4.9], "w_brass"),
+           box([1.6, 0, 11.1], [4.9, 0.6, 14.4], "w_brass"), box([11.1, 0, 11.1], [14.4, 0.6, 14.4], "w_brass")]
+    m = dm.emit(els, {}, T("walnut"))
+    dm.write(os.path.join(A, "models", "block", "west", "arm_table.json"), m)
+    v = {f"facing={f}": {"model": "casino:block/west/arm_table", "y": y} for f, y in DIRS}
+    dm.write(os.path.join(A, "blockstates", "arm_table.json"), {"variants": v})
+    dm.write(os.path.join(A, "models", "item", "arm_table.json"), {"parent": "casino:block/west/arm_table", "display": dm.DISPLAY})
+
+
 def bull_block():
     # el toro entero lo dibuja el renderizador; el bloque no tiene modelo propio
     v = {f"facing={f}": {"model": "casino:block/heist/empty", "y": y} for f, y in DIRS}
@@ -294,7 +315,8 @@ if __name__ == "__main__":
     bull_block()
     duel_bell()
     dice_table()
-    for n in ("mechanical_bull", "shooting_gallery", "duel_bell", "liars_dice"):
+    arm_table()
+    for n in ("mechanical_bull", "shooting_gallery", "duel_bell", "liars_dice", "arm_table"):
         dm.loot(n)
     if "--preview" in sys.argv:
         out = sys.argv[sys.argv.index("--preview") + 1]

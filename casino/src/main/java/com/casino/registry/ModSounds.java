@@ -29,6 +29,8 @@ public final class ModSounds {
     public static final RegistryObject<SoundEvent> DUEL_DRAW = reg("duel_draw");
     /** Dados del mentiroso: los dados sonando dentro del cubilete. */
     public static final RegistryObject<SoundEvent> DICE_SHAKE = reg("dice_shake");
+    /** Vencidas: la mano del perdedor golpea la mesa. */
+    public static final RegistryObject<SoundEvent> ARM_SLAM = reg("arm_slam");
 
     /** El "tic" del puntero al pasar por cada casilla. */
     public static final RegistryObject<SoundEvent> WHEEL_TICK = reg("wheel_tick");

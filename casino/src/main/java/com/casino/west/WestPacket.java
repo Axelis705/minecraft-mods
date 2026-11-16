@@ -16,12 +16,19 @@ public final class WestPacket {
     public static final int BULL_BET = 0;
     public static final int GALLERY_BET = 1;
     public static final int BULL_INPUT = 2;
-    /** value = pistolero * 100000 + apuesta */
-    public static final int DUEL_BET = 3;
     /** Dados del mentiroso: apostar para empezar, subir (value = cantidad * 10 + cara) y gritar "¡mentiroso!". */
     public static final int DICE_BET = 4;
     public static final int DICE_BID = 5;
     public static final int DICE_CALL = 6;
+    /** Retos (duelo y vencidas): contra NPC (value = rival * 100000 + apuesta), contra jugador (value = apuesta), aceptar, cancelar,
+     *  rendirse; duelo: tecla (value = ms * 256 + letra); vencidas: golpes (value = cuántos). */
+    public static final int MATCH_NPC = 7;
+    public static final int MATCH_PVP = 8;
+    public static final int MATCH_ACCEPT = 9;
+    public static final int MATCH_CANCEL = 10;
+    public static final int MATCH_GIVE_UP = 11;
+    public static final int DUEL_KEY = 12;
+    public static final int ARM_TAPS = 13;
 
     public final int action;
     public final BlockPos pos;
@@ -53,7 +60,9 @@ public final class WestPacket {
             }
             return;
         }
-        if (!p.level().isLoaded(m.pos) || p.distanceToSqr(m.pos.getX() + 0.5, m.pos.getY() + 0.5, m.pos.getZ() + 0.5) > 8 * 8) {
+        // quien juega un reto puede estar lejos de la campana (el duelista del otro lado de la calle)
+        double reach = m.action == DUEL_KEY || m.action == ARM_TAPS || m.action == MATCH_GIVE_UP ? 40 : 8;
+        if (!p.level().isLoaded(m.pos) || p.distanceToSqr(m.pos.getX() + 0.5, m.pos.getY() + 0.5, m.pos.getZ() + 0.5) > reach * reach) {
             return;
         }
         if (m.action == BULL_BET) {
@@ -86,12 +95,25 @@ public final class WestPacket {
                     be.playerCall(p);
                 }
             }
-        } else if (m.action == DUEL_BET) {
-            if (p.level().getBlockEntity(m.pos) instanceof DuelBE be) {
-                if (be.phase() != DuelBE.IDLE) {
-                    Plat.msg(p, Component.translatable("casino.duel.busy").withStyle(ChatFormatting.YELLOW), true);
-                } else {
-                    be.begin(p, m.value / 100000, m.value % 100000);
+        } else if (m.action >= MATCH_NPC && m.action <= ARM_TAPS) {
+            if (!(p.level().getBlockEntity(m.pos) instanceof MatchBE be)) {
+                return;
+            }
+            switch (m.action) {
+                case MATCH_NPC -> be.challengeNpc(p, m.value / 100000, m.value % 100000);
+                case MATCH_PVP -> be.challengePvp(p, m.value);
+                case MATCH_ACCEPT -> be.accept(p);
+                case MATCH_CANCEL -> be.cancel(p);
+                case MATCH_GIVE_UP -> be.giveUp(p);
+                case DUEL_KEY -> {
+                    if (be instanceof DuelBE d) {
+                        d.press(p, (char) (m.value & 0xFF), m.value >>> 8);
+                    }
+                }
+                default -> {
+                    if (be instanceof ArmBE a) {
+                        a.taps(p, m.value);
+                    }
                 }
             }
         } else if (m.action == GALLERY_BET) {

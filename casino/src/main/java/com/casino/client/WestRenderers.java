@@ -452,7 +452,7 @@ public final class WestRenderers {
             net.minecraft.core.BlockPos o = be.getBlockPos();
             Box3 b = new Box3(d.cutout(Box3.WHITE), ps.last(), light);
             // las dos X de gis en la calle (la tuya y la del pistolero)
-            for (net.minecraft.core.BlockPos m : new net.minecraft.core.BlockPos[]{be.playerMark(), be.npcMark()}) {
+            for (net.minecraft.core.BlockPos m : new net.minecraft.core.BlockPos[]{be.spot(0), be.spot(1)}) {
                 double x = m.getX() - o.getX() + 0.5, y = m.getY() - o.getY() + 0.012, z = m.getZ() - o.getZ() + 0.5;
                 for (int k = -5; k <= 5; k++) {
                     double s = k * 0.07;
@@ -468,14 +468,116 @@ public final class WestRenderers {
             ps.mulPose(Axis.YP.rotationDegrees(-f.getCounterClockWise().toYRot()));
             ps.translate(0, 0, 0.19);
             label(ps, d, Component.translatable("casino.duel.board_title"), 0, 1.08F, 0.0F, 0.065F, 0xFF7A2010, light);
-            if (be.bestTicks() > 0) {
+            if (be.bestMs() > 0) {
                 label(ps, d, Component.literal(be.bestName()), 0, 0.98F, 0.0F, 0.055F, 0xFF2A1A0A, light);
-                label(ps, d, Component.literal(String.format(java.util.Locale.ROOT, "%.2f s", be.bestTicks() / 20.0)), 0, 0.86F, 0.0F, 0.065F,
+                label(ps, d, Component.literal(String.format(java.util.Locale.ROOT, "%.3f s", be.bestMs() / 1000.0)), 0, 0.86F, 0.0F, 0.065F,
                         0xFF1A4A1A, light);
             } else {
                 label(ps, d, Component.translatable("casino.duel.board_empty"), 0, 0.92F, 0.0F, 0.05F, 0xFF2A1A0A, light);
             }
             ps.popPose();
+            matchText(be, ps, d, 0.5, 2.3, 0.5);
+        }
+    }
+
+    /** Texto que flota y mira a la cámara (varias líneas, la última abajo). */
+    static void floating(PoseStack ps, Draw d, double x, double y, double z, Component... lines) {
+        net.minecraft.client.gui.Font font = Draw.font();
+        ps.pushPose();
+        ps.translate(x, y, z);
+        ps.mulPose(Draw.camRot());
+        ps.scale(0.022F * Draw.camFlipX(), -0.022F, 0.022F);
+        for (int i = 0; i < lines.length; i++) {
+            d.text(ps, lines[i], -font.width(lines[i]) / 2.0F, (i - lines.length) * 10, 0xFFFFFFFF, 0x50000000, FULL);
+        }
+        ps.popPose();
+    }
+
+    /** Encima del duelo o de la mesa de vencidas: el reto abierto (para que otro lo acepte) o quién está jugando. */
+    static void matchText(com.casino.west.MatchBE be, PoseStack ps, Draw d, double x, double y, double z) {
+        if (be.getLevel() == null || be.phase() == com.casino.west.MatchBE.IDLE) {
+            return;
+        }
+        net.minecraft.core.BlockPos o = be.getBlockPos();
+        if (Draw.camPos().distanceToSqr(o.getX() + x, o.getY() + y, o.getZ() + z) > 20 * 20) {
+            return;
+        }
+        if (be.phase() == com.casino.west.MatchBE.WAITING) {
+            floating(ps, d, x, y, z,
+                    Component.translatable("casino.match.float_open", be.name(0), be.bet()).withStyle(net.minecraft.ChatFormatting.GOLD, net.minecraft.ChatFormatting.BOLD),
+                    Component.translatable("casino.match.float_click", be.waitLeft() / 20).withStyle(net.minecraft.ChatFormatting.YELLOW));
+        } else {
+            floating(ps, d, x, y, z, Component.translatable("casino.match.vs", be.name(0), be.rivalName()).withStyle(net.minecraft.ChatFormatting.GOLD));
+        }
+    }
+
+    // ------------------------------------------------------------------ mesa de vencidas
+
+    public static class Arm extends CasinoBER<com.casino.west.ArmBE> {
+        public Arm(BlockEntityRendererProvider.Context ctx) {
+        }
+
+        private static final double TOP = 14 / 16.0;
+
+        /** Un antebrazo de a hasta b (caja angosta girada). */
+        private static void forearm(PoseStack ps, Draw d, int light, org.joml.Vector3f a, org.joml.Vector3f b, int rgb) {
+            org.joml.Vector3f v = new org.joml.Vector3f(b).sub(a);
+            float len = v.length();
+            if (len < 1e-3F) {
+                return;
+            }
+            ps.pushPose();
+            ps.translate(a.x, a.y, a.z);
+            ps.mulPose(new org.joml.Quaternionf().rotationTo(0, 1, 0, v.x / len, v.y / len, v.z / len));
+            Box3 bx = new Box3(d.cutout(Box3.WHITE), ps.last(), light);
+            bx.box(-0.045, -0.02, -0.045, 0.045, len - 0.03, 0.045, rgb);
+            ps.popPose();
+        }
+
+        @Override
+        protected void draw(com.casino.west.ArmBE be, float partial, PoseStack ps, Draw d, int light, int overlay) {
+            if (be.getLevel() == null) {
+                return;
+            }
+            Direction f = be.facing();
+            ps.pushPose();
+            ps.translate(0.5, 0, 0.5);
+            ps.mulPose(Axis.YP.rotationDegrees(-f.toYRot()));   // +z = hacia el lado 0
+            Box3 b = new Box3(d.cutout(Box3.WHITE), ps.last(), light);
+            // cojines para los codos y agarraderas
+            b.box(0.02, TOP, 0.18, 0.2, TOP + 0.02, 0.38, 0x2A5A2A);
+            b.box(-0.2, TOP, -0.38, -0.02, TOP + 0.02, -0.18, 0x2A5A2A);
+            b.box(-0.3, TOP, 0.2, -0.26, TOP + 0.14, 0.24, 0x8A8A8A);
+            b.box(0.26, TOP, -0.24, 0.3, TOP + 0.14, -0.2, 0x8A8A8A);
+            boolean on = be.phase() == com.casino.west.MatchBE.RUNNING || be.phase() == com.casino.west.MatchBE.RESULT;
+            if (on) {
+                double ang = Math.toRadians(com.casino.game.ArmRules.angle(be.x()));
+                // x > 0 (gana el lado 0): las manos se van hacia -x (la izquierda del lado 0)
+                org.joml.Vector3f hand = new org.joml.Vector3f((float) (-Math.sin(ang) * 0.36), (float) (TOP + 0.04 + Math.cos(ang) * 0.36), 0);
+                org.joml.Vector3f e0 = new org.joml.Vector3f(0.11F, (float) TOP + 0.04F, 0.28F), e1 = new org.joml.Vector3f(-0.11F, (float) TOP + 0.04F, -0.28F);
+                forearm(ps, d, light, e0, hand, 0xC68A5E);
+                if (be.mode() == com.casino.west.MatchBE.PVP) {
+                    forearm(ps, d, light, e1, hand, 0xB07850);
+                }
+                ps.pushPose();
+                ps.translate(hand.x, hand.y, hand.z);
+                ps.mulPose(Axis.ZP.rotation((float) ang));
+                Box3 h = new Box3(d.cutout(Box3.WHITE), ps.last(), light);
+                h.box(-0.07, -0.06, -0.07, 0.07, 0.07, 0.07, 0xD8A070);
+                h.box(-0.072, 0.0, -0.02, 0.072, 0.02, 0.02, 0xB07850);
+                ps.popPose();
+            }
+            ps.popPose();
+            // récord en el borde de la mesa (lado 0)
+            if (be.phase() == com.casino.west.MatchBE.IDLE && Draw.camPos().distanceToSqr(be.getBlockPos().getX() + 0.5, be.getBlockPos().getY() + 1,
+                    be.getBlockPos().getZ() + 0.5) < 12 * 12) {
+                Component l1 = Component.translatable("casino.arm.board_title").withStyle(net.minecraft.ChatFormatting.GOLD, net.minecraft.ChatFormatting.BOLD);
+                Component l2 = be.bestTicks() > 0
+                        ? Component.translatable("casino.arm.record_line", be.bestName(), String.format(java.util.Locale.ROOT, "%.1f", be.bestTicks() / 20.0))
+                        : Component.translatable("casino.arm.board_empty");
+                floating(ps, d, 0.5, 1.75, 0.5, l1, l2.copy().withStyle(net.minecraft.ChatFormatting.AQUA));
+            }
+            matchText(be, ps, d, 0.5, 2.0, 0.5);
         }
     }
 

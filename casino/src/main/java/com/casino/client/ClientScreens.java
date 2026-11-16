@@ -14,4 +14,13 @@ public final class ClientScreens {
         return Minecraft.getInstance().screen == null;
         //#endif
     }
+
+    /** La pantalla abierta (o null). */
+    public static net.minecraft.client.gui.screens.Screen current() {
+        //#if MC >= 26.2
+        //$$ return Minecraft.getInstance().gui.screen();
+        //#else
+        return Minecraft.getInstance().screen;
+        //#endif
+    }
 }

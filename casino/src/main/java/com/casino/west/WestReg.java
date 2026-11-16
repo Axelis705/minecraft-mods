@@ -57,6 +57,10 @@ public final class WestReg {
             .mapColor(MapColor.COLOR_GREEN).strength(-1.0F, 3_600_000.0F).sound(SoundType.WOOL).noOcclusion()));
     public static final RegistryObject<Item> DICE_ITEM = ModItems.ITEMS.register("liars_dice",
             () -> new BlockItem(DICE.get(), Reg.blockItem("liars_dice")));
+    public static final RegistryObject<Block> ARM_TABLE = ModBlocks.BLOCKS.register("arm_table", () -> new WestBlocks.ArmTable(Reg.block("arm_table")
+            .mapColor(MapColor.WOOD).strength(-1.0F, 3_600_000.0F).sound(SoundType.WOOD).noOcclusion()));
+    public static final RegistryObject<Item> ARM_TABLE_ITEM = ModItems.ITEMS.register("arm_table",
+            () -> new BlockItem(ARM_TABLE.get(), Reg.blockItem("arm_table")));
     public static final RegistryObject<Item> REVOLVER = ModItems.ITEMS.register("gallery_revolver",
             () -> new RevolverItem(Reg.item("gallery_revolver").stacksTo(1)));
 
@@ -75,6 +79,8 @@ public final class WestReg {
             () -> Reg.blockEntity(DuelBE::new, DUEL_BELL.get()));
     public static final RegistryObject<BlockEntityType<DiceBE>> DICE_BE = ModBlockEntities.TYPES.register("liars_dice",
             () -> Reg.blockEntity(DiceBE::new, DICE.get()));
+    public static final RegistryObject<BlockEntityType<ArmBE>> ARM_BE = ModBlockEntities.TYPES.register("arm_table",
+            () -> Reg.blockEntity(ArmBE::new, ARM_TABLE.get()));
     public static final RegistryObject<EntityType<BullRideEntity>> BULL_RIDE = ModEntities.ENTITIES.register("bull_ride",
             () -> Reg.entity("bull_ride", EntityType.Builder.<BullRideEntity>of(BullRideEntity::new, MobCategory.MISC).sized(0.001F, 0.001F)
                     .clientTrackingRange(8).updateInterval(1)));

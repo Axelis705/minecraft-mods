@@ -47,6 +47,14 @@ public final class Nbt {
         //#endif
     }
 
+    public static double d(CompoundTag t, String k) {
+        //#if MC >= 1.21.5
+        //$$ return t.getDoubleOr(k, 0.0);
+        //#else
+        return t.getDouble(k);
+        //#endif
+    }
+
     public static String s(CompoundTag t, String k) {
         //#if MC >= 1.21.5
         //$$ return t.getStringOr(k, "");

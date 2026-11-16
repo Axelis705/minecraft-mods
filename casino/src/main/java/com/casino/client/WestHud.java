@@ -53,11 +53,6 @@ public final class WestHud {
             g.fill(sw / 2 - w / 2, 6, sw / 2 + w / 2, 22, 0xC0201008);
             g.drawCenteredString(mc.font, c, sw / 2, 10, 0xFFFFFFFF);
         }
-        com.casino.west.DuelBE db = WestClient.duel();
-        if (db != null) {
-            duel(g, mc, db, sw, sh, pt);
-            return;
-        }
         GalleryBE gb = WestClient.gallery();
         if (gb != null) {
             gallery(g, mc.font, gb, sw, sh, pt);
@@ -68,7 +63,7 @@ public final class WestHud {
         return x10 % 10 == 0 ? "x" + x10 / 10 : "x" + x10 / 10 + "." + x10 % 10;
     }
 
-    private static void big(G g, Font f, Component c, int cx, int cy, float scale, int color) {
+    static void big(G g, Font f, Component c, int cx, int cy, float scale, int color) {
         g.push();
         g.translate(cx, cy, 0);
         g.scale(scale, scale, 1);
@@ -169,74 +164,5 @@ public final class WestHud {
         Component now = x10 > 0 ? Component.translatable("casino.gallery.hud_now", (long) be.bet() * x10 / 10, x(x10)).withStyle(ChatFormatting.GREEN)
                 : Component.translatable("casino.gallery.hud_need", GalleryPlan.SCORE_AT[0]).withStyle(ChatFormatting.GRAY);
         g.drawString(f, now, x + 6, y + 37, 0xFFFFFFFF, false);
-    }
-
-    // ------------------------------------------------------------------ duelo
-
-    private static long drawFor = Long.MIN_VALUE;
-    private static long drawNanos;
-
-    private static void duel(G g, Minecraft mc, com.casino.west.DuelBE be, int sw, int sh, float pt) {
-        Font f = mc.font;
-        int cx = sw / 2;
-        Component name = Component.translatable("casino.npc.duelist_" + (com.casino.entity.DealerEntity.WEST + com.casino.game.DuelRules.SKIN[be.opponent()]));
-        if (be.phase() == com.casino.west.DuelBE.RESULT) {
-            int r = be.result();
-            Component head = switch (r) {
-                case com.casino.west.DuelBE.R_WIN -> Component.translatable("casino.duel.hud_win").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD);
-                case com.casino.west.DuelBE.R_LOSE -> Component.translatable("casino.duel.hud_lose", name).withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
-                case com.casino.west.DuelBE.R_EARLY -> Component.translatable("casino.duel.hud_early").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
-                case com.casino.west.DuelBE.R_LOOKED -> Component.translatable("casino.duel.hud_looked").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
-                default -> Component.translatable("casino.duel.hud_left").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
-            };
-            big(g, f, head, cx, sh / 2 - 46, 2.5F, 0xFFFFFFFF);
-            if (r == com.casino.west.DuelBE.R_WIN) {
-                g.drawCenteredString(f, Component.translatable("casino.duel.hud_time", String.format(Locale.ROOT, "%.2f", be.reaction() / 20.0)), cx, sh / 2 - 24, 0xFFFFFFFF);
-                g.drawCenteredString(f, Component.translatable("casino.duel.won", be.pay()).withStyle(ChatFormatting.GREEN), cx, sh / 2 - 12, 0xFFFFFFFF);
-            } else {
-                g.drawCenteredString(f, Component.translatable("casino.duel.lost", be.bet()).withStyle(ChatFormatting.RED), cx, sh / 2 - 24, 0xFFFFFFFF);
-            }
-            if (r == com.casino.west.DuelBE.R_LOSE) {
-                // destello rojo del golpe
-                g.fill(0, 0, sw, sh, 0x30FF0000);
-            }
-            return;
-        }
-        double t = be.time(pt);
-        boolean holstered = mc.player != null && mc.player.getXRot() >= com.casino.game.DuelRules.HOLSTER_PITCH;
-        if (!be.drawn(pt)) {
-            int tolls = t >= com.casino.game.DuelRules.TOLL_3 ? 3 : t >= com.casino.game.DuelRules.TOLL_2 ? 2 : t >= com.casino.game.DuelRules.TOLL_1 ? 1 : 0;
-            if (tolls == 0) {
-                big(g, f, Component.translatable("casino.duel.hud_vs", name).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), cx, 40, 2F, 0xFFFFFFFF);
-            } else {
-                big(g, f, Component.literal(String.valueOf(tolls)).withStyle(ChatFormatting.BOLD), cx, 44, 4F, 0xFFE8D8B0);
-            }
-            if (be.noon()) {
-                g.drawCenteredString(f, Component.translatable("casino.duel.hud_noon").withStyle(ChatFormatting.YELLOW), cx, 66, 0xFFFFFFFF);
-            }
-            Component hol = holstered ? Component.translatable("casino.duel.hud_holstered").withStyle(ChatFormatting.GREEN)
-                    : Component.translatable("casino.duel.hud_look_down").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
-            g.drawCenteredString(f, hol, cx, sh / 2 + 18, 0xFFFFFFFF);
-            g.drawCenteredString(f, Component.translatable("casino.duel.hud_hint"), cx, sh / 2 + 30, 0xFFD0C0A0);
-            return;
-        }
-        long now = System.nanoTime();
-        if (drawFor != be.drawAt()) {
-            drawFor = be.drawAt();
-            drawNanos = now;
-        }
-        double secs = (now - drawNanos) / 1e9;
-        if (secs < 1.2 && ((int) (secs * 8)) % 2 == 0) {
-            g.fill(0, 0, sw, sh, 0x18FF8040);
-        }
-        big(g, f, Component.translatable("casino.duel.go").withStyle(ChatFormatting.BOLD), cx, 44, 3.2F, 0xFFFF4020);
-        g.drawCenteredString(f, Component.literal(String.format(Locale.ROOT, "%.2f s", secs)), cx, 70, 0xFFFFFFFF);
-        // balas
-        for (int i = 0; i < com.casino.game.DuelRules.SHOTS; i++) {
-            int bx = cx - 33 + i * 11;
-            boolean full = i < be.shots();
-            g.fill(bx, sh - 70, bx + 6, sh - 58, full ? 0xFF8A6A2A : 0xFF3A2A1A);
-            g.fill(bx + 1, sh - 72, bx + 5, sh - 70, full ? 0xFFD8B060 : 0xFF3A2A1A);
-        }
     }
 }

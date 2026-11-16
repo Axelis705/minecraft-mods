@@ -13,6 +13,7 @@ public final class WestClient {
     public static final int BULL = 0;
     public static final int GALLERY = 1;
     public static final int DUEL = 2;
+    public static final int ARM = 3;
 
     private static int lastInput;
     private static int sendAgain;
@@ -76,14 +77,7 @@ public final class WestClient {
             return;
         }
         GalleryBE g = gallery();
-        com.casino.west.DuelBE d = duel();
-        if (g == null && d == null) {
-            return;
-        }
-        if (g != null && (g.time(0) < 0 || g.shots() <= 0)) {
-            return;
-        }
-        if (d != null && !d.drawn(0)) {
+        if (g == null || g.time(0) < 0 || g.shots() <= 0) {
             return;
         }
         long now = mc.level.getGameTime();
@@ -121,26 +115,32 @@ public final class WestClient {
         return dice;
     }
 
-    // ------------------------------------------------------------------ duelo
+    // ------------------------------------------------------------------ duelo y vencidas (retos contra NPC o jugadores)
 
-    private static com.casino.west.DuelBE duel;
-    private static long duelSeenAt;
+    /** Abre la pantalla del reto (elegir rival y apuesta, retar a otro jugador o aceptar un reto). */
+    public static void openMatch(BlockPos pos, int kind) {
+        ClientHooks.open(new ChallengeScreen(pos, kind));
+    }
 
+    /** Cada tick del duelo en el cliente: si juego en él y ya empezó, abre la pantalla del duelo (si no está abierta). */
     public static void duelSeen(com.casino.west.DuelBE be) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && be.isShooter(mc.player.getUUID())) {
-            duel = be;
-            duelSeenAt = mc.level == null ? 0 : mc.level.getGameTime();
+        if (mc.player == null || be.phase() != com.casino.west.MatchBE.RUNNING || !be.isPlayer(mc.player.getUUID())) {
+            return;
+        }
+        if (!(ClientScreens.current() instanceof DuelScreen ds && ds.pos().equals(be.getBlockPos()))) {
+            ClientHooks.open(new DuelScreen(be.getBlockPos()));
         }
     }
 
-    /** El duelo en el que estoy (o null). */
-    public static com.casino.west.DuelBE duel() {
+    /** Lo mismo para la mesa de vencidas. */
+    public static void armSeen(com.casino.west.ArmBE be) {
         Minecraft mc = Minecraft.getInstance();
-        if (duel == null || mc.level == null || mc.player == null || duel.isRemoved() || duel.getLevel() != mc.level
-                || mc.level.getGameTime() - duelSeenAt > 5 || !duel.isShooter(mc.player.getUUID())) {
-            duel = null;
+        if (mc.player == null || be.phase() != com.casino.west.MatchBE.RUNNING || !be.isPlayer(mc.player.getUUID())) {
+            return;
         }
-        return duel;
+        if (!(ClientScreens.current() instanceof ArmScreen as && as.pos().equals(be.getBlockPos()))) {
+            ClientHooks.open(new ArmScreen(be.getBlockPos()));
+        }
     }
 }

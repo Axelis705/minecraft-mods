@@ -17,9 +17,11 @@ import java.util.function.Supplier;
 
 /** La Guía del Casino: un libro abierto de dos páginas. Los textos están en los archivos de idioma (casino.guide.pN.*). */
 public final class GuideScreen extends CasinoScreen {
-    public static final int PAGES = 19;
+    public static final int PAGES = 20;
     private static final int PW = 150;
     private static final int PH = 196;
+    /** Alto de cada renglón del índice (18 temas caben antes del número de página). */
+    private static final int LINE = 8;
     private static final int TEXT = 0xFF3A2614;
     private static int remembered = 0;
 
@@ -52,6 +54,7 @@ public final class GuideScreen extends CasinoScreen {
         l.add(() -> com.casino.west.WestReg.GALLERY_ITEM.get());
         l.add(() -> com.casino.west.WestReg.DUEL_BELL_ITEM.get());
         l.add(() -> com.casino.west.WestReg.DICE_ITEM.get());
+        l.add(() -> com.casino.west.WestReg.ARM_TABLE_ITEM.get());
         l.add(() -> ModItems.CHIP_1.get());
         return l;
     }
@@ -96,14 +99,14 @@ public final class GuideScreen extends CasinoScreen {
         int page = spread * 2 == 0 ? 1 : -1;
         if (page == 1) {
             int x = left + PW + 8 + 12;
-            int y = top + 34;
+            int y = top + 30;
             for (int i = 2; i < PAGES; i++) {
-                if (mx >= x && mx < x + PW - 24 && my >= y && my < y + 9) {
+                if (mx >= x && mx < x + PW - 24 && my >= y && my < y + LINE) {
                     spread = i / 2;
                     remembered = spread;
                     return true;
                 }
-                y += 9;
+                y += LINE;
             }
         }
         return super.onClick(mx, my, button);
@@ -146,12 +149,12 @@ public final class GuideScreen extends CasinoScreen {
             g.drawString(font, title, x + 10, top + 10, 0xFF6A1018, false);
             g.fill(x + 10, top + 21, x + PW - 26, top + 22, 0xFFB08A40);
             if (i == 1) {
-                int y = top + 34;
+                int y = top + 30;
                 for (int k = 2; k < PAGES; k++) {
-                    boolean hover = mx >= x + 12 && mx < x + PW - 12 && my >= y && my < y + 9;
+                    boolean hover = mx >= x + 12 && mx < x + PW - 12 && my >= y && my < y + LINE;
                     g.drawString(font, Component.literal((k + 1) + ". ").append(Component.translatable("casino.guide.p" + k + ".title")),
                             x + 12, y, hover ? 0xFFB01020 : TEXT, false);
-                    y += 9;
+                    y += LINE;
                 }
             } else {
                 text(g, Component.translatable("casino.guide.p" + i + ".body").getString(), x + 10, top + 28, PW - 20, PH - 46);

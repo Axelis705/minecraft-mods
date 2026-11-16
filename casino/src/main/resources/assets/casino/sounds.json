@@ -243,5 +243,11 @@
    "casino:west/dice_shake"
   ],
   "subtitle": "subtitles.casino.dice_shake"
+ },
+ "arm_slam": {
+  "sounds": [
+   "casino:west/arm_slam"
+  ],
+  "subtitle": "subtitles.casino.arm_slam"
  }
 }

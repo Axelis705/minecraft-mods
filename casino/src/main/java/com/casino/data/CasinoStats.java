@@ -33,7 +33,8 @@ public final class CasinoStats extends SavedData {
     public static final int GALLERY = 8;
     public static final int DUEL = 9;
     public static final int DICE = 10;
-    public static final int GAMES = 11;
+    public static final int ARM = 11;
+    public static final int GAMES = 12;
     /** Los juegos que cuentan para el logro "probar todos" (los del principio; los nuevos no lo quitan a quien ya lo tiene). */
     public static final int CLASSIC = 7;
     public static final int CLASSIC_MASK = (1 << CLASSIC) - 1;

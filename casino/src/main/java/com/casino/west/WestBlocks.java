@@ -433,20 +433,7 @@ public final class WestBlocks {
 
         @Override
         protected InteractionResult onUse(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-            if (hand != InteractionHand.MAIN_HAND || !(level.getBlockEntity(pos) instanceof DuelBE be)) {
-                return InteractionResult.PASS;
-            }
-            if (player.getMainHandItem().getItem() instanceof RevolverItem) {
-                return InteractionResult.PASS;
-            }
-            if (level.isClientSide()) {
-                if (be.phase() == DuelBE.IDLE) {
-                    com.casino.plat.Net.onClient(() -> com.casino.client.WestClient.openBet(pos, com.casino.client.WestClient.DUEL));
-                }
-            } else if (be.phase() != DuelBE.IDLE) {
-                Plat.msg(player, Component.translatable("casino.duel.busy").withStyle(ChatFormatting.YELLOW), true);
-            }
-            return Plat.ok(level.isClientSide());
+            return useMatch(level, pos, player, hand, com.casino.client.WestClient.DUEL);
         }
 
         @Override
@@ -517,6 +504,67 @@ public final class WestBlocks {
                 return null;
             }
             return level.isClientSide() ? (lvl, p, st, be) -> ((DiceBE) be).clientTick() : (lvl, p, st, be) -> ((DiceBE) be).serverTick();
+        }
+    }
+
+    /** Clic en la campana del duelo o en la mesa de vencidas: abre la pantalla del reto (rival NPC, reto entre jugadores o aceptar). */
+    static InteractionResult useMatch(Level level, BlockPos pos, Player player, InteractionHand hand, int kind) {
+        if (hand != InteractionHand.MAIN_HAND || !(level.getBlockEntity(pos) instanceof MatchBE be)) {
+            return InteractionResult.PASS;
+        }
+        if (level.isClientSide()) {
+            if (be.phase() == MatchBE.IDLE || be.phase() == MatchBE.WAITING) {
+                com.casino.plat.Net.onClient(() -> com.casino.client.WestClient.openMatch(pos, kind));
+            }
+        } else if (be.phase() == MatchBE.RUNNING || be.phase() == MatchBE.RESULT) {
+            Plat.msg(player, Component.translatable("casino.match.busy").withStyle(ChatFormatting.YELLOW), true);
+        }
+        return Plat.ok(level.isClientSide());
+    }
+
+    /**
+     * Mesa de vencidas (pulso): una mesa alta y fuerte con coderas. FACING = hacia el lado del que retó (el otro, o el forzudo, va del
+     * lado contrario). Clic → reto contra un forzudo o contra otro jugador. Reglas en {@link com.casino.game.ArmRules}.
+     */
+    public static class ArmTable extends UseBlock implements EntityBlock {
+        private static final VoxelShape SHAPE = net.minecraft.world.level.block.Block.box(1, 0, 1, 15, 14, 15);
+
+        public ArmTable(Properties p) {
+            super(p);
+            registerDefaultState(stateDefinition.any().setValue(FACING, Direction.SOUTH));
+        }
+
+        @Override
+        protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
+            b.add(FACING);
+        }
+
+        @Override
+        public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+            return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+        }
+
+        @Override
+        public VoxelShape getShape(BlockState s, BlockGetter g, BlockPos p, CollisionContext c) {
+            return SHAPE;
+        }
+
+        @Override
+        protected InteractionResult onUse(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+            return useMatch(level, pos, player, hand, com.casino.client.WestClient.ARM);
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new ArmBE(pos, state);
+        }
+
+        @Override
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            if (type != WestReg.ARM_BE.get()) {
+                return null;
+            }
+            return level.isClientSide() ? (lvl, p, st, be) -> ((ArmBE) be).clientTick() : (lvl, p, st, be) -> ((ArmBE) be).serverTick();
         }
     }
 }

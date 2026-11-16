@@ -471,6 +471,18 @@ public final class DealerMotion {
      */
     private void duelist(DealerEntity e, float partial) {
         int c = e.combat();
+        if (c >= 100) {
+            // vencidas: la mesa está un bloque al frente; x = 1 - (c-100)/50 (+1 = ganó el jugador, -1 = ganó este forzudo)
+            double x = 1 - (c - 100) / 50.0;
+            double ang = Math.toRadians(com.casino.game.ArmRules.angle(x));
+            double cx = ex + fx, cz = ez + fz, top = ey + 14 / 16.0 + 0.04;
+            // las manos se van hacia la derecha de este forzudo cuando gana el jugador
+            Vec3 hand = new Vec3(cx + rxv * Math.sin(ang) * 0.36, top + Math.cos(ang) * 0.36, cz + rzv * Math.sin(ang) * 0.36);
+            armR(hand, 1);
+            armL(new Vec3(cx - rxv * 0.28 - fx * 0.22, top + 0.08, cz - rzv * 0.28 - fz * 0.22), 1);
+            look(hand, 1);
+            return;
+        }
         Vec3 hip = new Vec3(ex + fx * 0.12 + rxv * 0.34, ey + 0.82, ez + fz * 0.12 + rzv * 0.34);
         switch (c) {
             case 1 -> {

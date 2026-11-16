@@ -8,6 +8,7 @@ Frente al sur (z máxima): calle de tierra, banqueta de tablones con techito y p
   - detrás, la torre de agua, la letrina, barriles y cactus.
 Planta baja del saloon: barra larga con espejo y botellas (cantinero), pianola, 2 mesas de 21, ruleta de la suerte entre
 tragamonedas, caja con rejas y tienda de premios; escalera al centro del fondo con puertitas VIP y dos sheriffs.
+Mesa de vencidas en el salón (contra un forzudo o contra otro jugador).
 Primer piso (tarjeta Plata): sala de cartas con una mesa de 21 de alto riesgo y la mesa de dados del mentiroso, galería con barandal alrededor del salón, cuartos al frente
 y el palco del dueño (tarjeta Oro) con salida al balcón.
 """
@@ -373,6 +374,9 @@ for i, ch in enumerate("CAJA"):
 o.set(41, 1, 33, 'minecraft:chest[facing=west]'); o.set(42, 1, 31, 'minecraft:barrel[facing=up]')
 o.marker(42, 1, 28, 'shop 0', [(0, 0, 0, 'casino:prize_shop[facing=north]')])
 o.marker(40, 1, 28, 'shop 0', [(0, 0, 0, 'casino:prize_shop[facing=north]')])
+
+# ---- mesa de vencidas en el salón (de pie; el retador del lado este, el forzudo o el otro jugador del lado oeste)
+o.set(26, 1, 28, 'casino:arm_table[facing=east]')
 
 # ---- pared este: ruleta de la suerte entre tragamonedas
 mq.place(o, 'wheel', IX1, 1, 19, 3)

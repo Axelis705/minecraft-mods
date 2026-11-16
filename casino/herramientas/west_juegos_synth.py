@@ -12,6 +12,8 @@ Salen en casino/src/main/resources/assets/casino/sounds/west/:
   bull_motor    resoplido mecánico del toro (pistón y motor)
   duel_theme    silbido del enfrentamiento con guitarra (duelo al mediodía)
   duel_draw     golpe metálico de "¡desenfunda!"
+  dice_shake    dados en el cubilete
+  arm_slam      manotazo contra la mesa al ganar unas vencidas (golpe de madera y vasos que tiemblan)
 """
 import os
 import sys
@@ -189,10 +191,32 @@ def dice_shake():
     return norm(s, 0.8)
 
 
+def arm_slam():
+    """Manotazo seco contra la mesa de madera: golpe grave, crujido de la tabla y los vasos que tiemblan."""
+    rnd = np.random.default_rng(47)
+    dur = 1.1
+    t = np.arange(int(dur * SR)) / SR
+    thud = np.sin(2 * np.pi * (110 - 50 * np.minimum(t, 0.2)) * t) * np.exp(-t / 0.09)
+    knock = lowpass(rnd.standard_normal(len(t)), 4) * np.exp(-t / 0.018) * 1.2
+    wood = np.zeros_like(t)
+    for f, a, d in ((340, 0.5, 0.06), (520, 0.35, 0.05), (870, 0.2, 0.03)):
+        wood += a * np.sin(2 * np.pi * f * t) * np.exp(-t / d)
+    glass = np.zeros_like(t)
+    for k in range(9):
+        at = 0.04 + 0.35 * rnd.random()
+        tt = np.clip(t - at, 0, None)
+        f = rnd.uniform(2600, 4200)
+        glass += (t >= at) * np.sin(2 * np.pi * f * tt) * np.exp(-tt / 0.05) * rnd.uniform(0.05, 0.14)
+    s = thud + knock + wood + glass
+    d = int(0.05 * SR)
+    s[d:] += s[:-d] * 0.2
+    return norm(s, 0.9)
+
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     for name, fn in (("gallery_shot", shot), ("gallery_ding", ding), ("gallery_quack", quack), ("gallery_buzz", buzz),
                      ("bull_bell", cowbell), ("bull_motor", motor), ("duel_theme", duel_theme), ("duel_draw", duel_draw),
-                     ("dice_shake", dice_shake)):
+                     ("dice_shake", dice_shake), ("arm_slam", arm_slam)):
         write(os.path.join(OUT, name + ".ogg"), fn(), q=5)
         print("listo", name)
