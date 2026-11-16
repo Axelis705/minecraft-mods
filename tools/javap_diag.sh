@@ -14,7 +14,7 @@ echo "JAR: $jar"
 for c in "$@"; do
   c="${c//%/\$}"   # en el flujo manual se escribe Clase%Interna (el $ lo come bash)
   echo "===== $c"
-  javap -cp "$jar" -public "$c" 2>&1 | head -150
+  javap -cp "$jar" -public -constants "$c" 2>&1 | head -${DIAG_LINEAS:-150}
 done
 # miembros privados que contengan un texto: DIAG_PRIVADOS="Clase:texto Clase:texto"
 for ct in ${DIAG_PRIVADOS:-}; do
@@ -28,6 +28,14 @@ if [ -n "${DIAG_METODO:-}" ]; then
     c="${cm%%#*}"; m="${cm##*#}"
     echo "===== orden en $c.$m()"
     javap -cp "$jar" -c -p "$c" 2>/dev/null | awk -v m="$m" 'index($0, " " m "(") && index($0, ")") && !index($0, "invoke") {on=1; next} on && (/invoke/ || /putfield/ || /Hud|hide|Hidden/) {print} on && /^$/ {exit}' | sed 's/^ *//; s/.*\/\/ //' | cut -c1-160 | head -120
+  done
+fi
+# código completo de un método: DIAG_CODIGO=Clase#metodo
+if [ -n "${DIAG_CODIGO:-}" ]; then
+  for cm in $DIAG_CODIGO; do
+    c="${cm%%#*}"; c="${c//%/\$}"; m="${cm##*#}"
+    echo "===== código de $c.$m()"
+    javap -cp "$jar" -c -p "$c" 2>/dev/null | awk -v m="$m" 'index($0, " " m "(") && index($0, ")") && !index($0, "invoke") {on=1} on {print} on && /^$/ {exit}' | cut -c1-200 | head -90
   done
 fi
 exit 0
