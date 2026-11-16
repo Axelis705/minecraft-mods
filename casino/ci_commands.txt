@@ -134,6 +134,12 @@ execute if block 326 101 162 casino:blackjack if block 333 101 162 casino:blackj
 execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=327.5,y=101,z=159.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=332.5,y=101,z=159.5,distance=..1.5] run say PRUEBA_SALOON_SHERIFF
 execute if entity @e[type=casino:dealer,nbt={Game:4,Variant:64},x=318.5,y=101,z=155.5,distance=..1.5] if entity @e[type=casino:dealer,nbt={Game:0,Variant:64},x=326.5,y=101,z=161.5,distance=..2] run say PRUEBA_SALOON_PERSONAL
 execute if entity @e[type=casino:dealer,nbt={Game:6,Variant:69},x=317,y=109,z=151,distance=..14] run say PRUEBA_SALOON_VAQUEROS
+# juegos del saloon: toro mecánico en el ruedo y la caja de la galería de tiro en el mostrador, con sus datos
+execute if block 309 101 169 casino:mechanical_bull[facing=south] if block 350 102 170 casino:shooting_gallery[facing=south] run say PRUEBA_SALOON_JUEGOS
+execute if data block 309 101 169 BestTicks run say PRUEBA_SALOON_TORO_DATOS
+execute if data block 309 101 169 casino.BestTicks run say PRUEBA_SALOON_TORO_DATOS
+execute if data block 350 102 170 BestScore run say PRUEBA_SALOON_GALERIA_DATOS
+execute if data block 350 102 170 casino.BestScore run say PRUEBA_SALOON_GALERIA_DATOS
 place structure casino:el_saloon 0 -60 600
 execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=0,y=-60,z=600,distance=..60] run say PRUEBA_SALOON_ESTRUCTURA
 #expect PRUEBA_RASCA_OK
@@ -184,3 +190,6 @@ execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=0,y=-60,z=600,
 #expect PRUEBA_SALOON_PERSONAL
 #expect PRUEBA_SALOON_VAQUEROS
 #expect PRUEBA_SALOON_ESTRUCTURA
+#expect PRUEBA_SALOON_JUEGOS
+#expect PRUEBA_SALOON_TORO_DATOS
+#expect PRUEBA_SALOON_GALERIA_DATOS

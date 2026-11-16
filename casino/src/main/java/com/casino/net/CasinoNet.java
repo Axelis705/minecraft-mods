@@ -52,6 +52,8 @@ public final class CasinoNet {
         Net.register(30, com.casino.heist.HeistOfferPacket.class, com.casino.heist.HeistOfferPacket::encode, com.casino.heist.HeistOfferPacket::decode,
                 com.casino.heist.HeistOfferPacket::handle);
         Net.register(31, TournamentPacket.class, TournamentPacket::encode, TournamentPacket::decode, TournamentPacket::handle);
+        Net.register(32, com.casino.west.WestPacket.class, com.casino.west.WestPacket::encode, com.casino.west.WestPacket::decode,
+                com.casino.west.WestPacket::handle);
         Net.done();
     }
 

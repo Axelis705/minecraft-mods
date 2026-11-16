@@ -285,4 +285,118 @@ public final class WestBlocks {
             return DESIGN;
         }
     }
+
+    // ================================================================== toro mecánico y galería de tiro
+
+    /**
+     * Toro mecánico: un toro de fierro y cuero sobre un pistón. Clic para apostar y montarlo (pantalla de apuesta en el cliente). Lo
+     * dibuja {@code WestRenderers.Bull}; la montada es {@link BullRideEntity}. FACING = hacia donde mira la cabeza.
+     */
+    public static class Bull extends UseBlock implements EntityBlock {
+        private static final VoxelShape SHAPE = net.minecraft.world.level.block.Block.box(1, 0, 1, 15, 24, 15);
+
+        public Bull(Properties p) {
+            super(p);
+            registerDefaultState(stateDefinition.any().setValue(FACING, Direction.SOUTH));
+        }
+
+        @Override
+        protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
+            b.add(FACING);
+        }
+
+        @Override
+        public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+            return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+        }
+
+        @Override
+        public VoxelShape getShape(BlockState s, BlockGetter g, BlockPos p, CollisionContext c) {
+            return SHAPE;
+        }
+
+        @Override
+        protected InteractionResult onUse(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+            if (hand != InteractionHand.MAIN_HAND) {
+                return InteractionResult.PASS;
+            }
+            boolean busy = !level.getEntitiesOfClass(BullRideEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(1.5)).isEmpty();
+            if (level.isClientSide()) {
+                if (!busy && !player.isPassenger()) {
+                    com.casino.plat.Net.onClient(() -> com.casino.client.WestClient.openBet(pos, com.casino.client.WestClient.BULL));
+                }
+            } else if (busy) {
+                Plat.msg(player, Component.translatable("casino.bull.busy").withStyle(ChatFormatting.YELLOW), true);
+            }
+            return Plat.ok(level.isClientSide());
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new BullBE(pos, state);
+        }
+    }
+
+    /**
+     * Caja del mostrador de la galería de tiro (campana y alcancía). Clic para apostar: te prestan un revólver y salen los blancos al
+     * fondo. FACING = hacia el tirador. Los blancos y el marcador los dibuja {@code WestRenderers.Gallery}; las reglas están en
+     * {@link com.casino.game.GalleryPlan}.
+     */
+    public static class Gallery extends UseBlock implements EntityBlock {
+        private static final Map<Direction, VoxelShape> SHAPES = Shapes.rotated(new double[]{2, 0, 3, 14, 9, 13});
+
+        public Gallery(Properties p) {
+            super(p);
+            registerDefaultState(stateDefinition.any().setValue(FACING, Direction.SOUTH));
+        }
+
+        @Override
+        protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
+            b.add(FACING);
+        }
+
+        @Override
+        public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+            return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+        }
+
+        @Override
+        public VoxelShape getShape(BlockState s, BlockGetter g, BlockPos p, CollisionContext c) {
+            return SHAPES.get(s.getValue(FACING));
+        }
+
+        @Override
+        protected InteractionResult onUse(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+            if (hand != InteractionHand.MAIN_HAND) {
+                return InteractionResult.PASS;
+            }
+            if (!(level.getBlockEntity(pos) instanceof GalleryBE be)) {
+                return InteractionResult.PASS;
+            }
+            if (player.getMainHandItem().getItem() instanceof RevolverItem) {
+                return InteractionResult.PASS;   // con el revólver en la mano, el clic es un disparo
+            }
+            if (level.isClientSide()) {
+                if (!be.playing()) {
+                    com.casino.plat.Net.onClient(() -> com.casino.client.WestClient.openBet(pos, com.casino.client.WestClient.GALLERY));
+                }
+            } else if (be.playing()) {
+                Plat.msg(player, Component.translatable("casino.gallery.busy", be.shooterName()).withStyle(ChatFormatting.YELLOW), true);
+            }
+            return Plat.ok(level.isClientSide());
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new GalleryBE(pos, state);
+        }
+
+        @Override
+        public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+            if (type != WestReg.GALLERY_BE.get()) {
+                return null;
+            }
+            return level.isClientSide() ? (lvl, p, st, be) -> ((GalleryBE) be).clientTick() : (lvl, p, st, be) -> ((GalleryBE) be).serverTick();
+        }
+    }
 }

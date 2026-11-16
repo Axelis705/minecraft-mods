@@ -526,7 +526,7 @@ for x in range(RX0 + 1, RX1):
             o.set(x, 1, z, 'minecraft:oak_fence')
 for x, z in ((RCX, RCZ + 5),):
     o.set(x, 1, z, 'minecraft:oak_fence_gate[facing=south,open=false,in_wall=false]')
-o.set(RCX, 1, RCZ, 'minecraft:hay_block[axis=y]')               # aquí va el toro mecánico
+o.set(RCX, 1, RCZ, 'casino:mechanical_bull[facing=south]')    # el toro mira a la puerta del ruedo (el letrero del récord lo dibuja él)
 for x, z in ((5, 22), (13, 22), (5, 36), (13, 36), (4, 29), (14, 29)):
     o.set(x, 1, z, 'minecraft:hay_block[axis=y]')
 for z in (24, 34):
@@ -574,23 +574,37 @@ for x in range(SX1 + 1, TX1 + 1):
 for x in (45, 50, 51, 56):
     for y in range(1, 5):
         o.set(x, y, 42, POST)
-# mostrador y carriles hacia los blancos del fondo
+# mostrador con la caja de la galería (campana): los blancos, el agua de los patitos, la repisa de las botellas, el riel de los
+# bandidos y el marcador los dibuja el renderizador de la galería (casino:shooting_gallery, mira al tirador)
 for x in range(TX0 + 1, TX1):
     o.set(x, 1, 30, 'minecraft:spruce_planks'); o.set(x, 2, 30, 'minecraft:spruce_slab[type=bottom]')
 o.set(TX0 + 1, 1, 30, AIR); o.set(TX0 + 1, 2, 30, AIR)            # paso detrás del mostrador
+o.set(50, 2, 30, 'casino:shooting_gallery[facing=south]')
 for x in range(TX0 + 1, TX1):
     for z in range(TZ0 + 1, 30):
         o.set(x, 0, z, 'minecraft:sand' if (x + z) % 3 else 'minecraft:smooth_sandstone')
-for x in (47, 50, 53, 55):
-    o.set(x, 1, TZ0 + 1, 'minecraft:hay_block[axis=y]'); o.set(x, 2, TZ0 + 1, 'minecraft:target')
-for x in (48, 52):
-    o.set(x, 1, TZ0 + 4, 'minecraft:spruce_fence'); o.set(x, 2, TZ0 + 4, 'casino:drinks[facing=south,drinks=2]')
+# telón pintado del fondo: desierto con mesas, cactus y sol
 for x in range(TX0 + 1, TX1):
-    o.set(x, 3, TZ0 + 1, 'minecraft:spruce_slab[type=bottom]')
-    if x % 2:
-        o.set(x, 4, TZ0 + 1, 'casino:drinks[facing=south,drinks=1]')
+    for y in range(1, 6):
+        st = ('minecraft:cut_sandstone' if y == 1 else 'minecraft:sandstone' if y == 2 else 'minecraft:orange_terracotta' if y == 3
+              else 'minecraft:light_blue_terracotta')
+        if y == 3 and x % 4 == 0:
+            st = 'minecraft:red_terracotta'
+        o.set(x, y, TZ0 + 1, st)
+for x, y in ((47, 2), (47, 3), (55, 2), (55, 3), (54, 3)):
+    o.set(x, y, TZ0 + 1, 'minecraft:green_terracotta')
+o.set(53, 5, TZ0 + 1, 'minecraft:yellow_terracotta'); o.set(52, 5, TZ0 + 1, 'minecraft:yellow_terracotta')
+o.set(53, 4, TZ0 + 1, 'minecraft:yellow_terracotta')
+# canal de los patitos (fila de enfrente) y postes de la repisa de las botellas
+for x in range(TX0 + 1, TX1):
+    o.set(x, 1, 25, 'minecraft:spruce_planks')
+    o.set(x, 1, 26, 'minecraft:spruce_slab[type=bottom]')
+for x in (TX0 + 1, TX1 - 1):
+    o.set(x, 1, 23, 'minecraft:spruce_fence'); o.set(x, 2, 23, 'minecraft:spruce_fence')
+    o.set(x, 1, 20, 'minecraft:spruce_fence'); o.set(x, 2, 20, 'minecraft:spruce_fence')
+# faroles a los lados (para no tapar los blancos)
 for z in (22, 27):
-    lantern(50, 6, z, 1); lantern(54, 6, z, 1)
+    lantern(TX0 + 1, 6, z, 1); lantern(TX1 - 1, 6, z, 1)
 lantern(48, 6, 34, 1); lantern(54, 6, 34, 1)
 o.marker(53, 1, 33, 'wpatron 2 1', [(0, 0, 0, 'minecraft:light_blue_wool')])
 for z in (34, 36):

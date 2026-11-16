@@ -26,9 +26,9 @@ public final class Net {
     }
 
     //#if MC >= 1.21
-    //$$ private static final SimpleChannel CHANNEL = ChannelBuilder.named(Ids.casino("main")).networkProtocolVersion(3).simpleChannel();
+    //$$ private static final SimpleChannel CHANNEL = ChannelBuilder.named(Ids.casino("main")).networkProtocolVersion(4).simpleChannel();
     //#else
-    private static final String PROTOCOL = "3";
+    private static final String PROTOCOL = "4";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(Ids.casino("main"), () -> PROTOCOL, PROTOCOL::equals,
             PROTOCOL::equals);
     //#endif

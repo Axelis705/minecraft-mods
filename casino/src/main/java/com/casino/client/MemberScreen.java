@@ -204,7 +204,7 @@ public final class MemberScreen extends CasinoScreen {
     /** Cuánto lleva en los logros que cuentan algo. */
     private String progress(int i) {
         return switch (i) {
-            case Membership.ALL_GAMES -> Integer.bitCount(d.gamesMask) + " / " + CasinoStats.GAMES;
+            case Membership.ALL_GAMES -> Integer.bitCount(d.gamesMask & CasinoStats.CLASSIC_MASK) + " / " + CasinoStats.CLASSIC;
             case Membership.REGULAR -> Math.min(100, d.bets) + " / 100";
             case Membership.VETERAN -> Math.min(1000, d.bets) + " / 1000";
             case Membership.WHEEL_FAN -> Math.min(Membership.WHEEL_NEEDED, d.wheelSpins) + " / " + Membership.WHEEL_NEEDED;

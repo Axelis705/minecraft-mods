@@ -189,5 +189,41 @@
    "casino:saloon_door"
   ],
   "subtitle": "subtitles.casino.saloon_door"
+ },
+ "gallery_shot": {
+  "sounds": [
+   "casino:west/gallery_shot"
+  ],
+  "subtitle": "subtitles.casino.gallery_shot"
+ },
+ "gallery_ding": {
+  "sounds": [
+   "casino:west/gallery_ding"
+  ],
+  "subtitle": "subtitles.casino.gallery_ding"
+ },
+ "gallery_quack": {
+  "sounds": [
+   "casino:west/gallery_quack"
+  ],
+  "subtitle": "subtitles.casino.gallery_quack"
+ },
+ "gallery_buzz": {
+  "sounds": [
+   "casino:west/gallery_buzz"
+  ],
+  "subtitle": "subtitles.casino.gallery_buzz"
+ },
+ "bull_bell": {
+  "sounds": [
+   "casino:west/bull_bell"
+  ],
+  "subtitle": "subtitles.casino.bull_bell"
+ },
+ "bull_motor": {
+  "sounds": [
+   "casino:west/bull_motor"
+  ],
+  "subtitle": "subtitles.casino.bull_motor"
  }
 }

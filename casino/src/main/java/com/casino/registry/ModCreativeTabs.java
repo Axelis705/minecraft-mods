@@ -37,6 +37,8 @@ public final class ModCreativeTabs {
                 out.accept(com.casino.diamond.DiamondReg.ELEVATOR_ITEM.get());
                 out.accept(com.casino.diamond.DiamondReg.PRIZE_SHOP_ITEM.get());
                 out.accept(com.casino.diamond.DiamondReg.RECORD_SCREEN_ITEM.get());
+                out.accept(com.casino.west.WestReg.BULL_ITEM.get());
+                out.accept(com.casino.west.WestReg.GALLERY_ITEM.get());
                 for (var h : com.casino.heist.HeistReg.ITEMS) {
                     out.accept(h.get());
                 }

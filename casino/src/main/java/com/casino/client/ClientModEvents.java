@@ -37,6 +37,9 @@ public final class ClientModEvents {
         e.registerBlockEntityRenderer(com.casino.west.WestReg.DOOR_BE.get(), WestRenderers.Door::new);
         e.registerBlockEntityRenderer(com.casino.west.WestReg.GATE_BE.get(), WestRenderers.Door::new);
         e.registerBlockEntityRenderer(com.casino.west.WestReg.PIANO_BE.get(), WestRenderers.Piano::new);
+        e.registerBlockEntityRenderer(com.casino.west.WestReg.BULL_BE.get(), WestRenderers.Bull::new);
+        e.registerBlockEntityRenderer(com.casino.west.WestReg.GALLERY_BE.get(), WestRenderers.Gallery::new);
+        e.registerEntityRenderer(com.casino.west.WestReg.BULL_RIDE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         e.registerEntityRenderer(ModEntities.DEALER.get(), DealerRenderer::new);
         e.registerEntityRenderer(com.casino.registry.ModDecor.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
     }
@@ -55,6 +58,7 @@ public final class ClientModEvents {
     //$$         MemberHud.render(new G(gg), gg.guiWidth(), gg.guiHeight());
     //$$         HeistHud.render(new G(gg), gg.guiWidth(), gg.guiHeight());
     //$$         RaceHud.render(new G(gg), gg.guiWidth(), gg.guiHeight());
+    //$$         WestHud.render(new G(gg), gg.guiWidth(), gg.guiHeight());
     //$$         WinBanner.render(new G(gg), gg.guiWidth(), gg.guiHeight());
     //$$     });
     //$$ }
@@ -65,6 +69,7 @@ public final class ClientModEvents {
             MemberHud.render(new G(gg), w, h);
             HeistHud.render(new G(gg), w, h);
             RaceHud.render(new G(gg), w, h);
+            WestHud.render(new G(gg), w, h);
             WinBanner.render(new G(gg), w, h);
         });
     }

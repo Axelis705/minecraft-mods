@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 /** La Guía del Casino: un libro abierto de dos páginas. Los textos están en los archivos de idioma (casino.guide.pN.*). */
 public final class GuideScreen extends CasinoScreen {
-    public static final int PAGES = 15;
+    public static final int PAGES = 17;
     private static final int PW = 150;
     private static final int PH = 196;
     private static final int TEXT = 0xFF3A2614;
@@ -48,6 +48,8 @@ public final class GuideScreen extends CasinoScreen {
         l.add(() -> ModDecor.CHAIRS.get(0).get().asItem());
         l.add(() -> ModDecor.NEON_LETTER.get().asItem());
         l.add(() -> ModDecor.SPEAKER.get().asItem());
+        l.add(() -> com.casino.west.WestReg.BULL_ITEM.get());
+        l.add(() -> com.casino.west.WestReg.GALLERY_ITEM.get());
         l.add(() -> ModItems.CHIP_1.get());
         return l;
     }
@@ -99,7 +101,7 @@ public final class GuideScreen extends CasinoScreen {
                     remembered = spread;
                     return true;
                 }
-                y += 11;
+                y += 10;
             }
         }
         return super.onClick(mx, my, button);
@@ -147,7 +149,7 @@ public final class GuideScreen extends CasinoScreen {
                     boolean hover = mx >= x + 12 && mx < x + PW - 12 && my >= y && my < y + 11;
                     g.drawString(font, Component.literal((k + 1) + ". ").append(Component.translatable("casino.guide.p" + k + ".title")),
                             x + 12, y, hover ? 0xFFB01020 : TEXT, false);
-                    y += 11;
+                    y += 10;
                 }
             } else {
                 text(g, Component.translatable("casino.guide.p" + i + ".body").getString(), x + 10, top + 28, PW - 20, PH - 46);

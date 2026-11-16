@@ -8,7 +8,11 @@ import com.casino.registry.ModBlocks;
 import com.casino.registry.ModDecor;
 import com.casino.registry.ModItems;
 import com.casino.worldgen.TemplateCasinoPiece;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import com.casino.registry.ModEntities;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -36,12 +40,32 @@ public final class WestReg {
     public static final RegistryObject<Block> WANTED = block("wanted_poster", () -> new WestBlocks.Wanted(Reg.block("wanted_poster")
             .mapColor(MapColor.SAND).strength(0.3F).sound(SoundType.WOOL).noOcclusion()));
 
+    // juegos del saloon (van en la pestaña principal del casino)
+    public static final RegistryObject<Block> BULL = ModBlocks.BLOCKS.register("mechanical_bull", () -> new WestBlocks.Bull(Reg.block("mechanical_bull")
+            .mapColor(MapColor.COLOR_BROWN).strength(-1.0F, 3_600_000.0F).sound(SoundType.METAL).noOcclusion()));
+    public static final RegistryObject<Item> BULL_ITEM = ModItems.ITEMS.register("mechanical_bull",
+            () -> new BlockItem(BULL.get(), Reg.blockItem("mechanical_bull")));
+    public static final RegistryObject<Block> GALLERY = ModBlocks.BLOCKS.register("shooting_gallery", () -> new WestBlocks.Gallery(Reg.block("shooting_gallery")
+            .mapColor(MapColor.WOOD).strength(-1.0F, 3_600_000.0F).sound(SoundType.WOOD).noOcclusion()));
+    public static final RegistryObject<Item> GALLERY_ITEM = ModItems.ITEMS.register("shooting_gallery",
+            () -> new BlockItem(GALLERY.get(), Reg.blockItem("shooting_gallery")));
+    public static final RegistryObject<Item> REVOLVER = ModItems.ITEMS.register("gallery_revolver",
+            () -> new RevolverItem(Reg.item("gallery_revolver").stacksTo(1)));
+
     public static final RegistryObject<BlockEntityType<SaloonDoorBE>> DOOR_BE = ModBlockEntities.TYPES.register("saloon_door",
             () -> Reg.blockEntity(SaloonDoorBE::new, SALOON_DOOR.get()));
     public static final RegistryObject<BlockEntityType<SaloonDoorBE>> GATE_BE = ModBlockEntities.TYPES.register("vip_gate",
             () -> Reg.blockEntity((p, s) -> new SaloonDoorBE(WestReg.GATE_BE.get(), p, s), VIP_GATE.get()));
     public static final RegistryObject<BlockEntityType<PianoBE>> PIANO_BE = ModBlockEntities.TYPES.register("player_piano",
             () -> Reg.blockEntity(PianoBE::new, PIANO.get()));
+
+    public static final RegistryObject<BlockEntityType<BullBE>> BULL_BE = ModBlockEntities.TYPES.register("mechanical_bull",
+            () -> Reg.blockEntity(BullBE::new, BULL.get()));
+    public static final RegistryObject<BlockEntityType<GalleryBE>> GALLERY_BE = ModBlockEntities.TYPES.register("shooting_gallery",
+            () -> Reg.blockEntity(GalleryBE::new, GALLERY.get()));
+    public static final RegistryObject<EntityType<BullRideEntity>> BULL_RIDE = ModEntities.ENTITIES.register("bull_ride",
+            () -> Reg.entity("bull_ride", EntityType.Builder.<BullRideEntity>of(BullRideEntity::new, MobCategory.MISC).sized(0.001F, 0.001F)
+                    .clientTrackingRange(8).updateInterval(1)));
 
     private WestReg() {
     }

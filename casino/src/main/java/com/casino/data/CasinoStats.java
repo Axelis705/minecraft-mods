@@ -28,7 +28,13 @@ public final class CasinoStats extends SavedData {
     public static final int PLINKO = 4;
     public static final int SCRATCH = 5;
     public static final int RACE = 6;
-    public static final int GAMES = 7;
+    /** Juegos del saloon del Viejo Oeste. */
+    public static final int BULL = 7;
+    public static final int GALLERY = 8;
+    public static final int GAMES = 9;
+    /** Los juegos que cuentan para el logro "probar todos" (los del principio; los nuevos no lo quitan a quien ya lo tiene). */
+    public static final int CLASSIC = 7;
+    public static final int CLASSIC_MASK = (1 << CLASSIC) - 1;
 
     /** Un jugador. Los campos "d" son de hoy (se borran solos al cambiar de día). */
     public static final class Entry {
@@ -206,7 +212,7 @@ public final class CasinoStats extends SavedData {
         if (payout >= 10000) {
             unlock(server, id, e, Membership.JACKPOT);
         }
-        if (e.gamesMask == (1 << GAMES) - 1) {
+        if ((e.gamesMask & CLASSIC_MASK) == CLASSIC_MASK) {
             unlock(server, id, e, Membership.ALL_GAMES);
         }
         if (e.bets >= 100) {
