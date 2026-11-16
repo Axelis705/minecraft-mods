@@ -422,6 +422,9 @@ final class DesignTorre {
                 b.set(ox, f, CZ + oz, "cartography_table");
             }
         }
+        // Piedra de Portal de la Torre: lleva a la cima donde espera el Archimago (jefe de la etapa 4). Si el mod de los jefes no
+        // está instalado, el bloque no existe y simplemente no se pone.
+        b.set(0, f, CZ + 4, "mundos_de_axelis:portal_stone_tower");
         return obs;
     }
 

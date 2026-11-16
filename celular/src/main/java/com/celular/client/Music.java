@@ -135,7 +135,7 @@ public final class Music {
                 // el celular ya no está (en un cofre, lo recogió otro, se quemó...): se pausa
                 if (MusicPlayer.playing) {
                     MusicPlayer.toggle();
-                    mc.player.displayClientMessage(Component.translatable("celular.music.phone_gone"), true);
+                    com.celular.plat.Plat.msg(mc.player, Component.translatable("celular.music.phone_gone"), true);
                 }
                 speakerPos = null;
                 speakerId = -1;
