@@ -1,0 +1,21 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "PPP",
+  " L ",
+  " L "
+ ],
+ "key": {
+  "P": {
+   "item": "minecraft:spruce_slab"
+  },
+  "L": {
+   "item": "minecraft:dark_oak_log"
+  }
+ },
+ "result": {
+  "item": "casino:saloon_table",
+  "count": 1
+ }
+}

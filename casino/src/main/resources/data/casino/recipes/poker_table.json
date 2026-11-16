@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "WWW",
+  "PPP",
+  "S S"
+ ],
+ "key": {
+  "W": {
+   "item": "minecraft:green_wool"
+  },
+  "P": {
+   "item": "minecraft:dark_oak_planks"
+  },
+  "S": {
+   "item": "minecraft:stick"
+  }
+ },
+ "result": {
+  "item": "casino:poker_table",
+  "count": 1
+ }
+}

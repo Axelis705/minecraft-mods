@@ -1192,5 +1192,11 @@
   "casino.match.gone": "The challenger already left. The challenge is closed.",
   "casino.tip.duelist_west.say_5": "Think you can take me? Grip tight, stranger.",
   "casino.tip.duelist_west.say_6": "Ha! Go eat more beans and come back.",
-  "casino.tip.duelist_west.say_7": "What an arm! You beat me fair and square."
+  "casino.tip.duelist_west.say_7": "What an arm! You beat me fair and square.",
+  "block.casino.saloon_chair": "Saloon Chair",
+  "block.casino.saloon_stool": "Saloon Stool",
+  "block.casino.saloon_table": "Saloon Table",
+  "block.casino.poker_table": "Poker Table",
+  "block.casino.saloon_bench": "Saloon Bench",
+  "block.casino.wheel_chandelier": "Wagon Wheel Chandelier"
 }

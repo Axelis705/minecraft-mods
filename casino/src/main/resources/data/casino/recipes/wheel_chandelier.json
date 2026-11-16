@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  " C ",
+  "TWT",
+  " T "
+ ],
+ "key": {
+  "C": {
+   "item": "minecraft:chain"
+  },
+  "T": {
+   "item": "minecraft:candle"
+  },
+  "W": {
+   "item": "minecraft:dark_oak_planks"
+  }
+ },
+ "result": {
+  "item": "casino:wheel_chandelier",
+  "count": 1
+ }
+}

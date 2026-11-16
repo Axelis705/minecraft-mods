@@ -105,6 +105,21 @@ public final class ModDecor {
         }
     }
 
+    // muebles de madera del Viejo Oeste (saloon)
+    public static final RegistryObject<Block> SALOON_CHAIR = block("saloon_chair", p -> new SeatBlock(p.mapColor(MapColor.WOOD).strength(1.5F)
+            .sound(SoundType.WOOD).noOcclusion(), 0.55, new double[]{2, 0, 2, 14, 9, 14}, new double[]{2, 9, 11.8, 14, 16, 13.7}));
+    public static final RegistryObject<Block> SALOON_STOOL = block("saloon_stool", p -> new SeatBlock(p.mapColor(MapColor.WOOD).strength(1.5F)
+            .sound(SoundType.WOOD).noOcclusion(), 0.85, new double[]{2.6, 0, 2.6, 13.4, 13.8, 13.4}));
+    public static final RegistryObject<Block> SALOON_TABLE = block("saloon_table", p -> new DecorBlock(p.mapColor(MapColor.WOOD).strength(2.0F)
+            .sound(SoundType.WOOD).noOcclusion(), false, new double[]{6.5, 0, 6.5, 9.5, 14.3, 9.5}, new double[]{0.4, 14.3, 0.4, 15.6, 16, 15.6}));
+    public static final RegistryObject<Block> POKER_TABLE = block("poker_table", p -> new DecorBlock(p.mapColor(MapColor.COLOR_GREEN).strength(2.0F)
+            .sound(SoundType.WOOD).noOcclusion(), false, new double[]{1.4, 0, 1.4, 14.6, 14, 14.6}, new double[]{0, 14, 0, 16, 16, 16}));
+    public static final RegistryObject<Block> SALOON_BENCH = block("saloon_bench", p -> new SeatBlock(p.mapColor(MapColor.WOOD).strength(1.5F)
+            .sound(SoundType.WOOD).noOcclusion(), 0.5, new double[]{0, 0, 2.5, 16, 8.5, 12.5}, new double[]{0, 8.5, 11.9, 16, 16, 13.6}));
+    /** Rueda de carreta con velas (se cuelga de una cadena); casi dos bloques de ancho, pero solo choca la maza. */
+    public static final RegistryObject<Block> WHEEL_CHANDELIER = block("wheel_chandelier", p -> new DecorBlock(p.mapColor(MapColor.WOOD)
+            .strength(1.0F).sound(SoundType.WOOD).noOcclusion().lightLevel(s -> 15), false, new double[]{5.5, 2.5, 5.5, 10.5, 16, 10.5}));
+
     public static final List<RegistryObject<Block>> ROPE_POSTS = new ArrayList<>();
 
     static {

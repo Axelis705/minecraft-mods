@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "casino:block/west/wheel_chandelier"
+  },
+  "facing=east": {
+   "model": "casino:block/west/wheel_chandelier"
+  },
+  "facing=south": {
+   "model": "casino:block/west/wheel_chandelier"
+  },
+  "facing=west": {
+   "model": "casino:block/west/wheel_chandelier"
+  }
+ }
+}

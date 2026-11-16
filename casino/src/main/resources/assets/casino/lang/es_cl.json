@@ -1192,5 +1192,11 @@
   "casino.match.gone": "Quien retó ya se fue. El reto se cerró.",
   "casino.tip.duelist_west.say_5": "¿Crees que puedes conmigo? Agarra fuerte, forastero.",
   "casino.tip.duelist_west.say_6": "¡Ja! Ve a comer más frijoles y vuelve.",
-  "casino.tip.duelist_west.say_7": "¡Qué brazo! Me ganaste limpio."
+  "casino.tip.duelist_west.say_7": "¡Qué brazo! Me ganaste limpio.",
+  "block.casino.saloon_chair": "Silla de saloon",
+  "block.casino.saloon_stool": "Taburete de saloon",
+  "block.casino.saloon_table": "Mesa de saloon",
+  "block.casino.poker_table": "Mesa de póker",
+  "block.casino.saloon_bench": "Banca de saloon",
+  "block.casino.wheel_chandelier": "Candil de rueda de carreta"
 }

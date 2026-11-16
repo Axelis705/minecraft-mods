@@ -229,11 +229,11 @@ public final class WestRenderers {
             drawBull(b);
             ps.popPose();
             ps.popPose();
-            // letrero del récord junto a la entrada del ruedo
+            // letrero del récord junto a la entrada del ruedo (afuera de la cerca)
             ps.pushPose();
             ps.translate(0.5, 0, 0.5);
             ps.mulPose(Axis.YP.rotationDegrees(-f.toYRot()));
-            ps.translate(-2.1, 0, 3.3);
+            ps.translate(-2.1, 0, 4.25);
             Box3 s = new Box3(d.cutout(Box3.WHITE), ps.last(), light);
             s.box(-0.62, 0, -0.04, -0.54, 1.05, 0.04, 0x5A3A1E);
             s.box(0.54, 0, -0.04, 0.62, 1.05, 0.04, 0x5A3A1E);

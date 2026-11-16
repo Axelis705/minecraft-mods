@@ -1,0 +1,21 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "P  ",
+  "PPP",
+  "S S"
+ ],
+ "key": {
+  "P": {
+   "item": "minecraft:spruce_slab"
+  },
+  "S": {
+   "item": "minecraft:stick"
+  }
+ },
+ "result": {
+  "item": "casino:saloon_bench",
+  "count": 3
+ }
+}

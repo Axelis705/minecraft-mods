@@ -1,0 +1,21 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "pattern": [
+  "P  ",
+  "PPP",
+  "S S"
+ ],
+ "key": {
+  "P": {
+   "item": "minecraft:spruce_planks"
+  },
+  "S": {
+   "item": "minecraft:stick"
+  }
+ },
+ "result": {
+  "item": "casino:saloon_chair",
+  "count": 2
+ }
+}

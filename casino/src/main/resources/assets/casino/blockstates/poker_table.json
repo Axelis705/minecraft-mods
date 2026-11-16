@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "casino:block/west/poker_table"
+  },
+  "facing=east": {
+   "model": "casino:block/west/poker_table"
+  },
+  "facing=south": {
+   "model": "casino:block/west/poker_table"
+  },
+  "facing=west": {
+   "model": "casino:block/west/poker_table"
+  }
+ }
+}
