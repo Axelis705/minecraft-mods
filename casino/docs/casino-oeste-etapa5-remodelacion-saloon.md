@@ -21,7 +21,7 @@ mesas, sillas, está todo mal". Errores encontrados en el video y en las vistas 
   (0.5; en fila se ve como una sola). Son `SeatBlock`: clic derecho para sentarse; los clientes del casino también se sientan.
 - `saloon_table` mesa redonda de un pie (cubierta hasta y=16: las bebidas quedan apoyadas), `poker_table` mesa con paño verde,
   fichas y cartas. `wheel_chandelier` rueda de carreta con 8 velas, casi dos bloques de ancho, luz 15.
-- Recetas con madera, palos, lana verde, cadena y velas. Nombres ES/EN en `west_saloon_lang.py`.
+- Recetas con madera, palos, lana verde, pepita de hierro y velas (la cadena se llama distinto en 26.x). Nombres ES/EN en `west_saloon_lang.py`.
 
 ## Otros cambios
 - El letrero del récord del toro se dibuja 1 bloque más afuera (ya no queda encima de la cerca nueva).
