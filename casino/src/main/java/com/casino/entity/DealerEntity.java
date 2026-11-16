@@ -651,6 +651,9 @@ public class DealerEntity extends Mob {
             }
             return Plat.ok(level().isClientSide());
         }
+        if (isPatron() && !level().isClientSide() && player instanceof ServerPlayer bp && com.casino.west.Brawl.interact(this, bp)) {
+            return Plat.ok(false);   // pelea de cantina: le apostaste a este
+        }
         if (isPatron()) {
             if (!level().isClientSide()) {
                 // voltea a verte y te dice algo

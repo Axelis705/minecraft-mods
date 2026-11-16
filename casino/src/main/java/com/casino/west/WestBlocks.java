@@ -252,8 +252,11 @@ public final class WestBlocks {
 
         @Override
         public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-            if (!level.isClientSide() || type != WestReg.PIANO_BE.get()) {
+            if (type != WestReg.PIANO_BE.get()) {
                 return null;
+            }
+            if (!level.isClientSide()) {
+                return (lvl, p, st, be) -> ((PianoBE) be).serverTick();
             }
             return (lvl, p, st, be) -> {
                 if (st.getValue(LIT)) {

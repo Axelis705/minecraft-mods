@@ -145,6 +145,9 @@ execute if block 322 101 189 casino:duel_bell[facing=east] if data block 322 101
 execute if block 322 101 189 casino:duel_bell[facing=east] if data block 322 101 189 casino.Phase run say PRUEBA_SALOON_DUELO
 # mesa de dados del mentiroso arriba, con el viejo Hank enfrente
 execute if block 337 110 153 casino:liars_dice[facing=south] if entity @e[type=casino:dealer,nbt={Game:9,Variant:67},x=337.5,y=109,z=152.5,distance=..1.5] run say PRUEBA_SALOON_DADOS
+# pelea de cantina: la pianola del saloon la arranca con dos vaqueros (los peleadores quedan en modo pelea)
+casino pelea 317 101 173
+execute if entity @e[type=casino:dealer,nbt={Game:6,NoAI:1b}] run say PRUEBA_SALOON_PELEA
 place structure casino:el_saloon 0 -60 600
 execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=0,y=-60,z=600,distance=..60] run say PRUEBA_SALOON_ESTRUCTURA
 #expect PRUEBA_RASCA_OK
@@ -200,3 +203,4 @@ execute if entity @e[type=casino:dealer,nbt={Game:3,Variant:64},x=0,y=-60,z=600,
 #expect PRUEBA_SALOON_GALERIA_DATOS
 #expect PRUEBA_SALOON_DUELO
 #expect PRUEBA_SALOON_DADOS
+#expect PRUEBA_SALOON_PELEA

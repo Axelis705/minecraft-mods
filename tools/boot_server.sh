@@ -23,7 +23,14 @@ if [ $ok -eq 1 ] && [ -f ci_commands.txt ]; then
     case "$line" in ''|'#expect '*) continue;; esac
     echo "$line" >&3; sleep 1
   done < ci_commands.txt
-  sleep 9
+  # esperar a que el servidor termine de procesar todo (en una máquina lenta las construcciones grandes tardan); máximo 3 minutos
+  echo "say CI_FIN_COMANDOS" >&3
+  for i in $(seq 1 90); do
+    if grep -q 'CI_FIN_COMANDOS' "$log" 2>/dev/null || grep -q 'CI_FIN_COMANDOS' run/logs/latest.log 2>/dev/null; then break; fi
+    if grep -q '^exit=' "$log"; then break; fi
+    sleep 2
+  done
+  sleep 4
 fi
 echo "stop" >&3; sleep 8; exec 3>&-
 pkill -f "runServer" 2>/dev/null || true

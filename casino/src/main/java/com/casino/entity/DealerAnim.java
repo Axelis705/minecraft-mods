@@ -51,10 +51,13 @@ public final class DealerAnim {
     public static final int EARPIECE = 19;
     /** Cliente: toma un trago de su copa. */
     public static final int SIP = 20;
+    /** Pelea de cantina: golpe con la derecha y con la izquierda. */
+    public static final int PUNCH = 21;
+    public static final int PUNCH_L = 22;
     /** Momento del servicio en que el vaso llega a la mano del jugador (ahí se da el efecto). */
     public static final int SERVE_HANDOVER = 56;
 
-    private static final int[] TICKS = {0, 18, 36, 14, 16, 26, 24, 20, 26, 30, 20, 16, 40, 22, 34, 30, 32, 66, 36, 40, 30};
+    private static final int[] TICKS = {0, 18, 36, 14, 16, 26, 24, 20, 26, 30, 20, 16, 40, 22, 34, 30, 32, 66, 36, 40, 30, 8, 8};
 
     private DealerAnim() {
     }

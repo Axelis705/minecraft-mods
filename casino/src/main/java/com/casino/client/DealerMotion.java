@@ -401,6 +401,24 @@ public final class DealerMotion {
 
     /** Los clientes: unos traen su copa (y le dan traguitos), otros juegan con unas fichas en la mano. */
     private void patron(DealerEntity e, float partial) {
+        if (e.combat() == 4) {
+            // pelea de cantina: puños arriba frente a la cara; el golpe estira un brazo hacia el otro
+            Vec3 r = new Vec3(ex + fx * 0.32 + rxv * 0.14, ey + 1.42, ez + fz * 0.32 + rzv * 0.14);
+            Vec3 l = new Vec3(ex + fx * 0.36 - rxv * 0.14, ey + 1.38, ez + fz * 0.36 - rzv * 0.14);
+            double t = e.tickCount - e.animStart + partial;
+            if (e.animId == DealerAnim.PUNCH || e.animId == DealerAnim.PUNCH_L) {
+                double k = t < 3 ? smooth((float) (t / 3)) : 1 - smooth((float) ((t - 3) / 5));
+                Vec3 reach = new Vec3(fx * 0.55 * k, 0.05 * k, fz * 0.55 * k);
+                if (e.animId == DealerAnim.PUNCH) {
+                    r = r.add(reach);
+                } else {
+                    l = l.add(reach);
+                }
+            }
+            armR(r, 1);
+            armL(l, 1);
+            return;
+        }
         if (e.holdsDrink()) {
             propL = DealerProps.GLASS_FULL;
             double t = e.animId == DealerAnim.SIP ? e.tickCount - e.animStart + partial : -1;

@@ -60,6 +60,9 @@ public final class CasinoCommands {
                                                 BlockPosArgument.getBlockPos(c, "pos"), IntegerArgumentType.getInteger(c, "rot"))))
                                         .then(Commands.literal("saloon").executes(c -> buildTemplate(c.getSource(), "el_saloon",
                                                 BlockPosArgument.getBlockPos(c, "pos"), IntegerArgumentType.getInteger(c, "rot")))))))
+                .then(Commands.literal("pelea")
+                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                .executes(c -> brawl(c.getSource(), BlockPosArgument.getBlockPos(c, "pos")))))
                 .then(Commands.literal("chips")
                         .then(Commands.argument("players", EntityArgument.players())
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(1, 1_000_000)).executes(c -> {
@@ -73,6 +76,26 @@ public final class CasinoCommands {
                                     c.getSource().sendSuccess(() -> Component.translatable("casino.cmd.chips", amount, count), true);
                                     return n;
                                 })))));
+    }
+
+    /** Arranca una pelea de cantina en la pianola más cercana a esa posición (hasta 32 bloques). */
+    private static int brawl(CommandSourceStack src, BlockPos near) {
+        var level = src.getLevel();
+        com.casino.west.PianoBE best = null;
+        double bd = 32 * 32;
+        for (BlockPos p : BlockPos.betweenClosed(near.offset(-32, -8, -32), near.offset(32, 8, 32))) {
+            if (level.isLoaded(p) && level.getBlockEntity(p) instanceof com.casino.west.PianoBE pb && p.distSqr(near) < bd) {
+                bd = p.distSqr(near);
+                best = pb;
+            }
+        }
+        if (best != null && best.brawlNow()) {
+            BlockPos bp = best.getBlockPos();
+            src.sendSuccess(() -> Component.translatable("casino.cmd.brawl", bp.getX(), bp.getY(), bp.getZ()), true);
+            return 1;
+        }
+        src.sendFailure(Component.translatable("casino.cmd.brawl_none"));
+        return 0;
     }
 
     private static int buildTemplate(CommandSourceStack src, String name, BlockPos pos, int rot) {

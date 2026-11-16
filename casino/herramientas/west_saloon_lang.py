@@ -151,6 +151,17 @@ ES = {
     "casino.dice.face_6": "seises",
     "casino.dice.hud_turn": "Dados: ¡tu turno! (clic en la mesa)",
     "casino.dice.hud_wait": "Dados: %s está pensando…",
+    # pelea de cantina
+    "casino.brawl.start": "¡Se armó la pelea en el saloon! %s contra %s. Clic derecho a un peleador para apostarle %s fichas (paga %s).",
+    "casino.brawl.closed": "Ya no se aceptan apuestas en esta pelea.",
+    "casino.brawl.already": "Ya le apostaste a uno.",
+    "casino.brawl.bet": "Apostaste %s fichas por %s.",
+    "casino.brawl.end": "¡%s ganó la pelea! El sheriff pone orden.",
+    "casino.brawl.won": "¡Tu peleador ganó! Cobras %s fichas.",
+    "casino.brawl.lost": "Tu peleador perdió: pierdes %s fichas.",
+    "casino.tip.guard_west.say_3": "¡Se acabó! A sus mesas, muchachos, o duermen en la cárcel.",
+    "casino.cmd.brawl": "Pelea de cantina en la pianola de %s %s %s.",
+    "casino.cmd.brawl_none": "No hay una pianola cerca con dos vaqueros para pelear.",
 }
 
 EN = {
@@ -299,4 +310,14 @@ EN = {
     "casino.dice.face_6": "sixes",
     "casino.dice.hud_turn": "Dice: your turn! (click the table)",
     "casino.dice.hud_wait": "Dice: %s is thinking…",
+    "casino.brawl.start": "A brawl broke out in the saloon! %s against %s. Right-click a fighter to bet %s chips on him (pays %s).",
+    "casino.brawl.closed": "No more bets on this fight.",
+    "casino.brawl.already": "You already bet on one.",
+    "casino.brawl.bet": "You bet %s chips on %s.",
+    "casino.brawl.end": "%s won the brawl! The sheriff restores order.",
+    "casino.brawl.won": "Your fighter won! You get %s chips.",
+    "casino.brawl.lost": "Your fighter lost: you lose %s chips.",
+    "casino.tip.guard_west.say_3": "That's enough! Back to your tables, boys, or you sleep in jail.",
+    "casino.cmd.brawl": "Saloon brawl at the player piano at %s %s %s.",
+    "casino.cmd.brawl_none": "No player piano nearby with two cowboys to fight.",
 }

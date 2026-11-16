@@ -1108,5 +1108,15 @@
   "casino.dice.face_5": "fives",
   "casino.dice.face_6": "sixes",
   "casino.dice.hud_turn": "Dice: your turn! (click the table)",
-  "casino.dice.hud_wait": "Dice: %s is thinking…"
+  "casino.dice.hud_wait": "Dice: %s is thinking…",
+  "casino.brawl.start": "A brawl broke out in the saloon! %s against %s. Right-click a fighter to bet %s chips on him (pays %s).",
+  "casino.brawl.closed": "No more bets on this fight.",
+  "casino.brawl.already": "You already bet on one.",
+  "casino.brawl.bet": "You bet %s chips on %s.",
+  "casino.brawl.end": "%s won the brawl! The sheriff restores order.",
+  "casino.brawl.won": "Your fighter won! You get %s chips.",
+  "casino.brawl.lost": "Your fighter lost: you lose %s chips.",
+  "casino.tip.guard_west.say_3": "That's enough! Back to your tables, boys, or you sleep in jail.",
+  "casino.cmd.brawl": "Saloon brawl at the player piano at %s %s %s.",
+  "casino.cmd.brawl_none": "No player piano nearby with two cowboys to fight."
 }
