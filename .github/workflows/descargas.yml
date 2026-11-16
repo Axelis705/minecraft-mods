@@ -1,0 +1,29 @@
+name: Bajar recursos libres (CC0)
+# Baja archivos de licencia libre (por ejemplo sonidos CC0 de OpenGameArt) y los deja en la rama "descargas",
+# porque la nube de Claude no puede bajar archivos de internet pero sí leer ramas del repositorio.
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Direcciones separadas por espacios"
+        required: true
+
+jobs:
+  bajar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Bajar y subir a la rama descargas
+        run: |
+          d=$(mktemp -d); cd "$d"
+          for u in ${{ github.event.inputs.urls }}; do
+            n=$(basename "${u%%\?*}")
+            curl -sSL --fail -o "$n" "$u" && echo "ok $n" || echo "FALLO $u"
+          done
+          echo "${{ github.event.inputs.urls }}" > ORIGEN.txt
+          ls -la
+          git init -q -b descargas
+          git config user.name ci; git config user.email ci@example.com
+          git add -A; git commit -qm "descargas"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" descargas
