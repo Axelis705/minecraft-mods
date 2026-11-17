@@ -8,6 +8,19 @@ Versiones: **1.20.1** (se compila desde la carpeta), **1.21.1, 1.21.4 y 26.3** (
 - Receta: `IGI / IRI / ICI` (hierro, panel de vidrio, redstone, cobre). Se tiñe en la mesa: celular (cualquiera, tag `celular:phones`) + tinte (lingote de oro para el dorado).
 - Clic derecho o tecla **K** abre el celular (hay que tenerlo en el inventario). Con la K, si el celular está en la barra rápida pero no en la mano, se elige esa casilla (así los demás ven la pose) y al cerrar se vuelve a la de antes (salvo con la linterna encendida). **Y** contesta y **U** cuelga. Tecla opcional (sin asignar) para la linterna.
 - Bloque `celular:flash_light` (sin objeto): la luz invisible de la linterna.
+- **Audífonos** `celular:headphones` (hierro, redstone y lana): se ponen en la cabeza con clic derecho (`Equipable` hasta 1.21.1, componente `equippable` desde 1.21.2) y se ven en el jugador (modelo 3D con `display.head`). Con ellos puestos tu música solo la oyes tú: no sale por el altavoz ni por la bocina, y no oyes los altavoces de otros (el Jam sí).
+- **Bocina Bluetooth** `celular:speaker` (hierro, redstone y bloque musical): clic derecho para conectar tu celular (otra vez para soltarla; una bocina es de una persona). Tu música sale desde la bocina (se oye hasta 40 bloques; tú debes estar a menos de 96) y las canciones del mundo las oyen todos los cercanos desde ahí. Mientras suena: estado `on=true` (luz 7, barra de luz, aro de color y bajo que late con la textura animada `speaker_woofer_on`) y notas musicales. Se apaga sola con un tick aleatorio si nadie la usa, al cerrar el servidor y al desconectarse el dueño.
+
+## El celular en 3D (17-nov)
+- Modelo `models/item/phone3d/base.json`: cuerpo de 7 × 14 × 1.5 con marco, pantalla (plano encima del frente), cámara trasera con dos lentes y flash, botones a los lados y un logo propio (estrellita). Carcasas de 64 px por color (`textures/item/phone3d/<color>.png`).
+- Pantallas de 32 × 64 (`textures/item/phone3d/screen/`): `lock` (la normal, celular guardado), las 17 apps y `ear` (apagada, pegada a la oreja). Dibujadas a 4x y achicadas, con hora de píxeles, isla y esquinas redondeadas.
+- Un modelo por carcasa × pantalla (`phone3d/<color>_<app>.json`); la de la llamada usa `base_ear.json` (otra forma de sostenerlo).
+- Cómo se sostiene: `thirdperson_righthand` rotación [0, -50, 90], traslación [-0.5, -1, -1.2], escala 0.45 (la parte de arriba hacia los dedos, la pantalla hacia la palma, inclinado 40°); primera persona abajo a la derecha mirando a la cámara. Todo calculado con `herramientas/sim` (ver su LEEME): simula la cadena del juego (brazo → mano → `display`) y dibuja un jugador de cajas con cada pose.
+- Poses (`PhonePoses.aim`: el brazo apunta a un lado con la palma hacia otro y de ahí salen los ángulos Z·Y·X): escribir (las dos manos delante del pecho, vaivén y pulgares), foto (las dos manos arriba delante de la cara; pantalla de la cámara), llamada (`EAR` = 18, el codo afuera y el celular entre la cabeza y el brazo), linterna (el brazo hacia donde mira). En la simulación la pantalla queda mirando a los ojos al escribir y al tomar foto (0.99 de 1).
+- Haz de la linterna: motitas de luz (`END_ROD`) delante de cualquier jugador cercano que alumbra.
+
+## Animaciones de la interfaz (17-nov)
+`client/Anim`: valores que se acercan suave a su objetivo. Interruptores que se deslizan (Ajustes, Notas, Mapa), pestañas con la pastilla que se mueve (Música, Notas), brillo al tocar cualquier botón (`App.drawPress`), burbujas nuevas que suben y aparecen, el saldo de la billetera que cuenta, y el botón de la linterna que se hunde con un resplandor que crece.
 
 ## Apps
 | App | Qué hace |
@@ -65,7 +78,7 @@ Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas per
 `world/celular/instacraft/publicaciones.json` + una foto `<id>.jpg` por publicación (máximo 400; se borran las más viejas). Las fotos suben en pedazos de 28 KB (máx 96 KB). 15 s entre publicaciones (los operadores no esperan). Comandos: `/celular instacraft borrar <jugador>` y `/celular instacraft total`.
 
 ## Recursos
-- `celular/herramientas/assets.py`: texturas del objeto y sus 17 pantallas encendidas, iconos de apps (`gui/apps.png`, 15 de 64 px), iconos de la interfaz (`gui/ui.png`, 64 de 24 px, blancos y teñidos en el juego) y fondos (`gui/wallpapers.png`, 8). Las de la interfaz llevan `.mcmeta` con `blur`.
+- `celular/herramientas/assets.py`: el celular 3D (carcasas, 19 pantallas y modelos), audífonos, bocina (con la textura animada), iconos de apps (`gui/apps.png`, 15 de 64 px), iconos de la interfaz (`gui/ui.png`, 64 de 24 px, blancos y teñidos en el juego) y fondos (`gui/wallpapers.png`, 8). Las de la interfaz llevan `.mcmeta` con `blur`.
 - `celular/herramientas/sonidos.py`: sonidos sintetizados (obturador, tono de llamada, tono de espera, notificación, like, colgar, toque, desbloqueo).
 - `celular/herramientas/idiomas.py`: 15 idiomas (español en todas sus variantes, inglés, portugués, francés, alemán, italiano, ruso, japonés y chino).
 
