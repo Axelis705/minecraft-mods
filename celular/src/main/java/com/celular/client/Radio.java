@@ -338,6 +338,9 @@ public final class Radio {
         }
         uploading = t;
         upProgress = 0;
+        // desde ya cuenta el tiempo de espera: antes valía el de la subida anterior (o 0) y el reloj de abajo cancelaba la subida
+        // en el primer cuadro, antes de terminar de leer el archivo (lo encontró la prueba de dos jugadores)
+        upAt = System.currentTimeMillis();
         Thread th = new Thread(() -> {
             byte[] data = null;
             try {
