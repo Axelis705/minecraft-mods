@@ -473,6 +473,53 @@ public final class Radio {
         return l;
     }
 
+    /** Distancia a la que se deja de oír una bocina (más que un celular). */
+    static final double HEAR_SPEAKER = 40.0;
+
+    /** Desde dónde suena: la bocina conectada, o la entidad (el jugador o su celular tirado). Null si no está cargado. */
+    private static Vec3 from(Minecraft mc, RadioNet.SpeakerState st) {
+        if (st.block != RadioNet.SpeakerState.NO_BLOCK) {
+            return Vec3.atCenterOf(net.minecraft.core.BlockPos.of(st.block));
+        }
+        Entity src = mc.level.getEntity(st.source);
+        return src == null ? null : src.position().add(0, src.getBbHeight() * 0.6, 0);
+    }
+
+    private static double hear(RadioNet.SpeakerState st) {
+        return st.block != RadioNet.SpeakerState.NO_BLOCK ? HEAR_SPEAKER : HEAR;
+    }
+
+    // ------------------------------------------------------------------ mi bocina
+
+    /** La bocina conectada a mi celular (null = ninguna) y en qué dimensión está. */
+    public static net.minecraft.core.BlockPos pairedPos;
+    public static String pairedDim = "";
+
+    static void paired(CelularNet.Notify m) {
+        String[] p = m.text.split("\\|", 2);
+        if (p.length < 2) {
+            pairedPos = null;
+            pairedDim = "";
+            return;
+        }
+        try {
+            pairedPos = net.minecraft.core.BlockPos.of(Long.parseLong(p[0]));
+            pairedDim = p[1];
+        } catch (NumberFormatException e) {
+            pairedPos = null;
+        }
+    }
+
+    /** ¿Mi música sale por la bocina ahora? (está conectada, en esta dimensión y no muy lejos). */
+    static Vec3 mySpeakerPos(Minecraft mc) {
+        if (pairedPos == null || mc.level == null || mc.player == null || !mc.level.dimension().toString().equals(pairedDim)
+                || com.celular.HeadphonesItem.wearing(mc.player)) {
+            return null;
+        }
+        Vec3 c = Vec3.atCenterOf(pairedPos);
+        return c.distanceTo(mc.player.position()) < 96 ? c : null;
+    }
+
     private static void remotes(Minecraft mc) {
         if (!Prefs.hearOthers || com.celular.HeadphonesItem.wearing(mc.player)) {
             // con audífonos puestos (o si no quiere) no se oyen los altavoces de los demás
@@ -489,11 +536,12 @@ public final class Radio {
         List<Map.Entry<UUID, Remote>> near = new ArrayList<>();
         for (Map.Entry<UUID, Remote> e : REMOTES.entrySet()) {
             Remote r = e.getValue();
-            Entity src = mc.level.getEntity(r.st.source);
-            double d = src == null ? 1e9 : src.position().add(0, src.getBbHeight() * 0.6, 0).distanceTo(ear);
-            if (d < HEAR + 4 && r.st.playing) {
+            Vec3 at = from(mc, r.st);
+            double d = at == null ? 1e9 : at.distanceTo(ear);
+            double hear = hear(r.st);
+            if (d < hear + 4 && r.st.playing) {
                 near.add(e);
-                if (d < HEAR + 16) {
+                if (d < hear + 16) {
                     want(r.st.song, false);
                 }
             } else if (r.stream != null) {
@@ -502,8 +550,8 @@ public final class Radio {
             }
         }
         near.sort((a, b) -> {
-            Entity ea = mc.level.getEntity(a.getValue().st.source), eb = mc.level.getEntity(b.getValue().st.source);
-            return Double.compare(ea == null ? 1e9 : ea.distanceToSqr(ear), eb == null ? 1e9 : eb.distanceToSqr(ear));
+            Vec3 pa = from(mc, a.getValue().st), pb = from(mc, b.getValue().st);
+            return Double.compare(pa == null ? 1e9 : pa.distanceToSqr(ear), pb == null ? 1e9 : pb.distanceToSqr(ear));
         });
         for (int k = 0; k < near.size(); k++) {
             Remote r = near.get(k).getValue();
@@ -514,8 +562,8 @@ public final class Radio {
                 }
                 continue;
             }
-            Entity src = mc.level.getEntity(r.st.source);
-            if (src == null) {
+            Vec3 at = from(mc, r.st);
+            if (at == null) {
                 continue;
             }
             if (r.stream != null && r.stream.done()) {
@@ -532,7 +580,7 @@ public final class Radio {
                 }
             }
             if (r.stream != null) {
-                float[] g = Music.spatial(mc, src.position().add(0, src.getBbHeight() * 0.6, 0), HEAR);
+                float[] g = Music.spatial(mc, at, hear(r.st));
                 float vol = Prefs.othersVolume;
                 r.stream.left = g[0] * vol;
                 r.stream.right = g[1] * vol;
@@ -879,6 +927,8 @@ public final class Radio {
         jams = null;
         invites.clear();
         sentSong = 0;
+        pairedPos = null;
+        pairedDim = "";
         pendingPlay = 0;
         HASHING.clear();
         READY.clear();

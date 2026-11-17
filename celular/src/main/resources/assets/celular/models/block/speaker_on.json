@@ -1,0 +1,412 @@
+{
+  "parent": "minecraft:block/block",
+  "credit": "Bocina del celular (generado por herramientas/assets.py)",
+  "texture_size": [
+    64,
+    64
+  ],
+  "textures": {
+    "case": "celular:block/speaker_case",
+    "particle": "celular:block/speaker_case",
+    "front": "celular:block/speaker_front_on",
+    "woofer": "celular:block/speaker_woofer_on"
+  },
+  "elements": [
+    {
+      "name": "caja",
+      "from": [
+        3,
+        0,
+        4
+      ],
+      "to": [
+        13,
+        14,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            10,
+            14
+          ],
+          "texture": "#front"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            10,
+            14
+          ],
+          "texture": "#case"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8,
+            14
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8,
+            14
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            10,
+            8
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            10,
+            8
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "bajo",
+      "from": [
+        4.5,
+        1.5,
+        3.5
+      ],
+      "to": [
+        11.5,
+        8.5,
+        4
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#woofer"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            0.5,
+            7.0
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            0.5,
+            7.0
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            7.0,
+            0.5
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            7.0,
+            0.5
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "tweeter",
+      "from": [
+        6,
+        9.5,
+        3.5
+      ],
+      "to": [
+        10,
+        13.5,
+        4
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#woofer"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            0.5,
+            4.0
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            0.5,
+            4.0
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            0.5
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            0.5
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "asa_izq",
+      "from": [
+        5,
+        14,
+        7.5
+      ],
+      "to": [
+        6,
+        15.5,
+        8.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            1.5
+          ],
+          "texture": "#case"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            1.5
+          ],
+          "texture": "#case"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1.0,
+            1.5
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1.0,
+            1.5
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1.0
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1.0
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "asa_der",
+      "from": [
+        10,
+        14,
+        7.5
+      ],
+      "to": [
+        11,
+        15.5,
+        8.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            1,
+            1.5
+          ],
+          "texture": "#case"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            1,
+            1.5
+          ],
+          "texture": "#case"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1.0,
+            1.5
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1.0,
+            1.5
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            1,
+            1.0
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            1,
+            1.0
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "asa",
+      "from": [
+        5,
+        15.5,
+        7.5
+      ],
+      "to": [
+        11,
+        16,
+        8.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            6,
+            0.5
+          ],
+          "texture": "#case"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            6,
+            0.5
+          ],
+          "texture": "#case"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            1.0,
+            0.5
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            1.0,
+            0.5
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            6,
+            1.0
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            6,
+            1.0
+          ],
+          "texture": "#case"
+        }
+      }
+    }
+  ]
+}

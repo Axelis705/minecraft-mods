@@ -111,6 +111,14 @@ public final class Music {
      * queda). Si el celular desaparece cerca de ti (alguien lo recogió, se quemó o lo guardaste en un cofre), la música se pausa.
      */
     private static void speaker(Minecraft mc) {
+        Vec3 bocina = Radio.mySpeakerPos(mc);
+        if (bocina != null) {
+            // conectado a una bocina: tu música sale desde ahí (más fuerte y se oye más lejos)
+            float[] g = spatial(mc, bocina, Radio.HEAR_SPEAKER);
+            MusicPlayer.spatialL = g[0];
+            MusicPlayer.spatialR = g[1];
+            return;
+        }
         if (mc.player == null || mc.level == null || holdsPhone(mc) || com.celular.HeadphonesItem.wearing(mc.player)) {
             speakerId = -1;
             speakerPos = null;

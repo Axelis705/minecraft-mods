@@ -66,6 +66,26 @@ public final class SelfTest {
         } catch (Throwable e) {
             bad += check(log, "luz " + e, false);
         }
+        // 2b. la bocina: apagada no alumbra, encendida sí (7), y si nadie la usa se apaga sola
+        try {
+            ServerLevel lvl = s.overworld();
+            BlockPos pos = new BlockPos(2, Plat.maxY(lvl) - 4, 0);
+            if (!lvl.getBlockState(pos).isAir()) {
+                log.accept("bocina OMITIDA (no hay aire)");
+            } else {
+                lvl.setBlock(pos, CelularReg.SPEAKER.get().defaultBlockState(), 2);
+                BlockState off = lvl.getBlockState(pos);
+                lvl.setBlock(pos, off.setValue(SpeakerBlock.ON, true), 2);
+                BlockState on = lvl.getBlockState(pos);
+                boolean lit = off.getLightEmission() == 0 && on.getLightEmission() == 7 && !com.celular.radio.Speakers.active(lvl, pos);
+                on.randomTick(lvl, pos, lvl.getRandom());
+                boolean offAgain = !lvl.getBlockState(pos).getValue(SpeakerBlock.ON);
+                lvl.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);
+                bad += check(log, "bocina", lit && offAgain);
+            }
+        } catch (Throwable e) {
+            bad += check(log, "bocina " + e, false);
+        }
         // 3. billetera: lo que no es ficha vale 0 (y dice si el Casino está)
         try {
             bad += check(log, "billetera", Wallet.value(new ItemStack(Items.DIAMOND)) == 0 && Wallet.value(ItemStack.EMPTY) == 0);

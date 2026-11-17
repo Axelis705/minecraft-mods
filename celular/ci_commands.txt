@@ -7,6 +7,7 @@ celular instacraft total
 celular prueba
 #expect PRUEBA_CELULAR pantalla OK
 #expect PRUEBA_CELULAR luz OK
+#expect PRUEBA_CELULAR bocina OK
 #expect PRUEBA_CELULAR mensajes_guardar OK
 #expect PRUEBA_CELULAR jam OK
 #expect PRUEBA_CELULAR TOTAL fallos=0 fin

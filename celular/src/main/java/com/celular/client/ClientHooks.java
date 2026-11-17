@@ -265,6 +265,7 @@ public final class ClientHooks {
                     net.minecraft.network.chat.Component.translatable("celular.notify.missed", m.who));
             case CelularNet.Notify.JAM_INVITE -> Radio.invite(m);
             case CelularNet.Notify.DJ -> Radio.dj(m);
+            case CelularNet.Notify.SPEAKER_PAIR -> Radio.paired(m);
             case CelularNet.Notify.WALLET -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet", net.minecraft.network.chat.Component.translatable(m.text));
             case CelularNet.Notify.WALLET_SENT -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet",
                     net.minecraft.network.chat.Component.translatable("celular.wallet.sent", m.text, m.who));

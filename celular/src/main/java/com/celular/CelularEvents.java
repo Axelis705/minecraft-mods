@@ -38,7 +38,7 @@ public final class CelularEvents {
             Instacraft.logout(p.getUUID());
             WorldMusic.logout(p.getUUID());
             Jams.leave(Plat.server(p), p.getUUID(), false);
-            Speakers.ownerGone(Plat.server(p), p.getUUID());
+            Speakers.logout(Plat.server(p), p.getUUID());
             com.celular.PhoneUse.logout(p);
             com.celular.map.Friends.logout(p.getUUID());
         }
@@ -65,7 +65,7 @@ public final class CelularEvents {
     public static void onStopping(ServerStoppingEvent e) {
         CallManager.clear();
         Jams.clear();
-        Speakers.clear();
+        Speakers.clear(e.getServer());
         com.celular.PhoneUse.clear(e.getServer());
         com.celular.msg.Messages.stopping(e.getServer());
         com.celular.wallet.Wallet.stopping();

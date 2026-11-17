@@ -215,14 +215,22 @@ public final class RadioNet {
         public final SongInfo song;
         public final long posMs;
         public final boolean playing;
+        /** Si suena desde una bocina: su posición (BlockPos.asLong); {@link #NO_BLOCK} = desde la entidad {@code source}. */
+        public final long block;
+        public static final long NO_BLOCK = Long.MIN_VALUE;
 
         public SpeakerState(UUID owner, String name, int source, SongInfo song, long posMs, boolean playing) {
+            this(owner, name, source, song, posMs, playing, NO_BLOCK);
+        }
+
+        public SpeakerState(UUID owner, String name, int source, SongInfo song, long posMs, boolean playing, long block) {
             this.owner = owner;
             this.name = name;
             this.source = source;
             this.song = song;
             this.posMs = posMs;
             this.playing = playing;
+            this.block = block;
         }
 
         void write(FriendlyByteBuf b) {
@@ -235,6 +243,7 @@ public final class RadioNet {
             }
             b.writeLong(posMs);
             b.writeBoolean(playing);
+            b.writeLong(block);
         }
 
         static SpeakerState read(FriendlyByteBuf b) {
@@ -242,7 +251,7 @@ public final class RadioNet {
             String n = b.readUtf(40);
             int src = b.readVarInt();
             SongInfo s = b.readBoolean() ? SongInfo.read(b) : null;
-            return new SpeakerState(o, n, src, s, b.readLong(), b.readBoolean());
+            return new SpeakerState(o, n, src, s, b.readLong(), b.readBoolean(), b.readLong());
         }
     }
 

@@ -1669,11 +1669,124 @@ def headphones():
         json.dump(model, fh, indent=2)
 
 
+# =====================================================================================================================
+#  Bocina Bluetooth (bloque): caja con rejilla, bajo y tweeter; encendida, el bajo late y las luces cambian de color
+# =====================================================================================================================
+def speaker_block():
+    K = 4
+    body, body_hi = hexc("#24252b"), hexc("#34363e")
+    # el material de la caja (atrás, costados, arriba, abajo, asa): 16 × 16 unidades a 4 px
+    case = Image.new("RGBA", (64, 64), body)
+    pc = case.load()
+    for y in range(64):
+        for x in range(64):
+            if (x + y) % 9 == 0:
+                pc[x, y] = lerp(body, body_hi, 0.6)
+    save(case, "block/speaker_case.png")
+    # el frente: rejilla de puntitos, borde, y una barrita de luz abajo (apagada o encendida)
+    for on in (False, True):
+        front = Image.new("RGBA", (64, 64), body)
+        pf = front.load()
+        for y in range(14 * K):
+            for x in range(10 * K):
+                edge = x < 2 or x >= 10 * K - 2 or y < 2 or y >= 14 * K - 2
+                if edge:
+                    pf[x, y] = body_hi
+                elif x % 3 == 1 and y % 3 == 1:
+                    pf[x, y] = hexc("#0d0d10")
+        for x in range(14, 26):                        # barra de luz
+            for y in (14 * K - 5, 14 * K - 4):
+                pf[x, y] = lerp(hexc("#ff375f"), hexc("#5e5ce6"), (x - 14) / 11) if on else hexc("#3a3a40")
+        for (x, y) in ((4, 4), (5, 4), (4, 5), (5, 5)):  # el logo (punto)
+            pf[x, y] = hexc("#8e8e93")
+        save(front, "block/speaker_front_on.png" if on else "block/speaker_front.png")
+
+    def woofer(pulse, hue, lit):
+        S = 128
+        big = Image.new("RGBA", (S, S), body)
+        d = ImageDraw.Draw(big)
+        c = S / 2
+        ring = hsv_rgb(hue, 0.85, 1.0) if lit else (60, 60, 66)
+        d.ellipse((2, 2, S - 3, S - 3), fill=(28, 28, 32, 255))
+        d.ellipse((6, 6, S - 7, S - 7), outline=ring + (255,), width=6)         # aro de luz
+        r_sur = 50
+        d.ellipse((c - r_sur, c - r_sur, c + r_sur, c + r_sur), fill=(16, 16, 18, 255))   # borde de goma
+        r_cone = 42 + pulse * 3
+        for k in range(12):                                                      # el cono (degradado)
+            rr = r_cone * (1 - k / 12)
+            v = int(55 + 60 * (k / 12) + 40 * pulse)
+            d.ellipse((c - rr, c - rr, c + rr, c + rr), fill=(v, v, v + 6, 255))
+        r_cap = 13 + pulse * 4
+        cap = int(120 + 100 * pulse)
+        d.ellipse((c - r_cap, c - r_cap, c + r_cap, c + r_cap), fill=(cap, cap, cap + 8, 255))
+        d.ellipse((c - r_cap * 0.5, c - r_cap * 0.9, c + r_cap * 0.1, c - r_cap * 0.3), fill=(255, 255, 255, 90))
+        return big.resize((32, 32), Image.LANCZOS)
+
+    save(woofer(0, 0, False), "block/speaker_woofer.png")
+    beats = [1.0, 0.55, 0.25, 0.1, 0.8, 0.35, 0.15, 0.05]
+    strip = Image.new("RGBA", (32, 32 * len(beats)))
+    for i, b in enumerate(beats):
+        strip.paste(woofer(b, i * 45, True), (0, 32 * i))
+    save(strip, "block/speaker_woofer_on.png")
+    with open(os.path.join(TEX, "block", "speaker_woofer_on.png.mcmeta"), "w") as fh:
+        fh.write('{\n  "animation": {\n    "frametime": 2\n  }\n}\n')
+
+    def faces(uvs, tex="#case"):
+        return {f: {"uv": uv, "texture": tex} for f, uv in uvs.items()}
+
+    def cuboid(a, b):
+        w, h, dz = b[0] - a[0], b[1] - a[1], b[2] - a[2]
+        return {"north": [0, 0, w, h], "south": [0, 0, w, h], "east": [0, 0, dz, h], "west": [0, 0, dz, h],
+                "up": [0, 0, w, dz], "down": [0, 0, w, dz]}
+
+    elements = []
+    a, b = [3, 0, 4], [13, 14, 12]
+    f = faces(cuboid(a, b))
+    f["north"] = {"uv": [0, 0, 10, 14], "texture": "#front"}
+    elements.append({"name": "caja", "from": a, "to": b, "faces": f})
+    for name, a, b in (("bajo", [4.5, 1.5, 3.5], [11.5, 8.5, 4]), ("tweeter", [6, 9.5, 3.5], [10, 13.5, 4])):
+        f = faces(cuboid(a, b))
+        f["north"] = {"uv": [0, 0, 16, 16], "texture": "#woofer"}
+        del f["south"]
+        elements.append({"name": name, "from": a, "to": b, "faces": f})
+    for name, a, b in (("asa_izq", [5, 14, 7.5], [6, 15.5, 8.5]), ("asa_der", [10, 14, 7.5], [11, 15.5, 8.5]),
+                       ("asa", [5, 15.5, 7.5], [11, 16, 8.5])):
+        elements.append({"name": name, "from": a, "to": b, "faces": faces(cuboid(a, b))})
+    os.makedirs(os.path.join(ROOT, "models", "block"), exist_ok=True)
+    for on in (False, True):
+        m = {"parent": "minecraft:block/block", "credit": "Bocina del celular (generado por herramientas/assets.py)",
+             "texture_size": [64, 64],
+             "textures": {"case": "celular:block/speaker_case", "particle": "celular:block/speaker_case",
+                          "front": "celular:block/speaker_front_on" if on else "celular:block/speaker_front",
+                          "woofer": "celular:block/speaker_woofer_on" if on else "celular:block/speaker_woofer"},
+             "elements": elements}
+        with open(os.path.join(ROOT, "models", "block", "speaker_on.json" if on else "speaker.json"), "w") as fh:
+            json.dump(m, fh, indent=2)
+    variants = {}
+    for facing, rot in (("north", 0), ("east", 90), ("south", 180), ("west", 270)):
+        for on in ("false", "true"):
+            v = {"model": "celular:block/speaker_on" if on == "true" else "celular:block/speaker"}
+            if rot:
+                v["y"] = rot
+            variants[f"facing={facing},on={on}"] = v
+    with open(os.path.join(ROOT, "blockstates", "speaker.json"), "w") as fh:
+        json.dump({"variants": variants}, fh, indent=2)
+    with open(os.path.join(ROOT, "models", "item", "speaker.json"), "w") as fh:
+        json.dump({"parent": "celular:block/speaker"}, fh, indent=2)
+
+
+def hsv_rgb(h, sat, v):
+    import colorsys
+    r, g, b = colorsys.hsv_to_rgb((h % 360) / 360.0, sat, v)
+    return (int(r * 255), int(g * 255), int(b * 255))
+
+
 def main():
     for name, (b, l, dk) in CASES.items():
         phone_item(name, b, l, dk)
     phone3d()
     headphones()
+    speaker_block()
     apps = [icon_insta(), icon_camera(), icon_gallery(), icon_phone(), icon_patreon(), icon_settings(), icon_music(), icon_weather(),
             icon_compass(), icon_calc(), icon_flash(), icon_messages(), icon_notes(), icon_map(), icon_wallet()]
     atlas = Image.new("RGBA", (S * len(apps), S), (0, 0, 0, 0))

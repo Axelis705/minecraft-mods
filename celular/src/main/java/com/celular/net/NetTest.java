@@ -66,14 +66,15 @@ public final class NetTest {
                     && b.readableBytes() == 0);
 
             UUID u = UUID.randomUUID();
-            RadioNet.SpeakerState sp = new RadioNet.SpeakerState(u, "Axelis", 321, song(4), 9000, true);
+            RadioNet.SpeakerState sp = new RadioNet.SpeakerState(u, "Axelis", 321, song(4), 9000, true, 123456789L);
             b = buf(sp::write);
             RadioNet.SpeakerState sp2 = RadioNet.SpeakerState.read(b);
             RadioNet.SpeakerState off = new RadioNet.SpeakerState(u, "Axelis", 321, null, 0, false);
             FriendlyByteBuf b2 = buf(off::write);
             RadioNet.SpeakerState off2 = RadioNet.SpeakerState.read(b2);
             bad += check(log, "altavoz", sp2.owner.equals(u) && sp2.source == 321 && sp2.song != null && sp2.song.id == 4 && sp2.posMs == 9000
-                    && sp2.playing && off2.song == null && b.readableBytes() == 0 && b2.readableBytes() == 0);
+                    && sp2.playing && sp2.block == 123456789L && off2.song == null && off2.block == RadioNet.SpeakerState.NO_BLOCK
+                    && b.readableBytes() == 0 && b2.readableBytes() == 0);
 
             byte[] data = new byte[RadioNet.DOWN_CHUNK];
             data[0] = 1;

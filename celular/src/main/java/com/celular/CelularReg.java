@@ -45,6 +45,13 @@ public final class CelularReg {
         //#endif
     }
 
+    /** Bocina Bluetooth (bloque con su objeto). */
+    public static final RegistryObject<net.minecraft.world.level.block.Block> SPEAKER = BLOCKS.register("speaker",
+            () -> new SpeakerBlock(Reg.block("speaker").strength(1.0F).sound(net.minecraft.world.level.block.SoundType.METAL).noOcclusion()
+                    .randomTicks().lightLevel(st -> st.getValue(SpeakerBlock.ON) ? 7 : 0)));
+    public static final RegistryObject<Item> SPEAKER_ITEM = ITEMS.register("speaker",
+            () -> new net.minecraft.world.item.BlockItem(SPEAKER.get(), Reg.blockItem("speaker")));
+
     /** La luz invisible de la linterna (no tiene objeto). */
     public static final RegistryObject<net.minecraft.world.level.block.Block> FLASH_LIGHT = BLOCKS.register("flash_light",
             () -> new FlashLightBlock(Reg.block("flash_light").noCollission().replaceable().noLootTable().randomTicks()
@@ -69,6 +76,7 @@ public final class CelularReg {
                     out.accept(p.get());
                 }
                 out.accept(HEADPHONES.get());
+                out.accept(SPEAKER_ITEM.get());
             })
             .build());
 

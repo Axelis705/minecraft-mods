@@ -140,6 +140,9 @@ ES = {
         "settings.party": "Notas de fiesta",
         "settings.share_location": "Compartir ubicación",
         "item.celular.headphones": "Audífonos",
+        "block.celular.speaker": "Bocina Bluetooth",
+        "speaker.paired": "Conectado a la bocina: tu música sale por aquí",
+        "speaker.unpaired": "Bocina desconectada",
         "headphones.tooltip": "Póntelos (clic derecho): tu música solo la oyes tú",
         "app.messages": "Mensajes",
         "app.notes": "Notas",
@@ -368,7 +371,9 @@ EN = {
         "music.phone_gone": "Your phone isn't nearby anymore: the music was paused",
         "settings.msg_toasts": "Message alerts", "settings.speaker": "Speaker (others hear your music)",
         "settings.hear_others": "Hear others' music", "settings.party": "Party notes", "settings.share_location": "Share location",
-        "item.celular.headphones": "Headphones", "headphones.tooltip": "Put them on (right click): only you hear your music",
+        "item.celular.headphones": "Headphones", "block.celular.speaker": "Bluetooth Speaker",
+        "speaker.paired": "Connected to the speaker: your music plays from here", "speaker.unpaired": "Speaker disconnected",
+        "headphones.tooltip": "Put them on (right click): only you hear your music",
         "app.messages": "Messages", "app.notes": "Notes", "app.map": "Map", "app.wallet": "Wallet",
         "msg.all": "Everyone", "msg.location": "My location", "msg.location_saved": "%s's location was saved in the Compass (the arrow points to it)",
         "msg.you": "You", "msg.start": "Say something", "msg.hint": "Message…",
@@ -696,6 +701,9 @@ ZH = variant(EN, phone="手机", colors=["", "(白色)", "(粉色)", "(蓝色)",
 for _L, _n in ((PT, "Fones de ouvido"), (FR, "Casque audio"), (DE, "Kopfhörer"), (IT, "Cuffie"), (RU, "Наушники"), (JA, "ヘッドホン"),
                (ZH, "耳机")):
     _L["k"]["item.celular.headphones"] = _n
+for _L, _n in ((PT, "Caixa de som Bluetooth"), (FR, "Enceinte Bluetooth"), (DE, "Bluetooth-Lautsprecher"), (IT, "Cassa Bluetooth"),
+               (RU, "Bluetooth-колонка"), (JA, "Bluetoothスピーカー"), (ZH, "蓝牙音箱")):
+    _L["k"]["block.celular.speaker"] = _n
 for _L, _n in ((PT, "Lanterna"), (FR, "Lampe torche"), (DE, "Taschenlampe"), (IT, "Torcia"), (RU, "Фонарик"), (JA, "ライト"), (ZH, "手电筒")):
     _L["k"]["app.flash"] = _n
 for _L, _a in ((PT, ("Mensagens", "Notas", "Mapa", "Carteira")), (FR, ("Messages", "Notes", "Carte", "Portefeuille")),
