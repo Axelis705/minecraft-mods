@@ -181,6 +181,7 @@ public final class AutoTest {
         fake.yBodyRot = fake.yBodyRotO = 180F;
         fake.yHeadRot = fake.yHeadRotO = 180F;
         fake.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(CelularReg.PHONES.get(2).get()));
+        fake.setId(1_999_999_001);       // en 26.x hay que darle un número antes de agregarlo (y no choca con los del servidor)
         //#if MC >= 1.20.2
         //$$ mc.level.addEntity(fake);
         //#else
