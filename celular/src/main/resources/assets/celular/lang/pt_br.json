@@ -111,7 +111,7 @@
   "celular.settings.shutter": "Som da câmera",
   "celular.settings.grid": "Grade da câmera",
   "celular.settings.about": "Sobre",
-  "celular.settings.about_text": "Celular · Mod do Axelis. Suas fotos ficam em .minecraft/celular/fotos",
+  "celular.settings.about_text": "Celular · Mod do Axelis. Tecla K: pegar o celular. Caixa de som: clique direito para conectar. Suas fotos ficam em .minecraft/celular/fotos e sua música em .minecraft/celular/musica",
   "celular.settings.wallpaper_photo": "Você também pode usar uma foto: Galeria → Papel de parede",
   "celular.cmd.patreon_added": "%s added to Patreon",
   "celular.cmd.patreon_exists": "%s was already listed (or the name is invalid)",

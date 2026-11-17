@@ -111,7 +111,7 @@
   "celular.settings.shutter": "Camera sound",
   "celular.settings.grid": "Camera grid",
   "celular.settings.about": "About",
-  "celular.settings.about_text": "Phone · A mod by Axelis. Photos in .minecraft/celular/fotos and your music in .minecraft/celular/musica",
+  "celular.settings.about_text": "Phone · A mod by Axelis. K key: take out your phone. Speaker: right-click it to pair your phone. Headphones: your music just for you. Photos are in .minecraft/celular/fotos and your music in .minecraft/celular/musica. If something breaks, an admin can run /celular prueba",
   "celular.settings.wallpaper_photo": "You can also use a photo: Gallery → Wallpaper",
   "celular.cmd.patreon_added": "%s added to Patreon",
   "celular.cmd.patreon_exists": "%s was already listed (or the name is invalid)",

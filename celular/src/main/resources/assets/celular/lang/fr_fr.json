@@ -111,7 +111,7 @@
   "celular.settings.shutter": "Son de l'appareil",
   "celular.settings.grid": "Grille de l'appareil",
   "celular.settings.about": "À propos",
-  "celular.settings.about_text": "Téléphone · Un mod d'Axelis. Tes photos sont dans .minecraft/celular/fotos",
+  "celular.settings.about_text": "Téléphone · Un mod d'Axelis. Touche K : sortir le téléphone. Enceinte : clic droit pour la connecter. Tes photos sont dans .minecraft/celular/fotos et ta musique dans .minecraft/celular/musica",
   "celular.settings.wallpaper_photo": "Tu peux aussi utiliser une photo : Galerie → Fond d'écran",
   "celular.cmd.patreon_added": "%s added to Patreon",
   "celular.cmd.patreon_exists": "%s was already listed (or the name is invalid)",

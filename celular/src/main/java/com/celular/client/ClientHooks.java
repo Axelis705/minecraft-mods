@@ -109,6 +109,9 @@ public final class ClientHooks {
         if (sc instanceof PhoneScreen || sc instanceof CameraScreen) {
             return;
         }
+        if (call.state == CallState.ACTIVE || call.state == CallState.DIALING) {
+            return;                 // en llamada se queda en la mano (en la oreja); al colgar se guarda
+        }
         int r = restoreSlot;
         restoreSlot = -1;
         Minecraft mc = Minecraft.getInstance();

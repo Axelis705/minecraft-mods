@@ -111,7 +111,7 @@
   "celular.settings.shutter": "Kamerageräusch",
   "celular.settings.grid": "Kameraraster",
   "celular.settings.about": "Info",
-  "celular.settings.about_text": "Handy · Ein Mod von Axelis. Fotos liegen in .minecraft/celular/fotos",
+  "celular.settings.about_text": "Handy · Ein Mod von Axelis. Taste K: Handy herausholen. Lautsprecher: Rechtsklick zum Verbinden. Fotos liegen in .minecraft/celular/fotos, Musik in .minecraft/celular/musica",
   "celular.settings.wallpaper_photo": "Du kannst auch ein Foto nehmen: Galerie → Hintergrund",
   "celular.cmd.patreon_added": "%s added to Patreon",
   "celular.cmd.patreon_exists": "%s was already listed (or the name is invalid)",

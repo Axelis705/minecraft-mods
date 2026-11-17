@@ -104,7 +104,7 @@ ES = {
         "settings.shutter": "Sonido de la cámara",
         "settings.grid": "Cuadrícula en la cámara",
         "settings.about": "Acerca de",
-        "settings.about_text": "Celular · Mod de Axelis. Fotos en .minecraft/celular/fotos y tu música en .minecraft/celular/musica",
+        "settings.about_text": "Celular · Mod de Axelis. Tecla K: sacar el celular. Bocina: clic derecho para conectarla a tu celular. Audífonos: tu música solo para ti. Tus fotos están en .minecraft/celular/fotos y tu música en .minecraft/celular/musica. Si algo falla, un admin puede usar /celular prueba",
         "settings.wallpaper_photo": "También puedes usar una foto: Galería → De fondo",
         "cmd.patreon_added": "%s agregado a Patreon",
         "cmd.patreon_exists": "%s ya estaba en la lista (o el nombre no es válido)",
@@ -343,7 +343,7 @@ EN = {
         "patreon.more": "Want to be listed here? Support the mod on Patreon.",
         "settings.wallpaper": "Wallpaper", "settings.dark": "Dark mode", "settings.notifications": "Notifications",
         "settings.shutter": "Camera sound", "settings.grid": "Camera grid", "settings.about": "About",
-        "settings.about_text": "Phone · A mod by Axelis. Photos in .minecraft/celular/fotos and your music in .minecraft/celular/musica",
+        "settings.about_text": "Phone · A mod by Axelis. K key: take out your phone. Speaker: right-click it to pair your phone. Headphones: your music just for you. Photos are in .minecraft/celular/fotos and your music in .minecraft/celular/musica. If something breaks, an admin can run /celular prueba",
         "settings.wallpaper_photo": "You can also use a photo: Gallery → Wallpaper",
         "cmd.patreon_added": "%s added to Patreon", "cmd.patreon_exists": "%s was already listed (or the name is invalid)",
         "cmd.patreon_removed": "%s removed from Patreon", "cmd.patreon_missing": "%s wasn't on the list", "cmd.patreon_list": "Patreon: %s",
@@ -505,7 +505,7 @@ PT = variant(EN, phone="Celular", colors=["", "branco", "rosa", "azul", "verde",
                 "patreon.thanks": "Obrigado a quem apoia o mod ❤", "patreon.more": "Quer aparecer aqui? Apoie o mod no Patreon.",
                 "settings.wallpaper": "Papel de parede", "settings.dark": "Modo escuro", "settings.notifications": "Notificações",
                 "settings.shutter": "Som da câmera", "settings.grid": "Grade da câmera", "settings.about": "Sobre",
-                "settings.about_text": "Celular · Mod do Axelis. Suas fotos ficam em .minecraft/celular/fotos",
+                "settings.about_text": "Celular · Mod do Axelis. Tecla K: pegar o celular. Caixa de som: clique direito para conectar. Suas fotos ficam em .minecraft/celular/fotos e sua música em .minecraft/celular/musica",
                 "settings.wallpaper_photo": "Você também pode usar uma foto: Galeria → Papel de parede",
                 "no_phone": "Você não tem um celular no inventário", "app.music": "Música", "app.weather": "Clima", "app.compass": "Bússola", "app.calc": "Calculadora", "lock.hint": "Deslize para cima ou clique", "music.open_folder": "Abrir pasta", "music.refresh": "Atualizar", "music.shuffle_all": "Aleatório", "music.now_playing": "Tocando agora", "music.empty": "Ainda não há músicas", "music.empty_sub": "Coloque suas músicas MP3, OGG ou WAV na pasta de música e toque em Atualizar.", "settings.lock": "Tela de bloqueio", "settings.music_mute": "Silenciar a música do Minecraft", "settings.music_toasts": "Avisar a música que toca", "compass.save_here": "Salvar este lugar", "compass.death": "Onde você morreu", "compass.dirs": "S,SO,O,NO,N,NE,L,SE", "compass.card": "N,L,S,O", "weather.sunny": "Ensolarado", "weather.rain": "Chuva", "weather.storm": "Tempestade", "weather.snow": "Nevando", "weather.clear_night": "Noite limpa", "key.celular.music_toggle": "Música: pausar / tocar", "key.celular.music_next": "Música: próxima", "key.celular.music_prev": "Música: anterior"})
 
@@ -539,7 +539,7 @@ FR = variant(EN, phone="Téléphone", colors=["", "blanc", "rose", "bleu", "vert
                 "patreon.thanks": "Merci à ceux qui soutiennent le mod ❤", "patreon.more": "Tu veux apparaître ici ? Soutiens le mod sur Patreon.",
                 "settings.wallpaper": "Fond d'écran", "settings.dark": "Mode sombre", "settings.shutter": "Son de l'appareil",
                 "settings.grid": "Grille de l'appareil", "settings.about": "À propos",
-                "settings.about_text": "Téléphone · Un mod d'Axelis. Tes photos sont dans .minecraft/celular/fotos",
+                "settings.about_text": "Téléphone · Un mod d'Axelis. Touche K : sortir le téléphone. Enceinte : clic droit pour la connecter. Tes photos sont dans .minecraft/celular/fotos et ta musique dans .minecraft/celular/musica",
                 "settings.wallpaper_photo": "Tu peux aussi utiliser une photo : Galerie → Fond d'écran",
                 "no_phone": "Tu n'as pas de téléphone dans l'inventaire", "app.music": "Musique", "app.weather": "Météo", "app.compass": "Boussole", "app.calc": "Calculatrice", "lock.hint": "Glissez vers le haut ou cliquez", "music.open_folder": "Ouvrir le dossier", "music.refresh": "Actualiser", "music.shuffle_all": "Aléatoire", "music.now_playing": "En cours", "music.empty": "Pas encore de chansons", "music.empty_sub": "Mettez vos chansons MP3, OGG ou WAV dans le dossier musique puis Actualiser.", "settings.lock": "Écran de verrouillage", "settings.music_mute": "Couper la musique de Minecraft", "settings.music_toasts": "Afficher la chanson en cours", "compass.save_here": "Enregistrer ce lieu", "compass.death": "Où vous êtes mort", "compass.dirs": "S,SO,O,NO,N,NE,E,SE", "compass.card": "N,E,S,O", "weather.sunny": "Ensoleillé", "weather.rain": "Pluie", "weather.storm": "Orage", "weather.snow": "Neige", "weather.clear_night": "Nuit claire", "key.celular.music_toggle": "Musique : pause / lecture", "key.celular.music_next": "Musique : suivante", "key.celular.music_prev": "Musique : précédente"})
 
@@ -573,7 +573,7 @@ DE = variant(EN, phone="Handy", colors=["", "(Weiß)", "(Rosa)", "(Blau)", "(Gr�
                 "patreon.thanks": "Danke an alle Unterstützer ❤", "patreon.more": "Willst du hier stehen? Unterstütze den Mod auf Patreon.",
                 "settings.wallpaper": "Hintergrund", "settings.dark": "Dunkelmodus", "settings.notifications": "Mitteilungen",
                 "settings.shutter": "Kamerageräusch", "settings.grid": "Kameraraster", "settings.about": "Info",
-                "settings.about_text": "Handy · Ein Mod von Axelis. Fotos liegen in .minecraft/celular/fotos",
+                "settings.about_text": "Handy · Ein Mod von Axelis. Taste K: Handy herausholen. Lautsprecher: Rechtsklick zum Verbinden. Fotos liegen in .minecraft/celular/fotos, Musik in .minecraft/celular/musica",
                 "settings.wallpaper_photo": "Du kannst auch ein Foto nehmen: Galerie → Hintergrund",
                 "no_phone": "Du hast kein Handy im Inventar", "app.music": "Musik", "app.weather": "Wetter", "app.compass": "Kompass", "app.calc": "Rechner", "lock.hint": "Nach oben wischen oder klicken", "music.open_folder": "Ordner öffnen", "music.refresh": "Aktualisieren", "music.shuffle_all": "Zufall", "music.now_playing": "Läuft gerade", "music.empty": "Noch keine Songs", "music.empty_sub": "Lege deine MP3-, OGG- oder WAV-Songs in den Musikordner und tippe auf Aktualisieren.", "settings.lock": "Sperrbildschirm", "settings.music_mute": "Minecraft-Musik stummschalten", "settings.music_toasts": "Laufenden Song anzeigen", "compass.save_here": "Ort speichern", "compass.death": "Wo du gestorben bist", "compass.dirs": "S,SW,W,NW,N,NO,O,SO", "compass.card": "N,O,S,W", "weather.sunny": "Sonnig", "weather.rain": "Regen", "weather.storm": "Gewitter", "weather.snow": "Schnee", "weather.clear_night": "Klare Nacht", "key.celular.music_toggle": "Musik: Pause / Abspielen", "key.celular.music_next": "Musik: nächster Song", "key.celular.music_prev": "Musik: vorheriger Song"})
 

@@ -593,6 +593,8 @@ public final class Radio {
     private static long sentSong;
     private static boolean sentPlaying;
     private static int sentSource;
+    /** Si al avisar la última vez mi música salía por la bocina (al alejarme o acercarme cambia y hay que volver a avisar). */
+    private static boolean sentBocina;
     private static double sentPos;
     private static long sentAt;
     private static final Map<Track, Boolean> HASHING = new HashMap<>();
@@ -652,8 +654,10 @@ public final class Radio {
         boolean pl = MusicPlayer.playing;
         double pos = MusicPlayer.position();
         double expected = sentPlaying ? sentPos + (now - sentAt) / 1000.0 : sentPos;
-        if (cur.worldId != sentSong || pl != sentPlaying || src != sentSource || Math.abs(pos - expected) > 2.0) {
+        boolean bocina = mySpeakerPos(mc) != null;
+        if (cur.worldId != sentSong || pl != sentPlaying || src != sentSource || bocina != sentBocina || Math.abs(pos - expected) > 2.0) {
             Net.toServer(new RadioNet.SpeakerSet(cur.worldId, (long) (pos * 1000), pl, src));
+            sentBocina = bocina;
             sentSong = cur.worldId;
             sentPlaying = pl;
             sentSource = src;

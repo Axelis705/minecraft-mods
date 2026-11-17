@@ -111,7 +111,7 @@
   "celular.settings.shutter": "Sonido de la cámara",
   "celular.settings.grid": "Cuadrícula en la cámara",
   "celular.settings.about": "Acerca de",
-  "celular.settings.about_text": "Celular · Mod de Axelis. Fotos en .minecraft/celular/fotos y tu música en .minecraft/celular/musica",
+  "celular.settings.about_text": "Celular · Mod de Axelis. Tecla K: sacar el celular. Bocina: clic derecho para conectarla a tu celular. Audífonos: tu música solo para ti. Tus fotos están en .minecraft/celular/fotos y tu música en .minecraft/celular/musica. Si algo falla, un admin puede usar /celular prueba",
   "celular.settings.wallpaper_photo": "También puedes usar una foto: Galería → De fondo",
   "celular.cmd.patreon_added": "%s agregado a Patreon",
   "celular.cmd.patreon_exists": "%s ya estaba en la lista (o el nombre no es válido)",

@@ -141,8 +141,9 @@ final class MapApp extends App {
         int playerY = (int) Math.floor(mc.player.getY());
         BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
         int[] h = new int[1];
-        int rows = 12;
-        for (int r = 0; r < rows && workRow < N; r++, workRow++) {
+        // se dibuja por partes: filas hasta gastar ~1.5 ms por cuadro (en el Nether cada columna cuesta mucho más), así no se traba el juego
+        long budget = System.nanoTime() + 1_500_000L;
+        for (int r = 0; r < 16 && workRow < N && (r == 0 || System.nanoTime() < budget); r++, workRow++) {
             int[] heights = new int[N];
             int wz = workZ + (workRow - N / 2) * workZoom;
             for (int c = 0; c < N; c++) {
