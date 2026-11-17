@@ -1,0 +1,400 @@
+  Downloading missing asset: minecraft/sounds/step/gravel2.ogg
+  Downloading missing asset: minecraft/sounds/step/gravel3.ogg
+  Downloading missing asset: minecraft/sounds/step/gravel4.ogg
+  Downloading missing asset: minecraft/sounds/step/ladder1.ogg
+  Downloading missing asset: minecraft/sounds/step/ladder2.ogg
+  Downloading missing asset: minecraft/sounds/step/ladder3.ogg
+  Downloading missing asset: minecraft/sounds/step/ladder4.ogg
+  Downloading missing asset: minecraft/sounds/step/ladder5.ogg
+  Downloading missing asset: minecraft/sounds/step/sand1.ogg
+  Downloading missing asset: minecraft/sounds/step/sand2.ogg
+  Downloading missing asset: minecraft/sounds/step/sand3.ogg
+  Downloading missing asset: minecraft/sounds/step/sand4.ogg
+  Downloading missing asset: minecraft/sounds/step/sand5.ogg
+  Downloading missing asset: minecraft/sounds/step/scaffold1.ogg
+  Downloading missing asset: minecraft/sounds/step/scaffold2.ogg
+  Downloading missing asset: minecraft/sounds/step/scaffold3.ogg
+  Downloading missing asset: minecraft/sounds/step/scaffold4.ogg
+  Downloading missing asset: minecraft/sounds/step/scaffold5.ogg
+  Downloading missing asset: minecraft/sounds/step/scaffold6.ogg
+  Downloading missing asset: minecraft/sounds/step/scaffold7.ogg
+  Downloading missing asset: minecraft/sounds/step/snow1.ogg
+  Downloading missing asset: minecraft/sounds/step/snow2.ogg
+  Downloading missing asset: minecraft/sounds/step/snow3.ogg
+  Downloading missing asset: minecraft/sounds/step/snow4.ogg
+  Downloading missing asset: minecraft/sounds/step/stone1.ogg
+  Downloading missing asset: minecraft/sounds/step/stone2.ogg
+  Downloading missing asset: minecraft/sounds/step/stone3.ogg
+  Downloading missing asset: minecraft/sounds/step/stone4.ogg
+  Downloading missing asset: minecraft/sounds/step/stone5.ogg
+  Downloading missing asset: minecraft/sounds/step/stone6.ogg
+  Downloading missing asset: minecraft/sounds/step/wet_grass1.ogg
+  Downloading missing asset: minecraft/sounds/step/wet_grass2.ogg
+  Downloading missing asset: minecraft/sounds/step/wet_grass3.ogg
+  Downloading missing asset: minecraft/sounds/step/wet_grass4.ogg
+  Downloading missing asset: minecraft/sounds/step/wet_grass5.ogg
+  Downloading missing asset: minecraft/sounds/step/wet_grass6.ogg
+  Downloading missing asset: minecraft/sounds/step/wood1.ogg
+  Downloading missing asset: minecraft/sounds/step/wood2.ogg
+  Downloading missing asset: minecraft/sounds/step/wood3.ogg
+  Downloading missing asset: minecraft/sounds/step/wood4.ogg
+  Downloading missing asset: minecraft/sounds/step/wood5.ogg
+  Downloading missing asset: minecraft/sounds/step/wood6.ogg
+  Downloading missing asset: minecraft/sounds/tile/piston/in.ogg
+  Downloading missing asset: minecraft/sounds/tile/piston/out.ogg
+  Downloading missing asset: minecraft/sounds/ui/cartography_table/drawmap1.ogg
+  Downloading missing asset: minecraft/sounds/ui/cartography_table/drawmap2.ogg
+  Downloading missing asset: minecraft/sounds/ui/cartography_table/drawmap3.ogg
+  Downloading missing asset: minecraft/sounds/ui/hud/hud_bubble.ogg
+  Downloading missing asset: minecraft/sounds/ui/loom/select_pattern1.ogg
+  Downloading missing asset: minecraft/sounds/ui/loom/select_pattern2.ogg
+  Downloading missing asset: minecraft/sounds/ui/loom/select_pattern3.ogg
+  Downloading missing asset: minecraft/sounds/ui/loom/select_pattern4.ogg
+  Downloading missing asset: minecraft/sounds/ui/loom/select_pattern5.ogg
+  Downloading missing asset: minecraft/sounds/ui/loom/take_result1.ogg
+  Downloading missing asset: minecraft/sounds/ui/loom/take_result2.ogg
+  Downloading missing asset: minecraft/sounds/ui/stonecutter/cut1.ogg
+  Downloading missing asset: minecraft/sounds/ui/stonecutter/cut2.ogg
+  Downloading missing asset: minecraft/sounds/ui/toast/challenge_complete.ogg
+  Downloading missing asset: minecraft/sounds/ui/toast/in.ogg
+  Downloading missing asset: minecraft/sounds/ui/toast/out.ogg
+  Downloading missing asset: minecraft/textures/gui/title/background/panorama_0.png
+  Downloading missing asset: minecraft/textures/gui/title/background/panorama_1.png
+  Downloading missing asset: minecraft/textures/gui/title/background/panorama_2.png
+  Downloading missing asset: minecraft/textures/gui/title/background/panorama_3.png
+  Downloading missing asset: minecraft/textures/gui/title/background/panorama_4.png
+  Downloading missing asset: minecraft/textures/gui/title/background/panorama_5.png
+  Downloading missing asset: minecraft/textures/gui/title/background/panorama_overlay.png
+  Downloading missing asset: pack.mcmeta
+  Downloading missing asset: realms/lang/en_us.json
+  Downloading missing asset: realms/textures/gui/images/1.png
+  Downloading missing asset: realms/textures/gui/images/10.png
+  Downloading missing asset: realms/textures/gui/images/11.png
+  Downloading missing asset: realms/textures/gui/images/12.png
+  Downloading missing asset: realms/textures/gui/images/13.png
+  Downloading missing asset: realms/textures/gui/images/14.png
+  Downloading missing asset: realms/textures/gui/images/15.png
+  Downloading missing asset: realms/textures/gui/images/2.png
+  Downloading missing asset: realms/textures/gui/images/3.png
+  Downloading missing asset: realms/textures/gui/images/4.png
+  Downloading missing asset: realms/textures/gui/images/5.png
+  Downloading missing asset: realms/textures/gui/images/6.png
+  Downloading missing asset: realms/textures/gui/images/7.png
+  Downloading missing asset: realms/textures/gui/images/8.png
+  Downloading missing asset: realms/textures/gui/images/9.png
+Extracting natives to /home/runner/.gradle/caches/minecraftforge/forgegradle/slime-launcher/cache/net/minecraftforge/forge/26.3-66.1.5/natives
+Looking for main class: net.minecraftforge.bootstrap.ForgeBootstrap
+Sanitizing Minecraft arguments
+Slime Launcher has finished setting up, took 33331ms
+Launching using main class: net.minecraftforge.bootstrap.ForgeBootstrap
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by net.minecraftforge.unsafe.UnsafeHacks (file:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/unsafe/0.9.2/33bad02861cabd77c54a8c9d1205e8638bbbbb4f/unsafe-0.9.2.jar)
+WARNING: Please consider reporting this to the maintainers of class net.minecraftforge.unsafe.UnsafeHacks
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.jna.Native in module com.sun.jna (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.17.0/33d12735bef894440780fce64f9758d420c7bae2/jna-5.17.0.jar!/)
+WARNING: Use --enable-native-access=com.sun.jna to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jline.nativ.JLineNativeLoader in module org.jline.nativ (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-native/3.25.1/7f58e474f7d94db5bf87b1fddf4fa646475779f2/jline-native-3.25.1.jar!/)
+WARNING: Use --enable-native-access=org.jline.nativ to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-11-17T19:53:09.569535095Z main WARN Advanced terminal features are not available in this environment
+[19:53:09] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher running: args [--gameDir, ., --launchTarget, forge_userdev_client, --version, MOD_DEV, --assetIndex, 34, --assetsDir, /home/runner/.minecraft/assets, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[19:53:09] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 25.0.5+8-LTS
+[19:53:09] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher 10.2.6 starting: java version 25.0.5 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1019-azure
+[19:53:09] [main/WARN] [ne.mi.fm.lo.FMLConfig/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/celular-26.3/run/config/fml.toml is not correct. Correcting
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowHeight] was corrected from null to 480
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [versionCheck] was corrected from null to true
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowFBScale] was corrected from null to 1
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowProvider] was corrected from null to fmlearlywindow
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowWidth] was corrected from null to 854
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowMaximized] was corrected from null to false
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [defaultConfigPath] was corrected from null to defaultconfigs
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [disableOptimizedDFU] was corrected from null to true
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [maxThreads] was corrected from null to -1
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[19:53:09] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[19:53:09] [main/INFO] [ne.mi.fm.lo.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because splash screen is disabled
+[19:53:09] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.7/8ab114ac385e6dbdad5efafe28aba4df8120915f/mixin-0.8.7.jar!/ Service=ModLauncher Env=CLIENT
+[19:53:10] [main/INFO] [ne.mi.fm.lo.mo.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[19:53:10] [main/INFO] [cp.mo.mo.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forge_userdev_client' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.minecraft/assets, --assetIndex, 34, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.lwjgl.system.Library$$Lambda/0x0000000015673000 in module org.lwjgl (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.4.3/7ab5265a73d8a959ed62332d546536ae6be2f0d5/lwjgl-3.4.3.jar!/)
+WARNING: Use --enable-native-access=org.lwjgl to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.lwjgl.stb.LibSTB$$Lambda/0x00000000156b2800 in module org.lwjgl.stb (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.4.3/cdce54785bd3758e44a81f345d6260774d921c78/lwjgl-stb-3.4.3.jar!/)
+WARNING: Use --enable-native-access=org.lwjgl.stb to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.lwjgl.util.vma.LibVma$$Lambda/0x00000000156b7000 in module org.lwjgl.vma (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-vma/3.4.3/816a6ac87f1e447e5346ca0e7a1078353f51fbd6/lwjgl-vma-3.4.3.jar!/)
+WARNING: Use --enable-native-access=org.lwjgl.vma to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.lwjgl.opengl.GL$$Lambda/0x000000001570c000 in module org.lwjgl.opengl (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.4.3/b81769ee48050f8c71e70839505f350bf9219d90/lwjgl-opengl-3.4.3.jar!/)
+WARNING: Use --enable-native-access=org.lwjgl.opengl to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[19:53:12] [Datafixer Bootstrap #0/INFO] [mojang/DataFixerBuilder]: 307 Datafixer optimizations took 528 milliseconds
+[19:53:15] [Render thread/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/celular-26.3/.gradle/mavenizer/repo/net/minecraftforge/forge/26.3-66.1.5/forge-26.3-66.1.5.jar%230!/assets/.mcassetsroot' uses unexpected schema
+[19:53:15] [Render thread/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/celular-26.3/.gradle/mavenizer/repo/net/minecraftforge/forge/26.3-66.1.5/forge-26.3-66.1.5.jar%230!/data/.mcassetsroot' uses unexpected schema
+[19:53:15] [Render thread/INFO] [mojang/MinecraftServicesDiscoveryService]: Environment: Environment[discoveryUrl=https://discovery.minecraftservices.com/minecraft/client, name=PROD]
+[19:53:15] [Render thread/INFO] [minecraft/Minecraft]: Setting user: Dev
+[19:53:15] [Render thread/INFO] [minecraft/Minecraft]: Backend library: LWJGL version 3.4.3+4
+[19:53:15] [Render thread/INFO] [mojang/SdlDebug]: SDL [SYSTEM]: App name: Minecraft
+[19:53:15] [Render thread/INFO] [mojang/SdlDebug]: SDL [SYSTEM]: App version: 26.3
+[19:53:15] [Render thread/INFO] [mojang/SdlDebug]: SDL [SYSTEM]: App ID: com.mojang.minecraft
+[19:53:15] [Render thread/INFO] [mojang/SdlDebug]: SDL [SYSTEM]: SDL revision: SDL-3.4.14--128-NOTFOUND
+[19:53:16] [Render thread/ERROR] [minecraft/Minecraft]: Failed to create backend OpenGL
+com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+	at TRANSFORMER/minecraft@26.3/com.mojang.renderpearl.backend.opengl.GlDevice.<init>(GlDevice.java:77) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.renderpearl.backend.opengl.GlBackend.createDevice(GlBackend.java:76) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.<init>(Minecraft.java:491) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.main.Main.main(Main.java:272) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:96) [fmlloader-26.3-66.1.5.jar!/:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:79) [fmlloader-26.3-66.1.5.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:84) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:104) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.run(Launcher.java:151) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.main(Launcher.java:110) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) [modlauncher-10.2.6.jar!/:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) [bootstrap-2.1.8.jar!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+Transformer Audit:
+  com.mojang.renderpearl.backend.opengl.GlBackend
+    REASON: classloading
+  com.mojang.renderpearl.backend.opengl.GlDevice
+    REASON: classloading
+  net.minecraft.client.Minecraft
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.client.main.Main
+    REASON: classloading
+[19:53:16] [Render thread/INFO] [mojang/VulkanBackend]: Enabling optional FeatureSet [Wireframe]
+[19:53:16] [Render thread/INFO] [mojang/VulkanBackend]: Optional FeatureSet [AMD Buffer Marker] not supported
+[19:53:16] [Render thread/INFO] [mojang/VulkanBackend]: Enabling optional FeatureSet [Calibrated Timestamps]
+[19:53:16] [Render thread/INFO] [mojang/VulkanBackend]: Optional FeatureSet [NV Diagnostic Checkpoint] not supported
+[19:53:16] [Render thread/INFO] [mojang/VulkanBackend]: Enabling optional FeatureSet [EXT MultiDraw]
+[19:53:16] [Render thread/INFO] [minecraft/Minecraft]: Using graphics backend Vulkan, using drivers: 1.4.335 llvmpipe Mesa 26.0.8-1ubuntu0.3 (LLVM 21.1.8)
+[19:53:16] [Render thread/INFO] [minecraft/Minecraft]: Using graphics device: llvmpipe (LLVM 21.1.8, 256 bits) (0x10005)
+[19:53:16] [Render thread/INFO] [minecraft/Minecraft]: Using graphics device extensions: VK_EXT_calibrated_timestamps (D), VK_KHR_synchronization2 (D), VK_EXT_multi_draw (D), VK_EXT_vertex_attribute_divisor (D), VK_KHR_swapchain (D), VK_KHR_surface (I), VK_KHR_push_descriptor (D), VK_KHR_xlib_surface (I), VK_EXT_debug_utils (I), VK_KHR_dynamic_rendering (D)
+[19:53:16] [Render thread/INFO] [mojang/Window]: Created window using SDL video driver: x11
+[19:53:16] [modloading-worker-0/INFO] [ne.mi.co.ForgeMod/FORGEMOD]: Forge mod loading, version 66.1.5, for MC 26.3 with MCP 20260918.230105
+[19:53:16] [modloading-worker-0/INFO] [ne.mi.co.MinecraftForge/FORGE]: MinecraftForge v66.1.5 Initialized
+[19:53:16] [modloading-worker-0/INFO] [ne.mi.co.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
+[W][19:53:16.846972] pw.conf      | [          conf.c: 1182 try_load_conf()] can't load config client.conf: No such file or directory
+[E][19:53:16.847893] pw.conf      | [          conf.c: 1215 pw_conf_load_conf_for_context()] can't load config client.conf: No such file or directory
+[ALSOFT] (EE) Failed to create PipeWire event context (errno: 2)
+[19:53:17] [Render thread/INFO] [minecraft/ReloadableResourceManager]: Reloading ResourceManager: vanilla, vanilla, mod:forge, mod:celular
+[19:53:17] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/celular-26.3/run/config/forge-client.toml is not correct. Correcting
+[19:53:17] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SynchronizedConfig{DataHolder:{}}. 
+[19:53:17] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[19:53:17] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.allowMipmapLowering was corrected from null to its default, false. 
+[19:53:17] [Download-1/INFO] [mojang/RealmsClient]: Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: 0
+[19:53:17] [Download-1/ERROR] [mojang/RealmsClient]: Failed to fetch Realms feature flags
+com.mojang.realmsclient.exception.RealmsServiceException: Realms authentication error with message 'java.lang.RuntimeException: Failed to parse into SignedJWT: 0'
+	at TRANSFORMER/minecraft@26.3/com.mojang.realmsclient.client.RealmsClient.execute(RealmsClient.java:622) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.realmsclient.client.RealmsClient.fetchFeatureFlags(RealmsClient.java:177) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1789) [?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) [?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) [?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+Transformer Audit:
+  com.mojang.realmsclient.client.RealmsClient
+    REASON: classloading
+[19:53:17] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[19:53:17] [Worker-Main-3/INFO] [minecraft/UnihexProvider]: Found unifont_all_no_pua-17.0.01.hex, loading
+[19:53:17] [Worker-Main-1/INFO] [minecraft/UnihexProvider]: Found unifont_pua-17.0.01.hex, loading
+[19:53:18] [Worker-Main-3/INFO] [minecraft/UnihexProvider]: Found unifont_jp_patch-17.0.01.hex, loading
+[19:53:18] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Found status: OUTDATED Current: 66.1.5 Target: 66.1.8
+ALSA lib confmisc.c:855:(parse_card) [error.core] cannot find card '0'
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) [error.core] error evaluating strings
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) [error.core] error evaluating name
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5734:(snd_config_expand) [error.core] Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) [error.pcm] Unknown PCM default
+ALSA lib confmisc.c:855:(parse_card) [error.core] cannot find card '0'
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) [error.core] error evaluating strings
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) [error.core] error evaluating name
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5734:(snd_config_expand) [error.core] Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) [error.pcm] Unknown PCM default
+[19:53:21] [Render thread/ERROR] [minecraft/SoundEngine]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at TRANSFORMER/minecraft@26.3/com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:185) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.blaze3d.audio.Library.init(Library.java:66) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:112) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:103) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:120) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:43) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:19) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:739) [?:?]
+	at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:503) [?:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$prepareTasks$3(SimpleReloadInstance.java:75) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:160) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:24) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:135) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:116) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.runTick(Minecraft.java:1190) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.run(Minecraft.java:928) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.main.Main.main(Main.java:286) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:96) [fmlloader-26.3-66.1.5.jar!/:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:79) [fmlloader-26.3-66.1.5.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:84) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:104) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.run(Launcher.java:151) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.main(Launcher.java:110) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) [modlauncher-10.2.6.jar!/:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) [bootstrap-2.1.8.jar!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+Transformer Audit:
+  com.mojang.blaze3d.audio.Library
+    REASON: classloading
+  net.minecraft.client.Minecraft
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.client.main.Main
+    REASON: classloading
+  net.minecraft.client.sounds.SoundEngine
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.client.sounds.SoundManager
+    REASON: classloading
+  net.minecraft.server.packs.resources.SimplePreparableReloadListener
+    REASON: classloading
+  net.minecraft.server.packs.resources.SimpleReloadInstance
+    REASON: classloading
+  net.minecraft.util.thread.BlockableEventLoop
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.util.thread.ReentrantBlockableEventLoop
+    REASON: classloading
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[19:53:21] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[19:53:24] [Worker-Main-2/INFO] [minecraft/AdvancementTree]: Loaded 1866 advancements
+[19:53:24] [Server thread/INFO] [minecraft/IntegratedServer]: Starting integrated minecraft server version 26.3
+[19:53:24] [Server thread/INFO] [minecraft/MinecraftServer]: Generating keypair
+[19:53:25] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Loading 0 persistent chunks...
+[19:53:25] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 16%
+[19:53:25] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[19:53:25] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[19:53:25] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[19:53:25] [Server thread/INFO] [ne.mi.se.pe.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[19:53:25] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Loading 48 chunks for player spawn...
+[19:53:25] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 16%
+[19:53:26] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 20%
+[19:53:26] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 49%
+[19:53:26] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Time elapsed: 1633 ms
+[19:53:26] [Server thread/INFO] [minecraft/PlayerList]: Dev[local:E:d0db7a39] logged in with entity id 1 at (4.5, -60.0, -6.5)
+[19:53:26] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dev joined the game
+[19:53:27] [Server thread/INFO] [minecraft/IntegratedServer]: Changing view distance to 6, from 10
+[19:53:27] [Server thread/INFO] [minecraft/IntegratedServer]: Changing simulation distance to 5, from 0
+[19:53:27] [Render thread/INFO] [minecraft/AdvancementTree]: Loaded 2 advancements
+[19:53:27] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST video pasos=34
+[19:53:27] [Render thread/WARN] [minecraft/ShaderManager]: Requested post effect does not exist: minecraft:end_of_frame
+[19:53:27] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[19:53:27] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[19:53:28] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[19:53:28] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 2 reached during a single frame. New capacity will be 8.
+[19:53:28] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 2 reached during a single frame. New capacity will be 8.
+[19:53:29] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[19:53:29] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[19:53:29] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[19:53:29] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[19:53:29] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[19:53:29] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Incorrect argument for command
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: gamerule sendCommandFeedback false<--[HERE]
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Incorrect argument for command
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: gamerule logAdminCommands false<--[HERE]
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set Dev's game mode to Creative Mode
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set minecraft:overworld to 6000 tick(s)
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Incorrect argument for command
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: gamerule doDaylightCycle false<--[HERE]
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set the weather to clear
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Incorrect argument for command
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: gamerule doWeatherCycle false<--[HERE]
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Incorrect argument for command
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: gamerule randomTickSpeed 0<--[HERE]
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Incorrect argument for command
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: gamerule doMobSpawning false<--[HERE]
+[19:53:37] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed 83 entities
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No items were found on player Dev
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Replaced 1 slot(s) on Dev with [Phone]
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Replaced 1 slot(s) on Dev with [Bluetooth Speaker]
+[19:53:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Replaced 1 slot(s) on Dev with [Headphones]
+[19:53:38] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 6, -60, -6
+[19:53:38] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 8, -60, -6
+[19:53:38] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 7, -60, -7
+[19:53:38] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 0.500000, -60.000000, 6.500000
+[19:53:39] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[19:53:39] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[19:53:42] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 1_poses inicio t=1794945222278
+[19:54:12] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 1_poses fin t=1794945252782
+[19:54:15] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 2_celular inicio t=1794945255279
+[19:54:44] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 2_celular fin t=1794945284775
+[19:54:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set minecraft:overworld to 18000 tick(s)
+[19:54:47] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 3_noche_otro inicio t=1794945287291
+[19:54:56] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 3_noche_otro fin t=1794945296805
+[19:54:58] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 3_noche_mia inicio t=1794945298790
+[19:55:07] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 3_noche_mia fin t=1794945307803
+[19:55:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set minecraft:overworld to 6000 tick(s)
+[19:55:09] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 4_bocinas inicio t=1794945309300
+[19:55:17] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST CLIP 4_bocinas fin t=1794945317290
+[19:55:18] [Render thread/INFO] [co.ce.Celular/]: AUTOTEST AUTOTEST_FIN video fallos=0
+[19:55:19] [Render thread/INFO] [minecraft/Minecraft]: Stopping!
+[19:55:19] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[19:55:19] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[19:55:19] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Dev lost connection: Disconnected
+[19:55:19] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dev left the game
+[19:55:19] [Server thread/INFO] [minecraft/ServerCommonPacketListenerImpl]: Stopping singleplayer server as player logged out
+[19:55:19] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[19:55:19] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[19:55:19] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[19:55:19] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_5-1794945150790.json
+
+BUILD SUCCESSFUL in 2m 53s
+4 actionable tasks: 1 executed, 3 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html

@@ -1,0 +1,217 @@
+[17Nov2026 19:53:09.659] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--gameDir, ., --launchTarget, forge_userdev_client, --version, MOD_DEV, --assetIndex, 34, --assetsDir, /home/runner/.minecraft/assets, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[17Nov2026 19:53:09.660] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 25.0.5+8-LTS
+[17Nov2026 19:53:09.660] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.2.6 starting: java version 25.0.5 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1019-azure
+[17Nov2026 19:53:09.709] [main/WARN] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/celular-26.3/run/config/fml.toml is not correct. Correcting
+[17Nov2026 19:53:09.710] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowHeight] was corrected from null to 480
+[17Nov2026 19:53:09.710] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [versionCheck] was corrected from null to true
+[17Nov2026 19:53:09.710] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowFBScale] was corrected from null to 1
+[17Nov2026 19:53:09.710] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowProvider] was corrected from null to fmlearlywindow
+[17Nov2026 19:53:09.711] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowWidth] was corrected from null to 854
+[17Nov2026 19:53:09.711] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowMaximized] was corrected from null to false
+[17Nov2026 19:53:09.711] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [defaultConfigPath] was corrected from null to defaultconfigs
+[17Nov2026 19:53:09.711] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [disableOptimizedDFU] was corrected from null to true
+[17Nov2026 19:53:09.711] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[17Nov2026 19:53:09.711] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[17Nov2026 19:53:09.712] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [maxThreads] was corrected from null to -1
+[17Nov2026 19:53:09.712] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[17Nov2026 19:53:09.712] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[17Nov2026 19:53:09.724] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because splash screen is disabled
+[17Nov2026 19:53:09.784] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.7/8ab114ac385e6dbdad5efafe28aba4df8120915f/mixin-0.8.7.jar!/ Service=ModLauncher Env=CLIENT
+[17Nov2026 19:53:10.697] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[17Nov2026 19:53:10.877] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forge_userdev_client' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.minecraft/assets, --assetIndex, 34, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[17Nov2026 19:53:12.494] [Datafixer Bootstrap #0/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 307 Datafixer optimizations took 528 milliseconds
+[17Nov2026 19:53:15.720] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/celular-26.3/.gradle/mavenizer/repo/net/minecraftforge/forge/26.3-66.1.5/forge-26.3-66.1.5.jar%230!/assets/.mcassetsroot' uses unexpected schema
+[17Nov2026 19:53:15.720] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/celular-26.3/.gradle/mavenizer/repo/net/minecraftforge/forge/26.3-66.1.5/forge-26.3-66.1.5.jar%230!/data/.mcassetsroot' uses unexpected schema
+[17Nov2026 19:53:15.740] [Render thread/INFO] [com.mojang.authlib.services.MinecraftServicesDiscoveryService/]: Environment: Environment[discoveryUrl=https://discovery.minecraftservices.com/minecraft/client, name=PROD]
+[17Nov2026 19:53:15.765] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[17Nov2026 19:53:15.873] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.4.3+4
+[17Nov2026 19:53:15.896] [Render thread/INFO] [com.mojang.blaze3d.platform.SdlDebug/]: SDL [SYSTEM]: App name: Minecraft
+[17Nov2026 19:53:15.896] [Render thread/INFO] [com.mojang.blaze3d.platform.SdlDebug/]: SDL [SYSTEM]: App version: 26.3
+[17Nov2026 19:53:15.896] [Render thread/INFO] [com.mojang.blaze3d.platform.SdlDebug/]: SDL [SYSTEM]: App ID: com.mojang.minecraft
+[17Nov2026 19:53:15.896] [Render thread/INFO] [com.mojang.blaze3d.platform.SdlDebug/]: SDL [SYSTEM]: SDL revision: SDL-3.4.14--128-NOTFOUND
+[17Nov2026 19:53:16.429] [Render thread/ERROR] [net.minecraft.client.Minecraft/]: Failed to create backend OpenGL
+com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+	at TRANSFORMER/minecraft@26.3/com.mojang.renderpearl.backend.opengl.GlDevice.<init>(GlDevice.java:77) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.renderpearl.backend.opengl.GlBackend.createDevice(GlBackend.java:76) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.<init>(Minecraft.java:491) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.main.Main.main(Main.java:272) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:96) ~[fmlloader-26.3-66.1.5.jar:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:79) ~[fmlloader-26.3-66.1.5.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:84) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:104) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.run(Launcher.java:151) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.main(Launcher.java:110) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) ~[modlauncher-10.2.6.jar:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) ~[bootstrap-2.1.8.jar:2.1.8]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+[17Nov2026 19:53:16.454] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Enabling optional FeatureSet [Wireframe]
+[17Nov2026 19:53:16.454] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Optional FeatureSet [AMD Buffer Marker] not supported
+[17Nov2026 19:53:16.454] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Enabling optional FeatureSet [Calibrated Timestamps]
+[17Nov2026 19:53:16.454] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Optional FeatureSet [NV Diagnostic Checkpoint] not supported
+[17Nov2026 19:53:16.454] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Enabling optional FeatureSet [EXT MultiDraw]
+[17Nov2026 19:53:16.536] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Using graphics backend Vulkan, using drivers: 1.4.335 llvmpipe Mesa 26.0.8-1ubuntu0.3 (LLVM 21.1.8)
+[17Nov2026 19:53:16.537] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Using graphics device: llvmpipe (LLVM 21.1.8, 256 bits) (0x10005)
+[17Nov2026 19:53:16.537] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Using graphics device extensions: VK_EXT_calibrated_timestamps (D), VK_KHR_synchronization2 (D), VK_EXT_multi_draw (D), VK_EXT_vertex_attribute_divisor (D), VK_KHR_swapchain (D), VK_KHR_surface (I), VK_KHR_push_descriptor (D), VK_KHR_xlib_surface (I), VK_EXT_debug_utils (I), VK_KHR_dynamic_rendering (D)
+[17Nov2026 19:53:16.544] [Render thread/INFO] [com.mojang.blaze3d.platform.Window/]: Created window using SDL video driver: x11
+[17Nov2026 19:53:16.635] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 66.1.5, for MC 26.3 with MCP 20260918.230105
+[17Nov2026 19:53:16.635] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v66.1.5 Initialized
+[17Nov2026 19:53:16.641] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
+[17Nov2026 19:53:17.410] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, vanilla, mod:forge, mod:celular
+[17Nov2026 19:53:17.442] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/celular-26.3/run/config/forge-client.toml is not correct. Correcting
+[17Nov2026 19:53:17.443] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SynchronizedConfig{DataHolder:{}}. 
+[17Nov2026 19:53:17.443] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[17Nov2026 19:53:17.443] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.allowMipmapLowering was corrected from null to its default, false. 
+[17Nov2026 19:53:17.481] [Download-1/INFO] [com.mojang.realmsclient.client.RealmsClient/]: Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: 0
+[17Nov2026 19:53:17.487] [Download-1/ERROR] [com.mojang.realmsclient.client.RealmsClient/]: Failed to fetch Realms feature flags
+com.mojang.realmsclient.exception.RealmsServiceException: Realms authentication error with message 'java.lang.RuntimeException: Failed to parse into SignedJWT: 0'
+	at TRANSFORMER/minecraft@26.3/com.mojang.realmsclient.client.RealmsClient.execute(RealmsClient.java:622) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.realmsclient.client.RealmsClient.fetchFeatureFlags(RealmsClient.java:177) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1789) [?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) [?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) [?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+[17Nov2026 19:53:17.621] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[17Nov2026 19:53:17.887] [Worker-Main-3/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-17.0.01.hex, loading
+[17Nov2026 19:53:17.960] [Worker-Main-1/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_pua-17.0.01.hex, loading
+[17Nov2026 19:53:18.134] [Worker-Main-3/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-17.0.01.hex, loading
+[17Nov2026 19:53:18.155] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: OUTDATED Current: 66.1.5 Target: 66.1.8
+[17Nov2026 19:53:21.521] [Render thread/ERROR] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at TRANSFORMER/minecraft@26.3/com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:185) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.blaze3d.audio.Library.init(Library.java:66) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:112) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:103) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:120) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:43) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:19) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:739) ~[?:?]
+	at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:503) ~[?:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$prepareTasks$3(SimpleReloadInstance.java:75) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:160) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:24) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:135) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:116) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.runTick(Minecraft.java:1190) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.run(Minecraft.java:928) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.main.Main.main(Main.java:286) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:96) ~[fmlloader-26.3-66.1.5.jar:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:79) ~[fmlloader-26.3-66.1.5.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:84) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:104) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.run(Launcher.java:151) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.main(Launcher.java:110) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) ~[modlauncher-10.2.6.jar:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) ~[bootstrap-2.1.8.jar:2.1.8]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+[17Nov2026 19:53:21.523] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[17Nov2026 19:53:21.545] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[17Nov2026 19:53:21.546] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[17Nov2026 19:53:21.547] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[17Nov2026 19:53:21.550] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[17Nov2026 19:53:21.553] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[17Nov2026 19:53:21.556] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[17Nov2026 19:53:21.633] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[17Nov2026 19:53:21.643] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[17Nov2026 19:53:21.650] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[17Nov2026 19:53:21.650] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[17Nov2026 19:53:21.651] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[17Nov2026 19:53:24.305] [Worker-Main-2/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1866 advancements
+[17Nov2026 19:53:24.694] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 26.3
+[17Nov2026 19:53:24.694] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[17Nov2026 19:53:25.014] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Loading 0 persistent chunks...
+[17Nov2026 19:53:25.015] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Preparing spawn area: 16%
+[17Nov2026 19:53:25.025] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[17Nov2026 19:53:25.043] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[17Nov2026 19:53:25.072] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[17Nov2026 19:53:25.146] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[17Nov2026 19:53:25.833] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Loading 48 chunks for player spawn...
+[17Nov2026 19:53:25.833] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Preparing spawn area: 16%
+[17Nov2026 19:53:26.047] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Preparing spawn area: 20%
+[17Nov2026 19:53:26.547] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Preparing spawn area: 49%
+[17Nov2026 19:53:26.647] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Time elapsed: 1633 ms
+[17Nov2026 19:53:26.946] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:d0db7a39] logged in with entity id 1 at (4.5, -60.0, -6.5)
+[17Nov2026 19:53:26.967] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Dev joined the game
+[17Nov2026 19:53:27.145] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 6, from 10
+[17Nov2026 19:53:27.149] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 5, from 0
+[17Nov2026 19:53:27.214] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2 advancements
+[17Nov2026 19:53:27.270] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST video pasos=34
+[17Nov2026 19:53:27.352] [Render thread/WARN] [net.minecraft.client.renderer.ShaderManager/]: Requested post effect does not exist: minecraft:end_of_frame
+[17Nov2026 19:53:27.392] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[17Nov2026 19:53:27.799] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[17Nov2026 19:53:28.320] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[17Nov2026 19:53:28.516] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 2 reached during a single frame. New capacity will be 8.
+[17Nov2026 19:53:28.517] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 2 reached during a single frame. New capacity will be 8.
+[17Nov2026 19:53:29.041] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[17Nov2026 19:53:29.041] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[17Nov2026 19:53:29.282] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[17Nov2026 19:53:29.282] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[17Nov2026 19:53:29.494] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[17Nov2026 19:53:29.494] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[17Nov2026 19:53:37.298] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Incorrect argument for command
+[17Nov2026 19:53:37.298] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: gamerule sendCommandFeedback false<--[HERE]
+[17Nov2026 19:53:37.298] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Incorrect argument for command
+[17Nov2026 19:53:37.298] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: gamerule logAdminCommands false<--[HERE]
+[17Nov2026 19:53:37.897] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set Dev's game mode to Creative Mode
+[17Nov2026 19:53:37.898] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set minecraft:overworld to 6000 tick(s)
+[17Nov2026 19:53:37.898] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Incorrect argument for command
+[17Nov2026 19:53:37.898] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: gamerule doDaylightCycle false<--[HERE]
+[17Nov2026 19:53:37.899] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set the weather to clear
+[17Nov2026 19:53:37.899] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Incorrect argument for command
+[17Nov2026 19:53:37.899] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: gamerule doWeatherCycle false<--[HERE]
+[17Nov2026 19:53:37.899] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Incorrect argument for command
+[17Nov2026 19:53:37.899] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: gamerule randomTickSpeed 0<--[HERE]
+[17Nov2026 19:53:37.899] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Incorrect argument for command
+[17Nov2026 19:53:37.899] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: gamerule doMobSpawning false<--[HERE]
+[17Nov2026 19:53:37.920] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[17Nov2026 19:53:37.940] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 83 entities
+[17Nov2026 19:53:37.963] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: No items were found on player Dev
+[17Nov2026 19:53:37.985] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Replaced 1 slot(s) on Dev with [Phone]
+[17Nov2026 19:53:37.988] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Replaced 1 slot(s) on Dev with [Bluetooth Speaker]
+[17Nov2026 19:53:37.992] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Replaced 1 slot(s) on Dev with [Headphones]
+[17Nov2026 19:53:38.003] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Changed the block at 6, -60, -6
+[17Nov2026 19:53:38.003] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Changed the block at 8, -60, -6
+[17Nov2026 19:53:38.003] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Changed the block at 7, -60, -7
+[17Nov2026 19:53:38.013] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, 6.500000
+[17Nov2026 19:53:39.089] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[17Nov2026 19:53:39.090] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[17Nov2026 19:53:42.279] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 1_poses inicio t=1794945222278
+[17Nov2026 19:54:12.782] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 1_poses fin t=1794945252782
+[17Nov2026 19:54:15.279] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 2_celular inicio t=1794945255279
+[17Nov2026 19:54:44.775] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 2_celular fin t=1794945284775
+[17Nov2026 19:54:45.275] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set minecraft:overworld to 18000 tick(s)
+[17Nov2026 19:54:47.291] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 3_noche_otro inicio t=1794945287291
+[17Nov2026 19:54:56.806] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 3_noche_otro fin t=1794945296805
+[17Nov2026 19:54:58.790] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 3_noche_mia inicio t=1794945298790
+[17Nov2026 19:55:07.803] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 3_noche_mia fin t=1794945307803
+[17Nov2026 19:55:07.805] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set minecraft:overworld to 6000 tick(s)
+[17Nov2026 19:55:09.300] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 4_bocinas inicio t=1794945309300
+[17Nov2026 19:55:17.290] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST CLIP 4_bocinas fin t=1794945317290
+[17Nov2026 19:55:18.302] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST AUTOTEST_FIN video fallos=0
+[17Nov2026 19:55:19.313] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[17Nov2026 19:55:19.347] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[17Nov2026 19:55:19.351] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[17Nov2026 19:55:19.375] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[17Nov2026 19:55:19.375] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Dev left the game
+[17Nov2026 19:55:19.386] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[17Nov2026 19:55:19.386] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[17Nov2026 19:55:19.697] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[17Nov2026 19:55:19.958] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[17Nov2026 19:55:19.964] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
