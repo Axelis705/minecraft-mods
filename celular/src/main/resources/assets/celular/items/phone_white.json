@@ -12,119 +12,126 @@
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_home"
+          "model": "celular:item/phone3d/phone_white_home"
         }
       },
       {
         "threshold": 2,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_insta"
+          "model": "celular:item/phone3d/phone_white_insta"
         }
       },
       {
         "threshold": 3,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_camera"
+          "model": "celular:item/phone3d/phone_white_camera"
         }
       },
       {
         "threshold": 4,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_gallery"
+          "model": "celular:item/phone3d/phone_white_gallery"
         }
       },
       {
         "threshold": 5,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_call"
+          "model": "celular:item/phone3d/phone_white_call"
         }
       },
       {
         "threshold": 6,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_patreon"
+          "model": "celular:item/phone3d/phone_white_patreon"
         }
       },
       {
         "threshold": 7,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_settings"
+          "model": "celular:item/phone3d/phone_white_settings"
         }
       },
       {
         "threshold": 8,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_music"
+          "model": "celular:item/phone3d/phone_white_music"
         }
       },
       {
         "threshold": 9,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_weather"
+          "model": "celular:item/phone3d/phone_white_weather"
         }
       },
       {
         "threshold": 10,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_compass"
+          "model": "celular:item/phone3d/phone_white_compass"
         }
       },
       {
         "threshold": 11,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_calc"
+          "model": "celular:item/phone3d/phone_white_calc"
         }
       },
       {
         "threshold": 12,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_messages"
+          "model": "celular:item/phone3d/phone_white_messages"
         }
       },
       {
         "threshold": 13,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_notes"
+          "model": "celular:item/phone3d/phone_white_notes"
         }
       },
       {
         "threshold": 14,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_map"
+          "model": "celular:item/phone3d/phone_white_map"
         }
       },
       {
         "threshold": 15,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_wallet"
+          "model": "celular:item/phone3d/phone_white_wallet"
         }
       },
       {
         "threshold": 16,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_flash"
+          "model": "celular:item/phone3d/phone_white_flash"
         }
       },
       {
         "threshold": 17,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_white_jam"
+          "model": "celular:item/phone3d/phone_white_jam"
+        }
+      },
+      {
+        "threshold": 18,
+        "model": {
+          "type": "minecraft:model",
+          "model": "celular:item/phone3d/phone_white_ear"
         }
       }
     ]

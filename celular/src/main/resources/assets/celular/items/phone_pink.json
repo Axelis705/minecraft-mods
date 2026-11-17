@@ -12,119 +12,126 @@
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_home"
+          "model": "celular:item/phone3d/phone_pink_home"
         }
       },
       {
         "threshold": 2,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_insta"
+          "model": "celular:item/phone3d/phone_pink_insta"
         }
       },
       {
         "threshold": 3,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_camera"
+          "model": "celular:item/phone3d/phone_pink_camera"
         }
       },
       {
         "threshold": 4,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_gallery"
+          "model": "celular:item/phone3d/phone_pink_gallery"
         }
       },
       {
         "threshold": 5,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_call"
+          "model": "celular:item/phone3d/phone_pink_call"
         }
       },
       {
         "threshold": 6,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_patreon"
+          "model": "celular:item/phone3d/phone_pink_patreon"
         }
       },
       {
         "threshold": 7,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_settings"
+          "model": "celular:item/phone3d/phone_pink_settings"
         }
       },
       {
         "threshold": 8,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_music"
+          "model": "celular:item/phone3d/phone_pink_music"
         }
       },
       {
         "threshold": 9,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_weather"
+          "model": "celular:item/phone3d/phone_pink_weather"
         }
       },
       {
         "threshold": 10,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_compass"
+          "model": "celular:item/phone3d/phone_pink_compass"
         }
       },
       {
         "threshold": 11,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_calc"
+          "model": "celular:item/phone3d/phone_pink_calc"
         }
       },
       {
         "threshold": 12,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_messages"
+          "model": "celular:item/phone3d/phone_pink_messages"
         }
       },
       {
         "threshold": 13,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_notes"
+          "model": "celular:item/phone3d/phone_pink_notes"
         }
       },
       {
         "threshold": 14,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_map"
+          "model": "celular:item/phone3d/phone_pink_map"
         }
       },
       {
         "threshold": 15,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_wallet"
+          "model": "celular:item/phone3d/phone_pink_wallet"
         }
       },
       {
         "threshold": 16,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_flash"
+          "model": "celular:item/phone3d/phone_pink_flash"
         }
       },
       {
         "threshold": 17,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_pink_jam"
+          "model": "celular:item/phone3d/phone_pink_jam"
+        }
+      },
+      {
+        "threshold": 18,
+        "model": {
+          "type": "minecraft:model",
+          "model": "celular:item/phone3d/phone_pink_ear"
         }
       }
     ]

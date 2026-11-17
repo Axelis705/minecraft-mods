@@ -12,119 +12,126 @@
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_home"
+          "model": "celular:item/phone3d/phone_green_home"
         }
       },
       {
         "threshold": 2,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_insta"
+          "model": "celular:item/phone3d/phone_green_insta"
         }
       },
       {
         "threshold": 3,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_camera"
+          "model": "celular:item/phone3d/phone_green_camera"
         }
       },
       {
         "threshold": 4,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_gallery"
+          "model": "celular:item/phone3d/phone_green_gallery"
         }
       },
       {
         "threshold": 5,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_call"
+          "model": "celular:item/phone3d/phone_green_call"
         }
       },
       {
         "threshold": 6,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_patreon"
+          "model": "celular:item/phone3d/phone_green_patreon"
         }
       },
       {
         "threshold": 7,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_settings"
+          "model": "celular:item/phone3d/phone_green_settings"
         }
       },
       {
         "threshold": 8,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_music"
+          "model": "celular:item/phone3d/phone_green_music"
         }
       },
       {
         "threshold": 9,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_weather"
+          "model": "celular:item/phone3d/phone_green_weather"
         }
       },
       {
         "threshold": 10,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_compass"
+          "model": "celular:item/phone3d/phone_green_compass"
         }
       },
       {
         "threshold": 11,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_calc"
+          "model": "celular:item/phone3d/phone_green_calc"
         }
       },
       {
         "threshold": 12,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_messages"
+          "model": "celular:item/phone3d/phone_green_messages"
         }
       },
       {
         "threshold": 13,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_notes"
+          "model": "celular:item/phone3d/phone_green_notes"
         }
       },
       {
         "threshold": 14,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_map"
+          "model": "celular:item/phone3d/phone_green_map"
         }
       },
       {
         "threshold": 15,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_wallet"
+          "model": "celular:item/phone3d/phone_green_wallet"
         }
       },
       {
         "threshold": 16,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_flash"
+          "model": "celular:item/phone3d/phone_green_flash"
         }
       },
       {
         "threshold": 17,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_green_jam"
+          "model": "celular:item/phone3d/phone_green_jam"
+        }
+      },
+      {
+        "threshold": 18,
+        "model": {
+          "type": "minecraft:model",
+          "model": "celular:item/phone3d/phone_green_ear"
         }
       }
     ]

@@ -1,0 +1,451 @@
+{
+  "credit": "Celular de Axelis (generado por herramientas/assets.py)",
+  "texture_size": [
+    64,
+    64
+  ],
+  "textures": {
+    "particle": "#case",
+    "case": "celular:item/phone3d/phone",
+    "screen": "celular:item/phone3d/screen/lock"
+  },
+  "elements": [
+    {
+      "name": "cuerpo",
+      "from": [
+        4.5,
+        1,
+        7.25
+      ],
+      "to": [
+        11.5,
+        15,
+        8.75
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            0,
+            7,
+            14
+          ],
+          "texture": "#case"
+        },
+        "north": {
+          "uv": [
+            7,
+            0,
+            14,
+            14
+          ],
+          "texture": "#case"
+        },
+        "east": {
+          "uv": [
+            14,
+            0,
+            15.5,
+            14
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            14,
+            0,
+            15.5,
+            14
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            0,
+            14,
+            7,
+            15.5
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            0,
+            14,
+            7,
+            15.5
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "pantalla",
+      "from": [
+        5,
+        2,
+        8.76
+      ],
+      "to": [
+        11,
+        14,
+        8.76
+      ],
+      "faces": {
+        "south": {
+          "uv": [
+            0,
+            0,
+            8,
+            16
+          ],
+          "texture": "#screen"
+        }
+      }
+    },
+    {
+      "name": "camara",
+      "from": [
+        8.6,
+        11.6,
+        7.0
+      ],
+      "to": [
+        10.9,
+        13.9,
+        7.25
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            14,
+            14,
+            16,
+            16
+          ],
+          "texture": "#case"
+        },
+        "east": {
+          "uv": [
+            14,
+            14,
+            14.5,
+            16
+          ],
+          "texture": "#case"
+        },
+        "west": {
+          "uv": [
+            14,
+            14,
+            14.5,
+            16
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            14,
+            14,
+            16,
+            14.5
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            14,
+            14,
+            16,
+            14.5
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "boton",
+      "from": [
+        11.5,
+        9.6,
+        7.75
+      ],
+      "to": [
+        11.75,
+        11.6,
+        8.25
+      ],
+      "faces": {
+        "east": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            4
+          ],
+          "texture": "#case"
+        },
+        "north": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            4
+          ],
+          "texture": "#case"
+        },
+        "south": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            4
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "volumen1",
+      "from": [
+        4.25,
+        10.6,
+        7.75
+      ],
+      "to": [
+        4.5,
+        11.8,
+        8.25
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            3.2
+          ],
+          "texture": "#case"
+        },
+        "north": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            3.2
+          ],
+          "texture": "#case"
+        },
+        "south": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            3.2
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#case"
+        }
+      }
+    },
+    {
+      "name": "volumen2",
+      "from": [
+        4.25,
+        8.8,
+        7.75
+      ],
+      "to": [
+        4.5,
+        10.0,
+        8.25
+      ],
+      "faces": {
+        "west": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            3.2
+          ],
+          "texture": "#case"
+        },
+        "north": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            3.2
+          ],
+          "texture": "#case"
+        },
+        "south": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            3.2
+          ],
+          "texture": "#case"
+        },
+        "up": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#case"
+        },
+        "down": {
+          "uv": [
+            15,
+            2,
+            15.5,
+            2.5
+          ],
+          "texture": "#case"
+        }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        -50,
+        90
+      ],
+      "translation": [
+        -0.5,
+        -1,
+        -1.2
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.45
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -12,
+        -15,
+        0
+      ],
+      "translation": [
+        -3.4,
+        5.2,
+        0.3
+      ],
+      "scale": [
+        0.42,
+        0.42,
+        0.42
+      ]
+    },
+    "gui": {
+      "rotation": [
+        8,
+        -22,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "head": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        13,
+        7
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    }
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "celular:item/phone_gold",
-    "layer1": "celular:item/screen/calc"
-  }
-}

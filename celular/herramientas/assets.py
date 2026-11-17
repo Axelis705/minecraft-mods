@@ -947,165 +947,661 @@ def wall_galaxy():
 
 
 # =====================================================================================================================
-#  Pantallas encendidas (lo que ven los demás en tu celular según la app): 16 × 16, solo la zona de la pantalla (6 × 10)
+#  El celular en 3D: cuerpo con grosor, marco, cámara atrás, botones y la pantalla encendida (32 × 64) que ven los demás
 # =====================================================================================================================
-# El orden es el número que va en custom_model_data (1 = inicio ... ); tiene que ser igual al de PhoneUse.java
+# El orden es el número que va en custom_model_data (1 = inicio ... ); tiene que ser igual al de PhoneUse.java.
+# "lock" (sin número) es la pantalla normal (el celular guardado); "ear" es la pantalla apagada pegada a la oreja.
 SCREENS = ["home", "insta", "camera", "gallery", "call", "patreon", "settings", "music", "weather", "compass", "calc", "messages",
-           "notes", "map", "wallet", "flash", "jam"]
-SX, SY = 5, 3  # esquina de la pantalla dentro del dibujo del celular
+           "notes", "map", "wallet", "flash", "jam", "ear"]
+SW, SH = 32, 64       # píxeles de la pantalla
+SS4 = 4               # se dibuja a 4x y se achica (bordes suaves)
+
+# Letras de 3 × 5 para la hora y los números de las pantallas
+FONT = {
+    "0": ["111", "101", "101", "101", "111"], "1": ["010", "110", "010", "010", "111"], "2": ["111", "001", "111", "100", "111"],
+    "3": ["111", "001", "111", "001", "111"], "4": ["101", "101", "111", "001", "001"], "5": ["111", "100", "111", "001", "111"],
+    "6": ["111", "100", "111", "101", "111"], "7": ["111", "001", "010", "010", "010"], "8": ["111", "101", "111", "101", "111"],
+    "9": ["111", "101", "111", "001", "111"], ":": ["0", "1", "0", "1", "0"], "°": ["11", "11", "00", "00", "00"],
+    ".": ["0", "0", "0", "0", "1"], "+": ["000", "010", "111", "010", "000"], "-": ["000", "000", "111", "000", "000"],
+}
 
 
-def scr_grad(top, bot):
-    t, b = hexc(top), hexc(bot)
-    return [[lerp(t, b, y / 9) for x in range(6)] for y in range(10)]
+def text_px(img, s, x, y, col, scale=1):
+    """Texto de píxeles (sin suavizar) encima de la imagen ya achicada."""
+    p = img.load()
+    c = hexc(col) if isinstance(col, str) else col
+    for ch in s:
+        g = FONT.get(ch)
+        if g is None:
+            x += 2 * scale
+            continue
+        for gy, row in enumerate(g):
+            for gx, v in enumerate(row):
+                if v == "1":
+                    for sy in range(scale):
+                        for sx in range(scale):
+                            px, py = x + gx * scale + sx, y + gy * scale + sy
+                            if 0 <= px < img.width and 0 <= py < img.height:
+                                p[px, py] = c
+        x += (len(g[0]) + 1) * scale
+    return x
 
 
-def scr_fill(c):
-    return [[hexc(c) for x in range(6)] for y in range(10)]
+def text_w(s, scale=1):
+    return sum((len(FONT[ch][0]) + 1) * scale if ch in FONT else 2 * scale for ch in s) - scale
 
 
-def put(g, pts, c):
-    col = hexc(c) if isinstance(c, str) else c
-    for (x, y) in pts:
-        if 0 <= x < 6 and 0 <= y < 10:
-            g[y][x] = col
+class Scr:
+    """Lienzo grande (4x) para dibujar una pantalla; .done() la achica a 32 × 64 con las esquinas redondeadas."""
+
+    def __init__(self, bg):
+        self.big = Image.new("RGBA", (SW * SS4, SH * SS4), hexc(bg) if isinstance(bg, str) else bg)
+        self.d = ImageDraw.Draw(self.big)
+
+    def _over(self, fn):
+        """Dibuja en una capa aparte y la mezcla encima (así el color semitransparente se ve como vidrio y no como un hueco)."""
+        layer = Image.new("RGBA", self.big.size, (0, 0, 0, 0))
+        fn(ImageDraw.Draw(layer))
+        self.big = Image.alpha_composite(self.big, layer)
+        self.d = ImageDraw.Draw(self.big)
+
+    def grad(self, top, bot, y0=0, y1=SH):
+        g = grad(SW * SS4, (y1 - y0) * SS4, [(0, hexc(top)), (1, hexc(bot))])
+        self.big.paste(g, (0, int(y0 * SS4)))
+        self.d = ImageDraw.Draw(self.big)
+
+    def rect(self, x0, y0, x1, y1, c, r=0):
+        box = (x0 * SS4, y0 * SS4, x1 * SS4 - 1, y1 * SS4 - 1)
+        col = hexc(c) if isinstance(c, str) else c
+        if r:
+            self._over(lambda d: d.rounded_rectangle(box, radius=r * SS4, fill=col))
+        else:
+            self._over(lambda d: d.rectangle(box, fill=col))
+
+    def circ(self, cx, cy, r, c, outline=None, w=0):
+        col = None if c is None else hexc(c) if isinstance(c, str) else c
+        self._over(lambda d: d.ellipse(((cx - r) * SS4, (cy - r) * SS4, (cx + r) * SS4, (cy + r) * SS4), fill=col,
+                                       outline=(hexc(outline) if outline else None), width=int(w * SS4)))
+
+    def line(self, pts, c, w=1.0):
+        col = hexc(c) if isinstance(c, str) else c
+        self._over(lambda d: d.line([(x * SS4, y * SS4) for x, y in pts], fill=col, width=max(1, int(w * SS4))))
+
+    def poly(self, pts, c):
+        col = hexc(c) if isinstance(c, str) else c
+        self._over(lambda d: d.polygon([(x * SS4, y * SS4) for x, y in pts], fill=col))
+
+    def status(self, dark=False):
+        """Barra de arriba: hora, isla, señal y batería."""
+        self.rect(14.5, 1, 20.5, 3.5, "#000000", 1.25)
+        self.bar_dark = dark
+
+    def home_bar(self, dark=False):
+        self.rect(11, 61.2, 21, 62.2, "#1c1c1e" if dark else "#f2f2f2", 0.5)
+
+    def done(self, clock=True, dark=False):
+        small = self.big.resize((SW, SH), Image.LANCZOS)
+        if hasattr(self, "bar_dark"):
+            col = "#111111" if self.bar_dark else "#ffffff"
+            if clock:
+                text_px(small, "9:41", 1, 1, col)
+            p = small.load()
+            c = hexc(col)
+            for x in range(25, 29):           # batería
+                p[x, 2] = c
+                p[x, 3] = c
+            p[29, 2] = c
+        # esquinas redondeadas (transparentes: se ve el marco negro)
+        p = small.load()
+        for (x, y) in ((0, 0), (1, 0), (0, 1), (SW - 1, 0), (SW - 2, 0), (SW - 1, 1), (0, SH - 1), (1, SH - 1), (0, SH - 2),
+                       (SW - 1, SH - 1), (SW - 2, SH - 1), (SW - 1, SH - 2)):
+            p[x, y] = (0, 0, 0, 0)
+        out = Image.new("RGBA", (64, 64), (0, 0, 0, 0))       # cuadrada: la pantalla usa la mitad izquierda
+        out.paste(small, (0, 0))
+        return out
 
 
-def rect(x0, y0, x1, y1):
-    return [(x, y) for y in range(y0, y1 + 1) for x in range(x0, x1 + 1)]
+def app_grid(s, y0, rows, cols=4, size=5, gapx=7, gapy=8, x0=3.5, seed=1):
+    colors = ["#ff375f", "#30d158", "#0a84ff", "#ff9f0a", "#bf5af2", "#64d2ff", "#ffd60a", "#fa233b", "#5e5ce6", "#34c759", "#ff6482",
+              "#8e8e93", "#ac8e68", "#00c7be", "#ff2d55", "#4cd964"]
+    rnd = random.Random(seed)
+    for r in range(rows):
+        for c in range(cols):
+            col = colors[rnd.randrange(len(colors))]
+            x, y = x0 + c * gapx, y0 + r * gapy
+            s.rect(x, y, x + size, y + size, col, 1.4)
+            s.rect(x + 1.5, y + 1.5, x + size - 1.5, y + size - 1.5, lerp(hexc(col), (255, 255, 255, 255), 0.55), 0.6)
 
 
-def screen_art(name):
-    if name == "home":
-        g = scr_grad("#3a7bd5", "#6a4fd8")
-        for (x, y, c) in [(1, 2, "#feda75"), (3, 2, "#d62976"), (1, 4, "#34c759"), (3, 4, "#0a84ff"), (1, 6, "#ff424d"), (3, 6, "#fa233b")]:
-            put(g, [(x, y)], c)
-            put(g, [(x + 1, y)], lerp(hexc(c), (255, 255, 255, 255), 0.3))
-        put(g, [(2, 9), (3, 9)], "#e6e6e6")
-    elif name == "insta":
-        g = scr_grad("#833ab4", "#fcb045")
-        put(g, rect(0, 0, 5, 0), "#ffffff")
-        put(g, rect(1, 2, 4, 5), "#f4f4f4")
-        put(g, [(2, 3), (3, 4)], "#9ad0ff")
-        put(g, [(1, 7), (2, 7)], "#ff3b5c")
-        put(g, [(4, 7)], "#ffffff")
-    elif name == "camera":
-        g = scr_fill("#0d0d0d")
-        put(g, rect(0, 1, 5, 6), "#5b7f9e")
-        put(g, rect(0, 5, 5, 6), "#4e8a3c")
-        put(g, [(4, 2)], "#ffe066")
-        put(g, [(2, 8), (3, 8)], "#ffffff")
-        put(g, [(2, 9), (3, 9)], "#bdbdbd")
-    elif name == "gallery":
-        g = scr_fill("#f2f2f7")
-        cols = ["#ff9f0a", "#30d158", "#0a84ff", "#ff375f", "#bf5af2", "#64d2ff"]
-        k = 0
-        for y in (1, 4, 7):
-            for x in (0, 3):
-                put(g, rect(x, y, x + 2, y + 1), cols[k])
-                k += 1
-    elif name == "call":
-        g = scr_grad("#1d3b2a", "#0b1410")
-        put(g, rect(2, 1, 3, 2), "#c7c7cc")
-        put(g, rect(1, 3, 4, 3), "#8e8e93")
-        put(g, [(1, 8)], "#ff3b30")
-        put(g, [(4, 8)], "#34c759")
-        put(g, [(1, 7), (4, 7)], "#2a2a2a")
-    elif name == "patreon":
-        g = scr_fill("#ff424d")
-        put(g, rect(2, 3, 4, 5), "#ffffff")
-        put(g, rect(1, 3, 1, 7), "#1b1b1b")
-    elif name == "settings":
-        g = scr_fill("#1c1c1e")
-        for y, c in ((1, "#636366"), (3, "#0a84ff"), (5, "#34c759"), (7, "#ff9f0a")):
-            put(g, [(0, y)], c)
-            put(g, rect(2, y, 5, y), "#3a3a3c")
-    elif name == "music":
-        g = scr_grad("#5a0f1c", "#16070a")
-        put(g, rect(1, 1, 4, 4), "#fa233b")
-        put(g, [(2, 2), (3, 3)], "#ff8fa0")
-        put(g, [(0, 8), (1, 7), (1, 8), (2, 8), (3, 6), (3, 7), (3, 8), (4, 8), (5, 7), (5, 8)], "#ffffff")
-    elif name == "weather":
-        g = scr_grad("#4facfe", "#9be0ff")
-        put(g, rect(2, 2, 3, 3), "#ffd60a")
-        put(g, [(1, 2), (4, 3), (2, 1), (3, 4)], "#ffe98a")
-        put(g, rect(1, 6, 4, 7), "#ffffff")
-        put(g, [(0, 7), (5, 7)], "#e8f6ff")
-    elif name == "compass":
-        g = scr_fill("#0f1626")
-        put(g, [(1, 2), (2, 1), (3, 1), (4, 2), (5, 3), (5, 4), (4, 5), (3, 6), (2, 6), (1, 5), (0, 4), (0, 3)], "#d8d8d8")
-        put(g, [(2, 2), (2, 3)], "#ff3b30")
-        put(g, [(3, 4), (3, 5)], "#ffffff")
-    elif name == "calc":
-        g = scr_fill("#000000")
-        put(g, rect(1, 1, 5, 1), "#ffffff")
-        for y in (3, 5, 7, 9):
-            put(g, [(0, y), (2, y)], "#505050")
-            put(g, [(4, y), (5, y)], "#ff9f0a")
-    elif name == "messages":
-        g = scr_fill("#f2f2f7")
-        put(g, rect(0, 1, 3, 2), "#d1d1d6")
-        put(g, rect(2, 4, 5, 5), "#34c759")
-        put(g, rect(0, 7, 2, 8), "#d1d1d6")
-    elif name == "notes":
-        g = scr_fill("#fffbe6")
-        put(g, rect(0, 0, 5, 1), "#ffd60a")
-        for y in (3, 5, 7):
-            put(g, rect(0, y, 4 if y != 7 else 2, y), "#8e8e93")
-    elif name == "map":
-        g = scr_fill("#a8d58c")
-        put(g, [(0, 2), (1, 3), (2, 3), (3, 4), (4, 5), (5, 5), (5, 6)], "#5ab4f0")
-        put(g, rect(0, 7, 5, 7), "#f5f0dc")
-        put(g, [(3, 1), (3, 2)], "#ff3b30")
-        put(g, [(1, 6)], "#0a84ff")
-    elif name == "wallet":
-        g = scr_fill("#0b0b0f")
-        put(g, rect(0, 2, 5, 5), "#d4af37")
-        put(g, rect(0, 3, 5, 3), "#3a2e10")
-        put(g, [(4, 5)], "#fff3c4")
-        put(g, rect(1, 7, 4, 7), "#30d158")
-    elif name == "flash":
-        g = [[lerp(hexc("#ffffff"), hexc("#fff3b0"), min(1, (abs(x - 2.5) + abs(y - 4.5)) / 6)) for x in range(6)] for y in range(10)]
-        put(g, [(2, 4), (3, 4), (2, 5), (3, 5)], "#ffffff")
-    elif name == "jam":
-        g = scr_grad("#0f3d22", "#060c08")
-        put(g, rect(1, 1, 4, 4), "#1db954")
-        put(g, [(2, 2), (3, 2), (2, 3)], "#0b2414")
-        put(g, [(0, 8), (1, 7), (1, 8), (2, 6), (2, 7), (2, 8), (3, 7), (3, 8), (4, 8), (5, 7), (5, 8)], "#1ed760")
-    else:
-        g = scr_fill("#000000")
-    return g
+def scr_lock():
+    s = Scr("#000000")
+    s.grad("#5b2a86", "#1d4e89", 0, 34)
+    s.grad("#1d4e89", "#f72585", 34, 64)
+    s.circ(26, 46, 14, (255, 255, 255, 30))
+    s.circ(5, 14, 9, (255, 214, 10, 40))
+    s.status()
+    # botones de linterna y cámara
+    s.circ(6, 55, 3, (0, 0, 0, 90))
+    s.circ(26, 55, 3, (0, 0, 0, 90))
+    s.home_bar()
+    img = s.done(clock=False)
+    text_px(img, "9:41", 3, 12, "#ffffff", 2)
+    p = img.load()
+    for x in range(9, 23):                # fecha (rayita)
+        p[x, 9] = (255, 255, 255, 170)
+    for (x, y) in ((5, 54), (6, 54), (6, 55), (5, 56)):
+        p[x, y] = hexc("#ffffff")
+    for (x, y) in ((25, 54), (26, 54), (27, 54), (25, 55), (26, 55), (27, 55)):
+        p[x, y] = hexc("#ffffff")
+    return img
 
 
-def screens():
-    for n in SCREENS:
-        img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
-        p = img.load()
-        g = screen_art(n)
-        for y in range(10):
-            for x in range(6):
-                p[SX + x, SY + y] = g[y][x]
-        # brillo del vidrio (igual que el celular apagado)
-        if n != "flash":
-            p[SX, SY] = lerp(p[SX, SY], (255, 255, 255, 255), 0.35)
-        save(img, f"item/screen/{n}.png")
-    # modelos: una carcasa × una pantalla, y los "overrides" (hasta 1.21.3) / la definición del ítem (1.21.4+)
+def scr_home():
+    s = Scr("#000000")
+    s.grad("#3a7bd5", "#6a4fd8")
+    s.status()
+    # widget de la canción
+    s.rect(3, 6, 29, 16, (0, 0, 0, 70), 2.5)
+    s.rect(4.5, 7.5, 11.5, 14.5, "#fa233b", 1.5)
+    s.rect(13, 9, 26, 10.2, (255, 255, 255, 220), 0.5)
+    s.rect(13, 12, 22, 13, (255, 255, 255, 140), 0.5)
+    app_grid(s, 20, 3, seed=4)
+    # dock de vidrio
+    s.rect(2, 50, 30, 59, (255, 255, 255, 70), 3)
+    for i, col in enumerate(("#30d158", "#34c759", "#ff375f", "#fa233b")):
+        x = 4 + i * 6.7
+        s.rect(x, 52, x + 5, 57, col, 1.4)
+    s.home_bar()
+    return s.done()
+
+
+def scr_insta():
+    s = Scr("#ffffff")
+    s.status(dark=True)
+    s.rect(0, 5, 32, 10, "#ffffff")
+    s.rect(3, 6.5, 14, 8.5, "#262626", 0.6)          # el nombre de la app
+    for i in range(4):                                # historias
+        cx = 6 + i * 7
+        s.circ(cx, 14, 3, "#d62976")
+        s.circ(cx, 14, 2.3, "#ffffff")
+        s.circ(cx, 14, 1.8, ["#feda75", "#8a3ab9", "#4c68d7", "#fa7e1e"][i])
+    # una publicación: cielo, sol, montañas
+    s.grad("#4facfe", "#a1f0ff", 19, 39)
+    s.circ(24, 24, 3, "#ffd60a")
+    s.poly([(0, 39), (9, 28), (17, 39)], "#3d7d4a")
+    s.poly([(10, 39), (21, 30), (32, 39)], "#2e6b3b")
+    s.rect(0, 35, 32, 39, "#5aa469")
+    # me gusta, comentar, enviar
+    s.circ(4, 42, 1.6, "#ff3040")
+    s.circ(9, 42, 1.4, "#262626")
+    s.circ(9, 42, 0.8, "#ffffff")
+    s.poly([(12.5, 40.6), (15.5, 42), (12.5, 43.4)], "#262626")
+    s.rect(3, 45, 20, 46, "#262626", 0.5)
+    s.rect(3, 47.5, 26, 48.3, "#8e8e8e", 0.4)
+    s.grad("#fd1d1d", "#fcb045", 51, 60)
+    s.rect(0, 59, 32, 64, "#ffffff")
+    for i in range(5):
+        s.circ(4 + i * 6, 61, 1.2, "#262626")
+    return s.done()
+
+
+def scr_camera():
+    s = Scr("#000000")
+    s.status()
+    s.grad("#87c5ff", "#d9f0ff", 8, 30)
+    s.circ(22, 14, 3.5, "#fff3b0")
+    s.poly([(0, 44), (10, 26), (20, 44)], "#6c7a89")
+    s.poly([(7, 30.5), (10, 26), (13, 30.5)], "#ffffff")
+    s.poly([(12, 44), (24, 30), (32, 40), (32, 44)], "#4d5b6b")
+    s.rect(0, 40, 32, 48, "#4c9a4f")
+    # cuadrícula de tercios
+    for x in (10.6, 21.3):
+        s.rect(x, 8, x + 0.3, 48, (255, 255, 255, 90))
+    for y in (21.3, 34.6):
+        s.rect(0, y, 32, y + 0.3, (255, 255, 255, 90))
+    s.rect(11, 50, 21, 51.2, "#ffcc00", 0.5)         # "FOTO"
+    s.circ(16, 56.5, 4.5, "#ffffff")
+    s.circ(16, 56.5, 3.6, "#000000")
+    s.circ(16, 56.5, 3.1, "#ffffff")
+    s.rect(4, 54.5, 8, 58.5, "#3a3a3c", 1)            # última foto
+    s.circ(27, 56.5, 2.4, "#2c2c2e")
+    return s.done()
+
+
+def scr_gallery():
+    s = Scr("#ffffff")
+    s.status(dark=True)
+    s.rect(3, 6, 18, 8, "#111111", 0.6)
+    cols = ["#ff9f0a", "#30d158", "#0a84ff", "#ff375f", "#bf5af2", "#64d2ff", "#ffd60a", "#ac8e68", "#5e5ce6", "#34c759", "#ff6482",
+            "#00c7be", "#fa233b", "#8e8e93", "#4cd964"]
+    k = 0
+    for r in range(5):
+        for c in range(3):
+            x, y = c * 10.8, 10 + r * 10.2
+            col = cols[k % len(cols)]
+            s.rect(x + 0.4, y, x + 10.4, y + 9.8, col)
+            s.rect(x + 0.4, y + 6, x + 10.4, y + 9.8, lerp(hexc(col), (0, 0, 0, 255), 0.25))
+            s.circ(x + 7.5, y + 3, 1.5, lerp(hexc(col), (255, 255, 255, 255), 0.6))
+            k += 1
+    s.home_bar(dark=True)
+    return s.done()
+
+
+def scr_call():
+    s = Scr("#000000")
+    s.grad("#2c3e50", "#000000")
+    s.status()
+    # cara de quien llama (cuadrada, como en Minecraft)
+    s.rect(10, 9, 22, 21, "#8d5a3b", 2)
+    s.rect(10, 9, 22, 13, "#3b2a1a", 2)
+    s.rect(12, 15, 14.5, 16.5, "#ffffff")
+    s.rect(17.5, 15, 20, 16.5, "#ffffff")
+    s.rect(13, 15.3, 14.5, 16.5, "#3b5ba8")
+    s.rect(18.5, 15.3, 20, 16.5, "#3b5ba8")
+    s.rect(13.5, 18.5, 18.5, 19.5, "#5a3825")
+    s.rect(9, 24, 23, 25.6, "#ffffff", 0.8)
+    s.rect(11, 27.5, 21, 28.6, "#30d158", 0.5)
+    for i in range(3):
+        for j in range(2):
+            s.circ(7 + i * 9, 37 + j * 8, 3, (255, 255, 255, 50))
+    s.circ(16, 55, 4, "#ff3b30")
+    s.rect(13.5, 54.5, 18.5, 55.8, "#ffffff", 0.6)
+    return s.done()
+
+
+def scr_ear():
+    """Pegado a la oreja: la pantalla se apaga (solo un reflejo)."""
+    s = Scr("#050506")
+    s.poly([(0, 0), (12, 0), (0, 20)], (255, 255, 255, 12))
+    s.poly([(32, 40), (32, 64), (20, 64)], (255, 255, 255, 8))
+    return s.done(clock=False)
+
+
+def scr_patreon():
+    s = Scr("#ffffff")
+    s.rect(0, 0, 32, 20, "#ff424d")
+    s.status()
+    s.circ(13, 12, 4.5, "#ffffff")
+    s.rect(18, 8, 20, 16.5, "#141414")
+    for i in range(5):
+        y = 23 + i * 7.5
+        s.circ(5, y + 2.5, 2.5, ["#ffd700", "#c0c0c0", "#cd7f32", "#ff424d", "#ffd700"][i])
+        s.rect(10, y + 1, 27, y + 2.3, "#141414", 0.6)
+        s.rect(10, y + 3.5, 22, y + 4.4, "#9e9e9e", 0.4)
+    s.home_bar(dark=True)
+    return s.done()
+
+
+def scr_settings():
+    s = Scr("#f2f2f7")
+    s.status(dark=True)
+    s.rect(3, 6, 20, 8.4, "#111111", 0.6)
+    s.rect(2, 11, 30, 18, "#ffffff", 2)
+    s.circ(6.5, 14.5, 2.5, "#8e8e93")
+    s.rect(11, 13, 24, 14.3, "#111111", 0.5)
+    s.rect(11, 15.3, 19, 16.1, "#8e8e93", 0.4)
+    cols = ["#ff9500", "#0a84ff", "#34c759", "#ff3b30", "#5856d6", "#ff2d55", "#636366", "#30d158"]
+    s.rect(2, 20, 30, 20 + 8 * 4.6, "#ffffff", 2)
+    for i, c in enumerate(cols):
+        y = 21 + i * 4.6
+        s.rect(3.5, y, 6.5, y + 3, c, 0.8)
+        s.rect(8.5, y + 1, 20, y + 2, "#3a3a3c", 0.4)
+        on = i % 3 != 1
+        s.rect(23, y + 0.3, 28, y + 2.7, "#34c759" if on else "#d1d1d6", 1.2)
+        s.circ(26.8 if on else 24.2, y + 1.5, 1.05, "#ffffff")
+    s.home_bar(dark=True)
+    return s.done()
+
+
+def scr_music():
+    s = Scr("#000000")
+    s.grad("#7a1a2c", "#1a0508")
+    s.status()
+    s.rect(14, 5, 18, 5.6, (255, 255, 255, 120), 0.3)
+    # portada
+    s.rect(5, 9, 27, 31, (0, 0, 0, 90), 2.5)
+    s.big.paste(grad(22 * SS4, 22 * SS4, [(0, hexc("#ff5f6d")), (1, hexc("#ffc371"))], 45), (5 * SS4, 8 * SS4),
+                Image.new("L", (22 * SS4, 22 * SS4), 255))
+    s.d = ImageDraw.Draw(s.big)
+    s.circ(13, 23, 2.5, "#ffffff")
+    s.rect(14.6, 13, 16, 23, "#ffffff")
+    s.rect(14.6, 13, 20, 15, "#ffffff")
+    s.rect(4, 34, 28, 36, (255, 255, 255, 230), 0.6)
+    s.rect(4, 37.5, 18, 38.7, (255, 255, 255, 140), 0.4)
+    # avance
+    s.rect(4, 42, 28, 42.8, (255, 255, 255, 70), 0.4)
+    s.rect(4, 42, 15, 42.8, "#ffffff", 0.4)
+    s.circ(15, 42.4, 1.1, "#ffffff")
+    # controles
+    s.poly([(10, 49), (6, 51.5), (10, 54)], "#ffffff")
+    s.poly([(7, 49), (3, 51.5), (7, 54)], "#ffffff")
+    s.rect(14, 48.5, 15.6, 54.5, "#ffffff", 0.5)
+    s.rect(17.4, 48.5, 19, 54.5, "#ffffff", 0.5)
+    s.poly([(22, 49), (26, 51.5), (22, 54)], "#ffffff")
+    s.poly([(25, 49), (29, 51.5), (25, 54)], "#ffffff")
+    s.home_bar()
+    return s.done()
+
+
+def scr_weather():
+    s = Scr("#000000")
+    s.grad("#2f80ed", "#56ccf2")
+    s.status()
+    s.circ(23, 15, 5, "#ffd60a")
+    s.circ(23, 15, 6.5, (255, 214, 10, 60))
+    s.circ(10, 20, 4, "#ffffff")
+    s.circ(15, 19, 5, "#ffffff")
+    s.rect(6, 19, 20, 24, "#ffffff", 2)
+    s.rect(3, 40, 29, 58, (255, 255, 255, 50), 3)
+    for i in range(4):
+        x = 6 + i * 6.5
+        s.circ(x, 47, 1.8, ["#ffd60a", "#ffd60a", "#ffffff", "#8e8e93"][i])
+        s.rect(x - 1.5, 52, x + 1.5, 53, (255, 255, 255, 200), 0.4)
+    img = s.done()
+    text_px(img, "21°", 6, 29, "#ffffff", 2)
+    return img
+
+
+def scr_compass():
+    s = Scr("#0e0f13")
+    s.status()
+    s.circ(16, 26, 13, "#1c1c1e")
+    for i in range(36):
+        a = math.radians(i * 10)
+        r0 = 11 if i % 9 == 0 else 12
+        s.line([(16 + math.sin(a) * r0, 26 - math.cos(a) * r0), (16 + math.sin(a) * 13, 26 - math.cos(a) * 13)],
+               "#ffffff" if i % 9 == 0 else "#8e8e93", 0.5)
+    s.poly([(16, 15), (14.3, 26), (17.7, 26)], "#ff3b30")
+    s.poly([(16, 37), (14.3, 26), (17.7, 26)], "#e5e5ea")
+    s.circ(16, 26, 1.2, "#0e0f13")
+    s.rect(9, 44, 23, 46, "#ffffff", 0.6)
+    s.rect(7, 48.5, 25, 49.5, "#8e8e93", 0.4)
+    s.rect(3, 53, 29, 59, "#1c1c1e", 2)
+    s.circ(6.5, 56, 1.5, "#ff9f0a")
+    s.rect(9.5, 55.5, 22, 56.5, "#e5e5ea", 0.4)
+    return s.done()
+
+
+def scr_calc():
+    s = Scr("#000000")
+    s.status()
+    for r in range(5):
+        for c in range(4):
+            x, y = 2 + c * 7.3, 28 + r * 7
+            if r == 4 and c == 0:
+                s.rect(x, y, x + 13, y + 5.6, "#333333", 2.8)
+                continue
+            if r == 4 and c == 1:
+                continue
+            col = "#ff9f0a" if c == 3 else ("#a5a5a5" if r == 0 else "#333333")
+            s.circ(x + 2.9, y + 2.8, 2.9, col)
+    img = s.done()
+    text_px(img, "128", 31 - text_w("128", 2), 16, "#ffffff", 2)
+    return img
+
+
+def scr_messages():
+    s = Scr("#ffffff")
+    s.status(dark=True)
+    s.rect(0, 5, 32, 11, "#f7f7f7")
+    s.circ(16, 8, 2.2, "#c7c7cc")
+    for i, (mine, w, h) in enumerate(((False, 18, 4), (True, 15, 4), (True, 21, 7), (False, 12, 4), (False, 20, 7), (True, 14, 4))):
+        y = 13 + sum(hh + 2 for _, _, hh in ((False, 18, 4), (True, 15, 4), (True, 21, 7), (False, 12, 4), (False, 20, 7),
+                                              (True, 14, 4))[:i])
+        x0 = 30 - w if mine else 2
+        s.rect(x0, y, x0 + w, y + h, "#0a84ff" if mine else "#e5e5ea", 2)
+    s.rect(2, 57, 26, 61, "#ffffff", 2)
+    s.d.rounded_rectangle((2 * SS4, 57 * SS4, 26 * SS4, 61 * SS4), radius=2 * SS4, outline=hexc("#d1d1d6"), width=SS4 // 2)
+    s.circ(29, 59, 2, "#0a84ff")
+    return s.done()
+
+
+def scr_notes():
+    s = Scr("#fffdf2")
+    s.status(dark=True)
+    s.rect(0, 5, 32, 12, "#ffd60a")
+    s.rect(3, 7.5, 16, 9.6, "#3a2e00", 0.6)
+    for i in range(8):
+        y = 15 + i * 5.5
+        done = i in (1, 4)
+        s.circ(4.5, y + 1, 1.6, "#ff9f0a" if done else "#c7c7cc")
+        if not done:
+            s.circ(4.5, y + 1, 1.0, "#fffdf2")
+        s.rect(8, y + 0.5, 8 + [18, 13, 20, 9, 15, 19, 11, 16][i], y + 1.5, "#b0b0b5" if done else "#3a3a3c", 0.4)
+    s.circ(27, 57, 3, "#ff9f0a")
+    s.rect(26.4, 55, 27.6, 59, "#ffffff")
+    s.rect(25, 56.4, 29, 57.6, "#ffffff")
+    return s.done()
+
+
+def scr_map():
+    s = Scr("#a8d58c")
+    s.rect(0, 0, 32, 64, "#b8de9c")
+    s.rect(0, 14, 13, 30, "#9ccc7c", 2)
+    s.rect(19, 38, 32, 54, "#9ccc7c", 2)
+    s.line([(0, 22), (8, 26), (14, 25), (22, 33), (32, 31)], "#5ab4f0", 3.2)
+    s.line([(9, 0), (11, 64)], "#fbf6e6", 2.2)
+    s.line([(0, 46), (32, 41)], "#fbf6e6", 1.8)
+    s.line([(18, 0), (25, 64)], "#fbf6e6", 1.2)
+    s.status(dark=True)
+    # tú (punto azul) y un amigo (alfiler)
+    s.circ(13, 40, 3.2, (10, 132, 255, 60))
+    s.circ(13, 40, 1.8, "#ffffff")
+    s.circ(13, 40, 1.3, "#0a84ff")
+    s.circ(24, 18, 3, "#ff3b30")
+    s.poly([(21.6, 19.5), (26.4, 19.5), (24, 24)], "#ff3b30")
+    s.circ(24, 18, 1.1, "#ffffff")
+    s.rect(2, 55, 30, 62, (255, 255, 255, 235), 2.5)
+    s.circ(6, 58.5, 2, "#8d5a3b")
+    s.rect(10, 57.5, 22, 58.6, "#111111", 0.4)
+    s.rect(10, 59.6, 18, 60.4, "#8e8e93", 0.4)
+    return s.done()
+
+
+def scr_wallet():
+    s = Scr("#000000")
+    s.status()
+    s.rect(3, 7, 18, 9.4, "#ffffff", 0.6)
+    s.rect(2, 13, 30, 28, "#0a84ff", 2.5)
+    s.rect(2, 17, 30, 32, "#30d158", 2.5)
+    s.big.paste(grad(28 * SS4, 16 * SS4, [(0, hexc("#f6d365")), (1, hexc("#b8860b"))], 30), (2 * SS4, 21 * SS4),
+                Image.new("L", (28 * SS4, 16 * SS4), 255))
+    s.d = ImageDraw.Draw(s.big)
+    s.rect(5, 25, 9, 28, "#e8c46a", 0.8)
+    s.rect(5, 25, 9, 26.2, "#c9a24a", 0.5)
+    s.circ(25, 33, 2.4, "#e03b3b")
+    s.circ(25, 33, 1.2, "#ffffff")
+    for i in range(4):
+        y = 42 + i * 5
+        s.circ(5, y + 1.5, 1.8, "#2c2c2e")
+        s.rect(9, y + 0.8, 20, y + 1.8, "#e5e5ea", 0.4)
+        s.rect(23, y + 0.8, 29, y + 1.8, "#30d158" if i % 2 == 0 else "#ff453a", 0.4)
+    return s.done()
+
+
+def scr_flash():
+    s = Scr("#fffbe8")
+    s.big.paste(grad(SW * SS4, SH * SS4, [(0, hexc("#ffffff")), (0.55, hexc("#fff6cc")), (1, hexc("#ffe58a"))], 90), (0, 0))
+    s.d = ImageDraw.Draw(s.big)
+    for r, a in ((14, 40), (11, 70), (8, 110)):
+        s.circ(16, 30, r, (255, 255, 255, a))
+    s.circ(16, 30, 6, "#ffffff")
+    s.rect(14.6, 25.5, 17.4, 34.5, "#ffcc00", 1)
+    s.status(dark=True)
+    return s.done()
+
+
+def scr_jam():
+    s = Scr("#000000")
+    s.grad("#1c5c37", "#050a07")
+    s.status()
+    s.rect(5, 9, 27, 31, (0, 0, 0, 90), 2.5)
+    s.big.paste(grad(22 * SS4, 22 * SS4, [(0, hexc("#1ed760")), (1, hexc("#0b6b33"))], 45), (5 * SS4, 8 * SS4),
+                Image.new("L", (22 * SS4, 22 * SS4), 255))
+    s.d = ImageDraw.Draw(s.big)
+    for i, h in enumerate((5, 9, 13, 8, 11, 6)):          # ondas del Jam
+        x = 8.5 + i * 2.8
+        s.rect(x, 19 - h / 2, x + 1.6, 19 + h / 2, "#ffffff", 0.8)
+    s.rect(4, 34, 28, 36, (255, 255, 255, 230), 0.6)
+    s.rect(4, 37.5, 16, 38.7, "#1ed760", 0.4)
+    for i in range(4):                                    # los del Jam
+        s.circ(7 + i * 5.5, 45, 2.2, ["#8d5a3b", "#f2c094", "#5b3a29", "#e0ac69"][i])
+        s.circ(7 + i * 5.5, 45, 2.2, None, outline="#1ed760", w=0.5)
+    for i, col in enumerate(("#ff9f0a", "#bf5af2", "#30d158", "#ff375f")):   # botonera de DJ
+        x = 3 + i * 6.8
+        s.rect(x, 51, x + 5.6, 56, col, 1.2)
+    s.home_bar()
+    return s.done()
+
+
+SCREEN_ART = {"lock": scr_lock, "home": scr_home, "insta": scr_insta, "camera": scr_camera, "gallery": scr_gallery, "call": scr_call,
+              "patreon": scr_patreon, "settings": scr_settings, "music": scr_music, "weather": scr_weather, "compass": scr_compass,
+              "calc": scr_calc, "messages": scr_messages, "notes": scr_notes, "map": scr_map, "wallet": scr_wallet, "flash": scr_flash,
+              "jam": scr_jam, "ear": scr_ear}
+
+
+def case_tex(name, base, light, dark):
+    """Textura de la carcasa (64 × 64, 4 píxeles por unidad del modelo): frente (marco), espalda (con el módulo de cámara), costados,
+    arriba/abajo y la cámara."""
+    b, l, d = hexc(base), hexc(light), hexc(dark)
+    K = 4                                              # píxeles por unidad del modelo
+    img = Image.new("RGBA", (16 * K, 16 * K), (0, 0, 0, 0))
+    p = img.load()
+    W, H = 7 * K, 14 * K                               # frente y espalda: 7 × 14 unidades
+    # frente: borde de color y cristal negro (la pantalla va encima)
+    for y in range(H):
+        for x in range(W):
+            edge = x < 2 or x >= W - 2 or y < 2 or y >= H - 2
+            p[x, y] = lerp(l, b, 0.3) if edge else (8, 8, 10, 255)
+    for x in range(W // 2 - 3, W // 2 + 3):            # bocina de arriba
+        p[x, 2] = (48, 48, 54, 255)
+    # espalda: degradado, borde un poco más oscuro y un brillo suave en diagonal
+    for y in range(H):
+        for x in range(W):
+            c = lerp(lerp(l, b, 0.35), lerp(b, d, 0.35), y / (H - 1))
+            if x < 1 or x >= W - 1 or y < 1 or y >= H - 1:
+                c = lerp(c, d, 0.4)
+            band = abs((x - y * 0.35) - W * 0.25) / 3.0
+            if band < 1:
+                c = lerp(c, (255, 255, 255, 255), 0.13 * (1 - band))
+            p[W + x, y] = c
+    # el módulo de cámara (arriba a la izquierda visto de atrás): sombra donde va la cámara
+    for y in range(2, 11):
+        for x in range(2, 11):
+            p[W + x, y] = lerp(p[W + x, y], (0, 0, 0, 255), 0.35)
+    # logo: una estrellita de cuatro puntas (propia del celular)
+    cx, cy = W + W // 2, H // 2
+    glow = lerp(lerp(l, b, 0.2), (255, 255, 255, 255), 0.35)
+    for k in range(-4, 5):
+        w = max(0, 1 - abs(k) // 2)
+        for j in range(-w, w + 1):
+            p[cx + k, cy + j] = glow
+            p[cx + j, cy + k] = glow
+    p[cx, cy] = lerp(glow, (255, 255, 255, 255), 0.5)
+    # costados (1.5 × 14 unidades) en x 14..15.5 y arriba/abajo (7 × 1.5) en y 14..15.5
+    for y in range(H):
+        for x in range(6):
+            p[14 * K + x, y] = lerp(l, b, 0.15) if x in (2, 3) else lerp(b, d, 0.25)
+    for y in range(6):
+        for x in range(W):
+            p[x, 14 * K + y] = lerp(l, b, 0.15) if y in (2, 3) else lerp(b, d, 0.25)
+    # botones (un poco más claros) en 15..15.5 × 2..4
+    for y in range(2 * K, 4 * K):
+        for x in range(15 * K, 15 * K + 2):
+            p[x, y] = lerp(l, b, 0.1)
+    # la cámara (2 × 2 unidades = 8 × 8) en 14..16 × 14..16: vidrio oscuro, dos lentes y el flash
+    ox, oy = 14 * K, 14 * K
+    for y in range(8):
+        for x in range(8):
+            p[ox + x, oy + y] = (30, 30, 34, 255)
+    for (lx, ly) in ((2, 2), (2, 5)):
+        for y in range(-2, 2):
+            for x in range(-2, 2):
+                r2 = (x + 0.5) ** 2 + (y + 0.5) ** 2
+                if r2 <= 3.2:
+                    p[ox + lx + x, oy + ly + y] = (12, 12, 16, 255) if r2 > 1.2 else (60, 80, 140, 255)
+    p[ox + 6, oy + 2] = (255, 240, 200, 255)
+    p[ox + 6, oy + 5] = (90, 90, 96, 255)
+    save(img, f"item/phone3d/{name}.png")
+
+
+def phone3d():
+    """Texturas, el modelo base (con su forma de sostenerse) y un modelo por carcasa × pantalla."""
+    for n, fn in SCREEN_ART.items():
+        save(fn(), f"item/phone3d/screen/{n}.png")
+    for name, (b, l, dk) in CASES.items():
+        case_tex(name, b, l, dk)
     models = os.path.join(ROOT, "models", "item")
     items = os.path.join(ROOT, "items")
-    os.makedirs(os.path.join(models, "screen"), exist_ok=True)
+    # quita lo del celular plano de antes
+    import shutil
+    shutil.rmtree(os.path.join(models, "screen"), ignore_errors=True)
+    shutil.rmtree(os.path.join(TEX, "item", "screen"), ignore_errors=True)
+    os.makedirs(os.path.join(models, "phone3d"), exist_ok=True)
     os.makedirs(items, exist_ok=True)
+
+    def face(uv, tex="#case", rot=0):
+        f = {"uv": uv, "texture": tex}
+        if rot:
+            f["rotation"] = rot
+        return f
+
+    side = [14, 0, 15.5, 14]
+    cap = [0, 14, 7, 15.5]
+    base = {
+        "credit": "Celular de Axelis (generado por herramientas/assets.py)",
+        "texture_size": [64, 64],
+        "textures": {"particle": "#case", "case": "celular:item/phone3d/phone", "screen": "celular:item/phone3d/screen/lock"},
+        "elements": [
+            {"name": "cuerpo", "from": [4.5, 1, 7.25], "to": [11.5, 15, 8.75],
+             "faces": {"south": face([0, 0, 7, 14]), "north": face([7, 0, 14, 14]), "east": face(side), "west": face(side),
+                       "up": face(cap), "down": face(cap)}},
+            {"name": "pantalla", "from": [5, 2, 8.76], "to": [11, 14, 8.76],
+             "faces": {"south": {"uv": [0, 0, 8, 16], "texture": "#screen"}}},
+            {"name": "camara", "from": [8.6, 11.6, 7.0], "to": [10.9, 13.9, 7.25],
+             "faces": {"north": face([14, 14, 16, 16]), "east": face([14, 14, 14.5, 16]), "west": face([14, 14, 14.5, 16]),
+                       "up": face([14, 14, 16, 14.5]), "down": face([14, 14, 16, 14.5])}},
+            {"name": "boton", "from": [11.5, 9.6, 7.75], "to": [11.75, 11.6, 8.25],
+             "faces": {"east": face([15, 2, 15.5, 4]), "north": face([15, 2, 15.5, 4]), "south": face([15, 2, 15.5, 4]),
+                       "up": face([15, 2, 15.5, 2.5]), "down": face([15, 2, 15.5, 2.5])}},
+            {"name": "volumen1", "from": [4.25, 10.6, 7.75], "to": [4.5, 11.8, 8.25],
+             "faces": {"west": face([15, 2, 15.5, 3.2]), "north": face([15, 2, 15.5, 3.2]), "south": face([15, 2, 15.5, 3.2]),
+                       "up": face([15, 2, 15.5, 2.5]), "down": face([15, 2, 15.5, 2.5])}},
+            {"name": "volumen2", "from": [4.25, 8.8, 7.75], "to": [4.5, 10.0, 8.25],
+             "faces": {"west": face([15, 2, 15.5, 3.2]), "north": face([15, 2, 15.5, 3.2]), "south": face([15, 2, 15.5, 3.2]),
+                       "up": face([15, 2, 15.5, 2.5]), "down": face([15, 2, 15.5, 2.5])}},
+        ],
+        # cómo se sostiene (calculado con una simulación de la mano: la pantalla mira a los ojos al escribir, tomar foto y alumbrar)
+        "display": {
+            "thirdperson_righthand": {"rotation": [0, -50, 90], "translation": [-0.5, -1, -1.2], "scale": [0.45, 0.45, 0.45]},
+            "firstperson_righthand": {"rotation": [-12, -15, 0], "translation": [-3.4, 5.2, 0.3], "scale": [0.42, 0.42, 0.42]},
+            "gui": {"rotation": [8, -22, 0], "translation": [0, 0, 0], "scale": [1, 1, 1]},
+            "ground": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": [0.5, 0.5, 0.5]},
+            "fixed": {"rotation": [0, 180, 0], "translation": [0, 0, 0], "scale": [1, 1, 1]},
+            "head": {"rotation": [0, 180, 0], "translation": [0, 13, 7], "scale": [1, 1, 1]},
+        },
+    }
+    with open(os.path.join(models, "phone3d", "base.json"), "w") as fh:
+        json.dump(base, fh, indent=2)
+    # en una llamada el celular va pegado a la oreja: otra forma de sostenerlo (también calculada con la simulación)
+    ear = json.loads(json.dumps(base))
+    ear["display"]["thirdperson_righthand"] = {"rotation": [-180, -110, -100], "translation": [-3.33, -0.94, 4.12], "scale": [0.45, 0.45, 0.45]}
+    with open(os.path.join(models, "phone3d", "base_ear.json"), "w") as fh:
+        json.dump(ear, fh, indent=2)
     for case in CASES:
         overrides, entries = [], []
         for i, n in enumerate(SCREENS, 1):
-            m = f"celular:item/screen/{case}_{n}"
-            with open(os.path.join(models, "screen", f"{case}_{n}.json"), "w") as fh:
-                json.dump({"parent": "minecraft:item/generated",
-                           "textures": {"layer0": f"celular:item/{case}", "layer1": f"celular:item/screen/{n}"}}, fh, indent=2)
+            m = f"celular:item/phone3d/{case}_{n}"
+            with open(os.path.join(models, "phone3d", f"{case}_{n}.json"), "w") as fh:
+                json.dump({"parent": "celular:item/phone3d/" + ("base_ear" if n == "ear" else "base"),
+                           "textures": {"case": f"celular:item/phone3d/{case}", "screen": f"celular:item/phone3d/screen/{n}"}}, fh,
+                          indent=2)
             overrides.append({"predicate": {"custom_model_data": i}, "model": m})
             entries.append({"threshold": i, "model": {"type": "minecraft:model", "model": m}})
         with open(os.path.join(models, f"{case}.json"), "w") as fh:
-            json.dump({"parent": "minecraft:item/generated", "textures": {"layer0": f"celular:item/{case}"}, "overrides": overrides}, fh,
-                      indent=2)
+            json.dump({"parent": "celular:item/phone3d/base",
+                       "textures": {"case": f"celular:item/phone3d/{case}", "screen": "celular:item/phone3d/screen/lock"},
+                       "overrides": overrides}, fh, indent=2)
         with open(os.path.join(items, f"{case}.json"), "w") as fh:
             json.dump({"model": {"type": "minecraft:range_dispatch", "property": "minecraft:custom_model_data", "index": 0,
                                  "fallback": {"type": "minecraft:model", "model": f"celular:item/{case}"}, "entries": entries}}, fh,
@@ -1115,7 +1611,7 @@ def screens():
 def main():
     for name, (b, l, dk) in CASES.items():
         phone_item(name, b, l, dk)
-    screens()
+    phone3d()
     apps = [icon_insta(), icon_camera(), icon_gallery(), icon_phone(), icon_patreon(), icon_settings(), icon_music(), icon_weather(),
             icon_compass(), icon_calc(), icon_flash(), icon_messages(), icon_notes(), icon_map(), icon_wallet()]
     atlas = Image.new("RGBA", (S * len(apps), S), (0, 0, 0, 0))

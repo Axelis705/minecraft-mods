@@ -47,6 +47,10 @@ public final class Flash {
         if (sc instanceof CameraScreen) {
             return PhoneUse.CAMERA;
         }
+        int st = ClientHooks.call.state;
+        if (st == CelularNet.CallState.ACTIVE || st == CelularNet.CallState.DIALING) {
+            return PhoneUse.EAR;                           // hablando por teléfono: el celular a la oreja
+        }
         return on ? PhoneUse.FLASH : PhoneUse.OFF;
     }
 

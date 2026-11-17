@@ -12,119 +12,126 @@
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_home"
+          "model": "celular:item/phone3d/phone_red_home"
         }
       },
       {
         "threshold": 2,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_insta"
+          "model": "celular:item/phone3d/phone_red_insta"
         }
       },
       {
         "threshold": 3,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_camera"
+          "model": "celular:item/phone3d/phone_red_camera"
         }
       },
       {
         "threshold": 4,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_gallery"
+          "model": "celular:item/phone3d/phone_red_gallery"
         }
       },
       {
         "threshold": 5,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_call"
+          "model": "celular:item/phone3d/phone_red_call"
         }
       },
       {
         "threshold": 6,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_patreon"
+          "model": "celular:item/phone3d/phone_red_patreon"
         }
       },
       {
         "threshold": 7,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_settings"
+          "model": "celular:item/phone3d/phone_red_settings"
         }
       },
       {
         "threshold": 8,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_music"
+          "model": "celular:item/phone3d/phone_red_music"
         }
       },
       {
         "threshold": 9,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_weather"
+          "model": "celular:item/phone3d/phone_red_weather"
         }
       },
       {
         "threshold": 10,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_compass"
+          "model": "celular:item/phone3d/phone_red_compass"
         }
       },
       {
         "threshold": 11,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_calc"
+          "model": "celular:item/phone3d/phone_red_calc"
         }
       },
       {
         "threshold": 12,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_messages"
+          "model": "celular:item/phone3d/phone_red_messages"
         }
       },
       {
         "threshold": 13,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_notes"
+          "model": "celular:item/phone3d/phone_red_notes"
         }
       },
       {
         "threshold": 14,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_map"
+          "model": "celular:item/phone3d/phone_red_map"
         }
       },
       {
         "threshold": 15,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_wallet"
+          "model": "celular:item/phone3d/phone_red_wallet"
         }
       },
       {
         "threshold": 16,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_flash"
+          "model": "celular:item/phone3d/phone_red_flash"
         }
       },
       {
         "threshold": 17,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_red_jam"
+          "model": "celular:item/phone3d/phone_red_jam"
+        }
+      },
+      {
+        "threshold": 18,
+        "model": {
+          "type": "minecraft:model",
+          "model": "celular:item/phone3d/phone_red_ear"
         }
       }
     ]

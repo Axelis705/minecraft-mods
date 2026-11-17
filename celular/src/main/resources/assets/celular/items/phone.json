@@ -12,119 +12,126 @@
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_home"
+          "model": "celular:item/phone3d/phone_home"
         }
       },
       {
         "threshold": 2,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_insta"
+          "model": "celular:item/phone3d/phone_insta"
         }
       },
       {
         "threshold": 3,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_camera"
+          "model": "celular:item/phone3d/phone_camera"
         }
       },
       {
         "threshold": 4,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gallery"
+          "model": "celular:item/phone3d/phone_gallery"
         }
       },
       {
         "threshold": 5,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_call"
+          "model": "celular:item/phone3d/phone_call"
         }
       },
       {
         "threshold": 6,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_patreon"
+          "model": "celular:item/phone3d/phone_patreon"
         }
       },
       {
         "threshold": 7,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_settings"
+          "model": "celular:item/phone3d/phone_settings"
         }
       },
       {
         "threshold": 8,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_music"
+          "model": "celular:item/phone3d/phone_music"
         }
       },
       {
         "threshold": 9,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_weather"
+          "model": "celular:item/phone3d/phone_weather"
         }
       },
       {
         "threshold": 10,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_compass"
+          "model": "celular:item/phone3d/phone_compass"
         }
       },
       {
         "threshold": 11,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_calc"
+          "model": "celular:item/phone3d/phone_calc"
         }
       },
       {
         "threshold": 12,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_messages"
+          "model": "celular:item/phone3d/phone_messages"
         }
       },
       {
         "threshold": 13,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_notes"
+          "model": "celular:item/phone3d/phone_notes"
         }
       },
       {
         "threshold": 14,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_map"
+          "model": "celular:item/phone3d/phone_map"
         }
       },
       {
         "threshold": 15,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_wallet"
+          "model": "celular:item/phone3d/phone_wallet"
         }
       },
       {
         "threshold": 16,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_flash"
+          "model": "celular:item/phone3d/phone_flash"
         }
       },
       {
         "threshold": 17,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_jam"
+          "model": "celular:item/phone3d/phone_jam"
+        }
+      },
+      {
+        "threshold": 18,
+        "model": {
+          "type": "minecraft:model",
+          "model": "celular:item/phone3d/phone_ear"
         }
       }
     ]

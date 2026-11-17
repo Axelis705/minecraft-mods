@@ -1,0 +1,7 @@
+{
+  "parent": "celular:item/phone3d/base",
+  "textures": {
+    "case": "celular:item/phone3d/phone_pink",
+    "screen": "celular:item/phone3d/screen/patreon"
+  }
+}

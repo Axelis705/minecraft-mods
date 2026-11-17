@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "celular:item/phone_blue",
-    "layer1": "celular:item/screen/settings"
-  }
-}

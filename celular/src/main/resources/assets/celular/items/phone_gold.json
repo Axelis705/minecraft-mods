@@ -12,119 +12,126 @@
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_home"
+          "model": "celular:item/phone3d/phone_gold_home"
         }
       },
       {
         "threshold": 2,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_insta"
+          "model": "celular:item/phone3d/phone_gold_insta"
         }
       },
       {
         "threshold": 3,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_camera"
+          "model": "celular:item/phone3d/phone_gold_camera"
         }
       },
       {
         "threshold": 4,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_gallery"
+          "model": "celular:item/phone3d/phone_gold_gallery"
         }
       },
       {
         "threshold": 5,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_call"
+          "model": "celular:item/phone3d/phone_gold_call"
         }
       },
       {
         "threshold": 6,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_patreon"
+          "model": "celular:item/phone3d/phone_gold_patreon"
         }
       },
       {
         "threshold": 7,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_settings"
+          "model": "celular:item/phone3d/phone_gold_settings"
         }
       },
       {
         "threshold": 8,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_music"
+          "model": "celular:item/phone3d/phone_gold_music"
         }
       },
       {
         "threshold": 9,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_weather"
+          "model": "celular:item/phone3d/phone_gold_weather"
         }
       },
       {
         "threshold": 10,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_compass"
+          "model": "celular:item/phone3d/phone_gold_compass"
         }
       },
       {
         "threshold": 11,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_calc"
+          "model": "celular:item/phone3d/phone_gold_calc"
         }
       },
       {
         "threshold": 12,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_messages"
+          "model": "celular:item/phone3d/phone_gold_messages"
         }
       },
       {
         "threshold": 13,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_notes"
+          "model": "celular:item/phone3d/phone_gold_notes"
         }
       },
       {
         "threshold": 14,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_map"
+          "model": "celular:item/phone3d/phone_gold_map"
         }
       },
       {
         "threshold": 15,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_wallet"
+          "model": "celular:item/phone3d/phone_gold_wallet"
         }
       },
       {
         "threshold": 16,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_flash"
+          "model": "celular:item/phone3d/phone_gold_flash"
         }
       },
       {
         "threshold": 17,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_gold_jam"
+          "model": "celular:item/phone3d/phone_gold_jam"
+        }
+      },
+      {
+        "threshold": 18,
+        "model": {
+          "type": "minecraft:model",
+          "model": "celular:item/phone3d/phone_gold_ear"
         }
       }
     ]

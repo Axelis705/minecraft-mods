@@ -12,119 +12,126 @@
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_home"
+          "model": "celular:item/phone3d/phone_purple_home"
         }
       },
       {
         "threshold": 2,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_insta"
+          "model": "celular:item/phone3d/phone_purple_insta"
         }
       },
       {
         "threshold": 3,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_camera"
+          "model": "celular:item/phone3d/phone_purple_camera"
         }
       },
       {
         "threshold": 4,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_gallery"
+          "model": "celular:item/phone3d/phone_purple_gallery"
         }
       },
       {
         "threshold": 5,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_call"
+          "model": "celular:item/phone3d/phone_purple_call"
         }
       },
       {
         "threshold": 6,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_patreon"
+          "model": "celular:item/phone3d/phone_purple_patreon"
         }
       },
       {
         "threshold": 7,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_settings"
+          "model": "celular:item/phone3d/phone_purple_settings"
         }
       },
       {
         "threshold": 8,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_music"
+          "model": "celular:item/phone3d/phone_purple_music"
         }
       },
       {
         "threshold": 9,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_weather"
+          "model": "celular:item/phone3d/phone_purple_weather"
         }
       },
       {
         "threshold": 10,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_compass"
+          "model": "celular:item/phone3d/phone_purple_compass"
         }
       },
       {
         "threshold": 11,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_calc"
+          "model": "celular:item/phone3d/phone_purple_calc"
         }
       },
       {
         "threshold": 12,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_messages"
+          "model": "celular:item/phone3d/phone_purple_messages"
         }
       },
       {
         "threshold": 13,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_notes"
+          "model": "celular:item/phone3d/phone_purple_notes"
         }
       },
       {
         "threshold": 14,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_map"
+          "model": "celular:item/phone3d/phone_purple_map"
         }
       },
       {
         "threshold": 15,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_wallet"
+          "model": "celular:item/phone3d/phone_purple_wallet"
         }
       },
       {
         "threshold": 16,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_flash"
+          "model": "celular:item/phone3d/phone_purple_flash"
         }
       },
       {
         "threshold": 17,
         "model": {
           "type": "minecraft:model",
-          "model": "celular:item/screen/phone_purple_jam"
+          "model": "celular:item/phone3d/phone_purple_jam"
+        }
+      },
+      {
+        "threshold": 18,
+        "model": {
+          "type": "minecraft:model",
+          "model": "celular:item/phone3d/phone_purple_ear"
         }
       }
     ]

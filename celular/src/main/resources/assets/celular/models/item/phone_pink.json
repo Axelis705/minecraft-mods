@@ -1,110 +1,117 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "celular:item/phone3d/base",
   "textures": {
-    "layer0": "celular:item/phone_pink"
+    "case": "celular:item/phone3d/phone_pink",
+    "screen": "celular:item/phone3d/screen/lock"
   },
   "overrides": [
     {
       "predicate": {
         "custom_model_data": 1
       },
-      "model": "celular:item/screen/phone_pink_home"
+      "model": "celular:item/phone3d/phone_pink_home"
     },
     {
       "predicate": {
         "custom_model_data": 2
       },
-      "model": "celular:item/screen/phone_pink_insta"
+      "model": "celular:item/phone3d/phone_pink_insta"
     },
     {
       "predicate": {
         "custom_model_data": 3
       },
-      "model": "celular:item/screen/phone_pink_camera"
+      "model": "celular:item/phone3d/phone_pink_camera"
     },
     {
       "predicate": {
         "custom_model_data": 4
       },
-      "model": "celular:item/screen/phone_pink_gallery"
+      "model": "celular:item/phone3d/phone_pink_gallery"
     },
     {
       "predicate": {
         "custom_model_data": 5
       },
-      "model": "celular:item/screen/phone_pink_call"
+      "model": "celular:item/phone3d/phone_pink_call"
     },
     {
       "predicate": {
         "custom_model_data": 6
       },
-      "model": "celular:item/screen/phone_pink_patreon"
+      "model": "celular:item/phone3d/phone_pink_patreon"
     },
     {
       "predicate": {
         "custom_model_data": 7
       },
-      "model": "celular:item/screen/phone_pink_settings"
+      "model": "celular:item/phone3d/phone_pink_settings"
     },
     {
       "predicate": {
         "custom_model_data": 8
       },
-      "model": "celular:item/screen/phone_pink_music"
+      "model": "celular:item/phone3d/phone_pink_music"
     },
     {
       "predicate": {
         "custom_model_data": 9
       },
-      "model": "celular:item/screen/phone_pink_weather"
+      "model": "celular:item/phone3d/phone_pink_weather"
     },
     {
       "predicate": {
         "custom_model_data": 10
       },
-      "model": "celular:item/screen/phone_pink_compass"
+      "model": "celular:item/phone3d/phone_pink_compass"
     },
     {
       "predicate": {
         "custom_model_data": 11
       },
-      "model": "celular:item/screen/phone_pink_calc"
+      "model": "celular:item/phone3d/phone_pink_calc"
     },
     {
       "predicate": {
         "custom_model_data": 12
       },
-      "model": "celular:item/screen/phone_pink_messages"
+      "model": "celular:item/phone3d/phone_pink_messages"
     },
     {
       "predicate": {
         "custom_model_data": 13
       },
-      "model": "celular:item/screen/phone_pink_notes"
+      "model": "celular:item/phone3d/phone_pink_notes"
     },
     {
       "predicate": {
         "custom_model_data": 14
       },
-      "model": "celular:item/screen/phone_pink_map"
+      "model": "celular:item/phone3d/phone_pink_map"
     },
     {
       "predicate": {
         "custom_model_data": 15
       },
-      "model": "celular:item/screen/phone_pink_wallet"
+      "model": "celular:item/phone3d/phone_pink_wallet"
     },
     {
       "predicate": {
         "custom_model_data": 16
       },
-      "model": "celular:item/screen/phone_pink_flash"
+      "model": "celular:item/phone3d/phone_pink_flash"
     },
     {
       "predicate": {
         "custom_model_data": 17
       },
-      "model": "celular:item/screen/phone_pink_jam"
+      "model": "celular:item/phone3d/phone_pink_jam"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 18
+      },
+      "model": "celular:item/phone3d/phone_pink_ear"
     }
   ]
 }

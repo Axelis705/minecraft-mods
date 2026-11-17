@@ -31,8 +31,8 @@ import java.util.concurrent.TimeUnit;
 public final class PhoneUse {
     // pantallas (el mismo orden que SCREENS en herramientas/assets.py)
     public static final int OFF = 0, HOME = 1, INSTA = 2, CAMERA = 3, GALLERY = 4, CALL = 5, PATREON = 6, SETTINGS = 7, MUSIC = 8,
-            WEATHER = 9, COMPASS = 10, CALC = 11, MESSAGES = 12, NOTES = 13, MAP = 14, WALLET = 15, FLASH = 16, JAM = 17;
-    public static final int COUNT = 18;
+            WEATHER = 9, COMPASS = 10, CALC = 11, MESSAGES = 12, NOTES = 13, MAP = 14, WALLET = 15, FLASH = 16, JAM = 17, EAR = 18;
+    public static final int COUNT = 19;
     /** Hasta dónde llega la luz de la linterna. */
     private static final double FLASH_RANGE = 28.0;
 
