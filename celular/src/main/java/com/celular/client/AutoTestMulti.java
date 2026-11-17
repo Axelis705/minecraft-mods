@@ -41,7 +41,10 @@ final class AutoTestMulti {
     private static int idx, checks, bad;
     private static UUID other;
     private static String otherName = "";
-    private static boolean a;
+    private static boolean a, signaled;
+    private static long seenAt;
+    /** Dónde A pone la señal de arranque (un bloque de oro arriba del centro, cerca de los dos). */
+    private static final net.minecraft.core.BlockPos SIGNAL = new net.minecraft.core.BlockPos(0, -50, 4);
 
     private static void log(String s) {
         AutoTest.log(AutoTest.ROLE + " " + s);
@@ -89,7 +92,20 @@ final class AutoTestMulti {
                 return;                 // todavía no llega el otro
             }
             a = "A".equals(AutoTest.ROLE);
-            t0 = now + 4000;
+            if (seenAt == 0) {
+                seenAt = now;
+                log("ya veo a " + otherName);
+            }
+            // los dos arrancan juntos: A pone un bloque de oro arriba del centro (8 s después de ver a B, para que B ya haya cargado
+            // el terreno) y los dos empiezan el guion al verlo. Antes cada uno contaba desde que veía al otro y B iba unos 6 s atrás.
+            if (a && !signaled && now - seenAt > 8000) {
+                signaled = true;
+                cmd("setblock " + SIGNAL.getX() + " " + SIGNAL.getY() + " " + SIGNAL.getZ() + " minecraft:gold_block");
+            }
+            if (!mc.level.getBlockState(SIGNAL).is(net.minecraft.world.level.block.Blocks.GOLD_BLOCK)) {
+                return;
+            }
+            t0 = now + 3000;
             build();
             log("los dos están: yo=" + mc.player.getScoreboardName() + " otro=" + otherName + " pasos=" + STEPS.size());
             return;
