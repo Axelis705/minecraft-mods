@@ -135,7 +135,7 @@ jobs:
             sleep 2
             export DISPLAY=:99
             date +%s%3N > grab_inicio.txt
-            ffmpeg -loglevel error -f x11grab -framerate 30 -video_size 1280x720 -i :99 -c:v libx264 -preset ultrafast -crf 18 -pix_fmt yuv420p grabacion.mkv < /dev/null > ffmpeg.log 2>&1 &
+            ffmpeg -loglevel error -f x11grab -draw_mouse 0 -framerate 30 -video_size 1280x720 -i :99 -c:v libx264 -preset ultrafast -crf 18 -pix_fmt yuv420p grabacion.mkv < /dev/null > ffmpeg.log 2>&1 &
             fp=$!
             timeout 1800 ./gradlew runClient --no-daemon > cliente.log 2>&1
             echo "salida del juego: $?"

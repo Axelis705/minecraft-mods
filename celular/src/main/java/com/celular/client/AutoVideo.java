@@ -242,6 +242,10 @@ final class AutoVideo {
         });
 
         // ---- 4) las bocinas (el bajo late y salen notas de la encendida)
+        at(91, "encender la bocina", () -> {
+            // en 26.x la regla de los ticks aleatorios tiene otro nombre y la bocina (sin música) se apaga sola: se vuelve a encender
+            AutoTest.cmd("setblock 6 -60 -6 celular:speaker[facing=south,on=true]");
+        });
         at(92, "bocinas", () -> {
             AutoTest.ui(true);
             clip("4_bocinas", true);
