@@ -506,6 +506,13 @@ public class PhoneScreen extends BaseScreen {
         if (ClientHooks.badgeInsta > 0) {
             y = lockCard(g, font, y, D.APP_INSTA, Component.translatable("celular.lock.likes", ClientHooks.badgeInsta));
         }
+        if (Chats.badge > 0) {
+            y = lockCard(g, font, y, D.APP_MESSAGES, Component.translatable("celular.lock.messages", Chats.badge));
+        }
+        if (Notes.timerEnd > now) {
+            long left = (Notes.timerEnd - now + 999) / 1000;
+            y = lockCard(g, font, y, D.APP_NOTES, Component.translatable("celular.lock.timer", String.format(java.util.Locale.ROOT, "%d:%02d", left / 60, left % 60)));
+        }
         com.celular.music.Track tr = com.celular.music.MusicPlayer.current;
         if (tr != null) {
             int x0 = dx0 + 7, x1 = dx1 - 7, y1 = y + 30;
@@ -557,15 +564,16 @@ public class PhoneScreen extends BaseScreen {
         if (com.celular.music.MusicPlayer.current == null) {
             return false;
         }
-        int yy = cy0 + 74 + (ClientHooks.badgeCalls > 0 ? 24 : 0) + (ClientHooks.badgeInsta > 0 ? 24 : 0);
+        int yy = cy0 + 74 + (ClientHooks.badgeCalls > 0 ? 24 : 0) + (ClientHooks.badgeInsta > 0 ? 24 : 0) + (Chats.badge > 0 ? 24 : 0)
+                + (Notes.timerEnd > System.currentTimeMillis() ? 24 : 0);
         int x1 = dx1 - 7;
         if (in(x, y, x1 - 32, yy, x1 - 17, yy + 30)) {
-            com.celular.music.MusicPlayer.toggle();
+            Radio.toggle();
             ClientHooks.tap();
             return true;
         }
         if (in(x, y, x1 - 17, yy, x1, yy + 30)) {
-            com.celular.music.MusicPlayer.next();
+            Radio.next();
             ClientHooks.tap();
             return true;
         }
@@ -698,8 +706,23 @@ public class PhoneScreen extends BaseScreen {
                 int bh = 1 + (int) (v * 6);
                 g.fill(cx + 10 + i * 3, dy0 + 10 - bh, cx + 12 + i * 3, dy0 + 10, 0xFFFF2D55);
             }
+        } else if (Notes.timerEnd > System.currentTimeMillis()) {
+            // la isla muestra el temporizador
+            long left = (Notes.timerEnd - System.currentTimeMillis() + 999) / 1000;
+            String s = String.format(java.util.Locale.ROOT, "%d:%02d", left / 60, left % 60);
+            int w = 30 + (int) (font.width(s) * 0.75F);
+            D.rr(g, cx - w / 2, dy0 + 2, cx + w / 2, dy0 + 11, 4, 0xFF000000);
+            D.icon(g, D.STOPWATCH, cx - w / 2 + 3, dy0 + 3, 7, 0xFFFF9F0A);
+            g.push();
+            g.translate(cx - w / 2 + 13, dy0 + 4, 0);
+            g.scale(0.75F, 0.75F, 1);
+            g.drawString(font, s, 0, 0, 0xFFFF9F0A, false);
+            g.pop();
         } else {
             D.rr(g, cx - 13, dy0 + 2, cx + 13, dy0 + 10, 4, 0xFF000000);
+            if (Flash.on) {
+                D.circle(g, cx + 9, dy0 + 6, 2, 0xFFFFE066);     // puntito: la linterna está encendida
+            }
         }
     }
 

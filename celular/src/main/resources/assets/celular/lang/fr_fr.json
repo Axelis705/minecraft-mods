@@ -296,6 +296,8 @@
   "celular.compass.card": "N,E,S,O",
   "celular.lock.missed": "%s missed calls",
   "celular.lock.likes": "%s new likes on Instacraft",
+  "celular.lock.messages": "%s unread messages",
+  "celular.lock.timer": "Timer: %s",
   "celular.lock.hint": "Glissez vers le haut ou cliquez",
   "celular.settings.lock": "Écran de verrouillage",
   "celular.settings.music_mute": "Couper la musique de Minecraft",

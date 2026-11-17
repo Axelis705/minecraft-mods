@@ -296,6 +296,8 @@
   "celular.compass.card": "北,東,南,西",
   "celular.lock.missed": "%s missed calls",
   "celular.lock.likes": "%s new likes on Instacraft",
+  "celular.lock.messages": "%s unread messages",
+  "celular.lock.timer": "Timer: %s",
   "celular.lock.hint": "上にスワイプまたはクリック",
   "celular.settings.lock": "ロック画面",
   "celular.settings.music_mute": "Minecraft の音楽を止める",

@@ -296,6 +296,8 @@
   "celular.compass.card": "С,В,Ю,З",
   "celular.lock.missed": "%s missed calls",
   "celular.lock.likes": "%s new likes on Instacraft",
+  "celular.lock.messages": "%s unread messages",
+  "celular.lock.timer": "Timer: %s",
   "celular.lock.hint": "Проведите вверх или нажмите",
   "celular.settings.lock": "Экран блокировки",
   "celular.settings.music_mute": "Выключать музыку Minecraft",
