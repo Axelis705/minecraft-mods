@@ -452,10 +452,11 @@ public class PhoneScreen extends BaseScreen {
         int h = w[3] - w[1];
         com.celular.music.Track tr = com.celular.music.MusicPlayer.current;
         if (tr != null) {
-            int cs = h - 10;
-            D.cover(g, tr.hue(), w[0] + 5, w[1] + 5, cs, 4);
+            // en celulares chicos la portada se achica para dejarle lugar al título
+            int cs = Math.min(h - 10, Math.max(14, (w[2] - w[0]) / 5));
+            D.cover(g, tr.hue(), w[0] + 5, w[1] + (h - cs) / 2, cs, 4);
             int tx = w[0] + cs + 10, tw = w[2] - tx - 34;
-            g.drawString(font, D.cut(font, tr.title, tw), tx, w[1] + h / 2 - 9, 0xFFFFFFFF, false);
+            D.fit(g, font, tr.title, tx, w[1] + h / 2 - 9, 1F, 0.7F, tw, 0xFFFFFFFF, false, false);
             g.push();
             g.translate(tx, w[1] + h / 2 + 2, 0);
             g.scale(0.7F, 0.7F, 1);
