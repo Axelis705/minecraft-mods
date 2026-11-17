@@ -90,6 +90,9 @@ public final class Flash {
             if (!lit || p.distanceToSqr(mc.player) > 48 * 48) {
                 continue;
             }
+            if (p == mc.player && mc.options.getCameraType().isFirstPerson()) {
+                continue;               // la mía en primera persona: las chispas tapaban justo donde miras (la luz ya se ve)
+            }
             net.minecraft.world.phys.Vec3 eye = p.getEyePosition(), look = p.getLookAngle();
             double d = 1.2 + RND.nextDouble() * 9.0;
             double spread = 0.08 * d;

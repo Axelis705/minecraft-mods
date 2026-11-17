@@ -254,6 +254,16 @@ public final class AutoTest {
         });
         poseShots("texto", PhoneUse.HOME, 15F, 4);
         poseShots("oreja", PhoneUse.EAR, 0F, 4);
+        photo("4_pose_oreja_mira_abajo", 1200, () -> {
+            fakeUses(PhoneUse.EAR, 35F);
+            lookFrom(FX + 1.56, FZ - 1.56, FX, GROUND + 1.15, FZ);
+        });
+        photo("4_pose_oreja_gira_cabeza", 1200, () -> {
+            fakeUses(PhoneUse.EAR, 0F);
+            fake.yHeadRot = fake.yHeadRotO = 180F + 45F;
+            lookFrom(FX + 1.56, FZ - 1.56, FX, GROUND + 1.15, FZ);
+        });
+        add("cabeza derecha", 200, () -> fake.yHeadRot = fake.yHeadRotO = 180F);
         poseShots("foto", PhoneUse.CAMERA, 0F, 3);
         poseShots("linterna", PhoneUse.FLASH, 10F, 3);
         add("audifonos", 300, () -> fake.setItemSlot(EquipmentSlot.HEAD, new ItemStack(CelularReg.HEADPHONES.get())));
@@ -289,8 +299,8 @@ public final class AutoTest {
         add("1080p", 2500, () -> {
             close();
             mc.getWindow().setWindowed(1920, 1080);
-            guiScale(4);
         });
+        add("escala 4", 1500, () -> guiScale(4));     // después de que la ventana ya cambió (si no, la escala 4 no se permite)
         photo("8_g270_inicio", 2000, () -> ClientHooks.openPhone(0));
         photo("8_g270_musica", 1800, () -> ClientHooks.open(new PhoneScreen(0, "music")));
         photo("8_g270_ajustes", 1800, () -> ClientHooks.open(new PhoneScreen(0, "settings")));

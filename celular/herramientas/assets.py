@@ -1583,9 +1583,10 @@ def phone3d():
     }
     with open(os.path.join(models, "phone3d", "base.json"), "w") as fh:
         json.dump(base, fh, indent=2)
-    # en una llamada el celular va pegado a la oreja: otra forma de sostenerlo (también calculada con la simulación)
+    # en una llamada el celular va de la boca a la oreja, pegado al costado de la cabeza (la mano delante de la mejilla, como en
+    # PhonePoses.atEar). Calculado con sim/ear2.py y revisado con las capturas del juego de verdad (workflow cliente.yml)
     ear = json.loads(json.dumps(base))
-    ear["display"]["thirdperson_righthand"] = {"rotation": [-180, -110, -100], "translation": [-3.33, -0.94, 4.12], "scale": [0.45, 0.45, 0.45]}
+    ear["display"]["thirdperson_righthand"] = {"rotation": [-180, -100, 155], "translation": [-2.21, 2.07, 5.18], "scale": [0.45, 0.45, 0.45]}
     with open(os.path.join(models, "phone3d", "base_ear.json"), "w") as fh:
         json.dump(ear, fh, indent=2)
     for case in CASES:

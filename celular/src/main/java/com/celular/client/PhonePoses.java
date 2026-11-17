@@ -133,15 +133,30 @@ public final class PhonePoses {
         aim(a, right, l[0], l[1], l[2], right ? 0.4F : -0.4F, -1F, 0F);
     }
 
-    /** El celular pegado a la oreja: el brazo sube por el lado de la cabeza, la palma hacia ella. */
+    /**
+     * El celular en la oreja: la mano sube hacia adelante hasta delante de la mejilla (como con el catalejo, pero al costado) y el
+     * celular va de la boca a la oreja, pegado a la cabeza (eso lo pone el modelo base_ear). Antes el brazo subía derecho por el lado
+     * de la cabeza y parecía que saludaba (el celular quedaba escondido); se cambió viendo las capturas del juego de verdad.
+     * La mano sigue a la cabeza cuando mira arriba, abajo o a los lados.
+     */
     private static void atEar(HumanoidModel<?> m, HumanoidArm arm) {
         boolean right = arm == HumanoidArm.RIGHT;
         ModelPart a = right ? m.rightArm : m.leftArm;
         float in = right ? 1F : -1F;
-        float sway = (float) Math.sin(time() * 1.1) * 0.03F;
-        // el brazo sube por el lado de la cabeza con el codo un poco afuera; el modelo de la llamada (base_ear) pone el celular
-        // entre la cabeza y el brazo, a la altura de la oreja
-        aim(a, right, -0.35F * in, -1F, -0.2F + sway, in, 0F, 0F);
+        float pitch = Math.max(-0.6F, Math.min(0.6F, m.head.xRot)) * 0.8F + (float) Math.sin(time() * 1.1) * 0.03F;
+        float yaw = Math.max(-0.8F, Math.min(0.8F, m.head.yRot));
+        // a dónde va la mano con la cabeza derecha (junto a la boca, por fuera) y hacia dónde mira la palma (a la cabeza)
+        float[] t = headRot(-6F * in, -2F, -5.5F, pitch, yaw);
+        float[] p = headRot(in, 0F, 0F, pitch, yaw);
+        aim(a, right, t[0] - a.x, t[1] - a.y, t[2] - a.z, p[0], p[1], p[2]);
+    }
+
+    /** Gira un punto del espacio de la cabeza como gira la cabeza (primero hacia arriba/abajo y luego a los lados). */
+    private static float[] headRot(float x, float y, float z, float pitch, float yaw) {
+        float cp = (float) Math.cos(pitch), sp = (float) Math.sin(pitch);
+        float y1 = y * cp - z * sp, z1 = y * sp + z * cp;
+        float cy = (float) Math.cos(yaw), sy = (float) Math.sin(yaw);
+        return new float[]{x * cy + z1 * sy, y1, -x * sy + z1 * cy};
     }
 
     /** Las dos manos arriba delante de la cara, como tomando una foto con el celular. */

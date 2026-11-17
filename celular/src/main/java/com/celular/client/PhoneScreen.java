@@ -434,7 +434,7 @@ public class PhoneScreen extends BaseScreen {
             if (dockIndex(i) < 0) {
                 // el nombre entero si cabe (se achica un poco en celulares chicos antes de cortarlo)
                 String label = Component.translatable("celular.app." + apps[i].key).getString();
-                D.fit(g, font, label, r[0] + r[2] / 2F, r[1] + r[2] + 3, 0.7F, 0.5F, dw() / cols() - 1, 0xFFFFFFFF, true, true);
+                D.fit(g, font, label, r[0] + r[2] / 2F, r[1] + r[2] + 3, 0.7F, 0.55F, dw() / cols() - 4, 0xFFFFFFFF, true, true);
             }
         }
     }
