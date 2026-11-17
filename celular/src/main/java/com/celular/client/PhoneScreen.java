@@ -599,6 +599,7 @@ public class PhoneScreen extends BaseScreen {
         Music.frame();
         if (app != null && animApp == null) {
             app.draw(g, mxx, myy, pt);
+            app.drawPress(g);
         } else {
             drawHome(g, locked ? -999 : mxx, locked ? -999 : myy, interactive && !locked);
             if (animApp != null) {

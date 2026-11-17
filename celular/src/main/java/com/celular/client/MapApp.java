@@ -190,8 +190,7 @@ final class MapApp extends App {
         // compartir ubicación (arriba a la derecha)
         boolean share = friends == null || friends.sharing;
         int sx = s.dx1 - 26, sy = s.cy0 + 4;
-        D.rr(g, sx, sy, sx + 20, sy + 11, 5, share ? 0xFF34C759 : (Prefs.dark ? 0xFF39393D : 0xFFD1D1D6));
-        D.circle(g, share ? sx + 14 : sx + 6, sy + 5, 4, 0xFFFFFFFF);
+        Anim.toggle(g, sx, sy, share, "map:share");
         D.icon(g, D.PIN, sx - 12, sy + 1, 9, share ? 0xFF34C759 : s.sub());
         hit(sx - 14, sy - 2, sx + 22, sy + 13, () -> {
             Prefs.shareLocation = !(friends == null || friends.sharing);

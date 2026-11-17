@@ -10,6 +10,9 @@ import net.minecraft.network.chat.Component;
  * cerrada) y tu brazo se estira hacia adelante para que los demás vean que alumbras.
  */
 final class FlashApp extends App {
+    /** Cuándo se tocó el botón (se hunde un poquito). */
+    private long pressedAt;
+
     FlashApp(PhoneScreen s) {
         super(s, D.APP_FLASH, "flash");
     }
@@ -37,17 +40,21 @@ final class FlashApp extends App {
         g.fill(s.dx0, s.dy0, s.dx1, s.dy1, bg());
         boolean on = Flash.on;
         int cx = (s.dx0 + s.dx1) / 2, cy = centerY(), r = radius();
-        if (on) {
-            // resplandor que respira un poquito
+        float lit = Anim.ease("linterna", on ? 1F : 0F, 9F);
+        if (lit > 0.01F) {
+            // resplandor que crece al encender y respira un poquito
             float k = (float) (0.5 + 0.5 * Math.sin(System.currentTimeMillis() / 400.0));
-            for (int rr = r + 22; rr > r; rr -= 3) {
-                D.circle(g, cx, cy, rr, D.alpha(0xFFFFF3B0, 0.05F + 0.03F * k));
+            int reach = Math.round(22 * lit);
+            for (int rr = r + reach; rr > r; rr -= 3) {
+                D.circle(g, cx, cy, rr, D.alpha(0xFFFFF3B0, (0.05F + 0.03F * k) * lit));
             }
         }
         boolean h = s.in(mx, my, cx - r, cy - r, cx + r, cy + r);
-        D.circle(g, cx, cy, r, on ? 0xFFFFFFFF : h ? 0xFF3A3A3C : 0xFF2C2C2E);
+        int offCol = h ? 0xFF3A3A3C : 0xFF2C2C2E;
+        int press = Math.round((1 - Math.min(1F, (System.currentTimeMillis() - pressedAt) / 160F)) * 2);
+        D.circle(g, cx, cy, r - press, D.mix(offCol, 0xFFFFFFFF, lit));
         int is = r;
-        D.icon(g, D.FLASH, cx - is / 2, cy - is / 2, is, on ? 0xFF1C1C1E : 0xFFFFFFFF);
+        D.icon(g, D.FLASH, cx - is / 2, cy - is / 2, is, D.mix(0xFFFFFFFF, 0xFF1C1C1E, lit));
         int y = cy + r + 10;
         centered(g, Component.translatable(on ? "celular.flash.on" : "celular.flash.off").withStyle(ChatFormatting.BOLD), y,
                 on ? 0xFFFFE066 : 0xFFE5E5EA);
@@ -61,6 +68,7 @@ final class FlashApp extends App {
         int cx = (s.dx0 + s.dx1) / 2, cy = centerY(), r = radius();
         if (s.in(x, y, cx - r - 4, cy - r - 4, cx + r + 4, cy + r + 4)) {
             Flash.toggle();
+            pressedAt = System.currentTimeMillis();
         }
         return true;
     }

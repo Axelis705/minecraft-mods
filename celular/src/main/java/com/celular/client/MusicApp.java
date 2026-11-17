@@ -150,12 +150,11 @@ final class MusicApp extends App {
         D.rr(g, x0, y, x1, y + 13, 6, Prefs.dark ? 0xFF2C2C2E : 0xFFE5E5EA);
         String[] keys = {"celular.radio.tab_mine", "celular.radio.tab_world", "celular.radio.tab_jam"};
         int w = (x1 - x0) / 3;
+        int px0 = x0 + Math.round(Anim.ease("musica:pestana", tab, 18F) * w);     // la pastilla roja se desliza
+        D.rr(g, px0 + 1, y + 1, px0 + w - 1, y + 12, 5, RED);
         for (int i = 0; i < 3; i++) {
             int sx = x0 + i * w, ex = i == 2 ? x1 : sx + w;
             boolean sel = tab == i, h = s.in(mx, my, sx, y, ex, y + 13);
-            if (sel) {
-                D.rr(g, sx + 1, y + 1, ex - 1, y + 12, 5, RED);
-            }
             String t = Component.translatable(keys[i]).getString();
             int tw = (int) (font().width(t) * 0.7F);
             small(g, t, (sx + ex) / 2 - tw / 2, y + 4, sel ? 0xFFFFFFFF : h ? s.fg() : s.sub(), 0.7F);

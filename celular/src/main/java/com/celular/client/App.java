@@ -129,11 +129,31 @@ abstract class App {
             Hit h = hits.get(i);
             if (s.in(x, y, h.x0(), h.y0(), h.x1(), h.y1())) {
                 ClientHooks.tap();
+                pressed = h;
+                pressedAt = System.currentTimeMillis();
                 h.run().run();
                 return true;
             }
         }
         return false;
+    }
+
+    private Hit pressed;
+    private long pressedAt;
+
+    /** Encima de todo: un brillo que se apaga donde se tocó (como al tocar un botón de verdad). */
+    void drawPress(G g) {
+        if (pressed == null) {
+            return;
+        }
+        float t = (System.currentTimeMillis() - pressedAt) / 220F;
+        if (t >= 1) {
+            pressed = null;
+            return;
+        }
+        Hit h = pressed;
+        int r = Math.min(6, (h.y1() - h.y0()) / 2);
+        D.rr(g, h.x0(), h.y0(), h.x1(), h.y1(), r, D.alpha(Prefs.dark ? 0xFFFFFFFF : 0xFF000000, 0.18F * (1 - t)));
     }
 
     /** Texto chico (escalado). */

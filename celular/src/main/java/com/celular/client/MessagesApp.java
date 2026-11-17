@@ -25,6 +25,9 @@ final class MessagesApp extends App {
     private boolean stick = true;
     private long listAt;
     private EditBox input;
+    /** Cuándo apareció cada burbuja (las nuevas suben y aparecen suave); las que ya estaban al abrir el chat no se animan. */
+    private final java.util.Map<String, Long> seenAt = new java.util.HashMap<>();
+    private long chatOpenedAt;
 
     MessagesApp(PhoneScreen s) {
         super(s, D.APP_MESSAGES, "messages");
@@ -64,6 +67,8 @@ final class MessagesApp extends App {
     void openChat(UUID id, String name) {
         chat = id;
         chatName = name;
+        chatOpenedAt = System.currentTimeMillis();
+        seenAt.clear();
         Chats.open = null;
         Chats.viewing = id;
         stick = true;
@@ -273,13 +278,14 @@ final class MessagesApp extends App {
         for (int i = 0; i < t.msgs.size(); i++) {
             AppNet.Msg m = t.msgs.get(i);
             int h = heights[i];
+            float pop = popIn(m);
             if (y + h >= top && y <= bottom) {
                 int w = 0;
                 for (FormattedCharSequence l : lines[i]) {
                     w = Math.max(w, (int) Math.ceil(f.width(l) * sc));
                 }
                 w += 8;
-                int yy = y;
+                int yy = y + Math.round((1 - pop) * 8);
                 boolean showName = isAll(chat) && !m.mine && (i == 0 || t.msgs.get(i - 1).mine || !t.msgs.get(i - 1).from.equals(m.from));
                 if (showName) {
                     small(g, D.cut(f, m.from, (int) (maxW / 0.6F)), s.dx0 + 9, yy, D.hsv(Math.floorMod(m.from.hashCode(), 360), 0.6F, 0.95F), 0.6F);
@@ -293,13 +299,13 @@ final class MessagesApp extends App {
                 }
                 int bh = lines[i].size() * lineH + 6;
                 int bx0 = m.mine ? s.dx1 - 5 - w : s.dx0 + 5;
-                D.rr(g, bx0, yy, bx0 + w, yy + bh, 5, m.mine ? BLUE : Prefs.dark ? 0xFF2C2C2E : 0xFFE5E5EA);
+                D.rr(g, bx0, yy, bx0 + w, yy + bh, 5, D.alpha(m.mine ? BLUE : Prefs.dark ? 0xFF2C2C2E : 0xFFE5E5EA, pop));
                 int ly = yy + 3;
                 for (FormattedCharSequence l : lines[i]) {
                     g.push();
                     g.translate(bx0 + 4, ly, 0);
                     g.scale(sc, sc, 1);
-                    g.drawString(f, l, 0, 0, m.mine ? 0xFFFFFFFF : s.fg(), false);
+                    g.drawString(f, l, 0, 0, D.alpha(m.mine ? 0xFFFFFFFF : s.fg(), Math.max(0.15F, pop)), false);
                     g.pop();
                     ly += lineH;
                 }
@@ -307,6 +313,14 @@ final class MessagesApp extends App {
             y += h;
         }
         g.noScissor();
+    }
+
+    /** 0..1: qué tanto ha aparecido esta burbuja (1 = del todo). */
+    private float popIn(AppNet.Msg m) {
+        long now = System.currentTimeMillis();
+        String key = m.time + ":" + m.mine + ":" + m.text.hashCode();
+        long at = seenAt.computeIfAbsent(key, k -> now - chatOpenedAt < 600 ? 0L : now);
+        return at == 0 ? 1F : D.easeOut(Math.min(1F, (now - at) / 220F));
     }
 
     /** Tarjeta de ubicación: dónde estaba; si es de otro, tocarla la guarda en la Brújula. */

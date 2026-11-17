@@ -90,12 +90,11 @@ final class NotesApp extends App {
         D.rr(g, x0, y, x1, y + 13, 6, Prefs.dark ? 0xFF2C2C2E : 0xFFE5E5EA);
         String[] keys = {"celular.notes.tab_notes", "celular.notes.tab_alarms", "celular.notes.tab_timer"};
         int w = (x1 - x0) / 3;
+        int px0 = x0 + Math.round(Anim.ease("notas:pestana", tab, 18F) * w);
+        D.rr(g, px0 + 1, y + 1, px0 + w - 1, y + 12, 5, ORANGE);
         for (int i = 0; i < 3; i++) {
             int sx = x0 + i * w, ex = i == 2 ? x1 : sx + w;
             boolean sel = tab == i, h = s.in(mx, my, sx, y, ex, y + 13);
-            if (sel) {
-                D.rr(g, sx + 1, y + 1, ex - 1, y + 12, 5, ORANGE);
-            }
             String t = Component.translatable(keys[i]).getString();
             t = D.cut(font(), t, (int) ((ex - sx - 4) / 0.7F));
             int tw = (int) (font().width(t) * 0.7F);
@@ -227,8 +226,7 @@ final class NotesApp extends App {
             });
             // interruptor y basura
             int sx = s.dx1 - 40, sy = ry + 9;
-            D.rr(g, sx, sy, sx + 20, sy + 11, 5, a.on ? 0xFF34C759 : (Prefs.dark ? 0xFF39393D : 0xFFD1D1D6));
-            D.circle(g, a.on ? sx + 14 : sx + 6, sy + 5, 4, 0xFFFFFFFF);
+            Anim.toggle(g, sx, sy, a.on, a);
             hitIn(sx - 2, ry, sx + 22, ry + rowH, top, bottom, () -> {
                 a.on = !a.on;
                 Notes.save();

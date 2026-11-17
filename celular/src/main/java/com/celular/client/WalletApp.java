@@ -98,7 +98,7 @@ final class WalletApp extends App {
         g.fillGradient(x0, y, x1, y + 44, 0xFF2B2416, 0xFF14110B);
         D.rrLine(g, x0, y, x1, y + 44, 6, GOLD);
         small(g, Component.translatable("celular.wallet.balance").getString().toUpperCase(java.util.Locale.ROOT), x0 + 6, y + 5, 0xFFBFA65A, 0.6F);
-        String b = num(bal);
+        String b = num(Math.round(Anim.ease("billetera:saldo", bal, 7F)));
         float sc = 1.7F;
         g.push();
         g.translate(x0 + 6, y + 14, 0);
