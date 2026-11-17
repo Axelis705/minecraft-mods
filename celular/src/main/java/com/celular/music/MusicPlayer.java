@@ -61,6 +61,11 @@ public final class MusicPlayer {
     public static volatile String error = "";
     /** Segundo donde se quedó en pausa (cuando no hay hilo). */
     private static volatile double pausedAt;
+    /**
+     * La canción la manda otra cosa (el Jam): al terminar no sigue con otra de la lista, solo se queda esperando a que le digan
+     * cuál toca. Se apaga al tocar algo de la lista.
+     */
+    public static volatile boolean external;
 
     private static Worker worker;
 
@@ -156,6 +161,7 @@ public final class MusicPlayer {
         if (index < 0 || index >= list.size()) {
             return;
         }
+        external = false;
         Track first = list.get(index);
         queue.clear();
         queue.addAll(list);
@@ -255,11 +261,42 @@ public final class MusicPlayer {
         playing = false;
         current = null;
         pausedAt = 0;
+        external = false;
+    }
+
+    /** Toca {@code t} desde el segundo {@code sec}, mandado desde fuera (el Jam). {@code play}=false la deja en pausa ahí. */
+    public static synchronized void playExternal(Track t, double sec, boolean play) {
+        external = true;
+        queue.clear();
+        queue.add(t);
+        qi = 0;
+        if (play) {
+            start(t, sec);
+        } else {
+            if (worker != null) {
+                worker.kill();
+                worker = null;
+            }
+            if (t != current) {
+                announce = t;
+            }
+            current = t;
+            playing = false;
+            pausedAt = sec;
+        }
+    }
+
+    /** Pausa o sigue sin tocar la lista (para el Jam). */
+    public static synchronized void setPlaying(boolean on) {
+        if (current == null || on == playing) {
+            return;
+        }
+        toggle();
     }
 
     /** Siguiente (o anterior) según la lista, el aleatorio y el repetir. {@code auto}: se acabó sola. Null = ya no hay más. */
     private static Track step(int dir, boolean auto) {
-        if (queue.isEmpty()) {
+        if (queue.isEmpty() || (external && auto)) {
             return null;
         }
         if (auto && repeat == 2) {
@@ -361,6 +398,28 @@ public final class MusicPlayer {
 
     public static boolean active() {
         return current != null;
+    }
+
+    /** Aplica el volumen (de {@code l0,r0} a {@code l1,r1} a lo largo del trozo) a muestras de 16 bits. */
+    static void gain(byte[] b, int n, int ch, float l0, float r0, float l1, float r1) {
+        if (l0 >= 0.999F && r0 >= 0.999F && l1 >= 0.999F && r1 >= 0.999F) {
+            return;
+        }
+        int fb = Math.max(1, ch) * 2;
+        int frames = n / fb;
+        for (int fi = 0; fi < frames; fi++) {
+            float k = frames <= 1 ? 1F : (float) fi / (frames - 1);
+            float gl = l0 + (l1 - l0) * k;
+            float gr = r0 + (r1 - r0) * k;
+            for (int c = 0; c < ch; c++) {
+                int i = fi * fb + c * 2;
+                float g = ch == 1 || c > 1 ? (gl + gr) * 0.5F : c == 0 ? gl : gr;
+                int s = Math.round((short) ((b[i] & 255) | b[i + 1] << 8) * g);
+                s = Math.max(-32768, Math.min(32767, s));
+                b[i] = (byte) s;
+                b[i + 1] = (byte) (s >> 8);
+            }
+        }
     }
 
     // ------------------------------------------------------------------ el hilo que suena
@@ -556,26 +615,5 @@ public final class MusicPlayer {
         /** Último volumen aplicado a cada lado (-1 = aún ninguno): el cambio se reparte en todo el trozo para que no chasquee. */
         private float lastL = -1F, lastR = -1F;
 
-        /** Aplica el volumen (de {@code l0,r0} a {@code l1,r1} a lo largo del trozo) a muestras de 16 bits. */
-        private static void gain(byte[] b, int n, int ch, float l0, float r0, float l1, float r1) {
-            if (l0 >= 0.999F && r0 >= 0.999F && l1 >= 0.999F && r1 >= 0.999F) {
-                return;
-            }
-            int fb = Math.max(1, ch) * 2;
-            int frames = n / fb;
-            for (int fi = 0; fi < frames; fi++) {
-                float k = frames <= 1 ? 1F : (float) fi / (frames - 1);
-                float gl = l0 + (l1 - l0) * k;
-                float gr = r0 + (r1 - r0) * k;
-                for (int c = 0; c < ch; c++) {
-                    int i = fi * fb + c * 2;
-                    float g = ch == 1 || c > 1 ? (gl + gr) * 0.5F : c == 0 ? gl : gr;
-                    int s = Math.round((short) ((b[i] & 255) | b[i + 1] << 8) * g);
-                    s = Math.max(-32768, Math.min(32767, s));
-                    b[i] = (byte) s;
-                    b[i + 1] = (byte) (s >> 8);
-                }
-            }
-        }
     }
 }

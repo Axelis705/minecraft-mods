@@ -204,6 +204,7 @@ public final class ClientHooks {
             }
             case CelularNet.Notify.MISSED_CALL -> PhoneHud.toast(D.APP_PHONE, "celular.app.phone",
                     net.minecraft.network.chat.Component.translatable("celular.notify.missed", m.who));
+            case CelularNet.Notify.JAM_INVITE -> Radio.invite(m);
             default -> {
             }
         }
@@ -231,6 +232,7 @@ public final class ClientHooks {
         call = new CallState(CallState.IDLE, 0, null, "", 0, false);
         badgeInsta = 0;
         Photos.clearAll();
+        Radio.reset();
         com.celular.music.MusicPlayer.stop();          // al salir del mundo se calla la música
     }
 }

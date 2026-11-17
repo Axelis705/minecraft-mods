@@ -4,6 +4,9 @@ import com.celular.call.CallManager;
 import com.celular.insta.Instacraft;
 import com.celular.patreon.Patreon;
 import com.celular.plat.Plat;
+import com.celular.radio.Jams;
+import com.celular.radio.Speakers;
+import com.celular.radio.WorldMusic;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -33,12 +36,32 @@ public final class CelularEvents {
         if (e.getEntity() instanceof ServerPlayer p) {
             CallManager.logout(p);
             Instacraft.logout(p.getUUID());
+            WorldMusic.logout(p.getUUID());
+            Jams.leave(Plat.server(p), p.getUUID(), false);
+            Speakers.ownerGone(Plat.server(p), p.getUUID());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p) {
+            Speakers.sendAll(p);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onDimension(PlayerEvent.PlayerChangedDimensionEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p) {
+            Speakers.ownerGone(Plat.server(p), p.getUUID());
+            Speakers.sendAll(p);
         }
     }
 
     @SubscribeEvent
     public static void onStopping(ServerStoppingEvent e) {
         CallManager.clear();
+        Jams.clear();
+        Speakers.clear();
     }
 
     @SubscribeEvent
@@ -64,6 +87,19 @@ public final class CelularEvents {
                             Celular.LOGGER.info("Celular: lista de Patreon: {}", all);
                             c.getSource().sendSuccess(() -> Component.translatable("celular.cmd.patreon_list", all), false);
                             return 1;
+                        })))
+                .then(Commands.literal("musica")
+                        .then(Commands.literal("borrar").then(Commands.argument("jugador", StringArgumentType.word()).executes(c -> {
+                            String n = StringArgumentType.getString(c, "jugador");
+                            int k = WorldMusic.clearUploader(c.getSource().getServer(), n);
+                            c.getSource().sendSuccess(() -> Component.translatable("celular.cmd.music_cleared", k, n), true);
+                            return k;
+                        })))
+                        .then(Commands.literal("total").executes(c -> {
+                            int k = WorldMusic.count(c.getSource().getServer());
+                            long mb = WorldMusic.usedBytes(c.getSource().getServer()) / (1024 * 1024);
+                            c.getSource().sendSuccess(() -> Component.translatable("celular.cmd.music_total", k, mb), false);
+                            return k;
                         })))
                 .then(Commands.literal("instacraft")
                         .then(Commands.literal("borrar").then(Commands.argument("jugador", StringArgumentType.word()).executes(c -> {

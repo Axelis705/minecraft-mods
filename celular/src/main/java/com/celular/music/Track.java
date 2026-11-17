@@ -13,6 +13,10 @@ public final class Track {
     public volatile int seconds = -1;
     /** Si no se pudo leer (formato raro o archivo dañado). */
     public volatile boolean broken;
+    /** Si es una canción subida al mundo: su número en el servidor (0 = solo está en esta PC). */
+    public volatile long worldId;
+    /** SHA-1 del archivo (se calcula al subirla o al reconocerla en el mundo; "" = aún no). */
+    public volatile String hash = "";
 
     public Track(Path path, String title, String artist, String ext, long modified) {
         this.path = path;

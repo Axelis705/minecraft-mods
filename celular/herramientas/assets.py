@@ -616,12 +616,119 @@ def g_sliders(d, u):
         d.ellipse((u(k - 2.8), u(y - 2.8), u(k + 2.8), u(y + 2.8)), fill=W)
 
 
+def g_upload(d, u):
+    cloud(d, u(1.5), u(3), u(21), W)
+    d.polygon([(u(12), u(8)), (u(7), u(13.5)), (u(10), u(13.5)), (u(10), u(19)), (u(14), u(19)), (u(14), u(13.5)), (u(17), u(13.5))],
+              fill=(0, 0, 0, 0))
+
+
+def g_speaker(d, u):
+    d.polygon([(u(3), u(9)), (u(7.5), u(9)), (u(13), u(4)), (u(13), u(20)), (u(7.5), u(15)), (u(3), u(15))], fill=W)
+    d.arc((u(10), u(7.5), u(18), u(16.5)), 300, 60, fill=W, width=int(u(2)))
+    d.arc((u(10), u(4), u(22), u(20)), 300, 60, fill=W, width=int(u(2)))
+
+
+def g_headphones(d, u):
+    d.arc((u(3.5), u(3.5), u(20.5), u(21)), 180, 360, fill=W, width=int(u(2.4)))
+    d.rounded_rectangle((u(2.5), u(12), u(8), u(21)), u(2), fill=W)
+    d.rounded_rectangle((u(16), u(12), u(21.5), u(21)), u(2), fill=W)
+
+
+def g_globe(d, u):
+    d.ellipse((u(3), u(3), u(21), u(21)), outline=W, width=int(u(2)))
+    d.ellipse((u(8), u(3), u(16), u(21)), outline=W, width=int(u(1.6)))
+    d.line([(u(3.5), u(12)), (u(20.5), u(12))], fill=W, width=int(u(1.6)))
+    d.line([(u(5.5), u(7.5)), (u(18.5), u(7.5))], fill=W, width=int(u(1.3)))
+    d.line([(u(5.5), u(16.5)), (u(18.5), u(16.5))], fill=W, width=int(u(1.3)))
+
+
+def g_crown(d, u):
+    d.polygon([(u(3), u(8)), (u(7.5), u(12.5)), (u(12), u(5)), (u(16.5), u(12.5)), (u(21), u(8)), (u(19), u(18)), (u(5), u(18))], fill=W)
+    d.rectangle((u(5), u(19.2), u(19), u(21)), fill=W)
+
+
+def g_thumb(d, u):
+    d.rounded_rectangle((u(3), u(11), u(7), u(21)), u(1), fill=W)
+    d.polygon([(u(8), u(11)), (u(12), u(3.5)), (u(14.5), u(4.5)), (u(13.5), u(10)), (u(20), u(10)), (u(21), u(12.5)),
+               (u(18.5), u(21)), (u(8), u(21))], fill=W)
+
+
+def g_download(d, u):
+    cloud(d, u(1.5), u(3), u(21), W)
+    d.polygon([(u(12), u(19.5)), (u(7), u(14)), (u(10), u(14)), (u(10), u(8.5)), (u(14), u(8.5)), (u(14), u(14)), (u(17), u(14))],
+              fill=(0, 0, 0, 0))
+
+
+def g_queue(d, u):
+    for y in (5, 10.5):
+        d.rounded_rectangle((u(3), u(y), u(16), u(y + 2.4)), u(1), fill=W)
+    d.rounded_rectangle((u(3), u(16), u(11), u(18.4)), u(1), fill=W)
+    d.polygon([(u(14), u(14)), (u(21), u(17.5)), (u(14), u(21))], fill=W)
+
+
+def g_chat(d, u):
+    d.rounded_rectangle((u(2.5), u(3.5), u(21.5), u(16.5)), u(4), fill=W)
+    d.polygon([(u(6), u(15)), (u(5), u(21.5)), (u(12), u(15.5))], fill=W)
+    for x in (7.5, 12, 16.5):
+        d.ellipse((u(x - 1.3), u(8.7), u(x + 1.3), u(11.3)), fill=(0, 0, 0, 0))
+
+
+def g_map(d, u):
+    d.polygon([(u(2.5), u(5)), (u(8.5), u(3)), (u(15.5), u(5)), (u(21.5), u(3)), (u(21.5), u(19)), (u(15.5), u(21)), (u(8.5), u(19)),
+               (u(2.5), u(21))], fill=W)
+    d.line([(u(8.5), u(3.5)), (u(8.5), u(19))], fill=(0, 0, 0, 0), width=int(u(1.3)))
+    d.line([(u(15.5), u(5)), (u(15.5), u(20.5))], fill=(0, 0, 0, 0), width=int(u(1.3)))
+
+
+def g_notes(d, u):
+    d.rounded_rectangle((u(4), u(2.5), u(20), u(21.5)), u(2.5), fill=W)
+    for y in (8, 12, 16):
+        d.line([(u(7.5), u(y)), (u(16.5), u(y))], fill=(0, 0, 0, 0), width=int(u(1.5)))
+
+
+def g_flash(d, u):
+    d.polygon([(u(5), u(3)), (u(19), u(3)), (u(16), u(10)), (u(8), u(10))], fill=W)
+    d.rounded_rectangle((u(8.5), u(10), u(15.5), u(21.5)), u(1.5), fill=W)
+    d.ellipse((u(10.6), u(13), u(13.4), u(15.8)), fill=(0, 0, 0, 0))
+
+
+def g_wallet(d, u):
+    d.rounded_rectangle((u(2.5), u(5.5), u(21.5), u(20.5)), u(3), fill=W)
+    d.rounded_rectangle((u(13.5), u(10), u(22.5), u(16)), u(2), fill=(0, 0, 0, 0))
+    d.ellipse((u(16), u(11.8), u(18.4), u(14.2)), fill=W)
+    d.line([(u(4.5), u(5.5)), (u(17), u(2.5))], fill=W, width=int(u(2)))
+
+
+def g_stopwatch(d, u):
+    d.ellipse((u(4), u(5.5), u(20), u(21.5)), outline=W, width=int(u(2.2)))
+    d.rectangle((u(10), u(2), u(14), u(4)), fill=W)
+    d.line([(u(12), u(13.5)), (u(12), u(8.5))], fill=W, width=int(u(2)))
+    d.line([(u(17.5), u(5.5)), (u(19.5), u(3.5))], fill=W, width=int(u(2)))
+
+
+def g_alarm(d, u):
+    d.ellipse((u(4), u(4.5), u(20), u(20.5)), outline=W, width=int(u(2.2)))
+    d.line([(u(12), u(12.5)), (u(12), u(8))], fill=W, width=int(u(2)))
+    d.line([(u(12), u(12.5)), (u(15.5), u(14.5))], fill=W, width=int(u(2)))
+    d.line([(u(3), u(6)), (u(6.5), u(2.5))], fill=W, width=int(u(2.2)))
+    d.line([(u(21), u(6)), (u(17.5), u(2.5))], fill=W, width=int(u(2.2)))
+    d.line([(u(7), u(19.5)), (u(5), u(22))], fill=W, width=int(u(2)))
+    d.line([(u(17), u(19.5)), (u(19), u(22))], fill=W, width=int(u(2)))
+
+
+def g_link(d, u):
+    d.rounded_rectangle((u(2.5), u(8), u(13.5), u(16)), u(4), outline=W, width=int(u(2.2)))
+    d.rounded_rectangle((u(10.5), u(8), u(21.5), u(16)), u(4), outline=W, width=int(u(2.2)))
+
+
 GLYPHS = [g_heart, g_heart_full, g_home, g_plus, g_user, g_call, g_hangup, g_camera,
           g_switch, g_trash, g_back, g_send, g_star, g_wifi, g_battery, g_signal,
           g_gallery, g_gear, g_mic, g_bell, g_clock, g_people, g_close, g_wallpaper,
           g_next, g_play, g_pause, g_prev, g_skip, g_shuffle, g_repeat, g_repeat1,
           g_folder, g_note, g_vol_low, g_vol_high, g_refresh, g_down, g_sun, g_moon,
-          g_rain, g_storm, g_cloud, g_pin, g_nav, g_skull, g_lock, g_sliders]
+          g_rain, g_storm, g_cloud, g_pin, g_nav, g_skull, g_lock, g_sliders,
+          g_upload, g_speaker, g_headphones, g_globe, g_crown, g_thumb, g_download, g_queue,
+          g_chat, g_map, g_notes, g_flash, g_wallet, g_stopwatch, g_alarm, g_link]
 
 
 # =====================================================================================================================
@@ -786,7 +893,7 @@ def main():
     for i, a in enumerate(apps):
         atlas.paste(a, (i * S, 0))
     save(atlas, "gui/apps.png", blur=True)
-    ui = Image.new("RGBA", (G * 8, G * 6), (0, 0, 0, 0))
+    ui = Image.new("RGBA", (G * 8, G * 8), (0, 0, 0, 0))
     for i, fn in enumerate(GLYPHS):
         ui.paste(glyph(fn), ((i % 8) * G, (i // 8) * G))
     save(ui, "gui/ui.png", blur=True)

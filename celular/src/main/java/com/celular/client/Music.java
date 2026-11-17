@@ -63,6 +63,7 @@ public final class Music {
         Minecraft mc = Minecraft.getInstance();
         gameVolume = readGameVolume(mc);
         speaker(mc);
+        Radio.frame(mc);
         if (MusicPlayer.playing && Prefs.muteGameMusic) {
             long now = System.currentTimeMillis();
             if (now - lastMute > 1500) {
@@ -133,7 +134,10 @@ public final class Music {
             boolean near = speakerPos == null || speakerPos.distanceTo(mc.player.position()) < 20.0;
             if (near && now - lostSince > 1500) {
                 // el celular ya no está (en un cofre, lo recogió otro, se quemó...): se pausa
-                if (MusicPlayer.playing) {
+                if (Radio.inJam()) {
+                    Radio.jamLeave();                      // sin celular no hay Jam
+                    com.celular.plat.Plat.msg(mc.player, Component.translatable("celular.music.phone_gone"), true);
+                } else if (MusicPlayer.playing) {
                     MusicPlayer.toggle();
                     com.celular.plat.Plat.msg(mc.player, Component.translatable("celular.music.phone_gone"), true);
                 }
@@ -147,18 +151,32 @@ public final class Music {
                 return;
             }
         }
+        float[] g = spatial(mc, speakerPos.add(0, 0.25, 0), HEAR);
+        MusicPlayer.spatialL = g[0];
+        MusicPlayer.spatialR = g[1];
+    }
+
+    /**
+     * Volumen de cada oído para algo que suena en {@code pos}: más bajo con la distancia (se deja de oír a {@code hear} bloques) y más
+     * fuerte del lado en que queda. Devuelve {izquierdo, derecho}.
+     */
+    static float[] spatial(Minecraft mc, Vec3 pos, double hear) {
         Vec3 ear = mc.player.getEyePosition();
-        Vec3 to = speakerPos.add(0, 0.25, 0).subtract(ear);
+        Vec3 to = pos.subtract(ear);
         double d = to.length();
-        double att = d <= 2.0 ? 1.0 : Math.max(0.0, 1.0 - (d - 2.0) / (HEAR - 2.0));
+        double att = d <= 2.0 ? 1.0 : Math.max(0.0, 1.0 - (d - 2.0) / (hear - 2.0));
         att = att * att;
         // hacia qué lado queda: derecha positiva
         double yaw = Math.toRadians(mc.player.getYRot());
         double rx = -Math.cos(yaw), rz = -Math.sin(yaw);
         double flat = Math.hypot(to.x, to.z);
         double pan = flat < 0.3 ? 0.0 : (to.x * rx + to.z * rz) / flat;
-        MusicPlayer.spatialL = (float) (att * (1.0 - 0.65 * Math.max(0.0, pan)));
-        MusicPlayer.spatialR = (float) (att * (1.0 - 0.65 * Math.max(0.0, -pan)));
+        return new float[]{(float) (att * (1.0 - 0.65 * Math.max(0.0, pan))), (float) (att * (1.0 - 0.65 * Math.max(0.0, -pan)))};
+    }
+
+    /** Desde qué entidad sale mi música para los demás: el celular tirado si lo está, si no yo mismo. */
+    static int speakerSource(Minecraft mc) {
+        return speakerId >= 0 && speakerPos != null ? speakerId : mc.player.getId();
     }
 
     private static float readGameVolume(Minecraft mc) {

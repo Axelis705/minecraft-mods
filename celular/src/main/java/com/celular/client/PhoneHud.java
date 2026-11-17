@@ -98,13 +98,13 @@ public final class PhoneHud {
             }
         }
         while (MUSIC_TOGGLE.consumeClick()) {
-            com.celular.music.MusicPlayer.toggle();
+            Radio.toggle();
         }
         while (MUSIC_NEXT.consumeClick()) {
-            com.celular.music.MusicPlayer.next();
+            Radio.next();
         }
         while (MUSIC_PREV.consumeClick()) {
-            com.celular.music.MusicPlayer.prev();
+            Radio.prev();
         }
         CallState st = ClientHooks.call;
         while (ANSWER.consumeClick()) {

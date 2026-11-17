@@ -27,6 +27,10 @@ public final class Prefs {
     public static boolean musicToasts = true;
     /** Pantalla de bloqueo al sacar el celular. */
     public static boolean lockScreen = true;
+    /** Altavoz: lo que tocas del mundo lo oyen los que están cerca. */
+    public static boolean speaker = true;
+    /** Volumen de los altavoces de los demás (0..1). */
+    public static float othersVolume = 0.8F;
     private static boolean loaded;
 
     private Prefs() {
@@ -60,6 +64,8 @@ public final class Prefs {
             muteGameMusic = Boolean.parseBoolean(p.getProperty("musica_callar_minecraft", "true"));
             musicToasts = Boolean.parseBoolean(p.getProperty("musica_avisos", "true"));
             lockScreen = Boolean.parseBoolean(p.getProperty("pantalla_bloqueo", "true"));
+            speaker = Boolean.parseBoolean(p.getProperty("musica_altavoz", "true"));
+            othersVolume = Math.max(0, Math.min(1, Float.parseFloat(p.getProperty("musica_volumen_otros", "0.8"))));
         } catch (Exception ignored) {
         }
     }
@@ -78,6 +84,8 @@ public final class Prefs {
         p.setProperty("musica_callar_minecraft", Boolean.toString(muteGameMusic));
         p.setProperty("musica_avisos", Boolean.toString(musicToasts));
         p.setProperty("pantalla_bloqueo", Boolean.toString(lockScreen));
+        p.setProperty("musica_altavoz", Boolean.toString(speaker));
+        p.setProperty("musica_volumen_otros", Float.toString(othersVolume));
         try {
             Files.createDirectories(file().getParent());
             try (Writer w = Files.newBufferedWriter(file(), StandardCharsets.UTF_8)) {

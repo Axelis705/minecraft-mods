@@ -40,7 +40,38 @@ public final class CelularNet {
         Net.register(id++, Names.class, Names::write, Names::read, (m, p) -> Net.onClient(() -> ClientHooks.names(m)));
         Net.register(id++, Contacts.class, Contacts::write, Contacts::read, (m, p) -> Net.onClient(() -> ClientHooks.contacts(m)));
         Net.register(id++, Notify.class, Notify::write, Notify::read, (m, p) -> Net.onClient(() -> ClientHooks.notify(m)));
+        // ---- música del mundo (altavoces y Jams)
+        Net.register(id++, RadioNet.SongUp.class, RadioNet.SongUp::write, RadioNet.SongUp::read, (m, p) -> {
+            if (p != null) {
+                com.celular.radio.WorldMusic.upload(p, m);
+            }
+        });
+        Net.register(id++, RadioNet.Req.class, RadioNet.Req::write, RadioNet.Req::read, CelularNet::radio);
+        Net.register(id++, RadioNet.SpeakerSet.class, RadioNet.SpeakerSet::write, RadioNet.SpeakerSet::read, (m, p) -> {
+            if (p != null) {
+                com.celular.radio.Speakers.set(p, m);
+            }
+        });
+        Net.register(id++, RadioNet.SongAck.class, RadioNet.SongAck::write, RadioNet.SongAck::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.ack(m)));
+        Net.register(id++, RadioNet.Library.class, RadioNet.Library::write, RadioNet.Library::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.library(m)));
+        Net.register(id++, RadioNet.SongData.class, RadioNet.SongData::write, RadioNet.SongData::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.data(m)));
+        Net.register(id++, RadioNet.SpeakerState.class, RadioNet.SpeakerState::write, RadioNet.SpeakerState::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.speaker(m)));
+        Net.register(id++, RadioNet.JamState.class, RadioNet.JamState::write, RadioNet.JamState::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.jam(m)));
+        Net.register(id++, RadioNet.JamList.class, RadioNet.JamList::write, RadioNet.JamList::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.jamList(m)));
         Net.done();
+    }
+
+    private static void radio(RadioNet.Req m, ServerPlayer p) {
+        if (p == null) {
+            return;
+        }
+        switch (m.what) {
+            case RadioNet.Req.LIB -> com.celular.radio.WorldMusic.sendLibrary(p);
+            case RadioNet.Req.DELETE -> com.celular.radio.WorldMusic.delete(p, m.a);
+            case RadioNet.Req.GET -> com.celular.radio.WorldMusic.download(p, m.a, (int) m.b);
+            case RadioNet.Req.UP_CANCEL -> com.celular.radio.WorldMusic.cancel(p);
+            default -> com.celular.radio.Jams.handle(p, m);
+        }
     }
 
     private static void simple(Simple m, ServerPlayer p) {
@@ -399,7 +430,7 @@ public final class CelularNet {
 
     /** Una notificación en el celular. */
     public static final class Notify {
-        public static final int LIKE = 0, NEW_POST = 1, MISSED_CALL = 2, POSTED = 3, ERROR = 4;
+        public static final int LIKE = 0, NEW_POST = 1, MISSED_CALL = 2, POSTED = 3, ERROR = 4, JAM_INVITE = 5;
         public final int type;
         public final String who;
         /** Texto extra (o una clave de traducción en ERROR). */

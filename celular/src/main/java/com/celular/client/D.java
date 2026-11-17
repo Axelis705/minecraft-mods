@@ -20,12 +20,14 @@ public final class D {
     public static final int WALL_COUNT = 8;
     public static final int WALL_W = 180, WALL_H = 390;
 
-    // iconos de ui.png (24 × 24 cada uno, 8 por fila, 4 filas)
+    // iconos de ui.png (24 × 24 cada uno, 8 por fila, 8 filas)
     public static final int HEART = 0, HEART_FULL = 1, HOME = 2, PLUS = 3, USER = 4, CALL = 5, HANGUP = 6, CAMERA = 7, SWITCH = 8,
             TRASH = 9, BACK = 10, SEND = 11, STAR = 12, WIFI = 13, BATTERY = 14, SIGNAL = 15, GALLERY = 16, GEAR = 17, MIC = 18,
             CHECK = 19, CLOCK = 20, PEOPLE = 21, CLOSE = 22, WALLPAPER = 23, NEXT = 24, PLAY = 25, PAUSE = 26, PREV = 27, SKIP = 28,
             SHUFFLE = 29, REPEAT = 30, REPEAT1 = 31, FOLDER = 32, NOTE = 33, VOL_LOW = 34, VOL_HIGH = 35, REFRESH = 36, DOWN = 37, SUN = 38,
-            MOON = 39, RAIN = 40, STORM = 41, CLOUD = 42, PIN = 43, NAV = 44, SKULL = 45, LOCK = 46, SLIDERS = 47;
+            MOON = 39, RAIN = 40, STORM = 41, CLOUD = 42, PIN = 43, NAV = 44, SKULL = 45, LOCK = 46, SLIDERS = 47, UPLOAD = 48, SPEAKER = 49,
+            HEADPHONES = 50, GLOBE = 51, CROWN = 52, THUMB = 53, DOWNLOAD = 54, QUEUE = 55, CHAT = 56, MAP = 57, NOTES = 58, FLASH = 59,
+            WALLET = 60, STOPWATCH = 61, ALARM = 62, LINK = 63;
     // apps de apps.png (64 × 64 cada una)
     public static final int APP_INSTA = 0, APP_CAMERA = 1, APP_GALLERY = 2, APP_PHONE = 3, APP_PATREON = 4, APP_SETTINGS = 5, APP_MUSIC = 6,
             APP_WEATHER = 7, APP_COMPASS = 8, APP_CALC = 9;
@@ -77,7 +79,7 @@ public final class D {
     }
 
     public static void icon(G g, int idx, int x, int y, int size, int argb) {
-        g.blitTint(UI, x, y, size, size, (idx % 8) * 24, (idx / 8) * 24, 24, 24, 192, 144, argb);
+        g.blitTint(UI, x, y, size, size, (idx % 8) * 24, (idx / 8) * 24, 24, 24, 192, 192, argb);
     }
 
     public static void app(G g, int idx, int x, int y, int size) {
