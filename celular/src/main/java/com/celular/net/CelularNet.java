@@ -96,6 +96,7 @@ public final class CelularNet {
             case AppNet.Req.SHARE -> com.celular.map.Friends.share(p, m.n != 0);
             case AppNet.Req.WALLET_SEND -> com.celular.wallet.Wallet.send(p, m.who, m.n);
             case AppNet.Req.WALLET_HIST -> com.celular.wallet.Wallet.sendHist(p);
+            case AppNet.Req.TAKE_OUT -> com.celular.PhoneUse.takeOut(p);
             default -> com.celular.msg.Messages.handle(p, m);
         }
     }
@@ -474,7 +475,7 @@ public final class CelularNet {
     /** Una notificación en el celular. */
     public static final class Notify {
         public static final int LIKE = 0, NEW_POST = 1, MISSED_CALL = 2, POSTED = 3, ERROR = 4, JAM_INVITE = 5, WALLET = 6, WALLET_SENT = 7,
-                WALLET_IN = 8, DJ = 9, SPEAKER_PAIR = 10;
+                WALLET_IN = 8, DJ = 9, SPEAKER_PAIR = 10, TAKE_OUT = 11;
         public final int type;
         public final String who;
         /** Texto extra (o una clave de traducción en ERROR). */

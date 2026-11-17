@@ -27,7 +27,16 @@ jobs:
       - name: Mundo plano (lo crea el servidor de prueba)
         run: |
           mkdir -p celular/run
-          printf 'level-type=minecraft\\:flat\ngenerate-structures=false\nspawn-protection=0\nonline-mode=false\nspawn-monsters=false\nspawn-animals=false\nspawn-npcs=false\n' > celular/run/server.properties
+          cat > celular/run/server.properties <<'EOF'
+          level-type=minecraft\:flat
+          generator-settings={"layers"\:[{"block"\:"minecraft\:bedrock","height"\:1},{"block"\:"minecraft\:dirt","height"\:2},{"block"\:"minecraft\:grass_block","height"\:1}],"biome"\:"minecraft\:plains"}
+          generate-structures=false
+          spawn-protection=0
+          online-mode=false
+          spawn-monsters=false
+          spawn-animals=false
+          spawn-npcs=false
+          EOF
           bash tools/boot_server.sh celular
           mkdir -p celular/run/saves
           rm -rf celular/run/saves/prueba

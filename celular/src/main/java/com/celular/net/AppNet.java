@@ -22,7 +22,7 @@ public final class AppNet {
     /** Un pedido de una app: qué ({@code what}), a quién, un número y un texto. */
     public static final class Req {
         public static final int MSG_LIST = 0, MSG_OPEN = 1, MSG_SEND = 2, MSG_READ = 3, MAP = 10, SHARE = 11, WALLET_SEND = 20,
-                WALLET_HIST = 21;
+                WALLET_HIST = 21, TAKE_OUT = 30;
         public final int what;
         public final UUID who;
         public final long n;

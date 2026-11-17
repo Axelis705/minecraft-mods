@@ -431,6 +431,8 @@ public final class Radio {
         long recvAt;
         RemoteStream stream;
         boolean ended;
+        /** En qué mundo (dimensión) estaba yo cuando llegó: al cambiar de dimensión los de la anterior ya no cuentan. */
+        Object level;
 
         double pos(long now) {
             return (st.posMs + (st.playing ? now - recvAt : 0)) / 1000.0;
@@ -460,6 +462,7 @@ public final class Radio {
         }
         r.st = m;
         r.recvAt = now;
+        r.level = Minecraft.getInstance().level;
     }
 
     /** Quién está poniendo música cerca (para mostrarlo en la app). */
@@ -531,6 +534,16 @@ public final class Radio {
             }
             return;
         }
+        // los de otra dimensión (de antes de cruzar un portal) ya no se oyen: una bocina en las mismas coordenadas del Nether no es esta
+        REMOTES.values().removeIf(r -> {
+            if (r.level == mc.level) {
+                return false;
+            }
+            if (r.stream != null) {
+                r.stream.kill();
+            }
+            return true;
+        });
         long now = System.currentTimeMillis();
         Vec3 ear = mc.player.getEyePosition();
         List<Map.Entry<UUID, Remote>> near = new ArrayList<>();
@@ -890,9 +903,15 @@ public final class Radio {
 
     // ------------------------------------------------------------------ cada cuadro y reinicio
 
+    private static Object lastLevel;
+
     static void frame(Minecraft mc) {
         if (mc.player == null || mc.level == null) {
             return;
+        }
+        if (mc.level != lastLevel) {
+            lastLevel = mc.level;
+            sentSong = 0;           // al cambiar de dimensión el servidor apaga mi altavoz: se vuelve a avisar si sigue sonando
         }
         pump();
         if (pendingPlay != 0) {

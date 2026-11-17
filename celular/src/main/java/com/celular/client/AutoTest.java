@@ -221,6 +221,17 @@ public final class AutoTest {
             Prefs.lockScreen = false;
             ClientHooks.openPhone(0);
         });
+        photo("1_inicio_cancion", 2500, () -> {
+            close();
+            com.celular.music.MusicPlayer.volume = 0F;
+            com.celular.music.MusicPlayer.scan();
+            if (com.celular.music.MusicPlayer.library.isEmpty()) {
+                log("no hay canciones en la carpeta de música");
+            } else {
+                com.celular.music.MusicPlayer.playList(new ArrayList<>(com.celular.music.MusicPlayer.library), 0);
+            }
+            ClientHooks.openPhone(0);
+        });
         for (String a : APPS) {
             photo("2_app_" + a, a.equals("map") ? 3500 : 1800, () -> ClientHooks.open(new PhoneScreen(0, a)));
         }
@@ -286,6 +297,7 @@ public final class AutoTest {
 
         add("fin", 4000, () -> {
             close();
+            com.celular.music.MusicPlayer.stop();
             log("AUTOTEST_FIN fotos=" + shots + " fallos=" + fails);
         });
         add("salir", 1000, () -> Minecraft.getInstance().stop());

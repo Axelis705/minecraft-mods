@@ -267,6 +267,47 @@ public final class PhoneUse {
         }
     }
 
+    // ------------------------------------------------------------------ sacarlo de la mochila
+
+    /**
+     * Abrió el celular con la K pero lo tenía en la mochila (fuera de la barra rápida): se pasa a una casilla vacía de la barra (o a la
+     * de la mano, cambiando de lugar lo que tenía) para que se vea en la mano y los demás vean qué hace. El cliente elige esa casilla.
+     */
+    public static void takeOut(ServerPlayer p) {
+        if (inHand(p) != null || p.isSpectator()) {
+            return;
+        }
+        net.minecraft.world.entity.player.Inventory inv = p.getInventory();
+        int from = -1;
+        for (int i = 9; i < 36; i++) {
+            if (inv.getItem(i).getItem() instanceof PhoneItem) {
+                from = i;
+                break;
+            }
+        }
+        if (from < 0) {
+            return;
+        }
+        int to = -1;
+        for (int i = 0; i < 9; i++) {
+            if (inv.getItem(i).isEmpty()) {
+                to = i;
+                break;
+            }
+        }
+        if (to < 0) {
+            //#if MC >= 1.21.5
+            //$$ to = inv.getSelectedSlot();
+            //#else
+            to = inv.selected;
+            //#endif
+        }
+        ItemStack phone = inv.getItem(from), other = inv.getItem(to);
+        inv.setItem(to, phone);
+        inv.setItem(from, other);
+        com.celular.plat.Net.toPlayer(p, new com.celular.net.CelularNet.Notify(com.celular.net.CelularNet.Notify.TAKE_OUT, "", Integer.toString(to)));
+    }
+
     // ------------------------------------------------------------------ entrar, salir, apagar
 
     public static void logout(ServerPlayer p) {

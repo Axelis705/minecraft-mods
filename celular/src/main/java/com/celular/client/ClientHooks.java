@@ -98,6 +98,31 @@ public final class ClientHooks {
                 return;
             }
         }
+        // está en la mochila: el servidor lo pasa a la barra rápida y avisa a qué casilla (ver tookOut)
+        for (int i = 9; i < 36; i++) {
+            if (inv.getItem(i).getItem() instanceof com.celular.PhoneItem) {
+                com.celular.plat.Net.toServer(new com.celular.net.AppNet.Req(com.celular.net.AppNet.Req.TAKE_OUT));
+                return;
+            }
+        }
+    }
+
+    /** El servidor pasó el celular de la mochila a la casilla {@code slot} de la barra rápida. */
+    private static void tookOut(String slot) {
+        Minecraft mc = Minecraft.getInstance();
+        Object sc = screen();
+        if (mc.player == null || !(sc instanceof PhoneScreen || sc instanceof CameraScreen)) {
+            return;                 // ya lo cerró
+        }
+        try {
+            int k = Integer.parseInt(slot);
+            net.minecraft.world.entity.player.Inventory inv = mc.player.getInventory();
+            if (k >= 0 && k < 9 && k != selected(inv)) {
+                restoreSlot = selected(inv);
+                select(inv, k);
+            }
+        } catch (NumberFormatException ignored) {
+        }
     }
 
     /** Cada cuadro: al cerrar el celular se vuelve a la casilla de antes (salvo con la linterna encendida). */
@@ -269,6 +294,7 @@ public final class ClientHooks {
             case CelularNet.Notify.JAM_INVITE -> Radio.invite(m);
             case CelularNet.Notify.DJ -> Radio.dj(m);
             case CelularNet.Notify.SPEAKER_PAIR -> Radio.paired(m);
+            case CelularNet.Notify.TAKE_OUT -> tookOut(m.text);
             case CelularNet.Notify.WALLET -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet", net.minecraft.network.chat.Component.translatable(m.text));
             case CelularNet.Notify.WALLET_SENT -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet",
                     net.minecraft.network.chat.Component.translatable("celular.wallet.sent", m.text, m.who));

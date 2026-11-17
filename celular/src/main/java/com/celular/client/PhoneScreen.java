@@ -320,10 +320,40 @@ public class PhoneScreen extends BaseScreen {
         return dockTop() - 8 - rows * (iconSize() + 16);
     }
 
-    /** Recuadro del widget (música o clima) entre el reloj y las apps. */
+    /**
+     * Qué cabe arriba de las apps según el alto de la pantalla: 3 = reloj grande y widget, 2 = reloj mediano y widget, 1 = una sola
+     * cosa (el widget si suena música; si no, el reloj mediano), 0 = nada. Con 15 apps y la pantalla más chica del juego (240 de
+     * alto) antes no se veía el widget nunca.
+     */
+    private int header() {
+        int room = gridTop() - cy0;
+        return room >= 92 ? 3 : room >= 63 ? 2 : room >= 34 ? 1 : 0;
+    }
+
+    /** Recuadro del widget (música o clima) entre el reloj y las apps (alto 0 = no se muestra). */
     private int[] widgetRect() {
-        int y0 = cy0 + 58, y1 = Math.min(y0 + 40, gridTop() - 8);
+        int h = header(), gt = gridTop();
+        int y0 = h == 3 ? cy0 + 58 : h == 2 ? cy0 + 31 : cy0 + 3;
+        int y1 = Math.min(y0 + 40, gt - (h == 3 ? 8 : 6));
+        if (h == 0 || h == 1 && com.celular.music.MusicPlayer.current == null) {
+            y1 = y0;
+        }
         return new int[]{dx0 + 7, y0, dx1 - 7, y1};
+    }
+
+    /** Reloj mediano con la fecha abajo (cuando no cabe el grande). */
+    private void midClock(G g, Font font, int cx, int y, String time, Component date) {
+        g.push();
+        g.translate(cx, y, 0);
+        g.scale(2.0F, 2.0F, 1);
+        g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
+        g.pop();
+        g.push();
+        g.translate(cx, y + 18, 0);
+        g.scale(0.75F, 0.75F, 1);
+        String d = date.getString();
+        g.drawString(font, d, -font.width(d) / 2, 0, 0xE0FFFFFF, true);
+        g.pop();
     }
 
     private void drawWallpaper(G g) {
@@ -371,8 +401,8 @@ public class PhoneScreen extends BaseScreen {
         Component date = Component.translatable("celular.date", Component.translatable("celular.day." + now.getDayOfWeek().getValue()),
                 now.getDayOfMonth(), Component.translatable("celular.month." + now.getMonthValue()));
         int cx = (dx0 + dx1) / 2;
-        int room = gridTop() - cy0;
-        if (room >= 52) {
+        int hd = header();
+        if (hd == 3) {
             g.drawCenteredString(font, date, cx, cy0 + 8, 0xFFFFFFFF);
             g.push();
             float sc = 3.0F;
@@ -380,13 +410,10 @@ public class PhoneScreen extends BaseScreen {
             g.scale(sc, sc, 1);
             g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
             g.pop();
-        } else if (room >= 22) {
-            // con muchas apps y la pantalla chica: el reloj más pequeño
-            g.push();
-            g.translate(cx, cy0 + 4, 0);
-            g.scale(1.6F, 1.6F, 1);
-            g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
-            g.pop();
+        } else if (hd == 2) {
+            midClock(g, font, cx, cy0 + 4, time, date);
+        } else if (hd == 1 && com.celular.music.MusicPlayer.current == null) {
+            midClock(g, font, cx, cy0 + 6, time, date);
         }
         drawWidget(g, mx, my, interactive);
         // dock con fondo de vidrio
