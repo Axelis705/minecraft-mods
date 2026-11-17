@@ -95,6 +95,15 @@ Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas per
 ## Pruebas en el servidor (`/celular prueba`)
 `SelfTest` + `net/NetTest`: pone y quita cada pantalla en un celular (y que quede igual que uno nuevo), coloca la luz de la linterna (luz 15) y la borra con un tick aleatorio, claves y archivo de Mensajes (guardar y volver a leer), billetera, y escribe/lee de vuelta todos los mensajes de red (canción, Jam, pedidos, altavoz, pedazos, mensajes, amigos, billetera, pantalla). El CI la corre al arrancar el servidor en las 4 versiones (`ci_commands.txt` exige `PRUEBA_CELULAR TOTAL fallos=0 fin`).
 
+## Pulido (17-nov, tarde)
+- **Reloj de respaldo** (`client/Ticker`): cada 50 ms, con `Minecraft.execute` (igual en todas las versiones), corre la parte del HUD que no dibuja (`PhoneHud.logic`: teclas, música, linterna, alarmas, bocina) si el HUD no lo hizo hace 150 ms. Antes, con F1 (sin HUD) no servían las teclas ni sonaban las alarmas. Se arranca en `ClientModEvents.onKeys`.
+- **Inicio que se adapta** (`PhoneScreen.header`): con 15 apps el widget no cabía en las pantallas comunes (240–270 de alto). Ahora: ≥92 px libres → reloj grande + widget; ≥63 → reloj mediano con fecha + widget; ≥34 → el widget si suena música, si no el reloj mediano.
+- **Mapa**: dibuja filas hasta gastar ~1.5 ms por cuadro (antes 12 filas fijas; en el Nether cada columna cuesta hasta 52 bloques).
+- **Bocinas y dimensiones**: al cruzar un portal se olvidan los altavoces de la dimensión anterior (una bocina en las mismas coordenadas del Nether ya no se oye) y mi altavoz se vuelve a avisar (el servidor lo apaga al cambiar). Si me alejo o acerco a mi bocina (96 bloques) también se reavisa.
+- **K con el celular en la mochila**: el servidor lo pasa a una casilla vacía de la barra rápida (o a la de la mano, cambiando de lugar lo que había) y avisa la casilla (`Req.TAKE_OUT` / `Notify.TAKE_OUT`).
+- **En llamada** el celular se queda en la mano (en la oreja) aunque cierres la pantalla; al colgar vuelve la casilla de antes.
+- Acerca de (Ajustes) con consejos: K, bocina, audífonos, carpetas y `/celular prueba`.
+
 ## Prueba con el cliente real (fotos)
 Flujo manual `.github/workflows/cliente.yml` (`gh api -X POST repos/Axelis705/minecraft-mods/actions/workflows/cliente.yml/dispatches -f ref=main`): el servidor de prueba crea un mundo plano, se copia a `run/saves/prueba` y se abre el juego 1.20.1 de verdad sin pantalla (Xvfb + Mesa por software) con `--quickPlaySingleplayer prueba` y `-Dcelular.autotest=true`. `client/AutoTest` (solo hace algo con esa opción) toma capturas: bloqueo, inicio, inicio con canción, las 15 apps, el celular en la mano (apagado, inicio, música), otro jugador de mentira (`RemotePlayer` agregado solo en el cliente) con cada pose desde 3–4 lados (texto, oreja, foto, linterna, con audífonos), las bocinas encendida/apagada, la linterna de noche y el inicio con la interfaz a 360 y 270 de alto (1080p). Las fotos, `latest.log` y el final del registro se suben a la rama `fotos-celular` (bajar con `git fetch origin fotos-celular`).
 
@@ -107,4 +116,3 @@ Flujo manual `.github/workflows/cliente.yml` (`gh api -X POST repos/Axelis705/mi
 ## Pendiente
 - Nombre y estilo definitivos del celular (los decide Axelis).
 - Probarlo en el juego (sobre todo la cámara en 26.3, la voz con SVC, la música del mundo con 2 jugadores, la pose y la linterna).
-- La pose no se ve si el celular está guardado en la mochila (fuera de la barra rápida) y se abre con la K.
