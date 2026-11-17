@@ -128,6 +128,30 @@ public final class D {
         return sc;
     }
 
+    /**
+     * Un texto en una línea centrada en {@code yMid} (escala {@code max}, o hasta un 20% más chico); si no cabe, en dos líneas a escala
+     * 0.65 (lo que siga se corta). Para filas y tarjetas en celulares chicos.
+     */
+    public static void label(G g, Font f, net.minecraft.network.chat.Component text, float x, float yMid, int w, int color, float max) {
+        int tw = f.width(text);
+        float sc = tw <= 0 ? max : Math.min(max, w / (float) tw);
+        if (sc >= max * 0.8F) {
+            fit(g, f, text.getString(), x, yMid - 4 * sc, sc, sc, w, color, false, false);
+            return;
+        }
+        float s2 = Math.min(max, 0.65F);
+        java.util.List<net.minecraft.util.FormattedCharSequence> lines = f.split(text, (int) (w / s2));
+        int n = Math.min(2, lines.size());
+        float y = yMid - (n * 9 * s2) / 2F;
+        for (int k = 0; k < n; k++) {
+            g.push();
+            g.translate(x, y + k * 9 * s2, 0);
+            g.scale(s2, s2, 1);
+            g.drawString(f, lines.get(k), 0, 0, color, false);
+            g.pop();
+        }
+    }
+
     public static String cut(Font f, String s, int w) {
         if (f.width(s) <= w) {
             return s;

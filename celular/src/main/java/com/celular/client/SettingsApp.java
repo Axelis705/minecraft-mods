@@ -100,7 +100,8 @@ final class SettingsApp extends App {
             int ry = y + i * 22;
             D.rr(g, x0 + 4, ry + 4, x0 + 18, ry + 18, 4, colors[i]);
             D.icon(g, icons[i], x0 + 5, ry + 5, 12, 0xFFFFFFFF);
-            D.fit(g, f, Component.translatable("celular.settings." + TOGGLES[i]).getString(), x0 + 23, ry + 7, 1F, 0.65F, x1 - x0 - 50, s.fg(), false, false);
+            // en una línea si cabe; si no, en dos (en pantallas de 240 de alto antes se cortaban casi todos: "Notificatio…")
+            D.label(g, f, Component.translatable("celular.settings." + TOGGLES[i]), x0 + 23, ry + 11, x1 - x0 - 50, s.fg(), 1F);
             boolean on = value(i);
             int sx = x1 - 26, sy = ry + 6;
             Anim.toggle(g, sx, sy, on, "set:" + TOGGLES[i]);

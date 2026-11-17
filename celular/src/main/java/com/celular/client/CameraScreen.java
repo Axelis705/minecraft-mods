@@ -103,8 +103,14 @@ public class CameraScreen extends BaseScreen {
 
     // ------------------------------------------------------------------ geometría
 
+    /*
+     * Arriba hace falta lugar para la etiqueta del modo (24) y abajo para los botones y la ayuda (50). En pantallas chicas el visor
+     * se achica: antes, con 240 de alto, la etiqueta quedaba cortada arriba y la ayuda encima del botón de disparo.
+     */
+    private static final int TOP = 24, BOTTOM = 50;
+
     private int side() {
-        return (int) (Math.min(width, height) * 0.8);
+        return Math.max(60, Math.min((int) (Math.min(width, height) * 0.8), height - TOP - BOTTOM));
     }
 
     private int vx() {
@@ -112,7 +118,7 @@ public class CameraScreen extends BaseScreen {
     }
 
     private int vy() {
-        return height / 2 - side() / 2 - 8;
+        return TOP + Math.max(0, (height - TOP - BOTTOM - side()) / 2);
     }
 
     private int shutterX() {
@@ -120,7 +126,7 @@ public class CameraScreen extends BaseScreen {
     }
 
     private int shutterY() {
-        return Math.min(height - 22, vy() + side() + 20);
+        return vy() + side() + 20;
     }
 
     // ------------------------------------------------------------------ foto
@@ -227,7 +233,7 @@ public class CameraScreen extends BaseScreen {
         }
         // ayuda
         Component help = Component.translatable("celular.camera.help");
-        g.drawString(font, help, width / 2 - font.width(help) / 2, Math.min(height - 10, sy + 20), 0xC0FFFFFF, false);
+        D.fit(g, font, help.getString(), width / 2F, Math.min(height - 9, sy + 19), 1F, 0.6F, width - 8, 0xC0FFFFFF, false, true);
         // destello
         long fa = now - flashAt;
         if (fa < 350) {

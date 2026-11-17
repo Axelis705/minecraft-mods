@@ -196,7 +196,7 @@ final class WeatherApp extends App {
             D.rr(g, x0, y, x1, y + 22, 7, 0x40000000);
             D.icon(g, i.night ? D.SUN : D.SKULL, x0 + 5, y + 5, 12, 0xFFFFFFFF);
             Component when = Component.translatable(i.night ? "celular.weather.dawn_in" : "celular.weather.mobs_in", i.minutesToChange);
-            small(g, D.cut(f, when.getString(), (int) ((x1 - x0 - 24) / 0.75F)), x0 + 21, y + 8, 0xFFFFFFFF, 0.75F);
+            D.label(g, f, when, x0 + 21, y + 11, x1 - x0 - 24, 0xFFFFFFFF, 0.75F);
             y += 26;
             D.rr(g, x0, y, x1, y + 22, 7, 0x40000000);
             drawMoon(g, x0 + 11, y + 11, 6, i.moon);
