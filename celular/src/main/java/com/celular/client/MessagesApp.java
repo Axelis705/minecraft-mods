@@ -58,10 +58,10 @@ final class MessagesApp extends App {
     }
 
     private void makeInput() {
-        input = s.box(s.dx0 + 10, inputTop() + 5, s.dw() - 34, 10, "celular.msg.hint", 256);
+        input = s.box(s.dx0 + 26, inputTop() + 5, s.dw() - 50, 10, "celular.msg.hint", 256);
     }
 
-    private void openChat(UUID id, String name) {
+    void openChat(UUID id, String name) {
         chat = id;
         chatName = name;
         Chats.open = null;
@@ -79,6 +79,18 @@ final class MessagesApp extends App {
         Chats.viewing = null;
         scroll.reset();
         askList();
+    }
+
+    /** Manda dónde estoy (se ve como una tarjeta que el otro puede guardar en su Brújula). */
+    private void sendLocation() {
+        net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+        if (chat == null || mc.player == null) {
+            return;
+        }
+        String t = Chats.LOC + Math.round(mc.player.getX()) + "|" + Math.round(mc.player.getY()) + "|" + Math.round(mc.player.getZ()) + "|"
+                + CompassApp.currentDim();
+        Net.toServer(new AppNet.Req(AppNet.Req.MSG_SEND, chat, 0, t));
+        stick = true;
     }
 
     private void send() {
@@ -161,9 +173,9 @@ final class MessagesApp extends App {
             if (c.last.isEmpty()) {
                 prev = Component.translatable("celular.msg.start").getString();
             } else if (c.lastMine) {
-                prev = Component.translatable("celular.msg.you").getString() + ": " + c.last;
+                prev = Component.translatable("celular.msg.you").getString() + ": " + Chats.pretty(c.last);
             } else {
-                prev = isAll(c.id) ? c.name + ": " + c.last : c.last;
+                prev = isAll(c.id) ? c.name + ": " + Chats.pretty(c.last) : Chats.pretty(c.last);
             }
             int pw = s.dw() - 30 - (c.unread > 0 ? 14 : 4);
             small(g, D.cut(f, prev, (int) (pw / 0.7F)), s.dx0 + 27, ry + 15, c.unread > 0 ? s.fg() : s.sub(), 0.7F);
@@ -198,11 +210,27 @@ final class MessagesApp extends App {
         AppNet.MsgThread t = Chats.open != null && Chats.open.id.equals(chat) ? Chats.open : null;
         avatar(g, chat, s.dx0 + 18, y0 + 3, 12, t != null && t.online);
         String title = isAll(chat) ? Component.translatable("celular.msg.all").getString() : chatName;
-        g.drawString(f, Component.literal(D.cut(f, title, s.dw() - 40)).withStyle(ChatFormatting.BOLD), s.dx0 + 34, y0 + 5, s.fg(), false);
+        g.drawString(f, Component.literal(D.cut(f, title, s.dw() - 56)).withStyle(ChatFormatting.BOLD), s.dx0 + 34, y0 + 5, s.fg(), false);
+        if (!isAll(chat)) {
+            // llamar a esta persona
+            boolean hc = s.in(mx, my, s.dx1 - 18, y0 + 1, s.dx1 - 2, y0 + 17);
+            D.icon(g, D.CALL, s.dx1 - 15, y0 + 4, 11, hc ? 0xFF4CD964 : GREEN);
+            UUID who = chat;
+            String nm = chatName;
+            hit(s.dx1 - 18, y0, s.dx1, y0 + 18, () -> {
+                if (s.switchTo("phone") instanceof PhoneApp ph) {
+                    ph.dial(who, nm);
+                }
+            });
+        }
         int top = y0 + 19, bottom = inputTop() - 2;
         // caja para escribir y botón de enviar
         int iy = inputTop();
-        D.rr(g, s.dx0 + 5, iy + 2, s.dx1 - 21, iy + 16, 7, s.card());
+        D.rr(g, s.dx0 + 21, iy + 2, s.dx1 - 21, iy + 16, 7, s.card());
+        boolean hl = s.in(mx, my, s.dx0 + 3, iy + 1, s.dx0 + 19, iy + 17);
+        D.circle(g, s.dx0 + 11, iy + 9, 7, hl ? 0xFFFF6961 : 0xFFFF3B30);
+        D.icon(g, D.PIN, s.dx0 + 6, iy + 4, 10, 0xFFFFFFFF);
+        hit(s.dx0 + 2, iy, s.dx0 + 20, iy + 18, this::sendLocation);
         boolean hs = s.in(mx, my, s.dx1 - 19, iy + 1, s.dx1 - 3, iy + 17);
         D.circle(g, s.dx1 - 11, iy + 9, 7, hs ? 0xFF3AA0FF : BLUE);
         D.icon(g, D.SEND, s.dx1 - 16, iy + 4, 10, 0xFFFFFFFF);
@@ -226,9 +254,10 @@ final class MessagesApp extends App {
         List<FormattedCharSequence>[] lines = new List[t.msgs.size()];
         for (int i = 0; i < t.msgs.size(); i++) {
             AppNet.Msg m = t.msgs.get(i);
-            lines[i] = f.split(Component.literal(m.text), wrap);
+            Object[] loc = Chats.location(m.text);
+            lines[i] = loc != null ? List.of() : f.split(Component.literal(m.text), wrap);
             boolean showName = isAll(chat) && !m.mine && (i == 0 || t.msgs.get(i - 1).mine || !t.msgs.get(i - 1).from.equals(m.from));
-            heights[i] = lines[i].size() * lineH + 6 + (showName ? 7 : 0) + 3;
+            heights[i] = (loc != null ? 24 : lines[i].size() * lineH + 6) + (showName ? 7 : 0) + 3;
             total += heights[i];
         }
         scroll.update(total, bottom - top);
@@ -256,6 +285,12 @@ final class MessagesApp extends App {
                     small(g, D.cut(f, m.from, (int) (maxW / 0.6F)), s.dx0 + 9, yy, D.hsv(Math.floorMod(m.from.hashCode(), 360), 0.6F, 0.95F), 0.6F);
                     yy += 7;
                 }
+                Object[] loc = Chats.location(m.text);
+                if (loc != null) {
+                    drawLocation(g, mx, my, m, loc, yy, maxW, top, bottom);
+                    y += h;
+                    continue;
+                }
                 int bh = lines[i].size() * lineH + 6;
                 int bx0 = m.mine ? s.dx1 - 5 - w : s.dx0 + 5;
                 D.rr(g, bx0, yy, bx0 + w, yy + bh, 5, m.mine ? BLUE : Prefs.dark ? 0xFF2C2C2E : 0xFFE5E5EA);
@@ -272,6 +307,27 @@ final class MessagesApp extends App {
             y += h;
         }
         g.noScissor();
+    }
+
+    /** Tarjeta de ubicación: dónde estaba; si es de otro, tocarla la guarda en la Brújula. */
+    private void drawLocation(G g, int mx, int my, AppNet.Msg m, Object[] loc, int y, int maxW, int top, int bottom) {
+        Font f = font();
+        int w = Math.min(maxW, 92);
+        int x0 = m.mine ? s.dx1 - 5 - w : s.dx0 + 5;
+        boolean h = !m.mine && s.in(mx, my, x0, Math.max(y, top), x0 + w, Math.min(y + 21, bottom));
+        D.rr(g, x0, y, x0 + w, y + 21, 5, m.mine ? BLUE : h ? (Prefs.dark ? 0xFF3A3A3C : 0xFFD1D1D6) : Prefs.dark ? 0xFF2C2C2E : 0xFFE5E5EA);
+        D.circle(g, x0 + 10, y + 10, 7, 0xFFFF3B30);
+        D.icon(g, D.PIN, x0 + 5, y + 5, 10, 0xFFFFFFFF);
+        int fg = m.mine ? 0xFFFFFFFF : s.fg();
+        small(g, D.cut(f, Component.translatable("celular.msg.location").getString(), (int) ((w - 24) / 0.75F)), x0 + 20, y + 3, fg, 0.75F);
+        String xyz = Math.round((Double) loc[0]) + ", " + Math.round((Double) loc[1]) + ", " + Math.round((Double) loc[2]);
+        small(g, D.cut(f, xyz, (int) ((w - 24) / 0.6F)), x0 + 20, y + 12, m.mine ? 0xD0FFFFFF : s.sub(), 0.6F);
+        if (!m.mine) {
+            hitIn(x0, y, x0 + w, y + 21, top, bottom, () -> {
+                CompassApp.addPlace(m.from, (Double) loc[0], (Double) loc[1], (Double) loc[2], (String) loc[3]);
+                PhoneHud.toastQuiet(D.APP_COMPASS, "celular.app.compass", Component.translatable("celular.msg.location_saved", m.from));
+            });
+        }
     }
 
     // ------------------------------------------------------------------ entrada

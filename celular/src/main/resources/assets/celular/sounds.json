@@ -46,5 +46,29 @@
       "celular:unlock"
     ],
     "subtitle": "subtitles.celular.unlock"
+  },
+  "dj_horn": {
+    "sounds": [
+      "celular:dj_horn"
+    ],
+    "subtitle": "subtitles.celular.dj_horn"
+  },
+  "dj_scratch": {
+    "sounds": [
+      "celular:dj_scratch"
+    ],
+    "subtitle": "subtitles.celular.dj_scratch"
+  },
+  "dj_claps": {
+    "sounds": [
+      "celular:dj_claps"
+    ],
+    "subtitle": "subtitles.celular.dj_claps"
+  },
+  "dj_drop": {
+    "sounds": [
+      "celular:dj_drop"
+    ],
+    "subtitle": "subtitles.celular.dj_drop"
   }
 }

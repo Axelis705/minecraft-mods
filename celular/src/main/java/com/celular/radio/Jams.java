@@ -183,6 +183,7 @@ public final class Jams {
             case RadioNet.Req.JAM_PAUSE -> pause(s, p);
             case RadioNet.Req.JAM_REMOVE -> remove(s, p, (int) m.a);
             case RadioNet.Req.JAM_INVITE -> invite(s, p, m.s);
+            case RadioNet.Req.JAM_DJ -> dj(s, p, (int) m.a);
             default -> {
             }
         }
@@ -339,6 +340,29 @@ public final class Jams {
         Net.toPlayer(t, new CelularNet.Notify(CelularNet.Notify.JAM_INVITE, p.getScoreboardName(), j.id + "|" + j.name));
     }
 
+    private static final Map<UUID, Long> LAST_DJ = new HashMap<>();
+
+    /** Botonera de DJ: todos los del Jam oyen el efecto (como mucho uno cada 1.2 s por persona). */
+    private static void dj(MinecraftServer s, ServerPlayer p, int fx) {
+        Jam j = of(p.getUUID());
+        if (j == null || fx < 0 || fx > 3) {
+            return;
+        }
+        long now = System.currentTimeMillis();
+        Long last = LAST_DJ.get(p.getUUID());
+        if (last != null && now - last < 1200) {
+            return;
+        }
+        LAST_DJ.put(p.getUUID(), now);
+        CelularNet.Notify n = new CelularNet.Notify(CelularNet.Notify.DJ, p.getScoreboardName(), Integer.toString(fx));
+        for (UUID u : j.members) {
+            ServerPlayer q = s.getPlayerList().getPlayer(u);
+            if (q != null) {
+                Net.toPlayer(q, n);
+            }
+        }
+    }
+
     /** La canción se borró del mundo: sale de todas las colas. */
     public static void songRemoved(MinecraftServer s, long song) {
         for (Jam j : JAMS.values()) {
@@ -363,6 +387,7 @@ public final class Jams {
     }
 
     public static void clear() {
+        LAST_DJ.clear();
         JAMS.clear();
         MEMBER.clear();
         if (ticking != null) {

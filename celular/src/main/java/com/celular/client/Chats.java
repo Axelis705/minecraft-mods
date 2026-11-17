@@ -45,9 +45,36 @@ public final class Chats {
         stale = true;
         if (!m.msg.mine && !seeing) {
             badge++;
+            if (!Prefs.msgToasts) {
+                return;
+            }
             String who = Messages.ALL.equals(m.conv) ? Component.translatable("celular.msg.all").getString() + " · " + m.msg.from : m.msg.from;
-            PhoneHud.toast(D.APP_MESSAGES, "celular.app.messages", Component.literal(who + ": " + m.msg.text));
+            PhoneHud.toast(D.APP_MESSAGES, "celular.app.messages", Component.literal(who + ": " + pretty(m.msg.text)));
         }
+    }
+
+    /** Mensaje con una ubicación: "[[loc]]x|y|z|dimensión". */
+    static final String LOC = "[[loc]]";
+
+    /** {x, y, z} y la dimensión de un mensaje de ubicación, o null si es texto normal. */
+    static Object[] location(String text) {
+        if (!text.startsWith(LOC)) {
+            return null;
+        }
+        String[] p = text.substring(LOC.length()).split("\\|", 4);
+        if (p.length < 4) {
+            return null;
+        }
+        try {
+            return new Object[]{Double.parseDouble(p[0]), Double.parseDouble(p[1]), Double.parseDouble(p[2]), p[3]};
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    /** Cómo se ve un mensaje en una línea (las ubicaciones como "Ubicación"). */
+    static String pretty(String text) {
+        return location(text) != null ? Component.translatable("celular.msg.location").getString() : text;
     }
 
     /** (El mapa y la billetera no son públicos: sus datos llegan por aquí.) */

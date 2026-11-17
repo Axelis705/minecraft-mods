@@ -33,6 +33,12 @@ public final class Prefs {
     public static float othersVolume = 0.8F;
     /** Mapa con amigos: los demás ven dónde estoy. */
     public static boolean shareLocation = true;
+    /** Oír la música que ponen otros con su altavoz. */
+    public static boolean hearOthers = true;
+    /** Notas musicales flotando sobre quien pone música. */
+    public static boolean partyNotes = true;
+    /** Avisos de mensajes nuevos. */
+    public static boolean msgToasts = true;
     private static boolean loaded;
 
     private Prefs() {
@@ -69,6 +75,9 @@ public final class Prefs {
             speaker = Boolean.parseBoolean(p.getProperty("musica_altavoz", "true"));
             othersVolume = Math.max(0, Math.min(1, Float.parseFloat(p.getProperty("musica_volumen_otros", "0.8"))));
             shareLocation = Boolean.parseBoolean(p.getProperty("compartir_ubicacion", "true"));
+            hearOthers = Boolean.parseBoolean(p.getProperty("oir_altavoces", "true"));
+            partyNotes = Boolean.parseBoolean(p.getProperty("notas_fiesta", "true"));
+            msgToasts = Boolean.parseBoolean(p.getProperty("avisos_mensajes", "true"));
         } catch (Exception ignored) {
         }
     }
@@ -90,6 +99,9 @@ public final class Prefs {
         p.setProperty("musica_altavoz", Boolean.toString(speaker));
         p.setProperty("musica_volumen_otros", Float.toString(othersVolume));
         p.setProperty("compartir_ubicacion", Boolean.toString(shareLocation));
+        p.setProperty("oir_altavoces", Boolean.toString(hearOthers));
+        p.setProperty("notas_fiesta", Boolean.toString(partyNotes));
+        p.setProperty("avisos_mensajes", Boolean.toString(msgToasts));
         try {
             Files.createDirectories(file().getParent());
             try (Writer w = Files.newBufferedWriter(file(), StandardCharsets.UTF_8)) {

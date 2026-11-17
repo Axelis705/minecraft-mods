@@ -598,6 +598,29 @@ final class MusicApp extends App {
             }
         }
         y += 38;
+        // botonera de DJ: lo oyen todos los del Jam
+        String[] djKeys = {"celular.radio.dj_horn", "celular.radio.dj_scratch", "celular.radio.dj_claps", "celular.radio.dj_drop"};
+        int[] djIcons = {D.SPEAKER, D.REFRESH, D.PEOPLE, D.VOL_HIGH};
+        int[] djCols = {0xFFFF9F0A, 0xFFBF5AF2, 0xFF30D158, 0xFFFF375F};
+        int gap = 3, bw = (s.dw() - 12 - gap * 3) / 4;
+        long now = System.currentTimeMillis();
+        for (int k = 0; k < 4; k++) {
+            int bx = s.dx0 + 6 + k * (bw + gap);
+            boolean hov = s.in(mx, my, bx, y, bx + bw, y + 18);
+            boolean lit = Radio.djFx == k && now - Radio.djAt < 700;
+            int col = lit ? D.mix(djCols[k], 0xFFFFFFFF, 0.35F) : hov ? D.mix(djCols[k], 0xFFFFFFFF, 0.15F) : djCols[k];
+            D.rr(g, bx, y, bx + bw, y + 18, 5, col);
+            D.icon(g, djIcons[k], bx + bw / 2 - 4, y + 2, 8, 0xFFFFFFFF);
+            String lbl = D.cut(f, Component.translatable(djKeys[k]).getString(), (int) ((bw - 2) / 0.5F));
+            small(g, lbl, bx + bw / 2 - (int) (f.width(lbl) * 0.5F / 2), y + 12, 0xFFFFFFFF, 0.5F);
+            int fx = k;
+            hit(bx, y, bx + bw, y + 18, () -> Radio.djPress(fx));
+        }
+        if (now - Radio.djAt < 1500 && !Radio.djWho.isEmpty()) {
+            String w = "♪ " + Radio.djWho;
+            small(g, D.cut(f, w, (int) ((s.dw() - 12) / 0.55F)), s.dx1 - 6 - (int) (f.width(w) * 0.55F), y + 20, djCols[Math.max(0, Radio.djFx)], 0.55F);
+        }
+        y += 24;
         // cola
         small(g, Component.translatable("celular.radio.queue").getString().toUpperCase(java.util.Locale.ROOT), s.dx0 + 6, y, s.sub(), 0.6F);
         boolean ha = s.in(mx, my, s.dx1 - 20, y - 3, s.dx1, y + 8);

@@ -213,6 +213,17 @@ final class MapApp extends App {
         float k = size / (float) N / Math.max(1, shownZoom);
         double cxw = shownX + 0.5, czw = shownZ + 0.5;
         g.scissor(x0, y0, x0 + size, y0 + size);
+        // lugares guardados en la Brújula (alfileres)
+        for (CompassApp.Place pl : CompassApp.placesHere()) {
+            float px = x0 + size / 2F + (float) ((pl.x - cxw) * k), py = y0 + size / 2F + (float) ((pl.z - czw) * k);
+            if (px < x0 || px > x0 + size || py < y0 || py > y0 + size) {
+                continue;
+            }
+            D.icon(g, D.PIN, (int) px - 4, (int) py - 8, 8, 0xFFFF3B30);
+            if (s.in(mx, my, px - 5, py - 9, px + 5, py + 1)) {
+                small(g, D.cut(f, pl.name, (int) (60 / 0.6F)), (int) px + 4, (int) py - 8, 0xFFFFFFFF, 0.6F);
+            }
+        }
         // amigos
         if (friends != null && mc.player != null) {
             for (int i = 0; i < friends.ids.size(); i++) {
@@ -267,7 +278,17 @@ final class MapApp extends App {
             double[] fp = friends.pos.get(i);
             double dx = fp[0] - mc.player.getX(), dz = fp[2] - mc.player.getZ();
             int dist = (int) Math.round(Math.sqrt(dx * dx + dz * dz));
+            if (s.in(mx, my, s.dx0, Math.max(ry, ly), s.dx1, Math.min(ry + rowH, bottom))) {
+                g.fill(s.dx0, ry, s.dx1, ry + rowH, s.card());
+            }
             D.faceRound(g, id, s.dx0 + 6, ry + 2, 9, s.line());
+            String fname = friends.names.get(i);
+            hitIn(s.dx0, ry, s.dx1, ry + rowH, ly, bottom, () -> {
+                // tocar a un amigo abre su chat
+                if (s.switchTo("messages") instanceof MessagesApp ma) {
+                    ma.openChat(id, fname);
+                }
+            });
             String info = dist + " m · " + dir(dx, dz);
             int iw = (int) (f.width(info) * 0.65F);
             small(g, info, s.dx1 - 5 - iw, ry + 4, s.sub(), 0.65F);

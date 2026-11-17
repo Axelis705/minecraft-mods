@@ -474,7 +474,7 @@ public final class CelularNet {
     /** Una notificación en el celular. */
     public static final class Notify {
         public static final int LIKE = 0, NEW_POST = 1, MISSED_CALL = 2, POSTED = 3, ERROR = 4, JAM_INVITE = 5, WALLET = 6, WALLET_SENT = 7,
-                WALLET_IN = 8;
+                WALLET_IN = 8, DJ = 9;
         public final int type;
         public final String who;
         /** Texto extra (o una clave de traducción en ERROR). */

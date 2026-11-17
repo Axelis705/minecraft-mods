@@ -59,7 +59,66 @@ public final class ClientHooks {
 
     public static void openPhone(int color) {
         lastColor = color;
+        takeOut();
         open(new PhoneScreen(color, null));
+    }
+
+    // ------------------------------------------------------------------ sacar el celular a la mano (para que los demás lo vean)
+
+    /** Casilla que había antes de sacar el celular con la K (-1 = no se cambió). */
+    private static int restoreSlot = -1;
+
+    private static int selected(net.minecraft.world.entity.player.Inventory inv) {
+        //#if MC >= 1.21.5
+        //$$ return inv.getSelectedSlot();
+        //#else
+        return inv.selected;
+        //#endif
+    }
+
+    private static void select(net.minecraft.world.entity.player.Inventory inv, int slot) {
+        //#if MC >= 1.21.5
+        //$$ inv.setSelectedSlot(slot);
+        //#else
+        inv.selected = slot;
+        //#endif
+    }
+
+    /** Si el celular está en la barra rápida pero no en la mano, se elige esa casilla (el juego se lo avisa solo al servidor). */
+    private static void takeOut() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || Flash.inHand(mc)) {
+            return;
+        }
+        net.minecraft.world.entity.player.Inventory inv = mc.player.getInventory();
+        for (int i = 0; i < 9; i++) {
+            if (inv.getItem(i).getItem() instanceof com.celular.PhoneItem) {
+                restoreSlot = selected(inv);
+                select(inv, i);
+                return;
+            }
+        }
+    }
+
+    /** Cada cuadro: al cerrar el celular se vuelve a la casilla de antes (salvo con la linterna encendida). */
+    static void putAwayIfClosed() {
+        if (restoreSlot < 0) {
+            return;
+        }
+        Object sc = screen();
+        if (sc instanceof PhoneScreen || sc instanceof CameraScreen) {
+            return;
+        }
+        int r = restoreSlot;
+        restoreSlot = -1;
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || Flash.on) {
+            return;
+        }
+        net.minecraft.world.entity.player.Inventory inv = mc.player.getInventory();
+        if (inv.getItem(selected(inv)).getItem() instanceof com.celular.PhoneItem && r >= 0 && r < 9) {
+            select(inv, r);
+        }
     }
 
     /** Abre una pantalla (en 26.2+ las pantallas viven en gui). */
@@ -205,6 +264,7 @@ public final class ClientHooks {
             case CelularNet.Notify.MISSED_CALL -> PhoneHud.toast(D.APP_PHONE, "celular.app.phone",
                     net.minecraft.network.chat.Component.translatable("celular.notify.missed", m.who));
             case CelularNet.Notify.JAM_INVITE -> Radio.invite(m);
+            case CelularNet.Notify.DJ -> Radio.dj(m);
             case CelularNet.Notify.WALLET -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet", net.minecraft.network.chat.Component.translatable(m.text));
             case CelularNet.Notify.WALLET_SENT -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet",
                     net.minecraft.network.chat.Component.translatable("celular.wallet.sent", m.text, m.who));
@@ -239,6 +299,7 @@ public final class ClientHooks {
         Photos.clearAll();
         Radio.reset();
         Flash.reset();
+        restoreSlot = -1;
         Chats.reset();
         Notes.reset();
         MapApp.reset();

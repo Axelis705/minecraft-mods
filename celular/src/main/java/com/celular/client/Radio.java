@@ -474,6 +474,15 @@ public final class Radio {
     }
 
     private static void remotes(Minecraft mc) {
+        if (!Prefs.hearOthers) {
+            for (Remote r : REMOTES.values()) {
+                if (r.stream != null) {
+                    r.stream.kill();
+                    r.stream = null;
+                }
+            }
+            return;
+        }
         long now = System.currentTimeMillis();
         Vec3 ear = mc.player.getEyePosition();
         List<Map.Entry<UUID, Remote>> near = new ArrayList<>();
@@ -642,6 +651,33 @@ public final class Radio {
         toast(Component.translatable("celular.radio.invited", m.who, parts[1]));
     }
 
+    /** Último efecto de DJ que sonó (para dibujarlo en la app un momento). */
+    public static String djWho = "";
+    public static int djFx = -1;
+    public static long djAt;
+
+    /** Alguien del Jam tocó un botón de la botonera: suena aquí (sin importar dónde estés). */
+    static void dj(CelularNet.Notify m) {
+        int fx;
+        try {
+            fx = Integer.parseInt(m.text);
+        } catch (NumberFormatException e) {
+            return;
+        }
+        if (fx < 0 || fx >= com.celular.CelularReg.DJ.size() || !inJam()) {
+            return;
+        }
+        float vol = Math.max(0.15F, MusicPlayer.volume);
+        ClientHooks.play(com.celular.CelularReg.DJ.get(fx).get(), 1.0F, vol);
+        djWho = m.who;
+        djFx = fx;
+        djAt = System.currentTimeMillis();
+    }
+
+    public static void djPress(int fx) {
+        Net.toServer(new RadioNet.Req(RadioNet.Req.JAM_DJ, fx, 0, ""));
+    }
+
     /** Segundo actual del Jam según el servidor. */
     public static double jamPos() {
         return (jam.posMs + (jam.playing ? System.currentTimeMillis() - jamAt : 0)) / 1000.0;
@@ -774,7 +810,7 @@ public final class Radio {
 
     private static void party(Minecraft mc) {
         long now = System.currentTimeMillis();
-        if (now - notesAt < 650 || mc.isPaused()) {
+        if (now - notesAt < 650 || mc.isPaused() || !Prefs.partyNotes) {
             return;
         }
         notesAt = now;

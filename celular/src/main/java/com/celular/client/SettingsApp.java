@@ -16,19 +16,27 @@ final class SettingsApp extends App {
     @Override
     void enter() {
         walls = false;
+        scroll.reset();
     }
 
-    private static final String[] TOGGLES = {"dark", "lock", "notifications", "shutter", "grid", "music_mute", "music_toasts"};
+    private final Scroll scroll = new Scroll();
+    private static final String[] TOGGLES = {"dark", "lock", "notifications", "msg_toasts", "shutter", "grid", "music_mute", "music_toasts",
+            "speaker", "hear_others", "party", "share_location"};
 
     private boolean value(int i) {
         return switch (i) {
             case 0 -> Prefs.dark;
             case 1 -> Prefs.lockScreen;
             case 2 -> Prefs.notifications;
-            case 3 -> Prefs.shutterSound;
-            case 4 -> Prefs.grid;
-            case 5 -> Prefs.muteGameMusic;
-            default -> Prefs.musicToasts;
+            case 3 -> Prefs.msgToasts;
+            case 4 -> Prefs.shutterSound;
+            case 5 -> Prefs.grid;
+            case 6 -> Prefs.muteGameMusic;
+            case 7 -> Prefs.musicToasts;
+            case 8 -> Prefs.speaker;
+            case 9 -> Prefs.hearOthers;
+            case 10 -> Prefs.partyNotes;
+            default -> Prefs.shareLocation;
         };
     }
 
@@ -37,34 +45,56 @@ final class SettingsApp extends App {
             case 0 -> Prefs.dark = !Prefs.dark;
             case 1 -> Prefs.lockScreen = !Prefs.lockScreen;
             case 2 -> Prefs.notifications = !Prefs.notifications;
-            case 3 -> Prefs.shutterSound = !Prefs.shutterSound;
-            case 4 -> Prefs.grid = !Prefs.grid;
-            case 5 -> Prefs.muteGameMusic = !Prefs.muteGameMusic;
-            default -> Prefs.musicToasts = !Prefs.musicToasts;
+            case 3 -> Prefs.msgToasts = !Prefs.msgToasts;
+            case 4 -> Prefs.shutterSound = !Prefs.shutterSound;
+            case 5 -> Prefs.grid = !Prefs.grid;
+            case 6 -> Prefs.muteGameMusic = !Prefs.muteGameMusic;
+            case 7 -> Prefs.musicToasts = !Prefs.musicToasts;
+            case 8 -> Prefs.speaker = !Prefs.speaker;
+            case 9 -> Prefs.hearOthers = !Prefs.hearOthers;
+            case 10 -> Prefs.partyNotes = !Prefs.partyNotes;
+            default -> {
+                Prefs.shareLocation = !Prefs.shareLocation;
+                com.celular.plat.Net.toServer(new com.celular.net.AppNet.Req(com.celular.net.AppNet.Req.SHARE, null, Prefs.shareLocation ? 1 : 0, ""));
+            }
         }
         Prefs.save();
     }
 
     @Override
     void draw(G g, int mx, int my, float pt) {
+        hits.clear();
         Font f = font();
         g.fill(s.dx0, s.dy0, s.dx1, s.dy1, s.bg());
         if (walls) {
             drawWalls(g, mx, my);
             return;
         }
-        int y = header(g, "celular.app.settings", false, mx, my) + 6;
-        // fondo de pantalla
+        int top = header(g, "celular.app.settings", false, mx, my);
         int x0 = s.dx0 + 6, x1 = s.dx1 - 6;
+        // todo lo de abajo se desplaza
+        int[] colors = {0xFF636366, 0xFF5856D6, 0xFFFF3B30, 0xFF30D158, 0xFFFF9F0A, 0xFF34C759, 0xFFFA233B, 0xFFFF2D55, 0xFF1DB954, 0xFF0A84FF,
+                0xFFBF5AF2, 0xFFFF9500};
+        int[] icons = {D.MOON, D.LOCK, D.CHECK, D.CHAT, D.CAMERA, D.GALLERY, D.NOTE, D.NOTE, D.SPEAKER, D.HEADPHONES, D.STAR, D.PIN};
+        Component about = Component.translatable("celular.settings.about").withStyle(ChatFormatting.BOLD);
+        java.util.List<net.minecraft.util.FormattedCharSequence> aboutLines = f.split(Component.translatable("celular.settings.about_text"),
+                (int) ((x1 - x0 - 4) / 0.75F));
+        int content = 6 + 28 + TOGGLES.length * 22 + 10 + 11 + aboutLines.size() * 8 + 6;
+        scroll.update(content, s.cy1 - top);
+        g.scissor(s.dx0, top, s.dx1, s.cy1);
+        int y = top + 6 - scroll.off();
+        // fondo de pantalla
         D.rr(g, x0, y, x1, y + 22, 6, s.card());
-        boolean hw = s.in(mx, my, x0, y, x1, y + 22);
+        boolean hw = s.in(mx, my, x0, Math.max(y, top), x1, y + 22);
         D.rr(g, x0 + 4, y + 4, x0 + 18, y + 18, 4, 0xFF5E5CE6);
         D.icon(g, D.WALLPAPER, x0 + 5, y + 5, 12, 0xFFFFFFFF);
         g.drawString(f, Component.translatable("celular.settings.wallpaper"), x0 + 23, y + 7, hw ? s.accent() : s.fg(), false);
         D.icon(g, D.NEXT, x1 - 12, y + 6, 10, s.sub());
+        hitIn(x0, y, x1, y + 22, top, s.cy1, () -> {
+            walls = true;
+            scroll.reset();
+        });
         y += 28;
-        int[] colors = {0xFF636366, 0xFF5856D6, 0xFFFF3B30, 0xFFFF9F0A, 0xFF34C759, 0xFFFA233B, 0xFFFF2D55};
-        int[] icons = {D.MOON, D.LOCK, D.CHECK, D.CAMERA, D.GALLERY, D.NOTE, D.NOTE};
         D.rr(g, x0, y, x1, y + TOGGLES.length * 22, 6, s.card());
         for (int i = 0; i < TOGGLES.length; i++) {
             int ry = y + i * 22;
@@ -78,13 +108,14 @@ final class SettingsApp extends App {
             if (i < TOGGLES.length - 1) {
                 g.fill(x0 + 23, ry + 21, x1, ry + 22, s.line());
             }
+            int ti = i;
+            hitIn(x0, ry, x1, ry + 22, top, s.cy1, () -> flip(ti));
         }
         y += TOGGLES.length * 22 + 10;
         // acerca de
-        Component about = Component.translatable("celular.settings.about").withStyle(ChatFormatting.BOLD);
         g.drawString(f, about, x0 + 2, y, s.sub(), false);
         y += 11;
-        for (net.minecraft.util.FormattedCharSequence l : f.split(Component.translatable("celular.settings.about_text"), x1 - x0 - 4)) {
+        for (net.minecraft.util.FormattedCharSequence l : aboutLines) {
             g.push();
             g.translate(x0 + 2, y, 0);
             g.scale(0.75F, 0.75F, 1);
@@ -92,6 +123,7 @@ final class SettingsApp extends App {
             g.pop();
             y += 8;
         }
+        g.noScissor();
     }
 
     private int wallCell() {
@@ -144,20 +176,22 @@ final class SettingsApp extends App {
             }
             return true;
         }
-        int y0 = s.cy0 + 19 + 6;
-        int x0 = s.dx0 + 6, x1 = s.dx1 - 6;
-        if (s.in(x, y, x0, y0, x1, y0 + 22)) {
-            walls = true;
-            ClientHooks.tap();
-            return true;
+        clickHits(x, y);
+        return true;
+    }
+
+    @Override
+    boolean drag(double x, double y, double dx, double dy) {
+        if (!walls) {
+            scroll.drag(dy);
         }
-        int ty = y0 + 28;
-        for (int i = 0; i < TOGGLES.length; i++) {
-            if (s.in(x, y, x0, ty + i * 22, x1, ty + i * 22 + 22)) {
-                flip(i);
-                ClientHooks.tap();
-                return true;
-            }
+        return true;
+    }
+
+    @Override
+    boolean scroll(double x, double y, double d) {
+        if (!walls) {
+            scroll.wheel(d);
         }
         return true;
     }

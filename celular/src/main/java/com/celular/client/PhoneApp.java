@@ -302,7 +302,7 @@ final class PhoneApp extends App {
         return true;
     }
 
-    private void dial(UUID id, String name) {
+    void dial(UUID id, String name) {
         ClientHooks.tap();
         ClientHooks.lastEnd = null;
         // se ve "llamando" de una vez; el servidor confirma (o dice que está ocupado)

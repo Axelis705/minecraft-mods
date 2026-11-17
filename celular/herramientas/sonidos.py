@@ -136,13 +136,74 @@ def unlock():
     return s
 
 
+# ---------------------------------------------------------------- botonera de DJ (Jam)
+
+def saw(freq, x):
+    """Diente de sierra suave (suma de armónicos)."""
+    out = np.zeros_like(x)
+    for k in range(1, 14):
+        out += ((-1) ** (k + 1)) * np.sin(2 * np.pi * k * freq * x) / k
+    return out
+
+
+def dj_horn():
+    """Bocina de fiesta: tres toques (corto, corto, largo) de un acorde de sierra que sube un poquito al empezar."""
+    buf = np.zeros(int(R * 1.5))
+    for at, dur in ((0.0, 0.16), (0.22, 0.16), (0.44, 0.9)):
+        x = t(dur)
+        bend = 1 - 0.06 * np.exp(-x * 30)
+        s = sum(saw(f * bend, x) for f in (466, 587, 698)) / 3
+        e = np.minimum(1, x / 0.01) * np.minimum(1, (dur - x) / 0.04)
+        place(buf, s * e, at)
+    return np.tanh(buf * 2.2)
+
+
+def dj_scratch():
+    """Scratch de disco: ruido filtrado que va y viene con el tono subiendo y bajando."""
+    dur = 0.9
+    x = t(dur)
+    n = len(x)
+    noise = bandpass_noise(n, 300, 5000, seed=7)
+    # velocidad del disco: adelante, atrás, adelante rápido
+    speed = np.sin(2 * np.pi * 2.2 * x) * np.sin(2 * np.pi * 0.55 * x + 0.3)
+    tone = np.sin(2 * np.pi * np.cumsum(220 + 900 * np.abs(speed)) / R)
+    s = (0.6 * noise / (np.max(np.abs(noise)) + 1e-9) + 0.5 * tone) * np.abs(speed) ** 0.7
+    return s * np.minimum(1, (dur - x) / 0.05)
+
+
+def dj_claps():
+    """Aplausos: muchas palmadas cortas de ruido, cada una un poco distinta."""
+    buf = np.zeros(int(R * 1.4))
+    rng = np.random.default_rng(3)
+    for i in range(26):
+        at = rng.uniform(0, 1.15)
+        n = int(R * 0.06)
+        c = bandpass_noise(n, 900 + rng.uniform(-200, 300), 4500, seed=10 + i)
+        c = c / (np.max(np.abs(c)) + 1e-9) * env(n, 0.001, 0.05, 6) * rng.uniform(0.4, 1.0)
+        place(buf, c, at)
+    return buf
+
+
+def dj_drop():
+    """El bajo que cae: un golpe grave que baja de tono y vibra."""
+    dur = 1.3
+    x = t(dur)
+    f = 40 + 110 * np.exp(-x * 4)
+    s = np.sin(2 * np.pi * np.cumsum(f) / R) * env(len(x), 0.004, dur, 2.2)
+    click = bandpass_noise(len(x), 2000, 8000, seed=5) * np.exp(-x * 120) * 0.3
+    return np.tanh((s + click) * 1.8)
+
+
 SOUNDS = {"shutter": shutter, "ringtone": ringtone, "ringback": ringback, "notify": notify, "like": like, "hangup": hangup,
-          "tap": tap, "unlock": unlock}
+          "tap": tap, "unlock": unlock, "dj_horn": dj_horn, "dj_scratch": dj_scratch, "dj_claps": dj_claps, "dj_drop": dj_drop}
 
 
 def main():
+    import sys
+    only = sys.argv[1:]          # se pueden generar solo algunos (los demás no cambian)
     for name, fn in SOUNDS.items():
-        write(name, fn())
+        if not only or name in only:
+            write(name, fn())
     js = {n: {"sounds": ["celular:" + n], "subtitle": "subtitles.celular." + n} for n in SOUNDS}
     with open(os.path.join(ROOT, "sounds.json"), "w") as fh:
         json.dump(js, fh, indent=2)

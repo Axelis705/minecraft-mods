@@ -163,6 +163,35 @@ final class CompassApp extends App {
         }
     }
 
+    // ------------------------------------------------------------------ para otras apps (Mensajes y Mapa)
+
+    /** La dimensión donde está el jugador (como se guarda en los lugares). */
+    static String currentDim() {
+        return dim();
+    }
+
+    /** Guarda un lugar (por ejemplo una ubicación que te mandaron por Mensajes) y la flecha grande apunta hacia él. */
+    static void addPlace(String name, double x, double y, double z, String dimension) {
+        load();
+        Place p = new Place(name, x, y, z, dimension);
+        places.add(p);
+        target = p;
+        save();
+    }
+
+    /** Los lugares guardados de esta dimensión (para dibujarlos en el mapa). */
+    static List<Place> placesHere() {
+        load();
+        String d = dim();
+        List<Place> out = new ArrayList<>();
+        for (Place p : places) {
+            if (p.dim.equals(d)) {
+                out.add(p);
+            }
+        }
+        return out;
+    }
+
     /** Cada cuadro: si el jugador murió, recuerda dónde. */
     static void watchDeath() {
         Minecraft mc = Minecraft.getInstance();

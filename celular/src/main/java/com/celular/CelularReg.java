@@ -47,6 +47,8 @@ public final class CelularReg {
     public static final RegistryObject<SoundEvent> HANGUP = sound("hangup");
     public static final RegistryObject<SoundEvent> TAP = sound("tap");
     public static final RegistryObject<SoundEvent> UNLOCK = sound("unlock");
+    /** Botonera de DJ del Jam: bocina, scratch, aplausos y bajo. */
+    public static final List<RegistryObject<SoundEvent>> DJ = List.of(sound("dj_horn"), sound("dj_scratch"), sound("dj_claps"), sound("dj_drop"));
 
     public static final RegistryObject<CreativeModeTab> TAB = TABS.register("main", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.celular"))

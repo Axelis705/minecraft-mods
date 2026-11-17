@@ -54,6 +54,7 @@ public final class Flash {
         if (mc.player == null || mc.getConnection() == null) {
             return;
         }
+        ClientHooks.putAwayIfClosed();
         if (on && !inHand(mc) && !(ClientHooks.screen() instanceof PhoneScreen)) {
             on = false;                                    // soltó el celular (o lo cambió de mano a la barra)
             com.celular.plat.Plat.msg(mc.player, Component.translatable("celular.flash.off_msg"), true);

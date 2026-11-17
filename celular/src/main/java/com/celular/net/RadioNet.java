@@ -60,7 +60,7 @@ public final class RadioNet {
     /** Un pedido sencillo: qué ({@code what}) con dos números y un texto. */
     public static final class Req {
         public static final int LIB = 0, DELETE = 1, GET = 2, UP_CANCEL = 3, JAM_LIST = 10, JAM_CREATE = 11, JAM_JOIN = 12, JAM_LEAVE = 13,
-                JAM_ADD = 14, JAM_SKIP = 15, JAM_PAUSE = 16, JAM_REMOVE = 17, JAM_INVITE = 18;
+                JAM_ADD = 14, JAM_SKIP = 15, JAM_PAUSE = 16, JAM_REMOVE = 17, JAM_INVITE = 18, JAM_DJ = 19;
         public final int what;
         public final long a, b;
         public final String s;
