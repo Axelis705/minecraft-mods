@@ -146,6 +146,8 @@
   "celular.settings.hear_others": "Oír la música de otros",
   "celular.settings.party": "Notas de fiesta",
   "celular.settings.share_location": "Compartir ubicación",
+  "item.celular.headphones": "Audífonos",
+  "celular.headphones.tooltip": "Póntelos (clic derecho): tu música solo la oyes tú",
   "celular.app.messages": "Mensajes",
   "celular.app.notes": "Notas",
   "celular.app.map": "Mapa",

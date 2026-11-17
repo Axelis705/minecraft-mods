@@ -474,7 +474,8 @@ public final class Radio {
     }
 
     private static void remotes(Minecraft mc) {
-        if (!Prefs.hearOthers) {
+        if (!Prefs.hearOthers || com.celular.HeadphonesItem.wearing(mc.player)) {
+            // con audífonos puestos (o si no quiere) no se oyen los altavoces de los demás
             for (Remote r : REMOTES.values()) {
                 if (r.stream != null) {
                     r.stream.kill();
@@ -589,7 +590,8 @@ public final class Radio {
         if (cur != null && cur.worldId == 0 && Prefs.speaker && !inJam()) {
             hashLocal(cur);
         }
-        boolean on = Prefs.speaker && cur != null && !inJam() && cur.worldId != 0 && song(cur.worldId) != null;
+        boolean on = Prefs.speaker && !com.celular.HeadphonesItem.wearing(mc.player) && cur != null && !inJam() && cur.worldId != 0
+                && song(cur.worldId) != null;
         long now = System.currentTimeMillis();
         if (!on) {
             if (sentSong != 0) {

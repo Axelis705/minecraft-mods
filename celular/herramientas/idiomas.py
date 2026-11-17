@@ -15,7 +15,7 @@ def build(L):
     d["key.categories.celular"] = L["phone"]
     d["key.category.celular.main"] = L["phone"]
     for k, v in L["k"].items():
-        d[k if k.startswith(("key.", "subtitles.", "block.")) else "celular." + k] = v
+        d[k if k.startswith(("key.", "subtitles.", "block.", "item.")) else "celular." + k] = v
     for i, n in enumerate(L["days"], 1):
         d[f"celular.day.{i}"] = n
     for i, n in enumerate(L["months"], 1):
@@ -139,6 +139,8 @@ ES = {
         "settings.hear_others": "Oír la música de otros",
         "settings.party": "Notas de fiesta",
         "settings.share_location": "Compartir ubicación",
+        "item.celular.headphones": "Audífonos",
+        "headphones.tooltip": "Póntelos (clic derecho): tu música solo la oyes tú",
         "app.messages": "Mensajes",
         "app.notes": "Notas",
         "app.map": "Mapa",
@@ -366,6 +368,7 @@ EN = {
         "music.phone_gone": "Your phone isn't nearby anymore: the music was paused",
         "settings.msg_toasts": "Message alerts", "settings.speaker": "Speaker (others hear your music)",
         "settings.hear_others": "Hear others' music", "settings.party": "Party notes", "settings.share_location": "Share location",
+        "item.celular.headphones": "Headphones", "headphones.tooltip": "Put them on (right click): only you hear your music",
         "app.messages": "Messages", "app.notes": "Notes", "app.map": "Map", "app.wallet": "Wallet",
         "msg.all": "Everyone", "msg.location": "My location", "msg.location_saved": "%s's location was saved in the Compass (the arrow points to it)",
         "msg.you": "You", "msg.start": "Say something", "msg.hint": "Message…",
@@ -690,6 +693,9 @@ ZH = variant(EN, phone="手机", colors=["", "(白色)", "(粉色)", "(蓝色)",
 
 
 # nombres de la linterna en los demás idiomas
+for _L, _n in ((PT, "Fones de ouvido"), (FR, "Casque audio"), (DE, "Kopfhörer"), (IT, "Cuffie"), (RU, "Наушники"), (JA, "ヘッドホン"),
+               (ZH, "耳机")):
+    _L["k"]["item.celular.headphones"] = _n
 for _L, _n in ((PT, "Lanterna"), (FR, "Lampe torche"), (DE, "Taschenlampe"), (IT, "Torcia"), (RU, "Фонарик"), (JA, "ライト"), (ZH, "手电筒")):
     _L["k"]["app.flash"] = _n
 for _L, _a in ((PT, ("Mensagens", "Notas", "Mapa", "Carteira")), (FR, ("Messages", "Notes", "Carte", "Portefeuille")),

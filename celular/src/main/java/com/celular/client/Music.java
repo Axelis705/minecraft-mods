@@ -111,7 +111,7 @@ public final class Music {
      * queda). Si el celular desaparece cerca de ti (alguien lo recogió, se quemó o lo guardaste en un cofre), la música se pausa.
      */
     private static void speaker(Minecraft mc) {
-        if (mc.player == null || mc.level == null || holdsPhone(mc)) {
+        if (mc.player == null || mc.level == null || holdsPhone(mc) || com.celular.HeadphonesItem.wearing(mc.player)) {
             speakerId = -1;
             speakerPos = null;
             lostSince = 0;

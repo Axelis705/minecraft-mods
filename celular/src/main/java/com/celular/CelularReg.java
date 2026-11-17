@@ -34,6 +34,17 @@ public final class CelularReg {
         }
     }
 
+    /** Audífonos: se ponen en la cabeza. */
+    public static final RegistryObject<Item> HEADPHONES = ITEMS.register("headphones", () -> new HeadphonesItem(headphoneProps()));
+
+    private static Item.Properties headphoneProps() {
+        //#if MC >= 1.21.2
+        //$$ return Reg.item("headphones").stacksTo(1).equippable(net.minecraft.world.entity.EquipmentSlot.HEAD);
+        //#else
+        return Reg.item("headphones").stacksTo(1);
+        //#endif
+    }
+
     /** La luz invisible de la linterna (no tiene objeto). */
     public static final RegistryObject<net.minecraft.world.level.block.Block> FLASH_LIGHT = BLOCKS.register("flash_light",
             () -> new FlashLightBlock(Reg.block("flash_light").noCollission().replaceable().noLootTable().randomTicks()
@@ -57,6 +68,7 @@ public final class CelularReg {
                 for (var p : PHONES) {
                     out.accept(p.get());
                 }
+                out.accept(HEADPHONES.get());
             })
             .build());
 

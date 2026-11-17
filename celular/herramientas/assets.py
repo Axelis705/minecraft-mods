@@ -1608,10 +1608,72 @@ def phone3d():
                       indent=2)
 
 
+# =====================================================================================================================
+#  Audífonos (se ponen en la cabeza; con ellos solo tú oyes tu música)
+# =====================================================================================================================
+def headphones():
+    K = 2                                             # píxeles por unidad (textura de 32 × 32)
+    img = Image.new("RGBA", (32, 32), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    band, band_hi, cup, rim, accent, cushion = (hexc("#26262b"), hexc("#4a4a52"), hexc("#151518"), hexc("#2f2f35"), hexc("#ff375f"),
+                                                hexc("#3a3a40"))
+    # A: diadema (u 0..8, v 0..1.5)
+    d.rectangle((0, 0, 15, 2), fill=band)
+    d.line((0, 1, 15, 1), fill=band_hi)
+    # C: la cara de afuera del audífono (u 0..6, v 2..8 -> 12 × 12 px en 0..11, 4..15)
+    d.rectangle((0, 4, 11, 15), fill=cup)
+    d.ellipse((1, 5, 10, 14), outline=accent)
+    d.ellipse((3, 7, 8, 12), fill=rim)
+    d.rectangle((5, 9, 6, 10), fill=hexc("#ffffff"))
+    # D: borde del audífono (u 6..8, v 2..8)
+    d.rectangle((12, 4, 15, 15), fill=rim)
+    d.line((13, 4, 13, 15), fill=accent)
+    # E: almohadilla (u 8..14, v 2..8)
+    d.rectangle((16, 4, 27, 15), fill=cushion)
+    d.rectangle((18, 6, 25, 13), fill=hexc("#2a2a30"))
+    save(img, "item/headphones.png")
+
+    A, C, Dr, E = [0, 0, 8, 1.5], [0, 2, 6, 8], [6, 2, 8, 8], [8, 2, 14, 8]
+
+    def all_faces(uv):
+        return {f: {"uv": uv, "texture": "#t"} for f in ("north", "south", "east", "west", "up", "down")}
+
+    def cup(x0, x1, outer):
+        f = {k: {"uv": Dr, "texture": "#t"} for k in ("north", "south", "up", "down")}
+        f[outer] = {"uv": C, "texture": "#t"}
+        f["east" if outer == "west" else "west"] = {"uv": E, "texture": "#t"}
+        return {"from": [x0, 4.6, 5.2], "to": [x1, 10.2, 10.8], "faces": f}
+
+    model = {
+        "credit": "Audífonos del celular (generado por herramientas/assets.py)",
+        "texture_size": [32, 32],
+        "textures": {"t": "celular:item/headphones", "particle": "celular:item/headphones"},
+        "elements": [
+            {"name": "diadema", "from": [1.2, 14.4, 6.8], "to": [14.8, 15.6, 9.2], "faces": all_faces(A)},
+            {"name": "lado_izq", "from": [0.4, 9.6, 6.8], "to": [1.6, 15.6, 9.2], "faces": all_faces(A)},
+            {"name": "lado_der", "from": [14.4, 9.6, 6.8], "to": [15.6, 15.6, 9.2], "faces": all_faces(A)},
+            dict(cup(-0.8, 1.6, "west"), name="audifono_izq"),
+            dict(cup(14.4, 16.8, "east"), name="audifono_der"),
+        ],
+        # en la cabeza el modelo de 16 unidades cubre la cabeza (como una calabaza): los audífonos quedan en las orejas
+        "display": {
+            "head": {"rotation": [0, 0, 0], "translation": [0, 0, 0], "scale": [1, 1, 1]},
+            "gui": {"rotation": [15, -35, 0], "translation": [0, 0, 0], "scale": [0.75, 0.75, 0.75]},
+            "ground": {"rotation": [0, 0, 0], "translation": [0, 3, 0], "scale": [0.4, 0.4, 0.4]},
+            "fixed": {"rotation": [0, 0, 0], "translation": [0, 0, 0], "scale": [0.7, 0.7, 0.7]},
+            "thirdperson_righthand": {"rotation": [75, 45, 0], "translation": [0, 2.5, 0], "scale": [0.375, 0.375, 0.375]},
+            "firstperson_righthand": {"rotation": [0, 45, 0], "translation": [0, 0, 0], "scale": [0.4, 0.4, 0.4]},
+        },
+    }
+    with open(os.path.join(ROOT, "models", "item", "headphones.json"), "w") as fh:
+        json.dump(model, fh, indent=2)
+
+
 def main():
     for name, (b, l, dk) in CASES.items():
         phone_item(name, b, l, dk)
     phone3d()
+    headphones()
     apps = [icon_insta(), icon_camera(), icon_gallery(), icon_phone(), icon_patreon(), icon_settings(), icon_music(), icon_weather(),
             icon_compass(), icon_calc(), icon_flash(), icon_messages(), icon_notes(), icon_map(), icon_wallet()]
     atlas = Image.new("RGBA", (S * len(apps), S), (0, 0, 0, 0))
