@@ -177,8 +177,10 @@ public final class PhonePoses {
     public static final IClientItemExtensions EXT = new IClientItemExtensions() {
         @Override
         public HumanoidModel.ArmPose getArmPose(LivingEntity who, InteractionHand hand, ItemStack stack) {
+            // apagado: la pose normal de tener algo en la mano. NUNCA null: en 26.3 el juego ya no lo acepta y se cerraba en cuanto
+            // alguien (tú también, en primera persona) tenía el celular en la mano (lo encontró la prueba con el cliente real)
             return switch (PhoneUse.get(stack)) {
-                case PhoneUse.OFF -> null;
+                case PhoneUse.OFF -> HumanoidModel.ArmPose.ITEM;
                 case PhoneUse.FLASH -> FLASH;
                 case PhoneUse.EAR -> EAR;
                 case PhoneUse.CAMERA -> PHOTO;

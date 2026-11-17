@@ -1,0 +1,114 @@
+name: Prueba de dos jugadores (celular)
+
+# Un servidor de prueba (mundo plano, los dos son operadores) y DOS clientes de verdad (Forge instalado con portablemc, con el
+# jar que se entrega) que entran a la vez: "Axelis" (rol A) y "Odette" (rol B). El mod sigue el guion de client/AutoTestMulti:
+# pose y pantalla vistas por el otro, llamada, mensajes, música del mundo con altavoz, Jam y mapa. Las fotos y los registros se
+# suben a la rama fotos-celular-dos.
+on:
+  workflow_dispatch:
+
+jobs:
+  dos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Paquetes
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils
+          pip install --break-system-packages -q portablemc || pip install -q portablemc
+      - name: Compilar el jar
+        working-directory: celular
+        run: ./gradlew build --no-daemon
+      - name: Instalar Minecraft 1.20.1 con Forge (sin abrirlo)
+        run: portablemc --main-dir "$HOME/pmc" start --dry forge::1.20.1-47.4.10
+      - name: Servidor de prueba
+        run: |
+          mkdir -p celular/run
+          cat > celular/run/server.properties <<'EOF'
+          level-type=minecraft\:flat
+          generator-settings={"layers"\:[{"block"\:"minecraft\:bedrock","height"\:1},{"block"\:"minecraft\:dirt","height"\:2},{"block"\:"minecraft\:grass_block","height"\:1}],"biome"\:"minecraft\:plains"}
+          generate-structures=false
+          spawn-protection=0
+          online-mode=false
+          spawn-monsters=false
+          spawn-animals=false
+          spawn-npcs=false
+          view-distance=6
+          EOF
+          echo "eula=true" > celular/run/eula.txt
+          python3 - <<'EOF'
+          import hashlib, json, uuid
+          ops = []
+          for n in ("Axelis", "Odette"):
+              u = uuid.UUID(bytes=hashlib.md5(("OfflinePlayer:" + n).encode()).digest(), version=3)
+              ops.append({"uuid": str(u), "name": n, "level": 4, "bypassesPlayerLimit": False})
+          json.dump(ops, open("celular/run/ops.json", "w"))
+          print(ops)
+          EOF
+          cd celular
+          nohup ./gradlew runServer --no-daemon > ../servidor.log 2>&1 &
+          for i in $(seq 1 120); do grep -q 'Done (' ../servidor.log 2>/dev/null && break; sleep 5; done
+          grep -m1 'Done (' ../servidor.log || { tail -60 ../servidor.log; exit 1; }
+      - name: Los dos clientes
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set +e
+          for r in A B; do
+            d="$HOME/c$r"
+            mkdir -p "$d/mods" "$d/config" "$d/celular/musica"
+            cp celular/build/libs/celular-*.jar "$d/mods/"
+            printf 'earlyWindowControl = false\n' > "$d/config/fml.toml"
+            printf 'onboardAccessibility:false\ntutorialStep:none\npauseOnLostFocus:false\nrenderDistance:6\nsimulationDistance:5\nguiScale:3\nrenderClouds:"false"\nsoundCategory_master:0.0\nskipMultiplayerWarning:true\njoinedFirstServer:true\nnarrator:0\nmaxFps:30\n' > "$d/options.txt"
+          done
+          cp celular/tests/fixtures/tono.mp3 "$HOME/cA/celular/musica/"
+          Xvfb :99 -screen 0 2600x800x24 &
+          export DISPLAY=:99
+          sleep 2
+          portablemc --main-dir "$HOME/pmc" start forge::1.20.1-47.4.10 --mc-dir "$HOME/cA" -u Axelis --join-server localhost --resolution 1280x720 --jvm-arg=-Dcelular.autotest.rol=A,-Xmx2G > A.log 2>&1 &
+          pa=$!
+          sleep 25
+          portablemc --main-dir "$HOME/pmc" start forge::1.20.1-47.4.10 --mc-dir "$HOME/cB" -u Odette --join-server localhost --resolution 1280x720 --jvm-arg=-Dcelular.autotest.rol=B,-Xmx2G > B.log 2>&1 &
+          pb=$!
+          for i in $(seq 1 240); do
+            kill -0 $pa 2>/dev/null || kill -0 $pb 2>/dev/null || break
+            sleep 5
+          done
+          kill $pa $pb 2>/dev/null
+          for r in A B; do
+            echo "===== cliente $r"
+            grep -a "AUTOTEST" "$HOME/c$r/logs/latest.log" | sed 's/^.*AUTOTEST/AUTOTEST/' | head -80
+          done
+          echo "===== servidor"
+          grep -aE "joined|left|ERROR|Exception" servidor.log | head -40
+          ok=0
+          for r in A B; do grep -aq "AUTOTEST_FIN" "$HOME/c$r/logs/latest.log" || ok=1; done
+          if grep -aq "CHECK .* FALLO" "$HOME/cA/logs/latest.log" "$HOME/cB/logs/latest.log"; then echo "::warning title=Dos jugadores::hay comprobaciones con FALLO"; fi
+          exit $ok
+      - name: Subir fotos a la rama fotos-celular-dos
+        if: always()
+        run: |
+          d=$(mktemp -d)
+          for r in A B; do
+            cp "$HOME/c$r"/screenshots/*.png "$d"/ 2>/dev/null || true
+            cp "$HOME/c$r/logs/latest.log" "$d/cliente_$r.log" 2>/dev/null || true
+            cp "$HOME/c$r"/crash-reports/*.txt "$d"/ 2>/dev/null || true
+            tail -200 "$r.log" > "$d/portablemc_$r.log" 2>/dev/null || true
+          done
+          tail -300 servidor.log > "$d/servidor.log" 2>/dev/null || true
+          cd "$d"
+          echo "${{ github.sha }}" > LEEME.txt
+          git init -q -b fotos-celular-dos
+          git config user.name ci; git config user.email ci@example.com
+          git add -A; git commit -qm "dos jugadores ${{ github.sha }}"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" fotos-celular-dos
+          ls -la

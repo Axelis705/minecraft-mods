@@ -29,13 +29,17 @@ import java.util.UUID;
  */
 public final class AutoTest {
     public static final boolean ON = Boolean.getBoolean("celular.autotest");
+    /** Prueba de dos jugadores en un servidor: "A" o "B" (ver {@link AutoTestMulti}). */
+    static final String ROLE = System.getProperty("celular.autotest.rol", "");
 
     private AutoTest() {
     }
 
     /** Lo llama {@link Ticker} cada 50 ms en el hilo del juego. */
     static void tick() {
-        if (ON) {
+        if (!ROLE.isEmpty()) {
+            AutoTestMulti.tick();
+        } else if (ON) {
             tickRun();
         }
     }
@@ -47,13 +51,13 @@ public final class AutoTest {
     private static int idx;
     private static long next;
     private static long joinedAt;
-    private static int shots, fails;
+    static int shots, fails;
     private static RemotePlayer fake;
 
     /** El otro jugador está en (0.5, -60, 0.5) mirando al norte; desde aquí se le toman las fotos. */
     private static final double FX = 0.5, FZ = 0.5, GROUND = -60;
 
-    private static void log(String s) {
+    static void log(String s) {
         Celular.LOGGER.info("AUTOTEST " + s);
     }
 
@@ -94,7 +98,7 @@ public final class AutoTest {
     }
 
     /** Guarda lo que se ve en {@code screenshots/celular_<nombre>.png} (con Tex.screenshot, que sirve en todas las versiones). */
-    private static void shot(String name) {
+    static void shot(String name) {
         Tex.screenshot(img -> {
             try (NativeImage n = img) {
                 int w = n.getWidth(), h = n.getHeight();

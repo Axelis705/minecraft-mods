@@ -476,6 +476,16 @@ public final class Radio {
         return l;
     }
 
+    /** Para la prueba de dos jugadores: qué altavoces de otros conozco y en qué estado (nombre:canción:sonando/listo/bajando). */
+    static String remotesDebug() {
+        StringBuilder b = new StringBuilder();
+        for (Remote r : REMOTES.values()) {
+            b.append(r.st.name).append(':').append(r.st.song == null ? "-" : r.st.song.title).append(':')
+                    .append(r.stream != null && !r.stream.done() ? "sonando" : r.st.song != null && ready(r.st.song) ? "listo" : "bajando").append(' ');
+        }
+        return b.toString().trim();
+    }
+
     /** Distancia a la que se deja de oír una bocina (más que un celular). */
     static final double HEAR_SPEAKER = 40.0;
 
