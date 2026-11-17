@@ -53,7 +53,7 @@ public class PhoneScreen extends BaseScreen {
         this.startApp = startApp;
         Prefs.load();
         apps = new App[]{new InstaApp(this), new CameraApp(this), new GalleryApp(this), new PhoneApp(this), new PatreonApp(this),
-                new SettingsApp(this), new MusicApp(this), new WeatherApp(this), new CompassApp(this), new CalcApp(this)};
+                new SettingsApp(this), new MusicApp(this), new WeatherApp(this), new CompassApp(this), new CalcApp(this), new FlashApp(this)};
         Music.init();
     }
 
@@ -104,6 +104,31 @@ public class PhoneScreen extends BaseScreen {
             app.leave();
         }
         super.removed();
+    }
+
+    /** Qué pantalla ven los demás en mi celular (ver PhoneUse). */
+    int useScreen() {
+        if (locked || app == null) {
+            return com.celular.PhoneUse.HOME;
+        }
+        return switch (app.key) {
+            case "insta" -> com.celular.PhoneUse.INSTA;
+            case "camera" -> com.celular.PhoneUse.CAMERA;
+            case "gallery" -> com.celular.PhoneUse.GALLERY;
+            case "phone" -> com.celular.PhoneUse.CALL;
+            case "patreon" -> com.celular.PhoneUse.PATREON;
+            case "settings" -> com.celular.PhoneUse.SETTINGS;
+            case "music" -> Radio.inJam() ? com.celular.PhoneUse.JAM : com.celular.PhoneUse.MUSIC;
+            case "weather" -> com.celular.PhoneUse.WEATHER;
+            case "compass" -> com.celular.PhoneUse.COMPASS;
+            case "calc" -> com.celular.PhoneUse.CALC;
+            case "flash" -> Flash.on ? com.celular.PhoneUse.FLASH : com.celular.PhoneUse.HOME;
+            case "messages" -> com.celular.PhoneUse.MESSAGES;
+            case "notes" -> com.celular.PhoneUse.NOTES;
+            case "map" -> com.celular.PhoneUse.MAP;
+            case "wallet" -> com.celular.PhoneUse.WALLET;
+            default -> com.celular.PhoneUse.HOME;
+        };
     }
 
     // ------------------------------------------------------------------ colores del tema
@@ -241,7 +266,7 @@ public class PhoneScreen extends BaseScreen {
     /** Las apps de abajo (el "dock"): Teléfono, Instacraft, Cámara y Música. Las demás van en la cuadrícula. */
     private static final int[] DOCK = {3, 0, 1, 6};
     /** Orden de la cuadrícula. */
-    private static final int[] GRID = {2, 7, 8, 9, 4, 5};
+    private static final int[] GRID = {2, 7, 8, 9, 10, 4, 5};
 
     private int cols() {
         return 4;
@@ -716,10 +741,10 @@ public class PhoneScreen extends BaseScreen {
         if (w[3] - w[1] >= 26 && in(x, y, w[0], w[1], w[2], w[3])) {
             if (com.celular.music.MusicPlayer.current != null) {
                 if (in(x, y, w[2] - 32, w[1], w[2] - 17, w[3])) {
-                    com.celular.music.MusicPlayer.toggle();
+                    Radio.toggle();
                     ClientHooks.tap();
                 } else if (in(x, y, w[2] - 17, w[1], w[2], w[3])) {
-                    com.celular.music.MusicPlayer.next();
+                    Radio.next();
                     ClientHooks.tap();
                 } else {
                     openApp("music");

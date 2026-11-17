@@ -2,5 +2,109 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "celular:item/phone_red"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "celular:item/screen/phone_red_home"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "celular:item/screen/phone_red_insta"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "celular:item/screen/phone_red_camera"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "celular:item/screen/phone_red_gallery"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "celular:item/screen/phone_red_call"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 6
+      },
+      "model": "celular:item/screen/phone_red_patreon"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 7
+      },
+      "model": "celular:item/screen/phone_red_settings"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 8
+      },
+      "model": "celular:item/screen/phone_red_music"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9
+      },
+      "model": "celular:item/screen/phone_red_weather"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10
+      },
+      "model": "celular:item/screen/phone_red_compass"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 11
+      },
+      "model": "celular:item/screen/phone_red_calc"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 12
+      },
+      "model": "celular:item/screen/phone_red_messages"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 13
+      },
+      "model": "celular:item/screen/phone_red_notes"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 14
+      },
+      "model": "celular:item/screen/phone_red_map"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 15
+      },
+      "model": "celular:item/screen/phone_red_wallet"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 16
+      },
+      "model": "celular:item/screen/phone_red_flash"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 17
+      },
+      "model": "celular:item/screen/phone_red_jam"
+    }
+  ]
 }

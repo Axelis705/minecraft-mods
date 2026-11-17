@@ -39,6 +39,7 @@ public final class CelularEvents {
             WorldMusic.logout(p.getUUID());
             Jams.leave(Plat.server(p), p.getUUID(), false);
             Speakers.ownerGone(Plat.server(p), p.getUUID());
+            com.celular.PhoneUse.logout(p);
         }
     }
 
@@ -46,6 +47,7 @@ public final class CelularEvents {
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (e.getEntity() instanceof ServerPlayer p) {
             Speakers.sendAll(p);
+            com.celular.PhoneUse.login(p);
         }
     }
 
@@ -62,6 +64,7 @@ public final class CelularEvents {
         CallManager.clear();
         Jams.clear();
         Speakers.clear();
+        com.celular.PhoneUse.clear(e.getServer());
     }
 
     @SubscribeEvent

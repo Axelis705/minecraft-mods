@@ -31,6 +31,18 @@ public class PhoneItem extends Item {
         }
     }
 
+    /** La pose del brazo en tercera persona (escribiendo o alumbrando) según la pantalla que lleva el celular. */
+    @Override
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> consumer) {
+        consumer.accept(com.celular.client.PhonePoses.EXT);
+    }
+
+    /** Cambiar de app cambia el número de pantalla del celular: eso no debe hacer que la mano lo vuelva a sacar. */
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return slotChanged || oldStack.getItem() != newStack.getItem();
+    }
+
     //#if MC >= 1.21.2
     //$$ @Override
     //$$ public InteractionResult use(Level level, Player player, InteractionHand hand) {

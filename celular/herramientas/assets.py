@@ -2,6 +2,7 @@
 """Genera las texturas del celular: el objeto (8 colores), los iconos de las apps, los iconos pequeños de la interfaz y los fondos
 de pantalla. Uso: python3 celular/herramientas/assets.py"""
 import math
+import json
 import os
 import random
 
@@ -313,6 +314,23 @@ def icon_calc():
     d.line([(U(42), U(18.5)), (U(47), U(18.5))], fill=W2, width=U(1.6))
     d.line([(U(42), U(46)), (U(47), U(46))], fill=W2, width=U(1.6))
     d.line([(U(42), U(48.5)), (U(47), U(48.5))], fill=W2, width=U(1.6))
+    return finish(big)
+
+
+def icon_flash():
+    big = app_base([(0, hexc("#3a3a40")), (1, hexc("#0d0d10"))])
+    # haz de luz (capa aparte para que se mezcle)
+    beam = Image.new("RGBA", big.size, (0, 0, 0, 0))
+    bd = ImageDraw.Draw(beam)
+    bd.polygon([(U(32), U(30)), (U(10), U(4)), (U(54), U(4))], fill=(255, 236, 150, 110))
+    bd.polygon([(U(32), U(30)), (U(20), U(6)), (U(44), U(6))], fill=(255, 246, 200, 120))
+    big = Image.alpha_composite(big, beam)
+    d = ImageDraw.Draw(big)
+    d.rounded_rectangle((U(23), U(26), U(41), U(34)), radius=U(2), fill=hexc("#f2f2f7"))
+    d.rectangle((U(24), U(25), U(40), U(27)), fill=hexc("#fff3b0"))
+    d.rounded_rectangle((U(26.5), U(33), U(37.5), U(57)), radius=U(3), fill=hexc("#c7c7cc"))
+    d.rounded_rectangle((U(26.5), U(33), U(29), U(57)), radius=U(1), fill=hexc("#e5e5ea"))
+    d.ellipse((U(29.5), U(41), U(34.5), U(46)), fill=hexc("#ffcc00"))
     return finish(big)
 
 
@@ -884,11 +902,178 @@ def wall_galaxy():
     return img
 
 
+# =====================================================================================================================
+#  Pantallas encendidas (lo que ven los demás en tu celular según la app): 16 × 16, solo la zona de la pantalla (6 × 10)
+# =====================================================================================================================
+# El orden es el número que va en custom_model_data (1 = inicio ... ); tiene que ser igual al de PhoneUse.java
+SCREENS = ["home", "insta", "camera", "gallery", "call", "patreon", "settings", "music", "weather", "compass", "calc", "messages",
+           "notes", "map", "wallet", "flash", "jam"]
+SX, SY = 5, 3  # esquina de la pantalla dentro del dibujo del celular
+
+
+def scr_grad(top, bot):
+    t, b = hexc(top), hexc(bot)
+    return [[lerp(t, b, y / 9) for x in range(6)] for y in range(10)]
+
+
+def scr_fill(c):
+    return [[hexc(c) for x in range(6)] for y in range(10)]
+
+
+def put(g, pts, c):
+    col = hexc(c) if isinstance(c, str) else c
+    for (x, y) in pts:
+        if 0 <= x < 6 and 0 <= y < 10:
+            g[y][x] = col
+
+
+def rect(x0, y0, x1, y1):
+    return [(x, y) for y in range(y0, y1 + 1) for x in range(x0, x1 + 1)]
+
+
+def screen_art(name):
+    if name == "home":
+        g = scr_grad("#3a7bd5", "#6a4fd8")
+        for (x, y, c) in [(1, 2, "#feda75"), (3, 2, "#d62976"), (1, 4, "#34c759"), (3, 4, "#0a84ff"), (1, 6, "#ff424d"), (3, 6, "#fa233b")]:
+            put(g, [(x, y)], c)
+            put(g, [(x + 1, y)], lerp(hexc(c), (255, 255, 255, 255), 0.3))
+        put(g, [(2, 9), (3, 9)], "#e6e6e6")
+    elif name == "insta":
+        g = scr_grad("#833ab4", "#fcb045")
+        put(g, rect(0, 0, 5, 0), "#ffffff")
+        put(g, rect(1, 2, 4, 5), "#f4f4f4")
+        put(g, [(2, 3), (3, 4)], "#9ad0ff")
+        put(g, [(1, 7), (2, 7)], "#ff3b5c")
+        put(g, [(4, 7)], "#ffffff")
+    elif name == "camera":
+        g = scr_fill("#0d0d0d")
+        put(g, rect(0, 1, 5, 6), "#5b7f9e")
+        put(g, rect(0, 5, 5, 6), "#4e8a3c")
+        put(g, [(4, 2)], "#ffe066")
+        put(g, [(2, 8), (3, 8)], "#ffffff")
+        put(g, [(2, 9), (3, 9)], "#bdbdbd")
+    elif name == "gallery":
+        g = scr_fill("#f2f2f7")
+        cols = ["#ff9f0a", "#30d158", "#0a84ff", "#ff375f", "#bf5af2", "#64d2ff"]
+        k = 0
+        for y in (1, 4, 7):
+            for x in (0, 3):
+                put(g, rect(x, y, x + 2, y + 1), cols[k])
+                k += 1
+    elif name == "call":
+        g = scr_grad("#1d3b2a", "#0b1410")
+        put(g, rect(2, 1, 3, 2), "#c7c7cc")
+        put(g, rect(1, 3, 4, 3), "#8e8e93")
+        put(g, [(1, 8)], "#ff3b30")
+        put(g, [(4, 8)], "#34c759")
+        put(g, [(1, 7), (4, 7)], "#2a2a2a")
+    elif name == "patreon":
+        g = scr_fill("#ff424d")
+        put(g, rect(2, 3, 4, 5), "#ffffff")
+        put(g, rect(1, 3, 1, 7), "#1b1b1b")
+    elif name == "settings":
+        g = scr_fill("#1c1c1e")
+        for y, c in ((1, "#636366"), (3, "#0a84ff"), (5, "#34c759"), (7, "#ff9f0a")):
+            put(g, [(0, y)], c)
+            put(g, rect(2, y, 5, y), "#3a3a3c")
+    elif name == "music":
+        g = scr_grad("#5a0f1c", "#16070a")
+        put(g, rect(1, 1, 4, 4), "#fa233b")
+        put(g, [(2, 2), (3, 3)], "#ff8fa0")
+        put(g, [(0, 8), (1, 7), (1, 8), (2, 8), (3, 6), (3, 7), (3, 8), (4, 8), (5, 7), (5, 8)], "#ffffff")
+    elif name == "weather":
+        g = scr_grad("#4facfe", "#9be0ff")
+        put(g, rect(2, 2, 3, 3), "#ffd60a")
+        put(g, [(1, 2), (4, 3), (2, 1), (3, 4)], "#ffe98a")
+        put(g, rect(1, 6, 4, 7), "#ffffff")
+        put(g, [(0, 7), (5, 7)], "#e8f6ff")
+    elif name == "compass":
+        g = scr_fill("#0f1626")
+        put(g, [(1, 2), (2, 1), (3, 1), (4, 2), (5, 3), (5, 4), (4, 5), (3, 6), (2, 6), (1, 5), (0, 4), (0, 3)], "#d8d8d8")
+        put(g, [(2, 2), (2, 3)], "#ff3b30")
+        put(g, [(3, 4), (3, 5)], "#ffffff")
+    elif name == "calc":
+        g = scr_fill("#000000")
+        put(g, rect(1, 1, 5, 1), "#ffffff")
+        for y in (3, 5, 7, 9):
+            put(g, [(0, y), (2, y)], "#505050")
+            put(g, [(4, y), (5, y)], "#ff9f0a")
+    elif name == "messages":
+        g = scr_fill("#f2f2f7")
+        put(g, rect(0, 1, 3, 2), "#d1d1d6")
+        put(g, rect(2, 4, 5, 5), "#34c759")
+        put(g, rect(0, 7, 2, 8), "#d1d1d6")
+    elif name == "notes":
+        g = scr_fill("#fffbe6")
+        put(g, rect(0, 0, 5, 1), "#ffd60a")
+        for y in (3, 5, 7):
+            put(g, rect(0, y, 4 if y != 7 else 2, y), "#8e8e93")
+    elif name == "map":
+        g = scr_fill("#a8d58c")
+        put(g, [(0, 2), (1, 3), (2, 3), (3, 4), (4, 5), (5, 5), (5, 6)], "#5ab4f0")
+        put(g, rect(0, 7, 5, 7), "#f5f0dc")
+        put(g, [(3, 1), (3, 2)], "#ff3b30")
+        put(g, [(1, 6)], "#0a84ff")
+    elif name == "wallet":
+        g = scr_fill("#0b0b0f")
+        put(g, rect(0, 2, 5, 5), "#d4af37")
+        put(g, rect(0, 3, 5, 3), "#3a2e10")
+        put(g, [(4, 5)], "#fff3c4")
+        put(g, rect(1, 7, 4, 7), "#30d158")
+    elif name == "flash":
+        g = [[lerp(hexc("#ffffff"), hexc("#fff3b0"), min(1, (abs(x - 2.5) + abs(y - 4.5)) / 6)) for x in range(6)] for y in range(10)]
+        put(g, [(2, 4), (3, 4), (2, 5), (3, 5)], "#ffffff")
+    elif name == "jam":
+        g = scr_grad("#0f3d22", "#060c08")
+        put(g, rect(1, 1, 4, 4), "#1db954")
+        put(g, [(2, 2), (3, 2), (2, 3)], "#0b2414")
+        put(g, [(0, 8), (1, 7), (1, 8), (2, 6), (2, 7), (2, 8), (3, 7), (3, 8), (4, 8), (5, 7), (5, 8)], "#1ed760")
+    else:
+        g = scr_fill("#000000")
+    return g
+
+
+def screens():
+    for n in SCREENS:
+        img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+        p = img.load()
+        g = screen_art(n)
+        for y in range(10):
+            for x in range(6):
+                p[SX + x, SY + y] = g[y][x]
+        # brillo del vidrio (igual que el celular apagado)
+        if n != "flash":
+            p[SX, SY] = lerp(p[SX, SY], (255, 255, 255, 255), 0.35)
+        save(img, f"item/screen/{n}.png")
+    # modelos: una carcasa × una pantalla, y los "overrides" (hasta 1.21.3) / la definición del ítem (1.21.4+)
+    models = os.path.join(ROOT, "models", "item")
+    items = os.path.join(ROOT, "items")
+    os.makedirs(os.path.join(models, "screen"), exist_ok=True)
+    os.makedirs(items, exist_ok=True)
+    for case in CASES:
+        overrides, entries = [], []
+        for i, n in enumerate(SCREENS, 1):
+            m = f"celular:item/screen/{case}_{n}"
+            with open(os.path.join(models, "screen", f"{case}_{n}.json"), "w") as fh:
+                json.dump({"parent": "minecraft:item/generated",
+                           "textures": {"layer0": f"celular:item/{case}", "layer1": f"celular:item/screen/{n}"}}, fh, indent=2)
+            overrides.append({"predicate": {"custom_model_data": i}, "model": m})
+            entries.append({"threshold": i, "model": {"type": "minecraft:model", "model": m}})
+        with open(os.path.join(models, f"{case}.json"), "w") as fh:
+            json.dump({"parent": "minecraft:item/generated", "textures": {"layer0": f"celular:item/{case}"}, "overrides": overrides}, fh,
+                      indent=2)
+        with open(os.path.join(items, f"{case}.json"), "w") as fh:
+            json.dump({"model": {"type": "minecraft:range_dispatch", "property": "minecraft:custom_model_data", "index": 0,
+                                 "fallback": {"type": "minecraft:model", "model": f"celular:item/{case}"}, "entries": entries}}, fh,
+                      indent=2)
+
+
 def main():
     for name, (b, l, dk) in CASES.items():
         phone_item(name, b, l, dk)
+    screens()
     apps = [icon_insta(), icon_camera(), icon_gallery(), icon_phone(), icon_patreon(), icon_settings(), icon_music(), icon_weather(),
-            icon_compass(), icon_calc()]
+            icon_compass(), icon_calc(), icon_flash()]
     atlas = Image.new("RGBA", (S * len(apps), S), (0, 0, 0, 0))
     for i, a in enumerate(apps):
         atlas.paste(a, (i * S, 0))

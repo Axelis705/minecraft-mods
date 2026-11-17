@@ -33,6 +33,7 @@ public final class PhoneHud {
     //$$ public static final KeyMapping MUSIC_TOGGLE = new SafeKey("key.celular.music_toggle", InputConstants.UNKNOWN.getValue(), CAT);
     //$$ public static final KeyMapping MUSIC_NEXT = new SafeKey("key.celular.music_next", InputConstants.UNKNOWN.getValue(), CAT);
     //$$ public static final KeyMapping MUSIC_PREV = new SafeKey("key.celular.music_prev", InputConstants.UNKNOWN.getValue(), CAT);
+    //$$ public static final KeyMapping FLASHLIGHT = new SafeKey("key.celular.flashlight", InputConstants.UNKNOWN.getValue(), CAT);
     //#else
     public static final KeyMapping OPEN = new SafeKey("key.celular.open", InputConstants.KEY_K, "key.categories.celular");
     public static final KeyMapping ANSWER = new SafeKey("key.celular.answer", InputConstants.KEY_Y, "key.categories.celular");
@@ -40,6 +41,7 @@ public final class PhoneHud {
     public static final KeyMapping MUSIC_TOGGLE = new SafeKey("key.celular.music_toggle", InputConstants.UNKNOWN.getValue(), "key.categories.celular");
     public static final KeyMapping MUSIC_NEXT = new SafeKey("key.celular.music_next", InputConstants.UNKNOWN.getValue(), "key.categories.celular");
     public static final KeyMapping MUSIC_PREV = new SafeKey("key.celular.music_prev", InputConstants.UNKNOWN.getValue(), "key.categories.celular");
+    public static final KeyMapping FLASHLIGHT = new SafeKey("key.celular.flashlight", InputConstants.UNKNOWN.getValue(), "key.categories.celular");
     //#endif
 
     private static final class Toast {
@@ -105,6 +107,9 @@ public final class PhoneHud {
         }
         while (MUSIC_PREV.consumeClick()) {
             Radio.prev();
+        }
+        while (FLASHLIGHT.consumeClick()) {
+            Flash.toggle();
         }
         CallState st = ClientHooks.call;
         while (ANSWER.consumeClick()) {

@@ -30,8 +30,8 @@ public final class D {
             WALLET = 60, STOPWATCH = 61, ALARM = 62, LINK = 63;
     // apps de apps.png (64 × 64 cada una)
     public static final int APP_INSTA = 0, APP_CAMERA = 1, APP_GALLERY = 2, APP_PHONE = 3, APP_PATREON = 4, APP_SETTINGS = 5, APP_MUSIC = 6,
-            APP_WEATHER = 7, APP_COMPASS = 8, APP_CALC = 9;
-    private static final int APP_COUNT = 10;
+            APP_WEATHER = 7, APP_COMPASS = 8, APP_CALC = 9, APP_FLASH = 10;
+    private static final int APP_COUNT = 11;
 
     private D() {
     }

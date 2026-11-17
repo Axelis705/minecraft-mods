@@ -58,6 +58,12 @@ public final class CelularNet {
         Net.register(id++, RadioNet.SpeakerState.class, RadioNet.SpeakerState::write, RadioNet.SpeakerState::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.speaker(m)));
         Net.register(id++, RadioNet.JamState.class, RadioNet.JamState::write, RadioNet.JamState::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.jam(m)));
         Net.register(id++, RadioNet.JamList.class, RadioNet.JamList::write, RadioNet.JamList::read, (m, p) -> Net.onClient(() -> com.celular.client.Radio.jamList(m)));
+        // ---- qué pantalla muestra el celular (para que los demás lo vean) y la linterna
+        Net.register(id++, UseScreen.class, UseScreen::write, UseScreen::read, (m, p) -> {
+            if (p != null) {
+                com.celular.PhoneUse.set(p, m.screen);
+            }
+        });
         Net.done();
     }
 
@@ -211,6 +217,23 @@ public final class CelularNet {
     }
 
     /** Peticiones sin datos: la lista de Patreon o la de contactos. */
+    /** El celular dice qué app tiene abierta (0 = guardado; {@link com.celular.PhoneUse#FLASH} = linterna encendida). */
+    public static final class UseScreen {
+        public final int screen;
+
+        public UseScreen(int screen) {
+            this.screen = screen;
+        }
+
+        void write(FriendlyByteBuf b) {
+            b.writeVarInt(screen);
+        }
+
+        static UseScreen read(FriendlyByteBuf b) {
+            return new UseScreen(b.readVarInt());
+        }
+    }
+
     public static final class Simple {
         public static final int PATREON = 0, CONTACTS = 1;
         public final int what;

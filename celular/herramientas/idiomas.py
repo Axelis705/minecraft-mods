@@ -15,7 +15,7 @@ def build(L):
     d["key.categories.celular"] = L["phone"]
     d["key.category.celular.main"] = L["phone"]
     for k, v in L["k"].items():
-        d[k if k.startswith(("key.", "subtitles.")) else "celular." + k] = v
+        d[k if k.startswith(("key.", "subtitles.", "block.")) else "celular." + k] = v
     for i, n in enumerate(L["days"], 1):
         d[f"celular.day.{i}"] = n
     for i, n in enumerate(L["months"], 1):
@@ -134,6 +134,14 @@ ES = {
         "music.error_audio": "No se pudo usar la salida de audio de la computadora",
         "music.folder_error": "No se pudo abrir la carpeta. Está en: %s",
         "music.phone_gone": "Tu celular ya no está cerca: la música se pausó",
+        "app.flash": "Linterna",
+        "flash.on": "Encendida",
+        "flash.off": "Apagada",
+        "flash.hint": "Cierra el celular y apunta: la luz va hacia donde miras mientras lo tengas en la mano.",
+        "flash.need_hand": "Toma el celular en la mano para usar la linterna",
+        "flash.off_msg": "Linterna apagada (soltaste el celular)",
+        "key.celular.flashlight": "Linterna (encender/apagar)",
+        "block.celular.flash_light": "Luz de linterna",
         "radio.tab_mine": "Mías",
         "radio.tab_world": "Mundo",
         "radio.tab_jam": "Jam",
@@ -290,6 +298,10 @@ EN = {
         "music.error_audio": "Couldn't use the computer's audio output",
         "music.folder_error": "Couldn't open the folder. It's at: %s",
         "music.phone_gone": "Your phone isn't nearby anymore: the music was paused",
+        "app.flash": "Flashlight", "flash.on": "On", "flash.off": "Off",
+        "flash.hint": "Close the phone and aim: the light goes where you look while it's in your hand.",
+        "flash.need_hand": "Hold the phone in your hand to use the flashlight", "flash.off_msg": "Flashlight off (you let go of the phone)",
+        "key.celular.flashlight": "Flashlight (on/off)", "block.celular.flash_light": "Flashlight light",
         "radio.tab_mine": "Mine", "radio.tab_world": "World", "radio.tab_jam": "Jam", "radio.speaker": "Speaker",
         "radio.speaker_on": "Speaker on: people nearby hear what you play from the world",
         "radio.speaker_off": "Speaker off: only you hear your music",
@@ -581,6 +593,11 @@ ZH = variant(EN, phone="手机", colors=["", "(白色)", "(粉色)", "(蓝色)",
                 "settings.wallpaper": "壁纸", "settings.dark": "深色模式", "settings.notifications": "通知", "settings.shutter": "快门声",
                 "settings.grid": "相机网格", "settings.about": "关于", "settings.about_text": "手机 · Axelis 制作的模组。照片保存在 .minecraft/celular/fotos",
                 "settings.wallpaper_photo": "也可以用照片:相册 → 设为壁纸", "no_phone": "你的背包里没有手机", "app.music": "音乐", "app.weather": "天气", "app.compass": "指南针", "app.calc": "计算器", "lock.hint": "向上滑动或点击", "music.open_folder": "打开文件夹", "music.refresh": "刷新", "music.shuffle_all": "随机播放", "music.now_playing": "正在播放", "music.empty": "还没有歌曲", "music.empty_sub": "把 MP3、OGG 或 WAV 歌曲放进音乐文件夹,然后点刷新。", "settings.lock": "锁屏", "settings.music_mute": "关闭 Minecraft 的音乐", "settings.music_toasts": "显示正在播放的歌曲", "compass.save_here": "保存这个地点", "compass.death": "死亡地点", "compass.dirs": "南,西南,西,西北,北,东北,东,东南", "compass.card": "北,东,南,西", "weather.sunny": "晴", "weather.rain": "雨", "weather.storm": "雷雨", "weather.snow": "下雪", "weather.clear_night": "晴朗的夜晚", "key.celular.music_toggle": "音乐:暂停 / 播放", "key.celular.music_next": "音乐:下一首", "key.celular.music_prev": "音乐:上一首"})
+
+
+# nombres de la linterna en los demás idiomas
+for _L, _n in ((PT, "Lanterna"), (FR, "Lampe torche"), (DE, "Taschenlampe"), (IT, "Torcia"), (RU, "Фонарик"), (JA, "ライト"), (ZH, "手电筒")):
+    _L["k"]["app.flash"] = _n
 
 
 def main():

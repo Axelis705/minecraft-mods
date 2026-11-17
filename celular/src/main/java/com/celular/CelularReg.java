@@ -18,6 +18,7 @@ import java.util.List;
 /** Objetos, sonidos y la pestaña del modo creativo. */
 public final class CelularReg {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Celular.MODID);
+    public static final DeferredRegister<net.minecraft.world.level.block.Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Celular.MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Celular.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Celular.MODID);
 
@@ -32,6 +33,11 @@ public final class CelularReg {
             PHONES.add(ITEMS.register(name, () -> new PhoneItem(Reg.item(name).stacksTo(1), color)));
         }
     }
+
+    /** La luz invisible de la linterna (no tiene objeto). */
+    public static final RegistryObject<net.minecraft.world.level.block.Block> FLASH_LIGHT = BLOCKS.register("flash_light",
+            () -> new FlashLightBlock(Reg.block("flash_light").noCollission().replaceable().noLootTable().randomTicks()
+                    .lightLevel(st -> 15)));
 
     public static final RegistryObject<SoundEvent> SHUTTER = sound("shutter");
     public static final RegistryObject<SoundEvent> RINGTONE = sound("ringtone");

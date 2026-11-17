@@ -64,6 +64,7 @@ public final class Music {
         gameVolume = readGameVolume(mc);
         speaker(mc);
         Radio.frame(mc);
+        Flash.frame(mc);
         if (MusicPlayer.playing && Prefs.muteGameMusic) {
             long now = System.currentTimeMillis();
             if (now - lastMute > 1500) {

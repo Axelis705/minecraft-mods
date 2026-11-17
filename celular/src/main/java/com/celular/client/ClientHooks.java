@@ -233,6 +233,7 @@ public final class ClientHooks {
         badgeInsta = 0;
         Photos.clearAll();
         Radio.reset();
+        Flash.reset();
         com.celular.music.MusicPlayer.stop();          // al salir del mundo se calla la música
     }
 }

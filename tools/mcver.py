@@ -77,6 +77,7 @@ REMAP = [
                (r"\.moveTo\(", ".snapTo("),
                ("getGameProfile().getName()", "getGameProfile().name()"),
                (r"\.getAllKeys\(\)", ".keySet()"),
+               (r"\.noCollission\(\)", ".noCollision()"),
                # en 26.x los eventos que usamos (atributos, renderers, capas del HUD) viven en el bus normal, no en el del mod
                (", bus = Mod.EventBusSubscriber.Bus.MOD", "")]),
     ((26, 3), [("PushReaction.BLOCK", "PushReaction.IMMOVEABLE"),
@@ -213,7 +214,7 @@ def gen_resources(src_res, dst_res, mc, modid):
                 with open(out, "w", encoding="utf-8") as fh:
                     json.dump(meta, fh, indent=2)
                 continue
-            if relp.startswith(f"assets/{modid}/models/item/") and f.endswith(".json"):
+            if os.path.dirname(relp) == f"assets/{modid}/models/item" and f.endswith(".json"):
                 item_models.append(f[:-5])
             # una versión puede traer su propio archivo: nombre.json + nombre@1.21.4.json (gana el más alto que aplique)
             if "@" in f:

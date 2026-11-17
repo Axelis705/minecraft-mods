@@ -25,6 +25,7 @@ public class Celular {
         IEventBus bus = context.getModEventBus();
         //#endif
         CelularReg.ITEMS.register(bus);
+        CelularReg.BLOCKS.register(bus);
         CelularReg.SOUNDS.register(bus);
         CelularReg.TABS.register(bus);
         //#if MC >= 26.1

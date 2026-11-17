@@ -25,6 +25,7 @@ public final class ClientModEvents {
         e.register(PhoneHud.MUSIC_TOGGLE);
         e.register(PhoneHud.MUSIC_NEXT);
         e.register(PhoneHud.MUSIC_PREV);
+        e.register(PhoneHud.FLASHLIGHT);
     }
 
     //#if MC >= 1.20.5
