@@ -93,7 +93,7 @@ final class MusicApp extends App {
     private static final int RED = 0xFFFA233B, GREEN = 0xFF1DB954;
     private static final int TAB_MINE = 0, TAB_WORLD = 1, TAB_JAM = 2;
     /** Pestaña elegida (se recuerda al volver a abrir la app). */
-    private static int tab;
+    static int tab;
     /** En el Jam: eligiendo a quién invitar. */
     private boolean inviting;
     /** Canción del mundo esperando el segundo toque para borrarse. */

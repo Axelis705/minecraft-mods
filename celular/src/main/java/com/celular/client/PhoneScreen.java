@@ -559,7 +559,7 @@ public class PhoneScreen extends BaseScreen {
         return y + 24;
     }
 
-    private void unlock() {
+    void unlock() {
         if (locked && unlockAt == 0) {
             unlockAt = System.currentTimeMillis();
             ClientHooks.play(CelularReg.UNLOCK.get(), 1.0F, 0.4F);

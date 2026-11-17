@@ -39,6 +39,8 @@ public final class AutoTest {
     static void tick() {
         if (!ROLE.isEmpty()) {
             AutoTestMulti.tick();
+        } else if (ON && AutoVideo.ON) {
+            AutoVideo.tick();
         } else if (ON) {
             tickRun();
         }
@@ -52,10 +54,10 @@ public final class AutoTest {
     private static long next;
     private static long joinedAt;
     static int shots, fails;
-    private static RemotePlayer fake;
+    static RemotePlayer fake;
 
     /** El otro jugador está en (0.5, -60, 0.5) mirando al norte; desde aquí se le toman las fotos. */
-    private static final double FX = 0.5, FZ = 0.5, GROUND = -60;
+    static final double FX = 0.5, FZ = 0.5, GROUND = -60;
 
     static void log(String s) {
         Celular.LOGGER.info("AUTOTEST " + s);
@@ -92,7 +94,7 @@ public final class AutoTest {
         STEPS.add(new Step(name, wait, r));
     }
 
-    private static void cmd(String c) {
+    static void cmd(String c) {
         IntegratedServer s = Minecraft.getInstance().getSingleplayerServer();
         s.execute(() -> s.getCommands().performPrefixedCommand(s.createCommandSourceStack(), c));
     }
@@ -127,7 +129,7 @@ public final class AutoTest {
     }
 
     /** Qué pantalla muestra mi celular (como si yo lo estuviera usando), puesto desde el servidor. */
-    private static void myScreen(int id) {
+    static void myScreen(int id) {
         Minecraft mc = Minecraft.getInstance();
         IntegratedServer s = mc.getSingleplayerServer();
         UUID u = mc.player.getUUID();
@@ -140,7 +142,7 @@ public final class AutoTest {
     }
 
     /** Me pongo en (x, z) mirando hacia el punto (tx, ty, tz). */
-    private static void lookFrom(double x, double z, double tx, double ty, double tz) {
+    static void lookFrom(double x, double z, double tx, double ty, double tz) {
         double ey = GROUND + 1.62;
         double dx = tx - x, dy = ty - ey, dz = tz - z;
         float yaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
@@ -148,7 +150,7 @@ public final class AutoTest {
         cmd(String.format(Locale.ROOT, "tp @a %.3f %.1f %.3f %.2f %.2f", x, GROUND, z, yaw, pitch));
     }
 
-    private static void ui(boolean hide) {
+    static void ui(boolean hide) {
         //#if MC < 26.1
         Minecraft.getInstance().options.hideGui = hide;
         //#elif MC >= 26.3
@@ -156,7 +158,7 @@ public final class AutoTest {
         //#endif
     }
 
-    private static void close() {
+    static void close() {
         ClientHooks.open(null);
     }
 
@@ -168,7 +170,7 @@ public final class AutoTest {
     }
     //#endif
 
-    private static void makeFake() {
+    static void makeFake() {
         Minecraft mc = Minecraft.getInstance();
         fake = new RemotePlayer(mc.level, new GameProfile(UUID.fromString("3c1f5e2a-1111-4000-8000-00000000abcd"), "Odette"));
         //#if MC >= 1.21.5
@@ -190,7 +192,7 @@ public final class AutoTest {
     }
 
     /** Pone en el celular del otro jugador lo que está usando (así lo vería cualquiera en un servidor). */
-    private static void fakeUses(int id, float pitch) {
+    static void fakeUses(int id, float pitch) {
         PhoneUse.put(fake.getMainHandItem(), id);
         fake.setXRot(pitch);
         fake.xRotO = pitch;

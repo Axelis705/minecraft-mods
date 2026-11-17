@@ -10,6 +10,9 @@ on:
       versiones:
         description: 'Versiones separadas por espacio (1.20.1 1.21.1 1.21.4 26.3)'
         default: '1.20.1 1.21.1 1.21.4 26.3'
+      video:
+        description: 'true = en vez de fotos, graba un video de las animaciones (rama videos-celular-<versión>)'
+        default: 'false'
 
 jobs:
   preparar:
@@ -52,7 +55,7 @@ jobs:
       - name: Paquetes para dibujar sin pantalla
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils mesa-vulkan-drivers
+          sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils mesa-vulkan-drivers ffmpeg
       - name: Generar el proyecto de ${{ matrix.mc }}
         if: matrix.mc != '1.20.1'
         run: python3 tools/mkproject.py celular ${{ matrix.mc }} $P
@@ -100,6 +103,7 @@ jobs:
               runs {
                   client {
                       property 'celular.autotest', 'true'
+                      property 'celular.autotest.video', '${{ github.event.inputs.video }}'
                       args '--quickPlaySingleplayer', 'prueba', '--width', '1280', '--height', '720'
                   }
               }
@@ -112,6 +116,7 @@ jobs:
               runs {
                   named('client') {
                       systemProperty 'celular.autotest', 'true'
+                      systemProperty 'celular.autotest.video', '${{ github.event.inputs.video }}'
                       args '--quickPlaySingleplayer', 'prueba', '--width', '1280', '--height', '720'
                   }
               }
@@ -124,19 +129,56 @@ jobs:
         run: |
           set +e
           cd $P
-          timeout 1800 xvfb-run -a -s "-screen 0 1920x1080x24" ./gradlew runClient --no-daemon > cliente.log 2>&1
-          echo "salida del juego: $?"
+          if [ "${{ github.event.inputs.video }}" = "true" ]; then
+            # pantalla propia y grabación de lo que se ve (ffmpeg); luego se cortan los clips con las marcas CLIP del registro
+            Xvfb :99 -screen 0 1280x720x24 &
+            sleep 2
+            export DISPLAY=:99
+            date +%s%3N > grab_inicio.txt
+            ffmpeg -loglevel error -f x11grab -framerate 30 -video_size 1280x720 -i :99 -c:v libx264 -preset ultrafast -crf 18 -pix_fmt yuv420p grabacion.mkv < /dev/null > ffmpeg.log 2>&1 &
+            fp=$!
+            timeout 1800 ./gradlew runClient --no-daemon > cliente.log 2>&1
+            echo "salida del juego: $?"
+            kill -INT $fp; sleep 3
+          else
+            timeout 1800 xvfb-run -a -s "-screen 0 1920x1080x24" ./gradlew runClient --no-daemon > cliente.log 2>&1
+            echo "salida del juego: $?"
+          fi
           echo "----- AUTOTEST -----"
           grep -E "AUTOTEST" run/logs/latest.log | sed 's/^.*AUTOTEST/AUTOTEST/' | head -150
           echo "----- errores -----"
           grep -nE "Exception|/ERROR\]|/FATAL\]" run/logs/latest.log | grep -viE "realms|telemetry|OpenAL|sound|narrator|authlib|Failed to fetch|profile" | head -40
           ls -la run/screenshots
           grep -q "AUTOTEST_FIN" run/logs/latest.log || { echo "::error title=Prueba con el cliente ${{ matrix.mc }}::no llegó al final (ver cliente_tail.log en la rama fotos-celular-${{ matrix.mc }})"; tail -80 cliente.log; exit 1; }
+      - name: Cortar los clips del video
+        if: always() && github.event.inputs.video == 'true'
+        run: |
+          cd $P
+          mkdir -p clips
+          python3 - <<'EOF'
+          import re, subprocess
+          start = int(open("grab_inicio.txt").read().strip())
+          marks = {}
+          for line in open("run/logs/latest.log", errors="ignore"):
+              m = re.search(r"AUTOTEST CLIP (\S+) (inicio|fin) t=(\d+)", line)
+              if m:
+                  marks.setdefault(m.group(1), {})[m.group(2)] = int(m.group(3))
+          for name, v in marks.items():
+              if "inicio" in v and "fin" in v:
+                  a = max(0, (v["inicio"] - start) / 1000 - 0.3)
+                  d = (v["fin"] - v["inicio"]) / 1000 + 0.6
+                  subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-ss", f"{a:.2f}", "-i", "grabacion.mkv", "-t", f"{d:.2f}",
+                                  "-c:v", "libx264", "-preset", "veryfast", "-crf", "24", "-pix_fmt", "yuv420p", "-movflags", "+faststart",
+                                  "-an", f"clips/{name}.mp4"], check=False)
+                  print(name, round(a, 1), round(d, 1))
+          EOF
+          ls -la clips
       - name: Subir fotos a la rama fotos-celular-${{ matrix.mc }}
         if: always()
         run: |
           d=$(mktemp -d)
           cp $P/run/screenshots/*.png "$d"/ 2>/dev/null || true
+          cp $P/clips/*.mp4 "$d"/ 2>/dev/null || true
           cp $P/run/logs/latest.log "$d"/ 2>/dev/null || true
           ls $P/crash-reports/*.txt >/dev/null 2>&1 && cp $P/crash-reports/*.txt "$d"/ || true
           ls $P/run/crash-reports/*.txt >/dev/null 2>&1 && cp $P/run/crash-reports/*.txt "$d"/ || true
@@ -144,6 +186,7 @@ jobs:
           cd "$d"
           echo "${{ github.sha }} ${{ matrix.mc }}" > LEEME.txt
           b="fotos-celular-${{ matrix.mc }}"
+          [ "${{ github.event.inputs.video }}" = "true" ] && b="videos-celular-${{ matrix.mc }}"
           git init -q -b "$b"
           git config user.name ci; git config user.email ci@example.com
           git add -A; git commit -qm "fotos ${{ github.sha }} ${{ matrix.mc }}"
