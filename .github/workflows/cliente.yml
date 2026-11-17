@@ -1,0 +1,93 @@
+name: Prueba con el cliente (fotos)
+
+# Abre el juego de verdad (sin pantalla: Xvfb y dibujo por software) con el celular en un mundo plano. El mod, con
+# -Dcelular.autotest=true, toma capturas (apps, celular en la mano, poses que ven los demás, audífonos, bocina, linterna de noche,
+# varios tamaños de pantalla) y cierra el juego. Las fotos y el registro se suben a la rama fotos-celular (la nube de Claude no
+# puede bajar artefactos de Actions, pero sí ramas).
+on:
+  workflow_dispatch:
+
+jobs:
+  cliente:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Paquetes para dibujar sin pantalla
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils
+      - name: Mundo plano (lo crea el servidor de prueba)
+        run: |
+          mkdir -p celular/run
+          printf 'level-type=minecraft\\:flat\ngenerate-structures=false\nspawn-protection=0\nonline-mode=false\nspawn-monsters=false\nspawn-animals=false\nspawn-npcs=false\n' > celular/run/server.properties
+          bash tools/boot_server.sh celular
+          mkdir -p celular/run/saves
+          rm -rf celular/run/saves/prueba
+          cp -r celular/run/world celular/run/saves/prueba
+          rm -f celular/run/saves/prueba/session.lock
+      - name: Opciones del juego y de la prueba
+        run: |
+          mkdir -p celular/run/celular/musica celular/run/config
+          cp celular/tests/fixtures/tono.mp3 celular/run/celular/musica/ || true
+          cat > celular/run/options.txt <<'EOF'
+          onboardAccessibility:false
+          tutorialStep:none
+          pauseOnLostFocus:false
+          renderDistance:6
+          simulationDistance:5
+          guiScale:3
+          renderClouds:"false"
+          soundCategory_master:0.0
+          skipMultiplayerWarning:true
+          joinedFirstServer:true
+          narrator:0
+          maxFps:60
+          EOF
+          printf 'earlyWindowControl = false\n' > celular/run/config/fml.toml
+          cat >> celular/build.gradle <<'EOF'
+
+          minecraft {
+              runs {
+                  client {
+                      property 'celular.autotest', 'true'
+                      args '--quickPlaySingleplayer', 'prueba', '--width', '1280', '--height', '720'
+                  }
+              }
+          }
+          EOF
+      - name: Abrir el juego y tomar las fotos
+        working-directory: celular
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set +e
+          timeout 1800 xvfb-run -a -s "-screen 0 1920x1080x24" ./gradlew runClient --no-daemon > cliente.log 2>&1
+          echo "salida del juego: $?"
+          echo "----- AUTOTEST -----"
+          grep -E "AUTOTEST" run/logs/latest.log | sed 's/^.*AUTOTEST/AUTOTEST/' | head -150
+          echo "----- errores -----"
+          grep -nE "Exception|/ERROR\]|/FATAL\]" run/logs/latest.log | grep -viE "realms|telemetry|OpenAL|sound|narrator|authlib|Failed to fetch|profile" | head -40
+          ls -la run/screenshots
+          grep -q "AUTOTEST_FIN" run/logs/latest.log || { echo "::error title=Prueba con el cliente::no llegó al final (ver cliente_tail.log en la rama fotos-celular)"; tail -80 cliente.log; exit 1; }
+      - name: Subir fotos a la rama fotos-celular
+        if: always()
+        run: |
+          d=$(mktemp -d)
+          cp celular/run/screenshots/*.png "$d"/ 2>/dev/null || true
+          cp celular/run/logs/latest.log "$d"/ 2>/dev/null || true
+          tail -400 celular/cliente.log > "$d/cliente_tail.log" 2>/dev/null || true
+          cd "$d"
+          echo "${{ github.sha }}" > LEEME.txt
+          git init -q -b fotos-celular
+          git config user.name ci; git config user.email ci@example.com
+          git add -A; git commit -qm "fotos ${{ github.sha }}"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" fotos-celular
+          ls -la

@@ -19,6 +19,8 @@ public final class ClientModEvents {
 
     @SubscribeEvent
     public static void onKeys(net.minecraftforge.client.event.RegisterKeyMappingsEvent e) {
+        // este evento llega una vez al iniciar el juego en todas las versiones: aquí se arranca el reloj de respaldo
+        Ticker.start();
         e.register(PhoneHud.OPEN);
         e.register(PhoneHud.ANSWER);
         e.register(PhoneHud.HANGUP);

@@ -124,26 +124,50 @@ public final class PhoneHud {
         }
     }
 
-    public static void render(G g, int sw, int sh) {
-        Minecraft mc = Minecraft.getInstance();
+    /** Cuándo corrió {@link #logic} por última vez. */
+    private static long lastLogic;
+
+    /** Lo que no dibuja: teclas, música, linterna, alarmas... (devuelve false si no hay jugador). */
+    private static boolean logic(Minecraft mc) {
+        long now = System.currentTimeMillis();
+        lastLogic = now;
         Object conn = mc.getConnection();
         if (conn != lastConnection) {
             lastConnection = conn;
             ClientHooks.reset();
         }
-        if (mc.player == null) {
-            return;
+        if (mc.player == null || mc.level == null) {
+            return false;
         }
         keys(mc);
         Music.frame();
         CompassApp.watchDeath();
-        long now = System.currentTimeMillis();
         CallState st = ClientHooks.call;
         // tono de "está sonando" para quien llama
         if (st.state == CallState.DIALING && now - lastRingback > 3000) {
             lastRingback = now;
             ClientHooks.play(CelularReg.RINGBACK.get(), 1.0F, 0.5F);
         }
+        return true;
+    }
+
+    /**
+     * Respaldo (lo llama {@link Ticker}): con F1 el juego no dibuja el HUD y entonces nada de lo anterior corría (no sonaban las
+     * alarmas, no servían las teclas, la música de la bocina no se movía). Si el HUD no lo hizo hace rato, se hace desde aquí.
+     */
+    static void fallback() {
+        if (System.currentTimeMillis() - lastLogic > 150) {
+            logic(Minecraft.getInstance());
+        }
+    }
+
+    public static void render(G g, int sw, int sh) {
+        Minecraft mc = Minecraft.getInstance();
+        if (!logic(mc)) {
+            return;
+        }
+        long now = System.currentTimeMillis();
+        CallState st = ClientHooks.call;
         if (ClientHooks.screen() instanceof CameraScreen) {
             return; // nada encima de las fotos
         }
