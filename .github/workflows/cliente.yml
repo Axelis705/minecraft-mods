@@ -2,32 +2,64 @@ name: Prueba con el cliente (fotos)
 
 # Abre el juego de verdad (sin pantalla: Xvfb y dibujo por software) con el celular en un mundo plano. El mod, con
 # -Dcelular.autotest=true, toma capturas (apps, celular en la mano, poses que ven los demás, audífonos, bocina, linterna de noche,
-# varios tamaños de pantalla) y cierra el juego. Las fotos y el registro se suben a la rama fotos-celular (la nube de Claude no
-# puede bajar artefactos de Actions, pero sí ramas).
+# varios tamaños de pantalla) y cierra el juego. Las fotos y el registro se suben a la rama fotos-celular-<versión> (la nube de
+# Claude no puede bajar artefactos de Actions, pero sí ramas). Con la entrada "versiones" se eligen cuáles probar.
 on:
   workflow_dispatch:
+    inputs:
+      versiones:
+        description: 'Versiones separadas por espacio (1.20.1 1.21.1 1.21.4 26.3)'
+        default: '1.20.1 1.21.1 1.21.4 26.3'
 
 jobs:
-  cliente:
+  preparar:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    outputs:
+      matriz: ${{ steps.m.outputs.matriz }}
+    steps:
+      - id: m
+        run: |
+          j="["; sep=""
+          for v in ${{ github.event.inputs.versiones }}; do
+            case "$v" in
+              1.20.1) java=17 ;;
+              1.21.1|1.21.4) java=21 ;;
+              *) java=25 ;;
+            esac
+            j="$j$sep{\"mc\":\"$v\",\"java\":\"$java\"}"; sep=","
+          done
+          echo "matriz=$j]" >> "$GITHUB_OUTPUT"
+
+  cliente:
+    needs: preparar
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
     permissions:
       contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.preparar.outputs.matriz) }}
+    env:
+      P: ${{ matrix.mc == '1.20.1' && 'celular' || format('gen/celular-{0}', matrix.mc) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: ${{ matrix.java }}
       - uses: gradle/actions/setup-gradle@v4
       - name: Paquetes para dibujar sin pantalla
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils
+          sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils mesa-vulkan-drivers
+      - name: Generar el proyecto de ${{ matrix.mc }}
+        if: matrix.mc != '1.20.1'
+        run: python3 tools/mkproject.py celular ${{ matrix.mc }} $P
       - name: Mundo plano (lo crea el servidor de prueba)
         run: |
-          mkdir -p celular/run
-          cat > celular/run/server.properties <<'EOF'
+          mkdir -p $P/run
+          cat > $P/run/server.properties <<'EOF'
           level-type=minecraft\:flat
           generator-settings={"layers"\:[{"block"\:"minecraft\:bedrock","height"\:1},{"block"\:"minecraft\:dirt","height"\:2},{"block"\:"minecraft\:grass_block","height"\:1}],"biome"\:"minecraft\:plains"}
           generate-structures=false
@@ -37,16 +69,16 @@ jobs:
           spawn-animals=false
           spawn-npcs=false
           EOF
-          bash tools/boot_server.sh celular
-          mkdir -p celular/run/saves
-          rm -rf celular/run/saves/prueba
-          cp -r celular/run/world celular/run/saves/prueba
-          rm -f celular/run/saves/prueba/session.lock
+          bash tools/boot_server.sh $P
+          mkdir -p $P/run/saves
+          rm -rf $P/run/saves/prueba
+          cp -r $P/run/world $P/run/saves/prueba
+          rm -f $P/run/saves/prueba/session.lock
       - name: Opciones del juego y de la prueba
         run: |
-          mkdir -p celular/run/celular/musica celular/run/config
-          cp celular/tests/fixtures/tono.mp3 celular/run/celular/musica/ || true
-          cat > celular/run/options.txt <<'EOF'
+          mkdir -p $P/run/celular/musica $P/run/config
+          cp celular/tests/fixtures/tono.mp3 $P/run/celular/musica/ || true
+          cat > $P/run/options.txt <<'EOF'
           onboardAccessibility:false
           tutorialStep:none
           pauseOnLostFocus:false
@@ -60,8 +92,9 @@ jobs:
           narrator:0
           maxFps:60
           EOF
-          printf 'earlyWindowControl = false\n' > celular/run/config/fml.toml
-          cat >> celular/build.gradle <<'EOF'
+          printf 'earlyWindowControl = false\n' > $P/run/config/fml.toml
+          if [ "${{ matrix.mc }}" = "1.20.1" ]; then
+          cat >> $P/build.gradle <<'EOF'
 
           minecraft {
               runs {
@@ -72,12 +105,25 @@ jobs:
               }
           }
           EOF
+          else
+          cat >> $P/build.gradle <<'EOF'
+
+          minecraft {
+              runs {
+                  named('client') {
+                      systemProperty 'celular.autotest', 'true'
+                      args '--quickPlaySingleplayer', 'prueba', '--width', '1280', '--height', '720'
+                  }
+              }
+          }
+          EOF
+          fi
       - name: Abrir el juego y tomar las fotos
-        working-directory: celular
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           set +e
+          cd $P
           timeout 1800 xvfb-run -a -s "-screen 0 1920x1080x24" ./gradlew runClient --no-daemon > cliente.log 2>&1
           echo "salida del juego: $?"
           echo "----- AUTOTEST -----"
@@ -85,18 +131,21 @@ jobs:
           echo "----- errores -----"
           grep -nE "Exception|/ERROR\]|/FATAL\]" run/logs/latest.log | grep -viE "realms|telemetry|OpenAL|sound|narrator|authlib|Failed to fetch|profile" | head -40
           ls -la run/screenshots
-          grep -q "AUTOTEST_FIN" run/logs/latest.log || { echo "::error title=Prueba con el cliente::no llegó al final (ver cliente_tail.log en la rama fotos-celular)"; tail -80 cliente.log; exit 1; }
-      - name: Subir fotos a la rama fotos-celular
+          grep -q "AUTOTEST_FIN" run/logs/latest.log || { echo "::error title=Prueba con el cliente ${{ matrix.mc }}::no llegó al final (ver cliente_tail.log en la rama fotos-celular-${{ matrix.mc }})"; tail -80 cliente.log; exit 1; }
+      - name: Subir fotos a la rama fotos-celular-${{ matrix.mc }}
         if: always()
         run: |
           d=$(mktemp -d)
-          cp celular/run/screenshots/*.png "$d"/ 2>/dev/null || true
-          cp celular/run/logs/latest.log "$d"/ 2>/dev/null || true
-          tail -400 celular/cliente.log > "$d/cliente_tail.log" 2>/dev/null || true
+          cp $P/run/screenshots/*.png "$d"/ 2>/dev/null || true
+          cp $P/run/logs/latest.log "$d"/ 2>/dev/null || true
+          ls $P/crash-reports/*.txt >/dev/null 2>&1 && cp $P/crash-reports/*.txt "$d"/ || true
+          ls $P/run/crash-reports/*.txt >/dev/null 2>&1 && cp $P/run/crash-reports/*.txt "$d"/ || true
+          tail -400 $P/cliente.log > "$d/cliente_tail.log" 2>/dev/null || true
           cd "$d"
-          echo "${{ github.sha }}" > LEEME.txt
-          git init -q -b fotos-celular
+          echo "${{ github.sha }} ${{ matrix.mc }}" > LEEME.txt
+          b="fotos-celular-${{ matrix.mc }}"
+          git init -q -b "$b"
           git config user.name ci; git config user.email ci@example.com
-          git add -A; git commit -qm "fotos ${{ github.sha }}"
-          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" fotos-celular
+          git add -A; git commit -qm "fotos ${{ github.sha }} ${{ matrix.mc }}"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "$b"
           ls -la

@@ -76,7 +76,7 @@ public final class ClientHooks {
         //#endif
     }
 
-    private static void select(net.minecraft.world.entity.player.Inventory inv, int slot) {
+    static void select(net.minecraft.world.entity.player.Inventory inv, int slot) {
         //#if MC >= 1.21.5
         //$$ inv.setSelectedSlot(slot);
         //#else

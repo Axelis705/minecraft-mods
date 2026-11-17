@@ -86,7 +86,7 @@ public class CameraScreen extends BaseScreen {
 
     //#if MC >= 26.3
     //$$ /** En 26.3 el HUD (barra de objetos, mira) se oculta en Hud.isHidden, que no tiene "set": se cambia por reflexión. */
-    //$$ private static void hud(boolean hidden) {
+    //$$ static void hud(boolean hidden) {
     //$$     try {
     //$$         net.minecraftforge.fml.util.ObfuscationReflectionHelper.setPrivateValue(net.minecraft.client.gui.Hud.class,
     //$$                 Minecraft.getInstance().gui.hud, hidden, "isHidden");

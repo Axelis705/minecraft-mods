@@ -1,12 +1,11 @@
 package com.celular.client;
 
-//#if MC < 1.20.2
 import com.celular.Celular;
 import com.celular.CelularReg;
 import com.celular.PhoneUse;
 import com.mojang.authlib.GameProfile;
+import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Screenshot;
 import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,15 +13,17 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
+import java.awt.image.BufferedImage;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-//#endif
 
 /**
  * Prueba con el juego de verdad, solo para el CI (workflow "Prueba con el cliente"): se activa con {@code -Dcelular.autotest=true}.
- * Entra a un mundo plano, toma capturas del celular y sus apps (en varios tamaños de pantalla), del celular en la mano, de las poses
+ * Sirve en las 4 versiones. Entra a un mundo plano, toma capturas del celular y sus apps (en 1.20.1 también en otros tamaños), del celular en la mano, de las poses
  * que ven los demás (con otro jugador de mentira, desde varios lados), de los audífonos, la bocina y la linterna de noche, y cierra
  * el juego. Así se ve cómo queda todo sin abrir el juego a mano. Sin esa opción no hace nada.
  */
@@ -34,14 +35,11 @@ public final class AutoTest {
 
     /** Lo llama {@link Ticker} cada 50 ms en el hilo del juego. */
     static void tick() {
-        //#if MC < 1.20.2
         if (ON) {
             tickRun();
         }
-        //#endif
     }
 
-    //#if MC < 1.20.2
     private record Step(String name, long pause, Runnable run) {
     }
 
@@ -95,12 +93,27 @@ public final class AutoTest {
         s.execute(() -> s.getCommands().performPrefixedCommand(s.createCommandSourceStack(), c));
     }
 
+    /** Guarda lo que se ve en {@code screenshots/celular_<nombre>.png} (con Tex.screenshot, que sirve en todas las versiones). */
     private static void shot(String name) {
-        Minecraft mc = Minecraft.getInstance();
-        Screenshot.grab(mc.gameDirectory, "celular_" + name + ".png", mc.getMainRenderTarget(), m -> {
+        Tex.screenshot(img -> {
+            try (NativeImage n = img) {
+                int w = n.getWidth(), h = n.getHeight();
+                BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+                for (int y = 0; y < h; y++) {
+                    for (int x = 0; x < w; x++) {
+                        bi.setRGB(x, y, Tex.argb(n, x, y) & 0xFFFFFF);
+                    }
+                }
+                Path dir = net.minecraftforge.fml.loading.FMLPaths.GAMEDIR.get().resolve("screenshots");
+                Files.createDirectories(dir);
+                javax.imageio.ImageIO.write(bi, "png", dir.resolve("celular_" + name + ".png").toFile());
+            } catch (Exception e) {
+                fails++;
+                log("FALLO foto " + name + ": " + e);
+            }
         });
         shots++;
-        log("foto " + name + " gui=" + mc.getWindow().getGuiScaledWidth() + "x" + mc.getWindow().getGuiScaledHeight());
+        log("foto " + name);
     }
 
     /** Una foto: primero prepara, espera a que se dibuje y luego la toma. */
@@ -132,29 +145,43 @@ public final class AutoTest {
     }
 
     private static void ui(boolean hide) {
+        //#if MC < 26.1
         Minecraft.getInstance().options.hideGui = hide;
+        //#elif MC >= 26.3
+        //$$ CameraScreen.hud(hide);
+        //#endif
     }
 
     private static void close() {
         ClientHooks.open(null);
     }
 
+    //#if MC < 1.20.2
     private static void guiScale(int s) {
         Minecraft mc = Minecraft.getInstance();
         mc.options.guiScale().set(s);
         mc.resizeDisplay();
     }
+    //#endif
 
     private static void makeFake() {
         Minecraft mc = Minecraft.getInstance();
         fake = new RemotePlayer(mc.level, new GameProfile(UUID.fromString("3c1f5e2a-1111-4000-8000-00000000abcd"), "Odette"));
+        //#if MC >= 1.21.5
+        //$$ fake.snapTo(FX, GROUND, FZ, 180F, 15F);
+        //#else
         fake.moveTo(FX, GROUND, FZ, 180F, 15F);
+        //#endif
         fake.yRotO = 180F;
         fake.xRotO = 15F;
         fake.yBodyRot = fake.yBodyRotO = 180F;
         fake.yHeadRot = fake.yHeadRotO = 180F;
         fake.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(CelularReg.PHONES.get(2).get()));
+        //#if MC >= 1.20.2
+        //$$ mc.level.addEntity(fake);
+        //#else
         mc.level.addPlayer(fake.getId(), fake);
+        //#endif
     }
 
     /** Pone en el celular del otro jugador lo que está usando (así lo vería cualquiera en un servidor). */
@@ -208,7 +235,7 @@ public final class AutoTest {
             cmd("setblock 8 -60 -6 celular:speaker[facing=south,on=false]");
             cmd("setblock 7 -60 -7 minecraft:oak_planks");
             cmd("tp @a 0.5 -60 6.5 180 0");
-            mc.player.getInventory().selected = 0;
+            ClientHooks.select(mc.player.getInventory(), 0);
             Prefs.load();
             Prefs.lockScreen = true;
             ui(false);
@@ -291,7 +318,8 @@ public final class AutoTest {
             cmd("time set 6000");
         });
 
-        // ---- otros tamaños de pantalla: 360 de alto (escala 2) y 270 (1080p con escala automática)
+        // ---- otros tamaños de pantalla (solo en 1.20.1: el acomodo es el mismo código en todas las versiones)
+        //#if MC < 1.20.2
         add("escala 2", 1500, () -> guiScale(2));
         photo("7_g360_inicio", 1800, () -> ClientHooks.openPhone(0));
         photo("7_g360_musica", 1800, () -> ClientHooks.open(new PhoneScreen(0, "music")));
@@ -305,6 +333,8 @@ public final class AutoTest {
         photo("8_g270_musica", 1800, () -> ClientHooks.open(new PhoneScreen(0, "music")));
         photo("8_g270_ajustes", 1800, () -> ClientHooks.open(new PhoneScreen(0, "settings")));
 
+        //#endif
+
         add("fin", 4000, () -> {
             close();
             com.celular.music.MusicPlayer.stop();
@@ -312,5 +342,4 @@ public final class AutoTest {
         });
         add("salir", 1000, () -> Minecraft.getInstance().stop());
     }
-    //#endif
 }
