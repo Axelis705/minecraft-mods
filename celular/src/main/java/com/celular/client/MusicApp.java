@@ -100,24 +100,6 @@ final class MusicApp extends App {
     private long confirmDel;
     private long confirmAt, jamListAt, contactsAt;
 
-    /** Zonas que se pueden tocar (se arman al dibujar; la última encima gana). */
-    private record Hit(int x0, int y0, int x1, int y1, Runnable run) {
-    }
-
-    private final List<Hit> hits = new ArrayList<>();
-
-    private void hit(int x0, int y0, int x1, int y1, Runnable run) {
-        hits.add(new Hit(x0, y0, x1, y1, run));
-    }
-
-    /** Igual, pero recortada a la parte visible de una lista. */
-    private void hitIn(int x0, int y0, int x1, int y1, int top, int bottom, Runnable run) {
-        int a = Math.max(y0, top), b = Math.min(y1, bottom);
-        if (b > a) {
-            hits.add(new Hit(x0, a, x1, b, run));
-        }
-    }
-
     private void drawList(G g, int mx, int my) {
         hits.clear();
         Font f = font();
@@ -744,14 +726,6 @@ final class MusicApp extends App {
         }
     }
 
-    private void small(G g, String text, int x, int y, int color, float sc) {
-        g.push();
-        g.translate(x, y, 0);
-        g.scale(sc, sc, 1);
-        g.drawString(font(), text, 0, 0, color, false);
-        g.pop();
-    }
-
     private void drawPlayer(G g, int mx, int my) {
         Font f = font();
         Track t = MusicPlayer.current;
@@ -905,14 +879,7 @@ final class MusicApp extends App {
         if (player) {
             return clickPlayer(x, y);
         }
-        for (int i = hits.size() - 1; i >= 0; i--) {
-            Hit h = hits.get(i);
-            if (s.in(x, y, h.x0(), h.y0(), h.x1(), h.y1())) {
-                ClientHooks.tap();
-                h.run().run();
-                return true;
-            }
-        }
+        clickHits(x, y);
         return true;
     }
 

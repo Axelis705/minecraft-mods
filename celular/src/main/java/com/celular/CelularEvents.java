@@ -40,6 +40,7 @@ public final class CelularEvents {
             Jams.leave(Plat.server(p), p.getUUID(), false);
             Speakers.ownerGone(Plat.server(p), p.getUUID());
             com.celular.PhoneUse.logout(p);
+            com.celular.map.Friends.logout(p.getUUID());
         }
     }
 
@@ -48,6 +49,7 @@ public final class CelularEvents {
         if (e.getEntity() instanceof ServerPlayer p) {
             Speakers.sendAll(p);
             com.celular.PhoneUse.login(p);
+            com.celular.msg.Messages.login(p);
         }
     }
 
@@ -65,6 +67,8 @@ public final class CelularEvents {
         Jams.clear();
         Speakers.clear();
         com.celular.PhoneUse.clear(e.getServer());
+        com.celular.msg.Messages.stopping(e.getServer());
+        com.celular.wallet.Wallet.stopping();
     }
 
     @SubscribeEvent

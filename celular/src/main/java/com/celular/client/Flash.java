@@ -59,6 +59,10 @@ public final class Flash {
             com.celular.plat.Plat.msg(mc.player, Component.translatable("celular.flash.off_msg"), true);
         }
         int want = screen(mc);
+        if (sent == -1 && !Prefs.shareLocation) {
+            // recién entró al mundo: el servidor no sabe que no quiere compartir su ubicación
+            Net.toServer(new com.celular.net.AppNet.Req(com.celular.net.AppNet.Req.SHARE, null, 0, ""));
+        }
         if (want != sent) {
             sent = want;
             Net.toServer(new CelularNet.UseScreen(want));

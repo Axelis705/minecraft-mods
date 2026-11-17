@@ -334,6 +334,50 @@ def icon_flash():
     return finish(big)
 
 
+def icon_messages():
+    big = app_base([(0, hexc("#5fe07a")), (1, hexc("#1fb84a"))])
+    d = ImageDraw.Draw(big)
+    d.ellipse((U(12), U(15), U(52), U(45)), fill=(255, 255, 255, 255))
+    d.polygon([(U(19), U(38)), (U(14), U(51)), (U(29), U(43))], fill=(255, 255, 255, 255))
+    return finish(big)
+
+
+def icon_notes():
+    big = app_base([(0, hexc("#ffffff")), (1, hexc("#f2f2f2"))])
+    d = ImageDraw.Draw(big)
+    d.rectangle((0, 0, U(64), U(17)), fill=hexc("#ffd60a"))
+    for i, y in enumerate((27, 36, 45, 54)):
+        d.line([(U(12), U(y)), (U(52 if i < 3 else 36), U(y))], fill=hexc("#c7c7cc"), width=U(2))
+    d.ellipse((U(44), U(40), U(58), U(54)), fill=hexc("#ff9f0a"))
+    d.line([(U(51), U(43)), (U(51), U(47.5)), (U(54), U(49))], fill=(255, 255, 255, 255), width=U(1.6))
+    return finish(big)
+
+
+def icon_map():
+    big = app_base([(0, hexc("#b8e08f")), (1, hexc("#8cc56a"))])
+    d = ImageDraw.Draw(big)
+    d.line([(U(0), U(20)), (U(20), U(28)), (U(34), U(26)), (U(64), U(40))], fill=hexc("#62b8f0"), width=U(7))
+    d.line([(U(10), U(64)), (U(30), U(0))], fill=hexc("#f7f2e2"), width=U(5))
+    d.line([(U(0), U(50)), (U(64), U(56))], fill=hexc("#f7f2e2"), width=U(4))
+    # alfiler
+    d.ellipse((U(34), U(10), U(52), U(28)), fill=hexc("#ff3b30"))
+    d.polygon([(U(36), U(23)), (U(50), U(23)), (U(43), U(38))], fill=hexc("#ff3b30"))
+    d.ellipse((U(40), U(16), U(46), U(22)), fill=(255, 255, 255, 255))
+    return finish(big)
+
+
+def icon_wallet():
+    big = app_base([(0, hexc("#2b2b30")), (1, hexc("#0c0c0e"))])
+    d = ImageDraw.Draw(big)
+    d.rounded_rectangle((U(10), U(14), U(54), U(34)), radius=U(4), fill=hexc("#d4af37"))
+    d.rounded_rectangle((U(10), U(22), U(54), U(42)), radius=U(4), fill=hexc("#0a84ff"))
+    d.rounded_rectangle((U(10), U(30), U(54), U(52)), radius=U(4), fill=hexc("#f2f2f7"))
+    # ficha
+    d.ellipse((U(34), U(34), U(50), U(50)), fill=hexc("#e03b3b"))
+    d.ellipse((U(38), U(38), U(46), U(46)), fill=hexc("#ffffff"))
+    return finish(big)
+
+
 # =====================================================================================================================
 #  Iconos pequeños de la interfaz (24 × 24, blancos; el juego los pinta del color que toque)
 # =====================================================================================================================
@@ -1073,7 +1117,7 @@ def main():
         phone_item(name, b, l, dk)
     screens()
     apps = [icon_insta(), icon_camera(), icon_gallery(), icon_phone(), icon_patreon(), icon_settings(), icon_music(), icon_weather(),
-            icon_compass(), icon_calc(), icon_flash()]
+            icon_compass(), icon_calc(), icon_flash(), icon_messages(), icon_notes(), icon_map(), icon_wallet()]
     atlas = Image.new("RGBA", (S * len(apps), S), (0, 0, 0, 0))
     for i, a in enumerate(apps):
         atlas.paste(a, (i * S, 0))

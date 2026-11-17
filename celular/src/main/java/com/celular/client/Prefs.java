@@ -31,6 +31,8 @@ public final class Prefs {
     public static boolean speaker = true;
     /** Volumen de los altavoces de los demás (0..1). */
     public static float othersVolume = 0.8F;
+    /** Mapa con amigos: los demás ven dónde estoy. */
+    public static boolean shareLocation = true;
     private static boolean loaded;
 
     private Prefs() {
@@ -66,6 +68,7 @@ public final class Prefs {
             lockScreen = Boolean.parseBoolean(p.getProperty("pantalla_bloqueo", "true"));
             speaker = Boolean.parseBoolean(p.getProperty("musica_altavoz", "true"));
             othersVolume = Math.max(0, Math.min(1, Float.parseFloat(p.getProperty("musica_volumen_otros", "0.8"))));
+            shareLocation = Boolean.parseBoolean(p.getProperty("compartir_ubicacion", "true"));
         } catch (Exception ignored) {
         }
     }
@@ -86,6 +89,7 @@ public final class Prefs {
         p.setProperty("pantalla_bloqueo", Boolean.toString(lockScreen));
         p.setProperty("musica_altavoz", Boolean.toString(speaker));
         p.setProperty("musica_volumen_otros", Float.toString(othersVolume));
+        p.setProperty("compartir_ubicacion", Boolean.toString(shareLocation));
         try {
             Files.createDirectories(file().getParent());
             try (Writer w = Files.newBufferedWriter(file(), StandardCharsets.UTF_8)) {

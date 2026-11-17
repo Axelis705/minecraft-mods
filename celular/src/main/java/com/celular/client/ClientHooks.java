@@ -205,6 +205,11 @@ public final class ClientHooks {
             case CelularNet.Notify.MISSED_CALL -> PhoneHud.toast(D.APP_PHONE, "celular.app.phone",
                     net.minecraft.network.chat.Component.translatable("celular.notify.missed", m.who));
             case CelularNet.Notify.JAM_INVITE -> Radio.invite(m);
+            case CelularNet.Notify.WALLET -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet", net.minecraft.network.chat.Component.translatable(m.text));
+            case CelularNet.Notify.WALLET_SENT -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet",
+                    net.minecraft.network.chat.Component.translatable("celular.wallet.sent", m.text, m.who));
+            case CelularNet.Notify.WALLET_IN -> PhoneHud.toast(D.APP_WALLET, "celular.app.wallet",
+                    net.minecraft.network.chat.Component.translatable("celular.wallet.received", m.who, m.text));
             default -> {
             }
         }
@@ -234,6 +239,10 @@ public final class ClientHooks {
         Photos.clearAll();
         Radio.reset();
         Flash.reset();
+        Chats.reset();
+        Notes.reset();
+        MapApp.reset();
+        WalletApp.reset();
         com.celular.music.MusicPlayer.stop();          // al salir del mundo se calla la música
     }
 }

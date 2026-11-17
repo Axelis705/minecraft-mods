@@ -104,6 +104,47 @@ abstract class App {
         }
     }
 
+    // ------------------------------------------------------------------ zonas que se pueden tocar (se arman al dibujar)
+
+    record Hit(int x0, int y0, int x1, int y1, Runnable run) {
+    }
+
+    final java.util.List<Hit> hits = new java.util.ArrayList<>();
+
+    void hit(int x0, int y0, int x1, int y1, Runnable run) {
+        hits.add(new Hit(x0, y0, x1, y1, run));
+    }
+
+    /** Igual, pero recortada a la parte visible de una lista. */
+    void hitIn(int x0, int y0, int x1, int y1, int top, int bottom, Runnable run) {
+        int a = Math.max(y0, top), b = Math.min(y1, bottom);
+        if (b > a) {
+            hits.add(new Hit(x0, a, x1, b, run));
+        }
+    }
+
+    /** Toca la zona de más arriba que contenga el punto. */
+    boolean clickHits(double x, double y) {
+        for (int i = hits.size() - 1; i >= 0; i--) {
+            Hit h = hits.get(i);
+            if (s.in(x, y, h.x0(), h.y0(), h.x1(), h.y1())) {
+                ClientHooks.tap();
+                h.run().run();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Texto chico (escalado). */
+    void small(G g, String text, int x, int y, int color, float sc) {
+        g.push();
+        g.translate(x, y, 0);
+        g.scale(sc, sc, 1);
+        g.drawString(font(), text, 0, 0, color, false);
+        g.pop();
+    }
+
     /** Texto centrado en varias líneas (para los mensajes de "no hay nada aquí"). */
     void centered(G g, net.minecraft.network.chat.Component text, int y, int color) {
         Font f = font();

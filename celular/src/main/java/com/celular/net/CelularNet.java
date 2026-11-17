@@ -64,6 +64,13 @@ public final class CelularNet {
                 com.celular.PhoneUse.set(p, m.screen);
             }
         });
+        // ---- Mensajes, Mapa con amigos y Billetera
+        Net.register(id++, AppNet.Req.class, AppNet.Req::write, AppNet.Req::read, CelularNet::app);
+        Net.register(id++, AppNet.MsgList.class, AppNet.MsgList::write, AppNet.MsgList::read, (m, p) -> Net.onClient(() -> com.celular.client.Chats.list(m)));
+        Net.register(id++, AppNet.MsgThread.class, AppNet.MsgThread::write, AppNet.MsgThread::read, (m, p) -> Net.onClient(() -> com.celular.client.Chats.thread(m)));
+        Net.register(id++, AppNet.MsgNew.class, AppNet.MsgNew::write, AppNet.MsgNew::read, (m, p) -> Net.onClient(() -> com.celular.client.Chats.incoming(m)));
+        Net.register(id++, AppNet.Friends.class, AppNet.Friends::write, AppNet.Friends::read, (m, p) -> Net.onClient(() -> com.celular.client.Chats.friends(m)));
+        Net.register(id++, AppNet.WalletHist.class, AppNet.WalletHist::write, AppNet.WalletHist::read, (m, p) -> Net.onClient(() -> com.celular.client.Chats.walletHist(m)));
         Net.done();
     }
 
@@ -77,6 +84,19 @@ public final class CelularNet {
             case RadioNet.Req.GET -> com.celular.radio.WorldMusic.download(p, m.a, (int) m.b);
             case RadioNet.Req.UP_CANCEL -> com.celular.radio.WorldMusic.cancel(p);
             default -> com.celular.radio.Jams.handle(p, m);
+        }
+    }
+
+    private static void app(AppNet.Req m, ServerPlayer p) {
+        if (p == null) {
+            return;
+        }
+        switch (m.what) {
+            case AppNet.Req.MAP -> com.celular.map.Friends.send(p);
+            case AppNet.Req.SHARE -> com.celular.map.Friends.share(p, m.n != 0);
+            case AppNet.Req.WALLET_SEND -> com.celular.wallet.Wallet.send(p, m.who, m.n);
+            case AppNet.Req.WALLET_HIST -> com.celular.wallet.Wallet.sendHist(p);
+            default -> com.celular.msg.Messages.handle(p, m);
         }
     }
 
@@ -453,7 +473,8 @@ public final class CelularNet {
 
     /** Una notificación en el celular. */
     public static final class Notify {
-        public static final int LIKE = 0, NEW_POST = 1, MISSED_CALL = 2, POSTED = 3, ERROR = 4, JAM_INVITE = 5;
+        public static final int LIKE = 0, NEW_POST = 1, MISSED_CALL = 2, POSTED = 3, ERROR = 4, JAM_INVITE = 5, WALLET = 6, WALLET_SENT = 7,
+                WALLET_IN = 8;
         public final int type;
         public final String who;
         /** Texto extra (o una clave de traducción en ERROR). */

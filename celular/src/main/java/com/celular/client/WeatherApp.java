@@ -256,12 +256,4 @@ final class WeatherApp extends App {
             }
         }
     }
-
-    private void small(G g, String text, int x, int y, int color, float sc) {
-        g.push();
-        g.translate(x, y, 0);
-        g.scale(sc, sc, 1);
-        g.drawString(font(), text, 0, 0, color, false);
-        g.pop();
-    }
 }

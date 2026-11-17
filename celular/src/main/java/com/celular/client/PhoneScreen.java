@@ -53,7 +53,8 @@ public class PhoneScreen extends BaseScreen {
         this.startApp = startApp;
         Prefs.load();
         apps = new App[]{new InstaApp(this), new CameraApp(this), new GalleryApp(this), new PhoneApp(this), new PatreonApp(this),
-                new SettingsApp(this), new MusicApp(this), new WeatherApp(this), new CompassApp(this), new CalcApp(this), new FlashApp(this)};
+                new SettingsApp(this), new MusicApp(this), new WeatherApp(this), new CompassApp(this), new CalcApp(this), new FlashApp(this),
+                new MessagesApp(this), new NotesApp(this), new MapApp(this), new WalletApp(this)};
         Music.init();
     }
 
@@ -264,9 +265,9 @@ public class PhoneScreen extends BaseScreen {
     // ------------------------------------------------------------------ inicio
 
     /** Las apps de abajo (el "dock"): Teléfono, Instacraft, Cámara y Música. Las demás van en la cuadrícula. */
-    private static final int[] DOCK = {3, 0, 1, 6};
+    private static final int[] DOCK = {3, 11, 0, 6};
     /** Orden de la cuadrícula. */
-    private static final int[] GRID = {2, 7, 8, 9, 10, 4, 5};
+    private static final int[] GRID = {1, 2, 7, 13, 12, 14, 8, 9, 10, 4, 5};
 
     private int cols() {
         return 4;
@@ -358,7 +359,7 @@ public class PhoneScreen extends BaseScreen {
     }
 
     private int badge(int i) {
-        return i == 0 ? ClientHooks.badgeInsta : i == 3 ? ClientHooks.badgeCalls : 0;
+        return i == 0 ? ClientHooks.badgeInsta : i == 3 ? ClientHooks.badgeCalls : i == 11 ? Chats.badge : 0;
     }
 
     private void drawHome(G g, int mx, int my, boolean interactive) {
@@ -370,13 +371,23 @@ public class PhoneScreen extends BaseScreen {
         Component date = Component.translatable("celular.date", Component.translatable("celular.day." + now.getDayOfWeek().getValue()),
                 now.getDayOfMonth(), Component.translatable("celular.month." + now.getMonthValue()));
         int cx = (dx0 + dx1) / 2;
-        g.drawCenteredString(font, date, cx, cy0 + 8, 0xFFFFFFFF);
-        g.push();
-        float sc = 3.0F;
-        g.translate(cx, cy0 + 20, 0);
-        g.scale(sc, sc, 1);
-        g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
-        g.pop();
+        int room = gridTop() - cy0;
+        if (room >= 52) {
+            g.drawCenteredString(font, date, cx, cy0 + 8, 0xFFFFFFFF);
+            g.push();
+            float sc = 3.0F;
+            g.translate(cx, cy0 + 20, 0);
+            g.scale(sc, sc, 1);
+            g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
+            g.pop();
+        } else if (room >= 22) {
+            // con muchas apps y la pantalla chica: el reloj más pequeño
+            g.push();
+            g.translate(cx, cy0 + 4, 0);
+            g.scale(1.6F, 1.6F, 1);
+            g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
+            g.pop();
+        }
         drawWidget(g, mx, my, interactive);
         // dock con fondo de vidrio
         int dt = dockTop();
