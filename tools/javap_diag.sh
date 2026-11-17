@@ -18,7 +18,7 @@ for c in "$@"; do
 done
 # miembros privados que contengan un texto: DIAG_PRIVADOS="Clase:texto Clase:texto"
 for ct in ${DIAG_PRIVADOS:-}; do
-  c="${ct%%:*}"; t="${ct##*:}"
+  c="${ct%%:*}"; c="${c//%/\$}"; t="${ct##*:}"
   echo "===== privados de $c con '$t'"
   javap -cp "$jar" -p "$c" 2>/dev/null | grep -i "$t" | head -20
 done
