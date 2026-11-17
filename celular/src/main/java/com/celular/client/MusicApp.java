@@ -211,11 +211,13 @@ final class MusicApp extends App {
         }
         // "aleatorio" y cuántas hay
         int y = ctop;
-        boolean hs = s.in(mx, my, s.dx0 + 6, y, s.dx0 + 66, y + 14);
-        D.rr(g, s.dx0 + 6, y, s.dx0 + 66, y + 14, 7, hs ? 0xFFFF4D63 : RED);
+        String shuf = Component.translatable("celular.music.shuffle_all").getString();
+        int pe = s.dx0 + 6 + Math.min(70, 21 + (int) Math.ceil(f.width(shuf) * 0.75F) + 6);
+        boolean hs = s.in(mx, my, s.dx0 + 6, y, pe, y + 14);
+        D.rr(g, s.dx0 + 6, y, pe, y + 14, 7, hs ? 0xFFFF4D63 : RED);
         D.icon(g, D.SHUFFLE, s.dx0 + 9, y + 2, 10, 0xFFFFFFFF);
-        small(g, Component.translatable("celular.music.shuffle_all").getString(), s.dx0 + 21, y + 4, 0xFFFFFFFF, 0.75F);
-        hit(s.dx0 + 6, y, s.dx0 + 66, y + 14, () -> {
+        D.fit(g, f, shuf, s.dx0 + 21, y + 4, 0.75F, 0.6F, pe - s.dx0 - 25, 0xFFFFFFFF, false, false);
+        hit(s.dx0 + 6, y, pe, y + 14, () -> {
             Radio.leaveJamForLocal();
             MusicPlayer.shuffle = true;
             Prefs.shuffle = true;
@@ -223,8 +225,12 @@ final class MusicApp extends App {
             MusicPlayer.playList(new ArrayList<>(lib), new java.util.Random().nextInt(lib.size()));
             player = true;
         });
-        Component cnt = Component.translatable("celular.music.count", lib.size());
-        small(g, cnt.getString(), s.dx1 - 6 - (int) (f.width(cnt) * 0.75F), y + 4, s.sub(), 0.75F);
+        String cnt = (lib.size() == 1 ? Component.translatable("celular.music.count_one") : Component.translatable("celular.music.count", lib.size())).getString();
+        int room = s.dx1 - 6 - (pe + 4);
+        float csc = Math.min(0.75F, room / (float) Math.max(1, f.width(cnt)));
+        if (csc >= 0.5F) {
+            small(g, cnt, s.dx1 - 6 - (int) (f.width(cnt) * csc), y + 4, s.sub(), csc);
+        }
         int listTop = y + 18;
         int rowH = 22;
         scroll.update(lib.size() * rowH, bottom - listTop);

@@ -134,6 +134,7 @@
   "celular.music.refresh": "Atualizar",
   "celular.music.shuffle_all": "Aleatório",
   "celular.music.count": "%s songs",
+  "celular.music.count_one": "1 song",
   "celular.music.unknown_artist": "Unknown artist",
   "celular.music.broken": "This file can't be played",
   "celular.music.now_playing": "Tocando agora",

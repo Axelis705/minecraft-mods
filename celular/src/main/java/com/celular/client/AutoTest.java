@@ -235,7 +235,7 @@ public final class AutoTest {
         for (String a : APPS) {
             photo("2_app_" + a, a.equals("map") ? 3500 : 1800, () -> ClientHooks.open(new PhoneScreen(0, a)));
         }
-        photo("2_app_camera", 2500, () -> ClientHooks.open(new PhoneScreen(0, "camera")));
+        photo("2_app_camera", 2500, () -> ClientHooks.open(new CameraScreen(0)));
         add("cerrar", 800, AutoTest::close);
 
         // ---- el celular en la mano (primera persona)

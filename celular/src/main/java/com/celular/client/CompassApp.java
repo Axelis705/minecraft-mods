@@ -318,7 +318,7 @@ final class CompassApp extends App {
         scroll.update(list.size() * rowH, bottom - top);
         g.scissor(s.dx0, top, s.dx1, bottom);
         if (list.isEmpty()) {
-            centered(g, Component.translatable("celular.compass.empty"), top + 6, 0xFF8E8E93);
+            centered(g, Component.translatable("celular.compass.empty"), top + 6, 0xFF8E8E93, bottom);
         }
         for (int i = 0; i < list.size(); i++) {
             Place p = list.get(i);

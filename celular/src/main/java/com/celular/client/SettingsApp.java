@@ -100,7 +100,7 @@ final class SettingsApp extends App {
             int ry = y + i * 22;
             D.rr(g, x0 + 4, ry + 4, x0 + 18, ry + 18, 4, colors[i]);
             D.icon(g, icons[i], x0 + 5, ry + 5, 12, 0xFFFFFFFF);
-            g.drawString(f, D.cut(f, Component.translatable("celular.settings." + TOGGLES[i]).getString(), x1 - x0 - 50), x0 + 23, ry + 7, s.fg(), false);
+            D.fit(g, f, Component.translatable("celular.settings." + TOGGLES[i]).getString(), x0 + 23, ry + 7, 1F, 0.65F, x1 - x0 - 50, s.fg(), false, false);
             boolean on = value(i);
             int sx = x1 - 26, sy = ry + 6;
             Anim.toggle(g, sx, sy, on, "set:" + TOGGLES[i]);

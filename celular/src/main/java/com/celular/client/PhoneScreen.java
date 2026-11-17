@@ -343,17 +343,8 @@ public class PhoneScreen extends BaseScreen {
 
     /** Reloj mediano con la fecha abajo (cuando no cabe el grande). */
     private void midClock(G g, Font font, int cx, int y, String time, Component date) {
-        g.push();
-        g.translate(cx, y, 0);
-        g.scale(2.0F, 2.0F, 1);
-        g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
-        g.pop();
-        g.push();
-        g.translate(cx, y + 18, 0);
-        g.scale(0.75F, 0.75F, 1);
-        String d = date.getString();
-        g.drawString(font, d, -font.width(d) / 2, 0, 0xE0FFFFFF, true);
-        g.pop();
+        D.fit(g, font, time, cx, y, 2F, 1.5F, dw() - 10, 0xFFFFFFFF, true, true);
+        D.fit(g, font, date.getString(), cx, y + 18, 0.75F, 0.55F, dw() - 8, 0xE0FFFFFF, true, true);
     }
 
     private void drawWallpaper(G g) {
@@ -403,13 +394,8 @@ public class PhoneScreen extends BaseScreen {
         int cx = (dx0 + dx1) / 2;
         int hd = header();
         if (hd == 3) {
-            g.drawCenteredString(font, date, cx, cy0 + 8, 0xFFFFFFFF);
-            g.push();
-            float sc = 3.0F;
-            g.translate(cx, cy0 + 20, 0);
-            g.scale(sc, sc, 1);
-            g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
-            g.pop();
+            D.fit(g, font, date.getString(), cx, cy0 + 8, 1F, 0.6F, dw() - 8, 0xFFFFFFFF, true, true);
+            D.fit(g, font, time, cx, cy0 + 20, 3F, 2F, dw() - 10, 0xFFFFFFFF, true, true);
         } else if (hd == 2) {
             midClock(g, font, cx, cy0 + 4, time, date);
         } else if (hd == 1 && com.celular.music.MusicPlayer.current == null) {
@@ -446,13 +432,9 @@ public class PhoneScreen extends BaseScreen {
                 g.drawString(font, b, r[0] + r[2] + 3 - bw / 2 - font.width(b) / 2, r[1] - 2, 0xFFFFFFFF, false);
             }
             if (dockIndex(i) < 0) {
-                Component label = Component.translatable("celular.app." + apps[i].key);
-                g.push();
-                g.translate(r[0] + r[2] / 2F, r[1] + r[2] + 3, 0);
-                g.scale(0.7F, 0.7F, 1);
-                String ls = D.cut(font, label.getString(), (int) ((dw() / cols() - 1) / 0.7F));
-                g.drawString(font, ls, -font.width(ls) / 2, 0, 0xFFFFFFFF, true);
-                g.pop();
+                // el nombre entero si cabe (se achica un poco en celulares chicos antes de cortarlo)
+                String label = Component.translatable("celular.app." + apps[i].key).getString();
+                D.fit(g, font, label, r[0] + r[2] / 2F, r[1] + r[2] + 3, 0.7F, 0.5F, dw() / cols() - 1, 0xFFFFFFFF, true, true);
             }
         }
     }
@@ -509,7 +491,8 @@ public class PhoneScreen extends BaseScreen {
         int lift = (int) (k * (dy1 - dy0));
         g.scissor(dx0, dy0, dx1, dy1 - lift);
         g.push();
-        g.translate(0, -lift, 0);
+        // más adelante (z) que el inicio de abajo: si no, los textos del inicio se veían a través del bloqueo
+        g.translate(0, -lift, 120);
         drawWallpaper(g);
         g.fillGradient(dx0, dy0, dx1, dy1, 0x30000000, 0x90000000);
         Font font = Minecraft.getInstance().font;
@@ -518,13 +501,9 @@ public class PhoneScreen extends BaseScreen {
         LocalDateTime t = LocalDateTime.now();
         Component date = Component.translatable("celular.date", Component.translatable("celular.day." + t.getDayOfWeek().getValue()),
                 t.getDayOfMonth(), Component.translatable("celular.month." + t.getMonthValue()));
-        g.drawCenteredString(font, date, cx, cy0 + 18, 0xE0FFFFFF);
+        D.fit(g, font, date.getString(), cx, cy0 + 18, 1F, 0.6F, dw() - 8, 0xE0FFFFFF, true, true);
         String time = String.format(java.util.Locale.ROOT, "%d:%02d", t.getHour(), t.getMinute());
-        g.push();
-        g.translate(cx, cy0 + 30, 0);
-        g.scale(4.0F, 4.0F, 1);
-        g.drawString(font, time, -font.width(time) / 2, 0, 0xFFFFFFFF, true);
-        g.pop();
+        D.fit(g, font, time, cx, cy0 + 30, 4F, 2F, dw() - 10, 0xFFFFFFFF, true, true);
         // avisos pendientes
         int y = cy0 + 74;
         if (ClientHooks.badgeCalls > 0) {
@@ -633,8 +612,13 @@ public class PhoneScreen extends BaseScreen {
                 drawAppAnim(g, now, mxx, myy, pt);
             }
         }
+        boolean lockLayer = locked || animApp != null;
         if (locked) {
             drawLock(g, mxx, myy, now);
+        }
+        if (lockLayer) {
+            g.push();
+            g.translate(0, 0, 130);     // la barra de estado y las esquinas, encima del bloqueo / la app que se abre (van más adelante)
         }
         drawStatusBar(g, font, now);
         // barrita de inicio
@@ -642,6 +626,9 @@ public class PhoneScreen extends BaseScreen {
         boolean hovBar = interactive && app != null && in(mx, my, (dx0 + dx1) / 2 - 24, dy1 - 9, (dx0 + dx1) / 2 + 24, dy1);
         D.rr(g, (dx0 + dx1) / 2 - (hovBar ? 22 : 18), dy1 - 6, (dx0 + dx1) / 2 + (hovBar ? 22 : 18), dy1 - 3, 2, D.alpha(hb, 0.85F));
         drawCorners(g);
+        if (lockLayer) {
+            g.pop();
+        }
         g.pop();
         if (app != null && animApp == null && slide == 0) {
             drawWidgets(g, mx, my, pt);
@@ -661,9 +648,12 @@ public class PhoneScreen extends BaseScreen {
         float k = animOpening ? D.easeOut(t) : 1 - D.easeOut(t);
         int x0 = (int) (animIx + (dx0 - animIx) * k), y0 = (int) (animIy + (dy0 - animIy) * k);
         int x1 = (int) (animIx + animIs + (dx1 - animIx - animIs) * k), y1 = (int) (animIy + animIs + (dy1 - animIy - animIs) * k);
+        g.push();
+        g.translate(0, 0, 60);          // encima de los nombres de las apps (que tienen sombra y quedan un poquito más adelante)
         D.rr(g, x0, y0, x1, y1, (int) (animIs / 4 + (8 - animIs / 4) * k), animApp.bg());
         int is = (int) (animIs + 10 * k);
         D.app(g, animApp.icon, (x0 + x1) / 2 - is / 2, (y0 + y1) / 2 - is / 2, is);
+        g.pop();
     }
 
     private void drawBody(G g) {

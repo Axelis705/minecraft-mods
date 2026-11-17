@@ -21,6 +21,7 @@ public final class ClientModEvents {
     public static void onKeys(net.minecraftforge.client.event.RegisterKeyMappingsEvent e) {
         // este evento llega una vez al iniciar el juego en todas las versiones: aquí se arranca el reloj de respaldo
         Ticker.start();
+        PhonePoses.init();      // las poses deben existir antes de dibujar a cualquier jugador
         e.register(PhoneHud.OPEN);
         e.register(PhoneHud.ANSWER);
         e.register(PhoneHud.HANGUP);

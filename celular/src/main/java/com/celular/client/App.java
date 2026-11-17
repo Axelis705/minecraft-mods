@@ -165,6 +165,27 @@ abstract class App {
         g.pop();
     }
 
+    /** Como {@link #centered(G, net.minecraft.network.chat.Component, int, int)} pero achica la letra para que quepa antes de {@code bottom}. */
+    void centered(G g, net.minecraft.network.chat.Component text, int y, int color, int bottom) {
+        Font f = font();
+        int w = s.dx1 - s.dx0 - 16;
+        float sc = 1F;
+        java.util.List<net.minecraft.util.FormattedCharSequence> lines = f.split(text, w);
+        while (sc > 0.6F && y + lines.size() * 10 * sc > bottom) {
+            sc -= 0.1F;
+            lines = f.split(text, (int) (w / sc));
+        }
+        int cx = (s.dx0 + s.dx1) / 2;
+        for (net.minecraft.util.FormattedCharSequence l : lines) {
+            g.push();
+            g.translate(cx, y, 0);
+            g.scale(sc, sc, 1);
+            g.drawString(f, l, -f.width(l) / 2, 0, color, false);
+            g.pop();
+            y += Math.round(10 * sc);
+        }
+    }
+
     /** Texto centrado en varias líneas (para los mensajes de "no hay nada aquí"). */
     void centered(G g, net.minecraft.network.chat.Component text, int y, int color) {
         Font f = font();

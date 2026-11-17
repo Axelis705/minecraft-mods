@@ -112,6 +112,22 @@ public final class D {
         face(g, id, x, y, size);
     }
 
+    /**
+     * Escribe {@code s} a escala {@code max}, o más chico si no cabe en {@code w} (hasta {@code min}; si aun así no cabe, se corta con
+     * "…"). {@code x} es el borde izquierdo, o el centro si {@code center}. Para que nada se salga de la pantalla en celulares chicos.
+     */
+    public static float fit(G g, Font f, String s, float x, float y, float max, float min, int w, int color, boolean shadow, boolean center) {
+        int tw = f.width(s);
+        float sc = tw <= 0 ? max : Math.max(min, Math.min(max, w / (float) tw));
+        String t = tw * sc > w + 0.5F ? cut(f, s, (int) (w / sc)) : s;
+        g.push();
+        g.translate(x, y, 0);
+        g.scale(sc, sc, 1);
+        g.drawString(f, t, center ? -f.width(t) / 2 : 0, 0, color, shadow);
+        g.pop();
+        return sc;
+    }
+
     public static String cut(Font f, String s, int w) {
         if (f.width(s) <= w) {
             return s;

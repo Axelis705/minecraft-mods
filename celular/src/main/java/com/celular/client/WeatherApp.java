@@ -185,13 +185,10 @@ final class WeatherApp extends App {
         int ccx = s.dx0 + 10 + r, ccy = y + r;
         drawDial(g, ccx, ccy, r, i);
         int tx = ccx + r + 10;
-        g.drawString(f, Component.translatable("celular.weather.time"), tx, y + 4, 0xC0FFFFFF, false);
-        g.push();
-        g.translate(tx, y + 15, 0);
-        g.scale(2F, 2F, 1);
-        g.drawString(f, i.time, 0, 0, 0xFFFFFFFF, true);
-        g.pop();
-        g.drawString(f, Component.translatable("celular.weather.day", i.day), tx, y + 36, 0xC0FFFFFF, false);
+        int tw = s.dx1 - 5 - tx;
+        D.fit(g, f, Component.translatable("celular.weather.time").getString(), tx, y + 4, 1F, 0.6F, tw, 0xC0FFFFFF, false, false);
+        D.fit(g, f, i.time, tx, y + 15, 2F, 1F, tw, 0xFFFFFFFF, true, false);
+        D.fit(g, f, Component.translatable("celular.weather.day", i.day).getString(), tx, y + 36, 1F, 0.6F, tw, 0xC0FFFFFF, false, false);
         y += 2 * r + 12;
         // tarjetas: cuánto falta y la luna
         int x0 = s.dx0 + 6, x1 = s.dx1 - 6;

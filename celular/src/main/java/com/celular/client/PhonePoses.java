@@ -28,8 +28,6 @@ public final class PhonePoses {
     /** Dónde están los ojos en el modelo del jugador (píxeles; y hacia abajo, el frente es -z). */
     private static final float EYE_Y = -4.5F, EYE_Z = -4F;
 
-    private static HumanoidModel.ArmPose text, flash, ear, photo;
-
     //#if MC >= 26.1
     //$$ private static HumanoidModel.ArmPose make(String name, boolean both, java.util.function.BiConsumer<HumanoidModel<?>, HumanoidArm> fn) {
     //$$     return HumanoidModel.ArmPose.create(name, both, both, (model, who, arm) -> fn.accept(model, arm));
@@ -40,32 +38,19 @@ public final class PhonePoses {
     }
     //#endif
 
-    private static HumanoidModel.ArmPose text() {
-        if (text == null) {
-            text = make("CELULAR_TEXT", true, PhonePoses::texting);
-        }
-        return text;
-    }
+    /*
+     * Las poses se crean AL INICIAR el juego (cuando se registra el celular), nunca después: el juego decide qué hacer con cada pose
+     * con una tabla que arma la primera vez que dibuja a alguien, del tamaño de las poses que existen en ese momento. Una pose creada
+     * después queda fuera de la tabla y el juego se cae ("Index 10 out of bounds for length 10" en HumanoidModel.poseRightArm) a
+     * todos los que ven a un jugador usar el celular. Lo encontró la prueba con el cliente real.
+     */
+    private static final HumanoidModel.ArmPose TEXT = make("CELULAR_TEXT", true, PhonePoses::texting);
+    private static final HumanoidModel.ArmPose FLASH = make("CELULAR_FLASH", false, PhonePoses::pointing);
+    private static final HumanoidModel.ArmPose EAR = make("CELULAR_EAR", false, PhonePoses::atEar);
+    private static final HumanoidModel.ArmPose PHOTO = make("CELULAR_PHOTO", true, PhonePoses::takingPhoto);
 
-    private static HumanoidModel.ArmPose flash() {
-        if (flash == null) {
-            flash = make("CELULAR_FLASH", false, PhonePoses::pointing);
-        }
-        return flash;
-    }
-
-    private static HumanoidModel.ArmPose ear() {
-        if (ear == null) {
-            ear = make("CELULAR_EAR", false, PhonePoses::atEar);
-        }
-        return ear;
-    }
-
-    private static HumanoidModel.ArmPose photo() {
-        if (photo == null) {
-            photo = make("CELULAR_PHOTO", true, PhonePoses::takingPhoto);
-        }
-        return photo;
+    /** Solo para asegurarse de que las poses ya existen (lo llama el registro de teclas al iniciar, por si acaso). */
+    static void init() {
     }
 
     // ------------------------------------------------------------------ matemática del brazo
@@ -179,10 +164,10 @@ public final class PhonePoses {
         public HumanoidModel.ArmPose getArmPose(LivingEntity who, InteractionHand hand, ItemStack stack) {
             return switch (PhoneUse.get(stack)) {
                 case PhoneUse.OFF -> null;
-                case PhoneUse.FLASH -> flash();
-                case PhoneUse.EAR -> ear();
-                case PhoneUse.CAMERA -> photo();
-                default -> text();
+                case PhoneUse.FLASH -> FLASH;
+                case PhoneUse.EAR -> EAR;
+                case PhoneUse.CAMERA -> PHOTO;
+                default -> TEXT;
             };
         }
     };
