@@ -352,6 +352,7 @@ public final class Radio {
             Minecraft.getInstance().execute(() -> {
                 if (d == null) {
                     uploading = null;
+                    com.celular.Celular.LOGGER.info("Celular: no se pudo leer la canción para subirla: {}", t.path);
                     toast(Component.translatable("celular.radio.err_big"));
                     return;
                 }
@@ -413,6 +414,7 @@ public final class Radio {
                 requestLibrary();
             }
             default -> {
+                com.celular.Celular.LOGGER.info("Celular: el servidor no aceptó la canción ({})", m.msg);
                 toast(Component.translatable(m.msg.isEmpty() ? "celular.radio.err_bad" : m.msg, maxSongMb));
                 uploading = null;
                 upData = null;

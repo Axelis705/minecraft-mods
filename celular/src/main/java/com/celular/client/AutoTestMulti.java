@@ -220,7 +220,9 @@ final class AutoTestMulti {
             }
             Radio.requestLibrary();
         });
+        at(44, "subiendo", () -> log("subiendo=" + (Radio.uploading != null) + " progreso=" + Radio.upProgress + " canciones=" + Radio.songs.size()));
         at(48, "lista del mundo", () -> {
+            log("subiendo=" + (Radio.uploading != null) + " progreso=" + Radio.upProgress + " canciones=" + Radio.songs.size());
             Radio.requestLibrary();
         });
         at(50, "A pone la canción con altavoz", () -> {

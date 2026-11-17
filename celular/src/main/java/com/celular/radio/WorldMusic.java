@@ -169,6 +169,9 @@ public final class WorldMusic {
     // ------------------------------------------------------------------ subir
 
     private static void ack(ServerPlayer p, int session, int next, int status, String msg) {
+        if (status == RadioNet.SongAck.ERROR) {
+            Celular.LOGGER.info("Celular: no se pudo subir la canción de {} ({})", p.getScoreboardName(), msg);
+        }
         Net.toPlayer(p, new RadioNet.SongAck(session, next, status, msg));
     }
 
