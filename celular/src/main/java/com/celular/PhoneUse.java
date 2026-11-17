@@ -71,7 +71,7 @@ public final class PhoneUse {
         //#endif
     }
 
-    private static void put(ItemStack s, int v) {
+    static void put(ItemStack s, int v) {
         if (get(s) == v) {
             return;
         }

@@ -108,6 +108,10 @@ public final class CelularEvents {
                             c.getSource().sendSuccess(() -> Component.translatable("celular.cmd.music_total", k, mb), false);
                             return k;
                         })))
+                .then(Commands.literal("prueba").executes(c -> {
+                    int bad = SelfTest.run(c.getSource().getServer(), t -> c.getSource().sendSuccess(() -> Component.literal(t), false));
+                    return bad == 0 ? 1 : 0;
+                }))
                 .then(Commands.literal("instacraft")
                         .then(Commands.literal("borrar").then(Commands.argument("jugador", StringArgumentType.word()).executes(c -> {
                             String n = StringArgumentType.getString(c, "jugador");

@@ -351,6 +351,43 @@ public final class Messages {
         }
     }
 
+    // ------------------------------------------------------------------ prueba (/celular prueba)
+
+    /** Revisa las claves de los chats, los sin leer y que guardar y volver a leer el archivo no pierda nada. */
+    public static int selfTest(MinecraftServer s, java.util.function.Consumer<String> log) {
+        ensure(s);
+        int bad = 0;
+        UUID a = UUID.randomUUID(), b = UUID.randomUUID();
+        String k = key(a, b);
+        boolean keys = k.equals(key(b, a)) && b.equals(other(k, a)) && a.equals(other(k, b)) && other(k, UUID.randomUUID()) == null
+                && key(a, ALL).equals("todos") && ALL.equals(other("todos", a));
+        log.accept("mensajes_claves " + (keys ? "OK" : "FALLO"));
+        bad += keys ? 0 : 1;
+        Chat c = new Chat();
+        Msg m = new Msg();
+        m.from = a.toString();
+        m.text = "Prueba ñ ¿sí? \"comillas\"";
+        m.time = System.currentTimeMillis();
+        c.msgs.add(m);
+        CHATS.put(k, c);
+        NAMES.put(a.toString(), "PruebaA");
+        boolean unread = unread(b, k, c) == 1 && unread(a, k, c) == 0;
+        dirty = true;
+        save(s, true);
+        loadedFor = null;
+        ensure(s);
+        Chat back = CHATS.get(k);
+        boolean kept = back != null && back.msgs.size() == 1 && back.msgs.get(0).text.equals(m.text) && back.msgs.get(0).time == m.time
+                && "PruebaA".equals(NAMES.get(a.toString()));
+        log.accept("mensajes_guardar " + (unread && kept ? "OK" : "FALLO"));
+        bad += unread && kept ? 0 : 1;
+        CHATS.remove(k);
+        NAMES.remove(a.toString());
+        dirty = true;
+        save(s, true);
+        return bad;
+    }
+
     // ------------------------------------------------------------------ entrar y apagar
 
     public static void login(ServerPlayer p) {
