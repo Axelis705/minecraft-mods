@@ -128,14 +128,13 @@ public final class Notes {
         long now = System.currentTimeMillis();
         int m = gameMinute();
         if (m >= 0 && lastMinute >= 0 && m != lastMinute) {
-            // pasó del minuto anterior al actual (con salto de medianoche o si el reloj saltó un poco)
+            // pasó del minuto anterior al actual (también si saltó: medianoche, dormir en la cama o /time set)
             int span = Math.floorMod(m - lastMinute, 1440);
-            if (span <= 60) {
-                for (Alarm a : alarms) {
-                    int am = a.hour * 60 + a.minute;
-                    if (a.on && Math.floorMod(am - lastMinute, 1440) > 0 && Math.floorMod(am - lastMinute, 1440) <= span) {
-                        ring(Component.translatable("celular.notes.alarm_ring", clock(am)));
-                    }
+            for (Alarm a : alarms) {
+                int am = a.hour * 60 + a.minute;
+                int d = Math.floorMod(am - lastMinute, 1440);
+                if (a.on && d > 0 && d <= span) {
+                    ring(Component.translatable("celular.notes.alarm_ring", clock(am)));
                 }
             }
         }
