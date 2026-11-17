@@ -135,8 +135,11 @@ public final class D {
     public static void label(G g, Font f, net.minecraft.network.chat.Component text, float x, float yMid, int w, int color, float max) {
         int tw = f.width(text);
         float sc = tw <= 0 ? max : Math.min(max, w / (float) tw);
-        if (sc >= max * 0.8F) {
-            fit(g, f, text.getString(), x, yMid - 4 * sc, sc, sc, w, color, false, false);
+        String str = text.getString();
+        // una línea si se lee bien; una sola palabra larga nunca se parte a la mitad ("Notification" / "s"): se achica
+        if (sc >= Math.min(max * 0.8F, 0.7F) || str.indexOf(' ') < 0) {
+            float k = Math.max(0.5F, sc);
+            fit(g, f, str, x, yMid - 4 * k, k, k, w, color, false, false);
             return;
         }
         float s2 = Math.min(max, 0.65F);
