@@ -6,7 +6,8 @@ Versiones: **1.20.1** (se compila desde la carpeta), **1.21.1, 1.21.4 y 26.3** (
 ## Objetos
 - 8 celulares: `celular:phone` (negro) y `phone_white/pink/blue/green/purple/gold/red`.
 - Receta: `IGI / IRI / ICI` (hierro, panel de vidrio, redstone, cobre). Se tiñe en la mesa: celular (cualquiera, tag `celular:phones`) + tinte (lingote de oro para el dorado).
-- Clic derecho o tecla **K** abre el celular (hay que tenerlo en el inventario). **Y** contesta y **U** cuelga.
+- Clic derecho o tecla **K** abre el celular (hay que tenerlo en el inventario). **Y** contesta y **U** cuelga. Tecla opcional (sin asignar) para la linterna.
+- Bloque `celular:flash_light` (sin objeto): la luz invisible de la linterna.
 
 ## Apps
 | App | Qué hace |
@@ -20,11 +21,22 @@ Versiones: **1.20.1** (se compila desde la carpeta), **1.21.1, 1.21.4 y 26.3** (
 | Clima | Tiempo de Minecraft donde estás (sol, luna, nubes, lluvia, nieve, tormenta con relámpagos), "temperatura" del bioma, reloj del mundo (disco día/noche), día, fase de la luna, minutos para que salgan los monstruos o amanezca, hora real. Nether y End con su mensaje. |
 | Brújula | Rosa de los vientos que gira contigo, rumbo y coordenadas, lugares guardados con distancia y flechita (la flecha grande apunta al elegido), "donde moriste". Se guardan por mundo/servidor en `.minecraft/celular/lugares.properties`. |
 | Calculadora | Como la de los celulares (AC/C, ±, %, ÷ × − +), también con el teclado. |
+| Mensajes (17-nov) | Chats privados con cualquier jugador que haya estado en el mundo y el grupo **Todos**. Lista con el último mensaje, hora y sin leer (globito verde en el icono); burbujas (las tuyas azules a la derecha; en Todos se ve quién habla), caja para escribir y Enter para enviar. Llegan aunque el otro esté desconectado. |
+| Notas (17-nov) | Tres pestañas: **Notas** (pendientes: Enter para agregar, tocar para tachar, basura con doble toque), **Alarmas** con la hora de Minecraft (tocar la hora = +1, los minutos = +15; interruptor) y **Timer** de minutos reales (1, 3, 5, 10, 15, 30). Suenan con el timbre y un aviso aunque el celular esté cerrado. Se guardan en `.minecraft/celular/notas.json`. |
+| Mapa (17-nov) | Mapa real alrededor (128 × 128, colores de los bloques como los mapas del juego, con relieve y agua más oscura si es profunda; x1, x2 o x4 bloques por píxel). Tu flecha y las caras de los amigos que comparten su ubicación (si están fuera del mapa, en el borde con marco naranja); abajo la lista con distancia y hacia dónde. Interruptor para no compartir (se recuerda en ajustes). En el Nether busca el suelo debajo de ti. |
+| Billetera (17-nov) | Las fichas del mod Casino que llevas (total y de qué valor, con su dibujo), enviar fichas a un jugador conectado (+1/+5/+25/+100/+500, Todo, Borrar) y los últimos 30 movimientos. Si el Casino no está instalado lo dice. No depende del Casino: reconoce las fichas por su nombre (`casino:chip_N`). |
+| Linterna (17-nov) | Botón grande. Con el celular en la mano, la luz sale hacia donde miras (también con el celular cerrado) y el brazo se estira hacia adelante. Si sueltas el celular se apaga. |
 | Ajustes | 8 fondos (atardecer, noche, océano, aurora, pastel, bosque, synthwave, galaxia) o una foto propia, modo oscuro, pantalla de bloqueo, notificaciones, sonido de cámara, cuadrícula, callar la música de Minecraft, aviso de la canción. Se guardan en `.minecraft/celular/ajustes.properties`. |
 
 Extras: la "isla" de arriba muestra la llamada en curso o la canción (portada y barritas); insignias rojas en los iconos; notificaciones que bajan arriba a la derecha; fuera del celular se ve el aviso de llamada entrante, una pastilla con la llamada en curso y "Ahora suena" al cambiar de canción.
 
-Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas perdidas, me gusta, la canción con botones; se quita con clic, tecla o deslizando hacia arriba; se puede apagar), reloj, widget de la canción (con pausa y siguiente) o del clima, cuadrícula de 4 columnas (Galería, Clima, Brújula, Calculadora, Patreon, Ajustes) y dock de vidrio (Teléfono, Instacraft, Cámara, Música). El icono de Música late mientras suena.
+Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas perdidas, me gusta, la canción con botones; se quita con clic, tecla o deslizando hacia arriba; se puede apagar), reloj, widget de la canción (con pausa y siguiente) o del clima, cuadrícula de 4 columnas y dock de vidrio. Desde el 17-nov son 15 apps: dock = Teléfono, Mensajes, Instacraft, Música; cuadrícula = Cámara, Galería, Clima, Mapa, Notas, Billetera, Brújula, Calculadora, Linterna, Patreon, Ajustes. Si no cabe el reloj grande (pantallas chicas) se dibuja más pequeño o no se dibuja. El icono de Música late mientras suena.
+
+## Lo que ven los demás (17-nov)
+- `PhoneUse` (servidor): el celular dice qué pantalla muestra (`CelularNet.UseScreen`: 0 apagado, 1 inicio, 2 Instacraft … 16 linterna, 17 Jam; el mismo orden que `SCREENS` en `assets.py`) y el servidor lo escribe en el **custom_model_data** del celular que tienes en la mano (`CustomModelData` NBT en 1.20.1, componente con un número en 1.21.1 y con `floats` desde 1.21.4). Así todos lo ven sin paquetes extra y cada versión lo dibuja con su modelo: `overrides` en `models/item/phone*.json` (hasta 1.21.3) y `range_dispatch` en `items/phone*.json` (1.21.4+). Los otros celulares del inventario se apagan solos (revisa 10 veces por segundo); al entrar o salir del mundo se apagan todos. `shouldCauseReequipAnimation` evita que la mano "vuelva a sacar" el celular al cambiar de app.
+- Texturas: `textures/item/screen/<app>.png` (solo la pantalla de 6 × 10, encima del celular) y modelos `models/item/screen/<carcasa>_<app>.json` (8 × 17), todo generado por `assets.py`. `tools/mcver.py` solo crea definiciones de ítem para los modelos que están directo en `models/item/` (no en subcarpetas).
+- Pose en tercera persona (`client/PhonePoses`, por `IClientItemExtensions.getArmPose` + `ArmPose.create`): con cualquier app, las dos manos delante del pecho mirando la pantalla; con la linterna, el brazo estirado hacia donde mira. En 26.x `ArmPose.create` lleva un booleano más.
+- Linterna: el servidor busca con `ClipContext` hasta 28 bloques lo que miras y pone `celular:flash_light` (luz 15, sin choque, reemplazable, sin botín) en el aire justo delante; la mueve al cambiar de lugar. Con ticks aleatorios se borra sola si ninguna linterna la usa (por si el servidor se cierra de golpe). `noCollission` se llama `noCollision` en 26.x (lo cambia `mcver.py`).
 
 ## Música (cómo funciona)
 - `music/MusicPlayer` (sin nada de Minecraft): biblioteca, cola, aleatorio, repetir y un hilo "Celular-Musica" que decodifica y toca con `javax.sound` (`SourceDataLine`, ~0.25 s de búfer). Así funciona igual en las 4 versiones, la pausa es instantánea y la posición es exacta. Se detiene sola cuando el juego está en pausa; se calla al salir del mundo.
@@ -34,6 +46,11 @@ Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas per
 - `music/Spectrum`: FFT de 1024 cuadros → 16 bandas (50 Hz a 15 kHz) guardadas con su número de cuadro para mostrar las del momento.
 - Volumen: el de la app × Volumen general × Discos de Minecraft. Teclas sin asignar: pausar/seguir, siguiente y anterior (en Controles).
 - **Modo bocina** (17-nov): si el celular no está en tu inventario (ni agarrado con el ratón) pero está tirado en el suelo, la música sale desde ahí: volumen según la distancia (normal hasta 2 bloques, silencio a 24) y más fuerte del lado en que queda (`MusicPlayer.spatialL/R`, el cambio se reparte dentro de cada trozo para que no chasquee). Si el celular desaparece cerca de ti (lo recogió otro, se quemó, lo guardaste en un cofre) la música se pausa con el aviso `celular.music.phone_gone`. Si te alejas mucho (o mueres y reapareces lejos) solo queda en silencio hasta que vuelvas. Solo lo escucha quien tiene las canciones (son archivos de su PC).
+- **Música del mundo** (17-nov): pestañas **Mías** (la carpeta; flechita para subir la canción al mundo, globo verde si ya está), **Mundo** y **Jam**.
+  - Subir: pedazos de 28 KB con confirmación (6 en camino), máximo 15 MB por canción, 50 por jugador y 500 MB por mundo (`config/celular-musica.properties`). Se guardan en `world/celular/musica` con `canciones.json`; las repetidas (mismo SHA-1) no se duplican. Borra el que la subió o un operador (doble toque en la basura). `/celular musica borrar <jugador>` y `/celular musica total`.
+  - Bajar: cada celular guarda las del mundo en `.minecraft/celular/cache_musica/<sha1>.<ext>` y solo las baja cuando las va a tocar o a oír (pedazos de 60 KB, 6 por pedido, se verifica el SHA-1).
+  - **Altavoz** (interruptor en Mundo, encendido por defecto): si tocas una canción del mundo (o una tuya que ya está en el mundo), el servidor avisa a los de tu dimensión qué canción, en qué segundo y desde qué entidad (tú o tu celular tirado). Cada uno la oye desde ahí con distancia y lado (hasta 24 bloques, los 3 más cercanos), en un hilo aparte (`music/RemoteStream`).
+  - **Jam** (como Spotify): crear, unirse (lista o invitación con aviso), cola compartida (se agrega desde Mundo con +), el anfitrión pausa/salta/quita, los demás votan para saltar (con la mitad basta) y quitan lo que ellos pusieron. El servidor lleva el reloj y cada celular se sincroniza con `MusicPlayer.playExternal` (corrige si se desfasa más de 1.5 s y baja la siguiente antes). Las teclas de música y el widget del inicio pasan por el Jam.
 - `client/Music`: une el reproductor con el juego (carpeta, volumen, pausa, callar la música de Minecraft, avisos, abrir la carpeta con explorer/open/xdg-open).
 - Prueba `celular/tests/MusicTest.java` (en el CI): etiquetas, duración, decodificar, salto, barras y WAV.
 
@@ -46,7 +63,7 @@ Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas per
 `world/celular/instacraft/publicaciones.json` + una foto `<id>.jpg` por publicación (máximo 400; se borran las más viejas). Las fotos suben en pedazos de 28 KB (máx 96 KB). 15 s entre publicaciones (los operadores no esperan). Comandos: `/celular instacraft borrar <jugador>` y `/celular instacraft total`.
 
 ## Recursos
-- `celular/herramientas/assets.py`: texturas del objeto, iconos de apps (`gui/apps.png`, 10 de 64 px), iconos de la interfaz (`gui/ui.png`, 48 de 24 px, blancos y teñidos en el juego) y fondos (`gui/wallpapers.png`, 8). Las de la interfaz llevan `.mcmeta` con `blur`.
+- `celular/herramientas/assets.py`: texturas del objeto y sus 17 pantallas encendidas, iconos de apps (`gui/apps.png`, 15 de 64 px), iconos de la interfaz (`gui/ui.png`, 64 de 24 px, blancos y teñidos en el juego) y fondos (`gui/wallpapers.png`, 8). Las de la interfaz llevan `.mcmeta` con `blur`.
 - `celular/herramientas/sonidos.py`: sonidos sintetizados (obturador, tono de llamada, tono de espera, notificación, like, colgar, toque, desbloqueo).
 - `celular/herramientas/idiomas.py`: 15 idiomas (español en todas sus variantes, inglés, portugués, francés, alemán, italiano, ruso, japonés y chino).
 
@@ -68,4 +85,5 @@ Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas per
 
 ## Pendiente
 - Nombre y estilo definitivos del celular (los decide Axelis).
-- Probarlo en el juego (sobre todo la cámara en 26.3 y la voz con SVC).
+- Probarlo en el juego (sobre todo la cámara en 26.3, la voz con SVC, la música del mundo con 2 jugadores, la pose y la linterna).
+- La pose solo se ve si el celular está en una mano (si se abre con K desde el inventario no hay celular en la mano que mostrar).

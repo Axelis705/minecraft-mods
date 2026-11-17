@@ -759,6 +759,45 @@ public final class Radio {
         }
     }
 
+    // ------------------------------------------------------------------ fiesta: notas musicales sobre quien pone música
+
+    private static long notesAt;
+    private static final java.util.Random RND = new java.util.Random();
+
+    private static void note(Minecraft mc, Entity e) {
+        if (e == null || e.distanceToSqr(mc.player) > HEAR * HEAR) {
+            return;
+        }
+        double x = e.getX() + (RND.nextDouble() - 0.5) * 0.6, y = e.getY() + e.getBbHeight() + 0.35, z = e.getZ() + (RND.nextDouble() - 0.5) * 0.6;
+        mc.level.addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, x, y, z, RND.nextInt(25) / 24.0, 0.0, 0.0);
+    }
+
+    private static void party(Minecraft mc) {
+        long now = System.currentTimeMillis();
+        if (now - notesAt < 650 || mc.isPaused()) {
+            return;
+        }
+        notesAt = now;
+        // altavoces de los demás que suenan
+        for (Remote r : REMOTES.values()) {
+            if (r.stream != null && !r.stream.done() && r.st.playing) {
+                note(mc, mc.level.getEntity(r.st.source));
+            }
+        }
+        // mi altavoz
+        if (sentSong != 0 && sentPlaying) {
+            note(mc, mc.level.getEntity(sentSource));
+        }
+        // los del Jam que están cerca (todos oyen lo mismo)
+        if (inJam() && jam.playing) {
+            for (net.minecraft.world.entity.player.Player p : mc.level.players()) {
+                if (jam.members.contains(p.getScoreboardName())) {
+                    note(mc, p);
+                }
+            }
+        }
+    }
+
     // ------------------------------------------------------------------ cada cuadro y reinicio
 
     static void frame(Minecraft mc) {
@@ -777,6 +816,7 @@ public final class Radio {
         jamFrame();
         mySpeaker(mc);
         remotes(mc);
+        party(mc);
         if (uploading != null && System.currentTimeMillis() - upAt > 20000) {
             uploading = null;                              // el servidor no contestó
             upData = null;

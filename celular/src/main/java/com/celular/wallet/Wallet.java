@@ -90,10 +90,8 @@ public final class Wallet {
             while (n > 0) {
                 int c = (int) Math.min(n, it.getDefaultInstance().getMaxStackSize());
                 n -= c;
-                ItemStack st = new ItemStack(it, c);
-                if (!p.getInventory().add(st) && !st.isEmpty()) {
-                    p.drop(st, false);
-                }
+                // a la mochila, y lo que no quepa cae a sus pies
+                net.minecraftforge.items.ItemHandlerHelper.giveItemToPlayer(p, new ItemStack(it, c));
             }
         }
     }
