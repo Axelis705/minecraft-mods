@@ -104,6 +104,24 @@ public final class ModEntities {
                     .sized(1.5F, 4.2F)
                     .clientTrackingRange(16)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "archimago").toString()));
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.CorazonMagma>> CORAZON_MAGMA = ENTITIES.register("corazon_magma",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.CorazonMagma>of(com.mundosdeaxelis.entity.CorazonMagma::new, MobCategory.MONSTER)
+                    .sized(2.6F, 3.4F)
+                    .fireImmune()
+                    .clientTrackingRange(16)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "corazon_magma").toString()));
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.AnclaMagma>> ANCLA_MAGMA = ENTITIES.register("ancla_magma",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.AnclaMagma>of(com.mundosdeaxelis.entity.AnclaMagma::new, MobCategory.MISC)
+                    .sized(1.0F, 1.6F)
+                    .fireImmune()
+                    .clientTrackingRange(16)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "ancla_magma").toString()));
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.LarvaMagma>> LARVA_MAGMA = ENTITIES.register("larva_magma",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.LarvaMagma>of(com.mundosdeaxelis.entity.LarvaMagma::new, MobCategory.MONSTER)
+                    .sized(0.7F, 0.45F)
+                    .fireImmune()
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "larva_magma").toString()));
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Esbirro>> ESBIRRO = ENTITIES.register("esbirro",
             () -> EntityType.Builder.<com.mundosdeaxelis.entity.Esbirro>of(com.mundosdeaxelis.entity.Esbirro::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)

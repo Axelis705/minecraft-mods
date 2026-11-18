@@ -197,6 +197,82 @@ public final class AutoTest {
         });
     }
 
+    /** Ejecuta algo en el servidor con mi jugador (en la dimensión donde esté). */
+    private static void onServer(java.util.function.Consumer<net.minecraft.server.level.ServerPlayer> c) {
+        Minecraft mc = Minecraft.getInstance();
+        IntegratedServer srv = mc.getSingleplayerServer();
+        java.util.UUID u = mc.player.getUUID();
+        srv.execute(() -> {
+            net.minecraft.server.level.ServerPlayer sp = srv.getPlayerList().getPlayer(u);
+            if (sp != null) {
+                c.accept(sp);
+            }
+        });
+    }
+
+    /** Me pone de pie en (x, y, z) de la dimensión donde estoy, mirando al punto (tx, ty, tz). */
+    private static void standLooking(double x, double y, double z, double tx, double ty, double tz) {
+        double dx = tx - x, dy = ty - (y + 1.62), dz = tz - z;
+        float yaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+        float pitch = (float) Math.toDegrees(-Math.atan2(dy, Math.hypot(dx, dz)));
+        onServer(sp -> {
+            sp.teleportTo(sp.serverLevel(), x, y, z, yaw, pitch);
+            sp.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+        });
+    }
+
+    /** El Corazón de Magma del volcán donde estoy (en el servidor). */
+    private static void heart(java.util.function.BiConsumer<net.minecraft.server.level.ServerPlayer, com.mundosdeaxelis.entity.CorazonMagma> c) {
+        onServer(sp -> {
+            com.mundosdeaxelis.entity.CorazonMagma h = com.mundosdeaxelis.world.FireTravel.find(sp.serverLevel());
+            if (h == null) {
+                log("FALLO no hay Corazón de Magma en " + sp.serverLevel().dimension().location());
+                fails++;
+                return;
+            }
+            c.accept(sp, h);
+        });
+    }
+
+    /** Rompe (quita) todas las anclas de las cadenas, como si los jugadores las hubieran destrozado. */
+    private static void breakAnchors() {
+        onServer(sp -> {
+            List<com.mundosdeaxelis.entity.AnclaMagma> as = sp.serverLevel().getEntitiesOfClass(com.mundosdeaxelis.entity.AnclaMagma.class,
+                    sp.getBoundingBox().inflate(80.0));
+            log("anclas rotas: " + as.size());
+            as.forEach(net.minecraft.world.entity.Entity::discard);
+        });
+    }
+
+    /** Le quita vida al corazón (expuesto) con un golpe de jugador para que cambie de fase o muera. */
+    private static void hitHeart(float leaveFraction) {
+        heart((sp, h) -> {
+            h.setHealth(Math.max(1.0F, h.getMaxHealth() * leaveFraction));
+            boolean ok = h.hurt(sp.damageSources().playerAttack(sp), leaveFraction <= 0 ? h.getMaxHealth() : 2.0F);
+            log("golpe al corazón (estado " + h.state() + "): " + (ok ? "entró" : "no entró") + ", vida " + (int) h.getHealth());
+        });
+    }
+
+    /** El corazón como lo ve el cliente. */
+    private static com.mundosdeaxelis.entity.CorazonMagma clientHeart() {
+        for (var en : Minecraft.getInstance().level.entitiesForRendering()) {
+            if (en instanceof com.mundosdeaxelis.entity.CorazonMagma h && h.isAlive()) {
+                return h;
+            }
+        }
+        return null;
+    }
+
+    private static int clientCount(Class<?> type) {
+        int n = 0;
+        for (var en : Minecraft.getInstance().level.entitiesForRendering()) {
+            if (type.isInstance(en)) {
+                n++;
+            }
+        }
+        return n;
+    }
+
     private static String screenName() {
         Screen sc = Minecraft.getInstance().screen;
         return sc == null ? "ninguna" : sc.getClass().getSimpleName();
@@ -378,6 +454,130 @@ public final class AutoTest {
             check("la piedra lleva a la Torre (dimensión " + dim + ")", dim.startsWith("boss_tower"));
         });
         add("torre (foto)", 300, () -> shot("10_torre"));
+        // 7. el volcán (etapa 4): piedra, ficha, entrar, la intro (el techo se agrieta y baja el corazón con cadenas) y la pelea
+        add("salir de la torre", 5000, () -> {
+            clearMobs();
+            open(null);
+            cmd("execute in minecraft:overworld run tp @a 0.5 -60 0.5 0 0");
+        });
+        add("piedra del volcán", 1500, () -> {
+            cmd("setblock 0 -60 -3 mundos_de_axelis:portal_stone_volcano");
+            cmd("tp @a 0.5 -60 -0.5 180 35");
+            Minecraft.getInstance().player.getInventory().selected = 8;
+        });
+        add("clic derecho (volcán)", 1500, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            net.minecraft.core.BlockPos pos = new net.minecraft.core.BlockPos(0, -60, -3);
+            mc.gameMode.useItemOn(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND,
+                    new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos).add(0, 0.5, 0),
+                            net.minecraft.core.Direction.UP, pos, false));
+        });
+        add("ficha del volcán abierta", 300, () -> check("la piedra del volcán abre la ficha del jefe (pantalla " + screenName() + ")",
+                Minecraft.getInstance().screen instanceof BossBriefScreen));
+        add("ficha del volcán (foto)", 5500, () -> shot("11_ficha_volcan"));
+        add("comenzar (volcán)", 45000, () -> {
+            com.mundosdeaxelis.network.ModNetwork.CHANNEL.sendToServer(
+                    new com.mundosdeaxelis.network.BossStartPacket(new net.minecraft.core.BlockPos(0, -60, -3)));
+            open(null);
+        });
+        add("en el volcán", 300, () -> {
+            String dim = Minecraft.getInstance().level.dimension().location().getPath();
+            check("la piedra lleva al volcán (dimensión " + dim + ")", dim.startsWith("boss_volcano"));
+            open(null);
+        });
+        add("antesala (foto)", 300, () -> shot("12_volcan_antesala"));
+        add("larva", 2500, () -> {
+            cmd("effect give @a minecraft:resistance 900 4 true");
+            cmd("effect give @a minecraft:fire_resistance 900 0 true");
+            net.minecraft.world.phys.Vec3 e = com.mundosdeaxelis.world.FireArena.entryPoint(0);
+            standLooking(e.x, e.y, e.z, e.x + 1.0, e.y + 0.3, e.z - 3.0);
+            onServer(sp -> {
+                com.mundosdeaxelis.entity.LarvaMagma l = com.mundosdeaxelis.registry.ModEntities.LARVA_MAGMA.get().create(sp.serverLevel());
+                if (l != null) {
+                    l.moveTo(e.x + 1.0, e.y, e.z - 3.0, 30.0F, 0.0F);
+                    l.setNoAi(true);
+                    sp.serverLevel().addFreshEntity(l);
+                }
+            });
+        });
+        add("larva (foto)", 300, () -> {
+            check("larva de magma a la vista", clientCount(com.mundosdeaxelis.entity.LarvaMagma.class) > 0);
+            shot("13_larva");
+        });
+        add("a la arena", 2000, () -> {
+            onServer(sp -> sp.serverLevel().getEntitiesOfClass(com.mundosdeaxelis.entity.LarvaMagma.class, sp.getBoundingBox().inflate(30))
+                    .forEach(net.minecraft.world.entity.Entity::discard));
+            open(null);
+            net.minecraft.world.phys.Vec3 h = com.mundosdeaxelis.world.FireArena.heartHome();
+            standLooking(0.5, com.mundosdeaxelis.world.FireArena.Y + 1, 16.5, h.x, h.y + 4, h.z);
+        });
+        add("temblor (foto)", 2600, () -> shot("14_volcan_temblor"));
+        add("grieta (foto)", 2400, () -> shot("15_volcan_grieta"));
+        add("baja el corazón (foto)", 4500, () -> {
+            check("el corazón aparece en la intro", clientHeart() != null);
+            shot("16_corazon_baja");
+        });
+        add("encadenado", 300, () -> {
+            net.minecraft.world.phys.Vec3 h = com.mundosdeaxelis.world.FireArena.heartHome();
+            standLooking(0.5, com.mundosdeaxelis.world.FireArena.Y + 1, 17.5, h.x, h.y, h.z);
+        });
+        add("encadenado (foto)", 1200, () -> {
+            com.mundosdeaxelis.entity.CorazonMagma h = clientHeart();
+            int anchors = clientCount(com.mundosdeaxelis.entity.AnclaMagma.class);
+            check("el corazón queda encadenado (estado " + (h == null ? -1 : h.state()) + ", anclas " + anchors + ")",
+                    h != null && h.state() == com.mundosdeaxelis.entity.CorazonMagma.S_CHAINED && anchors >= 3);
+            shot("17_corazon_cadenas");
+        });
+        add("ancla de cerca", 1500, () -> {
+            net.minecraft.world.phys.Vec3 a = com.mundosdeaxelis.world.FireArena.anchor(0);
+            net.minecraft.world.phys.Vec3 c = com.mundosdeaxelis.world.FireArena.center();
+            net.minecraft.world.phys.Vec3 d = c.subtract(a).normalize();
+            standLooking(a.x + d.x * 4.5 + d.z * 1.5, com.mundosdeaxelis.world.FireArena.Y + 1, a.z + d.z * 4.5 - d.x * 1.5, a.x, a.y + 0.8, a.z);
+        });
+        add("ancla (foto)", 300, () -> shot("18_ancla"));
+        add("golpe a la coraza", 1200, () -> heart((sp, h) -> check("con cadenas no recibe daño",
+                !h.hurt(sp.damageSources().playerAttack(sp), 10.0F))));
+        add("romper anclas", 1800, () -> {
+            net.minecraft.world.phys.Vec3 h = com.mundosdeaxelis.world.FireArena.heartHome();
+            standLooking(0.5, com.mundosdeaxelis.world.FireArena.Y + 1, 14.5, h.x, com.mundosdeaxelis.world.FireArena.Y + 3, h.z);
+            breakAnchors();
+        });
+        add("cae (foto)", 2500, () -> shot("19_corazon_cae"));
+        add("expuesto (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.CorazonMagma h = clientHeart();
+            check("sin anclas cae y queda expuesto (estado " + (h == null ? -1 : h.state()) + ")",
+                    h != null && (h.state() == com.mundosdeaxelis.entity.CorazonMagma.S_EXPOSED || h.state() == com.mundosdeaxelis.entity.CorazonMagma.S_FALL));
+            shot("20_corazon_expuesto");
+        });
+        add("fase 2", 1500, () -> hitHeart(0.62F));
+        add("fase 2 (foto)", 5000, () -> {
+            com.mundosdeaxelis.entity.CorazonMagma h = clientHeart();
+            check("pasa a la fase 2 (fase " + (h == null ? -1 : h.phase()) + ")", h != null && h.phase() == 2);
+            shot("21_fase2");
+        });
+        add("fase 2 ataques (foto)", 4000, () -> shot("22_fase2_ataques"));
+        add("fase 2 ataques b (foto)", 4000, () -> shot("23_fase2_ataques"));
+        add("anclas otra vez", 4500, () -> {
+            check("vuelve a encadenarse con 4 anclas (" + clientCount(com.mundosdeaxelis.entity.AnclaMagma.class) + ")",
+                    clientCount(com.mundosdeaxelis.entity.AnclaMagma.class) >= 4);
+            breakAnchors();
+        });
+        add("fase 3", 1500, () -> hitHeart(0.3F));
+        add("fase 3 (foto)", 5000, () -> {
+            com.mundosdeaxelis.entity.CorazonMagma h = clientHeart();
+            check("pasa a la fase 3 (fase " + (h == null ? -1 : h.phase()) + ")", h != null && h.phase() == 3);
+            shot("24_fase3");
+        });
+        add("fase 3 ataques (foto)", 4000, () -> shot("25_fase3_ataques"));
+        add("fase 3 ataques b (foto)", 5000, () -> shot("26_fase3_ataques"));
+        add("anclas última vez", 4500, () -> breakAnchors());
+        add("golpe final", 2500, () -> hitHeart(0.0F));
+        add("muere (foto)", 4000, () -> shot("27_corazon_muere"));
+        add("victoria (foto)", 300, () -> {
+            check("el corazón ya no está", clientHeart() == null);
+            shot("28_victoria");
+        });
+        add("premios (foto)", 3000, () -> shot("29_premios"));
         add("fin", 2000, () -> {
             clearMobs();
             open(null);

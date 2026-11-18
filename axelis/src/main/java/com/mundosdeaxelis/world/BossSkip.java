@@ -34,6 +34,9 @@ public final class BossSkip {
         if (ModDimensions.isTower(sl.dimension())) {
             return TowerTravel.of(sl).canLeave();
         }
+        if (ModDimensions.isVolcano(sl.dimension())) {
+            return FireTravel.of(sl).canLeave();
+        }
         if (ModDimensions.isIce(sl.dimension())) {
             return IceTravel.of(sl).canLeave();
         }

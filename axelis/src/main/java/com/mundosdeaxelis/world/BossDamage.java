@@ -63,6 +63,9 @@ public final class BossDamage {
         if (e instanceof com.mundosdeaxelis.entity.LoboArtico) {
             return 3;
         }
+        if (e instanceof com.mundosdeaxelis.entity.CorazonMagma) {
+            return 4;
+        }
         if (e instanceof com.mundosdeaxelis.entity.Archimago) {
             return 5;
         }

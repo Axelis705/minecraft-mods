@@ -27,6 +27,10 @@ public final class ModDimensions {
     public static final ResourceKey<Level> BOSS_TOWER =
             ResourceKey.create(Registries.DIMENSION, new ResourceLocation(MundosDeAxelis.MODID, "boss_tower"));
 
+    /** El corazón del volcán (jefe de la etapa 4, el Corazón de Magma): data/mundos_de_axelis/dimension/boss_volcano.json */
+    public static final ResourceKey<Level> BOSS_VOLCANO =
+            ResourceKey.create(Registries.DIMENSION, new ResourceLocation(MundosDeAxelis.MODID, "boss_volcano"));
+
     /** Cuántas copias de cada dungeon puede haber a la vez (cada grupo que pulsa «Comenzar» usa una copia libre). */
     public static final int COPIES = 3;
 
@@ -35,6 +39,7 @@ public final class ModDimensions {
     public static final List<ResourceKey<Level>> FORGE_COPIES = copies(BOSS_FORGE, "boss_forge");
     public static final List<ResourceKey<Level>> ICE_COPIES = copies(BOSS_ICE, "boss_ice");
     public static final List<ResourceKey<Level>> TOWER_COPIES = copies(BOSS_TOWER, "boss_tower");
+    public static final List<ResourceKey<Level>> VOLCANO_COPIES = copies(BOSS_VOLCANO, "boss_volcano");
 
     private static List<ResourceKey<Level>> copies(ResourceKey<Level> first, String name) {
         List<ResourceKey<Level>> out = new ArrayList<>();
@@ -61,14 +66,18 @@ public final class ModDimensions {
         return TOWER_COPIES.contains(k);
     }
 
-    /** ¿Es una copia de alguna dungeon de jefe? */
-    public static boolean isBoss(ResourceKey<Level> k) {
-        return isForest(k) || isForge(k) || isIce(k) || isTower(k);
+    public static boolean isVolcano(ResourceKey<Level> k) {
+        return VOLCANO_COPIES.contains(k);
     }
 
-    /** Las copias de la dungeon de una etapa (1 Bosque, 2 Forja, 3 Hielo, 4 Fuego (pendiente), 5 Torre). */
+    /** ¿Es una copia de alguna dungeon de jefe? */
+    public static boolean isBoss(ResourceKey<Level> k) {
+        return isForest(k) || isForge(k) || isIce(k) || isTower(k) || isVolcano(k);
+    }
+
+    /** Las copias de la dungeon de una etapa (1 Bosque, 2 Forja, 3 Hielo, 4 Volcán, 5 Torre). */
     public static List<ResourceKey<Level>> copiesOf(int stage) {
-        return stage == 5 ? TOWER_COPIES : stage == 4 ? List.of() : stage == 3 ? ICE_COPIES : stage == 2 ? FORGE_COPIES : FOREST_COPIES;
+        return stage == 5 ? TOWER_COPIES : stage == 4 ? VOLCANO_COPIES : stage == 3 ? ICE_COPIES : stage == 2 ? FORGE_COPIES : FOREST_COPIES;
     }
 
     private ModDimensions() {

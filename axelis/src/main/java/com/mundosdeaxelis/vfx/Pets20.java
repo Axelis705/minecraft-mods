@@ -270,4 +270,86 @@ final class Pets20 {
             glow(c, cp, 0.09, k == 1 ? new float[]{1F, 0.6F, 0.9F} : new float[]{0.55F, 0.95F, 1F}, 0.4);
         }
     }
+
+    // ------------------------------------------------------------------ 67. CORAZONCITO DE MAGMA
+
+    private static final float[] MH_L = hex(0xFF6A1A), MH_L2 = hex(0xFFB838), MH_D = hex(0xB82A10), MH_OB = hex(0x22182C), MH_OB2 = hex(0x4A3A5E),
+            MH_IRON = hex(0x4A4450), MH_EYE = hex(0x3A1A10);
+
+    static void magmaHeart(Ctx c) {
+        double t = c.t, ph = c.ph, w = c.walk;
+        double bob = Math.abs(Math.sin(c.gait)) * 0.02 * w + 0.008 * c.breath;
+        // late como el de verdad
+        double u = ((t + ph * 9) % 26) / 26.0;
+        double beat = Math.max(Math.exp(-Math.pow((u - 0.06) / 0.05, 2)), 0.6 * Math.exp(-Math.pow((u - 0.25) / 0.06, 2)));
+        double sq = 1 + 0.05 * beat;
+        c.pivot = new V3(0, 0.2, 0);
+        // patitas de roca
+        for (int sd = -1; sd <= 1; sd += 2) {
+            double p = c.gait + (sd > 0 ? Math.PI : 0);
+            double sw = Math.sin(p) * 0.045 * w, lift = Math.max(0, Math.cos(p)) * 0.035 * w;
+            ell(c, new V3(sd * 0.065, 0.032 + lift, 0.02 + sw), new V3(0.05, 0.032, 0.065), 12, 8, (n, q) -> mix(MH_OB, MH_OB2, ss(-0.2, 0.9, n.y) * 0.6F));
+        }
+        glow(c, new V3(0, 0.22 + bob, 0), 0.75, new float[]{1F, 0.5F, 0.15F}, 0.25 + 0.25 * beat);
+        // cuerpo: corazón de lava (dos lóbulos arriba y la punta abajo), brilla solo
+        boolean em = c.emissive;
+        c.emissive = true;
+        Paint lava = (n, q) -> mix(MH_L, MH_L2, ss(0.2, 1.0, n.y * 0.6 + n.z * 0.4 + 0.3 * beat));
+        V3 bc = new V3(0, 0.2 + bob, 0);
+        ell(c, bc, new V3(0.15 * sq, 0.13 * sq, 0.13 * sq), 22, 14, lava);
+        for (int sd = -1; sd <= 1; sd += 2) {
+            ell(c, bc.add(sd * 0.075, 0.08, -0.01), new V3(0.095 * sq, 0.09 * sq, 0.1 * sq), 16, 10, lava);
+        }
+        cone(c, bc.add(0, -0.06, 0.0), bc.add(0, -0.17, 0.02), 0.11, 0.02, 12, flat(MH_D));
+        // llamita encima, entre los lóbulos
+        double fl = 0.5 + 0.5 * Math.sin(t * 0.3 + ph);
+        cone(c, bc.add(0, 0.13, -0.01), bc.add(Math.sin(t * 0.2) * 0.02, 0.24 + 0.04 * fl, -0.02), 0.04, 0.0, 6, flat(MH_L2));
+        cone(c, bc.add(0, 0.13, -0.01), bc.add(0, 0.19 + 0.03 * fl, 0.0), 0.022, 0.0, 5, flat(hex(0xFFF2B0)));
+        c.emissive = em;
+        // placas de obsidiana sueltas (como la coraza del jefe)
+        V3 br = new V3(0.15, 0.13, 0.13);
+        for (V3 d : new V3[]{new V3(-0.8, 0.3, -0.4), new V3(0.75, -0.2, -0.5), new V3(-0.3, -0.5, -0.8), new V3(0.4, 0.6, -0.7)}) {
+            V3 n = d.norm();
+            V3 at = surf(bc, br, n);
+            double yaw = Math.atan2(n.x, n.z), pitch = -Math.asin(Math.max(-1, Math.min(1, n.y)));
+            ell(c, at.add(n.mul(0.01)), new V3(0.06, 0.055, 0.016), yaw, pitch, 0.3, 8, 5, (nn, q) -> mix(MH_OB, MH_OB2, ss(-0.2, 0.9, nn.y) * 0.7F));
+        }
+        // bracitos; en uno lleva el grillete roto con dos eslabones
+        for (int sd = -1; sd <= 1; sd += 2) {
+            double wv = sd > 0 ? Math.sin(t * 0.15 + ph) * 0.02 : 0;
+            V3 hd = new V3(sd * 0.19, 0.16 + bob + wv, 0.06);
+            tube(c, new V3[]{new V3(sd * 0.12, 0.21 + bob, 0.02), hd}, new double[]{0.026, 0.024}, 6, flat(MH_OB));
+            ell(c, hd, new V3(0.032, 0.03, 0.032), 8, 6, flat(MH_OB2));
+            if (sd < 0) {
+                V3[] ring = new V3[9];
+                for (int k = 0; k <= 8; k++) {
+                    double a = k * Math.PI / 4;
+                    ring[k] = hd.add(0, 0.025, 0).add(Math.cos(a) * 0.035, 0, Math.sin(a) * 0.035);
+                }
+                double[] rr = new double[9];
+                java.util.Arrays.fill(rr, 0.009);
+                tube(c, ring, rr, 4, flat(MH_IRON));
+                double sw = Math.sin(t * 0.12 + ph) * 0.02;
+                for (int k = 0; k < 2; k++) {
+                    V3 lc = hd.add(-0.01 + sw * (k + 1), -0.02 - k * 0.045, 0.0);
+                    ell(c, lc, new V3(0.012, 0.024, 0.006), 0.0, 0.0, k * 1.5, 6, 4, flat(MH_IRON));
+                }
+            }
+        }
+        // carita
+        headLook(c, 0.08, 0.0);
+        c.hpv = new V3(0, 0.2, 0.05);
+        V3 hc = bc, hr = new V3(0.15, 0.13, 0.13);
+        decal(c, hc, hr, new V3(0.36, 0.1, 0.93), 0.085, 0.0, c.shut ? T_EYE_SHUT : T_BEAD, new float[]{1F, 0.92F, 0.75F}, 1, 0.006);
+        decal(c, hc, hr, new V3(-0.36, 0.1, 0.93), 0.085, 0.0, c.shut ? T_EYE_SHUT : T_BEAD, new float[]{1F, 0.92F, 0.75F}, 1, 0.006);
+        decal(c, hc, hr, new V3(0, -0.18, 1), 0.07, 0.0, T_MOUTH, new float[]{0.35F, 0.08F, 0.05F}, 0.95, 0.007);
+        cheeks(c, hc, hr, 0.66, -0.12, 0.74, 0.06);
+        c.head = false;
+        // chispas que suben
+        for (int k = 0; k < 5; k++) {
+            double uu = ((t * 0.02 + k * 0.2 + ph * 0.1) % 1.0);
+            Detail.twinkle(c, new V3(Math.sin(k * 2.2 + uu * 3) * 0.2, 0.25 + uu * 0.35, Math.cos(k * 1.6) * 0.18), 0.022,
+                    new float[]{1F, 0.7F, 0.3F}, t, ph + k, 0.4);
+        }
+    }
 }

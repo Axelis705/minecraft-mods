@@ -142,6 +142,8 @@ public final class ModSounds {
     public static final RegistryObject<SoundEvent> MUSIC_TOWER_BOSS = register("music_tower_boss");
     public static final RegistryObject<SoundEvent> MUSIC_ICE_DUNGEON = register("music_ice_dungeon");
     public static final RegistryObject<SoundEvent> MUSIC_ICE_BOSS = register("music_ice_boss");
+    public static final RegistryObject<SoundEvent> MUSIC_VOLCANO_DUNGEON = register("music_volcano_dungeon");
+    public static final RegistryObject<SoundEvent> MUSIC_VOLCANO_BOSS = register("music_volcano_boss");
     // Archimago (sintetizados con gen/gen_sonidos_archimago.py)
     public static final RegistryObject<SoundEvent> ARCHIMAGO_AMBIENT = register("archimago_ambient");
     public static final RegistryObject<SoundEvent> ARCHIMAGO_HURT = register("archimago_hurt");

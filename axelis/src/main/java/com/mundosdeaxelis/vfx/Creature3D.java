@@ -17,8 +17,8 @@ final class Creature3D {
             FOREST_SPIRIT = 33, MOON_WOLF = 34, NIGHT_DRAGON = 35,
             OCTOPUS = 36, BUTTERFLY = 37, CRAB = 38, FIREFLY = 39, KOALA = 40, ELEPHANT = 41, LION = 42, SALAMANDER = 43, PEACOCK = 44, DOLPHIN = 45,
             PEGASUS = 46, CELESTIAL = 47, FERRET = 48, MIMIC = 49, GRYPHON = 50, PIGGY = 51, SKUNK = 52, PATCH = 53, SEAL = 54, IMP = 55, TRIKE = 61, YETI = 62, SPROUT_KING = 63, EMBER_ANVIL = 64,
-            FROST_PUP = 65, LITTLE_ARCHMAGE = 66;
-    static final int SPECIES = 67;
+            FROST_PUP = 65, LITTLE_ARCHMAGE = 66, MAGMA_HEART = 67;
+    static final int SPECIES = 68;
 
     // celdas de la textura creature3d.png: u0, v0, u1, v1
     static final float[] T_EYE = {0F, 0F, 0.5F, 0.5F};
@@ -501,6 +501,7 @@ final class Creature3D {
             case EMBER_ANVIL -> Pets19.emberAnvil(c);
             case FROST_PUP -> Pets20.frostPup(c);
             case LITTLE_ARCHMAGE -> Pets20.littleArchmage(c);
+            case MAGMA_HEART -> Pets20.magmaHeart(c);
             default -> Creatures2.fairy(c);
         }
     }

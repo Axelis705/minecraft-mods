@@ -21,12 +21,15 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.PORTAL_STONE_FOREST.get());
                         output.accept(ModItems.PORTAL_STONE_FORGE.get());
                         output.accept(ModItems.PORTAL_STONE_ICE.get());
+                        output.accept(ModItems.PORTAL_STONE_VOLCANO.get());
                         output.accept(ModItems.PORTAL_STONE_TOWER.get());
                         output.accept(ModItems.ETERNAL_BRAZIER.get());
                         output.accept(ModItems.REY_BROTE_SPAWN_EGG.get());
                         output.accept(ModItems.LOBO_ARTICO_SPAWN_EGG.get());
                         output.accept(ModItems.ARCHIMAGO_SPAWN_EGG.get());
                         output.accept(ModItems.ESBIRRO_SPAWN_EGG.get());
+                        output.accept(ModItems.CORAZON_MAGMA_SPAWN_EGG.get());
+                        output.accept(ModItems.LARVA_MAGMA_SPAWN_EGG.get());
                         output.accept(ModItems.LIBRO_EMBRUJADO_SPAWN_EGG.get());
                         output.accept(ModItems.ARMADURA_ENCANTADA_SPAWN_EGG.get());
                         output.accept(ModItems.LOBO_ESCARCHA_SPAWN_EGG.get());
@@ -204,6 +207,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.COMP_SPROUT_KING.get());
                         output.accept(ModItems.COMP_EMBER_ANVIL.get());
                         output.accept(ModItems.COMP_FROST_PUP.get());
+                        output.accept(ModItems.COMP_MAGMA_HEART.get());
                         output.accept(ModItems.COMP_LITTLE_ARCHMAGE.get());
                         output.accept(ModItems.GEAR_DAWN_BLADE.get());
                         output.accept(ModItems.GEAR_FROST_BLADE.get());

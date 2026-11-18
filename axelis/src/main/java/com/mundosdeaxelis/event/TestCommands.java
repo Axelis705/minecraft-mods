@@ -166,6 +166,12 @@ public final class TestCommands {
                     return 1;
                 }))
                 .then(Commands.literal("arena3").executes(ctx -> arena3(ctx.getSource())))
+                .then(Commands.literal("entrar4").executes(ctx -> {
+                    ServerPlayer p = ctx.getSource().getPlayerOrException();
+                    com.mundosdeaxelis.world.BossTravel.enter(ctx.getSource().getServer(), java.util.List.of(p), 4);
+                    ctx.getSource().sendSuccess(() -> Component.literal("Entrando al corazón del volcán (dimensión de la etapa 4)."), false);
+                    return 1;
+                }))
                 .then(Commands.literal("entrar5").executes(ctx -> {
                     ServerPlayer p = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.world.BossTravel.enter(ctx.getSource().getServer(), java.util.List.of(p), 5);
@@ -316,6 +322,7 @@ public final class TestCommands {
                 case 1 -> com.mundosdeaxelis.world.ForestArena.isBuilt(level);
                 case 2 -> com.mundosdeaxelis.world.ForgeArena.isBuilt(level);
                 case 3 -> com.mundosdeaxelis.world.IceArena.isBuilt(level);
+                case 4 -> com.mundosdeaxelis.world.FireArena.isBuilt(level);
                 default -> com.mundosdeaxelis.world.TowerArena.isBuilt(level);
             };
             String msg = (built ? "PRUEBA_CONSTRUIR_" + stage + "_OK" : "PRUEBA_CONSTRUIR_" + stage + "_SIN_MARCA")
@@ -334,6 +341,7 @@ public final class TestCommands {
                 com.mundosdeaxelis.world.ForgeDungeon.build(level, lay, ok);
             });
             case 3 -> com.mundosdeaxelis.world.IceArena.ensureBuilt(level, ok);
+            case 4 -> com.mundosdeaxelis.world.FireArena.ensureBuilt(level, ok);
             default -> com.mundosdeaxelis.world.TowerArena.ensureBuilt(level, ok);
         }
         src.sendSuccess(() -> Component.literal("Construyendo la etapa " + stage + "..."), true);

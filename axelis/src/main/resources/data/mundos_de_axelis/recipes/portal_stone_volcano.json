@@ -1,0 +1,23 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "ABA",
+  "BEB",
+  "ABA"
+ ],
+ "key": {
+  "A": {
+   "item": "minecraft:magma_block"
+  },
+  "B": {
+   "item": "minecraft:polished_blackstone_bricks"
+  },
+  "E": {
+   "item": "minecraft:fire_charge"
+  }
+ },
+ "result": {
+  "item": "mundos_de_axelis:portal_stone_volcano",
+  "count": 1
+ }
+}

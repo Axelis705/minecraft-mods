@@ -39,6 +39,7 @@ public final class ServerReset {
                 ForgeManager::clearRuntime,
                 IceTravel::clearRuntime,
                 TowerTravel::clearRuntime,
+                FireTravel::clearRuntime,
                 BossIntro::clearRuntime,
                 IceIntro::clearRuntime,
                 TowerIntro::clearRuntime,

@@ -36,7 +36,9 @@ public final class DecorDefs {
             new Def("decor_trophy_forge", Tier.EPIC, 8, "STONE", 1, 1, new double[]{3.0, 0.0, 3.0, 14.8, 16.0, 13.0}, 1.5F, ""),
             // trofeo del jefe de la etapa 3 (Hielo): solo al derrotar al Lobo Ártico
             new Def("decor_trophy_ice", Tier.EPIC, 8, "GLASS", 1, 1, new double[]{3.0, 0.0, 3.0, 13.0, 16.0, 13.0}, 1.5F, ""),
-            // trofeo del jefe de la etapa 4 (Torre): solo al derrotar al Archimago
+            // trofeo del jefe de la etapa 4 (Volcán): solo al derrotar al Corazón de Magma
+            new Def("decor_trophy_volcano", Tier.EPIC, 12, "STONE", 1, 1, new double[]{3.0, 0.0, 3.0, 13.0, 16.0, 13.0}, 1.5F, ""),
+            // trofeo del jefe de la etapa 5 (Torre): solo al derrotar al Archimago
             new Def("decor_trophy_tower", Tier.EPIC, 10, "AMETHYST", 1, 1, new double[]{3.0, 0.0, 3.0, 13.0, 16.0, 13.0}, 1.5F, ""),
             new Def("decor_rose_bricks", Tier.LEGENDARY, 0, "STONE", 8, 16, null, 1.0F, "ruby"),
             new Def("decor_checker_tiles", Tier.COMMON, 0, "STONE", 8, 16, null, 1.0F, "forge"),

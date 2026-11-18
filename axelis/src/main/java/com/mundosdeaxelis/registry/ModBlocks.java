@@ -38,6 +38,14 @@ public final class ModBlocks {
                     .sound(SoundType.GLASS)
                     .lightLevel(state -> 10), 3));
 
+    /** Piedra de Portal de la etapa 4 (Volcán): lleva al corazón del volcán, con el Corazón de Magma. */
+    public static final RegistryObject<Block> PORTAL_STONE_VOLCANO = BLOCKS.register("portal_stone_volcano",
+            () -> new com.mundosdeaxelis.block.BossPortalBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(3.0F, 1200.0F)
+                    .sound(SoundType.NETHER_BRICKS)
+                    .lightLevel(state -> 12), 4));
+
     /** Piedra de Portal de la etapa 5 (Torre): lleva a la cima de la torre del Archimago. */
     public static final RegistryObject<Block> PORTAL_STONE_TOWER = BLOCKS.register("portal_stone_tower",
             () -> new com.mundosdeaxelis.block.BossPortalBlock(BlockBehaviour.Properties.of()

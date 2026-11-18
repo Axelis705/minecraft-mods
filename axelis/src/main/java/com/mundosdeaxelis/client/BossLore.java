@@ -80,6 +80,21 @@ public final class BossLore {
                     "Los rayos giratorios cambian de sentido a la mitad: mira hacia dónde van antes de correr.",
                     "Lleva pociones de curación y leche: los charcos de veneno hacen mucho daño si te quedas dentro."));
 
+    private static final Lore VOLCANO = new Lore("Corazón de Magma", "Jefe del Volcán", "Corazón del volcán", "las anclas de las cadenas",
+            0xFF6A1A, 0xFF3A1406, 0xFF120604,
+            "Un corazón de fuego del tamaño de una casa, cubierto de placas de obsidiana y colgado de cadenas en el centro del volcán. Late, y con cada latido el volcán entero tiembla. Mientras esté encadenado, nada le hace daño.",
+            "la lluvia de rocas",
+            List.of(new Attack("Escudo de cadenas", "Mientras quede un ancla de cristal en pie, el corazón no recibe daño. Romped las anclas del borde de la arena: al caer la última, se desploma con la coraza agrietada y se le puede golpear unos segundos.", true),
+                    new Attack("Bombas de lava", "Marca círculos rojos en el suelo y lanza lava en arco. Sal del círculo.", false),
+                    new Attack("Gas volcánico", "Los respiraderos echan humo y luego una nube amarilla que quema y te debilita. Aléjate de ellos.", false),
+                    new Attack("Larvas de magma", "Suelta gusanos de lava que muerden y queman. Acaba con ellos antes de que te rodeen.", false),
+                    new Attack("Géiseres y suelo que se cae", "Desde el 66 %: la lava sale bajo tus pies (círculo) y trozos del suelo crujen y caen a la lava. Si caes, la lava te escupe de vuelta, pero duele.", true),
+                    new Attack("Techo y latido", "Desde el 33 %: caen rocas del techo con círculo y una onda de fuego barre el suelo desde el centro. Salta cuando llegue.", true)),
+            List.of("Repartíos las anclas: cuanto antes caigan todas, antes podréis golpear el corazón.",
+                    "Cuando caiga al suelo, todos a pegarle: la ventana dura poco y, al subir, empuja y quema a quien esté pegado.",
+                    "Fíjate en el suelo: los trozos que van a caer echan humo y chispas antes.",
+                    "Lleva pociones de resistencia al fuego: la lava, las bombas y las larvas queman."));
+
     private static Lore generic(int stage) {
         return new Lore("Jefe de la etapa " + stage, "Jefe · Etapa " + stage, "Dungeon · Etapa " + stage, "el mini-jefe",
                 0xB48CFF, 0xFF2A1D4A, 0xFF100A20, "Un jefe todavía sin descubrir.", "su golpe más fuerte",
@@ -91,6 +106,7 @@ public final class BossLore {
             case 1 -> FOREST;
             case 2 -> FORGE;
             case 3 -> ICE;
+            case 4 -> VOLCANO;
             case 5 -> TOWER;
             default -> generic(stage);
         };
@@ -103,6 +119,7 @@ public final class BossLore {
                 case 1 -> new ReyBrote(ModEntities.REY_BROTE.get(), level);
                 case 2 -> new GranHerrero(ModEntities.GRAN_HERRERO.get(), level);
                 case 3 -> new com.mundosdeaxelis.entity.LoboArtico(ModEntities.LOBO_ARTICO.get(), level);
+                case 4 -> new com.mundosdeaxelis.entity.CorazonMagma(ModEntities.CORAZON_MAGMA.get(), level);
                 case 5 -> new com.mundosdeaxelis.entity.Archimago(ModEntities.ARCHIMAGO.get(), level);
                 default -> null;
             };

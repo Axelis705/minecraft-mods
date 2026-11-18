@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * Barras de jefe decoradas de los dungeons (bosque y forja). En otros mundos se deja la barra normal del juego.
+ * Barras de jefe decoradas de los dungeons (bosque, forja, volcán y torre). En otros mundos se deja la barra normal del juego.
  * Las texturas son de 256x256: marco en (0,0) de 202x26 y rellenos de 182x6 en v=32, 40 y 48.
  */
 @Mod.EventBusSubscriber(modid = MundosDeAxelis.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -28,6 +28,9 @@ public final class BossBars {
     private static final ResourceLocation TOWER =
             new ResourceLocation(MundosDeAxelis.MODID, "textures/gui/boss_tower.png");
 
+    private static final ResourceLocation VOLCANO =
+            new ResourceLocation(MundosDeAxelis.MODID, "textures/gui/boss_volcano.png");
+
     private BossBars() {
     }
 
@@ -41,10 +44,15 @@ public final class BossBars {
         boolean forest = ModDimensions.isForest(mc.level.dimension());
         boolean forge = ModDimensions.isForge(mc.level.dimension());
         boolean tower = ModDimensions.isTower(mc.level.dimension());
-        if (!forest && !forge && !tower) {
+        boolean volcano = ModDimensions.isVolcano(mc.level.dimension());
+        if (!forest && !forge && !tower && !volcano) {
             return;
         }
         LerpingBossEvent boss = event.getBossEvent();
+        if (volcano) {
+            drawVolcano(event, boss, mc);
+            return;
+        }
         if (tower) {
             drawTower(event, boss, mc);
             return;
@@ -167,5 +175,55 @@ public final class BossBars {
         g.drawCenteredString(mc.font, boss.getName(), x + 91, y - 6, 0xE8DCFF);
         event.setIncrement(30);
         event.setCanceled(true);
+    }
+    /**
+     * Barra del volcán: marco de basalto con grietas de lava, un corazón a la izquierda y una llama a la derecha. El relleno cambia
+     * con la fase del Corazón de Magma (lava, rojo blanco y latido final) y, mientras está encadenado (no recibe daño), se dibujan
+     * cadenas encima de la barra.
+     */
+    private static void drawVolcano(CustomizeGuiOverlayEvent.BossEventProgress event, LerpingBossEvent boss, Minecraft mc) {
+        GuiGraphics g = event.getGuiGraphics();
+        int x = event.getX();
+        int y = event.getY();
+        float progress = Math.max(0.0F, Math.min(1.0F, boss.getProgress()));
+        g.blit(VOLCANO, x - 10, y - 8, 0, 0, 202, 26);
+        BossEvent.BossBarColor color = boss.getColor();
+        int v = color == BossEvent.BossBarColor.YELLOW ? 48 : color == BossEvent.BossBarColor.PINK ? 40 : 32;
+        int w = (int) (182 * progress);
+        long t = mc.level.getGameTime();
+        if (w > 0) {
+            g.blit(VOLCANO, x, y + 2, 0, v, w, 6);
+            int sx = (int) ((t * 2) % (w + 50)) - 20;
+            int x0 = Math.max(0, sx);
+            int x1 = Math.min(w, sx + 10);
+            if (x1 > x0) {
+                g.fill(x + x0, y + 2, x + x1, y + 4, 0x48FFFFFF);
+            }
+        }
+        // marcas de las fases (66 % y 33 % de vida)
+        g.fill(x + 120, y + 2, x + 121, y + 8, 0xFF1A0804);
+        g.fill(x + 60, y + 2, x + 61, y + 8, 0xFF1A0804);
+        if (chained(mc)) {
+            g.blit(VOLCANO, x, y + 2, 0, 56, 182, 6);
+        }
+        g.drawCenteredString(mc.font, boss.getName(), x + 91, y - 6, 0xFFD2A0);
+        event.setIncrement(30);
+        event.setCanceled(true);
+    }
+
+    /** ¿Hay un Corazón de Magma encadenado (o bajando o subiendo a su sitio) cerca? Mientras tanto no recibe daño. */
+    private static boolean chained(Minecraft mc) {
+        if (mc.player == null) {
+            return false;
+        }
+        for (com.mundosdeaxelis.entity.CorazonMagma h : mc.level.getEntitiesOfClass(com.mundosdeaxelis.entity.CorazonMagma.class,
+                mc.player.getBoundingBox().inflate(96.0))) {
+            int st = h.state();
+            if (st == com.mundosdeaxelis.entity.CorazonMagma.S_CHAINED || st == com.mundosdeaxelis.entity.CorazonMagma.S_DESCEND
+                    || st == com.mundosdeaxelis.entity.CorazonMagma.S_RISE) {
+                return true;
+            }
+        }
+        return false;
     }
 }

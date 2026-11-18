@@ -66,6 +66,7 @@ public final class Tiers {
         put(Tier.LEGENDARY, "comp_ember_anvil");
         // y las del Lobo Ártico y el Archimago
         put(Tier.LEGENDARY, "comp_frost_pup");
+        put(Tier.LEGENDARY, "comp_magma_heart");
         put(Tier.MYTHIC, "comp_little_archmage");
         // ---------------- equipo (12)
         put(Tier.COMMON, "gear_dawn_blade", "gear_cheer_pick", "gear_lumber_axe");
@@ -81,7 +82,7 @@ public final class Tiers {
 
     /** Objetos que NO salen en cajas ni cofres: solo se consiguen creándolos en la Mesa del Artífice. */
     private static final java.util.Set<String> CRAFT_ONLY = java.util.Set.of("smith_ring", "comp_sprout_king", "comp_ember_anvil",
-            "comp_frost_pup", "comp_little_archmage");
+            "comp_frost_pup", "comp_magma_heart", "comp_little_archmage");
 
     public static boolean craftOnly(String id) {
         return CRAFT_ONLY.contains(id);

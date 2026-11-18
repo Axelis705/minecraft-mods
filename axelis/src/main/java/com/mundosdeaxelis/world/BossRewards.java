@@ -61,6 +61,8 @@ public final class BossRewards {
                     ModItems.EMBER_STEEL::get, 5, 8, 0.60, new Mats[]{Mats.LIVE_EMBER, Mats.OLD_COIN, Mats.DARK_ASH}, 0.65, 0.70, 300);
             case 3 -> new Spec("decor_trophy_ice", 0.50, "frost_bracelet", 0.30, "comp_frost_pup", 0.15,
                     ModItems.GOLDEN_RIVET::get, 1, 2, 0.55, new Mats[]{Mats.PEARL_KELP, Mats.LUNAR_VEIL, Mats.SEA_SCALE}, 0.65, 0.70, 450);
+            case 4 -> new Spec("decor_trophy_volcano", 0.50, "magma_boots", 0.30, "comp_magma_heart", 0.15,
+                    ModItems.GOLDEN_RIVET::get, 1, 2, 0.55, new Mats[]{Mats.LIVE_EMBER, Mats.DARK_ASH, Mats.LAMENT_ECHO}, 0.65, 0.70, 550);
             case 5 -> new Spec("decor_trophy_tower", 0.50, "arcane_tome", 0.30, "comp_little_archmage", 0.15,
                     ModItems.GOLDEN_RIVET::get, 2, 3, 0.55, new Mats[]{Mats.ELIXIR_DROP, Mats.PURPLE_ESSENCE, Mats.SHELL_SHARD}, 0.65, 0.70, 650);
             default -> null;

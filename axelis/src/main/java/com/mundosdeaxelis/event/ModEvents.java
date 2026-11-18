@@ -38,6 +38,9 @@ public final class ModEvents {
         event.put(ModEntities.LOBO_ARTICO.get(), com.mundosdeaxelis.entity.LoboArtico.createAttributes().build());
         event.put(ModEntities.ARCHIMAGO.get(), com.mundosdeaxelis.entity.Archimago.createAttributes().build());
         event.put(ModEntities.ESBIRRO.get(), com.mundosdeaxelis.entity.Esbirro.createAttributes().build());
+        event.put(ModEntities.CORAZON_MAGMA.get(), com.mundosdeaxelis.entity.CorazonMagma.createAttributes().build());
+        event.put(ModEntities.ANCLA_MAGMA.get(), com.mundosdeaxelis.entity.AnclaMagma.createAttributes().build());
+        event.put(ModEntities.LARVA_MAGMA.get(), com.mundosdeaxelis.entity.LarvaMagma.createAttributes().build());
         event.put(ModEntities.LIBRO_EMBRUJADO.get(), com.mundosdeaxelis.entity.LibroEmbrujado.createAttributes().build());
         event.put(ModEntities.ARMADURA_ENCANTADA.get(), com.mundosdeaxelis.entity.ArmaduraEncantada.createAttributes().build());
         event.put(ModEntities.LOBO_ESCARCHA.get(), com.mundosdeaxelis.entity.LoboEscarcha.createAttributes().build());

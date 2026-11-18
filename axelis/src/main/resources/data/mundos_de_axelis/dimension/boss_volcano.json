@@ -1,0 +1,18 @@
+{
+  "type": "mundos_de_axelis:boss_volcano",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:basalt_deltas",
+      "features": false,
+      "lakes": false,
+      "layers": [
+        {
+          "block": "minecraft:air",
+          "height": 1
+        }
+      ],
+      "structure_overrides": []
+    }
+  }
+}

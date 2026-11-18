@@ -4,7 +4,8 @@ mundos prueba construir 5
 #wait PRUEBA_CONSTRUIR_5 150
 #expect PRUEBA_CONSTRUIR_5_OK vez 1
 mundos prueba construir 4
-#expect de la etapa 4
+#wait PRUEBA_CONSTRUIR_4 150
+#expect PRUEBA_CONSTRUIR_4_OK vez 1
 mundos desbloquear 5
 #expect nivel del mundo 4
 mundos prueba construir 3

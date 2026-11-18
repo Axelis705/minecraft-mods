@@ -23,6 +23,8 @@ public final class ModItems {
             () -> new com.mundosdeaxelis.item.PortalStoneItem(ModBlocks.PORTAL_STONE_FORGE.get(), new Item.Properties().rarity(Rarity.UNCOMMON), "portal_stone_forge"));
     public static final RegistryObject<Item> PORTAL_STONE_ICE = ITEMS.register("portal_stone_ice",
             () -> new com.mundosdeaxelis.item.PortalStoneItem(ModBlocks.PORTAL_STONE_ICE.get(), new Item.Properties().rarity(Rarity.UNCOMMON), "portal_stone_ice"));
+    public static final RegistryObject<Item> PORTAL_STONE_VOLCANO = ITEMS.register("portal_stone_volcano",
+            () -> new com.mundosdeaxelis.item.PortalStoneItem(ModBlocks.PORTAL_STONE_VOLCANO.get(), new Item.Properties().rarity(Rarity.RARE), "portal_stone_volcano"));
     public static final RegistryObject<Item> PORTAL_STONE_TOWER = ITEMS.register("portal_stone_tower",
             () -> new com.mundosdeaxelis.item.PortalStoneItem(ModBlocks.PORTAL_STONE_TOWER.get(), new Item.Properties().rarity(Rarity.RARE), "portal_stone_tower"));
 
@@ -37,6 +39,10 @@ public final class ModItems {
             () -> new ForgeSpawnEggItem(ModEntities.LOBO_ARTICO, 0x1A2030, 0x9FE3FF, new Item.Properties()));
     public static final RegistryObject<Item> ARCHIMAGO_SPAWN_EGG = ITEMS.register("archimago_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ARCHIMAGO, 0x2B2360, 0x78F0FF, new Item.Properties()));
+    public static final RegistryObject<Item> CORAZON_MAGMA_SPAWN_EGG = ITEMS.register("corazon_magma_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.CORAZON_MAGMA, 0x1B1222, 0xFF5A14, new Item.Properties()));
+    public static final RegistryObject<Item> LARVA_MAGMA_SPAWN_EGG = ITEMS.register("larva_magma_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.LARVA_MAGMA, 0x2A1814, 0xFFB030, new Item.Properties()));
     public static final RegistryObject<Item> ESBIRRO_SPAWN_EGG = ITEMS.register("esbirro_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ESBIRRO, 0x2B2360, 0xB57CFF, new Item.Properties()));
     public static final RegistryObject<Item> LIBRO_EMBRUJADO_SPAWN_EGG = ITEMS.register("libro_embrujado_spawn_egg",
@@ -322,6 +328,7 @@ public final class ModItems {
     public static final RegistryObject<Item> COMP_SPROUT_KING = ITEMS.register("comp_sprout_king", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.SPROUT_KING));
     public static final RegistryObject<Item> COMP_EMBER_ANVIL = ITEMS.register("comp_ember_anvil", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.EMBER_ANVIL));
     public static final RegistryObject<Item> COMP_FROST_PUP = ITEMS.register("comp_frost_pup", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.FROST_PUP));
+    public static final RegistryObject<Item> COMP_MAGMA_HEART = ITEMS.register("comp_magma_heart", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.MAGMA_HEART));
     public static final RegistryObject<Item> COMP_LITTLE_ARCHMAGE = ITEMS.register("comp_little_archmage", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.LITTLE_ARCHMAGE));
     public static final RegistryObject<Item> COMP_FERRET = ITEMS.register("comp_ferret", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.FERRET));
 

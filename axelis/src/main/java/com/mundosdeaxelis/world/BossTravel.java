@@ -38,13 +38,16 @@ public final class BossTravel {
     }
 
     public static ResourceKey<Level> dimensionOf(int stage) {
-        return stage == 5 ? ModDimensions.BOSS_TOWER : stage == 3 ? ModDimensions.BOSS_ICE : stage == 2 ? ModDimensions.BOSS_FORGE : ModDimensions.BOSS_FOREST;
+        return stage == 5 ? ModDimensions.BOSS_TOWER : stage == 4 ? ModDimensions.BOSS_VOLCANO : stage == 3 ? ModDimensions.BOSS_ICE : stage == 2 ? ModDimensions.BOSS_FORGE : ModDimensions.BOSS_FOREST;
     }
 
     /** Etapa del jefe de la dungeon en la que está este nivel (0 si no es una dungeon). Cada dungeon nueva añade aquí su línea. */
     public static int stageOf(Level level) {
         if (ModDimensions.isTower(level.dimension())) {
             return 5;
+        }
+        if (ModDimensions.isVolcano(level.dimension())) {
+            return 4;
         }
         if (ModDimensions.isIce(level.dimension())) {
             return 3;
@@ -66,10 +69,7 @@ public final class BossTravel {
             return;
         }
         if (stage == 4) {
-            // la dungeon de fuego (etapa 4) todavía no está hecha
-            for (ServerPlayer p : players) {
-                p.sendSystemMessage(Component.literal("La dungeon de fuego (etapa 4) todavía no existe.").withStyle(net.minecraft.ChatFormatting.GOLD));
-            }
+            FireTravel.enter(server, players);
             return;
         }
         if (stage == 3) {
@@ -387,7 +387,9 @@ public final class BossTravel {
                 return;
             }
             boolean alive;
-            if (ModDimensions.isTower(sl.dimension())) {
+            if (ModDimensions.isVolcano(sl.dimension())) {
+                alive = FireTravel.of(sl).running(sl);
+            } else if (ModDimensions.isTower(sl.dimension())) {
                 alive = TowerTravel.of(sl).running(sl);
             } else if (ModDimensions.isIce(sl.dimension())) {
                 alive = IceTravel.of(sl).running(sl);
