@@ -85,7 +85,7 @@ public final class TowerTravel {
             Scheduler.runLater(20, () -> start(server, ids));
             return;
         }
-        ServerLevel level = BossTravel.pickCopy(server, 4);
+        ServerLevel level = BossTravel.pickCopy(server, Archimago.STAGE);
         if (level == null) {
             BossTravel.noCopy(server, ids, DARK);
             return;

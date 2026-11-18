@@ -314,6 +314,34 @@ public final class AutoTest {
             }
             check("enemigos a la vista en el cliente: " + n + " de 4", n == 4);
         });
+        // 6. la Piedra de Portal de la Torre, como un jugador: clic derecho, ficha, «Comenzar» y entrar (etapa 5)
+        add("piedra de la torre", 1500, () -> {
+            cmd("kill @e[type=!player]");
+            cmd("setblock 0 -60 -3 mundos_de_axelis:portal_stone_tower");
+            cmd("tp @a 0.5 -60 -0.5 180 35");
+            Minecraft.getInstance().player.getInventory().selected = 8; // mano vacía
+        });
+        add("clic derecho", 1500, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            net.minecraft.core.BlockPos pos = new net.minecraft.core.BlockPos(0, -60, -3);
+            mc.gameMode.useItemOn(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND,
+                    new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos).add(0, 0.5, 0),
+                            net.minecraft.core.Direction.UP, pos, false));
+        });
+        add("ficha abierta", 300, () -> check("la piedra abre la ficha del jefe (pantalla " + screenName() + ")",
+                Minecraft.getInstance().screen instanceof BossBriefScreen));
+        add("ficha (foto)", 5500, () -> shot("9_ficha_torre"));
+        add("comenzar", 30000, () -> {
+            // lo mismo que hace el botón «Comenzar» (activo a los 5 s)
+            com.mundosdeaxelis.network.ModNetwork.CHANNEL.sendToServer(
+                    new com.mundosdeaxelis.network.BossStartPacket(new net.minecraft.core.BlockPos(0, -60, -3)));
+            open(null);
+        });
+        add("en la torre", 300, () -> {
+            String dim = Minecraft.getInstance().level.dimension().location().getPath();
+            check("la piedra lleva a la Torre (dimensión " + dim + ")", dim.startsWith("boss_tower"));
+        });
+        add("torre (foto)", 300, () -> shot("10_torre"));
         add("fin", 2000, () -> {
             cmd("kill @e[type=!player]");
             open(null);
