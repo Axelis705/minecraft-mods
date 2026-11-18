@@ -205,3 +205,8 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
+
+// Para las pruebas automaticas (tools/boot_server.sh): que el servidor de prueba lea comandos de la entrada estandar.
+tasks.matching { it.name == 'runServer' }.configureEach {
+    standardInput = System.in
+}
