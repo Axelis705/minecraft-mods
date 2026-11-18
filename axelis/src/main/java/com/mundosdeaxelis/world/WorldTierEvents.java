@@ -62,6 +62,27 @@ public final class WorldTierEvents {
             new Extra(EntityType.GHAST, 7, 1));
 
     private static boolean spawning;
+    /** Escalado de vida/daño y refuerzos de los monstruos del mundo normal según el nivel del mundo: apagado. */
+    public static final boolean OVERWORLD_SCALING = false;
+
+    /** Los monstruos que ya se hicieron más fuertes en partidas anteriores vuelven a lo normal al cargarse. */
+    @SubscribeEvent
+    public static void onJoin(net.minecraftforge.event.entity.EntityJoinLevelEvent e) {
+        if (OVERWORLD_SCALING || e.getLevel().isClientSide() || !(e.getEntity() instanceof Mob mob) || !normalDimension(e.getLevel())) {
+            return;
+        }
+        AttributeInstance hp = mob.getAttribute(Attributes.MAX_HEALTH);
+        if (hp != null && hp.getModifier(HP_ID) != null) {
+            hp.removeModifier(HP_ID);
+            if (mob.getHealth() > mob.getMaxHealth()) {
+                mob.setHealth(mob.getMaxHealth());
+            }
+        }
+        AttributeInstance dmg = mob.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (dmg != null && dmg.getModifier(DMG_ID) != null) {
+            dmg.removeModifier(DMG_ID);
+        }
+    }
 
     private static boolean normalDimension(Level level) {
         return level.dimension().location().getNamespace().equals("minecraft");
@@ -102,7 +123,9 @@ public final class WorldTierEvents {
                 return;
             }
         }
-        if (lv <= 0) {
+        // Axelis (18-nov): el mundo normal NO se vuelve más difícil al vencer jefes; solo las dungeons, sus jefes y enemigos.
+        // El nivel del mundo queda solo como avance (piedras de portal, cajas del Archivo, Brotes por el mundo).
+        if (!OVERWORLD_SCALING || lv <= 0) {
             return;
         }
         scale(mob, lv);
@@ -166,7 +189,7 @@ public final class WorldTierEvents {
         for (ServerPlayer p : server.getPlayerList().getPlayers()) {
             // quien acaba de vencer al jefe ya lo vio en su pantalla de resultados
             if (!BossRewards.hadResult(p)) {
-                p.sendSystemMessage(Component.translatable("message.mundos_de_axelis.world_tier", level, Math.round(HP_PER_LEVEL * level * 100)));
+                p.sendSystemMessage(Component.translatable("message.mundos_de_axelis.world_tier", level));
             }
             p.level().playSound(null, p.blockPosition(), SoundEvents.WITHER_SPAWN, SoundSource.AMBIENT, 0.5F, 1.4F);
         }

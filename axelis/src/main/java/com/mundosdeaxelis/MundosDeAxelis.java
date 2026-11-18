@@ -37,6 +37,10 @@ public class MundosDeAxelis {
         com.mundosdeaxelis.cartas.Cartas.init(modBus);
 
         context.registerConfig(net.minecraftforge.fml.config.ModConfig.Type.CLIENT, ClientConfig.SPEC);
+        net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,
+                () -> () -> context.registerExtensionPoint(net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory.class,
+                        () -> new net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory(
+                                (mc, parent) -> new com.mundosdeaxelis.client.MundosOptionsScreen(parent))));
 
         modBus.addListener(this::commonSetup);
     }

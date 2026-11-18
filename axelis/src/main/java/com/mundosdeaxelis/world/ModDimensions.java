@@ -66,9 +66,9 @@ public final class ModDimensions {
         return isForest(k) || isForge(k) || isIce(k) || isTower(k);
     }
 
-    /** Las copias de la dungeon de una etapa (1 Bosque, 2 Forja, 3 Hielo, 4 Torre). */
+    /** Las copias de la dungeon de una etapa (1 Bosque, 2 Forja, 3 Hielo, 4 Fuego (pendiente), 5 Torre). */
     public static List<ResourceKey<Level>> copiesOf(int stage) {
-        return stage == 4 ? TOWER_COPIES : stage == 3 ? ICE_COPIES : stage == 2 ? FORGE_COPIES : FOREST_COPIES;
+        return stage == 5 ? TOWER_COPIES : stage == 4 ? List.of() : stage == 3 ? ICE_COPIES : stage == 2 ? FORGE_COPIES : FOREST_COPIES;
     }
 
     private ModDimensions() {

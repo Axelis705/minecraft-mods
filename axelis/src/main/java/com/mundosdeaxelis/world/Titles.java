@@ -19,9 +19,9 @@ public final class Titles {
         player.connection.send(new ClientboundSetTitleTextPacket(Component.literal(title)));
     }
 
-    /** Aviso pequeño en el panel de arriba a la derecha (unos 10 s) para lo que no es lo bastante importante como para un título gigante. */
+    /** Aviso pequeño en el panel de avisos (unos 5 s) para lo que no es lo bastante importante como para un título gigante. */
     public static void hint(ServerPlayer player, String title, String subtitle) {
-        notice(player, title, subtitle, colorFor(title), 200);
+        notice(player, title, subtitle, colorFor(title), 110);
     }
 
     /** Tarjeta en el panel de avisos: título en negrita, texto opcional debajo, color del borde y duración en ticks. */

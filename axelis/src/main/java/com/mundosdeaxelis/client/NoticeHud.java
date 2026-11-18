@@ -113,6 +113,14 @@ public final class NoticeHud {
                 return;
             }
         }
+        boolean few = com.mundosdeaxelis.ClientConfig.FEW_NOTICES.get();
+        if (few) {
+            // pocos avisos: el nuevo reemplaza a los que haya y dura menos
+            for (Card o : CARDS) {
+                o.until = Math.min(o.until, ticks);
+            }
+            lifeTicks = Math.min(lifeTicks, 70);
+        }
         Card c = new Card();
         c.key = key;
         c.born = ticks;

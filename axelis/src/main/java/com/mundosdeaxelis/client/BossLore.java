@@ -91,7 +91,7 @@ public final class BossLore {
             case 1 -> FOREST;
             case 2 -> FORGE;
             case 3 -> ICE;
-            case 4 -> TOWER;
+            case 5 -> TOWER;
             default -> generic(stage);
         };
     }
@@ -103,7 +103,7 @@ public final class BossLore {
                 case 1 -> new ReyBrote(ModEntities.REY_BROTE.get(), level);
                 case 2 -> new GranHerrero(ModEntities.GRAN_HERRERO.get(), level);
                 case 3 -> new com.mundosdeaxelis.entity.LoboArtico(ModEntities.LOBO_ARTICO.get(), level);
-                case 4 -> new com.mundosdeaxelis.entity.Archimago(ModEntities.ARCHIMAGO.get(), level);
+                case 5 -> new com.mundosdeaxelis.entity.Archimago(ModEntities.ARCHIMAGO.get(), level);
                 default -> null;
             };
         } catch (RuntimeException e) {

@@ -109,7 +109,7 @@ public final class DungeonMapHud {
 
     @SubscribeEvent
     public static void onOverlay(RenderGuiOverlayEvent.Post event) {
-        if (event.getOverlay() != VanillaGuiOverlay.HOTBAR.type() || !on || cells.isEmpty()) {
+        if (event.getOverlay() != VanillaGuiOverlay.HOTBAR.type() || !on || cells.isEmpty() || !com.mundosdeaxelis.ClientConfig.SHOW_MAP.get()) {
             return;
         }
         Minecraft mc = Minecraft.getInstance();

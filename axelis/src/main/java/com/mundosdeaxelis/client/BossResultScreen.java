@@ -196,8 +196,8 @@ public class BossResultScreen extends Screen {
         }
         // avisos del mundo y del Archivo
         if (data.tierLevel > 0) {
-            for (FormattedCharSequence l : this.font.split(Component.literal("El mundo se vuelve más peligroso: nivel " + data.tierLevel
-                    + " (los monstruos tienen +" + data.tierPct + " % de vida y de daño).").withStyle(ChatFormatting.LIGHT_PURPLE), pw - 40)) {
+            for (FormattedCharSequence l : this.font.split(Component.literal("Avance del mundo: nivel " + data.tierLevel
+                    + ". Se abre la siguiente Piedra de Portal.").withStyle(ChatFormatting.LIGHT_PURPLE), pw - 40)) {
                 g.drawCenteredString(this.font, l, cx, y, 0xFFFFFF);
                 y += 10;
             }

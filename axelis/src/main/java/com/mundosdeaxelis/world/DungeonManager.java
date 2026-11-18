@@ -149,7 +149,13 @@ public final class DungeonManager {
     // ------------------------------------------------------------------ inicio y reinicio
 
     /** Empieza el seguimiento de una dungeon recién construida. */
+    /** Para no repetir textos en la misma partida (se vacían al empezar una dungeon nueva). */
+    private boolean doorTipShown;
+    private final java.util.Set<String> tipsShown = new java.util.HashSet<>();
+
     public void begin(ServerLevel level, DungeonLayout lay) {
+        doorTipShown = false;
+        tipsShown.clear();
         clearRuntime(level);
         layout = lay;
         for (DungeonLayout.Cell c : lay.cells) {
@@ -479,10 +485,15 @@ public final class DungeonManager {
                     r.st = St.PRE;
                     r.timer = 8; // 8 pasos de 5 ticks = 2 s
                     dirty = true;
+                    // menos texto en pantalla: el aviso de la puerta solo en la primera sala, y cada consejo de enemigos una sola vez
                     for (ServerPlayer q : players) {
-                        Titles.hint(q, nameOf(c), "La puerta de atrás se cerrará...");
+                        Titles.hint(q, nameOf(c), doorTipShown ? "" : "La puerta de atrás se cerrará...");
                     }
-                    say(in, hintOf(c), ChatFormatting.YELLOW);
+                    doorTipShown = true;
+                    String tip = hintOf(c);
+                    if (tipsShown.add(tip)) {
+                        say(in, tip, ChatFormatting.YELLOW);
+                    }
                     level.playSound(null, in.get(0).blockPosition(), ModSounds.DUNGEON_ROOM_START.get(), SoundSource.HOSTILE, 2.0F, 1.0F);
                 }
             }

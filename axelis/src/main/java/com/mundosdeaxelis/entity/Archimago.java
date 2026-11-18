@@ -58,7 +58,7 @@ import java.util.UUID;
  */
 public class Archimago extends Monster {
     /** Etapa del jefe: de ella salen su vida y su daño (ver {@link BossBalance}). */
-    public static final int STAGE = 4;
+    public static final int STAGE = 5;
 
     public static final int S_IDLE = 0;
     public static final int S_RAYS = 1;

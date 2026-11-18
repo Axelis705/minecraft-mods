@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Viaje a la cima de la Torre del Archimago (jefe de la etapa 4). Lo llama {@link BossTravel#enter}. Los jugadores aparecen en
+ * Viaje a la cima de la Torre del Archimago (jefe de la etapa 5). Lo llama {@link BossTravel#enter}. Los jugadores aparecen en
  * la biblioteca (reciben la ficha del jefe y pueden salir sin pelear); al cruzar el puente y pisar la arena empieza la intro:
  * libros que giran, runas y cristales, y el Archimago baja del cielo. Entonces el vitral de la puerta se cierra y empieza la pelea.
  */

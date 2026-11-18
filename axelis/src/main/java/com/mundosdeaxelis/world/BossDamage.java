@@ -64,7 +64,7 @@ public final class BossDamage {
             return 3;
         }
         if (e instanceof com.mundosdeaxelis.entity.Archimago) {
-            return 4;
+            return 5;
         }
         return 0;
     }

@@ -33,8 +33,8 @@ public enum Mats {
     FORGE_CORE("forge_core", 2, 0xFF8A2B, Rarity.RARE),
     FROST_CRYSTAL("frost_crystal", 3, 0x8FDFFF, Rarity.EPIC),
     // la Torre (etapa 4) es la del Archimago, un mago: suelta el Fragmento Arcano; el Corazón de Magma queda para el jefe 5
-    MAGMA_CORE("magma_core", 5, 0xFF4A1A, Rarity.EPIC),
-    ARCANE_SHARD("arcane_shard", 4, 0xC070FF, Rarity.EPIC),
+    MAGMA_CORE("magma_core", 4, 0xFF4A1A, Rarity.EPIC),
+    ARCANE_SHARD("arcane_shard", 5, 0xC070FF, Rarity.EPIC),
     LIVING_RUBY("living_ruby", 6, 0xFF3A5E, Rarity.EPIC),
     STORM_FEATHER("storm_feather", 7, 0x7AB8FF, Rarity.EPIC);
 

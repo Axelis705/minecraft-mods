@@ -166,18 +166,18 @@ public final class TestCommands {
                     return 1;
                 }))
                 .then(Commands.literal("arena3").executes(ctx -> arena3(ctx.getSource())))
-                .then(Commands.literal("entrar4").executes(ctx -> {
+                .then(Commands.literal("entrar5").executes(ctx -> {
                     ServerPlayer p = ctx.getSource().getPlayerOrException();
-                    com.mundosdeaxelis.world.BossTravel.enter(ctx.getSource().getServer(), java.util.List.of(p), 4);
-                    ctx.getSource().sendSuccess(() -> Component.literal("Entrando a la cima de la Torre del Archimago (dimensión de la etapa 4)."), false);
+                    com.mundosdeaxelis.world.BossTravel.enter(ctx.getSource().getServer(), java.util.List.of(p), 5);
+                    ctx.getSource().sendSuccess(() -> Component.literal("Entrando a la cima de la Torre del Archimago (dimensión de la etapa 5)."), false);
                     return 1;
                 }))
                 .then(Commands.literal("construir")
-                        .then(Commands.argument("etapa", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1, 4))
+                        .then(Commands.argument("etapa", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1, 5))
                                 .executes(ctx -> construir(ctx.getSource(), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "etapa")))))
-                .then(Commands.literal("jefe4").executes(ctx -> jefe4(ctx.getSource())))
-                .then(Commands.literal("arena4").executes(ctx -> arena4(ctx.getSource())))
-                .then(Commands.literal("limpiar4").executes(ctx -> limpiar4(ctx.getSource())))
+                .then(Commands.literal("jefe5").executes(ctx -> jefe4(ctx.getSource())))
+                .then(Commands.literal("arena5").executes(ctx -> arena4(ctx.getSource())))
+                .then(Commands.literal("limpiar5").executes(ctx -> limpiar4(ctx.getSource())))
                 .then(Commands.literal("limpiar3").executes(ctx -> limpiar3(ctx.getSource())))
                 .then(Commands.literal("saltardungeon2").executes(ctx -> saltarDungeon2(ctx.getSource())))
                 .then(Commands.literal("plano")
@@ -299,11 +299,12 @@ public final class TestCommands {
      * Construye la arena (y la dungeon, en las etapas 1 y 2) en la primera copia de esa etapa, sin jugadores; sirve también desde la
      * consola del servidor (pruebas automáticas). Al terminar escribe en el registro PRUEBA_CONSTRUIR_n_OK con el tiempo que tardó.
      */
-    private static final int[] BUILDS = new int[5];
+    private static final int[] BUILDS = new int[6];
 
     private static int construir(CommandSourceStack src, int stage) {
         net.minecraft.server.MinecraftServer server = src.getServer();
-        net.minecraft.server.level.ServerLevel level = server.getLevel(com.mundosdeaxelis.world.ModDimensions.copiesOf(stage).get(0));
+        java.util.List<net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level>> copies = com.mundosdeaxelis.world.ModDimensions.copiesOf(stage);
+        net.minecraft.server.level.ServerLevel level = copies.isEmpty() ? null : server.getLevel(copies.get(0));
         if (level == null) {
             src.sendFailure(Component.literal("No existe la dimensión de la etapa " + stage));
             return 0;

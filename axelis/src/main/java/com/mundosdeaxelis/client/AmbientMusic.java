@@ -95,7 +95,7 @@ public final class AmbientMusic {
             }
             bossAround = found;
         }
-        SoundEvent want = (mc.level == null || mc.player == null) ? null : wanted(mc.level.dimension());
+        SoundEvent want = (mc.level == null || mc.player == null || !com.mundosdeaxelis.ClientConfig.DUNGEON_MUSIC.get()) ? null : wanted(mc.level.dimension());
         if (want != null) {
             mc.getMusicManager().stopPlaying();
         }

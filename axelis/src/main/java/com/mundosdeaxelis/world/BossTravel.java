@@ -38,13 +38,13 @@ public final class BossTravel {
     }
 
     public static ResourceKey<Level> dimensionOf(int stage) {
-        return stage == 4 ? ModDimensions.BOSS_TOWER : stage == 3 ? ModDimensions.BOSS_ICE : stage == 2 ? ModDimensions.BOSS_FORGE : ModDimensions.BOSS_FOREST;
+        return stage == 5 ? ModDimensions.BOSS_TOWER : stage == 3 ? ModDimensions.BOSS_ICE : stage == 2 ? ModDimensions.BOSS_FORGE : ModDimensions.BOSS_FOREST;
     }
 
     /** Etapa del jefe de la dungeon en la que está este nivel (0 si no es una dungeon). Cada dungeon nueva añade aquí su línea. */
     public static int stageOf(Level level) {
         if (ModDimensions.isTower(level.dimension())) {
-            return 4;
+            return 5;
         }
         if (ModDimensions.isIce(level.dimension())) {
             return 3;
@@ -61,8 +61,15 @@ public final class BossTravel {
     }
 
     public static void enter(MinecraftServer server, List<ServerPlayer> players, int stage) {
-        if (stage == 4) {
+        if (stage == 5) {
             TowerTravel.enter(server, players);
+            return;
+        }
+        if (stage == 4) {
+            // la dungeon de fuego (etapa 4) todavía no está hecha
+            for (ServerPlayer p : players) {
+                p.sendSystemMessage(Component.literal("La dungeon de fuego (etapa 4) todavía no existe.").withStyle(net.minecraft.ChatFormatting.GOLD));
+            }
             return;
         }
         if (stage == 3) {

@@ -55,7 +55,7 @@ public final class SoulsHud {
     public static void render(GuiGraphics g, float pt, int width, int height) {
         Minecraft mc = Minecraft.getInstance();
         Player p = mc.player;
-        if (p == null || mc.options.hideGui) {
+        if (p == null || mc.options.hideGui || !com.mundosdeaxelis.ClientConfig.SHOW_SOULS.get()) {
             return;
         }
         long now = mc.level == null ? 0 : mc.level.getGameTime();
