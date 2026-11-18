@@ -1,0 +1,17 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "BIB",
+  "IMI",
+  "BIB"
+ ],
+ "key": {
+  "B": {"item": "minecraft:polished_blackstone"},
+  "I": {"item": "minecraft:iron_ingot"},
+  "M": {"item": "minecraft:magma_block"}
+ },
+ "result": {
+  "item": "mundos_de_axelis:portal_stone_forge",
+  "count": 1
+ }
+}

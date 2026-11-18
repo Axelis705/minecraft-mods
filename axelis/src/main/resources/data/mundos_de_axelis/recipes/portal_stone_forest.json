@@ -1,0 +1,17 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "MVM",
+  "VEV",
+  "MVM"
+ ],
+ "key": {
+  "M": {"item": "minecraft:mossy_cobblestone"},
+  "V": {"item": "minecraft:vine"},
+  "E": {"item": "minecraft:emerald"}
+ },
+ "result": {
+  "item": "mundos_de_axelis:portal_stone_forest",
+  "count": 1
+ }
+}

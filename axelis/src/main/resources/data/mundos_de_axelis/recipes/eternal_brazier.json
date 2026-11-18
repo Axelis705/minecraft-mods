@@ -1,0 +1,26 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "III",
+  "CFC",
+  "SSS"
+ ],
+ "key": {
+  "I": {
+   "item": "minecraft:iron_ingot"
+  },
+  "C": {
+   "item": "minecraft:coal_block"
+  },
+  "F": {
+   "item": "minecraft:campfire"
+  },
+  "S": {
+   "item": "minecraft:stone_bricks"
+  }
+ },
+ "result": {
+  "item": "mundos_de_axelis:eternal_brazier",
+  "count": 1
+ }
+}

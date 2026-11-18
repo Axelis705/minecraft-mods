@@ -20,7 +20,18 @@ done
 # comandos de prueba opcionales del mod (ci_commands.txt): una linea por comando; "#expect TEXTO" exige que TEXTO salga en el registro
 if [ $ok -eq 1 ] && [ -f ci_commands.txt ]; then
   while IFS= read -r line; do
-    case "$line" in ''|'#expect '*) continue;; esac
+    case "$line" in
+      ''|'#expect '*) continue;;
+      '#wait '*)
+        # "#wait TEXTO SEGUNDOS": esperar a que TEXTO salga en el registro (por ejemplo, el final de una construcción larga)
+        w="${line#\#wait }"; txt="${w% *}"; secs="${w##* }"
+        for i in $(seq 1 "$secs"); do
+          if grep -qF "$txt" "$log" 2>/dev/null || grep -qF "$txt" run/logs/latest.log 2>/dev/null; then break; fi
+          if grep -q '^exit=' "$log"; then break; fi
+          sleep 1
+        done
+        continue;;
+    esac
     echo "$line" >&3; sleep 1
   done < ci_commands.txt
   # esperar a que el servidor termine de procesar todo (en una máquina lenta las construcciones grandes tardan); máximo 3 minutos

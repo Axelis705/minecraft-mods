@@ -1,0 +1,23 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "ABA",
+  "BEB",
+  "ABA"
+ ],
+ "key": {
+  "A": {
+   "item": "minecraft:amethyst_block"
+  },
+  "B": {
+   "item": "minecraft:bookshelf"
+  },
+  "E": {
+   "item": "minecraft:ender_eye"
+  }
+ },
+ "result": {
+  "item": "mundos_de_axelis:portal_stone_tower",
+  "count": 1
+ }
+}

@@ -1,0 +1,19 @@
+cartas probar
+#expect PRUEBA_CARTAS_OK
+mundos prueba construir 4
+#wait PRUEBA_CONSTRUIR_4 150
+#expect PRUEBA_CONSTRUIR_4_OK vez 1
+mundos prueba construir 3
+#wait PRUEBA_CONSTRUIR_3 150
+#expect PRUEBA_CONSTRUIR_3_OK vez 1
+mundos prueba construir 1
+#wait PRUEBA_CONSTRUIR_1 300
+#expect PRUEBA_CONSTRUIR_1_OK vez 1
+mundos prueba construir 1
+#wait PRUEBA_CONSTRUIR_1_OK vez 2 300
+#expect PRUEBA_CONSTRUIR_1_OK vez 2
+mundos prueba construir 2
+#wait PRUEBA_CONSTRUIR_2 300
+#expect PRUEBA_CONSTRUIR_2_OK vez 1
+say PRUEBA_SE_APAGA_A_MEDIA_OBRA
+mundos prueba construir 2

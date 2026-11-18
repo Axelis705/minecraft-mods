@@ -14,12 +14,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mod: [casino, pooltable, kensei, scardax, estructuras, cartas, show, autos, celular]
+        mod: [casino, pooltable, kensei, scardax, estructuras, cartas, show, autos, celular, axelis]
     steps:
       - uses: actions/checkout@v4
       - name: Revisar recursos de ${{ matrix.mod }}
+        # el mod principal solo sube código y datos (las texturas, modelos y sonidos están en la PC)
+        if: matrix.mod != 'axelis'
         run: python3 tools/check_resources.py ${{ matrix.mod }}
       - name: Revisar texturas de ${{ matrix.mod }}
+        # el mod principal solo sube código y datos (las texturas, modelos y sonidos están en la PC)
+        if: matrix.mod != 'axelis'
         run: |
           pip install pillow -q
           python3 tools/check_textures.py ${{ matrix.mod }}

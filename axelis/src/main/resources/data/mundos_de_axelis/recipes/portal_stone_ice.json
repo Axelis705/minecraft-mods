@@ -1,0 +1,17 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "pattern": [
+  "PIP",
+  "ISI",
+  "PIP"
+ ],
+ "key": {
+  "P": {"item": "minecraft:packed_ice"},
+  "I": {"item": "minecraft:iron_ingot"},
+  "S": {"item": "minecraft:snow_block"}
+ },
+ "result": {
+  "item": "mundos_de_axelis:portal_stone_ice",
+  "count": 1
+ }
+}

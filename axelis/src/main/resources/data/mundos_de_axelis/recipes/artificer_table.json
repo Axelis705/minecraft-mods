@@ -1,0 +1,30 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  " A ",
+  "GBG",
+  "PCP"
+ ],
+ "key": {
+  "A": {
+   "item": "minecraft:amethyst_shard"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "B": {
+   "item": "minecraft:book"
+  },
+  "P": {
+   "tag": "minecraft:planks"
+  },
+  "C": {
+   "item": "minecraft:crafting_table"
+  }
+ },
+ "result": {
+  "item": "mundos_de_axelis:artificer_table",
+  "count": 1
+ }
+}
