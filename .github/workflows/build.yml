@@ -90,7 +90,7 @@ jobs:
           name: ${{ matrix.mod }}-jar
           path: ${{ matrix.mod }}/build/libs/*.jar
       - name: Guardar el jar 1.20.1 en una rama (la nube de Claude no puede bajar artefactos)
-        if: (matrix.mod == 'casino' || matrix.mod == 'celular') && github.ref == 'refs/heads/main'
+        if: (matrix.mod == 'casino' || matrix.mod == 'celular' || matrix.mod == 'axelis') && github.ref == 'refs/heads/main'
         run: bash tools/push_jar.sh ${{ matrix.mod }} 1.20.1 ${{ matrix.mod }}/build/libs ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.sha }}
 
   # El mismo código, generado y compilado para las otras versiones de Minecraft (tools/mcver.py + tools/mkproject.py)
