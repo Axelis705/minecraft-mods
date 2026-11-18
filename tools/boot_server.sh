@@ -52,6 +52,14 @@ ann() { # manda un texto como anotacion visible en GitHub (varias lineas)
   local t; t=$(tail -n "$2" "$3" | cut -c1-300 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
   echo "::error title=$1::${t}"
 }
+# lo que dijeron las pruebas (también si luego falla algo, para saber hasta dónde llegó)
+if [ -f ci_commands.txt ]; then
+  echo "----- lineas de prueba del registro -----"
+  grep -E "PRUEBA_|DIAG_|Unknown or incomplete command|unexpected error|Incorrect argument|Can't keep up" "$log" | sed 's/^.*\] \[/[/' | cut -c1-300 | sort -u | head -80
+  echo "----- final del registro -----"
+  grep -vE "^\s*at |^----- run/logs" "$log" | tail -25 | cut -c1-300
+  echo "-----"
+fi
 if [ $ok -ne 1 ]; then echo "ERROR: el servidor no llego a 'Done'"; tail -80 "$log"; grep -nE "Caused by|Exception|Error|/ERROR\]|/FATAL\]|Invalid|Unable|Failed" "$log" | grep -vE "jarjar|PlatformDependent|setAccessible|server.properties|/DEBUG\]" | head -25 > "$log.why"; ann "Servidor no arranco ($mod)" 25 "$log.why"; exit 1; fi
 bad=$(grep -E "/(ERROR|FATAL)\]|Missing registry|Couldn't parse|Parsing error|Failed to load (recipe|advancement|loot|function|tag)|Exception in thread|Mod .* failed|Failed to start the minecraft server|Crash" "$log" \
   | grep -vE "server.properties|PlatformDependent|jarjar|ForgeGradle|Reflective setAccessible|/DEBUG\]" | head -30)
