@@ -77,7 +77,7 @@ jobs:
         run: |
           set +e
           cd $P
-          timeout 1800 xvfb-run -a -s "-screen 0 1920x1080x24" ./gradlew runClient --no-daemon > cliente.log 2>&1
+          timeout 1200 xvfb-run -a -s "-screen 0 1920x1080x24" ./gradlew runClient --no-daemon > cliente.log 2>&1
           echo "salida del juego: $?"
           echo "----- AUTOTEST -----"
           grep -E "AUTOTEST" run/logs/latest.log | sed 's/^.*AUTOTEST/AUTOTEST/' | head -150

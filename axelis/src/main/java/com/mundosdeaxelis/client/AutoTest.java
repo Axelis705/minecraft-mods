@@ -43,6 +43,7 @@ public final class AutoTest {
     private static int idx;
     private static long next;
     private static long joinedAt;
+    private static long confirmAt;
     private static int shots, fails, checks;
 
     private AutoTest() {
@@ -67,6 +68,17 @@ public final class AutoTest {
         }
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null || mc.getSingleplayerServer() == null) {
+            // el mundo de prueba lo creó un servidor: Forge avisa de "ajustes experimentales" (dimensiones del mod) y espera un clic
+            if (mc.screen instanceof net.minecraft.client.gui.screens.ConfirmScreen && System.currentTimeMillis() > confirmAt) {
+                confirmAt = System.currentTimeMillis() + 3000;
+                for (GuiEventListener l : mc.screen.children()) {
+                    if (l instanceof Button b) {
+                        log("aviso al abrir el mundo: se pulsa \"" + b.getMessage().getString() + "\"");
+                        b.onPress();
+                        break;
+                    }
+                }
+            }
             return;
         }
         long now = System.currentTimeMillis();
