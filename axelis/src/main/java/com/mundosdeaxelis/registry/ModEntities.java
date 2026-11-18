@@ -106,7 +106,7 @@ public final class ModEntities {
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "archimago").toString()));
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.CorazonMagma>> CORAZON_MAGMA = ENTITIES.register("corazon_magma",
             () -> EntityType.Builder.<com.mundosdeaxelis.entity.CorazonMagma>of(com.mundosdeaxelis.entity.CorazonMagma::new, MobCategory.MONSTER)
-                    .sized(2.6F, 3.4F)
+                    .sized(3.6F, 4.6F)
                     .fireImmune()
                     .clientTrackingRange(16)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "corazon_magma").toString()));
@@ -127,6 +127,28 @@ public final class ModEntities {
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "esbirro").toString()));
+    /** Enemigos del volcán (etapa 4). */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.SalamandraLava>> SALAMANDRA_LAVA = ENTITIES.register("salamandra_lava",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.SalamandraLava>of(com.mundosdeaxelis.entity.SalamandraLava::new, MobCategory.MONSTER)
+                    .sized(1.0F, 0.55F)
+                    .fireImmune()
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "salamandra_lava").toString()));
+
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Diablillo>> DIABLILLO = ENTITIES.register("diablillo",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.Diablillo>of(com.mundosdeaxelis.entity.Diablillo::new, MobCategory.MONSTER)
+                    .sized(0.6F, 0.95F)
+                    .fireImmune()
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "diablillo").toString()));
+
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.CultistaVolcan>> CULTISTA_VOLCAN = ENTITIES.register("cultista_volcan",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.CultistaVolcan>of(com.mundosdeaxelis.entity.CultistaVolcan::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .fireImmune()
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "cultista_volcan").toString()));
+
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.LibroEmbrujado>> LIBRO_EMBRUJADO = ENTITIES.register("libro_embrujado",
             () -> EntityType.Builder.<com.mundosdeaxelis.entity.LibroEmbrujado>of(com.mundosdeaxelis.entity.LibroEmbrujado::new, MobCategory.MONSTER)
                     .sized(0.6F, 0.6F)

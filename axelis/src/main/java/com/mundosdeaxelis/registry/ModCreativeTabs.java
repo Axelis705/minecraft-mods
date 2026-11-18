@@ -30,6 +30,9 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.ESBIRRO_SPAWN_EGG.get());
                         output.accept(ModItems.CORAZON_MAGMA_SPAWN_EGG.get());
                         output.accept(ModItems.LARVA_MAGMA_SPAWN_EGG.get());
+                        output.accept(ModItems.SALAMANDRA_LAVA_SPAWN_EGG.get());
+                        output.accept(ModItems.DIABLILLO_SPAWN_EGG.get());
+                        output.accept(ModItems.CULTISTA_VOLCAN_SPAWN_EGG.get());
                         output.accept(ModItems.LIBRO_EMBRUJADO_SPAWN_EGG.get());
                         output.accept(ModItems.ARMADURA_ENCANTADA_SPAWN_EGG.get());
                         output.accept(ModItems.LOBO_ESCARCHA_SPAWN_EGG.get());

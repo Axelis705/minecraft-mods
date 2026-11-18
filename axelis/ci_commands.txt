@@ -23,7 +23,13 @@ mundos prueba construir 2
 summon mundos_de_axelis:esbirro 3 -60 3
 summon mundos_de_axelis:libro_embrujado -3 -58 3
 summon mundos_de_axelis:armadura_encantada 3 -60 -3
+summon mundos_de_axelis:salamandra_lava 6 -60 6
+summon mundos_de_axelis:diablillo -6 -57 6
+summon mundos_de_axelis:cultista_volcan 6 -60 -6
 say ESPERANDO_ENEMIGOS
+execute if entity @e[type=mundos_de_axelis:salamandra_lava] run say PRUEBA_SALAMANDRA_OK
+execute if entity @e[type=mundos_de_axelis:diablillo] run say PRUEBA_DIABLILLO_OK
+execute if entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_CULTISTA_OK
 execute if entity @e[type=mundos_de_axelis:armadura_encantada] run say PRUEBA_ENEMIGOS_VIVOS_OK
 kill @e[type=!minecraft:player]
 execute positioned 0 -60 40 rotated 0 0 run mundos estructura torre
@@ -34,6 +40,9 @@ execute if entity @e[type=mundos_de_axelis:armadura_encantada] run say PRUEBA_TO
 mundos estructura deshacer
 execute unless entity @e[type=mundos_de_axelis:esbirro] run say PRUEBA_DESHACER_ENEMIGOS_OK
 #expect PRUEBA_ENEMIGOS_VIVOS_OK
+#expect PRUEBA_SALAMANDRA_OK
+#expect PRUEBA_DIABLILLO_OK
+#expect PRUEBA_CULTISTA_OK
 #expect PRUEBA_TORRE_ESBIRROS_OK
 #expect PRUEBA_TORRE_LIBROS_OK
 #expect PRUEBA_TORRE_ARMADURA_OK

@@ -45,6 +45,15 @@ public final class ModItems {
             () -> new ForgeSpawnEggItem(ModEntities.LARVA_MAGMA, 0x2A1814, 0xFFB030, new Item.Properties()));
     public static final RegistryObject<Item> ESBIRRO_SPAWN_EGG = ITEMS.register("esbirro_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ESBIRRO, 0x2B2360, 0xB57CFF, new Item.Properties()));
+    public static final RegistryObject<Item> SALAMANDRA_LAVA_SPAWN_EGG = ITEMS.register("salamandra_lava_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.SALAMANDRA_LAVA, 0x221614, 0xFF7A20, new Item.Properties()));
+
+    public static final RegistryObject<Item> DIABLILLO_SPAWN_EGG = ITEMS.register("diablillo_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.DIABLILLO, 0x8E1E14, 0xFFE36A, new Item.Properties()));
+
+    public static final RegistryObject<Item> CULTISTA_VOLCAN_SPAWN_EGG = ITEMS.register("cultista_volcan_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.CULTISTA_VOLCAN, 0x2A1414, 0xD6A048, new Item.Properties()));
+
     public static final RegistryObject<Item> LIBRO_EMBRUJADO_SPAWN_EGG = ITEMS.register("libro_embrujado_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.LIBRO_EMBRUJADO, 0x6E3C28, 0xB57CFF, new Item.Properties()));
     public static final RegistryObject<Item> ARMADURA_ENCANTADA_SPAWN_EGG = ITEMS.register("armadura_encantada_spawn_egg",

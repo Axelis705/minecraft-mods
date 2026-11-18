@@ -29,6 +29,8 @@ public class BossResultScreen extends Screen {
     private long openedAt;
     private int revealed;
     private int left, top, pw, ph;
+    /** Si no cabe en la pantalla (escala de interfaz grande y muchos premios), todo se dibuja más pequeño. */
+    private float k = 1F;
 
     public BossResultScreen(BossResultPacket data) {
         super(Component.literal("Resultado"));
@@ -55,11 +57,14 @@ public class BossResultScreen extends Screen {
         UiFx.open();
         openedAt = net.minecraft.Util.getMillis();
         revealed = 0;
-        pw = Math.min(this.width - 12, 300);
         int extra = (data.tierLevel > 0 ? 24 : 0) + (data.archiveNew ? 14 : 0);
-        ph = Math.min(this.height - 8, 88 + rows() * 18 + missHeight() + extra + 34);
-        left = (this.width - pw) / 2;
-        top = (this.height - ph) / 2;
+        int need = 88 + rows() * 18 + missHeight() + extra + 34;
+        k = Math.min(1F, (this.height - 8) / (float) need);
+        int vw = (int) (this.width / k), vh = (int) (this.height / k);
+        pw = Math.min(vw - 12, 300);
+        ph = need;
+        left = (vw - pw) / 2;
+        top = (vh - ph) / 2;
     }
 
     private static Item itemOf(String id) {
@@ -75,21 +80,31 @@ public class BossResultScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mx, double my, int button) {
+    public boolean mouseClicked(double rmx, double rmy, int button) {
+        double mx = rmx / k, my = rmy / k;
         int bw = 110;
         if (button == 0 && over(mx, my, left + pw / 2 - bw / 2, top + ph - 28, bw, 20)) {
             UiFx.click();
             onClose();
             return true;
         }
-        return super.mouseClicked(mx, my, button);
+        return super.mouseClicked(rmx, rmy, button);
     }
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
+    public void render(GuiGraphics g, int rmx, int rmy, float pt) {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         g.fillGradient(0, 0, this.width, this.height, 0x70000000, 0x90000000);
+        g.pose().pushPose();
+        g.pose().scale(k, k, 1F);
+        int mx = (int) (rmx / k), my = (int) (rmy / k);
+        draw(g, mx, my);
+        g.pose().popPose();
+        super.render(g, rmx, rmy, pt);
+    }
+
+    private void draw(GuiGraphics g, int mx, int my) {
         int acc = lore.accent();
         PanelUi.frame(g, left, top, pw, ph, acc);
         int cx = left + pw / 2;
@@ -212,6 +227,5 @@ public class BossResultScreen extends Screen {
                 over(mx, my, cx - bwd / 2, top + ph - 28, bwd, 20), acc);
         g.drawCenteredString(this.font, Component.literal("Volverás a la superficie en unos segundos").withStyle(ChatFormatting.DARK_GRAY),
                 cx, top + ph - 40, 0xFFFFFF);
-        super.render(g, mx, my, pt);
     }
 }

@@ -456,6 +456,8 @@ public class CorazonMagma extends Monster {
             this.home = position();
         }
         this.bossEvent.setProgress(Mth.clamp(getHealth() / getMaxHealth(), 0.0F, 1.0F));
+        // la barra aparece cuando se ve el corazón (no mientras espera escondido encima del techo)
+        this.bossEvent.setVisible(state() != S_HIDDEN);
         if (this.tickCount % 20 == 0) {
             rescale(sl);
         }

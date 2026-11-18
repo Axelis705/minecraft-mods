@@ -98,6 +98,9 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.CORAZON_MAGMA.get(), MagmaRenderers.Heart::new);
         event.registerEntityRenderer(ModEntities.ANCLA_MAGMA.get(), MagmaRenderers.Anchor::new);
         event.registerEntityRenderer(ModEntities.LARVA_MAGMA.get(), MagmaRenderers.Larva::new);
+        event.registerEntityRenderer(ModEntities.SALAMANDRA_LAVA.get(), MagmaRenderers.Salamander::new);
+        event.registerEntityRenderer(ModEntities.DIABLILLO.get(), MagmaRenderers.Imp::new);
+        event.registerEntityRenderer(ModEntities.CULTISTA_VOLCAN.get(), MagmaRenderers.Cultist::new);
         event.registerEntityRenderer(ModEntities.LIBRO_EMBRUJADO.get(), LibroEmbrujadoRenderer::new);
         event.registerEntityRenderer(ModEntities.ARMADURA_ENCANTADA.get(), ArmaduraEncantadaRenderer::new);
         event.registerEntityRenderer(ModEntities.LOBO_ESCARCHA.get(), LoboEscarchaRenderer::new);

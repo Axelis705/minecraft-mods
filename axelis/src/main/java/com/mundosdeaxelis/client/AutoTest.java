@@ -89,6 +89,10 @@ public final class AutoTest {
             log("inicio pasos=" + STEPS.size());
             return;
         }
+        // en el volcán, que el fuego en la pantalla no tape las fotos (la prueba tiene resistencia al fuego)
+        if (mc.player.isOnFire() && mc.level.dimension().location().getPath().startsWith("boss_volcano")) {
+            onServer(net.minecraft.world.entity.Entity::clearFire);
+        }
         if (idx >= STEPS.size() || now < next) {
             return;
         }
@@ -408,6 +412,19 @@ public final class AutoTest {
             }
             check("enemigos a la vista en el cliente: " + n + " de 4", n == 4);
         });
+        // 5a. enemigos del volcán (quietos): salamandra de lava, diablillo y cultista
+        add("enemigos del volcán", 2500, () -> {
+            clearMobs();
+            cmd("summon mundos_de_axelis:salamandra_lava -2.5 -60 9 {NoAI:1b,Rotation:[200f,0f]}");
+            cmd("summon mundos_de_axelis:diablillo 0.5 -58.6 10 {NoAI:1b,Rotation:[180f,0f]}");
+            cmd("summon mundos_de_axelis:cultista_volcan 3.5 -60 10 {NoAI:1b,Rotation:[160f,0f]}");
+        });
+        photo("8d_enemigos_volcan", 2500, () -> lookFrom(0.5, 4.0, 0.5, GROUND + 1.0, 9.5));
+        add("contar enemigos del volcán", 300, () -> {
+            int n = clientCount(com.mundosdeaxelis.entity.SalamandraLava.class) + clientCount(com.mundosdeaxelis.entity.Diablillo.class)
+                    + clientCount(com.mundosdeaxelis.entity.CultistaVolcan.class);
+            check("enemigos del volcán a la vista en el cliente: " + n + " de 3", n == 3);
+        });
         // 5b. mascotas de los jefes (Lobito Ártico y Archimaguito) invocadas a tu lado
         add("mascotas", 3000, () -> {
             clearMobs();
@@ -504,6 +521,23 @@ public final class AutoTest {
             check("larva de magma a la vista", clientCount(com.mundosdeaxelis.entity.LarvaMagma.class) > 0);
             shot("13_larva");
         });
+        add("enemigos vivos", 2800, () -> {
+            onServer(sp -> sp.serverLevel().getEntitiesOfClass(com.mundosdeaxelis.entity.LarvaMagma.class, sp.getBoundingBox().inflate(30))
+                    .forEach(net.minecraft.world.entity.Entity::discard));
+            net.minecraft.world.phys.Vec3 e = com.mundosdeaxelis.world.FireArena.entryPoint(0);
+            standLooking(e.x, e.y, e.z, e.x, e.y + 1.0, e.z - 8.0);
+            cmd("execute as @a at @s run summon mundos_de_axelis:cultista_volcan ~2 ~ ~-9");
+            cmd("execute as @a at @s run summon mundos_de_axelis:salamandra_lava ~-2 ~ ~-6");
+            cmd("execute as @a at @s run summon mundos_de_axelis:diablillo ~ ~3 ~-5");
+        });
+        add("enemigos atacan (foto)", 2600, () -> shot("13b_enemigos_atacan"));
+        add("enemigos atacan b (foto)", 300, () -> shot("13c_enemigos_atacan"));
+        add("quitar enemigos", 1000, () -> onServer(sp -> {
+            for (Class<? extends net.minecraft.world.entity.Entity> k : List.of(com.mundosdeaxelis.entity.SalamandraLava.class,
+                    com.mundosdeaxelis.entity.Diablillo.class, com.mundosdeaxelis.entity.CultistaVolcan.class, com.mundosdeaxelis.entity.LarvaMagma.class)) {
+                sp.serverLevel().getEntitiesOfClass(k, sp.getBoundingBox().inflate(40)).forEach(net.minecraft.world.entity.Entity::discard);
+            }
+        }));
         add("a la arena", 2000, () -> {
             onServer(sp -> sp.serverLevel().getEntitiesOfClass(com.mundosdeaxelis.entity.LarvaMagma.class, sp.getBoundingBox().inflate(30))
                     .forEach(net.minecraft.world.entity.Entity::discard));

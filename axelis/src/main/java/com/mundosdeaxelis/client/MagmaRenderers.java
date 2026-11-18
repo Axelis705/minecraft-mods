@@ -1,16 +1,24 @@
 package com.mundosdeaxelis.client;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mundosdeaxelis.MundosDeAxelis;
 import com.mundosdeaxelis.entity.AnclaMagma;
 import com.mundosdeaxelis.entity.CorazonMagma;
+import com.mundosdeaxelis.entity.CultistaVolcan;
+import com.mundosdeaxelis.entity.Diablillo;
 import com.mundosdeaxelis.entity.LarvaMagma;
+import com.mundosdeaxelis.entity.SalamandraLava;
 import com.mundosdeaxelis.vfx.BossMesh;
 import com.mundosdeaxelis.vfx.Cam;
 import com.mundosdeaxelis.vfx.Sink;
 import com.mundosdeaxelis.vfx.V3;
 import com.mundosdeaxelis.vfx.VfxTex;
+import com.mundosdeaxelis.vfx.VolcanMesh;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,7 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Renderers de la etapa 4 (fuego): el Corazón de Magma con sus cadenas, las anclas y las larvas. No usan modelos de cubos:
+ * Renderers de la etapa 4 (fuego): el Corazón de Magma con sus cadenas, las anclas, las larvas y los enemigos del volcán
+ * (salamandra de lava, diablillo y cultista). No usan modelos de cubos:
  * dibujan las mallas suaves de {@link BossMesh} (el mismo motor que las mascotas 3D) directamente en los búferes de entidad.
  */
 public final class MagmaRenderers {
@@ -49,21 +58,45 @@ public final class MagmaRenderers {
             ResourceLocation rl = tex == VfxTex.SOFT ? SOFT : CREATURE;
             boolean add = blend == Sink.ADD;
             // pedir el búfer justo antes de usarlo (los búferes de entidad se comparten)
-            VertexConsumer vc = buf.getBuffer(add ? RenderType.eyes(rl) : RenderType.entityTranslucent(rl));
+            VertexConsumer vc = buf.getBuffer(add ? Glow.TYPE.apply(rl) : RenderType.entityTranslucent(rl));
             for (int k = 0; k < 4; k++) {
                 float a = col[k * 4 + 3];
                 float r = col[k * 4], g = col[k * 4 + 1], b = col[k * 4 + 2];
-                if (add) {
-                    r *= a;
-                    g *= a;
-                    b *= a;
-                    a = 1F;
-                }
                 vc.vertex(pose, (float) p[k * 3], (float) p[k * 3 + 1], (float) p[k * 3 + 2])
                         .color(Mth.clamp(r, 0F, 1F), Mth.clamp(g, 0F, 1F), Mth.clamp(b, 0F, 1F), Mth.clamp(a, 0F, 1F))
                         .uv(uv[k * 2], uv[k * 2 + 1]).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(nrm, 0F, 1F, 0F).endVertex();
             }
         };
+    }
+
+    /**
+     * Luz aditiva que respeta la transparencia de la textura (SRC_ALPHA, ONE), como los efectos de {@code VfxClient}. El tipo
+     * «eyes» del juego suma el color sin mirar el alfa y el halo salía como un cuadrado de color.
+     */
+    static final class Glow extends RenderType {
+        private Glow() {
+            super("mundos_glow_dummy", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, () -> {
+            }, () -> {
+            });
+        }
+
+        private static final TransparencyStateShard ADD_ALPHA = new TransparencyStateShard("mundos_add_alpha", () -> {
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        }, () -> {
+            RenderSystem.disableBlend();
+            RenderSystem.defaultBlendFunc();
+        });
+
+        static final java.util.function.Function<ResourceLocation, RenderType> TYPE = net.minecraft.Util.memoize(tex -> RenderType.create(
+                "mundos_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                RenderType.CompositeState.builder()
+                        .setShaderState(RENDERTYPE_EYES_SHADER)
+                        .setTextureState(new TextureStateShard(tex, false, false))
+                        .setTransparencyState(ADD_ALPHA)
+                        .setWriteMaskState(COLOR_WRITE)
+                        .setCullState(NO_CULL)
+                        .createCompositeState(false)));
     }
 
     /** Cámara del juego en coordenadas relativas a la entidad (para la luz de borde de la malla). */
@@ -82,7 +115,7 @@ public final class MagmaRenderers {
     // ------------------------------------------------------------------ corazón
 
     public static final class Heart extends EntityRenderer<CorazonMagma> {
-        private static final double SCALE = 2.3;
+        private static final double SCALE = 3.3;
 
         public Heart(EntityRendererProvider.Context ctx) {
             super(ctx);
@@ -184,6 +217,84 @@ public final class MagmaRenderers {
 
         @Override
         public ResourceLocation getTextureLocation(LarvaMagma e) {
+            return CREATURE;
+        }
+    }
+    /** Al morir se encoge y se hunde un poco (las mallas no tienen el giro de muerte de los modelos de cubos). */
+    static double deathScale(net.minecraft.world.entity.LivingEntity e, float pt) {
+        return e.isDeadOrDying() ? Math.max(0.05, 1 - (e.deathTime + pt) / 20.0) : 1.0;
+    }
+
+    static double hurtOf(net.minecraft.world.entity.LivingEntity e, float pt) {
+        return e.hurtTime > 0 ? Math.max(0, (e.hurtTime - pt) / 10.0) : 0.0;
+    }
+
+    // ------------------------------------------------------------------ salamandra de lava
+
+    public static final class Salamander extends EntityRenderer<SalamandraLava> {
+        public Salamander(EntityRendererProvider.Context ctx) {
+            super(ctx);
+            this.shadowRadius = 0.5F;
+        }
+
+        @Override
+        public void render(SalamandraLava e, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
+            float t = e.tickCount + pt;
+            float body = Mth.rotLerp(pt, e.yBodyRotO, e.yBodyRot);
+            double sc = deathScale(e, pt);
+            VolcanMesh.salamander(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), sc, t,
+                    Math.min(1, e.walkAnimation.speed(pt) * 1.5), -Math.toRadians(body), hurtOf(e, pt), e.spitOpen(pt), e.onLava() ? 1.0 : 0.25);
+            super.render(e, yaw, pt, ps, buf, light);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(SalamandraLava e) {
+            return CREATURE;
+        }
+    }
+
+    // ------------------------------------------------------------------ diablillo
+
+    public static final class Imp extends EntityRenderer<Diablillo> {
+        public Imp(EntityRendererProvider.Context ctx) {
+            super(ctx);
+            this.shadowRadius = 0.3F;
+        }
+
+        @Override
+        public void render(Diablillo e, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
+            float t = e.tickCount + pt;
+            float body = Mth.rotLerp(pt, e.yBodyRotO, e.yBodyRot);
+            VolcanMesh.imp(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), deathScale(e, pt), t,
+                    -Math.toRadians(body), hurtOf(e, pt), e.charge(pt), e.diving() ? 1.0 : 0.0);
+            super.render(e, yaw, pt, ps, buf, light);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(Diablillo e) {
+            return CREATURE;
+        }
+    }
+
+    // ------------------------------------------------------------------ cultista del volcán
+
+    public static final class Cultist extends EntityRenderer<CultistaVolcan> {
+        public Cultist(EntityRendererProvider.Context ctx) {
+            super(ctx);
+            this.shadowRadius = 0.45F;
+        }
+
+        @Override
+        public void render(CultistaVolcan e, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
+            float t = e.tickCount + pt;
+            float body = Mth.rotLerp(pt, e.yBodyRotO, e.yBodyRot);
+            VolcanMesh.cultist(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0),
+                    deathScale(e, pt), t, Math.min(1, e.walkAnimation.speed(pt) * 1.5), -Math.toRadians(body), hurtOf(e, pt), e.cast(pt));
+            super.render(e, yaw, pt, ps, buf, light);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(CultistaVolcan e) {
             return CREATURE;
         }
     }
