@@ -385,9 +385,7 @@ public class CapeLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<Abs
         @SuppressWarnings({"unchecked", "rawtypes"})
         private static void hideVanillaCape(PlayerRenderer pr) {
             try {
-                java.util.List<RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>> layers =
-                        net.minecraftforge.fml.util.ObfuscationReflectionHelper.getPrivateValue(
-                                net.minecraft.client.renderer.entity.LivingEntityRenderer.class, pr, "layers");
+                java.util.List<RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>>> layers = layersOf(pr);
                 for (int i = 0; i < layers.size(); i++) {
                     RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> l = layers.get(i);
                     if (l instanceof net.minecraft.client.renderer.entity.layers.CapeLayer vanilla) {
@@ -397,6 +395,25 @@ public class CapeLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<Abs
             } catch (RuntimeException e) {
                 MundosDeAxelis.LOGGER.warn("No se pudo ocultar la capa normal al llevar una capa del mod", e);
             }
+        }
+
+        /**
+         * La lista de capas del dibujante. En el juego normal los nombres de los campos están ofuscados ("layers" solo existe al
+         * programar), así que se busca el único campo de tipo List de LivingEntityRenderer, sin depender del nombre.
+         */
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        private static java.util.List layersOf(PlayerRenderer pr) {
+            for (java.lang.reflect.Field f : net.minecraft.client.renderer.entity.LivingEntityRenderer.class.getDeclaredFields()) {
+                if (java.util.List.class.isAssignableFrom(f.getType()) && !java.lang.reflect.Modifier.isStatic(f.getModifiers())) {
+                    try {
+                        f.setAccessible(true);
+                        return (java.util.List) f.get(pr);
+                    } catch (IllegalAccessException e) {
+                        throw new IllegalStateException(e);
+                    }
+                }
+            }
+            throw new IllegalStateException("LivingEntityRenderer sin lista de capas");
         }
 
         @SubscribeEvent
