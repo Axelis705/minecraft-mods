@@ -37,7 +37,7 @@ public final class ClientForgeEvents {
 
     @SubscribeEvent
     public static void onCamera(ViewportEvent.ComputeCameraAngles event) {
-        float s = ScreenFx.shake();
+        float s = com.mundosdeaxelis.ClientConfig.SCREEN_SHAKE.get() ? ScreenFx.shake() : 0.0F;
         if (s > 0.01F) {
             double t = net.minecraft.Util.getMillis() / 50.0;
             event.setRoll(event.getRoll() + (float) Math.sin(t * 2.3) * s * 1.4F);

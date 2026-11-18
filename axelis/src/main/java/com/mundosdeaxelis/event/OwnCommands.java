@@ -34,8 +34,8 @@ public final class OwnCommands {
             t.set(need);
         }
         for (net.minecraft.server.level.ServerPlayer sp : src.getServer().getPlayerList().getPlayers()) {
-            for (int k = 1; k <= need; k++) {
-                com.mundosdeaxelis.table.Essence.registerProgress(sp, k);
+            if (need > 0) {
+                com.mundosdeaxelis.table.Essence.registerProgress(sp, need); // apunta todas las etapas de una vez (un solo aviso)
             }
         }
         int lv = t.level();

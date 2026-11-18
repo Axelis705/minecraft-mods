@@ -92,7 +92,11 @@ public final class ScreenFx {
             float b = (a.rgb() & 255) / 255.0F;
             Random rnd = new Random(a.seed());
             switch (a.kind()) {
-                case ScreenFxPacket.FLASH -> flash(g, w, h, t, a.dur(), r, gr, b);
+                case ScreenFxPacket.FLASH -> {
+                    if (com.mundosdeaxelis.ClientConfig.FLASHES.get()) {
+                        flash(g, w, h, t, a.dur(), r, gr, b);
+                    }
+                }
                 case ScreenFxPacket.VIGNETTE -> vignette(g, w, h, t, env, r, gr, b);
                 case ScreenFxPacket.BUBBLES -> {
                     vignette(g, w, h, t, env * 0.55F, 0.45F, 0.85F, 1.0F);

@@ -153,6 +153,21 @@ public final class AutoTest {
         }
     }
 
+    /** Pone el ratón en ese punto de la interfaz (solo en la prueba; en el entorno de desarrollo los nombres no están ofuscados). */
+    private static void hover(int guiX, int guiY) {
+        Minecraft mc = Minecraft.getInstance();
+        double k = mc.getWindow().getGuiScale();
+        try {
+            for (String f : new String[]{"xpos", "ypos"}) {
+                java.lang.reflect.Field fd = net.minecraft.client.MouseHandler.class.getDeclaredField(f);
+                fd.setAccessible(true);
+                fd.setDouble(mc.mouseHandler, (f.equals("xpos") ? guiX : guiY) * k);
+            }
+        } catch (Exception ex) {
+            log("no se pudo mover el ratón: " + ex);
+        }
+    }
+
     private static <T> T find(Class<T> type, String simpleName) {
         Screen sc = Minecraft.getInstance().screen;
         if (sc == null) {
@@ -213,6 +228,20 @@ public final class AutoTest {
         add("pantalla de opciones", 1500, () -> check("el cuadrito abre las opciones (pantalla " + screenName() + ")",
                 Minecraft.getInstance().screen instanceof MundosOptionsScreen));
         add("opciones (foto)", 300, () -> shot("3_opciones"));
+        photo("3b_opciones_ayuda", 800, () -> {
+            // el ratón encima de "Sacudidas de cámara" para ver la explicación
+            List<CycleButton<?>> cs = new ArrayList<>();
+            for (GuiEventListener l : Minecraft.getInstance().screen.children()) {
+                if (l instanceof CycleButton<?> c) {
+                    cs.add(c);
+                }
+            }
+            check("interruptores en las opciones: " + cs.size() + " de 6", cs.size() == 6);
+            if (cs.size() > 4) {
+                hover(cs.get(4).getX() + 30, cs.get(4).getY() + 10);
+            }
+        });
+        add("ratón fuera", 300, () -> hover(1, 1));
         add("apagar barra de almas", 600, () -> {
             CycleButton<?> c = find(CycleButton.class, null);
             check("hay interruptores en las opciones", c != null);

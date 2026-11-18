@@ -25,21 +25,27 @@ public class MundosOptionsScreen extends Screen {
 
     @Override
     protected void init() {
-        int w = 220;
-        int x = this.width / 2 - w / 2;
+        // dos columnas de interruptores; al pasar el ratón cada uno explica qué hace
+        int w = 150;
+        int x0 = this.width / 2 - w - 5, x1 = this.width / 2 + 5;
         int y = this.height / 4 + 8;
-        toggle(x, y, w, "souls", ClientConfig.SHOW_SOULS, false);
-        toggle(x, y + 24, w, "map", ClientConfig.SHOW_MAP, false);
-        toggle(x, y + 48, w, "few_notices", ClientConfig.FEW_NOTICES, false);
-        toggle(x, y + 72, w, "music", ClientConfig.DUNGEON_MUSIC, false);
-        addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose()).bounds(this.width / 2 - 100, y + 112, 200, 20).build());
+        toggle(x0, y, w, "souls", ClientConfig.SHOW_SOULS);
+        toggle(x1, y, w, "map", ClientConfig.SHOW_MAP);
+        toggle(x0, y + 24, w, "few_notices", ClientConfig.FEW_NOTICES);
+        toggle(x1, y + 24, w, "music", ClientConfig.DUNGEON_MUSIC);
+        toggle(x0, y + 48, w, "shake", ClientConfig.SCREEN_SHAKE);
+        toggle(x1, y + 48, w, "flashes", ClientConfig.FLASHES);
+        addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose()).bounds(this.width / 2 - 100, y + 84, 200, 20).build());
     }
 
-    private void toggle(int x, int y, int w, String label, ForgeConfigSpec.BooleanValue value, boolean unused) {
-        addRenderableWidget(CycleButton.onOffBuilder(value.get()).create(x, y, w, 20, Component.translatable("gui.mundos_de_axelis.options." + label), (b, v) -> {
-            value.set(v);
-            ClientConfig.SPEC.save();
-        }));
+    private void toggle(int x, int y, int w, String key, ForgeConfigSpec.BooleanValue value) {
+        String k = "gui.mundos_de_axelis.options." + key;
+        addRenderableWidget(CycleButton.onOffBuilder(value.get())
+                .withTooltip(v -> net.minecraft.client.gui.components.Tooltip.create(Component.translatable(k + ".tip")))
+                .create(x, y, w, 20, Component.translatable(k), (b, v) -> {
+                    value.set(v);
+                    ClientConfig.SPEC.save();
+                }));
     }
 
     @Override

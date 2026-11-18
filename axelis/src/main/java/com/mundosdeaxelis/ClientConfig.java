@@ -15,6 +15,10 @@ public final class ClientConfig {
     public static final ForgeConfigSpec.BooleanValue FEW_NOTICES;
     /** Música propia de las dungeons y jefes. */
     public static final ForgeConfigSpec.BooleanValue DUNGEON_MUSIC;
+    /** Sacudidas de cámara (golpes fuertes de los jefes, explosiones...). */
+    public static final ForgeConfigSpec.BooleanValue SCREEN_SHAKE;
+    /** Destellos de pantalla (flashes de color de los ataques y efectos). */
+    public static final ForgeConfigSpec.BooleanValue FLASHES;
 
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
@@ -26,6 +30,8 @@ public final class ClientConfig {
         SHOW_MAP = b.comment("Mostrar el mapa de la dungeon").define("show_map", true);
         FEW_NOTICES = b.comment("Pocos avisos: solo uno a la vez y más cortos").define("few_notices", false);
         DUNGEON_MUSIC = b.comment("Música de las dungeons y jefes").define("dungeon_music", true);
+        SCREEN_SHAKE = b.comment("Sacudidas de cámara de los jefes y efectos").define("screen_shake", true);
+        FLASHES = b.comment("Destellos de color en la pantalla").define("flashes", true);
         b.pop();
         SPEC = b.build();
     }
