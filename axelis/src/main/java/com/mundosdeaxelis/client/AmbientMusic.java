@@ -37,6 +37,9 @@ public final class AmbientMusic {
         if (ModDimensions.isTower(dim)) {
             return bossAround ? ModSounds.MUSIC_TOWER_BOSS.get() : ModSounds.MUSIC_TOWER_DUNGEON.get();
         }
+        if (ModDimensions.isIce(dim)) {
+            return bossAround ? ModSounds.MUSIC_ICE_BOSS.get() : ModSounds.MUSIC_ICE_DUNGEON.get();
+        }
         return null;
     }
 
@@ -69,6 +72,14 @@ public final class AmbientMusic {
             if (ModDimensions.isForge(mc.level.dimension())) {
                 for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
                     if (e instanceof com.mundosdeaxelis.entity.GranHerrero && e.isAlive()) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (ModDimensions.isIce(mc.level.dimension())) {
+                for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
+                    if (e instanceof com.mundosdeaxelis.entity.LoboArtico && e.isAlive()) {
                         found = true;
                         break;
                     }

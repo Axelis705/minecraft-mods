@@ -44,8 +44,11 @@ public final class IceTravel {
     private enum Phase {WAITING, INTRO, FIGHT}
 
     private Phase phase = Phase.WAITING;
-    /** La pelea llegó a empezar y la sala puede tener hielo derretido: hay que reconstruirla al volver a entrar. */
-    private boolean dirtyArena;
+    /**
+     * La pelea llegó a empezar y la sala puede tener hielo derretido: hay que reconstruirla al volver a entrar. Empieza en true:
+     * tras reiniciar el servidor no se sabe si la última pelea dejó la sala rota, así que la primera entrada la deja como nueva.
+     */
+    private boolean dirtyArena = true;
     private int emptyT;
 
     private static final Map<ResourceKey<Level>, IceTravel> INSTANCES = new HashMap<>();

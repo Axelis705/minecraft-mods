@@ -140,6 +140,17 @@ public final class ModSounds {
     public static final RegistryObject<SoundEvent> MUSIC_FORGE_BOSS = register("music_forge_boss");
     public static final RegistryObject<SoundEvent> MUSIC_TOWER_DUNGEON = register("music_tower_dungeon");
     public static final RegistryObject<SoundEvent> MUSIC_TOWER_BOSS = register("music_tower_boss");
+    public static final RegistryObject<SoundEvent> MUSIC_ICE_DUNGEON = register("music_ice_dungeon");
+    public static final RegistryObject<SoundEvent> MUSIC_ICE_BOSS = register("music_ice_boss");
+    // Archimago (sintetizados con gen/gen_sonidos_archimago.py)
+    public static final RegistryObject<SoundEvent> ARCHIMAGO_AMBIENT = register("archimago_ambient");
+    public static final RegistryObject<SoundEvent> ARCHIMAGO_HURT = register("archimago_hurt");
+    public static final RegistryObject<SoundEvent> ARCHIMAGO_DEATH = register("archimago_death");
+    public static final RegistryObject<SoundEvent> ARCHIMAGO_CHARGE = register("archimago_charge");
+    public static final RegistryObject<SoundEvent> ARCHIMAGO_CAST = register("archimago_cast");
+    public static final RegistryObject<SoundEvent> ARCHIMAGO_BLINK = register("archimago_blink");
+    public static final RegistryObject<SoundEvent> ARCHIMAGO_ORB = register("archimago_orb");
+    public static final RegistryObject<SoundEvent> ARCHIMAGO_BURST = register("archimago_burst");
 
     /** Sonidos de las reliquias. */
     public static final RegistryObject<SoundEvent> RELIC_ACTIVATE = register("relic_activate");

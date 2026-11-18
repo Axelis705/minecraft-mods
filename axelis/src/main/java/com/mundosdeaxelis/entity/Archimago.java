@@ -1,5 +1,6 @@
 package com.mundosdeaxelis.entity;
 
+import com.mundosdeaxelis.registry.ModSounds;
 import com.mundosdeaxelis.fx.Vfx;
 import com.mundosdeaxelis.relic.RelicFx;
 import com.mundosdeaxelis.world.BossBalance;
@@ -255,17 +256,17 @@ public class Archimago extends Monster {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.EVOKER_HURT;
+        return com.mundosdeaxelis.registry.ModSounds.ARCHIMAGO_HURT.get();
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.EVOKER_AMBIENT;
+        return com.mundosdeaxelis.registry.ModSounds.ARCHIMAGO_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.EVOKER_DEATH;
+        return com.mundosdeaxelis.registry.ModSounds.ARCHIMAGO_DEATH.get();
     }
 
     @Override
@@ -663,7 +664,7 @@ public class Archimago extends Monster {
                 Vec3 end = position().add(dir.scale(24.0)).add(0, 1.0, 0);
                 Vfx.beam(sl, from, end, WARN, 0.12, 13, 0);
             }
-            sound(sl, position(), SoundEvents.EVOKER_PREPARE_ATTACK, 2.0F, 1.3F);
+            sound(sl, position(), ModSounds.ARCHIMAGO_CHARGE.get(), 2.0F, 1.2F);
         }
         if (t == 17) {
             Vec3 from = staffTip();
@@ -679,7 +680,7 @@ public class Archimago extends Monster {
                     }
                 }
             }
-            sound(sl, position(), SoundEvents.ILLUSIONER_CAST_SPELL, 2.4F, 0.9F);
+            sound(sl, position(), ModSounds.ARCHIMAGO_CAST.get(), 2.4F, 0.95F);
             sound(sl, position(), SoundEvents.AMETHYST_BLOCK_CHIME, 3.0F, 0.6F);
         }
     }
@@ -690,7 +691,7 @@ public class Archimago extends Monster {
     private void runesTick(ServerLevel sl) {
         int waves = phase() >= 2 ? 2 : 1;
         if (stateT == 8 || (waves == 2 && stateT == 34)) {
-            sound(sl, position(), SoundEvents.EVOKER_CAST_SPELL, 2.2F, 0.8F);
+            sound(sl, position(), ModSounds.ARCHIMAGO_CAST.get(), 2.2F, 0.8F);
             for (ServerPlayer p : players(sl, 40.0)) {
                 addMark(sl, clampToArena(p.position()), 2.6, Mark.RUNE, 30);
                 int extra = 1 + phase();
@@ -743,7 +744,7 @@ public class Archimago extends Monster {
                 Vfx.ring(sl, m.pos, GOLD, m.radius + 1.5, 10);
                 sl.sendParticles(ParticleTypes.EXPLOSION, m.pos.x, m.pos.y + 0.5, m.pos.z, 3, 0.8, 0.3, 0.8, 0.0);
                 sl.sendParticles(ParticleTypes.LAVA, m.pos.x, m.pos.y + 0.3, m.pos.z, 10, 1.0, 0.2, 1.0, 0.0);
-                sound(sl, m.pos, SoundEvents.GENERIC_EXPLODE, 2.4F, 0.8F + this.random.nextFloat() * 0.3F);
+                sound(sl, m.pos, ModSounds.ARCHIMAGO_BURST.get(), 2.4F, 0.9F + this.random.nextFloat() * 0.25F);
                 RelicFx.shakeNear(sl, m.pos, 12, 0.6F, 6);
             }
             case Mark.FLASK -> {
@@ -810,7 +811,7 @@ public class Archimago extends Monster {
                 Vec3 at = clampToArena(lead);
                 addMark(sl, at, 3.0, Mark.FLASK, 22);
                 Vfx.beam(sl, staffTip(), at.add(0, 0.3, 0), VENOM, 0.25, 8, 0);
-                sound(sl, position(), SoundEvents.WITCH_THROW, 2.0F, 0.7F);
+                sound(sl, position(), ModSounds.ARCHIMAGO_ORB.get(), 2.0F, 0.9F + this.random.nextFloat() * 0.2F);
                 face(p.position(), 60.0F);
             }
         }
@@ -875,14 +876,14 @@ public class Archimago extends Monster {
 
     private void blinkTick(ServerLevel sl, ServerPlayer tgt) {
         if (stateT == 1) {
-            sound(sl, position(), SoundEvents.ENDERMAN_TELEPORT, 2.4F, 0.6F);
+            sound(sl, position(), ModSounds.ARCHIMAGO_BLINK.get(), 2.4F, 0.9F);
             sl.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 2.0, getZ(), 60, 0.6, 1.6, 0.6, 0.4);
         }
         if (stateT == 7) {
             addMark(sl, position(), 3.5, Mark.ECHO, 16);
             teleportTo(blinkTo.x, blinkTo.y, blinkTo.z);
             getNavigation().stop();
-            sound(sl, blinkTo, SoundEvents.ENDERMAN_TELEPORT, 2.4F, 0.8F);
+            sound(sl, blinkTo, ModSounds.ARCHIMAGO_BLINK.get(), 2.4F, 1.1F);
             sl.sendParticles(ParticleTypes.PORTAL, blinkTo.x, blinkTo.y + 2.0, blinkTo.z, 60, 0.6, 1.6, 0.6, 0.4);
             Vfx.flash(sl, blinkTo.add(0, 2.0, 0), ARCANE_PALE, 3.0, 6);
         }
@@ -943,7 +944,7 @@ public class Archimago extends Monster {
                     return;
                 }
                 Vfx.beam(sl, from, end, ARCANE, 0.9, 7, 0);
-                sound(sl, position(), SoundEvents.ILLUSIONER_CAST_SPELL, 2.0F, 0.9F);
+                sound(sl, position(), ModSounds.ARCHIMAGO_CAST.get(), 2.0F, 1.05F);
                 for (ServerPlayer p : players(sl, 28.0)) {
                     if (RelicFx.segDist(p.position().add(0, 1.0, 0), feet, end) <= 1.0) {
                         p.hurt(damageSources().indirectMagic(this, this), 6.0F * dmgNow);
@@ -986,13 +987,13 @@ public class Archimago extends Monster {
         if (stateT == limit - 30) {
             Vfx.ring(sl, position().add(0, 0.2, 0), WARN, 26.0, 30);
             Vfx.rune(sl, position().add(0, 0.1, 0), WARN, 8.0, 30);
-            sound(sl, position(), SoundEvents.RESPAWN_ANCHOR_CHARGE, 4.0F, 0.6F);
+            sound(sl, position(), ModSounds.ARCHIMAGO_CHARGE.get(), 4.0F, 0.7F);
         }
         if (stateT >= limit) {
             int left = seals.size();
             Vfx.dome(sl, position().add(0, 1.5, 0), VIOLET, 22.0, 12, true);
             Vfx.flash(sl, position().add(0, 2.0, 0), ARCANE_PALE, 10.0, 8);
-            sound(sl, position(), SoundEvents.GENERIC_EXPLODE, 4.0F, 0.6F);
+            sound(sl, position(), ModSounds.ARCHIMAGO_BURST.get(), 4.0F, 0.7F);
             RelicFx.shakeNear(sl, position(), 30, 1.6F, 14);
             for (ServerPlayer p : players(sl, 26.0)) {
                 p.hurt(damageSources().indirectMagic(this, this), 4.5F * left * dmgNow);
@@ -1020,7 +1021,7 @@ public class Archimago extends Monster {
     private void startMeteors(ServerLevel sl) {
         getNavigation().stop();
         setState(S_METEORS);
-        sound(sl, position(), SoundEvents.EVOKER_PREPARE_SUMMON, 3.0F, 0.6F);
+        sound(sl, position(), ModSounds.ARCHIMAGO_CHARGE.get(), 3.0F, 0.8F);
         announce(sl, "Lluvia de meteoritos", "Sal de los círculos rojos");
     }
 
