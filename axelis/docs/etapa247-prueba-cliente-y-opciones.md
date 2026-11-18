@@ -18,6 +18,11 @@ Pedido (18 nov 2026): "sigue con el botón del menú y los errores"; los enemigo
 - `est_pila_libros` (rotación) y `magma_boots` (modelo): en el registro del usuario con el jar nuevo (08:36) ya **no salen**. Confirmado también por la prueba con cliente.
 - Las líneas "Incorrect key pantalla..." del primer arranque son normales: Forge añade las opciones nuevas al archivo de configuración.
 
+## Error encontrado por Axelis: "Todas las copias de esta dungeon están ocupadas"
+- Al usar la Piedra de la Torre tras `/mundos desbloquear 5` salía ese aviso siempre.
+- Causa: en el cambio de etapa (246) quedó `TowerTravel.enter` buscando las copias de la **etapa 4** (`pickCopy(server, 4)`), que ahora es la de fuego y no tiene copias. Ahora usa `Archimago.STAGE` (5).
+- El CI de servidor no lo vio porque `construir 5` no pasa por la piedra. Por eso la prueba con cliente ahora hace lo mismo que un jugador: pone la Piedra de la Torre, clic derecho, abre la ficha, "Comenzar" a los 5 s y comprueba que llega a `boss_tower` (run 44336967679: **12 comprobaciones, 0 fallos**).
+
 ## Opciones (menú de pausa → cuadrito)
 - Ahora 6 interruptores en dos columnas, cada uno con explicación al pasar el ratón:
   Barra de almas, Mapa de dungeon, Pocos avisos, Música de jefes, **Sacudidas de cámara** (nuevo, `screen_shake`), **Destellos** (nuevo, `flashes`: apaga los destellos de color `ScreenFxPacket.FLASH`).
