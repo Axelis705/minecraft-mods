@@ -2482,5 +2482,42 @@
         "stream": true
       }
     ]
+  },
+  "corazon_latido": {
+    "sounds": [
+      "mundos_de_axelis:corazon_latido1",
+      "mundos_de_axelis:corazon_latido2"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.corazon_latido"
+  },
+  "corazon_rugido": {
+    "sounds": [
+      "mundos_de_axelis:corazon_rugido"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.corazon_rugido"
+  },
+  "cadenas_rompen": {
+    "sounds": [
+      "mundos_de_axelis:cadenas_rompen"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.cadenas_rompen"
+  },
+  "corazon_cae": {
+    "sounds": [
+      "mundos_de_axelis:corazon_cae"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.corazon_cae"
+  },
+  "corazon_muerte": {
+    "sounds": [
+      "mundos_de_axelis:corazon_muerte"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.corazon_muerte"
+  },
+  "volcan_retumbo": {
+    "sounds": [
+      "mundos_de_axelis:volcan_retumbo"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.volcan_retumbo"
   }
 }

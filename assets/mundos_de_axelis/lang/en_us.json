@@ -1813,5 +1813,11 @@
   "block.mundos_de_axelis.lava_falsa": "Fake Lava",
   "block.mundos_de_axelis.basalto_agrietado": "Cracked Basalt",
   "block.mundos_de_axelis.respiradero_volcan": "Volcanic Vent",
-  "block.mundos_de_axelis.nucleo_volcan": "Volcano Core"
+  "block.mundos_de_axelis.nucleo_volcan": "Volcano Core",
+  "subtitles.mundos_de_axelis.corazon_latido": "Magma Heart beats",
+  "subtitles.mundos_de_axelis.corazon_rugido": "Magma Heart roars",
+  "subtitles.mundos_de_axelis.cadenas_rompen": "Chains snap",
+  "subtitles.mundos_de_axelis.corazon_cae": "Magma Heart crashes down",
+  "subtitles.mundos_de_axelis.corazon_muerte": "Magma Heart bursts",
+  "subtitles.mundos_de_axelis.volcan_retumbo": "Volcano rumbles"
 }

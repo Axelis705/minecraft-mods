@@ -1813,5 +1813,11 @@
   "block.mundos_de_axelis.lava_falsa": "Lava Falsa",
   "block.mundos_de_axelis.basalto_agrietado": "Basalto Agrietado",
   "block.mundos_de_axelis.respiradero_volcan": "Respiradero Volcánico",
-  "block.mundos_de_axelis.nucleo_volcan": "Corazón del Volcán"
+  "block.mundos_de_axelis.nucleo_volcan": "Corazón del Volcán",
+  "subtitles.mundos_de_axelis.corazon_latido": "Late el Corazón de Magma",
+  "subtitles.mundos_de_axelis.corazon_rugido": "Ruge el Corazón de Magma",
+  "subtitles.mundos_de_axelis.cadenas_rompen": "Se rompen las cadenas",
+  "subtitles.mundos_de_axelis.corazon_cae": "El Corazón de Magma cae",
+  "subtitles.mundos_de_axelis.corazon_muerte": "Revienta el Corazón de Magma",
+  "subtitles.mundos_de_axelis.volcan_retumbo": "Retumba el volcán"
 }
