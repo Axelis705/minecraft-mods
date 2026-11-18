@@ -98,6 +98,8 @@ public final class Estructuras {
         final ResourceKey<Level> dim;
         final String title;
         final Map<BlockPos, Snap> snaps = new LinkedHashMap<>();
+        /** Enemigos puestos con la estructura (al deshacer se quitan también). */
+        final List<UUID> mobs = new ArrayList<>();
 
         Undo(ResourceKey<Level> dim, String title) {
             this.dim = dim;
@@ -172,6 +174,7 @@ public final class Estructuras {
         // red de seguridad: lo que no pueda sostenerse (nenúfar sin agua, antorcha sin muro, alfombra en el aire...) se quita ahora,
         // en silencio; si no, más tarde se rompería solo y dejaría el objeto tirado en el suelo
         int removed = dropUnsupported(level, placed);
+        int mobs = spawnMobs(level, bp, origin, r, undo);
         Deque<Undo> dq = UNDO.computeIfAbsent(key(src), k -> new ArrayDeque<>());
         dq.push(undo);
         while (dq.size() > MAX_UNDO) {
@@ -180,8 +183,34 @@ public final class Estructuras {
         int n = undo.snaps.size();
         // unos pocos pueden quedar por culpa del terreno de prueba (un mundo plano donde la estructura queda en el aire): se toleran 3
         String extra = removed > 3 ? "SIN APOYO " + removed : "apoyo ok";
-        src.sendSuccess(() -> Component.literal(kind.title + " construida [" + extra + "] (" + n + " bloques). Para quitarla: /mundos estructura deshacer"), true);
+        String foes = mobs > 0 ? ", " + mobs + " enemigos" : "";
+        src.sendSuccess(() -> Component.literal(kind.title + " construida [" + extra + "] (" + n + " bloques" + foes + "). Para quitarla: /mundos estructura deshacer"), true);
         return 1;
+    }
+
+    /** Pone los enemigos del plano (una sola vez: no reaparecen) y los apunta para poder quitarlos al deshacer. */
+    private static int spawnMobs(ServerLevel level, StructBp bp, BlockPos origin, Rotation r, Undo undo) {
+        int n = 0;
+        for (StructBp.Mob m : bp.mobs) {
+            net.minecraft.world.entity.EntityType<?> type = net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES
+                    .getValue(new net.minecraft.resources.ResourceLocation(com.mundosdeaxelis.MundosDeAxelis.MODID, m.kind()));
+            if (type == null) {
+                continue;
+            }
+            net.minecraft.world.entity.Entity e = type.create(level);
+            if (!(e instanceof net.minecraft.world.entity.Mob mob)) {
+                continue;
+            }
+            BlockPos p = origin.offset(new BlockPos(m.x(), m.y(), m.z()).rotate(r));
+            mob.moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, level.random.nextFloat() * 360.0F, 0.0F);
+            mob.finalizeSpawn(level, level.getCurrentDifficultyAt(p), net.minecraft.world.entity.MobSpawnType.STRUCTURE, null, null);
+            mob.setPersistenceRequired();
+            if (level.addFreshEntity(mob)) {
+                undo.mobs.add(mob.getUUID());
+                n++;
+            }
+        }
+        return n;
     }
 
     /** Quita (sin soltar objetos) los bloques colocados que no pueden sostenerse; repite por si al quitar uno otro se queda sin apoyo. */
@@ -240,6 +269,12 @@ public final class Estructuras {
             ServerLevel level = src.getServer().getLevel(u.dim);
             if (level == null) {
                 continue;
+            }
+            for (UUID id : u.mobs) {
+                net.minecraft.world.entity.Entity e = level.getEntity(id);
+                if (e != null) {
+                    e.discard();
+                }
             }
             // al revés: primero lo de arriba, para no dejar cosas sin apoyo
             List<Map.Entry<BlockPos, Snap>> list = new ArrayList<>(u.snaps.entrySet());

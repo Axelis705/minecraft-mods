@@ -37,6 +37,12 @@ public final class ModItems {
             () -> new ForgeSpawnEggItem(ModEntities.LOBO_ARTICO, 0x1A2030, 0x9FE3FF, new Item.Properties()));
     public static final RegistryObject<Item> ARCHIMAGO_SPAWN_EGG = ITEMS.register("archimago_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ARCHIMAGO, 0x2B2360, 0x78F0FF, new Item.Properties()));
+    public static final RegistryObject<Item> ESBIRRO_SPAWN_EGG = ITEMS.register("esbirro_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.ESBIRRO, 0x2B2360, 0xB57CFF, new Item.Properties()));
+    public static final RegistryObject<Item> LIBRO_EMBRUJADO_SPAWN_EGG = ITEMS.register("libro_embrujado_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.LIBRO_EMBRUJADO, 0x6E3C28, 0xB57CFF, new Item.Properties()));
+    public static final RegistryObject<Item> ARMADURA_ENCANTADA_SPAWN_EGG = ITEMS.register("armadura_encantada_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.ARMADURA_ENCANTADA, 0xA8A8A8, 0x5CE1FF, new Item.Properties()));
     public static final RegistryObject<Item> LOBO_ESCARCHA_SPAWN_EGG = ITEMS.register("lobo_escarcha_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.LOBO_ESCARCHA, 0xD6E4F2, 0x5FB8F0, new Item.Properties()));
 

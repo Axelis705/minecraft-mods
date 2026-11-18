@@ -1284,6 +1284,55 @@ final class TorreInterior {
         hangLantern(b, cx, f + 4, CZ + cz, 1, "lantern");
     }
 
+    // ================================================================== ENEMIGOS (se ponen una vez, al colocar la torre)
+
+    /**
+     * Pocos enemigos simples, como acordamos: esbirros en el Gran Salón y la cripta, libros embrujados en la biblioteca y en la sala de
+     * encantamiento (flotan a media altura) y una armadura encantada en la armería secreta. Solo en celdas de aire con suelo firme.
+     */
+    static void mobs(StructBp b) {
+        spread(b, 3, 3, "esbirro", 0);
+        spread(b, -5, 2, "esbirro", 0);
+        spread(b, 27, 2, "libro_embrujado", 1);
+        spread(b, 35, 2, "libro_embrujado", 1);
+        int[][] armory = {{-10, 10}, {-9, 10}, {-10, 9}, {-11, 10}, {-10, 11}};
+        for (int[] c : armory) {
+            if (freeCell(b, c[0], 3, CZ + c[1])) {
+                b.mobs.add(new StructBp.Mob(c[0], 3, CZ + c[1], "armadura_encantada"));
+                break;
+            }
+        }
+    }
+
+    private static boolean freeCell(StructBp b, int x, int y, int z) {
+        String below = b.get(x, y - 1, z);
+        return "air".equals(b.get(x, y, z)) && "air".equals(b.get(x, y + 1, z)) && below != null && !below.equals("air")
+                && !below.contains("carpet") && !below.contains("slab") && !below.contains("stairs");
+    }
+
+    /** Hasta {@code n} enemigos en anillos alrededor del centro de la planta, separados al menos 4 bloques entre sí. */
+    private static void spread(StructBp b, int f, int n, String kind, int lift) {
+        java.util.List<int[]> picked = new java.util.ArrayList<>();
+        for (int r = 3; r <= 9 && picked.size() < n; r++) {
+            for (int k = 0; k < 12 && picked.size() < n; k++) {
+                double a = Math.PI * 2 * k / 12 + r * 0.61;
+                int x = (int) Math.round(Math.cos(a) * r);
+                int z = CZ + (int) Math.round(Math.sin(a) * r);
+                if (!freeCell(b, x, f, z) || (lift > 0 && !"air".equals(b.get(x, f + 2, z)))) {
+                    continue;
+                }
+                boolean near = false;
+                for (int[] q : picked) {
+                    near |= Math.hypot(q[0] - x, q[1] - z) < 4.0;
+                }
+                if (!near) {
+                    picked.add(new int[]{x, z});
+                    b.mobs.add(new StructBp.Mob(x, f + lift, z, kind));
+                }
+            }
+        }
+    }
+
     static void secrets(StructBp b, Arq a) {
         secretRoom(b, a, -1, 1, 0);   // armería (fondo izquierda)
         secretRoom(b, a, 1, 1, 1);    // archivo (fondo derecha)

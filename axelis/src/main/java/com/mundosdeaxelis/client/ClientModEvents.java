@@ -94,6 +94,9 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.GRAN_HERRERO.get(), GranHerreroRenderer::new);
         event.registerEntityRenderer(ModEntities.LOBO_ARTICO.get(), LoboArticoRenderer::new);
         event.registerEntityRenderer(ModEntities.ARCHIMAGO.get(), ArchimagoRenderer::new);
+        event.registerEntityRenderer(ModEntities.ESBIRRO.get(), EsbirroRenderer::new);
+        event.registerEntityRenderer(ModEntities.LIBRO_EMBRUJADO.get(), LibroEmbrujadoRenderer::new);
+        event.registerEntityRenderer(ModEntities.ARMADURA_ENCANTADA.get(), ArmaduraEncantadaRenderer::new);
         event.registerEntityRenderer(ModEntities.LOBO_ESCARCHA.get(), LoboEscarchaRenderer::new);
         // Los perritos de las mascotas se ven con su color.
     }

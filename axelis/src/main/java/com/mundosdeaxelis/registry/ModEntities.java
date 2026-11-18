@@ -104,6 +104,21 @@ public final class ModEntities {
                     .sized(1.5F, 4.2F)
                     .clientTrackingRange(16)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "archimago").toString()));
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Esbirro>> ESBIRRO = ENTITIES.register("esbirro",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.Esbirro>of(com.mundosdeaxelis.entity.Esbirro::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "esbirro").toString()));
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.LibroEmbrujado>> LIBRO_EMBRUJADO = ENTITIES.register("libro_embrujado",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.LibroEmbrujado>of(com.mundosdeaxelis.entity.LibroEmbrujado::new, MobCategory.MONSTER)
+                    .sized(0.6F, 0.6F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "libro_embrujado").toString()));
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.ArmaduraEncantada>> ARMADURA_ENCANTADA = ENTITIES.register("armadura_encantada",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.ArmaduraEncantada>of(com.mundosdeaxelis.entity.ArmaduraEncantada::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "armadura_encantada").toString()));
 
     /** Lobezno de escarcha: la manada que invoca el Lobo Ártico. */
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.LoboEscarcha>> LOBO_ESCARCHA = ENTITIES.register("lobo_escarcha",

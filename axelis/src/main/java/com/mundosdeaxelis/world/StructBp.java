@@ -16,6 +16,11 @@ public final class StructBp {
     }
 
     public final Map<Long, String> m = new LinkedHashMap<>();
+    /** Enemigos que se ponen una sola vez al colocar la estructura (posición local de los pies y su id sin espacio de nombres). */
+    public final List<Mob> mobs = new ArrayList<>();
+
+    public record Mob(int x, int y, int z, String kind) {
+    }
     public final List<Found> found = new ArrayList<>();
     public final Random r;
     /** Salas planificadas (nombre -> cajas x0,y0,z0,x1,y1,z1) solo para revisar el plano fuera del juego. */

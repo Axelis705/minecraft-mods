@@ -44,6 +44,8 @@ public final class TowerTravel {
 
     private Phase phase = Phase.WAITING;
     private int emptyT;
+    /** Los libros embrujados del puente ya salieron en esta partida. */
+    private boolean bridgeGuards;
 
     private static final Map<ResourceKey<Level>, TowerTravel> INSTANCES = new HashMap<>();
 
@@ -101,6 +103,8 @@ public final class TowerTravel {
     }
 
     private void resetFight(ServerLevel level) {
+        bridgeGuards = false;
+        clearBooks(level);
         DungeonReset.bump(level); // el Archimago anterior (cargado o guardado en una zona descargada) ya no vale
         for (Archimago b : level.getEntitiesOfClass(Archimago.class, ALL)) {
             b.clearFight(level);
@@ -193,6 +197,15 @@ public final class TowerTravel {
         if (phase == Phase.WAITING && level.random.nextInt(3) == 0) {
             level.sendParticles(ParticleTypes.ENCHANT, 0.5, TowerArena.Y + 2.5, TowerArena.AZ + 0.5, 12, 3.0, 1.5, 3.0, 0.6);
         }
+        if (phase == Phase.WAITING && !bridgeGuards) {
+            for (ServerPlayer p : alive(level)) {
+                if (p.getZ() < TowerArena.AZ - 9 && p.getZ() > 24 && p.getY() > TowerArena.Y - 2) {
+                    bridgeGuards = true;
+                    spawnBooks(level, alive(level).size());
+                    break;
+                }
+            }
+        }
         if (phase == Phase.WAITING) {
             for (ServerPlayer p : level.players()) {
                 if (p.isAlive() && !p.isSpectator() && TowerArena.inArena(p.getX(), p.getZ(), 3.0) && p.getY() > TowerArena.Y - 2) {
@@ -214,7 +227,33 @@ public final class TowerTravel {
         return out;
     }
 
+    /** Libros embrujados que salen de la torre y cortan el paso en el puente (2, y uno más por cada jugador extra; máximo 4). */
+    private static void spawnBooks(ServerLevel level, int players) {
+        int n = Math.min(4, 1 + Math.max(1, players));
+        for (int k = 0; k < n; k++) {
+            com.mundosdeaxelis.entity.LibroEmbrujado b = com.mundosdeaxelis.registry.ModEntities.LIBRO_EMBRUJADO.get().create(level);
+            if (b == null) {
+                continue;
+            }
+            double x = (k % 2 == 0 ? -2.5 : 3.5);
+            double z = 24.0 + k * 2.5;
+            b.moveTo(x, TowerArena.Y + 3.0, z, 180.0F, 0.0F);
+            level.addFreshEntity(b);
+            level.sendParticles(ParticleTypes.ENCHANT, x, TowerArena.Y + 3.4, z, 30, 0.4, 0.4, 0.4, 0.8);
+        }
+        level.playSound(null, 0.5, TowerArena.Y + 2, 28, net.minecraft.sounds.SoundEvents.BOOK_PAGE_TURN, net.minecraft.sounds.SoundSource.HOSTILE, 2.0F, 0.6F);
+    }
+
+    /** Al empezar la pelea (o reiniciarla) se van los libros que queden: el Archimago pelea solo. */
+    private static void clearBooks(ServerLevel level) {
+        for (com.mundosdeaxelis.entity.LibroEmbrujado b : level.getEntitiesOfClass(com.mundosdeaxelis.entity.LibroEmbrujado.class, ALL)) {
+            level.sendParticles(ParticleTypes.ENCHANT, b.getX(), b.getY() + 0.4, b.getZ(), 20, 0.3, 0.3, 0.3, 0.6);
+            b.discard();
+        }
+    }
+
     private void intro(ServerLevel level) {
+        clearBooks(level);
         final int epoch = DungeonReset.epoch(level);
         List<ServerPlayer> watchers = alive(level);
         if (TowerIntro.canPlay(watchers)) {

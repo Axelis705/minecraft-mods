@@ -111,6 +111,7 @@ final class DesignTorre {
         a.seed(0, fy(8), CZ - 3);
         gapsBalcony(b);
         TorreInterior.tidy(b);
+        TorreInterior.mobs(b);
         // Todas las plantas están hechas a mano y las revisa ConectividadTest (salas sin acceso / trampas),
         // así que no se llama a Arq.repair: quitaría muebles diseñados (mesas de encantamiento, estanterías, el estanque...).
         for (String p : a.check()) {

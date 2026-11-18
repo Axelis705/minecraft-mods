@@ -15,5 +15,23 @@ mundos prueba construir 1
 mundos prueba construir 2
 #wait PRUEBA_CONSTRUIR_2 300
 #expect PRUEBA_CONSTRUIR_2_OK vez 1
+summon mundos_de_axelis:esbirro 3 -60 3
+summon mundos_de_axelis:libro_embrujado -3 -58 3
+summon mundos_de_axelis:armadura_encantada 3 -60 -3
+say ESPERANDO_ENEMIGOS
+execute if entity @e[type=mundos_de_axelis:armadura_encantada] run say PRUEBA_ENEMIGOS_VIVOS_OK
+kill @e[type=!minecraft:player]
+execute positioned 0 -60 40 rotated 0 0 run mundos estructura torre
+#wait construida 120
+execute if entity @e[type=mundos_de_axelis:esbirro] run say PRUEBA_TORRE_ESBIRROS_OK
+execute if entity @e[type=mundos_de_axelis:libro_embrujado] run say PRUEBA_TORRE_LIBROS_OK
+execute if entity @e[type=mundos_de_axelis:armadura_encantada] run say PRUEBA_TORRE_ARMADURA_OK
+mundos estructura deshacer
+execute unless entity @e[type=mundos_de_axelis:esbirro] run say PRUEBA_DESHACER_ENEMIGOS_OK
+#expect PRUEBA_ENEMIGOS_VIVOS_OK
+#expect PRUEBA_TORRE_ESBIRROS_OK
+#expect PRUEBA_TORRE_LIBROS_OK
+#expect PRUEBA_TORRE_ARMADURA_OK
+#expect PRUEBA_DESHACER_ENEMIGOS_OK
 say PRUEBA_SE_APAGA_A_MEDIA_OBRA
 mundos prueba construir 2
