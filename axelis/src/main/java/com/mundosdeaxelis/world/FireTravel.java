@@ -268,7 +268,7 @@ public final class FireTravel {
             Fx.screen(p, ScreenFxPacket.DARK, 0x1A0602, 50);
             Titles.actionBar(p, "La caverna tiembla...");
         }
-        level.playSound(null, ceil.x, ceil.y, ceil.z, SoundEvents.WARDEN_EMERGE, SoundSource.HOSTILE, 5.0F, 0.6F);
+        level.playSound(null, ceil.x, ceil.y, ceil.z, com.mundosdeaxelis.registry.ModSounds.CORAZON_RUGIDO.get(), SoundSource.HOSTILE, 5.0F, 0.8F);
         // temblores y polvo del techo
         for (int k = 0; k < 6; k++) {
             final int kk = k;
@@ -280,7 +280,7 @@ public final class FireTravel {
                 level.sendParticles(ParticleTypes.ASH, ceil.x, ceil.y, ceil.z, 60, 4.0, 0.5, 4.0, 0.0);
                 level.sendParticles(ParticleTypes.LAVA, ceil.x, ceil.y - 0.5, ceil.z, 6, 2.0, 0.2, 2.0, 0.0);
                 level.playSound(null, ceil.x, ceil.y, ceil.z, SoundEvents.BASALT_BREAK, SoundSource.HOSTILE, 4.0F, 0.4F + kk * 0.05F);
-                level.playSound(null, ceil.x, ceil.y, ceil.z, SoundEvents.WARDEN_HEARTBEAT, SoundSource.HOSTILE, 5.0F, 0.5F);
+                level.playSound(null, ceil.x, ceil.y, ceil.z, com.mundosdeaxelis.registry.ModSounds.CORAZON_LATIDO.get(), SoundSource.HOSTILE, 5.0F, 0.8F);
             });
         }
         // el corazón espera escondido encima del techo

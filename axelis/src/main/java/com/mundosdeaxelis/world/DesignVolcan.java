@@ -127,8 +127,10 @@ final class DesignVolcan {
                 }
                 double k = StructKit.hash01(31, x, z);
                 String s = k < 0.35 ? "coarse_dirt" : k < 0.6 ? "gravel" : k < 0.8 ? "tuff" : k < 0.92 ? "blackstone" : "basalt[axis=y]";
-                b.set(x, -1, z, s);
-                if (d > RB - 2 && StructKit.hash01(32, x, z) < 0.035) {
+                boolean bush = d > RB - 2 && StructKit.hash01(32, x, z) < 0.035;
+                // los matojos secos solo aguantan sobre tierra
+                b.set(x, -1, z, bush ? "coarse_dirt" : s);
+                if (bush) {
                     b.set(x, 0, z, "dead_bush");
                 }
             }

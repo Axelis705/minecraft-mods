@@ -42,7 +42,8 @@ public class RespiraderoBlock extends Block {
 
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState old, boolean moving) {
-        if (!level.isClientSide && !level.getBlockTicks().hasScheduledTick(pos, this)) {
+        // solo al ponerlo (no cuando cambia de fase él mismo: el tick ya programa el siguiente paso)
+        if (!level.isClientSide && !old.is(this) && !level.getBlockTicks().hasScheduledTick(pos, this)) {
             level.scheduleTick(pos, this, idleTicks(pos, level.random));
         }
     }

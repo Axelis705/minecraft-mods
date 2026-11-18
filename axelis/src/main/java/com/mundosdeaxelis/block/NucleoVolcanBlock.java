@@ -33,7 +33,7 @@ public class NucleoVolcanBlock extends LavaFalsaBlock {
 
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState old, boolean moving) {
-        if (!level.isClientSide && !level.getBlockTicks().hasScheduledTick(pos, this)) {
+        if (!level.isClientSide && !old.is(this) && !level.getBlockTicks().hasScheduledTick(pos, this)) {
             // la primera, pronto (para que se vea al llegar)
             level.scheduleTick(pos, this, 400 + level.random.nextInt(400));
         }
@@ -69,9 +69,9 @@ public class NucleoVolcanBlock extends LavaFalsaBlock {
     /** La erupción: retumbar, temblor, columna de fuego y bolas de fuego que caen por las laderas. */
     public static void erupt(ServerLevel level, BlockPos pos, RandomSource r) {
         Vec3 top = Vec3.atCenterOf(pos).add(0, 1.0, 0);
-        level.playSound(null, top.x, top.y, top.z, SoundEvents.GENERIC_EXPLODE, SoundSource.AMBIENT, 6.0F, 0.4F);
+        level.playSound(null, top.x, top.y, top.z, com.mundosdeaxelis.registry.ModSounds.VOLCAN_RETUMBO.get(), SoundSource.AMBIENT, 8.0F, 1.0F);
         level.playSound(null, top.x, top.y, top.z, SoundEvents.LAVA_AMBIENT, SoundSource.AMBIENT, 6.0F, 0.5F);
-        level.playSound(null, top.x, top.y, top.z, SoundEvents.WARDEN_HEARTBEAT, SoundSource.AMBIENT, 6.0F, 0.4F);
+        level.playSound(null, top.x, top.y, top.z, com.mundosdeaxelis.registry.ModSounds.CORAZON_LATIDO.get(), SoundSource.AMBIENT, 6.0F, 0.7F);
         com.mundosdeaxelis.relic.RelicFx.shakeNear(level, top, 110, 1.2F, 30);
         Vfx.column(level, top, LAVA, 4.0, 30.0, 50);
         for (int k = 0; k < 8; k++) {

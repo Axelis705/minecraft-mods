@@ -153,6 +153,13 @@ public final class ModSounds {
     public static final RegistryObject<SoundEvent> ARCHIMAGO_BLINK = register("archimago_blink");
     public static final RegistryObject<SoundEvent> ARCHIMAGO_ORB = register("archimago_orb");
     public static final RegistryObject<SoundEvent> ARCHIMAGO_BURST = register("archimago_burst");
+    // Corazón de Magma y volcán (sintetizados con gen/gen_sonidos_volcan.py)
+    public static final RegistryObject<SoundEvent> CORAZON_LATIDO = register("corazon_latido");
+    public static final RegistryObject<SoundEvent> CORAZON_RUGIDO = register("corazon_rugido");
+    public static final RegistryObject<SoundEvent> CADENAS_ROMPEN = register("cadenas_rompen");
+    public static final RegistryObject<SoundEvent> CORAZON_CAE = register("corazon_cae");
+    public static final RegistryObject<SoundEvent> CORAZON_MUERTE = register("corazon_muerte");
+    public static final RegistryObject<SoundEvent> VOLCAN_RETUMBO = register("volcan_retumbo");
 
     /** Sonidos de las reliquias. */
     public static final RegistryObject<SoundEvent> RELIC_ACTIVATE = register("relic_activate");

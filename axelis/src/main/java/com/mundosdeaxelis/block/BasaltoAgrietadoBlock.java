@@ -120,7 +120,8 @@ public class BasaltoAgrietadoBlock extends Block {
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState old, boolean moving) {
         // si se guardó a medio caer (o el comando lo puso así), que siga su ciclo
-        if (!level.isClientSide && state.getValue(STAGE) != 0 && !level.getBlockTicks().hasScheduledTick(pos, this)) {
+        // (no cuando cambia de etapa él mismo: su propio tick ya programa el siguiente y uno duplicado se ignoraría)
+        if (!level.isClientSide && !old.is(this) && state.getValue(STAGE) != 0 && !level.getBlockTicks().hasScheduledTick(pos, this)) {
             level.scheduleTick(pos, this, 20);
         }
     }

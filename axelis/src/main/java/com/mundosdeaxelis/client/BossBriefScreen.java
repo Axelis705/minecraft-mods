@@ -149,6 +149,22 @@ public class BossBriefScreen extends Screen {
                 grp.add(white("Cada jugador extra: +" + data.hpPerExtraPct + " % de vida y +" + data.dmgPerExtraPct + " % de daño del jefe."));
                 grp.add(gray("Viajan " + n + ": vida del jefe " + data.hpNow + (data.dmgBonusPct > 0 ? ", +" + data.dmgBonusPct + " % de daño." : ", daño normal.")));
                 out.add(new Section("Con más jugadores", 0xFF7B6B, grp));
+            } else if (tab == 1 && data.stage == 4) {
+                List<Component> how = new ArrayList<>();
+                how.add(white("Cueva de entrada, un puente sobre el mar de lava y la cúpula donde late el corazón."));
+                how.add(gray("Al pisar la arena se cierra la salida hasta el final de la pelea."));
+                out.add(new Section("Cómo es", 0xFF8A3D, how));
+                List<Component> volc = new ArrayList<>();
+                volc.add(white("Con /mundos estructura volcan aparece el Volcán en el mundo."));
+                volc.add(bullet("Sube", ChatFormatting.GOLD, "por el camino en espiral hasta el cráter."));
+                volc.add(bullet("Tírate", ChatFormatting.GOLD, "al lago: es lava falsa y caes despacio."));
+                volc.add(bullet("Cruza", ChatFormatting.GOLD, "el puente que se derrumba y la sala de las erupciones."));
+                volc.add(bullet("Santuario", ChatFormatting.GOLD, "al fondo está esta misma piedra."));
+                out.add(new Section("El Volcán", 0xFFD35C, volc));
+                List<Component> loot = new ArrayList<>();
+                loot.add(white("Salamandras, diablillos y cultistas sueltan botín."));
+                loot.add(gray("Puedes salir antes del jefe, sin sus premios."));
+                out.add(new Section("Botín y salida", 0x7BD66B, loot));
             } else if (tab == 1) {
                 List<Component> how = new ArrayList<>();
                 how.add(white("Distinta cada vez; más larga con más jugadores."));

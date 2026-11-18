@@ -262,7 +262,7 @@ public class CorazonMagma extends Monster {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.WARDEN_DEATH;
+        return com.mundosdeaxelis.registry.ModSounds.CORAZON_MUERTE.get();
     }
 
     @Override
@@ -468,7 +468,7 @@ public class CorazonMagma extends Monster {
         // el latido se oye (y se siente cerca)
         int per = Math.round(beatPeriod());
         if (state() != S_HIDDEN && this.tickCount % per == 0) {
-            sound(sl, core(), SoundEvents.WARDEN_HEARTBEAT, 4.0F, state() == S_EXPOSED ? 0.75F : 0.55F);
+            sound(sl, core(), com.mundosdeaxelis.registry.ModSounds.CORAZON_LATIDO.get(), 4.0F, state() == S_EXPOSED ? 1.15F : 0.95F);
         }
         List<ServerPlayer> ps = watchers(sl, 80.0);
         if (ps.isEmpty() && state() != S_HIDDEN) {
@@ -612,8 +612,8 @@ public class CorazonMagma extends Monster {
     private void startFall(ServerLevel sl) {
         from = position();
         setState(S_FALL);
-        sound(sl, core(), SoundEvents.CHAIN_BREAK, 4.0F, 0.5F);
-        sound(sl, core(), SoundEvents.WARDEN_ROAR, 3.0F, 0.6F);
+        sound(sl, core(), com.mundosdeaxelis.registry.ModSounds.CADENAS_ROMPEN.get(), 4.0F, 1.0F);
+        sound(sl, core(), com.mundosdeaxelis.registry.ModSounds.CORAZON_RUGIDO.get(), 3.5F, 1.0F);
         announce(sl, "¡Las cadenas se rompen!", "");
     }
 
@@ -629,7 +629,7 @@ public class CorazonMagma extends Monster {
             Vfx.flash(sl, c.add(0, 1.0, 0), PALE, 5.0, 10);
             sl.sendParticles(ParticleTypes.LAVA, c.x, c.y + 0.5, c.z, 40, 2.0, 0.5, 2.0, 0.0);
             sl.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, c.x, c.y + 1.0, c.z, 30, 2.0, 0.6, 2.0, 0.02);
-            sound(sl, c, SoundEvents.GENERIC_EXPLODE, 3.0F, 0.6F);
+            sound(sl, c, com.mundosdeaxelis.registry.ModSounds.CORAZON_CAE.get(), 4.0F, 1.0F);
             sound(sl, c, SoundEvents.BASALT_BREAK, 4.0F, 0.5F);
             RelicFx.shakeNear(sl, c, 40, 1.4F, 14);
             for (ServerPlayer p : players(sl, 5.0)) {
@@ -772,7 +772,6 @@ public class CorazonMagma extends Monster {
                 sl.sendParticles(ParticleTypes.FLAME, c.x, c.y, c.z, 12, 1.2, 1.2, 1.2, 0.05);
             }
             if (this.deathTicks % 12 == 0) {
-                sound(sl, c, SoundEvents.WARDEN_HEARTBEAT, 5.0F, 0.9F + this.deathTicks / (float) DEATH_TICKS);
                 RelicFx.shakeNear(sl, c, 40, 0.6F + this.deathTicks / 60F, 8);
             }
             if (this.deathTicks == DEATH_TICKS - 6) {
@@ -977,7 +976,7 @@ public class CorazonMagma extends Monster {
     private void meteors(ServerLevel sl) {
         List<ServerPlayer> ps = players(sl, 60.0);
         int n = 6 + 2 * ps.size();
-        sound(sl, core(), SoundEvents.WARDEN_ROAR, 3.0F, 0.8F);
+        sound(sl, core(), com.mundosdeaxelis.registry.ModSounds.CORAZON_RUGIDO.get(), 3.5F, 1.1F);
         RelicFx.shakeNear(sl, core(), 60, 1.0F, 30);
         for (int i = 0; i < n; i++) {
             Vec3 tgt;
