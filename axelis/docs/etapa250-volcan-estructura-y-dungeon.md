@@ -42,6 +42,8 @@ Iluminado con hongos de luz, faroles y magma (no deberían aparecer monstruos de
 ## Otros cambios
 - La ficha del jefe 4, pestaña «La dungeon», explica la arena y cómo llegar por el Volcán (antes mostraba el texto de las dungeons del bosque y la forja).
 - `Linker`: la lava falsa cuenta como paso (se cae por ella desde cualquier altura), para revisar que el volcán está bien conectado.
+- Fallo encontrado por la prueba del servidor y corregido: al cambiar de etapa, el bloque se volvía a "poner" y programaba un tick antes que el suyo (el juego ignora el segundo). El puente se rehacía en 1 s en vez de 10, y los respiraderos se habrían quedado a medias. Ahora solo programa al colocarlo.
+- Los matojos secos de la ceniza van sobre tierra gruesa (sobre grava o toba el juego los quitaba).
 
 ## Comprobado
 - Plano revisado fuera del juego: 0 trampas, entrada transitable, 1 «sala» sin acceso tolerada (lo alto del corazón de piedra colgado, adorno), 11 enemigos con sitio válido, nada sin apoyo. Fotos con el visor de estructuras.

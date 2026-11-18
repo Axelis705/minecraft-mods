@@ -30,6 +30,7 @@ public final class Vfx {
         private int rgb = 0xFFFFFF, flags, life = 20, follow;
         private float size = 1F, a, b;
         private double x, y, z, dx, dy, dz;
+        private double range = RANGE;
 
         private B(ServerLevel level, int type) {
             this.level = level;
@@ -99,6 +100,12 @@ public final class Vfx {
             return this;
         }
 
+        /** Hasta qué distancia se manda (por defecto 96 bloques); para efectos que se tienen que ver de lejos. */
+        public B range(double r) {
+            range = r;
+            return this;
+        }
+
         /** El efecto acompaña a una entidad; la posición pasa a ser el desplazamiento respecto a ella. */
         public B follow(Entity e, double ox, double oy, double oz) {
             follow = e.getId();
@@ -124,7 +131,7 @@ public final class Vfx {
             }
             final Vec3 w = where;
             ModNetwork.CHANNEL.send(PacketDistributor.NEAR.with(() ->
-                    new PacketDistributor.TargetPoint(w.x, w.y, w.z, RANGE, level.dimension())), packet(VfxType.ACT_ADD, id));
+                    new PacketDistributor.TargetPoint(w.x, w.y, w.z, range, level.dimension())), packet(VfxType.ACT_ADD, id));
             return id;
         }
 
@@ -134,7 +141,7 @@ public final class Vfx {
                 return;
             }
             ModNetwork.CHANNEL.send(PacketDistributor.NEAR.with(() ->
-                    new PacketDistributor.TargetPoint(x, y, z, RANGE, level.dimension())), packet(VfxType.ACT_ADD, id));
+                    new PacketDistributor.TargetPoint(x, y, z, range, level.dimension())), packet(VfxType.ACT_ADD, id));
         }
 
         /** Cambia posición, tamaño, color... de un efecto que ya existe. life > 0 = ticks que le quedan. */

@@ -73,13 +73,14 @@ public class NucleoVolcanBlock extends LavaFalsaBlock {
         level.playSound(null, top.x, top.y, top.z, SoundEvents.LAVA_AMBIENT, SoundSource.AMBIENT, 6.0F, 0.5F);
         level.playSound(null, top.x, top.y, top.z, com.mundosdeaxelis.registry.ModSounds.CORAZON_LATIDO.get(), SoundSource.AMBIENT, 6.0F, 0.7F);
         com.mundosdeaxelis.relic.RelicFx.shakeNear(level, top, 110, 1.2F, 30);
-        Vfx.column(level, top, LAVA, 4.0, 30.0, 50);
+        Vfx.make(level, VfxType.COLUMN).at(top).rgb(LAVA).size(4.0).a(30.0).life(50).range(RANGE).send();
         for (int k = 0; k < 8; k++) {
             final int kk = k;
             Scheduler.runLater(k * 4, () -> {
-                level.sendParticles(ParticleTypes.LAVA, top.x, top.y + 1, top.z, 30, 3.0, 1.0, 3.0, 0.0);
-                level.sendParticles(ParticleTypes.LARGE_SMOKE, top.x, top.y + 6 + kk * 2, top.z, 30, 3.0, 2.0, 3.0, 0.05);
-                level.sendParticles(ParticleTypes.FLAME, top.x, top.y + 2, top.z, 40, 2.5, 3.0, 2.5, 0.08);
+                far(level, top, ParticleTypes.LAVA, top.x, top.y + 1, top.z, 30, 3.0, 1.0, 3.0, 0.0);
+                far(level, top, ParticleTypes.LARGE_SMOKE, top.x, top.y + 6 + kk * 2, top.z, 30, 3.0, 2.0, 3.0, 0.05);
+                far(level, top, ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, top.x, top.y + 4 + kk * 3, top.z, 6, 2.0, 2.0, 2.0, 0.02);
+                far(level, top, ParticleTypes.FLAME, top.x, top.y + 2, top.z, 40, 2.5, 3.0, 2.5, 0.08);
             });
         }
         int n = 7 + r.nextInt(5);
@@ -93,8 +94,21 @@ public class NucleoVolcanBlock extends LavaFalsaBlock {
         }
     }
 
+    /** Hasta dónde se ve la erupción (las partículas normales solo llegan a 32 bloques). */
+    private static final double RANGE = 180.0;
+
+    /** Partículas que se ven de lejos: se mandan "forzadas" a cada jugador a menos de {@link #RANGE}. */
+    private static void far(ServerLevel level, Vec3 c, net.minecraft.core.particles.ParticleOptions p, double x, double y, double z, int n,
+                            double dx, double dy, double dz, double speed) {
+        for (ServerPlayer sp : level.players()) {
+            if (sp.distanceToSqr(c) < RANGE * RANGE) {
+                level.sendParticles(sp, p, true, x, y, z, n, dx, dy, dz, speed);
+            }
+        }
+    }
+
     private static void lob(ServerLevel level, Vec3 a, Vec3 b, int ticks, double arc) {
-        int id = Vfx.make(level, VfxType.ORB).at(a).rgb(LAVA).size(0.7).life(ticks + 6).flags(VfxType.F_TRAIL).send();
+        int id = Vfx.make(level, VfxType.ORB).at(a).rgb(LAVA).size(0.7).life(ticks + 6).flags(VfxType.F_TRAIL).range(RANGE).send();
         for (int t = 1; t <= ticks; t++) {
             final double u = t / (double) ticks;
             final boolean last = t == ticks;
@@ -103,9 +117,9 @@ public class NucleoVolcanBlock extends LavaFalsaBlock {
                 Vfx.make(level, VfxType.ORB).at(p).rgb(LAVA).size(0.7).flags(VfxType.F_TRAIL).life(0).update(id);
                 if (last) {
                     Vfx.remove(level, id);
-                    level.sendParticles(ParticleTypes.LAVA, b.x, b.y + 0.3, b.z, 12, 0.6, 0.2, 0.6, 0.0);
-                    level.sendParticles(ParticleTypes.LARGE_SMOKE, b.x, b.y + 0.5, b.z, 10, 0.6, 0.4, 0.6, 0.02);
-                    level.sendParticles(ParticleTypes.FLAME, b.x, b.y + 0.4, b.z, 16, 0.6, 0.3, 0.6, 0.05);
+                    far(level, b, ParticleTypes.LAVA, b.x, b.y + 0.3, b.z, 12, 0.6, 0.2, 0.6, 0.0);
+                    far(level, b, ParticleTypes.LARGE_SMOKE, b.x, b.y + 0.5, b.z, 10, 0.6, 0.4, 0.6, 0.02);
+                    far(level, b, ParticleTypes.FLAME, b.x, b.y + 0.4, b.z, 16, 0.6, 0.3, 0.6, 0.05);
                     level.playSound(null, b.x, b.y, b.z, SoundEvents.GENERIC_EXPLODE, SoundSource.AMBIENT, 1.6F, 0.8F);
                 }
             });
