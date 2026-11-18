@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/cube_bottom_top",
+ "textures": {
+  "top": "mundos_de_axelis:block/respiradero_volcan_top_2",
+  "bottom": "mundos_de_axelis:block/basalto_agrietado_top_0",
+  "side": "mundos_de_axelis:block/respiradero_volcan_side_2"
+ }
+}

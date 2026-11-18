@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "stage=0": {
+   "model": "mundos_de_axelis:block/basalto_agrietado_0"
+  },
+  "stage=1": {
+   "model": "mundos_de_axelis:block/basalto_agrietado_1"
+  },
+  "stage=2": {
+   "model": "mundos_de_axelis:block/basalto_agrietado_2"
+  },
+  "stage=3": {
+   "model": "mundos_de_axelis:block/basalto_agrietado_caido"
+  }
+ }
+}

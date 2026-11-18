@@ -1809,5 +1809,9 @@
   "item.mundos_de_axelis.comp_magma_heart": "Figurine: Little Magma Heart",
   "tooltip.mundos_de_axelis.comp_magma_heart.1": "Only dropped by the Magma Heart of the volcano. Gives armor.",
   "tooltip.mundos_de_axelis.comp_magma_heart.2": "Only dropped by the Magma Heart of the volcano. Gives armor.",
-  "tooltip.mundos_de_axelis.comp_magma_heart.lore": "It beats just like the big one, but instead of chains it only kept a broken shackle as a souvenir."
+  "tooltip.mundos_de_axelis.comp_magma_heart.lore": "It beats just like the big one, but instead of chains it only kept a broken shackle as a souvenir.",
+  "block.mundos_de_axelis.lava_falsa": "Fake Lava",
+  "block.mundos_de_axelis.basalto_agrietado": "Cracked Basalt",
+  "block.mundos_de_axelis.respiradero_volcan": "Volcanic Vent",
+  "block.mundos_de_axelis.nucleo_volcan": "Volcano Core"
 }
