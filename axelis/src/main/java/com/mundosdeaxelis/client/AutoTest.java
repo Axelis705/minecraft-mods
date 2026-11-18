@@ -653,7 +653,9 @@ public final class AutoTest {
         });
         add("enemigos atacan (foto)", 2600, () -> shot("13b_enemigos_atacan"));
         add("enemigos atacan b (foto)", 300, () -> shot("13c_enemigos_atacan"));
-        add("escudo de lava", 3500, () -> onServer(sp -> {
+        add("esperar el escudo", 3200, () -> {
+        });
+        add("escudo de lava", 400, () -> onServer(sp -> {
             int n = 0;
             net.minecraft.world.entity.LivingEntity first = null;
             for (net.minecraft.world.entity.LivingEntity e : sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
@@ -671,6 +673,9 @@ public final class AutoTest {
                 net.minecraft.world.phys.Vec3 c = first.position().add(0, first.getBbHeight() * 0.5, 0);
                 net.minecraft.world.phys.Vec3 d = sp.position().subtract(first.position()).multiply(1, 0, 1);
                 d = d.lengthSqr() < 0.01 ? new net.minecraft.world.phys.Vec3(0, 0, 1) : d.normalize();
+                if (first instanceof net.minecraft.world.entity.Mob m) {
+                    m.setNoAi(true); // quieto para la foto (luego se quitan todos)
+                }
                 net.minecraft.world.phys.Vec3 cam = first.position().add(d.scale(4.0));
                 float yaw = (float) Math.toDegrees(Math.atan2(-(c.x - cam.x), c.z - cam.z));
                 float pitch = (float) Math.toDegrees(-Math.atan2(c.y - (cam.y + 1.62), Math.hypot(c.x - cam.x, c.z - cam.z)));
@@ -874,7 +879,7 @@ public final class AutoTest {
         });
         // 8. el álbum de cartas lleno: jefes (con el Corazón de Magma y el Archimago) y las criaturas nuevas
         add("álbum lleno", 1500, () -> {
-            cmd("cartas llenar @a");
+            cmd("cartas llenar @p");
             cmd("execute in minecraft:overworld run tp @a 0.5 -60 0.5 0 0");
         });
         add("álbum: jefes", 2500, () -> open(new com.mundosdeaxelis.cartas.client.AlbumScreen()));
