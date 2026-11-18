@@ -655,13 +655,27 @@ public final class AutoTest {
         add("enemigos atacan b (foto)", 300, () -> shot("13c_enemigos_atacan"));
         add("escudo de lava", 3500, () -> onServer(sp -> {
             int n = 0;
+            net.minecraft.world.entity.LivingEntity first = null;
             for (net.minecraft.world.entity.LivingEntity e : sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
                     sp.getBoundingBox().inflate(30), com.mundosdeaxelis.entity.EscudoLava::isAlly)) {
                 if (com.mundosdeaxelis.entity.EscudoLava.has(e)) {
                     n++;
+                    if (first == null) {
+                        first = e;
+                    }
                 }
             }
             check("el cultista pone un escudo de lava a un aliado (" + n + " con escudo)", n > 0);
+            if (first != null) {
+                // la cámara, a 4 bloques del aliado protegido, del lado donde estoy
+                net.minecraft.world.phys.Vec3 c = first.position().add(0, first.getBbHeight() * 0.5, 0);
+                net.minecraft.world.phys.Vec3 d = sp.position().subtract(first.position()).multiply(1, 0, 1);
+                d = d.lengthSqr() < 0.01 ? new net.minecraft.world.phys.Vec3(0, 0, 1) : d.normalize();
+                net.minecraft.world.phys.Vec3 cam = first.position().add(d.scale(4.0));
+                float yaw = (float) Math.toDegrees(Math.atan2(-(c.x - cam.x), c.z - cam.z));
+                float pitch = (float) Math.toDegrees(-Math.atan2(c.y - (cam.y + 1.62), Math.hypot(c.x - cam.x, c.z - cam.z)));
+                sp.teleportTo(sp.serverLevel(), cam.x, cam.y, cam.z, yaw, pitch);
+            }
         }));
         add("escudo de lava (foto)", 300, () -> shot("13d_escudo_lava"));
         add("quitar enemigos", 1000, () -> onServer(sp -> {
@@ -697,8 +711,8 @@ public final class AutoTest {
         add("retrato corazón", 900, () -> {
             // de cerca, flotando a media altura y sin interfaz: para la carta del Corazón de Magma
             onServer(sp -> sp.setNoGravity(true));
-            net.minecraft.world.phys.Vec3 h = com.mundosdeaxelis.world.FireArena.heartHome();
-            standLooking(0.5, h.y - 0.6 - 1.62, 6.8, 0.5, h.y, 0.5);
+            net.minecraft.world.phys.Vec3 h = com.mundosdeaxelis.world.FireArena.heartHome().add(0, 2.9, 0);
+            standLooking(0.5, h.y - 0.8 - 1.62, 8.0, 0.5, h.y, 0.5);
             Minecraft.getInstance().options.hideGui = true;
         });
         add("retrato corazón (foto)", 300, () -> {
@@ -844,20 +858,34 @@ public final class AutoTest {
             studio(ST_TORRE, "torre");
         });
         portrait("cultista_volcan", ST_VOLCAN, "cultista_volcan", -60.0, -58.85, 2.7, 0.35, 165);
-        portrait("salamandra_lava", ST_VOLCAN, "salamandra_lava", -60.0, -59.65, 2.0, 0.75, 215);
-        portrait("diablillo", ST_VOLCAN, "diablillo", -59.4, -58.85, 1.7, 0.15, 170);
-        portrait("larva_magma", ST_VOLCAN, "larva_magma", -60.0, -59.75, 1.25, 0.45, 205);
-        portrait("fundidor", ST_FORJA, "fundidor", -60.0, -58.6, 3.0, 0.3, 170);
-        portrait("ascua", ST_FORJA, "ascua", -59.5, -59.0, 1.35, 0.15, 180);
-        portrait("esbirro", ST_TORRE, "esbirro", -60.0, -58.95, 2.5, 0.3, 170);
-        portrait("armadura_encantada", ST_TORRE, "armadura_encantada", -60.0, -58.9, 2.6, 0.3, 190);
-        portrait("libro_embrujado", ST_TORRE, "libro_embrujado", -59.3, -58.95, 1.3, 0.2, 180);
+        portrait("salamandra_lava", ST_VOLCAN, "salamandra_lava", -60.0, -59.72, 1.25, 0.32, 212);
+        portrait("diablillo", ST_VOLCAN, "diablillo", -59.4, -58.95, 1.05, 0.05, 172);
+        portrait("larva_magma", ST_VOLCAN, "larva_magma", -60.0, -59.8, 0.95, 0.25, 205);
+        portrait("fundidor", ST_FORJA, "fundidor", -60.0, -58.65, 2.6, 0.25, 170);
+        portrait("ascua", ST_FORJA, "ascua", -59.5, -59.0, 1.6, 0.1, 180);
+        portrait("esbirro", ST_TORRE, "esbirro", -60.0, -58.95, 2.1, 0.25, 168);
+        portrait("armadura_encantada", ST_TORRE, "armadura_encantada", -60.0, -58.95, 2.2, 0.25, 192);
+        portrait("libro_embrujado", ST_TORRE, "libro_embrujado", -59.3, -58.75, 0.95, 0.05, 160);
         portrait("archimago", ST_TORRE, "archimago", -60.0, -57.8, 4.6, 0.2, 175);
         add("fin de los retratos", 300, () -> {
             Minecraft.getInstance().options.hideGui = false;
             clearMobs();
             cmd("forceload remove all");
         });
+        // 8. el álbum de cartas lleno: jefes (con el Corazón de Magma y el Archimago) y las criaturas nuevas
+        add("álbum lleno", 1500, () -> {
+            cmd("cartas llenar @a");
+            cmd("execute in minecraft:overworld run tp @a 0.5 -60 0.5 0 0");
+        });
+        add("álbum: jefes", 2500, () -> open(new com.mundosdeaxelis.cartas.client.AlbumScreen()));
+        add("álbum: jefes (foto)", 300, () -> {
+            check("el álbum tiene " + com.mundosdeaxelis.cartas.Cards.ALL.size() + " cartas (41 esperadas)", com.mundosdeaxelis.cartas.Cards.ALL.size() == 41);
+            shot("46_album_jefes");
+        });
+        add("álbum: criaturas", 1800, () -> Minecraft.getInstance().screen.keyPressed(org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT, 0, 0));
+        add("álbum: criaturas (foto)", 300, () -> shot("47_album_criaturas"));
+        add("álbum: criaturas nuevas", 1800, () -> Minecraft.getInstance().screen.keyPressed(org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT, 0, 0));
+        add("álbum: criaturas nuevas (foto)", 300, () -> shot("48_album_criaturas_nuevas"));
         add("fin", 2000, () -> {
             clearMobs();
             open(null);

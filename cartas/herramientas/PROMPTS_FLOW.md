@@ -6,6 +6,7 @@
 2. Pega primero el **ESTILO COMÚN** y justo después el texto de la carta. Así todas se parecen entre sí.
 3. Para las **cartas de skins**: sube la skin como imagen de referencia (la que ya está en `herramientas/skins/`) y usa el prompt de esa carta.
 4. Para los **jefes, enemigos y mascotas de tu mod**: la captura del juego es OBLIGATORIA (ver "Cláusula de referencia" abajo). Sin captura, Flow inventa el diseño (así salió el Rey Brote como árbol de madera, que no es).
+   - **Las capturas de las cartas nuevas ya las saqué yo** con la prueba del juego (sin interfaz, de frente, con fondo del tema): están en `herramientas/arte/referencias/carta_<id>.png`. Esas mismas fotos son el arte provisional de la carta hasta que me mandes la de Flow.
 5. Déjame las imágenes con el **nombre de la carta** (`rey_brote.png`, `odette.png`...). Yo les pongo el marco de rareza, el nombre, el brillo holográfico y las meto en el mod.
 
 Regla de composición (importante): **deja vacío el 20 % de abajo** — ahí va el nombre de la carta. El personaje o criatura va centrado, en el 80 % de arriba.
@@ -74,6 +75,27 @@ arena in the sky with a wall of ice, four eternal braziers burning, a giant moon
 snowstorm and frost crystals in the air. Blocky style, cold cyan and white palette, low angle.
 ```
 
+**corazon_magma — Corazón de Magma (Legendaria)** ✔ referencia: `arte/referencias/carta_corazon_magma.png`
+```
+[Cláusula de referencia] A gigantic beating heart of molten lava the size of a house, covered by
+cracked black obsidian plates with sharp horn-like spikes, glowing orange-yellow magma visible
+between the plates, a bright core of fire inside. It hangs in the air held by thick iron chains that
+go down to glowing crystal anchors on the floor. It floats in the center of a huge underground
+volcanic dome cavern: dark basalt walls with veins of magma, a sea of lava far below, embers and ash
+floating, heat haze, intense orange and black palette. Low camera angle, monumental scale.
+```
+
+**archimago — Archimago (Legendaria)** ✔ referencia: `arte/referencias/carta_archimago.png`
+```
+[Cláusula de referencia] A tall old wizard with a long grey beard and glowing cyan eyes, wearing a
+deep purple robe sprinkled with tiny golden stars and golden trim, a tall pointed purple hat with a
+cyan gem on the tip. He holds a long wooden staff topped with a golden claw holding a glowing cyan
+crystal; a magic book floats open beside him and three floating crystals (cyan, pink and white)
+orbit around him. He stands in a circular arcane library at the top of a tower at night: tall
+bookshelves, amethyst pillars, purple candles, glowing runes on the floor, stars through a big
+round window. Purple, gold and cyan palette, magical sparkles, low camera angle.
+```
+
 ## CRIATURAS DEL BOSQUE (⚠ = mándame captura)
 
 **guardian_musgo — Guardián de Musgo (Rara)** ⚠ mini-jefe, golpe al suelo avisado, invoca Raizales
@@ -118,7 +140,7 @@ inside a dark brick forge room with chains, stone anvils and glowing braziers, s
 in the air, warm orange rim light.
 ```
 
-**ascua — Ascua (Común)** ⚠ (necesita tu captura)
+**ascua — Ascua (Común)** ✔ captura ya sacada: `arte/referencias/carta_ascua.png`
 ```
 Use the attached in-game screenshot as the EXACT reference for the creature: same shape, same
 proportions, same colors, same face. Do NOT redesign it. Do NOT add arms, legs, armor, weapons or
@@ -128,7 +150,7 @@ fragments orbiting around it and a trail of sparks, in a dark smoky brick forge 
 in the background, red and orange palette.
 ```
 
-**fundidor — Fundidor (Rara)** ⚠ (necesita tu captura)
+**fundidor — Fundidor (Rara)** ✔ captura ya sacada: `arte/referencias/carta_fundidor.png`
 ```
 Use the attached in-game screenshot as the EXACT reference for the creature: same shape, same
 proportions, same colors, same face. Do NOT redesign it. Do NOT add arms, legs, armor, weapons or
@@ -145,6 +167,66 @@ Use the attached screenshot as the exact reference. A small four-legged frost wo
 pale blue-white fur and glowing blue ice crystals growing along its back, snarling with cold breath
 mist, in the snowy ice arena at night with a huge moon and blue light, snow particles, the big
 hooded werewolf boss as a dark silhouette far behind.
+```
+
+## CRIATURAS DEL VOLCÁN (referencias en `arte/referencias/`)
+
+**salamandra_lava — Salamandra de Lava (Común)** ✔ `carta_salamandra_lava.png`
+```
+[Cláusula de referencia] A blocky lizard made of dark grey basalt with bright orange magma spots on
+its back and tail, small flames flickering on its body, mouth open about to spit a ball of lava.
+It walks on the surface of a lava river as if it were solid ground, inside a dark volcanic cave with
+basalt columns, lava falls and floating embers. Warm orange rim light, low angle.
+```
+
+**diablillo — Diablillo (Común)** ✔ `carta_diablillo.png`
+```
+[Cláusula de referencia] A small red imp with two curved horns, big yellow eyes and a mischievous
+grin, dark red bat wings spread wide, flying and laughing while a ball of fire grows in its raised
+hand. Background: a volcanic cavern with erupting fire vents, smoke and sparks. Red and orange
+palette, playful but dangerous mood.
+```
+
+**larva_magma — Larva de Magma (Común)** ✔ `carta_larva_magma.png`
+```
+[Cláusula de referencia] A small fast worm of glowing lava with dark crusted segments, crawling and
+leaving a trail of sparks, mouth open to bite. On a cracked basalt floor with glowing magma in the
+cracks, inside a dark volcanic cave, tiny embers in the air. Close-up, low camera angle.
+```
+
+**cultista_volcan — Cultista del Volcán (Rara)** ✔ `carta_cultista_volcan.png`
+```
+[Cláusula de referencia] A hooded cultist in a long dark-red robe with golden trim, face hidden
+behind a black obsidian mask with glowing eyes, holding a staff topped with a burning magma
+crystal. He raises his arms casting a spell: a column of fire bursts from a rune circle on the floor
+and a glowing bubble of lava protects an ally lizard beside him. Background: a volcanic altar with
+crying obsidian, candles and magma blocks. Dark red, gold and orange palette.
+```
+
+## CRIATURAS DE LA TORRE (referencias en `arte/referencias/`)
+
+**esbirro — Esbirro (Común)** ✔ `carta_esbirro.png`
+```
+[Cláusula de referencia] A hooded guardian in a dark navy-purple robe with a golden belt, face in
+shadow with two glowing purple eyes, holding a short dagger. He appears out of a purple teleport
+flash with smoke around his feet. Background: a tower library with tall bookshelves, amethyst
+pillars and purple candles. Purple and gold palette, mysterious mood.
+```
+
+**libro_embrujado — Libro Embrujado (Común)** ✔ `carta_libro_embrujado.png`
+```
+[Cláusula de referencia] An old enchanted book flying by itself, its covers flapping like wings and
+its pages flipping fast, shooting a glowing purple orb made of a torn page. Loose pages flutter
+around. Background: a dark tower library with floating candles and bookshelves. Purple glow,
+magical sparkles.
+```
+
+**armadura_encantada — Armadura Encantada (Rara)** ✔ `carta_armadura_encantada.png`
+```
+[Cláusula de referencia] A suit of iron armor that looked like a decoration but has just woken up:
+glowing purple eyes inside the empty helmet, purple magic smoke leaking from the joints, one arm
+raised ready to strike. Background: a secret armory in a tower with weapon racks, iron bars and
+purple torchlight. Silver and purple palette, dramatic low angle.
 ```
 
 ## MASCOTAS (no son entidades: sube la captura del ícono 3D o de la figurita)

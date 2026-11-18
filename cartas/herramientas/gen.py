@@ -64,6 +64,8 @@ S = {
     "witchhat": [".......OO...", "......OAAO..", ".....OAAAO..", ".....OAAO...", "....OAAAAO..", "....OBBBBO..", "...OAAAAAAO.", "..OAAAAAAAAO", ".OAAAAAAAAAO", "OOOOOOOOOOOO", "............", "............"],
     "ferret": ["............", "..OO....OO..", ".OAAO..OAAO.", ".OAAOOOOAAO.", ".OAAAAAAAAO.", "OAADAAAADAAO", "OAAAAAAAAAAO", "OAAAABBAAAAO", ".OAAAADAAAO.", "..OAAAAAAO..", "...OOOOOO...", "............"],
     "villager": ["............", "...OOOOOO...", "..OAAAAAAO..", "..OBBBBBBO..", "..OWDAADWO..", "..OAAOOAAO..", "..OAAOOAAO..", "...OAOOAO...", "..OBBBBBBO..", ".OBBBAABBBO.", ".OBBAAAABBO.", ".OOOOOOOOOO."],
+    "imp": ["..O......O..", "..OO....OO..", "...OAAAAO...", "O..OWAAWO..O", "OO.OAAAAO.OO", "OAOOADDAOOAO", "OAAOAAAAOAAO", ".OAOABBAOAO.", "..OOAAAAOO..", "....OAAO....", "....O..O....", "............"],
+    "lizard": [".....OO.....", "....OAAO....", "....OWWO....", ".O..OAAO..O.", "OAOOABBAOOAO", ".O.OABAAO.O.", "...OAABAO...", ".O.OABAAO.O.", "OAOOAABAOOAO", ".O..OAAO..O.", ".....OAO....", "......OO...."],
     "heart": ["............", "..OOO..OOO..", ".OAAAOOAAAO.", "OAAWAAAAAAAO", "OAAAAAAAAAAO", "OAAAAAAAAAAO", ".OAAAAAAAAO.", "..OAAAAAAO..", "...OAAAAO...", "....OAAO....", ".....OO.....", "............"],
 }
 for k, v in S.items():

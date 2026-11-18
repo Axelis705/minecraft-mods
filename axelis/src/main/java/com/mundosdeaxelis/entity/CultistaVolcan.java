@@ -142,8 +142,11 @@ public class CultistaVolcan extends Monster {
                         EscudoLava.give(sl, ward);
                     }
                     ward = null;
+                    // tras el escudo, un respiro corto antes de la siguiente columna (no reinicia la espera entera)
+                    castCd = Math.max(castCd, 30);
+                } else {
+                    castCd = 90 + this.random.nextInt(40);
                 }
-                castCd = 90 + this.random.nextInt(40);
             }
             return;
         }
@@ -186,7 +189,7 @@ public class CultistaVolcan extends Monster {
         if (wardCd > 0) {
             wardCd--;
         }
-        if (castCd <= 0 && wardCd <= 0) {
+        if (wardCd <= 0) {
             LivingEntity a = pickWard(sl);
             if (a != null) {
                 startWard(sl, a);

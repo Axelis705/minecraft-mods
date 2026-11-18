@@ -83,6 +83,30 @@
    ]
   },
   {
+   "id": "corazon_magma",
+   "name": "Corazón de Magma",
+   "cat": "jefes",
+   "rar": "LEGENDARIA",
+   "glyph": "heart",
+   "c1": "#ff6a1a",
+   "c2": "#2a1e24",
+   "desc": "Late colgado de cadenas. Rompe sus anclas y golpéalo.",
+   "scene": "nether",
+   "art": "arte/corazon_magma.png"
+  },
+  {
+   "id": "archimago",
+   "name": "Archimago",
+   "cat": "jefes",
+   "rar": "LEGENDARIA",
+   "glyph": "witchhat",
+   "c1": "#4a3590",
+   "c2": "#7ae8ff",
+   "desc": "Señor de la Torre. Cada hechizo avisa antes de caer.",
+   "scene": "end",
+   "art": "arte/archimago.png"
+  },
+  {
    "id": "guardian_musgo",
    "name": "Guardián de Musgo",
    "cat": "criaturas",
@@ -235,7 +259,8 @@
    "c1": "#ff7a1a",
    "c2": "#ffe27a",
    "desc": "Brasa viva que vuela y te deja débil.",
-   "scene": "forge"
+   "scene": "forge",
+   "art": "arte/ascua.png"
   },
   {
    "id": "fundidor",
@@ -246,7 +271,8 @@
    "c1": "#9a9a9a",
    "c2": "#ff5a1a",
    "desc": "Gólem de metal fundido. Hace erupción bajo tus pies.",
-   "scene": "forge"
+   "scene": "forge",
+   "art": "arte/fundidor.png"
   },
   {
    "id": "lobo_escarcha",
@@ -265,6 +291,90 @@
     1,
     0.9
    ]
+  },
+  {
+   "id": "salamandra_lava",
+   "name": "Salamandra de Lava",
+   "cat": "criaturas",
+   "rar": "COMUN",
+   "glyph": "lizard",
+   "c1": "#3a3438",
+   "c2": "#ff7a1a",
+   "desc": "Anda sobre la lava y se cura en ella. Sácala a tierra.",
+   "scene": "nether",
+   "art": "arte/salamandra_lava.png"
+  },
+  {
+   "id": "diablillo",
+   "name": "Diablillo",
+   "cat": "criaturas",
+   "rar": "COMUN",
+   "glyph": "imp",
+   "c1": "#c8322a",
+   "c2": "#ffcc40",
+   "desc": "Vuela en círculos riéndose y lanza bolas de fuego.",
+   "scene": "nether",
+   "art": "arte/diablillo.png"
+  },
+  {
+   "id": "larva_magma",
+   "name": "Larva de Magma",
+   "cat": "criaturas",
+   "rar": "COMUN",
+   "glyph": "bug",
+   "c1": "#ff8a2a",
+   "c2": "#3a2a2a",
+   "desc": "Gusanito de lava: rápido, frágil y muerde con fuego.",
+   "scene": "nether",
+   "art": "arte/larva_magma.png"
+  },
+  {
+   "id": "cultista_volcan",
+   "name": "Cultista del Volcán",
+   "cat": "criaturas",
+   "rar": "RARA",
+   "glyph": "flame",
+   "c1": "#4a1e18",
+   "c2": "#ff8a2a",
+   "desc": "Columnas de fuego y escudos de lava para los suyos.",
+   "scene": "nether",
+   "art": "arte/cultista_volcan.png"
+  },
+  {
+   "id": "esbirro",
+   "name": "Esbirro",
+   "cat": "criaturas",
+   "rar": "COMUN",
+   "glyph": "enderman",
+   "c1": "#2c2550",
+   "c2": "#e0b84a",
+   "desc": "Guardián encapuchado. Si te alejas, aparece a tu lado.",
+   "scene": "end",
+   "art": "arte/esbirro.png"
+  },
+  {
+   "id": "libro_embrujado",
+   "name": "Libro Embrujado",
+   "cat": "criaturas",
+   "rar": "COMUN",
+   "glyph": "book",
+   "c1": "#6a2a8a",
+   "c2": "#e8d8b0",
+   "desc": "Vuela pasando hojas y dispara páginas mágicas.",
+   "scene": "end",
+   "art": "arte/libro_embrujado.png"
+  },
+  {
+   "id": "armadura_encantada",
+   "name": "Armadura Encantada",
+   "cat": "criaturas",
+   "rar": "RARA",
+   "glyph": "helmet",
+   "c1": "#b8bcc4",
+   "c2": "#7a4cff",
+   "desc": "Parece de adorno, hasta que te acercas demasiado.",
+   "scene": "end",
+   "art": "arte/armadura_encantada.png"
   },
   {
    "id": "fosu",
