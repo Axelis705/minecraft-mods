@@ -2466,5 +2466,21 @@
       "mundos_de_axelis:archimago_burst"
     ],
     "subtitle": "subtitles.mundos_de_axelis.archimago_burst"
+  },
+  "music_volcano_dungeon": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_volcano_dungeon",
+        "stream": true
+      }
+    ]
+  },
+  "music_volcano_boss": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_volcano_boss",
+        "stream": true
+      }
+    ]
   }
 }
