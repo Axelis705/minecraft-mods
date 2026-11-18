@@ -37,10 +37,9 @@ public class MundosDeAxelis {
         com.mundosdeaxelis.cartas.Cartas.init(modBus);
 
         context.registerConfig(net.minecraftforge.fml.config.ModConfig.Type.CLIENT, ClientConfig.SPEC);
+        // botón "Configurar" en la lista de mods (solo cliente: la clase de la pantalla no existe en el servidor)
         net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,
-                () -> () -> context.registerExtensionPoint(net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory.class,
-                        () -> new net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory(
-                                (mc, parent) -> new com.mundosdeaxelis.client.MundosOptionsScreen(parent))));
+                () -> () -> com.mundosdeaxelis.client.MundosOptionsScreen.registerConfigButton(context));
 
         modBus.addListener(this::commonSetup);
     }

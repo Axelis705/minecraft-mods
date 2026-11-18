@@ -17,6 +17,12 @@ public class MundosOptionsScreen extends Screen {
         this.parent = parent;
     }
 
+    /** Botón "Configurar" de la lista de mods: abre esta misma pantalla. Solo se llama en el cliente. */
+    public static void registerConfigButton(net.minecraftforge.fml.ModLoadingContext context) {
+        context.registerExtensionPoint(net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory((mc, parent) -> new MundosOptionsScreen(parent)));
+    }
+
     @Override
     protected void init() {
         int w = 220;
