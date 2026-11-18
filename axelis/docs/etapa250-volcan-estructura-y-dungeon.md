@@ -48,7 +48,16 @@ Iluminado con hongos de luz, faroles y magma (no deberían aparecer monstruos de
 ## Comprobado
 - Plano revisado fuera del juego: 0 trampas, entrada transitable, 1 «sala» sin acceso tolerada (lo alto del corazón de piedra colgado, adorno), 11 enemigos con sitio válido, nada sin apoyo. Fotos con el visor de estructuras.
 - CI de servidor: se construye, están la piedra, el núcleo, el lago, el puente, los respiraderos y los tres tipos de enemigo; el basalto se derrumba; deshacer lo quita todo (enemigos incluidos). Conectividad de las 5 estructuras en verde.
-- Prueba con el cliente real: ver el resultado en la sección de pruebas al final.
+- Prueba con el cliente real (juego de verdad):
+  - se construye el volcán y se fotografía por fuera (humo, ríos, cráter con lago);
+  - tirarse al lago lleva a la cámara del cráter, a 32 bloques, **sin daño** (prueba sin resistencia);
+  - el puente se derrumba al pisarlo y se cae al foso;
+  - las erupciones de los respiraderos salen en la foto;
+  - diablillos, salamandras y cultistas atacan;
+  - la Piedra de Portal: Volcán está en el santuario.
+  
+  28 comprobaciones, 0 fallos, sin errores de modelos ni texturas.
+- Las erupciones de adorno no se veían de lejos (las partículas normales llegan solo a 32 bloques y los efectos a 96): ahora se mandan forzadas hasta 180 bloques.
 
 ## Pendiente
 - Generación natural de las estructuras (para todas): sigue siendo con comando.
