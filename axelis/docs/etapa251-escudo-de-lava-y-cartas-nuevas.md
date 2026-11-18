@@ -27,4 +27,16 @@ Estaba en el diseño del volcán («escudos de lava a los demás») y faltaba.
 - CI de estructuras: fallaba a veces «sin objetos» porque el mundo de prueba generaba aldeas y la estructura pisaba un cofre (pan, papas y manzanas por el suelo). Ahora el mundo de prueba no tiene aldeas.
 
 ## Comprobado
-(se completa al terminar)
+- Prueba del servidor (`/mundos prueba escudo`): el escudo se pone a una salamandra. Primer golpe de 5: vida 24 → 24 y al escudo le quedan 3. Segundo golpe de 5: el escudo se rompe y pasan 2 (vida 22). CI verde en todos los módulos.
+- Prueba con el cliente real:
+  - un cultista de verdad pone el escudo a un aliado durante la pelea (foto: el diablillo dentro de la burbuja);
+  - 11 retratos sin interfaz, uno por carta;
+  - el juego carga las 41 cartas;
+  - fotos del álbum con las páginas de jefes y criaturas.
+
+  40 comprobaciones, 0 fallos, sin errores de texturas ni modelos.
+- Hizo falta un arreglo: al principio el escudo esperaba a que terminara la espera de la columna de fuego y tardaba 8–10 s. Ahora tiene su propia espera: el primero llega a los 3–4 s de empezar la pelea.
+
+## Pendiente
+- Arte final de Flow para las 9 cartas nuevas, y Ascua y Fundidor (opcional: los retratos ya sirven).
+- Generación natural de las estructuras (sigue con comando).
