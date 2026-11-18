@@ -1772,7 +1772,15 @@
   "item.mundos_de_axelis.armadura_encantada_spawn_egg": "Huevo de Armadura Encantada",
   "gui.mundos_de_axelis.options": "Opciones de Mundos de Axelis",
   "gui.mundos_de_axelis.options.souls": "Barra de almas",
-  "gui.mundos_de_axelis.options.map": "Mapa de la dungeon",
-  "gui.mundos_de_axelis.options.few_notices": "Pocos avisos en pantalla",
-  "gui.mundos_de_axelis.options.music": "Música de dungeons y jefes"
+  "gui.mundos_de_axelis.options.map": "Mapa de dungeon",
+  "gui.mundos_de_axelis.options.few_notices": "Pocos avisos",
+  "gui.mundos_de_axelis.options.music": "Música de jefes",
+  "gui.mundos_de_axelis.options.shake": "Sacudidas de cámara",
+  "gui.mundos_de_axelis.options.flashes": "Destellos",
+  "gui.mundos_de_axelis.options.souls.tip": "La barra de almas a la derecha de la pantalla. Las almas se siguen juntando aunque esté oculta.",
+  "gui.mundos_de_axelis.options.map.tip": "El mapa de salas arriba a la izquierda dentro de las dungeons.",
+  "gui.mundos_de_axelis.options.few_notices.tip": "SÍ: solo un aviso a la vez y más corto. NO: todos los avisos y consejos.",
+  "gui.mundos_de_axelis.options.music.tip": "La música propia de las dungeons y de las peleas contra jefes.",
+  "gui.mundos_de_axelis.options.shake.tip": "La cámara tiembla con los golpes fuertes de los jefes. Apágalo si te marea.",
+  "gui.mundos_de_axelis.options.flashes.tip": "Destellos de color que cubren la pantalla en algunos ataques. Apágalo si te molestan las luces."
 }

@@ -1773,6 +1773,14 @@
   "gui.mundos_de_axelis.options": "Mundos de Axelis Options",
   "gui.mundos_de_axelis.options.souls": "Souls bar",
   "gui.mundos_de_axelis.options.map": "Dungeon map",
-  "gui.mundos_de_axelis.options.few_notices": "Fewer on-screen notices",
-  "gui.mundos_de_axelis.options.music": "Dungeon and boss music"
+  "gui.mundos_de_axelis.options.few_notices": "Fewer notices",
+  "gui.mundos_de_axelis.options.music": "Boss music",
+  "gui.mundos_de_axelis.options.shake": "Camera shake",
+  "gui.mundos_de_axelis.options.flashes": "Screen flashes",
+  "gui.mundos_de_axelis.options.souls.tip": "The souls bar on the right of the screen. Souls are still collected while it is hidden.",
+  "gui.mundos_de_axelis.options.map.tip": "The room map at the top left inside dungeons.",
+  "gui.mundos_de_axelis.options.few_notices.tip": "ON: only one shorter notice at a time. OFF: every notice and tip.",
+  "gui.mundos_de_axelis.options.music.tip": "The mod's own dungeon and boss fight music.",
+  "gui.mundos_de_axelis.options.shake.tip": "The camera shakes with heavy boss hits. Turn it off if it makes you dizzy.",
+  "gui.mundos_de_axelis.options.flashes.tip": "Color flashes that cover the screen during some attacks. Turn it off if bright lights bother you."
 }
