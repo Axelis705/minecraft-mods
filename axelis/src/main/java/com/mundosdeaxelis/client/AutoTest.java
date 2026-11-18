@@ -882,7 +882,8 @@ public final class AutoTest {
             cmd("cartas llenar @p");
             cmd("execute in minecraft:overworld run tp @a 0.5 -60 0.5 0 0");
         });
-        add("álbum: jefes", 2500, () -> open(new com.mundosdeaxelis.cartas.client.AlbumScreen()));
+        // como lo abre el jugador: el servidor manda su álbum (si no, el cliente no sabe qué cartas tiene)
+        add("álbum: jefes", 2500, () -> onServer(com.mundosdeaxelis.cartas.CartasNet::openAlbum));
         add("álbum: jefes (foto)", 300, () -> {
             check("el álbum tiene " + com.mundosdeaxelis.cartas.Cards.ALL.size() + " cartas (41 esperadas)", com.mundosdeaxelis.cartas.Cards.ALL.size() == 41);
             shot("46_album_jefes");
