@@ -64,6 +64,9 @@ public final class Tiers {
         // mascotas exclusivas de los jefes (Rey Brote y Gran Herrero): solo caen de ellos, no salen en cajas
         put(Tier.EPIC, "comp_sprout_king");
         put(Tier.LEGENDARY, "comp_ember_anvil");
+        // y las del Lobo Ártico y el Archimago
+        put(Tier.LEGENDARY, "comp_frost_pup");
+        put(Tier.MYTHIC, "comp_little_archmage");
         // ---------------- equipo (12)
         put(Tier.COMMON, "gear_dawn_blade", "gear_cheer_pick", "gear_lumber_axe");
         put(Tier.UNCOMMON, "gear_frost_blade", "gear_prospector_pick");
@@ -77,7 +80,8 @@ public final class Tiers {
     }
 
     /** Objetos que NO salen en cajas ni cofres: solo se consiguen creándolos en la Mesa del Artífice. */
-    private static final java.util.Set<String> CRAFT_ONLY = java.util.Set.of("smith_ring", "comp_sprout_king", "comp_ember_anvil");
+    private static final java.util.Set<String> CRAFT_ONLY = java.util.Set.of("smith_ring", "comp_sprout_king", "comp_ember_anvil",
+            "comp_frost_pup", "comp_little_archmage");
 
     public static boolean craftOnly(String id) {
         return CRAFT_ONLY.contains(id);

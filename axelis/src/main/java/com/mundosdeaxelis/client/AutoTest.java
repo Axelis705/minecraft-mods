@@ -208,6 +208,8 @@ public final class AutoTest {
             cmd("item replace entity @a hotbar.4 with mundos_de_axelis:esbirro_spawn_egg");
             cmd("item replace entity @a hotbar.5 with mundos_de_axelis:libro_embrujado_spawn_egg");
             cmd("item replace entity @a hotbar.6 with mundos_de_axelis:armadura_encantada_spawn_egg");
+            cmd("item replace entity @a hotbar.7 with mundos_de_axelis:comp_frost_pup");
+            cmd("item replace entity @a hotbar.8 with mundos_de_axelis:comp_little_archmage");
             cmd("item replace entity @a armor.feet with mundos_de_axelis:magma_boots");
             cmd("mundos desbloquear 5");
             cmd("tp @a 0.5 -60 0.5 0 0");
@@ -314,11 +316,29 @@ public final class AutoTest {
             }
             check("enemigos a la vista en el cliente: " + n + " de 4", n == 4);
         });
+        // 5b. mascotas de los jefes (Lobito Ártico y Archimaguito) invocadas a tu lado
+        add("mascotas", 3000, () -> {
+            cmd("kill @e[type=!player]");
+            cmd("tp @a 0.5 -60 0.5 0 18");
+            Minecraft mc = Minecraft.getInstance();
+            IntegratedServer srv = mc.getSingleplayerServer();
+            java.util.UUID u = mc.player.getUUID();
+            srv.execute(() -> {
+                net.minecraft.server.level.ServerPlayer sp = srv.getPlayerList().getPlayer(u);
+                if (sp != null) {
+                    com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.FROST_PUP, 1.0F);
+                    com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.LITTLE_ARCHMAGE, 1.0F);
+                }
+            });
+        });
+        add("mascotas (foto)", 2500, () -> shot("8b_mascotas"));
+        add("mascotas de cerca (foto)", 300, () -> shot("8c_mascotas"));
         // 6. la Piedra de Portal de la Torre, como un jugador: clic derecho, ficha, «Comenzar» y entrar (etapa 5)
         add("piedra de la torre", 1500, () -> {
             cmd("kill @e[type=!player]");
             cmd("setblock 0 -60 -3 mundos_de_axelis:portal_stone_tower");
             cmd("tp @a 0.5 -60 -0.5 180 35");
+            cmd("item replace entity @a hotbar.8 with air");
             Minecraft.getInstance().player.getInventory().selected = 8; // mano vacía
         });
         add("clic derecho", 1500, () -> {

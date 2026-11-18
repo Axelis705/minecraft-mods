@@ -663,12 +663,18 @@ public final class CratePools {
      * Celestiales del Abismo (puesto 8) dan lo mismo, 16.
      */
     public static synchronized int petArmor(String id) {
-        // mascotas exclusivas de los jefes: dan lo mismo que la estrella de la caja de su mazmorra (Naturaleza 2, Forja 4)
+        // mascotas exclusivas de los jefes: dan lo mismo que la estrella de la caja de su mazmorra (Naturaleza 2, Forja 4, Hielo 6, Magia 10)
         if (id.equals("comp_sprout_king")) {
             return 2;
         }
         if (id.equals("comp_ember_anvil")) {
             return 4;
+        }
+        if (id.equals("comp_frost_pup")) {
+            return 6; // la estrella de la caja de Hielo
+        }
+        if (id.equals("comp_little_archmage")) {
+            return 10; // la estrella de la caja de Magia (etapa 5)
         }
         int r = petRank(id);
         if (r <= 0) {

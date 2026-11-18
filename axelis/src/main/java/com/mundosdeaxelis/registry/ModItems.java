@@ -321,6 +321,8 @@ public final class ModItems {
     public static final RegistryObject<Item> COMP_YETI = ITEMS.register("comp_yeti", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.YETI));
     public static final RegistryObject<Item> COMP_SPROUT_KING = ITEMS.register("comp_sprout_king", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.SPROUT_KING));
     public static final RegistryObject<Item> COMP_EMBER_ANVIL = ITEMS.register("comp_ember_anvil", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.EMBER_ANVIL));
+    public static final RegistryObject<Item> COMP_FROST_PUP = ITEMS.register("comp_frost_pup", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.FROST_PUP));
+    public static final RegistryObject<Item> COMP_LITTLE_ARCHMAGE = ITEMS.register("comp_little_archmage", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.LITTLE_ARCHMAGE));
     public static final RegistryObject<Item> COMP_FERRET = ITEMS.register("comp_ferret", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.FERRET));
 
     // ---------------------------------------------------------------- Equipo especial (armas y herramientas)

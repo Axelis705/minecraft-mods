@@ -203,6 +203,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.COMP_YETI.get());
                         output.accept(ModItems.COMP_SPROUT_KING.get());
                         output.accept(ModItems.COMP_EMBER_ANVIL.get());
+                        output.accept(ModItems.COMP_FROST_PUP.get());
+                        output.accept(ModItems.COMP_LITTLE_ARCHMAGE.get());
                         output.accept(ModItems.GEAR_DAWN_BLADE.get());
                         output.accept(ModItems.GEAR_FROST_BLADE.get());
                         output.accept(ModItems.GEAR_STORM_BLADE.get());

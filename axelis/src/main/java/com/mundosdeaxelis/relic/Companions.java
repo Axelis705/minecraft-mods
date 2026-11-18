@@ -105,10 +105,12 @@ public final class Companions {
     // mascotas exclusivas de los jefes de las mazmorras (solo caen de ellos)
     public static final Spec SPROUT_KING = new Spec("comp_sprout_king", 63, 1.0, false, 0x5CD66C, 50, 60, Rarity.EPIC, 63);
     public static final Spec EMBER_ANVIL = new Spec("comp_ember_anvil", 64, 1.05, false, 0xFF7A2A, 55, 70, Rarity.EPIC, 64);
+    public static final Spec FROST_PUP = new Spec("comp_frost_pup", 65, 1.05, false, 0x9AEAFF, 55, 75, Rarity.EPIC, 65);
+    public static final Spec LITTLE_ARCHMAGE = new Spec("comp_little_archmage", 66, 1.1, false, 0x8A7AFF, 55, 80, Rarity.EPIC, 66);
     public static final Spec[] ALL = {FOX, CAT, BUNNY, JELLY, PHOENIX, TURTLE, PENGUIN, PANDA,
             CHICK, FROG, HAMSTER, SNAIL, BEE, SHEEP, HEDGEHOG, AXOLOTL, RACCOON, WHALE, KITSUNE,
             CAPYBARA, DUCK, SLIME, CORGI, CREEPER, SNOWMAN, GHOST, GOLEM, SPARKMOUSE, DROID, FOREST_SPIRIT, MOON_WOLF, NIGHT_DRAGON,
-            OCTOPUS, BUTTERFLY, CRAB, FIREFLY, ELEPHANT, LION, PEACOCK, DOLPHIN, PEGASUS, CELESTIAL_DRAGON, FERRET, MIMIC, GRIFFON, PIGGY, SKUNK, PATCH, SEAL, MOONIMP, TRIKE, YETI, SPROUT_KING, EMBER_ANVIL};
+            OCTOPUS, BUTTERFLY, CRAB, FIREFLY, ELEPHANT, LION, PEACOCK, DOLPHIN, PEGASUS, CELESTIAL_DRAGON, FERRET, MIMIC, GRIFFON, PIGGY, SKUNK, PATCH, SEAL, MOONIMP, TRIKE, YETI, SPROUT_KING, EMBER_ANVIL, FROST_PUP, LITTLE_ARCHMAGE};
 
     private static final class C {
         Spec s;
