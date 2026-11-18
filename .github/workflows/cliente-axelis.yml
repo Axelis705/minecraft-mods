@@ -1,0 +1,106 @@
+name: Prueba con el cliente (Mundos de Axelis)
+
+# Abre el juego de verdad (sin pantalla: Xvfb y dibujo por software) con Mundos de Axelis en un mundo plano. El mod, con
+# -Dmundos.autotest=true, toma capturas (HUD, menú de pausa con el cuadrito, opciones, inventario, bloques, enemigos de la Torre),
+# comprueba cosas y cierra el juego. Las texturas, modelos y sonidos vienen de la rama recursos-axelis (el módulo axelis/ solo
+# tiene código y datos). Fotos y registro van a la rama fotos-axelis.
+on:
+  workflow_dispatch:
+
+jobs:
+  cliente:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    permissions:
+      contents: write
+    env:
+      P: axelis
+    steps:
+      - uses: actions/checkout@v4
+      - name: Recursos del mod (rama recursos-axelis)
+        run: |
+          git fetch -q --depth 1 origin recursos-axelis
+          git --work-tree="$P/src/main/resources" checkout FETCH_HEAD -- assets
+          git reset -q
+          ls "$P/src/main/resources/assets"
+          find "$P/src/main/resources/assets" -type f | wc -l
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Paquetes para dibujar sin pantalla
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils
+      - name: Mundo plano (lo crea el servidor de prueba)
+        run: |
+          rm -f $P/ci_commands.txt
+          bash tools/boot_server.sh $P | tail -20
+          mkdir -p $P/run/saves
+          rm -rf $P/run/saves/prueba
+          cp -r $P/run/world $P/run/saves/prueba
+          rm -f $P/run/saves/prueba/session.lock
+      - name: Opciones del juego y de la prueba
+        run: |
+          mkdir -p $P/run/config
+          cat > $P/run/options.txt <<'EOF'
+          onboardAccessibility:false
+          tutorialStep:none
+          pauseOnLostFocus:false
+          renderDistance:6
+          simulationDistance:5
+          guiScale:3
+          renderClouds:"false"
+          soundCategory_master:0.0
+          skipMultiplayerWarning:true
+          joinedFirstServer:true
+          narrator:0
+          maxFps:60
+          lang:es_mx
+          EOF
+          printf 'earlyWindowControl = false\n' > $P/run/config/fml.toml
+          cat >> $P/build.gradle <<'EOF'
+
+          minecraft {
+              runs {
+                  client {
+                      property 'mundos.autotest', 'true'
+                      args '--quickPlaySingleplayer', 'prueba', '--width', '1280', '--height', '720'
+                  }
+              }
+          }
+          EOF
+      - name: Abrir el juego y tomar las fotos
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set +e
+          cd $P
+          timeout 1800 xvfb-run -a -s "-screen 0 1920x1080x24" ./gradlew runClient --no-daemon > cliente.log 2>&1
+          echo "salida del juego: $?"
+          echo "----- AUTOTEST -----"
+          grep -E "AUTOTEST" run/logs/latest.log | sed 's/^.*AUTOTEST/AUTOTEST/' | head -150
+          echo "----- modelos y texturas -----"
+          grep -nE "Unable to load model|Failed to load model|Missing texture|missing textures|Unable to resolve texture|Couldn't load|Exception loading blockstate" run/logs/latest.log | grep -i "mundos" | cut -c1-300 | head -60
+          echo "----- errores -----"
+          grep -nE "Exception|/ERROR\]|/FATAL\]" run/logs/latest.log | grep -viE "realms|telemetry|OpenAL|sound|narrator|authlib|Failed to fetch|profile" | cut -c1-300 | head -40
+          ls -la run/screenshots
+          grep -q "AUTOTEST_FIN" run/logs/latest.log || { echo "::error title=Prueba con el cliente::no llegó al final (ver cliente_tail.log en la rama fotos-axelis)"; tail -80 cliente.log; exit 1; }
+          grep -q "AUTOTEST FALLO\|fallos=[1-9]" run/logs/latest.log && { echo "::error title=Prueba con el cliente::hay comprobaciones que fallaron"; exit 1; }
+          exit 0
+      - name: Subir fotos a la rama fotos-axelis
+        if: always()
+        run: |
+          d=$(mktemp -d)
+          cp $P/run/screenshots/*.png "$d"/ 2>/dev/null || true
+          cp $P/run/logs/latest.log "$d"/ 2>/dev/null || true
+          ls $P/run/crash-reports/*.txt >/dev/null 2>&1 && cp $P/run/crash-reports/*.txt "$d"/ || true
+          tail -400 $P/cliente.log > "$d/cliente_tail.log" 2>/dev/null || true
+          cd "$d"
+          echo "${{ github.sha }}" > LEEME.txt
+          git init -q -b fotos-axelis
+          git config user.name ci; git config user.email ci@example.com
+          git add -A; git commit -qm "fotos ${{ github.sha }}"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" fotos-axelis
+          ls -la
