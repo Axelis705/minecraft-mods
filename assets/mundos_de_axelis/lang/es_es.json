@@ -1782,5 +1782,13 @@
   "gui.mundos_de_axelis.options.few_notices.tip": "SÍ: solo un aviso a la vez y más corto. NO: todos los avisos y consejos.",
   "gui.mundos_de_axelis.options.music.tip": "La música propia de las dungeons y de las peleas contra jefes.",
   "gui.mundos_de_axelis.options.shake.tip": "La cámara tiembla con los golpes fuertes de los jefes. Apágalo si te marea.",
-  "gui.mundos_de_axelis.options.flashes.tip": "Destellos de color que cubren la pantalla en algunos ataques. Apágalo si te molestan las luces."
+  "gui.mundos_de_axelis.options.flashes.tip": "Destellos de color que cubren la pantalla en algunos ataques. Apágalo si te molestan las luces.",
+  "item.mundos_de_axelis.comp_frost_pup": "Figurita: Lobito Ártico",
+  "tooltip.mundos_de_axelis.comp_frost_pup.1": "Solo la suelta el Lobo Ártico del Palacio de hielo. Da armadura.",
+  "tooltip.mundos_de_axelis.comp_frost_pup.2": "Solo la suelta el Lobo Ártico del Palacio de hielo. Da armadura.",
+  "tooltip.mundos_de_axelis.comp_frost_pup.lore": "El Lobo Ártico en chiquito: ya tiene su capucha y su guadaña, pero todavía le da miedo la oscuridad.",
+  "item.mundos_de_axelis.comp_little_archmage": "Figurita: Archimaguito",
+  "tooltip.mundos_de_axelis.comp_little_archmage.1": "Solo la suelta el Archimago de la Torre. Da armadura.",
+  "tooltip.mundos_de_axelis.comp_little_archmage.2": "Solo la suelta el Archimago de la Torre. Da armadura.",
+  "tooltip.mundos_de_axelis.comp_little_archmage.lore": "El Archimago en chiquito: se sabe todos los hechizos, pero su barba todavía no le llega a los pies."
 }

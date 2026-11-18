@@ -1782,5 +1782,13 @@
   "gui.mundos_de_axelis.options.few_notices.tip": "ON: only one shorter notice at a time. OFF: every notice and tip.",
   "gui.mundos_de_axelis.options.music.tip": "The mod's own dungeon and boss fight music.",
   "gui.mundos_de_axelis.options.shake.tip": "The camera shakes with heavy boss hits. Turn it off if it makes you dizzy.",
-  "gui.mundos_de_axelis.options.flashes.tip": "Color flashes that cover the screen during some attacks. Turn it off if bright lights bother you."
+  "gui.mundos_de_axelis.options.flashes.tip": "Color flashes that cover the screen during some attacks. Turn it off if bright lights bother you.",
+  "item.mundos_de_axelis.comp_frost_pup": "Figurine: Little Arctic Wolf",
+  "tooltip.mundos_de_axelis.comp_frost_pup.1": "Only dropped by the Arctic Wolf of the Ice Palace. Gives armor.",
+  "tooltip.mundos_de_axelis.comp_frost_pup.2": "Only dropped by the Arctic Wolf of the Ice Palace. Gives armor.",
+  "tooltip.mundos_de_axelis.comp_frost_pup.lore": "The Arctic Wolf in miniature: it already has its hood and scythe, but it is still a little scared of the dark.",
+  "item.mundos_de_axelis.comp_little_archmage": "Figurine: Little Archmage",
+  "tooltip.mundos_de_axelis.comp_little_archmage.1": "Only dropped by the Archmage of the Tower. Gives armor.",
+  "tooltip.mundos_de_axelis.comp_little_archmage.2": "Only dropped by the Archmage of the Tower. Gives armor.",
+  "tooltip.mundos_de_axelis.comp_little_archmage.lore": "The Archmage in miniature: it knows every spell by heart, but its beard doesn't reach its feet yet."
 }
