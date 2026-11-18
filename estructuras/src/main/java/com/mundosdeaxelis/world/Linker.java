@@ -204,6 +204,9 @@ final class Linker {
                 t = 3;
             } else if (s.startsWith("iron_door") && s.contains("open=true")) {
                 t = 0;
+            } else if (s.startsWith("mundos_de_axelis:lava_falsa")) {
+                // lava falsa: se atraviesa y se cae despacio (caída lenta), desde cualquier altura
+                t = 4;
             } else {
                 t = (byte) (passName(s) ? 0 : 1);
             }
@@ -226,7 +229,7 @@ final class Linker {
                         continue;
                     }
                     int below = kind[idx(x, y - 1, z)];
-                    if (below == 1 || below == 3 || kind[i] == 2 || kind[i] == 3) {
+                    if (below == 1 || below == 3 || kind[i] == 2 || kind[i] == 3 || kind[i] == 4) {
                         stand[i] = true;
                     }
                 }
@@ -326,6 +329,19 @@ final class Linker {
                     continue;
                 }
                 out[m++] = ni;
+            }
+        }
+        if (kind[c] == 4) {
+            // dentro de la lava falsa: se cae recto hasta el primer suelo, sin importar la altura
+            for (int ny = y - 1; ny >= y0 + 1; ny--) {
+                int ni = idx(x, ny, z);
+                if (kind[ni] == 1) {
+                    break;
+                }
+                if (stand[ni] && kind[ni] != 4) {
+                    out[m++] = ni;
+                    break;
+                }
             }
         }
         if (kind[c] == 2 || kind[c] == 3) {

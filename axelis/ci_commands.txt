@@ -47,5 +47,32 @@ execute unless entity @e[type=mundos_de_axelis:esbirro] run say PRUEBA_DESHACER_
 #expect PRUEBA_TORRE_LIBROS_OK
 #expect PRUEBA_TORRE_ARMADURA_OK
 #expect PRUEBA_DESHACER_ENEMIGOS_OK
+execute positioned 0 -48 0 rotated 0 0 run mundos estructura volcan
+#wait El Volcán construida 150
+execute if block 0 -54 106 mundos_de_axelis:portal_stone_volcano run say PRUEBA_VOLCAN_PIEDRA_OK
+execute if block 0 13 76 mundos_de_axelis:nucleo_volcan run say PRUEBA_VOLCAN_NUCLEO_OK
+execute if block 3 13 76 mundos_de_axelis:lava_falsa run say PRUEBA_VOLCAN_LAGO_OK
+execute if block 0 -25 94 mundos_de_axelis:basalto_agrietado run say PRUEBA_VOLCAN_PUENTE_OK
+execute if block -15 -41 86 mundos_de_axelis:respiradero_volcan run say PRUEBA_VOLCAN_RESPIRADERO_OK
+execute if entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_VOLCAN_CULTISTAS_OK
+execute if entity @e[type=mundos_de_axelis:salamandra_lava] run say PRUEBA_VOLCAN_SALAMANDRAS_OK
+execute if entity @e[type=mundos_de_axelis:diablillo] run say PRUEBA_VOLCAN_DIABLILLOS_OK
+setblock 1 -25 94 mundos_de_axelis:basalto_agrietado[stage=1]
+#wait NUNCA_SALE_ESTE_TEXTO 3
+execute if block 1 -25 94 mundos_de_axelis:basalto_agrietado[stage=3] run say PRUEBA_VOLCAN_SE_DERRUMBA_OK
+mundos estructura deshacer
+execute unless block 0 -54 106 mundos_de_axelis:portal_stone_volcano run say PRUEBA_VOLCAN_DESHECHO_OK
+execute unless entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_VOLCAN_SIN_ENEMIGOS_OK
+#expect PRUEBA_VOLCAN_PIEDRA_OK
+#expect PRUEBA_VOLCAN_NUCLEO_OK
+#expect PRUEBA_VOLCAN_LAGO_OK
+#expect PRUEBA_VOLCAN_PUENTE_OK
+#expect PRUEBA_VOLCAN_RESPIRADERO_OK
+#expect PRUEBA_VOLCAN_CULTISTAS_OK
+#expect PRUEBA_VOLCAN_SALAMANDRAS_OK
+#expect PRUEBA_VOLCAN_DIABLILLOS_OK
+#expect PRUEBA_VOLCAN_SE_DERRUMBA_OK
+#expect PRUEBA_VOLCAN_DESHECHO_OK
+#expect PRUEBA_VOLCAN_SIN_ENEMIGOS_OK
 say PRUEBA_SE_APAGA_A_MEDIA_OBRA
 mundos prueba construir 2

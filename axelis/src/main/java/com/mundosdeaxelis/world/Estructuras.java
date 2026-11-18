@@ -37,7 +37,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Estructuras de fondo para grabar videos, hechas solo con comandos (como WorldEdit):
- * {@code /mundos estructura <bosque|forja|hielo|torre>} la construye delante de quien escribe, mirando hacia él;
+ * {@code /mundos estructura <bosque|forja|hielo|torre|volcan>} la construye delante de quien escribe, mirando hacia él;
  * {@code /mundos estructura deshacer [veces]} la quita y deja el terreno como estaba (bloques, entidades de bloque y todo).
  * Los bloques propios del mod (decoraciones) se usan si existen; si no, simplemente se omiten.
  */
@@ -64,7 +64,8 @@ public final class Estructuras {
         BOSQUE("bosque", "Gran templo del bosque"),
         FORJA("forja", "Gran fundición de la forja"),
         HIELO("hielo", "Ciudadela de cristal"),
-        TORRE("torre", "Fortaleza en ruinas");
+        TORRE("torre", "Fortaleza en ruinas"),
+        VOLCAN("volcan", "El Volcán");
 
         final String id;
         final String title;

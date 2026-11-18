@@ -24,6 +24,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.PORTAL_STONE_VOLCANO.get());
                         output.accept(ModItems.PORTAL_STONE_TOWER.get());
                         output.accept(ModItems.ETERNAL_BRAZIER.get());
+                        output.accept(ModItems.LAVA_FALSA.get());
+                        output.accept(ModItems.NUCLEO_VOLCAN.get());
+                        output.accept(ModItems.BASALTO_AGRIETADO.get());
+                        output.accept(ModItems.RESPIRADERO_VOLCAN.get());
                         output.accept(ModItems.REY_BROTE_SPAWN_EGG.get());
                         output.accept(ModItems.LOBO_ARTICO_SPAWN_EGG.get());
                         output.accept(ModItems.ARCHIMAGO_SPAWN_EGG.get());

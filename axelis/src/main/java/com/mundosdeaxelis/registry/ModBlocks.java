@@ -54,6 +54,65 @@ public final class ModBlocks {
                     .sound(SoundType.AMETHYST)
                     .lightLevel(state -> 11), 5));
 
+    /** Lava falsa del cráter del volcán: se ve como lava pero no quema ni tiene suelo (caes despacio a la dungeon). */
+    public static final RegistryObject<Block> LAVA_FALSA = BLOCKS.register("lava_falsa",
+            () -> new com.mundosdeaxelis.block.LavaFalsaBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.FIRE)
+                    .noCollission()
+                    .noOcclusion()
+                    .strength(-1.0F, 3600000.0F)
+                    .noLootTable()
+                    .lightLevel(state -> 15)
+                    .isSuffocating((st, l, p) -> false)
+                    .isViewBlocking((st, l, p) -> false)
+                    .isValidSpawn((st, l, p, t) -> false)
+                    .pushReaction(PushReaction.BLOCK)));
+
+    /** Corazón del volcán: parece lava falsa, pero de vez en cuando hace erupciones de adorno si hay alguien cerca. */
+    public static final RegistryObject<Block> NUCLEO_VOLCAN = BLOCKS.register("nucleo_volcan",
+            () -> new com.mundosdeaxelis.block.NucleoVolcanBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.FIRE)
+                    .noCollission()
+                    .noOcclusion()
+                    .strength(-1.0F, 3600000.0F)
+                    .noLootTable()
+                    .lightLevel(state -> 15)
+                    .randomTicks()
+                    .isSuffocating((st, l, p) -> false)
+                    .isViewBlocking((st, l, p) -> false)
+                    .isValidSpawn((st, l, p, t) -> false)
+                    .pushReaction(PushReaction.BLOCK)));
+
+    /** Basalto agrietado de la dungeon del volcán: al pisarlo cruje, cae y a los 10 s se vuelve a formar. */
+    public static final RegistryObject<Block> BASALTO_AGRIETADO = BLOCKS.register("basalto_agrietado",
+            () -> new com.mundosdeaxelis.block.BasaltoAgrietadoBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F)
+                    .noLootTable()
+                    .noOcclusion()
+                    .sound(SoundType.BASALT)
+                    .isValidSpawn((st, l, p, t) -> false)
+                    .pushReaction(PushReaction.BLOCK)
+                    .lightLevel(state -> switch (state.getValue(com.mundosdeaxelis.block.BasaltoAgrietadoBlock.STAGE)) {
+                        case 1 -> 5;
+                        case 2 -> 9;
+                        default -> 2;
+                    })));
+
+    /** Respiradero volcánico de la dungeon del volcán: erupciones de fuego con aviso. */
+    public static final RegistryObject<Block> RESPIRADERO_VOLCAN = BLOCKS.register("respiradero_volcan",
+            () -> new com.mundosdeaxelis.block.RespiraderoBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.NETHER)
+                    .strength(-1.0F, 3600000.0F)
+                    .noLootTable()
+                    .sound(SoundType.BASALT)
+                    .isValidSpawn((st, l, p, t) -> false)
+                    .pushReaction(PushReaction.BLOCK)
+                    .lightLevel(state -> {
+                        int ph = state.getValue(com.mundosdeaxelis.block.RespiraderoBlock.PHASE);
+                        return ph >= 2 ? 14 : ph == 1 ? 9 : 5;
+                    })));
+
     /** Brasero Eterno: fuente de calor de las dungeons de frío (luz 15 encendido). */
     public static final RegistryObject<Block> ETERNAL_BRAZIER = BLOCKS.register("eternal_brazier",
             () -> new com.mundosdeaxelis.block.EternalBrazierBlock(BlockBehaviour.Properties.of()

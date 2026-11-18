@@ -13,6 +13,7 @@ public final class StructDesigns {
             case "bosque" -> DesignBosque.make();
             case "forja" -> DesignForja.make();
             case "hielo" -> DesignHielo.make();
+            case "volcan" -> DesignVolcan.make();
             default -> DesignTorre.make();
         };
         // lo que el juego rompería solo (antorcha sin muro, farola en el aire...) se quita del plano: así lo revisado es lo construido

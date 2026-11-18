@@ -29,6 +29,18 @@ public final class ModItems {
             () -> new com.mundosdeaxelis.item.PortalStoneItem(ModBlocks.PORTAL_STONE_TOWER.get(), new Item.Properties().rarity(Rarity.RARE), "portal_stone_tower"));
 
     /** Brasero Eterno (bloque de calor para el frío). */
+    public static final RegistryObject<Item> LAVA_FALSA = ITEMS.register("lava_falsa",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.LAVA_FALSA.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> NUCLEO_VOLCAN = ITEMS.register("nucleo_volcan",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.NUCLEO_VOLCAN.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> BASALTO_AGRIETADO = ITEMS.register("basalto_agrietado",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.BASALTO_AGRIETADO.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> RESPIRADERO_VOLCAN = ITEMS.register("respiradero_volcan",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.RESPIRADERO_VOLCAN.get(), new Item.Properties()));
+
     public static final RegistryObject<Item> ETERNAL_BRAZIER = ITEMS.register("eternal_brazier",
             () -> new com.mundosdeaxelis.item.PortalStoneItem(ModBlocks.ETERNAL_BRAZIER.get(), new Item.Properties().rarity(Rarity.RARE), "eternal_brazier"));
 

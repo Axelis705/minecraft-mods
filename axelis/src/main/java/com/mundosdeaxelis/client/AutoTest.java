@@ -201,6 +201,14 @@ public final class AutoTest {
         });
     }
 
+    /** Dónde se construye el volcán en la prueba: el plano (x, y, z) queda en el mundo en (x, VY + y, VZ + z). */
+    private static final int VY = -52, VZ = 136;
+
+    /** Como {@link #standLooking}, pero en coordenadas del plano del volcán. */
+    private static void lookV(double x, double y, double z, double tx, double ty, double tz) {
+        standLooking(x, VY + y, VZ + z, tx, VY + ty, VZ + tz);
+    }
+
     /** Ejecuta algo en el servidor con mi jugador (en la dimensión donde esté). */
     private static void onServer(java.util.function.Consumer<net.minecraft.server.level.ServerPlayer> c) {
         Minecraft mc = Minecraft.getInstance();
@@ -612,6 +620,81 @@ public final class AutoTest {
             shot("28_victoria");
         });
         add("premios (foto)", 3000, () -> shot("29_premios"));
+        // 8. la estructura del volcán (/mundos estructura volcan): por fuera, el cráter, tirarse a la lava falsa, la dungeon y una erupción
+        add("volver al mundo", 4000, () -> {
+            open(null);
+            clearMobs();
+            cmd("execute in minecraft:overworld run tp @a 0.5 -60 60 180 0");
+        });
+        add("construir volcán", 30000, () -> {
+            open(null);
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld positioned 0 " + VY + " " + (VZ - 16) + " rotated 0 0 run mundos estructura volcan");
+        });
+        add("volcán de lejos", 4000, () -> lookV(0, 30, -75, 0, 32, 60));
+        add("volcán de lejos (foto)", 300, () -> shot("30_volcan_lejos"));
+        add("volcán de lado", 4000, () -> lookV(100, 55, 25, 0, 30, 60));
+        add("volcán de lado (foto)", 300, () -> shot("31_volcan_lado"));
+        add("camino", 3000, () -> lookV(48, 14, 2, 30, 18, 30));
+        add("camino (foto)", 300, () -> shot("32_volcan_camino"));
+        add("cráter", 3500, () -> lookV(0, 82, 36, 0, 61, 60));
+        add("cráter (foto)", 300, () -> shot("33_volcan_crater"));
+        add("a tirarse", 600, () -> {
+            cmd("gamemode survival @a");
+            // sin resistencia: así se comprueba que la caída por la lava falsa no hace daño
+            cmd("effect clear @a minecraft:resistance");
+            cmd("effect give @a minecraft:fire_resistance 900 0 true");
+            cmd("effect give @a minecraft:instant_health 1 5 true");
+            lookV(0.5, 64, 60.5, 0.5, 50, 72);
+        });
+        add("cayendo (foto)", 2500, () -> shot("34_volcan_cayendo"));
+        add("aterriza", 9000, () -> {
+        });
+        add("cámara del cráter", 300, () -> {
+            double ly = Minecraft.getInstance().player.getY() - VY;
+            check("tirarse a la lava falsa lleva a la cámara del cráter (altura " + String.format(Locale.ROOT, "%.1f", ly) + ")", ly < 40 && ly > 28);
+            check("la caída no hace daño (vida " + (int) Minecraft.getInstance().player.getHealth() + ")", Minecraft.getInstance().player.getHealth() >= 19.0F);
+            cmd("effect give @a minecraft:resistance 900 4 true");
+            lookV(0.5, 32, 51, 0, 35, 64);
+        });
+        add("cámara (foto)", 1500, () -> shot("35_volcan_camara"));
+        add("puente", 1500, () -> lookV(-11.5, 24, 78.5, 4, 24, 78.5));
+        add("puente (foto)", 300, () -> shot("36_volcan_puente"));
+        add("pisar el puente", 700, () -> lookV(-8.5, 24, 78.5, 4, 23, 78.5));
+        add("cruje (foto)", 2500, () -> shot("37_puente_cruje"));
+        add("se cae", 300, () -> {
+            double ly = Minecraft.getInstance().player.getY() - VY;
+            check("el puente se derrumba y caes al foso (altura " + String.format(Locale.ROOT, "%.1f", ly) + ")", ly < 23);
+            shot("38_puente_foso");
+        });
+        add("sala de erupciones", 3500, () -> {
+            onServer(net.minecraft.world.entity.Entity::clearFire);
+            lookV(5.5, 8, 67.5, 0, 9, 80);
+        });
+        add("erupciones (foto)", 2500, () -> shot("39_volcan_erupciones"));
+        add("erupciones b (foto)", 2500, () -> shot("40_volcan_erupciones"));
+        add("altar", 3000, () -> lookV(-14.5, 8, 76.5, -24, 9, 76.5));
+        add("altar (foto)", 300, () -> shot("41_volcan_altar"));
+        add("santuario", 3000, () -> {
+            clearMobs();
+            lookV(0.5, -8, 82.5, 0.5, -6, 90.5);
+        });
+        add("santuario (foto)", 300, () -> {
+            net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(0, VY - 6, VZ + 90);
+            String id = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level.getBlockState(p).getBlock()).getPath();
+            check("la Piedra de Portal: Volcán está en el santuario (" + id + ")", id.equals("portal_stone_volcano"));
+            shot("42_volcan_santuario");
+        });
+        add("salida", 2500, () -> lookV(0.5, 2, 14.5, 0.5, 1, 0));
+        add("salida (foto)", 300, () -> shot("43_volcan_salida"));
+        add("erupción", 1500, () -> {
+            cmd("gamemode spectator @a");
+            lookV(70, 40, -20, 0, 60, 60);
+            onServer(sp -> com.mundosdeaxelis.block.NucleoVolcanBlock.erupt(sp.serverLevel(),
+                    new net.minecraft.core.BlockPos(0, VY + 61, VZ + 60), sp.getRandom()));
+        });
+        add("erupción (foto)", 2000, () -> shot("44_volcan_erupcion"));
+        add("erupción b (foto)", 300, () -> shot("45_volcan_erupcion"));
         add("fin", 2000, () -> {
             clearMobs();
             open(null);
