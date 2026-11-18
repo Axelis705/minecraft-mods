@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=south": {
+   "model": "mundos_de_axelis:block/crate_ice"
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/crate_ice",
+   "y": 90
+  },
+  "facing=north": {
+   "model": "mundos_de_axelis:block/crate_ice",
+   "y": 180
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/crate_ice",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=south": {
+   "model": "mundos_de_axelis:block/crate_forest"
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/crate_forest",
+   "y": 90
+  },
+  "facing=north": {
+   "model": "mundos_de_axelis:block/crate_forest",
+   "y": 180
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/crate_forest",
+   "y": 270
+  }
+ }
+}

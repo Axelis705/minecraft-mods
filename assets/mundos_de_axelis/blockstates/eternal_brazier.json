@@ -1,0 +1,10 @@
+{
+ "variants": {
+  "lit=true": {
+   "model": "mundos_de_axelis:block/eternal_brazier_lit"
+  },
+  "lit=false": {
+   "model": "mundos_de_axelis:block/eternal_brazier_off"
+  }
+ }
+}

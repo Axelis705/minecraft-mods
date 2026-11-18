@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/est_caldero_magico"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/est_caldero_magico",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/est_caldero_magico",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/est_caldero_magico",
+   "y": 270
+  }
+ }
+}

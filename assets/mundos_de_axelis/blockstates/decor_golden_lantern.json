@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/decor_golden_lantern"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/decor_golden_lantern",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/decor_golden_lantern",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/decor_golden_lantern",
+   "y": 270
+  }
+ }
+}

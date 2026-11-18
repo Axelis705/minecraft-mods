@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/decor_book_stack"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/decor_book_stack",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/decor_book_stack",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/decor_book_stack",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,11 @@
+{
+ "parent": "mundos_de_axelis:block/crate_base",
+ "textures": {
+  "side": "mundos_de_axelis:block/crate_armor_side",
+  "top": "mundos_de_axelis:block/crate_armor_top",
+  "trim": "mundos_de_axelis:block/crate_armor_trim",
+  "gem": "mundos_de_axelis:block/crate_armor_gem",
+  "metal": "mundos_de_axelis:block/crate_metal",
+  "lock": "mundos_de_axelis:block/crate_lock"
+ }
+}

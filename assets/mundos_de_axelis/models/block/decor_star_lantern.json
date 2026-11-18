@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/cube_all",
+ "textures": {
+  "all": "mundos_de_axelis:block/decor_star_lantern"
+ }
+}

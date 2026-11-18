@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/decor_cosmic_gate"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/decor_cosmic_gate",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/decor_cosmic_gate",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/decor_cosmic_gate",
+   "y": 270
+  }
+ }
+}

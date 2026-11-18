@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/decor_cog_clock"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/decor_cog_clock",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/decor_cog_clock",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/decor_cog_clock",
+   "y": 270
+  }
+ }
+}

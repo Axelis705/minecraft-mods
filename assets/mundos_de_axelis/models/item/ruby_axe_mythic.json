@@ -1,0 +1,15 @@
+{
+ "loader": "forge:separate_transforms",
+ "gui_light": "front",
+ "base": {
+  "parent": "mundos_de_axelis:item/gear3d/ruby_axe_mythic_3d"
+ },
+ "perspectives": {
+  "gui": {
+   "parent": "minecraft:item/generated",
+   "textures": {
+    "layer0": "mundos_de_axelis:item/ruby_axe_mythic"
+   }
+  }
+ }
+}

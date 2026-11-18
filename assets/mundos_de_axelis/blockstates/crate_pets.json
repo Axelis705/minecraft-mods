@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=south": {
+   "model": "mundos_de_axelis:block/crate_pets"
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/crate_pets",
+   "y": 90
+  },
+  "facing=north": {
+   "model": "mundos_de_axelis:block/crate_pets",
+   "y": 180
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/crate_pets",
+   "y": 270
+  }
+ }
+}

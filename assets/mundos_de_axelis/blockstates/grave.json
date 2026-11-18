@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/grave"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/grave",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/grave",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/grave",
+   "y": 270
+  }
+ }
+}

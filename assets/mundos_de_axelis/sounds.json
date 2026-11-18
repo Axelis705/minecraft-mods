@@ -1,0 +1,2470 @@
+{
+  "katana_slash": {
+    "sounds": [
+      {
+        "name": "entity.player.attack.sweep",
+        "type": "event",
+        "pitch": 1.6,
+        "volume": 1.0,
+        "weight": 1
+      },
+      {
+        "name": "item.trident.throw",
+        "type": "event",
+        "pitch": 1.8,
+        "volume": 0.6,
+        "weight": 1
+      }
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.katana_slash"
+  },
+  "relic_activate": {
+    "sounds": [
+      "mundos_de_axelis:relic_activate"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_activate"
+  },
+  "relic_ready": {
+    "sounds": [
+      "mundos_de_axelis:relic_ready"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_ready"
+  },
+  "relic_boom": {
+    "sounds": [
+      "mundos_de_axelis:relic_boom"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_boom"
+  },
+  "relic_whoosh": {
+    "sounds": [
+      "mundos_de_axelis:relic_whoosh"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_whoosh"
+  },
+  "relic_heal": {
+    "sounds": [
+      "mundos_de_axelis:relic_heal"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_heal"
+  },
+  "relic_magic": {
+    "sounds": [
+      "mundos_de_axelis:relic_magic"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_magic"
+  },
+  "relic_fire": {
+    "sounds": [
+      "mundos_de_axelis:relic_fire"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_fire"
+  },
+  "relic_ice": {
+    "sounds": [
+      "mundos_de_axelis:relic_ice"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_ice"
+  },
+  "relic_dark": {
+    "sounds": [
+      "mundos_de_axelis:relic_dark"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_dark"
+  },
+  "relic_revive": {
+    "sounds": [
+      "mundos_de_axelis:relic_revive"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_revive"
+  },
+  "relic_star_bow_charge": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_bow_charge"
+    ]
+  },
+  "relic_star_bow_shoot": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_bow_shoot"
+    ]
+  },
+  "relic_star_bow_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_bow_cast"
+    ]
+  },
+  "relic_star_bow_hit": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_bow_hit"
+    ]
+  },
+  "relic_comet_lance_charge": {
+    "sounds": [
+      "mundos_de_axelis:relic_comet_lance_charge"
+    ]
+  },
+  "relic_comet_lance_dash": {
+    "sounds": [
+      "mundos_de_axelis:relic_comet_lance_dash"
+    ]
+  },
+  "relic_comet_lance_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comet_lance_cast"
+    ]
+  },
+  "relic_comet_lance_hit": {
+    "sounds": [
+      "mundos_de_axelis:relic_comet_lance_hit"
+    ]
+  },
+  "relic_mirror_shield_raise": {
+    "sounds": [
+      "mundos_de_axelis:relic_mirror_shield_raise"
+    ]
+  },
+  "relic_mirror_shield_reflect": {
+    "sounds": [
+      "mundos_de_axelis:relic_mirror_shield_reflect"
+    ]
+  },
+  "relic_mirror_shield_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_mirror_shield_cast"
+    ]
+  },
+  "relic_astral_spyglass_scan": {
+    "sounds": [
+      "mundos_de_axelis:relic_astral_spyglass_scan"
+    ]
+  },
+  "relic_astral_spyglass_mark": {
+    "sounds": [
+      "mundos_de_axelis:relic_astral_spyglass_mark"
+    ]
+  },
+  "relic_astral_spyglass_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_astral_spyglass_cast"
+    ]
+  },
+  "relic_fang_staff_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_fang_staff_cast"
+    ]
+  },
+  "relic_fang_staff_bite": {
+    "sounds": [
+      "mundos_de_axelis:relic_fang_staff_bite"
+    ]
+  },
+  "relic_rewind_anchor_tick": {
+    "sounds": [
+      "mundos_de_axelis:relic_rewind_anchor_tick"
+    ]
+  },
+  "relic_rewind_anchor_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_rewind_anchor_cast"
+    ]
+  },
+  "relic_fate_coin_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_fate_coin_cast"
+    ]
+  },
+  "relic_fate_coin_flip": {
+    "sounds": [
+      "mundos_de_axelis:relic_fate_coin_flip"
+    ]
+  },
+  "relic_fate_coin_heads": {
+    "sounds": [
+      "mundos_de_axelis:relic_fate_coin_heads"
+    ]
+  },
+  "relic_fate_coin_tails": {
+    "sounds": [
+      "mundos_de_axelis:relic_fate_coin_tails"
+    ]
+  },
+  "relic_heart_fireworks_charge": {
+    "sounds": [
+      "mundos_de_axelis:relic_heart_fireworks_charge"
+    ]
+  },
+  "relic_heart_fireworks_launch": {
+    "sounds": [
+      "mundos_de_axelis:relic_heart_fireworks_launch"
+    ]
+  },
+  "relic_heart_fireworks_burst": {
+    "sounds": [
+      "mundos_de_axelis:relic_heart_fireworks_burst"
+    ]
+  },
+  "relic_heart_fireworks_crackle": {
+    "sounds": [
+      "mundos_de_axelis:relic_heart_fireworks_crackle"
+    ]
+  },
+  "relic_heart_fireworks_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_heart_fireworks_cast"
+    ]
+  },
+  "relic_red_thread_link": {
+    "sounds": [
+      "mundos_de_axelis:relic_red_thread_link"
+    ]
+  },
+  "relic_red_thread_snap": {
+    "sounds": [
+      "mundos_de_axelis:relic_red_thread_snap"
+    ]
+  },
+  "relic_red_thread_pulse": {
+    "sounds": [
+      "mundos_de_axelis:relic_red_thread_pulse"
+    ]
+  },
+  "relic_red_thread_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_red_thread_cast"
+    ]
+  },
+  "relic_victory_banner_plant": {
+    "sounds": [
+      "mundos_de_axelis:relic_victory_banner_plant"
+    ]
+  },
+  "relic_victory_banner_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_victory_banner_cast"
+    ]
+  },
+  "relic_victory_banner_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_victory_banner_end"
+    ]
+  },
+  "relic_whirlwind_staff_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_whirlwind_staff_cast"
+    ]
+  },
+  "relic_whirlwind_staff_loop": {
+    "sounds": [
+      "mundos_de_axelis:relic_whirlwind_staff_loop"
+    ]
+  },
+  "relic_whirlwind_staff_fling": {
+    "sounds": [
+      "mundos_de_axelis:relic_whirlwind_staff_fling"
+    ]
+  },
+  "relic_world_tree_seed_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_world_tree_seed_cast"
+    ]
+  },
+  "relic_world_tree_seed_plant": {
+    "sounds": [
+      "mundos_de_axelis:relic_world_tree_seed_plant"
+    ]
+  },
+  "relic_world_tree_seed_grow": {
+    "sounds": [
+      "mundos_de_axelis:relic_world_tree_seed_grow"
+    ]
+  },
+  "relic_world_tree_seed_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_world_tree_seed_end"
+    ]
+  },
+  "relic_hatchling_egg_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_hatchling_egg_cast"
+    ]
+  },
+  "relic_hatchling_egg_hatch": {
+    "sounds": [
+      "mundos_de_axelis:relic_hatchling_egg_hatch"
+    ]
+  },
+  "relic_hatchling_egg_roar": {
+    "sounds": [
+      "mundos_de_axelis:relic_hatchling_egg_roar"
+    ]
+  },
+  "relic_hatchling_egg_breath": {
+    "sounds": [
+      "mundos_de_axelis:relic_hatchling_egg_breath"
+    ]
+  },
+  "relic_hatchling_egg_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_hatchling_egg_end"
+    ]
+  },
+  "relic_fairy_jar_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_fairy_jar_cast"
+    ]
+  },
+  "relic_fairy_jar_bolt": {
+    "sounds": [
+      "mundos_de_axelis:relic_fairy_jar_bolt"
+    ]
+  },
+  "relic_fairy_jar_heal": {
+    "sounds": [
+      "mundos_de_axelis:relic_fairy_jar_heal"
+    ]
+  },
+  "relic_fairy_jar_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_fairy_jar_end"
+    ]
+  },
+  "relic_moon_blade_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_moon_blade_cast"
+    ]
+  },
+  "relic_moon_blade_wave": {
+    "sounds": [
+      "mundos_de_axelis:relic_moon_blade_wave"
+    ]
+  },
+  "relic_moon_blade_hit": {
+    "sounds": [
+      "mundos_de_axelis:relic_moon_blade_hit"
+    ]
+  },
+  "relic_rocket_pack_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_rocket_pack_cast"
+    ]
+  },
+  "relic_rocket_pack_thrust": {
+    "sounds": [
+      "mundos_de_axelis:relic_rocket_pack_thrust"
+    ]
+  },
+  "relic_rocket_pack_empty": {
+    "sounds": [
+      "mundos_de_axelis:relic_rocket_pack_empty"
+    ]
+  },
+  "relic_rocket_pack_ready": {
+    "sounds": [
+      "mundos_de_axelis:relic_rocket_pack_ready"
+    ]
+  },
+  "relic_music_box_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_music_box_cast"
+    ]
+  },
+  "relic_music_box_song": {
+    "sounds": [
+      "mundos_de_axelis:relic_music_box_song"
+    ]
+  },
+  "relic_music_box_wake": {
+    "sounds": [
+      "mundos_de_axelis:relic_music_box_wake"
+    ]
+  },
+  "relic_star_heart_charge": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_heart_charge"
+    ]
+  },
+  "relic_star_heart_beam": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_heart_beam"
+    ]
+  },
+  "relic_star_heart_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_heart_cast"
+    ]
+  },
+  "relic_star_heart_hit": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_heart_hit"
+    ]
+  },
+  "relic_dragon_whip_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_dragon_whip_cast"
+    ]
+  },
+  "relic_dragon_whip_crack": {
+    "sounds": [
+      "mundos_de_axelis:relic_dragon_whip_crack"
+    ]
+  },
+  "relic_dragon_whip_hit": {
+    "sounds": [
+      "mundos_de_axelis:relic_dragon_whip_hit"
+    ]
+  },
+  "relic_abyss_scepter_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_abyss_scepter_cast"
+    ]
+  },
+  "relic_abyss_scepter_grab": {
+    "sounds": [
+      "mundos_de_axelis:relic_abyss_scepter_grab"
+    ]
+  },
+  "relic_abyss_scepter_slam": {
+    "sounds": [
+      "mundos_de_axelis:relic_abyss_scepter_slam"
+    ]
+  },
+  "relic_levelup": {
+    "sounds": [
+      "mundos_de_axelis:relic_levelup"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.relic_levelup"
+  },
+  "relic_voltaic_scepter_charge": {
+    "sounds": [
+      "mundos_de_axelis:relic_voltaic_scepter_charge"
+    ]
+  },
+  "relic_voltaic_scepter_zap": {
+    "sounds": [
+      "mundos_de_axelis:relic_voltaic_scepter_zap"
+    ]
+  },
+  "relic_voltaic_scepter_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_voltaic_scepter_cast"
+    ]
+  },
+  "relic_war_horn_charge": {
+    "sounds": [
+      "mundos_de_axelis:relic_war_horn_charge"
+    ]
+  },
+  "relic_war_horn_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_war_horn_cast"
+    ]
+  },
+  "relic_home_mirror_charge": {
+    "sounds": [
+      "mundos_de_axelis:relic_home_mirror_charge"
+    ]
+  },
+  "relic_home_mirror_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_home_mirror_cast"
+    ]
+  },
+  "relic_home_mirror_arrive": {
+    "sounds": [
+      "mundos_de_axelis:relic_home_mirror_arrive"
+    ]
+  },
+  "relic_medusa_eye_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_medusa_eye_cast"
+    ]
+  },
+  "relic_medusa_eye_crack": {
+    "sounds": [
+      "mundos_de_axelis:relic_medusa_eye_crack"
+    ]
+  },
+  "relic_rage_gauntlet_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_rage_gauntlet_cast"
+    ]
+  },
+  "relic_rage_gauntlet_hit": {
+    "sounds": [
+      "mundos_de_axelis:relic_rage_gauntlet_hit"
+    ]
+  },
+  "relic_umbral_glaive_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_umbral_glaive_cast"
+    ]
+  },
+  "relic_umbral_glaive_blade": {
+    "sounds": [
+      "mundos_de_axelis:relic_umbral_glaive_blade"
+    ]
+  },
+  "relic_magma_boots_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_magma_boots_cast"
+    ]
+  },
+  "relic_magma_boots_land": {
+    "sounds": [
+      "mundos_de_axelis:relic_magma_boots_land"
+    ]
+  },
+  "relic_cloud_bottle_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_cloud_bottle_cast"
+    ]
+  },
+  "relic_void_singularity_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_void_singularity_cast"
+    ]
+  },
+  "relic_void_singularity_implode": {
+    "sounds": [
+      "mundos_de_axelis:relic_void_singularity_implode"
+    ]
+  },
+  "relic_celestial_aegis_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_celestial_aegis_cast"
+    ]
+  },
+  "relic_celestial_aegis_absorb": {
+    "sounds": [
+      "mundos_de_axelis:relic_celestial_aegis_absorb"
+    ]
+  },
+  "relic_healing_lyre_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_healing_lyre_cast"
+    ]
+  },
+  "relic_healing_lyre_note": {
+    "sounds": [
+      "mundos_de_axelis:relic_healing_lyre_note"
+    ]
+  },
+  "relic_genie_lamp_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_genie_lamp_cast"
+    ]
+  },
+  "relic_genie_lamp_wish": {
+    "sounds": [
+      "mundos_de_axelis:relic_genie_lamp_wish"
+    ]
+  },
+  "relic_meteor_scepter_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_meteor_scepter_cast"
+    ]
+  },
+  "relic_meteor_scepter_fall": {
+    "sounds": [
+      "mundos_de_axelis:relic_meteor_scepter_fall"
+    ]
+  },
+  "relic_meteor_scepter_impact": {
+    "sounds": [
+      "mundos_de_axelis:relic_meteor_scepter_impact"
+    ]
+  },
+  "relic_eclipse_dagger_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_eclipse_dagger_cast"
+    ]
+  },
+  "relic_eclipse_dagger_slash": {
+    "sounds": [
+      "mundos_de_axelis:relic_eclipse_dagger_slash"
+    ]
+  },
+  "relic_quake_seal_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_quake_seal_cast"
+    ]
+  },
+  "relic_quake_seal_wave": {
+    "sounds": [
+      "mundos_de_axelis:relic_quake_seal_wave"
+    ]
+  },
+  "relic_light_wings_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_light_wings_cast"
+    ]
+  },
+  "relic_light_wings_flap": {
+    "sounds": [
+      "mundos_de_axelis:relic_light_wings_flap"
+    ]
+  },
+  "relic_soul_lantern_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_soul_lantern_cast"
+    ]
+  },
+  "relic_soul_lantern_release": {
+    "sounds": [
+      "mundos_de_axelis:relic_soul_lantern_release"
+    ]
+  },
+  "relic_soul_lantern_collect": {
+    "sounds": [
+      "mundos_de_axelis:relic_soul_lantern_collect"
+    ]
+  },
+  "relic_prism_rainbow_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_prism_rainbow_cast"
+    ]
+  },
+  "relic_prism_rainbow_hum": {
+    "sounds": [
+      "mundos_de_axelis:relic_prism_rainbow_hum"
+    ]
+  },
+  "relic_solar_chakram_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_solar_chakram_cast"
+    ]
+  },
+  "relic_solar_chakram_spin": {
+    "sounds": [
+      "mundos_de_axelis:relic_solar_chakram_spin"
+    ]
+  },
+  "relic_solar_chakram_catch": {
+    "sounds": [
+      "mundos_de_axelis:relic_solar_chakram_catch"
+    ]
+  },
+  "relic_time_pendulum_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_time_pendulum_cast"
+    ]
+  },
+  "relic_time_pendulum_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_time_pendulum_end"
+    ]
+  },
+  "relic_phoenix_ring_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_phoenix_ring_cast"
+    ]
+  },
+  "relic_feather_talisman_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_feather_talisman_cast"
+    ]
+  },
+  "relic_oak_heart_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_oak_heart_cast"
+    ]
+  },
+  "relic_miner_medallion_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_miner_medallion_cast"
+    ]
+  },
+  "relic_tide_shell_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_tide_shell_cast"
+    ]
+  },
+  "relic_wolf_fang_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_wolf_fang_cast"
+    ]
+  },
+  "relic_star_charm_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_star_charm_cast"
+    ]
+  },
+  "relic_frost_bracelet_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_frost_bracelet_cast"
+    ]
+  },
+  "relic_sun_crown_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_sun_crown_cast"
+    ]
+  },
+  "relic_storm_eye_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_storm_eye_cast"
+    ]
+  },
+  "relic_wind_ring_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_wind_ring_cast"
+    ]
+  },
+  "relic_dragon_scale_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_dragon_scale_cast"
+    ]
+  },
+  "relic_moon_crystal_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_moon_crystal_cast"
+    ]
+  },
+  "relic_eternal_rose_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_eternal_rose_cast"
+    ]
+  },
+  "relic_hourglass_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_hourglass_cast"
+    ]
+  },
+  "relic_fox_charm_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_fox_charm_cast"
+    ]
+  },
+  "relic_crystal_heart_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_crystal_heart_cast"
+    ]
+  },
+  "relic_specter_mask_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_specter_mask_cast"
+    ]
+  },
+  "relic_aurora_horn_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_aurora_horn_cast"
+    ]
+  },
+  "relic_arcane_tome_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_arcane_tome_cast"
+    ]
+  },
+  "relic_warrior_medal_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_warrior_medal_cast"
+    ]
+  },
+  "relic_vampire_chalice_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_vampire_chalice_cast"
+    ]
+  },
+  "relic_ender_orb_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_ender_orb_cast"
+    ]
+  },
+  "relic_titan_belt_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_titan_belt_cast"
+    ]
+  },
+  "relic_comp_fox_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_fox_cast"
+    ]
+  },
+  "relic_comp_fox_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_fox_act"
+    ]
+  },
+  "relic_comp_fox_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_fox_end"
+    ]
+  },
+  "relic_comp_cat_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_cat_cast"
+    ]
+  },
+  "relic_comp_cat_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_cat_act"
+    ]
+  },
+  "relic_comp_cat_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_cat_end"
+    ]
+  },
+  "relic_comp_owl_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_owl_cast"
+    ]
+  },
+  "relic_comp_owl_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_owl_act"
+    ]
+  },
+  "relic_comp_owl_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_owl_end"
+    ]
+  },
+  "relic_comp_bunny_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_bunny_cast"
+    ]
+  },
+  "relic_comp_bunny_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_bunny_act"
+    ]
+  },
+  "relic_comp_bunny_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_bunny_end"
+    ]
+  },
+  "relic_comp_jelly_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_jelly_cast"
+    ]
+  },
+  "relic_comp_jelly_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_jelly_act"
+    ]
+  },
+  "relic_comp_jelly_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_jelly_end"
+    ]
+  },
+  "relic_comp_phoenix_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_phoenix_cast"
+    ]
+  },
+  "relic_comp_phoenix_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_phoenix_act"
+    ]
+  },
+  "relic_comp_phoenix_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_phoenix_end"
+    ]
+  },
+  "relic_comp_turtle_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_turtle_cast"
+    ]
+  },
+  "relic_comp_turtle_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_turtle_act"
+    ]
+  },
+  "relic_comp_turtle_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_turtle_end"
+    ]
+  },
+  "relic_comp_penguin_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_penguin_cast"
+    ]
+  },
+  "relic_comp_penguin_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_penguin_act"
+    ]
+  },
+  "relic_comp_penguin_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_penguin_end"
+    ]
+  },
+  "relic_comp_unicorn_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_unicorn_cast"
+    ]
+  },
+  "relic_comp_unicorn_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_unicorn_act"
+    ]
+  },
+  "relic_comp_unicorn_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_unicorn_end"
+    ]
+  },
+  "relic_comp_panda_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_panda_cast"
+    ]
+  },
+  "relic_comp_panda_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_panda_act"
+    ]
+  },
+  "relic_comp_panda_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_panda_end"
+    ]
+  },
+  "relic_comp_chick_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_chick_cast"
+    ]
+  },
+  "relic_comp_chick_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_chick_act"
+    ]
+  },
+  "relic_comp_chick_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_chick_end"
+    ]
+  },
+  "relic_comp_frog_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_frog_cast"
+    ]
+  },
+  "relic_comp_frog_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_frog_act"
+    ]
+  },
+  "relic_comp_frog_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_frog_end"
+    ]
+  },
+  "relic_comp_hamster_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_hamster_cast"
+    ]
+  },
+  "relic_comp_hamster_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_hamster_act"
+    ]
+  },
+  "relic_comp_hamster_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_hamster_end"
+    ]
+  },
+  "relic_comp_snail_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_snail_cast"
+    ]
+  },
+  "relic_comp_snail_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_snail_act"
+    ]
+  },
+  "relic_comp_snail_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_snail_end"
+    ]
+  },
+  "relic_comp_bee_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_bee_cast"
+    ]
+  },
+  "relic_comp_bee_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_bee_act"
+    ]
+  },
+  "relic_comp_bee_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_bee_end"
+    ]
+  },
+  "relic_comp_sheep_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_sheep_cast"
+    ]
+  },
+  "relic_comp_sheep_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_sheep_act"
+    ]
+  },
+  "relic_comp_sheep_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_sheep_end"
+    ]
+  },
+  "relic_comp_hedgehog_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_hedgehog_cast"
+    ]
+  },
+  "relic_comp_hedgehog_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_hedgehog_act"
+    ]
+  },
+  "relic_comp_hedgehog_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_hedgehog_end"
+    ]
+  },
+  "relic_comp_axolotl_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_axolotl_cast"
+    ]
+  },
+  "relic_comp_axolotl_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_axolotl_act"
+    ]
+  },
+  "relic_comp_axolotl_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_axolotl_end"
+    ]
+  },
+  "relic_comp_raccoon_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_raccoon_cast"
+    ]
+  },
+  "relic_comp_raccoon_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_raccoon_act"
+    ]
+  },
+  "relic_comp_raccoon_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_raccoon_end"
+    ]
+  },
+  "relic_comp_deer_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_deer_cast"
+    ]
+  },
+  "relic_comp_deer_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_deer_act"
+    ]
+  },
+  "relic_comp_deer_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_deer_end"
+    ]
+  },
+  "relic_comp_whale_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_whale_cast"
+    ]
+  },
+  "relic_comp_whale_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_whale_act"
+    ]
+  },
+  "relic_comp_whale_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_whale_end"
+    ]
+  },
+  "relic_comp_kitsune_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_kitsune_cast"
+    ]
+  },
+  "relic_comp_kitsune_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_kitsune_act"
+    ]
+  },
+  "relic_comp_kitsune_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_kitsune_end"
+    ]
+  },
+  "crate_tick": {
+    "sounds": [
+      "mundos_de_axelis:crate_tick"
+    ]
+  },
+  "crate_unlock": {
+    "sounds": [
+      "mundos_de_axelis:crate_unlock"
+    ]
+  },
+  "crate_spin": {
+    "sounds": [
+      "mundos_de_axelis:crate_spin"
+    ]
+  },
+  "crate_reveal_0": {
+    "sounds": [
+      "mundos_de_axelis:crate_reveal_0"
+    ]
+  },
+  "crate_reveal_1": {
+    "sounds": [
+      "mundos_de_axelis:crate_reveal_1"
+    ]
+  },
+  "crate_reveal_2": {
+    "sounds": [
+      "mundos_de_axelis:crate_reveal_2"
+    ]
+  },
+  "crate_reveal_3": {
+    "sounds": [
+      "mundos_de_axelis:crate_reveal_3"
+    ]
+  },
+  "crate_reveal_4": {
+    "sounds": [
+      "mundos_de_axelis:crate_reveal_4"
+    ]
+  },
+  "crate_reveal_5": {
+    "sounds": [
+      "mundos_de_axelis:crate_reveal_5"
+    ]
+  },
+  "crate_reveal_6": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:crate_reveal_5",
+        "pitch": 0.92
+      }
+    ]
+  },
+  "crate_reveal_7": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:crate_reveal_5",
+        "pitch": 0.84,
+        "volume": 1.0
+      }
+    ]
+  },
+  "relic_comp_capybara_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_capybara_cast"
+    ]
+  },
+  "relic_comp_capybara_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_capybara_act"
+    ]
+  },
+  "relic_comp_capybara_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_capybara_end"
+    ]
+  },
+  "relic_comp_duck_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_duck_cast"
+    ]
+  },
+  "relic_comp_duck_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_duck_act"
+    ]
+  },
+  "relic_comp_duck_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_duck_end"
+    ]
+  },
+  "relic_comp_slime_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_slime_cast"
+    ]
+  },
+  "relic_comp_slime_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_slime_act"
+    ]
+  },
+  "relic_comp_slime_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_slime_end"
+    ]
+  },
+  "relic_comp_corgi_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_corgi_cast"
+    ]
+  },
+  "relic_comp_corgi_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_corgi_act"
+    ]
+  },
+  "relic_comp_corgi_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_corgi_end"
+    ]
+  },
+  "relic_comp_creeper_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_creeper_cast"
+    ]
+  },
+  "relic_comp_creeper_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_creeper_act"
+    ]
+  },
+  "relic_comp_creeper_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_creeper_end"
+    ]
+  },
+  "relic_comp_snowman_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_snowman_cast"
+    ]
+  },
+  "relic_comp_snowman_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_snowman_act"
+    ]
+  },
+  "relic_comp_snowman_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_snowman_end"
+    ]
+  },
+  "relic_comp_ghost_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_ghost_cast"
+    ]
+  },
+  "relic_comp_ghost_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_ghost_act"
+    ]
+  },
+  "relic_comp_ghost_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_ghost_end"
+    ]
+  },
+  "relic_comp_golem_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_golem_cast"
+    ]
+  },
+  "relic_comp_golem_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_golem_act"
+    ]
+  },
+  "relic_comp_golem_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_golem_end"
+    ]
+  },
+  "relic_comp_sparkmouse_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_sparkmouse_cast"
+    ]
+  },
+  "relic_comp_sparkmouse_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_sparkmouse_act"
+    ]
+  },
+  "relic_comp_sparkmouse_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_sparkmouse_end"
+    ]
+  },
+  "relic_comp_droid_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_droid_cast"
+    ]
+  },
+  "relic_comp_droid_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_droid_act"
+    ]
+  },
+  "relic_comp_droid_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_droid_end"
+    ]
+  },
+  "relic_comp_forest_spirit_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_forest_spirit_cast"
+    ]
+  },
+  "relic_comp_forest_spirit_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_forest_spirit_act"
+    ]
+  },
+  "relic_comp_forest_spirit_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_forest_spirit_end"
+    ]
+  },
+  "relic_comp_moon_wolf_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_moon_wolf_cast"
+    ]
+  },
+  "relic_comp_moon_wolf_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_moon_wolf_act"
+    ]
+  },
+  "relic_comp_moon_wolf_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_moon_wolf_end"
+    ]
+  },
+  "relic_comp_night_dragon_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_night_dragon_cast"
+    ]
+  },
+  "relic_comp_night_dragon_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_night_dragon_act"
+    ]
+  },
+  "relic_comp_night_dragon_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_night_dragon_end"
+    ]
+  },
+  "relic_comp_octopus_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_octopus_cast"
+    ]
+  },
+  "relic_comp_octopus_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_octopus_act"
+    ]
+  },
+  "relic_comp_octopus_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_octopus_end"
+    ]
+  },
+  "relic_comp_butterfly_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_butterfly_cast"
+    ]
+  },
+  "relic_comp_butterfly_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_butterfly_act"
+    ]
+  },
+  "relic_comp_butterfly_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_butterfly_end"
+    ]
+  },
+  "relic_comp_crab_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_crab_cast"
+    ]
+  },
+  "relic_comp_crab_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_crab_act"
+    ]
+  },
+  "relic_comp_crab_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_crab_end"
+    ]
+  },
+  "relic_comp_firefly_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_firefly_cast"
+    ]
+  },
+  "relic_comp_firefly_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_firefly_act"
+    ]
+  },
+  "relic_comp_firefly_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_firefly_end"
+    ]
+  },
+  "relic_comp_koala_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_koala_cast"
+    ]
+  },
+  "relic_comp_koala_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_koala_act"
+    ]
+  },
+  "relic_comp_koala_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_koala_end"
+    ]
+  },
+  "relic_comp_elephant_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_elephant_cast"
+    ]
+  },
+  "relic_comp_elephant_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_elephant_act"
+    ]
+  },
+  "relic_comp_elephant_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_elephant_end"
+    ]
+  },
+  "relic_comp_lion_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_lion_cast"
+    ]
+  },
+  "relic_comp_lion_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_lion_act"
+    ]
+  },
+  "relic_comp_lion_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_lion_end"
+    ]
+  },
+  "relic_comp_salamander_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_salamander_cast"
+    ]
+  },
+  "relic_comp_salamander_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_salamander_act"
+    ]
+  },
+  "relic_comp_salamander_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_salamander_end"
+    ]
+  },
+  "relic_comp_peacock_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_peacock_cast"
+    ]
+  },
+  "relic_comp_peacock_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_peacock_act"
+    ]
+  },
+  "relic_comp_peacock_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_peacock_end"
+    ]
+  },
+  "relic_comp_dolphin_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_dolphin_cast"
+    ]
+  },
+  "relic_comp_dolphin_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_dolphin_act"
+    ]
+  },
+  "relic_comp_dolphin_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_dolphin_end"
+    ]
+  },
+  "relic_comp_pegasus_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_pegasus_cast"
+    ]
+  },
+  "relic_comp_pegasus_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_pegasus_act"
+    ]
+  },
+  "relic_comp_pegasus_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_pegasus_end"
+    ]
+  },
+  "relic_comp_celestial_dragon_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_celestial_dragon_cast"
+    ]
+  },
+  "relic_comp_celestial_dragon_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_celestial_dragon_act"
+    ]
+  },
+  "relic_comp_celestial_dragon_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_celestial_dragon_end"
+    ]
+  },
+  "relic_comp_ferret_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_ferret_cast"
+    ]
+  },
+  "relic_comp_ferret_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_ferret_act"
+    ]
+  },
+  "relic_comp_ferret_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_ferret_end"
+    ]
+  },
+  "ui_open": {
+    "sounds": [
+      "mundos_de_axelis:ui_open"
+    ]
+  },
+  "ui_hover": {
+    "sounds": [
+      "mundos_de_axelis:ui_hover"
+    ]
+  },
+  "ui_click": {
+    "sounds": [
+      "mundos_de_axelis:ui_click"
+    ]
+  },
+  "ui_tab": {
+    "sounds": [
+      "mundos_de_axelis:ui_tab"
+    ]
+  },
+  "ui_success": {
+    "sounds": [
+      "mundos_de_axelis:ui_success"
+    ]
+  },
+  "ui_error": {
+    "sounds": [
+      "mundos_de_axelis:ui_error"
+    ]
+  },
+  "ui_forge": {
+    "sounds": [
+      "mundos_de_axelis:ui_forge"
+    ]
+  },
+  "rey_brote_ambient": {
+    "sounds": [
+      "mundos_de_axelis:rey_brote_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rey_brote_ambient"
+  },
+  "rey_brote_hurt": {
+    "sounds": [
+      "mundos_de_axelis:rey_brote_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rey_brote_hurt"
+  },
+  "rey_brote_death": {
+    "sounds": [
+      "mundos_de_axelis:rey_brote_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rey_brote_death"
+  },
+  "rey_brote_charge": {
+    "sounds": [
+      "mundos_de_axelis:rey_brote_charge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rey_brote_charge"
+  },
+  "rey_brote_slam": {
+    "sounds": [
+      "mundos_de_axelis:rey_brote_slam"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rey_brote_slam"
+  },
+  "rey_brote_spit": {
+    "sounds": [
+      "mundos_de_axelis:rey_brote_spit"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rey_brote_spit"
+  },
+  "rey_brote_roar": {
+    "sounds": [
+      "mundos_de_axelis:rey_brote_roar"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rey_brote_roar"
+  },
+  "rey_brote_absorb": {
+    "sounds": [
+      "mundos_de_axelis:rey_brote_absorb"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rey_brote_absorb"
+  },
+  "brote_ambient": {
+    "sounds": [
+      "mundos_de_axelis:brote_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.brote_ambient"
+  },
+  "brote_hurt": {
+    "sounds": [
+      "mundos_de_axelis:brote_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.brote_hurt"
+  },
+  "brote_death": {
+    "sounds": [
+      "mundos_de_axelis:brote_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.brote_death"
+  },
+  "brote_attack": {
+    "sounds": [
+      "mundos_de_axelis:brote_attack"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.brote_attack"
+  },
+  "espinoso_shoot": {
+    "sounds": [
+      "mundos_de_axelis:espinoso_shoot"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.espinoso_shoot"
+  },
+  "espinoso_charge": {
+    "sounds": [
+      "mundos_de_axelis:espinoso_charge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.espinoso_charge"
+  },
+  "espinoso_hurt": {
+    "sounds": [
+      "mundos_de_axelis:espinoso_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.espinoso_hurt"
+  },
+  "espinoso_death": {
+    "sounds": [
+      "mundos_de_axelis:espinoso_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.espinoso_death"
+  },
+  "guardian_step": {
+    "sounds": [
+      "mundos_de_axelis:guardian_step"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.guardian_step"
+  },
+  "guardian_hurt": {
+    "sounds": [
+      "mundos_de_axelis:guardian_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.guardian_hurt"
+  },
+  "guardian_death": {
+    "sounds": [
+      "mundos_de_axelis:guardian_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.guardian_death"
+  },
+  "guardian_slam": {
+    "sounds": [
+      "mundos_de_axelis:guardian_slam"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.guardian_slam"
+  },
+  "guardian_roar": {
+    "sounds": [
+      "mundos_de_axelis:guardian_roar"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.guardian_roar"
+  },
+  "guardian_charge": {
+    "sounds": [
+      "mundos_de_axelis:guardian_charge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.guardian_charge"
+  },
+  "dungeon_door_close": {
+    "sounds": [
+      "mundos_de_axelis:dungeon_door_close"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.dungeon_door_close"
+  },
+  "dungeon_door_open": {
+    "sounds": [
+      "mundos_de_axelis:dungeon_door_open"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.dungeon_door_open"
+  },
+  "dungeon_room_start": {
+    "sounds": [
+      "mundos_de_axelis:dungeon_room_start"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.dungeon_room_start"
+  },
+  "dungeon_room_clear": {
+    "sounds": [
+      "mundos_de_axelis:dungeon_room_clear"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.dungeon_room_clear"
+  },
+  "dungeon_boss_gate": {
+    "sounds": [
+      "mundos_de_axelis:dungeon_boss_gate"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.dungeon_boss_gate"
+  },
+  "dungeon_wave": {
+    "sounds": [
+      "mundos_de_axelis:dungeon_wave"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.dungeon_wave"
+  },
+  "music_forest_dungeon": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_forest_dungeon",
+        "stream": true
+      }
+    ]
+  },
+  "music_forest_boss": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_forest_boss",
+        "stream": true
+      }
+    ]
+  },
+  "raizal_hurt": {
+    "sounds": [
+      "mundos_de_axelis:raizal_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.raizal_hurt"
+  },
+  "raizal_death": {
+    "sounds": [
+      "mundos_de_axelis:raizal_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.raizal_death"
+  },
+  "raizal_roots": {
+    "sounds": [
+      "mundos_de_axelis:raizal_roots"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.raizal_roots"
+  },
+  "raizal_step": {
+    "sounds": [
+      "mundos_de_axelis:raizal_step"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.raizal_step"
+  },
+  "polinizador_buzz": {
+    "sounds": [
+      "mundos_de_axelis:polinizador_buzz"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.polinizador_buzz"
+  },
+  "polinizador_hurt": {
+    "sounds": [
+      "mundos_de_axelis:polinizador_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.polinizador_hurt"
+  },
+  "polinizador_death": {
+    "sounds": [
+      "mundos_de_axelis:polinizador_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.polinizador_death"
+  },
+  "polinizador_spore": {
+    "sounds": [
+      "mundos_de_axelis:polinizador_spore"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.polinizador_spore"
+  },
+  "rune_0": {
+    "sounds": [
+      "mundos_de_axelis:rune_0"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rune_0"
+  },
+  "rune_1": {
+    "sounds": [
+      "mundos_de_axelis:rune_1"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rune_1"
+  },
+  "rune_2": {
+    "sounds": [
+      "mundos_de_axelis:rune_2"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rune_2"
+  },
+  "rune_3": {
+    "sounds": [
+      "mundos_de_axelis:rune_3"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rune_3"
+  },
+  "rune_fail": {
+    "sounds": [
+      "mundos_de_axelis:rune_fail"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rune_fail"
+  },
+  "rune_ok": {
+    "sounds": [
+      "mundos_de_axelis:rune_ok"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rune_ok"
+  },
+  "vault_open": {
+    "sounds": [
+      "mundos_de_axelis:vault_open"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.vault_open"
+  },
+  "key_use": {
+    "sounds": [
+      "mundos_de_axelis:key_use"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.key_use"
+  },
+  "crumble": {
+    "sounds": [
+      "mundos_de_axelis:crumble"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.crumble"
+  },
+  "key_get": {
+    "sounds": [
+      "mundos_de_axelis:key_get"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.key_get"
+  },
+  "lock_pin": {
+    "sounds": [
+      "mundos_de_axelis:lock_pin"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lock_pin"
+  },
+  "lock_miss": {
+    "sounds": [
+      "mundos_de_axelis:lock_miss"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lock_miss"
+  },
+  "lock_fake": {
+    "sounds": [
+      "mundos_de_axelis:lock_fake"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lock_fake"
+  },
+  "lock_turn": {
+    "sounds": [
+      "mundos_de_axelis:lock_turn"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lock_turn"
+  },
+  "lock_open": {
+    "sounds": [
+      "mundos_de_axelis:lock_open"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lock_open"
+  },
+  "herrero_ambient": {
+    "sounds": [
+      "mundos_de_axelis:herrero_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_ambient"
+  },
+  "herrero_hurt": {
+    "sounds": [
+      "mundos_de_axelis:herrero_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_hurt"
+  },
+  "herrero_death": {
+    "sounds": [
+      "mundos_de_axelis:herrero_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_death"
+  },
+  "herrero_charge": {
+    "sounds": [
+      "mundos_de_axelis:herrero_charge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_charge"
+  },
+  "herrero_slam": {
+    "sounds": [
+      "mundos_de_axelis:herrero_slam"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_slam"
+  },
+  "herrero_sparks": {
+    "sounds": [
+      "mundos_de_axelis:herrero_sparks"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_sparks"
+  },
+  "herrero_roar": {
+    "sounds": [
+      "mundos_de_axelis:herrero_roar"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_roar"
+  },
+  "herrero_anvil": {
+    "sounds": [
+      "mundos_de_axelis:herrero_anvil"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_anvil"
+  },
+  "herrero_temper": {
+    "sounds": [
+      "mundos_de_axelis:herrero_temper"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_temper"
+  },
+  "escoria_ambient": {
+    "sounds": [
+      "mundos_de_axelis:escoria_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.escoria_ambient"
+  },
+  "escoria_hurt": {
+    "sounds": [
+      "mundos_de_axelis:escoria_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.escoria_hurt"
+  },
+  "escoria_death": {
+    "sounds": [
+      "mundos_de_axelis:escoria_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.escoria_death"
+  },
+  "escoria_attack": {
+    "sounds": [
+      "mundos_de_axelis:escoria_attack"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.escoria_attack"
+  },
+  "chispero_charge": {
+    "sounds": [
+      "mundos_de_axelis:chispero_charge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.chispero_charge"
+  },
+  "chispero_shoot": {
+    "sounds": [
+      "mundos_de_axelis:chispero_shoot"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.chispero_shoot"
+  },
+  "chispero_hurt": {
+    "sounds": [
+      "mundos_de_axelis:chispero_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.chispero_hurt"
+  },
+  "chispero_death": {
+    "sounds": [
+      "mundos_de_axelis:chispero_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.chispero_death"
+  },
+  "ascua_buzz": {
+    "sounds": [
+      "mundos_de_axelis:ascua_buzz"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.ascua_buzz"
+  },
+  "ascua_hurt": {
+    "sounds": [
+      "mundos_de_axelis:ascua_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.ascua_hurt"
+  },
+  "ascua_death": {
+    "sounds": [
+      "mundos_de_axelis:ascua_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.ascua_death"
+  },
+  "ascua_shoot": {
+    "sounds": [
+      "mundos_de_axelis:ascua_shoot"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.ascua_shoot"
+  },
+  "fundidor_step": {
+    "sounds": [
+      "mundos_de_axelis:fundidor_step"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.fundidor_step"
+  },
+  "fundidor_hurt": {
+    "sounds": [
+      "mundos_de_axelis:fundidor_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.fundidor_hurt"
+  },
+  "fundidor_death": {
+    "sounds": [
+      "mundos_de_axelis:fundidor_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.fundidor_death"
+  },
+  "fundidor_erupt": {
+    "sounds": [
+      "mundos_de_axelis:fundidor_erupt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.fundidor_erupt"
+  },
+  "capataz_step": {
+    "sounds": [
+      "mundos_de_axelis:capataz_step"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.capataz_step"
+  },
+  "capataz_hurt": {
+    "sounds": [
+      "mundos_de_axelis:capataz_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.capataz_hurt"
+  },
+  "capataz_death": {
+    "sounds": [
+      "mundos_de_axelis:capataz_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.capataz_death"
+  },
+  "capataz_slam": {
+    "sounds": [
+      "mundos_de_axelis:capataz_slam"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.capataz_slam"
+  },
+  "capataz_roar": {
+    "sounds": [
+      "mundos_de_axelis:capataz_roar"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.capataz_roar"
+  },
+  "capataz_charge": {
+    "sounds": [
+      "mundos_de_axelis:capataz_charge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.capataz_charge"
+  },
+  "music_forge_dungeon": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_forge_dungeon",
+        "stream": true
+      }
+    ]
+  },
+  "music_forge_boss": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_forge_boss",
+        "stream": true
+      }
+    ]
+  },
+  "herrero_step": {
+    "sounds": [
+      "mundos_de_axelis:herrero_step"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_step"
+  },
+  "herrero_swing": {
+    "sounds": [
+      "mundos_de_axelis:herrero_swing"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_swing"
+  },
+  "herrero_land": {
+    "sounds": [
+      "mundos_de_axelis:herrero_land"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_land"
+  },
+  "herrero_burst": {
+    "sounds": [
+      "mundos_de_axelis:herrero_burst"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_burst"
+  },
+  "herrero_clink": {
+    "sounds": [
+      "mundos_de_axelis:herrero_clink"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_clink"
+  },
+  "herrero_blast": {
+    "sounds": [
+      "mundos_de_axelis:herrero_blast"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.herrero_blast"
+  },
+  "escoria_step": {
+    "sounds": [
+      "mundos_de_axelis:escoria_step"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.escoria_step"
+  },
+  "chispero_ambient": {
+    "sounds": [
+      "mundos_de_axelis:chispero_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.chispero_ambient"
+  },
+  "fundidor_ambient": {
+    "sounds": [
+      "mundos_de_axelis:fundidor_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.fundidor_ambient"
+  },
+  "capataz_ambient": {
+    "sounds": [
+      "mundos_de_axelis:capataz_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.capataz_ambient"
+  },
+  "capataz_burst": {
+    "sounds": [
+      "mundos_de_axelis:capataz_burst"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.capataz_burst"
+  },
+  "forge_door_open": {
+    "sounds": [
+      "mundos_de_axelis:forge_door_open"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.forge_door_open"
+  },
+  "forge_door_close": {
+    "sounds": [
+      "mundos_de_axelis:forge_door_close"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.forge_door_close"
+  },
+  "forge_room_start": {
+    "sounds": [
+      "mundos_de_axelis:forge_room_start"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.forge_room_start"
+  },
+  "forge_room_clear": {
+    "sounds": [
+      "mundos_de_axelis:forge_room_clear"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.forge_room_clear"
+  },
+  "forge_wave": {
+    "sounds": [
+      "mundos_de_axelis:forge_wave"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.forge_wave"
+  },
+  "forge_boss_gate": {
+    "sounds": [
+      "mundos_de_axelis:forge_boss_gate"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.forge_boss_gate"
+  },
+  "rivet_use": {
+    "sounds": [
+      "mundos_de_axelis:rivet_use"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.rivet_use"
+  },
+  "crate_bonus_key": {
+    "sounds": [
+      "mundos_de_axelis:crate_bonus_key"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.crate_bonus_key"
+  },
+  "boss_rumble": {
+    "sounds": [
+      "mundos_de_axelis:boss_rumble"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.boss_rumble"
+  },
+  "boss_riser": {
+    "sounds": [
+      "mundos_de_axelis:boss_riser"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.boss_riser"
+  },
+  "boss_impact": {
+    "sounds": [
+      "mundos_de_axelis:boss_impact"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.boss_impact"
+  },
+  "boss_title_forge": {
+    "sounds": [
+      "mundos_de_axelis:boss_title_forge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.boss_title_forge"
+  },
+  "boss_title_forest": {
+    "sounds": [
+      "mundos_de_axelis:boss_title_forest"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.boss_title_forest"
+  },
+  "boss_roar_forest": {
+    "sounds": [
+      "mundos_de_axelis:boss_roar_forest"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.boss_roar_forest"
+  },
+  "boss_shatter": {
+    "sounds": [
+      "mundos_de_axelis:boss_shatter"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.boss_shatter"
+  },
+  "boss_phase": {
+    "sounds": [
+      "mundos_de_axelis:boss_phase"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.boss_phase"
+  },
+  "lobo_ambient": {
+    "sounds": [
+      "mundos_de_axelis:lobo_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_ambient"
+  },
+  "lobo_hurt": {
+    "sounds": [
+      "mundos_de_axelis:lobo_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_hurt"
+  },
+  "lobo_death": {
+    "sounds": [
+      "mundos_de_axelis:lobo_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_death"
+  },
+  "lobo_howl": {
+    "sounds": [
+      "mundos_de_axelis:lobo_howl"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_howl"
+  },
+  "lobo_roar": {
+    "sounds": [
+      "mundos_de_axelis:lobo_roar"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_roar"
+  },
+  "lobo_step": {
+    "sounds": [
+      "mundos_de_axelis:lobo_step"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_step"
+  },
+  "lobo_charge": {
+    "sounds": [
+      "mundos_de_axelis:lobo_charge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_charge"
+  },
+  "lobo_dash": {
+    "sounds": [
+      "mundos_de_axelis:lobo_dash"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_dash"
+  },
+  "lobo_slash": {
+    "sounds": [
+      "mundos_de_axelis:lobo_slash"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_slash"
+  },
+  "lobo_cross": {
+    "sounds": [
+      "mundos_de_axelis:lobo_cross"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_cross"
+  },
+  "lobo_crash": {
+    "sounds": [
+      "mundos_de_axelis:lobo_crash"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_crash"
+  },
+  "lobo_wind": {
+    "sounds": [
+      "mundos_de_axelis:lobo_wind"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_wind"
+  },
+  "lobo_moon": {
+    "sounds": [
+      "mundos_de_axelis:lobo_moon"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_moon"
+  },
+  "lobo_freeze": {
+    "sounds": [
+      "mundos_de_axelis:lobo_freeze"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_freeze"
+  },
+  "lobo_pup_ambient": {
+    "sounds": [
+      "mundos_de_axelis:lobo_pup_ambient"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_pup_ambient"
+  },
+  "lobo_pup_hurt": {
+    "sounds": [
+      "mundos_de_axelis:lobo_pup_hurt"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_pup_hurt"
+  },
+  "lobo_pup_death": {
+    "sounds": [
+      "mundos_de_axelis:lobo_pup_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_pup_death"
+  },
+  "lobo_pup_bite": {
+    "sounds": [
+      "mundos_de_axelis:lobo_pup_bite"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.lobo_pup_bite"
+  },
+  "music_tower_dungeon": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_tower_dungeon",
+        "stream": true
+      }
+    ]
+  },
+  "music_tower_boss": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_tower_boss",
+        "stream": true
+      }
+    ]
+  },
+  "music_ice_dungeon": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_ice_dungeon",
+        "stream": true
+      }
+    ]
+  },
+  "music_ice_boss": {
+    "sounds": [
+      {
+        "name": "mundos_de_axelis:music_ice_boss",
+        "stream": true
+      }
+    ]
+  },
+  "archimago_ambient": {
+    "sounds": [
+      "mundos_de_axelis:archimago_ambient1",
+      "mundos_de_axelis:archimago_ambient2"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.archimago_ambient"
+  },
+  "archimago_hurt": {
+    "sounds": [
+      "mundos_de_axelis:archimago_hurt1",
+      "mundos_de_axelis:archimago_hurt2"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.archimago_hurt"
+  },
+  "archimago_death": {
+    "sounds": [
+      "mundos_de_axelis:archimago_death"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.archimago_death"
+  },
+  "archimago_charge": {
+    "sounds": [
+      "mundos_de_axelis:archimago_charge"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.archimago_charge"
+  },
+  "archimago_cast": {
+    "sounds": [
+      "mundos_de_axelis:archimago_cast"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.archimago_cast"
+  },
+  "archimago_blink": {
+    "sounds": [
+      "mundos_de_axelis:archimago_blink"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.archimago_blink"
+  },
+  "archimago_orb": {
+    "sounds": [
+      "mundos_de_axelis:archimago_orb"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.archimago_orb"
+  },
+  "archimago_burst": {
+    "sounds": [
+      "mundos_de_axelis:archimago_burst"
+    ],
+    "subtitle": "subtitles.mundos_de_axelis.archimago_burst"
+  }
+}

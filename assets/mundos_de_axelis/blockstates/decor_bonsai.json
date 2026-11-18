@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/decor_bonsai"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/decor_bonsai",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/decor_bonsai",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/decor_bonsai",
+   "y": 270
+  }
+ }
+}

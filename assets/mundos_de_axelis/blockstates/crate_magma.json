@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=south": {
+   "model": "mundos_de_axelis:block/crate_magma"
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/crate_magma",
+   "y": 90
+  },
+  "facing=north": {
+   "model": "mundos_de_axelis:block/crate_magma",
+   "y": 180
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/crate_magma",
+   "y": 270
+  }
+ }
+}

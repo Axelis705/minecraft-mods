@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/decor_balloon"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/decor_balloon",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/decor_balloon",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/decor_balloon",
+   "y": 270
+  }
+ }
+}

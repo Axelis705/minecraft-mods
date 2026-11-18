@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=south": {
+   "model": "mundos_de_axelis:block/crate_magic"
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/crate_magic",
+   "y": 90
+  },
+  "facing=north": {
+   "model": "mundos_de_axelis:block/crate_magic",
+   "y": 180
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/crate_magic",
+   "y": 270
+  }
+ }
+}

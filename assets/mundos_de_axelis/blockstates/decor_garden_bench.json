@@ -1,0 +1,34 @@
+{
+ "variants": {
+  "facing=north,part=a": {
+   "model": "mundos_de_axelis:block/decor_garden_bench"
+  },
+  "facing=north,part=b": {
+   "model": "mundos_de_axelis:block/decor_garden_bench_b"
+  },
+  "facing=east,part=a": {
+   "model": "mundos_de_axelis:block/decor_garden_bench",
+   "y": 90
+  },
+  "facing=east,part=b": {
+   "model": "mundos_de_axelis:block/decor_garden_bench_b",
+   "y": 90
+  },
+  "facing=south,part=a": {
+   "model": "mundos_de_axelis:block/decor_garden_bench",
+   "y": 180
+  },
+  "facing=south,part=b": {
+   "model": "mundos_de_axelis:block/decor_garden_bench_b",
+   "y": 180
+  },
+  "facing=west,part=a": {
+   "model": "mundos_de_axelis:block/decor_garden_bench",
+   "y": 270
+  },
+  "facing=west,part=b": {
+   "model": "mundos_de_axelis:block/decor_garden_bench_b",
+   "y": 270
+  }
+ }
+}

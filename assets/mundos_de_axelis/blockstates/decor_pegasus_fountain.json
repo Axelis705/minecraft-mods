@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/decor_pegasus_fountain"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/decor_pegasus_fountain",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/decor_pegasus_fountain",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/decor_pegasus_fountain",
+   "y": 270
+  }
+ }
+}

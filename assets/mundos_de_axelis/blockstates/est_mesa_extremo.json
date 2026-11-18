@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "mundos_de_axelis:block/est_mesa_extremo"
+  },
+  "facing=east": {
+   "model": "mundos_de_axelis:block/est_mesa_extremo",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "mundos_de_axelis:block/est_mesa_extremo",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "mundos_de_axelis:block/est_mesa_extremo",
+   "y": 270
+  }
+ }
+}
