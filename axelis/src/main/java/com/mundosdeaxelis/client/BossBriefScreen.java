@@ -163,6 +163,7 @@ public class BossBriefScreen extends Screen {
                 out.add(new Section("El Volcán", 0xFFD35C, volc));
                 List<Component> loot = new ArrayList<>();
                 loot.add(white("Salamandras, diablillos y cultistas sueltan botín."));
+                loot.add(bullet("Consejo", ChatFormatting.GOLD, "primero los cultistas: ponen escudos de lava a los demás."));
                 loot.add(gray("Puedes salir antes del jefe, sin sus premios."));
                 out.add(new Section("Botín y salida", 0x7BD66B, loot));
             } else if (tab == 1) {

@@ -222,6 +222,119 @@ public final class AutoTest {
         });
     }
 
+    // ------------------------------------------------------------------ estudios para los retratos de las cartas
+
+    /** X de cada estudio (todos en Z = {@link #SZ}, dentro de la zona que siempre está cargada cerca del punto de aparición). */
+    private static final int ST_VOLCAN = -80, ST_FORJA = -110, ST_TORRE = -140, SZ = -60;
+
+    /** Cuarto cerrado de 13 x 13 con suelo, pared del fondo decorada según el tema y luces invisibles. La criatura va en (x, -60, SZ). */
+    private static void studio(int x, String theme) {
+        int z = SZ;
+        String wall = switch (theme) {
+            case "volcan" -> "minecraft:blackstone";
+            case "forja" -> "minecraft:polished_deepslate";
+            default -> "minecraft:deepslate_bricks";
+        };
+        String floor = switch (theme) {
+            case "volcan" -> "minecraft:polished_blackstone_bricks";
+            case "forja" -> "minecraft:deepslate_tiles";
+            default -> "minecraft:polished_deepslate";
+        };
+        List<String> c = new ArrayList<>();
+        c.add(f("fill %d -61 %d %d -52 %d %s hollow", x - 7, z - 9, x + 7, z + 5, wall));
+        c.add(f("fill %d -61 %d %d -61 %d %s", x - 6, z - 8, x + 6, z + 4, floor));
+        switch (theme) {
+            case "volcan" -> {
+                c.add(f("fill %d -60 %d %d -53 %d minecraft:basalt", x - 6, z + 4, x + 6, z + 4));
+                c.add(f("fill %d -60 %d %d -60 %d minecraft:polished_blackstone_bricks", x - 6, z + 4, x + 6, z + 4));
+                c.add(f("fill %d -53 %d %d -53 %d minecraft:polished_blackstone_bricks", x - 6, z + 4, x + 6, z + 4));
+                c.add(f("fill %d -59 %d %d -54 %d mundos_de_axelis:lava_falsa", x - 3, z + 4, x - 3, z + 4));
+                c.add(f("fill %d -59 %d %d -54 %d mundos_de_axelis:lava_falsa", x + 3, z + 4, x + 3, z + 4));
+                c.add(f("fill %d -61 %d %d -61 %d mundos_de_axelis:lava_falsa", x - 6, z + 3, x + 6, z + 3));
+                c.add(f("setblock %d -56 %d minecraft:crying_obsidian", x, z + 4));
+                c.add(f("setblock %d -57 %d minecraft:crying_obsidian", x - 1, z + 4));
+                c.add(f("setblock %d -57 %d minecraft:crying_obsidian", x + 1, z + 4));
+                c.add(f("setblock %d -58 %d minecraft:magma_block", x, z + 4));
+                for (int[] m : new int[][]{{-4, 1}, {4, -1}, {-2, -3}, {5, 2}, {-5, -2}, {2, 2}}) {
+                    c.add(f("setblock %d -61 %d minecraft:magma_block", x + m[0], z + m[1]));
+                }
+                c.add(f("setblock %d -60 %d minecraft:soul_campfire", x - 5, z + 2));
+                c.add(f("setblock %d -60 %d minecraft:soul_campfire", x + 5, z + 2));
+            }
+            case "forja" -> {
+                c.add(f("fill %d -60 %d %d -53 %d minecraft:deepslate_bricks", x - 6, z + 4, x + 6, z + 4));
+                c.add(f("fill %d -59 %d %d -54 %d mundos_de_axelis:lava_falsa", x, z + 4, x, z + 4));
+                c.add(f("fill %d -60 %d %d -53 %d minecraft:iron_bars", x - 1, z + 4, x - 1, z + 4));
+                c.add(f("fill %d -60 %d %d -53 %d minecraft:iron_bars", x + 1, z + 4, x + 1, z + 4));
+                c.add(f("fill %d -61 %d %d -61 %d mundos_de_axelis:lava_falsa", x - 6, z + 3, x + 6, z + 3));
+                c.add(f("setblock %d -60 %d minecraft:blast_furnace[facing=north,lit=true]", x - 4, z + 2));
+                c.add(f("setblock %d -60 %d minecraft:blast_furnace[facing=north,lit=true]", x + 4, z + 2));
+                c.add(f("setblock %d -59 %d minecraft:blast_furnace[facing=north,lit=true]", x + 4, z + 2));
+                c.add(f("setblock %d -60 %d minecraft:anvil[facing=east]", x - 5, z));
+                c.add(f("fill %d -55 %d %d -53 %d minecraft:chain", x - 3, z + 2, x - 3, z + 2));
+                c.add(f("fill %d -55 %d %d -53 %d minecraft:chain", x + 2, z + 1, x + 2, z + 1));
+                c.add(f("setblock %d -56 %d minecraft:lantern[hanging=true]", x - 3, z + 2));
+                c.add(f("setblock %d -56 %d minecraft:lantern[hanging=true]", x + 2, z + 1));
+                for (int[] m : new int[][]{{-3, 0}, {3, -2}, {5, 1}, {-1, -4}}) {
+                    c.add(f("setblock %d -61 %d minecraft:smooth_basalt", x + m[0], z + m[1]));
+                }
+            }
+            default -> {
+                c.add(f("fill %d -60 %d %d -56 %d minecraft:bookshelf", x - 6, z + 4, x + 6, z + 4));
+                c.add(f("fill %d -55 %d %d -53 %d minecraft:deepslate_tiles", x - 6, z + 4, x + 6, z + 4));
+                c.add(f("fill %d -60 %d %d -53 %d minecraft:amethyst_block", x - 4, z + 4, x - 4, z + 4));
+                c.add(f("fill %d -60 %d %d -53 %d minecraft:amethyst_block", x + 4, z + 4, x + 4, z + 4));
+                c.add(f("fill %d -56 %d %d -54 %d minecraft:purple_stained_glass", x - 1, z + 4, x + 1, z + 4));
+                c.add(f("fill %d -56 %d %d -54 %d minecraft:sea_lantern", x - 1, z + 5, x + 1, z + 5));
+                c.add(f("setblock %d -55 %d minecraft:purple_candle[candles=3,lit=true]", x - 3, z + 4));
+                c.add(f("setblock %d -55 %d minecraft:purple_candle[candles=4,lit=true]", x + 3, z + 4));
+                c.add(f("setblock %d -55 %d minecraft:purple_candle[candles=2,lit=true]", x - 6, z + 4));
+                c.add(f("setblock %d -55 %d minecraft:purple_candle[candles=2,lit=true]", x + 6, z + 4));
+                c.add(f("fill %d -60 %d %d -60 %d minecraft:purple_carpet", x - 1, z - 8, x + 1, z + 3));
+                c.add(f("setblock %d -53 %d minecraft:soul_lantern[hanging=true]", x - 3, z + 2));
+                c.add(f("setblock %d -53 %d minecraft:soul_lantern[hanging=true]", x + 3, z + 2));
+                c.add(f("setblock %d -60 %d minecraft:enchanting_table", x - 5, z + 2));
+                c.add(f("setblock %d -60 %d minecraft:lectern[facing=west]", x + 5, z + 2));
+            }
+        }
+        // luces invisibles alrededor de la criatura (se ve bien iluminada sin lámparas en la foto)
+        c.add(f("setblock %d -58 %d minecraft:light[level=15]", x - 2, z - 1));
+        c.add(f("setblock %d -58 %d minecraft:light[level=15]", x + 2, z - 1));
+        c.add(f("setblock %d -55 %d minecraft:light[level=13]", x, z - 1));
+        c.add(f("setblock %d -59 %d minecraft:light[level=12]", x, z - 3));
+        for (String k : c) {
+            cmd("execute in minecraft:overworld run " + k);
+        }
+    }
+
+    private static String f(String fmt, Object... a) {
+        return String.format(Locale.ROOT, fmt, a);
+    }
+
+    /**
+     * Un retrato: pone la criatura quieta en el centro del estudio, mirando con el giro {@code yaw}, y la cámara delante a {@code d}
+     * bloques, un poco por encima ({@code up}) de su centro {@code cy}; quita la interfaz y saca la foto {@code carta_<nombre>}.
+     */
+    private static void portrait(String card, int x, String id, double feetY, double cy, double d, double up, float yaw) {
+        add("retrato " + card, 1700, () -> {
+            clearMobs();
+            cmd(f("execute in minecraft:overworld run summon mundos_de_axelis:%s %.1f %.2f %.1f "
+                    + "{NoAI:1b,NoGravity:1b,Silent:1b,Invulnerable:1b,PersistenceRequired:1b,Rotation:[%.1ff,0f]}", id, x + 0.5, feetY, SZ + 0.5, yaw));
+            standLooking(x + 0.5, cy + up - 1.62, SZ + 0.5 - d, x + 0.5, cy, SZ + 0.5);
+            Minecraft.getInstance().options.hideGui = true;
+        });
+        add("retrato " + card + " (foto)", 300, () -> {
+            int n = 0;
+            for (net.minecraft.world.entity.Entity e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (id.equals(net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getKey(e.getType()).getPath())) {
+                    n++;
+                }
+            }
+            check("retrato de " + card + " (en la foto: " + n + ")", n == 1);
+            shot("carta_" + card);
+        });
+    }
+
     /** Me pone de pie en (x, y, z) de la dimensión donde estoy, mirando al punto (tx, ty, tz). */
     private static void standLooking(double x, double y, double z, double tx, double ty, double tz) {
         double dx = tx - x, dy = ty - (y + 1.62), dz = tz - z;
@@ -540,6 +653,17 @@ public final class AutoTest {
         });
         add("enemigos atacan (foto)", 2600, () -> shot("13b_enemigos_atacan"));
         add("enemigos atacan b (foto)", 300, () -> shot("13c_enemigos_atacan"));
+        add("escudo de lava", 3500, () -> onServer(sp -> {
+            int n = 0;
+            for (net.minecraft.world.entity.LivingEntity e : sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                    sp.getBoundingBox().inflate(30), com.mundosdeaxelis.entity.EscudoLava::isAlly)) {
+                if (com.mundosdeaxelis.entity.EscudoLava.has(e)) {
+                    n++;
+                }
+            }
+            check("el cultista pone un escudo de lava a un aliado (" + n + " con escudo)", n > 0);
+        }));
+        add("escudo de lava (foto)", 300, () -> shot("13d_escudo_lava"));
         add("quitar enemigos", 1000, () -> onServer(sp -> {
             for (Class<? extends net.minecraft.world.entity.Entity> k : List.of(com.mundosdeaxelis.entity.SalamandraLava.class,
                     com.mundosdeaxelis.entity.Diablillo.class, com.mundosdeaxelis.entity.CultistaVolcan.class, com.mundosdeaxelis.entity.LarvaMagma.class)) {
@@ -569,6 +693,18 @@ public final class AutoTest {
             check("el corazón queda encadenado (estado " + (h == null ? -1 : h.state()) + ", anclas " + anchors + ")",
                     h != null && h.state() == com.mundosdeaxelis.entity.CorazonMagma.S_CHAINED && anchors >= 3);
             shot("17_corazon_cadenas");
+        });
+        add("retrato corazón", 900, () -> {
+            // de cerca, flotando a media altura y sin interfaz: para la carta del Corazón de Magma
+            onServer(sp -> sp.setNoGravity(true));
+            net.minecraft.world.phys.Vec3 h = com.mundosdeaxelis.world.FireArena.heartHome();
+            standLooking(0.5, h.y - 0.6 - 1.62, 6.8, 0.5, h.y, 0.5);
+            Minecraft.getInstance().options.hideGui = true;
+        });
+        add("retrato corazón (foto)", 300, () -> {
+            shot("carta_corazon_magma");
+            Minecraft.getInstance().options.hideGui = false;
+            onServer(sp -> sp.setNoGravity(false));
         });
         add("ancla de cerca", 1500, () -> {
             net.minecraft.world.phys.Vec3 a = com.mundosdeaxelis.world.FireArena.anchor(0);
@@ -695,6 +831,33 @@ public final class AutoTest {
         });
         add("erupción (foto)", 2000, () -> shot("44_volcan_erupcion"));
         add("erupción b (foto)", 300, () -> shot("45_volcan_erupcion"));
+        // 7. retratos para las cartas: tres "estudios" cerrados (volcán, forja y torre) y cada criatura quieta, de frente, sin interfaz
+        add("estudios", 3000, () -> {
+            clearMobs();
+            cmd("gamemode spectator @a");
+            cmd("forceload add " + (ST_TORRE - 10) + " " + (SZ - 12) + " " + (ST_VOLCAN + 10) + " " + (SZ + 8));
+            cmd("execute in minecraft:overworld run tp @a " + ST_FORJA + " -50 " + (SZ - 20));
+        });
+        add("construir estudios", 2500, () -> {
+            studio(ST_VOLCAN, "volcan");
+            studio(ST_FORJA, "forja");
+            studio(ST_TORRE, "torre");
+        });
+        portrait("cultista_volcan", ST_VOLCAN, "cultista_volcan", -60.0, -58.85, 2.7, 0.35, 165);
+        portrait("salamandra_lava", ST_VOLCAN, "salamandra_lava", -60.0, -59.65, 2.0, 0.75, 215);
+        portrait("diablillo", ST_VOLCAN, "diablillo", -59.4, -58.85, 1.7, 0.15, 170);
+        portrait("larva_magma", ST_VOLCAN, "larva_magma", -60.0, -59.75, 1.25, 0.45, 205);
+        portrait("fundidor", ST_FORJA, "fundidor", -60.0, -58.6, 3.0, 0.3, 170);
+        portrait("ascua", ST_FORJA, "ascua", -59.5, -59.0, 1.35, 0.15, 180);
+        portrait("esbirro", ST_TORRE, "esbirro", -60.0, -58.95, 2.5, 0.3, 170);
+        portrait("armadura_encantada", ST_TORRE, "armadura_encantada", -60.0, -58.9, 2.6, 0.3, 190);
+        portrait("libro_embrujado", ST_TORRE, "libro_embrujado", -59.3, -58.95, 1.3, 0.2, 180);
+        portrait("archimago", ST_TORRE, "archimago", -60.0, -57.8, 4.6, 0.2, 175);
+        add("fin de los retratos", 300, () -> {
+            Minecraft.getInstance().options.hideGui = false;
+            clearMobs();
+            cmd("forceload remove all");
+        });
         add("fin", 2000, () -> {
             clearMobs();
             open(null);

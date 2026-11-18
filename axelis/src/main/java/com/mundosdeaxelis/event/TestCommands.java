@@ -150,6 +150,7 @@ public final class TestCommands {
                 .then(Commands.literal("progreso")
                         .then(Commands.argument("etapa", IntegerArgumentType.integer(1, 8))
                                 .executes(ctx -> progreso(ctx.getSource(), IntegerArgumentType.getInteger(ctx, "etapa")))))
+                .then(Commands.literal("escudo").executes(ctx -> escudo(ctx.getSource())))
                 .then(Commands.literal("jefe").executes(ctx -> jefe(ctx.getSource())))
                 .then(Commands.literal("arena").executes(ctx -> arena(ctx.getSource())))
                 .then(Commands.literal("saltardungeon").executes(ctx -> saltarDungeon(ctx.getSource())))
@@ -305,6 +306,39 @@ public final class TestCommands {
      * Construye la arena (y la dungeon, en las etapas 1 y 2) en la primera copia de esa etapa, sin jugadores; sirve también desde la
      * consola del servidor (pruebas automáticas). Al terminar escribe en el registro PRUEBA_CONSTRUIR_n_OK con el tiempo que tardó.
      */
+    /**
+     * Prueba del escudo de lava de los cultistas: se lo pone a una salamandra viva del mundo, le pega dos veces 5 de daño y comprueba
+     * que el primer golpe no le quita vida (el escudo se queda con 3), y que el segundo rompe el escudo y solo pasan 2.
+     */
+    private static int escudo(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        java.util.List<? extends com.mundosdeaxelis.entity.SalamandraLava> all = sl.getEntities(
+                net.minecraft.world.level.entity.EntityTypeTest.forClass(com.mundosdeaxelis.entity.SalamandraLava.class),
+                net.minecraft.world.entity.Entity::isAlive);
+        if (all.isEmpty()) {
+            com.mundosdeaxelis.MundosDeAxelis.LOGGER.info("PRUEBA_ESCUDO_SIN_SALAMANDRA");
+            src.sendFailure(Component.literal("No hay ninguna salamandra de lava"));
+            return 0;
+        }
+        com.mundosdeaxelis.entity.SalamandraLava s = all.get(0);
+        s.setHealth(s.getMaxHealth());
+        com.mundosdeaxelis.entity.EscudoLava.give(sl, s);
+        float h0 = s.getHealth();
+        s.invulnerableTime = 0;
+        s.hurt(sl.damageSources().generic(), 5.0F);
+        float h1 = s.getHealth(), left1 = com.mundosdeaxelis.entity.EscudoLava.left(s);
+        s.invulnerableTime = 0;
+        s.hurt(sl.damageSources().generic(), 5.0F);
+        float h2 = s.getHealth();
+        boolean has2 = com.mundosdeaxelis.entity.EscudoLava.has(s);
+        boolean ok = h1 == h0 && Math.abs(left1 - 3.0F) < 0.01F && !has2 && h2 < h0 && h2 > h0 - 2.01F;
+        String msg = (ok ? "PRUEBA_ESCUDO_OK" : "PRUEBA_ESCUDO_FALLO") + String.format(java.util.Locale.ROOT,
+                " vida %.1f -> %.1f -> %.1f, escudo tras el 1er golpe %.1f, sigue tras el 2.o %s", h0, h1, h2, left1, has2);
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return ok ? 1 : 0;
+    }
+
     private static final int[] BUILDS = new int[6];
 
     private static int construir(CommandSourceStack src, int stage) {

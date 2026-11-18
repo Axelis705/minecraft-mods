@@ -31,6 +31,7 @@ execute if entity @e[type=mundos_de_axelis:salamandra_lava] run say PRUEBA_SALAM
 execute if entity @e[type=mundos_de_axelis:diablillo] run say PRUEBA_DIABLILLO_OK
 execute if entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_CULTISTA_OK
 execute if entity @e[type=mundos_de_axelis:armadura_encantada] run say PRUEBA_ENEMIGOS_VIVOS_OK
+mundos prueba escudo
 kill @e[type=!minecraft:player]
 execute positioned 0 -60 40 rotated 0 0 run mundos estructura torre
 #wait construida 120
@@ -43,6 +44,7 @@ execute unless entity @e[type=mundos_de_axelis:esbirro] run say PRUEBA_DESHACER_
 #expect PRUEBA_SALAMANDRA_OK
 #expect PRUEBA_DIABLILLO_OK
 #expect PRUEBA_CULTISTA_OK
+#expect PRUEBA_ESCUDO_OK
 #expect PRUEBA_TORRE_ESBIRROS_OK
 #expect PRUEBA_TORRE_LIBROS_OK
 #expect PRUEBA_TORRE_ARMADURA_OK
