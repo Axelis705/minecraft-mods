@@ -181,6 +181,22 @@ public final class AutoTest {
         return null;
     }
 
+    /** Quita a los enemigos sin matarlos (si muere el Archimago cuenta como victoria y salen los premios en pantalla). */
+    private static void clearMobs() {
+        IntegratedServer srv = Minecraft.getInstance().getSingleplayerServer();
+        srv.execute(() -> {
+            for (net.minecraft.server.level.ServerLevel l : srv.getAllLevels()) {
+                List<net.minecraft.world.entity.Entity> gone = new ArrayList<>();
+                for (net.minecraft.world.entity.Entity e : l.getAllEntities()) {
+                    if (e instanceof net.minecraft.world.entity.Mob) {
+                        gone.add(e);
+                    }
+                }
+                gone.forEach(net.minecraft.world.entity.Entity::discard);
+            }
+        });
+    }
+
     private static String screenName() {
         Screen sc = Minecraft.getInstance().screen;
         return sc == null ? "ninguna" : sc.getClass().getSimpleName();
@@ -318,7 +334,7 @@ public final class AutoTest {
         });
         // 5b. mascotas de los jefes (Lobito Ártico y Archimaguito) invocadas a tu lado
         add("mascotas", 3000, () -> {
-            cmd("kill @e[type=!player]");
+            clearMobs();
             cmd("tp @a 0.5 -60 0.5 0 18");
             Minecraft mc = Minecraft.getInstance();
             IntegratedServer srv = mc.getSingleplayerServer();
@@ -335,7 +351,7 @@ public final class AutoTest {
         add("mascotas de cerca (foto)", 300, () -> shot("8c_mascotas"));
         // 6. la Piedra de Portal de la Torre, como un jugador: clic derecho, ficha, «Comenzar» y entrar (etapa 5)
         add("piedra de la torre", 1500, () -> {
-            cmd("kill @e[type=!player]");
+            clearMobs();
             cmd("setblock 0 -60 -3 mundos_de_axelis:portal_stone_tower");
             cmd("tp @a 0.5 -60 -0.5 180 35");
             cmd("item replace entity @a hotbar.8 with air");
@@ -363,7 +379,7 @@ public final class AutoTest {
         });
         add("torre (foto)", 300, () -> shot("10_torre"));
         add("fin", 2000, () -> {
-            cmd("kill @e[type=!player]");
+            clearMobs();
             open(null);
             log("AUTOTEST_FIN fotos=" + shots + " comprobaciones=" + checks + " fallos=" + fails);
         });
