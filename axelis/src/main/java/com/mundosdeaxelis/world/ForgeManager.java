@@ -337,6 +337,10 @@ public final class ForgeManager {
             }
         }
         if (players.isEmpty()) {
+            if (BossTravel.hasSpectator(level)) {
+                emptyTicks = 0; // solo hay alguien en espectador: la dungeon espera, no se reinicia
+                return;
+            }
             if (++emptyTicks > 40) { // al quedar vacía (muerte, salida...) se reinicia casi al instante: jefe fuera y dungeon nueva
                 reset(level);
             }

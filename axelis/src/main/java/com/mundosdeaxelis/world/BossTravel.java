@@ -247,6 +247,19 @@ public final class BossTravel {
         return false;
     }
 
+    /**
+     * ¿Hay alguien mirando en modo espectador? Si la dungeon o la arena se queda sin jugadores activos pero hay un espectador,
+     * se queda en pausa (no se reinicia ni se reconstruye bajo sus pies); al volver a supervivencia todo sigue donde estaba.
+     */
+    public static boolean hasSpectator(ServerLevel level) {
+        for (ServerPlayer p : level.players()) {
+            if (p.isSpectator()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Hace aparecer al jefe si no hay uno vivo ya. */
     public static void spawnBoss(ServerLevel level) {
         if (!hasPlayer(level)) {

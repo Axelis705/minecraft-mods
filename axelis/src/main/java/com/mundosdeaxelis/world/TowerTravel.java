@@ -184,6 +184,10 @@ public final class TowerTravel {
     }
 
     private void tick(ServerLevel level) {
+        if (alive(level).isEmpty() && BossTravel.hasSpectator(level)) {
+            emptyT = 0; // solo hay alguien en espectador: la pelea queda en pausa, no se reinicia
+            return;
+        }
         if (alive(level).isEmpty()) {
             // torre vacía (todos murieron o salieron): el Archimago desaparece y la pelea queda lista para empezar de cero
             if (phase != Phase.WAITING && ++emptyT > 8) {
