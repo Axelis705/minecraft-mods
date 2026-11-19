@@ -7,7 +7,7 @@ package com.mundosdeaxelis.vfx;
  *
  * Marco local: +z = hacia donde mira, +y = arriba, los pies en y = 0, altura total ≈ 1.
  */
-final class Creature3D {
+public final class Creature3D {
     private Creature3D() {
     }
 
@@ -17,8 +17,8 @@ final class Creature3D {
             FOREST_SPIRIT = 33, MOON_WOLF = 34, NIGHT_DRAGON = 35,
             OCTOPUS = 36, BUTTERFLY = 37, CRAB = 38, FIREFLY = 39, KOALA = 40, ELEPHANT = 41, LION = 42, SALAMANDER = 43, PEACOCK = 44, DOLPHIN = 45,
             PEGASUS = 46, CELESTIAL = 47, FERRET = 48, MIMIC = 49, GRYPHON = 50, PIGGY = 51, SKUNK = 52, PATCH = 53, SEAL = 54, IMP = 55, TRIKE = 61, YETI = 62, SPROUT_KING = 63, EMBER_ANVIL = 64,
-            FROST_PUP = 65, LITTLE_ARCHMAGE = 66, MAGMA_HEART = 67;
-    static final int SPECIES = 68;
+            FROST_PUP = 65, LITTLE_ARCHMAGE = 66, MAGMA_HEART = 67, CRYSTAL_DRAGON = 68;
+    static final int SPECIES = 69;
 
     // celdas de la textura creature3d.png: u0, v0, u1, v1
     static final float[] T_EYE = {0F, 0F, 0.5F, 0.5F};
@@ -370,6 +370,73 @@ final class Creature3D {
 
     // ------------------------------------------------------------------ entrada
 
+    /** Las especies que vuelan (no pisan el suelo: sin polvo al andar y con otro modo de inclinarse). */
+    public static boolean flier(int sp) {
+        return sp == RACCOON || sp == CRYSTAL_DRAGON || sp == GRYPHON || sp == JELLY || sp == PHOENIX || sp == FAIRY || sp == BEE || sp == WHALE
+                || sp == GHOST || sp == NIGHT_DRAGON || sp == BUTTERFLY || sp == FIREFLY || sp == DOLPHIN || sp == PEGASUS || sp == CELESTIAL;
+    }
+
+    /**
+     * Pone al día el movimiento con vida de una criatura 3D (lo llama el cliente una vez por tick, después de moverla):
+     * velocidad suavizada, zancada según la distancia, inclinación con muelle al acelerar y frenar, ladeo al girar y
+     * aplastado con rebote al aterrizar.
+     */
+    public static void tickMotion(VfxData d) {
+        int sp = (int) Math.round(d.b);
+        double vx = d.x - d.px, vz = d.z - d.pz, vy = d.y - d.py;
+        double spd = Math.sqrt(vx * vx + vz * vz);
+        if (spd > 1.5) {
+            spd = 0;
+        }
+        if (!d.mInit) {
+            d.mInit = true;
+            d.mSpd = d.pmSpd = spd;
+            d.mVy = vy;
+            return;
+        }
+        d.pmSpd = d.mSpd;
+        d.mSpd += (spd - d.mSpd) * 0.3;
+        double accel = d.mSpd - d.pmSpd;
+        boolean fly = flier(sp);
+        double size = Math.max(0.5, d.size);
+        // zancada: en el suelo avanza con lo recorrido (más pasos si es pequeña); volando, las alas baten algo más rápido al ir deprisa
+        d.pmGait = d.mGait;
+        if (fly) {
+            d.mGait += 0.62 * (1 + Math.min(1, d.mSpd * 3) * 0.6);
+        } else {
+            d.mGait += 0.62 * cl(d.mSpd / 0.22 / Math.sqrt(size), 0.4, 2.3);
+        }
+        // inclinación: hacia delante al arrancar, hacia atrás al frenar (con muelle)
+        d.pmLean = d.mLean;
+        double leanT = cl(accel * 9.0 + Math.min(d.mSpd, 0.4) * (fly ? 0.9 : 0.35), -0.3, fly ? 0.5 : 0.3);
+        d.mLeanV += (leanT - d.mLean) * 0.22;
+        d.mLeanV *= 0.6;
+        d.mLean += d.mLeanV;
+        // ladeo hacia dentro de la curva (con muelle)
+        double dyaw = d.yaw - d.pyaw;
+        while (dyaw > Math.PI) {
+            dyaw -= Math.PI * 2;
+        }
+        while (dyaw < -Math.PI) {
+            dyaw += Math.PI * 2;
+        }
+        d.pmBank = d.mBank;
+        double bankT = cl(dyaw * (fly ? 3.2 : 2.0) * Math.min(1, d.mSpd * 5 + 0.2), -0.32, 0.32);
+        d.mBankV += (bankT - d.mBank) * 0.2;
+        d.mBankV *= 0.6;
+        d.mBank += d.mBankV;
+        // aterrizaje: si venía cayendo y se para, se aplasta y rebota
+        if (!fly && d.mVy < -0.12 && vy > -0.03) {
+            d.mSqV -= Math.min(0.35, -d.mVy * 0.9);
+        }
+        d.mVy = vy;
+        d.pmSq = d.mSq;
+        double sqT = fly ? 0 : cl(Math.abs(vy) * 1.2, 0, 0.12);
+        d.mSqV += (sqT - d.mSq) * 0.3;
+        d.mSqV *= 0.7;
+        d.mSq += d.mSqV;
+    }
+
     static void emit(VfxData d, double age, double partial, V3 pos, Cam cam, Sink s) {
         int sp = (int) Math.round(d.b);
         if (sp < 0 || sp >= SPECIES || d.size <= 0) {
@@ -411,13 +478,16 @@ final class Creature3D {
         c.t = age;
         c.ph = ph;
         c.yaw = yaw;
-        c.speed = Math.min(1, Math.sqrt(vel.x * vel.x + vel.z * vel.z) * 2.2);
+        double mspd = d.mInit ? d.pmSpd + (d.mSpd - d.pmSpd) * partial : Math.sqrt(vel.x * vel.x + vel.z * vel.z);
+        c.speed = Math.min(1, mspd * 2.2);
         c.walk = ss(0.06, 0.40, c.speed);
-        c.gait = age * 0.62 + ph;
-        boolean flier = sp == GRYPHON || sp == JELLY || sp == PHOENIX || sp == FAIRY || sp == BEE || sp == WHALE || sp == GHOST || sp == NIGHT_DRAGON
-                || sp == BUTTERFLY || sp == FIREFLY || sp == DOLPHIN || sp == PEGASUS || sp == CELESTIAL;
-        c.pitch = flier ? cl(vf * 1.1 - vy * 0.5, -0.30, 0.45) : cl(vf * 0.5 - vy * 0.4, -0.18, 0.18);
-        c.roll = flier ? cl(vl * 1.0, -0.30, 0.30) : 0;
+        c.gait = (d.mInit ? d.pmGait + (d.mGait - d.pmGait) * partial : age * 0.62) + ph;
+        double mLean = d.pmLean + (d.mLean - d.pmLean) * partial;
+        double mBank = d.pmBank + (d.mBank - d.pmBank) * partial;
+        double mSq = d.pmSq + (d.mSq - d.pmSq) * partial;
+        boolean flier = flier(sp);
+        c.pitch = flier ? cl(mLean - vy * 0.5, -0.30, 0.5) : cl(mLean - vy * 0.4, -0.22, 0.24);
+        c.roll = flier ? cl(mBank + vl * 0.4, -0.34, 0.34) : cl(mBank * 0.7, -0.2, 0.2);
         double bc0 = (age + ph * 7) % 96;
         c.shut = bc0 < 5 || (bc0 >= 10 && bc0 < 14 && ((long) ((age + ph * 7) / 96)) % 3 == 0);
         // vida: respiración, saltito de alegría, sacudida y ladeo de cabeza (solo cuando está quieto)
@@ -434,38 +504,45 @@ final class Creature3D {
         c.origin = pos.add(0, c.joy * 0.075 * c.scale, 0);
         double[] bm = rot(yaw + c.shake * 0.20, c.pitch, c.roll);
         // respirar: el cuerpo se estira y encoge apenas (más al estar quieto); al saltar se estira
-        double stretch = 1 + 0.014 * c.breath * idle + 0.06 * c.joy;
+        double stretch = 1 + 0.014 * c.breath * idle + 0.06 * c.joy + mSq;
+        double widen = 1 - mSq * 0.5;
         bm[1] *= stretch;
         bm[4] *= stretch;
         bm[7] *= stretch;
+        bm[0] *= widen;
+        bm[3] *= widen;
+        bm[6] *= widen;
+        bm[2] *= widen;
+        bm[5] *= widen;
+        bm[8] *= widen;
         System.arraycopy(bm, 0, c.m, 0, 9);
         switch (sp) {
-            case FOX -> Pets10.griffin(c);
+            case FOX -> Pets21.landShark(c);
             case CAT -> Pets9.fortuneCat(c);
             case OWL -> Pets13.emberPup(c);
             case BUNNY -> Pets9.moonBunny(c);
-            case JELLY -> Pets11.seahorse(c);
-            case PHOENIX -> Pets12.thunderbird(c);
+            case JELLY -> Pets21.cloud(c);
+            case PHOENIX -> Pets22.cometCat(c);
             case TURTLE -> Pets10.islandTurtle(c);
             case PENGUIN -> Pets10.explorerPenguin(c);
             case UNICORN -> Pets13.angelLamb(c);
-            case PANDA -> Pets11.monkRedPanda(c);
+            case PANDA -> Pets22.astroOctopus(c);
             case CHICK -> Pets8.mushroom(c);
-            case FROG -> Pets8.frogBulb(c);
+            case FROG -> Pets23.sproutFrog(c);
             case HAMSTER -> Pets8.sootSprite(c);
             case SNAIL -> Pets8.cottageSnail(c);
             case BEE -> Creatures3.bee(c);
-            case SHEEP -> Pets9.goat(c);
-            case HEDGEHOG -> Pets9.turboHedgehog(c);
+            case SHEEP -> Pets23.mountainGoat(c);
+            case HEDGEHOG -> Pets21.toaster(c);
             case AXOLOTL -> Creatures3.axolotl(c);
-            case RACCOON -> Pets10.maskedThief(c);
+            case RACCOON -> Pets21.vampireBat(c);
             case DEER -> Pets13.jadeDragon(c);
             case WHALE -> Pets12.skyWhale(c);
             case KITSUNE -> Creatures4.kitsune(c);
-            case CAPYBARA -> Pets8.tanuki(c);
+            case CAPYBARA -> Pets22.zenCapybara(c);
             case DUCK -> Pets8.pirateDuck(c);
             case SLIME -> Creatures5.slime(c);
-            case CORGI -> Pets9.ninjaDog(c);
+            case CORGI -> Pets23.ninjaPup(c);
             case CREEPER -> Creatures5.creeper(c);
             case SNOWMAN -> Creatures5.snowman(c);
             case GHOST -> Creatures5.ghost(c);
@@ -481,16 +558,16 @@ final class Creature3D {
             case FIREFLY -> Pets9.lanternSpirit(c);
             case KOALA -> Pets9.sloth(c);
             case ELEPHANT -> Pets10.mammoth(c);
-            case LION -> Creatures7.lion(c);
+            case LION -> Pets23.lionCub(c);
             case SALAMANDER -> Creatures7.salamander(c);
-            case PEACOCK -> Pets11.quetzal(c);
+            case PEACOCK -> Pets23.quetzal(c);
             case DOLPHIN -> Pets11.narwhal(c);
             case PEGASUS -> Creatures7.pegasus(c);
             case CELESTIAL -> Creatures7.celestial(c);
             case FERRET -> Creatures7.ferret(c);
             case MIMIC -> Pets14.mimic(c);
-            case GRYPHON -> Pets14.royalGriffin(c);
-            case PIGGY -> Pets17.piggyBank(c);
+            case GRYPHON -> Pets23.royalGriffon(c);
+            case PIGGY -> Pets23.piggyBank(c);
             case SKUNK -> Pets17.skunkWizard(c);
             case SEAL -> Pets17.sailorSeal(c);
             case IMP -> Pets15.moonImp(c);
@@ -502,6 +579,7 @@ final class Creature3D {
             case FROST_PUP -> Pets20.frostPup(c);
             case LITTLE_ARCHMAGE -> Pets20.littleArchmage(c);
             case MAGMA_HEART -> Pets20.magmaHeart(c);
+            case CRYSTAL_DRAGON -> Pets22.crystalDragon(c);
             default -> Creatures2.fairy(c);
         }
     }

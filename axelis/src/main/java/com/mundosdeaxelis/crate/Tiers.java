@@ -40,12 +40,12 @@ public final class Tiers {
         put(Tier.STELLAR, "hourglass", "abyss_scepter");
         put(Tier.CELESTIAL, "void_singularity", "celestial_aegis");
         // ---------------- compañeros (48)
-        put(Tier.COMMON, "comp_chick", "comp_frog", "comp_hamster", "comp_snail", "comp_capybara", "comp_duck", "comp_slime");
-        put(Tier.UNCOMMON, "comp_bee", "comp_sheep", "comp_hedgehog", "comp_bunny", "comp_cat", "comp_corgi", "comp_snowman");
-        put(Tier.RARE, "comp_fox", "comp_turtle", "comp_penguin", "comp_raccoon", "comp_ghost", "comp_sparkmouse");
-        put(Tier.EPIC, "comp_jelly", "comp_panda", "comp_forest_spirit");
+        put(Tier.COMMON, "comp_chick", "comp_frog", "comp_hamster", "comp_snail", "comp_zen_capybara", "comp_duck", "comp_slime");
+        put(Tier.UNCOMMON, "comp_bee", "comp_sheep", "comp_toaster", "comp_bunny", "comp_cat", "comp_corgi", "comp_snowman");
+        put(Tier.RARE, "comp_land_shark", "comp_turtle", "comp_penguin", "comp_vampire_bat", "comp_ghost", "comp_sparkmouse");
+        put(Tier.EPIC, "comp_cloud", "comp_astro_octopus", "comp_forest_spirit");
         // favoritas de Axelis subidas de rareza: Creepercito, Golemcito y Ajolote a Legendaria; Droide, Cerbero y Dragón de la Noche a Mítica
-        put(Tier.LEGENDARY, "comp_phoenix", "comp_whale", "comp_creeper", "comp_golem", "comp_axolotl");
+        put(Tier.LEGENDARY, "comp_comet_cat", "comp_crystal_dragon", "comp_whale", "comp_creeper", "comp_golem", "comp_axolotl");
         put(Tier.MYTHIC, "comp_kitsune", "comp_droid", "comp_moon_wolf", "comp_night_dragon");
         put(Tier.COMMON, "comp_crab");
         put(Tier.UNCOMMON, "comp_octopus", "comp_firefly");

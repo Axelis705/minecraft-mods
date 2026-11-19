@@ -403,6 +403,212 @@ public final class AutoTest {
         return sc == null ? "ninguna" : sc.getClass().getSimpleName();
     }
 
+    // ------------------------------------------------------------------ hojas de animación (cuadros seguidos de cada criatura)
+
+    /** Estudio de animación: suelo liso y pared gris clara (se ven bien las siluetas), luces invisibles. Criatura en (AX, -60, AZ). */
+    private static final int AX = -200, AZ = -60;
+    private static final int CELL = 200, COLS = 10, ROWS = 6;
+    private static String clipName;
+    private static int clipLeft, clipN;
+    private static long clipNext, clipEvery;
+    private static BufferedImage clipSheet;
+
+    private static void animStudio() {
+        List<String> c = new ArrayList<>();
+        c.add(f("fill %d -61 %d %d -61 %d minecraft:smooth_stone", AX - 14, AZ - 14, AX + 14, AZ + 8));
+        c.add(f("fill %d -60 %d %d -45 %d minecraft:air", AX - 14, AZ - 14, AX + 14, AZ + 7));
+        c.add(f("fill %d -60 %d %d -46 %d minecraft:light_gray_concrete", AX - 14, AZ + 8, AX + 14, AZ + 8));
+        c.add(f("fill %d -60 %d %d -60 %d minecraft:gray_concrete", AX - 14, AZ + 8, AX + 14, AZ + 8));
+        for (int dx = -9; dx <= 9; dx += 3) {
+            c.add(f("setblock %d -56 %d minecraft:light[level=15]", AX + dx, AZ - 2));
+            c.add(f("setblock %d -52 %d minecraft:light[level=15]", AX + dx, AZ + 2));
+            c.add(f("setblock %d -57 %d minecraft:light[level=15]", AX + dx, AZ - 6));
+        }
+        c.add("time set 6000");
+        for (String k : c) {
+            cmd("execute in minecraft:overworld run " + k);
+        }
+    }
+
+    /** Empieza a guardar {@code n} cuadros, uno cada {@code every} ms, en la hoja de la criatura actual. */
+    private static void clip(int n, long every) {
+        clipLeft = n;
+        clipEvery = every;
+        clipNext = 0;
+    }
+
+    @SubscribeEvent
+    public static void onRender(TickEvent.RenderTickEvent e) {
+        if (!ON || e.phase != TickEvent.Phase.END || clipLeft <= 0 || clipSheet == null) {
+            return;
+        }
+        long now = System.currentTimeMillis();
+        if (now < clipNext) {
+            return;
+        }
+        clipNext = now + clipEvery;
+        clipLeft--;
+        try (NativeImage n = Screenshot.takeScreenshot(Minecraft.getInstance().getMainRenderTarget())) {
+            int w = n.getWidth(), h = n.getHeight();
+            int side = (int) (Math.min(w, h) * 0.86);
+            int x0 = (w - side) / 2, y0 = (h - side) / 2;
+            int step = Math.max(1, side / CELL);
+            BufferedImage cell = new BufferedImage(CELL, CELL, BufferedImage.TYPE_INT_RGB);
+            for (int y = 0; y < CELL; y++) {
+                for (int x = 0; x < CELL; x++) {
+                    // media de un cuadrito de píxeles (más suave que tomar uno solo)
+                    long r = 0, g = 0, b = 0;
+                    int cnt = 0;
+                    int sx = x0 + x * side / CELL, sy = y0 + y * side / CELL;
+                    for (int j = 0; j < step; j += 2) {
+                        for (int i = 0; i < step; i += 2) {
+                            int c = n.getPixelRGBA(Math.min(w - 1, sx + i), Math.min(h - 1, sy + j));
+                            r += c & 0xFF;
+                            g += c >> 8 & 0xFF;
+                            b += c >> 16 & 0xFF;
+                            cnt++;
+                        }
+                    }
+                    cell.setRGB(x, y, (int) (r / cnt) << 16 | (int) (g / cnt) << 8 | (int) (b / cnt));
+                }
+            }
+            int k = clipN++;
+            if (k < COLS * ROWS) {
+                clipSheet.getGraphics().drawImage(cell, k % COLS * CELL, k / COLS * CELL, null);
+            }
+        } catch (Exception ex) {
+            log("FALLO cuadro de " + clipName + ": " + ex);
+        }
+    }
+
+    /** La criatura de la prueba de animación (en el servidor). */
+    private static void onMob(String id, java.util.function.Consumer<net.minecraft.world.entity.Mob> c) {
+        onServer(sp -> {
+            for (net.minecraft.world.entity.Entity en : sp.serverLevel().getAllEntities()) {
+                if (en instanceof net.minecraft.world.entity.Mob mob && id.equals(net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES.getKey(en.getType()).getPath())) {
+                    try {
+                        c.accept(mob);
+                    } catch (Throwable t) {
+                        log("aviso en la animación de " + id + ": " + t);
+                    }
+                    return;
+                }
+            }
+        });
+    }
+
+    /**
+     * Graba una hoja de cuadros de la criatura {@code id}: quieta (6), andando de un lado a otro (18), atacando (12), recibiendo
+     * un golpe (8) y muriendo (16). La cámara la mira de lado desde {@code d} bloques, centrada en la altura {@code cy}. Los jefes
+     * ({@code boss}) no mueren (su muerte cuenta como victoria): se quitan.
+     */
+    private static void animClip(String id, double y, double cy, double d, String nbt, boolean boss) {
+        add("animación " + id, 1800, () -> {
+            clearMobs();
+            clipName = id;
+            clipN = 0;
+            clipSheet = new BufferedImage(CELL * COLS, CELL * ROWS, BufferedImage.TYPE_INT_RGB);
+            cmd(f("execute in minecraft:overworld run summon mundos_de_axelis:%s %.1f %.2f %.1f {PersistenceRequired:1b,Silent:1b,Rotation:[90f,0f]%s}",
+                    id, AX + 0.5, y, AZ + 0.5, nbt));
+            onMob(id, mob -> {
+                mob.goalSelector.removeAllGoals(g -> true);
+                mob.targetSelector.removeAllGoals(g -> true);
+                mob.setHealth(mob.getMaxHealth());
+            });
+            standLooking(AX + 0.5, cy - 1.2, AZ + 0.5 - d, AX + 0.5, cy, AZ + 0.5);
+        });
+        add("animación " + id + ": quieta", 6 * 110 + 200, () -> clip(6, 110));
+        add("animación " + id + ": andando", 18 * 110 + 200, () -> {
+            if (nbt.contains("Awake:0b")) {
+                cmd(f("execute in minecraft:overworld run data merge entity @e[type=mundos_de_axelis:%s,limit=1] {Awake:1b}", id));
+            }
+            onMob(id, mob -> {
+                mob.setAggressive(true);
+                // de un lado a otro sin salirse del cuadro (lo que se ve a esa distancia)
+                double r = d * 0.42;
+                mob.getNavigation().moveTo(AX + 0.5 + r, y, AZ + 0.5, 1.0);
+                com.mundosdeaxelis.world.Scheduler.runLater(20, () -> {
+                    if (mob.isAlive()) {
+                        mob.getNavigation().moveTo(AX + 0.5 - r, y, AZ + 0.5, 1.2);
+                    }
+                });
+            });
+            clip(18, 110);
+        });
+        add("animación " + id + ": ataca", 12 * 85 + 200, () -> {
+            onMob(id, mob -> {
+                mob.getNavigation().stop();
+                mob.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+                com.mundosdeaxelis.world.Scheduler.runLater(14, () -> mob.swing(net.minecraft.world.InteractionHand.MAIN_HAND));
+            });
+            clip(12, 85);
+        });
+        add("animación " + id + ": golpe", 8 * 85 + 200, () -> {
+            onMob(id, mob -> mob.hurt(mob.damageSources().generic(), Math.min(2.0F, mob.getHealth() * 0.1F)));
+            clip(8, 85);
+        });
+        add("animación " + id + ": muere", 16 * 90 + 300, () -> {
+            if (boss) {
+                onMob(id, mob -> mob.hurt(mob.damageSources().generic(), Math.min(2.0F, mob.getHealth() * 0.1F)));
+            } else {
+                onMob(id, net.minecraft.world.entity.LivingEntity::kill);
+            }
+            clip(16, 90);
+        });
+        add("animación " + id + " (hoja)", 300, () -> {
+            try {
+                Path dir = FMLPaths.GAMEDIR.get().resolve("screenshots");
+                Files.createDirectories(dir);
+                javax.imageio.ImageIO.write(clipSheet, "png", dir.resolve("axelis_anim_" + id + ".png").toFile());
+                check("hoja de animación de " + id + " (" + clipN + " cuadros)", clipN >= 50);
+            } catch (Exception ex) {
+                fails++;
+                log("FALLO hoja de " + id + ": " + ex);
+            }
+            clipSheet = null;
+        });
+    }
+
+    /** Mascotas nuevas siguiendo al dueño, que se va moviendo de un lado a otro (para ver cómo andan, vuelan y se inclinan). */
+    private static void petClip() {
+        add("animación mascotas", 2500, () -> {
+            clearMobs();
+            clipName = "mascotas";
+            clipN = 0;
+            clipSheet = new BufferedImage(CELL * COLS, CELL * ROWS, BufferedImage.TYPE_INT_RGB);
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 900 4 true");
+            standLooking(AX - 4.5, -60.0, AZ - 4.5, AX - 4.5, -59.3, AZ + 5.5);
+            onServer(sp -> {
+                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.LAND_SHARK, 1.0F);
+                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.COMET_CAT, 1.0F);
+                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.TOASTER, 1.0F);
+                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.CRYSTAL_DRAGON, 1.0F);
+            });
+        });
+        add("animación mascotas: quietas", 10 * 110 + 200, () -> clip(10, 110));
+        for (int k = 0; k < 5; k++) {
+            double x = AX + (k % 2 == 0 ? 4.5 : -4.5);
+            add("animación mascotas: me muevo " + k, 10 * 110 + 200, () -> {
+                standLooking(x, -60.0, AZ - 4.5, x, -59.3, AZ + 5.5);
+                clip(10, 110);
+            });
+        }
+        add("animación mascotas (hoja)", 300, () -> {
+            try {
+                Path dir = FMLPaths.GAMEDIR.get().resolve("screenshots");
+                Files.createDirectories(dir);
+                javax.imageio.ImageIO.write(clipSheet, "png", dir.resolve("axelis_anim_mascotas.png").toFile());
+                check("hoja de animación de las mascotas (" + clipN + " cuadros)", clipN >= 50);
+            } catch (Exception ex) {
+                fails++;
+                log("FALLO hoja de mascotas: " + ex);
+            }
+            clipSheet = null;
+            cmd("gamemode spectator @a");
+        });
+    }
+
     private static void build() {
         add("reglas", 800, () -> {
             cmd("gamerule sendCommandFeedback false");
@@ -892,6 +1098,40 @@ public final class AutoTest {
         add("álbum: criaturas (foto)", 300, () -> shot("47_album_criaturas"));
         add("álbum: criaturas nuevas", 1800, () -> Minecraft.getInstance().screen.keyPressed(org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT, 0, 0));
         add("álbum: criaturas nuevas (foto)", 300, () -> shot("48_album_criaturas_nuevas"));
+        // 9. animaciones en movimiento: cada criatura quieta, andando, atacando, recibiendo un golpe y muriendo, en hojas de cuadros
+        add("estudio de animación", 2500, () -> {
+            clearMobs();
+            Minecraft.getInstance().options.hideGui = true;
+            cmd("gamemode spectator @a");
+            animStudio();
+        });
+        animClip("brote", -60.0, -59.3, 3.4, "", false);
+        animClip("espinoso", -60.0, -59.2, 3.4, "", false);
+        animClip("polinizador", -58.6, -58.4, 3.2, "", false);
+        animClip("raizal", -60.0, -58.6, 4.8, "", false);
+        animClip("guardian_musgo", -60.0, -58.3, 6.2, "", false);
+        animClip("rey_brote", -60.0, -57.8, 9.0, "", true);
+        animClip("escoria", -60.0, -59.4, 3.0, "", false);
+        animClip("chispero", -60.0, -59.3, 3.2, "", false);
+        animClip("ascua", -58.8, -58.7, 2.8, "", false);
+        animClip("fundidor", -60.0, -58.6, 4.6, "", false);
+        animClip("capataz", -60.0, -58.4, 5.6, "", false);
+        animClip("gran_herrero", -60.0, -57.4, 10.0, "", true);
+        animClip("lobo_escarcha", -60.0, -59.2, 4.2, "", false);
+        animClip("lobo_artico", -60.0, -57.9, 8.0, "", true);
+        animClip("esbirro", -60.0, -59.0, 3.8, "", false);
+        animClip("armadura_encantada", -60.0, -59.0, 3.8, ",Awake:0b", false);
+        animClip("libro_embrujado", -59.0, -58.8, 2.6, "", false);
+        animClip("archimago", -60.0, -58.0, 6.0, "", true);
+        animClip("salamandra_lava", -60.0, -59.6, 3.0, "", false);
+        animClip("diablillo", -58.8, -58.7, 2.8, "", false);
+        animClip("cultista_volcan", -60.0, -58.9, 3.8, "", false);
+        animClip("larva_magma", -60.0, -59.7, 2.4, "", false);
+        petClip();
+        add("fin de las animaciones", 500, () -> {
+            clearMobs();
+            Minecraft.getInstance().options.hideGui = false;
+        });
         add("fin", 2000, () -> {
             clearMobs();
             open(null);

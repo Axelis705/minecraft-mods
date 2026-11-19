@@ -1,0 +1,28 @@
+{
+ "variants": {
+  "phase=0": {
+   "model": "mundos_de_axelis:block/respiradero_volcan_0"
+  },
+  "phase=1": {
+   "model": "mundos_de_axelis:block/respiradero_volcan_1"
+  },
+  "phase=2": {
+   "model": "mundos_de_axelis:block/respiradero_volcan_2"
+  },
+  "phase=3": {
+   "model": "mundos_de_axelis:block/respiradero_volcan_2"
+  },
+  "phase=4": {
+   "model": "mundos_de_axelis:block/respiradero_volcan_2"
+  },
+  "phase=5": {
+   "model": "mundos_de_axelis:block/respiradero_volcan_2"
+  },
+  "phase=6": {
+   "model": "mundos_de_axelis:block/respiradero_volcan_2"
+  },
+  "phase=7": {
+   "model": "mundos_de_axelis:block/respiradero_volcan_2"
+  }
+ }
+}

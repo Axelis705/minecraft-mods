@@ -269,6 +269,45 @@ public class LoboArticoModel extends EntityModel<LoboArtico> {
         float alx, alz, flx, arx, arz, frx;
         float tlx, tlz, trx, trz, rolll, rollr;
         float tail, cloak, strip, flap, drape;
+
+        /** La pose como lista de números (para mezclar estados con {@link Inertia}). */
+        float[] pack() {
+            return new float[]{spin, torsoX, torsoY, torsoZ, neckX, headPitch, headYaw, jaw, lx, rx, lsx, rsx, alx, alz, flx, arx, arz, frx,
+                    tlx, tlz, trx, trz, rolll, rollr, tail, cloak, strip, flap, drape};
+        }
+
+        void unpack(float[] v) {
+            int i = 0;
+            spin = v[i++];
+            torsoX = v[i++];
+            torsoY = v[i++];
+            torsoZ = v[i++];
+            neckX = v[i++];
+            headPitch = v[i++];
+            headYaw = v[i++];
+            jaw = v[i++];
+            lx = v[i++];
+            rx = v[i++];
+            lsx = v[i++];
+            rsx = v[i++];
+            alx = v[i++];
+            alz = v[i++];
+            flx = v[i++];
+            arx = v[i++];
+            arz = v[i++];
+            frx = v[i++];
+            tlx = v[i++];
+            tlz = v[i++];
+            trx = v[i++];
+            trz = v[i++];
+            rolll = v[i++];
+            rollr = v[i++];
+            tail = v[i++];
+            cloak = v[i++];
+            strip = v[i++];
+            flap = v[i++];
+            drape = v[i++];
+        }
     }
 
     private static float clamp01(float x) {
@@ -651,6 +690,13 @@ public class LoboArticoModel extends EntityModel<LoboArtico> {
         if (dth > 0.0F) {
             kneel(p, sm(dth * 2.2F));
         }
+        // al cambiar de ataque, la pose anterior se funde con la nueva en unos ticks (nada salta de golpe)
+        float[] pv = p.pack();
+        Inertia.blend(e, state, pv, 7.0F, pt);
+        p.unpack(pv);
+        // y el cuerpo entero se mece un poco con la inercia de sus giros y los golpes que recibe
+        Motion mo = Motion.of(e);
+        float jig = mo.jiggle(pt), swayM = mo.sway(pt), dragM = mo.drag(pt);
 
         // hundirse sobre las piernas dobladas (el cuerpo baja lo que suben los pies respecto a la guardia)
         float h0 = legHeight(-0.35F, 0.9F);
@@ -704,20 +750,20 @@ public class LoboArticoModel extends EntityModel<LoboArtico> {
         // capa, capucha y cola se mecen solas
         float sw = Mth.sin(age * 0.09F);
         float sw2 = Mth.sin(age * 0.13F + 1.0F);
-        this.cloakA.xRot = p.cloak + sw * 0.035F;
-        this.cloakB.xRot = p.cloak * 0.7F + p.strip * 0.3F + sw2 * 0.05F;
+        this.cloakA.xRot = p.cloak + sw * 0.035F + dragM * 0.35F;
+        this.cloakB.xRot = p.cloak * 0.7F + p.strip * 0.3F + sw2 * 0.05F + dragM * 0.25F + jig * 0.1F;
         this.cloakCl.xRot = p.strip + Mth.sin(age * 0.11F + 0.4F) * 0.07F;
         this.cloakCm.xRot = p.strip + Mth.sin(age * 0.11F + 1.7F) * 0.07F;
         this.cloakCr.xRot = p.strip + Mth.sin(age * 0.11F + 2.9F) * 0.07F;
         this.flapL.xRot = p.flap + Mth.sin(age * 0.1F) * 0.04F;
         this.flapR.xRot = p.flap + Mth.sin(age * 0.1F + 0.8F) * 0.04F;
         this.hoodDrape.xRot = 0.3F + p.drape + sw * 0.03F;
-        this.tailA.xRot = 0.2F + p.tail;
-        this.tailA.yRot = Mth.sin(age * 0.07F) * 0.1F;
+        this.tailA.xRot = 0.2F + p.tail + dragM * 0.2F + jig * 0.15F;
+        this.tailA.yRot = Mth.sin(age * 0.07F) * 0.1F + swayM * 0.5F;
         this.tailB.xRot = this.tailBx + Mth.sin(age * 0.09F + 0.7F) * 0.08F;
-        this.tailB.yRot = Mth.sin(age * 0.07F + 0.9F) * 0.14F;
+        this.tailB.yRot = Mth.sin(age * 0.07F + 0.9F) * 0.14F + swayM * 0.4F;
         this.tailC.xRot = this.tailCx + Mth.sin(age * 0.1F + 1.4F) * 0.1F;
-        this.tailC.yRot = Mth.sin(age * 0.07F + 1.8F) * 0.2F;
+        this.tailC.yRot = Mth.sin(age * 0.07F + 1.8F) * 0.2F + swayM * 0.35F;
         this.chainL.xRot = this.chainLx + Mth.sin(age * 0.1F) * 0.08F + p.cloak * 0.4F;
         this.chainR.xRot = this.chainRx + Mth.sin(age * 0.1F + 1.2F) * 0.08F + p.cloak * 0.4F;
         this.beard.xRot = this.beardX + Mth.sin(age * 0.08F) * 0.04F - p.torsoX * 0.1F;

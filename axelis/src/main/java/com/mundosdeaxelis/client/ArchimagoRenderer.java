@@ -10,13 +10,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /** Dibuja al Archimago: grande, con los ojos, la gema del bastón, los cristales y el borde de la túnica brillando en la oscuridad. */
-public class ArchimagoRenderer extends MobRenderer<Archimago, ArchimagoModel> {
+public class ArchimagoRenderer extends AnimatedMobRenderer<Archimago, ArchimagoModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/archimago.png");
     private static final ResourceLocation GLOW = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/archimago_glow.png");
     /** Tamaño del modelo respecto a su dibujo (las cajas miden 1/16 de bloque). */
@@ -32,10 +31,6 @@ public class ArchimagoRenderer extends MobRenderer<Archimago, ArchimagoModel> {
         return TEXTURE;
     }
 
-    @Override
-    protected float getFlipDegrees(Archimago entity) {
-        return 0.0F;
-    }
 
     /** Ya tiene barra de jefe: el rótulo con el nombre se quedaría metido en el sombrero. */
     @Override
@@ -44,7 +39,7 @@ public class ArchimagoRenderer extends MobRenderer<Archimago, ArchimagoModel> {
     }
 
     @Override
-    protected void scale(Archimago entity, PoseStack pose, float partialTick) {
+    protected void baseScale(Archimago entity, PoseStack pose, float partialTick) {
         pose.scale(SCALE, SCALE, SCALE);
     }
 

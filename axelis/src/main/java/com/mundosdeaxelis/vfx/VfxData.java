@@ -20,6 +20,13 @@ public final class VfxData {
     /** Orientación suavizada (solo para modelos 3D): la actual, la del tick anterior y si ya se inicializó. */
     public double yaw, pyaw;
     public boolean yawInit;
+    /**
+     * "Movimiento con vida" de las criaturas 3D, puesto al día cada tick por el cliente (con su valor del tick anterior para
+     * interpolar): velocidad suavizada, fase de la zancada (avanza con la distancia recorrida: las patas no "patinan"),
+     * inclinación al acelerar o frenar, ladeo al girar y aplastado al aterrizar.
+     */
+    public double mSpd, pmSpd, mGait, pmGait, mLean, pmLean, mLeanV, mBank, pmBank, mBankV, mSq, pmSq, mSqV, mVy;
+    public boolean mInit;
     public double tx, ty, tz;
     public boolean hasT;
     public final double[] trail = new double[TRAIL_MAX * 3];

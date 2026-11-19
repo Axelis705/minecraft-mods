@@ -207,24 +207,25 @@ public final class MysteryLoot {
         add(BoxTier.LEGENDARY, 10, of(ModItems.VICTORY_BANNER, 1, 1));
         add(BoxTier.LEGENDARY, 10, vanilla(Items.ELYTRA, 1, 1));
         // Figuritas de compañeros
-        add(BoxTier.RARE, 5, of(ModItems.COMP_FOX, 1, 1));
+        add(BoxTier.RARE, 5, of(ModItems.COMP_LAND_SHARK, 1, 1));
         add(BoxTier.RARE, 5, of(ModItems.COMP_CAT, 1, 1));
         add(BoxTier.RARE, 5, of(ModItems.COMP_BUNNY, 1, 1));
         add(BoxTier.RARE, 5, of(ModItems.COMP_TURTLE, 1, 1));
         add(BoxTier.RARE, 5, of(ModItems.COMP_PENGUIN, 1, 1));
-        add(BoxTier.EPIC, 4, of(ModItems.COMP_FOX, 1, 1));
+        add(BoxTier.EPIC, 4, of(ModItems.COMP_LAND_SHARK, 1, 1));
         add(BoxTier.EPIC, 4, of(ModItems.COMP_CAT, 1, 1));
         add(BoxTier.EPIC, 4, of(ModItems.COMP_BUNNY, 1, 1));
         add(BoxTier.EPIC, 4, of(ModItems.COMP_TURTLE, 1, 1));
         add(BoxTier.EPIC, 4, of(ModItems.COMP_PENGUIN, 1, 1));
-        add(BoxTier.EPIC, 4, of(ModItems.COMP_JELLY, 1, 1));
-        add(BoxTier.EPIC, 4, of(ModItems.COMP_PHOENIX, 1, 1));
-        add(BoxTier.EPIC, 4, of(ModItems.COMP_PANDA, 1, 1));
-        add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_JELLY, 1, 1));
-        add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_PHOENIX, 1, 1));
-        add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_PANDA, 1, 1));
-        add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_FOX, 1, 1));
+        add(BoxTier.EPIC, 4, of(ModItems.COMP_CLOUD, 1, 1));
+        add(BoxTier.EPIC, 4, of(ModItems.COMP_COMET_CAT, 1, 1));
+        add(BoxTier.EPIC, 4, of(ModItems.COMP_ASTRO_OCTOPUS, 1, 1));
+        add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_CLOUD, 1, 1));
+        add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_COMET_CAT, 1, 1));
+        add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_ASTRO_OCTOPUS, 1, 1));
+        add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_LAND_SHARK, 1, 1));
         add(BoxTier.LEGENDARY, 8, of(ModItems.COMP_CAT, 1, 1));
+        add(BoxTier.LEGENDARY, 6, of(ModItems.COMP_CRYSTAL_DRAGON, 1, 1));
 
         add(BoxTier.LEGENDARY, 10, vanilla(Items.TOTEM_OF_UNDYING, 1, 2));
         add(BoxTier.LEGENDARY, 8, vanilla(Items.NETHERITE_INGOT, 1, 2));

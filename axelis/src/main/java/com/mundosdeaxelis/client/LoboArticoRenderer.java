@@ -10,13 +10,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /** Dibuja al Lobo Ártico: grande, con los ojos, los cristales y los filos de las guadañas brillando en la oscuridad. */
-public class LoboArticoRenderer extends MobRenderer<LoboArtico, LoboArticoModel> {
+public class LoboArticoRenderer extends AnimatedMobRenderer<LoboArtico, LoboArticoModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/lobo_artico.png");
     private static final ResourceLocation GLOW = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/lobo_artico_glow.png");
     /** Tamaño del modelo respecto a su dibujo (las cajas miden 1/16 de bloque). */
@@ -32,10 +31,6 @@ public class LoboArticoRenderer extends MobRenderer<LoboArtico, LoboArticoModel>
         return TEXTURE;
     }
 
-    @Override
-    protected float getFlipDegrees(LoboArtico entity) {
-        return 0.0F;
-    }
 
     /** Ya tiene barra de jefe: el rótulo con el nombre se quedaría metido en la capucha. */
     @Override
@@ -44,7 +39,7 @@ public class LoboArticoRenderer extends MobRenderer<LoboArtico, LoboArticoModel>
     }
 
     @Override
-    protected void scale(LoboArtico entity, PoseStack pose, float partialTick) {
+    protected void baseScale(LoboArtico entity, PoseStack pose, float partialTick) {
         pose.scale(SCALE, SCALE, SCALE);
     }
 
@@ -56,7 +51,7 @@ public class LoboArticoRenderer extends MobRenderer<LoboArtico, LoboArticoModel>
         if (p > 0.0F) {
             float k = Mth.clamp((p - 0.5F) / 0.5F, 0.0F, 1.0F);
             k = k * k * (3.0F - 2.0F * k);
-            pose.mulPose(Axis.XP.rotationDegrees(k * 78.0F));
+            pose.mulPose(Axis.XP.rotationDegrees(-k * 78.0F)); // negativo = hacia delante (marco local: delante = -Z)
         }
     }
 

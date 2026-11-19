@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/cube_column",
+ "textures": {
+  "end": "mundos_de_axelis:block/basalto_agrietado_top_1",
+  "side": "mundos_de_axelis:block/basalto_agrietado_side_1"
+ }
+}

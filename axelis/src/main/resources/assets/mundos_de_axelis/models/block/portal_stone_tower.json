@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/cube_column",
+ "textures": {
+  "end": "mundos_de_axelis:block/portal_stone_tower_top",
+  "side": "mundos_de_axelis:block/portal_stone_tower_side"
+ }
+}

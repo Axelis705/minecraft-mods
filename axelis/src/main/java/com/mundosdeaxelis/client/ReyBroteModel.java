@@ -30,10 +30,17 @@ public class ReyBroteModel extends EntityModel<ReyBrote> {
 
     private final ModelPart root;
     private final ModelPart leaves;
+    private final ModelPart leafSide;
+    private final ModelPart trunk;
+    private final ModelPart[] flowers;
 
     public ReyBroteModel(ModelPart root) {
         this.root = root;
         this.leaves = root.hasChild("leaves") ? root.getChild("leaves") : null;
+        this.leafSide = this.leaves != null ? this.leaves.getChild("leaf_side") : null;
+        this.trunk = root.hasChild("trunk") ? root.getChild("trunk") : null;
+        this.flowers = root.hasChild("flower_a")
+                ? new ModelPart[]{root.getChild("flower_a"), root.getChild("flower_b"), root.getChild("flower_c")} : new ModelPart[0];
     }
 
     public static LayerDefinition bodyLayer() {
@@ -42,15 +49,16 @@ public class ReyBroteModel extends EntityModel<ReyBrote> {
         // cuerpo interior con la cara
         r.addOrReplaceChild("inner", CubeListBuilder.create().texOffs(0, 16).addBox(-3.0F, 17.0F, -3.0F, 6.0F, 6.0F, 6.0F), PartPose.ZERO);
         // tronco del arbolito (sale por arriba de la gelatina)
-        r.addOrReplaceChild("trunk", CubeListBuilder.create().texOffs(0, 36).addBox(-0.5F, 9.0F, -0.5F, 1.0F, 8.5F, 1.0F), PartPose.ZERO);
+        r.addOrReplaceChild("trunk", CubeListBuilder.create().texOffs(0, 36).addBox(-0.5F, -8.5F, -0.5F, 1.0F, 8.5F, 1.0F), PartPose.offset(0.0F, 17.5F, 0.0F));
         r.addOrReplaceChild("branch", CubeListBuilder.create().texOffs(0, 36).addBox(0.0F, 11.5F, -0.5F, 2.5F, 0.8F, 1.0F),
                 PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.5F));
         // copa de hojas: dos bloques que se mecen un poco
+        // (giran desde lo alto del tronco: y = 9.5)
         PartDefinition leaves = r.addOrReplaceChild("leaves", CubeListBuilder.create().texOffs(20, 36)
-                .addBox(-2.5F, 5.5F, -2.5F, 5.0F, 3.5F, 5.0F).texOffs(20, 36)
-                .addBox(-1.5F, 3.8F, -1.5F, 3.0F, 2.0F, 3.0F), PartPose.ZERO);
+                .addBox(-2.5F, -4.0F, -2.5F, 5.0F, 3.5F, 5.0F).texOffs(20, 36)
+                .addBox(-1.5F, -5.7F, -1.5F, 3.0F, 2.0F, 3.0F), PartPose.offset(0.0F, 9.5F, 0.0F));
         leaves.addOrReplaceChild("leaf_side", CubeListBuilder.create().texOffs(20, 36)
-                .addBox(1.5F, 7.5F, -1.5F, 2.5F, 2.0F, 3.0F), PartPose.ZERO);
+                .addBox(0.0F, -1.0F, -1.5F, 2.5F, 2.0F, 3.0F), PartPose.offset(1.5F, -1.0F, 0.0F));
         // flores sobre la gelatina
         r.addOrReplaceChild("flower_a", CubeListBuilder.create().texOffs(0, 48).addBox(2.7F, 14.9F, 1.6F, 1.0F, 1.0F, 1.0F), PartPose.ZERO);
         r.addOrReplaceChild("flower_b", CubeListBuilder.create().texOffs(8, 48).addBox(-3.5F, 14.9F, -2.6F, 1.0F, 1.0F, 1.0F), PartPose.ZERO);
@@ -86,10 +94,34 @@ public class ReyBroteModel extends EntityModel<ReyBrote> {
     }
 
     @Override
-    public void setupAnim(ReyBrote entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (this.leaves != null) {
-            this.leaves.zRot = Mth.sin(ageInTicks * 0.08F) * 0.04F;
-            this.leaves.xRot = Mth.cos(ageInTicks * 0.06F) * 0.03F;
+    public void setupAnim(ReyBrote e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
+        if (this.leaves == null) {
+            return;
+        }
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
+        float jig = m.jiggle(pt), sway = m.sway(pt), drag = m.drag(pt);
+        float sq = Mth.lerp(pt, e.sqO, e.sq);
+        float fury = 0.3F * (e.phase() - 1);
+        // el arbolito: se mece con el viento, se queda atrás al saltar y se sacude con cada golpe o aterrizaje
+        float tx = Mth.cos(age * 0.06F) * 0.05F + drag * 0.25F + jig * 0.35F - sq * 0.25F;
+        float tz = Mth.sin(age * 0.08F) * 0.06F + sway * 0.35F + Mth.sin(age * 0.9F) * 0.03F * fury;
+        this.trunk.xRot = tx * 0.6F;
+        this.trunk.zRot = tz * 0.6F;
+        // la copa va en la punta del tronco
+        float len = -8.0F;
+        this.leaves.x = -Mth.sin(tz * 0.6F) * len;
+        this.leaves.y = 17.5F + len * Mth.cos(tx * 0.6F) * Mth.cos(tz * 0.6F);
+        this.leaves.z = len * Mth.sin(tx * 0.6F);
+        this.leaves.xRot = tx;
+        this.leaves.zRot = tz;
+        float rustle = 1.0F + Mth.sin(age * 0.15F) * 0.04F + jig * 0.08F;
+        this.leaves.xScale = rustle;
+        this.leaves.zScale = rustle;
+        this.leafSide.zRot = -0.2F + Mth.sin(age * 0.2F) * 0.15F + jig * 0.4F;
+        // flores: botan con la gelatina
+        for (int i = 0; i < this.flowers.length; i++) {
+            this.flowers[i].y = Mth.sin(age * 0.18F + i * 2.1F) * 0.15F - sq * 0.6F + jig * 0.3F;
         }
     }
 

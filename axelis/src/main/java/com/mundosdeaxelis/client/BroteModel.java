@@ -17,6 +17,9 @@ import net.minecraft.util.Mth;
 
 /** Modelo del Brote: un retoño del bosque con brazos de enredadera, patas de raíz y un brote con hojas en la cabeza. */
 public class BroteModel extends EntityModel<Brote> {
+    private final ModelPart body;
+    private final ModelPart bud;
+
     public static final ModelLayerLocation LAYER =
             new ModelLayerLocation(new ResourceLocation(MundosDeAxelis.MODID, "brote"), "main");
 
@@ -38,6 +41,8 @@ public class BroteModel extends EntityModel<Brote> {
         this.legL = root.getChild("leg_l");
         this.leafA = this.head.getChild("leaf_a");
         this.leafB = this.head.getChild("leaf_b");
+        this.body = root.getChild("body");
+        this.bud = this.head.getChild("bud");
     }
 
     public static LayerDefinition createLayer() {
@@ -60,20 +65,54 @@ public class BroteModel extends EntityModel<Brote> {
 
     @Override
     public void setupAnim(Brote e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        this.head.yRot = netHeadYaw * ((float) Math.PI / 180.0F);
-        this.head.xRot = headPitch * ((float) Math.PI / 180.0F);
-        float swing = Mth.cos(limbSwing * 0.8F) * 1.3F * limbSwingAmount;
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
+        float walk = Math.min(1.0F, limbSwingAmount);
+        float ph = limbSwing * 0.8F;
+        // piernas: zancada con la rodilla que sube al adelantar el pie
+        float swing = Mth.cos(ph) * 1.25F * walk;
         this.legR.xRot = swing;
         this.legL.xRot = -swing;
-        float raise = e.isAggressive() ? -1.25F : 0.0F;
-        float hit = Mth.sin(e.getAttackAnim(0.0F) * (float) Math.PI) * -1.1F;
-        this.armR.xRot = raise + hit - swing * 0.4F;
-        this.armL.xRot = raise + hit + swing * 0.4F;
-        this.armR.zRot = 0.1F + Mth.cos(age * 0.09F) * 0.03F;
-        this.armL.zRot = -0.1F - Mth.cos(age * 0.09F) * 0.03F;
-        float sway = Mth.sin(age * 0.12F) * 0.12F;
-        this.leafA.zRot = -0.45F + sway;
-        this.leafB.zRot = 0.45F + sway;
+        this.legR.y = 19.0F - Math.max(0.0F, Mth.sin(ph)) * 1.4F * walk;
+        this.legL.y = 19.0F - Math.max(0.0F, -Mth.sin(ph)) * 1.4F * walk;
+        // cuerpo: rebota a cada paso, respira y gira la cadera
+        float breath = Anim.breath(age, 0.11F);
+        float by = -Anim.bob(limbSwing, walk, 0.8F) * 1.3F + breath * 0.25F * (1.0F - walk);
+        this.body.y = 11.0F + by;
+        this.head.y = 11.0F + by;
+        this.body.yRot = Mth.sin(ph) * 0.14F * walk;
+        // enfado (suave), ataque con peso, golpe recibido
+        float agg = m.smooth(0, e.isAggressive() ? 1.0F : 0.0F, 0.12F, pt);
+        float atk = Anim.attack(e, pt);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        // cabeza: sigue la mirada, ojea al estar quieto, se echa atrás con el golpe y cabecea al correr
+        this.head.yRot = netHeadYaw * Anim.DEG + Anim.idleLook(e, age) * (1.0F - walk) * (1.0F - agg) - this.body.yRot * 0.5F;
+        this.head.xRot = headPitch * Anim.DEG - hurt * 0.45F + atk * 0.3F + Mth.sin(ph * 2.0F) * 0.06F * walk;
+        this.head.zRot = jig * 0.12F;
+        // brazos de enredadera: enfadado los estira hacia delante; al correr se balancean; el golpe es un latigazo
+        float armSwing = Mth.cos(ph) * 0.8F * walk * (1.0F - agg * 0.7F);
+        float reach = -1.3F * agg + Mth.sin(age * 0.35F) * 0.08F * agg;
+        this.armR.xRot = reach - armSwing - atk * 1.5F;
+        this.armL.xRot = reach + armSwing - atk * 1.1F;
+        this.armR.y = 12.5F + by;
+        this.armL.y = 12.5F + by;
+        this.armR.zRot = 0.12F + Mth.cos(age * 0.09F) * 0.04F + hurt * 0.35F + atk * 0.2F;
+        this.armL.zRot = -0.12F - Mth.cos(age * 0.09F) * 0.04F - hurt * 0.35F - atk * 0.2F;
+        this.armR.yRot = -atk * 0.35F;
+        this.armL.yRot = atk * 0.2F;
+        // hojas: viento, inercia en las curvas, se van hacia atrás al correr y tiemblan con los golpes
+        float sway = m.sway(pt), drag = m.drag(pt);
+        float wind = Mth.sin(age * 0.12F) * 0.12F;
+        this.leafA.zRot = -0.45F + wind + sway * 0.5F + jig * 0.4F;
+        this.leafB.zRot = 0.45F + wind + sway * 0.5F - jig * 0.4F;
+        this.leafA.yRot = -drag * 0.6F;
+        this.leafB.yRot = drag * 0.6F;
+        // el brote late con la respiración (y rápido cuando está enfadado)
+        float pulse = 1.0F + 0.06F * breath + 0.18F * agg * (0.5F + 0.5F * Mth.sin(age * 0.5F));
+        this.bud.xScale = pulse;
+        this.bud.yScale = pulse;
+        this.bud.zScale = pulse;
     }
 
     @Override

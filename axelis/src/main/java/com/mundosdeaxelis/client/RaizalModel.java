@@ -17,6 +17,8 @@ import net.minecraft.util.Mth;
 
 /** Modelo del Raizal: un gólem de raíces y corteza con hombros de musgo, garras de espina y ramas con hojas en la espalda. */
 public class RaizalModel extends EntityModel<Raizal> {
+    private ModelPart beard;
+
     public static final ModelLayerLocation LAYER =
             new ModelLayerLocation(new ResourceLocation(MundosDeAxelis.MODID, "raizal"), "main");
 
@@ -42,6 +44,7 @@ public class RaizalModel extends EntityModel<Raizal> {
         this.branchA = root.getChild("torso").getChild("branch_a");
         this.branchB = root.getChild("torso").getChild("branch_b");
         this.branchC = root.getChild("torso").getChild("branch_c");
+        this.beard = this.head.getChild("beard");
     }
 
     public static LayerDefinition createLayer() {
@@ -75,22 +78,58 @@ public class RaizalModel extends EntityModel<Raizal> {
 
     @Override
     public void setupAnim(Raizal e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        this.head.yRot = netHeadYaw * ((float) Math.PI / 180.0F) * 0.8F;
-        this.head.xRot = headPitch * ((float) Math.PI / 180.0F) * 0.8F;
-        float swing = Mth.cos(limbSwing * 0.6F) * 1.1F * limbSwingAmount;
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
+        float walk = Math.min(1.0F, limbSwingAmount);
+        float ph = limbSwing * 0.6F;
+        boolean root = e.isRooting();
+        float rooting = m.smooth(0, root ? 1.0F : 0.0F, 0.18F, pt);
+        float slam = Motion.pulse(m.sinceEnd(0, root, e, pt), 12.0F);
+        float agg = m.smooth(1, e.isAggressive() ? 1.0F : 0.0F, 0.1F, pt);
+        float u = Anim.swing(m, e, pt, 18.0F);
+        float atk = u < 0.0F ? 0.0F : Math.max(0.0F, -Anim.smash(u) / 2.7F);
+        float hit = Anim.impact(u);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        float breath = Anim.breath(age, 0.08F);
+        float sway = m.sway(pt), drag = m.drag(pt);
+        // piernas: zancada pesada, la rodilla sube al adelantar y el pie golpea el suelo
+        float swing = Mth.cos(ph) * 1.05F * walk;
         this.legR.xRot = swing;
         this.legL.xRot = -swing;
-        float hit = Mth.sin(e.getAttackAnim(0.0F) * (float) Math.PI) * -1.4F;
-        float raise = e.isRooting() ? -2.6F + Mth.sin(age * 0.9F) * 0.12F : (e.isAggressive() ? -0.5F : 0.0F);
-        this.armR.xRot = raise + hit - swing * 0.6F;
-        this.armL.xRot = raise + hit + swing * 0.6F;
-        this.armR.zRot = 0.08F + Mth.cos(age * 0.07F) * 0.02F;
-        this.armL.zRot = -0.08F - Mth.cos(age * 0.07F) * 0.02F;
-        this.torso.xRot = e.isRooting() ? -0.25F : 0.05F;
-        float sway = Mth.sin(age * 0.1F) * 0.06F;
-        this.branchA.zRot = -0.45F + sway;
-        this.branchB.zRot = 0.45F - sway;
-        this.branchC.xRot = 0.5F + sway;
+        this.legR.y = 14.0F - Math.max(0.0F, Mth.sin(ph)) * 1.2F * walk;
+        this.legL.y = 14.0F - Math.max(0.0F, -Mth.sin(ph)) * 1.2F * walk;
+        // tronco: se balancea de lado a lado con cada paso, respira, se encorva al enfadarse y se arquea al plantar raíces
+        float bob = -Anim.bob(limbSwing, walk, 0.6F) * 1.1F + breath * 0.3F * (1.0F - walk);
+        float roll = Mth.sin(ph) * 0.07F * walk;
+        this.torso.y = 14.0F + bob;
+        this.torso.zRot = roll + jig * 0.06F;
+        this.torso.xRot = 0.05F + agg * 0.12F - rooting * 0.32F + slam * 0.45F - atk * 0.15F + hit * 0.35F - hurt * 0.2F;
+        this.torso.yRot = Mth.sin(ph) * 0.1F * walk + atk * 0.15F;
+        // la cabeza va encima del tronco (sigue su inclinación) y mira al objetivo
+        Anim.follow(this.head, 14.0F + bob, 0.0F, 0.0F, 3.0F + bob, 0.0F, this.torso.xRot);
+        this.head.yRot = netHeadYaw * Anim.DEG * 0.8F + Anim.idleLook(e, age) * (1.0F - walk) * (1.0F - agg);
+        this.head.xRot = headPitch * Anim.DEG * 0.8F + agg * 0.15F - hurt * 0.4F + slam * 0.2F;
+        this.head.zRot = roll * 0.6F + jig * 0.1F;
+        this.beard.xRot = -drag * 0.35F + Mth.sin(age * 0.09F) * 0.06F + jig * 0.25F - Math.max(0.0F, this.torso.xRot) * 0.6F;
+        // brazos: cuelgan pesados y se balancean; el golpe es un mazazo con las dos manos; al plantar raíces los alza y los clava
+        float armSwing = Mth.cos(ph) * 0.65F * walk;
+        float raise = -2.7F * rooting + Mth.sin(age * 0.9F) * 0.1F * rooting - 0.45F * agg * (1.0F - rooting);
+        float smash = Anim.smash(u);
+        this.armR.xRot = raise - armSwing * (1.0F - Math.abs(smash) * 0.4F) + smash + slam * 2.4F;
+        this.armL.xRot = raise + armSwing * (1.0F - Math.abs(smash) * 0.4F) + smash + slam * 2.4F;
+        Anim.follow(this.armR, 14.0F + bob, 0.0F, -8.5F, 4.5F + bob, 0.0F, this.torso.xRot);
+        Anim.follow(this.armL, 14.0F + bob, 0.0F, 8.5F, 4.5F + bob, 0.0F, this.torso.xRot);
+        this.armR.zRot = 0.08F + Mth.cos(age * 0.07F) * 0.02F + hurt * 0.3F + roll + rooting * 0.25F;
+        this.armL.zRot = -0.08F - Mth.cos(age * 0.07F) * 0.02F - hurt * 0.3F + roll - rooting * 0.25F;
+        // ramas de la espalda: se mecen, se quedan atrás en las curvas y tiemblan con cada golpe
+        float wave = Mth.sin(age * 0.1F) * 0.06F;
+        float shake = jig * 0.25F + (slam + hit) * Mth.sin(age * 3.0F) * 0.12F;
+        this.branchA.zRot = -0.45F + wave + sway * 0.4F + shake;
+        this.branchB.zRot = 0.45F - wave + sway * 0.4F - shake;
+        this.branchC.xRot = 0.5F + wave + drag * 0.25F + shake;
+        this.branchA.xRot = 0.35F + drag * 0.2F + Mth.sin(ph * 2.0F) * 0.05F * walk;
+        this.branchB.xRot = 0.35F + drag * 0.2F + Mth.sin(ph * 2.0F + 1.0F) * 0.05F * walk;
     }
 
     @Override

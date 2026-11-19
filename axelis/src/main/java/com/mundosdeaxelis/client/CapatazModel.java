@@ -102,7 +102,7 @@ public class CapatazModel extends EntityModel<Capataz> {
         PartDefinition cheek_rPart = headPart.addOrReplaceChild("cheek_r", CubeListBuilder.create().texOffs(0, 84).addBox(-5.5F, -5F, -4.5F, 1F, 5F, 5F), PartPose.offset(0F, 0F, 0F));
         PartDefinition cheek_lPart = headPart.addOrReplaceChild("cheek_l", CubeListBuilder.create().texOffs(12, 84).addBox(4.5F, -5F, -4.5F, 1F, 5F, 5F), PartPose.offset(0F, 0F, 0F));
         PartDefinition crestPart = headPart.addOrReplaceChild("crest", CubeListBuilder.create().texOffs(36, 44).addBox(-1F, -5F, -5F, 2F, 5F, 10F), PartPose.offset(0F, -9F, 0F));
-        PartDefinition bodyPart = r.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, -6F, -4.5F, 14F, 16F, 9F), PartPose.offset(0F, 0F, 0F));
+        PartDefinition bodyPart = r.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-7F, -16F, -4.5F, 14F, 16F, 9F), PartPose.offset(0F, 10F, 0F));
         PartDefinition beltPart = r.addOrReplaceChild("belt", CubeListBuilder.create().texOffs(0, 60).addBox(-7F, 0F, -4.5F, 14F, 3F, 9F), PartPose.offset(0F, 8F, 0F));
         PartDefinition bucklePart = r.addOrReplaceChild("buckle", CubeListBuilder.create().texOffs(34, 94).addBox(-2F, 0F, -1F, 4F, 3F, 1F), PartPose.offset(0F, 8F, -4.9F));
         PartDefinition capePart = r.addOrReplaceChild("cape", CubeListBuilder.create().texOffs(54, 0).addBox(-6F, 0F, 0F, 12F, 22F, 1F), PartPose.offset(0F, -5F, 5F));
@@ -136,29 +136,76 @@ public class CapatazModel extends EntityModel<Capataz> {
 
     @Override
     public void setupAnim(Capataz e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        float pt = age - e.tickCount;
-        float dth = ForgeDeath.progress(e, pt);
-        this.head.yRot = netHeadYaw * ((float) Math.PI / 180.0F) * 0.5F;
-        this.head.xRot = headPitch * ((float) Math.PI / 180.0F) * 0.5F;
-        float swing = Mth.cos(limbSwing * 0.5F) * 0.9F * limbSwingAmount;
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
+        float dth = Anim.death(e, pt);
+        float walk = Math.min(1.0F, limbSwingAmount);
+        float ph = limbSwing * 0.5F;
+        float charge = e.slamProgress();
+        boolean slamming = charge > 0.0F;
+        float ch = m.smooth(0, charge, 0.5F, pt);
+        float slam = Motion.pulse(m.sinceEnd(0, slamming, e, pt), 14.0F);
+        float agg = m.smooth(1, e.isAggressive() ? 1.0F : 0.0F, 0.1F, pt);
+        float u = Anim.swing(m, e, pt, 18.0F);
+        float sm = Anim.smash(u);
+        float raise = -sm / 2.7F;
+        float hit = Anim.impact(u);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        float breath = Anim.breath(age, 0.07F);
+        float sway = m.sway(pt), drag = m.drag(pt);
+        // marcha de capataz: pasos firmes
+        float swing = Mth.cos(ph) * 0.9F * walk;
         this.legR.xRot = swing;
         this.legL.xRot = -swing;
-        float charge = e.slamProgress();
-        float lift = -2.7F * charge;
-        float hit = Mth.sin(e.getAttackAnim(pt) * (float) Math.PI) * -1.7F;
+        this.legR.y = 10.0F - Math.max(0.0F, Mth.sin(ph)) * 1.4F * walk;
+        this.legL.y = 10.0F - Math.max(0.0F, -Mth.sin(ph)) * 1.4F * walk;
+        // cuerpo desde la cadera
+        float bob = -Anim.bob(limbSwing, walk, 0.5F) * 1.3F + breath * 0.3F * (1.0F - walk);
+        float bodyX = 0.03F + 0.08F * walk + agg * 0.06F - ch * 0.2F + slam * 0.45F - raise * 0.2F + hit * 0.35F - hurt * 0.15F;
+        float roll = Mth.sin(ph) * 0.05F * walk + jig * 0.04F + raise * 0.06F;
+        this.body.y = 10.0F + bob;
+        this.body.xRot = bodyX;
+        this.body.zRot = roll;
+        this.body.yRot = Mth.sin(ph) * 0.07F * walk - raise * 0.25F + hit * 0.2F;
+        Anim.follow(this.belt, 10.0F + bob, 0.0F, 0.0F, 8.0F + bob, 0.0F, bodyX);
+        Anim.follow(this.buckle, 10.0F + bob, 0.0F, 0.0F, 8.0F + bob, -4.9F, bodyX);
+        this.belt.xRot = bodyX;
+        this.buckle.xRot = bodyX;
+        this.belt.zRot = roll;
+        this.buckle.zRot = roll;
+        Anim.follow(this.head, 10.0F + bob, 0.0F, 0.0F, -6.0F + bob, -1.0F, bodyX);
+        this.head.yRot = netHeadYaw * Anim.DEG * 0.5F + Anim.idleLook(e, age) * (1.0F - walk) * (1.0F - agg);
+        this.head.xRot = headPitch * Anim.DEG * 0.5F - bodyX * 0.5F + ch * 0.1F - hurt * 0.3F + hit * 0.2F + dth * 0.5F;
+        this.head.zRot = roll;
+        this.crest.zRot = jig * 0.2F + Mth.sin(age * 0.1F) * 0.03F;
+        this.crest.xRot = -drag * 0.15F;
+        // brazos: el derecho lleva el martillo (mazazo largo y pesado), el izquierdo acompaña; con la carga los alza los dos
+        Anim.follow(this.pauldR, 10.0F + bob, 0.0F, -8.0F, -5.0F + bob, 0.0F, bodyX);
+        Anim.follow(this.pauldL, 10.0F + bob, 0.0F, 8.0F, -5.0F + bob, 0.0F, bodyX);
+        Anim.follow(this.armR, 10.0F + bob, 0.0F, -10.5F, -4.0F + bob, 0.0F, bodyX);
+        Anim.follow(this.armL, 10.0F + bob, 0.0F, 10.5F, -4.0F + bob, 0.0F, bodyX);
+        float lift = -2.7F * ch + Mth.sin(age * 1.7F) * 0.06F * ch;
         float idle = Mth.sin(age * 0.06F) * 0.04F;
-        this.armR.xRot = lift + hit - swing * 0.5F + idle + dth * 0.8F;
-        this.armL.xRot = lift * 0.9F + hit * 0.6F + swing * 0.5F - idle + dth * 0.8F;
-        this.armR.zRot = 0.06F + dth * 0.3F;
-        this.armL.zRot = -0.06F - dth * 0.3F;
-        this.body.xRot = charge * -0.16F;
-        this.head.xRot += charge * 0.1F;
-        this.pauldR.xRot = this.armR.xRot * 0.3F;
-        this.pauldL.xRot = this.armL.xRot * 0.3F;
-        this.chainA.xRot = Mth.sin(age * 0.2F) * 0.12F + swing * 0.3F;
-        this.chainB.xRot = -Mth.sin(age * 0.2F) * 0.12F - swing * 0.3F;
-        this.cape.xRot = 0.08F + limbSwingAmount * 0.45F + Mth.sin(age * 0.08F) * 0.04F - charge * 0.25F;
-        this.capeTrim.xRot = Mth.sin(age * 0.15F) * 0.05F + limbSwingAmount * 0.15F;
+        float armSwing = Mth.cos(ph) * 0.5F * walk * (1.0F - raise);
+        this.armR.xRot = lift + sm - armSwing + idle + slam * 1.0F + dth * 0.8F - agg * 0.25F * (1.0F - ch) * (1.0F - raise);
+        this.armL.xRot = lift * 0.9F + sm * 0.45F + armSwing - idle + slam * 0.8F + dth * 0.8F;
+        this.armR.zRot = 0.06F + roll + hurt * 0.25F + ch * 0.15F + dth * 0.3F;
+        this.armL.zRot = -0.06F + roll - hurt * 0.25F - ch * 0.15F - dth * 0.3F;
+        this.pauldR.xRot = bodyX + this.armR.xRot * 0.3F;
+        this.pauldL.xRot = bodyX + this.armL.xRot * 0.3F;
+        this.pauldR.zRot = roll;
+        this.pauldL.zRot = roll;
+        // cadenas del cinturón
+        this.chainA.xRot = Mth.sin(age * 0.2F) * 0.12F + swing * 0.3F + drag * 0.4F + jig * 0.3F - bodyX;
+        this.chainB.xRot = -Mth.sin(age * 0.2F) * 0.12F - swing * 0.3F + drag * 0.4F - jig * 0.3F - bodyX;
+        // capa: va sobre la espalda, se levanta al andar, ondea y se queda atrás en las curvas; el ribete va a destiempo
+        Anim.follow(this.cape, 10.0F + bob, 0.0F, 0.0F, -5.0F + bob, 5.0F, bodyX);
+        float wave = Mth.sin(age * 0.08F) * 0.04F + Mth.sin(limbSwing * 1.0F) * 0.06F * walk;
+        this.cape.xRot = Math.max(bodyX + 0.04F, 0.08F + drag * 0.7F + wave - ch * 0.25F + slam * 0.3F + jig * 0.1F);
+        this.cape.zRot = sway * 0.25F + roll;
+        this.cape.yRot = -sway * 0.15F;
+        this.capeTrim.xRot = Mth.sin(age * 0.15F - 0.8F) * 0.06F + drag * 0.25F + jig * 0.15F;
     }
 
     @Override

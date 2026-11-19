@@ -133,13 +133,13 @@ public class GranHerreroModel extends EntityModel<GranHerrero> {
     public static LayerDefinition createLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition r = mesh.getRoot();
-        PartDefinition bodyPart = r.addOrReplaceChild("body", CubeListBuilder.create().texOffs(40, 0).addBox(-12F, 0F, -7F, 24F, 22F, 14F), PartPose.offset(0F, -16F, 0F));
-        PartDefinition beltPart = bodyPart.addOrReplaceChild("belt", CubeListBuilder.create().texOffs(48, 67).addBox(-13F, 17F, -8F, 26F, 4F, 16F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition bucklePart = bodyPart.addOrReplaceChild("buckle", CubeListBuilder.create().texOffs(166, 136).addBox(-3F, 17F, -8.9F, 6F, 4F, 1F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition apronPart = bodyPart.addOrReplaceChild("apron", CubeListBuilder.create().texOffs(96, 89).addBox(-8F, 22F, -9F, 16F, 15F, 2F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition chest_lPart = bodyPart.addOrReplaceChild("chest_l", CubeListBuilder.create().texOffs(36, 123).addBox(6.5F, 2F, -8.5F, 6F, 10F, 2F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition chest_rPart = bodyPart.addOrReplaceChild("chest_r", CubeListBuilder.create().texOffs(52, 123).addBox(-12.5F, 2F, -8.5F, 6F, 10F, 2F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition collarPart = bodyPart.addOrReplaceChild("collar", CubeListBuilder.create().texOffs(132, 107).addBox(-10F, -2F, -5F, 20F, 3F, 10F), PartPose.offset(0F, 0F, 0F));
+        PartDefinition bodyPart = r.addOrReplaceChild("body", CubeListBuilder.create().texOffs(40, 0).addBox(-12F, -22F, -7F, 24F, 22F, 14F), PartPose.offset(0F, 6F, 0F));
+        PartDefinition beltPart = bodyPart.addOrReplaceChild("belt", CubeListBuilder.create().texOffs(48, 67).addBox(-13F, 17F, -8F, 26F, 4F, 16F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition bucklePart = bodyPart.addOrReplaceChild("buckle", CubeListBuilder.create().texOffs(166, 136).addBox(-3F, 17F, -8.9F, 6F, 4F, 1F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition apronPart = bodyPart.addOrReplaceChild("apron", CubeListBuilder.create().texOffs(96, 89).addBox(-8F, 22F, -9F, 16F, 15F, 2F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition chest_lPart = bodyPart.addOrReplaceChild("chest_l", CubeListBuilder.create().texOffs(36, 123).addBox(6.5F, 2F, -8.5F, 6F, 10F, 2F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition chest_rPart = bodyPart.addOrReplaceChild("chest_r", CubeListBuilder.create().texOffs(52, 123).addBox(-12.5F, 2F, -8.5F, 6F, 10F, 2F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition collarPart = bodyPart.addOrReplaceChild("collar", CubeListBuilder.create().texOffs(132, 107).addBox(-10F, -2F, -5F, 20F, 3F, 10F), PartPose.offset(0F, -22F, 0F));
         PartDefinition headPart = r.addOrReplaceChild("head", CubeListBuilder.create().texOffs(76, 38).addBox(-6F, -11F, -6F, 12F, 11F, 12F), PartPose.offset(0F, -17F, -1F));
         PartDefinition browPart = headPart.addOrReplaceChild("brow", CubeListBuilder.create().texOffs(180, 136).addBox(-6.5F, -9F, -7F, 13F, 2F, 2F), PartPose.offset(0F, 0F, 0F));
         PartDefinition beardPart = headPart.addOrReplaceChild("beard", CubeListBuilder.create().texOffs(204, 123).addBox(-4F, 0F, -7.5F, 8F, 6F, 3F), PartPose.offset(0F, 0F, 0F));
@@ -174,15 +174,15 @@ public class GranHerreroModel extends EntityModel<GranHerrero> {
         PartDefinition fist_lPart = arm_lPart.addOrReplaceChild("fist_l", CubeListBuilder.create().texOffs(0, 67).addBox(-6F, 26F, -6F, 12F, 10F, 12F), PartPose.offset(0F, 0F, 0F));
         PartDefinition cuff_lPart = arm_lPart.addOrReplaceChild("cuff_l", CubeListBuilder.create().texOffs(0, 107).addBox(-6F, 20F, -6F, 12F, 4F, 12F), PartPose.offset(0F, 0F, 0F));
         PartDefinition elbow_lPart = arm_lPart.addOrReplaceChild("elbow_l", CubeListBuilder.create().texOffs(0, 136).addBox(5F, 8F, -3F, 3F, 3F, 6F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition anvil_basePart = bodyPart.addOrReplaceChild("anvil_base", CubeListBuilder.create().texOffs(68, 107).addBox(-7F, 8F, 7F, 14F, 4F, 10F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition anvil_waistPart = bodyPart.addOrReplaceChild("anvil_waist", CubeListBuilder.create().texOffs(0, 123).addBox(-3.5F, 2F, 8.5F, 7F, 6F, 7F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition anvil_topPart = bodyPart.addOrReplaceChild("anvil_top", CubeListBuilder.create().texOffs(132, 67).addBox(-12F, -6F, 6F, 24F, 8F, 12F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition anvil_hornPart = bodyPart.addOrReplaceChild("anvil_horn", CubeListBuilder.create().texOffs(140, 123).addBox(12F, -5F, 9F, 6F, 5F, 6F), PartPose.offset(0F, 0F, 0F));
-        PartDefinition pipe_aPart = bodyPart.addOrReplaceChild("pipe_a", CubeListBuilder.create().texOffs(204, 67).addBox(-2.5F, -14F, -2.5F, 5F, 14F, 5F), PartPose.offset(-8F, -8F, 10F));
-        PartDefinition pipe_bPart = bodyPart.addOrReplaceChild("pipe_b", CubeListBuilder.create().texOffs(48, 107).addBox(-2.5F, -10F, -2.5F, 5F, 10F, 5F), PartPose.offset(8F, -8F, 10F));
-        PartDefinition chain_aPart = bodyPart.addOrReplaceChild("chain_a", CubeListBuilder.create().texOffs(28, 123).addBox(-1F, 0F, -1F, 2F, 11F, 2F), PartPose.offset(-10F, 21F, -8.5F));
-        PartDefinition chain_bPart = bodyPart.addOrReplaceChild("chain_b", CubeListBuilder.create().texOffs(164, 123).addBox(-1F, 0F, -1F, 2F, 9F, 2F), PartPose.offset(10F, 21F, -8.5F));
-        PartDefinition chain_cPart = bodyPart.addOrReplaceChild("chain_c", CubeListBuilder.create().texOffs(196, 123).addBox(-1F, 0F, -1F, 2F, 8F, 2F), PartPose.offset(0F, 21F, 9F));
+        PartDefinition anvil_basePart = bodyPart.addOrReplaceChild("anvil_base", CubeListBuilder.create().texOffs(68, 107).addBox(-7F, 8F, 7F, 14F, 4F, 10F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition anvil_waistPart = bodyPart.addOrReplaceChild("anvil_waist", CubeListBuilder.create().texOffs(0, 123).addBox(-3.5F, 2F, 8.5F, 7F, 6F, 7F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition anvil_topPart = bodyPart.addOrReplaceChild("anvil_top", CubeListBuilder.create().texOffs(132, 67).addBox(-12F, -6F, 6F, 24F, 8F, 12F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition anvil_hornPart = bodyPart.addOrReplaceChild("anvil_horn", CubeListBuilder.create().texOffs(140, 123).addBox(12F, -5F, 9F, 6F, 5F, 6F), PartPose.offset(0F, -22F, 0F));
+        PartDefinition pipe_aPart = bodyPart.addOrReplaceChild("pipe_a", CubeListBuilder.create().texOffs(204, 67).addBox(-2.5F, -14F, -2.5F, 5F, 14F, 5F), PartPose.offset(-8F, -30F, 10F));
+        PartDefinition pipe_bPart = bodyPart.addOrReplaceChild("pipe_b", CubeListBuilder.create().texOffs(48, 107).addBox(-2.5F, -10F, -2.5F, 5F, 10F, 5F), PartPose.offset(8F, -30F, 10F));
+        PartDefinition chain_aPart = bodyPart.addOrReplaceChild("chain_a", CubeListBuilder.create().texOffs(28, 123).addBox(-1F, 0F, -1F, 2F, 11F, 2F), PartPose.offset(-10F, -1F, -8.5F));
+        PartDefinition chain_bPart = bodyPart.addOrReplaceChild("chain_b", CubeListBuilder.create().texOffs(164, 123).addBox(-1F, 0F, -1F, 2F, 9F, 2F), PartPose.offset(10F, -1F, -8.5F));
+        PartDefinition chain_cPart = bodyPart.addOrReplaceChild("chain_c", CubeListBuilder.create().texOffs(196, 123).addBox(-1F, 0F, -1F, 2F, 8F, 2F), PartPose.offset(0F, -1F, 9F));
         PartDefinition lump_aPart = chain_aPart.addOrReplaceChild("lump_a", CubeListBuilder.create().texOffs(122, 136).addBox(-2F, 0F, -2F, 4F, 3F, 4F), PartPose.offset(0F, 11F, 0F));
         PartDefinition lump_bPart = chain_bPart.addOrReplaceChild("lump_b", CubeListBuilder.create().texOffs(138, 136).addBox(-2F, 0F, -2F, 4F, 3F, 4F), PartPose.offset(0F, 9F, 0F));
         return LayerDefinition.create(mesh, 256, 192);
@@ -190,68 +190,91 @@ public class GranHerreroModel extends EntityModel<GranHerrero> {
 
     @Override
     public void setupAnim(GranHerrero e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        float pt = age - e.tickCount;
-        float dth = ForgeDeath.progress(e, pt);
-        float swing = Mth.cos(limbSwing * 0.45F) * 0.7F * limbSwingAmount;
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
+        float dth = Anim.death(e, pt);
+        float walk = Math.min(1.0F, limbSwingAmount);
+        float ph = limbSwing * 0.45F;
+        int t = e.slamValue();
+        // estados del jefe: brazos en alto (ataque especial), carga del gran martillazo y recuperación tras el golpe
+        float special = m.smooth(0, e.pose() == 1 ? 1.0F : 0.0F, 0.15F, pt);
+        float windRaw = t > 0 ? Mth.clamp(t / (float) GranHerrero.WINDUP, 0.0F, 1.0F) : 0.0F;
+        float wind = m.smooth(1, windRaw * windRaw * (3.0F - 2.0F * windRaw), 0.45F, pt);
+        float recRaw = t < 0 ? Mth.clamp(-t / (float) GranHerrero.RECOVER, 0.0F, 1.0F) : 0.0F;
+        float rec = m.smooth(2, recRaw, 0.5F, pt);
+        float quake = rec * rec * rec;
+        float agg = m.smooth(3, e.isAggressive() ? 1.0F : 0.0F, 0.08F, pt);
+        float u = Anim.swing(m, e, pt, 22.0F);
+        float sm = Anim.smash(u);
+        float raise = -sm / 2.7F;
+        float hit = Anim.impact(u);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        float sway = m.sway(pt), drag = m.drag(pt);
+        float breath = Mth.sin(age * 0.08F) * 0.45F * (1.0F - dth);
+        // pisadas de gigante: la rodilla sube mucho y el cuerpo cae con cada paso
+        float swing = Mth.cos(ph) * 0.7F * walk;
         this.legR.xRot = swing;
         this.legL.xRot = -swing;
-        this.head.yRot = netHeadYaw * ((float) Math.PI / 180.0F) * 0.5F;
-        this.head.xRot = headPitch * ((float) Math.PI / 180.0F) * 0.4F;
-        int t = e.slamValue();
-        float armRx;
-        float armLx;
-        float bodyX = 0.0F;
-        float idle = Mth.sin(age * 0.06F) * 0.04F;
-        if (e.pose() == 1) {
-            armRx = -2.5F + Mth.sin(age * 0.8F) * 0.06F;
-            armLx = -2.5F - Mth.sin(age * 0.8F) * 0.06F;
-            bodyX = -0.18F;
-            this.head.xRot = -0.35F;
-        } else if (t > 0) {
-            float p = Mth.clamp(t / (float) GranHerrero.WINDUP, 0.0F, 1.0F);
-            float k = p * p * (3.0F - 2.0F * p);
-            armRx = -2.95F * k;
-            armLx = -2.4F * k;
-            bodyX = -0.22F * k;
-        } else if (t < 0) {
-            float q = Mth.clamp(-t / (float) GranHerrero.RECOVER, 0.0F, 1.0F);
-            armRx = 0.95F * q * q;
-            armLx = 0.7F * q * q;
-            bodyX = 0.3F * q;
-        } else {
-            float hit = Mth.sin(e.getAttackAnim(pt) * (float) Math.PI) * -1.6F;
-            armRx = -swing * 0.5F + hit + idle;
-            armLx = swing * 0.5F - idle;
-        }
-        armRx += dth * 0.9F;
-        armLx += dth * 0.9F;
-        this.armR.xRot = armRx;
-        this.armL.xRot = armLx;
-        this.armR.zRot = 0.05F + dth * 0.5F;
-        this.armL.zRot = -0.05F - dth * 0.5F;
-        float br = Mth.sin(age * 0.08F) * 0.45F * (1.0F - dth);
-        this.body.y = -16.0F + br;
-        this.head.y = -17.0F + br;
-        this.armR.y = -16.0F + br;
-        this.armL.y = -16.0F + br;
-        this.pauldR.y = -14.0F + br;
-        this.pauldL.y = -14.0F + br;
+        this.legR.y = 4.0F - Math.max(0.0F, Mth.sin(ph)) * 2.0F * walk;
+        this.legL.y = 4.0F - Math.max(0.0F, -Mth.sin(ph)) * 2.0F * walk;
+        float bob = -Anim.bob(limbSwing, walk, 0.45F) * 1.8F + breath;
+        // cuerpo (desde la cadera)
+        float bodyX = 0.04F * walk + agg * 0.05F - special * 0.18F - wind * 0.24F + quake * 0.38F + rec * 0.1F
+                - raise * 0.15F + hit * 0.3F - hurt * 0.1F;
+        float roll = Mth.sin(ph) * 0.05F * walk + jig * 0.03F + quake * Mth.sin(age * 2.2F) * 0.04F + wind * Mth.sin(age * 1.9F) * 0.02F;
+        this.body.y = 6.0F + bob;
         this.body.xRot = bodyX;
-        this.head.xRot += bodyX * -0.6F + dth * 0.6F;
-        this.pauldR.xRot = armRx * 0.25F;
-        this.pauldL.xRot = armLx * 0.25F;
-        this.pipeA.xRot = Mth.sin(age * 0.13F) * 0.05F;
-        this.pipeB.xRot = Mth.sin(age * 0.13F + 1.0F) * 0.05F;
-        float fk = 1.0F + Mth.sin(age * 0.75F) * 0.22F;
-        float fk2 = 1.0F + Mth.sin(age * 0.75F + 1.7F) * 0.22F;
-        this.flameR.yScale = fk * (e.isHot() ? 1.0F : 0.35F);
-        this.flameL.yScale = fk2 * (e.isHot() ? 1.0F : 0.35F);
-        this.flameR.xRot = Mth.sin(age * 0.4F) * 0.12F;
+        this.body.zRot = roll;
+        this.body.yRot = Mth.sin(ph) * 0.06F * walk - raise * 0.2F + hit * 0.15F + wind * 0.12F;
+        Anim.follow(this.head, 6.0F + bob, 0.0F, 0.0F, -17.0F + bob, -1.0F, bodyX);
+        this.head.yRot = netHeadYaw * Anim.DEG * 0.5F + Anim.idleLook(e, age) * 0.5F * (1.0F - walk) * (1.0F - agg);
+        this.head.xRot = headPitch * Anim.DEG * 0.4F - bodyX * 0.6F - special * 0.35F - hurt * 0.25F + hit * 0.2F + dth * 0.6F;
+        this.head.zRot = roll * 0.8F;
+        this.beard.xRot = Mth.sin(age * 0.09F) * 0.04F - bodyX * 0.5F + drag * -0.2F + (jig + quake) * 0.25F;
+        this.brow.y = agg * 0.5F + special * 0.4F;
+        // hombros y brazos sobre el cuerpo
+        Anim.follow(this.pauldR, 6.0F + bob, 0.0F, -17.0F, -14.0F + bob, 0.0F, bodyX);
+        Anim.follow(this.pauldL, 6.0F + bob, 0.0F, 17.0F, -14.0F + bob, 0.0F, bodyX);
+        Anim.follow(this.armR, 6.0F + bob, 0.0F, -17.0F, -16.0F + bob, 0.0F, bodyX);
+        Anim.follow(this.armL, 6.0F + bob, 0.0F, 17.0F, -16.0F + bob, 0.0F, bodyX);
+        float idle = Mth.sin(age * 0.06F) * 0.04F;
+        float armSwing = Mth.cos(ph) * 0.5F * walk * (1.0F - raise) * (1.0F - special) * (1.0F - wind);
+        float shake = Mth.sin(age * 0.8F) * 0.06F;
+        float armRx = -2.5F * special + shake * special - 2.95F * wind + Mth.sin(age * 1.6F) * 0.05F * wind + 0.95F * rec * rec
+                + sm - armSwing + idle;
+        float armLx = -2.5F * special - shake * special - 2.4F * wind + 0.7F * rec * rec + sm * 0.4F + armSwing - idle;
+        this.armR.xRot = armRx + dth * 0.9F;
+        this.armL.xRot = armLx + dth * 0.9F;
+        this.armR.zRot = 0.05F + roll + hurt * 0.2F + wind * 0.12F + dth * 0.5F;
+        this.armL.zRot = -0.05F + roll - hurt * 0.2F - wind * 0.12F - dth * 0.5F;
+        this.pauldR.xRot = bodyX + armRx * 0.25F;
+        this.pauldL.xRot = bodyX + armLx * 0.25F;
+        this.pauldR.zRot = roll;
+        this.pauldL.zRot = roll;
+        // tubos de la fragua de la espalda: humean y tiemblan al cargar
+        float puff = 1.0F + Mth.sin(age * 0.35F) * 0.05F + wind * (0.15F + Mth.sin(age * 1.4F) * 0.06F) + quake * 0.25F;
+        this.pipeA.yScale = puff;
+        this.pipeB.yScale = 1.0F + Mth.sin(age * 0.35F + 1.3F) * 0.05F + wind * 0.12F + quake * 0.2F;
+        this.pipeA.xRot = Mth.sin(age * 0.13F) * 0.05F + drag * 0.1F + jig * 0.12F;
+        this.pipeB.xRot = Mth.sin(age * 0.13F + 1.0F) * 0.05F + drag * 0.1F - jig * 0.12F;
+        // llamas de las hombreras: más altas cuando está "caliente" y al cargar
+        boolean hot = e.isHot();
+        float fk = (1.0F + Mth.sin(age * 0.75F) * 0.22F) * (hot ? 1.0F : 0.35F) * (1.0F + wind * 0.5F + special * 0.3F);
+        float fk2 = (1.0F + Mth.sin(age * 0.75F + 1.7F) * 0.22F) * (hot ? 1.0F : 0.35F) * (1.0F + wind * 0.5F + special * 0.3F);
+        this.flameR.yScale = fk * (1.0F - dth);
+        this.flameL.yScale = fk2 * (1.0F - dth);
+        this.flameR.xRot = Mth.sin(age * 0.4F) * 0.12F + drag * 0.5F;
         this.flameL.zRot = Mth.sin(age * 0.45F) * 0.12F;
-        this.chainA.xRot = Mth.sin(age * 0.12F) * 0.06F - swing * 0.35F + bodyX * 0.5F;
-        this.chainB.xRot = Mth.sin(age * 0.12F + 1.3F) * 0.06F + swing * 0.35F + bodyX * 0.5F;
-        this.chainC.xRot = Mth.sin(age * 0.1F + 0.7F) * 0.05F + bodyX * 0.3F;
-        this.beard.xRot = Mth.sin(age * 0.09F) * 0.04F - bodyX * 0.5F;
+        this.flameL.xRot = drag * 0.5F;
+        // cadenas y lingotes del cinturón: péndulos que cuelgan rectos aunque el cuerpo se incline
+        this.chainA.xRot = Mth.sin(age * 0.12F) * 0.06F - swing * 0.35F + drag * 0.35F + (jig + quake) * 0.3F - bodyX;
+        this.chainB.xRot = Mth.sin(age * 0.12F + 1.3F) * 0.06F + swing * 0.35F + drag * 0.35F - (jig + quake) * 0.3F - bodyX;
+        this.chainC.xRot = Mth.sin(age * 0.1F + 0.7F) * 0.05F - drag * 0.2F - bodyX;
+        this.chainA.zRot = sway * 0.3F;
+        this.chainB.zRot = sway * 0.3F;
+        this.lumpA.xRot = Mth.sin(age * 0.12F - 0.6F) * 0.08F + jig * 0.2F;
+        this.lumpB.xRot = Mth.sin(age * 0.12F + 0.7F) * 0.08F - jig * 0.2F;
     }
 
     @Override

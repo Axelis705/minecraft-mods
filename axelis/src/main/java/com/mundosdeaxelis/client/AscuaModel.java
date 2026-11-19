@@ -79,31 +79,58 @@ public class AscuaModel extends EntityModel<Ascua> {
 
     @Override
     public void setupAnim(Ascua e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        float pt = age - e.tickCount;
-        float dth = ForgeDeath.progress(e, pt);
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
         boolean ch = e.isCharging();
-        this.core.y = 18.0F + Mth.sin(age * 0.2F) * 1.5F;
-        this.core.xRot = ch ? 0.5F : 0.0F;
-        this.core.yRot = dth * dth * 14.0F;
-        float sp = age * (ch ? 0.45F : 0.12F);
-        this.shardA.setPos(Mth.cos(sp) * 5.0F, Mth.sin(sp * 1.3F) * 1.5F, Mth.sin(sp) * 5.0F);
-        this.shardB.setPos(Mth.cos(sp + (float) Math.PI) * 5.0F, Mth.sin(sp * 1.3F + 2.0F) * 1.5F, Mth.sin(sp + (float) Math.PI) * 5.0F);
-        this.shardC.setPos(Mth.cos(sp + 1.57F) * 5.0F, Mth.sin(sp * 1.3F + 4.0F) * 1.5F, Mth.sin(sp + 1.57F) * 5.0F);
-        this.shardD.setPos(Mth.cos(sp + 4.71F) * 5.0F, Mth.sin(sp * 1.3F + 1.0F) * 1.5F, Mth.sin(sp + 4.71F) * 5.0F);
+        float charge = m.smooth(0, ch ? 1.0F : 0.0F, 0.2F, pt);
+        float shot = Motion.pulse(m.sinceEnd(0, ch, e, pt), 9.0F);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        float dth = Anim.death(e, pt);
+        float speed = Math.min(1.0F, m.speed(pt) * 6.0F);
+        float sway = m.sway(pt), drag = m.drag(pt);
+        // núcleo: flota, se encoge al cargar (acumula calor) y se hincha al soltar la bola de fuego
+        this.core.y = 18.0F + Mth.sin(age * 0.2F) * 1.5F * (1.0F - charge * 0.5F) + Mth.sin(age * 0.53F) * 0.3F;
+        this.core.xRot = charge * 0.5F - shot * 0.4F - hurt * 0.4F + speed * 0.25F;
+        this.core.zRot = sway * 0.4F + jig * 0.15F;
+        this.core.yRot = 0.0F;
+        float heat = 1.0F - charge * 0.12F + shot * 0.25F + Mth.sin(age * 0.9F) * 0.03F;
+        this.core.xScale = heat;
+        this.core.yScale = heat;
+        this.core.zScale = heat;
+        // esquirlas en órbita: más deprisa y más cerca al cargar; salen despedidas al disparar
+        float sp = age * (0.12F + 0.4F * charge);
+        float rad = 5.0F - 1.2F * charge + 2.0F * shot;
+        this.shardA.setPos(Mth.cos(sp) * rad, Mth.sin(sp * 1.3F) * 1.5F, Mth.sin(sp) * rad);
+        this.shardB.setPos(Mth.cos(sp + Anim.PI) * rad, Mth.sin(sp * 1.3F + 2.0F) * 1.5F, Mth.sin(sp + Anim.PI) * rad);
+        this.shardC.setPos(Mth.cos(sp + 1.57F) * rad, Mth.sin(sp * 1.3F + 4.0F) * 1.5F, Mth.sin(sp + 1.57F) * rad);
+        this.shardD.setPos(Mth.cos(sp + 4.71F) * rad, Mth.sin(sp * 1.3F + 1.0F) * 1.5F, Mth.sin(sp + 4.71F) * rad);
+        this.shardA.yRot = age * 0.2F;
+        this.shardB.xRot = age * 0.2F;
+        this.shardC.zRot = age * 0.2F;
+        this.shardD.yRot = -age * 0.2F;
+        // llamas de la cresta: parpadean y se inclinan hacia atrás al volar
         float fl = Mth.sin(age * 0.5F) * 0.15F;
         this.flameB.zRot = 0.35F + fl;
         this.flameC.zRot = -0.35F - fl;
-        this.flameA.xRot = Mth.sin(age * 0.4F) * 0.1F;
-        this.flameA.yScale = 1.0F + Mth.sin(age * 0.7F) * 0.2F;
-        float fs = age * (ch ? 1.1F : 0.55F);
-        float amp = ch ? 0.75F : 0.45F;
-        this.wingL.zRot = -0.45F - Mth.sin(fs) * amp;
-        this.wingR.zRot = 0.45F + Mth.sin(fs) * amp;
+        this.flameA.xRot = Mth.sin(age * 0.4F) * 0.1F + drag * 0.6F;
+        this.flameA.yScale = 1.0F + Mth.sin(age * 0.7F) * 0.2F + charge * 0.4F + shot * 0.5F;
+        this.flameB.xRot = drag * 0.5F;
+        this.flameC.xRot = drag * 0.5F;
+        // alas: baten más rápido al cargar y al ir deprisa; las puntas van a destiempo; al morir se pliegan
+        float fs = age * (0.55F + 0.55F * charge + 0.4F * speed);
+        float amp = (0.45F + 0.3F * charge + 0.15F * speed) * (1.0F - dth);
+        this.wingL.zRot = -0.45F - Mth.sin(fs) * amp + dth * 1.0F;
+        this.wingR.zRot = 0.45F + Mth.sin(fs) * amp - dth * 1.0F;
         this.tipL.zRot = -0.3F - Mth.sin(fs - 1.0F) * amp * 0.8F;
         this.tipR.zRot = 0.3F + Mth.sin(fs - 1.0F) * amp * 0.8F;
-        this.tailA.yRot = Mth.sin(age * 0.2F) * 0.25F;
-        this.tailB.yRot = Mth.sin(age * 0.2F - 0.8F) * 0.3F;
-        this.tailC.yRot = Mth.sin(age * 0.2F - 1.6F) * 0.35F;
+        // cola de brasas: una cadena que ondea y se queda atrás en los giros
+        this.tailA.yRot = Mth.sin(age * 0.2F) * 0.25F + sway * 0.6F;
+        this.tailB.yRot = Mth.sin(age * 0.2F - 0.8F) * 0.3F + sway * 0.5F;
+        this.tailC.yRot = Mth.sin(age * 0.2F - 1.6F) * 0.35F + sway * 0.4F;
+        this.tailA.xRot = drag * 0.25F - shot * 0.3F;
+        this.tailB.xRot = drag * 0.2F + jig * 0.3F;
+        this.tailC.xRot = drag * 0.15F + jig * 0.4F;
     }
 
     @Override

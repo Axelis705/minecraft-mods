@@ -17,6 +17,13 @@ import net.minecraft.util.Mth;
 
 /** Modelo de los lobeznos de escarcha que invoca el Lobo Ártico: cuatro patas, lomo con cristales y ojos que brillan. */
 public class LoboEscarchaModel extends EntityModel<LoboEscarcha> {
+    private ModelPart mane;
+    private ModelPart rump;
+    private ModelPart earL;
+    private ModelPart earR;
+    private ModelPart tailTip;
+    private final ModelPart[] spikes = new ModelPart[3];
+
     public static final ModelLayerLocation LAYER =
             new ModelLayerLocation(new ResourceLocation(MundosDeAxelis.MODID, "lobo_escarcha"), "main");
 
@@ -44,6 +51,14 @@ public class LoboEscarchaModel extends EntityModel<LoboEscarcha> {
         this.legBr = root.getChild("leg_br");
         this.headY = this.head.y;
         this.tailX = this.tail.xRot;
+        this.mane = this.body.getChild("mane");
+        this.rump = this.body.getChild("rump");
+        this.earL = this.head.getChild("ear_l");
+        this.earR = this.head.getChild("ear_r");
+        this.tailTip = this.tail.getChild("tail_tip");
+        for (int i = 0; i < 3; i++) {
+            this.spikes[i] = this.body.getChild("spike" + i);
+        }
     }
 
     public static LayerDefinition createLayer() {
@@ -78,20 +93,70 @@ public class LoboEscarchaModel extends EntityModel<LoboEscarcha> {
 
     @Override
     public void setupAnim(LoboEscarcha e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        float pt = age - e.tickCount;
-        float sw = Mth.cos(limbSwing * 0.7F) * 1.1F * limbSwingAmount;
-        this.legFl.xRot = sw;
-        this.legBr.xRot = sw;
-        this.legFr.xRot = -sw;
-        this.legBl.xRot = -sw;
-        float atk = Mth.sin(Mth.sqrt(e.getAttackAnim(pt)) * (float) Math.PI);
-        this.head.xRot = headPitch * ((float) Math.PI / 180.0F) - atk * 0.5F;
-        this.head.yRot = Mth.clamp(netHeadYaw, -45.0F, 45.0F) * ((float) Math.PI / 180.0F);
-        this.head.y = this.headY + Mth.sin(age * 0.1F) * 0.2F + limbSwingAmount * Mth.sin(limbSwing * 1.4F) * 0.3F;
-        this.jaw.xRot = 0.1F + atk * 0.9F + Math.max(0.0F, Mth.sin(age * 0.05F)) * 0.05F;
-        this.tail.xRot = this.tailX - 0.5F * limbSwingAmount;
-        this.tail.yRot = Mth.sin(age * 0.2F) * (0.2F + 0.3F * limbSwingAmount);
-        this.body.xRot = atk * -0.12F;
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
+        float walk = Math.min(1.0F, limbSwingAmount);
+        // al correr pasa del trote (patas en diagonal) al galope (las de delante juntas, luego las de atrás)
+        float gallop = m.smooth(0, walk > 0.7F ? 1.0F : 0.0F, 0.08F, pt);
+        float ph = limbSwing * 0.7F;
+        float agg = m.smooth(1, e.isAggressive() ? 1.0F : 0.0F, 0.12F, pt);
+        float u = Anim.swing(m, e, pt, 11.0F);
+        float bite = Anim.jab(u);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        float breath = Anim.breath(age, 0.14F);
+        float sway = m.sway(pt), drag = m.drag(pt);
+        // patas: trote en diagonal que se convierte en galope; el pie se levanta al adelantar
+        float a = 1.1F * walk;
+        float fl = Mth.cos(ph) * a;
+        float fr = Mth.cos(ph + Anim.PI * (1.0F - gallop * 0.85F)) * a;
+        float bl = Mth.cos(ph + Anim.PI * (1.0F - gallop * 0.6F)) * a;
+        float br = Mth.cos(ph + gallop * Anim.PI * 0.25F) * a;
+        this.legFl.xRot = fl - agg * 0.15F * (1.0F - walk);
+        this.legFr.xRot = fr - agg * 0.15F * (1.0F - walk);
+        this.legBl.xRot = bl + agg * 0.2F * (1.0F - walk);
+        this.legBr.xRot = br + agg * 0.2F * (1.0F - walk);
+        this.legFl.y = 16.0F - Math.max(0.0F, Mth.sin(ph)) * 1.2F * walk;
+        this.legFr.y = 16.0F - Math.max(0.0F, Mth.sin(ph + Anim.PI * (1.0F - gallop * 0.85F))) * 1.2F * walk;
+        this.legBl.y = 16.0F - Math.max(0.0F, Mth.sin(ph + Anim.PI * (1.0F - gallop * 0.6F))) * 1.2F * walk;
+        this.legBr.y = 16.0F - Math.max(0.0F, Mth.sin(ph + gallop * Anim.PI * 0.25F)) * 1.2F * walk;
+        // lomo: se estira y se encoge con el galope, se agacha al acechar y se lanza al morder
+        float flex = Mth.sin(ph) * 0.08F * walk * (0.4F + gallop);
+        float crouch = agg * (1.0F - walk) * 1.2F;
+        this.body.xRot = flex - bite * 0.12F + hurt * 0.15F;
+        this.body.y = 13.0F + crouch + Mth.sin(ph * 2.0F) * 0.5F * walk + breath * 0.15F;
+        this.body.z = 1.0F - bite * 1.5F;
+        this.body.zRot = jig * 0.06F + sway * 0.12F;
+        this.mane.xScale = 1.0F + breath * 0.03F + agg * 0.06F;
+        this.mane.yScale = 1.0F + breath * 0.03F + agg * 0.08F;
+        this.rump.xRot = -flex * 0.8F;
+        // las púas de hielo del lomo se erizan al enfadarse y vibran con los golpes
+        for (int i = 0; i < 3; i++) {
+            this.spikes[i].yScale = 1.0F + agg * 0.3F + jig * 0.15F;
+            this.spikes[i].zRot = Mth.sin(age * 0.9F + i) * 0.04F * agg + jig * 0.1F;
+        }
+        // cabeza: va baja al acechar, cabecea al trotar, se lanza al morder y se echa atrás al recibir un golpe
+        this.head.y = this.headY + crouch * 0.8F + Mth.sin(age * 0.1F) * 0.2F + Mth.sin(ph * 2.0F) * 0.6F * walk;
+        this.head.z = -7.5F - bite * 3.0F;
+        this.head.xRot = headPitch * Anim.DEG + agg * 0.15F * (1.0F - walk) - bite * 0.35F + hurt * -0.4F + Mth.sin(ph * 2.0F) * 0.05F * walk;
+        this.head.yRot = Mth.clamp(netHeadYaw, -45.0F, 45.0F) * Anim.DEG + Anim.idleLook(e, age) * (1.0F - walk) * (1.0F - agg);
+        this.head.zRot = jig * 0.12F + Mth.sin(age * 0.05F) * 0.04F * (1.0F - walk);
+        // mandíbula: jadea al correr, gruñe enfadado y se cierra de golpe al morder
+        float pant = walk * (0.12F + Math.max(0.0F, Mth.sin(age * 0.5F)) * 0.15F);
+        float snarl = agg * (0.18F + Mth.sin(age * 0.7F) * 0.05F) * (1.0F - walk);
+        float snap = u < 0.0F ? 0.0F : (u < 0.12F ? u / 0.12F * 0.9F : 0.9F * (1.0F - Anim.smooth(Math.min(1.0F, (u - 0.12F) / 0.12F))));
+        this.jaw.xRot = 0.1F + pant + snarl + snap + hurt * 0.5F + Math.max(0.0F, Mth.sin(age * 0.05F)) * 0.05F;
+        // orejas: atentas al enfadarse, hacia atrás al correr y al recibir un golpe; de vez en cuando se mueven solas
+        float flick = Anim.blink(e, age * 0.7F) ? 0.4F : 0.0F;
+        this.earL.xRot = -drag * 0.6F - hurt * 0.8F + agg * 0.1F;
+        this.earR.xRot = -drag * 0.6F - hurt * 0.8F + agg * 0.1F;
+        this.earL.zRot = 0.1F + flick + jig * 0.3F;
+        this.earR.zRot = -0.1F - jig * 0.3F;
+        // cola: se menea con el trote, se queda atrás en las curvas, se levanta al galopar y se esconde al recibir golpes
+        this.tail.xRot = this.tailX - 0.5F * walk - drag * 0.3F + hurt * 0.4F - agg * 0.2F * (1.0F - walk);
+        this.tail.yRot = Mth.sin(age * 0.2F) * (0.2F + 0.3F * walk) * (1.0F - agg * 0.7F) + sway * 0.9F;
+        this.tail.y = 10.5F + crouch + Mth.sin(ph * 2.0F) * 0.5F * walk;
+        this.tailTip.xRot = drag * 0.2F + jig * 0.3F;
     }
 
     @Override

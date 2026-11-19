@@ -294,14 +294,14 @@ public final class ModItems {
     public static final RegistryObject<Item> ABYSS_SCEPTER = ITEMS.register("abyss_scepter", com.mundosdeaxelis.relic.AbyssScepterItem::new);
 
     // Figuritas de compañeros 3D
-    public static final RegistryObject<Item> COMP_FOX = ITEMS.register("comp_fox", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.FOX));
+    public static final RegistryObject<Item> COMP_LAND_SHARK = ITEMS.register("comp_land_shark", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.LAND_SHARK));
     public static final RegistryObject<Item> COMP_CAT = ITEMS.register("comp_cat", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.CAT));
     public static final RegistryObject<Item> COMP_BUNNY = ITEMS.register("comp_bunny", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.BUNNY));
-    public static final RegistryObject<Item> COMP_JELLY = ITEMS.register("comp_jelly", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.JELLY));
-    public static final RegistryObject<Item> COMP_PHOENIX = ITEMS.register("comp_phoenix", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.PHOENIX));
+    public static final RegistryObject<Item> COMP_CLOUD = ITEMS.register("comp_cloud", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.CLOUD));
+    public static final RegistryObject<Item> COMP_COMET_CAT = ITEMS.register("comp_comet_cat", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.COMET_CAT));
     public static final RegistryObject<Item> COMP_TURTLE = ITEMS.register("comp_turtle", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.TURTLE));
     public static final RegistryObject<Item> COMP_PENGUIN = ITEMS.register("comp_penguin", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.PENGUIN));
-    public static final RegistryObject<Item> COMP_PANDA = ITEMS.register("comp_panda", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.PANDA));
+    public static final RegistryObject<Item> COMP_ASTRO_OCTOPUS = ITEMS.register("comp_astro_octopus", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.ASTRO_OCTOPUS));
 
     public static final RegistryObject<Item> COMP_CHICK = ITEMS.register("comp_chick", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.CHICK));
     public static final RegistryObject<Item> COMP_FROG = ITEMS.register("comp_frog", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.FROG));
@@ -309,12 +309,12 @@ public final class ModItems {
     public static final RegistryObject<Item> COMP_SNAIL = ITEMS.register("comp_snail", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.SNAIL));
     public static final RegistryObject<Item> COMP_BEE = ITEMS.register("comp_bee", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.BEE));
     public static final RegistryObject<Item> COMP_SHEEP = ITEMS.register("comp_sheep", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.SHEEP));
-    public static final RegistryObject<Item> COMP_HEDGEHOG = ITEMS.register("comp_hedgehog", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.HEDGEHOG));
+    public static final RegistryObject<Item> COMP_TOASTER = ITEMS.register("comp_toaster", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.TOASTER));
     public static final RegistryObject<Item> COMP_AXOLOTL = ITEMS.register("comp_axolotl", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.AXOLOTL));
-    public static final RegistryObject<Item> COMP_RACCOON = ITEMS.register("comp_raccoon", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.RACCOON));
+    public static final RegistryObject<Item> COMP_VAMPIRE_BAT = ITEMS.register("comp_vampire_bat", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.VAMPIRE_BAT));
     public static final RegistryObject<Item> COMP_WHALE = ITEMS.register("comp_whale", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.WHALE));
     public static final RegistryObject<Item> COMP_KITSUNE = ITEMS.register("comp_kitsune", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.KITSUNE));
-    public static final RegistryObject<Item> COMP_CAPYBARA = ITEMS.register("comp_capybara", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.CAPYBARA));
+    public static final RegistryObject<Item> COMP_ZEN_CAPYBARA = ITEMS.register("comp_zen_capybara", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.ZEN_CAPYBARA));
     public static final RegistryObject<Item> COMP_DUCK = ITEMS.register("comp_duck", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.DUCK));
     public static final RegistryObject<Item> COMP_SLIME = ITEMS.register("comp_slime", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.SLIME));
     public static final RegistryObject<Item> COMP_CORGI = ITEMS.register("comp_corgi", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.CORGI));
@@ -342,6 +342,7 @@ public final class ModItems {
     public static final RegistryObject<Item> COMP_PIGGY = ITEMS.register("comp_piggy", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.PIGGY));
     public static final RegistryObject<Item> COMP_SKUNK = ITEMS.register("comp_skunk", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.SKUNK));
     public static final RegistryObject<Item> COMP_SEAL = ITEMS.register("comp_seal", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.SEAL));
+    public static final RegistryObject<Item> COMP_CRYSTAL_DRAGON = ITEMS.register("comp_crystal_dragon", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.CRYSTAL_DRAGON));
     public static final RegistryObject<Item> COMP_MOONIMP = ITEMS.register("comp_moonimp", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.MOONIMP));
     public static final RegistryObject<Item> COMP_PATCH = ITEMS.register("comp_patch", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.PATCH));
     public static final RegistryObject<Item> COMP_TRIKE = ITEMS.register("comp_trike", () -> new com.mundosdeaxelis.relic.CompanionItem(com.mundosdeaxelis.relic.Companions.TRIKE));

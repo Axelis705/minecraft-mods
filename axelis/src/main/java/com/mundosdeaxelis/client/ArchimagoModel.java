@@ -235,13 +235,30 @@ public class ArchimagoModel extends HierarchicalModel<Archimago> {
             lz = -1.0F * k;
             lift = -4.0F * ease((death - 0.5F) * 2.0F);
         }
+        // al cambiar de hechizo, la pose anterior se funde con la nueva (nada salta de golpe)
+        float[] pv = {rx, rz, lx, lz, bodyX, bodyY, lift, head.xRot};
+        Inertia.blend(e, death > 0.0F ? 99 : st, pv, 8.0F, pt);
+        rx = pv[0];
+        rz = pv[1];
+        lx = pv[2];
+        lz = pv[3];
+        bodyX = pv[4];
+        bodyY = pv[5];
+        lift = pv[6];
+        head.xRot = pv[7];
+        // inercia del vuelo y temblor al recibir golpes
+        Motion mo = Motion.of(e);
+        float jig = mo.jiggle(pt), hurt = Anim.hurt(e, pt);
         rightArm.xRot = rx;
-        rightArm.zRot = rz;
+        rightArm.zRot = rz + hurt * 0.25F;
         leftArm.xRot = lx;
-        leftArm.zRot = lz;
-        body.xRot = bodyX;
+        leftArm.zRot = lz - hurt * 0.25F;
+        body.xRot = bodyX - hurt * 0.15F;
         body.yRot = bodyY;
+        body.zRot = jig * 0.05F;
         body.y -= lift;
+        skirt.xRot += mo.drag(pt) * 0.35F;
+        skirt.zRot = mo.sway(pt) * 0.25F;
         // el bastón queda más o menos vertical aunque el brazo suba
         staff.xRot = st == Archimago.S_RAYS || st == Archimago.S_STAFF ? 1.35F : Mth.clamp(-rx * 0.75F, -0.4F, 1.6F);
 

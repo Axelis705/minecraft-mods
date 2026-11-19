@@ -9,13 +9,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /** Dibuja al Guardián de Musgo, con los ojos y la runa del pecho brillando (más fuerte al preparar el golpe de suelo). */
-public class GuardianRenderer extends MobRenderer<GuardianMusgo, GuardianModel> {
+public class GuardianRenderer extends AnimatedMobRenderer<GuardianMusgo, GuardianModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/guardian_musgo.png");
     private static final ResourceLocation GLOW = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/guardian_musgo_glow.png");
 

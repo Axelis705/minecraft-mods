@@ -1,5 +1,6 @@
 package com.mundosdeaxelis.client;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mundosdeaxelis.MundosDeAxelis;
 import com.mundosdeaxelis.entity.ArmaduraEncantada;
 import net.minecraft.client.model.HumanoidModel;
@@ -17,7 +18,8 @@ public class ArmaduraEncantadaRenderer extends HumanoidMobRenderer<ArmaduraEncan
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/armadura_encantada.png");
 
     public ArmaduraEncantadaRenderer(EntityRendererProvider.Context context) {
-        super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.ZOMBIE)), 0.5F);
+        super(context, new LivelyHumanoidModel<ArmaduraEncantada>(context.bakeLayer(ModelLayers.ZOMBIE), false, true)
+                .asleepWhen(e -> !e.isAwake()), 0.5F);
         this.addLayer(new HumanoidArmorLayer<>(this, new HumanoidModel<>(context.bakeLayer(ModelLayers.ZOMBIE_INNER_ARMOR)),
                 new HumanoidModel<>(context.bakeLayer(ModelLayers.ZOMBIE_OUTER_ARMOR)), context.getModelManager()));
     }
@@ -25,5 +27,23 @@ public class ArmaduraEncantadaRenderer extends HumanoidMobRenderer<ArmaduraEncan
     @Override
     public ResourceLocation getTextureLocation(ArmaduraEncantada entity) {
         return TEXTURE;
+    }
+
+    @Override
+    protected float getFlipDegrees(ArmaduraEncantada e) {
+        return 0.0F;
+    }
+
+    @Override
+    protected void setupRotations(ArmaduraEncantada e, PoseStack pose, float age, float yaw, float pt) {
+        super.setupRotations(e, pose, age, yaw, pt);
+        if (e.isAwake() || e.deathTime > 0) {
+            Juice.body(pose, e, CreatureStyles.of(e), pt);
+        }
+    }
+
+    @Override
+    protected void scale(ArmaduraEncantada e, PoseStack pose, float pt) {
+        Juice.scale(pose, e, CreatureStyles.of(e), pt);
     }
 }

@@ -17,6 +17,15 @@ import net.minecraft.util.Mth;
 
 /** Modelo del Polinizador: un insecto-flor con cuatro alas, collar de pétalos alrededor de la cara y un aguijón de espora. */
 public class PolinizadorModel extends EntityModel<Polinizador> {
+    private ModelPart legA;
+    private ModelPart legB;
+    private ModelPart pollen;
+    private ModelPart sting;
+    private ModelPart petalUp;
+    private ModelPart petalDn;
+    private ModelPart petalL;
+    private ModelPart petalR;
+
     public static final ModelLayerLocation LAYER =
             new ModelLayerLocation(new ResourceLocation(MundosDeAxelis.MODID, "polinizador"), "main");
 
@@ -42,6 +51,14 @@ public class PolinizadorModel extends EntityModel<Polinizador> {
         this.wingL2 = root.getChild("body").getChild("wing_l2");
         this.antennaL = root.getChild("body").getChild("head").getChild("antenna_l");
         this.antennaR = root.getChild("body").getChild("head").getChild("antenna_r");
+        this.legA = this.body.getChild("leg_a");
+        this.legB = this.body.getChild("leg_b");
+        this.pollen = this.body.getChild("pollen");
+        this.sting = this.tail.getChild("sting");
+        this.petalUp = this.head.getChild("petal_up");
+        this.petalDn = this.head.getChild("petal_dn");
+        this.petalL = this.head.getChild("petal_l");
+        this.petalR = this.head.getChild("petal_r");
     }
 
     public static LayerDefinition createLayer() {
@@ -69,18 +86,60 @@ public class PolinizadorModel extends EntityModel<Polinizador> {
 
     @Override
     public void setupAnim(Polinizador e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        float flap = Mth.sin(age * 1.9F) * 0.7F;
-        this.wingR1.zRot = -0.3F - flap;
-        this.wingR2.zRot = -0.2F - flap * 0.8F;
-        this.wingL1.zRot = 0.3F + flap;
-        this.wingL2.zRot = 0.2F + flap * 0.8F;
-        this.body.y = 16.0F + Mth.sin(age * 0.2F) * 1.2F;
-        this.body.xRot = e.isCharging() ? -0.5F : 0.1F + Mth.sin(age * 0.15F) * 0.05F;
-        this.head.xRot = headPitch * ((float) Math.PI / 180.0F) * 0.5F;
-        this.head.yRot = netHeadYaw * ((float) Math.PI / 180.0F) * 0.7F;
-        this.tail.xRot = 0.35F + Mth.sin(age * 0.25F) * 0.1F + (e.isCharging() ? 0.5F : 0.0F);
-        this.antennaL.xRot = -0.5F + Mth.sin(age * 0.3F) * 0.1F;
-        this.antennaR.xRot = -0.5F - Mth.sin(age * 0.3F) * 0.1F;
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
+        boolean ch = e.isCharging();
+        float charge = m.smooth(0, ch ? 1.0F : 0.0F, 0.22F, pt);
+        float windup = Mth.clamp(m.sinceStart(1, ch, e, pt) / 8.0F, 0.0F, 1.0F);
+        float after = Motion.pulse(m.sinceEnd(1, ch, e, pt), 10.0F);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        float dth = Anim.death(e, pt);
+        float speed = Math.min(1.0F, m.speed(pt) * 6.0F);
+        float sway = m.sway(pt), drag = m.drag(pt);
+        // alas: aleteo rapidísimo (más al cargar y al ir deprisa); el par de atrás va un poco a destiempo; al morir se paran
+        float beat = 1.9F + 0.9F * charge + 0.5F * speed;
+        float amp = (0.65F + 0.25F * charge) * (1.0F - dth);
+        float f1 = Mth.sin(age * beat) * amp, f2 = Mth.sin(age * beat - 0.9F) * amp * 0.85F;
+        this.wingR1.zRot = -0.3F - f1 - dth * 0.6F;
+        this.wingR2.zRot = -0.2F - f2 - dth * 0.5F;
+        this.wingL1.zRot = 0.3F + f1 + dth * 0.6F;
+        this.wingL2.zRot = 0.2F + f2 + dth * 0.5F;
+        this.wingR1.yRot = -0.15F * speed;
+        this.wingL1.yRot = 0.15F * speed;
+        this.wingR2.yRot = -0.2F * speed;
+        this.wingL2.yRot = 0.2F * speed;
+        // cuerpo: flota en ocho (sube y baja y se mece), apunta al cargar y retrocede tras la embestida
+        float hover = Mth.sin(age * 0.2F) * 1.2F + Mth.sin(age * 0.47F) * 0.35F;
+        this.body.y = 16.0F + hover * (1.0F - charge * 0.6F) - after * 1.5F;
+        this.body.x = Mth.sin(age * 0.1F) * 0.5F * (1.0F - charge);
+        this.body.xRot = 0.1F + Mth.sin(age * 0.15F) * 0.05F - charge * 0.6F + windup * Mth.sin(age * 2.6F) * 0.06F
+                + after * 0.35F - hurt * 0.4F + speed * 0.2F;
+        this.body.zRot = Mth.sin(age * 0.1F + 1.0F) * 0.06F + jig * 0.2F + sway * 0.4F;
+        // cabeza: mira al objetivo; los pétalos de la cara se abren al atacar
+        this.head.xRot = headPitch * Anim.DEG * 0.5F + charge * 0.3F;
+        this.head.yRot = netHeadYaw * Anim.DEG * 0.7F;
+        this.head.zRot = -jig * 0.15F;
+        float bloom = 1.0F + charge * 0.35F + Mth.sin(age * 0.3F) * 0.04F;
+        this.petalUp.yScale = bloom;
+        this.petalDn.yScale = bloom;
+        this.petalL.xScale = bloom;
+        this.petalR.xScale = bloom;
+        // cola y aguijón: se curva para picar y late
+        this.tail.xRot = 0.35F + Mth.sin(age * 0.25F) * 0.1F + charge * 0.75F - after * 0.3F + drag * -0.15F;
+        this.tail.yRot = -sway * 0.5F;
+        float st = 1.0F + charge * (0.35F + 0.15F * Mth.sin(age * 1.2F));
+        this.sting.zScale = st;
+        // antenas: tiemblan, se quedan atrás al volar rápido y rebotan con los golpes
+        this.antennaL.xRot = -0.5F + Mth.sin(age * 0.3F) * 0.1F + drag * 0.5F + jig * 0.3F;
+        this.antennaR.xRot = -0.5F - Mth.sin(age * 0.3F) * 0.1F + drag * 0.5F - jig * 0.3F;
+        this.antennaL.zRot = 0.3F + sway * 0.4F + charge * 0.25F;
+        this.antennaR.zRot = -0.3F + sway * 0.4F - charge * 0.25F;
+        // patitas colgando y la bola de polen que se balancea como un péndulo
+        this.legA.xRot = 0.25F + drag * 0.7F + Mth.sin(age * 0.33F) * 0.15F;
+        this.legB.xRot = 0.25F + drag * 0.7F + Mth.sin(age * 0.33F + 1.4F) * 0.15F;
+        this.pollen.xRot = drag * 0.35F + Mth.sin(age * 0.2F + 0.8F) * 0.12F;
+        this.pollen.zRot = sway * 0.6F + jig * 0.2F;
     }
 
     @Override

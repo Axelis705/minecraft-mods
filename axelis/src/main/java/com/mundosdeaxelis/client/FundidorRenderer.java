@@ -9,13 +9,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /** Dibuja a Fundidor con las partes incandescentes brillando en la oscuridad (y apagándose al morir). */
-public class FundidorRenderer extends MobRenderer<Fundidor, FundidorModel> {
+public class FundidorRenderer extends AnimatedMobRenderer<Fundidor, FundidorModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/fundidor.png");
     private static final ResourceLocation GLOW = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/fundidor_glow.png");
 
@@ -24,19 +23,10 @@ public class FundidorRenderer extends MobRenderer<Fundidor, FundidorModel> {
         this.addLayer(new Glow(this));
     }
 
-    @Override
-    protected float getFlipDegrees(Fundidor e) {
-        return 0.0F;
-    }
+
 
     @Override
-    protected void setupRotations(Fundidor e, PoseStack pose, float age, float yaw, float pt) {
-        super.setupRotations(e, pose, age, yaw, pt);
-        ForgeDeath.topple(pose, e, pt);
-    }
-
-    @Override
-    protected void scale(Fundidor e, PoseStack pose, float partialTick) {
+    protected void baseScale(Fundidor e, PoseStack pose, float partialTick) {
         float s = 1.15F;
         pose.scale(s, s, s);
     }

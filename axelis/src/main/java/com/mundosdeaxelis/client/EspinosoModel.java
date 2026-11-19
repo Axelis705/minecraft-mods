@@ -17,6 +17,10 @@ import net.minecraft.util.Mth;
 
 /** Modelo del Espinoso: una flor carnívora clavada en el suelo; abre los pétalos justo antes de disparar una espina. */
 public class EspinosoModel extends EntityModel<Espinoso> {
+    private ModelPart leafL;
+    private ModelPart leafR;
+    private final ModelPart[] thorns = new ModelPart[5];
+
     public static final ModelLayerLocation LAYER =
             new ModelLayerLocation(new ResourceLocation(MundosDeAxelis.MODID, "espinoso"), "main");
 
@@ -36,6 +40,11 @@ public class EspinosoModel extends EntityModel<Espinoso> {
         this.petalS = this.head.getChild("petal_s");
         this.petalE = this.head.getChild("petal_e");
         this.petalW = this.head.getChild("petal_w");
+        this.leafL = this.stem.getChild("leaf_l");
+        this.leafR = this.stem.getChild("leaf_r");
+        for (int i = 0; i < 5; i++) {
+            this.thorns[i] = this.head.getChild("thorn_" + (i + 1));
+        }
     }
 
     public static LayerDefinition createLayer() {
@@ -60,18 +69,53 @@ public class EspinosoModel extends EntityModel<Espinoso> {
 
     @Override
     public void setupAnim(Espinoso e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        this.stem.yRot = netHeadYaw * ((float) Math.PI / 180.0F) * 0.5F;
-        this.stem.xRot = Mth.sin(age * 0.07F) * 0.05F + headPitch * ((float) Math.PI / 180.0F) * 0.25F;
-        this.head.yRot = netHeadYaw * ((float) Math.PI / 180.0F) * 0.5F;
-        float open = e.isCharging() ? 1.0F : 0.12F + 0.05F * Mth.sin(age * 0.1F);
-        this.petalN.xRot = -open * 0.95F;
-        this.petalS.xRot = open * 0.95F;
-        this.petalE.zRot = -open * 0.95F;
-        this.petalW.zRot = open * 0.95F;
-        if (e.isCharging()) {
-            this.head.xRot = -0.18F + Mth.sin(age * 1.6F) * 0.03F;
-        } else {
-            this.head.xRot = 0.0F;
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
+        boolean ch = e.isCharging();
+        // carga suave; los pétalos se abren con resorte (se pasan un poco y rebotan)
+        float charge = m.smooth(0, ch ? 1.0F : 0.0F, 0.2F, pt);
+        float open = m.spring(0, ch ? 1.0F : 0.12F, 0.2F, 0.22F, pt);
+        // el disparo: justo al soltar la carga
+        float shot = Motion.pulse(m.sinceEnd(0, ch, e, pt), 9.0F);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        float dth = Anim.smooth(Anim.death(e, pt));
+        float breath = Anim.breath(age, 0.09F);
+        float wind = Mth.sin(age * 0.07F + e.getId()) * 0.06F + Mth.sin(age * 0.19F + e.getId() * 0.3F) * 0.025F;
+        float tremble = Mth.sin(age * 2.1F) * 0.035F * charge;
+        // tallo: se mece con el viento, apunta, se echa atrás al cargar, latigazo al disparar, se dobla con los golpes y se marchita
+        this.stem.yRot = netHeadYaw * Anim.DEG * 0.5F + wind * 0.5F;
+        this.stem.xRot = wind + headPitch * Anim.DEG * 0.25F - charge * 0.16F + shot * 0.38F - hurt * 0.32F + dth * 1.15F;
+        this.stem.zRot = Mth.cos(age * 0.06F + e.getId()) * 0.04F + jig * 0.12F + tremble;
+        // cabeza: tiembla al cargar, cabecea al disparar y se infla un poco con cada carga
+        this.head.yRot = netHeadYaw * Anim.DEG * 0.5F;
+        this.head.xRot = -0.2F * charge + tremble * 1.5F + shot * 0.28F + dth * 0.5F;
+        this.head.zRot = jig * 0.18F;
+        float puff = 1.0F + breath * 0.025F + charge * 0.07F * (0.6F + 0.4F * Mth.sin(age * 0.9F)) - shot * 0.08F;
+        this.head.xScale = puff;
+        this.head.yScale = 1.0F + breath * 0.02F + charge * 0.05F + shot * 0.06F;
+        this.head.zScale = puff;
+        // pétalos: respiran, se abren de golpe al cargar (cada uno con su ritmo), se abren más al disparar y caen al morir
+        float o = open + shot * 0.45F + dth * 0.6F;
+        this.petalN.xRot = -(o + Mth.sin(age * 0.13F) * 0.04F) * 0.95F;
+        this.petalS.xRot = (o + Mth.sin(age * 0.13F + 1.6F) * 0.04F) * 0.95F;
+        this.petalE.zRot = -(o + Mth.sin(age * 0.13F + 3.1F) * 0.04F) * 0.95F;
+        this.petalW.zRot = (o + Mth.sin(age * 0.13F + 4.7F) * 0.04F) * 0.95F;
+        // hojas del tallo: aletean con el viento y los golpes; se caen al morir
+        float flutter = wind * 2.2F + jig * 0.45F + hurt * 0.3F;
+        this.leafL.zRot = 0.6F + flutter - dth * 0.9F;
+        this.leafR.zRot = -0.6F + flutter + dth * 0.9F;
+        this.leafL.yRot = Mth.sin(age * 0.11F) * 0.12F;
+        this.leafR.yRot = -Mth.sin(age * 0.11F + 1.0F) * 0.12F;
+        // espinas: se erizan al cargar, salen disparadas (se encogen) y vuelven a crecer
+        for (int i = 0; i < 5; i++) {
+            ModelPart t = this.thorns[i];
+            float grow = Mth.clamp(1.0F + charge * 0.55F - shot * 0.85F, 0.15F, 1.6F);
+            t.yScale = grow;
+            t.xScale = 1.0F + charge * 0.15F;
+            t.zScale = 1.0F + charge * 0.15F;
+            t.xRot = Mth.sin(age * 1.7F + i * 1.3F) * 0.08F * charge;
+            t.zRot = Mth.cos(age * 1.5F + i * 0.9F) * 0.08F * charge;
         }
     }
 

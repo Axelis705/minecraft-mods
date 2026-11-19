@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "mundos_de_axelis:item/carta_fundidor"
+  }
+}

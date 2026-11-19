@@ -4,11 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mundosdeaxelis.MundosDeAxelis;
 import com.mundosdeaxelis.entity.Espinoso;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-/** Dibuja al Espinoso (al morir se encoge en vez de caerse). */
-public class EspinosoRenderer extends MobRenderer<Espinoso, EspinosoModel> {
+/** Dibuja al Espinoso (al morir se marchita y se desmorona: lo hace Juice con su estilo). */
+public class EspinosoRenderer extends AnimatedMobRenderer<Espinoso, EspinosoModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/espinoso.png");
 
     public EspinosoRenderer(EntityRendererProvider.Context context) {
@@ -18,16 +17,5 @@ public class EspinosoRenderer extends MobRenderer<Espinoso, EspinosoModel> {
     @Override
     public ResourceLocation getTextureLocation(Espinoso entity) {
         return TEXTURE;
-    }
-
-    @Override
-    protected float getFlipDegrees(Espinoso entity) {
-        return 0.0F;
-    }
-
-    @Override
-    protected void scale(Espinoso entity, PoseStack pose, float pt) {
-        float s = entity.deathTime > 0 ? Math.max(0.05F, 1.0F - (entity.deathTime + pt) / 20.0F) : 1.0F;
-        pose.scale(s, s, s);
     }
 }

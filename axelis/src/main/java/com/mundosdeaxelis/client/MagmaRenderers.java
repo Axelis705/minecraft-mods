@@ -108,6 +108,18 @@ public final class MagmaRenderers {
                 new V3(look.x(), look.y(), look.z()));
     }
 
+    /**
+     * El "movimiento con vida" de {@link Juice} para las criaturas hechas de malla: se gira al marco de la criatura (delante =
+     * -Z), se inclina, se ladea, retrocede, se aplasta y muere con su estilo, y se vuelve a girar (la malla pone su propio giro).
+     */
+    static void juice(PoseStack ps, net.minecraft.world.entity.LivingEntity e, float pt, float bodyDeg) {
+        CreatureStyle st = CreatureStyles.of(e);
+        ps.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180.0F - bodyDeg));
+        Juice.body(ps, e, st, pt);
+        Juice.scale(ps, e, st, pt);
+        ps.mulPose(com.mojang.math.Axis.YP.rotationDegrees(bodyDeg - 180.0F));
+    }
+
     static Vec3 lerpPos(Entity e, float pt) {
         return new Vec3(Mth.lerp(pt, e.xo, e.getX()), Mth.lerp(pt, e.yo, e.getY()), Mth.lerp(pt, e.zo, e.getZ()));
     }
@@ -209,9 +221,11 @@ public final class MagmaRenderers {
             double hurt = e.hurtTime > 0 ? (e.hurtTime - pt) / 10.0 : 0.0;
             float body = Mth.rotLerp(pt, e.yBodyRotO, e.yBodyRot);
             double walk = e.walkAnimation.speed(pt);
-            double sc = e.isDeadOrDying() ? Math.max(0.05, 1 - (e.deathTime + pt) / 20.0) : 1.0;
-            BossMesh.larva(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), sc, t,
+            ps.pushPose();
+            juice(ps, e, pt, body);
+            BossMesh.larva(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), 1.0, t,
                     Math.min(1, walk * 1.5), -Math.toRadians(body), Math.max(0, hurt));
+            ps.popPose();
             super.render(e, yaw, pt, ps, buf, light);
         }
 
@@ -241,9 +255,11 @@ public final class MagmaRenderers {
         public void render(SalamandraLava e, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
             float t = e.tickCount + pt;
             float body = Mth.rotLerp(pt, e.yBodyRotO, e.yBodyRot);
-            double sc = deathScale(e, pt);
-            VolcanMesh.salamander(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), sc, t,
+            ps.pushPose();
+            juice(ps, e, pt, body);
+            VolcanMesh.salamander(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), 1.0, t,
                     Math.min(1, e.walkAnimation.speed(pt) * 1.5), -Math.toRadians(body), hurtOf(e, pt), e.spitOpen(pt), e.onLava() ? 1.0 : 0.25);
+            ps.popPose();
             super.render(e, yaw, pt, ps, buf, light);
         }
 
@@ -265,8 +281,11 @@ public final class MagmaRenderers {
         public void render(Diablillo e, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
             float t = e.tickCount + pt;
             float body = Mth.rotLerp(pt, e.yBodyRotO, e.yBodyRot);
-            VolcanMesh.imp(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), deathScale(e, pt), t,
+            ps.pushPose();
+            juice(ps, e, pt, body);
+            VolcanMesh.imp(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), 1.0, t,
                     -Math.toRadians(body), hurtOf(e, pt), e.charge(pt), e.diving() ? 1.0 : 0.0);
+            ps.popPose();
             super.render(e, yaw, pt, ps, buf, light);
         }
 
@@ -288,8 +307,11 @@ public final class MagmaRenderers {
         public void render(CultistaVolcan e, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
             float t = e.tickCount + pt;
             float body = Mth.rotLerp(pt, e.yBodyRotO, e.yBodyRot);
+            ps.pushPose();
+            juice(ps, e, pt, body);
             VolcanMesh.cultist(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0),
-                    deathScale(e, pt), t, Math.min(1, e.walkAnimation.speed(pt) * 1.5), -Math.toRadians(body), hurtOf(e, pt), e.cast(pt));
+                    1.0, t, Math.min(1, e.walkAnimation.speed(pt) * 1.5), -Math.toRadians(body), hurtOf(e, pt), e.cast(pt));
+            ps.popPose();
             super.render(e, yaw, pt, ps, buf, light);
         }
 

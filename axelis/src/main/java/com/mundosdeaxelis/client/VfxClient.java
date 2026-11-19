@@ -264,6 +264,27 @@ public final class VfxClient {
                     }
                     d.yaw += diff * 0.22;
                 }
+                if ((int) d.a == VfxTex.CREATURE3D) {
+                    double g0 = d.mGait;
+                    com.mundosdeaxelis.vfx.Creature3D.tickMotion(d);
+                    // polvito al apoyar cada pata (las que andan por el suelo)
+                    int sp = Math.round(d.b);
+                    if (d.mSpd > 0.06 && Math.floor(g0 / Math.PI) != Math.floor(d.mGait / Math.PI)
+                            && !com.mundosdeaxelis.vfx.Creature3D.flier(sp) && mc.options.particles().get().getId() == 0) {
+                        net.minecraft.core.BlockPos bp = net.minecraft.core.BlockPos.containing(d.x, d.y - 0.2, d.z);
+                        net.minecraft.world.level.block.state.BlockState bs = mc.level.getBlockState(bp);
+                        if (!bs.isAir() && bs.getRenderShape() != net.minecraft.world.level.block.RenderShape.INVISIBLE) {
+                            double side = (Math.floor(d.mGait / Math.PI) % 2 == 0 ? 1 : -1) * 0.12 * d.size;
+                            double c = Math.cos(d.yaw), sn = Math.sin(d.yaw);
+                            for (int k = 0; k < 2; k++) {
+                                mc.level.addParticle(new net.minecraft.core.particles.BlockParticleOption(
+                                                net.minecraft.core.particles.ParticleTypes.BLOCK, bs),
+                                        d.x + c * side + (Math.random() - 0.5) * 0.15, d.y + 0.03, d.z - sn * side + (Math.random() - 0.5) * 0.15,
+                                        (Math.random() - 0.5) * 0.06, 0.04 + Math.random() * 0.04, (Math.random() - 0.5) * 0.06);
+                            }
+                        }
+                    }
+                }
             }
             if (d.type == VfxType.DOME && d.a > 0) {
                 d.a = Math.max(0, d.a - 0.12F);

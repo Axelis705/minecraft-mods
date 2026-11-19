@@ -9,12 +9,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 /** Dibuja a los lobeznos de escarcha, con los ojos y los cristales del lomo brillando. */
-public class LoboEscarchaRenderer extends MobRenderer<LoboEscarcha, LoboEscarchaModel> {
+public class LoboEscarchaRenderer extends AnimatedMobRenderer<LoboEscarcha, LoboEscarchaModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/lobo_escarcha.png");
     private static final ResourceLocation GLOW = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/lobo_escarcha_glow.png");
 
@@ -29,7 +28,7 @@ public class LoboEscarchaRenderer extends MobRenderer<LoboEscarcha, LoboEscarcha
     }
 
     @Override
-    protected void scale(LoboEscarcha entity, PoseStack pose, float partialTick) {
+    protected void baseScale(LoboEscarcha entity, PoseStack pose, float partialTick) {
         pose.scale(1.3F, 1.3F, 1.3F);
     }
 

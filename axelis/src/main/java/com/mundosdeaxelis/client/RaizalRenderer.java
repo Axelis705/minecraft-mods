@@ -4,11 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mundosdeaxelis.MundosDeAxelis;
 import com.mundosdeaxelis.entity.Raizal;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 /** Dibuja a Raizal. */
-public class RaizalRenderer extends MobRenderer<Raizal, RaizalModel> {
+public class RaizalRenderer extends AnimatedMobRenderer<Raizal, RaizalModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/raizal.png");
 
     public RaizalRenderer(EntityRendererProvider.Context context) {
@@ -16,7 +15,7 @@ public class RaizalRenderer extends MobRenderer<Raizal, RaizalModel> {
     }
 
     @Override
-    protected void scale(Raizal e, PoseStack pose, float partialTick) {
+    protected void baseScale(Raizal e, PoseStack pose, float partialTick) {
         float s = e.isElite() ? 1.5F : 1.2F;
         pose.scale(s, s, s);
     }

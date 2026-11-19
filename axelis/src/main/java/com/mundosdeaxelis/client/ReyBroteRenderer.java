@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /** Dibuja al Rey Brote: cuerpo, gelatina translúcida por fuera y semilla brillante, con estiramiento al saltar y aplastarse. */
-public class ReyBroteRenderer extends MobRenderer<ReyBrote, ReyBroteModel> {
+public class ReyBroteRenderer extends AnimatedMobRenderer<ReyBrote, ReyBroteModel> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/rey_brote.png");
 
@@ -31,11 +31,6 @@ public class ReyBroteRenderer extends MobRenderer<ReyBrote, ReyBroteModel> {
     }
 
     @Override
-    protected float getFlipDegrees(ReyBrote entity) {
-        return 0.0F;
-    }
-
-    @Override
     public void render(ReyBrote entity, float yaw, float pt, PoseStack pose, MultiBufferSource buffer, int light) {
         this.shadowRadius = 2.4F * entity.scaleFactor();
         super.render(entity, yaw, pt, pose, buffer, light);
@@ -48,14 +43,13 @@ public class ReyBroteRenderer extends MobRenderer<ReyBrote, ReyBroteModel> {
     }
 
     @Override
-    protected void scale(ReyBrote entity, PoseStack pose, float pt) {
+    protected void baseScale(ReyBrote entity, PoseStack pose, float pt) {
         float base = 6.0F * entity.scaleFactor();
         float sq = Mth.lerp(pt, entity.sqO, entity.sq);
         // aplastado (sq < 0): más ancho y bajo; estirado (sq > 0): más alto y fino
         float sy = 1.0F + 0.28F * sq;
         float sxz = 1.0F - 0.16F * sq;
-        float death = entity.deathTime > 0 ? Math.max(0.0F, 1.0F - (entity.deathTime + pt) / 20.0F) : 1.0F;
-        pose.scale(base * sxz * death, base * sy * death, base * sxz * death);
+        pose.scale(base * sxz, base * sy, base * sxz);
     }
 
     /** La gelatina de fuera. */

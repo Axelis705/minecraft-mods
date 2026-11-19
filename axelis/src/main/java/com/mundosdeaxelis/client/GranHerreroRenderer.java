@@ -9,13 +9,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /** Dibuja a GranHerrero con las partes incandescentes brillando en la oscuridad (y apagándose al morir). */
-public class GranHerreroRenderer extends MobRenderer<GranHerrero, GranHerreroModel> {
+public class GranHerreroRenderer extends AnimatedMobRenderer<GranHerrero, GranHerreroModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/gran_herrero.png");
     private static final ResourceLocation GLOW = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/gran_herrero_glow.png");
 
@@ -24,19 +23,10 @@ public class GranHerreroRenderer extends MobRenderer<GranHerrero, GranHerreroMod
         this.addLayer(new Glow(this));
     }
 
-    @Override
-    protected float getFlipDegrees(GranHerrero e) {
-        return 0.0F;
-    }
+
 
     @Override
-    protected void setupRotations(GranHerrero e, PoseStack pose, float age, float yaw, float pt) {
-        super.setupRotations(e, pose, age, yaw, pt);
-        ForgeDeath.topple(pose, e, pt);
-    }
-
-    @Override
-    protected void scale(GranHerrero e, PoseStack pose, float partialTick) {
+    protected void baseScale(GranHerrero e, PoseStack pose, float partialTick) {
         float s = 1.5F;
         pose.scale(s, s, s);
     }

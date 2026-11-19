@@ -50,26 +50,19 @@ public final class Companions {
     public record Spec(String id, int species, double size, boolean fly, int rgb, int secs, int cdSecs, Rarity rarity, int slot) {
     }
 
-    public static final Spec FOX = new Spec("comp_fox", 0, 1.05, false, 0xFF9A3C, 60, 60, Rarity.RARE, 0);
     public static final Spec CAT = new Spec("comp_cat", 1, 0.95, false, 0xB8B0FF, 60, 60, Rarity.RARE, 1);
     public static final Spec BUNNY = new Spec("comp_bunny", 3, 0.95, false, 0x7CE38A, 70, 70, Rarity.RARE, 3);
-    public static final Spec JELLY = new Spec("comp_jelly", 4, 1.15, true, 0xB8D8FF, 55, 70, Rarity.EPIC, 4);
-    public static final Spec PHOENIX = new Spec("comp_phoenix", 5, 1.15, true, 0xFF6A2E, 50, 80, Rarity.EPIC, 5);
     public static final Spec TURTLE = new Spec("comp_turtle", 6, 0.95, false, 0x59E0D0, 70, 75, Rarity.RARE, 6);
     public static final Spec PENGUIN = new Spec("comp_penguin", 7, 1.05, false, 0x9FE8FF, 55, 65, Rarity.RARE, 7);
-    public static final Spec PANDA = new Spec("comp_panda", 9, 1.05, false, 0x9AD86A, 55, 70, Rarity.EPIC, 9);
     public static final Spec CHICK = new Spec("comp_chick", 11, 0.80, false, 0xFFE55C, 40, 45, Rarity.COMMON, 10);
     public static final Spec FROG = new Spec("comp_frog", 12, 0.85, false, 0x6CE070, 40, 45, Rarity.COMMON, 11);
     public static final Spec HAMSTER = new Spec("comp_hamster", 13, 0.85, false, 0xFFBC66, 40, 45, Rarity.COMMON, 12);
     public static final Spec SNAIL = new Spec("comp_snail", 14, 0.95, false, 0xFFB0E8, 45, 50, Rarity.COMMON, 13);
     public static final Spec BEE = new Spec("comp_bee", 15, 0.80, true, 0xFFCC33, 45, 50, Rarity.UNCOMMON, 14);
     public static final Spec SHEEP = new Spec("comp_sheep", 16, 1.0, false, 0xE8F0FF, 50, 55, Rarity.UNCOMMON, 15);
-    public static final Spec HEDGEHOG = new Spec("comp_hedgehog", 17, 0.85, false, 0xB07850, 50, 55, Rarity.UNCOMMON, 16);
     public static final Spec AXOLOTL = new Spec("comp_axolotl", 18, 0.95, false, 0xFF8FB0, 55, 60, Rarity.EPIC, 17);
-    public static final Spec RACCOON = new Spec("comp_raccoon", 19, 1.0, false, 0x9AA0C0, 55, 60, Rarity.RARE, 18);
     public static final Spec WHALE = new Spec("comp_whale", 21, 1.6, true, 0x6A9CFF, 60, 90, Rarity.EPIC, 20);
     public static final Spec KITSUNE = new Spec("comp_kitsune", 22, 1.2, false, 0xB8C8FF, 60, 100, Rarity.EPIC, 21);
-    public static final Spec CAPYBARA = new Spec("comp_capybara", 23, 1.1, false, 0xC89A62, 60, 55, Rarity.COMMON, 22);
     public static final Spec DUCK = new Spec("comp_duck", 24, 0.85, false, 0xFFE04A, 40, 45, Rarity.COMMON, 23);
     public static final Spec SLIME = new Spec("comp_slime", 25, 0.95, false, 0x7CE06A, 40, 45, Rarity.COMMON, 24);
     public static final Spec CORGI = new Spec("comp_corgi", 26, 1.0, false, 0xF5A64C, 50, 55, Rarity.UNCOMMON, 25);
@@ -88,7 +81,7 @@ public final class Companions {
     public static final Spec FIREFLY = new Spec("comp_firefly", 39, 0.85, true, 0xD8FF50, 50, 55, Rarity.UNCOMMON, 38);
     public static final Spec ELEPHANT = new Spec("comp_elephant", 41, 1.3, false, 0xB8B8D8, 55, 65, Rarity.RARE, 40);
     public static final Spec LION = new Spec("comp_lion", 42, 1.0, false, 0xFFB84A, 55, 65, Rarity.RARE, 41);
-    public static final Spec PEACOCK = new Spec("comp_peacock", 44, 1.2, false, 0x30C8D8, 60, 75, Rarity.EPIC, 43);
+    public static final Spec PEACOCK = new Spec("comp_peacock", 44, 1.2, false, 0x34D8A0, 60, 75, Rarity.EPIC, 43);
     public static final Spec DOLPHIN = new Spec("comp_dolphin", 45, 1.5, true, 0x6AC8FF, 60, 80, Rarity.EPIC, 44);
     public static final Spec PEGASUS = new Spec("comp_pegasus", 46, 1.4, true, 0xF0F4FF, 55, 90, Rarity.EPIC, 45);
     public static final Spec CELESTIAL_DRAGON = new Spec("comp_celestial_dragon", 47, 1.7, true, 0x40E0B8, 60, 100, Rarity.EPIC, 46);
@@ -102,16 +95,27 @@ public final class Companions {
     public static final Spec PATCH = new Spec("comp_patch", 53, 1.12, false, 0xB59CF0, 40, 45, Rarity.COMMON, 58);
     public static final Spec TRIKE = new Spec("comp_trike", 61, 1.0, false, 0xFF7C98, 55, 60, Rarity.RARE, 61);
     public static final Spec YETI = new Spec("comp_yeti", 62, 1.1, false, 0x9AEAFF, 55, 75, Rarity.EPIC, 62);
+    // etapa 252: mascotas nuevas (reemplazan a las que se quitaron; usan sus mismas habilidades base, rehechas)
+    public static final Spec LAND_SHARK = new Spec("comp_land_shark", 0, 1.0, false, 0x6AA8E8, 55, 60, Rarity.RARE, 0);
+    public static final Spec CLOUD = new Spec("comp_cloud", 4, 1.1, true, 0xCFE6FF, 55, 70, Rarity.EPIC, 4);
+    public static final Spec COMET_CAT = new Spec("comp_comet_cat", 5, 1.05, true, 0x9FD8FF, 50, 80, Rarity.EPIC, 5);
+    public static final Spec ASTRO_OCTOPUS = new Spec("comp_astro_octopus", 9, 1.05, false, 0xFF8AB0, 55, 70, Rarity.EPIC, 9);
+    public static final Spec TOASTER = new Spec("comp_toaster", 17, 0.95, false, 0x7CE0C8, 50, 55, Rarity.UNCOMMON, 16);
+    public static final Spec VAMPIRE_BAT = new Spec("comp_vampire_bat", 19, 0.95, true, 0x9A4AD8, 55, 60, Rarity.RARE, 18);
+    public static final Spec ZEN_CAPYBARA = new Spec("comp_zen_capybara", 23, 1.05, false, 0xC89A62, 60, 55, Rarity.COMMON, 22);
+    public static final Spec CRYSTAL_DRAGON = new Spec("comp_crystal_dragon", 68, 1.25, true, 0xC08AFF, 60, 90, Rarity.EPIC, 68);
     // mascotas exclusivas de los jefes de las mazmorras (solo caen de ellos)
     public static final Spec SPROUT_KING = new Spec("comp_sprout_king", 63, 1.0, false, 0x5CD66C, 50, 60, Rarity.EPIC, 63);
     public static final Spec EMBER_ANVIL = new Spec("comp_ember_anvil", 64, 1.05, false, 0xFF7A2A, 55, 70, Rarity.EPIC, 64);
     public static final Spec FROST_PUP = new Spec("comp_frost_pup", 65, 1.05, false, 0x9AEAFF, 55, 75, Rarity.EPIC, 65);
     public static final Spec LITTLE_ARCHMAGE = new Spec("comp_little_archmage", 66, 1.1, false, 0x8A7AFF, 55, 80, Rarity.EPIC, 66);
     public static final Spec MAGMA_HEART = new Spec("comp_magma_heart", 67, 1.0, false, 0xFF6A1A, 55, 75, Rarity.EPIC, 67);
-    public static final Spec[] ALL = {FOX, CAT, BUNNY, JELLY, PHOENIX, TURTLE, PENGUIN, PANDA,
-            CHICK, FROG, HAMSTER, SNAIL, BEE, SHEEP, HEDGEHOG, AXOLOTL, RACCOON, WHALE, KITSUNE,
-            CAPYBARA, DUCK, SLIME, CORGI, CREEPER, SNOWMAN, GHOST, GOLEM, SPARKMOUSE, DROID, FOREST_SPIRIT, MOON_WOLF, NIGHT_DRAGON,
-            OCTOPUS, BUTTERFLY, CRAB, FIREFLY, ELEPHANT, LION, PEACOCK, DOLPHIN, PEGASUS, CELESTIAL_DRAGON, FERRET, MIMIC, GRIFFON, PIGGY, SKUNK, PATCH, SEAL, MOONIMP, TRIKE, YETI, SPROUT_KING, EMBER_ANVIL, FROST_PUP, LITTLE_ARCHMAGE, MAGMA_HEART};
+    public static final Spec[] ALL = {
+            CAT, BUNNY, TURTLE, PENGUIN, CHICK, FROG, HAMSTER, SNAIL, BEE, SHEEP, AXOLOTL, WHALE, KITSUNE, DUCK, SLIME, CORGI,
+            CREEPER, SNOWMAN, GHOST, GOLEM, SPARKMOUSE, DROID, FOREST_SPIRIT, MOON_WOLF, NIGHT_DRAGON, OCTOPUS, BUTTERFLY, CRAB,
+            FIREFLY, ELEPHANT, LION, PEACOCK, DOLPHIN, PEGASUS, CELESTIAL_DRAGON, FERRET, MIMIC, GRIFFON, PIGGY, SKUNK, PATCH,
+            SEAL, MOONIMP, TRIKE, YETI, SPROUT_KING, EMBER_ANVIL, FROST_PUP, LITTLE_ARCHMAGE, MAGMA_HEART, LAND_SHARK, CLOUD,
+            COMET_CAT, ASTRO_OCTOPUS, TOASTER, VAMPIRE_BAT, ZEN_CAPYBARA, CRYSTAL_DRAGON};
 
     private static final class C {
         Spec s;
@@ -456,13 +460,13 @@ public final class Companions {
             default -> {
             }
         }
-        boolean melee = s.species() == 0 || s.species() == 1 || s.species() == 3 || s.species() == 9 || s.species() == 11 || s.species() == 16
-                || s.species() == 17 || s.species() == 18 || s.species() == 19
+        boolean melee = s.species() == 0 || s.species() == 1 || s.species() == 3 || s.species() == 11 || s.species() == 16
+                || s.species() == 18 || s.species() == 19
                 || s.species() == 24 || s.species() == 25 || s.species() == 26 || s.species() == 27 || s.species() == 30 || s.species() == 34
                 || s.species() == 38 || s.species() == 42 || s.species() == 48;
         if (foe != null && melee && left > 14) {
             Vec3 toFoe = flat(foe.position().subtract(c.pos));
-            target = foe.position().subtract(toFoe.scale(s.species() == 9 ? 1.4 : 1.0));
+            target = foe.position().subtract(toFoe);
         }
         if (!s.fly()) {
             if (c.pos.distanceTo(home) < 0.4 && foe == null) {
@@ -472,7 +476,7 @@ public final class Companions {
         } else {
             double hover = switch (s.species()) {
                 case 2 -> 2.3;
-                case 4 -> 2.7;
+                case 4 -> 2.4;
                 case 15 -> 1.9;
                 case 21 -> 3.0;
                 case 29 -> 1.9;
@@ -485,7 +489,10 @@ public final class Companions {
                 default -> 2.2;
             };
             Vec3 want = home.add(0, hover - 0.35 + Math.sin(c.age * 0.12 + s.slot()) * 0.25, 0);
-            if (foe != null && s.species() == 5) {
+            if (foe != null && s.species() == 19 && left > 14) {
+                want = foe.position().add(0, foe.getBbHeight() + 0.2, 0);
+            }
+            if (foe != null && (s.species() == 5 || s.species() == 68)) {
                 Vec3 away = flat(ownerPos.subtract(foe.position()));
                 want = foe.position().add(away.scale(4.0)).add(0, 2.4, 0);
             }
@@ -533,6 +540,32 @@ public final class Companions {
         RelicSounds.play(c.level, c.pos, c.s.id(), "act", vol, pitch);
     }
 
+    /** La tostadora lanza una tostada en parábola: cae donde estaba el enemigo y quema a los que estén cerca. */
+    private static void lobToast(C c, ServerPlayer owner, Vec3 from, Vec3 to, float dmg, int ticks) {
+        ServerLevel sl = c.level;
+        act(c, 0.8F, 1.1F + sl.random.nextFloat() * 0.1F);
+        sl.sendParticles(ParticleTypes.SMOKE, from.x, from.y + 0.3, from.z, 4, 0.1, 0.05, 0.1, 0.01);
+        double h = 1.2 + from.distanceTo(to) * 0.18;
+        for (int i = 1; i <= ticks; i++) {
+            final double t = i / (double) ticks;
+            final boolean last = i == ticks;
+            Scheduler.runLater(i, () -> {
+                Vec3 at = from.lerp(to, t).add(0, 4 * h * t * (1 - t), 0);
+                sl.sendParticles(Fx.dust(0xD49A52, 0.9F), at.x, at.y, at.z, 2, 0.05, 0.05, 0.05, 0.0);
+                sl.sendParticles(Fx.dust(0x8A5A2A, 0.6F), at.x, at.y, at.z, 1, 0.08, 0.08, 0.08, 0.0);
+                if (last) {
+                    Vfx.flash(sl, at, 0xFFC070, 1.2, 7);
+                    RelicFx.burst(sl, Fx.dust(0xD49A52, 0.6F), at, 14, 0.2);
+                    sl.sendParticles(ParticleTypes.SMOKE, at.x, at.y, at.z, 6, 0.2, 0.2, 0.2, 0.02);
+                    for (LivingEntity e : RelicFx.foes(sl, at, 1.8, owner)) {
+                        RelicFx.damage(sl, owner, e, dmg);
+                        e.setSecondsOnFire(2);
+                    }
+                }
+            });
+        }
+    }
+
     private static Vec3 mid(LivingEntity e) {
         return e.getBoundingBox().getCenter();
     }
@@ -542,25 +575,47 @@ public final class Companions {
         Vec3 body = c.pos.add(0, c.s.size() * 0.5, 0);
         float p = c.power;
         switch (c.s.species()) {
-            // ---------------------------------------------------------- zorro estelar: mordida veloz + velocidad
+            // ---------------------------------------------------------- tiburoncito de tierra: nada bajo el suelo y muerde desde abajo
             case 0 -> {
                 if (c.age % 40 == 0) {
                     buff(owner, MobEffects.MOVEMENT_SPEED, 80, 0);
                 }
+                // la aleta va abriendo la tierra al andar
+                if (c.age % 2 == 0 && c.vel.lengthSqr() > 0.004) {
+                    BlockState g = RelicFx.groundState(sl, c.pos.x, c.pos.y - 0.4, c.pos.z);
+                    sl.sendParticles(RelicFx.blockDust(g), c.pos.x, c.pos.y + 0.1, c.pos.z, 2, 0.15, 0.02, 0.15, 0.02);
+                }
                 if (foe != null && c.cd <= 0 && c.pos.distanceTo(foe.position()) < 2.0) {
-                    c.cd = 28;
+                    c.cd = 26;
                     Vec3 to = mid(foe);
                     RelicFx.damage(sl, owner, foe, 3.8F * p);
-                    Vfx.flash(sl, to, 0xFFD070, 1.4, 7);
-                    Vfx.slash(sl, to, c.face.scale(1.5).add(0, -0.3, 0), 0xFFB040, 2.0, 0.6, 7);
-                    RelicFx.burst(sl, Fx.spark(0xFFD070, 0.6F), to, 10, 0.25);
+                    Vfx.flash(sl, to, 0xCFE8FF, 1.3, 7);
+                    Vfx.slash(sl, to, new Vec3(0, 1.2, 0).add(c.face.scale(0.4)), 0x8EC4F0, 1.8, 0.0, 7);
+                    BlockState g = RelicFx.groundState(sl, foe.getX(), foe.getY() - 0.4, foe.getZ());
+                    RelicFx.burst(sl, RelicFx.blockDust(g), foe.position().add(0, 0.2, 0), 12, 0.25);
                     act(c, 0.85F, 0.95F + sl.random.nextFloat() * 0.15F);
-                    Vec3 kb = flat(foe.position().subtract(c.pos)).scale(0.25);
-                    foe.setDeltaMovement(foe.getDeltaMovement().add(kb.x, 0.18, kb.z));
+                    foe.setDeltaMovement(foe.getDeltaMovement().add(0, 0.32, 0));
                     foe.hurtMarked = true;
                 }
-                if (c.age % 3 == 0 && c.vel.lengthSqr() > 0.01) {
-                    sl.sendParticles(Fx.spark(0xFFE08A, 0.4F), c.pos.x, c.pos.y + 0.3, c.pos.z, 1, 0.1, 0.1, 0.1, 0.0);
+                // ¡tiburón!: unas fauces de tierra salen bajo los enemigos cercanos
+                if (foe != null && c.cd2 <= 0 && dist < 9) {
+                    c.cd2 = 20 * 8;
+                    int n = 0;
+                    for (LivingEntity e : RelicFx.foes(sl, foe.position(), 4.0, owner)) {
+                        if (n++ >= 3) {
+                            break;
+                        }
+                        Vec3 at = e.position();
+                        Vfx.maw(sl, at, 0x6AA8E8, 0.9, 1.6, 16);
+                        BlockState g = RelicFx.groundState(sl, at.x, at.y - 0.4, at.z);
+                        RelicFx.burst(sl, RelicFx.blockDust(g), at.add(0, 0.2, 0), 18, 0.3);
+                        RelicFx.damage(sl, owner, e, 5.0F * p);
+                        e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 50, 1, false, true, true));
+                        e.setDeltaMovement(e.getDeltaMovement().add(0, 0.55, 0));
+                        e.hurtMarked = true;
+                    }
+                    RelicFx.shakeNear(sl, foe.position(), 8, 0.5F, 6);
+                    RelicSounds.play(sl, foe.position(), c.s.id(), "cast", 1.0F, 1.0F);
                 }
             }
             // ---------------------------------------------------------- gatito lunar: arañazos y visión nocturna
@@ -635,13 +690,23 @@ public final class Companions {
                     Vfx.flash(sl, mid(foe), 0x9FFFA8, 1.0, 7);
                 }
             }
-            // ---------------------------------------------------------- medusa de nube: cura y descargas suaves
+            // ---------------------------------------------------------- nubecita: lluvia que cura, apaga el fuego y lanza rayitos
             case 4 -> {
                 if (c.age % 100 == 0 || c.age == 2) {
                     buff(owner, MobEffects.WATER_BREATHING, 20 * 12, 0);
                 }
-                if (c.age % 4 == 0) {
-                    sl.sendParticles(Fx.bubble(0xB8D8FF, 0.4F), c.pos.x + (sl.random.nextDouble() - 0.5) * 0.5, c.pos.y + 0.3, c.pos.z + (sl.random.nextDouble() - 0.5) * 0.5, 1, 0, -0.05, 0, 0.0);
+                // llovizna bajo la nube
+                if (c.age % 2 == 0) {
+                    sl.sendParticles(ParticleTypes.FALLING_WATER, c.pos.x + (sl.random.nextDouble() - 0.5) * 0.7, c.pos.y + 0.15,
+                            c.pos.z + (sl.random.nextDouble() - 0.5) * 0.7, 1, 0, 0, 0, 0.0);
+                }
+                // si su dueño se quema, le cae un chaparrón encima
+                if (owner.isOnFire() && c.cd3 <= 0) {
+                    c.cd3 = 30;
+                    owner.clearFire();
+                    sl.sendParticles(ParticleTypes.SPLASH, owner.getX(), owner.getY() + 1.8, owner.getZ(), 30, 0.4, 0.2, 0.4, 0.1);
+                    sl.sendParticles(ParticleTypes.FALLING_WATER, owner.getX(), owner.getY() + 2.4, owner.getZ(), 24, 0.5, 0.1, 0.5, 0.0);
+                    act(c, 0.7F, 1.3F);
                 }
                 if (c.cd2 <= 0) {
                     c.cd2 = 44;
@@ -650,57 +715,64 @@ public final class Companions {
                         if (a.getHealth() < a.getMaxHealth() - 0.4F) {
                             a.heal(2.0F * p);
                             sl.sendParticles(Fx.heart(0xFF9BD8, 0.6F), a.getX(), a.getY() + a.getBbHeight() * 0.8, a.getZ(), 3, 0.3, 0.3, 0.3, 0.02);
+                            sl.sendParticles(ParticleTypes.FALLING_WATER, a.getX(), a.getY() + a.getBbHeight() + 0.8, a.getZ(), 10, 0.35, 0.1, 0.35, 0.0);
                             any = true;
                         }
                     }
                     if (any) {
                         act(c, 0.7F, 1.1F);
-                        Vfx.ring(sl, c.pos.add(0, -1.0, 0), 0xB8D8FF, 2.4, 12);
+                        // y sale el arcoíris
+                        Fx.rainbowLine(sl, body, owner.position().add(0, owner.getBbHeight() + 0.3, 0), 0.25, c.age * 0.05F);
+                        Vfx.ring(sl, c.pos.add(0, -1.0, 0), 0xCFE6FF, 2.4, 12);
                     }
                 }
-                if (foe != null && c.cd <= 0 && dist < 9) {
-                    c.cd = 52;
+                if (foe != null && c.cd <= 0 && dist < 10) {
+                    c.cd = 48;
                     Vec3 to = mid(foe);
-                    Vfx.bolt(sl, body.add(0, -0.2, 0), to, 0xCFE6FF, 0.04, 7);
-                    Vfx.flash(sl, to, 0xCFE6FF, 1.2, 8);
-                    RelicFx.damage(sl, owner, foe, 2.8F * p);
+                    Vfx.bolt(sl, body.add(0, -0.25, 0), to, 0xFFF4A0, 0.05, 7);
+                    Vfx.flash(sl, to, 0xFFF8C8, 1.3, 8);
+                    RelicFx.burst(sl, Fx.bolt(0xFFF4A0, 0.5F), to, 8, 0.2);
+                    RelicFx.damage(sl, owner, foe, 3.0F * p);
                     foe.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 1, false, true, true));
                     act(c, 0.8F, 1.0F);
                 }
             }
-            // ---------------------------------------------------------- fénix bebé: llamas y renacimiento
+            // ---------------------------------------------------------- gatito cometa: suerte, polvo de estrellas y un deseo
             case 5 -> {
-                if (c.age % 60 == 0 || c.age == 2) {
-                    buff(owner, MobEffects.FIRE_RESISTANCE, 20 * 8, 0);
+                if (c.age % 100 == 0 || c.age == 2) {
+                    buff(owner, MobEffects.LUCK, 20 * 14, 0);
                 }
                 if (c.age % 3 == 0) {
-                    sl.sendParticles(ParticleTypes.SMALL_FLAME, c.pos.x, c.pos.y + 0.5, c.pos.z, 1, 0.2, 0.15, 0.2, 0.0);
+                    sl.sendParticles(Fx.spark(Fx.rainbow(c.age * 0.02F), 0.35F), c.pos.x, c.pos.y + 0.4, c.pos.z, 1, 0.15, 0.1, 0.15, 0.0);
                 }
+                // pide un deseo: la primera vez que te ve en apuros, te salva con una lluvia de estrellas
                 if (!c.used && owner.getHealth() < owner.getMaxHealth() * 0.4F) {
                     c.used = true;
                     owner.heal(8.0F * p);
                     buff(owner, MobEffects.REGENERATION, 100, 1);
                     Vec3 om = owner.position().add(0, 1, 0);
-                    Vfx.flash(sl, om, 0xFFB040, 3.2, 14);
-                    Vfx.column(sl, owner.position(), 0xFF8A2E, 0.8, 5.0, 24);
-                    Vfx.ring(sl, owner.position().add(0, 0.1, 0), 0xFF8A2E, 5.0, 18);
-                    RelicFx.burst(sl, ParticleTypes.FLAME, om, 24, 0.2);
-                    RelicFx.burst(sl, Fx.ember(0xFFB040, 0.8F), om, 20, 0.3);
+                    Vfx.flash(sl, om, 0xCFEFFF, 3.2, 14);
+                    Vfx.column(sl, owner.position(), 0x9FD8FF, 0.8, 6.0, 24);
+                    Vfx.ring(sl, owner.position().add(0, 0.1, 0), 0xFFE9A0, 5.0, 18);
+                    RelicFx.burst(sl, Fx.spark(0xFFF0B0, 0.7F), om, 30, 0.3);
                     RelicSounds.play(sl, om, c.s.id(), "cast", 1.0F, 1.2F);
-                    for (LivingEntity e : RelicFx.foes(sl, owner.position(), 4.5, owner)) {
-                        e.setSecondsOnFire(4);
+                    for (LivingEntity e : RelicFx.foes(sl, owner.position(), 5.0, owner)) {
+                        Vec3 top = e.position().add(0, 6, 0);
+                        Vfx.beam(sl, top, mid(e), 0xFFF0B0, 0.12, 8, VfxType.F_CAPS);
+                        e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 120, 0, false, false, true));
                         RelicFx.damage(sl, owner, e, 3.0F * p);
                     }
                 }
                 if (foe != null && c.cd <= 0 && dist < 14) {
                     c.cd = 30;
                     Vec3 to = mid(foe);
-                    Vfx.make(sl, VfxType.BEAM).at(body).dir(to.subtract(body)).rgb(0xFF7A1A).size(0.18).life(8).flags(VfxType.F_FLICKER | VfxType.F_CAPS).send();
-                    Vfx.make(sl, VfxType.BEAM).at(body).dir(to.subtract(body)).rgb(0xFFE080).size(0.08).life(8).flags(VfxType.F_FLICKER).send();
-                    RelicFx.line(sl, ParticleTypes.FLAME, body, to, 0.6);
-                    Vfx.flash(sl, to, 0xFF8A2E, 1.4, 8);
+                    Vfx.make(sl, VfxType.BEAM).at(body).dir(to.subtract(body)).rgb(0x9FD8FF).size(0.16).life(8).flags(VfxType.F_FLICKER | VfxType.F_CAPS).send();
+                    Vfx.make(sl, VfxType.BEAM).at(body).dir(to.subtract(body)).rgb(0xFFFFFF).size(0.07).life(8).flags(VfxType.F_FLICKER).send();
+                    RelicFx.line(sl, Fx.spark(0xFFF0B0, 0.4F), body, to, 0.6);
+                    Vfx.flash(sl, to, 0xCFEFFF, 1.4, 8);
+                    RelicFx.burst(sl, Fx.spark(0xFFE070, 0.5F), to, 10, 0.25);
                     RelicFx.damage(sl, owner, foe, 4.0F * p);
-                    foe.setSecondsOnFire(4);
+                    foe.addEffect(new MobEffectInstance(MobEffects.GLOWING, 80, 0, false, false, true));
                     act(c, 0.8F, 1.0F);
                 }
             }
@@ -926,30 +998,24 @@ public final class Companions {
                     act(c, 0.7F, 1.15F);
                 }
             }
-            // ---------------------------------------------------------- erizo: púas
+            // ---------------------------------------------------------- robot tostadora: tostadas calientes y desayuno
             case 17 -> {
                 LivingEntity at = owner.getLastHurtByMob();
-                if (owner.hurtTime == 9 && at != null && at.isAlive() && c.cd3 <= 0 && at.distanceTo(owner) < 6) {
+                if (owner.hurtTime == 9 && at != null && at.isAlive() && c.cd3 <= 0 && at.distanceTo(owner) < 7) {
                     c.cd3 = 30;
-                    RelicFx.damage(sl, owner, at, 3.0F * p);
-                    Vec3 kb = flat(at.position().subtract(owner.position())).scale(0.6);
-                    at.setDeltaMovement(at.getDeltaMovement().add(kb.x, 0.25, kb.z));
-                    at.hurtMarked = true;
-                    Vfx.bolt(sl, body, mid(at), 0xE0B890, 0.03, 5);
-                    Vfx.flash(sl, mid(at), 0xE0B890, 1.2, 6);
-                    act(c, 0.9F, 1.0F);
+                    lobToast(c, owner, body, mid(at), 3.0F * p, 6);
                 }
-                if (foe != null && c.cd <= 0 && dist < 3.5) {
-                    c.cd = 46;
-                    Vfx.ring(sl, c.pos.add(0, 0.15, 0), 0xE0B890, 3.4, 12);
-                    for (LivingEntity e : RelicFx.foes(sl, c.pos, 3.2, owner)) {
-                        RelicFx.damage(sl, owner, e, 2.4F * p);
-                        Vec3 kb = flat(e.position().subtract(c.pos)).scale(0.5);
-                        e.setDeltaMovement(e.getDeltaMovement().add(kb.x, 0.2, kb.z));
-                        e.hurtMarked = true;
-                    }
-                    RelicFx.burst(sl, Fx.shard(0xE0B890, 0.5F), c.pos.add(0, 0.2, 0), 12, 0.3);
-                    act(c, 0.85F, 1.0F);
+                if (foe != null && c.cd <= 0 && dist < 11) {
+                    c.cd = 40;
+                    lobToast(c, owner, body, mid(foe), 3.4F * p, 10);
+                }
+                // ¡ding! el desayuno está listo
+                if (c.cd2 <= 0 && owner.getFoodData().getFoodLevel() < 17) {
+                    c.cd2 = 20 * 25;
+                    owner.getFoodData().eat(4, 0.6F);
+                    RelicFx.burst(sl, Fx.dust(0xD49A52, 0.7F), owner.position().add(0, 1.5, 0), 12, 0.08);
+                    sl.sendParticles(Fx.heart(0xFFC070, 0.5F), owner.getX(), owner.getY() + 2.0, owner.getZ(), 2, 0.2, 0.1, 0.2, 0.01);
+                    RelicSounds.play(sl, c.pos, c.s.id(), "cast", 0.9F, 1.2F);
                 }
             }
             // ---------------------------------------------------------- ajolote: regeneración
@@ -978,35 +1044,50 @@ public final class Companions {
                     act(c, 0.8F, 1.0F);
                 }
             }
-            // ---------------------------------------------------------- mapache: recoge objetos y roba botín
+            // ---------------------------------------------------------- murcielaguito vampiro: eco, mordida que roba vida y drenaje
             case 19 -> {
-                if (c.age % 10 == 0) {
-                    Vec3 tw = owner.position().add(0, 0.6, 0);
-                    for (ItemEntity ie : sl.getEntitiesOfClass(ItemEntity.class, new AABB(c.pos.subtract(7, 3, 7), c.pos.add(7, 3, 7)))) {
-                        if (!ie.hasPickUpDelay() && ie.position().distanceTo(tw) > 1.5) {
-                            Vec3 dv = tw.subtract(ie.position()).normalize().scale(0.35);
-                            ie.setDeltaMovement(dv.x, dv.y + 0.1, dv.z);
-                            ie.hurtMarked = true;
+                if (RelicFx.isNight(sl) && (c.age % 100 == 0 || c.age == 2)) {
+                    buff(owner, MobEffects.NIGHT_VISION, 20 * 16, 0);
+                }
+                // ecolocalización: marca a los enemigos escondidos
+                if (c.cd3 <= 0) {
+                    List<LivingEntity> near = RelicFx.foes(sl, owner.position(), 14, owner);
+                    if (!near.isEmpty()) {
+                        c.cd3 = 20 * 6;
+                        Vfx.ring(sl, c.pos, 0xB070FF, 4.0, 14);
+                        for (LivingEntity e : near) {
+                            e.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 0, false, false, true));
                         }
+                        act(c, 0.5F, 1.6F);
                     }
                 }
-                if (foe != null && c.cd <= 0 && c.pos.distanceTo(foe.position()) < 1.9) {
-                    c.cd = 26;
+                if (foe != null && c.cd <= 0 && c.pos.distanceTo(mid(foe)) < 2.2) {
+                    c.cd = 24;
                     Vec3 to = mid(foe);
-                    RelicFx.damage(sl, owner, foe, 2.8F * p);
-                    Vfx.slash(sl, to, c.face.scale(1.4).add(0, -0.3, 0), 0xC8CCE8, 1.8, 0.4, 6);
-                    if (sl.random.nextInt(3) == 0) {
-                        ItemStack loot = sl.random.nextInt(5) == 0 ? new ItemStack(Items.EMERALD) : new ItemStack(Items.GOLD_NUGGET, 1 + sl.random.nextInt(3));
-                        ItemEntity ie = new ItemEntity(sl, to.x, to.y, to.z, loot);
-                        ie.setDeltaMovement(0, 0.25, 0);
-                        sl.addFreshEntity(ie);
-                    }
-                    act(c, 0.85F, 1.0F);
+                    float dmg = 2.8F * p;
+                    RelicFx.damage(sl, owner, foe, dmg);
+                    owner.heal(dmg * 0.4F);
+                    Vfx.flash(sl, to, 0xFF3050, 1.1, 6);
+                    RelicFx.burst(sl, Fx.dust(0xC0182E, 0.6F), to, 8, 0.15);
+                    RelicFx.line(sl, Fx.heart(0xD02040, 0.35F), to, owner.position().add(0, 1.1, 0), 0.9);
+                    act(c, 0.85F, 1.1F);
                 }
-                if (c.cd2 <= 0) {
-                    c.cd2 = 20 * 14;
-                    ExperienceOrb.award(sl, owner.position().add(0, 0.5, 0), 4 + sl.random.nextInt(4));
-                    act(c, 0.6F, 1.3F);
+                // si su dueño está herido, le roba un poco de vida a todos los enemigos cercanos
+                if (c.cd2 <= 0 && owner.getHealth() < owner.getMaxHealth() * 0.6F) {
+                    List<LivingEntity> near = RelicFx.foes(sl, owner.position(), 6, owner);
+                    if (!near.isEmpty()) {
+                        c.cd2 = 20 * 10;
+                        float got = 0;
+                        Vec3 om = owner.position().add(0, 1.0, 0);
+                        for (LivingEntity e : near) {
+                            RelicFx.damage(sl, owner, e, 2.0F * p);
+                            got += 2.0F * p;
+                            Vfx.thread(sl, mid(e), om, 0xD0203A, 0.05, 12);
+                        }
+                        owner.heal(Math.min(8.0F, got * 0.5F));
+                        Vfx.ring(sl, owner.position().add(0, 0.1, 0), 0x9A2040, 3.4, 14);
+                        RelicSounds.play(sl, om, c.s.id(), "cast", 1.0F, 1.0F);
+                    }
                 }
             }
             // ---------------------------------------------------------- ciervo lunar: luz de luna
@@ -1108,26 +1189,35 @@ public final class Companions {
                     }
                 }
             }
-            // ---------------------------------------------------------- panda guardián: porrazo
+            // ---------------------------------------------------------- pulpo astronauta: gravedad baja y chorro de tinta
             case 9 -> {
                 if (c.age % 100 == 0 || c.age == 2) {
-                    buff(owner, MobEffects.DAMAGE_RESISTANCE, 20 * 8, 0);
-                    owner.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 20 * 10, 0, true, false, true));
+                    buff(owner, MobEffects.JUMP, 20 * 8, 1);
                 }
-                if (foe != null && c.cd <= 0 && c.pos.distanceTo(foe.position()) < 2.4) {
-                    c.cd = 54;
-                    Vec3 at = foe.position();
-                    Vfx.ring(sl, at.add(0, 0.1, 0), 0x9AD86A, 4.4, 14);
-                    Vfx.flash(sl, at.add(0, 0.3, 0), 0xFFFFFF, 2.0, 8);
-                    RelicFx.burst(sl, RelicFx.blockDust(RelicFx.groundState(sl, at.x, at.y - 0.5, at.z)), at.add(0, 0.2, 0), 18, 0.25);
-                    RelicFx.shakeNear(sl, at, 10, 0.6F, 8);
-                    for (LivingEntity e : RelicFx.foes(sl, at, 3.2, owner)) {
-                        RelicFx.damage(sl, owner, e, 4.5F * p);
-                        Vec3 kb = flat(e.position().subtract(at)).scale(0.6);
-                        e.setDeltaMovement(e.getDeltaMovement().add(kb.x, 0.45, kb.z));
-                        e.hurtMarked = true;
+                // caes como en la Luna
+                if (owner.fallDistance > 3.0F) {
+                    buff(owner, MobEffects.SLOW_FALLING, 30, 0);
+                    if (c.age % 4 == 0) {
+                        sl.sendParticles(Fx.bubble(0xFF8AB0, 0.4F), owner.getX(), owner.getY(), owner.getZ(), 2, 0.3, 0.1, 0.3, 0.0);
                     }
-                    act(c, 1.0F, 0.95F);
+                }
+                // bajo el agua le comparte su oxígeno
+                if (owner.isUnderWater() && owner.getAirSupply() < owner.getMaxAirSupply() / 3 && c.cd3 <= 0) {
+                    c.cd3 = 60;
+                    owner.setAirSupply(owner.getMaxAirSupply());
+                    RelicFx.burst(sl, Fx.bubble(0xCFEFFF, 0.6F), owner.position().add(0, 1.4, 0), 16, 0.15);
+                    act(c, 0.6F, 1.3F);
+                }
+                if (foe != null && c.cd <= 0 && dist < 8) {
+                    c.cd = 46;
+                    Vec3 to = mid(foe);
+                    Vfx.beam(sl, body, to, 0x2A1838, 0.14, 7, VfxType.F_CAPS);
+                    RelicFx.line(sl, ParticleTypes.SQUID_INK, body, to, 0.45);
+                    RelicFx.burst(sl, ParticleTypes.SQUID_INK, to, 14, 0.12);
+                    RelicFx.damage(sl, owner, foe, 3.4F * p);
+                    foe.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0, false, true, true));
+                    foe.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1, false, true, true));
+                    act(c, 0.85F, 1.0F);
                 }
             }
             default -> behave5(c, owner, foe, dist);
@@ -1146,7 +1236,7 @@ public final class Companions {
         Vec3 body = c.pos.add(0, c.s.size() * 0.5, 0);
         float p = c.power;
         switch (c.s.species()) {
-            // ---------------------------------------------------------- capibara: calma para todos
+            // ---------------------------------------------------------- capibara zen: calma para todos
             case 23 -> {
                 if (c.age % 100 == 0 || c.age == 2) {
                     for (LivingEntity a : RelicFx.allies(sl, c.pos, 6, owner, true)) {
@@ -1168,8 +1258,19 @@ public final class Companions {
                         act(c, 0.8F, 1.0F);
                     }
                 }
+                // su calma contagia: los enemigos que se acercan van más lentos
+                if (foe != null && c.cd <= 0 && dist < 6) {
+                    c.cd = 20 * 6;
+                    for (LivingEntity e : RelicFx.foes(sl, c.pos, 5.0, owner)) {
+                        e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 70, 1, false, true, true));
+                        e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 70, 0, false, true, true));
+                        sl.sendParticles(Fx.note(0xFFB040, 0.5F), e.getX(), e.getY() + e.getBbHeight() + 0.3, e.getZ(), 2, 0.2, 0.1, 0.2, 0.0);
+                    }
+                    Vfx.ring(sl, c.pos.add(0, 0.1, 0), 0xFFB040, 5.0, 20);
+                    RelicSounds.play(sl, c.pos, c.s.id(), "cast", 0.8F, 0.9F);
+                }
                 if (c.age % 8 == 0) {
-                    sl.sendParticles(Fx.spark(0xFFB040, 0.3F), c.pos.x, c.pos.y + 0.7, c.pos.z, 1, 0.1, 0.05, 0.1, 0.0);
+                    sl.sendParticles(Fx.spark(0xFFB040, 0.3F), c.pos.x, c.pos.y + 0.9, c.pos.z, 1, 0.1, 0.05, 0.1, 0.0);
                 }
             }
             // ---------------------------------------------------------- patito: picotazos y saltos
@@ -1867,6 +1968,34 @@ public final class Companions {
                     Vfx.ring(sl, c.pos.add(0, 0.1, 0), 0xB4BAC6, 5.0, 16);
                     RelicFx.burst(sl, Fx.spark(0xE4E8F4, 0.4F), c.pos.add(0, 0.5, 0), 24, 0.3);
                     RelicSounds.play(sl, c.pos, c.s.id(), "cast", 1.0F, 1.0F);
+                }
+            }
+            // ---------------------------------------------------------- dragoncito de cristal: esquirlas y escudo de cristal
+            case 68 -> {
+                if (c.age % 100 == 0 || c.age == 2) {
+                    buff(owner, MobEffects.DIG_SPEED, 20 * 12, 0);
+                }
+                if (c.age % 4 == 0) {
+                    sl.sendParticles(Fx.shard(0xD8B8FF, 0.3F), c.pos.x, c.pos.y + 0.6, c.pos.z, 1, 0.25, 0.2, 0.25, 0.0);
+                }
+                if (foe != null && c.cd <= 0 && dist < 14) {
+                    c.cd = 34;
+                    Vec3 to = mid(foe);
+                    for (int k = -1; k <= 1; k++) {
+                        Vec3 side = flat(to.subtract(body)).normalize().cross(new Vec3(0, 1, 0)).scale(0.35 * k);
+                        Vfx.beam(sl, body.add(side), to, k == 0 ? 0xF0E0FF : 0xC08AFF, k == 0 ? 0.11 : 0.07, 8, VfxType.F_CAPS);
+                    }
+                    RelicFx.burst(sl, Fx.shard(0xE0C8FF, 0.6F), to, 14, 0.3);
+                    Vfx.flash(sl, to, 0xF0E0FF, 1.4, 8);
+                    RelicFx.damage(sl, owner, foe, 4.2F * p);
+                    act(c, 0.85F, 1.0F);
+                }
+                if (c.cd2 <= 0 && (foe != null || owner.getHealth() < owner.getMaxHealth() * 0.7F)) {
+                    c.cd2 = 20 * 15;
+                    owner.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 20 * 10, 1, true, false, true));
+                    Vfx.domeFollow(sl, owner, 0xC08AFF, 1.3, 30);
+                    RelicFx.burst(sl, Fx.shard(0xF0E0FF, 0.7F), owner.position().add(0, 1.0, 0), 20, 0.25);
+                    RelicSounds.play(sl, owner.position(), c.s.id(), "cast", 1.0F, 1.1F);
                 }
             }
             default -> {

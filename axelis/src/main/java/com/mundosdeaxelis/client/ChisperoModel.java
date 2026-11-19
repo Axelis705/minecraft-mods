@@ -70,20 +70,49 @@ public class ChisperoModel extends EntityModel<Chispero> {
 
     @Override
     public void setupAnim(Chispero e, float limbSwing, float limbSwingAmount, float age, float netHeadYaw, float headPitch) {
-        float pt = age - e.tickCount;
-        float dth = ForgeDeath.progress(e, pt);
+        float pt = Anim.pt(e, age);
+        Motion m = Motion.of(e);
         boolean ch = e.isCharging();
+        float charge = m.smooth(0, ch ? 1.0F : 0.0F, 0.2F, pt);
+        float shot = Motion.pulse(m.sinceEnd(0, ch, e, pt), 10.0F);
+        float agg = m.smooth(1, e.isAggressive() ? 1.0F : 0.0F, 0.1F, pt);
+        float hurt = Anim.hurt(e, pt);
+        float jig = m.jiggle(pt);
+        float dth = Anim.death(e, pt);
         float op = Mth.lerp(pt, e.openO, e.open);
-        this.doorL.yRot = -op * 1.45F;
-        this.doorR.yRot = op * 1.45F;
-        this.nozzle.z = -5.0F - op * 1.0F + e.recoil * 2.5F;
-        this.nozzle.xRot = ch ? Mth.sin(age * 1.6F) * 0.03F : 0.0F;
-        this.bellowL.zRot = Mth.sin(age * (ch ? 0.9F : 0.25F)) * 0.18F;
-        this.bellowR.zRot = -this.bellowL.zRot;
-        this.chimney.xRot = ch ? Mth.sin(age * 1.4F) * 0.04F : 0.0F;
-        this.stack.xRot = Mth.sin(age * 0.5F) * 0.02F;
-        this.body.yRot = netHeadYaw * ((float) Math.PI / 180.0F) * 0.35F;
-        this.body.zRot = ch ? Mth.sin(age * 2.1F) * 0.012F : 0.0F;
+        // puertas de la boca del horno: se abren con resorte y tiemblan al disparar
+        float door = m.spring(0, op, 0.3F, 0.3F, pt);
+        this.doorL.yRot = -door * 1.45F - shot * 0.2F;
+        this.doorR.yRot = door * 1.45F + shot * 0.2F;
+        // tobera: avanza al abrir, retrocede de golpe al disparar (y vuelve con rebote)
+        this.nozzle.z = -5.0F - op * 1.0F + e.recoil * 2.5F + shot * 1.2F;
+        this.nozzle.xRot = Mth.sin(age * 1.6F) * 0.03F * charge - shot * 0.12F + headPitch * Anim.DEG * 0.3F;
+        // fuelles: bombean más rápido y más hondo al cargar
+        float pump = Mth.sin(age * (0.25F + 0.75F * charge)) * (0.18F + 0.12F * charge);
+        this.bellowL.zRot = pump;
+        this.bellowR.zRot = -pump;
+        this.bellowL.xScale = 1.0F - pump * 0.6F;
+        this.bellowR.xScale = 1.0F - pump * 0.6F;
+        // chimeneas: tiemblan al cargar; la boca de la chimenea "tose" al disparar
+        this.chimney.xRot = Mth.sin(age * 1.4F) * 0.05F * charge - shot * 0.15F;
+        this.chimney.zRot = jig * 0.15F;
+        float cough = 1.0F + shot * 0.45F + charge * 0.1F * Mth.sin(age * 0.8F);
+        this.rim.xScale = cough;
+        this.rim.zScale = cough;
+        this.stack.xRot = Mth.sin(age * 0.5F) * 0.02F - shot * 0.1F + jig * 0.1F;
+        // manómetro: la aguja sube con la carga
+        this.gauge.xRot = -charge * 0.9F + Mth.sin(age * 2.0F) * 0.05F * charge + jig * 0.2F;
+        // ceño: se frunce al enfadarse
+        this.brow.y = -8.0F + agg * 0.8F;
+        this.brow.zRot = Mth.sin(age * 0.07F) * 0.03F * (1.0F - agg);
+        // todo el horno: apunta, se aplasta al disparar y se sacude con los golpes
+        this.body.yRot = netHeadYaw * Anim.DEG * 0.35F;
+        this.body.zRot = Mth.sin(age * 2.1F) * 0.014F * charge + jig * 0.05F;
+        this.body.xRot = shot * 0.08F - hurt * 0.08F;
+        float squash = 1.0F - shot * 0.08F + charge * 0.03F + dth * 0.0F;
+        this.body.yScale = squash;
+        this.body.xScale = 2.0F - squash;
+        this.body.zScale = 2.0F - squash;
     }
 
     @Override

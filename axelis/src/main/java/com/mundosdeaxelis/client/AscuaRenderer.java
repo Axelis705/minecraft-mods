@@ -9,13 +9,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /** Dibuja a Ascua con las partes incandescentes brillando en la oscuridad (y apagándose al morir). */
-public class AscuaRenderer extends MobRenderer<Ascua, AscuaModel> {
+public class AscuaRenderer extends AnimatedMobRenderer<Ascua, AscuaModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/ascua.png");
     private static final ResourceLocation GLOW = new ResourceLocation(MundosDeAxelis.MODID, "textures/entity/ascua_glow.png");
 
@@ -24,15 +23,10 @@ public class AscuaRenderer extends MobRenderer<Ascua, AscuaModel> {
         this.addLayer(new Glow(this));
     }
 
-    @Override
-    protected float getFlipDegrees(Ascua e) {
-        return 0.0F;
-    }
 
     @Override
-    protected void scale(Ascua e, PoseStack pose, float partialTick) {
-        float d = ForgeDeath.progress(e, partialTick);
-        float s = 1.2F * (1.0F - 0.9F * d);
+    protected void baseScale(Ascua e, PoseStack pose, float partialTick) {
+        float s = 1.2F;
         pose.scale(s, s, s);
     }
 
