@@ -1100,6 +1100,7 @@ public final class AutoTest {
         add("álbum: criaturas nuevas (foto)", 300, () -> shot("48_album_criaturas_nuevas"));
         // 9. animaciones en movimiento: cada criatura quieta, andando, atacando, recibiendo un golpe y muriendo, en hojas de cuadros
         add("estudio de animación", 2500, () -> {
+            open(null);
             clearMobs();
             Minecraft.getInstance().options.hideGui = true;
             cmd("gamemode spectator @a");
