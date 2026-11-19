@@ -40,8 +40,24 @@
 - Nuevas: Tiburoncito de Tierra, Nubecita, Gatito Cometa, Pulpo Astronauta, Robot Tostadora, Murcielaguito Vampiro,
   Capibara Zen, Dragoncito de Cristal (especie 68). Con iconos, figuritas, 24 sonidos sintetizados y textos.
 - Rehechas: Sapo Brote, Cabrita Montañera, Perrito Ninja, Cachorro Rey, Quetzal Dorado, Grifo Imponente, Cerdito Alcancía.
+- Segunda vuelta (Axelis las marcó en el catálogo): Cachorro Rey (melena de sol con gajos redondos, mofletes, ojazos),
+  Cabrita Montañera (lana de nube de bolitas, patitas gorditas, bufanda de punto, mochila con manta) y Capibara Zen (cabeza
+  cuadrada con ojos y mofletes sobre la superficie real, toalla de aguas termales con mandarina y un patito en el lomo), en
+  `vfx/Pets24.java`. Lección: en las cabezas de caja (`sbox`) los ojos y calcomanías se ponen con `boxSurf`, no con `surf`
+  (que es de elipsoide), o quedan escondidos dentro.
+
+## Arreglos de paso
+- Rey Brote: la ramita del árbol giraba alrededor de un punto lejano y se veía suelta; ahora es hija del tronco.
+- CI: `axelis/settings.gradle` busca primero en Maven Central (el portal de plugins daba 404 con gson-2.9.1.jar).
+- `PetBake`: si la figurita tiene más de 256 colores, junta los parecidos (4 bits por canal) en vez de fallar.
+
+## Revisión
+- Prueba con el cliente: 23 hojas de cuadros (22 criaturas + mascotas), 63 comprobaciones, 0 fallos.
+- Páginas para Axelis: "Mascotas de Axelis" (catálogo para marcar cambios) y "Animaciones de Axelis" (videos de cada
+  criatura con botón para marcar).
 
 ## Herramientas
-- `herramientas/PetBake.java`, `PetCatalog.java`, `PetSheet.java` (iconos, retratos y hojas de revisión de mascotas).
+- `herramientas/PetBake.java`, `PetCatalog.java`, `PetSheet.java`, `PetClip.java` (iconos, retratos, hojas de revisión y
+  cuadros en movimiento de las mascotas).
 - `herramientas/gen_sonidos_mascotas252.py` (sonidos de las mascotas nuevas).
 - Prueba con el cliente: hoja de cuadros `axelis_anim_<criatura>.png` (quieta, andando, atacando, golpe, muerte).
