@@ -774,19 +774,19 @@
       "mundos_de_axelis:relic_titan_belt_cast"
     ]
   },
-  "relic_comp_fox_cast": {
+  "relic_comp_land_shark_cast": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_fox_cast"
+      "mundos_de_axelis:relic_comp_land_shark_cast"
     ]
   },
-  "relic_comp_fox_act": {
+  "relic_comp_land_shark_act": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_fox_act"
+      "mundos_de_axelis:relic_comp_land_shark_act"
     ]
   },
-  "relic_comp_fox_end": {
+  "relic_comp_land_shark_end": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_fox_end"
+      "mundos_de_axelis:relic_comp_land_shark_end"
     ]
   },
   "relic_comp_cat_cast": {
@@ -834,34 +834,34 @@
       "mundos_de_axelis:relic_comp_bunny_end"
     ]
   },
-  "relic_comp_jelly_cast": {
+  "relic_comp_cloud_cast": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_jelly_cast"
+      "mundos_de_axelis:relic_comp_cloud_cast"
     ]
   },
-  "relic_comp_jelly_act": {
+  "relic_comp_cloud_act": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_jelly_act"
+      "mundos_de_axelis:relic_comp_cloud_act"
     ]
   },
-  "relic_comp_jelly_end": {
+  "relic_comp_cloud_end": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_jelly_end"
+      "mundos_de_axelis:relic_comp_cloud_end"
     ]
   },
-  "relic_comp_phoenix_cast": {
+  "relic_comp_comet_cat_cast": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_phoenix_cast"
+      "mundos_de_axelis:relic_comp_comet_cat_cast"
     ]
   },
-  "relic_comp_phoenix_act": {
+  "relic_comp_comet_cat_act": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_phoenix_act"
+      "mundos_de_axelis:relic_comp_comet_cat_act"
     ]
   },
-  "relic_comp_phoenix_end": {
+  "relic_comp_comet_cat_end": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_phoenix_end"
+      "mundos_de_axelis:relic_comp_comet_cat_end"
     ]
   },
   "relic_comp_turtle_cast": {
@@ -909,19 +909,19 @@
       "mundos_de_axelis:relic_comp_unicorn_end"
     ]
   },
-  "relic_comp_panda_cast": {
+  "relic_comp_astro_octopus_cast": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_panda_cast"
+      "mundos_de_axelis:relic_comp_astro_octopus_cast"
     ]
   },
-  "relic_comp_panda_act": {
+  "relic_comp_astro_octopus_act": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_panda_act"
+      "mundos_de_axelis:relic_comp_astro_octopus_act"
     ]
   },
-  "relic_comp_panda_end": {
+  "relic_comp_astro_octopus_end": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_panda_end"
+      "mundos_de_axelis:relic_comp_astro_octopus_end"
     ]
   },
   "relic_comp_chick_cast": {
@@ -1014,19 +1014,19 @@
       "mundos_de_axelis:relic_comp_sheep_end"
     ]
   },
-  "relic_comp_hedgehog_cast": {
+  "relic_comp_toaster_cast": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_hedgehog_cast"
+      "mundos_de_axelis:relic_comp_toaster_cast"
     ]
   },
-  "relic_comp_hedgehog_act": {
+  "relic_comp_toaster_act": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_hedgehog_act"
+      "mundos_de_axelis:relic_comp_toaster_act"
     ]
   },
-  "relic_comp_hedgehog_end": {
+  "relic_comp_toaster_end": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_hedgehog_end"
+      "mundos_de_axelis:relic_comp_toaster_end"
     ]
   },
   "relic_comp_axolotl_cast": {
@@ -1044,19 +1044,19 @@
       "mundos_de_axelis:relic_comp_axolotl_end"
     ]
   },
-  "relic_comp_raccoon_cast": {
+  "relic_comp_vampire_bat_cast": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_raccoon_cast"
+      "mundos_de_axelis:relic_comp_vampire_bat_cast"
     ]
   },
-  "relic_comp_raccoon_act": {
+  "relic_comp_vampire_bat_act": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_raccoon_act"
+      "mundos_de_axelis:relic_comp_vampire_bat_act"
     ]
   },
-  "relic_comp_raccoon_end": {
+  "relic_comp_vampire_bat_end": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_raccoon_end"
+      "mundos_de_axelis:relic_comp_vampire_bat_end"
     ]
   },
   "relic_comp_deer_cast": {
@@ -1166,19 +1166,19 @@
       }
     ]
   },
-  "relic_comp_capybara_cast": {
+  "relic_comp_zen_capybara_cast": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_capybara_cast"
+      "mundos_de_axelis:relic_comp_zen_capybara_cast"
     ]
   },
-  "relic_comp_capybara_act": {
+  "relic_comp_zen_capybara_act": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_capybara_act"
+      "mundos_de_axelis:relic_comp_zen_capybara_act"
     ]
   },
-  "relic_comp_capybara_end": {
+  "relic_comp_zen_capybara_end": {
     "sounds": [
-      "mundos_de_axelis:relic_comp_capybara_end"
+      "mundos_de_axelis:relic_comp_zen_capybara_end"
     ]
   },
   "relic_comp_duck_cast": {
@@ -2519,5 +2519,20 @@
       "mundos_de_axelis:volcan_retumbo"
     ],
     "subtitle": "subtitles.mundos_de_axelis.volcan_retumbo"
+  },
+  "relic_comp_crystal_dragon_cast": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_crystal_dragon_cast"
+    ]
+  },
+  "relic_comp_crystal_dragon_act": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_crystal_dragon_act"
+    ]
+  },
+  "relic_comp_crystal_dragon_end": {
+    "sounds": [
+      "mundos_de_axelis:relic_comp_crystal_dragon_end"
+    ]
   }
 }
