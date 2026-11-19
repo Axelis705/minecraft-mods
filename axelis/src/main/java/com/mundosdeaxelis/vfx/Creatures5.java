@@ -1099,8 +1099,9 @@ final class Creatures5 {
 
     // ------------------------------------------------------------------ 35. DRAGÓN DE LA NOCHE
 
-    private static final float[] ND_B = {0.12F, 0.12F, 0.17F}, ND_B2 = {0.22F, 0.22F, 0.32F}, ND_BL = {0.30F, 0.34F, 0.42F},
-            ND_EY = {0.45F, 1F, 0.40F}, ND_PL = {0.55F, 0.45F, 1F};
+    // etapa 253: rediseño propio (azul medianoche con alas de constelación, cuernos de luna creciente y ojos dorados)
+    private static final float[] ND_B = {0.15F, 0.15F, 0.33F}, ND_B2 = {0.27F, 0.26F, 0.52F}, ND_BL = {0.46F, 0.42F, 0.74F},
+            ND_EY = {1F, 0.84F, 0.40F}, ND_PL = {0.78F, 0.88F, 1F}, ND_MOON = {0.88F, 0.90F, 1F}, ND_MOON2 = {0.70F, 0.68F, 0.92F};
 
     static void nightDragon(Ctx c) {
         double t = c.t, ph = c.ph;
@@ -1129,13 +1130,28 @@ final class Creatures5 {
             for (int k = 0; k < 5; k++) {
                 tube(c, new V3[]{hand, hand.lerp(tips[k], 0.5), tips[k]}, new double[]{0.009, 0.007, 0.004}, 4, skin);
             }
+            // estrellitas de constelación en la membrana
+            for (int k = 0; k < 4; k++) {
+                V3 st = hand.lerp(tips[k], 0.45 + 0.15 * (k % 2)).lerp(tips[k + 1], 0.5).lerp(root, 0.12 * k);
+                Detail.twinkle(c, st, 0.012, ND_PL, t, ph + k * 1.3 + sd, 0.15);
+            }
         }
         // cola con aleta
         double sw = Math.sin(t * 0.18 + ph);
         V3[] tcp = {new V3(0, 0.42 + bob, -0.22), new V3(sw * 0.04, 0.38 + bob, -0.40), new V3(sw * 0.10, 0.36 + bob, -0.58), new V3(sw * 0.15, 0.37 + bob, -0.74)};
         curve(c, tcp, new double[]{0.08, 0.058, 0.04, 0.026}, 4, 8, skin);
-        for (int sd = -1; sd <= 1; sd += 2) {
-            ell(c, tcp[3].add(sd * 0.05, 0.0, -0.05), new V3(0.075, 0.008, 0.095), 0, sd * 0.1, -sd * 0.35, 10, 5, flat(sd > 0 ? ND_BL : new float[]{0.55F, 0.20F, 0.22F}));
+        // aleta de luna creciente al final de la cola
+        {
+            V3 ce = tcp[3].add(0, 0.0, -0.06);
+            V3[] arc = new V3[9];
+            double[] rr = new double[9];
+            for (int i = 0; i < 9; i++) {
+                double a = -1.25 + 2.5 * i / 8.0;
+                arc[i] = ce.add(sw * 0.02, Math.sin(a) * 0.09, -Math.cos(a) * 0.05);
+                rr[i] = 0.004 + 0.022 * Math.cos(a * 1.1);
+            }
+            curve(c, arc, rr, 2, 6, (n, p) -> mix(ND_MOON2, ND_MOON, ss(-0.4, 0.9, n.y) * 0.7));
+            glow(c, ce.add(0, 0, -0.04), 0.16, ND_PL, 0.25);
         }
         // patas cortas
         for (int sd = -1; sd <= 1; sd += 2) {
@@ -1178,14 +1194,14 @@ final class Creatures5 {
         for (int sd = -1; sd <= 1; sd += 2) {
             ell(c, new V3(sd * 0.026, 0.60 + bob, 0.488), new V3(0.011, 0.008, 0.007), 5, 4, flat(BLACK));
         }
-        // orejas-aletas largas hacia atrás + cuernitos
+        // cuernos de luna creciente hacia atrás y orejitas puntiagudas
         for (int sd = -1; sd <= 1; sd += 2) {
-            double fw = Math.sin(t * 0.09 + ph + sd) * 0.02;
             double ef = Detail.flick(c, sd > 0 ? 41 : 42);
-            fw += 0.04 * ef;
-            curve(c, new V3[]{new V3(sd * 0.08, 0.70 + bob, 0.27), new V3(sd * 0.12, 0.77 + bob + fw, 0.20), new V3(sd * 0.15, 0.80 + bob + fw, 0.10)},
-                    new double[]{0.045, 0.036, 0.008}, 3, 7, skin);
-            cone(c, new V3(sd * 0.05, 0.72 + bob, 0.30), new V3(sd * 0.055, 0.78 + bob, 0.33), 0.016, 0.002, 5, flat(ND_BL));
+            curve(c, new V3[]{new V3(sd * 0.07, 0.70 + bob, 0.30), new V3(sd * 0.10, 0.78 + bob, 0.25), new V3(sd * 0.11, 0.81 + bob, 0.16),
+                    new V3(sd * 0.09, 0.78 + bob, 0.09)}, new double[]{0.026, 0.02, 0.012, 0.003}, 3, 7, (n, p) -> mix(ND_MOON2, ND_MOON, ss(-0.3, 0.9, n.y) * 0.8));
+            V3 e0 = new V3(sd * 0.13, 0.67 + bob, 0.28);
+            cone(c, e0, e0.add(sd * (0.06 + 0.02 * ef), 0.05 - 0.02 * ef, -0.04), 0.03, 0.003, 6, skin);
+            ell(c, e0.add(sd * 0.012, 0.006, 0.01), new V3(0.012, 0.016, 0.006), 0, 0, sd * 0.8, 5, 4, flat(ND_BL));
         }
         Detail.scales(c, hc, hr, 5, 11, 0.032, d -> d.y > -0.1 && d.z < 0.55 ? 1 : 0, (n, p) -> mix(ND_B, ND_B2, ss(-0.2, 1.0, n.y) * 0.8), scale(ND_B2, 1.3));
         for (int sd = -1; sd <= 1; sd += 2) {

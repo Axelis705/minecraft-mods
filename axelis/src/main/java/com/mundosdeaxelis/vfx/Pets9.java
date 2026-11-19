@@ -205,6 +205,12 @@ final class Pets9 {
         Paint bp = (n, p) -> mix(MB_W, MB_W2, ss(0.1, -0.9, n.y) * 0.5);
         ell(c, bc, br, 14, 10, bp);
         Detail.fur(c, bc, br, 130, 911, 0.03, 0.016, new V3(0, -0.5, -1), 0.8, Detail.ALL, bp, null);
+        // pechera de pelusa blanca
+        ell(c, bc.add(0, 0.05, 0.13), new V3(0.075, 0.07, 0.04), 9, 7, (n, q) -> mix(new float[]{0.96F, 0.96F, 1F}, WHITE, ss(0, 1, n.y) * 0.5));
+        for (int k = -1; k <= 1; k++) {
+            V3 b0 = bc.add(k * 0.03, 0.03, 0.16);
+            Pets25.lock(c, new V3[]{b0, b0.add(k * 0.005, -0.02, 0.01), b0.add(k * 0.008, -0.035, 0.008)}, 0.016, 0.007, flat(WHITE));
+        }
         // colita pompón
         ell(c, new V3(0, 0.2 + bob, -0.21), new V3(0.06, 0.06, 0.06), 10, 7, flat(MB_W));
         Detail.fur(c, new V3(0, 0.2 + bob, -0.21), new V3(0.06, 0.06, 0.06), 30, 912, 0.025, 0.012, new V3(0, 0, -1), 0.5, Detail.ALL, flat(MB_W), null);
@@ -336,6 +342,17 @@ final class Pets9 {
                 Detail.whisker(c, new V3(sd * 0.04, 0.465 + bob + k * 0.012, 0.28), new V3(sd * 0.14, 0.47 + bob + k * 0.035, 0.25), -0.006, 0.0022, new float[]{1, 1, 1});
             }
         }
+        // lazo rojo con cascabelito en la oreja izquierda
+        {
+            V3 bw = new V3(0.11, 0.6, 0.13);
+            for (int sd = -1; sd <= 1; sd += 2) {
+                ell(c, bw.add(sd * 0.022, 0.004, 0), new V3(0.022, 0.014, 0.008), 0, 0, sd * 0.4, 7, 5, flat(new float[]{0.92F, 0.18F, 0.24F}));
+            }
+            ell(c, bw, new V3(0.009, 0.009, 0.009), 5, 4, flat(new float[]{0.92F, 0.18F, 0.24F}));
+            V3 jb = bw.add(0, -0.022, 0.004);
+            ell(c, jb, new V3(0.011, 0.011, 0.011), 6, 4, flat(new float[]{1F, 0.82F, 0.3F}));
+            Detail.glint(c, jb, new V3(0.011, 0.011, 0.011), new V3(-0.3, 0.6, 0.8), 0.01, WHITE, 0.8);
+        }
         c.head = false;
         // monedas que brillan
         for (int k = 0; k < 4; k++) {
@@ -455,6 +472,17 @@ final class Pets9 {
                 Detail.twinkle(c, e.add(dir.mul(0.17)), 0.016, new float[]{1F, 0.5F, 0.8F}, t, ph, 0.3);
             }
         }
+        // paleta de pintor en un tentáculo (con pegotes de colores) y ventosas rosas
+        {
+            V3 pl = new V3(-0.2, 0.12 + bob + Math.sin(t * 0.15 + ph) * 0.01, 0.12);
+            Pets21.sbox(c, pl, new V3(0.07, 0.008, 0.05), 0.6, 10, 4, (n, q) -> mix(new float[]{0.78F, 0.58F, 0.36F}, new float[]{0.9F, 0.72F, 0.5F}, ss(0, 1, n.y) * 0.5));
+            float[][] pc = {{0.95F, 0.25F, 0.3F}, {1F, 0.82F, 0.2F}, {0.3F, 0.6F, 1F}, {0.4F, 0.85F, 0.4F}, {1F, 1F, 1F}};
+            for (int k = 0; k < 5; k++) {
+                double a = -1.2 + k * 0.6;
+                ell(c, pl.add(Math.cos(a) * 0.045, 0.009, Math.sin(a) * 0.03), new V3(0.012, 0.006, 0.011), 6, 3, flat(pc[k]));
+            }
+            ell(c, pl.add(0.04, 0.0, -0.02), new V3(0.012, 0.009, 0.012), 6, 3, flat(new float[]{0.4F, 0.3F, 0.2F}));
+        }
         // cuerpo (manto alargado)
         V3 mc = new V3(0, 0.31 + bob, 0), mr = new V3(0.15, 0.2, 0.14);
         Paint mp = (n, p) -> mix(SQ_P, SQ_P2, ss(-0.3, 0.9, n.y) * 0.5);
@@ -477,6 +505,9 @@ final class Pets9 {
         V3 bt = new V3(0.02, 0.495 + bob, 0.0);
         Detail.cap(c, bt, new V3(0.17, 0.065, 0.16), 0, 0, 0.18, 1.55, 0.0, 16, 5, (n, p) -> mix(SQ_BE, scale(SQ_BE, 1.25), ss(-0.2, 0.9, n.y)));
         ell(c, bt.add(0.01, 0.06, 0), new V3(0.016, 0.02, 0.016), 6, 4, flat(scale(SQ_BE, 0.8)));
+        // salpicaduras de pintura en la boina
+        Detail.spot(c, bt, new V3(0.13, 0.04, 0.13), new V3(0.4, 1, 0.3), 0.025, new float[]{0.3F, 0.6F, 1F});
+        Detail.spot(c, bt, new V3(0.13, 0.04, 0.13), new V3(-0.5, 1, -0.2), 0.02, new float[]{1F, 0.82F, 0.2F});
         c.head = false;
         // gotitas de pintura que flotan
         for (int k = 0; k < 4; k++) {
@@ -509,6 +540,14 @@ final class Pets9 {
         glow(c, bc, 0.5 * flick, new float[]{1F, 0.75F, 0.3F}, 0.55);
         glow(c, bc, 0.28 * flick, new float[]{1F, 0.95F, 0.7F}, 0.7);
         c.emissive = em;
+        // ramita de cerezo pintada en el papel
+        for (int k = 0; k < 5; k++) {
+            V3 d = new V3(-0.6 + k * 0.25, 0.35 - 0.15 * k + 0.05 * k * k, 0.75);
+            Detail.leaf(c, bc, br, d, 0.05, 0.5 + k * 0.3, new float[]{0.42F, 0.22F, 0.18F});
+            if (k % 2 == 0) {
+                Detail.spot(c, bc, br, d.add(0.08, 0.1, 0), 0.04, new float[]{1F, 0.72F, 0.82F});
+            }
+        }
         // tapas negras y dorado
         for (int sd = -1; sd <= 1; sd += 2) {
             ell(c, bc.add(0, sd * 0.2, 0), new V3(0.105, 0.032, 0.105), 14, 4, flat(LN_BK));
@@ -544,6 +583,19 @@ final class Pets9 {
         for (int k = 0; k < 6; k++) {
             double u = ((t * 0.016 + ph * 0.2 + k * 0.17) % 1.0);
             Detail.twinkle(c, new V3(Math.sin(k * 2.1 + u * 3) * 0.2, 0.55 + u * 0.45 + bob, Math.cos(k * 1.6 + u * 2) * 0.18), 0.02 * (1 - u * 0.5), new float[]{1F, 0.7F, 0.3F}, t, ph + k, 0.3);
+        }
+        // una polilla curiosa revolotea alrededor
+        {
+            double a = t * 0.07 + ph;
+            V3 mp = new V3(Math.cos(a) * 0.3, 0.55 + 0.08 * Math.sin(a * 2.3), Math.sin(a) * 0.26);
+            double fm = Math.sin(t * 1.4) * 0.7;
+            V3 fw = new V3(-Math.sin(a), 0, Math.cos(a));
+            V3 sd = fw.cross(V3.UP).norm();
+            ell(c, mp, new V3(0.006, 0.006, 0.016), 5, 3, flat(new float[]{0.55F, 0.45F, 0.4F}));
+            for (int s2 = -1; s2 <= 1; s2 += 2) {
+                V3 tip = mp.add(sd.mul(s2 * 0.03 * Math.cos(fm))).add(0, 0.03 * Math.abs(Math.sin(fm)), 0);
+                Detail.kite(c, mp, tip, fw, 0.014, V3.UP, new float[]{0.92F, 0.88F, 0.78F}, new float[]{0.8F, 0.72F, 0.6F});
+            }
         }
     }
 

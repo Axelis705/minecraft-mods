@@ -209,6 +209,12 @@ final class Pets10 {
         // cuerpo verde
         V3 bc = new V3(0, 0.17 + bob, 0), br = new V3(0.19, 0.07, 0.25);
         ell(c, bc, br, 14, 8, (n, p) -> TI_G);
+        // manchitas de las aletas y del cuerpo
+        for (int sd = -1; sd <= 1; sd += 2) {
+            for (int k = 0; k < 3; k++) {
+                Detail.soft(c, bc, br, new V3(sd * 0.9, 0.2, 0.5 - 0.5 * k), 0.035, scale(TI_G, 0.78), 0.6);
+            }
+        }
         // caparazón: isla
         V3 sc = new V3(0, 0.215 + bob, -0.01), sr = new V3(0.22, 0.14, 0.27);
         Paint sp = (n, p) -> {
@@ -284,6 +290,22 @@ final class Pets10 {
         // brisa marina
         double u = ((t * 0.01 + ph) % 1.0);
         Detail.twinkle(c, new V3(0.2 + u * 0.1, 0.35 + u * 0.2 + bob, 0.1), 0.02 * (1 - u * 0.4), new float[]{0.8F, 0.95F, 1F}, t, ph, 0.2);
+        // gaviota que planea en círculos sobre la isla
+        {
+            double a = t * 0.045 + ph;
+            V3 gp = new V3(Math.cos(a) * 0.36, 0.62 + 0.04 * Math.sin(a * 3), Math.sin(a) * 0.36);
+            V3 gfw = new V3(-Math.sin(a), 0, Math.cos(a));
+            V3 gsd = gfw.cross(V3.UP).norm();
+            double fl = Math.sin(t * 0.5 + ph) * 0.5;
+            ell(c, gp, new V3(0.012, 0.012, 0.026), 0, 0, 0, 6, 4, flat(WHITE));
+            cone(c, gp.add(gfw.mul(0.026)), gp.add(gfw.mul(0.04)), 0.004, 0.001, 3, flat(new float[]{1F, 0.75F, 0.25F}));
+            for (int s2 = -1; s2 <= 1; s2 += 2) {
+                V3 el = gp.add(gsd.mul(s2 * 0.03)).add(0, 0.012 + 0.01 * fl, 0);
+                V3 tip = el.add(gsd.mul(s2 * 0.03)).add(0, -0.01 + 0.02 * fl, -0.006);
+                Detail.kite(c, gp, el, gfw, 0.012, V3.UP, WHITE, WHITE);
+                Detail.kite(c, el, tip, gfw, 0.009, V3.UP, WHITE, new float[]{0.35F, 0.35F, 0.4F});
+            }
+        }
     }
 
     // ------------------------------------------------------------------ 7. PINGÜINO EXPLORADOR
@@ -324,6 +346,16 @@ final class Pets10 {
         };
         ell(c, bc, br, 16, 11, bp);
         Detail.soft(c, bc, br, new V3(0, 0.1, 1), 0.2, new float[]{1F, 1F, 1F}, 0.5);
+        // brújula colgada de una correa
+        {
+            V3 cp = surf(bc, br, new V3(0.25, 0.3, 1)).add(0, 0, 0.012);
+            curve(c, new V3[]{bc.add(-0.08, 0.17, 0.08), bc.add(0.02, 0.12, 0.13), cp}, new double[]{0.005, 0.005, 0.005}, 3, 4, flat(new float[]{0.55F, 0.32F, 0.18F}));
+            tube(c, new V3[]{cp.add(0, 0, -0.006), cp.add(0, 0, 0.006)}, new double[]{0.024, 0.024}, 10, flat(new float[]{0.85F, 0.65F, 0.3F}));
+            ell(c, cp.add(0, 0, 0.007), new V3(0.02, 0.02, 0.002), 10, 3, flat(new float[]{0.96F, 0.95F, 0.9F}));
+            double nd = Math.sin(t * 0.07 + ph) * 0.4;
+            tube(c, new V3[]{cp.add(-Math.sin(nd) * 0.014, -Math.cos(nd) * 0.014, 0.009), cp.add(Math.sin(nd) * 0.014, Math.cos(nd) * 0.014, 0.009)},
+                    new double[]{0.0025, 0.0025}, 3, flat(new float[]{0.9F, 0.2F, 0.2F}));
+        }
         // colita corta y plumas del pecho
         cone(c, new V3(0, 0.14 + bob, -0.12), new V3(0, 0.09 + bob, -0.2), 0.03, 0.004, 5, flat(PX_BK2));
         // aletas
@@ -373,6 +405,15 @@ final class Pets10 {
         for (int k = 0; k < 3; k++) {
             double uu = (u + k * 0.33) % 1.0;
             Detail.twinkle(c, new V3(Math.sin(k * 2.4 + uu * 3) * 0.25, 0.7 - uu * 0.55 + bob, Math.cos(k * 1.9) * 0.2), 0.016, new float[]{0.9F, 0.97F, 1F}, t, ph + k, 0.2);
+        }
+        // vaho de la respiración (hace frío)
+        for (int k = 0; k < 2; k++) {
+            double uu = ((t * 0.01 + k * 0.5 + ph) % 1 + 1) % 1;
+            c.blend = Sink.NORMAL;
+            c.alpha = 0.3 * Math.sin(uu * Math.PI);
+            ell(c, new V3(0, 0.53 + uu * 0.05, 0.18 + uu * 0.16), new V3(0.02 + 0.03 * uu, 0.02 + 0.03 * uu, 0.02 + 0.03 * uu), 6, 4, flat(WHITE));
+            c.alpha = 1;
+            c.blend = Sink.SOLID;
         }
     }
 
@@ -486,6 +527,15 @@ final class Pets10 {
         Paint bp = (n, p) -> mix(MM_F, MM_F2, ss(0.0, 0.9, n.y) * 0.5);
         ell(c, bc, br, 16, 11, bp);
         Detail.fur(c, bc, br, 240, 971, 0.07, 0.03, new V3(0, -1, -0.1), 0.9, Detail.ALL, bp, MM_F2);
+        // uñitas color hueso en cada pata
+        for (int sd = -1; sd <= 1; sd += 2) {
+            for (int fb = 0; fb < 2; fb++) {
+                double z0 = fb == 0 ? 0.13 : -0.17;
+                for (int k = -1; k <= 1; k++) {
+                    ell(c, new V3(sd * 0.11 + k * 0.022, 0.02, z0 + 0.065), new V3(0.012, 0.012, 0.01), 5, 3, flat(new float[]{0.95F, 0.9F, 0.78F}));
+                }
+            }
+        }
         // faldón largo de pelo
         Detail.fur(c, bc.add(0, -0.08, 0), new V3(0.2, 0.1, 0.27), 90, 972, 0.09, 0.03, new V3(0, -1, 0), 1.0, Detail.SIDES, (n, p) -> MM_DK, MM_F);
         // nieve en el lomo

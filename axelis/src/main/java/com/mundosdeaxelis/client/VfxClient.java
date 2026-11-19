@@ -47,7 +47,7 @@ public final class VfxClient {
     public static ShaderInstance shader;
 
     private static final int MAX_FX = 320;
-    private static final int MAX_QUADS = 36000;
+    private static final int MAX_QUADS = 60000;
     private static final double MAX_DIST = 140;
 
     private static final Map<Integer, VfxData> FX = new HashMap<>();
@@ -267,6 +267,15 @@ public final class VfxClient {
                 if ((int) d.a == VfxTex.CREATURE3D) {
                     double g0 = d.mGait;
                     com.mundosdeaxelis.vfx.Creature3D.tickMotion(d);
+                    // luz del mundo donde está (como los demás bichos: de noche o en una cueva se ve más oscura, nunca negra)
+                    {
+                        net.minecraft.core.BlockPos lp = net.minecraft.core.BlockPos.containing(d.x, d.y + 0.3 * d.size, d.z);
+                        float blk = mc.level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, lp) / 15F;
+                        float sky = mc.level.getBrightness(net.minecraft.world.level.LightLayer.SKY, lp) / 15F * mc.level.getSkyDarken(1F);
+                        float lv = Math.max(blk, sky);
+                        float target = 0.42F + 0.58F * (float) Math.pow(lv, 0.8);
+                        d.light += (target - d.light) * 0.15F;
+                    }
                     // polvito al apoyar cada pata (las que andan por el suelo)
                     int sp = Math.round(d.b);
                     if (d.mSpd > 0.06 && Math.floor(g0 / Math.PI) != Math.floor(d.mGait / Math.PI)
@@ -418,6 +427,10 @@ public final class VfxClient {
                     Batch b = batches[key];
                     if (b == null || b.n == 0) {
                         continue;
+                    }
+                    if (tex == VfxTex.CREATURE3D) {
+                        // la textura de las mascotas se filtra suave (ojos redondos de cerca, sin dientes de sierra)
+                        mc.getTextureManager().getTexture(TEX[tex]).setFilter(true, false);
                     }
                     RenderSystem.setShaderTexture(0, TEX[tex]);
                     bb.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);

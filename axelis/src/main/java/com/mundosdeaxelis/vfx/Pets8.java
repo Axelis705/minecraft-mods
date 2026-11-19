@@ -48,6 +48,20 @@ final class Pets8 {
         cheeks(c, bc, br, 0.62, -0.30, 0.72, 0.075);
         decal(c, bc, br, new V3(0, -0.40, 1), 0.06, 0, T_MOUTH, new float[]{0.45F, 0.22F, 0.22F}, 0.95, 0.003);
         // sombrero de hongo (se inclina con la cabeza)
+        // faldita del tallo bajo el sombrero y pequitas
+        {
+            V3[] skirt = new V3[19];
+            for (int i = 0; i <= 18; i++) {
+                double a = Math.PI * 2 * i / 18.0;
+                skirt[i] = bc.add(Math.cos(a) * 0.122, 0.10 + 0.006 * Math.sin(a * 6), Math.sin(a) * 0.114);
+            }
+            tube(c, skirt, Pets23.radii(19, 0.013), 5, (n, q) -> mix(MU_STEM, WHITE, ss(0.2, 1, n.y) * 0.4));
+            for (int sd = -1; sd <= 1; sd += 2) {
+                for (int k = 0; k < 3; k++) {
+                    ell(c, surf(bc, br, new V3(sd * (0.5 + 0.08 * k), -0.16 + 0.07 * (k % 2), 0.85)), new V3(0.0045, 0.0045, 0.003), 4, 3, flat(scale(MU_STEM2, 0.82)));
+                }
+            }
+        }
         headLook(c, 0.10, 0.02);
         c.hpv = new V3(0, 0.38 + bob, 0);
         V3 cc = new V3(0, 0.485 + bob, 0), cr = new V3(0.26, 0.17, 0.25);
@@ -71,6 +85,21 @@ final class Pets8 {
         tube(c, st, new double[]{0.012, 0.01, 0.008}, 5, flat(MU_LEAF));
         for (int sd = -1; sd <= 1; sd += 2) {
             Detail.kite(c, st[2], st[2].add(sd * 0.075, 0.025 + lf, 0.01), new V3(0, 0, 1), 0.028, new V3(0, 1, 0), MU_LEAF, scale(MU_LEAF, 1.2));
+        }
+        // mariquita que pasea por el sombrero
+        {
+            double a = t * 0.012 + ph;
+            V3 dir = new V3(Math.cos(a) * 0.62, 0.78, Math.sin(a) * 0.62);
+            V3 at = surf(cc, cr, dir);
+            V3 nn = new V3(dir.x / cr.x, dir.y / cr.y, dir.z / cr.z).norm();
+            V3 tg = new V3(-Math.sin(a), 0, Math.cos(a));
+            V3 lb = at.add(nn.mul(0.01));
+            ell(c, lb, new V3(0.017, 0.012, 0.017), 8, 5, (n, q) -> mix(new float[]{0.86F, 0.12F, 0.12F}, new float[]{1F, 0.4F, 0.35F}, ss(0.3, 1, n.y) * 0.5));
+            ell(c, lb.add(tg.mul(0.018)), new V3(0.009, 0.008, 0.009), 5, 4, flat(BLACK));
+            for (int k = 0; k < 4; k++) {
+                V3 sp2 = lb.add(nn.mul(0.011)).add(tg.mul(k < 2 ? 0.006 : -0.006)).add(tg.cross(nn).norm().mul(k % 2 == 0 ? 0.007 : -0.007));
+                ell(c, sp2, new V3(0.004, 0.003, 0.004), 4, 3, flat(BLACK));
+            }
         }
         c.head = false;
         // esporas brillantes
@@ -233,6 +262,16 @@ final class Pets8 {
         Paint bp = (n, p) -> mix(SN_BODY, SN_BODY2, ss(0.2, -0.9, n.y) * 0.8);
         curve(c, cp, rd, 4, 10, bp);
         ell(c, new V3(0, 0.025, 0.02), new V3(0.095, 0.022, 0.26), 12, 5, flat(SN_BODY2));
+        // rastro brillante de baba al andar y florecitas al pie de la casita
+        if (w > 0.05) {
+            c.blend = Sink.NORMAL;
+            for (int k = 0; k < 5; k++) {
+                c.alpha = 0.35 * w * (1 - k / 5.0);
+                ell(c, new V3(Math.sin(t * 0.1 - k * 0.6) * 0.01, 0.004, -0.2 - k * 0.07), new V3(0.05, 0.003, 0.045), 8, 3, flat(new float[]{0.8F, 0.92F, 1F}));
+            }
+            c.alpha = 1;
+            c.blend = Sink.SOLID;
+        }
         // casita-concha en el lomo
         V3 hc0 = new V3(0, 0.285, -0.07);
         double sway = Math.sin(c.gait * 0.7) * 0.02 * w;
@@ -259,6 +298,17 @@ final class Pets8 {
             c.emissive = true;
             glow(c, sm, 0.07 + 0.08 * u, new float[]{1F, 1F, 1F}, 0.5 * (1 - u));
             c.emissive = em;
+        }
+        // jardincito: matas y flores alrededor de la casita
+        for (int k = 0; k < 5; k++) {
+            double a = -0.6 + k * 0.3;
+            V3 fb = sc.add(Math.sin(a) * 0.17, -0.105, Math.cos(a) * 0.15);
+            for (int g = -1; g <= 1; g++) {
+                cone(c, fb.add(g * 0.008, 0, 0), fb.add(g * 0.012, 0.035, 0.004), 0.005, 0.001, 3, flat(new float[]{0.42F, 0.74F, 0.32F}));
+            }
+            if (k % 2 == 0) {
+                Pets26.flower(c, fb.add(0, 0.04, 0.006), new V3(0, 0.4, 1).norm(), 0.012, k == 2 ? new float[]{1F, 0.62F, 0.78F} : WHITE, new float[]{1F, 0.85F, 0.3F}, k);
+            }
         }
         // puertita y ventanas luminosas
         decal(c, sc, sr, new V3(0, -0.2, 1), 0.07, 0, Detail.T_DISC, SN_DOOR, 1, 0.006);
@@ -387,6 +437,23 @@ final class Pets8 {
         Paint bp = (n, p) -> mix(PD_Y, PD_Y2, ss(0.0, -0.8, n.y) * 0.8);
         ell(c, bc, br, 14, 10, bp);
         Detail.plumage(c, bc, br, 7, 11, 0.045, 0.026, Detail.ALL, bp, PD_Y2);
+        // cinturón de cuero con hebilla dorada y un mapa del tesoro enrollado
+        {
+            V3[] belt = new V3[19];
+            for (int i = 0; i <= 18; i++) {
+                double a = Math.PI * 2 * i / 18.0;
+                belt[i] = bc.add(Math.sin(a) * br.x * 0.99, -0.045, Math.cos(a) * br.z * 0.98);
+            }
+            tube(c, belt, Pets23.radii(19, 0.012), 5, flat(new float[]{0.42F, 0.24F, 0.14F}));
+            V3 bk = bc.add(0, -0.045, br.z * 0.98 + 0.006);
+            Pets21.sbox(c, bk, new V3(0.024, 0.02, 0.006), 0.5, 6, 5, flat(new float[]{1F, 0.8F, 0.3F}));
+            Pets21.sbox(c, bk.add(0, 0, 0.004), new V3(0.012, 0.009, 0.004), 0.5, 5, 4, flat(new float[]{0.42F, 0.24F, 0.14F}));
+            Detail.glint(c, bk, new V3(0.024, 0.02, 0.012), new V3(-0.3, 0.6, 0.8), 0.016, WHITE, 0.7);
+            V3 mp = bc.add(-0.11, -0.06, 0.09);
+            tube(c, new V3[]{mp.add(-0.004, -0.035, -0.004), mp, mp.add(0.004, 0.04, 0.004)}, new double[]{0.014, 0.015, 0.014}, 7,
+                    (n, q) -> mix(new float[]{0.95F, 0.88F, 0.68F}, new float[]{0.8F, 0.68F, 0.46F}, 0.5 + 0.5 * Math.sin(q.y * 400)));
+            ell(c, mp, new V3(0.016, 0.004, 0.016), 6, 3, flat(new float[]{0.75F, 0.15F, 0.15F}));
+        }
         // colita parada
         for (int k = -1; k <= 1; k++) {
             Detail.feather(c, bc.add(k * 0.02, 0.05, -0.15), bc.add(k * 0.05, 0.13, -0.24), new V3(1, 0, 0), 0.03, new V3(0, 0.6, -0.8), PD_Y, PD_Y2);
@@ -444,6 +511,11 @@ final class Pets8 {
         // pluma roja
         V3 pf = hat.add(0.09, 0.03, -0.02);
         Detail.feather(c, pf, pf.add(0.06, 0.1, -0.06), new V3(0, 0, 1), 0.026, new V3(1, 0, 0), PD_RED, scale(PD_RED, 1.3));
+        // plumón despeinado que asoma bajo el sombrero
+        for (int k = -1; k <= 1; k++) {
+            V3 b0 = surf(hc, hr, new V3(k * 0.5 - 0.3, 0.55, 0.75));
+            Pets25.lock(c, new V3[]{b0, b0.add(k * 0.008, 0.016, 0.01), b0.add(k * 0.016, 0.012, 0.025)}, 0.012, 0.005, flat(new float[]{1F, 0.92F, 0.5F}));
+        }
         c.head = false;
         // brillos de monedas
         double u = ((t * 0.012 + ph) % 1.0);
@@ -517,6 +589,15 @@ final class Pets8 {
         Detail.cap(c, lc, new V3(0.095, 0.05, 0.088), 0, 0, 0, 1.4, 0.0, 14, 5, (n, q) -> CT_W);
         ell(c, lc.add(0, -0.003, 0), new V3(0.1, 0.01, 0.092), 14, 3, flat(CT_B));
         ell(c, lc.add(0, 0.055, 0), new V3(0.022, 0.022, 0.022), 8, 6, flat(CT_GOLD));
+        // bolsita de té colgando de la tapa, con su hilo y etiqueta que se mece
+        {
+            double sw = Math.sin(t * 0.21 + ph) * 0.03 + Math.sin(c.gait) * 0.02 * w;
+            V3 h0 = lc.add(-0.07, 0.0, 0.1);
+            V3 h1 = h0.add(-0.02 + sw * 0.3, -0.06, 0.03), h2 = h1.add(-0.005 + sw, -0.05, 0.006);
+            curve(c, new V3[]{h0, h1, h2}, new double[]{0.0022, 0.0022, 0.0022}, 3, 3, flat(new float[]{0.95F, 0.95F, 0.92F}));
+            Pets21.sbox(c, h2.add(0, -0.02, 0), new V3(0.018, 0.022, 0.003), 0.5, 6, 5, flat(new float[]{0.96F, 0.86F, 0.4F}));
+            ell(c, h2.add(0, -0.02, 0.003), new V3(0.007, 0.007, 0.002), 5, 3, flat(new float[]{0.9F, 0.35F, 0.35F}));
+        }
         // pico (vertedero) y asa
         V3[] sp = {tc.add(0.12, -0.02, 0.1), tc.add(0.2, 0.0, 0.15), tc.add(0.25, 0.07, 0.19)};
         tube(c, sp, new double[]{0.05, 0.034, 0.024}, 8, tp);

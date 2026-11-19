@@ -96,8 +96,13 @@ public final class PetBake {
 
     /** Las decalcomanías (ojos, boca, mejillas) usan celdas con transparencia. */
     static boolean decalCell(float[] uv) {
-        float u = (uv[0] + uv[2] + uv[4] + uv[6]) / 4, v = (uv[1] + uv[3] + uv[5] + uv[7]) / 4;
-        return !(u > 0.54 && u < 0.58 && v > 0.89 && v < 0.93);
+        // la geometría sólida usa un solo punto de la textura (las 4 esquinas con la misma UV); las pegatinas, una celda
+        for (int i = 2; i < 8; i++) {
+            if (Math.abs(uv[i] - uv[i % 2]) > 1.0E-4) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static double depth(Q q, Cam cam) {
@@ -218,7 +223,7 @@ public final class PetBake {
     static double[] bbox(List<Q> qs) {
         double[] b = {1e9, 1e9, 1e9, -1e9, -1e9, -1e9};
         for (Q q : qs) {
-            if (q.blend == Sink.ADD) {
+            if (q.blend == Sink.ADD || q.tex == VfxTex.SOFT || q.tex == VfxTex.ZZZ) {
                 continue;
             }
             for (int i = 0; i < 4; i++) {
@@ -252,6 +257,7 @@ public final class PetBake {
     }
 
     public static void main(String[] a) throws Exception {
+        Creature3D.SHADOWS = false;
         int species = Integer.parseInt(a[0]);
         double size = Double.parseDouble(a[1]);
         String name = a[2];

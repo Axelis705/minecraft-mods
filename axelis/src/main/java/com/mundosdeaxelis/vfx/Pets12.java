@@ -153,6 +153,10 @@ final class Pets12 {
             return mix(mix(top, SW_BEL, ss(0.0, -0.7, n.y)), SW_PK, ss(-0.5, -1.0, n.y) * (0.2 + stripe));
         };
         ell(c, bc, br, 18, 12, bp);
+        // surcos de la garganta (rayitas claras bajo la boca)
+        for (int k = -3; k <= 3; k++) {
+            Detail.leaf(c, bc, br, new V3(k * 0.12, -0.85, 0.6), 0.12, Math.PI / 2, SW_PK);
+        }
         // aletas pectorales
         for (int sd = -1; sd <= 1; sd += 2) {
             double ff = Math.sin(t * 0.16 + ph + (sd > 0 ? 0 : 1)) * 0.07;
@@ -208,6 +212,19 @@ final class Pets12 {
         for (int k = 0; k < 3; k++) {
             double uu = ((t * 0.01 + ph * 0.3 + k * 0.33) % 1.0);
             Detail.twinkle(c, new V3(Math.sin(k * 2.9 + uu * 3) * 0.3, 0.25 + bob + uu * 0.1, Math.cos(k * 1.7) * 0.3), 0.025, new float[]{1F, 1F, 1F}, t, ph + k, 0.2);
+        }
+        // dos pajaritos que revolotean alrededor del arbolito
+        for (int k = 0; k < 2; k++) {
+            double a = t * 0.06 * (k == 0 ? 1 : -1.2) + k * 2 + ph;
+            V3 bdp = new V3(Math.cos(a) * 0.2, 0.86 + 0.05 * Math.sin(a * 2 + k), -0.04 + Math.sin(a) * 0.2);
+            double fl = Math.sin(t * 1.2 + k) * 0.6;
+            V3 fw = new V3(-Math.sin(a) * (k == 0 ? 1 : -1), 0, Math.cos(a) * (k == 0 ? 1 : -1));
+            V3 sd = fw.cross(V3.UP).norm();
+            float[] col = k == 0 ? new float[]{1F, 0.85F, 0.3F} : new float[]{0.5F, 0.8F, 1F};
+            ell(c, bdp, new V3(0.011, 0.011, 0.016), 6, 4, flat(col));
+            for (int s2 = -1; s2 <= 1; s2 += 2) {
+                Detail.kite(c, bdp, bdp.add(sd.mul(s2 * 0.025)).add(0, 0.015 * fl, 0), fw, 0.01, V3.UP, col, WHITE);
+            }
         }
     }
 }

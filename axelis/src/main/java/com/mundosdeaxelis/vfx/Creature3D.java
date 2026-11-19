@@ -27,7 +27,8 @@ public final class Creature3D {
     static final float[] T_MOUTH = {0.75F, 0.5F, 1F, 0.75F};
     static final float[] T_BEAD = {0.5F, 0.5F, 0.75F, 0.75F};
     static final float[] T_CAT = {0.75F, 0.75F, 1F, 1F};
-    static final float[] T_WHITE = {0.55F, 0.90F, 0.57F, 0.92F};
+    /** Blanco sólido para la geometría: el centro del disco duro (en la textura de 256 ya no está dentro del destello). */
+    static final float[] T_WHITE = {0.551F, 0.801F, 0.574F, 0.824F};
 
     static final float[] WHITE = {1F, 1F, 1F};
     static final float[] BLACK = {0.12F, 0.10F, 0.13F};
@@ -54,6 +55,16 @@ public final class Creature3D {
         V3 hpv = new V3(0, 0.45, 0.2);
         final V3 light = new V3(-0.40, 0.80, 0.45).norm();
         boolean emissive;
+        /**
+         * Sombreado de las mascotas (más volumen): luz principal que sigue un poco a la cámara, cielo arriba y suelo
+         * abajo, sombra de contacto cerca de los pies, banda cálida entre luz y sombra, brillo suave y luz del mundo.
+         * Los demás modelos (utilería, jefes) siguen con el sombreado simple de antes.
+         */
+        boolean pretty, ground;
+        V3 key = light;
+        double world = 1, gloss = 1;
+        /** Vida extra: dormido (0..1), atención hacia la cámara (0..1) y hacia dónde queda la cámara (giro, cabeceo). */
+        double sleep, look, lookYaw, lookPitch;
         double lod = 1;
         double alpha = 1;
         int blend = Sink.SOLID;
@@ -97,11 +108,38 @@ public final class Creature3D {
             V3 toCam = cam.pos.sub(wp).norm();
             double facing = wn.dot(toCam);
             V3 n = facing < 0 ? wn.mul(-1) : wn;
+            if (pretty) {
+                return shadePretty(base, wp, n, toCam, facing, a);
+            }
             double lam = Math.max(0, n.dot(light));
             double rim = Math.pow(1 - Math.abs(facing), 3) * 0.14;
             double k = 0.68 + 0.40 * lam;
             return new float[]{(float) Math.min(1, base[0] * k + rim), (float) Math.min(1, base[1] * k + rim * 0.85),
                     (float) Math.min(1, base[2] * k + rim * 0.6), (float) a};
+        }
+
+        float[] shadePretty(float[] base, V3 wp, V3 n, V3 toCam, double facing, double a) {
+            double ndl = n.dot(key);
+            double wrap = Math.max(0, (ndl + 0.35) / 1.35);
+            wrap = wrap * wrap * (3 - 2 * wrap) * 0.55 + wrap * 0.45;
+            double hemi = 0.5 + 0.5 * n.y;
+            double occ = 1;
+            if (ground) {
+                double h = (wp.y - origin.y) / Math.max(1.0E-6, scale);
+                occ = 0.76 + 0.24 * ss(0.0, 0.17, h);
+            }
+            double amb = 0.50 + 0.21 * hemi;
+            double kr = (amb * 0.98 + wrap * 0.50) * occ, kg = (amb + wrap * 0.47) * occ, kb = (amb * 1.06 + wrap * 0.41) * occ;
+            // banda cálida y saturada donde la luz se apaga (parece piel o pelaje suave)
+            double term = Math.exp(-(ndl + 0.05) * (ndl + 0.05) * 9) * 0.11 * occ;
+            double lum = base[0] * 0.3 + base[1] * 0.59 + base[2] * 0.11;
+            V3 hv = key.add(toCam).norm();
+            double spec = gloss * 0.12 * Math.pow(Math.max(0, n.dot(hv)), 16) * occ;
+            double rim = Math.pow(1 - Math.abs(facing), 3) * 0.15 * (0.55 + 0.45 * hemi);
+            double r = base[0] * kr + (base[0] - lum) * term + base[0] * term * 0.35 + spec + rim * 0.92;
+            double g = base[1] * kg + (base[1] - lum) * term + spec + rim * 0.96;
+            double b = base[2] * kb + (base[2] - lum) * term + spec + rim;
+            return new float[]{(float) cl(r * world, 0, 1), (float) cl(g * world, 0, 1), (float) cl(b * world, 0, 1), (float) a};
         }
 
         void quad(int bl, double a, float[] cell, V3[] p, V3[] n, float[][] base, float[][] uvRel) {
@@ -182,8 +220,8 @@ public final class Creature3D {
 
     /** Esfera achatada con giro opcional (yaw, pitch, roll). */
     static void ell(Ctx c, V3 ce, V3 r, double yaw, double pitch, double roll, int nu, int nv, Paint paint) {
-        nu = Math.max(6, (int) Math.round(nu * c.lod));
-        nv = Math.max(4, (int) Math.round(nv * c.lod));
+        nu = Math.max(6, Math.min(Math.max(nu, 44), (int) Math.round(nu * c.lod)));
+        nv = Math.max(4, Math.min(Math.max(nv, 32), (int) Math.round(nv * c.lod)));
         double[] rm = (yaw == 0 && pitch == 0 && roll == 0) ? null : rot(yaw, pitch, roll);
         V3[][] P = new V3[nv + 1][nu + 1], N = new V3[nv + 1][nu + 1];
         for (int i = 0; i <= nv; i++) {
@@ -309,7 +347,33 @@ public final class Creature3D {
         boolean em = c.emissive;
         c.emissive = false;
         c.quad(Sink.NORMAL, alpha, cell, p, nn, b, uv);
+        if (cell == T_EYE && c.pretty && alpha > 0.5) {
+            // brillos blancos (no se tiñen con el iris): uno grande hacia la luz y uno chiquito del otro lado
+            V3 wr = c.nor(right).norm(), wu = c.nor(up).norm();
+            double kx = c.key.dot(wr), ky = c.key.dot(wu);
+            double kl = Math.sqrt(kx * kx + ky * ky);
+            kx = kl < 1.0E-4 ? -0.6 : kx / kl;
+            ky = kl < 1.0E-4 ? 0.8 : ky / kl;
+            ky = Math.max(ky, 0.45);
+            double kn = Math.sqrt(kx * kx + ky * ky);
+            kx /= kn;
+            ky /= kn;
+            V3 off = right.mul(kx).add(up.mul(ky));
+            V3 base0 = sp.add(n.mul(0.0012 * size / 0.1));
+            flatQuad(c, base0.add(off.mul(size * 0.25)), right, up, n, size * 0.135, size * 0.115, T_DISC_W, WHITE, alpha * 0.96);
+            flatQuad(c, base0.sub(off.mul(size * 0.27)).add(right.mul(size * 0.05)), right, up, n, size * 0.055, size * 0.055, T_DISC_W, WHITE, alpha * 0.85);
+        }
         c.emissive = em;
+    }
+
+    /** Disco duro de la textura (para brillos). */
+    static final float[] T_DISC_W = {0.5F, 0.75F, 0.625F, 0.875F};
+
+    /** Cuadro plano centrado (sobre una pegatina). */
+    static void flatQuad(Ctx c, V3 ce, V3 right, V3 up, V3 n, double hw, double hh, float[] cell, float[] col, double alpha) {
+        V3[] p = {ce.sub(right.mul(hw)).sub(up.mul(hh)), ce.add(right.mul(hw)).sub(up.mul(hh)), ce.add(right.mul(hw)).add(up.mul(hh)),
+                ce.sub(right.mul(hw)).add(up.mul(hh))};
+        c.quad(Sink.NORMAL, alpha, cell, p, new V3[]{n, n, n, n}, new float[][]{col, col, col, col}, new float[][]{{0, 1}, {1, 1}, {1, 0}, {0, 0}});
     }
 
     /** Par de ojos simétricos sobre la cabeza. */
@@ -381,6 +445,9 @@ public final class Creature3D {
      * velocidad suavizada, zancada según la distancia, inclinación con muelle al acelerar y frenar, ladeo al girar y
      * aplastado con rebote al aterrizar.
      */
+    /** Ticks quieto antes de dormirse (45 s). */
+    static final int SLEEP_T = 900;
+
     public static void tickMotion(VfxData d) {
         int sp = (int) Math.round(d.b);
         double vx = d.x - d.px, vz = d.z - d.pz, vy = d.y - d.py;
@@ -399,12 +466,36 @@ public final class Creature3D {
         double accel = d.mSpd - d.pmSpd;
         boolean fly = flier(sp);
         double size = Math.max(0.5, d.size);
+        double dyaw0 = d.yaw - d.pyaw;
+        while (dyaw0 > Math.PI) {
+            dyaw0 -= Math.PI * 2;
+        }
+        while (dyaw0 < -Math.PI) {
+            dyaw0 += Math.PI * 2;
+        }
+        // girar en el sitio: da pasitos (antes se deslizaba como sobre hielo)
+        d.pmTurn = d.mTurn;
+        double turnT = fly ? 0 : cl(Math.abs(dyaw0) * 7, 0, 1) * (1 - cl(d.mSpd * 8, 0, 1));
+        d.mTurn += (turnT - d.mTurn) * 0.35;
+        // quieto mucho rato: se duerme; al moverse otra vez se despierta con un respingo
+        boolean still = d.mSpd < 0.012 && Math.abs(dyaw0) < 0.03;
+        if (still) {
+            d.mIdle += 1;
+        } else {
+            if (d.mIdle > SLEEP_T + 20) {
+                d.mWake = 16;
+            }
+            d.mIdle = 0;
+        }
+        if (d.mWake > 0) {
+            d.mWake--;
+        }
         // zancada: en el suelo avanza con lo recorrido (más pasos si es pequeña); volando, las alas baten algo más rápido al ir deprisa
         d.pmGait = d.mGait;
         if (fly) {
             d.mGait += 0.62 * (1 + Math.min(1, d.mSpd * 3) * 0.6);
         } else {
-            d.mGait += 0.62 * cl(d.mSpd / 0.22 / Math.sqrt(size), 0.4, 2.3);
+            d.mGait += 0.62 * cl(d.mSpd / 0.22 / Math.sqrt(size), 0.4, 2.3) + 0.62 * 1.2 * d.mTurn;
         }
         // inclinación: hacia delante al arrancar, hacia atrás al frenar (con muelle)
         d.pmLean = d.mLean;
@@ -474,7 +565,13 @@ public final class Creature3D {
             return;
         }
         Ctx c = new Ctx(s, cam, pos, d.size * pop);
-        c.lod = dist < 12 ? 1.0 : (dist < 28 ? 0.72 : 0.5);
+        // de cerca, más caras (siluetas más redondas); de lejos, menos
+        c.lod = dist < 7 ? 1.35 : (dist < 12 ? 1.1 : (dist < 28 ? 0.72 : 0.5));
+        c.pretty = true;
+        c.world = d.light;
+        // luz principal: mitad fija en el mundo, mitad desde arriba a la izquierda de la cámara (siempre se ve bonita)
+        V3 camL = cam.fwd.mul(-0.55).add(cam.up.mul(0.75)).add(cam.right.mul(-0.40)).norm();
+        c.key = c.light.add(camL).norm();
         c.t = age;
         c.ph = ph;
         c.yaw = yaw;
@@ -486,6 +583,9 @@ public final class Creature3D {
         double mBank = d.pmBank + (d.mBank - d.pmBank) * partial;
         double mSq = d.pmSq + (d.mSq - d.pmSq) * partial;
         boolean flier = flier(sp);
+        c.ground = !flier;
+        double turn = d.pmTurn + (d.mTurn - d.pmTurn) * partial;
+        c.walk = Math.max(c.walk, turn * 0.8);
         c.pitch = flier ? cl(mLean - vy * 0.5, -0.30, 0.5) : cl(mLean - vy * 0.4, -0.22, 0.24);
         c.roll = flier ? cl(mBank + vl * 0.4, -0.34, 0.34) : cl(mBank * 0.7, -0.2, 0.2);
         double bc0 = (age + ph * 7) % 96;
@@ -499,13 +599,35 @@ public final class Creature3D {
         c.shake = (wigU < 1 && idle > 0.6) ? Math.sin(wigU * Math.PI * 6) * Math.sin(wigU * Math.PI) : 0;
         double tiltU = ((age + ph * 23 + 40) % 340) / 56.0;
         c.tilt = (tiltU < 1 && idle > 0.4) ? Math.sin(tiltU * Math.PI) : 0;
+        // dormido: ojos cerrados, respiración lenta y honda, cabeza caída; al despertar, un respingo
+        c.sleep = ss(SLEEP_T, SLEEP_T + 50, d.mIdle + partial);
+        if (c.sleep > 0) {
+            c.shut = c.shut || c.sleep > 0.45;
+            c.breath = c.breath * (1 - c.sleep) + Math.sin(age * 0.05 + ph) * c.sleep;
+            c.joy *= 1 - c.sleep;
+            c.shake *= 1 - c.sleep;
+            c.tilt *= 1 - c.sleep;
+        }
+        if (d.mWake > 0 && !flier) {
+            c.joy = Math.max(c.joy, Math.sin(cl((16 - d.mWake + partial) / 16.0, 0, 1) * Math.PI));
+        }
+        // atención: quieta y despierta, de vez en cuando te mira (gira la cabeza y levanta la vista hacia la cámara)
+        {
+            V3 tc = cam.pos.sub(pos.add(0, 0.6 * c.scale, 0));
+            double lx = tc.dot(left), lz = tc.dot(fwd);
+            c.lookYaw = Math.atan2(lx, lz);
+            c.lookPitch = -Math.atan2(tc.y, Math.sqrt(lx * lx + lz * lz) + 1.0E-6);
+            double aU = (age + ph * 13) % 260;
+            double att = ss(0, 14, aU) * (1 - ss(150, 172, aU));
+            c.look = att * idle * (1 - c.sleep) * (1 - ss(1.3, 2.0, Math.abs(c.lookYaw)));
+        }
         c.tint = rgb(d.rgb);
         // el saltito eleva todo el modelo y la sacudida lo gira un poco
         c.origin = pos.add(0, c.joy * 0.075 * c.scale, 0);
         double[] bm = rot(yaw + c.shake * 0.20, c.pitch, c.roll);
         // respirar: el cuerpo se estira y encoge apenas (más al estar quieto); al saltar se estira
-        double stretch = 1 + 0.014 * c.breath * idle + 0.06 * c.joy + mSq;
-        double widen = 1 - mSq * 0.5;
+        double stretch = (1 + 0.014 * c.breath * idle + 0.022 * c.breath * c.sleep + 0.06 * c.joy + mSq) * (1 - 0.07 * c.sleep);
+        double widen = (1 - mSq * 0.5) * (1 + 0.035 * c.sleep);
         bm[1] *= stretch;
         bm[4] *= stretch;
         bm[7] *= stretch;
@@ -529,10 +651,10 @@ public final class Creature3D {
             case PANDA -> Pets22.astroOctopus(c);
             case CHICK -> Pets8.mushroom(c);
             case FROG -> Pets23.sproutFrog(c);
-            case HAMSTER -> Pets8.sootSprite(c);
+            case HAMSTER -> Pets26.hamster(c);
             case SNAIL -> Pets8.cottageSnail(c);
             case BEE -> Creatures3.bee(c);
-            case SHEEP -> Pets24.mountainGoat(c);
+            case SHEEP -> Pets25.mountainGoat(c);
             case HEDGEHOG -> Pets21.toaster(c);
             case AXOLOTL -> Creatures3.axolotl(c);
             case RACCOON -> Pets21.vampireBat(c);
@@ -547,9 +669,9 @@ public final class Creature3D {
             case SNOWMAN -> Creatures5.snowman(c);
             case GHOST -> Creatures5.ghost(c);
             case GOLEM -> Creatures5.golem(c);
-            case SPARKMOUSE -> Creatures5.sparkmouse(c);
-            case DROID -> Creatures5.droid(c);
-            case FOREST_SPIRIT -> Creatures5.forestSpirit(c);
+            case SPARKMOUSE -> Pets26.sparkmouse(c);
+            case DROID -> Pets26.droid(c);
+            case FOREST_SPIRIT -> Pets26.forestSpirit(c);
             case MOON_WOLF -> Pets11.cerberusPup(c);
             case NIGHT_DRAGON -> Creatures5.nightDragon(c);
             case OCTOPUS -> Pets9.squidPainter(c);
@@ -558,7 +680,7 @@ public final class Creature3D {
             case FIREFLY -> Pets9.lanternSpirit(c);
             case KOALA -> Pets9.sloth(c);
             case ELEPHANT -> Pets10.mammoth(c);
-            case LION -> Pets24.lionCub(c);
+            case LION -> Pets25.lionCub(c);
             case SALAMANDER -> Creatures7.salamander(c);
             case PEACOCK -> Pets23.quetzal(c);
             case DOLPHIN -> Pets11.narwhal(c);
@@ -582,15 +704,58 @@ public final class Creature3D {
             case CRYSTAL_DRAGON -> Pets22.crystalDragon(c);
             default -> Creatures2.fairy(c);
         }
+        c.head = false;
+        if (c.ground && SHADOWS) {
+            // sombrita de contacto en el suelo (más chica y clara al saltar)
+            double rr = c.scale * 0.36 * (1 - 0.25 * c.joy), al = 0.30 * (1 - 0.45 * c.joy) * Math.min(1, pop * 1.2) * (0.55 + 0.45 * d.light);
+            V3 g = pos.add(0, 0.015, 0);
+            V3 ax = left.mul(rr), az = fwd.mul(rr * 1.18);
+            double[] pp = {g.x - ax.x - az.x, g.y, g.z - ax.z - az.z, g.x + ax.x - az.x, g.y, g.z + ax.z - az.z,
+                    g.x + ax.x + az.x, g.y, g.z + ax.z + az.z, g.x - ax.x + az.x, g.y, g.z - ax.z + az.z};
+            float fa = (float) al;
+            s.quad(VfxTex.SOFT, Sink.NORMAL, pp, new float[]{0, 1, 1, 1, 1, 0, 0, 0}, new float[]{0.05F, 0.04F, 0.06F, fa, 0.05F, 0.04F, 0.06F, fa,
+                    0.05F, 0.04F, 0.06F, fa, 0.05F, 0.04F, 0.06F, fa});
+        }
+        if (c.sleep > 0.05) {
+            // zetas que suben y se desvanecen sobre la cabeza
+            for (int k = 0; k < 3; k++) {
+                double u = ((age * 0.011 + k / 3.0 + ph * 0.1) % 1 + 1) % 1;
+                V3 at = c.pos(new V3(0.10 + 0.16 * u + 0.04 * Math.sin(u * 9 + k), 0.92 + 0.42 * u, 0.12));
+                double h = c.scale * (0.07 + 0.08 * u);
+                float za = (float) (Math.sin(u * Math.PI) * c.sleep * 0.9);
+                V3 r = cam.right.mul(h), up = cam.up.mul(h);
+                double[] pp = {at.x - r.x - up.x, at.y - r.y - up.y, at.z - r.z - up.z, at.x + r.x - up.x, at.y + r.y - up.y, at.z + r.z - up.z,
+                        at.x + r.x + up.x, at.y + r.y + up.y, at.z + r.z + up.z, at.x - r.x + up.x, at.y - r.y + up.y, at.z - r.z + up.z};
+                float v1 = 1F / 3F;
+                s.quad(VfxTex.ZZZ, Sink.NORMAL, pp, new float[]{0, v1, 1, v1, 1, 0, 0, 0}, new float[]{0.85F, 0.9F, 1F, za, 0.85F, 0.9F, 1F, za,
+                        0.85F, 0.9F, 1F, za, 0.85F, 0.9F, 1F, za});
+            }
+        }
     }
+
+    /** Sombra de contacto bajo las mascotas que andan (las herramientas la apagan para los iconos). */
+    public static boolean SHADOWS = true;
 
     /** Giro de cabeza: mira alrededor de vez en cuando. */
     static void headLook(Ctx c, double amp, double pitchBias) {
         double t = c.t, ph = c.ph;
         double hy = amp * Math.sin(t * 0.07 + ph) + (Math.sin(t * 0.023 + ph) > 0.92 ? 0.30 : 0) + c.tilt * 0.10;
         double hp = 0.06 * Math.sin(t * 0.09 + ph + 1) - c.pitch * 0.6 + pitchBias - c.joy * 0.12 + 0.015 * c.breath;
+        double hr = 0.04 * Math.sin(t * 0.05 + ph) + c.tilt * 0.24;
+        if (c.look > 0) {
+            // te mira: gira la cabeza (hasta donde le da el cuello) y levanta un poco la vista
+            // cuánto puede girar depende de cuánto suele mover la cabeza cada especie (las de cabeza "pegada" casi nada)
+            double my = cl(amp * 6, 0.25, 0.8);
+            hy += (cl(c.lookYaw, -my, my) - hy) * c.look * 0.85;
+            hp += (cl(c.lookPitch * 0.8, -0.45 * my / 0.8, 0.25) - hp) * c.look * 0.7;
+        }
+        if (c.sleep > 0) {
+            hy *= 1 - c.sleep;
+            hp += (0.30 - hp) * c.sleep;
+            hr += 0.13 * c.sleep;
+        }
         c.head = true;
-        System.arraycopy(rot(hy, hp, 0.04 * Math.sin(t * 0.05 + ph) + c.tilt * 0.24), 0, c.hm, 0, 9);
+        System.arraycopy(rot(hy, hp, hr), 0, c.hm, 0, 9);
     }
 
     // ------------------------------------------------------------------ 1. ZORRO ESTELAR

@@ -59,6 +59,16 @@ final class Pets21 {
         Paint finP = (n, p) -> mix(SH_B, SH_DK, ss(-0.02, 0.10, p.y) * 0.35);
         ell(c, new V3(0, y0 + 0.20, -0.02), new V3(0.032, 0.09, 0.10), 0, 0.25, 0, 10, 7, finP);
         ell(c, new V3(0, y0 + 0.29, -0.08), new V3(0.022, 0.07, 0.045), 0, 0.85, 0, 8, 6, finP);
+        // puntas blancas de las aletas y una muesca de "aventurero" en la dorsal
+        ell(c, new V3(0, y0 + 0.335, -0.115), new V3(0.016, 0.026, 0.02), 0, 0.85, 0, 6, 4, flat(SH_W));
+        ell(c, new V3(0.02, y0 + 0.24, -0.05), new V3(0.006, 0.014, 0.012), 0, 0.5, 0, 5, 3, flat(SH_DK));
+        ell(c, tb.add(wag * 0.2, 0.18, -0.1), new V3(0.02, 0.035, 0.03), wag * 0.6, -0.55, 0, 6, 4, flat(SH_W));
+        // rayitas del lomo (como un tiburón tigre bebé)
+        for (int k = 0; k < 4; k++) {
+            for (int sd = -1; sd <= 1; sd += 2) {
+                Detail.leaf(c, bc, br, new V3(sd * 0.55, 0.75, 0.15 - k * 0.22), 0.07, sd * 0.9, SH_DK);
+            }
+        }
         // aletas pectorales: bracitos que reman
         double pad = Math.sin(t * 0.30 + ph) * (0.25 + 0.35 * jump);
         for (int sd = -1; sd <= 1; sd += 2) {
@@ -83,10 +93,33 @@ final class Pets21 {
         for (int sd = -1; sd <= 1; sd += 2) {
             V3 tooth = surf(hc, hr, new V3(sd * 0.13, -0.30, 1)).add(0, -0.008, 0.004);
             cone(c, tooth.add(0, 0.006, 0), tooth.add(0, -0.022, 0.004), 0.009, 0.002, 5, flat(SH_W));
+            Detail.brow(c, hc, hr, sd, 0.48, 0.55, 0.68, 0.07, sd * 0.3, SH_DK);
+            ell(c, surf(hc, hr, new V3(sd * 0.12, 0.05, 1)), new V3(0.007, 0.005, 0.004), 4, 3, flat(SH_DK));
         }
         c.head = false;
         restore(c, sv);
         // montoncito de tierra que empuja al nadar bajo el suelo (gira con el cuerpo, delante de la aleta)
+        // quieto: el hoyito de tierra del que salió, con terrones, piedritas y matitas de pasto
+        double hole = (1 - dive) * (1 - jump);
+        if (hole > 0.05) {
+            for (int k = 0; k < 16; k++) {
+                double a = k / 16.0 * Math.PI * 2 + 0.3;
+                double r0 = 0.2 + 0.025 * Math.sin(k * 2.7);
+                V3 at = new V3(Math.cos(a) * r0, 0.012, 0.02 + Math.sin(a) * r0 * 1.2);
+                double rs = 1 + 0.25 * Math.sin(k * 1.9);
+                float[] dc = k % 2 == 0 ? SAND2 : mix(SAND, SAND2, 0.5);
+                ell(c, at, new V3(0.06 * hole * rs, 0.034 * hole * rs, 0.05 * hole * rs), 8, 5, (n, p) -> mix(dc, SAND, ss(-0.2, 1, n.y) * 0.6));
+                if (k % 3 == 0) {
+                    ell(c, at.add(0.02, 0.02 * hole, 0.01), new V3(0.012, 0.009, 0.011).mul(hole), 5, 3, flat(new float[]{0.62F, 0.62F, 0.66F}));
+                }
+                if (k % 3 == 1) {
+                    for (int g = -1; g <= 1; g++) {
+                        V3 gb = at.add(g * 0.012, 0.02 * hole, 0);
+                        cone(c, gb, gb.add(g * 0.012, 0.05 * hole, 0.005), 0.005, 0.001, 3, flat(new float[]{0.42F, 0.72F, 0.32F}));
+                    }
+                }
+            }
+        }
         if (dive > 0.05) {
             for (int k = 0; k < 7; k++) {
                 double a = k / 7.0 * Math.PI * 2 + t * 0.05;
@@ -129,12 +162,36 @@ final class Pets21 {
             ell(c, new V3(pf[0] * sq, y + pf[1], pf[2]), new V3(pf[3] * wob, pf[4] * wob / sq, pf[5] * wob), 14, 9, fluff);
         }
         V3 hc = new V3(0, y, 0.0), hr = new V3(0.26, 0.22, 0.22);
+        c.look = 0;
         headLook(c, 0.08, 0.0);
         c.hpv = new V3(0, y, 0);
         eyes(c, hc, hr, 0.36, 0.10, 0.92, 0.12, T_BEAD, new float[]{1, 1, 1});
         cheeks(c, hc, hr, 0.62, -0.14, 0.78, 0.10);
         decal(c, hc, hr, new V3(0, -0.22, 1), 0.09, 0, c.joy > 0.3 ? T_CAT : T_MOUTH, new float[]{0.35F, 0.25F, 0.40F}, 0.95, 0.004);
+        for (int sd = -1; sd <= 1; sd += 2) {
+            Detail.brow(c, hc, hr, sd, 0.34, 0.34, 0.88, 0.05, sd * 0.2, CL_SH);
+        }
         c.head = false;
+        // un solecito asoma por detrás (con rayos que giran) y dos nubecitas que le dan vueltas
+        {
+            V3 sun = new V3(0.2, y + 0.17, -0.2);
+            c.emissive = true;
+            ell(c, sun, new V3(0.08, 0.08, 0.05), 12, 8, (n, p) -> mix(new float[]{1F, 0.78F, 0.25F}, new float[]{1F, 0.95F, 0.6F}, ss(-0.2, 1, n.y) * 0.6));
+            for (int k = 0; k < 8; k++) {
+                double a = Math.PI * 2 * k / 8 + t * 0.02;
+                V3 d = new V3(Math.cos(a), Math.sin(a), 0);
+                cone(c, sun.add(d.mul(0.085)), sun.add(d.mul(0.125 + 0.01 * Math.sin(t * 0.2 + k))), 0.016, 0.002, 4, flat(new float[]{1F, 0.85F, 0.35F}));
+            }
+            c.emissive = false;
+            glow(c, sun, 0.3, new float[]{1F, 0.85F, 0.4F}, 0.3);
+            for (int k = 0; k < 2; k++) {
+                double a = t * 0.03 + k * Math.PI + ph;
+                V3 mc = new V3(Math.cos(a) * 0.42, y + 0.05 + 0.06 * Math.sin(a * 2), Math.sin(a) * 0.32);
+                ell(c, mc, new V3(0.05, 0.035, 0.04), 8, 5, fluff);
+                ell(c, mc.add(0.035, -0.008, 0), new V3(0.035, 0.026, 0.03), 7, 5, fluff);
+                ell(c, mc.add(-0.034, -0.01, 0), new V3(0.03, 0.022, 0.028), 7, 5, fluff);
+            }
+        }
         // lluvia: gotitas que caen y se reinician
         c.blend = Sink.NORMAL;
         for (int k = 0; k < 6; k++) {
@@ -238,7 +295,26 @@ final class Pets21 {
         // franja cromada abajo y palanca al lado
         ell(c, bc.add(0, -0.125, 0), new V3(0.215, 0.03, 0.145), 16, 5, flat(TO_CHROME));
         double lever = 0.5 + 0.5 * Math.sin(t * 0.05 + ph);
+        tube(c, new V3[]{bc.add(0.2, 0.09, 0), bc.add(0.222, 0.09, 0), bc.add(0.222, -0.08, 0)}, new double[]{0.006, 0.006, 0.006}, 4, flat(TO_DK));
         ell(c, bc.add(0.225, 0.02 - 0.05 * lever, 0), new V3(0.03, 0.02, 0.04), 8, 5, flat(TO_RED));
+        // borde cromado arriba, perillas de tostado y cable con enchufe que cuelga detrás
+        tube(c, Pets23.ring(bc.add(0, 0.155, 0), 0.205, 0.135, 20), Pets23.radii(21, 0.01), 5, (n, p) -> mix(TO_CHROME, WHITE, ss(0.3, 1, n.y) * 0.5));
+        for (int k = 0; k < 2; k++) {
+            V3 kn = bc.add(-0.226, 0.04 - 0.07 * k, 0.03);
+            ell(c, kn, new V3(0.012, 0.025, 0.025), 8, 5, flat(TO_CHROME));
+            double ang = t * 0.01 * (k + 1) + ph;
+            V3 mk = kn.add(-0.012, Math.cos(ang) * 0.016, Math.sin(ang) * 0.016);
+            ell(c, mk, new V3(0.004, 0.005, 0.005), 4, 3, flat(TO_RED));
+        }
+        {
+            double sw = Math.sin(t * 0.17 + ph) * 0.03 + Math.sin(c.gait * 1.3) * 0.03 * w;
+            V3 c0 = bc.add(0, -0.08, -0.15), c1 = c0.add(sw * 0.5, -0.08, -0.08), c2 = new V3(sw, 0.02, c0.z - 0.2);
+            curve(c, new V3[]{c0, c1, c2}, new double[]{0.008, 0.008, 0.008}, 4, 4, flat(TO_DK));
+            Pets21.sbox(c, c2.add(0, 0.012, -0.02), new V3(0.022, 0.016, 0.024), 0.5, 6, 5, flat(new float[]{0.92F, 0.92F, 0.9F}));
+            for (int sd = -1; sd <= 1; sd += 2) {
+                tube(c, new V3[]{c2.add(sd * 0.008, 0.012, -0.044), c2.add(sd * 0.008, 0.012, -0.064)}, new double[]{0.003, 0.003}, 3, flat(TO_CHROME));
+            }
+        }
         // tostadas que saltan
         double pop = Math.max(c.joy, Detail.flick(c, 41));
         for (int k = -1; k <= 1; k += 2) {
@@ -246,10 +322,32 @@ final class Pets21 {
             V3 tc = new V3(k * 0.085, hy, -0.02);
             sbox(c, tc, new V3(0.07, 0.07, 0.022), 0.45, 12, 8, (n, p) -> mix(TOAST2, TOAST, ss(0.6, 0.95, Math.abs(n.x) + Math.max(0, n.y))));
             ell(c, tc.add(0, 0.07, 0), new V3(0.075, 0.035, 0.024), 12, 6, flat(TOAST));
+            if (k > 0) {
+                // cuadrito de mantequilla que se derrite
+                Pets21.sbox(c, tc.add(0.0, 0.03, 0.024), new V3(0.022, 0.016, 0.006), 0.5, 6, 5, flat(new float[]{1F, 0.94F, 0.55F}));
+            } else {
+                // carita de mermelada
+                for (int sd = -1; sd <= 1; sd += 2) {
+                    ell(c, tc.add(sd * 0.022, 0.03, 0.023), new V3(0.009, 0.009, 0.003), 5, 3, flat(new float[]{0.75F, 0.12F, 0.25F}));
+                }
+                tube(c, new V3[]{tc.add(-0.022, 0.0, 0.023), tc.add(0, -0.012, 0.024), tc.add(0.022, 0.0, 0.023)}, new double[]{0.004, 0.004, 0.004}, 3,
+                        flat(new float[]{0.75F, 0.12F, 0.25F}));
+            }
         }
-        // ranuras (encima, tapan la parte baja de las tostadas)
+        // ranuras (encima, tapan la parte baja de las tostadas) con el calorcito naranja dentro y vapor
         for (int k = -1; k <= 1; k += 2) {
             ell(c, bc.add(k * 0.085, 0.168, -0.02), new V3(0.082, 0.008, 0.03), 10, 4, flat(TO_DK));
+            c.emissive = true;
+            ell(c, bc.add(k * 0.085, 0.17, -0.02), new V3(0.06, 0.004, 0.012), 8, 3, flat(new float[]{1F, 0.5F, 0.2F}));
+            c.emissive = false;
+            for (int j = 0; j < 2; j++) {
+                double u = ((t * 0.012 + j * 0.5 + k * 0.25 + ph) % 1 + 1) % 1;
+                c.blend = Sink.NORMAL;
+                c.alpha = 0.35 * Math.sin(u * Math.PI);
+                ell(c, bc.add(k * 0.085 + Math.sin(u * 6 + j) * 0.02, 0.19 + u * 0.22 + 0.2 * pop, -0.02), new V3(0.02 + 0.02 * u, 0.02 + 0.02 * u, 0.02 + 0.02 * u), 6, 4, flat(WHITE));
+                c.alpha = 1;
+                c.blend = Sink.SOLID;
+            }
         }
         // antena con lucecita
         V3 a0 = bc.add(0.12, 0.17, 0.05), a1 = a0.add(0.02 + Math.sin(t * 0.2 + ph) * 0.015, 0.12, 0);
@@ -259,7 +357,8 @@ final class Pets21 {
         ell(c, a1, new V3(0.024, 0.024, 0.024), 8, 6, flat(mix(TO_RED, WHITE, 0.3 * blink)));
         glow(c, a1, 0.12 + 0.06 * blink, TO_RED, 0.5 * blink + 0.2);
         c.emissive = false;
-        // pantalla con cara de luz
+        // pantalla con cara de luz (la pantalla va pegada a la caja: no gira la "cabeza" para mirarte)
+        c.look = 0;
         headLook(c, 0.06, 0.0);
         c.hpv = bc;
         V3 sc = bc.add(0, 0.015, 0.145);
@@ -335,6 +434,8 @@ final class Pets21 {
             for (V3 tp : tips) {
                 tube(c, new V3[]{hand, hand.lerp(tp, 0.5), tp}, new double[]{0.007, 0.006, 0.004}, 4, flat(BT_F));
             }
+            // garrita del pulgar en la "mano" del ala
+            cone(c, hand, hand.add(sd * 0.01, 0.035, 0.015), 0.008, 0.001, 4, flat(new float[]{0.92F, 0.88F, 0.9F}));
         }
         // patitas colgando
         for (int sd = -1; sd <= 1; sd += 2) {
@@ -357,6 +458,12 @@ final class Pets21 {
             }
         }
         ell(c, new V3(0, y - 0.13, 0.11), new V3(0.03, 0.025, 0.012), 8, 5, flat(CAPE_R));
+        // medallón dorado con rubí en el cuello de la capa
+        ell(c, new V3(0, y - 0.13, 0.122), new V3(0.026, 0.026, 0.008), 9, 5, flat(new float[]{1F, 0.8F, 0.3F}));
+        c.emissive = true;
+        ell(c, new V3(0, y - 0.13, 0.13), new V3(0.012, 0.012, 0.006), 6, 4, flat(new float[]{0.95F, 0.15F, 0.3F}));
+        c.emissive = false;
+        Detail.glint(c, new V3(0, y - 0.13, 0.13), new V3(0.012, 0.012, 0.006), new V3(-0.3, 0.5, 0.8), 0.012, WHITE, 0.8);
         // orejas grandes
         for (int sd = -1; sd <= 1; sd += 2) {
             double ef = Detail.flick(c, sd > 0 ? 51 : 52);

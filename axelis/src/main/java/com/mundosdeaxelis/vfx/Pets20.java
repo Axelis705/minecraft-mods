@@ -337,6 +337,16 @@ final class Pets20 {
             }
         }
         // carita
+        // gotas de lava que caen de la punta y se apagan
+        for (int xk = 0; xk < 2; xk++) {
+            double xu = ((t * 0.015 + xk * 0.5 + ph) % 1 + 1) % 1;
+            V3 xp = bc.add(0.01 * xk, -0.13 - xu * 0.1, 0.02);
+            boolean xe = c.emissive;
+            c.emissive = true;
+            ell(c, xp, new V3(0.012, 0.016 * (1 - 0.3 * xu), 0.012), 6, 4, flat(mix(new float[]{1F, 0.85F, 0.3F}, new float[]{0.6F, 0.15F, 0.05F}, xu)));
+            c.emissive = xe;
+        }
+        c.look = 0;
         headLook(c, 0.08, 0.0);
         c.hpv = new V3(0, 0.2, 0.05);
         V3 hc = bc, hr = new V3(0.15, 0.13, 0.13);

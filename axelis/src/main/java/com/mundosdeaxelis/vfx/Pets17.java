@@ -180,6 +180,20 @@ final class Pets17 {
             double u = ((t * 0.02 + k * 0.25 + ph * 0.1) % 1.0);
             Detail.twinkle(c, wt.add(Math.sin(k * 2.5 + u * 4) * 0.06, u * 0.1, Math.cos(k * 1.9) * 0.05), 0.02, new float[]{0.85F, 0.7F, 1F}, t, ph + k, 0.4);
         }
+        // libro de hechizos que flota a su lado y pasa las páginas
+        {
+            V3 bk = new V3(-0.2, 0.33 + Math.sin(t * 0.12 + ph) * 0.02, 0.06);
+            double open = 0.55 + 0.1 * Math.sin(t * 0.2);
+            for (int sd = -1; sd <= 1; sd += 2) {
+                V3 cv = bk.add(sd * Math.cos(open) * 0.035, Math.sin(open) * 0.012, 0);
+                ell(c, cv, new V3(0.035, 0.004, 0.045), 0, 0, -sd * (Math.PI / 2 - open) * 0.4, 6, 3, flat(new float[]{0.42F, 0.2F, 0.6F}));
+                ell(c, cv.add(0, 0.005, 0), new V3(0.031, 0.004, 0.041), 0, 0, -sd * (Math.PI / 2 - open) * 0.4, 6, 3, flat(new float[]{0.98F, 0.95F, 0.85F}));
+            }
+            double pg = ((t * 0.02 + ph) % 1);
+            ell(c, bk.add(Math.cos(pg * Math.PI) * 0.03, 0.012 + Math.sin(pg * Math.PI) * 0.02, 0), new V3(0.03, 0.002, 0.04), 0, 0, -(pg - 0.5) * 2.4, 6, 3,
+                    flat(new float[]{0.98F, 0.95F, 0.85F}));
+            Detail.twinkle(c, bk.add(0, 0.05, 0), 0.015, new float[]{0.8F, 0.6F, 1F}, t, ph, 0.3);
+        }
     }
 
     // ------------------------------------------------------------------ 53. ARDILLA EXPLORADORA
@@ -271,6 +285,12 @@ final class Pets17 {
         V3 bc = new V3(0, 0.215 + bob, 0.0), br = new V3(0.125, 0.15, 0.12);
         Paint bp = (n, p) -> mix(mix(SL_G, SL_G2, ss(0.0, 0.9, n.y) * 0.5), SL_C, ss(0.1, 0.6, n.z) * ss(0.6, -0.6, n.y));
         ell(c, bc, br, 24, 16, bp);
+        // manchitas de foca en el lomo
+        for (int k = 0; k < 10; k++) {
+            double a = k * 2.399 + 0.5;
+            V3 d = new V3(Math.cos(a) * 0.8, 0.5 + 0.4 * Math.sin(k * 1.7), Math.sin(a) * 0.8 - 0.3);
+            Detail.soft(c, bc, br, d, 0.022 + 0.01 * (k % 3), scale(SL_G, 0.75), 0.6);
+        }
         // salvavidas rojo y blanco
         for (int k = 0; k < 8; k++) {
             double a0 = k * Math.PI / 4, a1 = a0 + Math.PI / 4;

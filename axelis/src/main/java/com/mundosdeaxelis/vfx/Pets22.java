@@ -279,6 +279,19 @@ final class Pets22 {
         c.emissive = true;
         Pets22.star(c, new V3(0.0, 0.25 + bob, 0.155), new V3(0, 0.1, 1), V3.UP, 0.028, 0, OC_GOLD, WHITE);
         c.emissive = false;
+        // planetita con anillo que da vueltas alrededor del casco
+        {
+            double xa = t * 0.05 + ph;
+            V3 xp = new V3(Math.cos(xa) * 0.3, 0.5 + 0.05 * Math.sin(xa * 2), Math.sin(xa) * 0.3);
+            ell(c, xp, new V3(0.035, 0.035, 0.035), 10, 7, (n, q) -> mix(new float[]{1F, 0.62F, 0.3F}, new float[]{1F, 0.85F, 0.55F}, 0.5 + 0.5 * Math.sin(q.y * 140)));
+            V3[] xr = new V3[15];
+            for (int i = 0; i <= 14; i++) {
+                double b = Math.PI * 2 * i / 14.0;
+                xr[i] = xp.add(Math.cos(b) * 0.055, Math.cos(b) * 0.016, Math.sin(b) * 0.055);
+            }
+            tube(c, xr, Pets23.radii(15, 0.005), 4, flat(new float[]{0.75F, 0.85F, 1F}));
+            Detail.twinkle(c, new V3(-Math.cos(xa * 1.3) * 0.32, 0.62, -Math.sin(xa * 1.3) * 0.3), 0.012, WHITE, t, ph, 0.4);
+        }
     }
 
     // ------------------------------------------------------------------ DRAGONCITO DE CRISTAL
@@ -343,6 +356,11 @@ final class Pets22 {
         // cuerpo
         V3 bc = new V3(0, y - 0.02, -0.02), br = new V3(0.13, 0.15, 0.15);
         ell(c, bc, br, 14, 10, skin);
+        // escamitas claras en la barriga y destellos de facetas
+        Detail.scales(c, bc, br, 6, 10, 0.022, d -> d.z > 0.2 && d.y < 0.3 ? 1 : 0, (n, q) -> new float[]{0.92F, 0.84F, 1F}, new float[]{1F, 1F, 1F});
+        for (int xk = 0; xk < 3; xk++) {
+            Detail.glint(c, bc, br, new V3(-0.6 + 0.6 * xk, 0.6, 0.4 - 0.4 * xk), 0.03, WHITE, 0.6 + 0.3 * Math.sin(t * 0.2 + xk));
+        }
         // gema del pecho que late
         c.emissive = true;
         double beat = 0.5 + 0.5 * Math.sin(t * 0.2 + ph);

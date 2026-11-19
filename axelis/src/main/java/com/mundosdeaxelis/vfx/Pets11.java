@@ -559,6 +559,12 @@ final class Pets11 {
             return mix(top, NV_W, ss(0.0, -0.8, n.y));
         };
         ell(c, bc, br, 18, 12, bp);
+        // moteado de narval en el lomo
+        for (int k = 0; k < 14; k++) {
+            double a = k * 2.399;
+            V3 d = new V3(Math.cos(a) * 0.7, 0.6 + 0.3 * Math.sin(k * 1.3), Math.sin(a) * 0.9);
+            Detail.soft(c, bc, br, d, 0.03 + 0.015 * (k % 3), scale(NV_B, 0.72), 0.55);
+        }
         // estrellas en el lomo
         for (int k = 0; k < 10; k++) {
             double a = k * 2.399;

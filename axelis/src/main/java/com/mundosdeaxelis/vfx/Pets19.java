@@ -36,6 +36,18 @@ final class Pets19 {
         ell(c, bc, br, 26, 18, bp);
         // brillo de gelatina
         decal(c, bc, br, new V3(-0.45, 0.62, 0.62), 0.09, 0.0, Detail.T_DISC, new float[]{1F, 1F, 1F}, 0.55, 0.004);
+        // burbujitas que suben dentro de la gelatina
+        for (int xk = 0; xk < 5; xk++) {
+            double xu = ((t * 0.006 + xk * 0.2 + ph * 0.1) % 1 + 1) % 1;
+            double xa = xk * 2.4 + ph;
+            V3 xp = bc.add(Math.cos(xa) * 0.08, -0.08 + xu * 0.16, Math.sin(xa) * 0.08);
+            double xr = (0.01 + 0.004 * (xk % 3)) * (1 - 0.4 * xu);
+            c.blend = Sink.NORMAL;
+            c.alpha = 0.6;
+            ell(c, xp, new V3(xr, xr, xr), 6, 4, flat(new float[]{0.85F, 1F, 0.85F}));
+            c.alpha = 1;
+            c.blend = Sink.SOLID;
+        }
         // musgo y flores
         ell(c, bc.add(0.115, -0.03, 0.05), new V3(0.04, 0.05, 0.06), 0.0, 0.0, 0.3, 10, 8, flat(BR_DK));
         ell(c, bc.add(-0.12, 0.0, -0.03), new V3(0.04, 0.045, 0.055), 0.0, 0.0, -0.3, 10, 8, flat(BR_DK));
@@ -82,6 +94,11 @@ final class Pets19 {
                     (n, q) -> mix(BR_LF, BR_LF2, ss(0.0, 1.0, n.y) * 0.7F));
         }
         ell(c, top.add(0, 0.035, 0.0), new V3(0.026, 0.04, 0.02), 0.0, 0.0, 0.0, 10, 7, (n, q) -> mix(BR_LF, BR_LF2, ss(-0.2, 1.0, n.y) * 0.7F));
+        // gotitas de rocío brillantes sobre la carita
+        for (int xk = 0; xk < 3; xk++) {
+            V3 xd = new V3(-0.5 + xk * 0.5, 0.75, 0.45 - 0.1 * xk);
+            Detail.glint(c, hc, hr, xd, 0.03, WHITE, 0.6);
+        }
         c.head = false;
         for (int k = 0; k < 5; k++) {
             double u = ((t * 0.011 + ph * 0.2 + k * 0.2) % 1.0);

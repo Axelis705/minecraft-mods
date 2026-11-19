@@ -27,6 +27,13 @@ public final class VfxData {
      */
     public double mSpd, pmSpd, mGait, pmGait, mLean, pmLean, mLeanV, mBank, pmBank, mBankV, mSq, pmSq, mSqV, mVy;
     public boolean mInit;
+    /**
+     * Más vida de las criaturas 3D: ticks seguidos sin moverse (para dormirse), giro en el sitio suavizado (para dar
+     * pasitos al girar), ticks del susto al despertar y luz del mundo donde está (0..1; la pone el cliente).
+     */
+    public double mIdle, mTurn, pmTurn;
+    public int mWake;
+    public float light = 1F;
     public double tx, ty, tz;
     public boolean hasT;
     public final double[] trail = new double[TRAIL_MAX * 3];

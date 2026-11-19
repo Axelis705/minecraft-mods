@@ -56,6 +56,18 @@ final class Pets18 {
             V3 b0 = bc.add(0, 0.115 - Math.abs(k - 1.5) * 0.012, 0.1 - k * 0.07);
             cone(c, b0, b0.add(0, 0.045, -0.008), 0.02, 0.0, 5, flat(TC_PK));
         }
+        // placas redondeadas en el lomo (de colores alternos) y manchitas
+        for (int xk = 0; xk < 5; xk++) {
+            V3 xd = new V3(0, 1, 0.55 - xk * 0.3);
+            V3 xp = surf(bc, br, xd);
+            float[] xc = xk % 2 == 0 ? new float[]{1F, 0.62F, 0.74F} : new float[]{1F, 0.86F, 0.62F};
+            ell(c, xp.add(0, 0.012, 0), new V3(0.012, 0.03 - 0.003 * Math.abs(xk - 2), 0.026), 0, 0, 0, 7, 5, (n, q) -> mix(xc, WHITE, ss(0.3, 1, n.y) * 0.3));
+        }
+        for (int xs = -1; xs <= 1; xs += 2) {
+            for (int xk = 0; xk < 4; xk++) {
+                Detail.soft(c, bc, br, new V3(xs * 0.85, 0.35 - 0.12 * (xk % 2), 0.45 - xk * 0.3), 0.03 + 0.01 * (xk % 2), new float[]{0.55F, 0.86F, 0.72F}, 0.65);
+            }
+        }
         headLook(c, 0.1, 0.0);
         c.hpv = new V3(0, 0.25, 0.12);
         V3 hc = new V3(0, 0.27 + bob, 0.17), hr = new V3(0.125, 0.11, 0.11);
@@ -181,6 +193,13 @@ final class Pets18 {
             cone(c, hc.add(sd * 0.075, 0.1, 0.0), hc.add(sd * 0.095, 0.17, -0.01), 0.02, 0.0, 5, flat(YT_IC));
             c.emissive = em;
         }
+        // montoncito de nieve con brillito en la coronilla
+        {
+            V3 xs = surf(hc, hr, new V3(0.2, 1, -0.1));
+            ell(c, xs.add(0, 0.008, 0), new V3(0.04, 0.018, 0.035), 8, 5, flat(WHITE));
+            ell(c, xs.add(0.02, 0.016, 0.004), new V3(0.022, 0.014, 0.02), 7, 4, flat(WHITE));
+            Detail.twinkle(c, xs.add(0.02, 0.03, 0.01), 0.01, new float[]{0.8F, 0.95F, 1F}, t, ph, 0.3);
+        }
         c.head = false;
         // bufanda roja con flecos
         ell(c, bc.add(0, 0.115 + 0.0, 0.05), new V3(0.115, 0.03, 0.1), 16, 8, flat(YT_RD));
@@ -193,6 +212,20 @@ final class Pets18 {
         for (int k = 0; k < 7; k++) {
             double u = ((t * 0.014 + k * 0.14 + ph * 0.1) % 1.0);
             Detail.twinkle(c, new V3(Math.sin(k * 2.3 + u * 3) * 0.24, 0.55 - u * 0.45, Math.cos(k * 1.7 + u) * 0.22), 0.02, new float[]{0.85F, 0.95F, 1F}, t, ph + k, 0.3);
+        }
+        // vaho de la respiración y copitos que caen
+        for (int xk = 0; xk < 2; xk++) {
+            double xu = ((t * 0.01 + xk * 0.5 + ph) % 1 + 1) % 1;
+            c.blend = Sink.NORMAL;
+            c.alpha = 0.28 * Math.sin(xu * Math.PI);
+            ell(c, new V3(0, 0.33 + xu * 0.05, 0.16 + xu * 0.14), new V3(0.018 + 0.025 * xu, 0.018 + 0.025 * xu, 0.018 + 0.025 * xu), 6, 4, flat(WHITE));
+            c.alpha = 1;
+            c.blend = Sink.SOLID;
+        }
+        for (int xk = 0; xk < 4; xk++) {
+            double xu = ((t * 0.006 + xk * 0.25 + ph * 0.3) % 1 + 1) % 1;
+            V3 xp = new V3(Math.sin(xk * 2.1 + xu * 3) * 0.28, 0.7 - xu * 0.65, Math.cos(xk * 1.7 + xu * 2) * 0.25);
+            Detail.twinkle(c, xp, 0.012, new float[]{0.85F, 0.95F, 1F}, t, ph + xk, 0.2);
         }
     }
 

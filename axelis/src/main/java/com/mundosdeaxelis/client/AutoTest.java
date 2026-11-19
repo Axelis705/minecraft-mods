@@ -582,10 +582,11 @@ public final class AutoTest {
             cmd("effect give @a minecraft:resistance 900 4 true");
             standLooking(AX - 4.5, -60.0, AZ - 4.5, AX - 4.5, -60.4, AZ - 1.0);
             onServer(sp -> {
-                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.LAND_SHARK, 1.0F);
-                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.COMET_CAT, 1.0F);
-                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.TOASTER, 1.0F);
-                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.CRYSTAL_DRAGON, 1.0F);
+                // etapa 253: las rehechas y las de diseño nuevo (quietas más de 45 s se duermen: se ve al final de la tanda quieta)
+                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.LION, 1.0F);
+                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.SHEEP, 1.0F);
+                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.HAMSTER, 1.0F);
+                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.DROID, 1.0F);
             });
         });
         add("animación mascotas: quietas", 10 * 110 + 200, () -> clip(10, 110));

@@ -35,7 +35,7 @@ public final class PetSheet {
         V3 center = new V3(0, 0.5 * size, 0);
         // {yaw, pitch, edad, velocidad}
         double[][] vs = {{30, 12, age, 0}, {90, 4, age, 0}, {200, 15, age, 0}, {30, 12, age + 7, 0.2}, {30, 12, age + 11, 0.2}, {0, 8, age, 0}};
-        int W = 360;
+        int W = Integer.getInteger("w", 360);
         BufferedImage sheet = new BufferedImage(W * vs.length, W, BufferedImage.TYPE_INT_ARGB);
         // el mismo encuadre para todas las vistas (el de la vista quieta de 3/4) para comparar tamaños
         Cam c0 = PetBake.camFrom(vs[0][0], vs[0][1], center);

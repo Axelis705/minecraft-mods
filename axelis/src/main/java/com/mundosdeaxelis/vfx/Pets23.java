@@ -76,6 +76,11 @@ final class Pets23 {
         for (int k = 0; k < 5; k++) {
             Detail.spot(c, bc, br, new V3((k % 2 == 0 ? 0.5 : -0.5) + k * 0.05, 0.6, -0.7 + k * 0.18), 0.04 + 0.01 * (k % 2), FR_SPOT);
         }
+        // manchitas en el lomo
+        for (int xk = 0; xk < 7; xk++) {
+            double xa = xk * 2.399;
+            Detail.soft(c, bc, br, new V3(Math.cos(xa) * 0.7, 0.65, -0.2 + Math.sin(xa) * 0.6), 0.04 + 0.012 * (xk % 3), new float[]{0.36F, 0.66F, 0.32F}, 0.7);
+        }
         headLook(c, 0.10, 0.0);
         c.hpv = bc;
         // ojos saltones arriba
@@ -100,6 +105,15 @@ final class Pets23 {
             ell(c, s2.add(Math.cos(a) * 0.025, 0.012, Math.sin(a) * 0.025), new V3(0.02, 0.01, 0.02), 6, 4, flat(FLOWER));
         }
         ell(c, s2.add(0, 0.018, 0), new V3(0.014, 0.01, 0.014), 6, 4, flat(FLOWER_C));
+        // saco de la garganta que se infla de vez en cuando (croac)
+        {
+            double xu = ((t + ph * 17) % 200) / 26.0;
+            double xc = xu < 1 ? Math.sin(xu * Math.PI) : 0;
+            if (xc > 0.02) {
+                V3 xg = surf(bc, br, new V3(0, -0.45, 1)).add(0, -0.01, -0.02);
+                ell(c, xg, new V3(0.06 * xc, 0.05 * xc, 0.045 * xc), 9, 6, (n, q) -> mix(new float[]{1F, 0.95F, 0.78F}, WHITE, ss(0, 1, n.y) * 0.4));
+            }
+        }
         c.head = false;
     }
 
@@ -192,6 +206,17 @@ final class Pets23 {
         // bufanda roja
         V3 nk = new V3(0, 0.36 + bob, 0.09);
         tube(c, ring(nk, 0.09, 0.08, 14), radii(15, 0.026), 6, flat(NJ_RED));
+        // estrellita ninja (shuriken) colgada del nudo de la bufanda
+        {
+            V3 xs = nk.add(0.05, -0.05, 0.075);
+            double xr = Math.sin(t * 0.1 + ph) * 0.3;
+            for (int xk = 0; xk < 4; xk++) {
+                double xa = xk * Math.PI / 2 + xr;
+                V3 xd = new V3(Math.cos(xa), Math.sin(xa), 0);
+                Detail.kite(c, xs, xs.add(xd.mul(0.028)), new V3(-xd.y, xd.x, 0), 0.008, new V3(0, 0, 1), new float[]{0.7F, 0.74F, 0.8F}, new float[]{0.92F, 0.94F, 1F});
+            }
+            ell(c, xs, new V3(0.007, 0.007, 0.004), 5, 3, flat(new float[]{0.3F, 0.32F, 0.38F}));
+        }
         // cabeza
         headLook(c, 0.12, 0.03);
         c.hpv = new V3(0, 0.40, 0.10);
@@ -347,6 +372,9 @@ final class Pets23 {
                 Detail.feather(c, base.add(0, -k * 0.015, 0), tip, new V3(0, 0, 1), 0.035, new V3(sd, 0.3, 0).norm(), QZ_G, k > 1 ? QZ_TEAL : QZ_G2);
             }
         }
+        // plumitas en escamas sobre el pecho rojo y brillo iridiscente
+        Detail.plumage(c, bc, br, 4, 12, 0.035, 0.014, d -> d.z > 0.35 && d.y < 0.2 ? 1 : 0, (n, q) -> QZ_RED, new float[]{1F, 0.45F, 0.45F});
+        Detail.glint(c, bc, br, new V3(-0.4, 0.8, 0.3), 0.06, new float[]{0.7F, 1F, 0.8F}, 0.5);
         headLook(c, 0.12, 0.02);
         c.hpv = bc;
         eyes(c, bc, br, 0.42, 0.30, 0.80, 0.13, T_EYE, new float[]{0.35F, 0.25F, 0.15F});
@@ -455,11 +483,17 @@ final class Pets23 {
         double bob = Math.abs(Math.sin(c.gait * 1.2)) * 0.025 * w;
         double rock = Math.sin(c.gait * 1.2) * 0.08 * w;
         c.pivot = new V3(0, 0.25, 0);
+        c.gloss = 2.4;
         double[] sv = Pets21.tiltAll(c, 0, rock);
         Paint cer = (n, p) -> mix(PG, PG2, ss(-0.3, 0.9, n.y) * 0.6);
         stubLegs(c, 0.10, 0.10, -0.10, 0.12 + bob, 0.04, true, cer, flat(PG_DK), 1.2);
         V3 bc = new V3(0, 0.27 + bob, 0), br = new V3(0.21, 0.19, 0.24);
         ell(c, bc, br, 18, 12, cer);
+        // corazón dorado pintado en el lomo
+        for (int xs = -1; xs <= 1; xs += 2) {
+            Detail.spot(c, bc, br, new V3(xs * 0.08, 0.9, -0.55), 0.06, new float[]{1F, 0.8F, 0.35F});
+        }
+        Detail.leaf(c, bc, br, new V3(0, 0.82, -0.6), 0.07, Math.PI, new float[]{1F, 0.8F, 0.35F});
         // brillo de cerámica
         Detail.soft(c, bc, br, new V3(-0.45, 0.75, 0.35), 0.16, WHITE, 0.75);
         Detail.soft(c, bc, br, new V3(-0.3, 0.6, 0.55), 0.06, WHITE, 0.9);
@@ -509,5 +543,6 @@ final class Pets23 {
         }
         c.head = false;
         Pets21.restore(c, sv);
+        c.gloss = 1;
     }
 }
