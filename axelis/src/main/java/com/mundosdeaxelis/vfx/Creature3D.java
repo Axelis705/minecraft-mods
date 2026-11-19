@@ -720,7 +720,7 @@ public final class Creature3D {
             // zetas que suben y se desvanecen sobre la cabeza
             for (int k = 0; k < 3; k++) {
                 double u = ((age * 0.011 + k / 3.0 + ph * 0.1) % 1 + 1) % 1;
-                V3 at = c.pos(new V3(0.10 + 0.16 * u + 0.04 * Math.sin(u * 9 + k), 0.92 + 0.42 * u, 0.12));
+                V3 at = c.pos(new V3(c.hpv.x + 0.08 + 0.14 * u + 0.03 * Math.sin(u * 9 + k), c.hpv.y + 0.2 + 0.3 * u, c.hpv.z));
                 double h = c.scale * (0.07 + 0.08 * u);
                 float za = (float) (Math.sin(u * Math.PI) * c.sleep * 0.9);
                 V3 r = cam.right.mul(h), up = cam.up.mul(h);

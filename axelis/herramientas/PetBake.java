@@ -29,7 +29,7 @@ public final class PetBake {
             try {
                 BufferedImage im = ImageIO.read(new File(assets + "/textures/vfx/" + VfxTex.FILE[k] + ".png"));
                 int fr = VfxTex.FRAMES[k];
-                if (fr > 1) {
+                if (fr > 1 && k != VfxTex.ZZZ) {
                     im = im.getSubimage(0, 0, im.getWidth(), im.getHeight() / fr);
                 }
                 return im;

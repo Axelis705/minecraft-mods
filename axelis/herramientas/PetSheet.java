@@ -12,8 +12,14 @@ import java.util.List;
  */
 public final class PetSheet {
     static List<PetBake.Q> pose(int species, double size, double age, Cam cam, double speed) {
+        return pose(species, size, age, cam, speed, 0);
+    }
+
+    /** idle = ticks que lleva quieta (más de 900: dormida). */
+    static List<PetBake.Q> pose(int species, double size, double age, Cam cam, double speed, double idle) {
         List<PetBake.Q> out = new ArrayList<>();
         VfxData d = new VfxData();
+        d.mIdle = idle;
         d.b = species;
         d.size = (float) size;
         d.id = 3;
