@@ -104,3 +104,40 @@ Se parecían demasiado a personajes conocidos, así que ahora son diseños origi
 - Iconos, figuritas y retratos rehorneados de las 58 figuritas.
 - Catálogo con botón **Comparar con antes**; las marcas nuevas se guardan en `seleccion/axelis253`.
 - Página de animaciones con 10 videos nuevos; las marcas nuevas se guardan en `revision/animaciones253`.
+
+## 8. Segunda vuelta (mismo día): rendimiento y reacciones
+
+Axelis: «luego las testeo, sigue mejorando el mod y puliendo cosas».
+
+### Rendimiento: dibujar mascotas cuesta 2,5 veces menos
+Medido sin el juego (de cerca, el caso más caro):
+- **Antes:** entre 0,5 y 8,7 ms por mascota en cada cuadro (de media 1,6 ms).
+- **Ahora:** de media unos 0,6 ms, y como máximo 2,7 ms (Remendín).
+
+Cambios:
+- `Ctx.grid`: en esferas, tubos, cajas redondeadas, casquetes, telas y parches cada vértice se transforma y se sombrea **una sola vez**. Antes se hacía 4 veces, una por cada cuadro que lo comparte. Se ve igual.
+- Cuentas del sombreado más baratas: potencias por multiplicación y la banda cálida con un polinomio.
+- Remendín: cuerpo y cabeza con menos caras (el dibujo de tela ya va en parches aparte).
+- Cachorro Rey: mechones de 5 lados.
+
+### Reacciones al jugador (solo en el cliente, mascotas a menos de 10 bloques)
+- **Saltas** → dan un saltito contigo (cada una con su pequeño retraso).
+- **Te agachas** → se sientan (más bajitas) y te miran.
+- **Te pegan** → respingo, y si estaban dormidas se despiertan.
+- Campos nuevos en `VfxData`: `mHop`, `mSit`, `pmSit`. El cliente (`VfxClient`) los calcula.
+
+### Detalles para las que solo tenían las mejoras generales
+- Cerbero: collares de cuero con púas y placa dorada en los tres cuellos.
+- Cofre Mímico: cuatro gemas que brillan en la tapa.
+- Fantasmita: lacito rosa.
+- Abejita: florecita en la cabeza.
+- Pilluelo Lunar: colgante de luna creciente.
+- Pegaso: polvo dorado detrás.
+
+### Catálogo
+- Debajo de cada mascota va su frase (las equipadas dan armadura, no habilidades).
+- El encabezado cuenta las reacciones nuevas.
+
+### Comprobado
+- CI «Compilar mods» en verde.
+- Prueba con el cliente: 66 fotos, 63 comprobaciones, 0 fallos.
