@@ -98,15 +98,16 @@ final class Detail {
             n--;
             V3 p = surf(ce, r, d);
             V3 nr = new V3(d.x / r.x, d.y / r.y, d.z / r.z).norm();
-            V3 dir = nr.mul(0.55).add(comb.mul(combAmt)).norm();
-            double L = len * (0.65 + 0.7 * rnd(seed, i, 4));
+            // mechón más tumbado y corto (pelaje suave, no púas)
+            V3 dir = nr.mul(0.42).add(comb.mul(combAmt)).add(nr.mul(0.0)).norm();
+            double L = len * 0.82 * (0.65 + 0.7 * rnd(seed, i, 4));
             V3 tp = p.add(dir.mul(L)).add(nr.mul(-len * 0.1));
             V3 sd = nr.cross(comb.len() > 0.01 ? comb : V3.UP);
             sd = sd.len() < 0.05 ? nr.anyPerp() : sd.norm();
             sd = sd.rot(nr, (rnd(seed, i, 5) - 0.5) * 1.2);
             float[] pc = paint.at(nr, p.sub(ce));
-            float[] c0 = scale(pc, 0.92), c1 = tip != null ? mix(pc, tip, 0.8) : scale(pc, 1.12 + 0.1 * rnd(seed, i, 6));
-            kite(c, p.add(nr.mul(-0.004)), tp, sd, w * (0.7 + 0.6 * rnd(seed, i, 7)), nr, c0, c1);
+            float[] c0 = scale(pc, 0.96), c1 = tip != null ? mix(pc, tip, 0.6) : scale(pc, 1.05 + 0.05 * rnd(seed, i, 6));
+            kite(c, p.add(nr.mul(-0.004)), tp, sd, w * 1.25 * (0.7 + 0.6 * rnd(seed, i, 7)), nr, c0, c1);
         }
     }
 

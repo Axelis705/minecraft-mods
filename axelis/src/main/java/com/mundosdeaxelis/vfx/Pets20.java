@@ -56,7 +56,7 @@ final class Pets20 {
         Paint bp = (n, p) -> mix(FP_W, FP_B, ss(0.1, -0.95, n.y) * 0.65F);
         ell(c, bc, br, 24, 16, bp);
         Detail.fur(c, bc, br, 380, 9502, 0.024, 0.026, new V3(0, -0.7, -0.3), 0.6, Detail.ALL, bp, FP_W);
-        decal(c, bc, br, new V3(0, -0.1, 1), 0.2, 0.0, Detail.T_DISC, FP_IC2, 0.55, 0.004);
+        ell(c, bc.add(0, -0.015, br.z * 0.44), new V3(br.x * 0.6, br.y * 0.6, br.z * 0.62), 14, 10, (n, q) -> mix(FP_W, FP_IC2, 0.55F));
         // cinturón con una calaverita colgando (como las del Lobo)
         ell(c, bc.add(0, -0.055, 0), new V3(0.142, 0.016, 0.133), 18, 4, flat(FP_BELT));
         V3 sk = bc.add(0.06, -0.085, 0.118);

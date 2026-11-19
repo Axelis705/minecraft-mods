@@ -128,7 +128,7 @@ final class Pets18 {
         ell(c, bc, br, 24, 16, bp);
         Detail.fur(c, bc, br, 420, 9301, 0.026, 0.028, new V3(0, -0.7, -0.3), 0.6, Detail.ALL, bp, YT_W);
         // panza clarita
-        decal(c, bc, br, new V3(0, -0.15, 1), 0.2, 0.0, Detail.T_DISC, YT_FC, 0.5, 0.004);
+        ell(c, bc.add(0, -0.025, br.z * 0.44), new V3(br.x * 0.6, br.y * 0.6, br.z * 0.62), 14, 10, (n, q) -> mix(YT_W, YT_FC, 0.55F));
         // cristales de hielo en la espalda
         for (int k = 0; k < 5; k++) {
             double a = -0.8 + k * 0.4;
@@ -181,12 +181,14 @@ final class Pets18 {
             Detail.fur(c, ec, new V3(0.03, 0.04, 0.025), 14, 9306 + sd, 0.02, 0.02, new V3(0, 0, 0), 0, Detail.ALL, hp, YT_W);
             ell(c, ec.add(sd * 0.01, 0, 0.012), new V3(0.016, 0.026, 0.012), 8, 6, flat(YT_PK));
         }
-        decal(c, hc, hr, new V3(0, -0.1, 1), 0.22, 0.0, Detail.T_DISC, YT_FC, 0.95, 0.004);
-        decal(c, hc, hr, new V3(0.34, 0.06, 0.93), 0.07, 0.0, c.shut ? T_EYE_SHUT : T_BEAD, WHITE, 1, 0.005);
-        decal(c, hc, hr, new V3(-0.34, 0.06, 0.93), 0.07, 0.0, c.shut ? T_EYE_SHUT : T_BEAD, WHITE, 1, 0.005);
-        ell(c, hc.add(0, -0.03, 0.113), new V3(0.02, 0.014, 0.012), 8, 6, flat(hex(0x32466E)));
-        decal(c, hc, hr, new V3(0, -0.32, 1), 0.08, 0, T_MOUTH, new float[]{0.35F, 0.15F, 0.25F}, 0.95, 0.006);
-        cheeks(c, hc, hr, 0.72, -0.18, 0.7, 0.06);
+        // carita: máscara curva (antes era un disco plano que sobresalía de perfil) y los rasgos encima
+        V3 fcc = hc.add(0, -0.012, 0.05), fcr = new V3(0.098, 0.085, 0.075);
+        ell(c, fcc, fcr, 16, 12, (n, q) -> mix(YT_FC, WHITE, ss(0.3, 1, n.y) * 0.25F));
+        eyes(c, fcc, fcr, 0.36, 0.14, 0.92, 0.062, T_BEAD, WHITE);
+        ell(c, surf(fcc, fcr, new V3(0, -0.2, 1)), new V3(0.018, 0.013, 0.01), 8, 6, flat(hex(0x32466E)));
+        Detail.glint(c, surf(fcc, fcr, new V3(0, -0.2, 1)), new V3(0.018, 0.013, 0.01), new V3(-0.3, 0.8, 0.5), 0.008, WHITE, 0.7);
+        decal(c, fcc, fcr, new V3(0, -0.5, 1), 0.06, 0, T_MOUTH, new float[]{0.35F, 0.15F, 0.25F}, 0.95, 0.003);
+        cheeks(c, fcc, fcr, 0.7, -0.25, 0.66, 0.05);
         for (int sd = -1; sd <= 1; sd += 2) {
             boolean em = c.emissive;
             c.emissive = true;

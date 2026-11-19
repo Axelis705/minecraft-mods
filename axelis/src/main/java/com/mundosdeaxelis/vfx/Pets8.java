@@ -442,10 +442,10 @@ final class Pets8 {
             V3[] belt = new V3[19];
             for (int i = 0; i <= 18; i++) {
                 double a = Math.PI * 2 * i / 18.0;
-                belt[i] = bc.add(Math.sin(a) * br.x * 0.99, -0.045, Math.cos(a) * br.z * 0.98);
+                belt[i] = bc.add(Math.sin(a) * br.x * 1.1, -0.045, Math.cos(a) * br.z * 1.08);
             }
-            tube(c, belt, Pets23.radii(19, 0.012), 5, flat(new float[]{0.42F, 0.24F, 0.14F}));
-            V3 bk = bc.add(0, -0.045, br.z * 0.98 + 0.006);
+            tube(c, belt, Pets23.radii(19, 0.016), 6, flat(new float[]{0.42F, 0.24F, 0.14F}));
+            V3 bk = bc.add(0, -0.045, br.z * 1.08 + 0.01);
             Pets21.sbox(c, bk, new V3(0.024, 0.02, 0.006), 0.5, 6, 5, flat(new float[]{1F, 0.8F, 0.3F}));
             Pets21.sbox(c, bk.add(0, 0, 0.004), new V3(0.012, 0.009, 0.004), 0.5, 5, 4, flat(new float[]{0.42F, 0.24F, 0.14F}));
             Detail.glint(c, bk, new V3(0.024, 0.02, 0.012), new V3(-0.3, 0.6, 0.8), 0.016, WHITE, 0.7);
@@ -592,8 +592,8 @@ final class Pets8 {
         // bolsita de té colgando de la tapa, con su hilo y etiqueta que se mece
         {
             double sw = Math.sin(t * 0.21 + ph) * 0.03 + Math.sin(c.gait) * 0.02 * w;
-            V3 h0 = lc.add(-0.07, 0.0, 0.1);
-            V3 h1 = h0.add(-0.02 + sw * 0.3, -0.06, 0.03), h2 = h1.add(-0.005 + sw, -0.05, 0.006);
+            V3 h0 = lc.add(0.03, 0.01, 0.06);
+            V3 h1 = lc.add(0.05 + sw * 0.3, -0.01, 0.19), h2 = h1.add(sw, -0.08, 0.012);
             curve(c, new V3[]{h0, h1, h2}, new double[]{0.0022, 0.0022, 0.0022}, 3, 3, flat(new float[]{0.95F, 0.95F, 0.92F}));
             Pets21.sbox(c, h2.add(0, -0.02, 0), new V3(0.018, 0.022, 0.003), 0.5, 6, 5, flat(new float[]{0.96F, 0.86F, 0.4F}));
             ell(c, h2.add(0, -0.02, 0.003), new V3(0.007, 0.007, 0.002), 5, 3, flat(new float[]{0.9F, 0.35F, 0.35F}));

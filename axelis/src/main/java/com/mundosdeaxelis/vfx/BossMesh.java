@@ -25,6 +25,9 @@ public final class BossMesh {
         Ctx c = new Ctx(s, cam, origin, scale);
         c.lod = 1.0;
         c.pivot = new V3(0, 0, 0);
+        // mismo sombreado con volumen que las mascotas (luz principal que sigue un poco a la cámara, brillo y banda cálida)
+        c.pretty = true;
+        c.key = c.light.add(cam.fwd.mul(-0.55).add(cam.up.mul(0.75)).add(cam.right.mul(-0.40)).norm()).norm();
         System.arraycopy(rot(yaw, 0, 0), 0, c.m, 0, 9);
         return c;
     }
