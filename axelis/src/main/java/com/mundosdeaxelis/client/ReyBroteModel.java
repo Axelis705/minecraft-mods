@@ -49,9 +49,11 @@ public class ReyBroteModel extends EntityModel<ReyBrote> {
         // cuerpo interior con la cara
         r.addOrReplaceChild("inner", CubeListBuilder.create().texOffs(0, 16).addBox(-3.0F, 17.0F, -3.0F, 6.0F, 6.0F, 6.0F), PartPose.ZERO);
         // tronco del arbolito (sale por arriba de la gelatina)
-        r.addOrReplaceChild("trunk", CubeListBuilder.create().texOffs(0, 36).addBox(-0.5F, -8.5F, -0.5F, 1.0F, 8.5F, 1.0F), PartPose.offset(0.0F, 17.5F, 0.0F));
-        r.addOrReplaceChild("branch", CubeListBuilder.create().texOffs(0, 36).addBox(0.0F, 11.5F, -0.5F, 2.5F, 0.8F, 1.0F),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.5F));
+        PartDefinition trunk = r.addOrReplaceChild("trunk", CubeListBuilder.create().texOffs(0, 36).addBox(-0.5F, -8.5F, -0.5F, 1.0F, 8.5F, 1.0F),
+                PartPose.offset(0.0F, 17.5F, 0.0F));
+        // la ramita sale del tronco (antes giraba alrededor de un punto lejano y se veía suelta, flotando al lado del árbol)
+        trunk.addOrReplaceChild("branch", CubeListBuilder.create().texOffs(0, 36).addBox(0.0F, -0.4F, -0.5F, 2.5F, 0.8F, 1.0F),
+                PartPose.offsetAndRotation(0.3F, -5.6F, 0.0F, 0.0F, 0.0F, -0.5F));
         // copa de hojas: dos bloques que se mecen un poco
         // (giran desde lo alto del tronco: y = 9.5)
         PartDefinition leaves = r.addOrReplaceChild("leaves", CubeListBuilder.create().texOffs(20, 36)

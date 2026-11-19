@@ -437,6 +437,21 @@ public final class PetBake {
                 z1[y][x] = 8 + d / 2;
             }
         }
+        // si no cabe la paleta (mucho degradado), se juntan los colores parecidos: 4 bits por canal en vez de 5
+        if (pal.size() > 256) {
+            pal.clear();
+            for (int y = 0; y < py; y++) {
+                for (int x = 0; x < px; x++) {
+                    int c = colAt[y][x];
+                    if (c >= 0) {
+                        int r5 = c >> 10 & 31, g5 = c >> 5 & 31, b5 = c & 31;
+                        int k2 = (r5 & ~1) << 10 | (g5 & ~1) << 5 | (b5 & ~1);
+                        colAt[y][x] = k2;
+                        pal.putIfAbsent(k2, pal.size());
+                    }
+                }
+            }
+        }
         if (pal.size() > 256) {
             throw new IllegalStateException("demasiados colores: " + pal.size());
         }

@@ -532,14 +532,14 @@ public final class Creature3D {
             case HAMSTER -> Pets8.sootSprite(c);
             case SNAIL -> Pets8.cottageSnail(c);
             case BEE -> Creatures3.bee(c);
-            case SHEEP -> Pets23.mountainGoat(c);
+            case SHEEP -> Pets24.mountainGoat(c);
             case HEDGEHOG -> Pets21.toaster(c);
             case AXOLOTL -> Creatures3.axolotl(c);
             case RACCOON -> Pets21.vampireBat(c);
             case DEER -> Pets13.jadeDragon(c);
             case WHALE -> Pets12.skyWhale(c);
             case KITSUNE -> Creatures4.kitsune(c);
-            case CAPYBARA -> Pets22.zenCapybara(c);
+            case CAPYBARA -> Pets24.zenCapybara(c);
             case DUCK -> Pets8.pirateDuck(c);
             case SLIME -> Creatures5.slime(c);
             case CORGI -> Pets23.ninjaPup(c);
@@ -558,7 +558,7 @@ public final class Creature3D {
             case FIREFLY -> Pets9.lanternSpirit(c);
             case KOALA -> Pets9.sloth(c);
             case ELEPHANT -> Pets10.mammoth(c);
-            case LION -> Pets23.lionCub(c);
+            case LION -> Pets24.lionCub(c);
             case SALAMANDER -> Creatures7.salamander(c);
             case PEACOCK -> Pets23.quetzal(c);
             case DOLPHIN -> Pets11.narwhal(c);
