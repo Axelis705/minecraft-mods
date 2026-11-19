@@ -29,6 +29,8 @@ public final class Creature3D {
     static final float[] T_CAT = {0.75F, 0.75F, 1F, 1F};
     /** Blanco sólido para la geometría: el centro del disco duro (en la textura de 256 ya no está dentro del destello). */
     static final float[] T_WHITE = {0.551F, 0.801F, 0.574F, 0.824F};
+    /** UV del centro del blanco sólido para los 4 vértices (los receptores copian los valores, así que se comparte). */
+    static final float[] UV_WHITE = {0.5625F, 0.8125F, 0.5625F, 0.8125F, 0.5625F, 0.8125F, 0.5625F, 0.8125F};
 
     static final float[] WHITE = {1F, 1F, 1F};
     static final float[] BLACK = {0.12F, 0.10F, 0.13F};
@@ -131,15 +133,62 @@ public final class Creature3D {
             double amb = 0.50 + 0.21 * hemi;
             double kr = (amb * 0.98 + wrap * 0.50) * occ, kg = (amb + wrap * 0.47) * occ, kb = (amb * 1.06 + wrap * 0.41) * occ;
             // banda cálida y saturada donde la luz se apaga (parece piel o pelaje suave)
-            double term = Math.exp(-(ndl + 0.05) * (ndl + 0.05) * 9) * 0.11 * occ;
+            double tq = 1 - (ndl + 0.05) * (ndl + 0.05) * 4.5;
+            double term = tq > 0 ? tq * tq * 0.11 * occ : 0;
             double lum = base[0] * 0.3 + base[1] * 0.59 + base[2] * 0.11;
             V3 hv = key.add(toCam).norm();
-            double spec = gloss * 0.12 * Math.pow(Math.max(0, n.dot(hv)), 16) * occ;
-            double rim = Math.pow(1 - Math.abs(facing), 3) * 0.15 * (0.55 + 0.45 * hemi);
+            double sh = Math.max(0, n.dot(hv));
+            sh *= sh;
+            sh *= sh;
+            sh *= sh;
+            double spec = gloss * 0.12 * sh * sh * occ;
+            double fr = 1 - Math.abs(facing);
+            double rim = fr * fr * fr * 0.15 * (0.55 + 0.45 * hemi);
             double r = base[0] * kr + (base[0] - lum) * term + base[0] * term * 0.35 + spec + rim * 0.92;
             double g = base[1] * kg + (base[1] - lum) * term + spec + rim * 0.96;
             double b = base[2] * kb + (base[2] - lum) * term + spec + rim;
             return new float[]{(float) cl(r * world, 0, 1), (float) cl(g * world, 0, 1), (float) cl(b * world, 0, 1), (float) a};
+        }
+
+        /**
+         * Rejilla de cuadros (esferas, tubos, cajas, telas): cada vértice se transforma y se sombrea UNA vez (antes se hacía
+         * cuatro veces, una por cada cuadro que lo comparte). Mismo resultado, mucho menos trabajo por cuadro de imagen.
+         */
+        void grid(V3[][] P, V3[][] N, float[][][] B) {
+            int nv = P.length - 1, nu = P[0].length - 1, W = nu + 1;
+            double[] wx = new double[(nv + 1) * W * 3];
+            float[] wc = new float[(nv + 1) * W * 4];
+            for (int i = 0; i <= nv; i++) {
+                for (int j = 0; j <= nu; j++) {
+                    V3 wp = pos(P[i][j]);
+                    V3 wn = nor(N[i][j]).norm();
+                    int k = i * W + j;
+                    wx[k * 3] = wp.x;
+                    wx[k * 3 + 1] = wp.y;
+                    wx[k * 3 + 2] = wp.z;
+                    float[] c = shade(B[i][j], wp, wn, alpha);
+                    wc[k * 4] = c[0];
+                    wc[k * 4 + 1] = c[1];
+                    wc[k * 4 + 2] = c[2];
+                    wc[k * 4 + 3] = c[3];
+                }
+            }
+            double[] pp = new double[12];
+            float[] col = new float[16];
+            for (int i = 0; i < nv; i++) {
+                for (int j = 0; j < nu; j++) {
+                    int k0 = i * W + j, k1 = k0 + 1, k2 = k1 + W, k3 = k0 + W;
+                    System.arraycopy(wx, k0 * 3, pp, 0, 3);
+                    System.arraycopy(wx, k1 * 3, pp, 3, 3);
+                    System.arraycopy(wx, k2 * 3, pp, 6, 3);
+                    System.arraycopy(wx, k3 * 3, pp, 9, 3);
+                    System.arraycopy(wc, k0 * 4, col, 0, 4);
+                    System.arraycopy(wc, k1 * 4, col, 4, 4);
+                    System.arraycopy(wc, k2 * 4, col, 8, 4);
+                    System.arraycopy(wc, k3 * 4, col, 12, 4);
+                    s.quad(VfxTex.CREATURE3D, blend, pp, UV_WHITE, col);
+                }
+            }
         }
 
         void quad(int bl, double a, float[] cell, V3[] p, V3[] n, float[][] base, float[][] uvRel) {
@@ -239,17 +288,13 @@ public final class Creature3D {
                 N[i][j] = n;
             }
         }
-        for (int i = 0; i < nv; i++) {
-            for (int j = 0; j < nu; j++) {
-                V3[] p = {P[i][j], P[i][j + 1], P[i + 1][j + 1], P[i + 1][j]};
-                V3[] n = {N[i][j], N[i][j + 1], N[i + 1][j + 1], N[i + 1][j]};
-                float[][] b = new float[4][];
-                for (int k = 0; k < 4; k++) {
-                    b[k] = paint.at(n[k], rm == null ? p[k].sub(ce) : p[k].sub(ce));
-                }
-                c.quad(c.blend, c.alpha, T_WHITE, p, n, b, null);
+        float[][][] B = new float[nv + 1][nu + 1][];
+        for (int i = 0; i <= nv; i++) {
+            for (int j = 0; j <= nu; j++) {
+                B[i][j] = paint.at(N[i][j], P[i][j].sub(ce));
             }
         }
+        c.grid(P, N, B);
     }
 
     static void ell(Ctx c, V3 ce, V3 r, Paint paint) {
@@ -281,17 +326,13 @@ public final class Creature3D {
                 nor[i][j] = d;
             }
         }
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < sides; j++) {
-                V3[] p = {ring[i][j], ring[i][j + 1], ring[i + 1][j + 1], ring[i + 1][j]};
-                V3[] nn = {nor[i][j], nor[i][j + 1], nor[i + 1][j + 1], nor[i + 1][j]};
-                float[][] b = new float[4][];
-                for (int k = 0; k < 4; k++) {
-                    b[k] = paint.at(nn[k], p[k]);
-                }
-                c.quad(c.blend, c.alpha, T_WHITE, p, nn, b, null);
+        float[][][] B = new float[n][sides + 1][];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= sides; j++) {
+                B[i][j] = paint.at(nor[i][j], ring[i][j]);
             }
         }
+        c.grid(ring, nor, B);
     }
 
     /** Cono / pata sencilla de dos puntos. */
@@ -611,6 +652,12 @@ public final class Creature3D {
         if (d.mWake > 0 && !flier) {
             c.joy = Math.max(c.joy, Math.sin(cl((16 - d.mWake + partial) / 16.0, 0, 1) * Math.PI));
         }
+        // saltas y ella salta contigo (las voladoras dan un bote en el aire)
+        if (d.mHop > 0) {
+            c.joy = Math.max(c.joy, Math.sin(cl((14 - d.mHop + partial) / 14.0, 0, 1) * Math.PI));
+        }
+        // te agachas: se sienta (más bajita) y te mira
+        double sit = d.pmSit + (d.mSit - d.pmSit) * partial;
         // atención: quieta y despierta, de vez en cuando te mira (gira la cabeza y levanta la vista hacia la cámara)
         {
             V3 tc = cam.pos.sub(pos.add(0, 0.6 * c.scale, 0));
@@ -619,15 +666,16 @@ public final class Creature3D {
             c.lookPitch = -Math.atan2(tc.y, Math.sqrt(lx * lx + lz * lz) + 1.0E-6);
             double aU = (age + ph * 13) % 260;
             double att = ss(0, 14, aU) * (1 - ss(150, 172, aU));
-            c.look = att * idle * (1 - c.sleep) * (1 - ss(1.3, 2.0, Math.abs(c.lookYaw)));
+            c.look = Math.max(att, sit) * idle * (1 - c.sleep) * (1 - ss(1.3, 2.0, Math.abs(c.lookYaw)));
         }
         c.tint = rgb(d.rgb);
         // el saltito eleva todo el modelo y la sacudida lo gira un poco
         c.origin = pos.add(0, c.joy * 0.075 * c.scale, 0);
         double[] bm = rot(yaw + c.shake * 0.20, c.pitch, c.roll);
         // respirar: el cuerpo se estira y encoge apenas (más al estar quieto); al saltar se estira
-        double stretch = (1 + 0.014 * c.breath * idle + 0.022 * c.breath * c.sleep + 0.06 * c.joy + mSq) * (1 - 0.07 * c.sleep);
-        double widen = (1 - mSq * 0.5) * (1 + 0.035 * c.sleep);
+        double crouch = flier ? 0 : sit * 0.09;
+        double stretch = (1 + 0.014 * c.breath * idle + 0.022 * c.breath * c.sleep + 0.06 * c.joy + mSq) * (1 - 0.07 * c.sleep - crouch);
+        double widen = (1 - mSq * 0.5) * (1 + 0.035 * c.sleep + crouch * 0.4);
         bm[1] *= stretch;
         bm[4] *= stretch;
         bm[7] *= stretch;

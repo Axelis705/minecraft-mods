@@ -48,6 +48,8 @@ public final class VfxClient {
 
     private static final int MAX_FX = 320;
     private static final int MAX_QUADS = 60000;
+    private static boolean wasOnGround = true;
+    private static int lastHurt;
     private static final double MAX_DIST = 140;
 
     private static final Map<Integer, VfxData> FX = new HashMap<>();
@@ -192,6 +194,17 @@ public final class VfxClient {
             return;
         }
         tick++;
+        // lo que hace el jugador (las mascotas cercanas reaccionan): saltar, agacharse y recibir un golpe
+        boolean pJump = false, pSneak = false, pHurt = false;
+        if (mc.player != null) {
+            boolean ground = mc.player.onGround();
+            pJump = wasOnGround && !ground && mc.player.getDeltaMovement().y > 0.2;
+            wasOnGround = ground;
+            pSneak = mc.player.isShiftKeyDown();
+            // flanco de subida: el contador de golpe vuelve a subir justo al recibir uno
+            pHurt = mc.player.hurtTime > lastHurt;
+            lastHurt = mc.player.hurtTime;
+        }
         Iterator<VfxData> it = FX.values().iterator();
         while (it.hasNext()) {
             VfxData d = it.next();
@@ -267,6 +280,24 @@ public final class VfxClient {
                 if ((int) d.a == VfxTex.CREATURE3D) {
                     double g0 = d.mGait;
                     com.mundosdeaxelis.vfx.Creature3D.tickMotion(d);
+                    if (mc.player != null && mc.player.distanceToSqr(d.x, d.y, d.z) < 100) {
+                        // saltas: dan un saltito contigo; te agachas: se sientan; te pegan: respingo (y se despiertan)
+                        if (pJump && d.mHop <= 0) {
+                            d.mHop = 12 + (d.id % 3) * 2;
+                        }
+                        if (pHurt) {
+                            d.mIdle = 0;
+                            d.mWake = 16;
+                        }
+                        d.pmSit = d.mSit;
+                        d.mSit += ((pSneak ? 1 : 0) - d.mSit) * 0.18;
+                    } else {
+                        d.pmSit = d.mSit;
+                        d.mSit *= 0.82;
+                    }
+                    if (d.mHop > 0) {
+                        d.mHop--;
+                    }
                     // luz del mundo donde está (como los demás bichos: de noche o en una cueva se ve más oscura, nunca negra)
                     {
                         net.minecraft.core.BlockPos lp = net.minecraft.core.BlockPos.containing(d.x, d.y + 0.3 * d.size, d.z);

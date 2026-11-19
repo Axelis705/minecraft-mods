@@ -392,6 +392,8 @@ final class Creatures3 {
             tube(c, new V3[]{a, m, b}, new double[]{0.007, 0.006, 0.005}, 4, flat(BE_K));
             ell(c, b, new V3(0.016, 0.016, 0.016), 6, 4, flat(BE_Y));
         }
+        // florecita prendida en la cabeza
+        Pets26.flower(c, surf(hc, hr, new V3(0.55, 0.65, 0.35)).add(0, 0.006, 0), new V3(0.55, 0.65, 0.35).norm(), 0.018, WHITE, new float[]{1F, 0.8F, 0.2F}, t * 0.0);
         c.head = false;
     }
 

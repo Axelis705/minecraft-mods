@@ -535,4 +535,32 @@ final class Pets26 {
         }
         ell(c, at.add(n.mul(r * 0.25)), new V3(r * 0.4, r * 0.4, r * 0.4), 5, 3, flat(center));
     }
+
+    /** Collar de cuero con púas y placa: rodea un cuello de eje {@code axis} y radio {@code r}. */
+    static void spikedCollar(Ctx c, V3 ce, V3 axis, double r, float[] band, float[] spike, float[] tag) {
+        V3 a = axis.norm(), u = a.anyPerp(), v = a.cross(u).norm();
+        int n = 14;
+        V3[] ring = new V3[n + 1];
+        for (int i = 0; i <= n; i++) {
+            double ang = Math.PI * 2 * i / n;
+            ring[i] = ce.add(u.mul(Math.cos(ang) * r)).add(v.mul(Math.sin(ang) * r));
+        }
+        tube(c, ring, Pets23.radii(n + 1, r * 0.16), 5, (nn, p) -> mix(band, WHITE, ss(0.4, 1, nn.y) * 0.15));
+        for (int i = 0; i < n; i += 2) {
+            V3 d = ring[i].sub(ce).norm();
+            cone(c, ring[i].add(d.mul(r * 0.1)), ring[i].add(d.mul(r * 0.42)), r * 0.11, r * 0.01, 4, flat(spike));
+        }
+        // placa colgando abajo
+        V3 down = v.mul(-1);
+        double best = -2;
+        for (V3 cand : new V3[]{u, u.mul(-1), v, v.mul(-1)}) {
+            if (-cand.y > best) {
+                best = -cand.y;
+                down = cand;
+            }
+        }
+        V3 tg = ce.add(down.mul(r * 1.2)).add(0, -r * 0.25, 0);
+        ell(c, tg, new V3(r * 0.28, r * 0.28, r * 0.08), 8, 5, flat(tag));
+        Detail.glint(c, tg, new V3(r * 0.28, r * 0.28, r * 0.08), new V3(-0.3, 0.5, 0.8), r * 0.3, WHITE, 0.8);
+    }
 }

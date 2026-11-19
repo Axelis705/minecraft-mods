@@ -112,6 +112,17 @@ final class Pets14 {
             V3 b0 = ec.add(s * 0.05, 0.05, 0.0), b1 = ec.add(-s * 0.03, 0.036, 0.012);
             tube(c, new V3[]{b0, b0.lerp(b1, 0.5).add(0, 0.006, 0), b1}, new double[]{0.008, 0.01, 0.008}, 4, flat(MM_WD));
         }
+        // gemas engastadas en las esquinas de la tapa
+        float[][] xg = {{0.25F, 0.55F, 1F}, {0.9F, 0.15F, 0.3F}, {0.3F, 0.85F, 0.45F}, {0.75F, 0.35F, 1F}};
+        for (int xk = 0; xk < 4; xk++) {
+            V3 xp = lc.add((xk % 2 == 0 ? -1 : 1) * 0.135, 0.078, (xk < 2 ? 1 : -1) * 0.1);
+            ell(c, xp, new V3(0.016, 0.012, 0.016), 7, 4, flat(MM_GOLD));
+            boolean xe = c.emissive;
+            c.emissive = true;
+            ell(c, xp.add(0, 0.008, 0), new V3(0.011, 0.008, 0.011), 6, 4, flat(xg[xk]));
+            c.emissive = xe;
+            Detail.twinkle(c, xp.add(0, 0.014, 0), 0.008, xg[xk], t, ph + xk * 1.7, 0.2);
+        }
         c.head = false;
         for (int k = 0; k < 3; k++) {
             double u = ((t * 0.014 + ph * 0.2 + k * 0.33) % 1.0);

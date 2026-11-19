@@ -381,6 +381,11 @@ final class Creatures7 {
             Detail.twinkle(c, new V3(Math.sin(k * 2.4 + uu * 6) * 0.1, 0.9 + uu * 0.1, 0.3 - uu * 0.1), 0.02 * (1 - uu * 0.5), PG_GD, t, ph + k, 0.3);
         }
         c.head = false;
+        // polvo dorado que sueltan las pezuñas al volar
+        for (int xk = 0; xk < 6; xk++) {
+            double xu = ((t * 0.03 + xk / 6.0 + ph) % 1 + 1) % 1;
+            Detail.twinkle(c, new V3(Math.sin(xk * 2.3 + t * 0.05) * 0.06, 0.3 - xu * 0.12, -0.12 - xu * 0.35), 0.014 * (1 - xu), new float[]{1F, 0.88F, 0.45F}, t, ph + xk, 0.4);
+        }
     }
 
     // ------------------------------------------------------------------ 47. DRAGÓN CELESTIAL (vuela)

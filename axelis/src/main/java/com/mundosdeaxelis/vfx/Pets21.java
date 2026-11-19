@@ -259,17 +259,13 @@ final class Pets21 {
                 N[i][j] = n.len() < 1.0E-9 ? new V3(0, ct >= 0 ? 1 : -1, 0) : n.norm();
             }
         }
-        for (int i = 0; i < nv; i++) {
-            for (int j = 0; j < nu; j++) {
-                V3[] p = {P[i][j], P[i][j + 1], P[i + 1][j + 1], P[i + 1][j]};
-                V3[] n = {N[i][j], N[i][j + 1], N[i + 1][j + 1], N[i + 1][j]};
-                float[][] b = new float[4][];
-                for (int k = 0; k < 4; k++) {
-                    b[k] = paint.at(n[k], p[k].sub(ce));
-                }
-                c.quad(c.blend, c.alpha, T_WHITE, p, n, b, null);
+        float[][][] B = new float[nv + 1][nu + 1][];
+        for (int i = 0; i <= nv; i++) {
+            for (int j = 0; j <= nu; j++) {
+                B[i][j] = paint.at(N[i][j], P[i][j].sub(ce));
             }
         }
+        c.grid(P, N, B);
     }
 
     /**

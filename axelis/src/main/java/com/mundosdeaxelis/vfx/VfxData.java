@@ -33,6 +33,9 @@ public final class VfxData {
      */
     public double mIdle, mTurn, pmTurn;
     public int mWake;
+    /** Reacciones al jugador cercano: saltito cuando salta (ticks que quedan) y sentarse cuando se agacha (0..1). */
+    public int mHop;
+    public double mSit, pmSit;
     public float light = 1F;
     public double tx, ty, tz;
     public boolean hasT;

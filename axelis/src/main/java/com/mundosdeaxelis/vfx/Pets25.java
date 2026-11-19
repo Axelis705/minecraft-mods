@@ -26,18 +26,13 @@ final class Pets25 {
                 N[i][j] = n.len() < 1.0E-9 ? V3.UP : n.norm();
             }
         }
-        for (int i = 0; i < nv; i++) {
-            for (int j = 0; j < nu; j++) {
-                V3[] p = {P[i][j], P[i][j + 1], P[i + 1][j + 1], P[i + 1][j]};
-                V3[] n = {N[i][j], N[i][j + 1], N[i + 1][j + 1], N[i + 1][j]};
-                int[][] ij = {{i, j}, {i, j + 1}, {i + 1, j + 1}, {i + 1, j}};
-                float[][] b = new float[4][];
-                for (int k = 0; k < 4; k++) {
-                    b[k] = paint.at(n[k], new V3(ij[k][1] / (double) nu, ij[k][0] / (double) nv, 0));
-                }
-                c.quad(c.blend, c.alpha, T_WHITE, p, n, b, null);
+        float[][][] B = new float[nv + 1][nu + 1][];
+        for (int i = 0; i <= nv; i++) {
+            for (int j = 0; j <= nu; j++) {
+                B[i][j] = paint.at(N[i][j], new V3(j / (double) nu, i / (double) nv, 0));
             }
         }
+        c.grid(P, N, B);
     }
 
     /** Mechón suave: curva que se afina y termina en una bolita (silueta redonda, sin púas). */
@@ -52,7 +47,7 @@ final class Pets25 {
         }
         curve(c, cp, rad, sub, sides, paint);
         V3 tip = cp[cp.length - 1];
-        ell(c, tip, new V3(r1 * 1.05, r1 * 1.05, r1 * 1.05), 6, 4, (n, p) -> paint.at(n, p.add(tip)));
+        ell(c, tip, new V3(r1 * 1.05, r1 * 1.05, r1 * 1.05), 0, 0, 0, sides, 4, (n, p) -> paint.at(n, p.add(tip)));
     }
 
     /** Pata de gato grande: pata, mano redonda con tres deditos delante y almohadillas rosas debajo. */
@@ -231,7 +226,7 @@ final class Pets25 {
                         b0.add(o.mul(len)).add(sway * 1.6 * ca, -droop + sway * sa, -0.03 - 0.006 * L)};
                 float[] c0 = L == 0 ? LC_MANE2 : (L == 1 ? mix(LC_MANE2, LC_MANE, 0.55) : LC_MANE);
                 double r0 = 0.045 - 0.003 * L;
-                lock(c, cp, r0 * (1 - 0.3 * top), 0.02, 2, 6, (n, p) -> mix(c0, LC_GOLD2, ss(0.35, 1, n.y) * 0.32));
+                lock(c, cp, r0 * (1 - 0.3 * top), 0.02, 2, 5, (n, p) -> mix(c0, LC_GOLD2, ss(0.35, 1, n.y) * 0.32));
             }
         }
         Paint headFur = (n, p) -> {

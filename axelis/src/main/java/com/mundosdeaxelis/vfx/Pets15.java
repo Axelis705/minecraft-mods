@@ -51,6 +51,24 @@ final class Pets15 {
             }
         }
         // cabeza grande con ojos enormes brillantes y sonrisa pícara
+        // colgante de luna creciente en un cordón
+        {
+            V3 xn = surf(bc, br, new V3(0, 0.35, 1)).add(0, 0.0, 0.01);
+            curve(c, new V3[]{bc.add(-0.06, 0.1, 0.05), bc.add(-0.03, 0.06, 0.09), xn, bc.add(0.03, 0.06, 0.09), bc.add(0.06, 0.1, 0.05)}, new double[]{0.003, 0.003, 0.003, 0.003, 0.003}, 2, 3,
+                    flat(new float[]{0.35F, 0.25F, 0.5F}));
+            V3[] xa = new V3[7];
+            double[] xr = new double[7];
+            for (int i = 0; i < 7; i++) {
+                double a = -1.1 + 2.2 * i / 6.0;
+                xa[i] = xn.add(Math.sin(a) * 0.022, -0.018 - Math.cos(a) * 0.016, 0.004);
+                xr[i] = 0.002 + 0.006 * Math.cos(a * 1.2);
+            }
+            boolean xe = c.emissive;
+            c.emissive = true;
+            curve(c, xa, xr, 2, 5, flat(new float[]{1F, 0.9F, 0.55F}));
+            c.emissive = xe;
+            glow(c, xn.add(0, -0.02, 0.01), 0.06, new float[]{1F, 0.9F, 0.55F}, 0.3);
+        }
         headLook(c, 0.12, 0.0);
         c.hpv = new V3(0, 0.33, 0.0);
         V3 hc = new V3(0, 0.43 + bob, 0.02), hr = new V3(0.15, 0.125, 0.13);

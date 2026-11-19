@@ -454,6 +454,11 @@ final class Pets11 {
             tube(c, nk, new double[]{0.08, 0.065, 0.055}, 7, bp);
             pupHead(c, hc, sd * 0.5, sd > 0 ? CB_EMB2 : CB_FL, bob, 2);
         }
+        // collares de cuero con púas en los tres cuellos (con placa dorada)
+        Pets26.spikedCollar(c, new V3(0, 0.405 + bob, 0.185), new V3(0, 0.55, 0.85), 0.075, new float[]{0.32F, 0.16F, 0.12F}, new float[]{0.86F, 0.88F, 0.92F}, new float[]{1F, 0.8F, 0.3F});
+        for (int xs = -1; xs <= 1; xs += 2) {
+            Pets26.spikedCollar(c, new V3(xs * 0.15, 0.39 + bob, 0.14), new V3(xs * 0.6, 0.4, 0.6), 0.064, new float[]{0.32F, 0.16F, 0.12F}, new float[]{0.86F, 0.88F, 0.92F}, new float[]{1F, 0.8F, 0.3F});
+        }
         c.head = false;
         // brasas y chispas azules
         for (int k = 0; k < 5; k++) {

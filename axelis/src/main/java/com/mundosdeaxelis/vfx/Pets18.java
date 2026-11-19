@@ -271,19 +271,16 @@ final class Pets18 {
                 N[i][j] = fabricN(r, d0, t1, t2, phi, s, rho, rot, sq);
             }
         }
-        for (int i = 0; i < nr; i++) {
-            double s = (i + 0.5) / nr;
-            float[] cc = mix(col, scale(col, 0.82F), (float) (s * s * s));
-            for (int j = 0; j < na; j++) {
-                V3[] p = {P[i][j], P[i][j + 1], P[i + 1][j + 1], P[i + 1][j]};
-                V3[] n = {N[i][j], N[i][j + 1], N[i + 1][j + 1], N[i + 1][j]};
-                float[][] b = new float[4][];
-                for (int k = 0; k < 4; k++) {
-                    b[k] = flat(cc).at(n[k], p[k].sub(ce));
-                }
-                c.quad(c.blend, c.alpha, T_WHITE, p, n, b, null);
+        // color por fila de vértices (el borde, un poco más oscuro), sombreado una sola vez por vértice
+        float[][][] B = new float[nr + 1][na + 1][];
+        for (int i = 0; i <= nr; i++) {
+            double sv = Math.min(1, (i + 0.25) / nr);
+            float[] cc = mix(col, scale(col, 0.82F), (float) (sv * sv * sv));
+            for (int j = 0; j <= na; j++) {
+                B[i][j] = cc;
             }
         }
+        c.grid(P, N, B);
         int nd = 22;
         for (int k = 0; k < nd; k++) {
             double p0 = 2 * Math.PI * k / nd, p1 = p0 + 2 * Math.PI / nd * 0.58;
@@ -373,7 +370,7 @@ final class Pets18 {
             ell(c, lc.add(0, -0.012, 0.032), new V3(0.032, 0.028, 0.03), 10, 7, flat(PK_IN));
         }
         V3 bc = new V3(0, 0.145 + bob, 0.0), br = new V3(0.125, 0.105, 0.108);
-        ell(c, bc, br, 48, 34, pb);
+        ell(c, bc, br, 26, 18, pb);
         fabric(c, bc, br, new V3(1.0, 0.12, -0.1), 0.78, 0.2, 2.0, MINT);
         fabric(c, bc, br, new V3(-0.3, 0.45, -0.85), 0.62, 0.4, 4.0, LILAC);
         fabric(c, bc, br, new V3(-0.95, -0.2, 0.2), 0.5, 0.0, 2.0, SKY);
@@ -403,7 +400,7 @@ final class Pets18 {
         headLook(c, 0.14, 0.0);
         c.hpv = new V3(0, 0.27, 0.05);
         V3 hc = new V3(0, 0.295 + bob, 0.02), hr = new V3(0.15, 0.13, 0.13);
-        ell(c, hc, hr, 56, 40, phd);
+        ell(c, hc, hr, 30, 20, phd);
         Detail.glint(c, hc, hr, new V3(-0.35, 0.8, 0.5), 0.1, WHITE, 0.3);
         // orejas largas (una doblada)
         for (int sd = -1; sd <= 1; sd += 2) {

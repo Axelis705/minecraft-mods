@@ -597,6 +597,16 @@ final class Creatures5 {
         ell(c, new V3(0, 0.71 + bob, 0), new V3(0.022, 0.05 * k, 0.022), 6, 4, flat(new float[]{0.7F, 0.9F, 1F}));
         glow(c, new V3(0, 0.71 + bob, 0), 0.3, new float[]{0.5F, 0.75F, 1F}, 0.45);
         c.emissive = false;
+        // lacito rosa en la coronilla (es tímido pero coqueto)
+        {
+            V3 xb = new V3(0.07, 0.655 + bob, 0.02);
+            c.blend = Sink.SOLID;
+            c.alpha = 1;
+            for (int xs = -1; xs <= 1; xs += 2) {
+                ell(c, xb.add(xs * 0.028, 0.004, 0), new V3(0.028, 0.017, 0.01), 0, 0, xs * 0.35, 8, 5, flat(new float[]{1F, 0.55F, 0.72F}));
+            }
+            ell(c, xb, new V3(0.011, 0.011, 0.011), 6, 4, flat(new float[]{0.95F, 0.42F, 0.62F}));
+        }
     }
 
     // ------------------------------------------------------------------ 30. GOLEMCITO
