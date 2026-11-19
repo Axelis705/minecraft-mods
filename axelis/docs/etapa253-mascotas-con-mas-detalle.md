@@ -141,3 +141,27 @@ Cambios:
 ### Comprobado
 - CI «Compilar mods» en verde.
 - Prueba con el cliente: 66 fotos, 63 comprobaciones, 0 fallos.
+
+## 9. Tercera vuelta: pulido sin crear nada nuevo
+
+Axelis: «continúa, con pulir más, y aún no crees nada».
+
+- **Dragoncito del huevo** (`Dragon3D`) ahora usa el motor de las mascotas, con la misma forma de antes. Con eso tiene:
+  - sombreado con volumen y luz del mundo;
+  - ojos dorados nuevos con brillos;
+  - dibujo por rejilla;
+  - te mira cuando va despacio.
+  - Ya no usa su propia textura `dragon3d.png`, que queda sin usar.
+- **Criaturas de malla del volcán** (salamandra, diablillo, cultista, larva) y el **Corazón de Magma**: tienen el mismo sombreado con volumen (`BossMesh.ctx`).
+- **Yetito de las Nieves**:
+  - Antes tenía la cara en un disco plano que sobresalía de perfil y, según el orden de dibujo, tapaba los ojos.
+  - Ahora es una máscara curva, con ojos, nariz con brillo, boca y rubor encima.
+- **Barrigas curvas** en el Yetito y el Lobito Ártico (antes eran discos planos).
+- **Pelaje más suave** en todas: los mechones van más tumbados, más anchos y con la punta menos brillante. Parecen pelusa, no púas.
+- **Patito Pirata**: el cinturón ya se ve por fuera de la pelusa.
+- **Cangrejo Tetera**: la bolsita de té cuelga por delante de la tetera (antes quedaba dentro).
+- **Cofre Mímico**: las gemas ahora se ven sobre la tapa.
+- **CI**: gson se baja siempre de Maven Central (`exclusiveContent` en `settings.gradle`). La caché del CI recordaba el portal de plugins, que daba 404.
+- **Comprobado**:
+  - Compilación del CI en verde.
+  - Prueba con el cliente: 66 fotos, 63 comprobaciones, 0 fallos. Las mallas del volcán se ven bien en el juego.
