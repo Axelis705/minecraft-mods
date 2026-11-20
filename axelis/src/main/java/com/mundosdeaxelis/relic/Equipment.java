@@ -319,7 +319,8 @@ public final class Equipment {
             if (d.capes[0].getItem() instanceof com.mundosdeaxelis.item.CapeItem cape) {
                 armor += cape.def().armor();
             }
-            Companions.follow(sp, want);
+            // etapa 254: las equipadas son criaturas de verdad (antes eran dibujos que simulaba Companions.follow)
+            PetKeeper.follow(sp, want);
             applyPetArmor(sp, (float) armor);
         }
         // si cambió la capa (por el menú, clic derecho o un comando), avisa a los demás

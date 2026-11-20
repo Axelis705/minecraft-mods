@@ -24,6 +24,10 @@ public final class ModMenus {
                         new SimpleContainer(com.mundosdeaxelis.relic.Equipment.MAX_RELICS), new SimpleContainer(1), np, nr);
             }));
 
+    /** Menú de una mascota (agachado + clic derecho sobre ella; etapa 254). */
+    public static final RegistryObject<MenuType<com.mundosdeaxelis.relic.PetMenu>> PET = MENUS.register("pet",
+            () -> IForgeMenuType.create(com.mundosdeaxelis.relic.PetMenu::new));
+
     /** Menú de la Mesa del Artífice. */
     public static final RegistryObject<MenuType<com.mundosdeaxelis.table.TableMenu>> TABLE = MENUS.register("table",
             () -> IForgeMenuType.create((id, inv, buf) -> com.mundosdeaxelis.table.TableMenu.client(id, inv)));

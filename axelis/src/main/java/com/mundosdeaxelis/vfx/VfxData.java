@@ -37,6 +37,13 @@ public final class VfxData {
     public int mHop;
     public double mSit, pmSit;
     public float light = 1F;
+    /**
+     * Etapa 254: dibujada como entidad de verdad. Entonces no pone su sombrita (la sombra es la del juego), el giro del cuerpo
+     * llega ya calculado ({@code eYaw}, en radianes del modelo), la cabeza mira hacia donde mira la entidad ({@code eLookYaw},
+     * {@code eLookPitch}, con fuerza {@code eLook}) y {@code eYawOff} es un giro extra (el truco de dar una vuelta).
+     */
+    public boolean entity;
+    public double eYaw, eYawOff, eLookYaw, eLookPitch, eLook;
     public double tx, ty, tz;
     public boolean hasT;
     public final double[] trail = new double[TRAIL_MAX * 3];

@@ -463,6 +463,9 @@ public abstract class RelicItem extends Item implements Tiered {
         if (isPet()) {
             tooltip.add(Component.translatable("tooltip.mundos_de_axelis.pet_armor", fmtArmor(com.mundosdeaxelis.crate.CratePools.petArmor(id))).withStyle(ChatFormatting.BLUE));
             tooltip.add(Component.translatable("tooltip.mundos_de_axelis.pet_only").withStyle(ChatFormatting.DARK_GRAY));
+            if (this instanceof CompanionItem ci) {
+                CompanionItem.petLines(ci.spec(), stack, tooltip);
+            }
         }
         if (hasActive() && !isPet()) {
             tooltip.add(Component.translatable("tooltip.mundos_de_axelis." + id + ".2").withStyle(ChatFormatting.AQUA));

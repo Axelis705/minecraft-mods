@@ -104,6 +104,7 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.LIBRO_EMBRUJADO.get(), LibroEmbrujadoRenderer::new);
         event.registerEntityRenderer(ModEntities.ARMADURA_ENCANTADA.get(), ArmaduraEncantadaRenderer::new);
         event.registerEntityRenderer(ModEntities.LOBO_ESCARCHA.get(), LoboEscarchaRenderer::new);
+        event.registerEntityRenderer(ModEntities.MASCOTA.get(), PetRenderer::new);
         // Los perritos de las mascotas se ven con su color.
     }
 
@@ -145,6 +146,7 @@ public final class ClientModEvents {
         event.enqueueWork(() -> {
             net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.EQUIP.get(), EquipScreen::new);
             net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.TABLE.get(), TableScreen::new);
+            net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.PET.get(), PetScreen::new);
         });
     }
 

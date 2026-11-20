@@ -186,7 +186,7 @@ public final class Creature3D {
                     System.arraycopy(wc, k1 * 4, col, 4, 4);
                     System.arraycopy(wc, k2 * 4, col, 8, 4);
                     System.arraycopy(wc, k3 * 4, col, 12, 4);
-                    s.quad(VfxTex.CREATURE3D, blend, pp, UV_WHITE, col);
+                    s.quadE(VfxTex.CREATURE3D, blend, pp, UV_WHITE, col, emissive);
                 }
             }
         }
@@ -207,7 +207,7 @@ public final class Creature3D {
                 uv[i * 2] = cell[0] + (cell[2] - cell[0]) * ru;
                 uv[i * 2 + 1] = cell[1] + (cell[3] - cell[1]) * rv;
             }
-            s.quad(VfxTex.CREATURE3D, bl, pp, uv, col);
+            s.quadE(VfxTex.CREATURE3D, bl, pp, uv, col, emissive);
         }
     }
 
@@ -487,7 +487,7 @@ public final class Creature3D {
      * aplastado con rebote al aterrizar.
      */
     /** Ticks quieto antes de dormirse (45 s). */
-    static final int SLEEP_T = 900;
+    public static final int SLEEP_T = 900;
 
     public static void tickMotion(VfxData d) {
         int sp = (int) Math.round(d.b);
@@ -569,6 +569,11 @@ public final class Creature3D {
         d.mSq += d.mSqV;
     }
 
+    /** Dibuja una mascota-entidad (etapa 254): {@code d.entity} debe estar puesto y {@code pos}/{@code cam} relativos a ella. */
+    public static void emitPet(VfxData d, double age, double partial, V3 pos, Cam cam, Sink s) {
+        emit(d, age, partial, pos, cam, s);
+    }
+
     static void emit(VfxData d, double age, double partial, V3 pos, Cam cam, Sink s) {
         int sp = (int) Math.round(d.b);
         if (sp < 0 || sp >= SPECIES || d.size <= 0) {
@@ -585,7 +590,9 @@ public final class Creature3D {
         }
         double ph = d.id * 1.7;
         double yaw;
-        if (d.yawInit) {
+        if (d.entity) {
+            yaw = d.eYaw + d.eYawOff;
+        } else if (d.yawInit) {
             double dy = d.yaw - d.pyaw;
             while (dy > Math.PI) {
                 dy -= 2 * Math.PI;
@@ -667,6 +674,12 @@ public final class Creature3D {
             double aU = (age + ph * 13) % 260;
             double att = ss(0, 14, aU) * (1 - ss(150, 172, aU));
             c.look = Math.max(att, sit) * idle * (1 - c.sleep) * (1 - ss(1.3, 2.0, Math.abs(c.lookYaw)));
+            if (d.entity) {
+                // entidad: la cabeza va hacia donde mira la criatura (te mira a ti, a otro jugador o a su enemigo)
+                c.lookYaw = d.eLookYaw;
+                c.lookPitch = d.eLookPitch;
+                c.look = d.eLook * (1 - c.sleep);
+            }
         }
         c.tint = rgb(d.rgb);
         // el saltito eleva todo el modelo y la sacudida lo gira un poco
@@ -753,7 +766,7 @@ public final class Creature3D {
             default -> Creatures2.fairy(c);
         }
         c.head = false;
-        if (c.ground && SHADOWS) {
+        if (c.ground && SHADOWS && !d.entity) {
             // sombrita de contacto en el suelo (más chica y clara al saltar)
             double rr = c.scale * 0.36 * (1 - 0.25 * c.joy), al = 0.30 * (1 - 0.45 * c.joy) * Math.min(1, pop * 1.2) * (0.55 + 0.45 * d.light);
             V3 g = pos.add(0, 0.015, 0);

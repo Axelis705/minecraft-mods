@@ -8,4 +8,9 @@ public interface Sink {
     int SOLID = 2;
 
     void quad(int tex, int blend, double[] p12, float[] uv8, float[] col16);
+
+    /** Igual que {@link #quad}, pero avisa si la pieza brilla sola (las mascotas-entidad no la oscurecen de noche). */
+    default void quadE(int tex, int blend, double[] p12, float[] uv8, float[] col16, boolean emissive) {
+        quad(tex, blend, p12, uv8, col16);
+    }
 }

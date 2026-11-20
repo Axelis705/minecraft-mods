@@ -209,6 +209,46 @@ public final class AutoTest {
         standLooking(x, VY + y, VZ + z, tx, VY + ty, VZ + tz);
     }
 
+    /** Etapa 254: equipa estas figuritas en las ranuras de mascotas del jugador (las criaturas aparecen solas). */
+    private static void equipPets(com.mundosdeaxelis.relic.Companions.Spec... specs) {
+        onServer(sp -> {
+            com.mundosdeaxelis.relic.Equipment.Data d = com.mundosdeaxelis.relic.Equipment.get(sp);
+            for (int i = 0; i < d.pets.length; i++) {
+                net.minecraft.world.item.Item it = i < specs.length
+                        ? net.minecraftforge.registries.ForgeRegistries.ITEMS.getValue(new net.minecraft.resources.ResourceLocation(MundosDeAxelis.MODID, specs[i].id()))
+                        : null;
+                d.pets[i] = it == null ? net.minecraft.world.item.ItemStack.EMPTY : new net.minecraft.world.item.ItemStack(it);
+            }
+            com.mundosdeaxelis.relic.Equipment.sync(sp);
+        });
+    }
+
+    /** Mascotas-criatura que ve el cliente. */
+    private static List<com.mundosdeaxelis.entity.Mascota> pets() {
+        List<com.mundosdeaxelis.entity.Mascota> out = new ArrayList<>();
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level != null) {
+            for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
+                if (e instanceof com.mundosdeaxelis.entity.Mascota m && m.isAlive()) {
+                    out.add(m);
+                }
+            }
+        }
+        return out;
+    }
+
+    /** Mascotas-criatura del jugador en el servidor. */
+    private static List<com.mundosdeaxelis.entity.Mascota> serverPets(net.minecraft.server.level.ServerPlayer sp) {
+        List<com.mundosdeaxelis.entity.Mascota> out = new ArrayList<>();
+        for (net.minecraft.world.entity.Entity e : sp.serverLevel().getAllEntities()) {
+            if (e instanceof com.mundosdeaxelis.entity.Mascota m && m.isAlive() && sp.getUUID().equals(m.getOwnerUUID())) {
+                out.add(m);
+            }
+        }
+        out.sort(java.util.Comparator.comparingInt(net.minecraft.world.entity.Entity::getId));
+        return out;
+    }
+
     /** Ejecuta algo en el servidor con mi jugador (en la dimensión donde esté). */
     private static void onServer(java.util.function.Consumer<net.minecraft.server.level.ServerPlayer> c) {
         Minecraft mc = Minecraft.getInstance();
@@ -581,13 +621,9 @@ public final class AutoTest {
             cmd("gamemode survival @a");
             cmd("effect give @a minecraft:resistance 900 4 true");
             standLooking(AX - 4.5, -60.0, AZ - 4.5, AX - 4.5, -60.4, AZ - 1.0);
-            onServer(sp -> {
-                // etapa 253: las rehechas y las de diseño nuevo (quietas más de 45 s se duermen: se ve al final de la tanda quieta)
-                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.LION, 1.0F);
-                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.SHEEP, 1.0F);
-                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.HAMSTER, 1.0F);
-                com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.DROID, 1.0F);
-            });
+            // etapa 254: equipadas, son criaturas de verdad que te siguen (quietas más de 45 s se duermen: se ve al final de la tanda quieta)
+            equipPets(com.mundosdeaxelis.relic.Companions.LION, com.mundosdeaxelis.relic.Companions.SHEEP,
+                    com.mundosdeaxelis.relic.Companions.CRYSTAL_DRAGON);
         });
         add("animación mascotas: quietas", 10 * 110 + 200, () -> clip(10, 110));
         for (int k = 0; k < 5; k++) {
@@ -608,6 +644,7 @@ public final class AutoTest {
                 log("FALLO hoja de mascotas: " + ex);
             }
             clipSheet = null;
+            equipPets();
             cmd("gamemode spectator @a");
         });
     }
@@ -755,23 +792,134 @@ public final class AutoTest {
                     + clientCount(com.mundosdeaxelis.entity.CultistaVolcan.class);
             check("enemigos del volcán a la vista en el cliente: " + n + " de 3", n == 3);
         });
-        // 5b. mascotas de los jefes (Lobito Ártico y Archimaguito) invocadas a tu lado
-        add("mascotas", 3000, () -> {
+        // 5b. etapa 254: las mascotas equipadas son criaturas de verdad (Lobito Ártico, Archimaguito y el Dragón de la Noche, que vuela)
+        add("fichas de mascotas", 300, () -> {
+            int miss = 0;
+            for (com.mundosdeaxelis.relic.Companions.Spec sp : com.mundosdeaxelis.relic.Companions.ALL) {
+                if (com.mundosdeaxelis.relic.PetKinds.of(sp.species()) == null) {
+                    miss++;
+                    log("sin ficha: " + sp.id());
+                }
+            }
+            check("todas las mascotas tienen ficha de criatura (" + com.mundosdeaxelis.relic.Companions.ALL.length + ")", miss == 0);
+        });
+        add("mascotas", 3500, () -> {
             clearMobs();
             cmd("tp @a 0.5 -60 0.5 0 18");
-            Minecraft mc = Minecraft.getInstance();
-            IntegratedServer srv = mc.getSingleplayerServer();
-            java.util.UUID u = mc.player.getUUID();
-            srv.execute(() -> {
-                net.minecraft.server.level.ServerPlayer sp = srv.getPlayerList().getPlayer(u);
-                if (sp != null) {
-                    com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.FROST_PUP, 1.0F);
-                    com.mundosdeaxelis.relic.Companions.summon(sp, com.mundosdeaxelis.relic.Companions.LITTLE_ARCHMAGE, 1.0F);
+            equipPets(com.mundosdeaxelis.relic.Companions.FROST_PUP, com.mundosdeaxelis.relic.Companions.LITTLE_ARCHMAGE,
+                    com.mundosdeaxelis.relic.Companions.NIGHT_DRAGON);
+        });
+        add("mascotas: aparecen", 300, () -> check("las 3 mascotas equipadas son criaturas en el mundo (cliente ve " + pets().size() + ")",
+                pets().size() == 3));
+        add("mascotas: delante", 1500, () -> onServer(sp -> {
+            // que se pongan delante de la cámara para la foto
+            int i = 0;
+            for (com.mundosdeaxelis.entity.Mascota m : serverPets(sp)) {
+                m.moveTo(-1.2 + i * 1.3, m.flier() ? -58.6 : -60.0, 3.2, 180F, 0F);
+                m.setYBodyRot(180F);
+                m.setYHeadRot(180F);
+                m.getNavigation().stop();
+                i++;
+            }
+        }));
+        add("mascotas (foto)", 600, () -> shot("8b_mascotas"));
+        add("mascotas de cerca (foto)", 300, () -> shot("8c_mascotas"));
+        add("mascota: sentarse", 1500, () -> onServer(sp -> {
+            List<com.mundosdeaxelis.entity.Mascota> l = serverPets(sp);
+            if (!l.isEmpty()) {
+                l.get(0).toggleSit(sp);
+            }
+        }));
+        add("mascota: sentada", 300, () -> {
+            boolean sat = false;
+            for (com.mundosdeaxelis.entity.Mascota m : pets()) {
+                sat |= m.isInSittingPose();
+            }
+            check("clic derecho: la mascota se sienta", sat);
+        });
+        add("mascota: comer", 1200, () -> onServer(sp -> {
+            List<com.mundosdeaxelis.entity.Mascota> l = serverPets(sp);
+            if (!l.isEmpty()) {
+                com.mundosdeaxelis.entity.Mascota m = l.get(0);
+                sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.item.ItemStack(m.kind().food(), 3));
+                m.mobInteract(sp, net.minecraft.world.InteractionHand.MAIN_HAND);
+                sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.EMPTY);
+            }
+        }));
+        add("mascota: cariño", 300, () -> {
+            int love = 0;
+            for (com.mundosdeaxelis.entity.Mascota m : pets()) {
+                love = Math.max(love, m.love());
+            }
+            check("al darle su comida favorita sube su cariño (" + love + ")", love >= 8);
+        });
+        add("mascota: menú", 1500, () -> onServer(sp -> {
+            List<com.mundosdeaxelis.entity.Mascota> l = serverPets(sp);
+            if (!l.isEmpty()) {
+                sp.setShiftKeyDown(true);
+                l.get(l.size() - 1).mobInteract(sp, net.minecraft.world.InteractionHand.MAIN_HAND);
+                sp.setShiftKeyDown(false);
+            }
+        }));
+        add("mascota: menú abierto", 300, () -> check("agachado + clic derecho abre el menú de la mascota (pantalla " + screenName() + ")",
+                Minecraft.getInstance().screen instanceof PetScreen));
+        add("mascota: menú (foto)", 1200, () -> shot("8e_menu_mascota"));
+        add("mascota: nombre", 1000, () -> onServer(sp -> {
+            if (sp.containerMenu instanceof com.mundosdeaxelis.relic.PetMenu pm) {
+                pm.rename(sp, "Pelusa");
+            }
+        }));
+        add("mascota: nombre puesto", 300, () -> {
+            boolean ok = false;
+            for (com.mundosdeaxelis.entity.Mascota m : pets()) {
+                ok |= m.hasCustomName() && m.getCustomName().getString().equals("Pelusa");
+            }
+            check("el menú le cambia el nombre a la mascota", ok);
+            onServer(sp -> {
+                boolean saved = false;
+                for (net.minecraft.world.item.ItemStack st : com.mundosdeaxelis.relic.Equipment.get(sp).pets) {
+                    saved |= com.mundosdeaxelis.relic.PetData.name(st).equals("Pelusa");
+                }
+                check("el nombre queda guardado en la figurita", saved);
+            });
+        });
+        add("mascota: cerrar menú", 800, () -> open(null));
+        add("mascota: pelea", 4500, () -> {
+            cmd("difficulty easy");
+            cmd("summon minecraft:zombie 0.5 -60 6.5 {NoAI:1b,PersistenceRequired:1b,Tags:[\"pet_target\"]}");
+            onServer(sp -> {
+                net.minecraft.world.entity.LivingEntity z = null;
+                for (net.minecraft.world.entity.Entity e : sp.serverLevel().getAllEntities()) {
+                    if (e.getTags().contains("pet_target") && e instanceof net.minecraft.world.entity.LivingEntity le) {
+                        z = le;
+                    }
+                }
+                for (com.mundosdeaxelis.entity.Mascota m : serverPets(sp)) {
+                    if (m.isOrderedToSit()) {
+                        m.toggleSit(sp);
+                    }
+                    if (z != null && m.kind().combat()) {
+                        m.setTarget(z);
+                    }
                 }
             });
         });
-        add("mascotas (foto)", 2500, () -> shot("8b_mascotas"));
-        add("mascotas de cerca (foto)", 300, () -> shot("8c_mascotas"));
+        add("mascota: pelea (resultado)", 300, () -> onServer(sp -> {
+            float hp = -1, max = 1;
+            boolean found = false;
+            for (net.minecraft.world.entity.Entity e : sp.serverLevel().getAllEntities()) {
+                if (e.getTags().contains("pet_target") && e instanceof net.minecraft.world.entity.LivingEntity le) {
+                    found = true;
+                    hp = le.getHealth();
+                    max = le.getMaxHealth();
+                    e.discard();
+                }
+            }
+            check("las mascotas de combate atacan a un zombi (vida " + hp + " de " + max + ")", !found || hp < max);
+            sp.server.getCommands().performPrefixedCommand(sp.server.createCommandSourceStack().withSuppressedOutput(), "difficulty peaceful");
+        }));
+        add("mascotas: quitarlas", 1800, () -> equipPets());
+        add("mascotas: se van", 300, () -> check("al quitarlas del menú de equipo se van (quedan " + pets().size() + ")", pets().isEmpty()));
         // 6. la Piedra de Portal de la Torre, como un jugador: clic derecho, ficha, «Comenzar» y entrar (etapa 5)
         add("piedra de la torre", 1500, () -> {
             clearMobs();

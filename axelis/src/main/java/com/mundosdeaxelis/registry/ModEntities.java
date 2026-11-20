@@ -13,6 +13,16 @@ public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MundosDeAxelis.MODID);
 
+    /**
+     * Etapa 254: las mascotas equipadas como criaturas de verdad (un solo tipo; la especie va en sus datos y cambia su caja,
+     * su modelo y su forma de moverse). Nunca se guardan con el mundo: las crea {@code relic.PetKeeper}.
+     */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Mascota>> MASCOTA = ENTITIES.register("mascota",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.Mascota>of(com.mundosdeaxelis.entity.Mascota::new, MobCategory.CREATURE)
+                    .sized(0.5F, 0.6F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "mascota").toString()));
+
     /** El Rey Brote: el jefe de la etapa 1 (Naturaleza). */
     public static final RegistryObject<EntityType<ReyBrote>> REY_BROTE = ENTITIES.register("rey_brote",
             () -> EntityType.Builder.<ReyBrote>of(ReyBrote::new, MobCategory.MONSTER)

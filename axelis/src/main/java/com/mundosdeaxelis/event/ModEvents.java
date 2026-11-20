@@ -47,5 +47,6 @@ public final class ModEvents {
         event.put(ModEntities.CULTISTA_VOLCAN.get(), com.mundosdeaxelis.entity.CultistaVolcan.createAttributes().build());
         event.put(ModEntities.ARMADURA_ENCANTADA.get(), com.mundosdeaxelis.entity.ArmaduraEncantada.createAttributes().build());
         event.put(ModEntities.LOBO_ESCARCHA.get(), com.mundosdeaxelis.entity.LoboEscarcha.createAttributes().build());
+        event.put(ModEntities.MASCOTA.get(), com.mundosdeaxelis.entity.Mascota.createAttributes().build());
     }
 }

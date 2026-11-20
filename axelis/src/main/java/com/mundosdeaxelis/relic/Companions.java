@@ -153,6 +153,16 @@ public final class Companions {
         return null;
     }
 
+    /** La ficha de esa especie de modelo (cada mascota tiene la suya), o null. */
+    public static Spec bySpecies(int species) {
+        for (Spec s : ALL) {
+            if (s.species() == species) {
+                return s;
+            }
+        }
+        return null;
+    }
+
     /** Invoca (o renueva) a ese compañero para el jugador. */
     public static void summon(ServerPlayer sp, Spec spec, float power) {
         spawn(sp, spec, power, false);
