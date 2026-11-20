@@ -269,6 +269,32 @@ public final class MagmaRenderers {
         }
     }
 
+    /** Gran Salamandra (etapa 255): el mismo modelo a casi el doble, con las manchas siempre encendidas. */
+    public static final class GranSalamander extends EntityRenderer<com.mundosdeaxelis.entity.GranSalamandra> {
+        public GranSalamander(EntityRendererProvider.Context ctx) {
+            super(ctx);
+            this.shadowRadius = 1.0F;
+        }
+
+        @Override
+        public void render(com.mundosdeaxelis.entity.GranSalamandra e, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
+            float t = e.tickCount + pt;
+            float body = Mth.rotLerp(pt, e.yBodyRotO, e.yBodyRot);
+            ps.pushPose();
+            juice(ps, e, pt, body);
+            double heat = e.onLava() ? 1.0 : e.enraged() ? 0.8 : 0.5;
+            VolcanMesh.salamander(sink(ps, buf, LightTexture.FULL_BRIGHT), cam(this.entityRenderDispatcher.camera, e, pt), new V3(0, 0, 0), 1.9, t,
+                    Math.min(1, e.walkAnimation.speed(pt) * 1.5), -Math.toRadians(body), hurtOf(e, pt), e.spitOpen(pt), heat);
+            ps.popPose();
+            super.render(e, yaw, pt, ps, buf, light);
+        }
+
+        @Override
+        public ResourceLocation getTextureLocation(com.mundosdeaxelis.entity.GranSalamandra e) {
+            return CREATURE;
+        }
+    }
+
     // ------------------------------------------------------------------ diablillo
 
     public static final class Imp extends EntityRenderer<Diablillo> {

@@ -145,6 +145,14 @@ public final class ModEntities {
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "salamandra_lava").toString()));
 
+    /** Mini jefe del volcán (etapa 255): la Gran Salamandra, guardiana del paso al santuario. */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.GranSalamandra>> GRAN_SALAMANDRA = ENTITIES.register("gran_salamandra",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.GranSalamandra>of(com.mundosdeaxelis.entity.GranSalamandra::new, MobCategory.MONSTER)
+                    .sized(1.9F, 1.05F)
+                    .fireImmune()
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "gran_salamandra").toString()));
+
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Diablillo>> DIABLILLO = ENTITIES.register("diablillo",
             () -> EntityType.Builder.<com.mundosdeaxelis.entity.Diablillo>of(com.mundosdeaxelis.entity.Diablillo::new, MobCategory.MONSTER)
                     .sized(0.6F, 0.95F)

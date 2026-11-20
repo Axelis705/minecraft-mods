@@ -38,6 +38,16 @@ public final class ModItems {
     public static final RegistryObject<Item> BASALTO_AGRIETADO = ITEMS.register("basalto_agrietado",
             () -> new net.minecraft.world.item.BlockItem(ModBlocks.BASALTO_AGRIETADO.get(), new Item.Properties()));
 
+    public static final RegistryObject<Item> FUMAROLA = ITEMS.register("fumarola",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.FUMAROLA.get(), new Item.Properties()));
+    public static final RegistryObject<Item> CENIZA_VOLCAN = ITEMS.register("ceniza_volcan",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.CENIZA_VOLCAN.get(), new Item.Properties()));
+    public static final RegistryObject<Item> VETA_MAGMA = ITEMS.register("veta_magma",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.VETA_MAGMA.get(), new Item.Properties()));
+    public static final RegistryObject<Item> BRASERO_VOLCAN = ITEMS.register("brasero_volcan",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.BRASERO_VOLCAN.get(), new Item.Properties()));
+    public static final RegistryObject<Item> REJA_VOLCAN = ITEMS.register("reja_volcan",
+            () -> new net.minecraft.world.item.BlockItem(ModBlocks.REJA_VOLCAN.get(), new Item.Properties()));
     public static final RegistryObject<Item> RESPIRADERO_VOLCAN = ITEMS.register("respiradero_volcan",
             () -> new net.minecraft.world.item.BlockItem(ModBlocks.RESPIRADERO_VOLCAN.get(), new Item.Properties()));
 
@@ -108,6 +118,10 @@ public final class ModItems {
             () -> new BlockItem(ModBlocks.VAULT_CHEST_FORGE.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> VAULT_CHEST_SEALED_FORGE = ITEMS.register("vault_chest_sealed_forge",
             () -> new BlockItem(ModBlocks.VAULT_CHEST_SEALED_FORGE.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> VAULT_CHEST_VOLCANO = ITEMS.register("vault_chest_volcano",
+            () -> new BlockItem(ModBlocks.VAULT_CHEST_VOLCANO.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> VAULT_CHEST_LOCKED_VOLCANO = ITEMS.register("vault_chest_locked_volcano",
+            () -> new BlockItem(ModBlocks.VAULT_CHEST_LOCKED_VOLCANO.get(), new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> VAULT_CHEST_LOCKED_FORGE = ITEMS.register("vault_chest_locked_forge",
             () -> new BlockItem(ModBlocks.VAULT_CHEST_LOCKED_FORGE.get(), new Item.Properties().rarity(Rarity.RARE)));
     /** Comida de la dungeon de la Forja: cura, regeneración I (6 s) y absorción I (30 s), con 5 s de espera entre un asado y otro. */

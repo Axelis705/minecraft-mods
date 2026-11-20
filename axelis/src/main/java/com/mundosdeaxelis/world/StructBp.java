@@ -28,8 +28,60 @@ public final class StructBp {
     /** Lo que {@link Soporte#prune} quitó por no poder sostenerse (tipo -> cantidad); vacío si el diseño no tenía nada así. */
     public Map<String, Integer> unsupported = new java.util.TreeMap<>();
 
+    /**
+     * Mezcla con el terreno (etapa 255): columna (x, z) -> cómo debe quedar su superficie al construir en un mundo de verdad.
+     * {@code w} = 0: la superficie queda a la altura de la estructura (y = -1) y se quita todo lo que haya encima; {@code w} = 1:
+     * se queda a la altura del terreno (solo se cambia el bloque de arriba y se quitan las plantas). Entre medias, una rampa suave.
+     * {@code top} es el bloque de la superficie (null = el que ya había) y {@code sub} el relleno de debajo ("a|b|c" = se elige uno
+     * por posición; null = el del terreno). Fuera del juego (planos, revisiones) estas columnas se ven planas a y = -1.
+     */
+    public record Blend(float w, String top, String sub) {
+    }
+
+    public final Map<Long, Blend> blend = new LinkedHashMap<>();
+
+    /**
+     * Cosas que se apoyan sobre la superficie real (que con la mezcla puede quedar más alta o más baja): árboles quemados, rocas,
+     * fumarolas del llano. Cada bloque va relativo a la columna del ancla: dy = 0 es justo encima de la superficie, dy = -1 la
+     * superficie misma.
+     */
+    public record Anchor(int x, int z, Map<Long, String> m) {
+        public void set(int dx, int dy, int dz, String s) {
+            if (s != null) {
+                m.put(key(dx, dy, dz), s);
+            }
+        }
+    }
+
+    public final List<Anchor> anchors = new ArrayList<>();
+
+    /** Datos de las entidades de bloque (texto SNBT, p. ej. {@code {Kind:"LOCKED",Stage:4}}) por posición del plano. */
+    public final Map<Long, String> nbt = new LinkedHashMap<>();
+
     public StructBp(long seed) {
         r = new Random(seed);
+    }
+
+    /** Columna mezclada con el terreno (ver {@link Blend}). */
+    public void blend(int x, int z, double w, String top, String sub) {
+        blend.put(key(x, 0, z), new Blend((float) Math.max(0, Math.min(1, w)), top, sub));
+    }
+
+    public Blend blendAt(int x, int z) {
+        return blend.get(key(x, 0, z));
+    }
+
+    /** Nuevo grupo de bloques apoyado sobre la superficie de la columna (x, z). */
+    public Anchor anchor(int x, int z) {
+        Anchor a = new Anchor(x, z, new LinkedHashMap<>());
+        anchors.add(a);
+        return a;
+    }
+
+    /** Bloque con datos de entidad de bloque (cofres del volcán: tipo, etapa y cerradura). */
+    public void setNbt(int x, int y, int z, String state, String snbt) {
+        set(x, y, z, state);
+        nbt.put(key(x, y, z), snbt);
     }
 
     public static long key(int x, int y, int z) {

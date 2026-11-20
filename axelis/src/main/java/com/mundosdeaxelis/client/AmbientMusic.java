@@ -23,6 +23,16 @@ public final class AmbientMusic {
     private static TrackSound current;
     /** ¿Hay un jefe cerca? (se revisa cada medio segundo). */
     private static boolean bossAround = false;
+    /** Dentro de la dungeon de un volcán del mundo normal (lo dice el servidor; etapa 255). */
+    private static int volcanZone = 0;
+
+    public static void setVolcanZone(int zone) {
+        volcanZone = zone;
+    }
+
+    public static int volcanZone() {
+        return volcanZone;
+    }
 
     private AmbientMusic() {
     }
@@ -41,6 +51,9 @@ public final class AmbientMusic {
             return bossAround ? ModSounds.MUSIC_ICE_BOSS.get() : ModSounds.MUSIC_ICE_DUNGEON.get();
         }
         if (ModDimensions.isVolcano(dim)) {
+            return bossAround ? ModSounds.MUSIC_VOLCANO_BOSS.get() : ModSounds.MUSIC_VOLCANO_DUNGEON.get();
+        }
+        if (volcanZone > 0) {
             return bossAround ? ModSounds.MUSIC_VOLCANO_BOSS.get() : ModSounds.MUSIC_VOLCANO_DUNGEON.get();
         }
         return null;
@@ -104,7 +117,19 @@ public final class AmbientMusic {
                     }
                 }
             }
+            if (volcanZone > 0 && mc.player != null) {
+                // la Gran Salamandra del volcán del mundo normal: música de jefe mientras está viva y cerca
+                for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
+                    if (e instanceof com.mundosdeaxelis.entity.GranSalamandra g && g.isAlive() && g.distanceToSqr(mc.player) < 22 * 22) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
             bossAround = found;
+        }
+        if (mc.level == null) {
+            volcanZone = 0;
         }
         SoundEvent want = (mc.level == null || mc.player == null || !com.mundosdeaxelis.ClientConfig.DUNGEON_MUSIC.get()) ? null : wanted(mc.level.dimension());
         if (want != null) {

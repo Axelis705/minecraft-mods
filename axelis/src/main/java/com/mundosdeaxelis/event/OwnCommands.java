@@ -20,7 +20,8 @@ public final class OwnCommands {
                         .then(Commands.argument("etapa", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1, 8))
                                 .executes(ctx -> unlock(ctx.getSource(), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "etapa")))))
                 .then(TestCommands.build())
-                .then(com.mundosdeaxelis.world.Estructuras.build()));
+                .then(com.mundosdeaxelis.world.Estructuras.build())
+                .then(com.mundosdeaxelis.world.Volcanes.command()));
     }
 
     /**

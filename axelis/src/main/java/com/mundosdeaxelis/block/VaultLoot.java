@@ -65,16 +65,16 @@ public final class VaultLoot {
 
     /** Objeto que repara el equipo de la caja de la etapa: la Bellota (bosque) o el Remache Ardiente (Forja). */
     private static ItemStack mender(int st, int n) {
-        return new ItemStack((st == 2 ? ModItems.EMBER_RIVET : ModItems.ACORN).get(), n);
+        return new ItemStack((st >= 2 ? ModItems.EMBER_RIVET : ModItems.ACORN).get(), n);
     }
 
     private static ItemStack goldenMender(int st) {
-        return new ItemStack((st == 2 ? ModItems.GOLDEN_RIVET : ModItems.GOLDEN_ACORN).get(), 1);
+        return new ItemStack((st >= 2 ? ModItems.GOLDEN_RIVET : ModItems.GOLDEN_ACORN).get(), 1);
     }
 
     /** Comida propia de la dungeon: Baya del Santuario (bosque) o Asado del Herrero (Forja). */
     private static ItemStack food(int st, int n) {
-        return new ItemStack((st == 2 ? ModItems.FORGE_ROAST : ModItems.SANCTUARY_BERRY).get(), n);
+        return new ItemStack((st >= 2 ? ModItems.FORGE_ROAST : ModItems.SANCTUARY_BERRY).get(), n);
     }
 
     /** Gelatina Brillante: el material que suelta el slime (lo que se pide a los cofres importantes). */
@@ -141,6 +141,10 @@ public final class VaultLoot {
 
     /** Sabor propio de cada etapa (el de la 1 es el bosque: bayas dulces). Etapa 2 (Forja): metal, carbón y poción de velocidad. */
     private static void flavor(List<ItemStack> out, Kind kind, int st, int lv, RandomSource r) {
+        if (st == 4) {
+            volcano(out, kind, lv, r);
+            return;
+        }
         if (st != 2) {
             return;
         }
@@ -169,6 +173,42 @@ public final class VaultLoot {
                 out.add(new ItemStack(Items.GOLD_INGOT, 2 + r.nextInt(3)));
                 out.add(new ItemStack(Items.COAL_BLOCK, 1 + r.nextInt(2)));
                 out.add(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_SWIFTNESS));
+            }
+        }
+    }
+
+    /** Sabor del volcán (etapa 4): resistencia al fuego, polvo de blaze, crema de magma, oro y obsidiana. */
+    private static void volcano(List<ItemStack> out, Kind kind, int lv, RandomSource r) {
+        switch (kind) {
+            case ANTE -> {
+                out.add(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_FIRE_RESISTANCE));
+                out.add(new ItemStack(Items.MAGMA_CREAM, 2 + r.nextInt(3)));
+            }
+            case TRIAL -> {
+                out.add(new ItemStack(Items.BLAZE_POWDER, 3 + r.nextInt(4)));
+                out.add(new ItemStack(Items.GOLD_INGOT, 3 + r.nextInt(4)));
+                if (r.nextInt(100) < 40) {
+                    out.add(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.FIRE_RESISTANCE));
+                }
+            }
+            case LOCKED -> {
+                out.add(new ItemStack(Items.GOLD_INGOT, 2 * lv + r.nextInt(4)));
+                out.add(new ItemStack(Items.OBSIDIAN, 2 + lv));
+                if (lv >= 3) {
+                    out.add(new ItemStack(Items.BLAZE_ROD, lv - 1 + r.nextInt(2)));
+                }
+                if (lv >= 5) {
+                    out.add(new ItemStack(Items.ANCIENT_DEBRIS, 1));
+                }
+            }
+            case CRYPT -> {
+                out.add(new ItemStack(Items.GOLD_BLOCK, 1 + r.nextInt(2)));
+                out.add(new ItemStack(Items.BLAZE_ROD, 3 + r.nextInt(3)));
+                out.add(new ItemStack(Items.MAGMA_CREAM, 4 + r.nextInt(4)));
+                out.add(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_FIRE_RESISTANCE));
+                if (r.nextInt(100) < 35) {
+                    out.add(new ItemStack(Items.ANCIENT_DEBRIS, 1));
+                }
             }
         }
     }
@@ -254,7 +294,7 @@ public final class VaultLoot {
                 addDecor(out, crate, r, 45);
             }
         }
-        if (st == 2) {
+        if (st == 2 || st == 4) {
             forgeSwap(out, st);
         }
         flavor(out, kind, st, lv, r);

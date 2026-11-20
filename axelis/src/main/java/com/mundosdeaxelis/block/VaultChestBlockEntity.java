@@ -124,7 +124,19 @@ public class VaultChestBlockEntity extends BlockEntity {
     }
 
     private String themed(String key) {
-        return stage == 2 ? key + "_forge" : key;
+        return stage == 2 ? key + "_forge" : stage == 4 ? key + "_volcano" : key;
+    }
+
+    /**
+     * Vacía el botín de todos (cada uno vuelve a tener uno nuevo la próxima vez que abra) y vuelve a cerrar la cerradura: lo usa el
+     * volcán al reiniciarse, como mucho una vez por hora.
+     */
+    public void resetLoot() {
+        loots.clear();
+        unlocked.clear();
+        cooldown.clear();
+        picked = false;
+        setChanged();
     }
 
     public void open(ServerPlayer sp) {

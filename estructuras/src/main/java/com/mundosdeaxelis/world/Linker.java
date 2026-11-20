@@ -204,6 +204,9 @@ final class Linker {
                 t = 3;
             } else if (s.startsWith("iron_door") && s.contains("open=true")) {
                 t = 0;
+            } else if (s.startsWith("mundos_de_axelis:reja_volcan")) {
+                // las rejas del volcán se abren (al vencer al guardián o al encender los braseros): cuentan como paso
+                t = 0;
             } else if (s.startsWith("mundos_de_axelis:lava_falsa")) {
                 // lava falsa: se atraviesa y se cae despacio (caída lenta), desde cualquier altura
                 t = 4;

@@ -59,6 +59,23 @@ execute if block -15 -41 86 mundos_de_axelis:respiradero_volcan run say PRUEBA_V
 execute if entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_VOLCAN_CULTISTAS_OK
 execute if entity @e[type=mundos_de_axelis:salamandra_lava] run say PRUEBA_VOLCAN_SALAMANDRAS_OK
 execute if entity @e[type=mundos_de_axelis:diablillo] run say PRUEBA_VOLCAN_DIABLILLOS_OK
+execute if entity @e[type=mundos_de_axelis:gran_salamandra] run say PRUEBA_VOLCAN_GUARDIAN_OK
+execute if block 14 -56 116 mundos_de_axelis:reja_volcan[open=false,channel=1] run say PRUEBA_VOLCAN_REJA_CERRADA_OK
+execute if block 15 -40 92 mundos_de_axelis:reja_volcan[open=false,channel=2] run say PRUEBA_VOLCAN_REJA_TESORO_OK
+execute if block -15 -40 83 mundos_de_axelis:brasero_volcan[lit=false,channel=2] run say PRUEBA_VOLCAN_BRASERO_OK
+execute if block 0 -16 66 mundos_de_axelis:vault_chest_volcano run say PRUEBA_VOLCAN_COFRE_OK
+execute if block 22 -40 94 mundos_de_axelis:vault_chest_locked_volcano run say PRUEBA_VOLCAN_COFRE_CERRADURA_OK
+execute if data block 22 -40 94 {Kind:"LOCKED",Stage:4,LockLevel:5} run say PRUEBA_VOLCAN_COFRE_DATOS_OK
+kill @e[type=mundos_de_axelis:gran_salamandra]
+#wait NUNCA_SALE_ESTE_TEXTO 2
+execute if block 14 -56 116 mundos_de_axelis:reja_volcan[open=true] run say PRUEBA_VOLCAN_REJA_ABRE_OK
+setblock -15 -40 83 mundos_de_axelis:brasero_volcan[lit=true,channel=2]
+kill @e[type=mundos_de_axelis:cultista_volcan]
+mundos volcan reiniciar
+execute if entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_VOLCAN_REAPARECEN_OK
+execute if entity @e[type=mundos_de_axelis:gran_salamandra] run say PRUEBA_VOLCAN_GUARDIAN_VUELVE_OK
+execute if block 14 -56 116 mundos_de_axelis:reja_volcan[open=false] run say PRUEBA_VOLCAN_REJA_CIERRA_OK
+execute if block -15 -40 83 mundos_de_axelis:brasero_volcan[lit=false] run say PRUEBA_VOLCAN_BRASERO_APAGA_OK
 setblock 1 -25 94 minecraft:air
 setblock 1 -25 94 mundos_de_axelis:basalto_agrietado[stage=1]
 #wait NUNCA_SALE_ESTE_TEXTO 3
@@ -77,5 +94,28 @@ execute unless entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_V
 #expect PRUEBA_VOLCAN_SE_DERRUMBA_OK
 #expect PRUEBA_VOLCAN_DESHECHO_OK
 #expect PRUEBA_VOLCAN_SIN_ENEMIGOS_OK
+#expect PRUEBA_VOLCAN_GUARDIAN_OK
+#expect PRUEBA_VOLCAN_REJA_CERRADA_OK
+#expect PRUEBA_VOLCAN_REJA_TESORO_OK
+#expect PRUEBA_VOLCAN_BRASERO_OK
+#expect PRUEBA_VOLCAN_COFRE_OK
+#expect PRUEBA_VOLCAN_COFRE_CERRADURA_OK
+#expect PRUEBA_VOLCAN_COFRE_DATOS_OK
+#expect PRUEBA_VOLCAN_REJA_ABRE_OK
+#expect PRUEBA_VOLCAN_REAPARECEN_OK
+#expect PRUEBA_VOLCAN_GUARDIAN_VUELVE_OK
+#expect PRUEBA_VOLCAN_REJA_CIERRA_OK
+#expect PRUEBA_VOLCAN_BRASERO_APAGA_OK
+forceload add 1700 -100 1840 100
+execute positioned 1770 -48 0 rotated 90 0 run mundos volcan generar aqui
+#wait VOLCAN_NATURAL_OK 300
+execute if block 1770 13 0 mundos_de_axelis:nucleo_volcan run say PRUEBA_VOLCAN_NATURAL_NUCLEO_OK
+execute if block 1770 -54 -30 mundos_de_axelis:portal_stone_volcano run say PRUEBA_VOLCAN_NATURAL_PIEDRA_OK
+execute if entity @e[type=mundos_de_axelis:gran_salamandra,x=1700,y=-80,z=-100,dx=140,dy=100,dz=200] run say PRUEBA_VOLCAN_NATURAL_ENEMIGOS_OK
+execute positioned 1770 -48 0 run mundos volcan cerca
+forceload remove 1700 -100 1840 100
+#expect PRUEBA_VOLCAN_NATURAL_NUCLEO_OK
+#expect PRUEBA_VOLCAN_NATURAL_PIEDRA_OK
+#expect PRUEBA_VOLCAN_NATURAL_ENEMIGOS_OK
 say PRUEBA_SE_APAGA_A_MEDIA_OBRA
 mundos prueba construir 2

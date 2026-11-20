@@ -1232,7 +1232,14 @@ public final class AutoTest {
         add("volcán de lado", 4000, () -> lookV(100, 55, 25, 0, 30, 60));
         add("volcán de lado (foto)", 300, () -> shot("31_volcan_lado"));
         add("camino", 3000, () -> lookV(48, 14, 2, 30, 18, 30));
-        add("camino (foto)", 300, () -> shot("32_volcan_camino"));
+        add("camino (foto)", 300, () -> {
+            check("fuera del volcán no suena su música (zona " + AmbientMusic.volcanZone() + ")", AmbientMusic.volcanZone() == 0);
+            shot("32_volcan_camino");
+        });
+        add("cono y fumarolas", 3500, () -> lookV(62, 22, 122, 37, 10, 97));
+        add("cono y fumarolas (foto)", 300, () -> shot("32b_volcan_cono"));
+        add("pie del volcán", 3000, () -> lookV(-70, 4, 30, -40, 0, 50));
+        add("pie del volcán (foto)", 300, () -> shot("32c_volcan_pie"));
         add("cráter", 3500, () -> lookV(0, 82, 36, 0, 61, 60));
         add("cráter (foto)", 300, () -> shot("33_volcan_crater"));
         add("a tirarse", 600, () -> {
@@ -1270,7 +1277,51 @@ public final class AutoTest {
         add("erupciones (foto)", 2500, () -> shot("39_volcan_erupciones"));
         add("erupciones b (foto)", 2500, () -> shot("40_volcan_erupciones"));
         add("altar", 3000, () -> lookV(-14.5, 8, 76.5, -24, 9, 76.5));
-        add("altar (foto)", 300, () -> shot("41_volcan_altar"));
+        add("altar (foto)", 300, () -> {
+            check("dentro del volcán suena su música (zona " + AmbientMusic.volcanZone() + ")", AmbientMusic.volcanZone() == 1);
+            shot("41_volcan_altar");
+        });
+        // etapa 255: el acertijo de los braseros, la sala del tesoro y el guardián
+        add("braseros", 2500, () -> {
+            onServer(sp -> {
+                net.minecraft.server.level.ServerLevel sl = sp.serverLevel();
+                for (int[] c : new int[][]{{-15, 67}, {-15, 85}, {9, 67}, {9, 85}}) {
+                    net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(c[0], VY + 8, VZ + c[1]);
+                    sl.getBlockState(p).use(sl, sp, net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.phys.BlockHitResult(
+                            net.minecraft.world.phys.Vec3.atCenterOf(p), net.minecraft.core.Direction.UP, p, false));
+                }
+            });
+            lookV(-14.5, 9, 66.5, 2, 8, 80);
+        });
+        add("braseros (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(15, VY + 8, VZ + 76));
+            check("encender los cuatro braseros abre la reja del tesoro", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
+                    && g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
+            shot("41b_volcan_braseros");
+        });
+        add("sala del tesoro", 2500, () -> {
+            clearMobs();
+            lookV(13.5, 8, 76.5, 22, 8.5, 76.5);
+        });
+        add("sala del tesoro (foto)", 300, () -> shot("41c_volcan_tesoro"));
+        add("guardián", 3000, () -> {
+            cmd("execute in minecraft:overworld run summon mundos_de_axelis:gran_salamandra 22.5 " + (VY - 8) + " " + (VZ + 100.5));
+            lookV(28.5, -8, 95.5, 22, -7, 100.5);
+        });
+        add("guardián (foto)", 300, () -> {
+            check("la Gran Salamandra guarda su cámara", clientCount(com.mundosdeaxelis.entity.GranSalamandra.class) > 0);
+            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(14, VY - 8, VZ + 100));
+            check("la reja del guardián está cerrada", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
+                    && !g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
+            shot("41d_volcan_guardian");
+        });
+        add("vencer al guardián", 2500, () -> cmd("kill @e[type=mundos_de_axelis:gran_salamandra]"));
+        add("reja abierta (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(14, VY - 8, VZ + 100));
+            check("al vencer a la Gran Salamandra se abre la reja", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
+                    && g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
+            shot("41e_volcan_reja");
+        });
         add("santuario", 3000, () -> {
             clearMobs();
             lookV(0.5, -8, 82.5, 0.5, -6, 90.5);

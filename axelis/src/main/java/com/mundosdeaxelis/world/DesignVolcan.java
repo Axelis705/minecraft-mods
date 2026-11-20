@@ -38,9 +38,6 @@ final class DesignVolcan {
     private static final String VENT = M + "respiradero_volcan";
     private static final String CORE = M + "nucleo_volcan";
     private static final String[] ROCK = {"basalt[axis=y]", "basalt[axis=y]", "blackstone", "smooth_basalt", "basalt[axis=y]", "tuff"};
-    private static final String[] SURF_LOW = {"tuff", "basalt[axis=y]", "blackstone", "deepslate", "smooth_basalt", "cobbled_deepslate"};
-    private static final String[] SURF_MID = {"blackstone", "blackstone", "deepslate", "basalt[axis=y]", "cobbled_deepslate", "polished_deepslate"};
-    private static final String[] SURF_TOP = {"blackstone", "blackstone", "deepslate", "cobbled_deepslate", "basalt[axis=y]", "netherrack"};
     private static final String[] WALL = {"basalt[axis=y]", "blackstone", "smooth_basalt", "polished_basalt[axis=y]"};
     private static final String PB = "polished_blackstone";
     private static final String PBB = "polished_blackstone_bricks";
@@ -49,12 +46,31 @@ final class DesignVolcan {
 
     /** Columnas por las que pasa el camino en espiral (para que los ríos y las rocas no lo tapen). */
     private static final Set<Long> TRAIL = new HashSet<>();
+    /** Columnas del camino de losas que llega desde fuera (se apoya en el terreno real: va en la mezcla, no en el plano). */
+    private static final Set<Long> ROAD = new HashSet<>();
+    /** Coladas de lava ya enfriada al pie de cada río (columna -> bloque de la superficie). */
+    private static final Map<Long, String> FAN = new HashMap<>();
+    private static final String FUMAROLA = M + "fumarola";
+    private static final String ASH_CEIL = M + "ceniza_volcan";
+    private static final String VEIN = M + "veta_magma";
+    private static final String BRAZ = M + "brasero_volcan";
+    private static final String GATE = M + "reja_volcan";
+    private static final String VC = M + "vault_chest_volcano";
+    private static final String VCL = M + "vault_chest_locked_volcano";
+    /** Suelo de la cámara del guardián (la Gran Salamandra). */
+    static final int F_GUARD = -8;
+    /** Centro de la cámara del guardián. */
+    static final int GX = 22, GZ = 100;
+    /** Rocas de las paredes que se pueden "pintar" con manchas y vetas (no los suelos ni los adornos). */
+    private static final Set<String> ROCKY = new HashSet<>(List.of("basalt[axis=y]", "blackstone", "smooth_basalt", "tuff", "deepslate",
+            "cobbled_deepslate", "polished_deepslate", "netherrack", "polished_basalt[axis=y]", "gravel", "coarse_dirt"));
 
-    static StructBp make() {
+    /** Sincronizado: usa conjuntos estáticos y el registro de volcanes lo calcula también en otro hilo. */
+    static synchronized StructBp make() {
         StructBp b = new StructBp(4404);
         TRAIL.clear();
-        b.foundation(-RB - 10, CZ - RB - 10, RB + 10, CZ + RB + 10, "blackstone");
-        ashPlain(b);
+        ROAD.clear();
+        FAN.clear();
         mountain(b);
         crater(b);
         rivers(b);
@@ -64,11 +80,22 @@ final class DesignVolcan {
         bridgeChamber(b);
         eruptionHall(b);
         cultistAltar(b);
+        treasureRoom(b);
+        guardianChamber(b);
         sanctuary(b);
         passages(b);
         exitTunnel(b);
         encaseUnderground(b);
+        interiorDetail(b);
+        // por fuera: fumarolas, coladas enfriadas, el pie que se funde con el terreno, árboles quemados y rocas
+        slopeFumaroles(b);
+        coneCraters(b);
+        fans(b);
+        surroundings(b);
+        charredTrees(b);
         boulders(b);
+        plainFumaroles(b);
+        chests(b);
         mobs(b);
         return b;
     }
@@ -91,7 +118,36 @@ final class DesignVolcan {
         return RB - (RB - RR) * Math.pow(Math.max(0, Math.min(1, h / H)), 1 / 1.25);
     }
 
-    /** Altura real de la columna (x, z): ladera con ruido y barrancos, borde del cráter dentado, cuenco del cráter. */
+    /**
+     * Conos pequeños al pie del volcán (volcanes "hijos"): ángulo desde el frente, distancia al centro, radio y alto. Están lejos del
+     * camino, de la entrada, de la salida y de los ríos.
+     */
+    static final double[][] CONES = {{2.35, RB - 2, 11.0, 17.0}, {4.45, RB - 1, 10.0, 14.0}, {5.75, RB + 3, 9.0, 12.0}};
+
+    static int coneX(int i) {
+        return (int) Math.round(Math.sin(CONES[i][0]) * CONES[i][1]);
+    }
+
+    static int coneZ(int i) {
+        return CZ - (int) Math.round(Math.cos(CONES[i][0]) * CONES[i][1]);
+    }
+
+    /** Altura del cono i en (x, z) (0 fuera de él), con un cráter pequeño arriba. */
+    static double coneH(int i, int x, int z) {
+        double dc = Math.hypot(x - coneX(i), z - coneZ(i));
+        double r = CONES[i][2];
+        if (dc >= r) {
+            return 0;
+        }
+        double t = 1 - dc / r;
+        double v = CONES[i][3] * Math.pow(t, 0.95) + (StructKit.vnoise(300 + i, x * 0.5, z * 0.5) - 0.5) * 1.6 * t;
+        if (dc < 2.4) {
+            v -= 3.2 * (1 - dc / 2.4) + 0.6;
+        }
+        return v;
+    }
+
+    /** Altura real de la columna (x, z): ladera con ruido y barrancos, borde del cráter dentado, cuenco del cráter y conos. */
     static int height(int x, int z) {
         double dx = x, dz = z - CZ;
         double d = Math.sqrt(dx * dx + dz * dz);
@@ -104,57 +160,116 @@ final class DesignVolcan {
             double t = (d - RL) / (RR - RL);
             return LAVA_Y + (int) Math.round(t * (H - LAVA_Y) + StructKit.vnoise(77, x * 0.4, z * 0.4) * 0.8);
         }
-        if (d >= RB + 1) {
-            return 0;
+        double main = 0;
+        if (d < RB + 1) {
+            double base = profile(d);
+            double t = (d - RR) / (RB - RR);
+            double amp = Math.sin(Math.PI * Math.min(1, t * 1.3)) * 3.0 + 0.6;
+            double n = (StructKit.fbm(4404, x, z, 9.0) - 0.5) * 2.0 * amp;
+            double gully = Math.sin(a * 9 + StructKit.fbm(91, x, z, 14.0) * 4) * 1.2 * Math.min(1, t * 2.5);
+            // borde del cráter dentado (pocos picos y bajos)
+            double rim = d < RR + 3 ? Math.max(0, (StructKit.vnoise(5, x * 0.5, z * 0.5) - 0.62) * 9) : 0;
+            main = Math.max(0, base + n + gully + rim);
         }
-        double base = profile(d);
-        double t = (d - RR) / (RB - RR);
-        double amp = Math.sin(Math.PI * Math.min(1, t * 1.3)) * 3.0 + 0.6;
-        double n = (StructKit.fbm(4404, x, z, 9.0) - 0.5) * 2.0 * amp;
-        double gully = Math.sin(a * 9 + StructKit.fbm(91, x, z, 14.0) * 4) * 1.2 * Math.min(1, t * 2.5);
-        // borde del cráter dentado (pocos picos y bajos)
-        double rim = d < RR + 3 ? Math.max(0, (StructKit.vnoise(5, x * 0.5, z * 0.5) - 0.62) * 9) : 0;
-        return (int) Math.max(0, Math.round(base + n + gully + rim));
-    }
-
-    private static void ashPlain(StructBp b) {
-        // suelo de ceniza alrededor de la base
-        for (int x = -RB - 10; x <= RB + 10; x++) {
-            for (int z = CZ - RB - 10; z <= CZ + RB + 10; z++) {
-                double d = Math.hypot(x, z - CZ);
-                if (d > RB + 10 + StructKit.vnoise(12, x * 0.2, z * 0.2) * 3) {
-                    continue;
-                }
-                double k = StructKit.hash01(31, x, z);
-                String s = k < 0.35 ? "coarse_dirt" : k < 0.6 ? "gravel" : k < 0.8 ? "tuff" : k < 0.92 ? "blackstone" : "basalt[axis=y]";
-                boolean bush = d > RB - 2 && StructKit.hash01(32, x, z) < 0.035;
-                // los matojos secos solo aguantan sobre tierra
-                b.set(x, -1, z, bush ? "coarse_dirt" : s);
-                if (bush) {
-                    b.set(x, 0, z, "dead_bush");
-                }
+        double cone = 0;
+        if (d > RB - 20) {
+            for (int i = 0; i < CONES.length; i++) {
+                cone = Math.max(cone, coneH(i, x, z));
             }
         }
+        return (int) Math.max(0, Math.round(Math.max(main, cone)));
+    }
+
+    /** Distancia (aprox.) desde la columna al pie del volcán o de sus conos: negativa dentro. */
+    static double edge(int x, int z) {
+        double e = Math.hypot(x, z - CZ) - RB;
+        for (int i = 0; i < CONES.length; i++) {
+            e = Math.min(e, Math.hypot(x - coneX(i), z - coneZ(i)) - CONES[i][2]);
+        }
+        return e;
+    }
+
+    /** Ruido sin costuras alrededor del volcán (según el ángulo): 0..1. */
+    private static double around(long seed, double a, double scale) {
+        return StructKit.vnoise(seed, 40 + Math.cos(a) * scale, 40 + Math.sin(a) * scale);
+    }
+
+    /**
+     * El bloque de la ladera: manchas grandes (no sal y pimienta), coladas viejas que bajan en franjas oscuras, ceniza clara en las
+     * faldas, roca negra y rojiza arriba, chispas de magma que abundan cerca del cráter; donde es muy empinado, roca desnuda.
+     */
+    static String surf(int x, int z, int y, double slope) {
+        double dz = z - CZ;
+        double d = Math.hypot(x, dz);
+        double a = Math.atan2(x, -dz);
+        double hot = Math.max(0, Math.min(1, 1 - d / RB));
+        double fine = StructKit.hash01(41, x, z);
+        if (fine < 0.004 + 0.05 * hot * hot * hot) {
+            return "magma_block";
+        }
+        double flow = StructKit.vnoise3(101, Math.cos(a) * 17, d * 0.07, Math.sin(a) * 17);
+        double patch = StructKit.fbm(102, x, z, 7.0) + (StructKit.hash01(104, x, z) - 0.5) * 0.14;
+        double band = y + (StructKit.vnoise(44, x * 0.15, z * 0.15) - 0.5) * 10;
+        if (slope >= 3.5) {
+            return patch < 0.5 ? "basalt[axis=y]" : "smooth_basalt";
+        }
+        if (flow > 0.66) {
+            return patch < 0.45 ? "blackstone" : patch < 0.82 ? "basalt[axis=y]" : "smooth_basalt";
+        }
+        if (band < 14) {
+            if (patch < 0.30) {
+                return "gravel";
+            }
+            if (patch < 0.56) {
+                return "tuff";
+            }
+            if (patch < 0.70) {
+                return y < 6 ? "coarse_dirt" : "tuff";
+            }
+            return "smooth_basalt";
+        }
+        if (band < 40) {
+            if (patch < 0.27) {
+                return "tuff";
+            }
+            if (patch < 0.52) {
+                return "cobbled_deepslate";
+            }
+            if (patch < 0.76) {
+                return "deepslate";
+            }
+            return "basalt[axis=y]";
+        }
+        if (patch < 0.24 && band > 50) {
+            return "netherrack";
+        }
+        if (patch < 0.52) {
+            return "blackstone";
+        }
+        if (patch < 0.8) {
+            return "basalt[axis=y]";
+        }
+        return "cobbled_deepslate";
     }
 
     private static void mountain(StructBp b) {
-        for (int x = -RB - 1; x <= RB + 1; x++) {
-            for (int z = CZ - RB - 1; z <= CZ + RB + 1; z++) {
+        int R = RB + 12;
+        for (int x = -R; x <= R; x++) {
+            for (int z = CZ - R; z <= CZ + R; z++) {
                 int h = height(x, z);
                 if (h <= 0) {
                     continue;
                 }
+                double slope = Math.max(Math.max(Math.abs(height(x + 1, z) - h), Math.abs(height(x - 1, z) - h)),
+                        Math.max(Math.abs(height(x, z + 1) - h), Math.abs(height(x, z - 1) - h)));
+                String top = surf(x, z, h - 1, slope);
+                boolean ashy = top.equals("gravel") || top.equals("tuff") || top.equals("coarse_dirt");
                 for (int y = 0; y < h; y++) {
-                    boolean top = y == h - 1;
                     String s;
-                    if (top) {
-                        double k = StructKit.hash01(41, x, z);
-                        double d = Math.hypot(x, z - CZ);
-                        // manchas de magma más arriba, ceniza abajo
-                        // franjas por altura (ceniza clara abajo, roca oscura arriba) con algo de ruido para que no sean rayas
-                        double band = y + (StructKit.vnoise(44, x * 0.15, z * 0.15) - 0.5) * 10;
-                        String[] pal = band < 18 ? SURF_LOW : band < 44 ? SURF_MID : SURF_TOP;
-                        s = k < 0.04 + 0.08 * (1 - d / RB) ? "magma_block" : pal[(int) (StructKit.hash01(42, x, z) * pal.length)];
+                    if (y == h - 1) {
+                        s = top;
+                    } else if (y == h - 2 && ashy) {
+                        s = "tuff"; // capa de ceniza bajo la ceniza suelta
                     } else {
                         s = ROCK[(int) (StructKit.hash01(43 + y, x, z) * ROCK.length)];
                     }
@@ -248,12 +363,13 @@ final class DesignVolcan {
         road(b, 0, -2, 0, 4);
         road(b, 0, 4, sx0 - 3, sz0 - 3);
         road(b, sx0 - 3, sz0 - 3, sx0, sz0);
-        // braseros a la entrada
+        // braseros a la entrada (apoyados en el suelo de verdad)
         for (int sx = -1; sx <= 1; sx += 2) {
-            b.set(sx * 3, -1, 1, PBB);
-            b.set(sx * 3, 0, 1, "polished_blackstone_wall");
-            b.set(sx * 3, 1, 1, "magma_block");
-            b.set(sx * 3, 2, 1, "campfire[lit=true,facing=north]");
+            StructBp.Anchor an = b.anchor(sx * 3, 1);
+            an.set(0, -1, 0, PBB);
+            an.set(0, 0, 0, "polished_blackstone_wall");
+            an.set(0, 1, 0, "magma_block");
+            an.set(0, 2, 0, "campfire[lit=true,facing=north]");
         }
         Map<Long, Integer> floorOf = new HashMap<>();
         int lastF = 0;
@@ -306,6 +422,10 @@ final class DesignVolcan {
     /** Donde empieza el camino (ángulo desde el frente, hacia la derecha). */
     private static final double ANG0 = 0.75;
 
+    private static String roadBlock(int x, int z) {
+        return StructKit.hash01(64, x, z) < 0.3 ? "blackstone" : PB;
+    }
+
     /** Camino de losas de 3 de ancho sobre la ceniza, en línea recta de (x0, z0) a (x1, z1). */
     private static void road(StructBp b, int x0, int z0, int x1, int z1) {
         int n = Math.max(Math.abs(x1 - x0), Math.abs(z1 - z0));
@@ -315,13 +435,18 @@ final class DesignVolcan {
             for (int dx = -1; dx <= 1; dx++) {
                 for (int dz = -1; dz <= 1; dz++) {
                     int x = cx + dx, z = cz + dz;
-                    if (height(x, z) > 1 && Math.hypot(x, z - CZ) < RB - 2) {
+                    int h = height(x, z);
+                    if (h > 1 && Math.hypot(x, z - CZ) < RB - 2) {
                         continue;
                     }
-                    b.set(x, -1, z, StructKit.hash01(64, x, z) < 0.3 ? "blackstone" : PB);
-                    for (int y = 0; y <= 3; y++) {
-                        b.set(x, y, z, "air");
+                    if (h > 0) {
+                        // donde aún asoma la ladera, se corta (el resto del camino va sobre el terreno real, en la mezcla)
+                        b.set(x, -1, z, roadBlock(x, z));
+                        for (int y = 0; y <= 3; y++) {
+                            b.set(x, y, z, "air");
+                        }
                     }
+                    ROAD.add(StructBp.key(x, 0, z));
                     TRAIL.add(StructBp.key(x, 0, z));
                 }
             }
@@ -553,6 +678,101 @@ final class DesignVolcan {
         hangLamp(b, -21, F_ERUPT + 4, 79, 2);
     }
 
+    /**
+     * Sala del tesoro, al este de la sala de erupciones, tras una reja (canal 2) que solo se abre al encender a la vez los cuatro
+     * braseros de la sala (cada uno arde 25 s): hay que cruzar las filas de respiraderos corriendo.
+     */
+    private static void treasureRoom(StructBp b) {
+        int x0 = 16, x1 = 23, z0 = 72, z1 = 80, f = F_ERUPT;
+        b.box(x0, f, z0, x1, f + 5, z1, "air");
+        for (int x = x0; x <= x1; x++) {
+            for (int z = z0; z <= z1; z++) {
+                b.set(x, f - 1, z, (x + z & 1) == 0 ? GILD : PBB);
+            }
+        }
+        // la reja de la puerta y su marco
+        for (int z = 75; z <= 77; z++) {
+            for (int y = f; y <= f + 3; y++) {
+                b.set(15, y, z, GATE + "[axis=z,open=false,channel=2]");
+            }
+            b.set(15, f - 1, z, PBB);
+        }
+        for (int y = f; y <= f + 4; y++) {
+            b.set(15, y, 74, PBB);
+            b.set(15, y, 78, PBB);
+        }
+        for (int z = 74; z <= 78; z++) {
+            b.set(15, f + 4, z, PBB);
+        }
+        b.set(15, f + 5, 76, "gilded_blackstone");
+        // tesoro a la vista: oro, velas, una cascada de lava al fondo
+        b.set(23, f, 72, "raw_gold_block");
+        b.set(23, f, 80, "raw_gold_block");
+        b.set(22, f, 72, "gold_block");
+        b.set(23, f + 1, 72, "candle[candles=3,lit=true]");
+        b.set(23, f + 1, 80, "candle[candles=4,lit=true]");
+        b.set(16, f, 72, GILD);
+        b.set(16, f, 80, GILD);
+        b.set(16, f + 1, 72, "candle[candles=2,lit=true]");
+        b.set(16, f + 1, 80, "candle[candles=2,lit=true]");
+        lavafall(b, x1 + 1, 76, f, f + 4);
+        b.set(x1 + 1, f - 1, 76, "magma_block");
+        for (int z = z0 + 1; z <= z1 - 1; z += 3) {
+            b.set(x1 + 1, f + 2, z, "shroomlight");
+        }
+        b.set(19, f + 6, 76, "shroomlight");
+        hangLamp(b, 19, f + 3, 73, 1);
+        hangLamp(b, 19, f + 3, 79, 1);
+        // los cuatro braseros de la sala de erupciones (canal 2)
+        for (int[] c : BRAZIERS) {
+            b.set(c[0], F_ERUPT - 1, c[1], PBB);
+            b.set(c[0], F_ERUPT, c[1], BRAZ + "[lit=false,channel=2]");
+        }
+    }
+
+    /** Braseros de la sala de erupciones (x, z): dos a cada lado de las filas de respiraderos. */
+    static final int[][] BRAZIERS = {{-15, 67}, {-15, 85}, {9, 67}, {9, 85}};
+
+    /**
+     * Cámara del guardián: la Gran Salamandra (mini jefe) espera entre la sala de erupciones y el santuario. Al vencerla se abre la
+     * reja (canal 1) hacia el santuario y el cofre del premio.
+     */
+    private static void guardianChamber(StructBp b) {
+        double r = 7.5;
+        dome(b, GX, GZ, r, F_GUARD, 4, 3);
+        for (int x = -8; x <= 8; x++) {
+            for (int z = -8; z <= 8; z++) {
+                double d = Math.hypot(x, z);
+                if (d > r) {
+                    continue;
+                }
+                double k = StructKit.hash01(111, x, z);
+                String s = Math.abs(d - 5.0) < 0.55 ? "magma_block" : d < 2.0 ? GILD : k < 0.5 ? PB : k < 0.8 ? "smooth_basalt" : "basalt[axis=y]";
+                b.set(GX + x, F_GUARD - 1, GZ + z, s);
+            }
+        }
+        // dos pozas de lava de verdad: la salamandra se cura en ellas (hay que sacarla a tierra firme)
+        for (int[] c : new int[][]{{-3, 3}, {3, -3}}) {
+            for (int dx = 0; dx <= 1; dx++) {
+                for (int dz = 0; dz <= 1; dz++) {
+                    b.set(GX + c[0] + dx, F_GUARD - 1, GZ + c[1] + dz, "lava");
+                    b.set(GX + c[0] + dx, F_GUARD - 2, GZ + c[1] + dz, "basalt[axis=y]");
+                }
+            }
+        }
+        // huesos de los que no lo lograron
+        b.set(GX + 5, F_GUARD, GZ + 3, "bone_block[axis=x]");
+        b.set(GX - 4, F_GUARD, GZ - 4, "bone_block[axis=z]");
+        b.set(GX + 2, F_GUARD, GZ - 6, "bone_block[axis=y]");
+        ringLights(b, GX, GZ, r, F_GUARD + 2, 8, "shroomlight");
+        ringLights(b, GX, GZ, r - 2, F_GUARD + 6, 5, "shroomlight");
+        for (int i = 0; i < 4; i++) {
+            double a = i * Math.PI / 2 + Math.PI / 4;
+            int x = GX + (int) Math.round(Math.cos(a) * (r + 1)), z = GZ + (int) Math.round(Math.sin(a) * (r + 1));
+            lavafall(b, x, z, F_GUARD, F_GUARD + 4);
+        }
+    }
+
     private static void sanctuary(StructBp b) {
         int cz = 90;
         double r = 10;
@@ -653,8 +873,19 @@ final class DesignVolcan {
         path(b, new int[][]{{-6, F_HALL, 66}, {-6, F_HALL, 72}, {-12, F_HALL - 6, 72}, {-12, F_BRIDGE, 76}});
         // repisa de salida del puente -> sala de erupciones (baja 16)
         path(b, new int[][]{{12, F_BRIDGE, 76}, {12, F_BRIDGE, 71}, {12, F_BRIDGE - 9, 62}, {5, F_ERUPT, 62}, {5, F_ERUPT, 67}});
-        // sala de erupciones -> santuario (baja 16, rodeando el santuario por fuera)
-        path(b, new int[][]{{12, F_ERUPT, 85}, {12, F_ERUPT, 89}, {12, F_ERUPT - 10, 99}, {6, F_SANCT, 99}, {3, F_SANCT, 99}});
+        // sala de erupciones -> cámara del guardián (baja 16)
+        path(b, new int[][]{{12, F_ERUPT, 85}, {12, F_ERUPT, 88}, {28, F_GUARD, 88}, {28, F_GUARD, 96}});
+        // cámara del guardián -> santuario (tras la reja que se abre al vencer a la Gran Salamandra)
+        path(b, new int[][]{{14, F_GUARD, 100}, {11, F_GUARD, 100}, {11, F_SANCT, 95}, {8, F_SANCT, 95}});
+        // la reja del guardián (canal 1) y el hueco del cofre de premio, junto al pasillo
+        for (int z = 99; z <= 101; z++) {
+            for (int y = F_GUARD; y <= F_GUARD + 3; y++) {
+                b.set(14, y, z, GATE + "[axis=z,open=false,channel=1]");
+            }
+        }
+        b.box(12, F_GUARD, 102, 13, F_GUARD + 2, 103, "air");
+        b.box(12, F_GUARD - 1, 102, 13, F_GUARD - 1, 103, PBB);
+        b.set(13, F_GUARD + 2, 103, "shroomlight");
     }
 
     /** Del santuario al frente del volcán: sube por un túnel largo y termina en un escalón de 2 hacia fuera (solo de salida). */
@@ -720,34 +951,387 @@ final class DesignVolcan {
         }
     }
 
-    /** Rocas de basalto sueltas alrededor de la base. */
-    private static void boulders(StructBp b) {
-        java.util.Random r = new java.util.Random(4405);
-        for (int i = 0; i < 26; i++) {
-            double a = r.nextDouble() * Math.PI * 2;
-            double d = RB + 1 + r.nextDouble() * 8;
-            int cx = (int) Math.round(Math.sin(a) * d), cz = CZ - (int) Math.round(Math.cos(a) * d);
-            boolean near = false;
-            for (int dx = -4; dx <= 4 && !near; dx++) {
-                for (int dz = -4; dz <= 4 && !near; dz++) {
-                    near = TRAIL.contains(StructBp.key(cx + dx, 0, cz + dz));
+    // ================================================================== ambiente de dentro
+
+    /**
+     * Las paredes de las salas y pasillos: manchas grandes de basalto, piedra negra y pizarra (ruido 3D, no al azar) y vetas de
+     * magma que brillan. En los techos, piedra de la que cae ceniza y estalactitas de basalto en las salas altas.
+     */
+    private static void interiorDetail(StructBp b) {
+        Set<Long> wall = new HashSet<>();
+        List<Long> ceilings = new ArrayList<>();
+        int[][] nb = {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}};
+        for (Map.Entry<Long, String> e : b.m.entrySet()) {
+            if (!"air".equals(e.getValue())) {
+                continue;
+            }
+            long k = e.getKey();
+            int x = StructBp.kx(k), y = StructBp.ky(k), z = StructBp.kz(k);
+            if (!inside(x, y, z)) {
+                continue; // solo las salas y pasillos de dentro (no el camino de fuera ni el cráter)
+            }
+            for (int[] n : nb) {
+                int nx = x + n[0], ny = y + n[1], nz = z + n[2];
+                String s = b.get(nx, ny, nz);
+                if (s != null && ROCKY.contains(s)) {
+                    long nk = StructBp.key(nx, ny, nz);
+                    if (wall.add(nk) && n[1] == 1) {
+                        ceilings.add(nk);
+                    }
                 }
             }
-            if (near || Math.abs(cx) <= 6 && cz < CZ - RB + 12) {
+        }
+        for (long k : wall) {
+            int x = StructBp.kx(k), y = StructBp.ky(k), z = StructBp.kz(k);
+            double v = StructKit.vnoise3(202, x * 0.11, y * 0.17, z * 0.11);
+            if (Math.abs(v - 0.5) < 0.03 && StructKit.hash01(203 + y, x, z) < 0.85) {
+                b.set(x, y, z, VEIN);
+                continue;
+            }
+            double n = StructKit.vnoise3(201, x * 0.19, y * 0.19, z * 0.19) + (StructKit.hash01(204 + y, x, z) - 0.5) * 0.1;
+            b.set(x, y, z, n < 0.34 ? "blackstone" : n < 0.62 ? "basalt[axis=y]" : n < 0.82 ? "smooth_basalt" : "cobbled_deepslate");
+        }
+        java.util.Collections.sort(ceilings);
+        for (long k : ceilings) {
+            int x = StructBp.kx(k), y = StructBp.ky(k), z = StructBp.kz(k);
+            if (VEIN.equals(b.get(x, y, z))) {
+                continue;
+            }
+            double h1 = StructKit.hash01(205 + y, x, z);
+            if (h1 < 0.07) {
+                b.set(x, y, z, ASH_CEIL);
+                continue;
+            }
+            // estalactitas: solo con mucho aire debajo y lejos del pozo por el que se cae desde el cráter
+            if (h1 > 0.955 && Math.hypot(x, z - CZ) > RL + 3) {
+                int free = 0;
+                while (free < 8 && "air".equals(b.get(x, y - 1 - free, z))) {
+                    free++;
+                }
+                if (free < 7) {
+                    continue;
+                }
+                int len = 1 + (int) (StructKit.hash01(206 + y, x, z) * 3);
+                for (int i = 1; i <= len; i++) {
+                    b.set(x, y - i, z, "basalt[axis=y]");
+                }
+                b.set(x, y - len - 1, z, "polished_blackstone_wall");
+            }
+        }
+    }
+
+    /** Caja de la dungeon (sin mirar si está bajo la ladera). */
+    private static boolean insideRaw(int x, int y, int z) {
+        return x >= -32 && x <= 34 && z >= 10 && z <= 114 && y >= -14 && y <= H;
+    }
+
+    /**
+     * ¿La posición local está dentro de la dungeon (bajo la ladera, no al aire libre)? Para la música del volcán: suena dentro, no
+     * en el camino de fuera ni en el cráter.
+     */
+    static boolean inside(int x, int y, int z) {
+        if (!insideRaw(x, y, z)) {
+            return false;
+        }
+        if (Math.hypot(x, z - CZ) <= RL + 0.5 && y > F_HALL + 11) {
+            return y < LAVA_Y; // cayendo por el pozo
+        }
+        return y < height(x, z) - 2;
+    }
+
+    // ================================================================== por fuera
+
+    /** Fumarolas en la ladera: bocas que echan vapor, con costra amarilla de azufre alrededor. */
+    private static void slopeFumaroles(StructBp b) {
+        java.util.Random r = new java.util.Random(4410);
+        int placed = 0;
+        for (int tries = 0; tries < 200 && placed < 11; tries++) {
+            double a = r.nextDouble() * Math.PI * 2;
+            double d = RR + 4 + r.nextDouble() * (RB - RR - 12);
+            int x = (int) Math.round(Math.sin(a) * d), z = CZ - (int) Math.round(Math.cos(a) * d);
+            int h = height(x, z);
+            if (h < 8 || nearTrail(x, z, 3) || !solidTop(b, x, h - 1, z)) {
+                continue;
+            }
+            b.set(x, h - 1, z, FUMAROLA);
+            crust(b, x, z, r);
+            placed++;
+        }
+    }
+
+    private static boolean solidTop(StructBp b, int x, int y, int z) {
+        String s = b.get(x, y, z);
+        return s != null && !s.equals("air") && !s.startsWith(M) && !s.contains("magma") && b.get(x, y + 1, z) == null;
+    }
+
+    /** Costra de azufre y minerales alrededor de una fumarola de la ladera. */
+    private static void crust(StructBp b, int x, int z, java.util.Random r) {
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                if (dx == 0 && dz == 0 || dx * dx + dz * dz > 5 || r.nextDouble() > 0.62) {
+                    continue;
+                }
+                int h = height(x + dx, z + dz);
+                if (h > 0 && solidTop(b, x + dx, h - 1, z + dz) && !nearTrail(x + dx, z + dz, 1)) {
+                    b.set(x + dx, h - 1, z + dz, r.nextDouble() < 0.6 ? "yellow_terracotta" : r.nextDouble() < 0.5 ? "white_terracotta" : "tuff");
+                }
+            }
+        }
+    }
+
+    private static boolean nearTrail(int x, int z, int rad) {
+        for (int dx = -rad; dx <= rad; dx++) {
+            for (int dz = -rad; dz <= rad; dz++) {
+                if (TRAIL.contains(StructBp.key(x + dx, 0, z + dz))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /** En el cráter de cada cono: una fumarola con un anillo de magma. */
+    private static void coneCraters(StructBp b) {
+        for (int i = 0; i < CONES.length; i++) {
+            int cx = coneX(i), cz = coneZ(i);
+            int h = height(cx, cz);
+            if (h <= 1) {
+                continue;
+            }
+            b.set(cx, h - 1, cz, FUMAROLA);
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx == 0 && dz == 0) {
+                        continue;
+                    }
+                    int hh = height(cx + dx, cz + dz);
+                    if (hh > 0) {
+                        b.set(cx + dx, hh - 1, cz + dz, StructKit.hash01(320 + i, dx, dz) < 0.6 ? "magma_block" : "yellow_terracotta");
+                    }
+                }
+            }
+        }
+    }
+
+    /** Ángulos de los ríos de lava (desde el frente). */
+    private static final double[] RIVERS = {0.55, 1.75, 2.9, 3.85, 5.15};
+
+    /**
+     * Al final de cada río, la lava que ya se enfrió: una lengua de obsidiana, basalto y algo de magma que baja hasta el llano y se
+     * abre como un abanico.
+     */
+    private static void fans(StructBp b) {
+        for (int i = 0; i < RIVERS.length; i++) {
+            double ph = i * 1.7;
+            for (double d = RB - 9; d < RB + 15; d += 0.5) {
+                double a = RIVERS[i] + 0.22 * Math.sin(d * 0.13 + ph) + 0.06 * Math.sin(d * 0.41 + ph * 2);
+                double hw = 1.5 + (d - (RB - 9)) * 0.2;
+                for (double k = -hw; k <= hw; k += 0.5) {
+                    int x = (int) Math.round(Math.sin(a) * d + Math.cos(a) * k), z = (int) Math.round(CZ - Math.cos(a) * d + Math.sin(a) * k);
+                    double ragged = Math.abs(k) / hw + (StructKit.hash01(330 + i, x, z) - 0.5) * 0.5;
+                    if (ragged > 0.95 || TRAIL.contains(StructBp.key(x, 0, z))) {
+                        continue;
+                    }
+                    double n = StructKit.fbm(331, x, z, 3.0) + (StructKit.hash01(332, x, z) - 0.5) * 0.2;
+                    String mat = n < 0.3 ? "obsidian" : n < 0.52 ? "basalt[axis=y]" : n < 0.7 ? "blackstone" : n < 0.8 ? "magma_block"
+                            : n < 0.84 ? "crying_obsidian" : "obsidian";
+                    int h = height(x, z);
+                    if (h > 0) {
+                        String cur = b.get(x, h - 1, z);
+                        if (cur != null && !cur.startsWith(M) && b.get(x, h, z) == null) {
+                            b.set(x, h - 1, z, mat);
+                        }
+                    } else {
+                        FAN.put(StructBp.key(x, 0, z), mat);
+                    }
+                }
+            }
+        }
+    }
+
+    private static double smooth(double t) {
+        t = Math.max(0, Math.min(1, t));
+        return t * t * (3 - 2 * t);
+    }
+
+    /** Ceniza suelta del llano: manchas de grava, toba, tierra quemada y roca. */
+    private static String ashTop(int x, int z, double e) {
+        double n = StructKit.fbm(510, x, z, 5.0) + (StructKit.hash01(511, x, z) - 0.5) * 0.16 + Math.max(0, e) * 0.006;
+        return n < 0.22 ? "gravel" : n < 0.40 ? "tuff" : n < 0.46 ? "coarse_dirt" : n < 0.62 ? "smooth_basalt" : n < 0.76 ? "basalt[axis=y]"
+                : n < 0.88 ? "blackstone" : "tuff";
+    }
+
+    private static final String SUB_FOOT = "basalt[axis=y]|blackstone|tuff|basalt[axis=y]";
+    private static final String SUB_APRON = "tuff|coarse_dirt|gravel|basalt[axis=y]";
+
+    /**
+     * El pie del volcán se funde con el terreno: bajo el volcán y hasta 5 bloques de él, todo a su altura (se quita lo que haya
+     * encima y se rellena por debajo); luego una rampa suave de 13 a 20 bloques hasta la altura del terreno de alrededor. La ceniza
+     * cubre la rampa y sigue en lenguas irregulares (más largas donde bajan los ríos); más allá el terreno queda como estaba.
+     */
+    private static void surroundings(StructBp b) {
+        int R = RB + 42;
+        for (int x = -R; x <= R; x++) {
+            for (int z = CZ - R; z <= CZ + R; z++) {
+                double d = Math.hypot(x, z - CZ);
+                if (d > R) {
+                    continue;
+                }
+                double a = Math.atan2(x, -(z - CZ));
+                int h = height(x, z);
+                double e = edge(x, z);
+                long key = StructBp.key(x, 0, z);
+                boolean foot = h > 0 || e <= 0;
+                double ramp = 13 + 7 * around(501, a, 3.0);
+                double w = foot ? 0 : smooth((e - 5) / ramp);
+                double tongue = 0;
+                for (double ra : RIVERS) {
+                    double da = Math.abs(Math.atan2(Math.sin(a - ra), Math.cos(a - ra)));
+                    tongue = Math.max(tongue, Math.exp(-(da / 0.13) * (da / 0.13)));
+                }
+                double reach = ramp + 4 + 14 * around(502, a, 4.0) + 12 * tongue;
+                double ash = 1 - (e - 5) / reach + (StructKit.fbm(503, x, z, 9.0) - 0.5) * 0.55;
+                String top = null;
+                if (ROAD.contains(key)) {
+                    top = roadBlock(x, z);
+                } else if (FAN.containsKey(key)) {
+                    top = FAN.get(key);
+                } else if (foot) {
+                    top = h > 0 ? "basalt[axis=y]|blackstone" : ashTop(x, z, e);
+                } else if (ash > 0.42) {
+                    top = ashTop(x, z, e);
+                }
+                if (w >= 0.999 && top == null) {
+                    continue;
+                }
+                b.blend(x, z, w, top, foot ? SUB_FOOT : SUB_APRON);
+                // matojos secos sobre la tierra quemada del llano
+                if (!foot && top != null && top.equals("coarse_dirt") && StructKit.hash01(504, x, z) < 0.05 && !nearTrail(x, z, 1)) {
+                    b.anchor(x, z).set(0, 0, 0, "dead_bush");
+                }
+            }
+        }
+    }
+
+    /** Árboles quemados por el llano de ceniza: troncos oscuros, sin hojas, con alguna rama. */
+    private static void charredTrees(StructBp b) {
+        java.util.Random r = new java.util.Random(4406);
+        int placed = 0;
+        List<int[]> spots = new ArrayList<>();
+        for (int tries = 0; tries < 400 && placed < 18; tries++) {
+            double a = r.nextDouble() * Math.PI * 2;
+            double d = RB + 5 + r.nextDouble() * 26;
+            int x = (int) Math.round(Math.sin(a) * d), z = CZ - (int) Math.round(Math.cos(a) * d);
+            StructBp.Blend bl = b.blendAt(x, z);
+            if (bl == null || bl.top() == null || edge(x, z) < 5 || nearTrail(x, z, 3) || FAN.containsKey(StructBp.key(x, 0, z))
+                    || Math.abs(x) <= 7 && z < 14) {
+                continue;
+            }
+            boolean close = false;
+            for (int[] o : spots) {
+                close |= Math.abs(o[0] - x) + Math.abs(o[1] - z) < 7;
+            }
+            if (close) {
+                continue;
+            }
+            spots.add(new int[]{x, z});
+            StructBp.Anchor t = b.anchor(x, z);
+            int h = 4 + r.nextInt(4);
+            t.set(0, -1, 0, "coarse_dirt");
+            for (int y = 0; y < h; y++) {
+                t.set(0, y, 0, "dark_oak_log[axis=y]");
+            }
+            int branches = 1 + r.nextInt(3);
+            for (int i = 0; i < branches; i++) {
+                int by = 2 + r.nextInt(Math.max(1, h - 2));
+                boolean alongX = r.nextBoolean();
+                int sgn = r.nextBoolean() ? 1 : -1;
+                int len = 1 + r.nextInt(2);
+                for (int j = 1; j <= len; j++) {
+                    t.set(alongX ? sgn * j : 0, by + (j == len ? 1 : 0), alongX ? 0 : sgn * j, "dark_oak_log[axis=" + (j == len ? "y" : alongX ? "x" : "z") + "]");
+                }
+            }
+            if (r.nextDouble() < 0.5) {
+                t.set(1, -1, 0, "coarse_dirt");
+                t.set(-1, -1, 1, "coarse_dirt");
+            }
+            placed++;
+        }
+    }
+
+    /** Rocas de basalto (y alguna de obsidiana) sueltas alrededor de la base, apoyadas en el suelo real. */
+    private static void boulders(StructBp b) {
+        java.util.Random r = new java.util.Random(4405);
+        for (int i = 0; i < 30; i++) {
+            double a = r.nextDouble() * Math.PI * 2;
+            double d = RB + 1 + r.nextDouble() * 12;
+            int cx = (int) Math.round(Math.sin(a) * d), cz = CZ - (int) Math.round(Math.cos(a) * d);
+            if (nearTrail(cx, cz, 4) || Math.abs(cx) <= 7 && cz < CZ - RB + 14 || height(cx, cz) > 0) {
                 continue; // no tapar la entrada, la salida ni el camino
             }
-            double rr = 1.2 + r.nextDouble() * 1.6;
+            double rr = 1.1 + r.nextDouble() * 1.7;
             int ri = (int) Math.ceil(rr);
+            StructBp.Anchor an = b.anchor(cx, cz);
+            boolean obs = r.nextDouble() < 0.2;
             for (int x = -ri; x <= ri; x++) {
-                for (int y = 0; y <= ri; y++) {
+                for (int y = -1; y <= ri; y++) {
                     for (int z = -ri; z <= ri; z++) {
-                        if (x * x + y * y * 1.5 + z * z <= rr * rr) {
-                            b.set(cx + x, y, cz + z, r.nextDouble() < 0.15 ? "magma_block" : "basalt[axis=y]");
+                        if (x * x + (y + 0.5) * (y + 0.5) * 1.6 + z * z <= rr * rr) {
+                            double k = r.nextDouble();
+                            an.set(x, y, z, obs ? (k < 0.7 ? "obsidian" : "crying_obsidian") : k < 0.12 ? "magma_block" : k < 0.3 ? "blackstone" : "basalt[axis=y]");
                         }
                     }
                 }
             }
         }
+    }
+
+    /** Fumarolas sueltas por el llano de ceniza (apoyadas en el suelo real), con costra de azufre. */
+    private static void plainFumaroles(StructBp b) {
+        java.util.Random r = new java.util.Random(4411);
+        int placed = 0;
+        for (int tries = 0; tries < 200 && placed < 6; tries++) {
+            double a = r.nextDouble() * Math.PI * 2;
+            double d = RB + 4 + r.nextDouble() * 16;
+            int x = (int) Math.round(Math.sin(a) * d), z = CZ - (int) Math.round(Math.cos(a) * d);
+            StructBp.Blend bl = b.blendAt(x, z);
+            if (bl == null || bl.top() == null || height(x, z) > 0 || nearTrail(x, z, 4) || Math.abs(x) <= 7 && z < 14) {
+                continue;
+            }
+            StructBp.Anchor an = b.anchor(x, z);
+            an.set(0, -1, 0, FUMAROLA);
+            for (int dx = -2; dx <= 2; dx++) {
+                for (int dz = -2; dz <= 2; dz++) {
+                    if ((dx != 0 || dz != 0) && dx * dx + dz * dz <= 5 && r.nextDouble() < 0.6) {
+                        an.set(dx, -1, dz, r.nextDouble() < 0.6 ? "yellow_terracotta" : r.nextDouble() < 0.5 ? "white_terracotta" : "tuff");
+                    }
+                }
+            }
+            placed++;
+        }
+    }
+
+    // ================================================================== cofres
+
+    private static void chest(StructBp b, int x, int y, int z, String facing, String kind, int lock) {
+        String block = kind.equals("LOCKED") ? VCL : VC;
+        String nbt = "{Kind:\"" + kind + "\",Stage:4" + (lock > 0 ? ",LockLevel:" + lock : "") + "}";
+        b.setNbt(x, y, z, block + "[facing=" + facing + "]", nbt);
+    }
+
+    /**
+     * Cofres del volcán (cada jugador tiene su botín): provisiones al aterrizar y antes del santuario, premio por cruzar el puente,
+     * cerradura junto al altar de los cultistas, dos en la sala del tesoro (premio del acertijo de los braseros, uno con la cerradura
+     * más difícil) y el gran cofre del guardián tras la reja.
+     */
+    private static void chests(StructBp b) {
+        chest(b, 0, F_HALL, CZ - 10, "south", "ANTE", 0);
+        chest(b, 12, F_BRIDGE, 82, "west", "TRIAL", 0);
+        chest(b, -25, F_ERUPT + 1, 80, "east", "LOCKED", 3);
+        chest(b, 22, F_ERUPT, 74, "west", "TRIAL", 0);
+        chest(b, 22, F_ERUPT, 78, "west", "LOCKED", 5);
+        chest(b, 12, F_GUARD, 103, "north", "CRYPT", 0);
+        chest(b, -8, F_SANCT, 90, "east", "ANTE", 0);
     }
 
     // ================================================================== enemigos
@@ -780,7 +1364,12 @@ final class DesignVolcan {
         // altar
         mob(b, -21, F_ERUPT + 1, 74, "cultista_volcan");
         mob(b, -21, F_ERUPT + 1, 79, "cultista_volcan");
-        // antes del santuario
-        mob(b, 12, F_ERUPT - 10, 99, "cultista_volcan");
+        // sala del tesoro: dos diablillos esperan tras la reja
+        mob(b, 19, F_ERUPT + 2, 76, "diablillo");
+        mob(b, 20, F_ERUPT + 2, 73, "diablillo");
+        // a mitad del pasillo hacia el guardián
+        mob(b, 28, F_GUARD, 91, "cultista_volcan");
+        // el guardián
+        mob(b, GX, F_GUARD, GZ, "gran_salamandra");
     }
 }

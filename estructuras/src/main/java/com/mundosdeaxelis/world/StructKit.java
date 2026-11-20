@@ -97,6 +97,23 @@ public final class StructKit {
         return a + (b - a) * fx + (c - a) * fz + (a - b - c + d) * fx * fz;
     }
 
+    /** Ruido de valor en 3D (0..1), suave: manchas y vetas en las paredes de las cuevas. */
+    public static double vnoise3(long seed, double x, double y, double z) {
+        int x0 = (int) Math.floor(x), y0 = (int) Math.floor(y), z0 = (int) Math.floor(z);
+        double fx = x - x0, fy = y - y0, fz = z - z0;
+        fx = fx * fx * (3 - 2 * fx);
+        fy = fy * fy * (3 - 2 * fy);
+        fz = fz * fz * (3 - 2 * fz);
+        double c000 = hash01(seed + 7919L * y0, x0, z0), c100 = hash01(seed + 7919L * y0, x0 + 1, z0);
+        double c010 = hash01(seed + 7919L * (y0 + 1), x0, z0), c110 = hash01(seed + 7919L * (y0 + 1), x0 + 1, z0);
+        double c001 = hash01(seed + 7919L * y0, x0, z0 + 1), c101 = hash01(seed + 7919L * y0, x0 + 1, z0 + 1);
+        double c011 = hash01(seed + 7919L * (y0 + 1), x0, z0 + 1), c111 = hash01(seed + 7919L * (y0 + 1), x0 + 1, z0 + 1);
+        double a0 = c000 + (c100 - c000) * fx, a1 = c010 + (c110 - c010) * fx;
+        double b0 = c001 + (c101 - c001) * fx, b1 = c011 + (c111 - c011) * fx;
+        double a = a0 + (a1 - a0) * fy, b = b0 + (b1 - b0) * fy;
+        return a + (b - a) * fz;
+    }
+
     /** Ruido de 0 a 1 con varias escalas; {@code scale} = tamaño de las manchas en bloques. */
     public static double fbm(long seed, double x, double z, double scale) {
         double s = 1.0 / scale;

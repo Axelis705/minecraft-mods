@@ -1,0 +1,60 @@
+{
+ "variants": {
+  "axis=x,channel=0,open=false": {
+   "model": "mundos_de_axelis:block/reja_volcan",
+   "y": 90
+  },
+  "axis=x,channel=1,open=false": {
+   "model": "mundos_de_axelis:block/reja_volcan",
+   "y": 90
+  },
+  "axis=x,channel=2,open=false": {
+   "model": "mundos_de_axelis:block/reja_volcan",
+   "y": 90
+  },
+  "axis=x,channel=3,open=false": {
+   "model": "mundos_de_axelis:block/reja_volcan",
+   "y": 90
+  },
+  "axis=x,channel=0,open=true": {
+   "model": "mundos_de_axelis:block/reja_volcan",
+   "y": 90
+  },
+  "axis=x,channel=1,open=true": {
+   "model": "mundos_de_axelis:block/reja_volcan",
+   "y": 90
+  },
+  "axis=x,channel=2,open=true": {
+   "model": "mundos_de_axelis:block/reja_volcan",
+   "y": 90
+  },
+  "axis=x,channel=3,open=true": {
+   "model": "mundos_de_axelis:block/reja_volcan",
+   "y": 90
+  },
+  "axis=z,channel=0,open=false": {
+   "model": "mundos_de_axelis:block/reja_volcan"
+  },
+  "axis=z,channel=1,open=false": {
+   "model": "mundos_de_axelis:block/reja_volcan"
+  },
+  "axis=z,channel=2,open=false": {
+   "model": "mundos_de_axelis:block/reja_volcan"
+  },
+  "axis=z,channel=3,open=false": {
+   "model": "mundos_de_axelis:block/reja_volcan"
+  },
+  "axis=z,channel=0,open=true": {
+   "model": "mundos_de_axelis:block/reja_volcan"
+  },
+  "axis=z,channel=1,open=true": {
+   "model": "mundos_de_axelis:block/reja_volcan"
+  },
+  "axis=z,channel=2,open=true": {
+   "model": "mundos_de_axelis:block/reja_volcan"
+  },
+  "axis=z,channel=3,open=true": {
+   "model": "mundos_de_axelis:block/reja_volcan"
+  }
+ }
+}

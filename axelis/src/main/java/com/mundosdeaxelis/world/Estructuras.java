@@ -14,21 +14,15 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -92,15 +86,14 @@ public final class Estructuras {
         return src.getEntity() == null ? new UUID(0, 0) : src.getEntity().getUUID();
     }
 
-    private record Snap(BlockState old, CompoundTag be) {
-    }
-
     private static final class Undo {
         final ResourceKey<Level> dim;
         final String title;
-        final Map<BlockPos, Snap> snaps = new LinkedHashMap<>();
+        final Map<BlockPos, StructPlacer.Snap> snaps = new LinkedHashMap<>();
         /** Enemigos puestos con la estructura (al deshacer se quitan también). */
         final List<UUID> mobs = new ArrayList<>();
+        /** Volcán apuntado en el registro (para quitarlo al deshacer); -1 si no es un volcán. */
+        int volcano = -1;
 
         Undo(ResourceKey<Level> dim, String title) {
             this.dim = dim;
@@ -117,144 +110,34 @@ public final class Estructuras {
         StructBp bp = StructDesigns.make(kind.id);
         Rotation r = rotationFor(fwd);
         Undo undo = new Undo(level.dimension(), kind.title);
-        int minY = level.getMinBuildHeight();
-        int maxY = level.getMaxBuildHeight();
-
-        // cimientos: columnas hacia abajo hasta tocar suelo firme
-        for (StructBp.Found f : bp.found) {
-            for (int x = f.x0(); x <= f.x1(); x++) {
-                for (int z = f.z0(); z <= f.z1(); z++) {
-                    BlockPos base = origin.offset(new BlockPos(x, 0, z).rotate(r));
-                    for (int y = origin.getY() - 1; y > origin.getY() - 1 - 24 && y >= minY; y--) {
-                        BlockPos p = new BlockPos(base.getX(), y, base.getZ());
-                        BlockState cur = level.getBlockState(p);
-                        boolean soft = cur.isAir() || !cur.getFluidState().isEmpty() || cur.canBeReplaced() || cur.is(BlockTags.LEAVES) || cur.is(BlockTags.LOGS);
-                        if (!soft) {
-                            break;
-                        }
-                        BlockState fs = state(f.state());
-                        if (fs != null) {
-                            put(level, undo, p, fs.rotate(r));
-                        }
-                    }
-                }
+        StructPlacer placer = new StructPlacer(level, bp, origin, r, undo.snaps);
+        if (kind == Kind.VOLCAN) {
+            placer.onMob(Volcanes::tagMob);
+            Volcanes.prime(bp);
+        }
+        placer.runAll();
+        for (UUID id : placer.mobs) {
+            if (id != null) {
+                undo.mobs.add(id);
             }
         }
-        // el plano, de abajo hacia arriba (para que lo que cuelga o se apoya encuentre su apoyo)
-        List<Map.Entry<Long, String>> entries = new ArrayList<>(bp.m.entrySet());
-        entries.sort((a1, b1) -> Integer.compare(StructBp.ky(a1.getKey()), StructBp.ky(b1.getKey())));
-        List<BlockPos> reshape = new ArrayList<>();
-        List<BlockPos> placed = new ArrayList<>(entries.size());
-        for (Map.Entry<Long, String> e : entries) {
-            long key = e.getKey();
-            BlockPos local = new BlockPos(StructBp.kx(key), StructBp.ky(key), StructBp.kz(key));
-            BlockPos p = origin.offset(local.rotate(r));
-            if (p.getY() < minY || p.getY() >= maxY) {
-                continue;
-            }
-            BlockState st0 = state(e.getValue());
-            if (st0 == null) {
-                continue;
-            }
-            BlockState st = st0.rotate(r);
-            put(level, undo, p, st);
-            placed.add(p);
-            Block b = st.getBlock();
-            if (b instanceof StairBlock || b instanceof FenceBlock || b instanceof WallBlock || b instanceof IronBarsBlock) {
-                reshape.add(p);
-            }
+        if (kind == Kind.VOLCAN) {
+            undo.volcano = Volcanes.register(level, origin, r, false, placer.mobs);
         }
-        // escaleras, vallas, muros y barrotes: ahora que todo está puesto, que se conecten bien
-        for (BlockPos p : reshape) {
-            BlockState cur = level.getBlockState(p);
-            BlockState fixed = Block.updateFromNeighbourShapes(cur, level, p);
-            if (fixed != cur) {
-                level.setBlock(p, fixed, FLAGS);
-            }
-        }
-        // red de seguridad: lo que no pueda sostenerse (nenúfar sin agua, antorcha sin muro, alfombra en el aire...) se quita ahora,
-        // en silencio; si no, más tarde se rompería solo y dejaría el objeto tirado en el suelo
-        int removed = dropUnsupported(level, placed);
-        int mobs = spawnMobs(level, bp, origin, r, undo);
         Deque<Undo> dq = UNDO.computeIfAbsent(key(src), k -> new ArrayDeque<>());
         dq.push(undo);
         while (dq.size() > MAX_UNDO) {
             dq.removeLast();
         }
         int n = undo.snaps.size();
+        int removed = placer.removed;
+        int mobs = undo.mobs.size();
         // unos pocos pueden quedar por culpa del terreno de prueba (un mundo plano donde la estructura queda en el aire): se toleran 3
         String extra = removed > 3 ? "SIN APOYO " + removed : "apoyo ok";
         String foes = mobs > 0 ? ", " + mobs + " enemigos" : "";
-        src.sendSuccess(() -> Component.literal(kind.title + " construida [" + extra + "] (" + n + " bloques" + foes + "). Para quitarla: /mundos estructura deshacer"), true);
+        String trees = placer.treesCut + placer.treesCharred > 0 ? ", árboles quitados " + placer.treesCut + " y quemados " + placer.treesCharred : "";
+        src.sendSuccess(() -> Component.literal(kind.title + " construida [" + extra + "] (" + n + " bloques" + foes + trees + "). Para quitarla: /mundos estructura deshacer"), true);
         return 1;
-    }
-
-    /** Pone los enemigos del plano (una sola vez: no reaparecen) y los apunta para poder quitarlos al deshacer. */
-    private static int spawnMobs(ServerLevel level, StructBp bp, BlockPos origin, Rotation r, Undo undo) {
-        int n = 0;
-        for (StructBp.Mob m : bp.mobs) {
-            net.minecraft.world.entity.EntityType<?> type = net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES
-                    .getValue(new net.minecraft.resources.ResourceLocation(com.mundosdeaxelis.MundosDeAxelis.MODID, m.kind()));
-            if (type == null) {
-                continue;
-            }
-            net.minecraft.world.entity.Entity e = type.create(level);
-            if (!(e instanceof net.minecraft.world.entity.Mob mob)) {
-                continue;
-            }
-            BlockPos p = origin.offset(new BlockPos(m.x(), m.y(), m.z()).rotate(r));
-            mob.moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, level.random.nextFloat() * 360.0F, 0.0F);
-            mob.finalizeSpawn(level, level.getCurrentDifficultyAt(p), net.minecraft.world.entity.MobSpawnType.STRUCTURE, null, null);
-            mob.setPersistenceRequired();
-            if (level.addFreshEntity(mob)) {
-                undo.mobs.add(mob.getUUID());
-                n++;
-            }
-        }
-        return n;
-    }
-
-    /** Quita (sin soltar objetos) los bloques colocados que no pueden sostenerse; repite por si al quitar uno otro se queda sin apoyo. */
-    private static int dropUnsupported(ServerLevel level, List<BlockPos> placed) {
-        int total = 0;
-        Map<String, Integer> byType = new java.util.TreeMap<>();
-        for (int pass = 0; pass < 6; pass++) {
-            int changed = 0;
-            for (BlockPos p : placed) {
-                BlockState cur = level.getBlockState(p);
-                if (cur.isAir() || cur.canSurvive(level, p)) {
-                    continue;
-                }
-                byType.merge(String.valueOf(ForgeRegistries.BLOCKS.getKey(cur.getBlock())), 1, Integer::sum);
-                level.setBlock(p, cur.getFluidState().createLegacyBlock(), FLAGS);
-                changed++;
-            }
-            total += changed;
-            if (changed == 0) {
-                break;
-            }
-        }
-        if (total > 0) {
-            com.mojang.logging.LogUtils.getLogger().info("[Estructuras] sin apoyo quitados: {}", byType);
-        }
-        return total;
-    }
-
-    /** Pone un bloque guardando antes lo que había (y su entidad de bloque, si tenía). */
-    private static void put(ServerLevel level, Undo undo, BlockPos p, BlockState st) {
-        BlockState old = level.getBlockState(p);
-        if (!undo.snaps.containsKey(p)) {
-            BlockEntity be = level.getBlockEntity(p);
-            undo.snaps.put(p.immutable(), new Snap(old, be == null ? null : be.saveWithFullMetadata()));
-        }
-        if (old == st) {
-            return;
-        }
-        BlockEntity be = level.getBlockEntity(p);
-        if (be != null) {
-            Clearable.tryClear(be);
-        }
-        level.setBlock(p, st, FLAGS);
     }
 
     private static int undo(CommandSourceStack src, int times) {
@@ -271,6 +154,9 @@ public final class Estructuras {
             if (level == null) {
                 continue;
             }
+            if (u.volcano >= 0) {
+                Volcanes.unregister(src.getServer(), u.volcano);
+            }
             for (UUID id : u.mobs) {
                 net.minecraft.world.entity.Entity e = level.getEntity(id);
                 if (e != null) {
@@ -278,19 +164,19 @@ public final class Estructuras {
                 }
             }
             // al revés: primero lo de arriba, para no dejar cosas sin apoyo
-            List<Map.Entry<BlockPos, Snap>> list = new ArrayList<>(u.snaps.entrySet());
+            List<Map.Entry<BlockPos, StructPlacer.Snap>> list = new ArrayList<>(u.snaps.entrySet());
             list.sort((a, b) -> Integer.compare(b.getKey().getY(), a.getKey().getY()));
-            for (Map.Entry<BlockPos, Snap> e : list) {
+            for (Map.Entry<BlockPos, StructPlacer.Snap> e : list) {
                 BlockPos p = e.getKey();
                 BlockEntity cur = level.getBlockEntity(p);
                 if (cur != null) {
                     Clearable.tryClear(cur);
                 }
-                level.setBlock(p, e.getValue().old, FLAGS);
-                if (e.getValue().be != null) {
+                level.setBlock(p, e.getValue().old(), FLAGS);
+                if (e.getValue().be() != null) {
                     BlockEntity be = level.getBlockEntity(p);
                     if (be != null) {
-                        be.load(e.getValue().be);
+                        be.load(e.getValue().be());
                         be.setChanged();
                     }
                 }
@@ -319,7 +205,7 @@ public final class Estructuras {
     private static final BlockState NONE = Blocks.BARRIER.defaultBlockState();
 
     /** Convierte un texto como {@code oak_stairs[facing=north,half=bottom]} en un bloque; devuelve null si ese bloque no existe. */
-    private static BlockState state(String spec) {
+    static BlockState state(String spec) {
         BlockState c = CACHE.get(spec);
         if (c != null) {
             return c == NONE ? null : c;

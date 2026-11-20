@@ -28,6 +28,11 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.NUCLEO_VOLCAN.get());
                         output.accept(ModItems.BASALTO_AGRIETADO.get());
                         output.accept(ModItems.RESPIRADERO_VOLCAN.get());
+                        output.accept(ModItems.FUMAROLA.get());
+                        output.accept(ModItems.CENIZA_VOLCAN.get());
+                        output.accept(ModItems.VETA_MAGMA.get());
+                        output.accept(ModItems.BRASERO_VOLCAN.get());
+                        output.accept(ModItems.REJA_VOLCAN.get());
                         output.accept(ModItems.REY_BROTE_SPAWN_EGG.get());
                         output.accept(ModItems.LOBO_ARTICO_SPAWN_EGG.get());
                         output.accept(ModItems.ARCHIMAGO_SPAWN_EGG.get());
@@ -56,6 +61,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.VAULT_CHEST_FORGE.get());
                         output.accept(ModItems.VAULT_CHEST_SEALED_FORGE.get());
                         output.accept(ModItems.VAULT_CHEST_LOCKED_FORGE.get());
+                        output.accept(ModItems.VAULT_CHEST_VOLCANO.get());
+                        output.accept(ModItems.VAULT_CHEST_LOCKED_VOLCANO.get());
                         output.accept(ModItems.GOLDEN_RIVET.get());
                         output.accept(ModItems.POLINIZADOR_SPAWN_EGG.get());
                         output.accept(ModItems.ESPINOSO_SPAWN_EGG.get());

@@ -44,11 +44,14 @@ public final class BossBars {
         boolean forest = ModDimensions.isForest(mc.level.dimension());
         boolean forge = ModDimensions.isForge(mc.level.dimension());
         boolean tower = ModDimensions.isTower(mc.level.dimension());
-        boolean volcano = ModDimensions.isVolcano(mc.level.dimension());
+        LerpingBossEvent boss = event.getBossEvent();
+        // la Gran Salamandra (etapa 255) vive en el volcán del mundo normal: también lleva la barra del volcán
+        boolean volcano = ModDimensions.isVolcano(mc.level.dimension())
+                || boss.getName().getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents tc
+                && "entity.mundos_de_axelis.gran_salamandra".equals(tc.getKey());
         if (!forest && !forge && !tower && !volcano) {
             return;
         }
-        LerpingBossEvent boss = event.getBossEvent();
         if (volcano) {
             drawVolcano(event, boss, mc);
             return;
@@ -200,9 +203,15 @@ public final class BossBars {
                 g.fill(x + x0, y + 2, x + x1, y + 4, 0x48FFFFFF);
             }
         }
-        // marcas de las fases (66 % y 33 % de vida)
-        g.fill(x + 120, y + 2, x + 121, y + 8, 0xFF1A0804);
-        g.fill(x + 60, y + 2, x + 61, y + 8, 0xFF1A0804);
+        if (boss.getName().getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents tc
+                && "entity.mundos_de_axelis.gran_salamandra".equals(tc.getKey())) {
+            // la Gran Salamandra cambia a media vida
+            g.fill(x + 91, y + 2, x + 92, y + 8, 0xFF1A0804);
+        } else {
+            // marcas de las fases (66 % y 33 % de vida)
+            g.fill(x + 120, y + 2, x + 121, y + 8, 0xFF1A0804);
+            g.fill(x + 60, y + 2, x + 61, y + 8, 0xFF1A0804);
+        }
         if (chained(mc)) {
             g.blit(VOLCANO, x, y + 2, 0, 56, 182, 6);
         }

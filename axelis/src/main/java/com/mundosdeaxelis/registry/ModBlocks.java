@@ -113,6 +113,54 @@ public final class ModBlocks {
                         return ph >= 2 ? 14 : ph == 1 ? 9 : 5;
                     })));
 
+    /** Fumarola del volcán (etapa 255): echa vapor sin parar; adorno de la ladera, sin daño. */
+    public static final RegistryObject<Block> FUMAROLA = BLOCKS.register("fumarola",
+            () -> new com.mundosdeaxelis.block.FumarolaBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(1.5F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.BASALT)
+                    .lightLevel(state -> 5)));
+
+    /** Roca de ceniza del volcán (etapa 255): en los techos de la dungeon, deja caer ceniza y a veces retumba. */
+    public static final RegistryObject<Block> CENIZA_VOLCAN = BLOCKS.register("ceniza_volcan",
+            () -> new com.mundosdeaxelis.block.CenizaVolcanBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GRAY)
+                    .strength(1.25F, 4.2F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.BASALT)));
+
+    /** Veta de magma (etapa 255): roca con grietas que brillan en las paredes del volcán. */
+    public static final RegistryObject<Block> VETA_MAGMA = BLOCKS.register("veta_magma",
+            () -> new com.mundosdeaxelis.block.VetaMagmaBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.NETHER)
+                    .strength(1.5F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.BASALT)
+                    .lightLevel(state -> 6)));
+
+    /** Brasero del volcán (etapa 255): el acertijo de fuego de la sala de erupciones. */
+    public static final RegistryObject<Block> BRASERO_VOLCAN = BLOCKS.register("brasero_volcan",
+            () -> new com.mundosdeaxelis.block.BraseroVolcanBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F)
+                    .noLootTable()
+                    .noOcclusion()
+                    .sound(SoundType.METAL)
+                    .pushReaction(PushReaction.BLOCK)
+                    .lightLevel(state -> state.getValue(com.mundosdeaxelis.block.BraseroVolcanBlock.LIT) ? 15 : 3)));
+
+    /** Reja del volcán (etapa 255): se abre al vencer al guardián o al resolver el acertijo de los braseros. */
+    public static final RegistryObject<Block> REJA_VOLCAN = BLOCKS.register("reja_volcan",
+            () -> new com.mundosdeaxelis.block.RejaVolcanBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F)
+                    .noLootTable()
+                    .noOcclusion()
+                    .sound(SoundType.CHAIN)
+                    .isValidSpawn((st, l, p, t) -> false)
+                    .pushReaction(PushReaction.BLOCK)));
+
     /** Brasero Eterno: fuente de calor de las dungeons de frío (luz 15 encendido). */
     public static final RegistryObject<Block> ETERNAL_BRAZIER = BLOCKS.register("eternal_brazier",
             () -> new com.mundosdeaxelis.block.EternalBrazierBlock(BlockBehaviour.Properties.of()
@@ -174,6 +222,24 @@ public final class ModBlocks {
                     .noOcclusion()
                     .noLootTable()
                     .lightLevel(state -> 5), false, true));
+
+    /** Versiones del volcán (etapa 255): basalto con grietas de magma y oro ennegrecido. */
+    public static final RegistryObject<Block> VAULT_CHEST_VOLCANO = BLOCKS.register("vault_chest_volcano",
+            () -> new com.mundosdeaxelis.block.VaultChestBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.NETHER_BRICKS)
+                    .noOcclusion()
+                    .noLootTable()
+                    .lightLevel(state -> 7), false));
+    public static final RegistryObject<Block> VAULT_CHEST_LOCKED_VOLCANO = BLOCKS.register("vault_chest_locked_volcano",
+            () -> new com.mundosdeaxelis.block.VaultChestBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.NETHER_BRICKS)
+                    .noOcclusion()
+                    .noLootTable()
+                    .lightLevel(state -> 6), false, true));
 
     /** Mesa del Artífice: mejoras, tienda de llaves y Archivo. */
     public static final RegistryObject<Block> ARTIFICER_TABLE = BLOCKS.register("artificer_table",
