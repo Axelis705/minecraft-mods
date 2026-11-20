@@ -203,6 +203,13 @@ public final class AutoTest {
 
     /** Dónde se construye el volcán en la prueba: el plano (x, y, z) queda en el mundo en (x, VY + y, VZ + z). */
     private static final int VY = -52, VZ = 136;
+    /** Santuario del Bosque (etapa 256): origen de la prueba (en el mundo plano, lejos del volcán). */
+    private static final int SX = 260, SY = -60, SZ0 = 20;
+    private static volatile boolean guardBroke;
+
+    private static void lookS(double x, double y, double z, double tx, double ty, double tz) {
+        standLooking(SX + x, SY + y, SZ0 + z, SX + tx, SY + ty, SZ0 + tz);
+    }
 
     /** Como {@link #standLooking}, pero en coordenadas del plano del volcán. */
     private static void lookV(double x, double y, double z, double tx, double ty, double tz) {
@@ -1347,6 +1354,45 @@ public final class AutoTest {
         });
         add("erupción (foto)", 2000, () -> shot("44_volcan_erupcion"));
         add("erupción b (foto)", 300, () -> shot("45_volcan_erupcion"));
+        // etapa 256: el Santuario del Bosque (la primera estructura) y que las estructuras no se pueden picar
+        add("santuario", 6000, () -> {
+            open(null);
+            clearMobs();
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " rotated 0 0 run mundos estructura bosque");
+        });
+        add("santuario de frente", 3000, () -> lookS(0, 6, -12, 0, 3, 22));
+        add("santuario de frente (foto)", 300, () -> shot("46_santuario_frente"));
+        add("santuario de lado", 2500, () -> lookS(24, 16, 2, 0, 2, 24));
+        add("santuario de lado (foto)", 300, () -> shot("47_santuario_lado"));
+        add("santuario dentro", 2500, () -> lookS(0.5, 0, 20.5, 0.5, 1, 30.5));
+        add("santuario dentro (foto)", 300, () -> {
+            net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(SX, SY + 1, SZ0 + 30);
+            String id = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level.getBlockState(p).getBlock()).getPath();
+            check("la Piedra de Portal: Naturaleza está en el altar del santuario (" + id + ")", id.equals("portal_stone_forest"));
+            check("enemigos del santuario a la vista (" + clientCount(com.mundosdeaxelis.entity.Brote.class) + " brotes, "
+                    + clientCount(com.mundosdeaxelis.entity.Raizal.class) + " raizal)", clientCount(com.mundosdeaxelis.entity.Brote.class) >= 2
+                    && clientCount(com.mundosdeaxelis.entity.Raizal.class) >= 1);
+            shot("48_santuario_dentro");
+        });
+        add("celda", 2500, () -> lookS(4.5, 0, 23.5, 11, 1, 24.5));
+        add("celda (foto)", 300, () -> shot("49_santuario_celda"));
+        add("no se puede picar", 1500, () -> {
+            cmd("gamemode survival @a");
+            onServer(sp -> {
+                // una pared del santuario y la Piedra de Portal: romper como un jugador en supervivencia no debe funcionar
+                net.minecraft.core.BlockPos wall = new net.minecraft.core.BlockPos(SX - 8, SY + 1, SZ0 + 27);
+                net.minecraft.core.BlockPos stone = new net.minecraft.core.BlockPos(SX, SY + 1, SZ0 + 30);
+                boolean a = sp.gameMode.destroyBlock(wall);
+                boolean b = sp.gameMode.destroyBlock(stone);
+                guardBroke = a || b || sp.serverLevel().getBlockState(wall).isAir() || sp.serverLevel().getBlockState(stone).isAir();
+            });
+        });
+        add("no se puede picar (comprobar)", 300, () -> {
+            check("las estructuras no se pueden picar en supervivencia", !guardBroke);
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " run mundos estructura deshacer");
+        });
         // 7. retratos para las cartas: tres "estudios" cerrados (volcán, forja y torre) y cada criatura quieta, de frente, sin interfaz
         add("estudios", 3000, () -> {
             clearMobs();

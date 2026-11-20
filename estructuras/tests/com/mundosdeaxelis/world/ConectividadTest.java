@@ -6,19 +6,22 @@ package com.mundosdeaxelis.world;
  * Los topes de las tres estructuras antiguas son lo que queda de cornisas y azoteas que el unificador no puede (ni debe) abrir;
  * la torre nueva está planificada sala por sala: no se tolera ninguna sala sin acceso ni ninguna trampa. En el volcán se
  * tolera 1 (lo alto del corazón de piedra que cuelga en el santuario, adorno) y la caída por la lava falsa cuenta como camino.
+ * En el Santuario del Bosque se tolera 1: la celda del NPC (cerrada con una puerta de hierro a propósito).
  */
 public class ConectividadTest {
     public static void main(String[] args) {
-        String[] kinds = {"bosque", "forja", "hielo", "torre", "volcan"};
-        int[] maxRooms = {3, 16, 2, 0, 1};
-        int[] maxTraps = {2, 3, 2, 0, 0};
+        String[] kinds = {"bosque", "forja", "hielo", "torre", "volcan", "santuario"};
+        int[] maxRooms = {3, 16, 2, 0, 1, 1};
+        int[] maxTraps = {2, 3, 2, 0, 0, 0};
+        // dónde empieza el recorrido (z): el santuario entra por el camino de tierra, que va sobre el terreno real hasta el arco
+        int[] startZ = {-3, -3, -3, -3, -3, 7};
         int fails = 0;
         for (int i = 0; i < kinds.length; i++) {
             StructBp bp = StructDesigns.make(kinds[i]);
             if (!bp.unsupported.isEmpty()) {
                 System.out.println(kinds[i] + ": bloques sin apoyo quitados del plano " + bp.unsupported);
             }
-            int[] r = Linker.audit(bp, 0, 0, -3, 10);
+            int[] r = Linker.audit(bp, 0, 0, startZ[i], 10);
             boolean ok = r[2] == 0 && r[0] <= maxRooms[i] && r[1] <= maxTraps[i];
             System.out.println(kinds[i] + ": salas sin acceso " + r[0] + " (tope " + maxRooms[i] + "), trampas " + r[1] + " (tope " + maxTraps[i] + "), entrada "
                     + (r[2] == 0 ? "transitable" : "BLOQUEADA") + (ok ? "  OK" : "  FALLA"));

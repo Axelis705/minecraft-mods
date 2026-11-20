@@ -2022,5 +2022,6 @@
   "message.mundos_de_axelis.gran_salamandra.dead": "The Great Salamander has fallen! The gate to the sanctuary opened.",
   "message.mundos_de_axelis.gran_salamandra.dead_nogate": "The Great Salamander has fallen!",
   "message.mundos_de_axelis.volcan.reset": "The volcano rumbles: its guardians are back.",
-  "message.mundos_de_axelis.volcan.reset_loot": "The volcano rumbles: its guardians are back and the vaults have fresh loot."
+  "message.mundos_de_axelis.volcan.reset_loot": "The volcano rumbles: its guardians are back and the vaults have fresh loot.",
+  "message.mundos_de_axelis.estructura.protegida": "This structure can't be broken."
 }

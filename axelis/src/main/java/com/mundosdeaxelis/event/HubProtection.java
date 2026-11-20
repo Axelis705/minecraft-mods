@@ -27,6 +27,15 @@ public final class HubProtection {
         }
     }
 
+    /** Ni siquiera empieza a picarse (sin grietas que luego desaparecen): funciona también en el cliente. */
+    @SubscribeEvent
+    public static void onBreakSpeed(net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed event) {
+        Player player = event.getEntity();
+        if (!player.isCreative() && ModDimensions.isBoss(player.level().dimension())) {
+            event.setNewSpeed(0.0F);
+        }
+    }
+
     @SubscribeEvent
     public static void onPlace(BlockEvent.EntityPlaceEvent event) {
         if (inHub(event.getLevel()) && !(event.getEntity() instanceof Player p && p.isCreative())) {

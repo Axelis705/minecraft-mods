@@ -21,7 +21,8 @@ public final class OwnCommands {
                                 .executes(ctx -> unlock(ctx.getSource(), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "etapa")))))
                 .then(TestCommands.build())
                 .then(com.mundosdeaxelis.world.Estructuras.build())
-                .then(com.mundosdeaxelis.world.Volcanes.command()));
+                .then(com.mundosdeaxelis.world.Volcanes.command())
+                .then(com.mundosdeaxelis.world.NaturalGen.command()));
     }
 
     /**

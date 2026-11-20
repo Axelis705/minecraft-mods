@@ -8,12 +8,14 @@ public final class StructDesigns {
     private StructDesigns() {
     }
 
-    public static StructBp make(String kind) {
+    /** Sincronizado: algunos diseños usan datos estáticos y la protección y los volcanes los calculan también en otro hilo. */
+    public static synchronized StructBp make(String kind) {
         StructBp bp = switch (kind) {
             case "bosque" -> DesignBosque.make();
             case "forja" -> DesignForja.make();
             case "hielo" -> DesignHielo.make();
             case "volcan" -> DesignVolcan.make();
+            case "santuario" -> DesignSantuario.make();
             default -> DesignTorre.make();
         };
         // lo que el juego rompería solo (antorcha sin muro, farola en el aire...) se quita del plano: así lo revisado es lo construido

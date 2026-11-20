@@ -31,7 +31,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Estructuras de fondo para grabar videos, hechas solo con comandos (como WorldEdit):
- * {@code /mundos estructura <bosque|forja|hielo|torre|volcan>} la construye delante de quien escribe, mirando hacia él;
+ * {@code /mundos estructura <bosque|templo_bosque|forja|hielo|torre|volcan>} la construye delante de quien escribe, mirando hacia él;
  * {@code /mundos estructura deshacer [veces]} la quita y deja el terreno como estaba (bloques, entidades de bloque y todo).
  * Los bloques propios del mod (decoraciones) se usan si existen; si no, simplemente se omiten.
  */
@@ -54,19 +54,25 @@ public final class Estructuras {
     private Estructuras() {
     }
 
-    private enum Kind {
-        BOSQUE("bosque", "Gran templo del bosque"),
-        FORJA("forja", "Gran fundición de la forja"),
-        HIELO("hielo", "Ciudadela de cristal"),
-        TORRE("torre", "Fortaleza en ruinas"),
-        VOLCAN("volcan", "El Volcán");
+    enum Kind {
+        /** Etapa 256: la estructura del bosque de verdad (pequeña, con la Piedra de Portal y la celda del NPC). */
+        BOSQUE("bosque", "Santuario del Bosque", "santuario"),
+        /** El templo grande de antes (fondo para videos). */
+        TEMPLO("templo_bosque", "Gran templo del bosque", "bosque"),
+        FORJA("forja", "Gran fundición de la forja", "forja"),
+        HIELO("hielo", "Ciudadela de cristal", "hielo"),
+        TORRE("torre", "Fortaleza en ruinas", "torre"),
+        VOLCAN("volcan", "El Volcán", "volcan");
 
         final String id;
         final String title;
+        /** Nombre del diseño en {@link StructDesigns#make}. */
+        final String design;
 
-        Kind(String id, String title) {
+        Kind(String id, String title, String design) {
             this.id = id;
             this.title = title;
+            this.design = design;
         }
     }
 
@@ -94,6 +100,8 @@ public final class Estructuras {
         final List<UUID> mobs = new ArrayList<>();
         /** Volcán apuntado en el registro (para quitarlo al deshacer); -1 si no es un volcán. */
         int volcano = -1;
+        /** Número en {@link StructGuard} (la protección contra picar); -1 si no hay. */
+        int guard = -1;
 
         Undo(ResourceKey<Level> dim, String title) {
             this.dim = dim;
@@ -107,7 +115,7 @@ public final class Estructuras {
         Direction fwd = Direction.fromYRot(rot.y);
         BlockPos feet = BlockPos.containing(src.getPosition());
         BlockPos origin = feet.relative(fwd, 16);
-        StructBp bp = StructDesigns.make(kind.id);
+        StructBp bp = StructDesigns.make(kind.design);
         Rotation r = rotationFor(fwd);
         Undo undo = new Undo(level.dimension(), kind.title);
         StructPlacer placer = new StructPlacer(level, bp, origin, r, undo.snaps);
@@ -124,6 +132,8 @@ public final class Estructuras {
         if (kind == Kind.VOLCAN) {
             undo.volcano = Volcanes.register(level, origin, r, false, placer.mobs);
         }
+        // nadie la puede picar en supervivencia (etapa 256)
+        undo.guard = StructGuard.add(level, kind.design, origin, r, bp);
         Deque<Undo> dq = UNDO.computeIfAbsent(key(src), k -> new ArrayDeque<>());
         dq.push(undo);
         while (dq.size() > MAX_UNDO) {
@@ -156,6 +166,9 @@ public final class Estructuras {
             }
             if (u.volcano >= 0) {
                 Volcanes.unregister(src.getServer(), u.volcano);
+            }
+            if (u.guard >= 0) {
+                StructGuard.remove(src.getServer(), u.guard);
             }
             for (UUID id : u.mobs) {
                 net.minecraft.world.entity.Entity e = level.getEntity(id);

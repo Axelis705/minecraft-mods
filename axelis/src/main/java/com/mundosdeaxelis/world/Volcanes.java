@@ -4,7 +4,6 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mundosdeaxelis.MundosDeAxelis;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,9 +24,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.TicketType;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.StructureTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.ChunkPos;
@@ -47,9 +43,7 @@ import net.minecraftforge.fml.common.Mod;
  * vuelven sus enemigos (y la Gran Salamandra), se cierran sus rejas y se apagan los braseros; los cofres se rellenan como mucho
  * una vez por hora (cada jugador, su botín nuevo).</li>
  * <li><b>Música</b>: dentro de la dungeon (bajo la ladera) suena la música del volcán; fuera, la normal.</li>
- * <li><b>Volcanes que aparecen solos</b>: el mundo normal se divide en regiones de 1024 bloques; en algunas (más o menos una de
- * cada tres, siempre las mismas para la misma semilla) hay un volcán, lejos del punto de aparición. Se construye poco a poco cuando
- * alguien pasa a unos 300 bloques, si el terreno sirve (sin agua, no muy desigual, sin aldeas y sin que nadie viva allí).</li>
+ * <li><b>Volcanes que aparecen solos</b>: los decide y construye {@link NaturalGen} (al terminar, se apuntan aquí).</li>
  * </ul>
  * Comandos: {@code /mundos volcan cerca | reiniciar | generar | natural <sí/no>}.
  */
@@ -59,15 +53,10 @@ public final class Volcanes extends SavedData {
     /** Marcas en los enemigos: de qué volcán son y su número en la lista del plano. */
     static final String TAG = "MundosVolcan";
     static final String TAG_I = "MundosVolcanI";
-    static final int REGION = 1024;
-    static final int MIN_SPAWN_DIST = 1200;
     static final long ABSENT = 12000L;
     static final long LOOT_EVERY = 72000L;
     /** Lejos y cerca para la vuelta de los enemigos (en bloques desde el centro del volcán). */
     static final double FAR = 160, NEAR = 64;
-    static final int BUILD_TRIGGER = 320;
-    private static final int TICKET_RADIUS = 7;
-    private static final TicketType<ChunkPos> TICKET = TicketType.create("mundos_volcan", Comparator.comparingLong(ChunkPos::toLong), 20 * 60 * 5);
 
     static final class V {
         int id;
@@ -100,10 +89,28 @@ public final class Volcanes extends SavedData {
     }
 
     private final List<V> list = new ArrayList<>();
-    /** Regiones ya vistas: -1/ausente sin decidir, 0 sin volcán, 1 construido, 2 terreno no válido, 3 + k sitio k pendiente. */
+    /** Regiones y su interruptor de la etapa 255: ahora viven en {@link NaturalGen} (se pasan allí una vez). */
     private final Map<Long, Integer> regions = new HashMap<>();
     private int nextId = 1;
-    private boolean natural = true;
+    private Boolean natural;
+
+    Map<Long, Integer> takeOldRegions() {
+        Map<Long, Integer> m = new HashMap<>(regions);
+        if (!regions.isEmpty()) {
+            regions.clear();
+            setDirty();
+        }
+        return m;
+    }
+
+    Boolean takeOldNatural() {
+        Boolean b = natural;
+        if (natural != null) {
+            natural = null;
+            setDirty();
+        }
+        return b;
+    }
 
     public Volcanes() {
     }
@@ -213,7 +220,7 @@ public final class Volcanes extends SavedData {
     public static Volcanes load(CompoundTag tag) {
         Volcanes vs = new Volcanes();
         vs.nextId = Math.max(1, tag.getInt("NextId"));
-        vs.natural = !tag.contains("Natural") || tag.getBoolean("Natural");
+        vs.natural = tag.contains("Natural") ? tag.getBoolean("Natural") : null;
         for (Tag t : tag.getList("Volcanes", Tag.TAG_COMPOUND)) {
             CompoundTag c = (CompoundTag) t;
             V v = new V();
@@ -240,7 +247,9 @@ public final class Volcanes extends SavedData {
     @Override
     public CompoundTag save(CompoundTag tag) {
         tag.putInt("NextId", nextId);
-        tag.putBoolean("Natural", natural);
+        if (natural != null) {
+            tag.putBoolean("Natural", natural);
+        }
         ListTag l = new ListTag();
         for (V v : list) {
             CompoundTag c = new CompoundTag();
@@ -267,10 +276,9 @@ public final class Volcanes extends SavedData {
 
     private static final Map<UUID, Integer> ZONE = new HashMap<>();
 
-    /** Al cerrar el servidor: se olvida lo que estaba en marcha (la música de cada jugador, la obra a medias). */
+    /** Al cerrar el servidor: se olvida lo que estaba en marcha (la música de cada jugador). */
     public static void clearRuntime() {
         ZONE.clear();
-        job = null;
         info = null;
         infoJob = null;
     }
@@ -286,9 +294,6 @@ public final class Volcanes extends SavedData {
             return;
         }
         MinecraftServer server = e.getServer();
-        if (job != null) {
-            job.tick(server);
-        }
         int t = server.getTickCount();
         if (t % 20 != 7) {
             return;
@@ -302,9 +307,6 @@ public final class Volcanes extends SavedData {
                     vs.visit(level, v);
                 }
             }
-        }
-        if (t % 100 == 7 && vs.natural && job == null) {
-            vs.plan(server);
         }
     }
 
@@ -431,219 +433,6 @@ public final class Volcanes extends SavedData {
         return back;
     }
 
-    // ================================================================== volcanes que aparecen solos
-
-    private static long regionKey(int rx, int rz) {
-        return ((long) rx << 32) ^ (rz & 0xFFFFFFFFL);
-    }
-
-    /** El sitio k (0..2) de una región: centro del volcán y giro. Siempre el mismo para la misma semilla. */
-    static BlockPos site(long seed, int rx, int rz, int k) {
-        java.util.Random r = new java.util.Random(seed ^ rx * 341873128712L ^ rz * 132897987541L ^ 0x5EED7011C4A0L ^ k * 0x9E3779B97F4A7C15L);
-        int x = rx * REGION + 180 + r.nextInt(REGION - 360);
-        int z = rz * REGION + 180 + r.nextInt(REGION - 360);
-        return new BlockPos(x, 0, z);
-    }
-
-    private static boolean hasVolcano(long seed, int rx, int rz) {
-        java.util.Random r = new java.util.Random(seed * 31 + rx * 0x2545F4914F6CDD1DL + rz * 0x9E3779B97F4A7C15L);
-        return r.nextInt(100) < 35;
-    }
-
-    private static Rotation rotOf(BlockPos site) {
-        return Rotation.values()[Math.floorMod(site.getX() * 31 + site.getZ() * 17, 4)];
-    }
-
-    /** Mira las regiones alrededor de cada jugador: decide si tienen volcán y, si alguien pasa cerca, lo empieza a construir. */
-    private void plan(MinecraftServer server) {
-        ServerLevel ow = server.overworld();
-        long seed = ow.getSeed();
-        BlockPos spawn = ow.getSharedSpawnPos();
-        for (ServerPlayer p : ow.players()) {
-            int prx = Math.floorDiv(p.getBlockX(), REGION), prz = Math.floorDiv(p.getBlockZ(), REGION);
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dz = -1; dz <= 1; dz++) {
-                    int rx = prx + dx, rz = prz + dz;
-                    long key = regionKey(rx, rz);
-                    Integer st = regions.get(key);
-                    if (st == null) {
-                        st = hasVolcano(seed, rx, rz) ? 3 : 0;
-                        regions.put(key, st);
-                        setDirty();
-                    }
-                    if (st < 3) {
-                        continue;
-                    }
-                    int k = st - 3;
-                    BlockPos s = site(seed, rx, rz, k);
-                    if (Math.hypot(s.getX() - spawn.getX(), s.getZ() - spawn.getZ()) < MIN_SPAWN_DIST) {
-                        nextCandidate(key, k);
-                        continue;
-                    }
-                    double d = Math.hypot(p.getX() - s.getX(), p.getZ() - s.getZ());
-                    if (d < BUILD_TRIGGER) {
-                        job = new Job(ow, s, rotOf(s), key, k, null);
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    private void nextCandidate(long key, int k) {
-        regions.put(key, k + 1 < 3 ? 3 + k + 1 : 2);
-        setDirty();
-    }
-
-    /** Obra en marcha (una sola a la vez): cargar el terreno, comprobarlo y construir unos milisegundos por tick. */
-    private static Job job;
-
-    private static final class Job {
-        final ServerLevel level;
-        final BlockPos center;
-        final Rotation rot;
-        final long region;
-        final int cand;
-        final CommandSourceStack src;
-        final ChunkPos cpos;
-        int stage = 0;
-        int wait = 0;
-        CompletableFuture<StructBp> bp;
-        StructPlacer placer;
-        BlockPos origin;
-        long started = System.currentTimeMillis();
-        /** Sin comprobar el terreno: el suelo del volcán a la altura de {@link #center} (prueba). */
-        boolean skipCheck;
-
-        Job(ServerLevel level, BlockPos center, Rotation rot, long region, int cand, CommandSourceStack src) {
-            this.level = level;
-            this.center = center;
-            this.rot = rot;
-            this.region = region;
-            this.cand = cand;
-            this.src = src;
-            this.cpos = new ChunkPos(center);
-            level.getChunkSource().addRegionTicket(TICKET, cpos, TICKET_RADIUS, cpos);
-            this.bp = CompletableFuture.supplyAsync(() -> StructDesigns.make("volcan"));
-            say("Volcán: cargando el terreno en " + center.getX() + " " + center.getZ() + "...");
-        }
-
-        void say(String s) {
-            MundosDeAxelis.LOGGER.info("[Volcanes] {}", s);
-            if (src != null) {
-                src.sendSuccess(() -> Component.literal(s), false);
-            }
-        }
-
-        void end(MinecraftServer server, boolean ok, String why) {
-            level.getChunkSource().removeRegionTicket(TICKET, cpos, TICKET_RADIUS, cpos);
-            Volcanes vs = get(server);
-            if (region != Long.MIN_VALUE) {
-                if (ok) {
-                    vs.regions.put(region, 1);
-                    vs.setDirty();
-                } else {
-                    vs.nextCandidate(region, cand);
-                }
-            }
-            say(ok ? "VOLCAN_NATURAL_OK: volcán construido en " + center.getX() + " " + origin.getY() + " " + center.getZ()
-                    + " (" + (System.currentTimeMillis() - started) / 1000 + " s)" : "Volcán: aquí no se puede (" + why + ")");
-            job = null;
-        }
-
-        void tick(MinecraftServer server) {
-            switch (stage) {
-                case 0 -> {
-                    // esperar a que estén cargados todos los trozos del terreno
-                    boolean all = true;
-                    for (int dx = -TICKET_RADIUS; dx <= TICKET_RADIUS && all; dx++) {
-                        for (int dz = -TICKET_RADIUS; dz <= TICKET_RADIUS && all; dz++) {
-                            all = level.getChunkSource().hasChunk(cpos.x + dx, cpos.z + dz);
-                        }
-                    }
-                    if (all && bp.isDone()) {
-                        stage = 1;
-                    } else if (++wait > 20 * 90) {
-                        end(server, false, "el terreno tardó demasiado en cargar");
-                    }
-                }
-                case 1 -> {
-                    int[] y = {center.getY()};
-                    String why = skipCheck ? null : check(level, center, y);
-                    if (why != null) {
-                        end(server, false, why);
-                        return;
-                    }
-                    origin = center.atY(y[0]).offset(new BlockPos(0, 0, -DesignVolcan.CZ).rotate(rot));
-                    StructBp plan = bp.join();
-                    prime(plan);
-                    placer = new StructPlacer(level, plan, origin, rot, null).onMob(Volcanes::tagMob);
-                    stage = 2;
-                    say("Volcán: construyendo...");
-                }
-                case 2 -> {
-                    if (placer.step(6_000_000L)) {
-                        register(level, origin, rot, true, placer.mobs);
-                        end(server, true, null);
-                    }
-                }
-                default -> job = null;
-            }
-        }
-    }
-
-    /**
-     * ¿Sirve el terreno? null si sí (y en {@code outY} la altura del suelo del volcán); si no, el motivo: agua, muy desigual,
-     * una aldea cerca, alguien vive allí, o bioma de mar, río o playa.
-     */
-    static String check(ServerLevel level, BlockPos center, int[] outY) {
-        int r = DesignVolcan.RB + 16;
-        List<Integer> hs = new ArrayList<>();
-        int water = 0;
-        for (int i = -4; i <= 4; i++) {
-            for (int j = -4; j <= 4; j++) {
-                int x = center.getX() + i * r / 4, z = center.getZ() + j * r / 4;
-                if ((double) i * i + j * j > 18) {
-                    continue;
-                }
-                int g = StructPlacer.groundY(level, x, z);
-                hs.add(g);
-                if (!level.getFluidState(new BlockPos(x, g + 1, z)).isEmpty()) {
-                    water++;
-                }
-                if (level.structureManager().getStructureWithPieceAt(new BlockPos(x, g, z), StructureTags.VILLAGE).isValid()) {
-                    return "hay una aldea";
-                }
-            }
-        }
-        if (water > 5) {
-            return "hay agua";
-        }
-        if (hs.get(hs.size() / 2) - 14 < level.getMinBuildHeight() + 2) {
-            return "muy cerca del fondo del mundo (la dungeon no cabría)";
-        }
-        hs.sort(Integer::compare);
-        int lo = hs.get(hs.size() / 10), hi = hs.get(hs.size() * 9 / 10);
-        if (hi - lo > 18) {
-            return "terreno muy desigual (" + (hi - lo) + " bloques)";
-        }
-        var biome = level.getBiome(center.atY(hs.get(hs.size() / 2)));
-        if (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_RIVER) || biome.is(BiomeTags.IS_BEACH)) {
-            return "mar, río o playa";
-        }
-        ChunkPos cp = new ChunkPos(center);
-        for (int dx = -5; dx <= 5; dx++) {
-            for (int dz = -5; dz <= 5; dz++) {
-                net.minecraft.world.level.chunk.LevelChunk ch = level.getChunkSource().getChunkNow(cp.x + dx, cp.z + dz);
-                if (ch != null && ch.getInhabitedTime() > 24000L) {
-                    return "alguien vive cerca";
-                }
-            }
-        }
-        outY[0] = hs.get(hs.size() / 2) + 1;
-        return null;
-    }
-
     // ================================================================== comandos
 
     private static V nearest(ServerLevel level, BlockPos p) {
@@ -666,16 +455,17 @@ public final class Volcanes extends SavedData {
         return Commands.literal("volcan")
                 .then(Commands.literal("cerca").executes(c -> near(c.getSource())))
                 .then(Commands.literal("reiniciar").executes(c -> forceReset(c.getSource())))
-                .then(Commands.literal("generar").executes(c -> generate(c.getSource(), false))
-                        .then(Commands.literal("aqui").executes(c -> generate(c.getSource(), true))))
+                .then(Commands.literal("generar").executes(c -> NaturalGen.generate(c.getSource(), NaturalGen.VOLCAN, false))
+                        .then(Commands.literal("aqui").executes(c -> NaturalGen.generate(c.getSource(), NaturalGen.VOLCAN, true))))
                 .then(Commands.literal("natural").then(Commands.argument("activo", BoolArgumentType.bool())
-                        .executes(c -> setNatural(c.getSource(), BoolArgumentType.getBool(c, "activo")))));
+                        .executes(c -> NaturalGen.setEnabled(c.getSource(), NaturalGen.VOLCAN, BoolArgumentType.getBool(c, "activo")))));
     }
 
     private static int near(CommandSourceStack src) {
         BlockPos p = BlockPos.containing(src.getPosition());
         Volcanes vs = get(src.getServer());
-        StringBuilder sb = new StringBuilder("Volcanes apuntados: " + vs.list.size() + (vs.natural ? " (aparecen solos)" : " (no aparecen solos)"));
+        NaturalGen g = NaturalGen.get(src.getServer());
+        StringBuilder sb = new StringBuilder("Volcanes apuntados: " + vs.list.size() + (g.enabled(NaturalGen.VOLCAN) ? " (aparecen solos)" : " (no aparecen solos)"));
         V v = nearest(src.getLevel(), p);
         if (v != null) {
             BlockPos c = v.center();
@@ -683,21 +473,7 @@ public final class Volcanes extends SavedData {
                     .append(" (a ").append((int) Math.sqrt(c.distSqr(p))).append(" bloques").append(v.natural ? ", natural" : ", de comando").append(")");
         }
         if (src.getLevel().dimension() == Level.OVERWORLD) {
-            long seed = src.getLevel().getSeed();
-            int rx = Math.floorDiv(p.getX(), REGION), rz = Math.floorDiv(p.getZ(), REGION);
-            Integer st = vs.regions.get(regionKey(rx, rz));
-            if (st == null) {
-                st = hasVolcano(seed, rx, rz) ? 3 : 0;
-            }
-            sb.append(". Esta región: ").append(switch (st) {
-                case 0 -> "sin volcán";
-                case 1 -> "su volcán ya está";
-                case 2 -> "el terreno no servía";
-                default -> {
-                    BlockPos s = site(seed, rx, rz, st - 3);
-                    yield "volcán pendiente cerca de " + s.getX() + " " + s.getZ();
-                }
-            });
+            sb.append(". Esta región: ").append(g.describe(NaturalGen.VOLCAN, src.getLevel(), p));
         }
         String msg = sb.toString();
         src.sendSuccess(() -> Component.literal(msg), false);
@@ -716,37 +492,6 @@ public final class Volcanes extends SavedData {
             return 0;
         }
         src.sendSuccess(() -> Component.literal("PRUEBA_VOLCAN_REINICIO: volvieron " + back + " enemigos, rejas cerradas, braseros apagados y cofres rellenos."), true);
-        return 1;
-    }
-
-    /**
-     * Construye un volcán "natural" (poco a poco, como los que aparecen solos): sin {@code aqui}, a unos 230 bloques hacia donde se
-     * mira y con las mismas comprobaciones del terreno; con {@code aqui}, con el centro donde se está y sin comprobar nada (pruebas).
-     */
-    private static int generate(CommandSourceStack src, boolean here) {
-        if (job != null) {
-            src.sendFailure(Component.literal("Ya hay un volcán construyéndose."));
-            return 0;
-        }
-        ServerLevel level = src.getLevel();
-        BlockPos center;
-        if (here) {
-            center = BlockPos.containing(src.getPosition());
-        } else {
-            net.minecraft.world.phys.Vec3 look = net.minecraft.world.phys.Vec3.directionFromRotation(0, src.getRotation().y);
-            BlockPos c = BlockPos.containing(src.getPosition().add(look.scale(230)));
-            center = new BlockPos(c.getX(), 0, c.getZ());
-        }
-        job = new Job(level, center, rotOf(center), Long.MIN_VALUE, 0, src);
-        job.skipCheck = here;
-        return 1;
-    }
-
-    private static int setNatural(CommandSourceStack src, boolean on) {
-        Volcanes vs = get(src.getServer());
-        vs.natural = on;
-        vs.setDirty();
-        src.sendSuccess(() -> Component.literal(on ? "Los volcanes aparecerán solos en el mundo." : "Los volcanes ya no aparecerán solos (los que ya hay se quedan)."), true);
         return 1;
     }
 }
