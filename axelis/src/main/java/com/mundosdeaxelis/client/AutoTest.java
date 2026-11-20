@@ -209,6 +209,8 @@ public final class AutoTest {
         standLooking(x, VY + y, VZ + z, tx, VY + ty, VZ + tz);
     }
 
+    private static volatile boolean zombieSeen;
+
     /** Etapa 254: equipa estas figuritas en las ranuras de mascotas del jugador (las criaturas aparecen solas). */
     private static void equipPets(com.mundosdeaxelis.relic.Companions.Spec... specs) {
         onServer(sp -> {
@@ -625,11 +627,30 @@ public final class AutoTest {
             equipPets(com.mundosdeaxelis.relic.Companions.LION, com.mundosdeaxelis.relic.Companions.SHEEP,
                     com.mundosdeaxelis.relic.Companions.CRYSTAL_DRAGON);
         });
+        // ahora son criaturas que te siguen por detrás (como los lobos): para el video se ponen delante de la cámara y luego caminan
+        // de un lado a otro con su propio camino (las órdenes de ir van directas a su navegación)
+        add("animación mascotas: delante", 1500, () -> onServer(sp -> {
+            int i = 0;
+            for (com.mundosdeaxelis.entity.Mascota m : serverPets(sp)) {
+                m.moveTo(AX - 5.7 + i * 1.2, m.flier() ? -59.0 : -60.0, AZ - 1.2, 180F, 0F);
+                m.setYBodyRot(180F);
+                m.setYHeadRot(180F);
+                m.getNavigation().stop();
+                i++;
+            }
+        }));
         add("animación mascotas: quietas", 10 * 110 + 200, () -> clip(10, 110));
         for (int k = 0; k < 5; k++) {
-            double x = AX + (k % 2 == 0 ? 4.5 : -4.5);
-            add("animación mascotas: me muevo " + k, 10 * 110 + 200, () -> {
-                standLooking(x, -60.0, AZ - 4.5, x, -60.4, AZ - 1.0);
+            final int kk = k;
+            add("animación mascotas: caminan " + k, 10 * 110 + 200, () -> {
+                onServer(sp -> {
+                    int i = 0;
+                    for (com.mundosdeaxelis.entity.Mascota m : serverPets(sp)) {
+                        double tx = AX - 4.5 + (kk % 2 == 0 ? 2.8 : -2.8) + (i - 1) * 0.9;
+                        m.getNavigation().moveTo(tx, m.flier() ? -58.8 : -60.0, AZ - 0.6 - i * 0.6, 1.0);
+                        i++;
+                    }
+                });
                 clip(10, 110);
             });
         }
@@ -885,7 +906,7 @@ public final class AutoTest {
         });
         add("mascota: cerrar menú", 800, () -> open(null));
         add("mascota: pelea", 4500, () -> {
-            cmd("difficulty easy");
+            // (la dificultad ya es «normal» desde la tanda de enemigos: no se cambia, la necesitan las pruebas del volcán)
             cmd("summon minecraft:zombie 0.5 -60 6.5 {NoAI:1b,PersistenceRequired:1b,Tags:[\"pet_target\"]}");
             onServer(sp -> {
                 net.minecraft.world.entity.LivingEntity z = null;
@@ -894,6 +915,7 @@ public final class AutoTest {
                         z = le;
                     }
                 }
+                zombieSeen = z != null;
                 for (com.mundosdeaxelis.entity.Mascota m : serverPets(sp)) {
                     if (m.isOrderedToSit()) {
                         m.toggleSit(sp);
@@ -915,8 +937,8 @@ public final class AutoTest {
                     e.discard();
                 }
             }
-            check("las mascotas de combate atacan a un zombi (vida " + hp + " de " + max + ")", !found || hp < max);
-            sp.server.getCommands().performPrefixedCommand(sp.server.createCommandSourceStack().withSuppressedOutput(), "difficulty peaceful");
+            check("las mascotas de combate atacan a un zombi (" + (found ? "vida " + hp + " de " + max : "lo vencieron") + ")",
+                    zombieSeen && (!found || hp < max));
         }));
         add("mascotas: quitarlas", 1800, () -> equipPets());
         add("mascotas: se van", 300, () -> check("al quitarlas del menú de equipo se van (quedan " + pets().size() + ")", pets().isEmpty()));
