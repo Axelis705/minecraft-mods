@@ -476,6 +476,8 @@ public final class AutoTest {
         });
         add("ruda sale de la celda", 5000, () -> lookS(-2.5, 1, 22.5, 6, 0.8, 26.5));
         add("ruda sale de la celda (foto)", 300, () -> {
+            rudaServer((sp, h) -> log("ruda servidor: en " + h.blockPosition().toShortString() + ", su sitio " + (h.home() == null ? "?" : h.home().toShortString())
+                    + ", camino " + (h.getNavigation().getPath() == null ? "ninguno" : h.getNavigation().getPath().getNodeCount() + " pasos, llega=" + h.getNavigation().getPath().canReach())));
             com.mundosdeaxelis.entity.Habitante h = rudaClient();
             check("Ruda salió de la celda (x " + (h == null ? "?" : String.format("%.1f", h.getX())) + ")", h != null && h.getX() < SX + 8);
             shot("52_ruda_libre");

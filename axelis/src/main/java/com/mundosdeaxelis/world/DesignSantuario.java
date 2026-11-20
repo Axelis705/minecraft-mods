@@ -389,7 +389,8 @@ final class DesignSantuario {
         b.set(x1 - 1, 3, z1 - 1, "cobweb");
         b.set(x0 + 1, 3, z0 + 1, "cobweb");
         b.set(x1 - 1, 0, z1 - 1, "cauldron");
-        b.set(x0 + 1, 0, z1 - 1, "candle[candles=1,lit=true]");
+        // la vela, en la esquina junto a los barrotes (junto a la puerta estorbaba el paso al salir)
+        b.set(x0 + 1, 0, z0 + 1, "candle[candles=1,lit=true]");
         // tejado de la celda
         for (int x = x0 + 1; x <= x1; x++) {
             for (int z = z0; z <= z1; z++) {

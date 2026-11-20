@@ -53,6 +53,8 @@ public class Habitante extends PathfinderMob {
     /** Con quién está hablando y por cuánto (se queda quieto mirándolo). */
     private UUID talkTo;
     private int talkTicks;
+    /** Cuánto lleva fuera de su sitio sin poder volver (si no encuentra camino, al rato aparece allí). */
+    private int awayTicks;
 
     public Habitante(EntityType<? extends Habitante> type, Level level) {
         super(type, level);
@@ -215,6 +217,18 @@ public class Habitante extends PathfinderMob {
         super.tick();
         if (talkTicks > 0) {
             talkTicks--;
+        }
+        if (!level().isClientSide && home != null && state() != PRESO) {
+            if (isWithinRestriction()) {
+                awayTicks = 0;
+            } else if (++awayTicks > 300 && !talking() && level() instanceof ServerLevel sl0) {
+                // atascado (algo tapa el camino): se escabulle hasta su sitio entre hojas
+                NpcService.poof(sl0, position(), false);
+                getNavigation().stop();
+                teleportTo(home.getX() + 0.5D, home.getY(), home.getZ() + 0.5D);
+                NpcService.poof(sl0, position(), true);
+                awayTicks = 0;
+            }
         }
         if (!level().isClientSide && tickCount % 40 == 7 && level() instanceof ServerLevel sl) {
             String kind = kindId();
