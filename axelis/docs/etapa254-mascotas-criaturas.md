@@ -132,11 +132,24 @@ Detalles:
 - Las piezas que brillan (`Sink.quadE`, con el nuevo `emissive`) no se oscurecen de noche.
 - La caja de choque de cada mascota se midió con su modelo (`PetBounds`). En las voladoras, el modelo se baja lo justo para que su parte de abajo quede en el suelo de la caja.
 
+Al seguirte, las voladoras se ponen a tu lado y un poco detrás, a la altura de tu cabeza; al flotar eligen sitios a los lados o detrás. Así nunca se quedan delante de tu cara. Al aparecer tampoco salen justo delante de ti.
+
 ## 6. Comprobado
 
 - Compilación local y del CI sin errores.
 - Prueba sin el juego: las 58 mascotas se dibujan en modo criatura (cabeza girada, truco, andando), sin fallos.
-- (Prueba con el cliente: ver abajo.)
+- **Prueba con el juego real (CI): 72 comprobaciones, 0 fallos.** Las nuevas comprueban que:
+  - las 58 tienen ficha;
+  - al equipar 3 aparecen como criaturas;
+  - clic derecho las sienta;
+  - con su comida favorita sube el cariño (8);
+  - agachado + clic derecho abre su menú;
+  - el nombre cambia y queda guardado en la figurita;
+  - las de combate vencen a un zombi;
+  - al quitarlas del menú de equipo se van.
+- Fotos: criaturas con su sombra y la luz del juego; su menú con la vista 3D y los textos en español; y un video de 60 cuadros con el Cachorro Rey y la Cabrita caminando (con polvito al pisar) y el Dragoncito de Cristal volando a un lado.
+- Para la prueba se subieron los textos nuevos a la rama `recursos-axelis` (la prueba toma los recursos de ahí).
+- Jar instalado en la instancia `test` (con el juego cerrado). Fuentes y este documento copiados a `Mod\1`.
 
 ## Pendiente / ideas siguientes
 
