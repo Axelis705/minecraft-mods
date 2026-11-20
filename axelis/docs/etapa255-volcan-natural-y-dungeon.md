@@ -112,4 +112,17 @@ por fuera más natural, dungeon con premios y reto, ambiente por dentro, y que a
 - Prueba de conectividad del volcán: 1 sala sin acceso tolerada (el adorno del corazón colgado), 0 trampas, entrada transitable. Las otras 4 estructuras siguen en verde.
 - Revisión de agujeros: ninguna sala queda abierta al cielo. La cámara del guardián se bajó a −8 tras encontrar un hueco en la ladera.
 - Vistas del visor: fuera (sin placa cuadrada, borde irregular, conos, árboles quemados, coladas) y dentro (vetas, tesoro, guardián, puente, santuario).
-- Pruebas en CI y con el cliente: ver la entrega.
+- **Servidor de verdad (CI)**: 28 de 28 comprobaciones del volcán.
+  - Construcción: piedra, núcleo, lago, puente, respiradero y enemigos.
+  - Gran Salamandra, las dos rejas cerradas, braseros apagados.
+  - Cofres del volcán con sus datos (tipo, etapa y cerradura).
+  - Al vencerla se abre la reja.
+  - `reiniciar` hace volver a los enemigos y a la Gran Salamandra, cierra la reja y apaga el brasero.
+  - El puente se derrumba. `deshacer` quita todo, incluidos los enemigos que volvieron.
+  - Un volcán "natural" construido por pasos (`generar aqui`) con su núcleo, su piedra y sus enemigos.
+- **Juego real (cliente)**: todas las comprobaciones en verde, entre ellas:
+  - fuera del volcán no suena su música y dentro sí;
+  - encender los cuatro braseros abre la reja del tesoro;
+  - la reja del guardián está cerrada y se abre al vencerlo.
+  - Fotos de fuera (con la rampa hasta el terreno, los conos y el llano), de la cámara, el puente, las erupciones, los braseros, el tesoro, el guardián y el santuario.
+- **Arreglado tras la prueba**: la barra de la Gran Salamandra se veía en todo el volcán, incluso desde fuera. Ahora solo aparece a menos de 18 bloques de ella y se quita a más de 24. Hay una comprobación nueva para eso.
