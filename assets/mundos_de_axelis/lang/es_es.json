@@ -2022,5 +2022,6 @@
   "message.mundos_de_axelis.gran_salamandra.dead": "¡La Gran Salamandra ha caído! Se ha abierto la reja hacia el santuario.",
   "message.mundos_de_axelis.gran_salamandra.dead_nogate": "¡La Gran Salamandra ha caído!",
   "message.mundos_de_axelis.volcan.reset": "El volcán retumba: sus guardianes han vuelto.",
-  "message.mundos_de_axelis.volcan.reset_loot": "El volcán retumba: sus guardianes han vuelto y los cofres tienen botín nuevo."
+  "message.mundos_de_axelis.volcan.reset_loot": "El volcán retumba: sus guardianes han vuelto y los cofres tienen botín nuevo.",
+  "message.mundos_de_axelis.estructura.protegida": "Esta estructura no se puede romper."
 }
