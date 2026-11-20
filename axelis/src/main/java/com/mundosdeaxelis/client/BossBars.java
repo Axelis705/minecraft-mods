@@ -34,6 +34,9 @@ public final class BossBars {
     private BossBars() {
     }
 
+    /** Última vez (tiempo del mundo) que se dibujó la barra de la Gran Salamandra (para la prueba automática). */
+    static long granBarTick = -1000;
+
     @SubscribeEvent
     public static void onBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
         NoticeHud.noteBossBar(event.getY() + Math.max(event.getIncrement(), 18));
@@ -205,6 +208,7 @@ public final class BossBars {
         }
         if (boss.getName().getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents tc
                 && "entity.mundos_de_axelis.gran_salamandra".equals(tc.getKey())) {
+            granBarTick = t;
             // la Gran Salamandra cambia a media vida
             g.fill(x + 91, y + 2, x + 92, y + 8, 0xFF1A0804);
         } else {

@@ -1260,7 +1260,11 @@ public final class AutoTest {
             cmd("effect give @a minecraft:resistance 900 4 true");
             lookV(0.5, 32, 51, 0, 35, 64);
         });
-        add("cámara (foto)", 1500, () -> shot("35_volcan_camara"));
+        add("cámara (foto)", 1500, () -> {
+            long since = Minecraft.getInstance().level.getGameTime() - BossBars.granBarTick;
+            check("lejos de su cámara no se ve la barra de la Gran Salamandra", since > 40);
+            shot("35_volcan_camara");
+        });
         add("puente", 1500, () -> lookV(-11.5, 24, 78.5, 4, 24, 78.5));
         add("puente (foto)", 300, () -> shot("36_volcan_puente"));
         add("pisar el puente", 700, () -> lookV(-8.5, 24, 78.5, 4, 23, 78.5));
@@ -1310,6 +1314,7 @@ public final class AutoTest {
         });
         add("guardián (foto)", 300, () -> {
             check("la Gran Salamandra guarda su cámara", clientCount(com.mundosdeaxelis.entity.GranSalamandra.class) > 0);
+            check("cerca de ella se ve su barra", Minecraft.getInstance().level.getGameTime() - BossBars.granBarTick < 40);
             net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(14, VY - 8, VZ + 100));
             check("la reja del guardián está cerrada", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
                     && !g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));

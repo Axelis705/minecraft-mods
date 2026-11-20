@@ -70,6 +70,19 @@ public class GranSalamandra extends SalamandraLava {
             }
             restrictTo(home, 11);
             this.bossEvent.setProgress(Mth.clamp(getHealth() / getMaxHealth(), 0.0F, 1.0F));
+            if (this.tickCount % 10 == 0 && this.level() instanceof ServerLevel sl) {
+                // la barra solo se ve de cerca (en su cámara), no por todo el volcán ni desde fuera
+                for (ServerPlayer p : new java.util.ArrayList<>(this.bossEvent.getPlayers())) {
+                    if (p.isRemoved() || p.level() != sl || p.distanceToSqr(this) > 24 * 24) {
+                        this.bossEvent.removePlayer(p);
+                    }
+                }
+                for (ServerPlayer p : sl.getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(18))) {
+                    if (p.distanceToSqr(this) <= 18 * 18) {
+                        this.bossEvent.addPlayer(p);
+                    }
+                }
+            }
         }
     }
 
@@ -178,9 +191,9 @@ public class GranSalamandra extends SalamandraLava {
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayer player) {
-        super.startSeenByPlayer(player);
-        this.bossEvent.addPlayer(player);
+    public void remove(RemovalReason reason) {
+        this.bossEvent.removeAllPlayers();
+        super.remove(reason);
     }
 
     @Override
