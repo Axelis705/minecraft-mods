@@ -27,7 +27,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
 import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -148,12 +147,7 @@ public class Habitante extends PathfinderMob {
     protected void registerGoals() {
         goalSelector.addGoal(0, new FloatGoal(this));
         goalSelector.addGoal(1, new OpenDoorGoal(this, true));
-        goalSelector.addGoal(3, new MoveTowardsRestrictionGoal(this, 0.55D) {
-            @Override
-            public boolean canUse() {
-                return !talking() && super.canUse();
-            }
-        });
+        goalSelector.addGoal(3, new GoHome());
         goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.42D, 0.001F) {
             @Override
             public boolean canUse() {
@@ -168,6 +162,31 @@ public class Habitante extends PathfinderMob {
         goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         goalSelector.addGoal(2, new FaceTalker());
+    }
+
+    /**
+     * Vuelve a su sitio por el camino más corto cuando está lejos (al salir de la celda, si lo empujan, si se aleja paseando).
+     * Va directo al punto: así cruza la puerta abierta de la celda en vez de buscar al azar.
+     */
+    private final class GoHome extends Goal {
+        GoHome() {
+            setFlags(EnumSet.of(Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            return !talking() && home != null && !isWithinRestriction();
+        }
+
+        @Override
+        public void start() {
+            getNavigation().moveTo(home.getX() + 0.5D, home.getY(), home.getZ() + 0.5D, 0.6D);
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return !talking() && !getNavigation().isDone();
+        }
     }
 
     /** Mira a quien le habla y no se mueve. */

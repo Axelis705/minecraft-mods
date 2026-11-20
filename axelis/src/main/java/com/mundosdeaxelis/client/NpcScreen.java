@@ -518,7 +518,7 @@ public class NpcScreen extends Screen {
             g.enableScissor(px, py, px + pw, py + ph);
             HabitanteRenderer.gui = true;
             try {
-                int cx = px + pw / 2, cy = py + ph + 34;
+                int cx = px + pw / 2, cy = py + ph + 40;
                 InventoryScreen.renderEntityInInventoryFollowsMouse(g, cx, cy, 44, (float) cx - mx, (float) (py + 22) - my, npc);
             } catch (RuntimeException ignored) {
                 // si algo falla al dibujar el retrato, la ventana sigue
