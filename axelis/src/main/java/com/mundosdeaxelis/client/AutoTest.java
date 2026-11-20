@@ -970,8 +970,9 @@ public final class AutoTest {
         }));
         add("mascota: cansada (se duerme)", 2200, () -> {
             boolean dying = false;
-            for (com.mundosdeaxelis.entity.Mascota m : pets()) {
-                dying |= m.isDeadOrDying();
+            Minecraft mc = Minecraft.getInstance();
+            for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
+                dying |= e instanceof com.mundosdeaxelis.entity.Mascota m && !m.isRemoved() && m.isDeadOrDying();
             }
             check("al cansarse no desaparece de golpe: se duerme y se encoge", dying);
         });
