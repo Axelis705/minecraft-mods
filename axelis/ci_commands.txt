@@ -117,6 +117,7 @@ forceload remove 1700 -100 1840 100
 #expect PRUEBA_VOLCAN_NATURAL_NUCLEO_OK
 #expect PRUEBA_VOLCAN_NATURAL_PIEDRA_OK
 #expect PRUEBA_VOLCAN_NATURAL_ENEMIGOS_OK
+forceload add 270 -10 330 70
 execute positioned 300 -60 0 rotated 0 0 run mundos estructura bosque
 #wait Santuario del Bosque construida 60
 execute if block 300 -59 46 mundos_de_axelis:portal_stone_forest run say PRUEBA_SANTUARIO_PIEDRA_OK
@@ -129,6 +130,7 @@ execute if entity @e[type=mundos_de_axelis:espinoso,x=280,y=-70,z=0,dx=40,dy=20,
 execute positioned 300 -60 0 run mundos estructura deshacer
 execute unless block 300 -59 46 mundos_de_axelis:portal_stone_forest run say PRUEBA_SANTUARIO_DESHECHO_OK
 execute unless entity @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_SIN_ENEMIGOS_OK
+forceload remove 270 -10 330 70
 forceload add 2500 -60 2600 60
 execute positioned 2550 -60 0 rotated 0 0 run mundos natural generar bosque aqui
 #wait BOSQUE_NATURAL_OK 120
