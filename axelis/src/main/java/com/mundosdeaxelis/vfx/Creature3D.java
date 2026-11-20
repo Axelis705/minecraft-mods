@@ -686,7 +686,7 @@ public final class Creature3D {
         c.origin = pos.add(0, c.joy * 0.075 * c.scale, 0);
         double[] bm = rot(yaw + c.shake * 0.20, c.pitch, c.roll);
         // respirar: el cuerpo se estira y encoge apenas (más al estar quieto); al saltar se estira
-        double crouch = flier ? 0 : sit * 0.09;
+        double crouch = flier ? 0 : sit * (d.entity ? 0.13 : 0.09); // sentada de verdad (entidad): un poco más bajita
         double stretch = (1 + 0.014 * c.breath * idle + 0.022 * c.breath * c.sleep + 0.06 * c.joy + mSq) * (1 - 0.07 * c.sleep - crouch);
         double widen = (1 - mSq * 0.5) * (1 + 0.035 * c.sleep + crouch * 0.4);
         bm[1] *= stretch;

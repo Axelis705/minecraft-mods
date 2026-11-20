@@ -96,11 +96,22 @@ final class MascotaGoals {
             }
             double speed = d > 8 * 8 ? 1.4 : 1.05;
             if (pet.flier()) {
-                pet.getNavigation().moveTo(owner.getX(), owner.getY() + 1.4, owner.getZ(), speed);
+                // a tu lado y un poco detrás, a la altura de tu cabeza (nunca delante de tu cara)
+                Vec3 v = besideOwner(pet, owner, 1.7, 1.3);
+                pet.getNavigation().moveTo(v.x, v.y, v.z, speed);
             } else {
                 pet.getNavigation().moveTo(owner, speed);
             }
         }
+    }
+
+    /** Punto a un lado y un poco detrás del dueño (cada mascota elige su lado), a cierta altura. */
+    static Vec3 besideOwner(Mascota pet, LivingEntity owner, double side, double up) {
+        double yaw = Math.toRadians(owner.getYRot());
+        Vec3 fwd = new Vec3(-Math.sin(yaw), 0, Math.cos(yaw));
+        Vec3 right = new Vec3(-fwd.z, 0, fwd.x);
+        double s = (pet.getId() % 2 == 0 ? 1 : -1) * side;
+        return owner.position().add(right.scale(s)).add(fwd.scale(-1.1)).add(0, up, 0);
     }
 
     // ------------------------------------------------------------------ pasear (las que andan) y flotar cerca de ti (las que vuelan)
@@ -148,10 +159,20 @@ final class MascotaGoals {
         @Override
         public void start() {
             LivingEntity o = pet.getOwner();
-            Vec3 c = o != null && o.distanceToSqr(pet) < 12 * 12 ? o.position() : pet.position();
+            boolean near = o != null && o.distanceToSqr(pet) < 12 * 12;
+            Vec3 c = near ? o.position() : pet.position();
             for (int i = 0; i < 8; i++) {
-                double x = c.x + (pet.getRandom().nextDouble() - 0.5) * 7.0;
-                double z = c.z + (pet.getRandom().nextDouble() - 0.5) * 7.0;
+                double x, z;
+                if (near) {
+                    // alrededor de su dueño pero fuera de lo que tiene delante de los ojos (a los lados o detrás)
+                    double a = Math.toRadians(o.getYRot()) + Math.PI + (pet.getRandom().nextDouble() - 0.5) * Math.toRadians(220);
+                    double r = 2.0 + pet.getRandom().nextDouble() * 1.8;
+                    x = c.x - Math.sin(a) * r;
+                    z = c.z + Math.cos(a) * r;
+                } else {
+                    x = c.x + (pet.getRandom().nextDouble() - 0.5) * 7.0;
+                    z = c.z + (pet.getRandom().nextDouble() - 0.5) * 7.0;
+                }
                 double gy = ground(x, c.y + 2, z);
                 double y = gy + 1.1 + pet.getRandom().nextDouble() * 1.1;
                 Vec3 v = new Vec3(x, y, z);

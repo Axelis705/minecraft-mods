@@ -729,6 +729,11 @@ public class Mascota extends TamableAnimal {
             if (Math.abs(dx) < 2 && Math.abs(dz) < 2) {
                 continue;
             }
+            // no justo delante de tus ojos (las primeras veces; si no hay sitio, vale cualquiera)
+            Vec3 f = Vec3.directionFromRotation(0, owner.getYRot());
+            if (i < 10 && (f.x * dx + f.z * dz) > 0.5 * Math.sqrt(dx * dx + dz * dz)) {
+                continue;
+            }
             int dy = random.nextInt(3) - 1;
             BlockPos p = ob.offset(dx, dy, dz);
             if (flier()) {
