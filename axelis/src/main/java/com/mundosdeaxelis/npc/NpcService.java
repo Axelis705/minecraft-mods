@@ -158,13 +158,8 @@ public final class NpcService {
             if (ds.getBlock() instanceof DoorBlock db) {
                 db.setOpen(sp != null ? sp : h, l, ds, door, true);
             }
-            int dx = door.getX() - spot.getX(), dz = door.getZ() - spot.getZ();
-            BlockPos out = Math.abs(dx) >= Math.abs(dz) ? door.offset(Integer.signum(dx) * 3, 0, 0) : door.offset(0, 0, Integer.signum(dz) * 3);
-            if (l.getBlockState(out).getCollisionShape(l, out).isEmpty() && l.getBlockState(out.above()).getCollisionShape(l, out.above()).isEmpty()) {
-                spot = out;
-            } else {
-                spot = door;
-            }
+            BlockPos out = outside(l, door, h.blockPosition());
+            spot = out != null ? out : door;
         }
         h.setState(Habitante.LIBRE, spot);
         Vecinos.set(l.getServer(), h.kindId(), Habitante.LIBRE, h.getUUID(), l.dimension(), spot, null, Rotation.NONE);
@@ -176,6 +171,33 @@ public final class NpcService {
             l.playSound(null, sp.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.6F, 1.4F);
             open(sp, h, result, null, 0);
         }
+    }
+
+    /**
+     * Un sitio libre al otro lado de la puerta (lejos del preso): se cruza la puerta en la dirección a la que mira, y se busca a
+     * 3 bloques (o 4, 2, 5...) un hueco con suelo firme y dos bloques de aire.
+     */
+    static BlockPos outside(Level l, BlockPos door, BlockPos prisoner) {
+        BlockState ds = l.getBlockState(door);
+        Direction f = ds.getBlock() instanceof DoorBlock ? ds.getValue(DoorBlock.FACING) : Direction.NORTH;
+        Direction.Axis ax = f.getAxis();
+        int d = ax == Direction.Axis.X ? door.getX() - prisoner.getX() : door.getZ() - prisoner.getZ();
+        Direction outDir = d == 0 ? f : Direction.fromAxisAndDirection(ax, d > 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+        Direction side = outDir.getClockWise();
+        for (int dist : new int[]{3, 4, 2, 5, 1}) {
+            for (int lat : new int[]{0, 1, -1, 2, -2}) {
+                BlockPos p = door.relative(outDir, dist).relative(side, lat);
+                if (standable(l, p)) {
+                    return p;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static boolean standable(Level l, BlockPos p) {
+        return l.getBlockState(p).getCollisionShape(l, p).isEmpty() && l.getBlockState(p.above()).getCollisionShape(l, p.above()).isEmpty()
+                && !l.getBlockState(p.below()).getCollisionShape(l, p.below()).isEmpty() && l.getFluidState(p).isEmpty();
     }
 
     static BlockPos findDoor(Level l, BlockPos c, int r) {
