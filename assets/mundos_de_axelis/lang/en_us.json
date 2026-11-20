@@ -1896,7 +1896,6 @@
   "tooltip.mundos_de_axelis.pet.love": "Affection: %s",
   "tooltip.mundos_de_axelis.pet.special": "In its menu: %s",
   "tooltip.mundos_de_axelis.pet.bag_count": "Carries %s of %s things in its bag",
-  "tooltip.mundos_de_axelis.pet.how": "Right-click: sit or follow · Sneak + right-click: its menu · Feed it its favorite food",
   "msg.mundos_de_axelis.pet.fainted": "%s got tired and returns to its figurine. Back in %s s.",
   "msg.mundos_de_axelis.pet.best_friend": "%s is now your best friend!",
   "msg.mundos_de_axelis.pet.sit": "%s stays here.",
@@ -1988,5 +1987,14 @@
   "gui.mundos_de_axelis.pet.element.leech": " (life steal)",
   "gui.mundos_de_axelis.pet.element.seed": " (seeds)",
   "gui.mundos_de_axelis.pet.element.earth": " (earth)",
-  "gui.mundos_de_axelis.pet.bag": "Bag"
+  "gui.mundos_de_axelis.pet.bag": "Bag",
+  "tooltip.mundos_de_axelis.pet.resting": "Resting: back in %s s",
+  "tooltip.mundos_de_axelis.pet.home": "Waiting for you, sitting at %s, %s, %s (%s)",
+  "tooltip.mundos_de_axelis.pet.dim.overworld": "Overworld",
+  "tooltip.mundos_de_axelis.pet.dim.nether": "Nether",
+  "tooltip.mundos_de_axelis.pet.dim.end": "End",
+  "tooltip.mundos_de_axelis.pet.dim.other": "another world",
+  "tooltip.mundos_de_axelis.pet.loves": "Loves: %s",
+  "tooltip.mundos_de_axelis.pet.how1": "Right-click: sit or follow",
+  "tooltip.mundos_de_axelis.pet.how2": "Sneak + right-click: its menu"
 }
