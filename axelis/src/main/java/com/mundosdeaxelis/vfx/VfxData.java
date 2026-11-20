@@ -44,6 +44,8 @@ public final class VfxData {
      */
     public boolean entity;
     public double eYaw, eYawOff, eLookYaw, eLookPitch, eLook;
+    /** Ladeo de cabeza al pedir comida (0..1) y avance de la sacudida al salir del agua (0..1; -1: no se sacude). */
+    public double eTilt, eShake = -1;
     public double tx, ty, tz;
     public boolean hasT;
     public final double[] trail = new double[TRAIL_MAX * 3];

@@ -122,6 +122,14 @@ public class PetRenderer extends EntityRenderer<Mascota> {
         d.eYawOff = e.trickT > 0 ? -2 * Math.PI * ease(1 - (e.trickT - pt) / 22.0) : 0;
         double age = e.tickCount + pt;
         d.life = e.leaveAge >= 0 ? (int) (e.leaveAge + 9) : 0;
+        // al salir del agua se sacude
+        d.eShake = e.shakeT > 0 ? Mth.clamp(1 - (e.shakeT - pt) / 30.0, 0, 1) : -1;
+        boolean dying = e.deathTime > 0;
+        if (dying) {
+            // se cansó: se queda dormida (zetas) y se encoge antes de volver a su figurita
+            d.mIdle = Creature3D.SLEEP_T + 60;
+            d.life = e.tickCount - e.deathTime + 20;
+        }
 
         Cam cam;
         if (gui) {
@@ -130,7 +138,7 @@ public class PetRenderer extends EntityRenderer<Mascota> {
         } else {
             cam = MagmaRenderers.cam(this.entityRenderDispatcher.camera, e, pt);
         }
-        final int overlay = LivingEntityRenderer.getOverlayCoords(e, 0.0F);
+        final int overlay = dying ? OverlayTexture.NO_OVERLAY : LivingEntityRenderer.getOverlayCoords(e, 0.0F);
         final Matrix4f pose = ps.last().pose();
         final Matrix3f nrm = ps.last().normal();
         final int lit = light;
@@ -166,7 +174,7 @@ public class PetRenderer extends EntityRenderer<Mascota> {
 
     @Override
     protected boolean shouldShowName(Mascota e) {
-        if (gui || !e.hasCustomName() || e.leaving()) {
+        if (gui || !e.hasCustomName() || e.leaving() || e.isDeadOrDying()) {
             return false;
         }
         return e.isCustomNameVisible() || (e == this.entityRenderDispatcher.crosshairPickEntity && Minecraft.renderNames());

@@ -110,14 +110,25 @@ public final class Equipment {
             if (!r.isEmpty()) {
                 setChanged();
             }
-            return r;
+            return unequipped(r);
         }
 
         @Override
         public ItemStack removeItemNoUpdate(int i) {
             ItemStack r = a[i];
             a[i] = ItemStack.EMPTY;
-            return r;
+            return unequipped(r);
+        }
+
+        /** Etapa 254: una figurita que sale del equipo ya no tiene a su mascota sentada esperando en ningún sitio. */
+        private static ItemStack unequipped(ItemStack st) {
+            if (st.getItem() instanceof CompanionItem) {
+                net.minecraft.nbt.CompoundTag t = st.getTagElement(PetData.KEY);
+                if (t != null) {
+                    t.remove("Home");
+                }
+            }
+            return st;
         }
 
         @Override

@@ -105,6 +105,11 @@ public final class PetKeeper {
                 r = new Rec(w);
                 loadSit(sp, r);
                 m.put(w, r);
+                ItemStack fig = figurine(sp, w);
+                if (r.sitPos == null && !fig.isEmpty() && PetData.read(fig).contains("Home")) {
+                    PetData.edit(fig).remove("Home"); // se había quedado de otra vez
+                    saved(sp, true);
+                }
             }
             try {
                 tend(sp, r, now);
@@ -116,6 +121,12 @@ public final class PetKeeper {
 
     private static void tend(ServerPlayer sp, Rec r, long now) {
         if (r.faintUntil > now) {
+            return;
+        }
+        // el descanso va guardado en la figurita: quitarla y ponerla no lo salta
+        long rest = PetData.read(figurine(sp, r.spec)).getLong("RestUntil");
+        if (rest > now) {
+            r.faintUntil = rest;
             return;
         }
         Mascota p = r.pet;
@@ -205,6 +216,12 @@ public final class PetKeeper {
         if (owner != null) {
             r.sitPos = null;
             clearSit(owner, r.spec);
+            ItemStack fig = figurine(owner, r.spec);
+            if (!fig.isEmpty()) {
+                PetData.edit(fig).putLong("RestUntil", r.faintUntil);
+                PetData.edit(fig).remove("Home");
+                saved(owner, true);
+            }
             owner.displayClientMessage(Component.translatable("msg.mundos_de_axelis.pet.fainted", m.getDisplayName(), FAINT_TICKS / 20), true);
         }
     }
@@ -238,6 +255,21 @@ public final class PetKeeper {
         } else {
             r.sitPos = null;
             clearSit(owner, r.spec);
+        }
+        // la figurita recuerda dónde te espera (se ve en su descripción)
+        ItemStack fig = figurine(owner, r.spec);
+        if (!fig.isEmpty()) {
+            if (sit) {
+                CompoundTag h = new CompoundTag();
+                h.putString("Dim", r.sitDim.location().toString());
+                h.putInt("X", (int) Math.floor(r.sitPos.x));
+                h.putInt("Y", (int) Math.floor(r.sitPos.y));
+                h.putInt("Z", (int) Math.floor(r.sitPos.z));
+                PetData.edit(fig).put("Home", h);
+            } else {
+                PetData.edit(fig).remove("Home");
+            }
+            saved(owner, true);
         }
     }
 
@@ -274,6 +306,15 @@ public final class PetKeeper {
             if (r.pet != null && !r.pet.isRemoved()) {
                 r.pet.leave(false);
             }
+        }
+    }
+
+    /** Tus flechas (y lo que lances) atraviesan a tus mascotas en vez de rebotar en ellas. */
+    @SubscribeEvent
+    public static void onProjectile(net.minecraftforge.event.entity.ProjectileImpactEvent e) {
+        if (e.getRayTraceResult() instanceof net.minecraft.world.phys.EntityHitResult eh && eh.getEntity() instanceof Mascota m
+                && e.getProjectile().getOwner() instanceof net.minecraft.world.entity.LivingEntity shooter && m.isOwnedBy(shooter)) {
+            e.setCanceled(true);
         }
     }
 

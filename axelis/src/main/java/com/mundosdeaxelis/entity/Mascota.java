@@ -93,7 +93,7 @@ public class Mascota extends TamableAnimal {
 
     /** Modos de las que pelean: defenderte (como el lobo), atacar a todo monstruo cercano, o quedarse tranquila. */
     public static final int MODE_DEFEND = 0, MODE_ATTACK = 1, MODE_CALM = 2;
-    public static final int F_LEAVING = 1, F_LIGHT = 2, F_FETCH = 4;
+    public static final int F_LEAVING = 1, F_LIGHT = 2, F_FETCH = 4, F_BEG = 8;
     /** Avisos al cliente (animaciones): contenta, truco, dispara, muerde, come, ruge. */
     public static final byte EV_HAPPY = 90, EV_TRICK = 91, EV_CAST = 92, EV_BITE = 93, EV_EAT = 94, EV_ROAR = 95;
 
@@ -112,6 +112,9 @@ public class Mascota extends TamableAnimal {
     public final VfxData anim = new VfxData();
     public int trickT, happyT, castT, biteT, eatT;
     private boolean ownerWasGround = true;
+    private boolean wasWet;
+    /** Cliente: ticks que le quedan a la sacudida para secarse (como el lobo al salir del agua). */
+    public int shakeT;
     private int lastHurt;
     public double leaveAge = -1;
 
@@ -154,6 +157,7 @@ public class Mascota extends TamableAnimal {
         this.goalSelector.addGoal(6, new MascotaGoals.Follow(this));
         this.goalSelector.addGoal(7, new MascotaGoals.Wander(this));
         this.goalSelector.addGoal(7, new MascotaGoals.Hover(this));
+        this.goalSelector.addGoal(7, new MascotaGoals.Beg(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new MascotaGoals.OwnerHurtBy(this));
@@ -442,6 +446,23 @@ public class Mascota extends TamableAnimal {
         return true;
     }
 
+    /** Tú y tu mascota no os empujáis (no te saca de un borde ni te tapa una puerta); entre mascotas sí. */
+    @Override
+    public void push(Entity e) {
+        if (e != null && e == getOwner()) {
+            return;
+        }
+        super.push(e);
+    }
+
+    @Override
+    protected void doPush(Entity e) {
+        if (e != null && e == getOwner()) {
+            return;
+        }
+        super.doPush(e);
+    }
+
     // ------------------------------------------------------------------ sonidos
 
     @Override
@@ -492,7 +513,7 @@ public class Mascota extends TamableAnimal {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack st = player.getItemInHand(hand);
-        if (kind == null || leaving()) {
+        if (kind == null || leaving() || this.isDeadOrDying()) {
             return InteractionResult.PASS;
         }
         boolean client = this.level().isClientSide;
@@ -679,7 +700,8 @@ public class Mascota extends TamableAnimal {
         }
         PetKeeper.fainted(this, o);
         clearLight();
-        this.discard();
+        this.navigation.stop();
+        // no desaparece de golpe: se queda dormida y se encoge (el juego la quita al segundo con su nubecita)
     }
 
     @Override
@@ -703,7 +725,12 @@ public class Mascota extends TamableAnimal {
         this.navigation.stop();
         if (level() instanceof ServerLevel sl && spec != null) {
             Vec3 c = this.getBoundingBox().getCenter();
-            RelicSounds.play(sl, c, spec.id(), "end", 0.7F, 1.0F);
+            if (RelicSounds.has(spec.id(), "end")) {
+                RelicSounds.play(sl, c, spec.id(), "end", 0.7F, 1.0F);
+            } else {
+                voice(0.6F, 1.25F);
+                playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 0.6F, 1.6F);
+            }
             Vfx.flash(sl, c, spec.rgb(), 1.4, 9);
             RelicFx.burst(sl, Fx.spark(spec.rgb(), 0.6F), c, 12, 0.22);
         }
@@ -982,6 +1009,9 @@ public class Mascota extends TamableAnimal {
             this.discard();
             return;
         }
+        if (this.isDeadOrDying()) {
+            return; // cansada: se duerme y el juego la quita al terminar (ya volvió a su figurita)
+        }
         if (leaveTicks >= 0) {
             if (--leaveTicks <= 0) {
                 this.discard();
@@ -991,6 +1021,14 @@ public class Mascota extends TamableAnimal {
         if (this.tickCount % 20 == 7 && !PetKeeper.isCurrent(this)) {
             this.discard(); // sobra (no es la mascota vigente de su dueño)
             return;
+        }
+        // si cae a la lava (y no la aguanta) o al vacío, vuelve contigo en vez de cansarse
+        ServerPlayer o = ownerPlayer();
+        if (o != null && this.tickCount % 5 == 0 && o.level() == this.level()
+                && (this.getY() < this.level().getMinBuildHeight() - 4 || (this.isInLava() && !this.fireImmune()))) {
+            teleportNear(o);
+            this.clearFire();
+            this.fallDistance = 0;
         }
         if (petCd > 0) {
             petCd--;
@@ -1092,6 +1130,31 @@ public class Mascota extends TamableAnimal {
         }
         d.pmSit = d.mSit;
         d.mSit += (sitT - d.mSit) * 0.18;
+        // te pide comida: ladea la cabeza y da saltitos (como el lobo cuando tienes un hueso en la mano)
+        double begT = hasFlag(F_BEG) ? 1 : 0;
+        d.eTilt += (begT - d.eTilt) * 0.2;
+        if (begT > 0) {
+            d.mIdle = 0;
+            if (d.mHop <= 0 && random.nextInt(45) == 0) {
+                d.mHop = 12;
+            }
+        }
+        // sale del agua: se sacude y salpica gotitas
+        boolean wet = this.isInWaterOrBubble();
+        if (wasWet && !wet && !flier()) {
+            shakeT = 30;
+        }
+        wasWet = wet;
+        if (shakeT > 0) {
+            shakeT--;
+            d.mIdle = 0;
+            if (shakeT % 3 == 0) {
+                for (int i = 0; i < 3; i++) {
+                    level().addParticle(ParticleTypes.SPLASH, getRandomX(0.7), getY() + getBbHeight() * (0.4 + random.nextDouble() * 0.5),
+                            getRandomZ(0.7), 0, 0, 0);
+                }
+            }
+        }
         if (d.mHop > 0) {
             d.mHop--;
         }

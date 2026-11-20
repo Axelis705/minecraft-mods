@@ -365,6 +365,57 @@ final class MascotaGoals {
         }
     }
 
+    // ------------------------------------------------------------------ pedir comida (como el lobo cuando tienes un hueso)
+
+    /** Si su dueño tiene su comida favorita en la mano, lo mira, ladea la cabeza y da saltitos. */
+    static final class Beg extends Goal {
+        private final Mascota pet;
+        private LivingEntity owner;
+        private int time;
+
+        Beg(Mascota pet) {
+            this.pet = pet;
+            this.setFlags(EnumSet.of(Flag.LOOK));
+        }
+
+        private boolean holding(LivingEntity o) {
+            return pet.kind() != null && o.isHolding(pet.kind().food());
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity o = pet.getOwner();
+            if (o == null || pet.leaving() || pet.getTarget() != null || o.distanceToSqr(pet) > 8 * 8 || !holding(o)) {
+                return false;
+            }
+            owner = o;
+            return true;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return owner != null && owner.isAlive() && time > 0 && owner.distanceToSqr(pet) < 8 * 8 && holding(owner) && pet.getTarget() == null;
+        }
+
+        @Override
+        public void start() {
+            time = adjustedTickDelay(40 + pet.getRandom().nextInt(40));
+            pet.setFlag(Mascota.F_BEG, true);
+        }
+
+        @Override
+        public void stop() {
+            pet.setFlag(Mascota.F_BEG, false);
+            owner = null;
+        }
+
+        @Override
+        public void tick() {
+            pet.getLookControl().setLookAt(owner.getX(), owner.getEyeY(), owner.getZ(), 10.0F, (float) pet.getMaxHeadXRot());
+            time--;
+        }
+    }
+
     // ------------------------------------------------------------------ recoger lo que hay en el suelo (las que tienen «recoger»)
 
     static final class Fetch extends Goal {

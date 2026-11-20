@@ -210,6 +210,7 @@ public final class AutoTest {
     }
 
     private static volatile boolean zombieSeen;
+    private static net.minecraft.world.item.ItemStack[] savedPets;
 
     /** Etapa 254: equipa estas figuritas en las ranuras de mascotas del jugador (las criaturas aparecen solas). */
     private static void equipPets(com.mundosdeaxelis.relic.Companions.Spec... specs) {
@@ -857,6 +858,27 @@ public final class AutoTest {
                 sat |= m.isInSittingPose();
             }
             check("clic derecho: la mascota se sienta", sat);
+            onServer(sp -> {
+                boolean home = false;
+                for (net.minecraft.world.item.ItemStack st : com.mundosdeaxelis.relic.Equipment.get(sp).pets) {
+                    home |= com.mundosdeaxelis.relic.PetData.read(st).contains("Home");
+                }
+                check("la figurita recuerda dónde te espera sentada", home);
+            });
+        });
+        add("mascota: pide comida", 1800, () -> onServer(sp -> {
+            List<com.mundosdeaxelis.entity.Mascota> l = serverPets(sp);
+            if (l.size() > 1) {
+                sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.item.ItemStack(l.get(1).kind().food()));
+            }
+        }));
+        add("mascota: pide comida (resultado)", 300, () -> {
+            boolean beg = false;
+            for (com.mundosdeaxelis.entity.Mascota m : pets()) {
+                beg |= m.hasFlag(com.mundosdeaxelis.entity.Mascota.F_BEG);
+            }
+            check("con su comida favorita en tu mano, te la pide (ladea la cabeza)", beg);
+            onServer(sp -> sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.EMPTY));
         });
         add("mascota: comer", 1200, () -> onServer(sp -> {
             List<com.mundosdeaxelis.entity.Mascota> l = serverPets(sp);
@@ -940,6 +962,45 @@ public final class AutoTest {
             check("las mascotas de combate atacan a un zombi (" + (found ? "vida " + hp + " de " + max : "lo vencieron") + ")",
                     zombieSeen && (!found || hp < max));
         }));
+        add("mascota: se cansa", 400, () -> onServer(sp -> {
+            List<com.mundosdeaxelis.entity.Mascota> l = serverPets(sp);
+            if (!l.isEmpty()) {
+                l.get(0).hurt(sp.damageSources().generic(), 1000F);
+            }
+        }));
+        add("mascota: cansada (se duerme)", 2200, () -> {
+            boolean dying = false;
+            for (com.mundosdeaxelis.entity.Mascota m : pets()) {
+                dying |= m.isDeadOrDying();
+            }
+            check("al cansarse no desaparece de golpe: se duerme y se encoge", dying);
+        });
+        add("mascota: descansando", 300, () -> {
+            check("al cansarse vuelve a su figurita (quedan " + pets().size() + " de 3)", pets().size() == 2);
+            onServer(sp -> {
+                boolean rest = false;
+                for (net.minecraft.world.item.ItemStack st : com.mundosdeaxelis.relic.Equipment.get(sp).pets) {
+                    rest |= com.mundosdeaxelis.relic.PetData.read(st).getLong("RestUntil") > sp.level().getGameTime();
+                }
+                check("su descanso queda guardado en la figurita", rest);
+            });
+        });
+        // las mismas figuritas (con lo que recuerdan) se quitan del equipo y se vuelven a poner
+        add("mascotas: quitar y poner", 1200, () -> onServer(sp -> {
+            com.mundosdeaxelis.relic.Equipment.Data d = com.mundosdeaxelis.relic.Equipment.get(sp);
+            savedPets = d.pets.clone();
+            java.util.Arrays.fill(d.pets, net.minecraft.world.item.ItemStack.EMPTY);
+            com.mundosdeaxelis.relic.Equipment.sync(sp);
+        }));
+        add("mascotas: poner otra vez", 2200, () -> onServer(sp -> {
+            com.mundosdeaxelis.relic.Equipment.Data d = com.mundosdeaxelis.relic.Equipment.get(sp);
+            if (savedPets != null) {
+                System.arraycopy(savedPets, 0, d.pets, 0, Math.min(savedPets.length, d.pets.length));
+            }
+            com.mundosdeaxelis.relic.Equipment.sync(sp);
+        }));
+        add("mascotas: la cansada sigue descansando", 300, () -> check("quitar y poner la figurita no se salta el descanso (aparecen "
+                + pets().size() + " de 3)", pets().size() == 2));
         add("mascotas: quitarlas", 1800, () -> equipPets());
         add("mascotas: se van", 300, () -> check("al quitarlas del menú de equipo se van (quedan " + pets().size() + ")", pets().isEmpty()));
         // 6. la Piedra de Portal de la Torre, como un jugador: clic derecho, ficha, «Comenzar» y entrar (etapa 5)

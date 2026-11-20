@@ -656,6 +656,13 @@ public final class Creature3D {
             c.shake *= 1 - c.sleep;
             c.tilt *= 1 - c.sleep;
         }
+        if (d.entity) {
+            // entidad: ladea la cabeza cuando le enseñas su comida; al salir del agua se sacude entera
+            c.tilt = Math.max(c.tilt, d.eTilt);
+            if (d.eShake >= 0 && d.eShake <= 1) {
+                c.shake = Math.sin(d.eShake * Math.PI * 9) * Math.sin(d.eShake * Math.PI) * 1.6;
+            }
+        }
         if (d.mWake > 0 && !flier) {
             c.joy = Math.max(c.joy, Math.sin(cl((16 - d.mWake + partial) / 16.0, 0, 1) * Math.PI));
         }

@@ -56,12 +56,14 @@ public class CompanionItem extends RelicItem {
     /**
      * Etapa 254: lo que la figurita cuenta de su mascota-criatura: su nombre, su cariño, si pelea y cómo, y qué hace en su menú.
      */
-    static void petLines(Companions.Spec spec, ItemStack stack, java.util.List<net.minecraft.network.chat.Component> tip) {
+    static void petLines(Companions.Spec spec, ItemStack stack, java.util.List<net.minecraft.network.chat.Component> tip,
+                         net.minecraft.world.level.Level level) {
         PetKinds.Kind k = PetKinds.of(spec.species());
         if (k == null) {
             return;
         }
         String g = "tooltip.mundos_de_axelis.pet.";
+        net.minecraft.nbt.CompoundTag d = PetData.read(stack);
         String name = PetData.name(stack);
         if (!name.isEmpty()) {
             tip.add(net.minecraft.network.chat.Component.translatable(g + "name", name).withStyle(net.minecraft.ChatFormatting.WHITE));
@@ -72,6 +74,18 @@ public class CompanionItem extends RelicItem {
             h.append(love >= (i + 1) * 20 ? "\u2665" : "\u2661");
         }
         tip.add(net.minecraft.network.chat.Component.translatable(g + "love", h.toString()).withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        // descansando tras cansarse en una pelea, o sentada esperándote en algún sitio
+        long rest = d.getLong("RestUntil") - (level == null ? 0 : level.getGameTime());
+        if (level != null && rest > 0) {
+            tip.add(net.minecraft.network.chat.Component.translatable(g + "resting", (rest + 19) / 20).withStyle(net.minecraft.ChatFormatting.RED));
+        } else if (d.contains("Home")) {
+            net.minecraft.nbt.CompoundTag home = d.getCompound("Home");
+            String dim = home.getString("Dim");
+            String dimKey = dim.equals("minecraft:overworld") ? "overworld" : dim.equals("minecraft:the_nether") ? "nether"
+                    : dim.equals("minecraft:the_end") ? "end" : "other";
+            tip.add(net.minecraft.network.chat.Component.translatable(g + "home", home.getInt("X"), home.getInt("Y"), home.getInt("Z"),
+                    net.minecraft.network.chat.Component.translatable(g + "dim." + dimKey)).withStyle(net.minecraft.ChatFormatting.YELLOW));
+        }
         if (k.combat()) {
             tip.add(net.minecraft.network.chat.Component.translatable("gui.mundos_de_axelis.pet.fight." + k.attack.name().toLowerCase(java.util.Locale.ROOT),
                     net.minecraft.network.chat.Component.translatable("gui.mundos_de_axelis.pet.element." + k.element.name().toLowerCase(java.util.Locale.ROOT)))
@@ -86,7 +100,9 @@ public class CompanionItem extends RelicItem {
         if (k.special == PetKinds.Special.BAG && PetData.bagCount(stack) > 0) {
             tip.add(net.minecraft.network.chat.Component.translatable(g + "bag_count", PetData.bagCount(stack), k.bag).withStyle(net.minecraft.ChatFormatting.GRAY));
         }
-        tip.add(net.minecraft.network.chat.Component.translatable(g + "how").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+        tip.add(net.minecraft.network.chat.Component.translatable(g + "loves", new ItemStack(k.food()).getHoverName()).withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+        tip.add(net.minecraft.network.chat.Component.translatable(g + "how1").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
+        tip.add(net.minecraft.network.chat.Component.translatable(g + "how2").withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
     }
 
     @Override
