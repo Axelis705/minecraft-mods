@@ -127,14 +127,37 @@ execute if data block 305 -60 46 {Kind:"ANTE",Stage:1} run say PRUEBA_SANTUARIO_
 execute if entity @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_RAIZAL_OK
 execute if entity @e[type=mundos_de_axelis:brote,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_BROTES_OK
 execute if entity @e[type=mundos_de_axelis:espinoso,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_ESPINOSO_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=308,y=-61,z=37,dx=5,dy=3,dz=6,nbt={NpcState:0}] run say PRUEBA_RUDA_PRESA_OK
+execute if entity @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_RUDA_RAIZAL_LLAVE_OK
+kill @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60]
+execute if entity @e[type=item,x=280,y=-70,z=0,dx=40,dy=20,dz=60,nbt={Item:{id:"mundos_de_axelis:llave_celda"}}] run say PRUEBA_RUDA_LLAVE_CAE_OK
+execute positioned 311 -60 40 run mundos vecinos liberar
+execute if block 308 -60 42 minecraft:iron_door[open=true] run say PRUEBA_RUDA_PUERTA_ABIERTA_OK
+execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1}] run say PRUEBA_RUDA_LIBRE_OK
 execute positioned 300 -60 0 run mundos estructura deshacer
 execute unless block 300 -59 46 mundos_de_axelis:portal_stone_forest run say PRUEBA_SANTUARIO_DESHECHO_OK
+execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1}] run say PRUEBA_RUDA_SIGUE_TRAS_DESHACER_OK
+forceload add 320 -40 345 -5
+execute positioned 330 -60 -30 rotated 0 0 run mundos vecinos plantar
+execute if block 330 -60 -29 minecraft:spruce_door run say PRUEBA_RUDA_CASA_PUERTA_OK
+execute if block 330 -56 -26 minecraft:lantern run say PRUEBA_RUDA_CASA_FAROL_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=327,y=-61,z=-29,dx=7,dy=4,dz=7,nbt={NpcState:2}] run say PRUEBA_RUDA_VECINA_OK
+execute unless entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1}] run say PRUEBA_RUDA_UNA_SOLA_OK
+mundos vecinos estado
+mundos vecinos mudar
+execute unless block 330 -60 -29 minecraft:spruce_door run say PRUEBA_RUDA_CASA_DESARMADA_OK
+execute if block 330 -61 -26 minecraft:grass_block run say PRUEBA_RUDA_CASA_SUELO_OK
+execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1}] run say PRUEBA_RUDA_MUDADA_OK
+mundos vecinos reiniciar
+execute unless entity @e[type=mundos_de_axelis:habitante] run say PRUEBA_RUDA_REINICIO_OK
+forceload remove 320 -40 345 -5
 execute unless entity @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_SIN_ENEMIGOS_OK
 forceload remove 270 -10 330 70
 forceload add 2500 -60 2600 60
 execute positioned 2550 -60 0 rotated 0 0 run mundos natural generar bosque aqui
 #wait BOSQUE_NATURAL_OK 120
 execute if block 2550 -59 -12 mundos_de_axelis:portal_stone_forest run say PRUEBA_SANTUARIO_NATURAL_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=2500,y=-80,z=-60,dx=100,dy=40,dz=120,nbt={NpcState:0}] run say PRUEBA_RUDA_NATURAL_PRESA_OK
 execute positioned 2550 -60 0 run mundos natural cerca
 forceload remove 2500 -60 2600 60
 #expect PRUEBA_SANTUARIO_PIEDRA_OK
@@ -147,5 +170,20 @@ forceload remove 2500 -60 2600 60
 #expect PRUEBA_SANTUARIO_DESHECHO_OK
 #expect PRUEBA_SANTUARIO_SIN_ENEMIGOS_OK
 #expect PRUEBA_SANTUARIO_NATURAL_OK
+#expect PRUEBA_RUDA_PRESA_OK
+#expect PRUEBA_RUDA_RAIZAL_LLAVE_OK
+#expect PRUEBA_RUDA_LLAVE_CAE_OK
+#expect PRUEBA_RUDA_PUERTA_ABIERTA_OK
+#expect PRUEBA_RUDA_LIBRE_OK
+#expect PRUEBA_RUDA_SIGUE_TRAS_DESHACER_OK
+#expect PRUEBA_RUDA_CASA_PUERTA_OK
+#expect PRUEBA_RUDA_CASA_FAROL_OK
+#expect PRUEBA_RUDA_VECINA_OK
+#expect PRUEBA_RUDA_UNA_SOLA_OK
+#expect PRUEBA_RUDA_CASA_DESARMADA_OK
+#expect PRUEBA_RUDA_CASA_SUELO_OK
+#expect PRUEBA_RUDA_MUDADA_OK
+#expect PRUEBA_RUDA_REINICIO_OK
+#expect PRUEBA_RUDA_NATURAL_PRESA_OK
 say PRUEBA_SE_APAGA_A_MEDIA_OBRA
 mundos prueba construir 2

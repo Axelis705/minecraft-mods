@@ -156,6 +156,9 @@ public final class ModItems {
     /** Acero Ígneo: material de la Forja para crear cosas en la Mesa del Artífice. */
     public static final RegistryObject<Item> EMBER_STEEL = ITEMS.register("ember_steel", com.mundosdeaxelis.item.EmberSteelItem::new);
     public static final RegistryObject<Item> DUNGEON_KEY = ITEMS.register("dungeon_key", com.mundosdeaxelis.item.DungeonKeyItem::new);
+    /** Etapa 257: llave de la celda del santuario (la lleva el Raizal del altar) y semilla de la casa de un habitante rescatado. */
+    public static final RegistryObject<Item> LLAVE_CELDA = ITEMS.register("llave_celda", com.mundosdeaxelis.npc.LlaveCeldaItem::new);
+    public static final RegistryObject<Item> SEMILLA_CASA = ITEMS.register("semilla_casa", com.mundosdeaxelis.npc.SemillaCasaItem::new);
 
     public static final RegistryObject<Item> ARTIFICER_TABLE = ITEMS.register("artificer_table",
             () -> new BlockItem(ModBlocks.ARTIFICER_TABLE.get(), new Item.Properties().rarity(Rarity.RARE)));

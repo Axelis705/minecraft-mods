@@ -19,7 +19,11 @@ public final class StructBp {
     /** Enemigos que se ponen una sola vez al colocar la estructura (posición local de los pies y su id sin espacio de nombres). */
     public final List<Mob> mobs = new ArrayList<>();
 
-    public record Mob(int x, int y, int z, String kind) {
+    /** {@code tag}: marca opcional (p. ej. qué NPC es el preso de la celda, o quién lleva la llave de la celda). */
+    public record Mob(int x, int y, int z, String kind, String tag) {
+        public Mob(int x, int y, int z, String kind) {
+            this(x, y, z, kind, null);
+        }
     }
     public final List<Found> found = new ArrayList<>();
     public final Random r;

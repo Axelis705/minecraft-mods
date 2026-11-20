@@ -9,7 +9,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 
 /** Canal de red entre servidor y clientes (diálogos, destellos, cinemáticas...). */
 public final class ModNetwork {
-    private static final String PROTOCOL = "21";
+    private static final String PROTOCOL = "22";
 
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MundosDeAxelis.MODID, "main"),
@@ -91,6 +91,10 @@ public final class ModNetwork {
                 PetNamePacket::encode, PetNamePacket::decode, PetNamePacket::handle, TO_SERVER);
         CHANNEL.registerMessage(id++, VolcanZonaPacket.class,
                 VolcanZonaPacket::encode, VolcanZonaPacket::decode, VolcanZonaPacket::handle, TO_CLIENT);
+        CHANNEL.registerMessage(id++, NpcOpenPacket.class,
+                NpcOpenPacket::encode, NpcOpenPacket::decode, NpcOpenPacket::handle, TO_CLIENT);
+        CHANNEL.registerMessage(id++, NpcActionPacket.class,
+                NpcActionPacket::encode, NpcActionPacket::decode, NpcActionPacket::handle, TO_SERVER);
     }
 
     public static void sendTo(ServerPlayer player, Object message) {

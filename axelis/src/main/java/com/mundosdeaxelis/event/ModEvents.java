@@ -44,6 +44,7 @@ public final class ModEvents {
         event.put(ModEntities.LIBRO_EMBRUJADO.get(), com.mundosdeaxelis.entity.LibroEmbrujado.createAttributes().build());
         event.put(ModEntities.SALAMANDRA_LAVA.get(), com.mundosdeaxelis.entity.SalamandraLava.createAttributes().build());
         event.put(ModEntities.GRAN_SALAMANDRA.get(), com.mundosdeaxelis.entity.GranSalamandra.createAttributes().build());
+        event.put(ModEntities.HABITANTE.get(), com.mundosdeaxelis.entity.Habitante.createAttributes().build());
         event.put(ModEntities.DIABLILLO.get(), com.mundosdeaxelis.entity.Diablillo.createAttributes().build());
         event.put(ModEntities.CULTISTA_VOLCAN.get(), com.mundosdeaxelis.entity.CultistaVolcan.createAttributes().build());
         event.put(ModEntities.ARMADURA_ENCANTADA.get(), com.mundosdeaxelis.entity.ArmaduraEncantada.createAttributes().build());

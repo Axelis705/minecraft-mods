@@ -139,6 +139,17 @@ public final class StructGuard extends SavedData {
         }
     }
 
+    /** Centros de las estructuras de un diseño ya construidas en esa dimensión (para las pistas y brújulas de los habitantes). */
+    public static List<BlockPos> centers(MinecraftServer server, String design, ResourceKey<Level> dim) {
+        List<BlockPos> out = new ArrayList<>();
+        for (Placed p : get(server).list) {
+            if (p.design().equals(design) && p.dim() == dim) {
+                out.add(p.box().getCenter());
+            }
+        }
+        return out;
+    }
+
     /** ¿Ese bloque es parte de una estructura protegida? */
     public static boolean protectedAt(ServerLevel level, BlockPos pos) {
         StructGuard g = get(level.getServer());

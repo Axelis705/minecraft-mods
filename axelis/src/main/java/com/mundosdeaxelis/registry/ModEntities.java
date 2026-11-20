@@ -145,6 +145,14 @@ public final class ModEntities {
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "salamandra_lava").toString()));
 
+    /** Habitantes (etapa 257): los NPC que se rescatan de las celdas de las estructuras. */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Habitante>> HABITANTE = ENTITIES.register("habitante",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.Habitante>of(com.mundosdeaxelis.entity.Habitante::new, MobCategory.MISC)
+                    .sized(0.6F, 1.8F)
+                    .fireImmune()
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "habitante").toString()));
+
     /** Mini jefe del volcán (etapa 255): la Gran Salamandra, guardiana del paso al santuario. */
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.GranSalamandra>> GRAN_SALAMANDRA = ENTITIES.register("gran_salamandra",
             () -> EntityType.Builder.<com.mundosdeaxelis.entity.GranSalamandra>of(com.mundosdeaxelis.entity.GranSalamandra::new, MobCategory.MONSTER)

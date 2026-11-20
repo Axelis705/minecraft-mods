@@ -493,9 +493,13 @@ final class DesignSantuario {
     }
 
     private static void mob(StructBp b, int x, int y, int z, String kind) {
+        mob(b, x, y, z, kind, null);
+    }
+
+    private static void mob(StructBp b, int x, int y, int z, String kind, String tag) {
         if (free(b, x, y, z)) {
             b.m.remove(StructBp.key(x, y, z));
-            b.mobs.add(new StructBp.Mob(x, y, z, kind));
+            b.mobs.add(new StructBp.Mob(x, y, z, kind, tag));
         } else {
             System.err.println("[Santuario] sin sitio para " + kind + " en " + x + "," + y + "," + z);
         }
@@ -506,6 +510,9 @@ final class DesignSantuario {
         mob(b, 5, 0, 15, "brote");
         mob(b, -2, 0, 17, "brote");
         mob(b, -6, 0, 28, "espinoso");
-        mob(b, 0, 0, 25, "raizal");
+        // el Raizal que guarda el altar lleva la llave de la celda
+        mob(b, 0, 0, 25, "raizal", "llave_celda");
+        // Ruda, la herbolaria, presa en la celda
+        mob(b, NPC_X, 0, NPC_Z, "habitante", "ruda");
     }
 }

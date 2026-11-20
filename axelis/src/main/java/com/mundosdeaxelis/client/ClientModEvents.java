@@ -95,6 +95,7 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.LOBO_ARTICO.get(), LoboArticoRenderer::new);
         event.registerEntityRenderer(ModEntities.ARCHIMAGO.get(), ArchimagoRenderer::new);
         event.registerEntityRenderer(ModEntities.ESBIRRO.get(), EsbirroRenderer::new);
+        event.registerEntityRenderer(ModEntities.HABITANTE.get(), HabitanteRenderer::new);
         event.registerEntityRenderer(ModEntities.CORAZON_MAGMA.get(), MagmaRenderers.Heart::new);
         event.registerEntityRenderer(ModEntities.ANCLA_MAGMA.get(), MagmaRenderers.Anchor::new);
         event.registerEntityRenderer(ModEntities.LARVA_MAGMA.get(), MagmaRenderers.Larva::new);

@@ -20,6 +20,16 @@ public final class ClientBridge {
         DungeonMapHud.set(p);
     }
 
+    /** Ventana de un habitante: si ya está abierta la suya, solo se actualiza. */
+    public static void npc(com.mundosdeaxelis.network.NpcOpenPacket p) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.screen instanceof NpcScreen s && s.accepts(p)) {
+            s.update(p);
+        } else if (p.result != com.mundosdeaxelis.npc.NpcService.R_MOVED || mc.screen == null) {
+            mc.setScreen(new NpcScreen(p));
+        }
+    }
+
     public static void openLockpick(com.mundosdeaxelis.network.LockpickOpenPacket p) {
         Minecraft.getInstance().setScreen(new LockpickScreen(p.pos, p.level, p.seed));
     }

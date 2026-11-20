@@ -49,6 +49,9 @@ public final class StructPlacer {
     public record Snap(BlockState old, CompoundTag be) {
     }
 
+    /** Marca de los enemigos del plano (ver {@link StructBp.Mob#tag}). */
+    public static final String TAG = "MundosTag";
+
     /** Solo avisa a los jugadores: sin avisar a los vecinos y sin soltar objetos (ver {@link Estructuras}). */
     static final int FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_SUPPRESS_DROPS;
     private static final int P_FOUND = 0, P_BLEND = 1, P_BLOCKS = 2, P_ANCHORS = 3, P_RESHAPE = 4, P_SUPPORT = 5, P_NBT = 6, P_MOBS = 7, P_DONE = 8;
@@ -105,6 +108,12 @@ public final class StructPlacer {
 
     public static BlockPos world(BlockPos origin, Rotation rot, int x, int y, int z) {
         return origin.offset(new BlockPos(x, y, z).rotate(rot));
+    }
+
+    /** El bloque que pide el plano en esa posición, ya girado (null si el texto no es un bloque conocido). */
+    public static net.minecraft.world.level.block.state.BlockState planned(String spec, Rotation rot) {
+        net.minecraft.world.level.block.state.BlockState st = Estructuras.state(spec);
+        return st == null ? null : st.rotate(rot);
     }
 
     public BlockPos world(int x, int y, int z) {
@@ -495,6 +504,15 @@ public final class StructPlacer {
         mob.moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, level.random.nextFloat() * 360.0F, 0.0F);
         mob.finalizeSpawn(level, level.getCurrentDifficultyAt(p), net.minecraft.world.entity.MobSpawnType.STRUCTURE, null, null);
         mob.setPersistenceRequired();
+        if (m.tag() != null) {
+            mob.getPersistentData().putString(TAG, m.tag());
+            if (mob instanceof com.mundosdeaxelis.entity.Habitante h) {
+                if (!h.prisonerAllowed(level, m.tag())) {
+                    return null; // ese NPC ya fue rescatado en este mundo: la celda queda vacía
+                }
+                h.setup(m.tag(), com.mundosdeaxelis.entity.Habitante.PRESO, p);
+            }
+        }
         if (hook != null) {
             hook.accept(index, mob);
         }

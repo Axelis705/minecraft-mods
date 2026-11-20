@@ -54,6 +54,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.SANCTUARY_BERRY.get());
                         output.accept(ModItems.ACORN.get());
                         output.accept(ModItems.GOLDEN_ACORN.get());
+                        output.accept(ModItems.LLAVE_CELDA.get());
+                        output.accept(com.mundosdeaxelis.npc.NpcService.kit("ruda"));
                         output.accept(ModItems.EMBER_STEEL.get());
                         output.accept(ModItems.EMBER_RIVET.get());
                         output.accept(ModItems.FORGE_ROAST.get());

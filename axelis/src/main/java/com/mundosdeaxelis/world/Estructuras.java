@@ -172,7 +172,8 @@ public final class Estructuras {
             }
             for (UUID id : u.mobs) {
                 net.minecraft.world.entity.Entity e = level.getEntity(id);
-                if (e != null) {
+                // un habitante ya rescatado no es parte de la estructura: se queda
+                if (e != null && !(e instanceof com.mundosdeaxelis.entity.Habitante h && h.state() != com.mundosdeaxelis.entity.Habitante.PRESO)) {
                     e.discard();
                 }
             }

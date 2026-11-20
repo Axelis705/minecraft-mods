@@ -22,7 +22,8 @@ public final class OwnCommands {
                 .then(TestCommands.build())
                 .then(com.mundosdeaxelis.world.Estructuras.build())
                 .then(com.mundosdeaxelis.world.Volcanes.command())
-                .then(com.mundosdeaxelis.world.NaturalGen.command()));
+                .then(com.mundosdeaxelis.world.NaturalGen.command())
+                .then(com.mundosdeaxelis.npc.Vecinos.command()));
     }
 
     /**

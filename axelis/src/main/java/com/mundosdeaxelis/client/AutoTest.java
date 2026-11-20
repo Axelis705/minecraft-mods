@@ -385,6 +385,185 @@ public final class AutoTest {
         });
     }
 
+    // ------------------------------------------------------------------ etapa 257: Ruda, la herbolaria (NPC de la celda)
+
+    /** Donde se planta la casa de Ruda en la prueba (la puerta queda en HZ + 1, mirando al norte). */
+    private static final int HX = 230, HZ = -10;
+    private static volatile boolean keyDropped;
+    private static volatile int essBefore;
+
+    private static com.mundosdeaxelis.entity.Habitante rudaClient() {
+        for (var en : Minecraft.getInstance().level.entitiesForRendering()) {
+            if (en instanceof com.mundosdeaxelis.entity.Habitante h && "ruda".equals(h.kindId())) {
+                return h;
+            }
+        }
+        return null;
+    }
+
+    private static void rudaServer(java.util.function.BiConsumer<net.minecraft.server.level.ServerPlayer, com.mundosdeaxelis.entity.Habitante> c) {
+        onServer(sp -> {
+            for (com.mundosdeaxelis.entity.Habitante h : sp.serverLevel().getEntitiesOfClass(com.mundosdeaxelis.entity.Habitante.class,
+                    sp.getBoundingBox().inflate(64))) {
+                c.accept(sp, h);
+                return;
+            }
+        });
+    }
+
+    private static NpcScreen npcScreen() {
+        return Minecraft.getInstance().screen instanceof NpcScreen s ? s : null;
+    }
+
+    private static int invCount(net.minecraft.world.item.Item it) {
+        int n = 0;
+        for (net.minecraft.world.item.ItemStack st : Minecraft.getInstance().player.getInventory().items) {
+            if (st.is(it)) {
+                n += st.getCount();
+            }
+        }
+        return n;
+    }
+
+    /** Usa el objeto que tengo en la mano sobre un bloque (como el clic derecho de un jugador). */
+    private static void useOn(net.minecraft.server.level.ServerPlayer sp, net.minecraft.world.item.ItemStack st, net.minecraft.core.BlockPos p,
+                              net.minecraft.core.Direction face) {
+        sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, st);
+        net.minecraft.world.phys.BlockHitResult hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(p), face, p, false);
+        sp.getMainHandItem().useOn(new net.minecraft.world.item.context.UseOnContext(sp, net.minecraft.world.InteractionHand.MAIN_HAND, hit));
+    }
+
+    private static void ruda() {
+        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(SX + 8, SY, SZ0 + 26);
+        add("ruda presa", 2500, () -> {
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            cmd("kill @e[type=mundos_de_axelis:brote]");
+            cmd("kill @e[type=mundos_de_axelis:espinoso]");
+            lookS(4.5, 0, 23.5, 11.5, 1.4, 24.5);
+        });
+        add("ruda presa (hablar)", 2600, () -> {
+            com.mundosdeaxelis.entity.Habitante h = rudaClient();
+            check("Ruda está presa en la celda", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
+            rudaServer(com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("ruda presa (foto)", 300, () -> {
+            check("se abre la ventana de diálogo de Ruda", npcScreen() != null);
+            shot("50_ruda_celda_dialogo");
+            open(null);
+        });
+        add("llave", 1200, () -> {
+            cmd("kill @e[type=mundos_de_axelis:raizal]");
+            onServer(sp -> keyDropped = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(48),
+                    i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
+        });
+        add("llave en la puerta", 2600, () -> {
+            check("el Raizal del altar suelta la llave de la celda", keyDropped);
+            cmd("kill @e[type=item]");
+            onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()), door,
+                    net.minecraft.core.Direction.WEST));
+        });
+        add("ruda rescatada (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(door);
+            check("con la llave se abre la puerta de la celda", ds.getBlock() instanceof net.minecraft.world.level.block.DoorBlock
+                    && ds.getValue(net.minecraft.world.level.block.DoorBlock.OPEN));
+            com.mundosdeaxelis.entity.Habitante h = rudaClient();
+            check("Ruda queda libre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE);
+            check("Ruda te da la Semilla de casa", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
+            check("sale la ventana de Ruda al rescatarla", npcScreen() != null && npcScreen().state() == com.mundosdeaxelis.entity.Habitante.LIBRE);
+            shot("51_ruda_rescatada");
+            open(null);
+        });
+        add("ruda sale de la celda", 5000, () -> lookS(-2.5, 1, 22.5, 6, 0.8, 26.5));
+        add("ruda sale de la celda (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = rudaClient();
+            check("Ruda salió de la celda (x " + (h == null ? "?" : String.format("%.1f", h.getX())) + ")", h != null && h.getX() < SX + 8);
+            shot("52_ruda_libre");
+        });
+        add("casa", 2500, () -> {
+            cmd("execute in minecraft:overworld run tp @a " + (HX + 0.5) + " " + SY + " " + (HZ - 2.5) + " 0 45");
+        });
+        add("casa (plantar)", 2500, () -> onServer(sp -> {
+            sp.teleportTo(sp.serverLevel(), HX + 0.5, SY, HZ - 2.5, 0.0F, 45.0F);
+            net.minecraft.world.item.ItemStack kit = com.mundosdeaxelis.npc.NpcService.kit("ruda");
+            useOn(sp, kit, new net.minecraft.core.BlockPos(HX, SY - 1, HZ), net.minecraft.core.Direction.UP);
+        }));
+        add("casa (comprobar)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(HX, SY, HZ + 1));
+            check("crece la casa de Ruda (puerta: " + ds.getBlock() + ")", ds.is(net.minecraft.world.level.block.Blocks.SPRUCE_DOOR));
+            com.mundosdeaxelis.entity.Habitante h = rudaClient();
+            check("Ruda vive en su casa", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.VECINO
+                    && Math.abs(h.getX() - HX) < 8 && Math.abs(h.getZ() - (HZ + 4)) < 8);
+            check("la semilla se gastó", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) == 0);
+        });
+        add("casa de fuera", 2500, () -> standLooking(HX + 7.5, SY + 3, HZ - 7.5, HX, SY + 2.5, HZ + 4));
+        add("casa de fuera (foto)", 300, () -> shot("53_casa_ruda"));
+        add("casa por dentro", 2500, () -> standLooking(HX + 0.5, SY, HZ + 2.3, HX - 0.5, SY + 1.2, HZ + 7));
+        add("casa por dentro (foto)", 300, () -> shot("54_casa_ruda_dentro"));
+        add("ruda vecina", 2600, () -> {
+            standLooking(HX + 0.5, SY, HZ + 2.3, HX + 0.5, SY + 1.4, HZ + 4.5);
+            onServer(sp -> {
+                com.mundosdeaxelis.table.Essence.add(sp, 500);
+                com.mundosdeaxelis.table.Essence.sync(sp);
+            });
+            rudaServer(com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("ruda vecina (foto)", 300, () -> {
+            check("ventana de Ruda vecina", npcScreen() != null && npcScreen().state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+            shot("55_ruda_vecina");
+            if (npcScreen() != null) {
+                npcScreen().press(NpcScreen.B_SHOP);
+            }
+        });
+        add("tienda (foto)", 800, () -> {
+            check("se abre la tienda de Ruda", npcScreen() != null && npcScreen().inShop());
+            shot("56_ruda_tienda");
+            essBefore = TableClient.essence;
+            if (npcScreen() != null) {
+                npcScreen().buy(0); // 3 bayas del santuario por 15
+            }
+        });
+        add("tienda (comprar brújula)", 1500, () -> {
+            check("la tienda cobra Esencia (" + essBefore + " -> " + TableClient.essence + ") y da las bayas",
+                    TableClient.essence == essBefore - 15 && invCount(com.mundosdeaxelis.registry.ModItems.SANCTUARY_BERRY.get()) >= 3);
+            if (npcScreen() != null) {
+                npcScreen().buy(7); // brújula al santuario
+            }
+        });
+        add("pistas", 3000, () -> {
+            boolean ok = false;
+            for (net.minecraft.world.item.ItemStack st : Minecraft.getInstance().player.getInventory().items) {
+                if (st.is(net.minecraft.world.item.Items.COMPASS) && st.hasTag() && st.getTag().contains("LodestonePos")) {
+                    ok = true;
+                    log("brújula -> " + st.getTag().get("LodestonePos") + " " + st.getHoverName().getString());
+                }
+            }
+            check("la brújula de Ruda apunta a un santuario", ok);
+            if (npcScreen() != null) {
+                npcScreen().press(NpcScreen.B_BACK);
+                npcScreen().press(NpcScreen.B_HINT);
+            }
+        });
+        add("pistas (foto)", 300, () -> {
+            String t = npcScreen() == null ? "" : npcScreen().lineText();
+            log("pista: " + t);
+            check("Ruda da una pista", !t.isEmpty());
+            shot("57_ruda_pistas");
+            if (npcScreen() != null) {
+                npcScreen().press(NpcScreen.B_MOVE);
+                npcScreen().press(NpcScreen.B_MOVE);
+            }
+        });
+        add("mudarse (comprobar)", 2000, () -> {
+            net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(HX, SY, HZ + 1));
+            check("al mudarse, la casa se desarma", ds.isAir());
+            com.mundosdeaxelis.entity.Habitante h = rudaClient();
+            check("al mudarse, Ruda queda libre con otra semilla", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE
+                    && invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
+            open(null);
+        });
+    }
+
     /** Me pone de pie en (x, y, z) de la dimensión donde estoy, mirando al punto (tx, ty, tz). */
     private static void standLooking(double x, double y, double z, double tx, double ty, double tz) {
         double dx = tx - x, dy = ty - (y + 1.62), dz = tz - z;
@@ -1390,8 +1569,14 @@ public final class AutoTest {
         });
         add("no se puede picar (comprobar)", 300, () -> {
             check("las estructuras no se pueden picar en supervivencia", !guardBroke);
+        });
+        ruda();
+        add("santuario (deshacer)", 1500, () -> {
+            open(null);
             cmd("gamemode spectator @a");
+            cmd("mundos vecinos reiniciar");
             cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
         });
         // 7. retratos para las cartas: tres "estudios" cerrados (volcán, forja y torre) y cada criatura quieta, de frente, sin interfaz
         add("estudios", 3000, () -> {

@@ -191,6 +191,60 @@ public final class NaturalGen extends SavedData {
         return Rotation.values()[Math.floorMod(site.getX() * 31 + site.getZ() * 17, 4)];
     }
 
+    /**
+     * La estructura de ese tipo más cercana a {@code from} en el mundo normal: una ya construida o el sitio donde aparecerá
+     * (mirando hasta 2 regiones alrededor). Null si no hay ninguna. Para las pistas y brújulas de los habitantes (etapa 257).
+     */
+    public static BlockPos nearest(MinecraftServer server, String id, BlockPos from) {
+        Spec s = byId(id);
+        if (s == null) {
+            return null;
+        }
+        BlockPos best = null;
+        double bd = Double.MAX_VALUE;
+        for (BlockPos c : StructGuard.centers(server, s.design(), net.minecraft.world.level.Level.OVERWORLD)) {
+            double d = Math.hypot(c.getX() - from.getX(), c.getZ() - from.getZ());
+            if (d < bd) {
+                bd = d;
+                best = c;
+            }
+        }
+        NaturalGen g = get(server);
+        if (!g.enabled(s)) {
+            return best;
+        }
+        ServerLevel ow = server.overworld();
+        long seed = ow.getSeed();
+        BlockPos spawn = ow.getSharedSpawnPos();
+        Map<Long, Integer> regs = g.map(s);
+        int rx0 = Math.floorDiv(from.getX(), s.region()), rz0 = Math.floorDiv(from.getZ(), s.region());
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                int rx = rx0 + dx, rz = rz0 + dz;
+                Integer st = regs.get(regionKey(rx, rz));
+                if (st == null) {
+                    st = hasSite(s, seed, rx, rz, spawn) ? 3 : 0;
+                }
+                if (st < 3) {
+                    continue; // sin sitio, ya construida (está en StructGuard) o el terreno no servía
+                }
+                for (int k = st - 3; k < 3; k++) {
+                    BlockPos c = site(s, seed, rx, rz, k);
+                    if (Math.hypot(c.getX() - spawn.getX(), c.getZ() - spawn.getZ()) < s.minSpawn()) {
+                        continue;
+                    }
+                    double d = Math.hypot(c.getX() - from.getX(), c.getZ() - from.getZ());
+                    if (d < bd) {
+                        bd = d;
+                        best = new BlockPos(c.getX(), ow.getSeaLevel(), c.getZ());
+                    }
+                    break;
+                }
+            }
+        }
+        return best;
+    }
+
     /** Estado de la región donde está {@code p} para un tipo, en palabras. */
     String describe(Spec s, ServerLevel ow, BlockPos p) {
         long seed = ow.getSeed();
