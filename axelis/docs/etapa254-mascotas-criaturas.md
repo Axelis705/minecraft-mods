@@ -151,6 +151,40 @@ Al seguirte, las voladoras se ponen a tu lado y un poco detrás, a la altura de 
 - Para la prueba se subieron los textos nuevos a la rama `recursos-axelis` (la prueba toma los recursos de ahí).
 - Jar instalado en la instancia `test` (con el juego cerrado). Fuentes y este documento copiados a `Mod\1`.
 
+## 7. Segunda vuelta: pulido (mismo día)
+
+Axelis: «sigue puliendo».
+
+**Arreglos**
+- **El descanso se guarda en la figurita** (`RestUntil`). Antes, quitarla y volver a ponerla la traía de vuelta al instante.
+- **La figurita dice cómo está la mascota**:
+  - «Descansando: vuelve en 45 s»;
+  - «Te espera sentada en X, Y, Z (mundo normal / Nether / End)», para que no se te olvide dónde la dejaste. Esa nota se borra sola cuando sacas la figurita del equipo.
+- Descripción de la figurita más clara: «Le encanta: (su comida)», «Clic derecho: se sienta o te sigue» y «Agachado + clic derecho: su menú», cada uno en su línea.
+- Las 14 mascotas sin sonido propio de despedida usan su voz y un tintineo al irse; antes se iban en silencio.
+
+**Gestos de lobo y gato**
+- **Te pide comida**: si tienes su comida favorita en la mano, te mira, ladea la cabeza y da saltitos, como el lobo con un hueso (`MascotaGoals.Beg`, aviso `F_BEG`).
+- **Se sacude al salir del agua**, con gotitas, como el lobo (solo las que andan).
+- **Al cansarse no desaparece de golpe**: se queda dormida (con zetas), se encoge y se va con la nubecita del juego, sin el parpadeo rojo. Mientras tanto no se le puede hacer clic.
+
+**Comodidad**
+- **No os empujáis**: tú y tu mascota os atravesáis (no te saca de un borde ni te tapa una puerta). Entre mascotas sí se empujan, para que no se amontonen.
+- **Tus flechas y lo que lances atraviesan a tus mascotas** en vez de rebotar en ellas (`ProjectileImpactEvent`).
+- **Lava y vacío**: si cae a la lava (y no la aguanta) o se cae del mundo, vuelve contigo en vez de cansarse.
+
+**Catálogo** «Mascotas de Axelis» actualizado:
+- cada mascota dice cómo pelea, qué hace en su menú y qué le encanta comer;
+- las que pelean llevan la etiqueta roja «Pelea»;
+- el texto de arriba explica cómo se usan ahora.
+
+**Comprobado**: compilación sin errores y prueba con el juego real con estas comprobaciones nuevas:
+- la figurita recuerda dónde te espera sentada;
+- con su comida en la mano te la pide;
+- al cansarse se duerme en vez de desaparecer;
+- vuelve a su figurita y su descanso queda guardado;
+- quitar y poner la misma figurita no se salta el descanso.
+
 ## Pendiente / ideas siguientes
 
 - Montar en las grandes (Pegaso, Grifo, dragones).
