@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/cube_bottom_top",
+ "textures": {
+  "top": "mundos_de_axelis:block/fumarola_top",
+  "bottom": "minecraft:block/basalt_top",
+  "side": "mundos_de_axelis:block/fumarola_side"
+ }
+}

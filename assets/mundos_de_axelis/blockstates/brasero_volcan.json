@@ -1,0 +1,52 @@
+{
+ "variants": {
+  "channel=0,lit=false,solved=false": {
+   "model": "mundos_de_axelis:block/brasero_volcan_off"
+  },
+  "channel=1,lit=false,solved=false": {
+   "model": "mundos_de_axelis:block/brasero_volcan_off"
+  },
+  "channel=2,lit=false,solved=false": {
+   "model": "mundos_de_axelis:block/brasero_volcan_off"
+  },
+  "channel=3,lit=false,solved=false": {
+   "model": "mundos_de_axelis:block/brasero_volcan_off"
+  },
+  "channel=0,lit=false,solved=true": {
+   "model": "mundos_de_axelis:block/brasero_volcan_off"
+  },
+  "channel=1,lit=false,solved=true": {
+   "model": "mundos_de_axelis:block/brasero_volcan_off"
+  },
+  "channel=2,lit=false,solved=true": {
+   "model": "mundos_de_axelis:block/brasero_volcan_off"
+  },
+  "channel=3,lit=false,solved=true": {
+   "model": "mundos_de_axelis:block/brasero_volcan_off"
+  },
+  "channel=0,lit=true,solved=false": {
+   "model": "mundos_de_axelis:block/brasero_volcan_on"
+  },
+  "channel=1,lit=true,solved=false": {
+   "model": "mundos_de_axelis:block/brasero_volcan_on"
+  },
+  "channel=2,lit=true,solved=false": {
+   "model": "mundos_de_axelis:block/brasero_volcan_on"
+  },
+  "channel=3,lit=true,solved=false": {
+   "model": "mundos_de_axelis:block/brasero_volcan_on"
+  },
+  "channel=0,lit=true,solved=true": {
+   "model": "mundos_de_axelis:block/brasero_volcan_on"
+  },
+  "channel=1,lit=true,solved=true": {
+   "model": "mundos_de_axelis:block/brasero_volcan_on"
+  },
+  "channel=2,lit=true,solved=true": {
+   "model": "mundos_de_axelis:block/brasero_volcan_on"
+  },
+  "channel=3,lit=true,solved=true": {
+   "model": "mundos_de_axelis:block/brasero_volcan_on"
+  }
+ }
+}
