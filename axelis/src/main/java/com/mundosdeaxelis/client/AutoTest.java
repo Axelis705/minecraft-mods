@@ -1333,6 +1333,8 @@ public final class AutoTest {
 
     // ------------------------------------------------------------------ etapa 272: el mímico
 
+    private static volatile int mimicEss0;
+
     private static net.minecraft.world.entity.Entity nearestMimic() {
         Minecraft mc = Minecraft.getInstance();
         net.minecraft.world.entity.Entity best = null;
@@ -1378,6 +1380,7 @@ public final class AutoTest {
         });
         add("mimico (morder, foto)", 600, () -> shot("107_mimico_ataca"));
         add("mimico (matarlo)", 1500, () -> {
+            mimicEss0 = invCount(com.mundosdeaxelis.registry.ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.VENENO).get());
             cmd("kill @e[type=minecraft:item]");
             cmd("execute as @a run damage @e[type=mundos_de_axelis:mimico,limit=1,sort=nearest] 100000 minecraft:player_attack by @s");
         });
@@ -1391,7 +1394,9 @@ public final class AutoTest {
                     ess |= ie.getItem().getItem() instanceof com.mundosdeaxelis.gema.GemaItems.Esencia;
                 }
             }
-            check("al matar al mímico suelta su botín (" + items + " objetos, con esencia)", items >= 2 && ess);
+            // la esencia puede estar en el suelo o ya recogida por el jugador, que está al lado
+            ess |= invCount(com.mundosdeaxelis.registry.ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.VENENO).get()) > mimicEss0;
+            check("al matar al mímico suelta su botín (" + items + " objetos, esencia " + ess + ")", items >= 2 && ess);
             shot("108_mimico_botin");
             cmd("kill @e[type=minecraft:item]");
             cmd("kill @e[type=mundos_de_axelis:mimico]");
@@ -1463,6 +1468,17 @@ public final class AutoTest {
     /** Etapa 276: el Saqueador del Tesoro te ve y huye; atrapado, su saco revienta en botín. */
     private static void saqueador() {
         double sx = LTX + 0.5, sz = LTZ + 0.5;
+        add("saqueador (de cerca)", 1500, () -> {
+            cmd("kill @e[type=mundos_de_axelis:saqueador]");
+            cmd("execute in minecraft:overworld run summon mundos_de_axelis:saqueador " + (LTX + 0.5) + " " + LTY + " " + (LTZ - 2.0)
+                    + " {Tier:1,NoAI:1b,Rotation:[150f,0f]}");
+            standLooking(LTX + 0.5, LTY, LTZ - 4.6, LTX + 0.5, LTY + 0.5, LTZ - 2.0);
+        });
+        add("saqueador (de cerca, foto)", 300, () -> {
+            shot("111a_saqueador_cerca");
+            cmd("kill @e[type=mundos_de_axelis:saqueador]");
+            cmd("kill @e[type=minecraft:item]");
+        });
         add("saqueador (poner)", 1500, () -> {
             cmd("kill @e[type=mundos_de_axelis:saqueador]");
             cmd("kill @e[type=minecraft:item]");
