@@ -191,6 +191,21 @@
     },
     {
      "type": "minecraft:item",
+     "name": "mundos_de_axelis:bomba_esporas",
+     "weight": 3,
+     "functions": [
+      {
+       "function": "minecraft:set_count",
+       "count": {
+        "type": "minecraft:uniform",
+        "min": 1,
+        "max": 2
+       }
+      }
+     ]
+    },
+    {
+     "type": "minecraft:item",
      "name": "mundos_de_axelis:acorn",
      "weight": 2
     },

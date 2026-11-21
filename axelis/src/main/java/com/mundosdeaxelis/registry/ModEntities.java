@@ -219,4 +219,12 @@ public final class ModEntities {
                     .sized(0.875F, 0.85F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "mimico").toString()));
+
+    /** Etapa 273: un arrojadizo en vuelo. */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.arrojadizo.ArrojadizoEntity>> ARROJADIZO = ENTITIES.register("arrojadizo",
+            () -> EntityType.Builder.<com.mundosdeaxelis.arrojadizo.ArrojadizoEntity>of(com.mundosdeaxelis.arrojadizo.ArrojadizoEntity::new, MobCategory.MISC)
+                    .sized(0.3F, 0.3F)
+                    .clientTrackingRange(6)
+                    .updateInterval(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "arrojadizo").toString()));
 }

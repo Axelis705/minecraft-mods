@@ -1395,6 +1395,41 @@ public final class AutoTest {
             shot("108_mimico_botin");
             cmd("kill @e[type=minecraft:item]");
             cmd("kill @e[type=mundos_de_axelis:mimico]");
+        });
+        arrojadizo();
+    }
+
+    private static volatile int huskId = -1;
+
+    /** Etapa 273: lanzar un Orbe de Escarcha a un husk: el husk recibe daño (y se ve la escarcha). */
+    private static void arrojadizo() {
+        double hx = LTX - 3.5, hz = LTZ + 0.5;
+        add("arrojadizo (preparar)", 1500, () -> {
+            cmd("kill @e[type=minecraft:husk]");
+            cmd("execute in minecraft:overworld run summon minecraft:husk " + hx + " " + LTY + " " + hz + " {NoAI:1b,PersistenceRequired:1b}");
+            cmd("item replace entity @a hotbar.0 with mundos_de_axelis:orbe_escarcha 4");
+            Minecraft.getInstance().player.getInventory().selected = 0;
+            standLooking(LTX - 3.5, LTY, LTZ - 3.5, hx, LTY + 0.6, hz);
+        });
+        add("arrojadizo (lanzar)", 900, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            huskId = -1;
+            for (net.minecraft.world.entity.Entity en : mc.level.entitiesForRendering()) {
+                if (en instanceof net.minecraft.world.entity.monster.Husk) {
+                    huskId = en.getId();
+                }
+            }
+            mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+        });
+        add("arrojadizo (foto)", 300, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            net.minecraft.world.entity.Entity h = mc.level.getEntity(huskId);
+            check("el Orbe de Escarcha daña al husk (" + (h instanceof net.minecraft.world.entity.LivingEntity le ? le.getHealth() : -1) + ")",
+                    h == null || (h instanceof net.minecraft.world.entity.LivingEntity le && le.getHealth() < le.getMaxHealth()));
+            check("lanzar gasta un Orbe de Escarcha", mc.player.getInventory().getItem(0).getCount() == 3);
+            shot("109_arrojadizo_escarcha");
+            cmd("kill @e[type=minecraft:husk]");
+            cmd("item replace entity @a hotbar.0 with minecraft:air");
             cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
         });
     }

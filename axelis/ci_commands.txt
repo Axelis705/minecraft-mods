@@ -476,6 +476,7 @@ execute positioned 0 -60 -30 run mundos prueba gemas
 execute positioned 0 -60 -30 run mundos prueba mimico
 kill @e[type=mundos_de_axelis:mimico]
 kill @e[type=minecraft:item]
+execute positioned 0 -60 -60 run mundos prueba arrojadizos
 kill @e[type=minecraft:pig]
 kill @e[type=item]
 loot spawn 0 -58 -20 loot mundos_de_axelis:chests/barril_bosque
@@ -692,3 +693,4 @@ mundos prueba construir 2
 #expect PRUEBA_MESA_GEMAS_OK
 #expect PRUEBA_GEMAS_OK
 #expect PRUEBA_MIMICO_OK
+#expect PRUEBA_ARROJADIZOS_OK

@@ -186,6 +186,21 @@
     },
     {
      "type": "minecraft:item",
+     "name": "mundos_de_axelis:orbe_arcano",
+     "weight": 3,
+     "functions": [
+      {
+       "function": "minecraft:set_count",
+       "count": {
+        "type": "minecraft:uniform",
+        "min": 1,
+        "max": 2
+       }
+      }
+     ]
+    },
+    {
+     "type": "minecraft:item",
      "name": "mundos_de_axelis:mending_rune",
      "weight": 2
     },

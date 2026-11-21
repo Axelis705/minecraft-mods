@@ -83,6 +83,9 @@ public final class ModCreativeTabs {
                         }
                         output.accept(ModItems.HEART_FRAGMENT.get());
                         output.accept(ModItems.GRAN_YUNQUE.get());
+                        for (var ro : ModItems.ARROJADIZOS.values()) {
+                            output.accept(ro.get());
+                        }
                         output.accept(ModItems.MESA_GEMAS.get());
                         for (int t = 1; t <= 8; t++) {
                             com.mundosdeaxelis.gema.Gemas.Elemento el = com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(t);

@@ -2521,5 +2521,17 @@
   "entity.mundos_de_axelis.mimico": "Mimic",
   "item.mundos_de_axelis.mimico_spawn_egg": "Mimic Spawn Egg",
   "message.mundos_de_axelis.mimico.despierta": "That's no chest! It's a mimic!",
-  "message.mundos_de_axelis.sello.mimico": "The mimic crumbles to dust: its treasure is sealed. Defeat %s to loot it."
+  "message.mundos_de_axelis.sello.mimico": "The mimic crumbles to dust: its treasure is sealed. Defeat %s to loot it.",
+  "item.mundos_de_axelis.bomba_esporas": "Spore Bomb",
+  "tooltip.mundos_de_axelis.bomba_esporas": "Releases a green cloud that poisons and damages enemies for 5 seconds.",
+  "item.mundos_de_axelis.granada_hierro": "Iron Grenade",
+  "tooltip.mundos_de_axelis.granada_hierro": "Explodes and knocks enemies back. Doesn't break blocks.",
+  "item.mundos_de_axelis.orbe_escarcha": "Frost Orb",
+  "tooltip.mundos_de_axelis.orbe_escarcha": "Freezes enemies: they become very slow and weak.",
+  "item.mundos_de_axelis.bomba_volcanica": "Volcanic Bomb",
+  "tooltip.mundos_de_axelis.bomba_volcanica": "An eruption that throws enemies into the air. Works even on those that don't burn.",
+  "item.mundos_de_axelis.orbe_arcano": "Arcane Orb",
+  "tooltip.mundos_de_axelis.orbe_arcano": "A vortex pulls enemies to the center, then bursts.",
+  "tooltip.mundos_de_axelis.arrojadizo.use": "Right-click to throw it. Only hurts enemies.",
+  "entity.mundos_de_axelis.arrojadizo": "Throwable"
 }

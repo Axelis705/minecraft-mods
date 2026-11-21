@@ -341,6 +341,82 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    /**
+     * Etapa 273: los arrojadizos con un jugador falso. Cada uno revienta junto a un husk (enemigo) y una oveja (no enemigo): el
+     * husk sufre su efecto y la oveja y el jugador no; lanzarlo con el objeto crea el proyectil; el gran tesoro trae los del tier.
+     * Como la nube y el remolino tardan, el resultado se escribe 2 segundos después.
+     */
+    private static int arrojadizos(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        fp.moveTo(base.getX() + 0.5, base.getY(), base.getZ() - 6.5, 180.0F, 0.0F); // mira al norte: lo lanza lejos de las pruebas
+        fp.setHealth(fp.getMaxHealth());
+        java.util.List<String> fails = new java.util.concurrent.CopyOnWriteArrayList<>();
+        java.util.List<Runnable> checks = new java.util.ArrayList<>();
+        int i = 0;
+        for (com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo t : com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.values()) {
+            double x = base.getX() + 0.5 + 12 * i++, z = base.getZ() + 0.5;
+            net.minecraft.world.entity.monster.Husk husk = net.minecraft.world.entity.EntityType.HUSK.create(sl);
+            net.minecraft.world.entity.animal.Sheep pig = net.minecraft.world.entity.EntityType.SHEEP.create(sl);
+            husk.moveTo(x + 1.0, base.getY(), z, 0, 0);
+            husk.setNoAi(true);
+            pig.moveTo(x - 1.0, base.getY(), z, 0, 0);
+            pig.setNoAi(true);
+            sl.addFreshEntity(husk);
+            sl.addFreshEntity(pig);
+            net.minecraft.world.phys.Vec3 c = new net.minecraft.world.phys.Vec3(x, base.getY(), z);
+            com.mundosdeaxelis.arrojadizo.Arrojadizos.burst(sl, c, t, fp, null);
+            checks.add(() -> {
+                boolean hit = husk.isDeadOrDying() || husk.isRemoved() || husk.getHealth() < husk.getMaxHealth();
+                boolean extra = switch (t) {
+                    case ESCARCHA -> husk.isDeadOrDying() || husk.hasEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN);
+                    default -> true;
+                };
+                if (!hit || !extra) {
+                    fails.add(t.id + " no afectó al enemigo (vida " + husk.getHealth() + ")");
+                }
+                if (pig.getHealth() < pig.getMaxHealth()) {
+                    fails.add(t.id + " dañó a la oveja");
+                }
+                husk.discard();
+                pig.discard();
+            });
+        }
+        // lanzar con el objeto
+        net.minecraft.world.item.ItemStack orb = new net.minecraft.world.item.ItemStack(
+                com.mundosdeaxelis.registry.ModItems.ARROJADIZOS.get(com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ESCARCHA).get(), 3);
+        fp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, orb);
+        orb.getItem().use(sl, fp, net.minecraft.world.InteractionHand.MAIN_HAND);
+        boolean flying = !sl.getEntitiesOfClass(com.mundosdeaxelis.arrojadizo.ArrojadizoEntity.class, fp.getBoundingBox().inflate(4)).isEmpty();
+        if (!flying || fp.getMainHandItem().getCount() != 2) {
+            fails.add("lanzar con el objeto (proyectil " + flying + ", quedan " + fp.getMainHandItem().getCount() + ")");
+        }
+        fp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.EMPTY);
+        // el gran tesoro trae los del tier
+        net.minecraft.util.RandomSource r = net.minecraft.util.RandomSource.create(273L);
+        for (int st = 1; st <= 5; st++) {
+            boolean has = false;
+            for (net.minecraft.world.item.ItemStack it : com.mundosdeaxelis.block.VaultLoot.roll(com.mundosdeaxelis.block.VaultLoot.Kind.TREASURE, st, r)) {
+                has |= it.getItem() instanceof com.mundosdeaxelis.arrojadizo.ArrojadizoItem ai && ai.tipo.tier == st;
+            }
+            if (!has) {
+                fails.add("gran tesoro de tier " + st + " sin arrojadizos");
+            }
+        }
+        com.mundosdeaxelis.world.Scheduler.runLater(45, () -> {
+            checks.forEach(Runnable::run);
+            if (fp.getHealth() < fp.getMaxHealth()) {
+                fails.add("dañó a quien lo lanzó");
+            }
+            sl.getEntitiesOfClass(com.mundosdeaxelis.arrojadizo.ArrojadizoEntity.class, fp.getBoundingBox().inflate(40)).forEach(net.minecraft.world.entity.Entity::discard);
+            String msg = fails.isEmpty() ? "PRUEBA_ARROJADIZOS_OK" : "PRUEBA_ARROJADIZOS_FALLO " + String.join("; ", fails);
+            com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        });
+        src.sendSuccess(() -> Component.literal("arrojadizos: resultado en 2 s"), true);
+        return 1;
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal("prueba")
                 .then(Commands.literal("equipo")
@@ -351,6 +427,7 @@ public final class TestCommands {
                 .then(Commands.literal("botin").executes(ctx -> botin(ctx.getSource())))
                 .then(Commands.literal("gemas").executes(ctx -> gemas(ctx.getSource())))
                 .then(Commands.literal("mimico").executes(ctx -> mimico(ctx.getSource())))
+                .then(Commands.literal("arrojadizos").executes(ctx -> arrojadizos(ctx.getSource())))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     // los sellos que lleva encima se volverían a apuntar en el Archivo: se le quitan

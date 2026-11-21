@@ -237,6 +237,16 @@ public final class ModItems {
         }
     }
 
+    /** Etapa 273: los arrojadizos, uno por tier (bomba de esporas, granada de hierro, orbe de escarcha, bomba volcánica, orbe arcano). */
+    public static final java.util.Map<com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo, RegistryObject<Item>> ARROJADIZOS =
+            new java.util.EnumMap<>(com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.class);
+
+    static {
+        for (com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo t : com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.values()) {
+            ARROJADIZOS.put(t, ITEMS.register(t.id, () -> new com.mundosdeaxelis.arrojadizo.ArrojadizoItem(t)));
+        }
+    }
+
     /** Mesa de Gemas (se crea en la Mesa del Artífice). */
     public static final RegistryObject<Item> MESA_GEMAS = ITEMS.register("mesa_gemas",
             () -> new BlockItem(ModBlocks.MESA_GEMAS.get(), new Item.Properties().rarity(Rarity.EPIC)));

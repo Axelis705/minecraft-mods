@@ -339,6 +339,7 @@ public final class VaultLoot {
             }
         }
         gems(out, kind, st, lv, r);
+        throwables(out, kind, st, lv, r);
         flavor(out, kind, st, lv, r);
         return out;
     }
@@ -367,6 +368,20 @@ public final class VaultLoot {
         }
         if (essN > 0) {
             out.add(of(ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(st)).get(), essN));
+        }
+    }
+
+    /** Etapa 273: los arrojadizos del tier (los tiers 6 a 8 usan el Orbe Arcano por ahora). */
+    private static void throwables(List<ItemStack> out, Kind kind, int st, int lv, RandomSource r) {
+        int n = switch (kind) {
+            case ANTE -> r.nextInt(100) < 35 ? 1 + r.nextInt(2) : 0;
+            case TRIAL -> r.nextInt(100) < 45 ? 2 + r.nextInt(2) : 0;
+            case LOCKED -> r.nextInt(100) < 50 ? 1 + lv / 2 : 0;
+            case TREASURE -> 3 + r.nextInt(2);
+            case CRYPT -> 2;
+        };
+        if (n > 0) {
+            out.add(of(ModItems.ARROJADIZOS.get(com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ofTier(st)).get(), n));
         }
     }
 

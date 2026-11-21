@@ -92,6 +92,7 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.GUARDIAN_MUSGO.get(), GuardianRenderer::new);
         event.registerEntityRenderer(ModEntities.ESCORIA.get(), EscoriaRenderer::new);
         event.registerEntityRenderer(ModEntities.MIMICO.get(), MimicoRenderer::new);
+        event.registerEntityRenderer(ModEntities.ARROJADIZO.get(), ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 1.0F, false));
         event.registerEntityRenderer(ModEntities.CHISPERO.get(), ChisperoRenderer::new);
         event.registerEntityRenderer(ModEntities.ASCUA.get(), AscuaRenderer::new);
         event.registerEntityRenderer(ModEntities.FUNDIDOR.get(), FundidorRenderer::new);
