@@ -1,7 +1,25 @@
 {
  "variants": {
-  "": {
+  "flujo=up": {
    "model": "mundos_de_axelis:block/lava_falsa"
+  },
+  "flujo=down": {
+   "model": "mundos_de_axelis:block/lava_falsa_cae"
+  },
+  "flujo=south": {
+   "model": "mundos_de_axelis:block/lava_falsa_corre"
+  },
+  "flujo=west": {
+   "model": "mundos_de_axelis:block/lava_falsa_corre",
+   "y": 90
+  },
+  "flujo=north": {
+   "model": "mundos_de_axelis:block/lava_falsa_corre",
+   "y": 180
+  },
+  "flujo=east": {
+   "model": "mundos_de_axelis:block/lava_falsa_corre",
+   "y": 270
   }
  }
 }

@@ -1,0 +1,216 @@
+{
+ "parent": "minecraft:block/block",
+ "textures": {
+  "side": "mundos_de_axelis:block/piedra_regreso_side",
+  "top": "mundos_de_axelis:block/piedra_regreso_top",
+  "base": "minecraft:block/polished_blackstone_bricks",
+  "particle": "mundos_de_axelis:block/piedra_regreso_side"
+ },
+ "elements": [
+  {
+   "from": [
+    1,
+    0,
+    1
+   ],
+   "to": [
+    15,
+    2,
+    15
+   ],
+   "faces": {
+    "down": {
+     "texture": "#base",
+     "uv": [
+      1,
+      1,
+      15,
+      15
+     ],
+     "cullface": "down"
+    },
+    "up": {
+     "texture": "#base",
+     "uv": [
+      1,
+      1,
+      15,
+      15
+     ]
+    },
+    "north": {
+     "texture": "#base",
+     "uv": [
+      1,
+      14,
+      15,
+      16
+     ]
+    },
+    "south": {
+     "texture": "#base",
+     "uv": [
+      1,
+      14,
+      15,
+      16
+     ]
+    },
+    "east": {
+     "texture": "#base",
+     "uv": [
+      1,
+      14,
+      15,
+      16
+     ]
+    },
+    "west": {
+     "texture": "#base",
+     "uv": [
+      1,
+      14,
+      15,
+      16
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    3,
+    2,
+    3
+   ],
+   "to": [
+    13,
+    13,
+    13
+   ],
+   "faces": {
+    "down": {
+     "texture": "#base",
+     "uv": [
+      3,
+      3,
+      13,
+      13
+     ]
+    },
+    "up": {
+     "texture": "#base",
+     "uv": [
+      3,
+      3,
+      13,
+      13
+     ]
+    },
+    "north": {
+     "texture": "#side",
+     "uv": [
+      3,
+      2,
+      13,
+      13
+     ]
+    },
+    "south": {
+     "texture": "#side",
+     "uv": [
+      3,
+      2,
+      13,
+      13
+     ]
+    },
+    "east": {
+     "texture": "#side",
+     "uv": [
+      3,
+      2,
+      13,
+      13
+     ]
+    },
+    "west": {
+     "texture": "#side",
+     "uv": [
+      3,
+      2,
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "from": [
+    2,
+    13,
+    2
+   ],
+   "to": [
+    14,
+    16,
+    14
+   ],
+   "faces": {
+    "down": {
+     "texture": "#base",
+     "uv": [
+      2,
+      2,
+      14,
+      14
+     ]
+    },
+    "up": {
+     "texture": "#top",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ]
+    },
+    "north": {
+     "texture": "#base",
+     "uv": [
+      2,
+      0,
+      14,
+      3
+     ]
+    },
+    "south": {
+     "texture": "#base",
+     "uv": [
+      2,
+      0,
+      14,
+      3
+     ]
+    },
+    "east": {
+     "texture": "#base",
+     "uv": [
+      2,
+      0,
+      14,
+      3
+     ]
+    },
+    "west": {
+     "texture": "#base",
+     "uv": [
+      2,
+      0,
+      14,
+      3
+     ]
+    }
+   }
+  }
+ ]
+}
