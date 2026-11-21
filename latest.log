@@ -1,0 +1,1160 @@
+[21Nov2026 15:31:43.887] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, MOD_DEV, --assetIndex, 5, --assetsDir, /home/runner/.gradle/caches/forge_gradle/assets, --gameDir, ., --fml.forgeVersion, 47.4.10, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[21Nov2026 15:31:43.890] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.21 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1020-azure
+[21Nov2026 15:31:43.964] [main/WARN] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/axelis/run/config/fml.toml is not correct. Correcting
+[21Nov2026 15:31:43.965] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowHeight] was corrected from null to 480
+[21Nov2026 15:31:43.966] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [versionCheck] was corrected from null to true
+[21Nov2026 15:31:43.968] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowFBScale] was corrected from null to 1
+[21Nov2026 15:31:43.969] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowProvider] was corrected from null to fmlearlywindow
+[21Nov2026 15:31:43.969] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowWidth] was corrected from null to 854
+[21Nov2026 15:31:43.969] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowMaximized] was corrected from null to false
+[21Nov2026 15:31:43.970] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [defaultConfigPath] was corrected from null to defaultconfigs
+[21Nov2026 15:31:43.970] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [disableOptimizedDFU] was corrected from null to true
+[21Nov2026 15:31:43.970] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[21Nov2026 15:31:43.973] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[21Nov2026 15:31:43.973] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [maxThreads] was corrected from null to -1
+[21Nov2026 15:31:43.973] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[21Nov2026 15:31:43.974] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[21Nov2026 15:31:43.986] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because splash screen is disabled
+[21Nov2026 15:31:44.024] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23116!/ Service=ModLauncher Env=CLIENT
+[21Nov2026 15:31:44.309] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.4.10/ccc533c7dd67e0983217197d7549c8b49e7ab453/javafmllanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[21Nov2026 15:31:44.310] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.4.10/e9a2879fe3612ea34b9728ec2633304a1e67d480/lowcodelanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[21Nov2026 15:31:44.311] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.4.10/ec5cefbbc65c67302b8fac317010faab85fa14b9/mclanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[21Nov2026 15:31:44.312] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.4.10/94dae566be650566ea9115a1414ab76bfcf5a804/fmlcore-1.20.1-47.4.10.jar is missing mods.toml file
+[21Nov2026 15:31:44.347] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[21Nov2026 15:31:45.432] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientuserdev' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.gradle/caches/forge_gradle/assets, --assetIndex, 5, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[21Nov2026 15:31:47.610] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 188 Datafixer optimizations took 109 milliseconds
+[21Nov2026 15:31:48.782] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_official_1.20.1/forge-1.20.1-47.4.10_mapped_official_1.20.1.jar%23181!/assets/.mcassetsroot' uses unexpected schema
+[21Nov2026 15:31:48.782] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_official_1.20.1/forge-1.20.1-47.4.10_mapped_official_1.20.1.jar%23181!/data/.mcassetsroot' uses unexpected schema
+[21Nov2026 15:31:48.791] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[21Nov2026 15:31:48.796] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[21Nov2026 15:31:48.890] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.1 build 7
+[21Nov2026 15:31:49.512] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.4.10, for MC 1.20.1 with MCP 20230612.114412
+[21Nov2026 15:31:49.514] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.4.10 Initialized
+[21Nov2026 15:31:50.435] [Render thread/INFO] [net.minecraftforge.gametest.ForgeGameTestHooks/]: Enabled Gametest Namespaces: [mundos_de_axelis]
+[21Nov2026 15:31:50.631] [Render thread/ERROR] [com.mojang.text2speech.Narrator/]: Error while loading the narrator
+com.mojang.text2speech.Narrator$InitializeException: Failed to load library flite
+	at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:69) ~[text2speech-1.17.9.jar:?]
+	at com.mojang.text2speech.NarratorLinux.<init>(NarratorLinux.java:18) ~[text2speech-1.17.9.jar:?]
+	at com.mojang.text2speech.Narrator.getNarrator(Narrator.java:41) ~[text2speech-1.17.9.jar:?]
+	at net.minecraft.client.GameNarrator.<init>(GameNarrator.java:19) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.Minecraft.<init>(Minecraft.java:553) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.main.Main.main(Main.java:182) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+Caused by: java.lang.UnsatisfiedLinkError: Unable to load library 'flite':
+libflite.so: cannot open shared object file: No such file or directory
+libflite.so: cannot open shared object file: No such file or directory
+Native library (linux-x86-64/libflite.so) not found in resource path (/home/runner/work/minecraft-mods/minecraft-mods/axelis/build/classes/java/main:/home/runner/work/minecraft-mods/minecraft-mods/axelis/build/resources/main:/home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_official_1.20.1/forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:/home/runner/.gradle/caches/forge_gradle/minecraft_repo/versions/1.20.1/client-extra.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlearlydisplay/1.20.1-47.4.10/a262fa19e65f643aae210b4275b53bee053aa765/fmlearlydisplay-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.4.10/ccc533c7dd67e0983217197d7549c8b49e7ab453/javafmllanguage-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.4.10/e9a2879fe3612ea34b9728ec2633304a1e67d480/lowcodelanguage-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.4.10/ec5cefbbc65c67302b8fac317010faab85fa14b9/mclanguage-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.4.10/94dae566be650566ea9115a1414ab76bfcf5a804/fmlcore-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlloader/1.20.1-47.4.10/55c46d27e7cfc8b829af8a28e562a7d290fa38b6/fmlloader-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarSelector/0.3.19/376cc9c8ea60720cf027c01fc033de915699801c/JarJarSelector-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarMetadata/0.3.19/83feaa9b770e6ac0e96ee4fc23fa89325c5fe2/JarJarMetadata-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/60458f877d055d0c9114d9e1a2efb737b4bc282c/guava-31.1-jre.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.1/1227f9e0666314f9de41477e3ec277e542ed7f7b/java-objc-bridge-1.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/forgespi/7.0.1/3b4972a0cdb135853dba219be61a79b22cff1309/forgespi-7.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mergetool/1.1.5/f3da18e12c696d35a47c82cbb2cc8b5aa15e1154/mergetool-1.1.5-api.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.0.1/13c5c75c4206580aa4d683bffee658caae6c9f43/annotations-24.0.1.jar:/home/runner/.gradle/caches/forge_gradle/mcp_repo/net/minecraft/mapping/1.20.1/mapping-1.20.1-mapping.zip:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/accesstransformers/8.0.4/272d240aa73f42195b2a68e2ebd8b701ecf41f63/accesstransformers-8.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/eventbus/6.0.5/699143dd438431d06b57416944f7cedbe52e1475/eventbus-6.0.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.9/6d9443f56f50bb85cea383686ff9c867391458b/modlauncher-10.0.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/bootstraplauncher/1.1.2/c546e00443d8432cda6baa1c860346980742628/bootstraplauncher-1.1.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/securejarhandler/2.1.10/51e6a22c6c716beb11e244bf5b8be480f51dd6b5/securejarhandler-2.1.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/coremods/5.2.4/e30bab269d896613e38396274711410b3a0e4b87/coremods-5.2.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.openjdk.nashorn/nashorn-core/15.4/f67f5ffaa5f5130cf6fb9b133da00c7df3b532a5/nashorn-core-15.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.8/36e4d212970388e5bd2c5180292012502df461bb/asm-commons-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.8/395f1c1f035258511f27bc9b2583d76e4b143f59/asm-util-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.8/b9747a320844b6cb1eacd90d8ecfd260a16c01d3/asm-analysis-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.8/18419ca5b77a2f81097c741e7872e6ab8d2f40d/asm-tree-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.8/dc19ecb3f7889b7860697215cae99c0f9b6f6b4b/asm-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4/4.9.1/e92af8ab33e428461927b484e90bb155a4f3a052/antlr4-4.9.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.9.1/428664f05d2b7f7b7610204b5aa7c1763f62011a/antlr4-runtime-4.9.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/unsafe/0.2.0/54d7a0a5e8fdb71b973025caa46f341ae5904f39/unsafe-0.2.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/toml/3.6.4/51d6cefb2b55ee55ee26b16391212fb2c7dfb4f4/toml-3.6.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/core/3.6.4/510f174abbf1c947494db50ef2445683bd52c230/core-3.6.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.8.5/4433f50c07debefaed0553bd0068f4f48d449313/maven-artifact-3.8.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.jodah/typetools/0.6.3/a01aaa6ddaea9ec07ec4f209487b7a46a526283a/typetools-0.6.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecrell/terminalconsoleappender/1.2.0/96d02cd3b384ff015a8fef4223bcb4ccf1717c95/terminalconsoleappender-1.2.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-reader/3.12.1/4382ab1382c7b6f379377ed5f665dc2f6e1218bc/jline-reader-3.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal/3.12.1/c777448314e050d980a6b697c140f3bfe9eb7416/jline-terminal-3.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.19/2464eb7d6b9ddb9db36a82cf8a95193e5c6fe020/JarJarFileSystems-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.2.2/54f5efc19bca95d709d9a37d19ffcbba3d21c1a6/oshi-core-6.2.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10/dd9b193aef96e973d5a11ab13cd17430c2e4306b/gson-2.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/71.1/9e7d3304c23f9ba5cb71915f7cce23231a57a445/icu4j-71.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/4.0.43/2ff9d747a77570a07a60d32ac77eb6162ad2a2d9/authlib-4.0.43.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/blocklist/1.0.10/5c685c5ffa94c4cd39496c7184c1d122e515ecef/blocklist-1.0.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/brigadier/1.1.8/5244ce82c3337bba4a196a3ce858bfaecc74404a/brigadier-1.1.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/6.0.8/3ba4a30557a9b057760af4011f909ba619fc5125/datafixerupper-6.0.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.1.1/832b8e6674a9b325a5175a3a6267dfaf34c85139/logging-1.1.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/2.2.10/da05971b07cbb379d002cf7eaec6a2048211fefc/patchy-2.2.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.17.9/3cad216e3a7f0c19b4b394388bc9ffc446f13b14/text2speech-1.17.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.13/e5f6cae5ca7ecaac1ec2827a9e2d65ae2869cada/httpclient-4.5.13.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.15/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/a2503f302b11ebde7ebc3df41daebe0e4eea3689/commons-io-2.11.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.82.Final/644041d1fa96a5d3130a29e8978630d716d76e38/netty-handler-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.82.Final/b77200379acb345a9ffdece1c605e591ac3e4e0a/netty-codec-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.82.Final/476409d6255001ca53a55f65b01c13822f8dc93a/netty-transport-native-epoll-4.1.82.Final-linux-aarch_64.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.82.Final/c7350a71920f3ae9142945e25fed4846cce53374/netty-transport-native-epoll-4.1.82.Final-linux-x86_64.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.82.Final/e7c7dd18deac93105797f30057c912651ea76521/netty-transport-classes-epoll-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.82.Final/3e895b35ca1b8a0eca56cacff4c2dde5d2c6abce/netty-transport-native-unix-common-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.82.Final/e431a218d91acb6476ccad5f5aafde50aa3945ca/netty-transport-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.82.Final/a544270cf1ae8b8077082f5036436a9a9971ea71/netty-buffer-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.82.Final/38f665ae8dcd29032eea31245ba7806bed2e0fa8/netty-resolver-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.82.Final/22d148e85c3f5ebdacc0ce1f5aabb1d420f73f3/netty-common-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.9/bb7ea75ecdb216654237830b3a96d87ad91f8cc5/fastutil-8.5.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.12.1/97406a297c852f4a41e688a176ec675f72e8329/jna-platform-5.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.12.1/b1e93a735caea94f503e95e6fe79bf9cdc1e985d/jna-5.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/4fdac2fbe92dfad86aa6e9301736f6b4342a3f5c/jopt-simple-5.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/4ec95b60d4e86b5c95a0e919cb172a0af98011ef/commons-compress-1.21.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/c6842c86792ff03b9f1d1fe2aab8dc23aa6c6f0e/commons-lang3-3.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.15/7f2e0c573eaa7a74bac2e89b359e1f73d92a0a1d/httpcore-4.4.15.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.19.0/3b6eeb4de4c49c0fe38a4ee27188ff5fee44d0bb/log4j-core-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j2-impl/2.19.0/5c04bfdd63ce9dceb2e284b81e96b6a70010ee10/log4j-slf4j2-impl-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.19.0/ea1b37f38c327596b216542bc636cfdc0b8036fa/log4j-api-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.10.5/22566d58af70ad3d72308bab63b8339906deb649/joml-1.10.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/cbac1b8d30cb4795149c1ef540f912671a8616d0/lwjgl-glfw-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/81716978214ecbda15050ca394b06ef61501a49e/lwjgl-glfw-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/a817bcf213db49f710603677457567c37d53e103/lwjgl-jemalloc-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/33dbb017b6ed6b25f993ad9d56741a49e7937718/lwjgl-jemalloc-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/2623a6b8ae1dfcd880738656a9f0243d2e6840bd/lwjgl-openal-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/f906b6439f6daa66001182ea7727e3467a93681b/lwjgl-openal-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/831a5533a21a5f4f81bbc51bb13e9899319b5411/lwjgl-opengl-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/ab9ab6fde3743e3550fa5d46d785ecb45b047d99/lwjgl-opengl-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/b119297cf8ed01f247abe8685857f8e7fcf5980f/lwjgl-stb-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/3ee7aec8686e52867677110415566a5342a80230/lwjgl-stb-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/ff1914111ef2e3e0110ef2dabc8d8cdaad82347/lwjgl-tinyfd-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/a35110b9471bea8cde826ab297550ee8c22f5035/lwjgl-tinyfd-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/ae58664f88e18a9bb2c77b063833ca7aaec484cb/lwjgl-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/1de885aba434f934201b99f2f1afb142036ac189/lwjgl-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.machinezoo.noexception/noexception/1.7.1/b65330c98e38a1f915fa54a6e5eca496505e3f0a/noexception-1.7.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-simple/1.7.30/e606eac955f55ecf1d8edcccba04eb8ac98088dd/slf4j-simple-1.7.30.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.1/f48d81adce2abf5ad3cfe463df517952749e03bc/slf4j-api-2.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/srgutils/0.4.11/fbad1341ffdb47d276bbdc40ecb06da49e053e74/srgutils-0.4.11.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.codehaus.plexus/plexus-utils/3.3.0/cf43b5391de623b36fe066a21127baef82c64022/plexus-utils-3.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.12.0/d5692f0526415fcc6de94bb5bfbd3afd9dd3b3e5/checker-qual-3.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/c5a0ace696d3f8b1c1d8cc036d8c03cc0cbe6b69/error_prone_annotations-2.11.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.3/92f2c1ad8d84abcbeead6cf7f2c53a04166293c2/ST4-4.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/cd9cd41361c155f3af0f653009dcecb08d8b4afd/antlr-runtime-3.5.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.3/457216e8e6578099ae63667bb1e4439235892028/org.abego.treelayout.core-1.0.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.glassfish/javax.json/1.0.4/3178f73569fd7a1e5ffc464e680f7a8cc784b85a/javax.json-1.0.4.jar)
+	at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:307) ~[jna-5.12.1.jar:5.12.1 (b0)]
+	at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:467) ~[jna-5.12.1.jar:5.12.1 (b0)]
+	at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:409) ~[jna-5.12.1.jar:5.12.1 (b0)]
+	at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:67) ~[text2speech-1.17.9.jar:?]
+	... 21 more
+	Suppressed: java.lang.UnsatisfiedLinkError: libflite.so: cannot open shared object file: No such file or directory
+		at com.sun.jna.Native.open(Native Method) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:197) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:467) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:409) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:67) ~[text2speech-1.17.9.jar:?]
+		at com.mojang.text2speech.NarratorLinux.<init>(NarratorLinux.java:18) ~[text2speech-1.17.9.jar:?]
+		at com.mojang.text2speech.Narrator.getNarrator(Narrator.java:41) ~[text2speech-1.17.9.jar:?]
+		at net.minecraft.client.GameNarrator.<init>(GameNarrator.java:19) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at net.minecraft.client.Minecraft.<init>(Minecraft.java:553) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at net.minecraft.client.main.Main.main(Main.java:182) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+		at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+		at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+		at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	Suppressed: java.lang.UnsatisfiedLinkError: libflite.so: cannot open shared object file: No such file or directory
+		at com.sun.jna.Native.open(Native Method) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:210) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:467) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:409) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:67) ~[text2speech-1.17.9.jar:?]
+		at com.mojang.text2speech.NarratorLinux.<init>(NarratorLinux.java:18) ~[text2speech-1.17.9.jar:?]
+		at com.mojang.text2speech.Narrator.getNarrator(Narrator.java:41) ~[text2speech-1.17.9.jar:?]
+		at net.minecraft.client.GameNarrator.<init>(GameNarrator.java:19) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at net.minecraft.client.Minecraft.<init>(Minecraft.java:553) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at net.minecraft.client.main.Main.main(Main.java:182) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+		at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+		at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+		at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	Suppressed: java.io.IOException: Native library (linux-x86-64/libflite.so) not found in resource path (/home/runner/work/minecraft-mods/minecraft-mods/axelis/build/classes/java/main:/home/runner/work/minecraft-mods/minecraft-mods/axelis/build/resources/main:/home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_official_1.20.1/forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:/home/runner/.gradle/caches/forge_gradle/minecraft_repo/versions/1.20.1/client-extra.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlearlydisplay/1.20.1-47.4.10/a262fa19e65f643aae210b4275b53bee053aa765/fmlearlydisplay-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.4.10/ccc533c7dd67e0983217197d7549c8b49e7ab453/javafmllanguage-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.4.10/e9a2879fe3612ea34b9728ec2633304a1e67d480/lowcodelanguage-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.4.10/ec5cefbbc65c67302b8fac317010faab85fa14b9/mclanguage-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.4.10/94dae566be650566ea9115a1414ab76bfcf5a804/fmlcore-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlloader/1.20.1-47.4.10/55c46d27e7cfc8b829af8a28e562a7d290fa38b6/fmlloader-1.20.1-47.4.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarSelector/0.3.19/376cc9c8ea60720cf027c01fc033de915699801c/JarJarSelector-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarMetadata/0.3.19/83feaa9b770e6ac0e96ee4fc23fa89325c5fe2/JarJarMetadata-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/60458f877d055d0c9114d9e1a2efb737b4bc282c/guava-31.1-jre.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.1/1227f9e0666314f9de41477e3ec277e542ed7f7b/java-objc-bridge-1.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/forgespi/7.0.1/3b4972a0cdb135853dba219be61a79b22cff1309/forgespi-7.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mergetool/1.1.5/f3da18e12c696d35a47c82cbb2cc8b5aa15e1154/mergetool-1.1.5-api.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.0.1/13c5c75c4206580aa4d683bffee658caae6c9f43/annotations-24.0.1.jar:/home/runner/.gradle/caches/forge_gradle/mcp_repo/net/minecraft/mapping/1.20.1/mapping-1.20.1-mapping.zip:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/accesstransformers/8.0.4/272d240aa73f42195b2a68e2ebd8b701ecf41f63/accesstransformers-8.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/eventbus/6.0.5/699143dd438431d06b57416944f7cedbe52e1475/eventbus-6.0.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.9/6d9443f56f50bb85cea383686ff9c867391458b/modlauncher-10.0.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/bootstraplauncher/1.1.2/c546e00443d8432cda6baa1c860346980742628/bootstraplauncher-1.1.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/cpw.mods/securejarhandler/2.1.10/51e6a22c6c716beb11e244bf5b8be480f51dd6b5/securejarhandler-2.1.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/coremods/5.2.4/e30bab269d896613e38396274711410b3a0e4b87/coremods-5.2.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.openjdk.nashorn/nashorn-core/15.4/f67f5ffaa5f5130cf6fb9b133da00c7df3b532a5/nashorn-core-15.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.8/36e4d212970388e5bd2c5180292012502df461bb/asm-commons-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.8/395f1c1f035258511f27bc9b2583d76e4b143f59/asm-util-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.8/b9747a320844b6cb1eacd90d8ecfd260a16c01d3/asm-analysis-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.8/18419ca5b77a2f81097c741e7872e6ab8d2f40d/asm-tree-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.8/dc19ecb3f7889b7860697215cae99c0f9b6f6b4b/asm-9.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4/4.9.1/e92af8ab33e428461927b484e90bb155a4f3a052/antlr4-4.9.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.9.1/428664f05d2b7f7b7610204b5aa7c1763f62011a/antlr4-runtime-4.9.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/unsafe/0.2.0/54d7a0a5e8fdb71b973025caa46f341ae5904f39/unsafe-0.2.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/toml/3.6.4/51d6cefb2b55ee55ee26b16391212fb2c7dfb4f4/toml-3.6.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/core/3.6.4/510f174abbf1c947494db50ef2445683bd52c230/core-3.6.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.8.5/4433f50c07debefaed0553bd0068f4f48d449313/maven-artifact-3.8.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.jodah/typetools/0.6.3/a01aaa6ddaea9ec07ec4f209487b7a46a526283a/typetools-0.6.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecrell/terminalconsoleappender/1.2.0/96d02cd3b384ff015a8fef4223bcb4ccf1717c95/terminalconsoleappender-1.2.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-reader/3.12.1/4382ab1382c7b6f379377ed5f665dc2f6e1218bc/jline-reader-3.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-terminal/3.12.1/c777448314e050d980a6b697c140f3bfe9eb7416/jline-terminal-3.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.19/2464eb7d6b9ddb9db36a82cf8a95193e5c6fe020/JarJarFileSystems-0.3.19.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.2.2/54f5efc19bca95d709d9a37d19ffcbba3d21c1a6/oshi-core-6.2.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10/dd9b193aef96e973d5a11ab13cd17430c2e4306b/gson-2.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/71.1/9e7d3304c23f9ba5cb71915f7cce23231a57a445/icu4j-71.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/4.0.43/2ff9d747a77570a07a60d32ac77eb6162ad2a2d9/authlib-4.0.43.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/blocklist/1.0.10/5c685c5ffa94c4cd39496c7184c1d122e515ecef/blocklist-1.0.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/brigadier/1.1.8/5244ce82c3337bba4a196a3ce858bfaecc74404a/brigadier-1.1.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/6.0.8/3ba4a30557a9b057760af4011f909ba619fc5125/datafixerupper-6.0.8.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.1.1/832b8e6674a9b325a5175a3a6267dfaf34c85139/logging-1.1.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/2.2.10/da05971b07cbb379d002cf7eaec6a2048211fefc/patchy-2.2.10.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.17.9/3cad216e3a7f0c19b4b394388bc9ffc446f13b14/text2speech-1.17.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.13/e5f6cae5ca7ecaac1ec2827a9e2d65ae2869cada/httpclient-4.5.13.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.15/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/a2503f302b11ebde7ebc3df41daebe0e4eea3689/commons-io-2.11.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.82.Final/644041d1fa96a5d3130a29e8978630d716d76e38/netty-handler-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.82.Final/b77200379acb345a9ffdece1c605e591ac3e4e0a/netty-codec-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.82.Final/476409d6255001ca53a55f65b01c13822f8dc93a/netty-transport-native-epoll-4.1.82.Final-linux-aarch_64.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.82.Final/c7350a71920f3ae9142945e25fed4846cce53374/netty-transport-native-epoll-4.1.82.Final-linux-x86_64.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.82.Final/e7c7dd18deac93105797f30057c912651ea76521/netty-transport-classes-epoll-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.82.Final/3e895b35ca1b8a0eca56cacff4c2dde5d2c6abce/netty-transport-native-unix-common-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.82.Final/e431a218d91acb6476ccad5f5aafde50aa3945ca/netty-transport-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.82.Final/a544270cf1ae8b8077082f5036436a9a9971ea71/netty-buffer-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.82.Final/38f665ae8dcd29032eea31245ba7806bed2e0fa8/netty-resolver-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.82.Final/22d148e85c3f5ebdacc0ce1f5aabb1d420f73f3/netty-common-4.1.82.Final.jar:/home/runner/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.9/bb7ea75ecdb216654237830b3a96d87ad91f8cc5/fastutil-8.5.9.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.12.1/97406a297c852f4a41e688a176ec675f72e8329/jna-platform-5.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.12.1/b1e93a735caea94f503e95e6fe79bf9cdc1e985d/jna-5.12.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/4fdac2fbe92dfad86aa6e9301736f6b4342a3f5c/jopt-simple-5.0.4.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/4ec95b60d4e86b5c95a0e919cb172a0af98011ef/commons-compress-1.21.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/c6842c86792ff03b9f1d1fe2aab8dc23aa6c6f0e/commons-lang3-3.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.15/7f2e0c573eaa7a74bac2e89b359e1f73d92a0a1d/httpcore-4.4.15.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.19.0/3b6eeb4de4c49c0fe38a4ee27188ff5fee44d0bb/log4j-core-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j2-impl/2.19.0/5c04bfdd63ce9dceb2e284b81e96b6a70010ee10/log4j-slf4j2-impl-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.19.0/ea1b37f38c327596b216542bc636cfdc0b8036fa/log4j-api-2.19.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.10.5/22566d58af70ad3d72308bab63b8339906deb649/joml-1.10.5.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/cbac1b8d30cb4795149c1ef540f912671a8616d0/lwjgl-glfw-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/81716978214ecbda15050ca394b06ef61501a49e/lwjgl-glfw-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/a817bcf213db49f710603677457567c37d53e103/lwjgl-jemalloc-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/33dbb017b6ed6b25f993ad9d56741a49e7937718/lwjgl-jemalloc-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/2623a6b8ae1dfcd880738656a9f0243d2e6840bd/lwjgl-openal-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/f906b6439f6daa66001182ea7727e3467a93681b/lwjgl-openal-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/831a5533a21a5f4f81bbc51bb13e9899319b5411/lwjgl-opengl-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/ab9ab6fde3743e3550fa5d46d785ecb45b047d99/lwjgl-opengl-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/b119297cf8ed01f247abe8685857f8e7fcf5980f/lwjgl-stb-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/3ee7aec8686e52867677110415566a5342a80230/lwjgl-stb-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/ff1914111ef2e3e0110ef2dabc8d8cdaad82347/lwjgl-tinyfd-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/a35110b9471bea8cde826ab297550ee8c22f5035/lwjgl-tinyfd-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/ae58664f88e18a9bb2c77b063833ca7aaec484cb/lwjgl-3.3.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/1de885aba434f934201b99f2f1afb142036ac189/lwjgl-3.3.1-natives-linux.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.machinezoo.noexception/noexception/1.7.1/b65330c98e38a1f915fa54a6e5eca496505e3f0a/noexception-1.7.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-simple/1.7.30/e606eac955f55ecf1d8edcccba04eb8ac98088dd/slf4j-simple-1.7.30.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.1/f48d81adce2abf5ad3cfe463df517952749e03bc/slf4j-api-2.0.1.jar:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/srgutils/0.4.11/fbad1341ffdb47d276bbdc40ecb06da49e053e74/srgutils-0.4.11.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.codehaus.plexus/plexus-utils/3.3.0/cf43b5391de623b36fe066a21127baef82c64022/plexus-utils-3.3.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.12.0/d5692f0526415fcc6de94bb5bfbd3afd9dd3b3e5/checker-qual-3.12.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/c5a0ace696d3f8b1c1d8cc036d8c03cc0cbe6b69/error_prone_annotations-2.11.0.jar:/home/runner/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.3/92f2c1ad8d84abcbeead6cf7f2c53a04166293c2/ST4-4.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/cd9cd41361c155f3af0f653009dcecb08d8b4afd/antlr-runtime-3.5.2.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.3/457216e8e6578099ae63667bb1e4439235892028/org.abego.treelayout.core-1.0.3.jar:/home/runner/.gradle/caches/modules-2/files-2.1/org.glassfish/javax.json/1.0.4/3178f73569fd7a1e5ffc464e680f7a8cc784b85a/javax.json-1.0.4.jar)
+		at com.sun.jna.Native.extractFromResourcePath(Native.java:1145) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.loadLibrary(NativeLibrary.java:281) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:467) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.sun.jna.NativeLibrary.getInstance(NativeLibrary.java:409) ~[jna-5.12.1.jar:5.12.1 (b0)]
+		at com.mojang.text2speech.NarratorLinux$FliteLibrary.loadNative(NarratorLinux.java:67) ~[text2speech-1.17.9.jar:?]
+		at com.mojang.text2speech.NarratorLinux.<init>(NarratorLinux.java:18) ~[text2speech-1.17.9.jar:?]
+		at com.mojang.text2speech.Narrator.getNarrator(Narrator.java:41) ~[text2speech-1.17.9.jar:?]
+		at net.minecraft.client.GameNarrator.<init>(GameNarrator.java:19) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at net.minecraft.client.Minecraft.<init>(Minecraft.java:553) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at net.minecraft.client.main.Main.main(Main.java:182) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+		at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+		at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+		at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+		at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.4.10.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+		at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+[21Nov2026 15:31:50.652] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources
+[21Nov2026 15:31:50.670] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/axelis/run/config/forge-client.toml is not correct. Correcting
+[21Nov2026 15:31:50.671] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SimpleCommentedConfig:{}. 
+[21Nov2026 15:31:50.672] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.alwaysSetupTerrainOffThread was corrected from null to its default, false. 
+[21Nov2026 15:31:50.672] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.experimentalForgeLightPipelineEnabled was corrected from null to its default, false. 
+[21Nov2026 15:31:50.672] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[21Nov2026 15:31:50.672] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.useCombinedDepthStencilAttachment was corrected from null to its default, false. 
+[21Nov2026 15:31:50.672] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.compressLanIPv6Addresses was corrected from null to its default, true. 
+[21Nov2026 15:31:50.672] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.calculateAllNormals was corrected from null to its default, false. 
+[21Nov2026 15:31:50.672] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.stabilizeDirectionGetNearest was corrected from null to its default, true. 
+[21Nov2026 15:31:50.673] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.allowMipmapLowering was corrected from null to its default, false. 
+[21Nov2026 15:31:50.680] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/axelis/run/config/mundos_de_axelis-client.toml is not correct. Correcting
+[21Nov2026 15:31:50.680] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key sonidos was corrected from null to its default, SimpleCommentedConfig:{}. 
+[21Nov2026 15:31:50.680] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key sonidos.crate_volume was corrected from null to its default, 100. 
+[21Nov2026 15:31:50.681] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key pantalla was corrected from null to its default, SimpleCommentedConfig:{}. 
+[21Nov2026 15:31:50.681] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key pantalla.show_souls was corrected from null to its default, true. 
+[21Nov2026 15:31:50.681] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key pantalla.show_map was corrected from null to its default, true. 
+[21Nov2026 15:31:50.682] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key pantalla.few_notices was corrected from null to its default, false. 
+[21Nov2026 15:31:50.682] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key pantalla.dungeon_music was corrected from null to its default, true. 
+[21Nov2026 15:31:50.682] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key pantalla.screen_shake was corrected from null to its default, true. 
+[21Nov2026 15:31:50.682] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key pantalla.flashes was corrected from null to its default, true. 
+[21Nov2026 15:31:50.770] [Worker-Main-1/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.0.06.hex, loading
+[21Nov2026 15:31:53.130] [Worker-Main-3/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: Mundos de Axelis: listo.
+[21Nov2026 15:31:53.156] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: Armadura: tope subido de 30 a 1024.
+[21Nov2026 15:31:53.162] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[21Nov2026 15:31:53.480] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: OUTDATED Current: 47.4.10 Target: 47.4.28
+[21Nov2026 15:31:56.413] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[21Nov2026 15:31:56.413] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[21Nov2026 15:31:56.450] [Render thread/ERROR] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:283) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at com.mojang.blaze3d.audio.Library.init(Library.java:153) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:104) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:96) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:125) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:40) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:13) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:718) ~[?:?]
+	at java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?]
+	at net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$new$3(SimpleReloadInstance.java:69) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:156) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:23) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:130) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:115) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1106) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:718) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+[21Nov2026 15:31:56.549] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 8192x4096x4 minecraft:textures/atlas/blocks.png-atlas
+[21Nov2026 15:31:56.624] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[21Nov2026 15:31:56.625] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[21Nov2026 15:31:56.625] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[21Nov2026 15:31:56.626] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[21Nov2026 15:31:56.630] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[21Nov2026 15:31:56.630] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[21Nov2026 15:31:56.630] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[21Nov2026 15:31:56.630] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[21Nov2026 15:31:56.802] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[21Nov2026 15:31:56.982] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[21Nov2026 15:31:56.983] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[21Nov2026 15:31:56.983] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[21Nov2026 15:31:57.088] [Render thread/INFO] [net.minecraftforge.registries.GameData/REGISTRIES]: Injecting existing registry data into this CLIENT instance
+[21Nov2026 15:31:58.303] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[21Nov2026 15:31:58.380] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 1271 advancements
+[21Nov2026 15:31:58.679] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST aviso al abrir el mundo: se pulsa "Continuar"
+[21Nov2026 15:31:58.689] [Render thread/INFO] [net.minecraftforge.registries.GameData/REGISTRIES]: Injecting existing registry data into this CLIENT instance
+[21Nov2026 15:31:59.347] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[21Nov2026 15:31:59.384] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 1271 advancements
+[21Nov2026 15:31:59.794] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.20.1
+[21Nov2026 15:31:59.794] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[21Nov2026 15:32:00.054] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[21Nov2026 15:32:01.636] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparando área de aparición: 0 %
+[21Nov2026 15:32:01.636] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparando área de aparición: 0 %
+[21Nov2026 15:32:01.636] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparando área de aparición: 0 %
+[21Nov2026 15:32:01.636] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparando área de aparición: 0 %
+[21Nov2026 15:32:02.094] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparando área de aparición: 18 %
+[21Nov2026 15:32:02.399] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[21Nov2026 15:32:02.404] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 2321 ms
+[21Nov2026 15:32:02.464] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 6, from 10
+[21Nov2026 15:32:02.466] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 5, from 0
+[21Nov2026 15:32:02.532] [Render thread/WARN] [io.netty.util.internal.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
+[21Nov2026 15:32:02.873] [Netty Local Client IO #0/INFO] [net.minecraftforge.network.NetworkHooks/]: Connected to a modded server.
+[21Nov2026 15:32:02.942] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:a7223e85] logged in with entity id 1 at (8.5, -60.0, -8.5)
+[21Nov2026 15:32:02.962] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev se conectó
+[21Nov2026 15:32:03.274] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 2 advancements
+[21Nov2026 15:32:03.567] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST inicio pasos=610
+[21Nov2026 15:32:15.590] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: La regla sendCommandFeedback cambió a "false"
+[21Nov2026 15:32:15.590] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: La regla doDaylightCycle cambió a "false"
+[21Nov2026 15:32:15.590] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: La regla doWeatherCycle cambió a "false"
+[21Nov2026 15:32:15.590] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: La regla doMobSpawning cambió a "false"
+[21Nov2026 15:32:15.591] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Tiempo ajustado a 6000
+[21Nov2026 15:32:15.591] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Cambiando el tiempo a soleado
+[21Nov2026 15:32:15.610] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 70 entidades
+[21Nov2026 15:32:15.621] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: La dificultad cambió a Pacífico
+[21Nov2026 15:32:16.400] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:32:16.414] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Botas de Magma]
+[21Nov2026 15:32:16.419] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Pila de libros]
+[21Nov2026 15:32:16.419] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Piedra de Portal: Torre]
+[21Nov2026 15:32:16.420] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Huevo generador de Archimago]
+[21Nov2026 15:32:16.421] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Huevo de Esbirro del Archimago]
+[21Nov2026 15:32:16.421] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Huevo de Libro Embrujado]
+[21Nov2026 15:32:16.421] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Huevo de Armadura Encantada]
+[21Nov2026 15:32:16.422] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Figurita: Lobito Ártico]
+[21Nov2026 15:32:16.422] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Figurita: Archimaguito]
+[21Nov2026 15:32:16.423] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Ningún objetivo aceptó el ítem [Botas de Magma] en el espacio 100
+[21Nov2026 15:32:16.425] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Listo: puedes usar las Piedras de Portal hasta la etapa 5 (nivel del mundo 4). El mundo normal no se vuelve más difícil.
+[21Nov2026 15:32:16.427] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 0.500000, -60.000000, 0.500000
+[21Nov2026 15:32:16.540] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Avance registrado en tu Archivo: etapa 4. Ya puedes ver más cajas.
+[21Nov2026 15:32:20.912] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 1_hud
+[21Nov2026 15:32:21.299] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[21Nov2026 15:32:21.308] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[21Nov2026 15:32:21.317] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[21Nov2026 15:32:21.318] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[21Nov2026 15:32:21.318] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[21Nov2026 15:32:21.321] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[21Nov2026 15:32:21.322] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[21Nov2026 15:32:21.322] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[21Nov2026 15:32:21.325] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[21Nov2026 15:32:21.327] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[21Nov2026 15:32:21.327] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[21Nov2026 15:32:21.328] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[21Nov2026 15:32:21.328] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[21Nov2026 15:32:21.329] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[21Nov2026 15:32:21.329] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[21Nov2026 15:32:21.330] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[21Nov2026 15:32:21.330] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[21Nov2026 15:32:21.331] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[21Nov2026 15:32:21.331] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[21Nov2026 15:32:22.789] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 2_pausa
+[21Nov2026 15:32:23.115] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK cuadrito en el menú de pausa (pantalla PauseScreen)
+[21Nov2026 15:32:23.117] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK cuadrito arriba a la izquierda x=6 y=6 20x20
+[21Nov2026 15:32:23.357] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el cuadrito abre las opciones (pantalla MundosOptionsScreen)
+[21Nov2026 15:32:24.930] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 3_opciones
+[21Nov2026 15:32:25.255] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK interruptores en las opciones: 6 de 6
+[21Nov2026 15:32:26.087] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 3b_opciones_ayuda
+[21Nov2026 15:32:26.754] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay interruptores en las opciones
+[21Nov2026 15:32:27.441] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 4_opciones_sin_almas
+[21Nov2026 15:32:27.764] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la opción quedó apagada en memoria
+[21Nov2026 15:32:27.764] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la opción se guardó en el archivo (show_souls = false)
+[21Nov2026 15:32:28.100] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Hecho vuelve al menú de pausa (pantalla PauseScreen)
+[21Nov2026 15:32:30.287] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 5_hud_sin_almas
+[21Nov2026 15:32:32.523] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 6_inventario
+[21Nov2026 15:32:33.474] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 0, -60, 4 cambiado
+[21Nov2026 15:32:33.475] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 2, -60, 4 cambiado
+[21Nov2026 15:32:33.475] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 4, -60, 4 cambiado
+[21Nov2026 15:32:33.475] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 6, -60, 4 cambiado
+[21Nov2026 15:32:34.702] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 3.000000, -60.000000, 0.500000
+[21Nov2026 15:32:36.732] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 7_pila_libros
+[21Nov2026 15:32:37.053] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la pila de libros está puesta
+[21Nov2026 15:32:37.364] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: La dificultad cambió a Normal
+[21Nov2026 15:32:37.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Esbirro del Archimago generada
+[21Nov2026 15:32:37.368] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Armadura Encantada generada
+[21Nov2026 15:32:37.374] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Libro Embrujado generada
+[21Nov2026 15:32:37.376] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Archimago generada
+[21Nov2026 15:32:39.914] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 2.000000, -60.000000, 2.500000
+[21Nov2026 15:32:42.497] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 8_enemigos
+[21Nov2026 15:32:42.820] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK enemigos a la vista en el cliente: 4 de 4
+[21Nov2026 15:32:43.156] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Salamandra de Lava generada
+[21Nov2026 15:32:43.157] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Diablillo generada
+[21Nov2026 15:32:43.157] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Cultista del Volcán generada
+[21Nov2026 15:32:45.663] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 0.500000, -60.000000, 4.000000
+[21Nov2026 15:32:48.192] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 8d_enemigos_volcan
+[21Nov2026 15:32:48.510] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK enemigos del volcán a la vista en el cliente: 3 de 3
+[21Nov2026 15:32:48.816] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK todas las mascotas tienen ficha de criatura (58)
+[21Nov2026 15:32:49.153] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 0.500000, -60.000000, 0.500000
+[21Nov2026 15:32:52.658] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK las 3 mascotas equipadas son criaturas en el mundo (cliente ve 3)
+[21Nov2026 15:32:54.552] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 8b_mascotas
+[21Nov2026 15:32:55.261] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 8c_mascotas
+[21Nov2026 15:32:57.109] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK clic derecho: la mascota se sienta
+[21Nov2026 15:32:57.110] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la figurita recuerda dónde te espera sentada
+[21Nov2026 15:32:57.480] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 4 advancements
+[21Nov2026 15:32:59.258] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con su comida favorita en tu mano, te la pide (ladea la cabeza)
+[21Nov2026 15:33:00.808] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al darle su comida favorita sube su cariño (8)
+[21Nov2026 15:33:02.673] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK agachado + clic derecho abre el menú de la mascota (pantalla PetScreen)
+[21Nov2026 15:33:03.052] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 8e_menu_mascota
+[21Nov2026 15:33:05.305] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el menú le cambia el nombre a la mascota
+[21Nov2026 15:33:05.305] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el nombre queda guardado en la figurita
+[21Nov2026 15:33:06.417] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Zombi generada
+[21Nov2026 15:33:09.053] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev ha conseguido el progreso [Cazamonstruos]
+[21Nov2026 15:33:09.062] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev ha conseguido el progreso [Cazamonstruos]
+[21Nov2026 15:33:09.113] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 35 advancements
+[21Nov2026 15:33:10.965] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK las mascotas de combate atacan a un zombi (lo vencieron)
+[21Nov2026 15:33:11.764] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al cansarse no desaparece de golpe: se duerme y se encoge
+[21Nov2026 15:33:14.016] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al cansarse vuelve a su figurita (quedan 2 de 3)
+[21Nov2026 15:33:14.016] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK su descanso queda guardado en la figurita
+[21Nov2026 15:33:17.865] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK quitar y poner la figurita no se salta el descanso (aparecen 2 de 3)
+[21Nov2026 15:33:20.022] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al quitarlas del menú de equipo se van (quedan 0)
+[21Nov2026 15:33:20.361] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 0, -60, -3 cambiado
+[21Nov2026 15:33:20.362] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 0.500000, -60.000000, -0.500000
+[21Nov2026 15:33:20.363] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Aire]
+[21Nov2026 15:33:23.414] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la piedra abre la ficha del jefe (pantalla BossBriefScreen)
+[21Nov2026 15:33:23.742] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 9_ficha_torre
+[21Nov2026 15:33:30.379] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[21Nov2026 15:33:30.389] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[21Nov2026 15:33:30.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[21Nov2026 15:33:30.398] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[21Nov2026 15:33:30.399] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[21Nov2026 15:33:30.400] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[21Nov2026 15:33:30.400] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[21Nov2026 15:33:30.401] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[21Nov2026 15:33:30.401] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[21Nov2026 15:33:30.402] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[21Nov2026 15:33:30.403] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[21Nov2026 15:33:30.403] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[21Nov2026 15:33:30.404] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[21Nov2026 15:33:30.407] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[21Nov2026 15:33:30.409] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[21Nov2026 15:33:30.410] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[21Nov2026 15:33:30.412] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[21Nov2026 15:33:30.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[21Nov2026 15:33:30.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[21Nov2026 15:33:33.261] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Antesala: [Ficha del jefe]  [Salir]
+[21Nov2026 15:33:59.284] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la piedra lleva a la Torre (dimensión boss_tower)
+[21Nov2026 15:33:59.609] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 10_torre
+[21Nov2026 15:33:59.959] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 0.500000, -60.000000, 0.500000
+[21Nov2026 15:34:00.050] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[21Nov2026 15:34:00.056] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[21Nov2026 15:34:00.061] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[21Nov2026 15:34:00.062] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[21Nov2026 15:34:00.063] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[21Nov2026 15:34:00.063] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[21Nov2026 15:34:00.064] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[21Nov2026 15:34:00.064] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[21Nov2026 15:34:00.065] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[21Nov2026 15:34:00.065] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[21Nov2026 15:34:00.066] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[21Nov2026 15:34:00.067] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[21Nov2026 15:34:00.067] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[21Nov2026 15:34:00.068] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[21Nov2026 15:34:00.068] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[21Nov2026 15:34:00.069] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[21Nov2026 15:34:00.070] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[21Nov2026 15:34:00.071] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[21Nov2026 15:34:00.072] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[21Nov2026 15:34:04.981] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 0, -60, -3 cambiado
+[21Nov2026 15:34:04.981] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 0.500000, -60.000000, -0.500000
+[21Nov2026 15:34:08.045] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la piedra del volcán abre la ficha del jefe (pantalla BossBriefScreen)
+[21Nov2026 15:34:08.414] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 11_ficha_volcan
+[21Nov2026 15:34:15.118] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[21Nov2026 15:34:15.124] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[21Nov2026 15:34:15.126] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[21Nov2026 15:34:15.127] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[21Nov2026 15:34:15.127] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[21Nov2026 15:34:15.128] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[21Nov2026 15:34:15.129] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[21Nov2026 15:34:15.129] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[21Nov2026 15:34:15.130] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[21Nov2026 15:34:15.130] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[21Nov2026 15:34:15.131] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[21Nov2026 15:34:15.131] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[21Nov2026 15:34:15.131] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[21Nov2026 15:34:15.132] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[21Nov2026 15:34:15.132] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[21Nov2026 15:34:15.132] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[21Nov2026 15:34:15.133] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[21Nov2026 15:34:15.133] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[21Nov2026 15:34:15.133] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[21Nov2026 15:34:18.155] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Antesala: [Ficha del jefe]  [Salir]
+[21Nov2026 15:34:58.937] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la piedra lleva al volcán (dimensión boss_volcano)
+[21Nov2026 15:34:59.322] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 12_volcan_antesala
+[21Nov2026 15:34:59.667] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia aplicado a Dev
+[21Nov2026 15:34:59.668] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia al fuego aplicado a Dev
+[21Nov2026 15:35:02.169] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK larva de magma a la vista
+[21Nov2026 15:35:02.210] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 13_larva
+[21Nov2026 15:35:02.528] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Cultista del Volcán generada
+[21Nov2026 15:35:02.529] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Salamandra de Lava generada
+[21Nov2026 15:35:02.529] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Diablillo generada
+[21Nov2026 15:35:05.434] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 13b_enemigos_atacan
+[21Nov2026 15:35:08.125] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 13c_enemigos_atacan
+[21Nov2026 15:35:11.715] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el cultista pone un escudo de lava a un aliado (1 con escudo)
+[21Nov2026 15:35:12.171] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 13d_escudo_lava
+[21Nov2026 15:35:15.576] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 14_volcan_temblor
+[21Nov2026 15:35:18.241] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 15_volcan_grieta
+[21Nov2026 15:35:20.676] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el corazón aparece en la intro
+[21Nov2026 15:35:20.735] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 16_corazon_baja
+[21Nov2026 15:35:23.622] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Antesala: [Ficha del jefe]  [Salir]
+[21Nov2026 15:35:25.620] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el corazón queda encadenado (estado 2, anclas 3)
+[21Nov2026 15:35:25.677] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 17_corazon_cadenas
+[21Nov2026 15:35:27.886] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_corazon_magma
+[21Nov2026 15:35:29.763] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 18_ancla
+[21Nov2026 15:35:30.090] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con cadenas no recibe daño
+[21Nov2026 15:35:31.311] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST anclas rotas: 3
+[21Nov2026 15:35:33.171] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 19_corazon_cae
+[21Nov2026 15:35:35.673] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK sin anclas cae y queda expuesto (estado 4)
+[21Nov2026 15:35:35.720] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 20_corazon_expuesto
+[21Nov2026 15:35:36.085] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST golpe al corazón (estado 4): entró, vida 619
+[21Nov2026 15:35:37.614] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK pasa a la fase 2 (fase 2)
+[21Nov2026 15:35:37.663] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 21_fase2
+[21Nov2026 15:35:42.720] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 22_fase2_ataques
+[21Nov2026 15:35:46.775] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 23_fase2_ataques
+[21Nov2026 15:35:50.782] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK vuelve a encadenarse con 4 anclas (4)
+[21Nov2026 15:35:50.782] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST anclas rotas: 4
+[21Nov2026 15:35:55.310] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST golpe al corazón (estado 4): entró, vida 299
+[21Nov2026 15:35:56.835] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK pasa a la fase 3 (fase 3)
+[21Nov2026 15:35:56.876] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 24_fase3
+[21Nov2026 15:36:01.929] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 25_fase3_ataques
+[21Nov2026 15:36:05.979] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 26_fase3_ataques
+[21Nov2026 15:36:11.033] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST anclas rotas: 4
+[21Nov2026 15:36:15.586] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity CorazonMagma['Corazón de Magma'/468, l='ServerLevel[world]', x=0.50, y=65.00, z=0.50] died: Corazón de Magma fue asesinado/a por Dev
+[21Nov2026 15:36:15.587] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST golpe al corazón (estado 4): entró, vida 0
+[21Nov2026 15:36:15.611] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 36 advancements
+[21Nov2026 15:36:18.156] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 27_corazon_muere
+[21Nov2026 15:36:22.182] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el corazón ya no está
+[21Nov2026 15:36:22.214] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 28_victoria
+[21Nov2026 15:36:22.557] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 29_premios
+[21Nov2026 15:36:25.582] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 0.500000, -60.000000, 60.500000
+[21Nov2026 15:36:25.649] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[21Nov2026 15:36:25.652] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[21Nov2026 15:36:25.654] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[21Nov2026 15:36:25.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[21Nov2026 15:36:25.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[21Nov2026 15:36:25.656] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[21Nov2026 15:36:25.656] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[21Nov2026 15:36:25.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[21Nov2026 15:36:25.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[21Nov2026 15:36:25.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[21Nov2026 15:36:25.659] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[21Nov2026 15:36:25.661] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[21Nov2026 15:36:25.661] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[21Nov2026 15:36:25.662] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[21Nov2026 15:36:25.662] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[21Nov2026 15:36:25.662] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[21Nov2026 15:36:25.663] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[21Nov2026 15:36:25.663] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[21Nov2026 15:36:25.663] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[21Nov2026 15:36:29.609] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:36:31.802] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: El Volcán construida [apoyo ok] (388226 bloques, 16 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:36:31.802] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2152ms or 43 ticks behind
+[21Nov2026 15:37:03.703] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 30_volcan_lejos
+[21Nov2026 15:37:08.071] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 31_volcan_lado
+[21Nov2026 15:37:11.473] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK fuera del volcán no suena su música (zona 0)
+[21Nov2026 15:37:11.533] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 32_volcan_camino
+[21Nov2026 15:37:15.475] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 32b_volcan_cono
+[21Nov2026 15:37:18.924] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 32c_volcan_pie
+[21Nov2026 15:37:22.854] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 33_volcan_crater
+[21Nov2026 15:37:26.206] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al final del camino hay un arco rojo sobre el muelle del lago
+[21Nov2026 15:37:26.206] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK y un cartel «Salto de fe»
+[21Nov2026 15:37:26.207] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la lava de los ríos corre ladera abajo (Block{mundos_de_axelis:lava_falsa}[flujo=west])
+[21Nov2026 15:37:26.250] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 33b_volcan_salto
+[21Nov2026 15:37:29.116] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 33c_volcan_lago
+[21Nov2026 15:37:29.417] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:37:29.418] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia borrado de Dev
+[21Nov2026 15:37:29.418] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia al fuego aplicado a Dev
+[21Nov2026 15:37:29.418] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Curación instantánea aplicado a Dev
+[21Nov2026 15:37:30.048] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 34_volcan_cayendo
+[21Nov2026 15:37:41.576] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK tirarse a la lava falsa lleva a la cámara del cráter (altura 32.0)
+[21Nov2026 15:37:41.576] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la caída no hace daño (vida 20)
+[21Nov2026 15:37:41.577] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia aplicado a Dev
+[21Nov2026 15:37:41.903] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK lejos de su cámara no se ve la barra de la Gran Salamandra
+[21Nov2026 15:37:41.945] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 35_volcan_camara
+[21Nov2026 15:37:45.015] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 36_volcan_puente
+[21Nov2026 15:37:46.106] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 37_puente_cruje
+[21Nov2026 15:37:50.120] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el puente se derrumba y caes al foso (altura 21.0)
+[21Nov2026 15:37:50.152] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 38_puente_foso
+[21Nov2026 15:37:54.070] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 39_volcan_erupciones
+[21Nov2026 15:37:56.611] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 40_volcan_erupciones
+[21Nov2026 15:38:02.157] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK dentro del volcán suena su música (zona 1)
+[21Nov2026 15:38:02.197] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 41_volcan_altar
+[21Nov2026 15:38:05.085] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK encender los cuatro braseros abre la reja del tesoro
+[21Nov2026 15:38:05.129] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 41b_volcan_braseros
+[21Nov2026 15:38:08.034] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 41c_volcan_tesoro
+[21Nov2026 15:38:08.364] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Gran Salamandra generada
+[21Nov2026 15:38:11.366] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Gran Salamandra guarda su cámara
+[21Nov2026 15:38:11.367] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK cerca de ella se ve su barra
+[21Nov2026 15:38:11.367] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la reja del guardián está cerrada
+[21Nov2026 15:38:11.404] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 41d_volcan_guardian
+[21Nov2026 15:38:11.756] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Gran Salamandra
+[21Nov2026 15:38:11.775] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ¡La Gran Salamandra cayó! Se abrió la reja hacia el santuario.
+[21Nov2026 15:38:12.323] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 37 advancements
+[21Nov2026 15:38:14.270] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al vencer a la Gran Salamandra se abre la reja
+[21Nov2026 15:38:14.307] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 41e_volcan_reja
+[21Nov2026 15:38:17.656] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Piedra de Portal: Volcán está en el santuario (portal_stone_volcano)
+[21Nov2026 15:38:17.703] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 42_volcan_santuario
+[21Nov2026 15:38:18.011] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se pudo aplicar este efecto (el objetivo es inmune a los efectos o tiene algo de mayor fuerza)
+[21Nov2026 15:38:20.557] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ignacio está preso en la celda del volcán
+[21Nov2026 15:38:23.168] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK se abre la ventana de Ignacio
+[21Nov2026 15:38:23.195] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 42b_ignacio_preso
+[21Nov2026 15:38:23.505] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Cultista del Volcán generada
+[21Nov2026 15:38:23.506] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Cultista del Volcán
+[21Nov2026 15:38:25.313] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el sumo sacerdote suelta la llave de la celda
+[21Nov2026 15:38:25.314] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 18 entidades
+[21Nov2026 15:38:25.316] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] ignacio rescatada por Dev
+[21Nov2026 15:38:27.967] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ignacio queda libre
+[21Nov2026 15:38:27.968] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ignacio da su Semilla de casa
+[21Nov2026 15:38:27.993] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 42c_ignacio_rescatado
+[21Nov2026 15:38:28.317] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 1 ítem(s) eliminado(s) de Dev
+[21Nov2026 15:38:30.868] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK junto al altar está la Piedra de regreso (Block{mundos_de_axelis:piedra_regreso})
+[21Nov2026 15:38:30.907] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 42d_volcan_piedra_regreso
+[21Nov2026 15:38:33.757] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Piedra de regreso te deja en la entrada del volcán (0.5 -1.0 -1.5)
+[21Nov2026 15:38:33.793] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 43_volcan_regreso
+[21Nov2026 15:38:34.109] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:38:35.648] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 44_volcan_erupcion
+[21Nov2026 15:38:37.700] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 45_volcan_erupcion
+[21Nov2026 15:38:38.108] [Server thread/INFO] [com.mundosdeaxelis.world.StructPlacer/]: [Estructuras] sin apoyo quitados: {minecraft:brown_mushroom=1, minecraft:red_mushroom=1}
+[21Nov2026 15:38:38.113] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Santuario del Bosque construida [apoyo ok] (5228 bloques, 6 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:38:47.143] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 46_santuario_frente
+[21Nov2026 15:38:48.505] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Estructuras naturales] Fragua Olvidada: cargando el terreno en 368 123...
+[21Nov2026 15:38:48.610] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Estructuras naturales] Fragua Olvidada: aquí no se puede (muy cerca del fondo del mundo (no cabría))
+[21Nov2026 15:38:50.062] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 47_santuario_lado
+[21Nov2026 15:38:52.901] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al fondo del santuario está la celda de Ruda (iron_door)
+[21Nov2026 15:38:52.901] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK enemigos del santuario a la vista (3 brotes, 1 raizal)
+[21Nov2026 15:38:52.939] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 48_santuario_dentro
+[21Nov2026 15:38:55.841] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 49_santuario_celda
+[21Nov2026 15:38:56.164] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:38:57.702] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK las estructuras no se pueden picar en supervivencia
+[21Nov2026 15:38:58.070] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se pudo aplicar este efecto (el objetivo es inmune a los efectos o tiene algo de mayor fuerza)
+[21Nov2026 15:38:58.071] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 3 entidades
+[21Nov2026 15:38:58.073] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Espinoso
+[21Nov2026 15:39:00.605] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ruda está presa en la celda
+[21Nov2026 15:39:03.220] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK se abre la ventana de diálogo de Ruda
+[21Nov2026 15:39:03.249] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 50_ruda_celda_dialogo
+[21Nov2026 15:39:03.562] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Raizal
+[21Nov2026 15:39:04.779] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el Raizal que vigila la celda suelta la llave
+[21Nov2026 15:39:04.780] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Llave de la celda
+[21Nov2026 15:39:04.797] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] ruda rescatada por Dev
+[21Nov2026 15:39:07.402] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con la llave se abre la puerta de la celda
+[21Nov2026 15:39:07.402] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ruda queda libre
+[21Nov2026 15:39:07.402] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ruda te da la Semilla de casa
+[21Nov2026 15:39:07.402] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK sale la ventana de Ruda al rescatarla
+[21Nov2026 15:39:07.433] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 51_ruda_rescatada
+[21Nov2026 15:39:12.756] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ruda salió de la celda (z 46.8)
+[21Nov2026 15:39:12.757] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST ruda servidor: en 260, -60, 46, su sitio 260, -60, 45, camino 5 pasos, llega=true
+[21Nov2026 15:39:12.803] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 52_ruda_libre
+[21Nov2026 15:39:13.107] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 230.500000, -60.000000, -12.500000
+[21Nov2026 15:39:18.211] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:39:20.214] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la semilla queda puesta en el suelo como bloque
+[21Nov2026 15:39:20.214] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la semilla sabe que es la casa de Ruda
+[21Nov2026 15:39:20.214] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al ponerla se gastó de la mano
+[21Nov2026 15:39:20.214] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el holograma no marca nada en rojo en un sitio libre
+[21Nov2026 15:39:20.256] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 52b_holograma_ruda
+[21Nov2026 15:39:20.612] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 3 bloque(s) llenado(s) con éxito
+[21Nov2026 15:39:22.164] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el holograma marca en rojo el tronco que estorba (3 bloques)
+[21Nov2026 15:39:22.206] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 52c_holograma_estorbo
+[21Nov2026 15:39:22.206] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:39:22.553] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con algo en medio la casa no crece y la semilla sigue en su sitio
+[21Nov2026 15:39:22.553] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 3 bloque(s) llenado(s) con éxito
+[21Nov2026 15:39:23.754] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:39:25.270] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK agachado y con clic derecho la casa gira (west)
+[21Nov2026 15:39:25.315] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 52d_holograma_girado
+[21Nov2026 15:39:25.316] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:39:25.678] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] casa de ruda en 230 -60 -10
+[21Nov2026 15:39:28.208] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la semilla se convierte en la casa (ya no está)
+[21Nov2026 15:39:28.208] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK crece la casa de Ruda (puerta: Block{minecraft:spruce_door})
+[21Nov2026 15:39:28.208] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ruda vive en su casa
+[21Nov2026 15:39:28.208] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la semilla se gastó
+[21Nov2026 15:39:31.109] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 53_casa_ruda
+[21Nov2026 15:39:33.944] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 54_casa_ruda_dentro
+[21Nov2026 15:39:36.874] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK ventana de Ruda vecina
+[21Nov2026 15:39:36.900] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 55_ruda_vecina
+[21Nov2026 15:39:37.207] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK se abre la tienda de Ruda
+[21Nov2026 15:39:37.230] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 56_ruda_tienda
+[21Nov2026 15:39:38.071] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la tienda cobra Esencia (1031 -> 1016) y da las bayas
+[21Nov2026 15:39:38.129] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 38 advancements
+[21Nov2026 15:39:39.620] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST brújula -> {X:364,Y:63,Z:-344} Brújula: Gran Templo del Bosque
+[21Nov2026 15:39:39.620] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la brújula de Ruda apunta al templo del bosque
+[21Nov2026 15:39:42.656] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST pista: Las raíces me cuentan cosas: hay un volcán hacia el suroeste, a unos 300 bloques. Dicen que quien se tira a su lago no se quema. Raro, ¿no?
+[21Nov2026 15:39:42.656] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ruda da una pista
+[21Nov2026 15:39:42.684] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 57_ruda_pistas
+[21Nov2026 15:39:42.696] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] ruda se mudó; casa desarmada en 230 -60 -10
+[21Nov2026 15:39:43.006] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al mudarse, la casa se desarma
+[21Nov2026 15:39:43.006] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al mudarse, Ruda queda libre con otra semilla
+[21Nov2026 15:39:45.067] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:39:45.078] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Deshecho: 1 estructura(s), 5228 bloques restaurados.
+[21Nov2026 15:39:45.078] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron entidades
+[21Nov2026 15:39:46.732] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a -399.500000, -18.000000, 60.500000
+[21Nov2026 15:39:48.501] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Estructuras naturales] Gran Templo del Bosque: cargando el terreno en -508 247...
+[21Nov2026 15:39:50.293] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gran Templo del Bosque construida [apoyo ok] (236892 bloques, 12 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:39:50.310] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Estructuras naturales] Gran Templo del Bosque: aquí no se puede (muy cerca del fondo del mundo (no cabría))
+[21Nov2026 15:40:06.661] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al final del templo, junto al árbol del mundo, está la Piedra de Portal: Naturaleza (Block{mundos_de_axelis:portal_stone_forest})
+[21Nov2026 15:40:06.662] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay enemigos del bosque por el camino del templo
+[21Nov2026 15:40:06.702] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 46b_templo_fuera
+[21Nov2026 15:40:09.613] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 46c_templo_entrada
+[21Nov2026 15:40:12.462] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el Raizal guarda el altar del templo
+[21Nov2026 15:40:12.505] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 46d_templo_altar
+[21Nov2026 15:40:13.210] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Deshecho: 1 estructura(s), 236892 bloques restaurados.
+[21Nov2026 15:40:13.220] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 75 entidades
+[21Nov2026 15:40:15.433] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a -699.500000, -18.000000, 60.500000
+[21Nov2026 15:40:19.062] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Ciudadela de cristal construida [apoyo ok] (230174 bloques, 11 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:40:35.479] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay lobos de escarcha en los patios de la ciudadela
+[21Nov2026 15:40:35.521] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 61b_ciudadela_fuera
+[21Nov2026 15:40:38.414] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al final de la ciudadela, en la cripta, está la Piedra de Portal: Hielo (Block{mundos_de_axelis:portal_stone_ice})
+[21Nov2026 15:40:38.414] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK centinelas de escarcha guardan la cripta
+[21Nov2026 15:40:38.449] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 61c_ciudadela_cripta
+[21Nov2026 15:40:39.033] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Deshecho: 1 estructura(s), 230174 bloques restaurados.
+[21Nov2026 15:40:39.043] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 122 entidades
+[21Nov2026 15:40:41.401] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Fortín de Escarcha construida [apoyo ok] (8244 bloques, 6 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:40:52.809] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK en el estrado del fortín está la mesa de mapas de Bruno, no la Piedra de Portal (Block{minecraft:cartography_table})
+[21Nov2026 15:40:52.842] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 58_fortin_fuera
+[21Nov2026 15:40:55.684] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 59_fortin_patio
+[21Nov2026 15:40:58.509] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay centinelas de escarcha en el fortín (2)
+[21Nov2026 15:40:58.509] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay lobeznos de escarcha en el fortín
+[21Nov2026 15:40:58.546] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 60_fortin_sala
+[21Nov2026 15:40:58.862] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:40:58.863] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se pudo aplicar este efecto (el objetivo es inmune a los efectos o tiene algo de mayor fuerza)
+[21Nov2026 15:40:58.863] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 3 entidades
+[21Nov2026 15:40:58.864] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Sellos olvidados: 4 (vuelves a la etapa 0).
+[21Nov2026 15:40:58.865] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Aire]
+[21Nov2026 15:40:59.415] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Un poder antiguo te frena: este lugar aún no te corresponde. Vence a Gran Herrero de Brasas para poder saquearlo.
+[21Nov2026 15:41:01.866] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK dentro de una estructura que aún no te toca, un poder antiguo te frena (lentitud)
+[21Nov2026 15:41:03.400] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el cofre de escarcha está sellado si no venciste al jefe anterior (pantalla ninguna)
+[21Nov2026 15:41:03.429] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 59b_fortin_sellado
+[21Nov2026 15:41:03.746] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Listo: puedes usar las Piedras de Portal hasta la etapa 5 (nivel del mundo 4). El mundo normal no se vuelve más difícil.
+[21Nov2026 15:41:03.747] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Lentitud borrado de Dev
+[21Nov2026 15:41:03.762] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Avance registrado en tu Archivo: etapa 4. Ya puedes ver más cajas.
+[21Nov2026 15:41:05.265] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se pudo aplicar este efecto (el objetivo es inmune a los efectos o tiene algo de mayor fuerza)
+[21Nov2026 15:41:05.265] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron entidades
+[21Nov2026 15:41:07.800] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Bruno está preso en la celda del fortín
+[21Nov2026 15:41:10.405] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK se abre la ventana de Bruno
+[21Nov2026 15:41:10.430] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 61_bruno_preso
+[21Nov2026 15:41:10.760] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Centinela de escarcha
+[21Nov2026 15:41:12.012] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el centinela del estrado suelta la llave
+[21Nov2026 15:41:12.013] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 3 entidades
+[21Nov2026 15:41:12.013] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] bruno rescatada por Dev
+[21Nov2026 15:41:14.663] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Bruno queda libre
+[21Nov2026 15:41:14.664] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Bruno da su Semilla de casa
+[21Nov2026 15:41:14.691] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 62_bruno_rescatado
+[21Nov2026 15:41:20.008] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Bruno salió de la celda
+[21Nov2026 15:41:20.009] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Centinela de escarcha
+[21Nov2026 15:41:20.319] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] casa de ruda en 230 -60 -10
+[21Nov2026 15:41:20.319] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: VECINOS_CASA_OK ruda
+[21Nov2026 15:41:20.320] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 200.500000, -60.000000, -12.500000
+[21Nov2026 15:41:22.868] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] casa de bruno en 200 -60 -10
+[21Nov2026 15:41:25.410] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK crece la cabaña de Bruno
+[21Nov2026 15:41:25.410] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Bruno vive en su cabaña
+[21Nov2026 15:41:28.304] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 63_casa_bruno
+[21Nov2026 15:41:31.186] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 64_casa_bruno_dentro
+[21Nov2026 15:41:34.117] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK ventana de Bruno vecino
+[21Nov2026 15:41:35.627] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 65_bruno_tienda
+[21Nov2026 15:41:36.467] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con dos vecinos se puede comprar el sobre de plata (1476 -> 1336)
+[21Nov2026 15:41:36.468] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:41:36.475] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Deshecho: 1 estructura(s), 8244 bloques restaurados.
+[21Nov2026 15:41:36.475] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron entidades
+[21Nov2026 15:41:38.014] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 460.500000, -50.000000, 0.500000
+[21Nov2026 15:41:38.507] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Estructuras naturales] Fortín de Escarcha: cargando el terreno en 604 -149...
+[21Nov2026 15:41:38.611] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Estructuras naturales] Fortín de Escarcha: aquí no se puede (muy cerca del fondo del mundo (no cabría))
+[21Nov2026 15:41:40.599] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Fragua Olvidada construida [apoyo ok] (6157 bloques, 6 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:41:52.150] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK en el altar de la fragua está el tesoro del Gran Herrero, no la Piedra de Portal (Block{mundos_de_axelis:vault_chest_locked_forge})
+[21Nov2026 15:41:52.187] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 66_fragua_fuera
+[21Nov2026 15:41:55.010] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay escorias en la fragua
+[21Nov2026 15:41:55.043] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 67_fragua_patio
+[21Nov2026 15:41:57.862] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay un fundidor en la fragua
+[21Nov2026 15:41:57.862] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay un chispero en el balcón
+[21Nov2026 15:41:57.903] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 68_fragua_nave
+[21Nov2026 15:41:58.207] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST DIAG coloso cliente 0.5 0.0 30.5 estado 4
+[21Nov2026 15:41:58.208] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el Coloso de Hierro duerme delante del altar de la fragua
+[21Nov2026 15:41:58.250] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 68d_coloso_dormido
+[21Nov2026 15:41:58.555] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:41:58.555] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se pudo aplicar este efecto (el objetivo es inmune a los efectos o tiene algo de mayor fuerza)
+[21Nov2026 15:41:58.555] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se pudo aplicar este efecto (el objetivo es inmune a los efectos o tiene algo de mayor fuerza)
+[21Nov2026 15:41:58.556] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 3 entidades
+[21Nov2026 15:41:58.557] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Chispero
+[21Nov2026 15:42:01.059] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al acercarse, el Coloso de Hierro despierta
+[21Nov2026 15:42:01.099] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 68e_coloso_despierto
+[21Nov2026 15:42:02.151] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el Coloso levanta los puños para el golpe de suelo
+[21Nov2026 15:42:02.190] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 68f_coloso_carga
+[21Nov2026 15:42:03.458] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 68g_coloso_ondas
+[21Nov2026 15:42:03.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Coloso de Hierro
+[21Nov2026 15:42:05.316] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al vencer al Coloso suelta hierro
+[21Nov2026 15:42:05.318] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 53 entidades
+[21Nov2026 15:42:05.666] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Deshecho: 1 estructura(s), 6157 bloques restaurados.
+[21Nov2026 15:42:05.667] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 67 entidades
+[21Nov2026 15:42:07.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:42:07.756] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a -1299.500000, -8.000000, 50.500000
+[21Nov2026 15:42:11.387] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gran Fundición construida [apoyo ok] (236975 bloques, 10 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:42:43.298] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay escorias en la fundición
+[21Nov2026 15:42:43.346] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 68b_fundicion_fuera
+[21Nov2026 15:42:46.205] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK en la isla de los hornos está la Piedra de Portal: Forja (Block{mundos_de_axelis:portal_stone_forge})
+[21Nov2026 15:42:46.205] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK un fundidor guarda la isla
+[21Nov2026 15:42:46.247] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 68c_fundicion_hornos
+[21Nov2026 15:42:46.564] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:42:46.565] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia aplicado a Dev
+[21Nov2026 15:42:46.565] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia al fuego aplicado a Dev
+[21Nov2026 15:42:46.565] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 5 entidades
+[21Nov2026 15:42:46.566] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 2 entidades
+[21Nov2026 15:42:49.100] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Hilda está presa en la celda de los hornos de la fundición
+[21Nov2026 15:42:51.705] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK se abre la ventana de Hilda
+[21Nov2026 15:42:51.732] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 69_hilda_presa
+[21Nov2026 15:42:52.056] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:42:52.057] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Fundidor
+[21Nov2026 15:42:54.463] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el fundidor de la isla suelta la llave
+[21Nov2026 15:42:54.463] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Llave de la celda
+[21Nov2026 15:42:54.463] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] hilda rescatada por Dev
+[21Nov2026 15:42:57.070] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Hilda queda libre
+[21Nov2026 15:42:57.070] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Hilda da su Semilla de casa
+[21Nov2026 15:42:57.099] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 70_hilda_rescatada
+[21Nov2026 15:43:02.470] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Hilda salió de la celda
+[21Nov2026 15:43:02.471] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Fundidor
+[21Nov2026 15:43:02.792] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Deshecho: 1 estructura(s), 236975 bloques restaurados.
+[21Nov2026 15:43:02.805] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 170.500000, -60.000000, -12.500000
+[21Nov2026 15:43:02.977] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] casa de hilda en 170 -60 -10
+[21Nov2026 15:43:05.510] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK crece la herrería de Hilda
+[21Nov2026 15:43:05.510] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Hilda vive en su herrería
+[21Nov2026 15:43:05.510] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:43:08.396] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 71_casa_hilda
+[21Nov2026 15:43:11.287] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 72_casa_hilda_dentro
+[21Nov2026 15:43:11.598] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:43:14.216] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK ventana de Hilda vecina
+[21Nov2026 15:43:15.704] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 73_tienda_tres_vecinos
+[21Nov2026 15:43:16.511] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con tres vecinos se puede comprar el sobre de oro (1936 -> 1636)
+[21Nov2026 15:43:16.512] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:43:16.512] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron entidades
+[21Nov2026 15:43:18.219] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 580.500000, -48.000000, 0.500000
+[21Nov2026 15:43:20.626] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Torre Arcana construida [apoyo ok] (9420 bloques, 7 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:43:32.201] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 74_torre_fuera
+[21Nov2026 15:43:35.007] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay esbirros en la torre
+[21Nov2026 15:43:35.040] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 75_torre_patio
+[21Nov2026 15:43:37.871] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay libros embrujados en la biblioteca
+[21Nov2026 15:43:37.911] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 76_torre_biblioteca
+[21Nov2026 15:43:40.808] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK en el observatorio de la Torre Arcana está el tesoro del Archimago, no la Piedra de Portal (Block{mundos_de_axelis:vault_chest_locked_magic})
+[21Nov2026 15:43:40.808] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hay armaduras encantadas en la torre
+[21Nov2026 15:43:40.847] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 77_torre_observatorio
+[21Nov2026 15:43:41.168] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Deshecho: 1 estructura(s), 9420 bloques restaurados.
+[21Nov2026 15:43:41.169] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 31 entidades
+[21Nov2026 15:43:43.863] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a -999.500000, -8.000000, 50.500000
+[21Nov2026 15:43:46.415] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Fortaleza del Archimago construida [apoyo ok] (102519 bloques, 15 enemigos). Para quitarla: /mundos estructura deshacer
+[21Nov2026 15:44:14.300] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 77b_fortaleza_fuera
+[21Nov2026 15:44:17.162] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK arriba del todo de la fortaleza está la Piedra de Portal: Torre (Block{mundos_de_axelis:portal_stone_tower})
+[21Nov2026 15:44:17.162] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la armadura del observatorio guarda la llave
+[21Nov2026 15:44:17.200] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 77c_fortaleza_observatorio
+[21Nov2026 15:44:17.553] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:44:17.553] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia aplicado a Dev
+[21Nov2026 15:44:17.554] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 7 entidades
+[21Nov2026 15:44:17.555] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 5 entidades
+[21Nov2026 15:44:17.555] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Armadura Encantada
+[21Nov2026 15:44:20.071] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Teo está preso en la celda de la cripta de la fortaleza
+[21Nov2026 15:44:22.683] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK se abre la ventana de Teo
+[21Nov2026 15:44:22.721] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 78_teo_preso
+[21Nov2026 15:44:23.056] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Armadura Encantada
+[21Nov2026 15:44:24.266] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la armadura del observatorio suelta la llave
+[21Nov2026 15:44:24.268] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 21 entidades
+[21Nov2026 15:44:24.268] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] teo rescatada por Dev
+[21Nov2026 15:44:26.917] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Teo queda libre
+[21Nov2026 15:44:26.917] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Teo da su Semilla de casa
+[21Nov2026 15:44:26.944] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 79_teo_rescatado
+[21Nov2026 15:44:32.318] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Teo salió de la celda
+[21Nov2026 15:44:32.318] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron entidades
+[21Nov2026 15:44:32.319] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 140.500000, -60.000000, -12.500000
+[21Nov2026 15:44:35.163] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:44:37.211] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la semilla de Teo queda puesta con su holograma
+[21Nov2026 15:44:37.253] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 80_holograma_teo
+[21Nov2026 15:44:37.253] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:44:37.255] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] casa de teo en 140 -60 -10
+[21Nov2026 15:44:37.562] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK crece la biblioteca de Teo
+[21Nov2026 15:44:37.563] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Teo vive en su biblioteca
+[21Nov2026 15:44:37.563] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:44:41.405] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 81_casa_teo
+[21Nov2026 15:44:44.289] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 82_casa_teo_dentro
+[21Nov2026 15:44:44.606] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:44:47.272] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK ventana de Teo vecino
+[21Nov2026 15:44:48.789] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 83_tienda_cuatro_vecinos
+[21Nov2026 15:44:49.611] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con cuatro vecinos se puede comprar el libro de Reparación (2236 -> 1836)
+[21Nov2026 15:44:49.611] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:44:50.061] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Deshecho: 1 estructura(s), 102519 bloques restaurados.
+[21Nov2026 15:44:50.064] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Eliminadas 35 entidades
+[21Nov2026 15:44:51.147] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:44:51.148] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 110.500000, -60.000000, -12.500000
+[21Nov2026 15:44:55.198] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:44:57.210] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la semilla de Ignacio queda puesta con su holograma
+[21Nov2026 15:44:57.251] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 84_holograma_ignacio
+[21Nov2026 15:44:57.251] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:44:57.254] [Server thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: [Vecinos] casa de ignacio en 110 -60 -10
+[21Nov2026 15:44:57.563] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK crece la ermita de Ignacio
+[21Nov2026 15:44:57.563] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK Ignacio vive en su ermita
+[21Nov2026 15:44:57.564] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:45:01.352] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 85_casa_ignacio
+[21Nov2026 15:45:04.241] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 86_casa_ignacio_dentro
+[21Nov2026 15:45:04.559] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:45:07.201] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK ventana de Ignacio vecino
+[21Nov2026 15:45:08.626] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 87_tienda_cinco_vecinos
+[21Nov2026 15:45:08.689] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 39 advancements
+[21Nov2026 15:45:09.460] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con cinco vecinos se puede comprar la manzana encantada (2836 -> 2036)
+[21Nov2026 15:45:09.462] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:45:09.462] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Vecinos reiniciados (todos vuelven a estar presos; 2 quitados). Las celdas de los santuarios nuevos vuelven a tener preso.
+[21Nov2026 15:45:09.462] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron entidades
+[21Nov2026 15:45:10.998] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:45:11.000] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia aplicado a Dev
+[21Nov2026 15:45:11.002] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Carga forzosa activada para [1, -4] chunks en minecraft:overworld (de [1, -4] a [3, -2])
+[21Nov2026 15:45:11.004] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se rellenaron bloques
+[21Nov2026 15:45:11.012] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 36, -60, -37 cambiado
+[21Nov2026 15:45:11.014] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 38, -60, -37 cambiado
+[21Nov2026 15:45:11.016] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 40, -60, -37 cambiado
+[21Nov2026 15:45:11.016] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 42, -60, -37 cambiado
+[21Nov2026 15:45:11.016] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 44, -60, -37 cambiado
+[21Nov2026 15:45:11.016] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 39, -60, -34 cambiado
+[21Nov2026 15:45:11.016] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 41, -60, -34 cambiado
+[21Nov2026 15:45:11.017] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 40.500000, -60.000000, -43.500000
+[21Nov2026 15:45:11.019] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Aire]
+[21Nov2026 15:45:15.606] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK están los cofres de escarcha y arcano (Block{mundos_de_axelis:vault_chest_ice}, Block{mundos_de_axelis:vault_chest_magic})
+[21Nov2026 15:45:15.636] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 90_botin_cofres
+[21Nov2026 15:45:19.499] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el gran tesoro trae un fragmento de corazón (1)
+[21Nov2026 15:45:19.501] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el gran tesoro arcano se abre con botín (ContainerScreen: 24 pilas, 3 fragmentos de llave de la Magia, 2 libros encantados)
+[21Nov2026 15:45:19.526] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 91_botin_gran_tesoro
+[21Nov2026 15:45:19.875] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Fragmento de Corazón]
+[21Nov2026 15:45:23.881] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ♥ ¡Un corazón más para siempre! Corazones extra: 1
+[21Nov2026 15:45:24.811] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK cuatro fragmentos de corazón dan un corazón más para siempre (vida máxima 20 → 22.0)
+[21Nov2026 15:45:24.841] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 93a_botin_corazon
+[21Nov2026 15:45:25.461] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Runa de Esencia V]
+[21Nov2026 15:45:28.006] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Runa de Esencia V se rompe y da Esencia (2216 → 2346)
+[21Nov2026 15:45:28.354] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Pergamino: Teo y la araña Rosa]
+[21Nov2026 15:45:29.399] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[21Nov2026 15:45:29.404] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[21Nov2026 15:45:29.408] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[21Nov2026 15:45:29.409] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[21Nov2026 15:45:29.410] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[21Nov2026 15:45:29.410] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[21Nov2026 15:45:29.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[21Nov2026 15:45:29.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[21Nov2026 15:45:29.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[21Nov2026 15:45:29.412] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[21Nov2026 15:45:29.412] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[21Nov2026 15:45:29.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[21Nov2026 15:45:29.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[21Nov2026 15:45:29.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[21Nov2026 15:45:29.414] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[21Nov2026 15:45:29.414] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[21Nov2026 15:45:29.414] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[21Nov2026 15:45:29.415] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[21Nov2026 15:45:29.417] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[21Nov2026 15:45:30.868] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el pergamino de la crónica se abre como un libro (BookViewScreen)
+[21Nov2026 15:45:30.898] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 93b_botin_pergamino
+[21Nov2026 15:45:31.200] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 40, -60, -46 cambiado
+[21Nov2026 15:45:31.201] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:45:31.201] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:45:31.202] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:45:31.204] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 1 de [Yunque]
+[21Nov2026 15:45:31.205] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 1 de [Alto horno]
+[21Nov2026 15:45:31.206] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 2 de [Bloque de hierro]
+[21Nov2026 15:45:31.207] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 8 de [Fragmento de amatista]
+[21Nov2026 15:45:31.207] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 1 de [Mesa de herrería]
+[21Nov2026 15:45:31.208] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 1 de [Bloque de lapislázuli]
+[21Nov2026 15:45:31.208] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Te di 300 de Esencia.
+[21Nov2026 15:45:31.275] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 46 advancements
+[21Nov2026 15:45:35.772] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Mesa del Artífice se abre (TableScreen)
+[21Nov2026 15:45:37.027] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 92_botin_mesa_llaves
+[21Nov2026 15:45:37.347] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Mesa ya no forja llaves: crea el Gran Yunque de Fundición (receta 3)
+[21Nov2026 15:45:40.064] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Mesa crea el Gran Yunque de Fundición
+[21Nov2026 15:45:40.065] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Mesa crea la Mesa de Gemas
+[21Nov2026 15:45:40.092] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 93_botin_mesa_yunque
+[21Nov2026 15:45:40.094] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Carga forzosa desactivada para %s chunks en %s (de %s a %)
+[21Nov2026 15:45:40.410] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Carga forzosa activada para [1, -4] chunks en minecraft:overworld (de [1, -4] a [3, -2])
+[21Nov2026 15:45:40.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:45:40.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:45:40.412] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Gran Yunque de Fundición]
+[21Nov2026 15:45:43.465] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el Gran Yunque se pone con sus dos partes: el yunque y el crisol con lava
+[21Nov2026 15:45:44.733] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 94_yunque
+[21Nov2026 15:45:44.734] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 4 de [Fragmento de Llave de la Naturaleza]
+[21Nov2026 15:45:44.735] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Te di 200 de Esencia.
+[21Nov2026 15:45:46.610] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el Gran Yunque abre la forja (ForjaScreen)
+[21Nov2026 15:45:46.635] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 95_forja_elegir
+[21Nov2026 15:45:48.759] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la forja empieza fundiendo los fragmentos
+[21Nov2026 15:45:48.789] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 96_forja_fundir
+[21Nov2026 15:45:50.354] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el primer golpe en el punto dorado es perfecto
+[21Nov2026 15:45:50.379] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 97_forja_martillar
+[21Nov2026 15:45:52.232] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 98_forja_templar
+[21Nov2026 15:45:52.257] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ¡Has forjado Llave de la Naturaleza!
+[21Nov2026 15:45:52.565] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al templar en el rojo cereza la forja termina bien (OK)
+[21Nov2026 15:45:52.588] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 99_forja_resultado
+[21Nov2026 15:45:54.102] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el Gran Yunque da la Llave de la Naturaleza (llaves 0 → 1, fragmentos que quedan 0)
+[21Nov2026 15:45:55.309] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:45:55.309] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 4 de [Fragmento de Llave de la Naturaleza]
+[21Nov2026 15:46:04.033] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] La llave se quebró en la forja. Pierdes 1 fragmento.
+[21Nov2026 15:46:05.561] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK si la forja falla, la llave se quiebra y se pierde 1 fragmento (quedan 3 de 4)
+[21Nov2026 15:46:05.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Carga forzosa desactivada para %s chunks en %s (de %s a %)
+[21Nov2026 15:46:05.863] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Carga forzosa activada para [1, -4] chunks en minecraft:overworld (de [1, -4] a [3, -2])
+[21Nov2026 15:46:05.863] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en 45, -60, -46 cambiado
+[21Nov2026 15:46:05.864] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:46:05.865] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:46:05.865] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:46:05.866] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron ítems en el inventario de Dev
+[21Nov2026 15:46:05.867] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 1 de [Gema vacía (Pulida)]
+[21Nov2026 15:46:05.867] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 2 de [Esencia de Fuego]
+[21Nov2026 15:46:05.868] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev recibió 1 de [Espada de diamante]
+[21Nov2026 15:46:05.868] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Te di 300 de Esencia.
+[21Nov2026 15:46:07.367] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Mesa de Gemas está puesta
+[21Nov2026 15:46:07.412] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 100_mesa_gemas
+[21Nov2026 15:46:09.303] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la Mesa de Gemas abre su pantalla (GemTableScreen)
+[21Nov2026 15:46:10.553] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK con mayúsculas y clic, cada cosa va a su hueco (gema vacía, esencia y espada)
+[21Nov2026 15:46:10.578] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 101_gemas_antes
+[21Nov2026 15:46:10.914] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK infundir da una Gema de Fuego Pulida (1 gema_fuego, pureza 3)
+[21Nov2026 15:46:10.914] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK infundir gasta una esencia y 60 de Esencia (2960 → 2900)
+[21Nov2026 15:46:10.941] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 102_gemas_infundida
+[21Nov2026 15:46:13.164] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK engarzar pone la Gema de Fuego en la espada y gasta la gema
+[21Nov2026 15:46:13.191] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 103_gemas_engarzada
+[21Nov2026 15:46:14.406] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al cerrar la mesa, la espada (con gema) y la esencia sobrante vuelven al inventario
+[21Nov2026 15:46:14.407] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK la descripción de la espada muestra la gema engarzada
+[21Nov2026 15:46:14.408] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 1 ítem(s) eliminado(s) de Dev
+[21Nov2026 15:46:14.409] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Espacio en Dev reemplazado con [Espada de diamante]
+[21Nov2026 15:46:14.409] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No se encontraron entidades
+[21Nov2026 15:46:14.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Cerdo generada
+[21Nov2026 15:46:16.865] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK al golpear con la espada de Gema de Fuego, el cerdo arde
+[21Nov2026 15:46:16.891] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 104_gemas_fuego
+[21Nov2026 15:46:16.892] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Mataste a Cerdo
+[21Nov2026 15:46:16.892] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Carga forzosa desactivada para %s chunks en %s (de %s a %)
+[21Nov2026 15:46:17.315] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:46:17.315] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Carga forzosa activada para [-10, -5] chunks en minecraft:overworld (de [-10, -5] a [-5, -4])
+[21Nov2026 15:46:17.316] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a -109.500000, -50.000000, -79.500000
+[21Nov2026 15:46:20.362] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 898 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.364] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 169 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 104 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 13 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 13 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 6 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 6 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 13 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -80, -56, -56 cambiado
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -81, -57, -56 cambiado
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -79, -57, -56 cambiado
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -80, -58, -56 cambiado
+[21Nov2026 15:46:20.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -84, -61, -59 cambiado
+[21Nov2026 15:46:20.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -76, -61, -61 cambiado
+[21Nov2026 15:46:20.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -82, -61, -63 cambiado
+[21Nov2026 15:46:20.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -75, -61, -58 cambiado
+[21Nov2026 15:46:20.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -85, -61, -62 cambiado
+[21Nov2026 15:46:20.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -78, -61, -58 cambiado
+[21Nov2026 15:46:20.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -85, -60, -58 cambiado
+[21Nov2026 15:46:20.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -75, -60, -58 cambiado
+[21Nov2026 15:46:20.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -82, -58, -61 cambiado
+[21Nov2026 15:46:20.368] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -78, -58, -61 cambiado
+[21Nov2026 15:46:20.368] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -80, -55, -61 cambiado
+[21Nov2026 15:46:20.368] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -80, -59, -63 cambiado
+[21Nov2026 15:46:20.377] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 898 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.378] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 169 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.378] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 104 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.381] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 6 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.382] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 8 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.382] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 8 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.382] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 13 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.382] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -114, -60, -58 cambiado
+[21Nov2026 15:46:20.382] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -106, -60, -58 cambiado
+[21Nov2026 15:46:20.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -106, -59, -58 cambiado
+[21Nov2026 15:46:20.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -115, -60, -60 cambiado
+[21Nov2026 15:46:20.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 3 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 3 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -113, -56, -58 cambiado
+[21Nov2026 15:46:20.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -108, -56, -59 cambiado
+[21Nov2026 15:46:20.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -113, -61, -60 cambiado
+[21Nov2026 15:46:20.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -107, -61, -62 cambiado
+[21Nov2026 15:46:20.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -105, -61, -59 cambiado
+[21Nov2026 15:46:20.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -111, -61, -64 cambiado
+[21Nov2026 15:46:20.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -112, -58, -61 cambiado
+[21Nov2026 15:46:20.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -108, -58, -61 cambiado
+[21Nov2026 15:46:20.385] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -110, -55, -61 cambiado
+[21Nov2026 15:46:20.385] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -110, -59, -63 cambiado
+[21Nov2026 15:46:20.393] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 898 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.394] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 169 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.394] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 65 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 39 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 8 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 8 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 9 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 9 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -143, -55, -56 cambiado
+[21Nov2026 15:46:20.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -137, -55, -56 cambiado
+[21Nov2026 15:46:20.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -146, -55, -56 cambiado
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -134, -55, -56 cambiado
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 36 bloque(s) llenado(s) con éxito
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -143, -53, -58 cambiado
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -137, -53, -58 cambiado
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -145, -60, -58 cambiado
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -135, -60, -58 cambiado
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -142, -58, -61 cambiado
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -138, -58, -61 cambiado
+[21Nov2026 15:46:20.396] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -140, -55, -61 cambiado
+[21Nov2026 15:46:20.397] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Bloque en -140, -59, -63 cambiado
+[21Nov2026 15:46:22.857] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Cultista del Volcán generada
+[21Nov2026 15:46:24.604] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de cultista_volcan (en la foto: 1)
+[21Nov2026 15:46:24.636] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_cultista_volcan
+[21Nov2026 15:46:24.949] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Salamandra de Lava generada
+[21Nov2026 15:46:26.669] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de salamandra_lava (en la foto: 1)
+[21Nov2026 15:46:26.697] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_salamandra_lava
+[21Nov2026 15:46:27.001] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Diablillo generada
+[21Nov2026 15:46:28.708] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de diablillo (en la foto: 1)
+[21Nov2026 15:46:28.739] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_diablillo
+[21Nov2026 15:46:29.062] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Larva de Magma generada
+[21Nov2026 15:46:30.806] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de larva_magma (en la foto: 1)
+[21Nov2026 15:46:30.834] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_larva_magma
+[21Nov2026 15:46:31.162] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Fundidor generada
+[21Nov2026 15:46:32.867] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de fundidor (en la foto: 1)
+[21Nov2026 15:46:32.902] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_fundidor
+[21Nov2026 15:46:33.216] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Ascua generada
+[21Nov2026 15:46:34.962] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de ascua (en la foto: 1)
+[21Nov2026 15:46:34.995] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_ascua
+[21Nov2026 15:46:35.306] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Esbirro del Archimago generada
+[21Nov2026 15:46:37.009] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de esbirro (en la foto: 1)
+[21Nov2026 15:46:37.041] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_esbirro
+[21Nov2026 15:46:37.362] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Armadura Encantada generada
+[21Nov2026 15:46:39.108] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de armadura_encantada (en la foto: 1)
+[21Nov2026 15:46:39.140] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_armadura_encantada
+[21Nov2026 15:46:39.458] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Libro Embrujado generada
+[21Nov2026 15:46:41.157] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de libro_embrujado (en la foto: 1)
+[21Nov2026 15:46:41.189] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_libro_embrujado
+[21Nov2026 15:46:41.503] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Archimago generada
+[21Nov2026 15:46:43.206] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK retrato de archimago (en la foto: 1)
+[21Nov2026 15:46:43.243] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto carta_archimago
+[21Nov2026 15:46:43.576] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Carga forzosa desactivada para todos los chunks en minecraft:overworld
+[21Nov2026 15:46:43.864] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Álbum completado (para probar).
+[21Nov2026 15:46:43.865] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev teletransportado a 0.500000, -60.000000, 0.500000
+[21Nov2026 15:46:47.966] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK el álbum tiene 41 cartas (41 esperadas)
+[21Nov2026 15:46:47.995] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 46_album_jefes
+[21Nov2026 15:46:50.194] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 47_album_criaturas
+[21Nov2026 15:46:52.343] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST foto 48_album_criaturas_nuevas
+[21Nov2026 15:46:52.662] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Tiempo ajustado a 6000
+[21Nov2026 15:46:55.210] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Brote generada
+[21Nov2026 15:47:04.108] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de brote (59 cuadros)
+[21Nov2026 15:47:04.456] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Espinoso generada
+[21Nov2026 15:47:13.307] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de espinoso (60 cuadros)
+[21Nov2026 15:47:13.653] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Polinizador generada
+[21Nov2026 15:47:22.518] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de polinizador (60 cuadros)
+[21Nov2026 15:47:22.857] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Raizal generada
+[21Nov2026 15:47:31.714] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de raizal (60 cuadros)
+[21Nov2026 15:47:32.062] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Guardián de Musgo generada
+[21Nov2026 15:47:39.161] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity GuardianMusgo['Guardián de Musgo'/1896, l='ServerLevel[world]', x=-197.03, y=-60.00, z=-58.28] died: Guardián de Musgo murió
+[21Nov2026 15:47:40.964] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de guardian_musgo (60 cuadros)
+[21Nov2026 15:47:41.309] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Rey Brote generada
+[21Nov2026 15:47:50.166] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de rey_brote (60 cuadros)
+[21Nov2026 15:47:50.508] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Escoria generada
+[21Nov2026 15:47:59.365] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de escoria (60 cuadros)
+[21Nov2026 15:47:59.705] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Chispero generada
+[21Nov2026 15:48:08.609] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de chispero (60 cuadros)
+[21Nov2026 15:48:08.951] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Ascua generada
+[21Nov2026 15:48:17.816] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de ascua (60 cuadros)
+[21Nov2026 15:48:18.155] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Fundidor generada
+[21Nov2026 15:48:27.059] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de fundidor (60 cuadros)
+[21Nov2026 15:48:27.400] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Capataz generada
+[21Nov2026 15:48:34.509] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Capataz['Capataz'/1912, l='ServerLevel[world]', x=-197.03, y=-60.00, z=-58.28] died: Capataz murió
+[21Nov2026 15:48:36.333] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de capataz (60 cuadros)
+[21Nov2026 15:48:36.660] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Gran Herrero de Brasas generada
+[21Nov2026 15:48:45.524] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de gran_herrero (60 cuadros)
+[21Nov2026 15:48:45.855] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Lobezno de escarcha generada
+[21Nov2026 15:48:54.717] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de lobo_escarcha (60 cuadros)
+[21Nov2026 15:48:55.060] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Lobo Ártico generada
+[21Nov2026 15:49:03.933] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de lobo_artico (60 cuadros)
+[21Nov2026 15:49:04.256] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Esbirro del Archimago generada
+[21Nov2026 15:49:13.114] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de esbirro (60 cuadros)
+[21Nov2026 15:49:13.457] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Armadura Encantada generada
+[21Nov2026 15:49:16.155] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Datos de la entidad de Armadura Encantada modificados
+[21Nov2026 15:49:22.309] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de armadura_encantada (60 cuadros)
+[21Nov2026 15:49:22.613] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Libro Embrujado generada
+[21Nov2026 15:49:31.514] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de libro_embrujado (60 cuadros)
+[21Nov2026 15:49:31.859] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Archimago generada
+[21Nov2026 15:49:40.771] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de archimago (60 cuadros)
+[21Nov2026 15:49:41.101] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Salamandra de Lava generada
+[21Nov2026 15:49:49.964] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de salamandra_lava (60 cuadros)
+[21Nov2026 15:49:50.309] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Diablillo generada
+[21Nov2026 15:49:59.210] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de diablillo (60 cuadros)
+[21Nov2026 15:49:59.557] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Cultista del Volcán generada
+[21Nov2026 15:50:08.397] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de cultista_volcan (60 cuadros)
+[21Nov2026 15:50:08.708] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Entidad Larva de Magma generada
+[21Nov2026 15:50:17.611] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de larva_magma (60 cuadros)
+[21Nov2026 15:50:17.952] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Supervivencia
+[21Nov2026 15:50:17.953] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Efecto Resistencia aplicado a Dev
+[21Nov2026 15:50:30.057] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST OK hoja de animación de las mascotas (60 cuadros)
+[21Nov2026 15:50:30.057] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modo de juego de Dev cambiado a Espectador
+[21Nov2026 15:50:30.866] [Render thread/INFO] [com.mundosdeaxelis.MundosDeAxelis/]: AUTOTEST AUTOTEST_FIN fotos=154 comprobaciones=215 fallos=0
+[21Nov2026 15:50:32.922] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[21Nov2026 15:50:32.950] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Desconectado/a
+[21Nov2026 15:50:32.950] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev se desconectó
+[21Nov2026 15:50:32.953] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[21Nov2026 15:50:33.003] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[21Nov2026 15:50:33.003] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[21Nov2026 15:50:33.003] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[21Nov2026 15:50:33.158] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[21Nov2026 15:50:33.214] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[21Nov2026 15:50:33.214] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[21Nov2026 15:50:33.215] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[21Nov2026 15:50:33.215] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[21Nov2026 15:50:33.216] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[21Nov2026 15:50:33.217] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[21Nov2026 15:50:33.218] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[21Nov2026 15:50:33.219] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[21Nov2026 15:50:33.219] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[21Nov2026 15:50:33.220] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[21Nov2026 15:50:33.220] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[21Nov2026 15:50:33.221] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[21Nov2026 15:50:33.221] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[21Nov2026 15:50:33.222] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[21Nov2026 15:50:33.222] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[21Nov2026 15:50:33.223] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[21Nov2026 15:50:33.223] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (prueba): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_forest_3): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_forge_3): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_forest_2): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_tower_2): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_forest): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_ice_3): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_forge): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_volcano): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_ice_2): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_volcano_2): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_forge_2): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_tower): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_tower_3): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_ice): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (boss_volcano_3): All chunks are saved
+[21Nov2026 15:50:33.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved

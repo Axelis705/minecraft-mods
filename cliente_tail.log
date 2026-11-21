@@ -1,0 +1,400 @@
+[15:44:55] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Espectador
+[15:44:57] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la semilla de Ignacio queda puesta con su holograma
+[15:44:57] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 84_holograma_ignacio
+[15:44:57] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Supervivencia
+[15:44:57] [Server thread/INFO] [co.mu.MundosDeAxelis/]: [Vecinos] casa de ignacio en 110 -60 -10
+[15:44:57] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK crece la ermita de Ignacio
+[15:44:57] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK Ignacio vive en su ermita
+[15:44:57] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Espectador
+[15:45:01] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 85_casa_ignacio
+[15:45:04] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 86_casa_ignacio_dentro
+[15:45:04] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Supervivencia
+[15:45:07] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK ventana de Ignacio vecino
+[15:45:08] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 87_tienda_cinco_vecinos
+[15:45:08] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 39 advancements
+[15:45:09] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK con cinco vecinos se puede comprar la manzana encantada (2836 -> 2036)
+[15:45:09] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Espectador
+[15:45:09] [Server thread/INFO] [minecraft/MinecraftServer]: Vecinos reiniciados (todos vuelven a estar presos; 2 quitados). Las celdas de los santuarios nuevos vuelven a tener preso.
+[15:45:09] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron entidades
+[15:45:10] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Supervivencia
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Efecto Resistencia aplicado a Dev
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa activada para [1, -4] chunks en minecraft:overworld (de [1, -4] a [3, -2])
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: No se rellenaron bloques
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 36, -60, -37 cambiado
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 38, -60, -37 cambiado
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 40, -60, -37 cambiado
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 42, -60, -37 cambiado
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 44, -60, -37 cambiado
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 39, -60, -34 cambiado
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 41, -60, -34 cambiado
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Dev teletransportado a 40.500000, -60.000000, -43.500000
+[15:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: Espacio en Dev reemplazado con [Aire]
+[15:45:15] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK están los cofres de escarcha y arcano (Block{mundos_de_axelis:vault_chest_ice}, Block{mundos_de_axelis:vault_chest_magic})
+[15:45:15] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 90_botin_cofres
+[15:45:19] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK el gran tesoro trae un fragmento de corazón (1)
+[15:45:19] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK el gran tesoro arcano se abre con botín (ContainerScreen: 24 pilas, 3 fragmentos de llave de la Magia, 2 libros encantados)
+[15:45:19] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 91_botin_gran_tesoro
+[15:45:19] [Server thread/INFO] [minecraft/MinecraftServer]: Espacio en Dev reemplazado con [Fragmento de Corazón]
+[15:45:23] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ♥ ¡Un corazón más para siempre! Corazones extra: 1
+[15:45:24] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK cuatro fragmentos de corazón dan un corazón más para siempre (vida máxima 20 → 22.0)
+[15:45:24] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 93a_botin_corazon
+[15:45:25] [Server thread/INFO] [minecraft/MinecraftServer]: Espacio en Dev reemplazado con [Runa de Esencia V]
+[15:45:28] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la Runa de Esencia V se rompe y da Esencia (2216 → 2346)
+[15:45:28] [Server thread/INFO] [minecraft/MinecraftServer]: Espacio en Dev reemplazado con [Pergamino: Teo y la araña Rosa]
+[15:45:29] [Server thread/INFO] [minecraft/IntegratedServer]: Saving and pausing game...
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[15:45:29] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[15:45:29] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: Gathering id map for writing to world save world
+[15:45:29] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: ID Map collection complete world
+[15:45:30] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK el pergamino de la crónica se abre como un libro (BookViewScreen)
+[15:45:30] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 93b_botin_pergamino
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 40, -60, -46 cambiado
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 1 de [Yunque]
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 1 de [Alto horno]
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 2 de [Bloque de hierro]
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 8 de [Fragmento de amatista]
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 1 de [Mesa de herrería]
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 1 de [Bloque de lapislázuli]
+[15:45:31] [Server thread/INFO] [minecraft/MinecraftServer]: Te di 300 de Esencia.
+[15:45:31] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 46 advancements
+[15:45:35] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la Mesa del Artífice se abre (TableScreen)
+[15:45:37] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 92_botin_mesa_llaves
+[15:45:37] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la Mesa ya no forja llaves: crea el Gran Yunque de Fundición (receta 3)
+[15:45:40] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la Mesa crea el Gran Yunque de Fundición
+[15:45:40] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la Mesa crea la Mesa de Gemas
+[15:45:40] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 93_botin_mesa_yunque
+[15:45:40] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa desactivada para %s chunks en %s (de %s a %)
+[15:45:40] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa activada para [1, -4] chunks en minecraft:overworld (de [1, -4] a [3, -2])
+[15:45:40] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:45:40] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:45:40] [Server thread/INFO] [minecraft/MinecraftServer]: Espacio en Dev reemplazado con [Gran Yunque de Fundición]
+[15:45:43] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK el Gran Yunque se pone con sus dos partes: el yunque y el crisol con lava
+[15:45:44] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 94_yunque
+[15:45:44] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 4 de [Fragmento de Llave de la Naturaleza]
+[15:45:44] [Server thread/INFO] [minecraft/MinecraftServer]: Te di 200 de Esencia.
+[15:45:46] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK el Gran Yunque abre la forja (ForjaScreen)
+[15:45:46] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 95_forja_elegir
+[15:45:48] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la forja empieza fundiendo los fragmentos
+[15:45:48] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 96_forja_fundir
+[15:45:50] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK el primer golpe en el punto dorado es perfecto
+[15:45:50] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 97_forja_martillar
+[15:45:52] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 98_forja_templar
+[15:45:52] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ¡Has forjado Llave de la Naturaleza!
+[15:45:52] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK al templar en el rojo cereza la forja termina bien (OK)
+[15:45:52] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 99_forja_resultado
+[15:45:54] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK el Gran Yunque da la Llave de la Naturaleza (llaves 0 → 1, fragmentos que quedan 0)
+[15:45:55] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:45:55] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 4 de [Fragmento de Llave de la Naturaleza]
+[15:46:04] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] La llave se quebró en la forja. Pierdes 1 fragmento.
+[15:46:05] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK si la forja falla, la llave se quiebra y se pierde 1 fragmento (quedan 3 de 4)
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa desactivada para %s chunks en %s (de %s a %)
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa activada para [1, -4] chunks en minecraft:overworld (de [1, -4] a [3, -2])
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en 45, -60, -46 cambiado
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron ítems en el inventario de Dev
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 1 de [Gema vacía (Pulida)]
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 2 de [Esencia de Fuego]
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: Dev recibió 1 de [Espada de diamante]
+[15:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: Te di 300 de Esencia.
+[15:46:07] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la Mesa de Gemas está puesta
+[15:46:07] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 100_mesa_gemas
+[15:46:09] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la Mesa de Gemas abre su pantalla (GemTableScreen)
+[15:46:10] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK con mayúsculas y clic, cada cosa va a su hueco (gema vacía, esencia y espada)
+[15:46:10] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 101_gemas_antes
+[15:46:10] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK infundir da una Gema de Fuego Pulida (1 gema_fuego, pureza 3)
+[15:46:10] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK infundir gasta una esencia y 60 de Esencia (2960 → 2900)
+[15:46:10] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 102_gemas_infundida
+[15:46:13] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK engarzar pone la Gema de Fuego en la espada y gasta la gema
+[15:46:13] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 103_gemas_engarzada
+[15:46:14] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK al cerrar la mesa, la espada (con gema) y la esencia sobrante vuelven al inventario
+[15:46:14] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK la descripción de la espada muestra la gema engarzada
+[15:46:14] [Server thread/INFO] [minecraft/MinecraftServer]: 1 ítem(s) eliminado(s) de Dev
+[15:46:14] [Server thread/INFO] [minecraft/MinecraftServer]: Espacio en Dev reemplazado con [Espada de diamante]
+[15:46:14] [Server thread/INFO] [minecraft/MinecraftServer]: No se encontraron entidades
+[15:46:14] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Cerdo generada
+[15:46:16] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK al golpear con la espada de Gema de Fuego, el cerdo arde
+[15:46:16] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 104_gemas_fuego
+[15:46:16] [Server thread/INFO] [minecraft/MinecraftServer]: Mataste a Cerdo
+[15:46:16] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa desactivada para %s chunks en %s (de %s a %)
+[15:46:17] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Espectador
+[15:46:17] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa activada para [-10, -5] chunks en minecraft:overworld (de [-10, -5] a [-5, -4])
+[15:46:17] [Server thread/INFO] [minecraft/MinecraftServer]: Dev teletransportado a -109.500000, -50.000000, -79.500000
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 898 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 169 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 104 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 13 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 13 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 6 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 6 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 13 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -80, -56, -56 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -81, -57, -56 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -79, -57, -56 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -80, -58, -56 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -84, -61, -59 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -76, -61, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -82, -61, -63 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -75, -61, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -85, -61, -62 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -78, -61, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -85, -60, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -75, -60, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -82, -58, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -78, -58, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -80, -55, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -80, -59, -63 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 898 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 169 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 104 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 6 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 8 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 8 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 13 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -114, -60, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -106, -60, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -106, -59, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -115, -60, -60 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 3 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 3 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -113, -56, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -108, -56, -59 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -113, -61, -60 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -107, -61, -62 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -105, -61, -59 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -111, -61, -64 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -112, -58, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -108, -58, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -110, -55, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -110, -59, -63 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 898 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 169 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 65 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 39 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 8 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 8 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 9 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 9 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -143, -55, -56 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -137, -55, -56 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -146, -55, -56 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -134, -55, -56 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: 36 bloque(s) llenado(s) con éxito
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -143, -53, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -137, -53, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -145, -60, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -135, -60, -58 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -142, -58, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -138, -58, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -140, -55, -61 cambiado
+[15:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: Bloque en -140, -59, -63 cambiado
+[15:46:22] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Cultista del Volcán generada
+[15:46:24] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de cultista_volcan (en la foto: 1)
+[15:46:24] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_cultista_volcan
+[15:46:24] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Salamandra de Lava generada
+[15:46:26] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de salamandra_lava (en la foto: 1)
+[15:46:26] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_salamandra_lava
+[15:46:27] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Diablillo generada
+[15:46:28] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de diablillo (en la foto: 1)
+[15:46:28] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_diablillo
+[15:46:29] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Larva de Magma generada
+[15:46:30] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de larva_magma (en la foto: 1)
+[15:46:30] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_larva_magma
+[15:46:31] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Fundidor generada
+[15:46:32] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de fundidor (en la foto: 1)
+[15:46:32] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_fundidor
+[15:46:33] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Ascua generada
+[15:46:34] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de ascua (en la foto: 1)
+[15:46:34] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_ascua
+[15:46:35] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Esbirro del Archimago generada
+[15:46:37] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de esbirro (en la foto: 1)
+[15:46:37] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_esbirro
+[15:46:37] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Armadura Encantada generada
+[15:46:39] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de armadura_encantada (en la foto: 1)
+[15:46:39] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_armadura_encantada
+[15:46:39] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Libro Embrujado generada
+[15:46:41] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de libro_embrujado (en la foto: 1)
+[15:46:41] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_libro_embrujado
+[15:46:41] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Archimago generada
+[15:46:43] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK retrato de archimago (en la foto: 1)
+[15:46:43] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto carta_archimago
+[15:46:43] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa desactivada para todos los chunks en minecraft:overworld
+[15:46:43] [Server thread/INFO] [minecraft/MinecraftServer]: Álbum completado (para probar).
+[15:46:43] [Server thread/INFO] [minecraft/MinecraftServer]: Dev teletransportado a 0.500000, -60.000000, 0.500000
+[15:46:47] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK el álbum tiene 41 cartas (41 esperadas)
+[15:46:47] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 46_album_jefes
+[15:46:50] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 47_album_criaturas
+[15:46:52] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST foto 48_album_criaturas_nuevas
+[15:46:52] [Server thread/INFO] [minecraft/MinecraftServer]: Tiempo ajustado a 6000
+[15:46:55] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Brote generada
+[15:47:04] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de brote (59 cuadros)
+[15:47:04] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Espinoso generada
+[15:47:13] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de espinoso (60 cuadros)
+[15:47:13] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Polinizador generada
+[15:47:14] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: Gathering id map for writing to world save world
+[15:47:14] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: ID Map collection complete world
+[15:47:22] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de polinizador (60 cuadros)
+[15:47:22] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Raizal generada
+[15:47:31] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de raizal (60 cuadros)
+[15:47:32] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Guardián de Musgo generada
+[15:47:39] [Server thread/INFO] [minecraft/LivingEntity]: Named entity GuardianMusgo['Guardián de Musgo'/1896, l='ServerLevel[world]', x=-197.03, y=-60.00, z=-58.28] died: Guardián de Musgo murió
+[15:47:40] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de guardian_musgo (60 cuadros)
+[15:47:41] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Rey Brote generada
+[15:47:50] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de rey_brote (60 cuadros)
+[15:47:50] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Escoria generada
+[15:47:59] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de escoria (60 cuadros)
+[15:47:59] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Chispero generada
+[15:48:08] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de chispero (60 cuadros)
+[15:48:08] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Ascua generada
+[15:48:17] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de ascua (60 cuadros)
+[15:48:18] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Fundidor generada
+[15:48:27] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de fundidor (60 cuadros)
+[15:48:27] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Capataz generada
+[15:48:34] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Capataz['Capataz'/1912, l='ServerLevel[world]', x=-197.03, y=-60.00, z=-58.28] died: Capataz murió
+[15:48:36] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de capataz (60 cuadros)
+[15:48:36] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Gran Herrero de Brasas generada
+[15:48:45] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de gran_herrero (60 cuadros)
+[15:48:45] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Lobezno de escarcha generada
+[15:48:54] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de lobo_escarcha (60 cuadros)
+[15:48:55] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Lobo Ártico generada
+[15:49:03] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de lobo_artico (60 cuadros)
+[15:49:04] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Esbirro del Archimago generada
+[15:49:13] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de esbirro (60 cuadros)
+[15:49:13] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Armadura Encantada generada
+[15:49:16] [Server thread/INFO] [minecraft/MinecraftServer]: Datos de la entidad de Armadura Encantada modificados
+[15:49:22] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de armadura_encantada (60 cuadros)
+[15:49:22] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Libro Embrujado generada
+[15:49:31] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de libro_embrujado (60 cuadros)
+[15:49:31] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Archimago generada
+[15:49:40] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de archimago (60 cuadros)
+[15:49:41] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Salamandra de Lava generada
+[15:49:49] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de salamandra_lava (60 cuadros)
+[15:49:50] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Diablillo generada
+[15:49:59] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de diablillo (60 cuadros)
+[15:49:59] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Cultista del Volcán generada
+[15:50:08] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de cultista_volcan (60 cuadros)
+[15:50:08] [Server thread/INFO] [minecraft/MinecraftServer]: Entidad Larva de Magma generada
+[15:50:17] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de larva_magma (60 cuadros)
+[15:50:17] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Supervivencia
+[15:50:17] [Server thread/INFO] [minecraft/MinecraftServer]: Efecto Resistencia aplicado a Dev
+[15:50:30] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST OK hoja de animación de las mascotas (60 cuadros)
+[15:50:30] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Espectador
+[15:50:30] [Render thread/INFO] [co.mu.MundosDeAxelis/]: AUTOTEST AUTOTEST_FIN fotos=154 comprobaciones=215 fallos=0
+[15:50:32] [Render thread/INFO] [minecraft/Minecraft]: Stopping!
+[15:50:32] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Dev lost connection: Desconectado/a
+[15:50:32] [Server thread/INFO] [minecraft/MinecraftServer]: Dev se desconectó
+[15:50:32] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Stopping singleplayer server as player logged out
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_3
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_3
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest_2
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_2
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forest
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_3
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice_2
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_2
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_forge_2
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_tower_3
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_ice
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/mundos_de_axelis:boss_volcano_3
+[15:50:33] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: Gathering id map for writing to world save world
+[15:50:33] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: ID Map collection complete world
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (prueba): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_forest_3): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_forge_3): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_forest_2): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_tower_2): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_forest): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_ice_3): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_forge): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_volcano): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_ice_2): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_volcano_2): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_forge_2): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_tower): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_tower_3): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_ice): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (boss_volcano_3): All chunks are saved
+[15:50:33] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.GameData/REGISTRIES]: Reverting to FROZEN data state.
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:block Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:fluid Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:item Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:mob_effect Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:sound_event Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:potion Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:enchantment Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:entity_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:block_entity_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:particle_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:menu Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:painting_variant Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:recipe_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:recipe_serializer Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:attribute Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:stat_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:command_argument_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:villager_profession Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:point_of_interest_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:memory_module_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:sensor_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:schedule Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:activity Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/carver Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/feature Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:chunk_status Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/block_state_provider_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/foliage_placer_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/tree_decorator_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/biome Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:entity_data_serializers Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:global_loot_modifier_serializers Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:biome_modifier_serializers Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:fluid_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:structure_modifier_serializers Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:holder_set_type Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:display_contexts Sync: ACTIVE -> FROZEN
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ObjectHolderRegistry/REGISTRIES]: Applying holder lookups
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.ObjectHolderRegistry/REGISTRIES]: Holder lookups applied
+[15:50:33] [Server thread/DEBUG] [ne.mi.re.GameData/REGISTRIES]: FROZEN state restored.
+[15:50:33] [Server thread/DEBUG] [ne.mi.fm.co.ConfigTracker/CONFIG]: Unloading configs type SERVER
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_5-1795275098847.json
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 18m 57s
+10 actionable tasks: 3 executed, 7 up-to-date
