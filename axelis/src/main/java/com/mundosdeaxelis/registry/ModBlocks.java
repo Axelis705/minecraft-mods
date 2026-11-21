@@ -303,6 +303,15 @@ public final class ModBlocks {
                     .noLootTable()
                     .lightLevel(state -> 6), false, true));
 
+    /** Gran Yunque de Fundición (etapa 270): dos partes (yunque y crisol con lava); forja llaves con fragmentos y un juego de habilidad. */
+    public static final RegistryObject<Block> GRAN_YUNQUE = BLOCKS.register("gran_yunque",
+            () -> new com.mundosdeaxelis.block.GranYunqueBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(5.0F, 1200.0F)
+                    .sound(SoundType.ANVIL)
+                    .noOcclusion()
+                    .lightLevel(st -> st.getValue(com.mundosdeaxelis.block.GranYunqueBlock.PART) == com.mundosdeaxelis.block.GranYunqueBlock.Part.FORGE ? 13 : 3)));
+
     /** Mesa del Artífice: mejoras, tienda de llaves y Archivo. */
     public static final RegistryObject<Block> ARTIFICER_TABLE = BLOCKS.register("artificer_table",
             () -> new com.mundosdeaxelis.block.ArtificerTableBlock(BlockBehaviour.Properties.of()

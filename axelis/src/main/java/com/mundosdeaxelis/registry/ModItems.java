@@ -219,6 +219,10 @@ public final class ModItems {
         return l;
     }
 
+    /** Gran Yunque de Fundición (se crea en la Mesa del Artífice). */
+    public static final RegistryObject<Item> GRAN_YUNQUE = ITEMS.register("gran_yunque",
+            () -> new BlockItem(ModBlocks.GRAN_YUNQUE.get(), new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+
     /** Fragmento de corazón: cuatro = un corazón más de vida máxima, para siempre. */
     public static final RegistryObject<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment", com.mundosdeaxelis.item.HeartFragmentItem::new);
     /** Pergamino de la crónica (cuál es, en el dato «Pergamino»). */

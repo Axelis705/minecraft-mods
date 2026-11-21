@@ -1,4 +1,12 @@
 cartas probar
+setblock 10 -60 -40 mundos_de_axelis:gran_yunque[facing=north,part=anvil]
+setblock 11 -60 -40 mundos_de_axelis:gran_yunque[facing=north,part=forge]
+execute if block 10 -60 -40 mundos_de_axelis:gran_yunque[part=anvil] if block 11 -60 -40 mundos_de_axelis:gran_yunque[part=forge] run say PRUEBA_YUNQUE_PARTES_OK
+kill @e[type=item]
+setblock 11 -60 -40 air
+execute unless block 10 -60 -40 mundos_de_axelis:gran_yunque run say PRUEBA_YUNQUE_SE_ROMPE_ENTERO_OK
+execute if entity @e[type=item,x=7,y=-63,z=-43,dx=7,dy=6,dz=7,nbt={Item:{id:"mundos_de_axelis:gran_yunque"}}] run say PRUEBA_YUNQUE_SUELTA_OK
+kill @e[type=item]
 #expect PRUEBA_CARTAS_OK
 mundos prueba construir 5
 #wait PRUEBA_CONSTRUIR_5 150
@@ -670,3 +678,6 @@ mundos prueba construir 2
 #expect PRUEBA_BARRIL_TABLA_HIELO_OK
 #expect PRUEBA_BARRIL_TABLA_VOLCAN_OK
 #expect PRUEBA_BARRIL_TABLA_MAGIA_OK
+#expect PRUEBA_YUNQUE_PARTES_OK
+#expect PRUEBA_YUNQUE_SE_ROMPE_ENTERO_OK
+#expect PRUEBA_YUNQUE_SUELTA_OK

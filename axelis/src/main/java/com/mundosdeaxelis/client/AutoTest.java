@@ -1277,30 +1277,177 @@ public final class AutoTest {
             }
         });
         add("mesa (foto)", 300, () -> shot("92_botin_mesa_llaves"));
-        add("mesa (forjar)", 1500, () -> {
+        add("mesa (crear el Gran Yunque)", 1500, () -> {
             Minecraft mc = Minecraft.getInstance();
             int idx = -1;
             List<com.mundosdeaxelis.table.TableRecipes.Recipe> all = com.mundosdeaxelis.table.TableRecipes.all();
             for (int i = 0; i < all.size(); i++) {
-                if (all.get(i).id().equals("key_forest")) {
+                if (all.get(i).id().equals("gran_yunque")) {
                     idx = i;
                 }
             }
+            check("la Mesa ya no forja llaves: crea el Gran Yunque de Fundición (receta " + idx + ")", idx >= 0
+                    && all.stream().noneMatch(r -> r.id().startsWith("key_")));
             if (mc.screen instanceof TableScreen ts && idx >= 0) {
                 mc.gameMode.handleInventoryButtonClick(ts.getMenu().containerId, com.mundosdeaxelis.table.TableMenu.B_CRAFT + idx);
             }
         });
-        add("mesa (llave)", 300, () -> {
+        add("mesa (yunque creado)", 300, () -> {
             net.minecraft.world.entity.player.Inventory inv = Minecraft.getInstance().player.getInventory();
-            int keys = inv.countItem(com.mundosdeaxelis.registry.ModItems.KEYS.get(com.mundosdeaxelis.crate.CrateKind.FOREST).get());
-            int fr = inv.countItem(com.mundosdeaxelis.registry.ModItems.KEY_FRAGMENTS.get(com.mundosdeaxelis.crate.CrateKind.FOREST).get());
-            check("con 4 fragmentos se forja la Llave de la Naturaleza en la Mesa (llaves " + keys + ", fragmentos que quedan " + fr + ")",
-                    keys >= 1 && fr == 0);
-            shot("93_botin_llave_forjada");
+            check("la Mesa crea el Gran Yunque de Fundición", inv.countItem(com.mundosdeaxelis.registry.ModItems.GRAN_YUNQUE.get()) >= 1);
+            shot("93_botin_mesa_yunque");
             open(null);
             cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
         });
+        yunque();
     }
+
+    // ------------------------------------------------------------------ etapa 270: el Gran Yunque de Fundición
+
+    private static Object forjaGame() {
+        try {
+            java.lang.reflect.Field f = ForjaScreen.class.getDeclaredField("game");
+            f.setAccessible(true);
+            return Minecraft.getInstance().screen instanceof ForjaScreen fs ? f.get(fs) : null;
+        } catch (Exception ex) {
+            log("no se pudo leer la forja: " + ex);
+            return null;
+        }
+    }
+
+    private static void forjaStart(int tier) {
+        try {
+            java.lang.reflect.Method m = ForjaScreen.class.getDeclaredMethod("start", int.class);
+            m.setAccessible(true);
+            m.invoke(Minecraft.getInstance().screen, tier);
+        } catch (Exception ex) {
+            log("no se pudo empezar la forja: " + ex);
+        }
+    }
+
+    private static volatile int keys0, frags0;
+
+    /**
+     * El Gran Yunque: se pone con el objeto (dos partes), se abre la forja con 4 fragmentos, fotos de las tres fases y del
+     * resultado, una forja perfecta (llave + 1 fragmento de vuelta) y una fallida (se pierde 1 fragmento).
+     */
+    private static void yunque() {
+        net.minecraft.core.BlockPos ground = new net.minecraft.core.BlockPos(LTX - 6, LTY - 1, LTZ - 6);
+        net.minecraft.core.BlockPos anvil = ground.above();
+        net.minecraft.world.item.Item frag = com.mundosdeaxelis.registry.ModItems.KEY_FRAGMENTS.get(com.mundosdeaxelis.crate.CrateKind.FOREST).get();
+        net.minecraft.world.item.Item key = com.mundosdeaxelis.registry.ModItems.KEYS.get(com.mundosdeaxelis.crate.CrateKind.FOREST).get();
+        add("yunque (poner)", 1500, () -> {
+            cmd("execute in minecraft:overworld run forceload add " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+            cmd("clear @a mundos_de_axelis:key_fragment_forest");
+            cmd("clear @a mundos_de_axelis:key_forest");
+            cmd("item replace entity @a hotbar.8 with mundos_de_axelis:gran_yunque");
+            Minecraft.getInstance().player.getInventory().selected = 8;
+            standLooking(LTX - 5.5, LTY, LTZ - 9.5, LTX - 5.5, LTY - 1, LTZ - 5.5);
+        });
+        add("yunque (colocar)", 1500, () -> useBlock(ground));
+        add("yunque (dos partes)", 1200, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            net.minecraft.world.level.block.state.BlockState a = lv.getBlockState(anvil);
+            boolean ok = a.getBlock() instanceof com.mundosdeaxelis.block.GranYunqueBlock;
+            boolean two = false;
+            if (ok) {
+                net.minecraft.core.BlockPos other = anvil.relative(com.mundosdeaxelis.block.GranYunqueBlock.forgeSide(a.getValue(com.mundosdeaxelis.block.GranYunqueBlock.FACING)));
+                two = lv.getBlockState(other).getBlock() instanceof com.mundosdeaxelis.block.GranYunqueBlock;
+            }
+            check("el Gran Yunque se pone con sus dos partes: el yunque y el crisol con lava", ok && two);
+            standLooking(LTX - 5.5, LTY + 1.2, LTZ - 10.5, LTX - 5.0, LTY + 0.5, LTZ - 5.5);
+        });
+        add("yunque (foto)", 300, () -> {
+            shot("94_yunque");
+            cmd("give @a mundos_de_axelis:key_fragment_forest 4");
+            cmd("mundos prueba esencia 200");
+        });
+        add("yunque (abrir)", 1500, () -> {
+            keys0 = invCount(key);
+            useBlock(anvil);
+        });
+        add("yunque (elegir, foto)", 300, () -> {
+            check("el Gran Yunque abre la forja (" + screenName() + ")", Minecraft.getInstance().screen instanceof ForjaScreen);
+            shot("95_forja_elegir");
+            forjaStart(1);
+        });
+        add("forja (fundir)", 1800, () -> {
+            Object g = forjaGame();
+            if (g instanceof com.mundosdeaxelis.forja.ForjaGame fg) {
+                fg.press(); // soplar el fuelle
+            }
+        });
+        add("forja (fundir, foto)", 300, () -> {
+            Object g = forjaGame();
+            check("la forja empieza fundiendo los fragmentos", g instanceof com.mundosdeaxelis.forja.ForjaGame fg && fg.phase == com.mundosdeaxelis.forja.ForjaGame.Phase.MELT);
+            shot("96_forja_fundir");
+            if (g instanceof com.mundosdeaxelis.forja.ForjaGame fg) {
+                fg.release();
+                fg.melt = 1.0;
+                fg.phase = com.mundosdeaxelis.forja.ForjaGame.Phase.HAMMER;
+            }
+        });
+        add("forja (martillar)", 1200, () -> {
+            Object g = forjaGame();
+            if (g instanceof com.mundosdeaxelis.forja.ForjaGame fg) {
+                fg.hammerPos = fg.sweet;
+                fg.press();
+            }
+        });
+        add("forja (martillar, foto)", 300, () -> {
+            Object g = forjaGame();
+            check("el primer golpe en el punto dorado es perfecto", g instanceof com.mundosdeaxelis.forja.ForjaGame fg && fg.perfects >= 1);
+            shot("97_forja_martillar");
+            if (g instanceof com.mundosdeaxelis.forja.ForjaGame fg) {
+                fg.phase = com.mundosdeaxelis.forja.ForjaGame.Phase.TEMPER;
+            }
+        });
+        add("forja (templar)", 1500, () -> {
+        });
+        add("forja (templar, foto)", 300, () -> {
+            shot("98_forja_templar");
+            Object g = forjaGame();
+            if (g instanceof com.mundosdeaxelis.forja.ForjaGame fg) {
+                fg.cool = fg.target;
+                fg.press();
+            }
+        });
+        add("forja (resultado)", 1500, () -> {
+            Object g = forjaGame();
+            check("al templar en el rojo cereza la forja termina bien (" + (g instanceof com.mundosdeaxelis.forja.ForjaGame fg ? fg.result : "?") + ")",
+                    g instanceof com.mundosdeaxelis.forja.ForjaGame fg && fg.result != com.mundosdeaxelis.forja.ForjaGame.Result.FAIL);
+            shot("99_forja_resultado");
+        });
+        add("forja (llave)", 1200, () -> {
+            open(null);
+            int k = invCount(key), f = invCount(frag);
+            check("el Gran Yunque da la Llave de la Naturaleza (llaves " + keys0 + " → " + k + ", fragmentos que quedan " + f + ")",
+                    k == keys0 + 1 && f <= 1);
+        });
+        // forja fallida: la llave se quiebra y se pierde 1 fragmento
+        add("forja fallida (abrir)", 1500, () -> {
+            cmd("clear @a mundos_de_axelis:key_fragment_forest");
+            cmd("give @a mundos_de_axelis:key_fragment_forest 4");
+        });
+        add("forja fallida (clic)", 1500, () -> useBlock(anvil));
+        add("forja fallida (empezar)", 5600, () -> forjaStart(1));
+        add("forja fallida (romper)", 1500, () -> {
+            Object g = forjaGame();
+            if (g instanceof com.mundosdeaxelis.forja.ForjaGame fg) {
+                fg.result = com.mundosdeaxelis.forja.ForjaGame.Result.FAIL;
+                fg.phase = com.mundosdeaxelis.forja.ForjaGame.Phase.DONE;
+            }
+            if (Minecraft.getInstance().screen instanceof ForjaScreen fs) {
+                fs.onClose();
+            }
+        });
+        add("forja fallida (comprobar)", 300, () -> {
+            int f = invCount(frag);
+            check("si la forja falla, la llave se quiebra y se pierde 1 fragmento (quedan " + f + " de 4)", f == 3);
+            cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+        });
+    }
+
 
     // ------------------------------------------------------------------ etapa 261: Torre Arcana, Teo y cuatro vecinos
 

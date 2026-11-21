@@ -30,6 +30,10 @@ public final class ClientBridge {
         }
     }
 
+    public static void openForja(com.mundosdeaxelis.network.ForjaOpenPacket p) {
+        Minecraft.getInstance().setScreen(new ForjaScreen(p.pos, p.counts, p.seed));
+    }
+
     public static void openLockpick(com.mundosdeaxelis.network.LockpickOpenPacket p) {
         Minecraft.getInstance().setScreen(new LockpickScreen(p.pos, p.level, p.seed));
     }

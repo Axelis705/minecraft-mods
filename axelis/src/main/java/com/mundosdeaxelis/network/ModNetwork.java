@@ -95,6 +95,10 @@ public final class ModNetwork {
                 NpcOpenPacket::encode, NpcOpenPacket::decode, NpcOpenPacket::handle, TO_CLIENT);
         CHANNEL.registerMessage(id++, NpcActionPacket.class,
                 NpcActionPacket::encode, NpcActionPacket::decode, NpcActionPacket::handle, TO_SERVER);
+        CHANNEL.registerMessage(id++, ForjaOpenPacket.class,
+                ForjaOpenPacket::encode, ForjaOpenPacket::decode, ForjaOpenPacket::handle, TO_CLIENT);
+        CHANNEL.registerMessage(id++, ForjaResultPacket.class,
+                ForjaResultPacket::encode, ForjaResultPacket::decode, ForjaResultPacket::handle, TO_SERVER);
     }
 
     public static void sendTo(ServerPlayer player, Object message) {

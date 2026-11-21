@@ -82,6 +82,7 @@ public final class ModCreativeTabs {
                             output.accept(ModItems.ESSENCE_RUNES.get(t).get());
                         }
                         output.accept(ModItems.HEART_FRAGMENT.get());
+                        output.accept(ModItems.GRAN_YUNQUE.get());
                         for (int t = 1; t <= 5; t++) {
                             for (String id : com.mundosdeaxelis.world.Cronicas.of(t)) {
                                 output.accept(com.mundosdeaxelis.world.Cronicas.scroll(id));

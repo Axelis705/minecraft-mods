@@ -1,6 +1,5 @@
 package com.mundosdeaxelis.table;
 
-import com.mundosdeaxelis.crate.CrateKind;
 import com.mundosdeaxelis.registry.ModItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -32,12 +31,6 @@ public final class TableRecipes {
         return new Ing(it, n);
     }
 
-    /** Llave de una caja con {@link com.mundosdeaxelis.block.VaultLoot#FRAGMENTS_PER_KEY} fragmentos y un poco de Esencia (la quinta parte del precio de la llave). */
-    private static Recipe keyRecipe(CrateKind k) {
-        return new Recipe("key_" + k.id, () -> ModItems.KEYS.get(k).get(), 1, k.keyCost() / 5, 1,
-                List.of(of(() -> ModItems.KEY_FRAGMENTS.get(k).get(), com.mundosdeaxelis.block.VaultLoot.FRAGMENTS_PER_KEY)));
-    }
-
     /** Todas las recetas, en el orden en que salen en pantalla (el número de botón es la posición). */
     public static List<Recipe> all() {
         if (all == null) {
@@ -48,9 +41,9 @@ public final class TableRecipes {
                             List.of(of(ModItems.EMBER_STEEL::get, 2), of(() -> Items.GOLD_INGOT, 3))),
                     new Recipe("smith_ring", ModItems.SMITH_RING::get, 1, 400, 2,
                             List.of(of(ModItems.EMBER_STEEL::get, 8), mat(Mats.LIVE_EMBER, 4), mat(Mats.OLD_COIN, 6))),
-                    // etapa 268: forjar la llave de cada caja con los fragmentos que salen en los cofres de las estructuras
-                    keyRecipe(CrateKind.FOREST), keyRecipe(CrateKind.FORGE), keyRecipe(CrateKind.ICE), keyRecipe(CrateKind.MAGMA),
-                    keyRecipe(CrateKind.MAGIC), keyRecipe(CrateKind.RUBY), keyRecipe(CrateKind.SKY), keyRecipe(CrateKind.ABYSS)
+                    // etapa 270: las llaves ya no se forjan aquí sino en el Gran Yunque de Fundición, que se crea en esta Mesa
+                    new Recipe("gran_yunque", ModItems.GRAN_YUNQUE::get, 1, 100, 1,
+                            List.of(of(() -> Items.ANVIL, 1), of(() -> Items.BLAST_FURNACE, 1), of(() -> Items.IRON_BLOCK, 2)))
             );
         }
         return all;
