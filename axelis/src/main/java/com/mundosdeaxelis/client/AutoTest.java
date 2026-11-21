@@ -463,13 +463,13 @@ public final class AutoTest {
     }
 
     private static void ruda() {
-        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(SX + 8, SY, SZ0 + 26);
+        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(SX, SY, SZ0 + 28); // etapa 262: la celda está al fondo
         add("ruda presa", 2500, () -> {
             cmd("gamemode survival @a");
             cmd("effect give @a minecraft:resistance 600 4 true");
             cmd("kill @e[type=mundos_de_axelis:brote]");
             cmd("kill @e[type=mundos_de_axelis:espinoso]");
-            lookS(4.5, 0, 23.5, 11.5, 1.4, 24.5);
+            lookS(0.5, 0, 24.5, 0.5, 1.4, 30.5);
         });
         add("ruda presa (hablar)", 2600, () -> {
             com.mundosdeaxelis.entity.Habitante h = rudaClient();
@@ -487,10 +487,10 @@ public final class AutoTest {
                     i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
         });
         add("llave en la puerta", 2600, () -> {
-            check("el Raizal del altar suelta la llave de la celda", keyDropped);
+            check("el Raizal que vigila la celda suelta la llave", keyDropped);
             cmd("kill @e[type=item]");
             onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()), door,
-                    net.minecraft.core.Direction.WEST));
+                    net.minecraft.core.Direction.NORTH));
         });
         add("ruda rescatada (foto)", 300, () -> {
             net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(door);
@@ -503,12 +503,12 @@ public final class AutoTest {
             shot("51_ruda_rescatada");
             open(null);
         });
-        add("ruda sale de la celda", 5000, () -> lookS(-2.5, 1, 22.5, 6, 0.8, 26.5));
+        add("ruda sale de la celda", 5000, () -> lookS(-3.5, 1, 21.5, 0.5, 0.8, 27));
         add("ruda sale de la celda (foto)", 300, () -> {
             rudaServer((sp, h) -> log("ruda servidor: en " + h.blockPosition().toShortString() + ", su sitio " + (h.home() == null ? "?" : h.home().toShortString())
                     + ", camino " + (h.getNavigation().getPath() == null ? "ninguno" : h.getNavigation().getPath().getNodeCount() + " pasos, llega=" + h.getNavigation().getPath().canReach())));
             com.mundosdeaxelis.entity.Habitante h = rudaClient();
-            check("Ruda salió de la celda (x " + (h == null ? "?" : String.format("%.1f", h.getX())) + ")", h != null && h.getX() < SX + 8);
+            check("Ruda salió de la celda (z " + (h == null ? "?" : String.format("%.1f", h.getZ())) + ")", h != null && h.getZ() < SZ0 + 28);
             shot("52_ruda_libre");
         });
         add("casa", 2500, () -> {
@@ -617,7 +617,7 @@ public final class AutoTest {
             check("la tienda cobra Esencia (" + essBefore + " -> " + TableClient.essence + ") y da las bayas",
                     TableClient.essence == essBefore - 15 && invCount(com.mundosdeaxelis.registry.ModItems.SANCTUARY_BERRY.get()) >= 3);
             if (npcScreen() != null) {
-                npcScreen().buy(7); // brújula al santuario
+                npcScreen().buy(offer("compass_bosque")); // brújula al Gran Templo del Bosque (donde está la Piedra de Portal)
             }
         });
         add("pistas", 3000, () -> {
@@ -628,7 +628,7 @@ public final class AutoTest {
                     log("brújula -> " + st.getTag().get("LodestonePos") + " " + st.getHoverName().getString());
                 }
             }
-            check("la brújula de Ruda apunta a un santuario", ok);
+            check("la brújula de Ruda apunta al templo del bosque", ok);
             if (npcScreen() != null) {
                 npcScreen().press(NpcScreen.B_BACK);
                 npcScreen().press(NpcScreen.B_HINT);
@@ -928,6 +928,41 @@ public final class AutoTest {
             cmd("gamemode spectator @a");
             // Ruda, Bruno e Hilda se quedan con su casa: con Teo (la torre) serán cuatro
             cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
+        });
+    }
+
+    // ------------------------------------------------------------------ etapa 262: Gran Templo del Bosque (la Piedra de Portal: Naturaleza)
+
+    /** Templo: la entrada (z local 0) en {@code TPZ0}; se construye 12 más arriba que el suelo plano (la cripta baja 11). */
+    private static final int TPX = -400, TPY = -48, TPZ0 = 100;
+
+    private static void templo() {
+        add("templo (ir)", 2500, () -> {
+            clearMobs();
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld run tp @a " + (TPX + 0.5) + " " + (TPY + 30) + " " + (TPZ0 - 40) + " 0 20");
+        });
+        add("templo", 15000, () -> cmd("execute in minecraft:overworld positioned " + TPX + " " + TPY + " " + (TPZ0 - 16)
+                + " rotated 0 0 run mundos estructura templo"));
+        add("templo (fuera)", 2500, () -> standLooking(TPX + 48.5, TPY + 42, TPZ0 - 28, TPX, TPY + 12, TPZ0 + 50));
+        add("templo (fuera, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(TPX, TPY + 21, TPZ0 + 52));
+            check("al final del templo, junto al árbol del mundo, está la Piedra de Portal: Naturaleza (" + ps.getBlock() + ")",
+                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_FOREST.get()));
+            check("hay enemigos del bosque por el camino del templo", clientCount(com.mundosdeaxelis.entity.Brote.class) >= 2
+                    && clientCount(com.mundosdeaxelis.entity.Espinoso.class) >= 2);
+            shot("46b_templo_fuera");
+        });
+        add("templo (entrada)", 2500, () -> standLooking(TPX + 0.5, TPY + 3, TPZ0 - 6, TPX + 0.5, TPY + 12, TPZ0 + 30));
+        add("templo (entrada, foto)", 300, () -> shot("46c_templo_entrada"));
+        add("templo (altar)", 2500, () -> standLooking(TPX + 0.5, TPY + 20, TPZ0 + 46.5, TPX + 0.5, TPY + 21.5, TPZ0 + 52.5));
+        add("templo (altar, foto)", 300, () -> {
+            check("el Raizal guarda el altar del templo", clientCount(com.mundosdeaxelis.entity.Raizal.class) >= 1);
+            shot("46d_templo_altar");
+        });
+        add("templo (deshacer)", 2500, () -> {
+            cmd("execute in minecraft:overworld positioned " + TPX + " " + TPY + " " + (TPZ0 - 16) + " run mundos estructura deshacer");
             cmd("kill @e[type=item]");
         });
     }
@@ -2062,7 +2097,7 @@ public final class AutoTest {
             open(null);
             clearMobs();
             cmd("gamemode spectator @a");
-            cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " rotated 0 0 run mundos estructura bosque");
+            cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " rotated 0 0 run mundos estructura santuario");
         });
         add("santuario de frente", 3000, () -> lookS(0, 6, -12, 0, 3, 22));
         add("santuario de frente (foto)", 300, () -> shot("46_santuario_frente"));
@@ -2070,22 +2105,22 @@ public final class AutoTest {
         add("santuario de lado (foto)", 300, () -> shot("47_santuario_lado"));
         add("santuario dentro", 2500, () -> lookS(0.5, 0, 20.5, 0.5, 1, 30.5));
         add("santuario dentro (foto)", 300, () -> {
-            net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(SX, SY + 1, SZ0 + 30);
+            net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(SX, SY, SZ0 + 28);
             String id = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level.getBlockState(p).getBlock()).getPath();
-            check("la Piedra de Portal: Naturaleza está en el altar del santuario (" + id + ")", id.equals("portal_stone_forest"));
+            check("al fondo del santuario está la celda de Ruda (" + id + ")", id.equals("iron_door"));
             check("enemigos del santuario a la vista (" + clientCount(com.mundosdeaxelis.entity.Brote.class) + " brotes, "
                     + clientCount(com.mundosdeaxelis.entity.Raizal.class) + " raizal)", clientCount(com.mundosdeaxelis.entity.Brote.class) >= 2
                     && clientCount(com.mundosdeaxelis.entity.Raizal.class) >= 1);
             shot("48_santuario_dentro");
         });
-        add("celda", 2500, () -> lookS(4.5, 0, 23.5, 11, 1, 24.5));
+        add("celda", 2500, () -> lookS(0.5, 0, 23.5, 0.5, 1, 30));
         add("celda (foto)", 300, () -> shot("49_santuario_celda"));
         add("no se puede picar", 1500, () -> {
             cmd("gamemode survival @a");
             onServer(sp -> {
                 // una pared del santuario y la Piedra de Portal: romper como un jugador en supervivencia no debe funcionar
                 net.minecraft.core.BlockPos wall = new net.minecraft.core.BlockPos(SX - 8, SY + 1, SZ0 + 27);
-                net.minecraft.core.BlockPos stone = new net.minecraft.core.BlockPos(SX, SY + 1, SZ0 + 30);
+                net.minecraft.core.BlockPos stone = new net.minecraft.core.BlockPos(SX - 2, SY, SZ0 + 28); // los barrotes de la celda
                 boolean a = sp.gameMode.destroyBlock(wall);
                 boolean b = sp.gameMode.destroyBlock(stone);
                 guardBroke = a || b || sp.serverLevel().getBlockState(wall).isAir() || sp.serverLevel().getBlockState(stone).isAir();
@@ -2101,6 +2136,7 @@ public final class AutoTest {
             cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " run mundos estructura deshacer");
             cmd("kill @e[type=item]");
         });
+        templo();
         fortin();
         fragua();
         torre();

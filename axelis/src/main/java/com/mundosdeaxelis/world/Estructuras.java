@@ -31,7 +31,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Estructuras de fondo para grabar videos, hechas solo con comandos (como WorldEdit):
- * {@code /mundos estructura <bosque|templo_bosque|forja|fundicion|hielo|ciudadela|torre|fortaleza|volcan>} la construye delante de quien escribe, mirando hacia él;
+ * {@code /mundos estructura <templo|santuario|forja|fundicion|hielo|ciudadela|torre|fortaleza|volcan>} la construye delante de quien escribe, mirando hacia él;
  * {@code /mundos estructura deshacer [veces]} la quita y deja el terreno como estaba (bloques, entidades de bloque y todo).
  * Los bloques propios del mod (decoraciones) se usan si existen; si no, simplemente se omiten.
  */
@@ -55,10 +55,10 @@ public final class Estructuras {
     }
 
     enum Kind {
-        /** Etapa 256: la estructura del bosque de verdad (pequeña, con la Piedra de Portal y la celda del NPC). */
-        BOSQUE("bosque", "Santuario del Bosque", "santuario"),
-        /** El templo grande de antes (fondo para videos). */
-        TEMPLO("templo_bosque", "Gran templo del bosque", "bosque"),
+        /** Etapa 262: la estructura grande del bosque, con la Piedra de Portal: Naturaleza al final del recorrido. */
+        TEMPLO("templo", "Gran Templo del Bosque", "bosque"),
+        /** La estructura chica del bosque (etapa 256): termina en la celda de Ruda. */
+        SANTUARIO("santuario", "Santuario del Bosque", "santuario"),
         /** Etapa 259: la estructura de la forja de verdad (mediana, con la Piedra de Portal y la celda de Hilda). */
         FORJA("forja", "Fragua Olvidada", "fragua"),
         /** La gran fundición de antes (fondo para videos). */

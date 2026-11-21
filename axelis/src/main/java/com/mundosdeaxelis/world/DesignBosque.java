@@ -55,8 +55,104 @@ final class DesignBosque {
         basement(b);
         shrine(b);
         finishing(b);
+        ground(b);
         Linker.link(b, 0, 0, -3, 10, SB, SBS);
+        surroundings(b);
+        chests(b);
+        mobs(b);
         return b;
+    }
+
+    // ================================================================== etapa 262: la estructura grande del bosque (la del bloque)
+
+    static final String PORTAL = "mundos_de_axelis:portal_stone_forest";
+    /** Rectángulo que ocupa el templo (con árboles y estanques): x X0..X1, z Z0..Z1. */
+    static final int X0 = -44, X1 = 45, Z0 = -3, Z1 = 102;
+
+    /** Suelo de hierba en todo el rectángulo (donde la obra no pone nada) y relleno de tierra hasta el terreno real. */
+    private static void ground(StructBp b) {
+        for (int x = X0; x <= X1; x++) {
+            for (int z = Z0; z <= Z1; z++) {
+                double n = StructKit.fbm(4010, x, z, 6.0);
+                b.setIfAbsent(x, -1, z, n < 0.62 ? "grass_block" : n < 0.8 ? "moss_block" : "podzol");
+                b.setIfAbsent(x, -2, z, "dirt");
+            }
+        }
+        b.foundation(X0, Z0, X1, Z1, "dirt");
+    }
+
+    /** Fuera del rectángulo, el terreno real baja o sube en rampa suave hasta el nivel del templo; un camino lleva a la entrada. */
+    static double edge(int x, int z) {
+        double dx = Math.max(Math.max(0, X0 - x), Math.max(0, x - X1));
+        double dz = Math.max(Math.max(0, Z0 - z), Math.max(0, z - Z1));
+        double out = Math.hypot(dx, dz);
+        if (out > 0) {
+            return out;
+        }
+        return -Math.min(Math.min(x - X0, X1 - x), Math.min(z - Z0, Z1 - z));
+    }
+
+    private static void surroundings(StructBp b) {
+        int rr = 30;
+        for (int x = X0 - rr; x <= X1 + rr; x++) {
+            for (int z = Z0 - rr; z <= Z1 + rr; z++) {
+                double e = edge(x, z);
+                if (e <= 0) {
+                    continue;
+                }
+                double ramp = 9 + 4 * StructKit.vnoise(4011, x * 0.08, z * 0.08);
+                double w = Math.min(1, e / ramp);
+                w = w * w * (3 - 2 * w);
+                boolean road = Math.abs(x) <= 2 && z < Z0;
+                if (w >= 0.999 && !road) {
+                    continue;
+                }
+                String top = road ? (StructKit.hash01(4012, x, z) < 0.35 ? "mossy_cobblestone" : "gravel") : null;
+                b.blend(x, z, road ? Math.min(w, 0.5) : w, top, null);
+            }
+        }
+    }
+
+    /** Al final del recorrido: la Piedra de Portal: Naturaleza sobre el altar del árbol del mundo, y el cofre de provisiones al lado. */
+    private static void chests(StructBp b) {
+        b.set(0, 21, 52, PORTAL);
+        b.setNbt(-5, 20, 51, "mundos_de_axelis:vault_chest[facing=east]", "{Kind:\"ANTE\",Stage:1}");
+    }
+
+    private static boolean free(StructBp b, int x, int y, int z) {
+        String below = b.get(x, y - 1, z);
+        String at = b.get(x, y, z);
+        String up = b.get(x, y + 1, z);
+        boolean plant = at != null && (at.equals("grass") || at.equals("fern") || at.equals("moss_carpet") || at.equals("poppy"));
+        return (at == null || at.equals("air") || plant) && (up == null || up.equals("air"))
+                && below != null && !below.equals("air") && !below.contains("stairs") && !below.startsWith("water");
+    }
+
+    private static void mob(StructBp b, int x, int y, int z, String kind) {
+        if (free(b, x, y, z)) {
+            b.m.remove(StructBp.key(x, y, z));
+            b.mobs.add(new StructBp.Mob(x, y, z, kind));
+        } else {
+            System.err.println("[Templo] sin sitio para " + kind + " en " + x + "," + y + "," + z);
+        }
+    }
+
+    /** Enemigos del bosque por el camino: la plaza, las dos terrazas, dentro (para quien explore) y el Raizal que guarda el altar. */
+    private static void mobs(StructBp b) {
+        mob(b, -3, 0, 6, "brote");
+        mob(b, 3, 0, 9, "brote");
+        mob(b, -11, 10, 27, "espinoso");
+        mob(b, 11, 10, 28, "espinoso");
+        mob(b, -3, 20, 39, "brote");
+        mob(b, 3, 20, 40, "brote");
+        mob(b, 0, 20, 43, "espinoso");
+        // dentro de las terrazas (salas para explorar)
+        mob(b, -6, 0, 40, "brote");
+        mob(b, 6, 0, 52, "espinoso");
+        mob(b, 12, 10, 50, "brote");
+        // el guardián del árbol del mundo, delante del altar
+        mob(b, 0, 20, 49, "raizal");
+        mob(b, -7, 20, 64, "espinoso");
     }
 
     // ================================================================== masas y fachadas

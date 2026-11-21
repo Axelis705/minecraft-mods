@@ -71,7 +71,16 @@ public final class NaturalGen extends SavedData {
     public static final Spec VOLCAN = new Spec("volcan", "volcan", "Volcán", 1024, 35, 1200, 0L, DesignVolcan.CZ, DesignVolcan.RB + 16, 18, 14, 7, 320,
             false, NaturalGen::land, (l, o, r, bp, mobs) -> Volcanes.register(l, o, r, true, mobs));
 
-    public static final Spec BOSQUE = new Spec("bosque", "santuario", "Santuario del Bosque", 640, 55, 200, 0x5A71C0A1L, 18, 30, 9, 4, 4, 220,
+    /**
+     * Etapa 262: el Gran Templo del Bosque (la estructura grande del tier 1, con la Piedra de Portal: Naturaleza). Como es la
+     * primera, la región del punto de aparición siempre tiene uno. Su id sigue siendo "bosque": a él apuntan las pistas y brújulas.
+     */
+    public static final Spec BOSQUE = new Spec("bosque", "bosque", "Gran Templo del Bosque", 896, 50, 260, 0x7E3A1C55L, 50, 64, 14, 13, 5, 300,
+            true, b -> land(b) && (b.is(BiomeTags.IS_FOREST) || b.is(Biomes.PLAINS) || b.is(Biomes.MEADOW)), (l, o, r, bp, mobs) -> {
+    });
+
+    /** El Santuario del Bosque (la estructura chica del tier 1, con Ruda). También siempre en la región del punto de aparición. */
+    public static final Spec SANTUARIO = new Spec("santuario", "santuario", "Santuario del Bosque", 640, 55, 200, 0x5A71C0A1L, 18, 30, 9, 4, 4, 220,
             true, b -> land(b) && (b.is(BiomeTags.IS_FOREST) || b.is(BiomeTags.IS_TAIGA) || b.is(Biomes.PLAINS) || b.is(Biomes.SUNFLOWER_PLAINS)
             || b.is(Biomes.MEADOW)), (l, o, r, bp, mobs) -> {
     });
@@ -96,7 +105,7 @@ public final class NaturalGen extends SavedData {
             (l, o, r, bp, mobs) -> {
             });
 
-    public static final List<Spec> SPECS = List.of(BOSQUE, VOLCAN, HIELO, FORJA, TORRE);
+    public static final List<Spec> SPECS = List.of(BOSQUE, SANTUARIO, VOLCAN, HIELO, FORJA, TORRE);
 
     static Spec byId(String id) {
         for (Spec s : SPECS) {
@@ -113,6 +122,8 @@ public final class NaturalGen extends SavedData {
     private final Map<String, Map<Long, Integer>> regions = new HashMap<>();
     private final Map<String, Boolean> enabled = new HashMap<>();
     private boolean migrated;
+    /** Etapa 262: antes el id "bosque" era el santuario; ahora es el templo. Las regiones vistas pasan al id "santuario". */
+    private boolean migrated262;
 
     public NaturalGen() {
     }
@@ -133,6 +144,18 @@ public final class NaturalGen extends SavedData {
             }
             g.setDirty();
         }
+        if (!g.migrated262) {
+            g.migrated262 = true;
+            Map<Long, Integer> old = g.regions.remove(BOSQUE.id());
+            if (old != null && !g.regions.containsKey(SANTUARIO.id())) {
+                g.regions.put(SANTUARIO.id(), old);
+            }
+            Boolean on = g.enabled.remove(BOSQUE.id());
+            if (on != null) {
+                g.enabled.put(SANTUARIO.id(), on);
+            }
+            g.setDirty();
+        }
         return g;
     }
 
@@ -147,6 +170,7 @@ public final class NaturalGen extends SavedData {
     public static NaturalGen load(CompoundTag tag) {
         NaturalGen g = new NaturalGen();
         g.migrated = tag.getBoolean("Migrated");
+        g.migrated262 = tag.getBoolean("Migrated262");
         CompoundTag on = tag.getCompound("Enabled");
         for (String k : on.getAllKeys()) {
             g.enabled.put(k, on.getBoolean(k));
@@ -169,6 +193,7 @@ public final class NaturalGen extends SavedData {
     @Override
     public CompoundTag save(CompoundTag tag) {
         tag.putBoolean("Migrated", migrated);
+        tag.putBoolean("Migrated262", migrated262);
         CompoundTag on = new CompoundTag();
         enabled.forEach(on::putBoolean);
         tag.put("Enabled", on);
@@ -499,6 +524,9 @@ public final class NaturalGen extends SavedData {
         Holder<Biome> biome = level.getBiome(center.atY(mid));
         if (!s.biome().test(biome)) {
             return "bioma que no le va";
+        }
+        if (StructGuard.near(level, center, r + 48)) {
+            return "hay otra estructura cerca";
         }
         ChunkPos cp = new ChunkPos(center);
         int cr = Math.max(1, r / 16 + 1);

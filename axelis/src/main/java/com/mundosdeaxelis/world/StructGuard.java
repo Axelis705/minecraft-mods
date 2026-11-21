@@ -150,6 +150,22 @@ public final class StructGuard extends SavedData {
         return out;
     }
 
+    /** ¿Hay alguna estructura del mod a menos de {@code dist} bloques (en horizontal) de {@code pos}? (etapa 262: que no se pisen) */
+    public static boolean near(ServerLevel level, BlockPos pos, int dist) {
+        for (Placed p : get(level.getServer()).list) {
+            if (p.dim() != level.dimension()) {
+                continue;
+            }
+            BoundingBox bb = p.box();
+            int dx = Math.max(0, Math.max(bb.minX() - pos.getX(), pos.getX() - bb.maxX()));
+            int dz = Math.max(0, Math.max(bb.minZ() - pos.getZ(), pos.getZ() - bb.maxZ()));
+            if (dx * dx + dz * dz < dist * dist) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** ¿Ese bloque es parte de una estructura protegida? */
     public static boolean protectedAt(ServerLevel level, BlockPos pos) {
         StructGuard g = get(level.getServer());

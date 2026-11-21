@@ -118,24 +118,24 @@ forceload remove 1700 -100 1840 100
 #expect PRUEBA_VOLCAN_NATURAL_PIEDRA_OK
 #expect PRUEBA_VOLCAN_NATURAL_ENEMIGOS_OK
 forceload add 270 -10 330 70
-execute positioned 300 -60 0 rotated 0 0 run mundos estructura bosque
+execute positioned 300 -60 0 rotated 0 0 run mundos estructura santuario
 #wait Santuario del Bosque construida 60
-execute if block 300 -59 46 mundos_de_axelis:portal_stone_forest run say PRUEBA_SANTUARIO_PIEDRA_OK
-execute if block 308 -60 42 minecraft:iron_door run say PRUEBA_SANTUARIO_CELDA_PUERTA_OK
-execute if block 308 -60 38 minecraft:iron_bars run say PRUEBA_SANTUARIO_CELDA_BARROTES_OK
+execute unless block 300 -59 46 mundos_de_axelis:portal_stone_forest run say PRUEBA_SANTUARIO_SIN_PIEDRA_OK
+execute if block 300 -60 44 minecraft:iron_door run say PRUEBA_SANTUARIO_CELDA_PUERTA_OK
+execute if block 298 -60 44 minecraft:iron_bars run say PRUEBA_SANTUARIO_CELDA_BARROTES_OK
 execute if data block 305 -60 46 {Kind:"ANTE",Stage:1} run say PRUEBA_SANTUARIO_COFRE_OK
 execute if entity @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_RAIZAL_OK
 execute if entity @e[type=mundos_de_axelis:brote,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_BROTES_OK
 execute if entity @e[type=mundos_de_axelis:espinoso,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_ESPINOSO_OK
-execute if entity @e[type=mundos_de_axelis:habitante,x=308,y=-61,z=37,dx=5,dy=3,dz=6,nbt={NpcState:0}] run say PRUEBA_RUDA_PRESA_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=298,y=-61,z=44,dx=4,dy=3,dz=4,nbt={NpcState:0}] run say PRUEBA_RUDA_PRESA_OK
 execute if entity @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_RUDA_RAIZAL_LLAVE_OK
 kill @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60]
 execute if entity @e[type=item,x=280,y=-70,z=0,dx=40,dy=20,dz=60,nbt={Item:{id:"mundos_de_axelis:llave_celda"}}] run say PRUEBA_RUDA_LLAVE_CAE_OK
-execute positioned 311 -60 40 run mundos vecinos liberar
-execute if block 308 -60 42 minecraft:iron_door[open=true] run say PRUEBA_RUDA_PUERTA_ABIERTA_OK
+execute positioned 300 -60 46 run mundos vecinos liberar
+execute if block 300 -60 44 minecraft:iron_door[open=true] run say PRUEBA_RUDA_PUERTA_ABIERTA_OK
 execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1}] run say PRUEBA_RUDA_LIBRE_OK
 execute positioned 300 -60 0 run mundos estructura deshacer
-execute unless block 300 -59 46 mundos_de_axelis:portal_stone_forest run say PRUEBA_SANTUARIO_DESHECHO_OK
+execute unless block 300 -60 44 minecraft:iron_door run say PRUEBA_SANTUARIO_DESHECHO_OK
 execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1}] run say PRUEBA_RUDA_SIGUE_TRAS_DESHACER_OK
 forceload add 320 -40 345 -5
 execute positioned 330 -60 -30 rotated 0 0 run mundos vecinos plantar
@@ -283,13 +283,30 @@ execute if entity @e[type=mundos_de_axelis:esbirro,x=4240,y=-80,z=-80,dx=130,dy=
 execute positioned 4300 -60 0 run mundos natural cerca
 forceload remove 4250 -70 4360 80
 forceload add 2500 -60 2600 60
-execute positioned 2550 -60 0 rotated 0 0 run mundos natural generar bosque aqui
-#wait BOSQUE_NATURAL_OK 120
-execute if block 2550 -59 -12 mundos_de_axelis:portal_stone_forest run say PRUEBA_SANTUARIO_NATURAL_OK
+execute positioned 2550 -60 0 rotated 0 0 run mundos natural generar santuario aqui
+#wait SANTUARIO_NATURAL_OK 120
+execute if entity @e[type=mundos_de_axelis:raizal,x=2500,y=-80,z=-60,dx=100,dy=40,dz=120,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_SANTUARIO_NATURAL_OK
 execute if entity @e[type=mundos_de_axelis:habitante,x=2500,y=-80,z=-60,dx=100,dy=40,dz=120,nbt={NpcState:0}] run say PRUEBA_RUDA_NATURAL_PRESA_OK
 execute positioned 2550 -60 0 run mundos natural cerca
 forceload remove 2500 -60 2600 60
-#expect PRUEBA_SANTUARIO_PIEDRA_OK
+forceload add 1026 -17 1175 148
+execute positioned 1100 -48 0 rotated 0 0 run mundos estructura templo
+#wait Gran Templo del Bosque construida 200
+execute if block 1100 -27 68 mundos_de_axelis:portal_stone_forest run say PRUEBA_TEMPLO_PIEDRA_OK
+execute if data block 1095 -28 67 {Kind:"ANTE",Stage:1} run say PRUEBA_TEMPLO_COFRE_OK
+execute if entity @e[type=mundos_de_axelis:raizal,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_RAIZAL_OK
+execute if entity @e[type=mundos_de_axelis:brote,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_BROTES_OK
+execute if entity @e[type=mundos_de_axelis:espinoso,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_ESPINOSOS_OK
+execute unless entity @e[type=mundos_de_axelis:habitante,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_SIN_NPC_OK
+execute positioned 1100 -48 0 run mundos estructura deshacer
+execute unless block 1100 -27 68 mundos_de_axelis:portal_stone_forest run say PRUEBA_TEMPLO_DESHECHO_OK
+forceload remove 1026 -17 1175 148
+forceload add 4930 -70 5070 70
+execute positioned 5000 -48 0 rotated 0 0 run mundos natural generar bosque aqui
+#wait BOSQUE_NATURAL_OK 300
+execute if entity @e[type=mundos_de_axelis:raizal,x=4920,y=-80,z=-80,dx=160,dy=80,dz=160] run say PRUEBA_TEMPLO_NATURAL_OK
+forceload remove 4930 -70 5070 70
+#expect PRUEBA_SANTUARIO_SIN_PIEDRA_OK
 #expect PRUEBA_SANTUARIO_CELDA_PUERTA_OK
 #expect PRUEBA_SANTUARIO_CELDA_BARROTES_OK
 #expect PRUEBA_SANTUARIO_COFRE_OK
@@ -387,3 +404,11 @@ mundos prueba construir 2
 #expect PRUEBA_TEO_CASA_DESARMADA_OK
 #expect PRUEBA_TORRE_ARCANA_NATURAL_TEO_OK
 #expect PRUEBA_TORRE_ARCANA_NATURAL_ESBIRROS_OK
+#expect PRUEBA_TEMPLO_PIEDRA_OK
+#expect PRUEBA_TEMPLO_COFRE_OK
+#expect PRUEBA_TEMPLO_RAIZAL_OK
+#expect PRUEBA_TEMPLO_BROTES_OK
+#expect PRUEBA_TEMPLO_ESPINOSOS_OK
+#expect PRUEBA_TEMPLO_SIN_NPC_OK
+#expect PRUEBA_TEMPLO_DESHECHO_OK
+#expect PRUEBA_TEMPLO_NATURAL_OK

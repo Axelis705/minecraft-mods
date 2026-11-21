@@ -22,6 +22,7 @@ public final class StructDesigns {
             case "fragua" -> DesignFragua.make();
             case "torre_arcana" -> DesignTorreArcana.make();
             case "casa_teo" -> DesignCasaTeo.make();
+            case "casa_ignacio" -> DesignCasaIgnacio.make();
             case "casa_hilda" -> DesignCasaHilda.make();
             default -> DesignTorre.make();
         };

@@ -1,11 +1,11 @@
 package com.mundosdeaxelis.world;
 
 /**
- * Santuario del Bosque (etapa 256): la primera estructura, sencilla. Un claro con un camino de tierra, un muro bajo en ruinas con
- * su arco, un patio con flores y un estanque, y al fondo un santuario de piedra con musgo bajo un roble enorme. Dentro, el altar
- * con la Piedra de Portal: Naturaleza (lleva a la dungeon del Rey Brote), un cofre de provisiones y, a un lado, una celda con
- * barrotes y puerta de hierro (para el NPC que se rescatará). Enemigos: tres Brotes en el patio, un Espinoso y un Raizal que
- * guarda el altar.
+ * Santuario del Bosque (etapa 256; desde la etapa 262 es la estructura «chica» del bosque: la del NPC). Un claro con un camino de
+ * tierra, un muro bajo en ruinas con su arco, un patio con flores y un estanque, y al fondo un santuario de piedra con musgo bajo un
+ * roble enorme. El recorrido termina al fondo del santuario, en la celda de Ruda (barrotes y puerta de hierro, con el musgo del muro
+ * del fondo dentro); el Raizal que la vigila lleva la llave, y al lado hay un cofre de provisiones. La Piedra de Portal: Naturaleza
+ * está en el Gran Templo del Bosque (la estructura grande). Enemigos: tres Brotes en el patio, un Espinoso y el Raizal.
  * <p>Entrada por z = 0; el santuario ocupa x -8..8, z 19..32. El suelo de dentro del muro va en el plano (y = -1); alrededor, el
  * terreno real se aplana con una rampa suave (sin ceniza: el pasto de siempre).
  */
@@ -14,7 +14,6 @@ final class DesignSantuario {
     }
 
     private static final String M = "mundos_de_axelis:";
-    static final String PORTAL = M + "portal_stone_forest";
     private static final String SB = "stone_bricks";
     private static final String MSB = "mossy_stone_bricks";
     private static final String[] WALL = {"mossy_stone_bricks", "stone_bricks", "mossy_stone_bricks", "cracked_stone_bricks", "mossy_cobblestone"};
@@ -24,8 +23,9 @@ final class DesignSantuario {
     /** Muro del patio (x -13..13, z 9..33) y santuario (x -8..8, z 19..32). */
     static final int WX = 13, WZ0 = 9, WZ1 = 33;
     static final int SX = 8, SZ0 = 19, SZ1 = 32;
-    /** Donde estará el NPC de la celda (centro del suelo de la celda). */
-    static final int NPC_X = 11, NPC_Z = 24;
+    /** Celda al fondo del santuario (x -CW..CW, z CZ0..SZ1-1; la reja en z = CZ0) y sitio del NPC. */
+    static final int CW = 4, CZ0 = 28;
+    static final int NPC_X = 0, NPC_Z = 30;
 
     static StructBp make() {
         StructBp b = new StructBp(2561);
@@ -242,26 +242,11 @@ final class DesignSantuario {
         for (int z : new int[]{22, 28}) {
             for (int y = 2; y <= 3; y++) {
                 b.set(-SX, y, z, "air");
-                b.set(SX, y, z, z == 22 ? b.get(SX, y, z) : "air");
+                b.set(SX, y, z, "air");
             }
         }
         roof(b, top + 1);
-        // altar
-        for (int x = -2; x <= 2; x++) {
-            for (int z = 29; z <= 31; z++) {
-                b.set(x, 0, z, z == 29 ? StructBp.stair(MSBS, "+z", false) : MSB);
-            }
-        }
-        b.set(-3, 0, 30, StructBp.stair(MSBS, "+x", false));
-        b.set(3, 0, 30, StructBp.stair(MSBS, "-x", false));
-        b.set(-3, 0, 31, StructBp.stair(MSBS, "+x", false));
-        b.set(3, 0, 31, StructBp.stair(MSBS, "-x", false));
-        b.set(0, 1, 30, PORTAL);
-        b.set(-2, 1, 31, "flowering_azalea");
-        b.set(2, 1, 31, "flowering_azalea");
-        b.set(-1, 1, 31, "moss_carpet");
-        b.set(1, 1, 31, "moss_carpet");
-        // detrás del altar: musgo en la pared (en manchas), luces
+        // musgo en el muro del fondo (queda dentro de la celda), luces
         for (int x = -4; x <= 4; x++) {
             for (int y = 1; y <= 5; y++) {
                 if (StructKit.vnoise(2585, x * 0.6, y * 0.6) + (StructKit.hash01(2584, x, y) - 0.5) * 0.3 > 0.62) {
@@ -270,12 +255,12 @@ final class DesignSantuario {
             }
         }
         b.set(0, 4, SZ1, "chiseled_stone_bricks");
-        b.set(-4, 2, SZ1 - 1, "lantern");
-        b.set(-4, 1, SZ1 - 1, "mossy_stone_brick_wall");
-        b.set(-4, 0, SZ1 - 1, MSB);
-        b.set(4, 2, SZ1 - 1, "lantern");
-        b.set(4, 1, SZ1 - 1, "mossy_stone_brick_wall");
-        b.set(4, 0, SZ1 - 1, MSB);
+        b.set(-6, 2, SZ1 - 1, "lantern");
+        b.set(-6, 1, SZ1 - 1, "mossy_stone_brick_wall");
+        b.set(-6, 0, SZ1 - 1, MSB);
+        b.set(6, 2, SZ1 - 1, "lantern");
+        b.set(6, 1, SZ1 - 1, "mossy_stone_brick_wall");
+        b.set(6, 0, SZ1 - 1, MSB);
         // pasillo de musgo y bancos
         for (int z = SZ0 + 1; z <= 27; z++) {
             if (StructKit.hash01(2586, 0, z) < 0.7) {
@@ -362,39 +347,54 @@ final class DesignSantuario {
 
     /** Celda al este del santuario: barrotes que dan al salón y una puerta de hierro sin manivela (el NPC se rescatará). */
     private static void cell(StructBp b) {
-        int x0 = SX, x1 = SX + 5, z0 = 21, z1 = 27;
-        for (int x = x0 + 1; x <= x1; x++) {
-            for (int z = z0; z <= z1; z++) {
+        // muro de la celda al fondo del salón: reja de barrotes a los lados de la puerta, paredes hasta el techo
+        for (int x = -CW; x <= CW; x++) {
+            for (int y = 0; y <= 5; y++) {
+                boolean bars = y <= 2 && x != 0 && Math.abs(x) <= CW - 1;
+                b.set(x, y, CZ0, bars ? "iron_bars" : WALL[(int) (StructKit.hash01(2592 + y, x, CZ0) * 4)]);
+            }
+        }
+        for (int z = CZ0 + 1; z < SZ1; z++) {
+            for (int y = 0; y <= 5; y++) {
+                b.set(-CW, y, z, WALL[(int) (StructKit.hash01(2593 + y, -CW, z) * 4)]);
+                b.set(CW, y, z, WALL[(int) (StructKit.hash01(2594 + y, CW, z) * 4)]);
+            }
+        }
+        StructKit.ironDoor(b, 0, 0, CZ0, "-z", false);
+        b.set(0, 2, CZ0, "chiseled_stone_bricks");
+        // dentro: suelo de musgo y piedra, cama de paja, cadenas, una vela y telarañas
+        for (int x = -CW + 1; x <= CW - 1; x++) {
+            for (int z = CZ0 + 1; z < SZ1; z++) {
                 b.set(x, -1, z, StructKit.hash01(2590, x, z) < 0.4 ? "mossy_cobblestone" : "cobblestone");
-                b.set(x, -2, z, "cobblestone");
                 for (int y = 0; y <= 4; y++) {
-                    boolean edge = x == x1 || z == z0 || z == z1;
-                    b.set(x, y, z, y == 4 || edge ? (StructKit.hash01(2591 + y, x, z) < 0.5 ? "mossy_cobblestone" : "cobblestone") : "air");
+                    b.set(x, y, z, "air");
                 }
+                b.set(x, 5, z, "mossy_cobblestone");
             }
         }
-        // barrotes en el muro del salón y la puerta
-        for (int z = 22; z <= 24; z++) {
-            for (int y = 0; y <= 2; y++) {
-                b.set(x0, y, z, "iron_bars");
-            }
-        }
-        StructKit.ironDoor(b, x0, 0, 26, "e", false);
-        b.set(x0, 2, 26, "cobblestone");
-        // dentro: cama de paja, cadenas, una vela y telarañas
-        b.set(x1 - 1, 0, z0 + 1, "hay_block[axis=z]");
-        b.set(x1 - 1, 0, z0 + 2, "hay_block[axis=z]");
-        b.set(x1 - 1, 1, z0 + 1, "white_carpet");
-        StructKit.hangLantern(b, NPC_X, 3, NPC_Z, 1, "soul_lantern");
-        b.set(x1 - 1, 3, z1 - 1, "cobweb");
-        b.set(x0 + 1, 3, z0 + 1, "cobweb");
-        b.set(x1 - 1, 0, z1 - 1, "cauldron");
-        // la vela, en la esquina junto a los barrotes (junto a la puerta estorbaba el paso al salir)
-        b.set(x0 + 1, 0, z0 + 1, "candle[candles=1,lit=true]");
-        // tejado de la celda
-        for (int x = x0 + 1; x <= x1; x++) {
-            for (int z = z0; z <= z1; z++) {
-                b.set(x, 5, z, "mossy_cobblestone_slab[type=bottom]");
+        b.set(CW - 1, 0, CZ0 + 1, "hay_block[axis=z]");
+        b.set(CW - 1, 0, CZ0 + 2, "hay_block[axis=z]");
+        b.set(CW - 1, 1, CZ0 + 1, "white_carpet");
+        StructKit.hangLantern(b, NPC_X, 4, NPC_Z, 1, "soul_lantern");
+        b.set(CW - 1, 4, SZ1 - 1, "cobweb");
+        b.set(-CW + 1, 4, CZ0 + 1, "cobweb");
+        b.set(-CW + 1, 0, SZ1 - 1, "cauldron");
+        b.set(-CW + 1, 0, CZ0 + 1, "candle[candles=1,lit=true]");
+        b.set(CW - 1, 0, SZ1 - 1, "potted_fern");
+        // encima de la celda, hasta el tejado, macizo de tablones (que no quede un desván al que no se llega)
+        for (int x = -CW; x <= CW; x++) {
+            for (int z = CZ0; z < SZ1; z++) {
+                int roofY = -1;
+                for (int y = 6; y <= 14; y++) {
+                    String at = b.get(x, y, z);
+                    if (at != null && !at.equals("air")) {
+                        roofY = y;
+                        break;
+                    }
+                }
+                for (int y = 6; y < roofY; y++) {
+                    b.set(x, y, z, "spruce_planks");
+                }
             }
         }
     }
@@ -511,7 +511,7 @@ final class DesignSantuario {
         mob(b, 5, 0, 15, "brote");
         mob(b, -2, 0, 17, "brote");
         mob(b, -6, 0, 28, "espinoso");
-        // el Raizal que guarda el altar lleva la llave de la celda
+        // el Raizal que vigila la celda lleva la llave
         mob(b, 0, 0, 25, "raizal", "llave_celda");
         // Ruda, la herbolaria, presa en la celda
         mob(b, NPC_X, 0, NPC_Z, "habitante", "ruda");

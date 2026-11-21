@@ -11,8 +11,9 @@ package com.mundosdeaxelis.world;
 public class ConectividadTest {
     public static void main(String[] args) {
         String[] kinds = {"bosque", "forja", "hielo", "torre", "volcan", "santuario", "fortin", "fragua", "torre_arcana"};
-        int[] maxRooms = {3, 16, 2, 0, 1, 1, 1, 1, 1};
+        int[] maxRooms = {3, 16, 2, 0, 2, 1, 1, 1, 1};
         int[] maxTraps = {2, 3, 2, 0, 0, 0, 0, 0, 0};
+        // el volcán: 2 «salas» toleradas (lo alto del corazón colgado y, desde la etapa 262, la celda de Ignacio)
         // dónde empieza el recorrido (z): el santuario y el fortín entran por el camino, que va sobre el terreno real hasta el arco
         int[] startZ = {-3, -3, -3, -3, -3, 7, 7, 8, 6};
         int fails = 0;
