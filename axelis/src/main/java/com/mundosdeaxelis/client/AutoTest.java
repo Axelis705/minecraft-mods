@@ -697,7 +697,7 @@ public final class AutoTest {
             shot("65_bruno_tienda");
             essBefore = TableClient.essence;
             if (npcScreen() != null) {
-                npcScreen().buy(10); // sobre de plata: necesita 2 vecinos con casa
+                npcScreen().buy(offer("pack_silver")); // sobre de plata: necesita 2 vecinos con casa
             }
         });
         add("tienda con dos vecinos (comprobar)", 1500, () -> {
@@ -706,8 +706,154 @@ public final class AutoTest {
                             && invCount(com.mundosdeaxelis.cartas.CartasItems.PACKS.get("plata").get()) >= 1);
             open(null);
             cmd("gamemode spectator @a");
-            cmd("mundos vecinos reiniciar");
+            // Ruda y Bruno se quedan con su casa: con Hilda (la fragua) serán tres vecinos
             cmd("execute in minecraft:overworld positioned " + FX + " " + SY + " " + (FZ - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
+        });
+    }
+
+    /** Posición de una oferta de la tienda de los habitantes (por su nombre). */
+    private static int offer(String id) {
+        for (int i = 0; i < com.mundosdeaxelis.npc.NpcShop.OFFERS.size(); i++) {
+            if (com.mundosdeaxelis.npc.NpcShop.OFFERS.get(i).id().equals(id)) {
+                return i;
+            }
+        }
+        log("FALLO no existe la oferta " + id);
+        fails++;
+        return 0;
+    }
+
+    // ------------------------------------------------------------------ etapa 259: Fragua Olvidada, Hilda y tres vecinos
+
+    /** Fragua: la entrada (z local 0) en {@code GZ}; casa de Hilda en {@code KX, KZ}. */
+    private static final int GX = 460, GZ = 20;
+    private static final int KX = 170, KZ = -10;
+    private static volatile boolean forgeKey;
+
+    private static void fragua() {
+        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(GX + 10, SY, GZ + 29);
+        add("fragua (ir)", 2500, () -> {
+            clearMobs();
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld run tp @a " + (GX + 0.5) + " " + (SY + 10) + " " + (GZ - 20) + " 0 20");
+        });
+        add("fragua", 9000, () -> cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " rotated 0 0 run mundos estructura forja"));
+        add("fragua (fuera)", 2500, () -> standLooking(GX + 7.5, SY + 8, GZ - 20, GX, SY + 4, GZ + 26));
+        add("fragua (fuera, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(GX, SY + 1, GZ + 35));
+            check("en el altar de la fragua está la Piedra de Portal: Forja (" + ps.getBlock() + ")",
+                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_FORGE.get()));
+            shot("66_fragua_fuera");
+        });
+        add("fragua (patio)", 2500, () -> standLooking(GX + 0.5, SY, GZ + 9, GX + 0.5, SY + 3, GZ + 30));
+        add("fragua (patio, foto)", 300, () -> {
+            check("hay escorias en la fragua", clientCount(com.mundosdeaxelis.entity.Escoria.class) >= 2);
+            shot("67_fragua_patio");
+        });
+        add("fragua (nave)", 2500, () -> standLooking(GX + 0.5, SY, GZ + 23.5, GX + 0.5, SY + 1.2, GZ + 35));
+        add("fragua (nave, foto)", 300, () -> {
+            check("hay un fundidor guardando el altar", clientCount(com.mundosdeaxelis.entity.Fundidor.class) >= 1);
+            check("hay un chispero en el balcón", clientCount(com.mundosdeaxelis.entity.Chispero.class) >= 1);
+            shot("68_fragua_nave");
+        });
+        add("hilda presa", 2500, () -> {
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            cmd("effect give @a minecraft:fire_resistance 600 0 true");
+            cmd("kill @e[type=mundos_de_axelis:escoria]");
+            cmd("kill @e[type=mundos_de_axelis:chispero]");
+            standLooking(GX + 7.5, SY, GZ + 27.5, GX + 13.5, SY + 1.4, GZ + 27.5);
+        });
+        add("hilda presa (hablar)", 2600, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("hilda");
+            check("Hilda está presa en la celda de la fragua", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
+            npcServer("hilda", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("hilda presa (foto)", 300, () -> {
+            check("se abre la ventana de Hilda", npcScreen() != null);
+            shot("69_hilda_presa");
+            open(null);
+        });
+        add("llave del fundidor", 1200, () -> {
+            cmd("kill @e[type=mundos_de_axelis:fundidor,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
+            onServer(sp -> forgeKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(48),
+                    i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
+        });
+        add("llave en la celda de la fragua", 2600, () -> {
+            check("el fundidor del altar suelta la llave", forgeKey);
+            cmd("kill @e[type=item]");
+            onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()), door,
+                    net.minecraft.core.Direction.WEST));
+        });
+        add("hilda rescatada (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("hilda");
+            check("Hilda queda libre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE);
+            check("Hilda da su Semilla de casa", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
+            shot("70_hilda_rescatada");
+            open(null);
+        });
+        add("hilda sale", 5000, () -> {
+        });
+        add("hilda sale (comprobar)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("hilda");
+            check("Hilda salió de la celda", h != null && h.getX() < GX + 10);
+            cmd("kill @e[type=mundos_de_axelis:fundidor]");
+            cmd("execute in minecraft:overworld run tp @a " + (KX + 0.5) + " " + SY + " " + (KZ - 2.5) + " 0 45");
+        });
+        add("casa de hilda (plantar)", 2500, () -> onServer(sp -> {
+            sp.teleportTo(sp.serverLevel(), KX + 0.5, SY, KZ - 2.5, 0.0F, 45.0F);
+            useOn(sp, com.mundosdeaxelis.npc.NpcService.kit("hilda"), new net.minecraft.core.BlockPos(KX, SY - 1, KZ), net.minecraft.core.Direction.UP);
+        }));
+        add("casa de hilda (comprobar)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(KX, SY, KZ + 1));
+            check("crece la herrería de Hilda", ds.is(net.minecraft.world.level.block.Blocks.DARK_OAK_DOOR)
+                    && Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(KX + 2, SY, KZ + 5)).is(net.minecraft.world.level.block.Blocks.SMITHING_TABLE));
+            com.mundosdeaxelis.entity.Habitante h = npcClient("hilda");
+            check("Hilda vive en su herrería", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+            cmd("gamemode spectator @a");
+        });
+        add("casa de hilda (fuera)", 2500, () -> standLooking(KX + 9.5, SY + 3, KZ - 6.5, KX + 1, SY + 2.5, KZ + 4));
+        add("casa de hilda (fuera, foto)", 300, () -> shot("71_casa_hilda"));
+        add("casa de hilda (dentro)", 2500, () -> standLooking(KX + 0.5, SY, KZ + 2.3, KX + 0.5, SY + 1.2, KZ + 7));
+        add("casa de hilda (dentro, foto)", 300, () -> shot("72_casa_hilda_dentro"));
+        add("hilda vecina", 2600, () -> {
+            cmd("gamemode survival @a");
+            standLooking(KX + 0.5, SY, KZ + 2.3, KX + 0.5, SY + 1.4, KZ + 4.5);
+            onServer(sp -> {
+                com.mundosdeaxelis.table.Essence.add(sp, 600);
+                com.mundosdeaxelis.table.Essence.sync(sp);
+            });
+            npcServer("hilda", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("hilda vecina (tienda)", 800, () -> {
+            check("ventana de Hilda vecina", npcScreen() != null && npcScreen().state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+            if (npcScreen() != null) {
+                npcScreen().press(NpcScreen.B_SHOP);
+            }
+        });
+        add("tienda (hasta abajo)", 600, () -> {
+            if (npcScreen() != null) {
+                for (int i = 0; i < 12; i++) {
+                    npcScreen().mouseScrolled(0, 0, -1);
+                }
+            }
+        });
+        add("tienda con tres vecinos (foto)", 800, () -> {
+            shot("73_tienda_tres_vecinos");
+            essBefore = TableClient.essence;
+            if (npcScreen() != null) {
+                npcScreen().buy(offer("pack_gold")); // sobre de oro: necesita 3 vecinos con casa
+            }
+        });
+        add("tienda con tres vecinos (comprobar)", 1500, () -> {
+            check("con tres vecinos se puede comprar el sobre de oro (" + essBefore + " -> " + TableClient.essence + ")",
+                    TableClient.essence == essBefore - 300
+                            && invCount(com.mundosdeaxelis.cartas.CartasItems.PACKS.get("oro").get()) >= 1);
+            open(null);
+            cmd("gamemode spectator @a");
+            cmd("mundos vecinos reiniciar");
+            cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " run mundos estructura deshacer");
             cmd("kill @e[type=item]");
         });
     }
@@ -1726,6 +1872,7 @@ public final class AutoTest {
             cmd("kill @e[type=item]");
         });
         fortin();
+        fragua();
         // 7. retratos para las cartas: tres "estudios" cerrados (volcán, forja y torre) y cada criatura quieta, de frente, sin interfaz
         add("estudios", 3000, () -> {
             clearMobs();

@@ -27,11 +27,15 @@ public final class NpcKinds {
     /** Bruno, el cartógrafo: preso en la celda del Fortín de Escarcha (etapa 258). */
     public static final Kind BRUNO = new Kind("bruno", 0x7FC8F0, "casa_bruno", 4, 3, 8, false);
 
+    /** Hilda, la herrera: presa en la celda de la Fragua Olvidada (etapa 259). */
+    public static final Kind HILDA = new Kind("hilda", 0xF0883A, "casa_hilda", 4, 3, 8, true);
+
     public static final Map<String, Kind> ALL = new LinkedHashMap<>();
 
     static {
         ALL.put(RUDA.id(), RUDA);
         ALL.put(BRUNO.id(), BRUNO);
+        ALL.put(HILDA.id(), HILDA);
     }
 
     public static Kind get(String id) {

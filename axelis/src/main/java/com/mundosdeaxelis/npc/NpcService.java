@@ -415,6 +415,14 @@ public final class NpcService {
             if (!cur.is(want.getBlock())) {
                 continue;
             }
+            // lo que tenga cosas tuyas dentro (cofres, barriles, hornos, estanterías, un atril con libro) se queda
+            net.minecraft.world.level.block.entity.BlockEntity be = l.getBlockEntity(w);
+            if (be instanceof net.minecraft.world.Container c && !c.isEmpty()) {
+                continue;
+            }
+            if (cur.hasProperty(net.minecraft.world.level.block.LecternBlock.HAS_BOOK) && cur.getValue(net.minecraft.world.level.block.LecternBlock.HAS_BOOK)) {
+                continue;
+            }
             BlockState to = y < 0 ? Blocks.GRASS_BLOCK.defaultBlockState() : Blocks.AIR.defaultBlockState();
             if (y < 0 && cur.is(Blocks.GRASS_BLOCK)) {
                 continue;
@@ -495,7 +503,7 @@ public final class NpcService {
 
     // ================================================================== pistas
 
-    private static final String[] HINT_KINDS = {"volcan", "bosque", "hielo"};
+    private static final String[] HINT_KINDS = {"volcan", "bosque", "hielo", "forja"};
 
     static void hint(ServerPlayer sp, Habitante h, int n) {
         if (h.state() != Habitante.VECINO) {

@@ -82,7 +82,14 @@ public final class NaturalGen extends SavedData {
             (l, o, r, bp, mobs) -> {
             });
 
-    public static final List<Spec> SPECS = List.of(BOSQUE, VOLCAN, HIELO);
+    /** Etapa 259: la Fragua Olvidada, en las tierras baldías (badlands), colinas azotadas por el viento y mesetas de sabana. */
+    public static final Spec FORJA = new Spec("forja", "fragua", "Fragua Olvidada", 704, 50, 250, 0xF06A2B19L, 23, 30, 10, 4, 4, 220,
+            false, b -> land(b) && (b.is(BiomeTags.IS_BADLANDS) || b.is(Biomes.WINDSWEPT_HILLS) || b.is(Biomes.WINDSWEPT_GRAVELLY_HILLS)
+            || b.is(Biomes.WINDSWEPT_FOREST) || b.is(Biomes.WINDSWEPT_SAVANNA) || b.is(Biomes.SAVANNA_PLATEAU)),
+            (l, o, r, bp, mobs) -> {
+            });
+
+    public static final List<Spec> SPECS = List.of(BOSQUE, VOLCAN, HIELO, FORJA);
 
     static Spec byId(String id) {
         for (Spec s : SPECS) {
