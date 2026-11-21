@@ -478,6 +478,7 @@ kill @e[type=mundos_de_axelis:mimico]
 kill @e[type=minecraft:item]
 execute positioned 0 -60 -60 run mundos prueba arrojadizos
 execute positioned 30 -60 -90 run mundos prueba elites
+execute positioned -30 -60 -90 run mundos prueba saqueador
 kill @e[type=minecraft:pig]
 kill @e[type=item]
 loot spawn 0 -58 -20 loot mundos_de_axelis:chests/barril_bosque
@@ -696,3 +697,4 @@ mundos prueba construir 2
 #expect PRUEBA_MIMICO_OK
 #expect PRUEBA_ARROJADIZOS_OK
 #expect PRUEBA_ELITES_OK
+#expect PRUEBA_SAQUEADOR_OK

@@ -67,6 +67,7 @@ public final class ClientModEvents {
         event.registerLayerDefinition(GuardianModel.LAYER, GuardianModel::createLayer);
         event.registerLayerDefinition(EscoriaModel.LAYER, EscoriaModel::createLayer);
         event.registerLayerDefinition(MimicoModel.LAYER, MimicoModel::createLayer);
+        event.registerLayerDefinition(SaqueadorModel.LAYER, SaqueadorModel::createLayer);
         event.registerLayerDefinition(ChisperoModel.LAYER, ChisperoModel::createLayer);
         event.registerLayerDefinition(AscuaModel.LAYER, AscuaModel::createLayer);
         event.registerLayerDefinition(FundidorModel.LAYER, FundidorModel::createLayer);
@@ -92,6 +93,7 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.GUARDIAN_MUSGO.get(), GuardianRenderer::new);
         event.registerEntityRenderer(ModEntities.ESCORIA.get(), EscoriaRenderer::new);
         event.registerEntityRenderer(ModEntities.MIMICO.get(), MimicoRenderer::new);
+        event.registerEntityRenderer(ModEntities.SAQUEADOR.get(), SaqueadorRenderer::new);
         event.registerEntityRenderer(ModEntities.ARROJADIZO.get(), ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 1.0F, false));
         event.registerEntityRenderer(ModEntities.CHISPERO.get(), ChisperoRenderer::new);
         event.registerEntityRenderer(ModEntities.ASCUA.get(), AscuaRenderer::new);

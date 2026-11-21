@@ -227,4 +227,11 @@ public final class ModEntities {
                     .clientTrackingRange(6)
                     .updateInterval(10)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "arrojadizo").toString()));
+
+    /** Etapa 276: el Saqueador del Tesoro (huye con un saco lleno de botín). */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Saqueador>> SAQUEADOR = ENTITIES.register("saqueador",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.Saqueador>of(com.mundosdeaxelis.entity.Saqueador::new, MobCategory.MONSTER)
+                    .sized(0.6F, 0.95F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "saqueador").toString()));
 }

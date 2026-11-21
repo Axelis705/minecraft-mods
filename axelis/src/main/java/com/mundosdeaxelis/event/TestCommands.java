@@ -527,6 +527,53 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    /** Etapa 276: el Saqueador del Tesoro con un jugador falso: al golpearlo huye con su cuenta atrás, escapa, y muerto suelta su saco. */
+    private static int saqueador(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        com.mundosdeaxelis.table.Essence.forgetSeals(fp);
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        String fail = null;
+        com.mundosdeaxelis.entity.Saqueador s = com.mundosdeaxelis.registry.ModEntities.SAQUEADOR.get().create(sl);
+        s.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5, 0, 0);
+        s.setTier(2);
+        sl.addFreshEntity(s);
+        if (Math.abs(s.getMaxHealth() - com.mundosdeaxelis.world.DungeonBalance.hp(2, 8.0F)) > 0.01F || s.spotted()) {
+            fail = "vida o estado inicial";
+        }
+        s.hurt(sl.damageSources().playerAttack(fp), 1.0F);
+        if (!s.spotted() || s.escapeIn() != com.mundosdeaxelis.entity.Saqueador.ESCAPE_TICKS) {
+            fail = "al golpearlo no huye con su cuenta atrás";
+        }
+        s.escape();
+        if (!s.isRemoved()) {
+            fail = "no escapa";
+        }
+        net.minecraft.util.RandomSource r = net.minecraft.util.RandomSource.create(276L);
+        for (int t = 1; t <= 5; t++) {
+            int stacks = com.mundosdeaxelis.entity.Saqueador.loot(t, r).size();
+            if (stacks < 6) {
+                fail = "saco de tier " + t + " con " + stacks + " cosas";
+            }
+        }
+        sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(8)).forEach(net.minecraft.world.entity.Entity::discard);
+        com.mundosdeaxelis.entity.Saqueador k = com.mundosdeaxelis.registry.ModEntities.SAQUEADOR.get().create(sl);
+        k.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5, 0, 0);
+        k.setTier(1);
+        sl.addFreshEntity(k);
+        k.hurt(sl.damageSources().playerAttack(fp), 100000.0F);
+        int n = sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(8)).size();
+        if (n < 6) {
+            fail = "muerto suelta " + n + " cosas";
+        }
+        sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(8)).forEach(net.minecraft.world.entity.Entity::discard);
+        k.discard();
+        String msg = (fail == null ? "PRUEBA_SAQUEADOR_OK" : "PRUEBA_SAQUEADOR_FALLO " + fail) + " soltados=" + n;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fail == null ? 1 : 0;
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal("prueba")
                 .then(Commands.literal("equipo")
@@ -539,6 +586,7 @@ public final class TestCommands {
                 .then(Commands.literal("mimico").executes(ctx -> mimico(ctx.getSource())))
                 .then(Commands.literal("arrojadizos").executes(ctx -> arrojadizos(ctx.getSource())))
                 .then(Commands.literal("elites").executes(ctx -> elites(ctx.getSource())))
+                .then(Commands.literal("saqueador").executes(ctx -> saqueador(ctx.getSource())))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     // los sellos que lleva encima se volverían a apuntar en el Archivo: se le quitan

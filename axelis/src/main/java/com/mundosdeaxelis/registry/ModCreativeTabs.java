@@ -105,6 +105,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.GUARDIAN_MUSGO_SPAWN_EGG.get());
                         output.accept(ModItems.ESCORIA_SPAWN_EGG.get());
                         output.accept(ModItems.MIMICO_SPAWN_EGG.get());
+                        output.accept(ModItems.SAQUEADOR_SPAWN_EGG.get());
                         output.accept(ModItems.CHISPERO_SPAWN_EGG.get());
                         output.accept(ModItems.ASCUA_SPAWN_EGG.get());
                         output.accept(ModItems.FUNDIDOR_SPAWN_EGG.get());

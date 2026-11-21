@@ -1456,6 +1456,43 @@ public final class AutoTest {
                     && el.getMaxHealth() >= el.getAttributeBaseValue(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH) * 2.4D);
             shot("110_elite_ardiente");
             cmd("kill @e[type=mundos_de_axelis:escoria]");
+        });
+        saqueador();
+    }
+
+    /** Etapa 276: el Saqueador del Tesoro te ve y huye; atrapado, su saco revienta en botín. */
+    private static void saqueador() {
+        double sx = LTX + 0.5, sz = LTZ + 0.5;
+        add("saqueador (poner)", 1500, () -> {
+            cmd("kill @e[type=mundos_de_axelis:saqueador]");
+            cmd("kill @e[type=minecraft:item]");
+            cmd("execute in minecraft:overworld run summon mundos_de_axelis:saqueador " + sx + " " + LTY + " " + sz + " {Tier:1}");
+            standLooking(LTX + 0.5, LTY, LTZ - 4.5, sx, LTY + 0.6, sz);
+        });
+        add("saqueador (huye, foto)", 600, () -> {
+            com.mundosdeaxelis.entity.Saqueador sq = null;
+            for (net.minecraft.world.entity.Entity en : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (en instanceof com.mundosdeaxelis.entity.Saqueador s2) {
+                    sq = s2;
+                }
+            }
+            check("el Saqueador del Tesoro te ve y huye", sq != null && sq.spotted());
+            shot("111_saqueador");
+        });
+        add("saqueador (atraparlo)", 1500, () -> {
+            cmd("kill @e[type=minecraft:item]");
+            cmd("execute as @a run damage @e[type=mundos_de_axelis:saqueador,limit=1,sort=nearest] 100000 minecraft:player_attack by @s");
+        });
+        add("saqueador (botin, foto)", 300, () -> {
+            int items = 0;
+            for (net.minecraft.world.entity.Entity en : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (en instanceof net.minecraft.world.entity.item.ItemEntity && en.distanceToSqr(sx, LTY, sz) < 400) {
+                    items++;
+                }
+            }
+            check("atrapado, el Saqueador suelta su saco de botín (" + items + " objetos)", items >= 6);
+            shot("112_saqueador_botin");
+            cmd("kill @e[type=minecraft:item]");
             cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
         });
     }

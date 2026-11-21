@@ -31,6 +31,7 @@ public final class ModEvents {
         event.put(ModEntities.REY_BROTE.get(), com.mundosdeaxelis.entity.ReyBrote.createAttributes().build());
         event.put(ModEntities.ESCORIA.get(), com.mundosdeaxelis.entity.Escoria.createAttributes().build());
         event.put(ModEntities.MIMICO.get(), com.mundosdeaxelis.entity.Mimico.createAttributes().build());
+        event.put(ModEntities.SAQUEADOR.get(), com.mundosdeaxelis.entity.Saqueador.createAttributes().build());
         event.put(ModEntities.CHISPERO.get(), com.mundosdeaxelis.entity.Chispero.createAttributes().build());
         event.put(ModEntities.ASCUA.get(), com.mundosdeaxelis.entity.Ascua.createAttributes().build());
         event.put(ModEntities.FUNDIDOR.get(), com.mundosdeaxelis.entity.Fundidor.createAttributes().build());

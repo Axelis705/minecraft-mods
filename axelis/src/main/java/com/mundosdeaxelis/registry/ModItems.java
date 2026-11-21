@@ -106,6 +106,8 @@ public final class ModItems {
             () -> new ForgeSpawnEggItem(ModEntities.ESCORIA, 0x3A2F2C, 0xFF8A1E, new Item.Properties()));
     public static final RegistryObject<Item> MIMICO_SPAWN_EGG = ITEMS.register("mimico_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.MIMICO, 0x6B4A2B, 0xF2C14E, new Item.Properties()));
+    public static final RegistryObject<Item> SAQUEADOR_SPAWN_EGG = ITEMS.register("saqueador_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.SAQUEADOR, 0x78965C, 0xF6C840, new Item.Properties()));
     public static final RegistryObject<Item> CHISPERO_SPAWN_EGG = ITEMS.register("chispero_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.CHISPERO, 0x4A4F58, 0xFFB030, new Item.Properties()));
     public static final RegistryObject<Item> ASCUA_SPAWN_EGG = ITEMS.register("ascua_spawn_egg",
