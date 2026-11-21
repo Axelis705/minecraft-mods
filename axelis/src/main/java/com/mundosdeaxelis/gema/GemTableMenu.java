@@ -63,11 +63,11 @@ public class GemTableMenu extends AbstractContainerMenu {
         });
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 9; c++) {
-                addSlot(new Slot(inv, c + r * 9 + 9, 26 + c * 18, 110 + r * 18));
+                addSlot(new Slot(inv, c + r * 9 + 9, 26 + c * 18, 118 + r * 18));
             }
         }
         for (int c = 0; c < 9; c++) {
-            addSlot(new Slot(inv, c, 26 + c * 18, 168));
+            addSlot(new Slot(inv, c, 26 + c * 18, 176));
         }
     }
 

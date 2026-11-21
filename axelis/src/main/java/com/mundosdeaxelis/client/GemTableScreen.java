@@ -17,7 +17,7 @@ import java.util.List;
 
 /** Pantalla de la Mesa de Gemas (etapa 271): a la izquierda se infunde una gema vacía; a la derecha se engarza (o se quita) en un arma. */
 public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
-    private static final int W = 214, H = 192;
+    private static final int W = 214, H = 200;
     private static final int ACCENT = 0xC060FF, GOLD = 0xFFE9A8;
     private int hoverBtn = -1;
 
@@ -26,7 +26,7 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
         imageWidth = W;
         imageHeight = H;
         titleLabelY = 6;
-        inventoryLabelY = 99;
+        inventoryLabelY = 107;
     }
 
     @Override
@@ -101,9 +101,9 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
     protected void renderBg(GuiGraphics g, float pt, int mx, int my) {
         int x = leftPos, y = topPos;
         PanelUi.frame(g, x, y, W, H, ACCENT);
-        PanelUi.divider(g, x + 6, y + 94, W - 12, ACCENT);
+        PanelUi.divider(g, x + 6, y + 103, W - 12, ACCENT);
         // separador vertical entre las dos zonas
-        g.fillGradient(x + 106, y + 20, x + 107, y + 90, 0x00C060FF, 0xAAC060FF);
+        g.fillGradient(x + 106, y + 20, x + 107, y + 99, 0x00C060FF, 0xAAC060FF);
         Gemas.Elemento el = slot(GemTableMenu.S_ESENCIA).getItem() instanceof GemaItems.Esencia es ? es.el : null;
         int infAccent = el != null ? el.color : ACCENT;
         PanelUi.slot(g, x + 26, y + 36, infAccent, false);
@@ -119,11 +119,11 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
         }
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 9; c++) {
-                PanelUi.plain(g, x + 26 + c * 18, y + 110 + r * 18);
+                PanelUi.plain(g, x + 26 + c * 18, y + 118 + r * 18);
             }
         }
         for (int c = 0; c < 9; c++) {
-            PanelUi.plain(g, x + 26 + c * 18, y + 168);
+            PanelUi.plain(g, x + 26 + c * 18, y + 176);
         }
     }
 
@@ -175,7 +175,7 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
 
     private static void lines(GuiGraphics g, Font f, Component c, int x, int y, int w) {
         List<FormattedCharSequence> ls = f.split(c, (int) (w / 0.85F));
-        for (int i = 0; i < Math.min(2, ls.size()); i++) {
+        for (int i = 0; i < Math.min(3, ls.size()); i++) {
             g.pose().pushPose();
             g.pose().translate(x, y + i * 8, 0);
             g.pose().scale(0.85F, 0.85F, 1.0F);

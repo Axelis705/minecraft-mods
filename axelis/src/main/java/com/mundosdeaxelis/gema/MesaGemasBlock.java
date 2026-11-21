@@ -32,6 +32,7 @@ public class MesaGemasBlock extends Block {
             return InteractionResult.SUCCESS;
         }
         if (player instanceof ServerPlayer sp) {
+            com.mundosdeaxelis.table.Essence.sync(sp); // la pantalla muestra la Esencia al día
             net.minecraftforge.network.NetworkHooks.openScreen(sp, new SimpleMenuProvider((id, inv, p) ->
                     new GemTableMenu(id, inv, ContainerLevelAccess.create(level, pos)), Component.translatable("block.mundos_de_axelis.mesa_gemas")));
         }

@@ -1112,6 +1112,7 @@ public final class TestCommands {
             return 0;
         }
         Essence.add(sp, n);
+        Essence.sync(sp);
         src.sendSuccess(() -> Component.literal("Te di " + n + " de Esencia."), false);
         return 1;
     }

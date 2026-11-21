@@ -1417,13 +1417,14 @@ public final class AutoTest {
             menuClick(com.mundosdeaxelis.gema.GemTableMenu.S_GEMA, net.minecraft.world.inventory.ClickType.PICKUP);
         });
         add("gemas (engarzar)", 1000, () -> menuButton(com.mundosdeaxelis.gema.GemTableMenu.B_ENGARZAR));
-        add("gemas (engarzada, foto)", 300, () -> {
+        add("gemas (engarzada, foto)", 1200, () -> {
             net.minecraft.world.item.ItemStack w = menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_ARMA);
             check("engarzar pone la Gema de Fuego en la espada y gasta la gema",
                     com.mundosdeaxelis.gema.Gemas.gemaDe(w) == com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO
                             && menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_GEMA).isEmpty());
             shot("103_gemas_engarzada");
-            open(null);
+            // cerrar como con Esc (avisa al servidor, que devuelve lo que quedó en la mesa)
+            Minecraft.getInstance().player.closeContainer();
         });
         add("gemas (devuelve)", 1200, () -> {
             net.minecraft.world.item.ItemStack sword = net.minecraft.world.item.ItemStack.EMPTY;
