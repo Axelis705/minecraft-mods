@@ -2545,5 +2545,10 @@
   "elite.mundos_de_axelis.blindado": "Unbreakable",
   "elite.mundos_de_axelis.veloz": "Swift",
   "elite.mundos_de_axelis.explosivo": "Volatile",
-  "message.mundos_de_axelis.elite.vencido": "You defeated %s! It drops its loot."
+  "message.mundos_de_axelis.elite.vencido": "You defeated %s! It drops its loot.",
+  "entity.mundos_de_axelis.saqueador": "Treasure Thief",
+  "item.mundos_de_axelis.saqueador_spawn_egg": "Treasure Thief Spawn Egg",
+  "message.mundos_de_axelis.saqueador.visto": "A Treasure Thief! Catch it before it escapes with its loot.",
+  "message.mundos_de_axelis.saqueador.escapa": "The Thief opened a portal and escaped with its loot…",
+  "message.mundos_de_axelis.saqueador.atrapado": "You caught the Thief! Its sack bursts full of loot."
 }

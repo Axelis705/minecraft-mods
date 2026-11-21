@@ -2545,5 +2545,10 @@
   "elite.mundos_de_axelis.blindado": "Inquebrantable",
   "elite.mundos_de_axelis.veloz": "Veloz",
   "elite.mundos_de_axelis.explosivo": "Volátil",
-  "message.mundos_de_axelis.elite.vencido": "¡Has vencido a %s! Suelta su botín."
+  "message.mundos_de_axelis.elite.vencido": "¡Has vencido a %s! Suelta su botín.",
+  "entity.mundos_de_axelis.saqueador": "Saqueador del Tesoro",
+  "item.mundos_de_axelis.saqueador_spawn_egg": "Huevo generador de Saqueador del Tesoro",
+  "message.mundos_de_axelis.saqueador.visto": "¡Un Saqueador del Tesoro! Atrápalo antes de que escape con su botín.",
+  "message.mundos_de_axelis.saqueador.escapa": "El Saqueador abrió un portal y escapó con su botín…",
+  "message.mundos_de_axelis.saqueador.atrapado": "¡Atrapaste al Saqueador! Su saco revienta lleno de botín."
 }
