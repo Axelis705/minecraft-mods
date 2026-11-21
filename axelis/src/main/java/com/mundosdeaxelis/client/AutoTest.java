@@ -1178,6 +1178,7 @@ public final class AutoTest {
             vaultStacks = n;
             vaultFrags = f;
             vaultBooks = b;
+            hover(4, 4); // el ratón fuera de los huecos: que no tape el botín con una descripción
             check("el gran tesoro arcano se abre con botín (" + screenName() + ": " + n + " pilas, " + f + " fragmentos de llave de la Magia, "
                     + b + " libros encantados)", n >= 12 && f >= 2 && b >= 1);
             shot("91_botin_gran_tesoro");
@@ -1266,7 +1267,7 @@ public final class AutoTest {
         add("torre (observatorio, foto)", 300, () -> {
             net.minecraft.world.level.block.state.BlockState ts = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(TX, SY + 25, tz));
             check("en el observatorio de la Torre Arcana está el tesoro del Archimago, no la Piedra de Portal (" + ts.getBlock() + ")",
-                    ts.is(com.mundosdeaxelis.registry.ModBlocks.VAULT_CHEST_LOCKED.get()));
+                    ts.is(com.mundosdeaxelis.registry.ModBlocks.VAULT_CHEST_LOCKED_MAGIC.get()));
             check("hay armaduras encantadas en la torre", clientCount(com.mundosdeaxelis.entity.ArmaduraEncantada.class) >= 1);
             shot("77_torre_observatorio");
         });
