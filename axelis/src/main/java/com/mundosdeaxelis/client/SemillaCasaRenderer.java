@@ -216,7 +216,7 @@ public class SemillaCasaRenderer implements BlockEntityRenderer<SemillaCasaBlock
                 continue; // camas, cofres...: se dibujan con otro sistema; el recuadro ya marca su sitio
             }
             boolean bad = blocked.contains(g.rel());
-            float r = bad ? 1.0F : 0.55F, gr = bad ? 0.32F : 0.86F, b = bad ? 0.30F : 1.0F;
+            float r = bad ? 1.0F : 0.38F, gr = bad ? 0.30F : 0.84F, b = bad ? 0.28F : 1.0F;
             BakedModel model = brd.getBlockModel(g.state());
             ps.pushPose();
             ps.translate(g.rel().getX(), g.rel().getY(), g.rel().getZ());

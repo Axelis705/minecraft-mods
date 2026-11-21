@@ -521,7 +521,10 @@ public final class AutoTest {
             net.minecraft.world.item.ItemStack kit = com.mundosdeaxelis.npc.NpcService.kit("ruda");
             useOn(sp, kit, new net.minecraft.core.BlockPos(HX, SY - 1, HZ), net.minecraft.core.Direction.UP);
         }));
-        add("holograma (mirar)", 2000, () -> standLooking(HX + 9.5, SY + 5, HZ - 7.5, HX - 0.5, SY + 1, HZ + 4));
+        add("holograma (mirar)", 2000, () -> {
+            cmd("gamemode spectator @a"); // en el aire sin caerse, para la foto
+            standLooking(HX + 9.5, SY + 5, HZ - 7.5, HX - 0.5, SY + 2, HZ + 4);
+        });
         add("holograma (foto)", 300, () -> {
             net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
             check("la semilla queda puesta en el suelo como bloque", lv.getBlockState(seedPos).is(com.mundosdeaxelis.registry.ModBlocks.SEMILLA_CASA.get()));
@@ -538,6 +541,7 @@ public final class AutoTest {
             int n = Minecraft.getInstance().level.getBlockEntity(seedPos) instanceof com.mundosdeaxelis.npc.SemillaCasaBlockEntity be ? be.scanBlocked.size() : -1;
             check("el holograma marca en rojo el tronco que estorba (" + n + " bloques)", n == 3);
             shot("52c_holograma_estorbo");
+            cmd("gamemode survival @a");
             onServer(sp -> {
                 sp.teleportTo(sp.serverLevel(), HX + 0.5, SY, HZ - 2.5, 0.0F, 45.0F);
                 useBlock(sp, seedPos, false);
@@ -550,7 +554,10 @@ public final class AutoTest {
             cmd("execute in minecraft:overworld run fill " + (HX - 3) + " " + SY + " " + (HZ + 5) + " " + (HX - 3) + " " + (SY + 2) + " " + (HZ + 5) + " minecraft:air");
             onServer(sp -> useBlock(sp, seedPos, true)); // agachado: gira 90°
         });
-        add("holograma girado", 1500, () -> standLooking(HX + 6.5, SY + 9, HZ + 7.5, HX - 4, SY, HZ));
+        add("holograma girado", 1500, () -> {
+            cmd("gamemode spectator @a");
+            standLooking(HX + 8.5, SY + 7, HZ + 9.5, HX - 4.5, SY + 1, HZ + 0.5);
+        });
         add("holograma girado (foto)", 300, () -> {
             net.minecraft.world.level.block.state.BlockState st = Minecraft.getInstance().level.getBlockState(seedPos);
             check("agachado y con clic derecho la casa gira (" + (st.hasProperty(com.mundosdeaxelis.npc.SemillaCasaBlock.FACING)
@@ -563,6 +570,7 @@ public final class AutoTest {
                     useBlock(sp, seedPos, true); // otras tres vueltas: mira otra vez al sur
                 }
             });
+            cmd("gamemode survival @a");
         });
         add("casa (plantar)", 2500, () -> onServer(sp -> {
             sp.teleportTo(sp.serverLevel(), HX + 0.5, SY, HZ - 2.5, 0.0F, 45.0F);
