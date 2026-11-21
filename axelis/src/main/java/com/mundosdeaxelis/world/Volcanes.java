@@ -204,8 +204,10 @@ public final class Volcanes extends SavedData {
         for (V v : vs.list) {
             ServerLevel level = v.id == id ? server.getLevel(v.dim) : null;
             if (level != null) {
+                // los habitantes ya rescatados (Ignacio, etapa 263) se quedan: ya no son parte del volcán
                 for (Mob m : level.getEntitiesOfClass(Mob.class, new AABB(v.center()).inflate(100, 120, 100),
-                        m -> m.getPersistentData().getInt(TAG) == id)) {
+                        m -> m.getPersistentData().getInt(TAG) == id && !(m instanceof com.mundosdeaxelis.entity.Habitante h
+                                && h.state() != com.mundosdeaxelis.entity.Habitante.PRESO))) {
                     m.discard();
                 }
             }
@@ -279,6 +281,7 @@ public final class Volcanes extends SavedData {
     /** Al cerrar el servidor: se olvida lo que estaba en marcha (la música de cada jugador). */
     public static void clearRuntime() {
         ZONE.clear();
+        HINTS.clear();
         info = null;
         infoJob = null;
     }
@@ -286,6 +289,7 @@ public final class Volcanes extends SavedData {
     @SubscribeEvent
     public static void onLogout(net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent e) {
         ZONE.remove(e.getEntity().getUUID());
+        HINTS.remove(e.getEntity().getUUID());
     }
 
     @SubscribeEvent
@@ -310,7 +314,14 @@ public final class Volcanes extends SavedData {
         }
     }
 
-    /** Avisa a cada jugador cuando entra o sale de la dungeon de un volcán (para la música). */
+    /** Cuándo vio cada jugador cada pista por última vez (para no repetirlas cada segundo). */
+    private static final Map<UUID, long[]> HINTS = new HashMap<>();
+    static final long HINT_EVERY = 20L * 120;
+
+    /**
+     * Avisa a cada jugador cuando entra o sale de la dungeon de un volcán (para la música) y le da las pistas de la etapa 263: en el
+     * cráter, que se tire al lago; junto al altar, que la Piedra de regreso lo saca.
+     */
     private void music(MinecraftServer server) {
         for (ServerPlayer p : server.getPlayerList().getPlayers()) {
             int zone = 0;
@@ -321,7 +332,14 @@ public final class Volcanes extends SavedData {
                 BlockPos l = v.local(p.blockPosition());
                 if (DesignVolcan.inside(l.getX(), l.getY(), l.getZ())) {
                     zone = 1;
+                    if (Math.abs(l.getY() - DesignVolcan.F_SANCT) <= 2 && Math.hypot(l.getX() - DesignVolcan.RET_X, l.getZ() - DesignVolcan.RET_Z) <= 5) {
+                        hint(p, 1, "message.mundos_de_axelis.volcan.regreso_pista");
+                    }
                     break;
+                }
+                if (!p.isSpectator() && l.getY() >= DesignVolcan.LAVA_Y && l.getY() <= DesignVolcan.H + 4
+                        && Math.hypot(l.getX(), l.getZ() - DesignVolcan.CZ) <= DesignVolcan.RR + 1) {
+                    hint(p, 0, "message.mundos_de_axelis.volcan.salta_pista");
                 }
             }
             Integer was = ZONE.get(p.getUUID());
@@ -330,6 +348,42 @@ public final class Volcanes extends SavedData {
                 com.mundosdeaxelis.network.ModNetwork.sendTo(p, new com.mundosdeaxelis.network.VolcanZonaPacket(zone));
             }
         }
+    }
+
+    private static void hint(ServerPlayer p, int which, String key) {
+        long now = p.serverLevel().getGameTime();
+        long[] last = HINTS.computeIfAbsent(p.getUUID(), u -> new long[]{Long.MIN_VALUE / 2, Long.MIN_VALUE / 2});
+        if (now - last[which] >= HINT_EVERY) {
+            last[which] = now;
+            p.displayClientMessage(Component.translatable(key), true);
+        }
+    }
+
+    /**
+     * La Piedra de regreso (etapa 263): lleva a quien la usa a la entrada del volcán donde está (al pie del camino, mirando a la
+     * montaña). Si la piedra no es de ningún volcán apuntado, avisa y no hace nada.
+     */
+    public static void goBack(ServerPlayer sp, BlockPos stone) {
+        ServerLevel level = sp.serverLevel();
+        V v = nearest(level, stone);
+        if (v == null || v.center().distSqr(stone) > 130 * 130) {
+            sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.volcan.regreso_sin"), true);
+            return;
+        }
+        BlockPos door = v.world(0, 0, -2);
+        BlockPos c = v.center();
+        int y = level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, door.getX(), door.getZ());
+        float yaw = (float) Math.toDegrees(Math.atan2(-(c.getX() - door.getX()), c.getZ() - door.getZ()));
+        level.sendParticles(net.minecraft.core.particles.ParticleTypes.FLAME, sp.getX(), sp.getY() + 1.0, sp.getZ(), 40, 0.4, 0.9, 0.4, 0.05);
+        level.playSound(null, sp.blockPosition(), net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 0.7F);
+        sp.stopRiding();
+        sp.teleportTo(level, door.getX() + 0.5, y, door.getZ() + 0.5, yaw, 0.0F);
+        sp.resetFallDistance();
+        level.sendParticles(net.minecraft.core.particles.ParticleTypes.FLAME, door.getX() + 0.5, y + 1.0, door.getZ() + 0.5, 40, 0.4, 0.9, 0.4, 0.05);
+        level.sendParticles(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE, door.getX() + 0.5, y + 0.5, door.getZ() + 0.5, 12, 0.5, 0.3, 0.5, 0.02);
+        level.playSound(null, BlockPos.containing(door.getX() + 0.5, y, door.getZ() + 0.5), net.minecraft.sounds.SoundEvents.ENDERMAN_TELEPORT,
+                net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 0.9F);
+        sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.volcan.regreso"), true);
     }
 
     /** Si nadie se acercó en 10 minutos, al llegar alguien el volcán se reinicia. */

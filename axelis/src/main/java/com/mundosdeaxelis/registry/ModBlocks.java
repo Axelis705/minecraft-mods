@@ -54,6 +54,17 @@ public final class ModBlocks {
                     .sound(SoundType.AMETHYST)
                     .lightLevel(state -> 11), 5));
 
+    /** Piedra de regreso (etapa 263): junto al altar del volcán, lleva a la entrada del volcán. */
+    public static final RegistryObject<Block> PIEDRA_REGRESO = BLOCKS.register("piedra_regreso",
+            () -> new com.mundosdeaxelis.block.PiedraRegresoBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.GILDED_BLACKSTONE)
+                    .noLootTable()
+                    .noOcclusion()
+                    .lightLevel(state -> 10)
+                    .pushReaction(PushReaction.BLOCK)));
+
     /** Lava falsa del cráter del volcán: se ve como lava pero no quema ni tiene suelo (caes despacio a la dungeon). */
     public static final RegistryObject<Block> LAVA_FALSA = BLOCKS.register("lava_falsa",
             () -> new com.mundosdeaxelis.block.LavaFalsaBlock(BlockBehaviour.Properties.of()

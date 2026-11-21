@@ -33,6 +33,9 @@ public final class NpcKinds {
     /** Teo, el bibliotecario: preso en la celda de la Torre Arcana (etapa 261). */
     public static final Kind TEO = new Kind("teo", 0x9B7BE0, "casa_teo", 4, 3, 8, false);
 
+    /** Ignacio, el cultista arrepentido: preso en la celda del santuario del Volcán (etapa 263). */
+    public static final Kind IGNACIO = new Kind("ignacio", 0xE8743B, "casa_ignacio", 4, 3, 8, false);
+
     public static final Map<String, Kind> ALL = new LinkedHashMap<>();
 
     static {
@@ -40,6 +43,7 @@ public final class NpcKinds {
         ALL.put(BRUNO.id(), BRUNO);
         ALL.put(HILDA.id(), HILDA);
         ALL.put(TEO.id(), TEO);
+        ALL.put(IGNACIO.id(), IGNACIO);
     }
 
     public static Kind get(String id) {

@@ -297,13 +297,13 @@ final class DesignFragua {
         b.set(0, 1, 36, "anvil[facing=east]");
         // canal de metal fundido desde el horno, por el suelo, hasta los moldes
         for (int z = 25; z <= 31; z++) {
-            b.set(-7, -1, z, LAVA);
+            b.set(-7, -1, z, z == 25 ? LAVA + "[flujo=east]" : LAVA + "[flujo=north]");
             b.set(-7, -2, z, "magma_block");
             b.set(-8, -1, z, PB);
             b.set(-6, -1, z, PB);
         }
         for (int x = -7; x <= -4; x++) {
-            b.set(x, -1, 25, x == -4 ? PB : LAVA);
+            b.set(x, -1, 25, x == -4 ? PB : LAVA + "[flujo=east]");
             b.set(x, -2, 25, "magma_block");
         }
         // martillo gigante colgado de cadenas sobre el centro
@@ -427,7 +427,7 @@ final class DesignFragua {
         String at = b.get(x, y, z);
         String up = b.get(x, y + 1, z);
         return (at == null || at.equals("air")) && (up == null || up.equals("air"))
-                && below != null && !below.equals("air") && !below.contains("stairs") && !below.equals(LAVA);
+                && below != null && !below.equals("air") && !below.contains("stairs") && !below.startsWith(LAVA);
     }
 
     private static void mob(StructBp b, int x, int y, int z, String kind, String tag) {

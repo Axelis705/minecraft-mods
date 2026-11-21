@@ -66,6 +66,22 @@ execute if block -15 -40 83 mundos_de_axelis:brasero_volcan[lit=false,channel=2]
 execute if block 0 -16 66 mundos_de_axelis:vault_chest_volcano run say PRUEBA_VOLCAN_COFRE_OK
 execute if block 22 -40 94 mundos_de_axelis:vault_chest_locked_volcano run say PRUEBA_VOLCAN_COFRE_CERRADURA_OK
 execute if data block 22 -40 94 {Kind:"LOCKED",Stage:4,LockLevel:5} run say PRUEBA_VOLCAN_COFRE_DATOS_OK
+execute if block 3 -56 103 mundos_de_axelis:piedra_regreso run say PRUEBA_VOLCAN_PIEDRA_REGRESO_OK
+execute unless block 0 -45 30 minecraft:air run say PRUEBA_VOLCAN_SIN_TUNEL_OK
+execute if block 7 18 71 minecraft:red_nether_bricks run say PRUEBA_VOLCAN_ARCO_SALTO_OK
+execute if block 9 17 69 minecraft:crimson_sign run say PRUEBA_VOLCAN_CARTEL_SALTO_OK
+execute if block -40 -42 51 mundos_de_axelis:lava_falsa[flujo=west] run say PRUEBA_VOLCAN_RIO_CORRE_OK
+execute if block 0 13 77 mundos_de_axelis:lava_falsa[flujo=up] run say PRUEBA_VOLCAN_LAGO_QUIETO_OK
+execute if block -11 -56 108 minecraft:iron_door run say PRUEBA_IGNACIO_CELDA_PUERTA_OK
+execute if block -11 -56 105 minecraft:iron_bars run say PRUEBA_IGNACIO_CELDA_BARROTES_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=-17,y=-58,z=102,dx=6,dy=4,dz=8,nbt={NpcState:0,Npc:"ignacio"}] run say PRUEBA_IGNACIO_PRESO_OK
+execute if entity @e[type=mundos_de_axelis:cultista_volcan,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_IGNACIO_SACERDOTE_LLAVE_OK
+kill @e[type=mundos_de_axelis:cultista_volcan,nbt={ForgeData:{MundosTag:"llave_celda"}}]
+execute if entity @e[type=item,x=-30,y=-70,z=80,dx=60,dy=40,dz=60,nbt={Item:{id:"mundos_de_axelis:llave_celda"}}] run say PRUEBA_IGNACIO_LLAVE_CAE_OK
+kill @e[type=item]
+execute positioned -13 -56 106 run mundos vecinos liberar
+execute if block -11 -56 108 minecraft:iron_door[open=true] run say PRUEBA_IGNACIO_PUERTA_ABIERTA_OK
+execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1,Npc:"ignacio"}] run say PRUEBA_IGNACIO_LIBRE_OK
 kill @e[type=mundos_de_axelis:gran_salamandra]
 #wait NUNCA_SALE_ESTE_TEXTO 2
 execute if block 14 -56 116 mundos_de_axelis:reja_volcan[open=true] run say PRUEBA_VOLCAN_REJA_ABRE_OK
@@ -76,12 +92,15 @@ execute if entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_VOLCA
 execute if entity @e[type=mundos_de_axelis:gran_salamandra] run say PRUEBA_VOLCAN_GUARDIAN_VUELVE_OK
 execute if block 14 -56 116 mundos_de_axelis:reja_volcan[open=false] run say PRUEBA_VOLCAN_REJA_CIERRA_OK
 execute if block -15 -40 83 mundos_de_axelis:brasero_volcan[lit=false] run say PRUEBA_VOLCAN_BRASERO_APAGA_OK
+execute unless entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:0,Npc:"ignacio"}] run say PRUEBA_IGNACIO_NO_VUELVE_PRESO_OK
+execute if entity @e[type=mundos_de_axelis:cultista_volcan,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_IGNACIO_SACERDOTE_VUELVE_OK
 setblock 1 -25 94 minecraft:air
 setblock 1 -25 94 mundos_de_axelis:basalto_agrietado[stage=1]
 #wait NUNCA_SALE_ESTE_TEXTO 3
 execute if block 1 -25 94 mundos_de_axelis:basalto_agrietado[stage=3] run say PRUEBA_VOLCAN_SE_DERRUMBA_OK
 mundos estructura deshacer
 execute unless block 0 -54 106 mundos_de_axelis:portal_stone_volcano run say PRUEBA_VOLCAN_DESHECHO_OK
+execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1,Npc:"ignacio"}] run say PRUEBA_IGNACIO_SIGUE_TRAS_DESHACER_OK
 execute unless entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_VOLCAN_SIN_ENEMIGOS_OK
 #expect PRUEBA_VOLCAN_PIEDRA_OK
 #expect PRUEBA_VOLCAN_NUCLEO_OK
@@ -106,6 +125,22 @@ execute unless entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_V
 #expect PRUEBA_VOLCAN_GUARDIAN_VUELVE_OK
 #expect PRUEBA_VOLCAN_REJA_CIERRA_OK
 #expect PRUEBA_VOLCAN_BRASERO_APAGA_OK
+#expect PRUEBA_VOLCAN_PIEDRA_REGRESO_OK
+#expect PRUEBA_VOLCAN_SIN_TUNEL_OK
+#expect PRUEBA_VOLCAN_ARCO_SALTO_OK
+#expect PRUEBA_VOLCAN_CARTEL_SALTO_OK
+#expect PRUEBA_VOLCAN_RIO_CORRE_OK
+#expect PRUEBA_VOLCAN_LAGO_QUIETO_OK
+#expect PRUEBA_IGNACIO_CELDA_PUERTA_OK
+#expect PRUEBA_IGNACIO_CELDA_BARROTES_OK
+#expect PRUEBA_IGNACIO_PRESO_OK
+#expect PRUEBA_IGNACIO_SACERDOTE_LLAVE_OK
+#expect PRUEBA_IGNACIO_LLAVE_CAE_OK
+#expect PRUEBA_IGNACIO_PUERTA_ABIERTA_OK
+#expect PRUEBA_IGNACIO_LIBRE_OK
+#expect PRUEBA_IGNACIO_NO_VUELVE_PRESO_OK
+#expect PRUEBA_IGNACIO_SACERDOTE_VUELVE_OK
+#expect PRUEBA_IGNACIO_SIGUE_TRAS_DESHACER_OK
 forceload add 1700 -100 1840 100
 execute positioned 1770 -48 0 rotated 90 0 run mundos volcan generar aqui
 #wait VOLCAN_NATURAL_OK 300
@@ -261,6 +296,17 @@ mundos vecinos mudar teo
 execute unless block 740 -60 -29 minecraft:dark_oak_door run say PRUEBA_TEO_CASA_DESARMADA_OK
 mundos vecinos reiniciar
 forceload remove 728 -40 752 -15
+forceload add 768 -40 792 -15
+execute positioned 780 -60 -30 rotated 0 0 run mundos vecinos semilla ignacio
+execute positioned 780 -60 -30 run mundos vecinos crecer
+execute if block 780 -60 -29 minecraft:mangrove_door run say PRUEBA_IGNACIO_CASA_PUERTA_OK
+execute if block 778 -60 -25 minecraft:lectern run say PRUEBA_IGNACIO_CASA_ATRIL_OK
+execute if block 780 -57 -24 minecraft:wither_skeleton_skull run say PRUEBA_IGNACIO_CASA_MASCARA_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=771,y=-62,z=-35,dx=18,dy=6,dz=18,nbt={NpcState:2,Npc:"ignacio"}] run say PRUEBA_IGNACIO_VECINO_OK
+mundos vecinos mudar ignacio
+execute unless block 780 -60 -29 minecraft:mangrove_door run say PRUEBA_IGNACIO_CASA_DESARMADA_OK
+mundos vecinos reiniciar
+forceload remove 768 -40 792 -15
 forceload add 3150 -70 3260 80
 execute positioned 3200 -60 0 rotated 0 0 run mundos natural generar hielo aqui
 #wait HIELO_NATURAL_OK 150
@@ -412,3 +458,8 @@ mundos prueba construir 2
 #expect PRUEBA_TEMPLO_SIN_NPC_OK
 #expect PRUEBA_TEMPLO_DESHECHO_OK
 #expect PRUEBA_TEMPLO_NATURAL_OK
+#expect PRUEBA_IGNACIO_CASA_PUERTA_OK
+#expect PRUEBA_IGNACIO_CASA_ATRIL_OK
+#expect PRUEBA_IGNACIO_CASA_MASCARA_OK
+#expect PRUEBA_IGNACIO_VECINO_OK
+#expect PRUEBA_IGNACIO_CASA_DESARMADA_OK

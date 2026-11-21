@@ -52,7 +52,11 @@ public final class NpcShop {
             // con cuatro vecinos (etapa 261: Teo trae libros)
             new Offer("exp_bottles", () -> new ItemStack(Items.EXPERIENCE_BOTTLE, 8), 90, 4, null),
             new Offer("book_mending", () -> net.minecraft.world.item.EnchantedBookItem.createForEnchantment(
-                    new net.minecraft.world.item.enchantment.EnchantmentInstance(net.minecraft.world.item.enchantment.Enchantments.MENDING, 1)), 400, 4, null));
+                    new net.minecraft.world.item.enchantment.EnchantmentInstance(net.minecraft.world.item.enchantment.Enchantments.MENDING, 1)), 400, 4, null),
+            // con cinco vecinos (etapa 263: Ignacio trae cosas del volcán)
+            new Offer("blaze_rods", () -> new ItemStack(Items.BLAZE_ROD, 4), 120, 5, null),
+            new Offer("magma_cream", () -> new ItemStack(Items.MAGMA_CREAM, 4), 60, 5, null),
+            new Offer("god_apple", () -> new ItemStack(Items.ENCHANTED_GOLDEN_APPLE), 800, 5, null));
 
     private NpcShop() {
     }

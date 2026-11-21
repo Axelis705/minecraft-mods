@@ -17,7 +17,9 @@ import java.util.Set;
  * <li>Sala de las erupciones: filas de respiraderos que escupen fuego por turnos, diablillos, y un altar con cultistas.</li>
  * <li>Santuario del corazón: la Piedra de Portal: Volcán sobre un altar, bajo un corazón de magma encadenado.</li>
  * </ol>
- * Del santuario sale un túnel hacia el frente del volcán (de un solo sentido: termina en un escalón de 2 que no se puede subir).
+ * Etapa 263: se entra solo por el lago (al final del camino hay un muelle con un cartel, «Salto de fe», y faroles que guían hasta él)
+ * y se sale con la Piedra de regreso, junto al altar del santuario, que lleva a la entrada del volcán. En la celda del santuario está
+ * Ignacio, el cultista arrepentido. Los ríos de las laderas y las cascadas de lava falsa corren (no son lava quieta).
  * Entrada por z = 0; el centro del volcán está en z = {@link #CZ}.
  */
 final class DesignVolcan {
@@ -74,7 +76,8 @@ final class DesignVolcan {
         mountain(b);
         crater(b);
         rivers(b);
-        trail(b);
+        double end = trail(b);
+        jumpPier(b, end);
         // la dungeon de dentro
         landingHall(b);
         bridgeChamber(b);
@@ -83,8 +86,8 @@ final class DesignVolcan {
         treasureRoom(b);
         guardianChamber(b);
         sanctuary(b);
+        cell(b);
         passages(b);
-        exitTunnel(b);
         encaseUnderground(b);
         interiorDetail(b);
         // por fuera: fumarolas, coladas enfriadas, el pie que se funde con el terreno, árboles quemados y rocas
@@ -343,7 +346,8 @@ final class DesignVolcan {
                         continue;
                     }
                     boolean edge = Math.abs(k) == w + 1;
-                    b.set(x, h - 1, z, edge ? "magma_block" : LAVA);
+                    // la lava corre ladera abajo (hacia fuera del cráter): así el río se ve moverse
+                    b.set(x, h - 1, z, edge ? "magma_block" : flowing(Math.sin(a), -Math.cos(a)));
                     if (!edge) {
                         b.set(x, h - 2, z, "magma_block");
                     }
@@ -355,7 +359,8 @@ final class DesignVolcan {
     // ================================================================== camino en espiral
 
     /** Sube desde el frente de la base dando una vuelta al volcán, con escalones, hasta el borde del cráter. */
-    private static void trail(StructBp b) {
+    /** Devuelve el ángulo donde termina el camino (en el borde del cráter). */
+    private static double trail(StructBp b) {
         // de la entrada (z = 0) al pie del camino, que empieza a la derecha del frente
         double ang = ANG0;
         double r0 = radiusAt(2.5);
@@ -416,6 +421,85 @@ final class DesignVolcan {
             }
             ang += 0.42 / r;
             hgt += 0.42 / 2.7;
+        }
+        return ang;
+    }
+
+    /**
+     * Pista para tirarse (etapa 263): desde donde acaba el camino, faroles de almas bajan por el cuenco hasta un muelle rojo que entra
+     * 3 bloques en el lago, bajo un arco rojo de los cultistas con un farol colgado, estandartes rojos y un cartel: «Salto de fe».
+     */
+    private static void jumpPier(StructBp b, double ang) {
+        double ux = Math.sin(ang), uz = -Math.cos(ang); // hacia fuera del cráter
+        double px = Math.cos(ang), pz = Math.sin(ang); // de lado
+        int rot = Math.floorMod((int) Math.round(Math.toDegrees(Math.atan2(-ux, uz)) / 22.5), 16); // mirando hacia fuera
+        // la pasarela: desde la orilla hasta 3 bloques dentro del lago (sobre la lava, a ras)
+        Set<Long> done = new HashSet<>();
+        for (double d = RL + 2.5; d >= RL - 2.6; d -= 0.25) {
+            for (double k = -0.5; k <= 0.5; k += 1.0) {
+                int x = (int) Math.round(ux * d + px * k), z = CZ + (int) Math.round(uz * d + pz * k);
+                if (!done.add(StructBp.key(x, 0, z))) {
+                    continue;
+                }
+                // a ras del lago sobre la lava; en la orilla, sobre el suelo (baja como mucho de 1 en 1)
+                int ys = Math.max(LAVA_Y, height(x, z) - 1);
+                b.set(x, ys, z, "red_nether_brick_slab[type=bottom]");
+                for (int yy = ys + 1; yy <= ys + 3; yy++) {
+                    b.set(x, yy, z, "air");
+                }
+            }
+        }
+        // arco rojo de los cultistas en la entrada del muelle (se ve desde el borde del cráter): dos postes, una viga y un farol colgado
+        double da = RL + 1.6;
+        int[][] post = new int[2][];
+        int top = 0;
+        for (int i = 0; i < 2; i++) {
+            int side = i == 0 ? -1 : 1;
+            int x = (int) Math.round(ux * da + px * side * 2.2), z = CZ + (int) Math.round(uz * da + pz * side * 2.2);
+            post[i] = new int[]{x, Math.max(height(x, z), LAVA_Y + 1), z};
+            top = Math.max(top, post[i][1] + 3);
+        }
+        for (int[] q : post) {
+            b.set(q[0], q[1] - 1, q[2], "red_nether_bricks");
+            for (int y = q[1]; y < top; y++) {
+                b.set(q[0], y, q[2], "red_nether_brick_wall");
+            }
+            b.set(q[0], top, q[2], "red_nether_bricks");
+        }
+        for (double k = -2.2; k <= 2.2; k += 0.25) {
+            int x = (int) Math.round(ux * da + px * k), z = CZ + (int) Math.round(uz * da + pz * k);
+            b.set(x, top, z, "red_nether_bricks");
+        }
+        int cxm = (int) Math.round(ux * da), czm = CZ + (int) Math.round(uz * da);
+        b.set(cxm, top - 1, czm, "chain[axis=y]");
+        b.set(cxm, top - 2, czm, "soul_lantern[hanging=true]");
+        // estandartes rojos a los dos lados, un paso más afuera
+        for (int side = -1; side <= 1; side += 2) {
+            int bx = (int) Math.round(ux * (RL + 3.0) + px * side * 2.2), bz = CZ + (int) Math.round(uz * (RL + 3.0) + pz * side * 2.2);
+            int bh = Math.max(height(bx, bz), LAVA_Y + 1);
+            b.set(bx, bh - 1, bz, "red_nether_bricks");
+            b.set(bx, bh, bz, "red_banner[rotation=" + rot + "]");
+            b.set(bx, bh + 1, bz, "air");
+        }
+        // el cartel, delante del arco, mirando a quien baja del camino (los carteles no estorban al pasar)
+        int sx = (int) Math.round(ux * (RL + 4.6)), sz = CZ + (int) Math.round(uz * (RL + 4.6));
+        int sh = height(sx, sz);
+        b.set(sx, sh, sz, "air");
+        b.set(sx, sh + 1, sz, "air");
+        b.setNbt(sx, sh, sz, "crimson_sign[rotation=" + rot + "]", "{is_waxed:1b,front_text:{has_glowing_text:1b,color:\"orange\",messages:["
+                + "'{\"translate\":\"sign.mundos_de_axelis.volcan.salto.1\"}','{\"translate\":\"sign.mundos_de_axelis.volcan.salto.2\"}',"
+                + "'{\"translate\":\"sign.mundos_de_axelis.volcan.salto.3\"}','{\"translate\":\"sign.mundos_de_axelis.volcan.salto.4\"}']}}");
+        // faroles de almas que bajan del camino al muelle, a los dos lados
+        for (double d = RL + 5.5; d <= RR + 0.5; d += 2.6) {
+            for (int side = -1; side <= 1; side += 2) {
+                int x = (int) Math.round(ux * d + px * side * 2.2), z = CZ + (int) Math.round(uz * d + pz * side * 2.2);
+                int h = height(x, z);
+                if (TRAIL.contains(StructBp.key(x, 0, z))) {
+                    continue;
+                }
+                b.set(x, h, z, "soul_lantern");
+                b.set(x, h + 1, z, "air");
+            }
         }
     }
 
@@ -502,8 +586,14 @@ final class DesignVolcan {
     /** Cascada de lava falsa en un nicho de la pared (de y0 a y1), con borde de magma. */
     private static void lavafall(StructBp b, int x, int z, int y0, int y1) {
         for (int y = y0; y <= y1; y++) {
-            b.set(x, y, z, LAVA);
+            b.set(x, y, z, LAVA + "[flujo=down]");
         }
+    }
+
+    /** Lava falsa que corre en la dirección (dx, dz) (la que más pesa de las cuatro). */
+    static String flowing(double dx, double dz) {
+        String f = Math.abs(dx) > Math.abs(dz) ? (dx > 0 ? "east" : "west") : (dz > 0 ? "south" : "north");
+        return LAVA + "[flujo=" + f + "]";
     }
 
     private static void landingHall(StructBp b) {
@@ -828,11 +918,68 @@ final class DesignVolcan {
                 lavafall(b, x, z, F_SANCT, F_SANCT + 5);
             }
         }
+        // la Piedra de regreso (etapa 263), al pie del altar: lleva a la entrada del volcán
+        b.set(RET_X, F_SANCT - 1, RET_Z, GILD);
+        b.set(RET_X, F_SANCT, RET_Z, M + "piedra_regreso");
         // braseros alrededor del altar
         for (int[] c : new int[][]{{5, 0}, {-5, 0}, {0, 5}}) {
             b.set(c[0], F_SANCT, cz + c[1], "magma_block");
             b.set(c[0], F_SANCT + 1, cz + c[1], "soul_campfire[lit=true,facing=north]");
         }
+    }
+
+    /** Dónde está la Piedra de regreso, junto al altar (etapa 263). */
+    static final int RET_X = 3, RET_Z = 87;
+
+    /** Sitio del preso en la celda del santuario (etapa 262). */
+    static final int NPC_X = -13, NPC_Z = 90;
+
+    /**
+     * Celda de Ignacio, el cultista arrepentido (etapa 262): pegada al santuario por el oeste. Un nicho en la pared del santuario con
+     * barrotes (se le ve desde el altar) y una puerta de hierro; dentro, un jergón de lana roja (su vieja túnica), un caldero, una vela,
+     * cadenas y un estandarte rojo.
+     */
+    private static void cell(StructBp b) {
+        int cz = NPC_Z, y0 = F_SANCT;
+        // nicho en la pared del santuario: así los barrotes quedan a ras de la sala
+        for (int z = cz - 2; z <= cz + 2; z++) {
+            b.set(-10, y0 - 1, z, PBB);
+            for (int y = y0; y <= y0 + 3; y++) {
+                b.set(-10, y, z, "air");
+            }
+            b.set(-10, y0 + 4, z, PBB);
+        }
+        // muro de la celda, con barrotes frente al preso y la puerta de hierro
+        for (int z = cz - 3; z <= cz + 3; z++) {
+            for (int y = y0 - 1; y <= y0 + 4; y++) {
+                b.set(-11, y, z, PBB);
+            }
+        }
+        for (int z = cz - 1; z <= cz; z++) {
+            for (int y = y0; y <= y0 + 2; y++) {
+                b.set(-11, y, z, "iron_bars");
+            }
+        }
+        StructKit.ironDoor(b, -11, y0, cz + 2, "+x", false);
+        // la celda
+        for (int x = -16; x <= -12; x++) {
+            for (int z = cz - 3; z <= cz + 3; z++) {
+                boolean edge = x == -16 || Math.abs(z - cz) == 3;
+                b.set(x, y0 - 1, z, StructKit.hash01(4410, x, z) < 0.35 ? "cracked_polished_blackstone_bricks" : PB);
+                for (int y = y0; y <= y0 + 3; y++) {
+                    b.set(x, y, z, edge ? (y == 1 + y0 && x == -16 ? "basalt[axis=y]" : PBB) : "air");
+                }
+                b.set(x, y0 + 4, z, PBB);
+            }
+        }
+        b.set(-15, y0, cz - 2, "red_wool");
+        b.set(-14, y0, cz - 2, "red_wool");
+        b.set(-15, y0, cz + 2, "cauldron");
+        b.set(-12, y0, cz - 2, "candle[candles=1,lit=true]");
+        b.set(-15, y0 + 2, cz, "red_wall_banner[facing=east]");
+        b.set(-13, y0 + 3, cz, "chain[axis=y]");
+        b.set(-13, y0 + 2, cz, "soul_lantern[hanging=true]");
+        b.set(-12, y0 + 3, cz + 2, "chain[axis=y]");
     }
 
     // ================================================================== pasillos
@@ -886,38 +1033,6 @@ final class DesignVolcan {
         b.box(12, F_GUARD, 102, 13, F_GUARD + 2, 103, "air");
         b.box(12, F_GUARD - 1, 102, 13, F_GUARD - 1, 103, PBB);
         b.set(13, F_GUARD + 2, 103, "shroomlight");
-    }
-
-    /** Del santuario al frente del volcán: sube por un túnel largo y termina en un escalón de 2 hacia fuera (solo de salida). */
-    private static void exitTunnel(StructBp b) {
-        int mouthZ = 12;
-        // se dibuja de la boca (arriba) hacia el santuario (abajo)
-        path(b, new int[][]{{0, 2, mouthZ}, {0, 2, mouthZ + 3}, {0, F_SANCT, mouthZ + 13}, {0, F_SANCT, 81}});
-        // plaza fuera de la boca, al nivel del suelo (y 0): el escalón de 2 no se puede subir desde fuera
-        for (int x = -4; x <= 4; x++) {
-            for (int z = 2; z < mouthZ; z++) {
-                b.set(x, -1, z, Math.abs(x) == 4 ? "blackstone" : PB);
-                for (int y = 0; y <= 9; y++) {
-                    b.set(x, y, z, "air");
-                }
-            }
-        }
-        // marco de la boca
-        for (int y = 1; y <= 6; y++) {
-            b.set(-2, y, mouthZ, PBB);
-            b.set(2, y, mouthZ, PBB);
-        }
-        for (int x = -2; x <= 2; x++) {
-            b.set(x, 6, mouthZ, PBB);
-        }
-        b.set(-3, 3, mouthZ - 1, "lantern");
-        b.set(-3, 2, mouthZ - 1, "polished_blackstone_wall");
-        b.set(-3, 1, mouthZ - 1, "polished_blackstone_wall");
-        b.set(-3, 0, mouthZ - 1, PBB);
-        b.set(3, 3, mouthZ - 1, "lantern");
-        b.set(3, 2, mouthZ - 1, "polished_blackstone_wall");
-        b.set(3, 1, mouthZ - 1, "polished_blackstone_wall");
-        b.set(3, 0, mouthZ - 1, PBB);
     }
 
     /** Bajo tierra (y < 0) todo hueco del plano queda cerrado: se ponen paredes donde el plano no decía nada. */
@@ -1371,5 +1486,12 @@ final class DesignVolcan {
         mob(b, 28, F_GUARD, 91, "cultista_volcan");
         // el guardián
         mob(b, GX, F_GUARD, GZ, "gran_salamandra");
+        // etapa 262: el sumo sacerdote vigila el altar del corazón y lleva la llave de la celda; Ignacio, preso en ella
+        if (free(b, -4, F_SANCT, 86)) {
+            b.mobs.add(new StructBp.Mob(-4, F_SANCT, 86, "cultista_volcan", "llave_celda"));
+        } else {
+            System.err.println("[Volcan] sin sitio para el sumo sacerdote");
+        }
+        b.mobs.add(new StructBp.Mob(NPC_X, F_SANCT, NPC_Z, "habitante", "ignacio"));
     }
 }

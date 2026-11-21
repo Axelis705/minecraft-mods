@@ -201,6 +201,22 @@ public final class AutoTest {
         });
     }
 
+    /** Como {@link #clearMobs()}, pero deja a los habitantes (etapa 263: Ignacio sigue preso en su celda del volcán). */
+    private static void clearHostiles() {
+        IntegratedServer srv = Minecraft.getInstance().getSingleplayerServer();
+        srv.execute(() -> {
+            for (net.minecraft.server.level.ServerLevel l : srv.getAllLevels()) {
+                List<net.minecraft.world.entity.Entity> gone = new ArrayList<>();
+                for (net.minecraft.world.entity.Entity e : l.getAllEntities()) {
+                    if (e instanceof net.minecraft.world.entity.Mob && !(e instanceof com.mundosdeaxelis.entity.Habitante)) {
+                        gone.add(e);
+                    }
+                }
+                gone.forEach(net.minecraft.world.entity.Entity::discard);
+            }
+        });
+    }
+
     /** Dónde se construye el volcán en la prueba: el plano (x, y, z) queda en el mundo en (x, VY + y, VZ + z). */
     private static final int VY = -52, VZ = 136;
     /** Santuario del Bosque (etapa 256): origen de la prueba (en el mundo plano, lejos del volcán). */
@@ -1114,8 +1130,84 @@ public final class AutoTest {
                     TableClient.essence == essBefore - 400 && invCount(net.minecraft.world.item.Items.ENCHANTED_BOOK) >= 1);
             open(null);
             cmd("gamemode spectator @a");
-            cmd("mundos vecinos reiniciar");
             cmd("execute in minecraft:overworld positioned " + TX + " " + SY + " " + (TZ0 - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
+        });
+    }
+
+    // ------------------------------------------------------------------ etapa 263: la casa de Ignacio y la tienda de cinco vecinos
+
+    /** Casa de Ignacio (rescatado en la prueba del volcán) en {@code IX, IZ}. */
+    private static final int IX = 110, IZ = -10;
+
+    private static void ignacio() {
+        net.minecraft.core.BlockPos seed = new net.minecraft.core.BlockPos(IX, SY, IZ);
+        add("casa de ignacio (poner semilla)", 2500, () -> onServer(sp -> {
+            cmd("gamemode survival @a");
+            sp.teleportTo(sp.serverLevel(), IX + 0.5, SY, IZ - 2.5, 0.0F, 45.0F);
+            useOn(sp, com.mundosdeaxelis.npc.NpcService.kit("ignacio"), new net.minecraft.core.BlockPos(IX, SY - 1, IZ), net.minecraft.core.Direction.UP);
+        }));
+        add("holograma de ignacio", 2000, () -> {
+            cmd("gamemode spectator @a");
+            standLooking(IX + 10.5, SY + 5, IZ - 7.5, IX, SY + 2, IZ + 4);
+        });
+        add("holograma de ignacio (foto)", 300, () -> {
+            check("la semilla de Ignacio queda puesta con su holograma", Minecraft.getInstance().level.getBlockEntity(seed) instanceof com.mundosdeaxelis.npc.SemillaCasaBlockEntity be
+                    && "ignacio".equals(be.kind()) && be.scanTick != Long.MIN_VALUE && be.scanBlocked.isEmpty());
+            shot("84_holograma_ignacio");
+            cmd("gamemode survival @a");
+            onServer(sp -> {
+                sp.teleportTo(sp.serverLevel(), IX + 0.5, SY, IZ - 2.5, 0.0F, 45.0F);
+                useBlock(sp, seed, false);
+            });
+        });
+        add("casa de ignacio (comprobar)", 1200, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            check("crece la ermita de Ignacio", lv.getBlockState(new net.minecraft.core.BlockPos(IX, SY, IZ + 1)).is(net.minecraft.world.level.block.Blocks.MANGROVE_DOOR)
+                    && lv.getBlockState(new net.minecraft.core.BlockPos(IX - 2, SY, IZ + 5)).is(net.minecraft.world.level.block.Blocks.LECTERN));
+            com.mundosdeaxelis.entity.Habitante h = npcClient("ignacio");
+            check("Ignacio vive en su ermita", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+            cmd("gamemode spectator @a");
+        });
+        add("casa de ignacio (fuera)", 2500, () -> standLooking(IX + 9.5, SY + 3, IZ - 6.5, IX + 1, SY + 2, IZ + 4));
+        add("casa de ignacio (fuera, foto)", 300, () -> shot("85_casa_ignacio"));
+        add("casa de ignacio (dentro)", 2500, () -> standLooking(IX + 0.5, SY, IZ + 2.3, IX + 0.5, SY + 1.2, IZ + 7));
+        add("casa de ignacio (dentro, foto)", 300, () -> shot("86_casa_ignacio_dentro"));
+        add("ignacio vecino", 2600, () -> {
+            cmd("gamemode survival @a");
+            standLooking(IX + 0.5, SY, IZ + 2.3, IX + 0.5, SY + 1.4, IZ + 4.5);
+            onServer(sp -> {
+                com.mundosdeaxelis.table.Essence.add(sp, 1000);
+                com.mundosdeaxelis.table.Essence.sync(sp);
+            });
+            npcServer("ignacio", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("ignacio vecino (tienda)", 800, () -> {
+            check("ventana de Ignacio vecino", npcScreen() != null && npcScreen().state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+            if (npcScreen() != null) {
+                npcScreen().press(NpcScreen.B_SHOP);
+            }
+        });
+        add("tienda de ignacio (hasta el final)", 600, () -> {
+            if (npcScreen() != null) {
+                for (int i = 0; i < 18; i++) {
+                    npcScreen().mouseScrolled(0, 0, -1);
+                }
+            }
+        });
+        add("tienda con cinco vecinos (foto)", 800, () -> {
+            shot("87_tienda_cinco_vecinos");
+            essBefore = TableClient.essence;
+            if (npcScreen() != null) {
+                npcScreen().buy(offer("god_apple")); // manzana encantada: necesita 5 vecinos con casa
+            }
+        });
+        add("tienda con cinco vecinos (comprobar)", 1500, () -> {
+            check("con cinco vecinos se puede comprar la manzana encantada (" + essBefore + " -> " + TableClient.essence + ")",
+                    TableClient.essence == essBefore - 800 && invCount(net.minecraft.world.item.Items.ENCHANTED_GOLDEN_APPLE) >= 1);
+            open(null);
+            cmd("gamemode spectator @a");
+            cmd("mundos vecinos reiniciar");
             cmd("kill @e[type=item]");
         });
     }
@@ -1984,6 +2076,20 @@ public final class AutoTest {
         add("pie del volcán (foto)", 300, () -> shot("32c_volcan_pie"));
         add("cráter", 3500, () -> lookV(0, 82, 36, 0, 61, 60));
         add("cráter (foto)", 300, () -> shot("33_volcan_crater"));
+        // etapa 263: la pista para tirarse (arco rojo, muelle y cartel) y la lava de los ríos que corre
+        add("salto de fe", 3000, () -> lookV(15.5, 70, 45.5, 6, 63, 55.5));
+        add("salto de fe (foto)", 300, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            check("al final del camino hay un arco rojo sobre el muelle del lago", lv.getBlockState(new net.minecraft.core.BlockPos(7, VY + 66, VZ + 55))
+                    .is(net.minecraft.world.level.block.Blocks.RED_NETHER_BRICKS));
+            check("y un cartel «Salto de fe»", lv.getBlockState(new net.minecraft.core.BlockPos(9, VY + 65, VZ + 53)).is(net.minecraft.world.level.block.Blocks.CRIMSON_SIGN));
+            net.minecraft.world.level.block.state.BlockState river = lv.getBlockState(new net.minecraft.core.BlockPos(-40, VY + 6, VZ + 35));
+            check("la lava de los ríos corre ladera abajo (" + river + ")", river.is(com.mundosdeaxelis.registry.ModBlocks.LAVA_FALSA.get())
+                    && river.getValue(com.mundosdeaxelis.block.LavaFalsaBlock.FLUJO) == net.minecraft.core.Direction.WEST);
+            shot("33b_volcan_salto");
+        });
+        add("lago del cráter", 2500, () -> lookV(-6, 66, 62, 6, 61, 56));
+        add("lago del cráter (foto)", 300, () -> shot("33c_volcan_lago"));
         add("a tirarse", 600, () -> {
             cmd("gamemode survival @a");
             // sin resistencia: así se comprueba que la caída por la lava falsa no hace daño
@@ -2049,7 +2155,7 @@ public final class AutoTest {
             shot("41b_volcan_braseros");
         });
         add("sala del tesoro", 2500, () -> {
-            clearMobs();
+            clearHostiles();
             lookV(13.5, 8, 76.5, 22, 8.5, 76.5);
         });
         add("sala del tesoro (foto)", 300, () -> shot("41c_volcan_tesoro"));
@@ -2073,7 +2179,7 @@ public final class AutoTest {
             shot("41e_volcan_reja");
         });
         add("santuario", 3000, () -> {
-            clearMobs();
+            clearHostiles();
             lookV(0.5, -8, 82.5, 0.5, -6, 90.5);
         });
         add("santuario (foto)", 300, () -> {
@@ -2082,8 +2188,63 @@ public final class AutoTest {
             check("la Piedra de Portal: Volcán está en el santuario (" + id + ")", id.equals("portal_stone_volcano"));
             shot("42_volcan_santuario");
         });
-        add("salida", 2500, () -> lookV(0.5, 2, 14.5, 0.5, 1, 0));
-        add("salida (foto)", 300, () -> shot("43_volcan_salida"));
+        // etapa 263: Ignacio, preso en la celda del santuario; el sumo sacerdote lleva la llave
+        add("ignacio preso", 2500, () -> {
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            lookV(-9.5, -8, 90.5, -13, -6.6, 90.5);
+        });
+        add("ignacio preso (hablar)", 2600, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("ignacio");
+            check("Ignacio está preso en la celda del volcán", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
+            npcServer("ignacio", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("ignacio preso (foto)", 300, () -> {
+            check("se abre la ventana de Ignacio", npcScreen() != null);
+            shot("42b_ignacio_preso");
+            open(null);
+        });
+        add("llave del sumo sacerdote", 1500, () -> {
+            cmd("execute in minecraft:overworld run summon mundos_de_axelis:cultista_volcan -3.5 " + (VY - 8) + " " + (VZ + 86.5)
+                    + " {ForgeData:{MundosTag:\"llave_celda\"}}");
+            cmd("kill @e[type=mundos_de_axelis:cultista_volcan,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
+        });
+        add("llave del sumo sacerdote (comprobar)", 300, () -> onServer(sp -> towerKey = !sp.serverLevel().getEntitiesOfClass(
+                net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(32),
+                i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty()));
+        add("llave en la celda del volcán", 2600, () -> {
+            check("el sumo sacerdote suelta la llave de la celda", towerKey);
+            cmd("kill @e[type=item]");
+            onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()),
+                    new net.minecraft.core.BlockPos(-11, VY - 8, VZ + 92), net.minecraft.core.Direction.EAST));
+        });
+        add("ignacio rescatado (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("ignacio");
+            check("Ignacio queda libre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE);
+            check("Ignacio da su Semilla de casa", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
+            shot("42c_ignacio_rescatado");
+            open(null);
+        });
+        // la salida: la Piedra de regreso, junto al altar, lleva a la entrada del volcán
+        add("piedra de regreso", 2500, () -> {
+            cmd("clear @a mundos_de_axelis:semilla_casa");
+            lookV(5.5, -8, 85.5, 3.5, -7.5, 87.5);
+        });
+        add("piedra de regreso (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(3, VY - 8, VZ + 87));
+            check("junto al altar está la Piedra de regreso (" + st.getBlock() + ")", st.is(com.mundosdeaxelis.registry.ModBlocks.PIEDRA_REGRESO.get()));
+            shot("42d_volcan_piedra_regreso");
+            onServer(sp -> useBlock(sp, new net.minecraft.core.BlockPos(3, VY - 8, VZ + 87), false));
+        });
+        add("en la entrada", 2500, () -> {
+        });
+        add("en la entrada (foto)", 300, () -> {
+            net.minecraft.world.entity.player.Player pl = Minecraft.getInstance().player;
+            double lx = pl.getX(), lz = pl.getZ() - VZ;
+            check("la Piedra de regreso te deja en la entrada del volcán (" + String.format(Locale.ROOT, "%.1f %.1f %.1f", lx, pl.getY() - VY, lz) + ")",
+                    Math.abs(lx) < 4 && lz > -6 && lz < 4);
+            shot("43_volcan_regreso");
+        });
         add("erupción", 1500, () -> {
             cmd("gamemode spectator @a");
             lookV(70, 40, -20, 0, 60, 60);
@@ -2140,6 +2301,7 @@ public final class AutoTest {
         fortin();
         fragua();
         torre();
+        ignacio();
         // 7. retratos para las cartas: tres "estudios" cerrados (volcán, forja y torre) y cada criatura quieta, de frente, sin interfaz
         add("estudios", 3000, () -> {
             clearMobs();

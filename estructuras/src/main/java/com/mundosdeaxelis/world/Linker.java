@@ -194,9 +194,13 @@ final class Linker {
                 }
             }
         }
+        exits.clear();
         for (var e : bp.m.entrySet()) {
             long k = e.getKey();
             String s = e.getValue();
+            if (s.startsWith("mundos_de_axelis:piedra_regreso")) {
+                exits.add(k);
+            }
             byte t;
             if (s.startsWith("ladder")) {
                 t = 2;
@@ -220,6 +224,9 @@ final class Linker {
     private boolean clear(int x, int y, int z) {
         return in(x, y, z) && kind[idx(x, y, z)] != 1;
     }
+
+    /** Piedras de regreso del plano: llevan a la entrada (etapa 263). */
+    private final List<Long> exits = new ArrayList<>();
 
     private void walk(int sx, int sy, int sz) {
         int n = w * h * d;
@@ -277,6 +284,23 @@ final class Linker {
             ArrayDeque<Integer> q2 = new ArrayDeque<>();
             back[startIdx] = true;
             q2.add(startIdx);
+            // junto a una Piedra de regreso (etapa 263) se vuelve a la entrada de un salto: cuenta como salida
+            for (long e : exits) {
+                int ex = StructBp.kx(e), ey = StructBp.ky(e), ez = StructBp.kz(e);
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        for (int dy = -1; dy <= 1; dy++) {
+                            if (in(ex + dx, ey + dy, ez + dz)) {
+                                int j = idx(ex + dx, ey + dy, ez + dz);
+                                if (reach[j] && stand[j] && !back[j]) {
+                                    back[j] = true;
+                                    q2.add(j);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             while (!q2.isEmpty()) {
                 int c = q2.poll();
                 List<Integer> pr = rev.get(c);
