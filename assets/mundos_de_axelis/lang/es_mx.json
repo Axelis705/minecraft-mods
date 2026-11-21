@@ -2517,5 +2517,21 @@
   "message.mundos_de_axelis.gema.engarzada": "¡Gema engarzada en %s!",
   "message.mundos_de_axelis.gema.sin_gema": "Esa arma no tiene gema.",
   "message.mundos_de_axelis.gema.hueco_lleno": "Primero vacía el hueco de la gema.",
-  "message.mundos_de_axelis.gema.quitada": "Has sacado la gema del arma."
+  "message.mundos_de_axelis.gema.quitada": "Has sacado la gema del arma.",
+  "entity.mundos_de_axelis.mimico": "Mímico",
+  "item.mundos_de_axelis.mimico_spawn_egg": "Huevo generador de Mímico",
+  "message.mundos_de_axelis.mimico.despierta": "¡No era un cofre! ¡Es un mímico!",
+  "message.mundos_de_axelis.sello.mimico": "El mímico se deshace en polvo: su tesoro está sellado. Vence a %s para saquearlo.",
+  "item.mundos_de_axelis.bomba_esporas": "Bomba de Esporas",
+  "tooltip.mundos_de_axelis.bomba_esporas": "Suelta una nube verde que envenena y daña a los enemigos durante 5 segundos.",
+  "item.mundos_de_axelis.granada_hierro": "Granada de Hierro",
+  "tooltip.mundos_de_axelis.granada_hierro": "Explota y empuja a los enemigos. No rompe bloques.",
+  "item.mundos_de_axelis.orbe_escarcha": "Orbe de Escarcha",
+  "tooltip.mundos_de_axelis.orbe_escarcha": "Congela a los enemigos: quedan muy lentos y débiles.",
+  "item.mundos_de_axelis.bomba_volcanica": "Bomba Volcánica",
+  "tooltip.mundos_de_axelis.bomba_volcanica": "Una erupción que lanza a los enemigos por el aire. Sirve también contra los que no arden.",
+  "item.mundos_de_axelis.orbe_arcano": "Orbe Arcano",
+  "tooltip.mundos_de_axelis.orbe_arcano": "Un remolino atrae a los enemigos al centro y luego estalla.",
+  "tooltip.mundos_de_axelis.arrojadizo.use": "Clic derecho para lanzarlo. Solo daña a los enemigos.",
+  "entity.mundos_de_axelis.arrojadizo": "Arrojadizo"
 }
