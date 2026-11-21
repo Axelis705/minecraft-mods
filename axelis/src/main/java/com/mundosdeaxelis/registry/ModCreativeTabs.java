@@ -72,6 +72,21 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.VAULT_CHEST_MAGIC.get());
                         output.accept(ModItems.VAULT_CHEST_LOCKED_MAGIC.get());
                         output.accept(ModItems.GOLDEN_RIVET.get());
+                        for (com.mundosdeaxelis.crate.CrateKind k : new com.mundosdeaxelis.crate.CrateKind[]{com.mundosdeaxelis.crate.CrateKind.ICE,
+                                com.mundosdeaxelis.crate.CrateKind.MAGMA, com.mundosdeaxelis.crate.CrateKind.MAGIC, com.mundosdeaxelis.crate.CrateKind.RUBY,
+                                com.mundosdeaxelis.crate.CrateKind.SKY, com.mundosdeaxelis.crate.CrateKind.ABYSS}) {
+                            output.accept(ModItems.mender(k, false));
+                            output.accept(ModItems.mender(k, true));
+                        }
+                        for (int t = 1; t <= 8; t++) {
+                            output.accept(ModItems.ESSENCE_RUNES.get(t).get());
+                        }
+                        output.accept(ModItems.HEART_FRAGMENT.get());
+                        for (int t = 1; t <= 5; t++) {
+                            for (String id : com.mundosdeaxelis.world.Cronicas.of(t)) {
+                                output.accept(com.mundosdeaxelis.world.Cronicas.scroll(id));
+                            }
+                        }
                         output.accept(ModItems.POLINIZADOR_SPAWN_EGG.get());
                         output.accept(ModItems.ESPINOSO_SPAWN_EGG.get());
                         output.accept(ModItems.GUARDIAN_MUSGO_SPAWN_EGG.get());

@@ -156,6 +156,16 @@
     },
     {
      "type": "minecraft:item",
+     "name": "mundos_de_axelis:essence_rune_2",
+     "weight": 4
+    },
+    {
+     "type": "minecraft:item",
+     "name": "mundos_de_axelis:ember_rivet",
+     "weight": 2
+    },
+    {
+     "type": "minecraft:item",
      "name": "mundos_de_axelis:mat_runic_bone",
      "weight": 3,
      "functions": [

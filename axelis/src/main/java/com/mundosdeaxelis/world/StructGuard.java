@@ -166,6 +166,20 @@ public final class StructGuard extends SavedData {
         return false;
     }
 
+    /**
+     * Etapa 269: el tier más alto de las estructuras del mod cuya caja contiene ese punto (0 = ninguna, o una casa de habitante).
+     * Sirve para sellar los cofres y barriles y para frenar a quien aún no venció al jefe anterior.
+     */
+    public static int tierAt(ServerLevel level, BlockPos pos) {
+        int best = 0;
+        for (Placed p : get(level.getServer()).list) {
+            if (p.dim() == level.dimension() && p.box().isInside(pos)) {
+                best = Math.max(best, Sellos.designTier(p.design()));
+            }
+        }
+        return best;
+    }
+
     /** ¿Ese bloque es parte de una estructura protegida? */
     public static boolean protectedAt(ServerLevel level, BlockPos pos) {
         StructGuard g = get(level.getServer());

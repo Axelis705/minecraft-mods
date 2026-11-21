@@ -7,27 +7,24 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Botín de los cofres del santuario y de las estructuras (uno distinto para cada jugador que lo abre). Todo escala con la etapa:
- * los materiales de mobs y las llaves son los de la caja de esa etapa, y cada etapa tiene su propio sabor (etapa 268):
+ * Botín de los cofres del santuario y de las estructuras (uno distinto para cada jugador que lo abre). Etapa 269: cada cofre trae
+ * objetos de <b>categorías fijas</b>, iguales en todos los tiers pero con la versión de su tier, para que se entienda para qué
+ * sirve todo (inspirado en Elden Ring, Diablo, Zelda, Terraria y Stardew; ver docs/ideas-botin-referencias.md):
  * <ul>
- *     <li>1, bosque: miel, bayas, manzanas, polvo de hueso, bayas luminosas, regeneración y esmeraldas;</li>
- *     <li>2, forja: hierro, oro, carbón, velocidad y asados;</li>
- *     <li>3, hielo: lapislázuli, diamantes, salmón y pastel de calabaza, visión nocturna y catalejo;</li>
- *     <li>4, volcán: resistencia al fuego, blaze, crema de magma, oro, obsidiana y restos antiguos;</li>
- *     <li>5, magia: libros encantados, amatista, perlas de ender, regeneración, fuerza y algún tótem;</li>
- *     <li>6 a 8 (aún sin estructuras): diamantes, perlas, chatarra de netherita y manzanas encantadas.</li>
+ *     <li><b>reparadores</b> de la armadura y las armas de la caja del tier (normal y mayor);</li>
+ *     <li><b>Runas de Esencia</b> del tier (se rompen y dan Esencia);</li>
+ *     <li><b>fragmentos de llave</b> de la caja del tier (se funden en el Gran Yunque);</li>
+ *     <li><b>fragmentos de corazón</b> (cuatro = un corazón más para siempre): seguro en el gran tesoro, a veces en los demás;</li>
+ *     <li><b>pergaminos de la crónica</b> del tier que el jugador aún no leyó;</li>
+ *     <li>materiales de mobs, libros encantados y algo de Minecraft propio del tier (diamantes en el hielo, oro en el volcán…).</li>
  * </ul>
- * Todos pueden traer <b>fragmentos de llave</b> de la caja de la etapa (cuatro se forjan en una llave en la Mesa del Artífice) y
- * <b>libros encantados</b>. No lleva nada que dependa de la suerte de otro jugador.
+ * Sin pociones. La rareza del cofre es la de su tier (Común … Celestial) y la «pieza estrella» ({@link #isStar}) tiene su efecto.
  */
 public final class VaultLoot {
     private VaultLoot() {
@@ -65,10 +62,6 @@ public final class VaultLoot {
 
     private static ItemStack of(Item it, int n) {
         return new ItemStack(it, Math.max(1, n));
-    }
-
-    private static ItemStack potion(Potion p) {
-        return PotionUtils.setPotion(new ItemStack(Items.POTION), p);
     }
 
     /** Con esa probabilidad (%), añade una decoración del mod que sale en la caja de la etapa (premio raro para decorar). */
@@ -155,7 +148,40 @@ public final class VaultLoot {
     }
 
     public static List<ItemStack> roll(Kind kind, int stage, RandomSource r, int lockLevel) {
-        return scatter(rollRaw(kind, stage, r, lockLevel), r);
+        return roll(kind, stage, r, lockLevel, null);
+    }
+
+    /** @param archive el Archivo del jugador que abre el cofre (para darle un pergamino que aún no leyó), o null. */
+    public static List<ItemStack> roll(Kind kind, int stage, RandomSource r, int lockLevel, java.util.Set<String> archive) {
+        return scatter(rollRaw(kind, stage, r, lockLevel, archive), r);
+    }
+
+    /** La «pieza estrella» de un cofre: un fragmento de corazón, una llave entera, una manzana encantada o un tótem. */
+    public static boolean isStar(ItemStack it) {
+        return it.is(ModItems.HEART_FRAGMENT.get()) || it.getItem() instanceof com.mundosdeaxelis.item.CrateKeyItem
+                || it.is(Items.ENCHANTED_GOLDEN_APPLE) || it.is(Items.TOTEM_OF_UNDYING);
+    }
+
+    private static ItemStack rune(int st, int n) {
+        return of(ModItems.ESSENCE_RUNES.get(Math.max(1, Math.min(8, st))).get(), n);
+    }
+
+    private static ItemStack tierMender(CrateKind crate, boolean greater, int n) {
+        return of(ModItems.mender(crate, greater), n);
+    }
+
+    private static ItemStack heart() {
+        return of(ModItems.HEART_FRAGMENT.get(), 1);
+    }
+
+    /** Con esa probabilidad (%), un pergamino del tier que el jugador aún no leyó. */
+    private static void addScroll(List<ItemStack> out, int st, java.util.Set<String> archive, RandomSource r, int percent) {
+        if (r.nextInt(100) < percent) {
+            ItemStack sc = com.mundosdeaxelis.world.Cronicas.unread(st, archive, r);
+            if (!sc.isEmpty()) {
+                out.add(sc);
+            }
+        }
     }
 
     /**
@@ -185,35 +211,36 @@ public final class VaultLoot {
         return out;
     }
 
-    private static List<ItemStack> rollRaw(Kind kind, int stage, RandomSource r, int lockLevel) {
+    private static List<ItemStack> rollRaw(Kind kind, int stage, RandomSource r, int lockLevel, java.util.Set<String> archive) {
         int lv = Math.max(1, Math.min(5, lockLevel));
         int st = Math.max(1, Math.min(8, stage));
         CrateKind crate = CrateKind.byIndex(st);
         List<ItemStack> out = new ArrayList<>();
         switch (kind) {
             case ANTE -> {
+                // provisiones: comida, luz, un reparador y una runa
                 out.add(apples(st, 2));
-                out.add(meal(st, 12));
+                out.add(meal(st, 10));
                 out.add(food(st, 2));
-                out.add(of(Items.EXPERIENCE_BOTTLE, 8));
-                out.add(potion(Potions.STRONG_HEALING));
                 out.add(of(Items.TORCH, 12 + r.nextInt(9)));
-                out.add(mender(st, 1 + r.nextInt(2)));
+                out.add(tierMender(crate, false, 1 + r.nextInt(2)));
+                out.add(rune(st, 1));
+                out.add(of(Items.EXPERIENCE_BOTTLE, 4));
                 if (r.nextInt(100) < 25) {
                     out.add(fragments(crate, 1));
                 }
+                addScroll(out, st, archive, r, 10);
             }
             case TRIAL -> {
                 for (CrateForge.Need n : CrateForge.mats(crate)) {
                     out.add(of(ModItems.MATS.get(n.mat()).get(), 1 + r.nextInt(2)));
                 }
-                out.add(coins(st, 4 + 2 * st + r.nextInt(4)));
-                out.add(of(Items.EXPERIENCE_BOTTLE, 6));
-                out.add(apples(st, 1));
-                out.add(food(st, 1));
+                out.add(rune(st, 1 + r.nextInt(2)));
+                out.add(coins(st, 3 + st + r.nextInt(4)));
                 out.add(travel(st, 4 + r.nextInt(3)));
-                if (r.nextInt(100) < 30) {
-                    out.add(mender(st, 1));
+                out.add(food(st, 1));
+                if (r.nextInt(100) < 35) {
+                    out.add(tierMender(crate, false, 1));
                 }
                 if (r.nextInt(100) < 50) {
                     out.add(fragments(crate, 1));
@@ -221,27 +248,28 @@ public final class VaultLoot {
                 if (r.nextInt(100) < 25) {
                     out.add(book(r, st, 0));
                 }
+                if (r.nextInt(100) < 6) {
+                    out.add(heart());
+                }
+                addScroll(out, st, archive, r, 30);
                 addDecor(out, crate, r, 6);
             }
             case LOCKED -> {
                 for (CrateForge.Need n : CrateForge.mats(crate)) {
                     out.add(of(ModItems.MATS.get(n.mat()).get(), 1 + (lv >= 3 ? 1 : 0) + (lv >= 5 && r.nextBoolean() ? 1 : 0)));
                 }
-                out.add(travel(st, 3 + 2 * lv));
-                out.add(coins(st, 4 * lv + r.nextInt(5)));
-                out.add(apples(st, 1 + lv / 3));
-                out.add(food(st, 1));
+                out.add(rune(st, 1 + lv / 2));
+                out.add(coins(st, 3 * lv + r.nextInt(4)));
+                out.add(travel(st, 2 + lv));
                 out.add(jelly(1 + r.nextInt(2) + lv / 2));
-                if (r.nextInt(100) < 8 * lv) {
-                    out.add(mender(st, 1));
+                out.add(of(Items.EXPERIENCE_BOTTLE, 2 * lv));
+                if (r.nextInt(100) < 10 * lv) {
+                    out.add(tierMender(crate, false, 1));
                 }
-                // cuanto más difícil la cerradura, mejor premio: reparador dorado desde el nivel 4 y decoración rara del mod
+                // cuanto más difícil la cerradura, mejor premio: reparador mayor desde el nivel 4, decoración rara del mod
                 if (lv >= 4 && r.nextInt(100) < 16 * (lv - 3)) {
-                    out.add(goldenMender(st));
+                    out.add(tierMender(crate, true, 1));
                 }
-                addDecor(out, crate, r, 4 * lv);
-                out.add(of(Items.EXPERIENCE_BOTTLE, 4 + 2 * lv));
-                // fragmentos de llave: uno seguro desde el nivel 3, dos en el 5; a veces una llave entera
                 int frag = lv >= 5 ? 2 : lv >= 3 ? 1 : r.nextInt(100) < 30 * lv ? 1 : 0;
                 if (frag > 0) {
                     out.add(fragments(crate, frag));
@@ -249,27 +277,33 @@ public final class VaultLoot {
                 if (r.nextInt(100) < 12 * lv) {
                     out.add(book(r, st, 2 * lv));
                 }
+                if (lv >= 4 && r.nextInt(100) < 25 * (lv - 3)) {
+                    out.add(heart());
+                }
                 if (r.nextInt(100) < 6 * lv) {
                     out.add(of(ModItems.KEYS.get(crate).get(), 1));
                 }
+                addScroll(out, st, archive, r, 20 + 5 * lv);
+                addDecor(out, crate, r, 4 * lv);
             }
             case TREASURE -> {
+                // el gran tesoro del final: siempre un fragmento de corazón
+                out.add(heart());
                 for (CrateForge.Need n : CrateForge.mats(crate)) {
                     out.add(of(ModItems.MATS.get(n.mat()).get(), 2 + r.nextInt(2)));
                 }
                 out.add(fragments(crate, 2 + (r.nextInt(100) < 35 ? 1 : 0)));
-                out.add(coins(st, 8 + 4 * st + r.nextInt(5)));
+                out.add(rune(st, 2 + r.nextInt(2)));
+                out.add(tierMender(crate, true, 1));
+                out.add(tierMender(crate, false, 1 + r.nextInt(2)));
+                out.add(coins(st, 6 + 3 * st + r.nextInt(5)));
                 out.add(travel(st, 6 + r.nextInt(3)));
                 out.add(apples(st, 2));
-                out.add(of(Items.EXPERIENCE_BOTTLE, 12));
+                out.add(of(Items.EXPERIENCE_BOTTLE, 10));
                 out.add(jelly(2 + r.nextInt(3)));
-                out.add(mender(st, 1 + r.nextInt(2)));
                 out.add(book(r, st, 8));
                 if (r.nextInt(100) < 40) {
                     out.add(book(r, st, 4));
-                }
-                if (r.nextInt(100) < 45) {
-                    out.add(goldenMender(st));
                 }
                 if (r.nextInt(100) < 20) {
                     out.add(of(ModItems.KEYS.get(crate).get(), 1));
@@ -277,6 +311,7 @@ public final class VaultLoot {
                 if (st >= 4 && r.nextInt(100) < 4 * st) {
                     out.add(of(Items.ENCHANTED_GOLDEN_APPLE, 1));
                 }
+                addScroll(out, st, archive, r, 70);
                 addDecor(out, crate, r, 35);
             }
             case CRYPT -> {
@@ -285,16 +320,21 @@ public final class VaultLoot {
                     out.add(of(ModItems.MATS.get(n.mat()).get(), 2 + r.nextInt(2)));
                 }
                 out.add(fragments(crate, 1 + r.nextInt(2)));
-                out.add(coins(st, 8 + 4 * st + r.nextInt(5)));
+                out.add(rune(st, 2 + r.nextInt(2)));
+                out.add(tierMender(crate, false, 1 + r.nextInt(2)));
+                if (r.nextInt(100) < 55) {
+                    out.add(tierMender(crate, true, 1));
+                }
+                if (r.nextInt(100) < 50) {
+                    out.add(heart());
+                }
+                out.add(coins(st, 6 + 3 * st + r.nextInt(5)));
                 out.add(travel(st, 8));
                 out.add(apples(st, 2));
-                out.add(of(Items.EXPERIENCE_BOTTLE, 14));
+                out.add(of(Items.EXPERIENCE_BOTTLE, 12));
                 out.add(jelly(3 + r.nextInt(3)));
-                out.add(mender(st, 1 + r.nextInt(2)));
                 out.add(book(r, st, 6));
-                if (r.nextInt(100) < 55) {
-                    out.add(goldenMender(st));
-                }
+                addScroll(out, st, archive, r, 50);
                 addDecor(out, crate, r, 45);
             }
         }
@@ -326,7 +366,7 @@ public final class VaultLoot {
         }
     }
 
-    /** Bosque (etapa 1): miel, bayas dulces, manzanas, polvo de hueso, bayas luminosas, regeneración y algún bloque de esmeralda. */
+    /** Bosque (etapa 1): miel, bayas dulces y luminosas, manzanas, polvo de hueso, flechas y algún bloque de esmeralda. */
     private static void forest(List<ItemStack> out, Kind kind, int w, RandomSource r) {
         if (w == 0) {
             out.add(of(Items.HONEY_BOTTLE, 2));
@@ -336,25 +376,20 @@ public final class VaultLoot {
         out.add(of(Items.SWEET_BERRIES, 4 + 2 * w));
         out.add(of(Items.APPLE, 2 + w + r.nextInt(3)));
         out.add(of(Items.BONE_MEAL, 4 + 2 * w));
-        if (r.nextInt(100) < 50) {
-            out.add(of(Items.HONEY_BOTTLE, 1 + w / 2));
-        }
+        out.add(of(Items.ARROW, 8 + 4 * w));
         if (w >= 2) {
             out.add(of(Items.GLOW_BERRIES, 4 + r.nextInt(5)));
-            out.add(potion(w >= 3 ? Potions.LONG_REGENERATION : Potions.REGENERATION));
+            out.add(of(Items.HONEY_BOTTLE, 2));
         }
         if (w >= 3 && r.nextInt(100) < 35) {
             out.add(of(Items.EMERALD_BLOCK, 1));
         }
     }
 
-    /** Forja (etapa 2): metal, carbón, poción de velocidad. */
+    /** Forja (etapa 2): hierro, oro, carbón y bloques de hierro y carbón en los mejores cofres. */
     private static void forge(List<ItemStack> out, Kind kind, int w, int lv, RandomSource r) {
         switch (kind) {
-            case ANTE -> {
-                out.add(potion(Potions.LONG_SWIFTNESS));
-                out.add(of(Items.COAL, 8));
-            }
+            case ANTE -> out.add(of(Items.COAL, 8));
             case TRIAL -> {
                 out.add(of(Items.IRON_INGOT, 4 + r.nextInt(5)));
                 if (r.nextInt(100) < 30) {
@@ -366,26 +401,21 @@ public final class VaultLoot {
                 if (lv >= 3) {
                     out.add(of(Items.GOLD_INGOT, lv - 1 + r.nextInt(3)));
                 }
-                if (lv >= 4 && r.nextInt(100) < 35) {
-                    out.add(potion(Potions.LONG_SWIFTNESS));
-                }
             }
             case TREASURE, CRYPT -> {
                 out.add(of(Items.IRON_INGOT, 10 + r.nextInt(7)));
                 out.add(of(Items.GOLD_INGOT, 2 + r.nextInt(3)));
                 out.add(of(Items.COAL_BLOCK, 1 + r.nextInt(2)));
-                out.add(potion(Potions.LONG_SWIFTNESS));
-                if (kind == Kind.TREASURE && r.nextInt(100) < 40) {
+                if (r.nextInt(100) < 40) {
                     out.add(of(Items.IRON_BLOCK, 1));
                 }
             }
         }
     }
 
-    /** Hielo (etapa 3): lapislázuli, diamantes, pastel de calabaza, visión nocturna (las mazmorras son oscuras) y catalejo. */
+    /** Hielo (etapa 3): lapislázuli, diamantes, pastel de calabaza, amatista y, a veces, un catalejo. */
     private static void ice(List<ItemStack> out, Kind kind, int w, RandomSource r) {
         if (w == 0) {
-            out.add(potion(Potions.LONG_NIGHT_VISION));
             out.add(of(Items.PUMPKIN_PIE, 4));
             return;
         }
@@ -396,7 +426,6 @@ public final class VaultLoot {
         }
         out.add(of(Items.PUMPKIN_PIE, 2 + w));
         if (w >= 2) {
-            out.add(potion(Potions.LONG_NIGHT_VISION));
             out.add(of(Items.AMETHYST_SHARD, 3 + r.nextInt(4)));
         }
         if (w >= 3) {
@@ -407,19 +436,13 @@ public final class VaultLoot {
         }
     }
 
-    /** Volcán (etapa 4): resistencia al fuego, polvo de blaze, crema de magma, oro y obsidiana. */
+    /** Volcán (etapa 4): crema de magma, blaze, oro, obsidiana y, a veces, restos antiguos. */
     private static void volcano(List<ItemStack> out, Kind kind, int lv, RandomSource r) {
         switch (kind) {
-            case ANTE -> {
-                out.add(potion(Potions.LONG_FIRE_RESISTANCE));
-                out.add(of(Items.MAGMA_CREAM, 2 + r.nextInt(3)));
-            }
+            case ANTE -> out.add(of(Items.MAGMA_CREAM, 2 + r.nextInt(3)));
             case TRIAL -> {
                 out.add(of(Items.BLAZE_POWDER, 3 + r.nextInt(4)));
                 out.add(of(Items.GOLD_INGOT, 3 + r.nextInt(4)));
-                if (r.nextInt(100) < 40) {
-                    out.add(potion(Potions.FIRE_RESISTANCE));
-                }
             }
             case LOCKED -> {
                 out.add(of(Items.GOLD_INGOT, 2 * lv + r.nextInt(4)));
@@ -435,7 +458,6 @@ public final class VaultLoot {
                 out.add(of(Items.GOLD_BLOCK, 1 + r.nextInt(2)));
                 out.add(of(Items.BLAZE_ROD, 3 + r.nextInt(3)));
                 out.add(of(Items.MAGMA_CREAM, 4 + r.nextInt(4)));
-                out.add(potion(Potions.LONG_FIRE_RESISTANCE));
                 if (r.nextInt(100) < 35) {
                     out.add(of(Items.ANCIENT_DEBRIS, 1));
                 }
@@ -443,10 +465,9 @@ public final class VaultLoot {
         }
     }
 
-    /** Magia (etapa 5): más libros, amatista, lapislázuli, perlas de ender, galletas de la suerte, regeneración, fuerza y tótems. */
+    /** Magia (etapa 5): más libros encantados, amatista, lapislázuli, perlas de ender, piedra luminosa, galletas y algún tótem. */
     private static void magic(List<ItemStack> out, Kind kind, int w, RandomSource r) {
         if (w == 0) {
-            out.add(potion(Potions.LONG_REGENERATION));
             out.add(of(ModItems.FORTUNE_COOKIE.get(), 2));
             return;
         }
@@ -458,11 +479,9 @@ public final class VaultLoot {
         }
         if (w >= 2) {
             out.add(of(Items.GLOWSTONE_DUST, 6 + r.nextInt(6)));
-            out.add(potion(w >= 3 ? Potions.STRONG_STRENGTH : Potions.STRENGTH));
         }
         if (w >= 3) {
             out.add(of(Items.EXPERIENCE_BOTTLE, 8));
-            out.add(potion(Potions.LONG_INVISIBILITY));
             if (r.nextInt(100) < 25) {
                 out.add(of(Items.TOTEM_OF_UNDYING, 1));
             }
@@ -472,7 +491,6 @@ public final class VaultLoot {
     /** Etapas 6 a 8 (aún sin estructuras propias): diamantes, perlas de ender, chatarra de netherita y manzanas encantadas. */
     private static void high(List<ItemStack> out, Kind kind, int w, int st, RandomSource r) {
         if (w == 0) {
-            out.add(potion(Potions.STRONG_REGENERATION));
             out.add(of(Items.GOLDEN_APPLE, 1));
             return;
         }

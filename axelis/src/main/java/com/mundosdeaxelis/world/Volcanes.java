@@ -173,6 +173,20 @@ public final class Volcanes extends SavedData {
     // ================================================================== alta y baja
 
     /** Marca (antes de entrar al mundo) cada enemigo del volcán con su número en la lista del plano. */
+    /** Etapa 269: ¿hay un volcán del mod a menos de {@code r} bloques (en horizontal) de ese punto? */
+    public static boolean near(ServerLevel level, BlockPos pos, int r) {
+        for (V v : get(level.getServer()).list) {
+            if (v.dim == level.dimension()) {
+                BlockPos c = v.center();
+                long dx = c.getX() - pos.getX(), dz = c.getZ() - pos.getZ();
+                if (dx * dx + dz * dz <= (long) r * r) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void tagMob(int index, Mob mob) {
         mob.getPersistentData().putInt(TAG_I, index);
     }

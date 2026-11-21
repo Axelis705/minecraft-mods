@@ -52,6 +52,12 @@ public class LlaveCeldaItem extends Item {
             sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.llave.nadie"), true);
             return InteractionResult.FAIL;
         }
+        // etapa 269: las celdas de un tier que aún no te toca están selladas (la llave no se gasta)
+        int tier = com.mundosdeaxelis.world.Sellos.npcTier(h.kindId());
+        if (!com.mundosdeaxelis.world.Sellos.canLoot(sp, tier)) {
+            com.mundosdeaxelis.world.Sellos.deny(sp, door, tier, "celda");
+            return InteractionResult.FAIL;
+        }
         if (!sp.getAbilities().instabuild) {
             ctx.getItemInHand().shrink(1);
         }

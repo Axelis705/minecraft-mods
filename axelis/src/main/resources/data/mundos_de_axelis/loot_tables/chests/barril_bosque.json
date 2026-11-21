@@ -181,6 +181,16 @@
     },
     {
      "type": "minecraft:item",
+     "name": "mundos_de_axelis:essence_rune_1",
+     "weight": 4
+    },
+    {
+     "type": "minecraft:item",
+     "name": "mundos_de_axelis:acorn",
+     "weight": 2
+    },
+    {
+     "type": "minecraft:item",
      "name": "mundos_de_axelis:mat_torn_cloth",
      "weight": 3,
      "functions": [

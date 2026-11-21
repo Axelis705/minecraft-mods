@@ -725,6 +725,33 @@ public final class AutoTest {
             check("hay lobeznos de escarcha en el fortín", clientCount(com.mundosdeaxelis.entity.LoboEscarcha.class) >= 2);
             shot("60_fortin_sala");
         });
+        // etapa 269: sin haber vencido al jefe anterior, el fortín (tier 3) está sellado: lentitud y el cofre no se abre
+        net.minecraft.core.BlockPos sealedChest = new net.minecraft.core.BlockPos(FX - 14, SY, FZ + 31);
+        add("sellado (olvidar el progreso)", 3000, () -> {
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            cmd("kill @e[type=mundos_de_axelis:lobo_escarcha]");
+            cmd("mundos prueba olvidar_progreso");
+            Minecraft.getInstance().player.getInventory().selected = 8;
+            cmd("item replace entity @a hotbar.8 with air");
+            standLooking(FX - 12.5, SY, FZ + 31.5, FX - 14 + 0.5, SY + 0.5, FZ + 31.5);
+        });
+        add("sellado (cofre)", 1500, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            check("dentro de una estructura que aún no te toca, un poder antiguo te frena (lentitud)",
+                    mc.player.hasEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN));
+            useBlock(sealedChest);
+        });
+        add("sellado (comprobar)", 300, () -> {
+            check("el cofre de escarcha está sellado si no venciste al jefe anterior (pantalla " + screenName() + ")",
+                    !(Minecraft.getInstance().screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?>));
+            shot("59b_fortin_sellado");
+        });
+        add("sellado (recuperar el progreso)", 1500, () -> {
+            open(null);
+            cmd("mundos desbloquear 5");
+            cmd("effect clear @a minecraft:slowness");
+        });
         add("bruno preso", 2500, () -> {
             cmd("gamemode survival @a");
             cmd("effect give @a minecraft:resistance 600 4 true");
@@ -1117,6 +1144,7 @@ public final class AutoTest {
     /** Dónde se prueban los cofres nuevos y la forja de llaves (un rincón libre del mundo plano). */
     private static final int LTX = 40, LTY = -60, LTZ = -40;
     private static volatile int vaultStacks, vaultFrags, vaultBooks;
+    private static volatile int i0 = -1, e0;
 
     private static void useBlock(net.minecraft.core.BlockPos pos) {
         Minecraft mc = Minecraft.getInstance();
@@ -1160,7 +1188,7 @@ public final class AutoTest {
         add("botín (clic)", 2000, () -> useBlock(magic));
         add("botín (contenido)", 300, () -> {
             Minecraft mc = Minecraft.getInstance();
-            int n = 0, f = 0, b = 0;
+            int n = 0, f = 0, b = 0, hf = 0;
             if (mc.screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> cs) {
                 for (int i = 0; i < 27 && i < cs.getMenu().slots.size(); i++) {
                     net.minecraft.world.item.ItemStack it = cs.getMenu().slots.get(i).getItem();
@@ -1173,8 +1201,12 @@ public final class AutoTest {
                     if (it.is(net.minecraft.world.item.Items.ENCHANTED_BOOK)) {
                         b++;
                     }
+                    if (it.is(com.mundosdeaxelis.registry.ModItems.HEART_FRAGMENT.get())) {
+                        hf++;
+                    }
                 }
             }
+            check("el gran tesoro trae un fragmento de corazón (" + hf + ")", hf >= 1);
             vaultStacks = n;
             vaultFrags = f;
             vaultBooks = b;
@@ -1182,6 +1214,45 @@ public final class AutoTest {
             check("el gran tesoro arcano se abre con botín (" + screenName() + ": " + n + " pilas, " + f + " fragmentos de llave de la Magia, "
                     + b + " libros encantados)", n >= 12 && f >= 2 && b >= 1);
             shot("91_botin_gran_tesoro");
+        });
+        add("corazón (dar)", 1200, () -> {
+            open(null);
+            cmd("item replace entity @a hotbar.8 with mundos_de_axelis:heart_fragment 4");
+            Minecraft.getInstance().player.getInventory().selected = 8;
+        });
+        for (int i = 0; i < 4; i++) {
+            add("corazón (absorber " + (i + 1) + ")", 900, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                if (i0 < 0) {
+                    i0 = Math.round(mc.player.getMaxHealth());
+                }
+                mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+            });
+        }
+        add("corazón (comprobar)", 600, () -> {
+            float mh = Minecraft.getInstance().player.getMaxHealth();
+            check("cuatro fragmentos de corazón dan un corazón más para siempre (vida máxima " + i0 + " → " + mh + ")", mh >= i0 + 2);
+            shot("93a_botin_corazon");
+        });
+        add("runa (dar)", 1000, () -> {
+            e0 = TableClient.essence;
+            cmd("item replace entity @a hotbar.8 with mundos_de_axelis:essence_rune_5 1");
+        });
+        add("runa (romper)", 1500, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+        });
+        add("runa (comprobar)", 300, () -> check("la Runa de Esencia V se rompe y da Esencia (" + e0 + " → " + TableClient.essence + ")",
+                TableClient.essence >= e0 + com.mundosdeaxelis.item.EssenceRuneItem.VALUE[5]));
+        add("pergamino (dar)", 1000, () -> cmd("item replace entity @a hotbar.8 with mundos_de_axelis:lore_scroll{Pergamino:\"magia_2\"} 1"));
+        add("pergamino (leer)", 1500, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+        });
+        add("pergamino (foto)", 300, () -> {
+            check("el pergamino de la crónica se abre como un libro (" + screenName() + ")",
+                    Minecraft.getInstance().screen instanceof net.minecraft.client.gui.screens.inventory.BookViewScreen);
+            shot("93b_botin_pergamino");
         });
         add("mesa (poner)", 1500, () -> {
             open(null);

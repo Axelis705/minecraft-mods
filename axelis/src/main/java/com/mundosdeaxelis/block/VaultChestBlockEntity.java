@@ -47,6 +47,8 @@ public class VaultChestBlockEntity extends BlockEntity {
     private boolean picked = false;
     private static final int SESSION_TICKS = 20 * 90;
     private final Map<UUID, Long> cooldown = new HashMap<>();
+    /** Solo en el cliente (etapa 269): quién ya abrió este cofre, para no dibujar el haz de luz de los cofres sin abrir. */
+    private final Set<UUID> clientOpened = new HashSet<>();
     private record Session(BlockPos pos, long start) {
     }
 
@@ -144,6 +146,76 @@ public class VaultChestBlockEntity extends BlockEntity {
         cooldown.clear();
         picked = false;
         setChanged();
+        if (level != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    /** Etapa del cofre: también es su rareza (1 Común … 8 Celestial). */
+    public int stage() {
+        return stage;
+    }
+
+    /** Solo en el cliente: ¿ese jugador ya abrió este cofre? */
+    public boolean openedBy(UUID id) {
+        return clientOpened.contains(id);
+    }
+
+    /** Rareza del cofre (la de su etapa): Común, Poco común, Rara, Épica, Legendaria, Mítica, Estelar, Celestial. */
+    public static com.mundosdeaxelis.crate.Tier rarity(int stage) {
+        com.mundosdeaxelis.crate.Tier[] t = com.mundosdeaxelis.crate.Tier.values();
+        return t[Math.max(0, Math.min(t.length - 1, stage - 1))];
+    }
+
+    /**
+     * La «pieza estrella» (etapa 269): si el botín trae algo muy bueno (un fragmento de corazón, una llave entera, una manzana
+     * encantada, un tótem…) suena distinto, salta un destello y sale un aviso con el color de la rareza.
+     */
+    private void starPiece(ServerLevel sl, ServerPlayer sp, List<ItemStack> items) {
+        ItemStack best = ItemStack.EMPTY;
+        for (ItemStack it : items) {
+            if (VaultLoot.isStar(it)) {
+                best = it;
+                break;
+            }
+        }
+        if (best.isEmpty()) {
+            return;
+        }
+        double x = worldPosition.getX() + 0.5, y = worldPosition.getY() + 1.0, z = worldPosition.getZ() + 0.5;
+        sl.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 0.7F, 1.3F);
+        sl.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 1.0F, 0.8F);
+        sl.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, x, y, z, 30, 0.3, 0.5, 0.3, 0.35);
+        sl.sendParticles(ParticleTypes.END_ROD, x, y + 0.5, z, 16, 0.2, 0.8, 0.2, 0.05);
+        sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.vault.star", best.getHoverName())
+                .withStyle(rarity(stage).style()), true);
+    }
+
+    // ------------------------------------------------------------------ lo que ve el cliente (quién ya lo abrió)
+
+    /** El haz de luz sube hasta 13 bloques: que no se deje de dibujar al mirar hacia arriba. */
+    @Override
+    public net.minecraft.world.phys.AABB getRenderBoundingBox() {
+        return new net.minecraft.world.phys.AABB(worldPosition).expandTowards(0, 14, 0);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        tag.putString("Kind", kind.name());
+        tag.putInt("Stage", stage);
+        tag.putInt("LockLevel", lockLevel);
+        ListTag o = new ListTag();
+        for (UUID id : loots.keySet()) {
+            o.add(StringTag.valueOf(id.toString()));
+        }
+        tag.put("Opened", o);
+        return tag;
+    }
+
+    @Override
+    public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
     }
 
     public void open(ServerPlayer sp) {
@@ -151,6 +223,11 @@ public class VaultChestBlockEntity extends BlockEntity {
             return;
         }
         UUID id = sp.getUUID();
+        // etapa 269: cada jugador solo lootea hasta su etapa + 1 (vencer al jefe anterior rompe el sello)
+        if (!com.mundosdeaxelis.world.Sellos.canLoot(sp, stage)) {
+            com.mundosdeaxelis.world.Sellos.deny(sp, worldPosition, stage, "cofre");
+            return;
+        }
         if (locked() && !picked && !unlocked.contains(id)) {
             long now = sl.getGameTime();
             for (Map.Entry<UUID, Session> en : SESSIONS.entrySet()) {
@@ -193,7 +270,7 @@ public class VaultChestBlockEntity extends BlockEntity {
         SimpleContainer c = loots.get(id);
         if (c == null) {
             c = new SimpleContainer(27);
-            List<ItemStack> items = VaultLoot.roll(kind, stage, sp.getRandom(), lockLevel);
+            List<ItemStack> items = VaultLoot.roll(kind, stage, sp.getRandom(), lockLevel, Essence.archive(sp));
             List<Integer> slots = new ArrayList<>();
             for (int i = 0; i < 27; i++) {
                 slots.add(i);
@@ -204,6 +281,8 @@ public class VaultChestBlockEntity extends BlockEntity {
             }
             c.addListener(x -> setChanged());
             loots.put(id, c);
+            sl.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); // que el cliente apague el haz de luz
+            starPiece(sl, sp, items);
             int ess = VaultLoot.essence(kind, stage);
             Essence.add(sp, ess);
             Essence.sync(sp);
@@ -216,7 +295,8 @@ public class VaultChestBlockEntity extends BlockEntity {
         }
         final SimpleContainer container = c;
         sp.openMenu(new SimpleMenuProvider((wid, inv, p) -> ChestMenu.threeRows(wid, inv, container),
-                Component.translatable(themed("container.mundos_de_axelis.vault_" + kind.name().toLowerCase(java.util.Locale.ROOT)))));
+                Component.translatable(themed("container.mundos_de_axelis.vault_" + kind.name().toLowerCase(java.util.Locale.ROOT)))
+                        .withStyle(rarity(stage).style())));
     }
 
     @Override
@@ -257,6 +337,15 @@ public class VaultChestBlockEntity extends BlockEntity {
             try {
                 unlocked.add(UUID.fromString(t.getAsString()));
             } catch (IllegalArgumentException ignored) {
+            }
+        }
+        if (tag.contains("Opened", Tag.TAG_LIST)) {
+            clientOpened.clear();
+            for (Tag t : tag.getList("Opened", Tag.TAG_STRING)) {
+                try {
+                    clientOpened.add(UUID.fromString(t.getAsString()));
+                } catch (IllegalArgumentException ignored) {
+                }
             }
         }
         loots.clear();

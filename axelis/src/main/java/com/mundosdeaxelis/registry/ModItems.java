@@ -165,6 +165,65 @@ public final class ModItems {
     public static final RegistryObject<Item> GOLDEN_RIVET = ITEMS.register("golden_rivet",
             () -> new com.mundosdeaxelis.item.AcornItem(com.mundosdeaxelis.item.AcornItem.REPAIR_GOLDEN, "golden_rivet", Rarity.RARE,
                     "rivet", com.mundosdeaxelis.crate.CrateKind.FORGE));
+    // ---------------------------------------------------------------- etapa 269: reparadores de los demás tiers (normal 25 %, mayor 60 %)
+    private static RegistryObject<Item> mend(String id, boolean greater, String prefix, com.mundosdeaxelis.crate.CrateKind k) {
+        return ITEMS.register(id, () -> new com.mundosdeaxelis.item.AcornItem(
+                greater ? com.mundosdeaxelis.item.AcornItem.REPAIR_GOLDEN : com.mundosdeaxelis.item.AcornItem.REPAIR, id,
+                greater ? Rarity.EPIC : Rarity.RARE, prefix, k));
+    }
+
+    /** Hielo: Escama de escarcha y Escama de escarcha pura (repara los sets Hielo y Aurora). */
+    public static final RegistryObject<Item> FROST_SCALE = mend("frost_scale", false, "frost", com.mundosdeaxelis.crate.CrateKind.ICE);
+    public static final RegistryObject<Item> PURE_FROST_SCALE = mend("pure_frost_scale", true, "frost", com.mundosdeaxelis.crate.CrateKind.ICE);
+    /** Fuego: Brasa templada y Corazón de brasa (sets Magma y Obsidiana). */
+    public static final RegistryObject<Item> TEMPERED_CINDER = mend("tempered_cinder", false, "cinder", com.mundosdeaxelis.crate.CrateKind.MAGMA);
+    public static final RegistryObject<Item> CINDER_HEART = mend("cinder_heart", true, "cinder", com.mundosdeaxelis.crate.CrateKind.MAGMA);
+    /** Magia: Runa de remiendo y Runa de remiendo mayor (sets Magia y Luna). */
+    public static final RegistryObject<Item> MENDING_RUNE = mend("mending_rune", false, "mendrune", com.mundosdeaxelis.crate.CrateKind.MAGIC);
+    public static final RegistryObject<Item> GREATER_MENDING_RUNE = mend("greater_mending_rune", true, "mendrune", com.mundosdeaxelis.crate.CrateKind.MAGIC);
+    /** Dragón (tier 6, aún sin estructuras): Escama de remiendo y Escama ancestral. */
+    public static final RegistryObject<Item> DRAGON_MEND_SCALE = mend("dragon_mend_scale", false, "dragonmend", com.mundosdeaxelis.crate.CrateKind.RUBY);
+    public static final RegistryObject<Item> ANCIENT_DRAGON_SCALE = mend("ancient_dragon_scale", true, "dragonmend", com.mundosdeaxelis.crate.CrateKind.RUBY);
+    /** Cielo (tier 7): Pluma tejida y Pluma de tormenta tejida. */
+    public static final RegistryObject<Item> WOVEN_FEATHER = mend("woven_feather", false, "skyfeather", com.mundosdeaxelis.crate.CrateKind.SKY);
+    public static final RegistryObject<Item> STORM_WOVEN_FEATHER = mend("storm_woven_feather", true, "skyfeather", com.mundosdeaxelis.crate.CrateKind.SKY);
+    /** Abismo (tier 8): Astilla del vacío y Astilla del vacío pura. */
+    public static final RegistryObject<Item> VOID_SPLINTER = mend("void_splinter", false, "voidmend", com.mundosdeaxelis.crate.CrateKind.ABYSS);
+    public static final RegistryObject<Item> PURE_VOID_SPLINTER = mend("pure_void_splinter", true, "voidmend", com.mundosdeaxelis.crate.CrateKind.ABYSS);
+
+    /** El reparador de la caja de un tier: el normal o el mayor. */
+    public static net.minecraft.world.item.Item mender(com.mundosdeaxelis.crate.CrateKind k, boolean greater) {
+        RegistryObject<Item> r = switch (k) {
+            case FOREST, PETS -> greater ? GOLDEN_ACORN : ACORN;
+            case FORGE -> greater ? GOLDEN_RIVET : EMBER_RIVET;
+            case ICE -> greater ? PURE_FROST_SCALE : FROST_SCALE;
+            case MAGMA -> greater ? CINDER_HEART : TEMPERED_CINDER;
+            case MAGIC -> greater ? GREATER_MENDING_RUNE : MENDING_RUNE;
+            case RUBY -> greater ? ANCIENT_DRAGON_SCALE : DRAGON_MEND_SCALE;
+            case SKY -> greater ? STORM_WOVEN_FEATHER : WOVEN_FEATHER;
+            case ABYSS -> greater ? PURE_VOID_SPLINTER : VOID_SPLINTER;
+        };
+        return r.get();
+    }
+
+    /** Runas de Esencia I a VIII (índice = tier). */
+    public static final java.util.List<RegistryObject<Item>> ESSENCE_RUNES = registerRunes();
+
+    private static java.util.List<RegistryObject<Item>> registerRunes() {
+        java.util.List<RegistryObject<Item>> l = new java.util.ArrayList<>();
+        l.add(null);
+        for (int t = 1; t <= 8; t++) {
+            final int tier = t;
+            l.add(ITEMS.register("essence_rune_" + t, () -> new com.mundosdeaxelis.item.EssenceRuneItem(tier)));
+        }
+        return l;
+    }
+
+    /** Fragmento de corazón: cuatro = un corazón más de vida máxima, para siempre. */
+    public static final RegistryObject<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment", com.mundosdeaxelis.item.HeartFragmentItem::new);
+    /** Pergamino de la crónica (cuál es, en el dato «Pergamino»). */
+    public static final RegistryObject<Item> LORE_SCROLL = ITEMS.register("lore_scroll", com.mundosdeaxelis.item.LoreScrollItem::new);
+
     /** Llave de la dungeon de la Forja: abre los cofres sellados de allí. */
     public static final RegistryObject<Item> FORGE_KEY = ITEMS.register("forge_key",
             () -> new com.mundosdeaxelis.item.DungeonKeyItem("forge_key"));

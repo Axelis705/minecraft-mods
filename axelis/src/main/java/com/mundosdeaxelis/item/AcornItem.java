@@ -118,11 +118,22 @@ public class AcornItem extends Item {
                 level.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0F, 1.2F);
             }
             if (level instanceof ServerLevel sl) {
-                if (forge) {
-                    sl.sendParticles(ParticleTypes.LAVA, player.getX(), player.getY() + 1.0, player.getZ(), 6, 0.4, 0.6, 0.4, 0.0);
-                    sl.sendParticles(ParticleTypes.CRIT, player.getX(), player.getY() + 1.0, player.getZ(), 16, 0.4, 0.7, 0.4, 0.15);
-                } else {
-                    sl.sendParticles(ParticleTypes.HAPPY_VILLAGER, player.getX(), player.getY() + 1.0, player.getZ(), 14, 0.4, 0.7, 0.4, 0.0);
+                double px = player.getX(), py = player.getY() + 1.0, pz = player.getZ();
+                switch (crate) {
+                    case FORGE -> {
+                        sl.sendParticles(ParticleTypes.LAVA, px, py, pz, 6, 0.4, 0.6, 0.4, 0.0);
+                        sl.sendParticles(ParticleTypes.CRIT, px, py, pz, 16, 0.4, 0.7, 0.4, 0.15);
+                    }
+                    case ICE -> sl.sendParticles(ParticleTypes.SNOWFLAKE, px, py, pz, 24, 0.4, 0.7, 0.4, 0.03);
+                    case MAGMA -> {
+                        sl.sendParticles(ParticleTypes.FLAME, px, py, pz, 16, 0.4, 0.7, 0.4, 0.02);
+                        sl.sendParticles(ParticleTypes.LAVA, px, py, pz, 4, 0.4, 0.5, 0.4, 0.0);
+                    }
+                    case MAGIC -> sl.sendParticles(ParticleTypes.ENCHANT, px, py + 0.5, pz, 40, 0.5, 0.7, 0.5, 0.6);
+                    case RUBY -> sl.sendParticles(ParticleTypes.DRAGON_BREATH, px, py, pz, 18, 0.4, 0.6, 0.4, 0.01);
+                    case SKY -> sl.sendParticles(ParticleTypes.CLOUD, px, py, pz, 14, 0.4, 0.6, 0.4, 0.02);
+                    case ABYSS -> sl.sendParticles(ParticleTypes.REVERSE_PORTAL, px, py, pz, 30, 0.4, 0.7, 0.4, 0.05);
+                    default -> sl.sendParticles(ParticleTypes.HAPPY_VILLAGER, px, py, pz, 14, 0.4, 0.7, 0.4, 0.0);
                 }
             }
             player.displayClientMessage(Component.translatable("message.mundos_de_axelis." + prefix + ".used").withStyle(ChatFormatting.GREEN), true);

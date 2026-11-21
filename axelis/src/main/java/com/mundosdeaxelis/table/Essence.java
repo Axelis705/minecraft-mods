@@ -198,6 +198,24 @@ public final class Essence {
         return s;
     }
 
+    /** Solo para pruebas (etapa 269): olvida los sellos del Archivo (el jugador vuelve a la etapa 0). Devuelve cuántos quitó. */
+    public static int forgetSeals(ServerPlayer sp) {
+        CompoundTag t = tag(sp, true);
+        ListTag l = t.getList("archive", Tag.TAG_STRING);
+        ListTag keep = new ListTag();
+        int n = 0;
+        for (int i = 0; i < l.size(); i++) {
+            if (l.getString(i).startsWith("seal_")) {
+                n++;
+            } else {
+                keep.add(StringTag.valueOf(l.getString(i)));
+            }
+        }
+        t.put("archive", keep);
+        sync(sp);
+        return n;
+    }
+
     /** Apunta un objeto en el Archivo. Devuelve true si es nuevo. */
     public static boolean discover(ServerPlayer sp, String id) {
         CompoundTag t = tag(sp, true);

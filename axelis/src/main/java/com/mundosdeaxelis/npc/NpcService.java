@@ -131,6 +131,11 @@ public final class NpcService {
                     open(sp, h, R_OPEN, null, 0);
                     return;
                 }
+                int tier = com.mundosdeaxelis.world.Sellos.npcTier(h.kindId());
+                if (!com.mundosdeaxelis.world.Sellos.canLoot(sp, tier)) {
+                    com.mundosdeaxelis.world.Sellos.deny(sp, h.blockPosition(), tier, "celda");
+                    return;
+                }
                 if (!sp.getAbilities().instabuild && count(sp, Items.IRON_INGOT) < FORCE_IRON) {
                     open(sp, h, R_NEED_IRON, null, FORCE_IRON);
                     return;

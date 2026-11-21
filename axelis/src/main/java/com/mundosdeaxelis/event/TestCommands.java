@@ -77,7 +77,7 @@ public final class TestCommands {
         String fail = null;
         StringBuilder stats = new StringBuilder();
         for (com.mundosdeaxelis.block.VaultLoot.Kind k : com.mundosdeaxelis.block.VaultLoot.Kind.values()) {
-            int rolls = 0, stacks = 0, frags = 0, books = 0;
+            int rolls = 0, stacks = 0, frags = 0, books = 0, hearts = 0, runes = 0;
             for (int st = 1; st <= 8; st++) {
                 for (int lv = 1; lv <= 5; lv++) {
                     for (int i = 0; i < 20; i++) {
@@ -87,7 +87,7 @@ public final class TestCommands {
                         if (out.isEmpty() || out.size() > 27) {
                             fail = k + " etapa " + st + ": " + out.size() + " pilas";
                         }
-                        boolean frag = false;
+                        boolean frag = false, heart = false;
                         for (net.minecraft.world.item.ItemStack it : out) {
                             if (it.isEmpty() || it.getCount() > it.getMaxStackSize()) {
                                 fail = k + " etapa " + st + ": pila rara " + it;
@@ -102,15 +102,38 @@ public final class TestCommands {
                             if (it.is(net.minecraft.world.item.Items.ENCHANTED_BOOK)) {
                                 books++;
                             }
+                            // etapa 269: sin pociones; runas y reparadores siempre del tier del cofre
+                            if (it.is(net.minecraft.world.item.Items.POTION)) {
+                                fail = k + " etapa " + st + ": trae una poción";
+                            }
+                            if (it.getItem() instanceof com.mundosdeaxelis.item.EssenceRuneItem er && er.tier != st) {
+                                fail = k + " etapa " + st + ": runa de otro tier (" + er.tier + ")";
+                            }
+                            com.mundosdeaxelis.crate.CrateKind ck = com.mundosdeaxelis.crate.CrateKind.byIndex(st);
+                            if (it.getItem() instanceof com.mundosdeaxelis.item.AcornItem
+                                    && it.getItem() != com.mundosdeaxelis.registry.ModItems.mender(ck, false)
+                                    && it.getItem() != com.mundosdeaxelis.registry.ModItems.mender(ck, true)) {
+                                fail = k + " etapa " + st + ": reparador de otro tier (" + it + ")";
+                            }
+                            if (it.is(com.mundosdeaxelis.registry.ModItems.HEART_FRAGMENT.get())) {
+                                hearts++;
+                                heart = true;
+                            }
+                            if (it.getItem() instanceof com.mundosdeaxelis.item.EssenceRuneItem) {
+                                runes += it.getCount();
+                            }
                         }
                         if (k == com.mundosdeaxelis.block.VaultLoot.Kind.TREASURE && !frag) {
                             fail = "TREASURE etapa " + st + ": sin fragmentos";
                         }
+                        if (k == com.mundosdeaxelis.block.VaultLoot.Kind.TREASURE && !heart) {
+                            fail = "TREASURE etapa " + st + ": sin fragmento de corazón";
+                        }
                     }
                 }
             }
-            stats.append(String.format(java.util.Locale.ROOT, " %s: %.1f pilas, %.2f fragmentos, %.2f libros;", k.name(),
-                    stacks / (double) rolls, frags / (double) rolls, books / (double) rolls));
+            stats.append(String.format(java.util.Locale.ROOT, " %s: %.1f pilas, %.2f fragmentos, %.2f libros, %.2f runas, %.2f corazones;", k.name(),
+                    stacks / (double) rolls, frags / (double) rolls, books / (double) rolls, runes / (double) rolls, hearts / (double) rolls));
         }
         String msg = (fail == null ? "PRUEBA_BOTIN_OK" : "PRUEBA_BOTIN_FALLO " + fail) + stats;
         com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
@@ -126,6 +149,11 @@ public final class TestCommands {
                                 .executes(ctx -> equipo(ctx.getSource(), StringArgumentType.getString(ctx, "set")))))
                 .then(Commands.literal("capas").executes(ctx -> capas(ctx.getSource())))
                 .then(Commands.literal("botin").executes(ctx -> botin(ctx.getSource())))
+                .then(Commands.literal("olvidar_progreso").executes(ctx -> {
+                    int n = com.mundosdeaxelis.table.Essence.forgetSeals(ctx.getSource().getPlayerOrException());
+                    ctx.getSource().sendSuccess(() -> Component.literal("Sellos olvidados: " + n + " (vuelves a la etapa 0)."), false);
+                    return 1;
+                }))
                 .then(Commands.literal("llaves")
                         .executes(ctx -> llaves(ctx.getSource(), 5))
                         .then(Commands.argument("cantidad", IntegerArgumentType.integer(1, 64))
