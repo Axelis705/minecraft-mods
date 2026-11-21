@@ -25,7 +25,8 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
  */
 public class LlaveCeldaItem extends Item {
     public LlaveCeldaItem() {
-        super(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
+        // no se quema en la lava (el fundidor de la isla puede caer cerca de ella)
+        super(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant());
     }
 
     @Override

@@ -988,10 +988,15 @@ public final class AutoTest {
             shot("69_hilda_presa");
             open(null);
         });
-        add("llave del fundidor", 1200, () -> cmd("kill @e[type=mundos_de_axelis:fundidor,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]"));
+        add("llave del fundidor", 1200, () -> {
+            cmd("clear @a mundos_de_axelis:llave_celda");
+            cmd("kill @e[type=mundos_de_axelis:fundidor,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
+        });
         add("llave del fundidor (buscar)", 1200, () -> {
-            onServer(sp -> forgeKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
-                    new net.minecraft.world.phys.AABB(FDX - 10, FDY - 16, FDZ0 + 50, FDX + 10, FDY - 5, FDZ0 + 68),
+            // la llave está en el suelo cerca de la isla (o ya la recogió el jugador)
+            onServer(sp -> forgeKey = sp.getInventory().countItem(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()) > 0
+                    || !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+                    new net.minecraft.world.phys.AABB(FDX - 24, FDY - 24, FDZ0 + 36, FDX + 24, FDY + 4, FDZ0 + 82),
                     i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
         });
         add("llave en la celda de la fundición", 2600, () -> {
