@@ -241,9 +241,16 @@ execute if entity @e[type=mundos_de_axelis:escoria,x=515,y=-70,z=10,dx=50,dy=20,
 execute if entity @e[type=mundos_de_axelis:chispero,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_CHISPERO_OK
 execute if entity @e[type=mundos_de_axelis:fundidor,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_FUNDIDOR_OK
 execute unless entity @e[type=mundos_de_axelis:habitante,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_SIN_NPC_OK
+execute if entity @e[type=mundos_de_axelis:coloso_hierro,x=530,y=-62,z=40,dx=20,dy=6,dz=20,nbt={Dormido:1b}] run say PRUEBA_FRAGUA_COLOSO_DORMIDO_OK
 execute positioned 540 -60 0 run mundos estructura deshacer
 execute unless block 540 -59 51 mundos_de_axelis:vault_chest_locked_forge run say PRUEBA_FRAGUA_DESHECHA_OK
 execute unless entity @e[type=mundos_de_axelis:escoria,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_SIN_ENEMIGOS_OK
+execute unless entity @e[type=mundos_de_axelis:coloso_hierro,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_SIN_COLOSO_OK
+summon mundos_de_axelis:coloso_hierro 525 -60 20
+execute if entity @e[type=mundos_de_axelis:coloso_hierro,x=520,y=-62,z=15,dx=10,dy=6,dz=10] run say PRUEBA_COLOSO_INVOCADO_OK
+kill @e[type=mundos_de_axelis:coloso_hierro]
+execute if entity @e[type=item,x=515,y=-65,z=10,dx=20,dy=12,dz=20,nbt={Item:{id:"minecraft:iron_block"}}] run say PRUEBA_COLOSO_BOTIN_OK
+kill @e[type=item]
 forceload add 1934 -16 2066 126
 execute positioned 2000 -48 0 rotated 0 0 run mundos estructura fundicion
 #wait Gran Fundición construida 300
@@ -560,3 +567,7 @@ mundos prueba construir 2
 #expect PRUEBA_FUNDICION_SIN_ENEMIGOS_OK
 #expect PRUEBA_FUNDICION_NATURAL_HILDA_OK
 #expect PRUEBA_FUNDICION_NATURAL_LLAVE_OK
+#expect PRUEBA_FRAGUA_COLOSO_DORMIDO_OK
+#expect PRUEBA_FRAGUA_SIN_COLOSO_OK
+#expect PRUEBA_COLOSO_INVOCADO_OK
+#expect PRUEBA_COLOSO_BOTIN_OK

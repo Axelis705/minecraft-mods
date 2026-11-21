@@ -70,6 +70,7 @@ public final class ClientModEvents {
         event.registerLayerDefinition(AscuaModel.LAYER, AscuaModel::createLayer);
         event.registerLayerDefinition(FundidorModel.LAYER, FundidorModel::createLayer);
         event.registerLayerDefinition(CapatazModel.LAYER, CapatazModel::createLayer);
+        event.registerLayerDefinition(ColosoModel.LAYER, ColosoModel::createLayer);
         event.registerLayerDefinition(GranHerreroModel.LAYER, GranHerreroModel::createLayer);
         event.registerLayerDefinition(LoboArticoModel.LAYER, LoboArticoModel::createLayer);
         event.registerLayerDefinition(ArchimagoModel.LAYER, ArchimagoModel::createLayer);
@@ -92,6 +93,8 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.ASCUA.get(), AscuaRenderer::new);
         event.registerEntityRenderer(ModEntities.FUNDIDOR.get(), FundidorRenderer::new);
         event.registerEntityRenderer(ModEntities.CAPATAZ.get(), CapatazRenderer::new);
+        event.registerEntityRenderer(ModEntities.COLOSO_HIERRO.get(), ColosoRenderer::new);
+        event.registerEntityRenderer(ModEntities.LINGOTE_ROJO.get(), ctx -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(ctx, 1.4F, true));
         event.registerEntityRenderer(ModEntities.GRAN_HERRERO.get(), GranHerreroRenderer::new);
         event.registerEntityRenderer(ModEntities.LOBO_ARTICO.get(), LoboArticoRenderer::new);
         event.registerEntityRenderer(ModEntities.ARCHIMAGO.get(), ArchimagoRenderer::new);

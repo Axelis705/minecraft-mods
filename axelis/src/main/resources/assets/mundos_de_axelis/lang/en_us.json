@@ -2262,5 +2262,12 @@
   "npc.mundos_de_axelis.ignacio.hint.here": "%s? It's right here! Even I can see it, and I spent years looking only at lava.",
   "npc.mundos_de_axelis.place.fortin": "Frost Outpost",
   "npc.mundos_de_axelis.place.arcana": "Arcane Tower",
-  "npc.mundos_de_axelis.place.fragua": "Forgotten Forge"
+  "npc.mundos_de_axelis.place.fragua": "Forgotten Forge",
+  "entity.mundos_de_axelis.coloso_hierro": "Iron Colossus",
+  "entity.mundos_de_axelis.lingote_rojo": "Red-Hot Ingot",
+  "item.mundos_de_axelis.lingote_rojo": "Red-Hot Ingot",
+  "item.mundos_de_axelis.coloso_hierro_spawn_egg": "Iron Colossus Spawn Egg",
+  "message.mundos_de_axelis.coloso.despierta": "The Iron Colossus awakens! Jump over the shockwaves.",
+  "message.mundos_de_axelis.coloso.recalienta": "The Colossus overheats! It's vulnerable now: hit it!",
+  "message.mundos_de_axelis.coloso.vencido": "The Iron Colossus collapses. The Great Smith's treasure is yours."
 }

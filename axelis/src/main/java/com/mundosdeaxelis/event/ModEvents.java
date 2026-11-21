@@ -34,6 +34,7 @@ public final class ModEvents {
         event.put(ModEntities.ASCUA.get(), com.mundosdeaxelis.entity.Ascua.createAttributes().build());
         event.put(ModEntities.FUNDIDOR.get(), com.mundosdeaxelis.entity.Fundidor.createAttributes().build());
         event.put(ModEntities.CAPATAZ.get(), com.mundosdeaxelis.entity.Capataz.createAttributes().build());
+        event.put(ModEntities.COLOSO_HIERRO.get(), com.mundosdeaxelis.entity.ColosoHierro.createAttributes().build());
         event.put(ModEntities.GRAN_HERRERO.get(), com.mundosdeaxelis.entity.GranHerrero.createAttributes().build());
         event.put(ModEntities.LOBO_ARTICO.get(), com.mundosdeaxelis.entity.LoboArtico.createAttributes().build());
         event.put(ModEntities.ARCHIMAGO.get(), com.mundosdeaxelis.entity.Archimago.createAttributes().build());

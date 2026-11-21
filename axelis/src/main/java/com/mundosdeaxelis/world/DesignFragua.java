@@ -8,7 +8,8 @@ package com.mundosdeaxelis.world;
  * piedras de afilar, un martillo gigante colgado y, sobre un altar con forma de yunque, el tesoro del Gran Herrero (un cofre con
  * cerradura difícil) con un cofre de provisiones al lado. Pegado a la nave, el almacén (era la celda de Hilda).
  * <p>Etapa 266: es la estructura chica del tier de la forja, la del botín (la Piedra de Portal: Forja y Hilda están en la Gran
- * Fundición). Enemigos: Escorias en el patio y en la nave, un Chispero en un balcón y un Fundidor que guarda el altar.
+ * Fundición). Enemigos: Escorias y un Fundidor en el patio, un Chispero en un balcón y, delante del altar, el minijefe: el Coloso de
+ * Hierro (etapa 267), que duerme de pie hasta que alguien se acerca.
  * Entrada por z = 0; el patio ocupa x -14..14, z 8..20; la nave x -10..10, z 21..38.
  */
 final class DesignFragua {
@@ -447,7 +448,8 @@ final class DesignFragua {
         mob(b, 4, 0, 26, "escoria", null);
         // el chispero no se mueve: vigila la nave desde el balcón
         mob(b, -9, 3, 30, "chispero", null);
-        // el fundidor guarda el altar del tesoro
-        mob(b, 0, 0, 30, "fundidor", null);
+        // etapa 267: el Coloso de Hierro duerme de pie delante del altar del tesoro (se despierta al acercarse); un fundidor en el patio
+        mob(b, 0, 0, 30, "coloso_hierro", null);
+        mob(b, 8, 0, 16, "fundidor", null);
     }
 }

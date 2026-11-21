@@ -22,7 +22,7 @@ execute if block -13 -48 51 minecraft:air run say PRUEBA_BOSQUE_DESHECHO_OK
 execute if block 0 -61 20 minecraft:grass_block run say PRUEBA_SUELO_OK
 execute positioned 0 -48 0 rotated 0 0 run mundos estructura forja
 execute if block 26 -48 57 minecraft:smoker run say PRUEBA_FORJA_OK
-execute if block 0 -58 75 minecraft:soul_campfire run say PRUEBA_FORJA_BAJO_OK
+execute if block 0 -59 75 minecraft:crying_obsidian run say PRUEBA_FORJA_BAJO_OK
 say ESPERANDO_FORJA_1
 say ESPERANDO_FORJA_2
 say ESPERANDO_FORJA_3

@@ -201,6 +201,30 @@ public final class AutoTest {
         });
     }
 
+    /** El Coloso de Hierro más cercano que ve el cliente (etapa 267). */
+    private static com.mundosdeaxelis.entity.ColosoHierro clientColoso() {
+        Minecraft mc = Minecraft.getInstance();
+        com.mundosdeaxelis.entity.ColosoHierro best = null;
+        for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
+            if (e instanceof com.mundosdeaxelis.entity.ColosoHierro c && (best == null || c.distanceTo(mc.player) < best.distanceTo(mc.player))) {
+                best = c;
+            }
+        }
+        return best;
+    }
+
+    /** Cuántos objetos sueltos de ese tipo ve el cliente (a 40 bloques). */
+    private static int clientCountItems(net.minecraft.world.item.Item it) {
+        Minecraft mc = Minecraft.getInstance();
+        int n = 0;
+        for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
+            if (e instanceof net.minecraft.world.entity.item.ItemEntity ie && ie.getItem().is(it) && e.distanceTo(mc.player) < 40) {
+                n++;
+            }
+        }
+        return n;
+    }
+
     /** Como {@link #clearMobs()}, pero deja a los habitantes (etapa 263: Ignacio sigue preso en su celda del volcán). */
     private static void clearHostiles() {
         IntegratedServer srv = Minecraft.getInstance().getSingleplayerServer();
@@ -846,9 +870,46 @@ public final class AutoTest {
         });
         add("fragua (nave)", 2500, () -> standLooking(GX + 0.5, SY, GZ + 23.5, GX + 0.5, SY + 1.2, GZ + 35));
         add("fragua (nave, foto)", 300, () -> {
-            check("hay un fundidor guardando el altar", clientCount(com.mundosdeaxelis.entity.Fundidor.class) >= 1);
+            check("hay un fundidor en la fragua", clientCount(com.mundosdeaxelis.entity.Fundidor.class) >= 1);
             check("hay un chispero en el balcón", clientCount(com.mundosdeaxelis.entity.Chispero.class) >= 1);
             shot("68_fragua_nave");
+        });
+        // etapa 267: el Coloso de Hierro duerme delante del altar; al acercarse despierta, carga el golpe y suelta las ondas
+        add("coloso dormido (foto)", 300, () -> {
+            check("el Coloso de Hierro duerme delante del altar de la fragua", clientColoso() != null && clientColoso().asleep());
+            shot("68d_coloso_dormido");
+        });
+        add("coloso despierta", 2500, () -> {
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            cmd("effect give @a minecraft:fire_resistance 600 0 true");
+            cmd("kill @e[type=mundos_de_axelis:escoria]");
+            cmd("kill @e[type=mundos_de_axelis:chispero]");
+            standLooking(GX + 0.5, SY, GZ + 23.5, GX + 0.5, SY + 2.0, GZ + 30.5);
+        });
+        add("coloso despierto (foto)", 300, () -> {
+            check("al acercarse, el Coloso de Hierro despierta", clientColoso() != null && !clientColoso().asleep());
+            shot("68e_coloso_despierto");
+            onServer(sp -> {
+                for (com.mundosdeaxelis.entity.ColosoHierro c : sp.serverLevel().getEntitiesOfClass(com.mundosdeaxelis.entity.ColosoHierro.class,
+                        sp.getBoundingBox().inflate(30))) {
+                    c.forceSlam();
+                }
+            });
+        });
+        add("coloso carga", 700, () -> {
+        });
+        add("coloso carga (foto)", 300, () -> {
+            check("el Coloso levanta los puños para el golpe de suelo", clientColoso() != null && clientColoso().state() == com.mundosdeaxelis.entity.ColosoHierro.CHARGE);
+            shot("68f_coloso_carga");
+        });
+        add("coloso golpea", 900, () -> {
+        });
+        add("coloso golpea (foto)", 300, () -> shot("68g_coloso_ondas"));
+        add("coloso vencido", 1500, () -> cmd("kill @e[type=mundos_de_axelis:coloso_hierro]"));
+        add("coloso vencido (comprobar)", 300, () -> {
+            check("al vencer al Coloso suelta hierro", clientCountItems(net.minecraft.world.item.Items.IRON_INGOT) > 0);
+            cmd("kill @e[type=item]");
         });
         add("fragua (deshacer)", 2000, () -> {
             cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " run mundos estructura deshacer");
@@ -1225,8 +1286,12 @@ public final class AutoTest {
 
     private static void ignacio() {
         net.minecraft.core.BlockPos seed = new net.minecraft.core.BlockPos(IX, SY, IZ);
-        add("casa de ignacio (poner semilla)", 2500, () -> onServer(sp -> {
+        add("ignacio (ir)", 1500, () -> {
+            open(null);
             cmd("gamemode survival @a");
+            cmd("execute in minecraft:overworld run tp @a " + (IX + 0.5) + " " + SY + " " + (IZ - 2.5) + " 0 45");
+        });
+        add("casa de ignacio (poner semilla)", 2500, () -> onServer(sp -> {
             sp.teleportTo(sp.serverLevel(), IX + 0.5, SY, IZ - 2.5, 0.0F, 45.0F);
             useOn(sp, com.mundosdeaxelis.npc.NpcService.kit("ignacio"), new net.minecraft.core.BlockPos(IX, SY - 1, IZ), net.minecraft.core.Direction.UP);
         }));

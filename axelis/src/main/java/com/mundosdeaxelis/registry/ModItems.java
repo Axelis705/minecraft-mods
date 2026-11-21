@@ -54,6 +54,11 @@ public final class ModItems {
     public static final RegistryObject<Item> ETERNAL_BRAZIER = ITEMS.register("eternal_brazier",
             () -> new com.mundosdeaxelis.item.PortalStoneItem(ModBlocks.ETERNAL_BRAZIER.get(), new Item.Properties().rarity(Rarity.RARE), "eternal_brazier"));
 
+    /** Etapa 267: el lingote al rojo (lo lanza el Coloso de Hierro; también es su icono) y el huevo del Coloso. */
+    public static final RegistryObject<Item> LINGOTE_ROJO = ITEMS.register("lingote_rojo", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> COLOSO_HIERRO_SPAWN_EGG = ITEMS.register("coloso_hierro_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.COLOSO_HIERRO, 0x6B5A4E, 0xFF7A1E, new Item.Properties()));
+
     public static final RegistryObject<Item> REY_BROTE_SPAWN_EGG = ITEMS.register("rey_brote_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.REY_BROTE, 0x78D86A, 0xFFE35A, new Item.Properties()));
 

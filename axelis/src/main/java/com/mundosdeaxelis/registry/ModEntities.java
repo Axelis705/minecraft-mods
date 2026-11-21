@@ -83,6 +83,20 @@ public final class ModEntities {
                     .clientTrackingRange(12)
                     .fireImmune()
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "fundidor").toString()));
+    /** Etapa 267: el Coloso de Hierro, minijefe de la Fragua Olvidada, y los lingotes al rojo que lanza. */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.ColosoHierro>> COLOSO_HIERRO = ENTITIES.register("coloso_hierro",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.ColosoHierro>of(com.mundosdeaxelis.entity.ColosoHierro::new, MobCategory.MONSTER)
+                    .sized(2.0F, 3.5F)
+                    .clientTrackingRange(16)
+                    .fireImmune()
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "coloso_hierro").toString()));
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.LingoteRojo>> LINGOTE_ROJO = ENTITIES.register("lingote_rojo",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.LingoteRojo>of(com.mundosdeaxelis.entity.LingoteRojo::new, MobCategory.MISC)
+                    .sized(0.35F, 0.35F)
+                    .clientTrackingRange(8)
+                    .updateInterval(5)
+                    .fireImmune()
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "lingote_rojo").toString()));
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Capataz>> CAPATAZ = ENTITIES.register("capataz",
             () -> EntityType.Builder.<com.mundosdeaxelis.entity.Capataz>of(com.mundosdeaxelis.entity.Capataz::new, MobCategory.MONSTER)
                     .sized(1.9F, 3.2F)
