@@ -88,7 +88,7 @@ Lo vacío se desarma como siempre.
   - La herrería crece (puerta, mesa de herrería y chimenea) y Hilda vive en ella.
   - Al mudarse: la casa se desarma, el cofre con hierro dentro se queda y el barril vacío se va.
   - Una fragua «natural» construida por pasos, con Hilda presa y su fundidor.
-- **Juego real (cliente)**: todas las comprobaciones de esta etapa en verde, con fotos.
+- **Juego real (cliente)**: 134 comprobaciones y 0 fallos, con 101 fotos.
   - La fragua por fuera, el patio y la nave, con escorias, chispero y fundidor.
   - La ventana de Hilda presa; el fundidor suelta la llave, la puerta se abre, Hilda queda libre (aviso, semilla) y sale de la celda.
   - Su herrería por fuera y por dentro, con ella dentro.
