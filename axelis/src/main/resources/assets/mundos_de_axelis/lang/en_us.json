@@ -2373,7 +2373,7 @@
   "tooltip.mundos_de_axelis.heart_fragment.use": "Right click to absorb it. With %s, you gain one more heart forever.",
   "tooltip.mundos_de_axelis.heart_fragment.cap": "Cap: one extra heart per defeated boss, plus one (8 at most).",
   "message.mundos_de_axelis.corazon.fragmento": "Heart fragment: %s/%s",
-  "message.mundos_de_axelis.corazon.nuevo": "♥ One more heart! You now have %s extra hearts.",
+  "message.mundos_de_axelis.corazon.nuevo": "♥ One more heart, forever! Extra hearts: %s",
   "message.mundos_de_axelis.corazon.tope": "Your body can't hold more power. Defeat %s to keep growing.",
   "message.mundos_de_axelis.corazon.max": "You already have every extra heart.",
   "item.mundos_de_axelis.lore_scroll": "Chronicle Scroll",

@@ -731,7 +731,7 @@ public final class AutoTest {
             cmd("gamemode survival @a");
             cmd("effect give @a minecraft:resistance 600 4 true");
             cmd("kill @e[type=mundos_de_axelis:lobo_escarcha]");
-            cmd("mundos prueba olvidar_progreso");
+            cmd("execute as @a run mundos prueba olvidar_progreso");
             Minecraft.getInstance().player.getInventory().selected = 8;
             cmd("item replace entity @a hotbar.8 with air");
             standLooking(FX - 12.5, SY, FZ + 31.5, FX - 14 + 0.5, SY + 0.5, FZ + 31.5);
@@ -1259,7 +1259,7 @@ public final class AutoTest {
             cmd("execute in minecraft:overworld run setblock " + table.getX() + " " + table.getY() + " " + table.getZ() + " mundos_de_axelis:artificer_table");
             cmd("clear @a mundos_de_axelis:key_forest");
             cmd("give @a mundos_de_axelis:key_fragment_forest 4");
-            cmd("mundos prueba esencia 100");
+            cmd("execute as @a run mundos prueba esencia 100");
         });
         add("mesa (abrir)", 1500, () -> {
             standLooking(LTX + 0.5, LTY, LTZ - 3.5, LTX + 0.5, LTY + 0.5, LTZ - 5.5);
@@ -1360,7 +1360,7 @@ public final class AutoTest {
         add("yunque (foto)", 300, () -> {
             shot("94_yunque");
             cmd("give @a mundos_de_axelis:key_fragment_forest 4");
-            cmd("mundos prueba esencia 200");
+            cmd("execute as @a run mundos prueba esencia 200");
         });
         add("yunque (abrir)", 1500, () -> {
             keys0 = invCount(key);

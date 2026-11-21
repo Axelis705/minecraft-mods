@@ -2373,7 +2373,7 @@
   "tooltip.mundos_de_axelis.heart_fragment.use": "Clic derecho para absorberlo. Con %s, ganas un corazón más para siempre.",
   "tooltip.mundos_de_axelis.heart_fragment.cap": "Tope: un corazón extra por cada jefe vencido, más uno (8 como mucho).",
   "message.mundos_de_axelis.corazon.fragmento": "Fragmento de corazón: %s/%s",
-  "message.mundos_de_axelis.corazon.nuevo": "♥ ¡Un corazón más! Ahora tienes %s corazones extra.",
+  "message.mundos_de_axelis.corazon.nuevo": "♥ ¡Un corazón más para siempre! Corazones extra: %s",
   "message.mundos_de_axelis.corazon.tope": "Tu cuerpo no resiste más poder. Vence a %s para seguir creciendo.",
   "message.mundos_de_axelis.corazon.max": "Ya tienes todos los corazones extra posibles.",
   "item.mundos_de_axelis.lore_scroll": "Pergamino de la Crónica",
