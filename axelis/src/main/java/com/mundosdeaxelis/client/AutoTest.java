@@ -988,8 +988,8 @@ public final class AutoTest {
             shot("69_hilda_presa");
             open(null);
         });
-        add("llave del fundidor", 1200, () -> {
-            cmd("kill @e[type=mundos_de_axelis:fundidor,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
+        add("llave del fundidor", 1200, () -> cmd("kill @e[type=mundos_de_axelis:fundidor,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]"));
+        add("llave del fundidor (buscar)", 1200, () -> {
             onServer(sp -> forgeKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
                     new net.minecraft.world.phys.AABB(FDX - 10, FDY - 16, FDZ0 + 50, FDX + 10, FDY - 5, FDZ0 + 68),
                     i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
@@ -1258,8 +1258,16 @@ public final class AutoTest {
             open(null);
             cmd("execute in minecraft:overworld run setblock " + table.getX() + " " + table.getY() + " " + table.getZ() + " mundos_de_axelis:artificer_table");
             cmd("clear @a mundos_de_axelis:key_forest");
-            cmd("give @a mundos_de_axelis:key_fragment_forest 4");
-            cmd("execute as @a run mundos prueba esencia 100");
+            cmd("clear @a mundos_de_axelis:gran_yunque");
+            cmd("clear @a mundos_de_axelis:mesa_gemas");
+            // lo que piden el Gran Yunque (yunque, alto horno y 2 bloques de hierro) y la Mesa de Gemas (amatista, mesa de herrería, lapislázuli)
+            cmd("give @a minecraft:anvil 1");
+            cmd("give @a minecraft:blast_furnace 1");
+            cmd("give @a minecraft:iron_block 2");
+            cmd("give @a minecraft:amethyst_shard 8");
+            cmd("give @a minecraft:smithing_table 1");
+            cmd("give @a minecraft:lapis_block 1");
+            cmd("execute as @a run mundos prueba esencia 300");
         });
         add("mesa (abrir)", 1500, () -> {
             standLooking(LTX + 0.5, LTY, LTZ - 3.5, LTX + 0.5, LTY + 0.5, LTZ - 5.5);
@@ -1292,9 +1300,23 @@ public final class AutoTest {
                 mc.gameMode.handleInventoryButtonClick(ts.getMenu().containerId, com.mundosdeaxelis.table.TableMenu.B_CRAFT + idx);
             }
         });
+        add("mesa (crear la Mesa de Gemas)", 1200, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            int idx = -1;
+            List<com.mundosdeaxelis.table.TableRecipes.Recipe> all = com.mundosdeaxelis.table.TableRecipes.all();
+            for (int i = 0; i < all.size(); i++) {
+                if (all.get(i).id().equals("mesa_gemas")) {
+                    idx = i;
+                }
+            }
+            if (mc.screen instanceof TableScreen ts && idx >= 0) {
+                mc.gameMode.handleInventoryButtonClick(ts.getMenu().containerId, com.mundosdeaxelis.table.TableMenu.B_CRAFT + idx);
+            }
+        });
         add("mesa (yunque creado)", 300, () -> {
             net.minecraft.world.entity.player.Inventory inv = Minecraft.getInstance().player.getInventory();
             check("la Mesa crea el Gran Yunque de Fundición", inv.countItem(com.mundosdeaxelis.registry.ModItems.GRAN_YUNQUE.get()) >= 1);
+            check("la Mesa crea la Mesa de Gemas", inv.countItem(com.mundosdeaxelis.registry.ModItems.MESA_GEMAS.get()) >= 1);
             shot("93_botin_mesa_yunque");
             open(null);
             cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));

@@ -273,7 +273,14 @@ public final class TestCommands {
                 .then(Commands.literal("botin").executes(ctx -> botin(ctx.getSource())))
                 .then(Commands.literal("gemas").executes(ctx -> gemas(ctx.getSource())))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
-                    int n = com.mundosdeaxelis.table.Essence.forgetSeals(ctx.getSource().getPlayerOrException());
+                    net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
+                    // los sellos que lleva encima se volverían a apuntar en el Archivo: se le quitan
+                    for (net.minecraft.world.item.ItemStack it : sp.getInventory().items) {
+                        if (it.getItem() instanceof com.mundosdeaxelis.item.SealItem) {
+                            it.setCount(0);
+                        }
+                    }
+                    int n = com.mundosdeaxelis.table.Essence.forgetSeals(sp);
                     ctx.getSource().sendSuccess(() -> Component.literal("Sellos olvidados: " + n + " (vuelves a la etapa 0)."), false);
                     return 1;
                 }))
