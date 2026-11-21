@@ -10,11 +10,11 @@ package com.mundosdeaxelis.world;
  */
 public class ConectividadTest {
     public static void main(String[] args) {
-        String[] kinds = {"bosque", "forja", "hielo", "torre", "volcan", "santuario", "fortin", "fragua"};
-        int[] maxRooms = {3, 16, 2, 0, 1, 1, 1, 1};
-        int[] maxTraps = {2, 3, 2, 0, 0, 0, 0, 0};
+        String[] kinds = {"bosque", "forja", "hielo", "torre", "volcan", "santuario", "fortin", "fragua", "torre_arcana"};
+        int[] maxRooms = {3, 16, 2, 0, 1, 1, 1, 1, 1};
+        int[] maxTraps = {2, 3, 2, 0, 0, 0, 0, 0, 0};
         // dónde empieza el recorrido (z): el santuario y el fortín entran por el camino, que va sobre el terreno real hasta el arco
-        int[] startZ = {-3, -3, -3, -3, -3, 7, 7, 8};
+        int[] startZ = {-3, -3, -3, -3, -3, 7, 7, 8, 6};
         int fails = 0;
         for (int i = 0; i < kinds.length; i++) {
             StructBp bp = StructDesigns.make(kinds[i]);

@@ -20,6 +20,8 @@ public final class StructDesigns {
             case "fortin" -> DesignFortin.make();
             case "casa_bruno" -> DesignCasaBruno.make();
             case "fragua" -> DesignFragua.make();
+            case "torre_arcana" -> DesignTorreArcana.make();
+            case "casa_teo" -> DesignCasaTeo.make();
             case "casa_hilda" -> DesignCasaHilda.make();
             default -> DesignTorre.make();
         };

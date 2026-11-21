@@ -41,13 +41,18 @@ public final class NpcShop {
             new Offer("compass_volcan", () -> new ItemStack(Items.COMPASS), 120, 1, "volcan"),
             new Offer("compass_hielo", () -> new ItemStack(Items.COMPASS), 80, 1, "hielo"),
             new Offer("compass_forja", () -> new ItemStack(Items.COMPASS), 80, 1, "forja"),
+            new Offer("compass_torre", () -> new ItemStack(Items.COMPASS), 100, 1, "torre"),
             // con dos vecinos
             new Offer("pack_silver", () -> new ItemStack(CartasItems.PACKS.get("plata").get()), 140, 2, null),
             new Offer("golden_acorn", () -> new ItemStack(ModItems.GOLDEN_ACORN.get()), 200, 2, null),
             new Offer("fire_res", () -> potion(Potions.LONG_FIRE_RESISTANCE), 60, 2, null),
             // con tres vecinos
             new Offer("pack_gold", () -> new ItemStack(CartasItems.PACKS.get("oro").get()), 300, 3, null),
-            new Offer("golden_apple", () -> new ItemStack(Items.GOLDEN_APPLE), 120, 3, null));
+            new Offer("golden_apple", () -> new ItemStack(Items.GOLDEN_APPLE), 120, 3, null),
+            // con cuatro vecinos (etapa 261: Teo trae libros)
+            new Offer("exp_bottles", () -> new ItemStack(Items.EXPERIENCE_BOTTLE, 8), 90, 4, null),
+            new Offer("book_mending", () -> net.minecraft.world.item.EnchantedBookItem.createForEnchantment(
+                    new net.minecraft.world.item.enchantment.EnchantmentInstance(net.minecraft.world.item.enchantment.Enchantments.MENDING, 1)), 400, 4, null));
 
     private NpcShop() {
     }

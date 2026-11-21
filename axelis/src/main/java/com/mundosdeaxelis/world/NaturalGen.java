@@ -89,7 +89,14 @@ public final class NaturalGen extends SavedData {
             (l, o, r, bp, mobs) -> {
             });
 
-    public static final List<Spec> SPECS = List.of(BOSQUE, VOLCAN, HIELO, FORJA);
+    /** Etapa 261: la Torre Arcana, en bosques oscuros, bosques de abedules, taigas antiguas y arboledas de cerezos. */
+    public static final Spec TORRE = new Spec("torre", "torre_arcana", "Torre Arcana", 832, 45, 350, 0x70AA3C61L, 24, 31, 10, 4, 4, 220,
+            false, b -> land(b) && (b.is(Biomes.DARK_FOREST) || b.is(Biomes.BIRCH_FOREST) || b.is(Biomes.OLD_GROWTH_BIRCH_FOREST)
+            || b.is(Biomes.OLD_GROWTH_PINE_TAIGA) || b.is(Biomes.OLD_GROWTH_SPRUCE_TAIGA) || b.is(Biomes.CHERRY_GROVE)),
+            (l, o, r, bp, mobs) -> {
+            });
+
+    public static final List<Spec> SPECS = List.of(BOSQUE, VOLCAN, HIELO, FORJA, TORRE);
 
     static Spec byId(String id) {
         for (Spec s : SPECS) {

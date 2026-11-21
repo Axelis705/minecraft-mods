@@ -524,7 +524,7 @@ public final class NpcService {
 
     // ================================================================== pistas
 
-    private static final String[] HINT_KINDS = {"volcan", "bosque", "hielo", "forja"};
+    private static final String[] HINT_KINDS = {"volcan", "bosque", "hielo", "forja", "torre"};
 
     static void hint(ServerPlayer sp, Habitante h, int n) {
         if (h.state() != Habitante.VECINO) {

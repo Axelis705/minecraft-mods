@@ -31,7 +31,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Estructuras de fondo para grabar videos, hechas solo con comandos (como WorldEdit):
- * {@code /mundos estructura <bosque|templo_bosque|forja|fundicion|hielo|ciudadela|torre|volcan>} la construye delante de quien escribe, mirando hacia él;
+ * {@code /mundos estructura <bosque|templo_bosque|forja|fundicion|hielo|ciudadela|torre|fortaleza|volcan>} la construye delante de quien escribe, mirando hacia él;
  * {@code /mundos estructura deshacer [veces]} la quita y deja el terreno como estaba (bloques, entidades de bloque y todo).
  * Los bloques propios del mod (decoraciones) se usan si existen; si no, simplemente se omiten.
  */
@@ -67,7 +67,10 @@ public final class Estructuras {
         HIELO("hielo", "Fortín de Escarcha", "fortin"),
         /** La ciudadela grande de antes (fondo para videos). */
         CIUDADELA("ciudadela", "Ciudadela de cristal", "hielo"),
-        TORRE("torre", "Fortaleza en ruinas", "torre"),
+        /** Etapa 261: la estructura de la torre de verdad (mediana, con la Piedra de Portal en el observatorio y la celda de Teo). */
+        TORRE("torre", "Torre Arcana", "torre_arcana"),
+        /** La fortaleza grande de antes (fondo para videos). */
+        FORTALEZA("fortaleza", "Fortaleza en ruinas", "torre"),
         VOLCAN("volcan", "El Volcán", "volcan");
 
         final String id;

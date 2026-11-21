@@ -30,12 +30,16 @@ public final class NpcKinds {
     /** Hilda, la herrera: presa en la celda de la Fragua Olvidada (etapa 259). */
     public static final Kind HILDA = new Kind("hilda", 0xF0883A, "casa_hilda", 4, 3, 8, true);
 
+    /** Teo, el bibliotecario: preso en la celda de la Torre Arcana (etapa 261). */
+    public static final Kind TEO = new Kind("teo", 0x9B7BE0, "casa_teo", 4, 3, 8, false);
+
     public static final Map<String, Kind> ALL = new LinkedHashMap<>();
 
     static {
         ALL.put(RUDA.id(), RUDA);
         ALL.put(BRUNO.id(), BRUNO);
         ALL.put(HILDA.id(), HILDA);
+        ALL.put(TEO.id(), TEO);
     }
 
     public static Kind get(String id) {

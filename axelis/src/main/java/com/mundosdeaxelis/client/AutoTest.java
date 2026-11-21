@@ -926,8 +926,161 @@ public final class AutoTest {
                             && invCount(com.mundosdeaxelis.cartas.CartasItems.PACKS.get("oro").get()) >= 1);
             open(null);
             cmd("gamemode spectator @a");
-            cmd("mundos vecinos reiniciar");
+            // Ruda, Bruno e Hilda se quedan con su casa: con Teo (la torre) serán cuatro
             cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
+        });
+    }
+
+    // ------------------------------------------------------------------ etapa 261: Torre Arcana, Teo y cuatro vecinos
+
+    /** Torre: la entrada (z local 0) en {@code TZ0}; casa de Teo en {@code LX, LZ}. */
+    private static final int TX = 580, TZ0 = 20;
+    private static final int LX = 140, LZ = -10;
+    private static volatile boolean towerKey;
+
+    private static void torre() {
+        int tz = TZ0 + 30; // centro de la torre
+        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(TX + 7, SY, tz + 1);
+        net.minecraft.core.BlockPos seed = new net.minecraft.core.BlockPos(LX, SY, LZ);
+        add("torre (ir)", 2500, () -> {
+            clearMobs();
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld run tp @a " + (TX + 0.5) + " " + (SY + 12) + " " + (TZ0 - 20) + " 0 20");
+        });
+        add("torre", 9000, () -> cmd("execute in minecraft:overworld positioned " + TX + " " + SY + " " + (TZ0 - 16) + " rotated 0 0 run mundos estructura torre"));
+        add("torre (fuera)", 2500, () -> standLooking(TX + 16.5, SY + 10, TZ0 - 16, TX, SY + 16, tz));
+        add("torre (fuera, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(TX, SY + 25, tz));
+            check("en el observatorio de la torre está la Piedra de Portal: Torre (" + ps.getBlock() + ")",
+                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_TOWER.get()));
+            shot("74_torre_fuera");
+        });
+        add("torre (patio)", 2500, () -> standLooking(TX + 0.5, SY + 1, TZ0 + 8, TX + 0.5, SY + 5, tz));
+        add("torre (patio, foto)", 300, () -> {
+            check("hay esbirros en la torre", clientCount(com.mundosdeaxelis.entity.Esbirro.class) >= 2);
+            shot("75_torre_patio");
+        });
+        add("torre (biblioteca)", 2500, () -> standLooking(TX + 4.5, SY + 8, tz - 4.5, TX - 4, SY + 9, tz + 3));
+        add("torre (biblioteca, foto)", 300, () -> {
+            check("hay libros embrujados en la biblioteca", clientCount(com.mundosdeaxelis.entity.LibroEmbrujado.class) >= 1);
+            shot("76_torre_biblioteca");
+        });
+        add("torre (observatorio)", 2500, () -> standLooking(TX - 4.5, SY + 24, tz - 4.5, TX, SY + 26.5, tz + 2));
+        add("torre (observatorio, foto)", 300, () -> {
+            check("hay armaduras encantadas en la torre", clientCount(com.mundosdeaxelis.entity.ArmaduraEncantada.class) >= 1);
+            shot("77_torre_observatorio");
+        });
+        add("teo preso", 2500, () -> {
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            cmd("kill @e[type=mundos_de_axelis:esbirro]");
+            cmd("kill @e[type=mundos_de_axelis:libro_embrujado]");
+            cmd("kill @e[type=mundos_de_axelis:armadura_encantada,nbt=!{ForgeData:{MundosTag:\"llave_celda\"}}]");
+            standLooking(TX + 5.5, SY, tz - 1.5, TX + 10.5, SY + 1.4, tz + 0.5);
+        });
+        add("teo preso (hablar)", 2600, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("teo");
+            check("Teo está preso en la celda de la torre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
+            npcServer("teo", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("teo preso (foto)", 300, () -> {
+            check("se abre la ventana de Teo", npcScreen() != null);
+            shot("78_teo_preso");
+            open(null);
+        });
+        add("llave de la armadura", 1200, () -> {
+            cmd("kill @e[type=mundos_de_axelis:armadura_encantada,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
+            onServer(sp -> towerKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(48),
+                    i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
+        });
+        add("llave en la celda de la torre", 2600, () -> {
+            check("la armadura del observatorio suelta la llave", towerKey);
+            cmd("kill @e[type=item]");
+            onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()), door,
+                    net.minecraft.core.Direction.WEST));
+        });
+        add("teo rescatado (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("teo");
+            check("Teo queda libre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE);
+            check("Teo da su Semilla de casa", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
+            shot("79_teo_rescatado");
+            open(null);
+        });
+        add("teo sale", 5000, () -> {
+        });
+        add("teo sale (comprobar)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("teo");
+            check("Teo salió de la celda", h != null && h.getX() < TX + 7);
+            cmd("kill @e[type=mundos_de_axelis:armadura_encantada]");
+            cmd("execute in minecraft:overworld run tp @a " + (LX + 0.5) + " " + SY + " " + (LZ - 2.5) + " 0 45");
+        });
+        add("casa de teo (poner semilla)", 2500, () -> onServer(sp -> {
+            sp.teleportTo(sp.serverLevel(), LX + 0.5, SY, LZ - 2.5, 0.0F, 45.0F);
+            useOn(sp, com.mundosdeaxelis.npc.NpcService.kit("teo"), new net.minecraft.core.BlockPos(LX, SY - 1, LZ), net.minecraft.core.Direction.UP);
+        }));
+        add("holograma de teo", 2000, () -> {
+            cmd("gamemode spectator @a");
+            standLooking(LX + 9.5, SY + 5, LZ - 7.5, LX, SY + 2, LZ + 4);
+        });
+        add("holograma de teo (foto)", 300, () -> {
+            check("la semilla de Teo queda puesta con su holograma", Minecraft.getInstance().level.getBlockEntity(seed) instanceof com.mundosdeaxelis.npc.SemillaCasaBlockEntity be
+                    && "teo".equals(be.kind()) && be.scanTick != Long.MIN_VALUE && be.scanBlocked.isEmpty());
+            shot("80_holograma_teo");
+            cmd("gamemode survival @a");
+            onServer(sp -> {
+                sp.teleportTo(sp.serverLevel(), LX + 0.5, SY, LZ - 2.5, 0.0F, 45.0F);
+                useBlock(sp, seed, false);
+            });
+        });
+        add("casa de teo (comprobar)", 1200, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            check("crece la biblioteca de Teo", lv.getBlockState(new net.minecraft.core.BlockPos(LX, SY, LZ + 1)).is(net.minecraft.world.level.block.Blocks.DARK_OAK_DOOR)
+                    && lv.getBlockState(new net.minecraft.core.BlockPos(LX - 1, SY, LZ + 6)).is(net.minecraft.world.level.block.Blocks.CHISELED_BOOKSHELF));
+            com.mundosdeaxelis.entity.Habitante h = npcClient("teo");
+            check("Teo vive en su biblioteca", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+            cmd("gamemode spectator @a");
+        });
+        add("casa de teo (fuera)", 2500, () -> standLooking(LX + 9.5, SY + 3, LZ - 6.5, LX + 1, SY + 2.5, LZ + 4));
+        add("casa de teo (fuera, foto)", 300, () -> shot("81_casa_teo"));
+        add("casa de teo (dentro)", 2500, () -> standLooking(LX + 0.5, SY, LZ + 2.3, LX + 0.5, SY + 1.2, LZ + 7));
+        add("casa de teo (dentro, foto)", 300, () -> shot("82_casa_teo_dentro"));
+        add("teo vecino", 2600, () -> {
+            cmd("gamemode survival @a");
+            standLooking(LX + 0.5, SY, LZ + 2.3, LX + 0.5, SY + 1.4, LZ + 4.5);
+            onServer(sp -> {
+                com.mundosdeaxelis.table.Essence.add(sp, 600);
+                com.mundosdeaxelis.table.Essence.sync(sp);
+            });
+            npcServer("teo", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("teo vecino (tienda)", 800, () -> {
+            check("ventana de Teo vecino", npcScreen() != null && npcScreen().state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+            if (npcScreen() != null) {
+                npcScreen().press(NpcScreen.B_SHOP);
+            }
+        });
+        add("tienda (hasta el final)", 600, () -> {
+            if (npcScreen() != null) {
+                for (int i = 0; i < 14; i++) {
+                    npcScreen().mouseScrolled(0, 0, -1);
+                }
+            }
+        });
+        add("tienda con cuatro vecinos (foto)", 800, () -> {
+            shot("83_tienda_cuatro_vecinos");
+            essBefore = TableClient.essence;
+            if (npcScreen() != null) {
+                npcScreen().buy(offer("book_mending")); // libro encantado: necesita 4 vecinos con casa
+            }
+        });
+        add("tienda con cuatro vecinos (comprobar)", 1500, () -> {
+            check("con cuatro vecinos se puede comprar el libro de Reparación (" + essBefore + " -> " + TableClient.essence + ")",
+                    TableClient.essence == essBefore - 400 && invCount(net.minecraft.world.item.Items.ENCHANTED_BOOK) >= 1);
+            open(null);
+            cmd("gamemode spectator @a");
+            cmd("mundos vecinos reiniciar");
+            cmd("execute in minecraft:overworld positioned " + TX + " " + SY + " " + (TZ0 - 16) + " run mundos estructura deshacer");
             cmd("kill @e[type=item]");
         });
     }
@@ -1950,6 +2103,7 @@ public final class AutoTest {
         });
         fortin();
         fragua();
+        torre();
         // 7. retratos para las cartas: tres "estudios" cerrados (volcán, forja y torre) y cada criatura quieta, de frente, sin interfaz
         add("estudios", 3000, () -> {
             clearMobs();
