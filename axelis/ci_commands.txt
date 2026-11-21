@@ -7,6 +7,9 @@ setblock 11 -60 -40 air
 execute unless block 10 -60 -40 mundos_de_axelis:gran_yunque run say PRUEBA_YUNQUE_SE_ROMPE_ENTERO_OK
 execute if entity @e[type=item,x=7,y=-63,z=-43,dx=7,dy=6,dz=7,nbt={Item:{id:"mundos_de_axelis:gran_yunque"}}] run say PRUEBA_YUNQUE_SUELTA_OK
 kill @e[type=item]
+setblock 13 -60 -40 mundos_de_axelis:mesa_gemas
+execute if block 13 -60 -40 mundos_de_axelis:mesa_gemas run say PRUEBA_MESA_GEMAS_OK
+setblock 13 -60 -40 air
 #expect PRUEBA_CARTAS_OK
 mundos prueba construir 5
 #wait PRUEBA_CONSTRUIR_5 150
@@ -469,6 +472,8 @@ execute positioned 5000 -48 0 rotated 0 0 run mundos natural generar bosque aqui
 execute if entity @e[type=mundos_de_axelis:raizal,x=4920,y=-80,z=-80,dx=160,dy=80,dz=160] run say PRUEBA_TEMPLO_NATURAL_OK
 forceload remove 4930 -70 5070 70
 mundos prueba botin
+execute positioned 0 -60 -30 run mundos prueba gemas
+kill @e[type=minecraft:pig]
 kill @e[type=item]
 loot spawn 0 -58 -20 loot mundos_de_axelis:chests/barril_bosque
 execute if entity @e[type=item,x=-3,y=-62,z=-21,dx=6,dy=8,dz=3] run say PRUEBA_BARRIL_TABLA_BOSQUE_OK
@@ -681,3 +686,5 @@ mundos prueba construir 2
 #expect PRUEBA_YUNQUE_PARTES_OK
 #expect PRUEBA_YUNQUE_SE_ROMPE_ENTERO_OK
 #expect PRUEBA_YUNQUE_SUELTA_OK
+#expect PRUEBA_MESA_GEMAS_OK
+#expect PRUEBA_GEMAS_OK

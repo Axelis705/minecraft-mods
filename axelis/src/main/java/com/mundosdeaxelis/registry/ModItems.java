@@ -223,6 +223,22 @@ public final class ModItems {
     public static final RegistryObject<Item> GRAN_YUNQUE = ITEMS.register("gran_yunque",
             () -> new BlockItem(ModBlocks.GRAN_YUNQUE.get(), new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
 
+    /** Etapa 271: gema vacía (la pureza va en el dato «Pureza»), gemas de cada elemento y esencias de infusión. */
+    public static final RegistryObject<Item> GEMA_VACIA = ITEMS.register("gema_vacia", com.mundosdeaxelis.gema.GemaItems.Vacia::new);
+    public static final java.util.Map<com.mundosdeaxelis.gema.Gemas.Elemento, RegistryObject<Item>> GEMAS = new java.util.EnumMap<>(com.mundosdeaxelis.gema.Gemas.Elemento.class);
+    public static final java.util.Map<com.mundosdeaxelis.gema.Gemas.Elemento, RegistryObject<Item>> ESENCIAS = new java.util.EnumMap<>(com.mundosdeaxelis.gema.Gemas.Elemento.class);
+
+    static {
+        for (com.mundosdeaxelis.gema.Gemas.Elemento el : com.mundosdeaxelis.gema.Gemas.Elemento.values()) {
+            GEMAS.put(el, ITEMS.register("gema_" + el.id, () -> new com.mundosdeaxelis.gema.GemaItems.Gema(el)));
+            ESENCIAS.put(el, ITEMS.register("esencia_" + el.id, () -> new com.mundosdeaxelis.gema.GemaItems.Esencia(el)));
+        }
+    }
+
+    /** Mesa de Gemas (se crea en la Mesa del Artífice). */
+    public static final RegistryObject<Item> MESA_GEMAS = ITEMS.register("mesa_gemas",
+            () -> new BlockItem(ModBlocks.MESA_GEMAS.get(), new Item.Properties().rarity(Rarity.EPIC)));
+
     /** Fragmento de corazón: cuatro = un corazón más de vida máxima, para siempre. */
     public static final RegistryObject<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment", com.mundosdeaxelis.item.HeartFragmentItem::new);
     /** Pergamino de la crónica (cuál es, en el dato «Pergamino»). */

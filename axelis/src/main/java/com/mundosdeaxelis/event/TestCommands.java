@@ -77,7 +77,7 @@ public final class TestCommands {
         String fail = null;
         StringBuilder stats = new StringBuilder();
         for (com.mundosdeaxelis.block.VaultLoot.Kind k : com.mundosdeaxelis.block.VaultLoot.Kind.values()) {
-            int rolls = 0, stacks = 0, frags = 0, books = 0, hearts = 0, runes = 0;
+            int rolls = 0, stacks = 0, frags = 0, books = 0, hearts = 0, runes = 0, gems = 0, essences = 0;
             for (int st = 1; st <= 8; st++) {
                 for (int lv = 1; lv <= 5; lv++) {
                     for (int i = 0; i < 20; i++) {
@@ -87,7 +87,7 @@ public final class TestCommands {
                         if (out.isEmpty() || out.size() > 27) {
                             fail = k + " etapa " + st + ": " + out.size() + " pilas";
                         }
-                        boolean frag = false, heart = false;
+                        boolean frag = false, heart = false, essence = false;
                         for (net.minecraft.world.item.ItemStack it : out) {
                             if (it.isEmpty() || it.getCount() > it.getMaxStackSize()) {
                                 fail = k + " etapa " + st + ": pila rara " + it;
@@ -122,6 +122,23 @@ public final class TestCommands {
                             if (it.getItem() instanceof com.mundosdeaxelis.item.EssenceRuneItem) {
                                 runes += it.getCount();
                             }
+                            // etapa 271: gemas vacías con la pureza del tier y esencias del elemento del tier
+                            if (it.getItem() instanceof com.mundosdeaxelis.gema.GemaItems.Vacia) {
+                                gems += it.getCount();
+                                if (com.mundosdeaxelis.gema.Gemas.pureza(it) != com.mundosdeaxelis.gema.Gemas.purezaDeTier(st)) {
+                                    fail = k + " etapa " + st + ": gema vacía con otra pureza";
+                                }
+                                if (!com.mundosdeaxelis.block.VaultLoot.isStar(it)) {
+                                    fail = "la gema vacía no es pieza estrella";
+                                }
+                            }
+                            if (it.getItem() instanceof com.mundosdeaxelis.gema.GemaItems.Esencia es) {
+                                essences += it.getCount();
+                                essence = true;
+                                if (es.el != com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(st)) {
+                                    fail = k + " etapa " + st + ": esencia de otro tier (" + es.el.id + ")";
+                                }
+                            }
                         }
                         if (k == com.mundosdeaxelis.block.VaultLoot.Kind.TREASURE && !frag) {
                             fail = "TREASURE etapa " + st + ": sin fragmentos";
@@ -129,13 +146,118 @@ public final class TestCommands {
                         if (k == com.mundosdeaxelis.block.VaultLoot.Kind.TREASURE && !heart) {
                             fail = "TREASURE etapa " + st + ": sin fragmento de corazón";
                         }
+                        if ((k == com.mundosdeaxelis.block.VaultLoot.Kind.TREASURE || k == com.mundosdeaxelis.block.VaultLoot.Kind.CRYPT) && !essence) {
+                            fail = k + " etapa " + st + ": sin esencia de infusión";
+                        }
                     }
                 }
             }
-            stats.append(String.format(java.util.Locale.ROOT, " %s: %.1f pilas, %.2f fragmentos, %.2f libros, %.2f runas, %.2f corazones;", k.name(),
-                    stacks / (double) rolls, frags / (double) rolls, books / (double) rolls, runes / (double) rolls, hearts / (double) rolls));
+            stats.append(String.format(java.util.Locale.ROOT, " %s: %.1f pilas, %.2f fragmentos, %.2f libros, %.2f runas, %.2f corazones, %.2f gemas, %.2f esencias;",
+                    k.name(), stacks / (double) rolls, frags / (double) rolls, books / (double) rolls, runes / (double) rolls, hearts / (double) rolls,
+                    gems / (double) rolls, essences / (double) rolls));
         }
         String msg = (fail == null ? "PRUEBA_BOTIN_OK" : "PRUEBA_BOTIN_FALLO " + fail) + stats;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fail == null ? 1 : 0;
+    }
+
+    /**
+     * Etapa 271: las gemas sin jugador (con un jugador falso de Forge). Engarza y quita gemas, comprueba el efecto de cada elemento
+     * golpeando a un cerdo y hace el camino completo de la Mesa de Gemas: infundir (gasta Esencia), engarzar y quitar.
+     */
+    private static int gemas(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        String fail = null;
+        StringBuilder info = new StringBuilder();
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        fp.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5);
+        for (com.mundosdeaxelis.gema.Gemas.Elemento el : com.mundosdeaxelis.gema.Gemas.Elemento.values()) {
+            net.minecraft.world.item.ItemStack sword = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD);
+            com.mundosdeaxelis.gema.Gemas.engarzar(sword, el, 4);
+            if (com.mundosdeaxelis.gema.Gemas.gemaDe(sword) != el || com.mundosdeaxelis.gema.Gemas.purezaDe(sword) != 4) {
+                fail = "engarce " + el.id;
+            }
+            fp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, sword);
+            fp.setHealth(10.0F);
+            net.minecraft.world.entity.animal.Pig pig = net.minecraft.world.entity.EntityType.PIG.create(sl);
+            if (pig == null) {
+                fail = "sin cerdo";
+                break;
+            }
+            pig.moveTo(base.getX() + 2.5, base.getY(), base.getZ() + 0.5);
+            pig.setNoAi(true);
+            sl.addFreshEntity(pig);
+            float before = pig.getHealth();
+            pig.hurt(sl.damageSources().playerAttack(fp), 2.0F);
+            float lost = before - pig.getHealth();
+            boolean ok = switch (el) {
+                case VENENO -> pig.hasEffect(net.minecraft.world.effect.MobEffects.POISON);
+                case FILO -> lost > 2.2F;
+                case ESCARCHA -> pig.hasEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN);
+                case FUEGO -> pig.getRemainingFireTicks() > 0;
+                case ARCANO -> lost > 4.0F || pig.isDeadOrDying();
+                case VAMPIRO -> fp.getHealth() > 10.0F;
+                case RAYO -> lost >= 2.0F;
+                case VACIO -> pig.hasEffect(net.minecraft.world.effect.MobEffects.WITHER);
+            };
+            info.append(String.format(java.util.Locale.ROOT, " %s:%.1f", el.id, lost));
+            if (!ok) {
+                fail = "efecto de " + el.id + " (daño " + lost + ", vida del jugador " + fp.getHealth() + ")";
+            }
+            pig.discard();
+            com.mundosdeaxelis.gema.Gemas.quitar(sword);
+            if (com.mundosdeaxelis.gema.Gemas.gemaDe(sword) != null) {
+                fail = "quitar " + el.id;
+            }
+        }
+        fp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.EMPTY);
+        // la Mesa de Gemas, paso a paso
+        com.mundosdeaxelis.gema.GemTableMenu m = new com.mundosdeaxelis.gema.GemTableMenu(0, fp.getInventory(), net.minecraft.world.inventory.ContainerLevelAccess.NULL);
+        int e0 = com.mundosdeaxelis.table.Essence.get(fp);
+        if (e0 < 200) {
+            com.mundosdeaxelis.table.Essence.add(fp, 200);
+            e0 = com.mundosdeaxelis.table.Essence.get(fp);
+        }
+        m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_VACIA).set(com.mundosdeaxelis.block.VaultLoot.emptyGem(3));
+        m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_ESENCIA).set(new net.minecraft.world.item.ItemStack(
+                com.mundosdeaxelis.registry.ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO).get(), 2));
+        m.clickMenuButton(fp, com.mundosdeaxelis.gema.GemTableMenu.B_INFUNDIR);
+        net.minecraft.world.item.ItemStack made = m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_VACIA).getItem();
+        int cost = com.mundosdeaxelis.gema.GemTableMenu.infuseCost(2);
+        if (!(made.getItem() instanceof com.mundosdeaxelis.gema.GemaItems.Gema g) || g.el != com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO
+                || com.mundosdeaxelis.gema.Gemas.pureza(made) != 2) {
+            fail = "infundir dio " + made;
+        } else if (com.mundosdeaxelis.table.Essence.get(fp) != e0 - cost) {
+            fail = "infundir costó " + (e0 - com.mundosdeaxelis.table.Essence.get(fp)) + " en vez de " + cost;
+        } else if (m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_ESENCIA).getItem().getCount() != 1) {
+            fail = "infundir no gastó una esencia";
+        }
+        m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_GEMA).set(made.copy());
+        m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_VACIA).set(net.minecraft.world.item.ItemStack.EMPTY);
+        m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_ARMA).set(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_AXE));
+        m.clickMenuButton(fp, com.mundosdeaxelis.gema.GemTableMenu.B_ENGARZAR);
+        net.minecraft.world.item.ItemStack axe = m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_ARMA).getItem();
+        if (com.mundosdeaxelis.gema.Gemas.gemaDe(axe) != com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO
+                || !m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_GEMA).getItem().isEmpty()) {
+            fail = "engarzar en la mesa";
+        }
+        int e1 = com.mundosdeaxelis.table.Essence.get(fp);
+        m.clickMenuButton(fp, com.mundosdeaxelis.gema.GemTableMenu.B_QUITAR);
+        net.minecraft.world.item.ItemStack back = m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_GEMA).getItem();
+        if (com.mundosdeaxelis.gema.Gemas.gemaDe(axe) != null || !(back.getItem() instanceof com.mundosdeaxelis.gema.GemaItems.Gema)
+                || com.mundosdeaxelis.gema.Gemas.pureza(back) != 2 || com.mundosdeaxelis.table.Essence.get(fp) != e1 - com.mundosdeaxelis.gema.GemTableMenu.REMOVE_COST) {
+            fail = "quitar en la mesa (" + back + ")";
+        }
+        // un pico no admite gemas
+        if (com.mundosdeaxelis.gema.Gemas.admite(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_PICKAXE))) {
+            fail = "un pico admite gemas";
+        }
+        for (int i = 0; i < 4; i++) {
+            m.slots.get(i).set(net.minecraft.world.item.ItemStack.EMPTY);
+        }
+        String msg = (fail == null ? "PRUEBA_GEMAS_OK" : "PRUEBA_GEMAS_FALLO " + fail) + info;
         com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
         src.sendSuccess(() -> Component.literal(msg), true);
         return fail == null ? 1 : 0;
@@ -149,6 +271,7 @@ public final class TestCommands {
                                 .executes(ctx -> equipo(ctx.getSource(), StringArgumentType.getString(ctx, "set")))))
                 .then(Commands.literal("capas").executes(ctx -> capas(ctx.getSource())))
                 .then(Commands.literal("botin").executes(ctx -> botin(ctx.getSource())))
+                .then(Commands.literal("gemas").executes(ctx -> gemas(ctx.getSource())))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
                     int n = com.mundosdeaxelis.table.Essence.forgetSeals(ctx.getSource().getPlayerOrException());
                     ctx.getSource().sendSuccess(() -> Component.literal("Sellos olvidados: " + n + " (vuelves a la etapa 0)."), false);

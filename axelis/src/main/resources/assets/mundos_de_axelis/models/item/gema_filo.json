@@ -1,0 +1,26 @@
+{
+ "parent": "minecraft:item/generated",
+ "textures": {
+  "layer0": "mundos_de_axelis:item/gema_filo_agrietada"
+ },
+ "overrides": [
+  {
+   "predicate": {
+    "mundos_de_axelis:pureza": 0.3
+   },
+   "model": "mundos_de_axelis:item/gema_filo_tallada"
+  },
+  {
+   "predicate": {
+    "mundos_de_axelis:pureza": 0.6
+   },
+   "model": "mundos_de_axelis:item/gema_filo_pulida"
+  },
+  {
+   "predicate": {
+    "mundos_de_axelis:pureza": 0.9
+   },
+   "model": "mundos_de_axelis:item/gema_filo_perfecta"
+  }
+ ]
+}

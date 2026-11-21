@@ -146,6 +146,11 @@
     },
     {
      "type": "minecraft:item",
+     "name": "mundos_de_axelis:esencia_escarcha",
+     "weight": 2
+    },
+    {
+     "type": "minecraft:item",
      "name": "mundos_de_axelis:frost_scale",
      "weight": 2
     },

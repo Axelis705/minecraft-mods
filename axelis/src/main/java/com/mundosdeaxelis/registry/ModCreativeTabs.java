@@ -83,6 +83,15 @@ public final class ModCreativeTabs {
                         }
                         output.accept(ModItems.HEART_FRAGMENT.get());
                         output.accept(ModItems.GRAN_YUNQUE.get());
+                        output.accept(ModItems.MESA_GEMAS.get());
+                        for (int t = 1; t <= 8; t++) {
+                            com.mundosdeaxelis.gema.Gemas.Elemento el = com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(t);
+                            output.accept(com.mundosdeaxelis.gema.Gemas.conPureza(new net.minecraft.world.item.ItemStack(ModItems.GEMA_VACIA.get()),
+                                    com.mundosdeaxelis.gema.Gemas.purezaDeTier(t)));
+                            output.accept(ModItems.ESENCIAS.get(el).get());
+                            output.accept(com.mundosdeaxelis.gema.Gemas.conPureza(new net.minecraft.world.item.ItemStack(ModItems.GEMAS.get(el).get()),
+                                    com.mundosdeaxelis.gema.Gemas.purezaDeTier(t)));
+                        }
                         for (int t = 1; t <= 5; t++) {
                             for (String id : com.mundosdeaxelis.world.Cronicas.of(t)) {
                                 output.accept(com.mundosdeaxelis.world.Cronicas.scroll(id));

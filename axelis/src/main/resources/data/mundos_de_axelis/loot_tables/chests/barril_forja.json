@@ -161,6 +161,11 @@
     },
     {
      "type": "minecraft:item",
+     "name": "mundos_de_axelis:esencia_filo",
+     "weight": 2
+    },
+    {
+     "type": "minecraft:item",
      "name": "mundos_de_axelis:ember_rivet",
      "weight": 2
     },

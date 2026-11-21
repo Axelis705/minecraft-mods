@@ -312,6 +312,15 @@ public final class ModBlocks {
                     .noOcclusion()
                     .lightLevel(st -> st.getValue(com.mundosdeaxelis.block.GranYunqueBlock.PART) == com.mundosdeaxelis.block.GranYunqueBlock.Part.FORGE ? 13 : 3)));
 
+    /** Mesa de Gemas (etapa 271): infunde gemas vacías y las engarza en las armas. */
+    public static final RegistryObject<Block> MESA_GEMAS = BLOCKS.register("mesa_gemas",
+            () -> new com.mundosdeaxelis.gema.MesaGemasBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(3.5F, 1200.0F)
+                    .sound(SoundType.AMETHYST)
+                    .noOcclusion()
+                    .lightLevel(st -> 7)));
+
     /** Mesa del Artífice: mejoras, tienda de llaves y Archivo. */
     public static final RegistryObject<Block> ARTIFICER_TABLE = BLOCKS.register("artificer_table",
             () -> new com.mundosdeaxelis.block.ArtificerTableBlock(BlockBehaviour.Properties.of()

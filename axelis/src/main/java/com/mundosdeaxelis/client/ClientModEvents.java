@@ -154,7 +154,15 @@ public final class ClientModEvents {
         event.enqueueWork(() -> {
             net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.EQUIP.get(), EquipScreen::new);
             net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.TABLE.get(), TableScreen::new);
+            net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.GEM_TABLE.get(), com.mundosdeaxelis.client.GemTableScreen::new);
             net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.PET.get(), PetScreen::new);
+            // Etapa 271: la pureza de las gemas cambia su dibujo (0 Agrietada, 0.33 Tallada, 0.67 Pulida, 1 Perfecta).
+            ResourceLocation pureza = new ResourceLocation(MundosDeAxelis.MODID, "pureza");
+            ItemProperties.register(com.mundosdeaxelis.registry.ModItems.GEMA_VACIA.get(), pureza,
+                    (st, lvl, ent, seed) -> (com.mundosdeaxelis.gema.Gemas.pureza(st) - 1) / 3.0F);
+            for (var ro : com.mundosdeaxelis.registry.ModItems.GEMAS.values()) {
+                ItemProperties.register(ro.get(), pureza, (st, lvl, ent, seed) -> (com.mundosdeaxelis.gema.Gemas.pureza(st) - 1) / 3.0F);
+            }
         });
     }
 

@@ -156,9 +156,9 @@ public final class VaultLoot {
         return scatter(rollRaw(kind, stage, r, lockLevel, archive), r);
     }
 
-    /** La «pieza estrella» de un cofre: un fragmento de corazón, una llave entera, una manzana encantada o un tótem. */
+    /** La «pieza estrella» de un cofre: un fragmento de corazón, una llave entera, una gema vacía, una manzana encantada o un tótem. */
     public static boolean isStar(ItemStack it) {
-        return it.is(ModItems.HEART_FRAGMENT.get()) || it.getItem() instanceof com.mundosdeaxelis.item.CrateKeyItem
+        return it.is(ModItems.HEART_FRAGMENT.get()) || it.getItem() instanceof com.mundosdeaxelis.item.CrateKeyItem || it.is(ModItems.GEMA_VACIA.get())
                 || it.is(Items.ENCHANTED_GOLDEN_APPLE) || it.is(Items.TOTEM_OF_UNDYING);
     }
 
@@ -338,8 +338,41 @@ public final class VaultLoot {
                 addDecor(out, crate, r, 45);
             }
         }
+        gems(out, kind, st, lv, r);
         flavor(out, kind, st, lv, r);
         return out;
+    }
+
+    /**
+     * Etapa 271: las gemas. Las <b>gemas vacías</b> salen poco (son una pieza estrella) y su pureza depende del tier; las
+     * <b>esencias de infusión</b> (del elemento del tier) salen más, para que el jugador pueda elegir qué gema hacer.
+     */
+    private static void gems(List<ItemStack> out, Kind kind, int st, int lv, RandomSource r) {
+        int gemPct = switch (kind) {
+            case ANTE -> 0;
+            case TRIAL -> 4;
+            case LOCKED -> 4 * lv;
+            case TREASURE -> 35;
+            case CRYPT -> 45;
+        };
+        int essN = switch (kind) {
+            case ANTE -> r.nextInt(100) < 8 ? 1 : 0;
+            case TRIAL -> r.nextInt(100) < 25 ? 1 : 0;
+            case LOCKED -> r.nextInt(100) < Math.min(75, 15 * lv) ? 1 + (lv >= 4 ? 1 : 0) : 0;
+            case TREASURE -> 1 + r.nextInt(2);
+            case CRYPT -> 2;
+        };
+        if (r.nextInt(100) < gemPct) {
+            out.add(emptyGem(st));
+        }
+        if (essN > 0) {
+            out.add(of(ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(st)).get(), essN));
+        }
+    }
+
+    /** Una gema vacía con la pureza del tier. */
+    public static ItemStack emptyGem(int st) {
+        return com.mundosdeaxelis.gema.Gemas.conPureza(new ItemStack(ModItems.GEMA_VACIA.get()), com.mundosdeaxelis.gema.Gemas.purezaDeTier(st));
     }
 
     // ------------------------------------------------------------------ sabor de cada etapa

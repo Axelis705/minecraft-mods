@@ -43,7 +43,9 @@ public final class TableRecipes {
                             List.of(of(ModItems.EMBER_STEEL::get, 8), mat(Mats.LIVE_EMBER, 4), mat(Mats.OLD_COIN, 6))),
                     // etapa 270: las llaves ya no se forjan aquí sino en el Gran Yunque de Fundición, que se crea en esta Mesa
                     new Recipe("gran_yunque", ModItems.GRAN_YUNQUE::get, 1, 100, 1,
-                            List.of(of(() -> Items.ANVIL, 1), of(() -> Items.BLAST_FURNACE, 1), of(() -> Items.IRON_BLOCK, 2)))
+                            List.of(of(() -> Items.ANVIL, 1), of(() -> Items.BLAST_FURNACE, 1), of(() -> Items.IRON_BLOCK, 2))),
+                    new Recipe("mesa_gemas", ModItems.MESA_GEMAS::get, 1, 80, 1,
+                            List.of(of(() -> Items.AMETHYST_SHARD, 8), of(() -> Items.SMITHING_TABLE, 1), of(() -> Items.LAPIS_BLOCK, 1)))
             );
         }
         return all;

@@ -1300,6 +1300,151 @@ public final class AutoTest {
             cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
         });
         yunque();
+        gemas();
+    }
+
+    // ------------------------------------------------------------------ etapa 271: las gemas
+
+    /** Índice en el menú abierto del primer hueco con ese objeto (o -1). */
+    private static int menuSlotOf(net.minecraft.world.item.Item it, int from) {
+        if (Minecraft.getInstance().player == null) {
+            return -1;
+        }
+        net.minecraft.world.inventory.AbstractContainerMenu m = Minecraft.getInstance().player.containerMenu;
+        for (int i = from; i < m.slots.size(); i++) {
+            if (m.slots.get(i).getItem().is(it)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static void menuClick(int slot, net.minecraft.world.inventory.ClickType type) {
+        Minecraft mc = Minecraft.getInstance();
+        if (slot >= 0 && mc.player != null && mc.gameMode != null) {
+            mc.gameMode.handleInventoryMouseClick(mc.player.containerMenu.containerId, slot, 0, type, mc.player);
+        }
+    }
+
+    private static void menuButton(int id) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null && mc.gameMode != null) {
+            mc.gameMode.handleInventoryButtonClick(mc.player.containerMenu.containerId, id);
+        }
+    }
+
+    private static net.minecraft.world.item.ItemStack menuItem(int slot) {
+        return Minecraft.getInstance().player.containerMenu.slots.get(slot).getItem();
+    }
+
+    private static volatile int pigId = -1;
+
+    /**
+     * La Mesa de Gemas: se pone, se abre, se infunde una gema vacía Pulida con Esencia de Fuego (gasta esencia y Esencia), se
+     * engarza en una espada, al cerrar todo vuelve al inventario y la espada lleva la gema en su descripción; al golpear a un
+     * cerdo, este arde.
+     */
+    private static void gemas() {
+        net.minecraft.core.BlockPos mesa = new net.minecraft.core.BlockPos(LTX + 5, LTY, LTZ - 6);
+        net.minecraft.world.item.Item vacia = com.mundosdeaxelis.registry.ModItems.GEMA_VACIA.get();
+        net.minecraft.world.item.Item esFuego = com.mundosdeaxelis.registry.ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO).get();
+        net.minecraft.world.item.Item gemFuego = com.mundosdeaxelis.registry.ModItems.GEMAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO).get();
+        add("gemas (poner)", 1500, () -> {
+            cmd("execute in minecraft:overworld run forceload add " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+            cmd("execute in minecraft:overworld run setblock " + mesa.getX() + " " + mesa.getY() + " " + mesa.getZ() + " mundos_de_axelis:mesa_gemas");
+            cmd("clear @a minecraft:diamond_sword");
+            cmd("clear @a mundos_de_axelis:gema_vacia");
+            cmd("clear @a mundos_de_axelis:esencia_fuego");
+            cmd("clear @a mundos_de_axelis:gema_fuego");
+            cmd("give @a mundos_de_axelis:gema_vacia{Pureza:3} 1");
+            cmd("give @a mundos_de_axelis:esencia_fuego 2");
+            cmd("give @a minecraft:diamond_sword 1");
+            cmd("execute as @a run mundos prueba esencia 300");
+            standLooking(LTX + 5.5, LTY, LTZ - 9.5, LTX + 5.5, LTY + 0.6, LTZ - 5.5);
+        });
+        add("gemas (mesa, foto)", 300, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            check("la Mesa de Gemas está puesta", lv.getBlockState(mesa).is(com.mundosdeaxelis.registry.ModBlocks.MESA_GEMAS.get()));
+            shot("100_mesa_gemas");
+        });
+        add("gemas (abrir)", 1500, () -> useBlock(mesa));
+        add("gemas (meter)", 1200, () -> {
+            check("la Mesa de Gemas abre su pantalla (" + screenName() + ")", Minecraft.getInstance().screen instanceof GemTableScreen);
+            menuClick(menuSlotOf(vacia, 4), net.minecraft.world.inventory.ClickType.QUICK_MOVE);
+            menuClick(menuSlotOf(esFuego, 4), net.minecraft.world.inventory.ClickType.QUICK_MOVE);
+            menuClick(menuSlotOf(net.minecraft.world.item.Items.DIAMOND_SWORD, 4), net.minecraft.world.inventory.ClickType.QUICK_MOVE);
+        });
+        add("gemas (infundir, foto)", 300, () -> {
+            check("con mayúsculas y clic, cada cosa va a su hueco (gema vacía, esencia y espada)",
+                    menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_VACIA).is(vacia) && menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_ESENCIA).is(esFuego)
+                            && menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_ARMA).is(net.minecraft.world.item.Items.DIAMOND_SWORD));
+            shot("101_gemas_antes");
+            e0 = TableClient.essence;
+            menuButton(com.mundosdeaxelis.gema.GemTableMenu.B_INFUNDIR);
+        });
+        add("gemas (infundida)", 1200, () -> {
+            net.minecraft.world.item.ItemStack g = menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_VACIA);
+            check("infundir da una Gema de Fuego Pulida (" + g + ", pureza " + com.mundosdeaxelis.gema.Gemas.pureza(g) + ")",
+                    g.is(gemFuego) && com.mundosdeaxelis.gema.Gemas.pureza(g) == 3);
+            check("infundir gasta una esencia y " + com.mundosdeaxelis.gema.GemTableMenu.infuseCost(3) + " de Esencia (" + e0 + " → " + TableClient.essence + ")",
+                    menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_ESENCIA).getCount() == 1
+                            && TableClient.essence == e0 - com.mundosdeaxelis.gema.GemTableMenu.infuseCost(3));
+            shot("102_gemas_infundida");
+            // la gema pasa al hueco del engarce
+            menuClick(com.mundosdeaxelis.gema.GemTableMenu.S_VACIA, net.minecraft.world.inventory.ClickType.PICKUP);
+            menuClick(com.mundosdeaxelis.gema.GemTableMenu.S_GEMA, net.minecraft.world.inventory.ClickType.PICKUP);
+        });
+        add("gemas (engarzar)", 1000, () -> menuButton(com.mundosdeaxelis.gema.GemTableMenu.B_ENGARZAR));
+        add("gemas (engarzada, foto)", 300, () -> {
+            net.minecraft.world.item.ItemStack w = menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_ARMA);
+            check("engarzar pone la Gema de Fuego en la espada y gasta la gema",
+                    com.mundosdeaxelis.gema.Gemas.gemaDe(w) == com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO
+                            && menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_GEMA).isEmpty());
+            shot("103_gemas_engarzada");
+            open(null);
+        });
+        add("gemas (devuelve)", 1200, () -> {
+            net.minecraft.world.item.ItemStack sword = net.minecraft.world.item.ItemStack.EMPTY;
+            for (net.minecraft.world.item.ItemStack st : Minecraft.getInstance().player.getInventory().items) {
+                if (st.is(net.minecraft.world.item.Items.DIAMOND_SWORD)) {
+                    sword = st;
+                }
+            }
+            check("al cerrar la mesa, la espada (con gema) y la esencia sobrante vuelven al inventario",
+                    com.mundosdeaxelis.gema.Gemas.gemaDe(sword) == com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO && invCount(esFuego) == 1);
+            boolean tip = false;
+            if (!sword.isEmpty()) {
+                for (net.minecraft.network.chat.Component c : sword.getTooltipLines(Minecraft.getInstance().player, net.minecraft.world.item.TooltipFlag.Default.NORMAL)) {
+                    tip |= c.getString().contains("◆");
+                }
+            }
+            check("la descripción de la espada muestra la gema engarzada", tip);
+            cmd("clear @a minecraft:diamond_sword");
+            cmd("item replace entity @a hotbar.0 with minecraft:diamond_sword{MdcGema:{E:\"fuego\",P:3}}");
+            Minecraft.getInstance().player.getInventory().selected = 0;
+            cmd("kill @e[type=minecraft:pig]");
+            cmd("execute in minecraft:overworld run summon minecraft:pig " + (LTX + 5.5) + " " + LTY + " " + (LTZ - 2.5) + " {NoAI:1b,Health:40f,Attributes:[{Name:\"generic.max_health\",Base:40d}]}");
+            standLooking(LTX + 5.5, LTY, LTZ - 4.4, LTX + 5.5, LTY + 0.5, LTZ - 2.5);
+        });
+        add("gemas (golpear)", 1200, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            pigId = -1;
+            for (net.minecraft.world.entity.Entity en : mc.level.entitiesForRendering()) {
+                if (en instanceof net.minecraft.world.entity.animal.Pig) {
+                    pigId = en.getId();
+                    mc.gameMode.attack(mc.player, en);
+                    mc.player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+                    break;
+                }
+            }
+        });
+        add("gemas (fuego, foto)", 400, () -> {
+            net.minecraft.world.entity.Entity pig = Minecraft.getInstance().level.getEntity(pigId);
+            check("al golpear con la espada de Gema de Fuego, el cerdo arde", pig != null && pig.isOnFire());
+            shot("104_gemas_fuego");
+            cmd("kill @e[type=minecraft:pig]");
+            cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+        });
     }
 
     // ------------------------------------------------------------------ etapa 270: el Gran Yunque de Fundición
