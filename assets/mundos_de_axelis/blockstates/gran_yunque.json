@@ -1,0 +1,34 @@
+{
+ "variants": {
+  "facing=north,part=anvil": {
+   "model": "mundos_de_axelis:block/gran_yunque_anvil"
+  },
+  "facing=north,part=forge": {
+   "model": "mundos_de_axelis:block/gran_yunque_forge"
+  },
+  "facing=east,part=anvil": {
+   "model": "mundos_de_axelis:block/gran_yunque_anvil",
+   "y": 90
+  },
+  "facing=east,part=forge": {
+   "model": "mundos_de_axelis:block/gran_yunque_forge",
+   "y": 90
+  },
+  "facing=south,part=anvil": {
+   "model": "mundos_de_axelis:block/gran_yunque_anvil",
+   "y": 180
+  },
+  "facing=south,part=forge": {
+   "model": "mundos_de_axelis:block/gran_yunque_forge",
+   "y": 180
+  },
+  "facing=west,part=anvil": {
+   "model": "mundos_de_axelis:block/gran_yunque_anvil",
+   "y": 270
+  },
+  "facing=west,part=forge": {
+   "model": "mundos_de_axelis:block/gran_yunque_forge",
+   "y": 270
+  }
+ }
+}
