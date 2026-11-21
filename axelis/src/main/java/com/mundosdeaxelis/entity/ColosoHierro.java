@@ -69,6 +69,8 @@ public class ColosoHierro extends Monster {
             BossEvent.BossBarColor.YELLOW, BossEvent.BossBarOverlay.NOTCHED_10);
 
     private int stateTicks;
+    /** Dónde duerme (dormido no se mueve: si algo lo empuja, vuelve a su sitio). */
+    private Vec3 home;
     private int slamCd = 80;
     private int throwCd = 60;
     private int slamsSinceRest;
@@ -218,6 +220,14 @@ public class ColosoHierro extends Monster {
         super.tick();
         stateTicks++;
         if (this.level() instanceof ServerLevel sl) {
+            if (asleep()) {
+                if (home == null) {
+                    home = position();
+                } else if (position().distanceToSqr(home) > 0.25) {
+                    setPos(home.x, home.y, home.z);
+                    setDeltaMovement(Vec3.ZERO);
+                }
+            }
             if (asleep() && this.tickCount % 10 == 0 && !playersNear(sl, WAKE_RANGE).isEmpty()) {
                 wake(sl);
             }
@@ -434,6 +444,18 @@ public class ColosoHierro extends Monster {
     }
 
     @Override
+    public boolean isPushable() {
+        return !asleep() && super.isPushable();
+    }
+
+    @Override
+    public void push(double x, double y, double z) {
+        if (!asleep()) {
+            super.push(x, y, z);
+        }
+    }
+
+    @Override
     public void die(DamageSource source) {
         if (this.level() instanceof ServerLevel sl) {
             this.bossEvent.removeAllPlayers();
@@ -494,11 +516,19 @@ public class ColosoHierro extends Monster {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Dormido", asleep());
+        if (home != null) {
+            tag.putDouble("CasaX", home.x);
+            tag.putDouble("CasaY", home.y);
+            tag.putDouble("CasaZ", home.z);
+        }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        if (tag.contains("CasaX")) {
+            home = new Vec3(tag.getDouble("CasaX"), tag.getDouble("CasaY"), tag.getDouble("CasaZ"));
+        }
         if (tag.contains("Dormido") && !tag.getBoolean("Dormido")) {
             this.entityData.set(STATE, NORMAL);
             this.bossEvent.setVisible(true);

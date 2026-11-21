@@ -876,7 +876,11 @@ public final class AutoTest {
         });
         // etapa 267: el Coloso de Hierro duerme delante del altar; al acercarse despierta, carga el golpe y suelta las ondas
         add("coloso dormido (foto)", 300, () -> {
-            check("el Coloso de Hierro duerme delante del altar de la fragua", clientColoso() != null && clientColoso().asleep());
+            com.mundosdeaxelis.entity.ColosoHierro c = clientColoso();
+            log("DIAG coloso cliente " + (c == null ? "ninguno" : String.format(Locale.ROOT, "%.1f %.1f %.1f estado %d", c.getX() - GX, c.getY() - SY,
+                    c.getZ() - GZ, c.state())));
+            check("el Coloso de Hierro duerme delante del altar de la fragua", c != null && c.asleep()
+                    && Math.abs(c.getX() - (GX + 0.5)) < 2.0 && Math.abs(c.getZ() - (GZ + 30.5)) < 2.0);
             shot("68d_coloso_dormido");
         });
         add("coloso despierta", 2500, () -> {
@@ -885,7 +889,10 @@ public final class AutoTest {
             cmd("effect give @a minecraft:fire_resistance 600 0 true");
             cmd("kill @e[type=mundos_de_axelis:escoria]");
             cmd("kill @e[type=mundos_de_axelis:chispero]");
-            standLooking(GX + 0.5, SY, GZ + 23.5, GX + 0.5, SY + 2.0, GZ + 30.5);
+            // a 7 bloques del Coloso (donde esté), mirándolo
+            com.mundosdeaxelis.entity.ColosoHierro c = clientColoso();
+            double cx = c == null ? GX + 0.5 : c.getX(), cz = c == null ? GZ + 30.5 : c.getZ();
+            standLooking(cx, SY, cz - 7.0, cx, SY + 2.0, cz);
         });
         add("coloso despierto (foto)", 300, () -> {
             check("al acercarse, el Coloso de Hierro despierta", clientColoso() != null && !clientColoso().asleep());
