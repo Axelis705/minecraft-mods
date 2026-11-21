@@ -516,6 +516,8 @@ public final class StructPlacer {
         if (hook != null) {
             hook.accept(index, mob);
         }
+        // etapa 275: a veces un enemigo sale como élite
+        Elites.maybe(mob, level.random);
         return level.addFreshEntity(mob) ? mob.getUUID() : null;
     }
 

@@ -1430,6 +1430,32 @@ public final class AutoTest {
             shot("109_arrojadizo_escarcha");
             cmd("kill @e[type=minecraft:husk]");
             cmd("item replace entity @a hotbar.0 with minecraft:air");
+        });
+        elite();
+    }
+
+    /** Etapa 275: un enemigo de élite se ve con su nombre y apodo de color, y con el doble y medio de vida. */
+    private static void elite() {
+        double ex = LTX - 3.5, ez = LTZ + 0.5;
+        add("elite (poner)", 1800, () -> {
+            cmd("kill @e[type=mundos_de_axelis:escoria]");
+            cmd("execute in minecraft:overworld run summon mundos_de_axelis:escoria " + ex + " " + LTY + " " + ez
+                    + " {NoAI:1b,PersistenceRequired:1b,Rotation:[180f,0f],ForgeData:{mdc_elite:\"ardiente\",mdc_elite_tier:2}}");
+            standLooking(LTX - 3.5, LTY, LTZ - 3.0, ex, LTY + 1.4, ez);
+        });
+        add("elite (foto)", 400, () -> {
+            net.minecraft.world.entity.LivingEntity el = null;
+            for (net.minecraft.world.entity.Entity en : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (en instanceof com.mundosdeaxelis.entity.Escoria es) {
+                    el = es;
+                }
+            }
+            String nm = el == null || el.getCustomName() == null ? "-" : el.getCustomName().getString();
+            check("el enemigo de élite lleva su apodo a la vista (" + nm + ")", nm.contains("★") && !nm.contains("elite."));
+            check("el élite tiene el doble y medio de vida (" + (el == null ? -1 : el.getMaxHealth()) + ")", el != null
+                    && el.getMaxHealth() >= el.getAttributeBaseValue(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH) * 2.4D);
+            shot("110_elite_ardiente");
+            cmd("kill @e[type=mundos_de_axelis:escoria]");
             cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
         });
     }

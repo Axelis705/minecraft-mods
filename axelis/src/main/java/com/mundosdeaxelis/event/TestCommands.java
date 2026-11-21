@@ -445,6 +445,88 @@ public final class TestCommands {
         return 1;
     }
 
+    /** Etapa 275: los enemigos de élite (con un Brote de tier 1 y un jugador falso). */
+    private static int elites(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        com.mundosdeaxelis.table.Essence.forgetSeals(fp);
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        net.minecraft.world.entity.EntityType<?> broteType = net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES
+                .getValue(new net.minecraft.resources.ResourceLocation(com.mundosdeaxelis.MundosDeAxelis.MODID, "brote"));
+        String fail = null;
+        // quién puede ser élite
+        net.minecraft.world.entity.Entity sample = broteType.create(sl);
+        if (com.mundosdeaxelis.world.Elites.eligibleTier(sample) != 1) {
+            fail = "el Brote no puede ser élite";
+        }
+        net.minecraft.world.entity.Entity boss = net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES
+                .getValue(new net.minecraft.resources.ResourceLocation(com.mundosdeaxelis.MundosDeAxelis.MODID, "rey_brote")).create(sl);
+        if (boss != null && com.mundosdeaxelis.world.Elites.eligibleTier(boss) != 0) {
+            fail = "un jefe puede ser élite";
+        }
+        for (com.mundosdeaxelis.world.Elites.Afijo a : com.mundosdeaxelis.world.Elites.Afijo.values()) {
+            net.minecraft.world.entity.Mob m = (net.minecraft.world.entity.Mob) broteType.create(sl);
+            m.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5, 0, 0);
+            m.setNoAi(true);
+            float hp0 = m.getMaxHealth();
+            com.mundosdeaxelis.world.Elites.make(m, 1, a);
+            sl.addFreshEntity(m);
+            if (Math.abs(m.getMaxHealth() - hp0 * 2.5F) > 0.05F || m.getCustomName() == null || com.mundosdeaxelis.world.Elites.afijo(m) != a) {
+                fail = "élite " + a.id + " (vida " + hp0 + " -> " + m.getMaxHealth() + ")";
+            }
+            net.minecraft.world.entity.animal.Sheep v = net.minecraft.world.entity.EntityType.SHEEP.create(sl);
+            v.moveTo(base.getX() + 1.5, base.getY(), base.getZ() + 0.5, 0, 0);
+            v.setNoAi(true);
+            sl.addFreshEntity(v);
+            m.setHealth(m.getMaxHealth() * 0.5F);
+            float h1 = m.getHealth();
+            v.hurt(sl.damageSources().mobAttack(m), 2.0F);
+            boolean ok = switch (a) {
+                case ARDIENTE -> v.isOnFire();
+                case GELIDO -> v.hasEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN);
+                case VAMPIRICO -> m.getHealth() > h1;
+                case BLINDADO -> m.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR) >= 8.0D
+                        && m.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE) >= 0.7D;
+                case VELOZ -> m.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED)
+                        > m.getAttributeBaseValue(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED) * 1.3D;
+                case EXPLOSIVO -> true;
+            };
+            if (!ok) {
+                fail = "poder " + a.id;
+            }
+            v.discard();
+            if (a == com.mundosdeaxelis.world.Elites.Afijo.ARDIENTE) {
+                // matarlo: suelta su botín de tier 1
+                sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(5))
+                        .forEach(net.minecraft.world.entity.Entity::discard);
+                m.hurt(sl.damageSources().playerAttack(fp), 100000.0F);
+                int n = sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(5),
+                        ie -> ie.getItem().getItem() instanceof com.mundosdeaxelis.item.EssenceRuneItem).size();
+                if (n < 1) {
+                    fail = "el élite no suelta su runa";
+                }
+                sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(5))
+                        .forEach(net.minecraft.world.entity.Entity::discard);
+            }
+            m.discard();
+        }
+        // cuántos salen
+        net.minecraft.util.RandomSource r = net.minecraft.util.RandomSource.create(275L);
+        int elites = 0;
+        for (int i = 0; i < 400; i++) {
+            net.minecraft.world.entity.Mob m = (net.minecraft.world.entity.Mob) broteType.create(sl);
+            com.mundosdeaxelis.world.Elites.maybe(m, r);
+            elites += com.mundosdeaxelis.world.Elites.isElite(m) ? 1 : 0;
+        }
+        if (elites < 20 || elites > 75) {
+            fail = "salen " + elites + " élites de 400";
+        }
+        String msg = (fail == null ? "PRUEBA_ELITES_OK" : "PRUEBA_ELITES_FALLO " + fail) + " elites=" + elites + "/400";
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fail == null ? 1 : 0;
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal("prueba")
                 .then(Commands.literal("equipo")
@@ -456,6 +538,7 @@ public final class TestCommands {
                 .then(Commands.literal("gemas").executes(ctx -> gemas(ctx.getSource())))
                 .then(Commands.literal("mimico").executes(ctx -> mimico(ctx.getSource())))
                 .then(Commands.literal("arrojadizos").executes(ctx -> arrojadizos(ctx.getSource())))
+                .then(Commands.literal("elites").executes(ctx -> elites(ctx.getSource())))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     // los sellos que lleva encima se volverían a apuntar en el Archivo: se le quitan

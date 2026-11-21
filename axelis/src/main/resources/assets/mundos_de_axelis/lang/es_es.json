@@ -2537,5 +2537,13 @@
   "gui.mundos_de_axelis.gemas.combinar": "Combinar",
   "gui.mundos_de_axelis.gemas.combinar_resultado": "3 → %s. Cuesta %s ◆",
   "message.mundos_de_axelis.gema.falta_combinar": "Pon 3 gemas iguales (que no sean Perfectas) en el hueco de la izquierda.",
-  "message.mundos_de_axelis.gema.combinada": "¡Combinaste: %s!"
+  "message.mundos_de_axelis.gema.combinada": "¡Combinaste: %s!",
+  "elite.mundos_de_axelis.nombre": "%1$s %2$s ★",
+  "elite.mundos_de_axelis.ardiente": "Ardiente",
+  "elite.mundos_de_axelis.gelido": "Glacial",
+  "elite.mundos_de_axelis.vampirico": "Vampiro",
+  "elite.mundos_de_axelis.blindado": "Inquebrantable",
+  "elite.mundos_de_axelis.veloz": "Veloz",
+  "elite.mundos_de_axelis.explosivo": "Volátil",
+  "message.mundos_de_axelis.elite.vencido": "¡Has vencido a %s! Suelta su botín."
 }

@@ -2537,5 +2537,13 @@
   "gui.mundos_de_axelis.gemas.combinar": "Combine",
   "gui.mundos_de_axelis.gemas.combinar_resultado": "3 → %s. Costs %s ◆",
   "message.mundos_de_axelis.gema.falta_combinar": "Place 3 identical gems (not Flawless) in the left slot.",
-  "message.mundos_de_axelis.gema.combinada": "You combined: %s!"
+  "message.mundos_de_axelis.gema.combinada": "You combined: %s!",
+  "elite.mundos_de_axelis.nombre": "%2$s %1$s ★",
+  "elite.mundos_de_axelis.ardiente": "Burning",
+  "elite.mundos_de_axelis.gelido": "Glacial",
+  "elite.mundos_de_axelis.vampirico": "Vampiric",
+  "elite.mundos_de_axelis.blindado": "Unbreakable",
+  "elite.mundos_de_axelis.veloz": "Swift",
+  "elite.mundos_de_axelis.explosivo": "Volatile",
+  "message.mundos_de_axelis.elite.vencido": "You defeated %s! It drops its loot."
 }
