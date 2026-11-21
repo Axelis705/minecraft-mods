@@ -11,7 +11,7 @@ package com.mundosdeaxelis.world;
 public class ConectividadTest {
     public static void main(String[] args) {
         String[] kinds = {"bosque", "forja", "hielo", "torre", "volcan", "santuario", "fortin", "fragua", "torre_arcana"};
-        int[] maxRooms = {3, 16, 2, 1, 2, 1, 1, 1, 0};
+        int[] maxRooms = {3, 16, 2, 1, 2, 1, 1, 0, 0};
         int[] maxTraps = {2, 3, 2, 0, 0, 0, 0, 0, 0};
         // el volcán: 2 «salas» toleradas (lo alto del corazón colgado y, desde la etapa 262, la celda de Ignacio)
         // la fortaleza (torre): 1, la celda de Teo en la cripta (etapa 265); la Torre Arcana ya no tiene celda (es la despensa)

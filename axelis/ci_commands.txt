@@ -229,25 +229,42 @@ execute unless block 450 -60 -29 minecraft:spruce_door run say PRUEBA_BRUNO_CASA
 mundos vecinos reiniciar
 forceload remove 380 -40 470 80
 forceload add 510 -50 600 80
-execute positioned 540 -60 0 rotated 0 0 run mundos estructura forja
+execute positioned 540 -60 0 rotated 0 0 run mundos estructura fragua
 #wait Fragua Olvidada construida 90
-execute if block 540 -59 51 mundos_de_axelis:portal_stone_forge run say PRUEBA_FRAGUA_PIEDRA_OK
-execute if block 550 -60 45 minecraft:iron_door run say PRUEBA_FRAGUA_CELDA_PUERTA_OK
-execute if block 550 -60 41 minecraft:iron_bars run say PRUEBA_FRAGUA_CELDA_BARROTES_OK
+execute unless block 540 -59 51 mundos_de_axelis:portal_stone_forge run say PRUEBA_FRAGUA_SIN_PIEDRA_OK
+execute if data block 540 -59 51 {Kind:"LOCKED",Stage:2,LockLevel:4} run say PRUEBA_FRAGUA_TESORO_OK
+execute if data block 553 -60 43 {Kind:"TRIAL",Stage:2} run say PRUEBA_FRAGUA_ALMACEN_OK
+execute if block 550 -60 45 minecraft:spruce_door run say PRUEBA_FRAGUA_PUERTA_MADERA_OK
 execute if data block 543 -60 51 {Kind:"ANTE",Stage:2} run say PRUEBA_FRAGUA_COFRE_OK
 execute if block 547 -41 52 minecraft:campfire[signal_fire=true] run say PRUEBA_FRAGUA_CHIMENEA_OK
 execute if entity @e[type=mundos_de_axelis:escoria,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_ESCORIAS_OK
 execute if entity @e[type=mundos_de_axelis:chispero,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_CHISPERO_OK
-execute if entity @e[type=mundos_de_axelis:fundidor,x=515,y=-70,z=10,dx=50,dy=20,dz=55,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_FRAGUA_FUNDIDOR_LLAVE_OK
-execute if entity @e[type=mundos_de_axelis:habitante,x=551,y=-61,z=40,dx=4,dy=3,dz=6,nbt={NpcState:0,Npc:"hilda"}] run say PRUEBA_HILDA_PRESA_OK
-kill @e[type=mundos_de_axelis:fundidor,x=515,y=-70,z=10,dx=50,dy=20,dz=55,nbt={ForgeData:{MundosTag:"llave_celda"}}]
-execute if entity @e[type=item,x=515,y=-70,z=10,dx=50,dy=20,dz=55,nbt={Item:{id:"mundos_de_axelis:llave_celda"}}] run say PRUEBA_FRAGUA_LLAVE_CAE_OK
-execute positioned 553 -60 43 run mundos vecinos liberar
-execute if block 550 -60 45 minecraft:iron_door[open=true] run say PRUEBA_HILDA_PUERTA_ABIERTA_OK
-execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1,Npc:"hilda"}] run say PRUEBA_HILDA_LIBRE_OK
+execute if entity @e[type=mundos_de_axelis:fundidor,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_FUNDIDOR_OK
+execute unless entity @e[type=mundos_de_axelis:habitante,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_SIN_NPC_OK
 execute positioned 540 -60 0 run mundos estructura deshacer
-execute unless block 540 -59 51 mundos_de_axelis:portal_stone_forge run say PRUEBA_FRAGUA_DESHECHA_OK
+execute unless block 540 -59 51 mundos_de_axelis:vault_chest_locked_forge run say PRUEBA_FRAGUA_DESHECHA_OK
 execute unless entity @e[type=mundos_de_axelis:escoria,x=515,y=-70,z=10,dx=50,dy=20,dz=55] run say PRUEBA_FRAGUA_SIN_ENEMIGOS_OK
+forceload add 1934 -16 2066 126
+execute positioned 2000 -48 0 rotated 0 0 run mundos estructura fundicion
+#wait Gran Fundición construida 300
+execute if block 2000 -58 75 mundos_de_axelis:portal_stone_forge run say PRUEBA_FUNDICION_PIEDRA_OK
+execute if data block 2002 -59 75 {Kind:"ANTE",Stage:2} run say PRUEBA_FUNDICION_COFRE_OK
+execute if block 1989 -61 92 minecraft:iron_door run say PRUEBA_FUNDICION_CELDA_PUERTA_OK
+execute if block 1987 -61 92 minecraft:iron_bars run say PRUEBA_FUNDICION_CELDA_BARROTES_OK
+execute if entity @e[type=mundos_de_axelis:escoria,x=1934,y=-70,z=-16,dx=132,dy=60,dz=142] run say PRUEBA_FUNDICION_ESCORIAS_OK
+execute if entity @e[type=mundos_de_axelis:chispero,x=1934,y=-70,z=-16,dx=132,dy=60,dz=142] run say PRUEBA_FUNDICION_CHISPEROS_OK
+execute if entity @e[type=mundos_de_axelis:fundidor,x=1990,y=-64,z=65,dx=20,dy=10,dz=20,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_FUNDICION_FUNDIDOR_LLAVE_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=1984,y=-63,z=91,dx=6,dy=4,dz=6,nbt={NpcState:0,Npc:"hilda"}] run say PRUEBA_HILDA_PRESA_OK
+kill @e[type=mundos_de_axelis:fundidor,x=1990,y=-64,z=65,dx=20,dy=10,dz=20,nbt={ForgeData:{MundosTag:"llave_celda"}}]
+execute if entity @e[type=item,x=1990,y=-64,z=65,dx=20,dy=10,dz=20,nbt={Item:{id:"mundos_de_axelis:llave_celda"}}] run say PRUEBA_FUNDICION_LLAVE_CAE_OK
+kill @e[type=item]
+execute positioned 1987 -61 94 run mundos vecinos liberar
+execute if block 1989 -61 92 minecraft:iron_door[open=true] run say PRUEBA_HILDA_PUERTA_ABIERTA_OK
+execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1,Npc:"hilda"}] run say PRUEBA_HILDA_LIBRE_OK
+execute positioned 2000 -48 0 run mundos estructura deshacer
+execute unless block 2000 -58 75 mundos_de_axelis:portal_stone_forge run say PRUEBA_FUNDICION_DESHECHA_OK
+execute unless entity @e[type=mundos_de_axelis:escoria,x=1934,y=-70,z=-16,dx=132,dy=60,dz=142] run say PRUEBA_FUNDICION_SIN_ENEMIGOS_OK
+forceload remove 1934 -16 2066 126
 execute positioned 570 -60 -30 rotated 0 0 run mundos vecinos plantar hilda
 execute if block 570 -60 -29 minecraft:dark_oak_door run say PRUEBA_HILDA_CASA_PUERTA_OK
 execute if block 572 -60 -25 minecraft:smithing_table run say PRUEBA_HILDA_CASA_MESA_OK
@@ -291,7 +308,7 @@ execute if entity @e[type=mundos_de_axelis:armadura_encantada,x=640,y=-70,z=16,d
 execute unless entity @e[type=mundos_de_axelis:armadura_encantada,x=640,y=-70,z=16,dx=45,dy=45,dz=45,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_TORRE_ARCANA_SIN_LLAVE_OK
 execute unless entity @e[type=mundos_de_axelis:habitante,x=640,y=-70,z=16,dx=45,dy=45,dz=45] run say PRUEBA_TORRE_ARCANA_SIN_NPC_OK
 execute positioned 660 -60 0 run mundos estructura deshacer
-execute unless data block 660 -35 46 {Kind:"LOCKED"} run say PRUEBA_TORRE_ARCANA_DESHECHA_OK
+execute unless block 660 -35 46 mundos_de_axelis:vault_chest_locked run say PRUEBA_TORRE_ARCANA_DESHECHA_OK
 execute unless entity @e[type=mundos_de_axelis:esbirro,x=640,y=-70,z=16,dx=45,dy=45,dz=45] run say PRUEBA_TORRE_ARCANA_SIN_ENEMIGOS_OK
 forceload remove 630 -10 700 70
 forceload add 836 -16 965 112
@@ -334,12 +351,17 @@ execute if entity @e[type=mundos_de_axelis:centinela_escarcha,x=3140,y=-80,z=-80
 execute positioned 3200 -60 0 run mundos natural cerca
 forceload remove 3150 -70 3260 80
 forceload add 3650 -70 3760 80
-execute positioned 3700 -60 0 rotated 0 0 run mundos natural generar forja aqui
-#wait FORJA_NATURAL_OK 150
-execute if entity @e[type=mundos_de_axelis:habitante,x=3640,y=-80,z=-80,dx=130,dy=40,dz=170,nbt={NpcState:0,Npc:"hilda"}] run say PRUEBA_FRAGUA_NATURAL_HILDA_OK
+execute positioned 3700 -60 0 rotated 0 0 run mundos natural generar fragua aqui
+#wait FRAGUA_NATURAL_OK 150
 execute if entity @e[type=mundos_de_axelis:fundidor,x=3640,y=-80,z=-80,dx=130,dy=40,dz=170] run say PRUEBA_FRAGUA_NATURAL_FUNDIDOR_OK
 execute positioned 3700 -60 0 run mundos natural cerca
 forceload remove 3650 -70 3760 80
+forceload add 3920 -120 4080 120
+execute positioned 4000 -48 0 rotated 0 0 run mundos natural generar forja aqui
+#wait FORJA_NATURAL_OK 400
+execute if entity @e[type=mundos_de_axelis:habitante,x=3900,y=-80,z=-140,dx=200,dy=100,dz=280,nbt={NpcState:0,Npc:"hilda"}] run say PRUEBA_FUNDICION_NATURAL_HILDA_OK
+execute if entity @e[type=mundos_de_axelis:fundidor,x=3900,y=-80,z=-140,dx=200,dy=100,dz=280,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_FUNDICION_NATURAL_LLAVE_OK
+forceload remove 3920 -120 4080 120
 forceload add 4250 -70 4360 80
 execute positioned 4300 -60 0 rotated 0 0 run mundos natural generar arcana aqui
 #wait ARCANA_NATURAL_OK 200
@@ -440,16 +462,11 @@ forceload remove 4930 -70 5070 70
 #expect PRUEBA_FORTIN_NATURAL_CENTINELAS_OK
 say PRUEBA_SE_APAGA_A_MEDIA_OBRA
 mundos prueba construir 2
-#expect PRUEBA_FRAGUA_PIEDRA_OK
-#expect PRUEBA_FRAGUA_CELDA_PUERTA_OK
-#expect PRUEBA_FRAGUA_CELDA_BARROTES_OK
 #expect PRUEBA_FRAGUA_COFRE_OK
 #expect PRUEBA_FRAGUA_CHIMENEA_OK
 #expect PRUEBA_FRAGUA_ESCORIAS_OK
 #expect PRUEBA_FRAGUA_CHISPERO_OK
-#expect PRUEBA_FRAGUA_FUNDIDOR_LLAVE_OK
 #expect PRUEBA_HILDA_PRESA_OK
-#expect PRUEBA_FRAGUA_LLAVE_CAE_OK
 #expect PRUEBA_HILDA_PUERTA_ABIERTA_OK
 #expect PRUEBA_HILDA_LIBRE_OK
 #expect PRUEBA_FRAGUA_DESHECHA_OK
@@ -461,7 +478,6 @@ mundos prueba construir 2
 #expect PRUEBA_HILDA_CASA_DESARMADA_OK
 #expect PRUEBA_HILDA_COFRE_CON_COSAS_SE_QUEDA_OK
 #expect PRUEBA_HILDA_BARRIL_VACIO_SE_VA_OK
-#expect PRUEBA_FRAGUA_NATURAL_HILDA_OK
 #expect PRUEBA_FRAGUA_NATURAL_FUNDIDOR_OK
 #expect PRUEBA_SEMILLA_BLOQUE_OK
 #expect PRUEBA_SEMILLA_DE_HILDA_OK
@@ -526,3 +542,21 @@ mundos prueba construir 2
 #expect PRUEBA_TEO_SIGUE_TRAS_DESHACER_OK
 #expect PRUEBA_FORTALEZA_NATURAL_TEO_OK
 #expect PRUEBA_FORTALEZA_NATURAL_LLAVE_OK
+#expect PRUEBA_FRAGUA_SIN_PIEDRA_OK
+#expect PRUEBA_FRAGUA_TESORO_OK
+#expect PRUEBA_FRAGUA_ALMACEN_OK
+#expect PRUEBA_FRAGUA_PUERTA_MADERA_OK
+#expect PRUEBA_FRAGUA_FUNDIDOR_OK
+#expect PRUEBA_FRAGUA_SIN_NPC_OK
+#expect PRUEBA_FUNDICION_PIEDRA_OK
+#expect PRUEBA_FUNDICION_COFRE_OK
+#expect PRUEBA_FUNDICION_CELDA_PUERTA_OK
+#expect PRUEBA_FUNDICION_CELDA_BARROTES_OK
+#expect PRUEBA_FUNDICION_ESCORIAS_OK
+#expect PRUEBA_FUNDICION_CHISPEROS_OK
+#expect PRUEBA_FUNDICION_FUNDIDOR_LLAVE_OK
+#expect PRUEBA_FUNDICION_LLAVE_CAE_OK
+#expect PRUEBA_FUNDICION_DESHECHA_OK
+#expect PRUEBA_FUNDICION_SIN_ENEMIGOS_OK
+#expect PRUEBA_FUNDICION_NATURAL_HILDA_OK
+#expect PRUEBA_FUNDICION_NATURAL_LLAVE_OK

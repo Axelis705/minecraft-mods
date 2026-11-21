@@ -5,17 +5,17 @@ package com.mundosdeaxelis.world;
  * Gran Herrero: un patio de trabajo con muro bajo de piedra negra, montones de mineral y carbón, una vía de vagonetas, una pila
  * para templar y un yunque al aire libre; al fondo, una nave de ladrillo y piedra negra con tejado bajo de pizarra y dos grandes
  * chimeneas humeantes. Dentro: el gran horno (altos hornos y un crisol de lava), un canal de metal fundido por el suelo, yunques,
- * piedras de afilar, un martillo gigante colgado y, sobre un altar con forma de yunque, la Piedra de Portal: Forja (lleva a la
- * dungeon del Gran Herrero) con un cofre al lado. Pegada a la nave, la celda de la herrera.
- * <p>Enemigos: Escorias en el patio y en la nave, un Chispero en un balcón y un Fundidor que guarda el altar (lleva la llave de la
- * celda). Entrada por z = 0; el patio ocupa x -14..14, z 8..20; la nave x -10..10, z 21..38.
+ * piedras de afilar, un martillo gigante colgado y, sobre un altar con forma de yunque, el tesoro del Gran Herrero (un cofre con
+ * cerradura difícil) con un cofre de provisiones al lado. Pegado a la nave, el almacén (era la celda de Hilda).
+ * <p>Etapa 266: es la estructura chica del tier de la forja, la del botín (la Piedra de Portal: Forja y Hilda están en la Gran
+ * Fundición). Enemigos: Escorias en el patio y en la nave, un Chispero en un balcón y un Fundidor que guarda el altar.
+ * Entrada por z = 0; el patio ocupa x -14..14, z 8..20; la nave x -10..10, z 21..38.
  */
 final class DesignFragua {
     private DesignFragua() {
     }
 
     private static final String M = "mundos_de_axelis:";
-    static final String PORTAL = M + "portal_stone_forge";
     private static final String PB = "polished_blackstone_bricks";
     private static final String CPB = "cracked_polished_blackstone_bricks";
     private static final String BS = "blackstone";
@@ -289,7 +289,7 @@ final class DesignFragua {
                 b.set(x, 0, z, z == 33 ? StructBp.stair("polished_blackstone_brick_stairs", "+z", false) : PB);
             }
         }
-        b.set(0, 1, 35, PORTAL);
+        b.setNbt(0, 1, 35, M + "vault_chest_locked_forge[facing=north]", "{Kind:\"LOCKED\",Stage:2,LockLevel:4}");
         b.set(-1, 1, 35, "chiseled_polished_blackstone");
         b.set(1, 1, 35, "chiseled_polished_blackstone");
         b.set(-2, 1, 36, "lava_cauldron");
@@ -358,12 +358,12 @@ final class DesignFragua {
                 b.set(x0, y, z, "iron_bars");
             }
         }
-        StructKit.ironDoor(b, x0, 0, CZ1 - 1, "-x", false);
+        StructKit.woodDoor(b, "spruce", x0, 0, CZ1 - 1, "-x", false);
         b.set(x0, 2, CZ1 - 1, PB);
-        // dentro: jergón, un cubo de agua con un trapo, cadenas
-        b.set(CX1 - 1, 0, CZ0 + 1, "hay_block[axis=z]");
-        b.set(CX1 - 1, 0, CZ0 + 2, "hay_block[axis=z]");
-        b.set(CX1 - 1, 1, CZ0 + 1, "brown_carpet");
+        // dentro (etapa 266, el almacén): barriles de carbón y mineral, un cubo de agua, cadenas
+        b.set(CX1 - 1, 0, CZ0 + 1, "barrel[facing=up]");
+        b.set(CX1 - 1, 0, CZ0 + 2, "barrel[facing=west]");
+        b.set(CX1 - 1, 1, CZ0 + 1, "barrel[facing=up]");
         b.set(CX1 - 1, 0, CZ1 - 1, "water_cauldron[level=1]");
         b.set(x0 + 1, 0, CZ0 + 1, "candle[candles=1,lit=true]");
         StructKit.hangLantern(b, NPC_X, 3, NPC_Z, 1, "lantern");
@@ -420,6 +420,8 @@ final class DesignFragua {
 
     private static void chests(StructBp b) {
         b.setNbt(3, 0, 35, M + "vault_chest_forge[facing=west]", "{Kind:\"ANTE\",Stage:2}");
+        // premio del almacén
+        b.setNbt(NPC_X, 0, NPC_Z, M + "vault_chest_forge[facing=west]", "{Kind:\"TRIAL\",Stage:2}");
     }
 
     private static boolean free(StructBp b, int x, int y, int z) {
@@ -445,9 +447,7 @@ final class DesignFragua {
         mob(b, 4, 0, 26, "escoria", null);
         // el chispero no se mueve: vigila la nave desde el balcón
         mob(b, -9, 3, 30, "chispero", null);
-        // el fundidor del altar lleva la llave de la celda
-        mob(b, 0, 0, 30, "fundidor", "llave_celda");
-        // la herrera, presa en la celda
-        mob(b, NPC_X, 0, NPC_Z, "habitante", "hilda");
+        // el fundidor guarda el altar del tesoro
+        mob(b, 0, 0, 30, "fundidor", null);
     }
 }

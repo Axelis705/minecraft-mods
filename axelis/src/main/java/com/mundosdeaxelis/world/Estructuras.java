@@ -31,7 +31,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Estructuras de fondo para grabar videos, hechas solo con comandos (como WorldEdit):
- * {@code /mundos estructura <templo|santuario|forja|fundicion|ciudadela|fortin|torre|fortaleza|volcan>} la construye delante de quien escribe, mirando hacia él;
+ * {@code /mundos estructura <templo|santuario|fundicion|fragua|ciudadela|fortin|fortaleza|torre|volcan>} la construye delante de quien escribe, mirando hacia él;
  * {@code /mundos estructura deshacer [veces]} la quita y deja el terreno como estaba (bloques, entidades de bloque y todo).
  * Los bloques propios del mod (decoraciones) se usan si existen; si no, simplemente se omiten.
  */
@@ -59,10 +59,10 @@ public final class Estructuras {
         TEMPLO("templo", "Gran Templo del Bosque", "bosque"),
         /** La estructura chica del bosque (etapa 256): termina en la celda de Ruda. */
         SANTUARIO("santuario", "Santuario del Bosque", "santuario"),
-        /** Etapa 259: la estructura de la forja de verdad (mediana, con la Piedra de Portal y la celda de Hilda). */
-        FORJA("forja", "Fragua Olvidada", "fragua"),
-        /** La gran fundición de antes (fondo para videos). */
-        FUNDICION("fundicion", "Gran fundición de la forja", "forja"),
+        /** Etapa 266: la estructura grande de la forja: la Piedra de Portal en la isla de los hornos y la celda de Hilda. */
+        FUNDICION("fundicion", "Gran Fundición", "forja"),
+        /** La estructura chica de la forja (etapa 259): termina en el tesoro del altar. */
+        FRAGUA("fragua", "Fragua Olvidada", "fragua"),
         /** Etapa 264: la estructura grande del hielo, con la Piedra de Portal: Hielo en la cripta, al final de las mazmorras. */
         CIUDADELA("ciudadela", "Ciudadela de cristal", "hielo"),
         /** La estructura chica del hielo (etapa 258): termina en la celda de Bruno. */

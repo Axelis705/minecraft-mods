@@ -6,6 +6,9 @@ import static com.mundosdeaxelis.world.StructKit.*;
  * Fundición del Titán: una fortaleza de piedra negra con foso de lava, torres con tejados picudos, una gran nave de fundición
  * con río de lava, pasarelas, grúas y yunque gigante, talleres en los patios y hornos profundos bajo tierra.
  * Entrada por z = 0, se extiende hacia z positivo.
+ * <p>Etapa 266: es la estructura grande del tier de la forja (la «Gran Fundición»). Tiene las dos cosas importantes, abajo, en los
+ * hornos profundos: en la isla del lago de lava, la Piedra de Portal: Forja (el final del recorrido) con un cofre, y en la pared del
+ * fondo, la celda de Hilda. La llave la lleva el Fundidor que vigila la isla. Escorias y chisperos por el camino; aparece sola.
  */
 final class DesignForja {
     private DesignForja() {
@@ -32,6 +35,12 @@ final class DesignForja {
     private static final String CUL = "waxed_oxidized_cut_copper_slab";
     private static final String WCU = "waxed_weathered_cut_copper";
     private static final String LAVA = "lava";
+    private static final String M = "mundos_de_axelis:";
+    /** Lo que ocupa (para mezclar el borde con el terreno). */
+    static final int X0 = -40, X1 = 40, Z0 = -16, Z1 = 84;
+    /** Suelo de los hornos profundos y sitio de Hilda en su celda (etapa 266). */
+    static final int FY = -14;
+    static final int NPC_X = -13, NPC_Z = 78;
 
     static StructBp make() {
         StructBp b = new StructBp(5005);
@@ -45,6 +54,10 @@ final class DesignForja {
         basement(b);
         finishing(b);
         Linker.link(b, 0, 0, -3, 10, PBB, PBS);
+        // la celda se hace después de unir las salas: es cerrada a propósito (se abre con la llave)
+        hildaCell(b, FY);
+        surroundings(b);
+        mobs(b);
         return b;
     }
 
@@ -665,7 +678,9 @@ final class DesignForja {
             }
         }
         b.box(-1, fy + 3, 58, 1, fy + 3, 60, CRY);
-        b.set(0, fy + 4, 59, "soul_campfire[lit=true]");
+        // el final de la fundición: la Piedra de Portal: Forja sobre la isla, con su cofre de provisiones
+        b.set(0, fy + 4, 59, M + "portal_stone_forge");
+        b.setNbt(2, fy + 3, 59, M + "vault_chest_forge[facing=west]", "{Kind:\"ANTE\",Stage:2}");
         for (int y = fy + 5; y <= fy + 10; y++) {
             b.set(0, y, 59, "chain[axis=y]");
         }
@@ -698,11 +713,97 @@ final class DesignForja {
         for (int x = 12; x <= 16; x++) {
             b.set(x, 0, 48, "iron_bars");
         }
-        // goteras de lava y fundiciones del fondo
+        // goteras de lava y fundiciones del fondo (delante de la celda no hay magma)
         for (int x = -12; x <= 12; x += 6) {
             b.set(x, fy + 9, 75, "shroomlight");
-            b.set(x, fy + 1, 74, "magma_block");
+            if (x != -12) {
+                b.set(x, fy + 1, 74, "magma_block");
+            }
         }
+    }
+
+    /**
+     * Celda de Hilda (etapa 266), en la pared del fondo de los hornos: barrotes que dan al lago de lava y una puerta de hierro; dentro,
+     * un jergón, un yunque roto, un balde, una vela y un farol.
+     */
+    private static void hildaCell(StructBp b, int fy) {
+        b.box(-16, fy, 76, -9, fy + 6, 81, "deepslate_bricks");
+        for (int x = -14; x <= -11; x++) {
+            for (int z = 77; z <= 79; z++) {
+                b.set(x, fy, z, ((x + z) & 1) == 0 ? "cracked_deepslate_bricks" : "deepslate_tiles");
+                for (int y = fy + 1; y <= fy + 4; y++) {
+                    b.set(x, y, z, "air");
+                }
+            }
+        }
+        for (int x = -14; x <= -12; x++) {
+            for (int y = fy + 1; y <= fy + 3; y++) {
+                b.set(x, y, 76, "iron_bars");
+            }
+        }
+        ironDoor(b, -11, fy + 1, 76, "-z", false);
+        b.set(-14, fy + 1, 79, "hay_block[axis=x]");
+        b.set(-13, fy + 1, 79, "hay_block[axis=x]");
+        b.set(-11, fy + 1, 79, "chipped_anvil[facing=east]");
+        b.set(-14, fy + 1, 77, "cauldron");
+        b.set(-11, fy + 1, 77, "candle[candles=2,lit=true]");
+        hangLantern(b, -12, fy + 4, 78, 1, "lantern");
+    }
+
+    // ================================================================== alrededores y enemigos (etapa 266)
+
+    /** Fuera del rectángulo, el terreno real baja o sube en rampa suave hasta el nivel de la fundición; el camino sigue recto. */
+    private static void surroundings(StructBp b) {
+        int rr = 26;
+        for (int x = X0 - rr; x <= X1 + rr; x++) {
+            for (int z = Z0 - rr; z <= Z1 + rr; z++) {
+                double dx = Math.max(Math.max(0, X0 - x), Math.max(0, x - X1));
+                double dz = Math.max(Math.max(0, Z0 - z), Math.max(0, z - Z1));
+                double e = Math.hypot(dx, dz);
+                if (e <= 0) {
+                    continue;
+                }
+                double ramp = 9 + 4 * vnoise(5011, x * 0.08, z * 0.08);
+                double w = Math.min(1, e / ramp);
+                w = w * w * (3 - 2 * w);
+                boolean road = Math.abs(x) <= 2 && z < Z0;
+                if (w >= 0.999 && !road) {
+                    continue;
+                }
+                b.blend(x, z, road ? Math.min(w, 0.5) : w, road ? (hash01(5012, x, z) < 0.4 ? BLK : "gravel") : null, null);
+            }
+        }
+    }
+
+    private static boolean free(StructBp b, int x, int y, int z) {
+        String below = b.get(x, y - 1, z);
+        String at = b.get(x, y, z);
+        String up = b.get(x, y + 1, z);
+        return (at == null || at.equals("air")) && (up == null || up.equals("air")) && below != null && !below.equals("air")
+                && !below.contains("stairs") && !below.contains("campfire") && !below.equals(LAVA) && !below.contains("bars")
+                && !below.contains("wall") && !below.contains("fence") && !below.contains("magma");
+    }
+
+    private static void mob(StructBp b, int x, int y, int z, String kind, String tag) {
+        if (free(b, x, y, z)) {
+            b.mobs.add(new StructBp.Mob(x, y, z, kind, tag));
+        } else {
+            System.err.println("[Fundicion] sin sitio para " + kind + " en " + x + "," + y + "," + z);
+        }
+    }
+
+    /** Escorias en los patios y la nave, chisperos en la nave y los hornos, el Fundidor con la llave en la isla, y Hilda presa. */
+    private static void mobs(StructBp b) {
+        mob(b, -28, 0, 19, "escoria", null);
+        mob(b, 27, 0, 46, "escoria", null);
+        mob(b, -6, 0, 40, "escoria", null);
+        mob(b, 5, 0, 58, "escoria", null);
+        mob(b, -12, 0, 52, "chispero", null);
+        mob(b, 0, 0, 64, "fundidor", null);
+        mob(b, -12, FY + 1, 44, "escoria", null);
+        mob(b, 12, FY + 1, 66, "chispero", null);
+        mob(b, 0, FY + 3, 57, "fundidor", "llave_celda");
+        b.mobs.add(new StructBp.Mob(NPC_X, FY + 1, NPC_Z, "habitante", "hilda"));
     }
 
     // ================================================================== acabado

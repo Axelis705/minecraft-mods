@@ -821,19 +821,22 @@ public final class AutoTest {
     private static final int KX = 170, KZ = -10;
     private static volatile boolean forgeKey;
 
+    /** Gran Fundición (etapa 266): la entrada (z local 0) en {@code FDZ0}; se construye 12 más arriba que el suelo (los hornos bajan). */
+    private static final int FDX = -1300, FDY = -48, FDZ0 = 100;
+
     private static void fragua() {
-        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(GX + 10, SY, GZ + 29);
+        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(FDX - 11, FDY - 13, FDZ0 + 76);
         add("fragua (ir)", 2500, () -> {
             clearMobs();
             cmd("gamemode spectator @a");
             cmd("execute in minecraft:overworld run tp @a " + (GX + 0.5) + " " + (SY + 10) + " " + (GZ - 20) + " 0 20");
         });
-        add("fragua", 9000, () -> cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " rotated 0 0 run mundos estructura forja"));
+        add("fragua", 9000, () -> cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " rotated 0 0 run mundos estructura fragua"));
         add("fragua (fuera)", 2500, () -> standLooking(GX + 7.5, SY + 8, GZ - 20, GX, SY + 4, GZ + 26));
         add("fragua (fuera, foto)", 300, () -> {
             net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(GX, SY + 1, GZ + 35));
-            check("en el altar de la fragua está la Piedra de Portal: Forja (" + ps.getBlock() + ")",
-                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_FORGE.get()));
+            check("en el altar de la fragua está el tesoro del Gran Herrero, no la Piedra de Portal (" + ps.getBlock() + ")",
+                    ps.is(com.mundosdeaxelis.registry.ModBlocks.VAULT_CHEST_LOCKED_FORGE.get()));
             shot("66_fragua_fuera");
         });
         add("fragua (patio)", 2500, () -> standLooking(GX + 0.5, SY, GZ + 9, GX + 0.5, SY + 3, GZ + 30));
@@ -847,17 +850,41 @@ public final class AutoTest {
             check("hay un chispero en el balcón", clientCount(com.mundosdeaxelis.entity.Chispero.class) >= 1);
             shot("68_fragua_nave");
         });
+        add("fragua (deshacer)", 2000, () -> {
+            cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
+        });
+        // la Gran Fundición: la Piedra de Portal en la isla de los hornos y la celda de Hilda en la pared del fondo
+        add("fundición (ir)", 2500, () -> {
+            clearMobs();
+            cmd("execute in minecraft:overworld run tp @a " + (FDX + 0.5) + " " + (FDY + 40) + " " + (FDZ0 - 50) + " 0 25");
+        });
+        add("fundición", 30000, () -> cmd("execute in minecraft:overworld positioned " + FDX + " " + FDY + " " + (FDZ0 - 16)
+                + " rotated 0 0 run mundos estructura fundicion"));
+        add("fundición (fuera)", 3000, () -> standLooking(FDX + 55.5, FDY + 32, FDZ0 - 30, FDX, FDY + 8, FDZ0 + 40));
+        add("fundición (fuera, foto)", 300, () -> {
+            check("hay escorias en la fundición", clientCount(com.mundosdeaxelis.entity.Escoria.class) >= 1);
+            shot("68b_fundicion_fuera");
+        });
+        add("fundición (hornos)", 2500, () -> standLooking(FDX + 0.5, FDY - 11, FDZ0 + 50.5, FDX + 0.5, FDY - 9.5, FDZ0 + 59.5));
+        add("fundición (hornos, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(FDX, FDY - 10, FDZ0 + 59));
+            check("en la isla de los hornos está la Piedra de Portal: Forja (" + ps.getBlock() + ")",
+                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_FORGE.get()));
+            check("un fundidor guarda la isla", clientCount(com.mundosdeaxelis.entity.Fundidor.class) >= 1);
+            shot("68c_fundicion_hornos");
+        });
         add("hilda presa", 2500, () -> {
             cmd("gamemode survival @a");
             cmd("effect give @a minecraft:resistance 600 4 true");
             cmd("effect give @a minecraft:fire_resistance 600 0 true");
             cmd("kill @e[type=mundos_de_axelis:escoria]");
             cmd("kill @e[type=mundos_de_axelis:chispero]");
-            standLooking(GX + 7.5, SY, GZ + 27.5, GX + 13.5, SY + 1.4, GZ + 27.5);
+            standLooking(FDX - 10.5, FDY - 13, FDZ0 + 73.5, FDX - 12.5, FDY - 11.6, FDZ0 + 78.5);
         });
         add("hilda presa (hablar)", 2600, () -> {
             com.mundosdeaxelis.entity.Habitante h = npcClient("hilda");
-            check("Hilda está presa en la celda de la fragua", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
+            check("Hilda está presa en la celda de los hornos de la fundición", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
             npcServer("hilda", com.mundosdeaxelis.npc.NpcService::interact);
         });
         add("hilda presa (foto)", 300, () -> {
@@ -867,14 +894,15 @@ public final class AutoTest {
         });
         add("llave del fundidor", 1200, () -> {
             cmd("kill @e[type=mundos_de_axelis:fundidor,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
-            onServer(sp -> forgeKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(48),
+            onServer(sp -> forgeKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+                    new net.minecraft.world.phys.AABB(FDX - 10, FDY - 16, FDZ0 + 50, FDX + 10, FDY - 5, FDZ0 + 68),
                     i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
         });
-        add("llave en la celda de la fragua", 2600, () -> {
-            check("el fundidor del altar suelta la llave", forgeKey);
+        add("llave en la celda de la fundición", 2600, () -> {
+            check("el fundidor de la isla suelta la llave", forgeKey);
             cmd("kill @e[type=item]");
             onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()), door,
-                    net.minecraft.core.Direction.WEST));
+                    net.minecraft.core.Direction.NORTH));
         });
         add("hilda rescatada (foto)", 300, () -> {
             com.mundosdeaxelis.entity.Habitante h = npcClient("hilda");
@@ -887,8 +915,9 @@ public final class AutoTest {
         });
         add("hilda sale (comprobar)", 300, () -> {
             com.mundosdeaxelis.entity.Habitante h = npcClient("hilda");
-            check("Hilda salió de la celda", h != null && h.getX() < GX + 10);
+            check("Hilda salió de la celda", h != null && h.getZ() < FDZ0 + 76);
             cmd("kill @e[type=mundos_de_axelis:fundidor]");
+            cmd("execute in minecraft:overworld positioned " + FDX + " " + FDY + " " + (FDZ0 - 16) + " run mundos estructura deshacer");
             cmd("execute in minecraft:overworld run tp @a " + (KX + 0.5) + " " + SY + " " + (KZ - 2.5) + " 0 45");
         });
         add("casa de hilda (plantar)", 2500, () -> onServer(sp -> {
@@ -943,7 +972,6 @@ public final class AutoTest {
             open(null);
             cmd("gamemode spectator @a");
             // Ruda, Bruno e Hilda se quedan con su casa: con Teo (la torre) serán cuatro
-            cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " run mundos estructura deshacer");
             cmd("kill @e[type=item]");
         });
     }

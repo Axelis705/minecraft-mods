@@ -100,11 +100,22 @@ public final class NaturalGen extends SavedData {
             (l, o, r, bp, mobs) -> {
             });
 
-    /** Etapa 259: la Fragua Olvidada, en las tierras baldías (badlands), colinas azotadas por el viento y mesetas de sabana. */
-    public static final Spec FORJA = new Spec("forja", "fragua", "Fragua Olvidada", 704, 50, 250, 0xF06A2B19L, 23, 30, 10, 4, 4, 220,
-            false, b -> land(b) && (b.is(BiomeTags.IS_BADLANDS) || b.is(Biomes.WINDSWEPT_HILLS) || b.is(Biomes.WINDSWEPT_GRAVELLY_HILLS)
-            || b.is(Biomes.WINDSWEPT_FOREST) || b.is(Biomes.WINDSWEPT_SAVANNA) || b.is(Biomes.SAVANNA_PLATEAU)),
-            (l, o, r, bp, mobs) -> {
+    private static boolean forge(Holder<Biome> b) {
+        return land(b) && (b.is(BiomeTags.IS_BADLANDS) || b.is(Biomes.WINDSWEPT_HILLS) || b.is(Biomes.WINDSWEPT_GRAVELLY_HILLS)
+                || b.is(Biomes.WINDSWEPT_FOREST) || b.is(Biomes.WINDSWEPT_SAVANNA) || b.is(Biomes.SAVANNA_PLATEAU));
+    }
+
+    /**
+     * Etapa 266: la Gran Fundición (la estructura grande de la forja: la Piedra de Portal: Forja y Hilda en los hornos de abajo). Su id
+     * es "forja": a ella apuntan las pistas y brújulas de la forja.
+     */
+    public static final Spec FORJA = new Spec("forja", "forja", "Gran Fundición", 960, 45, 450, 0x5E0C7A93L, 34, 58, 12, 16, 6, 300,
+            false, NaturalGen::forge, (l, o, r, bp, mobs) -> {
+            });
+
+    /** Etapa 259: la Fragua Olvidada (la estructura chica de la forja, con el tesoro), en los mismos biomas. */
+    public static final Spec FRAGUA = new Spec("fragua", "fragua", "Fragua Olvidada", 704, 50, 250, 0xF06A2B19L, 23, 30, 10, 4, 4, 220,
+            false, NaturalGen::forge, (l, o, r, bp, mobs) -> {
             });
 
     private static boolean magic(Holder<Biome> b) {
@@ -125,7 +136,7 @@ public final class NaturalGen extends SavedData {
             false, NaturalGen::magic, (l, o, r, bp, mobs) -> {
             });
 
-    public static final List<Spec> SPECS = List.of(BOSQUE, SANTUARIO, VOLCAN, HIELO, FORTIN, FORJA, TORRE, ARCANA);
+    public static final List<Spec> SPECS = List.of(BOSQUE, SANTUARIO, VOLCAN, HIELO, FORTIN, FORJA, FRAGUA, TORRE, ARCANA);
 
     static Spec byId(String id) {
         for (Spec s : SPECS) {
@@ -148,6 +159,8 @@ public final class NaturalGen extends SavedData {
     private boolean migrated264;
     /** Etapa 265: antes el id "torre" era la Torre Arcana; ahora es la Fortaleza. Las regiones vistas pasan al id "arcana". */
     private boolean migrated265;
+    /** Etapa 266: antes el id "forja" era la Fragua Olvidada; ahora es la Gran Fundición. Las regiones vistas pasan al id "fragua". */
+    private boolean migrated266;
 
     public NaturalGen() {
     }
@@ -204,6 +217,18 @@ public final class NaturalGen extends SavedData {
             }
             g.setDirty();
         }
+        if (!g.migrated266) {
+            g.migrated266 = true;
+            Map<Long, Integer> old = g.regions.remove(FORJA.id());
+            if (old != null && !g.regions.containsKey(FRAGUA.id())) {
+                g.regions.put(FRAGUA.id(), old);
+            }
+            Boolean on = g.enabled.remove(FORJA.id());
+            if (on != null) {
+                g.enabled.put(FRAGUA.id(), on);
+            }
+            g.setDirty();
+        }
         return g;
     }
 
@@ -221,6 +246,7 @@ public final class NaturalGen extends SavedData {
         g.migrated262 = tag.getBoolean("Migrated262");
         g.migrated264 = tag.getBoolean("Migrated264");
         g.migrated265 = tag.getBoolean("Migrated265");
+        g.migrated266 = tag.getBoolean("Migrated266");
         CompoundTag on = tag.getCompound("Enabled");
         for (String k : on.getAllKeys()) {
             g.enabled.put(k, on.getBoolean(k));
@@ -246,6 +272,7 @@ public final class NaturalGen extends SavedData {
         tag.putBoolean("Migrated262", migrated262);
         tag.putBoolean("Migrated264", migrated264);
         tag.putBoolean("Migrated265", migrated265);
+        tag.putBoolean("Migrated266", migrated266);
         CompoundTag on = new CompoundTag();
         enabled.forEach(on::putBoolean);
         tag.put("Enabled", on);
