@@ -2517,5 +2517,9 @@
   "message.mundos_de_axelis.gema.engarzada": "Gem socketed into %s!",
   "message.mundos_de_axelis.gema.sin_gema": "That weapon has no gem.",
   "message.mundos_de_axelis.gema.hueco_lleno": "Empty the gem slot first.",
-  "message.mundos_de_axelis.gema.quitada": "You removed the gem from the weapon."
+  "message.mundos_de_axelis.gema.quitada": "You removed the gem from the weapon.",
+  "entity.mundos_de_axelis.mimico": "Mimic",
+  "item.mundos_de_axelis.mimico_spawn_egg": "Mimic Spawn Egg",
+  "message.mundos_de_axelis.mimico.despierta": "That's no chest! It's a mimic!",
+  "message.mundos_de_axelis.sello.mimico": "The mimic crumbles to dust: its treasure is sealed. Defeat %s to loot it."
 }

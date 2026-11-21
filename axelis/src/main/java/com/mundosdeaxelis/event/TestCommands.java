@@ -263,6 +263,84 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    /**
+     * Etapa 272: el Mímico sin jugador (con un jugador falso de Forge). Duerme quieto como un cofre; al intentar abrirlo despierta;
+     * su botín trae una esencia del tier y una pieza buena; matándolo suelta el botín solo si el tier ya se puede saquear; y cada
+     * estructura de tier 1 a 5 tiene el suyo en el plano.
+     */
+    private static int mimico(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        com.mundosdeaxelis.table.Essence.forgetSeals(fp);
+        String fail = null;
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        fp.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 6.5);
+        // 1) dormido y despertar
+        com.mundosdeaxelis.entity.Mimico m = com.mundosdeaxelis.registry.ModEntities.MIMICO.get().create(sl);
+        m.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5, 0.0F, 0.0F);
+        m.setTier(1);
+        sl.addFreshEntity(m);
+        if (m.isAwake() || m.isPushable() || !m.canBeCollidedWith()) {
+            fail = "dormido no parece un cofre";
+        }
+        m.interact(fp, net.minecraft.world.InteractionHand.MAIN_HAND);
+        if (!m.isAwake() || m.getTarget() != fp) {
+            fail = "no despierta al intentar abrirlo";
+        }
+        // 2) su botín
+        net.minecraft.util.RandomSource r = net.minecraft.util.RandomSource.create(272L);
+        int stars = 0;
+        for (int t = 1; t <= 5 && fail == null; t++) {
+            for (int i = 0; i < 60; i++) {
+                java.util.List<net.minecraft.world.item.ItemStack> l = com.mundosdeaxelis.entity.Mimico.loot(t, r, null);
+                boolean ess = false, star = false;
+                for (net.minecraft.world.item.ItemStack it : l) {
+                    ess |= it.getItem() instanceof com.mundosdeaxelis.gema.GemaItems.Esencia;
+                    star |= com.mundosdeaxelis.block.VaultLoot.isStar(it) || it.getItem() instanceof com.mundosdeaxelis.item.KeyFragmentItem;
+                    if (it.getItem() instanceof net.minecraft.world.item.PotionItem) {
+                        fail = "botín del mímico con poción";
+                    }
+                }
+                if (!ess || !star) {
+                    fail = "botín del mímico (tier " + t + ") sin esencia o sin pieza buena";
+                }
+                stars += star ? 1 : 0;
+            }
+        }
+        // 3) matarlo: tier 1 suelta botín; tier 3 (sellado para un jugador sin sellos) no
+        int[] counts = new int[2];
+        int[] tiers = {1, 3};
+        for (int k = 0; k < 2 && fail == null; k++) {
+            sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(6)).forEach(net.minecraft.world.entity.Entity::discard);
+            com.mundosdeaxelis.entity.Mimico v = com.mundosdeaxelis.registry.ModEntities.MIMICO.get().create(sl);
+            v.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5, 0.0F, 0.0F);
+            v.setTier(tiers[k]);
+            sl.addFreshEntity(v);
+            v.hurt(sl.damageSources().playerAttack(fp), 100000.0F);
+            counts[k] = sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(6)).size();
+            v.discard();
+        }
+        if (fail == null && (counts[0] < 2 || counts[1] != 0)) {
+            fail = "botín al morir: tier 1 soltó " + counts[0] + ", tier 3 sellado soltó " + counts[1];
+        }
+        sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(6)).forEach(net.minecraft.world.entity.Entity::discard);
+        m.discard();
+        // 4) en los planos
+        for (String d : new String[]{"santuario", "bosque", "forja", "fragua", "hielo", "fortin", "volcan", "torre_arcana", "torre"}) {
+            boolean has = false;
+            for (com.mundosdeaxelis.world.StructBp.Mob mb : com.mundosdeaxelis.world.StructDesigns.make(d).mobs) {
+                has |= mb.kind().equals("mimico") && mb.tag() != null && mb.tag().startsWith("mimico_");
+            }
+            if (!has) {
+                fail = "sin mímico en " + d;
+            }
+        }
+        String msg = (fail == null ? "PRUEBA_MIMICO_OK" : "PRUEBA_MIMICO_FALLO " + fail) + " botin_estrella=" + stars + " soltados=" + counts[0] + "/" + counts[1];
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fail == null ? 1 : 0;
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal("prueba")
                 .then(Commands.literal("equipo")
@@ -272,6 +350,7 @@ public final class TestCommands {
                 .then(Commands.literal("capas").executes(ctx -> capas(ctx.getSource())))
                 .then(Commands.literal("botin").executes(ctx -> botin(ctx.getSource())))
                 .then(Commands.literal("gemas").executes(ctx -> gemas(ctx.getSource())))
+                .then(Commands.literal("mimico").executes(ctx -> mimico(ctx.getSource())))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     // los sellos que lleva encima se volverían a apuntar en el Archivo: se le quitan

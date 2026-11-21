@@ -212,4 +212,11 @@ public final class ModEntities {
                     .sized(0.9F, 1.1F)
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "lobo_escarcha").toString()));
+
+    /** Etapa 272: el Mímico (un cofre del santuario que muerde). */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Mimico>> MIMICO = ENTITIES.register("mimico",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.Mimico>of(com.mundosdeaxelis.entity.Mimico::new, MobCategory.MONSTER)
+                    .sized(0.875F, 0.85F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "mimico").toString()));
 }

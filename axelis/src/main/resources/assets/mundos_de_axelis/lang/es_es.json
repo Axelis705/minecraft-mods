@@ -2517,5 +2517,9 @@
   "message.mundos_de_axelis.gema.engarzada": "¡Gema engarzada en %s!",
   "message.mundos_de_axelis.gema.sin_gema": "Esa arma no tiene gema.",
   "message.mundos_de_axelis.gema.hueco_lleno": "Primero vacía el hueco de la gema.",
-  "message.mundos_de_axelis.gema.quitada": "Has sacado la gema del arma."
+  "message.mundos_de_axelis.gema.quitada": "Has sacado la gema del arma.",
+  "entity.mundos_de_axelis.mimico": "Mímico",
+  "item.mundos_de_axelis.mimico_spawn_egg": "Huevo generador de Mímico",
+  "message.mundos_de_axelis.mimico.despierta": "¡No era un cofre! ¡Es un mímico!",
+  "message.mundos_de_axelis.sello.mimico": "El mímico se deshace en polvo: su tesoro está sellado. Vence a %s para saquearlo."
 }

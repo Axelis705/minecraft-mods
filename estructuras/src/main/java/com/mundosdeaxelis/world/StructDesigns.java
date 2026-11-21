@@ -31,6 +31,8 @@ public final class StructDesigns {
         bp.unsupported = Soporte.prune(bp);
         // etapa 268: los barriles de las estructuras traen cosas del tier (y a veces un fragmento de llave)
         StructKit.lootBarrels(bp, StructKit.barrelTable(kind));
+        // etapa 272: un mímico dormido junto a un cofre de verdad
+        StructKit.addMimics(bp, kind);
         return bp;
     }
 

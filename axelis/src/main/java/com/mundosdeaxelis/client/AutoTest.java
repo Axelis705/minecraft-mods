@@ -1328,6 +1328,75 @@ public final class AutoTest {
         });
         yunque();
         gemas();
+        mimico();
+    }
+
+    // ------------------------------------------------------------------ etapa 272: el mímico
+
+    private static net.minecraft.world.entity.Entity nearestMimic() {
+        Minecraft mc = Minecraft.getInstance();
+        net.minecraft.world.entity.Entity best = null;
+        for (net.minecraft.world.entity.Entity en : mc.level.entitiesForRendering()) {
+            if (en instanceof com.mundosdeaxelis.entity.Mimico && (best == null || en.distanceToSqr(mc.player) < best.distanceToSqr(mc.player))) {
+                best = en;
+            }
+        }
+        return best;
+    }
+
+    /**
+     * El Mímico: dormido parece un cofre del santuario (con su haz de luz); al intentar abrirlo despierta (tapa con dientes,
+     * patitas, ojos) y al matarlo suelta su botín.
+     */
+    private static void mimico() {
+        double mx = LTX - 3.5, mz = LTZ - 0.5;
+        add("mimico (poner)", 2000, () -> {
+            cmd("execute in minecraft:overworld run forceload add " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+            cmd("kill @e[type=mundos_de_axelis:mimico]");
+            cmd("kill @e[type=minecraft:item]");
+            cmd("execute in minecraft:overworld run summon mundos_de_axelis:mimico " + mx + " " + LTY + " " + mz + " {Tier:1}");
+            standLooking(LTX - 3.5, LTY, LTZ - 3.6, mx, LTY + 0.4, mz);
+        });
+        add("mimico (dormido, foto)", 400, () -> {
+            net.minecraft.world.entity.Entity e = nearestMimic();
+            check("hay un mímico dormido que parece un cofre", e instanceof com.mundosdeaxelis.entity.Mimico mm && !mm.isAwake() && mm.tier() == 1);
+            check("el mímico dormido mira al jugador, como un cofre bien puesto (yaw " + (e == null ? "-" : e.getYRot()) + ")",
+                    e != null && Math.abs(net.minecraft.util.Mth.wrapDegrees(e.getYRot() - 180.0F)) < 1.0F);
+            shot("105_mimico_dormido");
+        });
+        add("mimico (abrirlo)", 500, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            net.minecraft.world.entity.Entity e = nearestMimic();
+            if (e != null) {
+                mc.gameMode.interact(mc.player, e, net.minecraft.world.InteractionHand.MAIN_HAND);
+            }
+        });
+        add("mimico (despierto, foto)", 700, () -> {
+            net.minecraft.world.entity.Entity e = nearestMimic();
+            check("al intentar abrirlo, el mímico despierta", e instanceof com.mundosdeaxelis.entity.Mimico mm && mm.isAwake());
+            shot("106_mimico_despierto");
+        });
+        add("mimico (morder, foto)", 600, () -> shot("107_mimico_ataca"));
+        add("mimico (matarlo)", 1500, () -> {
+            cmd("kill @e[type=minecraft:item]");
+            cmd("execute as @a run damage @e[type=mundos_de_axelis:mimico,limit=1,sort=nearest] 100000 minecraft:player_attack by @s");
+        });
+        add("mimico (botin, foto)", 300, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            int items = 0;
+            boolean ess = false;
+            for (net.minecraft.world.entity.Entity en : mc.level.entitiesForRendering()) {
+                if (en instanceof net.minecraft.world.entity.item.ItemEntity ie && en.distanceToSqr(mx, LTY, mz) < 36) {
+                    items++;
+                    ess |= ie.getItem().getItem() instanceof com.mundosdeaxelis.gema.GemaItems.Esencia;
+                }
+            }
+            check("al matar al mímico suelta su botín (" + items + " objetos, con esencia)", items >= 2 && ess);
+            shot("108_mimico_botin");
+            cmd("kill @e[type=minecraft:item]");
+            cmd("kill @e[type=mundos_de_axelis:mimico]");
+            cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+        });
     }
 
     // ------------------------------------------------------------------ etapa 271: las gemas

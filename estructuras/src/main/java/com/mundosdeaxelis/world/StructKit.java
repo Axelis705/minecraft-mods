@@ -611,6 +611,34 @@ public final class StructKit {
         b.setNbt(x, y, z, vaultBlock(stage, locked) + "[facing=" + facing + "]", nbt);
     }
 
+    /**
+     * Etapa 272: dónde duerme un mímico en cada estructura, {x, y, z, tier}. Siempre al lado de un cofre de verdad (en un rincón
+     * contra la pared, como un cofre bien puesto), para que el jugador tenga que adivinar cuál es cuál.
+     */
+    public static int[][] mimics(String design) {
+        return switch (design) {
+            case "santuario" -> new int[][]{{3, 0, 31, 1}};
+            case "bosque" -> new int[][]{{26, 0, 35, 1}};
+            case "forja" -> new int[][]{{-26, 6, 64, 2}};
+            case "fragua" -> new int[][]{{13, 0, 25, 2}};
+            case "hielo" -> new int[][]{{17, 0, 24, 3}};
+            case "fortin" -> new int[][]{{-14, 0, 33, 3}};
+            case "volcan" -> new int[][]{{23, 8, 73, 4}};
+            case "torre_arcana" -> new int[][]{{11, 0, 31, 5}};
+            case "torre" -> new int[][]{{7, 59, 31, 5}};
+            default -> new int[0][];
+        };
+    }
+
+    /** Pone en el plano los mímicos de esa estructura (marca «mimico_N» con su tier). */
+    public static int addMimics(StructBp b, String design) {
+        int[][] ms = mimics(design);
+        for (int[] m : ms) {
+            b.mobs.add(new StructBp.Mob(m[0], m[1], m[2], "mimico", "mimico_" + m[3]));
+        }
+        return ms.length;
+    }
+
     /** Tabla de botín de los barriles de cada tier (etapa 268), o null si la estructura no lleva (las casas de los habitantes). */
     public static String barrelTable(String design) {
         return switch (design) {

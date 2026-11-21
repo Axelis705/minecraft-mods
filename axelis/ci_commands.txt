@@ -473,6 +473,9 @@ execute if entity @e[type=mundos_de_axelis:raizal,x=4920,y=-80,z=-80,dx=160,dy=8
 forceload remove 4930 -70 5070 70
 mundos prueba botin
 execute positioned 0 -60 -30 run mundos prueba gemas
+execute positioned 0 -60 -30 run mundos prueba mimico
+kill @e[type=mundos_de_axelis:mimico]
+kill @e[type=minecraft:item]
 kill @e[type=minecraft:pig]
 kill @e[type=item]
 loot spawn 0 -58 -20 loot mundos_de_axelis:chests/barril_bosque
@@ -688,3 +691,4 @@ mundos prueba construir 2
 #expect PRUEBA_YUNQUE_SUELTA_OK
 #expect PRUEBA_MESA_GEMAS_OK
 #expect PRUEBA_GEMAS_OK
+#expect PRUEBA_MIMICO_OK
