@@ -133,7 +133,9 @@ Es la idea del duende ladrón de Diablo, con nombre y aspecto propios.
 **Cliente**:
 
 - Fotos: el mímico dormido con su haz, despierto con la boca abierta y su botín; el Orbe de Escarcha contra un husk; la Escoria Ardiente ★; el Saqueador huyendo y su botín.
-- Resultado: 223 comprobaciones y 0 fallos en la prueba de la etapa 275. La de la etapa 276 se lanzó aparte.
+- Resultado final (todo junto, con el Saqueador): 225 comprobaciones y 0 fallos.
+
+**Instalado**: el jar se puso en la instancia «test» de Axelis el 21 de noviembre, con el juego cerrado (comprobado por la fecha de latest.log).
 
 ## Ideas para después (para decidir con Axelis)
 
