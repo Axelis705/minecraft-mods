@@ -2495,8 +2495,8 @@
   "gema.mundos_de_axelis.pureza.pulida": "Polished",
   "gema.mundos_de_axelis.pureza.perfecta": "Flawless",
   "tooltip.mundos_de_axelis.gema_vacia": "A hollow gem waiting for an element. The higher the tier, the purer it is.",
-  "tooltip.mundos_de_axelis.gema_vacia.use": "Infuse it with an Essence at the Gem Table.",
-  "tooltip.mundos_de_axelis.gema.use": "Socket it into a sword, axe or trident at the Gem Table.",
+  "tooltip.mundos_de_axelis.gema_vacia.use": "Infuse it with an Essence at the Gem Table. Three identical ones combine into a purer one.",
+  "tooltip.mundos_de_axelis.gema.use": "Socket it into a sword, axe or trident at the Gem Table. Three identical ones combine into a purer one.",
   "tooltip.mundos_de_axelis.esencia_infusion": "At the Gem Table, turns an empty gem into a %s.",
   "tooltip.mundos_de_axelis.mesa_gemas": "Infuse empty gems and socket them into your weapons.",
   "block.mundos_de_axelis.mesa_gemas": "Gem Table",
@@ -2506,7 +2506,7 @@
   "gui.mundos_de_axelis.gemas.engarzar": "Socket",
   "gui.mundos_de_axelis.gemas.quitar": "Remove",
   "gui.mundos_de_axelis.gemas.resultado": "You get: %s. Costs %s ◆",
-  "gui.mundos_de_axelis.gemas.infundir_ayuda": "Place an empty gem and an essence.",
+  "gui.mundos_de_axelis.gemas.infundir_ayuda": "Place an empty gem and an essence, or 3 identical gems to combine them.",
   "gui.mundos_de_axelis.gemas.actual": "Socketed: %s. Removing it costs %s ◆",
   "gui.mundos_de_axelis.gemas.sin_gema": "This weapon has no gem: place one next to it.",
   "gui.mundos_de_axelis.gemas.engarzar_ayuda": "Place a weapon (sword, axe or trident) and a gem.",
@@ -2533,5 +2533,9 @@
   "item.mundos_de_axelis.orbe_arcano": "Arcane Orb",
   "tooltip.mundos_de_axelis.orbe_arcano": "A vortex pulls enemies to the center, then bursts.",
   "tooltip.mundos_de_axelis.arrojadizo.use": "Right-click to throw it. Only hurts enemies.",
-  "entity.mundos_de_axelis.arrojadizo": "Throwable"
+  "entity.mundos_de_axelis.arrojadizo": "Throwable",
+  "gui.mundos_de_axelis.gemas.combinar": "Combine",
+  "gui.mundos_de_axelis.gemas.combinar_resultado": "3 → %s. Costs %s ◆",
+  "message.mundos_de_axelis.gema.falta_combinar": "Place 3 identical gems (not Flawless) in the left slot.",
+  "message.mundos_de_axelis.gema.combinada": "You combined: %s!"
 }

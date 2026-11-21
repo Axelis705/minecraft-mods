@@ -250,6 +250,34 @@ public final class TestCommands {
                 || com.mundosdeaxelis.gema.Gemas.pureza(back) != 2 || com.mundosdeaxelis.table.Essence.get(fp) != e1 - com.mundosdeaxelis.gema.GemTableMenu.REMOVE_COST) {
             fail = "quitar en la mesa (" + back + ")";
         }
+        // combinar: 3 Gemas de Fuego Talladas + Esencia = 1 Pulida (y quedan las que sobran)
+        for (int i = 0; i < 4; i++) {
+            m.slots.get(i).set(net.minecraft.world.item.ItemStack.EMPTY);
+        }
+        m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_VACIA).set(com.mundosdeaxelis.gema.Gemas.conPureza(new net.minecraft.world.item.ItemStack(
+                com.mundosdeaxelis.registry.ModItems.GEMAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO).get(), 4), 2));
+        int e2 = com.mundosdeaxelis.table.Essence.get(fp);
+        if (e2 < 200) {
+            com.mundosdeaxelis.table.Essence.add(fp, 200);
+            e2 = com.mundosdeaxelis.table.Essence.get(fp);
+        }
+        m.clickMenuButton(fp, com.mundosdeaxelis.gema.GemTableMenu.B_COMBINAR);
+        net.minecraft.world.item.ItemStack left = m.slots.get(com.mundosdeaxelis.gema.GemTableMenu.S_VACIA).getItem();
+        boolean gotPolished = false;
+        for (net.minecraft.world.item.ItemStack it : fp.getInventory().items) {
+            if (it.getItem() instanceof com.mundosdeaxelis.gema.GemaItems.Gema && com.mundosdeaxelis.gema.Gemas.pureza(it) == 3) {
+                gotPolished = true;
+                it.setCount(0);
+            }
+        }
+        if (left.getCount() != 1 || com.mundosdeaxelis.gema.Gemas.pureza(left) != 2 || !gotPolished
+                || com.mundosdeaxelis.table.Essence.get(fp) != e2 - com.mundosdeaxelis.gema.GemTableMenu.combineCost(2)) {
+            fail = "combinar 3 gemas (quedan " + left + ", pulida " + gotPolished + ")";
+        }
+        if (com.mundosdeaxelis.gema.GemTableMenu.combinable(com.mundosdeaxelis.gema.Gemas.conPureza(new net.minecraft.world.item.ItemStack(
+                com.mundosdeaxelis.registry.ModItems.GEMA_VACIA.get(), 3), 4))) {
+            fail = "se pueden combinar gemas Perfectas";
+        }
         // un pico no admite gemas
         if (com.mundosdeaxelis.gema.Gemas.admite(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_PICKAXE))) {
             fail = "un pico admite gemas";

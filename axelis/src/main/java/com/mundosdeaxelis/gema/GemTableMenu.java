@@ -29,7 +29,7 @@ import net.minecraft.world.item.ItemStack;
  * Lo que dejes en la mesa vuelve a tu inventario al cerrar.
  */
 public class GemTableMenu extends AbstractContainerMenu {
-    public static final int B_INFUNDIR = 0, B_ENGARZAR = 1, B_QUITAR = 2;
+    public static final int B_INFUNDIR = 0, B_ENGARZAR = 1, B_QUITAR = 2, B_COMBINAR = 3;
     public static final int S_VACIA = 0, S_ESENCIA = 1, S_ARMA = 2, S_GEMA = 3;
     private final SimpleContainer box = new SimpleContainer(4);
     private final ContainerLevelAccess access;
@@ -82,6 +82,16 @@ public class GemTableMenu extends AbstractContainerMenu {
 
     public static final int REMOVE_COST = 15;
 
+    /** Esencia que cuesta combinar tres gemas de esa pureza en una de la siguiente. */
+    public static int combineCost(int pureza) {
+        return 30 * pureza;
+    }
+
+    /** ¿Se pueden combinar? Tres gemas (o gemas vacías) iguales que todavía no son Perfectas. */
+    public static boolean combinable(ItemStack st) {
+        return (st.getItem() instanceof GemaItems.Vacia || st.getItem() instanceof GemaItems.Gema) && st.getCount() >= 3 && Gemas.pureza(st) < 4;
+    }
+
     @Override
     public boolean clickMenuButton(Player p, int id) {
         if (!(p instanceof ServerPlayer sp)) {
@@ -91,6 +101,7 @@ public class GemTableMenu extends AbstractContainerMenu {
             case B_INFUNDIR -> infundir(sp);
             case B_ENGARZAR -> engarzar(sp);
             case B_QUITAR -> quitar(sp);
+            case B_COMBINAR -> combinar(sp);
             default -> {
                 return false;
             }
@@ -133,6 +144,32 @@ public class GemTableMenu extends AbstractContainerMenu {
         }
         fx(sp, true, SoundEvents.AMETHYST_BLOCK_RESONATE);
         msg(sp, "infundida", ChatFormatting.LIGHT_PURPLE, gema.getHoverName());
+        broadcastChanges();
+    }
+
+    /** Combinar (como en Diablo 4 o Apotheosis): tres gemas iguales de una pureza se funden en una de la pureza siguiente. */
+    private void combinar(ServerPlayer sp) {
+        ItemStack v = box.getItem(S_VACIA);
+        if (!combinable(v)) {
+            msg(sp, "falta_combinar", ChatFormatting.RED);
+            return;
+        }
+        int p = Gemas.pureza(v);
+        int cost = combineCost(p);
+        if (!Essence.spend(sp, cost)) {
+            msg(sp, "esencia", ChatFormatting.RED, cost);
+            return;
+        }
+        Essence.sync(sp);
+        ItemStack out = Gemas.conPureza(new ItemStack(v.getItem()), p + 1);
+        v.shrink(3);
+        if (box.getItem(S_VACIA).isEmpty()) {
+            box.setItem(S_VACIA, out);
+        } else if (!sp.getInventory().add(out)) {
+            sp.drop(out, false);
+        }
+        fx(sp, true, SoundEvents.AMETHYST_CLUSTER_BREAK);
+        msg(sp, "combinada", ChatFormatting.LIGHT_PURPLE, out.getHoverName());
         broadcastChanges();
     }
 

@@ -44,6 +44,11 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
                 && TableClient.essence >= GemTableMenu.infuseCost(Gemas.pureza(slot(GemTableMenu.S_VACIA)));
     }
 
+    private boolean canCombine() {
+        ItemStack v = slot(GemTableMenu.S_VACIA);
+        return GemTableMenu.combinable(v) && TableClient.essence >= GemTableMenu.combineCost(Gemas.pureza(v));
+    }
+
     private boolean canSocket() {
         return Gemas.admite(slot(GemTableMenu.S_ARMA)) && slot(GemTableMenu.S_GEMA).getItem() instanceof GemaItems.Gema;
     }
@@ -53,7 +58,7 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
     }
 
     // botones: x, y, w, h (relativos a la ventana)
-    private static final int[][] BTN = {{16, 58, 80, 14}, {114, 58, 50, 14}, {168, 58, 38, 14}};
+    private static final int[][] BTN = {{8, 58, 47, 14}, {114, 58, 50, 14}, {168, 58, 38, 14}, {57, 58, 47, 14}};
 
     @Override
     public boolean mouseClicked(double mx, double my, int b) {
@@ -61,7 +66,7 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
             for (int i = 0; i < BTN.length; i++) {
                 int[] r = BTN[i];
                 if (mx >= leftPos + r[0] && mx < leftPos + r[0] + r[2] && my >= topPos + r[1] && my < topPos + r[1] + r[3]) {
-                    boolean ok = i == 0 ? canInfuse() : i == 1 ? canSocket() : canRemove();
+                    boolean ok = i == 0 ? canInfuse() : i == 1 ? canSocket() : i == 2 ? canRemove() : canCombine();
                     if (ok) {
                         UiFx.click();
                         if (minecraft != null && minecraft.gameMode != null) {
@@ -140,12 +145,12 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
         g.drawString(f, Component.translatable("gui.mundos_de_axelis.gemas.engarzar_titulo"), 117, 21, 0xFFFFE9A8, false);
         g.drawString(f, "+", 50, 40, 0xFFE8DCFF, true);
         g.drawString(f, "◆", 156, 40, 0xFFFFE9A8, true);
-        String[] keys = {"infundir", "engarzar", "quitar"};
-        boolean[] ok = {canInfuse(), canSocket(), canRemove()};
+        String[] keys = {"infundir", "engarzar", "quitar", "combinar"};
+        boolean[] ok = {canInfuse(), canSocket(), canRemove(), canCombine()};
         for (int i = 0; i < BTN.length; i++) {
             int[] r = BTN[i];
             boolean over = mx >= r[0] && mx < r[0] + r[2] && my >= r[1] && my < r[1] + r[3];
-            PanelUi.button(g, f, r[0], r[1], r[2], r[3], Component.translatable("gui.mundos_de_axelis.gemas." + keys[i]), ok[i], over, i == 0 ? ACCENT : GOLD);
+            PanelUi.button(g, f, r[0], r[1], r[2], r[3], Component.translatable("gui.mundos_de_axelis.gemas." + keys[i]), ok[i], over, i == 0 || i == 3 ? ACCENT : GOLD);
         }
         // texto de ayuda de cada zona
         ItemStack v = slot(GemTableMenu.S_VACIA), e = slot(GemTableMenu.S_ESENCIA);
@@ -154,6 +159,11 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
             int p = Gemas.pureza(v);
             left = Component.translatable("gui.mundos_de_axelis.gemas.resultado", Component.translatable("item.mundos_de_axelis.gema_" + esn.el.id)
                     .append(" (").append(Gemas.purezaName(p)).append(")").withStyle(esn.el.style()), GemTableMenu.infuseCost(p));
+        } else if (GemTableMenu.combinable(v)) {
+            int p = Gemas.pureza(v);
+            left = Component.translatable("gui.mundos_de_axelis.gemas.combinar_resultado", Gemas.conPureza(new ItemStack(v.getItem()), p + 1).getHoverName()
+                    .copy().withStyle(v.getItem() instanceof GemaItems.Gema gm ? gm.el.style() : net.minecraft.network.chat.Style.EMPTY.withColor(0xD8CCEE)),
+                    GemTableMenu.combineCost(p));
         } else {
             left = Component.translatable("gui.mundos_de_axelis.gemas.infundir_ayuda").withStyle(ChatFormatting.GRAY);
         }
