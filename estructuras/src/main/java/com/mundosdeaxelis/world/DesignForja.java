@@ -746,7 +746,7 @@ final class DesignForja {
         b.set(-13, fy + 1, 79, "hay_block[axis=x]");
         b.set(-11, fy + 1, 79, "chipped_anvil[facing=east]");
         b.set(-14, fy + 1, 77, "cauldron");
-        b.set(-11, fy + 1, 77, "candle[candles=2,lit=true]");
+        b.set(-12, fy + 1, 79, "candle[candles=2,lit=true]"); // al fondo: delante de la puerta no estorba nada
         hangLantern(b, -12, fy + 4, 78, 1, "lantern");
     }
 

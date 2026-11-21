@@ -73,3 +73,18 @@ Antiguo cultista del volcán que quiso dejar la secta; lo encerraron «para que 
   - tiene 2 salas sin acceso toleradas (la celda de Ignacio y un hueco junto al corazón colgante);
   - las demás estructuras siguen en verde.
 - Vistas del visor del arco y el muelle desde el lago, y del santuario con la Piedra de regreso y la celda.
+- **Servidor de verdad (CI)**, todo en verde:
+  - la Piedra de regreso junto al altar;
+  - que ya no hay túnel;
+  - el arco y el cartel del salto;
+  - un río que corre ladera abajo y el lago quieto;
+  - la celda de Ignacio (puerta y barrotes), Ignacio preso y el sumo sacerdote con la llave;
+  - la llave cae al vencerlo, el rescate abre la puerta e Ignacio queda libre;
+  - al reiniciar el volcán vuelve el sacerdote, pero no un segundo Ignacio, e Ignacio sigue libre tras deshacer el volcán;
+  - su ermita crece con la semilla (puerta, atril y máscara), él vive dentro y, al mudarse, se desarma.
+- **Juego real (cliente)**:
+  - fotos del arco y el muelle desde el camino y desde el lago;
+  - Ignacio preso (su ventana) y rescatado;
+  - la Piedra de regreso con su aviso;
+  - después de usarla, el jugador aparece en la entrada del volcán, entre los braseros.
+- Arreglo que salió en las pruebas: la casa de Ignacio no se ponía en la prueba de cliente porque el jugador seguía en modo espectador (era la prueba, no el juego).

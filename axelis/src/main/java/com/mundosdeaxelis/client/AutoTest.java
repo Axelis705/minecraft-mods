@@ -918,6 +918,7 @@ public final class AutoTest {
         // la Gran Fundición: la Piedra de Portal en la isla de los hornos y la celda de Hilda en la pared del fondo
         add("fundición (ir)", 2500, () -> {
             clearMobs();
+            cmd("gamemode spectator @a");
             cmd("execute in minecraft:overworld run tp @a " + (FDX + 0.5) + " " + (FDY + 40) + " " + (FDZ0 - 50) + " 0 25");
         });
         add("fundición", 30000, () -> cmd("execute in minecraft:overworld positioned " + FDX + " " + FDY + " " + (FDZ0 - 16)

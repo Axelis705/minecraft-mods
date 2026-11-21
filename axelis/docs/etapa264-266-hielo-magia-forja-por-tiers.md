@@ -1,4 +1,4 @@
-# Etapas 264 a 266 — Hielo, magia y forja por tiers
+# Etapas 264 a 267 — Hielo, magia y forja por tiers, y el Coloso de Hierro
 
 Pedido (21 nov 2026): dos estructuras por tier. Cada una empieza en la puerta y termina en lo importante: el bloque (la Piedra de Portal), la celda del habitante o el botín.
 
@@ -6,7 +6,7 @@ Pedido (21 nov 2026): dos estructuras por tier. Cada una empieza en la puerta y 
 |---|---|---|
 | Hielo | **Ciudadela de cristal**: la Piedra de Portal | **Fortín de Escarcha**: Bruno |
 | Magia | **Fortaleza del Archimago**: la Piedra de Portal y Teo | **Torre Arcana**: el tesoro |
-| Forja | **Gran Fundición**: la Piedra de Portal e Hilda | **Fragua Olvidada**: el tesoro (y luego un minijefe nuevo) |
+| Forja | **Gran Fundición**: la Piedra de Portal e Hilda | **Fragua Olvidada**: el tesoro, guardado por un minijefe nuevo, el **Coloso de Hierro** |
 
 Las brújulas y las pistas de los habitantes llevan siempre a la estructura que tiene la Piedra de Portal.
 
@@ -76,16 +76,36 @@ Las brújulas y las pistas de los habitantes llevan siempre a la estructura que 
 - Ahora se construye con `/mundos estructura fragua`.
 - **El final**: sobre el altar con forma de yunque está **el tesoro del Gran Herrero**, un cofre con cerradura difícil (nivel 4, etapa 2).
 - La antigua celda ahora es el **almacén**: puerta de madera, barriles y un cofre de premio.
-- El Fundidor guarda el altar.
+- Un Fundidor y escorias en el patio.
 - Aparece sola: `/mundos natural generar fragua [aqui]`.
-- **Pendiente**: el minijefe nuevo (en diseño).
+
+## El Coloso de Hierro (etapa 267, minijefe de la Fragua)
+
+Elegido por Axelis entre tres ideas. Es distinto del «Capataz» de la dungeon de la forja.
+
+Un gólem gigante de hierro oxidado (unos 3,5 bloques de alto) que construyó el Gran Herrero para guardar su tesoro.
+- **Aspecto**:
+  - torso ancho con un **horno encendido en el pecho** (rejilla que brilla);
+  - cabeza pequeña hundida entre los hombros con una rendija de ojos al rojo;
+  - hombreras remachadas y brazos larguísimos con **puños enormes** con grietas incandescentes;
+  - piernas cortas y dos chimeneas en la espalda que echan humo.
+  - Brilla en la oscuridad: casi apagado dormido, más fuerte al cargar, al rojo vivo recalentado.
+- **Duerme de pie** delante del altar del tesoro, como una estatua. Se despierta si alguien se acerca a unos 9 bloques o le pega (rugido, temblor, aviso «¡El Coloso de Hierro despierta! Salta las ondas del suelo»). Entonces sale su barra de vida.
+- **Ataques**:
+  - **puñetazo** si estás pegado a él;
+  - **golpe de suelo**: levanta los dos puños con aviso (anillo naranja y chirrido) y golpea. Salen **tres ondas en anillo** que avanzan por el suelo con chispas y polvo. **Hay que saltarlas**: en el aire no hacen daño;
+  - **lingotes al rojo**: si estás lejos, lanza tres lingotes incandescentes en arco que queman un momento (al caer se apagan, no prenden fuego al mundo).
+- **Se recalienta**: después de dos golpes de suelo se queda quieto unos 4 segundos echando vapor («¡El Coloso se recalienta! Ahora es vulnerable»). Recibe casi el doble de daño.
+- 180 de vida y mucha armadura. No le afecta el fuego ni la lava.
+- **Botín**: lingotes y bloques de hierro, oro y carbón. El tesoro del altar es aparte.
+- Hay un **huevo** en la pestaña del mod para probarlo.
 
 ## Mundos ya empezados
 
 - Las estructuras «chicas» que ya habían salido cerca (fortín, torre arcana, fragua) se conservan con su nombre nuevo.
 - Las grandes empiezan a aparecer desde ahora.
 
-## Comprobado
+## Comprobado (etapas 264 a 266)
 
 - Compila.
 - **Plano revisado fuera del juego**: las 9 estructuras en verde.
