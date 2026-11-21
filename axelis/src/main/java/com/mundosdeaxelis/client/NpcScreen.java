@@ -246,8 +246,38 @@ public class NpcScreen extends Screen {
         return (NpcShop.OFFERS.size() + 1) / 2;
     }
 
+    /** Filas que caben en la pantalla (con la interfaz grande no caben todas: el resto se ve con la rueda del ratón). */
+    private int visibleRows() {
+        int fit = (height - 8 - 30 - 34) / (CELL_H + 2);
+        return Math.max(2, Math.min(shopRows(), fit));
+    }
+
+    private int maxScroll() {
+        return Math.max(0, shopRows() - visibleRows());
+    }
+
     private int shopH() {
-        return 30 + shopRows() * (CELL_H + 2) + 34;
+        return 30 + visibleRows() * (CELL_H + 2) + 34;
+    }
+
+    /** Dónde se dibuja la oferta i (null si con el desplazamiento actual no se ve). */
+    private int[] cellPos(int i) {
+        int row = i / 2 - scroll;
+        if (row < 0 || row >= visibleRows()) {
+            return null;
+        }
+        return new int[]{shopX() + 8 + (i % 2) * (CELL_W + 4), shopY() + 30 + row * (CELL_H + 2)};
+    }
+
+    private int scroll;
+
+    @Override
+    public boolean mouseScrolled(double mx, double my, double delta) {
+        if (shop && maxScroll() > 0) {
+            scroll = Mth.clamp(scroll - (int) Math.signum(delta), 0, maxScroll());
+            return true;
+        }
+        return super.mouseScrolled(mx, my, delta);
     }
 
     private int shopX() {
@@ -416,9 +446,12 @@ public class NpcScreen extends Screen {
     }
 
     private int cellAt(double mx, double my) {
-        int x0 = shopX() + 8, y0 = shopY() + 30;
         for (int i = 0; i < NpcShop.OFFERS.size(); i++) {
-            int cx = x0 + (i % 2) * (CELL_W + 4), cy = y0 + (i / 2) * (CELL_H + 2);
+            int[] p = cellPos(i);
+            if (p == null) {
+                continue;
+            }
+            int cx = p[0], cy = p[1];
             if (mx >= cx && mx < cx + CELL_W && my >= cy && my < cy + CELL_H) {
                 return i;
             }
@@ -563,10 +596,13 @@ public class NpcScreen extends Screen {
         diamond(g, x + SHOP_W - ew - 18, y + 11);
         PanelUi.divider(g, x + 8, y + 22, SHOP_W - 16, ac);
         long now = System.currentTimeMillis();
-        int x0 = x + 8, y0 = y + 30;
         for (int i = 0; i < NpcShop.OFFERS.size(); i++) {
             NpcShop.Offer o = NpcShop.OFFERS.get(i);
-            int cx = x0 + (i % 2) * (CELL_W + 4), cy = y0 + (i / 2) * (CELL_H + 2);
+            int[] cp = cellPos(i);
+            if (cp == null) {
+                continue;
+            }
+            int cx = cp[0], cy = cp[1];
             boolean locked = data.residents < o.needResidents();
             boolean afford = TableClient.essence >= o.price();
             boolean over = mx >= cx && mx < cx + CELL_W && my >= cy && my < cy + CELL_H;
@@ -599,6 +635,13 @@ public class NpcScreen extends Screen {
                 diamond(g, cx + 25, cy + 16);
                 g.drawString(font, String.valueOf(o.price()), cx + 32, cy + 13, afford ? 0xFFE2B8FF : 0xFFE07070, false);
             }
+        }
+        if (maxScroll() > 0) {
+            int bx = x + SHOP_W - 5, by = y + 30, bh = visibleRows() * (CELL_H + 2) - 2;
+            g.fill(bx, by, bx + 2, by + bh, 0x40FFFFFF);
+            int th = Math.max(10, bh * visibleRows() / shopRows());
+            int ty = by + (bh - th) * scroll / maxScroll();
+            g.fill(bx, ty, bx + 2, ty + th, 0xFF000000 | ac);
         }
         int fy = y + h - 36;
         if (footer != null && now < footerUntil) {

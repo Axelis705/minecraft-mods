@@ -686,6 +686,13 @@ public final class AutoTest {
                 npcScreen().press(NpcScreen.B_SHOP);
             }
         });
+        add("tienda (bajar con la rueda)", 600, () -> {
+            if (npcScreen() != null) {
+                for (int i = 0; i < 4; i++) {
+                    npcScreen().mouseScrolled(0, 0, -1);
+                }
+            }
+        });
         add("tienda con dos vecinos (foto)", 800, () -> {
             shot("65_bruno_tienda");
             essBefore = TableClient.essence;
