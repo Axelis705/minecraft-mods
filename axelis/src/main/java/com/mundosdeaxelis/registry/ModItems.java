@@ -131,6 +131,14 @@ public final class ModItems {
             () -> new BlockItem(ModBlocks.VAULT_CHEST_LOCKED_VOLCANO.get(), new Item.Properties().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> VAULT_CHEST_LOCKED_FORGE = ITEMS.register("vault_chest_locked_forge",
             () -> new BlockItem(ModBlocks.VAULT_CHEST_LOCKED_FORGE.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> VAULT_CHEST_ICE = ITEMS.register("vault_chest_ice",
+            () -> new BlockItem(ModBlocks.VAULT_CHEST_ICE.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> VAULT_CHEST_LOCKED_ICE = ITEMS.register("vault_chest_locked_ice",
+            () -> new BlockItem(ModBlocks.VAULT_CHEST_LOCKED_ICE.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> VAULT_CHEST_MAGIC = ITEMS.register("vault_chest_magic",
+            () -> new BlockItem(ModBlocks.VAULT_CHEST_MAGIC.get(), new Item.Properties().rarity(Rarity.RARE)));
+    public static final RegistryObject<Item> VAULT_CHEST_LOCKED_MAGIC = ITEMS.register("vault_chest_locked_magic",
+            () -> new BlockItem(ModBlocks.VAULT_CHEST_LOCKED_MAGIC.get(), new Item.Properties().rarity(Rarity.RARE)));
     /** Comida de la dungeon de la Forja: cura, regeneración I (6 s) y absorción I (30 s), con 5 s de espera entre un asado y otro. */
     public static final RegistryObject<Item> FORGE_ROAST = ITEMS.register("forge_roast",
             () -> new com.mundosdeaxelis.item.ForgeRoastItem(new Item.Properties().food(new net.minecraft.world.food.FoodProperties.Builder()
@@ -461,6 +469,20 @@ public final class ModItems {
             CRATE_ITEMS.put(k, ITEMS.register(k.blockId(),
                     () -> new BlockItem(ModBlocks.CRATES.get(k).get(), new Item.Properties().rarity(Rarity.EPIC))));
             KEYS.put(k, ITEMS.register(k.keyId(), () -> new com.mundosdeaxelis.item.CrateKeyItem(k)));
+        }
+    }
+
+    /**
+     * Fragmentos de llave (etapa 268), uno por caja de colección: salen en los cofres y barriles de las estructuras de su tier y
+     * cuatro se forjan en la llave de esa caja en la Mesa del Artífice (pestaña Crear).
+     */
+    public static final java.util.Map<com.mundosdeaxelis.crate.CrateKind, RegistryObject<Item>> KEY_FRAGMENTS = new java.util.EnumMap<>(com.mundosdeaxelis.crate.CrateKind.class);
+
+    static {
+        for (com.mundosdeaxelis.crate.CrateKind k : com.mundosdeaxelis.crate.CrateKind.values()) {
+            if (k != com.mundosdeaxelis.crate.CrateKind.PETS) {
+                KEY_FRAGMENTS.put(k, ITEMS.register("key_fragment_" + k.id, () -> new com.mundosdeaxelis.item.KeyFragmentItem(k)));
+            }
         }
     }
 

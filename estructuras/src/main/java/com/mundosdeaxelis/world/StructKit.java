@@ -587,6 +587,56 @@ public final class StructKit {
         }
     }
 
+    // ------------------------------------------------------------------ cofres y barriles con botín (etapa 268)
+
+    /** Cofre del santuario de cada etapa: el de siempre (bosque y de la 6 en adelante), Forja, hielo, volcán y magia. */
+    public static String vaultBlock(int stage, boolean locked) {
+        String theme = switch (stage) {
+            case 2 -> "_forge";
+            case 3 -> "_ice";
+            case 4 -> "_volcano";
+            case 5 -> "_magic";
+            default -> "";
+        };
+        return "mundos_de_axelis:vault_chest" + (locked ? "_locked" : "") + theme;
+    }
+
+    /**
+     * Pone un cofre del santuario (cada jugador tiene su propio botín). {@code kind}: ANTE (provisiones), TRIAL (premio), LOCKED
+     * (cerradura de nivel {@code lock}), TREASURE (gran tesoro del final) o CRYPT. {@code facing}: hacia dónde mira el frente.
+     */
+    public static void vault(StructBp b, int x, int y, int z, String facing, String kind, int stage, int lock) {
+        boolean locked = kind.equals("LOCKED");
+        String nbt = "{Kind:\"" + kind + "\",Stage:" + stage + (locked ? ",LockLevel:" + Math.max(1, Math.min(5, lock)) : "") + "}";
+        b.setNbt(x, y, z, vaultBlock(stage, locked) + "[facing=" + facing + "]", nbt);
+    }
+
+    /** Tabla de botín de los barriles de cada tier (etapa 268), o null si la estructura no lleva (las casas de los habitantes). */
+    public static String barrelTable(String design) {
+        return switch (design) {
+            case "bosque", "santuario" -> "barril_bosque";
+            case "forja", "fragua" -> "barril_forja";
+            case "hielo", "fortin" -> "barril_hielo";
+            case "volcan" -> "barril_volcan";
+            default -> design.startsWith("casa_") ? null : "barril_magia";
+        };
+    }
+
+    /** Da a todos los barriles del plano la tabla de botín {@code mundos_de_axelis:chests/<table>}. Devuelve cuántos. */
+    public static int lootBarrels(StructBp b, String table) {
+        if (table == null) {
+            return 0;
+        }
+        int n = 0;
+        for (Map.Entry<Long, String> e : b.m.entrySet()) {
+            if (e.getValue().startsWith("barrel") && !b.nbt.containsKey(e.getKey())) {
+                b.nbt.put(e.getKey(), "{LootTable:\"mundos_de_axelis:chests/" + table + "\"}");
+                n++;
+            }
+        }
+        return n;
+    }
+
     /** Puerta de hierro de 2 de alto (o barrotes si la abierta). */
     public static void ironDoor(StructBp b, int x, int y, int z, String facing, boolean open) {
         b.set(x, y, z, "iron_door[facing=" + card(facing) + ",half=lower,hinge=left,open=" + open + "]");

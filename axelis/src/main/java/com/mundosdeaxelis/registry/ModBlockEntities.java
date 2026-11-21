@@ -24,7 +24,9 @@ public final class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<com.mundosdeaxelis.block.VaultChestBlockEntity>> VAULT = BLOCK_ENTITIES.register("vault",
             () -> BlockEntityType.Builder.of(com.mundosdeaxelis.block.VaultChestBlockEntity::new, ModBlocks.VAULT_CHEST.get(), ModBlocks.VAULT_CHEST_SEALED.get(), ModBlocks.VAULT_CHEST_LOCKED.get(),
                     ModBlocks.VAULT_CHEST_FORGE.get(), ModBlocks.VAULT_CHEST_SEALED_FORGE.get(), ModBlocks.VAULT_CHEST_LOCKED_FORGE.get(),
-                    ModBlocks.VAULT_CHEST_VOLCANO.get(), ModBlocks.VAULT_CHEST_LOCKED_VOLCANO.get()).build(null));
+                    ModBlocks.VAULT_CHEST_VOLCANO.get(), ModBlocks.VAULT_CHEST_LOCKED_VOLCANO.get(),
+                    ModBlocks.VAULT_CHEST_ICE.get(), ModBlocks.VAULT_CHEST_LOCKED_ICE.get(),
+                    ModBlocks.VAULT_CHEST_MAGIC.get(), ModBlocks.VAULT_CHEST_LOCKED_MAGIC.get()).build(null));
     /** Fumarola (etapa 255): solo para que el humo salga seguido en el cliente. */
     public static final RegistryObject<BlockEntityType<com.mundosdeaxelis.block.FumarolaBlockEntity>> FUMAROLA = BLOCK_ENTITIES.register("fumarola",
             () -> BlockEntityType.Builder.of(com.mundosdeaxelis.block.FumarolaBlockEntity::new, ModBlocks.FUMAROLA.get()).build(null));

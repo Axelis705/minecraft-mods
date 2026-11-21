@@ -41,7 +41,12 @@ public class TableMenu extends AbstractContainerMenu {
 
     // botones del menú
     public static final int B_LEVEL = 0, B_DISMANTLE = 1, B_REFINE = 2, B_UPGRADE = 3, B_BIND = 4;
-    public static final int B_KEY = 100, B_CRATE = 200, B_CRAFT = 300;
+    /**
+     * Botones con número: la llave y el bloque de cada caja y cada receta de Crear. El paquete de vanilla manda el número del botón
+     * en un solo byte (hasta 127): con los números de antes (200 y 300) en un servidor de verdad no llegaban bien y la Mesa no
+     * forjaba cajas ni creaba nada (etapa 268).
+     */
+    public static final int B_KEY = 20, B_CRATE = 40, B_CRAFT = 60;
     /** Cuántas veces más que la llave cuesta el bloque del crate. */
     public static final int CRATE_FACTOR = 4;
 

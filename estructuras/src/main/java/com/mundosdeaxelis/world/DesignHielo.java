@@ -51,6 +51,7 @@ final class DesignHielo {
         Linker.link(b, 0, 0, -3, 10, Q, QS);
         surroundings(b);
         mobs(b);
+        roomChests(b);
         return b;
     }
 
@@ -701,9 +702,9 @@ final class DesignHielo {
         // altar de hielo
         b.box(-2, fy + 1, 78, 2, fy + 1, 80, BI);
         b.box(-1, fy + 2, 79, 1, fy + 2, 79, CQ);
-        // el final de la ciudadela: la Piedra de Portal: Hielo sobre el altar, y el cofre de provisiones al lado
+        // el final de la ciudadela: la Piedra de Portal: Hielo sobre el altar, y al lado el gran tesoro (etapa 268)
         b.set(0, fy + 3, 79, PORTAL);
-        b.setNbt(2, fy + 2, 79, "mundos_de_axelis:vault_chest[facing=north]", "{Kind:\"ANTE\",Stage:3}");
+        vault(b, 2, fy + 2, 79, "north", "TREASURE", 3, 0);
         b.set(-2, fy + 2, 79, "soul_lantern");
         crystal(b, 0, 80, fy + 3, 8, 1, 0, 0, 3, BI, "light_blue_stained_glass");
         crypt.baseboard(QS).torches(6, fy + 3, true);
@@ -744,6 +745,18 @@ final class DesignHielo {
         for (int x = 8; x <= 12; x++) {
             b.set(x, 0, 48, "iron_bars");
         }
+    }
+
+    /**
+     * Etapa 268: cofres de escarcha por el camino y para quien explore: provisiones en la cocina del banquete, premios arriba en la
+     * biblioteca y en el cuartel, una cerradura en la sala de los carceleros y otra, más difícil, al fondo de la galería alta (triforio) de la catedral.
+     */
+    private static void roomChests(StructBp b) {
+        vault(b, 17, 0, 29, "east", "ANTE", 3, 0);
+        vault(b, -17, 6, 44, "north", "TRIAL", 3, 0);
+        vault(b, 24, 6, 62, "west", "TRIAL", 3, 0);
+        vault(b, 13, -11, 53, "north", "LOCKED", 3, 3);
+        vault(b, -12, 9, 39, "south", "LOCKED", 3, 4);
     }
 
     // ================================================================== alrededores y enemigos (etapa 264)

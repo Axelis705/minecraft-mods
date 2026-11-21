@@ -170,6 +170,9 @@ execute unless block 300 -59 46 mundos_de_axelis:portal_stone_forest run say PRU
 execute if block 300 -60 44 minecraft:iron_door run say PRUEBA_SANTUARIO_CELDA_PUERTA_OK
 execute if block 298 -60 44 minecraft:iron_bars run say PRUEBA_SANTUARIO_CELDA_BARROTES_OK
 execute if data block 305 -60 46 {Kind:"ANTE",Stage:1} run say PRUEBA_SANTUARIO_COFRE_OK
+execute if data block 288 -60 26 {Kind:"TRIAL",Stage:1} run say PRUEBA_SANTUARIO_COFRE_PATIO_OK
+execute if block 307 -60 36 mundos_de_axelis:vault_chest_locked run say PRUEBA_SANTUARIO_COFRE_CERRADURA_OK
+execute if data block 307 -60 36 {Kind:"LOCKED",Stage:1,LockLevel:1} run say PRUEBA_SANTUARIO_COFRE_CERRADURA_DATOS_OK
 execute if entity @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_RAIZAL_OK
 execute if entity @e[type=mundos_de_axelis:brote,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_BROTES_OK
 execute if entity @e[type=mundos_de_axelis:espinoso,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_ESPINOSO_OK
@@ -207,6 +210,11 @@ execute if block 420 -59 56 minecraft:cartography_table run say PRUEBA_FORTIN_ME
 execute if block 429 -60 48 minecraft:iron_door run say PRUEBA_FORTIN_CELDA_PUERTA_OK
 execute if block 429 -60 44 minecraft:iron_bars run say PRUEBA_FORTIN_CELDA_BARROTES_OK
 execute if data block 424 -59 57 {Kind:"ANTE",Stage:3} run say PRUEBA_FORTIN_COFRE_OK
+execute if block 424 -59 57 mundos_de_axelis:vault_chest_ice run say PRUEBA_FORTIN_COFRE_ESCARCHA_OK
+execute if data block 406 -60 47 {Kind:"TRIAL",Stage:3} run say PRUEBA_FORTIN_COFRE_PATIO_OK
+execute if block 434 -60 58 mundos_de_axelis:vault_chest_locked_ice run say PRUEBA_FORTIN_COFRE_CERRADURA_OK
+execute if data block 434 -60 58 {Kind:"LOCKED",Stage:3,LockLevel:2} run say PRUEBA_FORTIN_COFRE_CERRADURA_DATOS_OK
+execute if data block 433 -60 35 {LootTable:"mundos_de_axelis:chests/barril_hielo"} run say PRUEBA_FORTIN_BARRIL_OK
 execute if block 435 -48 24 minecraft:light_blue_stained_glass run say PRUEBA_FORTIN_TORRE_OK
 execute if entity @e[type=mundos_de_axelis:lobo_escarcha,x=395,y=-70,z=10,dx=50,dy=20,dz=60] run say PRUEBA_FORTIN_LOBOS_OK
 execute if entity @e[type=mundos_de_axelis:centinela_escarcha,x=395,y=-70,z=10,dx=50,dy=20,dz=60,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_FORTIN_CENTINELA_LLAVE_OK
@@ -255,7 +263,13 @@ forceload add 1934 -16 2066 126
 execute positioned 2000 -48 0 rotated 0 0 run mundos estructura fundicion
 #wait Gran Fundición construida 300
 execute if block 2000 -58 75 mundos_de_axelis:portal_stone_forge run say PRUEBA_FUNDICION_PIEDRA_OK
-execute if data block 2002 -59 75 {Kind:"ANTE",Stage:2} run say PRUEBA_FUNDICION_COFRE_OK
+execute if data block 2002 -59 75 {Kind:"TREASURE",Stage:2} run say PRUEBA_FUNDICION_COFRE_OK
+execute if data block 2026 -48 56 {Kind:"ANTE",Stage:2} run say PRUEBA_FUNDICION_COFRE_COMEDOR_OK
+execute if data block 1974 -42 78 {Kind:"TRIAL",Stage:2} run say PRUEBA_FUNDICION_COFRE_ARMERIA_OK
+execute if data block 1974 -42 54 {Kind:"TRIAL",Stage:2} run say PRUEBA_FUNDICION_COFRE_HERRERIA_OK
+execute if block 2026 -42 78 mundos_de_axelis:vault_chest_locked_forge run say PRUEBA_FUNDICION_COFRE_CAPATAZ_OK
+execute if data block 2026 -42 78 {Kind:"LOCKED",Stage:2,LockLevel:3} run say PRUEBA_FUNDICION_COFRE_CAPATAZ_DATOS_OK
+execute if data block 1979 -48 42 {LootTable:"mundos_de_axelis:chests/barril_forja"} run say PRUEBA_FUNDICION_BARRIL_OK
 execute if block 1989 -61 92 minecraft:iron_door run say PRUEBA_FUNDICION_CELDA_PUERTA_OK
 execute if block 1987 -61 92 minecraft:iron_bars run say PRUEBA_FUNDICION_CELDA_BARROTES_OK
 execute if entity @e[type=mundos_de_axelis:escoria,x=1934,y=-70,z=-16,dx=132,dy=60,dz=142] run say PRUEBA_FUNDICION_ESCORIAS_OK
@@ -303,10 +317,13 @@ forceload add 630 -10 700 70
 execute positioned 660 -60 0 rotated 0 0 run mundos estructura torre
 #wait Torre Arcana construida 90
 execute unless block 660 -35 46 mundos_de_axelis:portal_stone_tower run say PRUEBA_TORRE_ARCANA_SIN_PIEDRA_OK
-execute if data block 660 -35 46 {Kind:"LOCKED",Stage:4,LockLevel:5} run say PRUEBA_TORRE_ARCANA_TESORO_OK
-execute if data block 670 -60 46 {Kind:"TRIAL",Stage:4} run say PRUEBA_TORRE_ARCANA_DESPENSA_OK
+execute if data block 660 -35 46 {Kind:"LOCKED",Stage:5,LockLevel:5} run say PRUEBA_TORRE_ARCANA_TESORO_OK
+execute if data block 670 -60 46 {Kind:"TRIAL",Stage:5} run say PRUEBA_TORRE_ARCANA_DESPENSA_OK
 execute if block 667 -60 47 minecraft:dark_oak_door run say PRUEBA_TORRE_ARCANA_PUERTA_MADERA_OK
-execute if data block 657 -36 49 {Kind:"ANTE",Stage:4} run say PRUEBA_TORRE_ARCANA_COFRE_OK
+execute if data block 657 -36 49 {Kind:"ANTE",Stage:5} run say PRUEBA_TORRE_ARCANA_COFRE_OK
+execute if block 660 -35 46 mundos_de_axelis:vault_chest_locked_magic run say PRUEBA_TORRE_ARCANA_COFRE_ARCANO_OK
+execute if data block 654 -52 46 {Kind:"TRIAL",Stage:5} run say PRUEBA_TORRE_ARCANA_COFRE_BIBLIOTECA_OK
+execute if data block 664 -60 51 {LootTable:"mundos_de_axelis:chests/barril_magia"} run say PRUEBA_TORRE_ARCANA_BARRIL_OK
 execute if block 660 -25 46 minecraft:amethyst_block run say PRUEBA_TORRE_ARCANA_CUPULA_OK
 execute if block 659 -37 46 minecraft:deepslate_tile_stairs run say PRUEBA_TORRE_ARCANA_CARACOL_OK
 execute if entity @e[type=mundos_de_axelis:esbirro,x=640,y=-70,z=16,dx=45,dy=45,dz=45] run say PRUEBA_TORRE_ARCANA_ESBIRROS_OK
@@ -315,14 +332,22 @@ execute if entity @e[type=mundos_de_axelis:armadura_encantada,x=640,y=-70,z=16,d
 execute unless entity @e[type=mundos_de_axelis:armadura_encantada,x=640,y=-70,z=16,dx=45,dy=45,dz=45,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_TORRE_ARCANA_SIN_LLAVE_OK
 execute unless entity @e[type=mundos_de_axelis:habitante,x=640,y=-70,z=16,dx=45,dy=45,dz=45] run say PRUEBA_TORRE_ARCANA_SIN_NPC_OK
 execute positioned 660 -60 0 run mundos estructura deshacer
-execute unless block 660 -35 46 mundos_de_axelis:vault_chest_locked run say PRUEBA_TORRE_ARCANA_DESHECHA_OK
+execute unless block 660 -35 46 mundos_de_axelis:vault_chest_locked_magic run say PRUEBA_TORRE_ARCANA_DESHECHA_OK
 execute unless entity @e[type=mundos_de_axelis:esbirro,x=640,y=-70,z=16,dx=45,dy=45,dz=45] run say PRUEBA_TORRE_ARCANA_SIN_ENEMIGOS_OK
 forceload remove 630 -10 700 70
 forceload add 836 -16 965 112
 execute positioned 900 -48 0 rotated 0 0 run mundos estructura fortaleza
 #wait Fortaleza del Archimago construida 300
 execute if block 900 19 54 mundos_de_axelis:portal_stone_tower run say PRUEBA_FORTALEZA_PIEDRA_OK
-execute if data block 902 19 54 {Kind:"ANTE",Stage:4} run say PRUEBA_FORTALEZA_COFRE_OK
+execute if data block 902 19 54 {Kind:"TREASURE",Stage:5} run say PRUEBA_FORTALEZA_COFRE_OK
+execute if block 902 19 54 mundos_de_axelis:vault_chest_magic run say PRUEBA_FORTALEZA_COFRE_ARCANO_OK
+execute if data block 906 -45 42 {Kind:"ANTE",Stage:5} run say PRUEBA_FORTALEZA_COFRE_PLANTA_OK
+execute if data block 891 -53 55 {Kind:"TRIAL",Stage:5} run say PRUEBA_FORTALEZA_COFRE_CRIPTA_OK
+execute if data block 891 -29 50 {Kind:"TRIAL",Stage:5} run say PRUEBA_FORTALEZA_COFRE_LABORATORIO_OK
+execute if data block 894 -21 57 {Kind:"LOCKED",Stage:5,LockLevel:3} run say PRUEBA_FORTALEZA_COFRE_BIBLIOTECA_OK
+execute if data block 893 -13 49 {Kind:"LOCKED",Stage:5,LockLevel:4} run say PRUEBA_FORTALEZA_COFRE_ENCANTAMIENTOS_OK
+execute if data block 906 11 46 {Kind:"TRIAL",Stage:5} run say PRUEBA_FORTALEZA_COFRE_DORMITORIO_OK
+execute if data block 892 -29 47 {LootTable:"mundos_de_axelis:chests/barril_magia"} run say PRUEBA_FORTALEZA_BARRIL_OK
 execute if block 907 -53 52 minecraft:iron_door run say PRUEBA_FORTALEZA_CELDA_PUERTA_OK
 execute if block 908 -53 55 minecraft:iron_bars run say PRUEBA_FORTALEZA_CELDA_BARROTES_OK
 execute if entity @e[type=mundos_de_axelis:esbirro,x=836,y=-60,z=-16,dx=130,dy=90,dz=130] run say PRUEBA_FORTALEZA_ESBIRROS_OK
@@ -392,7 +417,13 @@ forceload add 1026 -17 1175 148
 execute positioned 1100 -48 0 rotated 0 0 run mundos estructura templo
 #wait Gran Templo del Bosque construida 200
 execute if block 1100 -27 68 mundos_de_axelis:portal_stone_forest run say PRUEBA_TEMPLO_PIEDRA_OK
-execute if data block 1095 -28 67 {Kind:"ANTE",Stage:1} run say PRUEBA_TEMPLO_COFRE_OK
+execute if data block 1095 -28 67 {Kind:"TREASURE",Stage:1} run say PRUEBA_TEMPLO_COFRE_OK
+execute if data block 1073 -48 41 {Kind:"ANTE",Stage:1} run say PRUEBA_TEMPLO_COFRE_ATRIO_OK
+execute if data block 1126 -48 53 {Kind:"TRIAL",Stage:1} run say PRUEBA_TEMPLO_COFRE_ARMERIA_OK
+execute if data block 1075 -48 58 {Kind:"LOCKED",Stage:1,LockLevel:2} run say PRUEBA_TEMPLO_COFRE_BIBLIOTECA_OK
+execute if data block 1112 -58 77 {Kind:"LOCKED",Stage:1,LockLevel:3} run say PRUEBA_TEMPLO_COFRE_CRIPTA_OK
+execute if data block 1071 -38 68 {Kind:"TRIAL",Stage:1} run say PRUEBA_TEMPLO_COFRE_JARDIN_OK
+execute if data block 1088 -48 62 {LootTable:"mundos_de_axelis:chests/barril_bosque"} run say PRUEBA_TEMPLO_BARRIL_OK
 execute if entity @e[type=mundos_de_axelis:raizal,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_RAIZAL_OK
 execute if entity @e[type=mundos_de_axelis:brote,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_BROTES_OK
 execute if entity @e[type=mundos_de_axelis:espinoso,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_ESPINOSOS_OK
@@ -404,7 +435,14 @@ forceload add 1330 -30 1470 130
 execute positioned 1400 -48 0 rotated 0 0 run mundos estructura ciudadela
 #wait Ciudadela de cristal construida 200
 execute if block 1400 -57 95 mundos_de_axelis:portal_stone_ice run say PRUEBA_CIUDADELA_PIEDRA_OK
-execute if data block 1402 -58 95 {Kind:"ANTE",Stage:3} run say PRUEBA_CIUDADELA_COFRE_OK
+execute if data block 1402 -58 95 {Kind:"TREASURE",Stage:3} run say PRUEBA_CIUDADELA_COFRE_OK
+execute if block 1402 -58 95 mundos_de_axelis:vault_chest_ice run say PRUEBA_CIUDADELA_COFRE_ESCARCHA_OK
+execute if data block 1417 -48 45 {Kind:"ANTE",Stage:3} run say PRUEBA_CIUDADELA_COFRE_COCINA_OK
+execute if data block 1383 -42 60 {Kind:"TRIAL",Stage:3} run say PRUEBA_CIUDADELA_COFRE_BIBLIOTECA_OK
+execute if data block 1424 -42 78 {Kind:"TRIAL",Stage:3} run say PRUEBA_CIUDADELA_COFRE_CUARTEL_OK
+execute if data block 1413 -59 69 {Kind:"LOCKED",Stage:3,LockLevel:3} run say PRUEBA_CIUDADELA_COFRE_CARCELEROS_OK
+execute if data block 1388 -39 55 {Kind:"LOCKED",Stage:3,LockLevel:4} run say PRUEBA_CIUDADELA_COFRE_TRIFORIO_OK
+execute if data block 1421 -48 68 {LootTable:"mundos_de_axelis:chests/barril_hielo"} run say PRUEBA_CIUDADELA_BARRIL_OK
 execute if entity @e[type=mundos_de_axelis:lobo_escarcha,x=1330,y=-70,z=-30,dx=140,dy=50,dz=160] run say PRUEBA_CIUDADELA_LOBOS_OK
 execute if entity @e[type=mundos_de_axelis:centinela_escarcha,x=1390,y=-62,z=82,dx=20,dy=6,dz=16] run say PRUEBA_CIUDADELA_CENTINELAS_CRIPTA_OK
 execute unless entity @e[type=mundos_de_axelis:habitante,x=1330,y=-70,z=-30,dx=140,dy=50,dz=160] run say PRUEBA_CIUDADELA_SIN_NPC_OK
@@ -422,6 +460,23 @@ execute positioned 5000 -48 0 rotated 0 0 run mundos natural generar bosque aqui
 #wait BOSQUE_NATURAL_OK 300
 execute if entity @e[type=mundos_de_axelis:raizal,x=4920,y=-80,z=-80,dx=160,dy=80,dz=160] run say PRUEBA_TEMPLO_NATURAL_OK
 forceload remove 4930 -70 5070 70
+mundos prueba botin
+kill @e[type=item]
+loot spawn 0 -58 -20 loot mundos_de_axelis:chests/barril_bosque
+execute if entity @e[type=item,x=-3,y=-62,z=-21,dx=6,dy=8,dz=3] run say PRUEBA_BARRIL_TABLA_BOSQUE_OK
+kill @e[type=item]
+loot spawn 0 -58 -23 loot mundos_de_axelis:chests/barril_forja
+execute if entity @e[type=item,x=-3,y=-62,z=-24,dx=6,dy=8,dz=3] run say PRUEBA_BARRIL_TABLA_FORJA_OK
+kill @e[type=item]
+loot spawn 0 -58 -26 loot mundos_de_axelis:chests/barril_hielo
+execute if entity @e[type=item,x=-3,y=-62,z=-27,dx=6,dy=8,dz=3] run say PRUEBA_BARRIL_TABLA_HIELO_OK
+kill @e[type=item]
+loot spawn 0 -58 -29 loot mundos_de_axelis:chests/barril_volcan
+execute if entity @e[type=item,x=-3,y=-62,z=-30,dx=6,dy=8,dz=3] run say PRUEBA_BARRIL_TABLA_VOLCAN_OK
+kill @e[type=item]
+loot spawn 0 -58 -32 loot mundos_de_axelis:chests/barril_magia
+execute if entity @e[type=item,x=-3,y=-62,z=-33,dx=6,dy=8,dz=3] run say PRUEBA_BARRIL_TABLA_MAGIA_OK
+kill @e[type=item]
 #expect PRUEBA_SANTUARIO_SIN_PIEDRA_OK
 #expect PRUEBA_SANTUARIO_CELDA_PUERTA_OK
 #expect PRUEBA_SANTUARIO_CELDA_BARROTES_OK
@@ -571,3 +626,47 @@ mundos prueba construir 2
 #expect PRUEBA_FRAGUA_SIN_COLOSO_OK
 #expect PRUEBA_COLOSO_INVOCADO_OK
 #expect PRUEBA_COLOSO_BOTIN_OK
+#expect PRUEBA_SANTUARIO_COFRE_PATIO_OK
+#expect PRUEBA_SANTUARIO_COFRE_CERRADURA_OK
+#expect PRUEBA_SANTUARIO_COFRE_CERRADURA_DATOS_OK
+#expect PRUEBA_FORTIN_COFRE_ESCARCHA_OK
+#expect PRUEBA_FORTIN_COFRE_PATIO_OK
+#expect PRUEBA_FORTIN_COFRE_CERRADURA_OK
+#expect PRUEBA_FORTIN_COFRE_CERRADURA_DATOS_OK
+#expect PRUEBA_FORTIN_BARRIL_OK
+#expect PRUEBA_FUNDICION_COFRE_COMEDOR_OK
+#expect PRUEBA_FUNDICION_COFRE_ARMERIA_OK
+#expect PRUEBA_FUNDICION_COFRE_HERRERIA_OK
+#expect PRUEBA_FUNDICION_COFRE_CAPATAZ_OK
+#expect PRUEBA_FUNDICION_COFRE_CAPATAZ_DATOS_OK
+#expect PRUEBA_FUNDICION_BARRIL_OK
+#expect PRUEBA_TORRE_ARCANA_COFRE_ARCANO_OK
+#expect PRUEBA_TORRE_ARCANA_COFRE_BIBLIOTECA_OK
+#expect PRUEBA_TORRE_ARCANA_BARRIL_OK
+#expect PRUEBA_FORTALEZA_COFRE_ARCANO_OK
+#expect PRUEBA_FORTALEZA_COFRE_PLANTA_OK
+#expect PRUEBA_FORTALEZA_COFRE_CRIPTA_OK
+#expect PRUEBA_FORTALEZA_COFRE_LABORATORIO_OK
+#expect PRUEBA_FORTALEZA_COFRE_BIBLIOTECA_OK
+#expect PRUEBA_FORTALEZA_COFRE_ENCANTAMIENTOS_OK
+#expect PRUEBA_FORTALEZA_COFRE_DORMITORIO_OK
+#expect PRUEBA_FORTALEZA_BARRIL_OK
+#expect PRUEBA_TEMPLO_COFRE_ATRIO_OK
+#expect PRUEBA_TEMPLO_COFRE_ARMERIA_OK
+#expect PRUEBA_TEMPLO_COFRE_BIBLIOTECA_OK
+#expect PRUEBA_TEMPLO_COFRE_CRIPTA_OK
+#expect PRUEBA_TEMPLO_COFRE_JARDIN_OK
+#expect PRUEBA_TEMPLO_BARRIL_OK
+#expect PRUEBA_CIUDADELA_COFRE_ESCARCHA_OK
+#expect PRUEBA_CIUDADELA_COFRE_COCINA_OK
+#expect PRUEBA_CIUDADELA_COFRE_BIBLIOTECA_OK
+#expect PRUEBA_CIUDADELA_COFRE_CUARTEL_OK
+#expect PRUEBA_CIUDADELA_COFRE_CARCELEROS_OK
+#expect PRUEBA_CIUDADELA_COFRE_TRIFORIO_OK
+#expect PRUEBA_CIUDADELA_BARRIL_OK
+#expect PRUEBA_BOTIN_OK
+#expect PRUEBA_BARRIL_TABLA_BOSQUE_OK
+#expect PRUEBA_BARRIL_TABLA_FORJA_OK
+#expect PRUEBA_BARRIL_TABLA_HIELO_OK
+#expect PRUEBA_BARRIL_TABLA_VOLCAN_OK
+#expect PRUEBA_BARRIL_TABLA_MAGIA_OK

@@ -29,6 +29,8 @@ public final class StructDesigns {
         // lo que el juego rompería solo (antorcha sin muro, farola en el aire...) se quita del plano: así lo revisado es lo construido
         Soporte.fix(bp);
         bp.unsupported = Soporte.prune(bp);
+        // etapa 268: los barriles de las estructuras traen cosas del tier (y a veces un fragmento de llave)
+        StructKit.lootBarrels(bp, StructKit.barrelTable(kind));
         return bp;
     }
 

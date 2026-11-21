@@ -1112,6 +1112,124 @@ public final class AutoTest {
         });
     }
 
+    // ------------------------------------------------------------------ etapa 268: el botín nuevo
+
+    /** Dónde se prueban los cofres nuevos y la forja de llaves (un rincón libre del mundo plano). */
+    private static final int LTX = 40, LTY = -60, LTZ = -40;
+    private static volatile int vaultStacks, vaultFrags, vaultBooks;
+
+    private static void useBlock(net.minecraft.core.BlockPos pos) {
+        Minecraft mc = Minecraft.getInstance();
+        mc.gameMode.useItemOn(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND,
+                new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(pos).add(0, 0.5, 0),
+                        net.minecraft.core.Direction.UP, pos, false));
+    }
+
+    /** Los cinco cofres de cada tier, el gran tesoro de la magia abierto y la forja de una llave con cuatro fragmentos en la Mesa. */
+    private static void botin() {
+        String[] themes = {"vault_chest", "vault_chest_forge", "vault_chest_ice", "vault_chest_volcano", "vault_chest_magic"};
+        net.minecraft.core.BlockPos magic = new net.minecraft.core.BlockPos(LTX + 4, LTY, LTZ + 3);
+        net.minecraft.core.BlockPos table = new net.minecraft.core.BlockPos(LTX, LTY, LTZ - 6);
+        add("botín (ir)", 2500, () -> {
+            clearMobs();
+            open(null);
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            cmd("execute in minecraft:overworld run forceload add " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+            cmd("execute in minecraft:overworld run fill " + (LTX - 8) + " " + LTY + " " + (LTZ - 10) + " " + (LTX + 8) + " " + (LTY + 6) + " " + (LTZ + 8) + " air");
+            for (int i = 0; i < themes.length; i++) {
+                cmd("execute in minecraft:overworld run setblock " + (LTX - 4 + 2 * i) + " " + LTY + " " + (LTZ + 3) + " mundos_de_axelis:" + themes[i]
+                        + "[facing=north]{Kind:\"TREASURE\",Stage:" + (i + 1) + "}");
+            }
+            cmd("execute in minecraft:overworld run setblock " + (LTX - 1) + " " + LTY + " " + (LTZ + 6) + " mundos_de_axelis:vault_chest_locked_ice[facing=north]");
+            cmd("execute in minecraft:overworld run setblock " + (LTX + 1) + " " + LTY + " " + (LTZ + 6) + " mundos_de_axelis:vault_chest_locked_magic[facing=north]");
+            cmd("execute in minecraft:overworld run tp @a " + (LTX + 0.5) + " " + LTY + " " + (LTZ - 3.5) + " 0 20");
+            cmd("item replace entity @a hotbar.8 with air");
+            Minecraft.getInstance().player.getInventory().selected = 8;
+        });
+        add("botín (cofres de cada tier)", 2000, () -> standLooking(LTX + 0.5, LTY + 1.2, LTZ - 2.5, LTX + 0.5, LTY, LTZ + 4));
+        add("botín (cofres, foto)", 300, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            check("están los cofres de escarcha y arcano (" + lv.getBlockState(new net.minecraft.core.BlockPos(LTX, LTY, LTZ + 3)).getBlock() + ", "
+                            + lv.getBlockState(magic).getBlock() + ")",
+                    lv.getBlockState(new net.minecraft.core.BlockPos(LTX, LTY, LTZ + 3)).is(com.mundosdeaxelis.registry.ModBlocks.VAULT_CHEST_ICE.get())
+                            && lv.getBlockState(magic).is(com.mundosdeaxelis.registry.ModBlocks.VAULT_CHEST_MAGIC.get()));
+            shot("90_botin_cofres");
+        });
+        add("botín (abrir el gran tesoro)", 1500, () -> standLooking(LTX + 4.5, LTY, LTZ + 1.5, LTX + 4.5, LTY + 0.5, LTZ + 3.5));
+        add("botín (clic)", 2000, () -> useBlock(magic));
+        add("botín (contenido)", 300, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            int n = 0, f = 0, b = 0;
+            if (mc.screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> cs) {
+                for (int i = 0; i < 27 && i < cs.getMenu().slots.size(); i++) {
+                    net.minecraft.world.item.ItemStack it = cs.getMenu().slots.get(i).getItem();
+                    if (!it.isEmpty()) {
+                        n++;
+                    }
+                    if (it.is(com.mundosdeaxelis.registry.ModItems.KEY_FRAGMENTS.get(com.mundosdeaxelis.crate.CrateKind.MAGIC).get())) {
+                        f += it.getCount();
+                    }
+                    if (it.is(net.minecraft.world.item.Items.ENCHANTED_BOOK)) {
+                        b++;
+                    }
+                }
+            }
+            vaultStacks = n;
+            vaultFrags = f;
+            vaultBooks = b;
+            check("el gran tesoro arcano se abre con botín (" + screenName() + ": " + n + " pilas, " + f + " fragmentos de llave de la Magia, "
+                    + b + " libros encantados)", n >= 12 && f >= 2 && b >= 1);
+            shot("91_botin_gran_tesoro");
+        });
+        add("mesa (poner)", 1500, () -> {
+            open(null);
+            cmd("execute in minecraft:overworld run setblock " + table.getX() + " " + table.getY() + " " + table.getZ() + " mundos_de_axelis:artificer_table");
+            cmd("clear @a mundos_de_axelis:key_forest");
+            cmd("give @a mundos_de_axelis:key_fragment_forest 4");
+            cmd("mundos prueba esencia 100");
+        });
+        add("mesa (abrir)", 1500, () -> {
+            standLooking(LTX + 0.5, LTY, LTZ - 3.5, LTX + 0.5, LTY + 0.5, LTZ - 5.5);
+        });
+        add("mesa (clic)", 1500, () -> useBlock(table));
+        add("mesa (pestaña Crear)", 1200, () -> {
+            Screen sc = Minecraft.getInstance().screen;
+            check("la Mesa del Artífice se abre (" + screenName() + ")", sc instanceof TableScreen);
+            try {
+                java.lang.reflect.Method m = TableScreen.class.getDeclaredMethod("setTab", int.class);
+                m.setAccessible(true);
+                m.invoke(sc, 4);
+            } catch (Exception ex) {
+                log("no se pudo cambiar de pestaña: " + ex);
+            }
+        });
+        add("mesa (foto)", 300, () -> shot("92_botin_mesa_llaves"));
+        add("mesa (forjar)", 1500, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            int idx = -1;
+            List<com.mundosdeaxelis.table.TableRecipes.Recipe> all = com.mundosdeaxelis.table.TableRecipes.all();
+            for (int i = 0; i < all.size(); i++) {
+                if (all.get(i).id().equals("key_forest")) {
+                    idx = i;
+                }
+            }
+            if (mc.screen instanceof TableScreen ts && idx >= 0) {
+                mc.gameMode.handleInventoryButtonClick(ts.getMenu().containerId, com.mundosdeaxelis.table.TableMenu.B_CRAFT + idx);
+            }
+        });
+        add("mesa (llave)", 300, () -> {
+            net.minecraft.world.entity.player.Inventory inv = Minecraft.getInstance().player.getInventory();
+            int keys = inv.countItem(com.mundosdeaxelis.registry.ModItems.KEYS.get(com.mundosdeaxelis.crate.CrateKind.FOREST).get());
+            int fr = inv.countItem(com.mundosdeaxelis.registry.ModItems.KEY_FRAGMENTS.get(com.mundosdeaxelis.crate.CrateKind.FOREST).get());
+            check("con 4 fragmentos se forja la Llave de la Naturaleza en la Mesa (llaves " + keys + ", fragmentos que quedan " + fr + ")",
+                    keys >= 1 && fr == 0);
+            shot("93_botin_llave_forjada");
+            open(null);
+            cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+        });
+    }
+
     // ------------------------------------------------------------------ etapa 261: Torre Arcana, Teo y cuatro vecinos
 
     /** Torre: la entrada (z local 0) en {@code TZ0}; casa de Teo en {@code LX, LZ}. */
@@ -2459,6 +2577,7 @@ public final class AutoTest {
         fragua();
         torre();
         ignacio();
+        botin();
         // 7. retratos para las cartas: tres "estudios" cerrados (volcán, forja y torre) y cada criatura quieta, de frente, sin interfaz
         add("estudios", 3000, () -> {
             clearMobs();

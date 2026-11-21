@@ -122,6 +122,7 @@ final class DesignTorre {
         for (String p : a.check()) {
             System.err.println("[Torre] " + p);
         }
+        roomChests(b);
         return b;
     }
 
@@ -454,9 +455,22 @@ final class DesignTorre {
         // Piedra de Portal de la Torre: lleva a la cima donde espera el Archimago (jefe de la etapa 4). Si el mod de los jefes no
         // está instalado, el bloque no existe y simplemente no se pone.
         b.set(0, f, CZ + 4, "mundos_de_axelis:portal_stone_tower");
-        // etapa 265: el cofre de provisiones junto a la piedra
-        b.setNbt(2, f, CZ + 4, "mundos_de_axelis:vault_chest[facing=north]", "{Kind:\"ANTE\",Stage:4}");
+        // etapa 268: el gran tesoro del Archimago junto a la piedra (antes, provisiones de la etapa 4: la magia es la 5)
+        vault(b, 2, f, CZ + 4, "north", "TREASURE", 5, 0);
         return obs;
+    }
+
+    /**
+     * Etapa 268: cofres arcanos por los pisos: provisiones en la planta baja, premios en la cripta, el laboratorio y el dormitorio
+     * del Archimago, y cerraduras en la biblioteca y en la sala de encantamientos.
+     */
+    private static void roomChests(StructBp b) {
+        vault(b, 6, fy(0), 26, "west", "ANTE", 5, 0);
+        vault(b, -9, -5, 39, "east", "TRIAL", 5, 0);
+        vault(b, -9, fy(2), 34, "east", "TRIAL", 5, 0);
+        vault(b, -6, fy(3), 41, "east", "LOCKED", 5, 3);
+        vault(b, -7, fy(4), 33, "east", "LOCKED", 5, 4);
+        vault(b, 6, fy(7), 30, "west", "TRIAL", 5, 0);
     }
 
     private static void topOfDome(StructBp b) {

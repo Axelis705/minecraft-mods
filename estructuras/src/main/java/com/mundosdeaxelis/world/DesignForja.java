@@ -58,6 +58,7 @@ final class DesignForja {
         hildaCell(b, FY);
         surroundings(b);
         mobs(b);
+        roomChests(b);
         return b;
     }
 
@@ -557,6 +558,17 @@ final class DesignForja {
         }
     }
 
+    /**
+     * Etapa 268: cofres de la Forja en los talleres del patio: provisiones en el comedor, premios arriba en la armería y en la
+     * herrería, y una cerradura arriba en el dormitorio (el cofre del capataz).
+     */
+    private static void roomChests(StructBp b) {
+        vault(b, 26, 0, 40, "north", "ANTE", 2, 0);
+        vault(b, -26, 6, 62, "east", "TRIAL", 2, 0);
+        vault(b, -26, 6, 38, "east", "TRIAL", 2, 0);
+        vault(b, 26, 6, 62, "west", "LOCKED", 2, 3);
+    }
+
     private static void shed(StructBp b, int x0, int z0, int x1, int z1, int kind) {
         b.box(x0 - 1, -1, z0 - 1, x1 + 1, 13, z1 + 1, PBB);
         Room low = new Room(b, x0, z0, x1, z1, -1, 5).carve();
@@ -678,9 +690,9 @@ final class DesignForja {
             }
         }
         b.box(-1, fy + 3, 58, 1, fy + 3, 60, CRY);
-        // el final de la fundición: la Piedra de Portal: Forja sobre la isla, con su cofre de provisiones
+        // el final de la fundición: la Piedra de Portal: Forja sobre la isla, con el gran tesoro de la Forja (etapa 268)
         b.set(0, fy + 4, 59, M + "portal_stone_forge");
-        b.setNbt(2, fy + 3, 59, M + "vault_chest_forge[facing=west]", "{Kind:\"ANTE\",Stage:2}");
+        vault(b, 2, fy + 3, 59, "west", "TREASURE", 2, 0);
         for (int y = fy + 5; y <= fy + 10; y++) {
             b.set(0, y, 59, "chain[axis=y]");
         }

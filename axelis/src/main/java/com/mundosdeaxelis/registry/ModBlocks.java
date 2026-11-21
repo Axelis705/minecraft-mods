@@ -267,6 +267,42 @@ public final class ModBlocks {
                     .noLootTable()
                     .lightLevel(state -> 6), false, true));
 
+    /** Versiones del hielo (etapa 268): cuarzo escarchado con ribetes de plata y una gema celeste. */
+    public static final RegistryObject<Block> VAULT_CHEST_ICE = BLOCKS.register("vault_chest_ice",
+            () -> new com.mundosdeaxelis.block.VaultChestBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.ICE)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()
+                    .noLootTable()
+                    .lightLevel(state -> 6), false));
+    public static final RegistryObject<Block> VAULT_CHEST_LOCKED_ICE = BLOCKS.register("vault_chest_locked_ice",
+            () -> new com.mundosdeaxelis.block.VaultChestBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.ICE)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()
+                    .noLootTable()
+                    .lightLevel(state -> 5), false, true));
+
+    /** Versiones de la magia (etapa 268): madera morada oscura con oro y una gema de amatista. */
+    public static final RegistryObject<Block> VAULT_CHEST_MAGIC = BLOCKS.register("vault_chest_magic",
+            () -> new com.mundosdeaxelis.block.VaultChestBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.AMETHYST)
+                    .noOcclusion()
+                    .noLootTable()
+                    .lightLevel(state -> 7), false));
+    public static final RegistryObject<Block> VAULT_CHEST_LOCKED_MAGIC = BLOCKS.register("vault_chest_locked_magic",
+            () -> new com.mundosdeaxelis.block.VaultChestBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.AMETHYST)
+                    .noOcclusion()
+                    .noLootTable()
+                    .lightLevel(state -> 6), false, true));
+
     /** Mesa del Artífice: mejoras, tienda de llaves y Archivo. */
     public static final RegistryObject<Block> ARTIFICER_TABLE = BLOCKS.register("artificer_table",
             () -> new com.mundosdeaxelis.block.ArtificerTableBlock(BlockBehaviour.Properties.of()

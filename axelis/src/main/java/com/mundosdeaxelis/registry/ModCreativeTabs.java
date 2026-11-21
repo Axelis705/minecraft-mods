@@ -67,6 +67,10 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.VAULT_CHEST_LOCKED_FORGE.get());
                         output.accept(ModItems.VAULT_CHEST_VOLCANO.get());
                         output.accept(ModItems.VAULT_CHEST_LOCKED_VOLCANO.get());
+                        output.accept(ModItems.VAULT_CHEST_ICE.get());
+                        output.accept(ModItems.VAULT_CHEST_LOCKED_ICE.get());
+                        output.accept(ModItems.VAULT_CHEST_MAGIC.get());
+                        output.accept(ModItems.VAULT_CHEST_LOCKED_MAGIC.get());
                         output.accept(ModItems.GOLDEN_RIVET.get());
                         output.accept(ModItems.POLINIZADOR_SPAWN_EGG.get());
                         output.accept(ModItems.ESPINOSO_SPAWN_EGG.get());
@@ -255,6 +259,9 @@ public final class ModCreativeTabs {
                         for (com.mundosdeaxelis.crate.CrateKind k : com.mundosdeaxelis.crate.CrateKind.values()) {
                             output.accept(ModItems.CRATE_ITEMS.get(k).get());
                             output.accept(ModItems.KEYS.get(k).get());
+                            if (ModItems.KEY_FRAGMENTS.containsKey(k)) {
+                                output.accept(ModItems.KEY_FRAGMENTS.get(k).get());
+                            }
                         }
                     })
                     .build());

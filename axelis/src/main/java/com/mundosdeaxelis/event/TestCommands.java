@@ -67,6 +67,57 @@ public final class TestCommands {
         return l;
     }
 
+    /**
+     * Etapa 268: tira el botín de los cofres muchas veces (cada tipo, las etapas 1 a 8 y las cerraduras 1 a 5) y comprueba que nunca
+     * sale vacío, ni con pilas vacías o demasiado grandes, ni con más de 27 cosas; que los fragmentos de llave son siempre los de la
+     * caja de la etapa y que el gran tesoro siempre trae alguno. Dice de media cuántas pilas, fragmentos y libros salen de cada tipo.
+     */
+    private static int botin(CommandSourceStack src) {
+        net.minecraft.util.RandomSource r = net.minecraft.util.RandomSource.create(268L);
+        String fail = null;
+        StringBuilder stats = new StringBuilder();
+        for (com.mundosdeaxelis.block.VaultLoot.Kind k : com.mundosdeaxelis.block.VaultLoot.Kind.values()) {
+            int rolls = 0, stacks = 0, frags = 0, books = 0;
+            for (int st = 1; st <= 8; st++) {
+                for (int lv = 1; lv <= 5; lv++) {
+                    for (int i = 0; i < 20; i++) {
+                        java.util.List<net.minecraft.world.item.ItemStack> out = com.mundosdeaxelis.block.VaultLoot.roll(k, st, r, lv);
+                        rolls++;
+                        stacks += out.size();
+                        if (out.isEmpty() || out.size() > 27) {
+                            fail = k + " etapa " + st + ": " + out.size() + " pilas";
+                        }
+                        boolean frag = false;
+                        for (net.minecraft.world.item.ItemStack it : out) {
+                            if (it.isEmpty() || it.getCount() > it.getMaxStackSize()) {
+                                fail = k + " etapa " + st + ": pila rara " + it;
+                            }
+                            if (it.getItem() instanceof com.mundosdeaxelis.item.KeyFragmentItem kf) {
+                                frag = true;
+                                frags += it.getCount();
+                                if (kf.kind != com.mundosdeaxelis.crate.CrateKind.byIndex(st)) {
+                                    fail = k + " etapa " + st + ": fragmento de otra caja (" + kf.kind.id + ")";
+                                }
+                            }
+                            if (it.is(net.minecraft.world.item.Items.ENCHANTED_BOOK)) {
+                                books++;
+                            }
+                        }
+                        if (k == com.mundosdeaxelis.block.VaultLoot.Kind.TREASURE && !frag) {
+                            fail = "TREASURE etapa " + st + ": sin fragmentos";
+                        }
+                    }
+                }
+            }
+            stats.append(String.format(java.util.Locale.ROOT, " %s: %.1f pilas, %.2f fragmentos, %.2f libros;", k.name(),
+                    stacks / (double) rolls, frags / (double) rolls, books / (double) rolls));
+        }
+        String msg = (fail == null ? "PRUEBA_BOTIN_OK" : "PRUEBA_BOTIN_FALLO " + fail) + stats;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fail == null ? 1 : 0;
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal("prueba")
                 .then(Commands.literal("equipo")
@@ -74,6 +125,7 @@ public final class TestCommands {
                                 .suggests((c, b) -> SharedSuggestionProvider.suggest(setIds(), b))
                                 .executes(ctx -> equipo(ctx.getSource(), StringArgumentType.getString(ctx, "set")))))
                 .then(Commands.literal("capas").executes(ctx -> capas(ctx.getSource())))
+                .then(Commands.literal("botin").executes(ctx -> botin(ctx.getSource())))
                 .then(Commands.literal("llaves")
                         .executes(ctx -> llaves(ctx.getSource(), 5))
                         .then(Commands.argument("cantidad", IntegerArgumentType.integer(1, 64))

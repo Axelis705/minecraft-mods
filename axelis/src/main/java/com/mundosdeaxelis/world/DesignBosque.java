@@ -60,6 +60,7 @@ final class DesignBosque {
         surroundings(b);
         chests(b);
         mobs(b);
+        roomChests(b);
         return b;
     }
 
@@ -113,10 +114,22 @@ final class DesignBosque {
         }
     }
 
-    /** Al final del recorrido: la Piedra de Portal: Naturaleza sobre el altar del árbol del mundo, y el cofre de provisiones al lado. */
+    /** Al final del recorrido: la Piedra de Portal: Naturaleza sobre el altar del árbol del mundo, y al lado el gran tesoro del templo. */
     private static void chests(StructBp b) {
         b.set(0, 21, 52, PORTAL);
-        b.setNbt(-5, 20, 51, "mundos_de_axelis:vault_chest[facing=east]", "{Kind:\"ANTE\",Stage:1}");
+        vault(b, -5, 20, 51, "east", "TREASURE", 1, 0);
+    }
+
+    /**
+     * Etapa 268: cofres por las salas, para quien explore: provisiones en el atrio, un premio en la armería y otro en el jardín
+     * interior, y dos cerraduras (la biblioteca y la cripta).
+     */
+    private static void roomChests(StructBp b) {
+        vault(b, -27, 0, 25, "east", "ANTE", 1, 0);
+        vault(b, 26, 0, 37, "west", "TRIAL", 1, 0);
+        vault(b, -25, 0, 42, "east", "LOCKED", 1, 2);
+        vault(b, 12, -10, 61, "west", "LOCKED", 1, 3);
+        vault(b, -29, 10, 52, "east", "TRIAL", 1, 0);
     }
 
     private static boolean free(StructBp b, int x, int y, int z) {

@@ -123,8 +123,15 @@ public class VaultChestBlockEntity extends BlockEntity {
         return off.is(want) ? off : ItemStack.EMPTY;
     }
 
+    /** Textos con el tema de la etapa: Forja (2), hielo (3), volcán (4) y magia (5); el bosque y el resto usan los de siempre. */
     private String themed(String key) {
-        return stage == 2 ? key + "_forge" : stage == 4 ? key + "_volcano" : key;
+        return switch (stage) {
+            case 2 -> key + "_forge";
+            case 3 -> key + "_ice";
+            case 4 -> key + "_volcano";
+            case 5 -> key + "_magic";
+            default -> key;
+        };
     }
 
     /**

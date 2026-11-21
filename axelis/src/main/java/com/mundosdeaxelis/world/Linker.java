@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -131,6 +132,35 @@ final class Linker {
             }
         }
         return new int[]{rooms, traps, l.startIdx < 0 ? 1 : 0};
+    }
+
+    /**
+     * Para las revisiones fuera del juego (etapa 268): cofres del santuario a los que no se llega. Un cofre vale si, desde la entrada,
+     * se puede estar de pie en alguna casilla pegada a él (a su altura o una por encima o por debajo). Devuelve las posiciones "x,y,z".
+     */
+    static List<String> unreachableChests(StructBp bp, int sx, int sy, int sz) {
+        Linker l = new Linker(bp, "stone_bricks", "stone_brick_stairs");
+        l.build();
+        l.walk(sx, sy, sz);
+        List<String> out = new ArrayList<>();
+        for (Map.Entry<Long, String> e : bp.nbt.entrySet()) {
+            String st = bp.m.get(e.getKey());
+            if (st == null || !st.contains("vault_chest")) {
+                continue;
+            }
+            int x = StructBp.kx(e.getKey()), y = StructBp.ky(e.getKey()), z = StructBp.kz(e.getKey());
+            boolean ok = false;
+            for (int[] d : new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
+                for (int dy = -1; dy <= 1 && !ok; dy++) {
+                    int nx = x + d[0], ny = y + dy, nz = z + d[1];
+                    ok = l.in(nx, ny, nz) && l.reach[l.idx(nx, ny, nz)];
+                }
+            }
+            if (!ok) {
+                out.add(x + "," + y + "," + z);
+            }
+        }
+        return out;
     }
 
     private static boolean passName(String s) {

@@ -509,7 +509,7 @@ final class DesignTorreArcana {
         int y0 = FLOOR[3] + 1;
         // el tesoro del Archimago sobre la columna del caracol: el cofre con la cerradura más difícil (el final de la torre)
         b.set(0, y0, TZ, CD);
-        b.setNbt(0, y0 + 1, TZ, M + "vault_chest_locked[facing=south]", "{Kind:\"LOCKED\",Stage:4,LockLevel:5}");
+        StructKit.vault(b, 0, y0 + 1, TZ, "south", "LOCKED", 5, 5);
         // mapa de estrellas: losas negras con puntos de luz alrededor
         for (int x = -5; x <= 5; x++) {
             for (int dz = -5; dz <= 5; dz++) {
@@ -622,10 +622,12 @@ final class DesignTorreArcana {
 
     // ================================================================== cofre y enemigos
 
+    /** Cofres arcanos (etapa 268: de la etapa 5, la de la magia; antes eran de la 4): provisiones arriba, premio en la despensa y en la biblioteca. */
     private static void chests(StructBp b) {
-        b.setNbt(-3, FLOOR[3] + 1, TZ + 3, M + "vault_chest[facing=east]", "{Kind:\"ANTE\",Stage:4}");
+        StructKit.vault(b, -3, FLOOR[3] + 1, TZ + 3, "east", "ANTE", 5, 0);
         // premio de la despensa
-        b.setNbt(NPC_X, 0, NPC_Z, M + "vault_chest[facing=west]", "{Kind:\"TRIAL\",Stage:4}");
+        StructKit.vault(b, NPC_X, 0, NPC_Z, "west", "TRIAL", 5, 0);
+        StructKit.vault(b, -6, 8, 30, "east", "TRIAL", 5, 0);
     }
 
     private static boolean free(StructBp b, int x, int y, int z) {
