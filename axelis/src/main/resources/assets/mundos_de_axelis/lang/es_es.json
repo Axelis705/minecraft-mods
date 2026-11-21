@@ -2059,7 +2059,7 @@
   "gui.mundos_de_axelis.npc.state.libre": "Sin casa",
   "gui.mundos_de_axelis.npc.state.vecino": "Vive aquí",
   "gui.mundos_de_axelis.npc.rescued": "¡%s está libre!",
-  "gui.mundos_de_axelis.npc.rescued.sub": "Planta su Semilla de casa cerca de donde vivas",
+  "gui.mundos_de_axelis.npc.rescued.sub": "Pon su Semilla de casa junto a tu hogar: verás su casa en holograma",
   "gui.mundos_de_axelis.npc.bought": "Compraste: %s",
   "gui.mundos_de_axelis.npc.no_essence": "No tienes Esencia suficiente.",
   "gui.mundos_de_axelis.npc.locked": "Aún no: hacen falta más vecinos con casa.",

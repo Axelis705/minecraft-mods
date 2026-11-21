@@ -425,6 +425,9 @@ final class DesignTorreArcana {
         StructKit.hangLantern(b, 3, FLOOR[1] - 1, TZ - 3, 1, "soul_lantern");
         StructKit.hangLantern(b, 3, FLOOR[1] - 1, TZ + 3, 1, "lantern");
         b.set(-5, 3, TZ + 4, "soul_wall_torch[facing=south]");
+        // luz junto a la celda: antorcha de almas entre los barrotes y la puerta, y un farol en el suelo
+        b.set(R - 1, 2, TZ, "soul_wall_torch[facing=west]");
+        b.set(R - 2, 0, TZ - 3, "lantern");
     }
 
     // ================================================================== primer piso: biblioteca

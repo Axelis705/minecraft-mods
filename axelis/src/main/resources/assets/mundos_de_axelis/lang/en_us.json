@@ -2059,7 +2059,7 @@
   "gui.mundos_de_axelis.npc.state.libre": "No home yet",
   "gui.mundos_de_axelis.npc.state.vecino": "Resident",
   "gui.mundos_de_axelis.npc.rescued": "%s is free!",
-  "gui.mundos_de_axelis.npc.rescued.sub": "Plant their House Seed near where you live",
+  "gui.mundos_de_axelis.npc.rescued.sub": "Place their House Seed next to your home: you'll see their house as a hologram",
   "gui.mundos_de_axelis.npc.bought": "Bought: %s",
   "gui.mundos_de_axelis.npc.no_essence": "Not enough Essence.",
   "gui.mundos_de_axelis.npc.locked": "Not yet: you need more residents with a house.",
