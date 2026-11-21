@@ -600,6 +600,20 @@ final class TorreInterior {
         }
         b.set(6, f, CZ - 8, "bone_block[axis=y]");
         skull(b, 6, f + 1, CZ - 8, 12);
+        // ---- etapa 265: la celda de Teo (la del sur): puerta de hierro en el hueco de los barrotes, barrotes que la cierran por el sur
+        // y, dentro, su jergón (la paja), una estantería con una vela y la cadena de los grilletes
+        StructKit.ironDoor(b, 7, f, CZ + 2, "-x", false);
+        for (int x = 8; x <= 9; x++) {
+            for (int h = 0; h <= 6; h++) {
+                String g = b.get(x, f + h, CZ + 5);
+                if (g == null || g.equals("air")) {
+                    b.set(x, f + h, CZ + 5, "iron_bars");
+                }
+            }
+        }
+        b.set(8, f, CZ + 3, "air");
+        b.set(9, f, CZ + 2, "bookshelf");
+        b.set(9, f + 1, CZ + 2, "candle[candles=2,lit=true]");
         // ---- SANTUARIO DEL CRISTAL (x -2..2, dz 3..10): pedestal rúnico con el cristal, cuatro braseros y un tapiz que esconde una puerta
         for (int x = -2; x <= 2; x++) {
             for (int dz = 4; dz <= 10; dz++) {
@@ -1302,7 +1316,27 @@ final class TorreInterior {
                 break;
             }
         }
+        // etapa 265: más enemigos camino arriba, la armadura del observatorio con la llave de la celda y Teo, preso en la cripta
+        spread(b, DesignTorre.fy(5), 2, "esbirro", 0);
+        spread(b, DesignTorre.fy(6), 1, "libro_embrujado", 1);
+        int fo = DesignTorre.fy(8);
+        int[][] obs = {{3, -2}, {-3, -2}, {3, 1}, {-3, 1}, {2, -4}, {-2, -4}};
+        boolean key = false;
+        for (int[] c : obs) {
+            if (freeCell(b, c[0], fo, CZ + c[1])) {
+                b.mobs.add(new StructBp.Mob(c[0], fo, CZ + c[1], "armadura_encantada", "llave_celda"));
+                key = true;
+                break;
+            }
+        }
+        if (!key) {
+            System.err.println("[Torre] sin sitio para la armadura de la llave");
+        }
+        b.mobs.add(new StructBp.Mob(TEO_X, -5, CZ + TEO_DZ, "habitante", "teo"));
     }
+
+    /** Sitio de Teo en su celda de la cripta (etapa 265). */
+    static final int TEO_X = 9, TEO_DZ = 3;
 
     private static boolean freeCell(StructBp b, int x, int y, int z) {
         String below = b.get(x, y - 1, z);

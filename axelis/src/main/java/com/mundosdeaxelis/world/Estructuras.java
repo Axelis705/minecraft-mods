@@ -67,10 +67,10 @@ public final class Estructuras {
         CIUDADELA("ciudadela", "Ciudadela de cristal", "hielo"),
         /** La estructura chica del hielo (etapa 258): termina en la celda de Bruno. */
         FORTIN("fortin", "Fortín de Escarcha", "fortin"),
-        /** Etapa 261: la estructura de la torre de verdad (mediana, con la Piedra de Portal en el observatorio y la celda de Teo). */
+        /** Etapa 265: la estructura grande de la magia: la Piedra de Portal: Torre arriba del todo y la celda de Teo en la cripta. */
+        FORTALEZA("fortaleza", "Fortaleza del Archimago", "torre"),
+        /** La estructura chica de la magia (etapa 261): termina en el tesoro del observatorio. */
         TORRE("torre", "Torre Arcana", "torre_arcana"),
-        /** La fortaleza grande de antes (fondo para videos). */
-        FORTALEZA("fortaleza", "Fortaleza en ruinas", "torre"),
         VOLCAN("volcan", "El Volcán", "volcan");
 
         final String id;

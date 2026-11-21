@@ -1022,9 +1022,12 @@ public final class AutoTest {
     private static final int LX = 140, LZ = -10;
     private static volatile boolean towerKey;
 
+    /** Fortaleza del Archimago (etapa 265): la entrada (z local 0) en {@code FTZ0}; se construye 12 más arriba que el suelo (la cripta baja). */
+    private static final int FTX = -1000, FTY = -48, FTZ0 = 100;
+
     private static void torre() {
         int tz = TZ0 + 30; // centro de la torre
-        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(TX + 7, SY, tz + 1);
+        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(FTX + 7, FTY - 5, FTZ0 + 36);
         net.minecraft.core.BlockPos seed = new net.minecraft.core.BlockPos(LX, SY, LZ);
         add("torre (ir)", 2500, () -> {
             clearMobs();
@@ -1033,12 +1036,7 @@ public final class AutoTest {
         });
         add("torre", 9000, () -> cmd("execute in minecraft:overworld positioned " + TX + " " + SY + " " + (TZ0 - 16) + " rotated 0 0 run mundos estructura torre"));
         add("torre (fuera)", 2500, () -> standLooking(TX + 16.5, SY + 10, TZ0 - 16, TX, SY + 16, tz));
-        add("torre (fuera, foto)", 300, () -> {
-            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(TX, SY + 25, tz));
-            check("en el observatorio de la torre está la Piedra de Portal: Torre (" + ps.getBlock() + ")",
-                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_TOWER.get()));
-            shot("74_torre_fuera");
-        });
+        add("torre (fuera, foto)", 300, () -> shot("74_torre_fuera"));
         add("torre (patio)", 2500, () -> standLooking(TX + 0.5, SY + 1, TZ0 + 8, TX + 0.5, SY + 5, tz));
         add("torre (patio, foto)", 300, () -> {
             check("hay esbirros en la torre", clientCount(com.mundosdeaxelis.entity.Esbirro.class) >= 2);
@@ -1049,10 +1047,34 @@ public final class AutoTest {
             check("hay libros embrujados en la biblioteca", clientCount(com.mundosdeaxelis.entity.LibroEmbrujado.class) >= 1);
             shot("76_torre_biblioteca");
         });
-        add("torre (observatorio)", 2500, () -> standLooking(TX - 4.5, SY + 24, tz - 4.5, TX, SY + 26.5, tz + 2));
+        add("torre (observatorio)", 2500, () -> standLooking(TX - 4.5, SY + 24, tz - 4.5, TX, SY + 25.5, tz + 2));
         add("torre (observatorio, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ts = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(TX, SY + 25, tz));
+            check("en el observatorio de la Torre Arcana está el tesoro del Archimago, no la Piedra de Portal (" + ts.getBlock() + ")",
+                    ts.is(com.mundosdeaxelis.registry.ModBlocks.VAULT_CHEST_LOCKED.get()));
             check("hay armaduras encantadas en la torre", clientCount(com.mundosdeaxelis.entity.ArmaduraEncantada.class) >= 1);
             shot("77_torre_observatorio");
+        });
+        add("torre (deshacer)", 2500, () -> {
+            cmd("execute in minecraft:overworld positioned " + TX + " " + SY + " " + (TZ0 - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
+        });
+        // la Fortaleza del Archimago: la Piedra de Portal arriba del todo y Teo en la cripta
+        add("fortaleza (ir)", 2500, () -> {
+            clearMobs();
+            cmd("execute in minecraft:overworld run tp @a " + (FTX + 0.5) + " " + (FTY + 40) + " " + (FTZ0 - 50) + " 0 25");
+        });
+        add("fortaleza", 25000, () -> cmd("execute in minecraft:overworld positioned " + FTX + " " + FTY + " " + (FTZ0 - 16)
+                + " rotated 0 0 run mundos estructura fortaleza"));
+        add("fortaleza (fuera)", 3000, () -> standLooking(FTX + 55.5, FTY + 40, FTZ0 - 30, FTX, FTY + 30, FTZ0 + 34));
+        add("fortaleza (fuera, foto)", 300, () -> shot("77b_fortaleza_fuera"));
+        add("fortaleza (observatorio)", 2500, () -> standLooking(FTX - 2.5, FTY + 67, FTZ0 + 30.5, FTX, FTY + 67.5, FTZ0 + 38));
+        add("fortaleza (observatorio, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(FTX, FTY + 67, FTZ0 + 38));
+            check("arriba del todo de la fortaleza está la Piedra de Portal: Torre (" + ps.getBlock() + ")",
+                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_TOWER.get()));
+            check("la armadura del observatorio guarda la llave", clientCount(com.mundosdeaxelis.entity.ArmaduraEncantada.class) >= 1);
+            shot("77c_fortaleza_observatorio");
         });
         add("teo preso", 2500, () -> {
             cmd("gamemode survival @a");
@@ -1060,11 +1082,11 @@ public final class AutoTest {
             cmd("kill @e[type=mundos_de_axelis:esbirro]");
             cmd("kill @e[type=mundos_de_axelis:libro_embrujado]");
             cmd("kill @e[type=mundos_de_axelis:armadura_encantada,nbt=!{ForgeData:{MundosTag:\"llave_celda\"}}]");
-            standLooking(TX + 5.5, SY, tz - 1.5, TX + 10.5, SY + 1.4, tz + 0.5);
+            standLooking(FTX + 5.5, FTY - 5, FTZ0 + 35.5, FTX + 9.5, FTY - 3.6, FTZ0 + 37.5);
         });
         add("teo preso (hablar)", 2600, () -> {
             com.mundosdeaxelis.entity.Habitante h = npcClient("teo");
-            check("Teo está preso en la celda de la torre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
+            check("Teo está preso en la celda de la cripta de la fortaleza", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
             npcServer("teo", com.mundosdeaxelis.npc.NpcService::interact);
         });
         add("teo preso (foto)", 300, () -> {
@@ -1074,10 +1096,11 @@ public final class AutoTest {
         });
         add("llave de la armadura", 1200, () -> {
             cmd("kill @e[type=mundos_de_axelis:armadura_encantada,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
-            onServer(sp -> towerKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(48),
+            onServer(sp -> towerKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+                    new net.minecraft.world.phys.AABB(FTX - 12, FTY + 60, FTZ0 + 24, FTX + 12, FTY + 76, FTZ0 + 46),
                     i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
         });
-        add("llave en la celda de la torre", 2600, () -> {
+        add("llave en la celda de la fortaleza", 2600, () -> {
             check("la armadura del observatorio suelta la llave", towerKey);
             cmd("kill @e[type=item]");
             onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()), door,
@@ -1094,7 +1117,7 @@ public final class AutoTest {
         });
         add("teo sale (comprobar)", 300, () -> {
             com.mundosdeaxelis.entity.Habitante h = npcClient("teo");
-            check("Teo salió de la celda", h != null && h.getX() < TX + 7);
+            check("Teo salió de la celda", h != null && h.getX() < FTX + 7);
             cmd("kill @e[type=mundos_de_axelis:armadura_encantada]");
             cmd("execute in minecraft:overworld run tp @a " + (LX + 0.5) + " " + SY + " " + (LZ - 2.5) + " 0 45");
         });
@@ -1162,7 +1185,7 @@ public final class AutoTest {
                     TableClient.essence == essBefore - 400 && invCount(net.minecraft.world.item.Items.ENCHANTED_BOOK) >= 1);
             open(null);
             cmd("gamemode spectator @a");
-            cmd("execute in minecraft:overworld positioned " + TX + " " + SY + " " + (TZ0 - 16) + " run mundos estructura deshacer");
+            cmd("execute in minecraft:overworld positioned " + FTX + " " + FTY + " " + (FTZ0 - 16) + " run mundos estructura deshacer");
             cmd("kill @e[type=item]");
         });
     }

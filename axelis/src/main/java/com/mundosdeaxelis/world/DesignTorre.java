@@ -10,6 +10,10 @@ import java.util.Set;
  * Tiene sótano (cripta), ocho pisos y un observatorio con cúpula de cristal. Todo el edificio gira alrededor de una escalera de caracol
  * central: cada piso se llega por una puerta de la escalera. Las salas se planifican con {@link Arq}, que une cada una con puertas
  * y avisa si alguna quedara aislada. Se entra por z = 0 (avenida, plataforma escalonada y gran portón).
+ * <p>Etapa 265: es la estructura grande del tier de la magia (la «Fortaleza»). Tiene las dos cosas importantes: arriba del todo, en
+ * el observatorio, la Piedra de Portal: Torre (el final del recorrido) con un cofre de provisiones; y abajo, en la mazmorra de la
+ * cripta, la celda de Teo. La llave la lleva la armadura encantada del observatorio: hay que subir hasta arriba y volver a bajar.
+ * Aparece sola en el mundo.
  */
 final class DesignTorre {
     private DesignTorre() {
@@ -111,6 +115,7 @@ final class DesignTorre {
         a.seed(0, fy(8), CZ - 3);
         gapsBalcony(b);
         TorreInterior.tidy(b);
+        surroundings(b);
         TorreInterior.mobs(b);
         // Todas las plantas están hechas a mano y las revisa ConectividadTest (salas sin acceso / trampas),
         // así que no se llama a Arq.repair: quitaría muebles diseñados (mesas de encantamiento, estanterías, el estanque...).
@@ -121,6 +126,29 @@ final class DesignTorre {
     }
 
     // ================================================================== entorno
+
+    /** Fuera del jardín, el terreno real baja o sube en rampa suave hasta el nivel de la fortaleza (etapa 265, para que aparezca sola). */
+    private static void surroundings(StructBp b) {
+        int x0 = -40, x1 = 40, z0 = -8, z1 = 72, rr = 24;
+        for (int x = x0 - rr; x <= x1 + rr; x++) {
+            for (int z = z0 - rr; z <= z1 + rr; z++) {
+                double dx = Math.max(Math.max(0, x0 - x), Math.max(0, x - x1));
+                double dz = Math.max(Math.max(0, z0 - z), Math.max(0, z - z1));
+                double e = Math.hypot(dx, dz);
+                if (e <= 0) {
+                    continue;
+                }
+                double ramp = 8 + 4 * vnoise(7118, x * 0.08, z * 0.08);
+                double w = Math.min(1, e / ramp);
+                w = w * w * (3 - 2 * w);
+                boolean road = Math.abs(x) <= 2 && z < z0;
+                if (w >= 0.999 && !road) {
+                    continue;
+                }
+                b.blend(x, z, road ? Math.min(w, 0.5) : w, road ? (hash01(7119, x, z) < 0.4 ? "cobbled_deepslate" : "gravel") : null, null);
+            }
+        }
+    }
 
     private static void site(StructBp b) {
         b.box(-40, -1, -8, 40, -1, 72, "grass_block");
@@ -426,6 +454,8 @@ final class DesignTorre {
         // Piedra de Portal de la Torre: lleva a la cima donde espera el Archimago (jefe de la etapa 4). Si el mod de los jefes no
         // está instalado, el bloque no existe y simplemente no se pone.
         b.set(0, f, CZ + 4, "mundos_de_axelis:portal_stone_tower");
+        // etapa 265: el cofre de provisiones junto a la piedra
+        b.setNbt(2, f, CZ + 4, "mundos_de_axelis:vault_chest[facing=north]", "{Kind:\"ANTE\",Stage:4}");
         return obs;
     }
 

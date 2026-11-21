@@ -5,23 +5,23 @@ package com.mundosdeaxelis.world;
  * Archimago antes de encerrarse en su fortaleza: una torre octogonal de piedra oscura con esquinas de púrpura, tres pisos y un
  * observatorio con cúpula de cristal violeta. Todo gira alrededor de una escalera de caracol central.
  * <ul>
- * <li>Planta baja: el vestíbulo (estanterías, una estatua de caballero, alfombras moradas) y la celda del bibliotecario, pegada a la
- * torre por el este.</li>
+ * <li>Planta baja: el vestíbulo (estanterías, una estatua de caballero, alfombras moradas) y la despensa del Archimago, pegada a la
+ * torre por el este (era la celda de Teo: etapa 265, Teo pasó a la Fortaleza).</li>
  * <li>Primer piso: la biblioteca (estanterías altas, atriles, una mesa de estudio con velas). Vuelan libros embrujados.</li>
  * <li>Segundo piso: el laboratorio de alquimia (soportes de pociones, calderos, frascos, amatistas).</li>
- * <li>Observatorio: un telescopio de cobre apuntando a la cúpula, un mapa de estrellas en el suelo y, en el centro, la Piedra de
- * Portal: Torre (lleva a la arena del Archimago) con un cofre al lado.</li>
+ * <li>Observatorio: un telescopio de cobre apuntando a la cúpula, un mapa de estrellas en el suelo y, en el centro, sobre la columna,
+ * el tesoro del Archimago: un cofre con la cerradura más difícil (etapa 265: es la estructura chica del tier de la magia, la del
+ * botín; la Piedra de Portal: Torre está en la Fortaleza).</li>
  * </ul>
  * Fuera: un patio con el muro en ruinas, un círculo arcano en el suelo, un cerezo, columnas caídas y una fuente seca.
  * <p>Enemigos: esbirros en el patio y en el laboratorio, una armadura encantada en el vestíbulo, libros embrujados en la biblioteca
- * y otra armadura encantada en el observatorio, que lleva la llave de la celda. Entrada por z = 0.
+ * y otra armadura encantada en el observatorio, que guarda el tesoro. Entrada por z = 0.
  */
 final class DesignTorreArcana {
     private DesignTorreArcana() {
     }
 
     private static final String M = "mundos_de_axelis:";
-    static final String PORTAL = M + "portal_stone_tower";
     private static final String DB = "deepslate_bricks";
     private static final String CDB = "cracked_deepslate_bricks";
     private static final String DT = "deepslate_tiles";
@@ -37,7 +37,7 @@ final class DesignTorreArcana {
     static final int[] FLOOR = {-1, 7, 15, 23};
     /** Patio con muro: x -WX..WX, z WZ0..WZ1. */
     static final int WX = 14, WZ0 = 6, WZ1 = 41;
-    /** Celda (al este de la torre) y sitio del preso. */
+    /** Despensa (al este de la torre; era la celda de Teo). */
     static final int CX0 = 8, CX1 = 12;
     static final int NPC_X = 10, NPC_Z = TZ;
 
@@ -507,9 +507,9 @@ final class DesignTorreArcana {
 
     private static void observatory(StructBp b) {
         int y0 = FLOOR[3] + 1;
-        // altar de la Piedra de Portal sobre la columna del caracol
+        // el tesoro del Archimago sobre la columna del caracol: el cofre con la cerradura más difícil (el final de la torre)
         b.set(0, y0, TZ, CD);
-        b.set(0, y0 + 1, TZ, PORTAL);
+        b.setNbt(0, y0 + 1, TZ, M + "vault_chest_locked[facing=south]", "{Kind:\"LOCKED\",Stage:4,LockLevel:5}");
         // mapa de estrellas: losas negras con puntos de luz alrededor
         for (int x = -5; x <= 5; x++) {
             for (int dz = -5; dz <= 5; dz++) {
@@ -563,13 +563,15 @@ final class DesignTorreArcana {
                 b.set(R, y, TZ + dz, "iron_bars");
             }
         }
-        StructKit.ironDoor(b, R, 0, TZ + 1, "-x", false);
+        StructKit.woodDoor(b, "dark_oak", R, 0, TZ + 1, "-x", false);
         b.set(R, 2, TZ + 1, DB);
-        // dentro: jergón, pila de libros (atril sin libro), cubo, telarañas
-        b.set(CX1 - 1, 0, TZ - 2, "hay_block[axis=x]");
-        b.set(CX1 - 2, 0, TZ - 2, "hay_block[axis=x]");
-        b.set(CX1 - 2, 1, TZ - 2, "purple_carpet");
+        // dentro: barriles, sacos (lana), un caldero, la pila de libros y un cofre de premio por subir a la torre (etapa 265)
+        b.set(CX1 - 1, 0, TZ - 2, "barrel[facing=up]");
+        b.set(CX1 - 2, 0, TZ - 2, "barrel[facing=west]");
+        b.set(CX1 - 1, 1, TZ - 2, "barrel[facing=up]");
         b.set(CX1 - 1, 0, TZ + 2, "water_cauldron[level=1]");
+        b.set(CX1 - 1, 0, TZ, "brown_wool");
+        b.set(CX1 - 1, 0, TZ - 1, "white_wool");
         b.set(CX0, 0, TZ + 2, "chiseled_bookshelf");
         b.set(CX0 + 1, 0, TZ - 2, "candle[candles=2,lit=true]");
         StructKit.hangLantern(b, NPC_X, 3, NPC_Z, 1, "soul_lantern");
@@ -622,6 +624,8 @@ final class DesignTorreArcana {
 
     private static void chests(StructBp b) {
         b.setNbt(-3, FLOOR[3] + 1, TZ + 3, M + "vault_chest[facing=east]", "{Kind:\"ANTE\",Stage:4}");
+        // premio de la despensa
+        b.setNbt(NPC_X, 0, NPC_Z, M + "vault_chest[facing=west]", "{Kind:\"TRIAL\",Stage:4}");
     }
 
     private static boolean free(StructBp b, int x, int y, int z) {
@@ -651,9 +655,7 @@ final class DesignTorreArcana {
         mob(b, -3, FLOOR[1] + 1, TZ + 1, "libro_embrujado", null);
         mob(b, 2, FLOOR[1] + 1, TZ - 4, "libro_embrujado", null);
         mob(b, -2, FLOOR[2] + 1, TZ - 3, "esbirro", null);
-        // la armadura del observatorio lleva la llave de la celda
-        mob(b, 3, FLOOR[3] + 1, TZ - 3, "armadura_encantada", "llave_celda");
-        // el bibliotecario, preso en la celda
-        mob(b, NPC_X, 0, NPC_Z, "habitante", "teo");
+        // la armadura del observatorio guarda el tesoro
+        mob(b, 3, FLOOR[3] + 1, TZ - 3, "armadura_encantada", null);
     }
 }

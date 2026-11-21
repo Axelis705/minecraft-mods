@@ -600,6 +600,20 @@ final class TorreInterior {
         }
         b.set(6, f, CZ - 8, "bone_block[axis=y]");
         skull(b, 6, f + 1, CZ - 8, 12);
+        // ---- etapa 265: la celda de Teo (la del sur): puerta de hierro en el hueco de los barrotes, barrotes que la cierran por el sur
+        // y, dentro, su jergón (la paja), una estantería con una vela y la cadena de los grilletes
+        StructKit.ironDoor(b, 7, f, CZ + 2, "-x", false);
+        for (int x = 8; x <= 9; x++) {
+            for (int h = 0; h <= 6; h++) {
+                String g = b.get(x, f + h, CZ + 5);
+                if (g == null || g.equals("air")) {
+                    b.set(x, f + h, CZ + 5, "iron_bars");
+                }
+            }
+        }
+        b.set(8, f, CZ + 3, "air");
+        b.set(9, f, CZ + 2, "bookshelf");
+        b.set(9, f + 1, CZ + 2, "candle[candles=2,lit=true]");
         // ---- SANTUARIO DEL CRISTAL (x -2..2, dz 3..10): pedestal rúnico con el cristal, cuatro braseros y un tapiz que esconde una puerta
         for (int x = -2; x <= 2; x++) {
             for (int dz = 4; dz <= 10; dz++) {
@@ -1282,6 +1296,75 @@ final class TorreInterior {
         }
         b.set(cx, f + 4, CZ + cz, "air");
         hangLantern(b, cx, f + 4, CZ + cz, 1, "lantern");
+    }
+
+    // ================================================================== ENEMIGOS (se ponen una vez, al colocar la torre)
+
+    /**
+     * Pocos enemigos simples, como acordamos: esbirros en el Gran Salón y la cripta, libros embrujados en la biblioteca y en la sala de
+     * encantamiento (flotan a media altura) y una armadura encantada en la armería secreta. Solo en celdas de aire con suelo firme.
+     */
+    static void mobs(StructBp b) {
+        spread(b, 3, 3, "esbirro", 0);
+        spread(b, -5, 2, "esbirro", 0);
+        spread(b, 27, 2, "libro_embrujado", 1);
+        spread(b, 35, 2, "libro_embrujado", 1);
+        int[][] armory = {{-10, 10}, {-9, 10}, {-10, 9}, {-11, 10}, {-10, 11}};
+        for (int[] c : armory) {
+            if (freeCell(b, c[0], 3, CZ + c[1])) {
+                b.mobs.add(new StructBp.Mob(c[0], 3, CZ + c[1], "armadura_encantada"));
+                break;
+            }
+        }
+        // etapa 265: más enemigos camino arriba, la armadura del observatorio con la llave de la celda y Teo, preso en la cripta
+        spread(b, DesignTorre.fy(5), 2, "esbirro", 0);
+        spread(b, DesignTorre.fy(6), 1, "libro_embrujado", 1);
+        int fo = DesignTorre.fy(8);
+        int[][] obs = {{3, -2}, {-3, -2}, {3, 1}, {-3, 1}, {2, -4}, {-2, -4}};
+        boolean key = false;
+        for (int[] c : obs) {
+            if (freeCell(b, c[0], fo, CZ + c[1])) {
+                b.mobs.add(new StructBp.Mob(c[0], fo, CZ + c[1], "armadura_encantada", "llave_celda"));
+                key = true;
+                break;
+            }
+        }
+        if (!key) {
+            System.err.println("[Torre] sin sitio para la armadura de la llave");
+        }
+        b.mobs.add(new StructBp.Mob(TEO_X, -5, CZ + TEO_DZ, "habitante", "teo"));
+    }
+
+    /** Sitio de Teo en su celda de la cripta (etapa 265). */
+    static final int TEO_X = 9, TEO_DZ = 3;
+
+    private static boolean freeCell(StructBp b, int x, int y, int z) {
+        String below = b.get(x, y - 1, z);
+        return "air".equals(b.get(x, y, z)) && "air".equals(b.get(x, y + 1, z)) && below != null && !below.equals("air")
+                && !below.contains("carpet") && !below.contains("slab") && !below.contains("stairs");
+    }
+
+    /** Hasta {@code n} enemigos en anillos alrededor del centro de la planta, separados al menos 4 bloques entre sí. */
+    private static void spread(StructBp b, int f, int n, String kind, int lift) {
+        java.util.List<int[]> picked = new java.util.ArrayList<>();
+        for (int r = 3; r <= 9 && picked.size() < n; r++) {
+            for (int k = 0; k < 12 && picked.size() < n; k++) {
+                double a = Math.PI * 2 * k / 12 + r * 0.61;
+                int x = (int) Math.round(Math.cos(a) * r);
+                int z = CZ + (int) Math.round(Math.sin(a) * r);
+                if (!freeCell(b, x, f, z) || (lift > 0 && !"air".equals(b.get(x, f + 2, z)))) {
+                    continue;
+                }
+                boolean near = false;
+                for (int[] q : picked) {
+                    near |= Math.hypot(q[0] - x, q[1] - z) < 4.0;
+                }
+                if (!near) {
+                    picked.add(new int[]{x, z});
+                    b.mobs.add(new StructBp.Mob(x, f + lift, z, kind));
+                }
+            }
+        }
     }
 
     static void secrets(StructBp b, Arq a) {

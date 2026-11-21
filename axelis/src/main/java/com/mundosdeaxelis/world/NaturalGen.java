@@ -107,14 +107,25 @@ public final class NaturalGen extends SavedData {
             (l, o, r, bp, mobs) -> {
             });
 
-    /** Etapa 261: la Torre Arcana, en bosques oscuros, bosques de abedules, taigas antiguas y arboledas de cerezos. */
-    public static final Spec TORRE = new Spec("torre", "torre_arcana", "Torre Arcana", 832, 45, 350, 0x70AA3C61L, 24, 31, 10, 4, 4, 220,
-            false, b -> land(b) && (b.is(Biomes.DARK_FOREST) || b.is(Biomes.BIRCH_FOREST) || b.is(Biomes.OLD_GROWTH_BIRCH_FOREST)
-            || b.is(Biomes.OLD_GROWTH_PINE_TAIGA) || b.is(Biomes.OLD_GROWTH_SPRUCE_TAIGA) || b.is(Biomes.CHERRY_GROVE)),
-            (l, o, r, bp, mobs) -> {
+    private static boolean magic(Holder<Biome> b) {
+        return land(b) && (b.is(Biomes.DARK_FOREST) || b.is(Biomes.BIRCH_FOREST) || b.is(Biomes.OLD_GROWTH_BIRCH_FOREST)
+                || b.is(Biomes.OLD_GROWTH_PINE_TAIGA) || b.is(Biomes.OLD_GROWTH_SPRUCE_TAIGA) || b.is(Biomes.CHERRY_GROVE));
+    }
+
+    /**
+     * Etapa 265: la Fortaleza del Archimago (la estructura grande de la magia: la Piedra de Portal: Torre en el observatorio y Teo en
+     * la cripta). Su id es "torre": a ella apuntan las pistas y brújulas de la torre.
+     */
+    public static final Spec TORRE = new Spec("torre", "torre", "Fortaleza del Archimago", 1024, 40, 600, 0x2B91E6D3L, 34, 52, 10, 8, 6, 320,
+            false, NaturalGen::magic, (l, o, r, bp, mobs) -> {
             });
 
-    public static final List<Spec> SPECS = List.of(BOSQUE, SANTUARIO, VOLCAN, HIELO, FORTIN, FORJA, TORRE);
+    /** Etapa 261: la Torre Arcana (la estructura chica de la magia, con el tesoro), en los mismos biomas. */
+    public static final Spec ARCANA = new Spec("arcana", "torre_arcana", "Torre Arcana", 832, 45, 350, 0x70AA3C61L, 24, 31, 10, 4, 4, 220,
+            false, NaturalGen::magic, (l, o, r, bp, mobs) -> {
+            });
+
+    public static final List<Spec> SPECS = List.of(BOSQUE, SANTUARIO, VOLCAN, HIELO, FORTIN, FORJA, TORRE, ARCANA);
 
     static Spec byId(String id) {
         for (Spec s : SPECS) {
@@ -135,6 +146,8 @@ public final class NaturalGen extends SavedData {
     private boolean migrated262;
     /** Etapa 264: antes el id "hielo" era el fortín; ahora es la ciudadela. Las regiones vistas pasan al id "fortin". */
     private boolean migrated264;
+    /** Etapa 265: antes el id "torre" era la Torre Arcana; ahora es la Fortaleza. Las regiones vistas pasan al id "arcana". */
+    private boolean migrated265;
 
     public NaturalGen() {
     }
@@ -179,6 +192,18 @@ public final class NaturalGen extends SavedData {
             }
             g.setDirty();
         }
+        if (!g.migrated265) {
+            g.migrated265 = true;
+            Map<Long, Integer> old = g.regions.remove(TORRE.id());
+            if (old != null && !g.regions.containsKey(ARCANA.id())) {
+                g.regions.put(ARCANA.id(), old);
+            }
+            Boolean on = g.enabled.remove(TORRE.id());
+            if (on != null) {
+                g.enabled.put(ARCANA.id(), on);
+            }
+            g.setDirty();
+        }
         return g;
     }
 
@@ -195,6 +220,7 @@ public final class NaturalGen extends SavedData {
         g.migrated = tag.getBoolean("Migrated");
         g.migrated262 = tag.getBoolean("Migrated262");
         g.migrated264 = tag.getBoolean("Migrated264");
+        g.migrated265 = tag.getBoolean("Migrated265");
         CompoundTag on = tag.getCompound("Enabled");
         for (String k : on.getAllKeys()) {
             g.enabled.put(k, on.getBoolean(k));
@@ -219,6 +245,7 @@ public final class NaturalGen extends SavedData {
         tag.putBoolean("Migrated", migrated);
         tag.putBoolean("Migrated262", migrated262);
         tag.putBoolean("Migrated264", migrated264);
+        tag.putBoolean("Migrated265", migrated265);
         CompoundTag on = new CompoundTag();
         enabled.forEach(on::putBoolean);
         tag.put("Enabled", on);
