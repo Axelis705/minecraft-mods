@@ -121,3 +121,26 @@ Un gólem gigante de hierro oxidado (unos 3,5 bloques de alto) que construyó el
   - el rescate;
   - deshacer;
   - la versión «natural».
+
+## Comprobado (etapa 267, el Coloso)
+
+- Compila.
+- **Servidor de verdad (CI)**:
+  - el Coloso duerme delante del altar de la Fragua;
+  - se puede invocar con su huevo;
+  - al vencerlo suelta bloques de hierro;
+  - deshacer la Fragua lo quita.
+- **Juego real (cliente)**: 187 comprobaciones y 0 fallos, con 136 fotos.
+  - El Coloso dormido como estatua; al acercarse despierta, con su barra y el aviso.
+  - Levanta los puños para el golpe de suelo y suelta las ondas.
+  - Al vencerlo suelta hierro.
+  - También pasaron: la Gran Fundición (la Piedra de Portal en la isla y el rescate de Hilda), la Fortaleza (la piedra arriba y el rescate de Teo en la cripta), la Torre Arcana con el tesoro, la Ciudadela con la piedra en la cripta, y la casa de Ignacio con la tienda de cinco vecinos (se compró la manzana encantada).
+- **Arreglos que salieron en las pruebas**:
+  - una vela tapaba la salida de la celda de Hilda y no podía salir;
+  - dormido, el Coloso ahora no se deja empujar y, si algo lo mueve, vuelve a su sitio.
+
+## Pendiente
+
+- Los tiers 6, 7 y 8 (más adelante).
+- Mejorar el botín de los cofres (Axelis lo ve vacío; idea: materiales para forjar llaves).
+
