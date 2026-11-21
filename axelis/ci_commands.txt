@@ -213,6 +213,19 @@ mundos vecinos mudar hilda
 execute unless block 570 -60 -29 minecraft:dark_oak_door run say PRUEBA_HILDA_CASA_DESARMADA_OK
 execute if block 568 -60 -28 minecraft:chest run say PRUEBA_HILDA_COFRE_CON_COSAS_SE_QUEDA_OK
 execute unless block 572 -60 -28 minecraft:barrel run say PRUEBA_HILDA_BARRIL_VACIO_SE_VA_OK
+execute positioned 600 -60 -30 rotated 0 0 run mundos vecinos semilla hilda
+execute if block 600 -60 -30 mundos_de_axelis:semilla_casa[facing=south] run say PRUEBA_SEMILLA_BLOQUE_OK
+execute if data block 600 -60 -30 {Npc:"hilda"} run say PRUEBA_SEMILLA_DE_HILDA_OK
+fill 597 -60 -27 597 -58 -27 minecraft:oak_log
+execute positioned 600 -60 -30 run mundos vecinos crecer
+execute unless block 600 -60 -29 minecraft:dark_oak_door run say PRUEBA_SEMILLA_NO_CRECE_CON_ESTORBO_OK
+execute if block 600 -60 -30 mundos_de_axelis:semilla_casa run say PRUEBA_SEMILLA_SIGUE_PUESTA_OK
+fill 597 -60 -27 597 -58 -27 minecraft:air
+execute positioned 600 -60 -30 run mundos vecinos crecer
+execute if block 600 -60 -29 minecraft:dark_oak_door run say PRUEBA_SEMILLA_CRECE_OK
+execute unless block 600 -60 -30 mundos_de_axelis:semilla_casa run say PRUEBA_SEMILLA_SE_GASTA_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=591,y=-62,z=-35,dx=18,dy=6,dz=18,nbt={NpcState:2,Npc:"hilda"}] run say PRUEBA_SEMILLA_HILDA_VECINA_OK
+mundos vecinos mudar hilda
 mundos vecinos reiniciar
 forceload remove 510 -50 600 80
 forceload add 3150 -70 3260 80
@@ -305,3 +318,10 @@ mundos prueba construir 2
 #expect PRUEBA_HILDA_BARRIL_VACIO_SE_VA_OK
 #expect PRUEBA_FRAGUA_NATURAL_HILDA_OK
 #expect PRUEBA_FRAGUA_NATURAL_FUNDIDOR_OK
+#expect PRUEBA_SEMILLA_BLOQUE_OK
+#expect PRUEBA_SEMILLA_DE_HILDA_OK
+#expect PRUEBA_SEMILLA_NO_CRECE_CON_ESTORBO_OK
+#expect PRUEBA_SEMILLA_SIGUE_PUESTA_OK
+#expect PRUEBA_SEMILLA_CRECE_OK
+#expect PRUEBA_SEMILLA_SE_GASTA_OK
+#expect PRUEBA_SEMILLA_HILDA_VECINA_OK

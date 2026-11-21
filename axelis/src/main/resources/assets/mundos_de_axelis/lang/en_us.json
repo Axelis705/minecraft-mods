@@ -2032,8 +2032,8 @@
   "item.mundos_de_axelis.brujula_npc": "Compass: %s",
   "tooltip.mundos_de_axelis.llave_celda": "Carried by the Raizal guarding the sanctuary's altar.",
   "tooltip.mundos_de_axelis.llave_celda.use": "Use it on the cell door to free whoever is locked inside.",
-  "tooltip.mundos_de_axelis.semilla_casa": "Grows the house of the one you rescued (about 9 × 10 blocks), door facing you.",
-  "tooltip.mundos_de_axelis.semilla_casa.use": "Use it on the ground, on a flat, clear spot near your home.",
+  "tooltip.mundos_de_axelis.semilla_casa": "Place it on the ground near your home: a hologram shows the house of the one you rescued, with its size.",
+  "tooltip.mundos_de_axelis.semilla_casa.use": "Red means something is in the way. Sneak with an empty hand + right click: turn the house.",
   "message.mundos_de_axelis.llave.nadie": "Nobody is locked up here.",
   "message.mundos_de_axelis.casa.unknown": "This seed belongs to nobody...",
   "message.mundos_de_axelis.casa.dimension": "Nothing grows here: find a spot in the Overworld.",
@@ -2172,5 +2172,16 @@
   "npc.mundos_de_axelis.hilda.hint.hielo": "There's a frost outpost to %s, about %s blocks away. Whoever forged those sentinels' swords had a steady hand, I'll give them that.",
   "npc.mundos_de_axelis.hilda.hint.forja": "The old forge is to %s, about %s blocks away. If you go back, say hi to the big anvil for me. And smash a couple of slags on my behalf.",
   "npc.mundos_de_axelis.hilda.hint.none": "I don't know of any place like that around here (%s). Explore farther and come back; meanwhile I'll sharpen something.",
-  "npc.mundos_de_axelis.hilda.hint.here": "%s? It's right here. Even a hammer could see it."
+  "npc.mundos_de_axelis.hilda.hint.here": "%s? It's right here. Even a hammer could see it.",
+  "block.mundos_de_axelis.semilla_casa": "House Seed",
+  "tooltip.mundos_de_axelis.semilla_casa.grow": "Right click the seed: the house grows. If you break it, it goes back to your hand.",
+  "message.mundos_de_axelis.casa.semilla_puesta": "Look at the hologram: that's how %s's house will look. Right click the seed to make it grow.",
+  "message.mundos_de_axelis.casa.girada": "House turned.",
+  "message.mundos_de_axelis.casa.ocupado_n": "It doesn't fit: %s blocks are in the way (shown in red in the hologram).",
+  "hologram.mundos_de_axelis.casa.title": "%s's house",
+  "hologram.mundos_de_axelis.casa.size": "%s × %s blocks · %s tall",
+  "hologram.mundos_de_axelis.casa.blocked": "%s blocks in the way (red)",
+  "hologram.mundos_de_axelis.casa.uneven": "Ground too uneven (orange)",
+  "hologram.mundos_de_axelis.casa.ok": "It fits! Right click the seed to make it grow",
+  "hologram.mundos_de_axelis.casa.rotate": "Sneak with empty hand + right click: turn"
 }

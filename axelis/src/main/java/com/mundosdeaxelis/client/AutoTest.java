@@ -447,6 +447,21 @@ public final class AutoTest {
         sp.getMainHandItem().useOn(new net.minecraft.world.item.context.UseOnContext(sp, net.minecraft.world.InteractionHand.MAIN_HAND, hit));
     }
 
+    /** Clic derecho en un bloque (agachado o no), como haría el jugador. */
+    private static void useBlock(net.minecraft.server.level.ServerPlayer sp, net.minecraft.core.BlockPos p, boolean sneak) {
+        sp.setShiftKeyDown(sneak);
+        net.minecraft.world.phys.BlockHitResult hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(p),
+                net.minecraft.core.Direction.UP, p, false);
+        sp.serverLevel().getBlockState(p).use(sp.serverLevel(), sp, net.minecraft.world.InteractionHand.MAIN_HAND, hit);
+        sp.setShiftKeyDown(false);
+    }
+
+    /** Pone la Semilla de casa en el suelo (delante, mirando al sur) y la hace crecer. */
+    private static void plantSeed(net.minecraft.server.level.ServerPlayer sp, String kind, int x, int z) {
+        useOn(sp, com.mundosdeaxelis.npc.NpcService.kit(kind), new net.minecraft.core.BlockPos(x, SY - 1, z), net.minecraft.core.Direction.UP);
+        useBlock(sp, new net.minecraft.core.BlockPos(x, SY, z), false);
+    }
+
     private static void ruda() {
         net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(SX + 8, SY, SZ0 + 26);
         add("ruda presa", 2500, () -> {
@@ -499,12 +514,63 @@ public final class AutoTest {
         add("casa", 2500, () -> {
             cmd("execute in minecraft:overworld run tp @a " + (HX + 0.5) + " " + SY + " " + (HZ - 2.5) + " 0 45");
         });
-        add("casa (plantar)", 2500, () -> onServer(sp -> {
+        // etapa 260: la semilla se pone como bloque y sale el holograma de la casa (con lo que estorba en rojo: un tronco en la pared de la ventana)
+        net.minecraft.core.BlockPos seedPos = new net.minecraft.core.BlockPos(HX, SY, HZ);
+        add("semilla (poner)", 2500, () -> onServer(sp -> {
             sp.teleportTo(sp.serverLevel(), HX + 0.5, SY, HZ - 2.5, 0.0F, 45.0F);
             net.minecraft.world.item.ItemStack kit = com.mundosdeaxelis.npc.NpcService.kit("ruda");
             useOn(sp, kit, new net.minecraft.core.BlockPos(HX, SY - 1, HZ), net.minecraft.core.Direction.UP);
         }));
+        add("holograma (mirar)", 2000, () -> standLooking(HX + 9.5, SY + 5, HZ - 7.5, HX - 0.5, SY + 1, HZ + 4));
+        add("holograma (foto)", 300, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            check("la semilla queda puesta en el suelo como bloque", lv.getBlockState(seedPos).is(com.mundosdeaxelis.registry.ModBlocks.SEMILLA_CASA.get()));
+            check("la semilla sabe que es la casa de Ruda", lv.getBlockEntity(seedPos) instanceof com.mundosdeaxelis.npc.SemillaCasaBlockEntity be
+                    && "ruda".equals(be.kind()));
+            check("al ponerla se gastó de la mano", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) == 0);
+            check("el holograma no marca nada en rojo en un sitio libre", lv.getBlockEntity(seedPos) instanceof com.mundosdeaxelis.npc.SemillaCasaBlockEntity be
+                    && be.scanTick != Long.MIN_VALUE && be.scanBlocked.isEmpty());
+            shot("52b_holograma_ruda");
+        });
+        add("estorbo", 1500, () -> cmd("execute in minecraft:overworld run fill " + (HX - 3) + " " + SY + " " + (HZ + 5) + " " + (HX - 3) + " " + (SY + 2)
+                + " " + (HZ + 5) + " minecraft:oak_log"));
+        add("holograma con estorbo (foto)", 300, () -> {
+            int n = Minecraft.getInstance().level.getBlockEntity(seedPos) instanceof com.mundosdeaxelis.npc.SemillaCasaBlockEntity be ? be.scanBlocked.size() : -1;
+            check("el holograma marca en rojo el tronco que estorba (" + n + " bloques)", n == 3);
+            shot("52c_holograma_estorbo");
+            onServer(sp -> {
+                sp.teleportTo(sp.serverLevel(), HX + 0.5, SY, HZ - 2.5, 0.0F, 45.0F);
+                useBlock(sp, seedPos, false);
+            });
+        });
+        add("no crece con estorbo", 1200, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            check("con algo en medio la casa no crece y la semilla sigue en su sitio", lv.getBlockState(seedPos).is(com.mundosdeaxelis.registry.ModBlocks.SEMILLA_CASA.get())
+                    && !lv.getBlockState(seedPos.south()).is(net.minecraft.world.level.block.Blocks.SPRUCE_DOOR));
+            cmd("execute in minecraft:overworld run fill " + (HX - 3) + " " + SY + " " + (HZ + 5) + " " + (HX - 3) + " " + (SY + 2) + " " + (HZ + 5) + " minecraft:air");
+            onServer(sp -> useBlock(sp, seedPos, true)); // agachado: gira 90°
+        });
+        add("holograma girado", 1500, () -> standLooking(HX + 6.5, SY + 9, HZ + 7.5, HX - 4, SY, HZ));
+        add("holograma girado (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState st = Minecraft.getInstance().level.getBlockState(seedPos);
+            check("agachado y con clic derecho la casa gira (" + (st.hasProperty(com.mundosdeaxelis.npc.SemillaCasaBlock.FACING)
+                    ? st.getValue(com.mundosdeaxelis.npc.SemillaCasaBlock.FACING) : "?") + ")",
+                    st.hasProperty(com.mundosdeaxelis.npc.SemillaCasaBlock.FACING)
+                            && st.getValue(com.mundosdeaxelis.npc.SemillaCasaBlock.FACING) == net.minecraft.core.Direction.WEST);
+            shot("52d_holograma_girado");
+            onServer(sp -> {
+                for (int i = 0; i < 3; i++) {
+                    useBlock(sp, seedPos, true); // otras tres vueltas: mira otra vez al sur
+                }
+            });
+        });
+        add("casa (plantar)", 2500, () -> onServer(sp -> {
+            sp.teleportTo(sp.serverLevel(), HX + 0.5, SY, HZ - 2.5, 0.0F, 45.0F);
+            useBlock(sp, seedPos, false);
+        }));
         add("casa (comprobar)", 300, () -> {
+            check("la semilla se convierte en la casa (ya no está)", !Minecraft.getInstance().level.getBlockState(seedPos)
+                    .is(com.mundosdeaxelis.registry.ModBlocks.SEMILLA_CASA.get()));
             net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(HX, SY, HZ + 1));
             check("crece la casa de Ruda (puerta: " + ds.getBlock() + ")", ds.is(net.minecraft.world.level.block.Blocks.SPRUCE_DOOR));
             com.mundosdeaxelis.entity.Habitante h = rudaClient();
@@ -659,7 +725,7 @@ public final class AutoTest {
         });
         add("casa de bruno (plantar)", 2500, () -> onServer(sp -> {
             sp.teleportTo(sp.serverLevel(), BX + 0.5, SY, BZ - 2.5, 0.0F, 45.0F);
-            useOn(sp, com.mundosdeaxelis.npc.NpcService.kit("bruno"), new net.minecraft.core.BlockPos(BX, SY - 1, BZ), net.minecraft.core.Direction.UP);
+            plantSeed(sp, "bruno", BX, BZ);
         }));
         add("casa de bruno (comprobar)", 300, () -> {
             net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(BX, SY, BZ + 1));
@@ -803,7 +869,7 @@ public final class AutoTest {
         });
         add("casa de hilda (plantar)", 2500, () -> onServer(sp -> {
             sp.teleportTo(sp.serverLevel(), KX + 0.5, SY, KZ - 2.5, 0.0F, 45.0F);
-            useOn(sp, com.mundosdeaxelis.npc.NpcService.kit("hilda"), new net.minecraft.core.BlockPos(KX, SY - 1, KZ), net.minecraft.core.Direction.UP);
+            plantSeed(sp, "hilda", KX, KZ);
         }));
         add("casa de hilda (comprobar)", 300, () -> {
             net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(KX, SY, KZ + 1));

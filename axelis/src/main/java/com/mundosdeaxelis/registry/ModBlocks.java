@@ -113,6 +113,21 @@ public final class ModBlocks {
                         return ph >= 2 ? 14 : ph == 1 ? 9 : 5;
                     })));
 
+    /**
+     * Semilla de casa puesta en el suelo (etapa 260): marca dónde crecerá la casa de un habitante y muestra un holograma de la casa.
+     * Se rompe al momento y vuelve a la mano; ni las explosiones, ni los pistones, ni el agua se la llevan.
+     */
+    public static final RegistryObject<Block> SEMILLA_CASA = BLOCKS.register("semilla_casa",
+            () -> new com.mundosdeaxelis.npc.SemillaCasaBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .strength(0.2F, 3600000.0F)
+                    .sound(SoundType.ROOTED_DIRT)
+                    .noOcclusion()
+                    .forceSolidOn()
+                    .noLootTable()
+                    .pushReaction(PushReaction.BLOCK)
+                    .lightLevel(state -> 6)));
+
     /** Fumarola del volcán (etapa 255): echa vapor sin parar; adorno de la ladera, sin daño. */
     public static final RegistryObject<Block> FUMAROLA = BLOCKS.register("fumarola",
             () -> new com.mundosdeaxelis.block.FumarolaBlock(BlockBehaviour.Properties.of()

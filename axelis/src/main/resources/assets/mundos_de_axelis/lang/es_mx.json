@@ -2032,8 +2032,8 @@
   "item.mundos_de_axelis.brujula_npc": "Brújula: %s",
   "tooltip.mundos_de_axelis.llave_celda": "La llevaba el Raizal que guarda el altar del santuario.",
   "tooltip.mundos_de_axelis.llave_celda.use": "Úsala en la puerta de la celda para liberar a quien está preso.",
-  "tooltip.mundos_de_axelis.semilla_casa": "Hace crecer la casa de quien rescataste (unos 9 × 10 bloques) con la puerta mirando hacia ti.",
-  "tooltip.mundos_de_axelis.semilla_casa.use": "Úsala sobre el suelo, en un sitio plano y despejado cerca de tu hogar.",
+  "tooltip.mundos_de_axelis.semilla_casa": "Ponla en el suelo cerca de tu hogar: sale un holograma de la casa de quien rescataste, con su tamaño.",
+  "tooltip.mundos_de_axelis.semilla_casa.use": "En rojo, lo que estorba. Agachado y con la mano vacía + clic derecho: girar la casa.",
   "message.mundos_de_axelis.llave.nadie": "Aquí no hay nadie preso.",
   "message.mundos_de_axelis.casa.unknown": "Esta semilla no es de nadie...",
   "message.mundos_de_axelis.casa.dimension": "Aquí no crece nada: busca un sitio en el mundo normal.",
@@ -2172,5 +2172,16 @@
   "npc.mundos_de_axelis.hilda.hint.hielo": "Hay un fortín de escarcha hacia %s, a unos %s bloques. Las espadas de esos centinelas las forjó alguien con buen pulso, lo reconozco.",
   "npc.mundos_de_axelis.hilda.hint.forja": "La vieja fragua queda hacia %s, a unos %s bloques. Si vuelves, salúdame al yunque grande. Y rompe un par de escorias por mí.",
   "npc.mundos_de_axelis.hilda.hint.none": "No sé de ningún sitio así por aquí (%s). Explora más lejos y vuelve; yo mientras afilo algo.",
-  "npc.mundos_de_axelis.hilda.hint.here": "¿%s? Está aquí mismo. Hasta un martillo lo vería."
+  "npc.mundos_de_axelis.hilda.hint.here": "¿%s? Está aquí mismo. Hasta un martillo lo vería.",
+  "block.mundos_de_axelis.semilla_casa": "Semilla de casa",
+  "tooltip.mundos_de_axelis.semilla_casa.grow": "Clic derecho en la semilla: la casa crece. Si la rompes, vuelve a tu mano.",
+  "message.mundos_de_axelis.casa.semilla_puesta": "Mira el holograma: así quedará la casa de %s. Clic derecho en la semilla para que crezca.",
+  "message.mundos_de_axelis.casa.girada": "Casa girada.",
+  "message.mundos_de_axelis.casa.ocupado_n": "No cabe: %s bloques estorban (los ves en rojo en el holograma).",
+  "hologram.mundos_de_axelis.casa.title": "Casa de %s",
+  "hologram.mundos_de_axelis.casa.size": "%s × %s bloques · %s de alto",
+  "hologram.mundos_de_axelis.casa.blocked": "%s bloques estorban (en rojo)",
+  "hologram.mundos_de_axelis.casa.uneven": "Terreno muy desigual (en naranja)",
+  "hologram.mundos_de_axelis.casa.ok": "¡Cabe! Clic derecho en la semilla para que crezca",
+  "hologram.mundos_de_axelis.casa.rotate": "Agachado y mano vacía + clic derecho: girar"
 }

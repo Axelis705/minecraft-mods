@@ -1,5 +1,6 @@
 package com.mundosdeaxelis.npc;
 
+import javax.annotation.Nullable;
 import com.mundosdeaxelis.MundosDeAxelis;
 import com.mundosdeaxelis.entity.Habitante;
 import com.mundosdeaxelis.network.ModNetwork;
@@ -258,7 +259,7 @@ public final class NpcService {
     }
 
     /** Lado al que mira el jugador -> giro del plano para que la casa crezca delante y la puerta quede mirándolo. */
-    static Rotation rotFor(Direction facing) {
+    public static Rotation rotFor(Direction facing) {
         return switch (facing) {
             case WEST -> Rotation.CLOCKWISE_90;
             case NORTH -> Rotation.CLOCKWISE_180;
@@ -272,6 +273,18 @@ public final class NpcService {
      * y pone dentro al habitante como vecino. Devuelve la clave del mensaje de error, o null si salió bien.
      */
     public static String plantHouse(ServerLevel l, ServerPlayer sp, String kind, BlockPos origin, Direction facing) {
+        return plantHouse(l, sp, kind, origin, facing, null);
+    }
+
+    /** Bloques que estorbaban en la última revisión del sitio (para el aviso «N bloques en medio»). Solo en el hilo del servidor. */
+    static int lastBlocked;
+
+    /**
+     * Igual, pero sin contar {@code seed} (la Semilla de casa puesta en el suelo, que marca dónde va la casa): si todo está bien la
+     * quita justo antes de construir.
+     */
+    public static String plantHouse(ServerLevel l, ServerPlayer sp, String kind, BlockPos origin, Direction facing, @Nullable BlockPos seed) {
+        lastBlocked = 0;
         NpcKinds.Kind k = NpcKinds.get(kind);
         if (k == null) {
             return "message.mundos_de_axelis.casa.unknown";
@@ -288,9 +301,12 @@ public final class NpcService {
         }
         Rotation rot = rotFor(facing);
         StructBp bp = StructDesigns.make(k.house());
-        String err = checkSite(l, sp, bp, origin, rot);
+        String err = checkSite(l, sp, bp, origin, rot, seed);
         if (err != null) {
             return err;
+        }
+        if (seed != null) {
+            l.removeBlock(seed, false); // la semilla se convierte en la casa (no suelta nada)
         }
         new StructPlacer(l, bp, origin, rot, null).runAll();
         BlockPos spot = StructPlacer.world(origin, rot, 0, 0, 4);
@@ -308,13 +324,17 @@ public final class NpcService {
         return null;
     }
 
-    static String checkSite(ServerLevel l, ServerPlayer sp, StructBp bp, BlockPos origin, Rotation rot) {
+    static String checkSite(ServerLevel l, ServerPlayer sp, StructBp bp, BlockPos origin, Rotation rot, @Nullable BlockPos seed) {
         int minX = Integer.MAX_VALUE, minY = minX, minZ = minX, maxX = Integer.MIN_VALUE, maxY = maxX, maxZ = maxX;
         int blocked = 0;
+        lastBlocked = 0;
         for (Map.Entry<Long, String> e : bp.m.entrySet()) {
             long key = e.getKey();
             int y = StructBp.ky(key);
             BlockPos w = StructPlacer.world(origin, rot, StructBp.kx(key), y, StructBp.kz(key));
+            if (w.equals(seed)) {
+                continue;
+            }
             if (w.getY() < l.getMinBuildHeight() || w.getY() >= l.getMaxBuildHeight() - 1) {
                 return "message.mundos_de_axelis.casa.altura";
             }
@@ -337,6 +357,7 @@ public final class NpcService {
             maxZ = Math.max(maxZ, w.getZ());
         }
         if (blocked > 0) {
+            lastBlocked = blocked;
             return "message.mundos_de_axelis.casa.ocupado";
         }
         // terreno: bajo el suelo de la casa no puede haber un hueco de más de 3 bloques

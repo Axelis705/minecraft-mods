@@ -1,0 +1,225 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "minecraft:block/moss_block",
+    "dirt": "minecraft:block/rooted_dirt",
+    "moss": "minecraft:block/moss_block",
+    "sprout": "mundos_de_axelis:block/semilla_casa_brote"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        2,
+        13
+      ],
+      "faces": {
+        "down": {
+          "texture": "#dirt",
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ]
+        },
+        "up": {
+          "texture": "#moss",
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ]
+        },
+        "north": {
+          "texture": "#dirt",
+          "uv": [
+            3,
+            14,
+            13,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#dirt",
+          "uv": [
+            3,
+            14,
+            13,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#dirt",
+          "uv": [
+            3,
+            14,
+            13,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#dirt",
+          "uv": [
+            3,
+            14,
+            13,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        2,
+        5
+      ],
+      "to": [
+        11,
+        3,
+        11
+      ],
+      "faces": {
+        "up": {
+          "texture": "#moss",
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ]
+        },
+        "north": {
+          "texture": "#moss",
+          "uv": [
+            5,
+            13,
+            11,
+            14
+          ]
+        },
+        "south": {
+          "texture": "#moss",
+          "uv": [
+            5,
+            13,
+            11,
+            14
+          ]
+        },
+        "west": {
+          "texture": "#moss",
+          "uv": [
+            5,
+            13,
+            11,
+            14
+          ]
+        },
+        "east": {
+          "texture": "#moss",
+          "uv": [
+            5,
+            13,
+            11,
+            14
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        0.8,
+        3,
+        8
+      ],
+      "to": [
+        15.2,
+        16,
+        8
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#sprout",
+          "uv": [
+            0,
+            3,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#sprout",
+          "uv": [
+            0,
+            3,
+            16,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        3,
+        0.8
+      ],
+      "to": [
+        8,
+        16,
+        15.2
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "west": {
+          "texture": "#sprout",
+          "uv": [
+            0,
+            3,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#sprout",
+          "uv": [
+            0,
+            3,
+            16,
+            16
+          ]
+        }
+      }
+    }
+  ]
+}

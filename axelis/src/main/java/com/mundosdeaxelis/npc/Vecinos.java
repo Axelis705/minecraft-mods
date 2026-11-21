@@ -177,6 +177,12 @@ public final class Vecinos extends SavedData {
                         .then(Commands.argument("tipo", com.mojang.brigadier.arguments.StringArgumentType.word())
                                 .suggests((c, sb) -> net.minecraft.commands.SharedSuggestionProvider.suggest(NpcKinds.ALL.keySet(), sb))
                                 .executes(c -> plant(c.getSource(), com.mojang.brigadier.arguments.StringArgumentType.getString(c, "tipo")))))
+                // etapa 260: poner la Semilla de casa (con su holograma) y hacerla crecer, como haría un jugador
+                .then(Commands.literal("semilla")
+                        .then(Commands.argument("tipo", com.mojang.brigadier.arguments.StringArgumentType.word())
+                                .suggests((c, sb) -> net.minecraft.commands.SharedSuggestionProvider.suggest(NpcKinds.ALL.keySet(), sb))
+                                .executes(c -> seed(c.getSource(), com.mojang.brigadier.arguments.StringArgumentType.getString(c, "tipo")))))
+                .then(Commands.literal("crecer").executes(c -> grow(c.getSource())))
                 .then(Commands.literal("mudar").executes(c -> move(c.getSource(), NpcKinds.RUDA.id()))
                         .then(Commands.argument("tipo", com.mojang.brigadier.arguments.StringArgumentType.word())
                                 .suggests((c, sb) -> net.minecraft.commands.SharedSuggestionProvider.suggest(NpcKinds.ALL.keySet(), sb))
@@ -211,6 +217,35 @@ public final class Vecinos extends SavedData {
             return 0;
         }
         src.sendSuccess(() -> Component.literal("VECINOS_CASA_OK " + kind), true);
+        return 1;
+    }
+
+    private static int seed(CommandSourceStack src, String kind) {
+        if (NpcKinds.get(kind) == null) {
+            src.sendFailure(Component.literal("No existe el habitante " + kind));
+            return 0;
+        }
+        ServerLevel l = src.getLevel();
+        BlockPos pos = BlockPos.containing(src.getPosition());
+        net.minecraft.core.Direction facing = net.minecraft.core.Direction.fromYRot(src.getRotation().y);
+        l.setBlock(pos, com.mundosdeaxelis.registry.ModBlocks.SEMILLA_CASA.get().defaultBlockState().setValue(SemillaCasaBlock.FACING, facing), 3);
+        if (l.getBlockEntity(pos) instanceof SemillaCasaBlockEntity be) {
+            be.setKind(kind);
+        }
+        src.sendSuccess(() -> Component.literal("VECINOS_SEMILLA_PUESTA " + kind), true);
+        return 1;
+    }
+
+    private static int grow(CommandSourceStack src) {
+        ServerLevel l = src.getLevel();
+        BlockPos pos = BlockPos.containing(src.getPosition());
+        String err = SemillaCasaBlock.grow(l, null, pos);
+        if (err != null) {
+            String extra = NpcService.lastBlocked > 0 ? " (" + NpcService.lastBlocked + " bloques en medio)" : "";
+            src.sendFailure(Component.literal("VECINOS_SEMILLA_NO_CRECE " + err + extra));
+            return 0;
+        }
+        src.sendSuccess(() -> Component.literal("VECINOS_SEMILLA_CRECIO"), true);
         return 1;
     }
 

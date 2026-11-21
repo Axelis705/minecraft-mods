@@ -29,6 +29,10 @@ public final class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<com.mundosdeaxelis.block.FumarolaBlockEntity>> FUMAROLA = BLOCK_ENTITIES.register("fumarola",
             () -> BlockEntityType.Builder.of(com.mundosdeaxelis.block.FumarolaBlockEntity::new, ModBlocks.FUMAROLA.get()).build(null));
 
+    /** Semilla de casa puesta en el suelo (etapa 260): de quién es, para el holograma de su casa. */
+    public static final RegistryObject<BlockEntityType<com.mundosdeaxelis.npc.SemillaCasaBlockEntity>> SEMILLA_CASA = BLOCK_ENTITIES.register("semilla_casa",
+            () -> BlockEntityType.Builder.of(com.mundosdeaxelis.npc.SemillaCasaBlockEntity::new, ModBlocks.SEMILLA_CASA.get()).build(null));
+
     private ModBlockEntities() {
     }
 }

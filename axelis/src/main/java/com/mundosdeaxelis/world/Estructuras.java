@@ -221,7 +221,8 @@ public final class Estructuras {
 
     // ------------------------------------------------------------------ bloques
 
-    private static final Map<String, BlockState> CACHE = new HashMap<>();
+    /** Se usa también desde el cliente (holograma de la Semilla de casa): por eso admite varios hilos a la vez. */
+    private static final Map<String, BlockState> CACHE = new java.util.concurrent.ConcurrentHashMap<>();
     private static final BlockState NONE = Blocks.BARRIER.defaultBlockState();
 
     /** Convierte un texto como {@code oak_stairs[facing=north,half=bottom]} en un bloque; devuelve null si ese bloque no existe. */

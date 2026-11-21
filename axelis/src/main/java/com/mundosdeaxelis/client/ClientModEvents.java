@@ -79,6 +79,7 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(com.mundosdeaxelis.registry.ModBlockEntities.CRATE.get(), CrateRenderer::new);
+        event.registerBlockEntityRenderer(com.mundosdeaxelis.registry.ModBlockEntities.SEMILLA_CASA.get(), SemillaCasaRenderer::new);
         event.registerBlockEntityRenderer(com.mundosdeaxelis.registry.ModBlockEntities.ARTIFICER_TABLE.get(), ArtificerTableRenderer::new);
         event.registerEntityRenderer(ModEntities.REY_BROTE.get(), ReyBroteRenderer::new);
         event.registerEntityRenderer(ModEntities.BROTE.get(), BroteRenderer::new);
