@@ -175,7 +175,7 @@ execute unless entity @e[type=mundos_de_axelis:centinela_escarcha,x=395,y=-70,z=
 execute positioned 450 -60 -30 rotated 0 0 run mundos vecinos plantar bruno
 execute if block 450 -60 -29 minecraft:spruce_door run say PRUEBA_BRUNO_CASA_PUERTA_OK
 execute if block 452 -60 -28 minecraft:cartography_table run say PRUEBA_BRUNO_CASA_MESA_OK
-execute if entity @e[type=mundos_de_axelis:habitante,x=447,y=-61,z=-29,dx=7,dy=4,dz=7,nbt={NpcState:2,Npc:"bruno"}] run say PRUEBA_BRUNO_VECINO_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=441,y=-62,z=-35,dx=18,dy=6,dz=18,nbt={NpcState:2,Npc:"bruno"}] run say PRUEBA_BRUNO_VECINO_OK
 mundos vecinos estado
 mundos vecinos mudar bruno
 execute unless block 450 -60 -29 minecraft:spruce_door run say PRUEBA_BRUNO_CASA_DESARMADA_OK
@@ -205,7 +205,8 @@ execute positioned 570 -60 -30 rotated 0 0 run mundos vecinos plantar hilda
 execute if block 570 -60 -29 minecraft:dark_oak_door run say PRUEBA_HILDA_CASA_PUERTA_OK
 execute if block 572 -60 -25 minecraft:smithing_table run say PRUEBA_HILDA_CASA_MESA_OK
 execute if block 574 -51 -24 minecraft:campfire run say PRUEBA_HILDA_CASA_CHIMENEA_OK
-execute if entity @e[type=mundos_de_axelis:habitante,x=567,y=-61,z=-29,dx=7,dy=4,dz=7,nbt={NpcState:2,Npc:"hilda"}] run say PRUEBA_HILDA_VECINA_OK
+execute as @e[type=mundos_de_axelis:habitante,nbt={Npc:"hilda"}] run data get entity @s Pos
+execute if entity @e[type=mundos_de_axelis:habitante,x=561,y=-62,z=-35,dx=18,dy=6,dz=18,nbt={NpcState:2,Npc:"hilda"}] run say PRUEBA_HILDA_VECINA_OK
 item replace block 568 -60 -28 container.0 with minecraft:iron_ingot 5
 mundos vecinos estado
 mundos vecinos mudar hilda
