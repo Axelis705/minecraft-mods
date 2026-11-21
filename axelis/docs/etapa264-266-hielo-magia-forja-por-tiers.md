@@ -142,5 +142,5 @@ Un gólem gigante de hierro oxidado (unos 3,5 bloques de alto) que construyó el
 ## Pendiente
 
 - Los tiers 6, 7 y 8 (más adelante).
-- Mejorar el botín de los cofres (Axelis lo ve vacío; idea: materiales para forjar llaves).
+- ~~Mejorar el botín de los cofres~~: hecho en la etapa 268 (fragmentos de llave, botín de cada tier, más cofres y barriles con botín).
 

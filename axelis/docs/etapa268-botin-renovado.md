@@ -105,3 +105,13 @@ Cada cofre nuevo está en un rincón junto a la pared. Una revisión automática
   - los barriles con su tabla de botín;
   - las cinco tablas de barriles sueltan cosas;
   - `mundos prueba botin`: tira el botín 800 veces por tipo (etapas 1 a 8, cerraduras 1 a 5) y comprueba que nunca sale vacío ni con pilas raras, que los fragmentos son de la caja de la etapa y que el gran tesoro siempre trae fragmentos.
+- **Juego real (cliente)**:
+  - los cinco cofres de cada tier, uno al lado del otro, y los de escarcha y arcano con cerradura;
+  - al abrir el gran tesoro del Archimago: 24 pilas, 2 fragmentos de llave de la Magia y 3 libros encantados, con el título «Gran tesoro del Archimago»;
+  - en la Mesa del Artífice, pestaña Crear, sale «Llave de la Naturaleza: 6 de Esencia y 4 fragmentos»; al pulsar Crear se gastan los 4 fragmentos y aparece la llave;
+  - el resto de la prueba de siempre (estructuras, rescates, Coloso, volcán…) sigue en verde: **191 comprobaciones, 0 fallos**, 140 fotos.
+  - Arreglo que salió en la prueba: la comprobación vieja de la Torre Arcana esperaba el cofre de antes; ahora espera el arcano.
+
+## Pendiente
+
+- Los tiers 6, 7 y 8 (más adelante): su botín ya tiene una base (diamantes, perlas, netherita), pero les faltan estructuras, cofres y barriles propios.
