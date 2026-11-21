@@ -1749,6 +1749,9 @@ public final class AutoTest {
         add("puente (foto)", 300, () -> shot("36_volcan_puente"));
         add("pisar el puente", 700, () -> lookV(-8.5, 24, 78.5, 4, 23, 78.5));
         add("cruje (foto)", 2500, () -> shot("37_puente_cruje"));
+        // si el servidor de pruebas va lento, el derrumbe (bloque a bloque) tarda un poco más en llegar a los pies
+        add("se derrumba", 1500, () -> {
+        });
         add("se cae", 300, () -> {
             double ly = Minecraft.getInstance().player.getY() - VY;
             check("el puente se derrumba y caes al foso (altura " + String.format(Locale.ROOT, "%.1f", ly) + ")", ly < 23);
