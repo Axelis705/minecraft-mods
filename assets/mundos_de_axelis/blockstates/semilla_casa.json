@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "mundos_de_axelis:block/semilla_casa",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "mundos_de_axelis:block/semilla_casa",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "mundos_de_axelis:block/semilla_casa"
+    },
+    "facing=west": {
+      "model": "mundos_de_axelis:block/semilla_casa",
+      "y": 90
+    }
+  }
+}
