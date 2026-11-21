@@ -198,7 +198,6 @@ final class Pets9 {
         for (int sd = -1; sd <= 1; sd += 2) {
             ell(c, new V3(sd * 0.115, 0.075 + hop * 0.5, -0.09), new V3(0.062, 0.062, 0.125), 12, 8, flat(MB_W));
             ell(c, new V3(sd * 0.115, 0.03 + hop * 0.3, -0.02), new V3(0.05, 0.022, 0.095), 10, 5, flat(MB_W2));
-            ell(c, new V3(sd * 0.075, 0.03 + hop * 0.3, 0.14), new V3(0.032, 0.03, 0.045), 8, 6, flat(MB_W));
         }
         // cuerpo
         V3 bc = new V3(0, 0.23 + bob, -0.03), br = new V3(0.15, 0.16, 0.18);

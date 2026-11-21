@@ -11,7 +11,8 @@ import java.util.Map;
  * archivos de idioma ({@code npc.mundos_de_axelis.<id>.preso.N}, {@code .libre.N}, {@code .vecino.N}).
  */
 public final class NpcKinds {
-    public record Kind(String id, int accent, String house, int presoLines, int libreLines, int vecinoLines) {
+    /** {@code slim}: brazos finos (como Alex) o anchos (como Steve). */
+    public record Kind(String id, int accent, String house, int presoLines, int libreLines, int vecinoLines, boolean slim) {
         public String nameKey() {
             return "entity.mundos_de_axelis.habitante." + id;
         }
@@ -22,12 +23,15 @@ public final class NpcKinds {
     }
 
     /** Ruda, la herbolaria: presa en la celda del Santuario del Bosque. */
-    public static final Kind RUDA = new Kind("ruda", 0x7DC45A, "casa_ruda", 4, 3, 8);
+    public static final Kind RUDA = new Kind("ruda", 0x7DC45A, "casa_ruda", 4, 3, 8, true);
+    /** Bruno, el cartógrafo: preso en la celda del Fortín de Escarcha (etapa 258). */
+    public static final Kind BRUNO = new Kind("bruno", 0x7FC8F0, "casa_bruno", 4, 3, 8, false);
 
     public static final Map<String, Kind> ALL = new LinkedHashMap<>();
 
     static {
         ALL.put(RUDA.id(), RUDA);
+        ALL.put(BRUNO.id(), BRUNO);
     }
 
     public static Kind get(String id) {

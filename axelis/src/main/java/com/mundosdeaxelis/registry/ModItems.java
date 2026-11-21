@@ -65,6 +65,8 @@ public final class ModItems {
             () -> new ForgeSpawnEggItem(ModEntities.CORAZON_MAGMA, 0x1B1222, 0xFF5A14, new Item.Properties()));
     public static final RegistryObject<Item> LARVA_MAGMA_SPAWN_EGG = ITEMS.register("larva_magma_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.LARVA_MAGMA, 0x2A1814, 0xFFB030, new Item.Properties()));
+    public static final RegistryObject<Item> CENTINELA_ESCARCHA_SPAWN_EGG = ITEMS.register("centinela_escarcha_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.CENTINELA_ESCARCHA, 0xBFD8EC, 0x2C5A8C, new Item.Properties()));
     public static final RegistryObject<Item> ESBIRRO_SPAWN_EGG = ITEMS.register("esbirro_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ESBIRRO, 0x2B2360, 0xB57CFF, new Item.Properties()));
     public static final RegistryObject<Item> SALAMANDRA_LAVA_SPAWN_EGG = ITEMS.register("salamandra_lava_spawn_egg",

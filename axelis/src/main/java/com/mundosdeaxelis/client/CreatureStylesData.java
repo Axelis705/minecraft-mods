@@ -73,6 +73,8 @@ final class CreatureStylesData {
         CreatureStyles.put(LoboArtico.class, CreatureStyle.of().steps(0.6F, 0.3F).heavy().bob(0.0F).lean(0.5F).bank(0.6F).squash(0.3F)
                 .recoil(4.0F).death(Death.NONE).hurtFx(() -> ParticleTypes.SNOWFLAKE).deathFx(() -> ParticleTypes.SNOWFLAKE, 44));
         // ---------------------------------------------------------------- torre
+        CreatureStyles.put(com.mundosdeaxelis.entity.CentinelaEscarcha.class, CreatureStyle.of().steps(0.6662F, 0.2F).bob(0.015F).lean(0.7F).bank(0.8F)
+                .death(Death.FLOP).hurtFx(() -> ParticleTypes.SNOWFLAKE).deathFx(() -> ParticleTypes.SNOWFLAKE, 30));
         CreatureStyles.put(Esbirro.class, CreatureStyle.of().steps(0.6662F, 0.2F).bob(0.02F).lean(0.9F).bank(1.0F).death(Death.FLOP)
                 .hurtFx(() -> Fx.wisp(0x9A6AFF, 0.4F)).deathFx(() -> Fx.wisp(0x9A6AFF, 0.6F), 24));
         CreatureStyles.put(ArmaduraEncantada.class, CreatureStyle.of().steps(0.6662F, 0.2F).bob(0.03F).lean(0.6F).squash(0.3F)

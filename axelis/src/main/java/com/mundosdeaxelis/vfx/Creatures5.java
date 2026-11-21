@@ -366,7 +366,7 @@ final class Creatures5 {
                 double z0 = fb == 0 ? 0.08 : -0.08;
                 double sz = Math.sin(phs) * 0.045 * w;
                 double lf = Math.max(0, Math.cos(phs)) * 0.03 * w;
-                Detail.pixBox(c, new V3(sd * 0.065, 0.055 + lf, z0 + sz), new V3(0.050, 0.055, 0.050), 3, 4, 3, (f, i, j, ni, nj) -> {
+                Detail.pixBox(c, new V3(sd * 0.065, 0.07 + lf, z0 + sz), new V3(0.050, 0.07, 0.050), 3, 4, 3, (f, i, j, ni, nj) -> {
                     float[] col = skin.at(f, i, j, ni, nj);
                     return (f < 2 || f > 3) && j == 0 ? scale(col, 0.55) : col;
                 });
@@ -625,9 +625,9 @@ final class Creatures5 {
         for (int sd = -1; sd <= 1; sd += 2) {
             double phs = c.gait * 0.9 + (sd > 0 ? 0 : Math.PI);
             double sz = Math.sin(phs) * 0.05 * w, lf = Math.max(0, Math.cos(phs)) * 0.03 * w;
-            box(c, new V3(sd * 0.078, 0.095 + lf, sz), new V3(0.058, 0.060, 0.062), iron);
+            box(c, new V3(sd * 0.078, 0.108 + lf, sz), new V3(0.058, 0.074, 0.062), iron);
             box(c, new V3(sd * 0.078, 0.028 + lf, sz + 0.02), new V3(0.064, 0.028, 0.082), flat(GO_DK));
-            box(c, new V3(sd * 0.078, 0.150 + lf, sz), new V3(0.05, 0.012, 0.055), flat(GO_RUST2));
+            box(c, new V3(sd * 0.078, 0.160 + lf, sz), new V3(0.06, 0.012, 0.064), flat(GO_RUST2));
         }
         // cintura y torso ancho
         box(c, new V3(0, 0.205 + bob, 0), new V3(0.115, 0.030, 0.088), flat(GO_DK));
@@ -1152,7 +1152,7 @@ final class Creatures5 {
         curve(c, tcp, new double[]{0.08, 0.058, 0.04, 0.026}, 4, 8, skin);
         // aleta de luna creciente al final de la cola
         {
-            V3 ce = tcp[3].add(0, 0.0, -0.06);
+            V3 ce = tcp[3].add(0, 0.0, -0.025);
             V3[] arc = new V3[9];
             double[] rr = new double[9];
             for (int i = 0; i < 9; i++) {

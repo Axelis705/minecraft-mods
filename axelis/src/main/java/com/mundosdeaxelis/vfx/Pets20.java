@@ -289,6 +289,9 @@ final class Pets20 {
             double p = c.gait + (sd > 0 ? Math.PI : 0);
             double sw = Math.sin(p) * 0.045 * w, lift = Math.max(0, Math.cos(p)) * 0.035 * w;
             ell(c, new V3(sd * 0.065, 0.032 + lift, 0.02 + sw), new V3(0.05, 0.032, 0.065), 12, 8, (n, q) -> mix(MH_OB, MH_OB2, ss(-0.2, 0.9, n.y) * 0.6F));
+            // tobillo de roca: une el pie con el cuerpo aunque el pie se adelante o se levante al andar
+            V3 ank = new V3(sd * 0.062, 0.075 + lift * 0.6 + bob * 0.5, 0.015 + sw * 0.7);
+            ell(c, ank, new V3(0.036, 0.048, 0.04), 10, 7, (n, q) -> mix(MH_OB, MH_OB2, ss(-0.2, 0.9, n.y) * 0.6F));
         }
         glow(c, new V3(0, 0.22 + bob, 0), 0.75, new float[]{1F, 0.5F, 0.15F}, 0.25 + 0.25 * beat);
         // cuerpo: corazón de lava (dos lóbulos arriba y la punta abajo), brilla solo

@@ -173,27 +173,14 @@ public final class Vecinos extends SavedData {
                     c.getSource().sendSuccess(() -> Component.literal("VECINOS_LIBERADO " + h.kindId()), true);
                     return 1;
                 }))
-                .then(Commands.literal("plantar").executes(c -> {
-                    ServerLevel l = c.getSource().getLevel();
-                    net.minecraft.core.Direction facing = net.minecraft.core.Direction.fromYRot(c.getSource().getRotation().y);
-                    String kind = NpcKinds.RUDA.id();
-                    String err = NpcService.plantHouse(l, null, kind, BlockPos.containing(c.getSource().getPosition()), facing);
-                    if (err != null) {
-                        c.getSource().sendFailure(Component.translatable(err));
-                        return 0;
-                    }
-                    c.getSource().sendSuccess(() -> Component.literal("VECINOS_CASA_OK " + kind), true);
-                    return 1;
-                }))
-                .then(Commands.literal("mudar").executes(c -> {
-                    Habitante h = find(c.getSource().getServer(), NpcKinds.RUDA.id());
-                    if (h == null || !NpcService.moveOut(null, h)) {
-                        c.getSource().sendFailure(Component.literal("No hay ningún vecino con casa cargado."));
-                        return 0;
-                    }
-                    c.getSource().sendSuccess(() -> Component.literal("VECINOS_MUDADO " + h.kindId()), true);
-                    return 1;
-                }))
+                .then(Commands.literal("plantar").executes(c -> plant(c.getSource(), NpcKinds.RUDA.id()))
+                        .then(Commands.argument("tipo", com.mojang.brigadier.arguments.StringArgumentType.word())
+                                .suggests((c, sb) -> net.minecraft.commands.SharedSuggestionProvider.suggest(NpcKinds.ALL.keySet(), sb))
+                                .executes(c -> plant(c.getSource(), com.mojang.brigadier.arguments.StringArgumentType.getString(c, "tipo")))))
+                .then(Commands.literal("mudar").executes(c -> move(c.getSource(), NpcKinds.RUDA.id()))
+                        .then(Commands.argument("tipo", com.mojang.brigadier.arguments.StringArgumentType.word())
+                                .suggests((c, sb) -> net.minecraft.commands.SharedSuggestionProvider.suggest(NpcKinds.ALL.keySet(), sb))
+                                .executes(c -> move(c.getSource(), com.mojang.brigadier.arguments.StringArgumentType.getString(c, "tipo")))))
                 .then(Commands.literal("reiniciar").executes(c -> {
                     MinecraftServer server = c.getSource().getServer();
                     int n = 0;
@@ -213,6 +200,28 @@ public final class Vecinos extends SavedData {
                             + " quitados). Las celdas de los santuarios nuevos vuelven a tener preso."), true);
                     return 1;
                 }));
+    }
+
+    private static int plant(CommandSourceStack src, String kind) {
+        ServerLevel l = src.getLevel();
+        net.minecraft.core.Direction facing = net.minecraft.core.Direction.fromYRot(src.getRotation().y);
+        String err = NpcService.plantHouse(l, null, kind, BlockPos.containing(src.getPosition()), facing);
+        if (err != null) {
+            src.sendFailure(Component.translatable(err));
+            return 0;
+        }
+        src.sendSuccess(() -> Component.literal("VECINOS_CASA_OK " + kind), true);
+        return 1;
+    }
+
+    private static int move(CommandSourceStack src, String kind) {
+        Habitante h = find(src.getServer(), kind);
+        if (h == null || !NpcService.moveOut(null, h)) {
+            src.sendFailure(Component.literal("No hay ningún vecino con casa cargado (" + kind + ")."));
+            return 0;
+        }
+        src.sendSuccess(() -> Component.literal("VECINOS_MUDADO " + kind), true);
+        return 1;
     }
 
     // ================================================================== guardar

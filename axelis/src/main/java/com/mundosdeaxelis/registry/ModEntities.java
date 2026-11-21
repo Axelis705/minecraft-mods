@@ -145,6 +145,12 @@ public final class ModEntities {
                     .clientTrackingRange(10)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "salamandra_lava").toString()));
 
+    /** Enemigo del Fortín de Escarcha (etapa 258). */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.CentinelaEscarcha>> CENTINELA_ESCARCHA = ENTITIES.register("centinela_escarcha",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.CentinelaEscarcha>of(com.mundosdeaxelis.entity.CentinelaEscarcha::new, MobCategory.MONSTER)
+                    .sized(0.65F, 2.05F)
+                    .clientTrackingRange(10)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "centinela_escarcha").toString()));
     /** Habitantes (etapa 257): los NPC que se rescatan de las celdas de las estructuras. */
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Habitante>> HABITANTE = ENTITIES.register("habitante",
             () -> EntityType.Builder.<com.mundosdeaxelis.entity.Habitante>of(com.mundosdeaxelis.entity.Habitante::new, MobCategory.MISC)

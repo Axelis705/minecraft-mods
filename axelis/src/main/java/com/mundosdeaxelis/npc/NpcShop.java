@@ -39,6 +39,7 @@ public final class NpcShop {
             new Offer("pack_basic", () -> new ItemStack(CartasItems.PACKS.get("basico").get()), 60, 1, null),
             new Offer("compass_bosque", () -> new ItemStack(Items.COMPASS), 40, 1, "bosque"),
             new Offer("compass_volcan", () -> new ItemStack(Items.COMPASS), 120, 1, "volcan"),
+            new Offer("compass_hielo", () -> new ItemStack(Items.COMPASS), 80, 1, "hielo"),
             // con dos vecinos
             new Offer("pack_silver", () -> new ItemStack(CartasItems.PACKS.get("plata").get()), 140, 2, null),
             new Offer("golden_acorn", () -> new ItemStack(ModItems.GOLDEN_ACORN.get()), 200, 2, null),

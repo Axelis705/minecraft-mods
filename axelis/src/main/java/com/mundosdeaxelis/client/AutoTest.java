@@ -393,12 +393,26 @@ public final class AutoTest {
     private static volatile int essBefore;
 
     private static com.mundosdeaxelis.entity.Habitante rudaClient() {
+        return npcClient("ruda");
+    }
+
+    private static com.mundosdeaxelis.entity.Habitante npcClient(String kind) {
         for (var en : Minecraft.getInstance().level.entitiesForRendering()) {
-            if (en instanceof com.mundosdeaxelis.entity.Habitante h && "ruda".equals(h.kindId())) {
+            if (en instanceof com.mundosdeaxelis.entity.Habitante h && kind.equals(h.kindId())) {
                 return h;
             }
         }
         return null;
+    }
+
+    private static void npcServer(String kind, java.util.function.BiConsumer<net.minecraft.server.level.ServerPlayer, com.mundosdeaxelis.entity.Habitante> c) {
+        onServer(sp -> {
+            for (com.mundosdeaxelis.entity.Habitante h : sp.serverLevel().getEntitiesOfClass(com.mundosdeaxelis.entity.Habitante.class,
+                    sp.getBoundingBox().inflate(64), x -> kind.equals(x.kindId()))) {
+                c.accept(sp, h);
+                return;
+            }
+        });
     }
 
     private static void rudaServer(java.util.function.BiConsumer<net.minecraft.server.level.ServerPlayer, com.mundosdeaxelis.entity.Habitante> c) {
@@ -563,6 +577,131 @@ public final class AutoTest {
             check("al mudarse, Ruda queda libre con otra semilla", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE
                     && invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
             open(null);
+        });
+    }
+
+    // ------------------------------------------------------------------ etapa 258: Fortín de Escarcha y Bruno, el cartógrafo
+
+    /** El fortín se construye con su origen en (FX, SY, FZ): la sala va de FZ + 24 a FZ + 43, la celda al este (x FX + 9..14). */
+    private static final int FX = 360, FZ = 20;
+    /** Casa de Bruno (la puerta queda en BZ + 1). */
+    private static final int BX = 200, BZ = -10;
+    private static volatile boolean fortKey;
+
+    private static void fortin() {
+        net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(FX + 9, SY, FZ + 32);
+        add("fortín", 9000, () -> {
+            clearMobs();
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld positioned " + FX + " " + SY + " " + (FZ - 16) + " rotated 0 0 run mundos estructura hielo");
+        });
+        add("fortín (fuera)", 2500, () -> standLooking(FX + 0.5, SY + 9, FZ - 26, FX, SY + 3, FZ + 26));
+        add("fortín (fuera, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(FX, SY + 1, FZ + 40));
+            check("en el estrado del fortín está la Piedra de Portal: Hielo (" + ps.getBlock() + ")",
+                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_ICE.get()));
+            shot("58_fortin_fuera");
+        });
+        add("fortín (patio)", 2500, () -> standLooking(FX + 0.5, SY, FZ - 5, FX + 0.5, SY + 3, FZ + 24));
+        add("fortín (patio, foto)", 300, () -> shot("59_fortin_patio"));
+        add("fortín (sala)", 2500, () -> standLooking(FX + 0.5, SY, FZ + 26.5, FX + 0.5, SY + 1.2, FZ + 40));
+        add("fortín (sala, foto)", 300, () -> {
+            int n = clientCount(com.mundosdeaxelis.entity.CentinelaEscarcha.class);
+            check("hay centinelas de escarcha en el fortín (" + n + ")", n >= 2);
+            check("hay lobeznos de escarcha en el fortín", clientCount(com.mundosdeaxelis.entity.LoboEscarcha.class) >= 2);
+            shot("60_fortin_sala");
+        });
+        add("bruno preso", 2500, () -> {
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            cmd("kill @e[type=mundos_de_axelis:lobo_escarcha]");
+            standLooking(FX + 6.5, SY, FZ + 29.5, FX + 12.5, SY + 1.4, FZ + 30.5);
+        });
+        add("bruno preso (hablar)", 2600, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("bruno");
+            check("Bruno está preso en la celda del fortín", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
+            npcServer("bruno", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("bruno preso (foto)", 300, () -> {
+            check("se abre la ventana de Bruno", npcScreen() != null);
+            shot("61_bruno_preso");
+            open(null);
+        });
+        add("llave del centinela", 1200, () -> {
+            cmd("kill @e[type=mundos_de_axelis:centinela_escarcha,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
+            onServer(sp -> fortKey = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(48),
+                    i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
+        });
+        add("llave en la celda del fortín", 2600, () -> {
+            check("el centinela del estrado suelta la llave", fortKey);
+            cmd("kill @e[type=item]");
+            onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()), door,
+                    net.minecraft.core.Direction.WEST));
+        });
+        add("bruno rescatado (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("bruno");
+            check("Bruno queda libre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE);
+            check("Bruno da su Semilla de casa", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
+            shot("62_bruno_rescatado");
+            open(null);
+        });
+        add("bruno sale (foto)", 5000, () -> {
+        });
+        add("bruno sale (comprobar)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("bruno");
+            check("Bruno salió de la celda", h != null && h.getX() < FX + 9);
+            cmd("kill @e[type=mundos_de_axelis:centinela_escarcha]");
+        });
+        add("dos casas", 2500, () -> {
+            // Ruda vuelve a tener casa (se había mudado) y se planta la de Bruno con su semilla
+            cmd("execute in minecraft:overworld positioned " + HX + " " + SY + " " + HZ + " rotated 0 0 run mundos vecinos plantar ruda");
+            cmd("execute in minecraft:overworld run tp @a " + (BX + 0.5) + " " + SY + " " + (BZ - 2.5) + " 0 45");
+        });
+        add("casa de bruno (plantar)", 2500, () -> onServer(sp -> {
+            sp.teleportTo(sp.serverLevel(), BX + 0.5, SY, BZ - 2.5, 0.0F, 45.0F);
+            useOn(sp, com.mundosdeaxelis.npc.NpcService.kit("bruno"), new net.minecraft.core.BlockPos(BX, SY - 1, BZ), net.minecraft.core.Direction.UP);
+        }));
+        add("casa de bruno (comprobar)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ds = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(BX, SY, BZ + 1));
+            check("crece la cabaña de Bruno", ds.is(net.minecraft.world.level.block.Blocks.SPRUCE_DOOR)
+                    && Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(BX + 2, SY, BZ + 2)).is(net.minecraft.world.level.block.Blocks.CARTOGRAPHY_TABLE));
+            com.mundosdeaxelis.entity.Habitante h = npcClient("bruno");
+            check("Bruno vive en su cabaña", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+        });
+        add("casa de bruno (fuera)", 2500, () -> standLooking(BX + 7.5, SY + 3, BZ - 7.5, BX, SY + 2.5, BZ + 4));
+        add("casa de bruno (fuera, foto)", 300, () -> shot("63_casa_bruno"));
+        add("casa de bruno (dentro)", 2500, () -> standLooking(BX + 0.5, SY, BZ + 2.3, BX + 0.5, SY + 1.2, BZ + 7));
+        add("casa de bruno (dentro, foto)", 300, () -> shot("64_casa_bruno_dentro"));
+        add("bruno vecino", 2600, () -> {
+            standLooking(BX + 0.5, SY, BZ + 2.3, BX + 0.5, SY + 1.4, BZ + 4.5);
+            onServer(sp -> {
+                com.mundosdeaxelis.table.Essence.add(sp, 500);
+                com.mundosdeaxelis.table.Essence.sync(sp);
+            });
+            npcServer("bruno", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("bruno vecino (tienda)", 800, () -> {
+            check("ventana de Bruno vecino", npcScreen() != null && npcScreen().state() == com.mundosdeaxelis.entity.Habitante.VECINO);
+            if (npcScreen() != null) {
+                npcScreen().press(NpcScreen.B_SHOP);
+            }
+        });
+        add("tienda con dos vecinos (foto)", 800, () -> {
+            shot("65_bruno_tienda");
+            essBefore = TableClient.essence;
+            if (npcScreen() != null) {
+                npcScreen().buy(10); // sobre de plata: necesita 2 vecinos con casa
+            }
+        });
+        add("tienda con dos vecinos (comprobar)", 1500, () -> {
+            check("con dos vecinos se puede comprar el sobre de plata (" + essBefore + " -> " + TableClient.essence + ")",
+                    TableClient.essence == essBefore - 140
+                            && invCount(com.mundosdeaxelis.cartas.CartasItems.PACKS.get("plata").get()) >= 1);
+            open(null);
+            cmd("gamemode spectator @a");
+            cmd("mundos vecinos reiniciar");
+            cmd("execute in minecraft:overworld positioned " + FX + " " + SY + " " + (FZ - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
         });
     }
 
@@ -1576,10 +1715,10 @@ public final class AutoTest {
         add("santuario (deshacer)", 1500, () -> {
             open(null);
             cmd("gamemode spectator @a");
-            cmd("mundos vecinos reiniciar");
             cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " run mundos estructura deshacer");
             cmd("kill @e[type=item]");
         });
+        fortin();
         // 7. retratos para las cartas: tres "estudios" cerrados (volcán, forja y torre) y cada criatura quieta, de frente, sin interfaz
         add("estudios", 3000, () -> {
             clearMobs();

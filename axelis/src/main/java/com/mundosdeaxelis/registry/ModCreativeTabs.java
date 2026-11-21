@@ -45,6 +45,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.LIBRO_EMBRUJADO_SPAWN_EGG.get());
                         output.accept(ModItems.ARMADURA_ENCANTADA_SPAWN_EGG.get());
                         output.accept(ModItems.LOBO_ESCARCHA_SPAWN_EGG.get());
+                        output.accept(ModItems.CENTINELA_ESCARCHA_SPAWN_EGG.get());
                         output.accept(ModItems.BROTE_SPAWN_EGG.get());
                         output.accept(ModItems.RAIZAL_SPAWN_EGG.get());
                         output.accept(ModItems.VAULT_CHEST.get());

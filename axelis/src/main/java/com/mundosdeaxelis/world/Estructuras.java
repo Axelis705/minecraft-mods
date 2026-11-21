@@ -60,7 +60,10 @@ public final class Estructuras {
         /** El templo grande de antes (fondo para videos). */
         TEMPLO("templo_bosque", "Gran templo del bosque", "bosque"),
         FORJA("forja", "Gran fundición de la forja", "forja"),
-        HIELO("hielo", "Ciudadela de cristal", "hielo"),
+        /** Etapa 258: la estructura del hielo de verdad (mediana, con la Piedra de Portal y la celda del NPC). */
+        HIELO("hielo", "Fortín de Escarcha", "fortin"),
+        /** La ciudadela grande de antes (fondo para videos). */
+        CIUDADELA("ciudadela", "Ciudadela de cristal", "hielo"),
         TORRE("torre", "Fortaleza en ruinas", "torre"),
         VOLCAN("volcan", "El Volcán", "volcan");
 

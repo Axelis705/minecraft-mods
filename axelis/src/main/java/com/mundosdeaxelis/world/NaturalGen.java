@@ -76,7 +76,13 @@ public final class NaturalGen extends SavedData {
             || b.is(Biomes.MEADOW)), (l, o, r, bp, mobs) -> {
     });
 
-    public static final List<Spec> SPECS = List.of(BOSQUE, VOLCAN);
+    /** Etapa 258: el Fortín de Escarcha, en llanuras nevadas, taigas nevadas, picos de hielo y arboledas. */
+    public static final Spec HIELO = new Spec("hielo", "fortin", "Fortín de Escarcha", 768, 50, 300, 0x1CE5F0A7L, 27, 34, 9, 4, 4, 220,
+            false, b -> land(b) && (b.is(Biomes.SNOWY_PLAINS) || b.is(Biomes.SNOWY_TAIGA) || b.is(Biomes.ICE_SPIKES) || b.is(Biomes.GROVE)),
+            (l, o, r, bp, mobs) -> {
+            });
+
+    public static final List<Spec> SPECS = List.of(BOSQUE, VOLCAN, HIELO);
 
     static Spec byId(String id) {
         for (Spec s : SPECS) {

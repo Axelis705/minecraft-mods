@@ -344,6 +344,8 @@ final class Pets10 {
             double belly = ss(0.0, 0.5, n.z) * ss(0.95, 0.3, Math.abs(n.x));
             return mix(mix(PX_BK, PX_BK2, ss(0.2, 0.9, n.y) * 0.3), PX_W, belly);
         };
+        // parte baja de la panza (forma de pera): baja hasta los pies, que antes quedaban sueltos debajo
+        ell(c, new V3(0, 0.15 + bob, 0.01), new V3(0.125, 0.105, 0.115), 14, 9, bp);
         ell(c, bc, br, 16, 11, bp);
         Detail.soft(c, bc, br, new V3(0, 0.1, 1), 0.2, new float[]{1F, 1F, 1F}, 0.5);
         // brújula colgada de una correa
