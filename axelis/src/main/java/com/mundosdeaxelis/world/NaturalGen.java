@@ -85,8 +85,17 @@ public final class NaturalGen extends SavedData {
             || b.is(Biomes.MEADOW)), (l, o, r, bp, mobs) -> {
     });
 
-    /** Etapa 258: el Fortín de Escarcha, en llanuras nevadas, taigas nevadas, picos de hielo y arboledas. */
-    public static final Spec HIELO = new Spec("hielo", "fortin", "Fortín de Escarcha", 768, 50, 300, 0x1CE5F0A7L, 27, 34, 9, 4, 4, 220,
+    /**
+     * Etapa 264: la Ciudadela de cristal (la estructura grande del tier del hielo, con la Piedra de Portal: Hielo en su cripta), en
+     * llanuras nevadas, taigas nevadas y picos de hielo. Su id es "hielo": a ella apuntan las pistas y brújulas del hielo.
+     */
+    public static final Spec HIELO = new Spec("hielo", "hielo", "Ciudadela de cristal", 960, 45, 450, 0x3C17DA05L, 34, 58, 12, 14, 6, 300,
+            false, b -> land(b) && (b.is(Biomes.SNOWY_PLAINS) || b.is(Biomes.SNOWY_TAIGA) || b.is(Biomes.ICE_SPIKES)),
+            (l, o, r, bp, mobs) -> {
+            });
+
+    /** Etapa 258: el Fortín de Escarcha (la estructura chica del hielo, con Bruno), en llanuras y taigas nevadas, picos de hielo y arboledas. */
+    public static final Spec FORTIN = new Spec("fortin", "fortin", "Fortín de Escarcha", 768, 50, 300, 0x1CE5F0A7L, 27, 34, 9, 4, 4, 220,
             false, b -> land(b) && (b.is(Biomes.SNOWY_PLAINS) || b.is(Biomes.SNOWY_TAIGA) || b.is(Biomes.ICE_SPIKES) || b.is(Biomes.GROVE)),
             (l, o, r, bp, mobs) -> {
             });
@@ -105,7 +114,7 @@ public final class NaturalGen extends SavedData {
             (l, o, r, bp, mobs) -> {
             });
 
-    public static final List<Spec> SPECS = List.of(BOSQUE, SANTUARIO, VOLCAN, HIELO, FORJA, TORRE);
+    public static final List<Spec> SPECS = List.of(BOSQUE, SANTUARIO, VOLCAN, HIELO, FORTIN, FORJA, TORRE);
 
     static Spec byId(String id) {
         for (Spec s : SPECS) {
@@ -124,6 +133,8 @@ public final class NaturalGen extends SavedData {
     private boolean migrated;
     /** Etapa 262: antes el id "bosque" era el santuario; ahora es el templo. Las regiones vistas pasan al id "santuario". */
     private boolean migrated262;
+    /** Etapa 264: antes el id "hielo" era el fortín; ahora es la ciudadela. Las regiones vistas pasan al id "fortin". */
+    private boolean migrated264;
 
     public NaturalGen() {
     }
@@ -156,6 +167,18 @@ public final class NaturalGen extends SavedData {
             }
             g.setDirty();
         }
+        if (!g.migrated264) {
+            g.migrated264 = true;
+            Map<Long, Integer> old = g.regions.remove(HIELO.id());
+            if (old != null && !g.regions.containsKey(FORTIN.id())) {
+                g.regions.put(FORTIN.id(), old);
+            }
+            Boolean on = g.enabled.remove(HIELO.id());
+            if (on != null) {
+                g.enabled.put(FORTIN.id(), on);
+            }
+            g.setDirty();
+        }
         return g;
     }
 
@@ -171,6 +194,7 @@ public final class NaturalGen extends SavedData {
         NaturalGen g = new NaturalGen();
         g.migrated = tag.getBoolean("Migrated");
         g.migrated262 = tag.getBoolean("Migrated262");
+        g.migrated264 = tag.getBoolean("Migrated264");
         CompoundTag on = tag.getCompound("Enabled");
         for (String k : on.getAllKeys()) {
             g.enabled.put(k, on.getBoolean(k));
@@ -194,6 +218,7 @@ public final class NaturalGen extends SavedData {
     public CompoundTag save(CompoundTag tag) {
         tag.putBoolean("Migrated", migrated);
         tag.putBoolean("Migrated262", migrated262);
+        tag.putBoolean("Migrated264", migrated264);
         CompoundTag on = new CompoundTag();
         enabled.forEach(on::putBoolean);
         tag.put("Enabled", on);

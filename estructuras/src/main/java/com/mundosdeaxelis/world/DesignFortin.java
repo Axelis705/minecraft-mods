@@ -4,8 +4,9 @@ package com.mundosdeaxelis.world;
  * Fortín de Escarcha (etapa 258): la estructura del hielo, de tamaño mediano. Una muralla baja de pizarra con almenas y cuatro
  * torres con chapitel, un portón con el rastrillo subido, un patio nevado (estanque helado, fogata con bancos de tronco, cajas,
  * carámbanos de hielo) y al fondo una gran sala nórdica de pizarra y abeto con tejado muy inclinado. Dentro, pilares, braseros
- * de fuego azul y, sobre un estrado, la Piedra de Portal: Hielo (lleva a la dungeon del Lobo Ártico) con un cofre al lado. Pegada
- * a la sala, una celda con barrotes y puerta de hierro donde está preso el habitante del hielo.
+ * de fuego azul y, sobre un estrado, la mesa de mapas que los centinelas le quitaron a Bruno, con un cofre al lado. Pegada a la sala,
+ * una celda con barrotes y puerta de hierro donde está preso Bruno: es el final de la estructura (etapa 264: la Piedra de Portal:
+ * Hielo pasó a la Ciudadela de cristal, la estructura grande del hielo).
  * <p>Enemigos: dos Lobeznos de escarcha en el patio, uno en la sala y dos Centinelas de escarcha (el del estrado lleva la llave de
  * la celda). Entrada por z = 0; la muralla ocupa x -15..15, z 8..46; la sala x -9..9, z 24..43.
  */
@@ -14,7 +15,6 @@ final class DesignFortin {
     }
 
     private static final String M = "mundos_de_axelis:";
-    static final String PORTAL = M + "portal_stone_ice";
     private static final String DB = "deepslate_bricks";
     private static final String CDB = "cracked_deepslate_bricks";
     private static final String CD = "cobbled_deepslate";
@@ -382,14 +382,15 @@ final class DesignFortin {
                 b.set(x, 1, z, "soul_campfire[lit=true,signal_fire=false,facing=north]");
             }
         }
-        // estrado con la Piedra de Portal
+        // estrado con la mesa de mapas de Bruno (se la quitaron los centinelas)
         for (int x = -5; x <= 5; x++) {
             for (int z = 38; z <= KZ1 - 1; z++) {
                 b.set(x, 0, z, Math.abs(x) <= 1 && z >= 39 ? "chiseled_deepslate" : PD);
             }
             b.set(x, 0, 37, StructBp.stair("polished_deepslate_stairs", "+z", false));
         }
-        b.set(0, 1, 40, PORTAL);
+        b.set(0, 1, 40, "cartography_table");
+        b.set(0, 2, 40, "candle[candles=3,lit=true]");
         for (int sx : new int[]{-1, 1}) {
             b.set(sx * 2, 1, 40, "blue_ice");
             b.set(sx * 2, 2, 40, "packed_ice");

@@ -31,7 +31,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Estructuras de fondo para grabar videos, hechas solo con comandos (como WorldEdit):
- * {@code /mundos estructura <templo|santuario|forja|fundicion|hielo|ciudadela|torre|fortaleza|volcan>} la construye delante de quien escribe, mirando hacia él;
+ * {@code /mundos estructura <templo|santuario|forja|fundicion|ciudadela|fortin|torre|fortaleza|volcan>} la construye delante de quien escribe, mirando hacia él;
  * {@code /mundos estructura deshacer [veces]} la quita y deja el terreno como estaba (bloques, entidades de bloque y todo).
  * Los bloques propios del mod (decoraciones) se usan si existen; si no, simplemente se omiten.
  */
@@ -63,10 +63,10 @@ public final class Estructuras {
         FORJA("forja", "Fragua Olvidada", "fragua"),
         /** La gran fundición de antes (fondo para videos). */
         FUNDICION("fundicion", "Gran fundición de la forja", "forja"),
-        /** Etapa 258: la estructura del hielo de verdad (mediana, con la Piedra de Portal y la celda del NPC). */
-        HIELO("hielo", "Fortín de Escarcha", "fortin"),
-        /** La ciudadela grande de antes (fondo para videos). */
+        /** Etapa 264: la estructura grande del hielo, con la Piedra de Portal: Hielo en la cripta, al final de las mazmorras. */
         CIUDADELA("ciudadela", "Ciudadela de cristal", "hielo"),
+        /** La estructura chica del hielo (etapa 258): termina en la celda de Bruno. */
+        FORTIN("fortin", "Fortín de Escarcha", "fortin"),
         /** Etapa 261: la estructura de la torre de verdad (mediana, con la Piedra de Portal en el observatorio y la celda de Teo). */
         TORRE("torre", "Torre Arcana", "torre_arcana"),
         /** La fortaleza grande de antes (fondo para videos). */

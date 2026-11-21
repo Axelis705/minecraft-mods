@@ -102,6 +102,17 @@ mundos estructura deshacer
 execute unless block 0 -54 106 mundos_de_axelis:portal_stone_volcano run say PRUEBA_VOLCAN_DESHECHO_OK
 execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1,Npc:"ignacio"}] run say PRUEBA_IGNACIO_SIGUE_TRAS_DESHACER_OK
 execute unless entity @e[type=mundos_de_axelis:cultista_volcan] run say PRUEBA_VOLCAN_SIN_ENEMIGOS_OK
+forceload add 768 -40 792 -15
+execute positioned 780 -60 -30 rotated 0 0 run mundos vecinos semilla ignacio
+execute positioned 780 -60 -30 run mundos vecinos crecer
+execute if block 780 -60 -29 minecraft:mangrove_door run say PRUEBA_IGNACIO_CASA_PUERTA_OK
+execute if block 778 -60 -25 minecraft:lectern run say PRUEBA_IGNACIO_CASA_ATRIL_OK
+execute if block 780 -57 -24 minecraft:wither_skeleton_skull run say PRUEBA_IGNACIO_CASA_MASCARA_OK
+execute if entity @e[type=mundos_de_axelis:habitante,x=771,y=-62,z=-35,dx=18,dy=6,dz=18,nbt={NpcState:2,Npc:"ignacio"}] run say PRUEBA_IGNACIO_VECINO_OK
+mundos vecinos mudar ignacio
+execute unless block 780 -60 -29 minecraft:mangrove_door run say PRUEBA_IGNACIO_CASA_DESARMADA_OK
+mundos vecinos reiniciar
+forceload remove 768 -40 792 -15
 #expect PRUEBA_VOLCAN_PIEDRA_OK
 #expect PRUEBA_VOLCAN_NUCLEO_OK
 #expect PRUEBA_VOLCAN_LAGO_OK
@@ -177,7 +188,7 @@ execute positioned 330 -60 -30 rotated 0 0 run mundos vecinos plantar
 execute if block 330 -60 -29 minecraft:spruce_door run say PRUEBA_RUDA_CASA_PUERTA_OK
 execute if block 330 -56 -26 minecraft:lantern run say PRUEBA_RUDA_CASA_FAROL_OK
 execute if entity @e[type=mundos_de_axelis:habitante,x=327,y=-61,z=-29,dx=7,dy=4,dz=7,nbt={NpcState:2}] run say PRUEBA_RUDA_VECINA_OK
-execute unless entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1}] run say PRUEBA_RUDA_UNA_SOLA_OK
+execute unless entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1,Npc:"ruda"}] run say PRUEBA_RUDA_UNA_SOLA_OK
 mundos vecinos estado
 mundos vecinos mudar
 execute unless block 330 -60 -29 minecraft:spruce_door run say PRUEBA_RUDA_CASA_DESARMADA_OK
@@ -189,9 +200,10 @@ forceload remove 320 -40 345 -5
 execute unless entity @e[type=mundos_de_axelis:raizal,x=280,y=-70,z=0,dx=40,dy=20,dz=60] run say PRUEBA_SANTUARIO_SIN_ENEMIGOS_OK
 forceload remove 270 -10 330 70
 forceload add 380 -40 470 80
-execute positioned 420 -60 0 rotated 0 0 run mundos estructura hielo
+execute positioned 420 -60 0 rotated 0 0 run mundos estructura fortin
 #wait Escarcha construida 90
-execute if block 420 -59 56 mundos_de_axelis:portal_stone_ice run say PRUEBA_FORTIN_PIEDRA_OK
+execute unless block 420 -59 56 mundos_de_axelis:portal_stone_ice run say PRUEBA_FORTIN_SIN_PIEDRA_OK
+execute if block 420 -59 56 minecraft:cartography_table run say PRUEBA_FORTIN_MESA_MAPAS_OK
 execute if block 429 -60 48 minecraft:iron_door run say PRUEBA_FORTIN_CELDA_PUERTA_OK
 execute if block 429 -60 44 minecraft:iron_bars run say PRUEBA_FORTIN_CELDA_BARROTES_OK
 execute if data block 424 -59 57 {Kind:"ANTE",Stage:3} run say PRUEBA_FORTIN_COFRE_OK
@@ -205,7 +217,7 @@ execute positioned 432 -60 46 run mundos vecinos liberar
 execute if block 429 -60 48 minecraft:iron_door[open=true] run say PRUEBA_BRUNO_PUERTA_ABIERTA_OK
 execute if entity @e[type=mundos_de_axelis:habitante,nbt={NpcState:1,Npc:"bruno"}] run say PRUEBA_BRUNO_LIBRE_OK
 execute positioned 420 -60 0 run mundos estructura deshacer
-execute unless block 420 -59 56 mundos_de_axelis:portal_stone_ice run say PRUEBA_FORTIN_DESHECHO_OK
+execute unless block 420 -59 56 minecraft:cartography_table run say PRUEBA_FORTIN_DESHECHO_OK
 execute unless entity @e[type=mundos_de_axelis:centinela_escarcha,x=395,y=-70,z=10,dx=50,dy=20,dz=60] run say PRUEBA_FORTIN_SIN_ENEMIGOS_OK
 execute positioned 450 -60 -30 rotated 0 0 run mundos vecinos plantar bruno
 execute if block 450 -60 -29 minecraft:spruce_door run say PRUEBA_BRUNO_CASA_PUERTA_OK
@@ -296,20 +308,9 @@ mundos vecinos mudar teo
 execute unless block 740 -60 -29 minecraft:dark_oak_door run say PRUEBA_TEO_CASA_DESARMADA_OK
 mundos vecinos reiniciar
 forceload remove 728 -40 752 -15
-forceload add 768 -40 792 -15
-execute positioned 780 -60 -30 rotated 0 0 run mundos vecinos semilla ignacio
-execute positioned 780 -60 -30 run mundos vecinos crecer
-execute if block 780 -60 -29 minecraft:mangrove_door run say PRUEBA_IGNACIO_CASA_PUERTA_OK
-execute if block 778 -60 -25 minecraft:lectern run say PRUEBA_IGNACIO_CASA_ATRIL_OK
-execute if block 780 -57 -24 minecraft:wither_skeleton_skull run say PRUEBA_IGNACIO_CASA_MASCARA_OK
-execute if entity @e[type=mundos_de_axelis:habitante,x=771,y=-62,z=-35,dx=18,dy=6,dz=18,nbt={NpcState:2,Npc:"ignacio"}] run say PRUEBA_IGNACIO_VECINO_OK
-mundos vecinos mudar ignacio
-execute unless block 780 -60 -29 minecraft:mangrove_door run say PRUEBA_IGNACIO_CASA_DESARMADA_OK
-mundos vecinos reiniciar
-forceload remove 768 -40 792 -15
 forceload add 3150 -70 3260 80
-execute positioned 3200 -60 0 rotated 0 0 run mundos natural generar hielo aqui
-#wait HIELO_NATURAL_OK 150
+execute positioned 3200 -60 0 rotated 0 0 run mundos natural generar fortin aqui
+#wait FORTIN_NATURAL_OK 150
 execute if entity @e[type=mundos_de_axelis:habitante,x=3140,y=-80,z=-80,dx=130,dy=40,dz=170,nbt={NpcState:0,Npc:"bruno"}] run say PRUEBA_FORTIN_NATURAL_BRUNO_OK
 execute if entity @e[type=mundos_de_axelis:centinela_escarcha,x=3140,y=-80,z=-80,dx=130,dy=40,dz=170] run say PRUEBA_FORTIN_NATURAL_CENTINELAS_OK
 execute positioned 3200 -60 0 run mundos natural cerca
@@ -347,6 +348,23 @@ execute unless entity @e[type=mundos_de_axelis:habitante,x=1050,y=-60,z=10,dx=10
 execute positioned 1100 -48 0 run mundos estructura deshacer
 execute unless block 1100 -27 68 mundos_de_axelis:portal_stone_forest run say PRUEBA_TEMPLO_DESHECHO_OK
 forceload remove 1026 -17 1175 148
+forceload add 1330 -30 1470 130
+execute positioned 1400 -48 0 rotated 0 0 run mundos estructura ciudadela
+#wait Ciudadela de cristal construida 200
+execute if block 1400 -57 95 mundos_de_axelis:portal_stone_ice run say PRUEBA_CIUDADELA_PIEDRA_OK
+execute if data block 1402 -58 95 {Kind:"ANTE",Stage:3} run say PRUEBA_CIUDADELA_COFRE_OK
+execute if entity @e[type=mundos_de_axelis:lobo_escarcha,x=1330,y=-70,z=-30,dx=140,dy=50,dz=160] run say PRUEBA_CIUDADELA_LOBOS_OK
+execute if entity @e[type=mundos_de_axelis:centinela_escarcha,x=1390,y=-62,z=82,dx=20,dy=6,dz=16] run say PRUEBA_CIUDADELA_CENTINELAS_CRIPTA_OK
+execute unless entity @e[type=mundos_de_axelis:habitante,x=1330,y=-70,z=-30,dx=140,dy=50,dz=160] run say PRUEBA_CIUDADELA_SIN_NPC_OK
+execute positioned 1400 -48 0 run mundos estructura deshacer
+execute unless block 1400 -57 95 mundos_de_axelis:portal_stone_ice run say PRUEBA_CIUDADELA_DESHECHA_OK
+execute unless entity @e[type=mundos_de_axelis:centinela_escarcha,x=1330,y=-70,z=-30,dx=140,dy=50,dz=160] run say PRUEBA_CIUDADELA_SIN_ENEMIGOS_OK
+forceload remove 1330 -30 1470 130
+forceload add 5520 -110 5680 110
+execute positioned 5600 -48 0 rotated 0 0 run mundos natural generar hielo aqui
+#wait HIELO_NATURAL_OK 300
+execute if entity @e[type=mundos_de_axelis:centinela_escarcha,x=5500,y=-80,z=-130,dx=200,dy=80,dz=260] run say PRUEBA_CIUDADELA_NATURAL_OK
+forceload remove 5520 -110 5680 110
 forceload add 4930 -70 5070 70
 execute positioned 5000 -48 0 rotated 0 0 run mundos natural generar bosque aqui
 #wait BOSQUE_NATURAL_OK 300
@@ -377,7 +395,8 @@ forceload remove 4930 -70 5070 70
 #expect PRUEBA_RUDA_MUDADA_OK
 #expect PRUEBA_RUDA_REINICIO_OK
 #expect PRUEBA_RUDA_NATURAL_PRESA_OK
-#expect PRUEBA_FORTIN_PIEDRA_OK
+#expect PRUEBA_FORTIN_SIN_PIEDRA_OK
+#expect PRUEBA_FORTIN_MESA_MAPAS_OK
 #expect PRUEBA_FORTIN_CELDA_PUERTA_OK
 #expect PRUEBA_FORTIN_CELDA_BARROTES_OK
 #expect PRUEBA_FORTIN_COFRE_OK
@@ -463,3 +482,11 @@ mundos prueba construir 2
 #expect PRUEBA_IGNACIO_CASA_MASCARA_OK
 #expect PRUEBA_IGNACIO_VECINO_OK
 #expect PRUEBA_IGNACIO_CASA_DESARMADA_OK
+#expect PRUEBA_CIUDADELA_PIEDRA_OK
+#expect PRUEBA_CIUDADELA_COFRE_OK
+#expect PRUEBA_CIUDADELA_LOBOS_OK
+#expect PRUEBA_CIUDADELA_CENTINELAS_CRIPTA_OK
+#expect PRUEBA_CIUDADELA_SIN_NPC_OK
+#expect PRUEBA_CIUDADELA_DESHECHA_OK
+#expect PRUEBA_CIUDADELA_SIN_ENEMIGOS_OK
+#expect PRUEBA_CIUDADELA_NATURAL_OK

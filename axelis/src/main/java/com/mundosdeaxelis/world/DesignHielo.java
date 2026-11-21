@@ -6,6 +6,9 @@ import static com.mundosdeaxelis.world.StructKit.*;
  * Ciudadela de Cristal: un palacio gótico de cuarzo y hielo rodeado de foso helado y muralla con torres,
  * con catedral central (naves, galería, trono), edificios en los patios, y mazmorras heladas bajo tierra.
  * Entrada por z = 0, se extiende hacia z positivo.
+ * <p>Etapa 264: es la estructura grande del tier del hielo. Su final es la cripta de hielo, al fondo de las mazmorras: allí, sobre el
+ * altar, está la Piedra de Portal: Hielo, con un cofre de provisiones. Lobos y centinelas de escarcha guardan el camino, y la
+ * ciudadela aparece sola en tierras nevadas.
  */
 final class DesignHielo {
     private DesignHielo() {
@@ -29,6 +32,9 @@ final class DesignHielo {
     private static final String PBS = "prismarine_brick_stairs";
     private static final String PBL = "prismarine_brick_slab";
     private static final String SOUL = "soul_lantern";
+    static final String PORTAL = "mundos_de_axelis:portal_stone_ice";
+    /** Lo que ocupa (para mezclar el borde con el terreno). */
+    static final int X0 = -42, X1 = 42, Z0 = -16, Z1 = 84;
 
     static StructBp make() {
         StructBp b = new StructBp(3003);
@@ -43,6 +49,8 @@ final class DesignHielo {
         dungeon(b);
         finishing(b);
         Linker.link(b, 0, 0, -3, 10, Q, QS);
+        surroundings(b);
+        mobs(b);
         return b;
     }
 
@@ -693,7 +701,10 @@ final class DesignHielo {
         // altar de hielo
         b.box(-2, fy + 1, 78, 2, fy + 1, 80, BI);
         b.box(-1, fy + 2, 79, 1, fy + 2, 79, CQ);
-        b.set(0, fy + 3, 79, "soul_campfire[lit=true]");
+        // el final de la ciudadela: la Piedra de Portal: Hielo sobre el altar, y el cofre de provisiones al lado
+        b.set(0, fy + 3, 79, PORTAL);
+        b.setNbt(2, fy + 2, 79, "mundos_de_axelis:vault_chest[facing=north]", "{Kind:\"ANTE\",Stage:3}");
+        b.set(-2, fy + 2, 79, "soul_lantern");
         crystal(b, 0, 80, fy + 3, 8, 1, 0, 0, 3, BI, "light_blue_stained_glass");
         crypt.baseboard(QS).torches(6, fy + 3, true);
         // sala de los carceleros al este y escalera desde la nave (bajo la galería)
@@ -733,6 +744,65 @@ final class DesignHielo {
         for (int x = 8; x <= 12; x++) {
             b.set(x, 0, 48, "iron_bars");
         }
+    }
+
+    // ================================================================== alrededores y enemigos (etapa 264)
+
+    /** Fuera del rectángulo, el terreno real baja o sube en rampa suave hasta el nivel de la ciudadela; el camino sigue recto. */
+    private static void surroundings(StructBp b) {
+        int rr = 26;
+        for (int x = X0 - rr; x <= X1 + rr; x++) {
+            for (int z = Z0 - rr; z <= Z1 + rr; z++) {
+                double dx = Math.max(Math.max(0, X0 - x), Math.max(0, x - X1));
+                double dz = Math.max(Math.max(0, Z0 - z), Math.max(0, z - Z1));
+                double e = Math.hypot(dx, dz);
+                if (e <= 0) {
+                    continue;
+                }
+                double ramp = 9 + 4 * vnoise(3011, x * 0.08, z * 0.08);
+                double w = Math.min(1, e / ramp);
+                w = w * w * (3 - 2 * w);
+                boolean road = Math.abs(x) <= 2 && z < Z0;
+                if (w >= 0.999 && !road) {
+                    continue;
+                }
+                b.blend(x, z, road ? Math.min(w, 0.5) : w, road ? (hash01(3012, x, z) < 0.4 ? "packed_ice" : "snow_block") : null, null);
+            }
+        }
+    }
+
+    private static boolean free(StructBp b, int x, int y, int z) {
+        String below = b.get(x, y - 1, z);
+        String at = b.get(x, y, z);
+        String up = b.get(x, y + 1, z);
+        boolean airAt = at == null || at.equals("air") || at.startsWith("snow[");
+        boolean airUp = up == null || up.equals("air");
+        return airAt && airUp && below != null && !below.equals("air") && !below.contains("stairs") && !below.contains("campfire")
+                && !below.contains("bars") && !below.contains("fence") && !below.contains("wall");
+    }
+
+    private static void mob(StructBp b, int x, int y, int z, String kind) {
+        if (free(b, x, y, z)) {
+            b.mobs.add(new StructBp.Mob(x, y, z, kind));
+        } else {
+            System.err.println("[Ciudadela] sin sitio para " + kind + " en " + x + "," + y + "," + z);
+        }
+    }
+
+    /** Lobos en los patios, centinelas en la catedral y en las mazmorras; dos más guardan la cripta. */
+    private static void mobs(StructBp b) {
+        int fy = -12;
+        mob(b, -9, 0, 21, "lobo_escarcha");
+        mob(b, 9, 0, 21, "lobo_escarcha");
+        mob(b, -25, 0, 47, "lobo_escarcha");
+        mob(b, 25, 0, 47, "lobo_escarcha");
+        mob(b, 0, 0, 34, "centinela_escarcha");
+        mob(b, -4, 0, 48, "centinela_escarcha");
+        mob(b, 0, fy + 1, 44, "centinela_escarcha");
+        mob(b, 0, fy + 1, 58, "centinela_escarcha");
+        mob(b, 8, fy + 1, 46, "lobo_escarcha");
+        mob(b, -1, fy + 1, 72, "centinela_escarcha");
+        mob(b, 1, fy + 1, 75, "centinela_escarcha");
     }
 
     // ================================================================== acabado

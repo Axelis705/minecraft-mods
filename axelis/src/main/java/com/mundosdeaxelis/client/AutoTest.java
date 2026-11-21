@@ -683,13 +683,13 @@ public final class AutoTest {
         add("fortín", 9000, () -> {
             clearMobs();
             cmd("gamemode spectator @a");
-            cmd("execute in minecraft:overworld positioned " + FX + " " + SY + " " + (FZ - 16) + " rotated 0 0 run mundos estructura hielo");
+            cmd("execute in minecraft:overworld positioned " + FX + " " + SY + " " + (FZ - 16) + " rotated 0 0 run mundos estructura fortin");
         });
         add("fortín (fuera)", 2500, () -> standLooking(FX + 0.5, SY + 9, FZ - 26, FX, SY + 3, FZ + 26));
         add("fortín (fuera, foto)", 300, () -> {
             net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(FX, SY + 1, FZ + 40));
-            check("en el estrado del fortín está la Piedra de Portal: Hielo (" + ps.getBlock() + ")",
-                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_ICE.get()));
+            check("en el estrado del fortín está la mesa de mapas de Bruno, no la Piedra de Portal (" + ps.getBlock() + ")",
+                    ps.is(net.minecraft.world.level.block.Blocks.CARTOGRAPHY_TABLE));
             shot("58_fortin_fuera");
         });
         add("fortín (patio)", 2500, () -> standLooking(FX + 0.5, SY, FZ - 5, FX + 0.5, SY + 3, FZ + 24));
@@ -944,6 +944,38 @@ public final class AutoTest {
             cmd("gamemode spectator @a");
             // Ruda, Bruno e Hilda se quedan con su casa: con Teo (la torre) serán cuatro
             cmd("execute in minecraft:overworld positioned " + GX + " " + SY + " " + (GZ - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
+        });
+    }
+
+    // ------------------------------------------------------------------ etapa 264: Ciudadela de cristal (la Piedra de Portal: Hielo)
+
+    /** Ciudadela: la entrada (z local 0) en {@code CDZ0}; se construye 12 más arriba que el suelo plano (las mazmorras bajan 12). */
+    private static final int CDX = -700, CDY = -48, CDZ0 = 100;
+
+    private static void ciudadela() {
+        add("ciudadela (ir)", 2500, () -> {
+            clearMobs();
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld run tp @a " + (CDX + 0.5) + " " + (CDY + 30) + " " + (CDZ0 - 40) + " 0 20");
+        });
+        add("ciudadela", 15000, () -> cmd("execute in minecraft:overworld positioned " + CDX + " " + CDY + " " + (CDZ0 - 16)
+                + " rotated 0 0 run mundos estructura ciudadela"));
+        add("ciudadela (fuera)", 2500, () -> standLooking(CDX + 52.5, CDY + 34, CDZ0 - 30, CDX, CDY + 8, CDZ0 + 40));
+        add("ciudadela (fuera, foto)", 300, () -> {
+            check("hay lobos de escarcha en los patios de la ciudadela", clientCount(com.mundosdeaxelis.entity.LoboEscarcha.class) >= 2);
+            shot("61b_ciudadela_fuera");
+        });
+        add("ciudadela (cripta)", 2500, () -> standLooking(CDX + 0.5, CDY - 11, CDZ0 + 70.5, CDX + 0.5, CDY - 8.5, CDZ0 + 79.5));
+        add("ciudadela (cripta, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(CDX, CDY - 9, CDZ0 + 79));
+            check("al final de la ciudadela, en la cripta, está la Piedra de Portal: Hielo (" + ps.getBlock() + ")",
+                    ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_ICE.get()));
+            check("centinelas de escarcha guardan la cripta", clientCount(com.mundosdeaxelis.entity.CentinelaEscarcha.class) >= 1);
+            shot("61c_ciudadela_cripta");
+        });
+        add("ciudadela (deshacer)", 2500, () -> {
+            cmd("execute in minecraft:overworld positioned " + CDX + " " + CDY + " " + (CDZ0 - 16) + " run mundos estructura deshacer");
             cmd("kill @e[type=item]");
         });
     }
@@ -2298,6 +2330,7 @@ public final class AutoTest {
             cmd("kill @e[type=item]");
         });
         templo();
+        ciudadela();
         fortin();
         fragua();
         torre();
