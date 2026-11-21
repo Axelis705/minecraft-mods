@@ -153,6 +153,15 @@ Se crea en la Mesa del Artífice: 8 fragmentos de amatista, una mesa de herrerí
 | Prueba con el cliente: Gran Yunque | forja perfecta y forja fallida |
 | Prueba con el cliente: Mesa de Gemas | infundir, engarzar, la descripción del arma y el cerdo que arde al golpearlo |
 
+## Arreglos que salieron en las pruebas
+
+- **Sellos**: el comando de prueba que borra el progreso ahora también quita los sellos del inventario. Si no, el Archivo los volvía a apuntar en 2 segundos.
+- **Llave de la celda**: ya no se quema en la lava. El fundidor de la isla de los hornos podía soltarla junto a la lava y se perdía.
+- **Mesa de Gemas**:
+  - al abrirla, la Esencia que muestra está al día;
+  - los textos de ayuda tienen 3 líneas y ya no se cortan.
+- **Resultado final de la prueba con el cliente**: 215 comprobaciones y 0 fallos.
+
 ## Qué queda para después
 
 - El contenido de los tiers 6 a 8.
