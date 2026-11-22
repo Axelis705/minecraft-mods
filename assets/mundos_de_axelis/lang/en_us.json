@@ -2601,7 +2601,7 @@
   "gui.mundos_de_axelis.tablon.recogido": "✔ Done",
   "gui.mundos_de_axelis.tablon.en_curso": "In progress",
   "gui.mundos_de_axelis.tablon.gran": "Big reward: claim all 3 bounties",
-  "gui.mundos_de_axelis.tablon.gran_detalle": "heart or gem · +%s ◆",
+  "gui.mundos_de_axelis.tablon.gran_detalle": "+%s ◆",
   "gui.mundos_de_axelis.tablon.manana": "Tomorrow (at dawn) there will be 3 new ones.",
   "message.mundos_de_axelis.encargo.cumplido": "Bounty done: %s! Claim it at the Bounty Board.",
   "message.mundos_de_axelis.encargo.recogido": "Bounty claimed: +%s Essence.",
