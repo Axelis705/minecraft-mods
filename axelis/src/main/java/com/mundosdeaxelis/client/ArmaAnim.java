@@ -39,20 +39,20 @@ public final class ArmaAnim implements IClientItemExtensions {
      * sale en diagonal y con 0 sale de arriba abajo.
      */
     private static final float[][] ESPADA = {
-            {0.00F, 0, 0, 0, 45, 0, 0},
-            {0.12F, 0.06F, 0.10F, 0.04F, 45, 8, 12},
-            {0.40F, -0.45F, -0.05F, -0.25F, 45, -25, -95},
-            {1.00F, 0, 0, 0, 45, 0, 0}};
+            {0.00F, 0, 0, 0, 0, 0, 0},
+            {0.12F, 0.01F, 0.17F, 0.00F, -54, 1, -4},
+            {0.40F, -0.26F, 0.04F, 0.00F, 68, -46, -91},
+            {1.00F, 0, 0, 0, 0, 0, 0}};
     // el hacha y el martillo suben (sin echarse hacia la cara) y bajan de golpe
     private static final float[][] HACHA = {
             {0.00F, 0, 0, 0, 0, 0, 0},
             {0.22F, 0.00F, 0.27F, 0.02F, -45, 9, 0},
-            {0.50F, -0.12F, -0.20F, -0.25F, 10, 8, -90},
+            {0.50F, -0.07F, 0.03F, 0.01F, 68, -60, -91},
             {1.00F, 0, 0, 0, 0, 0, 0}};
     private static final float[][] MARTILLO = {
             {0.00F, 0, 0, 0, 0, 0, 0},
-            {0.28F, 0.00F, 0.28F, -0.05F, 49, 28, -15},
-            {0.58F, -0.15F, -0.28F, -0.30F, 5, 10, -100},
+            {0.28F, -0.04F, 0.30F, 0.03F, 9, 4, -17},
+            {0.58F, 0.03F, 0.01F, -0.02F, 67, -56, -96},
             {1.00F, 0, 0, 0, 0, 0, 0}};
     // la lanza se pone apuntando al frente, se echa atrás y embiste hacia la mira
     private static final float[][] LANZA = {
@@ -62,8 +62,8 @@ public final class ArmaAnim implements IClientItemExtensions {
             {1.00F, 0, 0, 0, 0, 0, 0}};
     private static final float[][] DAGAS = {
             {0.00F, 0, 0, 0, 0, 0, 0},
-            {0.10F, 0.00F, 0.00F, 0.08F, 0, 20, -10},
-            {0.30F, -0.19F, 0.03F, -0.21F, -2, 46, -38},
+            {0.10F, 0.05F, 0.01F, -0.03F, 25, -40, -33},
+            {0.30F, -0.32F, 0.13F, -0.02F, 53, -40, -70},
             {1.00F, 0, 0, 0, 0, 0, 0}};
 
     private static float[][] claves(TipoArma t) {
