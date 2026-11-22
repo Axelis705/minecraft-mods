@@ -20,7 +20,7 @@ import java.util.List;
  * recogerlo; abajo, la gran recompensa por recoger las tres.
  */
 public class TablonScreen extends AbstractContainerScreen<TablonMenu> {
-    private static final int W = 236, H = 178;
+    private static final int W = 236, H = 192;
     private static final int ACCENT = 0xE0A040, PAPER = 0xFF2A2016, PAPER_DONE = 0xFF2E3A1C;
     private static final int ROW_Y = 22, ROW_H = 40, BONUS_Y = 146;
     private static final int[] BTN = {170, 12, 58, 16};
@@ -136,8 +136,7 @@ public class TablonScreen extends AbstractContainerScreen<TablonMenu> {
         Font f = font;
         int mx = amx - leftPos, my = amy - topPos;
         PanelUi.title(g, f, title, 8, 6, ACCENT);
-        Component tier = Component.translatable("gui.mundos_de_axelis.tablon.tier", menu.tier());
-        g.drawString(f, tier, W - 8 - f.width(tier), 6, 0xFFFFE9A8, false);
+
         RandomSource r = RandomSource.create(0L);
         for (int k = 0; k < Encargos.COUNT; k++) {
             int ry = ROW_Y + k * ROW_H;
@@ -188,7 +187,14 @@ public class TablonScreen extends AbstractContainerScreen<TablonMenu> {
         g.drawString(f, Component.translatable("gui.mundos_de_axelis.tablon.gran_detalle", 100 * menu.tier()), ix + 2, BONUS_Y + 16, 0xFFD8C8A0, false);
         button(g, f, Encargos.COUNT, mx, my, Component.translatable(menu.bonusClaimed() ? "gui.mundos_de_axelis.tablon.recogido"
                 : "gui.mundos_de_axelis.tablon.recoger"));
-        g.drawString(f, Component.translatable("gui.mundos_de_axelis.tablon.manana"), 8, H - 10, 0xFF8C7C60, false);
+        Component foot = Component.translatable("gui.mundos_de_axelis.tablon.tier", menu.tier()).append(" · ")
+                .append(Component.translatable("gui.mundos_de_axelis.tablon.manana"));
+        float fs = Math.min(1.0F, (W - 16.0F) / Math.max(1, f.width(foot)));
+        g.pose().pushPose();
+        g.pose().translate(8, H - 12, 0);
+        g.pose().scale(fs, fs, 1.0F);
+        g.drawString(f, foot, 0, 0, 0xFF8C7C60, false);
+        g.pose().popPose();
     }
 
     private void button(GuiGraphics g, Font f, int k, int mx, int my, Component label) {

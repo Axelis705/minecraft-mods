@@ -2601,7 +2601,7 @@
   "gui.mundos_de_axelis.tablon.recogido": "✔ Hecho",
   "gui.mundos_de_axelis.tablon.en_curso": "En curso",
   "gui.mundos_de_axelis.tablon.gran": "Gran recompensa: recoge los 3 encargos",
-  "gui.mundos_de_axelis.tablon.gran_detalle": "corazón o gema · +%s ◆",
+  "gui.mundos_de_axelis.tablon.gran_detalle": "+%s ◆",
   "gui.mundos_de_axelis.tablon.manana": "Mañana (al amanecer) salen otros 3.",
   "message.mundos_de_axelis.encargo.cumplido": "¡Encargo cumplido: %s! Recógelo en el Tablón de Encargos.",
   "message.mundos_de_axelis.encargo.recogido": "Encargo recogido: +%s de Esencia.",
