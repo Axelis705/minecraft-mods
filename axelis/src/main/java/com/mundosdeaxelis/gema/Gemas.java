@@ -30,6 +30,7 @@ import net.minecraftforge.fml.common.Mod;
  *     <li>Veneno (bosque): envenena; Filo (forja): más daño; Escarcha (hielo): ralentiza; Fuego (volcán): prende fuego;</li>
  *     <li>Arcano (magia): daño arcano extra; Vampiro (dragón): te cura; Rayo (cielo): a veces cae un rayo; Vacío (abismo): marchita.</li>
  * </ul>
+ * Desde la etapa 277 también se engarzan en la armadura, con un efecto de defensa distinto (ver {@link GemasArmadura}).
  */
 @Mod.EventBusSubscriber(modid = MundosDeAxelis.MODID)
 public final class Gemas {
@@ -90,9 +91,19 @@ public final class Gemas {
         return Component.translatable("gema.mundos_de_axelis.pureza." + PUREZA[Math.max(1, Math.min(4, p))]);
     }
 
-    /** ¿Admite gema? Armas cuerpo a cuerpo: espadas, hachas (las del mod también) y tridentes. */
+    /** ¿Admite gema? Armas cuerpo a cuerpo (espadas, hachas y tridentes) y, desde la etapa 277, las piezas de armadura. */
     public static boolean admite(ItemStack st) {
+        return esArma(st) || esArmadura(st);
+    }
+
+    /** Armas cuerpo a cuerpo: espadas, hachas (las del mod también) y tridentes. */
+    public static boolean esArma(ItemStack st) {
         return st.getItem() instanceof SwordItem || st.getItem() instanceof AxeItem || st.getItem() instanceof TridentItem;
+    }
+
+    /** Piezas de armadura (casco, peto, grebas y botas). */
+    public static boolean esArmadura(ItemStack st) {
+        return st.getItem() instanceof net.minecraft.world.item.ArmorItem;
     }
 
     public static Elemento gemaDe(ItemStack weapon) {
@@ -127,7 +138,7 @@ public final class Gemas {
             return;
         }
         ItemStack w = p.getMainHandItem();
-        Elemento el = gemaDe(w);
+        Elemento el = esArma(w) ? gemaDe(w) : null;
         if (el == null) {
             return;
         }
@@ -189,6 +200,7 @@ public final class Gemas {
         int pu = purezaDe(e.getItemStack());
         e.getToolTip().add(Component.literal("◆ ").append(Component.translatable("item.mundos_de_axelis.gema_" + el.id))
                 .append(" (").append(purezaName(pu)).append(")").withStyle(el.style()));
-        e.getToolTip().add(Component.translatable("gema.mundos_de_axelis.efecto." + el.id).withStyle(ChatFormatting.GRAY));
+        String k = esArmadura(e.getItemStack()) ? "gema.mundos_de_axelis.efecto_armadura." : "gema.mundos_de_axelis.efecto.";
+        e.getToolTip().add(Component.translatable(k + el.id).withStyle(ChatFormatting.GRAY));
     }
 }

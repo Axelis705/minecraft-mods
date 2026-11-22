@@ -278,6 +278,42 @@ public final class TestCommands {
                 com.mundosdeaxelis.registry.ModItems.GEMA_VACIA.get(), 3), 4))) {
             fail = "se pueden combinar gemas Perfectas";
         }
+        // etapa 277: gemas en la armadura
+        net.minecraft.world.item.ItemStack chest = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_CHESTPLATE);
+        net.minecraft.world.item.ItemStack boots = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_BOOTS);
+        net.minecraft.world.item.ItemStack helm = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_HELMET);
+        net.minecraft.world.item.ItemStack legs = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_LEGGINGS);
+        if (!com.mundosdeaxelis.gema.Gemas.admite(chest) || com.mundosdeaxelis.gema.Gemas.esArma(chest)) {
+            fail = "la armadura no admite gemas";
+        }
+        com.mundosdeaxelis.gema.Gemas.engarzar(chest, com.mundosdeaxelis.gema.Gemas.Elemento.VACIO, 4);
+        com.mundosdeaxelis.gema.Gemas.engarzar(boots, com.mundosdeaxelis.gema.Gemas.Elemento.RAYO, 2);
+        com.mundosdeaxelis.gema.Gemas.engarzar(helm, com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO, 3);
+        com.mundosdeaxelis.gema.Gemas.engarzar(legs, com.mundosdeaxelis.gema.Gemas.Elemento.ESCARCHA, 2);
+        double hpMod = chest.getAttributeModifiers(net.minecraft.world.entity.EquipmentSlot.CHEST)
+                .get(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).stream().mapToDouble(net.minecraft.world.entity.ai.attributes.AttributeModifier::getAmount).sum();
+        boolean speed = !boots.getAttributeModifiers(net.minecraft.world.entity.EquipmentSlot.FEET)
+                .get(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).isEmpty();
+        if (hpMod < 4.0D || !speed) {
+            fail = "atributos de las gemas en la armadura (vida " + hpMod + ", velocidad " + speed + ")";
+        }
+        fp.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, helm);
+        fp.setItemSlot(net.minecraft.world.entity.EquipmentSlot.LEGS, legs);
+        net.minecraftforge.event.entity.living.LivingHurtEvent fireEv = new net.minecraftforge.event.entity.living.LivingHurtEvent(fp, sl.damageSources().inFire(), 10.0F);
+        com.mundosdeaxelis.gema.GemasArmadura.onHurt(fireEv);
+        net.minecraft.world.entity.animal.Pig biter = net.minecraft.world.entity.EntityType.PIG.create(sl);
+        biter.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 2.5);
+        sl.addFreshEntity(biter);
+        net.minecraftforge.event.entity.living.LivingHurtEvent meleeEv = new net.minecraftforge.event.entity.living.LivingHurtEvent(fp, sl.damageSources().mobAttack(biter), 4.0F);
+        com.mundosdeaxelis.gema.GemasArmadura.onHurt(meleeEv);
+        if (Math.abs(fireEv.getAmount() - 10.0F * (1.0F - 0.24F)) > 0.01F) {
+            fail = "la gema de fuego en el casco no baja el daño de fuego (" + fireEv.getAmount() + ")";
+        } else if (!biter.hasEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN)) {
+            fail = "la gema de escarcha en las grebas no ralentiza a quien te golpea";
+        }
+        biter.discard();
+        fp.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, net.minecraft.world.item.ItemStack.EMPTY);
+        fp.setItemSlot(net.minecraft.world.entity.EquipmentSlot.LEGS, net.minecraft.world.item.ItemStack.EMPTY);
         // un pico no admite gemas
         if (com.mundosdeaxelis.gema.Gemas.admite(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIAMOND_PICKAXE))) {
             fail = "un pico admite gemas";
