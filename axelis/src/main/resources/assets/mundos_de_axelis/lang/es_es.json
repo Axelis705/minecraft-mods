@@ -2814,5 +2814,9 @@
   "item.mundos_de_axelis.driade_roble_spawn_egg": "Huevo generador de Dríade del Roble",
   "message.mundos_de_axelis.driade.despierta": "¡La Dríade del Roble despierta entre las raíces!",
   "message.mundos_de_axelis.driade.florece": "¡La Dríade florece! Brotan aliados del suelo.",
-  "message.mundos_de_axelis.driade.vencida": "La Dríade se deshace en pétalos... y algo cae entre las raíces."
+  "message.mundos_de_axelis.driade.vencida": "La Dríade se deshace en pétalos... y algo cae entre las raíces.",
+  "elite.mundos_de_axelis.espectral": "Espectral",
+  "elite.mundos_de_axelis.invocador": "Invocador",
+  "elite.mundos_de_axelis.erizado": "Erizado",
+  "elite.mundos_de_axelis.tormentoso": "Tormentoso"
 }

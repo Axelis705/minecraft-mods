@@ -527,7 +527,34 @@ public final class TestCommands {
                 case VELOZ -> m.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED)
                         > m.getAttributeBaseValue(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED) * 1.3D;
                 case EXPLOSIVO -> true;
+                // etapa 290
+                case ESPECTRAL -> {
+                    v.setYRot(0);
+                    boolean b = com.mundosdeaxelis.world.Elites.blink(m, v);
+                    yield b && m.distanceTo(v) < 3.0F;
+                }
+                case INVOCADOR -> com.mundosdeaxelis.world.Elites.invocar(m) == 2;
+                case ERIZADO -> {
+                    float sh = v.getHealth();
+                    m.invulnerableTime = 0;
+                    v.invulnerableTime = 0;
+                    m.hurt(sl.damageSources().mobAttack(v), 6.0F);
+                    yield v.getHealth() < sh;
+                }
+                case TORMENTOSO -> {
+                    net.minecraft.world.entity.animal.Sheep v2 = net.minecraft.world.entity.EntityType.SHEEP.create(sl);
+                    v2.moveTo(base.getX() + 3.5, base.getY(), base.getZ() + 0.5, 0, 0);
+                    v2.setNoAi(true);
+                    sl.addFreshEntity(v2);
+                    float h2 = v2.getHealth();
+                    com.mundosdeaxelis.world.Elites.chispa(m, v, 4.0F);
+                    boolean b = v2.getHealth() < h2;
+                    v2.discard();
+                    yield b;
+                }
             };
+            sl.getEntitiesOfClass(net.minecraft.world.entity.Mob.class, new net.minecraft.world.phys.AABB(base).inflate(6),
+                    x -> x.getPersistentData().contains("mdc_elite_amo")).forEach(net.minecraft.world.entity.Entity::discard);
             if (!ok) {
                 fail = "poder " + a.id;
             }

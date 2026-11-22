@@ -64,7 +64,16 @@ public final class Elites {
         VAMPIRICO("vampirico", 0xE0304E, ParticleTypes.CRIMSON_SPORE),
         BLINDADO("blindado", 0xC9D1D9, ParticleTypes.WAX_OFF),
         VELOZ("veloz", 0x8CF6A0, ParticleTypes.CLOUD),
-        EXPLOSIVO("explosivo", 0xFFC93C, ParticleTypes.SMOKE);
+        EXPLOSIVO("explosivo", 0xFFC93C, ParticleTypes.SMOKE),
+        // etapa 290: cuatro poderes nuevos
+        /** Cada pocos segundos se desvanece y aparece detrás de su objetivo. */
+        ESPECTRAL("espectral", 0xB28CFF, ParticleTypes.REVERSE_PORTAL),
+        /** Llama a dos ayudantes de su especie (como mucho cuatro a la vez). */
+        INVOCADOR("invocador", 0x7CD67A, ParticleTypes.ENCHANT),
+        /** Devuelve parte del daño cuerpo a cuerpo que le hacen. */
+        ERIZADO("erizado", 0x9AD66B, ParticleTypes.CRIT),
+        /** Sus golpes saltan en chispa a otro que esté cerca. */
+        TORMENTOSO("tormentoso", 0x8FDBFF, ParticleTypes.ELECTRIC_SPARK);
 
         public final String id;
         public final int color;
@@ -216,6 +225,7 @@ public final class Elites {
                             sl.sendParticles(ParticleTypes.HEART, att.getX(), att.getY() + att.getBbHeight() + 0.2, att.getZ(), 2, 0.2, 0.1, 0.2, 0.0);
                         }
                     }
+                    case TORMENTOSO -> chispa(att, victim, e.getAmount() * 0.5F);
                     default -> {
                     }
                 }
@@ -225,6 +235,12 @@ public final class Elites {
         Afijo va = afijo(victim);
         if (va == Afijo.BLINDADO && e.getSource().is(DamageTypeTags.IS_PROJECTILE)) {
             e.setAmount(e.getAmount() * 0.5F);
+        }
+        // erizado: quien le pega cuerpo a cuerpo se pincha (el 30 % del golpe)
+        if (va == Afijo.ERIZADO && e.getSource().getEntity() instanceof LivingEntity att && e.getSource().getDirectEntity() == att && att != victim
+                && !e.getSource().is(net.minecraft.world.damagesource.DamageTypes.THORNS) && victim.level() instanceof ServerLevel sl) {
+            att.hurt(sl.damageSources().thorns(victim), Math.max(1.0F, e.getAmount() * 0.3F));
+            sl.sendParticles(ParticleTypes.CRIT, att.getX(), att.getY() + att.getBbHeight() * 0.6, att.getZ(), 8, 0.3, 0.3, 0.3, 0.2);
         }
     }
 
@@ -240,6 +256,16 @@ public final class Elites {
         }
         if (le instanceof Mob m) {
             apply(m, a);
+            if (a == Afijo.ESPECTRAL || a == Afijo.INVOCADOR) {
+                CompoundTag d = m.getPersistentData();
+                int cd = d.getInt(KEY + "_cd") - 12;
+                LivingEntity t = m.getTarget();
+                if (cd <= 0 && t != null && t.isAlive()) {
+                    boolean hecho = a == Afijo.ESPECTRAL ? (m.distanceTo(t) > 3.5 && blink(m, t)) : invocar(m) > 0;
+                    cd = hecho ? (a == Afijo.ESPECTRAL ? 110 : 240) + m.getRandom().nextInt(40) : 20;
+                }
+                d.putInt(KEY + "_cd", Math.max(0, cd));
+            }
         }
         sl.sendParticles(a.aura, le.getX(), le.getY() + le.getBbHeight() * 0.5, le.getZ(), 3, le.getBbWidth() * 0.5, le.getBbHeight() * 0.4,
                 le.getBbWidth() * 0.5, 0.01);
@@ -265,6 +291,91 @@ public final class Elites {
                 }
             }
         });
+    }
+
+    /** Espectral: se desvanece y aparece detrás de su objetivo (en un sitio libre). Devuelve true si lo hizo. */
+    public static boolean blink(Mob m, LivingEntity t) {
+        if (!(m.level() instanceof ServerLevel sl)) {
+            return false;
+        }
+        net.minecraft.world.phys.Vec3 back = t.getLookAngle().multiply(1, 0, 1);
+        if (back.lengthSqr() < 1.0E-4) {
+            back = new net.minecraft.world.phys.Vec3(0, 0, 1);
+        }
+        back = back.normalize().scale(-2.0);
+        for (double s : new double[]{1.0, 0.5, -0.5}) {
+            double x = t.getX() + back.x * s, z = t.getZ() + back.z * s;
+            net.minecraft.core.BlockPos p = net.minecraft.core.BlockPos.containing(x, t.getY(), z);
+            if (sl.getBlockState(p).getCollisionShape(sl, p).isEmpty() && sl.getBlockState(p.above()).getCollisionShape(sl, p.above()).isEmpty()
+                    && !sl.getBlockState(p.below()).getCollisionShape(sl, p.below()).isEmpty()) {
+                sl.sendParticles(ParticleTypes.REVERSE_PORTAL, m.getX(), m.getY() + 1, m.getZ(), 30, 0.3, 0.6, 0.3, 0.05);
+                sl.playSound(null, m.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.8F, 1.4F);
+                m.teleportTo(x, p.getY(), z);
+                m.getLookControl().setLookAt(t, 90, 90);
+                sl.sendParticles(ParticleTypes.REVERSE_PORTAL, x, p.getY() + 1, z, 30, 0.3, 0.6, 0.3, 0.05);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Invocador: llama a dos ayudantes de su misma especie, más débiles (como mucho cuatro vivos). Devuelve cuántos llamó. */
+    public static int invocar(Mob m) {
+        if (!(m.level() instanceof ServerLevel sl)) {
+            return 0;
+        }
+        String owner = m.getUUID().toString();
+        int vivos = sl.getEntitiesOfClass(Mob.class, m.getBoundingBox().inflate(24), x -> x.isAlive() && owner.equals(x.getPersistentData().getString(KEY + "_amo"))).size();
+        int n = 0;
+        for (int i = 0; i < 2 && vivos + n < 4; i++) {
+            Entity e = m.getType().create(sl);
+            if (!(e instanceof Mob h)) {
+                break;
+            }
+            double ang = m.getRandom().nextDouble() * Math.PI * 2;
+            h.moveTo(m.getX() + Math.cos(ang) * 1.8, m.getY(), m.getZ() + Math.sin(ang) * 1.8, m.getYRot(), 0);
+            h.getPersistentData().putString(KEY + "_amo", owner);
+            if (h.getAttribute(Attributes.MAX_HEALTH) != null) {
+                h.getAttribute(Attributes.MAX_HEALTH).setBaseValue(h.getAttribute(Attributes.MAX_HEALTH).getBaseValue() * 0.5);
+                h.setHealth(h.getMaxHealth());
+            }
+            if (m.getTarget() != null) {
+                h.setTarget(m.getTarget());
+            }
+            sl.addFreshEntity(h);
+            sl.sendParticles(ParticleTypes.ENCHANT, h.getX(), h.getY() + 1, h.getZ(), 30, 0.4, 0.6, 0.4, 0.5);
+            n++;
+        }
+        if (n > 0) {
+            sl.playSound(null, m.blockPosition(), SoundEvents.EVOKER_CAST_SPELL, SoundSource.HOSTILE, 0.9F, 1.3F);
+        }
+        return n;
+    }
+
+    /** Tormentoso: una chispa salta del golpeado a otro ser vivo cercano (jugador, mascota o animal; no a sus compañeros). */
+    public static LivingEntity chispa(Mob att, LivingEntity victim, float dmg) {
+        if (!(att.level() instanceof ServerLevel sl)) {
+            return null;
+        }
+        LivingEntity best = null;
+        for (LivingEntity o : sl.getEntitiesOfClass(LivingEntity.class, victim.getBoundingBox().inflate(5),
+                x -> x != victim && x != att && x.isAlive() && !(x instanceof net.minecraft.world.entity.monster.Enemy)
+                        && !(x instanceof Player pl && (pl.isCreative() || pl.isSpectator())))) {
+            if (best == null || o.distanceToSqr(victim) < best.distanceToSqr(victim)) {
+                best = o;
+            }
+        }
+        if (best == null) {
+            return null;
+        }
+        net.minecraft.world.phys.Vec3 a = victim.position().add(0, victim.getBbHeight() * 0.6, 0), b = best.position().add(0, best.getBbHeight() * 0.6, 0);
+        for (int i = 0; i <= 10; i++) {
+            net.minecraft.world.phys.Vec3 q = a.lerp(b, i / 10.0);
+            sl.sendParticles(ParticleTypes.ELECTRIC_SPARK, q.x, q.y + (i % 2 == 0 ? 0.15 : -0.15), q.z, 2, 0.05, 0.05, 0.05, 0.0);
+        }
+        sl.playSound(null, best.blockPosition(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.HOSTILE, 0.4F, 1.8F);
+        best.hurt(sl.damageSources().indirectMagic(att, att), Math.max(1.0F, dmg));
+        return best;
     }
 
     // ------------------------------------------------------------------ botín

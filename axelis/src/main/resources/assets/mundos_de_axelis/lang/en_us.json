@@ -2814,5 +2814,9 @@
   "item.mundos_de_axelis.driade_roble_spawn_egg": "Oak Dryad Spawn Egg",
   "message.mundos_de_axelis.driade.despierta": "The Oak Dryad awakens among the roots!",
   "message.mundos_de_axelis.driade.florece": "The Dryad blooms! Allies sprout from the ground.",
-  "message.mundos_de_axelis.driade.vencida": "The Dryad falls apart into petals... and something drops among the roots."
+  "message.mundos_de_axelis.driade.vencida": "The Dryad falls apart into petals... and something drops among the roots.",
+  "elite.mundos_de_axelis.espectral": "Spectral",
+  "elite.mundos_de_axelis.invocador": "Summoner",
+  "elite.mundos_de_axelis.erizado": "Thorned",
+  "elite.mundos_de_axelis.tormentoso": "Stormborn"
 }
