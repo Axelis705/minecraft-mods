@@ -2873,9 +2873,10 @@ public final class AutoTest {
             });
             cmd("gamemode survival @a");
             cmd("effect give @a minecraft:resistance 40 4 true");
-            lookV(0.5, -8, -75, 0.5, 72, 60);
+            // a 85 bloques (en la prueba se ve poco lejos: el terreno más allá de 6 chunks no está cargado)
+            lookV(0.5, -8, -25, 0.5, 95, 60);
         });
-        add("primera vista (espera)", 2500, () -> lookV(0.5, -8, -75, 0.5, 72, 60));
+        add("primera vista (espera)", 2500, () -> lookV(0.5, -8, -25, 0.5, 95, 60));
         add("primera vista (mira)", 300, () -> onServer(sp -> vioVolcan = com.mundosdeaxelis.world.Volcanes.vioAlguno(sp)));
         add("primera vista (foto)", 300, () -> {
             check("al mirar el volcán por primera vez, despierta", vioVolcan);
@@ -3063,9 +3064,9 @@ public final class AutoTest {
             shot("42d_volcan_piedra_regreso");
             onServer(sp -> useBlock(sp, new net.minecraft.core.BlockPos(3, VY - 8, VZ + 87), false));
         });
-        // etapa 282: la piedra pide confirmar; el botón se puede pulsar a los 3 s
-        add("confirmar la salida", 3800, () -> {
-            check("la Piedra de regreso pide confirmar", Minecraft.getInstance().screen instanceof ConfirmarScreen);
+        // etapa 282: la piedra pide confirmar; el botón se puede pulsar a los 3 s (la espera va después de cada paso)
+        add("confirmar la salida", 3600, () -> check("la Piedra de regreso pide confirmar", Minecraft.getInstance().screen instanceof ConfirmarScreen));
+        add("confirmar la salida (pulsar)", 300, () -> {
             if (Minecraft.getInstance().screen instanceof ConfirmarScreen c) {
                 c.keyPressed(org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER, 0, 0);
             }

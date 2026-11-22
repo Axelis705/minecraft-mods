@@ -227,7 +227,50 @@ public class RevisarPlanos {
                 }
             }
         }
+        // etapa 287: la celda de cada preso tiene que estar cerrada del todo (barrotes, muros y su puerta de hierro, sin huecos)
+        for (StructBp.Mob m : b.mobs) {
+            if (m.kind().equals("habitante")) {
+                int[] r = celda(b, m.x(), m.y(), m.z());
+                if (r[0] > 0) {
+                    fallo(d, "la celda de " + m.tag() + " en " + m.x() + " " + m.y() + " " + m.z() + " no está cerrada: se sale por "
+                            + r[1] + " " + r[2] + " " + r[3]);
+                }
+            }
+        }
         System.out.println(d + ": " + cofres + " cofres, " + puertas + " puertas de hierro, " + altares + " altares, " + b.mobs.size() + " enemigos");
+    }
+
+    /**
+     * Desde el preso, por el aire (y lo fino) sin cruzar puertas de hierro, barrotes ni bloques: si llega a 400 casillas o a fuera del
+     * plano, la celda no está cerrada. Devuelve {0} si está cerrada, o {1, x, y, z} con la casilla por la que se escapa.
+     */
+    static int[] celda(StructBp b, int x0, int y0, int z0) {
+        java.util.ArrayDeque<int[]> q = new java.util.ArrayDeque<>();
+        java.util.Set<Long> vis = new java.util.HashSet<>();
+        q.add(new int[]{x0, y0, z0});
+        vis.add(StructBp.key(x0, y0, z0));
+        // también en diagonal: un hueco en la esquina de los barrotes se ve (aunque no se pueda pasar por él)
+        int[][] dirs = {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}, {1, 0, 1}, {1, 0, -1}, {-1, 0, 1}, {-1, 0, -1}};
+        while (!q.isEmpty()) {
+            int[] c = q.poll();
+            if (vis.size() > 400) {
+                return new int[]{1, c[0], c[1], c[2]};
+            }
+            for (int[] dd : dirs) {
+                int x = c[0] + dd[0], y = c[1] + dd[1], z = c[2] + dd[2];
+                if (!vis.add(StructBp.key(x, y, z))) {
+                    continue;
+                }
+                String s = b.get(x, y, z);
+                if (s == null) {
+                    return new int[]{1, x, y, z};
+                }
+                if (hueco(s) && !id(s).equals("iron_door")) {
+                    q.add(new int[]{x, y, z});
+                }
+            }
+        }
+        return new int[]{0};
     }
 
     /** ¿Buen sitio para un altar? Suelo, 3 de aire encima y un claro de radio 2 (para pelear contra la oleada). */

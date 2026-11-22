@@ -603,13 +603,20 @@ final class TorreInterior {
         // ---- etapa 265: la celda de Teo (la del sur): puerta de hierro en el hueco de los barrotes, barrotes que la cierran por el sur
         // y, dentro, su jergón (la paja), una estantería con una vela y la cadena de los grilletes
         StructKit.ironDoor(b, 7, f, CZ + 2, "-x", false);
-        for (int x = 8; x <= 9; x++) {
-            for (int h = 0; h <= 6; h++) {
-                String g = b.get(x, f + h, CZ + 5);
-                if (g == null || g.equals("air")) {
-                    b.set(x, f + h, CZ + 5, "iron_bars");
+        // etapa 287: las dos celdas cerradas del todo (antes quedaba un hueco en la esquina de los barrotes y la del norte no tenía
+        // ni frente ni puerta): barrotes al norte y al sur hasta el techo, y la entrada de la celda del norte tapiada con barrotes
+        for (int sdz : new int[]{-5, 5}) {
+            for (int x = 7; x <= 9; x++) {
+                for (int h = 0; h <= 6; h++) {
+                    String g = b.get(x, f + h, CZ + sdz);
+                    if (g == null || g.equals("air")) {
+                        b.set(x, f + h, CZ + sdz, "iron_bars");
+                    }
                 }
             }
+        }
+        for (int h = 0; h <= 1; h++) {
+            b.set(7, f + h, CZ - 2, "iron_bars");
         }
         b.set(8, f, CZ + 3, "air");
         b.set(9, f, CZ + 2, "bookshelf");
@@ -1244,7 +1251,9 @@ final class TorreInterior {
             b.set(t[0], f - 1, CZ + t[1], PD);
             b.set(t[0], f + 2, CZ + t[1], DB);
         }
-        estTall(b, 9 * sx, f, CZ + 6 * sz, sx < 0 ? EstIds.TAPIZ_ARCANO : EstIds.TAPIZ_ESTRELLAS, sx < 0 ? "east" : "west");
+        // etapa 287: el tapiz va pegado a la pared del salón, igual que los demás tapices (antes colgaba al fondo de un hueco y se
+        // notaba que detrás había algo); el túnel empieza justo detrás
+        estTall(b, 8 * sx, f, CZ + 6 * sz, sx < 0 ? EstIds.TAPIZ_ARCANO : EstIds.TAPIZ_ESTRELLAS, sx < 0 ? "east" : "west");
         a.seed(10 * sx, f, CZ + 6 * sz); // el túnel (detrás del tapiz) cuenta como alcanzable para la reparación de muebles
         // ---- cámara redonda (radio 2,2, 5 de alto)
         for (int u = -2; u <= 2; u++) {

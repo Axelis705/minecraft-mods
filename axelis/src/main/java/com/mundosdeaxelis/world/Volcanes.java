@@ -360,7 +360,7 @@ public final class Volcanes extends SavedData {
 
     /** Punto que hay que ver: en el aire, sobre el centro del cráter (donde sube la columna de fuego; el borde no lo tapa). */
     static BlockPos cima(V v) {
-        return v.world(0, DesignVolcan.H + 20, DesignVolcan.CZ);
+        return v.world(0, DesignVolcan.H + 26, DesignVolcan.CZ);
     }
 
     /** Para la prueba con el cliente: ¿ese jugador ya vio despertar algún volcán? */
