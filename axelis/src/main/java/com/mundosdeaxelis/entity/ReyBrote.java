@@ -1,5 +1,6 @@
 package com.mundosdeaxelis.entity;
 
+import net.minecraft.world.entity.LivingEntity;
 import com.mundosdeaxelis.fx.Vfx;
 import com.mundosdeaxelis.relic.RelicFx;
 import com.mundosdeaxelis.world.BossBalance;
@@ -262,7 +263,8 @@ public class ReyBrote extends Monster {
             rescale(sl);
         }
 
-        ServerPlayer tgt = nearestPlayer(sl, 64.0);
+        // etapa 284: el objetivo lo elige la amenaza (jugadores y mascotas), no solo «el más cercano»
+        LivingEntity tgt = com.mundosdeaxelis.world.JefeIA.objetivo(this, sl, 64.0, true);
         if (tgt == null) {
             idleNoPlayer++;
             setTarget(null);
@@ -278,6 +280,9 @@ public class ReyBrote extends Monster {
         }
         idleNoPlayer = 0;
         setTarget(tgt);
+        // etapa 284: las mascotas que le muerden se llevan un manotazo y, si le kitean, salta a por su objetivo
+        com.mundosdeaxelis.world.JefeIA.manotazo(this, sl, (5.0F + phase()) * dmgNow);
+        com.mundosdeaxelis.world.JefeIA.saltoPersecucion(this, sl);
         face(tgt.position());
 
         boolean onG = onGround();
@@ -386,7 +391,7 @@ public class ReyBrote extends Monster {
         this.yHeadRot = yaw;
     }
 
-    private void hop(ServerPlayer tgt, double dist) {
+    private void hop(LivingEntity tgt, double dist) {
         double v = Mth.clamp(dist / 7.2, 0.25, 0.75);
         Vec3 d = new Vec3(tgt.getX() - getX(), 0, tgt.getZ() - getZ());
         d = d.lengthSqr() < 1.0E-4 ? Vec3.ZERO : d.normalize();
@@ -396,7 +401,7 @@ public class ReyBrote extends Monster {
         hopCd = phase() == 1 ? 30 : phase() == 2 ? 22 : 15;
     }
 
-    private void startLeap(ServerLevel sl, ServerPlayer tgt) {
+    private void startLeap(ServerLevel sl, LivingEntity tgt) {
         leapCharge = 0;
         leapTarget = tgt.position();
         leapCd = phase() == 1 ? 170 : phase() == 2 ? 130 : 100;
@@ -446,7 +451,7 @@ public class ReyBrote extends Monster {
         return best;
     }
 
-    private void knock(ServerPlayer p, double horizontal, double up) {
+    private void knock(LivingEntity p, double horizontal, double up) {
         Vec3 d = new Vec3(p.getX() - getX(), 0, p.getZ() - getZ());
         d = d.lengthSqr() < 1.0E-4 ? new Vec3(0, 0, 1) : d.normalize();
         p.setDeltaMovement(p.getDeltaMovement().add(d.x * horizontal, up, d.z * horizontal));
@@ -525,7 +530,7 @@ public class ReyBrote extends Monster {
     }
 
     /** Invoca gelatinitas alrededor (con un máximo según la fase). */
-    private void summon(ServerLevel sl, ServerPlayer tgt, int count) {
+    private void summon(ServerLevel sl, LivingEntity tgt, int count) {
         int cap = phase() == 1 ? 3 : phase() == 2 ? 4 : 6;
         int have = minions(sl, 60.0).size();
         count = Math.min(count, cap - have);

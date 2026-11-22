@@ -125,8 +125,8 @@ public class GuardianMusgo extends Monster {
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.7D));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 10.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        // etapa 284: elige a quién pegar por la amenaza (jugadores y mascotas) y salta si le kitean
+        this.targetSelector.addGoal(1, new com.mundosdeaxelis.world.JefeIA.MetaObjetivo(this, 32.0));
     }
 
     @Override

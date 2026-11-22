@@ -78,7 +78,8 @@ public final class ArmaCuerpo {
 
     private static Reloj reloj(LivingEntity e) {
         Reloj r = RELOJ.computeIfAbsent(e, k -> new Reloj());
-        if (e.swinging && e.swingingArm == InteractionHand.MAIN_HAND && (!r.lastSwinging || e.swingTime < r.lastSwingTime)) {
+        // (swingingArm es null hasta el primer golpe)
+        if (e.swinging && e.swingingArm != InteractionHand.OFF_HAND && (!r.lastSwinging || e.swingTime < r.lastSwingTime)) {
             r.start = e.tickCount - Math.max(0, e.swingTime);
             r.swings++;
         }
@@ -231,7 +232,7 @@ public final class ArmaCuerpo {
                 main.yRot = 0.0F;
             }
         }
-        if (!(entity instanceof Player) || entity.swingingArm != InteractionHand.MAIN_HAND) {
+        if (!(entity instanceof Player) || entity.swingingArm == InteractionHand.OFF_HAND) {
             return;
         }
         // 2) el golpe: el de Minecraft (solo el brazo) se apaga y se hace el nuestro
@@ -304,7 +305,7 @@ public final class ArmaCuerpo {
                 p.yBodyRot = p.yBodyRotO = p.yHeadRot = p.yHeadRotO = r;
             }
             ArmaItem a = arma(p);
-            float t = a == null || p.swingingArm != InteractionHand.MAIN_HAND || !libre(p) ? -1.0F : progreso(p, a.tipo, e.getPartialTick());
+            float t = a == null || p.swingingArm == InteractionHand.OFF_HAND || !libre(p) ? -1.0F : progreso(p, a.tipo, e.getPartialTick());
             if (t < 0.0F) {
                 EMPUJADO.push(false);
                 return;
@@ -338,7 +339,7 @@ public final class ArmaCuerpo {
                 return;
             }
             ArmaItem a = arma(mc.player);
-            if (a == null || mc.player.swingingArm != InteractionHand.MAIN_HAND) {
+            if (a == null || mc.player.swingingArm == InteractionHand.OFF_HAND) {
                 return;
             }
             float t = progreso(mc.player, a.tipo, (float) e.getPartialTick());

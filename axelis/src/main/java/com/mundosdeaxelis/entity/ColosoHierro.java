@@ -173,8 +173,8 @@ public class ColosoHierro extends Monster {
                 return !asleep() && super.canUse();
             }
         });
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        // etapa 284: elige a quién pegar por la amenaza (jugadores y mascotas) y salta si le kitean
+        this.targetSelector.addGoal(1, new com.mundosdeaxelis.world.JefeIA.MetaObjetivo(this, 32.0, () -> !asleep()));
     }
 
     @Override

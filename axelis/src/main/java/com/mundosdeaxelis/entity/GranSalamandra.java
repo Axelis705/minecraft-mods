@@ -45,6 +45,14 @@ public class GranSalamandra extends SalamandraLava {
         }
     }
 
+    /** Etapa 284: elige a quién pegar por la amenaza (jugadores y mascotas) en lugar de «el último que me pegó». */
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.targetSelector.removeAllGoals(g -> true);
+        this.targetSelector.addGoal(1, new com.mundosdeaxelis.world.JefeIA.MetaObjetivo(this, 32.0));
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 220.0D)

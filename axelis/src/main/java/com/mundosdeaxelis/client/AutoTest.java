@@ -1642,9 +1642,9 @@ public final class AutoTest {
         });
         add("etapa 282 (confirmar: esperando)", 300, () -> {
             check("se abre la ventanita de confirmar la salida", Minecraft.getInstance().screen instanceof ConfirmarScreen);
-            shot("140_confirmar_salida_espera");
+            shot("170_confirmar_salida_espera");
         });
-        add("etapa 282 (confirmar: lista)", 3200, () -> shot("141_confirmar_salida_lista"));
+        add("etapa 282 (confirmar: lista)", 3200, () -> shot("171_confirmar_salida_lista"));
         add("etapa 282 (cerrar)", 300, () -> {
             Minecraft.getInstance().setScreen(null);
             net.minecraft.world.item.ItemStack st = new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.arma(
@@ -2757,8 +2757,9 @@ public final class AutoTest {
                 cmd("time set 6000");
                 cmd("weather clear 999999");
                 cmd("kill @e[type=!player]");
-                cmd("difficulty peaceful");
+                cmd("difficulty normal");
                 cmd("gamemode survival @a");
+                cmd("effect give @a minecraft:resistance 99999 4 true");
                 cmd("mundos desbloquear 5");
             });
             armas();

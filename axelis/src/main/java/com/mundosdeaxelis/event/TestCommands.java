@@ -759,6 +759,81 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    // ------------------------------------------------------------------ etapa 284: la cabeza de los jefes
+
+    /**
+     * Etapa 284: un mini-jefe con dos «jugadores» de mentira (A cerca, B lejos). Primero va a por A (está encima); cuando B le hace
+     * mucho daño, cambia a B (pasado el tiempo mínimo); si B se sube muy alto, vuelve a A; y si A desaparece y B se queda lejos
+     * mucho rato, salta hacia él (contra el kiteo).
+     */
+    private static int etapa284(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        java.util.List<String> fails = new java.util.concurrent.CopyOnWriteArrayList<>();
+        for (int dx = -3; dx <= 16; dx++) {
+            for (int dz = -3; dz <= 3; dz++) {
+                sl.setBlock(base.offset(dx, -1, dz), net.minecraft.world.level.block.Blocks.STONE.defaultBlockState(), 3);
+                for (int dy = 0; dy <= 14; dy++) {
+                    sl.setBlock(base.offset(dx, dy, dz), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+        }
+        com.mundosdeaxelis.entity.GuardianMusgo jefe = com.mundosdeaxelis.registry.ModEntities.GUARDIAN_MUSGO.get().create(sl);
+        jefe.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5, 0, 0);
+        jefe.setNoAi(true);
+        jefe.setPersistenceRequired();
+        sl.addFreshEntity(jefe);
+        net.minecraft.world.entity.monster.Vindicator a = muñeco(sl, base.getX() + 3.5, base.getY(), base.getZ() + 0.5, 90);
+        net.minecraft.world.entity.monster.Vindicator b = muñeco(sl, base.getX() + 13.5, base.getY(), base.getZ() + 0.5, 90);
+        com.mundosdeaxelis.world.JefeIA.PRUEBA.clear();
+        com.mundosdeaxelis.world.JefeIA.PRUEBA.add(a);
+        com.mundosdeaxelis.world.JefeIA.PRUEBA.add(b);
+        net.minecraft.world.entity.LivingEntity t0 = com.mundosdeaxelis.world.JefeIA.objetivo(jefe, sl, 40, true);
+        if (t0 != a) {
+            fails.add("al principio no va a por el que tiene cerca");
+        }
+        com.mundosdeaxelis.world.JefeIA.sumar(jefe, b, 80.0F);
+        net.minecraft.world.entity.LivingEntity t1 = com.mundosdeaxelis.world.JefeIA.objetivo(jefe, sl, 40, true);
+        if (t1 != a) {
+            fails.add("cambia de objetivo sin esperar");
+        }
+        com.mundosdeaxelis.world.Scheduler.runLater(com.mundosdeaxelis.world.JefeIA.CAMBIO_MIN + 12, () -> {
+            if (com.mundosdeaxelis.world.JefeIA.objetivo(jefe, sl, 40, true) != b) {
+                fails.add("no cambia al que más daño le hace");
+            }
+            b.teleportTo(b.getX(), base.getY() + 12, b.getZ());
+        });
+        com.mundosdeaxelis.world.Scheduler.runLater(2 * com.mundosdeaxelis.world.JefeIA.CAMBIO_MIN + 30, () -> {
+            if (com.mundosdeaxelis.world.JefeIA.objetivo(jefe, sl, 40, true) != a) {
+                fails.add("sigue con el que no puede alcanzar");
+            }
+            // ahora A se va y B se queda lejos (a su altura): kiteo
+            a.discard();
+            b.teleportTo(b.getX(), base.getY(), b.getZ());
+        });
+        // el kiteo se mide cada medio segundo: se le pregunta al jefe como haría en su turno
+        int t0k = 2 * com.mundosdeaxelis.world.JefeIA.CAMBIO_MIN + 40;
+        for (int k = 0; k <= com.mundosdeaxelis.world.JefeIA.KITEO + 40; k += com.mundosdeaxelis.world.JefeIA.CADA) {
+            com.mundosdeaxelis.world.Scheduler.runLater(t0k + k, () -> com.mundosdeaxelis.world.JefeIA.objetivo(jefe, sl, 40, true));
+        }
+        com.mundosdeaxelis.world.Scheduler.runLater(t0k + com.mundosdeaxelis.world.JefeIA.KITEO + 50, () -> {
+            if (!com.mundosdeaxelis.world.JefeIA.leKitean(jefe)) {
+                fails.add("no se da cuenta de que le kitean");
+            }
+            jefe.setOnGround(true);
+            if (!com.mundosdeaxelis.world.JefeIA.saltoPersecucion(jefe, sl) || jefe.getDeltaMovement().y <= 0.3 || jefe.getDeltaMovement().x <= 0.2) {
+                fails.add("no salta hacia el que le kitea (" + jefe.getDeltaMovement() + ")");
+            }
+            com.mundosdeaxelis.world.JefeIA.PRUEBA.clear();
+            jefe.discard();
+            b.discard();
+            String msg = fails.isEmpty() ? "PRUEBA_ETAPA284_OK" : "PRUEBA_ETAPA284_FALLO " + fails;
+            com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        });
+        src.sendSuccess(() -> Component.literal("etapa 284: resultado en 15 s"), true);
+        return 1;
+    }
+
     // ------------------------------------------------------------------ etapa 283: armas a dos manos
 
     /** Etapa 283: con algo en la otra mano, las armas a dos manos no golpean ni usan la especial; la espada sí (va con escudo). */
@@ -1282,6 +1357,7 @@ public final class TestCommands {
                 .then(Commands.literal("armas").executes(ctx -> armas(ctx.getSource())))
                 .then(Commands.literal("etapa282").executes(ctx -> etapa282(ctx.getSource())))
                 .then(Commands.literal("etapa283").executes(ctx -> etapa283(ctx.getSource())))
+                .then(Commands.literal("etapa284").executes(ctx -> etapa284(ctx.getSource())))
                 .then(Commands.literal("encargos_listos").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{

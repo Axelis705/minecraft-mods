@@ -1,5 +1,6 @@
 package com.mundosdeaxelis.entity;
 
+import net.minecraft.world.entity.LivingEntity;
 import com.mundosdeaxelis.registry.ModSounds;
 import com.mundosdeaxelis.fx.Vfx;
 import com.mundosdeaxelis.relic.RelicFx;
@@ -532,7 +533,8 @@ public class Archimago extends Monster {
         tickMarks(sl);
         tickPuddles(sl);
 
-        ServerPlayer tgt = nearestPlayer(sl, 70.0);
+        // etapa 284: el objetivo lo elige la amenaza (jugadores y mascotas), no solo «el más cercano»
+        LivingEntity tgt = com.mundosdeaxelis.world.JefeIA.objetivo(this, sl, 70.0, true);
         if (tgt == null) {
             idleNoPlayer++;
             setTarget(null);
@@ -545,6 +547,8 @@ public class Archimago extends Monster {
         }
         idleNoPlayer = 0;
         setTarget(tgt);
+        // etapa 284: las mascotas que le muerden se llevan un manotazo
+        com.mundosdeaxelis.world.JefeIA.manotazo(this, sl, 5.0F * dmgNow);
         stateT++;
         switch (state()) {
             case S_IDLE -> idleTick(sl, tgt);
@@ -563,7 +567,7 @@ public class Archimago extends Monster {
 
     // ------------------------------------------------------------------ guardia y elección de hechizo
 
-    private void idleTick(ServerLevel sl, ServerPlayer tgt) {
+    private void idleTick(ServerLevel sl, LivingEntity tgt) {
         double dist = hd(tgt.position());
         face(tgt.position(), 20.0F);
         if (atkCd > 0) {
@@ -634,7 +638,7 @@ public class Archimago extends Monster {
     // ------------------------------------------------------------------ rayos arcanos
 
     /** Tres salvas: una línea fina avisa por dónde irá cada rayo y medio segundo después pasa el rayo de verdad. */
-    private void raysTick(ServerLevel sl, ServerPlayer tgt) {
+    private void raysTick(ServerLevel sl, LivingEntity tgt) {
         int volleys = phase() >= 2 ? 3 : 2;
         int cycle = 26;
         int t = (stateT - 1) % cycle;
@@ -824,7 +828,7 @@ public class Archimago extends Monster {
 
     // ------------------------------------------------------------------ bastonazo y parpadeo
 
-    private void staffTick(ServerLevel sl, ServerPlayer tgt) {
+    private void staffTick(ServerLevel sl, LivingEntity tgt) {
         if (stateT <= 10) {
             face(tgt.position(), 30.0F);
         }
@@ -853,7 +857,7 @@ public class Archimago extends Monster {
     }
 
     /** Se va al punto de la arena más lejos del jugador (o al centro) y deja un eco que estalla donde estaba. */
-    private void startBlink(ServerLevel sl, ServerPlayer tgt, boolean toCenter) {
+    private void startBlink(ServerLevel sl, LivingEntity tgt, boolean toCenter) {
         getNavigation().stop();
         if (toCenter) {
             blinkTo = home;
@@ -874,7 +878,7 @@ public class Archimago extends Monster {
         setState(S_BLINK);
     }
 
-    private void blinkTick(ServerLevel sl, ServerPlayer tgt) {
+    private void blinkTick(ServerLevel sl, LivingEntity tgt) {
         if (stateT == 1) {
             sound(sl, position(), ModSounds.ARCHIMAGO_BLINK.get(), 2.4F, 0.9F);
             sl.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 2.0, getZ(), 60, 0.6, 1.6, 0.6, 0.4);
@@ -922,7 +926,7 @@ public class Archimago extends Monster {
         }
     }
 
-    private void sealsTick(ServerLevel sl, ServerPlayer tgt) {
+    private void sealsTick(ServerLevel sl, LivingEntity tgt) {
         int limit = 400;
         face(tgt.position(), 12.0F);
         if (stateT % 10 == 1) {
@@ -1026,7 +1030,7 @@ public class Archimago extends Monster {
     }
 
     /** Seis segundos de meteoritos: cada uno marca su círculo rojo algo más de un segundo antes de caer. */
-    private void meteorsTick(ServerLevel sl, ServerPlayer tgt) {
+    private void meteorsTick(ServerLevel sl, LivingEntity tgt) {
         face(tgt.position(), 10.0F);
         if (stateT >= 12 && stateT <= 120 && stateT % 7 == 0) {
             List<ServerPlayer> ps = players(sl, 50.0);

@@ -1,5 +1,6 @@
 package com.mundosdeaxelis.entity;
 
+import net.minecraft.world.entity.LivingEntity;
 import com.mundosdeaxelis.fx.Vfx;
 import com.mundosdeaxelis.registry.ModEntities;
 import com.mundosdeaxelis.registry.ModSounds;
@@ -284,7 +285,8 @@ public class GranHerrero extends Monster {
             rescale(sl);
         }
 
-        ServerPlayer tgt = nearestPlayer(sl, 80.0);
+        // etapa 284: el objetivo lo elige la amenaza (jugadores y mascotas), no solo «el más cercano»
+        LivingEntity tgt = com.mundosdeaxelis.world.JefeIA.objetivo(this, sl, 80.0, true);
         if (tgt == null) {
             idleNoPlayer++;
             setTarget(null);
@@ -300,6 +302,9 @@ public class GranHerrero extends Monster {
         }
         idleNoPlayer = 0;
         setTarget(tgt);
+        // etapa 284: las mascotas que le muerden se llevan un manotazo y, si le kitean, salta a por su objetivo
+        com.mundosdeaxelis.world.JefeIA.manotazo(this, sl, dmg(6.0F + phase()));
+        com.mundosdeaxelis.world.JefeIA.saltoPersecucion(this, sl);
 
         if (phase() >= 2) {
             tickHeat(sl);
@@ -441,7 +446,7 @@ public class GranHerrero extends Monster {
         return best;
     }
 
-    private void knock(ServerPlayer p, double horizontal, double up) {
+    private void knock(LivingEntity p, double horizontal, double up) {
         Vec3 d = new Vec3(p.getX() - getX(), 0, p.getZ() - getZ());
         d = d.lengthSqr() < 1.0E-4 ? new Vec3(0, 0, 1) : d.normalize();
         p.setDeltaMovement(p.getDeltaMovement().add(d.x * horizontal, up, d.z * horizontal));
@@ -510,7 +515,7 @@ public class GranHerrero extends Monster {
 
     // ------------------------------------------------------------------ martillazo
 
-    private void startSlam(ServerLevel sl, ServerPlayer tgt) {
+    private void startSlam(ServerLevel sl, LivingEntity tgt) {
         slamCd = phase() == 1 ? 110 : phase() == 2 ? 85 : 65;
         gcd = 25;
         slamTick = 0;

@@ -1,5 +1,6 @@
 package com.mundosdeaxelis.entity;
 
+import net.minecraft.world.entity.LivingEntity;
 import com.mundosdeaxelis.fx.Fx;
 import com.mundosdeaxelis.fx.Vfx;
 import com.mundosdeaxelis.network.ScreenFxPacket;
@@ -531,7 +532,8 @@ public class LoboArtico extends Monster {
         contactCd.replaceAll((k, v) -> v - 1);
         contactCd.values().removeIf(v -> v <= 0);
 
-        ServerPlayer tgt = nearestPlayer(sl, 70.0);
+        // etapa 284: el objetivo lo elige la amenaza (jugadores y mascotas), no solo «el más cercano»
+        LivingEntity tgt = com.mundosdeaxelis.world.JefeIA.objetivo(this, sl, 70.0, true);
         if (tgt == null) {
             idleNoPlayer++;
             setTarget(null);
@@ -547,6 +549,9 @@ public class LoboArtico extends Monster {
         }
         idleNoPlayer = 0;
         setTarget(tgt);
+        // etapa 284: las mascotas que le muerden se llevan un manotazo y, si le kitean, salta a por su objetivo
+        com.mundosdeaxelis.world.JefeIA.manotazo(this, sl, (6.0F + phase()) * dmgNow);
+        com.mundosdeaxelis.world.JefeIA.saltoPersecucion(this, sl);
         stateT++;
         switch (state()) {
             case S_IDLE -> idleTick(sl, tgt);
@@ -565,7 +570,7 @@ public class LoboArtico extends Monster {
 
     // ------------------------------------------------------------------ guardia y elección de ataque
 
-    private void idleTick(ServerLevel sl, ServerPlayer tgt) {
+    private void idleTick(ServerLevel sl, LivingEntity tgt) {
         double dist = hd(tgt.position());
         face(tgt.position(), 22.0F);
         if (atkCd > 0) {
@@ -615,7 +620,7 @@ public class LoboArtico extends Monster {
     }
 
     /** Camina hacia el objetivo (el camino se recalcula cada pocos ticks, no a cada tick). */
-    private void chase(ServerPlayer tgt, double speed) {
+    private void chase(LivingEntity tgt, double speed) {
         if (getNavigation().isDone() || this.tickCount % 8 == 0) {
             getNavigation().moveTo(tgt, speed);
         }
@@ -647,7 +652,7 @@ public class LoboArtico extends Monster {
         return out;
     }
 
-    private void slashTick(ServerLevel sl, ServerPlayer tgt) {
+    private void slashTick(ServerLevel sl, LivingEntity tgt) {
         int t = stateT;
         if (t <= 9) {
             face(tgt.position(), 30.0F);
@@ -677,7 +682,7 @@ public class LoboArtico extends Monster {
         }
     }
 
-    private void crossTick(ServerLevel sl, ServerPlayer tgt) {
+    private void crossTick(ServerLevel sl, LivingEntity tgt) {
         int t = stateT;
         if (t <= 17) {
             face(tgt.position(), 26.0F);
@@ -716,14 +721,14 @@ public class LoboArtico extends Monster {
         return phase() == 1 ? 30 : phase() == 2 ? 24 : 19;
     }
 
-    private void startWindup(ServerPlayer tgt) {
+    private void startWindup(LivingEntity tgt) {
         getNavigation().stop();
         dashDir = dirTo(tgt.position());
         setState(S_WINDUP);
         playSound(ModSounds.LOBO_CHARGE.get(), 2.4F, 1.0F);
     }
 
-    private void windupTick(ServerLevel sl, ServerPlayer tgt) {
+    private void windupTick(ServerLevel sl, LivingEntity tgt) {
         int wind = windDur();
         int lock = wind - 13;
         if (stateT < lock) {
@@ -840,7 +845,7 @@ public class LoboArtico extends Monster {
         setState(S_HOWL);
     }
 
-    private void howlTick(ServerLevel sl, ServerPlayer tgt) {
+    private void howlTick(ServerLevel sl, LivingEntity tgt) {
         int t = stateT;
         getNavigation().stop();
         if (t < 16) {
@@ -875,7 +880,7 @@ public class LoboArtico extends Monster {
         }
     }
 
-    private void summon(ServerLevel sl, ServerPlayer tgt, int count) {
+    private void summon(ServerLevel sl, LivingEntity tgt, int count) {
         int have = minions(sl, 70.0).size();
         count = Math.min(count, cap() - have);
         for (int i = 0; i < count; i++) {
@@ -911,7 +916,7 @@ public class LoboArtico extends Monster {
         }
     }
 
-    private void blizzardTick(ServerLevel sl, ServerPlayer tgt) {
+    private void blizzardTick(ServerLevel sl, LivingEntity tgt) {
         int t = stateT;
         if (t == 1) {
             heatWave(sl, 8, 42);
@@ -1120,7 +1125,7 @@ public class LoboArtico extends Monster {
         }
     }
 
-    private void skateTick(ServerLevel sl, ServerPlayer tgt) {
+    private void skateTick(ServerLevel sl, LivingEntity tgt) {
         int t = stateT;
         getNavigation().stop();
         Vec3 mv = getDeltaMovement();
@@ -1133,7 +1138,7 @@ public class LoboArtico extends Monster {
         // un empujón cada medio segundo largo hacia alguien (el hielo hace el resto)
         if (t % 34 == 2 && onGround()) {
             List<ServerPlayer> all = players(sl, 80.0);
-            ServerPlayer pick = all.isEmpty() ? tgt : all.get(this.random.nextInt(all.size()));
+            LivingEntity pick = all.isEmpty() ? tgt : all.get(this.random.nextInt(all.size()));
             Vec3 d = dirTo(pick.position());
             setDeltaMovement(d.x * 1.15, getDeltaMovement().y, d.z * 1.15);
             this.hasImpulse = true;
