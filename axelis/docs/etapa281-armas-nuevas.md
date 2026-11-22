@@ -75,6 +75,25 @@ Además, las armas de las cajas altas dan **más almas** al matar (×1,5 desde H
 - En la mano, el hacha, el martillo y la lanza se ven más grandes que una espada.
 - Generador: `axelis/herramientas/gen_armas281.py` (texturas, modelos y la hoja de muestra).
 
+## Animación al atacar
+
+Axelis vio la hoja de muestra («me gustan las nuevas armas») y pidió animación al atacar.
+
+- **Primera persona** (`client/ArmaAnim`, con `applyForgeHandTransform` de Forge): cada tipo tiene su golpe, hecho con fotogramas clave suavizados.
+  - Espada: tajo en diagonal, de arriba a la derecha hacia abajo a la izquierda.
+  - Hacha de guerra: la levanta y la baja.
+  - Martillo: subida más alta y golpe más pesado hacia abajo.
+  - Lanza: se echa atrás y embiste hacia delante.
+  - Dagas: puñalada corta y rápida.
+- **Tercera persona**: el hacha de guerra, el martillo y la lanza se llevan con las dos manos.
+  - Es una pose nueva de Forge (`ArmPose.create`), que se crea al arrancar el cliente.
+  - El brazo que no lleva el arma acompaña el golpe, para que no suelte el mango.
+- **Estela del golpe** (servidor, la ven todos), del color del tier, en los golpes cargados (las dagas, en todos):
+  - tajo en diagonal con la espada;
+  - tajo vertical con el hacha de guerra y el martillo;
+  - línea recta con la lanza;
+  - cortes pequeños con las dagas.
+
 ## Cajas
 
 - Las 5 armas de una caja comparten rareza, la del set A de esa caja.
