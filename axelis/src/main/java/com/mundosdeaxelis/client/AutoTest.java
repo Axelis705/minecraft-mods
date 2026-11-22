@@ -1521,7 +1521,8 @@ public final class AutoTest {
 
     /** Etapa 278: el Altar Maldito: despierta, trae oleadas (con barra), y al vencerlas suelta botín y se apaga. */
     private static void altar() {
-        net.minecraft.core.BlockPos ap = new net.minecraft.core.BlockPos(LTX - 5, LTY, LTZ - 1);
+        // lejos del Gran Yunque (que está en LTX-6, LTZ-6): la cámara mira hacia los cofres por el lado de la Mesa de Gemas
+        net.minecraft.core.BlockPos ap = new net.minecraft.core.BlockPos(LTX + 5, LTY, LTZ);
         add("altar (poner)", 1500, () -> {
             killTier1();
             cmd("execute in minecraft:overworld run setblock " + ap.getX() + " " + ap.getY() + " " + ap.getZ() + " mundos_de_axelis:altar_maldito[cargado=true]{Tier:1}");
