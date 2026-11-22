@@ -438,6 +438,10 @@ public class TableMenu extends AbstractContainerMenu {
 
     /** Crea un objeto de la pestaña «Crear»: pide nivel de mesa, Esencia y los ingredientes del inventario. */
     private void craft(ServerPlayer sp, TableRecipes.Recipe r) {
+        if (!r.conocida(Essence.archive(sp))) {
+            toast(sp, false, "craft_unknown");
+            return;
+        }
         if (effectiveLevel() < r.minLevel()) {
             toast(sp, false, "craft_level", Component.translatable(TableLevels.nameKey(r.minLevel())));
             return;

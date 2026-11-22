@@ -79,6 +79,13 @@ public class TableScreen extends AbstractContainerScreen<TableMenu> {
         }
     }
 
+    /** Para la prueba: abre la pestaña «Crear» en la categoría {@code c}. */
+    public void verCrear(int c) {
+        setTab(4);
+        craftCat = c;
+        craftPage = 0;
+    }
+
     private void setTab(int t) {
         tab = t;
         menu.tallerOpen = t == 0;
@@ -499,47 +506,96 @@ public class TableScreen extends AbstractContainerScreen<TableMenu> {
         return true;
     }
 
+    /** Etapa 286: pestaña de «Crear» que se ve (reparar, útiles o para tu base). */
+    private int craftCat;
+
     private void craftTab(GuiGraphics g, int mx, int my) {
-        List<com.mundosdeaxelis.table.TableRecipes.Recipe> list = com.mundosdeaxelis.table.TableRecipes.all();
+        List<com.mundosdeaxelis.table.TableRecipes.Recipe> all = com.mundosdeaxelis.table.TableRecipes.all();
+        String cat = com.mundosdeaxelis.table.TableRecipes.CATS[craftCat];
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).cat().equals(cat)) {
+                list.add(i);
+            }
+        }
+        // categorías (con cuántas recetas conoces de cada una)
+        int cx = 8;
+        for (int c = 0; c < com.mundosdeaxelis.table.TableRecipes.CATS.length; c++) {
+            String cc = com.mundosdeaxelis.table.TableRecipes.CATS[c];
+            int known = 0, total = 0;
+            for (com.mundosdeaxelis.table.TableRecipes.Recipe r : all) {
+                if (r.cat().equals(cc)) {
+                    total++;
+                    known += r.conocida(TableClient.archive) ? 1 : 0;
+                }
+            }
+            Component lab = Component.translatable("gui.mundos_de_axelis.table.craft_cat." + cc, known, total);
+            int cw = font.width(lab) + 10;
+            boolean on = c == craftCat;
+            boolean over = mx >= cx && mx < cx + cw && my >= 41 && my < 53;
+            PanelUi.tab(g, font, cx, 41, cw, 12, lab, on, over, GOLD & 0xFFFFFF);
+            if (!on) {
+                final int cc2 = c;
+                hots.add(new Hot(cx, 41, cw, 12, () -> {
+                    craftCat = cc2;
+                    craftPage = 0;
+                }, null));
+            }
+            cx += cw + 2;
+        }
         int pages = Math.max(1, (list.size() + CRAFT_PER_PAGE - 1) / CRAFT_PER_PAGE);
         craftPage = Math.max(0, Math.min(pages - 1, craftPage));
         int from = craftPage * CRAFT_PER_PAGE;
         double t = UiFx.time();
         int lx = 8, lw = W - 16;
         for (int i = 0; i < CRAFT_PER_PAGE && from + i < list.size(); i++) {
-            com.mundosdeaxelis.table.TableRecipes.Recipe r = list.get(from + i);
-            int idx = from + i;
-            int ry = 42 + i * 27;
+            int idx = list.get(from + i);
+            com.mundosdeaxelis.table.TableRecipes.Recipe r = all.get(idx);
+            int ry = 55 + i * 24;
+            boolean known = r.conocida(TableClient.archive);
             boolean lockedLv = menu.effectiveLevel() < r.minLevel();
-            boolean ready = canCraft(r);
+            boolean ready = known && canCraft(r);
             ItemStack out = new ItemStack(r.result().get(), r.count());
-            int tint = com.mundosdeaxelis.crate.Tiers.shown(out).color;
-            int edge = ready ? (int) (0x90 + 0x6F * Math.sin(t * 4.0D + i)) : lockedLv ? 0x50 : 0xB0;
-            g.fill(lx, ry, lx + lw, ry + 26, (edge << 24) | tint);
-            g.fillGradient(lx + 1, ry + 1, lx + lw - 1, ry + 25, lockedLv ? 0xFF1A1230 : 0xFF2A1C4A, lockedLv ? 0xFF0E0A1C : 0xFF150D28);
-            g.fillGradient(lx + 1, ry + 1, lx + lw - 1, ry + 10, (lockedLv ? 0x18000000 : 0x38000000) | tint, tint);
+            int tint = known ? com.mundosdeaxelis.crate.Tiers.shown(out).color : 0x6A5A8A;
+            int edge = ready ? (int) (0x90 + 0x6F * Math.sin(t * 4.0D + i)) : lockedLv || !known ? 0x50 : 0xB0;
+            g.fill(lx, ry, lx + lw, ry + 23, (edge << 24) | tint);
+            g.fillGradient(lx + 1, ry + 1, lx + lw - 1, ry + 22, lockedLv || !known ? 0xFF1A1230 : 0xFF2A1C4A, lockedLv || !known ? 0xFF0E0A1C : 0xFF150D28);
+            g.fillGradient(lx + 1, ry + 1, lx + lw - 1, ry + 9, (lockedLv || !known ? 0x18000000 : 0x38000000) | tint, tint);
+            // marco del icono, como una ranura de mesa
+            g.fill(lx + 2, ry + 3, lx + 20, ry + 21, 0xFF000000 | ((tint & 0xFEFEFE) >> 1));
+            g.fill(lx + 3, ry + 4, lx + 19, ry + 20, 0xFF0C0816);
             if (ready) {
                 for (int j = 0; j < 4; j++) {
                     double ph = (t * 0.6D + j * 0.25D + i * 0.1D) % 1.0D;
                     int px = lx + 26 + j * 40 + (int) (Math.sin(t * 2 + j) * 3);
-                    int py = ry + 24 - (int) (ph * 22);
+                    int py = ry + 22 - (int) (ph * 20);
                     g.fill(px, py, px + 1, py + 1, ((int) (Math.sin(ph * Math.PI) * 0xA0) << 24) | 0xFFFFFF);
                 }
             }
-            g.renderItem(out, lx + 3, ry + 5);
-            if (r.count() > 1) {
-                g.renderItemDecorations(font, out, lx + 3, ry + 5);
+            if (known) {
+                g.renderItem(out, lx + 3, ry + 4);
+                if (r.count() > 1) {
+                    g.renderItemDecorations(font, out, lx + 3, ry + 4);
+                }
+                if (mx >= lx + 3 && mx < lx + 19 && my >= ry + 4 && my < ry + 20) {
+                    hoverStack = out;
+                }
+            } else {
+                shadowItem(g, out, lx + 3, ry + 4);
             }
-            if (lockedLv) {
-                g.fill(lx + 3, ry + 5, lx + 19, ry + 21, 0x90100A20);
-                lock(g, lx + 7, ry + 8);
+            if (lockedLv && known) {
+                g.fill(lx + 3, ry + 4, lx + 19, ry + 20, 0x90100A20);
+                lock(g, lx + 7, ry + 7);
             }
-            if (mx >= lx + 3 && mx < lx + 19 && my >= ry + 5 && my < ry + 21) {
-                hoverStack = out;
+            if (!known) {
+                // aún no lo conoces: se aprende al tenerlo una vez (sale en los cofres de su tier)
+                fitText(g, Component.translatable("gui.mundos_de_axelis.table.craft_unknown"), lx + 22, ry + 3, lw - 26, 0xFF8C7AA8);
+                fitText(g, Component.translatable("gui.mundos_de_axelis.table.craft_unknown_hint"), lx + 22, ry + 13, lw - 26, 0xFF6C5E8C);
+                continue;
             }
             fitText(g, out.getHoverName(), lx + 22, ry + 3, lw - 22 - 50, lockedLv ? 0xFF807098 : 0xFF000000 | tint);
             String cost = "\u25C6" + r.essence();
-            int ex = lx + 22, ey = ry + 14;
+            int ex = lx + 22, ey = ry + 13;
             g.drawString(font, cost, ex, ey + 1, TableClient.essence >= r.essence() ? 0xFF7FE8FF : 0xFFFF8C8C, false);
             ex += font.width(cost) + 5;
             for (com.mundosdeaxelis.table.TableRecipes.Ing in : r.ings()) {
@@ -547,18 +603,21 @@ public class TableScreen extends AbstractContainerScreen<TableMenu> {
             }
             if (lockedLv) {
                 Component need = Component.translatable("gui.mundos_de_axelis.table.craft_need_level", Component.translatable(TableLevels.nameKey(r.minLevel())));
-                g.drawString(font, need, lx + lw - 4 - font.width(need), ry + 4, 0xFFFFC27A, false);
+                g.drawString(font, need, lx + lw - 4 - font.width(need), ry + 3, 0xFFFFC27A, false);
             } else {
                 button(g, lx + lw - 46, ry + 2, 42, 11, Component.translatable("gui.mundos_de_axelis.table.craft_btn"), ready, mx, my,
                         () -> press(TableMenu.B_CRAFT + idx), Component.translatable("gui.mundos_de_axelis.table.craft_tip", out.getHoverName()));
             }
         }
+        if (list.isEmpty()) {
+            g.drawCenteredString(font, Component.translatable("gui.mundos_de_axelis.npc.tab_vacia"), W / 2, 100, 0xFFB8AAD8);
+        }
         if (pages > 1) {
             final int pg = craftPage;
-            button(g, W - 8 - 60, 151, 14, 12, Component.literal("<"), pg > 0, mx, my, () -> craftPage--, null);
+            button(g, W - 8 - 56, 151, 12, 9, Component.literal("<"), pg > 0, mx, my, () -> craftPage--, null);
             String tx = (pg + 1) + "/" + pages;
-            g.drawString(font, tx, W - 8 - 42 + (28 - font.width(tx)) / 2, 153, 0xFFB8AAD8, false);
-            button(g, W - 8 - 14, 151, 14, 12, Component.literal(">"), pg < pages - 1, mx, my, () -> craftPage++, null);
+            g.drawString(font, tx, W - 8 - 42 + (28 - font.width(tx)) / 2, 152, 0xFFB8AAD8, false);
+            button(g, W - 8 - 12, 151, 12, 9, Component.literal(">"), pg < pages - 1, mx, my, () -> craftPage++, null);
         }
     }
 

@@ -84,6 +84,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.HEART_FRAGMENT.get());
                         output.accept(ModItems.GRAN_YUNQUE.get());
                         output.accept(ModItems.MESA_GEMAS.get());
+                        output.accept(ModItems.GUIA_GEMAS.get());
                         output.accept(ModItems.ALTAR_MALDITO.get());
                         output.accept(ModItems.TABLON_ENCARGOS.get());
                         for (int t = 1; t <= 8; t++) {

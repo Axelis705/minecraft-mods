@@ -1522,15 +1522,62 @@ public final class AutoTest {
         tablon();
     }
 
+    /** Etapa 286: la pestaña «Crear» por categorías (con un reparador aprendido y otros por descubrir) y la Guía del Gemista. */
+    private static void mesaNueva() {
+        net.minecraft.core.BlockPos mesa = new net.minecraft.core.BlockPos(LTX - 20, LTY, LTZ - 40);
+        add("mesa nueva (poner)", 2500, () -> {
+            open(null);
+            standLooking(mesa.getX() + 0.5, LTY, mesa.getZ() + 2.5, mesa.getX() + 0.5, LTY + 0.5, mesa.getZ() + 0.5);
+            cmd("execute in minecraft:overworld run setblock " + mesa.getX() + " " + mesa.getY() + " " + mesa.getZ() + " mundos_de_axelis:artificer_table");
+            cmd("give @a mundos_de_axelis:acorn 1"); // al tenerla se aprende su receta
+            cmd("give @a mundos_de_axelis:torn_cloth 4");
+            cmd("give @a minecraft:oak_sapling 2");
+            cmd("execute as @a run mundos prueba esencia 500");
+        });
+        add("mesa nueva (abrir)", 1500, () -> {
+            check("al tener una bellota se aprende su receta", TableClient.archive.contains("acorn"));
+            useBlock(mesa);
+        });
+        add("mesa nueva (Crear)", 1200, () -> {
+            if (Minecraft.getInstance().screen instanceof TableScreen ts) {
+                ts.verCrear(0);
+            }
+        });
+        add("mesa nueva (foto)", 400, () -> {
+            check("la Mesa del Artífice se abre en «Crear»", Minecraft.getInstance().screen instanceof TableScreen);
+            shot("190_mesa_crear_reparar");
+            if (Minecraft.getInstance().screen instanceof TableScreen ts) {
+                ts.verCrear(2);
+            }
+        });
+        add("mesa nueva (foto base)", 400, () -> shot("191_mesa_crear_base"));
+        add("guia (abrir)", 600, () -> {
+            open(null);
+            com.mundosdeaxelis.client.GuiaGemasLibro.abrir();
+        });
+        add("guia (foto)", 400, () -> {
+            check("la Guía del Gemista se abre como un libro", Minecraft.getInstance().screen instanceof net.minecraft.client.gui.screens.inventory.BookViewScreen);
+            shot("192_guia_gemas_1");
+            if (Minecraft.getInstance().screen instanceof net.minecraft.client.gui.screens.inventory.BookViewScreen b) {
+                b.setPage(7);
+            }
+        });
+        add("guia (foto elementos)", 400, () -> {
+            shot("193_guia_gemas_elementos");
+            open(null);
+        });
+    }
+
     /** Etapa 285: la tienda nueva de Hilda (pestañas, el camino al siguiente en dorado y el detalle de lo elegido). */
     private static void tiendaNueva() {
         int tx = LTX + 30, tz = LTZ - 30;
+        add("tienda nueva (ir)", 2500, () -> standLooking(tx + 0.5, LTY, tz - 7.5, tx + 0.5, LTY + 1.4, tz + 4.0));
         add("tienda nueva (casas)", 4000, () -> {
+            cmd("kill @e[type=!player]"); // en el mundo plano salen slimes: que no estorben a la casa
             cmd("mundos vecinos reiniciar");
             cmd("execute as @a run mundos vecinos semillas"); // todos libres (para poder plantar la casa)
             cmd("execute as @a run mundos prueba esencia 900");
             cmd("execute in minecraft:overworld positioned " + tx + " " + LTY + " " + tz + " rotated 0 0 run mundos vecinos plantar hilda");
-            standLooking(tx + 0.5, LTY, tz - 4.5, tx + 0.5, LTY + 1.4, tz + 4.0);
         });
         add("tienda nueva (hablar)", 1500, () -> {
             Minecraft mc = Minecraft.getInstance();
@@ -2818,6 +2865,7 @@ public final class AutoTest {
             cuerpoArmas();
             etapa282();
             tiendaNueva();
+            mesaNueva();
             add("fin", 2000, () -> {
                 open(null);
                 log("AUTOTEST_FIN fotos=" + shots + " comprobaciones=" + checks + " fallos=" + fails);

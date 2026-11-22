@@ -759,6 +759,62 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    // ------------------------------------------------------------------ etapa 286: Mesa del Artífice y Guía del Gemista
+
+    /**
+     * Etapa 286: los 16 reparadores se pueden crear (el remache ardiente y el dorado siempre; los demás al tenerlos una vez), los
+     * botones de la mesa caben en un byte, y la Mesa de Gemas da la guía una sola vez.
+     */
+    private static int etapa286(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.get(sl,
+                new com.mojang.authlib.GameProfile(java.util.UUID.fromString("5f0c2b86-0286-4a2e-9d1b-28600000e286"), "[prueba286]"));
+        java.util.List<String> fails = new java.util.ArrayList<>();
+        java.util.List<com.mundosdeaxelis.table.TableRecipes.Recipe> all = com.mundosdeaxelis.table.TableRecipes.all();
+        java.util.Set<String> reparar = new java.util.HashSet<>();
+        for (com.mundosdeaxelis.table.TableRecipes.Recipe r : all) {
+            if (r.cat().equals("reparar")) {
+                reparar.add(r.id());
+            }
+            if (!java.util.Arrays.asList(com.mundosdeaxelis.table.TableRecipes.CATS).contains(r.cat())) {
+                fails.add(r.id() + " en una pestaña que no existe");
+            }
+        }
+        for (String id : new String[]{"acorn", "golden_acorn", "ember_rivet", "golden_rivet", "frost_scale", "pure_frost_scale", "tempered_cinder",
+                "cinder_heart", "mending_rune", "greater_mending_rune", "dragon_mend_scale", "ancient_dragon_scale", "woven_feather",
+                "storm_woven_feather", "void_splinter", "pure_void_splinter"}) {
+            if (!reparar.contains(id)) {
+                fails.add("falta la receta del reparador " + id);
+            }
+        }
+        if (com.mundosdeaxelis.table.TableMenu.B_CRAFT + all.size() > 127) {
+            fails.add("demasiadas recetas para los botones (" + all.size() + ")");
+        }
+        com.mundosdeaxelis.table.TableRecipes.Recipe bellota = all.stream().filter(r -> r.id().equals("acorn")).findFirst().orElse(null);
+        com.mundosdeaxelis.table.TableRecipes.Recipe remache = all.stream().filter(r -> r.id().equals("ember_rivet")).findFirst().orElse(null);
+        java.util.Set<String> vacio = new java.util.HashSet<>();
+        if (bellota == null || bellota.conocida(vacio) || !bellota.conocida(java.util.Set.of("acorn"))) {
+            fails.add("la bellota no se aprende al tenerla");
+        }
+        if (remache == null || !remache.conocida(vacio)) {
+            fails.add("el remache ardiente no está siempre");
+        }
+        if (!com.mundosdeaxelis.table.TableRecipes.ensenia("frost_scale") || com.mundosdeaxelis.table.TableRecipes.ensenia("ember_rivet")) {
+            fails.add("qué enseña una receta está mal");
+        }
+        fp.getInventory().clearContent();
+        boolean g1 = com.mundosdeaxelis.gema.MesaGemasBlock.darGuia(fp);
+        boolean g2 = com.mundosdeaxelis.gema.MesaGemasBlock.darGuia(fp);
+        if (!g1 || g2 || fp.getInventory().countItem(com.mundosdeaxelis.registry.ModItems.GUIA_GEMAS.get()) != 1) {
+            fails.add("la guía no se da una sola vez (" + g1 + ", " + g2 + ")");
+        }
+        fp.getInventory().clearContent();
+        String msg = fails.isEmpty() ? "PRUEBA_ETAPA286_OK " + all.size() + " recetas" : "PRUEBA_ETAPA286_FALLO " + fails;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fails.isEmpty() ? 1 : 0;
+    }
+
     // ------------------------------------------------------------------ etapa 285: la tienda de cada habitante
 
     /** Etapa 285: cada habitante vende el camino al siguiente y los sitios de los tiers anteriores (Teo, todos). */
@@ -1393,6 +1449,7 @@ public final class TestCommands {
                 .then(Commands.literal("etapa283").executes(ctx -> etapa283(ctx.getSource())))
                 .then(Commands.literal("etapa284").executes(ctx -> etapa284(ctx.getSource())))
                 .then(Commands.literal("etapa285").executes(ctx -> etapa285(ctx.getSource())))
+                .then(Commands.literal("etapa286").executes(ctx -> etapa286(ctx.getSource())))
                 .then(Commands.literal("encargos_listos").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{

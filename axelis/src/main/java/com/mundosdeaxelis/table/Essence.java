@@ -284,14 +284,19 @@ public final class Essence {
             all.add(s);
         }
         for (ItemStack s : all) {
-            if (s.isEmpty() || !(s.getItem() instanceof RelicItem || s.getItem() instanceof MaterialItem || s.getItem() instanceof com.mundosdeaxelis.item.CapeItem || s.getItem() instanceof com.mundosdeaxelis.item.SealItem || s.getItem() instanceof com.mundosdeaxelis.gear.GearTool || s.getItem() instanceof com.mundosdeaxelis.gear.SetArmor)) {
+            if (s.isEmpty()) {
                 continue;
             }
             ResourceLocation rl = ForgeRegistries.ITEMS.getKey(s.getItem());
+            // etapa 286: lo que enseña una receta de la Mesa del Artífice (reparadores, gemas vacías, comida) también se apunta
+            boolean receta = rl != null && MundosDeAxelis.MODID.equals(rl.getNamespace()) && TableRecipes.ensenia(rl.getPath());
+            if (!receta && !(s.getItem() instanceof RelicItem || s.getItem() instanceof MaterialItem || s.getItem() instanceof com.mundosdeaxelis.item.CapeItem || s.getItem() instanceof com.mundosdeaxelis.item.SealItem || s.getItem() instanceof com.mundosdeaxelis.gear.GearTool || s.getItem() instanceof com.mundosdeaxelis.gear.SetArmor)) {
+                continue;
+            }
             if (rl != null && MundosDeAxelis.MODID.equals(rl.getNamespace()) && discover(sp, rl.getPath())) {
                 fresh = true;
-                sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.archive_new", s.getHoverName())
-                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+                sp.displayClientMessage(Component.translatable(receta ? "message.mundos_de_axelis.receta_nueva" : "message.mundos_de_axelis.archive_new",
+                        s.getHoverName()).withStyle(receta ? ChatFormatting.GOLD : ChatFormatting.LIGHT_PURPLE), true);
             }
         }
         if (fresh) {

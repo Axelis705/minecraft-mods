@@ -32,11 +32,28 @@ public class MesaGemasBlock extends Block {
             return InteractionResult.SUCCESS;
         }
         if (player instanceof ServerPlayer sp) {
+            darGuia(sp);
             com.mundosdeaxelis.table.Essence.sync(sp); // la pantalla muestra la Esencia al día
             net.minecraftforge.network.NetworkHooks.openScreen(sp, new SimpleMenuProvider((id, inv, p) ->
                     new GemTableMenu(id, inv, ContainerLevelAccess.create(level, pos)), Component.translatable("block.mundos_de_axelis.mesa_gemas")));
         }
         return InteractionResult.CONSUME;
+    }
+
+    /** Etapa 286: la primera vez que usas una Mesa de Gemas te da la Guía del Gemista (luego se puede crear en la Mesa del Artífice). */
+    public static boolean darGuia(ServerPlayer sp) {
+        net.minecraft.nbt.CompoundTag d = sp.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+        if (d.getBoolean("mdc_guia_gemas")) {
+            return false;
+        }
+        d.putBoolean("mdc_guia_gemas", true);
+        sp.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, d);
+        net.minecraft.world.item.ItemStack g = new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.GUIA_GEMAS.get());
+        if (!sp.getInventory().add(g)) {
+            sp.drop(g, false);
+        }
+        sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.guia_gemas").withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE), true);
+        return true;
     }
 
     @Override

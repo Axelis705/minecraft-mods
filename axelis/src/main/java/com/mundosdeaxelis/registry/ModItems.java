@@ -229,6 +229,8 @@ public final class ModItems {
 
     /** Etapa 271: gema vacía (la pureza va en el dato «Pureza»), gemas de cada elemento y esencias de infusión. */
     public static final RegistryObject<Item> GEMA_VACIA = ITEMS.register("gema_vacia", com.mundosdeaxelis.gema.GemaItems.Vacia::new);
+    /** Etapa 286: la Guía del Gemista (libro con todo lo de las gemas). */
+    public static final RegistryObject<Item> GUIA_GEMAS = ITEMS.register("guia_gemas", com.mundosdeaxelis.gema.GuiaGemasItem::new);
     public static final java.util.Map<com.mundosdeaxelis.gema.Gemas.Elemento, RegistryObject<Item>> GEMAS = new java.util.EnumMap<>(com.mundosdeaxelis.gema.Gemas.Elemento.class);
     public static final java.util.Map<com.mundosdeaxelis.gema.Gemas.Elemento, RegistryObject<Item>> ESENCIAS = new java.util.EnumMap<>(com.mundosdeaxelis.gema.Gemas.Elemento.class);
 
