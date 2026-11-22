@@ -617,11 +617,11 @@ public final class StructKit {
      */
     public static int[][] mimics(String design) {
         return switch (design) {
-            case "santuario" -> new int[][]{{3, 0, 31, 1}};
+            case "santuario" -> new int[][]{{5, 0, 31, 1}};
             case "bosque" -> new int[][]{{26, 0, 35, 1}};
             case "forja" -> new int[][]{{-26, 6, 64, 2}};
             case "fragua" -> new int[][]{{13, 0, 25, 2}};
-            case "hielo" -> new int[][]{{17, 0, 24, 3}};
+            case "hielo" -> new int[][]{{17, 0, 28, 3}};
             case "fortin" -> new int[][]{{-14, 0, 33, 3}};
             case "volcan" -> new int[][]{{23, 8, 73, 4}};
             case "torre_arcana" -> new int[][]{{11, 0, 31, 5}};
@@ -636,7 +636,7 @@ public final class StructKit {
      */
     public static int[][] altars(String design) {
         return switch (design) {
-            case "santuario" -> new int[][]{{1, 0, 19, 1}};
+            case "santuario" -> new int[][]{{1, 0, 22, 1}};
             case "bosque" -> new int[][]{{-1, 0, 1, 1}};
             case "forja" -> new int[][]{{-1, 0, 24, 2}};
             case "fragua" -> new int[][]{{1, 0, 27, 2}};
@@ -644,7 +644,7 @@ public final class StructKit {
             case "fortin" -> new int[][]{{0, 0, 30, 3}};
             case "volcan" -> new int[][]{{-12, 8, 75, 4}};
             case "torre_arcana" -> new int[][]{{0, 0, 31, 5}};
-            case "torre" -> new int[][]{{-1, 3, 28, 5}};
+            case "torre" -> new int[][]{{0, 3, 29, 5}};
             default -> new int[0][];
         };
     }

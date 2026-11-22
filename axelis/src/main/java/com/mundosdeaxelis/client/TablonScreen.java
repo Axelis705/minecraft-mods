@@ -45,7 +45,7 @@ public class TablonScreen extends AbstractContainerScreen<TablonMenu> {
             case COFRES -> new ItemStack(ModItems.VAULT_CHEST.get());
             case MIMICO -> new ItemStack(ModItems.MIMICO_SPAWN_EGG.get());
             case ALTAR -> new ItemStack(ModItems.ALTAR_MALDITO.get());
-            case ARROJADIZOS -> new ItemStack(ModItems.ARROJADIZOS.get(com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ARCANO).get());
+            case ARROJADIZOS -> new ItemStack(ModItems.ARMAS.values().iterator().next().get());
             case GEMAS -> new ItemStack(ModItems.GEMA_VACIA.get());
             case FORJA -> new ItemStack(ModItems.GRAN_YUNQUE.get());
         };

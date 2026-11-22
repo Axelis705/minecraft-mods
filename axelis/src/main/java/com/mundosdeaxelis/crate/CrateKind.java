@@ -66,18 +66,18 @@ public enum CrateKind {
         return (int) Math.round(CratePools.tierChances(this)[t.ordinal()] * 10.0);
     }
 
-    /** Esencia que cuesta la llave en la Mesa del Artífice (0 = no se vende: solo creativo). */
+    /** Esencia que cuesta la llave en la Mesa del Artífice (0 = no se vende: solo creativo). Etapa 282: un 35 % más caras. */
     public int keyCost() {
         return switch (this) {
             case PETS -> 0;
-            case FOREST -> 30;
-            case FORGE -> 50;
-            case ICE -> 80;
-            case MAGMA -> 120;
-            case MAGIC -> 160;
-            case RUBY -> 220;
-            case SKY -> 280;
-            case ABYSS -> 400;
+            case FOREST -> 40;
+            case FORGE -> 70;
+            case ICE -> 110;
+            case MAGMA -> 160;
+            case MAGIC -> 220;
+            case RUBY -> 300;
+            case SKY -> 380;
+            case ABYSS -> 540;
         };
     }
 

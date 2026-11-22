@@ -12,11 +12,11 @@ public final class TableLevels {
 
     public static final int MAX = 8;
     /** Cuánto cuesta cada reliquia o mascota por el aumento de nivel, según la rareza (se multiplica por el nivel actual). */
-    private static final int[] LEVEL_BASE = {6, 10, 16, 26, 40, 60, 90, 130};
+    private static final int[] LEVEL_BASE = {8, 13, 21, 34, 52, 78, 117, 169}; // etapa 282: +30 %
     /** Esencia que da desmontar un objeto, según la rareza. */
     private static final int[] DISMANTLE = {4, 8, 16, 32, 64, 128, 220, 360};
     /** Esencia necesaria para subir la mesa AL nivel indicado (índice). */
-    private static final int[] ESSENCE = {0, 0, 150, 450, 1100, 2200, 3600, 5500, 8000};
+    private static final int[] ESSENCE = {0, 0, 180, 540, 1320, 2640, 4320, 6600, 9600}; // etapa 282: +20 %
 
     public static String nameKey(int level) {
         return "table.mundos_de_axelis.level." + Math.max(1, Math.min(MAX, level));

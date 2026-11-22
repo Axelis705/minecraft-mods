@@ -482,6 +482,7 @@ public final class StructPlacer {
 
     private void stepMobs() {
         if (idx >= bp.mobs.size()) {
+            Correa.enlazar(level, bp, mobs, this::world);
             next();
             return;
         }
@@ -516,8 +517,14 @@ public final class StructPlacer {
         if (hook != null) {
             hook.accept(index, mob);
         }
-        // etapa 275: a veces un enemigo sale como élite
-        Elites.maybe(mob, level.random);
+        // etapa 282: los enemigos de la estructura no se alejan de su sitio (y el de la llave, menos aún)
+        Correa.hogar(mob, p);
+        if (Correa.KEY_TAG.equals(m.tag())) {
+            Correa.nombreLlave(mob);
+        } else {
+            // etapa 275: a veces un enemigo sale como élite
+            Elites.maybe(mob, level.random);
+        }
         return level.addFreshEntity(mob) ? mob.getUUID() : null;
     }
 

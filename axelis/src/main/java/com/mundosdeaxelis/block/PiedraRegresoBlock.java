@@ -38,7 +38,8 @@ public class PiedraRegresoBlock extends Block {
             return InteractionResult.PASS;
         }
         if (!level.isClientSide && player instanceof ServerPlayer sp) {
-            com.mundosdeaxelis.world.Volcanes.goBack(sp, pos);
+            // etapa 282: primero una ventanita; «Confirmar» se activa a los 3 s (así nadie sale sin querer)
+            com.mundosdeaxelis.world.Confirmar.pedir(sp, "salida_volcan", pos);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

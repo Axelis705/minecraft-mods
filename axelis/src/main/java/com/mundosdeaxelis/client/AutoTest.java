@@ -1512,7 +1512,35 @@ public final class AutoTest {
         });
         altar();
         armas();
+        etapa282();
         tablon();
+    }
+
+    /** Etapa 282: la ventanita de confirmar la salida del volcán (Confirmar se llena en 3 s) y el estallido en la ficha del arma. */
+    private static void etapa282() {
+        net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(LTX, LTY, LTZ - 6);
+        add("etapa 282 (confirmar salida)", 600, () -> {
+            Minecraft.getInstance().setScreen(new ConfirmarScreen("salida_volcan", p, com.mundosdeaxelis.world.Confirmar.ESPERA));
+        });
+        add("etapa 282 (confirmar: esperando)", 300, () -> {
+            check("se abre la ventanita de confirmar la salida", Minecraft.getInstance().screen instanceof ConfirmarScreen);
+            shot("140_confirmar_salida_espera");
+        });
+        add("etapa 282 (confirmar: lista)", 3200, () -> shot("141_confirmar_salida_lista"));
+        add("etapa 282 (cerrar)", 300, () -> {
+            Minecraft.getInstance().setScreen(null);
+            net.minecraft.world.item.ItemStack st = new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.arma(
+                    com.mundosdeaxelis.arma.TipoArma.MARTILLO, com.mundosdeaxelis.arma.TierArma.values()[3]));
+            java.util.List<net.minecraft.network.chat.Component> tip = st.getTooltipLines(Minecraft.getInstance().player, net.minecraft.world.item.TooltipFlag.NORMAL);
+            boolean estallido = false;
+            for (net.minecraft.network.chat.Component c : tip) {
+                estallido |= c.getString().contains("✸");
+            }
+            check("la ficha del arma dice su estallido", estallido);
+            check("el arrojadizo ya no sale en la pestaña del mod",
+                    !net.minecraft.world.item.CreativeModeTabs.allTabs().stream().anyMatch(t -> t.getDisplayItems().stream()
+                            .anyMatch(s -> s.getItem() instanceof com.mundosdeaxelis.arrojadizo.ArrojadizoItem)));
+        });
     }
 
     /** Etapa 281: las armas nuevas en la mano (primera y tercera persona), las 40 en un cofre y dos especiales en acción. */

@@ -308,15 +308,13 @@ final class DesignFragua {
             b.set(x, -2, 25, "magma_block");
         }
         // martillo gigante colgado de cadenas sobre el centro
-        for (int y = 9; y <= 11; y++) {
-            b.set(0, y, 28, "chain[axis=y]");
-        }
+        // etapa 282: el mango va arriba, hacia las cadenas (antes colgaba un palo hasta media sala)
+        b.set(0, 9, 28, "dark_oak_log[axis=y]");
+        b.set(0, 10, 28, "dark_oak_log[axis=y]");
+        b.set(0, 11, 28, "chain[axis=y]");
         for (int x = -2; x <= 2; x++) {
             b.set(x, 8, 28, Math.abs(x) == 2 ? CU : "iron_block");
             b.set(x, 7, 28, Math.abs(x) <= 1 ? "iron_block" : "air");
-        }
-        for (int y = 3; y <= 6; y++) {
-            b.set(0, y, 28, "dark_oak_log[axis=y]");
         }
         // yunques, piedras de afilar y armeros
         b.set(-8, 0, 32, "anvil[facing=south]");
@@ -420,7 +418,7 @@ final class DesignFragua {
     // ================================================================== cofre y enemigos
 
     private static void chests(StructBp b) {
-        b.setNbt(3, 0, 35, M + "vault_chest_forge[facing=west]", "{Kind:\"ANTE\",Stage:2}");
+        b.setNbt(3, 0, 35, M + "vault_chest_forge[facing=east]", "{Kind:\"ANTE\",Stage:2}");
         // premio del almacén
         b.setNbt(NPC_X, 0, NPC_Z, M + "vault_chest_forge[facing=west]", "{Kind:\"TRIAL\",Stage:2}");
     }

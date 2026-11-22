@@ -170,7 +170,7 @@ public final class MysteryLoot {
         add(BoxTier.EPIC, 8, of(ModItems.POCKET_BACKPACK, 1, 1));
         add(BoxTier.EPIC, 10, vanilla(Items.DIAMOND, 4, 7));
         add(BoxTier.EPIC, 8, vanilla(Items.ENCHANTED_GOLDEN_APPLE, 1, 1));
-        add(BoxTier.EPIC, 8, vanilla(Items.NETHERITE_SCRAP, 2, 4));
+        add(BoxTier.EPIC, 8, vanilla(Items.EXPERIENCE_BOTTLE, 12, 20));
         add(BoxTier.EPIC, 8, enchanted(Items.DIAMOND_PICKAXE, 30));
         add(BoxTier.EPIC, 8, enchanted(Items.DIAMOND_SWORD, 30));
         add(BoxTier.EPIC, 6, vanilla(Items.SHULKER_SHELL, 2, 3));
@@ -228,7 +228,7 @@ public final class MysteryLoot {
         add(BoxTier.LEGENDARY, 6, of(ModItems.COMP_CRYSTAL_DRAGON, 1, 1));
 
         add(BoxTier.LEGENDARY, 10, vanilla(Items.TOTEM_OF_UNDYING, 1, 2));
-        add(BoxTier.LEGENDARY, 8, vanilla(Items.NETHERITE_INGOT, 1, 2));
+        add(BoxTier.LEGENDARY, 8, vanilla(Items.ENCHANTED_GOLDEN_APPLE, 1, 2));
         add(BoxTier.LEGENDARY, 8, vanilla(Items.NETHER_STAR, 1, 1));
         add(BoxTier.LEGENDARY, 6, vanilla(Items.BEACON, 1, 1));
         add(BoxTier.LEGENDARY, 6, vanilla(Items.DIAMOND_BLOCK, 1, 2));

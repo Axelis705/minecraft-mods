@@ -20,7 +20,7 @@ public final class Bound {
     public static final String TAG = "mdc_bound";
     public static final String NAME = "mdc_bound_name";
     /** Esencia que cuesta vincular, según la rareza del objeto. */
-    private static final int[] COST = {20, 40, 80, 160, 320, 640, 1100, 1800};
+    private static final int[] COST = {25, 50, 100, 200, 400, 800, 1380, 2250}; // etapa 282: +25 %
 
     public static int cost(Tier t) {
         return COST[t.ordinal()];

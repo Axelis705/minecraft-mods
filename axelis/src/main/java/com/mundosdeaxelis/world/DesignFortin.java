@@ -587,7 +587,7 @@ final class DesignFortin {
 
     /** Provisiones junto a la mesa de mapas; etapa 268: un premio en el patio oeste y una cerradura en el patio este (cofres de escarcha). */
     private static void chests(StructBp b) {
-        StructKit.vault(b, 4, 1, 41, "west", "ANTE", 3, 0);
+        StructKit.vault(b, 4, 1, 41, "east", "ANTE", 3, 0);
         StructKit.vault(b, -14, 0, 31, "east", "TRIAL", 3, 0);
         StructKit.vault(b, 14, 0, 42, "west", "LOCKED", 3, 2);
     }

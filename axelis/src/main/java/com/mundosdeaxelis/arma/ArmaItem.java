@@ -148,6 +148,8 @@ public class ArmaItem extends SwordItem implements GearTool, SoulUser {
         tip.add(Component.translatable(k + "pasiva." + tipo.id + ".1").withStyle(ChatFormatting.GREEN));
         tip.add(Component.translatable(k + "pasiva." + tipo.id + ".2").withStyle(ChatFormatting.GREEN));
         tip.add(Component.translatable(k + "elemento." + tierArma.elemento.id).withStyle(Style.EMPTY.withColor(tierArma.color)));
+        // etapa 282: el arrojadizo del tier, ahora como estallido de los golpes cargados
+        tip.add(Component.translatable(k + "estallido." + Armas.estallidoDe(this).id).withStyle(Style.EMPTY.withColor(Armas.estallidoDe(this).color)));
         for (Map.Entry<Perk, Integer> e : perks.entrySet()) {
             tip.add(Component.translatable("perk.mundos_de_axelis." + e.getKey().id + e.getValue()).withStyle(ChatFormatting.DARK_GREEN));
         }

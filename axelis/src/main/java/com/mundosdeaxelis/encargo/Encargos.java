@@ -209,9 +209,16 @@ public final class Encargos {
                 out.add(new ItemStack(ModItems.ESSENCE_RUNES.get(T).get()));
             }
             case COFRES, FORJA -> out.add(new ItemStack(ModItems.KEY_FRAGMENTS.get(com.mundosdeaxelis.crate.CrateKind.byIndex(T)).get(), 2));
-            case MIMICO -> out.add(new ItemStack(ModItems.ARROJADIZOS.get(com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ofTier(T)).get(), 3));
+            case MIMICO -> {
+                out.add(new ItemStack(ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(T)).get()));
+                out.add(new ItemStack(ModItems.KEY_FRAGMENTS.get(com.mundosdeaxelis.crate.CrateKind.byIndex(T)).get()));
+            }
             case ALTAR -> out.add(new ItemStack(ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(T)).get(), 2));
-            case ARROJADIZOS -> out.add(new ItemStack(ModItems.ARROJADIZOS.get(com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ofTier(T)).get(), 4));
+            // etapa 282: «arrojadizos» pasó a ser «estallidos» (golpes cargados de las armas que estallan)
+            case ARROJADIZOS -> {
+                out.add(new ItemStack(ModItems.ESSENCE_RUNES.get(T).get()));
+                out.add(new ItemStack(ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(T)).get()));
+            }
             case GEMAS -> out.add(VaultLoot.emptyGem(T));
         }
         return out;

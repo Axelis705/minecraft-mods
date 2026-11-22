@@ -483,7 +483,7 @@ final class DesignSantuario {
 
     /** Provisiones junto a la celda; etapa 268: un premio en el rincón del patio y una cerradura fácil en el santuario. */
     private static void chests(StructBp b) {
-        b.setNbt(5, 0, 30, M + "vault_chest[facing=west]", "{Kind:\"ANTE\",Stage:1}");
+        b.setNbt(5, 0, 30, M + "vault_chest[facing=east]", "{Kind:\"ANTE\",Stage:1}");
         StructKit.vault(b, -12, 0, 10, "east", "TRIAL", 1, 0);
         StructKit.vault(b, 7, 0, 20, "west", "LOCKED", 1, 1);
     }

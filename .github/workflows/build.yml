@@ -51,6 +51,9 @@ jobs:
           W=estructuras/src/main/java/com/mundosdeaxelis/world
           javac -d out $W/StructBp.java $W/EstIds.java $W/Soporte.java $W/Arq.java $W/Linker.java $W/StructKit.java $W/StructDesigns.java $W/Design*.java $W/TorreInterior.java estructuras/tests/com/mundosdeaxelis/world/ConectividadTest.java
           java -cp out com.mundosdeaxelis.world.ConectividadTest
+          # etapa 282: cofres mirando a la sala, puertas de hierro con muro y paso, altares con sitio y mímicos junto a un cofre
+          javac -encoding UTF-8 -cp out -d out axelis/herramientas/RevisarPlanos.java
+          java -cp out RevisarPlanos -
       - name: Pruebas de logica de las cartas
         if: matrix.mod == 'cartas'
         run: |

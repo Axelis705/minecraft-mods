@@ -30,6 +30,11 @@ public final class ClientBridge {
         }
     }
 
+    /** Etapa 282: ventanita de confirmar (salir del volcán...). */
+    public static void confirmar(com.mundosdeaxelis.network.ConfirmarPacket p) {
+        Minecraft.getInstance().setScreen(new ConfirmarScreen(p.kind, p.pos, p.ticks));
+    }
+
     public static void openForja(com.mundosdeaxelis.network.ForjaOpenPacket p) {
         Minecraft.getInstance().setScreen(new ForjaScreen(p.pos, p.counts, p.seed));
     }

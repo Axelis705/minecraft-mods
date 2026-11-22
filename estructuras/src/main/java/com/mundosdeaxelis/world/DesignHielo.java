@@ -361,9 +361,7 @@ final class DesignHielo {
             }
         }
         rose(b, 0, 21, 34);
-        // puertas de hierro
-        ironDoor(b, -1, 0, 34, "-z", false);
-        ironDoor(b, 1, 0, 34, "-z", true);
+        // etapa 282: sin puertas de hierro sueltas en medio del gran portal (no se podían abrir y no tenían marco)
         for (int x = -4; x <= 4; x += 2) {
             candles(b, x, 0, 32, 3);
         }

@@ -407,7 +407,8 @@ public final class TestCommands {
 
     /**
      * Etapa 273: los arrojadizos con un jugador falso. Cada uno revienta junto a un husk (enemigo) y una oveja (no enemigo): el
-     * husk sufre su efecto y la oveja y el jugador no; lanzarlo con el objeto crea el proyectil; el gran tesoro trae los del tier.
+     * husk sufre su efecto y la oveja y el jugador no; lanzarlo con el objeto crea el proyectil (los que queden en los inventarios
+     * siguen sirviendo); los cofres ya no los traen (etapa 282).
      * Como la nube y el remolino tardan, el resultado se escribe 2 segundos después.
      */
     private static int arrojadizos(CommandSourceStack src) {
@@ -457,15 +458,15 @@ public final class TestCommands {
             fails.add("lanzar con el objeto (proyectil " + flying + ", quedan " + fp.getMainHandItem().getCount() + ")");
         }
         fp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.EMPTY);
-        // el gran tesoro trae los del tier
+        // etapa 282: los cofres ya no traen arrojadizos (ahora son el estallido de las armas)
         net.minecraft.util.RandomSource r = net.minecraft.util.RandomSource.create(273L);
         for (int st = 1; st <= 5; st++) {
-            boolean has = false;
-            for (net.minecraft.world.item.ItemStack it : com.mundosdeaxelis.block.VaultLoot.roll(com.mundosdeaxelis.block.VaultLoot.Kind.TREASURE, st, r)) {
-                has |= it.getItem() instanceof com.mundosdeaxelis.arrojadizo.ArrojadizoItem ai && ai.tipo.tier == st;
-            }
-            if (!has) {
-                fails.add("gran tesoro de tier " + st + " sin arrojadizos");
+            for (com.mundosdeaxelis.block.VaultLoot.Kind kind : com.mundosdeaxelis.block.VaultLoot.Kind.values()) {
+                for (net.minecraft.world.item.ItemStack it : com.mundosdeaxelis.block.VaultLoot.roll(kind, st, r, 5)) {
+                    if (it.getItem() instanceof com.mundosdeaxelis.arrojadizo.ArrojadizoItem) {
+                        fails.add("un cofre " + kind + " de tier " + st + " trae arrojadizos");
+                    }
+                }
             }
         }
         com.mundosdeaxelis.world.Scheduler.runLater(45, () -> {
@@ -756,6 +757,165 @@ public final class TestCommands {
         com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
         src.sendSuccess(() -> Component.literal(msg), true);
         return fail == null ? 1 : 0;
+    }
+
+    // ------------------------------------------------------------------ etapa 282: arreglos rápidos
+
+    /**
+     * Etapa 282: los cofres giran con la estructura; la Piedra de regreso pide confirmar pasados 3 s; si no hay guardián de la
+     * llave llega otro (con su nombre y su correa) y no se fuerza con hierro; los enemigos de las estructuras vuelven a su sitio;
+     * el golpe cargado hace estallar el arrojadizo del tier; sin netherita en el botín; y todas las semillas de casa de una.
+     */
+    private static int etapa282(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        java.util.List<String> fails = new java.util.concurrent.CopyOnWriteArrayList<>();
+        // 1) cofres: el estado gira con la estructura (antes quedaban mirando a la pared)
+        net.minecraft.world.level.block.state.BlockState ch = com.mundosdeaxelis.registry.ModBlocks.VAULT_CHEST.get().defaultBlockState()
+                .setValue(com.mundosdeaxelis.block.VaultChestBlock.FACING, net.minecraft.core.Direction.EAST);
+        if (ch.rotate(net.minecraft.world.level.block.Rotation.CLOCKWISE_90).getValue(com.mundosdeaxelis.block.VaultChestBlock.FACING) != net.minecraft.core.Direction.SOUTH
+                || ch.rotate(net.minecraft.world.level.block.Rotation.CLOCKWISE_180).getValue(com.mundosdeaxelis.block.VaultChestBlock.FACING) != net.minecraft.core.Direction.WEST) {
+            fails.add("el cofre no gira con la estructura");
+        }
+        net.minecraft.world.level.block.state.BlockState planned = com.mundosdeaxelis.world.StructPlacer.planned("mundos_de_axelis:vault_chest_ice[facing=north]",
+                net.minecraft.world.level.block.Rotation.COUNTERCLOCKWISE_90);
+        if (planned == null || planned.getValue(com.mundosdeaxelis.block.VaultChestBlock.FACING) != net.minecraft.core.Direction.WEST) {
+            fails.add("el cofre del plano no gira (" + planned + ")");
+        }
+        // 2) confirmar la salida: no vale antes de 3 s, ni lejos, ni otra cosa
+        net.minecraft.core.BlockPos piedra = base.offset(0, 0, -4);
+        fp.moveTo(piedra.getX() + 0.5, piedra.getY(), piedra.getZ() + 2.5, 0, 0);
+        com.mundosdeaxelis.world.Confirmar.registrar(fp, "salida_volcan", piedra);
+        if (com.mundosdeaxelis.world.Confirmar.valida(fp, "salida_volcan", piedra)) {
+            fails.add("se puede confirmar al momento");
+        }
+        if (com.mundosdeaxelis.world.Confirmar.valida(fp, "otra_cosa", piedra)) {
+            fails.add("confirma otra cosa");
+        }
+        // 3) estallido del arma: el golpe cargado suelta el arrojadizo del tier (esporas: veneno alrededor)
+        net.minecraft.world.entity.monster.Vindicator m1 = muñeco(sl, base.getX() + 8.5, base.getY(), base.getZ() + 0.5, 0);
+        net.minecraft.world.entity.monster.Vindicator m2 = muñeco(sl, base.getX() + 9.5, base.getY(), base.getZ() + 1.5, 0);
+        com.mundosdeaxelis.arma.ArmaItem espada = (com.mundosdeaxelis.arma.ArmaItem) com.mundosdeaxelis.registry.ModItems.arma(
+                com.mundosdeaxelis.arma.TipoArma.ESPADA, com.mundosdeaxelis.arma.TierArma.values()[0]);
+        if (com.mundosdeaxelis.arma.Armas.estallidoDe(espada) != com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ESPORAS) {
+            fails.add("el estallido de la espada del bosque no son esporas");
+        }
+        fp.moveTo(base.getX() + 6.5, base.getY(), base.getZ() + 0.5, -90, 0);
+        com.mundosdeaxelis.arma.Armas.forzarEstallido(espada, fp, sl, m1);
+        // 4) guardián de la llave: celda de prueba con puerta de hierro y una presa sin guardián
+        net.minecraft.core.BlockPos cell = base.offset(-20, 0, 0);
+        for (int dx = -14; dx <= 14; dx++) {
+            for (int dz = -14; dz <= 14; dz++) {
+                sl.setBlock(cell.offset(dx, -1, dz), net.minecraft.world.level.block.Blocks.STONE.defaultBlockState(), 3);
+                for (int dy = 0; dy <= 3; dy++) {
+                    sl.setBlock(cell.offset(dx, dy, dz), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+        }
+        net.minecraft.core.BlockPos door = cell.offset(0, 0, 2);
+        sl.setBlock(door, net.minecraft.world.level.block.Blocks.IRON_DOOR.defaultBlockState()
+                .setValue(net.minecraft.world.level.block.DoorBlock.FACING, net.minecraft.core.Direction.SOUTH), 3);
+        sl.setBlock(door.above(), net.minecraft.world.level.block.Blocks.IRON_DOOR.defaultBlockState()
+                .setValue(net.minecraft.world.level.block.DoorBlock.FACING, net.minecraft.core.Direction.SOUTH)
+                .setValue(net.minecraft.world.level.block.DoorBlock.HALF, net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER), 3);
+        com.mundosdeaxelis.entity.Habitante presa = com.mundosdeaxelis.entity.Habitante.create(sl, "ruda", com.mundosdeaxelis.entity.Habitante.PRESO, cell);
+        net.minecraft.world.entity.Mob g = presa == null ? null : com.mundosdeaxelis.npc.NpcService.renacer(sl, presa);
+        if (presa == null || g == null) {
+            fails.add("no llega un guardián nuevo con la llave (presa " + (presa != null) + ")");
+        } else {
+            if (!com.mundosdeaxelis.world.Correa.llevaLlave(g) || !g.getPersistentData().contains(com.mundosdeaxelis.world.Correa.HOGAR)
+                    || g.getPersistentData().getInt(com.mundosdeaxelis.world.Correa.RADIO) != com.mundosdeaxelis.world.Correa.RADIO_LLAVE) {
+                fails.add("el guardián nuevo no lleva la marca de la llave o su correa");
+            }
+            if (!g.hasCustomName() || !g.isCustomNameVisible()) {
+                fails.add("el guardián de la llave no lleva su nombre");
+            }
+            double dd = Math.sqrt(g.distanceToSqr(door.getX() + 0.5, door.getY(), door.getZ() + 0.5));
+            if (dd < 4 || dd > 14 || g.getZ() < door.getZ()) {
+                fails.add("el guardián nuevo aparece en mal sitio (a " + Math.round(dd) + " de la puerta)");
+            }
+            if (com.mundosdeaxelis.npc.NpcService.guardia(sl, presa) != g) {
+                fails.add("la presa no sabe quién es su guardián");
+            }
+            if (com.mundosdeaxelis.npc.NpcService.renacer(sl, presa) != null) {
+                fails.add("llegan guardianes sin esperar");
+            }
+        }
+        // 5) correa: un enemigo de estructura que se va muy lejos vuelve a su sitio
+        java.util.UUID ru = com.mundosdeaxelis.world.StructPlacer.spawn(sl, new com.mundosdeaxelis.world.StructBp.Mob(0, 0, 0, "raizal"), base.offset(0, 0, 12), 0, null);
+        net.minecraft.world.entity.Entity rz = ru == null ? null : sl.getEntity(ru);
+        if (!(rz instanceof net.minecraft.world.entity.Mob rm) || !rm.getPersistentData().contains(com.mundosdeaxelis.world.Correa.HOGAR)) {
+            fails.add("el enemigo de la estructura no recuerda su sitio");
+            rz = null;
+        } else {
+            rm.teleportTo(base.getX() + 0.5, base.getY(), base.getZ() + 80.5);
+        }
+        // 6) sin netherita en los cofres ni en las cajas
+        net.minecraft.util.RandomSource r = net.minecraft.util.RandomSource.create(282L);
+        for (int i = 0; i < 40; i++) {
+            for (com.mundosdeaxelis.block.VaultLoot.Kind k : com.mundosdeaxelis.block.VaultLoot.Kind.values()) {
+                for (int st = 1; st <= 8; st++) {
+                    for (net.minecraft.world.item.ItemStack it : com.mundosdeaxelis.block.VaultLoot.roll(k, st, r, 5)) {
+                        String id = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(it.getItem()).getPath();
+                        if (id.contains("netherite") || id.equals("ancient_debris")) {
+                            fails.add("cofre " + k + " de tier " + st + " con " + id);
+                            i = 99;
+                        }
+                    }
+                }
+            }
+        }
+        // 7) todas las semillas de casa de una (y luego se deja todo como estaba)
+        fp.getInventory().clearContent();
+        java.util.List<String> liberados = new java.util.ArrayList<>();
+        java.util.List<String> dadas = com.mundosdeaxelis.npc.Vecinos.darSemillas(fp, liberados, null);
+        int semillas = 0;
+        for (net.minecraft.world.item.ItemStack it : fp.getInventory().items) {
+            if (it.is(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get())) {
+                semillas += it.getCount();
+            }
+        }
+        if (dadas.isEmpty() || semillas != dadas.size()) {
+            fails.add("semillas: " + semillas + " para " + dadas);
+        }
+        for (String kind : liberados) {
+            if (com.mundosdeaxelis.npc.Vecinos.state(sl.getServer(), kind) != com.mundosdeaxelis.entity.Habitante.LIBRE) {
+                fails.add(kind + " no queda libre para plantar su casa");
+            }
+            com.mundosdeaxelis.npc.Vecinos.set(sl.getServer(), kind, com.mundosdeaxelis.entity.Habitante.PRESO, null,
+                    net.minecraft.world.level.Level.OVERWORLD, null, null, net.minecraft.world.level.block.Rotation.NONE);
+        }
+        fp.getInventory().clearContent();
+        final net.minecraft.world.entity.Entity rzf = rz;
+        final net.minecraft.world.entity.Mob gf = g;
+        com.mundosdeaxelis.world.Scheduler.runLater(Math.max(com.mundosdeaxelis.world.Confirmar.ESPERA, 50), () -> {
+            fp.moveTo(piedra.getX() + 0.5, piedra.getY(), piedra.getZ() + 2.5, 0, 0);
+            if (!com.mundosdeaxelis.world.Confirmar.valida(fp, "salida_volcan", piedra)) {
+                fails.add("pasados 3 s no se puede confirmar");
+            }
+            if (!m1.hasEffect(net.minecraft.world.effect.MobEffects.POISON) || !m2.hasEffect(net.minecraft.world.effect.MobEffects.POISON)) {
+                fails.add("el estallido de esporas no envenena alrededor");
+            }
+            if (rzf != null && rzf.distanceToSqr(base.getX() + 0.5, base.getY(), base.getZ() + 12.5) > 30 * 30) {
+                fails.add("el enemigo perdido no vuelve a su sitio (a " + Math.round(Math.sqrt(rzf.distanceToSqr(base.getX() + 0.5, base.getY(), base.getZ() + 12.5))) + ")");
+            }
+            m1.discard();
+            m2.discard();
+            if (rzf != null) {
+                rzf.discard();
+            }
+            if (gf != null) {
+                gf.discard();
+            }
+            if (presa != null) {
+                presa.discard();
+            }
+            String msg = fails.isEmpty() ? "PRUEBA_ETAPA282_OK" : "PRUEBA_ETAPA282_FALLO " + fails;
+            com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        });
+        src.sendSuccess(() -> Component.literal("etapa 282: resultado en 3 s"), true);
+        return 1;
     }
 
     /** Etapa 280: los encargos del Tablón con un jugador falso. */
@@ -1069,6 +1229,7 @@ public final class TestCommands {
                 .then(Commands.literal("suerte").executes(ctx -> suerte(ctx.getSource())))
                 .then(Commands.literal("encargos").executes(ctx -> encargos(ctx.getSource())))
                 .then(Commands.literal("armas").executes(ctx -> armas(ctx.getSource())))
+                .then(Commands.literal("etapa282").executes(ctx -> etapa282(ctx.getSource())))
                 .then(Commands.literal("encargos_listos").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{

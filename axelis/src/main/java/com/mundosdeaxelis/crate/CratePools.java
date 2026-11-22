@@ -208,18 +208,18 @@ public final class CratePools {
         v(4, Items.ENCHANTING_TABLE, 1, 1); v(4, Items.ANVIL, 1, 1); v(4, Items.BREWING_STAND, 1, 1); v(4, Items.CRYING_OBSIDIAN, 4, 8);
         v(4, Items.LAVA_BUCKET, 1, 1); v(4, Items.NAUTILUS_SHELL, 1, 2); v(4, Items.AMETHYST_CLUSTER, 1, 2); v(4, Items.EMERALD_BLOCK, 1, 2);
         v(4, Items.SPYGLASS, 1, 1); v(4, Items.TURTLE_HELMET, 1, 1);
-        // Nivel 5: bloques de diamante, restos antiguos y tesoros raros
-        v(5, Items.DIAMOND_BLOCK, 1, 1); v(5, Items.ANCIENT_DEBRIS, 1, 2); v(5, Items.HEART_OF_THE_SEA, 1, 1); v(5, Items.TRIDENT, 1, 1);
+        // Nivel 5: bloques de diamante, experiencia y tesoros raros (etapa 282: sin netherita, no sirve con el equipo del mod)
+        v(5, Items.DIAMOND_BLOCK, 1, 1); v(5, Items.EXPERIENCE_BOTTLE, 24, 32); v(5, Items.HEART_OF_THE_SEA, 1, 1); v(5, Items.TRIDENT, 1, 1);
         v(5, Items.WITHER_SKELETON_SKULL, 1, 1); v(5, Items.ENDER_CHEST, 1, 1); v(5, Items.END_CRYSTAL, 1, 2);
-        // Nivel 6: netherita en fragmentos y botín del Fin
-        v(6, Items.NETHERITE_SCRAP, 2, 3); v(6, Items.TOTEM_OF_UNDYING, 1, 1); v(6, Items.SHULKER_SHELL, 2, 3); v(6, Items.ECHO_SHARD, 2, 4);
+        // Nivel 6: diamante y botín del Fin
+        v(6, Items.DIAMOND_BLOCK, 1, 2); v(6, Items.TOTEM_OF_UNDYING, 1, 1); v(6, Items.SHULKER_SHELL, 2, 3); v(6, Items.ECHO_SHARD, 2, 4);
         v(6, Items.SCULK_SHRIEKER, 1, 2); v(6, Items.MUSIC_DISC_PIGSTEP, 1, 1);
-        // Nivel 7: netherita y manzana encantada
-        v(7, Items.NETHERITE_INGOT, 1, 2); v(7, Items.ENCHANTED_GOLDEN_APPLE, 1, 2); v(7, Items.BEACON, 1, 1); v(7, Items.SHULKER_BOX, 1, 1);
+        // Nivel 7: tótems y manzana encantada
+        v(7, Items.TOTEM_OF_UNDYING, 1, 2); v(7, Items.ENCHANTED_GOLDEN_APPLE, 1, 2); v(7, Items.BEACON, 1, 1); v(7, Items.SHULKER_BOX, 1, 1);
         // Nivel 8: objetos únicos
-        v(8, Items.ELYTRA, 1, 1); v(8, Items.DRAGON_HEAD, 1, 1); v(8, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, 1, 2); v(8, Items.CONDUIT, 1, 1);
+        v(8, Items.ELYTRA, 1, 1); v(8, Items.DRAGON_HEAD, 1, 1); v(8, Items.ENCHANTED_GOLDEN_APPLE, 2, 3); v(8, Items.CONDUIT, 1, 1);
         // Nivel 9: lo mejor que existe
-        v(9, Items.NETHER_STAR, 1, 2); v(9, Items.DRAGON_EGG, 1, 1); v(9, Items.NETHERITE_BLOCK, 1, 1);
+        v(9, Items.NETHER_STAR, 1, 2); v(9, Items.DRAGON_EGG, 1, 1); v(9, Items.DIAMOND_BLOCK, 4, 6);
     }
 
     private static final class B {

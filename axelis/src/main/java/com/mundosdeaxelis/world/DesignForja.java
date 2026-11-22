@@ -692,7 +692,7 @@ final class DesignForja {
         b.box(-1, fy + 3, 58, 1, fy + 3, 60, CRY);
         // el final de la fundición: la Piedra de Portal: Forja sobre la isla, con el gran tesoro de la Forja (etapa 268)
         b.set(0, fy + 4, 59, M + "portal_stone_forge");
-        vault(b, 2, fy + 3, 59, "west", "TREASURE", 2, 0);
+        vault(b, 2, fy + 3, 59, "east", "TREASURE", 2, 0);
         for (int y = fy + 5; y <= fy + 10; y++) {
             b.set(0, y, 59, "chain[axis=y]");
         }

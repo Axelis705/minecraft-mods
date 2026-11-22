@@ -54,6 +54,8 @@ public final class Armas {
         boolean corriendo;
         long contraHasta = -1;
         long sombraHasta = -1;
+        /** Etapa 282: hasta cuándo no puede volver a estallar un golpe cargado. */
+        long estallidoHasta = -1;
     }
 
     private static final Map<UUID, Estado> ESTADO = new HashMap<>();
@@ -105,8 +107,9 @@ public final class Armas {
                 estado(victim).contraHasta = victim.level().getGameTime() + 60;
             }
         }
+        // solo los golpes cuerpo a cuerpo (el estallido y otros efectos hacen daño de otro tipo y no repiten el estilo)
         if (e.getSource().getEntity() instanceof ServerPlayer sp && e.getSource().getDirectEntity() == sp && sp.level() instanceof ServerLevel sl
-                && sp.getMainHandItem().getItem() instanceof ArmaItem a) {
+                && e.getSource().is(net.minecraft.world.damagesource.DamageTypes.PLAYER_ATTACK) && sp.getMainHandItem().getItem() instanceof ArmaItem a) {
             Estado st = estado(sp);
             boolean reciente = sl.getGameTime() - st.golpeTick <= 1;
             if (reciente && st.objetivo != null && st.objetivo != e.getEntity()) {
@@ -208,7 +211,38 @@ public final class Armas {
                 }
             }
         }
+        if (cargado) {
+            estallido(a, sp, sl, t, st, now);
+        }
         return elemento(a, sp, sl, t, amount, true);
+    }
+
+    /** Probabilidad de que un golpe cargado estalle y espera mínima entre estallidos (ticks). */
+    public static final float ESTALLIDO_PROB = 0.20F;
+    public static final int ESTALLIDO_ESPERA = 100;
+
+    /** El arrojadizo de cada tier de arma (los tiers 6 a 8 usan el pulso arcano). */
+    public static com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo estallidoDe(ArmaItem a) {
+        return com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ofTier(Math.min(5, a.tierArma.nivel()));
+    }
+
+    /**
+     * Etapa 282: los arrojadizos pasaron a ser un efecto de las armas. Un golpe cargado a veces «estalla» con el arrojadizo de su
+     * tier (esporas, metralla, escarcha, erupción o pulso arcano) alrededor del enemigo.
+     */
+    private static void estallido(ArmaItem a, ServerPlayer sp, ServerLevel sl, LivingEntity t, Estado st, long now) {
+        if (now < st.estallidoHasta || sl.random.nextFloat() >= ESTALLIDO_PROB) {
+            return;
+        }
+        forzarEstallido(a, sp, sl, t);
+        st.estallidoHasta = now + ESTALLIDO_ESPERA;
+    }
+
+    /** Hace estallar el arrojadizo del arma en el enemigo (también lo usa la prueba). */
+    public static void forzarEstallido(ArmaItem a, ServerPlayer sp, ServerLevel sl, LivingEntity t) {
+        Vec3 at = new Vec3(t.getX(), t.getY() + 0.2, t.getZ());
+        com.mundosdeaxelis.arrojadizo.Arrojadizos.burst(sl, at, estallidoDe(a), sp, null);
+        com.mundosdeaxelis.encargo.Encargos.progress(sp, com.mundosdeaxelis.encargo.Encargos.Tipo.ARROJADIZOS, 1);
     }
 
     /**

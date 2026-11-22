@@ -119,8 +119,9 @@ public class NpcScreen extends Screen {
         int n = stageLines();
         // de vecina empieza por una frase distinta cada vez; presa y libre cuentan su historia en orden
         lineIdx = data.state == Habitante.VECINO && opening ? (int) (Math.random() * n) : 0;
+        // etapa 282: «guardGone» ahora quiere decir que acaba de llegar otro guardián con la llave
         if (data.state == Habitante.PRESO && data.guardGone && opening) {
-            say(Component.translatable("npc.mundos_de_axelis." + data.kind + ".preso.sin_llave", NpcService.FORCE_IRON));
+            say(Component.translatable("npc.mundos_de_axelis." + data.kind + ".preso.sin_llave"));
             lineIdx = -1;
             return;
         }
@@ -305,9 +306,7 @@ public class NpcScreen extends Screen {
         ids.add(B_NEXT);
         switch (data.state) {
             case Habitante.PRESO -> {
-                if (data.guardGone) {
-                    ids.add(B_FORCE);
-                }
+                // etapa 282: sin «Forzar»: la llave la lleva siempre un guardián
             }
             case Habitante.LIBRE -> ids.add(B_KIT);
             default -> {

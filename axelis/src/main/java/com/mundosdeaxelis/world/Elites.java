@@ -269,12 +269,13 @@ public final class Elites {
 
     // ------------------------------------------------------------------ botín
 
-    /** El botín de un élite de ese tier: siempre una Runa de Esencia; a veces arrojadizos, esencia, fragmento de llave, gema vacía o corazón. */
+    /** El botín de un élite de ese tier: siempre una Runa de Esencia; a veces otra runa, esencia, fragmento de llave, gema vacía o corazón. */
     public static java.util.List<ItemStack> loot(int tier, RandomSource r) {
         java.util.List<ItemStack> out = new java.util.ArrayList<>();
         out.add(new ItemStack(ModItems.ESSENCE_RUNES.get(Math.max(1, Math.min(8, tier))).get()));
         if (r.nextInt(100) < 40) {
-            out.add(new ItemStack(ModItems.ARROJADIZOS.get(com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ofTier(tier)).get(), 1 + r.nextInt(2)));
+            // etapa 282: antes, arrojadizos; ahora otra runa
+            out.add(new ItemStack(ModItems.ESSENCE_RUNES.get(Math.max(1, Math.min(8, tier))).get()));
         }
         if (r.nextInt(100) < 35) {
             out.add(new ItemStack(ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(tier)).get()));

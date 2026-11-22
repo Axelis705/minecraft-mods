@@ -51,6 +51,7 @@ public final class ServerReset {
                 DungeonReset::clearRuntime,
                 Estructuras::clearRuntime,
                 Volcanes::clearRuntime,
+                Confirmar::clearRuntime,
                 NaturalGen::clearRuntime,
                 StructGuard::clearRuntime,
                 com.mundosdeaxelis.cinematic.CinematicManager::clearRuntime,

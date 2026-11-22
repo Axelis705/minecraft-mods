@@ -182,6 +182,8 @@ public final class Vecinos extends SavedData {
                         .then(Commands.argument("tipo", com.mojang.brigadier.arguments.StringArgumentType.word())
                                 .suggests((c, sb) -> net.minecraft.commands.SharedSuggestionProvider.suggest(NpcKinds.ALL.keySet(), sb))
                                 .executes(c -> seed(c.getSource(), com.mojang.brigadier.arguments.StringArgumentType.getString(c, "tipo")))))
+                // etapa 282: todas las semillas de casa de una (quien siga preso queda libre, para poder plantar su casa)
+                .then(Commands.literal("semillas").executes(c -> seeds(c.getSource())))
                 .then(Commands.literal("crecer").executes(c -> grow(c.getSource())))
                 .then(Commands.literal("mudar").executes(c -> move(c.getSource(), NpcKinds.RUDA.id()))
                         .then(Commands.argument("tipo", com.mojang.brigadier.arguments.StringArgumentType.word())
@@ -218,6 +220,46 @@ public final class Vecinos extends SavedData {
         }
         src.sendSuccess(() -> Component.literal("VECINOS_CASA_OK " + kind), true);
         return 1;
+    }
+
+    private static int seeds(CommandSourceStack src) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        net.minecraft.server.level.ServerPlayer sp = src.getPlayerOrException();
+        java.util.List<String> conCasa = new java.util.ArrayList<>();
+        java.util.List<String> dadas = darSemillas(sp, null, conCasa);
+        String msg = "VECINOS_SEMILLAS " + dadas.size() + (dadas.isEmpty() ? "" : ": " + String.join(", ", dadas))
+                + (conCasa.isEmpty() ? "" : " (ya tienen casa: " + String.join(", ", conCasa) + ")");
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return dadas.size();
+    }
+
+    /**
+     * Da al jugador la semilla de casa de cada habitante que aún no tiene casa. Quien siga preso pasa a libre (la de la celda
+     * desaparece sola). Devuelve a quién se le dio; en {@code liberados} y {@code conCasa} (si no son null) apunta el resto.
+     */
+    public static java.util.List<String> darSemillas(net.minecraft.server.level.ServerPlayer sp, java.util.List<String> liberados, java.util.List<String> conCasa) {
+        MinecraftServer server = sp.getServer();
+        java.util.List<String> dadas = new java.util.ArrayList<>();
+        for (NpcKinds.Kind k : NpcKinds.ALL.values()) {
+            Entry e = entry(server, k.id());
+            if (e != null && e.state == Habitante.VECINO) {
+                if (conCasa != null) {
+                    conCasa.add(k.id());
+                }
+                continue;
+            }
+            if (e == null || e.state == Habitante.PRESO) {
+                set(server, k.id(), Habitante.LIBRE, null, sp.level().dimension(), null, null, Rotation.NONE);
+                if (liberados != null) {
+                    liberados.add(k.id());
+                }
+            }
+            net.minecraft.world.item.ItemStack st = NpcService.kit(k.id());
+            if (!sp.getInventory().add(st)) {
+                sp.drop(st, false);
+            }
+            dadas.add(k.id());
+        }
+        return dadas;
     }
 
     private static int seed(CommandSourceStack src, String kind) {

@@ -339,7 +339,7 @@ public final class VaultLoot {
             }
         }
         gems(out, kind, st, lv, r);
-        throwables(out, kind, st, lv, r);
+        // etapa 282: los arrojadizos ya no salen en el botín (ahora son el «estallido» de las armas)
         flavor(out, kind, st, lv, r);
         return out;
     }
@@ -513,7 +513,7 @@ public final class VaultLoot {
         }
     }
 
-    /** Volcán (etapa 4): crema de magma, blaze, oro, obsidiana y, a veces, restos antiguos. */
+    /** Volcán (etapa 4): crema de magma, blaze, oro, obsidiana y, a veces, ceniza templada (remache de la armadura del volcán). */
     private static void volcano(List<ItemStack> out, Kind kind, int lv, RandomSource r) {
         switch (kind) {
             case ANTE -> out.add(of(Items.MAGMA_CREAM, 2 + r.nextInt(3)));
@@ -528,7 +528,8 @@ public final class VaultLoot {
                     out.add(of(Items.BLAZE_ROD, lv - 1 + r.nextInt(2)));
                 }
                 if (lv >= 5) {
-                    out.add(of(Items.ANCIENT_DEBRIS, 1));
+                    // etapa 282: nada de netherita (no sirve con el equipo del mod): remaches del volcán
+                    out.add(of(ModItems.TEMPERED_CINDER.get(), 1));
                 }
             }
             case TREASURE, CRYPT -> {
@@ -536,7 +537,7 @@ public final class VaultLoot {
                 out.add(of(Items.BLAZE_ROD, 3 + r.nextInt(3)));
                 out.add(of(Items.MAGMA_CREAM, 4 + r.nextInt(4)));
                 if (r.nextInt(100) < 35) {
-                    out.add(of(Items.ANCIENT_DEBRIS, 1));
+                    out.add(of(ModItems.TEMPERED_CINDER.get(), 1 + r.nextInt(2)));
                 }
             }
         }
@@ -565,7 +566,7 @@ public final class VaultLoot {
         }
     }
 
-    /** Etapas 6 a 8 (aún sin estructuras propias): diamantes, perlas de ender, chatarra de netherita y manzanas encantadas. */
+    /** Etapas 6 a 8 (aún sin estructuras propias): diamantes, perlas de ender, experiencia y manzanas encantadas. */
     private static void high(List<ItemStack> out, Kind kind, int w, int st, RandomSource r) {
         if (w == 0) {
             out.add(of(Items.GOLDEN_APPLE, 1));
@@ -574,7 +575,7 @@ public final class VaultLoot {
         out.add(of(Items.DIAMOND, w + r.nextInt(2)));
         out.add(of(Items.ENDER_PEARL, 1 + w));
         if (w >= 2 && r.nextInt(100) < 15 * w + 5 * (st - 6)) {
-            out.add(of(Items.NETHERITE_SCRAP, 1));
+            out.add(of(Items.EXPERIENCE_BOTTLE, 6 + 4 * w));
         }
         if (w >= 3 && r.nextInt(100) < 20) {
             out.add(of(Items.ENCHANTED_GOLDEN_APPLE, 1));

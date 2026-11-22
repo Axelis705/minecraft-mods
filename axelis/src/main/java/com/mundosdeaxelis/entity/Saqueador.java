@@ -42,8 +42,8 @@ import java.util.List;
  * Etapa 276: el <b>Saqueador del Tesoro</b> (la idea del duende ladrón de Diablo). Un bicho pequeño con un saco lleno de botín
  * que aparece muy de vez en cuando dentro de una estructura que ya puedes saquear. Cuando te ve, se ríe y huye soltando monedas;
  * tienes unos 22 segundos para atraparlo antes de que abra un portal y escape. Si lo matas, revienta el saco: una lluvia de
- * botín de su tier (runas de esencia, esencias, arrojadizos, fragmentos de llave, a veces una gema vacía o un fragmento de corazón).
- * No ataca. Los arrojadizos (sobre todo el Orbe de Escarcha) ayudan mucho a cazarlo.
+ * botín de su tier (runas de esencia, esencias, fragmentos de llave, a veces una gema vacía o un fragmento de corazón).
+ * No ataca. Los estallidos de escarcha de las armas (golpe cargado) ayudan mucho a cazarlo.
  */
 public class Saqueador extends PathfinderMob implements Enemy {
     private static final EntityDataAccessor<Integer> TIER = SynchedEntityData.defineId(Saqueador.class, EntityDataSerializers.INT);
@@ -202,11 +202,12 @@ public class Saqueador extends PathfinderMob implements Enemy {
         List<ItemStack> out = new ArrayList<>();
         int t = Math.max(1, Math.min(8, tier));
         out.add(new ItemStack(ModItems.ESSENCE_RUNES.get(t).get(), 3 + r.nextInt(3)));
-        out.add(new ItemStack(ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(t)).get(), 1 + r.nextInt(2)));
-        out.add(new ItemStack(ModItems.ARROJADIZOS.get(com.mundosdeaxelis.arrojadizo.Arrojadizos.Tipo.ofTier(t)).get(), 3 + r.nextInt(3)));
+        out.add(new ItemStack(ModItems.ESENCIAS.get(com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(t)).get(), 2 + r.nextInt(2)));
         out.add(new ItemStack(ModItems.KEY_FRAGMENTS.get(com.mundosdeaxelis.crate.CrateKind.byIndex(t)).get(), 1 + r.nextInt(2)));
         out.add(new ItemStack(Items.GOLD_INGOT, 2 + r.nextInt(4)));
         out.add(new ItemStack(Items.GOLD_NUGGET, 6 + r.nextInt(10)));
+        // etapa 282: en lugar de los arrojadizos, experiencia embotellada
+        out.add(new ItemStack(Items.EXPERIENCE_BOTTLE, 4 + r.nextInt(4)));
         if (r.nextInt(100) < 55) {
             out.add(VaultLoot.emptyGem(t));
         }

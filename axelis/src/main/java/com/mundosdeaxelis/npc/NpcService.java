@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.NbtUtils;
@@ -65,8 +66,10 @@ public final class NpcService {
     public static final int R_OPEN = 0, R_RESCUED = 1, R_BOUGHT = 2, R_NO_ESSENCE = 3, R_LOCKED = 4, R_KIT_GIVEN = 5, R_HAS_KIT = 6,
             R_MOVED = 7, R_HINT = 8, R_NEED_IRON = 9, R_NO_HOUSE = 10, R_NONE_FOUND = 11, R_FORCED = 12;
 
-    /** Lingotes de hierro para forzar la cerradura si la llave se perdió. */
+    /** Etapa 282: ya no se fuerza la cerradura (si la llave se pierde, llega otro guardián con ella). Queda por compatibilidad. */
     public static final int FORCE_IRON = 4;
+    /** Espera mínima entre dos guardianes nuevos del mismo preso (1 min). */
+    public static final int RENACE_TICKS = 1200;
 
     // ================================================================== hablar
 
@@ -83,21 +86,158 @@ public final class NpcService {
             return;
         }
         Essence.sync(sp);
-        open(sp, h, R_OPEN, null, 0);
+        boolean nuevo = false;
+        if (h.state() == Habitante.PRESO) {
+            nuevo = dondeLlave(sp, h);
+        }
+        open(sp, h, R_OPEN, null, 0, nuevo);
     }
 
     public static void open(ServerPlayer sp, Habitante h, int result, Component msg, int extra) {
-        ServerLevel l = (ServerLevel) h.level();
-        boolean guardGone = h.state() == Habitante.PRESO && guardGone(l, h);
-        ModNetwork.sendTo(sp, new NpcOpenPacket(h.getId(), h.kindId(), h.state(), Vecinos.residents(l.getServer()), guardGone, result, msg, extra));
+        open(sp, h, result, msg, extra, false);
     }
 
-    /** ¿Ya no está el guardián con la llave (ni la llave tirada cerca)? Entonces se puede forzar la cerradura. */
-    static boolean guardGone(ServerLevel l, Habitante h) {
-        AABB box = h.getBoundingBox().inflate(48);
-        boolean guard = !l.getEntitiesOfClass(Mob.class, box, m -> m.isAlive() && KEY_TAG.equals(m.getPersistentData().getString(StructPlacer.TAG))).isEmpty();
-        boolean keyNear = !l.getEntitiesOfClass(ItemEntity.class, box, i -> i.getItem().is(ModItems.LLAVE_CELDA.get())).isEmpty();
-        return !guard && !keyNear;
+    /** {@code nuevo}: acaba de llegar otro guardián con la llave (el preso lo comenta). */
+    public static void open(ServerPlayer sp, Habitante h, int result, Component msg, int extra, boolean nuevo) {
+        ServerLevel l = (ServerLevel) h.level();
+        ModNetwork.sendTo(sp, new NpcOpenPacket(h.getId(), h.kindId(), h.state(), Vecinos.residents(l.getServer()), nuevo, result, msg, extra));
+    }
+
+    // ================================================================== la llave (etapa 282: siempre la lleva alguien)
+
+    /** El guardián que lleva la llave de este preso, si está vivo y cargado. */
+    public static Mob guardia(ServerLevel l, Habitante h) {
+        CompoundTag d = h.getPersistentData();
+        if (d.hasUUID(com.mundosdeaxelis.world.Correa.G_UUID) && l.getEntity(d.getUUID(com.mundosdeaxelis.world.Correa.G_UUID)) instanceof Mob m && m.isAlive()) {
+            return m;
+        }
+        AABB box = h.getBoundingBox().inflate(96, 64, 96);
+        Mob best = null;
+        double bd = Double.MAX_VALUE;
+        for (Mob m : l.getEntitiesOfClass(Mob.class, box, m -> m.isAlive() && com.mundosdeaxelis.world.Correa.llevaLlave(m))) {
+            double dd = m.distanceToSqr(h);
+            if (dd < bd) {
+                bd = dd;
+                best = m;
+            }
+        }
+        return best;
+    }
+
+    static ItemEntity llaveSuelta(ServerLevel l, Habitante h) {
+        List<ItemEntity> ks = l.getEntitiesOfClass(ItemEntity.class, h.getBoundingBox().inflate(96, 64, 96), i -> i.getItem().is(ModItems.LLAVE_CELDA.get()));
+        return ks.isEmpty() ? null : ks.get(0);
+    }
+
+    /** Qué guardián va con cada habitante si el preso no lo tiene apuntado (estructuras de antes de la etapa 282). */
+    static String guardiaDe(String kind) {
+        return switch (kind) {
+            case "bruno" -> "centinela_escarcha";
+            case "hilda" -> "fundidor";
+            case "teo" -> "armadura_encantada";
+            case "ignacio" -> "cultista_volcan";
+            default -> "raizal";
+        };
+    }
+
+    /**
+     * Le dice al jugador (en la barra de acción) quién lleva la llave y hacia dónde. Si no hay guardián ni llave por ningún lado,
+     * llega otro guardián con la llave a su puesto (como mucho uno por minuto). Devuelve true si acaba de llegar uno.
+     */
+    static boolean dondeLlave(ServerPlayer sp, Habitante h) {
+        ServerLevel l = (ServerLevel) h.level();
+        Mob g = guardia(l, h);
+        if (g != null) {
+            sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.llave.lleva", g.getType().getDescription(), rumbo(sp, g.position()),
+                    Math.round(Math.sqrt(sp.distanceToSqr(g)))).withStyle(ChatFormatting.GOLD), true);
+            return false;
+        }
+        ItemEntity k = llaveSuelta(l, h);
+        if (k != null) {
+            sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.llave.suelo", rumbo(sp, k.position()),
+                    Math.round(Math.sqrt(sp.distanceToSqr(k)))).withStyle(ChatFormatting.GOLD), true);
+            return false;
+        }
+        Mob nuevo = renacer(l, h);
+        if (nuevo == null) {
+            sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.llave.cerca").withStyle(ChatFormatting.GOLD), true);
+            return false;
+        }
+        sp.displayClientMessage(Component.translatable("message.mundos_de_axelis.llave.nueva", nuevo.getType().getDescription(), rumbo(sp, nuevo.position()),
+                Math.round(Math.sqrt(sp.distanceToSqr(nuevo)))).withStyle(ChatFormatting.GOLD), true);
+        return true;
+    }
+
+    /** Pone otro guardián con la llave en el puesto del anterior (o fuera de la celda). null si no toca o no se pudo. */
+    public static Mob renacer(ServerLevel l, Habitante h) {
+        CompoundTag d = h.getPersistentData();
+        long now = l.getGameTime();
+        if (d.contains(com.mundosdeaxelis.world.Correa.G_RENACE) && now < d.getLong(com.mundosdeaxelis.world.Correa.G_RENACE)) {
+            return null;
+        }
+        // si su UUID está apuntado pero el puesto no está cargado, no se sabe si sigue vivo: no se pone otro
+        BlockPos post = d.contains(com.mundosdeaxelis.world.Correa.G_POS) ? BlockPos.of(d.getLong(com.mundosdeaxelis.world.Correa.G_POS)) : puestoNuevo(l, h);
+        if (post == null || !l.isLoaded(post) || !l.shouldTickBlocksAt(post)) {
+            return null;
+        }
+        String kind = d.contains(com.mundosdeaxelis.world.Correa.G_KIND) ? d.getString(com.mundosdeaxelis.world.Correa.G_KIND) : guardiaDe(h.kindId());
+        java.util.UUID u = StructPlacer.spawn(l, new com.mundosdeaxelis.world.StructBp.Mob(0, 0, 0, kind, KEY_TAG), post, 0, null);
+        if (u == null || !(l.getEntity(u) instanceof Mob m)) {
+            return null;
+        }
+        d.putUUID(com.mundosdeaxelis.world.Correa.G_UUID, u);
+        d.putLong(com.mundosdeaxelis.world.Correa.G_POS, post.asLong());
+        d.putString(com.mundosdeaxelis.world.Correa.G_KIND, kind);
+        d.putLong(com.mundosdeaxelis.world.Correa.G_RENACE, now + RENACE_TICKS);
+        poof(l, m.position(), true);
+        l.playSound(null, m.blockPosition(), SoundEvents.EVOKER_PREPARE_SUMMON, SoundSource.HOSTILE, 0.8F, 0.9F);
+        MundosDeAxelis.LOGGER.info("[Vecinos] nuevo guardián con la llave de {} ({}) en {}", h.kindId(), kind, post);
+        return m;
+    }
+
+    /** Un sitio para el guardián nuevo: al otro lado de la puerta de la celda, a 6-12 bloques. */
+    static BlockPos puestoNuevo(ServerLevel l, Habitante h) {
+        BlockPos door = findDoor(l, h.blockPosition(), 6);
+        if (door == null) {
+            return null;
+        }
+        BlockState ds = l.getBlockState(door);
+        Direction f = ds.getBlock() instanceof DoorBlock ? ds.getValue(DoorBlock.FACING) : Direction.NORTH;
+        Direction.Axis ax = f.getAxis();
+        int dd = ax == Direction.Axis.X ? door.getX() - h.getBlockX() : door.getZ() - h.getBlockZ();
+        Direction outDir = dd == 0 ? f : Direction.fromAxisAndDirection(ax, dd > 0 ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
+        Direction side = outDir.getClockWise();
+        for (int dist : new int[]{7, 8, 6, 9, 10, 5, 12}) {
+            for (int lat : new int[]{0, 1, -1, 2, -2, 3, -3}) {
+                for (int dy : new int[]{0, 1, -1}) {
+                    BlockPos p = door.relative(outDir, dist).relative(side, lat).above(dy);
+                    if (standable(l, p)) {
+                        return p;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /** «al noreste», «al sur, más abajo»... desde el jugador hasta {@code to}. */
+    public static Component rumbo(ServerPlayer sp, net.minecraft.world.phys.Vec3 to) {
+        double dx = to.x - sp.getX(), dz = to.z - sp.getZ(), dy = to.y - sp.getY();
+        String[] r = {"s", "so", "o", "no", "n", "ne", "e", "se"};
+        // ángulo como el de Minecraft: 0 = sur (+z), 90 = oeste (-x)
+        double ang = Math.toDegrees(Math.atan2(-dx, dz));
+        int i = Math.floorMod((int) Math.round(ang / 45.0), 8);
+        Component c = Component.translatable("dir.mundos_de_axelis." + r[i]);
+        if (dx * dx + dz * dz < 9) {
+            c = Component.translatable("dir.mundos_de_axelis.aqui");
+        }
+        if (dy > 5) {
+            return Component.translatable("dir.mundos_de_axelis.arriba", c);
+        }
+        if (dy < -5) {
+            return Component.translatable("dir.mundos_de_axelis.abajo", c);
+        }
+        return c;
     }
 
     /** Lo que pide el menú (ya revisado que el jugador está cerca). */
@@ -126,25 +266,8 @@ public final class NpcService {
                     open(sp, h, R_KIT_GIVEN, null, 0);
                 }
             }
-            case A_FORCE -> {
-                if (h.state() != Habitante.PRESO || !guardGone(l, h)) {
-                    open(sp, h, R_OPEN, null, 0);
-                    return;
-                }
-                int tier = com.mundosdeaxelis.world.Sellos.npcTier(h.kindId());
-                if (!com.mundosdeaxelis.world.Sellos.canLoot(sp, tier)) {
-                    com.mundosdeaxelis.world.Sellos.deny(sp, h.blockPosition(), tier, "celda");
-                    return;
-                }
-                if (!sp.getAbilities().instabuild && count(sp, Items.IRON_INGOT) < FORCE_IRON) {
-                    open(sp, h, R_NEED_IRON, null, FORCE_IRON);
-                    return;
-                }
-                if (!sp.getAbilities().instabuild) {
-                    take(sp, Items.IRON_INGOT, FORCE_IRON);
-                }
-                free(sp, h, null, R_FORCED);
-            }
+            // etapa 282: ya no se fuerza la cerradura con hierro: la llave siempre la lleva un guardián
+            case A_FORCE -> open(sp, h, R_OPEN, null, 0);
             default -> {
             }
         }
@@ -242,6 +365,8 @@ public final class NpcService {
         if (!v.level().isClientSide && KEY_TAG.equals(v.getPersistentData().getString(StructPlacer.TAG))) {
             ItemEntity it = new ItemEntity(v.level(), v.getX(), v.getY() + 0.5, v.getZ(), new ItemStack(ModItems.LLAVE_CELDA.get()));
             it.setGlowingTag(true);
+            // etapa 282: la llave no desaparece del suelo
+            it.setUnlimitedLifetime();
             e.getDrops().add(it);
         }
     }
