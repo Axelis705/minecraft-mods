@@ -33,6 +33,8 @@ public final class StructDesigns {
         StructKit.lootBarrels(bp, StructKit.barrelTable(kind));
         // etapa 272: un mímico dormido junto a un cofre de verdad
         StructKit.addMimics(bp, kind);
+        // etapa 278: un Altar Maldito en una sala amplia
+        StructKit.addAltars(bp, kind);
         return bp;
     }
 

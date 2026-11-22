@@ -249,6 +249,10 @@ public final class ModItems {
         }
     }
 
+    /** Etapa 278: el Altar Maldito (para el modo creativo). */
+    public static final RegistryObject<Item> ALTAR_MALDITO = ITEMS.register("altar_maldito",
+            () -> new BlockItem(ModBlocks.ALTAR_MALDITO.get(), new Item.Properties().rarity(Rarity.EPIC)));
+
     /** Mesa de Gemas (se crea en la Mesa del Artífice). */
     public static final RegistryObject<Item> MESA_GEMAS = ITEMS.register("mesa_gemas",
             () -> new BlockItem(ModBlocks.MESA_GEMAS.get(), new Item.Properties().rarity(Rarity.EPIC)));

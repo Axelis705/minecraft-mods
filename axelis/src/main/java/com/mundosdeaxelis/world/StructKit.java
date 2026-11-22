@@ -630,6 +630,34 @@ public final class StructKit {
         };
     }
 
+    /**
+     * Etapa 278: dónde está el Altar Maldito de cada estructura, {x, y, z, tier}: en una sala amplia y con techo, lejos de los
+     * cofres, para que las oleadas tengan sitio.
+     */
+    public static int[][] altars(String design) {
+        return switch (design) {
+            case "santuario" -> new int[][]{{1, 0, 19, 1}};
+            case "bosque" -> new int[][]{{-1, 0, 1, 1}};
+            case "forja" -> new int[][]{{-1, 0, 24, 2}};
+            case "fragua" -> new int[][]{{1, 0, 27, 2}};
+            case "hielo" -> new int[][]{{0, 0, 41, 3}};
+            case "fortin" -> new int[][]{{0, 0, 30, 3}};
+            case "volcan" -> new int[][]{{-12, 8, 75, 4}};
+            case "torre_arcana" -> new int[][]{{0, 0, 31, 5}};
+            case "torre" -> new int[][]{{-1, 3, 28, 5}};
+            default -> new int[0][];
+        };
+    }
+
+    /** Pone en el plano el Altar Maldito de esa estructura. */
+    public static int addAltars(StructBp b, String design) {
+        int[][] as = altars(design);
+        for (int[] a : as) {
+            b.setNbt(a[0], a[1], a[2], "mundos_de_axelis:altar_maldito[cargado=true]", "{Tier:" + a[3] + "}");
+        }
+        return as.length;
+    }
+
     /** Pone en el plano los mímicos de esa estructura (marca «mimico_N» con su tier). */
     public static int addMimics(StructBp b, String design) {
         int[][] ms = mimics(design);

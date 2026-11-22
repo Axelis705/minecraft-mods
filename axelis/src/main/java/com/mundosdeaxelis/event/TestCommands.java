@@ -610,6 +610,85 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    /** Etapa 278: el Altar Maldito con un jugador falso: despierta, 3 oleadas (la última con un élite), botín, descanso y sellos. */
+    private static int altar(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        com.mundosdeaxelis.table.Essence.forgetSeals(fp);
+        net.minecraft.core.BlockPos pos = net.minecraft.core.BlockPos.containing(src.getPosition());
+        fp.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 8.5);
+        String fail = null;
+        sl.setBlock(pos, com.mundosdeaxelis.registry.ModBlocks.ALTAR_MALDITO.get().defaultBlockState(), 3);
+        com.mundosdeaxelis.block.AltarMalditoBlockEntity be = (com.mundosdeaxelis.block.AltarMalditoBlockEntity) sl.getBlockEntity(pos);
+        be.setTier(1);
+        java.util.List<net.minecraft.server.level.ServerPlayer> near = java.util.List.of(fp);
+        int e0 = com.mundosdeaxelis.table.Essence.get(fp);
+        sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(6)).forEach(net.minecraft.world.entity.Entity::discard);
+        be.activate(fp);
+        if (be.state() != com.mundosdeaxelis.block.AltarMalditoBlockEntity.RUNNING) {
+            fail = "no despierta";
+        }
+        boolean elite = false;
+        int[] sizes = new int[3];
+        for (int w = 1; w <= 3 && fail == null; w++) {
+            for (int t = 0; t < 120 && be.wave() < w; t++) {
+                be.tick(sl, near);
+            }
+            sizes[w - 1] = be.mobs().size();
+            if (be.wave() != w || be.mobs().size() != com.mundosdeaxelis.block.AltarMalditoBlockEntity.waveCount(w, 1)) {
+                fail = "oleada " + w + " (ola " + be.wave() + ", " + be.mobs().size() + " enemigos)";
+                break;
+            }
+            for (java.util.UUID id : new java.util.ArrayList<>(be.mobs())) {
+                net.minecraft.world.entity.Entity e = sl.getEntity(id);
+                if (w == 3 && e != null && com.mundosdeaxelis.world.Elites.isElite(e)) {
+                    elite = true;
+                }
+                if (e != null) {
+                    e.discard();
+                }
+            }
+            be.tick(sl, near);
+        }
+        if (fail == null && !elite) {
+            fail = "la última oleada no trae élite";
+        }
+        be.tick(sl, near);
+        int items = sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(6)).size();
+        if (fail == null && (be.state() != com.mundosdeaxelis.block.AltarMalditoBlockEntity.RESTING
+                || sl.getBlockState(pos).getValue(com.mundosdeaxelis.block.AltarMalditoBlock.CARGADO) || items < 3
+                || com.mundosdeaxelis.table.Essence.get(fp) <= e0)) {
+            fail = "al vencer (estado " + be.state() + ", " + items + " objetos, esencia " + e0 + " -> " + com.mundosdeaxelis.table.Essence.get(fp) + ")";
+        }
+        be.activate(fp);
+        if (fail == null && be.state() != com.mundosdeaxelis.block.AltarMalditoBlockEntity.RESTING) {
+            fail = "despierta mientras descansa";
+        }
+        be.recharge();
+        if (fail == null && (be.state() != com.mundosdeaxelis.block.AltarMalditoBlockEntity.IDLE || !sl.getBlockState(pos).getValue(com.mundosdeaxelis.block.AltarMalditoBlock.CARGADO))) {
+            fail = "no se recarga";
+        }
+        be.setTier(3);
+        be.activate(fp);
+        if (fail == null && be.state() != com.mundosdeaxelis.block.AltarMalditoBlockEntity.IDLE) {
+            fail = "un altar sellado despierta";
+        }
+        sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(6)).forEach(net.minecraft.world.entity.Entity::discard);
+        sl.setBlock(pos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+        for (String d : new String[]{"santuario", "bosque", "forja", "fragua", "hielo", "fortin", "volcan", "torre_arcana", "torre"}) {
+            com.mundosdeaxelis.world.StructBp b = com.mundosdeaxelis.world.StructDesigns.make(d);
+            int[] a = com.mundosdeaxelis.world.StructKit.altars(d)[0];
+            String st = b.m.get(com.mundosdeaxelis.world.StructBp.key(a[0], a[1], a[2]));
+            if (st == null || !st.contains("altar_maldito")) {
+                fail = "sin altar en " + d + " (" + st + ")";
+            }
+        }
+        String msg = (fail == null ? "PRUEBA_ALTAR_OK" : "PRUEBA_ALTAR_FALLO " + fail) + " oleadas=" + java.util.Arrays.toString(sizes) + " botin=" + items;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fail == null ? 1 : 0;
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal("prueba")
                 .then(Commands.literal("equipo")
@@ -623,6 +702,7 @@ public final class TestCommands {
                 .then(Commands.literal("arrojadizos").executes(ctx -> arrojadizos(ctx.getSource())))
                 .then(Commands.literal("elites").executes(ctx -> elites(ctx.getSource())))
                 .then(Commands.literal("saqueador").executes(ctx -> saqueador(ctx.getSource())))
+                .then(Commands.literal("altar").executes(ctx -> altar(ctx.getSource())))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     // los sellos que lleva encima se volverían a apuntar en el Archivo: se le quitan

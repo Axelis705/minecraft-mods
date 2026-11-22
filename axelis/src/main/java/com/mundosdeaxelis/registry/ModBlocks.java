@@ -312,6 +312,16 @@ public final class ModBlocks {
                     .noOcclusion()
                     .lightLevel(st -> st.getValue(com.mundosdeaxelis.block.GranYunqueBlock.PART) == com.mundosdeaxelis.block.GranYunqueBlock.Part.FORGE ? 13 : 3)));
 
+    /** Etapa 278: el Altar Maldito (oleadas de enemigos con recompensa; no se puede romper en supervivencia). */
+    public static final RegistryObject<Block> ALTAR_MALDITO = BLOCKS.register("altar_maldito",
+            () -> new com.mundosdeaxelis.block.AltarMalditoBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(-1.0F, 3600000.0F)
+                    .sound(SoundType.POLISHED_DEEPSLATE)
+                    .noOcclusion()
+                    .noLootTable()
+                    .lightLevel(st -> st.getValue(com.mundosdeaxelis.block.AltarMalditoBlock.CARGADO) ? 10 : 3)));
+
     /** Mesa de Gemas (etapa 271): infunde gemas vacías y las engarza en las armas. */
     public static final RegistryObject<Block> MESA_GEMAS = BLOCKS.register("mesa_gemas",
             () -> new com.mundosdeaxelis.gema.MesaGemasBlock(BlockBehaviour.Properties.of()

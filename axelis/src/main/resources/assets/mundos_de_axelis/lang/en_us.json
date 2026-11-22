@@ -2558,5 +2558,15 @@
   "gema.mundos_de_axelis.efecto_armadura.arcano": "On armor: −8% magic damage per purity level.",
   "gema.mundos_de_axelis.efecto_armadura.vampiro": "On armor: you heal 0.25 health per purity level every 5 seconds.",
   "gema.mundos_de_axelis.efecto_armadura.rayo": "On armor: +2.5% speed per purity level.",
-  "gema.mundos_de_axelis.efecto_armadura.vacio": "On armor: +half a heart of max health per purity level."
+  "gema.mundos_de_axelis.efecto_armadura.vacio": "On armor: +half a heart of max health per purity level.",
+  "block.mundos_de_axelis.altar_maldito": "Cursed Altar",
+  "tooltip.mundos_de_axelis.altar_maldito": "Touch it to wake it: survive 3 waves and take its loot. Recharges every day.",
+  "message.mundos_de_axelis.altar.despierta": "The Cursed Altar awakens! Survive %s waves.",
+  "message.mundos_de_axelis.altar.oleada": "Wave %s of %s",
+  "message.mundos_de_axelis.altar.en_marcha": "The altar is already active: wave %s of %s.",
+  "message.mundos_de_axelis.altar.descansa": "The altar is resting. Come back tomorrow.",
+  "message.mundos_de_axelis.altar.vencido": "You defeated the Cursed Altar! It drops its loot.",
+  "bossbar.mundos_de_axelis.altar": "Cursed Altar",
+  "bossbar.mundos_de_axelis.altar.oleada": "Cursed Altar · Wave %s/%s",
+  "message.mundos_de_axelis.sello.altar": "The altar doesn't respond: its power is sealed. Defeat %s first."
 }

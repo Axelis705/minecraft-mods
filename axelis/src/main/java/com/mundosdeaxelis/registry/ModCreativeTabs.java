@@ -87,6 +87,7 @@ public final class ModCreativeTabs {
                             output.accept(ro.get());
                         }
                         output.accept(ModItems.MESA_GEMAS.get());
+                        output.accept(ModItems.ALTAR_MALDITO.get());
                         for (int t = 1; t <= 8; t++) {
                             com.mundosdeaxelis.gema.Gemas.Elemento el = com.mundosdeaxelis.gema.Gemas.Elemento.ofTier(t);
                             output.accept(com.mundosdeaxelis.gema.Gemas.conPureza(new net.minecraft.world.item.ItemStack(ModItems.GEMA_VACIA.get()),

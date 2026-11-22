@@ -1509,6 +1509,65 @@ public final class AutoTest {
             check("atrapado, el Saqueador suelta su saco de botín (" + items + " objetos)", items >= 6);
             shot("112_saqueador_botin");
             cmd("kill @e[type=minecraft:item]");
+        });
+        altar();
+    }
+
+    private static void killTier1() {
+        for (String k : new String[]{"brote", "espinoso", "raizal", "polinizador"}) {
+            cmd("kill @e[type=mundos_de_axelis:" + k + "]");
+        }
+    }
+
+    /** Etapa 278: el Altar Maldito: despierta, trae oleadas (con barra), y al vencerlas suelta botín y se apaga. */
+    private static void altar() {
+        net.minecraft.core.BlockPos ap = new net.minecraft.core.BlockPos(LTX - 5, LTY, LTZ - 1);
+        add("altar (poner)", 1500, () -> {
+            killTier1();
+            cmd("execute in minecraft:overworld run setblock " + ap.getX() + " " + ap.getY() + " " + ap.getZ() + " mundos_de_axelis:altar_maldito[cargado=true]{Tier:1}");
+            standLooking(ap.getX() + 0.5, LTY, ap.getZ() - 4.5, ap.getX() + 0.5, LTY + 0.8, ap.getZ() + 0.5);
+        });
+        add("altar (foto)", 300, () -> {
+            check("el Altar Maldito está puesto y cargado", Minecraft.getInstance().level.getBlockState(ap).is(com.mundosdeaxelis.registry.ModBlocks.ALTAR_MALDITO.get())
+                    && Minecraft.getInstance().level.getBlockState(ap).getValue(com.mundosdeaxelis.block.AltarMalditoBlock.CARGADO));
+            shot("113_altar_cargado");
+        });
+        add("altar (despertar)", 4200, () -> useBlock(ap));
+        add("altar (oleada 1, foto)", 300, () -> {
+            int n = 0;
+            for (net.minecraft.world.entity.Entity en : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (en instanceof net.minecraft.world.entity.Mob && en.distanceToSqr(ap.getX(), ap.getY(), ap.getZ()) < 100
+                        && com.mundosdeaxelis.world.Elites.eligibleTier(en) == 1) {
+                    n++;
+                }
+            }
+            check("al tocar el altar sale la primera oleada (" + n + " enemigos)", n >= 3);
+            shot("114_altar_oleada");
+            killTier1();
+        });
+        add("altar (oleada 2)", 4200, () -> {
+        });
+        add("altar (oleada 2, matar)", 4200, () -> killTier1());
+        add("altar (oleada 3, foto)", 300, () -> {
+            shot("115_altar_oleada3");
+            killTier1();
+        });
+        add("altar (vencido)", 2500, () -> {
+        });
+        add("altar (botin, foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState st = Minecraft.getInstance().level.getBlockState(ap);
+            int items = 0;
+            for (net.minecraft.world.entity.Entity en : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (en instanceof net.minecraft.world.entity.item.ItemEntity && en.distanceToSqr(ap.getX(), ap.getY(), ap.getZ()) < 64) {
+                    items++;
+                }
+            }
+            check("vencidas las 3 oleadas, el altar se apaga y suelta botín (" + items + " objetos)",
+                    st.is(com.mundosdeaxelis.registry.ModBlocks.ALTAR_MALDITO.get()) && !st.getValue(com.mundosdeaxelis.block.AltarMalditoBlock.CARGADO) && items >= 2);
+            shot("116_altar_botin");
+            cmd("kill @e[type=minecraft:item]");
+            killTier1();
+            cmd("execute in minecraft:overworld run setblock " + ap.getX() + " " + ap.getY() + " " + ap.getZ() + " minecraft:air");
             cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
         });
     }

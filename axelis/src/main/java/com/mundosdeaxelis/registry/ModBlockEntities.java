@@ -37,4 +37,8 @@ public final class ModBlockEntities {
 
     private ModBlockEntities() {
     }
+
+    /** Etapa 278: el Altar Maldito. */
+    public static final RegistryObject<BlockEntityType<com.mundosdeaxelis.block.AltarMalditoBlockEntity>> ALTAR_MALDITO = BLOCK_ENTITIES.register("altar_maldito",
+            () -> BlockEntityType.Builder.of(com.mundosdeaxelis.block.AltarMalditoBlockEntity::new, ModBlocks.ALTAR_MALDITO.get()).build(null));
 }

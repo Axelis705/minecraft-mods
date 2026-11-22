@@ -2558,5 +2558,15 @@
   "gema.mundos_de_axelis.efecto_armadura.arcano": "En la armadura: −8 % de daño mágico por cada nivel de pureza.",
   "gema.mundos_de_axelis.efecto_armadura.vampiro": "En la armadura: te curas 0,25 de vida por cada nivel de pureza cada 5 segundos.",
   "gema.mundos_de_axelis.efecto_armadura.rayo": "En la armadura: +2,5 % de velocidad por cada nivel de pureza.",
-  "gema.mundos_de_axelis.efecto_armadura.vacio": "En la armadura: +medio corazón de vida máxima por cada nivel de pureza."
+  "gema.mundos_de_axelis.efecto_armadura.vacio": "En la armadura: +medio corazón de vida máxima por cada nivel de pureza.",
+  "block.mundos_de_axelis.altar_maldito": "Altar Maldito",
+  "tooltip.mundos_de_axelis.altar_maldito": "Tócalo para despertarlo: resiste 3 oleadas y llévate su botín. Se recarga cada día.",
+  "message.mundos_de_axelis.altar.despierta": "¡El Altar Maldito despierta! Resiste %s oleadas.",
+  "message.mundos_de_axelis.altar.oleada": "Oleada %s de %s",
+  "message.mundos_de_axelis.altar.en_marcha": "El altar ya está en marcha: oleada %s de %s.",
+  "message.mundos_de_axelis.altar.descansa": "El altar descansa. Vuelve mañana.",
+  "message.mundos_de_axelis.altar.vencido": "¡Venciste al Altar Maldito! Suelta su botín.",
+  "bossbar.mundos_de_axelis.altar": "Altar Maldito",
+  "bossbar.mundos_de_axelis.altar.oleada": "Altar Maldito · Oleada %s/%s",
+  "message.mundos_de_axelis.sello.altar": "El altar no responde: su poder está sellado. Vence a %s primero."
 }

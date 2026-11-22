@@ -491,7 +491,7 @@ public final class StructPlacer {
     }
 
     /** Pone un enemigo del plano (persistente) en {@code p}; devuelve su UUID o null. */
-    static UUID spawn(ServerLevel level, StructBp.Mob m, BlockPos p, int index, BiConsumer<Integer, net.minecraft.world.entity.Mob> hook) {
+    public static UUID spawn(ServerLevel level, StructBp.Mob m, BlockPos p, int index, BiConsumer<Integer, net.minecraft.world.entity.Mob> hook) {
         net.minecraft.world.entity.EntityType<?> type = ForgeRegistries.ENTITY_TYPES
                 .getValue(new ResourceLocation(com.mundosdeaxelis.MundosDeAxelis.MODID, m.kind()));
         if (type == null) {

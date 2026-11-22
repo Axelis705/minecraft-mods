@@ -104,6 +104,19 @@ public final class Elites {
             Map.entry("salamandra_lava", 4), Map.entry("diablillo", 4), Map.entry("cultista_volcan", 4), Map.entry("larva_magma", 4),
             Map.entry("esbirro", 5), Map.entry("libro_embrujado", 5), Map.entry("armadura_encantada", 5));
 
+    /** Los enemigos comunes de un tier (los nombres de sus entidades), para quien los necesite (el Altar Maldito). */
+    public static java.util.List<String> mobsOfTier(int tier) {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        int t = Math.max(1, Math.min(5, tier));
+        for (Map.Entry<String, Integer> e : TIER.entrySet()) {
+            if (e.getValue() == t) {
+                out.add(e.getKey());
+            }
+        }
+        java.util.Collections.sort(out);
+        return out;
+    }
+
     /** Tier del enemigo si puede ser élite; 0 si no. */
     public static int eligibleTier(Entity e) {
         ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(e.getType());
