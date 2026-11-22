@@ -761,8 +761,9 @@ public final class TestCommands {
     /** Etapa 280: los encargos del Tablón con un jugador falso. */
     // ------------------------------------------------------------------ etapa 281: armas nuevas
 
-    private static net.minecraft.world.entity.monster.Husk muñeco(net.minecraft.server.level.ServerLevel sl, double x, double y, double z, float yaw) {
-        net.minecraft.world.entity.monster.Husk h = net.minecraft.world.entity.EntityType.HUSK.create(sl);
+    /** Muñeco de prueba de las armas: un vindicador quieto (enemigo, sin armadura y al que le afecta el veneno). */
+    private static net.minecraft.world.entity.monster.Vindicator muñeco(net.minecraft.server.level.ServerLevel sl, double x, double y, double z, float yaw) {
+        net.minecraft.world.entity.monster.Vindicator h = net.minecraft.world.entity.EntityType.VINDICATOR.create(sl);
         h.moveTo(x, y, z, yaw, 0.0F);
         h.setYBodyRot(yaw);
         h.setYHeadRot(yaw);
@@ -781,7 +782,7 @@ public final class TestCommands {
         net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
         net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
         java.util.List<String> fails = new java.util.concurrent.CopyOnWriteArrayList<>();
-        sl.getEntitiesOfClass(net.minecraft.world.entity.monster.Husk.class, new net.minecraft.world.phys.AABB(base).inflate(80),
+        sl.getEntitiesOfClass(net.minecraft.world.entity.monster.Vindicator.class, new net.minecraft.world.phys.AABB(base).inflate(80),
                 e -> e.getTags().contains("prueba_armas")).forEach(net.minecraft.world.entity.Entity::discard);
         // 1) las 40 armas: daño, velocidad, alcance, barrido y gemas
         for (com.mundosdeaxelis.arma.TierArma t : com.mundosdeaxelis.arma.TierArma.values()) {
@@ -841,9 +842,9 @@ public final class TestCommands {
         double x0 = base.getX() + 0.5, y0 = base.getY(), z0 = base.getZ() + 0.5;
         fp.moveTo(x0, y0, z0 - 3.0, 0.0F, 0.0F); // mira al sur (+Z)
         fp.setHealth(fp.getMaxHealth());
-        net.minecraft.world.entity.monster.Husk h1 = muñeco(sl, x0, y0, z0, 180.0F); // mira al jugador
-        net.minecraft.world.entity.monster.Husk h2 = muñeco(sl, x0 + 1.2, y0, z0, 180.0F); // al lado
-        net.minecraft.world.entity.monster.Husk h3 = muñeco(sl, x0, y0, z0 + 1.6, 180.0F); // detrás (en la línea del golpe)
+        net.minecraft.world.entity.monster.Vindicator h1 = muñeco(sl, x0, y0, z0, 180.0F); // mira al jugador
+        net.minecraft.world.entity.monster.Vindicator h2 = muñeco(sl, x0 + 1.2, y0, z0, 180.0F); // al lado
+        net.minecraft.world.entity.monster.Vindicator h3 = muñeco(sl, x0, y0, z0 + 1.6, 180.0F); // detrás (en la línea del golpe)
         java.util.function.BiConsumer<String, Boolean> ok = (what, cond) -> {
             if (!cond) {
                 fails.add(what);
@@ -856,6 +857,15 @@ public final class TestCommands {
         com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.ESPADA), fp, sl, h1, 10.0F, true, false);
         ok.accept("barrido de la espada (" + hp2 + " -> " + h2.getHealth() + ")", h2.getHealth() < hp2 - 2.0F);
         ok.accept("veneno de Naturaleza", h1.hasEffect(net.minecraft.world.effect.MobEffects.POISON));
+        net.minecraft.world.entity.monster.Husk zombi = net.minecraft.world.entity.EntityType.HUSK.create(sl);
+        zombi.moveTo(x0 - 6, y0, z0, 180.0F, 0.0F); // mira al jugador: sin puñalada
+        zombi.setNoAi(true);
+        zombi.addTag("prueba_armas");
+        sl.addFreshEntity(zombi);
+        zombi.setYBodyRot(180.0F);
+        r = com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.DAGAS), fp, sl, zombi, 10.0F, false, false);
+        ok.accept("el veneno sobre un no-muerto pega +10 % (" + r + ")", Math.abs(r - 11.0F) < 0.01F && !zombi.hasEffect(net.minecraft.world.effect.MobEffects.POISON));
+        zombi.discard();
         h1.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR).setBaseValue(10.0);
         r = com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.HACHA), fp, sl, h1, 10.0F, false, false);
         ok.accept("quiebra armaduras " + r + " (armadura " + h1.getArmorValue() + ")", Math.abs(r - 10.0F * (1.0F + h1.getArmorValue() * 0.025F)) < 0.01F && r > 12.0F);
@@ -890,7 +900,7 @@ public final class TestCommands {
                 com.mundosdeaxelis.arma.TierArma.DRAGON), fp, sl, h3, 30.0F, false, false);
         ok.accept("vampiro (Dragón) " + fp.getHealth(), fp.getHealth() > 10.5F);
         fp.setHealth(fp.getMaxHealth());
-        net.minecraft.world.entity.monster.Husk hSangre = muñeco(sl, x0 - 10, y0, z0, 180.0F);
+        net.minecraft.world.entity.monster.Vindicator hSangre = muñeco(sl, x0 - 10, y0, z0, 180.0F);
         float hpSangre = hSangre.getHealth();
         com.mundosdeaxelis.arma.Armas.alGolpear((com.mundosdeaxelis.arma.ArmaItem) com.mundosdeaxelis.registry.ModItems.arma(com.mundosdeaxelis.arma.TipoArma.DAGAS,
                 com.mundosdeaxelis.arma.TierArma.FORJA), fp, sl, hSangre, 20.0F, false, false);
@@ -898,7 +908,7 @@ public final class TestCommands {
         fp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.item.ItemStack(
                 com.mundosdeaxelis.registry.ModItems.arma(com.mundosdeaxelis.arma.TipoArma.ESPADA, com.mundosdeaxelis.arma.TierArma.MAGIA)));
         com.mundosdeaxelis.gear.Souls.set(fp, 0);
-        net.minecraft.world.entity.monster.Husk victima = muñeco(sl, x0 + 6, y0, z0, 0.0F);
+        net.minecraft.world.entity.monster.Vindicator victima = muñeco(sl, x0 + 6, y0, z0, 0.0F);
         victima.hurt(sl.damageSources().playerAttack(fp), 100000.0F);
         int almas = com.mundosdeaxelis.gear.Souls.get(fp);
         ok.accept("matar con el arma da almas (" + almas + ")", almas > 0);
@@ -912,10 +922,10 @@ public final class TestCommands {
         ok.accept("la especial no se enfría", fp.getCooldowns().isOnCooldown(espada));
         ok.accept("se repite antes de tiempo", !com.mundosdeaxelis.arma.Armas.tryEspecial(espada, fp, sl, new net.minecraft.world.item.ItemStack(espada)));
         // 6) especiales: cada una en su carril, una detrás de otra (el muñeco del Tajo queda delante del jugador)
-        net.minecraft.world.entity.monster.Husk tajo = muñeco(sl, x0, y0, z0 + 4.5, 180.0F);
+        net.minecraft.world.entity.monster.Vindicator tajo = muñeco(sl, x0, y0, z0 + 4.5, 180.0F);
         float hpTajo = tajo.getHealth();
         java.util.Map<String, Float> antes = new java.util.HashMap<>();
-        java.util.List<net.minecraft.world.entity.monster.Husk> lanes = new java.util.ArrayList<>();
+        java.util.List<net.minecraft.world.entity.monster.Vindicator> lanes = new java.util.ArrayList<>();
         com.mundosdeaxelis.arma.TipoArma[] orden = {com.mundosdeaxelis.arma.TipoArma.HACHA, com.mundosdeaxelis.arma.TipoArma.MARTILLO,
                 com.mundosdeaxelis.arma.TipoArma.LANZA, com.mundosdeaxelis.arma.TipoArma.DAGAS};
         int[] cuando = {12, 50, 100, 115};
@@ -923,7 +933,7 @@ public final class TestCommands {
             final int k = i;
             double lx = x0 + 12 * (i + 1);
             double dz = orden[i] == com.mundosdeaxelis.arma.TipoArma.LANZA ? 1.6 : orden[i] == com.mundosdeaxelis.arma.TipoArma.DAGAS ? 4.0 : 2.0;
-            net.minecraft.world.entity.monster.Husk h = muñeco(sl, lx, y0, z0 - 3.0 + dz, 180.0F);
+            net.minecraft.world.entity.monster.Vindicator h = muñeco(sl, lx, y0, z0 - 3.0 + dz, 180.0F);
             lanes.add(h);
             antes.put(orden[i].id, h.getHealth());
             com.mundosdeaxelis.world.Scheduler.runLater(cuando[i], () -> {
@@ -949,7 +959,7 @@ public final class TestCommands {
                 fails.add("el sangrado no quita 3 × 10 % (" + hpSangre + " -> " + hSangre.getHealth() + ")");
             }
             for (int i = 0; i < orden.length; i++) {
-                net.minecraft.world.entity.monster.Husk h = lanes.get(i);
+                net.minecraft.world.entity.monster.Vindicator h = lanes.get(i);
                 float lost = antes.get(orden[i].id) - h.getHealth();
                 float need = orden[i] == com.mundosdeaxelis.arma.TipoArma.HACHA ? 12.0F : 4.0F;
                 if (lost < need) {
@@ -962,7 +972,7 @@ public final class TestCommands {
             if (!com.mundosdeaxelis.arma.Armas.sombra(fp)) {
                 fails.add("el Paso sombrío no da la sombra");
             }
-            sl.getEntitiesOfClass(net.minecraft.world.entity.monster.Husk.class, new net.minecraft.world.phys.AABB(base).inflate(80),
+            sl.getEntitiesOfClass(net.minecraft.world.entity.monster.Vindicator.class, new net.minecraft.world.phys.AABB(base).inflate(80),
                     e -> e.getTags().contains("prueba_armas")).forEach(net.minecraft.world.entity.Entity::discard);
             sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(80)).forEach(net.minecraft.world.entity.Entity::discard);
             String msg = fails.isEmpty() ? "PRUEBA_ARMAS_OK 40 armas" : "PRUEBA_ARMAS_FALLO " + fails;

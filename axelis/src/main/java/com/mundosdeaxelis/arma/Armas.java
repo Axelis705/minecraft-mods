@@ -249,7 +249,13 @@ public final class Armas {
         int col = a.tierArma.color;
         switch (a.tierArma.elemento) {
             case VENENO -> {
-                t.addEffect(new MobEffectInstance(MobEffects.POISON, 70, 0));
+                MobEffectInstance veneno = new MobEffectInstance(MobEffects.POISON, 70, 0);
+                if (t.canBeAffected(veneno)) {
+                    t.addEffect(veneno);
+                } else {
+                    // a los no-muertos (y a las arañas) no les hace nada el veneno: sus espinas pegan un 10 % más
+                    amount *= 1.10F;
+                }
                 sl.sendParticles(Fx.spark(0x7BD66B, 0.5F), c.x, c.y, c.z, 4, 0.25, 0.3, 0.25, 0.02);
             }
             case SANGRADO -> {

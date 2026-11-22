@@ -54,6 +54,8 @@ ann() { # manda un texto como anotacion visible en GitHub (varias lineas)
 }
 # lo que dijeron las pruebas (también si luego falla algo, para saber hasta dónde llegó)
 if [ -f ci_commands.txt ]; then
+  echo "----- fallos de las pruebas (primero) -----"
+  grep -E "_FALLO|unexpected error|An unexpected|Exception caught|Exception while" "$log" | sed 's/^.*\] \[/[/' | cut -c1-600 | head -20
   echo "----- lineas de prueba del registro -----"
   grep -E "PRUEBA_|DIAG_|Unknown or incomplete command|unexpected error|Incorrect argument|Can't keep up" "$log" | sed 's/^.*\] \[/[/' | cut -c1-300 | sort -u | head -80
   echo "----- final del registro -----"
@@ -75,7 +77,7 @@ if [ -f ci_commands.txt ]; then
   done < ci_commands.txt
   if [ -n "$miss" ]; then
     echo "ERROR: faltan en el registro:$miss"
-    { echo "Faltan:$miss"; grep -E "DIAG_|PRUEBA_|/ERROR\]|/WARN\].*casino|Exception|unexpected error|at com\.casino|not loaded" "$log" | sed 's/^.*\] \[/[/' | cut -c1-200 | head -60; } > "$log.bad"
+    { echo "Faltan:$miss"; grep -E "_FALLO" "$log" | sed 's/^.*\] \[/[/' | cut -c1-300 | head -10; grep -E "DIAG_|PRUEBA_|/ERROR\]|/WARN\].*casino|Exception|unexpected error|at com\.casino|not loaded" "$log" | sed 's/^.*\] \[/[/' | cut -c1-200 | head -60; } > "$log.bad"
     ann "Prueba de comandos fallo ($mod)" 62 "$log.bad"; exit 1
   fi
   echo "Comandos de prueba: bien"
