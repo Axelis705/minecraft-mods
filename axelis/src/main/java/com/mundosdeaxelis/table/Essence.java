@@ -59,6 +59,10 @@ public final class Essence {
         if (entries == null) {
             List<Entry> l = new ArrayList<>();
             Tiers.all().forEach((id, t) -> {
+                com.mundosdeaxelis.gear.GearDef gd = com.mundosdeaxelis.gear.GearDefs.get(id);
+                if (gd != null && gd.family() == com.mundosdeaxelis.gear.Family.SWORD) {
+                    return; // las espadas de los sets ya no salen (etapa 281): las armas nuevas ocupan su lugar en el Archivo
+                }
                 String cat = id.startsWith("comp_") ? "pets"
                         : id.startsWith("gear_") || com.mundosdeaxelis.arma.Armas.esArma(id) || com.mundosdeaxelis.gear.GearDefs.get(id) != null || com.mundosdeaxelis.gear.ArmorDefs.isArmorId(id) ? "gear" : "relics";
                 l.add(new Entry(cat, id, t));

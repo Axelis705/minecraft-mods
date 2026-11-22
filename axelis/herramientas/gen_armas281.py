@@ -597,7 +597,7 @@ def dibujar(tipo, tier, mano=False):
         return lz
     if tipo == "dagas":
         ej = Eje(3.5, 28.5, 1, -1)
-        f = lambda u, v: daga(tier, u, v, 31.0)
+        f = lambda u, v: daga(tier, u, v, 22.0)
     else:
         ej = Eje(2.0, 30.0, 1, -1)
         f = {"espada": espada, "hacha": hacha, "martillo": martillo, "lanza": lanza}[tipo]
