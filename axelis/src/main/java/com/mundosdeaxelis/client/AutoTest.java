@@ -214,6 +214,18 @@ public final class AutoTest {
     }
 
     /** Cuántos objetos sueltos de ese tipo ve el cliente (a 40 bloques). */
+    /** La entidad de esa clase más cercana que ve el cliente (o null). */
+    private static <T extends net.minecraft.world.entity.Entity> T clientEntity(Class<T> c) {
+        Minecraft mc = Minecraft.getInstance();
+        T best = null;
+        for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
+            if (c.isInstance(e) && (best == null || e.distanceTo(mc.player) < best.distanceTo(mc.player))) {
+                best = c.cast(e);
+            }
+        }
+        return best;
+    }
+
     private static int clientCountItems(net.minecraft.world.item.Item it) {
         Minecraft mc = Minecraft.getInstance();
         int n = 0;
@@ -525,11 +537,12 @@ public final class AutoTest {
         });
         add("llave", 1200, () -> {
             cmd("kill @e[type=mundos_de_axelis:raizal]");
+            cmd("kill @e[type=mundos_de_axelis:driade_roble]");
             onServer(sp -> keyDropped = !sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(48),
                     i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty());
         });
         add("llave en la puerta", 2600, () -> {
-            check("el Raizal que vigila la celda suelta la llave", keyDropped);
+            check("la Dríade que vigila la celda suelta la llave", keyDropped);
             cmd("kill @e[type=item]");
             onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()), door,
                     net.minecraft.core.Direction.NORTH));
@@ -3090,6 +3103,74 @@ public final class AutoTest {
         add("erupción b (foto)", 300, () -> shot("45_volcan_erupcion"));
     }
 
+    /** El Santuario del Bosque: por fuera, por dentro (con la Dríade del Roble), que no se puede picar y el rescate de Ruda. */
+    private static void santuarioEstructura() {
+        // etapa 256: el Santuario del Bosque (la primera estructura) y que las estructuras no se pueden picar
+        add("santuario", 6000, () -> {
+            open(null);
+            clearMobs();
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " rotated 0 0 run mundos estructura santuario");
+        });
+        add("santuario de frente", 3000, () -> lookS(0, 6, -12, 0, 3, 22));
+        add("santuario de frente (foto)", 300, () -> shot("46_santuario_frente"));
+        add("santuario de lado", 2500, () -> lookS(24, 16, 2, 0, 2, 24));
+        add("santuario de lado (foto)", 300, () -> shot("47_santuario_lado"));
+        add("santuario dentro", 2500, () -> lookS(0.5, 0, 20.5, 0.5, 1, 30.5));
+        add("santuario dentro (foto)", 300, () -> {
+            net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(SX, SY, SZ0 + 28);
+            String id = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level.getBlockState(p).getBlock()).getPath();
+            check("al fondo del santuario está la celda de Ruda (" + id + ")", id.equals("iron_door"));
+            check("enemigos del santuario a la vista (" + clientCount(com.mundosdeaxelis.entity.Brote.class) + " brotes, "
+                    + clientCount(com.mundosdeaxelis.entity.Raizal.class) + " raizal)", clientCount(com.mundosdeaxelis.entity.Brote.class) >= 2
+                    && clientCount(com.mundosdeaxelis.entity.Raizal.class) >= 1);
+            shot("48_santuario_dentro");
+        });
+        // etapa 288: la Dríade del Roble duerme arrodillada en el centro del santuario; al despertar levanta los brazos
+        add("dríade dormida", 2500, () -> lookS(3.5, 1.5, 20.5, 0.5, 0.8, 24.5));
+        add("dríade dormida (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.DriadeRoble d = clientEntity(com.mundosdeaxelis.entity.DriadeRoble.class);
+            check("la Dríade del Roble duerme en el santuario", d != null && d.dormida());
+            shot("48b_driade_dormida");
+            onServer(sp -> {
+                for (com.mundosdeaxelis.entity.DriadeRoble x : sp.serverLevel().getEntitiesOfClass(com.mundosdeaxelis.entity.DriadeRoble.class,
+                        sp.getBoundingBox().inflate(30))) {
+                    x.despertarYa();
+                    x.setNoAi(true); // quieta para la foto
+                }
+            });
+        });
+        add("dríade despierta", 1800, () -> lookS(3.5, 1.5, 19.5, 0.5, 1.6, 24.5));
+        add("dríade despierta (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.DriadeRoble d = clientEntity(com.mundosdeaxelis.entity.DriadeRoble.class);
+            check("al despertar se levanta (y sale su barra)", d != null && !d.dormida());
+            shot("48c_driade_despierta");
+        });
+        add("celda", 2500, () -> lookS(0.5, 0, 23.5, 0.5, 1, 30));
+        add("celda (foto)", 300, () -> shot("49_santuario_celda"));
+        add("no se puede picar", 1500, () -> {
+            cmd("gamemode survival @a");
+            onServer(sp -> {
+                // una pared del santuario y la Piedra de Portal: romper como un jugador en supervivencia no debe funcionar
+                net.minecraft.core.BlockPos wall = new net.minecraft.core.BlockPos(SX - 8, SY + 1, SZ0 + 27);
+                net.minecraft.core.BlockPos stone = new net.minecraft.core.BlockPos(SX - 2, SY, SZ0 + 28); // los barrotes de la celda
+                boolean a = sp.gameMode.destroyBlock(wall);
+                boolean b = sp.gameMode.destroyBlock(stone);
+                guardBroke = a || b || sp.serverLevel().getBlockState(wall).isAir() || sp.serverLevel().getBlockState(stone).isAir();
+            });
+        });
+        add("no se puede picar (comprobar)", 300, () -> {
+            check("las estructuras no se pueden picar en supervivencia", !guardBroke);
+        });
+        ruda();
+        add("santuario (deshacer)", 1500, () -> {
+            open(null);
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " run mundos estructura deshacer");
+            cmd("kill @e[type=item]");
+        });
+    }
+
     /** Solo una parte de la prueba (para probar rápido): -Dmundos.autotest.solo=armas */
     private static final String SOLO = System.getProperty("mundos.autotest.solo", "").trim();
 
@@ -3117,6 +3198,9 @@ public final class AutoTest {
             }
             if (solo.contains("volcan")) {
                 volcanEstructura();
+            }
+            if (solo.contains("santuario")) {
+                santuarioEstructura();
             }
             add("fin", 2000, () -> {
                 open(null);
@@ -3670,50 +3754,7 @@ public final class AutoTest {
         });
         add("premios (foto)", 3000, () -> shot("29_premios"));
         volcanEstructura();
-        // etapa 256: el Santuario del Bosque (la primera estructura) y que las estructuras no se pueden picar
-        add("santuario", 6000, () -> {
-            open(null);
-            clearMobs();
-            cmd("gamemode spectator @a");
-            cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " rotated 0 0 run mundos estructura santuario");
-        });
-        add("santuario de frente", 3000, () -> lookS(0, 6, -12, 0, 3, 22));
-        add("santuario de frente (foto)", 300, () -> shot("46_santuario_frente"));
-        add("santuario de lado", 2500, () -> lookS(24, 16, 2, 0, 2, 24));
-        add("santuario de lado (foto)", 300, () -> shot("47_santuario_lado"));
-        add("santuario dentro", 2500, () -> lookS(0.5, 0, 20.5, 0.5, 1, 30.5));
-        add("santuario dentro (foto)", 300, () -> {
-            net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(SX, SY, SZ0 + 28);
-            String id = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level.getBlockState(p).getBlock()).getPath();
-            check("al fondo del santuario está la celda de Ruda (" + id + ")", id.equals("iron_door"));
-            check("enemigos del santuario a la vista (" + clientCount(com.mundosdeaxelis.entity.Brote.class) + " brotes, "
-                    + clientCount(com.mundosdeaxelis.entity.Raizal.class) + " raizal)", clientCount(com.mundosdeaxelis.entity.Brote.class) >= 2
-                    && clientCount(com.mundosdeaxelis.entity.Raizal.class) >= 1);
-            shot("48_santuario_dentro");
-        });
-        add("celda", 2500, () -> lookS(0.5, 0, 23.5, 0.5, 1, 30));
-        add("celda (foto)", 300, () -> shot("49_santuario_celda"));
-        add("no se puede picar", 1500, () -> {
-            cmd("gamemode survival @a");
-            onServer(sp -> {
-                // una pared del santuario y la Piedra de Portal: romper como un jugador en supervivencia no debe funcionar
-                net.minecraft.core.BlockPos wall = new net.minecraft.core.BlockPos(SX - 8, SY + 1, SZ0 + 27);
-                net.minecraft.core.BlockPos stone = new net.minecraft.core.BlockPos(SX - 2, SY, SZ0 + 28); // los barrotes de la celda
-                boolean a = sp.gameMode.destroyBlock(wall);
-                boolean b = sp.gameMode.destroyBlock(stone);
-                guardBroke = a || b || sp.serverLevel().getBlockState(wall).isAir() || sp.serverLevel().getBlockState(stone).isAir();
-            });
-        });
-        add("no se puede picar (comprobar)", 300, () -> {
-            check("las estructuras no se pueden picar en supervivencia", !guardBroke);
-        });
-        ruda();
-        add("santuario (deshacer)", 1500, () -> {
-            open(null);
-            cmd("gamemode spectator @a");
-            cmd("execute in minecraft:overworld positioned " + SX + " " + SY + " " + (SZ0 - 16) + " run mundos estructura deshacer");
-            cmd("kill @e[type=item]");
-        });
+        santuarioEstructura();
         templo();
         ciudadela();
         fortin();

@@ -88,6 +88,7 @@ public final class ClientModEvents {
         event.registerEntityRenderer(ModEntities.REY_BROTE.get(), ReyBroteRenderer::new);
         event.registerEntityRenderer(ModEntities.BROTE.get(), BroteRenderer::new);
         event.registerEntityRenderer(ModEntities.RAIZAL.get(), RaizalRenderer::new);
+        event.registerEntityRenderer(ModEntities.DRIADE_ROBLE.get(), DriadeRenderer::new);
         event.registerEntityRenderer(ModEntities.POLINIZADOR.get(), PolinizadorRenderer::new);
         event.registerEntityRenderer(ModEntities.ESPINOSO.get(), EspinosoRenderer::new);
         event.registerEntityRenderer(ModEntities.GUARDIAN_MUSGO.get(), GuardianRenderer::new);

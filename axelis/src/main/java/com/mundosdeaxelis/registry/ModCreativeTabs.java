@@ -49,6 +49,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.CENTINELA_ESCARCHA_SPAWN_EGG.get());
                         output.accept(ModItems.BROTE_SPAWN_EGG.get());
                         output.accept(ModItems.RAIZAL_SPAWN_EGG.get());
+                        output.accept(ModItems.DRIADE_ROBLE_SPAWN_EGG.get());
                         output.accept(ModItems.VAULT_CHEST.get());
                         output.accept(ModItems.VAULT_CHEST_SEALED.get());
                         output.accept(ModItems.VAULT_CHEST_LOCKED.get());

@@ -261,16 +261,55 @@ final class DesignSantuario {
         b.set(6, 2, SZ1 - 1, "lantern");
         b.set(6, 1, SZ1 - 1, "mossy_stone_brick_wall");
         b.set(6, 0, SZ1 - 1, MSB);
-        // pasillo de musgo y bancos
-        for (int z = SZ0 + 1; z <= 27; z++) {
-            if (StructKit.hash01(2586, 0, z) < 0.7) {
-                b.set(0, 0, z, "moss_carpet");
+        // etapa 288: el santuario es el claro de la Dríade del Roble (antes había bancos sueltos sin sentido). En el centro, un nudo de
+        // raíces donde duerme arrodillada, dentro de un anillo de musgo con pétalos; raíces que bajan de las vigas y salen de las
+        // esquinas, azaleas en flor en los rincones y velas. El suelo del medio queda libre para pelear.
+        int ax = 0, az = 24;
+        for (int x = -SX + 1; x <= SX - 1; x++) {
+            for (int z = SZ0 + 1; z < CZ0; z++) {
+                double d = Math.hypot(x - ax, (z - az) * 1.15);
+                if (d <= 1.2) {
+                    b.set(x, -1, z, "rooted_dirt");
+                } else if (d <= 3.2) {
+                    b.set(x, -1, z, StructKit.hash01(2600, x, z) < 0.75 ? "moss_block" : "mossy_cobblestone");
+                } else if (d <= 3.9) {
+                    b.set(x, -1, z, "mossy_stone_bricks");
+                }
+                if (d > 2.2 && d <= 3.2 && StructKit.hash01(2601, x, z) < 0.45) {
+                    b.set(x, 0, z, "pink_petals[facing=" + (new String[]{"north", "east", "south", "west"})[(int) (StructKit.hash01(2602, x, z) * 4)]
+                            + ",flower_amount=" + (2 + (int) (StructKit.hash01(2603, x, z) * 3)) + "]");
+                }
             }
         }
-        for (int z : new int[]{22, 24, 26}) {
-            b.set(-5, 0, z, StructBp.stair("spruce_stairs", "-x", false));
-            b.set(-4, 0, z, StructBp.stair("spruce_stairs", "-x", false));
-            b.set(4, 0, z, StructBp.stair("spruce_stairs", "+x", false));
+        // el camino de musgo de la puerta al anillo
+        for (int z = SZ0 + 1; z <= 20; z++) {
+            b.set(0, 0, z, "moss_carpet");
+        }
+        // raíces que cuelgan de las vigas sobre el anillo
+        for (int x = -3; x <= 3; x += 2) {
+            for (int z : new int[]{22, 25}) {
+                if (StructKit.hash01(2604, x, z) < 0.8) {
+                    b.set(x, top, z, "hanging_roots");
+                }
+            }
+        }
+        // en los rincones: raíces de mangle que salen del muro, una azalea en flor y una vela encima de un muro bajo
+        for (int sx = -1; sx <= 1; sx += 2) {
+            for (int z : new int[]{SZ0 + 1, CZ0 - 1}) {
+                int x = sx * (SX - 1);
+                boolean cofre = z == SZ0 + 1 && sx > 0; // ahí está el cofre con cerradura (mirando a la sala)
+                for (int y = 2; y <= top - 1; y++) {
+                    if (StructKit.hash01(2605 + y, x, z) < 0.55) {
+                        b.set(x, y, z, "mangrove_roots");
+                    }
+                }
+                if (cofre) {
+                    continue;
+                }
+                b.set(x, 0, z, "flowering_azalea");
+                b.set(x - sx, 0, z, "mossy_stone_brick_wall");
+                b.set(x - sx, 1, z, "candle[candles=3,lit=true]");
+            }
         }
         // faroles colgados de las vigas
         for (int z : new int[]{22, 29}) {
@@ -514,8 +553,9 @@ final class DesignSantuario {
         mob(b, 5, 0, 15, "brote");
         mob(b, -2, 0, 17, "brote");
         mob(b, -6, 0, 28, "espinoso");
-        // el Raizal que vigila la celda lleva la llave
-        mob(b, 0, 0, 25, "raizal", "llave_celda");
+        // etapa 288: la Dríade del Roble duerme en el centro del santuario y lleva la llave de la celda; el Raizal pasea por el patio
+        mob(b, 0, 0, 24, "driade_roble", "llave_celda");
+        mob(b, -10, 0, 25, "raizal");
         // Ruda, la herbolaria, presa en la celda
         mob(b, NPC_X, 0, NPC_Z, "habitante", "ruda");
     }

@@ -25,6 +25,7 @@ public final class ModEvents {
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.BROTE.get(), com.mundosdeaxelis.entity.Brote.createAttributes().build());
         event.put(ModEntities.RAIZAL.get(), com.mundosdeaxelis.entity.Raizal.createAttributes().build());
+        event.put(ModEntities.DRIADE_ROBLE.get(), com.mundosdeaxelis.entity.DriadeRoble.createAttributes().build());
         event.put(ModEntities.POLINIZADOR.get(), com.mundosdeaxelis.entity.Polinizador.createAttributes().build());
         event.put(ModEntities.ESPINOSO.get(), com.mundosdeaxelis.entity.Espinoso.createAttributes().build());
         event.put(ModEntities.GUARDIAN_MUSGO.get(), com.mundosdeaxelis.entity.GuardianMusgo.createAttributes().build());

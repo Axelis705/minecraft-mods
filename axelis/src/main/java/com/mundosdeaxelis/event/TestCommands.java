@@ -766,6 +766,90 @@ public final class TestCommands {
      * botones de la mesa caben en un byte, y la Mesa de Gemas da la guía una sola vez.
      */
     /**
+     * Etapa 288: el Santuario del Bosque y su mini-jefa. En el plano: la Dríade (con la llave) en el centro del santuario, el Raizal en
+     * el patio y sin los bancos de antes. Con una Dríade de prueba: dormida no recibe daño, el golpe de un jugador la despierta, sus
+     * raíces y sus flores hieren a un cerdo cercano (y lo envenenan), al florecer llama a dos Brotes y al morir suelta la llave.
+     */
+    private static int etapa288(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        java.util.List<String> fails = new java.util.ArrayList<>();
+        com.mundosdeaxelis.world.StructBp b = com.mundosdeaxelis.world.StructDesigns.make("santuario");
+        boolean driade = false, raizalPatio = false;
+        for (com.mundosdeaxelis.world.StructBp.Mob m : b.mobs) {
+            if (m.kind().equals("driade_roble") && "llave_celda".equals(m.tag())) {
+                driade = true;
+            }
+            if (m.kind().equals("raizal") && m.tag() == null) {
+                raizalPatio = true;
+            }
+        }
+        if (!driade || !raizalPatio) {
+            fails.add("en el plano falta la Dríade con la llave o el Raizal del patio");
+        }
+        for (java.util.Map.Entry<Long, String> e : b.m.entrySet()) {
+            int x = com.mundosdeaxelis.world.StructBp.kx(e.getKey()), y = com.mundosdeaxelis.world.StructBp.ky(e.getKey()), z = com.mundosdeaxelis.world.StructBp.kz(e.getKey());
+            if (y == 0 && Math.abs(x) <= 7 && z >= 20 && z <= 27 && e.getValue().startsWith("spruce_stairs")) {
+                fails.add("quedan bancos en el santuario (" + x + " " + z + ")");
+                break;
+            }
+        }
+        net.minecraft.core.BlockPos pos = net.minecraft.core.BlockPos.containing(src.getPosition());
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.get(sl,
+                new com.mojang.authlib.GameProfile(java.util.UUID.fromString("5f0c2b88-0288-4a2e-9d1b-28800000e288"), "[prueba288]"));
+        fp.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 30.5);
+        sl.getEntitiesOfClass(net.minecraft.world.entity.Entity.class, new net.minecraft.world.phys.AABB(pos).inflate(12),
+                e -> !(e instanceof net.minecraft.world.entity.player.Player)).forEach(net.minecraft.world.entity.Entity::discard);
+        com.mundosdeaxelis.entity.DriadeRoble d = com.mundosdeaxelis.registry.ModEntities.DRIADE_ROBLE.get().create(sl);
+        d.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0.0F, 0.0F);
+        d.getPersistentData().putString(com.mundosdeaxelis.world.StructPlacer.TAG, "llave_celda");
+        sl.addFreshEntity(d);
+        float h0 = d.getHealth();
+        if (!d.dormida()) {
+            fails.add("no empieza dormida");
+        }
+        d.hurt(sl.damageSources().generic(), 5.0F);
+        if (d.getHealth() < h0 || !d.dormida()) {
+            fails.add("dormida recibe daño o despierta sola (" + d.getHealth() + ")");
+        }
+        d.hurt(sl.damageSources().playerAttack(fp), 5.0F);
+        if (d.dormida()) {
+            fails.add("el golpe de un jugador no la despierta");
+        }
+        net.minecraft.world.entity.animal.Pig pig = net.minecraft.world.entity.EntityType.PIG.create(sl);
+        pig.moveTo(pos.getX() + 3.5, pos.getY(), pos.getZ() + 0.5, 0.0F, 0.0F);
+        pig.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(200.0);
+        pig.setHealth(200.0F);
+        sl.addFreshEntity(pig);
+        int r = d.raicesGolpe(sl, 5.0);
+        float hp1 = pig.getHealth();
+        if (r < 1 || hp1 >= 200.0F) {
+            fails.add("las raíces no hieren al cerdo (" + r + ", vida " + hp1 + ")");
+        }
+        pig.invulnerableTime = 0;
+        int f = d.revientan(sl, pig.position(), 4.0F);
+        if (f < 1 || !pig.hasEffect(net.minecraft.world.effect.MobEffects.POISON)) {
+            fails.add("las flores no envenenan al cerdo (" + f + ")");
+        }
+        d.florecerYa();
+        int brotes = sl.getEntitiesOfClass(com.mundosdeaxelis.entity.Brote.class, new net.minecraft.world.phys.AABB(pos).inflate(6)).size();
+        if (!d.florecio() || brotes < 2) {
+            fails.add("al florecer no llama a dos Brotes (" + brotes + ")");
+        }
+        d.kill();
+        int llaves = sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(pos).inflate(4),
+                it -> it.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).size();
+        if (llaves != 1) {
+            fails.add("al morir no suelta la llave (" + llaves + ")");
+        }
+        sl.getEntitiesOfClass(net.minecraft.world.entity.Entity.class, new net.minecraft.world.phys.AABB(pos).inflate(12),
+                e -> !(e instanceof net.minecraft.world.entity.player.Player)).forEach(net.minecraft.world.entity.Entity::discard);
+        String msg = fails.isEmpty() ? "PRUEBA_ETAPA288_OK" : "PRUEBA_ETAPA288_FALLO " + fails;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fails.isEmpty() ? 1 : 0;
+    }
+
+    /**
      * Etapa 287 (volcán): la bajada del camino al muelle es limpia (de 3 de ancho, con sitio para pasar y escalones de uno en uno,
      * sin fogatas ni faroles en medio), el cartel cuelga del arco, y en el volcán construido: la reja del Altar Maldito, sus oleadas y
      * la primera vista (ver {@link com.mundosdeaxelis.world.Volcanes#prueba287}).
@@ -1470,6 +1554,7 @@ public final class TestCommands {
                 .then(Commands.literal("etapa285").executes(ctx -> etapa285(ctx.getSource())))
                 .then(Commands.literal("etapa286").executes(ctx -> etapa286(ctx.getSource())))
                 .then(Commands.literal("etapa287").executes(ctx -> etapa287(ctx.getSource())))
+                .then(Commands.literal("etapa288").executes(ctx -> etapa288(ctx.getSource())))
                 .then(Commands.literal("encargos_listos").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{

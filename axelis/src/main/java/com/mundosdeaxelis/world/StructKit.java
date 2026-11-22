@@ -636,7 +636,7 @@ public final class StructKit {
      */
     public static int[][] altars(String design) {
         return switch (design) {
-            case "santuario" -> new int[][]{{1, 0, 22, 1}};
+            case "santuario" -> new int[][]{{-5, 0, 22, 1}};
             case "bosque" -> new int[][]{{-1, 0, 1, 1}};
             case "forja" -> new int[][]{{-1, 0, 24, 2}};
             case "fragua" -> new int[][]{{1, 0, 27, 2}};

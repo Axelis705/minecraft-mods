@@ -97,6 +97,8 @@ public final class ModItems {
     public static final RegistryObject<Item> GUARDIAN_MUSGO_SPAWN_EGG = ITEMS.register("guardian_musgo_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.GUARDIAN_MUSGO, 0x707868, 0x96FF78, new Item.Properties()));
 
+    public static final RegistryObject<Item> DRIADE_ROBLE_SPAWN_EGG = ITEMS.register("driade_roble_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.DRIADE_ROBLE, 0xB08C62, 0xF08CBA, new Item.Properties()));
     public static final RegistryObject<Item> RAIZAL_SPAWN_EGG = ITEMS.register("raizal_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.RAIZAL, 0x5A3E26, 0xEEB040, new Item.Properties()));
     public static final RegistryObject<Item> POLINIZADOR_SPAWN_EGG = ITEMS.register("polinizador_spawn_egg",

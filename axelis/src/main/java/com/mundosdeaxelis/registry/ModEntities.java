@@ -47,6 +47,12 @@ public final class ModEntities {
                     .clientTrackingRange(16)
                     .build(new ResourceLocation(MundosDeAxelis.MODID, "guardian_musgo").toString()));
 
+    /** Etapa 288: la Dríade del Roble, mini-jefa del Santuario del Bosque. */
+    public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.DriadeRoble>> DRIADE_ROBLE = ENTITIES.register("driade_roble",
+            () -> EntityType.Builder.<com.mundosdeaxelis.entity.DriadeRoble>of(com.mundosdeaxelis.entity.DriadeRoble::new, MobCategory.MONSTER)
+                    .sized(0.7F, 2.15F)
+                    .clientTrackingRange(12)
+                    .build(new ResourceLocation(MundosDeAxelis.MODID, "driade_roble").toString()));
     public static final RegistryObject<EntityType<com.mundosdeaxelis.entity.Raizal>> RAIZAL = ENTITIES.register("raizal",
             () -> EntityType.Builder.<com.mundosdeaxelis.entity.Raizal>of(com.mundosdeaxelis.entity.Raizal::new, MobCategory.MONSTER)
                     .sized(1.0F, 2.4F)
