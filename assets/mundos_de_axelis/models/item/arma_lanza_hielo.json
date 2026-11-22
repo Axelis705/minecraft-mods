@@ -1,0 +1,76 @@
+{
+ "parent": "minecraft:item/handheld",
+ "textures": {
+  "layer0": "mundos_de_axelis:item/arma/arma_lanza_hielo"
+ },
+ "display": {
+  "thirdperson_righthand": {
+   "rotation": [
+    0,
+    -90,
+    55
+   ],
+   "translation": [
+    0,
+    3.2,
+    0.5
+   ],
+   "scale": [
+    1.2325,
+    1.2325,
+    1.2325
+   ]
+  },
+  "thirdperson_lefthand": {
+   "rotation": [
+    0,
+    90,
+    -55
+   ],
+   "translation": [
+    0,
+    3.2,
+    0.5
+   ],
+   "scale": [
+    1.2325,
+    1.2325,
+    1.2325
+   ]
+  },
+  "firstperson_righthand": {
+   "rotation": [
+    0,
+    -90,
+    25
+   ],
+   "translation": [
+    1.13,
+    2.4,
+    1.13
+   ],
+   "scale": [
+    0.986,
+    0.986,
+    0.986
+   ]
+  },
+  "firstperson_lefthand": {
+   "rotation": [
+    0,
+    90,
+    -25
+   ],
+   "translation": [
+    1.13,
+    2.4,
+    1.13
+   ],
+   "scale": [
+    0.986,
+    0.986,
+    0.986
+   ]
+  }
+ }
+}

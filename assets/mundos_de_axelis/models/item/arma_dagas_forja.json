@@ -1,0 +1,30 @@
+{
+ "loader": "forge:separate_transforms",
+ "gui_light": "front",
+ "base": {
+  "parent": "minecraft:item/handheld",
+  "textures": {
+   "layer0": "mundos_de_axelis:item/arma/arma_dagas_forja_mano"
+  }
+ },
+ "perspectives": {
+  "gui": {
+   "parent": "minecraft:item/generated",
+   "textures": {
+    "layer0": "mundos_de_axelis:item/arma/arma_dagas_forja"
+   }
+  },
+  "ground": {
+   "parent": "minecraft:item/generated",
+   "textures": {
+    "layer0": "mundos_de_axelis:item/arma/arma_dagas_forja"
+   }
+  },
+  "fixed": {
+   "parent": "minecraft:item/generated",
+   "textures": {
+    "layer0": "mundos_de_axelis:item/arma/arma_dagas_forja"
+   }
+  }
+ }
+}
