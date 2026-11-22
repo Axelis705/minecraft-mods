@@ -36,6 +36,9 @@ public class ArrojadizoItem extends Item {
             e.setItem(st.copyWithCount(1));
             e.shootFromRotation(p, p.getXRot(), p.getYRot(), -8.0F, 1.1F, 0.6F);
             level.addFreshEntity(e);
+            if (p instanceof net.minecraft.server.level.ServerPlayer sp) {
+                com.mundosdeaxelis.encargo.Encargos.progress(sp, com.mundosdeaxelis.encargo.Encargos.Tipo.ARROJADIZOS, 1);
+            }
         }
         p.getCooldowns().addCooldown(this, 14);
         p.awardStat(Stats.ITEM_USED.get(this));

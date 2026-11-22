@@ -1511,6 +1511,38 @@ public final class AutoTest {
             cmd("kill @e[type=minecraft:item]");
         });
         altar();
+        tablon();
+    }
+
+    /** Etapa 280: el Tablón de Encargos: se ve con sus 3 encargos y uno cumplido se recoge. */
+    private static void tablon() {
+        net.minecraft.core.BlockPos tp = new net.minecraft.core.BlockPos(LTX + 2, LTY, LTZ - 3);
+        add("tablón (poner)", 1500, () -> {
+            cmd("execute in minecraft:overworld run setblock " + tp.getX() + " " + tp.getY() + " " + tp.getZ() + " mundos_de_axelis:tablon_encargos[facing=north]");
+            cmd("execute as @a run mundos prueba encargos_listos");
+            standLooking(tp.getX() + 0.5, LTY, tp.getZ() - 2.5, tp.getX() + 0.5, LTY + 0.6, tp.getZ() + 0.5);
+        });
+        add("tablón (foto)", 300, () -> shot("117_tablon"));
+        add("tablón (abrir)", 1500, () -> useBlock(tp));
+        add("tablón (pantalla, foto)", 300, () -> {
+            check("el Tablón de Encargos abre su pantalla (" + screenName() + ")", Minecraft.getInstance().screen instanceof TablonScreen);
+            if (Minecraft.getInstance().screen instanceof TablonScreen ts) {
+                log("encargos: " + TablonScreen.debugRows(ts.getMenu()));
+            }
+            shot("118_tablon_encargos");
+            e0 = TableClient.essence;
+            if (Minecraft.getInstance().screen instanceof TablonScreen ts) {
+                ts.claim(0);
+            }
+        });
+        add("tablón (recogido, foto)", 1200, () -> {
+            boolean ok = Minecraft.getInstance().screen instanceof TablonScreen ts && ts.getMenu().claimed(0) && !ts.getMenu().claimed(1);
+            check("un encargo cumplido se recoge (y da Esencia: " + e0 + " → " + TableClient.essence + ")", ok && TableClient.essence > e0);
+            shot("119_tablon_recogido");
+            open(null);
+            cmd("execute in minecraft:overworld run setblock " + tp.getX() + " " + tp.getY() + " " + tp.getZ() + " minecraft:air");
+            cmd("execute in minecraft:overworld run forceload remove " + (LTX - 16) + " " + (LTZ - 16) + " " + (LTX + 16) + " " + (LTZ + 16));
+        });
     }
 
     private static void killTier1() {

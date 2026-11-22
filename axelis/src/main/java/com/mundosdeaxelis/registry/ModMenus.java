@@ -35,4 +35,8 @@ public final class ModMenus {
     /** Menú de la Mesa de Gemas (etapa 271). */
     public static final RegistryObject<MenuType<com.mundosdeaxelis.gema.GemTableMenu>> GEM_TABLE = MENUS.register("gem_table",
             () -> IForgeMenuType.create((id, inv, buf) -> com.mundosdeaxelis.gema.GemTableMenu.client(id, inv)));
+
+    /** Menú del Tablón de Encargos (etapa 280). */
+    public static final RegistryObject<MenuType<com.mundosdeaxelis.encargo.TablonMenu>> TABLON = MENUS.register("tablon",
+            () -> IForgeMenuType.create((id, inv, buf) -> com.mundosdeaxelis.encargo.TablonMenu.client(id, inv)));
 }

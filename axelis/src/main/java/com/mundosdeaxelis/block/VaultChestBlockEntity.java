@@ -287,6 +287,7 @@ public class VaultChestBlockEntity extends BlockEntity {
             loots.put(id, c);
             sl.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); // que el cliente apague el haz de luz
             starPiece(sl, sp, items);
+            com.mundosdeaxelis.encargo.Encargos.progress(sp, com.mundosdeaxelis.encargo.Encargos.Tipo.COFRES, 1);
             int ess = VaultLoot.essence(kind, stage);
             Essence.add(sp, ess);
             Essence.sync(sp);

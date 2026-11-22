@@ -758,6 +758,76 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    /** Etapa 280: los encargos del Tablón con un jugador falso. */
+    private static int encargos(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        com.mundosdeaxelis.table.Essence.forgetSeals(fp);
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        String fail = null;
+        com.mundosdeaxelis.encargo.Encargos.ageOneDay(fp);
+        java.util.List<com.mundosdeaxelis.encargo.Encargos.Encargo> a = com.mundosdeaxelis.encargo.Encargos.today(fp);
+        java.util.List<com.mundosdeaxelis.encargo.Encargos.Encargo> b = com.mundosdeaxelis.encargo.Encargos.today(fp);
+        java.util.Set<com.mundosdeaxelis.encargo.Encargos.Tipo> kinds = new java.util.HashSet<>();
+        a.forEach(e -> kinds.add(e.tipo()));
+        if (a.size() != 3 || kinds.size() != 3 || !a.equals(b)) {
+            fail = "los 3 encargos del día (" + a + ")";
+        }
+        // cumplir y recoger
+        int e0 = com.mundosdeaxelis.table.Essence.get(fp);
+        for (com.mundosdeaxelis.encargo.Encargos.Encargo e : a) {
+            com.mundosdeaxelis.encargo.Encargos.progress(fp, e.tipo(), e.need());
+        }
+        boolean c0 = com.mundosdeaxelis.encargo.Encargos.claim(fp, 3);
+        for (int i = 0; i < 3; i++) {
+            if (!com.mundosdeaxelis.encargo.Encargos.claim(fp, i)) {
+                fail = "no se puede recoger el encargo " + i;
+            }
+        }
+        boolean again = com.mundosdeaxelis.encargo.Encargos.claim(fp, 0);
+        boolean bonus = com.mundosdeaxelis.encargo.Encargos.claim(fp, 3);
+        boolean bonusAgain = com.mundosdeaxelis.encargo.Encargos.claim(fp, 3);
+        if (fail == null && (c0 || again || !bonus || bonusAgain)) {
+            fail = "recoger (gran recompensa antes " + c0 + ", repetir " + again + ", gran " + bonus + ", gran otra vez " + bonusAgain + ")";
+        }
+        if (fail == null && com.mundosdeaxelis.table.Essence.get(fp) <= e0) {
+            fail = "recoger no da Esencia";
+        }
+        // un día nuevo trae encargos nuevos sin recoger
+        com.mundosdeaxelis.encargo.Encargos.ageOneDay(fp);
+        if (fail == null && com.mundosdeaxelis.encargo.Encargos.today(fp).stream().anyMatch(com.mundosdeaxelis.encargo.Encargos.Encargo::claimed)) {
+            fail = "el día nuevo no trae encargos nuevos";
+        }
+        // las muertes cuentan solas
+        com.mundosdeaxelis.encargo.Encargos.force(fp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{com.mundosdeaxelis.encargo.Encargos.Tipo.ENEMIGOS,
+                com.mundosdeaxelis.encargo.Encargos.Tipo.ELITES, com.mundosdeaxelis.encargo.Encargos.Tipo.MIMICO}, new int[]{0, 0, 0});
+        net.minecraft.world.entity.EntityType<?> broteType = net.minecraftforge.registries.ForgeRegistries.ENTITY_TYPES
+                .getValue(new net.minecraft.resources.ResourceLocation(com.mundosdeaxelis.MundosDeAxelis.MODID, "brote"));
+        for (int i = 0; i < 2; i++) {
+            net.minecraft.world.entity.Mob m = (net.minecraft.world.entity.Mob) broteType.create(sl);
+            m.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5, 0, 0);
+            if (i == 1) {
+                com.mundosdeaxelis.world.Elites.make(m, 1, com.mundosdeaxelis.world.Elites.Afijo.VELOZ);
+            }
+            sl.addFreshEntity(m);
+            m.hurt(sl.damageSources().playerAttack(fp), 100000.0F);
+        }
+        com.mundosdeaxelis.entity.Mimico mi = com.mundosdeaxelis.registry.ModEntities.MIMICO.get().create(sl);
+        mi.moveTo(base.getX() + 0.5, base.getY(), base.getZ() + 0.5, 0, 0);
+        mi.setTier(1);
+        sl.addFreshEntity(mi);
+        mi.hurt(sl.damageSources().playerAttack(fp), 100000.0F);
+        java.util.List<com.mundosdeaxelis.encargo.Encargos.Encargo> k = com.mundosdeaxelis.encargo.Encargos.today(fp);
+        if (fail == null && (k.get(0).progress() != 2 || k.get(1).progress() != 1 || k.get(2).progress() != 1)) {
+            fail = "las muertes no cuentan (" + k + ")";
+        }
+        sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(6)).forEach(net.minecraft.world.entity.Entity::discard);
+        String msg = (fail == null ? "PRUEBA_ENCARGOS_OK" : "PRUEBA_ENCARGOS_FALLO " + fail) + " " + a;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fail == null ? 1 : 0;
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal("prueba")
                 .then(Commands.literal("equipo")
@@ -773,6 +843,15 @@ public final class TestCommands {
                 .then(Commands.literal("saqueador").executes(ctx -> saqueador(ctx.getSource())))
                 .then(Commands.literal("altar").executes(ctx -> altar(ctx.getSource())))
                 .then(Commands.literal("suerte").executes(ctx -> suerte(ctx.getSource())))
+                .then(Commands.literal("encargos").executes(ctx -> encargos(ctx.getSource())))
+                .then(Commands.literal("encargos_listos").executes(ctx -> {
+                    net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
+                    com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{
+                            com.mundosdeaxelis.encargo.Encargos.Tipo.ELITES, com.mundosdeaxelis.encargo.Encargos.Tipo.COFRES,
+                            com.mundosdeaxelis.encargo.Encargos.Tipo.ALTAR}, new int[]{-1, 2, 0});
+                    ctx.getSource().sendSuccess(() -> Component.literal("Encargos de prueba puestos."), false);
+                    return 1;
+                }))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     // los sellos que lleva encima se volverían a apuntar en el Archivo: se le quitan

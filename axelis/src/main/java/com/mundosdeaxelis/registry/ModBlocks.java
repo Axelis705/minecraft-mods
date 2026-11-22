@@ -322,6 +322,15 @@ public final class ModBlocks {
                     .noLootTable()
                     .lightLevel(st -> st.getValue(com.mundosdeaxelis.block.AltarMalditoBlock.CARGADO) ? 10 : 3)));
 
+    /** Etapa 280: el Tablón de Encargos. */
+    public static final RegistryObject<Block> TABLON_ENCARGOS = BLOCKS.register("tablon_encargos",
+            () -> new com.mundosdeaxelis.encargo.TablonBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD)
+                    .strength(2.0F, 3.0F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .ignitedByLava()));
+
     /** Mesa de Gemas (etapa 271): infunde gemas vacías y las engarza en las armas. */
     public static final RegistryObject<Block> MESA_GEMAS = BLOCKS.register("mesa_gemas",
             () -> new com.mundosdeaxelis.gema.MesaGemasBlock(BlockBehaviour.Properties.of()

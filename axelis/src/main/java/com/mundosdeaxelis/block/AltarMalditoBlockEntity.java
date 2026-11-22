@@ -305,6 +305,7 @@ public class AltarMalditoBlockEntity extends BlockEntity {
                 com.mundosdeaxelis.table.Essence.add(p, ess);
                 com.mundosdeaxelis.table.Essence.sync(p);
                 p.getPersistentData().putInt("mdc_altares", p.getPersistentData().getInt("mdc_altares") + 1);
+                com.mundosdeaxelis.encargo.Encargos.progress(p, com.mundosdeaxelis.encargo.Encargos.Tipo.ALTAR, 1);
             }
             p.displayClientMessage(Component.translatable("message.mundos_de_axelis.altar.vencido").withStyle(ChatFormatting.GOLD), true);
         }

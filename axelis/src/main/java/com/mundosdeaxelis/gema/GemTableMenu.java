@@ -143,6 +143,7 @@ public class GemTableMenu extends AbstractContainerMenu {
             sp.drop(gema, false);
         }
         fx(sp, true, SoundEvents.AMETHYST_BLOCK_RESONATE);
+        com.mundosdeaxelis.encargo.Encargos.progress(sp, com.mundosdeaxelis.encargo.Encargos.Tipo.GEMAS, 1);
         msg(sp, "infundida", ChatFormatting.LIGHT_PURPLE, gema.getHoverName());
         broadcastChanges();
     }
@@ -169,6 +170,7 @@ public class GemTableMenu extends AbstractContainerMenu {
             sp.drop(out, false);
         }
         fx(sp, true, SoundEvents.AMETHYST_CLUSTER_BREAK);
+        com.mundosdeaxelis.encargo.Encargos.progress(sp, com.mundosdeaxelis.encargo.Encargos.Tipo.GEMAS, 1);
         msg(sp, "combinada", ChatFormatting.LIGHT_PURPLE, out.getHoverName());
         broadcastChanges();
     }

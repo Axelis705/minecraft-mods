@@ -481,6 +481,7 @@ execute positioned 30 -60 -90 run mundos prueba elites
 execute positioned -30 -60 -90 run mundos prueba saqueador
 execute positioned -60 -60 -60 run mundos prueba altar
 execute positioned 60 -60 -60 run mundos prueba suerte
+execute positioned 60 -60 -90 run mundos prueba encargos
 kill @e[type=minecraft:pig]
 kill @e[type=item]
 loot spawn 0 -58 -20 loot mundos_de_axelis:chests/barril_bosque
@@ -702,3 +703,4 @@ mundos prueba construir 2
 #expect PRUEBA_SAQUEADOR_OK
 #expect PRUEBA_ALTAR_OK
 #expect PRUEBA_SUERTE_OK
+#expect PRUEBA_ENCARGOS_OK

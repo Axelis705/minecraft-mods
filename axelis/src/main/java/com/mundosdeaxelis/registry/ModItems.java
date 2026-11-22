@@ -253,6 +253,10 @@ public final class ModItems {
     public static final RegistryObject<Item> ALTAR_MALDITO = ITEMS.register("altar_maldito",
             () -> new BlockItem(ModBlocks.ALTAR_MALDITO.get(), new Item.Properties().rarity(Rarity.EPIC)));
 
+    /** Etapa 280: el Tablón de Encargos (se crea en la Mesa del Artífice). */
+    public static final RegistryObject<Item> TABLON_ENCARGOS = ITEMS.register("tablon_encargos",
+            () -> new BlockItem(ModBlocks.TABLON_ENCARGOS.get(), new Item.Properties().rarity(Rarity.UNCOMMON)));
+
     /** Mesa de Gemas (se crea en la Mesa del Artífice). */
     public static final RegistryObject<Item> MESA_GEMAS = ITEMS.register("mesa_gemas",
             () -> new BlockItem(ModBlocks.MESA_GEMAS.get(), new Item.Properties().rarity(Rarity.EPIC)));

@@ -45,7 +45,9 @@ public final class TableRecipes {
                     new Recipe("gran_yunque", ModItems.GRAN_YUNQUE::get, 1, 100, 1,
                             List.of(of(() -> Items.ANVIL, 1), of(() -> Items.BLAST_FURNACE, 1), of(() -> Items.IRON_BLOCK, 2))),
                     new Recipe("mesa_gemas", ModItems.MESA_GEMAS::get, 1, 80, 1,
-                            List.of(of(() -> Items.AMETHYST_SHARD, 8), of(() -> Items.SMITHING_TABLE, 1), of(() -> Items.LAPIS_BLOCK, 1)))
+                            List.of(of(() -> Items.AMETHYST_SHARD, 8), of(() -> Items.SMITHING_TABLE, 1), of(() -> Items.LAPIS_BLOCK, 1))),
+                    new Recipe("tablon_encargos", ModItems.TABLON_ENCARGOS::get, 1, 30, 1,
+                            List.of(of(() -> Items.SPRUCE_PLANKS, 6), of(() -> Items.PAPER, 4), of(() -> Items.INK_SAC, 1)))
             );
         }
         return all;

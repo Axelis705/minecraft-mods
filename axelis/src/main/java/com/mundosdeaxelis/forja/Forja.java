@@ -131,6 +131,7 @@ public final class Forja {
         ItemStack key = new ItemStack(ModItems.KEYS.get(k).get());
         Component name = key.getHoverName();
         give(sp, key);
+        com.mundosdeaxelis.encargo.Encargos.progress(sp, com.mundosdeaxelis.encargo.Encargos.Tipo.FORJA, 1);
         sl.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
         sl.playSound(null, pos, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 1.0F, 1.2F);
         sl.sendParticles(ParticleTypes.LAVA, x, y, z, 10, 0.3, 0.2, 0.3, 0.0);
