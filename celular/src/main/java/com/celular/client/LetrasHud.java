@@ -309,15 +309,16 @@ public final class LetrasHud {
         Font font = mc.font;
         boolean primera = f.mia && f.fijo == null && f.entity == mc.player && mc.options.getCameraType().isFirstPerson();
         float lejos = f.mia ? 1F : (float) Mth.clamp((f.oir - dist) / 6.0, 0.0, 1.0);
-        // el arco mira hacia la cámara (en primera persona, hacia donde miras) y la sigue despacio
+        // el arco: en primera persona, delante de ti hacia donde miras; visto desde fuera, por detrás de quien canta (como una
+        // corona alrededor de su cabeza, de cara a quien mira). Sigue a la cámara despacio.
         double objetivo;
         if (primera) {
             objetivo = mc.player.getViewYRot(pt);
         } else {
-            objetivo = Math.toDegrees(Math.atan2(-(cam.x - ancla.x), cam.z - ancla.z));
+            objetivo = Math.toDegrees(Math.atan2(-(cam.x - ancla.x), cam.z - ancla.z)) + 180.0;
         }
         double centro = centro(f.clave + (primera ? ":1p" : ":3p"), objetivo);
-        double r = primera ? 2.5 : f.fijo != null ? 1.7 : 1.9;
+        double r0 = primera ? 2.5 : f.fijo != null ? 1.7 : 1.9;
         float alto3d = primera ? 0.23F : 0.27F;               // alto de la letra en bloques
         double h0 = primera ? mc.player.getEyeHeight() + 0.3 : f.fijo != null ? 0.75 : (f.entity != null ? f.entity.getBbHeight() + 0.3 : 2.1);
         for (int k = Math.max(0, i - 1); k <= i; k++) {
@@ -329,7 +330,13 @@ public final class LetrasHud {
             Letra.Linea ln = l.lineas.get(k);
             double[] ts = l.tiempos(k, MAX_LINEA);
             int n = ln.palabras.length;
-            // ancho de cada palabra en el arco (en grados), para que no se pisen
+            // ancho de cada palabra (en bloques); si la línea es larga el arco se abre (más radio) para que no se curve de más
+            double largo = 0;
+            for (int j = 0; j < n; j++) {
+                largo += font.width(ln.palabras[j]) / 9.0 * alto3d + (j > 0 ? alto3d * 0.45 : 0);
+            }
+            double r = Mth.clamp(Math.max(r0, largo / (primera ? 2.0 : 2.2)), r0, 4.5);
+            // ...y en grados, para que no se pisen
             double[] ancho = new double[n];
             double total = 0, hueco = Math.toDegrees(alto3d * 0.45 / r);
             for (int j = 0; j < n; j++) {
@@ -347,8 +354,8 @@ public final class LetrasHud {
                 // sube despacio mientras dura su línea y se va hacia arriba rápido al terminar
                 double sube = Math.min(0.35, Math.max(0, edad) * 0.07) + Math.max(0, t - fin) * 0.9;
                 double ola = 0.07 * Math.sin(j * 1.9 + k);
-                // en primera persona el ángulo crece hacia la derecha; visto desde fuera, hacia la izquierda
-                double yaw = primera ? centro + mitad : centro - mitad;
+                // el ángulo crece hacia la derecha de quien mira (delante de ti, o detrás de quien canta)
+                double yaw = centro + mitad;
                 double rad = Math.toRadians(yaw);
                 Vec3 p = ancla.add(-Math.sin(rad) * r, h0 + ola + sube, Math.cos(rad) * r);
                 float[] s = proyectar(p);
@@ -358,7 +365,8 @@ public final class LetrasHud {
                 boolean cantando = edad >= 0 && (j + 1 >= n || t < ts[j + 1]) && t < fin;
                 float pop = (float) Mth.clamp(edad / 0.2, 0, 1);
                 float salto = pop < 1 ? 0.45F + 0.55F * backOut(pop) : 1F;
-                float altoPx = alto3d * focal / s[2];
+                // el tamaño va con la distancia real (con la profundidad, las de los lados del arco se verían más grandes)
+                float altoPx = (float) (alto3d * focal / Math.max(0.3, p.distanceTo(cam)));
                 Pal w = new Pal();
                 w.txt = ln.palabras[j];
                 w.x = s[0];
