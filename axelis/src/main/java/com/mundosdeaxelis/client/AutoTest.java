@@ -650,14 +650,16 @@ public final class AutoTest {
             shot("56_ruda_tienda");
             essBefore = TableClient.essence;
             if (npcScreen() != null) {
-                npcScreen().buy(0); // 3 bayas del santuario por 15
+                npcScreen().buy(offer("berries")); // 3 bayas del santuario
             }
         });
         add("tienda (comprar brújula)", 1500, () -> {
             check("la tienda cobra Esencia (" + essBefore + " -> " + TableClient.essence + ") y da las bayas",
-                    TableClient.essence == essBefore - 15 && invCount(com.mundosdeaxelis.registry.ModItems.SANCTUARY_BERRY.get()) >= 3);
+                    TableClient.essence == essBefore - lastPrice && invCount(com.mundosdeaxelis.registry.ModItems.SANCTUARY_BERRY.get()) >= 3);
             if (npcScreen() != null) {
-                npcScreen().buy(offer("compass_bosque")); // brújula al Gran Templo del Bosque (donde está la Piedra de Portal)
+                // etapa 285: Ruda solo vende el camino al siguiente habitante (Hilda, en la Gran Fundición)
+                check("Ruda no vende el templo del bosque (eso lo vende Hilda)", npcScreen().ofertaIdx("compass_bosque") < 0);
+                npcScreen().buy(offer("compass_forja"));
             }
         });
         add("pistas", 3000, () -> {
@@ -668,7 +670,7 @@ public final class AutoTest {
                     log("brújula -> " + st.getTag().get("LodestonePos") + " " + st.getHoverName().getString());
                 }
             }
-            check("la brújula de Ruda apunta al templo del bosque", ok);
+            check("la brújula de Ruda apunta a la Gran Fundición (el siguiente habitante)", ok);
             if (npcScreen() != null) {
                 npcScreen().press(NpcScreen.B_BACK);
                 npcScreen().press(NpcScreen.B_HINT);
@@ -843,7 +845,7 @@ public final class AutoTest {
         });
         add("tienda con dos vecinos (comprobar)", 1500, () -> {
             check("con dos vecinos se puede comprar el sobre de plata (" + essBefore + " -> " + TableClient.essence + ")",
-                    TableClient.essence == essBefore - 140
+                    TableClient.essence == essBefore - lastPrice
                             && invCount(com.mundosdeaxelis.cartas.CartasItems.PACKS.get("plata").get()) >= 1);
             open(null);
             cmd("gamemode spectator @a");
@@ -855,15 +857,18 @@ public final class AutoTest {
 
     /** Posición de una oferta de la tienda de los habitantes (por su nombre). */
     private static int offer(String id) {
-        for (int i = 0; i < com.mundosdeaxelis.npc.NpcShop.OFFERS.size(); i++) {
-            if (com.mundosdeaxelis.npc.NpcShop.OFFERS.get(i).id().equals(id)) {
-                return i;
-            }
+        int i = npcScreen() == null ? -1 : npcScreen().ofertaIdx(id);
+        if (i < 0) {
+            log("FALLO no existe la oferta " + id);
+            fails++;
+            return 0;
         }
-        log("FALLO no existe la oferta " + id);
-        fails++;
-        return 0;
+        lastPrice = npcScreen().precio(id);
+        return i;
     }
+
+    /** Precio de la última oferta buscada con {@link #offer} (etapa 285: los precios ya no van escritos en la prueba). */
+    private static volatile int lastPrice;
 
     // ------------------------------------------------------------------ etapa 259: Fragua Olvidada, Hilda y tres vecinos
 
@@ -1068,7 +1073,7 @@ public final class AutoTest {
         });
         add("tienda con tres vecinos (comprobar)", 1500, () -> {
             check("con tres vecinos se puede comprar el sobre de oro (" + essBefore + " -> " + TableClient.essence + ")",
-                    TableClient.essence == essBefore - 300
+                    TableClient.essence == essBefore - lastPrice
                             && invCount(com.mundosdeaxelis.cartas.CartasItems.PACKS.get("oro").get()) >= 1);
             open(null);
             cmd("gamemode spectator @a");
@@ -1517,6 +1522,53 @@ public final class AutoTest {
         tablon();
     }
 
+    /** Etapa 285: la tienda nueva de Hilda (pestañas, el camino al siguiente en dorado y el detalle de lo elegido). */
+    private static void tiendaNueva() {
+        int tx = LTX + 30, tz = LTZ - 30;
+        add("tienda nueva (casas)", 4000, () -> {
+            cmd("mundos vecinos reiniciar");
+            cmd("execute as @a run mundos vecinos semillas"); // todos libres (para poder plantar la casa)
+            cmd("execute as @a run mundos prueba esencia 900");
+            cmd("execute in minecraft:overworld positioned " + tx + " " + LTY + " " + tz + " rotated 0 0 run mundos vecinos plantar hilda");
+            standLooking(tx + 0.5, LTY, tz - 4.5, tx + 0.5, LTY + 1.4, tz + 4.0);
+        });
+        add("tienda nueva (hablar)", 1500, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            com.mundosdeaxelis.entity.Habitante h = null;
+            for (net.minecraft.world.entity.Entity e : mc.level.entitiesForRendering()) {
+                if (e instanceof com.mundosdeaxelis.entity.Habitante x && "hilda".equals(x.kindId())) {
+                    h = x;
+                }
+            }
+            check("Hilda vive en su casa de prueba", h != null);
+            if (h != null) {
+                mc.gameMode.interact(mc.player, h, net.minecraft.world.InteractionHand.MAIN_HAND);
+            }
+        });
+        add("tienda nueva (abrir)", 1200, () -> {
+            if (npcScreen() != null) {
+                npcScreen().press(NpcScreen.B_SHOP);
+            }
+        });
+        add("tienda nueva (destinos)", 800, () -> {
+            check("se abre la tienda nueva de Hilda", npcScreen() != null && npcScreen().inShop());
+            check("Hilda vende el camino a Bruno y los sitios del bosque, no los suyos",
+                    npcScreen() != null && npcScreen().ofertaIdx("compass_fortin") >= 0 && npcScreen().ofertaIdx("compass_bosque") >= 0
+                            && npcScreen().ofertaIdx("compass_fragua") < 0);
+            shot("180_tienda_destinos");
+        });
+        add("tienda nueva (provisiones)", 600, () -> {
+            if (npcScreen() != null) {
+                npcScreen().verTab(com.mundosdeaxelis.npc.NpcShop.PROVISIONES);
+            }
+        });
+        add("tienda nueva (provisiones, foto)", 300, () -> shot("181_tienda_provisiones"));
+        add("tienda nueva (cerrar)", 300, () -> {
+            open(null);
+            cmd("mundos vecinos reiniciar");
+        });
+    }
+
     /** Para las fotos de lado: el cuerpo (y la cabeza) del jugador se giran estos grados respecto a la cámara (NaN = normal). */
     public static volatile float ladoFoto = Float.NaN;
 
@@ -1552,7 +1604,7 @@ public final class AutoTest {
             add("cuerpo (" + tp[k].id + " golpe, foto)", 300, () -> {
                 float[] f = com.mundosdeaxelis.client.ArmaCuerpo.cuadro(tp[k], tGolpe);
                 check("el golpe de " + tp[k].id + " mueve el cuerpo (giro, inclinación y piernas)",
-                        Math.abs(f[2]) > 0.05F && Math.abs(f[13]) > 3.0F && Math.abs(f[11] - f[12]) > 0.3F);
+                        Math.abs(f[ArmaCuerpo.GIRO]) > 0.05F && Math.abs(f[ArmaCuerpo.INCL]) > 3.0F && Math.abs(f[ArmaCuerpo.DELANTE] - f[ArmaCuerpo.DETRAS]) > 0.3F);
                 shot("15" + k + "_cuerpo_" + tp[k].id + "_golpe");
             });
         }
@@ -2363,7 +2415,7 @@ public final class AutoTest {
         });
         add("tienda con cuatro vecinos (comprobar)", 1500, () -> {
             check("con cuatro vecinos se puede comprar el libro de Reparación (" + essBefore + " -> " + TableClient.essence + ")",
-                    TableClient.essence == essBefore - 400 && invCount(net.minecraft.world.item.Items.ENCHANTED_BOOK) >= 1);
+                    TableClient.essence == essBefore - lastPrice && invCount(net.minecraft.world.item.Items.ENCHANTED_BOOK) >= 1);
             open(null);
             cmd("gamemode spectator @a");
             cmd("execute in minecraft:overworld positioned " + FTX + " " + FTY + " " + (FTZ0 - 16) + " run mundos estructura deshacer");
@@ -2444,7 +2496,7 @@ public final class AutoTest {
         });
         add("tienda con cinco vecinos (comprobar)", 1500, () -> {
             check("con cinco vecinos se puede comprar la manzana encantada (" + essBefore + " -> " + TableClient.essence + ")",
-                    TableClient.essence == essBefore - 800 && invCount(net.minecraft.world.item.Items.ENCHANTED_GOLDEN_APPLE) >= 1);
+                    TableClient.essence == essBefore - lastPrice && invCount(net.minecraft.world.item.Items.ENCHANTED_GOLDEN_APPLE) >= 1);
             open(null);
             cmd("gamemode spectator @a");
             cmd("mundos vecinos reiniciar");
@@ -2765,6 +2817,7 @@ public final class AutoTest {
             armas();
             cuerpoArmas();
             etapa282();
+            tiendaNueva();
             add("fin", 2000, () -> {
                 open(null);
                 log("AUTOTEST_FIN fotos=" + shots + " comprobaciones=" + checks + " fallos=" + fails);

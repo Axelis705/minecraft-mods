@@ -32,6 +32,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayDeque;
+import org.joml.Matrix3f;
+import org.joml.Vector3f;
 import java.util.Deque;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -109,44 +111,49 @@ public final class ArmaCuerpo {
     // ------------------------------------------------------------------ poses del cuerpo
 
     /*
-     * Fotogramas: {t, peso, giro, brazo: x, adentro, afuera, z, otro brazo: x, adentro, afuera, z, pierna delante, pierna detrás,
-     * inclinación (grados), bajada (bloques), avance (bloques)}. «Adentro» lleva el brazo hacia el otro lado del cuerpo y «afuera»
-     * lo abre; z negativo = el hombro hacia delante; el giro positivo echa atrás el hombro del arma. Peso 0 = la pose normal.
+     * Fotogramas (etapa 283, ajustados con herramientas/pose283.py): {t, peso, giro, brazo del arma: dirección (3), hacia dónde
+     * apunta el arma (3), el otro brazo: dirección (3), su arma (3), pierna delante, pierna detrás, inclinación (grados), bajada
+     * (bloques), avance (bloques)}. Las direcciones van en (derecha, arriba, delante) para quien golpea con la derecha (con la
+     * izquierda se refleja). El otro brazo en NaN = agarra el mango del arma a dos manos. El giro positivo echa atrás el hombro
+     * del arma. Peso 0 = la pose normal.
      */
+    /** Espada: tajo en diagonal, de arriba a la derecha hacia abajo a la izquierda; el otro brazo equilibra. */
     private static final float[][] ESPADA = {
-            {0.00F, 0, 0.55F, -2.55F, -0.35F, 0.35F, 0.0F, -0.55F, 0.40F, -0.15F, 0.0F, -0.25F, 0.20F, -4, 0.00F, 0.00F},
-            {0.20F, 1, 0.55F, -2.55F, -0.35F, 0.35F, 0.0F, -0.55F, 0.40F, -0.15F, 0.0F, -0.25F, 0.20F, -4, 0.00F, 0.00F},
-            {0.38F, 1, -0.50F, -0.95F, 0.75F, -0.25F, -1.5F, -0.15F, 0.00F, 0.25F, 0.0F, -0.45F, 0.35F, 10, 0.02F, 0.12F},
-            {0.62F, 1, -0.62F, -0.45F, 0.90F, -0.10F, -1.0F, 0.15F, 0.00F, 0.20F, 0.0F, -0.40F, 0.30F, 8, 0.02F, 0.10F},
-            {1.00F, 0, -0.62F, -0.45F, 0.90F, -0.10F, -1.0F, 0.15F, 0.00F, 0.20F, 0.0F, -0.40F, 0.30F, 8, 0.02F, 0.10F}};
+            {0.00F, 0, 0.55F, 0.35F, 0.85F, 0.10F, 0.15F, 0.20F, -1.00F, -0.30F, -0.40F, 0.86F, 0.00F, 0.00F, 1.00F, -0.25F, 0.20F, -4, 0.00F, 0.00F},
+            {0.20F, 1, 0.55F, 0.35F, 0.85F, 0.10F, 0.15F, 0.20F, -1.00F, -0.30F, -0.40F, 0.86F, 0.00F, 0.00F, 1.00F, -0.25F, 0.20F, -4, 0.00F, 0.00F},
+            {0.38F, 1, -0.50F, -0.35F, -0.15F, 0.92F, -0.90F, -0.30F, -0.30F, -0.20F, -0.90F, -0.30F, 0.00F, 0.00F, 1.00F, -0.45F, 0.35F, 10, 0.02F, 0.12F},
+            {0.62F, 1, -0.62F, -0.60F, -0.35F, 0.72F, -0.55F, -0.40F, -0.73F, -0.20F, -0.90F, -0.30F, 0.00F, 0.00F, 1.00F, -0.40F, 0.30F, 8, 0.02F, 0.10F},
+            {1.00F, 0, -0.62F, -0.60F, -0.35F, 0.72F, -0.55F, -0.40F, -0.73F, -0.20F, -0.90F, -0.30F, 0.00F, 0.00F, 1.00F, -0.40F, 0.30F, 8, 0.02F, 0.10F}};
+    /** Hacha de guerra: a dos manos por encima del hombro y abajo con todo el cuerpo. */
     private static final float[][] HACHA = {
-            {0.00F, 0, 0.40F, -2.85F, -0.15F, 0.12F, 1.0F, -2.70F, 0.55F, -0.05F, 1.0F, -0.30F, 0.25F, -8, 0.00F, 0.00F},
-            {0.22F, 1, 0.40F, -2.85F, -0.15F, 0.12F, 1.0F, -2.70F, 0.55F, -0.05F, 1.0F, -0.30F, 0.25F, -8, 0.00F, 0.00F},
-            {0.40F, 1, -0.35F, -0.60F, 0.35F, -0.05F, -2.0F, -0.62F, 0.55F, 0.00F, -2.0F, -0.55F, 0.45F, 20, 0.08F, 0.15F},
-            {0.66F, 1, -0.42F, -0.35F, 0.40F, 0.00F, -1.5F, -0.40F, 0.60F, 0.00F, -1.5F, -0.50F, 0.40F, 16, 0.06F, 0.12F},
-            {1.00F, 0, -0.42F, -0.35F, 0.40F, 0.00F, -1.5F, -0.40F, 0.60F, 0.00F, -1.5F, -0.50F, 0.40F, 16, 0.06F, 0.12F}};
+            {0.00F, 0, 0.40F, 0.30F, 0.90F, -0.30F, 0.00F, -0.30F, -0.95F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.30F, 0.25F, -8, 0.00F, 0.00F},
+            {0.22F, 1, 0.40F, 0.30F, 0.90F, -0.30F, 0.00F, -0.30F, -0.95F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.30F, 0.25F, -8, 0.00F, 0.00F},
+            {0.40F, 1, -0.35F, -0.10F, 0.10F, 0.99F, 0.00F, -0.99F, 0.10F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.55F, 0.45F, 20, 0.08F, 0.15F},
+            {0.66F, 1, -0.42F, -0.20F, -0.25F, 0.95F, 0.00F, -0.95F, -0.25F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.50F, 0.40F, 16, 0.06F, 0.12F},
+            {1.00F, 0, -0.42F, -0.20F, -0.25F, 0.95F, 0.00F, -0.95F, -0.25F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.50F, 0.40F, 16, 0.06F, 0.12F}};
+    /** Martillo: los brazos arriba del todo y un mazazo al suelo, agachándose. */
     private static final float[][] MARTILLO = {
-            {0.00F, 0, 0.18F, -3.05F, 0.05F, 0.05F, 1.5F, -3.00F, 0.38F, 0.00F, 1.5F, -0.35F, 0.30F, -12, 0.00F, -0.02F},
-            {0.26F, 1, 0.18F, -3.05F, 0.05F, 0.05F, 1.5F, -3.00F, 0.38F, 0.00F, 1.5F, -0.35F, 0.30F, -12, 0.00F, -0.02F},
-            {0.44F, 1, -0.08F, -0.30F, 0.30F, 0.00F, -2.5F, -0.38F, 0.52F, 0.00F, -2.5F, -0.70F, 0.55F, 26, 0.16F, 0.10F},
-            {0.70F, 1, -0.10F, -0.25F, 0.30F, 0.00F, -2.0F, -0.32F, 0.50F, 0.00F, -2.0F, -0.62F, 0.50F, 22, 0.12F, 0.08F},
-            {1.00F, 0, -0.10F, -0.25F, 0.30F, 0.00F, -2.0F, -0.32F, 0.50F, 0.00F, -2.0F, -0.62F, 0.50F, 22, 0.12F, 0.08F}};
+            {0.00F, 0, 0.18F, 0.05F, 0.98F, 0.15F, 0.00F, -0.15F, -0.99F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.35F, 0.30F, -12, 0.00F, -0.02F},
+            {0.26F, 1, 0.18F, 0.05F, 0.98F, 0.15F, 0.00F, -0.15F, -0.99F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.35F, 0.30F, -12, 0.00F, -0.02F},
+            {0.44F, 1, -0.08F, 0.00F, 0.05F, 1.00F, 0.00F, -1.00F, 0.05F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.70F, 0.55F, 26, 0.16F, 0.10F},
+            {0.70F, 1, -0.10F, 0.00F, -0.15F, 0.99F, 0.00F, -0.99F, -0.15F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.62F, 0.50F, 22, 0.12F, 0.08F},
+            {1.00F, 0, -0.10F, 0.00F, -0.15F, 0.99F, 0.00F, -0.99F, -0.15F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.62F, 0.50F, 22, 0.12F, 0.08F}};
+    /** Lanza: el asta a la altura de la cadera, el cuerpo se carga atrás y embiste con un paso largo. */
     private static final float[][] LANZA = {
-            {0.00F, 0, 0.45F, -1.25F, 0.00F, 0.00F, 2.5F, -1.10F, 0.55F, 0.00F, 1.5F, -0.20F, 0.25F, -5, 0.00F, -0.05F},
-            {0.18F, 1, 0.45F, -1.25F, 0.00F, 0.00F, 2.5F, -1.10F, 0.55F, 0.00F, 1.5F, -0.20F, 0.25F, -5, 0.00F, -0.05F},
-            {0.34F, 1, -0.30F, -1.62F, 0.25F, 0.00F, -3.5F, -1.55F, 0.65F, 0.00F, -2.5F, -0.75F, 0.55F, 16, 0.05F, 0.28F},
-            {0.60F, 1, -0.25F, -1.58F, 0.25F, 0.00F, -3.0F, -1.50F, 0.62F, 0.00F, -2.0F, -0.65F, 0.50F, 13, 0.04F, 0.22F},
-            {1.00F, 0, -0.25F, -1.58F, 0.25F, 0.00F, -3.0F, -1.50F, 0.62F, 0.00F, -2.0F, -0.65F, 0.50F, 13, 0.04F, 0.22F}};
+            {0.00F, 0, 0.45F, 0.15F, -0.95F, 0.20F, 0.00F, 0.20F, 0.95F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.20F, 0.25F, -5, 0.00F, -0.05F},
+            {0.18F, 1, 0.45F, 0.15F, -0.95F, 0.20F, 0.00F, 0.20F, 0.95F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.20F, 0.25F, -5, 0.00F, -0.05F},
+            {0.34F, 1, -0.30F, 0.00F, -0.75F, 0.66F, 0.00F, 0.66F, 0.75F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.75F, 0.55F, 16, 0.05F, 0.28F},
+            {0.60F, 1, -0.25F, 0.00F, -0.80F, 0.60F, 0.00F, 0.60F, 0.80F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.65F, 0.50F, 13, 0.04F, 0.22F},
+            {1.00F, 0, -0.25F, 0.00F, -0.80F, 0.60F, 0.00F, 0.60F, 0.80F, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, Float.NaN, -0.65F, 0.50F, 13, 0.04F, 0.22F}};
     /** Dagas: el «brazo» es el que apuñala en este golpe (se turnan) y el «otro» se queda en guardia. */
     private static final float[][] DAGAS = {
-            {0.00F, 0, 0.30F, -0.75F, -0.10F, 0.10F, 1.5F, -0.95F, 0.35F, 0.00F, 0.0F, -0.20F, 0.20F, 2, 0.00F, 0.00F},
-            {0.15F, 1, 0.30F, -0.75F, -0.10F, 0.10F, 1.5F, -0.95F, 0.35F, 0.00F, 0.0F, -0.20F, 0.20F, 2, 0.00F, 0.00F},
-            {0.32F, 1, -0.40F, -1.60F, 0.30F, 0.00F, -3.0F, -0.70F, 0.20F, 0.00F, 0.5F, -0.40F, 0.30F, 9, 0.02F, 0.12F},
-            {0.58F, 1, -0.30F, -1.45F, 0.30F, 0.00F, -2.0F, -0.75F, 0.25F, 0.00F, 0.3F, -0.35F, 0.25F, 6, 0.02F, 0.08F},
-            {1.00F, 0, -0.30F, -1.45F, 0.30F, 0.00F, -2.0F, -0.75F, 0.25F, 0.00F, 0.3F, -0.35F, 0.25F, 6, 0.02F, 0.08F}};
+            {0.00F, 0, 0.30F, 0.10F, 0.60F, 0.79F, 0.00F, -0.79F, 0.60F, -0.20F, -0.50F, 0.85F, 0.00F, 0.85F, 0.50F, -0.20F, 0.20F, 2, 0.00F, 0.00F},
+            {0.15F, 1, 0.30F, 0.10F, 0.60F, 0.79F, 0.00F, -0.79F, 0.60F, -0.20F, -0.50F, 0.85F, 0.00F, 0.85F, 0.50F, -0.20F, 0.20F, 2, 0.00F, 0.00F},
+            {0.32F, 1, -0.40F, 0.00F, -0.50F, 0.87F, 0.00F, -0.87F, -0.50F, -0.20F, -0.50F, 0.85F, 0.00F, 0.85F, 0.50F, -0.40F, 0.30F, 9, 0.02F, 0.12F},
+            {0.58F, 1, -0.30F, 0.00F, -0.60F, 0.80F, 0.00F, -0.80F, -0.60F, -0.20F, -0.50F, 0.85F, 0.00F, 0.85F, 0.50F, -0.35F, 0.25F, 6, 0.02F, 0.08F},
+            {1.00F, 0, -0.30F, 0.00F, -0.60F, 0.80F, 0.00F, -0.80F, -0.60F, -0.20F, -0.50F, 0.85F, 0.00F, 0.85F, 0.50F, -0.35F, 0.25F, 6, 0.02F, 0.08F}};
 
-    static final int T = 0, W = 1, GIRO = 2, MX = 3, MIN = 4, MOUT = 5, MZ = 6, OX = 7, OIN = 8, OOUT = 9, OZ = 10, DELANTE = 11,
-            DETRAS = 12, INCL = 13, BAJA = 14, AVANCE = 15;
+    static final int T = 0, W = 1, GIRO = 2, AM = 3, BM = 6, AO = 9, BO = 12, DELANTE = 15, DETRAS = 16, INCL = 17, BAJA = 18, AVANCE = 19;
 
     private static float[][] claves(TipoArma t) {
         return switch (t) {
@@ -163,7 +170,7 @@ public final class ArmaCuerpo {
         return claves(tipo)[i][T];
     }
 
-    /** La pose del cuerpo en el punto {@code t} del golpe (16 valores, ver arriba). */
+    /** La pose del cuerpo en el punto {@code t} del golpe (20 valores, ver arriba; los NaN se quedan NaN). */
     public static float[] cuadro(TipoArma tipo, float t) {
         float[][] k = claves(tipo);
         t = Mth.clamp(t, 0.0F, 1.0F);
@@ -195,6 +202,14 @@ public final class ArmaCuerpo {
     public static boolean dagasDobles(LivingEntity e) {
         ArmaItem a = arma(e);
         return a != null && a.tipo == TipoArma.DAGAS && e.getOffhandItem().isEmpty();
+    }
+
+    /** Cómo sale el arma de la mano (en el brazo, con +y hacia la mano): casi en ángulo recto, 18 grados hacia la mano. */
+    private static final Vector3f HOJA = new Vector3f(0.0F, 0.309F, -0.951F);
+
+    /** De (derecha, arriba, delante) a las coordenadas del modelo, reflejando si golpea con la izquierda ({@code s} = -1). */
+    private static Vector3f modelo(float[] f, int i, float s) {
+        return new Vector3f(-f[i] * s, -f[i + 1], -f[i + 2]).normalize();
     }
 
     /**
@@ -261,10 +276,23 @@ public final class ArmaCuerpo {
         model.rightArm.x = -Mth.cos(giro) * 5.0F;
         model.leftArm.z = -Mth.sin(giro) * 5.0F;
         model.leftArm.x = Mth.cos(giro) * 5.0F;
-        // brazos («adentro» va hacia el otro lado: en el derecho es yRot negativo y en el izquierdo positivo)
-        brazo(act, act == model.rightArm, f[MX], f[MIN], f[MOUT], f[MZ], w, giro);
+        // brazo que golpea: dirección del brazo y del arma, girados con el tronco
+        Vector3f aM = modelo(f, AM, sa).rotateY(giro), bM = modelo(f, BM, sa).rotateY(giro);
+        apuntar(act, aM, bM, w);
         if (otroLibre) {
-            brazo(otro, otro == model.rightArm, f[OX], f[OIN], f[OOUT], f[OZ], w, giro);
+            Vector3f aO, bO;
+            if (Float.isNaN(f[AO])) {
+                // a dos manos: la otra mano va al mango (más abajo en el hacha y el martillo, más adelante en la lanza)
+                Vector3f mano = new Vector3f(act.x, act.y, act.z).add(new Vector3f(aM).mul(10.0F));
+                Vector3f hoja = arma(aM, bM);
+                Vector3f obj = mano.add(hoja.mul(tipo == TipoArma.LANZA ? 5.0F : -3.0F));
+                aO = obj.sub(otro.x, otro.y, otro.z).normalize();
+                bO = new Vector3f(bM);
+            } else {
+                aO = modelo(f, AO, sa).rotateY(giro);
+                bO = modelo(f, BO, sa).rotateY(giro);
+            }
+            apuntar(otro, aO, bO, w);
         } else {
             otro.yRot += giro;
         }
@@ -279,12 +307,38 @@ public final class ArmaCuerpo {
         }
     }
 
-    private static void brazo(ModelPart p, boolean derecho, float x, float adentro, float afuera, float z, float w, float giro) {
-        float side = derecho ? 1.0F : -1.0F;
-        p.xRot = Mth.lerp(w, p.xRot, x);
-        p.yRot = Mth.lerp(w, p.yRot, -side * adentro) + giro;
-        p.zRot = Mth.lerp(w, p.zRot, side * afuera);
-        p.z += z * w;
+    /** Hacia dónde sale el arma de un brazo que apunta a {@code a} con el arma «de lado» hacia {@code b}. */
+    private static Vector3f arma(Vector3f a, Vector3f b) {
+        Vector3f bp = perp(a, b);
+        return bp.mul(-HOJA.z).add(new Vector3f(a).mul(HOJA.y)).normalize();
+    }
+
+    /** {@code b} sin la parte que va en la dirección de {@code a} (perpendicular, normalizado). */
+    private static Vector3f perp(Vector3f a, Vector3f b) {
+        Vector3f bp = new Vector3f(b).sub(new Vector3f(a).mul(a.dot(b)));
+        if (bp.lengthSquared() < 1.0E-6F) {
+            bp.set(0.0F, 0.0F, -1.0F).sub(new Vector3f(a).mul(-a.z));
+        }
+        return bp.normalize();
+    }
+
+    /**
+     * Pone el brazo para que apunte a {@code a} con el arma hacia {@code b}, mezclado con su pose normal según {@code w}. Las
+     * cuentas se hacen con direcciones y se pasan a los ángulos de Minecraft (Z, Y, X) al final: así no hay saltos raros.
+     */
+    private static void apuntar(ModelPart p, Vector3f a, Vector3f b, float w) {
+        Matrix3f r0 = new Matrix3f().rotationZYX(p.zRot, p.yRot, p.xRot);
+        Vector3f a0 = r0.transform(new Vector3f(0.0F, 1.0F, 0.0F));
+        Vector3f b0 = r0.transform(new Vector3f(0.0F, 0.0F, -1.0F));
+        Vector3f ay = new Vector3f(a0).lerp(a, w).normalize();
+        Vector3f bp = perp(ay, new Vector3f(b0).lerp(perp(a, b), w));
+        // columnas: x = y × z, y = el brazo, z = el contrario de hacia donde sale el arma
+        Vector3f cz = new Vector3f(bp).negate();
+        Vector3f cx = new Vector3f(ay).cross(cz);
+        Vector3f e = new Matrix3f(cx, ay, cz).getEulerAnglesZYX(new Vector3f());
+        p.xRot = e.x;
+        p.yRot = e.y;
+        p.zRot = e.z;
     }
 
     // ------------------------------------------------------------------ inclinar todo el cuerpo (desde los pies)

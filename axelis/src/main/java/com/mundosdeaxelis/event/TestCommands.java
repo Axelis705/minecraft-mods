@@ -759,6 +759,40 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    // ------------------------------------------------------------------ etapa 285: la tienda de cada habitante
+
+    /** Etapa 285: cada habitante vende el camino al siguiente y los sitios de los tiers anteriores (Teo, todos). */
+    private static int etapa285(CommandSourceStack src) {
+        java.util.Map<String, String> want = new java.util.LinkedHashMap<>();
+        want.put("ruda", "forja*");
+        want.put("hilda", "fortin* santuario bosque");
+        want.put("bruno", "volcan* santuario bosque forja fragua");
+        want.put("ignacio", "torre* santuario bosque forja fragua fortin hielo");
+        want.put("teo", "santuario bosque forja fragua fortin hielo volcan torre arcana");
+        java.util.List<String> fails = new java.util.ArrayList<>();
+        for (java.util.Map.Entry<String, String> e : want.entrySet()) {
+            StringBuilder got = new StringBuilder();
+            for (com.mundosdeaxelis.npc.NpcShop.Offer o : com.mundosdeaxelis.npc.NpcShop.ofertas(e.getKey())) {
+                if (o.compass() != null) {
+                    got.append(got.length() == 0 ? "" : " ").append(o.compass()).append(o.siguiente() ? "*" : "");
+                    if (com.mundosdeaxelis.world.NaturalGen.SPECS.stream().noneMatch(sp -> sp.id().equals(o.compass()))) {
+                        fails.add(o.compass() + " no es una estructura");
+                    }
+                }
+            }
+            if (!got.toString().equals(e.getValue())) {
+                fails.add(e.getKey() + ": [" + got + "] en vez de [" + e.getValue() + "]");
+            }
+            if (com.mundosdeaxelis.npc.NpcShop.ofertas(e.getKey()).stream().noneMatch(o -> o.id().equals("berries"))) {
+                fails.add(e.getKey() + " no vende provisiones");
+            }
+        }
+        String msg = fails.isEmpty() ? "PRUEBA_ETAPA285_OK" : "PRUEBA_ETAPA285_FALLO " + fails;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fails.isEmpty() ? 1 : 0;
+    }
+
     // ------------------------------------------------------------------ etapa 284: la cabeza de los jefes
 
     /**
@@ -1358,6 +1392,7 @@ public final class TestCommands {
                 .then(Commands.literal("etapa282").executes(ctx -> etapa282(ctx.getSource())))
                 .then(Commands.literal("etapa283").executes(ctx -> etapa283(ctx.getSource())))
                 .then(Commands.literal("etapa284").executes(ctx -> etapa284(ctx.getSource())))
+                .then(Commands.literal("etapa285").executes(ctx -> etapa285(ctx.getSource())))
                 .then(Commands.literal("encargos_listos").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{

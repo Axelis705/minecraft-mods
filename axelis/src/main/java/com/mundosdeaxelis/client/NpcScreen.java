@@ -30,10 +30,12 @@ import net.minecraft.world.item.ItemStack;
  * <li>Libre: seguir hablando, pedir otra semilla de casa y adiós.</li>
  * <li>Vecina: seguir hablando, tienda, pistas, mudarse y adiós.</li>
  * </ul>
- * La tienda es un panel en el centro con las ofertas (las bloqueadas en gris con cuántos vecinos faltan) y tu Esencia.
+ * La tienda (etapa 285) es una ventana con el retrato del habitante y lo que dice a la izquierda, tres pestañas (destinos,
+ * provisiones y especiales) con la lista a la derecha (el camino al próximo habitante en dorado, lo bloqueado con candado) y, abajo,
+ * el detalle de lo elegido y el botón «Comprar» (o doble clic).
  */
 public class NpcScreen extends Screen {
-    static final int B_NEXT = 0, B_SHOP = 1, B_HINT = 2, B_MOVE = 3, B_KIT = 4, B_FORCE = 5, B_BYE = 6, B_BACK = 7;
+    static final int B_NEXT = 0, B_SHOP = 1, B_HINT = 2, B_MOVE = 3, B_KIT = 4, B_FORCE = 5, B_BYE = 6, B_BACK = 7, B_BUY = 8;
 
     private NpcOpenPacket data;
     private final NpcKinds.Kind kind;
@@ -47,11 +49,16 @@ public class NpcScreen extends Screen {
     private final List<Btn> buttons = new ArrayList<>();
     // tienda
     private int flashIdx = -1;
+    private long lastClick;
     private long flashUntil;
     private boolean flashGood;
     private Component footer;
     private long footerUntil;
     private final List<ItemStack> shopStacks = new ArrayList<>();
+    /** Etapa 285: la tienda de este habitante (cada uno vende el camino al siguiente) y la pestaña y la oferta elegidas. */
+    private final List<NpcShop.Offer> ofertas;
+    private int tab = NpcShop.DESTINOS;
+    private int sel = -1;
 
     private record Btn(int id, int x, int y, int w, int h, Component label) {
     }
@@ -60,7 +67,8 @@ public class NpcScreen extends Screen {
         super(Component.translatable("gui.mundos_de_axelis.npc.title"));
         this.data = p;
         this.kind = NpcKinds.get(p.kind);
-        for (NpcShop.Offer o : NpcShop.OFFERS) {
+        this.ofertas = NpcShop.ofertas(p.kind);
+        for (NpcShop.Offer o : ofertas) {
             ItemStack s = o.stack();
             if (o.compass() != null) {
                 s.setHoverName(Component.translatable("item.mundos_de_axelis.brujula_npc", Component.translatable("npc.mundos_de_axelis.place." + o.compass()))
@@ -241,33 +249,66 @@ public class NpcScreen extends Screen {
         return height - boxH() - 12;
     }
 
-    private static final int SHOP_W = 300, CELL_W = 140, CELL_H = 24;
+    // ---- la tienda (etapa 285): retrato a la izquierda, pestañas y lista a la derecha, detalle y «Comprar» abajo
 
-    private int shopRows() {
-        return (NpcShop.OFFERS.size() + 1) / 2;
-    }
+    private static final int ROW_H = 20;
 
-    /** Filas que caben en la pantalla (con la interfaz grande no caben todas: el resto se ve con la rueda del ratón). */
-    private int visibleRows() {
-        int fit = (height - 8 - 30 - 34) / (CELL_H + 2);
-        return Math.max(2, Math.min(shopRows(), fit));
-    }
-
-    private int maxScroll() {
-        return Math.max(0, shopRows() - visibleRows());
+    private int shopW() {
+        return Math.min(400, width - 12);
     }
 
     private int shopH() {
-        return 30 + visibleRows() * (CELL_H + 2) + 34;
+        return Math.min(244, height - 12);
     }
 
-    /** Dónde se dibuja la oferta i (null si con el desplazamiento actual no se ve). */
-    private int[] cellPos(int i) {
-        int row = i / 2 - scroll;
-        if (row < 0 || row >= visibleRows()) {
-            return null;
+    private int shopX() {
+        return (width - shopW()) / 2;
+    }
+
+    private int shopY() {
+        return (height - shopH()) / 2;
+    }
+
+    /** Columna derecha: x, ancho; la lista va de listY() a listY() + listH(). */
+    private int rightX() {
+        return shopX() + 112;
+    }
+
+    private int rightW() {
+        return shopW() - 120;
+    }
+
+    private int listY() {
+        return shopY() + 46;
+    }
+
+    private int listH() {
+        return shopH() - 46 - 64;
+    }
+
+    /** Índices (en {@link #ofertas}) de la pestaña actual. */
+    private List<Integer> visibles() {
+        List<Integer> out = new ArrayList<>();
+        for (int i = 0; i < ofertas.size(); i++) {
+            if (ofertas.get(i).cat() == tab) {
+                out.add(i);
+            }
         }
-        return new int[]{shopX() + 8 + (i % 2) * (CELL_W + 4), shopY() + 30 + row * (CELL_H + 2)};
+        return out;
+    }
+
+    private int visibleRows() {
+        return Math.max(1, listH() / ROW_H);
+    }
+
+    private int maxScroll() {
+        return Math.max(0, visibles().size() - visibleRows());
+    }
+
+    /** Fila de la oferta i (global) con el desplazamiento actual, o -1 si no se ve. */
+    private int rowOf(int i) {
+        int r = visibles().indexOf(i) - scroll;
+        return r >= 0 && r < visibleRows() ? r : -1;
     }
 
     private int scroll;
@@ -281,12 +322,25 @@ public class NpcScreen extends Screen {
         return super.mouseScrolled(mx, my, delta);
     }
 
-    private int shopX() {
-        return (width - SHOP_W) / 2;
+    /** Pestaña bajo el ratón (-1 si ninguna). */
+    private int tabAt(double mx, double my) {
+        int tw = rightW() / 3;
+        for (int t = 0; t < 3; t++) {
+            int tx = rightX() + t * tw;
+            if (mx >= tx && mx < tx + tw - 2 && my >= shopY() + 26 && my < shopY() + 42) {
+                return t;
+            }
+        }
+        return -1;
     }
 
-    private int shopY() {
-        return Math.max(4, (height - shopH()) / 2);
+    private void elegirTab(int t) {
+        tab = t;
+        scroll = 0;
+        List<Integer> v = visibles();
+        sel = v.isEmpty() ? -1 : v.get(0);
+        UiFx.tab();
+        rebuild();
     }
 
     @Override
@@ -299,7 +353,9 @@ public class NpcScreen extends Screen {
     private void rebuild() {
         buttons.clear();
         if (shop) {
-            buttons.add(new Btn(B_BACK, shopX() + SHOP_W / 2 - 40, shopY() + shopH() - 22, 80, 15, Component.translatable("gui.mundos_de_axelis.npc.back")));
+            int by = shopY() + shopH() - 22;
+            buttons.add(new Btn(B_BACK, shopX() + 8, by, 96, 15, Component.translatable("gui.mundos_de_axelis.npc.back")));
+            buttons.add(new Btn(B_BUY, rightX() + rightW() - 104, by, 104, 15, Component.translatable("gui.mundos_de_axelis.npc.buy")));
             return;
         }
         List<Integer> ids = new ArrayList<>();
@@ -335,6 +391,7 @@ public class NpcScreen extends Screen {
             case B_KIT -> Component.translatable("gui.mundos_de_axelis.npc.kit");
             case B_FORCE -> Component.translatable("gui.mundos_de_axelis.npc.force", NpcService.FORCE_IRON);
             case B_BACK -> Component.translatable("gui.mundos_de_axelis.npc.back");
+            case B_BUY -> Component.translatable("gui.mundos_de_axelis.npc.buy");
             default -> Component.translatable("gui.mundos_de_axelis.npc.bye");
         };
     }
@@ -351,9 +408,18 @@ public class NpcScreen extends Screen {
                 }
             }
             if (shop) {
+                int t = tabAt(mx, my);
+                if (t >= 0 && t != tab) {
+                    elegirTab(t);
+                    return true;
+                }
                 int i = cellAt(mx, my);
                 if (i >= 0) {
-                    send(NpcService.A_BUY, i);
+                    if (i == sel && System.currentTimeMillis() - lastClick < 350) {
+                        send(NpcService.A_BUY, i); // doble clic: compra
+                    }
+                    sel = i;
+                    lastClick = System.currentTimeMillis();
                     UiFx.click();
                     return true;
                 }
@@ -399,8 +465,21 @@ public class NpcScreen extends Screen {
             case B_SHOP -> {
                 shop = true;
                 send(NpcService.A_TALK, 0);
+                // abre en la pestaña que tenga algo (los destinos primero)
+                tab = NpcShop.DESTINOS;
+                if (visibles().isEmpty()) {
+                    tab = NpcShop.PROVISIONES;
+                }
+                scroll = 0;
+                List<Integer> v = visibles();
+                sel = v.isEmpty() ? -1 : v.get(0);
                 rebuild();
                 UiFx.tab();
+            }
+            case B_BUY -> {
+                if (sel >= 0) {
+                    send(NpcService.A_BUY, sel);
+                }
             }
             case B_HINT -> send(NpcService.A_HINT, hintN++);
             case B_MOVE -> {
@@ -445,17 +524,33 @@ public class NpcScreen extends Screen {
     }
 
     private int cellAt(double mx, double my) {
-        for (int i = 0; i < NpcShop.OFFERS.size(); i++) {
-            int[] p = cellPos(i);
-            if (p == null) {
-                continue;
-            }
-            int cx = p[0], cy = p[1];
-            if (mx >= cx && mx < cx + CELL_W && my >= cy && my < cy + CELL_H) {
+        if (mx < rightX() || mx >= rightX() + rightW() - 6 || my < listY()) {
+            return -1;
+        }
+        int r = (int) ((my - listY()) / ROW_H);
+        List<Integer> v = visibles();
+        int k = r + scroll;
+        return r >= 0 && r < visibleRows() && k < v.size() ? v.get(k) : -1;
+    }
+
+    /** Para la prueba: dónde está la oferta {@code id} en la tienda de este habitante (-1 si no la vende). */
+    int ofertaIdx(String id) {
+        for (int i = 0; i < ofertas.size(); i++) {
+            if (ofertas.get(i).id().equals(id)) {
                 return i;
             }
         }
         return -1;
+    }
+
+    /** Para la prueba: cambia de pestaña. */
+    void verTab(int t) {
+        elegirTab(t);
+    }
+
+    int precio(String id) {
+        int i = ofertaIdx(id);
+        return i < 0 ? -1 : ofertas.get(i).price();
     }
 
     @Override
@@ -510,19 +605,14 @@ public class NpcScreen extends Screen {
         }
         for (Btn b : buttons) {
             boolean over = mx >= b.x && mx < b.x + b.w && my >= b.y && my < b.y + b.h;
-            PanelUi.button(g, font, b.x, b.y, b.w, b.h, b.id == B_MOVE ? label(B_MOVE) : b.label, true, over, accent());
+            boolean on = b.id != B_BUY || sel >= 0 && data.residents >= ofertas.get(sel).needResidents();
+            PanelUi.button(g, font, b.x, b.y, b.w, b.h, b.id == B_MOVE ? label(B_MOVE) : b.label, on, over, accent());
         }
         super.render(g, mx, my, pt);
         if (shop) {
             int i = cellAt(mx, my);
-            if (i >= 0) {
-                List<Component> tip = new ArrayList<>(Screen.getTooltipFromItem(Minecraft.getInstance(), shopStacks.get(i)));
-                NpcShop.Offer o = NpcShop.OFFERS.get(i);
-                tip.add(Component.translatable("gui.mundos_de_axelis.npc.price", o.price()).withStyle(ChatFormatting.LIGHT_PURPLE));
-                if (data.residents < o.needResidents()) {
-                    tip.add(Component.translatable("gui.mundos_de_axelis.npc.need", o.needResidents()).withStyle(ChatFormatting.RED));
-                }
-                g.renderComponentTooltip(font, tip, mx, my);
+            if (i >= 0 && ofertas.get(i).compass() == null) {
+                g.renderTooltip(font, shopStacks.get(i), mx, my);
             }
         }
     }
@@ -582,73 +672,159 @@ public class NpcScreen extends Screen {
     }
 
     private void renderShop(GuiGraphics g, int mx, int my) {
-        int x = shopX(), y = shopY(), h = shopH();
+        int x = shopX(), y = shopY(), w = shopW(), h = shopH();
         int ac = accent();
-        PanelUi.frame(g, x, y, SHOP_W, h, ac);
-        Component title = Component.translatable("gui.mundos_de_axelis.npc.shop_title",
-                kind == null ? Component.literal(data.kind) : Component.translatable(kind.nameKey()));
-        PanelUi.title(g, font, title, x + 8, y + 8, ac);
-        // Esencia del jugador
+        long now = System.currentTimeMillis();
+        PanelUi.frame(g, x, y, w, h, ac);
+        Component who = kind == null ? Component.literal(data.kind) : Component.translatable(kind.nameKey());
+        PanelUi.title(g, font, Component.translatable("gui.mundos_de_axelis.npc.shop_title", who), x + 8, y + 8, ac);
+        // tu Esencia
         Component ess = Component.translatable("gui.mundos_de_axelis.npc.essence", TableClient.essence);
         int ew = font.width(ess);
-        g.drawString(font, ess, x + SHOP_W - ew - 10, y + 8, 0xFFE2B8FF, false);
-        diamond(g, x + SHOP_W - ew - 18, y + 11);
-        PanelUi.divider(g, x + 8, y + 22, SHOP_W - 16, ac);
-        long now = System.currentTimeMillis();
-        for (int i = 0; i < NpcShop.OFFERS.size(); i++) {
-            NpcShop.Offer o = NpcShop.OFFERS.get(i);
-            int[] cp = cellPos(i);
-            if (cp == null) {
-                continue;
+        g.drawString(font, ess, x + w - ew - 10, y + 8, 0xFFE2B8FF, false);
+        diamond(g, x + w - ew - 18, y + 11);
+        PanelUi.divider(g, x + 8, y + 20, w - 16, ac);
+        // ---- retrato y lo que dice
+        int px = x + 8, py = y + 26, pw = 96, ph = 92;
+        g.fill(px - 1, py - 1, px + pw + 1, py + ph + 1, 0xFF000000 | ac);
+        g.fillGradient(px, py, px + pw, py + ph, 0xFF1F2A22, 0xFF0A0F0B);
+        Habitante npc = npc();
+        if (npc != null) {
+            g.enableScissor(px, py, px + pw, py + ph);
+            HabitanteRenderer.gui = true;
+            try {
+                int cx = px + pw / 2, cy = py + ph + 30;
+                InventoryScreen.renderEntityInInventoryFollowsMouse(g, cx, cy, 56, (float) cx - mx, (float) (py + 26) - my, npc);
+            } catch (RuntimeException ignored) {
+                // si falla el retrato, la tienda sigue
+            } finally {
+                HabitanteRenderer.gui = false;
             }
-            int cx = cp[0], cy = cp[1];
+            g.disableScissor();
+        }
+        Component dice = footer != null && now < footerUntil ? footer
+                : Component.translatable("gui.mundos_de_axelis.npc.shop_hello." + (tab == NpcShop.DESTINOS ? "destinos" : "cosas"));
+        int by = py + ph + 6;
+        int bh = h - (by - y) - 30;
+        g.fill(px, by, px + pw, by + bh, 0xC0101418);
+        g.fill(px, by, px + pw, by + 1, 0xFF000000 | ac);
+        int ly = by + 4;
+        for (FormattedCharSequence l : font.split(dice, pw - 8)) {
+            if (ly > by + bh - 10) {
+                break;
+            }
+            g.drawString(font, l, px + 4, ly, 0xFFEFEADF, false);
+            ly += 10;
+        }
+        // ---- pestañas
+        String[] tabs = {"destinos", "provisiones", "especiales"};
+        int tw = rightW() / 3;
+        for (int t = 0; t < 3; t++) {
+            int tx = rightX() + t * tw;
+            boolean over = mx >= tx && mx < tx + tw - 2 && my >= y + 26 && my < y + 42;
+            int n = 0;
+            for (NpcShop.Offer o : ofertas) {
+                n += o.cat() == t ? 1 : 0;
+            }
+            PanelUi.tab(g, font, tx, y + 26, tw - 2, 16, Component.translatable("gui.mundos_de_axelis.npc.tab." + tabs[t], n), t == tab, over, ac);
+        }
+        // ---- lista
+        List<Integer> v = visibles();
+        int rx = rightX(), rw = rightW() - 6;
+        g.fill(rx, listY(), rx + rightW(), listY() + listH(), 0x60000000);
+        if (v.isEmpty()) {
+            g.drawCenteredString(font, Component.translatable("gui.mundos_de_axelis.npc.tab_vacia").withStyle(ChatFormatting.GRAY),
+                    rx + rightW() / 2, listY() + listH() / 2 - 4, 0xFFB8AAD8);
+        }
+        for (int r = 0; r < visibleRows() && r + scroll < v.size(); r++) {
+            int i = v.get(r + scroll);
+            NpcShop.Offer o = ofertas.get(i);
+            int ry = listY() + r * ROW_H;
             boolean locked = data.residents < o.needResidents();
             boolean afford = TableClient.essence >= o.price();
-            boolean over = mx >= cx && mx < cx + CELL_W && my >= cy && my < cy + CELL_H;
-            int bg = locked ? 0xFF14101E : over ? 0xFF3A2C62 : 0xFF221836;
+            boolean over = mx >= rx && mx < rx + rw && my >= ry && my < ry + ROW_H;
+            int bg = i == sel ? 0xFF3A2C62 : over ? 0xFF2A2048 : (r & 1) == 0 ? 0xFF1A1330 : 0xFF161029;
             if (i == flashIdx && now < flashUntil) {
                 float f = (flashUntil - now) / 600.0F;
-                int col = flashGood ? 0x55E07A : 0xE05555;
-                bg = 0xFF000000 | lerp(bg & 0xFFFFFF, col, f * 0.6F);
+                bg = 0xFF000000 | lerp(bg & 0xFFFFFF, flashGood ? 0x55E07A : 0xE05555, f * 0.6F);
             }
-            g.fill(cx, cy, cx + CELL_W, cy + CELL_H, locked ? 0xFF2A2238 : over ? 0xFF000000 | ac : 0xFF3B2B66);
-            g.fill(cx + 1, cy + 1, cx + CELL_W - 1, cy + CELL_H - 1, bg);
-            PanelUi.slot(g, cx + 4, cy + 4, ac, false);
+            g.fill(rx, ry, rx + rw, ry + ROW_H - 1, bg);
+            if (i == sel) {
+                g.fill(rx, ry, rx + 2, ry + ROW_H - 1, 0xFF000000 | ac);
+            }
+            if (o.siguiente()) {
+                // el camino al próximo habitante: dorado
+                g.fill(rx + rw - 2, ry, rx + rw, ry + ROW_H - 1, 0xFFFFD35C);
+            }
             ItemStack st = shopStacks.get(i);
-            g.renderItem(st, cx + 4, cy + 4);
-            g.renderItemDecorations(font, st, cx + 4, cy + 4);
+            g.renderItem(st, rx + 4, ry + 2);
             String nm = st.getHoverName().getString();
-            int maxW = CELL_W - 28;
+            int priceW = 34;
+            int maxW = rw - 26 - priceW - (o.siguiente() ? 12 : 0);
             if (font.width(nm) > maxW) {
                 nm = font.plainSubstrByWidth(nm, maxW - 6) + "…";
             }
-            g.drawString(font, nm, cx + 24, cy + 3, locked ? 0xFF6C5E8C : 0xFFFFFFFF, false);
+            g.drawString(font, nm, rx + 24, ry + 6, locked ? 0xFF6C5E8C : o.siguiente() ? 0xFFFFE9A8 : 0xFFFFFFFF, false);
+            if (o.siguiente()) {
+                g.drawString(font, "★", rx + 24 + font.width(nm) + 3, ry + 6, 0xFFFFD35C, false);
+            }
             if (locked) {
-                g.drawString(font, Component.translatable("gui.mundos_de_axelis.npc.need_short", o.needResidents()), cx + 24, cy + 13, 0xFF8C6A6A, false);
-                if (i == flashIdx && now < flashUntil) {
-                    g.fill(cx + 1, cy + 1, cx + CELL_W - 1, cy + CELL_H - 1, 0x30E05555);
-                }
-                g.fill(cx + 1, cy + 1, cx + CELL_W - 1, cy + CELL_H - 1, 0x50000000);
-                lock(g, cx + CELL_W - 12, cy + 7);
+                lock(g, rx + rw - 14, ry + 5);
+                g.fill(rx, ry, rx + rw, ry + ROW_H - 1, 0x50000000);
             } else {
-                diamond(g, cx + 25, cy + 16);
-                g.drawString(font, String.valueOf(o.price()), cx + 32, cy + 13, afford ? 0xFFE2B8FF : 0xFFE07070, false);
+                String pr = String.valueOf(o.price());
+                g.drawString(font, pr, rx + rw - 8 - font.width(pr), ry + 6, afford ? 0xFFE2B8FF : 0xFFE07070, false);
+                diamond(g, rx + rw - 14 - font.width(pr), ry + 9);
             }
         }
         if (maxScroll() > 0) {
-            int bx = x + SHOP_W - 5, by = y + 30, bh = visibleRows() * (CELL_H + 2) - 2;
-            g.fill(bx, by, bx + 2, by + bh, 0x40FFFFFF);
-            int th = Math.max(10, bh * visibleRows() / shopRows());
-            int ty = by + (bh - th) * scroll / maxScroll();
+            int bx = rx + rightW() - 4, bh2 = visibleRows() * ROW_H;
+            g.fill(bx, listY(), bx + 2, listY() + bh2, 0x40FFFFFF);
+            int th = Math.max(10, bh2 * visibleRows() / v.size());
+            int ty = listY() + (bh2 - th) * scroll / maxScroll();
             g.fill(bx, ty, bx + 2, ty + th, 0xFF000000 | ac);
         }
-        int fy = y + h - 36;
-        if (footer != null && now < footerUntil) {
-            g.drawCenteredString(font, footer, x + SHOP_W / 2, fy, 0xFFFFFFFF);
-        } else {
-            g.drawCenteredString(font, Component.translatable("gui.mundos_de_axelis.npc.shop_hint", data.residents)
-                    .withStyle(ChatFormatting.GRAY), x + SHOP_W / 2, fy, 0xFFB8AAD8);
+        // ---- detalle de lo elegido
+        int dy = listY() + listH() + 4;
+        if (sel >= 0 && sel < ofertas.size()) {
+            NpcShop.Offer o = ofertas.get(sel);
+            ItemStack st = shopStacks.get(sel);
+            PanelUi.slot(g, rx, dy, ac, false);
+            g.renderItem(st, rx, dy);
+            g.renderItemDecorations(font, st, rx, dy);
+            g.drawString(font, st.getHoverName(), rx + 22, dy + 1, 0xFFFFFFFF, false);
+            Component desc = descripcion(o, st);
+            int ddy = dy + 12;
+            for (FormattedCharSequence l : font.split(desc, rightW() - 24)) {
+                if (ddy > dy + 28) {
+                    break;
+                }
+                g.drawString(font, l, rx + 22, ddy, 0xFFB8C4B0, false);
+                ddy += 9;
+            }
+            boolean locked = data.residents < o.needResidents();
+            if (locked) {
+                g.drawString(font, Component.translatable("gui.mundos_de_axelis.npc.need", o.needResidents()), rx, dy + 36, 0xFFE07070, false);
+            }
         }
+    }
+
+    /** Lo que se cuenta de cada oferta: a dónde lleva la brújula (y quién está preso allí) o lo que dice el objeto. */
+    private Component descripcion(NpcShop.Offer o, ItemStack st) {
+        if (o.compass() != null) {
+            Component lugar = Component.translatable("npc.mundos_de_axelis.place." + o.compass());
+            if (o.siguiente()) {
+                for (String[] r : NpcShop.RUTA) {
+                    if (r[1].equals(o.compass())) {
+                        return Component.translatable("gui.mundos_de_axelis.npc.desc.siguiente", lugar,
+                                Component.translatable("entity.mundos_de_axelis.habitante." + r[0]));
+                    }
+                }
+            }
+            return Component.translatable("gui.mundos_de_axelis.npc.desc.brujula", lugar);
+        }
+        List<Component> tip = Screen.getTooltipFromItem(Minecraft.getInstance(), st);
+        return tip.size() > 1 ? tip.get(1) : Component.translatable("gui.mundos_de_axelis.npc.desc." + o.id());
     }
 
     private static int lerp(int a, int b, float t) {

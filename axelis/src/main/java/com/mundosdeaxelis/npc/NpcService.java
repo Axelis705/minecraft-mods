@@ -611,10 +611,11 @@ public final class NpcService {
             open(sp, h, R_NO_HOUSE, null, 0);
             return;
         }
-        if (idx < 0 || idx >= NpcShop.OFFERS.size()) {
+        List<NpcShop.Offer> ofs = NpcShop.ofertas(h.kindId());
+        if (idx < 0 || idx >= ofs.size()) {
             return;
         }
-        NpcShop.Offer o = NpcShop.OFFERS.get(idx);
+        NpcShop.Offer o = ofs.get(idx);
         ServerLevel l = (ServerLevel) h.level();
         if (Vecinos.residents(l.getServer()) < o.needResidents()) {
             open(sp, h, R_LOCKED, null, idx);
