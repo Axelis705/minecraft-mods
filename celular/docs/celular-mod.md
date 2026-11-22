@@ -87,8 +87,13 @@ Axelis pidió que, al poner una canción, salgan las letras flotando alrededor d
   - una línea dura como mucho 7 s.
 - **Cómo se ve** (`client/LetrasHud`, en el HUD):
   - Cada punto del mundo se pasa a la pantalla con la posición y el giro de la cámara. Así funciona igual en las 4 versiones; desde 1.21 el giro de la cámara viene con media vuelta (`FWD`).
-  - Tus canciones en primera persona: las palabras salen en un arco delante de ti, de izquierda a derecha, y se quedan quietas en el mundo aunque gires (el arco se fija al empezar cada línea).
-  - En tercera persona, con la bocina o con el celular tirado: giran alrededor de quien canta (o de la bocina).
+  - Tus canciones en primera persona: las palabras salen en un arco delante de ti, un poco por encima de la mira, de izquierda a derecha. El arco sigue tu mirada con suavidad (tarda ~0,4 s).
+    - La primera versión lo dejaba fijo donde mirabas al empezar la línea; si girabas, no se veían.
+  - Visto desde fuera (tercera persona, otro jugador, la bocina o el celular tirado): las palabras forman una corona por detrás de la cabeza de quien canta, de cara a quien mira, y se leen de izquierda a derecha.
+    - La primera versión las ponía del lado de la cámara y, con la cámara cerca, se amontonaban y se salían de la pantalla.
+  - Cada palabra ocupa en el arco lo que mide. Si la línea es larga, el arco se abre (más radio, hasta 4,5 bloques).
+  - El tamaño va con la distancia real; con la profundidad, las de los lados se veían más grandes.
+  - Se comprobó con una simulación de la pantalla antes de la prueba en el juego.
   - Cada palabra entra con un salto, sube despacio, tiene contorno oscuro y su color (según la portada); la que se canta en ese momento va en blanco y más grande. Al acabar la línea se desvanecen.
   - Las de otros solo se ven si su altavoz o bocina te suena (24 o 40 bloques) y se desvanecen al alejarte.
   - **Subtítulo tipo karaoke** abajo (encima de la barra de acción): las palabras ya cantadas en blanco y la siguiente línea más pequeña. Con canción de otro sale «♪ Nombre:».
