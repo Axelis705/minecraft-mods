@@ -683,6 +683,25 @@ public final class TestCommands {
                 fail = "sin altar en " + d + " (" + st + ")";
             }
         }
+        // barras pegadas: una barra de jefe se quita sola a quien está lejos aunque el jefe no se mueva
+        net.minecraft.world.entity.animal.Pig owner = net.minecraft.world.entity.EntityType.PIG.create(sl);
+        owner.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        sl.addFreshEntity(owner);
+        net.minecraft.server.level.ServerBossEvent bar = new net.minecraft.server.level.ServerBossEvent(Component.literal("prueba"),
+                net.minecraft.world.BossEvent.BossBarColor.RED, net.minecraft.world.BossEvent.BossBarOverlay.PROGRESS);
+        com.mundosdeaxelis.world.BarrasLejanas.track(bar, owner);
+        fp.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 10.5);
+        bar.addPlayer(fp);
+        com.mundosdeaxelis.world.BarrasLejanas.sweep();
+        boolean keptNear = bar.getPlayers().contains(fp);
+        fp.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 80.5);
+        com.mundosdeaxelis.world.BarrasLejanas.sweep();
+        boolean goneFar = !bar.getPlayers().contains(fp);
+        owner.discard();
+        com.mundosdeaxelis.world.BarrasLejanas.sweep();
+        if (fail == null && (!keptNear || !goneFar)) {
+            fail = "barra de jefe (cerca " + keptNear + ", lejos quitada " + goneFar + ")";
+        }
         String msg = (fail == null ? "PRUEBA_ALTAR_OK" : "PRUEBA_ALTAR_FALLO " + fail) + " oleadas=" + java.util.Arrays.toString(sizes) + " botin=" + items;
         com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
         src.sendSuccess(() -> Component.literal(msg), true);

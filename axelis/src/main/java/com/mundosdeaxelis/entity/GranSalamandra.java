@@ -40,6 +40,9 @@ public class GranSalamandra extends SalamandraLava {
         super(type, level);
         this.xpReward = 80;
         setPersistenceRequired();
+        if (!level.isClientSide) {
+            com.mundosdeaxelis.world.BarrasLejanas.track(this.bossEvent, this);
+        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {

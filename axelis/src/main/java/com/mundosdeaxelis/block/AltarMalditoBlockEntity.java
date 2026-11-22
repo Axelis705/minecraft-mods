@@ -176,6 +176,7 @@ public class AltarMalditoBlockEntity extends BlockEntity {
     private void updateBar(ServerLevel sl, List<ServerPlayer> near) {
         if (bar == null) {
             bar = new ServerBossEvent(Component.translatable("bossbar.mundos_de_axelis.altar"), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_6);
+            com.mundosdeaxelis.world.BarrasLejanas.track(bar, this);
         }
         float done = Math.max(0, wave - 1) + (waveSize <= 0 ? 0.0F : (waveSize - mobs.size()) / (float) waveSize);
         if (wave == 0) {
@@ -196,6 +197,7 @@ public class AltarMalditoBlockEntity extends BlockEntity {
     private void clearBar() {
         if (bar != null) {
             bar.removeAllPlayers();
+            com.mundosdeaxelis.world.BarrasLejanas.untrack(bar);
             bar = null;
         }
     }
