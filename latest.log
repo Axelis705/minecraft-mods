@@ -1,0 +1,236 @@
+[22Nov2026 12:24:20.282] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, MOD_DEV, --assetIndex, 5, --assetsDir, /home/runner/.gradle/caches/forge_gradle/assets, --gameDir, ., --fml.forgeVersion, 47.4.10, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[22Nov2026 12:24:20.284] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.21 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1020-azure
+[22Nov2026 12:24:20.337] [main/WARN] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/celular/run/config/fml.toml is not correct. Correcting
+[22Nov2026 12:24:20.338] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowHeight] was corrected from null to 480
+[22Nov2026 12:24:20.339] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [versionCheck] was corrected from null to true
+[22Nov2026 12:24:20.339] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowFBScale] was corrected from null to 1
+[22Nov2026 12:24:20.340] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowProvider] was corrected from null to fmlearlywindow
+[22Nov2026 12:24:20.340] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowWidth] was corrected from null to 854
+[22Nov2026 12:24:20.340] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowMaximized] was corrected from null to false
+[22Nov2026 12:24:20.340] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [defaultConfigPath] was corrected from null to defaultconfigs
+[22Nov2026 12:24:20.341] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [disableOptimizedDFU] was corrected from null to true
+[22Nov2026 12:24:20.341] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[22Nov2026 12:24:20.341] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[22Nov2026 12:24:20.342] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [maxThreads] was corrected from null to -1
+[22Nov2026 12:24:20.342] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[22Nov2026 12:24:20.343] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[22Nov2026 12:24:20.355] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because splash screen is disabled
+[22Nov2026 12:24:20.388] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23116!/ Service=ModLauncher Env=CLIENT
+[22Nov2026 12:24:20.617] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.4.10/ccc533c7dd67e0983217197d7549c8b49e7ab453/javafmllanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[22Nov2026 12:24:20.619] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.4.10/e9a2879fe3612ea34b9728ec2633304a1e67d480/lowcodelanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[22Nov2026 12:24:20.620] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.4.10/ec5cefbbc65c67302b8fac317010faab85fa14b9/mclanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[22Nov2026 12:24:20.621] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.4.10/94dae566be650566ea9115a1414ab76bfcf5a804/fmlcore-1.20.1-47.4.10.jar is missing mods.toml file
+[22Nov2026 12:24:20.665] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[22Nov2026 12:24:21.675] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientuserdev' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.gradle/caches/forge_gradle/assets, --assetIndex, 5, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[22Nov2026 12:24:23.848] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 188 Datafixer optimizations took 111 milliseconds
+[22Nov2026 12:24:24.882] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_official_1.20.1/forge-1.20.1-47.4.10_mapped_official_1.20.1.jar%23181!/assets/.mcassetsroot' uses unexpected schema
+[22Nov2026 12:24:24.882] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_official_1.20.1/forge-1.20.1-47.4.10_mapped_official_1.20.1.jar%23181!/data/.mcassetsroot' uses unexpected schema
+[22Nov2026 12:24:24.891] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[22Nov2026 12:24:24.896] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[22Nov2026 12:24:24.973] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.1 build 7
+[22Nov2026 12:24:25.461] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.4.10, for MC 1.20.1 with MCP 20230612.114412
+[22Nov2026 12:24:25.464] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.4.10 Initialized
+[22Nov2026 12:24:26.043] [Render thread/INFO] [net.minecraftforge.gametest.ForgeGameTestHooks/]: Enabled Gametest Namespaces: [celular]
+[22Nov2026 12:24:26.262] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources
+[22Nov2026 12:24:26.284] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/celular/run/config/forge-client.toml is not correct. Correcting
+[22Nov2026 12:24:26.285] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SimpleCommentedConfig:{}. 
+[22Nov2026 12:24:26.285] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.alwaysSetupTerrainOffThread was corrected from null to its default, false. 
+[22Nov2026 12:24:26.285] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.experimentalForgeLightPipelineEnabled was corrected from null to its default, false. 
+[22Nov2026 12:24:26.286] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[22Nov2026 12:24:26.286] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.useCombinedDepthStencilAttachment was corrected from null to its default, false. 
+[22Nov2026 12:24:26.286] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.compressLanIPv6Addresses was corrected from null to its default, true. 
+[22Nov2026 12:24:26.286] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.calculateAllNormals was corrected from null to its default, false. 
+[22Nov2026 12:24:26.286] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.stabilizeDirectionGetNearest was corrected from null to its default, true. 
+[22Nov2026 12:24:26.286] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.allowMipmapLowering was corrected from null to its default, false. 
+[22Nov2026 12:24:26.410] [Worker-Main-2/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.0.06.hex, loading
+[22Nov2026 12:24:27.031] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[22Nov2026 12:24:27.306] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: OUTDATED Current: 47.4.10 Target: 47.4.28
+[22Nov2026 12:24:28.784] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[22Nov2026 12:24:28.784] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[22Nov2026 12:24:28.800] [Render thread/ERROR] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:283) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at com.mojang.blaze3d.audio.Library.init(Library.java:153) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:104) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:96) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:125) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:40) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:13) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:718) ~[?:?]
+	at java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?]
+	at net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$new$3(SimpleReloadInstance.java:69) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:156) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:23) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:130) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:115) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1106) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:718) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+[22Nov2026 12:24:28.943] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/blocks.png-atlas
+[22Nov2026 12:24:28.955] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[22Nov2026 12:24:28.956] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[22Nov2026 12:24:28.957] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[22Nov2026 12:24:28.957] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[22Nov2026 12:24:28.961] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[22Nov2026 12:24:28.962] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[22Nov2026 12:24:28.962] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[22Nov2026 12:24:28.962] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[22Nov2026 12:24:29.182] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[22Nov2026 12:24:29.297] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
+[22Nov2026 12:24:29.298] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[22Nov2026 12:24:29.298] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[22Nov2026 12:24:29.376] [Render thread/INFO] [net.minecraftforge.registries.GameData/REGISTRIES]: Injecting existing registry data into this CLIENT instance
+[22Nov2026 12:24:30.563] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[22Nov2026 12:24:30.662] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 1271 advancements
+[22Nov2026 12:24:30.961] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.20.1
+[22Nov2026 12:24:30.961] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[22Nov2026 12:24:31.187] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[22Nov2026 12:24:32.914] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[22Nov2026 12:24:32.915] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[22Nov2026 12:24:32.915] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[22Nov2026 12:24:32.915] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[22Nov2026 12:24:33.207] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 3%
+[22Nov2026 12:24:33.582] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[22Nov2026 12:24:33.593] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 2402 ms
+[22Nov2026 12:24:33.643] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 6, from 10
+[22Nov2026 12:24:33.646] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 5, from 0
+[22Nov2026 12:24:33.714] [Render thread/WARN] [io.netty.util.internal.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
+[22Nov2026 12:24:34.047] [Netty Local Client IO #0/INFO] [net.minecraftforge.network.NetworkHooks/]: Connected to a modded server.
+[22Nov2026 12:24:34.121] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:05cbd1f3] logged in with entity id 1 at (-6.5, -60.0, 0.5)
+[22Nov2026 12:24:34.146] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[22Nov2026 12:24:34.466] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST inicio pasos=127
+[22Nov2026 12:24:34.564] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 2 advancements
+[22Nov2026 12:24:44.506] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule sendCommandFeedback is now set to: false
+[22Nov2026 12:24:44.506] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule logAdminCommands is now set to: false
+[22Nov2026 12:24:45.160] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[22Nov2026 12:24:45.161] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[22Nov2026 12:24:45.161] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule doDaylightCycle is now set to: false
+[22Nov2026 12:24:45.161] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the weather to clear
+[22Nov2026 12:24:45.161] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule doWeatherCycle is now set to: false
+[22Nov2026 12:24:45.161] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule randomTickSpeed is now set to: 0
+[22Nov2026 12:24:45.161] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule doMobSpawning is now set to: false
+[22Nov2026 12:24:45.186] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 84 entities
+[22Nov2026 12:24:45.190] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No items were found on player Dev
+[22Nov2026 12:24:45.213] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Phone]
+[22Nov2026 12:24:45.217] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Bluetooth Speaker]
+[22Nov2026 12:24:45.218] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Headphones]
+[22Nov2026 12:24:45.228] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 6, -60, -6
+[22Nov2026 12:24:45.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 8, -60, -6
+[22Nov2026 12:24:45.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, -7
+[22Nov2026 12:24:45.233] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, 6.500000
+[22Nov2026 12:24:50.603] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 1_bloqueo
+[22Nov2026 12:24:52.797] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 1_inicio
+[22Nov2026 12:24:55.594] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 1_inicio_cancion
+[22Nov2026 12:24:57.737] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_insta
+[22Nov2026 12:24:59.878] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_gallery
+[22Nov2026 12:25:02.034] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_phone
+[22Nov2026 12:25:04.185] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_patreon
+[22Nov2026 12:25:06.277] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_settings
+[22Nov2026 12:25:08.432] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_music
+[22Nov2026 12:25:10.583] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_weather
+[22Nov2026 12:25:12.689] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_compass
+[22Nov2026 12:25:14.790] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_calc
+[22Nov2026 12:25:16.884] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_flash
+[22Nov2026 12:25:19.043] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_messages
+[22Nov2026 12:25:21.174] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_notes
+[22Nov2026 12:25:25.028] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_map
+[22Nov2026 12:25:27.126] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_wallet
+[22Nov2026 12:25:29.988] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 2_app_camera
+[22Nov2026 12:25:32.630] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 3_mano_bloqueo
+[22Nov2026 12:25:34.477] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 3_mano_inicio
+[22Nov2026 12:25:36.325] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 3_mano_musica
+[22Nov2026 12:25:38.662] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -1.700000
+[22Nov2026 12:25:39.927] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_texto_frente
+[22Nov2026 12:25:40.209] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.700000, -60.000000, 0.500000
+[22Nov2026 12:25:41.478] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_texto_derecha
+[22Nov2026 12:25:41.758] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.060000, -60.000000, -1.060000
+[22Nov2026 12:25:43.038] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_texto_34
+[22Nov2026 12:25:43.302] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to -1.700000, -60.000000, 0.500000
+[22Nov2026 12:25:44.543] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_texto_izquierda
+[22Nov2026 12:25:44.802] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -1.700000
+[22Nov2026 12:25:46.038] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_oreja_frente
+[22Nov2026 12:25:46.302] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.700000, -60.000000, 0.500000
+[22Nov2026 12:25:47.535] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_oreja_derecha
+[22Nov2026 12:25:47.815] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.060000, -60.000000, -1.060000
+[22Nov2026 12:25:49.087] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_oreja_34
+[22Nov2026 12:25:49.352] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to -1.700000, -60.000000, 0.500000
+[22Nov2026 12:25:50.582] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_oreja_izquierda
+[22Nov2026 12:25:50.864] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.060000, -60.000000, -1.060000
+[22Nov2026 12:25:52.130] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_oreja_mira_abajo
+[22Nov2026 12:25:52.413] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.060000, -60.000000, -1.060000
+[22Nov2026 12:25:53.684] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_oreja_gira_cabeza
+[22Nov2026 12:25:54.200] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -1.700000
+[22Nov2026 12:25:55.429] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_foto_frente
+[22Nov2026 12:25:55.710] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.700000, -60.000000, 0.500000
+[22Nov2026 12:25:56.974] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_foto_derecha
+[22Nov2026 12:25:57.255] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.060000, -60.000000, -1.060000
+[22Nov2026 12:25:58.486] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_foto_34
+[22Nov2026 12:25:58.750] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -1.700000
+[22Nov2026 12:25:59.978] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_linterna_frente
+[22Nov2026 12:26:00.260] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.700000, -60.000000, 0.500000
+[22Nov2026 12:26:01.487] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_linterna_derecha
+[22Nov2026 12:26:01.751] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.060000, -60.000000, -1.060000
+[22Nov2026 12:26:02.983] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_linterna_34
+[22Nov2026 12:26:03.565] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -1.700000
+[22Nov2026 12:26:04.829] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_audifonos_frente
+[22Nov2026 12:26:05.110] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.700000, -60.000000, 0.500000
+[22Nov2026 12:26:06.336] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_audifonos_derecha
+[22Nov2026 12:26:06.600] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 2.060000, -60.000000, -1.060000
+[22Nov2026 12:26:07.832] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 4_pose_audifonos_34
+[22Nov2026 12:26:08.414] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, 6.500000
+[22Nov2026 12:26:09.957] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST ok: la letra de tono.mp3 se lee del .lrc de al lado (lista)
+[22Nov2026 12:26:09.958] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST ok: las letras flotan y el subtítulo va en la línea correcta (6, Letras que flotan a tu alrededor)
+[22Nov2026 12:26:09.959] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST ok: lo que está delante de la cámara cae en el centro de la pantalla (213.0,120.0 / 213.0,120.0)
+[22Nov2026 12:26:10.724] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 9_letras_primera_persona
+[22Nov2026 12:26:12.280] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 9_letras_tercera_persona
+[22Nov2026 12:26:13.829] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 9_letras_de_frente
+[22Nov2026 12:26:14.116] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 3.300000, -60.000000, -2.300000
+[22Nov2026 12:26:15.361] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST ok: letras alrededor del otro jugador (6)
+[22Nov2026 12:26:15.888] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 9_letras_de_otro
+[22Nov2026 12:26:16.457] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 7.500000, -60.000000, -3.600000
+[22Nov2026 12:26:18.527] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 5_bocinas
+[22Nov2026 12:26:18.809] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 6.500000, -60.000000, -4.400000
+[22Nov2026 12:26:20.374] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 5_bocina_cerca
+[22Nov2026 12:26:20.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[22Nov2026 12:26:20.656] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 4.000000, -60.000000, 3.000000
+[22Nov2026 12:26:23.731] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 6_noche_linterna_otro
+[22Nov2026 12:26:24.011] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, 8.500000
+[22Nov2026 12:26:27.079] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 6_noche_mi_linterna
+[22Nov2026 12:26:27.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[22Nov2026 12:26:31.789] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 7_g360_inicio
+[22Nov2026 12:26:33.889] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 7_g360_musica
+[22Nov2026 12:26:36.030] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 7_g360_mensajes
+[22Nov2026 12:26:42.430] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 8_g270_inicio
+[22Nov2026 12:26:44.577] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 8_g270_musica
+[22Nov2026 12:26:46.775] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST foto 8_g270_ajustes
+[22Nov2026 12:26:47.076] [Render thread/INFO] [com.celular.Celular/]: AUTOTEST AUTOTEST_FIN fotos=54 fallos=0
+[22Nov2026 12:26:51.131] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[22Nov2026 12:26:51.134] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[22Nov2026 12:26:51.134] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[22Nov2026 12:26:51.144] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[22Nov2026 12:26:51.182] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[22Nov2026 12:26:51.182] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[22Nov2026 12:26:51.183] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[22Nov2026 12:26:51.636] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[22Nov2026 12:26:51.738] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[22Nov2026 12:26:51.739] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[22Nov2026 12:26:51.759] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (prueba): All chunks are saved
+[22Nov2026 12:26:51.759] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[22Nov2026 12:26:51.759] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[22Nov2026 12:26:51.759] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
