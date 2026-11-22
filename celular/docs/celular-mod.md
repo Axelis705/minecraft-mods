@@ -69,6 +69,36 @@ Inicio (desde el 16-nov): pantalla de bloqueo (reloj grande, fecha, llamadas per
 - `client/Music`: une el reproductor con el juego (carpeta, volumen, pausa, callar la música de Minecraft, avisos, abrir la carpeta con explorer/open/xdg-open).
 - Prueba `celular/tests/MusicTest.java` (en el CI): etiquetas, duración, decodificar, salto, barras y WAV.
 
+## Letras de las canciones (22-nov)
+
+Axelis pidió que, al poner una canción, salgan las letras flotando alrededor del jugador. Eligió buscarlas en un archivo y, si no hay, en internet. También pidió un ajuste para ver o no las letras de otros, que solo se ven si estás a distancia de oír su canción.
+
+- **De dónde sale la letra** (`music/Letras`, en el hilo "Celular-Letras"), en este orden:
+  1. un `.lrc` o `.txt` con el mismo nombre que la canción, junto a ella o en una carpeta `letras` (o `lyrics`) de al lado. Acepta UTF-8 con o sin BOM, UTF-16 y Latin-1;
+  2. la letra guardada en la canción: MP3 (marcos `SYLT` con tiempos en ms y `USLT`) u OGG (comentarios `SYNCEDLYRICS`, `LYRICS` y `UNSYNCEDLYRICS`);
+  3. la caché `.minecraft/celular/letras/`. Si no se encontró, queda un `.none` y se vuelve a buscar a los 3 días;
+  4. internet: **LRCLIB** (lrclib.net, gratis). Primero `/api/get` con título, artista y duración; después `/api/search`. Elige la versión con tiempos cuya duración cuadre (±8 s) y no la instrumental.
+  - El ajuste «Buscar letras en internet» lo apaga. Solo se manda el título, el artista y la duración.
+  - Las canciones del mundo de otros se buscan por su archivo de la caché (la letra de dentro viaja con él) y por internet. El `.lrc` de quien la subió no viaja.
+- **Formato** (`music/Letra`):
+  - LRC con varias marcas por línea y `[offset:±ms]` (positivo = sale antes);
+  - palabras con tiempo `<mm:ss.xx>` (LRC mejorado); si no las trae, las palabras se reparten según su largo;
+  - letra sin tiempos: las líneas se reparten entre el 7 % y el 93 % de la canción;
+  - una línea dura como mucho 7 s.
+- **Cómo se ve** (`client/LetrasHud`, en el HUD):
+  - Cada punto del mundo se pasa a la pantalla con la posición y el giro de la cámara. Así funciona igual en las 4 versiones; desde 1.21 el giro de la cámara viene con media vuelta (`FWD`).
+  - Tus canciones en primera persona: las palabras salen en un arco delante de ti, de izquierda a derecha, y se quedan quietas en el mundo aunque gires (el arco se fija al empezar cada línea).
+  - En tercera persona, con la bocina o con el celular tirado: giran alrededor de quien canta (o de la bocina).
+  - Cada palabra entra con un salto, sube despacio, tiene contorno oscuro y su color (según la portada); la que se canta en ese momento va en blanco y más grande. Al acabar la línea se desvanecen.
+  - Las de otros solo se ven si su altavoz o bocina te suena (24 o 40 bloques) y se desvanecen al alejarte.
+  - **Subtítulo tipo karaoke** abajo (encima de la barra de acción): las palabras ya cantadas en blanco y la siguiente línea más pequeña. Con canción de otro sale «♪ Nombre:».
+- **Ajustes nuevos**: Letras de mis canciones, Letras de los demás, Subtítulo de la letra y Buscar letras en internet (`letras_*` en `ajustes.properties`).
+- **App de Música**: la línea que se canta ahora, sobre el ecualizador (o «Buscando la letra…» / «Sin letra…»).
+- **Pruebas**:
+  - `celular/tests/LetrasTest.java` (en el CI): LRC, offset, palabras con tiempo, letra sin tiempos, `.lrc` de al lado con BOM, caché, USLT y SYLT de un MP3 armado en la prueba, y la elección entre resultados de LRCLIB (JSON con escapes). Las letras de prueba son inventadas.
+  - Con `--internet` busca una canción de dominio público; si LRCLIB no responde no es un fallo.
+  - Prueba con el cliente: `tests/fixtures/tono.lrc` junto a `tono.mp3`. Comprueba que se lee el `.lrc`, que salen palabras y el subtítulo correcto, y que un punto delante de la cámara cae en el centro de la pantalla. Fotos en primera persona, en tercera (de espaldas y de frente) y alrededor de otro jugador (`LetrasHud.debugOtro`).
+
 ## Llamadas y voz
 - `CallManager` (servidor): DIAL → el que recibe ve "Llamada entrante" y su celular **suena de verdad** (lo oyen los de cerca) cada 2.6 s; 30 s sin contestar = llamada perdida. Ocupado, sin celular, desconectado, rechazada: cada una con su mensaje.
 - Voz: `voice/VoicePlugin` es un complemento de **Simple Voice Chat** (`@ForgeVoicechatPlugin`, API 2.5.0 compileOnly desde `maven.maxhenkel.de`). Toma el audio del micrófono de quien habla, lo decodifica, le pone el **filtro de teléfono** (`PhoneFilter`: pasa 320–3300 Hz, un poco de saturación y siseo) y lo manda por un canal directo al otro, a cualquier distancia. Si SVC no está, la clase nunca se carga y la llamada funciona sin voz (la app lo dice).
