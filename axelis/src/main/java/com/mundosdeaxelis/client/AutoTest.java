@@ -1540,6 +1540,28 @@ public final class AutoTest {
                 shot("12" + k + "_arma_" + tipos[k]);
             });
         }
+        // animación de ataque: cada arma en el momento del golpe (y el martillo también arriba, antes de bajar)
+        float[] golpe = {0.42F, 0.50F, 0.55F, 0.40F, 0.30F};
+        for (int i = 0; i < mano.length; i++) {
+            final int k = i;
+            add("armas (" + tipos[k] + " golpeando)", 700, () -> {
+                Minecraft.getInstance().player.getInventory().selected = k;
+                ArmaAnim.fijo = golpe[k];
+            });
+            add("armas (" + tipos[k] + " golpeando, foto)", 300, () -> {
+                float[] p = ArmaAnim.pose(com.mundosdeaxelis.arma.TipoArma.values()[k], golpe[k]);
+                check("la animación de ataque de " + tipos[k] + " mueve el arma", Math.abs(p[3]) + Math.abs(p[4]) > 30.0F);
+                shot("13" + k + "_golpe_" + tipos[k]);
+            });
+        }
+        add("armas (martillo arriba)", 700, () -> {
+            Minecraft.getInstance().player.getInventory().selected = 2;
+            ArmaAnim.fijo = 0.25F;
+        });
+        add("armas (martillo arriba, foto)", 300, () -> {
+            shot("135_golpe_martillo_arriba");
+            ArmaAnim.fijo = -1.0F;
+        });
         add("armas (tercera persona)", 900, () -> {
             Minecraft.getInstance().options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);
             Minecraft.getInstance().player.getInventory().selected = 2;

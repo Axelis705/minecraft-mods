@@ -132,6 +132,7 @@ public final class Armas {
         long now = sl.getGameTime();
         Vec3 c = t.getBoundingBox().getCenter();
         int col = a.tierArma.color;
+        estela(a, sp, sl, c, cargado);
         switch (a.tipo) {
             case ESPADA -> {
                 if (st.contraHasta >= now) {
@@ -208,6 +209,29 @@ public final class Armas {
             }
         }
         return elemento(a, sp, sl, t, amount, true);
+    }
+
+    /**
+     * Estela del golpe, con el color del tier: la espada deja un tajo en diagonal, el hacha y el martillo uno vertical, la lanza
+     * una línea recta y las dagas cortes pequeños. Solo en los golpes cargados (las dagas, siempre).
+     */
+    private static void estela(ArmaItem a, ServerPlayer sp, ServerLevel sl, Vec3 c, boolean cargado) {
+        if (!cargado && a.tipo != TipoArma.DAGAS) {
+            return;
+        }
+        int col = a.tierArma.color;
+        Vec3 eye = sp.getEyePosition();
+        Vec3 to = c.subtract(eye);
+        double d = Math.max(0.6, to.length() - 0.6);
+        Vec3 dir = to.normalize();
+        Vec3 p = eye.add(dir.scale(d));
+        switch (a.tipo) {
+            case ESPADA -> Vfx.slash(sl, p, dir.scale(0.5), col, 1.7, 0.7, 6);
+            case HACHA -> Vfx.slash(sl, p, dir.scale(0.4), col, 1.9, Math.PI / 2, 6);
+            case MARTILLO -> Vfx.slash(sl, p, dir.scale(0.3), col, 2.2, Math.PI / 2, 7);
+            case LANZA -> Vfx.beam(sl, eye.add(dir.scale(0.8)).subtract(0, 0.25, 0), c, col, 0.12, 5, 0);
+            case DAGAS -> Vfx.slash(sl, p, dir.scale(0.4), col, 1.0, (sl.random.nextBoolean() ? 1 : -1) * 0.9, 4);
+        }
     }
 
     /** ¿El jugador está detrás del enemigo (el enemigo le da la espalda)? */

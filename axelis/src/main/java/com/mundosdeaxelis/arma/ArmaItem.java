@@ -109,6 +109,12 @@ public class ArmaItem extends SwordItem implements GearTool, SoulUser {
         return tipo == TipoArma.HACHA;
     }
 
+    /** Animaciones de ataque (solo en el cliente; Forge lo llama dentro del constructor, así que no se lee nada del arma aquí). */
+    @Override
+    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> consumer) {
+        consumer.accept(com.mundosdeaxelis.client.ArmaAnim.INSTANCE);
+    }
+
     // ------------------------------------------------------------------ GearTool
 
     @Override

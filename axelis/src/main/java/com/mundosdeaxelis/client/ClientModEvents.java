@@ -157,6 +157,8 @@ public final class ClientModEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         // Cada mascota en brazos muestra el icono con su color (el número va de 0.005 a 0.145 según la mascota).
         event.enqueueWork(() -> {
+            // etapa 281: la pose a dos manos de las armas pesadas se crea antes de dibujar ningún jugador
+            ArmaAnim.init();
             net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.EQUIP.get(), EquipScreen::new);
             net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.TABLE.get(), TableScreen::new);
             net.minecraft.client.gui.screens.MenuScreens.register(com.mundosdeaxelis.registry.ModMenus.GEM_TABLE.get(), com.mundosdeaxelis.client.GemTableScreen::new);
