@@ -708,6 +708,56 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    /** Etapa 279: la protección contra la mala suerte y el brillo de las piezas estrella en el suelo. */
+    private static int suerte(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        String fail = null;
+        net.minecraft.nbt.CompoundTag data = new net.minecraft.nbt.CompoundTag();
+        net.minecraft.util.RandomSource r = net.minecraft.util.RandomSource.create(279L);
+        int added = 0, at = -1;
+        for (int i = 1; i <= com.mundosdeaxelis.block.VaultLoot.PITY; i++) {
+            java.util.List<net.minecraft.world.item.ItemStack> items = new java.util.ArrayList<>();
+            items.add(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.BREAD));
+            if (com.mundosdeaxelis.block.VaultLoot.pity(data, items, 2, r)) {
+                added++;
+                at = i;
+                boolean star = false;
+                for (net.minecraft.world.item.ItemStack it : items) {
+                    star |= com.mundosdeaxelis.block.VaultLoot.isStar(it) || it.getItem() instanceof com.mundosdeaxelis.item.KeyFragmentItem;
+                }
+                if (!star) {
+                    fail = "la protección no añadió una pieza buena";
+                }
+            }
+        }
+        if (fail == null && (added != 1 || at != com.mundosdeaxelis.block.VaultLoot.PITY)) {
+            fail = "protección contra la mala suerte (añadió " + added + " en el cofre " + at + ")";
+        }
+        java.util.List<net.minecraft.world.item.ItemStack> lucky = new java.util.ArrayList<>();
+        lucky.add(new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.HEART_FRAGMENT.get()));
+        data.putInt(com.mundosdeaxelis.block.VaultLoot.PITY_KEY, 5);
+        com.mundosdeaxelis.block.VaultLoot.pity(data, lucky, 2, r);
+        if (fail == null && data.getInt(com.mundosdeaxelis.block.VaultLoot.PITY_KEY) != 0) {
+            fail = "una pieza estrella no reinicia la cuenta";
+        }
+        net.minecraft.core.BlockPos p = net.minecraft.core.BlockPos.containing(src.getPosition());
+        net.minecraft.world.entity.item.ItemEntity heart = new net.minecraft.world.entity.item.ItemEntity(sl, p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5,
+                new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.HEART_FRAGMENT.get()));
+        net.minecraft.world.entity.item.ItemEntity dirt = new net.minecraft.world.entity.item.ItemEntity(sl, p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5,
+                new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.DIRT));
+        sl.addFreshEntity(heart);
+        sl.addFreshEntity(dirt);
+        if (fail == null && (!heart.hasGlowingTag() || dirt.hasGlowingTag())) {
+            fail = "brillo en el suelo (corazón " + heart.hasGlowingTag() + ", tierra " + dirt.hasGlowingTag() + ")";
+        }
+        heart.discard();
+        dirt.discard();
+        String msg = fail == null ? "PRUEBA_SUERTE_OK" : "PRUEBA_SUERTE_FALLO " + fail;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fail == null ? 1 : 0;
+    }
+
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return Commands.literal("prueba")
                 .then(Commands.literal("equipo")
@@ -722,6 +772,7 @@ public final class TestCommands {
                 .then(Commands.literal("elites").executes(ctx -> elites(ctx.getSource())))
                 .then(Commands.literal("saqueador").executes(ctx -> saqueador(ctx.getSource())))
                 .then(Commands.literal("altar").executes(ctx -> altar(ctx.getSource())))
+                .then(Commands.literal("suerte").executes(ctx -> suerte(ctx.getSource())))
                 .then(Commands.literal("olvidar_progreso").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     // los sellos que lleva encima se volverían a apuntar en el Archivo: se le quitan

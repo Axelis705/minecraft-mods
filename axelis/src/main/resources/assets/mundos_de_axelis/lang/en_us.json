@@ -2568,5 +2568,22 @@
   "message.mundos_de_axelis.altar.vencido": "You defeated the Cursed Altar! It drops its loot.",
   "bossbar.mundos_de_axelis.altar": "Cursed Altar",
   "bossbar.mundos_de_axelis.altar.oleada": "Cursed Altar · Wave %s/%s",
-  "message.mundos_de_axelis.sello.altar": "The altar doesn't respond: its power is sealed. Defeat %s first."
+  "message.mundos_de_axelis.sello.altar": "The altar doesn't respond: its power is sealed. Defeat %s first.",
+  "gui.mundos_de_axelis.gemas.guia": "Gem guide · click to close",
+  "gema.mundos_de_axelis.corto.veneno.arma": "Weapon: poisons",
+  "gema.mundos_de_axelis.corto.veneno.armadura": "Armor: poisons attackers",
+  "gema.mundos_de_axelis.corto.filo.arma": "Weapon: +7% damage per purity",
+  "gema.mundos_de_axelis.corto.filo.armadura": "Armor: reflects part of the hit",
+  "gema.mundos_de_axelis.corto.escarcha.arma": "Weapon: slows",
+  "gema.mundos_de_axelis.corto.escarcha.armadura": "Armor: slows attackers",
+  "gema.mundos_de_axelis.corto.fuego.arma": "Weapon: sets on fire",
+  "gema.mundos_de_axelis.corto.fuego.armadura": "Armor: less fire and lava damage",
+  "gema.mundos_de_axelis.corto.arcano.arma": "Weapon: extra arcane damage",
+  "gema.mundos_de_axelis.corto.arcano.armadura": "Armor: less magic damage",
+  "gema.mundos_de_axelis.corto.vampiro.arma": "Weapon: heals you on hit",
+  "gema.mundos_de_axelis.corto.vampiro.armadura": "Armor: slowly heals you",
+  "gema.mundos_de_axelis.corto.rayo.arma": "Weapon: sometimes calls lightning",
+  "gema.mundos_de_axelis.corto.rayo.armadura": "Armor: you run faster",
+  "gema.mundos_de_axelis.corto.vacio.arma": "Weapon: withers",
+  "gema.mundos_de_axelis.corto.vacio.armadura": "Armor: more max health"
 }

@@ -371,6 +371,35 @@ public final class VaultLoot {
         }
     }
 
+    /** Etapa 279: cofres seguidos sin pieza estrella tras los que el siguiente trae una segura (protección contra la mala suerte). */
+    public static final int PITY = 7;
+    public static final String PITY_KEY = "mdc_sin_estrella";
+
+    /**
+     * Protección contra la mala suerte (como en Diablo): cuenta los cofres que abre el jugador sin pieza estrella; al llegar a
+     * {@link #PITY}, el cofre trae una segura (una gema vacía del tier o dos fragmentos de llave). Devuelve true si la añadió.
+     */
+    public static boolean pity(net.minecraft.nbt.CompoundTag data, List<ItemStack> items, int stage, RandomSource r) {
+        for (ItemStack it : items) {
+            if (isStar(it)) {
+                data.putInt(PITY_KEY, 0);
+                return false;
+            }
+        }
+        int n = data.getInt(PITY_KEY) + 1;
+        if (n < PITY) {
+            data.putInt(PITY_KEY, n);
+            return false;
+        }
+        data.putInt(PITY_KEY, 0);
+        if (r.nextBoolean()) {
+            items.add(emptyGem(stage));
+        } else {
+            items.add(new ItemStack(ModItems.KEY_FRAGMENTS.get(com.mundosdeaxelis.crate.CrateKind.byIndex(Math.max(1, Math.min(8, stage)))).get(), 2));
+        }
+        return true;
+    }
+
     /** Etapa 273: los arrojadizos del tier (los tiers 6 a 8 usan el Orbe Arcano por ahora). */
     private static void throwables(List<ItemStack> out, Kind kind, int st, int lv, RandomSource r) {
         int n = switch (kind) {

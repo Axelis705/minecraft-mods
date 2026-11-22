@@ -57,6 +57,7 @@ public final class GemaItems {
         @Override
         public void appendHoverText(ItemStack st, @Nullable Level level, List<Component> tip, TooltipFlag flag) {
             tip.add(Component.translatable("gema.mundos_de_axelis.efecto." + el.id).withStyle(ChatFormatting.GRAY));
+            tip.add(Component.translatable("gema.mundos_de_axelis.efecto_armadura." + el.id).withStyle(ChatFormatting.DARK_GRAY));
             tip.add(Component.translatable("tooltip.mundos_de_axelis.gema.use").withStyle(ChatFormatting.AQUA));
         }
     }
@@ -79,6 +80,8 @@ public final class GemaItems {
         public void appendHoverText(ItemStack st, @Nullable Level level, List<Component> tip, TooltipFlag flag) {
             tip.add(Component.translatable("tooltip.mundos_de_axelis.esencia_infusion", Component.translatable("item.mundos_de_axelis.gema_" + el.id))
                     .withStyle(ChatFormatting.GRAY));
+            tip.add(Component.translatable("gema.mundos_de_axelis.efecto." + el.id).withStyle(ChatFormatting.DARK_GRAY));
+            tip.add(Component.translatable("gema.mundos_de_axelis.efecto_armadura." + el.id).withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 }

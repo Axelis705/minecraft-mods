@@ -20,6 +20,9 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
     private static final int W = 214, H = 200;
     private static final int ACCENT = 0xC060FF, GOLD = 0xFFE9A8;
     private int hoverBtn = -1;
+    /** Etapa 279: la guía de las 8 gemas (botón «?»). */
+    private boolean guide;
+    private static final int[] HELP = {W - 20, 4, 12, 11};
 
     public GemTableScreen(GemTableMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
@@ -60,8 +63,30 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
     // botones: x, y, w, h (relativos a la ventana)
     private static final int[][] BTN = {{8, 58, 47, 14}, {114, 58, 50, 14}, {168, 58, 38, 14}, {57, 58, 47, 14}};
 
+    /** Abre o cierra la guía (lo usa la prueba con el cliente). */
+    public void toggleGuide() {
+        guide = !guide;
+    }
+
+    public boolean guideOpen() {
+        return guide;
+    }
+
+    private boolean overHelp(double mx, double my) {
+        return mx >= leftPos + HELP[0] && mx < leftPos + HELP[0] + HELP[2] && my >= topPos + HELP[1] && my < topPos + HELP[1] + HELP[3];
+    }
+
     @Override
     public boolean mouseClicked(double mx, double my, int b) {
+        if (b == 0 && overHelp(mx, my)) {
+            guide = !guide;
+            UiFx.click();
+            return true;
+        }
+        if (guide) {
+            guide = false; // cualquier clic cierra la guía
+            return true;
+        }
         if (b == 0) {
             for (int i = 0; i < BTN.length; i++) {
                 int[] r = BTN[i];
@@ -99,7 +124,36 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
             }
         }
         super.render(g, mx, my, pt);
-        renderTooltip(g, mx, my);
+        if (guide) {
+            renderGuide(g);
+        } else {
+            renderTooltip(g, mx, my);
+        }
+    }
+
+    /** La guía: cada gema con lo que hace en un arma y en la armadura. */
+    private void renderGuide(GuiGraphics g) {
+        Font f = font;
+        int x = leftPos + 4, y = topPos + 18, w = W - 8, h = H - 22;
+        g.pose().pushPose();
+        g.pose().translate(0, 0, 400);
+        g.fill(x, y, x + w, y + h, 0xF0120A22);
+        PanelUi.frame(g, x, y, w, h, ACCENT);
+        g.drawString(f, Component.translatable("gui.mundos_de_axelis.gemas.guia"), x + 6, y + 5, 0xFFFFE9A8, false);
+        int row = 0;
+        for (Gemas.Elemento el : Gemas.Elemento.values()) {
+            int ry = y + 16 + row * 20;
+            g.renderItem(Gemas.conPureza(new ItemStack(com.mundosdeaxelis.registry.ModItems.GEMAS.get(el).get()), 3), x + 5, ry);
+            g.pose().pushPose();
+            g.pose().translate(x + 24, ry - 1, 0);
+            g.pose().scale(0.8F, 0.8F, 1.0F);
+            g.drawString(f, Component.translatable("item.mundos_de_axelis.gema_" + el.id).withStyle(el.style()), 0, 0, 0xFFFFFFFF, false);
+            g.drawString(f, Component.translatable("gema.mundos_de_axelis.corto." + el.id + ".arma"), 0, 8, 0xFFE8DCFF, false);
+            g.drawString(f, Component.translatable("gema.mundos_de_axelis.corto." + el.id + ".armadura"), 0, 16, 0xFFB0A4D0, false);
+            g.pose().popPose();
+            row++;
+        }
+        g.pose().popPose();
     }
 
     @Override
@@ -138,7 +192,11 @@ public class GemTableScreen extends AbstractContainerScreen<GemTableMenu> {
         int mx = amx - leftPos, my = amy - topPos;
         PanelUi.title(g, f, title, 8, titleLabelY, ACCENT);
         String es = "◆ " + TableClient.essence;
-        g.drawString(f, es, W - 8 - f.width(es), titleLabelY, 0xFF7FE8FF, true);
+        g.drawString(f, es, W - 24 - f.width(es), titleLabelY, 0xFF7FE8FF, true);
+        boolean oh = overHelp(amx, amy);
+        g.fill(HELP[0], HELP[1], HELP[0] + HELP[2], HELP[1] + HELP[3], oh || guide ? 0xFFC060FF : 0xFF5A3A8A);
+        g.fill(HELP[0] + 1, HELP[1] + 1, HELP[0] + HELP[2] - 1, HELP[1] + HELP[3] - 1, 0xFF1A1030);
+        g.drawString(f, "?", HELP[0] + 4, HELP[1] + 2, 0xFFFFE9A8, false);
         PanelUi.sectionBar(g, 8, 20, 94, ACCENT);
         g.drawString(f, Component.translatable("gui.mundos_de_axelis.gemas.infundir_titulo"), 13, 21, 0xFFE8DCFF, false);
         PanelUi.sectionBar(g, 112, 20, 94, GOLD);

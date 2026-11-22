@@ -2568,5 +2568,22 @@
   "message.mundos_de_axelis.altar.vencido": "¡Venciste al Altar Maldito! Suelta su botín.",
   "bossbar.mundos_de_axelis.altar": "Altar Maldito",
   "bossbar.mundos_de_axelis.altar.oleada": "Altar Maldito · Oleada %s/%s",
-  "message.mundos_de_axelis.sello.altar": "El altar no responde: su poder está sellado. Vence a %s primero."
+  "message.mundos_de_axelis.sello.altar": "El altar no responde: su poder está sellado. Vence a %s primero.",
+  "gui.mundos_de_axelis.gemas.guia": "Guía de gemas · clic para cerrar",
+  "gema.mundos_de_axelis.corto.veneno.arma": "Arma: envenena",
+  "gema.mundos_de_axelis.corto.veneno.armadura": "Armadura: envenena a quien te pega",
+  "gema.mundos_de_axelis.corto.filo.arma": "Arma: +7 % de daño por pureza",
+  "gema.mundos_de_axelis.corto.filo.armadura": "Armadura: devuelve parte del golpe",
+  "gema.mundos_de_axelis.corto.escarcha.arma": "Arma: ralentiza",
+  "gema.mundos_de_axelis.corto.escarcha.armadura": "Armadura: ralentiza a quien te pega",
+  "gema.mundos_de_axelis.corto.fuego.arma": "Arma: prende fuego",
+  "gema.mundos_de_axelis.corto.fuego.armadura": "Armadura: menos daño de fuego y lava",
+  "gema.mundos_de_axelis.corto.arcano.arma": "Arma: daño arcano extra",
+  "gema.mundos_de_axelis.corto.arcano.armadura": "Armadura: menos daño de magia",
+  "gema.mundos_de_axelis.corto.vampiro.arma": "Arma: te cura al golpear",
+  "gema.mundos_de_axelis.corto.vampiro.armadura": "Armadura: te curas poco a poco",
+  "gema.mundos_de_axelis.corto.rayo.arma": "Arma: a veces cae un rayo",
+  "gema.mundos_de_axelis.corto.rayo.armadura": "Armadura: corres más rápido",
+  "gema.mundos_de_axelis.corto.vacio.arma": "Arma: marchita",
+  "gema.mundos_de_axelis.corto.vacio.armadura": "Armadura: más vida máxima"
 }

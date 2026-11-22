@@ -270,7 +270,11 @@ public class VaultChestBlockEntity extends BlockEntity {
         SimpleContainer c = loots.get(id);
         if (c == null) {
             c = new SimpleContainer(27);
-            List<ItemStack> items = VaultLoot.roll(kind, stage, sp.getRandom(), lockLevel, Essence.archive(sp));
+            List<ItemStack> items = new ArrayList<>(VaultLoot.roll(kind, stage, sp.getRandom(), lockLevel, Essence.archive(sp)));
+            // etapa 279: tras varios cofres sin pieza estrella, una segura
+            net.minecraft.nbt.CompoundTag persisted = sp.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+            VaultLoot.pity(persisted, items, stage, sp.getRandom());
+            sp.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, persisted); // sobrevive a la muerte
             List<Integer> slots = new ArrayList<>();
             for (int i = 0; i < 27; i++) {
                 slots.add(i);

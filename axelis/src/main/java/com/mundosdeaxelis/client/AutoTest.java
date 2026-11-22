@@ -1671,6 +1671,16 @@ public final class AutoTest {
                     com.mundosdeaxelis.gema.Gemas.gemaDe(w) == com.mundosdeaxelis.gema.Gemas.Elemento.FUEGO
                             && menuItem(com.mundosdeaxelis.gema.GemTableMenu.S_GEMA).isEmpty());
             shot("103_gemas_engarzada");
+            if (Minecraft.getInstance().screen instanceof GemTableScreen gs) {
+                gs.toggleGuide();
+            }
+        });
+        add("gemas (guía, foto)", 1200, () -> {
+            check("la Mesa de Gemas tiene una guía con las 8 gemas", Minecraft.getInstance().screen instanceof GemTableScreen gs && gs.guideOpen());
+            shot("103b_gemas_guia");
+            if (Minecraft.getInstance().screen instanceof GemTableScreen gs) {
+                gs.toggleGuide();
+            }
             // cerrar como con Esc (avisa al servidor, que devuelve lo que quedó en la mesa)
             Minecraft.getInstance().player.closeContainer();
         });
