@@ -2743,5 +2743,14 @@
   "dir.mundos_de_axelis.no": "al noroeste",
   "dir.mundos_de_axelis.aqui": "aquí mismo",
   "dir.mundos_de_axelis.arriba": "%s, más arriba",
-  "dir.mundos_de_axelis.abajo": "%s, más abajo"
+  "dir.mundos_de_axelis.abajo": "%s, más abajo",
+  "tooltip.mundos_de_axelis.arma.dos_manos": "✋ A dos manos: la otra mano tiene que estar vacía",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.espada": "la espada",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.hacha": "el hacha de guerra",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.martillo": "el martillo",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.lanza": "la lanza",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.dagas": "las dagas",
+  "message.mundos_de_axelis.arma.dos_manos": "Para usar %s necesitas las dos manos: vacía la otra mano",
+  "gui.mundos_de_axelis.options.attack_camera": "Cámara al atacar",
+  "gui.mundos_de_axelis.options.attack_camera.tip": "En primera persona, la cámara acompaña un poco el golpe de las armas nuevas."
 }

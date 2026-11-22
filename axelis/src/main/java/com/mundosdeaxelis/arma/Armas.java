@@ -80,8 +80,29 @@ public final class Armas {
     // ------------------------------------------------------------------ eventos
 
     /** Al empezar el ataque: si el golpe va cargado, si corre y, con dagas, que el enemigo no esté "protegido" del golpe anterior. */
+    /** Etapa 283: ¿lleva un arma a dos manos con algo en la otra mano? (no puede usarla) */
+    public static boolean manosOcupadas(Player p) {
+        return p.getMainHandItem().getItem() instanceof ArmaItem a && a.tipo.dosManos() && !p.getOffhandItem().isEmpty();
+    }
+
+    /** Aviso en la barra de acción: hay que vaciar la otra mano. */
+    public static void avisoDosManos(Player p) {
+        if (p.getMainHandItem().getItem() instanceof ArmaItem a) {
+            p.displayClientMessage(Component.translatable("message.mundos_de_axelis.arma.dos_manos",
+                    Component.translatable("tooltip.mundos_de_axelis.arma.tipo_corto." + a.tipo.id)).withStyle(ChatFormatting.RED), true);
+        }
+    }
+
     @SubscribeEvent
     public static void onAttack(AttackEntityEvent e) {
+        // a dos manos: con algo en la otra mano no se golpea (en el cliente y en el servidor)
+        if (manosOcupadas(e.getEntity())) {
+            e.setCanceled(true);
+            if (e.getEntity().level().isClientSide) {
+                avisoDosManos(e.getEntity());
+            }
+            return;
+        }
         if (!(e.getEntity() instanceof ServerPlayer sp) || !(sp.getMainHandItem().getItem() instanceof ArmaItem a)) {
             return;
         }
@@ -422,6 +443,10 @@ public final class Armas {
 
     public static boolean tryEspecial(ArmaItem a, ServerPlayer sp, ServerLevel sl, ItemStack stack) {
         if (sp.getCooldowns().isOnCooldown(a)) {
+            return false;
+        }
+        if (manosOcupadas(sp)) {
+            avisoDosManos(sp);
             return false;
         }
         int cost = a.tipo.almas;

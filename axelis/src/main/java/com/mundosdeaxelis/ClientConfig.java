@@ -19,6 +19,8 @@ public final class ClientConfig {
     public static final ForgeConfigSpec.BooleanValue SCREEN_SHAKE;
     /** Destellos de pantalla (flashes de color de los ataques y efectos). */
     public static final ForgeConfigSpec.BooleanValue FLASHES;
+    /** Etapa 283: en primera persona, la cámara acompaña un poco el golpe de las armas. */
+    public static final ForgeConfigSpec.BooleanValue ATTACK_CAMERA;
 
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
@@ -32,6 +34,7 @@ public final class ClientConfig {
         DUNGEON_MUSIC = b.comment("Música de las dungeons y jefes").define("dungeon_music", true);
         SCREEN_SHAKE = b.comment("Sacudidas de cámara de los jefes y efectos").define("screen_shake", true);
         FLASHES = b.comment("Destellos de color en la pantalla").define("flashes", true);
+        ATTACK_CAMERA = b.comment("La cámara acompaña el golpe de las armas (primera persona)").define("attack_camera", true);
         b.pop();
         SPEC = b.build();
     }

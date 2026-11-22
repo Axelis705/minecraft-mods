@@ -1512,8 +1512,126 @@ public final class AutoTest {
         });
         altar();
         armas();
+        cuerpoArmas();
         etapa282();
         tablon();
+    }
+
+    /** Para las fotos de lado: el cuerpo (y la cabeza) del jugador se giran estos grados respecto a la cámara (NaN = normal). */
+    public static volatile float ladoFoto = Float.NaN;
+
+    /**
+     * Etapa 283: el golpe de todo el cuerpo con cada arma (de lado, preparando y en el impacto), las dos dagas (tercera y primera
+     * persona) y la regla de las armas a dos manos (con una antorcha en la otra mano no se golpea).
+     */
+    private static void cuerpoArmas() {
+        String[] mano = {"arma_espada_bosque", "arma_hacha_forja", "arma_martillo_hielo", "arma_lanza_magma", "arma_dagas_magia"};
+        com.mundosdeaxelis.arma.TipoArma[] tp = com.mundosdeaxelis.arma.TipoArma.values();
+        add("cuerpo (preparar)", 1500, () -> {
+            killTier1();
+            cmd("kill @e[type=minecraft:item]");
+            cmd("clear @a");
+            for (int i = 0; i < mano.length; i++) {
+                cmd("item replace entity @a hotbar." + i + " with mundos_de_axelis:" + mano[i]);
+            }
+            Minecraft.getInstance().player.getInventory().selected = 0;
+            standLooking(LTX + 0.5, LTY, LTZ + 0.5, LTX + 0.5, LTY + 1.4, LTZ - 8.5);
+            Minecraft.getInstance().options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);
+            ladoFoto = 90.0F;
+        });
+        for (int i = 0; i < tp.length; i++) {
+            final int k = i;
+            final float tPrep = clave(tp[k], 1), tGolpe = clave(tp[k], 2);
+            add("cuerpo (" + tp[k].id + " preparando)", 800, () -> {
+                Minecraft.getInstance().player.getInventory().selected = k;
+                ArmaAnim.fijoPrincipal = true;
+                ArmaAnim.fijo = tPrep;
+            });
+            add("cuerpo (" + tp[k].id + " preparando, foto)", 300, () -> shot("14" + k + "_cuerpo_" + tp[k].id + "_prepara"));
+            add("cuerpo (" + tp[k].id + " golpe)", 500, () -> ArmaAnim.fijo = tGolpe);
+            add("cuerpo (" + tp[k].id + " golpe, foto)", 300, () -> {
+                float[] f = com.mundosdeaxelis.client.ArmaCuerpo.cuadro(tp[k], tGolpe);
+                check("el golpe de " + tp[k].id + " mueve el cuerpo (giro, inclinación y piernas)",
+                        Math.abs(f[2]) > 0.05F && Math.abs(f[13]) > 3.0F && Math.abs(f[11] - f[12]) > 0.3F);
+                shot("15" + k + "_cuerpo_" + tp[k].id + "_golpe");
+            });
+        }
+        // las dos dagas: de frente, golpeando con la otra mano
+        add("cuerpo (dagas de frente)", 600, () -> {
+            ladoFoto = Float.NaN;
+            Minecraft.getInstance().player.getInventory().selected = 4;
+            ArmaAnim.fijoPrincipal = false;
+            ArmaAnim.fijo = clave(com.mundosdeaxelis.arma.TipoArma.DAGAS, 2);
+        });
+        add("cuerpo (dagas de frente, foto)", 300, () -> {
+            check("con las dagas y la otra mano libre se ven las dos", com.mundosdeaxelis.client.ArmaCuerpo.dagasDobles(Minecraft.getInstance().player));
+            shot("160_dos_dagas_3p");
+        });
+        add("cuerpo (dagas 1p)", 600, () -> Minecraft.getInstance().options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON));
+        add("cuerpo (dagas 1p, foto)", 300, () -> shot("161_dos_dagas_1p"));
+        add("cuerpo (martillo de frente)", 600, () -> {
+            Minecraft.getInstance().options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);
+            Minecraft.getInstance().player.getInventory().selected = 2;
+            ArmaAnim.fijoPrincipal = true;
+            ArmaAnim.fijo = clave(com.mundosdeaxelis.arma.TipoArma.MARTILLO, 2);
+        });
+        add("cuerpo (martillo de frente, foto)", 300, () -> {
+            shot("162_martillo_de_frente");
+            ArmaAnim.fijo = -1.0F;
+            Minecraft.getInstance().options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);
+        });
+        // a dos manos: con una antorcha en la otra mano, la lanza no golpea (y avisa)
+        add("dos manos (preparar)", 1200, () -> {
+            cmd("summon minecraft:husk " + (LTX + 0.5) + " " + LTY + " " + (LTZ - 1.5) + " {NoAI:1b,Health:400f,Attributes:[{Name:\"generic.max_health\",Base:400}],Tags:[\"arma_foto\"]}");
+            cmd("item replace entity @a weapon.offhand with minecraft:torch");
+            Minecraft.getInstance().player.getInventory().selected = 3;
+            standLooking(LTX + 0.5, LTY, LTZ + 1.0, LTX + 0.5, LTY + 1.0, LTZ - 1.5);
+        });
+        add("dos manos (golpear)", 700, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            for (net.minecraft.world.entity.Entity en : mc.level.entitiesForRendering()) {
+                if (en instanceof net.minecraft.world.entity.monster.Husk && en.distanceToSqr(mc.player) < 16) {
+                    mc.gameMode.attack(mc.player, en);
+                    mc.player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+                    break;
+                }
+            }
+        });
+        add("dos manos (foto)", 500, () -> {
+            shot("163_dos_manos_aviso");
+            onServer(sp -> {
+                java.util.List<net.minecraft.world.entity.monster.Husk> hs = sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.monster.Husk.class,
+                        sp.getBoundingBox().inflate(6), h -> h.getTags().contains("arma_foto"));
+                boolean sano = !hs.isEmpty() && hs.stream().allMatch(h -> h.getHealth() >= h.getMaxHealth());
+                check("con algo en la otra mano, la lanza no golpea (" + hs.size() + " muñecos)", sano);
+            });
+        });
+        add("dos manos (sin antorcha)", 600, () -> {
+            cmd("item replace entity @a weapon.offhand with minecraft:air");
+            Minecraft mc = Minecraft.getInstance();
+            mc.player.resetAttackStrengthTicker();
+        });
+        add("dos manos (golpear sin antorcha)", 1200, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            for (net.minecraft.world.entity.Entity en : mc.level.entitiesForRendering()) {
+                if (en instanceof net.minecraft.world.entity.monster.Husk && en.distanceToSqr(mc.player) < 16) {
+                    mc.gameMode.attack(mc.player, en);
+                    mc.player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+                    break;
+                }
+            }
+        });
+        add("dos manos (comprobar)", 500, () -> onServer(sp -> {
+            java.util.List<net.minecraft.world.entity.monster.Husk> hs = sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.monster.Husk.class,
+                    sp.getBoundingBox().inflate(6), h -> h.getTags().contains("arma_foto"));
+            check("con la otra mano libre, la lanza sí golpea", !hs.isEmpty() && hs.stream().anyMatch(h -> h.getHealth() < h.getMaxHealth()));
+            cmd("kill @e[type=minecraft:husk,tag=arma_foto]");
+        }));
+    }
+
+    /** El tiempo del fotograma {@code i} del golpe de todo el cuerpo (1 = preparando, 2 = impacto). */
+    private static float clave(com.mundosdeaxelis.arma.TipoArma t, int i) {
+        return com.mundosdeaxelis.client.ArmaCuerpo.tiempoClave(t, i);
     }
 
     /** Etapa 282: la ventanita de confirmar la salida del volcán (Confirmar se llena en 3 s) y el estallido en la ficha del arma. */
@@ -2627,7 +2745,32 @@ public final class AutoTest {
         });
     }
 
+    /** Solo una parte de la prueba (para probar rápido): -Dmundos.autotest.solo=armas */
+    private static final String SOLO = System.getProperty("mundos.autotest.solo", "").trim();
+
     private static void build() {
+        if (SOLO.equals("armas")) {
+            add("reglas", 800, () -> {
+                cmd("gamerule sendCommandFeedback false");
+                cmd("gamerule doDaylightCycle false");
+                cmd("gamerule doMobSpawning false");
+                cmd("time set 6000");
+                cmd("weather clear 999999");
+                cmd("kill @e[type=!player]");
+                cmd("difficulty peaceful");
+                cmd("gamemode survival @a");
+                cmd("mundos desbloquear 5");
+            });
+            armas();
+            cuerpoArmas();
+            etapa282();
+            add("fin", 2000, () -> {
+                open(null);
+                log("AUTOTEST_FIN fotos=" + shots + " comprobaciones=" + checks + " fallos=" + fails);
+            });
+            add("salir", 1000, () -> Minecraft.getInstance().stop());
+            return;
+        }
         add("reglas", 800, () -> {
             cmd("gamerule sendCommandFeedback false");
             cmd("gamerule doDaylightCycle false");

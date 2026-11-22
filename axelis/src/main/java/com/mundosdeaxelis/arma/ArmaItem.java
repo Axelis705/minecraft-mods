@@ -145,6 +145,10 @@ public class ArmaItem extends SwordItem implements GearTool, SoulUser {
         tip.add(Component.translatable(k + "tipo." + tipo.id).withStyle(ChatFormatting.GOLD)
                 .append(Component.literal(" · ").withStyle(ChatFormatting.DARK_GRAY))
                 .append(Component.translatable("crate.mundos_de_axelis." + tierArma.caja.id).withStyle(Style.EMPTY.withColor(tierArma.color))));
+        if (tipo.dosManos()) {
+            // etapa 283: a dos manos
+            tip.add(Component.translatable(k + "dos_manos").withStyle(ChatFormatting.YELLOW));
+        }
         tip.add(Component.translatable(k + "pasiva." + tipo.id + ".1").withStyle(ChatFormatting.GREEN));
         tip.add(Component.translatable(k + "pasiva." + tipo.id + ".2").withStyle(ChatFormatting.GREEN));
         tip.add(Component.translatable(k + "elemento." + tierArma.elemento.id).withStyle(Style.EMPTY.withColor(tierArma.color)));
@@ -170,6 +174,6 @@ public class ArmaItem extends SwordItem implements GearTool, SoulUser {
         if (player instanceof ServerPlayer sp && level instanceof ServerLevel sl) {
             return Armas.tryEspecial(this, sp, sl, stack) ? InteractionResultHolder.sidedSuccess(stack, false) : InteractionResultHolder.fail(stack);
         }
-        return player.getCooldowns().isOnCooldown(this) ? InteractionResultHolder.fail(stack) : InteractionResultHolder.success(stack);
+        return player.getCooldowns().isOnCooldown(this) || Armas.manosOcupadas(player) ? InteractionResultHolder.fail(stack) : InteractionResultHolder.success(stack);
     }
 }

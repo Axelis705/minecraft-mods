@@ -2743,5 +2743,14 @@
   "dir.mundos_de_axelis.no": "to the north-west",
   "dir.mundos_de_axelis.aqui": "right here",
   "dir.mundos_de_axelis.arriba": "%s, higher up",
-  "dir.mundos_de_axelis.abajo": "%s, further down"
+  "dir.mundos_de_axelis.abajo": "%s, further down",
+  "tooltip.mundos_de_axelis.arma.dos_manos": "✋ Two-handed: your other hand must be empty",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.espada": "the sword",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.hacha": "the war axe",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.martillo": "the hammer",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.lanza": "the spear",
+  "tooltip.mundos_de_axelis.arma.tipo_corto.dagas": "the daggers",
+  "message.mundos_de_axelis.arma.dos_manos": "You need both hands for %s: empty your other hand",
+  "gui.mundos_de_axelis.options.attack_camera": "Attack camera",
+  "gui.mundos_de_axelis.options.attack_camera.tip": "In first person, the camera follows the swing of the new weapons a little."
 }

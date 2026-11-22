@@ -20,7 +20,8 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
  * <ul>
  * <li>Primera persona: cada tipo golpea a su manera (la espada hace un tajo en diagonal, el hacha y el martillo levantan el
  * arma y la bajan con fuerza, la lanza se echa atrás y embiste, las dagas apuñalan rápido).</li>
- * <li>Tercera persona: el hacha de guerra, el martillo y la lanza se llevan con las dos manos y el otro brazo acompaña el golpe.</li>
+ * <li>Tercera persona (etapa 283): el golpe es de todo el cuerpo, ver {@link ArmaCuerpo}. El hacha de guerra, el martillo y la
+ * lanza se llevan con las dos manos y las dagas, una en cada mano.</li>
  * </ul>
  */
 public final class ArmaAnim implements IClientItemExtensions {
@@ -102,6 +103,10 @@ public final class ArmaAnim implements IClientItemExtensions {
             return false;
         }
         float t = fijo >= 0.0F ? fijo : swingProcess;
+        // etapa 283: con las dos dagas se turnan; cuando apuñala la otra, esta se queda quieta
+        if (a.tipo == TipoArma.DAGAS && ArmaCuerpo.dagasDobles(player) && !ArmaCuerpo.daLaPrincipal(player)) {
+            t = 0.0F;
+        }
         int i = arm == HumanoidArm.RIGHT ? 1 : -1;
         // la misma posición de reposo que Minecraft (con la bajada al cambiar de objeto o mientras se recarga el golpe); durante el
         // golpe casi no baja, para que se vea entero aunque el arma sea lenta
@@ -116,44 +121,73 @@ public final class ArmaAnim implements IClientItemExtensions {
         return true;
     }
 
-    // ------------------------------------------------------------------ tercera persona
+    /** Para las fotos: con {@link #fijo}, ¿apuñala la mano del arma (true) o la otra? */
+    public static volatile boolean fijoPrincipal = true;
 
-    private static HumanoidModel.ArmPose dosManos;
-
-    /** Crea la pose nueva al arrancar el cliente (las poses son un enum ampliable: no se deben crear a mitad de partida). */
-    public static void init() {
-        dosManos();
+    /**
+     * Primera persona (etapa 283): coloca la segunda daga en la otra mano, con el mismo golpe de las dagas, cuando le toca a ella.
+     */
+    public static void manoDaga(PoseStack pose, HumanoidArm arm, ItemStack stack, float partialTick, float equipProcess) {
+        net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+        float t = fijo >= 0.0F ? fijo : mc.player.getAttackAnim(partialTick);
+        if (ArmaCuerpo.daLaPrincipal(mc.player)) {
+            t = 0.0F;
+        }
+        int i = arm == HumanoidArm.RIGHT ? 1 : -1;
+        float baja = equipProcess * (1.0F - 0.85F * Mth.sin(t * (float) Math.PI));
+        pose.translate(i * 0.56F, -0.52F + baja * -0.6F, -0.72F);
+        float[] k = pose(TipoArma.DAGAS, t);
+        pose.translate(i * k[0], k[1], k[2]);
+        pose.mulPose(Axis.YP.rotationDegrees(i * k[3]));
+        pose.mulPose(Axis.ZP.rotationDegrees(i * k[4]));
+        pose.mulPose(Axis.XP.rotationDegrees(k[5]));
+        pose.mulPose(Axis.YP.rotationDegrees(i * -k[3]));
     }
 
-    /** Agarre a dos manos (hacha de guerra, martillo y lanza): el arma cruzada delante del pecho; el otro brazo sigue el golpe. */
-    private static HumanoidModel.ArmPose dosManos() {
-        if (dosManos == null) {
-            dosManos = HumanoidModel.ArmPose.create("MUNDOS_DE_AXELIS_DOS_MANOS", true, (model, entity, arm) -> {
-                ModelPart main = arm == HumanoidArm.RIGHT ? model.rightArm : model.leftArm;
-                ModelPart off = arm == HumanoidArm.RIGHT ? model.leftArm : model.rightArm;
-                float s = arm == HumanoidArm.RIGHT ? 1.0F : -1.0F;
-                float mira = Mth.clamp(model.head.xRot, -0.6F, 0.6F) * 0.3F;
-                main.xRot = -0.70F + mira;
-                main.yRot = s * -0.15F;
-                main.zRot = 0.0F;
-                off.xRot = -0.95F + mira;
-                off.yRot = s * 0.62F;
-                off.zRot = 0.0F;
-                // el golpe de Minecraft solo mueve el brazo del arma: aquí se le suma lo mismo al otro para que no suelte el mango
-                float t = model.attackTime;
-                if (t > 0.0F) {
-                    float f = 1.0F - t;
-                    f *= f;
-                    f *= f;
-                    f = 1.0F - f;
-                    float f1 = Mth.sin(f * (float) Math.PI);
-                    float f2 = Mth.sin(t * (float) Math.PI) * -(model.head.xRot - 0.7F) * 0.75F;
-                    off.xRot -= f1 * 1.2F + f2;
-                    off.zRot += s * Mth.sin(t * (float) Math.PI) * 0.3F;
+    // ------------------------------------------------------------------ tercera persona (etapa 283: todo el cuerpo, ver ArmaCuerpo)
+
+    private static HumanoidModel.ArmPose espada, dosManos, dagas;
+
+    /** Crea las poses nuevas al arrancar el cliente (las poses son un enum ampliable: no se deben crear a mitad de partida). */
+    public static void init() {
+        pose(TipoArma.ESPADA);
+        pose(TipoArma.HACHA);
+        pose(TipoArma.DAGAS);
+    }
+
+    /**
+     * La pose de cada tipo: la espada se lleva con una mano (la otra queda para el escudo); el hacha de guerra, el martillo y la
+     * lanza con las dos; las dagas, una en cada mano. El golpe de todo el cuerpo lo pone {@link ArmaCuerpo#aplicar}.
+     */
+    private static HumanoidModel.ArmPose pose(TipoArma t) {
+        switch (t) {
+            case ESPADA -> {
+                if (espada == null) {
+                    espada = HumanoidModel.ArmPose.create("MUNDOS_DE_AXELIS_ESPADA", false,
+                            (model, entity, arm) -> ArmaCuerpo.aplicar(model, entity, arm, tipoDe(entity, TipoArma.ESPADA)));
                 }
-            });
+                return espada;
+            }
+            case DAGAS -> {
+                if (dagas == null) {
+                    dagas = HumanoidModel.ArmPose.create("MUNDOS_DE_AXELIS_DAGAS", true,
+                            (model, entity, arm) -> ArmaCuerpo.aplicar(model, entity, arm, TipoArma.DAGAS));
+                }
+                return dagas;
+            }
+            default -> {
+                if (dosManos == null) {
+                    dosManos = HumanoidModel.ArmPose.create("MUNDOS_DE_AXELIS_DOS_MANOS", true,
+                            (model, entity, arm) -> ArmaCuerpo.aplicar(model, entity, arm, tipoDe(entity, TipoArma.HACHA)));
+                }
+                return dosManos;
+            }
         }
-        return dosManos;
+    }
+
+    /** El tipo del arma que lleva (la pose de dos manos la comparten el hacha, el martillo y la lanza). */
+    private static TipoArma tipoDe(LivingEntity e, TipoArma porDefecto) {
+        return e.getMainHandItem().getItem() instanceof ArmaItem a ? a.tipo : porDefecto;
     }
 
     @Override
@@ -161,9 +195,6 @@ public final class ArmaAnim implements IClientItemExtensions {
         if (hand != InteractionHand.MAIN_HAND || !(stack.getItem() instanceof ArmaItem a) || entity.isUsingItem()) {
             return null;
         }
-        return switch (a.tipo) {
-            case HACHA, MARTILLO, LANZA -> dosManos();
-            default -> null;
-        };
+        return pose(a.tipo);
     }
 }

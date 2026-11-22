@@ -759,6 +759,55 @@ public final class TestCommands {
         return fail == null ? 1 : 0;
     }
 
+    // ------------------------------------------------------------------ etapa 283: armas a dos manos
+
+    /** Etapa 283: con algo en la otra mano, las armas a dos manos no golpean ni usan la especial; la espada sí (va con escudo). */
+    private static int etapa283(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.get(sl,
+                new com.mojang.authlib.GameProfile(java.util.UUID.fromString("5f0c2b83-0283-4a2e-9d1b-28300000e283"), "[prueba283]"));
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        java.util.List<String> fails = new java.util.ArrayList<>();
+        for (com.mundosdeaxelis.arma.TipoArma tp : com.mundosdeaxelis.arma.TipoArma.values()) {
+            net.minecraft.world.entity.monster.Vindicator m = muñeco(sl, base.getX() + 0.5, base.getY(), base.getZ() + 1.5, 180);
+            fp.moveTo(base.getX() + 0.5, base.getY(), base.getZ() - 0.5, 0, 0);
+            fp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.item.ItemStack(
+                    com.mundosdeaxelis.registry.ModItems.arma(tp, com.mundosdeaxelis.arma.TierArma.values()[0])));
+            fp.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, new net.minecraft.world.item.ItemStack(
+                    tp == com.mundosdeaxelis.arma.TipoArma.ESPADA ? net.minecraft.world.item.Items.SHIELD : net.minecraft.world.item.Items.TORCH));
+            boolean ocupadas = com.mundosdeaxelis.arma.Armas.manosOcupadas(fp);
+            if (ocupadas != tp.dosManos()) {
+                fails.add(tp.id + ": manos ocupadas = " + ocupadas);
+            }
+            float h0 = m.getHealth();
+            m.invulnerableTime = 0;
+            fp.attack(m);
+            boolean pego = m.getHealth() < h0;
+            if (pego == tp.dosManos()) {
+                fails.add(tp.id + (tp.dosManos() ? " golpea con algo en la otra mano" : " con escudo no golpea"));
+            }
+            if (tp.dosManos()) {
+                com.mundosdeaxelis.gear.Souls.set(fp, com.mundosdeaxelis.gear.Souls.max(fp));
+                if (com.mundosdeaxelis.arma.Armas.tryEspecial((com.mundosdeaxelis.arma.ArmaItem) fp.getMainHandItem().getItem(), fp, sl, fp.getMainHandItem())) {
+                    fails.add(tp.id + " usa la especial con algo en la otra mano");
+                }
+                fp.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, net.minecraft.world.item.ItemStack.EMPTY);
+                m.invulnerableTime = 0;
+                float h1 = m.getHealth();
+                fp.attack(m);
+                if (m.getHealth() >= h1) {
+                    fails.add(tp.id + " con la otra mano libre no golpea");
+                }
+            }
+            m.discard();
+        }
+        fp.getInventory().clearContent();
+        String msg = fails.isEmpty() ? "PRUEBA_ETAPA283_OK" : "PRUEBA_ETAPA283_FALLO " + fails;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fails.isEmpty() ? 1 : 0;
+    }
+
     // ------------------------------------------------------------------ etapa 282: arreglos rápidos
 
     /**
@@ -768,7 +817,9 @@ public final class TestCommands {
      */
     private static int etapa282(CommandSourceStack src) {
         net.minecraft.server.level.ServerLevel sl = src.getLevel();
-        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        // un jugador falso propio: el de siempre lo usa la prueba de las armas, que sigue en marcha (sus especiales tardan)
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.get(sl,
+                new com.mojang.authlib.GameProfile(java.util.UUID.fromString("5f0c2b82-0282-4a2e-9d1b-28200000e282"), "[prueba282]"));
         net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
         java.util.List<String> fails = new java.util.concurrent.CopyOnWriteArrayList<>();
         // 1) cofres: el estado gira con la estructura (antes quedaban mirando a la pared)
@@ -1230,6 +1281,7 @@ public final class TestCommands {
                 .then(Commands.literal("encargos").executes(ctx -> encargos(ctx.getSource())))
                 .then(Commands.literal("armas").executes(ctx -> armas(ctx.getSource())))
                 .then(Commands.literal("etapa282").executes(ctx -> etapa282(ctx.getSource())))
+                .then(Commands.literal("etapa283").executes(ctx -> etapa283(ctx.getSource())))
                 .then(Commands.literal("encargos_listos").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{

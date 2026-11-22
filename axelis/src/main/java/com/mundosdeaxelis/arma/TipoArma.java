@@ -38,4 +38,9 @@ public enum TipoArma {
         this.almas = almas;
         this.enfriamiento = enfriamiento;
     }
+
+    /** Etapa 283: armas a dos manos (todas menos la espada): con algo en la otra mano no se puede golpear ni usar la especial. */
+    public boolean dosManos() {
+        return this != ESPADA;
+    }
 }

@@ -35,7 +35,8 @@ public class MundosOptionsScreen extends Screen {
         toggle(x1, y + 24, w, "music", ClientConfig.DUNGEON_MUSIC);
         toggle(x0, y + 48, w, "shake", ClientConfig.SCREEN_SHAKE);
         toggle(x1, y + 48, w, "flashes", ClientConfig.FLASHES);
-        addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose()).bounds(this.width / 2 - 100, y + 84, 200, 20).build());
+        toggle(x0, y + 72, w, "attack_camera", ClientConfig.ATTACK_CAMERA);
+        addRenderableWidget(Button.builder(Component.translatable("gui.done"), b -> onClose()).bounds(this.width / 2 - 100, y + 108, 200, 20).build());
     }
 
     private void toggle(int x, int y, int w, String key, ForgeConfigSpec.BooleanValue value) {
