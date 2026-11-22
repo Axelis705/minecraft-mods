@@ -172,6 +172,7 @@ public final class PhoneHud {
             return; // nada encima de las fotos
         }
         Font font = mc.font;
+        LetrasHud.render(g, sw, sh);              // las letras de la canción, debajo de todo lo demás
         boolean phoneOpen = ClientHooks.screen() instanceof PhoneScreen;
         if (!phoneOpen) {
             if (st.state == CallState.INCOMING) {

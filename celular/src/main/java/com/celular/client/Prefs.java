@@ -37,6 +37,8 @@ public final class Prefs {
     public static boolean hearOthers = true;
     /** Notas musicales flotando sobre quien pone música. */
     public static boolean partyNotes = true;
+    /** Letras de las canciones (etapa de letras): las mías, las de los demás que oigo, el subtítulo de abajo y buscarlas en internet. */
+    public static boolean lyricsMine = true, lyricsOthers = true, lyricsSubs = true, lyricsNet = true;
     /** Avisos de mensajes nuevos. */
     public static boolean msgToasts = true;
     private static boolean loaded;
@@ -77,6 +79,10 @@ public final class Prefs {
             shareLocation = Boolean.parseBoolean(p.getProperty("compartir_ubicacion", "true"));
             hearOthers = Boolean.parseBoolean(p.getProperty("oir_altavoces", "true"));
             partyNotes = Boolean.parseBoolean(p.getProperty("notas_fiesta", "true"));
+            lyricsMine = Boolean.parseBoolean(p.getProperty("letras_mias", "true"));
+            lyricsOthers = Boolean.parseBoolean(p.getProperty("letras_otros", "true"));
+            lyricsSubs = Boolean.parseBoolean(p.getProperty("letras_subtitulo", "true"));
+            lyricsNet = Boolean.parseBoolean(p.getProperty("letras_internet", "true"));
             msgToasts = Boolean.parseBoolean(p.getProperty("avisos_mensajes", "true"));
         } catch (Exception ignored) {
         }
@@ -101,6 +107,10 @@ public final class Prefs {
         p.setProperty("compartir_ubicacion", Boolean.toString(shareLocation));
         p.setProperty("oir_altavoces", Boolean.toString(hearOthers));
         p.setProperty("notas_fiesta", Boolean.toString(partyNotes));
+        p.setProperty("letras_mias", Boolean.toString(lyricsMine));
+        p.setProperty("letras_otros", Boolean.toString(lyricsOthers));
+        p.setProperty("letras_subtitulo", Boolean.toString(lyricsSubs));
+        p.setProperty("letras_internet", Boolean.toString(lyricsNet));
         p.setProperty("avisos_mensajes", Boolean.toString(msgToasts));
         try {
             Files.createDirectories(file().getParent());

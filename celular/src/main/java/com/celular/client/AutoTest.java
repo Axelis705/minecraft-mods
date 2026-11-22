@@ -90,6 +90,14 @@ public final class AutoTest {
         next = System.currentTimeMillis() + s.pause;
     }
 
+    /** Una comprobación: si falla, cuenta como fallo de la prueba (y queda en el registro). */
+    static void check(boolean ok, String what) {
+        if (!ok) {
+            throw new AssertionError(what);
+        }
+        log("ok: " + what);
+    }
+
     private static void add(String name, long wait, Runnable r) {
         STEPS.add(new Step(name, wait, r));
     }
@@ -303,6 +311,50 @@ public final class AutoTest {
         add("audifonos", 300, () -> fake.setItemSlot(EquipmentSlot.HEAD, new ItemStack(CelularReg.HEADPHONES.get())));
         poseShots("audifonos", PhoneUse.MUSIC, 15F, 3);
         add("sin audifonos", 300, () -> fake.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY));
+
+        // ---- letras de la canción (tono.lrc está junto a tono.mp3): las mías alrededor y las de otro jugador
+        add("letras (preparar)", 1500, () -> {
+            ui(false);
+            fakeUses(PhoneUse.OFF, 0F);
+            Prefs.lyricsNet = false;
+            Prefs.lyricsMine = Prefs.lyricsOthers = Prefs.lyricsSubs = true;
+            if (com.celular.music.MusicPlayer.current == null && !com.celular.music.MusicPlayer.library.isEmpty()) {
+                com.celular.music.MusicPlayer.playList(new ArrayList<>(com.celular.music.MusicPlayer.library), 0);
+            }
+            LetrasHud.debugSeg = 4.8;
+            mc.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);
+            cmd("tp @a 0.5 -60 6.5 180 0");
+        });
+        add("letras (comprobar)", 400, () -> {
+            check(LetrasHud.estadoMia().equals("lista"), "la letra de tono.mp3 se lee del .lrc de al lado (" + LetrasHud.estadoMia() + ")");
+            check(LetrasHud.palabras > 0 && LetrasHud.linea.equals("Letras que flotan a tu alrededor"),
+                    "las letras flotan y el subtítulo va en la línea correcta (" + LetrasHud.palabras + ", " + LetrasHud.linea + ")");
+            int sw = mc.getWindow().getGuiScaledWidth(), sh = mc.getWindow().getGuiScaledHeight();
+            float[] c = LetrasHud.probarCentro(mc, sw, sh);
+            check(c != null && Math.abs(c[0] - sw / 2F) < 2 && Math.abs(c[1] - sh / 2F) < 2 && Math.abs(c[2] - sw / 2F) < 3 && Math.abs(c[3] - sh / 2F) < 3,
+                    "lo que está delante de la cámara cae en el centro de la pantalla (" + (c == null ? "null" : c[0] + "," + c[1] + " / " + c[2] + "," + c[3]) + ")");
+        });
+        photo("9_letras_primera_persona", 300, () -> { });
+        photo("9_letras_tercera_persona", 1200, () -> mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_BACK));
+        photo("9_letras_de_frente", 1200, () -> mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT));
+        add("letras (de otro)", 1200, () -> {
+            mc.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);
+            Prefs.lyricsMine = false;
+            LetrasHud.debugSeg = -1;
+            LetrasHud.debugOtro = fake;
+            LetrasHud.debugLetraOtro = com.celular.music.Letra.lrc("[00:00.30]Hola mundo de bloques\n[00:01.20]Suena el celular\n[00:02.10]Letras que flotan a tu alrededor\n");
+            LetrasHud.debugSegOtro = 4.8;
+            lookFrom(FX + 2.8, FZ - 2.8, FX, GROUND + 1.3, FZ);
+        });
+        add("letras (de otro, comprobar)", 300, () -> check(LetrasHud.palabras > 0, "letras alrededor del otro jugador (" + LetrasHud.palabras + ")"));
+        photo("9_letras_de_otro", 200, () -> { });
+        add("letras (fin)", 300, () -> {
+            LetrasHud.debugOtro = null;
+            LetrasHud.debugLetraOtro = null;
+            Prefs.lyricsMine = true;
+            Prefs.lyricsNet = true;
+            ui(true);
+        });
 
         // ---- la bocina (encendida y apagada)
         photo("5_bocinas", 2000, () -> lookFrom(7.5, -3.6, 7.5, GROUND + 0.5, -6.5));

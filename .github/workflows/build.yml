@@ -78,6 +78,8 @@ jobs:
           java -cp out PhoneFilterTest
           javac -encoding UTF-8 -d out celular/src/main/java/com/celular/music/Meta.java celular/src/main/java/com/celular/music/Spectrum.java celular/src/main/java/com/celular/music/mp3/*.java celular/tests/MusicTest.java
           java -cp out MusicTest celular/tests/fixtures/tono.mp3
+          javac -encoding UTF-8 -d out celular/src/main/java/com/celular/music/Meta.java celular/src/main/java/com/celular/music/Letra.java celular/src/main/java/com/celular/music/Letras.java celular/tests/LetrasTest.java
+          java -cp out LetrasTest --internet
       - name: Compilar ${{ matrix.mod }}
         working-directory: ${{ matrix.mod }}
         run: |

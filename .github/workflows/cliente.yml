@@ -80,7 +80,7 @@ jobs:
       - name: Opciones del juego y de la prueba
         run: |
           mkdir -p $P/run/celular/musica $P/run/config
-          cp celular/tests/fixtures/tono.mp3 $P/run/celular/musica/ || true
+          cp celular/tests/fixtures/tono.mp3 celular/tests/fixtures/tono.lrc $P/run/celular/musica/ || true
           cat > $P/run/options.txt <<'EOF'
           onboardAccessibility:false
           tutorialStep:none

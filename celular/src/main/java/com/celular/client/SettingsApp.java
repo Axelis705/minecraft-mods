@@ -21,7 +21,7 @@ final class SettingsApp extends App {
 
     private final Scroll scroll = new Scroll();
     private static final String[] TOGGLES = {"dark", "lock", "notifications", "msg_toasts", "shutter", "grid", "music_mute", "music_toasts",
-            "speaker", "hear_others", "party", "share_location"};
+            "speaker", "hear_others", "party", "lyrics_mine", "lyrics_others", "lyrics_subs", "lyrics_net", "share_location"};
 
     private boolean value(int i) {
         return switch (i) {
@@ -36,6 +36,10 @@ final class SettingsApp extends App {
             case 8 -> Prefs.speaker;
             case 9 -> Prefs.hearOthers;
             case 10 -> Prefs.partyNotes;
+            case 11 -> Prefs.lyricsMine;
+            case 12 -> Prefs.lyricsOthers;
+            case 13 -> Prefs.lyricsSubs;
+            case 14 -> Prefs.lyricsNet;
             default -> Prefs.shareLocation;
         };
     }
@@ -53,6 +57,16 @@ final class SettingsApp extends App {
             case 8 -> Prefs.speaker = !Prefs.speaker;
             case 9 -> Prefs.hearOthers = !Prefs.hearOthers;
             case 10 -> Prefs.partyNotes = !Prefs.partyNotes;
+            case 11 -> Prefs.lyricsMine = !Prefs.lyricsMine;
+            case 12 -> Prefs.lyricsOthers = !Prefs.lyricsOthers;
+            case 13 -> Prefs.lyricsSubs = !Prefs.lyricsSubs;
+            case 14 -> {
+                Prefs.lyricsNet = !Prefs.lyricsNet;
+                com.celular.music.Letras.internet = Prefs.lyricsNet;
+                if (Prefs.lyricsNet) {
+                    com.celular.music.Letras.olvidar();      // volver a buscar las que no se encontraron sin internet
+                }
+            }
             default -> {
                 Prefs.shareLocation = !Prefs.shareLocation;
                 com.celular.plat.Net.toServer(new com.celular.net.AppNet.Req(com.celular.net.AppNet.Req.SHARE, null, Prefs.shareLocation ? 1 : 0, ""));
@@ -74,8 +88,9 @@ final class SettingsApp extends App {
         int x0 = s.dx0 + 6, x1 = s.dx1 - 6;
         // todo lo de abajo se desplaza
         int[] colors = {0xFF636366, 0xFF5856D6, 0xFFFF3B30, 0xFF30D158, 0xFFFF9F0A, 0xFF34C759, 0xFFFA233B, 0xFFFF2D55, 0xFF1DB954, 0xFF0A84FF,
-                0xFFBF5AF2, 0xFFFF9500};
-        int[] icons = {D.MOON, D.LOCK, D.CHECK, D.CHAT, D.CAMERA, D.GALLERY, D.NOTE, D.NOTE, D.SPEAKER, D.HEADPHONES, D.STAR, D.PIN};
+                0xFFBF5AF2, 0xFFFF2D92, 0xFF64D2FF, 0xFFFFD60A, 0xFF30B0C7, 0xFFFF9500};
+        int[] icons = {D.MOON, D.LOCK, D.CHECK, D.CHAT, D.CAMERA, D.GALLERY, D.NOTE, D.NOTE, D.SPEAKER, D.HEADPHONES, D.STAR, D.NOTE, D.QUEUE, D.CHAT,
+                D.GLOBE, D.PIN};
         Component about = Component.translatable("celular.settings.about").withStyle(ChatFormatting.BOLD);
         java.util.List<net.minecraft.util.FormattedCharSequence> aboutLines = f.split(Component.translatable("celular.settings.about_text"),
                 (int) ((x1 - x0 - 4) / 0.75F));

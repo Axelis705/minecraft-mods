@@ -874,6 +874,7 @@ final class MusicApp extends App {
         // ecualizador
         int eqBottom = s.cy1 - 2;
         int eqTop = Math.max(y + 4, eqBottom - 44);
+        letra(g, f, cx, eqTop, eqBottom);
         if (eqBottom - eqTop >= 6) {
             int n = Spectrum.BANDS;
             int bw = Math.max(2, (s.dw() - 16) / n - 1);
@@ -884,6 +885,39 @@ final class MusicApp extends App {
                 g.fillGradient(ex + i * (bw + 1), eqBottom - h, ex + i * (bw + 1) + bw, eqBottom, D.alpha(c, 0.95F), D.alpha(c, 0.35F));
             }
         }
+    }
+
+    /** La línea de la letra que se canta ahora (o si se está buscando / no hay), sobre el ecualizador. */
+    private void letra(G g, Font f, int cx, int top, int bottom) {
+        if (bottom - top < 10) {
+            return;
+        }
+        com.celular.music.Letra le = LetrasHud.mia();
+        String txt = null;
+        int col = 0xFFFFFFFF;
+        if (le != null) {
+            int li = le.linea(MusicPlayer.position());
+            txt = li >= 0 ? le.lineas.get(li).texto : "♪ ♪ ♪";
+        } else {
+            String est = LetrasHud.estadoMia();
+            if (est.equals("buscando")) {
+                txt = Component.translatable("celular.music.lyrics_searching").getString();
+                col = 0x90FFFFFF;
+            } else if (est.equals("ninguna")) {
+                txt = Component.translatable("celular.music.lyrics_none").getString();
+                col = 0x70FFFFFF;
+            }
+        }
+        if (txt == null || txt.isEmpty()) {
+            return;
+        }
+        float sc = Math.min(0.8F, (s.dw() - 12F) / Math.max(1, f.width(txt)));
+        int y = top + (bottom - top) / 2 - 4;
+        g.push();
+        g.translate(cx, y, 0);
+        g.scale(sc, sc, 1F);
+        g.drawString(f, txt, -f.width(txt) / 2, 0, col, true);
+        g.pop();
     }
 
     // ------------------------------------------------------------------ entrada

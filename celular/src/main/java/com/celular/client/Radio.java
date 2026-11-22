@@ -481,6 +481,53 @@ public final class Radio {
         return l;
     }
 
+    /** Un altavoz de otro que oigo ahora (para las letras): la canción, el segundo, de dónde sale y quién la pone. */
+    static final class Oido {
+        final SongInfo song;
+        final double seg;
+        final Entity entity;
+        final Vec3 block;
+        final String name;
+        final double hear;
+
+        Oido(SongInfo song, double seg, Entity entity, Vec3 block, String name, double hear) {
+            this.song = song;
+            this.seg = seg;
+            this.entity = entity;
+            this.block = block;
+            this.name = name;
+            this.hear = hear;
+        }
+    }
+
+    /** Los altavoces de otros que suenan para mí ahora mismo (están sonando, en mi dimensión y a distancia de oírse). */
+    static List<Oido> oidos(Minecraft mc) {
+        List<Oido> out = new ArrayList<>();
+        if (mc.level == null || mc.player == null) {
+            return out;
+        }
+        long now = System.currentTimeMillis();
+        for (Remote r : REMOTES.values()) {
+            if (r.stream == null || r.stream.done() || r.st == null || r.st.song == null || !r.st.playing || r.level != mc.level) {
+                continue;
+            }
+            Vec3 block = r.st.block != RadioNet.SpeakerState.NO_BLOCK ? Vec3.atCenterOf(net.minecraft.core.BlockPos.of(r.st.block)) : null;
+            Entity e = block == null ? mc.level.getEntity(r.st.source) : null;
+            Vec3 at = block != null ? block : e != null ? e.position() : null;
+            double hear = hear(r.st);
+            if (at == null || at.distanceTo(mc.player.position()) > hear) {
+                continue;
+            }
+            out.add(new Oido(r.st.song, r.pos(now), e, block, r.st.name, hear));
+        }
+        return out;
+    }
+
+    /** Dónde está guardada en la caché una canción del mundo (para leer la letra que trae dentro). */
+    static Path cacheFile(SongInfo i) {
+        return cached(i);
+    }
+
     /** Para la prueba de dos jugadores: qué altavoces de otros conozco y en qué estado (nombre:canción:sonando/listo/bajando). */
     static String remotesDebug() {
         StringBuilder b = new StringBuilder();
