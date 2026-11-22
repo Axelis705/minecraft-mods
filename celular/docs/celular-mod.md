@@ -104,6 +104,12 @@ Axelis pidió que, al poner una canción, salgan las letras flotando alrededor d
   - Con `--internet` busca una canción de dominio público; si LRCLIB no responde no es un fallo.
   - Prueba con el cliente: `tests/fixtures/tono.lrc` junto a `tono.mp3`. Comprueba que se lee el `.lrc`, que salen palabras y el subtítulo correcto, y que un punto delante de la cámara cae en el centro de la pantalla. Fotos en primera persona, en tercera (de espaldas y de frente) y alrededor de otro jugador (`LetrasHud.debugOtro`).
 
+- **Resultado**:
+  - La prueba con el cliente da 0 fallos en las 4 versiones (1.20.1: 54 fotos; 1.21.1, 1.21.4 y 26.3: 48 fotos).
+  - En el CI, LRCLIB encontró la letra con tiempos de una canción de dominio público (25 líneas).
+  - Una vez falló la prueba de 26.3 por el CI: Gradle no encontró Java 8 para `runServer`. Al repetirla salió bien.
+- **Instalado**: el celular se puso en la instancia «test» el 22 de noviembre, con el juego cerrado: `latest.log` terminaba en «Stopping!».
+
 ## Llamadas y voz
 - `CallManager` (servidor): DIAL → el que recibe ve "Llamada entrante" y su celular **suena de verdad** (lo oyen los de cerca) cada 2.6 s; 30 s sin contestar = llamada perdida. Ocupado, sin celular, desconectado, rechazada: cada una con su mensaje.
 - Voz: `voice/VoicePlugin` es un complemento de **Simple Voice Chat** (`@ForgeVoicechatPlugin`, API 2.5.0 compileOnly desde `maven.maxhenkel.de`). Toma el audio del micrófono de quien habla, lo decodifica, le pone el **filtro de teléfono** (`PhoneFilter`: pasa 320–3300 Hz, un poco de saturación y siseo) y lo manda por un canal directo al otro, a cualquier distancia. Si SVC no está, la clase nunca se carga y la llamada funciona sin voz (la app lo dice).
