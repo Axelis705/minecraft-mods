@@ -33,31 +33,37 @@ public final class ArmaAnim implements IClientItemExtensions {
 
     // ------------------------------------------------------------------ primera persona
 
-    /** Fotogramas clave: {tiempo, x, y, z, giro X, giro Y, giro Z} (x hacia el lado del brazo, grados). */
+    /**
+     * Fotogramas clave: {tiempo, x, y, z, guiño, giro, cabeceo} (x hacia el lado del brazo; grados). Igual que el golpe de
+     * Minecraft, el cabeceo (bajar el arma hacia delante, negativo) se hace en un marco girado "guiño" grados: con 45 el golpe
+     * sale en diagonal y con 0 sale de arriba abajo.
+     */
     private static final float[][] ESPADA = {
-            {0.00F, 0, 0, 0, 0, 0, 0},
-            {0.12F, 0.06F, 0.10F, 0.06F, 20, -20, -30},
-            {0.42F, -0.42F, -0.18F, -0.22F, -50, 50, 65},
-            {1.00F, 0, 0, 0, 0, 0, 0}};
+            {0.00F, 0, 0, 0, 45, 0, 0},
+            {0.12F, 0.06F, 0.10F, 0.04F, 45, 8, 12},
+            {0.40F, -0.45F, -0.05F, -0.25F, 45, -25, -95},
+            {1.00F, 0, 0, 0, 45, 0, 0}};
+    // el hacha y el martillo suben (sin echarse hacia la cara) y bajan de golpe
     private static final float[][] HACHA = {
             {0.00F, 0, 0, 0, 0, 0, 0},
-            {0.20F, 0.02F, 0.22F, 0.12F, 55, -5, -10},
-            {0.50F, -0.12F, -0.32F, -0.25F, -85, 10, 12},
+            {0.22F, 0.00F, 0.27F, 0.02F, -45, 9, 0},
+            {0.50F, -0.12F, -0.20F, -0.25F, 10, 8, -90},
             {1.00F, 0, 0, 0, 0, 0, 0}};
     private static final float[][] MARTILLO = {
             {0.00F, 0, 0, 0, 0, 0, 0},
-            {0.25F, 0.00F, 0.32F, 0.20F, 70, -8, -15},
-            {0.55F, -0.15F, -0.45F, -0.30F, -100, 12, 18},
+            {0.28F, 0.00F, 0.28F, -0.05F, 49, 28, -15},
+            {0.58F, -0.15F, -0.28F, -0.30F, 5, 10, -100},
             {1.00F, 0, 0, 0, 0, 0, 0}};
+    // la lanza se pone apuntando al frente, se echa atrás y embiste hacia la mira
     private static final float[][] LANZA = {
             {0.00F, 0, 0, 0, 0, 0, 0},
-            {0.15F, 0.04F, -0.04F, 0.22F, -55, -8, 0},
-            {0.40F, -0.12F, 0.02F, -0.65F, -62, 8, 0},
+            {0.18F, 0.03F, 0.03F, 0.07F, 4, -16, -69},
+            {0.42F, -0.02F, -0.01F, -0.65F, 26, -12, -80},
             {1.00F, 0, 0, 0, 0, 0, 0}};
     private static final float[][] DAGAS = {
             {0.00F, 0, 0, 0, 0, 0, 0},
-            {0.10F, 0.03F, 0.02F, 0.12F, -25, -10, 0},
-            {0.30F, -0.18F, 0.04F, -0.45F, -70, 18, -10},
+            {0.10F, 0.00F, 0.00F, 0.08F, 0, 20, -10},
+            {0.30F, -0.19F, 0.03F, -0.21F, -2, 46, -38},
             {1.00F, 0, 0, 0, 0, 0, 0}};
 
     private static float[][] claves(TipoArma t) {
@@ -70,7 +76,7 @@ public final class ArmaAnim implements IClientItemExtensions {
         };
     }
 
-    /** Posición del arma en el punto {@code t} (0..1) del golpe: {x, y, z, giro X, giro Y, giro Z}. */
+    /** Posición del arma en el punto {@code t} (0..1) del golpe: {x, y, z, guiño, giro, cabeceo}. */
     public static float[] pose(TipoArma tipo, float t) {
         float[][] k = claves(tipo);
         t = Mth.clamp(t, 0.0F, 1.0F);
@@ -101,9 +107,10 @@ public final class ArmaAnim implements IClientItemExtensions {
         pose.translate(i * 0.56F, -0.52F + equipProcess * -0.6F, -0.72F);
         float[] k = pose(a.tipo, t);
         pose.translate(i * k[0], k[1], k[2]);
-        pose.mulPose(Axis.YP.rotationDegrees(i * k[4]));
-        pose.mulPose(Axis.XP.rotationDegrees(k[3]));
-        pose.mulPose(Axis.ZP.rotationDegrees(i * k[5]));
+        pose.mulPose(Axis.YP.rotationDegrees(i * k[3]));
+        pose.mulPose(Axis.ZP.rotationDegrees(i * k[4]));
+        pose.mulPose(Axis.XP.rotationDegrees(k[5]));
+        pose.mulPose(Axis.YP.rotationDegrees(i * -k[3]));
         return true;
     }
 

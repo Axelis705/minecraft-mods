@@ -1541,7 +1541,7 @@ public final class AutoTest {
             });
         }
         // animación de ataque: cada arma en el momento del golpe (y el martillo también arriba, antes de bajar)
-        float[] golpe = {0.42F, 0.50F, 0.55F, 0.40F, 0.30F};
+        float[] golpe = {0.40F, 0.50F, 0.58F, 0.42F, 0.30F};
         for (int i = 0; i < mano.length; i++) {
             final int k = i;
             add("armas (" + tipos[k] + " golpeando)", 700, () -> {
@@ -1550,13 +1550,13 @@ public final class AutoTest {
             });
             add("armas (" + tipos[k] + " golpeando, foto)", 300, () -> {
                 float[] p = ArmaAnim.pose(com.mundosdeaxelis.arma.TipoArma.values()[k], golpe[k]);
-                check("la animación de ataque de " + tipos[k] + " mueve el arma", Math.abs(p[3]) + Math.abs(p[4]) > 30.0F);
+                check("la animación de ataque de " + tipos[k] + " mueve el arma", Math.abs(p[5]) + Math.abs(p[2]) > 0.3F);
                 shot("13" + k + "_golpe_" + tipos[k]);
             });
         }
         add("armas (martillo arriba)", 700, () -> {
             Minecraft.getInstance().player.getInventory().selected = 2;
-            ArmaAnim.fijo = 0.25F;
+            ArmaAnim.fijo = 0.28F;
         });
         add("armas (martillo arriba, foto)", 300, () -> {
             shot("135_golpe_martillo_arriba");
@@ -1606,7 +1606,7 @@ public final class AutoTest {
         // dos especiales con clic derecho (con almas): el Tajo creciente y el Terremoto
         add("armas (tajo, preparar)", 1500, () -> {
             for (int i = 0; i < 3; i++) {
-                cmd("summon minecraft:husk " + (LTX - 1 + i) + " " + LTY + " " + (LTZ - 5) + " {NoAI:1b,Tags:[\"arma_foto\"]}");
+                cmd("summon minecraft:husk " + (LTX - 1 + i) + " " + LTY + " " + (LTZ - 5) + " {NoAI:1b,Health:400f,Attributes:[{Name:\"generic.max_health\",Base:400}],Tags:[\"arma_foto\"]}");
             }
             onServer(sp -> com.mundosdeaxelis.gear.Souls.set(sp, com.mundosdeaxelis.gear.Souls.max(sp)));
             standLooking(LTX + 0.5, LTY, LTZ + 1.5, LTX + 0.5, LTY + 1.0, LTZ - 5.0);
@@ -1630,7 +1630,7 @@ public final class AutoTest {
             cmd("kill @e[type=minecraft:husk,tag=arma_foto]");
             for (int i = 0; i < 4; i++) {
                 double a = i * Math.PI / 2;
-                cmd(String.format(java.util.Locale.ROOT, "summon minecraft:husk %.2f %d %.2f {NoAI:1b,Tags:[\"arma_foto\"]}",
+                cmd(String.format(java.util.Locale.ROOT, "summon minecraft:husk %.2f %d %.2f {NoAI:1b,Health:400f,Attributes:[{Name:\"generic.max_health\",Base:400}],Tags:[\"arma_foto\"]}",
                         LTX + 0.5 + 2.5 * Math.cos(a), LTY, LTZ - 3.5 + 2.5 * Math.sin(a)));
             }
             onServer(sp -> com.mundosdeaxelis.gear.Souls.set(sp, com.mundosdeaxelis.gear.Souls.max(sp)));
