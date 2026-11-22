@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:item/handheld",
+ "textures": {
+  "layer0": "mundos_de_axelis:item/arma/arma_espada_abismo"
+ }
+}

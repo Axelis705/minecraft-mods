@@ -60,6 +60,7 @@ public final class ServerReset {
                 com.mundosdeaxelis.relic.RedThreadItem::clearRuntime,
                 com.mundosdeaxelis.relic.RewindAnchorItem::clearRuntime,
                 com.mundosdeaxelis.gear.GearEvents::clearRuntime,
+                com.mundosdeaxelis.arma.Armas::clearRuntime,
         };
         for (Runnable r : all) {
             try {

@@ -529,6 +529,23 @@ public final class ModItems {
         }
     }
 
+    // ---------------------------------------------------------------- Armas nuevas (etapa 281): 5 tipos x 8 tiers
+    public static final java.util.Map<String, RegistryObject<Item>> ARMAS = new java.util.LinkedHashMap<>();
+
+    static {
+        for (com.mundosdeaxelis.arma.TierArma t : com.mundosdeaxelis.arma.TierArma.values()) {
+            for (com.mundosdeaxelis.arma.TipoArma tp : com.mundosdeaxelis.arma.TipoArma.values()) {
+                String id = com.mundosdeaxelis.arma.ArmaItem.id(tp, t);
+                com.mundosdeaxelis.crate.Tiers.register(id, t.rareza());
+                ARMAS.put(id, ITEMS.register(id, () -> new com.mundosdeaxelis.arma.ArmaItem(tp, t)));
+            }
+        }
+    }
+
+    public static Item arma(com.mundosdeaxelis.arma.TipoArma tp, com.mundosdeaxelis.arma.TierArma t) {
+        return ARMAS.get(com.mundosdeaxelis.arma.ArmaItem.id(tp, t)).get();
+    }
+
     // ---------------------------------------------------------------- Armaduras de los ocho sets (4 piezas cada uno)
     public static final java.util.Map<String, RegistryObject<Item>> SET_ARMOR = new java.util.LinkedHashMap<>();
 

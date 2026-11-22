@@ -51,6 +51,12 @@ public class AcornItem extends Item {
                     found.add(d.id());
                 }
             }
+            com.mundosdeaxelis.arma.TierArma ta = com.mundosdeaxelis.arma.TierArma.deCaja(crate);
+            if (ta != null) {
+                for (com.mundosdeaxelis.arma.TipoArma tp : com.mundosdeaxelis.arma.TipoArma.values()) {
+                    found.add(com.mundosdeaxelis.arma.ArmaItem.id(tp, ta));
+                }
+            }
             ids = found;
         }
         return ids.contains(key.getPath());

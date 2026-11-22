@@ -276,8 +276,14 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.GEAR_EXCAVATOR.get());
                         output.accept(ModItems.GEAR_LUMBER_AXE.get());
                         output.accept(ModItems.GEAR_THUNDER_AXE.get());
+                        for (net.minecraftforge.registries.RegistryObject<net.minecraft.world.item.Item> a : ModItems.ARMAS.values()) {
+                            output.accept(a.get());
+                        }
+                        // las espadas de los sets se cambiaron por las armas nuevas (etapa 281): siguen existiendo para los mundos viejos
                         for (com.mundosdeaxelis.gear.GearDef d : com.mundosdeaxelis.gear.GearDefs.ALL) {
-                            output.accept(ModItems.SET_GEAR.get(d.id()).get());
+                            if (d.family() != com.mundosdeaxelis.gear.Family.SWORD) {
+                                output.accept(ModItems.SET_GEAR.get(d.id()).get());
+                            }
                         }
                         for (java.util.Map.Entry<String, net.minecraftforge.registries.RegistryObject<net.minecraft.world.item.Item>> a : ModItems.SET_ARMOR.entrySet()) {
                             output.accept(a.getValue().get());

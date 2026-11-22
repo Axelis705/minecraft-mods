@@ -104,6 +104,8 @@ public final class CratePools {
     private static final double BASE_VANILLA = 1.0;
     /** Armas y herramientas del set, según lo útil que es cada una. */
     private static final double BASE_SWORD = 0.30, BASE_PICK = 0.30, BASE_AXE = 0.26, BASE_SHOVEL = 0.22;
+    /** Cada una de las cinco armas de la caja (etapa 281): juntas salen algo más que las dos espadas de antes. */
+    private static final double BASE_ARMA = 0.12;
     /** Piezas de armadura (el peto protege más). */
     private static final double BASE_HELMET = 0.24, BASE_CHEST = 0.30, BASE_LEGS = 0.26, BASE_BOOTS = 0.22;
     /** Decoración: solo adorna, así que sale menos que lo útil. */
@@ -548,7 +550,7 @@ public final class CratePools {
             if (Tiers.craftOnly(id)) {
                 continue;
             }
-            if (!pet && (id.startsWith("gear_") || GearDefs.get(id) != null || com.mundosdeaxelis.gear.ArmorDefs.isArmorId(id))) {
+            if (!pet && (id.startsWith("gear_") || com.mundosdeaxelis.arma.Armas.esArma(id) || GearDefs.get(id) != null || com.mundosdeaxelis.gear.ArmorDefs.isArmorId(id))) {
                 continue;
             }
             byGroup.computeIfAbsent((pet ? "p" : "r") + levelOf(e.getValue(), id), k -> new ArrayList<>()).add((pet ? "p:" : "r:") + id);
@@ -588,8 +590,18 @@ public final class CratePools {
      * especiales que le tocan (con el nivel de la ventana más parecido al de su rareza).
      */
     private static void gear(B b, String... specials) {
+        // etapa 281: las cinco armas del tier de la caja (todas con la misma rareza); las espadas de los sets ya no salen
+        com.mundosdeaxelis.arma.TierArma ta = com.mundosdeaxelis.arma.TierArma.deCaja(b.kind);
+        if (ta != null) {
+            for (com.mundosdeaxelis.arma.TipoArma tp : com.mundosdeaxelis.arma.TipoArma.values()) {
+                b.any(Cat.GEAR, ta.rareza(), 0, com.mundosdeaxelis.arma.ArmaItem.id(tp, ta), 1, 1, BASE_ARMA, "gear_arma", "armas:" + ta.id);
+            }
+        }
         for (GearSet set : b.kind.sets) {
             for (GearDef d : GearDefs.of(set)) {
+                if (d.family() == com.mundosdeaxelis.gear.Family.SWORD) {
+                    continue;
+                }
                 double base = switch (d.family()) {
                     case SWORD -> BASE_SWORD;
                     case PICK -> BASE_PICK;
@@ -745,7 +757,7 @@ public final class CratePools {
     private static void relics(B b) {
         for (Map.Entry<String, Tier> e : new TreeMap<>(Tiers.all()).entrySet()) {
             String id = e.getKey();
-            if (Tiers.craftOnly(id) || id.startsWith("comp_") || id.startsWith("gear_") || GearDefs.get(id) != null || com.mundosdeaxelis.gear.ArmorDefs.isArmorId(id)) {
+            if (Tiers.craftOnly(id) || id.startsWith("comp_") || id.startsWith("gear_") || com.mundosdeaxelis.arma.Armas.esArma(id) || GearDefs.get(id) != null || com.mundosdeaxelis.gear.ArmorDefs.isArmorId(id)) {
                 continue;
             }
             if (owners().get("r:" + id) == b.kind) {

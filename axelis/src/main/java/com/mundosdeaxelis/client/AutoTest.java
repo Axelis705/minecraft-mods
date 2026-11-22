@@ -1511,7 +1511,128 @@ public final class AutoTest {
             cmd("kill @e[type=minecraft:item]");
         });
         altar();
+        armas();
         tablon();
+    }
+
+    /** Etapa 281: las armas nuevas en la mano (primera y tercera persona), las 40 en un cofre y dos especiales en acción. */
+    private static void armas() {
+        String[] mano = {"arma_espada_cielo", "arma_hacha_magma", "arma_martillo_hielo", "arma_lanza_dragon", "arma_dagas_abismo"};
+        String[] tipos = {"espada", "hacha", "martillo", "lanza", "dagas"};
+        String[] tiers = {"bosque", "forja", "hielo", "magma", "magia", "dragon", "cielo", "abismo"};
+        net.minecraft.core.BlockPos cofre = new net.minecraft.core.BlockPos(LTX + 1, LTY, LTZ - 9);
+        add("armas (preparar)", 1500, () -> {
+            killTier1();
+            cmd("kill @e[type=minecraft:item]");
+            cmd("clear @a");
+            for (int i = 0; i < mano.length; i++) {
+                cmd("item replace entity @a hotbar." + i + " with mundos_de_axelis:" + mano[i]);
+            }
+            Minecraft.getInstance().player.getInventory().selected = 0;
+            standLooking(LTX + 0.5, LTY, LTZ + 0.5, LTX + 0.5, LTY + 1.4, LTZ - 8.5);
+        });
+        for (int i = 0; i < mano.length; i++) {
+            final int k = i;
+            add("armas (" + tipos[k] + " en la mano)", 900, () -> Minecraft.getInstance().player.getInventory().selected = k);
+            add("armas (" + tipos[k] + ", foto)", 300, () -> {
+                net.minecraft.world.item.ItemStack st = Minecraft.getInstance().player.getMainHandItem();
+                check("el arma " + mano[k] + " está en la mano", st.getItem() instanceof com.mundosdeaxelis.arma.ArmaItem a && a.tipo.id.equals(tipos[k]));
+                shot("12" + k + "_arma_" + tipos[k]);
+            });
+        }
+        add("armas (tercera persona)", 900, () -> {
+            Minecraft.getInstance().options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT);
+            Minecraft.getInstance().player.getInventory().selected = 2;
+        });
+        add("armas (martillo, foto 3p)", 300, () -> shot("125_arma_martillo_3p"));
+        add("armas (lanza 3p)", 900, () -> Minecraft.getInstance().player.getInventory().selected = 3);
+        add("armas (lanza, foto 3p)", 300, () -> {
+            shot("126_arma_lanza_3p");
+            Minecraft.getInstance().options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON);
+        });
+        // las 40 en un cofre doble: la mitad derecha va primero
+        add("armas (cofre)", 1500, () -> {
+            cmd("execute in minecraft:overworld run setblock " + cofre.getX() + " " + LTY + " " + cofre.getZ() + " minecraft:chest[facing=north,type=left]");
+            cmd("execute in minecraft:overworld run setblock " + (cofre.getX() + 1) + " " + LTY + " " + cofre.getZ() + " minecraft:chest[facing=north,type=right]");
+            int n = 0;
+            for (String t : tiers) {
+                for (String tp : tipos) {
+                    int bx = n < 27 ? cofre.getX() + 1 : cofre.getX();
+                    int slot = n < 27 ? n : n - 27;
+                    cmd("execute in minecraft:overworld run item replace block " + bx + " " + LTY + " " + cofre.getZ() + " container." + slot
+                            + " with mundos_de_axelis:arma_" + tp + "_" + t);
+                    n++;
+                }
+            }
+            standLooking(cofre.getX() + 1.0, LTY, cofre.getZ() + 3.0, cofre.getX() + 1.0, LTY + 0.5, cofre.getZ() + 0.5);
+        });
+        add("armas (abrir cofre)", 1200, () -> useBlock(cofre));
+        add("armas (cofre, foto)", 300, () -> {
+            int n = 0;
+            if (Minecraft.getInstance().screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> cs) {
+                for (net.minecraft.world.inventory.Slot sl : cs.getMenu().slots) {
+                    if (sl.getItem().getItem() instanceof com.mundosdeaxelis.arma.ArmaItem) {
+                        n++;
+                    }
+                }
+            }
+            check("las 40 armas nuevas en un cofre (" + n + ", " + screenName() + ")", n >= 40);
+            shot("127_armas_todas");
+            Minecraft.getInstance().player.closeContainer();
+            cmd("execute in minecraft:overworld run fill " + cofre.getX() + " " + LTY + " " + cofre.getZ() + " " + (cofre.getX() + 1) + " " + LTY + " " + cofre.getZ() + " air");
+        });
+        // dos especiales con clic derecho (con almas): el Tajo creciente y el Terremoto
+        add("armas (tajo, preparar)", 1500, () -> {
+            for (int i = 0; i < 3; i++) {
+                cmd("summon minecraft:husk " + (LTX - 1 + i) + " " + LTY + " " + (LTZ - 5) + " {NoAI:1b,Tags:[\"arma_foto\"]}");
+            }
+            onServer(sp -> com.mundosdeaxelis.gear.Souls.set(sp, com.mundosdeaxelis.gear.Souls.max(sp)));
+            standLooking(LTX + 0.5, LTY, LTZ + 1.5, LTX + 0.5, LTY + 1.0, LTZ - 5.0);
+            Minecraft.getInstance().player.getInventory().selected = 0;
+        });
+        add("armas (tajo, usar)", 250, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+        });
+        add("armas (tajo, foto)", 900, () -> {
+            shot("128_tajo_creciente");
+            onServer(sp -> {
+                boolean gasto = com.mundosdeaxelis.gear.Souls.get(sp) < com.mundosdeaxelis.gear.Souls.max(sp);
+                java.util.List<net.minecraft.world.entity.monster.Husk> hs = sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.monster.Husk.class,
+                        sp.getBoundingBox().inflate(12), h -> h.getTags().contains("arma_foto"));
+                long heridos = hs.stream().filter(h -> h.getHealth() < h.getMaxHealth()).count();
+                check("el Tajo creciente gasta almas y hiere a los 3 muñecos (" + heridos + "/" + hs.size() + ")", gasto && heridos >= 3);
+            });
+        });
+        add("armas (terremoto, preparar)", 1200, () -> {
+            cmd("kill @e[type=minecraft:husk,tag=arma_foto]");
+            for (int i = 0; i < 4; i++) {
+                double a = i * Math.PI / 2;
+                cmd(String.format(java.util.Locale.ROOT, "summon minecraft:husk %.2f %d %.2f {NoAI:1b,Tags:[\"arma_foto\"]}",
+                        LTX + 0.5 + 2.5 * Math.cos(a), LTY, LTZ - 3.5 + 2.5 * Math.sin(a)));
+            }
+            onServer(sp -> com.mundosdeaxelis.gear.Souls.set(sp, com.mundosdeaxelis.gear.Souls.max(sp)));
+            standLooking(LTX + 0.5, LTY, LTZ - 3.5, LTX + 0.5, LTY + 0.5, LTZ - 9.0);
+            Minecraft.getInstance().player.getInventory().selected = 2;
+        });
+        add("armas (terremoto, usar)", 950, () -> {
+            Minecraft mc = Minecraft.getInstance();
+            mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+        });
+        add("armas (terremoto, foto)", 600, () -> {
+            shot("129_terremoto");
+            onServer(sp -> {
+                java.util.List<net.minecraft.world.entity.monster.Husk> hs = sp.serverLevel().getEntitiesOfClass(net.minecraft.world.entity.monster.Husk.class,
+                        sp.getBoundingBox().inflate(12), h -> h.getTags().contains("arma_foto"));
+                long heridos = hs.stream().filter(h -> h.getHealth() < h.getMaxHealth()).count();
+                check("el Terremoto hiere a los que tiene alrededor (" + heridos + "/" + hs.size() + ")", heridos >= 3);
+            });
+        });
+        add("armas (recoger)", 300, () -> {
+            cmd("kill @e[type=minecraft:husk,tag=arma_foto]");
+            cmd("clear @a");
+            Minecraft.getInstance().player.getInventory().selected = 8;
+        });
     }
 
     /** Etapa 280: el Tablón de Encargos: se ve con sus 3 encargos y uno cumplido se recoge. */

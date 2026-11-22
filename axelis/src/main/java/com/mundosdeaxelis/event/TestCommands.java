@@ -759,6 +759,220 @@ public final class TestCommands {
     }
 
     /** Etapa 280: los encargos del Tablón con un jugador falso. */
+    // ------------------------------------------------------------------ etapa 281: armas nuevas
+
+    private static net.minecraft.world.entity.monster.Husk muñeco(net.minecraft.server.level.ServerLevel sl, double x, double y, double z, float yaw) {
+        net.minecraft.world.entity.monster.Husk h = net.minecraft.world.entity.EntityType.HUSK.create(sl);
+        h.moveTo(x, y, z, yaw, 0.0F);
+        h.setYBodyRot(yaw);
+        h.setYHeadRot(yaw);
+        h.setNoAi(true);
+        h.setPersistenceRequired();
+        h.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH).setBaseValue(150.0);
+        h.setHealth(150.0F);
+        h.addTag("prueba_armas");
+        sl.addFreshEntity(h);
+        h.setYBodyRot(yaw);
+        return h;
+    }
+
+    private static int armas(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
+        net.minecraft.core.BlockPos base = net.minecraft.core.BlockPos.containing(src.getPosition());
+        java.util.List<String> fails = new java.util.concurrent.CopyOnWriteArrayList<>();
+        sl.getEntitiesOfClass(net.minecraft.world.entity.monster.Husk.class, new net.minecraft.world.phys.AABB(base).inflate(80),
+                e -> e.getTags().contains("prueba_armas")).forEach(net.minecraft.world.entity.Entity::discard);
+        // 1) las 40 armas: daño, velocidad, alcance, barrido y gemas
+        for (com.mundosdeaxelis.arma.TierArma t : com.mundosdeaxelis.arma.TierArma.values()) {
+            for (com.mundosdeaxelis.arma.TipoArma tp : com.mundosdeaxelis.arma.TipoArma.values()) {
+                net.minecraft.world.item.Item it = com.mundosdeaxelis.registry.ModItems.arma(tp, t);
+                if (!(it instanceof com.mundosdeaxelis.arma.ArmaItem a)) {
+                    fails.add("no existe " + com.mundosdeaxelis.arma.ArmaItem.id(tp, t));
+                    continue;
+                }
+                float want = Math.round(t.danoBase() * tp.mult * 2.0F) / 2.0F;
+                net.minecraft.world.item.ItemStack st = new net.minecraft.world.item.ItemStack(a);
+                double dmg = 1.0, spd = 4.0, reach = 0.0;
+                for (java.util.Map.Entry<net.minecraft.world.entity.ai.attributes.Attribute, net.minecraft.world.entity.ai.attributes.AttributeModifier> m
+                        : st.getAttributeModifiers(net.minecraft.world.entity.EquipmentSlot.MAINHAND).entries()) {
+                    if (m.getKey() == net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE) {
+                        dmg += m.getValue().getAmount();
+                    } else if (m.getKey() == net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_SPEED) {
+                        spd += m.getValue().getAmount();
+                    } else if (m.getKey() == net.minecraftforge.common.ForgeMod.ENTITY_REACH.get()) {
+                        reach += m.getValue().getAmount();
+                    }
+                }
+                if (Math.abs(dmg - want) > 0.01 || Math.abs(a.dano() - want) > 0.01 || Math.abs(spd - tp.velocidad) > 0.01 || Math.abs(reach - tp.alcance) > 0.01) {
+                    fails.add(a + " daño " + dmg + "/" + want + " velocidad " + spd + " alcance " + reach);
+                }
+                if (tp == com.mundosdeaxelis.arma.TipoArma.ESPADA && Math.abs(a.dano() - com.mundosdeaxelis.gear.GearStats.sword(2 * t.nivel())) > 0.01) {
+                    fails.add("la espada " + t.id + " no es la de referencia (LoadoutRef)");
+                }
+                if (a.canPerformAction(st, net.minecraftforge.common.ToolActions.SWORD_SWEEP) != (tp == com.mundosdeaxelis.arma.TipoArma.ESPADA)) {
+                    fails.add("barrido de " + a);
+                }
+                if (!com.mundosdeaxelis.gema.Gemas.admite(st)) {
+                    fails.add("no admite gemas " + a);
+                }
+            }
+        }
+        // 2) las cajas dan las armas de su tier y ya no las espadas viejas
+        for (com.mundosdeaxelis.arma.TierArma t : com.mundosdeaxelis.arma.TierArma.values()) {
+            java.util.Set<net.minecraft.world.item.Item> en = new java.util.HashSet<>();
+            com.mundosdeaxelis.crate.CratePools.pool(t.caja).values().forEach(l -> l.forEach(pz -> en.add(pz.item())));
+            for (com.mundosdeaxelis.arma.TipoArma tp : com.mundosdeaxelis.arma.TipoArma.values()) {
+                if (!en.contains(com.mundosdeaxelis.registry.ModItems.arma(tp, t))) {
+                    fails.add("la caja " + t.caja.id + " no da " + tp.id);
+                }
+            }
+            if (en.stream().anyMatch(x -> x instanceof com.mundosdeaxelis.gear.LadderSword)) {
+                fails.add("la caja " + t.caja.id + " aún da espadas viejas");
+            }
+            if (!com.mundosdeaxelis.crate.CratePools.verify(t.caja).isEmpty()) {
+                fails.add("orden de la caja " + t.caja.id + ": " + com.mundosdeaxelis.crate.CratePools.verify(t.caja));
+            }
+        }
+        // 3) el estilo de cada tipo (tier Naturaleza: su veneno no cambia el daño)
+        com.mundosdeaxelis.arma.TierArma B = com.mundosdeaxelis.arma.TierArma.BOSQUE;
+        java.util.function.Function<com.mundosdeaxelis.arma.TipoArma, com.mundosdeaxelis.arma.ArmaItem> A =
+                tp -> (com.mundosdeaxelis.arma.ArmaItem) com.mundosdeaxelis.registry.ModItems.arma(tp, B);
+        double x0 = base.getX() + 0.5, y0 = base.getY(), z0 = base.getZ() + 0.5;
+        fp.moveTo(x0, y0, z0 - 3.0, 0.0F, 0.0F); // mira al sur (+Z)
+        fp.setHealth(fp.getMaxHealth());
+        net.minecraft.world.entity.monster.Husk h1 = muñeco(sl, x0, y0, z0, 180.0F); // mira al jugador
+        net.minecraft.world.entity.monster.Husk h2 = muñeco(sl, x0 + 1.2, y0, z0, 180.0F); // al lado
+        net.minecraft.world.entity.monster.Husk h3 = muñeco(sl, x0, y0, z0 + 1.6, 180.0F); // detrás (en la línea del golpe)
+        java.util.function.BiConsumer<String, Boolean> ok = (what, cond) -> {
+            if (!cond) {
+                fails.add(what);
+            }
+        };
+        com.mundosdeaxelis.arma.Armas.cargarContra(fp);
+        float r = com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.ESPADA), fp, sl, h1, 10.0F, false, false);
+        ok.accept("contraataque " + r, Math.abs(r - 13.5F) < 0.01F);
+        float hp2 = h2.getHealth();
+        com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.ESPADA), fp, sl, h1, 10.0F, true, false);
+        ok.accept("barrido de la espada (" + hp2 + " -> " + h2.getHealth() + ")", h2.getHealth() < hp2 - 2.0F);
+        ok.accept("veneno de Naturaleza", h1.hasEffect(net.minecraft.world.effect.MobEffects.POISON));
+        h1.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR).setBaseValue(10.0);
+        r = com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.HACHA), fp, sl, h1, 10.0F, false, false);
+        ok.accept("quiebra armaduras " + r + " (armadura " + h1.getArmorValue() + ")", Math.abs(r - 10.0F * (1.0F + h1.getArmorValue() * 0.025F)) < 0.01F && r > 12.0F);
+        h1.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR).setBaseValue(0.0);
+        hp2 = h2.getHealth();
+        r = com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.MARTILLO), fp, sl, h1, 10.0F, true, false);
+        ok.accept("martillo aturde", h1.hasEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN));
+        ok.accept("onda del martillo", h2.getHealth() < hp2 - 1.5F);
+        r = com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.LANZA), fp, sl, h1, 10.0F, false, true);
+        ok.accept("carga de la lanza " + r, Math.abs(r - 13.0F) < 0.01F);
+        float hp3 = h3.getHealth();
+        com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.LANZA), fp, sl, h1, 10.0F, true, false);
+        ok.accept("la lanza atraviesa (" + hp3 + " -> " + h3.getHealth() + ")", h3.getHealth() < hp3 - 2.0F);
+        r = com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.DAGAS), fp, sl, h1, 10.0F, false, false);
+        ok.accept("dagas de frente " + r, Math.abs(r - 10.0F) < 0.01F);
+        h1.setYBodyRot(0.0F); // ahora da la espalda al jugador
+        h1.setYRot(0.0F);
+        r = com.mundosdeaxelis.arma.Armas.alGolpear(A.apply(com.mundosdeaxelis.arma.TipoArma.DAGAS), fp, sl, h1, 10.0F, false, false);
+        ok.accept("puñalada por la espalda " + r, Math.abs(r - 17.5F) < 0.01F);
+        // 4) elementos de otros tiers
+        com.mundosdeaxelis.arma.Armas.alGolpear((com.mundosdeaxelis.arma.ArmaItem) com.mundosdeaxelis.registry.ModItems.arma(com.mundosdeaxelis.arma.TipoArma.DAGAS,
+                com.mundosdeaxelis.arma.TierArma.MAGMA), fp, sl, h2, 10.0F, false, false);
+        ok.accept("fuego (Fuego)", h2.isOnFire());
+        com.mundosdeaxelis.arma.Armas.alGolpear((com.mundosdeaxelis.arma.ArmaItem) com.mundosdeaxelis.registry.ModItems.arma(com.mundosdeaxelis.arma.TipoArma.DAGAS,
+                com.mundosdeaxelis.arma.TierArma.HIELO), fp, sl, h3, 10.0F, false, false);
+        ok.accept("escarcha (Hielo)", h3.hasEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN));
+        com.mundosdeaxelis.arma.Armas.alGolpear((com.mundosdeaxelis.arma.ArmaItem) com.mundosdeaxelis.registry.ModItems.arma(com.mundosdeaxelis.arma.TipoArma.DAGAS,
+                com.mundosdeaxelis.arma.TierArma.ABISMO), fp, sl, h3, 10.0F, false, false);
+        ok.accept("vacío (Abismo)", h3.hasEffect(net.minecraft.world.effect.MobEffects.WITHER));
+        fp.setHealth(10.0F);
+        com.mundosdeaxelis.arma.Armas.alGolpear((com.mundosdeaxelis.arma.ArmaItem) com.mundosdeaxelis.registry.ModItems.arma(com.mundosdeaxelis.arma.TipoArma.DAGAS,
+                com.mundosdeaxelis.arma.TierArma.DRAGON), fp, sl, h3, 30.0F, false, false);
+        ok.accept("vampiro (Dragón) " + fp.getHealth(), fp.getHealth() > 10.5F);
+        fp.setHealth(fp.getMaxHealth());
+        net.minecraft.world.entity.monster.Husk hSangre = muñeco(sl, x0 - 10, y0, z0, 180.0F);
+        float hpSangre = hSangre.getHealth();
+        com.mundosdeaxelis.arma.Armas.alGolpear((com.mundosdeaxelis.arma.ArmaItem) com.mundosdeaxelis.registry.ModItems.arma(com.mundosdeaxelis.arma.TipoArma.DAGAS,
+                com.mundosdeaxelis.arma.TierArma.FORJA), fp, sl, hSangre, 20.0F, false, false);
+        // 5) almas: matar da almas; la especial las gasta y sin almas no sale
+        fp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.item.ItemStack(
+                com.mundosdeaxelis.registry.ModItems.arma(com.mundosdeaxelis.arma.TipoArma.ESPADA, com.mundosdeaxelis.arma.TierArma.MAGIA)));
+        com.mundosdeaxelis.gear.Souls.set(fp, 0);
+        net.minecraft.world.entity.monster.Husk victima = muñeco(sl, x0 + 6, y0, z0, 0.0F);
+        victima.hurt(sl.damageSources().playerAttack(fp), 100000.0F);
+        int almas = com.mundosdeaxelis.gear.Souls.get(fp);
+        ok.accept("matar con el arma da almas (" + almas + ")", almas > 0);
+        com.mundosdeaxelis.arma.ArmaItem espada = A.apply(com.mundosdeaxelis.arma.TipoArma.ESPADA);
+        com.mundosdeaxelis.gear.Souls.set(fp, 3);
+        fp.getCooldowns().removeCooldown(espada);
+        ok.accept("la especial sale sin almas", !com.mundosdeaxelis.arma.Armas.tryEspecial(espada, fp, sl, new net.minecraft.world.item.ItemStack(espada)));
+        com.mundosdeaxelis.gear.Souls.set(fp, 40);
+        boolean usa = com.mundosdeaxelis.arma.Armas.tryEspecial(espada, fp, sl, new net.minecraft.world.item.ItemStack(espada));
+        ok.accept("la especial no gasta sus almas (" + com.mundosdeaxelis.gear.Souls.get(fp) + ")", usa && com.mundosdeaxelis.gear.Souls.get(fp) == 40 - com.mundosdeaxelis.arma.TipoArma.ESPADA.almas);
+        ok.accept("la especial no se enfría", fp.getCooldowns().isOnCooldown(espada));
+        ok.accept("se repite antes de tiempo", !com.mundosdeaxelis.arma.Armas.tryEspecial(espada, fp, sl, new net.minecraft.world.item.ItemStack(espada)));
+        // 6) especiales: cada una en su carril, una detrás de otra (el muñeco del Tajo queda delante del jugador)
+        net.minecraft.world.entity.monster.Husk tajo = muñeco(sl, x0, y0, z0 + 4.5, 180.0F);
+        float hpTajo = tajo.getHealth();
+        java.util.Map<String, Float> antes = new java.util.HashMap<>();
+        java.util.List<net.minecraft.world.entity.monster.Husk> lanes = new java.util.ArrayList<>();
+        com.mundosdeaxelis.arma.TipoArma[] orden = {com.mundosdeaxelis.arma.TipoArma.HACHA, com.mundosdeaxelis.arma.TipoArma.MARTILLO,
+                com.mundosdeaxelis.arma.TipoArma.LANZA, com.mundosdeaxelis.arma.TipoArma.DAGAS};
+        int[] cuando = {12, 50, 100, 115};
+        for (int i = 0; i < orden.length; i++) {
+            final int k = i;
+            double lx = x0 + 12 * (i + 1);
+            double dz = orden[i] == com.mundosdeaxelis.arma.TipoArma.LANZA ? 1.6 : orden[i] == com.mundosdeaxelis.arma.TipoArma.DAGAS ? 4.0 : 2.0;
+            net.minecraft.world.entity.monster.Husk h = muñeco(sl, lx, y0, z0 - 3.0 + dz, 180.0F);
+            lanes.add(h);
+            antes.put(orden[i].id, h.getHealth());
+            com.mundosdeaxelis.world.Scheduler.runLater(cuando[i], () -> {
+                fp.moveTo(lx, y0, z0 - 3.0, 0.0F, 8.0F);
+                if (!com.mundosdeaxelis.arma.Armas.especial(A.apply(orden[k]), fp, sl)) {
+                    fails.add("no sale la especial " + orden[k].id);
+                }
+            });
+        }
+        boolean[] aturdido = {false};
+        for (int tt = 54; tt <= 100; tt += 3) {
+            com.mundosdeaxelis.world.Scheduler.runLater(tt, () -> {
+                if (lanes.get(1).hasEffect(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN)) {
+                    aturdido[0] = true;
+                }
+            });
+        }
+        com.mundosdeaxelis.world.Scheduler.runLater(160, () -> {
+            if (tajo.getHealth() >= hpTajo - 2.0F) {
+                fails.add("el Tajo creciente no hiere (" + tajo.getHealth() + ")");
+            }
+            if (hSangre.getHealth() > hpSangre - 5.0F || hSangre.getHealth() < hpSangre - 7.0F) {
+                fails.add("el sangrado no quita 3 × 10 % (" + hpSangre + " -> " + hSangre.getHealth() + ")");
+            }
+            for (int i = 0; i < orden.length; i++) {
+                net.minecraft.world.entity.monster.Husk h = lanes.get(i);
+                float lost = antes.get(orden[i].id) - h.getHealth();
+                float need = orden[i] == com.mundosdeaxelis.arma.TipoArma.HACHA ? 12.0F : 4.0F;
+                if (lost < need) {
+                    fails.add("la especial " + orden[i].id + " quita poco (" + lost + ")");
+                }
+            }
+            if (!aturdido[0]) {
+                fails.add("el Terremoto no aturde");
+            }
+            if (!com.mundosdeaxelis.arma.Armas.sombra(fp)) {
+                fails.add("el Paso sombrío no da la sombra");
+            }
+            sl.getEntitiesOfClass(net.minecraft.world.entity.monster.Husk.class, new net.minecraft.world.phys.AABB(base).inflate(80),
+                    e -> e.getTags().contains("prueba_armas")).forEach(net.minecraft.world.entity.Entity::discard);
+            sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(base).inflate(80)).forEach(net.minecraft.world.entity.Entity::discard);
+            String msg = fails.isEmpty() ? "PRUEBA_ARMAS_OK 40 armas" : "PRUEBA_ARMAS_FALLO " + fails;
+            com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+            sl.getServer().getPlayerList().broadcastSystemMessage(Component.literal(msg), false);
+        });
+        src.sendSuccess(() -> Component.literal("Prueba de armas en marcha (8 s)..."), true);
+        return 1;
+    }
+
     private static int encargos(CommandSourceStack src) {
         net.minecraft.server.level.ServerLevel sl = src.getLevel();
         net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(sl);
@@ -844,6 +1058,7 @@ public final class TestCommands {
                 .then(Commands.literal("altar").executes(ctx -> altar(ctx.getSource())))
                 .then(Commands.literal("suerte").executes(ctx -> suerte(ctx.getSource())))
                 .then(Commands.literal("encargos").executes(ctx -> encargos(ctx.getSource())))
+                .then(Commands.literal("armas").executes(ctx -> armas(ctx.getSource())))
                 .then(Commands.literal("encargos_listos").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{
@@ -1741,7 +1956,7 @@ public final class TestCommands {
         if (p.startsWith("mat_")) {
             return "material";
         }
-        if (GearDefs.get(p) != null || p.startsWith("gear_")) {
+        if (GearDefs.get(p) != null || p.startsWith("gear_") || com.mundosdeaxelis.arma.Armas.esArma(p)) {
             return "herramienta/arma";
         }
         return "reliquia";

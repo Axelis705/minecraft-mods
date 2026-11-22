@@ -60,7 +60,7 @@ public final class Essence {
             List<Entry> l = new ArrayList<>();
             Tiers.all().forEach((id, t) -> {
                 String cat = id.startsWith("comp_") ? "pets"
-                        : id.startsWith("gear_") || com.mundosdeaxelis.gear.GearDefs.get(id) != null || com.mundosdeaxelis.gear.ArmorDefs.isArmorId(id) ? "gear" : "relics";
+                        : id.startsWith("gear_") || com.mundosdeaxelis.arma.Armas.esArma(id) || com.mundosdeaxelis.gear.GearDefs.get(id) != null || com.mundosdeaxelis.gear.ArmorDefs.isArmorId(id) ? "gear" : "relics";
                 l.add(new Entry(cat, id, t));
             });
             Comparator<Entry> cmp = Comparator.comparingInt((Entry e) -> e.tier.ordinal()).thenComparing(Entry::id);
