@@ -38,7 +38,7 @@ Se aplica en todos los golpes y en la especial.
 
 | Caja | Elemento | Qué hace |
 |---|---|---|
-| Naturaleza | Veneno | envenena |
+| Naturaleza | Veneno | envenena (a los no-muertos y arañas, a los que no les afecta, les pega un 10 % más) |
 | Forja | Sangrado | el enemigo sangra 3 s (3 × 10 % del golpe, sin armadura) |
 | Hielo | Escarcha | ralentiza y congela |
 | Fuego | Fuego | prende fuego 4 s |
