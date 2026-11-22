@@ -2804,5 +2804,10 @@
   "libro.mundos_de_axelis.gemas.7.titulo": "La pureza",
   "libro.mundos_de_axelis.gemas.7": "Cada nivel de pureza hace más fuerte el efecto.\nEn la armadura, las gemas de las piezas se suman.\n\nEn las páginas siguientes: qué hace cada elemento.",
   "libro.mundos_de_axelis.gemas.fin.titulo": "Consejos",
-  "libro.mundos_de_axelis.gemas.fin": "· Guarda las vacías de tiers bajos para combinarlas.\n· Una gema de Vacío en cada pieza da mucha vida.\n· Si pierdes la guía, se crea en la Mesa del Artífice."
+  "libro.mundos_de_axelis.gemas.fin": "· Guarda las vacías de tiers bajos para combinarlas.\n· Una gema de Vacío en cada pieza da mucha vida.\n· Si pierdes la guía, se crea en la Mesa del Artífice.",
+  "message.mundos_de_axelis.reja_volcan.altar": "La reja no cede. La guarda el Altar Maldito de esta sala: vence sus tres oleadas.",
+  "message.mundos_de_axelis.altar.reja_abierta": "¡Con el altar vencido, la reja de la sala se abre!",
+  "message.mundos_de_axelis.volcan.altar_pista": "La reja del fondo no se abre sola: despierta el Altar Maldito y vence sus oleadas.",
+  "title.mundos_de_axelis.volcan.despierta": "¡El volcán despierta!",
+  "title.mundos_de_axelis.volcan.despierta.sub": "Algo late bajo el cráter..."
 }

@@ -314,7 +314,7 @@ final class DesignVolcan {
         // el corazón del volcán: bloque que hace las erupciones (parece lava)
         b.set(0, LAVA_Y, CZ, CORE);
         // fogatas de señal alrededor del lago: columnas de humo que se ven de lejos
-        int[] ang = {20, 75, 140, 200, 255, 320};
+        int[] ang = {25, 125, 175, 225, 280, 330}; // ninguna junto a la bajada al muelle (al este, 90°)
         for (int deg : ang) {
             double a = Math.toRadians(deg);
             int x = (int) Math.round(Math.sin(a) * (RL + 2.6));
@@ -380,9 +380,15 @@ final class DesignVolcan {
         int lastF = 0;
         int lampCount = 0;
         double hgt = 0;
-        while (hgt < H - 1) {
+        // etapa 287: arriba ya no sube; sigue llano por el borde del cráter hasta el muelle (al este, en línea recta con los bloques)
+        double fin = Double.MAX_VALUE; // ángulo del muelle (el primero al este después de llegar arriba; el camino da una vuelta)
+        while (hgt < H - 1 || ang < fin) {
+            boolean top = hgt >= H - 1;
+            if (top && fin == Double.MAX_VALUE) {
+                fin = PIER_ANG + 2 * Math.PI * Math.ceil((ang - PIER_ANG) / (2 * Math.PI));
+            }
             double r = Math.max(RR + 1.5, radiusAt(hgt + 2.5));
-            int f = (int) Math.floor(hgt);
+            int f = top ? lastF : (int) Math.floor(hgt);
             double px = Math.sin(ang) * r, pz = CZ - Math.cos(ang) * r;
             // dirección de avance (sentido antihorario visto desde arriba)
             double tx = Math.cos(ang), tz = Math.sin(ang);
@@ -404,7 +410,8 @@ final class DesignVolcan {
                 }
                 boolean step = f > lastF && f > 0;
                 b.set(x, f - 1, z, step ? StructBp.stair(PBBS, up, false) : (StructKit.hash01(62, x, z) < 0.3 ? "blackstone" : PB));
-                for (int y = f; y <= f + 3; y++) {
+                // por el borde, sin picos del borde dentado colgando encima
+                for (int y = f; y <= f + (top ? 8 : 3); y++) {
                     b.set(x, y, z, "air");
                 }
             }
@@ -420,87 +427,198 @@ final class DesignVolcan {
                 }
             }
             ang += 0.42 / r;
-            hgt += 0.42 / 2.7;
+            if (!top) {
+                hgt += 0.42 / 2.7;
+            }
         }
-        return ang;
+        trailTop = lastF;
+        return PIER_ANG;
+    }
+
+    /** Altura de los pies al final del camino (en el borde del cráter). */
+    private static int trailTop;
+
+    /** Etapa 287: una de las rejas que abre el Altar Maldito de la sala de erupciones (canal 3). */
+    static final int GATE_ALTAR_X = 12, GATE_ALTAR_Z = 87;
+
+    /** Etapa 287: el muelle del salto va siempre al este del cráter (+x), recto con los bloques: la bajada queda limpia y ancha. */
+    static final double PIER_ANG = Math.PI / 2;
+
+    /**
+     * Pista para tirarse (etapa 263, rehecha en la etapa 287). Desde el final del camino, en el borde del cráter, baja una escalera
+     * recta de 3 de ancho hasta un rellano y un muelle rojo de 3 de ancho que entra en el lago. Todo va en línea recta con los
+     * bloques (al este del cráter) y nada se pone en medio: los faroles van sobre postes a los lados, el arco de los cultistas
+     * deja libre el paso y el cartel está colgado en un poste del arco, mirando a quien baja.
+     */
+    private static void jumpPier(StructBp b, double ang) {
+        int ux = (int) Math.round(Math.sin(ang)), uz = (int) Math.round(-Math.cos(ang)); // hacia fuera del cráter
+        int px = -uz, pz = ux; // de lado
+        String upDir = ux > 0 ? "+x" : ux < 0 ? "-x" : uz > 0 ? "+z" : "-z"; // la escalera sube hacia fuera
+        String face = ux > 0 ? "east" : ux < 0 ? "west" : uz > 0 ? "south" : "north"; // carteles y estandartes miran hacia fuera
+        int top = trailTop; // pies al final del camino
+        int stairs = Math.max(1, top - 1 - LAVA_Y); // escalones: del suelo del camino hasta uno por encima del rellano
+        int t0 = (int) Math.floor(RR + 1.5 - 1.6); // primera columna que ya no es camino
+        int tLand = t0 - stairs; // columna del rellano más alta
+        int tShore = RL + 1; // última columna de tierra (luego, el muelle sobre la lava)
+        // donde acaba el camino: una explanada llana de 5 de ancho que lo une con la escalera (sin el borde dentado en medio)
+        for (int t = t0 + 1; t <= t0 + 2; t++) {
+            for (int k = -2; k <= 2; k++) {
+                int x = ux * t + px * k, z = CZ + uz * t + pz * k;
+                for (int y = Math.min(top - 1, height(x, z) - 1); y < top - 1; y++) {
+                    b.set(x, y, z, ROCK[(int) (StructKit.hash01(65, x + y, z) * ROCK.length)]);
+                }
+                b.set(x, top - 1, z, StructKit.hash01(66, x, z) < 0.3 ? "blackstone" : PB);
+                for (int y = top; y <= top + 5; y++) {
+                    b.set(x, y, z, "air");
+                }
+                TRAIL.add(StructBp.key(x, 0, z));
+            }
+        }
+        // la bajada: escalones, rellano y hombros a los lados (sin paredes ni cosas en medio)
+        for (int t = t0; t >= tShore; t--) {
+            boolean stair = t > tLand;
+            int floor = stair ? top - 1 - (t0 - t) : LAVA_Y;
+            for (int k = -3; k <= 3; k++) {
+                int x = ux * t + px * k, z = CZ + uz * t + pz * k;
+                int ak = Math.abs(k);
+                int fy = ak <= 2 ? floor : Math.min(height(x, z) - 1, floor + 1);
+                if (ak == 3 && fy < floor) {
+                    continue; // el terreno ya está más bajo: se deja como está
+                }
+                for (int y = Math.min(fy, height(x, z) - 1); y < fy; y++) {
+                    b.set(x, y, z, ROCK[(int) (StructKit.hash01(63, x + y, z) * ROCK.length)]);
+                }
+                String s = ak <= 1 ? (stair ? StructBp.stair(PBBS, upDir, false) : PBB) : ak == 2 ? (StructKit.hash01(64, x, z) < 0.4 ? "blackstone" : PB) : "smooth_basalt";
+                b.set(x, fy, z, s);
+                for (int y = fy + 1; y <= fy + 5; y++) {
+                    b.set(x, y, z, "air");
+                }
+                if (ak <= 2) {
+                    TRAIL.add(StructBp.key(x, 0, z));
+                }
+            }
+        }
+        // el muelle: 3 de ancho, de la orilla hasta 4 bloques dentro del lago (losas a ras de la lava)
+        for (int t = tShore - 1; t >= RL - 3; t--) {
+            for (int k = -1; k <= 1; k++) {
+                int x = ux * t + px * k, z = CZ + uz * t + pz * k;
+                b.set(x, LAVA_Y, z, "red_nether_brick_slab[type=bottom]");
+                for (int y = LAVA_Y + 1; y <= LAVA_Y + 4; y++) {
+                    b.set(x, y, z, "air");
+                }
+                TRAIL.add(StructBp.key(x, 0, z));
+            }
+        }
+        // arco rojo de los cultistas sobre el rellano: postes a los lados (fuera del paso) y viga arriba, con un farol colgado
+        int ta = tShore + 1;
+        int beam = LAVA_Y + 5;
+        for (int side = -1; side <= 1; side += 2) {
+            int x = ux * ta + px * 2 * side, z = CZ + uz * ta + pz * 2 * side;
+            b.set(x, LAVA_Y, z, "red_nether_bricks");
+            for (int y = LAVA_Y + 1; y < beam; y++) {
+                b.set(x, y, z, "red_nether_brick_wall");
+            }
+            // estandarte rojo colgado del poste, del lado de la escalera
+            b.set(x + ux, beam - 1, z + uz, "red_wall_banner[facing=" + face + "]");
+        }
+        for (int k = -2; k <= 2; k++) {
+            b.set(ux * ta + px * k, beam, CZ + uz * ta + pz * k, "red_nether_bricks");
+        }
+        b.set(ux * ta + px * -3, beam, CZ + uz * ta + pz * -3, "red_nether_brick_slab[type=bottom]");
+        b.set(ux * ta + px * 3, beam, CZ + uz * ta + pz * 3, "red_nether_brick_slab[type=bottom]");
+        b.set(ux * ta, beam - 1, CZ + uz * ta, "soul_lantern[hanging=true]");
+        // el cartel, colgado del poste izquierdo a la altura de los ojos, mirando a quien baja la escalera
+        int sx = ux * (ta + 1) + px * -2, sz = CZ + uz * (ta + 1) + pz * -2;
+        b.setNbt(sx, LAVA_Y + 2, sz, "crimson_wall_sign[facing=" + face + "]", "{is_waxed:1b,front_text:{has_glowing_text:1b,color:\"orange\",messages:["
+                + "'{\"translate\":\"sign.mundos_de_axelis.volcan.salto.1\"}','{\"translate\":\"sign.mundos_de_axelis.volcan.salto.2\"}',"
+                + "'{\"translate\":\"sign.mundos_de_axelis.volcan.salto.3\"}','{\"translate\":\"sign.mundos_de_axelis.volcan.salto.4\"}']}}");
+        // faroles de almas sobre postecitos, fuera del paso (a 3 del centro), a lo largo de la escalera
+        for (int t = t0 - 1; t > tLand; t -= 3) {
+            for (int side = -1; side <= 1; side += 2) {
+                int x = ux * t + px * 3 * side, z = CZ + uz * t + pz * 3 * side;
+                int y = topSolid(b, x, z);
+                if (y < LAVA_Y) {
+                    continue;
+                }
+                b.set(x, y + 1, z, "polished_blackstone_wall");
+                b.set(x, y + 2, z, "soul_lantern");
+            }
+        }
     }
 
     /**
-     * Pista para tirarse (etapa 263): desde donde acaba el camino, faroles de almas bajan por el cuenco hasta un muelle rojo que entra
-     * 3 bloques en el lago, bajo un arco rojo de los cultistas con un farol colgado, estandartes rojos y un cartel: «Salto de fe».
+     * Etapa 287: revisa en el plano la bajada al muelle (también la usa la prueba del servidor). Por el centro de la bajada (3 de
+     * ancho) desde el final del camino hasta la punta del muelle: dos bloques libres sobre el suelo, el suelo baja como mucho uno por
+     * paso (y si baja uno entero, con escalón), y no hay fogatas ni faroles a menos de 2 del paso. Además, el cartel en el arco y la
+     * reja del Altar Maldito. Devuelve los fallos.
      */
-    private static void jumpPier(StructBp b, double ang) {
-        double ux = Math.sin(ang), uz = -Math.cos(ang); // hacia fuera del cráter
-        double px = Math.cos(ang), pz = Math.sin(ang); // de lado
-        int rot = Math.floorMod((int) Math.round(Math.toDegrees(Math.atan2(-ux, uz)) / 22.5), 16); // mirando hacia fuera
-        // la pasarela: desde la orilla hasta 3 bloques dentro del lago (sobre la lava, a ras)
-        Set<Long> done = new HashSet<>();
-        for (double d = RL + 2.5; d >= RL - 2.6; d -= 0.25) {
-            for (double k = -0.5; k <= 0.5; k += 1.0) {
-                int x = (int) Math.round(ux * d + px * k), z = CZ + (int) Math.round(uz * d + pz * k);
-                if (!done.add(StructBp.key(x, 0, z))) {
-                    continue;
+    public static List<String> revisarBajada(StructBp b) {
+        List<String> f = new ArrayList<>();
+        int ux = (int) Math.round(Math.sin(PIER_ANG)), uz = (int) Math.round(-Math.cos(PIER_ANG));
+        int px = -uz, pz = ux;
+        for (int k = -1; k <= 1; k++) {
+            double last = Double.NaN;
+            for (int t = (int) Math.floor(RR + 1.5 - 1.6) + 2; t >= RL - 3; t--) {
+                int x = ux * t + px * k, z = CZ + uz * t + pz * k;
+                // el suelo cerca de donde se venía pisando (así no se toma por suelo la viga del arco)
+                int y = Double.isNaN(last) ? H + 12 : (int) Math.floor(last) + 2;
+                while (y > LAVA_Y - 2 && (b.get(x, y, z) == null || "air".equals(b.get(x, y, z)) || b.get(x, y, z).contains("lantern")
+                        || b.get(x, y, z).contains("banner") || b.get(x, y, z).contains("sign"))) {
+                    y--;
                 }
-                // a ras del lago sobre la lava; en la orilla, sobre el suelo (baja como mucho de 1 en 1)
-                int ys = Math.max(LAVA_Y, height(x, z) - 1);
-                b.set(x, ys, z, "red_nether_brick_slab[type=bottom]");
-                for (int yy = ys + 1; yy <= ys + 3; yy++) {
-                    b.set(x, yy, z, "air");
+                String s = b.get(x, y, z);
+                double walk = y + (s != null && (s.contains("_slab[type=bottom]") || s.contains("stairs")) ? 0.5 : 1.0);
+                for (int dy = 1; dy <= 2; dy++) {
+                    String a = b.get(x, y + dy, z);
+                    if (a != null && !"air".equals(a)) {
+                        f.add("algo en medio de la bajada en " + x + " " + (y + dy) + " " + z + ": " + a);
+                    }
+                }
+                if (!Double.isNaN(last) && Math.abs(walk - last) > 1.01) {
+                    f.add("salto de " + (walk - last) + " en la bajada en " + x + " " + z);
+                }
+                if (!Double.isNaN(last) && walk < last - 0.99 && !(s != null && s.contains("stairs")) && t > RL + 1) {
+                    String prev = b.get(x + ux, (int) Math.floor(last) - 1, z + uz);
+                    if (prev == null || !prev.contains("stairs")) {
+                        f.add("escalón sin escalera en " + x + " " + z);
+                    }
+                }
+                last = walk;
+                for (int dk = -2 - k; dk <= 2 - k; dk++) {
+                    for (int dy = -1; dy <= 3; dy++) {
+                        String a = b.get(x + px * dk, y + dy, z + pz * dk);
+                        if (a != null && (a.contains("campfire") || (a.contains("lantern") && !a.contains("hanging=true")))) {
+                            f.add("estorbo junto a la bajada en " + (x + px * dk) + " " + (y + dy) + " " + (z + pz * dk) + ": " + a);
+                        }
+                    }
                 }
             }
         }
-        // arco rojo de los cultistas en la entrada del muelle (se ve desde el borde del cráter): dos postes, una viga y un farol colgado
-        double da = RL + 1.6;
-        int[][] post = new int[2][];
-        int top = 0;
-        for (int i = 0; i < 2; i++) {
-            int side = i == 0 ? -1 : 1;
-            int x = (int) Math.round(ux * da + px * side * 2.2), z = CZ + (int) Math.round(uz * da + pz * side * 2.2);
-            post[i] = new int[]{x, Math.max(height(x, z), LAVA_Y + 1), z};
-            top = Math.max(top, post[i][1] + 3);
-        }
-        for (int[] q : post) {
-            b.set(q[0], q[1] - 1, q[2], "red_nether_bricks");
-            for (int y = q[1]; y < top; y++) {
-                b.set(q[0], y, q[2], "red_nether_brick_wall");
-            }
-            b.set(q[0], top, q[2], "red_nether_bricks");
-        }
-        for (double k = -2.2; k <= 2.2; k += 0.25) {
-            int x = (int) Math.round(ux * da + px * k), z = CZ + (int) Math.round(uz * da + pz * k);
-            b.set(x, top, z, "red_nether_bricks");
-        }
-        int cxm = (int) Math.round(ux * da), czm = CZ + (int) Math.round(uz * da);
-        b.set(cxm, top - 1, czm, "chain[axis=y]");
-        b.set(cxm, top - 2, czm, "soul_lantern[hanging=true]");
-        // estandartes rojos a los dos lados, un paso más afuera
-        for (int side = -1; side <= 1; side += 2) {
-            int bx = (int) Math.round(ux * (RL + 3.0) + px * side * 2.2), bz = CZ + (int) Math.round(uz * (RL + 3.0) + pz * side * 2.2);
-            int bh = Math.max(height(bx, bz), LAVA_Y + 1);
-            b.set(bx, bh - 1, bz, "red_nether_bricks");
-            b.set(bx, bh, bz, "red_banner[rotation=" + rot + "]");
-            b.set(bx, bh + 1, bz, "air");
-        }
-        // el cartel, delante del arco, mirando a quien baja del camino (los carteles no estorban al pasar)
-        int sx = (int) Math.round(ux * (RL + 4.6)), sz = CZ + (int) Math.round(uz * (RL + 4.6));
-        int sh = height(sx, sz);
-        b.set(sx, sh, sz, "air");
-        b.set(sx, sh + 1, sz, "air");
-        b.setNbt(sx, sh, sz, "crimson_sign[rotation=" + rot + "]", "{is_waxed:1b,front_text:{has_glowing_text:1b,color:\"orange\",messages:["
-                + "'{\"translate\":\"sign.mundos_de_axelis.volcan.salto.1\"}','{\"translate\":\"sign.mundos_de_axelis.volcan.salto.2\"}',"
-                + "'{\"translate\":\"sign.mundos_de_axelis.volcan.salto.3\"}','{\"translate\":\"sign.mundos_de_axelis.volcan.salto.4\"}']}}");
-        // faroles de almas que bajan del camino al muelle, a los dos lados
-        for (double d = RL + 5.5; d <= RR + 0.5; d += 2.6) {
-            for (int side = -1; side <= 1; side += 2) {
-                int x = (int) Math.round(ux * d + px * side * 2.2), z = CZ + (int) Math.round(uz * d + pz * side * 2.2);
-                int h = height(x, z);
-                if (TRAIL.contains(StructBp.key(x, 0, z))) {
-                    continue;
-                }
-                b.set(x, h, z, "soul_lantern");
-                b.set(x, h + 1, z, "air");
+        boolean sign = false;
+        for (Map.Entry<Long, String> e : b.m.entrySet()) {
+            if (e.getValue().startsWith("crimson_wall_sign")) {
+                sign = true;
             }
         }
+        if (!sign) {
+            f.add("falta el cartel del salto");
+        }
+        String g = b.get(GATE_ALTAR_X, F_ERUPT, GATE_ALTAR_Z);
+        if (g == null || !g.contains("reja_volcan") || !g.contains("channel=3")) {
+            f.add("falta la reja del altar (" + g + ")");
+        }
+        return f;
+    }
+
+    /** El bloque sólido más alto de la columna (desde arriba del volcán), o un valor muy bajo si no hay. */
+    private static int topSolid(StructBp b, int x, int z) {
+        for (int y = H + 10; y > 0; y--) {
+            String s = b.get(x, y, z);
+            if (s != null && !"air".equals(s)) {
+                return y;
+            }
+        }
+        return Integer.MIN_VALUE;
     }
 
     /** Donde empieza el camino (ángulo desde el frente, hacia la derecha). */
@@ -1022,6 +1140,12 @@ final class DesignVolcan {
         path(b, new int[][]{{12, F_BRIDGE, 76}, {12, F_BRIDGE, 71}, {12, F_BRIDGE - 9, 62}, {5, F_ERUPT, 62}, {5, F_ERUPT, 67}});
         // sala de erupciones -> cámara del guardián (baja 16)
         path(b, new int[][]{{12, F_ERUPT, 85}, {12, F_ERUPT, 88}, {28, F_GUARD, 88}, {28, F_GUARD, 96}});
+        // etapa 287: la reja de la sala de erupciones (canal 3) solo se abre al vencer las oleadas del Altar Maldito de la sala
+        for (int x = 11; x <= 13; x++) {
+            for (int y = F_ERUPT; y <= F_ERUPT + 3; y++) {
+                b.set(x, y, 87, GATE + "[axis=x,open=false,channel=3]");
+            }
+        }
         // cámara del guardián -> santuario (tras la reja que se abre al vencer a la Gran Salamandra)
         path(b, new int[][]{{14, F_GUARD, 100}, {11, F_GUARD, 100}, {11, F_SANCT, 95}, {8, F_SANCT, 95}});
         // la reja del guardián (canal 1) y el hueco del cofre de premio, junto al pasillo

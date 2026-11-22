@@ -2804,5 +2804,10 @@
   "libro.mundos_de_axelis.gemas.7.titulo": "Purity",
   "libro.mundos_de_axelis.gemas.7": "Each purity level makes the effect stronger.\nOn armor, the gems of every piece add up.\n\nNext pages: what each element does.",
   "libro.mundos_de_axelis.gemas.fin.titulo": "Tips",
-  "libro.mundos_de_axelis.gemas.fin": "· Keep low-tier empty gems to combine them.\n· A Void gem in every piece gives a lot of health.\n· If you lose this guide, craft it at the Artificer's Table."
+  "libro.mundos_de_axelis.gemas.fin": "· Keep low-tier empty gems to combine them.\n· A Void gem in every piece gives a lot of health.\n· If you lose this guide, craft it at the Artificer's Table.",
+  "message.mundos_de_axelis.reja_volcan.altar": "The gate won't budge. The Cursed Altar of this hall guards it: beat its three waves.",
+  "message.mundos_de_axelis.altar.reja_abierta": "With the altar beaten, the hall's gate opens!",
+  "message.mundos_de_axelis.volcan.altar_pista": "The gate at the back won't open by itself: wake the Cursed Altar and beat its waves.",
+  "title.mundos_de_axelis.volcan.despierta": "The volcano awakens!",
+  "title.mundos_de_axelis.volcan.despierta.sub": "Something beats beneath the crater..."
 }

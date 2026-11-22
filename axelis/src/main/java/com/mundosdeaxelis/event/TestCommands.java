@@ -765,6 +765,25 @@ public final class TestCommands {
      * Etapa 286: los 16 reparadores se pueden crear (el remache ardiente y el dorado siempre; los demás al tenerlos una vez), los
      * botones de la mesa caben en un byte, y la Mesa de Gemas da la guía una sola vez.
      */
+    /**
+     * Etapa 287 (volcán): la bajada del camino al muelle es limpia (de 3 de ancho, con sitio para pasar y escalones de uno en uno,
+     * sin fogatas ni faroles en medio), el cartel cuelga del arco, y en el volcán construido: la reja del Altar Maldito, sus oleadas y
+     * la primera vista (ver {@link com.mundosdeaxelis.world.Volcanes#prueba287}).
+     */
+    private static int etapa287(CommandSourceStack src) {
+        net.minecraft.server.level.ServerLevel sl = src.getLevel();
+        java.util.List<String> fails = new java.util.ArrayList<>(com.mundosdeaxelis.world.Volcanes.revisarBajada());
+        net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.get(sl,
+                new com.mojang.authlib.GameProfile(java.util.UUID.fromString("5f0c2b87-0287-4a2e-9d1b-28700000e287"), "[prueba287]"));
+        net.minecraft.core.BlockPos pos = net.minecraft.core.BlockPos.containing(src.getPosition());
+        fp.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        fails.addAll(com.mundosdeaxelis.world.Volcanes.prueba287(sl, fp));
+        String msg = fails.isEmpty() ? "PRUEBA_ETAPA287_OK" : "PRUEBA_ETAPA287_FALLO " + fails;
+        com.mundosdeaxelis.MundosDeAxelis.LOGGER.info(msg);
+        src.sendSuccess(() -> Component.literal(msg), true);
+        return fails.isEmpty() ? 1 : 0;
+    }
+
     private static int etapa286(CommandSourceStack src) {
         net.minecraft.server.level.ServerLevel sl = src.getLevel();
         net.minecraftforge.common.util.FakePlayer fp = net.minecraftforge.common.util.FakePlayerFactory.get(sl,
@@ -1450,6 +1469,7 @@ public final class TestCommands {
                 .then(Commands.literal("etapa284").executes(ctx -> etapa284(ctx.getSource())))
                 .then(Commands.literal("etapa285").executes(ctx -> etapa285(ctx.getSource())))
                 .then(Commands.literal("etapa286").executes(ctx -> etapa286(ctx.getSource())))
+                .then(Commands.literal("etapa287").executes(ctx -> etapa287(ctx.getSource())))
                 .then(Commands.literal("encargos_listos").executes(ctx -> {
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     com.mundosdeaxelis.encargo.Encargos.force(sp, new com.mundosdeaxelis.encargo.Encargos.Tipo[]{

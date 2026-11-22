@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 /**
  * Reja del volcán (etapa 255): barrotes de piedra negra que cierran el paso. No se rompen. Se abren por canal: el 1 al vencer a
  * la Gran Salamandra (paso al santuario), el 2 al encender a la vez los cuatro braseros de la sala de erupciones (sala del
- * tesoro). Abierta no se ve ni estorba; cuando el volcán se reinicia, se vuelve a cerrar.
+ * tesoro) y el 3 (etapa 287) al vencer las oleadas del Altar Maldito de la sala de erupciones (paso al guardián). Abierta no se ve ni estorba; cuando el volcán se reinicia, se vuelve a cerrar.
  */
 public class RejaVolcanBlock extends Block {
     /** Eje a lo largo del cual se extiende la reja (el plano de los barrotes contiene este eje y la vertical). */
@@ -83,7 +83,7 @@ public class RejaVolcanBlock extends Block {
         }
         if (!level.isClientSide) {
             int ch = state.getValue(CHANNEL);
-            player.displayClientMessage(Component.translatable("message.mundos_de_axelis.reja_volcan." + (ch == 1 ? "guardian" : ch == 2 ? "braziers" : "closed")), true);
+            player.displayClientMessage(Component.translatable("message.mundos_de_axelis.reja_volcan." + (ch == 1 ? "guardian" : ch == 2 ? "braziers" : ch == 3 ? "altar" : "closed")), true);
             level.playSound(null, pos, SoundEvents.CHAIN_HIT, SoundSource.BLOCKS, 0.7F, 0.7F);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);

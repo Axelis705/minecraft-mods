@@ -44,6 +44,8 @@ public class AltarMalditoBlockEntity extends BlockEntity {
     public static final int WAVES = 3;
     public static final long REST = 24000L;
     private static final double RANGE = 32.0D;
+    /** Hasta dónde busca las rejas que abre (canal 3) al vencerlo. */
+    public static final int GATE_REACH = 30;
 
     private int tier = 1;
     private int state = IDLE;
@@ -308,6 +310,13 @@ public class AltarMalditoBlockEntity extends BlockEntity {
                 com.mundosdeaxelis.encargo.Encargos.progress(p, com.mundosdeaxelis.encargo.Encargos.Tipo.ALTAR, 1);
             }
             p.displayClientMessage(Component.translatable("message.mundos_de_axelis.altar.vencido").withStyle(ChatFormatting.GOLD), true);
+        }
+        // etapa 287: las rejas que guarda este altar (canal 3, como la de la sala de erupciones del volcán) se abren
+        if (RejaVolcanBlock.setChannel(sl, worldPosition, 3, GATE_REACH, 6, true) > 0) {
+            for (ServerPlayer p : near) {
+                p.displayClientMessage(Component.translatable("message.mundos_de_axelis.altar.reja_abierta").withStyle(ChatFormatting.GOLD), false);
+            }
+            sl.playSound(null, worldPosition, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 1.0F, 0.6F);
         }
         sl.playSound(null, worldPosition, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.BLOCKS, 1.0F, 1.0F);
         sl.playSound(null, worldPosition, SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS, 1.0F, 0.8F);

@@ -79,10 +79,12 @@ execute if block 22 -40 94 mundos_de_axelis:vault_chest_locked_volcano run say P
 execute if data block 22 -40 94 {Kind:"LOCKED",Stage:4,LockLevel:5} run say PRUEBA_VOLCAN_COFRE_DATOS_OK
 execute if block 3 -56 103 mundos_de_axelis:piedra_regreso run say PRUEBA_VOLCAN_PIEDRA_REGRESO_OK
 execute unless block 0 -45 30 minecraft:air run say PRUEBA_VOLCAN_SIN_TUNEL_OK
-execute if block 7 18 71 minecraft:red_nether_bricks run say PRUEBA_VOLCAN_ARCO_SALTO_OK
-execute if block 9 17 69 minecraft:crimson_sign run say PRUEBA_VOLCAN_CARTEL_SALTO_OK
+execute if block 9 18 76 minecraft:red_nether_bricks run say PRUEBA_VOLCAN_ARCO_SALTO_OK
+execute if block 10 15 74 minecraft:crimson_wall_sign run say PRUEBA_VOLCAN_CARTEL_SALTO_OK
 execute if block -40 -42 51 mundos_de_axelis:lava_falsa[flujo=west] run say PRUEBA_VOLCAN_RIO_CORRE_OK
 execute if block 0 13 77 mundos_de_axelis:lava_falsa[flujo=up] run say PRUEBA_VOLCAN_LAGO_QUIETO_OK
+execute if block 12 -40 103 mundos_de_axelis:reja_volcan[open=false,channel=3] run say PRUEBA_VOLCAN_REJA_ALTAR_OK
+execute positioned 0 -40 90 run mundos prueba etapa287
 execute if block -11 -56 108 minecraft:iron_door run say PRUEBA_IGNACIO_CELDA_PUERTA_OK
 execute if block -11 -56 105 minecraft:iron_bars run say PRUEBA_IGNACIO_CELDA_BARROTES_OK
 execute if entity @e[type=mundos_de_axelis:habitante,x=-17,y=-58,z=102,dx=6,dy=4,dz=8,nbt={NpcState:0,Npc:"ignacio"}] run say PRUEBA_IGNACIO_PRESO_OK
@@ -138,6 +140,8 @@ forceload remove 768 -40 792 -15
 #expect PRUEBA_VOLCAN_GUARDIAN_OK
 #expect PRUEBA_VOLCAN_REJA_CERRADA_OK
 #expect PRUEBA_VOLCAN_REJA_TESORO_OK
+#expect PRUEBA_VOLCAN_REJA_ALTAR_OK
+#expect PRUEBA_ETAPA287_OK
 #expect PRUEBA_VOLCAN_BRASERO_OK
 #expect PRUEBA_VOLCAN_COFRE_OK
 #expect PRUEBA_VOLCAN_COFRE_CERRADURA_OK

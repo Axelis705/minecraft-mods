@@ -252,6 +252,8 @@ public final class AutoTest {
     }
 
     /** Como {@link #standLooking}, pero en coordenadas del plano del volcán. */
+    private static volatile boolean vioVolcan;
+
     private static void lookV(double x, double y, double z, double tx, double ty, double tz) {
         standLooking(x, VY + y, VZ + z, tx, VY + ty, VZ + tz);
     }
@@ -1579,6 +1581,9 @@ public final class AutoTest {
             cmd("execute as @a run mundos prueba esencia 900");
             cmd("execute in minecraft:overworld positioned " + tx + " " + LTY + " " + tz + " rotated 0 0 run mundos vecinos plantar hilda");
         });
+        // Hilda está dentro de su casa, a más de 6 bloques: el servidor no acepta hablar desde tan lejos. Sale a la puerta.
+        add("tienda nueva (que salga)", 800, () -> cmd("tp @e[type=mundos_de_axelis:habitante,limit=1,sort=nearest] "
+                + (tx + 0.5) + " " + LTY + " " + (tz - 5.0) + " 180 0"));
         add("tienda nueva (hablar)", 1500, () -> {
             Minecraft mc = Minecraft.getInstance();
             com.mundosdeaxelis.entity.Habitante h = null;
@@ -2844,11 +2849,252 @@ public final class AutoTest {
         });
     }
 
+    /** La estructura del volcán (/mundos estructura volcan): por fuera, el cráter, tirarse a la lava falsa, la dungeon y una erupción. */
+    private static void volcanEstructura() {
+        // 8. la estructura del volcán (/mundos estructura volcan): por fuera, el cráter, tirarse a la lava falsa, la dungeon y una erupción
+        add("volver al mundo", 4000, () -> {
+            open(null);
+            clearMobs();
+            cmd("execute in minecraft:overworld run tp @a 0.5 -60 60 180 0");
+        });
+        add("construir volcán", 30000, () -> {
+            open(null);
+            cmd("gamemode spectator @a");
+            cmd("execute in minecraft:overworld positioned 0 " + VY + " " + (VZ - 16) + " rotated 0 0 run mundos estructura volcan");
+        });
+        add("volcán de lejos", 4000, () -> lookV(0, 30, -75, 0, 32, 60));
+        add("volcán de lejos (foto)", 300, () -> shot("30_volcan_lejos"));
+        // etapa 287: la primera vez que un jugador (no espectador) mira al volcán, despierta con una gran erupción
+        add("primera vista", 800, () -> {
+            onServer(sp -> {
+                net.minecraft.nbt.CompoundTag per = sp.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+                per.remove("mdc_volcanes_vistos");
+                sp.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, per);
+            });
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 40 4 true");
+            lookV(0.5, -8, -75, 0.5, 72, 60);
+        });
+        add("primera vista (espera)", 2500, () -> lookV(0.5, -8, -75, 0.5, 72, 60));
+        add("primera vista (mira)", 300, () -> onServer(sp -> vioVolcan = com.mundosdeaxelis.world.Volcanes.vioAlguno(sp)));
+        add("primera vista (foto)", 300, () -> {
+            check("al mirar el volcán por primera vez, despierta", vioVolcan);
+            shot("30b_volcan_despierta");
+        });
+        add("primera vista (después)", 2200, () -> shot("30c_volcan_erupcion"));
+        add("primera vista (fin)", 300, () -> cmd("gamemode spectator @a"));
+        add("volcán de lado", 4000, () -> lookV(100, 55, 25, 0, 30, 60));
+        add("volcán de lado (foto)", 300, () -> shot("31_volcan_lado"));
+        add("camino", 3000, () -> lookV(48, 14, 2, 30, 18, 30));
+        add("camino (foto)", 300, () -> {
+            check("fuera del volcán no suena su música (zona " + AmbientMusic.volcanZone() + ")", AmbientMusic.volcanZone() == 0);
+            shot("32_volcan_camino");
+        });
+        add("cono y fumarolas", 3500, () -> lookV(62, 22, 122, 37, 10, 97));
+        add("cono y fumarolas (foto)", 300, () -> shot("32b_volcan_cono"));
+        add("pie del volcán", 3000, () -> lookV(-70, 4, 30, -40, 0, 50));
+        add("pie del volcán (foto)", 300, () -> shot("32c_volcan_pie"));
+        add("cráter", 3500, () -> lookV(0, 82, 36, 0, 61, 60));
+        add("cráter (foto)", 300, () -> shot("33_volcan_crater"));
+        // etapa 263: la pista para tirarse (arco rojo, muelle y cartel) y la lava de los ríos que corre
+        // etapa 287: desde el final del camino baja una escalera recta y ancha; el cartel cuelga del poste del arco
+        add("salto de fe", 3000, () -> lookV(18.5, 67, 60.5, 5, 62.5, 60.5));
+        add("salto de fe (foto)", 300, () -> {
+            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
+            check("al final del camino hay un arco rojo sobre el muelle del lago", lv.getBlockState(new net.minecraft.core.BlockPos(9, VY + 66, VZ + 60))
+                    .is(net.minecraft.world.level.block.Blocks.RED_NETHER_BRICKS));
+            check("y un cartel «Salto de fe» en el poste del arco", lv.getBlockState(new net.minecraft.core.BlockPos(10, VY + 63, VZ + 58))
+                    .is(net.minecraft.world.level.block.Blocks.CRIMSON_WALL_SIGN));
+            check("la escalera de bajada está libre", lv.getBlockState(new net.minecraft.core.BlockPos(13, VY + 65, VZ + 60)).isAir()
+                    && lv.getBlockState(new net.minecraft.core.BlockPos(13, VY + 66, VZ + 60)).isAir());
+            net.minecraft.world.level.block.state.BlockState river = lv.getBlockState(new net.minecraft.core.BlockPos(-40, VY + 6, VZ + 35));
+            check("la lava de los ríos corre ladera abajo (" + river + ")", river.is(com.mundosdeaxelis.registry.ModBlocks.LAVA_FALSA.get())
+                    && river.getValue(com.mundosdeaxelis.block.LavaFalsaBlock.FLUJO) == net.minecraft.core.Direction.WEST);
+            shot("33b_volcan_salto");
+        });
+        add("lago del cráter", 2500, () -> lookV(-6, 66, 62, 6, 61, 56));
+        add("lago del cráter (foto)", 300, () -> shot("33c_volcan_lago"));
+        add("a tirarse", 600, () -> {
+            cmd("gamemode survival @a");
+            // sin resistencia: así se comprueba que la caída por la lava falsa no hace daño
+            cmd("effect clear @a minecraft:resistance");
+            cmd("effect give @a minecraft:fire_resistance 900 0 true");
+            cmd("effect give @a minecraft:instant_health 1 5 true");
+            lookV(0.5, 64, 60.5, 0.5, 50, 72);
+        });
+        add("cayendo (foto)", 2500, () -> shot("34_volcan_cayendo"));
+        add("aterriza", 9000, () -> {
+        });
+        add("cámara del cráter", 300, () -> {
+            double ly = Minecraft.getInstance().player.getY() - VY;
+            check("tirarse a la lava falsa lleva a la cámara del cráter (altura " + String.format(Locale.ROOT, "%.1f", ly) + ")", ly < 40 && ly > 28);
+            check("la caída no hace daño (vida " + (int) Minecraft.getInstance().player.getHealth() + ")", Minecraft.getInstance().player.getHealth() >= 19.0F);
+            cmd("effect give @a minecraft:resistance 900 4 true");
+            lookV(0.5, 32, 51, 0, 35, 64);
+        });
+        add("cámara (foto)", 1500, () -> {
+            long since = Minecraft.getInstance().level.getGameTime() - BossBars.granBarTick;
+            check("lejos de su cámara no se ve la barra de la Gran Salamandra", since > 40);
+            shot("35_volcan_camara");
+        });
+        add("puente", 1500, () -> lookV(-11.5, 24, 78.5, 4, 24, 78.5));
+        add("puente (foto)", 300, () -> shot("36_volcan_puente"));
+        add("pisar el puente", 700, () -> lookV(-8.5, 24, 78.5, 4, 23, 78.5));
+        add("cruje (foto)", 2500, () -> shot("37_puente_cruje"));
+        // si el servidor de pruebas va lento, el derrumbe (bloque a bloque) tarda un poco más en llegar a los pies
+        add("se derrumba", 1500, () -> {
+        });
+        add("se cae", 300, () -> {
+            double ly = Minecraft.getInstance().player.getY() - VY;
+            check("el puente se derrumba y caes al foso (altura " + String.format(Locale.ROOT, "%.1f", ly) + ")", ly < 23);
+            shot("38_puente_foso");
+        });
+        add("sala de erupciones", 3500, () -> {
+            onServer(net.minecraft.world.entity.Entity::clearFire);
+            lookV(5.5, 8, 67.5, 0, 9, 80);
+        });
+        add("erupciones (foto)", 2500, () -> shot("39_volcan_erupciones"));
+        add("erupciones b (foto)", 2500, () -> shot("40_volcan_erupciones"));
+        add("altar", 3000, () -> lookV(-14.5, 8, 76.5, -24, 9, 76.5));
+        add("altar (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(12, VY + 8, VZ + 87));
+            check("la reja de la sala de erupciones espera a las oleadas del altar", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
+                    && !g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
+            check("dentro del volcán suena su música (zona " + AmbientMusic.volcanZone() + ")", AmbientMusic.volcanZone() == 1);
+            shot("41_volcan_altar");
+        });
+        // etapa 255: el acertijo de los braseros, la sala del tesoro y el guardián
+        add("braseros", 2500, () -> {
+            onServer(sp -> {
+                net.minecraft.server.level.ServerLevel sl = sp.serverLevel();
+                for (int[] c : new int[][]{{-15, 67}, {-15, 85}, {9, 67}, {9, 85}}) {
+                    net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(c[0], VY + 8, VZ + c[1]);
+                    sl.getBlockState(p).use(sl, sp, net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.phys.BlockHitResult(
+                            net.minecraft.world.phys.Vec3.atCenterOf(p), net.minecraft.core.Direction.UP, p, false));
+                }
+            });
+            lookV(-14.5, 9, 66.5, 2, 8, 80);
+        });
+        add("braseros (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(15, VY + 8, VZ + 76));
+            check("encender los cuatro braseros abre la reja del tesoro", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
+                    && g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
+            shot("41b_volcan_braseros");
+        });
+        add("sala del tesoro", 2500, () -> {
+            clearHostiles();
+            lookV(13.5, 8, 76.5, 22, 8.5, 76.5);
+        });
+        add("sala del tesoro (foto)", 300, () -> shot("41c_volcan_tesoro"));
+        add("guardián", 3000, () -> {
+            cmd("execute in minecraft:overworld run summon mundos_de_axelis:gran_salamandra 22.5 " + (VY - 8) + " " + (VZ + 100.5));
+            lookV(28.5, -8, 95.5, 22, -7, 100.5);
+        });
+        add("guardián (foto)", 300, () -> {
+            check("la Gran Salamandra guarda su cámara", clientCount(com.mundosdeaxelis.entity.GranSalamandra.class) > 0);
+            check("cerca de ella se ve su barra", Minecraft.getInstance().level.getGameTime() - BossBars.granBarTick < 40);
+            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(14, VY - 8, VZ + 100));
+            check("la reja del guardián está cerrada", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
+                    && !g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
+            shot("41d_volcan_guardian");
+        });
+        add("vencer al guardián", 2500, () -> cmd("kill @e[type=mundos_de_axelis:gran_salamandra]"));
+        add("reja abierta (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(14, VY - 8, VZ + 100));
+            check("al vencer a la Gran Salamandra se abre la reja", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
+                    && g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
+            shot("41e_volcan_reja");
+        });
+        add("santuario", 3000, () -> {
+            clearHostiles();
+            lookV(0.5, -8, 82.5, 0.5, -6, 90.5);
+        });
+        add("santuario (foto)", 300, () -> {
+            net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(0, VY - 6, VZ + 90);
+            String id = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level.getBlockState(p).getBlock()).getPath();
+            check("la Piedra de Portal: Volcán está en el santuario (" + id + ")", id.equals("portal_stone_volcano"));
+            shot("42_volcan_santuario");
+        });
+        // etapa 263: Ignacio, preso en la celda del santuario; el sumo sacerdote lleva la llave
+        add("ignacio preso", 2500, () -> {
+            cmd("gamemode survival @a");
+            cmd("effect give @a minecraft:resistance 600 4 true");
+            lookV(-9.5, -8, 90.5, -13, -6.6, 90.5);
+        });
+        add("ignacio preso (hablar)", 2600, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("ignacio");
+            check("Ignacio está preso en la celda del volcán", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
+            npcServer("ignacio", com.mundosdeaxelis.npc.NpcService::interact);
+        });
+        add("ignacio preso (foto)", 300, () -> {
+            check("se abre la ventana de Ignacio", npcScreen() != null);
+            shot("42b_ignacio_preso");
+            open(null);
+        });
+        add("llave del sumo sacerdote", 1500, () -> {
+            cmd("execute in minecraft:overworld run summon mundos_de_axelis:cultista_volcan -3.5 " + (VY - 8) + " " + (VZ + 86.5)
+                    + " {ForgeData:{MundosTag:\"llave_celda\"}}");
+            cmd("kill @e[type=mundos_de_axelis:cultista_volcan,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
+        });
+        add("llave del sumo sacerdote (comprobar)", 300, () -> onServer(sp -> towerKey = !sp.serverLevel().getEntitiesOfClass(
+                net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(32),
+                i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty()));
+        add("llave en la celda del volcán", 2600, () -> {
+            check("el sumo sacerdote suelta la llave de la celda", towerKey);
+            cmd("kill @e[type=item]");
+            onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()),
+                    new net.minecraft.core.BlockPos(-11, VY - 8, VZ + 92), net.minecraft.core.Direction.EAST));
+        });
+        add("ignacio rescatado (foto)", 300, () -> {
+            com.mundosdeaxelis.entity.Habitante h = npcClient("ignacio");
+            check("Ignacio queda libre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE);
+            check("Ignacio da su Semilla de casa", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
+            shot("42c_ignacio_rescatado");
+            open(null);
+        });
+        // la salida: la Piedra de regreso, junto al altar, lleva a la entrada del volcán
+        add("piedra de regreso", 2500, () -> {
+            cmd("clear @a mundos_de_axelis:semilla_casa");
+            lookV(5.5, -8, 85.5, 3.5, -7.5, 87.5);
+        });
+        add("piedra de regreso (foto)", 300, () -> {
+            net.minecraft.world.level.block.state.BlockState st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(3, VY - 8, VZ + 87));
+            check("junto al altar está la Piedra de regreso (" + st.getBlock() + ")", st.is(com.mundosdeaxelis.registry.ModBlocks.PIEDRA_REGRESO.get()));
+            shot("42d_volcan_piedra_regreso");
+            onServer(sp -> useBlock(sp, new net.minecraft.core.BlockPos(3, VY - 8, VZ + 87), false));
+        });
+        // etapa 282: la piedra pide confirmar; el botón se puede pulsar a los 3 s
+        add("confirmar la salida", 3800, () -> {
+            check("la Piedra de regreso pide confirmar", Minecraft.getInstance().screen instanceof ConfirmarScreen);
+            if (Minecraft.getInstance().screen instanceof ConfirmarScreen c) {
+                c.keyPressed(org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER, 0, 0);
+            }
+        });
+        add("en la entrada", 2500, () -> {
+        });
+        add("en la entrada (foto)", 300, () -> {
+            net.minecraft.world.entity.player.Player pl = Minecraft.getInstance().player;
+            double lx = pl.getX(), lz = pl.getZ() - VZ;
+            check("la Piedra de regreso te deja en la entrada del volcán (" + String.format(Locale.ROOT, "%.1f %.1f %.1f", lx, pl.getY() - VY, lz) + ")",
+                    Math.abs(lx) < 4 && lz > -6 && lz < 4);
+            shot("43_volcan_regreso");
+        });
+        add("erupción", 1500, () -> {
+            cmd("gamemode spectator @a");
+            lookV(70, 40, -20, 0, 60, 60);
+            onServer(sp -> com.mundosdeaxelis.block.NucleoVolcanBlock.erupt(sp.serverLevel(),
+                    new net.minecraft.core.BlockPos(0, VY + 61, VZ + 60), sp.getRandom()));
+        });
+        add("erupción (foto)", 2000, () -> shot("44_volcan_erupcion"));
+        add("erupción b (foto)", 300, () -> shot("45_volcan_erupcion"));
+    }
+
     /** Solo una parte de la prueba (para probar rápido): -Dmundos.autotest.solo=armas */
     private static final String SOLO = System.getProperty("mundos.autotest.solo", "").trim();
 
     private static void build() {
-        if (SOLO.equals("armas")) {
+        java.util.List<String> solo = java.util.Arrays.asList(SOLO.split(","));
+        if (!SOLO.isEmpty()) {
             add("reglas", 800, () -> {
                 cmd("gamerule sendCommandFeedback false");
                 cmd("gamerule doDaylightCycle false");
@@ -2861,11 +3107,16 @@ public final class AutoTest {
                 cmd("effect give @a minecraft:resistance 99999 4 true");
                 cmd("mundos desbloquear 5");
             });
-            armas();
-            cuerpoArmas();
-            etapa282();
-            tiendaNueva();
-            mesaNueva();
+            if (solo.contains("armas")) {
+                armas();
+                cuerpoArmas();
+                etapa282();
+                tiendaNueva();
+                mesaNueva();
+            }
+            if (solo.contains("volcan")) {
+                volcanEstructura();
+            }
             add("fin", 2000, () -> {
                 open(null);
                 log("AUTOTEST_FIN fotos=" + shots + " comprobaciones=" + checks + " fallos=" + fails);
@@ -3417,209 +3668,7 @@ public final class AutoTest {
             shot("28_victoria");
         });
         add("premios (foto)", 3000, () -> shot("29_premios"));
-        // 8. la estructura del volcán (/mundos estructura volcan): por fuera, el cráter, tirarse a la lava falsa, la dungeon y una erupción
-        add("volver al mundo", 4000, () -> {
-            open(null);
-            clearMobs();
-            cmd("execute in minecraft:overworld run tp @a 0.5 -60 60 180 0");
-        });
-        add("construir volcán", 30000, () -> {
-            open(null);
-            cmd("gamemode spectator @a");
-            cmd("execute in minecraft:overworld positioned 0 " + VY + " " + (VZ - 16) + " rotated 0 0 run mundos estructura volcan");
-        });
-        add("volcán de lejos", 4000, () -> lookV(0, 30, -75, 0, 32, 60));
-        add("volcán de lejos (foto)", 300, () -> shot("30_volcan_lejos"));
-        add("volcán de lado", 4000, () -> lookV(100, 55, 25, 0, 30, 60));
-        add("volcán de lado (foto)", 300, () -> shot("31_volcan_lado"));
-        add("camino", 3000, () -> lookV(48, 14, 2, 30, 18, 30));
-        add("camino (foto)", 300, () -> {
-            check("fuera del volcán no suena su música (zona " + AmbientMusic.volcanZone() + ")", AmbientMusic.volcanZone() == 0);
-            shot("32_volcan_camino");
-        });
-        add("cono y fumarolas", 3500, () -> lookV(62, 22, 122, 37, 10, 97));
-        add("cono y fumarolas (foto)", 300, () -> shot("32b_volcan_cono"));
-        add("pie del volcán", 3000, () -> lookV(-70, 4, 30, -40, 0, 50));
-        add("pie del volcán (foto)", 300, () -> shot("32c_volcan_pie"));
-        add("cráter", 3500, () -> lookV(0, 82, 36, 0, 61, 60));
-        add("cráter (foto)", 300, () -> shot("33_volcan_crater"));
-        // etapa 263: la pista para tirarse (arco rojo, muelle y cartel) y la lava de los ríos que corre
-        add("salto de fe", 3000, () -> lookV(15.5, 70, 45.5, 6, 63, 55.5));
-        add("salto de fe (foto)", 300, () -> {
-            net.minecraft.world.level.Level lv = Minecraft.getInstance().level;
-            check("al final del camino hay un arco rojo sobre el muelle del lago", lv.getBlockState(new net.minecraft.core.BlockPos(7, VY + 66, VZ + 55))
-                    .is(net.minecraft.world.level.block.Blocks.RED_NETHER_BRICKS));
-            check("y un cartel «Salto de fe»", lv.getBlockState(new net.minecraft.core.BlockPos(9, VY + 65, VZ + 53)).is(net.minecraft.world.level.block.Blocks.CRIMSON_SIGN));
-            net.minecraft.world.level.block.state.BlockState river = lv.getBlockState(new net.minecraft.core.BlockPos(-40, VY + 6, VZ + 35));
-            check("la lava de los ríos corre ladera abajo (" + river + ")", river.is(com.mundosdeaxelis.registry.ModBlocks.LAVA_FALSA.get())
-                    && river.getValue(com.mundosdeaxelis.block.LavaFalsaBlock.FLUJO) == net.minecraft.core.Direction.WEST);
-            shot("33b_volcan_salto");
-        });
-        add("lago del cráter", 2500, () -> lookV(-6, 66, 62, 6, 61, 56));
-        add("lago del cráter (foto)", 300, () -> shot("33c_volcan_lago"));
-        add("a tirarse", 600, () -> {
-            cmd("gamemode survival @a");
-            // sin resistencia: así se comprueba que la caída por la lava falsa no hace daño
-            cmd("effect clear @a minecraft:resistance");
-            cmd("effect give @a minecraft:fire_resistance 900 0 true");
-            cmd("effect give @a minecraft:instant_health 1 5 true");
-            lookV(0.5, 64, 60.5, 0.5, 50, 72);
-        });
-        add("cayendo (foto)", 2500, () -> shot("34_volcan_cayendo"));
-        add("aterriza", 9000, () -> {
-        });
-        add("cámara del cráter", 300, () -> {
-            double ly = Minecraft.getInstance().player.getY() - VY;
-            check("tirarse a la lava falsa lleva a la cámara del cráter (altura " + String.format(Locale.ROOT, "%.1f", ly) + ")", ly < 40 && ly > 28);
-            check("la caída no hace daño (vida " + (int) Minecraft.getInstance().player.getHealth() + ")", Minecraft.getInstance().player.getHealth() >= 19.0F);
-            cmd("effect give @a minecraft:resistance 900 4 true");
-            lookV(0.5, 32, 51, 0, 35, 64);
-        });
-        add("cámara (foto)", 1500, () -> {
-            long since = Minecraft.getInstance().level.getGameTime() - BossBars.granBarTick;
-            check("lejos de su cámara no se ve la barra de la Gran Salamandra", since > 40);
-            shot("35_volcan_camara");
-        });
-        add("puente", 1500, () -> lookV(-11.5, 24, 78.5, 4, 24, 78.5));
-        add("puente (foto)", 300, () -> shot("36_volcan_puente"));
-        add("pisar el puente", 700, () -> lookV(-8.5, 24, 78.5, 4, 23, 78.5));
-        add("cruje (foto)", 2500, () -> shot("37_puente_cruje"));
-        // si el servidor de pruebas va lento, el derrumbe (bloque a bloque) tarda un poco más en llegar a los pies
-        add("se derrumba", 1500, () -> {
-        });
-        add("se cae", 300, () -> {
-            double ly = Minecraft.getInstance().player.getY() - VY;
-            check("el puente se derrumba y caes al foso (altura " + String.format(Locale.ROOT, "%.1f", ly) + ")", ly < 23);
-            shot("38_puente_foso");
-        });
-        add("sala de erupciones", 3500, () -> {
-            onServer(net.minecraft.world.entity.Entity::clearFire);
-            lookV(5.5, 8, 67.5, 0, 9, 80);
-        });
-        add("erupciones (foto)", 2500, () -> shot("39_volcan_erupciones"));
-        add("erupciones b (foto)", 2500, () -> shot("40_volcan_erupciones"));
-        add("altar", 3000, () -> lookV(-14.5, 8, 76.5, -24, 9, 76.5));
-        add("altar (foto)", 300, () -> {
-            check("dentro del volcán suena su música (zona " + AmbientMusic.volcanZone() + ")", AmbientMusic.volcanZone() == 1);
-            shot("41_volcan_altar");
-        });
-        // etapa 255: el acertijo de los braseros, la sala del tesoro y el guardián
-        add("braseros", 2500, () -> {
-            onServer(sp -> {
-                net.minecraft.server.level.ServerLevel sl = sp.serverLevel();
-                for (int[] c : new int[][]{{-15, 67}, {-15, 85}, {9, 67}, {9, 85}}) {
-                    net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(c[0], VY + 8, VZ + c[1]);
-                    sl.getBlockState(p).use(sl, sp, net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.phys.BlockHitResult(
-                            net.minecraft.world.phys.Vec3.atCenterOf(p), net.minecraft.core.Direction.UP, p, false));
-                }
-            });
-            lookV(-14.5, 9, 66.5, 2, 8, 80);
-        });
-        add("braseros (foto)", 300, () -> {
-            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(15, VY + 8, VZ + 76));
-            check("encender los cuatro braseros abre la reja del tesoro", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
-                    && g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
-            shot("41b_volcan_braseros");
-        });
-        add("sala del tesoro", 2500, () -> {
-            clearHostiles();
-            lookV(13.5, 8, 76.5, 22, 8.5, 76.5);
-        });
-        add("sala del tesoro (foto)", 300, () -> shot("41c_volcan_tesoro"));
-        add("guardián", 3000, () -> {
-            cmd("execute in minecraft:overworld run summon mundos_de_axelis:gran_salamandra 22.5 " + (VY - 8) + " " + (VZ + 100.5));
-            lookV(28.5, -8, 95.5, 22, -7, 100.5);
-        });
-        add("guardián (foto)", 300, () -> {
-            check("la Gran Salamandra guarda su cámara", clientCount(com.mundosdeaxelis.entity.GranSalamandra.class) > 0);
-            check("cerca de ella se ve su barra", Minecraft.getInstance().level.getGameTime() - BossBars.granBarTick < 40);
-            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(14, VY - 8, VZ + 100));
-            check("la reja del guardián está cerrada", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
-                    && !g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
-            shot("41d_volcan_guardian");
-        });
-        add("vencer al guardián", 2500, () -> cmd("kill @e[type=mundos_de_axelis:gran_salamandra]"));
-        add("reja abierta (foto)", 300, () -> {
-            net.minecraft.world.level.block.state.BlockState g = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(14, VY - 8, VZ + 100));
-            check("al vencer a la Gran Salamandra se abre la reja", g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock
-                    && g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN));
-            shot("41e_volcan_reja");
-        });
-        add("santuario", 3000, () -> {
-            clearHostiles();
-            lookV(0.5, -8, 82.5, 0.5, -6, 90.5);
-        });
-        add("santuario (foto)", 300, () -> {
-            net.minecraft.core.BlockPos p = new net.minecraft.core.BlockPos(0, VY - 6, VZ + 90);
-            String id = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level.getBlockState(p).getBlock()).getPath();
-            check("la Piedra de Portal: Volcán está en el santuario (" + id + ")", id.equals("portal_stone_volcano"));
-            shot("42_volcan_santuario");
-        });
-        // etapa 263: Ignacio, preso en la celda del santuario; el sumo sacerdote lleva la llave
-        add("ignacio preso", 2500, () -> {
-            cmd("gamemode survival @a");
-            cmd("effect give @a minecraft:resistance 600 4 true");
-            lookV(-9.5, -8, 90.5, -13, -6.6, 90.5);
-        });
-        add("ignacio preso (hablar)", 2600, () -> {
-            com.mundosdeaxelis.entity.Habitante h = npcClient("ignacio");
-            check("Ignacio está preso en la celda del volcán", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.PRESO);
-            npcServer("ignacio", com.mundosdeaxelis.npc.NpcService::interact);
-        });
-        add("ignacio preso (foto)", 300, () -> {
-            check("se abre la ventana de Ignacio", npcScreen() != null);
-            shot("42b_ignacio_preso");
-            open(null);
-        });
-        add("llave del sumo sacerdote", 1500, () -> {
-            cmd("execute in minecraft:overworld run summon mundos_de_axelis:cultista_volcan -3.5 " + (VY - 8) + " " + (VZ + 86.5)
-                    + " {ForgeData:{MundosTag:\"llave_celda\"}}");
-            cmd("kill @e[type=mundos_de_axelis:cultista_volcan,nbt={ForgeData:{MundosTag:\"llave_celda\"}}]");
-        });
-        add("llave del sumo sacerdote (comprobar)", 300, () -> onServer(sp -> towerKey = !sp.serverLevel().getEntitiesOfClass(
-                net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(32),
-                i -> i.getItem().is(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get())).isEmpty()));
-        add("llave en la celda del volcán", 2600, () -> {
-            check("el sumo sacerdote suelta la llave de la celda", towerKey);
-            cmd("kill @e[type=item]");
-            onServer(sp -> useOn(sp, new net.minecraft.world.item.ItemStack(com.mundosdeaxelis.registry.ModItems.LLAVE_CELDA.get()),
-                    new net.minecraft.core.BlockPos(-11, VY - 8, VZ + 92), net.minecraft.core.Direction.EAST));
-        });
-        add("ignacio rescatado (foto)", 300, () -> {
-            com.mundosdeaxelis.entity.Habitante h = npcClient("ignacio");
-            check("Ignacio queda libre", h != null && h.state() == com.mundosdeaxelis.entity.Habitante.LIBRE);
-            check("Ignacio da su Semilla de casa", invCount(com.mundosdeaxelis.registry.ModItems.SEMILLA_CASA.get()) >= 1);
-            shot("42c_ignacio_rescatado");
-            open(null);
-        });
-        // la salida: la Piedra de regreso, junto al altar, lleva a la entrada del volcán
-        add("piedra de regreso", 2500, () -> {
-            cmd("clear @a mundos_de_axelis:semilla_casa");
-            lookV(5.5, -8, 85.5, 3.5, -7.5, 87.5);
-        });
-        add("piedra de regreso (foto)", 300, () -> {
-            net.minecraft.world.level.block.state.BlockState st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(3, VY - 8, VZ + 87));
-            check("junto al altar está la Piedra de regreso (" + st.getBlock() + ")", st.is(com.mundosdeaxelis.registry.ModBlocks.PIEDRA_REGRESO.get()));
-            shot("42d_volcan_piedra_regreso");
-            onServer(sp -> useBlock(sp, new net.minecraft.core.BlockPos(3, VY - 8, VZ + 87), false));
-        });
-        add("en la entrada", 2500, () -> {
-        });
-        add("en la entrada (foto)", 300, () -> {
-            net.minecraft.world.entity.player.Player pl = Minecraft.getInstance().player;
-            double lx = pl.getX(), lz = pl.getZ() - VZ;
-            check("la Piedra de regreso te deja en la entrada del volcán (" + String.format(Locale.ROOT, "%.1f %.1f %.1f", lx, pl.getY() - VY, lz) + ")",
-                    Math.abs(lx) < 4 && lz > -6 && lz < 4);
-            shot("43_volcan_regreso");
-        });
-        add("erupción", 1500, () -> {
-            cmd("gamemode spectator @a");
-            lookV(70, 40, -20, 0, 60, 60);
-            onServer(sp -> com.mundosdeaxelis.block.NucleoVolcanBlock.erupt(sp.serverLevel(),
-                    new net.minecraft.core.BlockPos(0, VY + 61, VZ + 60), sp.getRandom()));
-        });
-        add("erupción (foto)", 2000, () -> shot("44_volcan_erupcion"));
-        add("erupción b (foto)", 300, () -> shot("45_volcan_erupcion"));
+        volcanEstructura();
         // etapa 256: el Santuario del Bosque (la primera estructura) y que las estructuras no se pueden picar
         add("santuario", 6000, () -> {
             open(null);

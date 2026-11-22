@@ -122,11 +122,12 @@ public final class Volcanes extends SavedData {
     // ================================================================== datos del plano (enemigos, rejas, braseros, cofres)
 
     /** Lo que hace falta del plano para reiniciar un volcán, sin guardar el plano entero. */
-    record Info(List<StructBp.Mob> mobs, List<Long> gates, List<Long> braziers, List<Long> chests) {
+    record Info(List<StructBp.Mob> mobs, List<Long> gates, List<Long> braziers, List<Long> chests, List<Long> altars) {
         static Info of(StructBp bp) {
             List<Long> g = new ArrayList<>();
             List<Long> br = new ArrayList<>();
             List<Long> ch = new ArrayList<>();
+            List<Long> al = new ArrayList<>();
             for (Map.Entry<Long, String> e : bp.m.entrySet()) {
                 String s = e.getValue();
                 if (s.startsWith("mundos_de_axelis:reja_volcan")) {
@@ -135,9 +136,11 @@ public final class Volcanes extends SavedData {
                     br.add(e.getKey());
                 } else if (s.startsWith("mundos_de_axelis:vault_chest")) {
                     ch.add(e.getKey());
+                } else if (s.startsWith("mundos_de_axelis:altar_maldito")) {
+                    al.add(e.getKey());
                 }
             }
-            return new Info(List.copyOf(bp.mobs), g, br, ch);
+            return new Info(List.copyOf(bp.mobs), g, br, ch, al);
         }
     }
 
@@ -296,6 +299,7 @@ public final class Volcanes extends SavedData {
     public static void clearRuntime() {
         ZONE.clear();
         HINTS.clear();
+        DESPERTO.clear();
         info = null;
         infoJob = null;
     }
@@ -318,6 +322,7 @@ public final class Volcanes extends SavedData {
         }
         Volcanes vs = get(server);
         vs.music(server);
+        vs.primeraVista(server);
         if (t % 40 == 7) {
             for (V v : new ArrayList<>(vs.list)) {
                 ServerLevel level = server.getLevel(v.dim);
@@ -325,6 +330,114 @@ public final class Volcanes extends SavedData {
                     vs.visit(level, v);
                 }
             }
+        }
+    }
+
+    // ================================================================== etapa 287: la primera vez que lo ves, ruge
+
+    /** En el jugador (sobrevive a la muerte): los volcanes que ya vio despertar. */
+    static final String VISTOS = "mdc_volcanes_vistos";
+    /** Cuándo fue el último gran despertar de cada volcán (para no encadenar varios si llegan varios jugadores a la vez). */
+    private static final Map<Integer, Long> DESPERTO = new HashMap<>();
+
+    static boolean visto(ServerPlayer p, int id) {
+        for (int i : p.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG).getIntArray(VISTOS)) {
+            if (i == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static void marcarVisto(ServerPlayer p, int id) {
+        CompoundTag per = p.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+        int[] a = per.getIntArray(VISTOS);
+        int[] b = java.util.Arrays.copyOf(a, a.length + 1);
+        b[a.length] = id;
+        per.putIntArray(VISTOS, b);
+        p.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, per);
+    }
+
+    /** Punto que hay que ver: en el aire, sobre el centro del cráter (donde sube la columna de fuego; el borde no lo tapa). */
+    static BlockPos cima(V v) {
+        return v.world(0, DesignVolcan.H + 20, DesignVolcan.CZ);
+    }
+
+    /** Para la prueba con el cliente: ¿ese jugador ya vio despertar algún volcán? */
+    public static boolean vioAlguno(ServerPlayer p) {
+        return p.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG).getIntArray(VISTOS).length > 0;
+    }
+
+    /**
+     * ¿Está mirando ese jugador hacia el cráter y sin nada que lo tape? (a menos de 230 bloques, con el cráter dentro de la vista y
+     * sin bloques opacos entre sus ojos y la cima; si el camino pasa por terreno sin cargar, cuenta como que no lo ve).
+     */
+    static boolean loVe(ServerPlayer p, BlockPos cima) {
+        net.minecraft.world.phys.Vec3 eye = p.getEyePosition();
+        net.minecraft.world.phys.Vec3 to = net.minecraft.world.phys.Vec3.atCenterOf(cima).subtract(eye);
+        double dist = to.length();
+        if (dist < 6 || dist > 230) {
+            return false;
+        }
+        net.minecraft.world.phys.Vec3 dir = to.scale(1.0 / dist);
+        if (p.getLookAngle().dot(dir) < 0.77) { // unos 40° alrededor del centro de la vista
+            return false;
+        }
+        ServerLevel level = p.serverLevel();
+        BlockPos.MutableBlockPos m = new BlockPos.MutableBlockPos();
+        for (double d = 1.0; d < dist - 4; d += 0.8) {
+            m.set(eye.x + dir.x * d, eye.y + dir.y * d, eye.z + dir.z * d);
+            if (!level.hasChunkAt(m)) {
+                return false;
+            }
+            if (level.getBlockState(m).canOcclude()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Cada segundo: quien ve por primera vez un volcán lo ve despertar con una gran erupción. */
+    private void primeraVista(MinecraftServer server) {
+        for (ServerPlayer p : server.getPlayerList().getPlayers()) {
+            if (p.isSpectator() || !p.isAlive()) {
+                continue;
+            }
+            for (V v : list) {
+                if (v.dim != p.level().dimension()) {
+                    continue;
+                }
+                BlockPos c = v.center();
+                double dx = c.getX() + 0.5 - p.getX(), dz = c.getZ() + 0.5 - p.getZ();
+                if (dx * dx + dz * dz > 230 * 230 || visto(p, v.id)) {
+                    continue;
+                }
+                BlockPos l = v.local(p.blockPosition());
+                if (DesignVolcan.inside(l.getX(), l.getY(), l.getZ()) || !p.serverLevel().isLoaded(cima(v)) || !loVe(p, cima(v))) {
+                    continue;
+                }
+                marcarVisto(p, v.id);
+                despertar(p.serverLevel(), v, p);
+            }
+        }
+    }
+
+    /** El gran despertar: tres erupciones seguidas y un título para quien lo vio. */
+    static void despertar(ServerLevel level, V v, ServerPlayer quien) {
+        quien.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket(10, 70, 25));
+        quien.connection.send(new net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket(
+                Component.translatable("title.mundos_de_axelis.volcan.despierta.sub").withStyle(net.minecraft.ChatFormatting.GOLD)));
+        quien.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket(
+                Component.translatable("title.mundos_de_axelis.volcan.despierta").withStyle(net.minecraft.ChatFormatting.RED, net.minecraft.ChatFormatting.BOLD)));
+        long now = level.getGameTime();
+        Long last = DESPERTO.get(v.id);
+        if (last != null && now - last < 300) {
+            return; // ya está rugiendo por otro jugador: no se encadenan más
+        }
+        DESPERTO.put(v.id, now);
+        BlockPos core = v.world(0, DesignVolcan.LAVA_Y, DesignVolcan.CZ);
+        for (int i = 0; i < 3; i++) {
+            Scheduler.runLater(10 + i * 50, () -> com.mundosdeaxelis.block.NucleoVolcanBlock.erupt(level, core, level.random));
         }
     }
 
@@ -349,6 +462,13 @@ public final class Volcanes extends SavedData {
                     if (Math.abs(l.getY() - DesignVolcan.F_SANCT) <= 2 && Math.hypot(l.getX() - DesignVolcan.RET_X, l.getZ() - DesignVolcan.RET_Z) <= 5) {
                         hint(p, 1, "message.mundos_de_axelis.volcan.regreso_pista");
                     }
+                    // etapa 287: en la sala de erupciones, con su reja cerrada, se avisa de que la abre el Altar Maldito
+                    if (Math.abs(l.getY() - DesignVolcan.F_ERUPT) <= 2 && l.getX() >= -16 && l.getX() <= 14 && l.getZ() >= 66 && l.getZ() <= 86) {
+                        BlockState g = p.level().getBlockState(v.world(DesignVolcan.GATE_ALTAR_X, DesignVolcan.F_ERUPT, DesignVolcan.GATE_ALTAR_Z));
+                        if (g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock && !g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN)) {
+                            hint(p, 2, "message.mundos_de_axelis.volcan.altar_pista");
+                        }
+                    }
                     break;
                 }
                 if (!p.isSpectator() && l.getY() >= DesignVolcan.LAVA_Y && l.getY() <= DesignVolcan.H + 4
@@ -366,7 +486,7 @@ public final class Volcanes extends SavedData {
 
     private static void hint(ServerPlayer p, int which, String key) {
         long now = p.serverLevel().getGameTime();
-        long[] last = HINTS.computeIfAbsent(p.getUUID(), u -> new long[]{Long.MIN_VALUE / 2, Long.MIN_VALUE / 2});
+        long[] last = HINTS.computeIfAbsent(p.getUUID(), u -> new long[]{Long.MIN_VALUE / 2, Long.MIN_VALUE / 2, Long.MIN_VALUE / 2});
         if (now - last[which] >= HINT_EVERY) {
             last[which] = now;
             p.displayClientMessage(Component.translatable(key), true);
@@ -479,6 +599,14 @@ public final class Volcanes extends SavedData {
         for (long k : in.braziers()) {
             com.mundosdeaxelis.block.BraseroVolcanBlock.reset(level, v.world(StructBp.kx(k), StructBp.ky(k), StructBp.kz(k)));
         }
+        // etapa 287: la reja de la sala de erupciones vuelve a cerrarse; su Altar Maldito queda listo para abrirla otra vez
+        for (long k : in.altars()) {
+            BlockPos p = v.world(StructBp.kx(k), StructBp.ky(k), StructBp.kz(k));
+            if (level.isLoaded(p) && level.getBlockEntity(p) instanceof com.mundosdeaxelis.block.AltarMalditoBlockEntity be
+                    && be.state() == com.mundosdeaxelis.block.AltarMalditoBlockEntity.RESTING) {
+                be.recharge();
+            }
+        }
         boolean loot = forceLoot || now - v.lastLoot >= LOOT_EVERY;
         if (loot) {
             for (long k : in.chests()) {
@@ -502,6 +630,114 @@ public final class Volcanes extends SavedData {
     }
 
     // ================================================================== comandos
+
+    /**
+     * Prueba de la etapa 287 sobre el volcán más cercano (recién construido): la reja de la sala de erupciones está cerrada, la abre
+     * vencer las tres oleadas del Altar Maldito, al reiniciar el volcán se cierra y el altar queda listo; y la «primera vista»: quien
+     * mira hacia el cráter (y no tiene nada delante) lo ve, de espaldas no, y solo despierta una vez por jugador.
+     */
+    /** Etapa 287: revisa en el plano la bajada al muelle, el cartel y la reja del altar (ver {@link DesignVolcan#revisarBajada}). */
+    public static List<String> revisarBajada() {
+        return DesignVolcan.revisarBajada(StructDesigns.make("volcan"));
+    }
+
+    public static List<String> prueba287(ServerLevel sl, net.minecraftforge.common.util.FakePlayer fp) {
+        List<String> fails = new ArrayList<>();
+        V v = nearest(sl, fp.blockPosition());
+        if (v == null) {
+            fails.add("no hay volcán");
+            return fails;
+        }
+        BlockPos gate = v.world(DesignVolcan.GATE_ALTAR_X, DesignVolcan.F_ERUPT, DesignVolcan.GATE_ALTAR_Z);
+        java.util.function.Supplier<Boolean> abierta = () -> {
+            BlockState g = sl.getBlockState(gate);
+            return g.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock && g.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.OPEN);
+        };
+        BlockState g0 = sl.getBlockState(gate);
+        if (!(g0.getBlock() instanceof com.mundosdeaxelis.block.RejaVolcanBlock) || g0.getValue(com.mundosdeaxelis.block.RejaVolcanBlock.CHANNEL) != 3 || abierta.get()) {
+            fails.add("la reja del altar no está cerrada en su sitio (" + g0 + ")");
+        }
+        int[] a = StructKit.altars("volcan")[0];
+        BlockPos ap = v.world(a[0], a[1], a[2]);
+        if (!(sl.getBlockEntity(ap) instanceof com.mundosdeaxelis.block.AltarMalditoBlockEntity be)) {
+            fails.add("sin altar en la sala de erupciones");
+            return fails;
+        }
+        fp.setGameMode(net.minecraft.world.level.GameType.CREATIVE); // sin sellos de por medio
+        fp.moveTo(ap.getX() + 0.5, ap.getY(), ap.getZ() + 3.5);
+        List<ServerPlayer> near = List.of(fp);
+        be.recharge();
+        be.activate(fp);
+        for (int w = 1; w <= com.mundosdeaxelis.block.AltarMalditoBlockEntity.WAVES && fails.isEmpty(); w++) {
+            for (int t = 0; t < 120 && be.wave() < w; t++) {
+                be.tick(sl, near);
+            }
+            if (abierta.get()) {
+                fails.add("la reja se abre antes de terminar (oleada " + w + ")");
+            }
+            for (UUID id : new ArrayList<>(be.mobs())) {
+                net.minecraft.world.entity.Entity e = sl.getEntity(id);
+                if (e != null) {
+                    e.discard();
+                }
+            }
+            be.tick(sl, near);
+        }
+        be.tick(sl, near);
+        if (fails.isEmpty() && !abierta.get()) {
+            fails.add("vencer las oleadas no abre la reja (estado " + be.state() + ")");
+        }
+        sl.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new AABB(ap).inflate(8)).forEach(net.minecraft.world.entity.Entity::discard);
+        get(sl.getServer()).reset(sl, v, false);
+        if (abierta.get()) {
+            fails.add("al reiniciar el volcán la reja sigue abierta");
+        }
+        if (be.state() != com.mundosdeaxelis.block.AltarMalditoBlockEntity.IDLE) {
+            fails.add("al reiniciar el volcán el altar no queda listo (" + be.state() + ")");
+        }
+        fp.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+        // la primera vista: flotando sobre la ladera, mirando al cráter
+        BlockPos c = cima(v);
+        BlockPos from = v.world(0, DesignVolcan.H + 8, DesignVolcan.CZ - 40);
+        fp.moveTo(from.getX() + 0.5, from.getY(), from.getZ() + 0.5);
+        net.minecraft.world.phys.Vec3 d = net.minecraft.world.phys.Vec3.atCenterOf(c).subtract(fp.getEyePosition());
+        fp.setYRot((float) (Mth.atan2(d.z, d.x) * 180.0 / Math.PI) - 90.0F);
+        fp.setXRot((float) -(Mth.atan2(d.y, Math.sqrt(d.x * d.x + d.z * d.z)) * 180.0 / Math.PI));
+        if (!loVe(fp, c)) {
+            fails.add("mirando al cráter no lo ve");
+        }
+        fp.setYRot(fp.getYRot() + 180.0F);
+        if (loVe(fp, c)) {
+            fails.add("de espaldas lo ve");
+        }
+        fp.setYRot(fp.getYRot() - 180.0F);
+        BlockPos wall = BlockPos.containing(fp.getEyePosition().add(d.normalize().scale(3)));
+        BlockState was = sl.getBlockState(wall);
+        sl.setBlock(wall, net.minecraft.world.level.block.Blocks.STONE.defaultBlockState(), 2);
+        if (loVe(fp, c)) {
+            fails.add("con una piedra delante lo ve");
+        }
+        sl.setBlock(wall, was, 2);
+        CompoundTag per = fp.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+        per.remove(VISTOS);
+        fp.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, per);
+        if (visto(fp, v.id)) {
+            fails.add("ya lo había visto");
+        }
+        marcarVisto(fp, v.id);
+        if (!visto(fp, v.id)) {
+            fails.add("no se apunta que lo vio");
+        }
+        DESPERTO.remove(v.id);
+        despertar(sl, v, fp);
+        if (!DESPERTO.containsKey(v.id)) {
+            fails.add("no despierta");
+        }
+        per = fp.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+        per.remove(VISTOS);
+        fp.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, per);
+        return fails;
+    }
 
     private static V nearest(ServerLevel level, BlockPos p) {
         V best = null;
