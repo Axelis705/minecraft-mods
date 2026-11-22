@@ -1142,20 +1142,25 @@ public final class AutoTest {
         });
         add("templo", 15000, () -> cmd("execute in minecraft:overworld positioned " + TPX + " " + TPY + " " + (TPZ0 - 16)
                 + " rotated 0 0 run mundos estructura templo"));
-        add("templo (fuera)", 2500, () -> standLooking(TPX + 48.5, TPY + 42, TPZ0 - 28, TPX, TPY + 12, TPZ0 + 50));
+        // etapa 289: el templo es un árbol gigante (tronco hueco con pisos, escalera de caracol y la Copa arriba)
+        add("templo (fuera)", 2500, () -> standLooking(TPX + 62.5, TPY + 38, TPZ0 - 24, TPX, TPY + 32, TPZ0 + 46));
         add("templo (fuera, foto)", 300, () -> {
-            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(TPX, TPY + 21, TPZ0 + 52));
-            check("al final del templo, junto al árbol del mundo, está la Piedra de Portal: Naturaleza (" + ps.getBlock() + ")",
+            net.minecraft.world.level.block.state.BlockState ps = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(TPX, TPY + 56, TPZ0 + 47));
+            check("en la Copa del árbol está la Piedra de Portal: Naturaleza (" + ps.getBlock() + ")",
                     ps.is(com.mundosdeaxelis.registry.ModBlocks.PORTAL_STONE_FOREST.get()));
-            check("hay enemigos del bosque por el camino del templo", clientCount(com.mundosdeaxelis.entity.Brote.class) >= 2
+            check("hay enemigos del bosque en el árbol", clientCount(com.mundosdeaxelis.entity.Brote.class) >= 2
                     && clientCount(com.mundosdeaxelis.entity.Espinoso.class) >= 2);
             shot("46b_templo_fuera");
         });
-        add("templo (entrada)", 2500, () -> standLooking(TPX + 0.5, TPY + 3, TPZ0 - 6, TPX + 0.5, TPY + 12, TPZ0 + 30));
+        add("templo (entrada)", 2500, () -> standLooking(TPX + 0.5, TPY + 2, TPZ0 + 6, TPX + 0.5, TPY + 4, TPZ0 + 40));
         add("templo (entrada, foto)", 300, () -> shot("46c_templo_entrada"));
-        add("templo (altar)", 2500, () -> standLooking(TPX + 0.5, TPY + 20, TPZ0 + 46.5, TPX + 0.5, TPY + 21.5, TPZ0 + 52.5));
+        add("templo (salón)", 2500, () -> standLooking(TPX + 0.5, TPY + 1, TPZ0 + 36, TPX - 2, TPY + 9, TPZ0 + 50));
+        add("templo (salón, foto)", 300, () -> shot("46e_templo_salon"));
+        add("templo (biblioteca)", 2500, () -> standLooking(TPX + 4.5, TPY + 14, TPZ0 + 42.5, TPX - 3, TPY + 15, TPZ0 + 48));
+        add("templo (biblioteca, foto)", 300, () -> shot("46f_templo_biblioteca"));
+        add("templo (altar)", 2500, () -> standLooking(TPX + 0.5, TPY + 57, TPZ0 + 39.5, TPX + 0.5, TPY + 56.5, TPZ0 + 47.5));
         add("templo (altar, foto)", 300, () -> {
-            check("el Raizal guarda el altar del templo", clientCount(com.mundosdeaxelis.entity.Raizal.class) >= 1);
+            check("el Raizal guarda la Copa del árbol", clientCount(com.mundosdeaxelis.entity.Raizal.class) >= 1);
             shot("46d_templo_altar");
         });
         add("templo (deshacer)", 2500, () -> {
@@ -3201,6 +3206,9 @@ public final class AutoTest {
             }
             if (solo.contains("santuario")) {
                 santuarioEstructura();
+            }
+            if (solo.contains("templo")) {
+                templo();
             }
             add("fin", 2000, () -> {
                 open(null);

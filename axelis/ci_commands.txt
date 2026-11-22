@@ -435,20 +435,20 @@ forceload remove 2500 -60 2600 60
 forceload add 1026 -17 1175 148
 execute positioned 1100 -48 0 rotated 0 0 run mundos estructura templo
 #wait Gran Templo del Bosque construida 200
-execute if block 1100 -27 68 mundos_de_axelis:portal_stone_forest run say PRUEBA_TEMPLO_PIEDRA_OK
-execute if data block 1095 -28 67 {Kind:"TREASURE",Stage:1} run say PRUEBA_TEMPLO_COFRE_OK
-execute if data block 1073 -48 41 {Kind:"ANTE",Stage:1} run say PRUEBA_TEMPLO_COFRE_ATRIO_OK
-execute if data block 1126 -48 53 {Kind:"TRIAL",Stage:1} run say PRUEBA_TEMPLO_COFRE_ARMERIA_OK
-execute if data block 1075 -48 58 {Kind:"LOCKED",Stage:1,LockLevel:2} run say PRUEBA_TEMPLO_COFRE_BIBLIOTECA_OK
-execute if data block 1112 -58 77 {Kind:"LOCKED",Stage:1,LockLevel:3} run say PRUEBA_TEMPLO_COFRE_CRIPTA_OK
-execute if data block 1071 -38 68 {Kind:"TRIAL",Stage:1} run say PRUEBA_TEMPLO_COFRE_JARDIN_OK
-execute if data block 1088 -48 62 {LootTable:"mundos_de_axelis:chests/barril_bosque"} run say PRUEBA_TEMPLO_BARRIL_OK
-execute if entity @e[type=mundos_de_axelis:raizal,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_RAIZAL_OK
-execute if entity @e[type=mundos_de_axelis:brote,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_BROTES_OK
-execute if entity @e[type=mundos_de_axelis:espinoso,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_ESPINOSOS_OK
-execute unless entity @e[type=mundos_de_axelis:habitante,x=1050,y=-60,z=10,dx=100,dy=50,dz=120] run say PRUEBA_TEMPLO_SIN_NPC_OK
+execute if block 1100 8 63 mundos_de_axelis:portal_stone_forest run say PRUEBA_TEMPLO_PIEDRA_OK
+execute if data block 1097 8 63 {Kind:"TREASURE",Stage:1} run say PRUEBA_TEMPLO_COFRE_OK
+execute if data block 1092 -48 56 {Kind:"ANTE",Stage:1} run say PRUEBA_TEMPLO_COFRE_ATRIO_OK
+execute if data block 1097 -6 63 {Kind:"TRIAL",Stage:1} run say PRUEBA_TEMPLO_COFRE_ARMERIA_OK
+execute if data block 1096 -34 61 {Kind:"LOCKED",Stage:1,LockLevel:2} run say PRUEBA_TEMPLO_COFRE_BIBLIOTECA_OK
+execute if data block 1101 -58 82 {Kind:"LOCKED",Stage:1,LockLevel:3} run say PRUEBA_TEMPLO_COFRE_CRIPTA_OK
+execute if data block 1104 -20 63 {Kind:"TRIAL",Stage:1} run say PRUEBA_TEMPLO_COFRE_JARDIN_OK
+execute if data block 1091 -48 59 {LootTable:"mundos_de_axelis:chests/barril_bosque"} run say PRUEBA_TEMPLO_BARRIL_OK
+execute if entity @e[type=mundos_de_axelis:raizal,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_RAIZAL_OK
+execute if entity @e[type=mundos_de_axelis:brote,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_BROTES_OK
+execute if entity @e[type=mundos_de_axelis:espinoso,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_ESPINOSOS_OK
+execute unless entity @e[type=mundos_de_axelis:habitante,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_SIN_NPC_OK
 execute positioned 1100 -48 0 run mundos estructura deshacer
-execute unless block 1100 -27 68 mundos_de_axelis:portal_stone_forest run say PRUEBA_TEMPLO_DESHECHO_OK
+execute unless block 1100 8 63 mundos_de_axelis:portal_stone_forest run say PRUEBA_TEMPLO_DESHECHO_OK
 forceload remove 1026 -17 1175 148
 forceload add 1330 -30 1470 130
 execute positioned 1400 -48 0 rotated 0 0 run mundos estructura ciudadela
@@ -477,7 +477,7 @@ forceload remove 5520 -110 5680 110
 forceload add 4930 -70 5070 70
 execute positioned 5000 -48 0 rotated 0 0 run mundos natural generar bosque aqui
 #wait BOSQUE_NATURAL_OK 300
-execute if entity @e[type=mundos_de_axelis:raizal,x=4920,y=-80,z=-80,dx=160,dy=80,dz=160] run say PRUEBA_TEMPLO_NATURAL_OK
+execute if entity @e[type=mundos_de_axelis:raizal,x=4920,y=-80,z=-80,dx=160,dy=140,dz=160] run say PRUEBA_TEMPLO_NATURAL_OK
 forceload remove 4930 -70 5070 70
 mundos prueba botin
 execute positioned 0 -60 -30 run mundos prueba gemas

@@ -618,7 +618,7 @@ public final class StructKit {
     public static int[][] mimics(String design) {
         return switch (design) {
             case "santuario" -> new int[][]{{5, 0, 31, 1}};
-            case "bosque" -> new int[][]{{26, 0, 35, 1}};
+            case "bosque" -> new int[][]{{-8, 0, 42, 1}};
             case "forja" -> new int[][]{{-26, 6, 64, 2}};
             case "fragua" -> new int[][]{{13, 0, 25, 2}};
             case "hielo" -> new int[][]{{17, 0, 28, 3}};
@@ -637,7 +637,7 @@ public final class StructKit {
     public static int[][] altars(String design) {
         return switch (design) {
             case "santuario" -> new int[][]{{-5, 0, 22, 1}};
-            case "bosque" -> new int[][]{{-1, 0, 1, 1}};
+            case "bosque" -> new int[][]{{-3, 0, 43, 1}};
             case "forja" -> new int[][]{{-1, 0, 24, 2}};
             case "fragua" -> new int[][]{{1, 0, 27, 2}};
             case "hielo" -> new int[][]{{0, 0, 41, 3}};

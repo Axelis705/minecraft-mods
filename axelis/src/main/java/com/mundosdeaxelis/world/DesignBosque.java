@@ -1,76 +1,581 @@
 package com.mundosdeaxelis.world;
 
-import static com.mundosdeaxelis.world.StructKit.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Templo del Bosque: un gran templo escalonado cubierto de musgo, con avenida de estatuas, dos terrazas,
- * un santuario con un árbol gigante que sale por el techo, salas por dentro (biblioteca, taller, armería, comedor, celdas...)
- * y una cripta bajo tierra. Entrada por z = 0, se extiende hacia z positivo.
+ * Etapa 289: el Gran Templo del Bosque es ahora un <b>árbol gigante</b> (el Árbol del Mundo), no un templo de piedra con un árbol
+ * encima. Un tronco hueco de unos 22 bloques de ancho (36 en la base, que se abre en raíces enormes) y 56 de alto, con la copa
+ * encima. Se entra por un arco entre dos raíces, en el frente (z pequeña).
+ * <ul>
+ * <li><b>Salón de las Raíces</b> (y = 0): una sala enorme con forma de cúpula, columnas de raíces, un estanque, el Altar Maldito y
+ * la bajada a la <b>Cripta de las raíces</b> (y = -10), bajo el tronco.</li>
+ * <li>Una <b>escalera de caracol</b> pegada a la pared sube dando vueltas (una vuelta por piso) con barandilla del lado del hueco.</li>
+ * <li><b>Biblioteca de corteza</b> (y = 14), <b>Jardín de setas</b> (y = 28) y <b>Armería de los guardianes</b> (y = 42): plataformas
+ * redondas en el centro del tronco, con ventanas (agujeros de nudo) hacia fuera.</li>
+ * <li><b>La Copa</b> (y = 56): el tronco se abre en una plataforma entre ramas gruesas, bajo las hojas; allí está la Piedra de
+ * Portal: Naturaleza, el tesoro y el Raizal que la guarda.</li>
+ * </ul>
+ * Coordenadas: el tronco está en (0, CZ); la entrada en z = CZ - radio de la base.
  */
 final class DesignBosque {
     private DesignBosque() {
     }
 
-    private static final String SB = "stone_bricks";
-    private static final String SBS = "stone_brick_stairs";
-    private static final String SBL = "stone_brick_slab";
-    private static final String SBW = "stone_brick_wall";
-    private static final String CSB = "chiseled_stone_bricks";
-    private static final String MSB = "mossy_stone_bricks";
-    private static final String MSBS = "mossy_stone_brick_stairs";
-    private static final String MSBW = "mossy_stone_brick_wall";
-    private static final String PA = "polished_andesite";
-    private static final String[] CROWN = {LEAF, LEAF, AZ, FAZ};
+    static final String PORTAL = "mundos_de_axelis:portal_stone_forest";
+    /** Centro del tronco. */
+    static final int CZ = 46;
+    /** Alturas de los pisos (donde se pisa) y de la Copa; arriba del todo del tronco. */
+    static final int L1 = 14, L2 = 28, L3 = 42, COPA = 56, TOP = 56;
+    /** Suelo de la cripta. */
+    static final int CRYPT = -10;
+    /** Rectángulo que ocupa el árbol con sus raíces: x X0..X1, z Z0..Z1 (el terreno se aplana dentro). */
+    static final int X0 = -38, X1 = 38, Z0 = -3, Z1 = 86;
+    /** Dónde está la Piedra de Portal (en la Copa) y el tesoro. */
+    static final int PX = 0, PY = COPA, PZ = CZ + 1;
 
-    private record Face(String out, int c, int a0, int a1) {
-        int x(int a, int off) {
-            return switch (out) {
-                case "-x" -> c - off;
-                case "+x" -> c + off;
-                default -> a;
-            };
-        }
-
-        int z(int a, int off) {
-            return switch (out) {
-                case "-z" -> c - off;
-                case "+z" -> c + off;
-                default -> a;
-            };
-        }
-    }
+    private static final String BARK = "oak_wood[axis=y]";
+    private static final String BARK_D = "dark_oak_wood[axis=y]";
+    private static final String BARK_S = "stripped_oak_wood[axis=y]";
+    private static final String PLANK = "oak_planks";
+    private static final String STAIR = "oak_stairs";
+    private static final String SLAB = "oak_slab[type=bottom]";
+    private static final String FENCE = "oak_fence";
+    private static final String LEAF = "oak_leaves[persistent=true]";
+    private static final String AZ = "azalea_leaves[persistent=true]";
+    private static final String FAZ = "flowering_azalea_leaves[persistent=true]";
+    private static final String[] CROWN = {LEAF, LEAF, LEAF, AZ, FAZ};
 
     static StructBp make() {
         StructBp b = new StructBp(4004);
-        b.foundation(-34, 6, 34, 84, SB);
-        massing(b);
-        terraceDetail(b, -30, 22, 30, 80, -1, 9);
-        terraceDetail(b, -22, 34, 22, 74, 10, 19);
-        parapets(b);
-        flights(b);
-        avenue(b);
-        gates(b);
-        interiorT1(b);
-        interiorT2(b);
-        basement(b);
-        shrine(b);
-        finishing(b);
         ground(b);
-        Linker.link(b, 0, 0, -3, 10, SB, SBS);
+        roots(b);
+        trunk(b);
+        entrance(b);
+        floors(b);
+        spiral(b);
+        hall(b);
+        crypt(b);
+        library(b);
+        garden(b);
+        armory(b);
+        crown(b);
+        knotholes(b);
+        approach(b);
         surroundings(b);
         chests(b);
         mobs(b);
-        roomChests(b);
         return b;
     }
 
-    // ================================================================== etapa 262: la estructura grande del bosque (la del bloque)
+    // ================================================================== forma del árbol
 
-    static final String PORTAL = "mundos_de_axelis:portal_stone_forest";
-    /** Rectángulo que ocupa el templo (con árboles y estanques): x X0..X1, z Z0..Z1. */
-    static final int X0 = -44, X1 = 45, Z0 = -3, Z1 = 102;
+    /** Radio de fuera del tronco a la altura y, en el ángulo a (con bultos de corteza). La base se abre en una campana. */
+    static double rOut(double y, double a) {
+        double yy = Math.max(0, y);
+        double base = (11.0 + 7.0 * Math.exp(-yy / 5.0)) * (1.0 - 0.1 * Math.min(1, yy / TOP));
+        double bump = (StructKit.vnoise(4021, Math.cos(a) * 3 + 10, y * 0.25) - 0.5) * 1.4 + Math.sin(a * 5 + y * 0.12) * 0.35;
+        return base + bump;
+    }
 
-    /** Suelo de hierba en todo el rectángulo (donde la obra no pone nada) y relleno de tierra hasta el terreno real. */
+    /** Radio de dentro (hueco) a la altura y: la pared tiene unos 2,5 bloques. */
+    static double rIn(double y) {
+        double yy = Math.max(0, y);
+        return (11.0 + 7.0 * Math.exp(-yy / 5.0)) * (1.0 - 0.1 * Math.min(1, yy / TOP)) - 2.6;
+    }
+
+    /** Ángulo de la columna (x, z) respecto al tronco: 0 = hacia el frente (z menor), creciendo hacia +x. */
+    static double ang(int x, int z) {
+        return Math.atan2(x, -(z - CZ));
+    }
+
+    private static String barkAt(int x, int y, int z) {
+        double k = StructKit.hash01(4022 + y, x, z);
+        double v = StructKit.vnoise3(4023, x * 0.2, y * 0.12, z * 0.2);
+        return v < 0.28 ? BARK_D : k < 0.06 ? "mossy_cobblestone" : k < 0.12 ? "moss_block" : BARK;
+    }
+
+    /** El tronco: pared de corteza hasta arriba; dentro, hueco. */
+    private static void trunk(StructBp b) {
+        for (int y = -1; y <= TOP; y++) {
+            int R = (int) Math.ceil(rOut(y, 0) + 1.5);
+            for (int x = -R; x <= R; x++) {
+                for (int z = CZ - R; z <= CZ + R; z++) {
+                    double d = Math.hypot(x, z - CZ);
+                    double ro = rOut(y, ang(x, z));
+                    if (d > ro) {
+                        continue;
+                    }
+                    if (y >= 0 && d < rIn(y)) {
+                        b.set(x, y, z, "air");
+                    } else {
+                        b.set(x, y, z, barkAt(x, y, z));
+                    }
+                }
+            }
+        }
+    }
+
+    /** Ocho raíces enormes que salen de la base y se hunden en el suelo (la de delante no: ahí está la entrada). */
+    private static void roots(StructBp b) {
+        double[] as = {0.55, 1.25, 1.95, 2.65, 3.3, 3.95, 4.65, 5.35, 5.75};
+        for (int i = 0; i < as.length; i++) {
+            double a0 = as[i];
+            double len = 24 + StructKit.hash01(4030, i, 0) * 8;
+            for (double t = 0; t <= 1.0; t += 0.012) {
+                double a = a0 + 0.18 * Math.sin(t * 3.0 + i);
+                double d = 10 + t * len;
+                double y = 6.5 * (1 - t) * (1 - t) - 1.5 * t + 0.6 * Math.sin(t * 9 + i);
+                double rad = 3.6 * (1 - t) + 0.9;
+                double cx = Math.sin(a) * d, cz = CZ - Math.cos(a) * d;
+                int R = (int) Math.ceil(rad);
+                for (int dx = -R; dx <= R; dx++) {
+                    for (int dz = -R; dz <= R; dz++) {
+                        for (int dy = -R; dy <= R; dy++) {
+                            int x = (int) Math.round(cx) + dx, yy = (int) Math.round(y) + dy, z = (int) Math.round(cz) + dz;
+                            if (yy < -2 || Math.pow(x - cx, 2) + Math.pow((yy - y) * 1.3, 2) + Math.pow(z - cz, 2) > rad * rad) {
+                                continue;
+                            }
+                            if (Math.hypot(x, z - CZ) < rIn(yy) && yy >= 0) {
+                                continue; // por dentro del tronco no
+                            }
+                            b.set(x, yy, z, StructKit.hash01(4031 + yy, x, z) < 0.15 ? "moss_block" : BARK);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /** La entrada: un arco de 5 de ancho por la base del tronco, entre las dos raíces de delante. */
+    private static void entrance(StructBp b) {
+        int zIn = CZ - (int) Math.floor(rIn(0)) + 1;
+        for (int z = CZ - 22; z <= zIn; z++) {
+            for (int x = -3; x <= 3; x++) {
+                int h = Math.abs(x) <= 1 ? 6 : Math.abs(x) == 2 ? 5 : 4;
+                for (int y = 0; y <= h; y++) {
+                    String s = b.get(x, y, z);
+                    if (s != null && !s.equals("air") && Math.abs(x) <= 2) {
+                        b.set(x, y, z, "air");
+                    } else if (s != null && !s.equals("air") && Math.abs(x) == 3 && y <= 4) {
+                        b.set(x, y, z, BARK_S);
+                    }
+                }
+                if (Math.abs(x) <= 2) {
+                    b.set(x, -1, z, StructKit.hash01(4032, x, z) < 0.4 ? "moss_block" : "rooted_dirt");
+                }
+            }
+        }
+        // marco del arco con troncos pelados y dos faroles
+        int zf = CZ - (int) Math.floor(rOut(0, 0)) - 1;
+        for (int s = -1; s <= 1; s += 2) {
+            StructKit.hangLantern(b, 2 * s, 6, zf + 2, 1, "lantern");
+        }
+    }
+
+    /** Plataformas de los pisos: discos de tablones en el centro, con barandilla menos donde llega la escalera. */
+    private static void floors(StructBp b) {
+        for (int lv : new int[]{L1, L2, L3}) {
+            double rp = rIn(lv) - 2.4;
+            double entry = spiralAngle(lv);
+            for (int x = (int) -rp - 1; x <= rp + 1; x++) {
+                for (int z = CZ - (int) rp - 1; z <= CZ + rp + 1; z++) {
+                    double d = Math.hypot(x, z - CZ);
+                    if (d > rp) {
+                        continue;
+                    }
+                    b.set(x, lv - 1, z, (x * 3 + z) % 7 == 0 ? "stripped_oak_log[axis=x]" : PLANK);
+                    b.set(x, lv - 2, z, "spruce_planks");
+                    if (d > rp - 1.0) {
+                        double da = Math.abs(angDiff(ang(x, z), entry));
+                        b.set(x, lv, z, da < 0.38 ? "air" : FENCE);
+                    }
+                }
+            }
+            // vigas de apoyo hacia la pared (cuatro)
+            for (int i = 0; i < 4; i++) {
+                double a = i * Math.PI / 2 + 0.4;
+                for (double r = rp; r <= rIn(lv) + 0.5; r += 0.5) {
+                    int x = (int) Math.round(Math.sin(a) * r), z = CZ - (int) Math.round(Math.cos(a) * r);
+                    String s = b.get(x, lv - 2, z);
+                    if (s == null || s.equals("air")) {
+                        b.set(x, lv - 2, z, "stripped_dark_oak_log[axis=y]");
+                    }
+                }
+            }
+        }
+    }
+
+    static double angDiff(double a, double b) {
+        double d = (a - b) % (2 * Math.PI);
+        if (d > Math.PI) {
+            d -= 2 * Math.PI;
+        }
+        if (d < -Math.PI) {
+            d += 2 * Math.PI;
+        }
+        return d;
+    }
+
+    /** Ángulo de la escalera de caracol a la altura y (una vuelta por piso, empieza a la derecha de la entrada). */
+    static double spiralAngle(double y) {
+        return 0.9 + y / 14.0 * 2 * Math.PI;
+    }
+
+    /**
+     * La escalera de caracol: 2 de ancho, pegada a la pared por dentro, sube 14 por vuelta desde el Salón de las Raíces hasta la
+     * Copa. Escalones donde sube un bloque, tablones donde no; aire encima; barandilla del lado del hueco lejos de los pisos.
+     */
+    private static void spiral(StructBp b) {
+        int lastF = 0;
+        for (double y = 0; y <= COPA; y += 0.05) {
+            double a = spiralAngle(y);
+            int f = (int) Math.floor(y);
+            double ri = rIn(f + 3); // lo más estrecho por encima de la cabeza (abajo, la pared se va cerrando al subir)
+            String up = upDir(a);
+            boolean step = f > lastF;
+            for (double k = 0.3; k <= 2.3; k += 0.5) {
+                double r = ri - k;
+                int x = (int) Math.round(Math.sin(a) * r), z = CZ - (int) Math.round(Math.cos(a) * r);
+                if (f == 0) {
+                    continue; // en el salón, el suelo ya está
+                }
+                String cur = b.get(x, f - 1, z);
+                if (cur == null || cur.equals("air") || cur.startsWith(STAIR) || cur.equals(PLANK) || cur.startsWith("oak_fence")
+                        || cur.startsWith("stripped_") || cur.equals("spruce_planks")) {
+                    b.set(x, f - 1, z, step ? STAIR + "[facing=" + up + ",half=bottom]" : PLANK);
+                }
+                for (int h = f; h <= f + 3; h++) {
+                    String s = b.get(x, h, z);
+                    if (s != null && (s.startsWith("oak_fence") || s.equals(PLANK) || s.startsWith("stripped_") || s.equals("spruce_planks"))) {
+                        b.set(x, h, z, "air");
+                    }
+                }
+            }
+            // barandilla del lado del hueco, lejos de los pisos (allí se baja a la plataforma)
+            boolean nearFloor = false;
+            for (int lv : new int[]{L1, L2, L3, COPA}) {
+                if (y > lv - 3 && y < lv + 1.5) {
+                    nearFloor = true;
+                }
+            }
+            if (!nearFloor && f > 0) {
+                double r = ri - 2.8;
+                int x = (int) Math.round(Math.sin(a) * r), z = CZ - (int) Math.round(Math.cos(a) * r);
+                String below = b.get(x, f - 1, z);
+                if ((b.get(x, f, z) == null || "air".equals(b.get(x, f, z))) && below != null && !below.equals("air")) {
+                    b.set(x, f, z, FENCE);
+                } else if (b.get(x, f, z) == null || "air".equals(b.get(x, f, z))) {
+                    b.set(x, f - 1, z, SLAB);
+                    b.set(x, f, z, FENCE);
+                }
+            }
+            lastF = Math.max(lastF, f);
+        }
+    }
+
+    /** Hacia dónde sube la escalera en el ángulo a (la dirección de avance, redondeada a uno de los cuatro lados). */
+    private static String upDir(double a) {
+        double tx = Math.cos(a), tz = Math.sin(a); // derivada de (sin a, -cos a)
+        if (Math.abs(tx) > Math.abs(tz)) {
+            return tx > 0 ? "east" : "west";
+        }
+        return tz > 0 ? "south" : "north";
+    }
+
+    // ================================================================== las salas
+
+    /** Salón de las Raíces: suelo de musgo y tierra, columnas de raíces, un estanque, luz de hongos y la bajada a la cripta. */
+    private static void hall(StructBp b) {
+        double ri = rIn(0);
+        for (int x = (int) -ri; x <= ri; x++) {
+            for (int z = CZ - (int) ri; z <= CZ + ri; z++) {
+                if (Math.hypot(x, z - CZ) >= ri) {
+                    continue;
+                }
+                double n = StructKit.fbm(4040, x, z, 3.0);
+                b.set(x, -1, z, n < 0.35 ? "moss_block" : n < 0.6 ? "rooted_dirt" : n < 0.8 ? "coarse_dirt" : "mossy_cobblestone");
+                b.set(x, -2, z, "dirt");
+                if (n < 0.3 && StructKit.hash01(4041, x, z) < 0.3 && Math.abs(x) > 3) {
+                    b.set(x, 0, z, "moss_carpet");
+                }
+            }
+        }
+        // nudos de raíces que salen del suelo (lejos de la escalera, que va pegada a la pared)
+        for (double a : new double[]{2.6, 3.6, 4.7, 5.7}) {
+            int cx = (int) Math.round(Math.sin(a) * 7.0), cz = CZ - (int) Math.round(Math.cos(a) * 7.0);
+            for (int y = 0; y <= 2; y++) {
+                b.set(cx, y, cz, y == 2 ? "mangrove_roots" : "stripped_oak_wood[axis=y]");
+            }
+            b.set(cx + 1, 0, cz, "mangrove_roots");
+            b.set(cx, 0, cz + 1, "mangrove_roots");
+            b.set(cx, 3, cz, "moss_carpet");
+        }
+        // estanque al fondo a la izquierda con nenúfares
+        for (int x = -7; x <= -4; x++) {
+            for (int z = CZ + 4; z <= CZ + 7; z++) {
+                b.set(x, -1, z, "water");
+                b.set(x, -2, z, "clay");
+                if ((x + z) % 3 == 0) {
+                    b.set(x, 0, z, "lily_pad");
+                }
+            }
+        }
+        // luz: hongos de luz en la pared y faroles colgados del techo de la cúpula
+        for (int i = 0; i < 10; i++) {
+            double a = i * Math.PI / 5 + 0.2;
+            int y = 3 + (i % 3) * 3;
+            double r = rIn(y) + 0.6;
+            b.set((int) Math.round(Math.sin(a) * r), y, CZ - (int) Math.round(Math.cos(a) * r), "shroomlight");
+        }
+        for (int[] c : new int[][]{{-5, CZ - 3}, {5, CZ - 3}, {0, CZ + 4}}) {
+            StructKit.hangLantern(b, c[0], L1 - 3, c[1], 2, "lantern");
+        }
+        // barriles de provisiones junto a la pared
+        for (int[] c : new int[][]{{-9, CZ - 3}, {-9, CZ - 1}}) {
+            b.setNbt(c[0], 0, c[1], "barrel[facing=up]", "{LootTable:\"mundos_de_axelis:chests/barril_bosque\"}");
+        }
+        // la bajada a la cripta: escalera recta hacia el fondo (z+), con barandilla
+        for (int i = 0; i <= 9; i++) {
+            int z = CZ + 2 + i;
+            for (int x = 2; x <= 4; x++) {
+                b.set(x, -1 - i, z, STAIR + "[facing=north,half=bottom]");
+                for (int h = 0; h <= 3; h++) {
+                    b.set(x, -i + h, z, "air");
+                }
+                if (i == 0) {
+                    b.set(x, -1, z, STAIR + "[facing=north,half=bottom]");
+                }
+            }
+            b.set(1, -i, z, i == 0 ? FENCE : BARK);
+            b.set(5, -i, z, i == 0 ? FENCE : BARK);
+        }
+    }
+
+    /** Cripta de las raíces: bajo el tronco, raíces que atraviesan el techo, velas y el cofre con cerradura. */
+    private static void crypt(StructBp b) {
+        int f = CRYPT;
+        int z0 = CZ + 12, z1 = CZ + 22;
+        b.box(-6, f - 1, z0, 8, f + 6, z1, "rooted_dirt");
+        for (int x = -5; x <= 7; x++) {
+            for (int z = z0 + 1; z < z1; z++) {
+                b.set(x, f - 1, z, (x + z & 1) == 0 ? "mossy_stone_bricks" : "stone_bricks");
+                for (int y = f; y <= f + 4; y++) {
+                    b.set(x, y, z, "air");
+                }
+                if (StructKit.hash01(4050, x, z) < 0.25) {
+                    b.set(x, f + 4, z, "hanging_roots");
+                }
+            }
+        }
+        // la escalera del salón llega por aquí (x 2..4)
+        for (int x = 2; x <= 4; x++) {
+            for (int y = f; y <= f + 3; y++) {
+                b.set(x, y, z0, "air");
+            }
+            b.set(x, f - 1, z0, "stone_bricks");
+        }
+        for (int[] c : new int[][]{{-5, z0 + 1}, {7, z0 + 1}, {-5, z1 - 1}, {7, z1 - 1}}) {
+            b.set(c[0], f, c[1], "mossy_stone_brick_wall");
+            b.set(c[0], f + 1, c[1], "candle[candles=4,lit=true]");
+        }
+        for (int x : new int[]{-2, 4}) {
+            b.set(x, f + 4, z1 - 3, "shroomlight");
+        }
+        // sarcófago de piedra con musgo en el centro
+        for (int x = 0; x <= 2; x++) {
+            b.set(x, f, z1 - 4, "mossy_stone_bricks");
+        }
+        b.set(1, f + 1, z1 - 4, "moss_carpet");
+    }
+
+    /** Biblioteca de corteza (y = 14): estanterías en curva sobre la plataforma, atriles y una mesa. */
+    private static void library(StructBp b) {
+        int f = L1;
+        double rp = rIn(f) - 2.4;
+        double entry = spiralAngle(f);
+        for (int x = (int) -rp; x <= rp; x++) {
+            for (int z = CZ - (int) rp; z <= CZ + rp; z++) {
+                double d = Math.hypot(x, z - CZ);
+                double da = Math.abs(angDiff(ang(x, z), entry));
+                if (d > rp - 2.2 && d <= rp - 1.0 && da > 0.7 && da < 2.9) {
+                    b.set(x, f, z, "bookshelf");
+                    if (StructKit.hash01(4060, x, z) < 0.6) {
+                        b.set(x, f + 1, z, "bookshelf");
+                    }
+                }
+            }
+        }
+        b.set(0, f, CZ, "lectern[facing=south]");
+        b.set(-1, f, CZ + 1, "oak_slab[type=top]");
+        b.set(1, f, CZ + 1, "oak_slab[type=top]");
+        b.set(1, f + 1, CZ + 1, "candle[candles=2,lit=true]");
+        StructKit.hangLantern(b, 0, L2 - 3, CZ, 3, "lantern");
+    }
+
+    /** Jardín de setas (y = 28): suelo de micelio, setas grandes pequeñas, luz de hongos. */
+    private static void garden(StructBp b) {
+        int f = L2;
+        double rp = rIn(f) - 2.4;
+        for (int x = (int) -rp; x <= rp; x++) {
+            for (int z = CZ - (int) rp; z <= CZ + rp; z++) {
+                if (Math.hypot(x, z - CZ) <= rp - 1.0) {
+                    b.set(x, f - 1, z, StructKit.hash01(4070, x, z) < 0.6 ? "mycelium" : "moss_block");
+                }
+            }
+        }
+        for (int[] c : new int[][]{{-3, -2, 0}, {3, 2, 1}, {-2, 3, 1}}) {
+            int x = c[0], z = CZ + c[1];
+            String cap = c[2] == 0 ? "red_mushroom_block" : "brown_mushroom_block";
+            b.set(x, f, z, "mushroom_stem");
+            b.set(x, f + 1, z, "mushroom_stem");
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    b.set(x + dx, f + 2, z + dz, cap);
+                }
+            }
+        }
+        StructKit.hangLantern(b, 0, L3 - 3, CZ, 2, "shroomlight");
+    }
+
+    /** Armería de los guardianes (y = 42): yunque, afiladora, barriles y estandartes verdes. */
+    private static void armory(StructBp b) {
+        int f = L3;
+        b.set(-2, f, CZ + 2, "anvil[facing=east]");
+        b.set(2, f, CZ + 2, "grindstone[face=floor,facing=north]");
+        b.set(-3, f, CZ - 1, "barrel[facing=up]");
+        b.set(3, f, CZ - 1, "smithing_table");
+        b.set(0, f, CZ + 3, "green_banner[rotation=8]");
+        StructKit.hangLantern(b, 0, COPA - 3, CZ, 2, "lantern");
+    }
+
+    /**
+     * La Copa: el tronco se abre en una plataforma (y = 55) con barandilla de ramas; ramas gruesas salen hacia fuera y la cubren
+     * hojas (con huecos para la luz). En el centro, la Piedra de Portal sobre un altar con flores.
+     */
+    private static void crown(StructBp b) {
+        int f = COPA;
+        double rp = rOut(f, 0) + 1.5;
+        for (int x = (int) -rp - 1; x <= rp + 1; x++) {
+            for (int z = CZ - (int) rp - 1; z <= CZ + rp + 1; z++) {
+                double d = Math.hypot(x, z - CZ);
+                if (d > rp) {
+                    continue;
+                }
+                for (int y = f; y <= f + 5; y++) {
+                    b.set(x, y, z, "air");
+                }
+                // por donde sube la escalera (su último cuarto de vuelta) queda el hueco
+                double da = angDiff(ang(x, z), spiralAngle(COPA));
+                double rl = rIn(COPA);
+                if (d >= rl - 2.9 && d <= rl + 0.6 && da > -Math.PI / 2 - 0.35 && da < 0.1) {
+                    continue;
+                }
+                b.set(x, f - 1, z, d < 2.5 ? "moss_block" : (x + z & 1) == 0 ? PLANK : "stripped_oak_wood[axis=y]");
+                if (d > rp - 1.0) {
+                    b.set(x, f, z, "oak_fence");
+                }
+            }
+        }
+        // ramas gruesas: de la copa hacia fuera y arriba, con su bola de hojas al final
+        List<double[]> ends = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            double a = i * 2 * Math.PI / 7 + 0.3;
+            double len = 16 + StructKit.hash01(4080, i, 1) * 7;
+            double rise = 6 + StructKit.hash01(4081, i, 2) * 8;
+            for (double t = 0; t <= 1.0; t += 0.02) {
+                double d = rp - 1 + t * len;
+                double y = f - 2 + t * rise + Math.sin(t * Math.PI) * 2;
+                double rad = 2.2 * (1 - t) + 0.8;
+                double cx = Math.sin(a) * d, cz = CZ - Math.cos(a) * d;
+                int R = (int) Math.ceil(rad);
+                for (int dx = -R; dx <= R; dx++) {
+                    for (int dy = -R; dy <= R; dy++) {
+                        for (int dz = -R; dz <= R; dz++) {
+                            int x = (int) Math.round(cx) + dx, yy = (int) Math.round(y) + dy, z = (int) Math.round(cz) + dz;
+                            if (Math.pow(x - cx, 2) + Math.pow(yy - y, 2) + Math.pow(z - cz, 2) > rad * rad) {
+                                continue;
+                            }
+                            if (yy >= f && yy <= f + 5 && Math.hypot(x, z - CZ) <= rp) {
+                                continue; // la plataforma queda libre
+                            }
+                            b.set(x, yy, z, BARK);
+                        }
+                    }
+                }
+            }
+            ends.add(new double[]{Math.sin(a) * (rp - 1 + len), f - 2 + rise, CZ - Math.cos(a) * (rp - 1 + len)});
+        }
+        // hojas: una bola grande arriba (con agujeros de luz) y una por rama
+        blob(b, 0, f + 15, CZ, 17, 8, 4090, true);
+        for (int i = 0; i < ends.size(); i++) {
+            double[] e = ends.get(i);
+            blob(b, e[0], e[1] + 1, e[2], 7 + StructKit.hash01(4082, i, 3) * 2, 4.5, 4091 + i, false);
+        }
+        // el altar: Piedra de Portal sobre un pedestal de musgo, flores alrededor y luz
+        b.set(PX, f - 1, PZ, "mossy_stone_bricks");
+        b.set(PX, f, PZ, PORTAL);
+        for (int[] c : new int[][]{{-1, 0}, {1, 0}, {0, 1}, {0, -1}}) {
+            b.set(PX + c[0], f, PZ + c[1], c[1] == 0 ? "azalea" : "flowering_azalea");
+        }
+        for (int[] c : new int[][]{{-3, -3}, {3, -3}, {-3, 4}, {3, 4}}) {
+            b.set(c[0], f, CZ + c[1], "mossy_stone_brick_wall");
+            b.set(c[0], f + 1, CZ + c[1], "lantern");
+        }
+    }
+
+    /** Una bola de hojas (aplastada): {@code holes} deja huecos para que entre la luz. */
+    private static void blob(StructBp b, double cx, double cy, double cz, double r, double ry, long seed, boolean holes) {
+        int R = (int) Math.ceil(r);
+        int RY = (int) Math.ceil(ry);
+        for (int x = (int) cx - R; x <= cx + R; x++) {
+            for (int z = (int) cz - R; z <= cz + R; z++) {
+                for (int y = (int) cy - RY; y <= cy + RY; y++) {
+                    double n = (StructKit.vnoise3(seed, x * 0.25, y * 0.25, z * 0.25) - 0.5) * 0.5;
+                    double q = Math.pow((x - cx) / r, 2) + Math.pow((y - cy) / ry, 2) + Math.pow((z - cz) / r, 2);
+                    if (q > 1 + n) {
+                        continue;
+                    }
+                    if (holes && q < 0.45 && y < cy) {
+                        continue; // por debajo, hueca: se ve el cielo entre las hojas desde la Copa
+                    }
+                    if (holes && StructKit.hash01(seed + 1, x * 31 + y, z) < 0.04) {
+                        continue;
+                    }
+                    String s = b.get(x, y, z);
+                    if (s == null || s.equals("air")) {
+                        b.set(x, y, z, CROWN[(int) (StructKit.hash01(seed + 2, x + y * 7, z) * CROWN.length)]);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Agujeros de nudo: en cada piso, dos ventanas redondeadas hacia fuera con marco de corteza pelada. */
+    private static void knotholes(StructBp b) {
+        int[] levels = {L1, L2, L3};
+        for (int i = 0; i < levels.length; i++) {
+            for (int s = 0; s < 2; s++) {
+                double a = spiralAngle(levels[i]) + Math.PI * (0.55 + s * 0.8) + i * 0.4;
+                int y0 = levels[i] + 1;
+                double ro = rOut(y0, a) + 1;
+                for (double r = rIn(y0) - 0.5; r <= ro; r += 0.5) {
+                    for (int dy = 0; dy <= 1; dy++) {
+                        for (int k = -1; k <= 0; k++) {
+                            int x = (int) Math.round(Math.sin(a) * r + Math.cos(a) * k), z = CZ - (int) Math.round(Math.cos(a) * r - Math.sin(a) * k);
+                            String cur = b.get(x, y0 + dy, z);
+                            if (cur != null && (cur.startsWith("oak_wood") || cur.startsWith("dark_oak_wood") || cur.startsWith("moss") || cur.startsWith("mossy"))) {
+                                b.set(x, y0 + dy, z, "air");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ================================================================== fuera
+
     private static void ground(StructBp b) {
         for (int x = X0; x <= X1; x++) {
             for (int z = Z0; z <= Z1; z++) {
@@ -82,7 +587,42 @@ final class DesignBosque {
         b.foundation(X0, Z0, X1, Z1, "dirt");
     }
 
-    /** Fuera del rectángulo, el terreno real baja o sube en rampa suave hasta el nivel del templo; un camino lleva a la entrada. */
+    /** El camino de la entrada: tierra y musgo entre faroles, con flores a los lados. */
+    private static void approach(StructBp b) {
+        int zEnd = CZ - (int) Math.floor(rOut(0, 0)) - 1;
+        for (int z = Z0; z <= zEnd; z++) {
+            for (int x = -2; x <= 2; x++) {
+                String s = b.get(x, -1, z);
+                if (s == null || s.equals("grass_block") || s.equals("moss_block") || s.equals("podzol") || s.equals("dirt")) {
+                    b.set(x, -1, z, StructKit.hash01(4100, x, z) < 0.35 ? "moss_block" : "coarse_dirt");
+                }
+            }
+            if (z % 6 == 3 && z < zEnd - 2) {
+                for (int s = -1; s <= 1; s += 2) {
+                    String at = b.get(4 * s, 0, z);
+                    if (at == null || at.equals("air")) {
+                        b.set(4 * s, 0, z, "oak_fence");
+                        b.set(4 * s, 1, z, "lantern");
+                    }
+                }
+            }
+        }
+        // flores y helechos por el claro
+        for (int x = X0 + 2; x <= X1 - 2; x++) {
+            for (int z = Z0; z <= Z1 - 2; z++) {
+                String below = b.get(x, -1, z), at = b.get(x, 0, z);
+                if (at != null || below == null || !below.equals("grass_block") || Math.abs(x) <= 3 && z <= CZ) {
+                    continue;
+                }
+                double k = StructKit.hash01(4101, x, z);
+                if (k < 0.06) {
+                    b.set(x, 0, z, k < 0.02 ? "fern" : k < 0.035 ? "poppy" : k < 0.05 ? "oxeye_daisy" : "cornflower");
+                }
+            }
+        }
+    }
+
+    /** Fuera del rectángulo, el terreno real baja o sube en rampa suave hasta el nivel del árbol; un camino lleva a la entrada. */
     static double edge(int x, int z) {
         double dx = Math.max(Math.max(0, X0 - x), Math.max(0, x - X1));
         double dz = Math.max(Math.max(0, Z0 - z), Math.max(0, z - Z1));
@@ -114,22 +654,24 @@ final class DesignBosque {
         }
     }
 
-    /** Al final del recorrido: la Piedra de Portal: Naturaleza sobre el altar del árbol del mundo, y al lado el gran tesoro del templo. */
-    private static void chests(StructBp b) {
-        b.set(0, 21, 52, PORTAL);
-        vault(b, -5, 20, 51, "east", "TREASURE", 1, 0);
+    // ================================================================== cofres y enemigos
+
+    private static void vault(StructBp b, int x, int y, int z, String facing, String kind, int stage, int lock) {
+        StructKit.vault(b, x, y, z, facing, kind, stage, lock);
     }
 
-    /**
-     * Etapa 268: cofres por las salas, para quien explore: provisiones en el atrio, un premio en la armería y otro en el jardín
-     * interior, y dos cerraduras (la biblioteca y la cripta).
-     */
-    private static void roomChests(StructBp b) {
-        vault(b, -27, 0, 25, "east", "ANTE", 1, 0);
-        vault(b, 26, 0, 37, "west", "TRIAL", 1, 0);
-        vault(b, -25, 0, 42, "east", "LOCKED", 1, 2);
-        vault(b, 12, -10, 61, "west", "LOCKED", 1, 3);
-        vault(b, -29, 10, 52, "east", "TRIAL", 1, 0);
+    /** Dónde están los cofres de cada sala (los usa también la prueba del CI). */
+    static final int[] C_ANTE = {-8, 0, CZ - 6}, C_LIB = {-4, L1, CZ - 1}, C_GARDEN = {4, L2, CZ + 1}, C_ARMORY = {-3, L3, CZ + 1},
+            C_CRYPT = {1, CRYPT, CZ + 20}, C_TREASURE = {-3, COPA, CZ + 1};
+
+    /** Al final del recorrido, en la Copa: la Piedra de Portal y al lado el gran tesoro; y un cofre en cada sala. */
+    private static void chests(StructBp b) {
+        vault(b, C_TREASURE[0], C_TREASURE[1], C_TREASURE[2], "east", "TREASURE", 1, 0);
+        vault(b, C_ANTE[0], C_ANTE[1], C_ANTE[2], "east", "ANTE", 1, 0);
+        vault(b, C_LIB[0], C_LIB[1], C_LIB[2], "east", "LOCKED", 1, 2);
+        vault(b, C_GARDEN[0], C_GARDEN[1], C_GARDEN[2], "west", "TRIAL", 1, 0);
+        vault(b, C_ARMORY[0], C_ARMORY[1], C_ARMORY[2], "east", "TRIAL", 1, 0);
+        vault(b, C_CRYPT[0], C_CRYPT[1], C_CRYPT[2], "north", "LOCKED", 1, 3);
     }
 
     private static boolean free(StructBp b, int x, int y, int z) {
@@ -150,900 +692,19 @@ final class DesignBosque {
         }
     }
 
-    /** Enemigos del bosque por el camino: la plaza, las dos terrazas, dentro (para quien explore) y el Raizal que guarda el altar. */
+    /** Enemigos del bosque: en el claro, en el salón, en cada piso y el Raizal que guarda la Copa. */
     private static void mobs(StructBp b) {
-        mob(b, -3, 0, 6, "brote");
-        mob(b, 3, 0, 9, "brote");
-        mob(b, -11, 10, 27, "espinoso");
-        mob(b, 11, 10, 28, "espinoso");
-        mob(b, -3, 20, 39, "brote");
-        mob(b, 3, 20, 40, "brote");
-        mob(b, 0, 20, 43, "espinoso");
-        // dentro de las terrazas (salas para explorar)
-        mob(b, -6, 0, 40, "brote");
-        mob(b, 6, 0, 52, "espinoso");
-        mob(b, 12, 10, 50, "brote");
-        // el guardián del árbol del mundo, delante del altar
-        mob(b, 0, 20, 49, "raizal");
-        mob(b, -7, 20, 64, "espinoso");
-    }
-
-    // ================================================================== masas y fachadas
-
-    private static void massing(StructBp b) {
-        b.box(-30, -1, 22, 30, 9, 80, SB);
-        b.box(-22, 10, 34, 22, 19, 74, SB);
-    }
-
-    private static void terraceDetail(StructBp b, int x0, int z0, int x1, int z1, int yb, int yt) {
-        // zócalo, banda y cornisa que rodean toda la terraza
-        b.walls(x0 - 1, yb, z0 - 1, x1 + 1, yb + 1, z1 + 1, SB);
-        ring(b, x0 - 1, z0 - 1, x1 + 1, z1 + 1, yb + 2, SBS, false);
-        int mid = (yb + yt) / 2;
-        b.walls(x0 - 1, mid, z0 - 1, x1 + 1, mid, z1 + 1, CSB);
-        ring(b, x0 - 1, z0 - 1, x1 + 1, z1 + 1, yt - 1, SBS, true);
-        b.walls(x0 - 1, yt, z0 - 1, x1 + 1, yt, z1 + 1, SB);
-        Face[] faces = {new Face("-z", z0, x0, x1), new Face("+z", z1, x0, x1), new Face("-x", x0, z0, z1), new Face("+x", x1, z0, z1)};
-        for (Face f : faces) {
-            for (int a = f.a0() + 4; a <= f.a1() - 4; a += 6) {
-                boolean front = f.out().equals("-z");
-                if (front && (Math.abs(a) <= 7 || Math.abs(Math.abs(a) - 14) <= 3)) {
-                    continue;
-                }
-                pilaster(b, f, a, yb, yt);
-                // ranura luminosa entre pilastras
-                int a2 = a + 3;
-                if (a2 <= f.a1() - 3 && !(front && (Math.abs(a2) <= 7 || Math.abs(Math.abs(a2) - 14) <= 3))) {
-                    for (int y = yb + 4; y <= yt - 4; y++) {
-                        b.set(f.x(a2, -1), y, f.z(a2, -1), "shroomlight");
-                        b.set(f.x(a2, 0), y, f.z(a2, 0), "iron_bars");
-                    }
-                }
-            }
-        }
-    }
-
-    private static void pilaster(StructBp b, Face f, int a, int yb, int yt) {
-        for (int y = yb + 2; y <= yt - 2; y++) {
-            b.set(f.x(a, 1), y, f.z(a, 1), y == yb + 2 ? CSB : SB);
-        }
-        b.set(f.x(a, 1), yt - 1, f.z(a, 1), sti(SBS, opp(f.out())));
-    }
-
-    private static void parapets(StructBp b) {
-        parapet(b, -30, 22, 30, 80, 10, 4);
-        parapet(b, -22, 34, 22, 74, 20, 4);
-    }
-
-    private static void parapet(StructBp b, int x0, int z0, int x1, int z1, int y, int gap) {
-        for (int x = x0; x <= x1; x++) {
-            for (int z = z0; z <= z1; z++) {
-                if (!(x == x0 || x == x1 || z == z0 || z == z1)) {
-                    continue;
-                }
-                if (z == z0 && Math.abs(x) <= gap + 2) {
-                    continue; // hueco donde llega la escalera
-                }
-                boolean post = (x - x0) % 8 == 0 && (z == z0 || z == z1) || (z - z0) % 8 == 0 && (x == x0 || x == x1);
-                b.set(x, y, z, MSBW);
-                if (post) {
-                    b.set(x, y, z, SB);
-                    b.set(x, y + 1, z, CSB);
-                    b.set(x, y + 2, z, "lantern");
-                }
-            }
-        }
-    }
-
-    // ================================================================== escalinatas y avenida
-
-    private static void flights(StructBp b) {
-        flight(b, 13, -1);
-        flight(b, 25, 9);
-    }
-
-    /** Escalinata de 9 peldaños (ancho 9) con mejillas laterales; sube hacia +z desde z0; base = nivel del suelo de abajo. */
-    private static void flight(StructBp b, int z0, int base) {
-        for (int k = 0; k < 9; k++) {
-            int z = z0 + k;
-            int y = base + 1 + k;
-            for (int x = -4; x <= 4; x++) {
-                b.set(x, y, z, st(SBS, "+z"));
-                for (int yy = base + 1; yy < y; yy++) {
-                    b.set(x, yy, z, SB);
-                }
-            }
-            for (int s : new int[]{-1, 1}) {
-                for (int w = 5; w <= 6; w++) {
-                    for (int yy = base; yy <= y; yy++) {
-                        b.set(s * w, yy, z, SB);
-                    }
-                    b.set(s * w, y + 1, z, w == 6 ? slb(SBL) : CSB);
-                }
-            }
-        }
-        for (int s : new int[]{-1, 1}) {
-            brazier(b, s * 5, base + 10, z0 + 8, SB, "campfire[lit=true]");
-            b.set(s * 5, base + 10, z0 + 8, CSB);
-        }
-    }
-
-    private static void avenue(StructBp b) {
-        // suelo de la avenida y la plaza
-        for (int z = 0; z <= 21; z++) {
-            for (int x = -7; x <= 7; x++) {
-                String s = (Math.abs(x) <= 4) ? (z % 4 == 0 ? CSB : PA) : (Math.abs(x) == 5 ? CSB : SB);
-                if (z >= 13 && Math.abs(x) <= 6) {
-                    continue; // aquí está la escalinata
-                }
-                b.set(x, -1, z, s);
-            }
-        }
-        checker(b, -14, 8, 14, 12, -1, SB, MSB);
-        // muritos y farolas a los lados de la avenida
-        for (int s : new int[]{-1, 1}) {
-            for (int z = 0; z <= 12; z++) {
-                b.set(s * 8, 0, z, MSBW);
-                if (z % 4 == 0) {
-                    b.set(s * 8, 0, z, SB);
-                    b.set(s * 8, 1, z, SB);
-                    b.set(s * 8, 2, z, CSB);
-                    b.set(s * 8, 3, z, "lantern");
-                }
-            }
-            // guardianes de piedra
-            knight(b, s * 10, 0, 4, "+z", SB, SBS, SBW, CSB, PA);
-            knight(b, s * 10, 0, 16, "+z", SB, SBS, SBW, CSB, PA);
-            // estanques
-            pond(b, s * 16 - 5, 3, s * 16 + 5, 20);
-        }
-        // arco-pórtico de entrada
-        for (int s : new int[]{-1, 1}) {
-            column2(b, s * 7 - (s > 0 ? 0 : 1), 0, 0, 11, SB, SBL);
-            for (int y = 12; y <= 13; y++) {
-                b.box(s * 7 - (s > 0 ? 0 : 1), y, 0, s * 7 + (s > 0 ? 1 : 0), y, 1, y == 12 ? CSB : SB);
-            }
-        }
-        b.box(-8, 12, 0, 8, 12, 1, CSB);
-        b.box(-8, 13, 0, 8, 13, 1, SB);
-        for (int x = -8; x <= 8; x++) {
-            b.set(x, 14, 0, (x & 1) == 0 ? SB : "air");
-            b.set(x, 14, 1, (x & 1) == 0 ? SB : "air");
-        }
-        for (int x = -2; x <= 2; x++) {
-            b.set(x, 11, 0, "air");
-        }
-        hangLantern(b, 0, 11, 0, 1, "lantern");
-    }
-
-    private static void pond(StructBp b, int x0, int z0, int x1, int z1) {
-        for (int x = x0; x <= x1; x++) {
-            for (int z = z0; z <= z1; z++) {
-                boolean edge = x == x0 || x == x1 || z == z0 || z == z1;
-                b.set(x, -1, z, SB);
-                if (edge) {
-                    b.set(x, 0, z, MSB);
-                    b.set(x, 1, z, slb(SBL));
-                } else {
-                    b.set(x, 0, z, "water");
-                    if (b.chance(0.22)) {
-                        b.set(x, 1, z, "lily_pad");
-                    }
-                }
-            }
-        }
-        // isla central con arbusto
-        int cx = (x0 + x1) / 2;
-        int cz = (z0 + z1) / 2;
-        b.box(cx - 1, 0, cz - 1, cx + 1, 0, cz + 1, "mossy_cobblestone");
-        b.set(cx, 1, cz, "flowering_azalea");
-        b.set(cx + 1, 1, cz, "fern");
-        b.set(cx - 1, 1, cz + 1, "azalea");
-    }
-
-    // ================================================================== accesos
-
-    private static void gates(StructBp b) {
-        // T1: dos puertas laterales a los lados de la escalinata
-        for (int s : new int[]{-1, 1}) {
-            openZ(b, s * 14, 0, 21, 24, 2, 7, 2, CSB, null);
-            // T2: igual en su cara
-            openZ(b, s * 13, 10, 33, 36, 2, 6, 2, CSB, null);
-        }
-    }
-
-    // ================================================================== interior de la terraza baja (T1)
-
-    private static void interiorT1(StructBp b) {
-        int fy = -1;
-        int h = 8;
-        Room atrio = new Room(b, -27, 25, 27, 31, fy, h).carve();
-        Room nave = new Room(b, -10, 33, 10, 66, fy, h).carve();
-        Room tras = new Room(b, -27, 68, 27, 75, fy, h).carve();
-        int[][] sides = {{33, 43}, {45, 55}, {57, 66}};
-        Room[] left = new Room[3];
-        Room[] right = new Room[3];
-        for (int i = 0; i < 3; i++) {
-            left[i] = new Room(b, -26, sides[i][0], -12, sides[i][1], fy, h).carve();
-            right[i] = new Room(b, 12, sides[i][0], 26, sides[i][1], fy, h).carve();
-        }
-        // puertas y arcos entre salas
-        openZ(b, 0, 0, 32, 32, 4, 7, 1, CSB, null);          // atrio -> nave
-        openZ(b, 0, 0, 67, 67, 3, 7, 1, CSB, null);          // nave -> cámara trasera
-        for (int s : new int[]{-1, 1}) {
-            openZ(b, s * 19, 0, 32, 32, 2, 5, 1, CSB, null);   // atrio -> sala 1
-            openZ(b, s * 19, 0, 44, 44, 2, 5, 1, CSB, null);   // sala 1 -> 2
-            openZ(b, s * 19, 0, 56, 56, 2, 5, 1, CSB, null);   // sala 2 -> 3
-            openZ(b, s * 19, 0, 67, 67, 2, 5, 1, CSB, null);   // sala 3 -> trasera
-            for (int z : new int[]{38, 50, 61}) {
-                openX(b, z, 0, s * 11, s * 11, 2, 6, 1, CSB, null); // nave -> salas laterales
-            }
-        }
-        // suelo, rodapié, cornisa, luces
-        for (Room r : new Room[]{atrio, nave, tras}) {
-            r.baseboard(SBS).cornice(SBS).torches(7, 3, false);
-        }
-        checker(b, -27, 25, 27, 31, fy, SB, MSB);
-        borderLine(b, -27, 25, 27, 31, fy, 1, CSB);
-        // atrio: columnas y guardianes
-        for (int x : new int[]{-24, -18, -8, -4, 4, 8, 18, 24}) {
-            column(b, x, 28, 0, 7, SB, SBS, CSB);
-        }
-        chandelier(b, -14, 7, 28, 2, "lantern");
-        chandelier(b, 14, 7, 28, 2, "lantern");
-        chandelier(b, 0, 7, 28, 2, "lantern");
-        wallBanner(b, -2, 5, 31, "lime", "-z");
-        wallBanner(b, 2, 5, 31, "lime", "-z");
-        wallBanner(b, -9, 5, 31, "green", "-z");
-        wallBanner(b, 9, 5, 31, "green", "-z");
-
-        // nave
-        for (int x = -10; x <= 10; x++) {
-            for (int z = 33; z <= 66; z++) {
-                b.set(x, fy, z, Math.abs(x) <= 2 ? PA : SB);
-            }
-        }
-        for (int z = 34; z <= 65; z += 4) {
-            b.set(0, fy, z, CSB);
-        }
-        for (int s : new int[]{-1, 1}) {
-            for (int z = 36; z <= 60; z += 6) {
-                column2(b, s > 0 ? 5 : -6, z, 0, 7, SB, SBL);
-                // nervio que cruza la bóveda
-            }
-        }
-        for (int z = 36; z <= 60; z += 6) {
-            b.box(-10, 7, z, 10, 7, z + 1, CSB);
-        }
-        for (int z : new int[]{39, 51, 63}) {
-            chandelier(b, 0, 6, z, 2, "lantern");
-        }
-        for (int z : new int[]{39, 51}) {
-            for (int s : new int[]{-1, 1}) {
-                knight(b, s * 9, 0, z, s > 0 ? "-x" : "+x", SB, SBS, SBW, CSB, PA);
-            }
-        }
-        // altar al fondo de la nave
-        for (int x = -6; x <= 6; x++) {
-            for (int z = 58; z <= 65; z++) {
-                b.set(x, fy, z, MSB);
-            }
-        }
-        b.box(-6, 0, 58, 6, 0, 65, SB);
-        stairway(b, -6, 0, 58, "+z", 1, 1, SBS, SB, false);
-        b.box(-3, 1, 61, 3, 1, 63, CSB);
-        b.box(-2, 2, 62, 2, 2, 62, MSB);
-        for (int x = -2; x <= 2; x += 2) {
-            candles(b, x, 3, 62, 3);
-        }
-        b.set(0, 2, 63, "shroomlight");
-        b.set(0, 3, 63, "shroomlight");
-
-        // salas laterales
-        furnishLibrary(b, left[0], -1);
-        furnishWorkshop(b, left[1], -1);
-        furnishChapel(b, left[2], -1);
-        furnishArmory(b, right[0], 1);
-        furnishDining(b, right[1], 1);
-        furnishCells(b, right[2], 1);
-        for (Room r : new Room[]{left[0], left[1], left[2], right[0], right[1], right[2]}) {
-            r.baseboard(SBS).torches(6, 3, false);
-        }
-
-        // cámara trasera: escaleras hacia arriba a ambos lados y escalera hacia la cripta
-        tras.floor(SB);
-        borderLine(b, -27, 68, 27, 75, fy, 1, CSB);
-        for (int s : new int[]{-1, 1}) {
-            upStairs(b, s);
-            chandelier(b, s * 12, 7, 71, 2, "lantern");
-        }
-        for (int x = -4; x <= 4; x += 8) {
-            column(b, x, 72, 0, 7, SB, SBS, CSB);
-        }
-        // pozo hacia la cripta (a lo largo de -z, bajando hacia la nave)
-        for (int k = 0; k < 10; k++) {
-            int z = 75 - k;
-            int y = -1 - k;
-            for (int x = -1; x <= 1; x++) {
-                for (int yy = y + 1; yy <= Math.max(y + 4, 0); yy++) {
-                    if (z >= 68 || yy <= -2) {
-                        b.set(x, yy, z, "air");
-                    }
-                }
-                b.set(x, y, z, st(SBS, "+z"));
-                b.set(x, y - 1, z, SB);
-            }
-        }
-        // barandilla del pozo
-        for (int z = 69; z <= 74; z++) {
-            b.set(-2, 0, z, MSBW);
-            b.set(2, 0, z, MSBW);
-        }
-        b.set(-2, 1, 69, "lantern");
-        b.set(2, 1, 69, "lantern");
-    }
-
-    /** Escalera recta hacia la sala superior (T2): sube a lo largo de x, junto al fondo de la cámara trasera. */
-    private static void upStairs(StructBp b, int s) {
-        // el paso sube desde x = s*26 hacia el centro hasta y = 9
-        String up = s < 0 ? "+x" : "-x";
-        for (int k = 0; k < 10; k++) {
-            int x = s * 26 - s * k;
-            int y = k;
-            for (int z = 70; z <= 72; z++) {
-                b.set(x, y, z, st(SBS, up));
-                for (int yy = 0; yy < y; yy++) {
-                    b.set(x, yy, z, SB);
-                }
-            }
-        }
-        // hueco en el techo (y = 8..9) sobre los últimos pasos y despeje hasta la sala de arriba
-        for (int x = s * 20; s > 0 ? x >= s * 20 - 3 : x <= s * 20 + 3; x -= s) {
-            for (int z = 70; z <= 72; z++) {
-                b.air(x, 8, z, x, 9, z);
-            }
-        }
-        // barandilla a los lados del hueco, en la sala de arriba (y = 10)
-        for (int x = Math.min(s * 17, s * 21); x <= Math.max(s * 17, s * 21); x++) {
-            b.set(x, 10, 69, MSBW);
-            b.set(x, 10, 73, MSBW);
-        }
-    }
-
-    // ------------------------------------------------------------------ salas temáticas de T1
-
-    private static void furnishLibrary(StructBp b, Room r, int s) {
-        b.box(r.x0, r.fy, r.z0, r.x1, r.fy, r.z1, "spruce_planks");
-        shelves(b, r.x0, 0, r.z0 + 1, 'z', r.z1 - r.z0 - 1, 5);
-        shelves(b, r.x0 + 1, 0, r.z0, 'x', 4, 4);
-        shelves(b, r.x0 + 1, 0, r.z1, 'x', 4, 4);
-        shelves(b, r.x1 - 5, 0, r.z0, 'x', 4, 4);
-        b.air(r.x0 + 1, 1, r.z0 + 1, r.x0 + 1, 4, r.z1 - 1);
-        shelves(b, r.x0 + 1, 0, r.z0 + 1, 'z', r.z1 - r.z0 - 1, 0);
-        // mesas de lectura
-        int cx = r.cx() + 2;
-        table(b, cx - 2, 0, r.cz() - 2, 'x', 5, "spruce_slab", "spruce_fence");
-        table(b, cx - 2, 0, r.cz() + 2, 'x', 5, "spruce_slab", "spruce_fence");
-        for (int x = cx - 2; x <= cx + 2; x += 2) {
-            chair(b, x, 0, r.cz() - 3, "+z", "spruce_stairs");
-            chair(b, x, 0, r.cz() + 1, "-z", "spruce_stairs");
-            chair(b, x, 0, r.cz() + 1 + 2 + 1, "-z", "spruce_stairs");
-            b.set(x, 2, r.cz() - 2, "air");
-        }
-        candles(b, cx, 2, r.cz() - 2, 2);
-        candles(b, cx + 2, 2, r.cz() + 2, 3);
-        b.set(r.x1 - 1, 0, r.z0 + 2, "lectern[facing=west]");
-        chandelier(b, cx, 7, r.cz(), 2, "lantern");
-        b.set(r.x0 + 1, 7, r.z0 + 1, "cobweb");
-        b.set(r.x1, 7, r.z1, "cobweb");
-        b.set(r.x1, 6, r.z0, "cobweb");
-    }
-
-    private static void furnishWorkshop(StructBp b, Room r, int s) {
-        b.box(r.x0, r.fy, r.z0, r.x1, r.fy, r.z1, "moss_block");
-        for (int i = 0; i < 24; i++) {
-            int x = r.x0 + 1 + b.r.nextInt(r.x1 - r.x0 - 1);
-            int z = r.z0 + 1 + b.r.nextInt(r.z1 - r.z0 - 1);
-            b.set(x, 0, z, b.pick("fern", "azalea", "flowering_azalea", "moss_carpet", "poppy", "blue_orchid", "lily_of_the_valley"));
-        }
-        // mesas de trabajo
-        for (int x = r.x0 + 1; x <= r.x0 + 4; x++) {
-            b.set(x, 0, r.z0, "oak_planks");
-        }
-        b.set(r.x0, 0, r.z0 + 1, "cauldron");
-        b.set(r.x0, 0, r.z0 + 3, "cauldron");
-        b.set(r.x0, 0, r.z1 - 1, "composter");
-        b.set(r.x0 + 1, 1, r.z0, "brewing_stand");
-        b.set(r.x0 + 3, 1, r.z0, "brewing_stand");
-        b.set(r.x0 + 2, 1, r.z0, "potted_fern");
-        b.set(r.x1, 0, r.z0 + 1, "barrel[facing=up]");
-        b.set(r.x1, 0, r.z0 + 2, "barrel[facing=up]");
-        b.set(r.x1, 1, r.z0 + 1, "barrel[facing=up]");
-        b.set(r.x1, 0, r.z1, "hay_block[axis=y]");
-        b.set(r.x1 - 1, 0, r.z1, "hay_block[axis=y]");
-        // árbol pequeño en el centro y colgantes
-        int cx = r.cx();
-        int cz = r.cz();
-        for (int y = 0; y <= 3; y++) {
-            b.set(cx, y, cz, log("oak_log", 'y'));
-        }
-        for (int x = -2; x <= 2; x++) {
-            for (int z = -2; z <= 2; z++) {
-                for (int y = 3; y <= 5; y++) {
-                    if (x * x + z * z + (y - 4) * (y - 4) * 2 <= 5 && !(x == 0 && z == 0 && y == 3)) {
-                        b.setIfAbsent(cx + x, y, cz + z, y == 3 ? FAZ : AZ);
-                    }
-                }
-            }
-        }
-        for (int x = r.x0 + 2; x <= r.x1 - 2; x += 3) {
-            b.set(x, 7, r.z1, "vine[north=true]");
-            for (int y = 7; y >= 5; y--) {
-                b.set(x, y, r.z1, "vine[north=true]");
-            }
-        }
-        hangLantern(b, r.x0 + 3, 7, r.cz(), 2, "lantern");
-        hangLantern(b, r.x1 - 3, 7, r.cz(), 2, "lantern");
-    }
-
-    private static void furnishChapel(StructBp b, Room r, int s) {
-        b.box(r.x0, r.fy, r.z0, r.x1, r.fy, r.z1, MSB);
-        borderLine(b, r.x0, r.z0, r.x1, r.z1, r.fy, 1, CSB);
-        int cx = r.cx();
-        // altar al fondo
-        b.box(cx - 2, 0, r.z1 - 2, cx + 2, 0, r.z1 - 1, CSB);
-        b.box(cx - 1, 1, r.z1 - 1, cx + 1, 1, r.z1 - 1, MSB);
-        b.set(cx, 2, r.z1 - 1, "shroomlight");
-        candles(b, cx - 2, 1, r.z1 - 2, 3);
-        candles(b, cx + 2, 1, r.z1 - 2, 3);
-        wallBanner(b, cx - 3, 4, r.z1, "green", "-z");
-        wallBanner(b, cx + 3, 4, r.z1, "green", "-z");
-        wallBanner(b, cx, 5, r.z1, "lime", "-z");
-        // bancos
-        for (int z = r.z0 + 2; z <= r.z0 + 7; z += 2) {
-            for (int x : new int[]{cx - 4, cx + 3}) {
-                for (int i = 0; i < 2; i++) {
-                    chair(b, x + i, 0, z, "+z", "spruce_stairs");
-                }
-            }
-        }
-        for (int s2 : new int[]{-1, 1}) {
-            brazier(b, cx + s2 * 5, 0, r.z1 - 1, SB, "soul_campfire[lit=true]");
-        }
-        chandelier(b, cx, 7, r.cz(), 2, "soul_lantern");
-    }
-
-    private static void furnishArmory(StructBp b, Room r, int s) {
-        b.box(r.x0, r.fy, r.z0, r.x1, r.fy, r.z1, "polished_blackstone_bricks");
-        // paneles con armas (barrotes y estandartes) en la pared del fondo
-        for (int x = r.x0 + 1; x <= r.x1 - 1; x += 3) {
-            wallBanner(b, x, 4, r.z1, "red", "-z");
-            for (int y = 1; y <= 3; y++) {
-                b.set(x + 1, y, r.z1, "iron_bars");
-            }
-        }
-        for (int x = r.x0 + 1; x <= r.x0 + 6; x += 2) {
-            b.set(x, 0, r.z0, "barrel[facing=up]");
-        }
-        b.set(r.x1, 0, r.z0, "blast_furnace[facing=west,lit=true]");
-        b.set(r.x1, 0, r.z0 + 1, "anvil[facing=north]");
-        b.set(r.x1, 0, r.z0 + 3, "grindstone[face=floor,facing=east]");
-        b.set(r.x1, 0, r.z0 + 5, "smithing_table");
-        b.set(r.x1, 0, r.z0 + 7, "cauldron");
-        // maniquíes: pilares con casco
-        for (int x = r.x0 + 3; x <= r.x1 - 3; x += 4) {
-            b.set(x, 0, r.cz(), "polished_blackstone_brick_wall");
-            b.set(x, 1, r.cz(), "polished_blackstone_brick_wall");
-            b.set(x, 2, r.cz(), "iron_block");
-            b.set(x, 3, r.cz(), "skeleton_skull[rotation=" + (x & 15) + "]");
-            b.set(x - 1, 2, r.cz(), "iron_bars");
-            b.set(x + 1, 2, r.cz(), "iron_bars");
-        }
-        chandelier(b, r.cx(), 7, r.cz(), 2, "lantern");
-        b.set(r.x0, 7, r.z0, "cobweb");
-    }
-
-    private static void furnishDining(StructBp b, Room r, int s) {
-        b.box(r.x0, r.fy, r.z0, r.x1, r.fy, r.z1, "dark_oak_planks");
-        checker(b, r.x0, r.z0, r.x1, r.z1, r.fy, "dark_oak_planks", "spruce_planks");
-        int cx = r.cx();
-        for (int dz : new int[]{-2, 2}) {
-            table(b, cx - 4, 0, r.cz() + dz, 'x', 9, "dark_oak_slab", "dark_oak_fence");
-            for (int x = cx - 4; x <= cx + 4; x += 2) {
-                chair(b, x, 0, r.cz() + dz - 1, "+z", "dark_oak_stairs");
-                chair(b, x, 0, r.cz() + dz + 1, "-z", "dark_oak_stairs");
-                candles(b, x, 2, r.cz() + dz, 1 + (x & 3) % 3);
-            }
-        }
-        for (int z = r.z0; z <= r.z0 + 3; z++) {
-            b.set(r.x1, 0, z, "barrel[facing=up]");
-            b.set(r.x1, 1, z, z % 2 == 0 ? "barrel[facing=up]" : "air");
-        }
-        b.set(r.x0, 0, r.z1, "furnace[facing=east,lit=true]");
-        b.set(r.x0, 0, r.z1 - 1, "smoker[facing=east,lit=true]");
-        b.set(r.x0, 0, r.z1 - 2, "crafting_table");
-        chandelier(b, cx - 3, 7, r.cz(), 2, "lantern");
-        chandelier(b, cx + 3, 7, r.cz(), 2, "lantern");
-    }
-
-    private static void furnishCells(StructBp b, Room r, int s) {
-        b.box(r.x0, r.fy, r.z0, r.x1, r.fy, r.z1, "cobblestone");
-        // tres celdas contra el fondo
-        for (int i = 0; i < 3; i++) {
-            int xa = r.x0 + 1 + i * 4;
-            int xb = xa + 3;
-            for (int y = 0; y <= 5; y++) {
-                for (int x = xa; x <= xb; x++) {
-                    b.set(x, y, r.z1 - 5, "iron_bars");
-                }
-                b.set(xa, y, r.z1 - 5, y <= 5 ? "stone_bricks" : "air");
-            }
-            ironDoor(b, xa + 1, 0, r.z1 - 5, "+z", true);
-            b.set(xb - 1, 0, r.z1 - 1, "hay_block[axis=x]");
-            b.set(xb - 1, 1, r.z1 - 1, "skeleton_skull[rotation=" + (4 + i * 3) + "]");
-            b.set(xa, 0, r.z1 - 1, "bone_block[axis=x]");
-            b.set(xa + 1, 0, r.z1 - 3, "cobweb");
-            b.set(xa, 6, r.z1 - 1, "cobweb");
-        }
-        for (int x = r.x0 + 2; x <= r.x1 - 2; x += 4) {
-            hangLantern(b, x, 7, r.z0 + 3, 1, "soul_lantern");
-        }
-    }
-
-    // ================================================================== sala superior (T2): jardín interior
-
-    private static void interiorT2(StructBp b) {
-        int fy = 9;
-        int h = 8;
-        Room hall = new Room(b, -20, 37, 20, 72, fy, h).carve();
-        hall.baseboard(SBS).cornice(SBS).torches(7, fy + 4, false);
-        // suelo con alfombra de musgo y orla
-        for (int x = -20; x <= 20; x++) {
-            for (int z = 37; z <= 72; z++) {
-                b.set(x, fy, z, SB);
-            }
-        }
-        borderLine(b, -20, 37, 20, 72, fy, 1, CSB);
-        for (int z = 38; z <= 71; z++) {
-            for (int x = -1; x <= 1; x++) {
-                if (z < 51 || z > 61) {
-                    b.set(x, fy + 1, z, "moss_carpet");
-                }
-            }
-        }
-        // estanque central con isla
-        pool(b, -5, 51, 5, 61, fy + 1, 1, MSB, "water", SB);
-        b.box(-1, fy + 1, 55, 1, fy + 1, 57, "mossy_cobblestone");
-        b.set(0, fy + 2, 56, "flowering_azalea");
-        b.set(1, fy + 2, 56, "fern");
-        b.set(-1, fy + 2, 57, "azalea");
-        // los nenúfares van ENCIMA del agua (fy + 2), nunca sobre la isla
-        for (int i = 0; i < 6; i++) {
-            int lx = -4 + b.r.nextInt(9);
-            int lz = 52 + b.r.nextInt(9);
-            boolean island = lx >= -1 && lx <= 1 && lz >= 55 && lz <= 57;
-            if (!island && b.chance(0.5) && String.valueOf(b.get(lx, fy + 1, lz)).startsWith("water")) {
-                b.set(lx, fy + 2, lz, "lily_pad");
-            }
-        }
-        // columnas
-        for (int z = 40; z <= 68; z += 7) {
-            for (int s : new int[]{-1, 1}) {
-                column2(b, s > 0 ? 8 : -9, z, fy + 1, fy + h, SB, SBL);
-            }
-        }
-        // claraboyas hacia la plaza (dos huecos con jardín debajo)
-        for (int s : new int[]{-1, 1}) {
-            int cx = s * 9;
-            b.air(cx - 3, 18, 38, cx + 3, 19, 44);
-            for (int x = cx - 4; x <= cx + 4; x++) {
-                for (int z = 37; z <= 45; z++) {
-                    if (x == cx - 4 || x == cx + 4 || z == 37 || z == 45) {
-                        b.set(x, 20, z, MSBW);
-                    }
-                }
-            }
-            // jardín bajo la claraboya
-            b.box(cx - 3, fy, 38, cx + 3, fy, 44, "moss_block");
-            for (int x = cx - 3; x <= cx + 3; x++) {
-                for (int z = 38; z <= 44; z++) {
-                    if (b.chance(0.5)) {
-                        b.set(x, fy + 1, z, b.pick("fern", "azalea", "flowering_azalea", "moss_carpet", "poppy", "cornflower", "grass"));
-                    }
-                }
-            }
-            for (int y = fy + 1; y <= 17; y++) {
-                b.set(cx, y, 41, log("oak_log", 'y'));
-            }
-            for (int dx = -3; dx <= 3; dx++) {
-                for (int dz = -3; dz <= 3; dz++) {
-                    for (int dy = 0; dy <= 4; dy++) {
-                        if (dx * dx + dz * dz + dy * dy * 2 <= 10 && b.chance(0.92)) {
-                            b.setIfAbsent(cx + dx, 15 + dy, 41 + dz, b.pick(CROWN));
-                        }
-                    }
-                }
-            }
-        }
-        // ventanas gruesas hacia fuera (paredes de 2 de grosor)
-        for (int s : new int[]{-1, 1}) {
-            for (int z : new int[]{42, 52, 62, 70}) {
-                openX(b, z, fy + 2, s * 21, s * 22, 1, 6, 2, CSB, "lime_stained_glass_pane");
-            }
-        }
-        // luces y colgantes
-        for (int z : new int[]{44, 56, 66}) {
-            chandelier(b, 0, 16, z, 3, "lantern");
-        }
-        // balaustrada de la escalera de subida (huecos en y=17..)
-        for (int s : new int[]{-1, 1}) {
-            wallBanner(b, s * 19, fy + 5, 40, "green", s > 0 ? "-x" : "+x");
-            wallBanner(b, s * 19, fy + 5, 68, "green", s > 0 ? "-x" : "+x");
-        }
-        // rincones: braseros
-        for (int s : new int[]{-1, 1}) {
-            brazier(b, s * 19, fy + 1, 37, SB, "campfire[lit=true]");
-        }
-    }
-
-    // ================================================================== cripta bajo tierra
-
-    private static void basement(StructBp b) {
-        int fy = -11;
-        int h = 8;
-        // bloque macizo a modo de pared de la cripta y luego se vacía
-        b.box(-16, fy, 28, 16, fy + h + 1, 67, "deepslate_bricks");
-        Room hall = new Room(b, -9, 40, 9, 66, fy, h).carve();
-        Room end = new Room(b, -6, 30, 6, 37, fy, h).carve();
-        // arco entre ambas
-        openZ(b, 0, fy + 1, 38, 39, 3, 7, 2, "polished_deepslate", null);
-        for (int x = -9; x <= 9; x++) {
-            for (int z = 40; z <= 66; z++) {
-                b.set(x, fy, z, ((x + z) & 1) == 0 ? "deepslate_tiles" : "polished_deepslate");
-            }
-        }
-        // canal central con agua
-        pool(b, -2, 44, 2, 58, fy + 1, 1, "deepslate_bricks", "water", "deepslate_tiles");
-        for (int x = -2; x <= 2; x++) {
-            b.set(x, fy + 1, 51, "polished_deepslate");
-            b.set(x, fy + 2, 51, "air");
-        }
-        // columnas
-        for (int z = 44; z <= 62; z += 6) {
-            for (int s : new int[]{-1, 1}) {
-                column(b, s * 5, z, fy + 1, fy + h, "deepslate_bricks", "deepslate_brick_stairs", "chiseled_deepslate");
-            }
-        }
-        // nichos con sarcófagos a ambos lados
-        for (int s : new int[]{-1, 1}) {
-            for (int z = 44; z <= 62; z += 6) {
-                b.air(s * 10, fy + 1, z - 1, s * 12, fy + 4, z + 1);
-                sarcophagus(b, s > 0 ? 10 : 10 * s - 2, fy + 1, z, 'x', 3, "stone_bricks", "stone_brick_slab", "stone_brick_stairs");
-                // arreglo: el sarcófago ocupa 2 en z
-                b.set(s * 10, fy + 4, z, "skeleton_skull[rotation=" + (s > 0 ? 12 : 4) + "]");
-                candles(b, s * 11, fy + 3, z + 1, 2);
-            }
-        }
-        hall.baseboard("deepslate_brick_stairs").cornice("deepslate_brick_stairs").torches(6, fy + 3, true);
-        end.baseboard("deepslate_brick_stairs").cornice("deepslate_brick_stairs");
-        for (int x = -6; x <= 6; x++) {
-            for (int z = 30; z <= 37; z++) {
-                b.set(x, fy, z, "polished_blackstone_bricks");
-            }
-        }
-        // altar de la cripta
-        b.box(-2, fy + 1, 32, 2, fy + 1, 34, "obsidian");
-        b.box(-1, fy + 2, 33, 1, fy + 2, 33, "crying_obsidian");
-        b.set(0, fy + 3, 33, "soul_campfire[lit=true]");
-        for (int x : new int[]{-5, 5}) {
-            b.set(x, fy + 1, 31, "polished_blackstone_brick_wall");
-            b.set(x, fy + 2, 31, "polished_blackstone_brick_wall");
-            b.set(x, fy + 3, 31, "skeleton_skull[rotation=8]");
-            b.set(x, fy + 4, 31, "soul_lantern[hanging=false]");
-        }
-        // reja a la entrada
-        for (int x = -3; x <= 3; x++) {
-            for (int y = fy + 1; y <= fy + 7; y++) {
-                if (b.get(x, y, 38) == null || b.get(x, y, 38).equals("air")) {
-                    b.set(x, y, 38, "iron_bars");
-                }
-            }
-        }
-        chandelier(b, 0, fy + h, 52, 2, "soul_lantern");
-        chandelier(b, 0, fy + h, 64, 2, "soul_lantern");
-        for (int x = -4; x <= 4; x += 2) {
-            b.set(x, fy + h, 34, "cobweb");
-        }
-    }
-
-    // ================================================================== santuario con el árbol gigante
-
-    private static void shrine(StructBp b) {
-        int fy = 19;
-        int top = 32;
-        // muros gruesos
-        b.box(-15, fy, 46, 15, top, 72, SB);
-        b.air(-13, fy + 1, 48, 13, top + 1, 70);
-        // suelo: círculo de musgo con orla
-        for (int x = -13; x <= 13; x++) {
-            for (int z = 48; z <= 70; z++) {
-                b.set(x, fy, z, SB);
-            }
-        }
-        borderLine(b, -13, 48, 13, 70, fy, 1, CSB);
-        for (int x = -6; x <= 6; x++) {
-            for (int z = 53; z <= 65; z++) {
-                double d = Math.hypot(x, z - 59);
-                if (d <= 5.5) {
-                    b.set(x, fy, z, d > 4.3 ? CSB : "moss_block");
-                }
-            }
-        }
-        // puerta gótica
-        openZ(b, 0, fy + 1, 46, 47, 3, 10, 2, CSB, null);
-        // ventanas altas de cristal verde
-        for (int s : new int[]{-1, 1}) {
-            for (int z : new int[]{52, 59, 66}) {
-                openX(b, z, fy + 3, s * 14, s * 15, 1, 9, 2, CSB, "lime_stained_glass_pane");
-            }
-        }
-        b.walls(-15, fy + 1, 46, 15, fy + 1, 72, CSB);
-        // contrafuertes
-        for (int s : new int[]{-1, 1}) {
-            for (int z : new int[]{50, 59, 68}) {
-                buttress(b, s * 15, z, s > 0 ? "+x" : "-x", fy + 1, 13, 3, SBS, SB);
-            }
-        }
-        // techo a cuatro aguas con vigas
-        hipRoof(b, -15, 46, 15, 72, top + 1, 1, MSBS, MSB, "mossy_stone_brick_slab", 1);
-        for (int z : new int[]{52, 59, 66}) {
-            b.box(-14, top - 1, z, 14, top - 1, z, "dark_oak_log[axis=x]");
-            chandelier(b, -6, top - 2, z, 3, "lantern");
-            chandelier(b, 6, top - 2, z, 3, "lantern");
-        }
-        // el árbol del mundo: tronco grueso con raíces que se abren por el suelo, ramas dentro de la sala y copa gigante fuera
-        int tx = 0;
-        int tz = 59;
-        b.air(-3, top + 1, 56, 3, top + 18, 62);
-        for (int y = fy + 1; y <= 52; y++) {
-            double r = y < fy + 6 ? 3.3 - (y - fy - 1) * 0.3 : y < fy + 15 ? 2.0 : 1.5;
-            b.disc(tx, tz, r, y, y, log("dark_oak_log", 'y'));
-        }
-        for (int i = 0; i < 10; i++) {
-            double ang = i * Math.PI / 5 + 0.3;
-            int len = 4 + b.r.nextInt(3);
-            for (int d = 2; d <= len + 2; d++) {
-                int rx = tx + (int) Math.round(Math.cos(ang) * d);
-                int rz = tz + (int) Math.round(Math.sin(ang) * d);
-                char ax = Math.abs(Math.cos(ang)) > Math.abs(Math.sin(ang)) ? 'x' : 'z';
-                b.set(rx, fy + 1, rz, log("dark_oak_log", ax));
-                if (d <= 4) {
-                    b.set(rx, fy + 2, rz, log("dark_oak_log", ax));
-                }
-            }
-        }
-        // ramas largas dentro de la sala
-        int[][] arms = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        for (int[] a2 : arms) {
-            int y = fy + 12;
-            for (int d = 2; d <= 9; d++) {
-                if (d % 3 == 0) {
-                    y++;
-                }
-                int px = tx + a2[0] * d;
-                int pz = tz + a2[1] * d;
-                b.set(px, y, pz, log("dark_oak_log", a2[0] != 0 ? 'x' : 'z'));
-            }
-            int ex = tx + a2[0] * 9;
-            int ez = tz + a2[1] * 9;
-            for (int dx = -2; dx <= 2; dx++) {
-                for (int dz = -2; dz <= 2; dz++) {
-                    for (int dy = 0; dy <= 2; dy++) {
-                        if (dx * dx + dz * dz + dy * dy * 2 <= 5 && b.chance(0.9)) {
-                            b.setIfAbsent(ex + dx, fy + 16 + dy, ez + dz, b.pick(CROWN));
-                        }
-                    }
-                }
-            }
-        }
-        int[][] blobs = {{0, 48, 0, 9}, {-8, 46, 2, 7}, {8, 45, 1, 7}, {2, 45, -7, 6}, {-3, 46, 8, 6}, {0, 54, 0, 6}, {6, 50, 5, 5}, {-6, 50, -4, 5}};
-        for (int[] c : blobs) {
-            int rr = c[3];
-            for (int dx = -rr; dx <= rr; dx++) {
-                for (int dy = -rr / 2; dy <= rr / 2 + 1; dy++) {
-                    for (int dz = -rr; dz <= rr; dz++) {
-                        double d = dx * dx + dy * dy * 2.4 + dz * dz;
-                        if (d <= rr * rr && b.chance(0.93)) {
-                            b.setIfAbsent(tx + c[0] + dx, c[1] + dy, tz + c[2] + dz, b.pick(CROWN));
-                        }
-                    }
-                }
-            }
-        }
-        // torretas en las esquinas del santuario, con tejado de cobre
-        for (int sx : new int[]{-1, 1}) {
-            for (int zc : new int[]{47, 71}) {
-                int cx = sx * 16;
-                b.tube(cx, zc, 3.0, 1.6, fy + 1, top + 4, SB);
-                b.disc(cx, zc, 2.6, top + 5, top + 5, CSB);
-                cone(b, cx, zc, 4.2, top + 6, 11, "waxed_oxidized_cut_copper", null, "gold_block");
-                b.set(cx, top + 5, zc, "lantern");
-            }
-        }
-        // remate de cobre en lo alto del tejado
-        recolor(b, top + 10, 80, "mossy_stone_brick", "waxed_oxidized_cut_copper");
-        // altar frente al árbol
-        b.box(-3, fy + 1, 52, 3, fy + 1, 52, CSB);
-        candles(b, -3, fy + 2, 52, 3);
-        candles(b, 3, fy + 2, 52, 3);
-        b.set(0, fy + 2, 52, "shroomlight");
-        for (int s : new int[]{-1, 1}) {
-            brazier(b, s * 10, fy + 1, 50, SB, "campfire[lit=true]");
-            brazier(b, s * 10, fy + 1, 68, SB, "campfire[lit=true]");
-            knight(b, s * 11, fy + 1, 59, s > 0 ? "-x" : "+x", SB, SBS, SBW, CSB, PA);
-        }
-        // banderas a lo largo
-        for (int z : new int[]{52, 59, 66}) {
-            for (int s : new int[]{-1, 1}) {
-                wallBanner(b, s * 13, fy + 6, z + 3, "green", s > 0 ? "-x" : "+x");
-            }
-        }
-    }
-
-    /** Cambia, por encima de una altura, los bloques de piedra por su versión (bloque, escalera, losa) de otro material. */
-    private static void recolor(StructBp b, int minY, int maxY, String fromPrefix, String toBase) {
-        for (java.util.Map.Entry<Long, String> e : b.m.entrySet()) {
-            int y = StructBp.ky(e.getKey());
-            String v = e.getValue();
-            if (y < minY || y > maxY || !v.startsWith(fromPrefix)) {
-                continue;
-            }
-            if (v.contains("_stairs")) {
-                e.setValue(toBase + "_stairs" + v.substring(v.indexOf('[')));
-            } else if (v.contains("_slab")) {
-                e.setValue(toBase + "_slab" + v.substring(v.indexOf('[')));
-            } else if (!v.contains("_wall")) {
-                e.setValue(toBase);
-            }
-        }
-    }
-
-    // ================================================================== acabado: plantas, enredaderas, musgo
-
-    private static void finishing(StructBp b) {
-        // árboles grandes alrededor y atrás
-        int[][] trees = {{-27, 6}, {26, 5}, {-28, 14}, {27, 15}, {-20, 86}, {18, 87}, {-6, 90}, {8, 91}, {-34, 50}, {34, 55}, {-33, 30}, {33, 28}};
-        for (int[] t : trees) {
-            bigTree(b, t[0], t[1], 16 + b.r.nextInt(5), "dark_oak_log", CROWN, 7);
-        }
-        // césped y flores en el suelo de la plaza
-        groundCover(b, -12, 0, 12, 12, 0 - 1, 0.05, "grass", "fern", "poppy");
-        // plantas en las terrazas
-        groundCover(b, -29, 23, 29, 79, 9, 0.07, "grass", "fern", "moss_carpet", "azalea", "flowering_azalea");
-        groundCover(b, -21, 35, 21, 73, 19, 0.07, "grass", "fern", "moss_carpet", "azalea", "flowering_azalea");
-        // desgaste en manchas
-        weather(b, 11, "stone_brick", "mossy_stone_brick", 5.5, 0.50);
-        weather(b, 23, "stone_bricks", "cracked_stone_bricks", 3.0, 0.70);
-        weather(b, 5, "cobblestone", "mossy_cobblestone", 4.0, 0.4);
-        hangVines(b, "stone_brick", 3, 0.07, 4);
-        // enredaderas pegadas a las paredes exteriores
-        for (int i = 0; i < 70; i++) {
-            int side = b.r.nextInt(4);
-            int yTop = 5 + b.r.nextInt(5);
-            int len = 3 + b.r.nextInt(6);
-            int a = side < 2 ? -29 + b.r.nextInt(59) : 23 + b.r.nextInt(56);
-            for (int j = 0; j < len; j++) {
-                int y = yTop - j;
-                if (y < 0) {
-                    break;
-                }
-                switch (side) {
-                    case 0 -> b.setIfAbsent(a, y, 21, "vine[south=true]");
-                    case 1 -> b.setIfAbsent(a, y, 81, "vine[north=true]");
-                    case 2 -> b.setIfAbsent(-31, y, a, "vine[east=true]");
-                    default -> b.setIfAbsent(31, y, a, "vine[west=true]");
-                }
-            }
-        }
+        mob(b, -6, 0, CZ - 24, "brote");
+        mob(b, 6, 0, CZ - 22, "brote");
+        mob(b, -4, 0, CZ - 2, "brote");
+        mob(b, 7, 0, CZ + 1, "brote");
+        mob(b, 0, 0, CZ + 8, "espinoso");
+        mob(b, 2, L1, CZ - 2, "espinoso");
+        mob(b, -2, L1, CZ + 2, "brote");
+        mob(b, 2, L2, CZ - 2, "espinoso");
+        mob(b, -1, L2, CZ - 1, "espinoso");
+        mob(b, 2, L3, CZ - 2, "espinoso");
+        mob(b, -1, L3, CZ - 2, "brote");
+        mob(b, 2, COPA, CZ - 3, "raizal");
     }
 }
