@@ -103,8 +103,10 @@ public final class ArmaAnim implements IClientItemExtensions {
         }
         float t = fijo >= 0.0F ? fijo : swingProcess;
         int i = arm == HumanoidArm.RIGHT ? 1 : -1;
-        // la misma posición de reposo que Minecraft (con la bajada al cambiar de objeto o mientras se recarga el golpe)
-        pose.translate(i * 0.56F, -0.52F + equipProcess * -0.6F, -0.72F);
+        // la misma posición de reposo que Minecraft (con la bajada al cambiar de objeto o mientras se recarga el golpe); durante el
+        // golpe casi no baja, para que se vea entero aunque el arma sea lenta
+        float baja = equipProcess * (1.0F - 0.85F * Mth.sin(t * (float) Math.PI));
+        pose.translate(i * 0.56F, -0.52F + baja * -0.6F, -0.72F);
         float[] k = pose(a.tipo, t);
         pose.translate(i * k[0], k[1], k[2]);
         pose.mulPose(Axis.YP.rotationDegrees(i * k[3]));
