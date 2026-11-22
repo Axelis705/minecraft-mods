@@ -237,8 +237,23 @@ public final class LetrasHud {
         int color, sombra;
     }
 
-    /** Hacia dónde miraba al empezar cada línea (para que el arco de palabras se quede quieto en el mundo). */
-    private static final Map<String, float[]> ARCO = new HashMap<>();
+    /** Hacia dónde mira el arco de cada fuente {grados, último cuadro en ns}: sigue a la cámara con suavidad. */
+    private static final Map<String, double[]> CENTRO = new HashMap<>();
+
+    /** Mueve el centro del arco hacia {@code objetivo} (grados) sin saltos: tarda ~0.4 s en alcanzarlo. */
+    private static double centro(String clave, double objetivo) {
+        long now = System.nanoTime();
+        double[] c = CENTRO.get(clave);
+        if (c == null) {
+            CENTRO.put(clave, new double[]{objetivo, now});
+            return objetivo;
+        }
+        double dt = Math.min(0.25, (now - c[1]) / 1e9);
+        c[1] = now;
+        double k = 1.0 - Math.exp(-dt / 0.4);
+        c[0] += Mth.wrapDegrees(objetivo - c[0]) * k;
+        return c[0];
+    }
 
     public static void render(G g, int sw, int sh) {
         Minecraft mc = Minecraft.getInstance();
@@ -249,7 +264,7 @@ public final class LetrasHud {
         }
         List<Fuente> fs = fuentes(mc);
         if (fs.isEmpty()) {
-            ARCO.clear();
+            CENTRO.clear();
             return;
         }
         vista(mc, sw, sh);
@@ -291,8 +306,20 @@ public final class LetrasHud {
         if (i < 0) {
             return;
         }
+        Font font = mc.font;
         boolean primera = f.mia && f.fijo == null && f.entity == mc.player && mc.options.getCameraType().isFirstPerson();
         float lejos = f.mia ? 1F : (float) Mth.clamp((f.oir - dist) / 6.0, 0.0, 1.0);
+        // el arco mira hacia la cámara (en primera persona, hacia donde miras) y la sigue despacio
+        double objetivo;
+        if (primera) {
+            objetivo = mc.player.getViewYRot(pt);
+        } else {
+            objetivo = Math.toDegrees(Math.atan2(-(cam.x - ancla.x), cam.z - ancla.z));
+        }
+        double centro = centro(f.clave + (primera ? ":1p" : ":3p"), objetivo);
+        double r = primera ? 2.5 : f.fijo != null ? 1.7 : 1.9;
+        float alto3d = primera ? 0.23F : 0.27F;               // alto de la letra en bloques
+        double h0 = primera ? mc.player.getEyeHeight() + 0.3 : f.fijo != null ? 0.75 : (f.entity != null ? f.entity.getBbHeight() + 0.3 : 2.1);
         for (int k = Math.max(0, i - 1); k <= i; k++) {
             double fin = l.fin(k, MAX_LINEA);
             float salida = (float) Mth.clamp(1.0 - (t - fin) / 0.9, 0.0, 1.0);
@@ -302,32 +329,28 @@ public final class LetrasHud {
             Letra.Linea ln = l.lineas.get(k);
             double[] ts = l.tiempos(k, MAX_LINEA);
             int n = ln.palabras.length;
-            float[] arco = null;
-            if (primera) {
-                arco = ARCO.computeIfAbsent(f.clave + ":" + k, key -> new float[]{mc.player.getYRot()});
-            }
+            // ancho de cada palabra en el arco (en grados), para que no se pisen
+            double[] ancho = new double[n];
+            double total = 0, hueco = Math.toDegrees(alto3d * 0.45 / r);
             for (int j = 0; j < n; j++) {
+                ancho[j] = Math.toDegrees(font.width(ln.palabras[j]) / 9.0 * alto3d / r);
+                total += ancho[j] + (j > 0 ? hueco : 0);
+            }
+            double acc = -total / 2;
+            for (int j = 0; j < n; j++) {
+                double mitad = acc + ancho[j] / 2;
+                acc += ancho[j] + hueco;
                 double edad = t - ts[j];
                 if (edad < -0.02) {
                     continue;
                 }
-                Vec3 p;
-                double sube = Math.min(0.55, Math.max(0, edad) * 0.12);
-                if (primera) {
-                    float span = Math.min(150F, 40F + n * 13F);
-                    float yaw = arco[0] - span / 2F + span * (j + 0.5F) / n;
-                    double rad = Math.toRadians(yaw);
-                    double r = 2.4;
-                    double h = mc.player.getEyeHeight() - 0.12 + 0.16 * Math.sin(j * 1.3 + k) + sube;
-                    p = ancla.add(-Math.sin(rad) * r, h, Math.cos(rad) * r);
-                } else {
-                    double base = k * 2.4 + (f.clave.hashCode() & 7);
-                    double ang = base + j * 0.52 + t * 0.22;
-                    double r = f.fijo != null ? 1.25 : 1.45;
-                    double h0 = f.fijo != null ? 0.55 : (f.entity != null ? f.entity.getBbHeight() * 0.85 : 1.5);
-                    double h = h0 + 0.2 * Math.sin(j * 1.7 + k) + sube;
-                    p = ancla.add(Math.cos(ang) * r, h, Math.sin(ang) * r);
-                }
+                // sube despacio mientras dura su línea y se va hacia arriba rápido al terminar
+                double sube = Math.min(0.35, Math.max(0, edad) * 0.07) + Math.max(0, t - fin) * 0.9;
+                double ola = 0.07 * Math.sin(j * 1.9 + k);
+                // en primera persona el ángulo crece hacia la derecha; visto desde fuera, hacia la izquierda
+                double yaw = primera ? centro + mitad : centro - mitad;
+                double rad = Math.toRadians(yaw);
+                Vec3 p = ancla.add(-Math.sin(rad) * r, h0 + ola + sube, Math.cos(rad) * r);
                 float[] s = proyectar(p);
                 if (s == null) {
                     continue;
@@ -335,13 +358,13 @@ public final class LetrasHud {
                 boolean cantando = edad >= 0 && (j + 1 >= n || t < ts[j + 1]) && t < fin;
                 float pop = (float) Mth.clamp(edad / 0.2, 0, 1);
                 float salto = pop < 1 ? 0.45F + 0.55F * backOut(pop) : 1F;
-                float alto = (primera ? 0.24F : 0.3F) * focal / s[2];      // altura de la letra en la pantalla
+                float altoPx = alto3d * focal / s[2];
                 Pal w = new Pal();
                 w.txt = ln.palabras[j];
                 w.x = s[0];
                 w.y = s[1];
                 w.z = s[2];
-                w.scale = Mth.clamp(alto / 9F, 0.3F, 3.2F) * salto * (cantando ? 1.18F : 1F);
+                w.scale = Mth.clamp(altoPx / 9F, 0.3F, 3.2F) * salto * (cantando ? 1.1F : 1F);
                 w.alpha = Mth.clamp(pop * 1.6F, 0F, 1F) * salida * lejos;
                 int hue = f.hue + j * 17 + k * 40;
                 w.color = cantando ? 0xFFFFFFFF : D.hsv(hue, 0.5F, 1F);
@@ -350,17 +373,6 @@ public final class LetrasHud {
                     out.add(w);
                 }
             }
-        }
-        // olvidar los arcos de líneas viejas
-        if (primera && ARCO.size() > 6) {
-            ARCO.keySet().removeIf(key -> {
-                int c = key.lastIndexOf(':');
-                try {
-                    return key.startsWith(f.clave + ":") && Integer.parseInt(key.substring(c + 1)) < i - 1;
-                } catch (NumberFormatException e) {
-                    return true;
-                }
-            });
         }
     }
 
