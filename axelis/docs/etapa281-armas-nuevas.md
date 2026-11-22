@@ -110,4 +110,18 @@ Axelis vio la hoja de muestra («me gustan las nuevas armas») y pidió animaci�
 | Prueba | Qué comprueba |
 |---|---|
 | `mundos prueba armas` | las 40 armas: daño, velocidad, alcance, barrido y gemas; cada caja da sus 5 armas y ninguna espada vieja; el orden de rarezas; contraataque, barrido, quiebra armaduras, aturdir y onda, carga y atravesar, puñalada; veneno, fuego, escarcha, vacío, vampiro y sangrado; matar da almas; la especial gasta sus almas, se enfría y no sale sin almas; Tajo, Torbellino, Terremoto (con aturdimiento), Embestida y Paso sombrío hieren |
-| Prueba con el cliente | las 5 armas en la mano (primera persona), martillo y lanza en tercera persona, las 40 en un cofre, el Tajo creciente y el Terremoto con clic derecho sobre muñecos |
+| Prueba con el cliente | las 5 armas en la mano (primera persona), martillo y lanza en tercera persona, las 40 en un cofre, el Tajo creciente y el Terremoto con clic derecho sobre muñecos, y cada arma en el momento del golpe (y el martillo arriba) |
+
+**Resultado final de la prueba con el cliente**: 244 comprobaciones y 0 fallos.
+
+**Arreglos tras ver las fotos**:
+
+- Primera versión de los golpes: en el punto del golpe, el arma se salía de la pantalla.
+- Segunda versión: el arma se veía de canto y lejos.
+- Solución:
+  - Los golpes se calculan como el de Minecraft: se baja el arma en un marco girado, así sale en diagonal.
+  - Las posiciones se eligieron con una simulación de la cámara en primera persona (`axelis/herramientas/armas281_golpes.py`): el arma queda cerca, de cara y dentro de la pantalla en todo el golpe.
+  - Las armas lentas casi no bajan mientras golpean; después sí bajan mientras se recarga el golpe, como en Minecraft.
+- En la prueba del servidor, el veneno no afectaba a los zombis de prueba: los no-muertos no se envenenan. Por eso el veneno ahora pega un 10 % más a quien no le afecta.
+
+**Instalado**: el jar se puso en la instancia «test» de Axelis el 22 de noviembre, con el juego cerrado (comprobado por la fecha de latest.log).
