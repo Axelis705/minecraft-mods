@@ -1,0 +1,10 @@
+{
+ "variants": {
+  "cargado=true": {
+   "model": "mundos_de_axelis:block/altar_maldito"
+  },
+  "cargado=false": {
+   "model": "mundos_de_axelis:block/altar_maldito_apagado"
+  }
+ }
+}
