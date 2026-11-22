@@ -64,4 +64,13 @@ Viene de los santuarios malditos de Diablo y de las cámaras de desafío.
 | `ConectividadTest` (sin el juego) | las estructuras siguen bien con los altares |
 | Prueba con el cliente | 228 comprobaciones y 0 fallos: el altar cargado, la primera oleada con la barra, la oleada 3 con su élite y el botín al final con el altar apagado |
 
-**Instalado**: el jar se puso en la instancia «test» de Axelis el 21 de noviembre, con el juego cerrado.
+## Arreglo: barras de jefe pegadas
+
+En las fotos de la prueba se vio que la barra de la Gran Salamandra se quedaba en pantalla mucho después de salir del volcán.
+Pasaba si uno se iba de golpe (piedra de regreso, perla, /tp): la salamandra solo quitaba su barra mientras ella se movía, y
+lejos ya no se mueve.
+
+- **Arreglo**: `BarrasLejanas` revisa cada segundo las barras de la Gran Salamandra y del Altar Maldito. A más de 32 bloques, o en otra dimensión, la quita; si el dueño ya no existe, la borra.
+- **Prueba**: `mundos prueba altar` lo comprueba con una barra de prueba, y en las fotos nuevas ya no aparece.
+
+**Instalado**: el jar se puso en la instancia «test» de Axelis el 21 de noviembre, con el juego cerrado (comprobado por la fecha de latest.log).
