@@ -11,7 +11,7 @@ Mod nuevo de Axelis (`coleccionista/` en el repo, mod id `coleccionista`) para u
 - **Sin errores**: bots de prueba y pruebas automáticas (servidor y cliente con fotos). Más adelante: un launcher.
 
 ## Orden del evento (≈2 h 30 min) — las 7 pruebas están hechas
-0. **El despertar** (Ala de celdas): sala de espera a oscuras → ¡pum! → cinemática → 10 min para investigar → discurso en la tele (R acerca la cámara) → candados.
+0. **El despertar** (Ala de celdas): sala de espera a oscuras (chat cerrado) → ¡pum! → cinemática → 10 min de espera en la celda, sin pistas → **apagón** y, al volver la luz, los 3 números escondidos en cada celda → discurso en la tele (R acerca la cámara) → candados.
 1. **Encadenados** (las Cloacas) — parejas encadenadas, la llave en el barril del otro, gas detrás, cupo en el Refugio.
 2. **El traidor** (el Archivo) — cada sala abre su bóveda con un código repartido en notas; uno tiene notas falsas.
 3. **Compartir o robar** (el Salón) — parejas frente a frente, eligen en secreto.
@@ -43,6 +43,14 @@ Tríos al azar (si sobran, tríos de cuatro), cada uno en su carril de la **Gale
 2. **El recorrido:** se abren las rejas y van **encadenados en fila** (cadena de 4 bloques). La cadena **se atora en los postes** si cada quien pasa por un lado y hay que regresar para soltarla. Obstáculos: bosque de postes, zigzag de un bloque, túnel bajo (agachados) y una reja que se abre con **dos palancas a la vez**, lejos una de la otra (las esposas no pueden jalar).
 3. **El último trío en salir pierde** (el trío completo, o uno al azar con `/evento tres pierde uno`).
 Comandos: `/evento tres preparar|empezar [ya]|arrancar|tiempo <elegir> <recorrido>|largo N|pierde trio|uno|terminar`. Panel: pestaña Pruebas, "★ Encadenados de tres".
+
+## El despertar: pistas, candado y reglas del mapa
+- **Pistas escondidas:** cada celda tiene su propio código de 3 números (nunca se repite entre celdas). Los tres están **escondidos en la celda**, escritos o rayados sobre las cosas, uno de cada zona: la cama (costado del colchón, encima del colchón, el piso debajo del catre o el techo de arriba), el baño (espejo con plumón rojo, la pared debajo del lavabo o el tanque del retrete) y las paredes (abajo junto a los barrotes, abajo en el fondo, la viga de arriba de la reja o la tapa del baúl). Cada uno dice su lugar: `7 _ _`, `_ 3 _`, `_ _ 9`. Solo se leen de cerca.
+- **Nada antes de tiempo:** durante la sala de espera y los 10 minutos del despertar no hay ni números ni notas; el baúl está vacío. Al acabar el reloj (o con el botón *Discurso*) hay un **apagón** de 3 segundos y, cuando vuelve la luz, ya están los números y una hoja de diario en el baúl.
+- **Candado de combinación:** cuelga de los barrotes junto a la puerta. Al usarlo la cámara se acerca y **la mano del jugador es el mouse**: se arrastra una rueda hacia arriba para subir el número y hacia abajo para bajarlo (también la ruedita del mouse, o flechas/números); el botón rojo prueba. Foquito verde si abre, rojo si no. Los demás ven el brazo del jugador moverse y oyen los clics. Esc regresa.
+- **Chat:** `/evento chat cerrar|abrir` (o el botón del panel): con el chat cerrado solo escriben el host, los organizadores y los operadores (tampoco /msg, /me, /say). La voz no se toca.
+- **El mapa se cuida solo:** dentro del complejo no aparece ningún bicho que no ponga el evento (murciélagos, zombis, patrullas...), y en supervivencia nadie rompe ni pone bloques. El barandal de las pasarelas choca como cerca (no se puede subir para caer).
+- **El catre** no sirve para dormir (el evento acuesta a las piezas en la sala de espera y las levanta).
 
 ## Estilo del complejo (bloques propios)
 Todo el complejo se está pasando a **bloques nuevos del mod** (nada de bloques de Minecraft): una vieja institución abandonada, mitad prisión y mitad manicomio, con las salas del Coleccionista elegantes pero podridas. Texturas de 32×32, sucias y oxidadas, hechas por código (`herramientas/deco/`: `materiales.py` para los bloques enteros, `props_celdas.py` y `props_complejo.py` para muebles 3D, `build.py` lo genera todo y el mod lo registra desde `data/coleccionista/deco.json`). Ya son **115 bloques propios**; `mapa/Estilo.java` cambia lo que quede de Minecraft en una zona y `herramientas/Volcar.java` avisa si queda algo (hoy: "todo con bloques nuevos" en las 9 zonas; solo quedan el agua y la luz invisible).
