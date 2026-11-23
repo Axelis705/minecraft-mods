@@ -67,6 +67,8 @@ public final class Despertar {
         g.getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS).set(false, s);
         g.getRule(GameRules.RULE_PLAYERS_SLEEPING_PERCENTAGE).set(101, s);
         g.getRule(GameRules.RULE_DO_IMMEDIATE_RESPAWN).set(true, s);
+        // sin coordenadas en F3: en los laberintos y las cloacas nadie se orienta con números
+        g.getRule(GameRules.RULE_REDUCEDDEBUGINFO).set(true, s);
         s.overworld().setDayTime(18000);
         Celdas.luces(s, false);
         Celdas.puertas(s, 0, false);
