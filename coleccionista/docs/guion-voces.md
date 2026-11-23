@@ -16,14 +16,14 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 4 | `bienvenida_durmieron.ogg` | 4.6 s | Veo que ya despertaron. ¿Durmieron bien? |
 | 5 | `bienvenida_acerquense.ogg` | 7.0 s | No sean tímidos. Acérquense… (pulsen R para ver la pantalla de cerca) |
 | 6 | `bienvenida_presento.ogg` | 6.0 s | Permítanme presentarme. Soy… el Coleccionista. |
-| 7 | `bienvenida_coleccion.ogg` | 4.2 s | Y ustedes… son mi nueva colección. |
-| 8 | `bienvenida_pruebas.ogg` | 8.9 s | Esta noche van a jugar. Varias pruebas, una tras otra. |
-| 9 | `bienvenida_solo_uno.ogg` | 5.4 s | Y al final… solo uno saldrá de aquí. |
-| 10 | `bienvenida_los_demas.ogg` | 10.4 s | Los demás se quedan conmigo. Para siempre. |
+| 7 | `bienvenida_coleccion.ogg` | 4.5 s | Y ustedes son… mi nueva colección. |
+| 8 | `bienvenida_pruebas.ogg` | 6.1 s | Esta noche se enfrentarán a varias pruebas, una tras otra. |
+| 9 | `bienvenida_solo_uno.ogg` | 4.9 s | Y al final… solo uno podrá salir. |
+| 10 | `bienvenida_los_demas.ogg` | 5.0 s | Los demás… se quedan conmigo para siempre. |
 | 11 | `bienvenida_risa.ogg` | 3.5 s | Je, je, je… ¡Ja, ja, ja! |
-| 12 | `bienvenida_candado.ogg` | 5.8 s | Primero, salgan de su celda. El candado tiene tres números. |
-| 13 | `bienvenida_escondidos.ogg` | 5.2 s | Los tres están escondidos ahí adentro, con ustedes. |
-| 14 | `bienvenida_vitrina.ogg` | 4.2 s | Busquen bien. La vitrina está abierta. |
+| 12 | `bienvenida_candado.ogg` | 9.8 s | Primero necesitan salir de su celda. El candado tiene tres números… y los tres números están escondidos. |
+| 13 | `bienvenida_escondidos.ogg` | 5.8 s | Si no puedes pasar de aquí… je… te deseo suerte. |
+| 14 | `bienvenida_final_risa.ogg` | 3.5 s | ¡Ja, ja, ja! |
 
 ## El despertar: cuando todas salen de sus celdas (pantalla grande)
 

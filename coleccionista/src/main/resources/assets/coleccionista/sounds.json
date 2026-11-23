@@ -41,6 +41,16 @@
       }
     ]
   },
+  "voz.bienvenida.candado": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.candado",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_candado",
+        "stream": true
+      }
+    ]
+  },
   "voz.bienvenida.coleccion": {
     "category": "voice",
     "subtitle": "coleccionista.voz.bienvenida.coleccion",
@@ -57,6 +67,16 @@
     "sounds": [
       {
         "name": "coleccionista:voz/bienvenida_durmieron",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.escondidos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.escondidos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_escondidos",
         "stream": true
       }
     ]
