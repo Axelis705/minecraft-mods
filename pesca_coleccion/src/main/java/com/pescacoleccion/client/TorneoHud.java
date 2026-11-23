@@ -13,7 +13,10 @@ import net.minecraft.network.chat.Component;
 
 import java.util.UUID;
 
-/** (Cliente) El marcador del torneo arriba al centro: modo, tiempo que queda, los 3 primeros y tu lugar. */
+/**
+ * (Cliente) El marcador del torneo arriba a la izquierda (arriba al centro va la barra de los jefes y a la derecha los avisos de "¡Lo
+ * sacaste!", que lo tapaban): modo, tiempo que queda, los 3 primeros y tu lugar.
+ */
 public final class TorneoHud {
     private static final String MOD = PescaColeccion.MODID;
     private static long recibido;
@@ -54,7 +57,7 @@ public final class TorneoHud {
         }
         boolean extra = mio >= 3;
         int pw = Math.max(Ui.font().width(titulo) + 16, 150), ph = 16 + (filas + (extra ? 1 : 0)) * 11 + (filas == 0 ? 11 : 0);
-        int x = (w - pw) / 2, y = 4;
+        int x = 4, y = 4;
         g.fill(x, y, x + pw, y + ph, 0xC0101820);
         g.fill(x, y, x + pw, y + 1, 0xFF6FB7FF);
         g.drawString(Ui.font(), titulo, x + (pw - Ui.font().width(titulo)) / 2, y + 4, s <= 10 ? 0xFFFF7A6A : 0xFFE8F4FF, true);

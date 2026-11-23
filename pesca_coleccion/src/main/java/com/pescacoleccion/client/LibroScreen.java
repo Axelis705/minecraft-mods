@@ -76,6 +76,17 @@ public class LibroScreen extends UiScreen {
         return null;
     }
 
+    /** Para las pruebas: baja la lista de la pestaña abierta hasta el final y da el centro de su última fila. */
+    public int[] lastRow() {
+        for (var w : widgets) {
+            if (w instanceof ListView<?> lv) {
+                lv.scroll(lv.x + lv.w / 2.0, lv.y + lv.h / 2.0, -1000);
+                return new int[] {lv.x + lv.w / 2, lv.y + lv.h - lv.rowH / 2};
+            }
+        }
+        return null;
+    }
+
     private static CompoundTag datos() {
         return ClientData.player(MOD);
     }

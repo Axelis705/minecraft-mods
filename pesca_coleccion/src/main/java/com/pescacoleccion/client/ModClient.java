@@ -316,6 +316,12 @@ public final class ModClient {
                     com.axeliscore.ui.UiScreen.fakeMouse = l.rowCenter(5);
                 }
             });
+            // al final de Equipo: la sección de decoración y premios (placa, acuario y copas) con el cuadro de la copa
+            t.photo("libro_deco", 1200, () -> {
+                if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
+                    com.axeliscore.ui.UiScreen.fakeMouse = l.lastRow();
+                }
+            });
             t.photo("libro_records", 900, () -> {
                 com.axeliscore.ui.UiScreen.fakeMouse = null;
                 if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
