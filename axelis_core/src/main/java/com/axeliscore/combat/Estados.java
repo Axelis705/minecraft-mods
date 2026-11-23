@@ -64,7 +64,7 @@ public final class Estados {
             }));
     /** Más lento (20 % por nivel) y con escarcha. */
     public static final Estado CONGELADO = registrar(new Estado(AxelisCore.MODID, "congelado", 0x8FE3FF).icono(2).lento(0.2F).particula("snowflake")
-            .cada(1, (e, a) -> e.setTicksFrozen(Math.max(e.getTicksFrozen(), Math.min(139, 60 + 40 * a.nivel))))
+            .cada(1, (e, a) -> e.setTicksFrozen(Math.max(e.getTicksFrozen(), Math.min(125, 30 + 30 * a.nivel))))
             .alQuitar((e, a) -> e.setTicksFrozen(Math.min(e.getTicksFrozen(), 40))));
     /** Recibe 25 % más de daño por nivel. */
     public static final Estado MARCADO = registrar(new Estado(AxelisCore.MODID, "marcado", 0xFF5AA0).icono(3).recibeMas(0.25F).particula("spark"));

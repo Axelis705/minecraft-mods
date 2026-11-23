@@ -85,7 +85,7 @@ public final class CoreScenario {
         // avisos (sin daño, lentos)
         t.add("combate: avisos", 1500, () -> {
             t.cmd(aqui + "axeliscore combate avisos");
-            t.lookFrom(0.5, G + 6, -5.5, 0.5, G, 6.5);
+            t.lookFrom(0.5, G + 7, -1.5, 0.5, G, 7.0);
         });
         t.add("avisos en el cliente", 100, () -> t.check(cerca(com.axeliscore.combat.Aviso.class).size() == 5, "se ven los cinco avisos"));
         t.photo("17_avisos", 200, () -> {
@@ -105,7 +105,7 @@ public final class CoreScenario {
         // el Coloso por fases
         t.add("combate: jefe", 2200, () -> {
             t.cmd(aqui + "axeliscore combate jefe");
-            t.lookFrom(0.5, G + 1, -4.5, 0.5, G + 1.8, 7.5);
+            t.lookFrom(2.5, G + 1, 1.0, 0.5, G + 2.0, 7.5);
         });
         t.add("música de la fase 1", 100, () -> t.check("axelis_core:musica.coloso_1".equals(com.axeliscore.combat.client.MusicaJefe.actual()),
                 "suena la música de la fase 1 del Coloso"));
@@ -113,11 +113,11 @@ public final class CoreScenario {
         });
         t.photo("19_jefe_martillazo", 750, () -> {
             t.cmd("execute as @p run axeliscore combate ataque martillazo");
-            t.lookFrom(0.5, G + 4, -3.5, 0.5, G, 7.5);
+            t.lookFrom(2.5, G + 5, -1.5, 0.5, G, 7.5);
         });
         t.add("fase 2", 1000, () -> {
             t.cmd("axeliscore combate fase 1");
-            t.lookFrom(0.5, G + 1, -4.5, 0.5, G + 1.8, 7.5);
+            t.lookFrom(2.5, G + 1, 1.0, 0.5, G + 2.0, 7.5);
         });
         t.add("fase 2 en el cliente", 100, () -> {
             var j = jefe();
@@ -134,7 +134,7 @@ public final class CoreScenario {
         });
         t.photo("19_jefe_fragmentos", 900, () -> {
             t.cmd("execute as @p run axeliscore combate ataque fragmentos");
-            t.lookFrom(0.5, G + 1, -4.5, 0.5, G + 1.8, 7.5);
+            t.lookFrom(2.5, G + 1, 1.0, 0.5, G + 2.0, 7.5);
         });
         t.add("fase 3", 1000, () -> t.cmd("axeliscore combate fase 2"));
         t.photo("19_jefe_fase3_titulo", 100, () -> {
@@ -149,7 +149,7 @@ public final class CoreScenario {
         });
         t.photo("19_jefe_escarcha", 1300, () -> {
             t.cmd("execute as @p run axeliscore combate ataque escarcha");
-            t.lookFrom(0.5, G + 1, -4.5, 0.5, G + 2.5, 7.5);
+            t.lookFrom(2.5, G + 1, 1.0, 0.5, G + 2.6, 7.5);
         });
         t.add("limpiar jefe", 600, () -> {
             t.cmd("kill @e[type=!player]");
