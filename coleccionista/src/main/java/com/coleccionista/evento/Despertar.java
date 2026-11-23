@@ -96,7 +96,7 @@ public final class Despertar {
         }
         Pieza x = ev.pieza(p);
         if (x == null) {
-            if (Plat.isOp(p) || ev.esOrganizador(p.getUUID())) {
+            if (Plat.isOp(p) || Plat.isHost(p) || ev.esOrganizador(p.getUUID())) {
                 return;
             }
             x = ev.inscribir(s, p.getUUID(), p.getGameProfile().getName(), false);

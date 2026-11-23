@@ -109,6 +109,14 @@ public final class Comandos {
                         })))
                 .then(Commands.literal("bots").then(Commands.argument("cantidad", IntegerArgumentType.integer(1, 30))
                         .executes(c -> bots(c, IntegerArgumentType.getInteger(c, "cantidad")))))
+                // ---- el disfraz del Coleccionista
+                .then(Commands.literal("disfraz")
+                        .then(Commands.literal("si").executes(c -> disfraz(c, null, true))
+                                .then(Commands.argument("jugadores", EntityArgument.players()).executes(c -> disfraz(c,
+                                        EntityArgument.getPlayers(c, "jugadores"), true))))
+                        .then(Commands.literal("no").executes(c -> disfraz(c, null, false))
+                                .then(Commands.argument("jugadores", EntityArgument.players()).executes(c -> disfraz(c,
+                                        EntityArgument.getPlayers(c, "jugadores"), false)))))
                 // ---- el mapa y el despertar
                 .then(Commands.literal("construir").executes(Comandos::construir))
                 .then(Commands.literal("sala").executes(c -> {
@@ -120,7 +128,7 @@ public final class Comandos {
                 }))
                 .then(Commands.literal("despertar").executes(c -> Despertar.despertar(c.getSource().getServer())
                         ? ok(c, Component.translatable(MOD + ".cmd.despertar")) : error(c, Component.translatable(MOD + ".cmd.no_sala"))))
-                .then(Commands.literal("investigar").then(Commands.argument("segundos", IntegerArgumentType.integer(10, 3600)).executes(c -> {
+                .then(Commands.literal("investigar").then(Commands.argument("segundos", IntegerArgumentType.integer(3, 3600)).executes(c -> {
                     Despertar.segundosInvestigar = IntegerArgumentType.getInteger(c, "segundos");
                     return ok(c, Component.translatable(MOD + ".cmd.investigar", Despertar.segundosInvestigar));
                 })))
@@ -305,6 +313,18 @@ public final class Comandos {
         Complejo.construir(l, o, () -> src.sendSuccess(() -> Component.translatable(MOD + ".cmd.construido", o.getX(), o.getY(), o.getZ()),
                 true));
         return ok(c, Component.translatable(MOD + ".cmd.construyendo", 0));
+    }
+
+    private static int disfraz(CommandContext<CommandSourceStack> c, Collection<ServerPlayer> ps, boolean si) throws CommandSyntaxException {
+        MinecraftServer s = c.getSource().getServer();
+        Collection<ServerPlayer> lista = ps != null ? ps : java.util.List.of(c.getSource().getPlayerOrException());
+        for (ServerPlayer p : lista) {
+            Evento.get(s).disfraz(s, p.getUUID(), si);
+            if (si && p.isSpectator()) {
+                p.setGameMode(net.minecraft.world.level.GameType.CREATIVE);
+            }
+        }
+        return ok(c, Component.translatable(MOD + (si ? ".cmd.disfraz_si" : ".cmd.disfraz_no")));
     }
 
     private static int pantalla(CommandContext<CommandSourceStack> c, String modo, String texto) {

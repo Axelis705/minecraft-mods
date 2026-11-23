@@ -23,6 +23,11 @@ public final class ModClient {
     }
 
     @SubscribeEvent
+    public static void onLayers(EntityRenderersEvent.AddLayers e) {
+        DisfrazRender.capas(e);
+    }
+
+    @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent e) {
         EventoCliente.init();
         EventoHud.init();
@@ -32,6 +37,7 @@ public final class ModClient {
         Cine.init();
         Espera.init();
         Filtro.init();
+        DisfrazRender.init();
         com.axeliscore.ui.ScreenRegistry.register(Coleccionista.MODID + ":candado", CandadoScreen::new);
         // prueba con fotos: cliente-core.yml con mod=coleccionista y escenario=coleccionista
         ClientTest.scenario(Coleccionista.MODID, PruebaCliente::escenario);

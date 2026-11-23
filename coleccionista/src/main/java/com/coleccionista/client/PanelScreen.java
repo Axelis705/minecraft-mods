@@ -217,6 +217,15 @@ public class PanelScreen extends UiScreen {
             }
             init();
         })).help(Component.translatable(MOD + ".panel.reiniciar_ayuda"));
+        // el guion del inicio: sala de espera → ¡pum! → discurso → abrir celdas; y aparecer como el Coleccionista
+        y += 36;
+        String[][] guion = {{"sala", "g_sala"}, {"despertar", "g_despertar"}, {"discurso", "g_discurso"}, {"abrir_celdas", "g_abrir"},
+                {"disfraz", "g_disfraz"}};
+        for (int i = 0; i < guion.length; i++) {
+            String op = guion[i][0];
+            add(new Button(x + (bw + 6) * i, y, bw, 16, tr(guion[i][1]), () -> pedir(op, null)))
+                    .help(Component.translatable(MOD + ".panel." + guion[i][1] + "_ayuda"));
+        }
     }
 
     // ------------------------------------------------------------------ cámaras
@@ -338,9 +347,10 @@ public class PanelScreen extends UiScreen {
             int r = EventoCliente.resta();
             g.drawString(f, tr("sec_reloj") + (r >= 0 ? "  " + String.format("%d:%02d", r / 60, r % 60) : ""), x, py + 90, theme.accent, false);
             g.drawString(f, tr("sec_control"), x, py + 126, theme.accent, false);
+            g.drawString(f, tr("sec_guion"), x, py + 162, theme.accent, false);
             String pr = EventoCliente.prueba();
             Ui.text(g, Component.translatable(MOD + ".panel.estado", EventoCliente.fase(), pr.isEmpty() ? "-" : pr, EventoCliente.vivos(),
-                    EventoCliente.total()).getString(), x, py + 172, pw - 32, theme.textDim, 10);
+                    EventoCliente.total()).getString(), x, py + ph - 22, pw - 32, theme.textDim, 10);
         } else {
             int x = px + 194;
             Ui.text(g, Component.translatable(MOD + ".panel.camara_nota").getString(), x, py + ph - 52, pw - 206, theme.textDim, 10);

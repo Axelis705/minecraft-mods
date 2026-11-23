@@ -166,5 +166,18 @@
   "coleccionista.cmd.construyendo": "Building the Cell Wing: %s%%",
   "coleccionista.cmd.construido": "Cell Wing built (origin %s %s %s). Next: /evento sala",
   "coleccionista.cine.pulsa": "Get closer to the screen",
-  "coleccionista.cine.salir": "R or move: go back"
+  "coleccionista.cine.salir": "R or move: go back",
+  "coleccionista.panel.sec_guion": "Opening script",
+  "coleccionista.panel.g_sala": "Waiting room",
+  "coleccionista.panel.g_sala_ayuda": "Everyone to their cell, in bed, in the dark, unable to touch anything.",
+  "coleccionista.panel.g_despertar": "Boom!",
+  "coleccionista.panel.g_despertar_ayuda": "Lights on and everyone wakes up with their cinematic (then 10 minutes to investigate).",
+  "coleccionista.panel.g_discurso": "Speech",
+  "coleccionista.panel.g_discurso_ayuda": "Screens turn on and the Collector speaks now (without waiting for the clock).",
+  "coleccionista.panel.g_abrir": "Open cells",
+  "coleccionista.panel.g_abrir_ayuda": "Opens every door even without the code.",
+  "coleccionista.panel.g_disfraz": "Collector",
+  "coleccionista.panel.g_disfraz_ayuda": "Put on (or take off) the Collector's costume to appear in front of everyone.",
+  "coleccionista.cmd.disfraz_si": "You are now The Collector.",
+  "coleccionista.cmd.disfraz_no": "You took off the costume."
 }

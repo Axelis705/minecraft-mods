@@ -166,5 +166,18 @@
   "coleccionista.cmd.construyendo": "Construyendo el Ala de celdas: %s%%",
   "coleccionista.cmd.construido": "Ala de celdas construida (origen %s %s %s). Siguiente: /evento sala",
   "coleccionista.cine.pulsa": "Acercarse a la pantalla",
-  "coleccionista.cine.salir": "R o moverte: volver"
+  "coleccionista.cine.salir": "R o moverte: volver",
+  "coleccionista.panel.sec_guion": "Guion del inicio",
+  "coleccionista.panel.g_sala": "Sala de espera",
+  "coleccionista.panel.g_sala_ayuda": "Todos a su celda, acostados, a oscuras y sin poder tocar nada.",
+  "coleccionista.panel.g_despertar": "¡Pum!",
+  "coleccionista.panel.g_despertar_ayuda": "Se prenden las luces y todos despiertan con su cinemática (luego tienen 10 minutos para investigar).",
+  "coleccionista.panel.g_discurso": "Discurso",
+  "coleccionista.panel.g_discurso_ayuda": "Se prenden las pantallas y habla el Coleccionista ya (sin esperar el reloj).",
+  "coleccionista.panel.g_abrir": "Abrir celdas",
+  "coleccionista.panel.g_abrir_ayuda": "Abre todas las puertas aunque no tengan el código.",
+  "coleccionista.panel.g_disfraz": "Coleccionista",
+  "coleccionista.panel.g_disfraz_ayuda": "Te pones (o te quitas) el disfraz del Coleccionista para aparecer frente a todos.",
+  "coleccionista.cmd.disfraz_si": "Ahora eres El Coleccionista.",
+  "coleccionista.cmd.disfraz_no": "Te quitaste el disfraz."
 }

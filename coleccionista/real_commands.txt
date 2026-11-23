@@ -28,7 +28,7 @@ evento investigar 5
 evento sala
 #pausa 2
 evento despertar
-#pausa 42
+#pausa 46
 evento celdas abrir
 evento eliminar Bot_02
 evento cuerpos limpiar

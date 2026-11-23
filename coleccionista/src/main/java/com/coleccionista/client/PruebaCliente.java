@@ -146,7 +146,7 @@ final class PruebaCliente {
             t.check(!Cine.activo(), "terminó la cinemática");
         });
         // a los 22 segundos se prende la tele y habla el Coleccionista
-        t.photo("24_tele_habla", 15500, () -> {
+        t.photo("24_tele_habla", 17000, () -> {
         });
         t.add("habla", 100, () -> {
             var st = com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Pantallas.KEY);
@@ -172,5 +172,20 @@ final class PruebaCliente {
         });
         t.photo("29_pantalla_grande", 2000, () -> t.lookFrom(10.5, -57, 41.5, -7, -56, 41.5));
         t.photo("30_pasarela", 1500, () -> t.lookFrom(35.5, -54.4, 38, 0, -55, 38));
+        // Axelis aparece disfrazado del Coleccionista en el pasillo (visto de frente)
+        t.add("disfrazarme", 1500, () -> {
+            t.cmd("evento quitar " + yo());
+            t.cmd("evento disfraz si");
+        });
+        t.photo("31_disfraz", 1800, () -> {
+            t.lookFrom(14.5, -60, 41.5, 0, -58.4, 41.5);
+            Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
+        });
+        t.add("disfrazado", 100, () -> {
+            t.check(EventoCliente.disfrazado(Minecraft.getInstance().player.getUUID()), "estoy disfrazado del Coleccionista");
+            t.check(!Minecraft.getInstance().player.isSpectator(), "el disfraz me saca de espectador");
+            Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
+            t.cmd("evento disfraz no");
+        });
     }
 }

@@ -12,7 +12,7 @@ public final class Atajos {
     /** Tecla O: el panel del organizador (solo operadores u organizadores). */
     public static void panel() {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && (mc.player.hasPermissions(2) || EventoCliente.soyOrganizador())) {
+        if (mc.player != null && (mc.player.hasPermissions(2) || EventoCliente.soyOrganizador() || mc.hasSingleplayerServer())) {
             com.axeliscore.plat.client.Screens.open(new PanelScreen());
         }
     }
@@ -57,7 +57,7 @@ public final class Atajos {
     /** Tecla K: esconder o mostrar el HUD del evento (para grabar). */
     public static void hud() {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && (mc.player.hasPermissions(2) || EventoCliente.soyOrganizador())) {
+        if (mc.player != null && (mc.player.hasPermissions(2) || EventoCliente.soyOrganizador() || mc.hasSingleplayerServer())) {
             EventoHud.oculto = !EventoHud.oculto;
         }
     }

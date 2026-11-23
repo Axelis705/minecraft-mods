@@ -61,6 +61,8 @@ public final class Evento {
     int siguienteNumero = 1;
     /** Sala de espera: todos en su celda, acostados y con la pantalla en negro. */
     boolean sala;
+    /** Quién está disfrazado del Coleccionista (el organizador cuando aparece). */
+    final Set<UUID> disfraz = new LinkedHashSet<>();
 
     private Evento() {
     }
@@ -144,6 +146,17 @@ public final class Evento {
 
     public boolean esOrganizador(UUID id) {
         return organizadores.contains(id);
+    }
+
+    /** Pone o quita el disfraz del Coleccionista. */
+    public void disfraz(MinecraftServer s, UUID id, boolean si) {
+        if (si) {
+            disfraz.add(id);
+        } else {
+            disfraz.remove(id);
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_DISFRAZ {} {}", id, si);
+        cambio(s);
     }
 
     public boolean esFantasma(UUID id) {
@@ -434,6 +447,13 @@ public final class Evento {
         t.putInt("coleccionados", coleccionados);
         t.putInt("siguiente", siguienteNumero);
         t.putBoolean("sala", sala);
+        ListTag dz = new ListTag();
+        for (UUID id : disfraz) {
+            CompoundTag x = new CompoundTag();
+            x.putUUID("id", id);
+            dz.add(x);
+        }
+        t.put("disfraz", dz);
         ws.global().put("evento", t);
         ws.dirty();
     }
@@ -457,6 +477,9 @@ public final class Evento {
         coleccionados = Nbt.i(t, "coleccionados");
         siguienteNumero = Math.max(1, Nbt.i(t, "siguiente"));
         sala = t.getBoolean("sala");
+        for (Tag x : t.getList("disfraz", Tag.TAG_COMPOUND)) {
+            disfraz.add(((CompoundTag) x).getUUID("id"));
+        }
     }
 
     /** Lo que se manda a los clientes. */
@@ -486,6 +509,13 @@ public final class Evento {
             o.add(x);
         }
         t.put("organizadores", o);
+        ListTag dz = new ListTag();
+        for (UUID id : disfraz) {
+            CompoundTag x = new CompoundTag();
+            x.putUUID("id", id);
+            dz.add(x);
+        }
+        t.put("disfraz", dz);
         return t;
     }
 

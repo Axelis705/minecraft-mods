@@ -94,6 +94,19 @@ public final class Panel {
             }
             case "prueba" -> ev.prueba(s, Nbt.s(d, "nombre"));
             case "reiniciar" -> ev.reiniciar(s);
+            case "disfraz" -> {
+                boolean si = !ev.disfraz.contains(p.getUUID());
+                ev.disfraz(s, p.getUUID(), si);
+                p.setGameMode(si ? net.minecraft.world.level.GameType.CREATIVE : net.minecraft.world.level.GameType.SPECTATOR);
+            }
+            case "sala" -> {
+                if (Complejo.construido(s)) {
+                    Despertar.esperar(s);
+                }
+            }
+            case "despertar" -> Despertar.despertar(s);
+            case "discurso" -> Despertar.discurso(s);
+            case "abrir_celdas" -> Celdas.puertas(s, 0, true);
             case "toma_guardar" -> {
                 if (!Tomas.guardar(p, Nbt.s(d, "nombre"))) {
                     Plat.msg(p, Component.translatable(Coleccionista.MODID + ".panel.tomas_llenas", Tomas.MAX), true);

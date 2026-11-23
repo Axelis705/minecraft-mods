@@ -22,6 +22,7 @@ import java.util.UUID;
 public final class EventoCliente {
     private static final Map<UUID, CompoundTag> PIEZAS = new LinkedHashMap<>();
     private static final Set<UUID> ORGANIZADORES = new HashSet<>();
+    private static final Set<UUID> DISFRAZ = new HashSet<>();
     private static CompoundTag estado = new CompoundTag();
     private static long recibido;
 
@@ -43,6 +44,10 @@ public final class EventoCliente {
         ORGANIZADORES.clear();
         for (Tag x : t.getList("organizadores", Tag.TAG_COMPOUND)) {
             ORGANIZADORES.add(((CompoundTag) x).getUUID("id"));
+        }
+        DISFRAZ.clear();
+        for (Tag x : t.getList("disfraz", Tag.TAG_COMPOUND)) {
+            DISFRAZ.add(((CompoundTag) x).getUUID("id"));
         }
     }
 
@@ -102,6 +107,11 @@ public final class EventoCliente {
 
     public static boolean vivo(CompoundTag p) {
         return p != null && "VIVO".equals(Nbt.s(p, "rol"));
+    }
+
+    /** ¿Está disfrazado del Coleccionista? */
+    public static boolean disfrazado(UUID id) {
+        return DISFRAZ.contains(id);
     }
 
     public static boolean esFantasma(UUID id) {

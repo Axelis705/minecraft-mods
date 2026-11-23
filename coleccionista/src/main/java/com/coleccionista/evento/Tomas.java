@@ -30,9 +30,9 @@ public final class Tomas {
         });
     }
 
-    /** ¿Es operador u organizador? */
+    /** ¿Es operador, organizador o el dueño del mundo (en un jugador)? */
     public static boolean puede(ServerPlayer p) {
-        return Plat.isOp(p) || Evento.get(Plat.server(p)).esOrganizador(p.getUUID());
+        return Plat.isOp(p) || Plat.isHost(p) || Evento.get(Plat.server(p)).esOrganizador(p.getUUID());
     }
 
     static CompoundTag datos(MinecraftServer s) {
