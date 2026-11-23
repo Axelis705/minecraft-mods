@@ -6,6 +6,8 @@ mod="$1"; cd "$mod"
 mkdir -p run; echo "eula=true" > run/eula.txt
 # propiedades del servidor de prueba opcionales del mod (por ejemplo un mundo plano para probar estructuras)
 [ -f ci_server.properties ] && cp ci_server.properties run/server.properties
+# desde 1.21.2 el servidor se "pausa" a los 60 s sin jugadores (las entidades ya no se mueven): en las pruebas no
+mkdir -p run; grep -q "^pause-when-empty-seconds" run/server.properties 2>/dev/null || echo "pause-when-empty-seconds=0" >> run/server.properties
 log="$(mktemp)"; fifo="$(mktemp -u)"; mkfifo "$fifo"
 chmod +x gradlew
 # el fifo mantiene abierta la entrada del servidor; luego le mandamos "stop"

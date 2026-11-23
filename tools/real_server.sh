@@ -12,7 +12,7 @@ url="https://maven.minecraftforge.net/net/minecraftforge/forge/$mc-$forge/forge-
 curl -sSfL --retry 4 -o installer.jar "$url" || { echo "::error title=Servidor real $mc::no se pudo bajar $url"; exit 1; }
 java -jar installer.jar --installServer . > install.log 2>&1 || { tail -40 install.log; echo "::error title=Servidor real $mc::falló el instalador"; exit 1; }
 echo "eula=true" > eula.txt
-printf 'online-mode=false\nlevel-type=minecraft\\:flat\nspawn-protection=0\nmax-tick-time=-1\n' > server.properties
+printf 'online-mode=false\nlevel-type=minecraft\\:flat\nspawn-protection=0\nmax-tick-time=-1\npause-when-empty-seconds=0\n' > server.properties
 mkdir -p mods; for j in "${jars[@]}"; do cp "$j" mods/; done
 echo "mods/:"; ls -la mods
 if [ -f run.sh ]; then
