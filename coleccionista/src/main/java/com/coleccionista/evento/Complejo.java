@@ -92,6 +92,12 @@ public final class Complejo {
             l.add(new Zona("laberintos", com.coleccionista.mapa.Laberintos.crear(SEMILLA), -96, 0, 0, 0));
             // la Galería de los postes (Encadenados de tres), al sur de los Laberintos
             l.add(new Zona("galeria", com.coleccionista.mapa.Galeria.crear(SEMILLA), -96, 0, 30, 0));
+            // las antesalas (a donde llega el montacargas antes de cada prueba), afuera de cada zona y sin tocarse con nada
+            int[][] ante = {{100, 36}, {66, 64}, {212, -10}, {-70, -30}, {66, 38}, {-34, -52}, {-28, -86}, {-96, 82}};
+            for (int i = 0; i < com.coleccionista.mapa.Antesala.ZONAS.length; i++) {
+                String z = com.coleccionista.mapa.Antesala.ZONAS[i];
+                l.add(new Zona("ante_" + z, com.coleccionista.mapa.Antesala.crear(SEMILLA, z), ante[i][0], 0, ante[i][1], 1));
+            }
             zonas = l;
         }
         return zonas;

@@ -209,6 +209,16 @@ public final class Compartir {
 
     private static void hablar(MinecraftServer s) {
         fase = Fase.HABLAR;
+        // cada pareja negocia en privado: solo se oyen los de su mesa (el organizador y los fantasmas oyen a todos)
+        java.util.Map<UUID, Integer> voz = new java.util.HashMap<>();
+        for (Mesa m : mesas) {
+            voz.put(m.a, m.n);
+            voz.put(m.b, m.n);
+        }
+        if (perdonado != null) {
+            voz.put(perdonado, 0); // el perdonado mira desde su sillón, sin meterse en las pláticas
+        }
+        com.coleccionista.voz.Voz.separar(voz);
         Evento.get(s).reloj(s, segundosHablar);
         Pantallas.modo(s, "texto", Component.translatable(MOD + ".com.pantalla.hablen").getString());
         Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".com.chat.hablen", segundosHablar)));
@@ -332,6 +342,8 @@ public final class Compartir {
         }
         fase = Fase.REVELAR;
         revelando = -1;
+        // la revelación se vive todos juntos
+        com.coleccionista.voz.Voz.juntar();
         revelaDesde = t - REVELA + 30;
         Evento.get(s).reloj(s, 0);
         for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
@@ -484,6 +496,9 @@ public final class Compartir {
     }
 
     private static void limpiar(MinecraftServer s) {
+        if (fase == Fase.HABLAR || fase == Fase.ELEGIR) {
+            com.coleccionista.voz.Voz.juntar();
+        }
         fase = Fase.NADA;
         mesas.clear();
         perdonado = null;

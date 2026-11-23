@@ -3,6 +3,7 @@ coleccionista
 forceload add -16 -48 224 144
 forceload add -112 32 -16 80
 forceload add -112 64 -32 128
+forceload add 208 24 256 64
 #pausa 3
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
@@ -33,8 +34,10 @@ evento investigar 5
 evento sala
 #pausa 2
 evento despertar
-#pausa 46
+#pausa 66
 evento celdas abrir
+evento salida
+#pausa 2
 evento eliminar Bot_02
 evento cuerpos limpiar
 evento revivir Bot_02
@@ -70,6 +73,8 @@ evento compartir hablar 5
 evento compartir tiempo_elegir 12
 evento compartir ritmo 60
 evento compartir bots_eligen no
+evento montacargas salon
+#pausa 20
 evento compartir preparar
 #pausa 4
 evento compartir empezar ya
@@ -198,6 +203,11 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_DISCURSO bienvenida
 #expect COLECCIONISTA_DISCURSO_FIN bienvenida
 #expect COLECCIONISTA_CANDADOS activos
+#expect COLECCIONISTA_SALIDA discurso
+#expect COLECCIONISTA_DISCURSO salida
+#expect COLECCIONISTA_MONTACARGAS gas salon
+#expect COLECCIONISTA_MONTACARGAS llegada salon
+#expect COLECCIONISTA_CONSTRUIDO ante_salon
 #expect COLECCIONISTA_PISTAS reveladas inscripciones=
 #expect COLECCIONISTA_PROTECCION bichos_quitados=
 #expect COLECCIONISTA_CUERPO 02 Bot_02

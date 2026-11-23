@@ -23,6 +23,8 @@ import java.util.Set;
  *   <li>No aparece ningún bicho que no pusiera el evento (murciélagos, zombis, patrullas, fantasmas de la noche...). Los bots y lo que se
  *   invoque con comando sí.</li>
  *   <li>Nadie rompe ni pone bloques si no está en creativo (en supervivencia o aventura el mapa no se toca).</li>
+ *   <li>Nadie se lastima por caer (brincar de una escalera o una pasarela no le quita vida a nadie; las pruebas eliminan por sus reglas,
+ *   no por un mal brinco).</li>
  * </ul>
  */
 public final class Proteccion {
@@ -38,6 +40,16 @@ public final class Proteccion {
         MinecraftForge.EVENT_BUS.addListener(Proteccion::aparecer);
         MinecraftForge.EVENT_BUS.addListener(Proteccion::romper);
         MinecraftForge.EVENT_BUS.addListener(Proteccion::poner);
+        MinecraftForge.EVENT_BUS.addListener(Proteccion::caer);
+    }
+
+    private static void caer(net.minecraftforge.event.entity.living.LivingFallEvent e) {
+        Entity en = e.getEntity();
+        MinecraftServer s = en.getServer();
+        if (s != null && (en instanceof ServerPlayer || en instanceof com.coleccionista.bot.PiezaBot) && en.level() == s.overworld()
+                && dentro(s, en.blockPosition())) {
+            e.setCanceled(true);
+        }
     }
 
     /** ¿Está construido el complejo y este punto cae en él (todas las zonas, con orilla)? Fuera del complejo el mundo sigue normal. */

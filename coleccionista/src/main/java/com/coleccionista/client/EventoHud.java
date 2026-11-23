@@ -39,11 +39,14 @@ public final class EventoHud {
         com.axeliscore.fx.client.Hud.add(EventoHud::render);
     }
 
-    /** ¿Se dibuja el HUD del evento ahora? (no en escenas a pantalla completa, cinemáticas ni presentaciones) */
+    /**
+     * ¿Se dibuja el HUD del evento ahora? (no en escenas a pantalla completa, cinemáticas, presentaciones ni mientras se revela una mesa de
+     * Compartir o robar: ese cuadro ocupa lo de arriba)
+     */
     public static boolean visible() {
         Minecraft mc = Minecraft.getInstance();
         return !(oculto || mc.options.hideGui || mc.player == null || EscenaAviso.pantallaCompleta() || Espera.activa() || Cine.activo()
-                || Presentacion.activa() || (!EventoCliente.activo() && !EventoCliente.soyOrganizador()));
+                || Presentacion.activa() || CompartirCliente.revelandoMesa() || (!EventoCliente.activo() && !EventoCliente.soyOrganizador()));
     }
 
     private static void render(G g, int w, int h) {

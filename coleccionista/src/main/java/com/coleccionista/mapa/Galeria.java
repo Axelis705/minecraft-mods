@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * La Galería de los postes: el mapa de "Encadenados de tres". Seis carriles iguales en fila (uno por trío), separados por barrotes para que
- * se vean entre ellos. Cada carril: la sala de la mesa (donde eligen venda, cinta o esposas), la reja de salida y el recorrido:
+ * La Galería de los postes: el mapa de "Encadenados de tres". Seis carriles iguales en fila (uno por trío), cada uno su propia sala con
+ * muros completos (no se ven ni se estorban; durante la prueba cada trío solo oye a los suyos). Cada carril: la sala de la mesa (donde eligen venda, cinta o esposas), la reja de salida y el recorrido:
  * <ol>
  *   <li>Bosque de postes (la cuerda se enreda si cada quien pasa por un lado).</li>
  *   <li>Pasillo en zigzag de un bloque de ancho.</li>
@@ -67,13 +67,12 @@ public final class Galeria {
         for (int k = 1; k <= CARRILES; k++) {
             carril(p, k);
         }
-        // separadores entre carriles: muro en la sala de la mesa, barrotes en el recorrido (se ven entre ellos)
+        // separadores entre carriles: muro completo (cada trío en su propia sala: no se ven ni se estorban; la voz también va separada)
         for (int k = 1; k < CARRILES; k++) {
             int x = 10 * k;
             for (int z = 1; z < Z1; z++) {
                 for (int y = 1; y < Y1; y++) {
-                    boolean muro = z <= 9 || z >= Z_SALIDA - 1 || y == Y1 - 1;
-                    p.set(x, y, z, muro ? (y == 1 ? C + "azulejo_sucio" : y == 2 ? C + "azulejo_remate" : C + "yeso") : C + "barrotes");
+                    p.set(x, y, z, y == 1 ? C + "azulejo_sucio" : y == 2 ? C + "azulejo_remate" : C + "yeso");
                 }
                 if (z % 6 == 0) {
                     for (int y = 1; y < Y1; y++) {

@@ -136,6 +136,15 @@ public final class Comandos {
                     Despertar.discurso(c.getSource().getServer());
                     return ok(c, Component.translatable(MOD + ".cmd.discurso"));
                 }))
+                .then(Commands.literal("montacargas").then(Commands.argument("zona", StringArgumentType.word())
+                        .suggests((c, b) -> net.minecraft.commands.SharedSuggestionProvider.suggest(com.coleccionista.mapa.Antesala.ZONAS, b))
+                        .executes(c -> {
+                            String z = StringArgumentType.getString(c, "zona");
+                            Component no = Montacargas.viajar(c.getSource().getServer(), z);
+                            return no == null ? ok(c, Component.translatable(MOD + ".cmd.montacargas", Montacargas.nombre(z))) : error(c, no);
+                        })))
+                .then(Commands.literal("salida").executes(c -> Celdas.hablarSalida(c.getSource().getServer())
+                        ? ok(c, Component.translatable(MOD + ".cmd.salida")) : error(c, Component.translatable(MOD + ".cmd.pantalla_ocupada"))))
                 .then(Commands.literal("pantalla")
                         .then(Commands.literal("apagada").executes(c -> pantalla(c, "apagada", "")))
                         .then(Commands.literal("estatica").executes(c -> pantalla(c, "estatica", "")))

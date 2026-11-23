@@ -294,20 +294,40 @@ public final class Cine {
         }
     }
 
+    /** Una tecla dibujada (cuadrito con la letra), para los avisos. */
+    private static void tecla(G g, net.minecraft.client.gui.Font f, String k, int x, int y, float a) {
+        g.fill(x, y, x + 12, y + 12, com.axeliscore.ui.Ui.alpha(0xFFE8E2D8, a));
+        g.fill(x + 1, y + 1, x + 11, y + 11, com.axeliscore.ui.Ui.alpha(0xFF201418, a));
+        g.drawString(f, k, x + 6 - f.width(k) / 2, y + 2, com.axeliscore.ui.Ui.alpha(0xFFF4ECE4, a), false);
+    }
+
     /** El negro del principio del despertar, las franjas de cine, los subtítulos de cerca y el parpadeo. */
     private static void dibujar(G g, int w, int h) {
         long now = System.currentTimeMillis();
         if (enPantalla()) {
             float t = (now - inicio) / 1000F;
-            int barra = (int) (h * 0.12F * suave(t / 0.7F));
+            int barra = (int) (h * 0.16F * suave(t / 0.7F));
             g.fill(0, 0, w, barra, 0xFF000000);
             g.fill(0, h - barra, w, h, 0xFF000000);
             Espera.subtituloCine(g, w, h, barra);
-            if (t > 2.5F && t < 6F) {
-                float a = Math.min(1, (t - 2.5F) / 0.5F) * Math.min(1, (6F - t) / 0.6F);
-                String s = net.minecraft.network.chat.Component.translatable(com.coleccionista.Coleccionista.MODID + ".cine.salir").getString();
-                g.drawString(com.axeliscore.ui.Ui.font(), s, w - 10 - com.axeliscore.ui.Ui.font().width(s), barra / 2 - 4,
-                        com.axeliscore.ui.Ui.alpha(0xFF8A8078, a), false);
+            var f = com.axeliscore.ui.Ui.font();
+            String mod = com.coleccionista.Coleccionista.MODID;
+            if (t > 0.8F) {
+                // siempre a la vista: cómo salir (con la tecla dibujada)
+                float a = Math.min(1, (t - 0.8F) / 0.5F);
+                String s = net.minecraft.network.chat.Component.translatable(mod + ".cine.salir").getString();
+                int x = w - 10 - f.width(s), y = barra / 2 - 4;
+                tecla(g, f, "R", x - 16, y - 2, a);
+                g.drawString(f, s, x, y, com.axeliscore.ui.Ui.alpha(0xFFB8B0A8, a), false);
+            }
+            if (Subtitulo.termino() && t > 1.5F) {
+                // ya terminó de hablar: que se note cómo cerrar
+                float p = (float) (0.6 + 0.4 * Math.sin(now / 260.0));
+                String s = net.minecraft.network.chat.Component.translatable(mod + ".cine.cerrar").getString();
+                int sw = f.width(s);
+                int y = h - barra / 2 - 4;
+                tecla(g, f, "R", w / 2 - sw / 2 - 16, y - 2, p);
+                g.drawString(f, s, w / 2 - sw / 2, y, com.axeliscore.ui.Ui.alpha(0xFFF4ECE4, p), true);
             }
         }
         if (activo && "despertar".equals(tipo)) {

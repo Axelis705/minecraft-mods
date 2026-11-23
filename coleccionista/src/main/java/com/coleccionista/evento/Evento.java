@@ -416,6 +416,7 @@ public final class Evento {
         Celdas.candados(s, false);
         Pistas.ocultar(s);
         Uniforme.quitarTodos(s);
+        Montacargas.reiniciar(s);
         chatCerrado = false;
         fase = Fase.ESPERA;
         prueba = "";

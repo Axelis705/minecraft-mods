@@ -10,14 +10,43 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `bienvenida_hola.ogg` | 2.5 s | Hola a todos. |
-| 2 | `bienvenida_no_sabes.ogg` | 4.5 s | Yo sé que no sabes quién eres… ni qué haces aquí. |
-| 3 | `bienvenida_coleccion.ogg` | 3.5 s | Bienvenido a mi colección. |
-| 4 | `bienvenida_piezas.ogg` | 5.0 s | Cada uno de ustedes es una pieza. Única. Frágil. Mía. |
-| 5 | `bienvenida_una_sale.ogg` | 6.0 s | Esta noche jugaremos varios juegos… y solo una pieza saldrá de aquí. |
-| 6 | `bienvenida_listo.ogg` | 4.0 s | Pero dime… ¿estás listo para jugar un juego? |
-| 7 | `bienvenida_risa.ogg` | 3.5 s | Je, je, je… ¡Ja, ja, ja, ja! |
-| 8 | `bienvenida_candado.ogg` | 8.0 s | Tu celda tiene un candado. El código está más cerca de lo que crees. Que empiece la colección. |
+| 1 | `bienvenida_silencio.ogg` | 2.5 s | … |
+| 2 | `bienvenida_hola.ogg` | 3.0 s | Hola… |
+| 3 | `bienvenida_que_tenemos.ogg` | 4.2 s | Vaya, vaya… ¿qué tenemos aquí? |
+| 4 | `bienvenida_acerquense.ogg` | 6.0 s | No sean tímidos. Acérquense a la pantalla… (pulsa R para verme de cerca) |
+| 5 | `bienvenida_durmieron.ogg` | 4.5 s | Veo que ya despertaron. ¿Durmieron bien? Yo no duermo… nunca. |
+| 6 | `bienvenida_no_sabes.ogg` | 4.5 s | Yo sé que no sabes quién eres… ni qué haces aquí. |
+| 7 | `bienvenida_coleccion.ogg` | 3.5 s | Bienvenido a mi colección. |
+| 8 | `bienvenida_piezas.ogg` | 5.0 s | Cada uno de ustedes es una pieza. Única. Frágil. Mía. |
+| 9 | `bienvenida_una_sale.ogg` | 6.0 s | Esta noche jugaremos varios juegos… y solo una pieza saldrá de aquí. |
+| 10 | `bienvenida_listo.ogg` | 4.0 s | Pero dime… ¿estás listo para jugar un juego? |
+| 11 | `bienvenida_risa.ogg` | 3.5 s | Je, je, je… ¡Ja, ja, ja, ja! |
+| 12 | `bienvenida_candado.ogg` | 9.5 s | Tu celda tiene un candado. El código son tres números… y los tres están escondidos en tu celda. Que empiece la colección. |
+
+## El despertar: cuando todas salen de sus celdas (pantalla grande)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `salida_bien.ogg` | 3.5 s | Bien… muy bien. |
+| 2 | `salida_todas.ogg` | 4.5 s | Todas mis piezas fuera de sus cajas. Ni una sola se quedó atrás. |
+| 3 | `salida_museo.ogg` | 5.5 s | Miren a su alrededor. Esto fue una prisión… ahora es mi museo. |
+| 4 | `salida_pruebas.ogg` | 6.0 s | Pronto empezará la primera prueba. Las piezas que fallen… se quedan en mi colección. Para siempre. |
+| 5 | `salida_risa.ogg` | 3.0 s | Je, je, je… |
+| 6 | `salida_esperen.ogg` | 5.0 s | Esperen aquí. Y no se separen… todavía. |
+
+## El montacargas (entre pruebas)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `montacargas_viaje.ogg` | 4.5 s | Tranquilas, piezas. Mi montacargas es viejo… pero casi nunca se cae. |
+| 2 | `montacargas_cloacas.ogg` | 5.5 s | Siguiente parada: las Cloacas. Cuiden sus tobillos. |
+| 3 | `montacargas_archivo.ogg` | 5.5 s | Siguiente parada: el Archivo. Ahí guardo los secretos… y a los mentirosos. |
+| 4 | `montacargas_salon.ogg` | 5.5 s | Siguiente parada: el Salón. Pónganse elegantes: hoy se juega con la confianza. |
+| 5 | `montacargas_laberintos.ogg` | 5.5 s | Siguiente parada: los Laberintos. Ojalá confíen en la voz correcta. |
+| 6 | `montacargas_capilla.ogg` | 5.5 s | Siguiente parada: la Capilla. Recen, si todavía se acuerdan cómo. |
+| 7 | `montacargas_puertas.ogg` | 5.5 s | Siguiente parada: la Sala de las puertas. No todas llevan a algún lado. |
+| 8 | `montacargas_final.ogg` | 5.5 s | Última parada: mi Cámara. Solo las mejores piezas llegan hasta aquí. |
+| 9 | `montacargas_galeria.ogg` | 5.5 s | Siguiente parada: la Galería de los postes. Tres piezas, una cadena. |
 
 ## Prueba 1 · Encadenados
 
@@ -117,4 +146,4 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 8 | `tres_risa.ogg` | 3.0 s | Je, je, je… |
 | 9 | `tres_suerte.ogg` | 3.5 s | El último trío en salir se queda conmigo. |
 
-**Total: 66 líneas (≈5 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+**Total: 85 líneas (≈7 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

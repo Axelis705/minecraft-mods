@@ -8,7 +8,9 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 MOD = os.path.dirname(AQUI)
 src = open(os.path.join(MOD, "src/main/java/com/coleccionista/evento/Pantallas.java"), encoding="utf-8").read()
 lang = json.load(open(os.path.join(MOD, "src/main/resources/assets/coleccionista/lang/es_mx.json"), encoding="utf-8"))
-orden = [("bienvenida", "El despertar: el discurso de la tele (después de investigar)"), ("encadenados", "Prueba 1 · Encadenados"),
+orden = [("bienvenida", "El despertar: el discurso de la tele (después de investigar)"),
+         ("salida", "El despertar: cuando todas salen de sus celdas (pantalla grande)"), ("montacargas", "El montacargas (entre pruebas)"),
+         ("encadenados", "Prueba 1 · Encadenados"),
          ("traidor", "Prueba 2 · El traidor"), ("compartir", "Prueba 3 · Compartir o robar"), ("ciegas", "Prueba 4 · A ciegas"),
          ("sacrificio", "Prueba 5 · El sacrificio"), ("puertas", "Prueba 6 · Las puertas"), ("copas", "Prueba 7 (final) · Las copas"),
          ("tres", "Prueba extra · Encadenados de tres")]
@@ -25,6 +27,9 @@ for gid, titulo in orden:
     if not m:
         continue
     fr = re.findall(r'new Frase\("([a-z_]+)", (\d+)', m.group(1))
+    if gid == "montacargas":
+        # la segunda frase es la parada (una por zona)
+        fr += [(z, "110") for z in ("cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria")]
     out.append(f"## {titulo}\n")
     out.append("| # | Archivo | Dura | Texto |\n|---|---|---|---|")
     for i, (k, t) in enumerate(fr, 1):

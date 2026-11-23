@@ -68,24 +68,11 @@ public final class Espera {
 
     /** Subtítulos grandes dentro de la franja de cine de abajo (al ver la pantalla de cerca). */
     static void subtituloCine(G g, int w, int h, int barra) {
-        CompoundTag t = ClientData.get(Pantallas.KEY);
-        if (t == null || !Nbt.b(t, "hablando") || Nbt.s(t, "linea").isEmpty() || barra < 12) {
+        if (barra < 12) {
             return;
         }
-        Font f = Ui.font();
-        String s = Component.translatable(Nbt.s(t, "linea")).getString();
-        float esc = 1.35F;
-        List<net.minecraft.util.FormattedCharSequence> ls = f.split(Component.literal(s), (int) ((w - 60) / esc));
-        float alto = ls.size() * 10 * esc;
-        float y = h - barra / 2F - alto / 2F;
-        for (var l : ls) {
-            g.push();
-            g.translate(w / 2F - f.width(l) * esc / 2F, y, 0);
-            g.scale(esc, esc, 1);
-            g.drawString(f, l, 0, 0, 0xFFF4ECE4, true);
-            g.pop();
-            y += 10 * esc;
-        }
+        // en la franja de abajo, grande (el texto se va escribiendo)
+        Subtitulo.dibujar(g, w / 2, h - Math.max(6, barra / 4), w - 60, 1.5F, false);
     }
 
     private static void sala(G g, int w, int h) {
@@ -125,23 +112,9 @@ public final class Espera {
     }
 
     private static void subtitulo(G g, int w, int h) {
-        CompoundTag t = ClientData.get(Pantallas.KEY);
-        if (t == null || !Nbt.b(t, "hablando") || Nbt.s(t, "linea").isEmpty() || EventoHud.oculto) {
+        if (EventoHud.oculto) {
             return;
         }
-        Font f = Ui.font();
-        String s = Component.translatable(Nbt.s(t, "linea")).getString();
-        List<net.minecraft.util.FormattedCharSequence> ls = f.split(Component.literal(s), Math.min(320, w - 40));
-        int y = h - 70 - ls.size() * 11;
-        int ancho = 0;
-        for (var l : ls) {
-            ancho = Math.max(ancho, f.width(l));
-        }
-        g.fill(w / 2 - ancho / 2 - 8, y - 5, w / 2 + ancho / 2 + 8, y + ls.size() * 11 + 3, 0xB0000000);
-        g.fill(w / 2 - ancho / 2 - 8, y - 5, w / 2 - ancho / 2 - 6, y + ls.size() * 11 + 3, EventoHud.ROJO);
-        for (var l : ls) {
-            g.drawString(f, l, w / 2 - f.width(l) / 2, y, 0xFFF0E8E0, true);
-            y += 11;
-        }
+        Subtitulo.dibujar(g, w / 2, h - 64, Math.min(420, w - 40), 1.25F, true);
     }
 }

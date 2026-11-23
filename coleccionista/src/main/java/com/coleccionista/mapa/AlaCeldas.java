@@ -3,7 +3,7 @@ package com.coleccionista.mapa;
 /**
  * El Ala de celdas: donde despiertan las piezas. Un pabellón de una vieja institución (mitad prisión, mitad manicomio) que el Coleccionista
  * convirtió en su "vitrina": dos pisos de celdas con azulejo de hospital, yeso descarapelado, barrotes oxidados y pasarelas de rejilla; al
- * oeste, su escenario (la pantalla gigante entre cortinas de terciopelo y vitrinas con muñecas de porcelana); al este, la escalera y el
+ * oeste, su escenario (la pantalla gigante entre cortinas de terciopelo, casilleros, escritorio del guardia y el reglamento); al este, la escalera y el
  * portón de salida. Todo con bloques propios del mod.
  * <pre>
  *   x: -8 ... 44 (vestíbulo oeste -7..-1, celdas 0..36, vestíbulo este 37..43)
@@ -261,21 +261,34 @@ public final class AlaCeldas {
             }
             p.set(-7, 9, z == 4 ? 6 : 16, C + "bocina[facing=east]");
         }
-        // vitrinas de la colección: muñecas de porcelana
-        vitrina(p, -5, 2);
-        vitrina(p, -5, 20);
-        vitrina(p, -2, 2);
-        vitrina(p, -2, 20);
-        p.set(-4, 1, 9, C + "silla[facing=east]");
+        // de un lado, los casilleros de los guardias; del otro, el reglamento de la cárcel con la banca de espera
+        carcel(p);
         // cámaras vigilando el pasillo
         p.set(-7, 8, 2, C + "camara[facing=east]");
         p.set(-7, 8, 20, C + "camara[facing=east]");
     }
 
-    private static void vitrina(Plano p, int x, int z) {
-        String f = z < 11 ? "south" : "north";
-        p.set(x, 1, z, C + "vitrina[facing=" + f + ",half=lower]");
-        p.set(x, 2, z, C + "vitrina[facing=" + f + ",half=upper]");
+    /** Lo de cárcel del vestíbulo del escenario (en lugar de vitrinas): casilleros, escritorio del guardia, reglamento, banca y rayitas. */
+    private static void carcel(Plano p) {
+        // lado norte (z 1..2): casilleros de metal de dos pisos y el escritorio del guardia con papeles y un teléfono viejo
+        for (int x = -6; x <= -4; x++) {
+            p.set(x, 1, 1, C + "archivero");
+            p.set(x, 2, 1, C + "archivero");
+        }
+        p.letrero(-5, 3, 1, "", "south", "gray", "CASILLEROS", "PERSONAL");
+        p.set(-2, 1, 2, C + "mesa[facing=south]");
+        p.set(-2, 2, 2, C + "papeles[facing=south]");
+        p.set(-1, 1, 1, C + "cajon[facing=south]");
+        p.set(-3, 3, 1, C + "reloj[facing=south]");
+        p.set(-2, 4, 1, C + "lampara_jaula[facing=south,encendida=true,falla=false]");
+        // lado sur (z 20..21): el reglamento en la pared, una banca de tablones y las rayitas de alguien que contaba los días
+        p.letrero(-5, 3, 21, "", "north", "red", "REGLAMENTO", "1. Silencio.", "2. No tocar las rejas.", "3. Obedecer.");
+        p.letrero(-3, 3, 21, "", "north", "white", "4. No hay visitas.", "5. No hay salida.", "6. Ustedes son", "   la colección.");
+        for (int x = -6; x <= -2; x++) {
+            p.set(x, 1, 20, C + "losa_tablon[type=bottom]");
+        }
+        p.texto(-1, 2, 21, "rayon", "north", 0x9A958A, "IIII IIII", "IIII IIII", "IIII III");
+        p.set(-1, 1, 21, C + "grilletes[facing=north]");
     }
 
     private static void vestibuloEste(Plano p) {

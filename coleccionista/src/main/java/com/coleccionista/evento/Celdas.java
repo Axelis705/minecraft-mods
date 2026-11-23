@@ -49,6 +49,72 @@ public final class Celdas {
     public static void init() {
         Actions.on(ACCION_CODIGO, Celdas::probarCodigo);
         Actions.on(ACCION_TOQUE, Celdas::toque);
+        com.axeliscore.AxelisCore.onServerTick(Celdas::vigilarSalida);
+    }
+
+    // ------------------------------------------------------------------ cuando todas salen de su celda
+
+    /** Ticks que espera el Coleccionista desde que la última pieza salió de su celda hasta que habla en la pantalla grande. */
+    public static int esperaSalida = 100;
+    private static long salidaEn = -1;
+
+    /**
+     * Ya funcionan los candados: cuando todas las piezas vivas (las personas conectadas) están fuera de las celdas, a los pocos segundos el
+     * Coleccionista habla en la pantalla grande del escenario (una sola vez por despertar).
+     */
+    private static void vigilarSalida(MinecraftServer s) {
+        if (s.getTickCount() % 10 != 0 || !candados(s) || datos(s).getBoolean("salida") || !Complejo.construido(s)) {
+            salidaEn = -1;
+            return;
+        }
+        Evento ev = Evento.get(s);
+        int personas = 0;
+        boolean todas = true;
+        for (Pieza p : ev.vivos()) {
+            net.minecraft.server.level.ServerPlayer sp = p.bot ? null : s.getPlayerList().getPlayer(p.id);
+            if (sp == null) {
+                continue;
+            }
+            personas++;
+            if (enCelda(s, sp.blockPosition())) {
+                todas = false;
+                break;
+            }
+        }
+        long now = s.overworld().getGameTime();
+        if (personas == 0 || !todas) {
+            salidaEn = -1;
+            return;
+        }
+        if (salidaEn < 0) {
+            salidaEn = now + esperaSalida;
+            Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA todas fuera piezas={}", personas);
+        } else if (now >= salidaEn && !Pantallas.ocupado()) {
+            hablarSalida(s);
+        }
+    }
+
+    /** El discurso de cuando todas salieron (también a mano: {@code /evento salida}). */
+    public static boolean hablarSalida(MinecraftServer s) {
+        if (Pantallas.ocupado()) {
+            return false;
+        }
+        datos(s).putBoolean("salida", true);
+        sucio(s);
+        salidaEn = -1;
+        Pantallas.hablar(s, "salida", null);
+        Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA discurso");
+        return true;
+    }
+
+    /** ¿Ese punto cae dentro de alguna celda del Ala (las dos filas, los dos pisos)? */
+    public static boolean enCelda(MinecraftServer s, BlockPos b) {
+        BlockPos o = Complejo.origen(s, "celdas");
+        if (o == null) {
+            return false;
+        }
+        int x = b.getX() - o.getX(), y = b.getY() - o.getY(), z = b.getZ() - o.getZ();
+        return x >= 1 && x <= 35 && Math.floorMod(x, 6) != 0 && y >= 0 && y <= 10 && (z >= 1 && z <= 5 || z >= 17 && z <= 21);
     }
 
     private static CompoundTag datos(MinecraftServer s) {
@@ -205,6 +271,7 @@ public final class Celdas {
         ServerLevel l = mundo(s);
         Random r = new Random(l.getGameTime() ^ 0x5EEDL);
         CompoundTag d = datos(s);
+        d.putBoolean("salida", false);
         Set<Integer> usados = new HashSet<>();
         for (int n = 1; n <= com.coleccionista.mapa.AlaCeldas.CELDAS; n++) {
             int cod;

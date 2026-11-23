@@ -113,6 +113,12 @@ public final class Panel {
             }
             case "despertar" -> Despertar.despertar(s);
             case "discurso" -> Despertar.discurso(s);
+            case "llevar" -> {
+                Component no = Montacargas.viajar(s, Nbt.s(d, "zona"));
+                if (no != null) {
+                    Plat.msg(p, no, false);
+                }
+            }
             case "abrir_celdas" -> Celdas.puertas(s, 0, true);
             // ---- Encadenados
             case "enc_preparar" -> {

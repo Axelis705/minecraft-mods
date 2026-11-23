@@ -365,6 +365,18 @@ public class PanelScreen extends UiScreen {
             b.enabled = o.on().getAsBoolean();
             b.help(Component.translatable(MOD + ".panel." + o.id() + "_ayuda"));
         }
+        // el montacargas: lleva a todos (dormidos con gas) a la antesala de esta prueba
+        String[] zonas = {"cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria"};
+        if (pruebaSel >= 0 && pruebaSel < zonas.length) {
+            String z = zonas[pruebaSel];
+            CompoundTag d = new CompoundTag();
+            d.putString("zona", z);
+            int fy = py + 80 + ((os.size() + 1) / 2) * 20 + 6;
+            Button m = add(new Button(x, fy, w, 16, "▼ " + tr("llevar") + " · " + Component.translatable(MOD + ".mon.zona." + z).getString(),
+                    () -> pedir("llevar", null, d)));
+            m.enabled = "NADA".equals(MontacargasCliente.fase());
+            m.help(Component.translatable(MOD + ".panel.llevar_ayuda"));
+        }
     }
 
     // ------------------------------------------------------------------ cámaras

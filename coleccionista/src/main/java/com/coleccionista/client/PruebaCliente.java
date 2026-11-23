@@ -214,8 +214,12 @@ final class PruebaCliente {
         t.photo("25b_zoom_subtitulo", 5000, () -> {
         });
         t.add("volver", 1200, Atajos::acercarse);
-        t.add("esperar discurso", 24600, () -> {
+        t.add("esperar discurso", 40500, () -> {
         });
+        // de cerca otra vez cuando ya terminó de hablar: debe decir que con R se cierra
+        t.photo("25c_zoom_fin", 1800, Atajos::acercarse);
+        t.add("zoom fin", 100, () -> t.check(Subtitulo.termino(), "ya terminó de hablar (aviso de cerrar con R)"));
+        t.add("volver 2", 600, Atajos::acercarse);
         // el candado de la celda 1, de cerca: la mano gira las ruedas (arrastrando) y aprieta el botón
         t.add("abrir candado", 1400, () -> {
             CompoundTag c = new CompoundTag();
@@ -404,10 +408,27 @@ final class PruebaCliente {
 
     /** Prueba 3, Compartir o robar: el Salón, la mesa, la pantalla para elegir, la revelación de una mesa y el final. */
     private static void compartir(ClientTest.Script t) {
-        t.add("com: preparar", 1600, () -> {
+        // el montacargas: gas, viaje y llegada a la antesala del Salón
+        t.add("montacargas", 600, () -> {
             for (int i = 2; i <= 8; i++) {
                 t.cmd("evento revivir Bot_0" + i);
             }
+            t.cmd("forceload add 208 16 248 48");
+            t.cmd("gamemode adventure @a");
+            t.cmd("evento montacargas salon");
+        });
+        t.photo("41b_mont_gas", 2400, () -> {
+        });
+        t.photo("41c_mont_viaje", 6400, () -> {
+        });
+        t.add("viajando", 100, () -> t.check("VIAJE".equals(MontacargasCliente.fase()), "el montacargas va bajando"));
+        t.photo("41d_mont_llegada", 11200, () -> {
+        });
+        t.add("llegó", 100, () -> t.check(!"VIAJE".equals(MontacargasCliente.fase()), "el montacargas llegó"));
+        t.photo("41e_antesala", 1500, () -> t.lookFrom(225.5, -60, 31.5, 241, -57, 31.5));
+        t.photo("41f_antesala_jaula", 1200, () -> t.lookFrom(238.5, -60, 31.5, 222, -58, 31.5));
+        t.add("com: preparar", 1600, () -> {
+            t.cmd("gamemode adventure @a");
             t.cmd("forceload add 160 16 208 56");
             t.cmd("evento compartir hablar 8");
             t.cmd("evento compartir tiempo_elegir 12");

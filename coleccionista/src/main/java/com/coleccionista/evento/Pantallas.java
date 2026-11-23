@@ -49,7 +49,12 @@ public final class Pantallas {
     /** El discurso de bienvenida (al terminar los 10 minutos del despertar). */
     public static List<Frase> bienvenida() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hola", 50, null, 1F));
+        // un inicio lento, de villano: que la gente alcance a leer y sepa que puede acercarse con R
+        l.add(new Frase("silencio", 50, null, 1F));
+        l.add(new Frase("hola", 60, null, 1F));
+        l.add(new Frase("que_tenemos", 85, null, 1F));
+        l.add(new Frase("acerquense", 120, null, 1F));
+        l.add(new Frase("durmieron", 90, null, 1F));
         l.add(new Frase("no_sabes", 90, null, 1F));
         l.add(new Frase("coleccion", 70, null, 1F));
         l.add(new Frase("piezas", 100, null, 1F));
@@ -164,9 +169,33 @@ public final class Pantallas {
         return l;
     }
 
+    /** Cuando todas las piezas salieron de su celda (lo dice en la pantalla grande del escenario). */
+    public static List<Frase> salida() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("bien", 70, null, 1F));
+        l.add(new Frase("todas", 90, null, 1F));
+        l.add(new Frase("museo", 110, null, 1F));
+        l.add(new Frase("pruebas", 120, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("esperen", 100, null, 1F));
+        return l;
+    }
+
+    /** La parada del montacargas ({@link #parada}: la zona a la que va). */
+    public static String parada = "";
+
+    public static List<Frase> montacargas() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("viaje", 90, null, 1F));
+        l.add(new Frase(parada.isEmpty() ? "viaje" : parada, 110, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
+            case "salida" -> salida();
+            case "montacargas" -> montacargas();
             case "encadenados" -> encadenados();
             case "compartir" -> compartir();
             case "copas" -> copas();
