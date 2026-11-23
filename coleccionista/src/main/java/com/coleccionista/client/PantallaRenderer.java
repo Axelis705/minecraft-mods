@@ -81,6 +81,7 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         ps.pushPose();
         ps.translate(0.5, 0.5, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(-f.toYRot()));
+        giro = -f.toYRot();
         float z = -0.5F + 2.05F / 16F;
         Draw d = new Draw(buf);
         // marco
@@ -98,7 +99,7 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
             }
         }
         if (desde < 0.35F && !"apagada".equals(modo)) {
-            estatica(d, ps, w, h, z + 0.01F, 1F - desde / 0.35F);
+            estatica(d, ps, w, h, z + ColeccionistaTV.FRENTE + 0.01F, 1F - desde / 0.35F);
         }
         ps.popPose();
     }
@@ -113,8 +114,14 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
 
     private static void coleccionista(Draw d, PoseStack ps, float w, float h, float z, CompoundTag t, long ms) {
         boolean habla = Nbt.b(t, "hablando");
+        String clave = Nbt.s(t, "linea");
         // fondo de terciopelo rojo oscuro (más claro arriba)
         quad(d.translucent(BLANCO), ps, -w / 2, -h / 2, w / 2, h / 2, z, 0, 0, 1, 1, 0xFF180406, 0xFF3A0A10);
+        // él, en vivo y en 3D (si el modelo no cargara, el retrato de antes)
+        if (ColeccionistaTV.dibujar(ps, buf0, w, h, z, habla, clave, ms, giro)) {
+            encima(d, ps, w, h, z + ColeccionistaTV.FRENTE, habla, clave, ms);
+            return;
+        }
         // el retrato: cuadrado, un poco a la izquierda en la grande; se mece apenas
         float lado = h * 0.92F;
         float s = (float) Math.sin(ms / 700.0) * 0.02F * h, giro = habla ? (float) Math.sin(ms / 230.0) * 1.6F : 0F;
@@ -147,9 +154,35 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
             quad(d.translucent(BLANCO), ps, -w / 2, y, w / 2, y + h / (h * 24F) * 0.35F, z + 0.006F, 0, 0, 1, 1, 0x22000000, 0x22000000);
         }
         // subtítulo dentro de la pantalla
-        String clave = Nbt.s(t, "linea");
         if (habla && !clave.isEmpty() && !Cine.enPantalla()) {
             texto(d, ps, w, h, z + 0.008F, Component.translatable(clave).getString(), -h / 2 + h * 0.18F, w * 0.9F, 0.85F);
+        }
+    }
+
+    /** Lo que va delante del Coleccionista en 3D: barras de la voz, rayas de tele vieja, franja de abajo y el subtítulo. */
+    private static void encima(Draw d, PoseStack ps, float w, float h, float z, boolean habla, String clave, long ms) {
+        if (habla) {
+            int n = 9;
+            float bw = w * 0.022F, x0 = w / 2 - n * bw * 1.6F - w * 0.04F, y0 = -h / 2 + h * 0.06F;
+            for (int i = 0; i < n; i++) {
+                float k = (float) Math.abs(Math.sin(ms / (90.0 + i * 17) + i));
+                float bh = h * (0.05F + 0.22F * k);
+                float x = x0 + i * bw * 1.6F;
+                quad(d.translucent(BLANCO), ps, x, y0, x + bw, y0 + bh, z + 0.002F, 0, 0, 1, 1, 0xFFB3121A, 0xFFFF5A5A);
+            }
+        }
+        for (int i = 0; i < (int) (h * 24); i++) {
+            float y = -h / 2 + (i + 0.5F) * h / (h * 24F);
+            quad(d.translucent(BLANCO), ps, -w / 2, y, w / 2, y + h / (h * 24F) * 0.35F, z + 0.003F, 0, 0, 1, 1, 0x22000000, 0x22000000);
+        }
+        // la orilla de abajo (como el borde de una transmisión): tapa donde se corta el sillón
+        quad(d.translucent(BLANCO), ps, -w / 2, -h / 2, w / 2, -h / 2 + h * 0.025F, z + 0.004F, 0, 0, 1, 1, 0xFF0A0406, 0xFF14070A);
+        quad(d.translucent(BLANCO), ps, -w / 2, -h / 2 + h * 0.025F, w / 2, -h / 2 + h * 0.031F, z + 0.004F, 0, 0, 1, 1, 0xFF8E1018, 0xFF8E1018);
+        if (habla && !clave.isEmpty() && !Cine.enPantalla()) {
+            // franja oscura detrás del subtítulo (si no, se pierde contra la camisa blanca)
+            quad(d.translucent(BLANCO), ps, -w / 2, -h / 2 + h * 0.07F, w / 2, -h / 2 + h * 0.29F, z + 0.005F, 0, 0, 1, 1, 0xC0080204,
+                    0x50080204);
+            texto(d, ps, w, h, z + 0.007F, Component.translatable(clave).getString(), -h / 2 + h * 0.18F, w * 0.9F, 0.85F);
         }
     }
 
@@ -176,8 +209,10 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         ps.popPose();
     }
 
-    /** El búfer de este cuadro (para el texto). */
+    /** El búfer de este cuadro (para el texto y el Coleccionista en 3D). */
     private static MultiBufferSource buf0;
+    /** Los grados que se giró la pila para esta pantalla. */
+    private static float giro;
 
     /** Un rectángulo plano mirando hacia +z, con degradado de abajo ({@code c0}) a arriba ({@code c1}). */
     private static void quad(VB vb, PoseStack ps, float x0, float y0, float x1, float y1, float z, float u0, float v0, float u1, float v1, int c0,

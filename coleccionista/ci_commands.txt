@@ -198,10 +198,13 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_DISCURSO bienvenida
 #expect COLECCIONISTA_DISCURSO_FIN bienvenida
 #expect COLECCIONISTA_CANDADOS activos
+#expect COLECCIONISTA_PISTAS reveladas inscripciones=
+#expect COLECCIONISTA_PROTECCION bichos_quitados=
 #expect COLECCIONISTA_CUERPO 02 Bot_02
 #expect COLECCIONISTA_CONSTRUIDO cloacas
 #expect COLECCIONISTA_ENCADENADOS preparada equipos=2 cupo=1
 #expect COLECCIONISTA_PRESENTACION I
+#expect COLECCIONISTA_UNIFORME desgaste piezas=4 pruebas=1
 #expect COLECCIONISTA_ENCADENADOS empieza
 #expect COLECCIONISTA_GRILLETE
 #expect COLECCIONISTA_COMPUERTA 1 abierta

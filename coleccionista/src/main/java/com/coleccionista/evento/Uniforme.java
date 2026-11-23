@@ -39,6 +39,7 @@ public final class Uniforme {
         if (!activo || s == null) {
             return;
         }
+        int n = 0, max = 0;
         for (Pieza p : Evento.get(s).vivos()) {
             if (!Vestuario.tiene(s, p.id, ID)) {
                 continue;
@@ -46,7 +47,10 @@ public final class Uniforme {
             CompoundTag d = Vestuario.datos(s, p.id, ID);
             d.putInt("pruebas", d.getInt("pruebas") + 1);
             Vestuario.poner(s, p.id, ID, d);
+            n++;
+            max = Math.max(max, d.getInt("pruebas"));
         }
+        Coleccionista.LOGGER.info("COLECCIONISTA_UNIFORME desgaste piezas={} pruebas={}", n, max);
     }
 
     public static void quitar(MinecraftServer s, Pieza p) {
