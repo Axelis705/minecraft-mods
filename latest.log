@@ -1,0 +1,544 @@
+[23Nov2026 20:52:42.435] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--gameDir, ., --launchTarget, forge_userdev_client, --version, MOD_DEV, --assetIndex, 34, --assetsDir, /home/runner/.minecraft/assets, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[23Nov2026 20:52:42.437] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 25.0.5+8-LTS
+[23Nov2026 20:52:42.437] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.2.6 starting: java version 25.0.5 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1020-azure
+[23Nov2026 20:52:42.510] [main/WARN] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/axelis_core-26.3/run/config/fml.toml is not correct. Correcting
+[23Nov2026 20:52:42.511] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowHeight] was corrected from null to 480
+[23Nov2026 20:52:42.511] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [versionCheck] was corrected from null to true
+[23Nov2026 20:52:42.512] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowFBScale] was corrected from null to 1
+[23Nov2026 20:52:42.512] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowProvider] was corrected from null to fmlearlywindow
+[23Nov2026 20:52:42.512] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowWidth] was corrected from null to 854
+[23Nov2026 20:52:42.512] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowMaximized] was corrected from null to false
+[23Nov2026 20:52:42.513] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [defaultConfigPath] was corrected from null to defaultconfigs
+[23Nov2026 20:52:42.513] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [disableOptimizedDFU] was corrected from null to true
+[23Nov2026 20:52:42.513] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[23Nov2026 20:52:42.514] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[23Nov2026 20:52:42.514] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [maxThreads] was corrected from null to -1
+[23Nov2026 20:52:42.514] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[23Nov2026 20:52:42.515] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[23Nov2026 20:52:42.527] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because splash screen is disabled
+[23Nov2026 20:52:42.612] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.7/8ab114ac385e6dbdad5efafe28aba4df8120915f/mixin-0.8.7.jar!/ Service=ModLauncher Env=CLIENT
+[23Nov2026 20:52:43.870] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[23Nov2026 20:52:44.039] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forge_userdev_client' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.minecraft/assets, --assetIndex, 34, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[23Nov2026 20:52:46.121] [Datafixer Bootstrap #0/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 307 Datafixer optimizations took 618 milliseconds
+[23Nov2026 20:52:50.183] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/axelis_core-26.3/.gradle/mavenizer/repo/net/minecraftforge/forge/26.3-66.1.5/forge-26.3-66.1.5.jar%230!/assets/.mcassetsroot' uses unexpected schema
+[23Nov2026 20:52:50.184] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/axelis_core-26.3/.gradle/mavenizer/repo/net/minecraftforge/forge/26.3-66.1.5/forge-26.3-66.1.5.jar%230!/data/.mcassetsroot' uses unexpected schema
+[23Nov2026 20:52:50.211] [Render thread/INFO] [com.mojang.authlib.services.MinecraftServicesDiscoveryService/]: Environment: Environment[discoveryUrl=https://discovery.minecraftservices.com/minecraft/client, name=PROD]
+[23Nov2026 20:52:50.233] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[23Nov2026 20:52:50.366] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.4.3+4
+[23Nov2026 20:52:50.395] [Render thread/INFO] [com.mojang.blaze3d.platform.SdlDebug/]: SDL [SYSTEM]: App name: Minecraft
+[23Nov2026 20:52:50.396] [Render thread/INFO] [com.mojang.blaze3d.platform.SdlDebug/]: SDL [SYSTEM]: App version: 26.3
+[23Nov2026 20:52:50.396] [Render thread/INFO] [com.mojang.blaze3d.platform.SdlDebug/]: SDL [SYSTEM]: App ID: com.mojang.minecraft
+[23Nov2026 20:52:50.396] [Render thread/INFO] [com.mojang.blaze3d.platform.SdlDebug/]: SDL [SYSTEM]: SDL revision: SDL-3.4.14--128-NOTFOUND
+[23Nov2026 20:52:51.723] [Render thread/ERROR] [net.minecraft.client.Minecraft/]: Failed to create backend OpenGL
+com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+	at TRANSFORMER/minecraft@26.3/com.mojang.renderpearl.backend.opengl.GlDevice.<init>(GlDevice.java:77) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.renderpearl.backend.opengl.GlBackend.createDevice(GlBackend.java:76) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.<init>(Minecraft.java:491) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.main.Main.main(Main.java:272) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:96) ~[fmlloader-26.3-66.1.5.jar:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:79) ~[fmlloader-26.3-66.1.5.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:84) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:104) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.run(Launcher.java:151) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.main(Launcher.java:110) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) ~[modlauncher-10.2.6.jar:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) ~[bootstrap-2.1.8.jar:2.1.8]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+[23Nov2026 20:52:51.760] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Enabling optional FeatureSet [EXT MultiDraw]
+[23Nov2026 20:52:51.761] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Enabling optional FeatureSet [Wireframe]
+[23Nov2026 20:52:51.761] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Optional FeatureSet [AMD Buffer Marker] not supported
+[23Nov2026 20:52:51.761] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Enabling optional FeatureSet [Calibrated Timestamps]
+[23Nov2026 20:52:51.761] [Render thread/INFO] [com.mojang.renderpearl.backend.vulkan.VulkanBackend/]: Optional FeatureSet [NV Diagnostic Checkpoint] not supported
+[23Nov2026 20:52:51.849] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Using graphics backend Vulkan, using drivers: 1.4.335 llvmpipe Mesa 26.0.8-1ubuntu0.3 (LLVM 21.1.8)
+[23Nov2026 20:52:51.849] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Using graphics device: llvmpipe (LLVM 21.1.8, 256 bits) (0x10005)
+[23Nov2026 20:52:51.849] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Using graphics device extensions: VK_EXT_calibrated_timestamps (D), VK_KHR_synchronization2 (D), VK_EXT_multi_draw (D), VK_EXT_vertex_attribute_divisor (D), VK_KHR_swapchain (D), VK_KHR_surface (I), VK_KHR_push_descriptor (D), VK_KHR_xlib_surface (I), VK_EXT_debug_utils (I), VK_KHR_dynamic_rendering (D)
+[23Nov2026 20:52:51.861] [Render thread/INFO] [com.mojang.blaze3d.platform.Window/]: Created window using SDL video driver: x11
+[23Nov2026 20:52:51.951] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 66.1.5, for MC 26.3 with MCP 20260918.230105
+[23Nov2026 20:52:51.952] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v66.1.5 Initialized
+[23Nov2026 20:52:51.959] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
+[23Nov2026 20:52:52.003] [modloading-worker-0/INFO] [com.axeliscore.AxelisCore/]: Axelis Core 1.5.0 (API 6)
+[23Nov2026 20:52:52.590] [Download-1/INFO] [com.mojang.realmsclient.client.RealmsClient/]: Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: 0
+[23Nov2026 20:52:52.590] [Download-1/ERROR] [com.mojang.realmsclient.client.RealmsClient/]: Failed to fetch Realms feature flags
+com.mojang.realmsclient.exception.RealmsServiceException: Realms authentication error with message 'java.lang.RuntimeException: Failed to parse into SignedJWT: 0'
+	at TRANSFORMER/minecraft@26.3/com.mojang.realmsclient.client.RealmsClient.execute(RealmsClient.java:622) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.realmsclient.client.RealmsClient.fetchFeatureFlags(RealmsClient.java:177) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1789) [?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) [?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) [?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+[23Nov2026 20:52:52.828] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, vanilla, mod:forge, mod:axelis_core
+[23Nov2026 20:52:52.871] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/axelis_core-26.3/run/config/forge-client.toml is not correct. Correcting
+[23Nov2026 20:52:52.872] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SynchronizedConfig{DataHolder:{}}. 
+[23Nov2026 20:52:52.872] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[23Nov2026 20:52:52.872] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.allowMipmapLowering was corrected from null to its default, false. 
+[23Nov2026 20:52:53.090] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[23Nov2026 20:52:53.414] [Worker-Main-3/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-17.0.01.hex, loading
+[23Nov2026 20:52:53.425] [Worker-Main-1/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_pua-17.0.01.hex, loading
+[23Nov2026 20:52:53.497] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: OUTDATED Current: 66.1.5 Target: 66.1.9
+[23Nov2026 20:52:53.744] [Worker-Main-3/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-17.0.01.hex, loading
+[23Nov2026 20:52:54.525] [Worker-Main-3/WARN] [net.minecraft.client.resources.model.ModelDiscovery/]: Missing block model: minecraft:builtin/entity
+[23Nov2026 20:52:58.042] [Render thread/ERROR] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at TRANSFORMER/minecraft@26.3/com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:185) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.blaze3d.audio.Library.init(Library.java:66) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:112) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:103) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:120) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:43) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:19) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:739) ~[?:?]
+	at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:503) ~[?:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$prepareTasks$3(SimpleReloadInstance.java:75) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:160) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:24) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:135) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:116) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.runTick(Minecraft.java:1190) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.run(Minecraft.java:928) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.main.Main.main(Main.java:286) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:96) ~[fmlloader-26.3-66.1.5.jar:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:79) ~[fmlloader-26.3-66.1.5.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:84) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:104) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.run(Launcher.java:151) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.main(Launcher.java:110) ~[modlauncher-10.2.6.jar:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) ~[modlauncher-10.2.6.jar:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) ~[bootstrap-2.1.8.jar:2.1.8]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) ~[bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+[23Nov2026 20:52:58.045] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[23Nov2026 20:52:58.085] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[23Nov2026 20:52:58.087] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[23Nov2026 20:52:58.089] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[23Nov2026 20:52:58.094] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[23Nov2026 20:52:58.098] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[23Nov2026 20:52:58.102] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[23Nov2026 20:52:58.230] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[23Nov2026 20:52:58.247] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[23Nov2026 20:52:58.259] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[23Nov2026 20:52:58.260] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[23Nov2026 20:52:58.261] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[23Nov2026 20:53:01.639] [Worker-Main-3/INFO] [com.axeliscore.AxelisCore/]: DIAG_AXCORE_REGISTRO INTEGRATED
+[23Nov2026 20:53:01.659] [Worker-Main-3/INFO] [com.axeliscore.AxelisCore/]: AXCORE_COMANDOS galeria* criaturas* probar ir efecto datos* combate npc estudio* vestir desvestir particulas
+[23Nov2026 20:53:01.705] [Worker-Main-3/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1866 advancements
+[23Nov2026 20:53:02.153] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 26.3
+[23Nov2026 20:53:02.154] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[23Nov2026 20:53:02.631] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Loading 64 persistent chunks...
+[23Nov2026 20:53:02.633] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Preparing spawn area: 8%
+[23Nov2026 20:53:02.922] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[23Nov2026 20:53:03.127] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[23Nov2026 20:53:03.134] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[23Nov2026 20:53:03.200] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[23Nov2026 20:53:03.848] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Loading 0 chunks for player spawn...
+[23Nov2026 20:53:03.849] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Preparing spawn area: 60%
+[23Nov2026 20:53:03.849] [Server thread/INFO] [net.minecraft.server.level.progress.LoggingLevelLoadListener/]: Time elapsed: 1218 ms
+[23Nov2026 20:53:04.270] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:4f66a1e4] logged in with entity id 1 at (9.5, -60.0, -1.5)
+[23Nov2026 20:53:04.298] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Dev joined the game
+[23Nov2026 20:53:04.456] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST inicio pasos=287
+[23Nov2026 20:53:04.472] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 6, from 10
+[23Nov2026 20:53:04.483] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 5, from 0
+[23Nov2026 20:53:04.620] [Render thread/WARN] [net.minecraft.client.renderer.ShaderManager/]: Requested post effect does not exist: minecraft:end_of_frame
+[23Nov2026 20:53:04.694] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[23Nov2026 20:53:05.094] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2 advancements
+[23Nov2026 20:53:05.203] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[23Nov2026 20:53:05.775] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[23Nov2026 20:53:06.399] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[23Nov2026 20:53:06.399] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[23Nov2026 20:53:07.049] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=0 animaciones=0 texturas=0 errores=0
+[23Nov2026 20:53:07.051] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[23Nov2026 20:53:07.051] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[23Nov2026 20:53:07.356] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[23Nov2026 20:53:07.356] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[23Nov2026 20:53:07.471] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[23Nov2026 20:53:07.471] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[23Nov2026 20:53:07.851] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[23Nov2026 20:53:07.853] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[23Nov2026 20:53:14.498] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set Dev's game mode to Creative Mode
+[23Nov2026 20:53:14.499] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Incorrect argument for command
+[23Nov2026 20:53:14.499] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: gamerule doMobSpawning false<--[HERE]
+[23Nov2026 20:53:14.538] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 82 entities
+[23Nov2026 20:53:14.550] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[23Nov2026 20:53:14.564] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Reloading!
+[23Nov2026 20:53:15.147] [Worker-Main-3/INFO] [com.axeliscore.AxelisCore/]: DIAG_AXCORE_REGISTRO INTEGRATED
+[23Nov2026 20:53:15.147] [Worker-Main-3/INFO] [com.axeliscore.AxelisCore/]: AXCORE_COMANDOS galeria* criaturas* probar ir efecto datos* combate npc estudio* vestir desvestir particulas
+[23Nov2026 20:53:15.160] [Worker-Main-3/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1866 advancements
+[23Nov2026 20:53:15.311] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2 advancements
+[23Nov2026 20:53:20.488] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Axelis Core 1.5.0 (API 6)
+[23Nov2026 20:53:20.488] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_INFO Axelis Core 1.5.0 (API 6) usuarios=[]
+[23Nov2026 20:53:20.490] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set minecraft:overworld to 6000 tick(s)
+[23Nov2026 20:53:20.490] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set the weather to clear
+[23Nov2026 20:53:20.491] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: No entity was found
+[23Nov2026 20:53:20.497] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -6.500000
+[23Nov2026 20:53:20.638] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageMapped/]: Resizing Chunk Sections Command Buffer, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[23Nov2026 20:53:20.638] [Render thread/INFO] [net.minecraft.client.renderer.DynamicGpuDataStorageNonMapped/]: Resizing Chunk Sections Instanced, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[23Nov2026 20:53:23.014] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_GALERIA 5
+[23Nov2026 20:53:23.014] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Galería de Axelis Core
+[23Nov2026 20:53:27.021] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_1_galeria_1
+[23Nov2026 20:53:27.963] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_1_galeria_2
+[23Nov2026 20:53:28.719] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_1_galeria_3
+[23Nov2026 20:53:29.076] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 6.500000, -60.000000, -4.500000
+[23Nov2026 20:53:30.616] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_2_galeria_34
+[23Nov2026 20:53:30.939] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, 6.500000
+[23Nov2026 20:53:32.459] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_2_galeria_espalda
+[23Nov2026 20:53:32.765] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.500000, -60.000000, -1.400000
+[23Nov2026 20:53:34.266] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_3_cara_habla_1
+[23Nov2026 20:53:34.579] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.500000, -60.000000, -1.400000
+[23Nov2026 20:53:34.919] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_3_cara_habla_2
+[23Nov2026 20:53:35.226] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.500000, -60.000000, -1.400000
+[23Nov2026 20:53:35.563] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_3_cara_habla_3
+[23Nov2026 20:53:35.921] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:35.922] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR sit personajes=5
+[23Nov2026 20:53:36.870] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_sit
+[23Nov2026 20:53:37.200] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:37.201] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR point personajes=5
+[23Nov2026 20:53:38.113] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_point
+[23Nov2026 20:53:38.414] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:38.414] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR think personajes=5
+[23Nov2026 20:53:39.570] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_think
+[23Nov2026 20:53:39.921] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:39.921] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR laugh personajes=5
+[23Nov2026 20:53:40.632] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_laugh
+[23Nov2026 20:53:40.971] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:40.971] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR attack personajes=5
+[23Nov2026 20:53:41.161] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_attack
+[23Nov2026 20:53:41.473] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:41.474] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR fish_cast personajes=5
+[23Nov2026 20:53:41.815] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_fish_cast
+[23Nov2026 20:53:42.169] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:42.169] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR cheer personajes=5
+[23Nov2026 20:53:42.678] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_cheer
+[23Nov2026 20:53:43.033] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:43.033] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR nod personajes=5
+[23Nov2026 20:53:43.273] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_nod
+[23Nov2026 20:53:43.586] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:43.586] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR wave personajes=5
+[23Nov2026 20:53:44.316] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_wave
+[23Nov2026 20:53:44.643] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 4.500000, -60.000000, -4.000000
+[23Nov2026 20:53:44.644] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR death personajes=5
+[23Nov2026 20:53:46.262] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_death
+[23Nov2026 20:53:46.568] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Mara'/242, l='ServerLevel[world]', x=4.50, y=-60.00, z=0.50] died: Mara was killed
+[23Nov2026 20:53:46.569] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Iker'/243, l='ServerLevel[world]', x=2.50, y=-60.00, z=0.50] died: Iker was killed
+[23Nov2026 20:53:46.570] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Lu'/244, l='ServerLevel[world]', x=0.50, y=-60.00, z=0.50] died: Lu was killed
+[23Nov2026 20:53:46.570] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Nilo'/245, l='ServerLevel[world]', x=-1.50, y=-60.00, z=0.50] died: Nilo was killed
+[23Nov2026 20:53:46.571] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Sol'/246, l='ServerLevel[world]', x=-3.50, y=-60.00, z=0.50] died: Sol was killed
+[23Nov2026 20:53:46.571] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 5 entities
+[23Nov2026 20:53:46.580] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Persona
+[23Nov2026 20:53:46.581] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -1.500000
+[23Nov2026 20:53:47.812] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_IR 0.6 true
+[23Nov2026 20:53:50.007] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -9.577000, -60.000000, 2.566000
+[23Nov2026 20:53:50.306] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_5_camina_1
+[23Nov2026 20:53:50.620] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -10.128000, -60.000000, 2.457000
+[23Nov2026 20:53:50.919] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_5_camina_2
+[23Nov2026 20:53:51.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -10.809000, -60.000000, 2.370000
+[23Nov2026 20:53:51.582] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_5_camina_3
+[23Nov2026 20:53:51.917] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_IR 1.6 true
+[23Nov2026 20:53:53.775] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -10.193000, -60.000000, 3.143000
+[23Nov2026 20:53:54.007] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_6_corre_1
+[23Nov2026 20:53:54.369] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -10.492000, -60.000000, 2.807000
+[23Nov2026 20:53:54.601] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_6_corre_2
+[23Nov2026 20:53:54.967] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -10.899000, -60.000000, 2.436000
+[23Nov2026 20:53:55.191] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_6_corre_3
+[23Nov2026 20:53:55.522] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Applied 1.0 damage to Persona
+[23Nov2026 20:53:55.653] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_7_dano
+[23Nov2026 20:53:55.998] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 148 entities
+[23Nov2026 20:53:56.011] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_CRIATURAS 5
+[23Nov2026 20:53:56.016] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -9.500000
+[23Nov2026 20:54:00.030] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_8_criaturas_1
+[23Nov2026 20:54:00.877] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_8_criaturas_2
+[23Nov2026 20:54:01.179] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 9.000000, -59.000000, -6.000000
+[23Nov2026 20:54:02.723] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_8_criaturas_34
+[23Nov2026 20:54:03.028] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:03.029] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR attack personajes=5
+[23Nov2026 20:54:03.407] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_0_attack
+[23Nov2026 20:54:03.768] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:03.768] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR sit personajes=5
+[23Nov2026 20:54:04.733] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_1_sit
+[23Nov2026 20:54:05.066] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:05.066] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR slam personajes=5
+[23Nov2026 20:54:05.400] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Player Dev standing on air - force-sending blocks below
+[23Nov2026 20:54:06.128] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_2_slam
+[23Nov2026 20:54:06.456] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:06.709] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_3_slam
+[23Nov2026 20:54:07.016] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:07.016] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR sweep personajes=5
+[23Nov2026 20:54:07.834] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_4_sweep
+[23Nov2026 20:54:08.156] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:08.156] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR sniff personajes=5
+[23Nov2026 20:54:08.977] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_5_sniff
+[23Nov2026 20:54:09.330] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:09.330] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR sleep personajes=5
+[23Nov2026 20:54:10.562] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_6_sleep
+[23Nov2026 20:54:10.926] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:10.926] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR play personajes=5
+[23Nov2026 20:54:11.821] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_7_play
+[23Nov2026 20:54:12.173] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:12.173] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR stomp personajes=5
+[23Nov2026 20:54:12.772] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_8_stomp
+[23Nov2026 20:54:13.095] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:13.095] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR phase personajes=5
+[23Nov2026 20:54:14.605] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_9_phase
+[23Nov2026 20:54:14.924] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to -0.500000, -58.500000, -8.500000
+[23Nov2026 20:54:14.925] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_PROBAR death personajes=5
+[23Nov2026 20:54:17.530] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_10_death
+[23Nov2026 20:54:17.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 197 entities
+[23Nov2026 20:54:17.896] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_GALERIA 5
+[23Nov2026 20:54:17.896] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Galería de Axelis Core
+[23Nov2026 20:54:17.896] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -2.500000
+[23Nov2026 20:54:18.524] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO demo jugadores=1
+[23Nov2026 20:54:20.146] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_10_ui_demo_botones
+[23Nov2026 20:54:21.209] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_10_ui_demo_lista
+[23Nov2026 20:54:22.589] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_10_ui_demo_barras
+[23Nov2026 20:54:23.900] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tarjetas
+[23Nov2026 20:54:25.158] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_lista_cuadro
+[23Nov2026 20:54:26.415] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_boton_icono
+[23Nov2026 20:54:27.517] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_ajustes
+[23Nov2026 20:54:28.791] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tema_madera
+[23Nov2026 20:54:30.215] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tema_pergamino
+[23Nov2026 20:54:31.518] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tema_mar
+[23Nov2026 20:54:32.873] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tema_piedra
+[23Nov2026 20:54:33.499] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO dialogo jugadores=1
+[23Nov2026 20:54:37.148] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_11_ui_dialogo
+[23Nov2026 20:54:38.169] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO titulo jugadores=1
+[23Nov2026 20:54:38.170] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO aviso jugadores=1
+[23Nov2026 20:54:38.875] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_12_fx_titulo_aviso
+[23Nov2026 20:54:39.227] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO vineta jugadores=1
+[23Nov2026 20:54:39.727] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_12_fx_vineta
+[23Nov2026 20:54:40.075] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO destello jugadores=1
+[23Nov2026 20:54:40.216] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_12_fx_destello
+[23Nov2026 20:54:40.549] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Mara'/573, l='ServerLevel[world]', x=4.50, y=-60.00, z=3.50] died: Mara was killed
+[23Nov2026 20:54:40.550] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Iker'/574, l='ServerLevel[world]', x=2.50, y=-60.00, z=3.50] died: Iker was killed
+[23Nov2026 20:54:40.550] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Lu'/575, l='ServerLevel[world]', x=0.50, y=-60.00, z=3.50] died: Lu was killed
+[23Nov2026 20:54:40.551] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Nilo'/576, l='ServerLevel[world]', x=-1.50, y=-60.00, z=3.50] died: Nilo was killed
+[23Nov2026 20:54:40.551] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Sol'/577, l='ServerLevel[world]', x=-3.50, y=-60.00, z=3.50] died: Sol was killed
+[23Nov2026 20:54:40.558] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 159 entities
+[23Nov2026 20:54:40.570] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Persona
+[23Nov2026 20:54:40.571] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, 0.500000
+[23Nov2026 20:54:43.369] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_14_mirar_persona
+[23Nov2026 20:54:43.706] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Persona['Nilo'/656, l='ServerLevel[world]', x=0.50, y=-60.00, z=3.50] died: Nilo was killed
+[23Nov2026 20:54:43.720] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 123 entities
+[23Nov2026 20:54:43.722] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Crystal Colossus
+[23Nov2026 20:54:43.723] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, 0.500000
+[23Nov2026 20:54:45.936] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_14_mirar_coloso
+[23Nov2026 20:54:46.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 146 entities
+[23Nov2026 20:54:46.576] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 68 entities
+[23Nov2026 20:54:46.580] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Cinco bestias con un estado cada una
+[23Nov2026 20:54:46.581] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -2.500000
+[23Nov2026 20:54:48.118] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: los estados llegaron al cliente
+[23Nov2026 20:54:48.118] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Only one entity is allowed, but the provided selector allows more than one
+[23Nov2026 20:54:48.119] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: damage @e[type=axelis_core:bestia] 2<--[HERE]
+[23Nov2026 20:54:48.426] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_15_estados_barras_numeros
+[23Nov2026 20:54:48.780] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Applied 9.0 damage to Frozen
+[23Nov2026 20:54:49.097] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_15_estados_golpe_grande
+[23Nov2026 20:54:49.407] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set Dev's game mode to Survival Mode
+[23Nov2026 20:54:49.409] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Applied effect Resistance to Dev
+[23Nov2026 20:54:49.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -2.500000
+[23Nov2026 20:54:49.441] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[23Nov2026 20:54:50.620] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el jugador ve sus tres estados
+[23Nov2026 20:54:51.323] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_16_estados_jugador
+[23Nov2026 20:54:51.686] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set Dev's game mode to Creative Mode
+[23Nov2026 20:54:51.687] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Removed every effect from Dev
+[23Nov2026 20:54:51.688] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Bestia['Stunned'/983, l='ServerLevel[world]', x=-3.10, y=-60.00, z=2.50] died: Stunned was killed
+[23Nov2026 20:54:51.688] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Bestia['Burning'/984, l='ServerLevel[world]', x=-1.30, y=-60.00, z=2.50] died: Burning was killed
+[23Nov2026 20:54:51.689] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Bestia['Frozen'/985, l='ServerLevel[world]', x=0.50, y=-60.00, z=2.50] died: Frozen was killed
+[23Nov2026 20:54:51.689] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Bestia['Marked'/986, l='ServerLevel[world]', x=2.30, y=-60.00, z=2.50] died: Marked was killed
+[23Nov2026 20:54:51.689] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Bestia['Bleeding'/987, l='ServerLevel[world]', x=4.10, y=-60.00, z=2.50] died: Bleeding was killed
+[23Nov2026 20:54:51.694] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 57 entities
+[23Nov2026 20:54:51.722] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[23Nov2026 20:54:52.138] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Successfully filled 120 block(s)
+[23Nov2026 20:54:52.573] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Avisos: círculo, anillo, línea, cono y cuadro
+[23Nov2026 20:54:52.574] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -53.000000, -1.500000
+[23Nov2026 20:54:54.125] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se ven los cinco avisos
+[23Nov2026 20:54:54.458] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_17_avisos
+[23Nov2026 20:55:00.872] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_17_avisos_casi_llenos
+[23Nov2026 20:55:01.211] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 114 entities
+[23Nov2026 20:55:01.512] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Proyectiles: fuego, escarcha, fragmento y cristal
+[23Nov2026 20:55:01.512] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -2.500000
+[23Nov2026 20:55:02.844] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se ven los proyectiles
+[23Nov2026 20:55:03.222] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_18_proyectiles
+[23Nov2026 20:55:03.565] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 145 entities
+[23Nov2026 20:55:03.856] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: ¡Ahí viene el Coloso!
+[23Nov2026 20:55:03.857] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.500000, -59.000000, 1.000000
+[23Nov2026 20:55:06.081] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: suena la música de la fase 1 del Coloso
+[23Nov2026 20:55:06.415] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_fase1
+[23Nov2026 20:55:06.722] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.500000, -53.000000, -1.500000
+[23Nov2026 20:55:07.500] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_martillazo
+[23Nov2026 20:55:07.812] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_JEFE_FASE Crystal Colossus fase=1
+[23Nov2026 20:55:07.813] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.500000, -59.000000, 1.000000
+[23Nov2026 20:55:08.819] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el Coloso pasó a la fase 2
+[23Nov2026 20:55:08.819] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: cambió la música a la de la fase 2
+[23Nov2026 20:55:09.019] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_fase2_titulo
+[23Nov2026 20:55:11.557] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -53.000000, -4.500000
+[23Nov2026 20:55:12.476] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_lluvia
+[23Nov2026 20:55:12.832] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.500000, -59.000000, 1.000000
+[23Nov2026 20:55:13.773] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_fragmentos
+[23Nov2026 20:55:14.077] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_JEFE_FASE Crystal Colossus fase=2
+[23Nov2026 20:55:15.209] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_fase3_titulo
+[23Nov2026 20:55:17.770] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -53.000000, -8.500000
+[23Nov2026 20:55:18.684] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_onda
+[23Nov2026 20:55:19.724] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_onda_2
+[23Nov2026 20:55:20.057] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.500000, -59.000000, 1.000000
+[23Nov2026 20:55:20.402] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Player Dev standing on air - force-sending blocks below
+[23Nov2026 20:55:21.421] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_escarcha
+[23Nov2026 20:55:21.758] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 112 entities
+[23Nov2026 20:55:21.765] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Successfully filled 120 block(s)
+[23Nov2026 20:55:22.361] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 21 entities
+[23Nov2026 20:55:22.364] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: No items were found on player Dev
+[23Nov2026 20:55:22.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set minecraft:overworld to 6000 tick(s)
+[23Nov2026 20:55:22.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Se borraron tus misiones, amistades y compras
+[23Nov2026 20:55:22.366] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Listo: Mara vive y trabaja aquí (cambia con /axeliscore npc casa|trabajo)
+[23Nov2026 20:55:22.367] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Listo: Iker vive y trabaja aquí (cambia con /axeliscore npc casa|trabajo)
+[23Nov2026 20:55:22.368] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.000000, -60.000000, -0.500000
+[23Nov2026 20:55:24.223] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se ven los dos NPC con su definición
+[23Nov2026 20:55:24.224] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Mara tiene una misión nueva (!)
+[23Nov2026 20:55:24.763] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_20_npc_marcas
+[23Nov2026 20:55:26.708] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_21_npc_hablar
+[23Nov2026 20:55:27.169] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: con una misión nueva abre en Misiones
+[23Nov2026 20:55:28.839] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_21_npc_hablar_saludo
+[23Nov2026 20:55:29.916] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_22_npc_misiones
+[23Nov2026 20:55:30.289] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se puede aceptar la misión del pan
+[23Nov2026 20:55:30.292] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_MISION aceptar axelis_core:pan
+[23Nov2026 20:55:31.261] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la misión quedó activa
+[23Nov2026 20:55:31.417] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Gave 6 [Bread] to Dev
+[23Nov2026 20:55:32.158] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_MISION lista axelis_core:pan
+[23Nov2026 20:55:32.283] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la misión está lista
+[23Nov2026 20:55:32.792] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_23_npc_mision_lista
+[23Nov2026 20:55:33.157] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se puede entregar
+[23Nov2026 20:55:33.158] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AMISTAD axelis_core:mara nivel=1
+[23Nov2026 20:55:33.158] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_MISION entregar axelis_core:pan
+[23Nov2026 20:55:33.300] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 3 advancements
+[23Nov2026 20:55:33.428] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: premio y regalo
+[23Nov2026 20:55:34.051] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_24_npc_entregada
+[23Nov2026 20:55:35.195] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_25_npc_tienda
+[23Nov2026 20:55:35.612] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se puede comprar pan
+[23Nov2026 20:55:35.612] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_TIENDA axelis_core:mara oferta=0 veces=1
+[23Nov2026 20:55:35.868] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: compró
+[23Nov2026 20:55:36.351] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_25_npc_tienda_comprado
+[23Nov2026 20:55:37.484] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_26_npc_amistad
+[23Nov2026 20:55:37.882] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_MISION aceptar axelis_core:zombis
+[23Nov2026 20:55:37.883] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Misión aceptada
+[23Nov2026 20:55:37.886] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Zombie
+[23Nov2026 20:55:37.887] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Zombie
+[23Nov2026 20:55:39.421] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Dev has made the advancement [Monster Hunter]
+[23Nov2026 20:55:39.431] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Applied 100.0 damage to Zombie
+[23Nov2026 20:55:39.432] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Applied 100.0 damage to Zombie
+[23Nov2026 20:55:39.475] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Monster Hunter]
+[23Nov2026 20:55:39.476] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 45 advancements
+[23Nov2026 20:55:40.950] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: cuenta los zombis
+[23Nov2026 20:55:40.955] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 2.000000, -60.000000, -0.500000
+[23Nov2026 20:55:41.650] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_27_rastreador
+[23Nov2026 20:55:41.974] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la tecla del diario está registrada
+[23Nov2026 20:55:43.125] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_28_diario
+[23Nov2026 20:55:44.147] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_28_diario_hechas
+[23Nov2026 20:55:44.518] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Npc['Mara'/1468, l='ServerLevel[world]', x=0.50, y=-60.00, z=4.50] died: Mara was killed
+[23Nov2026 20:55:44.518] [Server thread/INFO] [net.minecraft.world.entity.LivingEntity/]: Named entity Npc['Iker'/1469, l='ServerLevel[world]', x=3.50, y=-60.00, z=4.50] died: Iker was killed
+[23Nov2026 20:55:44.522] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 62 entities
+[23Nov2026 20:55:44.522] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Se borraron tus misiones, amistades y compras
+[23Nov2026 20:55:44.523] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Removed 15 item(s) from player Dev
+[23Nov2026 20:55:45.137] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 17 entities
+[23Nov2026 20:55:45.138] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Persona
+[23Nov2026 20:55:45.139] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -0.500000
+[23Nov2026 20:55:47.181] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_ESTUDIO abierto entity.axelis_core.persona
+[23Nov2026 20:55:48.825] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_29_estudio
+[23Nov2026 20:55:49.141] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el editor tomó a la Persona
+[23Nov2026 20:55:49.142] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la Persona tiene la animación de saludar
+[23Nov2026 20:55:50.201] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_29_estudio_hueso
+[23Nov2026 20:55:51.451] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_29_estudio_clave
+[23Nov2026 20:55:51.773] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el brazo quedó donde se puso (-160.0, 25.0)
+[23Nov2026 20:55:52.811] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_29_estudio_efecto
+[23Nov2026 20:55:53.175] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: quedó el efecto en ese momento (chispas)
+[23Nov2026 20:55:53.176] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la animación tiene efectos
+[23Nov2026 20:55:53.327] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_ESTUDIO guardado /home/runner/work/minecraft-mods/minecraft-mods/gen/axelis_core-26.3/run/axelis_estudio/persona.animation.json
+[23Nov2026 20:55:53.328] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se guardó el archivo de animaciones
+[23Nov2026 20:55:53.783] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [Estudio] recargado: persona.animation.json
+[23Nov2026 20:55:53.783] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=0 animaciones=1 texturas=0 errores=0
+[23Nov2026 20:55:55.462] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: existe axelis_estudio/persona.animation.json
+[23Nov2026 20:55:55.462] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el archivo guardado lleva el efecto (particle_effects)
+[23Nov2026 20:55:55.462] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el editor soltó a la Persona
+[23Nov2026 20:55:55.634] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 80 entities
+[23Nov2026 20:55:55.636] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Jelly
+[23Nov2026 20:55:55.637] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, 0.000000
+[23Nov2026 20:55:55.795] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [Estudio] recargado: gelatina.bbmodel (2 huesos, 1 animaciones)
+[23Nov2026 20:55:55.796] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=1 animaciones=2 texturas=0 errores=0
+[23Nov2026 20:55:58.180] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el estudio cargó gelatina.bbmodel
+[23Nov2026 20:55:58.682] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_30_estudio_bbmodel
+[23Nov2026 20:55:59.611] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_30_estudio_bbmodel_2
+[23Nov2026 20:56:00.901] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=0 animaciones=0 texturas=0 errores=0
+[23Nov2026 20:56:02.503] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: al borrar el archivo vuelve el modelo del mod
+[23Nov2026 20:56:02.606] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 84 entities
+[23Nov2026 20:56:02.607] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, -2.500000
+[23Nov2026 20:56:03.429] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO explosion_magica
+[23Nov2026 20:56:03.829] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_explosion_magica
+[23Nov2026 20:56:05.407] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO curacion
+[23Nov2026 20:56:06.107] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_curacion
+[23Nov2026 20:56:07.681] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO aparecer
+[23Nov2026 20:56:08.181] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_aparecer
+[23Nov2026 20:56:09.716] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO fuego_circulo
+[23Nov2026 20:56:10.673] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_fuego_circulo
+[23Nov2026 20:56:12.203] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO subir_nivel
+[23Nov2026 20:56:12.732] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_subir_nivel
+[23Nov2026 20:56:14.274] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO portal
+[23Nov2026 20:56:15.432] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_portal
+[23Nov2026 20:56:16.977] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO chispas
+[23Nov2026 20:56:17.180] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_chispas
+[23Nov2026 20:56:18.717] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_EFECTO nevada
+[23Nov2026 20:56:20.350] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_nevada
+[23Nov2026 20:56:21.919] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: llegaron los efectos al cliente (8)
+[23Nov2026 20:56:22.073] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 43 entities
+[23Nov2026 20:56:22.404] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Set minecraft:overworld to time marker minecraft:noon
+[23Nov2026 20:56:22.405] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, 40.500000
+[23Nov2026 20:56:22.406] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: No entity was found
+[23Nov2026 20:56:22.407] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Persona
+[23Nov2026 20:56:22.407] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Vestuario: axelis_core:overol a 1
+[23Nov2026 20:56:22.408] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Vestuario: axelis_core:sombrero a 1
+[23Nov2026 20:56:23.917] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Vestuario: axelis_core:overol a 1
+[23Nov2026 20:56:23.917] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Vestuario: axelis_core:sombrero a 1
+[23Nov2026 20:56:24.780] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: llevo el overol y el sombrero (2)
+[23Nov2026 20:56:26.129] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_30_vestuario_frente
+[23Nov2026 20:56:27.468] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_30_vestuario_espalda
+[23Nov2026 20:56:27.777] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 1.500000, -60.000000, 40.500000
+[23Nov2026 20:56:28.830] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_30_vestuario_persona
+[23Nov2026 20:56:29.159] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: No items were found on player Dev
+[23Nov2026 20:56:29.160] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Gave 1 [Straw hat] to Dev
+[23Nov2026 20:56:29.160] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.500000, -60.000000, 40.500000
+[23Nov2026 20:56:30.420] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_objeto3d_mano
+[23Nov2026 20:56:31.674] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_objeto3d_tercera
+[23Nov2026 20:56:32.031] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: tengo en la mano el objeto con modelo 3D
+[23Nov2026 20:56:32.132] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Removed 1 item(s) from player Dev
+[23Nov2026 20:56:32.134] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Summoned new Straw hat
+[23Nov2026 20:56:32.135] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Teleported Dev to 0.000000, -60.000000, 40.000000
+[23Nov2026 20:56:33.651] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto core_31_objeto3d_suelo
+[23Nov2026 20:56:33.964] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed 9 entities
+[23Nov2026 20:56:33.965] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Vestuario: quitado a 1
+[23Nov2026 20:56:33.965] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Killed Persona
+[23Nov2026 20:56:34.824] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: ya no llevo nada
+[23Nov2026 20:56:34.926] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: datos: mundo bien, opciones bien
+[23Nov2026 20:56:34.927] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_DATOS mundo=true config=true peces=2 jugadores=1
+[23Nov2026 20:56:36.432] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: los datos del jugador llegaron al cliente
+[23Nov2026 20:56:36.930] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST AXCORE_AUTOTEST_FIN fotos=103 fallos=0
+[23Nov2026 20:56:36.963] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[23Nov2026 20:56:37.002] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[23Nov2026 20:56:37.003] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[23Nov2026 20:56:37.018] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[23Nov2026 20:56:37.021] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: System chat: Dev left the game
+[23Nov2026 20:56:37.030] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[23Nov2026 20:56:37.030] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[23Nov2026 20:56:37.347] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[23Nov2026 20:56:38.077] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[23Nov2026 20:56:38.093] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
