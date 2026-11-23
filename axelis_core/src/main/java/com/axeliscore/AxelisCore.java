@@ -36,6 +36,7 @@ public class AxelisCore {
         //#else
         IEventBus bus = context.getModEventBus();
         bus.addListener(this::commonSetup);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreCommands::register);
         //#endif
         com.axeliscore.registry.CoreEntities.ENTITIES.register(bus);
         LOGGER.info("Axelis Core {} (API {})", VERSION, API);

@@ -3,6 +3,7 @@ axeliscore galeria
 axeliscore probar wave
 axeliscore criaturas
 axeliscore probar slam
+kill @e[type=!player]
 #expect AXCORE_INFO Axelis Core
 #expect AXCORE_GALERIA 5
 #expect AXCORE_CRIATURAS 5

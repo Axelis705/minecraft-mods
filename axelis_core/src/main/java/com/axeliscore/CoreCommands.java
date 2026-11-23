@@ -32,7 +32,9 @@ import java.util.List;
  *     <li>/axeliscore ir &lt;x y z&gt; [velocidad]: la Persona más cercana camina (o corre) hasta ahí.</li>
  * </ul>
  */
-@Mod.EventBusSubscriber(modid = AxelisCore.MODID)
+//#if MC >= 26.1
+//$$ @Mod.EventBusSubscriber(modid = AxelisCore.MODID)
+//#endif
 public final class CoreCommands {
     /** Gesto que repite cada Persona de la galería y cada cuántos ticks. */
     private static final String[][] SHOW = {{"wave", "50"}, {"talk", "400"}, {"cheer", "40"}, {"fish_cast", "40"}, {"dance", "400"}};
@@ -40,8 +42,13 @@ public final class CoreCommands {
     private CoreCommands() {
     }
 
+    /**
+     * (En 1.20 y 1.21 se registra a mano desde {@link AxelisCore}: en la 1.21.1 el registro automático no llegaba al servidor del
+     * mundo de un jugador y los comandos no existían ahí.)
+     */
     @SubscribeEvent
     public static void register(RegisterCommandsEvent e) {
+        AxelisCore.LOGGER.info("DIAG_AXCORE_REGISTRO {}", e.getCommandSelection());
         CommandDispatcher<CommandSourceStack> d = e.getDispatcher();
         var galeria = Commands.literal("galeria").requires(Plat::isOp)
                 .executes(c -> gallery(c, c.getSource().getPosition(), c.getSource().getRotation().y + 180F))
