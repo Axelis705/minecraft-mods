@@ -1,5 +1,7 @@
 package com.axeliscore.character;
 
+import net.minecraft.network.chat.Component;
+
 import com.axeliscore.anim.AnimHost;
 import com.axeliscore.anim.Pose;
 import com.axeliscore.plat.Plat;
@@ -137,5 +139,11 @@ public class Chispa extends CoreMob {
         if (deathTime <= 0 && !axDoing(h, "sleep") && !axDoing(h, "happy")) {
             axLook(h, pose, pt, "head", null, 1F);
         }
+    }
+
+    @Override
+    public void axInfo(com.axeliscore.ui.InfoCard card, boolean detail) {
+        card.rareza(com.axeliscore.ui.Rareza.RARO).tag(Component.translatable("axelis_core.info.mascota"));
+        super.axInfo(card, detail);
     }
 }

@@ -15,5 +15,17 @@
   "axelis_core.dialog.si": "¡Sí, enséñame!",
   "axelis_core.dialog.no": "Ahora no",
   "axelis_core.dialog.muestra": "¡Hola! Soy Nilo. Llevo cuarenta años pescando en este lago y conozco cada pez que nada en él. ¿Quieres que te enseñe a lanzar la caña?",
-  "axelis_core.dialog.genial": "¡Así me gusta! Ven al muelle."
+  "axelis_core.dialog.genial": "¡Así me gusta! Ven al muelle.",
+  "axelis_core.rareza.comun": "Común",
+  "axelis_core.rareza.poco_comun": "Poco común",
+  "axelis_core.rareza.raro": "Raro",
+  "axelis_core.rareza.epico": "Épico",
+  "axelis_core.rareza.legendario": "Legendario",
+  "axelis_core.rareza.mitico": "Mítico",
+  "axelis_core.info.vida": "Vida",
+  "axelis_core.info.platicar": "Clic derecho: platicar",
+  "axelis_core.info.jefe": "Jefe",
+  "axelis_core.info.mascota": "Mascota",
+  "axelis_core.info.mas": "Shift: más información",
+  "axelis_core.info.coloso": "Un guardián de cristal que despierta cuando alguien se acerca a su cueva. Golpea el suelo, barre con los brazos y cambia de fase cuando está herido."
 }

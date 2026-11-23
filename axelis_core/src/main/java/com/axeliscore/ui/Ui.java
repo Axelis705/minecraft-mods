@@ -46,6 +46,14 @@ public final class Ui {
      */
     public static void panel(G g, int x, int y, int w, int h, Theme t, float open) {
         float a = Math.max(0, Math.min(1, open));
+        if (t.frame != null) {
+            // con marco de textura: sombra, fondo con degradado y el marco por fuera (no tapa el contenido)
+            round(g, x + 2, y + 5, w + 4, h + 2, alpha(t.shadow, a));
+            g.fillGradient(x - 1, y - 1, x + w + 1, y + h + 1, alpha(t.bgTop, a), alpha(t.bgBottom, a));
+            g.fill(x + 4, y + 3, x + w - 4, y + 4, alpha(t.accent, a * 0.85F));
+            frame(g, t.frame, x - 5, y - 5, w + 10, h + 10, a);
+            return;
+        }
         round(g, x + 3, y + 4, w, h, alpha(t.shadow, a));
         round(g, x - 1, y - 1, w + 2, h + 2, alpha(t.border, a));
         g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, alpha(t.bgTop, a), alpha(t.bgBottom, a));
@@ -61,6 +69,32 @@ public final class Ui {
         g.fill(x + w - 5, y + 6, x + w - 3, y + 8, r);
         g.fill(x + 3, y + h - 7, x + 5, y + h - 5, r);
         g.fill(x + w - 5, y + h - 7, x + w - 3, y + h - 5, r);
+    }
+
+    /**
+     * Marco con textura de 32x32 estirado por partes: esquinas de 10x10 fijas y bordes que se repiten (no se deforman los dibujos).
+     * El centro de la textura es transparente.
+     */
+    public static void frame(G g, net.minecraft.resources.ResourceLocation tex, int x, int y, int w, int h, float a) {
+        final int s = 32, c = 10, m = s - 2 * c;
+        int col = alpha(0xFFFFFFFF, a);
+        // esquinas
+        g.blitTint(tex, x, y, c, c, 0, 0, c, c, s, s, col);
+        g.blitTint(tex, x + w - c, y, c, c, s - c, 0, c, c, s, s, col);
+        g.blitTint(tex, x, y + h - c, c, c, 0, s - c, c, c, s, s, col);
+        g.blitTint(tex, x + w - c, y + h - c, c, c, s - c, s - c, c, c, s, s, col);
+        // bordes de arriba y abajo
+        for (int i = c; i < w - c; i += m) {
+            int seg = Math.min(m, w - c - i);
+            g.blitTint(tex, x + i, y, seg, c, c, 0, seg, c, s, s, col);
+            g.blitTint(tex, x + i, y + h - c, seg, c, c, s - c, seg, c, s, s, col);
+        }
+        // bordes de los lados
+        for (int j = c; j < h - c; j += m) {
+            int seg = Math.min(m, h - c - j);
+            g.blitTint(tex, x, y + j, c, seg, 0, c, c, seg, s, s, col);
+            g.blitTint(tex, x + w - c, y + j, c, seg, s - c, c, c, seg, s, s, col);
+        }
     }
 
     /** Un hueco hundido (para listas, retratos, ranuras). */

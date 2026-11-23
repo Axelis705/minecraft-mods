@@ -11,9 +11,19 @@ public final class CoreScenario {
     private CoreScenario() {
     }
 
+    /** Corre algo en el servidor del mundo de prueba (después de los comandos que ya se pidieron). */
+    static void onServer(java.util.function.Consumer<net.minecraft.server.level.ServerLevel> fn) {
+        var s = net.minecraft.client.Minecraft.getInstance().getSingleplayerServer();
+        s.execute(() -> fn.accept(s.overworld()));
+    }
+
     static void demoTab(int i) {
+        demo(d -> d.showTab(i));
+    }
+
+    static void demo(java.util.function.Consumer<com.axeliscore.ui.DemoScreen> fn) {
         if (com.axeliscore.plat.client.Screens.current() instanceof com.axeliscore.ui.DemoScreen d) {
-            d.showTab(i);
+            fn.accept(d);
         }
     }
 
@@ -116,6 +126,49 @@ public final class CoreScenario {
             t.photo("10_ui_demo_botones", 1500, () -> t.cmd("axeliscore efecto demo"));
             t.photo("10_ui_demo_lista", 600, () -> demoTab(1));
             t.photo("10_ui_demo_barras", 900, () -> demoTab(2));
+            // cuadros de información, tarjetas, interruptores, deslizadores y temas con marco (el mouse "falso" hace aparecer los cuadros)
+            t.photo("13_ui_tarjetas", 900, () -> demo(d -> {
+                d.showTab(3);
+                d.pick(8);
+                com.axeliscore.ui.UiScreen.fakeMouse = d.cellCenter(9);
+            }));
+            t.photo("13_ui_lista_cuadro", 800, () -> demo(d -> {
+                d.showTab(1);
+                com.axeliscore.ui.UiScreen.fakeMouse = d.rowCenter(3);
+            }));
+            t.photo("13_ui_boton_icono", 800, () -> demo(d -> {
+                d.showTab(0);
+                com.axeliscore.ui.UiScreen.fakeMouse = d.iconCenter(3);
+            }));
+            t.photo("13_ui_ajustes", 700, () -> demo(d -> {
+                com.axeliscore.ui.UiScreen.fakeMouse = null;
+                d.showTab(4);
+            }));
+            t.photo("13_ui_tema_madera", 900, () -> demo(d -> {
+                d.theme(1);
+                d.showTab(3);
+                d.pick(9);
+                com.axeliscore.ui.UiScreen.fakeMouse = d.cellCenter(4);
+            }));
+            t.photo("13_ui_tema_pergamino", 900, () -> demo(d -> {
+                d.theme(2);
+                d.showTab(0);
+                com.axeliscore.ui.UiScreen.fakeMouse = d.iconCenter(4);
+            }));
+            t.photo("13_ui_tema_mar", 900, () -> demo(d -> {
+                d.theme(3);
+                d.showTab(1);
+                com.axeliscore.ui.UiScreen.fakeMouse = d.rowCenter(6);
+            }));
+            t.photo("13_ui_tema_piedra", 900, () -> demo(d -> {
+                com.axeliscore.ui.UiScreen.fakeMouse = null;
+                d.theme(4);
+                d.showTab(5);
+            }));
+            t.add("sin mouse falso", 200, () -> {
+                com.axeliscore.ui.UiScreen.fakeMouse = null;
+                demo(d -> d.theme(0));
+            });
             t.photo("11_ui_dialogo", 3600, () -> t.cmd("axeliscore efecto dialogo"));
             t.add("cerrar", 600, () -> com.axeliscore.plat.client.Screens.close());
             t.photo("12_fx_titulo_aviso", 700, () -> {
@@ -124,6 +177,25 @@ public final class CoreScenario {
             });
             t.photo("12_fx_vineta", 500, () -> t.cmd("axeliscore efecto vineta"));
             t.photo("12_fx_destello", 120, () -> t.cmd("axeliscore efecto destello"));
+            // la tarjeta al mirar un personaje y un jefe
+            t.add("mirar", 900, () -> {
+                com.axeliscore.plat.client.Screens.close();
+                t.cmd("kill @e[type=!player]");
+                t.cmd("summon axelis_core:persona 0.5 -60 3.5 {NoAI:1b}");
+                onServer(l -> l.getEntitiesOfClass(com.axeliscore.character.Persona.class, new net.minecraft.world.phys.AABB(-4, -62, 0, 5, -56, 8))
+                        .forEach(p -> p.setCustomName(net.minecraft.network.chat.Component.literal("Nilo"))));
+                t.lookFrom(0.5, G, 0.5, 0.5, G + 1.1, 3.5);
+            });
+            t.photo("14_mirar_persona", 1000, () -> {
+            });
+            t.add("coloso", 1200, () -> {
+                t.cmd("kill @e[type=!player]");
+                t.cmd("summon axelis_core:coloso 0.5 -60 6.5 {NoAI:1b}");
+                t.lookFrom(0.5, G, 0.5, 0.5, G + 2.2, 6.5);
+            });
+            t.photo("14_mirar_coloso", 1000, () -> {
+            });
+            t.add("limpiar coloso", 300, () -> t.cmd("kill @e[type=!player]"));
             t.add("datos", 1500, () -> t.cmd("axeliscore datos @a"));
             t.add("datos en el cliente", 100, () -> t.check(com.axeliscore.plat.Nbt.i(
                     com.axeliscore.data.client.ClientData.player("axelis_core_prueba"), "visitas") > 0, "los datos del jugador llegaron al cliente"));

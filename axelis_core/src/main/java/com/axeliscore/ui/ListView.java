@@ -14,6 +14,8 @@ public class ListView<T> extends Widget {
     }
 
     public final List<T> items = new ArrayList<>();
+    /** Cuadro de información de cada fila al pasar el mouse (opcional). */
+    public java.util.function.Function<T, InfoCard> cards;
     public final int rowH;
     public int selected = -1;
     private final Row<T> row;
@@ -113,5 +115,25 @@ public class ListView<T> extends Widget {
         boolean d = dragging;
         dragging = false;
         return d;
+    }
+
+    private int rowAt(double mx, double my) {
+        if (!inside(mx, my)) {
+            return -1;
+        }
+        int i = (int) Math.floor((my - y + scroll) / rowH);
+        return i >= 0 && i < items.size() ? i : -1;
+    }
+
+    @Override
+    public InfoCard card(double mx, double my) {
+        int i = rowAt(mx, my);
+        return i >= 0 && cards != null ? cards.apply(items.get(i)) : null;
+    }
+
+    @Override
+    public Object hoverKey(double mx, double my) {
+        int i = rowAt(mx, my);
+        return i >= 0 ? items.get(i) : this;
     }
 }

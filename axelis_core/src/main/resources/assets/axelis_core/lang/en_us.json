@@ -15,5 +15,17 @@
   "axelis_core.dialog.si": "Yes, teach me!",
   "axelis_core.dialog.no": "Not now",
   "axelis_core.dialog.muestra": "Hi! I'm Nilo. I've been fishing this lake for forty years and I know every fish in it. Want me to teach you how to cast?",
-  "axelis_core.dialog.genial": "That's the spirit! Meet me at the dock."
+  "axelis_core.dialog.genial": "That's the spirit! Meet me at the dock.",
+  "axelis_core.rareza.comun": "Common",
+  "axelis_core.rareza.poco_comun": "Uncommon",
+  "axelis_core.rareza.raro": "Rare",
+  "axelis_core.rareza.epico": "Epic",
+  "axelis_core.rareza.legendario": "Legendary",
+  "axelis_core.rareza.mitico": "Mythic",
+  "axelis_core.info.vida": "Health",
+  "axelis_core.info.platicar": "Right-click: talk",
+  "axelis_core.info.jefe": "Boss",
+  "axelis_core.info.mascota": "Pet",
+  "axelis_core.info.mas": "Shift: more info",
+  "axelis_core.info.coloso": "A crystal guardian that wakes when someone nears its cave. It slams the ground, sweeps its arms and changes phase when hurt."
 }

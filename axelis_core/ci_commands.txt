@@ -1,5 +1,6 @@
 axeliscore
 forceload add ~-24 ~-24 ~24 ~24
+#pausa 5
 axeliscore galeria
 axeliscore probar wave
 axeliscore criaturas

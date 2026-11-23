@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
  *     <li>Variante (piel/forma) guardada y sincronizada.</li>
  * </ul>
  */
-public abstract class CoreMob extends PathfinderMob implements Animated {
+public abstract class CoreMob extends PathfinderMob implements Animated, com.axeliscore.ui.InfoSource {
     private static final EntityDataAccessor<String> ACTION = SynchedEntityData.defineId(CoreMob.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(CoreMob.class, EntityDataSerializers.INT);
     private final AnimHost anim = new AnimHost();
@@ -133,6 +133,31 @@ public abstract class CoreMob extends PathfinderMob implements Animated {
         setVariant(com.axeliscore.plat.Nbt.i(tag, "AxVariant"));
     }
     //#endif
+
+    // ------------------------------------------------------------------ tarjeta al mirarla (cliente)
+
+    /**
+     * Lo que dice la tarjeta al mirarla: por defecto, qué es (si tiene nombre propio), su vida y la pista de {@link #axInfoHint}. Los
+     * personajes pueden agregar más (oficio, ánimo, misión...).
+     */
+    @Override
+    public void axInfo(com.axeliscore.ui.InfoCard card, boolean detail) {
+        if (hasCustomName()) {
+            card.subtitle(getType().getDescription());
+        }
+        float hp = Math.max(0, getHealth()), max = Math.max(1, getMaxHealth());
+        card.bar(net.minecraft.network.chat.Component.translatable("axelis_core.info.vida"), hp / max, 0xFFE0524A,
+                (int) Math.ceil(hp) + "/" + Math.round(max));
+        net.minecraft.network.chat.Component hint = axInfoHint();
+        if (hint != null) {
+            card.hint(hint);
+        }
+    }
+
+    /** Pista abajo de la tarjeta (por ejemplo "Clic derecho: platicar"); null = ninguna. */
+    protected net.minecraft.network.chat.Component axInfoHint() {
+        return null;
+    }
 
     // ------------------------------------------------------------------ ayudas para los controladores (cliente)
 

@@ -9,6 +9,7 @@ public final class CoreClientEvents {
     }
 
     static void register() {
+        com.axeliscore.ui.client.Tooltips.init();
         //#if MC >= 26.1
         //$$ ViewportEvent.ComputeCameraAngles.BUS.addListener(CoreClientEvents::onCamera);
         //#else

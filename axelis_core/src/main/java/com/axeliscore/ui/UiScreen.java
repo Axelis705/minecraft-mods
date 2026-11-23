@@ -13,7 +13,9 @@ import java.util.List;
  * relativas al panel: {@link #px}, {@link #py}) y dibujan lo suyo en {@link #content}.
  */
 public abstract class UiScreen extends CoreScreen {
-    protected final Theme theme;
+    protected Theme theme;
+    /** Solo para las pruebas automáticas: si no es null, la pantalla hace como si el mouse estuviera ahí. */
+    public static int[] fakeMouse;
     protected final int pw, ph;
     protected int px, py;
     protected final List<Widget> widgets = new ArrayList<>();
@@ -56,8 +58,18 @@ public abstract class UiScreen extends CoreScreen {
         return (System.currentTimeMillis() - opened) / 1000F;
     }
 
+    /** Cambia el tema (colores y marco) y vuelve a armar la pantalla. */
+    public void setTheme(Theme t) {
+        this.theme = t;
+        init();
+    }
+
     @Override
     protected void draw(G g, int mx, int my, float pt) {
+        if (fakeMouse != null) {
+            mx = fakeMouse[0];
+            my = fakeMouse[1];
+        }
         long now = System.currentTimeMillis();
         float dt = last == 0 ? 0 : Math.min(0.1F, (now - last) / 1000F);
         last = now;
@@ -78,12 +90,38 @@ public abstract class UiScreen extends CoreScreen {
             }
         }
         g.pop();
-        for (Widget w : widgets) {
-            if (w.inside(mx, my) && w.tooltip() != null) {
-                g.renderTooltip(Ui.font(), w.tooltip(), mx, my);
-                break;
+        // cuadro de información de lo que está bajo el mouse (el de más arriba), que aparece suave
+        InfoCard card = null;
+        Object key = null;
+        for (int i = widgets.size() - 1; i >= 0; i--) {
+            Widget w = widgets.get(i);
+            if (w.visible && w.inside(mx, my)) {
+                card = w.card(mx, my);
+                key = w.hoverKey(mx, my);
+                if (card != null) {
+                    break;
+                }
             }
         }
+        if (card == null) {
+            card = extraCard(mx, my);
+            key = card == null ? null : card.title == null ? "extra" : card.title.getString();
+        }
+        if (!java.util.Objects.equals(key, hoverKey)) {
+            hoverKey = key;
+            hoverSince = time;
+        }
+        if (card != null) {
+            com.axeliscore.ui.client.Cards.drawAtMouse(g, card, mx, my, width, height, time - hoverSince);
+        }
+    }
+
+    private Object hoverKey;
+    private float hoverSince;
+
+    /** Cuadro de información de algo que no es un componente (por ejemplo, partes que dibuja {@link #content}). */
+    protected InfoCard extraCard(int mx, int my) {
+        return null;
     }
 
     @Override

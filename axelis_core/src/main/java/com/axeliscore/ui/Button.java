@@ -55,4 +55,17 @@ public class Button extends Widget {
     public List<Component> tooltip() {
         return help;
     }
+
+    private InfoCard card;
+
+    /** Cuadro de información completo al pasar el mouse (en vez de {@link #help}). */
+    public Button card(InfoCard c) {
+        this.card = c;
+        return this;
+    }
+
+    @Override
+    public InfoCard card(double mx, double my) {
+        return card != null ? card : super.card(mx, my);
+    }
 }

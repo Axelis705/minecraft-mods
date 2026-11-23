@@ -208,4 +208,15 @@ public class Coloso extends CoreMob {
     public boolean removeWhenFarAway(double d) {
         return false;
     }
+
+    @Override
+    public void axInfo(com.axeliscore.ui.InfoCard card, boolean detail) {
+        card.rareza(com.axeliscore.ui.Rareza.LEGENDARIO).tag(Component.translatable("axelis_core.info.jefe"));
+        super.axInfo(card, detail);
+        if (detail) {
+            card.text(Component.translatable("axelis_core.info.coloso"));
+        } else {
+            card.hint(Component.translatable("axelis_core.info.mas"));
+        }
+    }
 }

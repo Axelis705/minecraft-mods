@@ -45,8 +45,26 @@ public abstract class Widget {
         return false;
     }
 
-    /** Texto de ayuda al pasar el mouse (null = nada). */
+    /** Texto de ayuda al pasar el mouse (null = nada). Mejor usar {@link #card}. */
     public java.util.List<net.minecraft.network.chat.Component> tooltip() {
         return null;
+    }
+
+    /** Cuadro de información al pasar el mouse por (mx, my) (null = nada). Por defecto arma uno con {@link #tooltip()}. */
+    public InfoCard card(double mx, double my) {
+        java.util.List<net.minecraft.network.chat.Component> t = tooltip();
+        if (t == null || t.isEmpty()) {
+            return null;
+        }
+        InfoCard c = new InfoCard(t.get(0)).width(180);
+        for (int i = 1; i < t.size(); i++) {
+            c.text(t.get(i));
+        }
+        return c;
+    }
+
+    /** Qué cosa está bajo el mouse (para saber cuándo empezó a estar encima y hacer aparecer el cuadro suave). */
+    public Object hoverKey(double mx, double my) {
+        return this;
     }
 }

@@ -22,6 +22,9 @@ if [ $ok -eq 1 ] && [ -f ci_commands.txt ]; then
   while IFS= read -r line; do
     case "$line" in
       ''|'#expect '*) continue;;
+      '#pausa '*)
+        # "#pausa SEGUNDOS": dejar que el servidor termine algo (por ejemplo, cargar los chunks de un forceload)
+        sleep "${line#\#pausa }"; continue;;
       '#wait '*)
         # "#wait TEXTO SEGUNDOS": esperar a que TEXTO salga en el registro (por ejemplo, el final de una construcción larga)
         w="${line#\#wait }"; txt="${w% *}"; secs="${w##* }"

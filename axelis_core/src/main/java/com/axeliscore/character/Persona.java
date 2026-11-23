@@ -103,6 +103,11 @@ public class Persona extends CoreMob {
         return Plat.ok(level().isClientSide());
     }
 
+    @Override
+    protected Component axInfoHint() {
+        return Component.translatable("axelis_core.info.platicar");
+    }
+
     // ------------------------------------------------------------------ animación (cliente)
 
     @Override

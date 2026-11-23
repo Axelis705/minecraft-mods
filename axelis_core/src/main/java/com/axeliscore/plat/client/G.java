@@ -112,9 +112,12 @@ public final class G {
         //#elif MC >= 1.21.2
         //$$ raw.blit(net.minecraft.client.renderer.RenderType::guiTextured, tex, x, y, u, v, w, h, uw, vh, texW, texH, argb);
         //#else
+        com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+        com.mojang.blaze3d.systems.RenderSystem.defaultBlendFunc();
         raw.setColor(((argb >> 16) & 255) / 255F, ((argb >> 8) & 255) / 255F, (argb & 255) / 255F, ((argb >>> 24) & 255) / 255F);
         raw.blit(tex, x, y, w, h, u, v, uw, vh, texW, texH);
         raw.setColor(1F, 1F, 1F, 1F);
+        com.mojang.blaze3d.systems.RenderSystem.disableBlend();
         //#endif
     }
 
@@ -183,6 +186,18 @@ public final class G {
         //$$ raw.pose().rotate(rad);
         //#else
         raw.pose().mulPose(com.mojang.math.Axis.ZP.rotation(rad));
+        //#endif
+    }
+
+    /**
+     * Lo que se dibuje después queda encima de todo lo anterior (objetos incluidos): para cuadros de información y avisos. En 1.20/1.21
+     * sube la profundidad (hay que estar entre push y pop); en 26.x pasa a la capa de arriba.
+     */
+    public void top() {
+        //#if MC >= 26.1
+        //$$ raw.nextStratum();
+        //#else
+        raw.pose().translate(0, 0, 400);
         //#endif
     }
 

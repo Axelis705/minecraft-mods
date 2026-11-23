@@ -26,6 +26,14 @@ public class CoreItem extends Item {
         super(props);
     }
 
+    /**
+     * Cuadro de información al pasar el ratón (en cualquier pantalla). null = la ayuda normal de Minecraft con {@link #tooltip}.
+     * {@code detail} es true con Shift apretado.
+     */
+    public com.axeliscore.ui.InfoCard card(ItemStack stack, boolean detail) {
+        return null;
+    }
+
     /** Líneas de ayuda debajo del nombre. */
     protected void tooltip(ItemStack stack, Consumer<Component> add) {
     }
