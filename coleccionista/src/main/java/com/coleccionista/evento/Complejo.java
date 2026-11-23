@@ -81,6 +81,8 @@ public final class Complejo {
             l.add(new Zona("puertas", com.coleccionista.mapa.Puertas.crear(SEMILLA), 2, 0, -50, 0));
             // la Cámara final (Las copas), al norte de la Sala de las puertas
             l.add(new Zona("final", com.coleccionista.mapa.Final.crear(SEMILLA), 7, 0, -84, 0));
+            // la Capilla (El sacrificio), al sur del Ala de celdas
+            l.add(new Zona("capilla", com.coleccionista.mapa.Capilla.crear(SEMILLA), -10, 0, 40, 0));
             zonas = l;
         }
         return zonas;

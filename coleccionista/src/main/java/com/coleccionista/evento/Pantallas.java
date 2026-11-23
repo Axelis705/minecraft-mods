@@ -100,12 +100,25 @@ public final class Pantallas {
         return l;
     }
 
+    /** El sacrificio (en la Capilla). */
+    public static List<Frase> sacrificio() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("puerta", 90, null, 1F));
+        l.add(new Frase("altar", 110, null, 1F));
+        l.add(new Frase("votar", 100, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("valiente", 80, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
             case "encadenados" -> encadenados();
             case "compartir" -> compartir();
             case "copas" -> copas();
+            case "sacrificio" -> sacrificio();
             default -> null;
         };
     }

@@ -152,6 +152,17 @@ public final class Panel {
             case "cop_ya" -> com.coleccionista.prueba.LasCopas.empezar(s, false);
             case "cop_beber" -> com.coleccionista.prueba.LasCopas.beberYa(s);
             case "cop_terminar" -> com.coleccionista.prueba.LasCopas.terminar(s);
+            // ---- El sacrificio
+            case "sac_preparar" -> {
+                Component e = com.coleccionista.prueba.Sacrificio.preparar(s);
+                if (e != null) {
+                    Plat.msg(p, e, true);
+                }
+            }
+            case "sac_empezar" -> com.coleccionista.prueba.Sacrificio.empezar(s, true);
+            case "sac_ya" -> com.coleccionista.prueba.Sacrificio.empezar(s, false);
+            case "sac_votar" -> com.coleccionista.prueba.Sacrificio.votarYa(s);
+            case "sac_terminar" -> com.coleccionista.prueba.Sacrificio.terminar(s);
             case "toma_guardar" -> {
                 if (!Tomas.guardar(p, Nbt.s(d, "nombre"))) {
                     Plat.msg(p, Component.translatable(Coleccionista.MODID + ".panel.tomas_llenas", Tomas.MAX), true);

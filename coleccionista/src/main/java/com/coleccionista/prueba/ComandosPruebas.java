@@ -184,6 +184,44 @@ public final class ComandosPruebas {
                 }));
     }
 
+    public static LiteralArgumentBuilder<CommandSourceStack> sacrificio() {
+        return Commands.literal("sacrificio")
+                .then(Commands.literal("preparar").executes(c -> {
+                    Component e = Sacrificio.preparar(c.getSource().getServer());
+                    return e == null ? ok(c, Component.translatable(MOD + ".sac.cmd.preparada")) : error(c, e);
+                }))
+                .then(Commands.literal("empezar").executes(c -> Sacrificio.empezar(c.getSource().getServer(), true) ? ok(c,
+                        Component.translatable(MOD + ".sac.cmd.empieza")) : error(c, Component.translatable(MOD + ".sac.cmd.no_toca")))
+                        .then(Commands.literal("ya").executes(c -> Sacrificio.empezar(c.getSource().getServer(), false) ? ok(c,
+                                Component.translatable(MOD + ".sac.cmd.empieza")) : error(c, Component.translatable(MOD + ".sac.cmd.no_toca")))))
+                .then(Commands.literal("votar").executes(c -> Sacrificio.votarYa(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".sac.cmd.votar")) : error(c, Component.translatable(MOD + ".sac.cmd.no_toca"))))
+                .then(Commands.literal("bots_ofrecen")
+                        .then(Commands.literal("si").executes(c -> {
+                            Sacrificio.botsSeOfrecen = true;
+                            return ok(c, Component.literal("bots_ofrecen = si"));
+                        }))
+                        .then(Commands.literal("no").executes(c -> {
+                            Sacrificio.botsSeOfrecen = false;
+                            return ok(c, Component.literal("bots_ofrecen = no"));
+                        })))
+                .then(Commands.literal("tamano").then(Commands.argument("n", IntegerArgumentType.integer(2, 6)).executes(c -> {
+                    Sacrificio.tamano = IntegerArgumentType.getInteger(c, "n");
+                    return ok(c, Component.translatable(MOD + ".sac.cmd.ajustes", Sacrificio.tamano, Sacrificio.segundosOfrecer, Sacrificio.segundosVotar));
+                })))
+                .then(Commands.literal("tiempo").then(Commands.argument("ofrecer", IntegerArgumentType.integer(5, 600))
+                        .then(Commands.argument("votar", IntegerArgumentType.integer(5, 300)).executes(c -> {
+                            Sacrificio.segundosOfrecer = IntegerArgumentType.getInteger(c, "ofrecer");
+                            Sacrificio.segundosVotar = IntegerArgumentType.getInteger(c, "votar");
+                            return ok(c, Component.translatable(MOD + ".sac.cmd.ajustes", Sacrificio.tamano, Sacrificio.segundosOfrecer,
+                                    Sacrificio.segundosVotar));
+                        }))))
+                .then(Commands.literal("terminar").executes(c -> {
+                    Sacrificio.terminar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".sac.cmd.terminada"));
+                }));
+    }
+
     private static int forzar(CommandContext<CommandSourceStack> c, boolean robar) {
         Pieza p = pieza(c);
         if (p == null) {

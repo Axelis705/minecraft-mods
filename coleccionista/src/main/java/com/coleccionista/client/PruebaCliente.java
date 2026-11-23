@@ -386,5 +386,58 @@ final class PruebaCliente {
             t.check(EventoCliente.vivos() == 1, "queda una sola pieza (la ganadora)");
             t.cmd("evento copas terminar");
         });
+        sacrificio(t);
+    }
+
+    /** Prueba 5, El sacrificio: el cuarto, ofrecerse (nadie), votar en secreto, "¡salgan!" y el final. */
+    private static void sacrificio(ClientTest.Script t) {
+        t.add("sac: preparar", 1600, () -> {
+            t.cmd("evento revivir " + yo());
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("gamemode adventure @a");
+            t.cmd("forceload add -16 64 64 96");
+            t.cmd("evento sacrificio tamano 4");
+            t.cmd("evento sacrificio tiempo 12 15");
+            t.cmd("evento sacrificio bots_ofrecen no");
+            t.cmd("evento sacrificio preparar");
+        });
+        t.photo("60_sacrificio_presentacion", 5700, () -> {
+        });
+        t.photo("61_cuarto", 5000, () -> {
+        });
+        t.add("sacrificio lista", 100, () -> t.check("LISTA".equals(SacrificioCliente.fase()), "El sacrificio está lista"));
+        t.photo("62_ofrecer", 1500, () -> t.cmd("evento sacrificio empezar ya"));
+        t.photo("63_voto", 12000, () -> {
+        });
+        t.add("pantalla de voto", 100, () -> t.check(com.axeliscore.plat.client.Screens.current() instanceof VotoScreen,
+                "se abrió la pantalla para votar"));
+        t.photo("64_votado", 900, () -> {
+            var c = SacrificioCliente.miCuarto();
+            if (c != null) {
+                for (var y : c.getList("miembros", 10)) {
+                    var m = (net.minecraft.nbt.CompoundTag) y;
+                    if (!m.getUUID("id").equals(Minecraft.getInstance().player.getUUID())) {
+                        net.minecraft.nbt.CompoundTag v = new net.minecraft.nbt.CompoundTag();
+                        v.putUUID("id", m.getUUID("id"));
+                        com.axeliscore.data.client.ClientData.send(com.coleccionista.prueba.Sacrificio.ACCION, v);
+                        SacrificioCliente.miVoto = m.getUUID("id");
+                        break;
+                    }
+                }
+            }
+        });
+        t.add("cerrar voto", 13000, () -> com.axeliscore.plat.client.Screens.close());
+        t.photo("65_salgan", 600, () -> {
+        });
+        t.add("esperar sacrificio", 10000, () -> {
+        });
+        t.photo("66_sacrificio_fin", 600, () -> {
+        });
+        t.add("fin sacrificio", 100, () -> {
+            t.check("FIN".equals(SacrificioCliente.fase()), "terminó El sacrificio (cada cuarto perdió una pieza)");
+            t.cmd("evento sacrificio terminar");
+        });
     }
 }

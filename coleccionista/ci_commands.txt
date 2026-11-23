@@ -1,6 +1,6 @@
 axeliscore
 coleccionista
-forceload add -16 -48 224 96
+forceload add -16 -48 224 112
 #pausa 3
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
@@ -72,7 +72,7 @@ evento compartir elige Bot_01 robar
 evento compartir elige Bot_02 compartir
 evento compartir elige Bot_03 compartir
 evento compartir elige Bot_04 compartir
-#pausa 19
+#pausa 30
 evento compartir terminar
 evento revivir Bot_01
 evento revivir Bot_02
@@ -85,7 +85,7 @@ evento puertas preparar
 evento puertas ronda
 #pausa 1
 evento puertas cerrar
-#pausa 10
+#pausa 14
 evento puertas terminar
 evento revivir Bot_01
 evento revivir Bot_02
@@ -99,6 +99,17 @@ evento copas preparar
 evento copas empezar ya
 #pausa 45
 evento copas terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento sacrificio tamano 2
+evento sacrificio tiempo 6 5
+evento sacrificio preparar
+#pausa 4
+evento sacrificio empezar ya
+#pausa 32
+evento sacrificio terminar
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect usuarios=[coleccionista]
@@ -156,3 +167,11 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_COPAS veneno
 #expect COLECCIONISTA_COPAS fin vivos=1
 #expect COLECCIONISTA_COPAS terminada
+#expect COLECCIONISTA_CONSTRUIDO capilla
+#expect COLECCIONISTA_SACRIFICIO preparada cuartos=2
+#expect COLECCIONISTA_PRESENTACION V
+#expect COLECCIONISTA_SACRIFICIO ofrecer
+#expect COLECCIONISTA_SACRIFICIO votar
+#expect COLECCIONISTA_SACRIFICIO cuarto=
+#expect COLECCIONISTA_SACRIFICIO fin eliminados=2
+#expect COLECCIONISTA_SACRIFICIO terminada
