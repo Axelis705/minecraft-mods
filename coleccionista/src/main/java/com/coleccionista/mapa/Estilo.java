@@ -55,6 +55,19 @@ public final class Estilo {
             "chiseled_polished_blackstone", C + "ladrillo_oscuro",
             "polished_blackstone", C + "metal_placa");
 
+    /** El Archivo (los muros, pisos y columnas ya los pone con bloques nuevos el mapa). */
+    public static final Map<String, String> ARCHIVO = Map.of(
+            "bookshelf", C + "estante_archivo",
+            "chiseled_bookshelf", C + "archivero",
+            "brown_carpet", C + "alfombra_cafe",
+            "dark_oak_slab", C + "losa_madera",
+            "lectern", C + "atril",
+            "chest", C + "cofre_boveda",
+            "gold_block", C + "lingotes",
+            "chiseled_polished_blackstone", C + "ladrillo_oscuro",
+            "dark_oak_planks", C + "panel_madera",
+            "spruce_planks", C + "parquet");
+
     private Estilo() {
     }
 
@@ -109,7 +122,7 @@ public final class Estilo {
             return con(nuevo, pr);
         }
         switch (id) {
-            case "tripwire_hook" -> {
+            case "tripwire_hook", "lectern", "chest", "trapped_chest", "furnace", "smoker", "loom" -> {
                 return nuevo + "[facing=" + pr.getOrDefault("facing", "north") + "]";
             }
             case "barrel" -> {

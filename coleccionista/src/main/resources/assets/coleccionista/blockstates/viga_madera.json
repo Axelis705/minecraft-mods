@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "axis=y": {
+   "model": "coleccionista:block/viga_madera"
+  },
+  "axis=z": {
+   "model": "coleccionista:block/viga_madera_horizontal",
+   "x": 90
+  },
+  "axis=x": {
+   "model": "coleccionista:block/viga_madera_horizontal",
+   "x": 90,
+   "y": 90
+  }
+ }
+}

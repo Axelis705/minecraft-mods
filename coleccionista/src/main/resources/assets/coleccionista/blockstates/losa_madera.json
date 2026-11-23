@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "coleccionista:block/losa_madera"
+  },
+  "type=top": {
+   "model": "coleccionista:block/losa_madera_top"
+  },
+  "type=double": {
+   "model": "coleccionista:block/losa_madera_doble"
+  }
+ }
+}

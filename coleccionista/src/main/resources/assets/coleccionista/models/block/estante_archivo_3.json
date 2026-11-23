@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/cube_column",
+ "textures": {
+  "side": "coleccionista:block/estante_archivo_3",
+  "end": "coleccionista:block/estante_archivo_tapa_3"
+ }
+}

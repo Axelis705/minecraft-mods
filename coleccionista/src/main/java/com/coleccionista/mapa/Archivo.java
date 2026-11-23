@@ -15,7 +15,8 @@ public final class Archivo {
     public static final int X0 = 0, X1 = 72, Z0 = 0, Z1 = 20, Y0 = -1, Y1 = 8;
     public static final int SALAS = 6, LUGARES = 6;
     public static final int REJA_ANCHO = 3, REJA_ALTO = 3;
-    private static final String[] MURO = {"dark_oak_planks", "spruce_planks", "dark_oak_planks", "stripped_dark_oak_log[axis=y]"};
+    private static final String C = "coleccionista:";
+    private static final String[] MURO = {C + "panel_madera"};
 
     private Archivo() {
     }
@@ -29,9 +30,12 @@ public final class Archivo {
         p.cajaMezcla(X0, Y0, Z0, X1, Y1, Z1, MURO);
         for (int x = 1; x < X1; x++) {
             for (int z = 14; z <= 18; z++) {
-                p.set(x, 0, z, z == 16 ? "brown_carpet" : (x + z) % 2 == 0 ? "spruce_planks" : "dark_oak_planks");
+                p.set(x, 0, z, C + "parquet");
                 for (int y = 1; y <= 6; y++) {
                     p.set(x, y, z, "air");
+                }
+                if (z == 16) {
+                    p.set(x, 1, z, C + "alfombra_cafe");
                 }
             }
             if (z18Libre(x)) {
@@ -47,7 +51,25 @@ public final class Archivo {
         for (int k = 1; k <= SALAS; k++) {
             sala(p, k);
         }
+        ambiente(p);
+        Estilo.aplicar(p, Estilo.ARCHIVO);
         return p;
+    }
+
+    /** Papeles tirados y telarañas en las esquinas de arriba (no estorban). */
+    private static void ambiente(Plano p) {
+        String[] dirs = {"north", "east", "south", "west"};
+        for (long k : new java.util.ArrayList<>(p.m.keySet())) {
+            int x = Plano.kx(k), y = Plano.ky(k), z = Plano.kz(k);
+            if (!"air".equals(p.m.get(k))) {
+                continue;
+            }
+            if (y == 1 && p.r.nextDouble() < 0.035 && (C + "parquet").equals(p.get(x, 0, z))) {
+                p.set(x, 1, z, C + "papeles[facing=" + dirs[p.r.nextInt(4)] + "]");
+            } else if (y >= 4 && x < X1 - 8 && p.vacio(x, y, z) && !"air".equals(p.get(x, y + 1, z)) && p.get(x, y + 1, z) != null && p.r.nextDouble() < 0.03) {
+                p.set(x, y, z, C + "telarana");
+            }
+        }
     }
 
     private static boolean z18Libre(int x) {
@@ -58,7 +80,7 @@ public final class Archivo {
         int c = centro(k);
         for (int x = c - 4; x <= c + 4; x++) {
             for (int z = 4; z <= 12; z++) {
-                p.set(x, 0, z, (x + z) % 2 == 0 ? "spruce_planks" : "dark_oak_planks");
+                p.set(x, 0, z, C + "parquet");
                 for (int y = 1; y <= 5; y++) {
                     p.set(x, y, z, "air");
                 }
@@ -105,7 +127,7 @@ public final class Archivo {
             for (int y = 1; y <= REJA_ALTO; y++) {
                 p.set(x, y, 13, "iron_bars");
             }
-            p.set(x, 0, 13, "dark_oak_planks");
+            p.set(x, 0, 13, C + "parquet");
         }
         p.marca("arc.sala." + k + ".reja", c - 1, 1, 13, 0);
         p.letrero(c, REJA_ALTO + 1, 14, "dark_oak_wall_sign", "south", "white", "", "SALA", String.valueOf(k), "");

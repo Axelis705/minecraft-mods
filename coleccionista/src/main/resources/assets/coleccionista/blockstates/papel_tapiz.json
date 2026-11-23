@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/papel_tapiz_0"
+   },
+   {
+    "model": "coleccionista:block/papel_tapiz_1"
+   },
+   {
+    "model": "coleccionista:block/papel_tapiz_2"
+   }
+  ]
+ }
+}

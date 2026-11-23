@@ -413,6 +413,22 @@ def catalogo():
     cadena_blk('cadena', 'Cadena oxidada', 'Rusty chain', lambda s: M.cadena(s))
     trampilla_blk('trampilla', 'Trampilla de acero', 'Steel trapdoor', lambda s: M.trampilla(s))
     alfombra('alfombra_negra', 'Alfombra negra', 'Black carpet', lambda s: M.alfombra_negra(s))
+    # ---- el Archivo
+    cubo('parquet', 'Parquet viejo', 'Old parquet', lambda s: M.parquet(s), variantes=2, sonido='wood')
+    cubo('estante_archivo', 'Estante de archivo', 'Archive shelf', lambda s: M.estante_archivo(s), sonido='wood', top=lambda s: M.madera_tapa(s))
+    cubo('archivero', 'Archivero de metal', 'Filing cabinet', lambda s: M.archivero(s), variantes=2, sonido='metal',
+         top=lambda s: M.metal_placa(s, '#4b5a4c', pintado=0.95, remaches=False))
+    cubo('lingotes', 'Lingotes de oro', 'Gold bars', lambda s: M.lingotes(s), variantes=2, sonido='metal')
+    pilar('viga_madera', 'Columna de madera', 'Wooden column', lambda s: M.viga_madera_lado(s), lambda s: M.viga_madera_tapa(s), sonido='wood')
+    losa('losa_madera', 'Repisa de madera', 'Wooden slab', lambda s: M.madera_tapa(s), sonido='wood')
+    alfombra('alfombra_cafe', 'Alfombra café', 'Brown carpet', lambda s: M.alfombra_cafe(s))
+    # ---- el Salon
+    cubo('papel_tapiz', 'Papel tapiz de damasco', 'Damask wallpaper', lambda s: M.papel_tapiz(s), variantes=3, sonido='wool')
+    cubo('marmol_negro', 'Mármol negro', 'Black marble', lambda s: M.marmol(s, brillo=1.0), variantes=3)
+    cubo('marmol_crema', 'Mármol crema', 'Cream marble', lambda s: M.marmol(s, base='#8f8572', veta='#4a443a', brillo=1.0), variantes=2)
+    cubo('tapete_rojo', 'Tapete rojo', 'Red rug', lambda s: M.tapete(s), variantes=2, sonido='wool')
+    cubo('tapete_orilla', 'Orilla de tapete', 'Rug border', lambda s: M.tapete(s, orilla=True), variantes=1, sonido='wool')
+    cubo('marco_dorado', 'Marco dorado', 'Gilded frame', lambda s: M.marco_dorado(s), variantes=2, sonido='metal')
     # muebles y adornos
     P = props_celdas
     cama(P.catre())
@@ -444,6 +460,14 @@ def catalogo():
     prop(Q.argolla())
     prop(Q.barril(), {'cajon': True})
     prop(Q.placa_presion())
+    prop(Q.atril())
+    prop(Q.cofre_boveda())
+    prop(Q.mesa_tapete())
+    prop(Q.sillon())
+    prop(Q.estandarte())
+    prop(Q.estandarte('#151314', 'estandarte_negro', 'Estandarte negro', 'Black banner'))
+    prop(Q.arana())
+    prop(Q.lampara_billar())
     for p in P.focos():
         solo_modelos(p)
     solo_modelos(P.candado())

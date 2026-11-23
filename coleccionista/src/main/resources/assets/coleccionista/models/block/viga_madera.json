@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/cube_column",
+ "textures": {
+  "side": "coleccionista:block/viga_madera",
+  "end": "coleccionista:block/viga_madera_tapa"
+ }
+}

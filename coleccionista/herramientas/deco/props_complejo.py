@@ -104,5 +104,118 @@ def placa_presion():
     return p
 
 
-def all_props():
-    return [farol(True), farol(False), vela(), musgo(), argolla(), barril(), placa_presion()]
+def atril():
+    """Atril de madera con un libro de registro abierto (la mesa de lectura del Archivo)."""
+    p = Prop('atril', 'Atril con registro', 'Ledger stand', kind='floor', sound='wood', seed=78)
+    m = madera_vieja(78)
+    p.box(4, 0, 4, 12, 1, 12, m)
+    p.box(6.5, 1, 6.5, 9.5, 10, 9.5, m)
+    p.box(2, 10, 3, 14, 11.5, 13, m, rot=('x', -22.5, (8, 10.5, 8)))
+    papel = kit.parchment(ink=0.35, seed=79)
+    p.box(2.6, 11.5, 3.6, 7.8, 12, 12.4, papel, rot=('x', -22.5, (8, 10.5, 8)))
+    p.box(8.2, 11.5, 3.6, 13.4, 12, 12.4, papel, rot=('x', -22.5, (8, 10.5, 8)))
+    p.box(7.8, 11.4, 3.4, 8.2, 12.1, 12.6, solid('#3a1c12'), rot=('x', -22.5, (8, 10.5, 8)))
+    return p
+
+
+def cofre_boveda():
+    """Caja fuerte vieja de la boveda: acero negro, perilla y bisagras de laton."""
+    p = Prop('cofre_boveda', 'Caja fuerte', 'Strongbox', kind='floor', sound='metal', seed=80)
+    m = pintado('#262624', oxido=0.25, seed=80, saltado=0.12)
+    laton = kit.metal(Ramp('#5e4a22', '#7a6230', '#97793c', '#b59248'), seed=81)
+    p.box(1.5, 0, 2.5, 14.5, 12, 14, m, bevel=0.2)
+    p.box(2.5, 1, 2, 13.5, 11, 2.5, m)
+    p.box(6.5, 4.5, 1.4, 9.5, 7.5, 2, laton)             # perilla
+    p.box(7.6, 5.6, 1, 8.4, 6.4, 1.4, solid('#1a1712'))
+    for y0 in (2, 8.5):
+        p.box(12.6, y0, 1.6, 13.6, y0 + 1.5, 2.2, laton)   # bisagras
+    p.box(3.5, 9, 1.8, 6, 10, 2.1, laton)                # placa
+    return p
+
+
+
+
+def mesa_tapete():
+    """Mesa de juego: cubierta de pano verde con borde de madera y pata central (varias juntas hacen una mesa larga)."""
+    p = Prop('mesa_tapete', 'Mesa de juego', 'Card table', kind='floor', sound='wood', seed=82,
+             shape=[[0, 13, 0, 16, 16, 16], [6, 0, 6, 10, 13, 10]])
+    madera = madera_vieja(82)
+    pano = kit.cloth('#1f3a2a', weave=0.12, seed=83)
+    p.box(0, 14, 0, 16, 15.2, 16, pano)
+    p.box(0, 13, 0, 16, 14, 16, madera)
+    p.box(-0.01, 14, -0.01, 16.01, 15.6, 1, madera)
+    p.box(-0.01, 14, 15, 16.01, 15.6, 16.01, madera)
+    p.box(6.5, 1.5, 6.5, 9.5, 13, 9.5, madera)
+    p.box(4, 0, 4, 12, 1.5, 12, madera)
+    return p
+
+
+def sillon():
+    """Sillon de terciopelo rojo con respaldo alto (el lugar del perdonado)."""
+    p = Prop('sillon', 'Sillón de terciopelo', 'Velvet armchair', kind='floor', sound='wool', seed=84,
+             shape=[[1, 0, 1, 15, 8, 15], [1, 8, 12, 15, 22, 15]], tall=True, shape_upper=[[1, 0, 12, 15, 6, 15]])
+    tela = kit.cloth('#5a0f14', weave=0.08, seed=84, fold=0.3)
+    madera = madera_vieja(85)
+    oro = kit.metal(Ramp('#5e4a22', '#7a6230', '#97793c'), seed=86)
+    p.at('lower')
+    for x0, z0 in ((1.5, 1.5), (13, 1.5), (1.5, 13), (13, 13)):
+        p.box(x0, 0, z0, x0 + 1.5, 3, z0 + 1.5, madera)
+    p.box(1, 3, 1, 15, 7.5, 15, tela)                     # asiento
+    p.box(0.5, 7.5, 1, 3, 12, 14, tela)                   # brazos
+    p.box(13, 7.5, 1, 15.5, 12, 14, tela)
+    p.box(1, 7.5, 12, 15, 16, 15, tela)                   # respaldo
+    p.at('upper')
+    p.box(1, 0, 12, 15, 5, 15, tela)
+    p.box(2, 5, 12.3, 14, 6.5, 14.7, tela)
+    p.box(7, 6.5, 12.6, 9, 7.5, 14.4, oro)
+    return p
+
+
+def estandarte(color='#5a0f14', pid='estandarte_rojo', es='Estandarte rojo', en='Red banner'):
+    """Estandarte de tela que cuelga de una barra (dos bloques de alto) con flecos dorados y el emblema de la coleccion (un ojo)."""
+    p = Prop(pid, es, en, kind='wall', tall=True, sound='wool', seed=87, collide=False)
+    tela = kit.cloth(color, weave=0.1, seed=87, fold=0.5)
+    oro = kit.metal(Ramp('#5e4a22', '#7a6230', '#97793c', '#b59248'), seed=88)
+    p.at('upper')
+    p.box(1, 14, 14, 15, 15, 15, oro)                     # la barra
+    p.box(0.5, 13.5, 13.8, 1.5, 15.5, 15.2, oro)
+    p.box(14.5, 13.5, 13.8, 15.5, 15.5, 15.2, oro)
+    p.box(2, 0, 14.6, 14, 14, 15, tela)
+    p.box(6, 5, 14.5, 10, 9, 14.6, oro)                   # el ojo
+    p.box(7.3, 6.3, 14.4, 8.7, 7.7, 14.5, solid('#120c0a'))
+    p.at('lower')
+    p.box(2, 4, 14.6, 14, 16, 15, tela)
+    for i in range(6):
+        x0 = 2.3 + i * 2
+        p.box(x0, 1.5 + (i % 2), 14.65, x0 + 1.2, 4, 14.95, oro)   # flecos
+    return p
+
+
+def arana():
+    """Arana de velas (candelabro de techo) de hierro negro con velas: cuelga de su cadena."""
+    p = Prop('arana', 'Araña de velas', 'Candle chandelier', kind='hang', sound='metal', seed=89, collide=False, light=13,
+             particles=[{'type': 'minecraft:small_flame', 'pos': [2.5, 9.6, 8], 'rate': 0.25}, {'type': 'minecraft:small_flame', 'pos': [13.5, 9.6, 8], 'rate': 0.25},
+                        {'type': 'minecraft:small_flame', 'pos': [8, 9.6, 2.5], 'rate': 0.25}, {'type': 'minecraft:small_flame', 'pos': [8, 9.6, 13.5], 'rate': 0.25}])
+    m = pintado(NEGRO, oxido=0.2, seed=89)
+    cera = kit.stone(Ramp('#b6ad94', '#c6bea5', '#d4ccb3'), scale=2, seed=90)
+    p.box(7.5, 9, 7.5, 8.5, 16, 8.5, m)
+    p.box(6, 5, 6, 10, 9, 10, m)
+    p.box(1.5, 6, 7.5, 14.5, 7, 8.5, m)
+    p.box(7.5, 6, 1.5, 8.5, 7, 14.5, m)
+    for (x, z) in ((2.5, 8), (13.5, 8), (8, 2.5), (8, 13.5)):
+        p.box(x - 1.2, 7, z - 1.2, x + 1.2, 7.6, z + 1.2, m)
+        p.box(x - 0.6, 7.6, z - 0.6, x + 0.6, 9.4, z + 0.6, cera)
+    p.box(7, 3.5, 7, 9, 5, 9, m)
+    return p
+
+
+def lampara_billar():
+    """Lampara de mesa de juego: pantalla de metal verde que cuelga y alumbra hacia abajo."""
+    p = Prop('lampara_billar', 'Lámpara de mesa', 'Table lamp', kind='hang', sound='metal', seed=91, collide=False, light=12)
+    pant = pintado('#1f3b2c', oxido=0.15, seed=91, saltado=0.1)
+    laton = kit.metal(Ramp('#5e4a22', '#7a6230', '#97793c'), seed=92)
+    p.box(7.6, 12, 7.6, 8.4, 16, 8.4, laton)
+    p.box(5.5, 10, 5.5, 10.5, 12, 10.5, pant)
+    p.box(3, 7, 3, 13, 10, 13, pant)
+    p.box(4, 6.6, 4, 12, 7, 12, luz('#ffd9a0'))
+    return p

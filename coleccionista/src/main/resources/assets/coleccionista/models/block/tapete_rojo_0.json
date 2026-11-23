@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/cube_all",
+ "textures": {
+  "all": "coleccionista:block/tapete_rojo_0"
+ }
+}

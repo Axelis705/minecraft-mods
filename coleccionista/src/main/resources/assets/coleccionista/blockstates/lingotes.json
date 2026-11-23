@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/lingotes_0"
+   },
+   {
+    "model": "coleccionista:block/lingotes_1"
+   }
+  ]
+ }
+}

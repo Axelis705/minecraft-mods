@@ -665,3 +665,198 @@ def alfombra_negra(seed=0):
     rgb = np.where(((x % 16 == 0) | (y % 16 == 0))[..., None], rgb * 0.8, rgb)
     rgb = grime(rgb, seed + 8902, amount=0.3)
     return img(rgb)
+
+
+# ---------------------------------------------------------------- el Archivo (prueba 2)
+def parquet(seed=0):
+    """Parquet de espiga oscuro y gastado (las salas del Archivo)."""
+    y, x = np.mgrid[0:N, 0:N]
+    # espiga: tablillas de 4x16 que alternan direccion
+    blk = ((x // 4) + (y // 4)) % 2
+    u = np.where(blk == 0, (x + y // 4 * 4) % 16, (y + x // 4 * 4) % 16)
+    tid = np.where(blk == 0, (x // 4) * 5 + (y // 16) * 3, (y // 4) * 5 + (x // 16) * 3 + 2)
+    t = (0.82 + 0.3 * ((tid * 2654435761 + seed) % 17) / 17).astype(np.float32)
+    veta = 0.85 + 0.15 * np.sin(u * 1.3 + fbm(N, N, 4, seed + 9001) * 4)
+    rgb = hexc('#3b2516') * (t * veta)[..., None]
+    borde = np.where(blk == 0, (x % 4 == 0), (y % 4 == 0)) | (u == 0)
+    rgb = np.where(borde[..., None], rgb * 0.55, rgb)
+    desg = fbm(N, N, 10, seed + 9002)
+    rgb = mix(rgb, rgb * 1.25 + 10, np.clip((desg - 0.6) * 2, 0, 0.5))
+    rgb = grime(rgb, seed + 9003, amount=0.25)
+    return img(rgb)
+
+
+def estante_archivo(seed=0):
+    """Estante de madera con cajas de archivo, carpetas y legajos amarrados (frente). Dos repisas por bloque."""
+    r = np.random.RandomState(seed + 9100)
+    y, x = np.mgrid[0:N, 0:N]
+    madera = hexc('#2e1d12') * (0.8 + 0.3 * fbm(N, N, 4, seed + 9101))[..., None]
+    rgb = np.broadcast_to(hexc('#0e0a07'), (N, N, 3)).copy()      # fondo oscuro
+    for y0 in (1, 17):
+        xx = 1
+        while xx < 31:
+            kind = r.randint(0, 4)
+            w = {0: 6, 1: 2, 2: 3, 3: 5}[kind]
+            w = min(w, 31 - xx)
+            h = {0: 12, 1: 13, 2: 11, 3: 9}[kind]
+            top = y0 + 14 - h
+            if kind == 0:    # caja de carton con etiqueta
+                col = hexc(['#6b5a3e', '#5d4e36', '#7a6747'][r.randint(0, 3)])
+                rgb[top:y0 + 14, xx:xx + w] = col * (0.85 + 0.2 * r.rand())
+                rgb[top + 3:top + 6, xx + 1:xx + w - 1] = hexc('#c9c0a6')
+                rgb[top + 4, xx + 1:xx + w - 2] = hexc('#3a3226')
+            elif kind == 1:  # carpeta (lomo de color)
+                col = hexc(['#3d4a5c', '#5c2a24', '#33473a', '#4a3d2c', '#2a2a2e'][r.randint(0, 5)])
+                rgb[top:y0 + 14, xx:xx + w] = col
+                rgb[top + 2, xx:xx + w] = col * 1.5
+            elif kind == 2:  # legajo de papeles amarrado
+                rgb[top:y0 + 14, xx:xx + w] = hexc('#b3a98c') * (0.8 + 0.2 * white(1, 1, xx)[0, 0])
+                rgb[top + h // 2, xx:xx + w] = hexc('#5a3020')
+            else:            # hueco con polvo
+                pass
+            rgb[top:y0 + 14, xx + w - 1:xx + w] *= 0.6
+            xx += w
+        rgb[y0 + 14:y0 + 16, :] = madera[y0 + 14:y0 + 16, :]
+    rgb[:, :1] = madera[:, :1]
+    rgb[:, 31:] = madera[:, 31:] * 0.7
+    rgb[0:1, :] = madera[0:1, :]
+    rgb = grime(rgb, seed + 9102, amount=0.25)
+    return img(rgb)
+
+
+def madera_tapa(seed=0, color='#2e1d12'):
+    """Tapa de mueble de madera oscura (arriba y abajo de los estantes)."""
+    y, x = np.mgrid[0:N, 0:N]
+    veta = np.sin(x * 0.7 + fbm(N, N, 5, seed + 9201) * 6) * 0.5 + 0.5
+    rgb = hexc(color) * (0.8 + 0.3 * veta)[..., None]
+    rgb = np.where(((x == 0) | (y == 0) | (x == N - 1) | (y == N - 1))[..., None], rgb * 0.6, rgb)
+    return img(grime(rgb, seed + 9202, amount=0.2))
+
+
+def archivero(seed=0):
+    """Archivero de metal de cuatro cajones (verde oficina viejo) con jaladeras y tarjeteros."""
+    y, x = np.mgrid[0:N, 0:N]
+    base = np.array(metal_placa(seed, '#4b5a4c', pintado=0.92, remaches=False)).astype(np.float32)[..., :3]
+    rgb = base * 1.05
+    cajon = y // 8
+    ly = y % 8
+    rgb = np.where((ly == 0)[..., None], rgb * 0.45, rgb)
+    rgb = np.where((ly == 1)[..., None], rgb * 1.15, rgb)
+    jal = (ly >= 4) & (ly <= 5) & (x >= 12) & (x <= 19)
+    rgb = np.where(jal[..., None], hexc('#a8a89e') * (0.9 + 0.2 * white(N, N, seed)[..., None]), rgb)
+    rgb = np.where(((ly == 6) & (x >= 12) & (x <= 19))[..., None], rgb * 0.5, rgb)
+    tarj = (ly >= 2) & (ly <= 3) & (x >= 14) & (x <= 17)
+    rgb = np.where(tarj[..., None], hexc('#d6ceb5'), rgb)
+    rgb = np.where(((x == 0) | (x == N - 1))[..., None], rgb * 0.6, rgb)
+    rgb = grime(rgb, seed + 9301, amount=0.3)
+    return img(rgb)
+
+
+def lingotes(seed=0):
+    """Lingotes de oro apilados (el tesoro de la boveda): oro opaco con polvo."""
+    y, x = np.mgrid[0:N, 0:N]
+    row = y // 8
+    off = (row % 2) * 4
+    lx = (x + off) % 8
+    ly = y % 8
+    oro = ramp(fbm(N, N, 3, seed + 9401) * 0.6 + white(N, N, seed + 9402) * 0.4, '#6a4f1d', '#84652a', '#9c7a33', '#b48f42')
+    rgb = oro.copy()
+    rgb = np.where(((lx == 0) | (ly == 0))[..., None], rgb * 0.45, rgb)
+    rgb = np.where(((ly == 1) & (lx > 0))[..., None], rgb * 1.2 + 10, rgb)
+    rgb = np.where(((lx >= 2) & (lx <= 5) & (ly >= 3) & (ly <= 4))[..., None], rgb * 0.85, rgb)
+    rgb = grime(rgb, seed + 9403, amount=0.35)
+    return img(rgb)
+
+
+def viga_madera_lado(seed=0):
+    y, x = np.mgrid[0:N, 0:N]
+    veta = np.sin(x * 0.9 + fbm(N, N, 6, seed + 9501) * 8) * 0.5 + 0.5
+    rgb = hexc('#33200f') * (0.75 + 0.35 * veta)[..., None]
+    rgb = np.where(((x <= 1) | (x >= 30))[..., None], rgb * 0.6, rgb)
+    for yy in (4, 27):
+        rgb[yy:yy + 2, 2:30] = rgb[yy:yy + 2, 2:30] * 0.55     # molduras
+    return img(grime(rgb, seed + 9502, amount=0.25))
+
+
+def viga_madera_tapa(seed=0):
+    y, x = np.mgrid[0:N, 0:N]
+    d = np.hypot(x - 15.5, y - 15.5)
+    rgb = hexc('#4a3019') * (0.8 + 0.25 * np.sin(d * 1.4))[..., None]
+    rgb = np.where(((x <= 1) | (x >= 30) | (y <= 1) | (y >= 30))[..., None], hexc('#2a1a0d'), rgb)
+    return img(rgb)
+
+
+def alfombra_cafe(seed=0):
+    n = fbm(N, N, 3, seed + 9601) * 0.5 + white(N, N, seed + 9602) * 0.5
+    rgb = hexc('#4a3322') * (0.75 + 0.45 * n)[..., None]
+    y, x = np.mgrid[0:N, 0:N]
+    orla = ((x % 32 < 2) | (y % 32 < 2))
+    rgb = np.where(orla[..., None], hexc('#7a5a2a'), rgb)
+    rgb = grime(rgb, seed + 9603, amount=0.35)
+    return img(rgb)
+
+
+# ---------------------------------------------------------------- el Salon (prueba 3)
+def papel_tapiz(seed=0, fondo='#3a0e12', dibujo='#5c1a1e'):
+    """Papel tapiz de damasco rojo oscuro, manchado y despegado en partes (se ve el yeso)."""
+    r = np.random.RandomState(seed + 9700)
+    y, x = np.mgrid[0:N, 0:N]
+    # damasco: rombo con flor en el centro, se repite cada 16
+    u, v = (x % 16) - 7.5, (y % 16) - 7.5
+    rombo = (np.abs(u) + np.abs(v)) < 7
+    flor = (np.hypot(u, v * 0.7) < 3.2) | ((np.abs(u) < 0.8) & (np.abs(v) < 6)) | ((np.abs(v) < 0.8) & (np.abs(u) < 5))
+    linea = np.abs(np.abs(u) + np.abs(v) - 7) < 0.6
+    rgb = np.broadcast_to(hexc(fondo), (N, N, 3)).copy() * (0.85 + 0.25 * fbm(N, N, 6, seed + 9701))[..., None]
+    rgb = np.where((flor | linea)[..., None], hexc(dibujo) * (0.9 + 0.2 * white(N, N, seed)[..., None]), rgb)
+    rgb = np.where((rombo & ~flor & ~linea & ((x + y) % 4 == 0))[..., None], rgb * 1.08, rgb)
+    # despegado: se ve el yeso
+    if seed % 3 == 1:
+        d = fbm(N, N, 10, seed + 9702) > 0.68
+        yeso_ = hexc('#7d7563') * (0.8 + 0.3 * white(N, N, seed + 9703))[..., None]
+        rgb = np.where(d[..., None], yeso_, rgb)
+        orilla = d & ~np.roll(d, 1, 0)
+        rgb = np.where(orilla[..., None], hexc('#1f0a0b'), rgb)
+    rgb = streaks(rgb, seed + 9704, n=r.randint(0, 3), color='#1a1410', strength=0.4)
+    rgb = grime(rgb, seed + 9705, amount=0.3, top=0.15)
+    return img(rgb)
+
+
+def marmol(seed=0, base='#1c1b1d', veta='#6d6a62', brillo=0.0):
+    """Marmol pulido con vetas (negro u oscuro), algo rayado."""
+    y, x = np.mgrid[0:N, 0:N]
+    t = fbm(N, N, 8, seed + 9800)
+    w = np.abs(np.sin((x * 0.25 + y * 0.18 + t * 9.0)))
+    vena = w < 0.08
+    vena2 = np.abs(np.sin(x * 0.11 - y * 0.3 + fbm(N, N, 5, seed + 9801) * 7)) < 0.05
+    rgb = hexc(base) * (0.85 + 0.3 * fbm(N, N, 5, seed + 9802))[..., None]
+    rgb = np.where(vena[..., None], mix(rgb, np.broadcast_to(hexc(veta), rgb.shape), 0.7), rgb)
+    rgb = np.where(vena2[..., None], mix(rgb, np.broadcast_to(hexc(veta), rgb.shape), 0.35), rgb)
+    if brillo:
+        rgb = np.where((((x + y) % 23) < 1)[..., None], rgb + 18 * brillo, rgb)
+    rgb = np.where(((x == 0) | (y == 0))[..., None], rgb * 0.7, rgb)
+    rgb = envejecer(rgb, seed + 9803, 0.3)
+    return img(rgb)
+
+
+def tapete(seed=0, orilla=False):
+    """Alfombra roja gruesa como piso (bajo las mesas); con orilla dorada gastada."""
+    n = fbm(N, N, 3, seed + 9900) * 0.5 + white(N, N, seed + 9901) * 0.5
+    rgb = hexc('#4e0d12') * (0.75 + 0.45 * n)[..., None]
+    y, x = np.mgrid[0:N, 0:N]
+    if orilla:
+        rgb = hexc('#2a0709') * (0.8 + 0.45 * n)[..., None]
+        rgb = np.where((((x // 8) + (y // 8)) % 2 == 0)[..., None] & ((x % 8 == 4) & (y % 8 == 4))[..., None], hexc('#7a5a26'), rgb)
+    rgb = grime(rgb, seed + 9902, amount=0.35)
+    return img(rgb)
+
+
+def marco_dorado(seed=0):
+    """Moldura dorada vieja (marcos de la pantalla y de los cuadros)."""
+    y, x = np.mgrid[0:N, 0:N]
+    oro = ramp(fbm(N, N, 3, seed + 9950) * 0.5 + white(N, N, seed + 9951) * 0.5, '#4a3614', '#6a4f1e', '#8a6a2a', '#a8843a')
+    perfil = np.minimum(np.minimum(x, N - 1 - x), np.minimum(y, N - 1 - y))
+    rgb = oro * (0.55 + 0.6 * np.clip(np.sin(perfil * 0.9) * 0.5 + 0.5, 0, 1))[..., None]
+    adorno = ((perfil == 6) & ((x + y) % 4 < 2))
+    rgb = np.where(adorno[..., None], rgb * 1.25 + 10, rgb)
+    rgb = grime(rgb, seed + 9952, amount=0.45)
+    return img(rgb)

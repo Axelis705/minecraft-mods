@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/marco_dorado_0"
+   },
+   {
+    "model": "coleccionista:block/marco_dorado_1"
+   }
+  ]
+ }
+}

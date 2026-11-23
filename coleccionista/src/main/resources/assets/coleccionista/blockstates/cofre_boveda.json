@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/cofre_boveda"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/cofre_boveda",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/cofre_boveda",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/cofre_boveda",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/lampara_billar"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/lampara_billar",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/lampara_billar",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/lampara_billar",
+   "y": 270
+  }
+ }
+}

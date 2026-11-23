@@ -228,6 +228,85 @@
    "strength": 0.2
   },
   {
+   "id": "parquet",
+   "kind": "cubo",
+   "sound": "wood",
+   "strength": 2.0
+  },
+  {
+   "id": "estante_archivo",
+   "kind": "cubo",
+   "sound": "wood",
+   "strength": 2.0
+  },
+  {
+   "id": "archivero",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
+   "id": "lingotes",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
+   "id": "viga_madera",
+   "kind": "pilar",
+   "sound": "wood",
+   "strength": 3.0
+  },
+  {
+   "id": "losa_madera",
+   "kind": "losa",
+   "sound": "wood",
+   "strength": 2.0,
+   "transparente": false
+  },
+  {
+   "id": "alfombra_cafe",
+   "kind": "alfombra",
+   "sound": "wool",
+   "strength": 0.2
+  },
+  {
+   "id": "papel_tapiz",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 2.0
+  },
+  {
+   "id": "marmol_negro",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "marmol_crema",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "tapete_rojo",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 2.0
+  },
+  {
+   "id": "tapete_orilla",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 2.0
+  },
+  {
+   "id": "marco_dorado",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
    "id": "catre",
    "kind": "cama",
    "sound": "metal",
@@ -2254,6 +2333,617 @@
    "en": "Floor plate",
    "soft": false,
    "sub": "plain"
+  },
+  {
+   "id": "atril",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     4.0,
+     0.0,
+     4.0,
+     12.0,
+     1.0,
+     12.0
+    ],
+    [
+     6.5,
+     1.0,
+     6.5,
+     9.5,
+     10.0,
+     9.5
+    ]
+   ],
+   "particles": [],
+   "es": "Atril con registro",
+   "en": "Ledger stand",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "cofre_boveda",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     1.5,
+     0.0,
+     2.5,
+     14.5,
+     12.0,
+     14.0
+    ],
+    [
+     2.5,
+     1.0,
+     2.0,
+     13.5,
+     11.0,
+     2.5
+    ],
+    [
+     6.5,
+     4.5,
+     1.4,
+     9.5,
+     7.5,
+     2.0
+    ],
+    [
+     7.6,
+     5.6,
+     1.0,
+     8.4,
+     6.4,
+     1.4
+    ],
+    [
+     12.6,
+     2.0,
+     1.6,
+     13.6,
+     3.5,
+     2.2
+    ],
+    [
+     12.6,
+     8.5,
+     1.6,
+     13.6,
+     10.0,
+     2.2
+    ],
+    [
+     3.5,
+     9.0,
+     1.8,
+     6.0,
+     10.0,
+     2.1
+    ]
+   ],
+   "particles": [],
+   "es": "Caja fuerte",
+   "en": "Strongbox",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "mesa_tapete",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     13,
+     0,
+     16,
+     16,
+     16
+    ],
+    [
+     6,
+     0,
+     6,
+     10,
+     13,
+     10
+    ]
+   ],
+   "particles": [],
+   "es": "Mesa de juego",
+   "en": "Card table",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "sillon",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wool",
+   "shape": [
+    [
+     1,
+     0,
+     1,
+     15,
+     8,
+     15
+    ],
+    [
+     1,
+     8,
+     12,
+     15,
+     22,
+     15
+    ]
+   ],
+   "particles": [],
+   "es": "Sillón de terciopelo",
+   "en": "Velvet armchair",
+   "soft": false,
+   "shape_upper": [
+    [
+     1,
+     0,
+     12,
+     15,
+     6,
+     15
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "estandarte_rojo",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     2.0,
+     4.0,
+     14.6,
+     14.0,
+     16.0,
+     15.0
+    ],
+    [
+     2.3,
+     1.5,
+     14.65,
+     3.5,
+     4.0,
+     14.95
+    ],
+    [
+     4.3,
+     2.5,
+     14.65,
+     5.5,
+     4.0,
+     14.95
+    ],
+    [
+     6.3,
+     1.5,
+     14.65,
+     7.5,
+     4.0,
+     14.95
+    ],
+    [
+     8.3,
+     2.5,
+     14.65,
+     9.5,
+     4.0,
+     14.95
+    ],
+    [
+     10.3,
+     1.5,
+     14.65,
+     11.5,
+     4.0,
+     14.95
+    ],
+    [
+     12.3,
+     2.5,
+     14.65,
+     13.5,
+     4.0,
+     14.95
+    ]
+   ],
+   "particles": [],
+   "es": "Estandarte rojo",
+   "en": "Red banner",
+   "soft": false,
+   "shape_upper": [
+    [
+     1.0,
+     14.0,
+     14.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     0.5,
+     13.5,
+     13.8,
+     1.5,
+     15.5,
+     15.2
+    ],
+    [
+     14.5,
+     13.5,
+     13.8,
+     15.5,
+     15.5,
+     15.2
+    ],
+    [
+     2.0,
+     0.0,
+     14.6,
+     14.0,
+     14.0,
+     15.0
+    ],
+    [
+     6.0,
+     5.0,
+     14.5,
+     10.0,
+     9.0,
+     14.6
+    ],
+    [
+     7.3,
+     6.3,
+     14.4,
+     8.7,
+     7.7,
+     14.5
+    ]
+   ],
+   "sub": "wall"
+  },
+  {
+   "id": "estandarte_negro",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     2.0,
+     4.0,
+     14.6,
+     14.0,
+     16.0,
+     15.0
+    ],
+    [
+     2.3,
+     1.5,
+     14.65,
+     3.5,
+     4.0,
+     14.95
+    ],
+    [
+     4.3,
+     2.5,
+     14.65,
+     5.5,
+     4.0,
+     14.95
+    ],
+    [
+     6.3,
+     1.5,
+     14.65,
+     7.5,
+     4.0,
+     14.95
+    ],
+    [
+     8.3,
+     2.5,
+     14.65,
+     9.5,
+     4.0,
+     14.95
+    ],
+    [
+     10.3,
+     1.5,
+     14.65,
+     11.5,
+     4.0,
+     14.95
+    ],
+    [
+     12.3,
+     2.5,
+     14.65,
+     13.5,
+     4.0,
+     14.95
+    ]
+   ],
+   "particles": [],
+   "es": "Estandarte negro",
+   "en": "Black banner",
+   "soft": false,
+   "shape_upper": [
+    [
+     1.0,
+     14.0,
+     14.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     0.5,
+     13.5,
+     13.8,
+     1.5,
+     15.5,
+     15.2
+    ],
+    [
+     14.5,
+     13.5,
+     13.8,
+     15.5,
+     15.5,
+     15.2
+    ],
+    [
+     2.0,
+     0.0,
+     14.6,
+     14.0,
+     14.0,
+     15.0
+    ],
+    [
+     6.0,
+     5.0,
+     14.5,
+     10.0,
+     9.0,
+     14.6
+    ],
+    [
+     7.3,
+     6.3,
+     14.4,
+     8.7,
+     7.7,
+     14.5
+    ]
+   ],
+   "sub": "wall"
+  },
+  {
+   "id": "arana",
+   "kind": "prop",
+   "tall": false,
+   "light": 13,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     7.5,
+     9.0,
+     7.5,
+     8.5,
+     16.0,
+     8.5
+    ],
+    [
+     6.0,
+     5.0,
+     6.0,
+     10.0,
+     9.0,
+     10.0
+    ],
+    [
+     1.5,
+     6.0,
+     7.5,
+     14.5,
+     7.0,
+     8.5
+    ],
+    [
+     7.5,
+     6.0,
+     1.5,
+     8.5,
+     7.0,
+     14.5
+    ],
+    [
+     1.3,
+     7.0,
+     6.8,
+     3.7,
+     7.6,
+     9.2
+    ],
+    [
+     1.9,
+     7.6,
+     7.4,
+     3.1,
+     9.4,
+     8.6
+    ],
+    [
+     12.3,
+     7.0,
+     6.8,
+     14.7,
+     7.6,
+     9.2
+    ],
+    [
+     12.9,
+     7.6,
+     7.4,
+     14.1,
+     9.4,
+     8.6
+    ],
+    [
+     6.8,
+     7.0,
+     1.3,
+     9.2,
+     7.6,
+     3.7
+    ],
+    [
+     7.4,
+     7.6,
+     1.9,
+     8.6,
+     9.4,
+     3.1
+    ],
+    [
+     6.8,
+     7.0,
+     12.3,
+     9.2,
+     7.6,
+     14.7
+    ],
+    [
+     7.4,
+     7.6,
+     12.9,
+     8.6,
+     9.4,
+     14.1
+    ],
+    [
+     7.0,
+     3.5,
+     7.0,
+     9.0,
+     5.0,
+     9.0
+    ]
+   ],
+   "particles": [
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      2.5,
+      9.6,
+      8
+     ],
+     "rate": 0.25
+    },
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      13.5,
+      9.6,
+      8
+     ],
+     "rate": 0.25
+    },
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      8,
+      9.6,
+      2.5
+     ],
+     "rate": 0.25
+    },
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      8,
+      9.6,
+      13.5
+     ],
+     "rate": 0.25
+    }
+   ],
+   "es": "Araña de velas",
+   "en": "Candle chandelier",
+   "soft": false,
+   "sub": "hang"
+  },
+  {
+   "id": "lampara_billar",
+   "kind": "prop",
+   "tall": false,
+   "light": 12,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     7.6,
+     12.0,
+     7.6,
+     8.4,
+     16.0,
+     8.4
+    ],
+    [
+     5.5,
+     10.0,
+     5.5,
+     10.5,
+     12.0,
+     10.5
+    ],
+    [
+     3.0,
+     7.0,
+     3.0,
+     13.0,
+     10.0,
+     13.0
+    ]
+   ],
+   "particles": [],
+   "es": "Lámpara de mesa",
+   "en": "Table lamp",
+   "soft": false,
+   "sub": "hang"
   }
  ]
 }

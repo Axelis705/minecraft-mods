@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/tapete_rojo_0"
+   },
+   {
+    "model": "coleccionista:block/tapete_rojo_1"
+   }
+  ]
+ }
+}
