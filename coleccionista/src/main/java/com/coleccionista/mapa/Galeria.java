@@ -129,7 +129,7 @@ public final class Galeria {
         // 1) y 5) los bosques de postes
         for (int[] q : POSTES) {
             for (int y = 1; y <= 3; y++) {
-                p.set(c + q[0], y, q[1], C + "poste[axis=y]");
+                p.set(c + q[0], y, q[1], C + (y == 1 ? "poste" : "poste_liso") + "[axis=y]");
             }
             p.set(c + q[0], 4, q[1], C + "concreto");
         }

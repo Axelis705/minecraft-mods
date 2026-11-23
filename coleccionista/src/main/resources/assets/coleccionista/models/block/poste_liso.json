@@ -1,0 +1,100 @@
+{
+ "textures": {
+  "t": "coleccionista:block/poste_liso",
+  "particle": "coleccionista:block/poste_liso"
+ },
+ "elements": [
+  {
+   "from": [
+    4.5,
+    0,
+    4.5
+   ],
+   "to": [
+    11.5,
+    16,
+    11.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#t"
+    },
+    "south": {
+     "texture": "#t"
+    },
+    "west": {
+     "texture": "#t"
+    },
+    "east": {
+     "texture": "#t"
+    }
+   }
+  },
+  {
+   "from": [
+    3.9,
+    0,
+    3.9
+   ],
+   "to": [
+    12.1,
+    1.5,
+    12.1
+   ],
+   "faces": {
+    "north": {
+     "texture": "#t"
+    },
+    "south": {
+     "texture": "#t"
+    },
+    "west": {
+     "texture": "#t"
+    },
+    "east": {
+     "texture": "#t"
+    },
+    "down": {
+     "texture": "#t",
+     "cullface": "down"
+    },
+    "up": {
+     "texture": "#t"
+    }
+   }
+  },
+  {
+   "from": [
+    3.9,
+    14.5,
+    3.9
+   ],
+   "to": [
+    12.1,
+    16,
+    12.1
+   ],
+   "faces": {
+    "north": {
+     "texture": "#t"
+    },
+    "south": {
+     "texture": "#t"
+    },
+    "west": {
+     "texture": "#t"
+    },
+    "east": {
+     "texture": "#t"
+    },
+    "down": {
+     "texture": "#t"
+    },
+    "up": {
+     "texture": "#t",
+     "cullface": "up"
+    }
+   }
+  }
+ ]
+}

@@ -294,6 +294,7 @@ def catalogo():
     alfombra('alfombra_roja', 'Alfombra roja', 'Red carpet', lambda s: M.alfombra(s))
     tubo('tubo', 'Tubería oxidada', 'Rusty pipe', lambda s: M.metal_placa(s, '#4d5249', pintado=0.5, remaches=False))
     tubo('poste', 'Poste de acero', 'Steel post', lambda s: poste_tex(s), a=4.5, b=11.5, brida=0.6)
+    tubo('poste_liso', 'Poste de acero (liso)', 'Steel post (plain)', lambda s: M.metal_placa(s, '#5a5d55', pintado=0.6, remaches=False), a=4.5, b=11.5, brida=0.6)
     palanca('palanca', 'Palanca', 'Lever')
     # muebles y adornos
     P = props_celdas

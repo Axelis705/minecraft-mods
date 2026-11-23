@@ -135,6 +135,12 @@
    "strength": 2.0
   },
   {
+   "id": "poste_liso",
+   "kind": "tubo",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
    "id": "palanca",
    "kind": "palanca",
    "sound": "metal",

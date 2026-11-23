@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "axis=y": {
+   "model": "coleccionista:block/poste_liso"
+  },
+  "axis=z": {
+   "model": "coleccionista:block/poste_liso",
+   "x": 90
+  },
+  "axis=x": {
+   "model": "coleccionista:block/poste_liso",
+   "x": 90,
+   "y": 90
+  }
+ }
+}
