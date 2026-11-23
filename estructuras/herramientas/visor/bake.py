@@ -251,6 +251,8 @@ def opaque_full(n, props, x, y, z):
 
 # barrotes de otros mods (se unen como los de hierro)
 BARS = {'iron_bars', 'coleccionista:barrotes', 'coleccionista:barandal'}
+# bloques que no son enteros pero en el juego tienen la cara firme (los barrotes se unen a ellos)
+FIRMES = {'coleccionista:puerta_celda'}
 
 
 def finish_props(n, props, x, y, z):
@@ -288,7 +290,7 @@ def finish_props(n, props, x, y, z):
             conn = False
             if wall: conn = a.endswith('_wall') or opaque_full(a, b, x + dx, y, z + dz) or a.endswith('_fence_gate')
             elif n.endswith('_fence'): conn = (a.endswith('_fence') and (a.startswith('nether') == n.startswith('nether'))) or a.endswith('_fence_gate') or opaque_full(a, b, x + dx, y, z + dz)
-            else: conn = a in BARS or a.endswith('glass_pane') or a.endswith('_wall') or opaque_full(a, b, x + dx, y, z + dz)
+            else: conn = a in BARS or a in FIRMES or a.endswith('glass_pane') or a.endswith('_wall') or opaque_full(a, b, x + dx, y, z + dz)
             p[d] = ('low' if wall else 'true') if conn else ('none' if wall else 'false')
         if wall:
             cs = [d for d in DIRS4 if p[d] != 'none']

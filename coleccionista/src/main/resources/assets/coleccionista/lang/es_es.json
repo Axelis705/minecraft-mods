@@ -771,5 +771,6 @@
   "coleccionista.panel.tres_estado.juego": "¡En el recorrido!",
   "coleccionista.panel.tres_estado.fin": "Terminada",
   "coleccionista.panel.tres_nota": "Prueba extra (comodín). Tríos al azar en la Galería de los postes. Eligen en la mesa: venda (casi no ve), cinta (no habla ni escribe) y esposas (no toca nada). Luego cruzan encadenados en fila; la cadena se atora en los postes. El último trío pierde (/evento tres pierde trio|uno). Necesita Simple Voice Chat para la cinta.",
-  "block.coleccionista.poste_liso": "Poste de acero (liso)"
+  "block.coleccionista.poste_liso": "Poste de acero (liso)",
+  "coleccionista.sub.chispa": "Chispazo de lámpara"
 }

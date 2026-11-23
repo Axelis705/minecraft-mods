@@ -169,9 +169,7 @@ public final class Celdas {
                     l.setBlock(q, st.setValue(DoorBlock.OPEN, abrir), 2 | 16);
                 }
             }
-            if (celda != 0) {
-                l.playSound(null, p, abrir ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1F, 0.8F);
-            }
+            // el sonido de cada reja (pestillo, riel y golpe) lo pone la reja misma al moverse (RejaBE)
         }
         if (celda == 0) {
             Anuncio.sonido(s, abrir ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, 1F, 0.6F);

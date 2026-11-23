@@ -13,6 +13,7 @@ Tipos (campo "kind" del manifiesto):
   escalera  escaleras
   barrotes  barrotes que se unen como los de hierro (rejas, barandales)
   puerta    puerta de dos bloques que solo abre el evento (como la de hierro)
+  reja      puerta corrediza de reja (celdas): solo la abre el evento; el juego la anima (se corre a un lado)
   vidrio    vidrio
   alfombra  alfombra (1 px)
   prop      mueble o adorno 3D (catre, retrete, lamparas, camaras...), ver props_celdas.py
@@ -159,6 +160,74 @@ def puerta(bid, es, en, abajo, arriba, sonido='metal'):
     nombre(bid, es, en)
 
 
+def puerta_reja(p, corre=15, sale=2.5):
+    """Puerta corrediza de reja (kit, dos bloques de alto). Modelos cerrados (los que dibuja el juego moviendolos) y abiertos (ya corrida
+    a un lado y un poco hacia afuera: los usa el visor y el bloque si no hay animacion). bisagra izquierda corre a +x, derecha a -x."""
+    import copy
+    from PIL import Image, ImageDraw
+    models, img, alpha = kit.build(p)
+    img.save(os.path.join(A, 'textures/block', p.id + '.png'))
+
+    def modelo(els):
+        return {'textures': {'0': f'{NS}:block/{p.id}', 'particle': f'{NS}:block/{p.id}'}, 'elements': els, 'display': kit.DISPLAY,
+                'ambientocclusion': False, 'render_type': 'minecraft:cutout'}
+
+    def movido(els, dx, dz):
+        out = copy.deepcopy(els)
+        for e in out:
+            for k in ('from', 'to'):
+                e[k] = [round(e[k][0] + dx, 4), e[k][1], round(e[k][2] + dz, 4)]
+            if 'rotation' in e:
+                o = e['rotation']['origin']
+                e['rotation']['origin'] = [o[0] + dx, o[1], o[2] + dz]
+            for f in e['faces'].values():
+                f.pop('cullface', None)
+        return out
+    for part in ('lower', 'upper'):
+        dump(f'models/block/{p.id}_{part}.json', modelo(models[part]))
+        dump(f'models/block/{p.id}_{part}_abierta_i.json', modelo(movido(models[part], corre, sale)))
+        dump(f'models/block/{p.id}_{part}_abierta_d.json', modelo(movido(models[part], -corre, sale)))
+    rot = {'north': 0, 'east': 90, 'south': 180, 'west': 270}
+    v = {}
+    for f, y in rot.items():
+        for part in ('lower', 'upper'):
+            for hinge in ('left', 'right'):
+                for op in ('false', 'true'):
+                    m = f'{NS}:block/{p.id}_{part}' + ('' if op == 'false' else ('_abierta_i' if hinge == 'left' else '_abierta_d'))
+                    e = {'model': m}
+                    if y:
+                        e['y'] = y
+                    v[f'facing={f},half={part},hinge={hinge},open={op}'] = e
+    dump(f'blockstates/{p.id}.json', {'variants': v})
+    # el objeto: dibujo plano de la reja
+    ic = Image.new('RGBA', (32, 32))
+    d = ImageDraw.Draw(ic)
+    marco, barra, chapa = (58, 64, 62, 255), (44, 48, 46, 255), (64, 72, 64, 255)
+    d.rectangle((9, 1, 22, 31), outline=marco, width=2)
+    d.rectangle((11, 22, 20, 28), fill=chapa)
+    for y in (12, 20):
+        d.line((10, y, 21, y), fill=marco)
+    for x in (13, 15, 17, 19):
+        d.line((x, 3, x, 21), fill=barra)
+    d.rectangle((10, 13, 13, 17), fill=(120, 122, 118, 255))
+    d.point((11, 15), fill=(12, 12, 12, 255))
+    tex(p.id + '_objeto', ic)
+    dump(f'models/item/{p.id}.json', {'parent': 'minecraft:item/generated', 'textures': {'layer0': f'{NS}:block/{p.id}_objeto'}})
+    ficha.append({'id': p.id, 'kind': 'reja', 'sound': 'metal', 'strength': 5.0})
+    nombre(p.id, p.es, p.en)
+    # quita los modelos de la puerta vieja (la de Minecraft con textura)
+    for parte in ('bottom_left', 'bottom_left_open', 'bottom_right', 'bottom_right_open', 'top_left', 'top_left_open', 'top_right', 'top_right_open'):
+        try:
+            os.remove(os.path.join(A, f'models/block/{p.id}_{parte}.json'))
+        except FileNotFoundError:
+            pass
+    for t in ('_abajo', '_arriba'):
+        try:
+            os.remove(os.path.join(A, f'textures/block/{p.id}{t}.png'))
+        except FileNotFoundError:
+            pass
+
+
 def tubo(bid, es, en, fn, sonido='metal', a=5.5, b=10.5, brida=1.0):
     """Tubo con bridas que va en cualquier eje (por el techo y las paredes). Con a/b mas gordos sirve de poste."""
     t = tex(bid, fn(1))
@@ -290,7 +359,7 @@ def catalogo():
     escalera('escalera_metal', 'Escalera de metal', 'Metal stairs', lambda s: M.metal_placa(s, '#2e2f2c', pintado=0.3), 'metal_placa')
     barrotes('barrotes', 'Barrotes oxidados', 'Rusty bars', lambda s: M.barrotes(s))
     barrotes('barandal', 'Barandal', 'Railing', lambda s: barandal_tex(s))
-    puerta('puerta_celda', 'Puerta de celda', 'Cell door', lambda s: M.puerta(s, 'abajo'), lambda s: M.puerta(s, 'arriba'))
+    puerta_reja(props_celdas.puerta_reja())
     alfombra('alfombra_roja', 'Alfombra roja', 'Red carpet', lambda s: M.alfombra(s))
     tubo('tubo', 'Tubería oxidada', 'Rusty pipe', lambda s: M.metal_placa(s, '#4d5249', pintado=0.5, remaches=False))
     tubo('poste', 'Poste de acero', 'Steel post', lambda s: poste_tex(s), a=4.5, b=11.5, brida=0.6)

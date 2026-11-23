@@ -9,5 +9,26 @@
         "attenuation_distance": 8
       }
     ]
+  },
+  "chispa": {
+    "category": "block",
+    "subtitle": "coleccionista.sub.chispa",
+    "sounds": [
+      {
+        "name": "coleccionista:chispa1",
+        "volume": 0.7,
+        "attenuation_distance": 12
+      },
+      {
+        "name": "coleccionista:chispa2",
+        "volume": 0.7,
+        "attenuation_distance": 12
+      },
+      {
+        "name": "coleccionista:chispa3",
+        "volume": 0.7,
+        "attenuation_distance": 12
+      }
+    ]
   }
 }

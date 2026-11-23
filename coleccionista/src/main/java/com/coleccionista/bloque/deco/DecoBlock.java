@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -251,22 +252,84 @@ public class DecoBlock extends HorizontalDirectionalBlock {
 
     // ------------------------------------------------------------------ ambiente
 
+    /** Qué parte de las lámparas viejas están "malas" y parpadean seguido (las demás solo fallan muy de vez en cuando). */
+    public static int porcentajeMalas = 30;
+
+    /** ¿Esta lámpara es de las malas? Fijo según dónde está, así siempre son las mismas. */
+    public boolean mala(BlockPos p) {
+        return parpadeo && Math.floorMod(Mth.getSeed(p) >> 7, 100) < porcentajeMalas;
+    }
+
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState s, ServerLevel l, BlockPos p, RandomSource r) {
-        // la lámpara vieja falla: se apaga un momento (casi siempre un parpadeo, a veces un rato) y vuelve sola
-        if (parpadeo && s.getValue(ENCENDIDA) && !s.getValue(FALLA) && r.nextFloat() < 0.35F) {
-            l.setBlock(p, s.setValue(FALLA, true), 3);
-            l.scheduleTick(p, this, r.nextFloat() < 0.7F ? 2 + r.nextInt(4) : 20 + r.nextInt(60));
-            l.playSound(null, p, SoundEvents.REDSTONE_TORCH_BURNOUT, SoundSource.BLOCKS, 0.08F, 1.8F);
+    public void onPlace(BlockState s, Level l, BlockPos p, BlockState old, boolean moving) {
+        super.onPlace(s, l, p, old, moving);
+        // una lámpara mala que se acaba de poner (o de prender): empieza a fallar sola
+        if (l instanceof ServerLevel sl && parpadeo && s.getValue(ENCENDIDA) && mala(p) && (!old.is(this) || !old.getValue(ENCENDIDA))
+                && !sl.getBlockTicks().hasScheduledTick(p, this)) {
+            sl.scheduleTick(p, this, 20 + sl.random.nextInt(200));
         }
     }
 
     @Override
     @SuppressWarnings("deprecation")
+    public void randomTick(BlockState s, ServerLevel l, BlockPos p, RandomSource r) {
+        if (!parpadeo || !s.getValue(ENCENDIDA)) {
+            return;
+        }
+        if (mala(p)) {
+            // por si se perdió su ciclo (mundo viejo): lo vuelve a arrancar
+            if (!l.getBlockTicks().hasScheduledTick(p, this)) {
+                l.scheduleTick(p, this, 1 + r.nextInt(40));
+            }
+            return;
+        }
+        // las buenas también fallan, pero muy de vez en cuando: un parpadeo y vuelve
+        if (!s.getValue(FALLA) && r.nextFloat() < 0.35F) {
+            l.setBlock(p, s.setValue(FALLA, true), Block.UPDATE_CLIENTS);
+            l.scheduleTick(p, this, r.nextFloat() < 0.7F ? 2 + r.nextInt(4) : 20 + r.nextInt(60));
+            chispa(l, p, r, 0.5F);
+        }
+    }
+
+    /**
+     * El ciclo de una lámpara mala: prendida un rato, luego una racha de parpadeos (apagones de 1 a 4 ticks, a veces uno largo) con su
+     * chispazo, y otra vez prendida. Las buenas solo pasan por aquí para volver de su falla.
+     */
+    @Override
+    @SuppressWarnings("deprecation")
     public void tick(BlockState s, ServerLevel l, BlockPos p, RandomSource r) {
-        if (parpadeo && s.getValue(FALLA)) {
-            l.setBlock(p, s.setValue(FALLA, false), 3);
+        if (!parpadeo) {
+            return;
+        }
+        boolean falla = s.getValue(FALLA);
+        if (!s.getValue(ENCENDIDA)) {
+            // el evento la apagó: se queda quieta (sin ciclo) hasta que la prendan
+            if (falla) {
+                l.setBlock(p, s.setValue(FALLA, false), Block.UPDATE_CLIENTS);
+            }
+            return;
+        }
+        boolean mala = mala(p);
+        if (falla) {
+            l.setBlock(p, s.setValue(FALLA, false), Block.UPDATE_CLIENTS);
+            if (mala) {
+                // ¿sigue la racha? (en promedio 2 o 3 parpadeos seguidos) o descansa de 3 a 20 segundos
+                l.scheduleTick(p, this, r.nextFloat() < 0.55F ? 2 + r.nextInt(4) : 60 + r.nextInt(340));
+            }
+        } else if (mala) {
+            l.setBlock(p, s.setValue(FALLA, true), Block.UPDATE_CLIENTS);
+            chispa(l, p, r, 1F);
+            l.scheduleTick(p, this, r.nextFloat() < 0.85F ? 1 + r.nextInt(4) : 15 + r.nextInt(45));
+        }
+    }
+
+    /** El chispazo de la lámpara que se apaga sola: el sonido y, a veces, unas chispas. */
+    private void chispa(ServerLevel l, BlockPos p, RandomSource r, float fuerza) {
+        l.playSound(null, p, ModRegistry.CHISPA.get(), SoundSource.BLOCKS, (0.3F + r.nextFloat() * 0.25F) * fuerza, 0.85F + r.nextFloat() * 0.3F);
+        if (r.nextFloat() < 0.3F * fuerza) {
+            double y = def.sub().equals("hang") ? 0.6 : 0.5;
+            l.sendParticles(ParticleTypes.ELECTRIC_SPARK, p.getX() + 0.5, p.getY() + y, p.getZ() + 0.5, 2 + r.nextInt(4), 0.25, 0.08, 0.25, 0.06);
         }
     }
 

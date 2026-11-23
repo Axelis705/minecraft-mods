@@ -67,6 +67,7 @@ public final class Deco {
     private static final Map<String, Item> ITEMS = new LinkedHashMap<>();
     public static BlockEntityType<CajonBE> CAJON_BE;
     public static BlockEntityType<TextoBE> TEXTO_BE;
+    public static BlockEntityType<RejaBE> REJA_BE;
 
     private Deco() {
     }
@@ -144,6 +145,7 @@ public final class Deco {
             case "escalera" -> new StairBlock(() -> BLOCKS.get(d.str("base")).defaultBlockState(), p);
             case "barrotes" -> new IronBarsBlock(p.noOcclusion());
             case "puerta" -> new DoorBlock(p.noOcclusion(), BlockSetType.IRON);
+            case "reja" -> new DecoReja(p.noOcclusion());
             case "alfombra" -> new CarpetBlock(p);
             case "cama" -> new DecoCama(p.noOcclusion());
             default -> DecoBlock.crear(p, d);
@@ -188,6 +190,8 @@ public final class Deco {
             TEXTO_BE = BlockEntityType.Builder.of(TextoBE::new, textos.toArray(new Block[0])).build(null);
             h.register(new ResourceLocation(Coleccionista.MODID, "cajon"), CAJON_BE);
             h.register(new ResourceLocation(Coleccionista.MODID, "texto"), TEXTO_BE);
+            REJA_BE = BlockEntityType.Builder.of(RejaBE::new, BLOCKS.values().stream().filter(b -> b instanceof DecoReja).toArray(Block[]::new)).build(null);
+            h.register(new ResourceLocation(Coleccionista.MODID, "reja"), REJA_BE);
         });
         e.register(Registries.CREATIVE_MODE_TAB, h -> h.register(new ResourceLocation(Coleccionista.MODID, "deco"),
                 CreativeModeTab.builder().title(Component.translatable("itemGroup.coleccionista.deco"))

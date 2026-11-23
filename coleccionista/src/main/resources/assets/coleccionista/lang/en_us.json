@@ -771,5 +771,6 @@
   "coleccionista.panel.tres_estado.juego": "On the course!",
   "coleccionista.panel.tres_estado.fin": "Finished",
   "coleccionista.panel.tres_nota": "Extra trial (wildcard). Random trios in the Post Gallery. At the table they choose: blindfold (barely sees), tape (can't talk or type) and cuffs (can't touch anything). Then they cross chained in a line; the chain snags on posts. The last trio loses (/evento tres pierde trio|uno). Needs Simple Voice Chat for the tape.",
-  "block.coleccionista.poste_liso": "Steel post (plain)"
+  "block.coleccionista.poste_liso": "Steel post (plain)",
+  "coleccionista.sub.chispa": "Lamp sparks"
 }

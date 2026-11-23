@@ -17,7 +17,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CrossCollisionBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -201,9 +204,16 @@ public final class Complejo {
                 }
             }
         }
+        List<long[]> uniones = new ArrayList<>();
         for (long k : p.m.keySet()) {
             pasos.add(new long[] {Plano.kx(k), Plano.ky(k), Plano.kz(k), 1});
+            BlockState st = estado(p.m.get(k));
+            if (st != null && (st.getBlock() instanceof CrossCollisionBlock || st.getBlock() instanceof WallBlock)) {
+                uniones.add(new long[] {Plano.kx(k), Plano.ky(k), Plano.kz(k), 2});
+            }
         }
+        // al final, los barrotes, rejas, cercas y muros se unen con lo que tienen al lado (se pusieron sin avisar a los vecinos)
+        pasos.addAll(uniones);
         COLA.add(new Trabajo(level, base, pasos, p, new int[] {0}, () -> {
             datos(level.getServer()).putBoolean(z.id(), true);
             WorldStore.get(level.getServer(), MOD).dirty();
@@ -231,6 +241,12 @@ public final class Complejo {
                     Clearable.tryClear(be);
                 }
                 t.level.setBlock(p, Blocks.AIR.defaultBlockState(), 2 | 16);
+            } else if (q[3] == 2) {
+                BlockState st = t.level.getBlockState(p);
+                BlockState unido = Block.updateFromNeighbourShapes(st, t.level, p);
+                if (unido != st) {
+                    t.level.setBlock(p, unido, 2 | 16);
+                }
             } else {
                 long k = Plano.key((int) q[0], (int) q[1], (int) q[2]);
                 BlockState st = estado(t.plano.m.get(k));

@@ -28,6 +28,9 @@ public final class ModRegistry {
     /** El zumbido de las lámparas fluorescentes viejas. */
     public static final net.minecraftforge.registries.RegistryObject<SoundEvent> ZUMBIDO = SOUNDS.register("zumbido",
             () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "zumbido")));
+    /** El chispazo de una lámpara que falla (se apaga un instante y vuelve). */
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> CHISPA = SOUNDS.register("chispa",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "chispa")));
 
     // ---------------------------------------------------------------- bloques del mapa
     public static final net.minecraftforge.registries.RegistryObject<Block> PANTALLA = BLOCKS.register("pantalla",

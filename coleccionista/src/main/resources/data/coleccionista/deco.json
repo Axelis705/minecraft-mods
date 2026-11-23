@@ -112,7 +112,7 @@
   },
   {
    "id": "puerta_celda",
-   "kind": "puerta",
+   "kind": "reja",
    "sound": "metal",
    "strength": 5.0
   },

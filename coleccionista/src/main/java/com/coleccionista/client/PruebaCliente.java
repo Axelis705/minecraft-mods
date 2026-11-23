@@ -162,10 +162,29 @@ final class PruebaCliente {
         });
         t.photo("26_candado", 900, () -> com.axeliscore.plat.client.Screens.open(new CandadoScreen()));
         t.add("cerrar candado", 500, () -> com.axeliscore.plat.client.Screens.close());
+        // la reja de la celda 1: cerrada, corriéndose y abierta (con visión nocturna para que se vea en la foto)
+        t.photo("26b_reja_cerrada", 1500, () -> {
+            t.cmd("gamemode spectator @a");
+            t.cmd("effect give @a night_vision 30 0 true");
+            t.lookFrom(3.5, G, 39.3, 3.5, G + 1, 36.5);
+        });
+        t.photo("26c_reja_abriendo", 650, () -> t.cmd("evento celdas abrir 1"));
+        t.photo("26d_reja_abierta", 1600, () -> {
+        });
+        t.add("reja", 100, () -> {
+            var l = Minecraft.getInstance().level;
+            net.minecraft.core.BlockPos q = new net.minecraft.core.BlockPos(3, (int) G, 36);
+            var st = l.getBlockState(q);
+            t.check(st.getBlock() instanceof com.coleccionista.bloque.deco.DecoReja && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN),
+                    "la reja de la celda 1 está abierta");
+            t.check(l.getBlockEntity(q) instanceof com.coleccionista.bloque.deco.RejaBE be && be.avance(1F) == 1F, "la reja terminó de correrse");
+            t.cmd("effect clear @a night_vision");
+        });
         t.photo("27_pasillo", 2500, () -> {
             t.cmd("evento celdas abrir");
             t.cmd("gamemode spectator @a");
             t.lookFrom(-4.5, -60, 41.5, 40, -59.2, 41.5);
+            muestrearLamparas(true);
         });
         t.photo("28_cuerpo", 2500, () -> {
             t.cmd("evento eliminar Bot_02 Encadenados");
@@ -173,6 +192,10 @@ final class PruebaCliente {
         });
         t.photo("29_pantalla_grande", 2000, () -> t.lookFrom(10.5, -57, 41.5, -7, -56, 41.5));
         t.photo("30_pasarela", 1500, () -> t.lookFrom(35.5, -54.4, 38, 0, -55, 38));
+        t.add("lamparas", 100, () -> {
+            muestrearLamparas(false);
+            t.check(lamparasFallando > 0, "algunas lámparas del pasillo parpadean solas (" + lamparasFallando + " ticks con alguna apagada)");
+        });
         // Axelis aparece disfrazado del Coleccionista en el pasillo (visto de frente)
         t.add("disfrazarme", 1500, () -> {
             t.cmd("evento quitar " + yo());
@@ -189,6 +212,30 @@ final class PruebaCliente {
             t.cmd("evento disfraz no @a");
         });
         encadenados(t);
+    }
+
+    private static boolean escuchando, muestreando;
+    private static int lamparasFallando;
+
+    /** Cuenta los ticks en los que alguna lámpara del pasillo del Ala está apagada por una falla (las lámparas malas parpadean solas). */
+    private static void muestrearLamparas(boolean si) {
+        if (!escuchando) {
+            escuchando = true;
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.event.TickEvent.ClientTickEvent e) -> {
+                var l = Minecraft.getInstance().level;
+                if (!muestreando || e.phase != net.minecraftforge.event.TickEvent.Phase.END || l == null) {
+                    return;
+                }
+                for (net.minecraft.core.BlockPos p : net.minecraft.core.BlockPos.betweenClosed(-8, -60, 37, 44, -52, 45)) {
+                    var s = l.getBlockState(p);
+                    if (s.hasProperty(com.coleccionista.bloque.deco.DecoBlock.FALLA) && s.getValue(com.coleccionista.bloque.deco.DecoBlock.FALLA)) {
+                        lamparasFallando++;
+                        break;
+                    }
+                }
+            });
+        }
+        muestreando = si;
     }
 
     /** Mi pareja en Encadenados (su nombre), o "" si no tengo. */

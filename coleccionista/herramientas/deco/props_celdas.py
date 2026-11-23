@@ -569,6 +569,43 @@ def objeto(tipo):
     return p
 
 
+def puerta_reja():
+    """Puerta corrediza de reja de cada celda: va en la linea de los barrotes (z 7..9), con largueros, una placa abajo, barras redondas y
+    la cerradura del lado que cierra (x = 0). Cuando el evento la abre, el juego la corre hacia un lado (ver build.puerta_reja)."""
+    p = Prop('puerta_celda', 'Puerta de celda', 'Cell door', kind='floor', tall=True, sound='metal', seed=60)
+    marco = pintado('#4e504b', oxido=0.26, seed=60, saltado=0.15)
+    barra = pintado('#5a5a54', oxido=0.3, seed=61, saltado=0.1)
+    chapa = pintado('#474a45', oxido=0.3, seed=62, saltado=0.12)
+    cerr = acero(seed=63, sucio=0.6)
+    hoyo = solid('#0d0d0c')
+    z0, z1 = 7, 9
+    barras = [1.5 + 13 * (i + 1) / 5 - 0.6 for i in range(4)]
+    p.at('lower')
+    abajo = ('down',)                                      # lo que toca el piso no lleva cara de abajo (no parpadea con el piso)
+    p.box(0, 0, z0, 1.5, 16, z1, marco, skip=abajo)        # largueros
+    p.box(14.5, 0, z0, 16, 16, z1, marco, skip=abajo)
+    p.box(1.5, 0, z0, 14.5, 1.5, z1, marco, skip=abajo)    # travesano de abajo
+    p.box(1.5, 1.5, 7.6, 14.5, 6, 8.4, chapa)              # placa de abajo
+    p.box(1.5, 6, z0, 14.5, 7, z1, marco)
+    p.box(1.5, 12.5, z0, 14.5, 13.5, z1, marco)            # travesano de la cerradura
+    for x in barras:
+        p.box(x, 7, 7.4, x + 1.2, 16, 8.6, barra)
+    p.box(1.5, 10.5, 5.8, 5, 15.5, 10.2, cerr)             # la cerradura (se ve por los dos lados)
+    p.box(2.7, 12.2, 5.5, 3.7, 14, 5.8, hoyo)
+    p.box(2.7, 12.2, 10.2, 3.7, 14, 10.5, hoyo)
+    p.box(5, 13, 6.4, 6.2, 14, 9.6, cerr)                  # el pestillo
+    p.at('upper')
+    p.box(0, 0, z0, 1.5, 16, z1, marco)
+    p.box(14.5, 0, z0, 16, 16, z1, marco)
+    p.box(1.5, 7.5, z0, 14.5, 8.5, z1, marco)
+    p.box(0, 14.5, z0 - 0.4, 16, 16, z1 + 0.4, marco)      # travesano de arriba (corre en el riel)
+    for x in barras:
+        p.box(x, 0, 7.4, x + 1.2, 14.5, 8.6, barra)
+    for x in (2.5, 11.5):                                  # las ruedas del riel
+        p.box(x, 15.2, 6.2, x + 2, 16, 9.8, cerr)
+    return p
+
+
 def all_props():
     return [catre(), retrete(), lavabo(), espejo(), cajon(), silla(), lampara_tubo(True), lampara_tubo(False), lampara_jaula(True),
             lampara_jaula(False), rejilla_ventilacion(), camara(), bocina(), reloj(), telarana(),
