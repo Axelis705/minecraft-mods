@@ -36,8 +36,10 @@ final class VestuarioScenario {
             Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
             t.lookFrom(1.5, -60, 40.5, 1.5, -59, 37.5);
         });
-        // objeto con modelo de Blockbench en la mano (el sombrero) y tirado en el suelo
+        // objeto con modelo de Blockbench en la mano (el sombrero) y tirado en el suelo (con el HUD: si no, no se ve la mano)
         t.photo("31_objeto3d_mano", 1200, () -> {
+            t.hud(true);
+            Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
             t.cmd("clear @a");
             t.cmd("give @a axelis_core:sombrero");
             t.cmd("tp @a 0 -60 40 180 20");

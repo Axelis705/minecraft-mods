@@ -50,11 +50,13 @@ public class CoreItem extends Item {
     }
 
     //#if MC < 26.1
+    /**
+     * Minecraft llama esto dentro del constructor (antes de {@link #modelo3d}): por eso se pide siempre el dibujante de objetos 3D; solo
+     * se usa si el modelo del objeto es {@code axelis_core:item/modelo_3d} (y entonces dibuja lo que diga {@link #geo3d}).
+     */
     @Override
     public void initializeClient(Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> c) {
-        if (geo3d != null) {
-            c.accept(com.axeliscore.item.client.ObjetoModelo.extension());
-        }
+        c.accept(com.axeliscore.item.client.ObjetoModelo.extension());
     }
     //#endif
 

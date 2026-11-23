@@ -294,14 +294,15 @@ public final class CoreCommands {
     private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> vestir() {
         return Commands.literal("vestir").requires(Plat::isOp)
                 .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.entities())
-                        .then(Commands.argument("prenda", StringArgumentType.string())
-                                .executes(c -> vestir(c, ""))
-                                .then(Commands.argument("datos", StringArgumentType.greedyString())
-                                        .executes(c -> vestir(c, StringArgumentType.getString(c, "datos"))))));
+                        // "prenda [clave=valor,...]" en un solo texto (un nombre con ":" no cabe en una palabra de los comandos)
+                        .then(Commands.argument("prenda", StringArgumentType.greedyString())
+                                .executes(CoreCommands::vestir)));
     }
 
-    private static int vestir(CommandContext<CommandSourceStack> c, String datos) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
-        net.minecraft.resources.ResourceLocation id = com.axeliscore.plat.Ids.parse(StringArgumentType.getString(c, "prenda"));
+    private static int vestir(CommandContext<CommandSourceStack> c) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        String[] partes = StringArgumentType.getString(c, "prenda").trim().split("\\s+", 2);
+        net.minecraft.resources.ResourceLocation id = com.axeliscore.plat.Ids.parse(partes[0]);
+        String datos = partes.length > 1 ? partes[1] : "";
         net.minecraft.nbt.CompoundTag d = new net.minecraft.nbt.CompoundTag();
         for (String kv : datos.split(",")) {
             int i = kv.indexOf('=');
@@ -324,8 +325,8 @@ public final class CoreCommands {
         return Commands.literal("desvestir").requires(Plat::isOp)
                 .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.entities())
                         .executes(c -> desvestir(c, null))
-                        .then(Commands.argument("prenda", StringArgumentType.string())
-                                .executes(c -> desvestir(c, StringArgumentType.getString(c, "prenda")))));
+                        .then(Commands.argument("prenda", StringArgumentType.greedyString())
+                                .executes(c -> desvestir(c, StringArgumentType.getString(c, "prenda").trim()))));
     }
 
     private static int desvestir(CommandContext<CommandSourceStack> c, String prenda) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
