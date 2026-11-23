@@ -1,0 +1,318 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.axelis_core.chispa",
+    "texture_width": 64,
+    "texture_height": 64
+   },
+   "bones": [
+    {
+     "name": "root",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "body",
+     "pivot": [
+      0,
+      5,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        -2.5,
+        3,
+        -4
+       ],
+       "size": [
+        5,
+        4,
+        8
+       ],
+       "uv": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "head",
+     "pivot": [
+      0,
+      7,
+      -3.5
+     ],
+     "parent": "body",
+     "cubes": [
+      {
+       "origin": [
+        -3,
+        5.5,
+        -8.5
+       ],
+       "size": [
+        6,
+        5,
+        5
+       ],
+       "uv": [
+        26,
+        0
+       ]
+      },
+      {
+       "origin": [
+        -1.5,
+        5.5,
+        -10
+       ],
+       "size": [
+        3,
+        2,
+        1.5
+       ],
+       "uv": [
+        48,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "ear_r",
+     "pivot": [
+      -1.8,
+      10.5,
+      -6.5
+     ],
+     "parent": "head",
+     "cubes": [
+      {
+       "origin": [
+        -3.05,
+        10.5,
+        -7
+       ],
+       "size": [
+        2.5,
+        4,
+        1
+       ],
+       "uv": [
+        0,
+        12
+       ]
+      }
+     ]
+    },
+    {
+     "name": "ear_l",
+     "pivot": [
+      1.8,
+      10.5,
+      -6.5
+     ],
+     "parent": "head",
+     "cubes": [
+      {
+       "origin": [
+        0.55,
+        10.5,
+        -7
+       ],
+       "size": [
+        2.5,
+        4,
+        1
+       ],
+       "uv": [
+        8,
+        12
+       ]
+      }
+     ]
+    },
+    {
+     "name": "front_r",
+     "pivot": [
+      -1.5,
+      3,
+      -2.5
+     ],
+     "parent": "body",
+     "cubes": [
+      {
+       "origin": [
+        -2.5,
+        0,
+        -3.5
+       ],
+       "size": [
+        2,
+        3,
+        2
+       ],
+       "uv": [
+        16,
+        12
+       ]
+      }
+     ]
+    },
+    {
+     "name": "front_l",
+     "pivot": [
+      1.5,
+      3,
+      -2.5
+     ],
+     "parent": "body",
+     "cubes": [
+      {
+       "origin": [
+        0.5,
+        0,
+        -3.5
+       ],
+       "size": [
+        2,
+        3,
+        2
+       ],
+       "uv": [
+        24,
+        12
+       ]
+      }
+     ]
+    },
+    {
+     "name": "back_r",
+     "pivot": [
+      -1.5,
+      3,
+      2.5
+     ],
+     "parent": "body",
+     "cubes": [
+      {
+       "origin": [
+        -2.5,
+        0,
+        1.5
+       ],
+       "size": [
+        2,
+        3,
+        2
+       ],
+       "uv": [
+        32,
+        12
+       ]
+      }
+     ]
+    },
+    {
+     "name": "back_l",
+     "pivot": [
+      1.5,
+      3,
+      2.5
+     ],
+     "parent": "body",
+     "cubes": [
+      {
+       "origin": [
+        0.5,
+        0,
+        1.5
+       ],
+       "size": [
+        2,
+        3,
+        2
+       ],
+       "uv": [
+        40,
+        12
+       ]
+      }
+     ]
+    },
+    {
+     "name": "tail1",
+     "pivot": [
+      0,
+      6,
+      4
+     ],
+     "parent": "body",
+     "rotation": [
+      35,
+      0,
+      0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -1.5,
+        4.5,
+        4
+       ],
+       "size": [
+        3,
+        3,
+        4
+       ],
+       "uv": [
+        48,
+        12
+       ]
+      }
+     ]
+    },
+    {
+     "name": "tail2",
+     "pivot": [
+      0,
+      6,
+      8
+     ],
+     "parent": "tail1",
+     "rotation": [
+      -25,
+      0,
+      0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -2,
+        4,
+        8
+       ],
+       "size": [
+        4,
+        4,
+        5
+       ],
+       "uv": [
+        0,
+        19
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -143,3 +143,122 @@ def save_anims(prefix, anims, path):
     out = {"format_version": "1.8.0", "animations": {f"animation.{prefix}.{a.name}": a.json() for a in anims}}
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(out, fh, indent=1)
+
+
+# ---------------------------------------------------------------------------------------------------------------- criaturas
+# Modelo + textura juntos: cada cubo recibe su propio pedazo de textura (UV de caja) y una función que lo pinta.
+
+import math
+import random as _random
+
+
+def _ceil(v):
+    return int(math.ceil(v - 1e-6))
+
+
+class Creature:
+    """c = Creature("geometry.axelis_core.bestia", 128, 64); c.bone(...); c.part("body", origen, tamaño, pintar); c.save(geo, png)"""
+
+    def __init__(self, ident, tw=128, th=128, seed=1):
+        self.m = Model(ident, tw, th)
+        self.tw, self.th = tw, th
+        self.parts = []  # (cubo, tamaño, pintar)
+        self.rnd = _random.Random(seed)
+
+    def bone(self, name, pivot, parent=None, rotation=None):
+        self.m.bone(name, pivot, parent, rotation)
+
+    def part(self, bone, origin, size, paint, inflate=0, rotation=None, pivot=None):
+        c = self.m.cube(bone, origin, size, [0, 0], inflate=inflate, rotation=rotation, pivot=pivot)
+        self.parts.append((c, size, paint))
+        return c
+
+    def plane(self, bone, origin, w, h, paint, face="north"):
+        """Un plano (para ojos, marcas): solo la cara de frente con su propio pedazo de textura."""
+        c = self.m.cube(bone, origin, [w, h, 0], faces={})
+        self.parts.append((c, [w, h, 0], paint, face))
+        return c
+
+    def glow(self, *bones):
+        self.m.glow.extend(bones)
+
+    def bend(self, bone, child, at):
+        self.m.bend(bone, child, at)
+
+    def _pack(self):
+        x = y = rowh = 0
+        out = []
+        for p in self.parts:
+            c, size = p[0], p[1]
+            w, h, d = _ceil(size[0]), _ceil(size[1]), _ceil(size[2])
+            if len(p) == 4:  # plano
+                bw, bh = w, h
+            else:
+                bw, bh = 2 * (d + w), d + h
+            if x + bw > self.tw:
+                x = 0
+                y += rowh
+                rowh = 0
+            if y + bh > self.th:
+                raise ValueError(f"no cabe la textura ({self.tw}x{self.th}) en {self.m.ident}")
+            out.append((x, y))
+            x += bw
+            rowh = max(rowh, bh)
+        return out
+
+    def build(self, geo_path, png_path):
+        from PIL import Image
+        img = Image.new("RGBA", (self.tw, self.th), (0, 0, 0, 0))
+        for p, (u, v) in zip(self.parts, self._pack()):
+            c, size, paint = p[0], p[1], p[2]
+            w, h, d = _ceil(size[0]), _ceil(size[1]), _ceil(size[2])
+            if len(p) == 4:
+                c["uv"] = {p[3]: {"uv": [u, v], "uv_size": [size[0], size[1]]}}
+                for yy in range(h):
+                    for xx in range(w):
+                        col = paint("front", xx, yy, w, h)
+                        if col is not None:
+                            img.putpixel((u + xx, v + yy), _rgba(col, self.rnd, 1.0))
+                continue
+            c["uv"] = [u, v]
+            reg = {"top": (u + d, v, w, d), "bottom": (u + d + w, v, w, d), "right": (u, v + d, d, h), "front": (u + d, v + d, w, h),
+                   "left": (u + d + w, v + d, d, h), "back": (u + d + w + d, v + d, w, h)}
+            for face, (x0, y0, ww, hh) in reg.items():
+                k = {"top": 1.12, "bottom": 0.7, "right": 0.88, "front": 1.0, "left": 0.88, "back": 0.82}[face]
+                for yy in range(hh):
+                    for xx in range(ww):
+                        col = paint(face, xx, yy, ww, hh)
+                        if col is not None:
+                            img.putpixel((x0 + xx, y0 + yy), _rgba(col, self.rnd, k))
+        self.m.save(geo_path)
+        os.makedirs(os.path.dirname(png_path), exist_ok=True)
+        img.save(png_path)
+
+
+def _rgba(col, rnd, k):
+    noise = 0
+    a = 255
+    if len(col) == 4:
+        a = col[3]
+    if len(col) >= 3 and not (len(col) == 4 and col[3] == 254):
+        noise = rnd.randint(-5, 5)
+    return tuple(max(0, min(255, int(col[i] * k) + noise)) for i in range(3)) + (a,)
+
+
+def solid(c, top=None, bottom=None, front=None, back=None, side=None):
+    """Un color por cara (con algo de variación)."""
+    def f(face, x, y, w, h):
+        return {"top": top, "bottom": bottom, "front": front, "back": back, "right": side, "left": side}.get(face) or c
+    return f
+
+
+def shade_v(c1, c2):
+    """Degradado de arriba (c1) a abajo (c2) en los lados; arriba c1, abajo c2."""
+    def f(face, x, y, w, h):
+        if face == "top":
+            return c1
+        if face == "bottom":
+            return c2
+        t = y / max(1, h - 1)
+        return tuple(int(c1[i] + (c2[i] - c1[i]) * t) for i in range(3))
+    return f

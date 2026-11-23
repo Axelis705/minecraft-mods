@@ -89,7 +89,7 @@ public final class GeoRenderer {
 
     /** ¿La pila solo tiene la entrada de base? */
     private static boolean atBase(PoseStack st) {
-        //#if MC >= 1.21
+        //#if MC >= 1.21.2
         //$$ return st.isEmpty();
         //#else
         return st.clear();
