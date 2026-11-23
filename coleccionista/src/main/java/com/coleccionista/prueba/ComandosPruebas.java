@@ -107,6 +107,92 @@ public final class ComandosPruebas {
                 }));
     }
 
+    public static LiteralArgumentBuilder<CommandSourceStack> compartir(SuggestionProvider<CommandSourceStack> vivas) {
+        return Commands.literal("compartir")
+                .then(Commands.literal("preparar").executes(c -> {
+                    Component e = Compartir.preparar(c.getSource().getServer());
+                    return e == null ? ok(c, Component.translatable(MOD + ".com.cmd.preparada")) : error(c, e);
+                }))
+                .then(Commands.literal("empezar").executes(c -> Compartir.empezar(c.getSource().getServer(), true) ? ok(c,
+                        Component.translatable(MOD + ".com.cmd.empieza")) : error(c, Component.translatable(MOD + ".com.cmd.no_lista")))
+                        .then(Commands.literal("ya").executes(c -> Compartir.empezar(c.getSource().getServer(), false) ? ok(c,
+                                Component.translatable(MOD + ".com.cmd.empieza")) : error(c, Component.translatable(MOD + ".com.cmd.no_lista")))))
+                .then(Commands.literal("elegir").executes(c -> Compartir.elegirYa(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".com.cmd.elegir")) : error(c, Component.translatable(MOD + ".com.cmd.no_toca"))))
+                .then(Commands.literal("revelar").executes(c -> Compartir.revelarYa(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".com.cmd.revelar")) : error(c, Component.translatable(MOD + ".com.cmd.no_toca"))))
+                .then(Commands.literal("elige").then(Commands.argument("pieza", StringArgumentType.word()).suggests(vivas)
+                        .then(Commands.literal("compartir").executes(c -> forzar(c, false)))
+                        .then(Commands.literal("robar").executes(c -> forzar(c, true)))))
+                .then(Commands.literal("hablar").then(Commands.argument("segundos", IntegerArgumentType.integer(5, 600)).executes(c -> {
+                    Compartir.segundosHablar = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".com.cmd.tiempos", Compartir.segundosHablar, Compartir.segundosElegir));
+                })))
+                .then(Commands.literal("tiempo_elegir").then(Commands.argument("segundos", IntegerArgumentType.integer(5, 300)).executes(c -> {
+                    Compartir.segundosElegir = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".com.cmd.tiempos", Compartir.segundosHablar, Compartir.segundosElegir));
+                })))
+                .then(Commands.literal("terminar").executes(c -> {
+                    Compartir.terminar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".com.cmd.terminada"));
+                }));
+    }
+
+    public static LiteralArgumentBuilder<CommandSourceStack> puertas() {
+        return Commands.literal("puertas")
+                .then(Commands.literal("preparar").executes(c -> {
+                    Component e = LasPuertas.preparar(c.getSource().getServer());
+                    return e == null ? ok(c, Component.translatable(MOD + ".pue.cmd.preparada", LasPuertas.rondas)) : error(c, e);
+                }))
+                .then(Commands.literal("ronda").executes(c -> LasPuertas.ronda(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".pue.cmd.ronda")) : error(c, Component.translatable(MOD + ".pue.cmd.no_toca"))))
+                .then(Commands.literal("cerrar").executes(c -> LasPuertas.cerrar(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".pue.cmd.cerrada")) : error(c, Component.translatable(MOD + ".pue.cmd.no_toca"))))
+                .then(Commands.literal("rondas").then(Commands.argument("n", IntegerArgumentType.integer(1, 10)).executes(c -> {
+                    LasPuertas.rondas = IntegerArgumentType.getInteger(c, "n");
+                    return ok(c, Component.translatable(MOD + ".pue.cmd.ajustes", LasPuertas.rondas, LasPuertas.segundosElegir));
+                })))
+                .then(Commands.literal("tiempo").then(Commands.argument("segundos", IntegerArgumentType.integer(5, 300)).executes(c -> {
+                    LasPuertas.segundosElegir = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".pue.cmd.ajustes", LasPuertas.rondas, LasPuertas.segundosElegir));
+                })))
+                .then(Commands.literal("terminar").executes(c -> {
+                    LasPuertas.terminar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".pue.cmd.terminada"));
+                }));
+    }
+
+    public static LiteralArgumentBuilder<CommandSourceStack> copas() {
+        return Commands.literal("copas")
+                .then(Commands.literal("preparar").executes(c -> {
+                    Component e = LasCopas.preparar(c.getSource().getServer());
+                    return e == null ? ok(c, Component.translatable(MOD + ".cop.cmd.preparada")) : error(c, e);
+                }))
+                .then(Commands.literal("empezar").executes(c -> LasCopas.empezar(c.getSource().getServer(), true) ? ok(c,
+                        Component.translatable(MOD + ".cop.cmd.empieza")) : error(c, Component.translatable(MOD + ".cop.cmd.no_toca")))
+                        .then(Commands.literal("ya").executes(c -> LasCopas.empezar(c.getSource().getServer(), false) ? ok(c,
+                                Component.translatable(MOD + ".cop.cmd.empieza")) : error(c, Component.translatable(MOD + ".cop.cmd.no_toca")))))
+                .then(Commands.literal("beber").executes(c -> LasCopas.beberYa(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".cop.cmd.bebe")) : error(c, Component.translatable(MOD + ".cop.cmd.no_toca"))))
+                .then(Commands.literal("tiempo").then(Commands.argument("segundos", IntegerArgumentType.integer(5, 300)).executes(c -> {
+                    LasCopas.segundosTurno = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".cop.cmd.tiempo", LasCopas.segundosTurno));
+                })))
+                .then(Commands.literal("terminar").executes(c -> {
+                    LasCopas.terminar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".cop.cmd.terminada"));
+                }));
+    }
+
+    private static int forzar(CommandContext<CommandSourceStack> c, boolean robar) {
+        Pieza p = pieza(c);
+        if (p == null) {
+            return 0;
+        }
+        return Compartir.forzar(c.getSource().getServer(), p, robar) ? ok(c, Component.translatable(MOD + ".com.cmd.forzada", p.nombre))
+                : error(c, Component.translatable(MOD + ".com.cmd.no_toca"));
+    }
+
     private static int empezar(CommandContext<CommandSourceStack> c, boolean discurso) {
         return Encadenados.empezar(c.getSource().getServer(), discurso) ? ok(c, Component.translatable(MOD + ".enc.cmd.empieza"))
                 : error(c, Component.translatable(MOD + ".enc.cmd.no_lista"));

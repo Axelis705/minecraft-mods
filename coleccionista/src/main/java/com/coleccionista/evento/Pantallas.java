@@ -74,10 +74,38 @@ public final class Pantallas {
         return l;
     }
 
+    /** La explicación de Compartir o robar (en el Salón de las mesas). */
+    public static List<Frase> compartir() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("mesa", 90, null, 1F));
+        l.add(new Frase("hablen", 90, null, 1F));
+        l.add(new Frase("elijan", 110, null, 1F));
+        l.add(new Frase("reglas", 130, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("confianza", 90, null, 1F));
+        return l;
+    }
+
+    /** La final: Las copas. */
+    public static List<Frase> copas() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("llegaron", 90, null, 1F));
+        l.add(new Frase("copas", 100, null, 1F));
+        l.add(new Frase("veneno", 90, null, 1F));
+        l.add(new Frase("turnos", 100, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.5F));
+        l.add(new Frase("salud", 70, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
             case "encadenados" -> encadenados();
+            case "compartir" -> compartir();
+            case "copas" -> copas();
             default -> null;
         };
     }

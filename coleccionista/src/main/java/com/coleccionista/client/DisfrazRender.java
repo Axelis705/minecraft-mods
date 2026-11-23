@@ -43,16 +43,25 @@ public final class DisfrazRender {
         MinecraftForge.EVENT_BUS.addListener(DisfrazRender::antes);
     }
 
+    /** El dibujo del disfraz vuelve a lanzar el mismo evento: mientras dibujamos, se deja pasar (si no, se llamaría sin fin). */
+    private static boolean dibujando;
+
     private static void antes(RenderPlayerEvent.Pre e) {
-        if (renderer == null || !EventoCliente.disfrazado(e.getEntity().getUUID()) || EventoCliente.esFantasma(e.getEntity().getUUID())) {
+        if (dibujando || renderer == null || !EventoCliente.disfrazado(e.getEntity().getUUID())
+                || EventoCliente.esFantasma(e.getEntity().getUUID())) {
             return;
         }
         if (!(e.getEntity() instanceof AbstractClientPlayer p)) {
             return;
         }
         e.setCanceled(true);
-        renderer.render(p, p.getViewYRot(e.getPartialTick()), e.getPartialTick(), e.getPoseStack(), e.getMultiBufferSource(),
-                e.getPackedLight());
+        dibujando = true;
+        try {
+            renderer.render(p, p.getViewYRot(e.getPartialTick()), e.getPartialTick(), e.getPoseStack(), e.getMultiBufferSource(),
+                    e.getPackedLight());
+        } finally {
+            dibujando = false;
+        }
     }
 
     /** Un jugador con la piel del Coleccionista. */

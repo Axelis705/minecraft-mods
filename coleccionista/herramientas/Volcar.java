@@ -1,5 +1,8 @@
 import com.coleccionista.mapa.AlaCeldas;
 import com.coleccionista.mapa.Cloacas;
+import com.coleccionista.mapa.Final;
+import com.coleccionista.mapa.Puertas;
+import com.coleccionista.mapa.Salon;
 import com.coleccionista.mapa.Plano;
 
 import java.io.PrintWriter;
@@ -20,12 +23,15 @@ public final class Volcar {
         Plano p = switch (a[0]) {
             case "celdas" -> AlaCeldas.crear(1234L);
             case "cloacas", "cloacas_corte" -> Cloacas.crear(1234L);
+            case "salon", "salon_corte" -> Salon.crear(1234L);
+            case "puertas", "puertas_corte" -> Puertas.crear(1234L);
+            case "final", "final_corte" -> Final.crear(1234L);
             default -> throw new IllegalArgumentException("plano desconocido: " + a[0]);
         };
         int n = 0;
         try (PrintWriter w = new PrintWriter(a[1], StandardCharsets.UTF_8)) {
             for (Map.Entry<Long, String> e : p.m.entrySet()) {
-                if (e.getValue().equals("air") || a[0].endsWith("_corte") && Plano.ky(e.getKey()) >= 5) {
+                if (e.getValue().equals("air") || a[0].endsWith("_corte") && Plano.ky(e.getKey()) >= (a[0].startsWith("salon") ? 7 : a[0].startsWith("puertas") ? 13 : a[0].startsWith("final") ? 6 : 5)) {
                     continue;
                 }
                 w.println(Plano.kx(e.getKey()) + " " + Plano.ky(e.getKey()) + " " + Plano.kz(e.getKey()) + " " + e.getValue());

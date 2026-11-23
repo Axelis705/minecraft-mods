@@ -42,6 +42,12 @@ public final class ModRegistry {
             () -> new net.minecraft.world.item.BlockItem(CANDADO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "candado")));
     public static final net.minecraftforge.registries.RegistryObject<Item> FOCO_ITEM = ITEMS.register("foco",
             () -> new net.minecraft.world.item.BlockItem(FOCO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "foco")));
+    /** Una copa de la final (Las copas). */
+    public static final net.minecraftforge.registries.RegistryObject<Block> COPA = BLOCKS.register("copa",
+            () -> new com.coleccionista.bloque.CopaBlock(com.axeliscore.plat.Reg.block(Coleccionista.MODID, "copa")
+                    .strength(-1F, 3600000F).noOcclusion().sound(net.minecraft.world.level.block.SoundType.METAL)));
+    public static final net.minecraftforge.registries.RegistryObject<Item> COPA_ITEM = ITEMS.register("copa",
+            () -> new net.minecraft.world.item.BlockItem(COPA.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "copa")));
     /** La llave del grillete de una pieza (Encadenados). */
     public static final net.minecraftforge.registries.RegistryObject<Item> LLAVE = ITEMS.register("llave_grillete",
             () -> new com.coleccionista.prueba.LlaveGrillete(com.axeliscore.plat.Reg.item(Coleccionista.MODID, "llave_grillete").stacksTo(1)));

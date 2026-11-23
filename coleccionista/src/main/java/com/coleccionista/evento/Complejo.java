@@ -75,6 +75,12 @@ public final class Complejo {
             l.add(new Zona("celdas", planoCeldas(), 0, 0, 0, 1));
             // las Cloacas empiezan justo al este del portón del Ala (x 44): su pasillo (x local -5) queda en x 45
             l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 50, 0, -11, 0));
+            // el Salón de las mesas, pegado al este de las Cloacas (su pared oeste junto al Refugio)
+            l.add(new Zona("salon", com.coleccionista.mapa.Salon.crear(SEMILLA), 163, 0, -10, 0));
+            // la Sala de las puertas, al norte del Ala de celdas (elevada: su piso queda 6 bloques arriba)
+            l.add(new Zona("puertas", com.coleccionista.mapa.Puertas.crear(SEMILLA), 2, 0, -50, 0));
+            // la Cámara final (Las copas), al norte de la Sala de las puertas
+            l.add(new Zona("final", com.coleccionista.mapa.Final.crear(SEMILLA), 7, 0, -84, 0));
             zonas = l;
         }
         return zonas;

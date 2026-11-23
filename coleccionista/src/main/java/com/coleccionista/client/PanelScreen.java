@@ -82,7 +82,8 @@ public class PanelScreen extends UiScreen {
     private static int hashDatos() {
         CompoundTag e = ClientData.get(com.coleccionista.evento.Evento.KEY), t = ClientData.get(Tomas.KEY);
         // de Encadenados solo importa la fase (el gas cambia a cada rato)
-        return ((e == null ? 0 : e.hashCode()) * 31 + (t == null ? 0 : t.hashCode()) + tab) * 31 + EncadenadosCliente.fase.hashCode();
+        return ((e == null ? 0 : e.hashCode()) * 31 + (t == null ? 0 : t.hashCode()) + tab) * 31 + EncadenadosCliente.fase.hashCode() + CompartirCliente.fase().hashCode() * 7
+                + PuertasCliente.fase().hashCode() * 13 + PuertasCliente.ronda() + pruebaSel * 101 + CopasCliente.fase().hashCode() * 17;
     }
 
     @Override
@@ -233,31 +234,92 @@ public class PanelScreen extends UiScreen {
 
     // ------------------------------------------------------------------ pruebas
 
+    /** Las pruebas del panel: número, clave del nombre y sus botones (cada botón: acción y si se puede usar ahora). */
+    private static int pruebaSel;
+
+    private record Op(String id, java.util.function.BooleanSupplier on) {
+    }
+
+    private static String[] pruebasNombres() {
+        return new String[] {"1 · " + tr("p_encadenados"), "3 · " + tr("p_compartir"), "6 · " + tr("p_puertas"), "7 · " + tr("p_copas")};
+    }
+
+    private static List<Op> ops(int i) {
+        List<Op> l = new ArrayList<>();
+        if (i == 0) {
+            String f = EncadenadosCliente.fase;
+            l.add(new Op("enc_preparar", () -> !"JUEGO".equals(f) && !"HABLANDO".equals(f) && !"CIERRE".equals(f)));
+            l.add(new Op("enc_empezar", () -> "LISTA".equals(f)));
+            l.add(new Op("enc_ya", () -> "LISTA".equals(f)));
+            l.add(new Op("enc_soltar", () -> EncadenadosCliente.enJuego() && !EncadenadosCliente.grilletes.isEmpty()));
+            l.add(new Op("enc_cerrar", () -> "JUEGO".equals(f)));
+            l.add(new Op("enc_terminar", EncadenadosCliente::activa));
+        } else if (i == 1) {
+            String c = CompartirCliente.fase();
+            l.add(new Op("com_preparar", () -> "NADA".equals(c) || "LISTA".equals(c) || "FIN".equals(c)));
+            l.add(new Op("com_empezar", () -> "LISTA".equals(c)));
+            l.add(new Op("com_ya", () -> "LISTA".equals(c)));
+            l.add(new Op("com_elegir", () -> "HABLAR".equals(c) || "LISTA".equals(c)));
+            l.add(new Op("com_revelar", () -> "ELEGIR".equals(c)));
+            l.add(new Op("com_terminar", CompartirCliente::activa));
+        } else if (i == 3) {
+            String f = CopasCliente.fase();
+            l.add(new Op("cop_preparar", () -> "NADA".equals(f) || "LISTA".equals(f) || "FIN".equals(f)));
+            l.add(new Op("cop_empezar", () -> "LISTA".equals(f)));
+            l.add(new Op("cop_ya", () -> "LISTA".equals(f)));
+            l.add(new Op("cop_beber", () -> "TURNO".equals(f)));
+            l.add(new Op("cop_terminar", CopasCliente::activa));
+        } else {
+            String f = PuertasCliente.fase();
+            l.add(new Op("pue_preparar", () -> "NADA".equals(f) || "LISTA".equals(f) || "FIN".equals(f)));
+            l.add(new Op("pue_ronda", () -> "LISTA".equals(f) || "ENTRE".equals(f)));
+            l.add(new Op("pue_cerrar", () -> "ELEGIR".equals(f)));
+            l.add(new Op("pue_terminar", PuertasCliente::activa));
+        }
+        return l;
+    }
+
+    private static String estadoPrueba(int i) {
+        if (i == 0) {
+            String est = Component.translatable(MOD + ".panel.enc_estado." + EncadenadosCliente.fase.toLowerCase(Locale.ROOT)).getString();
+            if (EncadenadosCliente.activa()) {
+                est += " · " + tr("enc_cuenta", EncadenadosCliente.salvados, EncadenadosCliente.cupo, EncadenadosCliente.equipos,
+                        EncadenadosCliente.grilletes.size());
+            }
+            return est;
+        }
+        if (i == 1) {
+            return Component.translatable(MOD + ".panel.com_estado." + CompartirCliente.fase().toLowerCase(Locale.ROOT)).getString();
+        }
+        if (i == 3) {
+            return Component.translatable(MOD + ".panel.cop_estado." + CopasCliente.fase().toLowerCase(Locale.ROOT)).getString();
+        }
+        return Component.translatable(MOD + ".panel.pue_estado." + PuertasCliente.fase().toLowerCase(Locale.ROOT), PuertasCliente.ronda(),
+                PuertasCliente.rondas()).getString();
+    }
+
     private void pruebas() {
-        int x = px + 16, y = py + 64, w = pw - 32;
-        int bw = (w - 2 * 6) / 3;
-        String f = EncadenadosCliente.fase;
-        boolean lista = "LISTA".equals(f), juego = "JUEGO".equals(f);
-        Button b;
-        b = add(new Button(x, y, bw, 16, tr("enc_preparar"), () -> pedir("enc_preparar", null)));
-        b.enabled = !juego && !"HABLANDO".equals(f) && !"CIERRE".equals(f);
-        b.help(Component.translatable(MOD + ".panel.enc_preparar_ayuda"));
-        b = add(new Button(x + bw + 6, y, bw, 16, tr("enc_empezar"), () -> pedir("enc_empezar", null)));
-        b.enabled = lista;
-        b.help(Component.translatable(MOD + ".panel.enc_empezar_ayuda"));
-        b = add(new Button(x + (bw + 6) * 2, y, bw, 16, tr("enc_ya"), () -> pedir("enc_ya", null)));
-        b.enabled = lista;
-        b.help(Component.translatable(MOD + ".panel.enc_ya_ayuda"));
-        y += 22;
-        b = add(new Button(x, y, bw, 16, tr("enc_soltar"), () -> pedir("enc_soltar", null)));
-        b.enabled = EncadenadosCliente.enJuego() && !EncadenadosCliente.grilletes.isEmpty();
-        b.help(Component.translatable(MOD + ".panel.enc_soltar_ayuda"));
-        b = add(new Button(x + bw + 6, y, bw, 16, tr("enc_cerrar"), () -> pedir("enc_cerrar", null)));
-        b.enabled = juego;
-        b.help(Component.translatable(MOD + ".panel.enc_cerrar_ayuda"));
-        b = add(new Button(x + (bw + 6) * 2, y, bw, 16, tr("enc_terminar"), () -> pedir("enc_terminar", null)));
-        b.enabled = EncadenadosCliente.activa();
-        b.help(Component.translatable(MOD + ".panel.enc_terminar_ayuda"));
+        int y0 = py + 52;
+        ListView<String> lista = add(new ListView<>(px + 12, y0, 132, py + ph - 12 - y0, 18, (g, s, x, y, w, h, sel, hov, t) ->
+                g.drawString(Ui.font(), Ui.fit(s, w - 8), x + 4, y + 5, sel ? t.title : t.text, false), s -> {
+                    String[] ns = pruebasNombres();
+                    for (int i = 0; i < ns.length; i++) {
+                        if (ns[i].equals(s)) {
+                            pruebaSel = i;
+                        }
+                    }
+                    init();
+                }));
+        lista.items.addAll(List.of(pruebasNombres()));
+        lista.selected = pruebaSel;
+        int x = px + 152, w = pw - 164, bw = (w - 6) / 2;
+        List<Op> os = ops(pruebaSel);
+        for (int i = 0; i < os.size(); i++) {
+            Op o = os.get(i);
+            Button b = add(new Button(x + (i % 2) * (bw + 6), py + 80 + (i / 2) * 20, bw, 16, tr(o.id()), () -> pedir(o.id(), null)));
+            b.enabled = o.on().getAsBoolean();
+            b.help(Component.translatable(MOD + ".panel." + o.id() + "_ayuda"));
+        }
     }
 
     // ------------------------------------------------------------------ cámaras
@@ -384,16 +446,13 @@ public class PanelScreen extends UiScreen {
             Ui.text(g, Component.translatable(MOD + ".panel.estado", EventoCliente.fase(), pr.isEmpty() ? "-" : pr, EventoCliente.vivos(),
                     EventoCliente.total()).getString(), x, py + ph - 22, pw - 32, theme.textDim, 10);
         } else if (tab == 2) {
-            int x = px + 16;
-            g.drawString(f, tr("sec_encadenados"), x, py + 54, theme.accent, false);
-            String est = Component.translatable(MOD + ".panel.enc_estado." + EncadenadosCliente.fase.toLowerCase(Locale.ROOT)).getString();
-            g.drawString(f, est, x, py + 112, theme.title, false);
-            if (EncadenadosCliente.activa()) {
-                g.drawString(f, tr("enc_cuenta", EncadenadosCliente.salvados, EncadenadosCliente.cupo, EncadenadosCliente.equipos,
-                        EncadenadosCliente.grilletes.size()), x, py + 124, theme.textDim, false);
-            }
-            Ui.text(g, Component.translatable(MOD + ".panel.enc_nota").getString(), x, py + 142, pw - 32, theme.textDim, 10);
-            Ui.text(g, Component.translatable(MOD + ".panel.pruebas_proximas").getString(), x, py + ph - 34, pw - 32, 0xFF7A6E68, 10);
+            int x = px + 152, w = pw - 164;
+            g.drawString(f, pruebasNombres()[pruebaSel], x, py + 54, theme.accent, false);
+            g.drawString(f, Ui.fit(estadoPrueba(pruebaSel), w), x, py + 66, theme.title, false);
+            String[] notas = {"enc_nota", "com_nota", "pue_nota", "cop_nota"};
+            int filas = (ops(pruebaSel).size() + 1) / 2;
+            Ui.text(g, Component.translatable(MOD + ".panel." + notas[pruebaSel]).getString(), x, py + 86 + filas * 20, w, theme.textDim, 10);
+            Ui.text(g, Component.translatable(MOD + ".panel.pruebas_proximas").getString(), x, py + ph - 24, w, 0xFF7A6E68, 10);
         } else {
             int x = px + 194;
             Ui.text(g, Component.translatable(MOD + ".panel.camara_nota").getString(), x, py + ph - 52, pw - 206, theme.textDim, 10);

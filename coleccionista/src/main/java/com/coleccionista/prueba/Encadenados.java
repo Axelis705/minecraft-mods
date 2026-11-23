@@ -718,6 +718,10 @@ public final class Encadenados {
         for (Map.Entry<UUID, Entity> en : gente.entrySet()) {
             Entity e = en.getValue();
             UUID id = en.getKey();
+            Integer suyo = equipoDe(id);
+            if (suyo != null && salvados.contains(suyo)) {
+                continue; // los que ya se salvaron no corren peligro (aunque se asomen)
+            }
             boolean dentroGas = dentro(s, e) && e.getX() < gx && !enRefugio(s, e);
             int n = enGas.getOrDefault(id, 0);
             n = dentroGas ? n + 1 : Math.max(0, n - 3);

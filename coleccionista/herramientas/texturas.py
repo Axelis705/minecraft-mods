@@ -377,7 +377,96 @@ def encadenados():
     guardar(gas, "misc/gas.png")
 
 
+def cartas():
+    """Las cartas de Compartir o robar (64x96): el dorso (rojo con la máscara), COMPARTIR (moneda partida en dos mitades iguales) y
+    ROBAR (una mano negra que se lleva la moneda entera). El texto lo pone el juego (para que se traduzca)."""
+    import math, random
+    r = random.Random(5)
+    W, H = 64, 96
+    oro = (222, 172, 64, 255)
+    oro2 = (176, 128, 40, 255)
+    oro3 = (255, 222, 130, 255)
+    def base(fondo, fondo2, borde):
+        img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        for y in range(H):
+            for x in range(W):
+                # esquinas redondeadas
+                if (x < 2 or x > W - 3) and (y < 2 or y > H - 3):
+                    continue
+                t = y / H
+                c = mezcla(fondo, fondo2, t)
+                if r.random() < 0.06:
+                    c = mezcla(c, (0, 0, 0, 255), 0.12)
+                img.putpixel((x, y), c)
+        for x in range(2, W - 2):
+            for y in (1, 2, H - 3, H - 2):
+                img.putpixel((x, y), borde)
+        for y in range(2, H - 2):
+            for x in (1, 2, W - 3, W - 2):
+                img.putpixel((x, y), borde)
+        # filete interior
+        for x in range(5, W - 5):
+            img.putpixel((x, 5), mezcla(borde, (0, 0, 0, 255), 0.35))
+            img.putpixel((x, H - 6), mezcla(borde, (0, 0, 0, 255), 0.35))
+        for y in range(5, H - 5):
+            img.putpixel((5, y), mezcla(borde, (0, 0, 0, 255), 0.35))
+            img.putpixel((W - 6, y), mezcla(borde, (0, 0, 0, 255), 0.35))
+        return img
+    def moneda(img, cx, cy, rad, desde=0.0, hasta=2 * math.pi, dx=0):
+        for y in range(cy - rad - 1, cy + rad + 2):
+            for x in range(cx - rad - 1, cx + rad + 2):
+                d = math.hypot(x - cx, y - cy)
+                if d > rad + 0.3:
+                    continue
+                a = math.atan2(y - cy, x - cx) % (2 * math.pi)
+                if not (desde <= a <= hasta or (hasta > 2 * math.pi and a <= hasta - 2 * math.pi)):
+                    continue
+                c = oro2 if d > rad - 1.4 else oro
+                if d < rad * 0.55 and abs((x - cx) + (y - cy)) < 2:
+                    c = oro3
+                img.putpixel((x + dx, y), c)
+    # el dorso
+    dorso = base((120, 14, 22, 255), (60, 6, 12, 255), oro)
+    for y in range(8, H - 8):
+        for x in range(8, W - 8):
+            if (x + y) % 6 == 0 or (x - y) % 6 == 0:
+                dorso.putpixel((x, y), (150, 30, 36, 255))
+    # la máscara al centro
+    for y in range(34, 64):
+        for x in range(18, 46):
+            dx, dy = (x - 32) / 13.0, (y - 48) / 15.0
+            if dx * dx + dy * dy <= 1:
+                c = (232, 226, 216, 255)
+                if (abs(x - 26) <= 2 or abs(x - 37) <= 2) and 43 <= y <= 46:
+                    c = (20, 10, 12, 255)
+                if 55 <= y <= 56 and 27 <= x <= 37:
+                    c = (60, 20, 24, 255)
+                dorso.putpixel((x, y), c)
+    guardar(dorso, "gui/carta_dorso.png")
+    # compartir: crema con borde dorado, la moneda partida en dos (las mitades separadas)
+    comp = base((236, 226, 204, 255), (204, 188, 160, 255), oro)
+    moneda(comp, 32, 46, 15, math.pi / 2, 3 * math.pi / 2, dx=-3)
+    moneda(comp, 32, 46, 15, 3 * math.pi / 2, 5 * math.pi / 2, dx=3)
+    guardar(comp, "gui/carta_compartir.png")
+    # robar: negra con borde rojo, la moneda entera y una mano negra con dedos que la toma desde arriba
+    rob = base((30, 22, 26, 255), (10, 6, 8, 255), (200, 30, 40, 255))
+    moneda(rob, 32, 54, 15)
+    mano = (6, 4, 6, 255)
+    for dedo, (fx, largo) in enumerate([(22, 16), (28, 20), (34, 20), (40, 16)]):
+        for y in range(22, 22 + largo):
+            for x in range(fx, fx + 4):
+                rob.putpixel((x, y), mano)
+        # uñas rojas
+        for x in range(fx, fx + 4):
+            rob.putpixel((x, 22 + largo - 1), (150, 20, 28, 255))
+    for y in range(10, 26):
+        for x in range(20, 46):
+            rob.putpixel((x, y), mano)
+    guardar(rob, "gui/carta_robar.png")
+
+
 if __name__ == "__main__":
+    cartas()
     encadenados()
     fantasma()
     retrato()

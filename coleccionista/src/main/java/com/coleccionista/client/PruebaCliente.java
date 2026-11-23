@@ -135,7 +135,8 @@ final class PruebaCliente {
             t.check(Minecraft.getInstance().player.isSleeping(), "estoy acostado en mi cama");
             t.check(Espera.activa(), "veo la pantalla de espera");
         });
-        t.photo("21_despertar_cine", 2000, () -> t.cmd("evento despertar"));
+        // el ¡pum! prende las luces y la cinemática empieza segundo y medio después
+        t.photo("21_despertar_cine", 3500, () -> t.cmd("evento despertar"));
         t.add("cinematica", 100, () -> t.check(Cine.activo(), "está la cinemática del despertar"));
         t.photo("22_parpadeo", 2900, () -> {
         });
@@ -266,6 +267,124 @@ final class PruebaCliente {
         t.add("cerrar", 500, () -> {
             com.axeliscore.plat.client.Screens.close();
             t.cmd("evento encadenados terminar");
+        });
+        compartir(t);
+    }
+
+    /** Prueba 3, Compartir o robar: el Salón, la mesa, la pantalla para elegir, la revelación de una mesa y el final. */
+    private static void compartir(ClientTest.Script t) {
+        t.add("com: preparar", 1600, () -> {
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("forceload add 160 16 208 56");
+            t.cmd("evento compartir hablar 8");
+            t.cmd("evento compartir tiempo_elegir 12");
+            t.cmd("evento compartir preparar");
+        });
+        t.photo("42_salon_presentacion", 5700, () -> {
+        });
+        t.add("en la mesa", 100, () -> t.check("LISTA".equals(CompartirCliente.fase()), "Compartir o robar está lista"));
+        t.photo("43_mesa", 5000, () -> {
+        });
+        t.photo("44_hablar", 1200, () -> t.cmd("evento compartir empezar ya"));
+        t.photo("45_eleccion", 1500, () -> t.cmd("evento compartir elegir"));
+        t.add("pantalla de elegir", 100, () -> t.check(com.axeliscore.plat.client.Screens.current() instanceof EleccionScreen,
+                "se abrió la pantalla para elegir"));
+        t.photo("46_elegido", 900, () -> {
+            net.minecraft.nbt.CompoundTag c = new net.minecraft.nbt.CompoundTag();
+            c.putBoolean("robar", false);
+            com.axeliscore.data.client.ClientData.send(com.coleccionista.prueba.Compartir.ACCION, c);
+        });
+        t.add("revelar", 1500, () -> {
+            com.axeliscore.plat.client.Screens.close();
+            t.cmd("evento compartir revelar");
+        });
+        t.photo("47_revelacion", 4000, () -> {
+        });
+        t.add("revelando", 100, () -> t.check("REVELAR".equals(CompartirCliente.fase()), "se están revelando las mesas"));
+        t.add("esperar las mesas", 27500, () -> {
+        });
+        t.photo("48_compartir_fin", 600, () -> {
+        });
+        t.add("fin compartir", 100, () -> t.check("FIN".equals(CompartirCliente.fase()), "se revelaron todas las mesas"));
+        t.photo("49_panel_pruebas2", 900, () -> {
+            PanelScreen s = new PanelScreen();
+            com.axeliscore.plat.client.Screens.open(s);
+            s.pestana(2);
+        });
+        t.add("cerrar compartir", 500, () -> {
+            com.axeliscore.plat.client.Screens.close();
+            t.cmd("evento compartir terminar");
+        });
+        puertas(t);
+    }
+
+    /** Prueba 6, Las puertas: el vestíbulo, una ronda con colores y pista, la cabina con las rejas cerradas, la trampa y el final. */
+    private static void puertas(ClientTest.Script t) {
+        t.add("pue: preparar", 1600, () -> {
+            t.cmd("evento revivir " + yo());
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("gamemode adventure @a");
+            t.cmd("forceload add 0 -24 48 24");
+            t.cmd("evento puertas rondas 1");
+            t.cmd("evento puertas tiempo 30");
+            t.cmd("evento puertas preparar");
+        });
+        t.photo("50_puertas_presentacion", 5700, () -> {
+        });
+        t.photo("51_vestibulo", 5000, () -> {
+        });
+        t.add("puertas lista", 100, () -> t.check("LISTA".equals(PuertasCliente.fase()), "Las puertas está lista"));
+        t.photo("52_ronda", 1500, () -> t.cmd("evento puertas ronda"));
+        t.add("eligiendo", 100, () -> t.check("ELEGIR".equals(PuertasCliente.fase()), "se abrieron las rejas para elegir"));
+        t.photo("53_cabina", 1500, () -> t.cmd("evento puertas cerrar"));
+        t.photo("54_trampa", 3000, () -> {
+        });
+        t.add("trampa", 100, () -> t.check("CAE".equals(PuertasCliente.fase()) || "FIN".equals(PuertasCliente.fase()), "se abrió el piso de una cabina"));
+        t.add("esperar fin", 5200, () -> {
+        });
+        t.add("fin puertas", 100, () -> {
+            t.check("FIN".equals(PuertasCliente.fase()), "terminó Las puertas");
+            t.cmd("evento puertas terminar");
+        });
+        copas(t);
+    }
+
+    /** La final, Las copas: yo y dos bots en la Cámara final; turnos hasta que queda una sola pieza. */
+    private static void copas(ClientTest.Script t) {
+        t.add("cop: preparar", 1600, () -> {
+            t.cmd("evento revivir " + yo());
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            for (int i = 4; i <= 8; i++) {
+                t.cmd("evento eliminar Bot_0" + i);
+            }
+            t.cmd("gamemode adventure @a");
+            t.cmd("forceload add 0 -56 40 -20");
+            t.cmd("evento copas tiempo 20");
+            t.cmd("evento copas preparar");
+        });
+        t.photo("55_copas_presentacion", 6200, () -> {
+        });
+        t.photo("56_mesa_final", 5000, () -> {
+        });
+        t.add("final lista", 100, () -> t.check("LISTA".equals(CopasCliente.fase()), "la final está lista"));
+        t.photo("57_turno", 1500, () -> t.cmd("evento copas empezar ya"));
+        t.add("turno", 100, () -> t.check("TURNO".equals(CopasCliente.fase()), "alguien tiene el turno"));
+        t.photo("58_bebe", 1500, () -> t.cmd("evento copas beber"));
+        for (int i = 0; i < 12; i++) {
+            t.add("beber " + i, 4300, () -> t.cmd("evento copas beber"));
+        }
+        t.photo("59_ganador", 1200, () -> {
+        });
+        t.add("hay ganador", 100, () -> {
+            t.check("FIN".equals(CopasCliente.fase()), "terminó la final");
+            t.check(EventoCliente.vivos() == 1, "queda una sola pieza (la ganadora)");
+            t.cmd("evento copas terminar");
         });
     }
 }

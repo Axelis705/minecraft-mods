@@ -58,6 +58,12 @@ public final class Cine {
                 e.setCanceled(true);
             }
         });
+        // en las cinemáticas no se ve el nombre arriba de mi propio cuerpo
+        MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.client.event.RenderNameTagEvent e) -> {
+            if (activo && e.getEntity() == Minecraft.getInstance().player) {
+                e.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
+            }
+        });
         MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.client.event.RenderGuiOverlayEvent.Pre e) -> {
             if (activo && e.getOverlay().id().equals(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.CROSSHAIR.id())) {
                 e.setCanceled(true);

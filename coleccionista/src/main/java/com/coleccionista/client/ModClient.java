@@ -42,6 +42,9 @@ public final class ModClient {
         EncadenadosCliente.init();
         Gas.init();
         CadenaRender.init();
+        CompartirCliente.init();
+        PuertasCliente.init();
+        CopasCliente.init();
         com.axeliscore.ui.ScreenRegistry.register(Coleccionista.MODID + ":candado", CandadoScreen::new);
         // prueba con fotos: cliente-core.yml con mod=coleccionista y escenario=coleccionista
         ClientTest.scenario(Coleccionista.MODID, PruebaCliente::escenario);

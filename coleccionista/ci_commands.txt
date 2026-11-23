@@ -1,6 +1,6 @@
 axeliscore
 coleccionista
-forceload add -16 -16 176 96
+forceload add -16 -48 224 96
 #pausa 3
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
@@ -57,6 +57,48 @@ evento encadenados preparar
 evento encadenados empezar ya
 #pausa 16
 evento encadenados terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento compartir hablar 5
+evento compartir tiempo_elegir 5
+evento compartir preparar
+#pausa 4
+evento compartir empezar ya
+#pausa 1
+evento compartir elegir
+evento compartir elige Bot_01 robar
+evento compartir elige Bot_02 compartir
+evento compartir elige Bot_03 compartir
+evento compartir elige Bot_04 compartir
+#pausa 19
+evento compartir terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento puertas rondas 1
+evento puertas tiempo 5
+evento puertas preparar
+#pausa 4
+evento puertas ronda
+#pausa 1
+evento puertas cerrar
+#pausa 10
+evento puertas terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento eliminar Bot_03
+evento eliminar Bot_04
+evento copas tiempo 5
+evento copas preparar
+#pausa 5
+evento copas empezar ya
+#pausa 45
+evento copas terminar
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect usuarios=[coleccionista]
@@ -88,3 +130,29 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_ENCADENADOS fin salvados=1 eliminados=2
 #expect COLECCIONISTA_GAS
 #expect COLECCIONISTA_ENCADENADOS terminada
+#expect COLECCIONISTA_CONSTRUIDO salon
+#expect COLECCIONISTA_COMPARTIR preparada mesas=2 perdonado=false
+#expect COLECCIONISTA_PRESENTACION III
+#expect COLECCIONISTA_COMPARTIR elegir
+#expect COLECCIONISTA_COMPARTIR revelar
+#expect uno caen=1
+#expect comparten caen=0
+#expect COLECCIONISTA_COMPARTIR fin eliminados=1
+#expect COLECCIONISTA_COMPARTIR terminada
+#expect COLECCIONISTA_CONSTRUIDO puertas
+#expect COLECCIONISTA_PUERTAS preparada rondas=1
+#expect COLECCIONISTA_PRESENTACION VI
+#expect COLECCIONISTA_PUERTAS ronda=1 trampa=
+#expect COLECCIONISTA_PUERTAS cerradas ronda=1
+#expect COLECCIONISTA_PUERTAS trampa=
+#expect COLECCIONISTA_PUERTAS fin eliminados=
+#expect COLECCIONISTA_PUERTAS terminada
+#expect COLECCIONISTA_CONSTRUIDO final
+#expect COLECCIONISTA_COPAS preparada piezas=2
+#expect COLECCIONISTA_COPAS servidas=4
+#expect COLECCIONISTA_PRESENTACION VII
+#expect COLECCIONISTA_COPAS turno
+#expect COLECCIONISTA_COPAS bebe
+#expect COLECCIONISTA_COPAS veneno
+#expect COLECCIONISTA_COPAS fin vivos=1
+#expect COLECCIONISTA_COPAS terminada

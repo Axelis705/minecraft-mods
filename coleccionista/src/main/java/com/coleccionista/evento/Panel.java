@@ -119,6 +119,39 @@ public final class Panel {
             case "enc_soltar" -> com.coleccionista.prueba.Encadenados.soltarTodos(s);
             case "enc_cerrar" -> com.coleccionista.prueba.Encadenados.cerrar(s, false);
             case "enc_terminar" -> com.coleccionista.prueba.Encadenados.terminar(s);
+            // ---- Compartir o robar
+            case "com_preparar" -> {
+                Component e = com.coleccionista.prueba.Compartir.preparar(s);
+                if (e != null) {
+                    Plat.msg(p, e, true);
+                }
+            }
+            case "com_empezar" -> com.coleccionista.prueba.Compartir.empezar(s, true);
+            case "com_ya" -> com.coleccionista.prueba.Compartir.empezar(s, false);
+            case "com_elegir" -> com.coleccionista.prueba.Compartir.elegirYa(s);
+            case "com_revelar" -> com.coleccionista.prueba.Compartir.revelarYa(s);
+            case "com_terminar" -> com.coleccionista.prueba.Compartir.terminar(s);
+            // ---- Las puertas
+            case "pue_preparar" -> {
+                Component e = com.coleccionista.prueba.LasPuertas.preparar(s);
+                if (e != null) {
+                    Plat.msg(p, e, true);
+                }
+            }
+            case "pue_ronda" -> com.coleccionista.prueba.LasPuertas.ronda(s);
+            case "pue_cerrar" -> com.coleccionista.prueba.LasPuertas.cerrar(s);
+            case "pue_terminar" -> com.coleccionista.prueba.LasPuertas.terminar(s);
+            // ---- Las copas (la final)
+            case "cop_preparar" -> {
+                Component e = com.coleccionista.prueba.LasCopas.preparar(s);
+                if (e != null) {
+                    Plat.msg(p, e, true);
+                }
+            }
+            case "cop_empezar" -> com.coleccionista.prueba.LasCopas.empezar(s, true);
+            case "cop_ya" -> com.coleccionista.prueba.LasCopas.empezar(s, false);
+            case "cop_beber" -> com.coleccionista.prueba.LasCopas.beberYa(s);
+            case "cop_terminar" -> com.coleccionista.prueba.LasCopas.terminar(s);
             case "toma_guardar" -> {
                 if (!Tomas.guardar(p, Nbt.s(d, "nombre"))) {
                     Plat.msg(p, Component.translatable(Coleccionista.MODID + ".panel.tomas_llenas", Tomas.MAX), true);
