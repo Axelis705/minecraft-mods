@@ -26,6 +26,38 @@ public class CoreItem extends Item {
         super(props);
     }
 
+    private net.minecraft.resources.ResourceLocation geo3d, tex3d;
+
+    /**
+     * Se dibuja con un modelo de Blockbench (geo.json; en la carpeta del estudio también .bbmodel) en la mano, en el suelo, en los marcos
+     * y en el inventario. Recursos: en 1.20.1 y 1.21.1 el modelo del objeto es {@code {"parent": "axelis_core:item/modelo_3d"}}; en 26.x
+     * {@code assets/mod/items/nombre.json} usa {@code {"type": "minecraft:special", "base": "axelis_core:item/modelo_3d_base", "model":
+     * {"type": "axelis_core:geo", "geo": "...", "textura": "..."}}}. Ver {@link com.axeliscore.item.client.ObjetoModelo}.
+     */
+    public CoreItem modelo3d(net.minecraft.resources.ResourceLocation geo, net.minecraft.resources.ResourceLocation textura) {
+        this.geo3d = geo;
+        this.tex3d = textura;
+        return this;
+    }
+
+    /** El modelo 3D (null si se dibuja normal). */
+    public net.minecraft.resources.ResourceLocation geo3d() {
+        return geo3d;
+    }
+
+    public net.minecraft.resources.ResourceLocation textura3d() {
+        return tex3d;
+    }
+
+    //#if MC < 26.1
+    @Override
+    public void initializeClient(Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> c) {
+        if (geo3d != null) {
+            c.accept(com.axeliscore.item.client.ObjetoModelo.extension());
+        }
+    }
+    //#endif
+
     /**
      * Cuadro de información al pasar el ratón (en cualquier pantalla). null = la ayuda normal de Minecraft con {@link #tooltip}.
      * {@code detail} es true con Shift apretado.

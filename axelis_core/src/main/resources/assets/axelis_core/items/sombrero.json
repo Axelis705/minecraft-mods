@@ -1,0 +1,11 @@
+{
+ "model": {
+  "type": "minecraft:special",
+  "base": "axelis_core:item/modelo_3d_base",
+  "model": {
+   "type": "axelis_core:geo",
+   "geo": "axelis_core:geo/sombrero.geo.json",
+   "textura": "axelis_core:textures/prenda/sombrero.png"
+  }
+ }
+}

@@ -135,5 +135,6 @@
   "axelis_core.diario.no_seguir": "Untrack",
   "axelis_core.diario.vacio": "No quests in progress. Look for someone with a ! over their head.",
   "axelis_core.diario.vacio_hechas": "You haven't finished any quest yet.",
-  "axelis_core.diario.veces": "Done %s times"
+  "axelis_core.diario.veces": "Done %s times",
+  "item.axelis_core.sombrero": "Straw hat"
 }

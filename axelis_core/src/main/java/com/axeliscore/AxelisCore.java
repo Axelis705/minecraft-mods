@@ -55,6 +55,9 @@ public class AxelisCore {
         }
         com.axeliscore.ui.Teclas.nueva(MODID, "diario", 'N', () -> com.axeliscore.ui.ScreenRegistry.open(com.axeliscore.npc.NpcAcciones.DIARIO));
         com.axeliscore.registry.CoreEntities.ENTITIES.register(bus);
+        com.axeliscore.registry.CoreItems.ITEMS.register(bus);
+        // los objetos con modelo de Blockbench (en 26.x hay que avisarle a Minecraft antes de cargar los modelos)
+        com.axeliscore.plat.Net.onClient(com.axeliscore.item.client.ObjetoModelo::registrar);
         LOGGER.info("Axelis Core {} (API {})", VERSION, API);
     }
 

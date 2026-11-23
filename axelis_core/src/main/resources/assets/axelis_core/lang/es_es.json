@@ -135,5 +135,6 @@
   "axelis_core.diario.no_seguir": "Dejar de seguir",
   "axelis_core.diario.vacio": "No tienes misiones en curso. Busca a alguien con un ! sobre la cabeza.",
   "axelis_core.diario.vacio_hechas": "Todavía no terminas ninguna misión.",
-  "axelis_core.diario.veces": "Hecha %s veces"
+  "axelis_core.diario.veces": "Hecha %s veces",
+  "item.axelis_core.sombrero": "Sombrero de paja"
 }
