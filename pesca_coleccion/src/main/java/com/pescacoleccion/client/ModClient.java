@@ -45,6 +45,7 @@ public final class ModClient {
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent e) {
+        com.axeliscore.ui.ScreenRegistry.register(PescaColeccion.MODID + ":libro", LibroScreen::new);
         // estrellas de maestría del jugador (la copia que manda el servidor) para los cuadros de los peces
         com.pescacoleccion.pesca.PezItem.estrellas = id -> {
             var d = com.axeliscore.data.client.ClientData.player(PescaColeccion.MODID);
@@ -113,6 +114,33 @@ public final class ModClient {
             t.add("premio legendario", 1500, () -> t.check(tienePez(4), "el pez legendario llegó"));
             t.add("título", 100, () -> t.shot("pelea_legendaria_premio"));
             t.add("sin juego solo", 100, () -> PeleaScreen.autoplay = false);
+            // el libro de pesca
+            t.photo("libro_peces", 1400, () -> {
+                com.axeliscore.plat.client.Screens.open(new LibroScreen());
+            });
+            t.photo("libro_cuadro", 900, () -> {
+                if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
+                    l.pick("patriarca");
+                    com.axeliscore.ui.UiScreen.fakeMouse = l.cellCenter(14);
+                }
+            });
+            t.photo("libro_pista", 900, () -> {
+                if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
+                    com.axeliscore.ui.UiScreen.fakeMouse = l.cellCenter(2);
+                }
+            });
+            t.photo("libro_mejoras", 900, () -> {
+                com.axeliscore.ui.UiScreen.fakeMouse = null;
+                if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
+                    l.showTab(1);
+                }
+            });
+            t.photo("libro_records", 900, () -> {
+                if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
+                    l.showTab(2);
+                }
+            });
+            t.add("cerrar libro", 300, () -> com.axeliscore.plat.client.Screens.close());
         });
     }
 }

@@ -34,6 +34,9 @@ public final class ModRegistry {
     public static final java.util.Map<com.pescacoleccion.pesca.Cana, net.minecraftforge.registries.RegistryObject<Item>> CANAS = new java.util.EnumMap<>(
             com.pescacoleccion.pesca.Cana.class);
 
+    public static final net.minecraftforge.registries.RegistryObject<Item> LIBRO = ITEMS.register("libro_pesca",
+            () -> new com.pescacoleccion.pesca.LibroItem(com.axeliscore.plat.Reg.item(PescaColeccion.MODID, "libro_pesca").stacksTo(1)));
+
     /** Un objeto por cada pez de la colección (por id de especie). */
     public static final java.util.Map<String, net.minecraftforge.registries.RegistryObject<Item>> PECES = new java.util.LinkedHashMap<>();
 
@@ -55,6 +58,7 @@ public final class ModRegistry {
                     .title(net.minecraft.network.chat.Component.translatable("itemGroup." + PescaColeccion.MODID))
                     .icon(() -> new net.minecraft.world.item.ItemStack(CANAS.get(com.pescacoleccion.pesca.Cana.BAMBU).get()))
                     .displayItems((params, out) -> {
+                        out.accept(LIBRO.get());
                         for (var c : CANAS.values()) {
                             out.accept(c.get());
                         }

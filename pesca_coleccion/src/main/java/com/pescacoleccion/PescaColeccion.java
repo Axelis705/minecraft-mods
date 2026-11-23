@@ -34,6 +34,7 @@ public class PescaColeccion {
         //#endif
         com.pescacoleccion.registry.ModRegistry.register(bus);
         com.axeliscore.data.PlayerStore.syncOnLogin(MODID);
+        com.pescacoleccion.pesca.Libro.init();
         AxelisCore.commands(d -> d.register(Commands.literal(MODID).executes(c -> {
             c.getSource().sendSuccess(() -> Component.translatable(MODID + ".hola", AxelisCore.version()), false);
             LOGGER.info("PRUEBA_PESCA_COLECCION_OK {}", AxelisCore.version());

@@ -64,6 +64,11 @@ public class AxelisCore {
         CoreCommands.EXTRA.add(c);
     }
 
+    /** Algo que hacer cada vez que un jugador entra al mundo (en el servidor), igual en todas las versiones. */
+    public static void onLogin(java.util.function.Consumer<net.minecraft.server.level.ServerPlayer> c) {
+        CoreEvents.LOGIN.add(c);
+    }
+
     /** Texto con la versión, para que los mods lo muestren o lo comprueben. */
     public static String version() {
         return "Axelis Core " + VERSION + " (API " + API + ")";

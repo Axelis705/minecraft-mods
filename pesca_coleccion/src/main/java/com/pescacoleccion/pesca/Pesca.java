@@ -19,6 +19,10 @@ public final class Pesca {
     /** Devuelve el pez (para que vuele al jugador o se le dé). */
     public static ItemStack pescado(ServerPlayer p, Especie e, float cm, boolean perfecto) {
         Coleccion.Resultado r = Coleccion.registrar(p, e, cm, perfecto);
+        if (r.recordMundo()) {
+            Libro.recordsATodos(Plat.server(p));
+        }
+        Libro.primerPez(p);
         ItemStack st = PezItem.crear(ModRegistry.PECES.get(e.id()).get(), e, cm, p.getGameProfile().getName(), r.recordMundo());
         Rareza rz = Rareza.of(e.rareza());
         Component nombre = Component.translatable("item." + PescaColeccion.MODID + "." + e.itemId());

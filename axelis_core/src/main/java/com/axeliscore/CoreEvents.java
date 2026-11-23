@@ -13,10 +13,20 @@ public final class CoreEvents {
     private CoreEvents() {
     }
 
+    /** Lo que los mods quieren hacer cuando entra un jugador ({@link com.axeliscore.AxelisCore#onLogin}). */
+    static final java.util.List<java.util.function.Consumer<ServerPlayer>> LOGIN = new java.util.concurrent.CopyOnWriteArrayList<>();
+
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (e.getEntity() instanceof ServerPlayer p) {
             com.axeliscore.data.PlayerStore.onLogin(p);
+            for (var l : LOGIN) {
+                try {
+                    l.accept(p);
+                } catch (RuntimeException ex) {
+                    AxelisCore.LOGGER.error("Axelis Core: falló algo al entrar {}", p.getGameProfile().getName(), ex);
+                }
+            }
         }
     }
 }

@@ -201,6 +201,7 @@ public class Anzuelo extends Entity implements Animated {
         float cm = tamano;
         float rel = (cm - e.cmMin()) / Math.max(1, e.cmMax() - e.cmMin());
         PeleaSim.Params params = Especies.params(e, random.nextLong(), cana, rel);
+        Mejoras.aplicar(params, Mejoras.datos(p));
         if (PescaColeccion.facil()) {
             Niveles.facil(params);
         }
@@ -294,7 +295,9 @@ public class Anzuelo extends Entity implements Animated {
     private void timeline() {
         if (picadas == null) {
             if (espera > 0 && --espera == 0) {
-                especie = Especies.elegir(level(), blockPosition(), random, cana.suerte);
+                Player o = owner();
+                int suerte = cana.suerte + (o instanceof ServerPlayer sp ? Mejoras.suerte(Mejoras.datos(sp)) : 0);
+                especie = Especies.elegir(level(), blockPosition(), random, suerte);
                 rareza = especie.rareza();
                 tamano = especie.tamano(random.nextDouble());
                 picadas = Captura.picadas(random, rareza);

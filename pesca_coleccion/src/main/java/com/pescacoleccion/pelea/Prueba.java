@@ -17,6 +17,7 @@ public final class Prueba {
         }
         PeleaSim.Params params = Niveles.base(rareza, p.getRandom().nextLong());
         Niveles.cana(params, 0.40F, 1.0F, 100, 10);
+        com.pescacoleccion.pesca.Mejoras.aplicar(params, com.pescacoleccion.pesca.Mejoras.datos(p));
         if (facil) {
             Niveles.facil(params);
         }
