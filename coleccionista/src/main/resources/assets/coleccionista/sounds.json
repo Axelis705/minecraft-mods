@@ -41,6 +41,16 @@
       }
     ]
   },
+  "voz.bienvenida.coleccion": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.coleccion",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_coleccion",
+        "stream": true
+      }
+    ]
+  },
   "voz.bienvenida.durmieron": {
     "category": "voice",
     "subtitle": "coleccionista.voz.bienvenida.durmieron",
@@ -61,6 +71,16 @@
       }
     ]
   },
+  "voz.bienvenida.los_demas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.los_demas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_los_demas",
+        "stream": true
+      }
+    ]
+  },
   "voz.bienvenida.presento": {
     "category": "voice",
     "subtitle": "coleccionista.voz.bienvenida.presento",
@@ -71,12 +91,32 @@
       }
     ]
   },
+  "voz.bienvenida.pruebas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.pruebas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_pruebas",
+        "stream": true
+      }
+    ]
+  },
   "voz.bienvenida.que_tenemos": {
     "category": "voice",
     "subtitle": "coleccionista.voz.bienvenida.que_tenemos",
     "sounds": [
       {
         "name": "coleccionista:voz/bienvenida_que_tenemos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.solo_uno": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.solo_uno",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_solo_uno",
         "stream": true
       }
     ]

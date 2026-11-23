@@ -56,9 +56,9 @@ public final class Pantallas {
         l.add(new Frase("acerquense", 140, null, 1F));
         l.add(new Frase("presento", 120, null, 1F));
         l.add(new Frase("coleccion", 85, null, 1F));
-        l.add(new Frase("pruebas", 110, null, 1F));
-        l.add(new Frase("solo_uno", 90, null, 1F));
-        l.add(new Frase("los_demas", 90, null, 1F));
+        l.add(new Frase("pruebas", 178, null, 1F));
+        l.add(new Frase("solo_uno", 108, null, 1F));
+        l.add(new Frase("los_demas", 208, null, 1F));
         l.add(new Frase("risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
         l.add(new Frase("candado", 115, null, 1F));
         l.add(new Frase("escondidos", 105, null, 1F));

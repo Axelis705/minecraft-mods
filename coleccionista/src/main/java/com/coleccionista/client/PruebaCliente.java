@@ -214,7 +214,7 @@ final class PruebaCliente {
         t.photo("25b_zoom_subtitulo", 5000, () -> {
         });
         t.add("volver", 1200, Atajos::acercarse);
-        t.add("esperar discurso", 48000, () -> {
+        t.add("esperar discurso", 60000, () -> {
         });
         // de cerca otra vez cuando ya terminó de hablar: debe decir que con R se cierra
         t.photo("25c_zoom_fin", 1800, Atajos::acercarse);
