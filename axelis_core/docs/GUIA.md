@@ -94,6 +94,8 @@ event.registerEntityRenderer(PESCADOR.get(), PersonaRenderer.with(Ids.rl("pesca"
   cuadro por cuadro, velocidad, poner y quitar cuadros, curva de llegada, ver con o sin el código del personaje y **mover los
   huesos con el mouse** (clic derecho y arrastrar; con Shift gira en z). Guarda `nombre.animation.json` en el estudio (se abre en
   Blockbench con Importar animaciones). Teclas: espacio, flechas, Supr, S.
+  Con **✦ Efecto** se ponen efectos de partículas en el momento actual saliendo del hueso elegido (`particle_effects`, rombos
+  morados en la línea de tiempo); al elegirlo se ve una vez.
 - **Curvas**: las de GeckoLib/Blockbench (`easeInOutSine`, `easeOutBack`...) con `easingArgs` (cuánto se pasa o rebota, escalones);
   Bézier con manijas; `Ease.bezier(x1, y1, x2, y2)` para usarlas en código.
 - **Capas**: `layer.peso(w)`, `tiempo(t)`, `velocidad(v)`; **máscara suave** con pesos por hueso
