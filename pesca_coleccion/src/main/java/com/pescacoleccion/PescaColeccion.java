@@ -38,6 +38,7 @@ public class PescaColeccion {
         com.pescacoleccion.pesca.Lombrices.init();
         com.pescacoleccion.nilo.Encargos.init();
         com.pescacoleccion.nilo.Tienda.init();
+        com.pescacoleccion.torneo.Torneo.init();
         // la caña se dibuja sin el hilo que cuelga mientras su corcho está afuera (como la de Minecraft)
         Net.onClient(() -> com.axeliscore.item.client.ItemModelProps.bool(MODID, "lanzada", (stack, quien) -> {
             if (!(quien instanceof net.minecraft.world.entity.player.Player p) || !(stack.getItem() instanceof com.pescacoleccion.pesca.CanaItem)) {
@@ -51,7 +52,12 @@ public class PescaColeccion {
             c.getSource().sendSuccess(() -> Component.translatable(MODID + ".hola", AxelisCore.version()), false);
             LOGGER.info("PRUEBA_PESCA_COLECCION_OK {}", AxelisCore.version());
             return 1;
-        }).then(Commands.literal("nilo").requires(com.axeliscore.plat.Plat::isOp)
+        }).then(Commands.literal("torneo").requires(com.axeliscore.plat.Plat::isOp)
+                .then(Commands.literal("terminar").executes(c -> {
+                    com.pescacoleccion.torneo.Torneo.terminar(c.getSource().getServer());
+                    return 1;
+                })))
+        .then(Commands.literal("nilo").requires(com.axeliscore.plat.Plat::isOp)
                 .then(Commands.literal("llamar").executes(c -> {
                     var p = c.getSource().getPlayerOrException();
                     com.pescacoleccion.nilo.NiloMundo.llamar(p, com.pescacoleccion.nilo.NiloMundo.aguaCerca(p));

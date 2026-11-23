@@ -445,10 +445,65 @@ def acuario():
     write_json(os.path.join(BASE, "blockstates", "acuario.json"), {"variants": {"": {"model": f"{MOD}:block/acuario"}}})
 
 
+def copas():
+    """Copas de torneo (oro, plata, bronce): base de madera oscura, pie, tallo con nudo, copa abierta y dos asas."""
+    metales = {"oro": ("#FFE27A", "#E0A82E", "#8C5A10"), "plata": ("#F4F7FA", "#B8C2CC", "#5E6873"), "bronce": ("#F0B27A", "#C07838", "#6A3A14")}
+
+    def base(x, y, rnd):
+        c = hexc("#3A2618") if (x + y * 2) % 9 else hexc("#4A3220")
+        if y in (0, 15):
+            c = hexc("#2A1A10")
+        return ruido(c, rnd, 4)
+    textura("copa_base", 16, 16, base)
+    for nombre, (claro, medio, oscuro) in metales.items():
+        cl, me, os_ = hexc(claro), hexc(medio), hexc(oscuro)
+
+        def metal(x, y, rnd, cl=cl, me=me, os_=os_):
+            # degradado vertical con una franja de brillo en diagonal
+            t = y / 15.0
+            c = mix(cl, me, min(1, t * 1.4)) if t < 0.7 else mix(me, os_, (t - 0.7) / 0.3)
+            if (x + y) % 11 in (0, 1):
+                c = mix(c, (255, 255, 255, 255), 0.45)
+            return ruido(c, rnd, 3)
+        textura("copa_" + nombre, 16, 16, metal)
+        caras = lambda t: {f: {"texture": "#" + t} for f in ("north", "south", "east", "west", "up", "down")}
+        els = [
+            {"from": [4, 0, 4], "to": [12, 1.5, 12], "faces": caras("base")},
+            {"from": [5, 1.5, 5], "to": [11, 3, 11], "faces": caras("metal")},
+            {"from": [7, 3, 7], "to": [9, 6.5, 9], "faces": caras("metal")},
+            {"from": [6.5, 6.5, 6.5], "to": [9.5, 7.5, 9.5], "faces": caras("metal")},
+            {"from": [5.5, 7.5, 5.5], "to": [10.5, 8.5, 10.5], "faces": caras("metal")},
+            # paredes de la copa
+            {"from": [4.5, 8.5, 4.5], "to": [11.5, 13.5, 5.5], "faces": caras("metal")},
+            {"from": [4.5, 8.5, 10.5], "to": [11.5, 13.5, 11.5], "faces": caras("metal")},
+            {"from": [4.5, 8.5, 5.5], "to": [5.5, 13.5, 10.5], "faces": caras("metal")},
+            {"from": [10.5, 8.5, 5.5], "to": [11.5, 13.5, 10.5], "faces": caras("metal")},
+            # borde
+            {"from": [4, 13.5, 4], "to": [12, 14, 5], "faces": caras("metal")},
+            {"from": [4, 13.5, 11], "to": [12, 14, 12], "faces": caras("metal")},
+            {"from": [4, 13.5, 5], "to": [5, 14, 11], "faces": caras("metal")},
+            {"from": [11, 13.5, 5], "to": [12, 14, 11], "faces": caras("metal")},
+            # asas
+            {"from": [2.5, 9.5, 7.5], "to": [4.5, 10.5, 8.5], "faces": caras("metal")},
+            {"from": [2.5, 12, 7.5], "to": [4.5, 13, 8.5], "faces": caras("metal")},
+            {"from": [2.5, 10.5, 7.5], "to": [3.5, 12, 8.5], "faces": caras("metal")},
+            {"from": [11.5, 9.5, 7.5], "to": [13.5, 10.5, 8.5], "faces": caras("metal")},
+            {"from": [11.5, 12, 7.5], "to": [13.5, 13, 8.5], "faces": caras("metal")},
+            {"from": [12.5, 10.5, 7.5], "to": [13.5, 12, 8.5], "faces": caras("metal")}]
+        bid = "copa_" + nombre
+        write_json(os.path.join(BASE, "models", "block", bid + ".json"), {
+            "parent": "minecraft:block/block",
+            "textures": {"particle": f"{MOD}:block/{bid}", "metal": f"{MOD}:block/{bid}", "base": f"{MOD}:block/copa_base"},
+            "elements": els})
+        write_json(os.path.join(BASE, "models", "item", bid + ".json"), {"parent": f"{MOD}:block/{bid}"})
+        write_json(os.path.join(BASE, "blockstates", bid + ".json"), {"variants": {"": {"model": f"{MOD}:block/{bid}"}}})
+
+
 def main():
     corcho()
     trofeo()
     acuario()
+    copas()
     for n, cols in CANAS.items():
         cana(n, *cols)
         cana(n, *cols, lanzada=True)

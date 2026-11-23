@@ -29,6 +29,7 @@ AxelisCore.use(MODID);                 // el Core sabe quién lo usa (/axeliscor
 AxelisCore.commands(d -> d.register(...));   // comandos, registrados bien en todas las versiones
 AxelisCore.onLogin(jugador -> ...);          // algo al entrar un jugador (servidor)
 AxelisCore.onBreak((jugador, mundo, pos, bloque) -> ...);  // un jugador rompe un bloque (solo si de verdad se rompe)
+AxelisCore.onServerTick(servidor -> ...);    // al final de cada tick del servidor (20 por segundo)
 ```
 
 Versión actual: **1.1.0 (API 2)**. Un mod que necesita algo nuevo lo pide en su `mods.toml` (`versionRange="[1.1.0,)"`).
@@ -36,7 +37,7 @@ Versión actual: **1.1.0 (API 2)**. Un mod que necesita algo nuevo lo pide en su
 | API | Qué se agregó |
 |---|---|
 | 1 | Personajes, animación, interfaz, efectos, red, datos |
-| 2 | Cuadros de información (`InfoCard`) y temas con marco, `CoreItem`, `ItemTag`, `Plat.give`, `onLogin`, `onBreak`, condiciones de modelos de objetos (`ItemModelProps`), `Ui.fit`, `ClientTest.waitFor` |
+| 2 | Cuadros de información (`InfoCard`) y temas con marco, `CoreItem`, `ItemTag`, `Plat.give`, `onLogin`, `onBreak`, `onServerTick`, condiciones de modelos de objetos (`ItemModelProps`), bloques con datos y dibujo propio (`CoreBlock`, `CoreBlockEntity`, `CoreBER`), capas del HUD (`Hud`), `Ui.fit`, `ClientTest.waitFor` |
 
 ## Personajes
 
@@ -120,10 +121,23 @@ En 1.20.1 y 1.21.1 se usa en `"overrides"` del modelo (`"predicate": {"mod:lanza
 `assets/<mod>/items/<objeto>.json` con `"type": "minecraft:condition", "property": "mod:lanzada"`. Los dos archivos pueden
 vivir juntos en el mod (cada versión lee el suyo).
 
+## Bloques (`block/`)
+
+- `CoreBlock`: clic derecho (`onUse`), vecinos (`onNeighbor`) y "un jugador lo rompe" (`onPlayerBreak`, para soltar lo que guarda)
+  iguales en todas las versiones; gira bien con las plantillas.
+- `CoreBlockEntity`: solo `writeData`/`readData` con un CompoundTag; guarda y manda a los clientes en cada versión. Después de
+  cambiar algo, `changed()`. Objetos adentro: `Ser.item(stack)` / `Ser.item(tag)`.
+- `CoreBER` (cliente): dibujar encima del bloque con `Draw` (cuadros con textura `cutout`/`translucent`/`glow`, texto, objetos);
+  se registra con `e.registerBlockEntityRenderer(TIPO.get(), MiRenderer::new)`.
+- Los bloques que no son cubos enteros llevan `noOcclusion()`. Para transparencias, mejor dibujarlas en el `CoreBER` que con
+  `render_type` en el modelo.
+
 ## Efectos (`fx/Fx`)
 
 Desde el servidor: `Fx.shake` / `Fx.shakeNear` (temblor de cámara), `Fx.flash` (destello), `Fx.vignette` (bordes de color),
 `Fx.title` (título grande con franja de cine), `Fx.toast` (aviso con objeto).
+
+En el cliente, `Hud.add((g, ancho, alto) -> ...)` dibuja cosas propias en la pantalla de juego (marcadores, temporizadores).
 
 ## Datos (`data/`)
 
@@ -166,6 +180,8 @@ Desde el servidor: `Fx.shake` / `Fx.shakeNear` (temblor de cámara), `Fx.flash` 
 
 - 26.x: eventos con `@SubscribeEvent(priority = Priority.LOWEST)` de `eventbus.api.listener`; romper bloques se decide con
   el resultado del evento (`DENY` = no se rompe). Los modelos de objetos usan `items/*.json` (desde 1.21.4).
+- 26.x: `.moveTo(` se cambia solo a `.snapTo(`: escribir `this.moveTo(...)` (con el punto) y, para la navegación, que no debe
+  cambiar, `getNavigation(). moveTo(` (con un espacio después del punto).
 - 26.x: `ResourceLocation` → `Identifier`, `.moveTo(` → `.snapTo(` (por eso caminar va con `Plat.walkTo`), la pantalla vive en
   `Minecraft.gui` (26.2+), el golpe se lee con `getSwingAnimation` (26.3), no hay chunks de aparición (las pruebas del
   servidor usan `forceload`), la barra de jefe pide un UUID.

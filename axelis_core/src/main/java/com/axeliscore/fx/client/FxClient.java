@@ -75,6 +75,7 @@ public final class FxClient {
     /** Dibuja destello, viñeta, título y avisos encima de todo. */
     public static void render(G g, int w, int h) {
         com.axeliscore.ui.client.LookInfo.render(g, w, h);
+        Hud.renderAll(g, w, h);
         long now = System.currentTimeMillis();
         if (now < vigEnd) {
             float k = 1 - (now - vigStart) / (float) Math.max(1, vigEnd - vigStart);

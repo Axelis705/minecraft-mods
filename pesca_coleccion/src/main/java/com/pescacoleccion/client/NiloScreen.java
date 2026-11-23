@@ -71,7 +71,7 @@ public class NiloScreen extends UiScreen {
         Tabs t = add(new Tabs(px + 12, py + 52, pw - 24, 16, i -> {
             tab = i;
             rebuild();
-        }, tr("tab_encargos"), tr("tab_tienda"), tr("tab_nilo")));
+        }, tr("tab_encargos"), tr("tab_tienda"), Component.translatable(MOD + ".torneo.tab").getString(), tr("tab_nilo")));
         t.active = tab;
         rebuild();
     }
@@ -108,6 +108,8 @@ public class NiloScreen extends UiScreen {
                 return st.getItem() instanceof PezItem pz ? pz.card(st, false) : null;
             };
             refrescarVenta();
+        } else if (tab == 2) {
+            construirTorneo(y0);
         } else {
             int w = 168;
             pican = add(new ListView<>(px + 12, y0, w, py + ph - 10 - y0, 20, this::filaPez, null));
@@ -120,6 +122,93 @@ public class NiloScreen extends UiScreen {
             }
         }
         hashDatos = nilo().toString().hashCode();
+        hashTorneo = torneo().toString().hashCode();
+    }
+
+    // ------------------------------------------------------------------ torneo
+
+    private static int modoElegido = 2, minutosElegidos = 1;
+    private int hashTorneo;
+
+    private static CompoundTag torneo() {
+        CompoundTag t = ClientData.get(com.pescacoleccion.torneo.Torneo.KEY);
+        return t == null ? new CompoundTag() : t;
+    }
+
+    private static String tt(String k, Object... a) {
+        return Component.translatable(MOD + ".torneo." + k, a).getString();
+    }
+
+    private void construirTorneo(int y0) {
+        CompoundTag t = torneo();
+        int half = (pw - 30) / 2;
+        if (Nbt.b(t, "activo")) {
+            ListView<CompoundTag> l = add(new ListView<>(px + 12, y0, half, py + ph - 10 - y0, 14, (g, r, x, y, w, h, sel, hov, th) -> {
+                String a = Nbt.s(r, "n"), b = Nbt.s(r, "p");
+                g.drawString(Ui.font(), Ui.fit(a, w - 8 - Ui.font().width(b)), x + 2, y + 3, th.text, false);
+                g.drawString(Ui.font(), b, x + w - Ui.font().width(b), y + 3, 0xFFFFD24A, false);
+            }, null));
+            ListTag tabla = Nbt.list(t, "tabla");
+            for (int i = 0; i < tabla.size(); i++) {
+                l.items.add(Nbt.at(tabla, i));
+            }
+            Button fin = add(new Button(px + 18 + half, py + ph - 30, half, 18, tt("terminar"),
+                    () -> ClientData.send(MOD + ":torneo_terminar", new CompoundTag())));
+            fin.help(Component.translatable(MOD + ".torneo.terminar_ayuda"));
+            return;
+        }
+        int x = px + 12, y = y0;
+        for (int i = 0; i < com.pescacoleccion.torneo.Torneo.MODOS.length; i++) {
+            int k = i;
+            String m = com.pescacoleccion.torneo.Torneo.MODOS[i];
+            Button b = add(new Button(x, y + i * 21, half, 18, (i == modoElegido ? "✔ " : "") + tt("modo." + m), () -> {
+                modoElegido = k;
+                rebuild();
+            }));
+            b.help(Component.translatable(MOD + ".torneo.modo." + m + ".que"));
+        }
+        int by = y + 3 * 21 + 14;
+        int bw = (half - 9) / 4;
+        for (int i = 0; i < com.pescacoleccion.torneo.Torneo.MINUTOS.length; i++) {
+            int k = i;
+            add(new Button(x + i * (bw + 3), by, bw, 18, (i == minutosElegidos ? "✔" : "") + com.pescacoleccion.torneo.Torneo.MINUTOS[i] + "'", () -> {
+                minutosElegidos = k;
+                rebuild();
+            }));
+        }
+        add(new Button(x, py + ph - 30, half, 18, tt("empezar"), () -> {
+            CompoundTag d = new CompoundTag();
+            d.putString("modo", com.pescacoleccion.torneo.Torneo.MODOS[modoElegido]);
+            d.putInt("min", com.pescacoleccion.torneo.Torneo.MINUTOS[minutosElegidos]);
+            ClientData.send(MOD + ":torneo_empezar", d);
+        }));
+    }
+
+    private void dibujarTorneo(G g) {
+        CompoundTag t = torneo();
+        int half = (pw - 30) / 2, rx = px + 18 + half;
+        if (Nbt.b(t, "activo")) {
+            g.drawString(Ui.font(), tt("tabla"), px + 14, py + 75, theme.textDim, false);
+            long s = TorneoHud.resta(t);
+            InfoCard c = new InfoCard(Component.translatable(MOD + ".torneo.en_curso")).color(0xFF6FB7FF).width(half)
+                    .pair(Component.translatable(MOD + ".torneo.modo"), Component.translatable(MOD + ".torneo.modo." + Nbt.s(t, "modo")))
+                    .pair(Component.translatable(MOD + ".torneo.queda"), Component.literal(String.format("%d:%02d", s / 60, s % 60)))
+                    .pair(Component.translatable(MOD + ".torneo.organiza"), Component.literal(Nbt.s(t, "quien")))
+                    .text(Component.translatable(MOD + ".torneo.modo." + Nbt.s(t, "modo") + ".que"), 0xFF9AA3BC);
+            Cards.draw(g, c, rx, py + 72, 1F);
+            return;
+        }
+        g.drawString(Ui.font(), tt("elige_modo"), px + 14, py + 75, theme.textDim, false);
+        g.drawString(Ui.font(), tt("minutos"), px + 14, py + 86 + 3 * 21 + 3, theme.textDim, false);
+        String m = com.pescacoleccion.torneo.Torneo.MODOS[modoElegido];
+        InfoCard c = new InfoCard(Component.translatable(MOD + ".torneo.modo." + m)).color(0xFFFFD24A).width(half)
+                .text(Component.translatable(MOD + ".torneo.modo." + m + ".que"))
+                .divider().text(Component.translatable(MOD + ".torneo.premios"), 0xFF9AA3BC);
+        CompoundTag u = Nbt.c(t, "ultimo");
+        if (!Nbt.s(u, "ganador").isEmpty()) {
+            c.divider().pair(Component.translatable(MOD + ".torneo.ultimo"), Component.literal(Nbt.s(u, "ganador") + " · " + Nbt.s(u, "marca")));
+        }
+        Cards.draw(g, c, rx, py + 72, 1F);
     }
 
     private static long dia() {
@@ -274,7 +363,7 @@ public class NiloScreen extends UiScreen {
 
     @Override
     protected void content(G g, int mx, int my, float pt) {
-        if (nilo().toString().hashCode() != hashDatos) {
+        if (nilo().toString().hashCode() != hashDatos || tab == 2 && torneo().toString().hashCode() != hashTorneo) {
             rebuild();
         }
         if (venta != null && hashVenta() != hashInv) {
@@ -308,6 +397,8 @@ public class NiloScreen extends UiScreen {
             if (venta != null && venta.items.isEmpty()) {
                 Ui.text(g, tr("sin_peces"), px + 26 + (pw - 30) / 2, py + 96, (pw - 30) / 2 - 16, theme.textDim, 10);
             }
+        } else if (tab == 2) {
+            dibujarTorneo(g);
         } else {
             g.drawString(Ui.font(), tr("pican"), px + 14, py + 75, theme.textDim, false);
             if (pican != null && pican.items.isEmpty()) {

@@ -40,6 +40,7 @@ public class AxelisCore {
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreEvents::onLogin);
         // al final de todos: si otro mod protege el bloque (cancela), ya no llega aquí
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(net.minecraftforge.eventbus.api.EventPriority.LOWEST, CoreEvents::onBreak);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreEvents::onServerTick);
         //#endif
         com.axeliscore.registry.CoreEntities.ENTITIES.register(bus);
         LOGGER.info("Axelis Core {} (API {})", VERSION, API);
@@ -84,6 +85,11 @@ public class AxelisCore {
      */
     public static void onBreak(BreakHandler h) {
         CoreEvents.BREAK.add(h);
+    }
+
+    /** Algo que hacer al final de cada tick del servidor (20 veces por segundo), igual en todas las versiones. */
+    public static void onServerTick(java.util.function.Consumer<net.minecraft.server.MinecraftServer> c) {
+        CoreEvents.TICK.add(c);
     }
 
     /** Texto con la versión, para que los mods lo muestren o lo comprueben. */

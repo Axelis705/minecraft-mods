@@ -38,6 +38,26 @@ public final class ModRegistry {
             () -> new net.minecraft.world.item.BlockItem(TROFEO.get(), com.axeliscore.plat.Reg.blockItem(PescaColeccion.MODID, "trofeo")));
     public static final net.minecraftforge.registries.RegistryObject<Item> ACUARIO_ITEM = ITEMS.register("acuario",
             () -> new net.minecraft.world.item.BlockItem(ACUARIO.get(), com.axeliscore.plat.Reg.blockItem(PescaColeccion.MODID, "acuario")));
+    /** Copas de los torneos (oro, plata, bronce): llevan el nombre del ganador. */
+    public static final net.minecraftforge.registries.RegistryObject<Block> COPA_ORO = copa("copa_oro", 0);
+    public static final net.minecraftforge.registries.RegistryObject<Block> COPA_PLATA = copa("copa_plata", 1);
+    public static final net.minecraftforge.registries.RegistryObject<Block> COPA_BRONCE = copa("copa_bronce", 2);
+    public static final net.minecraftforge.registries.RegistryObject<Item> COPA_ORO_ITEM = copaItem("copa_oro", COPA_ORO);
+    public static final net.minecraftforge.registries.RegistryObject<Item> COPA_PLATA_ITEM = copaItem("copa_plata", COPA_PLATA);
+    public static final net.minecraftforge.registries.RegistryObject<Item> COPA_BRONCE_ITEM = copaItem("copa_bronce", COPA_BRONCE);
+    public static final net.minecraftforge.registries.RegistryObject<net.minecraft.world.level.block.entity.BlockEntityType<com.pescacoleccion.torneo.CopaBE>> COPA_BE =
+            BLOCK_ENTITIES.register("copa", () -> com.axeliscore.plat.Reg.blockEntity(com.pescacoleccion.torneo.CopaBE::new, COPA_ORO.get(), COPA_PLATA.get(),
+                    COPA_BRONCE.get()));
+
+    private static net.minecraftforge.registries.RegistryObject<Block> copa(String id, int lugar) {
+        return BLOCKS.register(id, () -> new com.pescacoleccion.torneo.CopaBlock(com.axeliscore.plat.Reg.block(PescaColeccion.MODID, id).strength(1.5F)
+                .sound(net.minecraft.world.level.block.SoundType.METAL).noOcclusion(), lugar));
+    }
+
+    private static net.minecraftforge.registries.RegistryObject<Item> copaItem(String id, net.minecraftforge.registries.RegistryObject<Block> b) {
+        return ITEMS.register(id, () -> new net.minecraft.world.item.BlockItem(b.get(), com.axeliscore.plat.Reg.blockItem(PescaColeccion.MODID, id).stacksTo(1)));
+    }
+
     public static final net.minecraftforge.registries.RegistryObject<net.minecraft.world.level.block.entity.BlockEntityType<com.pescacoleccion.deco.TrofeoBE>> TROFEO_BE =
             BLOCK_ENTITIES.register("trofeo", () -> com.axeliscore.plat.Reg.blockEntity(com.pescacoleccion.deco.TrofeoBE::new, TROFEO.get()));
     public static final net.minecraftforge.registries.RegistryObject<net.minecraft.world.level.block.entity.BlockEntityType<com.pescacoleccion.deco.AcuarioBE>> ACUARIO_BE =
@@ -92,6 +112,9 @@ public final class ModRegistry {
                         out.accept(LIBRO.get());
                         out.accept(TROFEO_ITEM.get());
                         out.accept(ACUARIO_ITEM.get());
+                        out.accept(COPA_ORO_ITEM.get());
+                        out.accept(COPA_PLATA_ITEM.get());
+                        out.accept(COPA_BRONCE_ITEM.get());
                         for (var c : CANAS.values()) {
                             out.accept(c.get());
                         }

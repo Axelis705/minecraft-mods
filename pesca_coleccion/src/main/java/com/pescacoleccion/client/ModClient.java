@@ -89,6 +89,10 @@ public final class ModClient {
     public static void onClientSetup(FMLClientSetupEvent e) {
         com.axeliscore.ui.ScreenRegistry.register(PescaColeccion.MODID + ":libro", LibroScreen::new);
         com.axeliscore.ui.ScreenRegistry.register(PescaColeccion.MODID + ":nilo", NiloScreen::new);
+        TorneoHud.init();
+        // cuadro de las copas de torneo en el inventario
+        com.axeliscore.ui.client.Tooltips.register((st, detalle) -> st.getItem() instanceof net.minecraft.world.item.BlockItem bi
+                && bi.getBlock() instanceof com.pescacoleccion.torneo.CopaBlock cb ? com.pescacoleccion.torneo.Copas.card(st, cb.lugar) : null);
         // estrellas de maestría del jugador (la copia que manda el servidor) para los cuadros de los peces
         com.pescacoleccion.pesca.PezItem.estrellas = id -> {
             var d = com.axeliscore.data.client.ClientData.player(PescaColeccion.MODID);
@@ -224,7 +228,7 @@ public final class ModClient {
             }));
             t.photo("nilo_amistad", 1400, () -> {
                 if (com.axeliscore.plat.client.Screens.current() instanceof NiloScreen ns) {
-                    ns.showTab(2);
+                    ns.showTab(3);
                 }
             });
             t.add("caña de Nilo", 300, () -> t.check(cuenta(com.pescacoleccion.registry.ModRegistry.CANAS.get(com.pescacoleccion.pesca.Cana.NILO).get()) > 0,
@@ -368,6 +372,56 @@ public final class ModClient {
             t.photo("trofeos_acuarios", 2000, () -> t.lookFrom(12.5, -60, 1.5, 12.5, -59, -5));
             t.photo("acuario_cerca", 2000, () -> t.lookFrom(14.5, -60, -0.3, 14.5, -60.4, -3));
             t.photo("trofeo_cuadro", 1500, () -> t.lookFrom(12.5, -60, -2.5, 12.5, -57.6, -5.4));
+            // torneo: empezar (puntos, 3 minutos), pescar un pez raro, ver el marcador, terminar y recibir la copa de oro
+            t.add("empezar torneo", 1200, () -> {
+                PeleaScreen.autoplay = true;
+                t.lookFrom(0.5, -60, -4.5, 0.5, -60.5, 4.5);
+                onServer(l -> com.pescacoleccion.torneo.Torneo.empezar(l.getServer().getPlayerList().getPlayers().get(0), 3, "puntos"));
+            });
+            t.add("pelea del torneo", 300, () -> t.cmd("execute as @p run " + PescaColeccion.MODID + " pelea 2"));
+            t.waitFor("se abre la pelea del torneo", 8000, () -> com.axeliscore.plat.client.Screens.current() instanceof PeleaScreen);
+            t.waitFor("termina la pelea del torneo", 60000, () -> !(com.axeliscore.plat.client.Screens.current() instanceof PeleaScreen));
+            t.add("marcador", 1500, () -> {
+                var tt = com.axeliscore.data.client.ClientData.get(com.pescacoleccion.torneo.Torneo.KEY);
+                t.check(tt != null && com.axeliscore.plat.Nbt.b(tt, "activo") && com.axeliscore.plat.Nbt.list(tt, "tabla").size() == 1,
+                        "el marcador del torneo tiene al jugador");
+                PeleaScreen.autoplay = false;
+            });
+            t.photo("torneo_marcador", 600, () -> {
+            });
+            t.add("torneo en el muelle", 300, () -> onServer(l -> {
+                var sp = l.getServer().getPlayerList().getPlayers().get(0);
+                var ns = l.getEntitiesOfClass(com.pescacoleccion.nilo.Nilo.class, sp.getBoundingBox().inflate(32));
+                if (!ns.isEmpty()) {
+                    com.pescacoleccion.nilo.NiloMundo.hablar(sp, ns.get(0));
+                }
+            }));
+            t.waitFor("ventana de Nilo (torneo)", 6000, () -> com.axeliscore.plat.client.Screens.current() instanceof NiloScreen);
+            t.photo("torneo_nilo", 1200, () -> {
+                if (com.axeliscore.plat.client.Screens.current() instanceof NiloScreen ns) {
+                    ns.showTab(2);
+                }
+            });
+            t.add("terminar torneo", 1500, () -> {
+                com.axeliscore.plat.client.Screens.close();
+                onServer(l -> com.pescacoleccion.torneo.Torneo.terminar(l.getServer()));
+            });
+            t.add("copa", 300, () -> t.check(cuenta(com.pescacoleccion.registry.ModRegistry.COPA_ORO_ITEM.get()) == 1, "el ganador recibió la copa de oro"));
+            t.photo("torneo_fin", 400, () -> {
+            });
+            t.add("poner copa", 800, () -> onServer(l -> {
+                var sp = l.getServer().getPlayerList().getPlayers().get(0);
+                var pos = new net.minecraft.core.BlockPos(12, -60, -2);
+                l.setBlockAndUpdate(pos, com.pescacoleccion.registry.ModRegistry.COPA_ORO.get().defaultBlockState());
+                for (var st : com.axeliscore.plat.Plat.mainItems(sp.getInventory())) {
+                    if (st.getItem() == com.pescacoleccion.registry.ModRegistry.COPA_ORO_ITEM.get()
+                            && l.getBlockEntity(pos) instanceof com.pescacoleccion.torneo.CopaBE be) {
+                        be.info = com.axeliscore.plat.ItemTag.get(st).copy();
+                        be.changed();
+                    }
+                }
+            }));
+            t.photo("copa", 1800, () -> t.lookFrom(12.5, -60, 0.2, 12.5, -59.6, -1.5));
         });
     }
 }

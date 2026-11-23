@@ -47,6 +47,36 @@ public final class CoreEvents {
         }
     }
 
+    /** Lo que los mods quieren hacer en cada tick del servidor ({@link com.axeliscore.AxelisCore#onServerTick}). */
+    static final java.util.List<java.util.function.Consumer<net.minecraft.server.MinecraftServer>> TICK = new java.util.concurrent.CopyOnWriteArrayList<>();
+
+    //#if MC >= 26.1
+    //$$ @SubscribeEvent
+    //$$ public static void onServerTick(net.minecraftforge.event.TickEvent.ServerTickEvent.Post e) {
+    //$$     serverTick(e.server());
+    //$$ }
+    //#elif MC >= 1.21
+    //$$ public static void onServerTick(net.minecraftforge.event.TickEvent.ServerTickEvent.Post e) {
+    //$$     serverTick(e.getServer());
+    //$$ }
+    //#else
+    public static void onServerTick(net.minecraftforge.event.TickEvent.ServerTickEvent e) {
+        if (e.phase == net.minecraftforge.event.TickEvent.Phase.END) {
+            serverTick(e.getServer());
+        }
+    }
+    //#endif
+
+    private static void serverTick(net.minecraft.server.MinecraftServer s) {
+        for (var c : TICK) {
+            try {
+                c.accept(s);
+            } catch (RuntimeException ex) {
+                AxelisCore.LOGGER.error("Axelis Core: falló algo en el tick del servidor", ex);
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (e.getEntity() instanceof ServerPlayer p) {

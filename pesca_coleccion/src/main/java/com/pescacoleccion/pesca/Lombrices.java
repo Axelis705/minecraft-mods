@@ -27,21 +27,23 @@ public final class Lombrices {
         AxelisCore.onBreak(Lombrices::alRomper);
     }
 
-    /** ¿De este bloque pueden salir lombrices? */
+    /** ¿De este bloque pueden salir lombrices? (la lista a mano por si la etiqueta cambia entre versiones) */
     public static boolean tierra(BlockState st) {
-        return st.is(BlockTags.DIRT) || st.is(Blocks.FARMLAND);
+        return st.is(Blocks.GRASS_BLOCK) || st.is(Blocks.DIRT) || st.is(Blocks.COARSE_DIRT) || st.is(Blocks.ROOTED_DIRT) || st.is(Blocks.PODZOL)
+                || st.is(Blocks.MYCELIUM) || st.is(Blocks.MUD) || st.is(Blocks.MOSS_BLOCK) || st.is(Blocks.FARMLAND) || st.is(BlockTags.DIRT);
     }
 
     static void alRomper(ServerPlayer p, ServerLevel level, BlockPos pos, BlockState state) {
+        boolean lluvia = level.isRainingAt(pos.above());
+        if (!aviso) {
+            aviso = true;
+            com.pescacoleccion.PescaColeccion.LOGGER.info("PESCA_LOMBRICES primer bloque (tierra={} lluvia={} creativo={})", tierra(state), lluvia,
+                    p.isCreative());
+        }
         if (p.isCreative() || p.isSpectator() || !tierra(state)) {
             return;
         }
-        boolean lluvia = level.isRainingAt(pos.above());
         float chance = lluvia ? CON_LLUVIA : SIN_LLUVIA;
-        if (!aviso) {
-            aviso = true;
-            com.pescacoleccion.PescaColeccion.LOGGER.info("PESCA_LOMBRICES primera tierra cavada (lluvia={})", lluvia);
-        }
         if (level.getRandom().nextFloat() < chance) {
             Block.popResource(level, pos, new ItemStack(ModRegistry.CEBOS.get(Cebo.LOMBRIZ).get()));
             level.playSound(null, pos, SoundEvents.SLIME_BLOCK_HIT, SoundSource.BLOCKS, 0.5F, 1.7F);
