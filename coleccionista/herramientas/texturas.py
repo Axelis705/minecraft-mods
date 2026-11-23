@@ -239,80 +239,16 @@ def bloques():
 
 
 def skin():
-    """La piel del Coleccionista (64x64, como la de un jugador): máscara de porcelana, traje negro, camisa, moño rojo, guantes blancos."""
-    img = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
-    porc, porc_s = (238, 232, 222, 255), (206, 198, 188, 255)
-    negro, traje, traje_l = (14, 12, 16, 255), (30, 26, 34, 255), (46, 40, 52, 255)
-    camisa, rojo, rojo_cl = (226, 220, 212, 255), (170, 16, 24, 255), (228, 54, 60, 255)
-    guante = (236, 234, 228, 255)
-
-    def rect(x0, y0, w, h, c):
-        for y in range(y0, y0 + h):
-            for x in range(x0, x0 + w):
-                img.putpixel((x, y), c(x - x0, y - y0, w, h) if callable(c) else c)
-
-    # cabeza (u 0, v 0): arriba 8..16 x 0..8, frente 8..16 x 8..16, lados y atrás
-    rect(8, 0, 8, 8, porc)                       # arriba de la cabeza (lo tapa el sombrero)
-    rect(16, 0, 8, 8, porc_s)                    # abajo
-    rect(0, 8, 8, 8, lambda x, y, w, h: porc_s if x < 2 else porc)   # derecha
-    rect(16, 8, 8, 8, lambda x, y, w, h: porc_s if x > 5 else porc)  # izquierda
-    rect(24, 8, 8, 8, negro)                     # atrás: el pelo negro
-    def cara(x, y, w, h):
-        if y in (3, 4) and x in (1, 2, 5, 6):
-            return negro                         # ojos huecos
-        if y == 2 and x in (1, 2, 5, 6):
-            return (70, 60, 60, 255)             # cejas pintadas
-        if y == 6 and 2 <= x <= 5:
-            return (120, 40, 46, 255)            # sonrisa fina
-        if y == 5 and x in (0, 7):
-            return (232, 170, 176, 255)          # mejillas
-        return porc
-    rect(8, 8, 8, 8, cara)
-    img.putpixel((9, 12), rojo_cl)               # los puntos rojos en los ojos
-    img.putpixel((14, 12), rojo_cl)
-    for (x, y) in [(13, 8), (13, 9), (14, 10)]:   # la grieta
-        img.putpixel((x, y), (130, 120, 114, 255))
-    # torso (u 16, v 16): frente 20..28 x 20..32
-    rect(20, 16, 8, 4, traje)                    # hombros arriba
-    rect(28, 16, 8, 4, traje)
-    rect(16, 20, 4, 12, traje)
-    rect(28, 20, 4, 12, traje)
-    rect(32, 20, 8, 12, lambda x, y, w, h: traje_l if y > 9 else traje)
-    def frente(x, y, w, h):
-        if 3 <= x <= 4 and y <= 8:
-            return camisa
-        if y in (0, 1) and 1 <= x <= 6:
-            return rojo if x not in (3, 4) else rojo_cl  # moño
-        if (x == 2 or x == 5) and y <= 6:
-            return traje_l                       # solapas
-        if x in (3, 4) and y in (5, 8):
-            return negro                         # botones
-        return traje
-    rect(20, 20, 8, 12, frente)
-    # brazo derecho (u 40, v 16) y piernas (u 0, v 16): traje, guantes y zapatos
-    def brazo(x, y, w, h):
-        return guante if y >= 9 else camisa if y == 8 else traje
-    rect(44, 16, 4, 4, traje)
-    rect(48, 16, 4, 4, guante)
-    rect(40, 20, 16, 12, brazo)
-    rect(36, 48, 4, 4, traje)                    # brazo izquierdo (u 32, v 48)
-    rect(40, 48, 4, 4, guante)
-    rect(32, 52, 16, 12, brazo)
-    def pierna(x, y, w, h):
-        return negro if y >= 10 else traje
-    rect(4, 16, 4, 4, traje)
-    rect(8, 16, 4, 4, negro)
-    rect(0, 20, 16, 12, pierna)
-    rect(20, 48, 4, 4, traje)                    # pierna izquierda (u 16, v 48)
-    rect(24, 48, 4, 4, negro)
-    rect(16, 52, 16, 12, pierna)
-    guardar(img, "entity/coleccionista.png")
-    # el sombrero de copa (textura de 32x16: copa negra, cinta roja, ala)
-    som = Image.new("RGBA", (32, 16), negro)
-    for x in range(32):
-        som.putpixel((x, 9), rojo)
-        som.putpixel((x, 10), rojo)
-        som.putpixel((x, 0), (34, 30, 38, 255))
+    """La piel del Coleccionista disfrazado (y sus ojos y el sombrero): ahora la pinta personajes/coleccionista_tv.py al triple de detalle,
+    con los mismos dibujos que el Coleccionista de la tele."""
+    import importlib.util
+    ruta = os.path.join(os.path.dirname(os.path.abspath(__file__)), "personajes", "coleccionista_tv.py")
+    spec = importlib.util.spec_from_file_location("coleccionista_tv", ruta)
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    piel, ojos, som = m.disfraz()
+    guardar(piel, "entity/coleccionista.png")
+    guardar(ojos, "entity/coleccionista_ojos.png")
     guardar(som, "entity/sombrero.png")
 
 

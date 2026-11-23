@@ -9,6 +9,8 @@ Escala: el triple de un jugador (la cabeza mide 24, una de jugador 8), un texel 
 Escribe:
   assets/coleccionista/geo/coleccionista_tv.geo.json
   assets/coleccionista/textures/entity/coleccionista_tv.png   (256x256)
+  y el disfraz de Axelis con los mismos dibujos: textures/entity/coleccionista.png (piel al triple, 192x192),
+  coleccionista_ojos.png (los puntos rojos que brillan) y sombrero.png (96x48)
 Con --vista [pose] dibuja también una vista previa de frente (scratch: vista_coleccionista_tv_<pose>.png).
 
 Uso: python3 coleccionista_tv.py [--vista quieto|habla|risa|todas] [--salida carpeta]
@@ -466,6 +468,100 @@ def construir():
     return geo, tex
 
 
+# ---------------------------------------------------------------- el disfraz (Axelis como el Coleccionista en persona)
+
+def p_brazo_jugador(v, seed, cara, afuera):
+    """Brazo entero de jugador al triple (12x36): manga del frac, puño de camisa con mancuerna y guante blanco."""
+    h, w = v.shape[:2]
+    if cara == 'arriba':
+        p_frac(v, seed, False)
+        return
+    if cara == 'abajo':
+        p_guante_punta(v, seed)
+        return
+    p_frac(v, seed, False)
+    v[26:29, :, :3] = CAMISA
+    v[29:, :, :3] = GUANTE * (0.95 + 0.08 * ruido(h - 29, w, seed + 1)[..., None])
+    v[29:, 0, :3] *= 0.8
+    v[29:, w - 1, :3] *= 0.8
+    v[29, :, :3] *= 0.85
+    # pliegue del codo
+    v[14:16, :, :3] *= 0.75
+    if afuera:
+        v[27, w // 2, :3] = ORO
+        v[28, w // 2, :3] = ORO_OSC
+    if cara == 'frente':
+        for x in (3, 6, 9):
+            for y in range(30, 34):
+                v[y, x, :3] = GUANTE * 0.78
+
+
+def p_pierna(v, seed, cara, afuera):
+    """Pierna al triple (12x36): pantalón negro con franja de satín al lado y zapato de charol."""
+    h, w = v.shape[:2]
+    if cara == 'abajo':
+        llenar(v, NEGRO * 0.8, seed, 0.05, 2)
+        return
+    llenar(v, FRAC * 0.85, seed, 0.10, 3)
+    if cara == 'arriba':
+        return
+    if afuera:
+        v[:h - 6, w // 2 - 1:w // 2 + 1, :3] = SATIN * 1.1
+    # el zapato: negro de charol con un brillo
+    v[h - 6:, :, :3] = NEGRO * (1.1 + 0.2 * ruido(6, w, seed + 4)[..., None])
+    v[h - 6, :, :3] = NEGRO * 0.6
+    if cara == 'frente':
+        v[h - 4, 3:6, :3] = np.array([70, 66, 80], np.float32)
+
+
+def disfraz():
+    """La piel del disfraz (al triple de una skin: 192x192, mismo acomodo), los ojos que brillan y el sombrero (96x48). Mismos dibujos
+    que el Coleccionista de la tele, así se ve igual en persona."""
+    S = 64 * 3
+    img = np.zeros((S, S, 4), np.float32)
+
+    def caja3(u, v, sx, sy, sz):
+        u, v, sx, sy, sz = [a * 3 for a in (u, v, sx, sy, sz)]
+        r = {'arriba': (u + sz, v, sx, sz), 'abajo': (u + sz + sx, v, sx, sz), 'der': (u, v + sz, sz, sy),
+             'frente': (u + sz, v + sz, sx, sy), 'izq': (u + sz + sx, v + sz, sz, sy), 'atras': (u + 2 * sz + sx, v + sz, sx, sy)}
+        return {k: img[y:y + hh, x:x + ww] for k, (x, y, ww, hh) in r.items()}
+    for i, (k, v) in enumerate(caja3(0, 0, 8, 8, 8).items()):
+        caras_cabeza(k, v, 3000 + i)
+    for i, (k, v) in enumerate(caja3(16, 16, 8, 12, 4).items()):
+        caras_torso(k, v, 3100 + i)
+    for i, (k, v) in enumerate(caja3(40, 16, 4, 12, 4).items()):
+        p_brazo_jugador(v, 3200 + i, k, k == 'der')
+    for i, (k, v) in enumerate(caja3(32, 48, 4, 12, 4).items()):
+        p_brazo_jugador(v, 3300 + i, k, k == 'izq')
+    for i, (k, v) in enumerate(caja3(0, 16, 4, 12, 4).items()):
+        p_pierna(v, 3400 + i, k, k == 'der')
+    for i, (k, v) in enumerate(caja3(16, 48, 4, 12, 4).items()):
+        p_pierna(v, 3500 + i, k, k == 'izq')
+    # el moño (en la piel no hay cubo aparte): pintado arriba del pecho
+    pecho = caja3(16, 16, 8, 12, 4)['frente']
+    sub = pecho[0:4, 7:17]
+    p_moño(sub, 3600)
+    piel = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8), 'RGBA')
+    # los puntos rojos de los ojos (capa que brilla en la oscuridad): en la cara, que empieza en (24, 24)
+    ojos = np.zeros((S, S, 4), np.uint8)
+    for x in (6, 7, 16, 17):
+        for y in (10, 11):
+            ojos[24 + y, 24 + x] = (255, 60, 50, 255)
+    # el sombrero: la copa (33 de alto, con la cinta roja abajo y un brillo) y el ala (15)
+    som = np.zeros((48, 96, 4), np.float32)
+    copa = som[0:33]
+    llenar(copa, NEGRO * 1.25, 3700, 0.10, 3)
+    yy, xx = malla(copa)
+    mezclar(copa, np.abs(xx - 27) < 2, np.array([62, 58, 72], np.float32), 0.55)
+    copa[0:2, :, :3] = np.array([40, 36, 46], np.float32)
+    copa[27:33, :, :3] = ROJO * (0.92 + 0.12 * ruido(6, 96, 3701)[..., None])
+    copa[27, :, :3] = ROJO_CL
+    ala = som[33:48]
+    llenar(ala, NEGRO * 1.2, 3702, 0.08, 3)
+    ala[0, :, :3] = np.array([44, 40, 52], np.float32)
+    return piel, Image.fromarray(ojos, 'RGBA'), Image.fromarray(np.clip(som, 0, 255).astype(np.uint8), 'RGBA')
+
+
 # ---------------------------------------------------------------- vista previa (como GeoRenderer: ModelPart, y hacia abajo)
 
 def rot_zyx(rz, ry, rx):
@@ -621,7 +717,11 @@ def main():
     with open(os.path.join(ASSETS, 'geo', 'coleccionista_tv.geo.json'), 'w', encoding='utf-8') as f:
         json.dump(geo, f, ensure_ascii=False, separators=(',', ':'))
     tex.save(os.path.join(ASSETS, 'textures', 'entity', 'coleccionista_tv.png'), optimize=True)
-    print('modelo y textura escritos')
+    piel, ojos, som = disfraz()
+    piel.save(os.path.join(ASSETS, 'textures', 'entity', 'coleccionista.png'), optimize=True)
+    ojos.save(os.path.join(ASSETS, 'textures', 'entity', 'coleccionista_ojos.png'), optimize=True)
+    som.save(os.path.join(ASSETS, 'textures', 'entity', 'sombrero.png'), optimize=True)
+    print('modelo y texturas escritos (tele y disfraz)')
     if '--vista' in args:
         cual = args[args.index('--vista') + 1] if args.index('--vista') + 1 < len(args) else 'quieto'
         carpeta = args[args.index('--salida') + 1] if '--salida' in args else '.'

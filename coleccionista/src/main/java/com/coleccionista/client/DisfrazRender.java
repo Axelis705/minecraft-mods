@@ -23,12 +23,15 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 /**
- * (Cliente) El organizador disfrazado del Coleccionista: se dibuja con la piel del Coleccionista (máscara de porcelana, traje, guantes)
- * y un sombrero de copa, con todas las animaciones normales del jugador, y su nombre dice "El Coleccionista".
+ * (Cliente) El organizador disfrazado del Coleccionista: se dibuja con la piel del Coleccionista (al triple de detalle, con los mismos
+ * dibujos que en la tele: máscara de porcelana con grieta y lágrima, frac, moño, guantes), los puntos rojos de los ojos que brillan en
+ * la oscuridad y un sombrero de copa, con todas las animaciones normales del jugador, y su nombre dice "El Coleccionista".
  */
 public final class DisfrazRender {
     static final ResourceLocation PIEL = Ids.rl(Coleccionista.MODID, "textures/entity/coleccionista.png");
     static final ResourceLocation SOMBRERO = Ids.rl(Coleccionista.MODID, "textures/entity/sombrero.png");
+    /** Los puntos rojos de los ojos (brillan en la oscuridad, como en la tele). */
+    static final ResourceLocation OJOS = Ids.rl(Coleccionista.MODID, "textures/entity/coleccionista_ojos.png");
     private static Disfrazado renderer;
 
     private DisfrazRender() {
@@ -69,6 +72,12 @@ public final class DisfrazRender {
         Disfrazado(EntityRendererProvider.Context ctx) {
             super(ctx, false);
             addLayer(new Sombrero(this));
+            addLayer(new net.minecraft.client.renderer.entity.layers.EyesLayer<>(this) {
+                @Override
+                public RenderType renderType() {
+                    return RenderType.eyes(OJOS);
+                }
+            });
         }
 
         @Override
