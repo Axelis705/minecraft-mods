@@ -16,7 +16,8 @@ public final class Capilla {
     public static final int X0 = 0, X1 = 72, Z0 = 0, Z1 = 22, Y0 = -1, Y1 = 8;
     public static final int CUARTOS = 6, LUGARES = 6;
     public static final int REJA_ANCHO = 3, REJA_ALTO = 3;
-    private static final String[] MURO = {"stone_bricks", "stone_bricks", "cracked_stone_bricks", "mossy_stone_bricks", "polished_andesite"};
+    private static final String C = "coleccionista:";
+    private static final String[] MURO = {C + "piedra_capilla"};
 
     private Capilla() {
     }
@@ -31,8 +32,11 @@ public final class Capilla {
         // el pasillo común (techo alto con vigas)
         for (int x = 1; x < X1; x++) {
             for (int z = 11; z <= 15; z++) {
-                p.set(x, 0, z, z == 13 ? "red_carpet" : (x + z) % 2 == 0 ? "polished_andesite" : "andesite");
-                for (int y = 1; y <= 6; y++) {
+                p.set(x, 0, z, C + "losa_piedra");
+                if (z == 13) {
+                    p.set(x, 1, z, C + "alfombra_roja");
+                }
+                for (int y = z == 13 ? 2 : 1; y <= 6; y++) {
                     p.set(x, y, z, "air");
                 }
             }
@@ -49,6 +53,7 @@ public final class Capilla {
         for (int k = 1; k <= CUARTOS; k++) {
             cuarto(p, k);
         }
+        Estilo.aplicar(p, java.util.Map.of());
         return p;
     }
 
@@ -57,7 +62,7 @@ public final class Capilla {
         // el cuarto: piso de piedra, velas, un vitral rojo arriba del altar
         for (int x = c - 4; x <= c + 4; x++) {
             for (int z = 1; z <= 9; z++) {
-                p.set(x, 0, z, Math.abs(x - c) <= 1 && z <= 8 ? "red_terracotta" : "polished_deepslate");
+                p.set(x, 0, z, Math.abs(x - c) <= 1 && z <= 8 ? C + "tapete_rojo" : C + "losa_piedra");
                 for (int y = 1; y <= 5; y++) {
                     p.set(x, y, z, "air");
                 }
@@ -66,19 +71,19 @@ public final class Capilla {
         // el altar: tarima de losas y la placa en medio
         for (int x = c - 1; x <= c + 1; x++) {
             for (int z = 2; z <= 4; z++) {
-                p.set(x, 0, z, "polished_blackstone");
+                p.set(x, 0, z, C + "marmol_negro");
             }
         }
-        p.set(c, 1, 3, "light_weighted_pressure_plate");
+        p.set(c, 1, 3, C + "placa_altar");
         p.marca("cap.cuarto." + k + ".altar", c, 1, 3, 0);
         for (int[] d : new int[][] {{-3, 1}, {3, 1}, {-3, 5}, {3, 5}}) {
-            p.set(c + d[0], 1, d[1], "polished_blackstone_wall");
-            p.set(c + d[0], 2, d[1], "candle[candles=3,lit=true]");
+            p.set(c + d[0], 1, d[1], C + "candelabro[facing=north,half=lower]");
+            p.set(c + d[0], 2, d[1], C + "candelabro[facing=north,half=upper]");
         }
         // vitral rojo en la pared del fondo
         for (int x = c - 1; x <= c + 1; x++) {
             for (int y = 2; y <= 4; y++) {
-                p.set(x, y, 0, "red_stained_glass");
+                p.set(x, y, 0, C + "vitral");
             }
         }
         p.set(c, 5, 5, "soul_lantern[hanging=true]");
@@ -88,7 +93,7 @@ public final class Capilla {
             for (int y = 1; y <= REJA_ALTO; y++) {
                 p.set(x, y, 10, "iron_bars");
             }
-            p.set(x, 0, 10, "polished_blackstone");
+            p.set(x, 0, 10, C + "marmol_negro");
         }
         p.marca("cap.cuarto." + k + ".reja", c - 1, 1, 10, 0);
         p.letrero(c, REJA_ALTO + 1, 11, "dark_oak_wall_sign", "south", "white", "", "CUARTO", String.valueOf(k), "");
@@ -110,8 +115,8 @@ public final class Capilla {
             p.set(c, y, 17, "air");
             p.set(c, y, 18, y == 3 ? "lantern[hanging=true]" : "air");
         }
-        p.set(c, 0, 17, "red_wool");
-        p.set(c, 0, 18, "red_wool");
+        p.set(c, 0, 17, C + "tapete_rojo");
+        p.set(c, 0, 18, C + "tapete_rojo");
         p.marca("cap.cuarto." + k + ".vitrina", c, 1, 17, 0);
     }
 }

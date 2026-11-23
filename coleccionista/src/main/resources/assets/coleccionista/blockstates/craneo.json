@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/craneo"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/craneo",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/craneo",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/craneo",
+   "y": 270
+  }
+ }
+}

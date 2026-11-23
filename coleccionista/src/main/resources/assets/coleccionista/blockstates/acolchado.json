@@ -1,0 +1,18 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/acolchado_0"
+   },
+   {
+    "model": "coleccionista:block/acolchado_1"
+   },
+   {
+    "model": "coleccionista:block/acolchado_2"
+   },
+   {
+    "model": "coleccionista:block/acolchado_3"
+   }
+  ]
+ }
+}

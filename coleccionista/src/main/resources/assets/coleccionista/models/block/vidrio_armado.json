@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/cube_all",
+ "textures": {
+  "all": "coleccionista:block/vidrio_armado"
+ },
+ "render_type": "minecraft:translucent"
+}

@@ -4,79 +4,92 @@
    "id": "azulejo",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "azulejo_sucio",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "azulejo_remate",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "yeso",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "concreto",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "concreto_piso",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "linoleo",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "ladrillo_viejo",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "metal_placa",
    "kind": "cubo",
    "sound": "metal",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "metal_negro",
    "kind": "cubo",
    "sound": "metal",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "panel_madera",
    "kind": "cubo",
    "sound": "wood",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "coladera",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "vidrio_sucio",
    "kind": "vidrio",
    "sound": "glass",
-   "strength": 0.3
+   "strength": 0.3,
+   "light": 0
   },
   {
    "id": "viga",
@@ -150,43 +163,50 @@
    "id": "ladrillo_cloaca",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "ladrillo_oscuro",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "piso_cloaca",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "lodo",
    "kind": "cubo",
    "sound": "wool",
-   "strength": 0.8
+   "strength": 0.8,
+   "light": 0
   },
   {
    "id": "concreto_humedo",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "cobre_viejo",
    "kind": "cubo",
    "sound": "metal",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "tablon",
    "kind": "cubo",
    "sound": "wood",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "losa_tablon",
@@ -231,25 +251,29 @@
    "id": "parquet",
    "kind": "cubo",
    "sound": "wood",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "estante_archivo",
    "kind": "cubo",
    "sound": "wood",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "archivero",
    "kind": "cubo",
    "sound": "metal",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "lingotes",
    "kind": "cubo",
    "sound": "metal",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "viga_madera",
@@ -274,37 +298,176 @@
    "id": "papel_tapiz",
    "kind": "cubo",
    "sound": "wool",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "marmol_negro",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "marmol_crema",
    "kind": "cubo",
    "sound": "stone",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "tapete_rojo",
    "kind": "cubo",
    "sound": "wool",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "tapete_orilla",
    "kind": "cubo",
    "sound": "wool",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
   },
   {
    "id": "marco_dorado",
    "kind": "cubo",
    "sound": "metal",
-   "strength": 2.0
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "acolchado",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "linoleo_verde",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "vidrio_armado",
+   "kind": "vidrio",
+   "sound": "glass",
+   "strength": 0.5,
+   "light": 0
+  },
+  {
+   "id": "panel_luz",
+   "kind": "cubo",
+   "sound": "glass",
+   "strength": 2.0,
+   "light": 15
+  },
+  {
+   "id": "marca_roja",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "marca_verde",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "piedra_capilla",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "losa_piedra",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "vitral",
+   "kind": "vidrio",
+   "sound": "glass",
+   "strength": 0.5,
+   "light": 0
+  },
+  {
+   "id": "marmol_oro",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "madera_pulida",
+   "kind": "cubo",
+   "sound": "wood",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "losa_marmol",
+   "kind": "losa",
+   "sound": "stone",
+   "strength": 2.0,
+   "transparente": false
+  },
+  {
+   "id": "marco_luz_apagado",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "marco_luz_roja",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 9
+  },
+  {
+   "id": "marco_luz_azul",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 9
+  },
+  {
+   "id": "marco_luz_verde",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 9
+  },
+  {
+   "id": "marco_luz_amarilla",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 9
+  },
+  {
+   "id": "marco_luz_morada",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 9
+  },
+  {
+   "id": "marco_luz_blanca",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 9
   },
   {
    "id": "catre",
@@ -2944,6 +3107,325 @@
    "en": "Table lamp",
    "soft": false,
    "sub": "hang"
+  },
+  {
+   "id": "placa_altar",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     1.0,
+     0.0,
+     1.0,
+     15.0,
+     0.8,
+     15.0
+    ],
+    [
+     3.0,
+     0.8,
+     7.3,
+     13.0,
+     0.9,
+     8.7
+    ],
+    [
+     4.5,
+     0.8,
+     6.3,
+     11.5,
+     0.9,
+     9.7
+    ],
+    [
+     6.0,
+     0.8,
+     5.6,
+     10.0,
+     0.9,
+     10.4
+    ],
+    [
+     6.8,
+     0.9,
+     6.8,
+     9.2,
+     0.95,
+     9.2
+    ],
+    [
+     7.4,
+     0.95,
+     7.4,
+     8.6,
+     1.0,
+     8.6
+    ]
+   ],
+   "particles": [],
+   "es": "Placa del altar",
+   "en": "Altar plate",
+   "soft": false,
+   "sub": "plain"
+  },
+  {
+   "id": "trono",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     1.0,
+     0.0,
+     1.0,
+     2.5,
+     4.0,
+     2.5
+    ],
+    [
+     13.5,
+     0.0,
+     1.0,
+     15.0,
+     4.0,
+     2.5
+    ],
+    [
+     1.0,
+     0.0,
+     13.0,
+     2.5,
+     4.0,
+     14.5
+    ],
+    [
+     13.5,
+     0.0,
+     13.0,
+     15.0,
+     4.0,
+     14.5
+    ],
+    [
+     0.5,
+     4.0,
+     0.5,
+     15.5,
+     8.0,
+     15.0
+    ],
+    [
+     1.0,
+     8.0,
+     1.0,
+     15.0,
+     9.5,
+     14.0
+    ],
+    [
+     0.0,
+     8.0,
+     1.0,
+     2.0,
+     13.0,
+     14.0
+    ],
+    [
+     14.0,
+     8.0,
+     1.0,
+     16.0,
+     13.0,
+     14.0
+    ],
+    [
+     -0.2,
+     12.5,
+     0.5,
+     2.2,
+     13.5,
+     14.5
+    ],
+    [
+     13.8,
+     12.5,
+     0.5,
+     16.2,
+     13.5,
+     14.5
+    ],
+    [
+     1.0,
+     8.0,
+     13.0,
+     15.0,
+     16.0,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Trono del Coleccionista",
+   "en": "The Collector's throne",
+   "soft": false,
+   "shape_upper": [
+    [
+     1.0,
+     0.0,
+     13.0,
+     15.0,
+     13.0,
+     16.0
+    ],
+    [
+     0.5,
+     0.0,
+     12.6,
+     1.5,
+     14.0,
+     16.0
+    ],
+    [
+     14.5,
+     0.0,
+     12.6,
+     15.5,
+     14.0,
+     16.0
+    ],
+    [
+     0.5,
+     13.0,
+     12.6,
+     15.5,
+     14.5,
+     16.0
+    ],
+    [
+     5.0,
+     14.5,
+     13.0,
+     11.0,
+     16.0,
+     15.6
+    ],
+    [
+     5.5,
+     7.0,
+     12.6,
+     10.5,
+     10.0,
+     12.9
+    ],
+    [
+     7.2,
+     7.8,
+     12.4,
+     8.8,
+     9.2,
+     12.6
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "craneo",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "stone",
+   "shape": [
+    [
+     4.5,
+     0.0,
+     4.0,
+     11.5,
+     6.0,
+     11.0
+    ],
+    [
+     5.0,
+     6.0,
+     4.5,
+     11.0,
+     7.5,
+     11.0
+    ],
+    [
+     5.5,
+     0.0,
+     3.2,
+     10.5,
+     2.4,
+     4.0
+    ],
+    [
+     5.4,
+     3.0,
+     3.8,
+     7.4,
+     5.0,
+     4.05
+    ],
+    [
+     8.6,
+     3.0,
+     3.8,
+     10.6,
+     5.0,
+     4.05
+    ],
+    [
+     7.6,
+     2.0,
+     3.8,
+     8.4,
+     3.0,
+     4.05
+    ],
+    [
+     6.0,
+     1.1,
+     3.1,
+     6.7,
+     1.9,
+     3.25
+    ],
+    [
+     7.1,
+     1.1,
+     3.1,
+     7.800000000000001,
+     1.9,
+     3.25
+    ],
+    [
+     8.2,
+     1.1,
+     3.1,
+     8.9,
+     1.9,
+     3.25
+    ],
+    [
+     9.3,
+     1.1,
+     3.1,
+     10.0,
+     1.9,
+     3.25
+    ]
+   ],
+   "particles": [],
+   "es": "Cráneo",
+   "en": "Skull",
+   "soft": false,
+   "sub": "floor"
   }
  ]
 }

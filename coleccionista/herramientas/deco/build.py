@@ -59,7 +59,7 @@ def nombre(bid, es, en):
 # ---------------------------------------------------------------- bloques enteros
 
 
-def cubo(bid, es, en, fn, variantes=4, sonido='stone', top=None, render=None, dureza=2.0):
+def cubo(bid, es, en, fn, variantes=4, sonido='stone', top=None, render=None, dureza=2.0, luz=0):
     """Bloque entero con `variantes` texturas al azar (fn(seed) -> imagen). `top`: funcion aparte para arriba y abajo."""
     models = []
     for i in range(variantes):
@@ -76,7 +76,7 @@ def cubo(bid, es, en, fn, variantes=4, sonido='stone', top=None, render=None, du
         models.append({'model': f'{NS}:block/{mn}'})
     dump(f'blockstates/{bid}.json', {'variants': {'': models if len(models) > 1 else models[0]}})
     dump(f'models/item/{bid}.json', {'parent': models[0]['model']})
-    ficha.append({'id': bid, 'kind': 'cubo', 'sound': sonido, 'strength': dureza})
+    ficha.append({'id': bid, 'kind': 'cubo', 'sound': sonido, 'strength': dureza, 'light': luz})
     nombre(bid, es, en)
 
 
@@ -429,6 +429,28 @@ def catalogo():
     cubo('tapete_rojo', 'Tapete rojo', 'Red rug', lambda s: M.tapete(s), variantes=2, sonido='wool')
     cubo('tapete_orilla', 'Orilla de tapete', 'Rug border', lambda s: M.tapete(s, orilla=True), variantes=1, sonido='wool')
     cubo('marco_dorado', 'Marco dorado', 'Gilded frame', lambda s: M.marco_dorado(s), variantes=2, sonido='metal')
+    # ---- los Laberintos (cuartos acolchados)
+    cubo('acolchado', 'Pared acolchada', 'Padded wall', lambda s: M.acolchado(s), sonido='wool')
+    cubo('linoleo_verde', 'Linóleo de hospital', 'Hospital linoleum', lambda s: M.linoleo_verde(s), variantes=2)
+    cubo('vidrio_armado', 'Vidrio armado', 'Wired glass', lambda s: M.vidrio_armado(s), variantes=1, sonido='glass', render='translucent', dureza=0.5)
+    ficha[-1]['kind'] = 'vidrio'
+    cubo('panel_luz', 'Panel de luz', 'Ceiling light panel', lambda s: M.panel_luz(s), variantes=1, sonido='glass', luz=15)
+    cubo('marca_roja', 'Marca roja en el piso', 'Red floor mark', lambda s: M.pintura_piso(s), variantes=1)
+    cubo('marca_verde', 'Marca verde en el piso', 'Green floor mark', lambda s: M.pintura_piso(s, '#2f7a34'), variantes=1)
+    # ---- la Capilla
+    cubo('piedra_capilla', 'Sillar de capilla', 'Chapel stone', lambda s: M.piedra_capilla(s))
+    cubo('losa_piedra', 'Losa de piedra', 'Stone flagstone', lambda s: M.losa_piedra(s), variantes=2)
+    cubo('vitral', 'Vitral', 'Stained glass window', lambda s: M.vitral(s), variantes=1, sonido='glass', render='translucent', dureza=0.5)
+    ficha[-1]['kind'] = 'vidrio'
+    # ---- la Camara final
+    cubo('marmol_oro', 'Mármol negro y oro', 'Gold-veined marble', lambda s: M.marmol(s, veta='#b08a3a', brillo=1.0), variantes=3)
+    cubo('madera_pulida', 'Madera pulida', 'Polished wood', lambda s: M.madera_pulida(s), variantes=2, sonido='wood')
+    losa('losa_marmol', 'Losa de mármol', 'Marble slab', lambda s: M.marmol(s, brillo=1.0), sonido='stone')
+    # ---- la Sala de las puertas: marcos de luz que cambian de color
+    cubo('marco_luz_apagado', 'Marco de luz (apagado)', 'Light frame (off)', lambda s: M.marco_luz(s), variantes=1, sonido='metal')
+    for cid, ces, cen, col in (('roja', 'rojo', 'red', '#ff3b3b'), ('azul', 'azul', 'blue', '#4a86ff'), ('verde', 'verde', 'green', '#6cff4a'),
+                               ('amarilla', 'amarillo', 'yellow', '#ffe14a'), ('morada', 'morado', 'purple', '#c14aff'), ('blanca', 'blanco', 'white', '#f4f4ee')):
+        cubo('marco_luz_' + cid, 'Marco de luz ' + ces, cen.capitalize() + ' light frame', lambda s, col=col: M.marco_luz(s, col), variantes=1, sonido='metal', luz=9)
     # muebles y adornos
     P = props_celdas
     cama(P.catre())
@@ -468,6 +490,9 @@ def catalogo():
     prop(Q.estandarte('#151314', 'estandarte_negro', 'Estandarte negro', 'Black banner'))
     prop(Q.arana())
     prop(Q.lampara_billar())
+    prop(Q.placa_altar())
+    prop(Q.trono())
+    prop(Q.craneo())
     for p in P.focos():
         solo_modelos(p)
     solo_modelos(P.candado())

@@ -219,3 +219,61 @@ def lampara_billar():
     p.box(3, 7, 3, 13, 10, 13, pant)
     p.box(4, 6.6, 4, 12, 7, 12, luz('#ffd9a0'))
     return p
+
+
+def placa_altar():
+    """La placa del altar: lamina de laton gastado con el ojo de la coleccion grabado."""
+    p = Prop('placa_altar', 'Placa del altar', 'Altar plate', kind='plain', sound='metal', seed=93, collide=False)
+    laton = kit.metal(Ramp('#4e3c1a', '#6a5226', '#86692f', '#a3823c'), seed=93)
+    p.box(1, 0, 1, 15, 0.8, 15, laton)
+    oscuro = solid('#2a1e0e')
+    p.box(3, 0.8, 7.3, 13, 0.9, 8.7, oscuro)               # el ojo: almendra
+    p.box(4.5, 0.8, 6.3, 11.5, 0.9, 9.7, oscuro)
+    p.box(6, 0.8, 5.6, 10, 0.9, 10.4, oscuro)
+    p.box(6.8, 0.9, 6.8, 9.2, 0.95, 9.2, solid('#d8cfa8'))  # el blanco
+    p.box(7.4, 0.95, 7.4, 8.6, 1.0, 8.6, solid('#8a1c16'))  # la pupila
+    return p
+
+
+def trono():
+    """El trono del Coleccionista: respaldo muy alto de terciopelo negro con marco dorado y el ojo arriba."""
+    p = Prop('trono', 'Trono del Coleccionista', "The Collector's throne", kind='floor', tall=True, sound='wood', seed=94, collide=False)
+    tela = kit.cloth('#1a0c10', weave=0.08, seed=94, fold=0.3)
+    roja = kit.cloth('#4a0a10', weave=0.08, seed=95, fold=0.2)
+    oro = kit.metal(Ramp('#5e4a22', '#7a6230', '#97793c', '#b59248'), seed=96)
+    madera = madera_vieja(97)
+    p.at('lower')
+    for x0, z0 in ((1, 1), (13.5, 1), (1, 13), (13.5, 13)):
+        p.box(x0, 0, z0, x0 + 1.5, 4, z0 + 1.5, oro)
+    p.box(0.5, 4, 0.5, 15.5, 8, 15, madera)
+    p.box(1, 8, 1, 15, 9.5, 14, roja)                     # cojin
+    p.box(0, 8, 1, 2, 13, 14, madera)                     # brazos
+    p.box(14, 8, 1, 16, 13, 14, madera)
+    p.box(-0.2, 12.5, 0.5, 2.2, 13.5, 14.5, oro)
+    p.box(13.8, 12.5, 0.5, 16.2, 13.5, 14.5, oro)
+    p.box(1, 8, 13, 15, 16, 16, tela)                     # respaldo
+    p.at('upper')
+    p.box(1, 0, 13, 15, 13, 16, tela)
+    p.box(0.5, 0, 12.6, 1.5, 14, 16, oro)
+    p.box(14.5, 0, 12.6, 15.5, 14, 16, oro)
+    p.box(0.5, 13, 12.6, 15.5, 14.5, 16, oro)
+    p.box(5, 14.5, 13, 11, 16, 15.6, oro)                 # remate
+    p.box(5.5, 7, 12.6, 10.5, 10, 12.9, oro)              # el ojo
+    p.box(7.2, 7.8, 12.4, 8.8, 9.2, 12.6, solid('#8a1c16'))
+    return p
+
+
+def craneo():
+    """Craneo viejo (recuerdo en las vitrinas)."""
+    p = Prop('craneo', 'Cráneo', 'Skull', kind='floor', sound='stone', seed=98, collide=False)
+    hueso = kit.stone(Ramp('#8f8670', '#a39a82', '#b5ad96', '#c4bca6'), scale=2, seed=98)
+    hoyo = solid('#161310')
+    p.box(4.5, 0, 4, 11.5, 6, 11, hueso)
+    p.box(5, 6, 4.5, 11, 7.5, 11, hueso)
+    p.box(5.5, 0, 3.2, 10.5, 2.4, 4, hueso)               # quijada
+    p.box(5.4, 3, 3.8, 7.4, 5, 4.05, hoyo)                # ojos
+    p.box(8.6, 3, 3.8, 10.6, 5, 4.05, hoyo)
+    p.box(7.6, 2, 3.8, 8.4, 3, 4.05, hoyo)
+    for i in range(4):
+        p.box(6 + i * 1.1, 1.1, 3.1, 6.7 + i * 1.1, 1.9, 3.25, solid('#d8d0b8'))
+    return p

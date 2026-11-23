@@ -860,3 +860,157 @@ def marco_dorado(seed=0):
     rgb = np.where(adorno[..., None], rgb * 1.25 + 10, rgb)
     rgb = grime(rgb, seed + 9952, amount=0.45)
     return img(rgb)
+
+
+# ---------------------------------------------------------------- los Laberintos (prueba 4): cuartos acolchados del manicomio
+def acolchado(seed=0):
+    """Pared acolchada de cuarto de manicomio: cojines de lona rombo con botones, sucios, con alguna rotura y manchas."""
+    r = np.random.RandomState(seed + 10100)
+    y, x = np.mgrid[0:N, 0:N]
+    u, v = (x + y) % 16, (x - y) % 16
+    du, dv = np.minimum(u, 16 - u), np.minimum(v, 16 - v)
+    k = np.minimum(du, dv)                                    # distancia a la costura
+    rgb = hexc('#b8b09a') * (0.62 + 0.45 * np.clip(k / 6.0, 0, 1) ** 0.6)[..., None]
+    rgb = rgb * (0.92 + 0.12 * fbm(N, N, 4, seed + 10101))[..., None]
+    boton = ((x % 16 == 8) & (y % 16 == 0)) | ((x % 16 == 0) & (y % 16 == 8)) | ((x % 16 == 0) & (y % 16 == 0)) | ((x % 16 == 8) & (y % 16 == 8))
+    boton = boton & ((x + y) % 16 == 0)
+    rgb = np.where(boton[..., None], hexc('#4a4436'), rgb)
+    # manchas amarillentas y cafes, y aranazos
+    m = fbm(N, N, 9, seed + 10102)
+    rgb = mix(rgb, np.broadcast_to(hexc('#8a7a4a'), rgb.shape), np.clip((m - 0.55) * 1.8, 0, 0.5))
+    if seed % 4 == 2:
+        for _ in range(3):
+            x0, y0 = r.randint(4, 28), r.randint(2, 20)
+            for i in range(r.randint(6, 12)):
+                if 0 <= y0 + i < N:
+                    rgb[y0 + i, x0 % N] = hexc('#3a2a20')
+                    rgb[y0 + i, (x0 + 2) % N] = hexc('#3a2a20')
+    if seed % 4 == 3:  # rotura: se ve el relleno
+        cx, cy = r.randint(8, 24), r.randint(8, 24)
+        hole = np.hypot(x - cx, (y - cy) * 1.6) < 3.2
+        rgb = np.where(hole[..., None], hexc('#d9d1bc') * (0.7 + 0.4 * white(N, N, seed)[..., None]), rgb)
+        rgb = np.where((np.abs(np.hypot(x - cx, (y - cy) * 1.6) - 3.4) < 0.6)[..., None], hexc('#3b3427'), rgb)
+    rgb = grime(rgb, seed + 10103, amount=0.3, bottom=0.35)
+    return img(rgb)
+
+
+def linoleo_verde(seed=0):
+    """Linoleo de hospital verde grisaceo, en hojas, gastado por donde se camina."""
+    y, x = np.mgrid[0:N, 0:N]
+    n = fbm(N, N, 6, seed + 10200) * 0.6 + white(N, N, seed + 10201) * 0.4
+    rgb = hexc('#56604f') * (0.85 + 0.25 * n)[..., None]
+    rgb = np.where((((x % 16) == 0) | ((y % 16) == 0))[..., None], rgb * 0.7, rgb)
+    rgb = np.where(((white(N, N, seed + 10202) > 0.97))[..., None], rgb * 1.3, rgb)
+    gastado = fbm(N, N, 12, seed + 10203)
+    rgb = mix(rgb, rgb * 0.75 + hexc('#3a3424') * 0.2, np.clip((gastado - 0.55) * 2, 0, 0.6))
+    rgb = cracks(rgb, seed + 10204, n=seed % 2, dark=0.7)
+    return img(rgb)
+
+
+def vidrio_armado(seed=0):
+    """Vidrio armado (con malla de alambre): casi transparente para que el guia vea el laberinto, con la malla y el marco."""
+    y, x = np.mgrid[0:N, 0:N]
+    a = np.full((N, N), 26.0) + 22 * np.clip(fbm(N, N, 10, seed + 10300) - 0.55, 0, 1) * 2
+    rgb = np.broadcast_to(hexc('#b9c6c1'), (N, N, 3)).copy()
+    malla = ((x % 16 == 8) | (y % 16 == 8))
+    rgb = np.where(malla[..., None], hexc('#6a6b66'), rgb)
+    a = np.where(malla, 110, a)
+    marco = (x == 0) | (y == 0)
+    rgb = np.where(marco[..., None], hexc('#3a3a36'), rgb)
+    a = np.where(marco, 170, a)
+    return img(rgb, a)
+
+
+def panel_luz(seed=0):
+    """Panel de luz del techo: rejilla metalica sobre un tubo que alumbra."""
+    y, x = np.mgrid[0:N, 0:N]
+    rgb = np.broadcast_to(hexc('#f0eedf'), (N, N, 3)).copy() * (0.92 + 0.08 * white(N, N, seed))[..., None]
+    rej = ((x % 6 == 0) | (y % 6 == 0))
+    rgb = np.where(rej[..., None], hexc('#8c8a80'), rgb)
+    marco = (x <= 1) | (y <= 1) | (x >= N - 2) | (y >= N - 2)
+    rgb = np.where(marco[..., None], hexc('#55544e'), rgb)
+    return img(rgb)
+
+
+def pintura_piso(seed=0, color='#8a1c16'):
+    """Concreto con una marca pintada (circulo con X): la salida o el inicio."""
+    base = np.array(concreto_piso(seed)).astype(np.float32)[..., :3]
+    y, x = np.mgrid[0:N, 0:N]
+    d = np.hypot(x - 15.5, y - 15.5)
+    m = (np.abs(d - 11) < 1.5) | ((np.abs(np.abs(x - 15.5) - np.abs(y - 15.5)) < 1.3) & (d < 10))
+    raspado = white(N, N, seed + 10400) > 0.25
+    rgb = np.where((m & raspado)[..., None], hexc(color) * (0.8 + 0.3 * white(N, N, seed + 10401)[..., None]), base)
+    return img(rgb)
+
+
+# ---------------------------------------------------------------- la Capilla (prueba 5)
+def piedra_capilla(seed=0):
+    """Sillares de piedra caliza vieja: grandes, gastados, con hollin de las velas, grietas o humedad (variantes)."""
+    r = np.random.RandomState(seed + 10500)
+    rgb, mort, ly = _ladrillos(seed, ancho=16, alto=16, color='#5c574b', mortero='#2a2720', jitter=0.34)
+    y = np.mgrid[0:N, 0:N][0]
+    tipo = seed % 4
+    if tipo == 1:
+        rgb = cracks(rgb, seed + 10501, n=2, dark=0.6)
+    elif tipo == 2:   # hollin que sube
+        rgb = mix(rgb, np.broadcast_to(hexc('#1d1a16'), rgb.shape), np.clip((fbm(N, N, 8, seed + 10502) - 0.4) * 1.5 * (1 - y / N), 0, 0.6))
+    elif tipo == 3:   # humedad y musgo abajo
+        m = fbm(N, N, 6, seed + 10503)
+        rgb = mix(rgb, np.broadcast_to(hexc('#3c4a2c'), rgb.shape), np.clip((m - 0.5) * 2 * (y / N), 0, 0.6))
+    rgb = envejecer(rgb, seed + 10504, 0.5)
+    rgb = grime(rgb, seed + 10505, amount=0.3)
+    rgb = streaks(rgb, seed + 10506, n=r.randint(0, 3), color='#2a2620', strength=0.35)
+    return img(rgb)
+
+
+def losa_piedra(seed=0):
+    """Losas de piedra del piso, grandes y gastadas al centro."""
+    y, x = np.mgrid[0:N, 0:N]
+    rgb, mort, ly = _ladrillos(seed, ancho=32, alto=16, color='#4d4840', mortero='#221f1a', jitter=0.25)
+    gast = np.clip(1 - np.hypot((x % 32) - 16, (y % 16) - 8) / 14, 0, 1)
+    rgb = rgb * (1 + 0.12 * gast)[..., None]
+    rgb = envejecer(rgb, seed + 10601, 0.4)
+    rgb = grime(rgb, seed + 10602, amount=0.3)
+    return img(rgb)
+
+
+def vitral(seed=0):
+    """Vitral de plomo: rombos de vidrio rojo oscuro y ambar, con plomo negro (translucido)."""
+    y, x = np.mgrid[0:N, 0:N]
+    u, v = (x + y) % 12, (x - y) % 12
+    plomo = (u == 0) | (v == 0) | (x == 0) | (y == 0)
+    cid = ((x + y) // 12 + (x - y) // 12) % 3
+    cols = np.array([hexc('#7a1012'), hexc('#a0541a'), hexc('#4a0c18')])
+    rgb = cols[cid] * (0.8 + 0.35 * fbm(N, N, 5, seed + 10701))[..., None]
+    a = np.full((N, N), 200.0)
+    rgb = np.where(plomo[..., None], hexc('#141210'), rgb)
+    a = np.where(plomo, 255, a)
+    roto = (fbm(N, N, 8, seed + 10702) > 0.78) & ~plomo
+    a = np.where(roto, 0, a)
+    return img(rgb, a)
+
+
+# ---------------------------------------------------------------- la Sala de las puertas (prueba 6)
+def marco_luz(seed=0, color=None):
+    """Marco de acero negro con una tira de luz de color al centro (las puertas cambian de color en cada ronda). Sin color: apagado."""
+    y, x = np.mgrid[0:N, 0:N]
+    base = np.array(metal_negro(seed)).astype(np.float32)[..., :3]
+    d = np.minimum(np.minimum(x, N - 1 - x), np.minimum(y, N - 1 - y))
+    tira = (d >= 9) & (d <= 12)
+    if color is None:
+        c = hexc('#3a3936') * (0.85 + 0.2 * white(N, N, seed)[..., None])
+    else:
+        c = np.minimum(hexc(color) * (0.95 + 0.1 * white(N, N, seed)[..., None]), 255)
+    rgb = np.where(tira[..., None], c, base)
+    rgb = np.where(((d == 8) | (d == 13))[..., None], base * 0.5, rgb)
+    return img(rgb)
+
+
+# ---------------------------------------------------------------- la Camara final
+def madera_pulida(seed=0, color='#2b180d'):
+    """Madera oscura pulida, sin juntas (la mesa redonda)."""
+    y, x = np.mgrid[0:N, 0:N]
+    veta = np.sin(x * 0.45 + fbm(N, N, 7, seed + 10801) * 9) * 0.5 + 0.5
+    rgb = hexc(color) * (0.78 + 0.35 * veta)[..., None] * (0.95 + 0.1 * white(N, N, seed + 10802))[..., None]
+    rgb = np.where((((x + y) % 29) < 1)[..., None], rgb * 1.2 + 8, rgb)
+    return img(rgb)

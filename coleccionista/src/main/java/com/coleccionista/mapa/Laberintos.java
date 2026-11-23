@@ -23,6 +23,7 @@ import java.util.Random;
 public final class Laberintos {
     public static final int X0 = 0, X1 = 84, Z0 = 0, Z1 = 22, Y0 = -1, Y1 = 12;
     public static final int LABERINTOS = 4, N = 7, LADO = 2 * N + 1, ZL = 5;
+    private static final String C = "coleccionista:";
     private static boolean[][] abierto;
 
     private Laberintos() {
@@ -110,23 +111,23 @@ public final class Laberintos {
 
     public static Plano crear(long semilla) {
         Plano p = new Plano(semilla);
-        p.cajaMezcla(X0, Y0, Z0, X1, Y1, Z1, "deepslate_bricks", "deepslate_tiles", "polished_deepslate");
+        p.cajaMezcla(X0, Y0, Z0, X1, Y1, Z1, C + "concreto");
         boolean[][] a = celdas();
         for (int k = 1; k <= LABERINTOS; k++) {
             int ox = origenX(k);
             for (int dx = 0; dx < LADO; dx++) {
                 for (int dz = 0; dz < LADO; dz++) {
                     int x = ox + dx, z = ZL + dz;
-                    p.set(x, 0, z, "smooth_stone");
+                    p.set(x, 0, z, C + "linoleo_verde");
                     for (int y = 1; y <= 7; y++) {
-                        p.set(x, y, z, y <= 3 && !a[dx][dz] ? (y == 3 ? "polished_blackstone_bricks" : "deepslate_bricks") : "air");
+                        p.set(x, y, z, y <= 3 && !a[dx][dz] ? C + "acolchado" : "air");
                     }
                     // el piso de vidrio del guía y su espacio arriba
-                    p.set(x, 8, z, "glass");
+                    p.set(x, 8, z, C + "vidrio_armado");
                     for (int y = 9; y <= 11; y++) {
                         p.set(x, y, z, "air");
                     }
-                    p.set(x, 12, z, (dx % 4 == 2 && dz % 4 == 2) ? "glowstone" : "deepslate_tiles");
+                    p.set(x, 12, z, (dx % 4 == 2 && dz % 4 == 2) ? C + "panel_luz" : C + "concreto");
                     // luz invisible entre los muros y el vidrio: para que el guía vea bien el laberinto desde arriba
                     if (dx % 4 == 1 && dz % 4 == 1) {
                         p.set(x, 6, z, "light[level=13]");
@@ -134,11 +135,11 @@ public final class Laberintos {
                 }
             }
             // la entrada (abajo a la izquierda, por el sur) y la salida (arriba a la derecha, al norte)
-            p.set(ox + 1, 0, ZL + LADO - 2, "red_terracotta");
+            p.set(ox + 1, 0, ZL + LADO - 2, C + "marca_roja");
             p.marca("cie.lab." + k + ".inicio", ox + 1, 1, ZL + LADO - 2, 180);
             for (int z = 1; z < ZL; z++) {
                 for (int dx = LADO - 4; dx <= LADO - 1; dx++) {
-                    p.set(ox + dx, 0, z, "polished_blackstone");
+                    p.set(ox + dx, 0, z, C + "concreto_piso");
                     for (int y = 1; y <= 4; y++) {
                         p.set(ox + dx, y, z, "air");
                     }
@@ -148,13 +149,14 @@ public final class Laberintos {
             for (int y = 1; y <= 3; y++) {
                 p.set(ox + LADO - 2, y, ZL, "air");
             }
-            p.set(ox + LADO - 2, 0, ZL, "lime_terracotta");
+            p.set(ox + LADO - 2, 0, ZL, C + "marca_verde");
             p.set(ox + LADO - 2, 3, 1, "lantern[hanging=true]");
             p.marca("cie.lab." + k + ".salida", ox + LADO - 2, 1, 2, 180);
             p.marca("cie.lab." + k + ".guia", ox + 1, 9, ZL + LADO - 2, 180);
             p.marca("cie.lab." + k + ".origen", ox, 0, ZL, 0);
             p.letrero(ox + 7, 10, ZL, "dark_oak_wall_sign", "south", "red", "", "LABERINTO " + k, "", "");
         }
+        Estilo.aplicar(p, java.util.Map.of());
         return p;
     }
 }

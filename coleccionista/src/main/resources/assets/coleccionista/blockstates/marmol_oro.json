@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/marmol_oro_0"
+   },
+   {
+    "model": "coleccionista:block/marmol_oro_1"
+   },
+   {
+    "model": "coleccionista:block/marmol_oro_2"
+   }
+  ]
+ }
+}

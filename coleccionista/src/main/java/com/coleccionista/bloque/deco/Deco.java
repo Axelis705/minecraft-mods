@@ -141,7 +141,7 @@ public final class Deco {
     private static Block crear(Def d) {
         BlockBehaviour.Properties p = BlockBehaviour.Properties.of().strength(d.strength(), 6F).sound(sonido(d.sound()));
         return switch (d.kind()) {
-            case "cubo" -> new Block(p);
+            case "cubo" -> new Block(d.light() > 0 ? p.lightLevel(st -> d.light()) : p);
             case "vidrio" -> new GlassBlock(p.noOcclusion().isViewBlocking((s, g, q) -> false).isSuffocating((s, g, q) -> false));
             case "pilar" -> new RotatedPillarBlock(p);
             case "tubo" -> new DecoTubo(p.noOcclusion());

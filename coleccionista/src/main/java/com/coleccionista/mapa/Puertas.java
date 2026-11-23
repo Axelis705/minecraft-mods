@@ -20,7 +20,8 @@ public final class Puertas {
     /** La cabina: x centro-3..centro+3, z 14..22. */
     public static final int CABINA_Z0 = 14, CABINA_Z1 = 22, CABINA_MEDIO = 3;
     public static final int LUGARES = 24;
-    private static final String[] MURO = {"polished_deepslate", "deepslate_tiles", "deepslate_bricks", "cracked_deepslate_tiles"};
+    private static final String C = "coleccionista:";
+    private static final String[] MURO = {C + "ladrillo_viejo"};
 
     private Puertas() {
     }
@@ -32,7 +33,7 @@ public final class Puertas {
         // vestíbulo (alto)
         for (int x = 2; x <= 38; x++) {
             for (int z = 24; z <= 38; z++) {
-                p.set(x, PISO, z, (x + z) % 2 == 0 ? "polished_blackstone_bricks" : "polished_deepslate");
+                p.set(x, PISO, z, (x + z) % 2 == 0 ? C + "marmol_negro" : C + "ladrillo_oscuro");
                 for (int y = PISO + 1; y <= 18; y++) {
                     p.set(x, y, z, "air");
                 }
@@ -54,7 +55,7 @@ public final class Puertas {
         for (int z = 24; z <= 38; z++) {
             for (int y = PISO + 2; y <= 17; y++) {
                 boolean marco = z == 24 || z == 38 || y == PISO + 2 || y == 17;
-                p.set(39, y, z, marco ? "gilded_blackstone" : "black_concrete");
+                p.set(39, y, z, marco ? C + "marco_dorado" : C + "metal_negro");
             }
         }
         p.set(38, 13, 31, "coleccionista:pantalla[facing=west,grande=true]");
@@ -62,9 +63,8 @@ public final class Puertas {
         // luces: candelabros altos a los lados y faroles colgando
         for (int z = 26; z <= 36; z += 5) {
             for (int x : new int[] {3}) {
-                p.set(x, PISO + 1, z, "polished_blackstone_wall");
-                p.set(x, PISO + 2, z, "polished_blackstone_wall");
-                p.set(x, PISO + 3, z, "candle[candles=4,lit=true]");
+                p.set(x, PISO + 1, z, C + "candelabro[facing=east,half=lower]");
+                p.set(x, PISO + 2, z, C + "candelabro[facing=east,half=upper]");
             }
         }
         // faroles colgando en dos filas (luz suficiente para la transmisión, pero tenue)
@@ -78,8 +78,10 @@ public final class Puertas {
         }
         // faroles en el piso a los lados de cada puerta
         for (int c : CENTROS) {
-            p.set(c - 4, PISO + 1, 24, "lantern");
-            p.set(c + 4, PISO + 1, 24, "lantern");
+            for (int dx : new int[] {-4, 4}) {
+                p.set(c + dx, PISO + 1, 24, C + "candelabro[facing=south,half=lower]");
+                p.set(c + dx, PISO + 2, 24, C + "candelabro[facing=south,half=upper]");
+            }
         }
         // los lugares de espera: 4 filas de 6, mirando al norte (a las puertas)
         int n = 0;
@@ -90,6 +92,7 @@ public final class Puertas {
         }
         p.letrero(20, PISO + 3, 38, "dark_oak_wall_sign", "north", "red", "", "UNA DE ELLAS", "NO TIENE PISO", "");
         p.marca("pue.centro", 20, PISO + 1, 36, 180);
+        Estilo.aplicar(p, java.util.Map.of());
         return p;
     }
 
@@ -100,16 +103,16 @@ public final class Puertas {
             for (int y = PISO + 1; y <= PISO + PUERTA_ALTO; y++) {
                 p.set(x, y, 23, "iron_bars");
             }
-            p.set(x, PISO, 23, "polished_blackstone");
+            p.set(x, PISO, 23, C + "metal_placa");
         }
         p.marca("pue.puerta." + k, c - 2, PISO + 1, 23, 0);
         // marco (gris hasta que la prueba le ponga color)
         for (int y = PISO + 1; y <= PISO + PUERTA_ALTO + 1; y++) {
-            p.set(c - 3, y, 23, "gray_concrete");
-            p.set(c + 3, y, 23, "gray_concrete");
+            p.set(c - 3, y, 23, C + "marco_luz_apagado");
+            p.set(c + 3, y, 23, C + "marco_luz_apagado");
         }
         for (int x = c - 3; x <= c + 3; x++) {
-            p.set(x, PISO + PUERTA_ALTO + 1, 23, "gray_concrete");
+            p.set(x, PISO + PUERTA_ALTO + 1, 23, C + "marco_luz_apagado");
         }
         String num = k == 1 ? "I" : k == 2 ? "II" : "III";
         p.letrero(c, PISO + PUERTA_ALTO + 2, 24, "dark_oak_wall_sign", "south", "white", "", num, "", "");
@@ -124,10 +127,10 @@ public final class Puertas {
                 for (int y = 1; y < PISO; y++) {
                     p.set(x, y, z, y <= 2 ? "water" : "air");
                 }
-                p.set(x, 0, z, "black_concrete");
+                p.set(x, 0, z, C + "concreto_humedo");
             }
         }
-        p.set(c, PISO + 6, CABINA_Z0 + 4, "sea_lantern");
+        p.set(c, PISO + 6, CABINA_Z0 + 4, C + "panel_luz");
         p.marca("pue.cabina." + k, c, PISO + 1, CABINA_Z0 + 4, 180);
         p.marca("pue.foso." + k, c, 1, CABINA_Z0 + 4, 180);
     }

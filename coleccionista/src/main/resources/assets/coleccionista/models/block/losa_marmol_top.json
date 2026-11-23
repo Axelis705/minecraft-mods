@@ -1,0 +1,8 @@
+{
+ "textures": {
+  "bottom": "coleccionista:block/losa_marmol",
+  "top": "coleccionista:block/losa_marmol",
+  "side": "coleccionista:block/losa_marmol"
+ },
+ "parent": "minecraft:block/slab_top"
+}

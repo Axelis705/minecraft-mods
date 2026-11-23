@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "coleccionista:block/losa_marmol"
+  },
+  "type=top": {
+   "model": "coleccionista:block/losa_marmol_top"
+  },
+  "type=double": {
+   "model": "coleccionista:block/losa_marmol_doble"
+  }
+ }
+}

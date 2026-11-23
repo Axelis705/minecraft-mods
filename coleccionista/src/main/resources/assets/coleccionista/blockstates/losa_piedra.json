@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/losa_piedra_0"
+   },
+   {
+    "model": "coleccionista:block/losa_piedra_1"
+   }
+  ]
+ }
+}

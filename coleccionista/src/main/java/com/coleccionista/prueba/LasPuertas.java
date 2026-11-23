@@ -53,9 +53,9 @@ public final class LasPuertas {
     }
 
     /** Los colores posibles: nombre (clave de idioma), concreto del marco y color del texto. */
-    static final String[][] COLORES = {{"roja", "red_concrete", "FFE0404A"}, {"azul", "blue_concrete", "FF4A7CE0"},
-            {"verde", "lime_concrete", "FF7CE04A"}, {"amarilla", "yellow_concrete", "FFE0D04A"}, {"morada", "purple_concrete", "FFB04AE0"},
-            {"blanca", "white_concrete", "FFF0F0F0"}};
+    static final String[][] COLORES = {{"roja", "coleccionista:marco_luz_roja", "FFE0404A"}, {"azul", "coleccionista:marco_luz_azul", "FF4A7CE0"},
+            {"verde", "coleccionista:marco_luz_verde", "FF7CE04A"}, {"amarilla", "coleccionista:marco_luz_amarilla", "FFE0D04A"},
+            {"morada", "coleccionista:marco_luz_morada", "FFB04AE0"}, {"blanca", "coleccionista:marco_luz_blanca", "FFF0F0F0"}};
 
     private static Fase fase = Fase.NADA;
     private static int ronda, trampa;
