@@ -15,7 +15,14 @@ for j in $cands; do
   if unzip -l "$j" 2>/dev/null | grep -q 'net/minecraft/client/Minecraft.class'; then jar="$j"; break; fi
 done
 fi
-[ -z "$jar" ] && { echo "no encontré el jar de Minecraft"; exit 0; }
+[ -z "$jar" ] && { echo "no encontré el jar de Minecraft"; # clases de un paquete en todos los jar (para buscar eventos nuevos): DIAG_LISTA="net/minecraftforge/client/event/ otro/paquete/"
+for pre in ${DIAG_LISTA:-}; do
+  echo "===== clases en $pre"
+  for j in $cands; do
+    unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep "^$pre[^/]*\.class$" | grep -v '\$' | sed "s|^|$(basename "$j"): |"
+  done | sort -u | head -150
+done
+exit 0; }
 echo "JAR: $jar"
 for c in "$@"; do
   c="${c//%/\$}"   # en el flujo manual se escribe Clase%Interna (el $ lo come bash)
@@ -44,4 +51,11 @@ if [ -n "${DIAG_CODIGO:-}" ]; then
     javap -cp "$jar" -c -p "$c" 2>/dev/null | awk -v m="$m" 'index($0, " " m "(") && index($0, ")") && !index($0, "invoke") {on=1} on {print} on && /^$/ {exit}' | cut -c1-200 | head -90
   done
 fi
+# clases de un paquete en todos los jar (para buscar eventos nuevos): DIAG_LISTA="net/minecraftforge/client/event/ otro/paquete/"
+for pre in ${DIAG_LISTA:-}; do
+  echo "===== clases en $pre"
+  for j in $cands; do
+    unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep "^$pre[^/]*\.class$" | grep -v '\$' | sed "s|^|$(basename "$j"): |"
+  done | sort -u | head -150
+done
 exit 0
