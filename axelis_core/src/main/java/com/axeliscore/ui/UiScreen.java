@@ -124,10 +124,14 @@ public abstract class UiScreen extends CoreScreen {
         return null;
     }
 
+    // Se recorre una copia: un botón puede rehacer la pantalla (pestaña, comprar, vender) y cambiar la lista mientras se recorre
+    // (en 26.3 tiraba ConcurrentModificationException al soltar el clic).
+
     @Override
     protected boolean onClick(double x, double y, int b) {
-        for (int i = widgets.size() - 1; i >= 0; i--) {
-            if (widgets.get(i).click(x, y, b)) {
+        List<Widget> l = new ArrayList<>(widgets);
+        for (int i = l.size() - 1; i >= 0; i--) {
+            if (l.get(i).click(x, y, b)) {
                 return true;
             }
         }
@@ -137,7 +141,7 @@ public abstract class UiScreen extends CoreScreen {
     @Override
     protected boolean onRelease(double x, double y, int b) {
         boolean any = false;
-        for (Widget w : widgets) {
+        for (Widget w : new ArrayList<>(widgets)) {
             any |= w.release(x, y, b);
         }
         return any || super.onRelease(x, y, b);
@@ -145,7 +149,7 @@ public abstract class UiScreen extends CoreScreen {
 
     @Override
     protected boolean onDrag(double x, double y, int b, double dx, double dy) {
-        for (Widget w : widgets) {
+        for (Widget w : new ArrayList<>(widgets)) {
             if (w.drag(x, y, b)) {
                 return true;
             }
@@ -155,7 +159,7 @@ public abstract class UiScreen extends CoreScreen {
 
     @Override
     protected boolean onScroll(double x, double y, double delta) {
-        for (Widget w : widgets) {
+        for (Widget w : new ArrayList<>(widgets)) {
             if (w.scroll(x, y, delta)) {
                 return true;
             }
