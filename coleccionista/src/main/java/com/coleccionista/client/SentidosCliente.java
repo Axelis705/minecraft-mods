@@ -241,7 +241,7 @@ public final class SentidosCliente {
         } else {
             return;
         }
-        int lw = Ui.font().width(linea) + 16, y = 41;
+        int lw = Ui.font().width(linea) + 16, y = EventoHud.lineaY(w, lw);
         g.fillGradient(w / 2 - lw / 2, y, w / 2 + lw / 2, y + 13, 0xB0140C0E, 0x90080506);
         g.drawCenteredString(Ui.font(), linea, w / 2, y + 3, 0xFFD8D0C8);
         // el trío: quién trae qué

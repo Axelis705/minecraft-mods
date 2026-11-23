@@ -25,6 +25,8 @@ public final class EventoHud {
     /** El organizador puede esconder todo para grabar. */
     public static boolean oculto;
     private static int ultimoSegundo = -1;
+    /** Dónde acabó la tarjeta de arriba a la izquierda en el último cuadro (para que los avisos del centro no se le encimen). */
+    private static int tarjetaDer, tarjetaAbajo;
 
     private EventoHud() {
     }
@@ -41,6 +43,8 @@ public final class EventoHud {
     }
 
     private static void render(G g, int w, int h) {
+        tarjetaDer = 0;
+        tarjetaAbajo = 0;
         if (!visible()) {
             return;
         }
@@ -127,27 +131,31 @@ public final class EventoHud {
 
     // ------------------------------------------------------------------ arriba a la izquierda
 
+    /**
+     * Tu tarjeta, como la ficha de una pieza de museo: la cara en un marco de porcelana, "PIEZA 07" en rojo, tu nombre grande, una línea,
+     * "♥ Una sola vida" (el corazón late) y, si tienes, tu pareja o equipo. De fantasma se pone azul y dice tu número en la colección.
+     */
     private static void tarjeta(G g) {
         Font f = Ui.font();
         Minecraft mc = Minecraft.getInstance();
         CompoundTag yo = EventoCliente.yo();
-        int x = 6, y = 3;
+        int x = 5, y = 4;
         if (yo == null) {
             if (EventoCliente.soyOrganizador()) {
-                int cw = Math.max(f.width(Component.translatable(MOD + ".hud.organizador")), f.width("/evento")) + 12;
-                g.fillGradient(x, y, x + cw, y + 24, FONDO, FONDO2);
-                g.fill(x, y + 23, x + cw, y + 24, ORO);
-                g.drawString(f, Component.translatable(MOD + ".hud.organizador"), x + 6, y + 4, ORO, true);
-                g.drawString(f, "/evento", x + 6, y + 14, 0xFF9A9090, false);
+                String t = Component.translatable(MOD + ".hud.organizador").getString();
+                int cw = Math.max((int) (f.width(t) * 1.25F), f.width("/evento  ·  O")) + 18;
+                fondo(g, x, y, cw, 30, ORO);
+                izq(g, f, t, x + 9, y + 5, 1.25F, ORO, true);
+                g.drawString(f, "/evento  ·  O", x + 9, y + 18, 0xFF9A9090, false);
             }
             return;
         }
         boolean vivo = EventoCliente.vivo(yo);
+        int acento = vivo ? ROJO : 0xFF3A6E80;
         String num = Component.translatable(MOD + ".hud.pieza", String.format("%02d", Nbt.i(yo, "numero"))).getString();
         String nombre = Nbt.s(yo, "nombre");
         String l2 = vivo ? Component.translatable(MOD + ".hud.una_vida").getString()
                 : Component.translatable(MOD + ".hud.coleccion", Nbt.i(yo, "orden")).getString();
-        int c2 = vivo ? 0xFF9A9090 : FANTASMA;
         List<CompoundTag> comp = vivo ? EventoCliente.companeros() : List.of();
         String l3 = "";
         if (!comp.isEmpty()) {
@@ -160,27 +168,83 @@ public final class EventoHud {
             }
             String tipo = comp.size() == 1 ? ".hud.pareja" : ".hud.equipo";
             l3 = Component.translatable(MOD + tipo, yo.getInt("equipo") + 1).getString() + ": " + sb;
-            if (f.width(l3) > 180) {
-                l3 = f.plainSubstrByWidth(l3, 176) + "…";
+            if (f.width(l3) > 200) {
+                l3 = f.plainSubstrByWidth(l3, 196) + "…";
             }
         }
-        int ancho = Math.max(Math.max(f.width(num), f.width(nombre)) + 30, f.width(l2) + 12);
-        ancho = Math.max(ancho, f.width(l3) + 12);
-        int alto = l3.isEmpty() ? 34 : 44;
-        g.fillGradient(x, y, x + ancho, y + alto, FONDO, FONDO2);
-        g.fill(x, y + alto - 1, x + ancho, y + alto, vivo ? ROJO : 0xFF3A6E80);
-        // cara
-        g.fill(x + 3, y + 3, x + 23, y + 23, vivo ? PORCELANA : 0xFF5A8090);
-        PlayerFaceRenderer.draw(g.raw, EventoCliente.piel(mc.player.getUUID()), x + 5, y + 5, 16);
+        // medidas: la cara de 28 en un marco de 32, el texto a la derecha
+        final int cara = 28, tx = x + 46;
+        int anchoTexto = Math.max((int) (f.width(num) * 1.3F), (int) (f.width(nombre) * 1.2F));
+        int ancho = Math.max(150, Math.max(tx - x + anchoTexto + 10, Math.max(f.width(l2) + 30, f.width(l3) + 20)));
+        int alto = l3.isEmpty() ? 58 : 70;
+        fondo(g, x, y, ancho, alto, acento);
+        tarjetaDer = x + ancho;
+        tarjetaAbajo = y + alto;
+        // la cara en su marco
+        int fx = x + 8, fy = y + 6;
+        g.fill(fx - 2, fy - 2, fx + cara + 2, fy + cara + 2, vivo ? 0xFF2A1A1C : 0xFF1E3A44);
+        g.fill(fx - 1, fy - 1, fx + cara + 1, fy + cara + 1, vivo ? PORCELANA : 0xFF7FB0C0);
+        PlayerFaceRenderer.draw(g.raw, EventoCliente.piel(mc.player.getUUID()), fx, fy, cara);
         if (!vivo) {
-            g.fill(x + 5, y + 5, x + 21, y + 21, 0x8840A0C0);
+            g.fill(fx, fy, fx + cara, fy + cara, 0x8840A0C0);
         }
-        g.drawString(f, num, x + 27, y + 4, vivo ? ROJO_CL : FANTASMA, true);
-        g.drawString(f, nombre, x + 27, y + 14, vivo ? 0xFFFFFFFF : 0xFFB0C8D0, true);
-        g.drawString(f, l2, x + 5, y + 24, c2, false);
+        // sombra de adentro del marco (que se vea hundida)
+        g.fill(fx, fy, fx + cara, fy + 1, 0x55000000);
+        g.fill(fx, fy, fx + 1, fy + cara, 0x55000000);
+        // número y nombre
+        izq(g, f, num, tx, y + 7, 1.3F, vivo ? ROJO_CL : FANTASMA, true);
+        izq(g, f, nombre, tx, y + 22, 1.2F, vivo ? 0xFFFFFFFF : 0xFFB0C8D0, true);
+        // la línea y el estado
+        int ly = y + 42;
+        g.fill(x + 8, ly - 3, x + ancho - 8, ly - 2, Ui.alpha(PORCELANA, 0.16F));
+        if (vivo) {
+            corazon(g, f, x + 12, ly + 4);
+            g.drawString(f, l2, x + 21, ly, 0xFFB8ACA6, false);
+        } else {
+            g.drawString(f, l2, x + 9, ly, FANTASMA, false);
+        }
         if (!l3.isEmpty()) {
-            g.drawString(f, l3, x + 5, y + 34, 0xFF8FD8E8, false);
+            g.drawString(f, l3, x + 9, ly + 12, 0xFF8FD8E8, false);
         }
+    }
+
+    /**
+     * Altura para un aviso centrado de ancho {@code lw} debajo de la placa del centro: 41, o debajo de la tarjeta si en una pantalla
+     * angosta se le encimaría.
+     */
+    public static int lineaY(int w, int lw) {
+        return w / 2 - lw / 2 < tarjetaDer + 4 && tarjetaAbajo > 39 ? tarjetaAbajo + 4 : 41;
+    }
+
+    /** El fondo de las tarjetas: degradado oscuro, una barra de color a la izquierda, el filo de arriba claro y la línea de abajo. */
+    private static void fondo(G g, int x, int y, int w, int h, int acento) {
+        g.fill(x + 1, y + 1, x + w + 1, y + h + 1, 0x66000000); // sombra
+        g.fillGradient(x, y, x + w, y + h, FONDO, FONDO2);
+        g.fill(x, y, x + w, y + 1, Ui.alpha(PORCELANA, 0.3F));
+        g.fill(x, y, x + 2, y + h, acento);
+        g.fill(x, y + h - 1, x + w, y + h, acento);
+        rombo(g, x + w - 1, y + h - 1, acento == ROJO ? ROJO_CL : acento);
+    }
+
+    /** El corazón que late (dos latidos y una pausa, como el sonido del despertar). */
+    private static void corazon(G g, Font f, int cx, int cy) {
+        double t = (System.currentTimeMillis() % 1400) / 1400.0;
+        double pulso = Math.max(0, 1 - Math.abs(t - 0.08) * 14) + 0.7 * Math.max(0, 1 - Math.abs(t - 0.26) * 14);
+        float esc = 1F + 0.28F * (float) pulso;
+        g.push();
+        g.translate(cx, cy, 0);
+        g.scale(esc, esc, 1);
+        g.drawString(f, "♥", -f.width("♥") / 2, -4, ROJO_CL, true);
+        g.pop();
+    }
+
+    /** Texto alineado a la izquierda en (x, y) con escala. */
+    private static void izq(G g, Font f, String s, int x, int y, float escala, int color, boolean sombra) {
+        g.push();
+        g.translate(x, y, 0);
+        g.scale(escala, escala, 1);
+        g.drawString(f, s, 0, 0, color, sombra);
+        g.pop();
     }
 
     // ------------------------------------------------------------------ tictac de los últimos 10 segundos

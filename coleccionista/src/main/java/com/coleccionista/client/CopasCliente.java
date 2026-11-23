@@ -69,7 +69,7 @@ public final class CopasCliente {
             }
         }
         if (linea != null) {
-            int lw = f.width(linea) + 16, y = 41;
+            int lw = f.width(linea) + 16, y = EventoHud.lineaY(w, lw);
             g.fillGradient(w / 2 - lw / 2, y, w / 2 + lw / 2, y + 13, 0xB0140C0E, 0x90080506);
             g.drawCenteredString(f, linea, w / 2, y + 3, color);
         }
