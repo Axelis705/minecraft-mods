@@ -27,13 +27,16 @@ import org.joml.Matrix4f;
 import java.util.UUID;
 
 /**
- * (Cliente) A ciegas: la venda de los que caminan (casi no ven: niebla negra a dos bloques y las orillas oscuras), las trampas en rojo y
- * la salida en verde para el guía (y el organizador), y el HUD de cada equipo.
+ * (Cliente) A ciegas: la venda de los que caminan (todo negro; cada pocos segundos un pulso blanco, como un eco, deja ver un instante lo
+ * que hay cerca), las trampas en rojo, las baldosas intermitentes (naranja apagadas, rojo encendidas) y la salida en verde para el guía
+ * (y el organizador), y el HUD de cada equipo. La misma venda la usa Encadenados de tres.
  */
 public final class CiegasCliente {
     private static final String MOD = Coleccionista.MODID;
     private static CompoundTag estado = new CompoundTag();
     private static float venda;
+    /** El último pulso que sonó (para que suene una vez por pulso). */
+    private static long ultimoPulso = -1;
 
     private CiegasCliente() {
     }
@@ -43,6 +46,7 @@ public final class CiegasCliente {
         MinecraftForge.EVENT_BUS.addListener(CiegasCliente::niebla);
         MinecraftForge.EVENT_BUS.addListener(CiegasCliente::colorNiebla);
         MinecraftForge.EVENT_BUS.addListener(CiegasCliente::dibujar);
+        MinecraftForge.EVENT_BUS.addListener(CiegasCliente::vendaNegra);
         com.axeliscore.fx.client.Hud.add(CiegasCliente::hud);
     }
 
@@ -118,13 +122,35 @@ public final class CiegasCliente {
                 || SentidosCliente.vendado();
     }
 
+    /** Cada cuántos ticks llega el pulso. */
+    private static int periodo() {
+        int seg = Nbt.i(estado, "pulso");
+        return Math.max(20, (seg <= 0 ? 4 : seg) * 20);
+    }
+
+    /** Segundos desde que empezó el último pulso (todos los vendados lo ven al mismo tiempo: sale del reloj del mundo). */
+    private static float desdePulso(float pt) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) {
+            return 99F;
+        }
+        return (Math.floorMod(mc.level.getGameTime(), periodo()) + pt) / 20F;
+    }
+
+    /** Qué tan fuerte está el pulso (0..1): sube rápido y se apaga suave. */
+    private static float pulso(float pt) {
+        float f = desdePulso(pt);
+        return f < 0.12F ? f / 0.12F : (float) Math.exp(-(f - 0.12F) * 3.2F);
+    }
+
     private static void niebla(ViewportEvent.RenderFog e) {
         venda = Mth.clamp(venda + (vendado() ? 0.05F : -0.05F), 0, 1);
         if (venda <= 0.01F) {
             return;
         }
+        float k = pulso((float) e.getPartialTick());
         e.setNearPlaneDistance(Mth.lerp(venda, e.getNearPlaneDistance(), 0F));
-        e.setFarPlaneDistance(Mth.lerp(venda, e.getFarPlaneDistance(), 2.6F));
+        e.setFarPlaneDistance(Mth.lerp(venda, e.getFarPlaneDistance(), Mth.lerp(k, 1.3F, 7F)));
         e.setCanceled(true);
     }
 
@@ -132,9 +158,50 @@ public final class CiegasCliente {
         if (venda <= 0.01F) {
             return;
         }
-        e.setRed(Mth.lerp(venda, e.getRed(), 0F));
-        e.setGreen(Mth.lerp(venda, e.getGreen(), 0F));
-        e.setBlue(Mth.lerp(venda, e.getBlue(), 0.01F));
+        // en el pulso la niebla se vuelve blanca: lo cercano se ve y lo lejano brilla
+        float k = pulso((float) e.getPartialTick()) * 0.72F;
+        e.setRed(Mth.lerp(venda, e.getRed(), k));
+        e.setGreen(Mth.lerp(venda, e.getGreen(), k));
+        e.setBlue(Mth.lerp(venda, e.getBlue(), k + 0.02F));
+    }
+
+    /**
+     * La venda: todo negro (debajo del resto del HUD, para que se sigan viendo el reloj y los avisos) y, en cada pulso, el negro se abre un
+     * instante y un anillo blanco sale del centro de la vista.
+     */
+    private static void vendaNegra(net.minecraftforge.client.event.RenderGuiOverlayEvent.Pre e) {
+        if (venda <= 0.01F || !e.getOverlay().id().equals(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.VIGNETTE.id())) {
+            return;
+        }
+        Minecraft mc = Minecraft.getInstance();
+        net.minecraft.client.gui.GuiGraphics g = e.getGuiGraphics();
+        int w = g.guiWidth(), h = g.guiHeight();
+        float pt = mc.getFrameTime();
+        float k = pulso(pt), f = desdePulso(pt);
+        if (mc.level != null && vendado()) {
+            long n = mc.level.getGameTime() / periodo();
+            if (n != ultimoPulso && f < 0.5F) {
+                ultimoPulso = n;
+                mc.getSoundManager().play(net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
+                        net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, 0.55F, 0.5F));
+            }
+        }
+        g.fill(0, 0, w, h, Ui.alpha(0xFF000000, venda * (0.985F - 0.8F * k)));
+        // un destello blanco suave al principio del pulso
+        if (f < 0.35F) {
+            g.fill(0, 0, w, h, Ui.alpha(0xFFE8ECF4, venda * 0.16F * (1 - f / 0.35F)));
+        }
+        // el anillo que se abre desde el centro
+        if (f < 0.9F) {
+            float r = f / 0.9F * (float) Math.hypot(w, h) * 0.55F;
+            int col = Ui.alpha(0xFFF4F6FF, venda * 0.55F * (1 - f / 0.9F));
+            int puntos = Math.max(24, (int) (r * 0.9F));
+            for (int i = 0; i < puntos; i++) {
+                double a = i * Math.PI * 2 / puntos;
+                int x = w / 2 + (int) (Math.cos(a) * r), y = h / 2 + (int) (Math.sin(a) * r);
+                g.fill(x - 1, y - 1, x + 1, y + 1, col);
+            }
+        }
     }
 
     /** Las trampas (rojo) y la salida (verde), solo para el guía de ese laberinto o para quien no juega (organizador, fantasmas). */
@@ -163,6 +230,16 @@ public final class CiegasCliente {
                 CompoundTag tr = (CompoundTag) y;
                 cuadro(vc, ps, ox + Nbt.i(tr, "dx"), oy + 1.03F, oz + Nbt.i(tr, "dz"), 0xE03030, brillo);
             }
+            // las baldosas intermitentes: naranja tenue apagadas (parpadean justo antes de prender), rojo fuerte encendidas
+            int ciclo = Math.max(1, Nbt.i(estado, "ciclo")), enc = Nbt.i(estado, "encendida");
+            long gt = mc.level == null ? 0 : mc.level.getGameTime();
+            for (Tag y : estado.getList("inter", Tag.TAG_COMPOUND)) {
+                CompoundTag b = (CompoundTag) y;
+                int fase = Math.floorMod(gt + Nbt.i(b, "des"), ciclo);
+                boolean on = fase < enc;
+                boolean aviso = !on && fase > ciclo - 20 && (gt / 3) % 2 == 0;
+                cuadro(vc, ps, ox + Nbt.i(b, "dx"), oy + 1.04F, oz + Nbt.i(b, "dz"), on ? 0xFF2020 : 0xF08A20, on ? 0.8F : aviso ? 0.6F : 0.28F);
+            }
             cuadro(vc, ps, ox + com.coleccionista.mapa.Laberintos.LADO - 2, oy + 1.03F, oz, 0x40E060, 0.5F);
         }
         ps.popPose();
@@ -184,15 +261,6 @@ public final class CiegasCliente {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) {
             return;
-        }
-        // la venda: orillas negras que dejan un círculo chiquito (también la de Encadenados de tres)
-        if (venda > 0.01F) {
-            int borde = (int) (Math.min(w, h) * 0.38F * venda);
-            int c = Ui.alpha(0xFF000000, 0.92F * venda);
-            g.fillGradient(0, 0, w, borde, c, 0x00000000);
-            g.fillGradient(0, h - borde, w, h, 0x00000000, c);
-            g.fill(0, 0, borde / 2, h, c);
-            g.fill(w - borde / 2, 0, w, h, c);
         }
         if (!activa() || !EventoHud.visible()) {
             return;

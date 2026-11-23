@@ -308,9 +308,21 @@ public final class ComandosPruebas {
                     ACiegas.segundos = IntegerArgumentType.getInteger(c, "segundos");
                     return ok(c, Component.translatable(MOD + ".cie.cmd.ajustes", ACiegas.tamano, ACiegas.segundos, ACiegas.trampas));
                 })))
-                .then(Commands.literal("trampas").then(Commands.argument("n", IntegerArgumentType.integer(0, 30)).executes(c -> {
+                .then(Commands.literal("trampas").then(Commands.argument("n", IntegerArgumentType.integer(0, 40)).executes(c -> {
                     ACiegas.trampas = IntegerArgumentType.getInteger(c, "n");
                     return ok(c, Component.translatable(MOD + ".cie.cmd.ajustes", ACiegas.tamano, ACiegas.segundos, ACiegas.trampas));
+                })))
+                .then(Commands.literal("pulso").then(Commands.argument("segundos", IntegerArgumentType.integer(1, 30)).executes(c -> {
+                    ACiegas.pulso = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".cie.cmd.ajustes2", ACiegas.pulso, ACiegas.cambio, ACiegas.intermitentes));
+                })))
+                .then(Commands.literal("cambio").then(Commands.argument("segundos", IntegerArgumentType.integer(0, 600)).executes(c -> {
+                    ACiegas.cambio = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".cie.cmd.ajustes2", ACiegas.pulso, ACiegas.cambio, ACiegas.intermitentes));
+                })))
+                .then(Commands.literal("intermitentes").then(Commands.argument("n", IntegerArgumentType.integer(0, 8)).executes(c -> {
+                    ACiegas.intermitentes = IntegerArgumentType.getInteger(c, "n");
+                    return ok(c, Component.translatable(MOD + ".cie.cmd.ajustes2", ACiegas.pulso, ACiegas.cambio, ACiegas.intermitentes));
                 })))
                 .then(Commands.literal("terminar").executes(c -> {
                     ACiegas.terminar(c.getSource().getServer());

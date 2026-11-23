@@ -137,6 +137,8 @@ public final class Pantallas {
         l.add(new Frase("venda", 100, null, 1F));
         l.add(new Frase("guia", 140, null, 1F));
         l.add(new Frase("trampas", 100, null, 1F));
+        l.add(new Frase("baldosas", 130, null, 1F));
+        l.add(new Frase("mueven", 100, null, 1F));
         l.add(new Frase("ultimo", 110, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
         l.add(new Frase("escuchen", 70, null, 1F));

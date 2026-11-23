@@ -553,7 +553,7 @@
   "coleccionista.cie.cmd.sacado": "%s salió del laberinto.",
   "coleccionista.cie.cmd.ajustes": "Equipos de %s · tiempo: %s s · trampas: %s.",
   "coleccionista.cie.cmd.terminada": "A ciegas terminada.",
-  "coleccionista.cie.hud.guia": "Eres el guía del laberinto %s · salieron %s de %s · las trampas están en rojo",
+  "coleccionista.cie.hud.guia": "Eres el guía del laberinto %s · salieron %s de %s · trampas en rojo · baldosas que se encienden en naranja",
   "coleccionista.cie.hud.saliste": "Saliste · tu equipo: %s de %s afuera",
   "coleccionista.cie.hud.vendado": "Tienes los ojos vendados: escucha a tu guía (%s)",
   "coleccionista.cie.hud.eres_guia": "Eres el GUÍA: vas a ver todo desde arriba",
@@ -672,9 +672,9 @@
   "coleccionista.com.regla.3": "Si los dos comparten, siguen los dos. Si uno roba, cae el que compartió.",
   "coleccionista.com.regla.4": "Si los dos roban, caen los dos. Si no eliges, compartes.",
   "coleccionista.cie.regla.1": "Uno de tu equipo es el guía: camina arriba y ve todo el laberinto.",
-  "coleccionista.cie.regla.2": "Los demás caminan con los ojos vendados: solo tienen la voz del guía.",
-  "coleccionista.cie.regla.3": "Pisar una trampa te regresa al inicio.",
-  "coleccionista.cie.regla.4": "El último equipo en salir pierde a su guía.",
+  "coleccionista.cie.regla.2": "Los demás caminan vendados: todo negro, solo un pulso de luz de vez en cuando. Escucha a tu guía.",
+  "coleccionista.cie.regla.3": "Pisar una trampa te regresa a la entrada. Las trampas cambian de lugar.",
+  "coleccionista.cie.regla.4": "En el camino hay baldosas que se encienden: crúzalas cuando estén apagadas.",
   "coleccionista.sac.regla.1": "Tu equipo está encerrado: la reja solo se abre si alguien se queda.",
   "coleccionista.sac.regla.2": "Para ofrecerte, párate 5 segundos en el altar.",
   "coleccionista.sac.regla.3": "Si nadie se ofrece, votan en secreto. Al más votado le toca quedarse.",
@@ -892,5 +892,10 @@
   "coleccionista.mini.n5": "El sacrificio",
   "coleccionista.mini.n6": "Las puertas",
   "coleccionista.mini.n7": "Las copas (final)",
-  "coleccionista.mini.n8": "Encadenados de tres (extra)"
+  "coleccionista.mini.n8": "Encadenados de tres (extra)",
+  "coleccionista.cie.cambian": "¡El Coleccionista movió las trampas! Míralas otra vez.",
+  "coleccionista.cie.cmd.ajustes2": "Pulso de luz cada %s s · las trampas cambian cada %s s (0 = nunca) · baldosas intermitentes: %s.",
+  "coleccionista.voz.ciegas.baldosas": "Y en el camino bueno… hay baldosas que se encienden. Esperen a que se apaguen… o vuelven al principio.",
+  "coleccionista.voz.ciegas.mueven": "Ah… y de vez en cuando, muevo mis trampas.",
+  "coleccionista.cie.regla.5": "El último equipo en salir pierde a su guía."
 }

@@ -35,15 +35,22 @@ import java.util.UUID;
 
 /**
  * Prueba 4: A ciegas. Equipos al azar, cada uno en su laberinto. Uno es el guía: camina arriba, sobre el vidrio, y ve todo (y ve las
- * trampas marcadas en rojo). Los demás caminan adentro con los ojos vendados (casi no ven nada) y solo tienen la voz del guía. Pisar una
- * trampa te regresa al inicio. Cuando todos los caminantes de un equipo salen, el equipo termina. El último equipo en terminar (o los que
- * no terminen a tiempo) pierde a su guía: "guió mal".
+ * trampas marcadas en rojo). Los demás caminan adentro con los ojos vendados (todo negro; solo un pulso blanco de vez en cuando les deja
+ * ver un instante lo que tienen cerca) y solo tienen la voz del guía. Pisar una trampa te regresa al vestíbulo de entrada.
+ * <p>
+ * Los desafíos: las trampas de fuera del camino cambian de lugar cada cierto tiempo (el guía tiene que estar atento), y en el camino bueno
+ * hay baldosas intermitentes que se encienden y se apagan: hay que esperar a que se apaguen para cruzar ("¡espera… ahora!"). Cuando todos
+ * los caminantes de un equipo salen, el equipo termina. El último equipo en terminar (o los que no terminen a tiempo) pierde a su guía.
  */
 public final class ACiegas {
     private static final String MOD = Coleccionista.MODID;
     public static final String KEY = MOD + ":ciegas";
     public static final String PRUEBA = "A ciegas";
-    public static int segundos = 300, tamano = 3, trampas = 8, pierden = 1;
+    public static int segundos = 300, tamano = 3, trampas = 12, pierden = 1;
+    /** Cada cuántos segundos ven los vendados el pulso blanco; cada cuántos cambian de lugar las trampas (0 = nunca); baldosas intermitentes. */
+    public static int pulso = 4, cambio = 45, intermitentes = 3;
+    /** Las baldosas intermitentes: ciclo y cuánto de él están encendidas (ticks). */
+    static final int CICLO = 120, ENCENDIDA = 50;
 
     public enum Fase {
         NADA, LISTA, HABLANDO, JUEGO, FIN
@@ -65,10 +72,13 @@ public final class ACiegas {
     private static final List<Equipo> equipos = new ArrayList<>();
     /** Las trampas (en bloques del laberinto: dx, dz), las mismas para todos los equipos. */
     private static final List<int[]> trampasPos = new ArrayList<>();
+    /** Las baldosas intermitentes del camino bueno: {dx, dz, desfase en ticks}. */
+    private static final List<int[]> interPos = new ArrayList<>();
+    private static final List<int[]> libres = new ArrayList<>();
     private static final Map<UUID, Long> botSale = new HashMap<>();
     private static long t, tpEn = -1, presentarEn = -1;
     private static int eliminados;
-    private static boolean cambio;
+    private static boolean sucio;
 
     private ACiegas() {
     }
@@ -127,7 +137,6 @@ public final class ACiegas {
         for (int[] c : Laberintos.camino()) {
             enCamino.add((long) c[0] * 1000 + c[1]);
         }
-        List<int[]> libres = new ArrayList<>();
         for (int dx = 1; dx < Laberintos.LADO - 1; dx++) {
             for (int dz = 1; dz < Laberintos.LADO - 1; dz++) {
                 if (a[dx][dz] && !enCamino.contains((long) dx * 1000 + dz)) {
@@ -135,9 +144,13 @@ public final class ACiegas {
                 }
             }
         }
-        Collections.shuffle(libres, r);
-        for (int i = 0; i < Math.min(trampas, libres.size()); i++) {
-            trampasPos.add(libres.get(i));
+        ponerTrampas(r, java.util.Set.of());
+        // las baldosas intermitentes, repartidas por el camino bueno (ni al principio ni al final), cada una con su ritmo
+        List<int[]> cam = Laberintos.camino();
+        int desde = 4, hasta = cam.size() - 5;
+        for (int i = 0; i < intermitentes && hasta > desde; i++) {
+            int[] c = cam.get(desde + (hasta - desde) * (i + 1) / (intermitentes + 1));
+            interPos.add(new int[] {c[0], c[1], (i * 47 + r.nextInt(40)) % CICLO});
         }
         ev.cambio(s);
         ev.prueba(s, PRUEBA);
@@ -148,18 +161,70 @@ public final class ACiegas {
         Escena.fundido(s, MOD + ".cie.fundido", 80);
         tpEn = now + 22;
         presentarEn = now + 90;
-        cambio = true;
-        Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS preparada equipos={} trampas={}", n, trampasPos.size());
+        sucio = true;
+        Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS preparada equipos={} trampas={} intermitentes={}", n, trampasPos.size(), interPos.size());
         return null;
+    }
+
+    /** Pone las trampas de fuera del camino (sin caer donde está parado alguien). */
+    private static void ponerTrampas(Random r, Set<Long> ocupadas) {
+        trampasPos.clear();
+        List<int[]> l = new ArrayList<>(libres);
+        Collections.shuffle(l, r);
+        for (int[] c : l) {
+            if (trampasPos.size() >= trampas) {
+                break;
+            }
+            if (!ocupadas.contains((long) c[0] * 1000 + c[1])) {
+                trampasPos.add(c);
+            }
+        }
+    }
+
+    /** ¿Esa baldosa intermitente está encendida ahora? */
+    private static boolean encendida(int[] b, long now) {
+        return Math.floorMod(now + b[2], CICLO) < ENCENDIDA;
     }
 
     private static void aSusLaberintos(MinecraftServer s) {
         Evento ev = Evento.get(s);
         for (Equipo e : equipos) {
+            int i = 0;
             for (UUID id : e.ids) {
-                mover(s, ev.pieza(id), "cie.lab." + e.k + (id.equals(e.guia) ? ".guia" : ".inicio"));
+                if (id.equals(e.guia)) {
+                    mover(s, ev.pieza(id), "cie.lab." + e.k + ".guia");
+                } else {
+                    // cada caminante en su lugar del vestíbulo (nadie aparece encima de otro)
+                    mover(s, ev.pieza(id), "cie.lab." + e.k + ".inicio." + (i % Laberintos.LUGARES + 1));
+                    i++;
+                }
             }
         }
+    }
+
+    /** De regreso al vestíbulo, a un lugar donde no haya nadie. */
+    private static void alInicio(MinecraftServer s, Equipo e, Pieza p) {
+        Evento ev = Evento.get(s);
+        for (int i = 1; i <= Laberintos.LUGARES; i++) {
+            BlockPos b = Complejo.pos(s, "cie.lab." + e.k + ".inicio." + i);
+            if (b == null) {
+                break;
+            }
+            boolean libre = true;
+            for (UUID id : e.ids) {
+                Pieza q = ev.pieza(id);
+                Entity en = q == null || q == p ? null : Evento.entidad(s, q);
+                if (en != null && en.distanceToSqr(b.getX() + 0.5, b.getY(), b.getZ() + 0.5) < 0.8) {
+                    libre = false;
+                    break;
+                }
+            }
+            if (libre) {
+                mover(s, p, "cie.lab." + e.k + ".inicio." + i);
+                return;
+            }
+        }
+        mover(s, p, "cie.lab." + e.k + ".inicio");
     }
 
     private static void mover(MinecraftServer s, Pieza p, String marca) {
@@ -191,7 +256,7 @@ public final class ACiegas {
         }
         if (conDiscurso) {
             fase = Fase.HABLANDO;
-            cambio = true;
+            sucio = true;
             Pantallas.hablar(s, "ciegas", () -> {
                 if (fase == Fase.HABLANDO) {
                     arrancar(s);
@@ -229,7 +294,7 @@ public final class ACiegas {
                 }
             }
         }
-        cambio = true;
+        sucio = true;
         Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS empieza");
     }
 
@@ -267,12 +332,16 @@ public final class ACiegas {
         }
         Evento ev = Evento.get(s);
         if (ev.fase() == Evento.Fase.PAUSA || fase != Fase.JUEGO) {
-            if (cambio) {
+            if (sucio) {
                 enviar(s);
             }
             return;
         }
         t++;
+        // las trampas de fuera del camino cambian de lugar (el guía tiene que estar atento)
+        if (cambio > 0 && t % (cambio * 20L) == 0) {
+            moverTrampas(s, ev);
+        }
         boolean quedan = false;
         for (Equipo e : equipos) {
             if (e.termino >= 0) {
@@ -301,22 +370,32 @@ public final class ACiegas {
                     Anuncio.todos(s, Component.literal("✔ ").withStyle(ChatFormatting.GREEN).append(Anuncio.nombre(p))
                             .append(Component.translatable(MOD + ".cie.chat.salio", e.k).withStyle(ChatFormatting.GRAY)));
                     Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS sale {} lab={}", p.etiqueta(), e.k);
-                    cambio = true;
+                    sucio = true;
                     continue;
                 }
                 int[] c = celda(s, e.k, en);
                 if (c != null) {
+                    boolean cae = false;
                     for (int[] tr : trampasPos) {
                         if (tr[0] == c[0] && tr[1] == c[1]) {
-                            // ¡trampa! de regreso al inicio
-                            s.overworld().playSound(null, en.getX(), en.getY(), en.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1F, 0.6F);
-                            mover(s, p, "cie.lab." + e.k + ".inicio");
-                            if (en instanceof ServerPlayer sp) {
-                                Plat.msg(sp, Component.translatable(MOD + ".cie.trampa").withStyle(ChatFormatting.RED), true);
-                            }
-                            Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS trampa {}", p.etiqueta());
+                            cae = true;
                             break;
                         }
+                    }
+                    for (int[] b2 : interPos) {
+                        if (b2[0] == c[0] && b2[1] == c[1] && encendida(b2, now)) {
+                            cae = true;
+                            break;
+                        }
+                    }
+                    if (cae) {
+                        // ¡trampa! de regreso al vestíbulo
+                        s.overworld().playSound(null, en.getX(), en.getY(), en.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1F, 0.6F);
+                        alInicio(s, e, p);
+                        if (en instanceof ServerPlayer sp) {
+                            Plat.msg(sp, Component.translatable(MOD + ".cie.trampa").withStyle(ChatFormatting.RED), true);
+                        }
+                        Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS trampa {}", p.etiqueta());
                     }
                 }
             }
@@ -325,7 +404,7 @@ public final class ACiegas {
                 Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".cie.chat.termino", e.k)));
                 Anuncio.sonido(s, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 0.6F, 1F);
                 Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS termino lab={}", e.k);
-                cambio = true;
+                sucio = true;
             } else {
                 quedan = true;
             }
@@ -340,9 +419,37 @@ public final class ACiegas {
         if (!quedan || sinTerminar <= Math.min(pierden, equipos.size() - 1) && sinTerminar > 0) {
             fin(s, false);
         }
-        if (cambio || now % 20 == 0) {
+        if (sucio || now % 20 == 0) {
             enviar(s);
         }
+    }
+
+    private static void moverTrampas(MinecraftServer s, Evento ev) {
+        Set<Long> ocupadas = new HashSet<>();
+        for (Equipo e : equipos) {
+            for (UUID id : e.ids) {
+                Pieza p = ev.pieza(id);
+                Entity en = p == null ? null : Evento.entidad(s, p);
+                int[] c = en == null ? null : celda(s, e.k, en);
+                if (c != null) {
+                    for (int ddx = -1; ddx <= 1; ddx++) {
+                        for (int ddz = -1; ddz <= 1; ddz++) {
+                            ocupadas.add((long) (c[0] + ddx) * 1000 + c[1] + ddz);
+                        }
+                    }
+                }
+            }
+        }
+        ponerTrampas(new Random(s.overworld().getRandom().nextLong()), ocupadas);
+        for (Equipo e : equipos) {
+            Pieza g = ev.pieza(e.guia);
+            if (g != null && Evento.entidad(s, g) instanceof ServerPlayer sp) {
+                Plat.msg(sp, Component.translatable(MOD + ".cie.cambian").withStyle(ChatFormatting.GOLD), true);
+                sp.playNotifySound(SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.8F, 0.6F);
+            }
+        }
+        sucio = true;
+        Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS trampas cambian");
     }
 
     public static boolean alAcabarReloj(MinecraftServer s) {
@@ -391,7 +498,7 @@ public final class ACiegas {
             }
         }
         Pantallas.modo(s, "coleccionista", "");
-        cambio = true;
+        sucio = true;
         Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS fin eliminados={} tiempo={}", eliminados, porTiempo);
         enviar(s);
     }
@@ -418,10 +525,13 @@ public final class ACiegas {
                 e.guia = p.id;
                 if (tpEn < 0 && antes != null && !antes.equals(p.id)) {
                     Evento ev = Evento.get(s);
-                    mover(s, ev.pieza(antes), "cie.lab." + e.k + ".inicio");
                     mover(s, p, "cie.lab." + e.k + ".guia");
+                    Pieza a2 = ev.pieza(antes);
+                    if (a2 != null) {
+                        alInicio(s, e, a2);
+                    }
                 }
-                cambio = true;
+                sucio = true;
                 Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS guia {} lab={}", p.etiqueta(), e.k);
                 return true;
             }
@@ -449,6 +559,8 @@ public final class ACiegas {
         fase = Fase.NADA;
         equipos.clear();
         trampasPos.clear();
+        interPos.clear();
+        libres.clear();
         botSale.clear();
         eliminados = 0;
         tpEn = -1;
@@ -495,11 +607,23 @@ public final class ACiegas {
             tr.add(x);
         }
         c0.put("trampas", tr);
+        ListTag in = new ListTag();
+        for (int[] p : interPos) {
+            CompoundTag x = new CompoundTag();
+            x.putInt("dx", p[0]);
+            x.putInt("dz", p[1]);
+            x.putInt("des", p[2]);
+            in.add(x);
+        }
+        c0.put("inter", in);
+        c0.putInt("ciclo", CICLO);
+        c0.putInt("encendida", ENCENDIDA);
+        c0.putInt("pulso", pulso);
         return c0;
     }
 
     private static void enviar(MinecraftServer s) {
-        cambio = false;
+        sucio = false;
         PlayerStore.Sync.toAll(s, KEY, estado(s));
     }
 }

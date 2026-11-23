@@ -553,7 +553,7 @@
   "coleccionista.cie.cmd.sacado": "%s got out of the maze.",
   "coleccionista.cie.cmd.ajustes": "Teams of %s · time: %s s · traps: %s.",
   "coleccionista.cie.cmd.terminada": "Blind ended.",
-  "coleccionista.cie.hud.guia": "You're the guide of maze %s · %s of %s out · traps are shown in red",
+  "coleccionista.cie.hud.guia": "You guide maze %s · %s of %s out · traps in red · flashing tiles in orange",
   "coleccionista.cie.hud.saliste": "You're out · your team: %s of %s out",
   "coleccionista.cie.hud.vendado": "You're blindfolded: listen to your guide (%s)",
   "coleccionista.cie.hud.eres_guia": "You're the GUIDE: you'll see everything from above",
@@ -672,9 +672,9 @@
   "coleccionista.com.regla.3": "If both share, both go on. If one steals, the one who shared falls.",
   "coleccionista.com.regla.4": "If both steal, both fall. If you don't choose, you share.",
   "coleccionista.cie.regla.1": "One of your team is the guide: they walk above and see the whole maze.",
-  "coleccionista.cie.regla.2": "The rest walk blindfolded: they only have the guide's voice.",
-  "coleccionista.cie.regla.3": "Stepping on a trap sends you back to the start.",
-  "coleccionista.cie.regla.4": "The last team out loses its guide.",
+  "coleccionista.cie.regla.2": "The others walk blindfolded: all black, just a pulse of light now and then. Listen to your guide.",
+  "coleccionista.cie.regla.3": "Stepping on a trap sends you back to the entrance. The traps move around.",
+  "coleccionista.cie.regla.4": "Some tiles on the path light up: cross them while they are dark.",
   "coleccionista.sac.regla.1": "Your team is locked in: the gate only opens if someone stays.",
   "coleccionista.sac.regla.2": "To offer yourself, stand on the altar for 5 seconds.",
   "coleccionista.sac.regla.3": "If nobody offers, you vote in secret. The most voted stays.",
@@ -892,5 +892,10 @@
   "coleccionista.mini.n5": "The sacrifice",
   "coleccionista.mini.n6": "The doors",
   "coleccionista.mini.n7": "The cups (final)",
-  "coleccionista.mini.n8": "Chained in threes (extra)"
+  "coleccionista.mini.n8": "Chained in threes (extra)",
+  "coleccionista.cie.cambian": "The Collector moved the traps! Look again.",
+  "coleccionista.cie.cmd.ajustes2": "Light pulse every %s s · traps move every %s s (0 = never) · flashing tiles: %s.",
+  "coleccionista.voz.ciegas.baldosas": "And on the right path… some tiles light up. Wait until they go dark… or back to the start you go.",
+  "coleccionista.voz.ciegas.mueven": "Oh… and every now and then, I move my traps.",
+  "coleccionista.cie.regla.5": "The last team out loses its guide."
 }

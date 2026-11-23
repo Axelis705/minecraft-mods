@@ -8,21 +8,26 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Los Laberintos: el mapa de la prueba 4, "A ciegas". Seis laberintos iguales en fila (uno por equipo: así alcanza para equipos de 3). Los que caminan van con los
- * ojos vendados por dentro; el guía camina arriba, sobre un piso de vidrio, viendo todo el laberinto, y los guía con la voz. Al norte de
- * cada laberinto, la salida.
+ * Los Laberintos: el mapa de la prueba 4, "A ciegas". Seis laberintos iguales en fila (uno por equipo: así alcanza para equipos de 3). Los
+ * que caminan van con los ojos vendados por dentro; el guía camina arriba, sobre un piso de vidrio, viendo todo el laberinto, y los guía con
+ * la voz. Cada laberinto tiene al sur su vestíbulo de entrada (con un lugar para cada caminante: nadie aparece encima de otro) y al norte la
+ * salida.
  * <pre>
- *   x: 0 ... 124   z: 0 ... 22   y: -1 ... 12
- *   laberinto K (K = 1..6): x 20K-18 .. 20K-4, z 5..19 (15 x 15: celdas de 7 x 7), muros de 3 de alto
+ *   x: 0 ... 144   z: 0 ... 28   y: -1 ... 12
+ *   laberinto K (K = 1..6): x 24K-22 .. 24K-4, z 5..23 (19 x 19: celdas de 9 x 9), muros de 3 de alto
+ *   vestíbulo de entrada: x 24K-22 .. 24K-18, z 24..27 (se entra por el sur, abajo a la izquierda)
  *   piso de vidrio del guía: y 8 (encima de todo el laberinto); techo con luz: y 12
  *   salida: z 1..3, al norte de la esquina noreste del laberinto
  * </pre>
- * Marcas: {@code cie.lab.K.inicio}, {@code cie.lab.K.guia}, {@code cie.lab.K.salida}, {@code cie.lab.K.origen} (la esquina noroeste del
- * laberinto, z 5). El camino bueno y las celdas libres salen de {@link #celdas()} (el mismo para los cuatro).
+ * Marcas: {@code cie.lab.K.inicio} (la entrada), {@code cie.lab.K.inicio.1..6} (los lugares del vestíbulo), {@code cie.lab.K.guia},
+ * {@code cie.lab.K.salida}, {@code cie.lab.K.origen} (la esquina noroeste del laberinto, z 5). El camino bueno y las celdas libres salen de
+ * {@link #celdas()} (el mismo para todos).
  */
 public final class Laberintos {
-    public static final int X0 = 0, X1 = 124, Z0 = 0, Z1 = 22, Y0 = -1, Y1 = 12;
-    public static final int LABERINTOS = 6, N = 7, LADO = 2 * N + 1, ZL = 5;
+    public static final int X0 = 0, X1 = 144, Z0 = 0, Z1 = 28, Y0 = -1, Y1 = 12;
+    public static final int LABERINTOS = 6, N = 9, LADO = 2 * N + 1, ZL = 5;
+    /** Lugares en el vestíbulo de entrada de cada laberinto. */
+    public static final int LUGARES = 6;
     private static final String C = "coleccionista:";
     private static boolean[][] abierto;
 
@@ -30,7 +35,7 @@ public final class Laberintos {
     }
 
     public static int origenX(int k) {
-        return 20 * k - 18;
+        return 24 * k - 22;
     }
 
     /** El laberinto en bloques (LADO x LADO): true = se puede caminar. Siempre el mismo (semilla fija). */
@@ -134,9 +139,29 @@ public final class Laberintos {
                     }
                 }
             }
-            // la entrada (abajo a la izquierda, por el sur) y la salida (arriba a la derecha, al norte)
-            p.set(ox + 1, 0, ZL + LADO - 2, C + "marca_roja");
-            p.marca("cie.lab." + k + ".inicio", ox + 1, 1, ZL + LADO - 2, 180);
+            // la entrada (abajo a la izquierda, por el sur): un vestíbulo con un lugar para cada caminante (nadie aparece encima de otro)
+            int zv = ZL + LADO; // primera fila del vestíbulo
+            for (int x = ox; x <= ox + 4; x++) {
+                for (int z = zv; z <= zv + 3; z++) {
+                    p.set(x, 0, z, C + "linoleo_verde");
+                    for (int y = 1; y <= 3; y++) {
+                        p.set(x, y, z, "air");
+                    }
+                }
+            }
+            for (int y = 1; y <= 3; y++) {
+                p.set(ox + 1, y, ZL + LADO - 1, "air");
+            }
+            p.set(ox + 1, 0, ZL + LADO - 1, C + "marca_roja");
+            p.set(ox + 2, 4, zv + 1, C + "panel_luz");
+            p.marca("cie.lab." + k + ".inicio", ox + 1, 1, zv, 180);
+            int[][] lugares = {{0, 1}, {2, 1}, {4, 1}, {0, 3}, {2, 3}, {4, 3}};
+            for (int i = 0; i < LUGARES; i++) {
+                p.set(ox + lugares[i][0], 0, zv + lugares[i][1], C + "marca_roja");
+                p.marca("cie.lab." + k + ".inicio." + (i + 1), ox + lugares[i][0], 1, zv + lugares[i][1], 180);
+            }
+            p.letrero(ox + 2, 2, zv + 3, "dark_oak_wall_sign", "north", "red", "LABERINTO " + k, "ENTRADA", "Escucha la voz", "de tu guía");
+            // la salida (arriba a la derecha, al norte)
             for (int z = 1; z < ZL; z++) {
                 for (int dx = LADO - 4; dx <= LADO - 1; dx++) {
                     p.set(ox + dx, 0, z, C + "concreto_piso");
@@ -154,7 +179,7 @@ public final class Laberintos {
             p.marca("cie.lab." + k + ".salida", ox + LADO - 2, 1, 2, 180);
             p.marca("cie.lab." + k + ".guia", ox + 1, 9, ZL + LADO - 2, 180);
             p.marca("cie.lab." + k + ".origen", ox, 0, ZL, 0);
-            p.letrero(ox + 7, 10, ZL, "dark_oak_wall_sign", "south", "red", "", "LABERINTO " + k, "", "");
+            p.letrero(ox + LADO / 2, 10, ZL, "dark_oak_wall_sign", "south", "red", "", "LABERINTO " + k, "", "");
         }
         Estilo.aplicar(p, java.util.Map.of());
         return p;

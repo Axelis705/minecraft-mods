@@ -1,7 +1,7 @@
 axeliscore
 coleccionista
 forceload add -16 -48 224 144
-forceload add -144 32 -16 80
+forceload add -160 32 -16 80
 forceload add -112 64 -32 128
 forceload add 208 24 256 64
 #pausa 3
@@ -156,11 +156,14 @@ evento revivir Bot_04
 evento ciegas tamano 2
 evento ciegas tiempo 60
 evento ciegas trampas 8
+evento ciegas pulso 4
+evento ciegas cambio 2
+evento ciegas intermitentes 3
 evento ciegas preparar
 #pausa 6
 evento ciegas guia Bot_01
 evento ciegas empezar ya
-#pausa 2
+#pausa 3
 evento ciegas sacar Bot_02
 evento ciegas sacar Bot_03
 evento ciegas sacar Bot_04
@@ -275,6 +278,8 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CIEGAS preparada equipos=2 trampas=8
 #expect COLECCIONISTA_PRESENTACION IV
 #expect COLECCIONISTA_CIEGAS guia
+#expect intermitentes=3
+#expect COLECCIONISTA_CIEGAS trampas cambian
 #expect COLECCIONISTA_CIEGAS empieza
 #expect COLECCIONISTA_CIEGAS sale
 #expect COLECCIONISTA_CIEGAS termino lab=

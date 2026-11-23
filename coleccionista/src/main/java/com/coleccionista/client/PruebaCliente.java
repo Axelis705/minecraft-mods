@@ -658,7 +658,7 @@ final class PruebaCliente {
                 t.cmd("evento revivir Bot_0" + i);
             }
             t.cmd("gamemode adventure @a");
-            t.cmd("forceload add -144 24 -16 64");
+            t.cmd("forceload add -160 24 -16 64");
             t.cmd("evento ciegas tamano 2");
             t.cmd("evento ciegas tiempo 120");
             t.cmd("evento ciegas trampas 10");

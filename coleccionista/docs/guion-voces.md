@@ -93,9 +93,11 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 2 | `ciegas_venda.ogg` | 5.0 s | Casi todos ustedes caminarán con los ojos vendados. |
 | 3 | `ciegas_guia.ogg` | 7.0 s | Uno de cada equipo será el guía: verá todo desde arriba… y solo podrá usar su voz. |
 | 4 | `ciegas_trampas.ogg` | 5.0 s | Hay trampas en el piso. Quien las pise vuelve al principio. |
-| 5 | `ciegas_ultimo.ogg` | 5.5 s | El último equipo en salir pierde a su guía. Por guiar mal. |
-| 6 | `ciegas_risa.ogg` | 3.0 s | Je, je, je… |
-| 7 | `ciegas_escuchen.ogg` | 3.5 s | Escuchen bien. |
+| 5 | `ciegas_baldosas.ogg` | 6.5 s | Y en el camino bueno… hay baldosas que se encienden. Esperen a que se apaguen… o vuelven al principio. |
+| 6 | `ciegas_mueven.ogg` | 5.0 s | Ah… y de vez en cuando, muevo mis trampas. |
+| 7 | `ciegas_ultimo.ogg` | 5.5 s | El último equipo en salir pierde a su guía. Por guiar mal. |
+| 8 | `ciegas_risa.ogg` | 3.0 s | Je, je, je… |
+| 9 | `ciegas_escuchen.ogg` | 3.5 s | Escuchen bien. |
 
 ## Prueba 5 · El sacrificio
 
@@ -146,4 +148,4 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 8 | `tres_risa.ogg` | 3.0 s | Je, je, je… |
 | 9 | `tres_suerte.ogg` | 3.5 s | El último trío en salir se queda conmigo. |
 
-**Total: 85 líneas (≈7 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+**Total: 87 líneas (≈7 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
