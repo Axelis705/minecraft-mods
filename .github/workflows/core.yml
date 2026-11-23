@@ -46,6 +46,11 @@ jobs:
         run: |
           python3 tools/mcver.py --check axelis_core
           python3 tools/mcver.py --check core_prueba
+          # la versión del Core en el código y la del jar deben ser iguales: con dos mods que traen el Core, Forge elige el de versión más
+          # alta; si un Core nuevo dice ser el viejo, puede cargar el viejo y faltarían clases
+          cv=$(grep -oP 'VERSION = "\K[^"]+' axelis_core/src/main/java/com/axeliscore/AxelisCore.java)
+          gv=$(grep -oP '^mod_version=\K.*' axelis_core/gradle.properties)
+          if [ "$cv" != "$gv" ]; then echo "::error::AxelisCore.VERSION=$cv pero gradle.properties dice mod_version=$gv"; exit 1; fi
       - name: Revisar recursos y texturas del Core
         run: |
           pip install pillow -q
