@@ -879,5 +879,17 @@
   "coleccionista.cmd.salida": "El Coleccionista habla: todas salieron de sus celdas.",
   "coleccionista.cmd.pantalla_ocupada": "Las pantallas están ocupadas (el Coleccionista ya está hablando).",
   "coleccionista.cine.cerrar": "Terminó de hablar · Pulsa R para cerrar la pantalla",
-  "coleccionista.sub.nombre": "EL COLECCIONISTA"
+  "coleccionista.sub.nombre": "EL COLECCIONISTA",
+  "coleccionista.mini.vivo": "EN VIVO",
+  "coleccionista.mini.ayuda": "Atajos: /minijuego <número> <acción> (por ejemplo /minijuego 1 empezar). /minijuego <número> dice sus acciones.",
+  "coleccionista.mini.no_accion": "El %s no tiene esa acción. Tiene: %s",
+  "coleccionista.mini.n0": "El despertar",
+  "coleccionista.mini.n1": "Encadenados",
+  "coleccionista.mini.n2": "El traidor",
+  "coleccionista.mini.n3": "Compartir o robar",
+  "coleccionista.mini.n4": "A ciegas",
+  "coleccionista.mini.n5": "El sacrificio",
+  "coleccionista.mini.n6": "Las puertas",
+  "coleccionista.mini.n7": "Las copas (final)",
+  "coleccionista.mini.n8": "Encadenados de tres (extra)"
 }

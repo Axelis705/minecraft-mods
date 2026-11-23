@@ -26,8 +26,14 @@ public final class Presentacion {
     private static long fundidoDesde, presDesde;
     private static int fundidoTicks;
     private static String fundidoTexto = "", numero = "", titulo = "", lema = "", tituloClave = "";
-    /** La tarjeta de reglas que sale después del título (lo necesario para jugar, sin decir cómo resolver la prueba). */
-    private static final float REGLAS_DURA = 16F;
+    /**
+     * La tarjeta de reglas (lo necesario para jugar, sin decir cómo resolver la prueba): sale arriba a la derecha DESPUÉS de que el
+     * Coleccionista explica la prueba (o cuando la prueba arranca sin discurso), entrando desde la orilla.
+     */
+    private static final float REGLAS_DURA = 18F;
+    /** Las reglas ya están listas (pasó la presentación) y esperan a que el Coleccionista termine de hablar o arranque la prueba. */
+    private static boolean reglasEsperan;
+    private static boolean hablo;
     private static long reglasDesde;
     /** El reloj que había cuando salió la tarjeta: si arranca otro (empezó la acción), la tarjeta se va para no tapar el juego. */
     private static long relojAlSalir;
@@ -50,6 +56,7 @@ public final class Presentacion {
 
     private static void presentar(CompoundTag t) {
         presDesde = System.currentTimeMillis();
+        reglasEsperan = false;
         numero = Nbt.s(t, "numero");
         tituloClave = Nbt.s(t, "titulo");
         titulo = Component.translatable(tituloClave).getString();
@@ -76,6 +83,30 @@ public final class Presentacion {
     private static float suave(float x) {
         x = Mth.clamp(x, 0, 1);
         return x * x * (3 - 2 * x);
+    }
+
+    /** Pasó la presentación: las reglas esperan a que el Coleccionista hable y termine (o a que arranque la prueba). */
+    private static void prepararReglas() {
+        reglasEsperan = true;
+        hablo = false;
+        relojAlSalir = EventoCliente.relojFin();
+    }
+
+    /** ¿Ya toca mostrar las reglas? Cuando el Coleccionista terminó de explicar, o cuando la prueba arrancó (su reloj) sin discurso. */
+    private static void vigilarReglas() {
+        if (!reglasEsperan) {
+            return;
+        }
+        if (!Subtitulo.linea().isEmpty()) {
+            hablo = true;
+            return;
+        }
+        boolean termino = hablo && Subtitulo.termino();
+        boolean arranco = EventoCliente.resta() >= 0 && EventoCliente.relojFin() != relojAlSalir;
+        if (termino || arranco) {
+            reglasEsperan = false;
+            empezarReglas();
+        }
     }
 
     /** Junta las reglas de la prueba ("...titulo" → "...regla.1..5") y las deja también en el chat para releerlas. */
@@ -111,7 +142,15 @@ public final class Presentacion {
         }
     }
 
-    /** La tarjeta de reglas: panel oscuro con borde rojo, el título y las reglas numeradas. */
+    /** Dónde empieza lo de arriba a la derecha (debajo del "en juego"): ahí van la mini tele y la tarjeta de reglas. */
+    static int arribaDerecha() {
+        return 37;
+    }
+
+    /**
+     * La tarjeta de reglas, arriba a la derecha (debajo del "en juego"): entra deslizándose desde la orilla con un rebote, una luz roja la
+     * recorre y las reglas aparecen una por una; al final se va por donde vino (y quedan en el chat).
+     */
     private static void tarjeta(G g, int w, int h, Font f, long now) {
         float t = (now - reglasDesde) / 1000F;
         if (t > REGLAS_DURA) {
@@ -119,47 +158,73 @@ public final class Presentacion {
             reglasAlChat();
             return;
         }
-        if (t < REGLAS_DURA - 0.8F && EventoCliente.resta() >= 0 && EventoCliente.relojFin() != relojAlSalir) {
-            // ya empezó la prueba (arrancó su reloj): la tarjeta se desvanece (las reglas siguen en el chat)
-            reglasDesde = now - (long) ((REGLAS_DURA - 0.8F) * 1000);
-            t = REGLAS_DURA - 0.8F;
-        }
-        float a = suave(t / 0.5F) * (1 - suave((t - (REGLAS_DURA - 0.8F)) / 0.8F));
         // con una pantalla abierta (el papel del traidor, el teclado...) no se dibuja detrás
-        if (a < 0.02F || Minecraft.getInstance().screen != null) {
+        if (Minecraft.getInstance().screen != null || !EventoHud.visible()) {
             return;
         }
-        int cw = Math.min(w - 40, 300);
+        float entra = t < 0.7F ? rebote(t / 0.7F) : 1F;
+        float sale = suave((t - (REGLAS_DURA - 0.7F)) / 0.7F);
+        float a = Math.min(1F, t / 0.25F) * (1 - sale);
+        if (a < 0.02F) {
+            return;
+        }
+        int cw = Math.min(Math.max(150, w / 3), 210);
         java.util.List<net.minecraft.util.FormattedCharSequence> lineas = new java.util.ArrayList<>();
         java.util.List<Integer> numeros = new java.util.ArrayList<>();
         for (int i = 0; i < reglas.size(); i++) {
-            java.util.List<net.minecraft.util.FormattedCharSequence> partes = f.split(Component.literal(reglas.get(i)), cw - 34);
+            java.util.List<net.minecraft.util.FormattedCharSequence> partes = f.split(Component.literal(reglas.get(i)), cw - 24);
             for (int j = 0; j < partes.size(); j++) {
                 lineas.add(partes.get(j));
                 numeros.add(j == 0 ? i + 1 : 0);
             }
         }
-        int ch = 30 + lineas.size() * 11 + 8;
-        // abajo de la placa de la prueba y de la línea de cada prueba (no se enciman)
-        int x0 = w / 2 - cw / 2, y0 = Math.max((int) (h * 0.22F), 66);
-        g.fillGradient(x0, y0, x0 + cw, y0 + ch, Ui.alpha(0xF0120A0C, a), Ui.alpha(0xE0080506, a));
-        g.fill(x0, y0, x0 + cw, y0 + 1, Ui.alpha(EventoHud.ROJO, a));
-        g.fill(x0, y0 + ch - 1, x0 + cw, y0 + ch, Ui.alpha(EventoHud.ROJO, a));
-        String cab = Component.translatable("coleccionista.reglas.titulo", titulo).getString();
-        EventoHud.texto(g, f, cab, w / 2, y0 + 8, 1.0F, Ui.alpha(EventoHud.ROJO_CL, a));
-        int y = y0 + 26;
-        for (int i = 0; i < lineas.size(); i++) {
-            if (numeros.get(i) > 0) {
-                g.drawString(f, numeros.get(i) + ".", x0 + 12, y, Ui.alpha(EventoHud.ROJO_CL, a), false);
-            }
-            g.drawString(f, lineas.get(i), x0 + 26, y, Ui.alpha(EventoHud.PORCELANA, a), false);
-            y += 11;
+        int ch = 24 + lineas.size() * 10 + 6;
+        int x1 = w - 6, x0 = x1 - cw;
+        int dx = (int) ((1 - entra) * (cw + 12) + sale * (cw + 12));
+        x0 += dx;
+        x1 += dx;
+        int y0 = arribaDerecha();
+        g.fillGradient(x0, y0, x1, y0 + ch, Ui.alpha(0xF0120A0C, a), Ui.alpha(0xE8080506, a));
+        g.fill(x0, y0, x0 + 2, y0 + ch, Ui.alpha(EventoHud.ROJO, a));
+        g.fill(x0, y0 + ch - 1, x1, y0 + ch, Ui.alpha(EventoHud.ROJO, a));
+        // la luz que la recorre al llegar
+        if (t < 1.4F) {
+            float k = suave((t - 0.3F) / 1.1F);
+            int lx = x0 + (int) (k * cw);
+            g.fill(Math.max(x0, lx - 12), y0, Math.min(x1, lx), y0 + 1, Ui.alpha(0xFFFF8A8A, a * (1 - k)));
         }
+        String cab = Component.translatable("coleccionista.reglas.titulo", titulo).getString();
+        g.drawString(f, Ui.fit(cab, cw - 14), x0 + 8, y0 + 7, Ui.alpha(EventoHud.ROJO_CL, a), true);
+        g.fill(x0 + 8, y0 + 18, x1 - 8, y0 + 19, Ui.alpha(0x40E8E2D8, a));
+        int y = y0 + 23;
+        for (int i = 0; i < lineas.size(); i++) {
+            // cada regla aparece un poco después que la anterior
+            int n = 0;
+            for (int j = 0; j <= i; j++) {
+                n = Math.max(n, numeros.get(j));
+            }
+            float ar = a * suave((t - 0.5F - n * 0.25F) / 0.3F);
+            if (ar > 0.02F) {
+                if (numeros.get(i) > 0) {
+                    g.drawString(f, numeros.get(i) + ".", x0 + 8, y, Ui.alpha(EventoHud.ROJO_CL, ar), false);
+                }
+                g.drawString(f, lineas.get(i), x0 + 18, y, Ui.alpha(EventoHud.PORCELANA, ar), false);
+            }
+            y += 10;
+        }
+    }
+
+    /** Entra con un pequeño rebote (pasa un poquito y regresa). */
+    private static float rebote(float x) {
+        x = Mth.clamp(x, 0, 1);
+        float c = 1.4F;
+        return 1 + (c + 1) * (float) Math.pow(x - 1, 3) + c * (float) Math.pow(x - 1, 2);
     }
 
     private static void dibujar(G g, int w, int h) {
         long now = System.currentTimeMillis();
         Font f = Ui.font();
+        vigilarReglas();
         if (reglasDesde > 0) {
             tarjeta(g, w, h, f, now);
         }
@@ -168,7 +233,7 @@ public final class Presentacion {
             float t = (now - presDesde) / 1000F;
             if (t > DURA) {
                 presDesde = 0;
-                empezarReglas();
+                prepararReglas();
             } else {
                 float salida = 1 - suave((t - (DURA - 0.9F)) / 0.9F);
                 float entra = suave(t / 0.6F);

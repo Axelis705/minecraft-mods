@@ -66,6 +66,7 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         }
         Direction f = st.getValue(PantallaBlock.FACING);
         boolean grande = st.getValue(PantallaBlock.GRANDE);
+        Atajos.vista(be.getBlockPos());
         float w = grande ? 11F : 3F, h = grande ? 7F : 2F;
         CompoundTag t = estado();
         String modo = Nbt.s(t, "modo");

@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Los Laberintos: el mapa de la prueba 4, "A ciegas". Cuatro laberintos iguales en fila (uno por equipo). Los que caminan van con los
+ * Los Laberintos: el mapa de la prueba 4, "A ciegas". Seis laberintos iguales en fila (uno por equipo: así alcanza para equipos de 3). Los que caminan van con los
  * ojos vendados por dentro; el guía camina arriba, sobre un piso de vidrio, viendo todo el laberinto, y los guía con la voz. Al norte de
  * cada laberinto, la salida.
  * <pre>
- *   x: 0 ... 84   z: 0 ... 22   y: -1 ... 12
- *   laberinto K (K = 1..4): x 20K-18 .. 20K-4, z 5..19 (15 x 15: celdas de 7 x 7), muros de 3 de alto
+ *   x: 0 ... 124   z: 0 ... 22   y: -1 ... 12
+ *   laberinto K (K = 1..6): x 20K-18 .. 20K-4, z 5..19 (15 x 15: celdas de 7 x 7), muros de 3 de alto
  *   piso de vidrio del guía: y 8 (encima de todo el laberinto); techo con luz: y 12
  *   salida: z 1..3, al norte de la esquina noreste del laberinto
  * </pre>
@@ -21,8 +21,8 @@ import java.util.Random;
  * laberinto, z 5). El camino bueno y las celdas libres salen de {@link #celdas()} (el mismo para los cuatro).
  */
 public final class Laberintos {
-    public static final int X0 = 0, X1 = 84, Z0 = 0, Z1 = 22, Y0 = -1, Y1 = 12;
-    public static final int LABERINTOS = 4, N = 7, LADO = 2 * N + 1, ZL = 5;
+    public static final int X0 = 0, X1 = 124, Z0 = 0, Z1 = 22, Y0 = -1, Y1 = 12;
+    public static final int LABERINTOS = 6, N = 7, LADO = 2 * N + 1, ZL = 5;
     private static final String C = "coleccionista:";
     private static boolean[][] abierto;
 

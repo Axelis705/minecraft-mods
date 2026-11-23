@@ -96,6 +96,59 @@ public final class ColeccionistaTV {
         return true;
     }
 
+    /**
+     * El Coleccionista en la mini tele del HUD (arriba a la derecha), en el rectángulo {@code x0, y0, w, h} de la interfaz. Misma
+     * animación que las pantallas. La luz se pone de frente solo para este dibujo y luego se regresa la de la interfaz.
+     */
+    static boolean dibujarHud(com.axeliscore.plat.client.G g, int x0, int y0, int w, int h, boolean habla, String linea) {
+        Geo gg = GeoAssets.geo(GEO);
+        if (gg == null || gg.bones.length == 0) {
+            return false;
+        }
+        if (gg != geo) {
+            // la primera vez se arma como en las pantallas
+            long ms = System.currentTimeMillis();
+            geo = gg;
+            pose = new Pose(gg.bones.length);
+            frame = new GeoRenderer.Frame(gg);
+            cuerpo = gg.bone("cuerpo");
+            cabeza = gg.bone("cabeza");
+            bd = gg.bone("brazo_der");
+            ad = gg.bone("antebrazo_der");
+            bi = gg.bone("brazo_izq");
+            ai = gg.bone("antebrazo_izq");
+            empezado = false;
+            animar(ms, habla, linea);
+        }
+        long ms = System.currentTimeMillis();
+        if (ms != ultimo) {
+            animar(ms, habla, linea);
+        }
+        net.minecraft.client.gui.GuiGraphics gr = g.raw;
+        gr.flush();
+        gr.enableScissor(x0, y0, x0 + w, y0 + h);
+        PoseStack ps = gr.pose();
+        ps.pushPose();
+        float sc = h * 0.97F / (ALTO / 16F);
+        // la base del modelo (y 1.5 del modelo) al pie del cuadro; la cara del modelo (-z) mira hacia quien juega (+z en la interfaz)
+        ps.translate(x0 + w / 2F, y0 + h - 1.5F * sc, 200);
+        ps.scale(sc, sc, -sc);
+        ps.last().normal().set(new Matrix3f().scaling(1F, 1F, -1F));
+        GeoRenderer.compute(geo, pose, ps, frame);
+        com.mojang.blaze3d.systems.RenderSystem.setShaderLights(new org.joml.Vector3f(0.35F, -0.55F, 1F).normalize(),
+                new org.joml.Vector3f(-0.4F, -0.25F, 1F).normalize());
+        Draw d = new Draw(gr.bufferSource());
+        GeoRenderer.draw(geo, pose, frame, d.cutout(TEX), GeoRenderer.Pass.NORMAL, LUZ, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
+        float brillo = habla ? 0.6F + 0.4F * Math.abs(Mth.sin(ms / 140F)) : 0.35F;
+        int b = Mth.clamp((int) (brillo * 255), 0, 255);
+        GeoRenderer.draw(geo, pose, frame, d.glow(TEX), GeoRenderer.Pass.GLOW, LUZ, OverlayTexture.NO_OVERLAY, 0xFF000000 | b << 16 | b << 8 | b);
+        gr.flush();
+        com.mojang.blaze3d.platform.Lighting.setupFor3DItems();
+        ps.popPose();
+        gr.disableScissor();
+        return true;
+    }
+
     private static void animar(long ms, boolean habla, String linea) {
         float dt = ultimo == 0 ? 0F : Mth.clamp((ms - ultimo) / 1000F, 0F, 0.25F);
         ultimo = ms;

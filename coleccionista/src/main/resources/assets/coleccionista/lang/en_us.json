@@ -879,5 +879,17 @@
   "coleccionista.cmd.salida": "The Collector speaks: everyone left their cells.",
   "coleccionista.cmd.pantalla_ocupada": "The screens are busy (the Collector is already talking).",
   "coleccionista.cine.cerrar": "He's done talking · Press R to close the screen",
-  "coleccionista.sub.nombre": "THE COLLECTOR"
+  "coleccionista.sub.nombre": "THE COLLECTOR",
+  "coleccionista.mini.vivo": "LIVE",
+  "coleccionista.mini.ayuda": "Shortcuts: /minijuego <number> <action> (for example /minijuego 1 empezar). /minijuego <number> lists its actions.",
+  "coleccionista.mini.no_accion": "%s doesn't have that action. It has: %s",
+  "coleccionista.mini.n0": "The awakening",
+  "coleccionista.mini.n1": "Chained",
+  "coleccionista.mini.n2": "The traitor",
+  "coleccionista.mini.n3": "Share or steal",
+  "coleccionista.mini.n4": "Blind",
+  "coleccionista.mini.n5": "The sacrifice",
+  "coleccionista.mini.n6": "The doors",
+  "coleccionista.mini.n7": "The cups (final)",
+  "coleccionista.mini.n8": "Chained in threes (extra)"
 }

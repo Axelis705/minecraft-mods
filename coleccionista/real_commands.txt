@@ -1,7 +1,7 @@
 axeliscore
 coleccionista
 forceload add -16 -48 224 144
-forceload add -112 32 -16 80
+forceload add -144 32 -16 80
 forceload add -112 64 -32 128
 forceload add 208 24 256 64
 #pausa 3
@@ -73,9 +73,9 @@ evento compartir hablar 5
 evento compartir tiempo_elegir 12
 evento compartir ritmo 60
 evento compartir bots_eligen no
-evento montacargas salon
+minijuego 3 montacargas
 #pausa 20
-evento compartir preparar
+minijuego 3 preparar
 #pausa 4
 evento compartir empezar ya
 #pausa 1
@@ -85,7 +85,7 @@ evento compartir elige Bot_02 compartir
 evento compartir elige Bot_03 compartir
 evento compartir elige Bot_04 compartir
 #pausa 30
-evento compartir terminar
+minijuego 3 terminar
 evento compartir bots_eligen si
 evento revivir Bot_01
 evento revivir Bot_02
@@ -206,6 +206,9 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_SALIDA discurso
 #expect COLECCIONISTA_DISCURSO salida
 #expect COLECCIONISTA_MONTACARGAS gas salon
+#expect COLECCIONISTA_MINIJUEGO 3 montacargas
+#expect COLECCIONISTA_MINIJUEGO 3 preparar
+#expect COLECCIONISTA_MINIJUEGO 3 terminar
 #expect COLECCIONISTA_MONTACARGAS llegada salon
 #expect COLECCIONISTA_CONSTRUIDO ante_salon
 #expect COLECCIONISTA_PISTAS reveladas inscripciones=

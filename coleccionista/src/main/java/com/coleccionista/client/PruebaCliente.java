@@ -352,9 +352,7 @@ final class PruebaCliente {
         });
         t.photo("33_presentacion", 5700, () -> {
         });
-        t.photo("33b_reglas", 6000, () -> {
-        });
-        t.add("reglas", 100, () -> t.check(Presentacion.reglasVisibles(), "sale la tarjeta de reglas después del título"));
+        t.add("después del título", 6000, () -> t.check(!Presentacion.reglasVisibles(), "las reglas esperan al Coleccionista (no salen solas)"));
         t.add("encadenado", 100, () -> {
             t.check("LISTA".equals(EncadenadosCliente.fase), "Encadenados está lista");
             t.check(EncadenadosCliente.encadenado(), "estoy encadenado a la pared");
@@ -365,11 +363,14 @@ final class PruebaCliente {
         t.photo("35_cadenas_tercera", 1200, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
         t.add("a jugar", 1200, () -> {
             Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
-            t.cmd("evento encadenados empezar ya");
+            t.cmd("minijuego 1 ya");
             t.cmd("evento encadenados soltar todos");
             t.cmd("evento encadenados ir enc.placa.1.a " + yo());
             t.cmd("evento encadenados ir enc.placa.1.b " + pareja());
         });
+        t.photo("33b_reglas", 1600, () -> {
+        });
+        t.add("reglas", 100, () -> t.check(Presentacion.reglasVisibles(), "al arrancar sale la tarjeta de reglas arriba a la derecha"));
         t.photo("36_compuerta", 900, () -> {
         });
         t.add("compuerta", 100, () -> {
@@ -427,6 +428,11 @@ final class PruebaCliente {
         t.add("llegó", 100, () -> t.check(!"VIAJE".equals(MontacargasCliente.fase()), "el montacargas llegó"));
         t.photo("41e_antesala", 1500, () -> t.lookFrom(225.5, -60, 31.5, 241, -57, 31.5));
         t.photo("41f_antesala_jaula", 1200, () -> t.lookFrom(238.5, -60, 31.5, 222, -58, 31.5));
+        // de espaldas a las pantallas: el Coleccionista habla en la mini tele de arriba a la derecha
+        t.add("habla sin tele enfrente", 600, () -> t.cmd("minijuego 0 salida"));
+        t.photo("41g_mini_tele", 4200, () -> {
+        });
+        t.add("mini tele", 100, () -> t.check(MiniTele.visible(), "sale la mini tele con el Coleccionista"));
         t.add("com: preparar", 1600, () -> {
             t.cmd("gamemode adventure @a");
             t.cmd("forceload add 160 16 208 56");
@@ -652,7 +658,7 @@ final class PruebaCliente {
                 t.cmd("evento revivir Bot_0" + i);
             }
             t.cmd("gamemode adventure @a");
-            t.cmd("forceload add -112 32 -16 64");
+            t.cmd("forceload add -144 24 -16 64");
             t.cmd("evento ciegas tamano 2");
             t.cmd("evento ciegas tiempo 120");
             t.cmd("evento ciegas trampas 10");

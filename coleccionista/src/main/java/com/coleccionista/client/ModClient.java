@@ -36,6 +36,7 @@ public final class ModClient {
         EscenaAviso.init();
         MontacargasCliente.init();
         BarraVida.init();
+        MiniTele.init();
         FantasmaRender.init();
         Camara.init();
         Cine.init();

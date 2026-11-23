@@ -63,12 +63,35 @@ public final class Atajos {
         return true;
     }
 
-    private static net.minecraft.world.phys.Vec3[] buscar(Minecraft mc) {
-        net.minecraft.core.BlockPos yo = mc.player.blockPosition();
+    /** ¿Tengo una pantalla enfrente (que se ve y mira hacia mí)? Si no, el Coleccionista sale en la mini tele del HUD. */
+    public static boolean pantallaEnfrente() {
+        Minecraft mc = Minecraft.getInstance();
+        net.minecraft.world.phys.Vec3[] p = pantallaCerca();
+        if (p == null || mc.player == null) {
+            return false;
+        }
         net.minecraft.world.phys.Vec3 ojo = mc.player.getEyePosition();
+        return mc.player.getViewVector(1F).dot(p[1].subtract(ojo).normalize()) > 0.55;
+    }
+
+    /** Las pantallas que se dibujaron hace poco (las cargadas cerca): posición → última vez. Así R funciona desde lejos. */
+    private static final java.util.Map<net.minecraft.core.BlockPos, Long> VISTAS = new java.util.HashMap<>();
+    /** Hasta dónde funciona R: las pantallas grandes desde muy lejos (en el Salón, desde cualquier mesa), las chicas menos. */
+    private static final double LEJOS_GRANDE = 64, LEJOS_CHICA = 28;
+
+    /** La pantalla se dibujó en este cuadro (lo llama PantallaRenderer). */
+    static void vista(net.minecraft.core.BlockPos p) {
+        VISTAS.put(p.immutable(), System.currentTimeMillis());
+    }
+
+    private static net.minecraft.world.phys.Vec3[] buscar(Minecraft mc) {
+        net.minecraft.world.phys.Vec3 ojo = mc.player.getEyePosition();
+        net.minecraft.world.phys.Vec3 mira = mc.player.getViewVector(1F);
         net.minecraft.world.phys.Vec3 mejor = null, frente = null;
-        double dist = 1e9;
-        for (net.minecraft.core.BlockPos p : net.minecraft.core.BlockPos.betweenClosed(yo.offset(-7, -3, -7), yo.offset(7, 5, 7))) {
+        double puntos = 1e9;
+        long now = System.currentTimeMillis();
+        VISTAS.values().removeIf(t -> now - t > 3000);
+        for (net.minecraft.core.BlockPos p : VISTAS.keySet()) {
             var st = mc.level.getBlockState(p);
             if (!(st.getBlock() instanceof com.coleccionista.bloque.PantallaBlock)) {
                 continue;
@@ -80,9 +103,15 @@ public final class Atajos {
             if (ojo.subtract(centro).dot(n) <= 0) {
                 continue; // la pantalla mira hacia el otro lado
             }
-            double dd = ojo.distanceToSqr(centro);
-            if (dd < dist && seVe(mc, ojo, centro.add(n.scale(0.3)), p)) {
-                dist = dd;
+            double d = ojo.distanceTo(centro);
+            if (d > (grande ? LEJOS_GRANDE : LEJOS_CHICA)) {
+                continue;
+            }
+            // la que tengo enfrente gana aunque esté un poco más lejos
+            double hacia = mira.dot(centro.subtract(ojo).normalize());
+            double pts = d * (hacia > 0.5 ? 0.5 : hacia > 0 ? 1 : 2.5);
+            if (pts < puntos && seVe(mc, ojo, centro.add(n.scale(0.3)), p)) {
+                puntos = pts;
                 mejor = centro;
                 frente = centro.add(n.scale(grande ? 7.5 : 1.7));
             }

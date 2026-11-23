@@ -51,6 +51,7 @@ public class Coleccionista {
         com.axeliscore.ui.Teclas.nueva(MODID, "panel", 'O', () -> com.coleccionista.client.Atajos.panel());
         com.axeliscore.ui.Teclas.nueva(MODID, "hud", 'K', () -> com.coleccionista.client.Atajos.hud());
         AxelisCore.commands(com.coleccionista.evento.Comandos::registrar);
+        AxelisCore.commands(com.coleccionista.evento.ComandosMinijuego::registrar);
         AxelisCore.commands(d -> d.register(Commands.literal(MODID).executes(c -> {
             c.getSource().sendSuccess(() -> Component.translatable(MODID + ".hola", AxelisCore.version()), false);
             LOGGER.info("PRUEBA_COLECCIONISTA_OK {}", AxelisCore.version());
