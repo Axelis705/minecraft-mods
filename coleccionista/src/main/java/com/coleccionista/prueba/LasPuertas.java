@@ -156,11 +156,11 @@ public final class LasPuertas {
                 }
             }
             for (BlockPos p : ps) {
-                l.setBlock(p, abrir ? Blocks.AIR.defaultBlockState() : Blocks.IRON_BARS.defaultBlockState(), 3);
+                l.setBlock(p, abrir ? Blocks.AIR.defaultBlockState() : com.coleccionista.bloque.deco.Deco.barrotes(), 3);
             }
             if (!abrir) {
                 for (BlockPos p : ps) {
-                    l.setBlock(p, Block.updateFromNeighbourShapes(Blocks.IRON_BARS.defaultBlockState(), l, p), 3);
+                    l.setBlock(p, Block.updateFromNeighbourShapes(com.coleccionista.bloque.deco.Deco.barrotes(), l, p), 3);
                 }
             }
             l.playSound(null, b.offset(2, 1, 0), abrir ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1.2F, 0.6F);

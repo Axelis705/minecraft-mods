@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/concreto_humedo_0"
+   },
+   {
+    "model": "coleccionista:block/concreto_humedo_1"
+   },
+   {
+    "model": "coleccionista:block/concreto_humedo_2"
+   }
+  ]
+ }
+}

@@ -31,7 +31,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BarrelBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -223,7 +222,7 @@ public final class Encadenados {
                 UUID dueno = ids.get((j + 1) % ids.size());
                 Pieza pd = ev.pieza(dueno);
                 BlockPos b = marca(s, "enc.lugar." + lugares.get(ids.get(j)) + ".barril");
-                if (b != null && l.getBlockEntity(b) instanceof BarrelBlockEntity barril) {
+                if (b != null && l.getBlockEntity(b) instanceof net.minecraft.world.Container barril) {
                     barril.clearContent();
                     barril.setItem(13, LlaveGrillete.crear(dueno, pd == null ? 0 : pd.numero));
                     barril.setChanged();
@@ -470,12 +469,12 @@ public final class Encadenados {
             }
         }
         for (BlockPos p : ps) {
-            l.setBlock(p, abrir ? Blocks.AIR.defaultBlockState() : Blocks.IRON_BARS.defaultBlockState(), 3);
+            l.setBlock(p, abrir ? Blocks.AIR.defaultBlockState() : com.coleccionista.bloque.deco.Deco.barrotes(), 3);
         }
         if (!abrir) {
             // que los barrotes se unan entre sí y con las paredes
             for (BlockPos p : ps) {
-                BlockState st = Block.updateFromNeighbourShapes(Blocks.IRON_BARS.defaultBlockState(), l, p);
+                BlockState st = Block.updateFromNeighbourShapes(com.coleccionista.bloque.deco.Deco.barrotes(), l, p);
                 l.setBlock(p, st, 3);
             }
         }
@@ -982,7 +981,7 @@ public final class Encadenados {
             ServerLevel l = s.overworld();
             for (int n = 0; n < Cloacas.LUGARES; n++) {
                 BlockPos b = marca(s, "enc.lugar." + n + ".barril");
-                if (b != null && l.getBlockEntity(b) instanceof BarrelBlockEntity barril) {
+                if (b != null && l.getBlockEntity(b) instanceof net.minecraft.world.Container barril) {
                     barril.clearContent();
                 }
             }

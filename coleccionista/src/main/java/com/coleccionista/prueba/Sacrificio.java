@@ -238,11 +238,11 @@ public final class Sacrificio {
 
     private static void barras(ServerLevel l, List<BlockPos> ps, boolean poner) {
         for (BlockPos p : ps) {
-            l.setBlock(p, poner ? Blocks.IRON_BARS.defaultBlockState() : Blocks.AIR.defaultBlockState(), 3);
+            l.setBlock(p, poner ? com.coleccionista.bloque.deco.Deco.barrotes() : Blocks.AIR.defaultBlockState(), 3);
         }
         if (poner) {
             for (BlockPos p : ps) {
-                l.setBlock(p, Block.updateFromNeighbourShapes(Blocks.IRON_BARS.defaultBlockState(), l, p), 3);
+                l.setBlock(p, Block.updateFromNeighbourShapes(com.coleccionista.bloque.deco.Deco.barrotes(), l, p), 3);
             }
         }
     }

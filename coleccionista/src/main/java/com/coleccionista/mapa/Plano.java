@@ -122,14 +122,25 @@ public final class Plano {
     }
 
     /** Un letrero de pared con texto (hasta 4 líneas). */
+    /**
+     * Un letrero de pared con texto (el letrero propio del complejo; antes era un letrero de Minecraft). {@code bloque} ya no se usa.
+     * {@code color}: "red", "white", "gold"... Las líneas vacías de arriba y de abajo se quitan.
+     */
     public void letrero(int x, int y, int z, String bloque, String facing, String color, String... lineas) {
-        set(x, y, z, bloque + "[facing=" + facing + "]");
-        StringBuilder sb = new StringBuilder("{front_text:{color:\"" + color + "\",has_glowing_text:1b,messages:[");
-        for (int i = 0; i < 4; i++) {
-            String l = i < lineas.length ? lineas[i].replace("\\", "\\\\").replace("\"", "\\\"") : "";
-            sb.append(i > 0 ? "," : "").append("'{\"text\":\"").append(l.replace("'", "\\'")).append("\"}'");
+        int a = 0, b = lineas.length;
+        while (a < b && lineas[a].isBlank()) {
+            a++;
         }
-        sb.append("]}}");
-        nbt(x, y, z, sb.toString());
+        while (b > a && lineas[b - 1].isBlank()) {
+            b--;
+        }
+        int c = switch (color) {
+            case "red" -> 0xC0281F;
+            case "gold", "yellow" -> 0xD9A93A;
+            case "green", "lime" -> 0x4CB050;
+            case "gray", "light_gray" -> 0x9A958A;
+            default -> 0xE8E2D0;
+        };
+        texto(x, y, z, "letrero", facing, c, java.util.Arrays.copyOfRange(lineas, a, b));
     }
 }

@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/outer_stairs",
+ "textures": {
+  "bottom": "coleccionista:block/escalera_ladrillo",
+  "top": "coleccionista:block/escalera_ladrillo",
+  "side": "coleccionista:block/escalera_ladrillo"
+ }
+}

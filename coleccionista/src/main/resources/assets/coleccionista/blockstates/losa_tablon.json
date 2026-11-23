@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "coleccionista:block/losa_tablon"
+  },
+  "type=top": {
+   "model": "coleccionista:block/losa_tablon_top"
+  },
+  "type=double": {
+   "model": "coleccionista:block/losa_tablon_doble"
+  }
+ }
+}

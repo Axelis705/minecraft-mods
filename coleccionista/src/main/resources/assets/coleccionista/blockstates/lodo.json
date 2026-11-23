@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/lodo_0"
+   },
+   {
+    "model": "coleccionista:block/lodo_1"
+   }
+  ]
+ }
+}

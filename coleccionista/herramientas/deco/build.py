@@ -28,6 +28,7 @@ sys.path.insert(0, AQUI)
 import kit  # noqa: E402
 import materiales as M  # noqa: E402
 import props_celdas  # noqa: E402
+import props_complejo  # noqa: E402
 
 NS = 'coleccionista'
 ROOT = os.path.abspath(os.path.join(AQUI, '..', '..', 'src', 'main', 'resources'))
@@ -228,6 +229,39 @@ def puerta_reja(p, corre=15, sale=2.5):
             pass
 
 
+def cadena_blk(bid, es, en, fn):
+    """Cadena que cuelga (o va acostada): el modelo cruzado de la cadena de Minecraft con textura propia."""
+    from PIL import Image
+    im = fn(1)
+    t = tex(bid, im)
+    m = json.load(open('/tmp/mcassets/assets/minecraft/models/block/chain.json'))
+    m['textures'] = {'particle': t, 'all': t}
+    m['parent'] = 'minecraft:block/block'
+    m['render_type'] = 'minecraft:cutout'
+    dump(f'models/block/{bid}.json', m)
+    vb = json.load(open('/tmp/mcassets/assets/minecraft/blockstates/chain.json'))
+    dump(f'blockstates/{bid}.json', json.loads(json.dumps(vb).replace('minecraft:block/chain', f'{NS}:block/{bid}')))
+    ic = Image.new('RGBA', (32, 32))
+    ic.paste(im.crop((0, 0, 6, 32)), (13, 0))
+    tex(bid + '_objeto', ic)
+    dump(f'models/item/{bid}.json', {'parent': 'minecraft:item/generated', 'textures': {'layer0': f'{NS}:block/{bid}_objeto'}})
+    ficha.append({'id': bid, 'kind': 'cadena', 'sound': 'chain', 'strength': 2.0})
+    nombre(bid, es, en)
+
+
+def trampilla_blk(bid, es, en, fn):
+    """Trampilla de acero (como la de hierro: solo la abre el evento)."""
+    t = tex(bid, fn(1))
+    for suf in ('bottom', 'top', 'open'):
+        dump(f'models/block/{bid}_{suf}.json', {'parent': f'minecraft:block/template_trapdoor_{suf}', 'textures': {'texture': t},
+                                               'render_type': 'minecraft:cutout'})
+    vb = json.load(open('/tmp/mcassets/assets/minecraft/blockstates/iron_trapdoor.json'))
+    dump(f'blockstates/{bid}.json', json.loads(json.dumps(vb).replace('minecraft:block/iron_trapdoor', f'{NS}:block/{bid}')))
+    dump(f'models/item/{bid}.json', {'parent': f'{NS}:block/{bid}_bottom'})
+    ficha.append({'id': bid, 'kind': 'trampilla', 'sound': 'metal', 'strength': 5.0})
+    nombre(bid, es, en)
+
+
 def tubo(bid, es, en, fn, sonido='metal', a=5.5, b=10.5, brida=1.0):
     """Tubo con bridas que va en cualquier eje (por el techo y las paredes). Con a/b mas gordos sirve de poste."""
     t = tex(bid, fn(1))
@@ -365,6 +399,20 @@ def catalogo():
     tubo('poste', 'Poste de acero', 'Steel post', lambda s: poste_tex(s), a=4.5, b=11.5, brida=0.6)
     tubo('poste_liso', 'Poste de acero (liso)', 'Steel post (plain)', lambda s: M.metal_placa(s, '#5a5d55', pintado=0.6, remaches=False), a=4.5, b=11.5, brida=0.6)
     palanca('palanca', 'Palanca', 'Lever')
+    # ---- las Cloacas y lo que se usa en todo el complejo
+    cubo('ladrillo_cloaca', 'Ladrillo de alcantarilla', 'Sewer brick', lambda s: M.ladrillo_cloaca(s))
+    cubo('ladrillo_oscuro', 'Sillar negro', 'Black ashlar', lambda s: M.ladrillo_oscuro(s), variantes=2)
+    cubo('piso_cloaca', 'Laja de alcantarilla', 'Sewer flagstone', lambda s: M.piso_cloaca(s), variantes=3)
+    cubo('lodo', 'Lodo', 'Mud', lambda s: M.lodo(s), variantes=2, sonido='wool', dureza=0.8)
+    cubo('concreto_humedo', 'Concreto húmedo', 'Damp concrete', lambda s: M.concreto_humedo(s), variantes=3)
+    cubo('cobre_viejo', 'Lámina de cobre vieja', 'Old copper plate', lambda s: M.cobre_viejo(s), variantes=3, sonido='metal')
+    cubo('tablon', 'Tablones viejos', 'Old planks', lambda s: M.tablon(s), variantes=2, sonido='wood')
+    losa('losa_tablon', 'Losa de tablones', 'Plank slab', lambda s: M.tablon(s), sonido='wood')
+    escalera('escalera_tablon', 'Escalón de tablones', 'Plank stairs', lambda s: M.tablon(s), 'tablon', sonido='wood')
+    escalera('escalera_ladrillo', 'Escalón de ladrillo', 'Brick stairs', lambda s: M.ladrillo_cloaca(s), 'ladrillo_cloaca', sonido='stone')
+    cadena_blk('cadena', 'Cadena oxidada', 'Rusty chain', lambda s: M.cadena(s))
+    trampilla_blk('trampilla', 'Trampilla de acero', 'Steel trapdoor', lambda s: M.trampilla(s))
+    alfombra('alfombra_negra', 'Alfombra negra', 'Black carpet', lambda s: M.alfombra_negra(s))
     # muebles y adornos
     P = props_celdas
     cama(P.catre())
@@ -389,6 +437,13 @@ def catalogo():
     prop(P.mesa())
     for t in ('venda', 'cinta', 'esposas'):
         prop(P.objeto(t), {'objeto': t})
+    Q = props_complejo
+    con_apagado(Q.farol(True), Q.farol(False), {'parpadeo': True})
+    prop(Q.vela())
+    prop(Q.musgo())
+    prop(Q.argolla())
+    prop(Q.barril(), {'cajon': True})
+    prop(Q.placa_presion())
     for p in P.focos():
         solo_modelos(p)
     solo_modelos(P.candado())

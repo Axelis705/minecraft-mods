@@ -36,13 +36,11 @@ public final class Cloacas {
     public static final int SALIDA_ANCHO = 5, SALIDA_ALTO = 4;
     public static final int INICIO_ANCHO = 3, INICIO_ALTO = 4;
 
-    private static final String[] ROCA = {"stone_bricks", "stone_bricks", "mossy_stone_bricks", "cracked_stone_bricks", "mud_bricks",
-            "tuff", "stone_bricks"};
-    private static final String[] PISO = {"mud_bricks", "packed_mud", "stone_bricks", "mossy_stone_bricks", "cracked_stone_bricks",
-            "mud_bricks"};
-    private static final String[] TECHO = {"deepslate_tiles", "deepslate_tiles", "cracked_deepslate_tiles", "polished_deepslate"};
-    private static final String[] COBRE = {"waxed_weathered_cut_copper", "waxed_weathered_cut_copper", "waxed_exposed_cut_copper",
-            "waxed_oxidized_cut_copper"};
+    private static final String C = "coleccionista:";
+    private static final String[] ROCA = {C + "ladrillo_cloaca"};
+    private static final String[] PISO = {C + "piso_cloaca", C + "piso_cloaca", C + "piso_cloaca", C + "lodo"};
+    private static final String[] TECHO = {C + "concreto_humedo"};
+    private static final String[] COBRE = {C + "cobre_viejo"};
 
     private Cloacas() {
     }
@@ -59,7 +57,33 @@ public final class Cloacas {
         tuberias(p);
         puente(p);
         salida(p);
+        ambiente(p);
+        Estilo.aplicar(p, Estilo.CLOACAS);
         return p;
+    }
+
+    /** Charcos que gotean, manchas y papeles en el piso de los túneles (no estorban: no tienen choque). */
+    private static void ambiente(Plano p) {
+        String[] dirs = {"north", "east", "south", "west"};
+        for (long k : new java.util.ArrayList<>(p.m.keySet())) {
+            if (Plano.ky(k) != 1 || !"air".equals(p.m.get(k))) {
+                continue;
+            }
+            int x = Plano.kx(k), z = Plano.kz(k);
+            String piso = p.get(x, 0, z);
+            if (piso == null || piso.equals("water") || piso.equals("air") || piso.contains("tablon") || piso.contains("spruce") || piso.contains("dark_oak")) {
+                continue;
+            }
+            double r = p.r.nextDouble();
+            String d = dirs[p.r.nextInt(4)];
+            if (r < 0.03) {
+                p.set(x, 1, z, C + "charco[facing=" + d + "]");
+            } else if (r < 0.045) {
+                p.set(x, 1, z, C + "mancha[facing=" + d + "]");
+            } else if (r < 0.05) {
+                p.set(x, 1, z, C + "papeles[facing=" + d + "]");
+            }
+        }
     }
 
     // ------------------------------------------------------------------ ayudas

@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "axis=x": {
+   "model": "coleccionista:block/cadena",
+   "x": 90,
+   "y": 90
+  },
+  "axis=y": {
+   "model": "coleccionista:block/cadena"
+  },
+  "axis=z": {
+   "model": "coleccionista:block/cadena",
+   "x": 90
+  }
+ }
+}

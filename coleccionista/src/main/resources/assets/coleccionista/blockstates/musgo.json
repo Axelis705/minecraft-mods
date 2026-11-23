@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/musgo"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/musgo",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/musgo",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/musgo",
+   "y": 270
+  }
+ }
+}

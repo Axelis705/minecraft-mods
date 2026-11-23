@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/piso_cloaca_0"
+   },
+   {
+    "model": "coleccionista:block/piso_cloaca_1"
+   },
+   {
+    "model": "coleccionista:block/piso_cloaca_2"
+   }
+  ]
+ }
+}

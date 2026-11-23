@@ -147,6 +147,87 @@
    "strength": 1.0
   },
   {
+   "id": "ladrillo_cloaca",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "ladrillo_oscuro",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "piso_cloaca",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "lodo",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 0.8
+  },
+  {
+   "id": "concreto_humedo",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "cobre_viejo",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
+   "id": "tablon",
+   "kind": "cubo",
+   "sound": "wood",
+   "strength": 2.0
+  },
+  {
+   "id": "losa_tablon",
+   "kind": "losa",
+   "sound": "wood",
+   "strength": 2.0,
+   "transparente": false
+  },
+  {
+   "id": "escalera_tablon",
+   "kind": "escalera",
+   "base": "tablon",
+   "sound": "wood",
+   "strength": 2.0
+  },
+  {
+   "id": "escalera_ladrillo",
+   "kind": "escalera",
+   "base": "ladrillo_cloaca",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "cadena",
+   "kind": "cadena",
+   "sound": "chain",
+   "strength": 2.0
+  },
+  {
+   "id": "trampilla",
+   "kind": "trampilla",
+   "sound": "metal",
+   "strength": 5.0
+  },
+  {
+   "id": "alfombra_negra",
+   "kind": "alfombra",
+   "sound": "wool",
+   "strength": 0.2
+  },
+  {
    "id": "catre",
    "kind": "cama",
    "sound": "metal",
@@ -1738,6 +1819,441 @@
    "soft": false,
    "sub": "floor",
    "objeto": "esposas"
+  },
+  {
+   "id": "farol",
+   "kind": "prop",
+   "tall": false,
+   "light": 12,
+   "collide": false,
+   "sound": "lantern",
+   "shape": [
+    [
+     7.6,
+     14.5,
+     7.6,
+     8.4,
+     16.1,
+     8.4
+    ],
+    [
+     7.6,
+     12.8,
+     7.6,
+     8.4,
+     14.4,
+     8.4
+    ],
+    [
+     6.0,
+     11.0,
+     6.0,
+     10.0,
+     12.0,
+     10.0
+    ],
+    [
+     6.5,
+     12.0,
+     6.5,
+     9.5,
+     12.8,
+     9.5
+    ],
+    [
+     5.5,
+     3.0,
+     5.5,
+     10.5,
+     4.0,
+     10.5
+    ],
+    [
+     5.5,
+     4.0,
+     5.5,
+     6.2,
+     11.0,
+     6.2
+    ],
+    [
+     9.8,
+     4.0,
+     5.5,
+     10.5,
+     11.0,
+     6.2
+    ],
+    [
+     5.5,
+     4.0,
+     9.8,
+     6.2,
+     11.0,
+     10.5
+    ],
+    [
+     9.8,
+     4.0,
+     9.8,
+     10.5,
+     11.0,
+     10.5
+    ]
+   ],
+   "particles": [
+    {
+     "type": "minecraft:smoke",
+     "pos": [
+      8,
+      12.5,
+      8
+     ],
+     "rate": 0.04
+    }
+   ],
+   "es": "Farol viejo",
+   "en": "Old lantern",
+   "soft": false,
+   "sub": "hang",
+   "parpadeo": true,
+   "apagable": true
+  },
+  {
+   "id": "vela",
+   "kind": "prop",
+   "tall": false,
+   "light": 6,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     6.0,
+     0.0,
+     6.0,
+     8.0,
+     7.0,
+     8.0
+    ],
+    [
+     5.7,
+     0.0,
+     5.7,
+     8.3,
+     0.6,
+     8.3
+    ],
+    [
+     6.8,
+     7.0,
+     6.8,
+     7.2,
+     7.6,
+     7.2
+    ],
+    [
+     9.5,
+     0.0,
+     8.5,
+     11.5,
+     5.0,
+     10.5
+    ],
+    [
+     9.2,
+     0.0,
+     8.2,
+     11.8,
+     0.6,
+     10.8
+    ],
+    [
+     10.3,
+     5.0,
+     9.3,
+     10.7,
+     5.6,
+     9.7
+    ],
+    [
+     4.0,
+     0.0,
+     9.0,
+     6.0,
+     4.0,
+     11.0
+    ],
+    [
+     3.7,
+     0.0,
+     8.7,
+     6.3,
+     0.6,
+     11.3
+    ],
+    [
+     4.8,
+     4.0,
+     9.8,
+     5.2,
+     4.6,
+     10.2
+    ]
+   ],
+   "particles": [
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      7,
+      7.6,
+      7
+     ],
+     "rate": 0.35
+    },
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      10.5,
+      5.6,
+      9.5
+     ],
+     "rate": 0.3
+    },
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      5,
+      4.6,
+      10
+     ],
+     "rate": 0.3
+    }
+   ],
+   "es": "Velas",
+   "en": "Candles",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "musgo",
+   "kind": "prop",
+   "tall": false,
+   "light": 4,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     0.0,
+     0.0,
+     15.9,
+     16.0,
+     16.0,
+     15.9
+    ]
+   ],
+   "particles": [],
+   "es": "Liquen",
+   "en": "Glowing lichen",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "argolla",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "chain",
+   "shape": [
+    [
+     5.5,
+     5.5,
+     15.0,
+     10.5,
+     10.5,
+     16.0
+    ],
+    [
+     7.5,
+     7.5,
+     13.5,
+     8.5,
+     8.5,
+     15.0
+    ],
+    [
+     6.0,
+     3.0,
+     13.0,
+     10.0,
+     4.0,
+     14.0
+    ],
+    [
+     6.0,
+     3.0,
+     13.0,
+     7.0,
+     8.0,
+     14.0
+    ],
+    [
+     9.0,
+     3.0,
+     13.0,
+     10.0,
+     8.0,
+     14.0
+    ],
+    [
+     6.0,
+     7.0,
+     13.0,
+     10.0,
+     8.0,
+     14.0
+    ]
+   ],
+   "particles": [],
+   "es": "Argolla de pared",
+   "en": "Wall ring",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "barril",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     2.5,
+     0.0,
+     2.5,
+     13.5,
+     15.0,
+     13.5
+    ],
+    [
+     3.0,
+     15.0,
+     3.0,
+     13.0,
+     15.6,
+     13.0
+    ],
+    [
+     9.5,
+     15.6,
+     9.5,
+     11.5,
+     16.0,
+     11.5
+    ],
+    [
+     2.2,
+     1.0,
+     2.2,
+     13.8,
+     2.0,
+     13.8
+    ],
+    [
+     2.2,
+     7.0,
+     2.2,
+     13.8,
+     8.0,
+     13.8
+    ],
+    [
+     2.2,
+     13.0,
+     2.2,
+     13.8,
+     14.0,
+     13.8
+    ],
+    [
+     5.0,
+     9.0,
+     2.3,
+     11.0,
+     12.0,
+     2.5
+    ],
+    [
+     5.5,
+     10.4,
+     2.2,
+     10.5,
+     10.9,
+     2.3
+    ]
+   ],
+   "particles": [],
+   "es": "Barril oxidado",
+   "en": "Rusty barrel",
+   "soft": false,
+   "sub": "floor",
+   "cajon": true
+  },
+  {
+   "id": "placa_presion",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     1.0,
+     0.0,
+     1.0,
+     15.0,
+     1.0,
+     15.0
+    ],
+    [
+     2.0,
+     1.0,
+     2.0,
+     3.4,
+     1.05,
+     14.0
+    ],
+    [
+     5.4,
+     1.0,
+     2.0,
+     6.800000000000001,
+     1.05,
+     14.0
+    ],
+    [
+     8.8,
+     1.0,
+     2.0,
+     10.200000000000001,
+     1.05,
+     14.0
+    ],
+    [
+     12.2,
+     1.0,
+     2.0,
+     13.6,
+     1.05,
+     14.0
+    ]
+   ],
+   "particles": [],
+   "es": "Placa de piso",
+   "en": "Floor plate",
+   "soft": false,
+   "sub": "plain"
   }
  ]
 }

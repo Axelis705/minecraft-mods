@@ -480,3 +480,188 @@ def viga_tapa(seed=0, pintura='#2f3a33'):
     base = np.array(metal_placa(seed + 1, pintura, pintado=0.75, remaches=False)).astype(np.float32)[..., :3]
     rgb = np.where(i[..., None], base, hexc('#161513'))
     return img(rgb)
+
+
+# ---------------------------------------------------------------- las Cloacas (prueba 1)
+def _ladrillos(seed, ancho=16, alto=8, color='#4f5047', mortero='#2b2a25', jitter=0.25):
+    """Muro de ladrillos/sillares: devuelve (rgb, mortero, fila, borde_abajo) para que cada material le ponga lo suyo."""
+    y, x = np.mgrid[0:N, 0:N]
+    row = y // alto
+    off = (row % 2) * (ancho // 2)
+    lx = (x + off) % ancho
+    ly = y % alto
+    mort = (lx == 0) | (ly == 0)
+    bid = ((x + off) // ancho) + row * 7
+    v = np.vectorize(lambda b: 1 - jitter / 2 + ((b * 2654435761 + seed * 7919) % 101) / 101 * jitter)(bid).astype(np.float32)
+    rgb = hexc(color) * v[..., None] * (0.82 + 0.3 * fbm(N, N, 4, seed + 100))[..., None]
+    rgb = np.where(mort[..., None], hexc(mortero) * (0.8 + 0.35 * white(N, N, seed)[..., None]), rgb)
+    # canto de arriba claro y de abajo oscuro (relieve)
+    rgb = np.where(((ly == 1) & ~mort)[..., None], rgb * 1.12 + 4, rgb)
+    rgb = np.where(((ly == alto - 1) & ~mort)[..., None], rgb * 0.78, rgb)
+    return rgb, mort, ly
+
+
+def ladrillo_cloaca(seed=0):
+    """Ladrillo de alcantarilla: piedra gris verdosa mojada, junta negra, salitre blanco, musgo y lama abajo (variantes)."""
+    r = np.random.RandomState(seed + 8100)
+    rgb, mort, ly = _ladrillos(seed, color='#4a4c42', mortero='#1b1b17', jitter=0.42)
+    y = np.mgrid[0:N, 0:N][0]
+    # manchas de humedad grandes (oscurecen)
+    hum = fbm(N, N, 14, seed + 8108)
+    rgb = rgb * (1 - 0.38 * np.clip((hum - 0.5) * 2.5, 0, 1))[..., None]
+    tipo = seed % 4
+    if tipo == 1:   # musgo en las juntas y abajo
+        m = fbm(N, N, 6, seed + 8101)
+        k = np.clip((m - 0.45) * 2.2, 0, 1) * (0.5 + 0.5 * (y / N)) + mort * 0.35
+        rgb = mix(rgb, ramp(white(N, N, seed + 8102), '#2f3f22', '#3d4f29', '#4a5c30')[...], np.clip(k, 0, 0.85))
+    elif tipo == 2:  # agrietado
+        rgb = cracks(rgb, seed + 8103, n=2, dark=0.6)
+    elif tipo == 3:  # salitre (manchas blancas que bajan)
+        rgb = streaks(rgb, seed + 8104, n=4, color='#b8b5a3', strength=0.35)
+    rgb = streaks(rgb, seed + 8105, n=r.randint(2, 5), color='#181a14', strength=0.5)
+    rgb = envejecer(rgb, seed + 8106, 0.55)
+    rgb = grime(rgb, seed + 8107, amount=0.35, bottom=0.4)
+    return img(rgb)
+
+
+def ladrillo_oscuro(seed=0):
+    """Sillares negros (marcos de las compuertas, el Refugio)."""
+    rgb, mort, ly = _ladrillos(seed, ancho=16, alto=16, color='#2c2b2a', mortero='#121211', jitter=0.18)
+    rgb = cracks(rgb, seed + 8201, n=1, dark=0.55)
+    rgb = grime(rgb, seed + 8202, amount=0.2)
+    return img(rgb)
+
+
+def piso_cloaca(seed=0):
+    """Piso de laja de la alcantarilla: lajas irregulares, lodo en las juntas y charquitos brillosos."""
+    r = np.random.RandomState(seed + 8300)
+    y, x = np.mgrid[0:N, 0:N]
+    # lajas: celdas de Voronoi que se repiten
+    pts = r.rand(7, 2) * N
+    d1 = np.full((N, N), 1e9)
+    d2 = np.full((N, N), 1e9)
+    idx = np.zeros((N, N), int)
+    for i, (px, py) in enumerate(pts):
+        for ox in (-N, 0, N):
+            for oy in (-N, 0, N):
+                d = np.hypot(x - px - ox, y - py - oy)
+                closer = d < d1
+                d2 = np.where(closer, d1, np.minimum(d2, d))
+                idx = np.where(closer, i, idx)
+                d1 = np.where(closer, d, d1)
+    borde = (d2 - d1) < 1.6
+    tono = (0.86 + 0.22 * ((idx * 37 + seed) % 11) / 11).astype(np.float32)
+    rgb = hexc('#3d3c35') * tono[..., None] * (0.85 + 0.25 * fbm(N, N, 4, seed + 8301))[..., None]
+    rgb = np.where(borde[..., None], hexc('#1f1a12') * (0.8 + 0.3 * white(N, N, seed + 8302))[..., None], rgb)
+    # charquitos: zonas oscuras con brillo
+    c = fbm(N, N, 10, seed + 8303)
+    agua = c > 0.6
+    rgb = np.where(agua[..., None], rgb * 0.55 + hexc('#1d2420') * 0.3, rgb)
+    brillo = agua & (white(N, N, seed + 8304) > 0.93)
+    rgb = np.where(brillo[..., None], rgb + 45, rgb)
+    rgb = envejecer(rgb, seed + 8305, 0.4)
+    return img(rgb)
+
+
+def lodo(seed=0):
+    n = fbm(N, N, 5, seed + 8400) * 0.6 + white(N, N, seed + 8401) * 0.4
+    rgb = ramp(n, '#241c14', '#2c2219', '#33281d', '#3b2e21')
+    w = fbm(N, N, 9, seed + 8402) > 0.7
+    rgb = np.where(w[..., None], rgb * 0.7 + hexc('#1f2a26') * 0.3, rgb)
+    return img(rgb)
+
+
+def concreto_humedo(seed=0):
+    """Boveda de concreto mojado: mas oscura, con goteras de lama verde y sarro."""
+    base = np.array(concreto(seed, color='#4d4e48', oxido=0)).astype(np.float32)[..., :3]
+    r = np.random.RandomState(seed + 8500)
+    base = streaks(base, seed + 8501, n=r.randint(2, 5), color='#26301f', strength=0.5)
+    base = streaks(base, seed + 8502, n=r.randint(0, 2), color='#a8a490', strength=0.25)
+    base = grime(base, seed + 8503, amount=0.35)
+    return img(base)
+
+
+def cobre_viejo(seed=0):
+    """Lamina de cobre de las tuberias grandes: verdin (patina azul verde), cobre que asoma y remaches en hilera."""
+    r = np.random.RandomState(seed + 8600)
+    y, x = np.mgrid[0:N, 0:N]
+    cobre = ramp(fbm(N, N, 4, seed + 8601) * 0.7 + white(N, N, seed + 8602) * 0.3, '#57321f', '#683c25', '#7a482c', '#8a5433')
+    verdin = ramp(fbm(N, N, 5, seed + 8603) * 0.6 + white(N, N, seed + 8604) * 0.4, '#25423a', '#2e4f44', '#385c4f', '#44695a')
+    k = fbm(N, N, 7, seed + 8605)
+    rgb = np.where((k > 0.42 - 0.1 * (seed % 3))[..., None], verdin, cobre)
+    # costuras de las laminas y remaches
+    cost = (y % 16 == 0) | (x == 0)
+    rgb = np.where(cost[..., None], rgb * 0.5, rgb)
+    rem = ((y % 16 == 3) & (x % 6 == 3))
+    rgb = np.where(rem[..., None], hexc('#b07a4c'), rgb)
+    rgb = np.where(np.roll(rem, 1, 0)[..., None], rgb * 0.55, rgb)
+    rgb = streaks(rgb, seed + 8606, n=r.randint(1, 3), color='#1e3a30', strength=0.4)
+    rgb = grime(rgb, seed + 8607, amount=0.25)
+    return img(rgb)
+
+
+def tablon(seed=0, color='#3e2f22'):
+    """Tablones viejos y mojados (el puente, el Refugio): vetas, clavos y orillas podridas."""
+    r = np.random.RandomState(seed + 8700)
+    y, x = np.mgrid[0:N, 0:N]
+    tabla = x // 8
+    t = (0.85 + 0.25 * ((tabla * 53 + seed * 7) % 9) / 9).astype(np.float32)
+    veta = np.sin(y * 0.55 + fbm(N, N, 5, seed + 8701) * 7 + tabla * 2.0) * 0.5 + 0.5
+    rgb = hexc(color) * t[..., None] * (0.78 + 0.32 * veta)[..., None]
+    rgb = np.where((x % 8 == 0)[..., None], rgb * 0.45, rgb)
+    rgb = np.where((x % 8 == 1)[..., None], rgb * 1.12, rgb)
+    for tx in range(4):
+        for cy in (3, 28):
+            rgb[cy, tx * 8 + 4] = hexc('#5a5a55')
+    pod = fbm(N, N, 6, seed + 8702) > 0.68
+    rgb = np.where(pod[..., None], rgb * 0.6 + hexc('#1c2018') * 0.25, rgb)
+    rgb = envejecer(rgb, seed + 8703, 0.5)
+    return img(rgb)
+
+
+def cadena(seed=0):
+    """Cadena oxidada con el acomodo de la textura de la cadena de Minecraft (x 0..5 una cara, x 6..11 la otra): eslabones que se alternan
+    de frente y de canto."""
+    a = np.zeros((N, N), np.float32)
+    rgb = np.zeros((N, N, 3), np.float32)
+    y, x = np.mgrid[0:N, 0:N]
+    hierro = ramp(white(N, N, seed + 8800), '#463c34', '#574b40', '#685a4c', '#7a6753')
+    for cara, x0 in ((0, 0), (1, 6)):
+        for k in range(4):
+            cy = k * 8 + 4
+            cx = x0 + 2.5
+            if (k + cara) % 2 == 0:   # de frente: anillo
+                ring = (np.abs(x - cx) <= 2.5) & (np.abs(y - cy) <= 4) & ~((np.abs(x - cx) <= 0.5) & (np.abs(y - cy) <= 2))
+                ring &= ~((np.abs(x - cx) >= 2) & (np.abs(y - cy) >= 4))
+            else:                     # de canto: barrita
+                ring = (np.abs(x - cx) <= 0.6) & (np.abs(y - cy) <= 4.5)
+            ring &= (x >= x0) & (x < x0 + 6)
+            a = np.where(ring, 255, a)
+            rgb = np.where(ring[..., None], hierro, rgb)
+    rgb = np.where(((np.roll(a, 1, 1) == 0) & (a > 0))[..., None], rgb * 1.25 + 8, rgb)
+    rust = fbm(N, N, 4, seed + 8801) > 0.58
+    rgb = np.where(rust[..., None], rgb * 0.7 + hexc('#7a3f1c') * 0.3, rgb)
+    return img(rgb, a)
+
+
+def trampilla(seed=0):
+    """Trampilla de reja de acero (piso que se abre): marco grueso y rejilla."""
+    y, x = np.mgrid[0:N, 0:N]
+    base = np.array(metal_placa(seed, '#3a3d39', pintado=0.45, remaches=False)).astype(np.float32)[..., :3]
+    marco = (x < 3) | (y < 3) | (x > 28) | (y > 28)
+    reja = ((x % 5 == 1) | (y % 5 == 1))
+    a = np.where(marco | reja, 255, 0)
+    rgb = np.where(marco[..., None], base * 0.9, base * 1.05)
+    rgb = np.where(((x == 3) | (y == 3))[..., None] & ~marco[..., None], rgb * 0.6, rgb)
+    for cx, cy in ((1, 1), (30, 1), (1, 30), (30, 30)):
+        rgb[cy, cx] = hexc('#8c8c84')
+    return img(rgb, a)
+
+
+def alfombra_negra(seed=0):
+    n = fbm(N, N, 3, seed + 8900) * 0.5 + white(N, N, seed + 8901) * 0.5
+    rgb = hexc('#1b1919') * (0.75 + 0.5 * n)[..., None]
+    y, x = np.mgrid[0:N, 0:N]
+    rgb = np.where(((x % 16 == 0) | (y % 16 == 0))[..., None], rgb * 0.8, rgb)
+    rgb = grime(rgb, seed + 8902, amount=0.3)
+    return img(rgb)

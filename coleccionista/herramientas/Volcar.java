@@ -47,5 +47,7 @@ public final class Volcar {
         }
         System.out.println("bloques=" + n + " marcas=" + p.marcas.size() + " caja=" + p.x0 + ".." + p.x1 + " " + p.y0 + ".." + p.y1 + " "
                 + p.z0 + ".." + p.z1);
+        var falta = com.coleccionista.mapa.Estilo.pendientes(p);
+        System.out.println(falta.isEmpty() ? "todo con bloques nuevos" : "bloques de Minecraft que quedan: " + falta);
     }
 }

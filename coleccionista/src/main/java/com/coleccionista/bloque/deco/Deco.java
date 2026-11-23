@@ -72,6 +72,11 @@ public final class Deco {
     private Deco() {
     }
 
+    /** Los barrotes oxidados (las rejas que cierran y abren las pruebas). */
+    public static net.minecraft.world.level.block.state.BlockState barrotes() {
+        return block("barrotes").defaultBlockState();
+    }
+
     public static Block block(String id) {
         return BLOCKS.get(id);
     }
@@ -146,6 +151,8 @@ public final class Deco {
             case "barrotes" -> new IronBarsBlock(p.noOcclusion());
             case "puerta" -> new DoorBlock(p.noOcclusion(), BlockSetType.IRON);
             case "reja" -> new DecoReja(p.noOcclusion());
+            case "cadena" -> new net.minecraft.world.level.block.ChainBlock(p.noOcclusion());
+            case "trampilla" -> new net.minecraft.world.level.block.TrapDoorBlock(p.noOcclusion(), BlockSetType.IRON);
             case "alfombra" -> new CarpetBlock(p);
             case "cama" -> new DecoCama(p.noOcclusion());
             default -> DecoBlock.crear(p, d);

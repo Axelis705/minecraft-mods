@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/argolla"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/argolla",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/argolla",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/argolla",
+   "y": 270
+  }
+ }
+}
