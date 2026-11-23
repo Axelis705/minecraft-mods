@@ -265,6 +265,48 @@ public final class ComandosPruebas {
                 : error(c, Component.translatable(MOD + ".tra.cmd.no_toca"));
     }
 
+    public static LiteralArgumentBuilder<CommandSourceStack> ciegas(SuggestionProvider<CommandSourceStack> vivas) {
+        return Commands.literal("ciegas")
+                .then(Commands.literal("preparar").executes(c -> {
+                    Component e = ACiegas.preparar(c.getSource().getServer());
+                    return e == null ? ok(c, Component.translatable(MOD + ".cie.cmd.preparada")) : error(c, e);
+                }))
+                .then(Commands.literal("empezar").executes(c -> ACiegas.empezar(c.getSource().getServer(), true) ? ok(c,
+                        Component.translatable(MOD + ".cie.cmd.empieza")) : error(c, Component.translatable(MOD + ".cie.cmd.no_toca")))
+                        .then(Commands.literal("ya").executes(c -> ACiegas.empezar(c.getSource().getServer(), false) ? ok(c,
+                                Component.translatable(MOD + ".cie.cmd.empieza")) : error(c, Component.translatable(MOD + ".cie.cmd.no_toca")))))
+                .then(Commands.literal("cortar").executes(c -> {
+                    ACiegas.fin(c.getSource().getServer(), true);
+                    return ok(c, Component.translatable(MOD + ".cie.cmd.cortado"));
+                }))
+                .then(Commands.literal("sacar").then(Commands.argument("pieza", StringArgumentType.word()).suggests(vivas).executes(c -> {
+                    Pieza p = pieza(c);
+                    return p != null && ACiegas.sacar(c.getSource().getServer(), p) ? ok(c, Component.translatable(MOD + ".cie.cmd.sacado", p.nombre))
+                            : error(c, Component.translatable(MOD + ".cie.cmd.no_toca"));
+                })))
+                .then(Commands.literal("guia").then(Commands.argument("pieza", StringArgumentType.word()).suggests(vivas).executes(c -> {
+                    Pieza p = pieza(c);
+                    return p != null && ACiegas.elegirGuia(c.getSource().getServer(), p) ? ok(c, Component.translatable(MOD + ".cie.cmd.guia", p.nombre))
+                            : error(c, Component.translatable(MOD + ".cie.cmd.no_toca"));
+                })))
+                .then(Commands.literal("tamano").then(Commands.argument("n", IntegerArgumentType.integer(2, 6)).executes(c -> {
+                    ACiegas.tamano = IntegerArgumentType.getInteger(c, "n");
+                    return ok(c, Component.translatable(MOD + ".cie.cmd.ajustes", ACiegas.tamano, ACiegas.segundos, ACiegas.trampas));
+                })))
+                .then(Commands.literal("tiempo").then(Commands.argument("segundos", IntegerArgumentType.integer(20, 1800)).executes(c -> {
+                    ACiegas.segundos = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".cie.cmd.ajustes", ACiegas.tamano, ACiegas.segundos, ACiegas.trampas));
+                })))
+                .then(Commands.literal("trampas").then(Commands.argument("n", IntegerArgumentType.integer(0, 30)).executes(c -> {
+                    ACiegas.trampas = IntegerArgumentType.getInteger(c, "n");
+                    return ok(c, Component.translatable(MOD + ".cie.cmd.ajustes", ACiegas.tamano, ACiegas.segundos, ACiegas.trampas));
+                })))
+                .then(Commands.literal("terminar").executes(c -> {
+                    ACiegas.terminar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".cie.cmd.terminada"));
+                }));
+    }
+
     private static int forzar(CommandContext<CommandSourceStack> c, boolean robar) {
         Pieza p = pieza(c);
         if (p == null) {

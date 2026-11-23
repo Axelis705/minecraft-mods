@@ -125,6 +125,19 @@ public final class Pantallas {
         return l;
     }
 
+    /** A ciegas (en los Laberintos). */
+    public static List<Frase> ciegas() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("venda", 100, null, 1F));
+        l.add(new Frase("guia", 110, null, 1F));
+        l.add(new Frase("trampas", 100, null, 1F));
+        l.add(new Frase("ultimo", 110, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("escuchen", 70, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -133,6 +146,7 @@ public final class Pantallas {
             case "copas" -> copas();
             case "sacrificio" -> sacrificio();
             case "traidor" -> traidor();
+            case "ciegas" -> ciegas();
             default -> null;
         };
     }

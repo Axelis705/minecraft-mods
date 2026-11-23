@@ -1,6 +1,7 @@
 axeliscore
 coleccionista
 forceload add -16 -48 224 144
+forceload add -112 32 -16 80
 #pausa 3
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
@@ -137,6 +138,23 @@ evento traidor codigo Bot_02 malo
 evento traidor codigo Bot_02 malo
 #pausa 12
 evento traidor terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento ciegas tamano 2
+evento ciegas tiempo 60
+evento ciegas trampas 8
+evento ciegas preparar
+#pausa 6
+evento ciegas guia Bot_01
+evento ciegas empezar ya
+#pausa 2
+evento ciegas sacar Bot_02
+evento ciegas sacar Bot_03
+evento ciegas sacar Bot_04
+#pausa 3
+evento ciegas terminar
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect usuarios=[coleccionista]
@@ -213,3 +231,12 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_TRAIDOR sala=1 castigo
 #expect COLECCIONISTA_TRAIDOR fin eliminados=1
 #expect COLECCIONISTA_TRAIDOR terminada
+#expect COLECCIONISTA_CONSTRUIDO laberintos
+#expect COLECCIONISTA_CIEGAS preparada equipos=2 trampas=8
+#expect COLECCIONISTA_PRESENTACION IV
+#expect COLECCIONISTA_CIEGAS guia
+#expect COLECCIONISTA_CIEGAS empieza
+#expect COLECCIONISTA_CIEGAS sale
+#expect COLECCIONISTA_CIEGAS termino lab=
+#expect COLECCIONISTA_CIEGAS fin eliminados=1
+#expect COLECCIONISTA_CIEGAS terminada

@@ -85,6 +85,8 @@ public final class Complejo {
             l.add(new Zona("capilla", com.coleccionista.mapa.Capilla.crear(SEMILLA), -10, 0, 40, 0));
             // el Archivo (El traidor), al sur de la Capilla
             l.add(new Zona("archivo", com.coleccionista.mapa.Archivo.crear(SEMILLA), -10, 0, 66, 0));
+            // los Laberintos (A ciegas), al oeste del Ala de celdas
+            l.add(new Zona("laberintos", com.coleccionista.mapa.Laberintos.crear(SEMILLA), -96, 0, 0, 0));
             zonas = l;
         }
         return zonas;

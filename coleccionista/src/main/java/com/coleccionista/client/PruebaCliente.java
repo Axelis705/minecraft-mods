@@ -489,5 +489,50 @@ final class PruebaCliente {
             com.axeliscore.plat.client.Screens.close();
             t.cmd("evento traidor terminar");
         });
+        ciegas(t);
+    }
+
+    /** Prueba 4, A ciegas: primero camino con la venda (casi no veo nada), luego soy el guía y veo el laberinto con las trampas en rojo. */
+    private static void ciegas(ClientTest.Script t) {
+        t.add("cie: preparar", 1600, () -> {
+            t.cmd("evento revivir " + yo());
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("gamemode adventure @a");
+            t.cmd("forceload add -112 32 -16 64");
+            t.cmd("evento ciegas tamano 2");
+            t.cmd("evento ciegas tiempo 120");
+            t.cmd("evento ciegas trampas 10");
+            t.cmd("evento ciegas preparar");
+        });
+        t.photo("74_ciegas_presentacion", 5700, () -> {
+        });
+        t.add("ciegas lista", 100, () -> {
+            t.check("LISTA".equals(CiegasCliente.fase()), "A ciegas está lista");
+            // que me toque caminar: el guía de mi equipo será mi compañero
+            String otro = CiegasCliente.companero();
+            if (otro != null) {
+                t.cmd("evento ciegas guia " + otro);
+            }
+        });
+        t.add("cie: empezar", 1500, () -> t.cmd("evento ciegas empezar ya"));
+        t.photo("75_vendado", 2500, () -> Minecraft.getInstance().player.setXRot(8));
+        t.add("vendado", 100, () -> t.check(CiegasCliente.vendado(), "camino con los ojos vendados"));
+        t.add("cie: otra vez", 1500, () -> {
+            t.cmd("evento ciegas terminar");
+            t.cmd("evento ciegas preparar");
+        });
+        t.add("cie: ser guía", 6000, () -> t.cmd("evento ciegas guia " + yo()));
+        t.add("cie: empezar 2", 1500, () -> t.cmd("evento ciegas empezar ya"));
+        t.photo("76_guia", 2500, () -> Minecraft.getInstance().player.setXRot(62));
+        t.add("guía", 100, () -> t.check(CiegasCliente.soyElGuia() && !CiegasCliente.vendado(), "soy el guía: veo todo y las trampas en rojo"));
+        t.add("cie: cortar", 1500, () -> t.cmd("evento ciegas cortar"));
+        t.photo("77_ciegas_fin", 1500, () -> {
+        });
+        t.add("fin ciegas", 100, () -> {
+            t.check("FIN".equals(CiegasCliente.fase()), "terminó A ciegas");
+            t.cmd("evento ciegas terminar");
+        });
     }
 }

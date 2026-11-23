@@ -14,12 +14,13 @@ public final class Pruebas {
         LasCopas.init();
         Sacrificio.init();
         Traidor.init();
+        ACiegas.init();
     }
 
     /** El reloj del evento llegó a cero: le toca a la prueba que esté en marcha. Devuelve si alguna lo atendió. */
     public static boolean alAcabarReloj(MinecraftServer s) {
         return Encadenados.alAcabarReloj(s) || Compartir.alAcabarReloj(s) || LasPuertas.alAcabarReloj(s) || LasCopas.alAcabarReloj(s) || Sacrificio.alAcabarReloj(s)
-                || Traidor.alAcabarReloj(s);
+                || Traidor.alAcabarReloj(s) || ACiegas.alAcabarReloj(s);
     }
 
     public static void reiniciar(MinecraftServer s) {
@@ -29,5 +30,6 @@ public final class Pruebas {
         LasCopas.reiniciar(s);
         Sacrificio.reiniciar(s);
         Traidor.reiniciar(s);
+        ACiegas.reiniciar(s);
     }
 }

@@ -172,6 +172,7 @@ public final class Comandos {
                 .then(com.coleccionista.prueba.ComandosPruebas.copas())
                 .then(com.coleccionista.prueba.ComandosPruebas.sacrificio())
                 .then(com.coleccionista.prueba.ComandosPruebas.traidor(vivas))
+                .then(com.coleccionista.prueba.ComandosPruebas.ciegas(vivas))
                 .then(Commands.literal("cuerpos").then(Commands.literal("limpiar").executes(c -> {
                     int n = Cuerpos.limpiar(c.getSource().getServer());
                     return ok(c, Component.translatable(MOD + ".cmd.cuerpos", n));
