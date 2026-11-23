@@ -92,7 +92,11 @@ public final class CoreScenario {
             t.cmd("effect clear @a");
             t.cmd("kill @e[type=!player]");
         });
-        t.add("volar", 300, () -> volar(true));
+        // un piso invisible (barrera) arriba para las fotos desde lo alto (volando a veces se caía)
+        t.add("volar", 400, () -> {
+            volar(true);
+            t.cmd("fill -4 -54 -9 5 -54 2 minecraft:barrier");
+        });
         // avisos (sin daño, lentos)
         t.add("combate: avisos", 1500, () -> {
             t.cmd(aqui + "axeliscore combate avisos");
@@ -124,7 +128,7 @@ public final class CoreScenario {
         });
         t.photo("19_jefe_martillazo", 750, () -> {
             t.cmd("execute as @p run axeliscore combate ataque martillazo");
-            t.lookFrom(2.5, G + 5, -1.5, 0.5, G, 7.5);
+            t.lookFrom(2.5, G + 7, -1.5, 0.5, G, 7.5);
         });
         t.add("fase 2", 1000, () -> {
             t.cmd("axeliscore combate fase 1");
@@ -141,7 +145,7 @@ public final class CoreScenario {
         });
         t.photo("19_jefe_lluvia", 900, () -> {
             t.cmd("execute as @p run axeliscore combate ataque lluvia");
-            t.lookFrom(0.5, G + 2.5, -4.5, 0.5, G, -2.0);
+            t.lookFrom(0.5, G + 7, -4.5, 0.5, G + 7, -2.6);
         });
         t.photo("19_jefe_fragmentos", 900, () -> {
             t.cmd("execute as @p run axeliscore combate ataque fragmentos");
@@ -154,7 +158,7 @@ public final class CoreScenario {
         });
         t.photo("19_jefe_onda", 900, () -> {
             t.cmd("execute as @p run axeliscore combate ataque onda");
-            t.lookFrom(0.5, G + 9, -7.5, 0.5, G, 7.5);
+            t.lookFrom(0.5, G + 7, -8.5, 0.5, G, 7.5);
         });
         t.photo("19_jefe_onda_2", 700, () -> {
         });
@@ -164,6 +168,7 @@ public final class CoreScenario {
         });
         t.add("limpiar jefe", 600, () -> {
             t.cmd("kill @e[type=!player]");
+            t.cmd("fill -4 -54 -9 5 -54 2 minecraft:air");
             t.hud(false);
             volar(false);
         });
