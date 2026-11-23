@@ -54,7 +54,8 @@ public final class Cine {
         MinecraftForge.EVENT_BUS.addListener((ScreenEvent.Opening e) -> {
             Minecraft mc = Minecraft.getInstance();
             // solo cuando el evento te tiene acostado a propósito (sala de espera y cinemática); si no, siempre puedes levantarte
-            if (e.getNewScreen() instanceof InBedChatScreen && (activo || EventoCliente.sala())) {
+            // (las piezas no se pueden acostar solas: si una está acostada es porque el evento la acostó)
+            if (e.getNewScreen() instanceof InBedChatScreen && (activo || parpadeo > 0 || EventoCliente.sala() || EventoCliente.yo() != null)) {
                 e.setCanceled(true);
             }
         });

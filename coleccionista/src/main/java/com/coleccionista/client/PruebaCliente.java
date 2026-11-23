@@ -168,7 +168,7 @@ final class PruebaCliente {
             t.check(!Cine.activo(), "terminó la cinemática");
         });
         // a los 22 segundos se acaba la espera: apagón y, al volver la luz, los tres números escondidos en cada celda
-        t.photo("24a_apagon", 15300, () -> {
+        t.photo("24a_apagon", 13800, () -> {
         });
         t.add("apagon", 100, () -> {
             var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(3, -57, 33));
@@ -176,7 +176,7 @@ final class PruebaCliente {
                     "se fue la luz de mi celda");
             t.check(InscripcionesCliente.cuantas(0) == 0, "todavía no hay números escritos");
         });
-        t.photo("24b_pistas", 4200, () -> {
+        t.photo("24b_pistas", 5700, () -> {
         });
         t.add("pistas", 100, () -> {
             t.check(InscripcionesCliente.cuantas(1) == 3, "mi celda tiene sus 3 números escondidos (" + InscripcionesCliente.cuantas(1) + ")");

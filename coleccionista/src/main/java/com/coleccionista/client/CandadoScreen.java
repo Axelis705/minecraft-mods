@@ -214,7 +214,7 @@ public class CandadoScreen extends CoreScreen {
         }
         abierta = this;
         // la cámara: frente al candado, un poco abajo del centro (se ven las ruedas y el botón)
-        Cine.acercarCandado(punto(0, -0.8, 9.2), punto(0, -0.9, 0));
+        Cine.acercarCandado(punto(0, -0.6, 11.5), punto(0, -0.7, 0));
         mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.CHAIN_STEP, 1.2F, 0.5F));
         // la mano es el mouse: no se ve la flecha
         GLFW.glfwSetInputMode(mc.getWindow().getWindow(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
@@ -542,13 +542,14 @@ public class CandadoScreen extends CoreScreen {
                     continue;
                 }
                 double rad = Math.toRadians(th);
-                float y = (float) (-MEDIO_ALTO * 0.92 * Math.sin(rad));
+                // radio de la rueda más grande que la ventanita: los números de arriba y abajo apenas asoman (el marco los tapa)
+                float y = (float) (-4.4 * Math.sin(rad));
                 float c = (float) Math.cos(rad);
-                int a = (int) (255 * Mth.clamp(c * c * 1.1F, 0, 1));
+                int a = (int) (255 * Mth.clamp(c * c * c * 1.05F, 0, 1));
                 String t = String.valueOf(Math.floorMod(dv, 10));
                 ps.pushPose();
                 ps.translate(u, y, 0);
-                float esc = 0.27F;
+                float esc = 0.31F;
                 ps.scale(esc, -esc * c, esc);
                 font.drawInBatch(t, -font.width(t) / 2F + 0.5F, -3.5F, (a << 24) | 0x1C1914, false, ps.last().pose(), buf,
                         Font.DisplayMode.POLYGON_OFFSET, 0, luz);
@@ -615,7 +616,8 @@ public class CandadoScreen extends CoreScreen {
         double u = Mth.clamp(mano[0], -14, 14), v = Mth.clamp(mano[1], -12, 14);
         Vec3 meta = punto(u, v, fuera);
         manoVis = manoVis == null ? meta : manoVis.lerp(meta, 0.45);
-        Vec3 y = n.scale(-0.82).add(der.scale(-0.42)).add(arriba.scale(0.5)).normalize(); // del hombro a la mano
+        // del hombro a la mano: el brazo sube desde abajo a la derecha, casi pegado al candado (si viene hacia la cámara se ve enorme)
+        Vec3 y = n.scale(-0.3).add(der.scale(-0.38)).add(arriba.scale(0.87)).normalize();
         Vec3 up = arriba.subtract(y.scale(arriba.dot(y))).normalize();
         Vec3 z = up.scale(-1);
         Vec3 x = y.cross(z).normalize();
@@ -626,7 +628,7 @@ public class CandadoScreen extends CoreScreen {
         ps.pushPose();
         ps.translate(manoVis.x - cam.x, manoVis.y - cam.y, manoVis.z - cam.z);
         ps.mulPose(new Quaternionf().setFromNormalized(rot));
-        ps.scale(0.8F, 0.8F, 0.8F);
+        ps.scale(0.62F, 0.62F, 0.62F);
         // la punta de la mano en el modelo del brazo derecho (pixeles /16): al centro del brazo, abajo (el brazo viene un poco ladeado)
         ps.translate((delgado ? 6.5 : 7.0) / 16, -(delgado ? 12.35 : 11.85) / 16, 0);
         if (mc.getEntityRenderDispatcher().getRenderer(mc.player) instanceof PlayerRenderer pr) {

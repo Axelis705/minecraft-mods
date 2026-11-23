@@ -107,7 +107,7 @@ public final class InscripcionesCliente {
             alguno = true;
             int packed = LevelRenderer.getLightColor(mc.level, i.luz());
             // un mínimo para que se distinga con la luz baja del ala (pero a oscuras total no se ve)
-            int bl = Math.max(LightTexture.block(packed), 3), sl = LightTexture.sky(packed);
+            int bl = Math.max(LightTexture.block(packed), 6), sl = LightTexture.sky(packed);
             int luz = LightTexture.pack(bl, sl);
             ps.pushPose();
             ps.translate(i.pos().x - cam.x, i.pos().y - cam.y, i.pos().z - cam.z);
@@ -125,18 +125,20 @@ public final class InscripcionesCliente {
             // chueco, como escrito a mano
             ps.mulPose(Axis.ZP.rotationDegrees(i.giro()));
             ps.scale(i.esc(), -i.esc(), i.esc());
+            // cuánto es 1 milésima de bloque en este espacio (el frente del texto mira hacia +z)
+            float capa = 0.0015F / i.esc();
             String t = i.texto();
             float x = -font.width(t) / 2F, y = -4;
             switch (i.estilo()) {
                 case Pistas.RAYADO -> {
                     // raspado: el surco oscuro y el metal claro encima, corrido medio pixel
                     font.drawInBatch(t, x + 0.6F, y + 0.6F, 0xFF16140F, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
-                    ps.translate(0, 0, -0.35F);
+                    ps.translate(0, 0, capa);
                     font.drawInBatch(t, x, y, 0xFFCFC8B8, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
                 }
                 case Pistas.TIZA -> {
                     font.drawInBatch(t, x + 0.4F, y + 0.3F, 0x88D8D2C2, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
-                    ps.translate(0, 0, -0.3F);
+                    ps.translate(0, 0, capa);
                     font.drawInBatch(t, x, y, 0xFFE9E4D6, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
                 }
                 case Pistas.ROJO -> font.drawInBatch(t, x, y, 0xFFA3161B, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);

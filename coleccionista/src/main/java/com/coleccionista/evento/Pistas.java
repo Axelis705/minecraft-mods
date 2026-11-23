@@ -143,7 +143,7 @@ public final class Pistas {
         }
 
         CompoundTag inscripcion(String lugar, String texto, Random r) {
-            final double e = 0.004; // despegado de la superficie
+            final double e = 0.006; // despegado de la superficie
             double x, y, z;
             int plano = PARED, estilo;
             float ang, esc;

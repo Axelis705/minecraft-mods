@@ -104,12 +104,14 @@ public final class Celdas {
             if (sp.isSleeping()) {
                 sp.stopSleeping();
             }
-            sp.teleportTo(l, at.getX() + 0.5, at.getY(), at.getZ() + 0.5, yaw, 0);
-            if (acostar) {
-                BlockPos cama = Complejo.pos(s, "celda." + p.celda + ".cama");
-                if (cama != null && l.getBlockState(cama).is(net.minecraft.tags.BlockTags.BEDS)) {
-                    sp.startSleeping(cama);
-                }
+            BlockPos cama = acostar ? Complejo.pos(s, "celda." + p.celda + ".cama") : null;
+            if (cama != null && l.getBlockState(cama).is(net.minecraft.tags.BlockTags.BEDS)) {
+                // directo a la cama: si se le manda primero a medio cuarto, al confirmar ese salto el servidor lo regresa ahí y queda
+                // "acostado" en el piso, lejos del catre (así no se veía en la cinemática)
+                sp.teleportTo(l, cama.getX() + 0.5, cama.getY() + 0.6875, cama.getZ() + 0.5, yaw, 0);
+                sp.startSleeping(cama);
+            } else {
+                sp.teleportTo(l, at.getX() + 0.5, at.getY(), at.getZ() + 0.5, yaw, 0);
             }
         } else {
             if (e.level() != l) {
