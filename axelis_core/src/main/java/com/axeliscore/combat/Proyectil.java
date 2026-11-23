@@ -183,7 +183,7 @@ public class Proyectil extends Entity {
                     continue;
                 }
                 float k = (float) Math.max(0.6, 1 - d / Math.max(0.1, r) * 0.4);
-                e.invulnerableTime = 0;
+                com.axeliscore.plat.Plat.sinInvulnerable(e);
                 Combate.danar(e, src, t.dano * k);
                 Combate.empujarDesde(e, at, t.empuje, t.empuje * 0.6);
                 if (t.estado != null) {
@@ -191,7 +191,7 @@ public class Proyectil extends Entity {
                 }
             }
         } else if (golpeado instanceof LivingEntity le && Combate.blanco(dueno, le)) {
-            le.invulnerableTime = 0;
+            com.axeliscore.plat.Plat.sinInvulnerable(le);
             Combate.danar(le, src, t.dano);
             Vec3 v = getDeltaMovement().normalize();
             Plat.push(le, v.x * t.empuje, 0.15 + t.empuje * 0.3, v.z * t.empuje);

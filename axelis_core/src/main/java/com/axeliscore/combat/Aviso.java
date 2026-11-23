@@ -282,7 +282,7 @@ public class Aviso extends Entity {
         }
         for (LivingEntity e : golpeados) {
             if (dano > 0) {
-                e.invulnerableTime = 0;
+                com.axeliscore.plat.Plat.sinInvulnerable(e);
                 Combate.danar(e, Combate.fuente(l, dueno), dano);
             }
             if (empuje != 0 || arriba != 0) {

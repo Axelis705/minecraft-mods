@@ -32,12 +32,13 @@ AxelisCore.onBreak((jugador, mundo, pos, bloque) -> ...);  // un jugador rompe u
 AxelisCore.onServerTick(servidor -> ...);    // al final de cada tick del servidor (20 por segundo)
 ```
 
-Versión actual: **1.1.0 (API 2)**. Un mod que necesita algo nuevo lo pide en su `mods.toml` (`versionRange="[1.1.0,)"`).
+Versión actual: **1.2.0 (API 3)**. Un mod que necesita algo nuevo lo pide en su `mods.toml` (`versionRange="[1.2.0,)"`).
 
 | API | Qué se agregó |
 |---|---|
 | 1 | Personajes, animación, interfaz, efectos, red, datos |
 | 2 | Cuadros de información (`InfoCard`) y temas con marco, `CoreItem`, `ItemTag`, `Plat.give`, `onLogin`, `onBreak`, `onServerTick`, condiciones de modelos de objetos (`ItemModelProps`), bloques con datos y dibujo propio (`CoreBlock`, `CoreBlockEntity`, `CoreBER`), capas del HUD (`Hud`), `Ui.fit`, `ClientTest.waitFor` |
+| 3 | Combate (`combat/`): estados (`Estados`, `Estado`), barras de vida y números de daño, ataques con aviso (`Aviso`), proyectiles (`Proyectil`, `ProyectilTipo`), jefes por fases (`Jefe`, `Fase`, `Ataque`, `JefeRenderer`), música de jefe, ayudas (`Combate`), renderizador sencillo (`CoreEntityRenderer`) |
 
 ## Personajes
 
@@ -161,10 +162,40 @@ En el cliente, `Hud.add((g, ancho, alto) -> ...)` dibuja cosas propias en la pan
 - `Plat.give(jugador, objeto)` (al inventario o al suelo si no cabe), `Plat.server(entidad)`, `Plat.mainItems(inventario)` y
   `Plat.mainAndOffhand(inventario)` (el inventario cambió en 1.21.5). `ItemTag` lee y edita los datos propios de un objeto.
 
+## Combate (`combat/`)
+
+**Estados** (servidor): `Estados.aplicar(objetivo, Estados.QUEMADO, ticks[, nivel, fuente])`, `tiene`, `nivel`, `quitar`, `limpiar`,
+`aturdido`. Los del Core: `ATURDIDO` (no camina ni ataca), `QUEMADO` (daño cada segundo, el agua lo apaga), `CONGELADO` (lento y con
+escarcha), `MARCADO` (+25 % de daño por nivel), `SANGRADO` (pierde vida, más si se mueve). Uno propio:
+`Estados.registrar(new Estado("mimod", "electrizado", 0x9FE8FF).icono(6).cada(20, (e, a) -> ...).lento(0.1F))` (íconos del Core: 0
+aturdido, 1 fuego, 2 hielo, 3 marca, 4 gota, 5 escudo, 6 rayo; o `icono(textura16x16)`). Nombre: `estado.<mod>.<nombre>` en los lang.
+Una criatura que los resiste implementa `Estados.Resiste`.
+
+**Lo que se ve** (cliente, para todas las criaturas): barra de vida sobre las heridas (con la parte blanca que baja despacio), números
+de daño (dorados y grandes en golpes fuertes, verdes al curarse, del color del estado si lo tiene), íconos de estados sobre la cabeza,
+estrellas al estar aturdido, partículas y, en el propio jugador, sus estados con el tiempo arriba de los corazones. Se apagan en
+`config/axelis_core.json` (`barras_vida`, `numeros_dano`). Se dibuja en el HUD pasando puntos del mundo a la pantalla (`Proyeccion`).
+
+**Ataques con aviso**: `Aviso.circulo / anillo / linea / cono / cuadro(level, ...)` + `.color .dano(quien, n) .empuje .estado .sonido
+.particulas .temblor .alto .seguir(entidad, fijarAntes) .soloA .alPegar .alTerminar` + `.lanzar()`. Se llena en el suelo y pega al
+terminar (no a los aliados del que ataca; ver `Combate.aliados`).
+
+**Proyectiles**: `ProyectilTipo.registrar(new ProyectilTipo(mod, nombre).orbe(color, tam) | .objeto("minecraft:...") | .modelo(geo, tex,
+tam)` + `.estela .gravedad .arrastre .persigue .vida .dano .area .estado .impacto .alLanzar)`; se lanzan con `Proyectil.lanzar(...)` o
+`Proyectil.hacia(level, tipo, dueño, desde, objetivo, rapidez)` (+ `.persiguiendo(e)`). Los escudos los paran. Muestras en
+`CoreProyectiles` (FUEGO, ESCARCHA, FRAGMENTO, CRISTAL).
+
+**Jefes**: `class MiJefe extends Jefe` con `fases()` (lista `static final` de `Fase`: desde qué vida, `.ataque(...)`, `.color`, `.titulo`,
+`.entrada(clip, ticks)`, `.dano`, `.rapidez`, `.caminar`, `.aspecto`, `.musica("mod:musica.x")`, `.alEntrar`). Cada `Ataque`: `.clip .dura
+.golpe .distancia .peso .espera .despues .alEmpezar .alGolpe .mientras`. El jefe trae barra, elige ataques por distancia y peso, no
+recibe daño mientras entra a una fase, resiste estados y pone música a los que estén cerca (sounds.json con `"stream": true`).
+Renderizador: `new JefeRenderer<>(ctx, mod, nombre, sombra, escala, aspectos)` (texturas `nombre.png`, `nombre_f2.png`...).
+Ejemplo completo: `character/Coloso.java` (música hecha con `herramientas/musica.py`).
+
 ## Comandos de prueba
 
 `/axeliscore` (versión y quién lo usa), `galeria`, `criaturas`, `probar <animación>`, `ir x y z [velocidad]`,
-`efecto <temblor|destello|vineta|titulo|aviso|dialogo|demo>`, `datos`.
+`efecto <temblor|destello|vineta|titulo|aviso|dialogo|demo>`, `datos`, `combate <estados|estado nombre [s] [nivel]|limpiar|avisos|proyectiles|jefe|fase n|ataque nombre|prueba|revisar>`.
 
 ## Pruebas automáticas
 

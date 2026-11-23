@@ -39,10 +39,17 @@ public abstract class CoreEntityRenderer<T extends Entity, S> extends EntityRend
     /** Dibuja (la pila ya está en la posición de la entidad). */
     protected abstract void draw(S s, PoseStack ps, Draw d, int light);
 
+    //#if MC >= 26.1
+    //$$ @Override
+    //$$ protected boolean affectedByCulling(T e) {
+    //$$     return false;
+    //$$ }
+    //#else
     @Override
     public boolean shouldRender(T e, Frustum f, double x, double y, double z) {
         return true;
     }
+    //#endif
 
     //#if MC >= 26.1
     //$$ @Override

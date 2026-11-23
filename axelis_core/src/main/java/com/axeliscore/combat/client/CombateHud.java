@@ -12,7 +12,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -232,7 +231,8 @@ public final class CombateHud {
     // ------------------------------------------------------------------ dibujo
 
     private static boolean esJefe(LivingEntity e) {
-        return e instanceof com.axeliscore.combat.Jefe || e.getType() == EntityType.ENDER_DRAGON || e.getType() == EntityType.WITHER;
+        String d = e.getType().getDescriptionId();
+        return e instanceof com.axeliscore.combat.Jefe || d.equals("entity.minecraft.ender_dragon") || d.equals("entity.minecraft.wither");
     }
 
     private static void barra(G g, int w, int h, LivingEntity e, Seguido s, boolean mirando, float pt, long now) {

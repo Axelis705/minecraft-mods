@@ -198,6 +198,18 @@ public final class Plat {
         //#endif
     }
 
+    /**
+     * Le quita los "ticks de invulnerabilidad" que deja cada golpe (para que un daño periódico o un aviso sí peguen aunque otro golpe
+     * acabe de llegar).
+     */
+    public static void sinInvulnerable(Entity e) {
+        //#if MC >= 26.1
+        //$$ e.setInvulnerableTime(0);
+        //#else
+        e.invulnerableTime = 0;
+        //#endif
+    }
+
     public static void invulnerable(Entity e, boolean v) {
         //#if MC >= 26.3
         //$$ e.setPermanentlyInvulnerable(v);

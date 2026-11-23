@@ -59,7 +59,7 @@ public final class Estados {
     /** Pierde vida cada segundo (más por nivel); el agua lo apaga. */
     public static final Estado QUEMADO = registrar(new Estado(AxelisCore.MODID, "quemado", 0xFF7A2E).icono(1).seApagaConAgua().particula("flame")
             .cada(20, (e, a) -> {
-                e.invulnerableTime = 0;
+                com.axeliscore.plat.Plat.sinInvulnerable(e);
                 Plat.hurt(e, e.damageSources().onFire(), 1F * a.nivel);
             }));
     /** Más lento (20 % por nivel) y con escarcha. */
@@ -73,7 +73,7 @@ public final class Estados {
             .cada(30, (e, a) -> {
                 var v = e.getDeltaMovement();
                 boolean seMueve = v.x * v.x + v.z * v.z > 0.004;
-                e.invulnerableTime = 0;
+                com.axeliscore.plat.Plat.sinInvulnerable(e);
                 Plat.hurt(e, e.damageSources().magic(), a.nivel * (seMueve ? 1.5F : 1F));
             }));
 

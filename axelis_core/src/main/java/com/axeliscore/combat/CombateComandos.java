@@ -118,7 +118,7 @@ public final class CombateComandos {
             m.setCustomName(est[i].nombre());
             l.addFreshEntity(m);
             Estados.aplicar(m, est[i], 20 * 30, i == 3 ? 2 : 1, s.getEntity());
-            m.invulnerableTime = 0;
+            com.axeliscore.plat.Plat.sinInvulnerable(m);
             Plat.hurt(m, l.damageSources().magic(), 3F + i);
         }
         s.sendSuccess(() -> Component.literal("Cinco bestias con un estado cada una"), false);
