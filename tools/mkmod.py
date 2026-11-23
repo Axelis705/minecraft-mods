@@ -257,6 +257,16 @@ public final class ModClient {{
         mods.append(mod_id)
     write(lst, "# mods que usan Axelis Core (los compila y prueba .github/workflows/mods-core.yml en 1.20.1, 1.21.1 y 26.3)\n" +
           "\n".join(mods) + "\n")
+    # el flujo de los mods viejos (build.yml) no tiene que correr cuando solo cambia este mod
+    wf = os.path.join(ROOT, ".github", "workflows", "build.yml")
+    if os.path.exists(wf):
+        with open(wf, encoding="utf-8") as fh:
+            y = fh.read()
+        line = f"      - '{mod_id}/**'\n"
+        anchor = "      - 'core_prueba/**'\n"
+        if line not in y and anchor in y:
+            with open(wf, "w", encoding="utf-8") as fh:
+                fh.write(y.replace(anchor, anchor + line, 1))
     print(f"mod {mod_id} creado en {mod_id}/ (clase {pkg}.{cls})")
 
 

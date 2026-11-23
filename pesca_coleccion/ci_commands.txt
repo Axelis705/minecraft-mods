@@ -1,0 +1,4 @@
+axeliscore
+pesca_coleccion
+#expect PRUEBA_PESCA_COLECCION_OK Axelis Core
+#expect usuarios=[pesca_coleccion]

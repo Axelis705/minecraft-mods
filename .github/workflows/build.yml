@@ -3,6 +3,17 @@ name: Compilar mods
 # Compila cada mod con Gradle real cada vez que se sube un cambio. El .jar queda descargable en la pestaña Actions.
 on:
   push:
+    # los cambios que solo tocan Axelis Core o los mods que lo usan se prueban en core.yml y mods-core.yml (tools/mkmod.py agrega
+    # aquí la carpeta de cada mod nuevo)
+    paths-ignore:
+      - 'axelis_core/**'
+      - 'core_prueba/**'
+      - 'pesca_coleccion/**'
+      - 'tools/mkmod.py'
+      - 'tools/mods_core.txt'
+      - '.github/workflows/core.yml'
+      - '.github/workflows/cliente-core.yml'
+      - '.github/workflows/mods-core.yml'
   pull_request:
   workflow_dispatch:
 
