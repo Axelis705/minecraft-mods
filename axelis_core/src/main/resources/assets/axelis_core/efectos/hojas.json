@@ -1,0 +1,14 @@
+{
+  "capas": [
+    {
+      "particula": "hoja",
+      "forma": "columna",
+      "radio": 1.6,
+      "alto": 3.0,
+      "cuantas": 26,
+      "duracion": 40,
+      "velocidad": 0.01,
+      "hacia": "abajo"
+    }
+  ]
+}

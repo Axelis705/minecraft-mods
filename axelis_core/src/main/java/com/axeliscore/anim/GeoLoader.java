@@ -93,6 +93,29 @@ public final class GeoLoader {
             bones[i] = new Geo.Bone(name, parent, piv[0], 24 - piv[1], piv[2], rad(rot[0]), rad(rot[1]), rad(rot[2]), cubes, glow.contains(name));
         }
         Geo geo = new Geo(id, tw, th, bones);
+        if (g.has("axelis_frames")) {
+            // {"bone": "eyes", "frames": 4, "fps": 8, "dv": 8}: la textura baja 8 píxeles en cada cuadro
+            for (JsonElement e : g.getAsJsonArray("axelis_frames")) {
+                JsonObject o = e.getAsJsonObject();
+                int b = geo.bone(o.get("bone").getAsString());
+                if (b >= 0) {
+                    geo.cuadros.add(new Geo.Cuadros(b, Math.max(1, o.has("frames") ? o.get("frames").getAsInt() : 2),
+                            o.has("fps") ? o.get("fps").getAsFloat() : 8, o.has("du") ? o.get("du").getAsFloat() : 0,
+                            o.has("dv") ? o.get("dv").getAsFloat() : 0));
+                }
+            }
+        }
+        if (g.has("axelis_pulse")) {
+            // {"bone": "crystal", "min": 0.6, "max": 1, "speed": 1.5}
+            for (JsonElement e : g.getAsJsonArray("axelis_pulse")) {
+                JsonObject o = e.getAsJsonObject();
+                int b = geo.bone(o.get("bone").getAsString());
+                if (b >= 0) {
+                    geo.pulsos.add(new Geo.Pulso(b, o.has("min") ? o.get("min").getAsFloat() : 0.6F, o.has("max") ? o.get("max").getAsFloat() : 1F,
+                            o.has("speed") ? o.get("speed").getAsFloat() : 1F));
+                }
+            }
+        }
         if (g.has("axelis_bends")) {
             for (JsonElement e : g.getAsJsonArray("axelis_bends")) {
                 JsonObject o = e.getAsJsonObject();

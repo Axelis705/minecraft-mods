@@ -10,6 +10,10 @@ public final class Pose {
     public final int n;
     public final float[] rot, pos, scl;
     public final boolean[] hidden;
+    /** Corrimiento de la textura de cada hueso (píxeles): para ojos, bocas o fuego por cuadros. */
+    public final float[] du, dv;
+    /** Color que multiplica a cada hueso (ARGB; 0xFFFFFFFF = normal): para brillar, apagarse o volverse transparente. */
+    public final int[] tinte;
 
     public Pose(int bones) {
         n = bones;
@@ -17,6 +21,9 @@ public final class Pose {
         pos = new float[bones * 3];
         scl = new float[bones * 3];
         hidden = new boolean[bones];
+        du = new float[bones];
+        dv = new float[bones];
+        tinte = new int[bones];
         reset();
     }
 
@@ -25,6 +32,9 @@ public final class Pose {
         Arrays.fill(pos, 0);
         Arrays.fill(scl, 1);
         Arrays.fill(hidden, false);
+        Arrays.fill(du, 0);
+        Arrays.fill(dv, 0);
+        Arrays.fill(tinte, 0xFFFFFFFF);
     }
 
     public void copyFrom(Pose o) {
@@ -32,6 +42,24 @@ public final class Pose {
         System.arraycopy(o.pos, 0, pos, 0, pos.length);
         System.arraycopy(o.scl, 0, scl, 0, scl.length);
         System.arraycopy(o.hidden, 0, hidden, 0, hidden.length);
+        System.arraycopy(o.du, 0, du, 0, du.length);
+        System.arraycopy(o.dv, 0, dv, 0, dv.length);
+        System.arraycopy(o.tinte, 0, tinte, 0, tinte.length);
+    }
+
+    /** Corre la textura de un hueso (píxeles). */
+    public void uv(int bone, float u, float v) {
+        if (bone >= 0) {
+            du[bone] = u;
+            dv[bone] = v;
+        }
+    }
+
+    /** Color de un hueso (ARGB que multiplica). */
+    public void tinte(int bone, int argb) {
+        if (bone >= 0) {
+            tinte[bone] = argb;
+        }
     }
 
     /** Mezcla hacia otra postura: w = 0 se queda igual, w = 1 queda como la otra. */

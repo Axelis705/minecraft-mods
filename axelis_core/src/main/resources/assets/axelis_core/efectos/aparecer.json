@@ -1,0 +1,48 @@
+{
+  "sonido": "minecraft:entity.illusioner.mirror_move",
+  "volumen": 1.0,
+  "tono": 1.0,
+  "capas": [
+    {
+      "particula": "nube",
+      "forma": "anillo",
+      "radio": 0.5,
+      "cuantas": 24,
+      "velocidad": 0.18,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "portal",
+      "forma": "columna",
+      "radio": 0.6,
+      "alto": 2.0,
+      "cuantas": 60,
+      "velocidad": 0.4,
+      "hacia": "adentro"
+    },
+    {
+      "particula": "polvo",
+      "color": "#5FD0FF",
+      "color2": "#FFFFFF",
+      "tam": 1.2,
+      "forma": "espiral",
+      "radio": 0.9,
+      "alto": 2.2,
+      "vueltas": 3,
+      "cuantas": 50,
+      "duracion": 10,
+      "velocidad": 0,
+      "hacia": "nada"
+    },
+    {
+      "particula": "vara",
+      "forma": "columna",
+      "radio": 0.3,
+      "alto": 2.0,
+      "cuantas": 6,
+      "velocidad": 0.05,
+      "hacia": "arriba",
+      "retraso": 8
+    }
+  ]
+}

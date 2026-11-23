@@ -70,5 +70,15 @@ public final class AnimHost {
         last = seconds;
         animator.tick(dt);
         animator.sample(pose);
+        for (Geo.Cuadros c : geo.cuadros) {
+            int f = (int) Math.floor(seconds * c.fps()) % c.frames();
+            pose.du[c.bone()] += f * c.du();
+            pose.dv[c.bone()] += f * c.dv();
+        }
+        for (Geo.Pulso p : geo.pulsos) {
+            float k = p.min() + (p.max() - p.min()) * (0.5F + 0.5F * (float) Math.sin(seconds * p.veces() * Math.PI * 2));
+            int v = Math.max(0, Math.min(255, Math.round(k * 255)));
+            pose.tinte[p.bone()] = 0xFF000000 | v << 16 | v << 8 | v;
+        }
     }
 }

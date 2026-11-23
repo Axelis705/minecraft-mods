@@ -43,6 +43,7 @@ public final class CoreClient {
         com.axeliscore.combat.client.CombateHud.init();
         com.axeliscore.combat.client.MusicaJefe.init();
         com.axeliscore.npc.client.NpcCliente.init();
+        com.axeliscore.fx.client.EfectosCliente.init();
         com.axeliscore.fx.client.Hud.add((g, w, h) -> com.axeliscore.anim.client.EstudioArchivos.revisar());
         com.axeliscore.ui.ScreenRegistry.register(AxelisCore.MODID + ":demo", com.axeliscore.ui.DemoScreen::new);
         com.axeliscore.ui.ScreenRegistry.register(com.axeliscore.anim.mc.EstudioServidor.PANTALLA, com.axeliscore.anim.client.EstudioScreen::new);

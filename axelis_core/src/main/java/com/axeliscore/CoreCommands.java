@@ -92,7 +92,17 @@ public final class CoreCommands {
                         .executes(c -> dataTest(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores"))));
         d.register(Commands.literal("axeliscore").executes(CoreCommands::info).then(galeria).then(criaturas).then(probar).then(ir).then(efecto)
                 .then(datos).then(com.axeliscore.combat.CombateComandos.nodo()).then(com.axeliscore.npc.NpcComandos.nodo())
-                .then(com.axeliscore.anim.mc.EstudioServidor.nodo()));
+                .then(com.axeliscore.anim.mc.EstudioServidor.nodo())
+                .then(Commands.literal("particulas").requires(Plat::isOp).then(Commands.argument("efecto", StringArgumentType.greedyString())
+                        .executes(c -> {
+                            var s = c.getSource();
+                            net.minecraft.world.phys.Vec3 at = s.getPosition().add(s.getEntity() != null ? s.getEntity().getLookAngle().scale(3)
+                                    : net.minecraft.world.phys.Vec3.ZERO).add(0, s.getEntity() != null ? s.getEntity().getEyeHeight() : 0, 0);
+                            String id = StringArgumentType.getString(c, "efecto").trim();
+                            com.axeliscore.fx.Efectos.lanzar(s.getLevel(), id.contains(":") ? id : AxelisCore.MODID + ":" + id, at);
+                            AxelisCore.LOGGER.info("AXCORE_EFECTO {}", id);
+                            return 1;
+                        }))));
         var node = d.getRoot().getChild("axeliscore");
         StringBuilder sb = new StringBuilder();
         if (node != null) {

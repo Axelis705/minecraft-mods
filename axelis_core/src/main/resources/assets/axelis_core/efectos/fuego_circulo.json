@@ -1,0 +1,51 @@
+{
+  "sonido": "minecraft:entity.blaze.shoot",
+  "volumen": 0.9,
+  "tono": 0.8,
+  "capas": [
+    {
+      "particula": "fuego",
+      "forma": "anillo",
+      "radio": 2.2,
+      "alto": 0.1,
+      "cuantas": 44,
+      "duracion": 8,
+      "velocidad": 0.02,
+      "hacia": "arriba",
+      "repetir": 4,
+      "cada": 8
+    },
+    {
+      "particula": "humo_grande",
+      "forma": "anillo",
+      "radio": 2.2,
+      "alto": 0.4,
+      "cuantas": 10,
+      "duracion": 20,
+      "velocidad": 0.04,
+      "hacia": "arriba",
+      "retraso": 6
+    },
+    {
+      "particula": "polvo",
+      "color": "#FFB040",
+      "color2": "#7A1F00",
+      "tam": 1.5,
+      "forma": "disco",
+      "radio": 2.0,
+      "alto": 0.15,
+      "cuantas": 30,
+      "duracion": 20,
+      "velocidad": 0.02,
+      "hacia": "arriba"
+    },
+    {
+      "particula": "lava",
+      "forma": "disco",
+      "radio": 1.8,
+      "cuantas": 6,
+      "duracion": 20,
+      "velocidad": 0.1
+    }
+  ]
+}

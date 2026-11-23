@@ -143,6 +143,7 @@ public class AnimTest {
         }
         bbmodel();
         mezcla();
+        idaYVuelta();
         if (fails > 0) {
             System.out.println("AnimTest: " + fails + " fallos");
             System.exit(1);
@@ -190,6 +191,55 @@ public class AnimTest {
         }
         tr.pos.sample(0.3F, n -> 0, out);
         eq("paso: después del cuadro usa el valor de salida", out[0], -4);
+    }
+
+    /**
+     * Ida y vuelta con Blockbench: el modelo de la Persona (un pedazo) se abrió en Blockbench 5.2, Blockbench lo guardó como .bbmodel y
+     * ese archivo, pasado por BbModel, tiene que dar exactamente el mismo modelo que el original (huesos, padres, cubos, UV, espejo, caras).
+     */
+    static void idaYVuelta() {
+        String original = """
+                {"format_version":"1.12.0","minecraft:geometry":[{"description":{"identifier":"geometry.axelis_core.persona","texture_width":64,"texture_height":64},"bones":[{"name":"root","pivot":[0,0,0]},{"name":"body","pivot":[0,12,0],"parent":"root","cubes":[{"origin":[-4,12,-2],"size":[8,12,4],"uv":[16,16]},{"origin":[-4,12,-2],"size":[8,12,4],"uv":[16,32],"inflate":0.25}]},{"name":"chest","pivot":[0,18,0],"parent":"body"},{"name":"head","pivot":[0,24,0],"parent":"chest","cubes":[{"origin":[-4,24,-4],"size":[8,8,8],"uv":[0,0]},{"origin":[-4,24,-4],"size":[8,8,8],"uv":[32,0],"inflate":0.5}]},{"name":"face_eyes","pivot":[0,24,0],"parent":"head","cubes":[{"origin":[-4,24,-4.03],"size":[8,8,0],"uv":{"north":{"uv":[0,0],"uv_size":[8,8]}}}]},{"name":"right_arm","pivot":[-5,22,0],"parent":"chest","rotation":[5,10,-15],"cubes":[{"origin":[-8,12,-2],"size":[4,12,4],"uv":[40,16]},{"origin":[-8,12,-2],"size":[4,12,4],"uv":[40,32],"inflate":0.25,"mirror":true}]},{"name":"right_forearm","pivot":[-6,18,0],"parent":"right_arm"},{"name":"left_leg","pivot":[1.9,12,0],"parent":"root","cubes":[{"origin":[-0.1,0,-2],"size":[4,12,4],"uv":[16,48],"pivot":[1.9,6,0],"rotation":[10,0,5]}]}]}]}
+                """;
+        String guardadoPorBlockbench = """
+                {"meta":{"format_version":"5.0","model_format":"bedrock","box_uv":true},"name":"persona","resolution":{"width":64,"height":64},"elements":[{"name":"body","type":"cube","uuid":"8999805c-abd7-2ce8-14a6-9846e4717bb8","from":[-4,12,-2],"to":[4,24,2],"origin":[0,0,0],"box_uv":true,"uv_offset":[16,16]},{"name":"body","type":"cube","uuid":"fcf11756-4e93-329a-310b-2341da24e04d","from":[-4,12,-2],"to":[4,24,2],"origin":[0,0,0],"box_uv":true,"inflate":0.25,"uv_offset":[16,32]},{"name":"head","type":"cube","uuid":"61c2f984-267f-6acc-3053-3d019509578c","from":[-4,24,-4],"to":[4,32,4],"origin":[0,0,0],"box_uv":true},{"name":"head","type":"cube","uuid":"f05a8ebd-58bd-7d2f-3dde-7a9b4cbf2fe2","from":[-4,24,-4],"to":[4,32,4],"origin":[0,0,0],"box_uv":true,"inflate":0.5,"uv_offset":[32,0]},{"name":"face_eyes","type":"cube","uuid":"60b80ed0-9426-bb6c-84ea-6d0b835792bc","from":[-4,24,-4.03],"to":[4,32,-4.03],"origin":[0,0,0],"box_uv":false,"faces":{"north":{"uv":[0,0,8,8]},"east":{"uv":[0,0,0,0],"texture":null},"south":{"uv":[0,0,0,0],"texture":null},"west":{"uv":[0,0,0,0],"texture":null},"up":{"uv":[0,0,0,0],"texture":null},"down":{"uv":[0,0,0,0],"texture":null}}},{"name":"right_arm","type":"cube","uuid":"9a22684e-97a9-3e3b-5dea-e638eb72dbe2","from":[4,12,-2],"to":[8,24,2],"origin":[0,0,0],"box_uv":true,"uv_offset":[40,16]},{"name":"right_arm","type":"cube","uuid":"c979898d-e8e0-c016-4e63-1cd819ac274e","from":[4,12,-2],"to":[8,24,2],"origin":[0,0,0],"box_uv":true,"inflate":0.25,"mirror_uv":true,"uv_offset":[40,32]},{"name":"left_leg","type":"cube","uuid":"5a4a0016-2d2b-6671-2e71-79bb70de3cd6","from":[-3.9,0,-2],"to":[0.10000000000000009,12,2],"origin":[-1.9,6,0],"box_uv":true,"rotation":[-10,0,5],"uv_offset":[16,48]}],"groups":[{"name":"root","uuid":"4e6532fe-ce84-c419-21a0-ea8f18f496ea","origin":[0,0,0],"rotation":[0,0,0]},{"name":"body","uuid":"ad52a49d-e8e6-60c7-7516-956fabbfc049","origin":[0,12,0],"rotation":[0,0,0]},{"name":"chest","uuid":"2f1b3796-7da4-5424-a4fe-63dac803d9aa","origin":[0,18,0],"rotation":[0,0,0]},{"name":"head","uuid":"22a288dc-9794-d3ae-0dc0-573d1cec010d","origin":[0,24,0],"rotation":[0,0,0]},{"name":"face_eyes","uuid":"f3adc67f-108a-9c2c-39cb-497c29eeb5f8","origin":[0,24,0],"rotation":[0,0,0]},{"name":"right_arm","uuid":"15ab30e5-0505-1caf-5f50-f648af559d65","origin":[5,22,0],"rotation":[-5,-10,-15]},{"name":"right_forearm","uuid":"abe4540d-7908-c007-6cf6-f21d4bd44c4b","origin":[6,18,0],"rotation":[0,0,0]},{"name":"left_leg","uuid":"30b6ffa4-ad31-4f5e-7837-00e5cecb3bc1","origin":[-1.9,12,0],"rotation":[0,0,0]}],"outliner":[{"uuid":"4e6532fe-ce84-c419-21a0-ea8f18f496ea","isOpen":false,"children":[{"uuid":"ad52a49d-e8e6-60c7-7516-956fabbfc049","isOpen":false,"children":["8999805c-abd7-2ce8-14a6-9846e4717bb8","fcf11756-4e93-329a-310b-2341da24e04d",{"uuid":"2f1b3796-7da4-5424-a4fe-63dac803d9aa","isOpen":false,"children":[{"uuid":"22a288dc-9794-d3ae-0dc0-573d1cec010d","isOpen":false,"children":["61c2f984-267f-6acc-3053-3d019509578c","f05a8ebd-58bd-7d2f-3dde-7a9b4cbf2fe2",{"uuid":"f3adc67f-108a-9c2c-39cb-497c29eeb5f8","isOpen":false,"children":["60b80ed0-9426-bb6c-84ea-6d0b835792bc"]}]},{"uuid":"15ab30e5-0505-1caf-5f50-f648af559d65","isOpen":false,"children":["9a22684e-97a9-3e3b-5dea-e638eb72dbe2","c979898d-e8e0-c016-4e63-1cd819ac274e",{"uuid":"abe4540d-7908-c007-6cf6-f21d4bd44c4b","isOpen":false,"children":[]}]}]}]},{"uuid":"30b6ffa4-ad31-4f5e-7837-00e5cecb3bc1","isOpen":false,"children":["5a4a0016-2d2b-6671-2e71-79bb70de3cd6"]}]}]}
+                """;
+        Geo o = GeoLoader.parse(original);
+        Geo c = GeoLoader.parse(BbModel.parse(guardadoPorBlockbench).geo);
+        eq("ida y vuelta: huesos", c.bones.length, o.bones.length);
+        for (Geo.Bone b : o.bones) {
+            int i = c.bone(b.name);
+            if (i < 0) {
+                fails++;
+                System.out.println("FALLO: ida y vuelta perdió el hueso " + b.name);
+                continue;
+            }
+            Geo.Bone x = c.bones[i];
+            String n = "ida y vuelta " + b.name;
+            eq(n + " pivote", b.px + b.py * 7 + b.pz * 13, x.px + x.py * 7 + x.pz * 13);
+            eq(n + " giro", b.rx + b.ry * 7 + b.rz * 13, x.rx + x.ry * 7 + x.rz * 13);
+            eq(n + " padre", b.parent < 0 ? -1 : c.bone(o.bones[b.parent].name), x.parent);
+            eq(n + " cubos", b.cubes.size(), x.cubes.size());
+            for (int j = 0; j < Math.min(b.cubes.size(), x.cubes.size()); j++) {
+                Geo.Cube u = b.cubes.get(j), v = x.cubes.get(j);
+                float[] m = {u.x0, u.y0, u.z0, u.sx, u.sy, u.sz, u.inflate, u.u, u.v, u.crx, u.cry, u.crz, u.cpx, u.cpy, u.cpz, u.mirror ? 1 : 0};
+                float[] w = {v.x0, v.y0, v.z0, v.sx, v.sy, v.sz, v.inflate, v.u, v.v, v.crx, v.cry, v.crz, v.cpx, v.cpy, v.cpz, v.mirror ? 1 : 0};
+                for (int k = 0; k < m.length; k++) {
+                    eq(n + " cubo " + j + " dato " + k, w[k], m[k]);
+                }
+                eq(n + " cubo " + j + " caras", u.faces == null ? 0 : 1, v.faces == null ? 0 : 1);
+                if (u.faces != null && v.faces != null) {
+                    for (int f = 0; f < 6; f++) {
+                        eq(n + " cara " + f, u.faces[f] == null ? 0 : 1, v.faces[f] == null ? 0 : 1);
+                        if (u.faces[f] != null && v.faces[f] != null) {
+                            for (int k = 0; k < 4; k++) {
+                                eq(n + " cara " + f + " uv " + k, v.faces[f][k], u.faces[f][k]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /** Mezcla por valor: a mitad de camino entre dos animaciones queda en medio. */

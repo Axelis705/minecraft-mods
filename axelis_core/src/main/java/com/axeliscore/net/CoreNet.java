@@ -163,6 +163,27 @@ public final class CoreNet {
         }
     }
 
+    /** Un efecto de partículas ({@link com.axeliscore.fx.Efectos}): en un punto o en un hueso de una entidad (ent >= 0). */
+    public record EfectoMsg(String id, double x, double y, double z, float dx, float dy, float dz, float escala, int ent, String hueso) {
+        void write(FriendlyByteBuf b) {
+            b.writeUtf(id);
+            b.writeDouble(x);
+            b.writeDouble(y);
+            b.writeDouble(z);
+            b.writeFloat(dx);
+            b.writeFloat(dy);
+            b.writeFloat(dz);
+            b.writeFloat(escala);
+            b.writeVarInt(ent + 1);
+            b.writeUtf(hueso);
+        }
+
+        static EfectoMsg read(FriendlyByteBuf b) {
+            return new EfectoMsg(b.readUtf(), b.readDouble(), b.readDouble(), b.readDouble(), b.readFloat(), b.readFloat(), b.readFloat(),
+                    b.readFloat(), b.readVarInt() - 1, b.readUtf());
+        }
+    }
+
     /** Se llama una vez al arrancar (dentro de enqueueWork del arranque común). */
     public static void register() {
         NET.register(FxMsg.class, FxMsg::write, FxMsg::read, (m, sender) -> Net.onClient(() -> ClientSide.fx(m)));
@@ -182,6 +203,7 @@ public final class CoreNet {
             }
         });
         NET.register(EstadosMsg.class, EstadosMsg::write, EstadosMsg::read, (m, sender) -> Net.onClient(() -> ClientSide.estados(m)));
+        NET.register(EfectoMsg.class, EfectoMsg::write, EfectoMsg::read, (m, sender) -> Net.onClient(() -> ClientSide.efecto(m)));
         NET.done();
     }
 
@@ -193,6 +215,10 @@ public final class CoreNet {
 
         static void title(TitleMsg m) {
             com.axeliscore.fx.client.FxClient.title(Txt.unpack(m.title()), Txt.unpack(m.sub()), m.color(), m.ticks());
+        }
+
+        static void efecto(EfectoMsg m) {
+            com.axeliscore.fx.client.EfectosCliente.recibir(m.id(), m.x(), m.y(), m.z(), m.dx(), m.dy(), m.dz(), m.escala(), m.ent(), m.hueso());
         }
 
         static void toast(ToastMsg m) {

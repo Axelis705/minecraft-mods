@@ -469,8 +469,12 @@ public class EstudioScreen extends UiScreen {
         }
     }
 
+    /**
+     * Al salir de la pantalla de cualquier forma (Esc, un comando, otra pantalla encima, desconectarse): guarda lo que faltaba y suelta a la
+     * entidad (vuelve a tener su IA). Va en removed() y no en onClose(), porque onClose() solo corre con Esc.
+     */
     @Override
-    public void onClose() {
+    public void removed() {
         Entity e = EstudioEditor.objetivo();
         if (EstudioEditor.cambios) {
             guardar();
@@ -478,10 +482,12 @@ public class EstudioScreen extends UiScreen {
         if (e != null) {
             CompoundTag d = new CompoundTag();
             d.putInt("ent", e.getId());
-            ClientData.send(EstudioServidor.FIN, d);
+            if (Minecraft.getInstance().getConnection() != null) {
+                ClientData.send(EstudioServidor.FIN, d);
+            }
         }
         EstudioEditor.terminar();
-        super.onClose();
+        super.removed();
     }
 
     private static int profundidad(Geo geo, int b) {

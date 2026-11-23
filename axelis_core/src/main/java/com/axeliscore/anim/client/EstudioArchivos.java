@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 public final class EstudioArchivos {
     private static Path carpeta;
     private static final Map<Path, Long> VISTOS = new HashMap<>();
-    private static final Map<String, String> GEO = new HashMap<>(), ANIM = new HashMap<>();
+    private static final Map<String, String> GEO = new HashMap<>(), ANIM = new HashMap<>(), EFECTOS = new HashMap<>();
     private static final Map<String, ResourceLocation> TEX = new HashMap<>();
     private static long proxima;
     private static int generacion, subidas;
@@ -64,7 +64,7 @@ public final class EstudioArchivos {
 
     /** ¿Hay algo cargado de la carpeta? */
     public static boolean activo() {
-        return !GEO.isEmpty() || !ANIM.isEmpty() || !TEX.isEmpty();
+        return !GEO.isEmpty() || !ANIM.isEmpty() || !TEX.isEmpty() || !EFECTOS.isEmpty();
     }
 
     // ------------------------------------------------------------------ lo que usan los renderizadores
@@ -103,6 +103,11 @@ public final class EstudioArchivos {
         generacion++;
     }
 
+    /** El efecto de partículas del estudio ({@code nombre.efecto.json}) que reemplaza a ese (o null). */
+    public static String efecto(ResourceLocation id) {
+        return EFECTOS.get(base(id));
+    }
+
     /** La textura del estudio que reemplaza a esa (o la misma). */
     public static ResourceLocation textura(ResourceLocation id) {
         if (id == null || TEX.isEmpty()) {
@@ -139,6 +144,7 @@ public final class EstudioArchivos {
                               - nombre.geo.json        modelo exportado
                               - nombre.animation.json  animaciones exportadas
                               - nombre.png             textura
+                              - nombre.efecto.json     efecto de particulas (por capas)
                             "nombre" es el del modelo del mod (por ejemplo persona, coloso, bestia) o el de la textura.
                             Para volver a lo del mod, borra o mueve el archivo.
                             Dentro del juego: /axeliscore estudio (editor de animaciones).
@@ -173,7 +179,7 @@ public final class EstudioArchivos {
 
     private static void cargarTodo(List<Path> archivos) throws IOException {
         Map<Path, Long> nuevos = new HashMap<>();
-        Map<String, String> geo = new HashMap<>(), anim = new HashMap<>();
+        Map<String, String> geo = new HashMap<>(), anim = new HashMap<>(), efectos = new HashMap<>();
         Map<String, byte[]> png = new HashMap<>();
         List<String> cargados = new ArrayList<>(), errores = new ArrayList<>();
         for (Path f : archivos) {
@@ -218,6 +224,13 @@ public final class EstudioArchivos {
                     if (nuevo) {
                         cargados.add(n);
                     }
+                } else if (nl.endsWith(".efecto.json")) {
+                    String txt = Files.readString(f, StandardCharsets.UTF_8);
+                    com.google.gson.JsonParser.parseString(txt).getAsJsonObject();
+                    efectos.put(nl.substring(0, nl.length() - 12), txt);
+                    if (nuevo) {
+                        cargados.add(n);
+                    }
                 } else if (nl.endsWith(".png")) {
                     png.putIfAbsent(nl.substring(0, nl.length() - 4), Files.readAllBytes(f));
                     if (nuevo) {
@@ -235,6 +248,8 @@ public final class EstudioArchivos {
         GEO.putAll(geo);
         ANIM.clear();
         ANIM.putAll(anim);
+        EFECTOS.clear();
+        EFECTOS.putAll(efectos);
         // texturas: se suben otra vez con otro nombre (así no se mezclan con las viejas)
         Map<String, ResourceLocation> viejas = new HashMap<>(TEX);
         TEX.clear();

@@ -137,8 +137,16 @@ public final class GeoRenderer {
             if (pass == Pass.NORMAL && bone.glow || pass == Pass.GLOW && !bone.glow) {
                 continue;
             }
+            int tb = pose.tinte[b];
+            int ra = r, ga = g, ba = bl, aa = a;
+            if (tb != 0xFFFFFFFF) {
+                aa = a * ((tb >>> 24) & 255) / 255;
+                ra = r * ((tb >> 16) & 255) / 255;
+                ga = g * ((tb >> 8) & 255) / 255;
+                ba = bl * (tb & 255) / 255;
+            }
             for (Geo.Cube c : bone.cubes) {
-                cube(geo, bone, c, f, b, vb, light, overlay, r, g, bl, a);
+                cube(geo, bone, c, f, b, vb, light, overlay, ra, ga, ba, aa, pose.du[b], pose.dv[b]);
             }
         }
     }
@@ -158,7 +166,8 @@ public final class GeoRenderer {
     private static final int DOWN = 0, UP = 1, WEST = 2, NORTH = 3, EAST = 4, SOUTH = 5;
     private static final float[][] NORMALS = {{0, -1, 0}, {0, 1, 0}, {-1, 0, 0}, {0, 0, -1}, {1, 0, 0}, {0, 0, 1}};
 
-    private static void cube(Geo geo, Geo.Bone bone, Geo.Cube c, Frame f, int b, VB vb, int light, int ov, int r, int g, int bl, int a) {
+    private static void cube(Geo geo, Geo.Bone bone, Geo.Cube c, Frame f, int b, VB vb, int light, int ov, int r, int g, int bl, int a, float du,
+            float dv) {
         float i = c.inflate;
         float x0 = c.x0 - i, y0 = c.y0 - i, z0 = c.z0 - i;
         float x1 = c.x0 + c.sx + i, y1 = c.y0 + c.sy + i, z1 = c.z0 + c.sz + i;
@@ -205,7 +214,7 @@ public final class GeoRenderer {
             }
             // Polygon: vértice 0 = (u2, v1), 1 = (u1, v1), 2 = (u1, v2), 3 = (u2, v2)
             float[][] q = new float[4][];
-            float[][] t = {{fu[2], fu[1]}, {fu[0], fu[1]}, {fu[0], fu[3]}, {fu[2], fu[3]}};
+            float[][] t = {{fu[2] + du, fu[1] + dv}, {fu[0] + du, fu[1] + dv}, {fu[0] + du, fu[3] + dv}, {fu[2] + du, fu[3] + dv}};
             for (int m = 0; m < 4; m++) {
                 q[m] = v[quads[k][m]];
             }
@@ -232,7 +241,7 @@ public final class GeoRenderer {
                 }
                 continue;
             }
-            float vTop = fu[1], vBot = fu[3];
+            float vTop = fu[1] + dv, vBot = fu[3] + dv;
             float span = Math.max(1e-4F, y1 - y0);
             float vJ = vTop + (vBot - vTop) * ((jy - y0) / span);
             // dos mitades: la de arriba (de y0 a la articulación) y la de abajo (de la articulación a y1)

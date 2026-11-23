@@ -1,0 +1,39 @@
+{
+  "sonido": "minecraft:entity.player.levelup",
+  "volumen": 0.9,
+  "tono": 1.0,
+  "capas": [
+    {
+      "particula": "totem",
+      "forma": "esfera",
+      "radio": 0.3,
+      "alto": 1.0,
+      "cuantas": 50,
+      "velocidad": 0.45,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "vara",
+      "forma": "espiral",
+      "radio": 0.8,
+      "alto": 2.6,
+      "vueltas": 2,
+      "cuantas": 30,
+      "duracion": 12,
+      "velocidad": 0.01,
+      "hacia": "arriba"
+    },
+    {
+      "particula": "polvo",
+      "color": "#FFD166",
+      "color2": "#FFFFFF",
+      "tam": 1.3,
+      "forma": "anillo",
+      "radio": 0.3,
+      "cuantas": 32,
+      "velocidad": 0.3,
+      "hacia": "afuera",
+      "retraso": 10
+    }
+  ]
+}

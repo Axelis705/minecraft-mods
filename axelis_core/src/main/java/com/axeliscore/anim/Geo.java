@@ -18,6 +18,18 @@ public final class Geo {
     /** Huesos sin padre, en orden. */
     public final int[] roots;
     private final Map<String, Integer> index;
+    /** Texturas por cuadros ("axelis_frames" en el geo). */
+    public final java.util.List<Cuadros> cuadros = new java.util.ArrayList<>();
+    /** Huesos que laten de brillo ("axelis_pulse"). */
+    public final java.util.List<Pulso> pulsos = new java.util.ArrayList<>();
+
+    /** Un hueso cuya textura cambia por cuadros: cada cuadro corre la textura (du, dv) píxeles. */
+    public record Cuadros(int bone, int frames, float fps, float du, float dv) {
+    }
+
+    /** Un hueso que late: su brillo va de min a max, {@code veces} por segundo. */
+    public record Pulso(int bone, float min, float max, float veces) {
+    }
 
     public Geo(String id, int texW, int texH, Bone[] bones) {
         this.id = id;

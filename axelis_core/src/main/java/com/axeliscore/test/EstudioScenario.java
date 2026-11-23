@@ -105,6 +105,20 @@ final class EstudioScenario {
         });
         t.add("estudio vacío", 100, () -> t.check(EstudioArchivos.geo(com.axeliscore.plat.Ids.core("geo/gelatina.geo.json")) == null,
                 "al borrar el archivo vuelve el modelo del mod"));
+        // efectos de partículas por capas (los manda el servidor)
+        t.add("efectos", 800, () -> {
+            t.cmd("kill @e[type=!player]");
+            t.lookFrom(0.5, G, -2.5, 0.5, G + 1.0, 4.0);
+        });
+        String[][] efectos = {{"explosion_magica", "350"}, {"curacion", "700"}, {"aparecer", "450"}, {"fuego_circulo", "900"},
+                {"subir_nivel", "500"}, {"portal", "1100"}, {"chispas", "150"}, {"nevada", "1600"}};
+        for (String[] e : efectos) {
+            t.photo("31_efecto_" + e[0], Long.parseLong(e[1]), () -> t.cmd("execute positioned 0.5 -59.8 4.0 run axeliscore particulas " + e[0]));
+            t.add("esperar " + e[0], 1200, () -> {
+            });
+        }
+        t.add("efectos llegaron", 100, () -> t.check(com.axeliscore.fx.client.EfectosCliente.lanzados >= efectos.length,
+                "llegaron los efectos al cliente (" + com.axeliscore.fx.client.EfectosCliente.lanzados + ")"));
         t.add("estudio: fin", 300, () -> {
             t.cmd("kill @e[type=!player]");
             t.hud(false);

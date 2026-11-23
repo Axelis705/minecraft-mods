@@ -1,0 +1,26 @@
+{
+  "capas": [
+    {
+      "particula": "nieve",
+      "forma": "disco",
+      "radio": 3.5,
+      "alto": 3.5,
+      "cuantas": 70,
+      "duracion": 60,
+      "velocidad": 0.04,
+      "hacia": "abajo"
+    },
+    {
+      "particula": "polvo",
+      "color": "#E8F6FF",
+      "tam": 0.6,
+      "forma": "disco",
+      "radio": 3.5,
+      "alto": 3.0,
+      "cuantas": 40,
+      "duracion": 60,
+      "velocidad": 0.02,
+      "hacia": "abajo"
+    }
+  ]
+}

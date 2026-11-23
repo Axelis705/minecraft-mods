@@ -1,0 +1,33 @@
+{
+  "sonido": "minecraft:entity.player.attack.crit",
+  "volumen": 0.8,
+  "tono": 1.0,
+  "capas": [
+    {
+      "particula": "critico",
+      "forma": "esfera",
+      "radio": 0.2,
+      "cuantas": 16,
+      "velocidad": 0.45,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "minecraft:sweep_attack",
+      "forma": "punto",
+      "cuantas": 1,
+      "velocidad": 0
+    },
+    {
+      "particula": "polvo",
+      "color": "#FFFFFF",
+      "color2": "#FFB0B0",
+      "tam": 0.9,
+      "forma": "cono",
+      "radio": 1.2,
+      "abertura": 35,
+      "cuantas": 18,
+      "velocidad": 0.2,
+      "hacia": "dir"
+    }
+  ]
+}

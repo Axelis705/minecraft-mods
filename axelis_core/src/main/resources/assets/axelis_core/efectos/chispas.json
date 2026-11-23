@@ -1,0 +1,33 @@
+{
+  "sonido": "minecraft:block.amethyst_block.hit",
+  "volumen": 0.7,
+  "tono": 1.4,
+  "capas": [
+    {
+      "particula": "polvo",
+      "color": "#FFE27A",
+      "color2": "#FF6A2A",
+      "tam": 0.7,
+      "forma": "esfera",
+      "radio": 0.15,
+      "cuantas": 22,
+      "velocidad": 0.28,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "chispa",
+      "forma": "esfera",
+      "radio": 0.2,
+      "cuantas": 8,
+      "velocidad": 0.35,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "vara",
+      "forma": "punto",
+      "cuantas": 3,
+      "velocidad": 0.08,
+      "hacia": "azar"
+    }
+  ]
+}

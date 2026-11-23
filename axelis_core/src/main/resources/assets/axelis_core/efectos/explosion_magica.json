@@ -1,0 +1,56 @@
+{
+  "sonido": "minecraft:entity.evoker.cast_spell",
+  "volumen": 1.0,
+  "tono": 0.9,
+  "capas": [
+    {
+      "particula": "polvo",
+      "color": "#C58CFF",
+      "color2": "#FF7AC8",
+      "tam": 1.6,
+      "forma": "anillo",
+      "radio": 0.4,
+      "alto": 0.1,
+      "cuantas": 48,
+      "velocidad": 0.45,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "polvo",
+      "color": "#FFFFFF",
+      "color2": "#8240D6",
+      "tam": 1.0,
+      "forma": "anillo",
+      "radio": 0.3,
+      "alto": 0.6,
+      "cuantas": 36,
+      "velocidad": 0.32,
+      "hacia": "afuera",
+      "retraso": 3
+    },
+    {
+      "particula": "magia",
+      "forma": "esfera",
+      "radio": 0.5,
+      "cuantas": 30,
+      "velocidad": 0.6,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "brillo",
+      "forma": "esfera",
+      "radio": 1.2,
+      "cuantas": 14,
+      "velocidad": 0.02,
+      "hacia": "arriba",
+      "retraso": 4,
+      "duracion": 10
+    },
+    {
+      "particula": "explosion",
+      "forma": "punto",
+      "cuantas": 1,
+      "velocidad": 0
+    }
+  ]
+}

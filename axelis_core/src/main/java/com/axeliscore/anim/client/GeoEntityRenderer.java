@@ -203,6 +203,13 @@ public abstract class GeoEntityRenderer<T extends Entity & Animated> extends Ent
             }
             return;
         }
+        if ("particle".equals(ev.kind) && !ev.value.isEmpty()) {
+            try {
+                com.axeliscore.fx.client.EfectosCliente.desdeAnimacion(e, ev.value, ev.locator);
+            } catch (RuntimeException ignored) {
+                // un efecto mal escrito no debe tirar el juego
+            }
+        }
         e.axEvent(h, layer, clip, ev);
     }
 

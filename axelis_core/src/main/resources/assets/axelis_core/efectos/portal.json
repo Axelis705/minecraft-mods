@@ -1,0 +1,41 @@
+{
+  "sonido": "minecraft:block.portal.trigger",
+  "volumen": 0.4,
+  "tono": 1.6,
+  "capas": [
+    {
+      "particula": "polvo",
+      "color": "#8240D6",
+      "color2": "#FF7AC8",
+      "tam": 1.4,
+      "forma": "espiral",
+      "radio": 1.4,
+      "alto": 0.0,
+      "vueltas": 4,
+      "cuantas": 80,
+      "duracion": 30,
+      "velocidad": 0.06,
+      "hacia": "adentro",
+      "repetir": 2,
+      "cada": 30
+    },
+    {
+      "particula": "encantar",
+      "forma": "esfera",
+      "radio": 1.2,
+      "cuantas": 40,
+      "duracion": 40,
+      "velocidad": 0.6,
+      "hacia": "adentro"
+    },
+    {
+      "particula": "portal",
+      "forma": "esfera",
+      "radio": 0.4,
+      "cuantas": 30,
+      "duracion": 60,
+      "velocidad": 0.5,
+      "hacia": "afuera"
+    }
+  ]
+}

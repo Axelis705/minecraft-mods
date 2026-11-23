@@ -32,7 +32,7 @@ AxelisCore.onBreak((jugador, mundo, pos, bloque) -> ...);  // un jugador rompe u
 AxelisCore.onServerTick(servidor -> ...);    // al final de cada tick del servidor (20 por segundo)
 ```
 
-Versión actual: **1.3.0 (API 4)**. Un mod que necesita algo nuevo lo pide en su `mods.toml` (`versionRange="[1.3.0,)"`).
+Versión actual: **1.4.0 (API 5)**. Un mod que necesita algo nuevo lo pide en su `mods.toml` (`versionRange="[1.4.0,)"`).
 
 | API | Qué se agregó |
 |---|---|
@@ -40,6 +40,7 @@ Versión actual: **1.3.0 (API 4)**. Un mod que necesita algo nuevo lo pide en su
 | 2 | Cuadros de información (`InfoCard`) y temas con marco, `CoreItem`, `ItemTag`, `Plat.give`, `onLogin`, `onBreak`, `onServerTick`, condiciones de modelos de objetos (`ItemModelProps`), bloques con datos y dibujo propio (`CoreBlock`, `CoreBlockEntity`, `CoreBER`), capas del HUD (`Hud`), `Ui.fit`, `ClientTest.waitFor` |
 | 3 | Combate (`combat/`): estados (`Estados`, `Estado`), barras de vida y números de daño, ataques con aviso (`Aviso`), proyectiles (`Proyectil`, `ProyectilTipo`), jefes por fases (`Jefe`, `Fase`, `Ataque`, `JefeRenderer`), música de jefe, ayudas (`Combate`), renderizador sencillo (`CoreEntityRenderer`) |
 | 4 | NPC (`npc/`): `NpcDef`, `Npc`, misiones (`Mision`, `Objetivo`, `Misiones`), tiendas (`Tienda`), amistad (`Amistad`), ventana del NPC, diario (tecla N) y rastreador; teclas propias (`Teclas`) |
+| 5 | Estudio: `.bbmodel` directo (`BbModel`), carpeta `axelis_estudio` que recarga sola, editor de animaciones (`/axeliscore estudio`), curvas Bézier y `easingArgs`, mezcla por valor (`Layer.mezcla`), máscaras suaves, `Animator.query`, `anim.mc.Procedural` (resortes, mirar, ruido), `Huesos.posicion`; efectos por capas (`fx/Efectos`, `EfectosCliente`); interfaz pixel art (`Theme.fondo`, `Ui.boton`, `Ui.nueve`, `Ui.ranura`, `Ui.fondo`, `Ui.relieve`); `Ejemplos` |
 
 ## Personajes
 
@@ -79,6 +80,33 @@ event.registerEntityRenderer(PESCADOR.get(), PersonaRenderer.with(Ids.rl("pesca"
   `axelis_core/herramientas/visor`.
 - Los modelos y pieles de muestra se generan con `axelis_core/herramientas/*.py`.
 
+### Al milímetro (API 5)
+
+- **Proyectos de Blockbench tal cual** (`BbModel`): un `.bbmodel` (Blockbench 4 o 5) se lee sin exportar: grupos, cubos girados,
+  UV de caja o por cara, animaciones con **Bézier** (manijas), catmullrom, paso y expresiones, sonidos, partículas y línea de
+  tiempo, y las texturas que lleva dentro. Se comprobó contra el exportador del propio Blockbench (las pruebas sin Minecraft lo
+  revisan en cada cambio).
+- **Carpeta del estudio** (`.minecraft/axelis_estudio/`): `nombre.bbmodel`, `nombre.geo.json`, `nombre.animation.json`,
+  `nombre.png` o `nombre.efecto.json` reemplazan al del mod con ese nombre y **se recargan solos al guardar** (sin reiniciar ni
+  F3+T); los errores salen en el chat. Borrar el archivo vuelve a lo del mod.
+- **Editor dentro del juego** (`/axeliscore estudio` mirando a una criatura del Core): huesos (se ven encima de la criatura),
+  animaciones (nueva, en bucle, duración), línea de tiempo con los cuadros clave (giro dorado, posición celeste, escala verde),
+  cuadro por cuadro, velocidad, poner y quitar cuadros, curva de llegada, ver con o sin el código del personaje y **mover los
+  huesos con el mouse** (clic derecho y arrastrar; con Shift gira en z). Guarda `nombre.animation.json` en el estudio (se abre en
+  Blockbench con Importar animaciones). Teclas: espacio, flechas, Supr, S.
+- **Curvas**: las de GeckoLib/Blockbench (`easeInOutSine`, `easeOutBack`...) con `easingArgs` (cuánto se pasa o rebota, escalones);
+  Bézier con manijas; `Ease.bezier(x1, y1, x2, y2)` para usarlas en código.
+- **Capas**: `layer.peso(w)`, `tiempo(t)`, `velocidad(v)`; **máscara suave** con pesos por hueso
+  (`mascara(geo, Map.of("chest", 0.5F, "right_arm", 1F))`); **mezcla por valor** con el paso sincronizado
+  (`layer("base").mezcla(new Clip[]{walk, run}, new float[]{1.3F, 3.7F}).valor(velocidad)`); `animator.pausar`, `escala`
+  (cámara lenta).
+- **Lo que las animaciones pueden leer** (`q.X` en Blockbench): `ground_speed`, `vertical_speed`, `is_on_ground`, `is_in_water`,
+  `is_sneaking`, `is_sprinting`, `health`, `max_health`, `hurt_time`, `yaw_speed`, `head_x_rotation`, `head_y_rotation`, además de
+  `anim_time`, `life_time`, `anim_length` y las `v.X` que ponga el personaje (`animator.var`).
+- **Movimiento por código** (`anim.mc.Procedural`, en `axPose`): `resorte(h, pose, "tail", entidad, rigidez, freno, fuerza)` y
+  `cadena(...)` para colas, pelo, orejas y capas; `mirar(...)` con límites y suavizado repartido entre huesos; `ruido(...)` suave.
+- **Dónde está un hueso en el mundo**: `Huesos.posicion(entidad, "right_hand", pt)` (cliente).
+
 ## Interfaz (`ui/`)
 
 - `UiScreen`: pantalla con panel animado y tema. Se agregan `Button`, `Tabs`, `ListView` (con desplazamiento), barras
@@ -94,6 +122,17 @@ event.registerEntityRenderer(PESCADOR.get(), PersonaRenderer.with(Ids.rl("pesca"
   `Slider`. `Ui.fit(texto, ancho)` recorta con "…" lo que no cabe.
 - Marcos con textura por tema: `Theme.MADERA`, `Theme.PIEDRA`, `Theme.PERGAMINO`, `Theme.MAR`, `Theme.NOCHE` o
   `tema.withFrame(...)`. Rarezas comunes a todos los mods: `Rareza.COMUN` … `Rareza.LEGENDARIO` (color, nombre y brillo).
+- **Estilo "Minecraft pulido"** (API 5): cada tema trae un **fondo de pixel art** que se repite al doble como el fondo de tierra de
+  Minecraft (`fondo_madera`: tablones; `fondo_piedra`: ladrillos con musgo; `fondo_pergamino`; `fondo_noche`: con **estrellas que
+  titilan**; `fondo_mar`: **el agua se mueve**). Propio: `tema.withFondo(textura128, velo, animación)`. Los botones usan una textura
+  de Minecraft teñida del color del tema (`Ui.boton`): al pasar el mouse sale el filo blanco y cruza un brillo, al apretar se
+  hunden. Las pestañas tienen una marca que se desliza, los interruptores y deslizadores son de pixel art, las barras tienen
+  marcas cada 10 %, las listas entran deslizándose renglón por renglón, los componentes suben al aparecer
+  (`Widget.retraso` para escalonarlos), cada clic hace una onda y los avisos entran con rebote y un brillo. Piezas:
+  `Ui.nueve` (textura en nueve partes), `Ui.ranura` (ranura de inventario), `Ui.fondo`, `Ui.relieve`. Las texturas se hacen con
+  `herramientas/interfaz.py`.
+- `UiScreen.panelPrincipal = false`: sin el panel del centro ni el fondo oscuro (para pantallas que dibujan sus propios paneles y
+  dejan ver el mundo, como el editor de animaciones).
 
 ### Cuadros de información (`InfoCard`)
 
@@ -140,6 +179,23 @@ Desde el servidor: `Fx.shake` / `Fx.shakeNear` (temblor de cámara), `Fx.flash` 
 `Fx.title` (título grande con franja de cine), `Fx.toast` (aviso con objeto).
 
 En el cliente, `Hud.add((g, ancho, alto) -> ...)` dibuja cosas propias en la pantalla de juego (marcadores, temporizadores).
+
+### Efectos de partículas por capas (`fx/Efectos`)
+
+Un efecto es un JSON en `assets/<mod>/efectos/<nombre>.json` (o `axelis_estudio/<nombre>.efecto.json`, que se recarga solo) con
+capas: partícula (`polvo` con `color` y `color2`, `brillo`, `chispa`, `fuego`, `magia`, `portal`, `totem`, `hoja`, `nieve`... o
+cualquier `minecraft:...` sencilla), forma (`punto`, `esfera`, `anillo`, `disco`, `linea`, `cono`, `espiral`, `columna`), hacia dónde
+salen (`afuera`, `adentro`, `arriba`, `abajo`, `dir`, `azar`), cuántas, tiempos (`retraso`, `duracion`, `repetir`, `cada`) y un
+sonido. Servidor: `Efectos.lanzar(level, "mod:nombre", pos[, dir, escala])` o `Efectos.enEntidad(e, "mod:nombre", "hueso")`;
+cliente: `EfectosCliente.lanzar(...)`. En Blockbench, un cuadro de **partícula** con efecto `axelis_core:chispas` y localizador
+(hueso) sale de ese hueso al animar. Muestras: `chispas`, `explosion_magica`, `curacion`, `aparecer`, `fuego_circulo`, `hojas`,
+`nevada`, `subir_nivel`, `golpe`, `portal` (`/axeliscore particulas <nombre>` para verlas).
+
+## Ejemplos (`Ejemplos`)
+
+Mara e Iker, la Persona de muestra, las criaturas, el Coloso, la galería y los comandos que los usan son **solo para probar la
+librería**: en los mods que usan el Core no aparecen. Se activan solos en desarrollo (runClient, runServer), en las pruebas
+automáticas o con `-Daxcore.ejemplos=true` (en el servidor y en el cliente a la vez).
 
 ## Datos (`data/`)
 
@@ -228,7 +284,9 @@ Todo se guarda con el jugador (`PlayerStore` del Core: `misiones`, `amistad`, `t
 
 `/axeliscore` (versión y quién lo usa), `galeria`, `criaturas`, `probar <animación>`, `ir x y z [velocidad]`,
 `efecto <temblor|destello|vineta|titulo|aviso|dialogo|demo>`, `datos`, `combate <estados|estado nombre [s] [nivel]|limpiar|avisos|proyectiles|jefe|fase n|ataque nombre|prueba|revisar>`,
-`npc <poner mod:nombre|casa|trabajo|lista|mision id|evento clave [n]|amistad npc puntos|reiniciar|prueba|revisar>`.
+`npc <poner mod:nombre|casa|trabajo|lista|mision id|evento clave [n]|amistad npc puntos|reiniciar|prueba|revisar>`,
+`estudio` (editor de animaciones), `particulas <efecto>`. Los de ejemplos (galeria, criaturas, combate estados/jefe/prueba, npc
+prueba) solo con los ejemplos activos.
 
 ## Pruebas automáticas
 
