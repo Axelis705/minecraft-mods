@@ -1,2 +1,9 @@
 axeliscore
+axeliscore galeria 0.5 -60 0.5 180
+axeliscore probar wave
+axeliscore criaturas 0.5 -60 6.5 180
+axeliscore probar slam
 #expect AXCORE_INFO Axelis Core
+#expect AXCORE_GALERIA 5
+#expect AXCORE_CRIATURAS 5
+#expect AXCORE_PROBAR slam personajes=10

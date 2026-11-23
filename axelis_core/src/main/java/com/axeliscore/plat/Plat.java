@@ -138,6 +138,15 @@ public final class Plat {
         //#endif
     }
 
+    /** Daño a una entidad (en 1.21.2+ el daño se hace con el mundo del servidor). Devuelve true si le hizo daño. */
+    public static boolean hurt(Entity target, net.minecraft.world.damagesource.DamageSource src, float amount) {
+        //#if MC >= 1.21.2
+        //$$ return target.level() instanceof net.minecraft.server.level.ServerLevel sl && target.hurtServer(sl, src, amount);
+        //#else
+        return target.hurt(src, amount);
+        //#endif
+    }
+
     public static void invulnerable(Entity e, boolean v) {
         //#if MC >= 26.3
         //$$ e.setPermanentlyInvulnerable(v);

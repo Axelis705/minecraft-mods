@@ -1,6 +1,11 @@
 package com.axeliscore.registry;
 
 import com.axeliscore.AxelisCore;
+import com.axeliscore.character.Alado;
+import com.axeliscore.character.Bestia;
+import com.axeliscore.character.Chispa;
+import com.axeliscore.character.Coloso;
+import com.axeliscore.character.Gelatina;
 import com.axeliscore.character.Persona;
 import com.axeliscore.plat.Reg;
 import net.minecraft.world.entity.EntityType;
@@ -21,11 +26,32 @@ public final class CoreEntities {
             () -> Reg.entity(AxelisCore.MODID, "persona", EntityType.Builder.<Persona>of(Persona::new, MobCategory.CREATURE).sized(0.6F, 1.8F)
                     .clientTrackingRange(10)));
 
+    public static final RegistryObject<EntityType<Bestia>> BESTIA = ENTITIES.register("bestia",
+            () -> Reg.entity(AxelisCore.MODID, "bestia", EntityType.Builder.<Bestia>of(Bestia::new, MobCategory.CREATURE).sized(0.9F, 1.25F)
+                    .clientTrackingRange(10)));
+    public static final RegistryObject<EntityType<Alado>> ALADO = ENTITIES.register("alado",
+            () -> Reg.entity(AxelisCore.MODID, "alado", EntityType.Builder.<Alado>of(Alado::new, MobCategory.CREATURE).sized(0.7F, 0.75F)
+                    .clientTrackingRange(10)));
+    public static final RegistryObject<EntityType<Gelatina>> GELATINA = ENTITIES.register("gelatina",
+            () -> Reg.entity(AxelisCore.MODID, "gelatina", EntityType.Builder.<Gelatina>of(Gelatina::new, MobCategory.CREATURE).sized(0.8F, 0.75F)
+                    .clientTrackingRange(10)));
+    public static final RegistryObject<EntityType<Coloso>> COLOSO = ENTITIES.register("coloso",
+            () -> Reg.entity(AxelisCore.MODID, "coloso", EntityType.Builder.<Coloso>of(Coloso::new, MobCategory.MONSTER).sized(1.9F, 2.9F)
+                    .clientTrackingRange(12)));
+    public static final RegistryObject<EntityType<Chispa>> CHISPA = ENTITIES.register("chispa",
+            () -> Reg.entity(AxelisCore.MODID, "chispa", EntityType.Builder.<Chispa>of(Chispa::new, MobCategory.CREATURE).sized(0.5F, 0.65F)
+                    .clientTrackingRange(10)));
+
     private CoreEntities() {
     }
 
     @SubscribeEvent
     public static void onAttributes(EntityAttributeCreationEvent e) {
         e.put(PERSONA.get(), Persona.createAttributes().build());
+        e.put(BESTIA.get(), Bestia.createAttributes().build());
+        e.put(ALADO.get(), Alado.createAttributes().build());
+        e.put(GELATINA.get(), Gelatina.createAttributes().build());
+        e.put(COLOSO.get(), Coloso.createAttributes().build());
+        e.put(CHISPA.get(), Chispa.createAttributes().build());
     }
 }

@@ -79,6 +79,130 @@
     }
    }
   },
+  "animation.gelatina.jump": {
+   "loop": false,
+   "animation_length": 0.45,
+   "bones": {
+    "body": {
+     "scale": {
+      "0.0": {
+       "vector": [
+        1.25,
+        0.72,
+        1.25
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.12": {
+       "vector": [
+        0.82,
+        1.28,
+        0.82
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.45": {
+       "vector": [
+        1,
+        1,
+        1
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "sprout": {
+     "rotation": {
+      "0.0": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.12": {
+       "vector": [
+        -28,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.45": {
+       "vector": [
+        10,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   }
+  },
+  "animation.gelatina.land": {
+   "loop": false,
+   "animation_length": 0.4,
+   "bones": {
+    "body": {
+     "scale": {
+      "0.0": {
+       "vector": [
+        1.3,
+        0.7,
+        1.3
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.15": {
+       "vector": [
+        0.92,
+        1.1,
+        0.92
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.4": {
+       "vector": [
+        1,
+        1,
+        1
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    },
+    "sprout": {
+     "rotation": {
+      "0.0": {
+       "vector": [
+        30,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.15": {
+       "vector": [
+        -12,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      },
+      "0.4": {
+       "vector": [
+        0,
+        0,
+        0
+       ],
+       "easing": "easeInOutSine"
+      }
+     }
+    }
+   }
+  },
   "animation.gelatina.hop": {
    "loop": true,
    "animation_length": 0.8,

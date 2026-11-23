@@ -373,6 +373,16 @@ def gelatina():
     a.scale("body", cyc([[1.0, 1.0, 1.0], [1.04, 0.95, 1.04], [1.0, 1.0, 1.0], [0.97, 1.03, 0.97]], 2.0))
     a.rot("sprout", cyc([[0, 0, -6], [0, 0, 6]], 2.0))
     an.append(a)
+    # brinco de verdad (la física la lanza): la animación solo la estira al despegar y la aplasta al caer
+    a = Anim("jump", 0.45, False)
+    a.scale("body", {0: ([1.25, 0.72, 1.25], "easeOutQuad"), 0.12: ([0.82, 1.28, 0.82], "easeOutQuad"), 0.45: ([1, 1, 1], S)})
+    a.rot("sprout", {0: ([0, 0, 0], S), 0.12: ([-28, 0, 0], S), 0.45: ([10, 0, 0], S)})
+    an.append(a)
+    a = Anim("land", 0.4, False)
+    a.scale("body", {0: ([1.3, 0.7, 1.3], "easeOutQuad"), 0.15: ([0.92, 1.1, 0.92], S), 0.4: ([1, 1, 1], S)})
+    a.rot("sprout", {0: ([30, 0, 0], S), 0.15: ([-12, 0, 0], S), 0.4: ([0, 0, 0], S)})
+    an.append(a)
+    # para galerías: brinca en el mismo lugar
     a = Anim("hop", 0.8, True)
     a.scale("body", {0: ([1.2, 0.75, 1.2], S), 0.15: ([0.85, 1.25, 0.85], "easeOutQuad"), 0.45: ([0.95, 1.05, 0.95], S),
                      0.62: ([1.25, 0.72, 1.25], "easeOutQuad"), 0.8: ([1.2, 0.75, 1.2], S)})

@@ -5,5 +5,10 @@
   "axelis_core.persona.lu": "Lu",
   "axelis_core.persona.nilo": "Nilo",
   "axelis_core.persona.sol": "Sol",
-  "axelis_core.persona.hola": "%s says hi."
+  "axelis_core.persona.hola": "%s says hi.",
+  "entity.axelis_core.bestia": "Ash Beast",
+  "entity.axelis_core.alado": "Storm Bird",
+  "entity.axelis_core.gelatina": "Jelly",
+  "entity.axelis_core.coloso": "Crystal Colossus",
+  "entity.axelis_core.chispa": "Spark"
 }

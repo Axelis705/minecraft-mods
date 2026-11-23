@@ -5,5 +5,10 @@
   "axelis_core.persona.lu": "Lu",
   "axelis_core.persona.nilo": "Nilo",
   "axelis_core.persona.sol": "Sol",
-  "axelis_core.persona.hola": "%s te saluda."
+  "axelis_core.persona.hola": "%s te saluda.",
+  "entity.axelis_core.bestia": "Bestia de ceniza",
+  "entity.axelis_core.alado": "Ave de tormenta",
+  "entity.axelis_core.gelatina": "Gelatina",
+  "entity.axelis_core.coloso": "Coloso de cristal",
+  "entity.axelis_core.chispa": "Chispa"
 }

@@ -17,6 +17,12 @@ public final class CoreClient {
     @SubscribeEvent
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerEntityRenderer(CoreEntities.PERSONA.get(), PersonaRenderer::new);
+        String ns = AxelisCore.MODID;
+        e.registerEntityRenderer(CoreEntities.BESTIA.get(), c -> new SimpleGeoRenderer<>(c, ns, "bestia", 0.6F, 1F));
+        e.registerEntityRenderer(CoreEntities.ALADO.get(), c -> new SimpleGeoRenderer<>(c, ns, "alado", 0.4F, 1F));
+        e.registerEntityRenderer(CoreEntities.GELATINA.get(), c -> new SimpleGeoRenderer<>(c, ns, "gelatina", 0.5F, 1F));
+        e.registerEntityRenderer(CoreEntities.COLOSO.get(), c -> new SimpleGeoRenderer<>(c, ns, "coloso", 1.2F, 1F));
+        e.registerEntityRenderer(CoreEntities.CHISPA.get(), c -> new SimpleGeoRenderer<>(c, ns, "chispa", 0.3F, 1F));
     }
 
     @SubscribeEvent

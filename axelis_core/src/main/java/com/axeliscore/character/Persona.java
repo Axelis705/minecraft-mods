@@ -40,9 +40,6 @@ public class Persona extends CoreMob {
 
     private int greetCooldown;
     private int nextIdleGesture = 300;
-    /** Para la galería: repite este gesto (y no se mueve). */
-    private String showcase;
-    private int showcaseTicks;
 
     public Persona(EntityType<? extends PathfinderMob> type, Level level) {
         super(type, level);
@@ -61,24 +58,10 @@ public class Persona extends CoreMob {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
-    /** Para la galería: se queda quieta repitiendo un gesto. */
-    public void showcase(String clip, int everyTicks) {
-        this.showcase = clip;
-        this.showcaseTicks = everyTicks;
-        setNoAi(true);
-        playAction(clip, everyTicks);
-    }
-
     @Override
     public void aiStep() {
         super.aiStep();
-        if (level().isClientSide()) {
-            return;
-        }
-        if (showcase != null) {
-            if (tickCount - lastActionTick >= showcaseTicks) {
-                playAction(showcase, showcaseTicks);
-            }
+        if (level().isClientSide() || showcasing()) {
             return;
         }
         if (greetCooldown > 0) {
