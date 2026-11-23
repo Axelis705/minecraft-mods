@@ -253,10 +253,10 @@ public final class ModClient {{
     if os.path.exists(lst):
         with open(lst, encoding="utf-8") as fh:
             mods = [l.strip() for l in fh if l.strip() and not l.startswith("#")]
-    if mod_id not in mods:
+    if mod_id not in [m.split()[0] for m in mods]:
         mods.append(mod_id)
-    write(lst, "# mods que usan Axelis Core (los compila y prueba .github/workflows/mods-core.yml en 1.20.1, 1.21.1 y 26.3)\n" +
-          "\n".join(mods) + "\n")
+    write(lst, "# mods que usan Axelis Core (los compila y prueba .github/workflows/mods-core.yml en 1.20.1, 1.21.1 y 26.3;\n"
+          "# con versiones después del nombre, solo en esas: por ejemplo \"evento 1.20.1\")\n" + "\n".join(mods) + "\n")
     # el flujo de los mods viejos (build.yml) no tiene que correr cuando solo cambia este mod
     wf = os.path.join(ROOT, ".github", "workflows", "build.yml")
     if os.path.exists(wf):

@@ -23,7 +23,8 @@ jobs:
       - id: m
         run: |
           mods="${{ github.event.inputs.mods }}"
-          todos=$(grep -v '^#' tools/mods_core.txt 2>/dev/null | tr '\n' ' ')
+          # cada línea: "mod" (las 3 versiones) o "mod 1.20.1 ..." (solo esas versiones)
+          todos=$(grep -v '^#' tools/mods_core.txt 2>/dev/null | awk 'NF{print $1}' | tr '\n' ' ')
           if [ -z "$mods" ]; then
             if [ "${{ github.event_name }}" = "push" ]; then
               # solo los mods que cambiaron (o todos si cambió el Core o las herramientas con las que se construyen)
@@ -40,8 +41,10 @@ jobs:
           echo "mods: $mods"
           j="["; sep=""
           for m in $mods; do
+            solo=$(awk -v m="$m" '$1==m{$1=""; print}' tools/mods_core.txt 2>/dev/null)
             for v in "1.20.1:17:47.4.10" "1.21.1:21:52.1.20" "26.3:25:66.1.5"; do
               IFS=: read mc java forge <<< "$v"
+              if [ -n "$(echo $solo)" ] && ! echo " $solo " | grep -q " $mc "; then continue; fi
               j="$j$sep{\"mod\":\"$m\",\"mc\":\"$mc\",\"java\":\"$java\",\"forge\":\"$forge\"}"; sep=","
             done
           done
