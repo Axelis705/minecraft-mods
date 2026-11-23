@@ -19,8 +19,12 @@ fi
 for pre in ${DIAG_LISTA:-}; do
   echo "===== clases en $pre"
   for j in $cands; do
-    unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep "^$pre[^/]*\.class$" | grep -v '\$' | sed "s|^|$(basename "$j"): |"
-  done | sort -u | head -150
+    # con / al final: solo las clases del paquete; sin /: también las internas (Clase$Interna) de lo que empiece así
+    case "$pre" in
+      */) unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep "^$pre[^/]*\.class$" | grep -v '\$' ;;
+      *) unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep "^$pre[^/]*\.class$" ;;
+    esac | sed "s|^|$(basename "$(dirname "$j")")/$(basename "$j"): |"
+  done | sort -u | head -300
 done
 exit 0; }
 echo "JAR: $jar"
@@ -55,7 +59,11 @@ fi
 for pre in ${DIAG_LISTA:-}; do
   echo "===== clases en $pre"
   for j in $cands; do
-    unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep "^$pre[^/]*\.class$" | grep -v '\$' | sed "s|^|$(basename "$j"): |"
-  done | sort -u | head -150
+    # con / al final: solo las clases del paquete; sin /: también las internas (Clase$Interna) de lo que empiece así
+    case "$pre" in
+      */) unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep "^$pre[^/]*\.class$" | grep -v '\$' ;;
+      *) unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep "^$pre[^/]*\.class$" ;;
+    esac | sed "s|^|$(basename "$(dirname "$j")")/$(basename "$j"): |"
+  done | sort -u | head -300
 done
 exit 0
