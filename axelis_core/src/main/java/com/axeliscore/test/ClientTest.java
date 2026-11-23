@@ -111,7 +111,29 @@ public final class ClientTest {
             this.prefix = name;
         }
 
+        private java.util.function.BooleanSupplier waitCond;
+        private long waitDeadline;
+        private String waitName;
+
         void step() {
+            if (waitCond != null) {
+                boolean ok;
+                try {
+                    ok = waitCond.getAsBoolean();
+                } catch (Throwable e) {
+                    ok = false;
+                }
+                if (ok) {
+                    waitCond = null;
+                    log("ok: " + waitName);
+                } else if (System.currentTimeMillis() > waitDeadline) {
+                    waitCond = null;
+                    fails++;
+                    log("FALLO no pasó a tiempo: " + waitName);
+                } else {
+                    return;
+                }
+            }
             if (idx >= steps.size() || System.currentTimeMillis() < next) {
                 return;
             }
@@ -137,6 +159,16 @@ public final class ClientTest {
                 prefix = p;
                 r.run();
             }));
+            return this;
+        }
+
+        /** Espera hasta que {@code cond} se cumpla (como mucho {@code timeoutMs}; si no, cuenta como fallo y sigue). */
+        public Script waitFor(String name, long timeoutMs, java.util.function.BooleanSupplier cond) {
+            add(name, 0, () -> {
+                waitCond = cond;
+                waitDeadline = System.currentTimeMillis() + timeoutMs;
+                waitName = name;
+            });
             return this;
         }
 

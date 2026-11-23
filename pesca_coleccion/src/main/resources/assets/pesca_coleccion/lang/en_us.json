@@ -1,4 +1,13 @@
 {
   "itemGroup.pesca_coleccion": "Pesca de colección",
-  "pesca_coleccion.hola": "Pesca de colección works with %s"
+  "pesca_coleccion.hola": "Pesca de colección works with %s",
+  "pesca_coleccion.pelea.titulo": "Fish fight",
+  "pesca_coleccion.pelea.pescado": "You caught it!",
+  "pesca_coleccion.pelea.gran_pez": "Big catch!",
+  "pesca_coleccion.prueba.pez_0": "Common test fish",
+  "pesca_coleccion.prueba.pez_1": "Uncommon test fish",
+  "pesca_coleccion.prueba.pez_2": "Rare test fish",
+  "pesca_coleccion.prueba.pez_3": "Epic test fish",
+  "pesca_coleccion.prueba.pez_4": "Legendary test fish",
+  "pesca_coleccion.prueba.pez_5": "Mythic test fish"
 }

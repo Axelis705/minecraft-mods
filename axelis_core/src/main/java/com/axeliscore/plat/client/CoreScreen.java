@@ -115,6 +115,15 @@ public abstract class CoreScreen extends Screen {
     //#endif
     //$$ }
     //$$
+    //$$ @Override
+    //$$ public boolean keyReleased(KeyEvent e) {
+    //#if MC >= 26.3
+    //$$     return onKeyRelease(Keys.glfw(e.key()), e.keycode(), e.modifiers()) || super.keyReleased(e);
+    //#else
+    //$$     return onKeyRelease(e.key(), e.scancode(), e.modifiers()) || super.keyReleased(e);
+    //#endif
+    //$$ }
+    //$$
     //$$ protected boolean superClick(double x, double y, int b) {
     //$$     return super.mouseClicked(lastMouse, false);
     //$$ }
@@ -166,6 +175,11 @@ public abstract class CoreScreen extends Screen {
         return onKey(key, scan, mods);
     }
 
+    @Override
+    public boolean keyReleased(int key, int scan, int mods) {
+        return onKeyRelease(key, scan, mods) || super.keyReleased(key, scan, mods);
+    }
+
     protected boolean superClick(double x, double y, int b) {
         return super.mouseClicked(x, y, b);
     }
@@ -212,6 +226,11 @@ public abstract class CoreScreen extends Screen {
     }
 
     protected boolean onScroll(double x, double y, double delta) {
+        return false;
+    }
+
+    /** Se soltó una tecla (código GLFW de siempre, en todas las versiones). true = ya se usó. */
+    protected boolean onKeyRelease(int key, int scan, int mods) {
         return false;
     }
 }

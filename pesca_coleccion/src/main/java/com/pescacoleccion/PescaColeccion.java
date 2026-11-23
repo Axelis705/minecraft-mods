@@ -37,12 +37,17 @@ public class PescaColeccion {
             c.getSource().sendSuccess(() -> Component.translatable(MODID + ".hola", AxelisCore.version()), false);
             LOGGER.info("PRUEBA_PESCA_COLECCION_OK {}", AxelisCore.version());
             return 1;
-        })));
+        }).then(Commands.literal("pelea").requires(com.axeliscore.plat.Plat::isOp)
+                .then(Commands.argument("rareza", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 5))
+                        .executes(c -> com.pescacoleccion.pelea.Prueba.pelea(c.getSource(),
+                                com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "rareza"), false))
+                        .then(Commands.literal("facil").executes(c -> com.pescacoleccion.pelea.Prueba.pelea(c.getSource(),
+                                com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "rareza"), true)))))));
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            // aquí se registran los mensajes de red: NET.register(Mensaje.class, Mensaje::write, Mensaje::read, (m, jugador) -> ...);
+            com.pescacoleccion.pelea.PeleaNet.register(NET);
             NET.done();
         });
     }

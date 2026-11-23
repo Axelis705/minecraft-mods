@@ -71,6 +71,9 @@ jobs:
           python3 tools/mcver.py --check ${{ matrix.mod }}
           python3 tools/check_resources.py ${{ matrix.mod }}
           python3 tools/check_textures.py ${{ matrix.mod }}
+      - name: Pruebas sin Minecraft (si el mod las tiene)
+        if: matrix.mc == '1.20.1'
+        run: if [ -f ${{ matrix.mod }}/tests/run.sh ]; then bash ${{ matrix.mod }}/tests/run.sh; else echo "sin pruebas propias"; fi
       - uses: actions/setup-java@v4
         id: j8
         continue-on-error: true
