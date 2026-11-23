@@ -25,9 +25,6 @@ public final class ModRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Coleccionista.MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Coleccionista.MODID);
 
-    /** La ficha de vida (para su animación al usarla; las fichas de cada pieza se cuentan en el evento). */
-    public static final net.minecraftforge.registries.RegistryObject<Item> FICHA = ITEMS.register("ficha_vida",
-            () -> new Item(com.axeliscore.plat.Reg.item(Coleccionista.MODID, "ficha_vida").stacksTo(16)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(

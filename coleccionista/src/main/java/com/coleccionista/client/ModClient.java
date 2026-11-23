@@ -26,6 +26,7 @@ public final class ModClient {
         EventoHud.init();
         EscenaAviso.init();
         FantasmaRender.init();
+        Camara.init();
         // prueba con fotos: cliente-core.yml con mod=coleccionista y escenario=coleccionista
         ClientTest.scenario(Coleccionista.MODID, PruebaCliente::escenario);
     }

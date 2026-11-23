@@ -66,17 +66,13 @@ public final class Comandos {
                         .then(Commands.literal("no").executes(c -> organizador(c, false)))))
                 .then(Commands.literal("eliminar")
                         .then(Commands.literal("equipo").then(Commands.argument("n", IntegerArgumentType.integer(1))
-                                .executes(c -> eliminarEquipo(c, false))
-                                .then(Commands.literal("forzar").executes(c -> eliminarEquipo(c, true)))))
+                                .executes(Comandos::eliminarEquipo)))
                         .then(Commands.argument("pieza", StringArgumentType.word()).suggests(vivas)
-                                .executes(c -> eliminar(c, "", false))
-                                .then(Commands.literal("forzar").executes(c -> eliminar(c, "", true)))
+                                .executes(c -> eliminar(c, ""))
                                 .then(Commands.argument("motivo", StringArgumentType.greedyString())
-                                        .executes(c -> eliminar(c, StringArgumentType.getString(c, "motivo"), false)))))
+                                        .executes(c -> eliminar(c, StringArgumentType.getString(c, "motivo"))))))
                 .then(Commands.literal("revivir").then(Commands.argument("pieza", StringArgumentType.word()).suggests(fantasmas)
                         .executes(Comandos::revivir)))
-                .then(Commands.literal("ficha").then(Commands.argument("pieza", StringArgumentType.word()).suggests(todas)
-                        .then(Commands.argument("cantidad", IntegerArgumentType.integer(-10, 10)).executes(Comandos::ficha))))
                 .then(Commands.literal("equipos")
                         .then(Commands.literal("quitar").executes(c -> {
                             Evento.get(c.getSource().getServer()).sinEquipos(c.getSource().getServer());
@@ -144,7 +140,6 @@ public final class Comandos {
         for (Pieza p : ev.piezas()) {
             MutableComponent m = Component.literal(" " + p.etiqueta() + " " + p.nombre).withStyle(p.vivo() ? ChatFormatting.WHITE
                     : ChatFormatting.DARK_GRAY);
-            m.append(Component.literal("  ♥" + p.fichas).withStyle(ChatFormatting.GOLD));
             if (p.equipo >= 0) {
                 m.append(Component.literal("  eq " + (p.equipo + 1)).withStyle(ChatFormatting.AQUA));
             }
@@ -196,20 +191,17 @@ public final class Comandos {
         return ok(c, Component.translatable(MOD + (si ? ".cmd.organizador" : ".cmd.no_organizador")));
     }
 
-    private static int eliminar(CommandContext<CommandSourceStack> c, String motivo, boolean forzar) {
+    private static int eliminar(CommandContext<CommandSourceStack> c, String motivo) {
         Pieza p = pieza(c);
         if (p == null) {
             return 0;
         }
-        Evento.Resultado r = Evento.get(c.getSource().getServer()).eliminar(c.getSource().getServer(), p, motivo, forzar);
-        return switch (r) {
-            case ELIMINADO -> ok(c, Component.translatable(MOD + ".cmd.eliminado", p.nombre));
-            case SALVADO -> ok(c, Component.translatable(MOD + ".cmd.salvado", p.nombre));
-            case YA_ESTABA -> error(c, Component.translatable(MOD + ".cmd.ya_eliminado", p.nombre));
-        };
+        Evento.Resultado r = Evento.get(c.getSource().getServer()).eliminar(c.getSource().getServer(), p, motivo);
+        return r == Evento.Resultado.ELIMINADO ? ok(c, Component.translatable(MOD + ".cmd.eliminado", p.nombre))
+                : error(c, Component.translatable(MOD + ".cmd.ya_eliminado", p.nombre));
     }
 
-    private static int eliminarEquipo(CommandContext<CommandSourceStack> c, boolean forzar) {
+    private static int eliminarEquipo(CommandContext<CommandSourceStack> c) {
         MinecraftServer s = c.getSource().getServer();
         Evento ev = Evento.get(s);
         int n = IntegerArgumentType.getInteger(c, "n") - 1;
@@ -218,7 +210,7 @@ public final class Comandos {
             return error(c, Component.translatable(MOD + ".cmd.equipo_vacio", n + 1));
         }
         for (Pieza p : eq) {
-            ev.eliminar(s, p, "", forzar);
+            ev.eliminar(s, p, "");
         }
         return ok(c, Component.translatable(MOD + ".cmd.equipo_eliminado", n + 1));
     }
@@ -231,16 +223,6 @@ public final class Comandos {
         boolean b = Evento.get(c.getSource().getServer()).revivir(c.getSource().getServer(), p);
         return b ? ok(c, Component.translatable(MOD + ".cmd.revivido", p.nombre)) : error(c, Component.translatable(MOD + ".cmd.ya_vivo",
                 p.nombre));
-    }
-
-    private static int ficha(CommandContext<CommandSourceStack> c) {
-        Pieza p = pieza(c);
-        if (p == null) {
-            return 0;
-        }
-        int n = IntegerArgumentType.getInteger(c, "cantidad");
-        Evento.get(c.getSource().getServer()).fichas(c.getSource().getServer(), p, n);
-        return ok(c, Component.translatable(MOD + ".cmd.fichas", p.nombre, p.fichas));
     }
 
     private static int equipos(CommandContext<CommandSourceStack> c, int tam) {

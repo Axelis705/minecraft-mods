@@ -16,7 +16,7 @@ import net.minecraft.sounds.SoundSource;
 
 import java.util.List;
 
-/** Lo que se le dice a todos: mensajes en el chat, sonidos, títulos y las escenas de eliminación y de ficha usada. */
+/** Lo que se le dice a todos: mensajes en el chat, sonidos, títulos y las escenas de eliminación y del ganador. */
 public final class Anuncio {
     private static final String MOD = Coleccionista.MODID;
     /** Rojo del Coleccionista. */
@@ -68,13 +68,6 @@ public final class Anuncio {
         sonido(s, SoundEvents.BELL_BLOCK, 1.0F, 0.5F);
         sonido(s, SoundEvents.SOUL_ESCAPE, 1.0F, 0.6F);
         aviso(s, "eliminado", p, quedan, p.motivo);
-    }
-
-    static void salvado(MinecraftServer s, Evento ev, Pieza p, String motivo) {
-        todos(s, Component.literal("✚ ").withStyle(ChatFormatting.GOLD).append(nombre(p).withStyle(ChatFormatting.GOLD))
-                .append(Component.translatable(MOD + ".chat.salvado", p.fichas).withStyle(ChatFormatting.YELLOW)));
-        sonido(s, SoundEvents.TOTEM_USE, 0.6F, 1.1F);
-        aviso(s, "salvado", p, ev.vivos().size(), motivo);
     }
 
     static void ganador(MinecraftServer s, Evento ev, Pieza g) {

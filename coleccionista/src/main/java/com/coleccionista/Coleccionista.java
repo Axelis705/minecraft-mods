@@ -35,6 +35,10 @@ public class Coleccionista {
         com.coleccionista.registry.ModRegistry.register(bus);
         com.coleccionista.evento.Evento.init();
         com.coleccionista.evento.Fantasmas.init();
+        com.coleccionista.evento.Panel.init();
+        com.coleccionista.evento.Tomas.init();
+        com.axeliscore.ui.Teclas.nueva(MODID, "panel", 'O', () -> com.coleccionista.client.Atajos.panel());
+        com.axeliscore.ui.Teclas.nueva(MODID, "hud", 'K', () -> com.coleccionista.client.Atajos.hud());
         AxelisCore.commands(com.coleccionista.evento.Comandos::registrar);
         AxelisCore.commands(d -> d.register(Commands.literal(MODID).executes(c -> {
             c.getSource().sendSuccess(() -> Component.translatable(MODID + ".hola", AxelisCore.version()), false);

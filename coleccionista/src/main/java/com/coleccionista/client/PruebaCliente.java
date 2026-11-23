@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 
 /**
  * La prueba con el juego de verdad y fotos (cliente-core.yml con mod=coleccionista y escenario=coleccionista): HUD, parejas, eliminación
- * (la franja y la escena propia), ficha de vida, fantasma, pausa y ganador. Corre con bots: no hace falta nadie más.
+ * (la franja y la escena propia), fantasma, panel del organizador, pausa y ganador. Corre con bots: no hace falta nadie más.
  */
 final class PruebaCliente {
     private static final double G = -60;
@@ -42,14 +42,11 @@ final class PruebaCliente {
         });
         t.photo("03_parejas", 900, () -> t.cmd("evento parejas"));
         t.add("parejas", 100, () -> t.check(!EventoCliente.companeros().isEmpty(), "tengo pareja"));
-        t.photo("04_eliminado", 900, () -> t.cmd("evento eliminar Bot_02 forzar"));
+        t.photo("04_eliminado", 900, () -> t.cmd("evento eliminar Bot_02 Encadenados"));
+        t.add("eliminado", 100, () -> t.check(EventoCliente.vivos() == 7, "quedan 7: " + EventoCliente.vivos()));
         t.add("esperar franja", 4200, () -> {
         });
-        t.photo("05_ficha", 1000, () -> t.cmd("evento eliminar Bot_03 Encadenados"));
-        t.add("ficha usada", 100, () -> t.check(EventoCliente.vivos() == 7, "con la ficha se salvó: quedan " + EventoCliente.vivos()));
-        t.add("esperar ficha", 3500, () -> {
-        });
-        t.photo("06_mi_eliminacion", 2800, () -> t.cmd("evento eliminar " + yo() + " forzar"));
+        t.photo("06_mi_eliminacion", 2800, () -> t.cmd("evento eliminar " + yo()));
         t.add("soy fantasma", 100, () -> {
             t.check(EventoCliente.esFantasma(Minecraft.getInstance().player.getUUID()), "quedé como fantasma");
             t.check(Minecraft.getInstance().player.isSpectator(), "estoy en modo espectador");
@@ -69,12 +66,40 @@ final class PruebaCliente {
             t.check(!Minecraft.getInstance().player.isSpectator(), "ya no soy espectador");
             t.lookFrom(0.5, G, -7.5, 0.5, G + 1, 0.5);
         });
+        // el panel del organizador (soy operador en la prueba)
+        t.photo("11_panel_piezas", 1200, () -> {
+            PanelScreen s = new PanelScreen();
+            com.axeliscore.plat.client.Screens.open(s);
+            s.pestana(0);
+        });
+        t.photo("12_panel_evento", 900, () -> {
+            if (com.axeliscore.plat.client.Screens.current() instanceof PanelScreen s) {
+                s.pestana(1);
+            }
+        });
+        t.add("tomas", 900, () -> {
+            com.axeliscore.data.client.ClientData.send(com.coleccionista.evento.Panel.ACCION,
+                    com.coleccionista.evento.Panel.pedido("toma_guardar", null));
+            com.axeliscore.data.client.ClientData.send(com.coleccionista.evento.Panel.ACCION,
+                    com.coleccionista.evento.Panel.pedido("toma_guardar", null));
+        });
+        t.photo("13_panel_camaras", 900, () -> {
+            if (com.axeliscore.plat.client.Screens.current() instanceof PanelScreen s) {
+                s.pestana(2);
+            }
+        });
+        t.add("cerrar panel", 600, () -> {
+            t.check(com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Tomas.KEY) != null
+                    && com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Tomas.KEY).getList("lista", 10).size() >= 2,
+                    "se guardaron las tomas de cámara");
+            com.axeliscore.plat.client.Screens.close();
+        });
         t.photo("09_pausa", 1200, () -> t.cmd("evento pausar"));
         t.add("reanudar", 800, () -> t.cmd("evento reanudar"));
         // quedo yo solo: salen las 6 franjas y luego la del ganador
         t.add("final", 4600, () -> {
             for (String b : new String[] {"Bot_03", "Bot_04", "Bot_05", "Bot_06", "Bot_07", "Bot_08"}) {
-                t.cmd("evento eliminar " + b + " forzar");
+                t.cmd("evento eliminar " + b);
             }
         });
         t.add("esperar franjas", 24000, () -> {

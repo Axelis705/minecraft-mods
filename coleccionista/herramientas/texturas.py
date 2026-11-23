@@ -6,7 +6,6 @@ Texturas de Los Juegos del Coleccionista (pixel art hecho a mano en código).
 
 Genera:
   - textures/entity/fantasma.png (32x32): el fantasmita de los eliminados (sábana, ojos, boca, falda con picos).
-  - textures/item/ficha_vida.png (16x16): la ficha de vida (porcelana con corazón rojo y filo dorado).
 """
 import os
 
@@ -95,52 +94,5 @@ def fantasma():
     guardar(img, "entity/fantasma.png")
 
 
-def ficha():
-    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
-    oro_os = (150, 104, 30, 255)
-    oro = (222, 172, 64, 255)
-    oro_cl = (255, 226, 130, 255)
-    porc = (236, 230, 222, 255)
-    porc_os = (196, 186, 176, 255)
-    rojo = (178, 18, 26, 255)
-    rojo_cl = (232, 64, 70, 255)
-    rojo_os = (110, 8, 16, 255)
-    cx, cy = 7.5, 7.5
-    for y in range(16):
-        for x in range(16):
-            d = ((x - cx) ** 2 + (y - cy) ** 2) ** 0.5
-            if d > 7.4:
-                continue
-            if d > 6.3:
-                img.putpixel((x, y), oro_cl if (x + y) < 12 else oro_os if (x + y) > 18 else oro)
-            elif d > 5.6:
-                img.putpixel((x, y), oro_os)
-            else:
-                img.putpixel((x, y), porc if (x + y) < 17 else porc_os)
-    corazon = [
-        "..##.##..",
-        ".#######.",
-        ".#######.",
-        "..#####..",
-        "...###...",
-        "....#....",
-    ]
-    for j, fila in enumerate(corazon):
-        for i, ch in enumerate(fila):
-            if ch == "#":
-                x, y = 4 + i, 5 + j
-                c = rojo
-                if j <= 1 and i in (2, 5):
-                    c = rojo_cl
-                elif j >= 3 or i >= 6:
-                    c = rojo_os if (i + j) > 8 else rojo
-                img.putpixel((x, y), c)
-    # grieta fina de porcelana (el sello del Coleccionista)
-    for (x, y) in [(11, 3), (11, 4), (12, 5)]:
-        img.putpixel((x, y), porc_os)
-    guardar(img, "item/ficha_vida.png")
-
-
 if __name__ == "__main__":
     fantasma()
-    ficha()

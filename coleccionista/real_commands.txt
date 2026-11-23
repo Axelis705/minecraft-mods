@@ -8,19 +8,18 @@ execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
 evento parejas
 evento prueba Encadenados
 evento reloj 600
-evento eliminar Bot_01 forzar
+evento eliminar Bot_01
 evento eliminar Bot_02 Encadenados
-evento ficha Bot_03 2
+evento eliminar Bot_02
 evento pausar
 #pausa 1
 evento reanudar
 evento revivir Bot_01
 evento estado
-evento eliminar Bot_01 forzar
-evento eliminar Bot_02 forzar
-evento eliminar Bot_03 forzar
-evento eliminar Bot_04 forzar
-evento eliminar Bot_05 forzar
+evento eliminar Bot_01
+evento eliminar Bot_03
+evento eliminar Bot_04
+evento eliminar Bot_05
 #pausa 1
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
@@ -28,8 +27,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
 #expect COLECCIONISTA_EQUIPOS tam=2 equipos=3
 #expect COLECCIONISTA_ELIMINADO 01 Bot_01 quedan=5
-#expect COLECCIONISTA_SALVADO 02 Bot_02 fichas=0
-#expect COLECCIONISTA_FICHAS 03 Bot_03 fichas=3
+#expect COLECCIONISTA_ELIMINADO 02 Bot_02 quedan=4
 #expect COLECCIONISTA_REVIVIDO 01 Bot_01
 #expect COLECCIONISTA_ELIMINADO 05 Bot_05 quedan=1
 #expect COLECCIONISTA_GANADOR 06 Bot_06

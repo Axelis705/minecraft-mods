@@ -1,6 +1,5 @@
 package com.coleccionista.client;
 
-import com.axeliscore.plat.Ids;
 import com.axeliscore.plat.Nbt;
 import com.axeliscore.plat.client.G;
 import com.axeliscore.ui.Ui;
@@ -11,20 +10,18 @@ import net.minecraft.client.gui.components.PlayerFaceRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
 import java.util.List;
 
 /**
  * (Cliente) El HUD del evento: arriba al centro la placa con la prueba y el reloj; arriba a la derecha cuántos quedan; arriba a la
- * izquierda tu tarjeta (tu número, tus fichas de vida y tu equipo), o la de fantasma u organizador.
+ * izquierda tu tarjeta (tu número, tu nombre y tu equipo), o la de fantasma u organizador.
  */
 public final class EventoHud {
     private static final String MOD = Coleccionista.MODID;
     public static final int ROJO = 0xFFB3121A, ROJO_CL = 0xFFE0404A, PORCELANA = 0xFFE8E2D8, ORO = 0xFFDEAC40, FONDO = 0xE0140C0E,
             FONDO2 = 0xC0080506, FANTASMA = 0xFFBFEFFF;
-    static final ResourceLocation FICHA = Ids.rl(MOD, "textures/item/ficha_vida.png");
     /** El organizador puede esconder todo para grabar. */
     public static boolean oculto;
     private static int ultimoSegundo = -1;
@@ -38,7 +35,8 @@ public final class EventoHud {
 
     private static void render(G g, int w, int h) {
         Minecraft mc = Minecraft.getInstance();
-        if (oculto || mc.options.hideGui || mc.player == null || (!EventoCliente.activo() && !EventoCliente.soyOrganizador())) {
+        if (oculto || mc.options.hideGui || mc.player == null || EscenaAviso.pantallaCompleta()
+                || (!EventoCliente.activo() && !EventoCliente.soyOrganizador())) {
             return;
         }
         placa(g, w);
@@ -142,16 +140,9 @@ public final class EventoHud {
         boolean vivo = EventoCliente.vivo(yo);
         String num = Component.translatable(MOD + ".hud.pieza", String.format("%02d", Nbt.i(yo, "numero"))).getString();
         String nombre = Nbt.s(yo, "nombre");
-        String l2;
-        int c2;
-        if (vivo) {
-            int fichas = Nbt.i(yo, "fichas");
-            l2 = fichas > 0 ? "" : Component.translatable(MOD + ".hud.sin_fichas").getString();
-            c2 = 0xFF9A9090;
-        } else {
-            l2 = Component.translatable(MOD + ".hud.coleccion", Nbt.i(yo, "orden")).getString();
-            c2 = FANTASMA;
-        }
+        String l2 = vivo ? Component.translatable(MOD + ".hud.una_vida").getString()
+                : Component.translatable(MOD + ".hud.coleccion", Nbt.i(yo, "orden")).getString();
+        int c2 = vivo ? 0xFF9A9090 : FANTASMA;
         List<CompoundTag> comp = vivo ? EventoCliente.companeros() : List.of();
         String l3 = "";
         if (!comp.isEmpty()) {
@@ -168,8 +159,7 @@ public final class EventoHud {
                 l3 = f.plainSubstrByWidth(l3, 176) + "…";
             }
         }
-        int fichas = Nbt.i(yo, "fichas");
-        int ancho = Math.max(Math.max(f.width(num), f.width(nombre)) + 30, Math.max(f.width(l2), vivo ? fichas * 10 : 0) + 30);
+        int ancho = Math.max(Math.max(f.width(num), f.width(nombre)) + 30, f.width(l2) + 12);
         ancho = Math.max(ancho, f.width(l3) + 12);
         int alto = l3.isEmpty() ? 34 : 44;
         g.fillGradient(x, y, x + ancho, y + alto, FONDO, FONDO2);
@@ -182,16 +172,7 @@ public final class EventoHud {
         }
         g.drawString(f, num, x + 27, y + 4, vivo ? ROJO_CL : FANTASMA, true);
         g.drawString(f, nombre, x + 27, y + 14, vivo ? 0xFFFFFFFF : 0xFFB0C8D0, true);
-        if (vivo && fichas > 0) {
-            for (int i = 0; i < Math.min(fichas, 8); i++) {
-                g.blit(FICHA, x + 5 + i * 10, y + 24, 9, 9, 0, 0, 16, 16, 16, 16);
-            }
-            if (fichas > 8) {
-                g.drawString(f, "+" + (fichas - 8), x + 86, y + 25, ORO, true);
-            }
-        } else {
-            g.drawString(f, l2, x + 5, y + 24, c2, false);
-        }
+        g.drawString(f, l2, x + 5, y + 24, c2, false);
         if (!l3.isEmpty()) {
             g.drawString(f, l3, x + 5, y + 34, 0xFF8FD8E8, false);
         }

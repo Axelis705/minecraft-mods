@@ -42,7 +42,7 @@ public final class Evento {
     }
 
     public enum Resultado {
-        ELIMINADO, SALVADO, YA_ESTABA
+        ELIMINADO, YA_ESTABA
     }
 
     private static Evento actual;
@@ -218,19 +218,12 @@ public final class Evento {
     // ------------------------------------------------------------------ eliminar y revivir
 
     /**
-     * Elimina a una pieza. Si tiene una ficha de vida (y no se fuerza), la gasta y se salva. Si no, pasa a la colección: anuncio en el
-     * chat, escena en pantalla y se vuelve fantasma.
+     * Elimina a una pieza (todos tienen una sola vida): pasa a la colección con anuncio en el chat y escena en pantalla, y se vuelve
+     * fantasma. Si queda una sola, es la ganadora.
      */
-    public Resultado eliminar(MinecraftServer s, Pieza p, String motivo, boolean forzar) {
+    public Resultado eliminar(MinecraftServer s, Pieza p, String motivo) {
         if (!p.vivo()) {
             return Resultado.YA_ESTABA;
-        }
-        if (!forzar && p.fichas > 0) {
-            p.fichas--;
-            Coleccionista.LOGGER.info("COLECCIONISTA_SALVADO {} {} fichas={}", p.etiqueta(), p.nombre, p.fichas);
-            Anuncio.salvado(s, this, p, motivo);
-            cambio(s);
-            return Resultado.SALVADO;
         }
         p.rol = Pieza.Rol.FANTASMA;
         p.orden = ++coleccionados;
@@ -265,25 +258,6 @@ public final class Evento {
         Coleccionista.LOGGER.info("COLECCIONISTA_REVIVIDO {} {}", p.etiqueta(), p.nombre);
         Fantasmas.restaurar(s, p);
         Anuncio.revivido(s, p);
-        cambio(s);
-        return true;
-    }
-
-    /** Suma (o resta, con número negativo) fichas de vida. */
-    public void fichas(MinecraftServer s, Pieza p, int cambio) {
-        p.fichas = Math.max(0, p.fichas + cambio);
-        Coleccionista.LOGGER.info("COLECCIONISTA_FICHAS {} {} fichas={}", p.etiqueta(), p.nombre, p.fichas);
-        cambio(s);
-    }
-
-    /** Pasa una ficha de una pieza a otra (regalo, trato o robo). */
-    public boolean pasarFicha(MinecraftServer s, Pieza de, Pieza a) {
-        if (de.fichas <= 0 || de == a) {
-            return false;
-        }
-        de.fichas--;
-        a.fichas++;
-        Coleccionista.LOGGER.info("COLECCIONISTA_FICHA_PASA {} -> {}", de.etiqueta(), a.etiqueta());
         cambio(s);
         return true;
     }

@@ -7,7 +7,7 @@ import java.util.UUID;
 
 /**
  * Un participante del evento. El Coleccionista los llama "piezas" (de su colección): cada uno tiene su número (Pieza 07), su estado
- * (vivo o fantasma), sus fichas de vida y su equipo. Los bots de prueba también son piezas.
+ * (vivo o fantasma) y su equipo. Cada uno tiene una sola vida. Los bots de prueba también son piezas.
  */
 public final class Pieza {
     public enum Rol {
@@ -18,8 +18,6 @@ public final class Pieza {
     public String nombre;
     public int numero;
     public Rol rol = Rol.VIVO;
-    /** Fichas de vida: cada una salva de una eliminación. */
-    public int fichas = 1;
     /** Equipo o pareja actual (-1: sin equipo). */
     public int equipo = -1;
     /** Por qué quedó fuera (nombre de la prueba o lo que escribió el organizador). */
@@ -51,7 +49,6 @@ public final class Pieza {
         t.putString("nombre", nombre);
         t.putInt("numero", numero);
         t.putString("rol", rol.name());
-        t.putInt("fichas", fichas);
         t.putInt("equipo", equipo);
         t.putString("motivo", motivo);
         t.putInt("orden", orden);
@@ -66,7 +63,6 @@ public final class Pieza {
         } catch (IllegalArgumentException e) {
             p.rol = Rol.VIVO;
         }
-        p.fichas = Nbt.i(t, "fichas");
         p.equipo = t.contains("equipo") ? t.getInt("equipo") : -1;
         p.motivo = Nbt.s(t, "motivo");
         p.orden = Nbt.i(t, "orden");

@@ -6,7 +6,6 @@ import com.axeliscore.plat.client.G;
 import com.axeliscore.ui.Ui;
 import com.coleccionista.Coleccionista;
 import com.coleccionista.evento.Evento;
-import com.coleccionista.registry.ModRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -14,7 +13,6 @@ import net.minecraft.client.gui.components.PlayerFaceRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -26,7 +24,6 @@ import java.util.UUID;
  *     <li>Eliminación: una franja negra con líneas rojas cruza la pantalla con la cara, el número y el nombre ("ahora es parte de la
  *     colección").</li>
  *     <li>Al eliminado: pantalla completa (destello rojo, negro, su retrato en un marco de porcelana: "Has sido añadido a la colección").</li>
- *     <li>Ficha de vida: la ficha salta en la pantalla (como un tótem) y una franja dorada avisa a todos.</li>
  *     <li>Ganador: franja dorada grande ("La última pieza").</li>
  * </ul>
  * Si llegan varias juntas, salen una tras otra.
@@ -52,11 +49,7 @@ public final class EscenaAviso {
         Minecraft mc = Minecraft.getInstance();
         String tipo = Nbt.s(t, "tipo");
         UUID id = t.getUUID("id");
-        float dur = switch (tipo) {
-            case "ganador" -> 8F;
-            case "salvado" -> 3.8F;
-            default -> 4.6F;
-        };
+        float dur = "ganador".equals(tipo) ? 8F : 4.6F;
         Aviso a = new Aviso(tipo, id, Nbt.s(t, "nombre"), Nbt.i(t, "numero"), Nbt.i(t, "orden"), Nbt.i(t, "quedan"), Nbt.s(t, "motivo"), dur,
                 new long[] {0});
         boolean mio = mc.player != null && mc.player.getUUID().equals(id);
@@ -64,10 +57,12 @@ public final class EscenaAviso {
             propia = new Aviso(tipo, id, a.nombre, a.numero, a.orden, a.quedan, a.motivo, 7F, new long[] {System.currentTimeMillis()});
             return;
         }
-        if (mio && "salvado".equals(tipo)) {
-            mc.gameRenderer.displayItemActivation(new ItemStack(ModRegistry.FICHA.get()));
-        }
         COLA.add(a);
+    }
+
+    /** ¿Se está viendo la escena de pantalla completa del propio eliminado? (el HUD se esconde mientras) */
+    public static boolean pantallaCompleta() {
+        return propia != null;
     }
 
     private static void render(G g, int w, int h) {
@@ -105,13 +100,13 @@ public final class EscenaAviso {
 
     private static void franja(G g, int w, int h, Aviso a, float t) {
         Font f = Ui.font();
-        boolean gana = "ganador".equals(a.tipo), salva = "salvado".equals(a.tipo);
+        boolean gana = "ganador".equals(a.tipo);
         float entra = suave(t / 0.35F), sale = t > a.dur - 0.4F ? suave((a.dur - t) / 0.4F) : 1F, al = entra * sale;
         int cy = (int) (h * (gana ? 0.42F : 0.30F));
-        int alto = gana ? 70 : salva ? 34 : 46;
+        int alto = gana ? 70 : 46;
         int y0 = cy - alto / 2, y1 = cy + alto / 2;
-        int linea = gana ? EventoHud.ORO : salva ? 0xFFE8B040 : EventoHud.ROJO;
-        int fondo = gana ? 0x3A2A10 : salva ? 0x2A2010 : 0x0C0608;
+        int linea = gana ? EventoHud.ORO : EventoHud.ROJO;
+        int fondo = gana ? 0x3A2A10 : 0x0C0608;
         g.fillGradient(0, y0, w, cy, Ui.alpha(0xFF000000 | fondo, 0.55F * al), Ui.alpha(0xFF000000 | fondo, 0.88F * al));
         g.fillGradient(0, cy, w, y1, Ui.alpha(0xFF000000 | fondo, 0.88F * al), Ui.alpha(0xFF000000 | fondo, 0.55F * al));
         int lw = (int) (w * entra);
@@ -121,10 +116,10 @@ public final class EscenaAviso {
             return;
         }
         int dx = (int) ((1 - entra) * 40);
-        int cara = gana ? 44 : salva ? 22 : 30;
-        String titulo = Component.translatable(MOD + (gana ? ".escena.ultima" : salva ? ".escena.ficha" : ".escena.eliminado")).getString();
-        String sub = Component.translatable(MOD + (gana ? ".escena.gana" : salva ? ".escena.salva_sub" : ".escena.coleccion")).getString();
-        float esc = gana ? 2.2F : salva ? 1.2F : 1.6F;
+        int cara = gana ? 44 : 30;
+        String titulo = Component.translatable(MOD + (gana ? ".escena.ultima" : ".escena.eliminado")).getString();
+        String sub = Component.translatable(MOD + (gana ? ".escena.gana" : ".escena.coleccion")).getString();
+        float esc = gana ? 2.2F : 1.6F;
         int anchoTexto = Math.max((int) (f.width(a.nombre) * esc), f.width(sub));
         int bloque = cara + 10 + Math.max(anchoTexto, f.width(titulo));
         int x = w / 2 - bloque / 2 + dx;
@@ -145,10 +140,10 @@ public final class EscenaAviso {
         }
         int tx = x + cara + 10;
         String num = "PIEZA " + String.format("%02d", a.numero);
-        g.drawString(f, num + "  ·  " + titulo, tx, cy - alto / 2 + (gana ? 10 : 6), Ui.alpha(gana ? EventoHud.ORO : salva ? 0xFFFFD27A
-                : EventoHud.ROJO_CL, al), true);
+        g.drawString(f, num + "  ·  " + titulo, tx, cy - alto / 2 + (gana ? 10 : 6), Ui.alpha(gana ? EventoHud.ORO : EventoHud.ROJO_CL, al),
+                true);
         g.push();
-        g.translate(tx, cy - (gana ? 6 : salva ? 2 : 4), 0);
+        g.translate(tx, cy - (gana ? 6 : 4), 0);
         g.scale(esc, esc, 1);
         g.drawString(f, a.nombre, 0, 0, Ui.alpha(0xFFFFFFFF, al), true);
         g.pop();
@@ -179,7 +174,8 @@ public final class EscenaAviso {
         if (ap <= 0.02F) {
             return;
         }
-        int cx = w / 2, cy = h / 2 - 18;
+        // arriba del centro: abajo a la izquierda está el chat
+        int cx = w / 2, cy = (int) (h * 0.30F);
         int lado = 64;
         int x = cx - lado / 2, y = cy - lado / 2;
         // marco de porcelana con filo rojo y placa

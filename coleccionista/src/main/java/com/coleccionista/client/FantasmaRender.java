@@ -45,6 +45,9 @@ public final class FantasmaRender {
             return;
         }
         e.setCanceled(true);
+        if (!veoFantasmas()) {
+            return;
+        }
         CompoundTag pz = EventoCliente.pieza(p.getUUID());
         String etiqueta = pz == null || p == Minecraft.getInstance().player ? null
                 : String.format("%02d", Nbt.i(pz, "numero")) + " · " + Nbt.s(pz, "nombre");
@@ -55,8 +58,14 @@ public final class FantasmaRender {
     /** ¿El que está jugando en esta computadora puede ver fantasmas? (si es fantasma, espectador u organizador) */
     public static boolean veoFantasmas() {
         Minecraft mc = Minecraft.getInstance();
-        return mc.player != null && (mc.player.isSpectator() || EventoCliente.soyOrganizador()
-                || EventoCliente.esFantasma(mc.player.getUUID()));
+        if (mc.player == null) {
+            return false;
+        }
+        if (EventoCliente.esFantasma(mc.player.getUUID())) {
+            return true;
+        }
+        // el organizador puede apagarlos para que la toma salga limpia
+        return (mc.player.isSpectator() || EventoCliente.soyOrganizador()) && Camara.verFantasmas;
     }
 
     /** Dibuja el fantasmita en la posición de la entidad (la pose ya está en su lugar), flotando a {@code altura}. */
