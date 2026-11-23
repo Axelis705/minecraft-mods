@@ -1,6 +1,6 @@
 axeliscore
 coleccionista
-forceload add -16 -48 224 112
+forceload add -16 -48 224 144
 #pausa 3
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
@@ -63,6 +63,7 @@ evento revivir Bot_03
 evento revivir Bot_04
 evento compartir hablar 5
 evento compartir tiempo_elegir 5
+evento compartir ritmo 60
 evento compartir preparar
 #pausa 4
 evento compartir empezar ya
@@ -110,6 +111,32 @@ evento sacrificio preparar
 evento sacrificio empezar ya
 #pausa 32
 evento sacrificio terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento traidor tamano 4
+evento traidor tiempo 60
+evento traidor preparar
+#pausa 4
+evento traidor empezar ya
+#pausa 10
+evento traidor codigo Bot_01 bueno
+#pausa 3
+evento traidor terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento traidor preparar
+#pausa 4
+evento traidor empezar ya
+#pausa 10
+evento traidor codigo Bot_02 malo
+evento traidor codigo Bot_02 malo
+evento traidor codigo Bot_02 malo
+#pausa 12
+evento traidor terminar
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect usuarios=[coleccionista]
@@ -175,3 +202,14 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_SACRIFICIO cuarto=
 #expect COLECCIONISTA_SACRIFICIO fin eliminados=2
 #expect COLECCIONISTA_SACRIFICIO terminada
+#expect COLECCIONISTA_CONSTRUIDO archivo
+#expect COLECCIONISTA_TRAIDOR preparada salas=1
+#expect COLECCIONISTA_PRESENTACION II
+#expect COLECCIONISTA_TRAIDOR roles
+#expect COLECCIONISTA_TRAIDOR buscar
+#expect COLECCIONISTA_TRAIDOR sala=1 abierta
+#expect COLECCIONISTA_TRAIDOR sala=1 fallo quedan=0
+#expect COLECCIONISTA_TRAIDOR sala=1 fallida
+#expect COLECCIONISTA_TRAIDOR sala=1 castigo
+#expect COLECCIONISTA_TRAIDOR fin eliminados=1
+#expect COLECCIONISTA_TRAIDOR terminada

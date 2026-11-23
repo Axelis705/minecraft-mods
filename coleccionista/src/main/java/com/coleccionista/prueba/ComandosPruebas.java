@@ -128,6 +128,11 @@ public final class ComandosPruebas {
                     Compartir.segundosHablar = IntegerArgumentType.getInteger(c, "segundos");
                     return ok(c, Component.translatable(MOD + ".com.cmd.tiempos", Compartir.segundosHablar, Compartir.segundosElegir));
                 })))
+                .then(Commands.literal("ritmo").then(Commands.argument("ticks", IntegerArgumentType.integer(40, 400)).executes(c -> {
+                    Compartir.REVELA = IntegerArgumentType.getInteger(c, "ticks");
+                    Compartir.RESULTADO = Compartir.REVELA * 95 / 150;
+                    return ok(c, Component.literal("ritmo = " + Compartir.REVELA));
+                })))
                 .then(Commands.literal("tiempo_elegir").then(Commands.argument("segundos", IntegerArgumentType.integer(5, 300)).executes(c -> {
                     Compartir.segundosElegir = IntegerArgumentType.getInteger(c, "segundos");
                     return ok(c, Component.translatable(MOD + ".com.cmd.tiempos", Compartir.segundosHablar, Compartir.segundosElegir));
@@ -220,6 +225,44 @@ public final class ComandosPruebas {
                     Sacrificio.terminar(c.getSource().getServer());
                     return ok(c, Component.translatable(MOD + ".sac.cmd.terminada"));
                 }));
+    }
+
+    public static LiteralArgumentBuilder<CommandSourceStack> traidor(SuggestionProvider<CommandSourceStack> vivas) {
+        return Commands.literal("traidor")
+                .then(Commands.literal("preparar").executes(c -> {
+                    Component e = Traidor.preparar(c.getSource().getServer());
+                    return e == null ? ok(c, Component.translatable(MOD + ".tra.cmd.preparada")) : error(c, e);
+                }))
+                .then(Commands.literal("empezar").executes(c -> Traidor.empezar(c.getSource().getServer(), true) ? ok(c,
+                        Component.translatable(MOD + ".tra.cmd.empieza")) : error(c, Component.translatable(MOD + ".tra.cmd.no_toca")))
+                        .then(Commands.literal("ya").executes(c -> Traidor.empezar(c.getSource().getServer(), false) ? ok(c,
+                                Component.translatable(MOD + ".tra.cmd.empieza")) : error(c, Component.translatable(MOD + ".tra.cmd.no_toca")))))
+                .then(Commands.literal("cortar").executes(c -> Traidor.cortar(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".tra.cmd.cortado")) : error(c, Component.translatable(MOD + ".tra.cmd.no_toca"))))
+                .then(Commands.literal("codigo").then(Commands.argument("pieza", StringArgumentType.word()).suggests(vivas)
+                        .then(Commands.literal("bueno").executes(c -> codigo(c, true)))
+                        .then(Commands.literal("malo").executes(c -> codigo(c, false)))))
+                .then(Commands.literal("tamano").then(Commands.argument("n", IntegerArgumentType.integer(3, 6)).executes(c -> {
+                    Traidor.tamano = IntegerArgumentType.getInteger(c, "n");
+                    return ok(c, Component.translatable(MOD + ".tra.cmd.ajustes", Traidor.tamano, Traidor.segundosBuscar));
+                })))
+                .then(Commands.literal("tiempo").then(Commands.argument("segundos", IntegerArgumentType.integer(20, 1800)).executes(c -> {
+                    Traidor.segundosBuscar = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".tra.cmd.ajustes", Traidor.tamano, Traidor.segundosBuscar));
+                })))
+                .then(Commands.literal("terminar").executes(c -> {
+                    Traidor.terminar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".tra.cmd.terminada"));
+                }));
+    }
+
+    private static int codigo(CommandContext<CommandSourceStack> c, boolean bueno) {
+        Pieza p = pieza(c);
+        if (p == null) {
+            return 0;
+        }
+        return Traidor.probarComo(c.getSource().getServer(), p, bueno) ? ok(c, Component.translatable(MOD + ".tra.cmd.probado", p.nombre))
+                : error(c, Component.translatable(MOD + ".tra.cmd.no_toca"));
     }
 
     private static int forzar(CommandContext<CommandSourceStack> c, boolean robar) {

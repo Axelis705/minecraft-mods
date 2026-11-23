@@ -280,6 +280,7 @@ final class PruebaCliente {
             t.cmd("forceload add 160 16 208 56");
             t.cmd("evento compartir hablar 8");
             t.cmd("evento compartir tiempo_elegir 12");
+            t.cmd("evento compartir ritmo 100");
             t.cmd("evento compartir preparar");
         });
         t.photo("42_salon_presentacion", 5700, () -> {
@@ -438,6 +439,55 @@ final class PruebaCliente {
         t.add("fin sacrificio", 100, () -> {
             t.check("FIN".equals(SacrificioCliente.fase()), "terminó El sacrificio (cada cuarto perdió una pieza)");
             t.cmd("evento sacrificio terminar");
+        });
+        traidor(t);
+    }
+
+    /** Prueba 2, El traidor: la sala, la carta secreta del papel, la nota, el teclado de la bóveda y el final con los traidores. */
+    private static void traidor(ClientTest.Script t) {
+        t.add("tra: preparar", 1600, () -> {
+            t.cmd("evento revivir " + yo());
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("gamemode adventure @a");
+            t.cmd("forceload add -16 88 64 120");
+            t.cmd("evento traidor tamano 4");
+            t.cmd("evento traidor tiempo 90");
+            t.cmd("evento traidor preparar");
+        });
+        t.photo("67_traidor_presentacion", 5700, () -> {
+        });
+        t.photo("68_sala_archivo", 5000, () -> {
+        });
+        t.add("traidor lista", 100, () -> t.check("LISTA".equals(TraidorCliente.fase()), "El traidor está lista"));
+        t.photo("69_papel", 2500, () -> t.cmd("evento traidor empezar ya"));
+        t.add("papel", 100, () -> t.check(!TraidorCliente.rol().isEmpty(), "me tocó un papel (leal o traidor)"));
+        t.photo("70_nota", 6000, () -> {
+            var inv = Minecraft.getInstance().player.getInventory();
+            for (int i = 0; i < 9; i++) {
+                var st = inv.getItem(i);
+                if (st.hasTag() && st.getTag().getBoolean("coleccionista_nota")) {
+                    inv.selected = i;
+                }
+            }
+        });
+        t.add("buscando", 100, () -> t.check("BUSCAR".equals(TraidorCliente.fase()), "empezó la búsqueda del código"));
+        t.photo("71_teclado", 900, () -> com.axeliscore.plat.client.Screens.open(new TecladoScreen()));
+        t.add("cortar", 3000, () -> {
+            com.axeliscore.plat.client.Screens.close();
+            t.cmd("evento traidor cortar");
+        });
+        t.photo("72_castigo", 600, () -> {
+        });
+        t.add("esperar traidor", 22000, () -> {
+        });
+        t.photo("73_traidor_fin", 600, () -> {
+        });
+        t.add("fin traidor", 100, () -> {
+            t.check("FIN".equals(TraidorCliente.fase()), "terminó El traidor");
+            com.axeliscore.plat.client.Screens.close();
+            t.cmd("evento traidor terminar");
         });
     }
 }

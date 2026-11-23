@@ -52,8 +52,8 @@ public final class Compartir {
     public static final String PANTALLA = MOD + ":eleccion";
     public static final String PRUEBA = "Compartir o robar";
     public static int segundosHablar = 60, segundosElegir = 20;
-    /** Ticks que dura cada revelación y cuándo se aplica el resultado. */
-    static final int REVELA = 150, RESULTADO = 95;
+    /** Ticks que dura cada revelación y cuándo se aplica el resultado (se puede acelerar para las pruebas). */
+    public static int REVELA = 150, RESULTADO = 95;
 
     public enum Fase {
         NADA, LISTA, HABLANDO_COLECCIONISTA, HABLAR, ELEGIR, REVELAR, FIN

@@ -112,6 +112,19 @@ public final class Pantallas {
         return l;
     }
 
+    /** El traidor (en el Archivo). */
+    public static List<Frase> traidor() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("boveda", 100, null, 1F));
+        l.add(new Frase("notas", 100, null, 1F));
+        l.add(new Frase("traidor", 110, null, 1F));
+        l.add(new Frase("intentos", 110, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("confien", 80, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -119,6 +132,7 @@ public final class Pantallas {
             case "compartir" -> compartir();
             case "copas" -> copas();
             case "sacrificio" -> sacrificio();
+            case "traidor" -> traidor();
             default -> null;
         };
     }

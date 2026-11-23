@@ -42,6 +42,12 @@ public final class ModRegistry {
             () -> new net.minecraft.world.item.BlockItem(CANDADO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "candado")));
     public static final net.minecraftforge.registries.RegistryObject<Item> FOCO_ITEM = ITEMS.register("foco",
             () -> new net.minecraft.world.item.BlockItem(FOCO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "foco")));
+    /** El teclado de la bóveda (El traidor). */
+    public static final net.minecraftforge.registries.RegistryObject<Block> TECLADO = BLOCKS.register("teclado",
+            () -> new com.coleccionista.bloque.TecladoBlock(com.axeliscore.plat.Reg.block(Coleccionista.MODID, "teclado")
+                    .strength(-1F, 3600000F).noOcclusion().sound(net.minecraft.world.level.block.SoundType.METAL)));
+    public static final net.minecraftforge.registries.RegistryObject<Item> TECLADO_ITEM = ITEMS.register("teclado",
+            () -> new net.minecraft.world.item.BlockItem(TECLADO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "teclado")));
     /** Una copa de la final (Las copas). */
     public static final net.minecraftforge.registries.RegistryObject<Block> COPA = BLOCKS.register("copa",
             () -> new com.coleccionista.bloque.CopaBlock(com.axeliscore.plat.Reg.block(Coleccionista.MODID, "copa")

@@ -84,7 +84,7 @@ public class PanelScreen extends UiScreen {
         // de Encadenados solo importa la fase (el gas cambia a cada rato)
         return ((e == null ? 0 : e.hashCode()) * 31 + (t == null ? 0 : t.hashCode()) + tab) * 31 + EncadenadosCliente.fase.hashCode() + CompartirCliente.fase().hashCode() * 7
                 + PuertasCliente.fase().hashCode() * 13 + PuertasCliente.ronda() + pruebaSel * 101 + CopasCliente.fase().hashCode() * 17
-                + SacrificioCliente.fase().hashCode() * 19;
+                + SacrificioCliente.fase().hashCode() * 19 + TraidorCliente.fase().hashCode() * 23;
     }
 
     @Override
@@ -242,8 +242,8 @@ public class PanelScreen extends UiScreen {
     }
 
     private static String[] pruebasNombres() {
-        return new String[] {"1 · " + tr("p_encadenados"), "3 · " + tr("p_compartir"), "5 · " + tr("p_sacrificio"), "6 · " + tr("p_puertas"),
-                "7 · " + tr("p_copas")};
+        return new String[] {"1 · " + tr("p_encadenados"), "2 · " + tr("p_traidor"), "3 · " + tr("p_compartir"), "5 · " + tr("p_sacrificio"),
+                "6 · " + tr("p_puertas"), "7 · " + tr("p_copas")};
     }
 
     private static List<Op> ops(int i) {
@@ -257,6 +257,13 @@ public class PanelScreen extends UiScreen {
             l.add(new Op("enc_cerrar", () -> "JUEGO".equals(f)));
             l.add(new Op("enc_terminar", EncadenadosCliente::activa));
         } else if (i == 1) {
+            String f = TraidorCliente.fase();
+            l.add(new Op("tra_preparar", () -> "NADA".equals(f) || "LISTA".equals(f) || "FIN".equals(f)));
+            l.add(new Op("tra_empezar", () -> "LISTA".equals(f)));
+            l.add(new Op("tra_ya", () -> "LISTA".equals(f)));
+            l.add(new Op("tra_cortar", () -> "BUSCAR".equals(f)));
+            l.add(new Op("tra_terminar", TraidorCliente::activa));
+        } else if (i == 2) {
             String c = CompartirCliente.fase();
             l.add(new Op("com_preparar", () -> "NADA".equals(c) || "LISTA".equals(c) || "FIN".equals(c)));
             l.add(new Op("com_empezar", () -> "LISTA".equals(c)));
@@ -264,14 +271,14 @@ public class PanelScreen extends UiScreen {
             l.add(new Op("com_elegir", () -> "HABLAR".equals(c) || "LISTA".equals(c)));
             l.add(new Op("com_revelar", () -> "ELEGIR".equals(c)));
             l.add(new Op("com_terminar", CompartirCliente::activa));
-        } else if (i == 2) {
+        } else if (i == 3) {
             String f = SacrificioCliente.fase();
             l.add(new Op("sac_preparar", () -> "NADA".equals(f) || "LISTA".equals(f) || "FIN".equals(f)));
             l.add(new Op("sac_empezar", () -> "LISTA".equals(f)));
             l.add(new Op("sac_ya", () -> "LISTA".equals(f)));
             l.add(new Op("sac_votar", () -> "OFRECER".equals(f)));
             l.add(new Op("sac_terminar", SacrificioCliente::activa));
-        } else if (i == 4) {
+        } else if (i == 5) {
             String f = CopasCliente.fase();
             l.add(new Op("cop_preparar", () -> "NADA".equals(f) || "LISTA".equals(f) || "FIN".equals(f)));
             l.add(new Op("cop_empezar", () -> "LISTA".equals(f)));
@@ -298,12 +305,15 @@ public class PanelScreen extends UiScreen {
             return est;
         }
         if (i == 1) {
-            return Component.translatable(MOD + ".panel.com_estado." + CompartirCliente.fase().toLowerCase(Locale.ROOT)).getString();
-        }
-        if (i == 4) {
-            return Component.translatable(MOD + ".panel.cop_estado." + CopasCliente.fase().toLowerCase(Locale.ROOT)).getString();
+            return Component.translatable(MOD + ".panel.tra_estado." + TraidorCliente.fase().toLowerCase(Locale.ROOT)).getString();
         }
         if (i == 2) {
+            return Component.translatable(MOD + ".panel.com_estado." + CompartirCliente.fase().toLowerCase(Locale.ROOT)).getString();
+        }
+        if (i == 5) {
+            return Component.translatable(MOD + ".panel.cop_estado." + CopasCliente.fase().toLowerCase(Locale.ROOT)).getString();
+        }
+        if (i == 3) {
             return Component.translatable(MOD + ".panel.sac_estado." + SacrificioCliente.fase().toLowerCase(Locale.ROOT)).getString();
         }
         return Component.translatable(MOD + ".panel.pue_estado." + PuertasCliente.fase().toLowerCase(Locale.ROOT), PuertasCliente.ronda(),
@@ -461,7 +471,7 @@ public class PanelScreen extends UiScreen {
             int x = px + 152, w = pw - 164;
             g.drawString(f, pruebasNombres()[pruebaSel], x, py + 54, theme.accent, false);
             g.drawString(f, Ui.fit(estadoPrueba(pruebaSel), w), x, py + 66, theme.title, false);
-            String[] notas = {"enc_nota", "com_nota", "sac_nota", "pue_nota", "cop_nota"};
+            String[] notas = {"enc_nota", "tra_nota", "com_nota", "sac_nota", "pue_nota", "cop_nota"};
             int filas = (ops(pruebaSel).size() + 1) / 2;
             Ui.text(g, Component.translatable(MOD + ".panel." + notas[pruebaSel]).getString(), x, py + 86 + filas * 20, w, theme.textDim, 10);
             Ui.text(g, Component.translatable(MOD + ".panel.pruebas_proximas").getString(), x, py + ph - 24, w, 0xFF7A6E68, 10);

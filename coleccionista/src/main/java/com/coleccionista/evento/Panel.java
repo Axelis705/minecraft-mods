@@ -163,6 +163,17 @@ public final class Panel {
             case "sac_ya" -> com.coleccionista.prueba.Sacrificio.empezar(s, false);
             case "sac_votar" -> com.coleccionista.prueba.Sacrificio.votarYa(s);
             case "sac_terminar" -> com.coleccionista.prueba.Sacrificio.terminar(s);
+            // ---- El traidor
+            case "tra_preparar" -> {
+                Component e = com.coleccionista.prueba.Traidor.preparar(s);
+                if (e != null) {
+                    Plat.msg(p, e, true);
+                }
+            }
+            case "tra_empezar" -> com.coleccionista.prueba.Traidor.empezar(s, true);
+            case "tra_ya" -> com.coleccionista.prueba.Traidor.empezar(s, false);
+            case "tra_cortar" -> com.coleccionista.prueba.Traidor.cortar(s);
+            case "tra_terminar" -> com.coleccionista.prueba.Traidor.terminar(s);
             case "toma_guardar" -> {
                 if (!Tomas.guardar(p, Nbt.s(d, "nombre"))) {
                     Plat.msg(p, Component.translatable(Coleccionista.MODID + ".panel.tomas_llenas", Tomas.MAX), true);

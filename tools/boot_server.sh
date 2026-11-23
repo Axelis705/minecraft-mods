@@ -81,6 +81,8 @@ if [ -f ci_commands.txt ]; then
     case "$line" in '#expect '*) want="${line#\#expect }"; grep -qF "$want" "$log" || miss="$miss $want";; esac
   done < ci_commands.txt
   if [ -n "$miss" ]; then
+    echo "----- marcas del mod en el registro (las ultimas 150) -----"
+    grep -E "\]: [A-Z][A-Z0-9]+_[A-Z0-9_]+ " "$log" | sed 's/^.*\] \[/[/' | cut -c1-260 | tail -150
     echo "ERROR: faltan en el registro:$miss"
     { echo "Faltan:$miss"; grep -E "_FALLO" "$log" | sed 's/^.*\] \[/[/' | cut -c1-300 | head -10; grep -E "DIAG_|PRUEBA_|/ERROR\]|/WARN\].*casino|Exception|unexpected error|at com\.casino|not loaded" "$log" | sed 's/^.*\] \[/[/' | cut -c1-200 | head -60; } > "$log.bad"
     ann "Prueba de comandos fallo ($mod)" 62 "$log.bad"; exit 1
