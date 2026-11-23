@@ -39,6 +39,124 @@ public final class CoreScenario {
         t.lookFrom(e.getX(), G, e.getZ() - dist, e.getX(), G + 0.9, e.getZ());
     }
 
+    static <T extends net.minecraft.world.entity.Entity> java.util.List<T> cerca(Class<T> c) {
+        var mc = net.minecraft.client.Minecraft.getInstance();
+        return mc.level.getEntitiesOfClass(c, mc.player.getBoundingBox().inflate(40));
+    }
+
+    static com.axeliscore.combat.Jefe jefe() {
+        var l = cerca(com.axeliscore.combat.Jefe.class);
+        return l.isEmpty() ? null : l.get(0);
+    }
+
+    /** Combate: estados, barras de vida, números de daño, avisos, proyectiles y el Coloso por fases (con la interfaz visible). */
+    static void combate(ClientTest.Script t) {
+        String aqui = "execute positioned 0.5 -60 -2.5 rotated 0 0 run ";
+        t.add("combate: estados", 1500, () -> {
+            t.hud(true);
+            t.cmd("kill @e[type=!player]");
+            t.cmd(aqui + "axeliscore combate estados");
+            t.lookFrom(0.5, G, -2.5, 0.5, G + 1.0, 2.5);
+        });
+        t.waitFor("los estados llegaron al cliente", 5000, () -> {
+            var l = cerca(com.axeliscore.character.Bestia.class);
+            return l.size() == 5 && l.stream().allMatch(b -> !com.axeliscore.combat.client.EstadosCliente.de(b.getId()).isEmpty());
+        });
+        t.photo("15_estados_barras_numeros", 280, () -> t.cmd("damage @e[type=axelis_core:bestia] 2"));
+        t.photo("15_estados_golpe_grande", 250, () -> t.cmd("damage @e[type=axelis_core:bestia,limit=1,sort=nearest] 9"));
+        t.add("estados en mí", 1200, () -> {
+            t.cmd("gamemode survival @a");
+            t.cmd("effect give @a minecraft:resistance 30 4 true");
+            t.cmd("execute as @p run axeliscore combate estado quemado 20");
+            t.cmd("execute as @p run axeliscore combate estado congelado 20 2");
+            t.cmd("execute as @p run axeliscore combate estado marcado 20 2");
+            t.lookFrom(0.5, G, -2.5, 0.5, G + 1.0, 2.5);
+        });
+        t.add("estados del jugador", 100, () -> t.check(com.axeliscore.combat.client.EstadosCliente.de(
+                net.minecraft.client.Minecraft.getInstance().player.getId()).size() == 3, "el jugador ve sus tres estados"));
+        t.photo("16_estados_jugador", 500, () -> {
+        });
+        t.add("sin estados", 400, () -> {
+            t.cmd("execute as @p run axeliscore combate limpiar");
+            t.cmd("gamemode creative @a");
+            t.cmd("effect clear @a");
+            t.cmd("kill @e[type=!player]");
+        });
+        // avisos (sin daño, lentos)
+        t.add("combate: avisos", 1500, () -> {
+            t.cmd(aqui + "axeliscore combate avisos");
+            t.lookFrom(0.5, G + 6, -5.5, 0.5, G, 6.5);
+        });
+        t.add("avisos en el cliente", 100, () -> t.check(cerca(com.axeliscore.combat.Aviso.class).size() == 5, "se ven los cinco avisos"));
+        t.photo("17_avisos", 200, () -> {
+        });
+        t.photo("17_avisos_casi_llenos", 6000, () -> {
+        });
+        t.add("limpiar avisos", 300, () -> t.cmd("kill @e[type=!player]"));
+        // proyectiles cruzando despacio
+        t.add("combate: proyectiles", 1300, () -> {
+            t.cmd(aqui + "axeliscore combate proyectiles");
+            t.lookFrom(0.5, G, -2.5, 0.5, G + 1.4, 3.5);
+        });
+        t.add("proyectiles en el cliente", 100, () -> t.check(cerca(com.axeliscore.combat.Proyectil.class).size() >= 3, "se ven los proyectiles"));
+        t.photo("18_proyectiles", 200, () -> {
+        });
+        t.add("limpiar proyectiles", 300, () -> t.cmd("kill @e[type=!player]"));
+        // el Coloso por fases
+        t.add("combate: jefe", 2200, () -> {
+            t.cmd(aqui + "axeliscore combate jefe");
+            t.lookFrom(0.5, G + 1, -4.5, 0.5, G + 1.8, 7.5);
+        });
+        t.add("música de la fase 1", 100, () -> t.check("axelis_core:musica.coloso_1".equals(com.axeliscore.combat.client.MusicaJefe.actual()),
+                "suena la música de la fase 1 del Coloso"));
+        t.photo("19_jefe_fase1", 200, () -> {
+        });
+        t.photo("19_jefe_martillazo", 750, () -> {
+            t.cmd("execute as @p run axeliscore combate ataque martillazo");
+            t.lookFrom(0.5, G + 4, -3.5, 0.5, G, 7.5);
+        });
+        t.add("fase 2", 1000, () -> {
+            t.cmd("axeliscore combate fase 1");
+            t.lookFrom(0.5, G + 1, -4.5, 0.5, G + 1.8, 7.5);
+        });
+        t.add("fase 2 en el cliente", 100, () -> {
+            var j = jefe();
+            t.check(j != null && j.fase() == 1, "el Coloso pasó a la fase 2");
+            t.check("axelis_core:musica.coloso_2".equals(com.axeliscore.combat.client.MusicaJefe.actual()), "cambió la música a la de la fase 2");
+        });
+        t.photo("19_jefe_fase2_titulo", 100, () -> {
+        });
+        t.add("termina la entrada", 2200, () -> {
+        });
+        t.photo("19_jefe_lluvia", 900, () -> {
+            t.cmd("execute as @p run axeliscore combate ataque lluvia");
+            t.lookFrom(0.5, G + 2.5, -4.5, 0.5, G, -2.0);
+        });
+        t.photo("19_jefe_fragmentos", 900, () -> {
+            t.cmd("execute as @p run axeliscore combate ataque fragmentos");
+            t.lookFrom(0.5, G + 1, -4.5, 0.5, G + 1.8, 7.5);
+        });
+        t.add("fase 3", 1000, () -> t.cmd("axeliscore combate fase 2"));
+        t.photo("19_jefe_fase3_titulo", 100, () -> {
+        });
+        t.add("termina la entrada 3", 2200, () -> {
+        });
+        t.photo("19_jefe_onda", 900, () -> {
+            t.cmd("execute as @p run axeliscore combate ataque onda");
+            t.lookFrom(0.5, G + 9, -7.5, 0.5, G, 7.5);
+        });
+        t.photo("19_jefe_onda_2", 700, () -> {
+        });
+        t.photo("19_jefe_escarcha", 1300, () -> {
+            t.cmd("execute as @p run axeliscore combate ataque escarcha");
+            t.lookFrom(0.5, G + 1, -4.5, 0.5, G + 2.5, 7.5);
+        });
+        t.add("limpiar jefe", 600, () -> {
+            t.cmd("kill @e[type=!player]");
+            t.hud(false);
+        });
+    }
+
     static void register() {
         ClientTest.scenario("core", t -> {
             // /reload: en la 1.21.1 con --quickPlaySingleplayer Forge no avisa a los mods al cargar el mundo (sin comandos ni
@@ -196,6 +314,7 @@ public final class CoreScenario {
             t.photo("14_mirar_coloso", 1000, () -> {
             });
             t.add("limpiar coloso", 300, () -> t.cmd("kill @e[type=!player]"));
+            combate(t);
             t.add("datos", 1500, () -> t.cmd("axeliscore datos @a"));
             t.add("datos en el cliente", 100, () -> t.check(com.axeliscore.plat.Nbt.i(
                     com.axeliscore.data.client.ClientData.player("axelis_core_prueba"), "visitas") > 0, "los datos del jugador llegaron al cliente"));

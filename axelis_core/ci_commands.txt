@@ -7,8 +7,15 @@ axeliscore criaturas
 axeliscore probar slam
 axeliscore datos
 kill @e[type=!player]
+axeliscore combate prueba
+#pausa 4
+axeliscore combate revisar
+kill @e[type=!player]
 #expect AXCORE_INFO Axelis Core
 #expect AXCORE_GALERIA 5
 #expect AXCORE_CRIATURAS 5
 #expect AXCORE_PROBAR slam personajes=10
 #expect AXCORE_DATOS mundo=true config=true
+#expect AXCORE_COMBATE estados=true marcado=1.50 jefe=1
+#expect AXCORE_COMBATE_GOLPES ok
+#expect AXCORE_JEFE_FASE

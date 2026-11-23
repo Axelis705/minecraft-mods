@@ -21,12 +21,12 @@ import org.slf4j.Logger;
 public class AxelisCore {
     public static final String MODID = "axelis_core";
     /** Versión del Core (la misma que la del jar). */
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.2.0";
     /**
      * Nivel de la API: sube cada vez que se agrega algo público. Un mod puede comprobar {@code AxelisCore.API >= n} si necesita algo
      * nuevo (Forge ya se encarga de cargar la versión más alta que haya).
      */
-    public static final int API = 2;
+    public static final int API = 3;
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public AxelisCore(FMLJavaModLoadingContext context) {
@@ -41,7 +41,10 @@ public class AxelisCore {
         // al final de todos: si otro mod protege el bloque (cancela), ya no llega aquí
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(net.minecraftforge.eventbus.api.EventPriority.LOWEST, CoreEvents::onBreak);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreEvents::onServerTick);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreEvents::onHurt);
         //#endif
+        com.axeliscore.combat.Estados.init();
+        com.axeliscore.combat.CoreProyectiles.init();
         com.axeliscore.registry.CoreEntities.ENTITIES.register(bus);
         LOGGER.info("Axelis Core {} (API {})", VERSION, API);
     }

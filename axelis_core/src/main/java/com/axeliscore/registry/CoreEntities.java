@@ -42,6 +42,16 @@ public final class CoreEntities {
             () -> Reg.entity(AxelisCore.MODID, "chispa", EntityType.Builder.<Chispa>of(Chispa::new, MobCategory.CREATURE).sized(0.5F, 0.65F)
                     .clientTrackingRange(10)));
 
+    /** Aviso de ataque en el suelo (círculo, anillo, línea, cono, cuadro) que pega al llenarse. */
+    public static final RegistryObject<EntityType<com.axeliscore.combat.Aviso>> AVISO = ENTITIES.register("aviso",
+            () -> Reg.entity(AxelisCore.MODID, "aviso", EntityType.Builder.<com.axeliscore.combat.Aviso>of(com.axeliscore.combat.Aviso::new,
+                    MobCategory.MISC).sized(0.5F, 0.25F).clientTrackingRange(8).updateInterval(1).fireImmune().noSave()));
+    /** Proyectil del Core (orbe, objeto o modelo). */
+    public static final RegistryObject<EntityType<com.axeliscore.combat.Proyectil>> PROYECTIL = ENTITIES.register("proyectil",
+            () -> Reg.entity(AxelisCore.MODID, "proyectil", EntityType.Builder.<com.axeliscore.combat.Proyectil>of(
+                    com.axeliscore.combat.Proyectil::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(8).updateInterval(1).fireImmune()
+                    .noSave()));
+
     private CoreEntities() {
     }
 

@@ -77,10 +77,30 @@ public final class CoreEvents {
         }
     }
 
+    /** El daño que recibe algo: los estados (marcado) y la entrada de fase de los jefes lo cambian. */
+    //#if MC >= 26.1
+    //$$ @SubscribeEvent
+    //#endif
+    public static void onHurt(net.minecraftforge.event.entity.living.LivingHurtEvent e) {
+        net.minecraft.world.entity.LivingEntity ent = e.getEntity();
+        if (ent == null || ent.level().isClientSide()) {
+            return;
+        }
+        float a = e.getAmount(), b = a;
+        if (ent instanceof com.axeliscore.combat.Jefe j) {
+            b = j.alRecibirDano(b);
+        }
+        b = com.axeliscore.combat.Estados.alRecibirDano(ent, b);
+        if (b != a) {
+            e.setAmount(b);
+        }
+    }
+
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (e.getEntity() instanceof ServerPlayer p) {
             com.axeliscore.data.PlayerStore.onLogin(p);
+            com.axeliscore.combat.Estados.alEntrar(p);
             for (var l : LOGIN) {
                 try {
                     l.accept(p);

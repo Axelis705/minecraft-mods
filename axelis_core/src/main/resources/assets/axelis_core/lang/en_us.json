@@ -27,5 +27,17 @@
   "axelis_core.info.jefe": "Boss",
   "axelis_core.info.mascota": "Pet",
   "axelis_core.info.mas": "Shift: more info",
-  "axelis_core.info.coloso": "A crystal guardian that wakes when someone nears its cave. It slams the ground, sweeps its arms and changes phase when hurt."
+  "axelis_core.info.coloso": "A crystal guardian that wakes when someone nears its cave. It slams the ground, sweeps its arms and changes phase when hurt.",
+  "estado.axelis_core.aturdido": "Stunned",
+  "estado.axelis_core.quemado": "Burning",
+  "estado.axelis_core.congelado": "Frozen",
+  "estado.axelis_core.marcado": "Marked",
+  "estado.axelis_core.sangrado": "Bleeding",
+  "axelis_core.coloso.fase2": "The crystals awaken!",
+  "axelis_core.coloso.fase2_sub": "The Colossus hits harder and hurls crystals",
+  "axelis_core.coloso.fase3": "Crystal fury!",
+  "axelis_core.coloso.fase3_sub": "Ice waves and orbs that hunt you down",
+  "axelis_core.info.fase": "Phase",
+  "entity.axelis_core.aviso": "Attack warning",
+  "entity.axelis_core.proyectil": "Projectile"
 }

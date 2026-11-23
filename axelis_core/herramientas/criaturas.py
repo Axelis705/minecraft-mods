@@ -417,8 +417,9 @@ def gelatina():
 
 
 # ================================================================================================================ COLOSO (jefe)
-def coloso():
-    st, st2, moss, cry, cry2 = (104, 102, 112), (72, 70, 82), (78, 112, 62), (120, 230, 255), (190, 120, 255)
+def coloso(sufijo="", cry=(120, 230, 255), cry2=(190, 120, 255)):
+    """El Coloso; con sufijo ("_f2", "_f3") solo hace la textura de otra fase con otros cristales (el modelo es el mismo)."""
+    st, st2, moss = (104, 102, 112), (72, 70, 82), (78, 112, 62)
     c = Creature("geometry.axelis_core.coloso", 256, 128, seed=41)
 
     def stone(face, x, y, w, h):
@@ -483,7 +484,12 @@ def coloso():
         c.bone(leg + "_low", [4 * s, 8.5, 0], leg)
         c.bend(leg, leg + "_low", 8.5)
     c.glow("core", "eyes", "crystal_r", "crystal_l")
-    c.build(*out("coloso"))
+    geo_p, png_p = out("coloso")
+    if sufijo:
+        import tempfile
+        c.build(os.path.join(tempfile.gettempdir(), "coloso_fase.geo.json"), png_p[:-4] + sufijo + ".png")
+        return
+    c.build(geo_p, png_p)
 
     an = []
     a = Anim("idle", 4.0, True)
@@ -717,5 +723,7 @@ if __name__ == "__main__":
     alado()
     gelatina()
     coloso()
+    coloso("_f2", (255, 128, 96), (255, 56, 150))
+    coloso("_f3", (226, 250, 255), (104, 170, 255))
     chispa()
     print("criaturas listas: bestia, alado, gelatina, coloso, chispa")

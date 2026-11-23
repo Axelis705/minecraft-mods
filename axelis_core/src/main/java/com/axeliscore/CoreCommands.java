@@ -91,7 +91,7 @@ public final class CoreCommands {
                 .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.players())
                         .executes(c -> dataTest(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores"))));
         d.register(Commands.literal("axeliscore").executes(CoreCommands::info).then(galeria).then(criaturas).then(probar).then(ir).then(efecto)
-                .then(datos));
+                .then(datos).then(com.axeliscore.combat.CombateComandos.nodo()));
         var node = d.getRoot().getChild("axeliscore");
         StringBuilder sb = new StringBuilder();
         if (node != null) {

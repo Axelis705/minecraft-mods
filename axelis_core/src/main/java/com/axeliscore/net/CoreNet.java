@@ -136,6 +136,33 @@ public final class CoreNet {
         }
     }
 
+    /** Los estados de combate de una entidad (vacío = ya no tiene). */
+    public record EstadosMsg(int entity, List<Item> items) {
+        public record Item(String id, int ticks, int max, int nivel) {
+        }
+
+        void write(FriendlyByteBuf b) {
+            b.writeVarInt(entity);
+            b.writeVarInt(items.size());
+            for (Item i : items) {
+                b.writeUtf(i.id());
+                b.writeVarInt(i.ticks());
+                b.writeVarInt(i.max());
+                b.writeVarInt(i.nivel());
+            }
+        }
+
+        static EstadosMsg read(FriendlyByteBuf b) {
+            int e = b.readVarInt();
+            int n = Math.min(64, b.readVarInt());
+            List<Item> l = new ArrayList<>();
+            for (int k = 0; k < n; k++) {
+                l.add(new Item(b.readUtf(), b.readVarInt(), b.readVarInt(), b.readVarInt()));
+            }
+            return new EstadosMsg(e, l);
+        }
+    }
+
     /** Se llama una vez al arrancar (dentro de enqueueWork del arranque común). */
     public static void register() {
         NET.register(FxMsg.class, FxMsg::write, FxMsg::read, (m, sender) -> Net.onClient(() -> ClientSide.fx(m)));
@@ -154,6 +181,7 @@ public final class CoreNet {
                 com.axeliscore.data.Actions.receive(sender, m.key(), m.tag());
             }
         });
+        NET.register(EstadosMsg.class, EstadosMsg::write, EstadosMsg::read, (m, sender) -> Net.onClient(() -> ClientSide.estados(m)));
         NET.done();
     }
 
@@ -177,6 +205,10 @@ public final class CoreNet {
 
         static void dialog(DialogMsg m) {
             com.axeliscore.ui.DialogScreen.open(m);
+        }
+
+        static void estados(EstadosMsg m) {
+            com.axeliscore.combat.client.EstadosCliente.recibir(m);
         }
 
         static void data(DataMsg m) {

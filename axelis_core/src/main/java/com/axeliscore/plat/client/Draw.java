@@ -27,6 +27,10 @@ import net.minecraft.client.renderer.RenderType;
  * 1.20/1.21 se dibuja directo y en 26.x se "entrega" todo al final del cuadro.
  */
 public final class Draw {
+    /** Textura blanca (para formas de un color: avisos en el suelo, barras). */
+    public static final ResourceLocation BLANCO = com.axeliscore.plat.Ids.core("textures/fx/blanco.png");
+    /** Círculo suave blanco (para orbes, brillos y halos con {@link #glow}). */
+    public static final ResourceLocation ORBE = com.axeliscore.plat.Ids.core("textures/fx/orbe.png");
     //#if MC >= 26.1
     //$$ private final SubmitNodeCollector out;
     //$$ private final List<Object[]> batches = new ArrayList<>();

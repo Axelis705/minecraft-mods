@@ -1,0 +1,26 @@
+{
+  "musica.coloso_1": {
+    "sounds": [
+      {
+        "name": "axelis_core:musica/coloso_1",
+        "stream": true
+      }
+    ]
+  },
+  "musica.coloso_2": {
+    "sounds": [
+      {
+        "name": "axelis_core:musica/coloso_2",
+        "stream": true
+      }
+    ]
+  },
+  "musica.coloso_3": {
+    "sounds": [
+      {
+        "name": "axelis_core:musica/coloso_3",
+        "stream": true
+      }
+    ]
+  }
+}
