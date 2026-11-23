@@ -2,6 +2,7 @@ name: Prueba del Core con el cliente (fotos)
 
 # Abre el juego de verdad (sin pantalla) con Axelis Core en un mundo plano y corre el escenario de prueba "core" (galería de
 # Personas, gestos, caminar, correr, daño). Las fotos y el registro quedan en la rama fotos-core-<versión>.
+# Con la entrada "mod" prueba igual un mod que use el Core (sus fotos quedan en fotos-<mod>-<versión>).
 on:
   workflow_dispatch:
     inputs:
@@ -11,6 +12,9 @@ on:
       escenario:
         description: 'Escenarios de prueba (separados por coma)'
         default: 'core'
+      mod:
+        description: 'Mod a probar (axelis_core o uno que lo use, por ejemplo pesca)'
+        default: 'axelis_core'
 
 jobs:
   preparar:
@@ -42,7 +46,8 @@ jobs:
       matrix:
         include: ${{ fromJson(needs.preparar.outputs.matriz) }}
     env:
-      P: ${{ matrix.mc == '1.20.1' && 'axelis_core' || format('gen/axelis_core-{0}', matrix.mc) }}
+      P: ${{ matrix.mc == '1.20.1' && github.event.inputs.mod || format('gen/{0}-{1}', github.event.inputs.mod, matrix.mc) }}
+      CORE: ${{ matrix.mc == '1.20.1' && 'axelis_core' || format('gen/axelis_core-{0}', matrix.mc) }}
     steps:
       - uses: actions/checkout@v4
       # el 8 lo pide el lanzador de ForgeGradle 7 (si falta, Gradle intenta bajarlo y a veces falla)
@@ -62,9 +67,15 @@ jobs:
         run: |
           sudo apt-get update -q
           sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils mesa-vulkan-drivers ffmpeg
-      - name: Generar el proyecto de ${{ matrix.mc }}
+      - name: Generar los proyectos de ${{ matrix.mc }}
         if: matrix.mc != '1.20.1'
-        run: python3 tools/mkproject.py axelis_core ${{ matrix.mc }} $P
+        run: |
+          python3 tools/mkproject.py axelis_core ${{ matrix.mc }} $CORE
+          if [ "${{ github.event.inputs.mod }}" != "axelis_core" ]; then python3 tools/mkproject.py ${{ github.event.inputs.mod }} ${{ matrix.mc }} $P; fi
+      - name: Compilar Axelis Core (el mod lo usa)
+        if: github.event.inputs.mod != 'axelis_core'
+        working-directory: ${{ env.CORE }}
+        run: ./gradlew build --no-daemon
       - name: Mundo plano (lo crea el servidor de prueba)
         run: |
           mkdir -p $P/run
@@ -140,7 +151,7 @@ jobs:
           grep -nE "Exception|/ERROR\]|/FATAL\]" run/logs/latest.log | grep -viE "realms|telemetry|OpenAL|sound|narrator|authlib|Failed to fetch|profile" | head -40
           ls -la run/screenshots
           grep -q "AXCORE_AUTOTEST_FIN" run/logs/latest.log || { echo "::error title=Prueba del Core ${{ matrix.mc }}::no llegó al final (ver cliente_tail.log en la rama fotos-core-${{ matrix.mc }})"; tail -80 cliente.log; exit 1; }
-      - name: Subir fotos a la rama fotos-core-${{ matrix.mc }}
+      - name: Subir fotos a su rama (fotos-core-<versión> o fotos-<mod>-<versión>)
         if: always()
         run: |
           d=$(mktemp -d)
@@ -151,7 +162,7 @@ jobs:
           tail -400 $P/cliente.log > "$d/cliente_tail.log" 2>/dev/null || true
           cd "$d"
           echo "${{ github.sha }} ${{ matrix.mc }}" > LEEME.txt
-          b="fotos-core-${{ matrix.mc }}"
+          b="fotos-${{ github.event.inputs.mod == 'axelis_core' && 'core' || github.event.inputs.mod }}-${{ matrix.mc }}"
           git init -q -b "$b"
           git config user.name ci; git config user.email ci@example.com
           git add -A; git commit -qm "fotos ${{ github.sha }} ${{ matrix.mc }}"

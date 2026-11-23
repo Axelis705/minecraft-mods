@@ -55,6 +55,14 @@ public class AxelisCore {
         LOGGER.info("{} usa {}", modid, version());
     }
 
+    /**
+     * Comandos de un mod: el Core los registra junto con los suyos (en todas las versiones, sin que cada mod tenga que preocuparse por
+     * cómo se registran en cada una).
+     */
+    public static void commands(java.util.function.Consumer<com.mojang.brigadier.CommandDispatcher<net.minecraft.commands.CommandSourceStack>> c) {
+        CoreCommands.EXTRA.add(c);
+    }
+
     /** Texto con la versión, para que los mods lo muestren o lo comprueben. */
     public static String version() {
         return "Axelis Core " + VERSION + " (API " + API + ")";

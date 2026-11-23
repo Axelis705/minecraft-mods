@@ -36,6 +36,10 @@ import java.util.List;
 //$$ @Mod.EventBusSubscriber(modid = AxelisCore.MODID)
 //#endif
 public final class CoreCommands {
+    /** Comandos de otros mods (ver {@link AxelisCore#commands}). */
+    static final java.util.List<java.util.function.Consumer<CommandDispatcher<CommandSourceStack>>> EXTRA =
+            new java.util.concurrent.CopyOnWriteArrayList<>();
+
     /** Gesto que repite cada Persona de la galería y cada cuántos ticks. */
     private static final String[][] SHOW = {{"wave", "50"}, {"talk", "400"}, {"cheer", "40"}, {"fish_cast", "40"}, {"dance", "400"}};
 
@@ -91,6 +95,13 @@ public final class CoreCommands {
             }
         }
         AxelisCore.LOGGER.info("AXCORE_COMANDOS {}", sb.toString().trim());
+        for (var extra : EXTRA) {
+            try {
+                extra.accept(d);
+            } catch (RuntimeException ex) {
+                AxelisCore.LOGGER.error("Axelis Core: falló el registro de comandos de un mod", ex);
+            }
+        }
     }
 
     private static int info(CommandContext<CommandSourceStack> c) {

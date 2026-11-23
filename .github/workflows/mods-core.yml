@@ -1,0 +1,112 @@
+name: Mods con Axelis Core
+
+# Compila y prueba cada mod de tools/mods_core.txt en 1.20.1, 1.21.1 y 26.3: el Core primero, luego el mod, arranca un servidor de
+# desarrollo con sus comandos de prueba, mete el Core dentro del jar (Jar-in-Jar) y lo prueba en un servidor Forge REAL solo con ese
+# jar. Los jars quedan en las ramas jar-<mod>-<versión>.
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      mods:
+        description: 'Mods separados por espacio (vacío = todos los de tools/mods_core.txt)'
+        default: ''
+
+jobs:
+  preparar:
+    runs-on: ubuntu-latest
+    outputs:
+      matriz: ${{ steps.m.outputs.matriz }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 30
+      - id: m
+        run: |
+          mods="${{ github.event.inputs.mods }}"
+          todos=$(grep -v '^#' tools/mods_core.txt 2>/dev/null | tr '\n' ' ')
+          if [ -z "$mods" ]; then
+            if [ "${{ github.event_name }}" = "push" ]; then
+              # solo los mods que cambiaron (o todos si cambió el Core o las herramientas con las que se construyen)
+              cambios=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null || echo TODO)
+              if echo "$cambios" | grep -qE '^(TODO|axelis_core/|tools/(mcver|mkproject|jarjar|real_server|boot_server|push_jar)|tools/mods_core.txt|\.github/workflows/mods-core\.yml)'; then
+                mods="$todos"
+              else
+                for m in $todos; do echo "$cambios" | grep -q "^$m/" && mods="$mods $m"; done
+              fi
+            else
+              mods="$todos"
+            fi
+          fi
+          echo "mods: $mods"
+          j="["; sep=""
+          for m in $mods; do
+            for v in "1.20.1:17:47.4.10" "1.21.1:21:52.1.20" "26.3:25:66.1.5"; do
+              IFS=: read mc java forge <<< "$v"
+              j="$j$sep{\"mod\":\"$m\",\"mc\":\"$mc\",\"java\":\"$java\",\"forge\":\"$forge\"}"; sep=","
+            done
+          done
+          echo "matriz=$j]" >> "$GITHUB_OUTPUT"
+          echo "matriz: $j]"
+
+  mod:
+    needs: preparar
+    if: needs.preparar.outputs.matriz != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.preparar.outputs.matriz) }}
+    env:
+      CORE: ${{ matrix.mc == '1.20.1' && 'axelis_core' || format('gen/axelis_core-{0}', matrix.mc) }}
+      MOD: ${{ matrix.mc == '1.20.1' && matrix.mod || format('gen/{0}-{1}', matrix.mod, matrix.mc) }}
+      SUF: ${{ matrix.mc == '1.20.1' && '1.0.0' || format('1.0.0+{0}', matrix.mc) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Revisar marcas, recursos y texturas
+        run: |
+          pip install pillow -q
+          python3 tools/mcver.py --check ${{ matrix.mod }}
+          python3 tools/check_resources.py ${{ matrix.mod }}
+          python3 tools/check_textures.py ${{ matrix.mod }}
+      - uses: actions/setup-java@v4
+        continue-on-error: true
+        with:
+          distribution: temurin
+          java-version: 8
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - name: Java 8 visible para Gradle (toolchain del lanzador)
+        run: mkdir -p ~/.gradle && echo "org.gradle.java.installations.fromEnv=JAVA_HOME_8_X64" >> ~/.gradle/gradle.properties
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Generar los proyectos de ${{ matrix.mc }}
+        if: matrix.mc != '1.20.1'
+        run: |
+          python3 tools/mkproject.py axelis_core ${{ matrix.mc }} $CORE
+          python3 tools/mkproject.py ${{ matrix.mod }} ${{ matrix.mc }} $MOD
+      - name: Compilar Axelis Core ${{ matrix.mc }}
+        working-directory: ${{ env.CORE }}
+        run: ./gradlew build --no-daemon
+      - name: Compilar ${{ matrix.mod }} ${{ matrix.mc }}
+        working-directory: ${{ env.MOD }}
+        run: ./gradlew build --no-daemon --stacktrace
+      - name: Servidor de desarrollo con ${{ matrix.mod }}
+        run: bash tools/boot_server.sh $MOD
+      - name: Meter el Core dentro (Jar-in-Jar)
+        run: python3 tools/jarjar.py $MOD/build/libs/${{ matrix.mod }}-$SUF.jar $CORE/build/libs/axelis_core-$SUF.jar
+      - name: Servidor Forge real solo con ${{ matrix.mod }}
+        run: bash tools/real_server.sh ${{ matrix.mc }} ${{ matrix.forge }} srv-real ${{ matrix.mod }}/real_commands.txt $MOD/build/libs/${{ matrix.mod }}-$SUF.jar
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ matrix.mod }}-${{ matrix.mc }}
+          path: |
+            ${{ env.MOD }}/build/libs/*.jar
+            srv-real/server_out.log
+      - name: Guardar el jar en una rama
+        if: github.ref == 'refs/heads/main'
+        run: bash tools/push_jar.sh ${{ matrix.mod }} ${{ matrix.mc }} $MOD/build/libs ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.sha }}

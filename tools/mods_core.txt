@@ -1,0 +1,2 @@
+# Mods que usan Axelis Core (uno por línea). tools/mkmod.py los agrega solo; .github/workflows/mods-core.yml los compila y prueba
+# en 1.20.1, 1.21.1 y 26.3.
