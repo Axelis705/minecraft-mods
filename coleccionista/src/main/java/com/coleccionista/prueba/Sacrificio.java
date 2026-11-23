@@ -440,8 +440,9 @@ public final class Sacrificio {
         Pieza q = ev.pieza(c.queda);
         if (q != null && q.vivo()) {
             mover(s, q, "cap.cuarto." + c.k + ".vitrina", 0, 0);
-            ev.eliminar(s, q, PRUEBA);
-            eliminados++;
+            if (ev.eliminarEnPrueba(s, q, PRUEBA)) {
+                eliminados++;
+            }
         }
         c.estado = Estado.RESUELTO;
         cambio = true;

@@ -368,8 +368,9 @@ public final class Compartir {
         String clave = !ra && !rb ? "comparten" : ra && rb ? "roban" : "uno";
         Coleccionista.LOGGER.info("COLECCIONISTA_MESA {} {} caen={}", m.n, clave, caen.size());
         for (Pieza p : caen) {
-            ev.eliminar(s, p, PRUEBA);
-            eliminados++;
+            if (ev.eliminarEnPrueba(s, p, PRUEBA)) {
+                eliminados++;
+            }
         }
         Anuncio.sonido(s, clave.equals("comparten") ? SoundEvents.PLAYER_LEVELUP : SoundEvents.BELL_BLOCK, 0.7F, clave.equals("comparten") ? 1.2F : 0.5F);
     }

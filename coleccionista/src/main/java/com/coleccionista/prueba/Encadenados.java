@@ -607,8 +607,9 @@ public final class Encadenados {
             } else {
                 Pieza p = ev.pieza(id);
                 if (p != null && p.vivo()) {
-                    ev.eliminar(s, p, PRUEBA);
-                    eliminadosPrueba++;
+                    if (ev.eliminarEnPrueba(s, p, PRUEBA)) {
+                        eliminadosPrueba++;
+                    }
                 }
                 proximaElim = t + 30;
             }
@@ -761,8 +762,9 @@ public final class Encadenados {
                     for (UUID otro : equipos.get(eq)) {
                         Pieza q = ev.pieza(otro);
                         if (q != null && q.vivo()) {
-                            ev.eliminar(s, q, PRUEBA);
-                            eliminadosPrueba++;
+                            if (ev.eliminarEnPrueba(s, q, PRUEBA)) {
+                                eliminadosPrueba++;
+                            }
                         }
                         enGas.remove(otro);
                     }

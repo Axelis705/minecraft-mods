@@ -613,5 +613,6 @@
   "coleccionista.voz.oye": "%s sí oye a %s.",
   "coleccionista.voz.no_oye": "%s no oye a %s.",
   "coleccionista.panel.g_altavoz": "Altavoz",
-  "coleccionista.panel.g_altavoz_ayuda": "Tu voz le llega a todos, estén donde estén (como las bocinas del complejo). Pulsa otra vez para volver a la voz por cercanía."
+  "coleccionista.panel.g_altavoz_ayuda": "Tu voz le llega a todos, estén donde estén (como las bocinas del complejo). Pulsa otra vez para volver a la voz por cercanía.",
+  "coleccionista.chat.salvado_final": "%s se salva… por ahora. Necesito piezas para mi final."
 }

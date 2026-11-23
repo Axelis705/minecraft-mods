@@ -378,8 +378,9 @@ public final class ACiegas {
             Pieza g = ev.pieza(e.guia);
             if (g != null && g.vivo() && ev.vivos().size() > 1) {
                 Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".cie.chat.guia", e.k, Anuncio.nombre(g))));
-                ev.eliminar(s, g, PRUEBA);
-                eliminados++;
+                if (ev.eliminarEnPrueba(s, g, PRUEBA)) {
+                    eliminados++;
+                }
                 caen++;
             }
         }

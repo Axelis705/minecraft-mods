@@ -366,8 +366,9 @@ public final class LasPuertas {
             Entity e = Evento.entidad(s, p);
             if (e != null && cabina(s, e) == trampa && e.getY() < c.getY() - 1.2) {
                 e.fallDistance = 0;
-                ev.eliminar(s, p, PRUEBA);
-                eliminados++;
+                if (ev.eliminarEnPrueba(s, p, PRUEBA)) {
+                    eliminados++;
+                }
             }
         }
     }

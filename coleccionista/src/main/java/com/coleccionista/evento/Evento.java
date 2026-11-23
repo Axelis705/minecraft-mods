@@ -259,6 +259,26 @@ public final class Evento {
         return Resultado.ELIMINADO;
     }
 
+    /** Las pruebas antes de la final nunca dejan menos de estas piezas vivas (la final las necesita). */
+    public static int minimoParaLaFinal = 2;
+
+    /**
+     * Elimina en una prueba que no es la final: si con esto quedarían menos piezas de las que necesita la final, se salva (el ganador
+     * solo sale de la final). Las eliminaciones a mano del organizador no pasan por aquí.
+     */
+    public boolean eliminarEnPrueba(MinecraftServer s, Pieza p, String prueba) {
+        if (!p.vivo()) {
+            return false;
+        }
+        if (vivos().size() <= minimoParaLaFinal) {
+            Coleccionista.LOGGER.info("COLECCIONISTA_SALVADO_FINAL {} {}", p.etiqueta(), p.nombre);
+            Anuncio.todos(s, Anuncio.coleccionista(net.minecraft.network.chat.Component.translatable(MOD + ".chat.salvado_final",
+                    Anuncio.nombre(p))));
+            return false;
+        }
+        return eliminar(s, p, prueba) == Resultado.ELIMINADO;
+    }
+
     /** Devuelve a una pieza al juego (si el organizador se equivocó). */
     public boolean revivir(MinecraftServer s, Pieza p) {
         if (p.vivo()) {

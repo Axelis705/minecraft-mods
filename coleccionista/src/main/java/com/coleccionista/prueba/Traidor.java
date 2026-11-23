@@ -410,8 +410,9 @@ public final class Traidor {
         Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".tra.chat.abrieron", sa.k)));
         if (tr != null && tr.vivo()) {
             Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".tra.chat.descubierto", sa.k, Anuncio.nombre(tr))));
-            ev.eliminar(s, tr, PRUEBA);
-            eliminados++;
+            if (ev.eliminarEnPrueba(s, tr, PRUEBA)) {
+                eliminados++;
+            }
         }
         sa.estado = Estado.RESUELTO;
         Coleccionista.LOGGER.info("COLECCIONISTA_TRAIDOR sala={} abierta", sa.k);
@@ -474,8 +475,9 @@ public final class Traidor {
         Pieza p = v == null ? null : ev.pieza(v);
         if (p != null && p.vivo()) {
             Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".tra.chat.victima", sa.k, Anuncio.nombre(p))));
-            ev.eliminar(s, p, PRUEBA);
-            eliminados++;
+            if (ev.eliminarEnPrueba(s, p, PRUEBA)) {
+                eliminados++;
+            }
         }
         sa.estado = Estado.RESUELTO;
         Coleccionista.LOGGER.info("COLECCIONISTA_TRAIDOR sala={} castigo", sa.k);
