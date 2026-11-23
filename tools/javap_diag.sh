@@ -9,6 +9,10 @@ cands=$(find "$HOME/.gradle" "$HOME/.m2" "$HOME/.mavenizer" "$dir" -name '*.jar'
 # con DIAG_JAR=<texto> se usa el primer jar cuyo nombre lo contenga (por ejemplo "eventbus" para las clases del bus de eventos)
 if [ -n "${DIAG_JAR:-}" ]; then
   jar=$(find "$HOME/.gradle" "$HOME/.m2" "$HOME/.mavenizer" "$dir" -name "*${DIAG_JAR}*.jar" 2>/dev/null | grep -v sources | head -1)
+  # también para las listas de clases (aunque sea un jar chico)
+  [ -n "$jar" ] && cands="$jar $cands"
+  # todos los jar que se parezcan (por ejemplo, el de Forge y el de Minecraft de una versión): se muestran para saber cuál usar
+  echo "JARS con '${DIAG_JAR}':"; find "$HOME/.gradle" "$HOME/.m2" "$HOME/.mavenizer" "$dir" -name "*${DIAG_JAR}*.jar" 2>/dev/null | grep -v sources | head -12
 fi
 if [ -z "$jar" ]; then
 for j in $cands; do
