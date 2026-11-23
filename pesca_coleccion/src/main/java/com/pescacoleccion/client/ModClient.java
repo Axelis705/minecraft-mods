@@ -313,7 +313,7 @@ public final class ModClient {
             });
             t.photo("libro_carnada", 900, () -> {
                 if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
-                    com.axeliscore.ui.UiScreen.fakeMouse = l.rowCenter(6);
+                    com.axeliscore.ui.UiScreen.fakeMouse = l.rowCenter(5);
                 }
             });
             t.photo("libro_records", 900, () -> {

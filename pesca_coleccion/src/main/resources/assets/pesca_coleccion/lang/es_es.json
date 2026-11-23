@@ -308,5 +308,12 @@
   "pesca_coleccion.torneo.elige_modo": "Elige el modo",
   "pesca_coleccion.torneo.minutos": "Minutos",
   "pesca_coleccion.torneo.premios": "Premios: copas de oro, plata y bronce con tu nombre; esmeraldas si juegan 2 o más; y amistad con Nilo para todos los que pesquen.",
-  "pesca_coleccion.torneo.ultimo": "Último ganador"
+  "pesca_coleccion.torneo.ultimo": "Último ganador",
+  "pesca_coleccion.libro.sec_deco": "Decoración y premios",
+  "pesca_coleccion.libro.deco.trofeo": "Monta tu mejor pez en la pared, con su nombre y tamaño.",
+  "pesca_coleccion.libro.deco.trofeo.como": "Pepita de oro + 3 tablones, o en la tienda de Nilo.",
+  "pesca_coleccion.libro.deco.acuario": "Hasta 3 peces vivos nadando en tu casa.",
+  "pesca_coleccion.libro.deco.acuario.como": "Vidrio, una cubeta de agua y losas de madera, o en la tienda de Nilo.",
+  "pesca_coleccion.libro.deco.copa": "Copas de oro, plata y bronce con el nombre del ganador.",
+  "pesca_coleccion.libro.deco.copa.como": "Se ganan en los torneos del muelle de Nilo."
 }

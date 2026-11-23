@@ -308,5 +308,12 @@
   "pesca_coleccion.torneo.elige_modo": "Pick a mode",
   "pesca_coleccion.torneo.minutos": "Minutes",
   "pesca_coleccion.torneo.premios": "Prizes: gold, silver and bronze cups with your name; emeralds if 2 or more play; and friendship with Nilo for everyone who fishes.",
-  "pesca_coleccion.torneo.ultimo": "Last winner"
+  "pesca_coleccion.torneo.ultimo": "Last winner",
+  "pesca_coleccion.libro.sec_deco": "Decoration and prizes",
+  "pesca_coleccion.libro.deco.trofeo": "Mount your best fish on the wall, with its name and size.",
+  "pesca_coleccion.libro.deco.trofeo.como": "Gold nugget + 3 planks, or at Nilo's shop.",
+  "pesca_coleccion.libro.deco.acuario": "Up to 3 live fish swimming in your home.",
+  "pesca_coleccion.libro.deco.acuario.como": "Glass, a water bucket and wooden slabs, or at Nilo's shop.",
+  "pesca_coleccion.libro.deco.copa": "Gold, silver and bronze cups with the winner's name.",
+  "pesca_coleccion.libro.deco.copa.como": "Won in tournaments at Nilo's dock."
 }

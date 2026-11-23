@@ -152,6 +152,10 @@ public class LibroScreen extends UiScreen {
             for (Mejoras.Mejora m : Mejoras.TODAS) {
                 l.items.add(m);
             }
+            l.items.add(Component.translatable(MOD + ".libro.sec_deco"));
+            l.items.add(new Deco("trofeo", ModRegistry.TROFEO_ITEM.get()));
+            l.items.add(new Deco("acuario", ModRegistry.ACUARIO_ITEM.get()));
+            l.items.add(new Deco("copa", ModRegistry.COPA_ORO_ITEM.get()));
         } else {
             ListView<Especie> l = add(new ListView<>(x, y, pw - 24, ph - 66, 20, (g, e, rx, ry, rw, rh, sel, hov, th) -> {
                 CompoundTag r = Nbt.c(ClientData.get(com.pescacoleccion.pesca.Libro.RECORDS), e.id());
@@ -203,7 +207,17 @@ public class LibroScreen extends UiScreen {
         return c;
     }
 
+    /** Una decoración del equipo (placa, acuario, copas): para qué sirve y cómo se consigue. */
+    private record Deco(String id, net.minecraft.world.item.Item item) {
+    }
+
     private static InfoCard upgradeCard(Object it) {
+        if (it instanceof Deco d) {
+            ItemStack st = new ItemStack(d.item());
+            return new InfoCard(st.getHoverName()).icon(st).color(0xFF8FD8FF)
+                    .text(Component.translatable(MOD + ".libro.deco." + d.id()))
+                    .divider().pair(Component.translatable(MOD + ".cebo.conseguir"), Component.translatable(MOD + ".libro.deco." + d.id() + ".como"));
+        }
         if (it instanceof Cana c) {
             ItemStack st = new ItemStack(ModRegistry.CANAS.get(c).get());
             InfoCard card = ((com.pescacoleccion.pesca.CanaItem) st.getItem()).card(st, false);
@@ -259,6 +273,13 @@ public class LibroScreen extends UiScreen {
                     : c == Cana.NILO ? Component.translatable(MOD + ".libro.regalo_nilo").getString()
                     : have + "/" + need + " " + Component.translatable(MOD + ".libro.especies").getString();
             g.drawString(Ui.font(), s, x + 22, y + 12, got ? th.good : th.textDim, false);
+            return;
+        }
+        if (it instanceof Deco dc) {
+            ItemStack st = new ItemStack(dc.item());
+            g.renderItem(st, x, y + 3);
+            g.drawString(Ui.font(), st.getHoverName().getString(), x + 22, y + 3, 0xFF8FD8FF, false);
+            g.drawString(Ui.font(), Ui.fit(Component.translatable(MOD + ".libro.deco." + dc.id()).getString(), w - 24), x + 22, y + 12, th.textDim, false);
             return;
         }
         if (it instanceof Cebo c) {

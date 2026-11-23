@@ -108,7 +108,7 @@ public final class Torneo {
         modo = List.of(MODOS).contains(m) ? m : "peces";
         activo = true;
         servidor = s;
-        finTick = s.getTickCount() + minutos * 60L * 20L;
+        finTick = s.overworld().getGameTime() + minutos * 60L * 20L;
         quien = p.getGameProfile().getName();
         quienId = p.getUUID();
         TABLA.clear();
@@ -162,7 +162,7 @@ public final class Torneo {
             TABLA.clear();
             return;
         }
-        long left = finTick - s.getTickCount();
+        long left = finTick - s.overworld().getGameTime();
         if (left <= 0) {
             terminar(s);
             return;
@@ -258,7 +258,9 @@ public final class Torneo {
         boolean on = activoEn(s);
         t.putBoolean("activo", on);
         t.putString("modo", modo);
-        t.putLong("resta", on ? Math.max(0, (finTick - s.getTickCount()) / 20) : 0);
+        t.putLong("resta", on ? Math.max(0, (finTick - s.overworld().getGameTime()) / 20) : 0);
+        // el cliente cuenta con el tiempo del mundo (que también tiene): así no depende de cuándo llegó el aviso
+        t.putLong("fin", finTick);
         t.putString("quien", quien);
         ListTag tabla = new ListTag();
         for (Fila f : on ? orden() : List.<Fila>of()) {

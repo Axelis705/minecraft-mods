@@ -26,8 +26,12 @@ public final class TorneoHud {
         com.axeliscore.fx.client.Hud.add(TorneoHud::render);
     }
 
-    /** Segundos que quedan (contando desde que llegó el último aviso del servidor). */
+    /** Segundos que quedan (con el tiempo del mundo, igual que el servidor). */
     public static long resta(CompoundTag t) {
+        var mc = Minecraft.getInstance();
+        if (mc.level != null && Nbt.l(t, "fin") > 0) {
+            return Math.max(0, (Nbt.l(t, "fin") - mc.level.getGameTime()) / 20);
+        }
         return Math.max(0, Nbt.l(t, "resta") - (System.currentTimeMillis() - recibido) / 1000);
     }
 
