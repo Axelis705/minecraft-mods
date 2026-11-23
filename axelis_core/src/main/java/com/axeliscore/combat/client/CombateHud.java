@@ -195,7 +195,8 @@ public final class CombateHud {
     private static void particulas(Minecraft mc) {
         for (Integer id : new ArrayList<>(EstadosCliente.conEstados())) {
             Entity ent = mc.level.getEntity(id);
-            if (!(ent instanceof LivingEntity e) || e.distanceToSqr(mc.player) > 48 * 48 || e.isInvisible()) {
+            // al propio jugador no (en primera persona las llamas y copos le taparían la vista)
+            if (!(ent instanceof LivingEntity e) || e == mc.player || e.distanceToSqr(mc.player) > 48 * 48 || e.isInvisible()) {
                 continue;
             }
             for (EstadosCliente.Visto v : EstadosCliente.de(id)) {

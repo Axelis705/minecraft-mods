@@ -49,11 +49,21 @@ public final class CoreScenario {
         return l.isEmpty() ? null : l.get(0);
     }
 
+    /** Volar (en creativo) para que las fotos desde arriba no se caigan al suelo. */
+    static void volar(boolean v) {
+        var p = net.minecraft.client.Minecraft.getInstance().player;
+        if (p != null) {
+            p.getAbilities().flying = v;
+            p.onUpdateAbilities();
+        }
+    }
+
     /** Combate: estados, barras de vida, números de daño, avisos, proyectiles y el Coloso por fases (con la interfaz visible). */
     static void combate(ClientTest.Script t) {
         String aqui = "execute positioned 0.5 -60 -2.5 rotated 0 0 run ";
         t.add("combate: estados", 1500, () -> {
             t.hud(true);
+            volar(true);
             t.cmd("kill @e[type=!player]");
             t.cmd(aqui + "axeliscore combate estados");
             t.lookFrom(0.5, G, -2.5, 0.5, G + 1.0, 2.5);
@@ -82,6 +92,7 @@ public final class CoreScenario {
             t.cmd("effect clear @a");
             t.cmd("kill @e[type=!player]");
         });
+        t.add("volar", 300, () -> volar(true));
         // avisos (sin daño, lentos)
         t.add("combate: avisos", 1500, () -> {
             t.cmd(aqui + "axeliscore combate avisos");
@@ -154,6 +165,7 @@ public final class CoreScenario {
         t.add("limpiar jefe", 600, () -> {
             t.cmd("kill @e[type=!player]");
             t.hud(false);
+            volar(false);
         });
     }
 
