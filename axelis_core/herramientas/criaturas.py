@@ -53,20 +53,32 @@ def bestia():
 
     def body(face, x, y, w, h):
         if face == "top":
-            return dark if (w // 2 - 1 <= x <= w // 2) else fur  # raya oscura en el lomo
+            if w // 2 - 1 <= x <= w // 2:
+                return dark  # raya oscura en el lomo
+            return mix(fur, dark, 0.25) if (y + x // 2) % 3 == 0 else fur
         if face == "bottom":
             return belly
         if y >= h - 2:
             return belly
-        if face in ("right", "left") and (x + y * 3) % 7 == 0:
-            return mix(fur, dark, 0.5)
+        if y == h - 3:
+            return mix(fur, belly, 0.5)
+        # mechones: rayitas verticales más oscuras, desordenadas
+        if (x * 7 + (y // 2) * 3) % 5 == 0:
+            return mix(fur, dark, 0.35)
+        if y == 0:
+            return mix(fur, dark, 0.2)
         return fur
 
     def mane_p(face, x, y, w, h):
         if face == "bottom":
             return mane
-        tip = (x * 5 + y * 3) % 9 == 0
-        return ember if tip and face != "top" else mix(mane, dark, (y % 3) / 4)
+        if face == "top":
+            return mix(mane, dark, 0.3) if x % 2 == 0 else mane
+        # mechones largos; las puntas de abajo arden como brasas
+        strand = (x * 3) % 4 == 0
+        if y >= h - 2 and (x + y) % 2 == 0:
+            return ember if y == h - 1 else mix(ember, mane, 0.5)
+        return mix(mane, (96, 88, 92), 0.35) if strand else mane
 
     def head(face, x, y, w, h):
         if face == "top":
@@ -312,8 +324,8 @@ def alado():
     a = Anim("idle", 3.0, True)  # posado: alas plegadas
     a.rot("body", [-18, 0, 0])
     a.rot("head", {0: ([18, 0, 0], C), 1.0: ([18, 25, 0], C), 2.0: ([14, -20, 0], C), 3.0: ([18, 0, 0], C)})
-    a.rot("wing_r", [0, -78, 6]).rot("wing_l", [0, 78, -6])
-    a.rot("wing_r_tip", [0, -95, 0]).rot("wing_l_tip", [0, 95, 0])
+    a.rot("wing_r", [0, 84, -10]).rot("wing_l", [0, -84, 10])
+    a.rot("wing_r_tip", [0, 8, -4]).rot("wing_l_tip", [0, -8, 4])
     a.rot("leg_r", [18, 0, 0]).rot("leg_l", [18, 0, 0])
     a.rot("tail", {0: ([22, 0, 0], C), 1.5: ([26, 0, 0], C), 3.0: ([22, 0, 0], C)})
     an.append(a)
@@ -421,6 +433,15 @@ def coloso():
         edge = x in (0, w - 1) or y in (0, h - 1)
         return st2 if edge else mix(st, (140, 138, 150), 0.3)
 
+    def fist(face, x, y, w, h):
+        if face == "front" and y in (2, 5) and 1 <= x <= w - 2:
+            return st2  # líneas de los dedos
+        if face == "front" and x in (3, 6) and 1 <= y <= 6:
+            return mix(st, st2, 0.6)
+        if face == "bottom":
+            return st2
+        return stone(face, x, y, w, h)
+
     def crystal(face, x, y, w, h):
         return (mix(cry, cry2, (x + y) / max(1, w + h)) + (255,))
 
@@ -454,7 +475,7 @@ def coloso():
         c.part(arm, [x0, 22, -4], [7, 14, 8], stone)
         c.bone(arm + "_low", [13.5 * s, 29, 0], arm)
         c.bend(arm, arm + "_low", 29)
-        c.part(arm + "_low", [x0 - 1, 13, -5], [9, 9, 10], plate)
+        c.part(arm + "_low", [x0 - 1, 13, -5], [9, 9, 10], fist)
         leg = f"leg_{side}"
         lx = -8.5 if s < 0 else 0.5
         c.bone(leg, [4 * s, 17, 0], "hips")

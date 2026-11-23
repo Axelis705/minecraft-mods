@@ -176,9 +176,7 @@ public final class CoreCommands {
             return 0;
         }
         best.setNoAi(false);
-        // (el espacio después del punto es a propósito: tools/mcver.py cambia el moveTo de las entidades por snapTo en 26.x,
-        // pero este es el moveTo de la navegación, que no cambió)
-        boolean ok = best.getNavigation(). moveTo(x, y, z, speed);
+        boolean ok = Plat.walkTo(best, x, y, z, speed);
         AxelisCore.LOGGER.info("AXCORE_IR {} {}", speed, ok);
         return ok ? 1 : 0;
     }

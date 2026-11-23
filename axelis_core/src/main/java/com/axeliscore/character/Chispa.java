@@ -70,7 +70,7 @@ public class Chispa extends CoreMob {
         @Override
         public void tick() {
             getLookControl().setLookAt(p, 30F, 30F);
-            getNavigation().moveTo(p, distanceTo(p) > 8 ? 1.25 : 1.0);
+            Plat.walkTo(Chispa.this, p, distanceTo(p) > 8 ? 1.25 : 1.0);
         }
 
         @Override

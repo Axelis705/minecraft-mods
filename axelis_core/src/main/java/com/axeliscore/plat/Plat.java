@@ -138,6 +138,26 @@ public final class Plat {
         //#endif
     }
 
+    /**
+     * Que una criatura camine hasta una entidad o un punto. (Los espacios después del punto son a propósito: tools/mcver.py cambia el
+     * moveTo de las entidades por snapTo en 26.x, pero el de la navegación no cambió.)
+     */
+    public static boolean walkTo(net.minecraft.world.entity.Mob m, Entity target, double speed) {
+        return m.getNavigation(). moveTo(target, speed);
+    }
+
+    public static boolean walkTo(net.minecraft.world.entity.Mob m, double x, double y, double z, double speed) {
+        return m.getNavigation(). moveTo(x, y, z, speed);
+    }
+
+    /** Empuja una entidad (se suma a su velocidad) y, si es un jugador, se lo avisa a su cliente para que se mueva de verdad. */
+    public static void push(Entity e, double x, double y, double z) {
+        e.setDeltaMovement(e.getDeltaMovement().add(x, y, z));
+        if (e instanceof net.minecraft.server.level.ServerPlayer sp) {
+            sp.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(sp));
+        }
+    }
+
     /** Daño a una entidad (en 1.21.2+ el daño se hace con el mundo del servidor). Devuelve true si le hizo daño. */
     public static boolean hurt(Entity target, net.minecraft.world.damagesource.DamageSource src, float amount) {
         //#if MC >= 1.21.2

@@ -507,29 +507,29 @@
     "wing_r": {
      "rotation": [
       0,
-      -78,
-      6
+      84,
+      -10
      ]
     },
     "wing_l": {
      "rotation": [
       0,
-      78,
-      -6
+      -84,
+      10
      ]
     },
     "wing_r_tip": {
      "rotation": [
       0,
-      -95,
-      0
+      8,
+      -4
      ]
     },
     "wing_l_tip": {
      "rotation": [
       0,
-      95,
-      0
+      -8,
+      4
      ]
     },
     "leg_r": {

@@ -39,8 +39,13 @@ public class Coloso extends CoreMob {
     /** Tiempos de impacto de cada animación (ticks), los mismos que el evento de la animación. */
     static final int SLAM_HIT = 23, SWEEP_HIT = 15, STOMP_HIT = 12, ROAR_HIT = 8, PHASE_LEN = 52;
 
+    //#if MC >= 26.1
+    //$$ private final ServerBossEvent bar = new ServerBossEvent(java.util.UUID.randomUUID(), Component.translatable("entity.axelis_core.coloso"),
+    //$$         BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.NOTCHED_10);
+    //#else
     private final ServerBossEvent bar = new ServerBossEvent(Component.translatable("entity.axelis_core.coloso"), BossEvent.BossBarColor.PURPLE,
             BossEvent.BossBarOverlay.NOTCHED_10);
+    //#endif
     private int cooldown = 40, busy, hitAt = -1;
     private String hitKind = "";
     private boolean phase2;
@@ -110,7 +115,7 @@ public class Coloso extends CoreMob {
         double d = distanceTo(t);
         if (--cooldown > 0) {
             if (d > 3.2) {
-                getNavigation().moveTo(t, 1.0);
+                Plat.walkTo(this, t, 1.0);
             }
             return;
         }
@@ -129,7 +134,7 @@ public class Coloso extends CoreMob {
             start("roar", 44, ROAR_HIT, "roar");
             cooldown = 70;
         } else {
-            getNavigation().moveTo(t, 1.0);
+            Plat.walkTo(this, t, 1.0);
             cooldown = 10;
         }
     }
@@ -157,8 +162,7 @@ public class Coloso extends CoreMob {
             switch (kind) {
                 case "slam" -> {
                     Plat.hurt(e, damageSources().mobAttack(this), SLAM_DMG * mult);
-                    e.setDeltaMovement(e.getDeltaMovement().add(dir.x * 0.6, 0.75, dir.z * 0.6));
-                    e.hurtMarked = true;
+                    Plat.push(e, dir.x * 0.6, 0.75, dir.z * 0.6);
                 }
                 case "sweep" -> {
                     if (dir.dot(fwd) < 0.1) {
@@ -166,20 +170,17 @@ public class Coloso extends CoreMob {
                     }
                     Plat.hurt(e, damageSources().mobAttack(this), SWEEP_DMG * mult);
                     Vec3 side = new Vec3(-fwd.z, 0, fwd.x);
-                    e.setDeltaMovement(e.getDeltaMovement().add(side.x * 1.1, 0.3, side.z * 1.1));
-                    e.hurtMarked = true;
+                    Plat.push(e, side.x * 1.1, 0.3, side.z * 1.1);
                 }
                 case "stomp" -> {
                     if (!e.onGround()) {
                         continue; // saltando se esquiva
                     }
                     Plat.hurt(e, damageSources().mobAttack(this), STOMP_DMG * mult);
-                    e.setDeltaMovement(e.getDeltaMovement().add(dir.x * 1.0, 0.4, dir.z * 1.0));
-                    e.hurtMarked = true;
+                    Plat.push(e, dir.x * 1.0, 0.4, dir.z * 1.0);
                 }
                 default -> {
-                    e.setDeltaMovement(e.getDeltaMovement().add(dir.x * 1.4, 0.35, dir.z * 1.4));
-                    e.hurtMarked = true;
+                    Plat.push(e, dir.x * 1.4, 0.35, dir.z * 1.4);
                 }
             }
         }
