@@ -3,6 +3,7 @@ package com.axeliscore.vestir;
 import com.axeliscore.AxelisCore;
 import com.axeliscore.data.PlayerStore;
 import com.axeliscore.data.WorldStore;
+import com.axeliscore.plat.Nbt;
 import com.axeliscore.plat.Plat;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -44,7 +45,7 @@ public final class Vestuario {
         if (!g.contains("vestuario")) {
             g.put("vestuario", new CompoundTag());
         }
-        return g.getCompound("vestuario");
+        return Nbt.c(g, "vestuario");
     }
 
     private static void sync(MinecraftServer s) {
@@ -56,7 +57,7 @@ public final class Vestuario {
     public static void poner(MinecraftServer s, UUID quien, ResourceLocation prenda, CompoundTag datos) {
         CompoundTag t = todo(s);
         String k = quien.toString();
-        CompoundTag suyas = t.getCompound(k);
+        CompoundTag suyas = Nbt.c(t, k);
         suyas.put(prenda.toString(), datos == null ? new CompoundTag() : datos.copy());
         t.put(k, suyas);
         sync(s);
@@ -69,10 +70,12 @@ public final class Vestuario {
         if (!t.contains(k)) {
             return;
         }
-        CompoundTag suyas = t.getCompound(k);
+        CompoundTag suyas = Nbt.c(t, k);
         suyas.remove(prenda.toString());
         if (suyas.isEmpty()) {
             t.remove(k);
+        } else {
+            t.put(k, suyas);
         }
         sync(s);
     }
@@ -91,12 +94,14 @@ public final class Vestuario {
         CompoundTag t = todo(s);
         boolean cambio = false;
         for (String k : t.getAllKeys().toArray(new String[0])) {
-            CompoundTag suyas = t.getCompound(k);
+            CompoundTag suyas = Nbt.c(t, k);
             if (suyas.contains(prenda.toString())) {
                 suyas.remove(prenda.toString());
                 cambio = true;
                 if (suyas.isEmpty()) {
                     t.remove(k);
+                } else {
+                    t.put(k, suyas);
                 }
             }
         }
@@ -107,11 +112,11 @@ public final class Vestuario {
 
     /** ¿La lleva puesta? */
     public static boolean tiene(MinecraftServer s, UUID quien, ResourceLocation prenda) {
-        return todo(s).getCompound(quien.toString()).contains(prenda.toString());
+        return Nbt.c(todo(s), quien.toString()).contains(prenda.toString());
     }
 
     /** Los datos con que la lleva (vacío si no la lleva). */
     public static CompoundTag datos(MinecraftServer s, UUID quien, ResourceLocation prenda) {
-        return todo(s).getCompound(quien.toString()).getCompound(prenda.toString()).copy();
+        return Nbt.c(Nbt.c(todo(s), quien.toString()), prenda.toString()).copy();
     }
 }

@@ -49,7 +49,7 @@ public final class CoreClient {
         //$$ }
         //#elif MC >= 1.20.2
         //$$ for (net.minecraft.client.resources.PlayerSkin.Model t : e.getSkins()) {
-        //$$     net.minecraft.client.renderer.entity.player.PlayerRenderer r = e.getSkin(t);
+        //$$     net.minecraft.client.renderer.entity.player.PlayerRenderer r = e.getPlayerSkin(t);
         //$$     if (r != null) {
         //$$         r.addLayer(new com.axeliscore.vestir.client.CapaVestuario(r));
         //$$     }
@@ -73,7 +73,7 @@ public final class CoreClient {
                     .piel(Ids.core("textures/prenda/overol.png")).sin(com.axeliscore.vestir.client.Prenda.Parte.CABEZA,
                             com.axeliscore.vestir.client.Prenda.Parte.BRAZO_DER, com.axeliscore.vestir.client.Prenda.Parte.BRAZO_IZQ)
                     .decorar((c, l) -> {
-                        String n = c.datos().getString("numero");
+                        String n = com.axeliscore.plat.Nbt.s(c.datos(), "numero");
                         if (!n.isEmpty()) {
                             l.texto(com.axeliscore.vestir.client.Prenda.Parte.CUERPO, n, 0F, 6.5F, -2F - l.inflado() - 0.03F, 0.3F, 0xFFEFE6C8,
                                     false);

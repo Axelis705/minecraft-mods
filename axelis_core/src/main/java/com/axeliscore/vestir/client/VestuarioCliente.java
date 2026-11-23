@@ -79,10 +79,10 @@ public final class VestuarioCliente {
             } catch (IllegalArgumentException e) {
                 continue;
             }
-            CompoundTag suyas = t.getCompound(k);
+            CompoundTag suyas = com.axeliscore.plat.Nbt.c(t, k);
             List<Puesta> l = new ArrayList<>();
             for (String p : suyas.getAllKeys()) {
-                l.add(new Puesta(Ids.parse(p), suyas.getCompound(p)));
+                l.add(new Puesta(Ids.parse(p), com.axeliscore.plat.Nbt.c(suyas, p)));
             }
             if (!l.isEmpty()) {
                 PUESTAS.put(id, l);
