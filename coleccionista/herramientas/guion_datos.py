@@ -18,52 +18,43 @@ LANG = os.path.join(MOD, "src/main/resources/assets/coleccionista/lang")
 PANTALLAS = os.path.join(MOD, "src/main/java/com/coleccionista/evento/Pantallas.java")
 
 # Quién es: un coleccionista de porcelana. No odia a nadie: quiere a sus piezas como se quiere un objeto fino. Habla bajito, despacio,
-# con cortesía de anticuario; nunca grita. Les dice "piezas" (por eso les habla en femenino: bienvenidas, todas). Nunca dice que mata:
+# con cortesía de anticuario; nunca grita. Frases cortas y directas (así las prefiere Axelis). Nunca dice que mata:
 # "se quedan conmigo", "en mi colección". Usa palabras de su oficio (vitrina, grieta, despostillar, réplica, original). Cierra cada
 # explicación con su frase: "La vitrina está abierta."
 
 GUIONES = {
     "bienvenida": [
         ("silencio", "…", "…", "Solo respira cerca del micrófono, lento, dos segundos."),
-        ("hola", "Hola…", "Hello…", "Muy bajito, alargando la o. Como quien se asoma a una cuna."),
+        ("hola", "Hola…", "Hello…", "Muy bajito, alargando la o."),
         ("que_tenemos", "Vaya, vaya… ¿Qué tenemos aquí?", "Well, well… What do we have here?", "Curioso, con una sonrisa que se oye."),
-        ("acerquense", "No sean tímidas. Acérquense… pulsen la R y véanme de cerca.",
-         "Don't be shy. Come closer… press R and see me up close.", "Amable, invitando con la mano."),
-        ("durmieron", "Veo que ya despertaron. ¿Durmieron bien? Las camas eran de las piezas anteriores.",
-         "I see you're awake. Did you sleep well? Those beds belonged to the previous pieces.",
-         "Cortés, como recepcionista de hotel caro. Lo último casi en secreto."),
-        ("no_sabes", "No recuerdan cómo llegaron aquí. No se preocupen… nadie lo recuerda.",
-         "You don't remember how you got here. Don't worry… nobody ever does.", "Tranquilizador. Demasiado tranquilizador."),
+        ("durmieron", "Veo que ya despertaron. ¿Durmieron bien?", "I see you're awake. Did you sleep well?", "Cortés, como anfitrión."),
+        ("acerquense", "No sean tímidos. Acérquense… (pulsen R para ver la pantalla de cerca)",
+         "Don't be shy. Come closer… (press R to see the screen up close)",
+         "Amable, invitando. Lo que va entre paréntesis no se dice: solo sale en el subtítulo."),
         ("presento", "Permítanme presentarme. Soy… el Coleccionista.", "Allow me to introduce myself. I am… the Collector.",
-         "Pausa antes del nombre. Orgulloso, como quien firma una obra."),
-        ("piezas", "Y ustedes son mis piezas nuevas. Cada una con su número, cosido en el pecho.",
-         "And you are my new pieces. Each one with her number, stitched on her chest.",
-         "Con cariño, como quien admira algo en una vitrina."),
-        ("fragiles", "Las piezas finas son frágiles. Por eso hay que probarlas… una por una.",
-         "Fine pieces are fragile. That's why they must be tested… one by one.", "Lento en «una por una»."),
-        ("una_sale", "Esta noche habrá varias pruebas. Y al final, solo una pieza saldrá por la puerta principal.",
-         "Tonight there will be several trials. And in the end, only one piece will walk out the front door.", "Claro, sin prisa."),
-        ("las_demas", "Las demás… se quedan conmigo. En mi colección. Para siempre.",
-         "The rest… stay with me. In my collection. Forever.", "Bajando la voz en «para siempre»."),
-        ("risa", "Je… je, je, je. ¡Ja, ja, ja!", "Heh… heh, heh, heh. Ha, ha, ha!",
-         "Empieza contenida y se le escapa al final. Luego se recompone."),
-        ("candado", "Su primera prueba es sencilla: salir de su celda. El candado tiene tres números…",
-         "Your first trial is simple: get out of your cell. The lock has three numbers…", "Ya compuesto. Explica como maestro paciente."),
-        ("escondidos", "…y los tres están escondidos ahí adentro, con ustedes. Busquen bien.",
-         "…and all three are hidden in there, with you. Look carefully.", "Juguetón, como quien esconde dulces."),
-        ("vitrina", "La vitrina está abierta.", "The display case is open.",
+         "Pausa antes del nombre. Orgulloso."),
+        ("coleccion", "Y ustedes… son mi nueva colección.", "And you… are my new collection.", "Despacio, saboreándolo."),
+        ("pruebas", "Esta noche van a jugar. Varias pruebas, una tras otra.", "Tonight you will play. Several trials, one after another.",
+         "Claro, sin prisa."),
+        ("solo_uno", "Y al final… solo uno saldrá de aquí.", "And in the end… only one will leave this place.", "Pausa larga antes de «solo uno»."),
+        ("los_demas", "Los demás se quedan conmigo. Para siempre.", "The rest stay with me. Forever.", "Bajando la voz en «para siempre»."),
+        ("risa", "Je, je, je… ¡Ja, ja, ja!", "Heh, heh, heh… Ha, ha, ha!", "Empieza contenida y se le escapa al final."),
+        ("candado", "Primero, salgan de su celda. El candado tiene tres números.",
+         "First, get out of your cell. The lock has three numbers.", "Ya compuesto. Explica."),
+        ("escondidos", "Los tres están escondidos ahí adentro, con ustedes.", "All three are hidden in there, with you.", "Juguetón."),
+        ("vitrina", "Busquen bien. La vitrina está abierta.", "Look carefully. The display case is open.",
          "Su frase de siempre: firme y lenta. Con ella termina cada explicación."),
     ],
     "salida": [
         ("bravo", "Bravo… bravo.", "Bravo… bravo.", "Aplaudiendo despacio (si quieres, aplaude de verdad)."),
-        ("todas", "Todas fuera de su celda. Ninguna se quedó atrás… qué lástima.",
+        ("todas", "Todos fuera de su celda. Ninguno se quedó atrás… qué lástima.",
          "All of you out of your cells. Nobody stayed behind… what a pity.", "Fingiendo que le da pena."),
         ("museo", "Esto que ven es la entrada de mi museo. Caminen con cuidado: el piso es viejo… como yo.",
          "What you see is the entrance to my museum. Walk carefully: the floor is old… like me.", "Guía de museo, con una risita al final."),
         ("salas", "Detrás de cada puerta hay una sala. Y en cada sala, una prueba.",
          "Behind every door there is a hall. And in every hall, a trial.", "Misterioso."),
         ("risa", "Je, je, je…", "Heh, heh, heh…", "Corta, hacia adentro."),
-        ("esperen", "Pónganse cómodas. El montacargas vendrá por ustedes muy pronto.",
+        ("esperen", "Pónganse cómodos. El montacargas vendrá por ustedes muy pronto.",
          "Make yourselves comfortable. The lift will come for you very soon.", "Anfitrión amable."),
     ],
     "montacargas": [
@@ -87,9 +78,9 @@ GUIONES = {
          "Special stop: the gallery of posts. Walk in line… and don't get tangled.", "Voz de operador, divertido."),
     ],
     "encadenados": [
-        ("hola", "Buenas noches, piezas. Bienvenidas a las cloacas.", "Good evening, pieces. Welcome to the sewers.",
+        ("hola", "Buenas noches. Bienvenidos a las cloacas.", "Good evening, pieces. Welcome to the sewers.",
          "Elegante, como si el lugar fuera un salón de baile."),
-        ("cadena", "Cada una está encadenada a la pared… y a otra pieza.", "Each of you is chained to the wall… and to another piece.",
+        ("cadena", "Cada uno está encadenado a la pared… y a alguien más.", "Each of you is chained to the wall… and to another piece.",
          "Despacio; pausa en los puntos."),
         ("pareja", "Su pareja de esta noche. No la eligieron ustedes. La elegí yo.",
          "Your partner for tonight. You didn't choose her. I did.", "Orgulloso de su elección."),
@@ -100,17 +91,17 @@ GUIONES = {
         ("gas", "Cuando se abra la reja, el gas empezará a bajar por los túneles. Yo no lo respiraría mucho tiempo.",
          "When the gate opens, the gas will start coming down the tunnels. I wouldn't breathe it for long.",
          "Casual, como quien habla del clima."),
-        ("refugio", "Al final hay un refugio. Es pequeño. No caben todas.", "At the end there is a shelter. It's small. Not all of you fit.",
+        ("refugio", "Al final hay un refugio. Es pequeño. No caben todos.", "At the end there is a shelter. It's small. Not all of you fit.",
          "Una pausa entre cada frase."),
         ("risa", "Je, je, je…", "Heh, heh, heh…", "Corta, hacia adentro."),
-        ("vitrina", "Lo que las ata… también puede salvarlas. La vitrina está abierta.",
+        ("vitrina", "Lo que los ata… también puede salvarlos. La vitrina está abierta.",
          "What binds you… can also save you. The display case is open.", "Su cierre de siempre, firme."),
     ],
     "traidor": [
-        ("hola", "Bienvenidas a mi archivo. Aquí guardo todo lo que sé de ustedes… que es mucho.",
+        ("hola", "Bienvenidos a mi archivo. Aquí guardo todo lo que sé de ustedes… que es mucho.",
          "Welcome to my archive. Here I keep everything I know about you… which is a lot.", "Coqueto, sabiendo más de lo que dice."),
         ("boveda", "Cada sala tiene una bóveda cerrada con un código.", "Each room has a vault locked with a code.", "Claro, explicando."),
-        ("notas", "Cada una tiene una nota con dos números. Juntas, tienen el código completo.",
+        ("notas", "Cada uno tiene una nota con dos números. Juntos, tienen el código completo.",
          "Each of you has a note with two numbers. Together, you have the whole code.", "Claro, explicando."),
         ("traidor", "Pero en cada sala hay un traidor. Una réplica barata entre piezas originales.",
          "But in every room there is a traitor. A cheap replica among original pieces.", "Con desprecio elegante en «réplica barata»."),
@@ -124,28 +115,28 @@ GUIONES = {
          "La pregunta despacio; el cierre firme."),
     ],
     "compartir": [
-        ("hola", "Bienvenidas a mi salón de juego. Tomen asiento… frente a frente.",
+        ("hola", "Bienvenidos a mi salón de juego. Tomen asiento… frente a frente.",
          "Welcome to my game parlor. Take a seat… face to face.", "Anfitrión de casino elegante."),
         ("mesa", "La pieza que tienen enfrente es su pareja en esta mesa.", "The piece in front of you is your partner at this table.",
          "Claro."),
         ("hablen", "Tienen un minuto para hablar. Prometan lo que quieran: las promesas no cuestan nada.",
          "You have one minute to talk. Promise whatever you like: promises cost nothing.", "Burlón en «no cuestan nada»."),
-        ("elijan", "Después, cada una elegirá en secreto: compartir… o robar.",
+        ("elijan", "Después, cada uno elegirá en secreto: compartir… o robar.",
          "Then each of you will choose in secret: share… or steal.", "Pausa larga antes de «o robar»."),
-        ("comparten", "Si las dos comparten, siguen las dos.", "If you both share, you both go on.", "Contento."),
-        ("roba", "Si una roba, solo sigue la que robó.", "If one steals, only the thief goes on.", "Neutral, como juez."),
-        ("roban", "Y si las dos roban… las dos se quedan conmigo.", "And if you both steal… you both stay with me.",
+        ("comparten", "Si los dos comparten, siguen los dos.", "If you both share, you both go on.", "Contento."),
+        ("roba", "Si uno roba, solo sigue el que robó.", "If one steals, only the thief goes on.", "Neutral, como juez."),
+        ("roban", "Y si los dos roban… los dos se quedan conmigo.", "And if you both steal… you both stay with me.",
          "Encantado con la idea."),
         ("risa", "Je, je, je…", "Heh, heh, heh…", "Corta, hacia adentro."),
         ("vitrina", "La confianza es una pieza muy fina: se rompe con nada. La vitrina está abierta.",
          "Trust is a very fine piece: it breaks at nothing. The display case is open.", "Reflexivo; el cierre firme."),
     ],
     "ciegas": [
-        ("hola", "Bienvenidas a mis laberintos. Paredes acolchadas… para que nadie se despostille.",
+        ("hola", "Bienvenidos a mis laberintos. Paredes acolchadas… para que nadie se rompa.",
          "Welcome to my mazes. Padded walls… so nobody gets chipped.", "Cariñoso, como si los cuidara."),
-        ("venda", "Casi todas caminarán con los ojos vendados. Solo verán un destello… de vez en cuando.",
+        ("venda", "Casi todos caminarán con los ojos vendados. Solo verán un destello… de vez en cuando.",
          "Almost all of you will walk blindfolded. You'll only see a flash… every now and then.", "Misterioso."),
-        ("guia", "En cada equipo, una pieza será la guía. Caminará arriba, sobre el vidrio, y lo verá todo.",
+        ("guia", "En cada equipo, uno será el guía. Caminará arriba, sobre el vidrio, y lo verá todo.",
          "In each team, one piece will be the guide. She'll walk above, on the glass, and see everything.", "Claro, explicando."),
         ("voz", "Pero no podrá bajar. Solo tendrá su voz.", "But she can't come down. All she has is her voice.", "Lento."),
         ("trampas", "En el piso hay trampas. Quien pise una, regresa a la entrada.",
@@ -160,11 +151,11 @@ GUIONES = {
         ("vitrina", "Escuchen bien. La vitrina está abierta.", "Listen carefully. The display case is open.", "Su cierre de siempre."),
     ],
     "sacrificio": [
-        ("hola", "Bienvenidas a mi capilla. Aquí se viene a pedir… y a dar.",
+        ("hola", "Bienvenidos a mi capilla. Aquí se viene a pedir… y a dar.",
          "Welcome to my chapel. Here you come to ask… and to give.", "Solemne, como sacerdote."),
         ("reja", "Cada cuarto tiene una reja. Solo se abre si alguien se queda adentro.",
          "Each room has a gate. It only opens if someone stays inside.", "Claro."),
-        ("altar", "Quien se pare cinco segundos en el altar, se ofrece. Las demás salen libres.",
+        ("altar", "Quien se pare cinco segundos en el altar, se ofrece. Los demás salen libres.",
          "Whoever stands on the altar for five seconds offers herself. The others walk free.", "Despacio en «se ofrece»."),
         ("votar", "Si nadie se ofrece, votarán en secreto. La pieza más votada se queda.",
          "If nobody offers, you'll vote in secret. The piece with the most votes stays.", "Neutral, como juez."),
@@ -173,36 +164,36 @@ GUIONES = {
          "Brave pieces are the most beautiful in my collection. The display case is open.", "Con admiración sincera."),
     ],
     "puertas": [
-        ("hola", "Bienvenidas a la sala de las puertas.", "Welcome to the hall of doors.", "Presentador de concurso."),
+        ("hola", "Bienvenidos a la sala de las puertas.", "Welcome to the hall of doors.", "Presentador de concurso."),
         ("tres", "Tres puertas. Detrás de cada una, una cabina.", "Three doors. Behind each one, a booth.", "Presentador de concurso."),
         ("piso", "En una de ellas el piso se abre… y el agua de abajo es muy, muy honda.",
          "In one of them the floor opens… and the water below is very, very deep.", "Bajando la voz en «muy, muy honda»."),
         ("pista", "Antes de cada ronda les daré una pista. Casi siempre digo la verdad. Casi.",
          "Before each round I'll give you a clue. I almost always tell the truth. Almost.", "Pausa larga antes del último «casi»."),
-        ("juntas", "Si todas eligen la misma puerta, esa vez el piso aguanta. Pónganse de acuerdo… si pueden.",
+        ("juntas", "Si todos eligen la misma puerta, esa vez el piso aguanta. Pónganse de acuerdo… si pueden.",
          "If you all choose the same door, that time the floor holds. Agree with each other… if you can.", "Retador."),
-        ("tiempo", "Elijan rápido: la que no entre antes de que bajen las rejas, deja que yo elija por ella.",
+        ("tiempo", "Elijan rápido: el que no entre antes de que bajen las rejas, deja que yo elija por él.",
          "Choose quickly: whoever isn't in before the gates come down lets me choose for her.", "Un poco más rápido, con urgencia."),
         ("risa", "Je, je, je…", "Heh, heh, heh…", "Corta, hacia adentro."),
-        ("vitrina", "Que la suerte las acompañe. La vitrina está abierta.", "May luck be with you. The display case is open.",
+        ("vitrina", "Que la suerte los acompañe. La vitrina está abierta.", "May luck be with you. The display case is open.",
          "Su cierre de siempre."),
     ],
     "copas": [
-        ("hola", "Bienvenidas a mi cámara privada. Muy pocas piezas llegan hasta aquí.",
+        ("hola", "Bienvenidos a mi cámara privada. Muy pocas piezas llegan hasta aquí.",
          "Welcome to my private chamber. Very few pieces make it this far.", "Íntimo, casi conmovido."),
-        ("llegaron", "Ustedes son lo mejor de mi colección. Las más fuertes. Las más bonitas.",
+        ("llegaron", "Ustedes son lo mejor de mi colección. Los más fuertes. Los más valientes.",
          "You are the finest of my collection. The strongest. The most beautiful.", "Orgulloso, como padre."),
         ("copas", "Sobre la mesa hay copas. Todas huelen igual. Todas brillan igual.",
          "There are glasses on the table. They all smell the same. They all shine the same.", "Despacio, saboreando."),
         ("veneno", "Solo una tiene veneno.", "Only one is poisoned.", "Seco. Pausa después."),
-        ("turnos", "Por turnos, cada una beberá una copa. La última pieza en pie… sale libre.",
+        ("turnos", "Por turnos, cada uno beberá una copa. La última pieza en pie… sale libre.",
          "Taking turns, each of you will drink a glass. The last piece standing… walks free.", "Claro; pausa antes de «sale libre»."),
         ("promesa", "Y yo siempre cumplo mis promesas.", "And I always keep my promises.", "Sincero. O casi."),
         ("risa", "Je, je, je…", "Heh, heh, heh…", "Corta, hacia adentro."),
         ("salud", "¡Salud!", "Cheers!", "Brindando, con alegría de fiesta."),
     ],
     "tres": [
-        ("hola", "Bienvenidas a mi galería de los postes.", "Welcome to my gallery of posts.", "Guía de museo."),
+        ("hola", "Bienvenidos a mi galería de los postes.", "Welcome to my gallery of posts.", "Guía de museo."),
         ("objetos", "En su mesa hay tres regalos: una venda, una cinta y unas esposas.",
          "On your table there are three gifts: a blindfold, a tape and handcuffs.", "Como quien entrega regalos de cumpleaños."),
         ("venda", "Quien se ponga la venda no verá nada. Solo un destello, de vez en cuando.",
@@ -212,7 +203,7 @@ GUIONES = {
          "Pausa antes de «no podrá tocar nada»."),
         ("decidan", "Decidan entre ustedes quién se pone qué. Si no deciden, decido yo.",
          "Decide among yourselves who wears what. If you don't, I will.", "Amable, pero sin paciencia."),
-        ("cadena", "Luego cruzarán la galería encadenadas en fila. Cuidado con los postes: las cadenas se enredan.",
+        ("cadena", "Luego cruzarán la galería encadenados en fila. Cuidado con los postes: las cadenas se enredan.",
          "Then you'll cross the gallery chained in a line. Mind the posts: chains get tangled.", "Claro, explicando."),
         ("risa", "Je, je, je…", "Heh, heh, heh…", "Corta, hacia adentro."),
         ("vitrina", "El último trío en salir se queda conmigo. La vitrina está abierta.",
@@ -244,6 +235,17 @@ def ticks(clave, texto):
         return 70 if "¡" in texto else 60
     seg = len(texto) / 13 + 1.3 + 0.35 * texto.count("…")
     return max(50, min(240, int(round(seg * 20 / 5.0)) * 5))
+
+
+def con_audio(gid, clave, t):
+    """Si ya está grabada, la frase dura al menos lo que dura su audio (+0.6 s)."""
+    ogg = os.path.join(MOD, "src/main/resources/assets/coleccionista/sounds/voz", f"{gid}_{clave}.ogg")
+    if not os.path.exists(ogg):
+        return t
+    import subprocess
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", ogg], capture_output=True, text=True)
+    seg = float(r.stdout.strip() or 0)
+    return max(t, int((seg + 0.6) * 20 + 0.999))
 
 
 def escribir():
@@ -283,8 +285,9 @@ def escribir():
             cuerpo.append("        }")
         else:
             for f in frases:
-                t = ticks(f[0], f[1])
-                if f[0].endswith("risa"):
+                t = con_audio(gid, f[0], ticks(f[0], f[1]))
+                if f[0].endswith("risa") and not os.path.exists(os.path.join(MOD, "src/main/resources/assets/coleccionista/sounds/voz",
+                                                                                 f"{gid}_{f[0]}.ogg")):
                     cuerpo.append(f'        l.add(new Frase("{f[0]}", {t}, SoundEvents.WITCH_CELEBRATE, 0.55F));')
                 else:
                     cuerpo.append(f'        l.add(new Frase("{f[0]}", {t}, null, 1F));')

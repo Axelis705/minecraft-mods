@@ -3,6 +3,7 @@
 
 Uso: python3 herramientas/voces.py <carpeta_con_grabaciones> [--sin-ajustar]
 
+- Corta solo el silencio de antes y después de la voz. Acepta también videos (MP4, MKV, MOV: se toma el audio).
 - Cada archivo se llama como en el guion (docs/guion-voces.md): <guion>_<clave>.<mp3|wav|ogg|m4a|...>, por ejemplo ciegas_hola.mp3.
 - Los convierte a OGG mono 44.1 kHz (lo que usa Minecraft), con el volumen parejo, en
   src/main/resources/assets/coleccionista/sounds/voz/<guion>_<clave>.ogg
@@ -31,6 +32,28 @@ def guiones():
     return out
 
 
+def recorte(f):
+    """Dónde empieza y termina la voz (segundos): corta el silencio o el ruido de antes y después (con un poquito de aire)."""
+    try:
+        import numpy as np
+        r = subprocess.run(["ffmpeg", "-v", "error", "-i", f, "-ac", "1", "-ar", "16000", "-f", "s16le", "-"], capture_output=True)
+        a = np.frombuffer(r.stdout, dtype=np.int16).astype(float)
+        w = 320  # 20 ms
+        rms = np.array([np.sqrt(np.mean(a[i:i + w] ** 2)) for i in range(0, len(a) - w, w)])
+        if len(rms) == 0 or rms.max() <= 0:
+            return None
+        ruido = np.percentile(rms, 20)
+        umbral = max(ruido * 3, rms.max() * 0.05)
+        voz = np.where(rms > umbral)[0]
+        if len(voz) == 0:
+            return None
+        ini = max(0.0, voz[0] * 0.02 - 0.25)
+        fin = min(len(a) / 16000, (voz[-1] + 1) * 0.02 + 0.35)
+        return ini, fin
+    except Exception:
+        return None
+
+
 def duracion(f):
     r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f], capture_output=True, text=True)
     return float(r.stdout.strip() or 0)
@@ -49,13 +72,15 @@ def main():
     hechas, desconocidas = {}, []
     for nombre in sorted(os.listdir(carpeta)):
         base, ext = os.path.splitext(nombre)
-        if ext.lower() not in (".mp3", ".wav", ".ogg", ".m4a", ".flac", ".aac", ".opus", ".webm"):
+        if ext.lower() not in (".mp3", ".wav", ".ogg", ".m4a", ".flac", ".aac", ".opus", ".webm", ".mp4", ".mkv", ".mov"):
             continue
         if base not in validas:
             desconocidas.append(nombre)
             continue
         sal = os.path.join(destino, base + ".ogg")
-        subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", os.path.join(carpeta, nombre), "-ac", "1", "-ar", "44100",
+        corte = recorte(os.path.join(carpeta, nombre))
+        rango = ["-ss", f"{corte[0]:.2f}", "-to", f"{corte[1]:.2f}"] if corte else []
+        subprocess.run(["ffmpeg", "-y", "-v", "error", *rango, "-i", os.path.join(carpeta, nombre), "-vn", "-ac", "1", "-ar", "44100",
                         "-af", "loudnorm=I=-16:TP=-1.5:LRA=11", "-c:a", "libvorbis", "-q:a", "5", sal], check=True)
         hechas[base] = duracion(sal)
         print(f"ok  {base}.ogg  {hechas[base]:.1f} s")

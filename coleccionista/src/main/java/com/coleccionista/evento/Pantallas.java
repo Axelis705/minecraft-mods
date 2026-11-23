@@ -51,26 +51,25 @@ public final class Pantallas {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("silencio", 50, null, 1F));
         l.add(new Frase("hola", 50, null, 1F));
-        l.add(new Frase("que_tenemos", 80, null, 1F));
-        l.add(new Frase("acerquense", 125, null, 1F));
-        l.add(new Frase("durmieron", 150, null, 1F));
-        l.add(new Frase("no_sabes", 140, null, 1F));
-        l.add(new Frase("presento", 105, null, 1F));
-        l.add(new Frase("piezas", 145, null, 1F));
-        l.add(new Frase("fragiles", 140, null, 1F));
-        l.add(new Frase("una_sale", 165, null, 1F));
-        l.add(new Frase("las_demas", 125, null, 1F));
+        l.add(new Frase("que_tenemos", 94, null, 1F));
+        l.add(new Frase("durmieron", 92, null, 1F));
+        l.add(new Frase("acerquense", 140, null, 1F));
+        l.add(new Frase("presento", 120, null, 1F));
+        l.add(new Frase("coleccion", 85, null, 1F));
+        l.add(new Frase("pruebas", 110, null, 1F));
+        l.add(new Frase("solo_uno", 90, null, 1F));
+        l.add(new Frase("los_demas", 90, null, 1F));
         l.add(new Frase("risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
-        l.add(new Frase("candado", 155, null, 1F));
-        l.add(new Frase("escondidos", 140, null, 1F));
-        l.add(new Frase("vitrina", 65, null, 1F));
+        l.add(new Frase("candado", 115, null, 1F));
+        l.add(new Frase("escondidos", 105, null, 1F));
+        l.add(new Frase("vitrina", 85, null, 1F));
         return l;
     }
 
     /** La explicación de Encadenados (en la Sala de los grilletes, antes de abrir la reja). */
     public static List<Frase> encadenados() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hola", 100, null, 1F));
+        l.add(new Frase("hola", 90, null, 1F));
         l.add(new Frase("cadena", 115, null, 1F));
         l.add(new Frase("pareja", 120, null, 1F));
         l.add(new Frase("llaves", 120, null, 1F));
@@ -101,7 +100,7 @@ public final class Pantallas {
     public static List<Frase> copas() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("hola", 130, null, 1F));
-        l.add(new Frase("llegaron", 135, null, 1F));
+        l.add(new Frase("llegaron", 140, null, 1F));
         l.add(new Frase("copas", 125, null, 1F));
         l.add(new Frase("veneno", 60, null, 1F));
         l.add(new Frase("turnos", 145, null, 1F));
@@ -141,9 +140,9 @@ public final class Pantallas {
     /** A ciegas (en los Laberintos). */
     public static List<Frase> ciegas() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hola", 155, null, 1F));
+        l.add(new Frase("hola", 145, null, 1F));
         l.add(new Frase("venda", 165, null, 1F));
-        l.add(new Frase("guia", 165, null, 1F));
+        l.add(new Frase("guia", 155, null, 1F));
         l.add(new Frase("voz", 90, null, 1F));
         l.add(new Frase("trampas", 120, null, 1F));
         l.add(new Frase("mueven", 125, null, 1F));

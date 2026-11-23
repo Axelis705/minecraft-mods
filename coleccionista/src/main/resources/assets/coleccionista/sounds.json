@@ -30,5 +30,55 @@
         "attenuation_distance": 12
       }
     ]
+  },
+  "voz.bienvenida.acerquense": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.acerquense",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_acerquense",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.durmieron": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.durmieron",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_durmieron",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.hola": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.hola",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_hola",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.presento": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.presento",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_presento",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.que_tenemos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.que_tenemos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_que_tenemos",
+        "stream": true
+      }
+    ]
   }
 }
