@@ -17,8 +17,9 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 SALIDA = os.path.join(AQUI, '..', '..', 'src', 'main', 'resources', 'assets', 'coleccionista', 'textures', 'prenda')
 K = 2  # texeles por píxel del modelo
 VARIANTES = 6
+NIVELES = 4  # desgaste: 0 al despertar, 3 al final
 
-HUESO = np.array([206, 197, 176], np.float32)
+HUESO = np.array([192, 182, 160], np.float32)
 PANTALON = np.array([64, 64, 66], np.float32)
 TENIS = np.array([46, 42, 38], np.float32)
 SUELA = np.array([150, 142, 128], np.float32)
@@ -183,7 +184,29 @@ def pantalon(L, u, v_, seed):
     return caras
 
 
-def pintar(variante, delgado):
+def rasgadura(vv, x0, y0, largo, seed):
+    """Una rasgadura: una línea quebrada oscura con la orilla deshilachada (en texeles de la cara)."""
+    rs = np.random.RandomState(seed)
+    h, w = vv.shape[:2]
+    x, y = x0, y0
+    for _ in range(largo):
+        if 0 <= x < w and 0 <= y < h and vv[y, x, 3] > 0:
+            vv[y, x, :3] = np.array([38, 32, 26], np.float32)
+            if 0 <= y - 1 < h and vv[y - 1, x, 3] > 0:
+                vv[y - 1, x, :3] = vv[y - 1, x, :3] * 1.12
+        x += 1
+        y += rs.choice([-1, 0, 0, 1])
+
+
+def mugre(vv, fuerza, seed):
+    """Mugre general (manchas de tierra y grasa) según el desgaste."""
+    h, w = vv.shape[:2]
+    m = ruido(h, w, seed, 5.0)
+    sucio = (m > 1 - 0.18 * fuerza) & (vv[..., 3] > 0)
+    vv[..., :3] = np.where(sucio[..., None], vv[..., :3] * 0.72 + np.array([30, 22, 10], np.float32), vv[..., :3])
+
+
+def pintar(variante, delgado, nivel=0):
     L = Lienzo()
     s = 100 * variante
     ab = 3 if delgado else 4
@@ -220,16 +243,43 @@ def pintar(variante, delgado):
             gx, gy = rs.randint(1, w * K - 1), rs.randint(K, 8 * K)
             if vv[gy, gx, 3] > 0:
                 vv[gy, gx, :3] = vv[gy, gx, :3] * 0.3 + SANGRE[g % 4] * 0.7
+    # desgaste: con cada prueba que sobreviven el uniforme se ve peor (más mugre, más manchas, rasgaduras)
+    if nivel > 0:
+        for j, (k, caras) in enumerate(cajas.items()):
+            for cara, (x, y, w, h) in caras.items():
+                if cara in ('arriba', 'abajo'):
+                    continue
+                mugre(L.cara(x, y, w, h), nivel, 5000 + variante * 31 + j * 7 + len(cara))
+        # sudor amarillento bajo los brazos
+        for cara in ('der', 'izq'):
+            x, y, w, h = cuerpo[cara]
+            vv = L.cara(x, y, w, h)
+            vv[K:4 * K, 1:-1, :3] = vv[K:4 * K, 1:-1, :3] * (1 - 0.12 * nivel) + np.array([150, 130, 60], np.float32) * 0.12 * nivel
+        extra = rs.choice(len(lugares), size=min(len(lugares), nivel + 1), replace=False)
+        for j, n in enumerate(extra):
+            parte, cara, (cx, cy) = lugares[n]
+            x, y, w, h = cajas[parte][cara]
+            vv = L.cara(x, y, w, h)
+            mancha(vv, min(w * K - 2, cx * K * 1.1 + rs.uniform(-2, 2)), cy * K + rs.uniform(-2, 2), K * rs.uniform(0.7, 1.0 + 0.15 * nivel),
+                   4000 + 97 * variante + 13 * nivel + j, gotas=rs.randint(2, 6))
+    if nivel >= 2:
+        for j, (parte, cara, fila) in enumerate((('cuerpo', 'frente', 7), ('bd', 'frente', 5), ('pi', 'frente', 6), ('cuerpo', 'atras', 9))[:nivel + 1]):
+            x, y, w, h = cajas[parte][cara]
+            rasgadura(L.cara(x, y, w, h), rs.randint(0, 3), fila * K + rs.randint(-2, 3), w * K // 2 + rs.randint(0, 4), 6000 + j + variante)
     img = np.clip(L.img, 0, 255).astype(np.uint8)
     return Image.fromarray(img, 'RGBA')
 
 
 def main():
     os.makedirs(SALIDA, exist_ok=True)
+    n = 0
     for v in range(1, VARIANTES + 1):
-        pintar(v, False).save(os.path.join(SALIDA, f'uniforme_{v}.png'))
-        pintar(v, True).save(os.path.join(SALIDA, f'uniforme_delgado_{v}.png'))
-    print(f'{VARIANTES * 2} texturas -> {os.path.normpath(SALIDA)}')
+        for nivel in range(NIVELES):
+            fin = '' if nivel == 0 else f'_{nivel}'
+            pintar(v, False, nivel).save(os.path.join(SALIDA, f'uniforme_{v}{fin}.png'))
+            pintar(v, True, nivel).save(os.path.join(SALIDA, f'uniforme_delgado_{v}{fin}.png'))
+            n += 2
+    print(f'{n} texturas -> {os.path.normpath(SALIDA)}')
 
 
 if __name__ == '__main__':

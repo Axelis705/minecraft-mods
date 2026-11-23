@@ -9,18 +9,22 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * (Cliente) Cómo se ve el uniforme de las piezas: textura tipo skin (sin cabeza: cada quien conserva su cara), una de seis variantes de
- * manchas según quién lo lleva, y su número escrito en la tela del pecho y de la espalda.
+ * manchas según quién lo lleva, más gastado con cada prueba que sobrevive (4 niveles), y su número en la tela del pecho y de la espalda.
  */
 public final class UniformeCliente {
-    private static final int VARIANTES = 6;
-    private static final ResourceLocation[] ANCHO = new ResourceLocation[VARIANTES], DELGADO = new ResourceLocation[VARIANTES];
+    private static final int VARIANTES = 6, NIVELES = 4;
+    /** [variante][desgaste]: 0 al despertar; sube cada dos pruebas hasta 3. */
+    private static final ResourceLocation[][] ANCHO = new ResourceLocation[VARIANTES][NIVELES], DELGADO = new ResourceLocation[VARIANTES][NIVELES];
     /** Tinta del número (plumón negro un poco corrido). */
     private static final int TINTA = 0xFF26211C;
 
     static {
         for (int i = 0; i < VARIANTES; i++) {
-            ANCHO[i] = Ids.rl(Coleccionista.MODID, "textures/prenda/uniforme_" + (i + 1) + ".png");
-            DELGADO[i] = Ids.rl(Coleccionista.MODID, "textures/prenda/uniforme_delgado_" + (i + 1) + ".png");
+            for (int n = 0; n < NIVELES; n++) {
+                String fin = n == 0 ? "" : "_" + n;
+                ANCHO[i][n] = Ids.rl(Coleccionista.MODID, "textures/prenda/uniforme_" + (i + 1) + fin + ".png");
+                DELGADO[i][n] = Ids.rl(Coleccionista.MODID, "textures/prenda/uniforme_delgado_" + (i + 1) + fin + ".png");
+            }
         }
     }
 
@@ -28,10 +32,11 @@ public final class UniformeCliente {
     }
 
     public static void registrar() {
-        Prenda p = Prenda.piel(ANCHO[0]).delgada(DELGADO[0]).sin(Prenda.Parte.CABEZA)
+        Prenda p = Prenda.piel(ANCHO[0][0]).delgada(DELGADO[0][0]).sin(Prenda.Parte.CABEZA)
                 .textura(c -> {
                     int v = Math.floorMod(c.semilla(), VARIANTES);
-                    return c.delgado() ? DELGADO[v] : ANCHO[v];
+                    int n = Math.min(NIVELES - 1, (c.datos().getInt("pruebas") + 1) / 2);
+                    return c.delgado() ? DELGADO[v][n] : ANCHO[v][n];
                 })
                 .decorar((c, l) -> {
                     String n = c.datos().getString("numero");

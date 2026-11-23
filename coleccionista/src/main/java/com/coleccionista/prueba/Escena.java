@@ -35,6 +35,7 @@ public final class Escena {
         t.putString("lema", claveLema);
         t.putInt("n", ++contador);
         PlayerStore.Sync.toAll(s, KEY_PRESENTACION, t);
+        com.coleccionista.evento.Uniforme.desgastar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_PRESENTACION {}", numero);
     }
 }

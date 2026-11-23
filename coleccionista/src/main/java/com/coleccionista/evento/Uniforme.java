@@ -24,9 +24,27 @@ public final class Uniforme {
         if (!activo || s == null || p == null) {
             return;
         }
+        CompoundTag antes = Vestuario.datos(s, p.id, ID);
         CompoundTag d = new CompoundTag();
         d.putString("numero", p.etiqueta());
-        if (!Vestuario.datos(s, p.id, ID).equals(d)) {
+        // cuántas pruebas lleva (el uniforme se ve más gastado y manchado con cada una)
+        d.putInt("pruebas", antes.getInt("pruebas"));
+        if (!antes.equals(d)) {
+            Vestuario.poner(s, p.id, ID, d);
+        }
+    }
+
+    /** Empieza otra prueba: el uniforme de cada pieza viva se gasta un poco más (más mugre, manchas y al final rasgaduras). */
+    public static void desgastar(MinecraftServer s) {
+        if (!activo || s == null) {
+            return;
+        }
+        for (Pieza p : Evento.get(s).vivos()) {
+            if (!Vestuario.tiene(s, p.id, ID)) {
+                continue;
+            }
+            CompoundTag d = Vestuario.datos(s, p.id, ID);
+            d.putInt("pruebas", d.getInt("pruebas") + 1);
             Vestuario.poner(s, p.id, ID, d);
         }
     }
