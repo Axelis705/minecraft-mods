@@ -17,7 +17,7 @@ public class CorePrueba {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public CorePrueba(FMLJavaModLoadingContext context) {
-        LOGGER.info("core_prueba usa {}", AxelisCore.version());
+        AxelisCore.use(MODID);
     }
 
     @Mod.EventBusSubscriber(modid = MODID)

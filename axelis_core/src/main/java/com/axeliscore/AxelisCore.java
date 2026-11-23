@@ -43,6 +43,15 @@ public class AxelisCore {
     private void commonSetup(final FMLCommonSetupEvent event) {
     }
 
+    /**
+     * Cada mod que usa el Core lo llama en su constructor ({@code AxelisCore.use(MODID)}): así el Core sabe quién lo usa (para el
+     * comando /axeliscore, la galería y los avisos de errores).
+     */
+    public static void use(String modid) {
+        CoreUsers.add(modid);
+        LOGGER.info("{} usa {}", modid, version());
+    }
+
     /** Texto con la versión, para que los mods lo muestren o lo comprueben. */
     public static String version() {
         return "Axelis Core " + VERSION + " (API " + API + ")";

@@ -52,6 +52,13 @@ jobs:
           pip install pillow -q
           python3 tools/check_resources.py axelis_core
           python3 tools/check_textures.py axelis_core
+      - name: Pruebas del motor de animación (sin Minecraft)
+        run: |
+          mkdir -p out-anim
+          G=$(find ~/.m2 /usr/share/java -name 'gson-*.jar' 2>/dev/null | head -1)
+          [ -z "$G" ] && { curl -sSfL -o gson.jar https://repo1.maven.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar; G=gson.jar; }
+          javac -encoding UTF-8 -cp "$G" -d out-anim axelis_core/src/main/java/com/axeliscore/anim/*.java axelis_core/tests/*.java
+          java -cp "out-anim:$G" AnimTest
       - uses: actions/setup-java@v4
         continue-on-error: true
         with:
