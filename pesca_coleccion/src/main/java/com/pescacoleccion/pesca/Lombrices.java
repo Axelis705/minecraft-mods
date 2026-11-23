@@ -35,7 +35,7 @@ public final class Lombrices {
             return;
         }
         float chance = level.isRainingAt(pos.above()) ? CON_LLUVIA : SIN_LLUVIA;
-        if (level.random.nextFloat() < chance) {
+        if (level.getRandom().nextFloat() < chance) {
             Block.popResource(level, pos, new ItemStack(ModRegistry.CEBOS.get(Cebo.LOMBRIZ).get()));
             level.playSound(null, pos, SoundEvents.SLIME_BLOCK_HIT, SoundSource.BLOCKS, 0.5F, 1.7F);
         }

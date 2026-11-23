@@ -97,10 +97,9 @@ public final class ModClient {
             t.photo("pelea_corcho", 2500, () -> t.check(net.minecraft.client.Minecraft.getInstance().player.getOffhandItem().getCount() == 4,
                     "el pez se comió una carnada al picar"));
             t.waitFor("termina la pelea del corcho", 90000, () -> !(com.axeliscore.plat.client.Screens.current() instanceof PeleaScreen));
-            t.add("premio del corcho", 2500, () -> {
-                t.check(tienePez(-1), "el pez del corcho llegó al inventario");
-                t.check(!com.pescacoleccion.pesca.Anzuelo.lanzada(net.minecraft.client.Minecraft.getInstance().player), "la caña vuelve a tener su hilo");
-            });
+            t.waitFor("el pez del corcho llegó al inventario", 10000, () -> tienePez(-1));
+            t.add("caña sin lanzar", 300, () -> t.check(!com.pescacoleccion.pesca.Anzuelo.lanzada(net.minecraft.client.Minecraft.getInstance().player),
+                    "la caña vuelve a tener su hilo"));
             // lombrices: cavar pasto bajo la lluvia (en supervivencia, con el evento de romper bloques de verdad)
             t.add("lluvia", 2500, () -> t.cmd("weather rain"));
             t.add("cavar", 600, () -> {
