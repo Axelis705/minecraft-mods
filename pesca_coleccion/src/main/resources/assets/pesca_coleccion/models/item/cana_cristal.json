@@ -2,5 +2,13 @@
   "parent": "minecraft:item/handheld_rod",
   "textures": {
     "layer0": "pesca_coleccion:item/cana_cristal"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "pesca_coleccion:lanzada": 1
+      },
+      "model": "pesca_coleccion:item/cana_cristal_lanzada"
+    }
+  ]
 }

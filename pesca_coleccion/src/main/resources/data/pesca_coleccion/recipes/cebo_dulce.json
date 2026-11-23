@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "pesca_coleccion:lombriz"
+    },
+    [
+      {
+        "item": "minecraft:honey_bottle"
+      },
+      {
+        "item": "minecraft:sweet_berries"
+      }
+    ],
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "item": "pesca_coleccion:cebo_dulce",
+    "count": 2
+  }
+}

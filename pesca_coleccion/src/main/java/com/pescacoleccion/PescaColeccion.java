@@ -35,6 +35,16 @@ public class PescaColeccion {
         com.pescacoleccion.registry.ModRegistry.register(bus);
         com.axeliscore.data.PlayerStore.syncOnLogin(MODID);
         com.pescacoleccion.pesca.Libro.init();
+        com.pescacoleccion.pesca.Lombrices.init();
+        // la caña se dibuja sin el hilo que cuelga mientras su corcho está afuera (como la de Minecraft)
+        Net.onClient(() -> com.axeliscore.item.client.ItemModelProps.bool(MODID, "lanzada", (stack, quien) -> {
+            if (!(quien instanceof net.minecraft.world.entity.player.Player p) || !(stack.getItem() instanceof com.pescacoleccion.pesca.CanaItem)) {
+                return false;
+            }
+            boolean main = p.getMainHandItem() == stack;
+            boolean off = p.getOffhandItem() == stack && !(p.getMainHandItem().getItem() instanceof com.pescacoleccion.pesca.CanaItem);
+            return (main || off) && com.pescacoleccion.pesca.Anzuelo.lanzada(p);
+        }));
         AxelisCore.commands(d -> d.register(Commands.literal(MODID).executes(c -> {
             c.getSource().sendSuccess(() -> Component.translatable(MODID + ".hola", AxelisCore.version()), false);
             LOGGER.info("PRUEBA_PESCA_COLECCION_OK {}", AxelisCore.version());

@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "pesca_coleccion:lanzada",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "pesca_coleccion:item/cana_bambu_lanzada"
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "pesca_coleccion:item/cana_bambu"
+    }
+  }
+}

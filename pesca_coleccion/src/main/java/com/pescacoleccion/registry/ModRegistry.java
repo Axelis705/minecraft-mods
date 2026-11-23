@@ -37,6 +37,10 @@ public final class ModRegistry {
     public static final net.minecraftforge.registries.RegistryObject<Item> LIBRO = ITEMS.register("libro_pesca",
             () -> new com.pescacoleccion.pesca.LibroItem(com.axeliscore.plat.Reg.item(PescaColeccion.MODID, "libro_pesca").stacksTo(1)));
 
+    /** Las carnadas. */
+    public static final java.util.Map<com.pescacoleccion.pesca.Cebo, net.minecraftforge.registries.RegistryObject<Item>> CEBOS = new java.util.EnumMap<>(
+            com.pescacoleccion.pesca.Cebo.class);
+
     /** Un objeto por cada pez de la colección (por id de especie). */
     public static final java.util.Map<String, net.minecraftforge.registries.RegistryObject<Item>> PECES = new java.util.LinkedHashMap<>();
 
@@ -44,6 +48,9 @@ public final class ModRegistry {
         for (com.pescacoleccion.pesca.Especie e : com.pescacoleccion.pesca.Especies.all()) {
             PECES.put(e.id(), ITEMS.register(e.itemId(), () -> new com.pescacoleccion.pesca.PezItem(
                     com.axeliscore.plat.Reg.item(PescaColeccion.MODID, e.itemId()).stacksTo(16), e.id())));
+        }
+        for (com.pescacoleccion.pesca.Cebo c : com.pescacoleccion.pesca.Cebo.values()) {
+            CEBOS.put(c, ITEMS.register(c.id, () -> new com.pescacoleccion.pesca.CeboItem(com.axeliscore.plat.Reg.item(PescaColeccion.MODID, c.id), c)));
         }
         for (com.pescacoleccion.pesca.Cana c : com.pescacoleccion.pesca.Cana.values()) {
             CANAS.put(c, ITEMS.register(c.id, () -> new com.pescacoleccion.pesca.CanaItem(
@@ -60,6 +67,9 @@ public final class ModRegistry {
                     .displayItems((params, out) -> {
                         out.accept(LIBRO.get());
                         for (var c : CANAS.values()) {
+                            out.accept(c.get());
+                        }
+                        for (var c : CEBOS.values()) {
                             out.accept(c.get());
                         }
                         for (var f : PECES.values()) {

@@ -4,7 +4,6 @@ import com.axeliscore.data.client.ClientData;
 import com.axeliscore.plat.Ids;
 import com.axeliscore.plat.Nbt;
 import com.axeliscore.plat.client.G;
-import com.axeliscore.ui.Button;
 import com.axeliscore.ui.CardGrid;
 import com.axeliscore.ui.InfoCard;
 import com.axeliscore.ui.ListView;
@@ -16,6 +15,8 @@ import com.axeliscore.ui.UiScreen;
 import com.axeliscore.ui.client.Cards;
 import com.pescacoleccion.PescaColeccion;
 import com.pescacoleccion.pesca.Cana;
+import com.pescacoleccion.pesca.Cebo;
+import com.pescacoleccion.pesca.CeboItem;
 import com.pescacoleccion.pesca.Coleccion;
 import com.pescacoleccion.pesca.Especie;
 import com.pescacoleccion.pesca.Especies;
@@ -60,6 +61,16 @@ public class LibroScreen extends UiScreen {
                 int used = cols * (cg.cellW + cg.gap) - cg.gap;
                 int ox = cg.x + (cg.w - 6 - used) / 2;
                 return new int[] {ox + (i % cols) * (cg.cellW + cg.gap) + cg.cellW / 2, cg.y + 4 + (i / cols) * (cg.cellH + cg.gap) + cg.cellH / 2};
+            }
+        }
+        return null;
+    }
+
+    /** Para las pruebas: el centro de la fila {@code i} de la lista de la pestaña abierta. */
+    public int[] rowCenter(int i) {
+        for (var w : widgets) {
+            if (w instanceof ListView<?> lv) {
+                return new int[] {lv.x + lv.w / 2, lv.y + i * lv.rowH + lv.rowH / 2};
             }
         }
         return null;
@@ -117,32 +128,29 @@ public class LibroScreen extends UiScreen {
             }, LibroScreen::card, e -> detail = e));
             grid.items.addAll(Especies.all());
         } else if (tab == 1) {
+            // equipo: cañas (clic en una ganada para reclamarla), carnadas y mejoras para siempre
             ListView<Object> l = add(new ListView<>(x, y, pw - 24, ph - 66, 22, (g, it, rx, ry, rw, rh, sel, hov, th) -> drawUpgradeRow(g, it, rx,
-                    ry, rw, rh, th), null));
+                    ry, rw, rh, hov, th), it -> {
+                        if (it instanceof Cana c && puedeReclamar(c)) {
+                            CompoundTag t = new CompoundTag();
+                            t.putInt("cana", c.ordinal());
+                            ClientData.send(MOD + ":reclamar_cana", t);
+                        }
+                    }));
             l.cards = LibroScreen::upgradeCard;
+            l.items.add(Component.translatable(MOD + ".libro.sec_canas"));
             for (Cana c : Cana.values()) {
                 if (c.ordinal() > 0) {
                     l.items.add(c);
                 }
             }
+            l.items.add(Component.translatable(MOD + ".libro.sec_cebos"));
+            for (Cebo c : Cebo.values()) {
+                l.items.add(c);
+            }
+            l.items.add(Component.translatable(MOD + ".libro.sec_mejoras"));
             for (Mejoras.Mejora m : Mejoras.TODAS) {
                 l.items.add(m);
-            }
-            // botones para reclamar las cañas ya ganadas
-            int by = y;
-            for (Cana c : Cana.values()) {
-                if (c.ordinal() == 0) {
-                    continue;
-                }
-                if (puedeReclamar(c)) {
-                    Button b = add(new Button(px + pw - 12 - 70, by + 2, 62, 18, Component.translatable(MOD + ".libro.reclamar").getString(), () -> {
-                        CompoundTag t = new CompoundTag();
-                        t.putInt("cana", c.ordinal());
-                        ClientData.send(MOD + ":reclamar_cana", t);
-                    }));
-                    b.card(new InfoCard(Component.translatable(MOD + ".libro.reclamar")).text(Component.translatable(MOD + ".libro.reclamar_ayuda")));
-                }
-                by += 22;
             }
         } else {
             ListView<Especie> l = add(new ListView<>(x, y, pw - 24, ph - 66, 20, (g, e, rx, ry, rw, rh, sel, hov, th) -> {
@@ -200,17 +208,35 @@ public class LibroScreen extends UiScreen {
             ItemStack st = new ItemStack(ModRegistry.CANAS.get(c).get());
             InfoCard card = ((com.pescacoleccion.pesca.CanaItem) st.getItem()).card(st, false);
             card.parts.removeIf(p -> p.kind == InfoCard.Kind.HINT);
-            return card.text(Component.translatable(MOD + ".libro.cana_pide", Mejoras.CANA_ESPECIES[c.ordinal()]), 0xFF9AA3BC);
+            card.text(Component.translatable(MOD + ".libro.cana_pide", Mejoras.CANA_ESPECIES[c.ordinal()]), 0xFF9AA3BC);
+            if (puedeReclamar(c)) {
+                card.hint(Component.translatable(MOD + ".libro.reclamar_ayuda"));
+            }
+            return card;
         }
-        Mejoras.Mejora m = (Mejoras.Mejora) it;
+        if (it instanceof Cebo c) {
+            ItemStack st = new ItemStack(ModRegistry.CEBOS.get(c).get());
+            return ((CeboItem) st.getItem()).card(st, true);
+        }
+        if (!(it instanceof Mejoras.Mejora m)) {
+            return null;
+        }
         boolean on = Coleccion.estrellas(datos()) >= m.estrellas();
         return new InfoCard(Component.translatable(MOD + ".mejora." + m.id())).color(on ? 0xFFFFD24A : 0xFF8A90A0)
                 .text(Component.translatable(MOD + ".mejora." + m.id() + ".que"))
                 .pair(Component.translatable(MOD + ".libro.pide"), Component.literal(m.estrellas() + " ★"));
     }
 
-    private void drawUpgradeRow(G g, Object it, int x, int y, int w, int h, Theme th) {
+    private void drawUpgradeRow(G g, Object it, int x, int y, int w, int h, boolean hov, Theme th) {
         CompoundTag d = datos();
+        if (it instanceof Component head) {
+            // título de sección
+            String s = head.getString();
+            g.drawString(Ui.font(), s, x + 2, y + 9, 0xFFFFD98A, true);
+            int lx = x + 8 + Ui.font().width(s);
+            g.fill(lx, y + 13, x + w - 2, y + 14, Ui.alpha(0xFFFFD98A, 0.35F));
+            return;
+        }
         if (it instanceof Cana c) {
             ItemStack st = new ItemStack(ModRegistry.CANAS.get(c).get());
             g.renderItem(st, x, y + 3);
@@ -218,9 +244,27 @@ public class LibroScreen extends UiScreen {
             int need = Mejoras.CANA_ESPECIES[c.ordinal()];
             int have = Mejoras.especies(d);
             g.drawString(Ui.font(), st.getHoverName().getString(), x + 22, y + 3, c.rareza.light, false);
+            if (puedeReclamar(c)) {
+                // ganada y sin reclamar: un botón que late (clic en la fila)
+                String r = Component.translatable(MOD + ".libro.reclamar").getString();
+                int bw = Ui.font().width(r) + 12, bx = x + w - bw - 2;
+                float k = 0.5F + 0.5F * (float) Math.sin(time * 5);
+                Ui.round(g, bx, y + 3, bw, 15, Ui.mix(0xFF2E8B3A, 0xFF46C25A, hov ? 1F : k * 0.6F));
+                g.drawString(Ui.font(), r, bx + 6, y + 7, 0xFFFFFFFF, true);
+                g.drawString(Ui.font(), Component.translatable(MOD + ".libro.ganada").getString(), x + 22, y + 12, th.good, false);
+                return;
+            }
             String s = got ? "✔ " + Component.translatable(MOD + ".libro.reclamada").getString()
-                    : have >= need ? "" : have + "/" + need + " " + Component.translatable(MOD + ".libro.especies").getString();
+                    : have + "/" + need + " " + Component.translatable(MOD + ".libro.especies").getString();
             g.drawString(Ui.font(), s, x + 22, y + 12, got ? th.good : th.textDim, false);
+            return;
+        }
+        if (it instanceof Cebo c) {
+            ItemStack st = new ItemStack(ModRegistry.CEBOS.get(c).get());
+            g.renderItem(st, x, y + 3);
+            g.drawString(Ui.font(), st.getHoverName().getString(), x + 22, y + 3, c.rareza.light, false);
+            String q = Component.translatable(MOD + ".cebo." + c.id + ".que").getString();
+            g.drawString(Ui.font(), Ui.fit(q, w - 24), x + 22, y + 12, th.textDim, false);
             return;
         }
         Mejoras.Mejora m = (Mejoras.Mejora) it;
@@ -228,9 +272,10 @@ public class LibroScreen extends UiScreen {
         boolean on = stars >= m.estrellas();
         Cards.star(g, x + 4, y + 7, on ? 0xFFFFD24A : 0xFF3A3F4E, on ? 0xFFB8860B : 0xFF262A36, 1);
         g.drawString(Ui.font(), Component.translatable(MOD + ".mejora." + m.id()).getString(), x + 22, y + 3, on ? 0xFFFFE6A0 : th.textDim, false);
-        g.drawString(Ui.font(), Component.translatable(MOD + ".mejora." + m.id() + ".que").getString(), x + 22, y + 12, on ? th.text : 0xFF7A6A58,
-                false);
         String need = on ? "✔" : stars + "/" + m.estrellas() + "★";
+        String q = Component.translatable(MOD + ".mejora." + m.id() + ".que").getString();
+        g.drawString(Ui.font(), Ui.fit(q, w - 26 - Ui.font().width(need)), x + 22, y + 12, on ? th.text : 0xFF7A6A58,
+                false);
         g.drawString(Ui.font(), need, x + w - Ui.font().width(need), y + 7, on ? th.good : th.textDim, false);
     }
 

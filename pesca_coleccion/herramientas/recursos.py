@@ -107,8 +107,10 @@ CANAS = {
 }
 
 
-def cana(name, rod, rod_dark, handle, reel):
-    """Caña de 16x16 en diagonal (mango abajo a la izquierda, punta arriba a la derecha) con carrete e hilo que cuelga."""
+def cana(name, rod, rod_dark, handle, reel, lanzada=False):
+    """Caña de 16x16 en diagonal (mango abajo a la izquierda, punta arriba a la derecha) con carrete e hilo que cuelga.
+
+    lanzada: sin el hilo ni el corcho (se usa mientras el corcho está en el agua, como la caña de Minecraft)."""
     img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
     p = img.load()
     rod, rod_dark, handle, reel = hexc(rod), hexc(rod_dark), hexc(handle), hexc(reel)
@@ -127,10 +129,11 @@ def cana(name, rod, rod_dark, handle, reel):
         p[x, y] = reel
     p[5, 12] = shade(reel, 0.35)
     # hilo que cuelga de la punta
-    for y in range(3, 10):
-        p[14, y] = (225, 228, 232, 255)
-    p[14, 10] = hexc("#D23A2E")
-    p[14, 11] = hexc("#F2F0EA")
+    if not lanzada:
+        for y in range(3, 10):
+            p[14, y] = (225, 228, 232, 255)
+        p[14, 10] = hexc("#D23A2E")
+        p[14, 11] = hexc("#F2F0EA")
     # contorno
     out = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
     q = out.load()
@@ -145,16 +148,176 @@ def cana(name, rod, rod_dark, handle, reel):
                     break
     out.alpha_composite(img)
     os.makedirs(os.path.join(BASE, "textures", "item"), exist_ok=True)
-    out.save(os.path.join(BASE, "textures", "item", name + ".png"))
+    tex = name + ("_lanzada" if lanzada else "")
+    out.save(os.path.join(BASE, "textures", "item", tex + ".png"))
+    model = {"parent": "minecraft:item/handheld_rod", "textures": {"layer0": f"{MOD}:item/{tex}"}}
+    if not lanzada:
+        # 1.20.1 y 1.21.1: el modelo cambia con la propiedad del Core (ItemModelProps) mientras el corcho está afuera
+        model["overrides"] = [{"predicate": {f"{MOD}:lanzada": 1}, "model": f"{MOD}:item/{name}_lanzada"}]
+        # 1.21.4+: la misma condición en la definición del objeto
+        write_json(os.path.join(BASE, "items", name + ".json"), {"model": {
+            "type": "minecraft:condition", "property": f"{MOD}:lanzada",
+            "on_true": {"type": "minecraft:model", "model": f"{MOD}:item/{name}_lanzada"},
+            "on_false": {"type": "minecraft:model", "model": f"{MOD}:item/{name}"}}})
+    write_json(os.path.join(BASE, "models", "item", tex + ".json"), model)
+
+
+# ---------------------------------------------------------------- carnadas
+
+def contorno(img, color):
+    """Contorno de 1 pixel alrededor de lo dibujado (como los objetos de Minecraft)."""
+    p = img.load()
+    w, h = img.size
+    out = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    q = out.load()
+    for y in range(h):
+        for x in range(w):
+            if p[x, y][3]:
+                continue
+            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                xx, yy = x + dx, y + dy
+                if 0 <= xx < w and 0 <= yy < h and p[xx, yy][3] > 200:
+                    q[x, y] = color
+                    break
+    out.alpha_composite(img)
+    return out
+
+
+def disco(p, cx, cy, r, color, w=16, h=16):
+    for y in range(h):
+        for x in range(w):
+            if (x + 0.5 - cx) ** 2 + (y + 0.5 - cy) ** 2 <= r * r:
+                p[x, y] = color
+
+
+def guardar_objeto(img, name):
+    os.makedirs(os.path.join(BASE, "textures", "item"), exist_ok=True)
+    img.save(os.path.join(BASE, "textures", "item", name + ".png"))
     write_json(os.path.join(BASE, "models", "item", name + ".json"),
-               {"parent": "minecraft:item/handheld_rod", "textures": {"layer0": f"{MOD}:item/{name}"}})
+               {"parent": "minecraft:item/generated", "textures": {"layer0": f"{MOD}:item/{name}"}})
+
+
+def lombriz():
+    """Lombriz en forma de S (en diagonal) con anillos, el cinturón más claro cerca de la cabeza y brillo arriba."""
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    p = img.load()
+    body, dark, light, band = hexc("#DB7F80"), hexc("#B0525E"), hexc("#F8BDB4"), hexc("#F0A898")
+    a, b, amp, r0, r1 = (3.0, 12.8), (12.8, 3.2), 2.2, 1.0, 1.55
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    ln = math.hypot(dx, dy)
+    nx, ny = -dy / ln, dx / ln
+    pts = []
+    for i in range(90):
+        t = i / 89
+        off = amp * math.sin(t * math.pi * 2)
+        pts.append((a[0] + dx * t + nx * off, a[1] + dy * t + ny * off, t))
+    for x, y, t in pts:
+        r = r0 + (r1 - r0) * min(1, t * 4) if t < 0.25 else (r1 if t < 0.85 else r1 - (t - 0.85) * 3)
+        disco(p, x, y, r, body)
+    for x, y, t in pts:
+        if 0.72 < t < 0.82:
+            disco(p, x, y, r1 + 0.1, band)
+    for i in range(4, 86, 6):
+        x, y, t = pts[i]
+        if 0.72 < t < 0.82:
+            continue
+        xi, yi = int(x + 0.5 * nx), int(y + 0.5 * ny)
+        if p[xi, yi][3]:
+            p[xi, yi] = dark
+    for i in range(6, 84, 4):
+        x, y, t = pts[i]
+        xi, yi = int(x - 0.9 * nx), int(y - 0.9 * ny)
+        if 0 <= xi < 16 and 0 <= yi < 16 and p[xi, yi][3] and p[xi, yi] != dark:
+            p[xi, yi] = light
+    guardar_objeto(contorno(img, hexc("#4A1E28")), "lombriz")
+
+
+def cebo_dulce():
+    """Bolita de masa dulce con miel que escurre y brillo."""
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    p = img.load()
+    base, sombra, luz, miel = hexc("#E9A23B"), hexc("#B8661E"), hexc("#FFE08A"), hexc("#F7C243", 235)
+    disco(p, 8, 7.5, 4.6, sombra)
+    disco(p, 7.6, 7.0, 4.1, base)
+    disco(p, 6.6, 5.8, 1.6, luz)
+    p[6, 5] = (255, 250, 220, 255)
+    # semillitas
+    for x, y in ((9, 6), (10, 9), (7, 10), (5, 8)):
+        p[x, y] = hexc("#8A4A16")
+    # miel que escurre
+    for y in range(11, 15):
+        p[9, y] = miel
+    p[9, 15] = hexc("#F7C243", 200)
+    for y in range(11, 13):
+        p[6, y] = miel
+    p[10, 11] = miel
+    guardar_objeto(contorno(img, hexc("#5A2E0C")), "cebo_dulce")
+
+
+def cebo_brillante():
+    """Larva que brilla (como las bayas luminosas) con chispas alrededor."""
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    p = img.load()
+    body, dark, light = hexc("#7FF5E0"), hexc("#2FAFB0"), hexc("#E6FFFA")
+    pts = []
+    for i in range(40):
+        a = math.pi * (0.15 + 1.25 * i / 39)
+        pts.append((8 + math.cos(a) * 3.6, 8.6 + math.sin(a) * 3.2, i / 39))
+    for x, y, t in pts:
+        disco(p, x, y, 1.9 - 0.6 * t, dark)
+    for x, y, t in pts:
+        disco(p, x - 0.3, y - 0.3, 1.45 - 0.5 * t, body)
+    for x, y, t in pts[4:30:5]:
+        p[int(x), int(y - 1)] = light
+    hx, hy, _ = pts[0]
+    p[int(hx), int(hy)] = hexc("#1C5A66")
+    out = contorno(img, hexc("#0E3A44"))
+    q = out.load()
+    for x, y, c in ((3, 2, "#FFFBD0"), (13, 3, "#FFFFFF"), (2, 12, "#BFFFF4"), (13, 13, "#FFFBD0"), (12, 1, "#BFFFF4")):
+        q[x, y] = hexc(c)
+    for x, y in ((3, 1), (3, 3), (2, 2), (4, 2)):
+        q[x, y] = hexc("#FFF6A8", 170)
+    guardar_objeto(out, "cebo_brillante")
+
+
+def cebo_luna():
+    """Señuelo de plata en forma de luna creciente con su argolla y una estrella."""
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    p = img.load()
+    plata, sombra, luz = hexc("#D8E6FF"), hexc("#7E95C8"), hexc("#FFFFFF")
+    for y in range(16):
+        for x in range(16):
+            fx, fy = x + 0.5, y + 0.5
+            dentro = (fx - 7.5) ** 2 + (fy - 8.5) ** 2 <= 5.6 ** 2
+            hueco = (fx - 10.2) ** 2 + (fy - 6.6) ** 2 <= 4.6 ** 2
+            if dentro and not hueco:
+                d = math.hypot(fx - 7.5, fy - 8.5)
+                p[x, y] = sombra if d > 4.6 or fy > 12 else plata
+    for x, y in ((4, 6), (3, 8), (4, 9), (5, 11)):
+        if p[x, y][3]:
+            p[x, y] = luz
+    # argolla arriba
+    for x, y in ((6, 1), (7, 1), (5, 2), (8, 2), (6, 3), (7, 3)):
+        p[x, y] = hexc("#B8C4D8")
+    out = contorno(img, hexc("#27335A"))
+    q = out.load()
+    # estrella
+    for x, y in ((12, 11), (12, 10), (12, 12), (11, 11), (13, 11)):
+        q[x, y] = hexc("#FFF3A0")
+    q[12, 11] = hexc("#FFFFFF")
+    guardar_objeto(out, "cebo_luna")
 
 
 def main():
     corcho()
     for n, cols in CANAS.items():
         cana(n, *cols)
-    print("recursos listos:", ", ".join(["anzuelo"] + list(CANAS)))
+        cana(n, *cols, lanzada=True)
+    lombriz()
+    cebo_dulce()
+    cebo_brillante()
+    cebo_luna()
+    print("recursos listos:", ", ".join(["anzuelo"] + list(CANAS) + ["lombriz", "cebo_dulce", "cebo_brillante", "cebo_luna"]))
 
 
 if __name__ == "__main__":

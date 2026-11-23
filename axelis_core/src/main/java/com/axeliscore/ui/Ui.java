@@ -34,6 +34,17 @@ public final class Ui {
     }
 
     /** Rectángulo con las esquinas recortadas (se ve redondeado). */
+    /** Recorta un texto para que quepa en {@code w} píxeles (con "…" al final si se cortó). */
+    public static String fit(String s, int w) {
+        if (font().width(s) <= w) {
+            return s;
+        }
+        while (s.length() > 1 && font().width(s + "…") > w) {
+            s = s.substring(0, s.length() - 1);
+        }
+        return s.trim() + "…";
+    }
+
     public static void round(G g, int x, int y, int w, int h, int c) {
         g.fill(x + 1, y, x + w - 1, y + h, c);
         g.fill(x, y + 1, x + 1, y + h - 1, c);

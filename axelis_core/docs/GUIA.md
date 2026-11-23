@@ -27,7 +27,16 @@ En el constructor del mod:
 ```java
 AxelisCore.use(MODID);                 // el Core sabe quién lo usa (/axeliscore lo muestra)
 AxelisCore.commands(d -> d.register(...));   // comandos, registrados bien en todas las versiones
+AxelisCore.onLogin(jugador -> ...);          // algo al entrar un jugador (servidor)
+AxelisCore.onBreak((jugador, mundo, pos, bloque) -> ...);  // un jugador rompe un bloque (solo si de verdad se rompe)
 ```
+
+Versión actual: **1.1.0 (API 2)**. Un mod que necesita algo nuevo lo pide en su `mods.toml` (`versionRange="[1.1.0,)"`).
+
+| API | Qué se agregó |
+|---|---|
+| 1 | Personajes, animación, interfaz, efectos, red, datos |
+| 2 | Cuadros de información (`InfoCard`) y temas con marco, `CoreItem`, `ItemTag`, `Plat.give`, `onLogin`, `onBreak`, condiciones de modelos de objetos (`ItemModelProps`), `Ui.fit`, `ClientTest.waitFor` |
 
 ## Personajes
 
@@ -78,6 +87,38 @@ event.registerEntityRenderer(PESCADOR.get(), PersonaRenderer.with(Ids.rl("pesca"
 - Pantallas que abre el servidor: en el cliente `ScreenRegistry.register("pesca:libro", LibroScreen::new)`; en el servidor
   `CoreScreens.open(jugador, "pesca:libro")`.
 - `Screens.open/close/current` (en `plat/client`): abrir y cerrar pantallas igual en todas las versiones.
+- Más piezas: `CardGrid` (cuadrícula de tarjetas, con `CardGrid.slot` para dibujar la casilla), `IconButton`, `Toggle`,
+  `Slider`. `Ui.fit(texto, ancho)` recorta con "…" lo que no cabe.
+- Marcos con textura por tema: `Theme.MADERA`, `Theme.PIEDRA`, `Theme.PERGAMINO`, `Theme.MAR`, `Theme.NOCHE` o
+  `tema.withFrame(...)`. Rarezas comunes a todos los mods: `Rareza.COMUN` … `Rareza.LEGENDARIO` (color, nombre y brillo).
+
+### Cuadros de información (`InfoCard`)
+
+Un cuadro con título, rareza, ícono o dibujo, subtítulo, texto, barras, pares "dato: valor", estrellas, separadores y pistas:
+
+```java
+new InfoCard(stack.getHoverName()).rareza(Rareza.RARO).icon(stack).subtitle(...)
+        .bar(texto, 0.7F, color, "70%").pair(texto, valor).stars(texto, 2, 3).divider().text(...).hint(...);
+```
+
+- **Objetos**: si el objeto extiende `CoreItem` y devuelve su cuadro en `card(stack, detalle)`, sale al pasar el ratón en
+  cualquier pantalla (con Shift, el detalle). `tooltip(stack, add)` agrega líneas al texto normal y `onUse` maneja el clic
+  derecho, igual en todas las versiones.
+- **Al mirar**: los personajes del Core (y lo que implemente `InfoSource`) muestran su tarjeta al mirarlos un momento.
+- **En pantallas del Core**: cada widget puede tener su cuadro (`Button.card(...)`, `ListView.cards`, `CardGrid`).
+- Para otros objetos: `Tooltips.register(stack -> cuadro)`.
+
+### Modelos de objetos que cambian (`item/client/ItemModelProps`)
+
+Una condición propia (por ejemplo "la caña está lanzada") que funciona en las tres versiones:
+
+```java
+Net.onClient(() -> ItemModelProps.bool(MODID, "lanzada", (stack, quien) -> ...));   // en el constructor del mod
+```
+
+En 1.20.1 y 1.21.1 se usa en `"overrides"` del modelo (`"predicate": {"mod:lanzada": 1}`); en 1.21.4+ en
+`assets/<mod>/items/<objeto>.json` con `"type": "minecraft:condition", "property": "mod:lanzada"`. Los dos archivos pueden
+vivir juntos en el mod (cada versión lee el suyo).
 
 ## Efectos (`fx/Fx`)
 
@@ -103,6 +144,8 @@ Desde el servidor: `Fx.shake` / `Fx.shakeNear` (temblor de cámara), `Fx.flash` 
 - `Ids` (identificadores), `Nbt` (leer datos sin los Optional de 1.21.5+), `Ser` (objetos y textos en mensajes), `Plat`
   (caminar con `walkTo`, empujar, dañar, mensajes, objetos por id…).
 - Texto: `net/Txt` empaqueta textos traducibles para mandarlos al cliente.
+- `Plat.give(jugador, objeto)` (al inventario o al suelo si no cabe), `Plat.server(entidad)`, `Plat.mainItems(inventario)` y
+  `Plat.mainAndOffhand(inventario)` (el inventario cambió en 1.21.5). `ItemTag` lee y edita los datos propios de un objeto.
 
 ## Comandos de prueba
 
@@ -114,11 +157,15 @@ Desde el servidor: `Fx.shake` / `Fx.shakeNear` (temblor de cámara), `Fx.flash` 
 - `core.yml`: marcas de versión, recursos, texturas, pruebas del motor, compilación, servidor de desarrollo con comandos,
   Jar-in-Jar y servidor Forge real, en las tres versiones.
 - `cliente-core.yml`: abre el juego de verdad sin pantalla, corre el escenario (`test/ClientTest`, `test/CoreScenario`) y saca
-  fotos. Termina con `AXCORE_AUTOTEST_FIN fotos=N fallos=M`.
+  fotos. Termina con `AXCORE_AUTOTEST_FIN fotos=N fallos=M`. Pasos: `t.add` (esperar un tiempo), `t.waitFor` (esperar hasta que
+  algo pase, con tiempo máximo), `t.photo`/`t.shot` (fotos), `t.check` (comprobar), `t.cmd` (comandos de consola) y
+  `UiScreen.fakeMouse` (poner el ratón donde se quiera para fotografiar cuadros).
 - `mods-core.yml`: lo mismo para cada mod de `tools/mods_core.txt`.
 
 ## Cosas a recordar de cada versión
 
+- 26.x: eventos con `@SubscribeEvent(priority = Priority.LOWEST)` de `eventbus.api.listener`; romper bloques se decide con
+  el resultado del evento (`DENY` = no se rompe). Los modelos de objetos usan `items/*.json` (desde 1.21.4).
 - 26.x: `ResourceLocation` → `Identifier`, `.moveTo(` → `.snapTo(` (por eso caminar va con `Plat.walkTo`), la pantalla vive en
   `Minecraft.gui` (26.2+), el golpe se lee con `getSwingAnimation` (26.3), no hay chunks de aparición (las pruebas del
   servidor usan `forceload`), la barra de jefe pide un UUID.

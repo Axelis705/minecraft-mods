@@ -160,32 +160,37 @@ public class PeleaScreen extends CoreScreen {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(s.value(), pitch, vol));
     }
 
+    /** Texto del HUD de la pelea en el idioma del jugador. */
+    private static String tr(String k) {
+        return Component.translatable("pesca_coleccion.pelea." + k).getString();
+    }
+
     private void feedback() {
         int hitX = px + 74;
         long t = System.currentTimeMillis();
         if (sim.perfects > lastPerfects) {
-            pops.add(new Pop("¡Perfecto!", 0xFFFFE680, t, hitX));
+            pops.add(new Pop(tr("perfecto"), 0xFFFFE680, t, hitX));
             sound(SoundEvents.NOTE_BLOCK_BELL, 1.4F + Math.min(0.6F, sim.combo * 0.03F), 0.5F);
         } else if (sim.goods > lastGoods) {
-            pops.add(new Pop("Bien", 0xFF9BE8FF, t, hitX));
+            pops.add(new Pop(tr("bien"), 0xFF9BE8FF, t, hitX));
             sound(SoundEvents.NOTE_BLOCK_PLING, 1.1F + Math.min(0.5F, sim.combo * 0.03F), 0.4F);
         }
         if (sim.misses > lastMisses) {
-            pops.add(new Pop("Fallo", 0xFFFF7A6A, t, hitX));
+            pops.add(new Pop(tr("fallo"), 0xFFFF7A6A, t, hitX));
             sound(SoundEvents.NOTE_BLOCK_BASS, 0.6F, 0.6F);
             shake = 1;
         }
         if (sim.traps > lastTraps) {
-            pops.add(new Pop("¡Trampa!", 0xFFFF4A4A, t, hitX));
+            pops.add(new Pop(tr("trampa"), 0xFFFF4A4A, t, hitX));
             sound(SoundEvents.NOTE_BLOCK_DIDGERIDOO, 0.6F, 0.7F);
             shake = 1.4F;
         }
         if (sim.jumpsOk > lastJumpsOk) {
-            pops.add(new Pop("¡Salto!", 0xFF7CF29A, t, px + PW / 2));
+            pops.add(new Pop(tr("salto"), 0xFF7CF29A, t, px + PW / 2));
             sound(SoundEvents.NOTE_BLOCK_CHIME, 1.2F, 0.7F);
         }
         if (sim.jumpsFailed > lastJumpsFailed) {
-            pops.add(new Pop("Se soltó un poco", 0xFFFF9A6A, t, px + PW / 2));
+            pops.add(new Pop(tr("solto"), 0xFFFF9A6A, t, px + PW / 2));
             shake = 1.2F;
         }
         if (sim.phase != lastPhase) {
@@ -298,10 +303,10 @@ public class PeleaScreen extends CoreScreen {
         g.drawString(Ui.font(), rz, px + PW - 10 - Ui.font().width(rz), py + 7, rareza.light, false);
         // hilo y energía
         int bw = 120;
-        g.drawString(Ui.font(), "Hilo", px + 10, py + 20, th.textDim, false);
+        g.drawString(Ui.font(), tr("hilo"), px + 10, py + 20, th.textDim, false);
         Ui.bar(g, px + 36, py + 21, bw - 26, 6, sim.hp / sim.p.lineHp, sim.hp / sim.p.lineHp < 0.3F ? 0xFFFF7A6A : 0xFFE8F4FF,
                 sim.hp / sim.p.lineHp < 0.3F ? 0xFFB02A2A : 0xFF6FA8C8, sim.now / 1000F);
-        g.drawString(Ui.font(), "Pez", px + PW - 10 - bw, py + 20, th.textDim, false);
+        g.drawString(Ui.font(), tr("pez"), px + PW - 10 - bw, py + 20, th.textDim, false);
         Ui.bar(g, px + PW - 10 - bw + 22, py + 21, bw - 22, 6, sim.stamina / sim.p.stamina, 0xFFFFB860, 0xFFD0602A, sim.now / 1000F);
         drawNeedle(g, th);
         drawLane(g, th);
@@ -429,7 +434,7 @@ public class PeleaScreen extends CoreScreen {
             arrow(g, bx + 3, ky + 3, order[i], held[order[i]] ? 0xFF04121A : Ui.alpha(KEY_COLOR[order[i]], 0.8F), 1);
         }
         if (sim.now < 6000 || sim.combo < 2) {
-            g.drawString(Ui.font(), "A/D: aguja verde · ← ↑ ↓ →: flechas", px + 12, py + PH - 15, 0xFF8FB8C4, false);
+            g.drawString(Ui.font(), tr("ayuda"), px + 12, py + PH - 15, 0xFF8FB8C4, false);
         }
     }
 
@@ -480,7 +485,7 @@ public class PeleaScreen extends CoreScreen {
         ring(g, cx, cy, target + 1, 0xFFFFE680);
         ring(g, cx, cy, r, k <= 1 ? 0xFF7CF29A : 0xFFFF7A6A);
         ring(g, cx, cy, r + 1, k <= 1 ? 0xFF7CF29A : 0xFFFF7A6A);
-        String s = "¡Salta! ESPACIO";
+        String s = tr("salta");
         g.drawString(Ui.font(), s, cx - Ui.font().width(s) / 2 + 60, cy - 4, 0xFFFFFFFF, true);
     }
 
@@ -497,7 +502,7 @@ public class PeleaScreen extends CoreScreen {
     private void drawFinal(G g) {
         int x0 = px + 12, y = py + 56;
         g.fill(x0, y, px + PW - 12, y + 28, 0xD004121A);
-        String s = "¡Sácalo! alterna ↑ ↓";
+        String s = tr("sacalo");
         g.drawString(Ui.font(), s, px + PW / 2 - Ui.font().width(s) / 2, y + 3, 0xFFFFE680, true);
         Ui.bar(g, x0 + 20, y + 16, PW - 64, 7, sim.reel, 0xFF7CF29A, 0xFF2E8B3A, sim.now / 1000F);
         boolean upNext = sim.lastMashKey != 0;
@@ -510,15 +515,15 @@ public class PeleaScreen extends CoreScreen {
         int c;
         switch (sim.result) {
             case PeleaSim.PESCADO -> {
-                s = sim.flawless() ? "¡Perfecto! Lo sacaste sin errores" : "¡Lo sacaste!";
+                s = sim.flawless() ? tr("sin_errores") : tr("sacaste");
                 c = 0xFF7CF29A;
             }
             case PeleaSim.HILO_ROTO -> {
-                s = "Se rompió el hilo";
+                s = tr("hilo_roto");
                 c = 0xFFFF7A6A;
             }
             default -> {
-                s = "Se escapó";
+                s = tr("escapo");
                 c = 0xFFFFB860;
             }
         }

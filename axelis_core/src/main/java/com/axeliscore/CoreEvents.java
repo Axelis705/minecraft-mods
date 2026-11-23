@@ -16,6 +16,31 @@ public final class CoreEvents {
     /** Lo que los mods quieren hacer cuando entra un jugador ({@link com.axeliscore.AxelisCore#onLogin}). */
     static final java.util.List<java.util.function.Consumer<ServerPlayer>> LOGIN = new java.util.concurrent.CopyOnWriteArrayList<>();
 
+    /** Lo que los mods quieren hacer cuando un jugador rompe un bloque ({@link com.axeliscore.AxelisCore#onBreak}). */
+    static final java.util.List<AxelisCore.BreakHandler> BREAK = new java.util.concurrent.CopyOnWriteArrayList<>();
+
+    //#if MC >= 26.1
+    //$$ @SubscribeEvent(priority = net.minecraftforge.eventbus.api.listener.Priority.LOWEST)
+    //$$ public static void onBreak(net.minecraftforge.event.level.BlockEvent.BreakEvent e) {
+    //$$     // en 26.x Forge decide con el resultado: DENY = no se rompe
+    //$$     if (e.getResult() == net.minecraftforge.common.util.Result.DENY) {
+    //$$         return;
+    //$$     }
+    //#else
+    public static void onBreak(net.minecraftforge.event.level.BlockEvent.BreakEvent e) {
+    //#endif
+        if (BREAK.isEmpty() || !(e.getPlayer() instanceof ServerPlayer p) || !(e.getLevel() instanceof net.minecraft.server.level.ServerLevel l)) {
+            return;
+        }
+        for (var h : BREAK) {
+            try {
+                h.broke(p, l, e.getPos(), e.getState());
+            } catch (RuntimeException ex) {
+                AxelisCore.LOGGER.error("Axelis Core: falló algo al romper un bloque", ex);
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (e.getEntity() instanceof ServerPlayer p) {

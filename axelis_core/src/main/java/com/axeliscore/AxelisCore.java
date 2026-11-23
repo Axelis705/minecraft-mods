@@ -21,12 +21,12 @@ import org.slf4j.Logger;
 public class AxelisCore {
     public static final String MODID = "axelis_core";
     /** Versión del Core (la misma que la del jar). */
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0";
     /**
      * Nivel de la API: sube cada vez que se agrega algo público. Un mod puede comprobar {@code AxelisCore.API >= n} si necesita algo
      * nuevo (Forge ya se encarga de cargar la versión más alta que haya).
      */
-    public static final int API = 1;
+    public static final int API = 2;
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public AxelisCore(FMLJavaModLoadingContext context) {
@@ -38,6 +38,8 @@ public class AxelisCore {
         bus.addListener(this::commonSetup);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreCommands::register);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreEvents::onLogin);
+        // al final de todos: si otro mod protege el bloque (cancela), ya no llega aquí
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(net.minecraftforge.eventbus.api.EventPriority.LOWEST, CoreEvents::onBreak);
         //#endif
         com.axeliscore.registry.CoreEntities.ENTITIES.register(bus);
         LOGGER.info("Axelis Core {} (API {})", VERSION, API);
@@ -67,6 +69,21 @@ public class AxelisCore {
     /** Algo que hacer cada vez que un jugador entra al mundo (en el servidor), igual en todas las versiones. */
     public static void onLogin(java.util.function.Consumer<net.minecraft.server.level.ServerPlayer> c) {
         CoreEvents.LOGIN.add(c);
+    }
+
+    /** Lo que se hace cuando un jugador rompe un bloque (ver {@link #onBreak}). */
+    @FunctionalInterface
+    public interface BreakHandler {
+        void broke(net.minecraft.server.level.ServerPlayer p, net.minecraft.server.level.ServerLevel level, net.minecraft.core.BlockPos pos,
+                net.minecraft.world.level.block.state.BlockState state);
+    }
+
+    /**
+     * Algo que hacer cuando un jugador rompe un bloque (en el servidor, justo antes de que se quite), igual en todas las versiones. Solo
+     * se llama si de verdad se va a romper: si otro mod lo protege, no llega.
+     */
+    public static void onBreak(BreakHandler h) {
+        CoreEvents.BREAK.add(h);
     }
 
     /** Texto con la versión, para que los mods lo muestren o lo comprueben. */

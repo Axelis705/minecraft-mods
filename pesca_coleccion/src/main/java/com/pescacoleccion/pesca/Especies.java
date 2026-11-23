@@ -137,6 +137,11 @@ public final class Especies {
 
     /** ¿Puede picar este pez aquí y ahora? */
     public static boolean pica(Especie e, Level level, BlockPos pos) {
+        return pica(e, level, pos, false);
+    }
+
+    /** {@code luna}: con el cebo de luna, los legendarios no piden luna ni clima. */
+    public static boolean pica(Especie e, Level level, BlockPos pos, boolean luna) {
         boolean lugar = false;
         for (String l : e.lugar()) {
             lugar |= lugar(level, pos, l);
@@ -145,16 +150,17 @@ public final class Especies {
         for (String h : e.hora()) {
             hora |= hora(level, h);
         }
-        return lugar && hora && clima(level, e.clima()) && luna(level, e.luna());
+        boolean libre = luna && e.rareza() >= 4;
+        return lugar && hora && (libre || clima(level, e.clima()) && luna(level, e.luna()));
     }
 
     /** El pez que se acerca: se sortea la rareza (con la suerte) y se elige uno que viva aquí a esta hora; si no hay, uno más común. */
-    public static Especie elegir(Level level, BlockPos pos, RandomSource r, int suerte) {
+    public static Especie elegir(Level level, BlockPos pos, RandomSource r, int suerte, boolean luna) {
         int rz = Captura.rareza(r, suerte);
         for (int k = rz; k >= 0; k--) {
             List<Especie> c = new ArrayList<>();
             for (Especie e : ALL) {
-                if (e.rareza() == k && pica(e, level, pos)) {
+                if (e.rareza() == k && pica(e, level, pos, luna)) {
                     c.add(e);
                 }
             }

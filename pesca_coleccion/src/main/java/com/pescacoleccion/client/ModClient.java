@@ -30,6 +30,9 @@ public final class ModClient {
         return false;
     }
 
+    /** Lombrices que salieron al cavar en la prueba (-1 = todavía no se sabe). */
+    static volatile int lombrices = -1;
+
     /** El corcho del jugador visto en el cliente (para las pruebas). */
     static com.pescacoleccion.pesca.Anzuelo corcho() {
         var mc = net.minecraft.client.Minecraft.getInstance();
@@ -67,10 +70,18 @@ public final class ModClient {
             t.add("estanque", 1500, () -> {
                 t.cmd("fill -4 -62 3 4 -61 10 water");
                 t.cmd("item replace entity @p weapon.mainhand with " + PescaColeccion.MODID + ":cana_bambu");
+                // carnada en la otra mano; en supervivencia para ver que el pez se la come al picar
+                t.cmd("item replace entity @p weapon.offhand with " + PescaColeccion.MODID + ":cebo_brillante 5");
+                t.cmd("gamemode survival @a");
                 t.lookFrom(0.5, -60, -1.5, 0.5, -61.2, 5.5);
             });
             t.add("lanzar", 1800, () -> onServer(l -> com.pescacoleccion.pesca.Anzuelo.lanzar(
                     l.getServer().getPlayerList().getPlayers().get(0), com.pescacoleccion.pesca.Cana.BAMBU)));
+            t.add("caña lanzada", 600, () -> {
+                var mc = net.minecraft.client.Minecraft.getInstance();
+                t.check(com.pescacoleccion.pesca.Anzuelo.lanzada(mc.player), "la caña se dibuja lanzada (sin el hilo que cuelga)");
+                t.check(mc.player.getOffhandItem().getCount() == 5, "la carnada no se gasta al lanzar");
+            });
             t.photo("corcho_flota", 1200, () -> {
             });
             t.waitFor("picada buena", 60000, () -> corcho() != null && corcho().state() == com.pescacoleccion.pesca.Anzuelo.PICA);
@@ -83,11 +94,42 @@ public final class ModClient {
                 }
             }));
             t.waitFor("se abre la pelea del corcho", 5000, () -> com.axeliscore.plat.client.Screens.current() instanceof PeleaScreen);
-            t.photo("pelea_corcho", 2500, () -> {
-            });
+            t.photo("pelea_corcho", 2500, () -> t.check(net.minecraft.client.Minecraft.getInstance().player.getOffhandItem().getCount() == 4,
+                    "el pez se comió una carnada al picar"));
             t.waitFor("termina la pelea del corcho", 90000, () -> !(com.axeliscore.plat.client.Screens.current() instanceof PeleaScreen));
-            t.add("premio del corcho", 2500, () -> t.check(tienePez(-1), "el pez del corcho llegó al inventario"));
-            t.add("vaciar", 300, () -> t.cmd("clear @p"));
+            t.add("premio del corcho", 2500, () -> {
+                t.check(tienePez(-1), "el pez del corcho llegó al inventario");
+                t.check(!com.pescacoleccion.pesca.Anzuelo.lanzada(net.minecraft.client.Minecraft.getInstance().player), "la caña vuelve a tener su hilo");
+            });
+            // lombrices: cavar pasto bajo la lluvia (en supervivencia, con el evento de romper bloques de verdad)
+            t.add("lluvia", 2500, () -> t.cmd("weather rain"));
+            t.add("cavar", 600, () -> {
+                lombrices = -1;
+                onServer(l -> {
+                    var sp = l.getServer().getPlayerList().getPlayers().get(0);
+                    var lombriz = com.pescacoleccion.registry.ModRegistry.CEBOS.get(com.pescacoleccion.pesca.Cebo.LOMBRIZ).get();
+                    int antes = sp.getInventory().countItem(lombriz);
+                    for (int i = 0; i < 40; i++) {
+                        net.minecraft.core.BlockPos bp = new net.minecraft.core.BlockPos(-8 - i % 8, -61, 14 + i / 8);
+                        l.setBlockAndUpdate(bp, net.minecraft.world.level.block.Blocks.GRASS_BLOCK.defaultBlockState());
+                        sp.gameMode.destroyBlock(bp);
+                    }
+                    int sueltas = 0;
+                    for (var it : l.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, sp.getBoundingBox().inflate(40))) {
+                        if (it.getItem().getItem() == lombriz) {
+                            sueltas += it.getItem().getCount();
+                        }
+                    }
+                    lombrices = sueltas + sp.getInventory().countItem(lombriz) - antes;
+                });
+            });
+            t.add("lombrices", 600, () -> t.check(lombrices > 0, "salen lombrices al cavar pasto bajo la lluvia (" + lombrices + " de 40)"));
+            t.add("vaciar", 300, () -> {
+                t.cmd("weather clear");
+                t.cmd("gamemode creative @a");
+                t.cmd("kill @e[type=item]");
+                t.cmd("clear @p");
+            });
             // pelea de un pez raro: fotos del ritmo, del salto y del final
             t.add("pelea rara", 300, () -> {
                 t.lookFrom(0.5, -60, -4.5, 0.5, -60.5, 4.5);
@@ -135,7 +177,13 @@ public final class ModClient {
                     l.showTab(1);
                 }
             });
+            t.photo("libro_carnada", 900, () -> {
+                if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
+                    com.axeliscore.ui.UiScreen.fakeMouse = l.rowCenter(6);
+                }
+            });
             t.photo("libro_records", 900, () -> {
+                com.axeliscore.ui.UiScreen.fakeMouse = null;
                 if (com.axeliscore.plat.client.Screens.current() instanceof LibroScreen l) {
                     l.showTab(2);
                 }

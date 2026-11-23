@@ -48,6 +48,7 @@ public class Anzuelo extends Entity implements Animated {
     private final AnimHost anim = new AnimHost();
     // servidor
     private Cana cana = Cana.BAMBU;
+    private Cebo cebo;
     private int espera = -1, t, rareza = -1, idx, piqueteHasta, picaHasta;
     private Especie especie;
     private float tamano;
@@ -136,6 +137,22 @@ public class Anzuelo extends Entity implements Animated {
 
     // ------------------------------------------------------------------ lanzar y tirar (servidor)
 
+    /** (Cliente) El corcho de cada jugador (por el número de entidad del dueño), para dibujar la caña "lanzada". */
+    private static final Map<Integer, Anzuelo> CLIENTE = new ConcurrentHashMap<>();
+
+    /** (Cliente) ¿Tiene esta entidad su corcho en el agua (o volando)? */
+    public static boolean lanzada(Entity quien) {
+        Anzuelo a = CLIENTE.get(quien.getId());
+        if (a == null) {
+            return false;
+        }
+        if (a.isRemoved() || a.level() != quien.level()) {
+            CLIENTE.remove(quien.getId(), a);
+            return false;
+        }
+        return true;
+    }
+
     /** El corcho del jugador, si tiene uno. */
     public static Anzuelo activo(ServerPlayer p) {
         Anzuelo a = ACTIVOS.get(p.getUUID());
@@ -202,6 +219,11 @@ public class Anzuelo extends Entity implements Animated {
         float rel = (cm - e.cmMin()) / Math.max(1, e.cmMax() - e.cmMin());
         PeleaSim.Params params = Especies.params(e, random.nextLong(), cana, rel);
         Mejoras.aplicar(params, Mejoras.datos(p));
+        if (cebo != null && CeboItem.gastar(p, cebo)) {
+            // el pez se comió la carnada: la dulce lo deja más tranquilo
+            params.pull *= cebo.tiron;
+            params.stamina *= cebo.energia;
+        }
         if (PescaColeccion.facil()) {
             Niveles.facil(params);
         }
@@ -236,6 +258,7 @@ public class Anzuelo extends Entity implements Animated {
     public void tick() {
         super.tick();
         if (level().isClientSide()) {
+            CLIENTE.put(this.entityData.get(OWNER), this);
             return;
         }
         Player o = owner();
@@ -251,7 +274,8 @@ public class Anzuelo extends Entity implements Animated {
             if (isInWater()) {
                 state(FLOTA);
                 v = v.multiply(0.3, 0.1, 0.3);
-                espera = Captura.espera(random, cana, level().isRaining());
+                ponerCebo();
+                espera = esperar(1F);
                 splash(6, 0.15);
                 level().playSound(null, getX(), getY(), getZ(), SoundEvents.FISHING_BOBBER_SPLASH, SoundSource.NEUTRAL, 0.25F, 1.4F);
             } else if (onGround() && s == VUELA) {
@@ -267,6 +291,7 @@ public class Anzuelo extends Entity implements Animated {
                 v = v.add(pelea());
             } else {
                 timeline();
+                brillo();
             }
         }
         setDeltaMovement(v);
@@ -296,8 +321,8 @@ public class Anzuelo extends Entity implements Animated {
         if (picadas == null) {
             if (espera > 0 && --espera == 0) {
                 Player o = owner();
-                int suerte = cana.suerte + (o instanceof ServerPlayer sp ? Mejoras.suerte(Mejoras.datos(sp)) : 0);
-                especie = Especies.elegir(level(), blockPosition(), random, suerte);
+                int suerte = cana.suerte + (cebo != null ? cebo.suerte : 0) + (o instanceof ServerPlayer sp ? Mejoras.suerte(Mejoras.datos(sp)) : 0);
+                especie = Especies.elegir(level(), blockPosition(), random, suerte, cebo != null && cebo.luna);
                 rareza = especie.rareza();
                 tamano = especie.tamano(random.nextDouble());
                 picadas = Captura.picadas(random, rareza);
@@ -342,7 +367,7 @@ public class Anzuelo extends Entity implements Animated {
             // no se tiró a tiempo: el pez se va y luego vendrá otro
             state(FLOTA);
             picadas = null;
-            espera = Captura.espera(random, cana, level().isRaining()) / 2;
+            espera = esperar(0.5F);
         }
     }
 
@@ -366,6 +391,36 @@ public class Anzuelo extends Entity implements Animated {
         Vec3 d = destino.subtract(position());
         double len = Math.sqrt(d.x * d.x + d.z * d.z);
         return len < 0.01 ? Vec3.ZERO : new Vec3(d.x / len * 0.03, 0, d.z / len * 0.03);
+    }
+
+    /** Al caer al agua: se pone en el anzuelo la carnada que lleve el dueño (se gasta cuando el pez pica). */
+    private void ponerCebo() {
+        Player o = owner();
+        cebo = o != null ? CeboItem.buscar(o) : null;
+        if (cebo != null && o instanceof ServerPlayer sp) {
+            ItemStack st = new ItemStack(com.pescacoleccion.registry.ModRegistry.CEBOS.get(cebo).get());
+            Plat.msg(sp, Component.translatable(PescaColeccion.MODID + ".cebo.puesto", st.getHoverName(), CeboItem.contar(sp, cebo)), true);
+        }
+    }
+
+    /** Ticks hasta que se acerque un pez (la caña, la lluvia y la carnada lo acortan). */
+    private int esperar(float k) {
+        float c = cebo != null ? cebo.espera : 1F;
+        return Math.max(30, Math.round(Captura.espera(random, cana, level().isRaining()) * c * k));
+    }
+
+    /** El brillo de la carnada alrededor del corcho mientras flota. */
+    private void brillo() {
+        if (cebo == null || tickCount % 9 != 0 || !(level() instanceof ServerLevel sl)) {
+            return;
+        }
+        switch (cebo) {
+            case DULCE -> sl.sendParticles(ParticleTypes.FALLING_HONEY, getX(), getY() + 0.25, getZ(), 1, 0.06, 0.02, 0.06, 0);
+            case BRILLANTE -> sl.sendParticles(ParticleTypes.GLOW, getX(), getY() + 0.1, getZ(), 2, 0.25, 0.05, 0.25, 0.01);
+            case LUNA -> sl.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 0.35, getZ(), 1, 0.2, 0.1, 0.2, 0.005);
+            default -> {
+            }
+        }
     }
 
     private void splash(int n, double spread) {

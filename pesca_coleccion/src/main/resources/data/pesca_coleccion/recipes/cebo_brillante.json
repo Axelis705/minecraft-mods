@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "pesca_coleccion:lombriz"
+    },
+    {
+      "item": "pesca_coleccion:lombriz"
+    },
+    [
+      {
+        "item": "minecraft:glowstone_dust"
+      },
+      {
+        "item": "minecraft:glow_berries"
+      },
+      {
+        "item": "minecraft:glow_ink_sac"
+      }
+    ]
+  ],
+  "result": {
+    "item": "pesca_coleccion:cebo_brillante",
+    "count": 2
+  }
+}
