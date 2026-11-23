@@ -20,6 +20,8 @@ public final class VozPuente {
     public static volatile boolean gruposVivos;
     /** ¿Los organizadores oyen el canal de los fantasmas? */
     public static volatile boolean organizadorOyeFantasmas = true;
+    /** ¿Separar la voz por salas en las pruebas por equipos? */
+    public static volatile boolean separarSalas = true;
     /** Lo pone el complemento: saca de sus grupos a las piezas (lo llama el hilo del servidor). */
     public static volatile Runnable sincronizar;
 

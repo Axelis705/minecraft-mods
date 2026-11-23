@@ -614,5 +614,7 @@
   "coleccionista.voz.no_oye": "%s doesn't hear %s.",
   "coleccionista.panel.g_altavoz": "Loudspeaker",
   "coleccionista.panel.g_altavoz_ayuda": "Your voice reaches everyone wherever they are (like the complex's speakers). Press again to go back to proximity voice.",
-  "coleccionista.chat.salvado_final": "%s is spared… for now. I need pieces for my final."
+  "coleccionista.chat.salvado_final": "%s is spared… for now. I need pieces for my final.",
+  "coleccionista.voz.salas_si": "In Blind, The Traitor and The Sacrifice each team will only hear its own.",
+  "coleccionista.voz.salas_no": "Voice is no longer split by rooms: everyone by proximity."
 }

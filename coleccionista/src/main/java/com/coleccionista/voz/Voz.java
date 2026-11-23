@@ -63,6 +63,9 @@ public final class Voz {
 
     /** Durante una prueba por grupos: cada pieza solo oye a las de su grupo (los fantasmas y el organizador oyen a todos). */
     public static void separar(Map<UUID, Integer> grupos) {
+        if (!VozPuente.separarSalas) {
+            return;
+        }
         separados = Map.copyOf(new HashMap<>(grupos));
         VozPuente.separados = separados;
         Coleccionista.LOGGER.info("COLECCIONISTA_VOZ separados={}", separados.size());

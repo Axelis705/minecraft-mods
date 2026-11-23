@@ -28,6 +28,9 @@ public final class ComandosVoz {
                 .then(Commands.literal("grupos")
                         .then(Commands.literal("si").executes(c -> grupos(c, true)))
                         .then(Commands.literal("no").executes(c -> grupos(c, false))))
+                .then(Commands.literal("salas")
+                        .then(Commands.literal("si").executes(c -> salas(c, true)))
+                        .then(Commands.literal("no").executes(c -> salas(c, false))))
                 .then(Commands.literal("fantasmas_organizador")
                         .then(Commands.literal("si").executes(c -> fantasmasOrg(c, true)))
                         .then(Commands.literal("no").executes(c -> fantasmasOrg(c, false))))
@@ -61,6 +64,15 @@ public final class ComandosVoz {
     private static int grupos(CommandContext<CommandSourceStack> c, boolean si) {
         VozPuente.gruposVivos = si;
         c.getSource().sendSuccess(() -> Component.translatable(MOD + (si ? ".voz.grupos_si" : ".voz.grupos_no")), true);
+        return 1;
+    }
+
+    private static int salas(CommandContext<CommandSourceStack> c, boolean si) {
+        VozPuente.separarSalas = si;
+        if (!si) {
+            Voz.juntar();
+        }
+        c.getSource().sendSuccess(() -> Component.translatable(MOD + (si ? ".voz.salas_si" : ".voz.salas_no")), true);
         return 1;
     }
 
