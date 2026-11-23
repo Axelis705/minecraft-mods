@@ -1,0 +1,50 @@
+package com.axeliscore;
+
+import com.mojang.logging.LogUtils;
+//#if MC >= 26.1
+//$$ import net.minecraftforge.eventbus.api.bus.BusGroup;
+//#else
+import net.minecraftforge.eventbus.api.IEventBus;
+//#endif
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.slf4j.Logger;
+
+/**
+ * Axelis Core: la base de los mods nuevos de Axelis (personajes con animaciones, interfaz, efectos y herramientas comunes).
+ * <p>
+ * No se instala aparte: cada mod que lo usa lo lleva dentro (Jar-in-Jar). Si dos mods traen versiones distintas, Forge carga la más
+ * nueva, por eso todo lo público debe seguir funcionando igual al subir de versión (solo se agregan cosas, no se quitan).
+ */
+@Mod(AxelisCore.MODID)
+public class AxelisCore {
+    public static final String MODID = "axelis_core";
+    /** Versión del Core (la misma que la del jar). */
+    public static final String VERSION = "1.0.0";
+    /**
+     * Nivel de la API: sube cada vez que se agrega algo público. Un mod puede comprobar {@code AxelisCore.API >= n} si necesita algo
+     * nuevo (Forge ya se encarga de cargar la versión más alta que haya).
+     */
+    public static final int API = 1;
+    public static final Logger LOGGER = LogUtils.getLogger();
+
+    public AxelisCore(FMLJavaModLoadingContext context) {
+        //#if MC >= 26.1
+        //$$ BusGroup bus = context.getModBusGroup();
+        //$$ FMLCommonSetupEvent.getBus(bus).addListener(this::commonSetup);
+        //#else
+        IEventBus bus = context.getModEventBus();
+        bus.addListener(this::commonSetup);
+        //#endif
+        LOGGER.info("Axelis Core {} (API {})", VERSION, API);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+    }
+
+    /** Texto con la versión, para que los mods lo muestren o lo comprueben. */
+    public static String version() {
+        return "Axelis Core " + VERSION + " (API " + API + ")";
+    }
+}

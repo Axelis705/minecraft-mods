@@ -62,6 +62,12 @@ def main(mod, mc, out):
         "@EXTRA_REPOS@": "\n".join(f"    maven {{ url = '{u.strip()}' }}" for u in p.get("extra_maven", "").split(",") if u.strip()),
         "@EXTRA_DEPS@": "\n".join(f"    compileOnly '{d.strip()}'" for d in p.get("extra_compile_only", "").split(",") if d.strip()),
     }
+    # mods que usan Axelis Core (gradle.properties: usa_axelis_core=true): se compilan y se prueban con el jar del Core de la misma
+    # versión, que debe estar ya compilado en gen/axelis_core-<version> (el jar final lo lleva dentro con tools/jarjar.py)
+    if p.get("usa_axelis_core", "").lower() == "true":
+        cv = props(os.path.join(root, "axelis_core")).get("mod_version", "1.0.0")
+        core = f"../axelis_core-{mc}/build/libs/axelis_core-{cv}+{mc}.jar"
+        rep["@EXTRA_DEPS@"] += f"\n    implementation files('{core}')"
     for f in ("build.gradle", "settings.gradle", "gradle.properties"):
         with open(os.path.join(tpl, f), encoding="utf-8") as fh:
             t = fh.read()

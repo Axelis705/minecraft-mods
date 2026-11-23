@@ -1,0 +1,102 @@
+name: Axelis Core
+
+# Compila Axelis Core en 1.20.1, 1.21.1 y 26.3 y lo prueba de dos formas:
+#  1) en el entorno de desarrollo (runServer) el Core solo y con un mod que lo usa (core_prueba);
+#  2) en un servidor Forge REAL (instalado con el instalador oficial) solo con el jar de core_prueba, que lleva el Core DENTRO
+#     (Jar-in-Jar, tools/jarjar.py): así se comprueba que un jugador solo necesita el mod, sin instalar el Core aparte.
+# Los jars quedan en las ramas jar-axelis_core-<versión> y jar-core_prueba-<versión>.
+on:
+  push:
+    paths:
+      - 'axelis_core/**'
+      - 'core_prueba/**'
+      - 'tools/mcver.py'
+      - 'tools/mkproject.py'
+      - 'tools/jarjar.py'
+      - 'tools/real_server.sh'
+      - 'tools/boot_server.sh'
+      - '.github/workflows/core.yml'
+  workflow_dispatch:
+
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mc: '1.20.1'
+            java: '17'
+            forge: '47.4.10'
+          - mc: '1.21.1'
+            java: '21'
+            forge: '52.1.20'
+          - mc: '26.3'
+            java: '25'
+            forge: '66.1.5'
+    env:
+      CORE: ${{ matrix.mc == '1.20.1' && 'axelis_core' || format('gen/axelis_core-{0}', matrix.mc) }}
+      PRUEBA: ${{ matrix.mc == '1.20.1' && 'core_prueba' || format('gen/core_prueba-{0}', matrix.mc) }}
+      SUF: ${{ matrix.mc == '1.20.1' && '1.0.0' || format('1.0.0+{0}', matrix.mc) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Revisar marcas de versión
+        run: |
+          python3 tools/mcver.py --check axelis_core
+          python3 tools/mcver.py --check core_prueba
+      - name: Revisar recursos y texturas del Core
+        run: |
+          pip install pillow -q
+          python3 tools/check_resources.py axelis_core
+          python3 tools/check_textures.py axelis_core
+      - uses: actions/setup-java@v4
+        continue-on-error: true
+        with:
+          distribution: temurin
+          java-version: 8
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - name: Java 8 visible para Gradle (toolchain del lanzador)
+        run: mkdir -p ~/.gradle && echo "org.gradle.java.installations.fromEnv=JAVA_HOME_8_X64" >> ~/.gradle/gradle.properties
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Generar los proyectos de ${{ matrix.mc }}
+        if: matrix.mc != '1.20.1'
+        run: |
+          python3 tools/mkproject.py axelis_core ${{ matrix.mc }} gen/axelis_core-${{ matrix.mc }}
+          python3 tools/mkproject.py core_prueba ${{ matrix.mc }} gen/core_prueba-${{ matrix.mc }}
+      - name: Compilar Axelis Core ${{ matrix.mc }}
+        working-directory: ${{ env.CORE }}
+        run: ./gradlew build --no-daemon --stacktrace
+      - name: Arrancar servidor con el Core solo
+        run: bash tools/boot_server.sh $CORE
+      - name: Compilar core_prueba ${{ matrix.mc }}
+        working-directory: ${{ env.PRUEBA }}
+        run: ./gradlew build --no-daemon --stacktrace
+      - name: Arrancar servidor de desarrollo con core_prueba + Core
+        run: bash tools/boot_server.sh $PRUEBA
+      - name: Meter el Core dentro de core_prueba (Jar-in-Jar)
+        run: |
+          ls -la $CORE/build/libs $PRUEBA/build/libs
+          python3 tools/jarjar.py $PRUEBA/build/libs/core_prueba-$SUF.jar $CORE/build/libs/axelis_core-$SUF.jar
+          unzip -l $PRUEBA/build/libs/core_prueba-$SUF.jar | grep -i jarjar
+          unzip -p $PRUEBA/build/libs/core_prueba-$SUF.jar META-INF/jarjar/metadata.json
+      - name: Servidor Forge real solo con core_prueba (el Core va dentro)
+        run: bash tools/real_server.sh ${{ matrix.mc }} ${{ matrix.forge }} srv-real core_prueba/real_commands.txt $PRUEBA/build/libs/core_prueba-$SUF.jar
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: axelis_core-${{ matrix.mc }}
+          path: |
+            ${{ env.CORE }}/build/libs/*.jar
+            ${{ env.PRUEBA }}/build/libs/*.jar
+            srv-real/server_out.log
+      - name: Guardar los jars en ramas
+        if: github.ref == 'refs/heads/main'
+        run: |
+          bash tools/push_jar.sh axelis_core ${{ matrix.mc }} $CORE/build/libs ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.sha }}
+          bash tools/push_jar.sh core_prueba ${{ matrix.mc }} $PRUEBA/build/libs ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.sha }}

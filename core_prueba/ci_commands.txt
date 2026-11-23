@@ -1,0 +1,5 @@
+coreprueba
+axeliscore
+#expect COREPRUEBA_OK Axelis Core
+#expect AXCORE_INFO Axelis Core
+#expect usuarios=[core_prueba]
