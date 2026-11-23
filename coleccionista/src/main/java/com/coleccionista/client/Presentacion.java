@@ -29,6 +29,9 @@ public final class Presentacion {
     /** La tarjeta de reglas que sale después del título (lo necesario para jugar, sin decir cómo resolver la prueba). */
     private static final float REGLAS_DURA = 16F;
     private static long reglasDesde;
+    /** El reloj que había cuando salió la tarjeta: si arranca otro (empezó la acción), la tarjeta se va para no tapar el juego. */
+    private static long relojAlSalir;
+    private static boolean alChat;
     private static java.util.List<String> reglas = java.util.List.of();
     private static int letrasSonadas;
 
@@ -50,6 +53,9 @@ public final class Presentacion {
         numero = Nbt.s(t, "numero");
         tituloClave = Nbt.s(t, "titulo");
         titulo = Component.translatable(tituloClave).getString();
+        if (reglasDesde > 0) {
+            reglasAlChat();
+        }
         reglasDesde = 0;
         lema = Component.translatable(Nbt.s(t, "lema")).getString();
         letrasSonadas = 0;
@@ -86,13 +92,23 @@ public final class Presentacion {
             return;
         }
         reglasDesde = System.currentTimeMillis();
+        relojAlSalir = EventoCliente.relojFin();
+        alChat = true;
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 0.9F, 0.8F));
+    }
+
+    /** Cuando la tarjeta se va, las reglas quedan en el chat para releerlas (no antes: no se enciman con la tarjeta). */
+    private static void reglasAlChat() {
+        if (!alChat || reglas.isEmpty()) {
+            return;
+        }
+        alChat = false;
         Minecraft mc = Minecraft.getInstance();
         mc.gui.getChat().addMessage(Component.literal("— " + Component.translatable("coleccionista.reglas.titulo", titulo).getString() + " —")
                 .withStyle(net.minecraft.ChatFormatting.DARK_RED, net.minecraft.ChatFormatting.BOLD));
-        for (String r : l) {
+        for (String r : reglas) {
             mc.gui.getChat().addMessage(Component.literal(" • " + r).withStyle(net.minecraft.ChatFormatting.GRAY));
         }
-        mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 0.9F, 0.8F));
     }
 
     /** La tarjeta de reglas: panel oscuro con borde rojo, el título y las reglas numeradas. */
@@ -100,7 +116,13 @@ public final class Presentacion {
         float t = (now - reglasDesde) / 1000F;
         if (t > REGLAS_DURA) {
             reglasDesde = 0;
+            reglasAlChat();
             return;
+        }
+        if (t < REGLAS_DURA - 0.8F && EventoCliente.resta() >= 0 && EventoCliente.relojFin() != relojAlSalir) {
+            // ya empezó la prueba (arrancó su reloj): la tarjeta se desvanece (las reglas siguen en el chat)
+            reglasDesde = now - (long) ((REGLAS_DURA - 0.8F) * 1000);
+            t = REGLAS_DURA - 0.8F;
         }
         float a = suave(t / 0.5F) * (1 - suave((t - (REGLAS_DURA - 0.8F)) / 0.8F));
         if (a < 0.02F) {
@@ -117,7 +139,8 @@ public final class Presentacion {
             }
         }
         int ch = 30 + lineas.size() * 11 + 8;
-        int x0 = w / 2 - cw / 2, y0 = (int) (h * 0.22F);
+        // abajo de la placa de la prueba y de la línea de cada prueba (no se enciman)
+        int x0 = w / 2 - cw / 2, y0 = Math.max((int) (h * 0.22F), 66);
         g.fillGradient(x0, y0, x0 + cw, y0 + ch, Ui.alpha(0xF0120A0C, a), Ui.alpha(0xE0080506, a));
         g.fill(x0, y0, x0 + cw, y0 + 1, Ui.alpha(EventoHud.ROJO, a));
         g.fill(x0, y0 + ch - 1, x0 + cw, y0 + ch, Ui.alpha(EventoHud.ROJO, a));

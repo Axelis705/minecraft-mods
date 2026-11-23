@@ -83,6 +83,11 @@ public final class EventoCliente {
         return Nbt.i(estado, "total");
     }
 
+    /** Cuándo termina el reloj de la prueba (tiempo del mundo; 0 = sin reloj). Cambia cada vez que arranca un reloj nuevo. */
+    public static long relojFin() {
+        return Nbt.l(estado, "fin");
+    }
+
     /** Segundos que le quedan al reloj (-1: sin reloj). */
     public static int resta() {
         Minecraft mc = Minecraft.getInstance();

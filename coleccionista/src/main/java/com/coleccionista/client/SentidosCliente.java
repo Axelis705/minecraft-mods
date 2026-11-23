@@ -221,7 +221,7 @@ public final class SentidosCliente {
     private static void hud(G g, int w, int h) {
         Minecraft mc = Minecraft.getInstance();
         // mientras está la presentación (título y tarjeta de reglas) no se encima nada
-        if (!activa() || mc.player == null || !EventoHud.visible() || Presentacion.activa()) {
+        if (!activa() || mc.player == null || !EventoHud.visible() || Presentacion.activa() || Presentacion.reglasVisibles()) {
             return;
         }
         Trio t = miTrio();

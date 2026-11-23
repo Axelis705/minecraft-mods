@@ -78,7 +78,7 @@ public final class EscenaAviso {
             }
         }
         // durante una presentación o un fundido, las franjas esperan (no tapan el título de la prueba)
-        if (Presentacion.activa()) {
+        if (Presentacion.activa() || Presentacion.reglasVisibles()) {
             if (actual != null) {
                 actual.inicio[0] += now - ultimo;
             }
