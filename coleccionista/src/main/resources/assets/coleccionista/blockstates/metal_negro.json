@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/metal_negro_0"
+   },
+   {
+    "model": "coleccionista:block/metal_negro_1"
+   }
+  ]
+ }
+}

@@ -1,0 +1,13 @@
+{
+  "zumbido": {
+    "category": "block",
+    "subtitle": "coleccionista.sub.zumbido",
+    "sounds": [
+      {
+        "name": "coleccionista:zumbido",
+        "volume": 0.6,
+        "attenuation_distance": 8
+      }
+    ]
+  }
+}

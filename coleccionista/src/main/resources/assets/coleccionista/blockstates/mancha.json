@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/mancha"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/mancha",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/mancha",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/mancha",
+   "y": 270
+  }
+ }
+}

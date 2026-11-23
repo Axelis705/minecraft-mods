@@ -1,0 +1,18 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/ladrillo_viejo_0"
+   },
+   {
+    "model": "coleccionista:block/ladrillo_viejo_1"
+   },
+   {
+    "model": "coleccionista:block/ladrillo_viejo_2"
+   },
+   {
+    "model": "coleccionista:block/ladrillo_viejo_3"
+   }
+  ]
+ }
+}

@@ -24,10 +24,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.entity.BarrelBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashSet;
@@ -132,6 +129,17 @@ public final class Celdas {
         for (int n = 1; n <= com.coleccionista.mapa.AlaCeldas.CELDAS; n++) {
             foco(l, Complejo.pos(s, "celda." + n + ".foco"), on);
         }
+        // y las lámparas del pasillo
+        for (int k = 0; k < 200; k++) {
+            BlockPos q = Complejo.pos(s, "ala.luz." + k);
+            if (q == null) {
+                break;
+            }
+            BlockState st = l.getBlockState(q);
+            if (st.hasProperty(com.coleccionista.bloque.deco.DecoBlock.ENCENDIDA) && st.getValue(com.coleccionista.bloque.deco.DecoBlock.ENCENDIDA) != on) {
+                l.setBlock(q, st.setValue(com.coleccionista.bloque.deco.DecoBlock.ENCENDIDA, on), 3);
+            }
+        }
     }
 
     static void foco(ServerLevel l, BlockPos p, boolean on) {
@@ -198,7 +206,8 @@ public final class Celdas {
             int a = 1 + r.nextInt(9), b = r.nextInt(10), c = r.nextInt(10);
             d.putInt("codigo" + n, a * 100 + b * 10 + c);
             BlockPos barril = Complejo.pos(s, "celda." + n + ".barril");
-            if (barril != null && l.getBlockEntity(barril) instanceof BarrelBlockEntity be) {
+            // el baúl de la celda (o un barril en mapas viejos)
+            if (barril != null && l.getBlockEntity(barril) instanceof net.minecraft.world.Container be && be.getContainerSize() >= 16) {
                 be.clearContent();
                 be.setItem(11, nota(Component.translatable(MOD + ".pista.nota_titulo"), Component.translatable(MOD + ".pista.nota1", a)));
                 be.setItem(15, diario(n, r));
@@ -238,22 +247,18 @@ public final class Celdas {
         return st;
     }
 
+    /** Rayones en la pared de la celda (una pista): se escriben encima del muro, como raspados con algo filoso. */
     private static void rayon(ServerLevel l, BlockPos p, String facing, String linea, String sub) {
         if (p == null) {
             return;
         }
-        BlockState st = Complejo.estado("dark_oak_wall_sign[facing=" + facing + "]");
+        BlockState st = Complejo.estado("coleccionista:rayon[facing=" + facing + "]");
+        if (st.isAir()) {
+            return;
+        }
         l.setBlock(p, st, 2);
-        if (l.getBlockEntity(p) instanceof SignBlockEntity be) {
-            SignText txt = new SignText().setColor(net.minecraft.world.item.DyeColor.GRAY)
-                    .setMessage(0, Component.literal(""))
-                    .setMessage(1, Component.literal(linea))
-                    .setMessage(2, Component.literal(sub))
-                    .setMessage(3, Component.literal(""));
-            be.setText(txt, true);
-            be.setWaxed(true);
-            be.setChanged();
-            l.sendBlockUpdated(p, be.getBlockState(), be.getBlockState(), 3);
+        if (l.getBlockEntity(p) instanceof com.coleccionista.bloque.deco.TextoBE be) {
+            be.escribir(0xC9C2B4, linea, sub);
         }
     }
 

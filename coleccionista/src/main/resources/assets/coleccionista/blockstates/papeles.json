@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/papeles"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/papeles",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/papeles",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/papeles",
+   "y": 270
+  }
+ }
+}

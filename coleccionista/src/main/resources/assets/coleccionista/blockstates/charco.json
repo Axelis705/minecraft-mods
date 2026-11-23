@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/charco"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/charco",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/charco",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/charco",
+   "y": 270
+  }
+ }
+}

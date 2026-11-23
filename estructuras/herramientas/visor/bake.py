@@ -249,6 +249,10 @@ def opaque_full(n, props, x, y, z):
     v = models_for(n, props, random.Random(0))
     return bool(v) and all(is_full(x_) for x_ in v[:1]) and len(v) == 1
 
+# barrotes de otros mods (se unen como los de hierro)
+BARS = {'iron_bars', 'coleccionista:barrotes', 'coleccionista:barandal'}
+
+
 def finish_props(n, props, x, y, z):
     """Propiedades que el juego calcula con los vecinos: escaleras, vallas, muros, barrotes, cristales."""
     p = dict(props)
@@ -277,14 +281,14 @@ def finish_props(n, props, x, y, z):
                     same = nb[0].endswith('_stairs') and nb[1].get('facing') == facing and nb[1].get('half', 'bottom') == half
                     if not same: shape = 'inner_left' if d == CCW[facing] else 'inner_right'
         p['shape'] = shape
-    elif n.endswith('_fence') or n == 'iron_bars' or n.endswith('_glass_pane') or n == 'glass_pane' or n.endswith('_wall') or n == 'chain_x':
+    elif n.endswith('_fence') or n in BARS or n.endswith('_glass_pane') or n == 'glass_pane' or n.endswith('_wall') or n == 'chain_x':
         wall = n.endswith('_wall')
         for d, (dx, dz) in DIRS4.items():
             a, b = nm(x + dx, y, z + dz)
             conn = False
             if wall: conn = a.endswith('_wall') or opaque_full(a, b, x + dx, y, z + dz) or a.endswith('_fence_gate')
             elif n.endswith('_fence'): conn = (a.endswith('_fence') and (a.startswith('nether') == n.startswith('nether'))) or a.endswith('_fence_gate') or opaque_full(a, b, x + dx, y, z + dz)
-            else: conn = a in ('iron_bars',) or a.endswith('glass_pane') or a.endswith('_wall') or opaque_full(a, b, x + dx, y, z + dz)
+            else: conn = a in BARS or a.endswith('glass_pane') or a.endswith('_wall') or opaque_full(a, b, x + dx, y, z + dz)
             p[d] = ('low' if wall else 'true') if conn else ('none' if wall else 'false')
         if wall:
             cs = [d for d in DIRS4 if p[d] != 'none']

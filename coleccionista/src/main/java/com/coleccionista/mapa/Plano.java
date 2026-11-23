@@ -107,6 +107,20 @@ public final class Plano {
         return r.nextDouble() < p;
     }
 
+    /**
+     * Un bloque con texto del mod ({@code coleccionista:placa}, {@code letrero} o {@code rayon}) mirando a {@code facing}, con su color
+     * (RGB) y hasta 4 líneas.
+     */
+    public void texto(int x, int y, int z, String bloque, String facing, int color, String... lineas) {
+        set(x, y, z, "coleccionista:" + bloque + "[facing=" + facing + "]");
+        StringBuilder sb = new StringBuilder("{color:" + color + ",lineas:[");
+        for (int i = 0; i < lineas.length; i++) {
+            sb.append(i > 0 ? "," : "").append('"').append(lineas[i].replace("\\", "\\\\").replace("\"", "\\\"")).append('"');
+        }
+        sb.append("]}");
+        nbt(x, y, z, sb.toString());
+    }
+
     /** Un letrero de pared con texto (hasta 4 líneas). */
     public void letrero(int x, int y, int z, String bloque, String facing, String color, String... lineas) {
         set(x, y, z, bloque + "[facing=" + facing + "]");

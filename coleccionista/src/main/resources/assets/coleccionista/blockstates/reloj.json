@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/reloj"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/reloj",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/reloj",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/reloj",
+   "y": 270
+  }
+ }
+}

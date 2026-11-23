@@ -1,0 +1,9 @@
+{
+ "textures": {
+  "bottom": "coleccionista:block/rejilla_piso",
+  "top": "coleccionista:block/rejilla_piso",
+  "side": "coleccionista:block/rejilla_piso"
+ },
+ "render_type": "minecraft:cutout",
+ "parent": "minecraft:block/slab"
+}

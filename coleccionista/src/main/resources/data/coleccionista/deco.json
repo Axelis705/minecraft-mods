@@ -1,0 +1,1161 @@
+{
+ "blocks": [
+  {
+   "id": "azulejo",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "azulejo_sucio",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "azulejo_remate",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "yeso",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "concreto",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "concreto_piso",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "linoleo",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "ladrillo_viejo",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "metal_placa",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
+   "id": "metal_negro",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
+   "id": "panel_madera",
+   "kind": "cubo",
+   "sound": "wood",
+   "strength": 2.0
+  },
+  {
+   "id": "coladera",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "vidrio_sucio",
+   "kind": "vidrio",
+   "sound": "glass",
+   "strength": 0.3
+  },
+  {
+   "id": "viga",
+   "kind": "pilar",
+   "sound": "metal",
+   "strength": 3.0
+  },
+  {
+   "id": "rejilla_piso",
+   "kind": "losa",
+   "sound": "metal",
+   "strength": 2.0,
+   "transparente": true
+  },
+  {
+   "id": "escalera_metal",
+   "kind": "escalera",
+   "base": "metal_placa",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
+   "id": "barrotes",
+   "kind": "barrotes",
+   "sound": "metal",
+   "strength": 5.0
+  },
+  {
+   "id": "barandal",
+   "kind": "barrotes",
+   "sound": "metal",
+   "strength": 5.0
+  },
+  {
+   "id": "puerta_celda",
+   "kind": "puerta",
+   "sound": "metal",
+   "strength": 5.0
+  },
+  {
+   "id": "alfombra_roja",
+   "kind": "alfombra",
+   "sound": "wool",
+   "strength": 0.2
+  },
+  {
+   "id": "tubo",
+   "kind": "tubo",
+   "sound": "metal",
+   "strength": 2.0
+  },
+  {
+   "id": "catre",
+   "kind": "cama",
+   "sound": "metal",
+   "strength": 1.0
+  },
+  {
+   "id": "retrete",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3.0,
+     0.0,
+     9.0,
+     13.0,
+     12.0,
+     16.0
+    ],
+    [
+     4.0,
+     0.0,
+     4.0,
+     12.0,
+     3.0,
+     12.0
+    ],
+    [
+     3.0,
+     3.0,
+     2.0,
+     13.0,
+     7.0,
+     11.0
+    ],
+    [
+     4.0,
+     7.0,
+     3.0,
+     12.0,
+     7.6,
+     10.0
+    ],
+    [
+     2.5,
+     7.0,
+     1.5,
+     13.5,
+     8.0,
+     11.5
+    ],
+    [
+     6.0,
+     12.0,
+     11.0,
+     10.0,
+     13.0,
+     14.0
+    ]
+   ],
+   "particles": [],
+   "es": "Retrete de acero",
+   "en": "Steel toilet",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "lavabo",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3.0,
+     6.0,
+     8.0,
+     13.0,
+     10.0,
+     16.0
+    ],
+    [
+     4.0,
+     9.5,
+     9.0,
+     12.0,
+     10.0,
+     15.0
+    ],
+    [
+     7.0,
+     10.0,
+     14.0,
+     9.0,
+     13.0,
+     16.0
+    ],
+    [
+     7.5,
+     12.0,
+     11.0,
+     8.5,
+     13.0,
+     14.0
+    ],
+    [
+     5.0,
+     4.0,
+     14.0,
+     11.0,
+     6.0,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Lavabo de celda",
+   "en": "Cell sink",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "espejo",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "glass",
+   "shape": [
+    [
+     4.0,
+     3.0,
+     15.0,
+     12.0,
+     13.0,
+     16.0
+    ],
+    [
+     5.0,
+     4.0,
+     14.8,
+     11.0,
+     12.0,
+     15.0
+    ]
+   ],
+   "particles": [],
+   "es": "Espejo roto",
+   "en": "Broken mirror",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "cajon",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     1.0,
+     0.0,
+     3.0,
+     15.0,
+     7.0,
+     13.0
+    ],
+    [
+     0.8,
+     7.0,
+     2.8,
+     15.2,
+     9.0,
+     13.2
+    ],
+    [
+     7.0,
+     5.0,
+     2.4,
+     9.0,
+     8.0,
+     2.8
+    ],
+    [
+     2.0,
+     1.0,
+     2.6,
+     3.0,
+     8.5,
+     3.0
+    ],
+    [
+     13.0,
+     1.0,
+     2.6,
+     14.0,
+     8.5,
+     3.0
+    ]
+   ],
+   "particles": [],
+   "es": "Baúl de la celda",
+   "en": "Cell footlocker",
+   "soft": false,
+   "sub": "floor",
+   "cajon": true
+  },
+  {
+   "id": "silla",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3.0,
+     0.0,
+     3.0,
+     4.0,
+     8.0,
+     4.0
+    ],
+    [
+     12.0,
+     0.0,
+     3.0,
+     13.0,
+     8.0,
+     4.0
+    ],
+    [
+     3.0,
+     0.0,
+     12.0,
+     4.0,
+     8.0,
+     13.0
+    ],
+    [
+     12.0,
+     0.0,
+     12.0,
+     13.0,
+     8.0,
+     13.0
+    ],
+    [
+     2.5,
+     8.0,
+     2.5,
+     13.5,
+     9.0,
+     13.5
+    ],
+    [
+     3.0,
+     9.0,
+     12.0,
+     4.0,
+     18.0,
+     13.0
+    ],
+    [
+     12.0,
+     9.0,
+     12.0,
+     13.0,
+     18.0,
+     13.0
+    ],
+    [
+     3.0,
+     13.0,
+     12.2,
+     13.0,
+     17.0,
+     12.8
+    ]
+   ],
+   "particles": [],
+   "es": "Silla de metal",
+   "en": "Metal chair",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "lampara_tubo",
+   "kind": "prop",
+   "tall": false,
+   "light": 14,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     7.5,
+     13.0,
+     7.5,
+     8.5,
+     16.0,
+     8.5
+    ],
+    [
+     0.0,
+     11.0,
+     5.0,
+     16.0,
+     13.0,
+     11.0
+    ]
+   ],
+   "particles": [],
+   "es": "Lámpara fluorescente",
+   "en": "Fluorescent lamp",
+   "soft": false,
+   "sub": "hang",
+   "parpadeo": true,
+   "zumbido": true,
+   "apagable": true
+  },
+  {
+   "id": "lampara_jaula",
+   "kind": "prop",
+   "tall": false,
+   "light": 11,
+   "collide": false,
+   "sound": "lantern",
+   "shape": [
+    [
+     5.0,
+     5.0,
+     15.0,
+     11.0,
+     11.0,
+     16.0
+    ],
+    [
+     7.0,
+     7.0,
+     12.0,
+     9.0,
+     9.0,
+     15.0
+    ],
+    [
+     5.5,
+     5.5,
+     7.0,
+     6.0,
+     6.0,
+     13.0
+    ],
+    [
+     10.0,
+     5.5,
+     7.0,
+     10.5,
+     6.0,
+     13.0
+    ],
+    [
+     5.5,
+     10.0,
+     7.0,
+     6.0,
+     10.5,
+     13.0
+    ],
+    [
+     10.0,
+     10.0,
+     7.0,
+     10.5,
+     10.5,
+     13.0
+    ],
+    [
+     5.5,
+     5.5,
+     7.0,
+     10.5,
+     10.5,
+     7.5
+    ]
+   ],
+   "particles": [],
+   "es": "Lámpara de jaula",
+   "en": "Cage lamp",
+   "soft": false,
+   "sub": "wall",
+   "parpadeo": true,
+   "apagable": true
+  },
+  {
+   "id": "ventila",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     2.0,
+     3.0,
+     15.0,
+     14.0,
+     13.0,
+     16.0
+    ],
+    [
+     2.0,
+     3.0,
+     14.5,
+     3.0,
+     13.0,
+     16.0
+    ],
+    [
+     13.0,
+     3.0,
+     14.5,
+     14.0,
+     13.0,
+     16.0
+    ],
+    [
+     2.0,
+     3.0,
+     14.5,
+     14.0,
+     4.0,
+     16.0
+    ],
+    [
+     2.0,
+     12.0,
+     14.5,
+     14.0,
+     13.0,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Rejilla de ventilación",
+   "en": "Air vent",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "camara",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     6.0,
+     9.0,
+     14.0,
+     10.0,
+     13.0,
+     16.0
+    ],
+    [
+     7.5,
+     10.0,
+     9.0,
+     8.5,
+     11.0,
+     14.0
+    ]
+   ],
+   "particles": [],
+   "es": "Cámara de vigilancia",
+   "en": "Security camera",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "bocina",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     7.0,
+     6.0,
+     13.0,
+     9.0,
+     9.0,
+     16.0
+    ],
+    [
+     5.0,
+     5.0,
+     8.0,
+     11.0,
+     11.0,
+     13.0
+    ],
+    [
+     3.0,
+     3.0,
+     5.0,
+     13.0,
+     13.0,
+     8.0
+    ],
+    [
+     4.0,
+     4.0,
+     4.8,
+     12.0,
+     12.0,
+     5.0
+    ]
+   ],
+   "particles": [],
+   "es": "Bocina",
+   "en": "Loudspeaker",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "reloj",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     3.0,
+     3.0,
+     15.0,
+     13.0,
+     13.0,
+     16.0
+    ],
+    [
+     4.0,
+     4.0,
+     14.8,
+     12.0,
+     12.0,
+     15.0
+    ],
+    [
+     7.6,
+     8.0,
+     14.6,
+     8.4,
+     11.5,
+     14.8
+    ],
+    [
+     8.0,
+     7.6,
+     14.6,
+     10.5,
+     8.4,
+     14.8
+    ]
+   ],
+   "particles": [],
+   "es": "Reloj de pared",
+   "en": "Wall clock",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "telarana",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [],
+   "particles": [],
+   "es": "Telaraña",
+   "en": "Cobweb",
+   "soft": false,
+   "sub": "plain"
+  },
+  {
+   "id": "mancha",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     0.0,
+     0.05,
+     0.0,
+     16.0,
+     0.05,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Mancha",
+   "en": "Stain",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "charco",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     0.0,
+     0.05,
+     0.0,
+     16.0,
+     0.05,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Charco",
+   "en": "Puddle",
+   "soft": false,
+   "sub": "floor",
+   "goteo": true
+  },
+  {
+   "id": "papeles",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     0.0,
+     0.05,
+     0.0,
+     16.0,
+     0.05,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Papeles tirados",
+   "en": "Scattered papers",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "vitrina",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "glass",
+   "shape": [
+    [
+     2.0,
+     0.0,
+     2.0,
+     14.0,
+     2.0,
+     14.0
+    ],
+    [
+     3.0,
+     2.0,
+     3.0,
+     13.0,
+     14.0,
+     13.0
+    ],
+    [
+     2.0,
+     14.0,
+     2.0,
+     14.0,
+     16.0,
+     14.0
+    ]
+   ],
+   "particles": [],
+   "es": "Vitrina de la colección",
+   "en": "Collection showcase",
+   "soft": false,
+   "shape_upper": [
+    [
+     5.0,
+     0.0,
+     5.0,
+     11.0,
+     2.0,
+     11.0
+    ],
+    [
+     5.5,
+     2.0,
+     5.5,
+     10.5,
+     7.5,
+     10.5
+    ],
+    [
+     6.5,
+     5.0,
+     5.3,
+     7.5,
+     6.0,
+     5.5
+    ],
+    [
+     8.5,
+     5.0,
+     5.3,
+     9.5,
+     6.0,
+     5.5
+    ],
+    [
+     7.0,
+     3.0,
+     5.3,
+     9.0,
+     3.5,
+     5.5
+    ],
+    [
+     5.2,
+     6.5,
+     5.2,
+     10.8,
+     8.5,
+     10.8
+    ],
+    [
+     2.0,
+     0.0,
+     2.0,
+     14.0,
+     12.0,
+     14.0
+    ],
+    [
+     2.0,
+     12.0,
+     2.0,
+     14.0,
+     13.0,
+     14.0
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "candelabro",
+   "kind": "prop",
+   "tall": true,
+   "light": 12,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     4.0,
+     0.0,
+     4.0,
+     12.0,
+     1.0,
+     12.0
+    ],
+    [
+     7.0,
+     1.0,
+     7.0,
+     9.0,
+     16.0,
+     9.0
+    ]
+   ],
+   "particles": [
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      8,
+      30.5,
+      8
+     ],
+     "rate": 0.4
+    },
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      3.5,
+      27.5,
+      8
+     ],
+     "rate": 0.3
+    },
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      12.5,
+      27.5,
+      8
+     ],
+     "rate": 0.3
+    },
+    {
+     "type": "minecraft:smoke",
+     "pos": [
+      8,
+      31,
+      8
+     ],
+     "rate": 0.1
+    }
+   ],
+   "es": "Candelabro de hierro",
+   "en": "Iron candelabra",
+   "soft": false,
+   "shape_upper": [
+    [
+     7.0,
+     0.0,
+     7.0,
+     9.0,
+     10.0,
+     9.0
+    ],
+    [
+     2.5,
+     8.0,
+     7.0,
+     13.5,
+     9.0,
+     9.0
+    ],
+    [
+     2.5,
+     9.0,
+     7.0,
+     4.5,
+     10.0,
+     9.0
+    ],
+    [
+     2.8,
+     10.0,
+     7.3,
+     4.2,
+     11.5,
+     8.7
+    ],
+    [
+     11.5,
+     9.0,
+     7.0,
+     13.5,
+     10.0,
+     9.0
+    ],
+    [
+     11.8,
+     10.0,
+     7.3,
+     13.2,
+     11.5,
+     8.7
+    ],
+    [
+     6.8,
+     10.0,
+     6.8,
+     9.2,
+     11.0,
+     9.2
+    ],
+    [
+     7.2,
+     11.0,
+     7.2,
+     8.8,
+     14.5,
+     8.8
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "cortina",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     1.0,
+     0.0,
+     13.0,
+     15.0,
+     16.0,
+     15.5
+    ]
+   ],
+   "particles": [],
+   "es": "Cortina de terciopelo",
+   "en": "Velvet curtain",
+   "soft": false,
+   "shape_upper": [
+    [
+     1.0,
+     0.0,
+     13.0,
+     15.0,
+     14.0,
+     15.5
+    ],
+    [
+     0.0,
+     14.0,
+     12.5,
+     16.0,
+     16.0,
+     16.0
+    ]
+   ],
+   "sub": "wall"
+  },
+  {
+   "id": "placa",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     3.0,
+     5.0,
+     15.4,
+     13.0,
+     11.0,
+     16.0
+    ],
+    [
+     3.6,
+     7.6,
+     15.2,
+     4.2,
+     8.4,
+     15.4
+    ],
+    [
+     11.8,
+     7.6,
+     15.2,
+     12.4,
+     8.4,
+     15.4
+    ]
+   ],
+   "particles": [],
+   "es": "Placa",
+   "en": "Plate",
+   "soft": false,
+   "sub": "wall",
+   "texto": "placa"
+  },
+  {
+   "id": "letrero",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     0.0,
+     3.0,
+     15.0,
+     16.0,
+     13.0,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Letrero",
+   "en": "Sign",
+   "soft": false,
+   "sub": "wall",
+   "texto": "letrero"
+  },
+  {
+   "id": "rayon",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "stone",
+   "shape": [
+    [
+     1.0,
+     1.0,
+     15.95,
+     15.0,
+     15.0,
+     15.95
+    ]
+   ],
+   "particles": [],
+   "es": "Rayones",
+   "en": "Scratches",
+   "soft": false,
+   "sub": "wall",
+   "texto": "rayon"
+  }
+ ]
+}

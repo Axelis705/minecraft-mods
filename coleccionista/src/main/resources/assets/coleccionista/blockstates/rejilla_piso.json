@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "coleccionista:block/rejilla_piso"
+  },
+  "type=top": {
+   "model": "coleccionista:block/rejilla_piso_top"
+  },
+  "type=double": {
+   "model": "coleccionista:block/rejilla_piso_doble"
+  }
+ }
+}

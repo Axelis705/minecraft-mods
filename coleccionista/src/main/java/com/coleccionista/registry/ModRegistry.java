@@ -25,6 +25,10 @@ public final class ModRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Coleccionista.MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Coleccionista.MODID);
 
+    /** El zumbido de las lámparas fluorescentes viejas. */
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> ZUMBIDO = SOUNDS.register("zumbido",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "zumbido")));
+
     // ---------------------------------------------------------------- bloques del mapa
     public static final net.minecraftforge.registries.RegistryObject<Block> PANTALLA = BLOCKS.register("pantalla",
             () -> new com.coleccionista.bloque.PantallaBlock(com.axeliscore.plat.Reg.block(Coleccionista.MODID, "pantalla")

@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/door_top_right_open",
+ "textures": {
+  "bottom": "coleccionista:block/puerta_celda_abajo",
+  "top": "coleccionista:block/puerta_celda_arriba"
+ },
+ "render_type": "minecraft:cutout"
+}

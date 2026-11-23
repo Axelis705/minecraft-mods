@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/cube_all",
+ "textures": {
+  "all": "coleccionista:block/azulejo_remate_0"
+ }
+}

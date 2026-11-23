@@ -2,19 +2,19 @@
   "variants": {
     "facing=south": {
       "model": "coleccionista:block/candado",
-      "y": 0
+      "y": 180
     },
     "facing=west": {
       "model": "coleccionista:block/candado",
-      "y": 90
+      "y": 270
     },
     "facing=north": {
       "model": "coleccionista:block/candado",
-      "y": 180
+      "y": 0
     },
     "facing=east": {
       "model": "coleccionista:block/candado",
-      "y": 270
+      "y": 90
     }
   }
 }

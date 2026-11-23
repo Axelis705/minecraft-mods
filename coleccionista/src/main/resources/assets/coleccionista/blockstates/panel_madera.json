@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/panel_madera_0"
+   },
+   {
+    "model": "coleccionista:block/panel_madera_1"
+   }
+  ]
+ }
+}

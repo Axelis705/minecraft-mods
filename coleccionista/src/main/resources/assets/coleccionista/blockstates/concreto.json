@@ -1,0 +1,18 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/concreto_0"
+   },
+   {
+    "model": "coleccionista:block/concreto_1"
+   },
+   {
+    "model": "coleccionista:block/concreto_2"
+   },
+   {
+    "model": "coleccionista:block/concreto_3"
+   }
+  ]
+ }
+}

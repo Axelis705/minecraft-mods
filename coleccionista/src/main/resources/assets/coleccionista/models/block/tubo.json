@@ -1,0 +1,100 @@
+{
+ "textures": {
+  "t": "coleccionista:block/tubo",
+  "particle": "coleccionista:block/tubo"
+ },
+ "elements": [
+  {
+   "from": [
+    5.5,
+    0,
+    5.5
+   ],
+   "to": [
+    10.5,
+    16,
+    10.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#t"
+    },
+    "south": {
+     "texture": "#t"
+    },
+    "west": {
+     "texture": "#t"
+    },
+    "east": {
+     "texture": "#t"
+    }
+   }
+  },
+  {
+   "from": [
+    4.5,
+    0,
+    4.5
+   ],
+   "to": [
+    11.5,
+    1.5,
+    11.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#t"
+    },
+    "south": {
+     "texture": "#t"
+    },
+    "west": {
+     "texture": "#t"
+    },
+    "east": {
+     "texture": "#t"
+    },
+    "down": {
+     "texture": "#t",
+     "cullface": "down"
+    },
+    "up": {
+     "texture": "#t"
+    }
+   }
+  },
+  {
+   "from": [
+    4.5,
+    14.5,
+    4.5
+   ],
+   "to": [
+    11.5,
+    16,
+    11.5
+   ],
+   "faces": {
+    "north": {
+     "texture": "#t"
+    },
+    "south": {
+     "texture": "#t"
+    },
+    "west": {
+     "texture": "#t"
+    },
+    "east": {
+     "texture": "#t"
+    },
+    "down": {
+     "texture": "#t"
+    },
+    "up": {
+     "texture": "#t",
+     "cullface": "up"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/azulejo_sucio_0"
+   },
+   {
+    "model": "coleccionista:block/azulejo_sucio_1"
+   },
+   {
+    "model": "coleccionista:block/azulejo_sucio_2"
+   },
+   {
+    "model": "coleccionista:block/azulejo_sucio_3"
+   }
+  ]
+ }
+}

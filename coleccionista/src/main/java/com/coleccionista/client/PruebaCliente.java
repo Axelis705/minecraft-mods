@@ -516,6 +516,8 @@ final class PruebaCliente {
                 t.cmd("evento ciegas guia " + otro);
             }
         });
+        t.add("cie: esperar la presentación", 5000, () -> {
+        });
         t.add("cie: empezar", 1500, () -> t.cmd("evento ciegas empezar ya"));
         t.photo("75_vendado", 2500, () -> Minecraft.getInstance().player.setXRot(8));
         t.add("vendado", 100, () -> t.check(CiegasCliente.vendado(), "camino con los ojos vendados"));
@@ -523,7 +525,7 @@ final class PruebaCliente {
             t.cmd("evento ciegas terminar");
             t.cmd("evento ciegas preparar");
         });
-        t.add("cie: ser guía", 6000, () -> t.cmd("evento ciegas guia " + yo()));
+        t.add("cie: ser guía", 11000, () -> t.cmd("evento ciegas guia " + yo()));
         t.add("cie: empezar 2", 1500, () -> t.cmd("evento ciegas empezar ya"));
         t.photo("76_guia", 2500, () -> Minecraft.getInstance().player.setXRot(62));
         t.add("guía", 100, () -> t.check(CiegasCliente.soyElGuia() && !CiegasCliente.vendado(), "soy el guía: veo todo y las trampas en rojo"));

@@ -20,6 +20,7 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.BOT.get(), BotRenderer::new);
         e.registerEntityRenderer(ModRegistry.CADAVER.get(), CadaverRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.PANTALLA_BE.get(), PantallaRenderer::new);
+        e.registerBlockEntityRenderer(com.coleccionista.bloque.deco.Deco.TEXTO_BE, TextoRenderer::new);
     }
 
     @SubscribeEvent

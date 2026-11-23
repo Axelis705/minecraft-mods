@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "axis=y": {
+   "model": "coleccionista:block/tubo"
+  },
+  "axis=z": {
+   "model": "coleccionista:block/tubo",
+   "x": 90
+  },
+  "axis=x": {
+   "model": "coleccionista:block/tubo",
+   "x": 90,
+   "y": 90
+  }
+ }
+}

@@ -1,0 +1,64 @@
+{
+ "variants": {
+  "facing=north,encendida=true,falla=false": {
+   "model": "coleccionista:block/lampara_jaula"
+  },
+  "facing=north,encendida=true,falla=true": {
+   "model": "coleccionista:block/lampara_jaula_apagada"
+  },
+  "facing=north,encendida=false,falla=false": {
+   "model": "coleccionista:block/lampara_jaula_apagada"
+  },
+  "facing=north,encendida=false,falla=true": {
+   "model": "coleccionista:block/lampara_jaula_apagada"
+  },
+  "facing=east,encendida=true,falla=false": {
+   "model": "coleccionista:block/lampara_jaula",
+   "y": 90
+  },
+  "facing=east,encendida=true,falla=true": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 90
+  },
+  "facing=east,encendida=false,falla=false": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 90
+  },
+  "facing=east,encendida=false,falla=true": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 90
+  },
+  "facing=south,encendida=true,falla=false": {
+   "model": "coleccionista:block/lampara_jaula",
+   "y": 180
+  },
+  "facing=south,encendida=true,falla=true": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 180
+  },
+  "facing=south,encendida=false,falla=false": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 180
+  },
+  "facing=south,encendida=false,falla=true": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 180
+  },
+  "facing=west,encendida=true,falla=false": {
+   "model": "coleccionista:block/lampara_jaula",
+   "y": 270
+  },
+  "facing=west,encendida=true,falla=true": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 270
+  },
+  "facing=west,encendida=false,falla=false": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 270
+  },
+  "facing=west,encendida=false,falla=true": {
+   "model": "coleccionista:block/lampara_jaula_apagada",
+   "y": 270
+  }
+ }
+}

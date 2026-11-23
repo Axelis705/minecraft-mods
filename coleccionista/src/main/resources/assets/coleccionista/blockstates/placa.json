@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/placa"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/placa",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/placa",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/placa",
+   "y": 270
+  }
+ }
+}
