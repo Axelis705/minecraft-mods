@@ -27,6 +27,8 @@ public final class EventoHud {
     private static int ultimoSegundo = -1;
     /** Dónde acabó la tarjeta de arriba a la izquierda en el último cuadro (para que los avisos del centro no se le encimen). */
     private static int tarjetaDer, tarjetaAbajo;
+    /** Dónde empieza la placa del centro (la tarjeta no debe llegar ahí en pantallas angostas). */
+    private static int placaIzq = Integer.MAX_VALUE;
 
     private EventoHud() {
     }
@@ -70,6 +72,7 @@ public final class EventoHud {
         int pw = Math.max(130, Math.max(f.width(pr) + 30, reloj != null ? f.width(reloj) * 2 + 40 : 0));
         int ph = grande ? 34 : 16;
         int x0 = w / 2 - pw / 2, x1 = w / 2 + pw / 2, y0 = 3, y1 = y0 + ph;
+        placaIzq = x0;
         g.fillGradient(x0, y0, x1, y1, FONDO, FONDO2);
         g.fill(x0, y0, x1, y0 + 1, Ui.alpha(PORCELANA, 0.35F));
         g.fill(x0, y1 - 1, x1, y1, ROJO);
@@ -173,9 +176,21 @@ public final class EventoHud {
             }
         }
         // medidas: la cara de 28 en un marco de 32, el texto a la derecha
-        final int cara = 28, tx = x + 46;
-        int anchoTexto = Math.max((int) (f.width(num) * 1.3F), (int) (f.width(nombre) * 1.2F));
-        int ancho = Math.max(150, Math.max(tx - x + anchoTexto + 10, Math.max(f.width(l2) + 30, f.width(l3) + 20)));
+        final int cara = 28, tx = x + 44;
+        // lo más ancha que puede ser sin llegar a la placa del centro
+        int max = Math.max(110, placaIzq - 6 - x);
+        float escNombre = 1.2F;
+        if (tx - x + f.width(nombre) * escNombre + 10 > max) {
+            escNombre = 1F;
+            if (tx - x + f.width(nombre) + 10 > max) {
+                nombre = f.plainSubstrByWidth(nombre, max - (tx - x) - 16) + "…";
+            }
+        }
+        if (f.width(l3) + 20 > max) {
+            l3 = f.plainSubstrByWidth(l3, max - 26) + "…";
+        }
+        int anchoTexto = Math.max((int) (f.width(num) * 1.3F), (int) (f.width(nombre) * escNombre));
+        int ancho = Math.min(max, Math.max(128, Math.max(tx - x + anchoTexto + 10, Math.max(f.width(l2) + 30, f.width(l3) + 20))));
         int alto = l3.isEmpty() ? 58 : 70;
         fondo(g, x, y, ancho, alto, acento);
         tarjetaDer = x + ancho;
@@ -193,7 +208,7 @@ public final class EventoHud {
         g.fill(fx, fy, fx + 1, fy + cara, 0x55000000);
         // número y nombre
         izq(g, f, num, tx, y + 7, 1.3F, vivo ? ROJO_CL : FANTASMA, true);
-        izq(g, f, nombre, tx, y + 22, 1.2F, vivo ? 0xFFFFFFFF : 0xFFB0C8D0, true);
+        izq(g, f, nombre, tx, y + 22, escNombre, vivo ? 0xFFFFFFFF : 0xFFB0C8D0, true);
         // la línea y el estado
         int ly = y + 42;
         g.fill(x + 8, ly - 3, x + ancho - 8, ly - 2, Ui.alpha(PORCELANA, 0.16F));

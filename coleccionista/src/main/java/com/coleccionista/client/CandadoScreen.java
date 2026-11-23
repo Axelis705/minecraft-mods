@@ -614,10 +614,16 @@ public class CandadoScreen extends CoreScreen {
             fuera = 0.8 - 1.3 * Math.sin(dp / 260.0 * Math.PI);
         }
         double u = Mth.clamp(mano[0], -14, 14), v = Mth.clamp(mano[1], -12, 14);
+        // sobre una rueda el dedo empuja desde su orilla derecha y un poco abajo: el brazo baja a la derecha y el número se sigue viendo
+        int sobre = parte(mano[0], mano[1]);
+        if (sobre >= 0 && sobre < 3) {
+            u = (sobre - 1) * SEP + MEDIO_ANCHO * 0.85;
+            v -= 1.1;
+        }
         Vec3 meta = punto(u, v, fuera);
         manoVis = manoVis == null ? meta : manoVis.lerp(meta, 0.45);
         // del hombro a la mano: el brazo sube desde abajo a la derecha, casi pegado al candado (si viene hacia la cámara se ve enorme)
-        Vec3 y = n.scale(-0.3).add(der.scale(-0.38)).add(arriba.scale(0.87)).normalize();
+        Vec3 y = n.scale(-0.3).add(der.scale(-0.62)).add(arriba.scale(0.72)).normalize();
         Vec3 up = arriba.subtract(y.scale(arriba.dot(y))).normalize();
         Vec3 z = up.scale(-1);
         Vec3 x = y.cross(z).normalize();
@@ -628,7 +634,7 @@ public class CandadoScreen extends CoreScreen {
         ps.pushPose();
         ps.translate(manoVis.x - cam.x, manoVis.y - cam.y, manoVis.z - cam.z);
         ps.mulPose(new Quaternionf().setFromNormalized(rot));
-        ps.scale(0.62F, 0.62F, 0.62F);
+        ps.scale(0.55F, 0.55F, 0.55F);
         // la punta de la mano en el modelo del brazo derecho (pixeles /16): al centro del brazo, abajo (el brazo viene un poco ladeado)
         ps.translate((delgado ? 6.5 : 7.0) / 16, -(delgado ? 12.35 : 11.85) / 16, 0);
         if (mc.getEntityRenderDispatcher().getRenderer(mc.player) instanceof PlayerRenderer pr) {
