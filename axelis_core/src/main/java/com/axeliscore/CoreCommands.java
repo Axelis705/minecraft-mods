@@ -86,7 +86,10 @@ public final class CoreCommands {
                                         .executes(c -> go(c, 0.6))
                                         .then(Commands.argument("velocidad", DoubleArgumentType.doubleArg(0.1, 3))
                                                 .executes(c -> go(c, DoubleArgumentType.getDouble(c, "velocidad")))))));
-        var datos = Commands.literal("datos").requires(Plat::isOp).executes(CoreCommands::dataTest);
+        var datos = Commands.literal("datos").requires(Plat::isOp)
+                .executes(c -> dataTest(c, c.getSource().getEntity() instanceof net.minecraft.server.level.ServerPlayer sp ? List.of(sp) : List.of()))
+                .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.players())
+                        .executes(c -> dataTest(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores"))));
         d.register(Commands.literal("axeliscore").executes(CoreCommands::info).then(galeria).then(criaturas).then(probar).then(ir).then(efecto)
                 .then(datos));
         var node = d.getRoot().getChild("axeliscore");
@@ -107,7 +110,7 @@ public final class CoreCommands {
     }
 
     /** Prueba de los datos guardados: el mundo (guardar y volver a leer) y las opciones (archivo de config). */
-    private static int dataTest(CommandContext<CommandSourceStack> c) {
+    private static int dataTest(CommandContext<CommandSourceStack> c, java.util.Collection<net.minecraft.server.level.ServerPlayer> players) {
         net.minecraft.server.MinecraftServer server = c.getSource().getServer();
         com.axeliscore.data.WorldStore s = com.axeliscore.data.WorldStore.get(server, "axelis_core_prueba");
         java.util.UUID id = java.util.UUID.nameUUIDFromBytes("prueba".getBytes(java.nio.charset.StandardCharsets.UTF_8));
@@ -124,14 +127,14 @@ public final class CoreCommands {
         cfg.reload();
         boolean config = cfg.num("numero", 7, 1, 10, "Número de prueba") == 9 && cfg.bool("activo", true, "Prueba") && first >= 1;
         cfg.set("numero", 7);
-        if (c.getSource().getEntity() instanceof net.minecraft.server.level.ServerPlayer sp) {
+        for (net.minecraft.server.level.ServerPlayer sp : players) {
             // los datos del jugador: se guardan y se manda la copia a su cliente (la prueba con cliente la revisa)
             net.minecraft.nbt.CompoundTag mine = com.axeliscore.data.PlayerStore.of(sp, "axelis_core_prueba");
             mine.putInt("visitas", com.axeliscore.plat.Nbt.i(mine, "visitas") + 1);
             com.axeliscore.data.PlayerStore.save(sp, "axelis_core_prueba");
         }
         c.getSource().sendSuccess(() -> Component.literal("datos: mundo " + (world ? "bien" : "MAL") + ", opciones " + (config ? "bien" : "MAL")), false);
-        AxelisCore.LOGGER.info("AXCORE_DATOS mundo={} config={} peces={}", world, config, com.axeliscore.plat.Nbt.i(pl, "peces"));
+        AxelisCore.LOGGER.info("AXCORE_DATOS mundo={} config={} peces={} jugadores={}", world, config, com.axeliscore.plat.Nbt.i(pl, "peces"), players.size());
         return world && config ? 1 : 0;
     }
 

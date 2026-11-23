@@ -176,3 +176,8 @@ jobs:
           git add -A; git commit -qm "fotos ${{ github.sha }} ${{ matrix.mc }}"
           git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "$b"
           ls -la
+      - name: Ninguna prueba falló
+        run: |
+          l=$(grep -o "AXCORE_AUTOTEST_FIN.*" $P/run/logs/latest.log | tail -1)
+          echo "$l"
+          echo "$l" | grep -q "fallos=0" || { grep "AXCORE_AUTOTEST FALLO" $P/run/logs/latest.log | head -10; echo "::error title=Prueba con cliente ${{ matrix.mc }}::$l"; exit 1; }
