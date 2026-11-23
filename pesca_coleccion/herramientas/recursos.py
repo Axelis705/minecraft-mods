@@ -104,6 +104,8 @@ CANAS = {
     "cana_hierro": ("#C8CDD4", "#7D848E", "#4A2E1A", "#E0B84A"),
     "cana_coral": ("#FF8A9A", "#C2506A", "#1E6E80", "#7FF0E0"),
     "cana_cristal": ("#B8F4FF", "#5FB7E6", "#2A3A6A", "#FFFFFF"),
+    # la de Nilo: madera vieja y oscura con mango dorado y carrete rosa (mítica)
+    "cana_nilo": ("#9A6434", "#55321A", "#E0B84A", "#FF7AC8"),
 }
 
 

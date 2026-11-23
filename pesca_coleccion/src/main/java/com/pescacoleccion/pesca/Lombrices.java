@@ -18,6 +18,8 @@ public final class Lombrices {
     /** Probabilidad de que salga una (con lluvia y sin lluvia). */
     public static final float CON_LLUVIA = 0.22F, SIN_LLUVIA = 0.07F;
 
+    private static boolean aviso;
+
     private Lombrices() {
     }
 
@@ -34,7 +36,12 @@ public final class Lombrices {
         if (p.isCreative() || p.isSpectator() || !tierra(state)) {
             return;
         }
-        float chance = level.isRainingAt(pos.above()) ? CON_LLUVIA : SIN_LLUVIA;
+        boolean lluvia = level.isRainingAt(pos.above());
+        float chance = lluvia ? CON_LLUVIA : SIN_LLUVIA;
+        if (!aviso) {
+            aviso = true;
+            com.pescacoleccion.PescaColeccion.LOGGER.info("PESCA_LOMBRICES primera tierra cavada (lluvia={})", lluvia);
+        }
         if (level.getRandom().nextFloat() < chance) {
             Block.popResource(level, pos, new ItemStack(ModRegistry.CEBOS.get(Cebo.LOMBRIZ).get()));
             level.playSound(null, pos, SoundEvents.SLIME_BLOCK_HIT, SoundSource.BLOCKS, 0.5F, 1.7F);

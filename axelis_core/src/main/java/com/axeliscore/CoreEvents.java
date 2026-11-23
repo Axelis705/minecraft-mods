@@ -16,6 +16,8 @@ public final class CoreEvents {
     /** Lo que los mods quieren hacer cuando entra un jugador ({@link com.axeliscore.AxelisCore#onLogin}). */
     static final java.util.List<java.util.function.Consumer<ServerPlayer>> LOGIN = new java.util.concurrent.CopyOnWriteArrayList<>();
 
+    private static boolean avisoRomper;
+
     /** Lo que los mods quieren hacer cuando un jugador rompe un bloque ({@link com.axeliscore.AxelisCore#onBreak}). */
     static final java.util.List<AxelisCore.BreakHandler> BREAK = new java.util.concurrent.CopyOnWriteArrayList<>();
 
@@ -29,6 +31,10 @@ public final class CoreEvents {
     //#else
     public static void onBreak(net.minecraftforge.event.level.BlockEvent.BreakEvent e) {
     //#endif
+        if (!avisoRomper) {
+            avisoRomper = true;
+            AxelisCore.LOGGER.info("AXCORE_ROMPER primer bloque roto (mods que escuchan: {})", BREAK.size());
+        }
         if (BREAK.isEmpty() || !(e.getPlayer() instanceof ServerPlayer p) || !(e.getLevel() instanceof net.minecraft.server.level.ServerLevel l)) {
             return;
         }

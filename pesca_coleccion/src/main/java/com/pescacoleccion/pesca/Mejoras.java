@@ -28,8 +28,8 @@ public final class Mejoras {
             new Mejora("ojo_aguila", 64, 0, 0, 0, 12, 0),
             new Mejora("leyenda_agua", 75, 0.02F, 10, 0.05F, 0, 1)};
 
-    /** Cañas que se ganan descubriendo especies (la de bambú se fabrica). */
-    public static final int[] CANA_ESPECIES = {0, 5, 10, 16, 22};
+    /** Cañas que se ganan descubriendo especies (la de bambú se fabrica; la de Nilo la regala él). */
+    public static final int[] CANA_ESPECIES = {0, 5, 10, 16, 22, Integer.MAX_VALUE};
 
     private Mejoras() {
     }

@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/handheld_rod",
+  "textures": {
+    "layer0": "pesca_coleccion:item/cana_nilo"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "pesca_coleccion:lanzada": 1
+      },
+      "model": "pesca_coleccion:item/cana_nilo_lanzada"
+    }
+  ]
+}

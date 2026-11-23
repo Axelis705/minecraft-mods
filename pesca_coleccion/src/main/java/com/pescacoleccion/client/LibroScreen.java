@@ -84,11 +84,11 @@ public class LibroScreen extends UiScreen {
         return Nbt.c(Nbt.c(datos(), "peces"), id);
     }
 
-    private static boolean conocido(Especie e) {
+    static boolean conocido(Especie e) {
         return Nbt.i(pez(e.id()), "n") > 0;
     }
 
-    private static ResourceLocation arte(Especie e, boolean sombra) {
+    static ResourceLocation arte(Especie e, boolean sombra) {
         return Ids.rl(MOD, "textures/gui/peces/" + e.id() + (sombra ? "_sombra" : "") + ".png");
     }
 
@@ -173,7 +173,7 @@ public class LibroScreen extends UiScreen {
     // ------------------------------------------------------------------ cuadros
 
     /** El cuadro de un pez en la cuadrícula: si ya se pescó, todo; si no, una pista de dónde buscarlo. */
-    private static InfoCard card(Especie e) {
+    static InfoCard card(Especie e) {
         Rareza r = Rareza.of(e.rareza());
         if (!conocido(e)) {
             return new InfoCard(Component.literal("???")).color(0xFF8A90A0).image(arte(e, true), 32)
@@ -208,7 +208,8 @@ public class LibroScreen extends UiScreen {
             ItemStack st = new ItemStack(ModRegistry.CANAS.get(c).get());
             InfoCard card = ((com.pescacoleccion.pesca.CanaItem) st.getItem()).card(st, false);
             card.parts.removeIf(p -> p.kind == InfoCard.Kind.HINT);
-            card.text(Component.translatable(MOD + ".libro.cana_pide", Mejoras.CANA_ESPECIES[c.ordinal()]), 0xFF9AA3BC);
+            card.text(c == Cana.NILO ? Component.translatable(MOD + ".libro.cana_nilo")
+                    : Component.translatable(MOD + ".libro.cana_pide", Mejoras.CANA_ESPECIES[c.ordinal()]), 0xFF9AA3BC);
             if (puedeReclamar(c)) {
                 card.hint(Component.translatable(MOD + ".libro.reclamar_ayuda"));
             }
@@ -255,6 +256,7 @@ public class LibroScreen extends UiScreen {
                 return;
             }
             String s = got ? "✔ " + Component.translatable(MOD + ".libro.reclamada").getString()
+                    : c == Cana.NILO ? Component.translatable(MOD + ".libro.regalo_nilo").getString()
                     : have + "/" + need + " " + Component.translatable(MOD + ".libro.especies").getString();
             g.drawString(Ui.font(), s, x + 22, y + 12, got ? th.good : th.textDim, false);
             return;

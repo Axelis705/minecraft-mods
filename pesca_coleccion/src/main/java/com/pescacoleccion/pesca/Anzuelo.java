@@ -243,6 +243,8 @@ public class Anzuelo extends Entity implements Animated {
             level().addFreshEntity(it);
             p.giveExperiencePoints(1 + e.rareza() * 2 + random.nextInt(3));
             splash(20, 0.4);
+            // la primera vez que alguien saca un pez en este mundo, llega Nilo
+            com.pescacoleccion.nilo.NiloMundo.alPescar(p, blockPosition());
         } else if (sim.result == PeleaSim.HILO_ROTO) {
             level().playSound(null, getX(), getY(), getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1F, 0.5F);
             Plat.msg(p, Component.translatable("pesca_coleccion.pesca.hilo_roto"), true);
@@ -326,6 +328,10 @@ public class Anzuelo extends Entity implements Animated {
                 rareza = especie.rareza();
                 tamano = especie.tamano(random.nextDouble());
                 picadas = Captura.picadas(random, rareza);
+                if (cana == Cana.NILO) {
+                    // con la caña de Nilo los peces no engañan: solo la picada buena
+                    picadas = new int[] {picadas[picadas.length - 1]};
+                }
                 idx = 0;
                 t = 0;
                 double a = random.nextDouble() * Math.PI * 2;

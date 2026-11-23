@@ -11,7 +11,9 @@ public enum Cana {
     ROBLE("cana_roble", Rareza.POCO_COMUN, 0.44F, 1.05F, 110, 11, 0.90F, 1),
     HIERRO("cana_hierro", Rareza.RARO, 0.48F, 1.10F, 125, 12, 0.80F, 2),
     CORAL("cana_coral", Rareza.EPICO, 0.52F, 1.15F, 140, 13.5F, 0.70F, 3),
-    CRISTAL("cana_cristal", Rareza.LEGENDARIO, 0.58F, 1.25F, 160, 15, 0.60F, 4);
+    CRISTAL("cana_cristal", Rareza.LEGENDARIO, 0.58F, 1.25F, 160, 15, 0.60F, 4),
+    /** La caña de Nilo: su regalo con la amistad más alta. Con ella no hay piquetes falsos. */
+    NILO("cana_nilo", Rareza.MITICO, 0.62F, 1.3F, 175, 16, 0.55F, 4);
 
     public final String id;
     public final Rareza rareza;

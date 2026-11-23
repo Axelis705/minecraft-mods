@@ -30,6 +30,12 @@ public final class ModRegistry {
                     com.pescacoleccion.pesca.Anzuelo::new, net.minecraft.world.entity.MobCategory.MISC).sized(0.25F, 0.25F)
                     .clientTrackingRange(6).updateInterval(1)));
 
+    /** Nilo, el pescador (llega solo la primera vez que alguien pesca). */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.pescacoleccion.nilo.Nilo>> NILO = ENTITIES.register("nilo",
+            () -> com.axeliscore.plat.Reg.entity(PescaColeccion.MODID, "nilo", EntityType.Builder.<com.pescacoleccion.nilo.Nilo>of(
+                    com.pescacoleccion.nilo.Nilo::new, net.minecraft.world.entity.MobCategory.CREATURE).sized(0.6F, 1.8F)
+                    .clientTrackingRange(10)));
+
     /** Las cañas (una por tipo de {@link com.pescacoleccion.pesca.Cana}). */
     public static final java.util.Map<com.pescacoleccion.pesca.Cana, net.minecraftforge.registries.RegistryObject<Item>> CANAS = new java.util.EnumMap<>(
             com.pescacoleccion.pesca.Cana.class);

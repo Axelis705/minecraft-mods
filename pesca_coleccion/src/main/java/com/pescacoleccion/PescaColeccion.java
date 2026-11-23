@@ -36,6 +36,8 @@ public class PescaColeccion {
         com.axeliscore.data.PlayerStore.syncOnLogin(MODID);
         com.pescacoleccion.pesca.Libro.init();
         com.pescacoleccion.pesca.Lombrices.init();
+        com.pescacoleccion.nilo.Encargos.init();
+        com.pescacoleccion.nilo.Tienda.init();
         // la caña se dibuja sin el hilo que cuelga mientras su corcho está afuera (como la de Minecraft)
         Net.onClient(() -> com.axeliscore.item.client.ItemModelProps.bool(MODID, "lanzada", (stack, quien) -> {
             if (!(quien instanceof net.minecraft.world.entity.player.Player p) || !(stack.getItem() instanceof com.pescacoleccion.pesca.CanaItem)) {
@@ -49,7 +51,18 @@ public class PescaColeccion {
             c.getSource().sendSuccess(() -> Component.translatable(MODID + ".hola", AxelisCore.version()), false);
             LOGGER.info("PRUEBA_PESCA_COLECCION_OK {}", AxelisCore.version());
             return 1;
-        }).then(Commands.literal("pelea").requires(com.axeliscore.plat.Plat::isOp)
+        }).then(Commands.literal("nilo").requires(com.axeliscore.plat.Plat::isOp)
+                .then(Commands.literal("llamar").executes(c -> {
+                    var p = c.getSource().getPlayerOrException();
+                    com.pescacoleccion.nilo.NiloMundo.llamar(p, com.pescacoleccion.nilo.NiloMundo.aguaCerca(p));
+                    return 1;
+                }))
+                .then(Commands.literal("aqui").executes(c -> {
+                    com.pescacoleccion.nilo.NiloMundo.aqui(c.getSource().getPlayerOrException());
+                    return 1;
+                }))
+                .then(Commands.literal("prueba").executes(c -> com.pescacoleccion.nilo.Prueba.correr(c.getSource()))))
+        .then(Commands.literal("pelea").requires(com.axeliscore.plat.Plat::isOp)
                 .then(Commands.argument("rareza", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 5))
                         .executes(c -> com.pescacoleccion.pelea.Prueba.pelea(c.getSource(),
                                 com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "rareza"), false))

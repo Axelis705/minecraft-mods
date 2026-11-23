@@ -39,6 +39,9 @@ public final class Pesca {
         } else if (perfecto) {
             Fx.title(p, Component.translatable(PescaColeccion.MODID + ".pelea.perfecta"), nombre, 0x7CF29A);
         }
+        // los encargos de Nilo que piden pescar
+        com.pescacoleccion.nilo.Encargos.alPescar(p, e, cm, perfecto, r.nuevo());
+        com.axeliscore.data.PlayerStore.save(p, PescaColeccion.MODID);
         if (r.estrellasNuevas() > 0) {
             Plat.msg(p, Component.translatable(PescaColeccion.MODID + ".pesca.estrella", nombre, Integer.bitCount(r.estrellasAhora() & 7)), true);
         }

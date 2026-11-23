@@ -44,6 +44,16 @@ public class PezItem extends CoreItem {
         return st;
     }
 
+    /** El tamaño de un ejemplar (0 si no tiene). */
+    public static float cm(ItemStack st) {
+        return Nbt.f(ItemTag.get(st), "cm");
+    }
+
+    /** ¿Es de los grandes de su especie (la cuarta parte más grande)? */
+    public static boolean grande(ItemStack st, Especie e) {
+        return cm(st) >= e.cmMin() + (e.cmMax() - e.cmMin()) * 0.75F;
+    }
+
     private static String num(float v) {
         return v >= 100 ? String.format(Locale.ROOT, "%.0f", v) : String.format(Locale.ROOT, "%.1f", v);
     }
