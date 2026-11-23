@@ -238,14 +238,16 @@ public class EstudioScreen extends UiScreen {
         for (int a : anchos) {
             total += a + 2;
         }
-        if (derecha - total - 6 - cx < 40) {
+        int velMin = Ui.font().width("Vel.  2.00x") + 2;
+        if (derecha - total - 6 - cx < velMin) {
             // angosto: la curva solo del ancho de la que está puesta
             total -= anchos[2];
             anchos[2] = Ui.font().width(cur.isEmpty() ? "Curva" : corto(cur)) + 10;
             total += anchos[2];
         }
         int velW = Math.max(30, derecha - total - 6 - cx);
-        add(new Slider(cx, byy - 7, velW, "Vel.", 0.1F, 2F, 0.05F, EstudioEditor.velocidad, v -> String.format(Locale.ROOT, "%.2fx", v),
+        String velNombre = velW >= velMin ? "Vel." : "";
+        add(new Slider(cx, byy - 7, velW, velNombre, 0.1F, 2F, 0.05F, EstudioEditor.velocidad, v -> String.format(Locale.ROOT, "%.2fx", v),
                 v -> EstudioEditor.velocidad = v));
         cx = Math.max(cx + velW + 6, derecha - total);
         add(new Button(cx, byy, anchos[0], 14, "+Clave", () -> {
