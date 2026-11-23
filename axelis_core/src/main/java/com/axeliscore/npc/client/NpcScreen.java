@@ -452,7 +452,7 @@ public class NpcScreen extends UiScreen {
             String s = String.valueOf(n);
             int ex = px + pw - 30;
             g.renderItem(def.tienda().iconoMoneda(1), ex, ry + 6);
-            g.drawString(f, s, ex - f.width(s) - 3, ry + 10, theme.title, true);
+            Ui.textoGrabado(g, s, ex - f.width(s) - 3, ry + 10, theme.title);
         }
         int x = px + 12, y = py + 80, iw = pw - 24;
         switch (tab) {

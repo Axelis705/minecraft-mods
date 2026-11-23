@@ -32,6 +32,7 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * (Cliente) El editor de animaciones (/axeliscore estudio): la criatura se ve en el mundo, en medio, con su esqueleto encima.
@@ -49,6 +50,14 @@ public class EstudioScreen extends UiScreen {
     private static final String[] CANALES = {"rotation", "position", "scale"};
     private int pestana;
     private final Slider[] props = new Slider[3];
+    private int etiquetaY = -1;
+    private static boolean modoEfectos;
+
+    /** (Pruebas) Mostrar la lista de efectos en vez de giro / posición / escala. */
+    public static void verEfectos(boolean v) {
+        modoEfectos = v;
+    }
+    private static final String[] AYUDA = {"Izq: girar", "Der: mover hueso", "Espacio: ▶", "← →: cuadro", "Supr: quitar", "S: guardar"};
     private boolean girandoModelo, girandoHueso;
     private long ultimoPoner;
     private float[] arrastre;
@@ -58,6 +67,7 @@ public class EstudioScreen extends UiScreen {
     public EstudioScreen() {
         super(Component.literal("Estudio"), 10, 10, Theme.PIEDRA);
         panelPrincipal = false;
+        modoEfectos = false;
         CompoundTag d = ClientData.get(EstudioServidor.DATOS);
         Minecraft mc = Minecraft.getInstance();
         Entity e = mc.level == null ? null : mc.level.getEntity(Nbt.i(d, "ent"));
@@ -139,11 +149,16 @@ public class EstudioScreen extends UiScreen {
                 }
             }
         }
-        // animaciones
-        int x = rx() + 3, w = rw() - 6, y = arriba() + 16;
-        int clipsAlto = Math.max(33, Math.min(66, (by() - arriba()) - 150));
+        // animaciones: se arma de abajo hacia arriba para que quepa también con la interfaz grande (escala 3 o 4)
+        int x = rx() + 3, w = rw() - 6;
+        int ty = by() - 66 - 15;                 // pestañas Giro / Mover / Escala (debajo van los tres deslizadores)
+        etiquetaY = ty - 11;                     // nombre del hueso elegido
+        int dy = etiquetaY - 22;                 // duración
+        int ny = dy - 16;                        // nueva / bucle
+        int clipsAlto = ny - 3 - (arriba() + 16);
+        int y = arriba() + 16;
         List<String> cs = EstudioEditor.clips();
-        ListView<String> clips = add(new ListView<>(x, y, w, clipsAlto, 11, (g, c, xx, yy, ww, hh, sel, hov, th) -> {
+        ListView<String> clips = add(new ListView<>(x, y, w, Math.max(11, clipsAlto), 11, (g, c, xx, yy, ww, hh, sel, hov, th) -> {
             int p = c.lastIndexOf('.');
             g.drawString(Ui.font(), Ui.fit(p >= 0 ? c.substring(p + 1) : c, ww - 4), xx, yy + 2, sel ? th.title : th.text, false);
         }, c -> {
@@ -153,26 +168,52 @@ public class EstudioScreen extends UiScreen {
         }));
         clips.items.addAll(cs);
         clips.selected = cs.indexOf(EstudioEditor.clip);
-        y += clipsAlto + 3;
+        y = ny;
         int bw = (w - 3) / 2;
         add(new Button(x, y, bw, 13, "Nueva", () -> {
             EstudioEditor.nueva();
             init();
-        }));
+        })).help(Component.literal("Nueva animación"), Component.literal("Empieza una animación vacía para esta criatura."));
         add(new Button(x + bw + 3, y, bw, 13, EstudioEditor.enBucle() ? "En bucle" : "Una vez", () -> {
             EstudioEditor.bucle(!EstudioEditor.enBucle());
             init();
-        }));
-        y += 16;
+        })).help(Component.literal("Repetir"), Component.literal("Si la animación vuelve a empezar al terminar."));
+        y = dy;
         add(new Slider(x, y, w, "Duración", 0.1F, 10F, 0.05F, EstudioEditor.largo(), v -> String.format(Locale.ROOT, "%.2f s", v),
                 EstudioEditor::largo));
-        y += 22;
-        Tabs t = add(new Tabs(x, y, w, 12, i -> {
-            pestana = i;
+        // en la línea del hueso: cambiar entre moverlo (giro / posición / escala) y ponerle efectos de partículas
+        int ew = Ui.font().width("✦ Efecto") + 8;
+        add(new Button(x + w - ew, etiquetaY - 1, ew, 12, modoEfectos ? "‹ Hueso" : "✦ Efecto", () -> {
+            modoEfectos = !modoEfectos;
+            init();
+        })).help(Component.literal("Efectos de partículas"), Component.literal(
+                "Pone un efecto en este momento de la animación, saliendo del hueso elegido (se ve morado en la línea de tiempo)."));
+        y = ty;
+        if (modoEfectos) {
+            List<String> efs = new java.util.ArrayList<>();
+            efs.add("");
+            efs.addAll(com.axeliscore.fx.client.EfectosCliente.disponibles());
+            ListView<String> lista = add(new ListView<>(x, y, w, by() - 6 - y, 11, (g, ef, xx, yy, ww, hh, sel, hov, th) -> {
+                g.drawString(Ui.font(), ef.isEmpty() ? "(ninguno)" : "✦ " + ef, xx + 2, yy + 2, ef.isEmpty() ? th.textDim : sel ? th.title : th.text,
+                        false);
+            }, ef -> {
+                EstudioEditor.efecto(ef);
+                Entity o = EstudioEditor.objetivo();
+                if (!ef.isEmpty() && o != null) {
+                    com.axeliscore.fx.client.EfectosCliente.desdeAnimacion(o, ef, EstudioEditor.hueso.isEmpty() ? null : EstudioEditor.hueso);
+                }
+                init();
+            }));
+            lista.items.addAll(efs);
+            lista.selected = efs.indexOf(EstudioEditor.efecto());
+        } else {
+            Tabs t = add(new Tabs(x, y, w, 12, i -> {
+                pestana = i;
+                rehacerProps();
+            }, "Giro", "Mover", "Escala"));
+            t.active = pestana;
             rehacerProps();
-        }, "Giro", "Mover", "Escala"));
-        t.active = pestana;
-        rehacerProps();
+        }
         // abajo: botones
         int bx = lx() + 3, byy = by() + bh() - 18, sb = 16;
         add(new Button(bx, byy, sb, 14, "|<", () -> irA(0)));
@@ -184,36 +225,55 @@ public class EstudioScreen extends UiScreen {
         add(new Button(bx + 3 * (sb + 2) + 4, byy, sb, 14, ">", () -> irA(EstudioEditor.tiempo + CUADRO)));
         add(new Button(bx + 4 * (sb + 2) + 4, byy, sb, 14, ">|", () -> irA(EstudioEditor.largo())));
         int cx = bx + 5 * (sb + 2) + 8;
-        add(new Slider(cx, byy - 7, 58, "Vel.", 0.1F, 2F, 0.05F, EstudioEditor.velocidad, v -> String.format(Locale.ROOT, "%.2fx", v),
+        // a la derecha, cada botón del ancho de su texto; la velocidad usa lo que sobra en medio
+        String cur = EstudioEditor.curva();
+        int wCurva = Ui.font().width("Curva");
+        for (String c : EstudioEditor.CURVAS) {
+            wCurva = Math.max(wCurva, Ui.font().width(corto(c)));
+        }
+        int[] anchos = {Ui.font().width("+Clave") + 10, Ui.font().width("Quitar") + 10, wCurva + 10, Ui.font().width("Código ✔") + 10,
+                Ui.font().width("Guardar*") + 10};
+        int derecha = width - 7;
+        int total = 0;
+        for (int a : anchos) {
+            total += a + 2;
+        }
+        if (derecha - total - 6 - cx < 40) {
+            // angosto: la curva solo del ancho de la que está puesta
+            total -= anchos[2];
+            anchos[2] = Ui.font().width(cur.isEmpty() ? "Curva" : corto(cur)) + 10;
+            total += anchos[2];
+        }
+        int velW = Math.max(30, derecha - total - 6 - cx);
+        add(new Slider(cx, byy - 7, velW, "Vel.", 0.1F, 2F, 0.05F, EstudioEditor.velocidad, v -> String.format(Locale.ROOT, "%.2fx", v),
                 v -> EstudioEditor.velocidad = v));
-        cx += 64;
-        add(new Button(cx, byy, 36, 14, "+Clave", () -> {
+        cx = Math.max(cx + velW + 6, derecha - total);
+        add(new Button(cx, byy, anchos[0], 14, "+Clave", () -> {
             EstudioEditor.poner(CANALES[pestana], EstudioEditor.valor(EstudioEditor.hueso, CANALES[pestana]));
             init();
         })).help(Component.literal("Poner cuadro clave"), Component.literal("Guarda el valor del hueso en este momento."));
-        cx += 38;
-        add(new Button(cx, byy, 36, 14, "Quitar", () -> {
+        cx += anchos[0] + 2;
+        add(new Button(cx, byy, anchos[1], 14, "Quitar", () -> {
             EstudioEditor.quitar();
             init();
-        }));
-        cx += 38;
-        String cur = EstudioEditor.curva();
-        add(new Button(cx, byy, 62, 14, cur.isEmpty() ? "Curva" : corto(cur), () -> {
+        })).help(Component.literal("Quitar cuadro clave"), Component.literal("Borra el cuadro clave del hueso en este momento (Supr)."));
+        cx += anchos[1] + 2;
+        add(new Button(cx, byy, anchos[2], 14, cur.isEmpty() ? "Curva" : corto(cur), () -> {
             String c = EstudioEditor.curva();
             int i = java.util.Arrays.asList(EstudioEditor.CURVAS).indexOf(c);
             EstudioEditor.curva(EstudioEditor.CURVAS[(i + 1) % EstudioEditor.CURVAS.length]);
             init();
         })).help(Component.literal("Curva"), Component.literal("Cómo llega a este cuadro clave (clic para cambiar)."));
-        cx += 64;
-        add(new Button(cx, byy, 40, 14, EstudioEditor.codigo ? "Código ✔" : "Código", () -> {
+        cx += anchos[2] + 2;
+        add(new Button(cx, byy, anchos[3], 14, EstudioEditor.codigo ? "Código ✔" : "Código", () -> {
             EstudioEditor.codigo = !EstudioEditor.codigo;
             init();
         })).help(Component.literal("Con el código"), Component.literal("Muestra también lo que hace el personaje por código (mirar, resortes)."));
-        cx += 42;
-        add(new Button(cx, byy, 44, 14, EstudioEditor.cambios ? "Guardar*" : "Guardar", () -> {
+        cx += anchos[3] + 2;
+        add(new Button(cx, byy, anchos[4], 14, EstudioEditor.cambios ? "Guardar*" : "Guardar", () -> {
             guardar();
             init();
-        }));
+        })).help(Component.literal("Guardar (S)"), Component.literal("Escribe la animación en axelis_estudio/ (se guarda sola al salir)."));
         // línea de tiempo
         add(new Linea(lx() + 3, by() + 14, width - 14, 22));
     }
@@ -238,7 +298,7 @@ public class EstudioScreen extends UiScreen {
         float max = canal.equals("rotation") ? 180 : canal.equals("position") ? 16 : 3;
         float paso = canal.equals("rotation") ? 0.5F : canal.equals("position") ? 0.1F : 0.01F;
         int x = rx() + 3, w = rw() - 6;
-        int y = by() - 64;
+        int y = by() - 66;
         String[] ejes = {"· X", "· Y", "· Z"};
         for (int i = 0; i < 3; i++) {
             int fi = i;
@@ -264,10 +324,14 @@ public class EstudioScreen extends UiScreen {
         Ui.panel(g, lx(), arriba(), lw(), by() - arriba() - 4, t, 1F);
         Ui.panel(g, rx(), arriba(), rw(), by() - arriba() - 4, t, 1F);
         Ui.panel(g, lx(), by(), width - 8, bh(), t, 1F);
-        g.drawString(Ui.font(), "Huesos", lx() + 5, arriba() + 5, t.title, true);
-        g.drawString(Ui.font(), "Animaciones", rx() + 5, arriba() + 5, t.title, true);
-        String h = EstudioEditor.hueso.isEmpty() ? "(elige un hueso)" : EstudioEditor.hueso;
-        g.drawString(Ui.font(), Ui.fit(h, rw() - 10), rx() + 5, by() - 76, EstudioEditor.hueso.isEmpty() ? t.textDim : t.accent, true);
+        Ui.textoGrabado(g, "Huesos", lx() + 5, arriba() + 5, t.title);
+        Ui.textoGrabado(g, "Animaciones", rx() + 5, arriba() + 5, t.title);
+        if (etiquetaY >= 0) {
+            String h = EstudioEditor.hueso.isEmpty() ? "(elige un hueso)" : EstudioEditor.hueso;
+            int ew = Ui.font().width("✦ Efecto") + 8;
+            g.drawString(Ui.font(), Ui.fit(h, rw() - 12 - ew), rx() + 5, etiquetaY + 1, EstudioEditor.hueso.isEmpty() ? t.textDim : t.accent,
+                    true);
+        }
         // valores en vivo mientras se reproduce
         if (EstudioEditor.reproducir && !EstudioEditor.hueso.isEmpty() && !girandoHueso) {
             float[] v = EstudioEditor.valor(EstudioEditor.hueso, CANALES[pestana]);
@@ -281,9 +345,17 @@ public class EstudioScreen extends UiScreen {
         String tt = String.format(Locale.ROOT, "%.2f / %.2f s  (cuadro %d)", EstudioEditor.tiempo, EstudioEditor.largo(),
                 Math.round(EstudioEditor.tiempo / CUADRO));
         g.drawString(Ui.font(), tt, lx() + 6, by() + 4, t.text, false);
-        String ayuda = "Izq: girar  ·  Der: mover hueso  ·  Espacio, flechas, Supr, S";
-        g.drawString(Ui.font(), Ui.fit(ayuda, width - 20 - Ui.font().width(tt) - 30), width - 10 - Math.min(Ui.font().width(ayuda),
-                width - 20 - Ui.font().width(tt) - 30), by() + 4, t.textDim, false);
+        // ayuda: tantas pistas como quepan a la derecha del tiempo
+        int libre = width - 24 - lx() - Ui.font().width(tt);
+        String ayuda = "";
+        for (String p : AYUDA) {
+            String n = ayuda.isEmpty() ? p : ayuda + "  ·  " + p;
+            if (Ui.font().width(n) > libre) {
+                break;
+            }
+            ayuda = n;
+        }
+        g.drawString(Ui.font(), ayuda, width - 10 - Ui.font().width(ayuda), by() + 4, t.textDim, false);
         if (!EstudioEditor.aviso.isEmpty()) {
             g.drawString(Ui.font(), "Guardado: " + EstudioEditor.aviso, lx() + lw() + 8, arriba() + 4, 0xFF7CFC9A, true);
         }
@@ -541,6 +613,19 @@ public class EstudioScreen extends UiScreen {
                     g.fill(px - 1, ky, px + 2, ky + 3, colores[c]);
                 }
             }
+            // efectos de partículas de la animación: rombos morados arriba
+            for (Map.Entry<Float, String> ef : EstudioEditor.efectos()) {
+                int px = xDe(ef.getKey());
+                for (int r = 0; r < 3; r++) {
+                    g.fill(px - r - 1, y + 1 + r, px + r + 2, y + 2 + r, 0xFF000000);
+                    g.fill(px - r - 1, y + 7 - r, px + r + 2, y + 8 - r, 0xFF000000);
+                }
+                for (int r = 0; r < 2; r++) {
+                    g.fill(px - r, y + 2 + r, px + r + 1, y + 3 + r, 0xFFC77DFF);
+                    g.fill(px - r, y + 6 - r, px + r + 1, y + 7 - r, 0xFFC77DFF);
+                }
+                g.fill(px - 2, y + 4, px + 3, y + 5, 0xFFE0B0FF);
+            }
             // aguja
             int ax = xDe(EstudioEditor.tiempo);
             g.fill(ax, y - 2, ax + 1, y + h, 0xFFFF4D4D);
@@ -568,6 +653,11 @@ public class EstudioScreen extends UiScreen {
                     }
                 }
             }
+            for (Map.Entry<Float, String> ef : EstudioEditor.efectos()) {
+                if (Math.abs(xDe(ef.getKey()) - mx) <= 3) {
+                    tt = ef.getKey();
+                }
+            }
             EstudioEditor.tiempo = tt;
         }
 
@@ -592,8 +682,14 @@ public class EstudioScreen extends UiScreen {
 
         @Override
         public InfoCard card(double mx, double my) {
+            for (Map.Entry<Float, String> ef : EstudioEditor.efectos()) {
+                if (Math.abs(xDe(ef.getKey()) - mx) <= 3 && my < y + 10) {
+                    return new InfoCard(Component.literal("✦ " + ef.getValue())).text(Component.literal(String.format(Locale.ROOT,
+                            "Efecto de partículas en %.2f s.", ef.getKey()))).width(150);
+                }
+            }
             return new InfoCard(Component.literal("Línea de tiempo")).text(Component.literal(
-                    "Arrastra para moverte. Dorado: giro, celeste: posición, verde: escala.")).width(170);
+                    "Arrastra para moverte. Dorado: giro, celeste: posición, verde: escala, morado: efectos.")).width(170);
         }
     }
 }

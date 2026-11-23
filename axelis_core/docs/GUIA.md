@@ -106,6 +106,13 @@ event.registerEntityRenderer(PESCADOR.get(), PersonaRenderer.with(Ids.rl("pesca"
 - **Movimiento por código** (`anim.mc.Procedural`, en `axPose`): `resorte(h, pose, "tail", entidad, rigidez, freno, fuerza)` y
   `cadena(...)` para colas, pelo, orejas y capas; `mirar(...)` con límites y suavizado repartido entre huesos; `ruido(...)` suave.
 - **Dónde está un hueso en el mundo**: `Huesos.posicion(entidad, "right_hand", pt)` (cliente).
+- **Texturas que se mueven por hueso** (en el geo, junto a `bones`):
+  - `"axelis_frames": [{"bone": "eyes", "frames": 4, "fps": 8, "dv": 8}]`: la textura de ese hueso baja `dv` píxeles (o se
+    corre `du`) en cada cuadro. Sirve para ojos que parpadean, fuego, agua o pantallas, sin tocar el código.
+  - `"axelis_pulse": [{"bone": "crystal", "min": 0.6, "max": 1, "speed": 1.5}]`: el hueso late de brillo (de `min` a `max`, `speed`
+    veces por segundo). Con `axelis_glow` queda un cristal o un núcleo que respira.
+  - Por código, en `axPose`: `pose.tinte(geo.bone("crystal"), 0xFF66CCFF)` tiñe un hueso y `pose.uv(geo.bone("eyes"), 0, 8)` corre su
+    textura (en píxeles).
 
 ## Interfaz (`ui/`)
 

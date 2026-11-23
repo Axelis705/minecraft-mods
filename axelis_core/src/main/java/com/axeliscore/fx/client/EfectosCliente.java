@@ -70,6 +70,17 @@ public final class EfectosCliente {
     /** Cuántos efectos del Core se lanzaron (para las pruebas). */
     public static int lanzados;
 
+    /** Los efectos que trae el Core (en {@code assets/axelis_core/efectos/}). */
+    public static final List<String> DEL_CORE = List.of("chispas", "golpe", "explosion_magica", "curacion", "aparecer", "fuego_circulo",
+            "hojas", "nevada", "subir_nivel", "portal");
+
+    /** Para elegir en el estudio: los del Core y los de la carpeta del estudio. */
+    public static List<String> disponibles() {
+        java.util.LinkedHashSet<String> r = new java.util.LinkedHashSet<>(DEL_CORE);
+        r.addAll(EstudioArchivos.efectosDelEstudio());
+        return new java.util.ArrayList<>(r);
+    }
+
     private EfectosCliente() {
     }
 

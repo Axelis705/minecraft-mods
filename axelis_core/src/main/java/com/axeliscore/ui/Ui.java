@@ -238,7 +238,7 @@ public final class Ui {
     public static void title(G g, String s, int cx, int y, Theme t) {
         Font f = font();
         int w = f.width(s);
-        g.drawString(f, s, cx - w / 2, y, t.title, true);
+        textoGrabado(g, s, cx - w / 2, y, t.title);
         int ly = y + 4;
         g.fill(cx - w / 2 - 22, ly, cx - w / 2 - 6, ly + 1, alpha(t.accent, 0.8F));
         g.fill(cx + w / 2 + 6, ly, cx + w / 2 + 22, ly + 1, alpha(t.accent, 0.8F));
@@ -253,7 +253,26 @@ public final class Ui {
         int dy = pressed ? 1 : 0;
         int col = enabled ? mix(t.buttonText, 0xFFFFFFA0, hover * 0.35F) : 0xFFA0A0A0;
         String s = fit(label, w - 6);
-        g.drawString(f, s, x + (w - f.width(s)) / 2, y + (h - 8) / 2 + dy, col, true);
+        textoGrabado(g, s, x + (w - f.width(s)) / 2, y + (h - 8) / 2 + dy, col);
+    }
+
+    /** Qué tan claro es un color (0 negro, 1 blanco). */
+    public static float luz(int argb) {
+        return (0.299F * ((argb >> 16) & 255) + 0.587F * ((argb >> 8) & 255) + 0.114F * (argb & 255)) / 255F;
+    }
+
+    /**
+     * Texto encima de un botón o pestaña: si es claro, con sombra (como Minecraft); si es oscuro (temas claros como el pergamino), sin
+     * sombra negra y con un filo claro abajo, como letras grabadas. Así no queda borroso.
+     */
+    public static void textoGrabado(G g, String s, int x, int y, int col) {
+        Font f = font();
+        if (luz(col) < 0.45F) {
+            g.drawString(f, s, x, y + 1, alpha(0xFFFFFFFF, 0.4F), false);
+            g.drawString(f, s, x, y, col, false);
+        } else {
+            g.drawString(f, s, x, y, col, true);
+        }
     }
 
     /**

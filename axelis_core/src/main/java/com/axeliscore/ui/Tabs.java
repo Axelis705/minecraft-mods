@@ -28,15 +28,49 @@ public class Tabs extends Widget {
         this.hov = new float[names.length];
     }
 
+    private int[] bordes;
+    private int bordesW = -1, bordesX;
+
+    /**
+     * Dónde empieza cada pestaña: del ancho de su nombre y lo que sobra repartido parejo (así "Tarjetas" no se corta si hay lugar); si
+     * no caben todas, todas iguales.
+     */
+    private int[] bordes() {
+        int n = names.length;
+        if (bordes == null || bordesW != w || bordesX != x) {
+            bordes = new int[n + 1];
+            int[] nat = new int[n];
+            int suma = 0;
+            for (int i = 0; i < n; i++) {
+                nat[i] = Ui.font().width(names[i]) + 10;
+                suma += nat[i];
+            }
+            int acc = 0;
+            for (int i = 0; i < n; i++) {
+                bordes[i] = x + acc;
+                acc += suma <= w ? nat[i] + (w - suma) * (i + 1) / n - (w - suma) * i / n : w * (i + 1) / n - w * i / n;
+            }
+            bordes[n] = x + w;
+            bordesW = w;
+            bordesX = x;
+        }
+        return bordes;
+    }
+
     private int tabAt(double mx) {
-        int n = names.length, tw = w / n;
-        int i = (int) ((mx - x) / tw);
-        return i >= 0 && i < n ? i : -1;
+        int[] b = bordes();
+        for (int i = 0; i < names.length; i++) {
+            if (mx >= b[i] && mx < b[i + 1]) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     protected void draw(G g, int mx, int my, Theme t) {
-        int n = names.length, tw = w / n;
+        int n = names.length;
+        int[] b = bordes();
         int over = inside(mx, my) ? tabAt(mx) : -1;
         if (sel < 0) {
             sel = active;
@@ -45,7 +79,7 @@ public class Tabs extends Widget {
         sel += (active - sel) * 0.25F;
         for (int i = 0; i < n; i++) {
             hov[i] += ((i == over ? 1 : 0) - hov[i]) * 0.3F;
-            int tx = x + i * tw;
+            int tx = b[i], tw = b[i + 1] - b[i];
             boolean on = i == active;
             int top = on ? y - 1 : y + 2 - (int) (hov[i] * 1.5F);
             if (on) {
@@ -57,11 +91,14 @@ public class Tabs extends Widget {
             }
             var f = Ui.font();
             String s = Ui.fit(names[i], tw - 6);
-            g.drawString(f, s, tx + (tw - f.width(s)) / 2, top + (y + h - top - 8) / 2 + 1, on ? t.title : Ui.mix(t.textDim, 0xFFFFFFFF, hov[i] * 0.5F),
-                    true);
+            Ui.textoGrabado(g, s, tx + (tw - f.width(s)) / 2, top + (y + h - top - 8) / 2 + 1, on ? t.title : Ui.mix(t.textDim, 0xFFFFFFFF,
+                    hov[i] * 0.5F));
         }
-        int lx = x + (int) (sel * tw) + 4;
-        g.fill(lx, y + h - 2, lx + tw - 8, y + h - 1, t.accent);
+        // la marca se desliza entre los bordes de las pestañas (que pueden ser de distinto ancho)
+        int i0 = Math.max(0, Math.min(n - 1, (int) Math.floor(sel))), i1 = Math.min(n - 1, i0 + 1);
+        float f = sel - i0;
+        float l0 = b[i0] + (b[i1] - b[i0]) * f, r0 = b[i0 + 1] + (b[i1 + 1] - b[i0 + 1]) * f;
+        g.fill(Math.round(l0) + 4, y + h - 2, Math.round(r0) - 4, y + h - 1, t.accent);
     }
 
     @Override

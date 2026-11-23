@@ -5,6 +5,7 @@ import com.axeliscore.anim.AnimHost;
 import com.axeliscore.anim.Animated;
 import com.axeliscore.anim.Animator;
 import com.axeliscore.anim.Clip;
+import com.axeliscore.anim.ClipLoader;
 import com.axeliscore.anim.Geo;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -202,8 +203,7 @@ public final class EstudioEditor {
         if (a != null && a.has("animation_length")) {
             return Math.max(0.05F, a.get("animation_length").getAsFloat());
         }
-        AnimHost h = host();
-        Clip c = h == null ? null : h.clip(clip);
+        Clip c = clipVivo();
         return c == null ? 1F : Math.max(0.05F, c.length);
     }
 
@@ -276,8 +276,7 @@ public final class EstudioEditor {
     public static float[] valor(String bone, String canal) {
         float def = canal.equals("scale") ? 1 : 0;
         float[] out = {def, def, def};
-        AnimHost h = host();
-        Clip c = h == null ? null : h.clip(clip);
+        Clip c = clipVivo();
         if (c == null) {
             return out;
         }
@@ -290,6 +289,32 @@ public final class EstudioEditor {
             }
         }
         return out;
+    }
+
+    private static Map<String, Clip> vivo;
+    private static int vivoGen = -1;
+    private static JsonObject vivoDoc;
+
+    /**
+     * La animación elegida tal como está ahora en el documento que se edita. La criatura recibe los cambios en el siguiente cuadro; los
+     * controles los necesitan ya (si no, después de "+Clave" o "Quitar" mostrarían el valor de antes).
+     */
+    static Clip clipVivo() {
+        if (doc != null && (vivo == null || vivoGen != EstudioArchivos.generacion() || vivoDoc != doc)) {
+            try {
+                vivo = ClipLoader.parse(doc);
+            } catch (RuntimeException ex) {
+                vivo = Map.of();
+            }
+            vivoGen = EstudioArchivos.generacion();
+            vivoDoc = doc;
+        }
+        Clip c = vivo == null ? null : vivo.get(clip);
+        if (c == null) {
+            AnimHost h = host();
+            c = h == null ? null : h.clip(clip);
+        }
+        return c;
     }
 
     static String t(float t) {
@@ -310,6 +335,85 @@ public final class EstudioEditor {
             }
         }
         return null;
+    }
+
+    // ------------------------------------------------------------------ efectos en la animación
+
+    /** Los efectos de partículas de la animación elegida (tiempo y nombre), en orden. */
+    public static List<Map.Entry<Float, String>> efectos() {
+        List<Map.Entry<Float, String>> r = new ArrayList<>();
+        JsonObject pe = efectosJson(false);
+        if (pe == null) {
+            return r;
+        }
+        for (Map.Entry<String, JsonElement> e : pe.entrySet()) {
+            try {
+                JsonElement v = e.getValue().isJsonArray() && e.getValue().getAsJsonArray().size() > 0 ? e.getValue().getAsJsonArray().get(0)
+                        : e.getValue();
+                String n = v.isJsonObject() ? (v.getAsJsonObject().has("effect") ? v.getAsJsonObject().get("effect").getAsString() : "")
+                        : v.getAsString();
+                r.add(Map.entry(Float.parseFloat(e.getKey()), n));
+            } catch (RuntimeException ignored) {
+                // claves raras
+            }
+        }
+        r.sort(Map.Entry.comparingByKey());
+        return r;
+    }
+
+    /** El efecto que sale en este momento de la animación ("" si no hay). */
+    public static String efecto() {
+        JsonObject pe = efectosJson(false);
+        String k = pe == null ? null : claveCerca(pe);
+        if (k == null) {
+            return "";
+        }
+        JsonElement v = pe.get(k);
+        if (v.isJsonArray() && v.getAsJsonArray().size() > 0) {
+            v = v.getAsJsonArray().get(0);
+        }
+        return v.isJsonObject() && v.getAsJsonObject().has("effect") ? v.getAsJsonObject().get("effect").getAsString()
+                : v.isJsonPrimitive() ? v.getAsString() : "";
+    }
+
+    /**
+     * Pone en este momento de la animación un efecto de partículas que sale del hueso elegido (o del centro si no hay hueso); con "" lo
+     * quita. Se guarda como {@code particle_effects} de Blockbench, así que también se ve y se mueve en Blockbench.
+     */
+    public static void efecto(String id) {
+        if (clip.isEmpty()) {
+            return;
+        }
+        JsonObject pe = efectosJson(true);
+        String k = claveCerca(pe);
+        if (k != null) {
+            pe.remove(k);
+        }
+        if (id != null && !id.isEmpty()) {
+            JsonObject o = new JsonObject();
+            o.addProperty("effect", id);
+            if (!hueso.isEmpty()) {
+                o.addProperty("locator", hueso);
+            }
+            pe.add(k != null ? k : t(tiempo), o);
+        } else if (pe.size() == 0) {
+            anims().getAsJsonObject(clip).remove("particle_effects");
+        }
+        aplicar();
+    }
+
+    private static JsonObject efectosJson(boolean crear) {
+        if (clip.isEmpty() || !anims().has(clip)) {
+            return null;
+        }
+        JsonObject a = anims().getAsJsonObject(clip);
+        if (!a.has("particle_effects") || !a.get("particle_effects").isJsonObject()) {
+            if (!crear) {
+                return null;
+            }
+            a.add("particle_effects", new JsonObject());
+        }
+        return a.getAsJsonObject("particle_effects");
     }
 
     /** Pone (o cambia) el cuadro clave del hueso elegido en el tiempo actual. */

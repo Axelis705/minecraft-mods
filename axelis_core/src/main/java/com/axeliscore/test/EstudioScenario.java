@@ -70,11 +70,29 @@ final class EstudioScenario {
             float[] v = EstudioEditor.valor("right_arm", "rotation");
             t.check(Math.abs(v[0] + 160) < 0.5F && Math.abs(v[2] - 25) < 0.5F, "el brazo quedó donde se puso (" + v[0] + ", " + v[2] + ")");
         });
+        // un efecto de partículas que sale de la mano en ese momento (rombo morado en la línea de tiempo)
+        t.photo("29_estudio_efecto", 900, () -> {
+            com.axeliscore.anim.client.EstudioScreen.verEfectos(true);
+            EstudioEditor.efecto("chispas");
+            if (com.axeliscore.plat.client.Screens.current() instanceof com.axeliscore.ui.UiScreen s) {
+                s.reconstruir();
+            }
+        });
+        t.add("efecto puesto", 100, () -> {
+            t.check("chispas".equals(EstudioEditor.efecto()), "quedó el efecto en ese momento (" + EstudioEditor.efecto() + ")");
+            t.check(EstudioEditor.efectos().size() >= 1, "la animación tiene efectos");
+            com.axeliscore.anim.client.EstudioScreen.verEfectos(false);
+        });
         t.add("guardar", 600, () -> t.check(EstudioEditor.guardar() != null, "se guardó el archivo de animaciones"));
         t.add("cerrar estudio", 1500, () -> com.axeliscore.plat.client.Screens.close());
         t.add("guardado", 100, () -> {
             Path f = EstudioArchivos.carpeta().resolve("persona.animation.json");
             t.check(Files.exists(f), "existe axelis_estudio/persona.animation.json");
+            try {
+                t.check(Files.readString(f).contains("particle_effects"), "el archivo guardado lleva el efecto (particle_effects)");
+            } catch (java.io.IOException e) {
+                throw new AssertionError("no se pudo leer " + f + ": " + e);
+            }
             t.check(!EstudioEditor.activo(), "el editor soltó a la Persona");
         });
         // carpeta del estudio: un .bbmodel que reemplaza a la gelatina sin reiniciar

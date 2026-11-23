@@ -103,6 +103,11 @@ public final class EstudioArchivos {
         generacion++;
     }
 
+    /** Los nombres de los efectos que hay en la carpeta del estudio ({@code nombre.efecto.json}). */
+    public static java.util.Set<String> efectosDelEstudio() {
+        return new java.util.TreeSet<>(EFECTOS.keySet());
+    }
+
     /** El efecto de partículas del estudio ({@code nombre.efecto.json}) que reemplaza a ese (o null). */
     public static String efecto(ResourceLocation id) {
         return EFECTOS.get(base(id));
@@ -147,7 +152,14 @@ public final class EstudioArchivos {
                               - nombre.efecto.json     efecto de particulas (por capas)
                             "nombre" es el del modelo del mod (por ejemplo persona, coloso, bestia) o el de la textura.
                             Para volver a lo del mod, borra o mueve el archivo.
-                            Dentro del juego: /axeliscore estudio (editor de animaciones).
+
+                            Con Blockbench, lo mas comodo:
+                              1. Abre el modelo y usa Archivo > Guardar proyecto como... dentro de ESTA carpeta, con el nombre del modelo.
+                              2. Desde ahi, cada Ctrl+S cambia la criatura en el juego en menos de un segundo.
+                              Las animaciones con curvas Bezier, sonidos y efectos de particulas (particle_effects) tambien llegan.
+
+                            Dentro del juego: /axeliscore estudio mirando a una criatura (editor de animaciones y efectos).
+                            Efectos: /axeliscore particulas <nombre> lanza un efecto para verlo.
                             """, StandardCharsets.UTF_8);
                 }
             }
