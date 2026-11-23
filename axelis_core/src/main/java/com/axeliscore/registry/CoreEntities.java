@@ -42,6 +42,11 @@ public final class CoreEntities {
             () -> Reg.entity(AxelisCore.MODID, "chispa", EntityType.Builder.<Chispa>of(Chispa::new, MobCategory.CREATURE).sized(0.5F, 0.65F)
                     .clientTrackingRange(10)));
 
+    /** NPC con misiones, tienda, amistad y rutina (usa un {@link com.axeliscore.npc.NpcDef}). */
+    public static final RegistryObject<EntityType<com.axeliscore.npc.Npc>> NPC = ENTITIES.register("npc",
+            () -> Reg.entity(AxelisCore.MODID, "npc", EntityType.Builder.<com.axeliscore.npc.Npc>of(com.axeliscore.npc.Npc::new,
+                    MobCategory.CREATURE).sized(0.6F, 1.8F).clientTrackingRange(10)));
+
     /** Aviso de ataque en el suelo (círculo, anillo, línea, cono, cuadro) que pega al llenarse. */
     public static final RegistryObject<EntityType<com.axeliscore.combat.Aviso>> AVISO = ENTITIES.register("aviso",
             () -> Reg.entity(AxelisCore.MODID, "aviso", EntityType.Builder.<com.axeliscore.combat.Aviso>of(com.axeliscore.combat.Aviso::new,
@@ -63,5 +68,6 @@ public final class CoreEntities {
         e.put(GELATINA.get(), Gelatina.createAttributes().build());
         e.put(COLOSO.get(), Coloso.createAttributes().build());
         e.put(CHISPA.get(), Chispa.createAttributes().build());
+        e.put(NPC.get(), Persona.createAttributes().build());
     }
 }

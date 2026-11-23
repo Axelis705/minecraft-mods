@@ -96,6 +96,24 @@ public final class CoreEvents {
         }
     }
 
+    /** Algo murió: si lo derrotó un jugador, cuenta para sus misiones de cazar. */
+    //#if MC >= 26.1
+    //$$ @SubscribeEvent
+    //#endif
+    public static void onDeath(net.minecraftforge.event.entity.living.LivingDeathEvent e) {
+        net.minecraft.world.entity.LivingEntity ent = e.getEntity();
+        if (ent == null || ent.level().isClientSide() || ent instanceof ServerPlayer) {
+            return;
+        }
+        if (e.getSource().getEntity() instanceof ServerPlayer p) {
+            try {
+                com.axeliscore.npc.Misiones.alDerrotar(p, ent);
+            } catch (RuntimeException ex) {
+                AxelisCore.LOGGER.error("Axelis Core: falló contar una criatura derrotada", ex);
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent e) {
         if (e.getEntity() instanceof ServerPlayer p) {

@@ -30,6 +30,7 @@ public final class CoreClient {
         e.registerEntityRenderer(CoreEntities.GELATINA.get(), c -> new SimpleGeoRenderer<>(c, ns, "gelatina", 0.5F, 1F));
         e.registerEntityRenderer(CoreEntities.COLOSO.get(), c -> new com.axeliscore.combat.client.JefeRenderer<>(c, ns, "coloso", 1.2F, 1F, 3));
         e.registerEntityRenderer(CoreEntities.CHISPA.get(), c -> new SimpleGeoRenderer<>(c, ns, "chispa", 0.3F, 1F));
+        e.registerEntityRenderer(CoreEntities.NPC.get(), c -> new PersonaRenderer<>(c, com.axeliscore.npc.client.NpcCliente::piel));
         e.registerEntityRenderer(CoreEntities.AVISO.get(), com.axeliscore.combat.client.AvisoRenderer::new);
         e.registerEntityRenderer(CoreEntities.PROYECTIL.get(), com.axeliscore.combat.client.ProyectilRenderer::new);
     }
@@ -39,6 +40,7 @@ public final class CoreClient {
         CoreClientEvents.register();
         com.axeliscore.combat.client.CombateHud.init();
         com.axeliscore.combat.client.MusicaJefe.init();
+        com.axeliscore.npc.client.NpcCliente.init();
         com.axeliscore.ui.ScreenRegistry.register(AxelisCore.MODID + ":demo", com.axeliscore.ui.DemoScreen::new);
         com.axeliscore.test.ClientTest.startIfEnabled();
     }

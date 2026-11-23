@@ -21,12 +21,12 @@ import org.slf4j.Logger;
 public class AxelisCore {
     public static final String MODID = "axelis_core";
     /** Versión del Core (la misma que la del jar). */
-    public static final String VERSION = "1.2.0";
+    public static final String VERSION = "1.3.0";
     /**
      * Nivel de la API: sube cada vez que se agrega algo público. Un mod puede comprobar {@code AxelisCore.API >= n} si necesita algo
      * nuevo (Forge ya se encarga de cargar la versión más alta que haya).
      */
-    public static final int API = 3;
+    public static final int API = 4;
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public AxelisCore(FMLJavaModLoadingContext context) {
@@ -42,9 +42,14 @@ public class AxelisCore {
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(net.minecraftforge.eventbus.api.EventPriority.LOWEST, CoreEvents::onBreak);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreEvents::onServerTick);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreEvents::onHurt);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener(CoreEvents::onDeath);
         //#endif
         com.axeliscore.combat.Estados.init();
         com.axeliscore.combat.CoreProyectiles.init();
+        com.axeliscore.npc.Misiones.init();
+        com.axeliscore.npc.NpcAcciones.init();
+        com.axeliscore.npc.CoreNpcs.init();
+        com.axeliscore.ui.Teclas.nueva(MODID, "diario", 'N', () -> com.axeliscore.ui.ScreenRegistry.open(com.axeliscore.npc.NpcAcciones.DIARIO));
         com.axeliscore.registry.CoreEntities.ENTITIES.register(bus);
         LOGGER.info("Axelis Core {} (API {})", VERSION, API);
     }

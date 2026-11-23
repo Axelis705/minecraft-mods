@@ -11,6 +11,9 @@ axeliscore combate prueba
 #pausa 4
 axeliscore combate revisar
 kill @e[type=!player]
+axeliscore npc prueba
+#pausa 2
+axeliscore npc revisar
 #expect AXCORE_INFO Axelis Core
 #expect AXCORE_GALERIA 5
 #expect AXCORE_CRIATURAS 5
@@ -19,3 +22,5 @@ kill @e[type=!player]
 #expect AXCORE_COMBATE estados=true marcado=1.50 jefe=1
 #expect AXCORE_COMBATE_GOLPES ok
 #expect AXCORE_JEFE_FASE
+#expect npc=si ok=true
+#expect AXCORE_NPC_REVISAR ok

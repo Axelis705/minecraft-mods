@@ -32,13 +32,14 @@ AxelisCore.onBreak((jugador, mundo, pos, bloque) -> ...);  // un jugador rompe u
 AxelisCore.onServerTick(servidor -> ...);    // al final de cada tick del servidor (20 por segundo)
 ```
 
-Versión actual: **1.2.0 (API 3)**. Un mod que necesita algo nuevo lo pide en su `mods.toml` (`versionRange="[1.2.0,)"`).
+Versión actual: **1.3.0 (API 4)**. Un mod que necesita algo nuevo lo pide en su `mods.toml` (`versionRange="[1.3.0,)"`).
 
 | API | Qué se agregó |
 |---|---|
 | 1 | Personajes, animación, interfaz, efectos, red, datos |
 | 2 | Cuadros de información (`InfoCard`) y temas con marco, `CoreItem`, `ItemTag`, `Plat.give`, `onLogin`, `onBreak`, `onServerTick`, condiciones de modelos de objetos (`ItemModelProps`), bloques con datos y dibujo propio (`CoreBlock`, `CoreBlockEntity`, `CoreBER`), capas del HUD (`Hud`), `Ui.fit`, `ClientTest.waitFor` |
 | 3 | Combate (`combat/`): estados (`Estados`, `Estado`), barras de vida y números de daño, ataques con aviso (`Aviso`), proyectiles (`Proyectil`, `ProyectilTipo`), jefes por fases (`Jefe`, `Fase`, `Ataque`, `JefeRenderer`), música de jefe, ayudas (`Combate`), renderizador sencillo (`CoreEntityRenderer`) |
+| 4 | NPC (`npc/`): `NpcDef`, `Npc`, misiones (`Mision`, `Objetivo`, `Misiones`), tiendas (`Tienda`), amistad (`Amistad`), ventana del NPC, diario (tecla N) y rastreador; teclas propias (`Teclas`) |
 
 ## Personajes
 
@@ -192,10 +193,42 @@ recibe daño mientras entra a una fase, resiste estados y pone música a los que
 Renderizador: `new JefeRenderer<>(ctx, mod, nombre, sombra, escala, aspectos)` (texturas `nombre.png`, `nombre_f2.png`...).
 Ejemplo completo: `character/Coloso.java` (música hecha con `herramientas/musica.py`).
 
+## NPC, misiones y tiendas (`npc/`)
+
+**Un NPC** se define una vez al arrancar (igual en servidor y cliente) y se registra con `NpcDef.registrar(...)`:
+`new NpcDef(mod, nombre).piel(textura64x64).tema(Theme.MADERA).saludos(claves...).tienda(...).mision(...).amistad(0, 10, 30, 60, 100)
+.niveles(claves...).regalo(nivel, jugador -> ...).rutina(NORMAL | QUIETO | LIBRE)`. Se pone en el mundo con
+`Npc.poner(level, def, pos)` (+ `.casa(pos)` y `.trabajo(pos)`), `/axeliscore npc poner mod:nombre` o
+`/summon axelis_core:npc ~ ~ ~ {AxNpc:"mod:nombre"}`. No recibe daño (salvo en creativo), no desaparece y sigue su rutina: de día
+cerca del trabajo, en la tarde a su casa y de noche se sienta. Nombre: `npc.<mod>.<nombre>`.
+
+**Misiones**: `new Mision(mod, nombre).objetivo(...).premio(...)` + `.diaria() .repetible() .requiere(otraId) .nivel(amistad)
+.amistad(puntos) .rareza(Rareza.RARO)`. Objetivos: `Objetivo.cazar("minecraft:zombie" | "*", n)`, `entregar(objeto, n)` (se los quedan),
+`tener(objeto, n)`, `hablar(npcId)`, `llegar(x, z, radio)`, `evento("mod:clave", n)` (el mod avisa con `Misiones.evento(jugador, clave,
+n)`), `.texto(clave)` para un texto propio. Premios: `Mision.Premio.objeto(id, n)`, `esmeraldas(n)`, `experiencia(n)`, `amistad(npc, n)`
+o uno propio con `new Premio(icono, n, texto, jugador -> ...)`. Las de un NPC se aceptan y se entregan en su ventana; una suelta se
+registra con `Misiones.registrar`, se da con `Misiones.aceptar(jugador, id)` y se entrega sola al completarse. Textos:
+`mision.<mod>.<nombre>` y `.desc`. Servidor: `Misiones.estado / aceptar / entregar / abandonar / seguir / evento`.
+
+**Tiendas**: `new Tienda().vende(objeto, n, precio[, existenciasPorDia, nivelAmistad]).compra(objeto, n, precio[, ...]).moneda(id)` (por
+defecto esmeraldas). Las existencias son por jugador y se renuevan cada día del juego.
+
+**Amistad**: sube al entregar misiones (5 por defecto) o con `Amistad.sumar(jugador, npc, n)`; al subir de nivel avisa y da el regalo
+de ese nivel. Abre misiones (`.nivel(n)`) y cosas de la tienda.
+
+**Lo que se ve**: "!" (misión nueva) o "?" (lista para entregar) sobre la cabeza y su nombre de cerca, la tarjeta al mirarlo (amistad),
+su ventana (Hablar, Misiones, Tienda, Amistad, con su retrato y los colores de su tema), el diario de misiones (tecla **N**) y el
+rastreador de la misión que se sigue a la derecha. Se apagan en `config/axelis_core.json` (`marcas_npc`, `rastreador_misiones`).
+Todo se guarda con el jugador (`PlayerStore` del Core: `misiones`, `amistad`, `tiendas`). Ejemplos: `npc/CoreNpcs.java` (Mara e Iker).
+
+**Teclas propias** (`ui/Teclas`): `Teclas.nueva(mod, "accion", 'J', () -> ...)` en el constructor del mod; salen en Controles
+(`key.<mod>.accion`, categoría `key.categories.<mod>`) y funcionan igual en todas las versiones (en 26.3 cambiaron los códigos).
+
 ## Comandos de prueba
 
 `/axeliscore` (versión y quién lo usa), `galeria`, `criaturas`, `probar <animación>`, `ir x y z [velocidad]`,
-`efecto <temblor|destello|vineta|titulo|aviso|dialogo|demo>`, `datos`, `combate <estados|estado nombre [s] [nivel]|limpiar|avisos|proyectiles|jefe|fase n|ataque nombre|prueba|revisar>`.
+`efecto <temblor|destello|vineta|titulo|aviso|dialogo|demo>`, `datos`, `combate <estados|estado nombre [s] [nivel]|limpiar|avisos|proyectiles|jefe|fase n|ataque nombre|prueba|revisar>`,
+`npc <poner mod:nombre|casa|trabajo|lista|mision id|evento clave [n]|amistad npc puntos|reiniciar|prueba|revisar>`.
 
 ## Pruebas automáticas
 
