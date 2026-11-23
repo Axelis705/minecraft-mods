@@ -46,6 +46,7 @@ public final class ModClient {
         CadenaRender.init();
         InscripcionesCliente.init();
         CandadoScreen.registrar();
+        UniformeCliente.registrar();
         CompartirCliente.init();
         PuertasCliente.init();
         CopasCliente.init();

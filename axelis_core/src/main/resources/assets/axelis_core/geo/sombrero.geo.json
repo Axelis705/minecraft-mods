@@ -1,0 +1,72 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.axelis_core.sombrero",
+    "texture_width": 64,
+    "texture_height": 32
+   },
+   "bones": [
+    {
+     "name": "cabeza",
+     "pivot": [
+      0,
+      24,
+      0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -7,
+        31.5,
+        -7
+       ],
+       "size": [
+        14,
+        1,
+        14
+       ],
+       "uv": [
+        0,
+        0
+       ]
+      },
+      {
+       "origin": [
+        -4.5,
+        32.5,
+        -4.5
+       ],
+       "size": [
+        9,
+        4,
+        9
+       ],
+       "uv": [
+        0,
+        15
+       ]
+      },
+      {
+       "origin": [
+        -4.6,
+        32.5,
+        -4.6
+       ],
+       "size": [
+        9.2,
+        1,
+        9.2
+       ],
+       "uv": [
+        36,
+        15
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -57,6 +57,8 @@ public abstract class GeoEntityRenderer<T extends Entity & Animated> extends Ent
         public boolean invisible;
         public ItemStack mainHand = ItemStack.EMPTY, offHand = ItemStack.EMPTY;
         public boolean leftHanded;
+        /** De quién es (para la ropa del Vestuario). */
+        public java.util.UUID uuid;
     }
 
     protected final ResourceLocation geoId;
@@ -139,6 +141,7 @@ public abstract class GeoEntityRenderer<T extends Entity & Animated> extends Ent
             e.axPose(h, h.pose(), pt);
         }
         s.host = h;
+        s.uuid = e.getUUID();
         s.scale = modelScale(e);
         s.tint = tint(e);
         s.texture = EstudioArchivos.textura(texture(e));
@@ -239,6 +242,9 @@ public abstract class GeoEntityRenderer<T extends Entity & Animated> extends Ent
                 VB g = d.glow(s.glowTexture != null ? s.glowTexture : s.texture);
                 GeoRenderer.draw(geo, h.pose(), f, g, GeoRenderer.Pass.GLOW, 0xF000F0, s.overlay, s.tint);
             }
+        }
+        if (!s.invisible) {
+            com.axeliscore.vestir.client.VestuarioCliente.dibujarEnGeo(s.uuid, null, geo, f, ps, d, s.light, s.overlay);
         }
         heldItem(geo, f, s.leftHanded ? s.offHand : s.mainHand, "right_item", ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, ps, d, s.light);
         heldItem(geo, f, s.leftHanded ? s.mainHand : s.offHand, "left_item", ItemDisplayContext.THIRD_PERSON_LEFT_HAND, ps, d, s.light);

@@ -77,6 +77,11 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         ps.translate(0, -1.501, 0);
         m.renderToBuffer(ps, buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, 0.86F,
                 0.82F, 0.82F, 1F);
+        // con su uniforme (si lo llevaba)
+        com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
+        com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
+                m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);
+        d.flush();
         ps.popPose();
         super.render(c, yaw, pt, ps, buf, light);
     }

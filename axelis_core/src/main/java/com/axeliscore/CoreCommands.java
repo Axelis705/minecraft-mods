@@ -92,7 +92,7 @@ public final class CoreCommands {
                         .executes(c -> dataTest(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores"))));
         d.register(Commands.literal("axeliscore").executes(CoreCommands::info).then(galeria).then(criaturas).then(probar).then(ir).then(efecto)
                 .then(datos).then(com.axeliscore.combat.CombateComandos.nodo()).then(com.axeliscore.npc.NpcComandos.nodo())
-                .then(com.axeliscore.anim.mc.EstudioServidor.nodo())
+                .then(com.axeliscore.anim.mc.EstudioServidor.nodo()).then(vestir()).then(desvestir())
                 .then(Commands.literal("particulas").requires(Plat::isOp).then(Commands.argument("efecto", StringArgumentType.greedyString())
                         .executes(c -> {
                             var s = c.getSource();
@@ -286,5 +286,60 @@ public final class CoreCommands {
         boolean ok = Plat.walkTo(best, x, y, z, speed);
         AxelisCore.LOGGER.info("AXCORE_IR {} {}", speed, ok);
         return ok ? 1 : 0;
+    }
+
+    // ------------------------------------------------------------------ vestuario
+
+    /** {@code /axeliscore vestir <jugadores> <prenda> [clave=valor,clave=valor]}: le pone una prenda registrada (para probar). */
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> vestir() {
+        return Commands.literal("vestir").requires(Plat::isOp)
+                .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.entities())
+                        .then(Commands.argument("prenda", StringArgumentType.string())
+                                .executes(c -> vestir(c, ""))
+                                .then(Commands.argument("datos", StringArgumentType.greedyString())
+                                        .executes(c -> vestir(c, StringArgumentType.getString(c, "datos"))))));
+    }
+
+    private static int vestir(CommandContext<CommandSourceStack> c, String datos) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        net.minecraft.resources.ResourceLocation id = com.axeliscore.plat.Ids.parse(StringArgumentType.getString(c, "prenda"));
+        net.minecraft.nbt.CompoundTag d = new net.minecraft.nbt.CompoundTag();
+        for (String kv : datos.split(",")) {
+            int i = kv.indexOf('=');
+            if (i > 0) {
+                d.putString(kv.substring(0, i).trim(), kv.substring(i + 1).trim());
+            }
+        }
+        int n = 0;
+        for (net.minecraft.world.entity.Entity e : net.minecraft.commands.arguments.EntityArgument.getEntities(c, "jugadores")) {
+            com.axeliscore.vestir.Vestuario.poner(c.getSource().getServer(), e.getUUID(), id, d);
+            n++;
+        }
+        int k = n;
+        c.getSource().sendSuccess(() -> Component.literal("Vestuario: " + id + " a " + k), true);
+        return n;
+    }
+
+    /** {@code /axeliscore desvestir <jugadores> [prenda]}: le quita una prenda (o todas). */
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> desvestir() {
+        return Commands.literal("desvestir").requires(Plat::isOp)
+                .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.entities())
+                        .executes(c -> desvestir(c, null))
+                        .then(Commands.argument("prenda", StringArgumentType.string())
+                                .executes(c -> desvestir(c, StringArgumentType.getString(c, "prenda")))));
+    }
+
+    private static int desvestir(CommandContext<CommandSourceStack> c, String prenda) throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        int n = 0;
+        for (net.minecraft.world.entity.Entity e : net.minecraft.commands.arguments.EntityArgument.getEntities(c, "jugadores")) {
+            if (prenda == null) {
+                com.axeliscore.vestir.Vestuario.quitarTodo(c.getSource().getServer(), e.getUUID());
+            } else {
+                com.axeliscore.vestir.Vestuario.quitar(c.getSource().getServer(), e.getUUID(), com.axeliscore.plat.Ids.parse(prenda));
+            }
+            n++;
+        }
+        int k = n;
+        c.getSource().sendSuccess(() -> Component.literal("Vestuario: quitado a " + k), true);
+        return n;
     }
 }

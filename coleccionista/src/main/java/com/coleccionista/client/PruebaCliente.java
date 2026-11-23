@@ -195,7 +195,15 @@ final class PruebaCliente {
             t.cmd("gamemode adventure @a");
             t.lookFrom(3.5, -60, 34.5, 3.5, -57.5, 31);
         });
-        t.photo("24_tele_habla", 1500, () -> {
+        // el uniforme de pieza (con su número) visto de frente y de espaldas
+        t.photo("24d_uniforme_frente", 900, () -> {
+            t.check(!com.axeliscore.vestir.client.VestuarioCliente.de(Minecraft.getInstance().player.getUUID()).isEmpty(),
+                    "llevo el uniforme de pieza");
+            Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
+        });
+        t.photo("24e_uniforme_espalda", 900, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
+        t.add("primera persona", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
+        t.photo("24_tele_habla", 300, () -> {
         });
         t.add("habla", 100, () -> {
             var st = com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Pantallas.KEY);
@@ -206,7 +214,7 @@ final class PruebaCliente {
         t.photo("25b_zoom_subtitulo", 5000, () -> {
         });
         t.add("volver", 1200, Atajos::acercarse);
-        t.add("esperar discurso", 25500, () -> {
+        t.add("esperar discurso", 24600, () -> {
         });
         // el candado de la celda 1, de cerca: la mano gira las ruedas (arrastrando) y aprieta el botón
         t.add("abrir candado", 1400, () -> {

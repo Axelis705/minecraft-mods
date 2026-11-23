@@ -147,6 +147,17 @@ public final class Comandos {
                                 .then(Commands.argument("n", IntegerArgumentType.integer(1, 24))
                                         .executes(c -> celdas(c, IntegerArgumentType.getInteger(c, "n"), true))))
                         .then(Commands.literal("cerrar").executes(c -> celdas(c, 0, false))))
+                .then(Commands.literal("uniforme")
+                        .then(Commands.literal("si").executes(c -> {
+                            MinecraftServer sv = c.getSource().getServer();
+                            Uniforme.activar(sv, Evento.get(sv), true);
+                            return 1;
+                        }))
+                        .then(Commands.literal("no").executes(c -> {
+                            MinecraftServer sv = c.getSource().getServer();
+                            Uniforme.activar(sv, Evento.get(sv), false);
+                            return 1;
+                        })))
                 .then(Commands.literal("chat")
                         .then(Commands.literal("cerrar").executes(c -> {
                             Chat.cerrar(c.getSource().getServer(), true);

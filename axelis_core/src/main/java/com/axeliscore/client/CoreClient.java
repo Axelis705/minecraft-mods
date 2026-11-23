@@ -37,8 +37,51 @@ public final class CoreClient {
         e.registerEntityRenderer(CoreEntities.PROYECTIL.get(), com.axeliscore.combat.client.ProyectilRenderer::new);
     }
 
+    /** La ropa del Vestuario encima de los dos modelos de jugador (brazos normales y delgados). */
+    @SubscribeEvent
+    public static void onLayers(EntityRenderersEvent.AddLayers e) {
+        //#if MC >= 26.1
+        //$$ for (net.minecraft.world.entity.player.PlayerModelType t : e.getModelTypes()) {
+        //$$     net.minecraft.client.renderer.entity.player.AvatarRenderer<net.minecraft.client.player.AbstractClientPlayer> r = e.getPlayerRenderer(t);
+        //$$     if (r != null) {
+        //$$         r.addLayer(new com.axeliscore.vestir.client.CapaVestuario(r));
+        //$$     }
+        //$$ }
+        //#elif MC >= 1.20.2
+        //$$ for (net.minecraft.client.resources.PlayerSkin.Model t : e.getSkins()) {
+        //$$     net.minecraft.client.renderer.entity.player.PlayerRenderer r = e.getSkin(t);
+        //$$     if (r != null) {
+        //$$         r.addLayer(new com.axeliscore.vestir.client.CapaVestuario(r));
+        //$$     }
+        //$$ }
+        //#else
+        for (String t : e.getSkins()) {
+            net.minecraft.client.renderer.entity.player.PlayerRenderer r = e.getSkin(t);
+            if (r != null) {
+                r.addLayer(new com.axeliscore.vestir.client.CapaVestuario(r));
+            }
+        }
+        //#endif
+    }
+
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent e) {
+        com.axeliscore.vestir.client.VestuarioCliente.init();
+        if (com.axeliscore.Ejemplos.activos()) {
+            // prendas de muestra (para las pruebas y como ejemplo): un overol tipo piel con número y un sombrero de Blockbench
+            com.axeliscore.vestir.client.VestuarioCliente.registrar(Ids.core("overol"), com.axeliscore.vestir.client.Prenda
+                    .piel(Ids.core("textures/prenda/overol.png")).sin(com.axeliscore.vestir.client.Prenda.Parte.CABEZA,
+                            com.axeliscore.vestir.client.Prenda.Parte.BRAZO_DER, com.axeliscore.vestir.client.Prenda.Parte.BRAZO_IZQ)
+                    .decorar((c, l) -> {
+                        String n = c.datos().getString("numero");
+                        if (!n.isEmpty()) {
+                            l.texto(com.axeliscore.vestir.client.Prenda.Parte.CUERPO, n, 0F, 6.5F, -2F - l.inflado() - 0.03F, 0.3F, 0xFFEFE6C8,
+                                    false);
+                        }
+                    }));
+            com.axeliscore.vestir.client.VestuarioCliente.registrar(Ids.core("sombrero"), com.axeliscore.vestir.client.Prenda
+                    .modelo(Ids.core("geo/sombrero.geo.json"), Ids.core("textures/prenda/sombrero.png")));
+        }
         CoreClientEvents.register();
         com.axeliscore.combat.client.CombateHud.init();
         com.axeliscore.combat.client.MusicaJefe.init();

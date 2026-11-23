@@ -43,6 +43,15 @@ public final class GeoRenderer {
         final PoseStack.Pose[] poses, halfPoses;
         final PoseStack stack = new PoseStack();
 
+        /** Matriz de un hueso en este cuadro (para pegarle algo, como la ropa del {@link com.axeliscore.vestir.client.VestuarioCliente}). */
+        public Matrix4f mundo(int bone) {
+            return world[bone];
+        }
+
+        public Matrix3f normal(int bone) {
+            return normal[bone];
+        }
+
         public Frame(Geo geo) {
             int n = geo.bones.length;
             world = new Matrix4f[n];
@@ -67,8 +76,25 @@ public final class GeoRenderer {
     public static void compute(Geo geo, Pose pose, PoseStack ps, Frame f) {
         Matrix4f base = ps.last().pose();
         Matrix3f baseN = ps.last().normal();
-        for (int r : geo.roots) {
-            bone(geo, pose, r, base, baseN, 0, 0, 0, f);
+        Matrix4f[] bs = new Matrix4f[geo.roots.length];
+        Matrix3f[] ns = new Matrix3f[geo.roots.length];
+        java.util.Arrays.fill(bs, base);
+        java.util.Arrays.fill(ns, baseN);
+        computeRaices(geo, pose, bs, ns, f);
+    }
+
+    /**
+     * Como {@link #compute}, pero cada raíz del modelo sale de su propia matriz (en el mismo orden que {@code geo.roots}): así cada
+     * parte de una prenda sigue a una parte distinta del cuerpo de quien la lleva. Una raíz con matriz null no se dibuja.
+     */
+    public static void computeRaices(Geo geo, Pose pose, Matrix4f[] base, Matrix3f[] baseN, Frame f) {
+        for (int i = 0; i < geo.roots.length; i++) {
+            int r = geo.roots[i];
+            if (base[i] == null) {
+                pose.hide(r, true);
+                continue;
+            }
+            bone(geo, pose, r, base[i], baseN[i], 0, 0, 0, f);
         }
         // cada hueso necesita su PoseStack.Pose (en 1.20 no se pueden crear sueltas): se piden a una pila propia, que se vacía en cada cuadro
         PoseStack st = f.stack;

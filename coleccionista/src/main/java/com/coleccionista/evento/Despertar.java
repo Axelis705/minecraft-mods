@@ -96,6 +96,7 @@ public final class Despertar {
         ev.relojFin = 0;
         for (Pieza p : ev.vivos()) {
             Celdas.asignar(s, ev, p);
+            Uniforme.poner(s, p);
             Celdas.llevar(s, p, true);
             if (Evento.entidad(s, p) instanceof ServerPlayer sp) {
                 sp.setGameMode(GameType.ADVENTURE);

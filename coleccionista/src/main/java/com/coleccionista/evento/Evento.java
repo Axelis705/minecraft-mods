@@ -201,6 +201,7 @@ public final class Evento {
             piezas.put(id, p);
             organizadores.remove(id);
             Coleccionista.LOGGER.info("COLECCIONISTA_INSCRITO {} {} bot={}", p.etiqueta(), nombre, bot);
+            Uniforme.poner(s, p);
             cambio(s);
         }
         return p;
@@ -211,6 +212,7 @@ public final class Evento {
         if (piezas.remove(p.id) == null) {
             return false;
         }
+        Uniforme.quitar(s, p);
         if (p.bot) {
             Entity e = entidad(s, p);
             if (e != null) {
@@ -413,6 +415,7 @@ public final class Evento {
         Pantallas.modo(s, "apagada", "");
         Celdas.candados(s, false);
         Pistas.ocultar(s);
+        Uniforme.quitarTodos(s);
         chatCerrado = false;
         fase = Fase.ESPERA;
         prueba = "";
