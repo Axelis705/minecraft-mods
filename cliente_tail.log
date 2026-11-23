@@ -1,0 +1,400 @@
+[20:58:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_3_cara_habla_1
+[20:58:21] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.500000, -60.000000, -1.400000
+[20:58:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_3_cara_habla_2
+[20:58:22] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.500000, -60.000000, -1.400000
+[20:58:22] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_3_cara_habla_3
+[20:58:22] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:22] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR sit personajes=5
+[20:58:23] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_sit
+[20:58:24] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:24] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR point personajes=5
+[20:58:25] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_point
+[20:58:25] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:25] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR think personajes=5
+[20:58:26] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_think
+[20:58:26] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:26] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR laugh personajes=5
+[20:58:27] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_laugh
+[20:58:28] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:28] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR attack personajes=5
+[20:58:28] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_attack
+[20:58:28] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:28] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR fish_cast personajes=5
+[20:58:28] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_fish_cast
+[20:58:29] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:29] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR cheer personajes=5
+[20:58:29] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_cheer
+[20:58:30] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:30] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR nod personajes=5
+[20:58:30] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_nod
+[20:58:30] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:30] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR wave personajes=5
+[20:58:31] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_wave
+[20:58:31] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 4.500000, -60.000000, -4.000000
+[20:58:31] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR death personajes=5
+[20:58:33] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_4_gesto_death
+[20:58:33] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Mara'/408, l='ServerLevel[world]', x=4.50, y=-60.00, z=0.50] died: Mara was killed
+[20:58:33] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Iker'/409, l='ServerLevel[world]', x=2.50, y=-60.00, z=0.50] died: Iker was killed
+[20:58:33] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Lu'/410, l='ServerLevel[world]', x=0.50, y=-60.00, z=0.50] died: Lu was killed
+[20:58:33] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Nilo'/411, l='ServerLevel[world]', x=-1.50, y=-60.00, z=0.50] died: Nilo was killed
+[20:58:33] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Sol'/412, l='ServerLevel[world]', x=-3.50, y=-60.00, z=0.50] died: Sol was killed
+[20:58:33] [Server thread/INFO] [minecraft/MinecraftServer]: Killed 5 entities
+[20:58:33] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Persona
+[20:58:33] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, -1.500000
+[20:58:34] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_IR 0.6 true
+[20:58:37] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -9.043000, -60.000000, 2.532000
+[20:58:37] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_5_camina_1
+[20:58:37] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -9.525000, -60.000000, 2.125000
+[20:58:38] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_5_camina_2
+[20:58:38] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -9.999000, -60.000000, 1.708000
+[20:58:38] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_5_camina_3
+[20:58:39] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_IR 1.6 true
+[20:58:40] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -11.464000, -60.000000, 2.920000
+[20:58:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_6_corre_1
+[20:58:41] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -11.887000, -60.000000, 3.320000
+[20:58:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_6_corre_2
+[20:58:42] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -12.310000, -60.000000, 3.721000
+[20:58:42] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_6_corre_3
+[20:58:42] [Server thread/INFO] [minecraft/MinecraftServer]: Applied 1.0 damage to Persona
+[20:58:42] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_7_dano
+[20:58:43] [Server thread/INFO] [minecraft/MinecraftServer]: Killed 121 entities
+[20:58:43] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_CRIATURAS 5
+[20:58:43] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, -9.500000
+[20:58:47] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_8_criaturas_1
+[20:58:48] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_8_criaturas_2
+[20:58:48] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 9.000000, -59.000000, -6.000000
+[20:58:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_8_criaturas_34
+[20:58:50] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:50] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR attack personajes=5
+[20:58:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_0_attack
+[20:58:51] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:51] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR sit personajes=5
+[20:58:52] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_1_sit
+[20:58:52] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:52] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR slam personajes=5
+[20:58:53] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_2_slam
+[20:58:53] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:54] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_3_slam
+[20:58:54] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:54] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR sweep personajes=5
+[20:58:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_4_sweep
+[20:58:55] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:55] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR sniff personajes=5
+[20:58:56] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_5_sniff
+[20:58:56] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:56] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR sleep personajes=5
+[20:58:57] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_6_sleep
+[20:58:58] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:58] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR play personajes=5
+[20:58:59] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_7_play
+[20:58:59] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:58:59] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR stomp personajes=5
+[20:59:00] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_8_stomp
+[20:59:00] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:59:00] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR phase personajes=5
+[20:59:01] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_9_phase
+[20:59:02] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to -0.500000, -58.500000, -8.500000
+[20:59:02] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_PROBAR death personajes=5
+[20:59:04] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_9_criaturas_10_death
+[20:59:05] [Server thread/INFO] [minecraft/MinecraftServer]: Killed 139 entities
+[20:59:05] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_GALERIA 5
+[20:59:05] [Server thread/INFO] [minecraft/MinecraftServer]: Galería de Axelis Core
+[20:59:05] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, -2.500000
+[20:59:05] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO demo jugadores=1
+[20:59:07] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_10_ui_demo_botones
+[20:59:08] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_10_ui_demo_lista
+[20:59:09] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_10_ui_demo_barras
+[20:59:10] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tarjetas
+[20:59:12] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_lista_cuadro
+[20:59:13] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_boton_icono
+[20:59:14] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_ajustes
+[20:59:15] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tema_madera
+[20:59:17] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tema_pergamino
+[20:59:18] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tema_mar
+[20:59:19] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_13_ui_tema_piedra
+[20:59:20] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO dialogo jugadores=1
+[20:59:23] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_11_ui_dialogo
+[20:59:24] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO titulo jugadores=1
+[20:59:24] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO aviso jugadores=1
+[20:59:25] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_12_fx_titulo_aviso
+[20:59:25] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO vineta jugadores=1
+[20:59:26] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_12_fx_vineta
+[20:59:26] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO destello jugadores=1
+[20:59:26] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_12_fx_destello
+[20:59:27] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Mara'/800, l='ServerLevel[world]', x=4.50, y=-60.00, z=3.50] died: Mara was killed
+[20:59:27] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Iker'/801, l='ServerLevel[world]', x=2.50, y=-60.00, z=3.50] died: Iker was killed
+[20:59:27] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Lu'/802, l='ServerLevel[world]', x=0.50, y=-60.00, z=3.50] died: Lu was killed
+[20:59:27] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Nilo'/803, l='ServerLevel[world]', x=-1.50, y=-60.00, z=3.50] died: Nilo was killed
+[20:59:27] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Sol'/804, l='ServerLevel[world]', x=-3.50, y=-60.00, z=3.50] died: Sol was killed
+[20:59:27] [Server thread/INFO] [minecraft/MinecraftServer]: Killed 71 entities
+[20:59:27] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Persona
+[20:59:27] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, 0.500000
+[20:59:30] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_14_mirar_persona
+[20:59:30] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Persona['Nilo'/859, l='ServerLevel[world]', x=0.50, y=-60.00, z=3.50] died: Nilo was killed
+[20:59:30] [Server thread/INFO] [minecraft/MinecraftServer]: Killed Nilo
+[20:59:30] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Crystal Colossus
+[20:59:30] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, 0.500000
+[20:59:32] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_14_mirar_coloso
+[20:59:32] [Server thread/INFO] [minecraft/MinecraftServer]: Killed Crystal Colossus
+[20:59:33] [Server thread/INFO] [minecraft/MinecraftServer]: No entity was found
+[20:59:33] [Server thread/INFO] [minecraft/MinecraftServer]: Cinco bestias con un estado cada una
+[20:59:33] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, -2.500000
+[20:59:34] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: los estados llegaron al cliente
+[20:59:34] [Server thread/INFO] [minecraft/MinecraftServer]: Only one entity is allowed, but the provided selector allows more than one
+[20:59:34] [Server thread/INFO] [minecraft/MinecraftServer]: damage @e[type=axelis_core:bestia] 2<--[HERE]
+[20:59:35] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_15_estados_barras_numeros
+[20:59:35] [Server thread/INFO] [minecraft/MinecraftServer]: Applied 9.0 damage to Frozen
+[20:59:35] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_15_estados_golpe_grande
+[20:59:36] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Survival Mode
+[20:59:36] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[20:59:36] [Server thread/INFO] [minecraft/MinecraftServer]: Applied effect Resistance to Dev
+[20:59:36] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, -2.500000
+[20:59:37] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el jugador ve sus tres estados
+[20:59:37] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_16_estados_jugador
+[20:59:38] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Creative Mode
+[20:59:38] [Server thread/INFO] [minecraft/MinecraftServer]: Removed every effect from Dev
+[20:59:38] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Bestia['Stunned'/863, l='ServerLevel[world]', x=-3.10, y=-60.00, z=2.50] died: Stunned was killed
+[20:59:38] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Bestia['Burning'/864, l='ServerLevel[world]', x=-1.30, y=-60.00, z=2.50] died: Burning was killed
+[20:59:38] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Bestia['Frozen'/865, l='ServerLevel[world]', x=0.50, y=-60.00, z=2.50] died: Frozen was killed
+[20:59:38] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Bestia['Marked'/866, l='ServerLevel[world]', x=2.30, y=-60.00, z=2.50] died: Marked was killed
+[20:59:38] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Bestia['Bleeding'/867, l='ServerLevel[world]', x=4.10, y=-60.00, z=2.50] died: Bleeding was killed
+[20:59:38] [Server thread/INFO] [minecraft/MinecraftServer]: Killed 5 entities
+[20:59:38] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[20:59:38] [Server thread/INFO] [minecraft/MinecraftServer]: Successfully filled 120 block(s)
+[20:59:39] [Server thread/INFO] [minecraft/MinecraftServer]: Avisos: círculo, anillo, línea, cono y cuadro
+[20:59:39] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -53.000000, -1.500000
+[20:59:40] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se ven los cinco avisos
+[20:59:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_17_avisos
+[20:59:47] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_17_avisos_casi_llenos
+[20:59:47] [Server thread/INFO] [minecraft/MinecraftServer]: Killed 5 entities
+[20:59:48] [Server thread/INFO] [minecraft/MinecraftServer]: Proyectiles: fuego, escarcha, fragmento y cristal
+[20:59:48] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, -2.500000
+[20:59:49] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se ven los proyectiles
+[20:59:49] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_18_proyectiles
+[20:59:50] [Server thread/INFO] [minecraft/MinecraftServer]: Killed 3 entities
+[20:59:50] [Server thread/INFO] [minecraft/MinecraftServer]: ¡Ahí viene el Coloso!
+[20:59:50] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.500000, -59.000000, 1.000000
+[20:59:52] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: suena la música de la fase 1 del Coloso
+[20:59:53] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_fase1
+[20:59:53] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.500000, -53.000000, -1.500000
+[20:59:54] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_martillazo
+[20:59:54] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_JEFE_FASE Crystal Colossus fase=1
+[20:59:54] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.500000, -59.000000, 1.000000
+[20:59:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el Coloso pasó a la fase 2
+[20:59:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: cambió la música a la de la fase 2
+[20:59:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_fase2_titulo
+[20:59:58] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -53.000000, -4.500000
+[20:59:59] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_lluvia
+[20:59:59] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.500000, -59.000000, 1.000000
+[21:00:00] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_fragmentos
+[21:00:01] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_JEFE_FASE Crystal Colossus fase=2
+[21:00:02] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_fase3_titulo
+[21:00:04] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -53.000000, -8.500000
+[21:00:05] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_onda
+[21:00:06] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_onda_2
+[21:00:07] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.500000, -59.000000, 1.000000
+[21:00:08] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_19_jefe_escarcha
+[21:00:08] [Server thread/INFO] [minecraft/MinecraftServer]: Killed Crystal Colossus
+[21:00:08] [Server thread/INFO] [minecraft/MinecraftServer]: Successfully filled 120 block(s)
+[21:00:09] [Server thread/INFO] [minecraft/MinecraftServer]: No entity was found
+[21:00:09] [Server thread/INFO] [minecraft/MinecraftServer]: No items were found on player Dev
+[21:00:09] [Server thread/INFO] [minecraft/MinecraftServer]: Set the time to 6000
+[21:00:09] [Server thread/INFO] [minecraft/MinecraftServer]: Se borraron tus misiones, amistades y compras
+[21:00:09] [Server thread/INFO] [minecraft/MinecraftServer]: Listo: Mara vive y trabaja aquí (cambia con /axeliscore npc casa|trabajo)
+[21:00:09] [Server thread/INFO] [minecraft/MinecraftServer]: Listo: Iker vive y trabaja aquí (cambia con /axeliscore npc casa|trabajo)
+[21:00:09] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.000000, -60.000000, -0.500000
+[21:00:11] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se ven los dos NPC con su definición
+[21:00:11] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: Mara tiene una misión nueva (!)
+[21:00:11] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_20_npc_marcas
+[21:00:13] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_21_npc_hablar
+[21:00:14] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: con una misión nueva abre en Misiones
+[21:00:15] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_21_npc_hablar_saludo
+[21:00:16] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_22_npc_misiones
+[21:00:16] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se puede aceptar la misión del pan
+[21:00:16] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_MISION aceptar axelis_core:pan
+[21:00:17] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: la misión quedó activa
+[21:00:18] [Server thread/INFO] [minecraft/MinecraftServer]: Gave 6 [Bread] to Dev
+[21:00:18] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_MISION lista axelis_core:pan
+[21:00:18] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: la misión está lista
+[21:00:19] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_23_npc_mision_lista
+[21:00:19] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se puede entregar
+[21:00:19] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_AMISTAD axelis_core:mara nivel=1
+[21:00:19] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_MISION entregar axelis_core:pan
+[21:00:19] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 3 advancements
+[21:00:19] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: premio y regalo
+[21:00:20] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_24_npc_entregada
+[21:00:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_25_npc_tienda
+[21:00:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se puede comprar pan
+[21:00:21] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_TIENDA axelis_core:mara oferta=0 veces=1
+[21:00:22] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: compró
+[21:00:22] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_25_npc_tienda_comprado
+[21:00:23] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_26_npc_amistad
+[21:00:23] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_MISION aceptar axelis_core:zombis
+[21:00:23] [Server thread/INFO] [minecraft/MinecraftServer]: Misión aceptada
+[21:00:23] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Zombie
+[21:00:23] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Zombie
+[21:00:25] [Server thread/INFO] [minecraft/MinecraftServer]: Dev has made the advancement [Monster Hunter]
+[21:00:25] [Server thread/INFO] [minecraft/MinecraftServer]: Applied 100.0 damage to Zombie
+[21:00:25] [Server thread/INFO] [minecraft/MinecraftServer]: Applied 100.0 damage to Zombie
+[21:00:25] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Dev has made the advancement [Monster Hunter]
+[21:00:25] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 34 advancements
+[21:00:26] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: cuenta los zombis
+[21:00:26] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 2.000000, -60.000000, -0.500000
+[21:00:27] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_27_rastreador
+[21:00:28] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: la tecla del diario está registrada
+[21:00:29] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_28_diario
+[21:00:30] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_28_diario_hechas
+[21:00:30] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Npc['Mara'/911, l='ServerLevel[world]', x=0.50, y=-60.00, z=4.50] died: Mara was killed
+[21:00:30] [Server thread/INFO] [minecraft/LivingEntity]: Named entity Npc['Iker'/912, l='ServerLevel[world]', x=3.50, y=-60.00, z=4.50] died: Iker was killed
+[21:00:30] [Server thread/INFO] [minecraft/MinecraftServer]: Killed 10 entities
+[21:00:30] [Server thread/INFO] [minecraft/MinecraftServer]: Se borraron tus misiones, amistades y compras
+[21:00:30] [Server thread/INFO] [minecraft/MinecraftServer]: Removed 15 item(s) from player Dev
+[21:00:31] [Server thread/INFO] [minecraft/MinecraftServer]: No entity was found
+[21:00:31] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Persona
+[21:00:31] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, -0.500000
+[21:00:33] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_ESTUDIO abierto entity.axelis_core.persona
+[21:00:34] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_29_estudio
+[21:00:35] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el editor tomó a la Persona
+[21:00:35] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: la Persona tiene la animación de saludar
+[21:00:36] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_29_estudio_hueso
+[21:00:37] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_29_estudio_clave
+[21:00:37] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el brazo quedó donde se puso (-160.0, 25.0)
+[21:00:38] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_29_estudio_efecto
+[21:00:39] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: quedó el efecto en ese momento (chispas)
+[21:00:39] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: la animación tiene efectos
+[21:00:39] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_ESTUDIO guardado /home/runner/work/minecraft-mods/minecraft-mods/axelis_core/run/axelis_estudio/persona.animation.json
+[21:00:39] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se guardó el archivo de animaciones
+[21:00:40] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Estudio] recargado: persona.animation.json
+[21:00:40] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=0 animaciones=1 texturas=0 errores=0
+[21:00:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: existe axelis_estudio/persona.animation.json
+[21:00:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el archivo guardado lleva el efecto (particle_effects)
+[21:00:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el editor soltó a la Persona
+[21:00:41] [Server thread/INFO] [minecraft/MinecraftServer]: Killed Persona
+[21:00:41] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Jelly
+[21:00:41] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, 0.000000
+[21:00:42] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Estudio] recargado: gelatina.bbmodel (2 huesos, 1 animaciones)
+[21:00:42] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=1 animaciones=2 texturas=0 errores=0
+[21:00:44] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el estudio cargó gelatina.bbmodel
+[21:00:44] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_30_estudio_bbmodel
+[21:00:45] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_30_estudio_bbmodel_2
+[21:00:46] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=0 animaciones=0 texturas=0 errores=0
+[21:00:48] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: al borrar el archivo vuelve el modelo del mod
+[21:00:48] [Server thread/INFO] [minecraft/MinecraftServer]: Killed Jelly
+[21:00:48] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, -2.500000
+[21:00:49] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO explosion_magica
+[21:00:49] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_explosion_magica
+[21:00:51] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO curacion
+[21:00:52] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_curacion
+[21:00:53] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO aparecer
+[21:00:54] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_aparecer
+[21:00:55] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO fuego_circulo
+[21:00:56] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_fuego_circulo
+[21:00:58] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO subir_nivel
+[21:00:58] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_subir_nivel
+[21:01:00] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO portal
+[21:01:01] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_portal
+[21:01:03] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO chispas
+[21:01:03] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_chispas
+[21:01:04] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_EFECTO nevada
+[21:01:06] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_efecto_nevada
+[21:01:07] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: llegaron los efectos al cliente (8)
+[21:01:08] [Server thread/INFO] [minecraft/MinecraftServer]: No entity was found
+[21:01:08] [Server thread/INFO] [minecraft/MinecraftServer]: Set the time to 6000
+[21:01:08] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, 40.500000
+[21:01:08] [Server thread/INFO] [minecraft/MinecraftServer]: No entity was found
+[21:01:08] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Persona
+[21:01:08] [Server thread/INFO] [minecraft/MinecraftServer]: Vestuario: axelis_core:overol a 1
+[21:01:08] [Server thread/INFO] [minecraft/MinecraftServer]: Vestuario: axelis_core:sombrero a 1
+[21:01:09] [Server thread/INFO] [minecraft/MinecraftServer]: Vestuario: axelis_core:overol a 1
+[21:01:09] [Server thread/INFO] [minecraft/MinecraftServer]: Vestuario: axelis_core:sombrero a 1
+[21:01:10] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: llevo el overol y el sombrero (2)
+[21:01:12] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_30_vestuario_frente
+[21:01:13] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_30_vestuario_espalda
+[21:01:13] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 1.500000, -60.000000, 40.500000
+[21:01:14] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_30_vestuario_persona
+[21:01:15] [Server thread/INFO] [minecraft/MinecraftServer]: No items were found on player Dev
+[21:01:15] [Server thread/INFO] [minecraft/MinecraftServer]: Gave 1 [Straw hat] to Dev
+[21:01:15] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.500000, -60.000000, 40.500000
+[21:01:16] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_objeto3d_mano
+[21:01:17] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_objeto3d_tercera
+[21:01:18] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: tengo en la mano el objeto con modelo 3D
+[21:01:18] [Server thread/INFO] [minecraft/MinecraftServer]: Removed 1 item(s) from player Dev
+[21:01:18] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Straw hat
+[21:01:18] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 0.000000, -60.000000, 40.000000
+[21:01:19] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto core_31_objeto3d_suelo
+[21:01:19] [Server thread/INFO] [minecraft/MinecraftServer]: Killed Straw hat
+[21:01:20] [Server thread/INFO] [minecraft/MinecraftServer]: Vestuario: quitado a 1
+[21:01:20] [Server thread/INFO] [minecraft/MinecraftServer]: Killed Persona
+[21:01:20] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: ya no llevo nada
+[21:01:20] [Server thread/INFO] [minecraft/MinecraftServer]: datos: mundo bien, opciones bien
+[21:01:20] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_DATOS mundo=true config=true peces=2 jugadores=1
+[21:01:22] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: los datos del jugador llegaron al cliente
+[21:01:22] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST AXCORE_AUTOTEST_FIN fotos=103 fallos=0
+[21:01:22] [Render thread/INFO] [minecraft/Minecraft]: Stopping!
+[21:01:22] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Dev lost connection: Disconnected
+[21:01:22] [Server thread/INFO] [minecraft/MinecraftServer]: Dev left the game
+[21:01:22] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Stopping singleplayer server as player logged out
+[21:01:22] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[21:01:22] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[21:01:22] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[21:01:23] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[21:01:23] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[21:01:23] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[21:01:23] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: Gathering id map for writing to world save world
+[21:01:23] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: ID Map collection complete world
+[21:01:23] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (prueba): All chunks are saved
+[21:01:23] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[21:01:23] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[21:01:23] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.GameData/REGISTRIES]: Reverting to FROZEN data state.
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:block Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:fluid Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:item Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:mob_effect Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:sound_event Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:potion Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:enchantment Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:entity_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:block_entity_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:particle_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:menu Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:painting_variant Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:recipe_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:recipe_serializer Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:attribute Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:stat_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:command_argument_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:villager_profession Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:point_of_interest_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:memory_module_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:sensor_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:schedule Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:activity Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/carver Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/feature Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:chunk_status Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/block_state_provider_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/foliage_placer_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/tree_decorator_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/biome Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:entity_data_serializers Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:global_loot_modifier_serializers Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:biome_modifier_serializers Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:fluid_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:structure_modifier_serializers Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:holder_set_type Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:display_contexts Sync: ACTIVE -> FROZEN
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ObjectHolderRegistry/REGISTRIES]: Applying holder lookups
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.ObjectHolderRegistry/REGISTRIES]: Holder lookups applied
+[21:01:23] [Server thread/DEBUG] [ne.mi.re.GameData/REGISTRIES]: FROZEN state restored.
+[21:01:23] [Server thread/DEBUG] [ne.mi.fm.co.ConfigTracker/CONFIG]: Unloading configs type SERVER
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_7-1795467447697.json
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 3m 58s
+10 actionable tasks: 3 executed, 7 up-to-date
