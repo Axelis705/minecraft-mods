@@ -53,7 +53,7 @@ public final class Espera {
     private static void aviso(G g, int w, int h) {
         CompoundTag t = ClientData.get(Pantallas.KEY);
         if (t == null || !"coleccionista".equals(Nbt.s(t, "modo")) || !EventoCliente.vivo(EventoCliente.yo()) || Cine.activo()
-                || EventoHud.oculto) {
+                || EventoHud.oculto || Atajos.pantallaCerca() == null) {
             return;
         }
         Font f = Ui.font();

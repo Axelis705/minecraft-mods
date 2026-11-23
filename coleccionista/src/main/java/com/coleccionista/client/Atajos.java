@@ -22,10 +22,31 @@ public final class Atajos {
      * regresa.
      */
     public static void acercarse() {
+        net.minecraft.world.phys.Vec3[] p = pantallaCerca();
+        if (p != null) {
+            Cine.acercarse(p[0], p[1]);
+        }
+    }
+
+    private static long revisada;
+    private static net.minecraft.world.phys.Vec3[] ultima;
+
+    /** La pantalla más cercana que mira hacia mí: {frente, centro} (null si no hay ninguna cerca). Se revisa cada medio segundo. */
+    public static net.minecraft.world.phys.Vec3[] pantallaCerca() {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null) {
-            return;
+            return null;
         }
+        long now = System.currentTimeMillis();
+        if (now - revisada < 500 && ultima != null || now - revisada < 100) {
+            return ultima;
+        }
+        revisada = now;
+        ultima = buscar(mc);
+        return ultima;
+    }
+
+    private static net.minecraft.world.phys.Vec3[] buscar(Minecraft mc) {
         net.minecraft.core.BlockPos yo = mc.player.blockPosition();
         net.minecraft.world.phys.Vec3 ojo = mc.player.getEyePosition();
         net.minecraft.world.phys.Vec3 mejor = null, frente = null;
@@ -49,9 +70,7 @@ public final class Atajos {
                 frente = centro.add(n.scale(grande ? 7.5 : 1.7));
             }
         }
-        if (mejor != null) {
-            Cine.acercarse(frente, mejor);
-        }
+        return mejor == null ? null : new net.minecraft.world.phys.Vec3[] {frente, mejor};
     }
 
     /** Tecla K: esconder o mostrar el HUD del evento (para grabar). */

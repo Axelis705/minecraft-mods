@@ -33,10 +33,15 @@ public final class EventoHud {
         com.axeliscore.fx.client.Hud.add(EventoHud::render);
     }
 
-    private static void render(G g, int w, int h) {
+    /** ¿Se dibuja el HUD del evento ahora? (no en escenas a pantalla completa, cinemáticas ni presentaciones) */
+    public static boolean visible() {
         Minecraft mc = Minecraft.getInstance();
-        if (oculto || mc.options.hideGui || mc.player == null || EscenaAviso.pantallaCompleta() || Espera.activa() || Cine.activo()
-                || (!EventoCliente.activo() && !EventoCliente.soyOrganizador())) {
+        return !(oculto || mc.options.hideGui || mc.player == null || EscenaAviso.pantallaCompleta() || Espera.activa() || Cine.activo()
+                || Presentacion.activa() || (!EventoCliente.activo() && !EventoCliente.soyOrganizador()));
+    }
+
+    private static void render(G g, int w, int h) {
+        if (!visible()) {
             return;
         }
         placa(g, w);

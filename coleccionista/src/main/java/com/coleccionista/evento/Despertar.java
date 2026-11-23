@@ -36,7 +36,7 @@ public final class Despertar {
     public static final String PRUEBA = "El despertar";
     /** Segundos para investigar antes de que hable el Coleccionista (Axelis pidió 10 minutos). */
     public static int segundosInvestigar = 600;
-    private static long levantarEn = -1;
+    private static long levantarEn = -1, cineEn = -1;
     private static boolean esperandoDiscurso;
 
     private Despertar() {
@@ -130,13 +130,20 @@ public final class Despertar {
     /** El organizador despierta a todos. */
     public static boolean despertar(MinecraftServer s) {
         Evento ev = Evento.get(s);
-        if (!ev.sala) {
+        if (!ev.sala || cineEn > 0) {
             return false;
         }
-        ev.sala = false;
+        // ¡pum!: las luces se prenden mientras todos siguen a oscuras; la cinemática empieza un momento después (así ya hay luz)
         Celdas.luces(s, true);
         Anuncio.sonido(s, SoundEvents.IRON_TRAPDOOR_CLOSE, 1F, 0.5F);
         Anuncio.sonido(s, SoundEvents.BEACON_ACTIVATE, 1F, 0.6F);
+        cineEn = s.overworld().getGameTime() + 30;
+        return true;
+    }
+
+    private static void despiertan(MinecraftServer s) {
+        Evento ev = Evento.get(s);
+        ev.sala = false;
         long now = s.overworld().getGameTime();
         for (Pieza p : ev.vivos()) {
             if (Evento.entidad(s, p) instanceof ServerPlayer sp) {
@@ -147,8 +154,8 @@ public final class Despertar {
         esperandoDiscurso = true;
         ev.prueba(s, PRUEBA);
         ev.reloj(s, segundosInvestigar);
+        ev.cambio(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_DESPERTAR piezas={}", ev.vivos().size());
-        return true;
     }
 
     /** La cinemática del despertar de una pieza: dos puntos de cámara en su celda y la cama a la que miran. */
@@ -199,6 +206,10 @@ public final class Despertar {
     private static void tick(MinecraftServer s) {
         Evento ev = Evento.get(s);
         long now = s.overworld().getGameTime();
+        if (cineEn > 0 && now >= cineEn) {
+            cineEn = -1;
+            despiertan(s);
+        }
         if (levantarEn > 0 && now >= levantarEn) {
             levantarEn = -1;
             for (Pieza p : ev.vivos()) {
@@ -218,6 +229,7 @@ public final class Despertar {
     /** Al reiniciar el evento. */
     static void reiniciar() {
         levantarEn = -1;
+        cineEn = -1;
         esperandoDiscurso = false;
     }
 }

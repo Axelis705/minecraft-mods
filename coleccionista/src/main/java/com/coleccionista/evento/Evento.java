@@ -386,6 +386,7 @@ public final class Evento {
         piezas.clear();
         sala = false;
         Despertar.reiniciar();
+        com.coleccionista.prueba.Encadenados.reiniciar(s);
         Cuerpos.limpiar(s);
         Pantallas.modo(s, "apagada", "");
         Celdas.candados(s, false);
@@ -407,7 +408,7 @@ public final class Evento {
         if (e.relojFin > 0 && s.overworld().getGameTime() >= e.relojFin) {
             e.relojFin = 0;
             Coleccionista.LOGGER.info("COLECCIONISTA_TIEMPO {}", e.prueba);
-            if (!Despertar.alAcabarReloj(s)) {
+            if (!Despertar.alAcabarReloj(s) && !com.coleccionista.prueba.Encadenados.alAcabarReloj(s)) {
                 Anuncio.tiempo(s);
             }
             e.cambio(s);
@@ -420,7 +421,7 @@ public final class Evento {
     // ------------------------------------------------------------------ guardar y mandar
 
     /** Guarda y avisa a todos los clientes. */
-    void cambio(MinecraftServer s) {
+    public void cambio(MinecraftServer s) {
         guardar(s);
         PlayerStore.Sync.toAll(s, KEY, estado(s));
     }

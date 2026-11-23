@@ -107,6 +107,18 @@ public final class Panel {
             case "despertar" -> Despertar.despertar(s);
             case "discurso" -> Despertar.discurso(s);
             case "abrir_celdas" -> Celdas.puertas(s, 0, true);
+            // ---- Encadenados
+            case "enc_preparar" -> {
+                Component e = com.coleccionista.prueba.Encadenados.preparar(s);
+                if (e != null) {
+                    Plat.msg(p, e, true);
+                }
+            }
+            case "enc_empezar" -> com.coleccionista.prueba.Encadenados.empezar(s, true);
+            case "enc_ya" -> com.coleccionista.prueba.Encadenados.empezar(s, false);
+            case "enc_soltar" -> com.coleccionista.prueba.Encadenados.soltarTodos(s);
+            case "enc_cerrar" -> com.coleccionista.prueba.Encadenados.cerrar(s, false);
+            case "enc_terminar" -> com.coleccionista.prueba.Encadenados.terminar(s);
             case "toma_guardar" -> {
                 if (!Tomas.guardar(p, Nbt.s(d, "nombre"))) {
                     Plat.msg(p, Component.translatable(Coleccionista.MODID + ".panel.tomas_llenas", Tomas.MAX), true);

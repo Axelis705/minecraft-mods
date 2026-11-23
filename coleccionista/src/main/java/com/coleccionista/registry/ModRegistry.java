@@ -42,6 +42,9 @@ public final class ModRegistry {
             () -> new net.minecraft.world.item.BlockItem(CANDADO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "candado")));
     public static final net.minecraftforge.registries.RegistryObject<Item> FOCO_ITEM = ITEMS.register("foco",
             () -> new net.minecraft.world.item.BlockItem(FOCO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "foco")));
+    /** La llave del grillete de una pieza (Encadenados). */
+    public static final net.minecraftforge.registries.RegistryObject<Item> LLAVE = ITEMS.register("llave_grillete",
+            () -> new com.coleccionista.prueba.LlaveGrillete(com.axeliscore.plat.Reg.item(Coleccionista.MODID, "llave_grillete").stacksTo(1)));
     public static final DeferredRegister<net.minecraft.world.level.block.entity.BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Coleccionista.MODID);
     public static final net.minecraftforge.registries.RegistryObject<net.minecraft.world.level.block.entity.BlockEntityType<

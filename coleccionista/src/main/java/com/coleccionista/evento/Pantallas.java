@@ -60,9 +60,24 @@ public final class Pantallas {
         return l;
     }
 
+    /** La explicación de Encadenados (en la Sala de los grilletes, antes de abrir la reja). */
+    public static List<Frase> encadenados() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hola", 60, null, 1F));
+        l.add(new Frase("cadena", 100, null, 1F));
+        l.add(new Frase("llaves", 110, null, 1F));
+        l.add(new Frase("lanzar", 90, null, 1F));
+        l.add(new Frase("gas", 110, null, 1F));
+        l.add(new Frase("cupo", 100, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("suerte", 80, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
+            case "encadenados" -> encadenados();
             default -> null;
         };
     }

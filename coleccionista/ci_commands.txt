@@ -1,6 +1,6 @@
 axeliscore
 coleccionista
-forceload add -16 -16 64 80
+forceload add -16 -16 176 96
 #pausa 3
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
@@ -32,6 +32,31 @@ evento despertar
 evento celdas abrir
 evento eliminar Bot_02
 evento cuerpos limpiar
+evento revivir Bot_02
+evento encadenados tiempo 60
+evento encadenados gracia 2
+evento encadenados preparar
+#pausa 4
+evento encadenados empezar ya
+#pausa 1
+evento encadenados soltar todos
+evento encadenados ir enc.placa.1.a Bot_01
+evento encadenados ir enc.placa.1.b Bot_03
+#pausa 2
+evento encadenados ir enc.salida Bot_01
+#pausa 8
+evento estado
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento encadenados tiempo 20
+evento encadenados gracia 0
+evento encadenados preparar
+#pausa 4
+evento encadenados empezar ya
+#pausa 16
+evento encadenados terminar
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect usuarios=[coleccionista]
@@ -52,3 +77,14 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_DISCURSO_FIN bienvenida
 #expect COLECCIONISTA_CANDADOS activos
 #expect COLECCIONISTA_CUERPO 02 Bot_02
+#expect COLECCIONISTA_CONSTRUIDO cloacas
+#expect COLECCIONISTA_ENCADENADOS preparada equipos=2 cupo=1
+#expect COLECCIONISTA_PRESENTACION I
+#expect COLECCIONISTA_ENCADENADOS empieza
+#expect COLECCIONISTA_GRILLETE
+#expect COLECCIONISTA_COMPUERTA 1 abierta
+#expect COLECCIONISTA_SALVADOS
+#expect COLECCIONISTA_ENCADENADOS cierre fuera=2
+#expect COLECCIONISTA_ENCADENADOS fin salvados=1 eliminados=2
+#expect COLECCIONISTA_GAS
+#expect COLECCIONISTA_ENCADENADOS terminada

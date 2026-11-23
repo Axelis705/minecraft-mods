@@ -52,7 +52,14 @@ public final class Cine {
         });
         // la ventana de "Salir de la cama": no en la sala de espera ni durante la cinemática
         MinecraftForge.EVENT_BUS.addListener((ScreenEvent.Opening e) -> {
-            if (e.getNewScreen() instanceof InBedChatScreen && (activo || EventoCliente.sala())) {
+            Minecraft mc = Minecraft.getInstance();
+            boolean pieza = mc.player != null && EventoCliente.activo() && EventoCliente.vivo(EventoCliente.yo());
+            if (e.getNewScreen() instanceof InBedChatScreen && (activo || EventoCliente.sala() || pieza)) {
+                e.setCanceled(true);
+            }
+        });
+        MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.client.event.RenderGuiOverlayEvent.Pre e) -> {
+            if (activo && e.getOverlay().id().equals(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.CROSSHAIR.id())) {
                 e.setCanceled(true);
             }
         });

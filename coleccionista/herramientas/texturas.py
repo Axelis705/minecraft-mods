@@ -316,7 +316,69 @@ def skin():
     guardar(som, "entity/sombrero.png")
 
 
+def encadenados():
+    """La llave del grillete (16x16, hierro viejo con óxido) y la niebla del gas (128x128, se pinta verde con el color del vértice)."""
+    import random, math
+    r = random.Random(77)
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    hierro = [(92, 88, 84, 255), (122, 116, 108, 255), (150, 144, 134, 255), (60, 56, 54, 255)]
+    oxido = [(126, 62, 30, 255), (150, 82, 40, 255), (98, 48, 26, 255)]
+    def px(x, y, c):
+        if 0 <= x < 16 and 0 <= y < 16:
+            img.putpixel((x, y), c)
+    # el ojo (anillo) arriba a la izquierda
+    for y in range(1, 8):
+        for x in range(1, 8):
+            d = math.hypot(x - 4, y - 4)
+            if 1.6 <= d <= 3.2:
+                c = hierro[2] if (x + y) < 7 else hierro[1] if d < 2.6 else hierro[0]
+                if r.random() < 0.18:
+                    c = r.choice(oxido)
+                px(x, y, c)
+    # el vástago en diagonal hacia abajo a la derecha
+    for i in range(0, 9):
+        x, y = 6 + i, 6 + i
+        px(x, y, hierro[1] if i % 3 else hierro[2])
+        px(x - 1, y, hierro[0])
+        if r.random() < 0.25:
+            px(x, y, r.choice(oxido))
+    # los dientes
+    for (x, y) in [(12, 9), (13, 9), (13, 10), (10, 12), (9, 12), (9, 13)]:
+        px(x, y, hierro[3] if y > 11 else hierro[1])
+    for (x, y) in [(11, 10), (14, 10)]:
+        px(x, y, oxido[0])
+    guardar(img, "item/llave_grillete.png")
+    # la niebla del gas: ruido suave que se repite, en grises (el color lo pone el dibujo)
+    n = 128
+    capas = []
+    for esc in (8, 16, 32):
+        rejilla = [[r.random() for _ in range(n // esc + 1)] for _ in range(n // esc + 1)]
+        capas.append((esc, rejilla))
+    gas = Image.new("RGBA", (n, n))
+    for y in range(n):
+        for x in range(n):
+            v = 0
+            pesos = 0
+            for k, (esc, rej) in enumerate(capas):
+                gx, gy = x / esc, y / esc
+                x0, y0 = int(gx) % (n // esc), int(gy) % (n // esc)
+                x1, y1 = (x0 + 1) % (n // esc), (y0 + 1) % (n // esc)
+                fx, fy = gx - int(gx), gy - int(gy)
+                fx, fy = fx * fx * (3 - 2 * fx), fy * fy * (3 - 2 * fy)
+                a = rej[y0][x0] * (1 - fx) + rej[y0][x1] * fx
+                b = rej[y1][x0] * (1 - fx) + rej[y1][x1] * fx
+                w = (k + 1)
+                v += (a * (1 - fy) + b * fy) * w
+                pesos += w
+            v /= pesos
+            g = int(150 + 105 * v)
+            al = int(max(0, min(255, (v - 0.22) * 330)))
+            gas.putpixel((x, y), (g, g, g, al))
+    guardar(gas, "misc/gas.png")
+
+
 if __name__ == "__main__":
+    encadenados()
     fantasma()
     retrato()
     estatica()

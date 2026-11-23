@@ -1,4 +1,5 @@
 import com.coleccionista.mapa.AlaCeldas;
+import com.coleccionista.mapa.Cloacas;
 import com.coleccionista.mapa.Plano;
 
 import java.io.PrintWriter;
@@ -11,18 +12,20 @@ import java.util.Map;
  * <pre>
  *   javac -d out coleccionista/src/main/java/com/coleccionista/mapa/*.java coleccionista/herramientas/Volcar.java
  *   java -cp out Volcar celdas salida.txt
+ *   java -cp out Volcar cloacas_corte salida.txt   (sin techo: para verlo desde arriba)
  * </pre>
  */
 public final class Volcar {
     public static void main(String[] a) throws Exception {
         Plano p = switch (a[0]) {
             case "celdas" -> AlaCeldas.crear(1234L);
+            case "cloacas", "cloacas_corte" -> Cloacas.crear(1234L);
             default -> throw new IllegalArgumentException("plano desconocido: " + a[0]);
         };
         int n = 0;
         try (PrintWriter w = new PrintWriter(a[1], StandardCharsets.UTF_8)) {
             for (Map.Entry<Long, String> e : p.m.entrySet()) {
-                if (e.getValue().equals("air")) {
+                if (e.getValue().equals("air") || a[0].endsWith("_corte") && Plano.ky(e.getKey()) >= 5) {
                     continue;
                 }
                 w.println(Plano.kx(e.getKey()) + " " + Plano.ky(e.getKey()) + " " + Plano.kz(e.getKey()) + " " + e.getValue());

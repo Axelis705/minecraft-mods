@@ -165,6 +165,8 @@ public final class Comandos {
                             Celdas.luces(c.getSource().getServer(), false);
                             return ok(c, Component.translatable(MOD + ".cmd.luces"));
                         })))
+                // ---- las pruebas
+                .then(com.coleccionista.prueba.ComandosPruebas.encadenados(vivas))
                 .then(Commands.literal("cuerpos").then(Commands.literal("limpiar").executes(c -> {
                     int n = Cuerpos.limpiar(c.getSource().getServer());
                     return ok(c, Component.translatable(MOD + ".cmd.cuerpos", n));

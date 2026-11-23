@@ -85,7 +85,7 @@ final class PruebaCliente {
         });
         t.photo("13_panel_camaras", 900, () -> {
             if (com.axeliscore.plat.client.Screens.current() instanceof PanelScreen s) {
-                s.pestana(2);
+                s.pestana(3);
             }
         });
         t.add("cerrar panel", 600, () -> {
@@ -175,7 +175,7 @@ final class PruebaCliente {
         // Axelis aparece disfrazado del Coleccionista en el pasillo (visto de frente)
         t.add("disfrazarme", 1500, () -> {
             t.cmd("evento quitar " + yo());
-            t.cmd("evento disfraz si");
+            t.cmd("evento disfraz si @a");
         });
         t.photo("31_disfraz", 1800, () -> {
             t.lookFrom(14.5, -60, 41.5, 0, -58.4, 41.5);
@@ -185,7 +185,87 @@ final class PruebaCliente {
             t.check(EventoCliente.disfrazado(Minecraft.getInstance().player.getUUID()), "estoy disfrazado del Coleccionista");
             t.check(!Minecraft.getInstance().player.isSpectator(), "el disfraz me saca de espectador");
             Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
-            t.cmd("evento disfraz no");
+            t.cmd("evento disfraz no @a");
+        });
+        encadenados(t);
+    }
+
+    /** Mi pareja en Encadenados (su nombre), o "" si no tengo. */
+    private static String pareja() {
+        java.util.UUID yo = Minecraft.getInstance().player.getUUID();
+        for (EncadenadosCliente.Cadena c : EncadenadosCliente.cadenas) {
+            java.util.UUID otro = c.a().equals(yo) ? c.b() : c.b().equals(yo) ? c.a() : null;
+            if (otro != null) {
+                var p = EventoCliente.pieza(otro);
+                return p == null ? "" : com.axeliscore.plat.Nbt.s(p, "nombre");
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Prueba 1, Encadenados: fundido, presentación, la Sala de los grilletes (cadenas a la pared y a la pareja, el aviso de la llave),
+     * la compuerta de dos placas, el frente del gas, adentro del gas, el Refugio y el final (el gas se lleva a los bots que se quedaron).
+     */
+    private static void encadenados(ClientTest.Script t) {
+        t.photo("32_fundido", 1600, () -> {
+            t.cmd("gamemode adventure @a");
+            t.cmd("evento inscribir @a");
+            t.cmd("evento revivir Bot_02");
+            t.cmd("forceload add 32 0 176 80");
+            t.cmd("evento encadenados tiempo 30");
+            t.cmd("evento encadenados gracia 2");
+            t.cmd("evento encadenados preparar");
+        });
+        t.photo("33_presentacion", 5700, () -> {
+        });
+        t.add("encadenado", 100, () -> {
+            t.check("LISTA".equals(EncadenadosCliente.fase), "Encadenados está lista");
+            t.check(EncadenadosCliente.encadenado(), "estoy encadenado a la pared");
+            t.check(!pareja().isEmpty(), "tengo pareja (cadena)");
+        });
+        t.photo("34_grilletes", 4800, () -> {
+        });
+        t.photo("35_cadenas_tercera", 1200, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+        t.add("a jugar", 1200, () -> {
+            Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
+            t.cmd("evento encadenados empezar ya");
+            t.cmd("evento encadenados soltar todos");
+            t.cmd("evento encadenados ir enc.placa.1.a " + yo());
+            t.cmd("evento encadenados ir enc.placa.1.b " + pareja());
+        });
+        t.photo("36_compuerta", 900, () -> {
+        });
+        t.add("compuerta", 100, () -> {
+            t.check(!EncadenadosCliente.encadenado(), "ya no estoy encadenado a la pared");
+            t.check(EncadenadosCliente.placas.stream().anyMatch(EncadenadosCliente.Placa::abierta), "la compuerta se abrió con las dos placas");
+            t.cmd("evento encadenados ir enc.centro " + yo());
+        });
+        t.add("voltear", 600, () -> Minecraft.getInstance().player.setYRot(90F));
+        t.photo("37_gas_frente", 1300, () -> Minecraft.getInstance().player.setYRot(90F));
+        t.photo("38_gas_dentro", 2600, () -> {
+        });
+        t.add("en el gas", 100, () -> {
+            t.check(Gas.adentro(Minecraft.getInstance().player.getEyePosition(), 0), "estoy dentro del gas");
+            t.check(EncadenadosCliente.aire() < 100, "se me acaba el aire");
+            t.cmd("evento encadenados ir enc.salida " + yo());
+        });
+        t.photo("39_refugio", 1600, () -> {
+        });
+        t.add("a salvo", 100, () -> t.check(EncadenadosCliente.aSalvo.contains(Minecraft.getInstance().player.getUUID()), "llegué al Refugio"));
+        t.add("esperar el gas", 9000, () -> {
+        });
+        t.photo("40_fin", 600, () -> {
+        });
+        t.add("fin de la prueba", 100, () -> t.check("FIN".equals(EncadenadosCliente.fase), "terminó Encadenados (el gas se llevó a los demás)"));
+        t.photo("41_panel_pruebas", 900, () -> {
+            PanelScreen s = new PanelScreen();
+            com.axeliscore.plat.client.Screens.open(s);
+            s.pestana(2);
+        });
+        t.add("cerrar", 500, () -> {
+            com.axeliscore.plat.client.Screens.close();
+            t.cmd("evento encadenados terminar");
         });
     }
 }

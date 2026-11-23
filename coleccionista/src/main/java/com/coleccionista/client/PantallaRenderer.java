@@ -148,7 +148,7 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         }
         // subtítulo dentro de la pantalla
         String clave = Nbt.s(t, "linea");
-        if (habla && !clave.isEmpty()) {
+        if (habla && !clave.isEmpty() && !Cine.enPantalla()) {
             texto(d, ps, w, h, z + 0.008F, Component.translatable(clave).getString(), -h / 2 + h * 0.18F, w * 0.9F, 0.85F);
         }
     }

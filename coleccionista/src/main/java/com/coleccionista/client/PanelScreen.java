@@ -81,7 +81,8 @@ public class PanelScreen extends UiScreen {
 
     private static int hashDatos() {
         CompoundTag e = ClientData.get(com.coleccionista.evento.Evento.KEY), t = ClientData.get(Tomas.KEY);
-        return (e == null ? 0 : e.hashCode()) * 31 + (t == null ? 0 : t.hashCode()) + tab;
+        // de Encadenados solo importa la fase (el gas cambia a cada rato)
+        return ((e == null ? 0 : e.hashCode()) * 31 + (t == null ? 0 : t.hashCode()) + tab) * 31 + EncadenadosCliente.fase.hashCode();
     }
 
     @Override
@@ -99,12 +100,14 @@ public class PanelScreen extends UiScreen {
         Tabs t = add(new Tabs(px + 12, py + 30, pw - 24, 15, i -> {
             tab = i;
             init();
-        }, tr("tab_piezas"), tr("tab_evento"), tr("tab_camaras")));
+        }, tr("tab_piezas"), tr("tab_evento"), tr("tab_pruebas"), tr("tab_camaras")));
         t.active = tab;
         if (tab == 0) {
             piezas();
         } else if (tab == 1) {
             evento();
+        } else if (tab == 2) {
+            pruebas();
         } else {
             camaras();
         }
@@ -226,6 +229,35 @@ public class PanelScreen extends UiScreen {
             add(new Button(x + (bw + 6) * i, y, bw, 16, tr(guion[i][1]), () -> pedir(op, null)))
                     .help(Component.translatable(MOD + ".panel." + guion[i][1] + "_ayuda"));
         }
+    }
+
+    // ------------------------------------------------------------------ pruebas
+
+    private void pruebas() {
+        int x = px + 16, y = py + 64, w = pw - 32;
+        int bw = (w - 2 * 6) / 3;
+        String f = EncadenadosCliente.fase;
+        boolean lista = "LISTA".equals(f), juego = "JUEGO".equals(f);
+        Button b;
+        b = add(new Button(x, y, bw, 16, tr("enc_preparar"), () -> pedir("enc_preparar", null)));
+        b.enabled = !juego && !"HABLANDO".equals(f) && !"CIERRE".equals(f);
+        b.help(Component.translatable(MOD + ".panel.enc_preparar_ayuda"));
+        b = add(new Button(x + bw + 6, y, bw, 16, tr("enc_empezar"), () -> pedir("enc_empezar", null)));
+        b.enabled = lista;
+        b.help(Component.translatable(MOD + ".panel.enc_empezar_ayuda"));
+        b = add(new Button(x + (bw + 6) * 2, y, bw, 16, tr("enc_ya"), () -> pedir("enc_ya", null)));
+        b.enabled = lista;
+        b.help(Component.translatable(MOD + ".panel.enc_ya_ayuda"));
+        y += 22;
+        b = add(new Button(x, y, bw, 16, tr("enc_soltar"), () -> pedir("enc_soltar", null)));
+        b.enabled = EncadenadosCliente.enJuego() && !EncadenadosCliente.grilletes.isEmpty();
+        b.help(Component.translatable(MOD + ".panel.enc_soltar_ayuda"));
+        b = add(new Button(x + bw + 6, y, bw, 16, tr("enc_cerrar"), () -> pedir("enc_cerrar", null)));
+        b.enabled = juego;
+        b.help(Component.translatable(MOD + ".panel.enc_cerrar_ayuda"));
+        b = add(new Button(x + (bw + 6) * 2, y, bw, 16, tr("enc_terminar"), () -> pedir("enc_terminar", null)));
+        b.enabled = EncadenadosCliente.activa();
+        b.help(Component.translatable(MOD + ".panel.enc_terminar_ayuda"));
     }
 
     // ------------------------------------------------------------------ cámaras
@@ -351,6 +383,17 @@ public class PanelScreen extends UiScreen {
             String pr = EventoCliente.prueba();
             Ui.text(g, Component.translatable(MOD + ".panel.estado", EventoCliente.fase(), pr.isEmpty() ? "-" : pr, EventoCliente.vivos(),
                     EventoCliente.total()).getString(), x, py + ph - 22, pw - 32, theme.textDim, 10);
+        } else if (tab == 2) {
+            int x = px + 16;
+            g.drawString(f, tr("sec_encadenados"), x, py + 54, theme.accent, false);
+            String est = Component.translatable(MOD + ".panel.enc_estado." + EncadenadosCliente.fase.toLowerCase(Locale.ROOT)).getString();
+            g.drawString(f, est, x, py + 112, theme.title, false);
+            if (EncadenadosCliente.activa()) {
+                g.drawString(f, tr("enc_cuenta", EncadenadosCliente.salvados, EncadenadosCliente.cupo, EncadenadosCliente.equipos,
+                        EncadenadosCliente.grilletes.size()), x, py + 124, theme.textDim, false);
+            }
+            Ui.text(g, Component.translatable(MOD + ".panel.enc_nota").getString(), x, py + 142, pw - 32, theme.textDim, 10);
+            Ui.text(g, Component.translatable(MOD + ".panel.pruebas_proximas").getString(), x, py + ph - 34, pw - 32, 0xFF7A6E68, 10);
         } else {
             int x = px + 194;
             Ui.text(g, Component.translatable(MOD + ".panel.camara_nota").getString(), x, py + ph - 52, pw - 206, theme.textDim, 10);

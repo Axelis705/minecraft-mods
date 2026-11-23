@@ -5,6 +5,7 @@ import com.axeliscore.data.WorldStore;
 import com.axeliscore.plat.Nbt;
 import com.coleccionista.Coleccionista;
 import com.coleccionista.mapa.AlaCeldas;
+import com.coleccionista.mapa.Cloacas;
 import com.coleccionista.mapa.Plano;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
@@ -28,18 +29,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * El mapa del evento en el overworld: dónde se construyó (el origen) y las marcas de los planos (celdas, pantallas, puertas...). La
- * construcción se hace por partes (unos miles de bloques por tick) para que el servidor no se trabe.
+ * El mapa del evento en el overworld: dónde se construyó (el origen) y las marcas de los planos (celdas, pantallas, puertas...). El
+ * mapa tiene varias zonas, cada una con su plano y su lugar respecto al origen: el Ala de celdas (en el origen) y las Cloacas de
+ * "Encadenados" (al este, pegadas al portón de salida del Ala). La construcción se hace por partes (unos miles de bloques por tick)
+ * para que el servidor no se trabe.
  */
 public final class Complejo {
     private static final String MOD = Coleccionista.MODID;
     private static final int POR_TICK = 6000;
     private static final long SEMILLA = 1234L;
     private static Plano celdas;
+    private static List<Zona> zonas;
     private static final Map<String, BlockState> CACHE = new HashMap<>();
     private static final Deque<Trabajo> COLA = new ArrayDeque<>();
 
     private record Trabajo(ServerLevel level, BlockPos origen, List<long[]> pasos, Plano plano, int[] hecho, Runnable fin) {
+    }
+
+    /**
+     * Una zona del mapa: su plano y dónde queda respecto al origen. {@code margen}: cuánto se limpia alrededor antes de construir (0 si
+     * está pegada a otra zona, para no borrarle la pared).
+     */
+    public record Zona(String id, Plano plano, int dx, int dy, int dz, int margen) {
     }
 
     private Complejo() {
@@ -57,6 +68,27 @@ public final class Complejo {
         return celdas;
     }
 
+    /** Las zonas del mapa, en el orden en que se construyen. */
+    public static List<Zona> zonas() {
+        if (zonas == null) {
+            List<Zona> l = new ArrayList<>();
+            l.add(new Zona("celdas", planoCeldas(), 0, 0, 0, 1));
+            // las Cloacas empiezan justo al este del portón del Ala (x 44): su pasillo (x local -5) queda en x 45
+            l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 50, 0, -11, 0));
+            zonas = l;
+        }
+        return zonas;
+    }
+
+    public static Zona zona(String id) {
+        for (Zona z : zonas()) {
+            if (z.id().equals(id)) {
+                return z;
+            }
+        }
+        return null;
+    }
+
     private static CompoundTag datos(MinecraftServer s) {
         CompoundTag g = WorldStore.get(s, MOD).global();
         if (!g.contains("complejo")) {
@@ -69,53 +101,102 @@ public final class Complejo {
         return datos(s).getBoolean("celdas");
     }
 
+    /** ¿Ya se construyó esa zona? */
+    public static boolean construido(MinecraftServer s, String zona) {
+        return datos(s).getBoolean(zona);
+    }
+
+    /** Dónde empieza una zona en el mundo (null si no se construyó). */
+    public static BlockPos origen(MinecraftServer s, String zona) {
+        Zona z = zona(zona);
+        if (z == null || !construido(s, zona)) {
+            return null;
+        }
+        return origen(s).offset(z.dx(), z.dy(), z.dz());
+    }
+
     public static BlockPos origen(MinecraftServer s) {
         CompoundTag d = datos(s);
         return new BlockPos(Nbt.i(d, "ox"), Nbt.i(d, "oy"), Nbt.i(d, "oz"));
     }
 
-    /** Una marca del Ala de celdas en el mundo (null si no existe o no se construyó). */
+    /** Una marca de cualquier zona en el mundo (null si no existe o esa zona no se construyó). */
     public static BlockPos pos(MinecraftServer s, String marca) {
-        Plano.Marca m = planoCeldas().marcas.get(marca);
-        if (m == null || !construido(s)) {
-            return null;
+        for (Zona z : zonas()) {
+            Plano.Marca m = z.plano().marcas.get(marca);
+            if (m != null) {
+                if (!construido(s, z.id())) {
+                    return null;
+                }
+                return origen(s).offset(z.dx() + m.x(), z.dy() + m.y(), z.dz() + m.z());
+            }
         }
-        return origen(s).offset(m.x(), m.y(), m.z());
+        return null;
     }
 
     public static float yaw(String marca) {
-        Plano.Marca m = planoCeldas().marcas.get(marca);
-        return m == null ? 0 : m.yaw();
+        for (Zona z : zonas()) {
+            Plano.Marca m = z.plano().marcas.get(marca);
+            if (m != null) {
+                return m.yaw();
+            }
+        }
+        return 0;
     }
 
     // ------------------------------------------------------------------ construir
 
-    /** Construye el Ala de celdas con su piso en {@code origen} (la esquina oeste). Llama a {@code fin} al terminar. */
+    /**
+     * Construye todo el mapa con el piso del Ala de celdas en {@code origen} (la esquina oeste). Llama a {@code fin} al terminar.
+     */
     public static void construir(ServerLevel level, BlockPos origen, Runnable fin) {
-        Plano p = planoCeldas();
+        CompoundTag d = datos(level.getServer());
+        d.putInt("ox", origen.getX());
+        d.putInt("oy", origen.getY());
+        d.putInt("oz", origen.getZ());
+        List<Zona> zs = zonas();
+        for (int i = 0; i < zs.size(); i++) {
+            Zona z = zs.get(i);
+            d.putBoolean(z.id(), false);
+            boolean ultima = i == zs.size() - 1;
+            encolar(level, origen.offset(z.dx(), z.dy(), z.dz()), z, ultima ? fin : null);
+        }
+        WorldStore.get(level.getServer(), MOD).dirty();
+    }
+
+    /** Vuelve a construir una sola zona (con el origen que ya tiene el mapa). */
+    public static boolean reconstruir(ServerLevel level, String id, Runnable fin) {
+        Zona z = zona(id);
+        if (z == null || !construido(level.getServer())) {
+            return false;
+        }
+        datos(level.getServer()).putBoolean(id, false);
+        encolar(level, origen(level.getServer()).offset(z.dx(), z.dy(), z.dz()), z, fin);
+        return true;
+    }
+
+    private static void encolar(ServerLevel level, BlockPos base, Zona z, Runnable fin) {
+        Plano p = z.plano();
+        int mg = z.margen();
         List<long[]> pasos = new ArrayList<>();
-        // primero se vacía la caja (con un margen) y luego se ponen los bloques
-        for (int x = p.x0 - 1; x <= p.x1 + 1; x++) {
-            for (int z = p.z0 - 1; z <= p.z1 + 1; z++) {
+        // primero se vacía la caja (con su margen) y luego se ponen los bloques
+        for (int x = p.x0 - mg; x <= p.x1 + mg; x++) {
+            for (int zz = p.z0 - mg; zz <= p.z1 + mg; zz++) {
                 for (int y = p.y0; y <= p.y1 + 3; y++) {
-                    pasos.add(new long[] {x, y, z, 0});
+                    pasos.add(new long[] {x, y, zz, 0});
                 }
             }
         }
         for (long k : p.m.keySet()) {
             pasos.add(new long[] {Plano.kx(k), Plano.ky(k), Plano.kz(k), 1});
         }
-        CompoundTag d = datos(level.getServer());
-        d.putInt("ox", origen.getX());
-        d.putInt("oy", origen.getY());
-        d.putInt("oz", origen.getZ());
-        d.putBoolean("celdas", false);
-        WorldStore.get(level.getServer(), MOD).dirty();
-        COLA.add(new Trabajo(level, origen, pasos, p, new int[] {0}, () -> {
-            d.putBoolean("celdas", true);
+        COLA.add(new Trabajo(level, base, pasos, p, new int[] {0}, () -> {
+            datos(level.getServer()).putBoolean(z.id(), true);
             WorldStore.get(level.getServer(), MOD).dirty();
-            Coleccionista.LOGGER.info("COLECCIONISTA_CONSTRUIDO celdas bloques={}", p.m.size());
-            fin.run();
+            Coleccionista.LOGGER.info("COLECCIONISTA_CONSTRUIDO {} bloques={}", z.id(), p.m.size());
+            if (fin != null) {
+                fin.run();
+            }
         }));
     }
 
@@ -197,6 +278,12 @@ public final class Complejo {
         if (t == null) {
             return Component.empty();
         }
-        return Component.translatable(MOD + ".cmd.construyendo", (int) (100L * t.hecho[0] / Math.max(1, t.pasos.size())));
+        // el avance de todo lo que falta (todas las zonas en la cola)
+        long hecho = 0, total = 0;
+        for (Trabajo w : COLA) {
+            hecho += w.hecho[0];
+            total += w.pasos.size();
+        }
+        return Component.translatable(MOD + ".cmd.construyendo", (int) (100L * hecho / Math.max(1, total)));
     }
 }
