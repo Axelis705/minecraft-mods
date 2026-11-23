@@ -24,6 +24,24 @@ public final class ModRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, PescaColeccion.MODID);
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, PescaColeccion.MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, PescaColeccion.MODID);
+    public static final DeferredRegister<net.minecraft.world.level.block.entity.BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(
+            net.minecraft.core.registries.Registries.BLOCK_ENTITY_TYPE, PescaColeccion.MODID);
+
+    /** Placa de trofeo (un pez montado en la pared) y acuario (peces que nadan). */
+    public static final net.minecraftforge.registries.RegistryObject<Block> TROFEO = BLOCKS.register("trofeo",
+            () -> new com.pescacoleccion.deco.TrofeoBlock(com.axeliscore.plat.Reg.block(PescaColeccion.MODID, "trofeo").strength(1F)
+                    .sound(net.minecraft.world.level.block.SoundType.WOOD).noOcclusion()));
+    public static final net.minecraftforge.registries.RegistryObject<Block> ACUARIO = BLOCKS.register("acuario",
+            () -> new com.pescacoleccion.deco.AcuarioBlock(com.axeliscore.plat.Reg.block(PescaColeccion.MODID, "acuario").strength(0.6F)
+                    .sound(net.minecraft.world.level.block.SoundType.GLASS).noOcclusion().lightLevel(st -> 4)));
+    public static final net.minecraftforge.registries.RegistryObject<Item> TROFEO_ITEM = ITEMS.register("trofeo",
+            () -> new net.minecraft.world.item.BlockItem(TROFEO.get(), com.axeliscore.plat.Reg.blockItem(PescaColeccion.MODID, "trofeo")));
+    public static final net.minecraftforge.registries.RegistryObject<Item> ACUARIO_ITEM = ITEMS.register("acuario",
+            () -> new net.minecraft.world.item.BlockItem(ACUARIO.get(), com.axeliscore.plat.Reg.blockItem(PescaColeccion.MODID, "acuario")));
+    public static final net.minecraftforge.registries.RegistryObject<net.minecraft.world.level.block.entity.BlockEntityType<com.pescacoleccion.deco.TrofeoBE>> TROFEO_BE =
+            BLOCK_ENTITIES.register("trofeo", () -> com.axeliscore.plat.Reg.blockEntity(com.pescacoleccion.deco.TrofeoBE::new, TROFEO.get()));
+    public static final net.minecraftforge.registries.RegistryObject<net.minecraft.world.level.block.entity.BlockEntityType<com.pescacoleccion.deco.AcuarioBE>> ACUARIO_BE =
+            BLOCK_ENTITIES.register("acuario", () -> com.axeliscore.plat.Reg.blockEntity(com.pescacoleccion.deco.AcuarioBE::new, ACUARIO.get()));
 
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.pescacoleccion.pesca.Anzuelo>> ANZUELO = ENTITIES.register("anzuelo",
             () -> com.axeliscore.plat.Reg.entity(PescaColeccion.MODID, "anzuelo", EntityType.Builder.<com.pescacoleccion.pesca.Anzuelo>of(
@@ -72,6 +90,8 @@ public final class ModRegistry {
                     .icon(() -> new net.minecraft.world.item.ItemStack(CANAS.get(com.pescacoleccion.pesca.Cana.BAMBU).get()))
                     .displayItems((params, out) -> {
                         out.accept(LIBRO.get());
+                        out.accept(TROFEO_ITEM.get());
+                        out.accept(ACUARIO_ITEM.get());
                         for (var c : CANAS.values()) {
                             out.accept(c.get());
                         }
@@ -95,6 +115,7 @@ public final class ModRegistry {
         BLOCKS.register(bus);
         ENTITIES.register(bus);
         SOUNDS.register(bus);
+        BLOCK_ENTITIES.register(bus);
         TABS.register(bus);
     }
 }

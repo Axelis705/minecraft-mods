@@ -17,6 +17,8 @@ public final class ModClient {
     @SubscribeEvent
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerEntityRenderer(com.pescacoleccion.registry.ModRegistry.ANZUELO.get(), AnzueloRenderer::new);
+        e.registerBlockEntityRenderer(com.pescacoleccion.registry.ModRegistry.TROFEO_BE.get(), TrofeoRenderer::new);
+        e.registerBlockEntityRenderer(com.pescacoleccion.registry.ModRegistry.ACUARIO_BE.get(), AcuarioRenderer::new);
         e.registerEntityRenderer(com.pescacoleccion.registry.ModRegistry.NILO.get(),
                 com.axeliscore.client.PersonaRenderer.with(com.pescacoleccion.nilo.NiloMundo.PIEL));
     }
@@ -44,6 +46,7 @@ public final class ModClient {
     }
 
     static int antes;
+    static volatile int trofeosListos;
 
     /** Nilo visto en el cliente (para las pruebas). */
     static com.pescacoleccion.nilo.Nilo nilo() {
@@ -316,6 +319,55 @@ public final class ModClient {
                 }
             });
             t.add("cerrar libro", 300, () -> com.axeliscore.plat.client.Screens.close());
+            // trofeos en la pared y acuarios con peces que nadan
+            t.add("pared", 800, () -> {
+                t.cmd("fill 8 -60 -6 16 -57 -6 minecraft:stone_bricks");
+                for (int x : new int[] {10, 12, 14}) {
+                    t.cmd("setblock " + x + " -58 -5 " + PescaColeccion.MODID + ":trofeo[facing=south]");
+                }
+                t.cmd("setblock 10 -60 -3 " + PescaColeccion.MODID + ":acuario");
+                t.cmd("setblock 14 -60 -3 " + PescaColeccion.MODID + ":acuario");
+            });
+            t.add("montar y soltar", 1200, () -> onServer(l -> {
+                var sp = l.getServer().getPlayerList().getPlayers().get(0);
+                String[] trofeos = {"pez_espada", "patriarca", "koi_cerezo"};
+                int[] xs = {10, 12, 14};
+                for (int i = 0; i < 3; i++) {
+                    var es = com.pescacoleccion.pesca.Especies.get(trofeos[i]);
+                    var st = com.pescacoleccion.pesca.PezItem.crear(com.pescacoleccion.registry.ModRegistry.PECES.get(es.id()).get(), es,
+                            es.cmMin() + (es.cmMax() - es.cmMin()) * 0.8F, "Dev", false);
+                    if (l.getBlockEntity(new net.minecraft.core.BlockPos(xs[i], -58, -5)) instanceof com.pescacoleccion.deco.TrofeoBE be) {
+                        com.pescacoleccion.deco.TrofeoBlock.montar(be, sp, st);
+                    }
+                }
+                String[][] peces = {{"payaso", "pez_globo", "koi_cerezo"}, {"pez_linterna", "trucha_arcoiris", "mojarra"}};
+                int[] ax = {10, 14};
+                trofeosListos = 0;
+                for (int a = 0; a < 2; a++) {
+                    if (l.getBlockEntity(new net.minecraft.core.BlockPos(ax[a], -60, -3)) instanceof com.pescacoleccion.deco.AcuarioBE be) {
+                        for (String id : peces[a]) {
+                            var es = com.pescacoleccion.pesca.Especies.get(id);
+                            var st = com.pescacoleccion.pesca.PezItem.crear(com.pescacoleccion.registry.ModRegistry.PECES.get(es.id()).get(), es,
+                                    es.cmMax() * 0.7F, "Dev", false);
+                            com.pescacoleccion.deco.AcuarioBlock.soltar(be, sp, st);
+                        }
+                        trofeosListos += be.peces.size();
+                    }
+                }
+            }));
+            t.add("datos en el cliente", 600, () -> {
+                var mc = net.minecraft.client.Minecraft.getInstance();
+                boolean ok = mc.level.getBlockEntity(new net.minecraft.core.BlockPos(12, -58, -5)) instanceof com.pescacoleccion.deco.TrofeoBE be
+                        && !be.pez.isEmpty();
+                t.check(ok, "el trofeo llegó al cliente con su pez");
+                t.check(trofeosListos == 6, "6 peces en los acuarios (" + trofeosListos + ")");
+                boolean ac = mc.level.getBlockEntity(new net.minecraft.core.BlockPos(14, -60, -3)) instanceof com.pescacoleccion.deco.AcuarioBE be
+                        && be.peces.size() == 3;
+                t.check(ac, "el acuario llegó al cliente con sus peces");
+            });
+            t.photo("trofeos_acuarios", 2000, () -> t.lookFrom(12.5, -60, 1.5, 12.5, -59, -5));
+            t.photo("acuario_cerca", 2000, () -> t.lookFrom(14.5, -60, -0.3, 14.5, -60.4, -3));
+            t.photo("trofeo_cuadro", 1500, () -> t.lookFrom(12.5, -60, -2.5, 12.5, -57.6, -5.4));
         });
     }
 }

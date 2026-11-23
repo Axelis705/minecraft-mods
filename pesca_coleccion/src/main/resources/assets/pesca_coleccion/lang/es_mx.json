@@ -259,5 +259,13 @@
   "pesca_coleccion.nilo.premio": "Premio",
   "pesca_coleccion.nilo.amistad": "Amistad",
   "pesca_coleccion.libro.cana_nilo": "Nilo te la regala cuando sean Leyenda del muelle.",
-  "pesca_coleccion.libro.regalo_nilo": "Regalo de Nilo"
+  "pesca_coleccion.libro.regalo_nilo": "Regalo de Nilo",
+  "block.pesca_coleccion.trofeo": "Placa de trofeo",
+  "block.pesca_coleccion.acuario": "Acuario",
+  "pesca_coleccion.trofeo.vacio": "Haz clic derecho con un pez para montarlo en la placa.",
+  "pesca_coleccion.trofeo.quitar": "Agachado y con la mano vacía: quitarlo",
+  "pesca_coleccion.acuario.vacio": "Haz clic derecho con un pez para soltarlo aquí.",
+  "pesca_coleccion.acuario.lleno": "El acuario está lleno (%s peces)",
+  "pesca_coleccion.acuario.viven": "Viven aquí %s de %s",
+  "pesca_coleccion.acuario.sacar": "Agachado y con la mano vacía: sacar el último"
 }

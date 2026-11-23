@@ -35,7 +35,9 @@ public final class Tienda {
             new Oferta(() -> ModRegistry.CEBOS.get(Cebo.BRILLANTE).get(), 3, 3, 2),
             new Oferta(() -> ModRegistry.CEBOS.get(Cebo.LUNA).get(), 1, 5, 3),
             new Oferta(() -> ModRegistry.CANAS.get(Cana.BAMBU).get(), 1, 1, 0),
-            new Oferta(() -> ModRegistry.LIBRO.get(), 1, 1, 0));
+            new Oferta(() -> ModRegistry.LIBRO.get(), 1, 1, 0),
+            new Oferta(() -> ModRegistry.TROFEO_ITEM.get(), 1, 2, 0),
+            new Oferta(() -> ModRegistry.ACUARIO_ITEM.get(), 1, 4, 1));
 
     private Tienda() {
     }

@@ -117,7 +117,7 @@ public class Nilo extends Persona {
             if (t < 240) {
                 return;
             }
-            moveTo(dst.x, dst.y, dst.z, getYRot(), getXRot());
+            this.moveTo(dst.x, dst.y, dst.z, getYRot(), getXRot());
         }
         getNavigation().stop();
         ServerPlayer p = recibe == null ? null : sl.getServer().getPlayerList().getPlayer(recibe);
@@ -177,7 +177,7 @@ public class Nilo extends Persona {
         if (d2 > 48 * 48 || t > 400) {
             // muy lejos o atorado: vuelve de un salto
             sl.sendParticles(ParticleTypes.POOF, getX(), getY() + 1, getZ(), 12, 0.3, 0.5, 0.3, 0.02);
-            moveTo(dst.x, dst.y, dst.z, c.yaw(), 0);
+            this.moveTo(dst.x, dst.y, dst.z, c.yaw(), 0);
             t = 0;
             return;
         }

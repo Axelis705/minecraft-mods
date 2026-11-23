@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "pesca_coleccion:block/trofeo"
+    },
+    "facing=east": {
+      "model": "pesca_coleccion:block/trofeo",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "pesca_coleccion:block/trofeo",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "pesca_coleccion:block/trofeo",
+      "y": 270
+    }
+  }
+}

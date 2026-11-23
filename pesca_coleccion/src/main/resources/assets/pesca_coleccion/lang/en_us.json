@@ -259,5 +259,13 @@
   "pesca_coleccion.nilo.premio": "Reward",
   "pesca_coleccion.nilo.amistad": "Friendship",
   "pesca_coleccion.libro.cana_nilo": "Nilo gives it to you once you're Legend of the dock.",
-  "pesca_coleccion.libro.regalo_nilo": "Nilo's gift"
+  "pesca_coleccion.libro.regalo_nilo": "Nilo's gift",
+  "block.pesca_coleccion.trofeo": "Trophy Plaque",
+  "block.pesca_coleccion.acuario": "Aquarium",
+  "pesca_coleccion.trofeo.vacio": "Right-click with a fish to mount it on the plaque.",
+  "pesca_coleccion.trofeo.quitar": "Sneak with an empty hand to take it down",
+  "pesca_coleccion.acuario.vacio": "Right-click with a fish to release it here.",
+  "pesca_coleccion.acuario.lleno": "The aquarium is full (%s fish)",
+  "pesca_coleccion.acuario.viven": "%s of %s living here",
+  "pesca_coleccion.acuario.sacar": "Sneak with an empty hand to take the last one out"
 }

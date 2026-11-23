@@ -74,7 +74,7 @@ REMAP = [
                (r"\bLightTexture\.", "net.minecraft.util.LightCoordsUtil."),
                (r"\bBlocks\.([A-Z_]+?)_(CONCRETE|CARPET|STAINED_GLASS|WOOL|TERRACOTTA)\b", _color_block),
                ("import net.minecraft.Util;", "import net.minecraft.util.Util;"), (r"\bnet\.minecraft\.Util\.", "net.minecraft.util.Util."),
-               (r"\.moveTo\(", ".snapTo("),
+               (r"\.moveTo\(", ".snapTo("), (r"(?<![\w.])moveTo\(", "snapTo("),
                ("getGameProfile().getName()", "getGameProfile().name()"),
                (r"\.getAllKeys\(\)", ".keySet()"),
                (r"\.noCollission\(\)", ".noCollision()"),

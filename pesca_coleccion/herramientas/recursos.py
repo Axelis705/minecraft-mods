@@ -310,8 +310,145 @@ def cebo_luna():
     guardar_objeto(out, "cebo_luna")
 
 
+# ---------------------------------------------------------------- trofeo y acuario
+
+def ruido(c, rnd, k=8):
+    return tuple(max(0, min(255, c[i] + rnd.randint(-k, k))) for i in range(3)) + (c[3],)
+
+
+def textura(name, w, h, fn, carpeta="block"):
+    import random
+    rnd = random.Random(name)
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    p = img.load()
+    for y in range(h):
+        for x in range(w):
+            c = fn(x, y, rnd)
+            if c is not None:
+                p[x, y] = c
+    os.makedirs(os.path.join(BASE, "textures", carpeta), exist_ok=True)
+    img.save(os.path.join(BASE, "textures", carpeta, name + ".png"))
+
+
+def trofeo():
+    oscura, clara = hexc("#4A2E18"), hexc("#8A5A32")
+
+    def madera(x, y, rnd):
+        # tabla con borde oscuro y vetas
+        borde = x in (0, 15) or y in (0, 15)
+        c = mix(oscura, clara, 0.35) if borde else (clara if (x * 3 + y // 2) % 7 else shade(clara, -0.12))
+        return ruido(c, rnd, 6)
+
+    def panel(x, y, rnd):
+        c = hexc("#A87444") if (x + y * 5) % 11 else hexc("#94643A")
+        return ruido(c, rnd, 5)
+
+    def laton(x, y, rnd):
+        c = hexc("#E8C25A") if y < 8 else hexc("#C99A32")
+        if x in (0, 15) or y in (0, 15):
+            c = hexc("#8C6418")
+        if (x, y) in ((2, 7), (13, 7)):
+            c = hexc("#6A4A10")
+        return ruido(c, rnd, 4)
+    textura("trofeo_madera", 16, 16, madera)
+    textura("trofeo_panel", 16, 16, panel)
+    textura("trofeo_laton", 16, 16, laton)
+    caras = lambda t: {f: {"texture": "#" + t} for f in ("north", "south", "east", "west", "up", "down")}
+    write_json(os.path.join(BASE, "models", "block", "trofeo.json"), {
+        "parent": "minecraft:block/block",
+        "textures": {"particle": f"{MOD}:block/trofeo_madera", "madera": f"{MOD}:block/trofeo_madera",
+                     "panel": f"{MOD}:block/trofeo_panel", "laton": f"{MOD}:block/trofeo_laton"},
+        "elements": [
+            {"from": [1, 2, 15], "to": [15, 14, 16], "faces": caras("madera")},
+            {"from": [2, 4.5, 14.5], "to": [14, 13, 15], "faces": caras("panel")},
+            {"from": [2, 1.6, 14.4], "to": [14, 4.2, 15], "faces": caras("laton")}],
+        "display": {
+            "gui": {"rotation": [0, 180, 0], "translation": [0, 0, 0], "scale": [0.9, 0.9, 0.9]},
+            "fixed": {"rotation": [0, 180, 0], "scale": [0.8, 0.8, 0.8]},
+            "ground": {"rotation": [0, 0, 0], "translation": [0, 3, 0], "scale": [0.5, 0.5, 0.5]},
+            "thirdperson_righthand": {"rotation": [75, 225, 0], "translation": [0, 2.5, 0], "scale": [0.375, 0.375, 0.375]},
+            "firstperson_righthand": {"rotation": [0, 225, 0], "scale": [0.4, 0.4, 0.4]}}})
+    write_json(os.path.join(BASE, "models", "item", "trofeo.json"), {"parent": f"{MOD}:block/trofeo"})
+    write_json(os.path.join(BASE, "blockstates", "trofeo.json"), {"variants": {
+                   "facing=north": {"model": f"{MOD}:block/trofeo"},
+                   "facing=east": {"model": f"{MOD}:block/trofeo", "y": 90},
+                   "facing=south": {"model": f"{MOD}:block/trofeo", "y": 180},
+                   "facing=west": {"model": f"{MOD}:block/trofeo", "y": 270}}})
+
+
+def acuario():
+    def marco(x, y, rnd):
+        c = hexc("#3A3F47") if (x + y) % 5 else hexc("#4B525C")
+        if x in (0, 15) or y in (0, 15):
+            c = hexc("#2A2E34")
+        return ruido(c, rnd, 5)
+
+    def arena(x, y, rnd):
+        c = hexc("#E4D3A0")
+        r = rnd.random()
+        if r < 0.12:
+            c = hexc("#C9B47E")
+        elif r < 0.17:
+            c = hexc("#9A9A9A")
+        elif r < 0.2:
+            c = hexc("#E88A6A")
+        return ruido(c, rnd, 6)
+
+    def roca(x, y, rnd):
+        return ruido(hexc("#7A7F86") if (x * y) % 4 else hexc("#5E636A"), rnd, 8)
+
+    def alga(x, y, rnd):
+        if abs((x - 8) - round(2 * math.sin(y / 3.0))) > 2 - (y > 12):
+            return None
+        return ruido(hexc("#3FA05A") if x % 2 else hexc("#2E7F45"), rnd, 8)
+
+    def agua(x, y, rnd):
+        # agua azul con brillos; transparente para ver los peces
+        base = (70, 150, 210, 95)
+        if (x + y * 3) % 13 == 0 or (y == 1 and x % 4 == 0):
+            base = (200, 235, 255, 140)
+        return base
+
+    def burbuja(x, y, rnd):
+        d = math.hypot(x - 7.5, y - 7.5)
+        if d > 7.6:
+            return None
+        if d > 6:
+            return (230, 245, 255, 230)
+        if 3 < x < 6 and 3 < y < 6:
+            return (255, 255, 255, 240)
+        return (200, 230, 255, 60)
+    textura("acuario_marco", 16, 16, marco)
+    textura("acuario_arena", 16, 16, arena)
+    textura("acuario_roca", 16, 16, roca)
+    textura("acuario_alga", 16, 16, alga, "entity")
+    textura("acuario_agua", 16, 16, agua, "entity")
+    textura("burbuja", 16, 16, burbuja, "entity")
+    caras = lambda t: {f: {"texture": "#" + t} for f in ("north", "south", "east", "west", "up", "down")}
+    els = [{"from": [0, 0, 0], "to": [16, 2, 16], "faces": caras("marco")},
+           {"from": [1, 2, 1], "to": [15, 3, 15], "faces": caras("arena")}]
+    for (x, z) in ((0, 0), (15, 0), (0, 15), (15, 15)):
+        els.append({"from": [x, 2, z], "to": [x + 1, 15, z + 1], "faces": caras("marco")})
+    els += [{"from": [0, 15, 0], "to": [16, 16, 1], "faces": caras("marco")},
+            {"from": [0, 15, 15], "to": [16, 16, 16], "faces": caras("marco")},
+            {"from": [0, 15, 1], "to": [1, 16, 15], "faces": caras("marco")},
+            {"from": [15, 15, 1], "to": [16, 16, 15], "faces": caras("marco")},
+            {"from": [3, 3, 9], "to": [6, 5, 12], "faces": caras("roca")},
+            {"from": [4, 5, 10], "to": [5.5, 6, 11.5], "faces": caras("roca")}]
+    # las algas las dibuja el renderizador (se mecen y necesitan transparencia)
+    write_json(os.path.join(BASE, "models", "block", "acuario.json"), {
+        "parent": "minecraft:block/block",
+        "textures": {"particle": f"{MOD}:block/acuario_marco", "marco": f"{MOD}:block/acuario_marco", "arena": f"{MOD}:block/acuario_arena",
+                     "roca": f"{MOD}:block/acuario_roca"},
+        "elements": els})
+    write_json(os.path.join(BASE, "models", "item", "acuario.json"), {"parent": f"{MOD}:block/acuario"})
+    write_json(os.path.join(BASE, "blockstates", "acuario.json"), {"variants": {"": {"model": f"{MOD}:block/acuario"}}})
+
+
 def main():
     corcho()
+    trofeo()
+    acuario()
     for n, cols in CANAS.items():
         cana(n, *cols)
         cana(n, *cols, lanzada=True)

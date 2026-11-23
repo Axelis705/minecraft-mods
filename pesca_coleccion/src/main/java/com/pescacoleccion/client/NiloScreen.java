@@ -219,10 +219,8 @@ public class NiloScreen extends UiScreen {
         ItemStack st = new ItemStack(o.item().get(), o.cuantos());
         boolean puede = nivel() >= o.nivel();
         g.renderItem(st, x, y + 3);
-        if (o.cuantos() > 1) {
-            g.drawString(Ui.font(), "×" + o.cuantos(), x + 12, y + 12, 0xFFFFFFFF, true);
-        }
-        g.drawString(Ui.font(), Ui.fit(st.getHoverName().getString(), w - 70), x + 24, y + 7, puede ? th.text : th.textDim, false);
+        String nom = st.getHoverName().getString() + (o.cuantos() > 1 ? " ×" + o.cuantos() : "");
+        g.drawString(Ui.font(), Ui.fit(nom, w - 62), x + 22, y + 7, puede ? th.text : th.textDim, false);
         if (puede) {
             String pr = String.valueOf(o.precio());
             int pw2 = Ui.font().width(pr);
@@ -240,12 +238,10 @@ public class NiloScreen extends UiScreen {
             return;
         }
         g.renderItem(st, x, y + 3);
-        if (st.getCount() > 1) {
-            g.drawString(Ui.font(), "×" + st.getCount(), x + 12, y + 12, 0xFFFFFFFF, true);
-        }
         String cm = String.format(Locale.ROOT, PezItem.cm(st) >= 100 ? "%.0f cm" : "%.1f cm", PezItem.cm(st));
         g.drawString(Ui.font(), Ui.fit(st.getHoverName().getString(), w - 70), x + 24, y + 3, Rareza.of(pz.especie().rareza()).light, false);
-        g.drawString(Ui.font(), cm + (PezItem.grande(st, pz.especie()) ? " ★" : ""), x + 24, y + 12, th.textDim, false);
+        g.drawString(Ui.font(), cm + (PezItem.grande(st, pz.especie()) ? " ★" : "") + (st.getCount() > 1 ? "  ×" + st.getCount() : ""), x + 24, y + 12,
+                th.textDim, false);
         String pr = "+" + Tienda.precio(st);
         g.drawString(Ui.font(), pr, x + w - 18 - Ui.font().width(pr), y + 7, 0xFF7CF29A, false);
         g.renderItem(new ItemStack(Items.EMERALD), x + w - 16, y + 3);
@@ -327,25 +323,90 @@ public class NiloScreen extends UiScreen {
         }
     }
 
-    /** Las tarjetas de los 3 encargos. */
+    /** Las 3 tarjetas de los encargos: cada una en su columna (el cuadro completo sale al pasar el mouse). */
     private void encargos(G g, CompoundTag nd) {
         ListTag l = Nbt.list(nd, "encargos");
-        int cw = (pw - 24 - 12) / 3;
+        int cw = (pw - 24 - 12) / 3, top = py + 74, h = ph - 74 - 32;
         if (l.isEmpty()) {
             Ui.text(g, tr("sin_encargos"), px + 16, py + 80, pw - 32, theme.textDim, 10);
         }
         for (int i = 0; i < Encargos.CUANTOS && i < l.size(); i++) {
-            Cards.draw(g, tarjeta(Nbt.at(l, i), cw), px + 12 + i * (cw + 6), py + 74, 1F);
+            panelEncargo(g, Nbt.at(l, i), px + 12 + i * (cw + 6), top, cw, h);
         }
     }
 
-    /** La tarjeta de un encargo: qué pide, cuánto llevas y qué da. */
-    static InfoCard tarjeta(CompoundTag q, int w) {
+    /** Una tarjeta compacta: ícono y tipo, qué pide, cuánto llevas y el premio con íconos. */
+    private void panelEncargo(G g, CompoundTag q, int x, int y, int w, int h) {
         String t = Nbt.s(q, "t");
-        int n = Math.max(1, Nbt.i(q, "n")), p = Nbt.i(q, "p");
+        boolean ok = Nbt.b(q, "ok"), listo = Encargos.cumplido(q);
+        int borde = ok ? 0xFF7CF29A : listo ? 0xFFFFD24A : 0xFF8FD8FF;
+        Ui.round(g, x, y, w, h, Ui.alpha(borde, ok || listo ? 0.9F : 0.45F));
+        g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, 0xF0102A34, 0xF00A1A22);
+        g.fill(x + 1, y + 1, x + w - 1, y + 2, Ui.alpha(borde, 0.7F));
+        g.renderItem(icono(q), x + 4, y + 5);
+        g.drawString(Ui.font(), Ui.fit(tr("t." + t), w - 26), x + 23, y + 9, borde, true);
+        int yy = Ui.text(g, que(q).getString(), x + 5, y + 25, w - 10, ok ? theme.textDim : theme.text, 10);
+        if (ok) {
+            Ui.text(g, "✔ " + tr("manana"), x + 5, yy + 3, w - 10, 0xFF7CF29A, 10);
+            return;
+        }
+        // progreso
+        int n = Math.max(1, Nbt.i(q, "n")), p = Math.min(n, llevas(q));
+        String pr = p + "/" + n;
+        g.drawString(Ui.font(), pr, x + w - 5 - Ui.font().width(pr), yy + 3, listo ? 0xFFFFD24A : theme.textDim, false);
+        Ui.bar(g, x + 5, yy + 5, w - 16 - Ui.font().width(pr), 4, p / (float) n, listo ? 0xFFFFD24A : 0xFF6FB7FF, listo ? 0xFFB8860B : 0xFF2F6FD6, time);
+        // premio: esmeraldas, carnada y amistad
+        int ry = y + h - 20, rx = x + 4;
+        g.renderItem(new ItemStack(Items.EMERALD), rx, ry);
+        g.drawString(Ui.font(), String.valueOf(Nbt.i(q, "es")), rx + 16, ry + 8, 0xFF7CF29A, true);
+        rx += 18 + Ui.font().width(String.valueOf(Nbt.i(q, "es")));
+        int cb = Nbt.i(q, "cb");
+        if (cb >= 0 && cb < Cebo.values().length && Nbt.i(q, "cbn") > 0) {
+            g.renderItem(new ItemStack(ModRegistry.CEBOS.get(Cebo.values()[cb]).get()), rx, ry);
+            String c = "×" + Nbt.i(q, "cbn");
+            g.drawString(Ui.font(), c, rx + 16, ry + 8, 0xFFFFFFFF, true);
+            rx += 18 + Ui.font().width(c);
+        }
+        corazon(g, rx + 1, ry + 6, 0xFFFF6FA8);
+        g.drawString(Ui.font(), "+" + Nbt.i(q, "am"), rx + 10, ry + 6, 0xFFFF9AD5, true);
+    }
+
+    /** Lo que lleva de un encargo (en los de entregar, los peces que trae encima). */
+    private static int llevas(CompoundTag q) {
+        String t = Nbt.s(q, "t");
+        if (!t.equals("entrega") && !t.equals("grande")) {
+            return Nbt.i(q, "p");
+        }
         Especie e = Especies.get(Nbt.s(q, "e"));
-        String nombre = e != null ? Component.translatable("item." + MOD + "." + e.itemId()).getString() : "";
-        ItemStack icono = switch (t) {
+        float min = t.equals("grande") ? Nbt.f(q, "cm") : 0;
+        int tiene = 0;
+        for (ItemStack st : Plat.mainAndOffhand(Minecraft.getInstance().player.getInventory())) {
+            if (st.getItem() instanceof PezItem pz && e != null && pz.especie() == e && PezItem.cm(st) >= min) {
+                tiene += st.getCount();
+            }
+        }
+        return tiene;
+    }
+
+    @Override
+    protected InfoCard extraCard(int mx, int my) {
+        if (tab != 0) {
+            return null;
+        }
+        ListTag l = Nbt.list(nilo(), "encargos");
+        int cw = (pw - 24 - 12) / 3, top = py + 74, h = ph - 74 - 32;
+        for (int i = 0; i < Encargos.CUANTOS && i < l.size(); i++) {
+            int x = px + 12 + i * (cw + 6);
+            if (mx >= x && mx < x + cw && my >= top && my < top + h) {
+                return tarjeta(Nbt.at(l, i), 200);
+            }
+        }
+        return null;
+    }
+
+    private static ItemStack icono(CompoundTag q) {
+        Especie e = Especies.get(Nbt.s(q, "e"));
+        return switch (Nbt.s(q, "t")) {
             case "entrega", "grande" -> e != null ? new ItemStack(ModRegistry.PECES.get(e.id()).get()) : new ItemStack(Items.COD);
             case "rareza" -> new ItemStack(ModRegistry.PECES.get(primera(Nbt.i(q, "r"))).get());
             case "perfecta" -> new ItemStack(Items.NETHER_STAR);
@@ -353,12 +414,28 @@ public class NiloScreen extends UiScreen {
             case "lluvia" -> new ItemStack(Items.WATER_BUCKET);
             default -> new ItemStack(ModRegistry.LIBRO.get());
         };
-        Component que = switch (t) {
+    }
+
+    private static Component que(CompoundTag q) {
+        String t = Nbt.s(q, "t");
+        int n = Math.max(1, Nbt.i(q, "n"));
+        Especie e = Especies.get(Nbt.s(q, "e"));
+        String nombre = e != null ? Component.translatable("item." + MOD + "." + e.itemId()).getString() : "";
+        return switch (t) {
             case "entrega" -> Component.translatable(MOD + ".nilo.e.entrega", n, nombre);
             case "grande" -> Component.translatable(MOD + ".nilo.e.grande", nombre, String.format(Locale.ROOT, "%.0f", Nbt.f(q, "cm")));
             case "rareza" -> Component.translatable(MOD + ".nilo.e.rareza", n, Rareza.of(Nbt.i(q, "r")).nombre());
             default -> Component.translatable(MOD + ".nilo.e." + t, n);
         };
+    }
+
+    /** La tarjeta de un encargo: qué pide, cuánto llevas y qué da. */
+    static InfoCard tarjeta(CompoundTag q, int w) {
+        String t = Nbt.s(q, "t");
+        int n = Math.max(1, Nbt.i(q, "n")), p = Nbt.i(q, "p");
+        Especie e = Especies.get(Nbt.s(q, "e"));
+        ItemStack icono = icono(q);
+        Component que = que(q);
         boolean ok = Nbt.b(q, "ok"), listo = Encargos.cumplido(q);
         InfoCard c = new InfoCard(Component.translatable(MOD + ".nilo.t." + t)).icon(icono).width(w)
                 .color(ok ? 0xFF7CF29A : listo ? 0xFFFFD24A : 0xFF8FD8FF).text(que);
