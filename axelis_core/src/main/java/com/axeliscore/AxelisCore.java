@@ -43,6 +43,7 @@ public class AxelisCore {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(com.axeliscore.net.CoreNet::register);
     }
 
     /**

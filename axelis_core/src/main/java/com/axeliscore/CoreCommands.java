@@ -68,6 +68,11 @@ public final class CoreCommands {
                                                 .executes(c -> creatures(c, new Vec3(DoubleArgumentType.getDouble(c, "x"),
                                                         DoubleArgumentType.getDouble(c, "y"), DoubleArgumentType.getDouble(c, "z")),
                                                         FloatArgumentType.getFloat(c, "giro")))))));
+        var efecto = Commands.literal("efecto").requires(Plat::isOp)
+                .then(Commands.argument("tipo", StringArgumentType.word())
+                        .executes(c -> effect(c, c.getSource().getServer().getPlayerList().getPlayers()))
+                        .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.players())
+                                .executes(c -> effect(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores")))));
         var probar = Commands.literal("probar").requires(Plat::isOp)
                 .then(Commands.argument("animacion", StringArgumentType.word()).executes(CoreCommands::tryClip));
         var ir = Commands.literal("ir").requires(Plat::isOp)
@@ -77,7 +82,7 @@ public final class CoreCommands {
                                         .executes(c -> go(c, 0.6))
                                         .then(Commands.argument("velocidad", DoubleArgumentType.doubleArg(0.1, 3))
                                                 .executes(c -> go(c, DoubleArgumentType.getDouble(c, "velocidad")))))));
-        d.register(Commands.literal("axeliscore").executes(CoreCommands::info).then(galeria).then(criaturas).then(probar).then(ir));
+        d.register(Commands.literal("axeliscore").executes(CoreCommands::info).then(galeria).then(criaturas).then(probar).then(ir).then(efecto));
         var node = d.getRoot().getChild("axeliscore");
         StringBuilder sb = new StringBuilder();
         if (node != null) {
@@ -167,6 +172,39 @@ public final class CoreCommands {
         }
         AxelisCore.LOGGER.info("AXCORE_CRIATURAS {}", row.length);
         return 1;
+    }
+
+    /** Prueba de los efectos y la interfaz: temblor, destello, vineta, titulo, aviso, dialogo, demo. */
+    private static int effect(CommandContext<CommandSourceStack> c, java.util.Collection<net.minecraft.server.level.ServerPlayer> ps) {
+        String k = StringArgumentType.getString(c, "tipo");
+        for (var p : ps) {
+            switch (k) {
+                case "temblor" -> com.axeliscore.fx.Fx.shake(p, 1F, 30);
+                case "destello" -> com.axeliscore.fx.Fx.flash(p, 0xC0FFFFFF, 12);
+                case "vineta" -> com.axeliscore.fx.Fx.vignette(p, 0xB0600000, 40);
+                case "titulo" -> com.axeliscore.fx.Fx.title(p, Component.literal("¡Récord!"), Component.literal("Salmón de 54 cm"), 0xFFD166);
+                case "aviso" -> com.axeliscore.fx.Fx.toast(p, new ItemStack(Items.TROPICAL_FISH), Component.literal("¡Pez nuevo!"),
+                        Component.literal("Pez tropical · 31 cm"), 0x7FF0E0);
+                case "demo" -> com.axeliscore.ui.CoreScreens.open(p, AxelisCore.MODID + ":demo");
+                case "dialogo" -> com.axeliscore.ui.Dialogs.show(p, Component.translatable("axelis_core.persona.nilo"),
+                        com.axeliscore.plat.Ids.core("textures/entity/persona/nilo.png"),
+                        Component.translatable("axelis_core.dialog.muestra"),
+                        List.of(Component.translatable("axelis_core.dialog.si"), Component.translatable("axelis_core.dialog.no")),
+                        choice -> {
+                            AxelisCore.LOGGER.info("AXCORE_DIALOGO respuesta={}", choice);
+                            if (choice == 0) {
+                                com.axeliscore.fx.Fx.toast(p, new ItemStack(Items.FISHING_ROD), Component.translatable("axelis_core.persona.nilo"),
+                                        Component.translatable("axelis_core.dialog.genial"), 0xFFD166);
+                            }
+                        });
+                default -> {
+                    c.getSource().sendFailure(Component.literal("temblor, destello, vineta, titulo, aviso, dialogo o demo"));
+                    return 0;
+                }
+            }
+        }
+        AxelisCore.LOGGER.info("AXCORE_EFECTO {} jugadores={}", k, ps.size());
+        return ps.size();
     }
 
     private static int go(CommandContext<CommandSourceStack> c, double speed) {

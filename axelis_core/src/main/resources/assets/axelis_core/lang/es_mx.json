@@ -10,5 +10,10 @@
   "entity.axelis_core.alado": "Ave de tormenta",
   "entity.axelis_core.gelatina": "Gelatina",
   "entity.axelis_core.coloso": "Coloso de cristal",
-  "entity.axelis_core.chispa": "Chispa"
+  "entity.axelis_core.chispa": "Chispa",
+  "axelis_core.dialog.seguir": "Seguir",
+  "axelis_core.dialog.si": "¡Sí, enséñame!",
+  "axelis_core.dialog.no": "Ahora no",
+  "axelis_core.dialog.muestra": "¡Hola! Soy Nilo. Llevo cuarenta años pescando en este lago y conozco cada pez que nada en él. ¿Quieres que te enseñe a lanzar la caña?",
+  "axelis_core.dialog.genial": "¡Así me gusta! Ven al muelle."
 }

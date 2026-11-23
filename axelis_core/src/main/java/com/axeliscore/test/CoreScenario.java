@@ -11,6 +11,12 @@ public final class CoreScenario {
     private CoreScenario() {
     }
 
+    static void demoTab(int i) {
+        if (net.minecraft.client.Minecraft.getInstance().screen instanceof com.axeliscore.ui.DemoScreen d) {
+            d.showTab(i);
+        }
+    }
+
     /** Pone la cámara de lado junto a la Persona que se mueve (la más cercana), a {@code dist} bloques. */
     static void follow(ClientTest.Script t, double dist) {
         var mc = net.minecraft.client.Minecraft.getInstance();
@@ -25,8 +31,17 @@ public final class CoreScenario {
 
     static void register() {
         ClientTest.scenario("core", t -> {
+            // /reload: en la 1.21.1 con --quickPlaySingleplayer Forge no avisa a los mods al cargar el mundo (sin comandos ni
+            // modificadores de botín) hasta que se recargan los datos
+            t.add("recargar", 6000, () -> {
+                t.cmd("gamemode creative @a");
+                t.cmd("gamerule doMobSpawning false");
+                t.cmd("kill @e[type=!player]");
+                t.cmd("reload");
+            });
             t.add("preparar", 2500, () -> {
                 t.hud(false);
+                t.cmd("axeliscore");
                 t.cmd("time set 6000");
                 t.cmd("weather clear");
                 t.cmd("kill @e[type=axelis_core:persona]");
@@ -91,6 +106,25 @@ public final class CoreScenario {
                     }
                 });
             }
+            // interfaz y efectos (con la interfaz visible)
+            t.add("interfaz", 600, () -> {
+                t.hud(true);
+                t.cmd("kill @e[type=!player]");
+                t.cmd("axeliscore galeria 0.5 -60 3.5 180");
+                t.lookFrom(0.5, G, -2.5, 0.5, G + 1.4, 3.5);
+            });
+            t.photo("10_ui_demo_botones", 1500, () -> t.cmd("axeliscore efecto demo"));
+            t.photo("10_ui_demo_lista", 600, () -> demoTab(1));
+            t.photo("10_ui_demo_barras", 900, () -> demoTab(2));
+            t.photo("11_ui_dialogo", 3600, () -> t.cmd("axeliscore efecto dialogo"));
+            t.add("cerrar", 600, () -> net.minecraft.client.Minecraft.getInstance().setScreen(null));
+            t.photo("12_fx_titulo_aviso", 700, () -> {
+                t.cmd("axeliscore efecto titulo");
+                t.cmd("axeliscore efecto aviso");
+            });
+            t.photo("12_fx_vineta", 500, () -> t.cmd("axeliscore efecto vineta"));
+            t.photo("12_fx_destello", 120, () -> t.cmd("axeliscore efecto destello"));
+            t.add("listo", 300, () -> t.hud(false));
         });
     }
 }

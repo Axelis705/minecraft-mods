@@ -3,7 +3,14 @@ package com.axeliscore.client;
 import com.axeliscore.AxelisCore;
 import com.axeliscore.registry.CoreEntities;
 import net.minecraftforge.api.distmarker.Dist;
+import com.axeliscore.plat.Ids;
+import com.axeliscore.plat.client.G;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+//#if MC >= 1.20.5
+//$$ import net.minecraftforge.client.event.AddGuiOverlayLayersEvent;
+//#else
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+//#endif
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -27,6 +34,21 @@ public final class CoreClient {
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent e) {
+        CoreClientEvents.register();
+        com.axeliscore.ui.ScreenRegistry.register(AxelisCore.MODID + ":demo", com.axeliscore.ui.DemoScreen::new);
         com.axeliscore.test.ClientTest.startIfEnabled();
     }
+
+    /** Capa del Core encima de todo: destellos, viñetas, títulos grandes y avisos. */
+    //#if MC >= 1.20.5
+    //$$ @SubscribeEvent
+    //$$ public static void onOverlays(AddGuiOverlayLayersEvent e) {
+    //$$     e.getLayeredDraw().add(Ids.core("fx"), (gg, delta) -> com.axeliscore.fx.client.FxClient.render(new G(gg), gg.guiWidth(), gg.guiHeight()));
+    //$$ }
+    //#else
+    @SubscribeEvent
+    public static void onOverlays(RegisterGuiOverlaysEvent e) {
+        e.registerAboveAll("fx", (gui, gg, pt, w, h) -> com.axeliscore.fx.client.FxClient.render(new G(gg), w, h));
+    }
+    //#endif
 }

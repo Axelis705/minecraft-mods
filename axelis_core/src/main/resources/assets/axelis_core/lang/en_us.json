@@ -10,5 +10,10 @@
   "entity.axelis_core.alado": "Storm Bird",
   "entity.axelis_core.gelatina": "Jelly",
   "entity.axelis_core.coloso": "Crystal Colossus",
-  "entity.axelis_core.chispa": "Spark"
+  "entity.axelis_core.chispa": "Spark",
+  "axelis_core.dialog.seguir": "Continue",
+  "axelis_core.dialog.si": "Yes, teach me!",
+  "axelis_core.dialog.no": "Not now",
+  "axelis_core.dialog.muestra": "Hi! I'm Nilo. I've been fishing this lake for forty years and I know every fish in it. Want me to teach you how to cast?",
+  "axelis_core.dialog.genial": "That's the spirit! Meet me at the dock."
 }

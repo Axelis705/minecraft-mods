@@ -158,6 +158,24 @@ public final class Plat {
         }
     }
 
+    /** Un objeto por su id ("minecraft:fishing_rod"); aire si no existe. */
+    public static net.minecraft.world.item.Item item(String id) {
+        try {
+            //#if MC >= 1.21.2
+            //$$ return net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(Ids.parse(id));
+            //#else
+            return net.minecraft.core.registries.BuiltInRegistries.ITEM.get(Ids.parse(id));
+            //#endif
+        } catch (RuntimeException e) {
+            return net.minecraft.world.item.Items.AIR;
+        }
+    }
+
+    /** El id de un objeto ("minecraft:fishing_rod"). */
+    public static String itemId(net.minecraft.world.item.Item it) {
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(it).toString();
+    }
+
     /** Daño a una entidad (en 1.21.2+ el daño se hace con el mundo del servidor). Devuelve true si le hizo daño. */
     public static boolean hurt(Entity target, net.minecraft.world.damagesource.DamageSource src, float amount) {
         //#if MC >= 1.21.2

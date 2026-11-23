@@ -142,6 +142,15 @@ public final class G {
         //#endif
     }
 
+    /** Solo se dibuja dentro de este rectángulo hasta {@link #disableScissor} (para listas con desplazamiento). */
+    public void enableScissor(int x0, int y0, int x1, int y1) {
+        raw.enableScissor(x0, y0, x1, y1);
+    }
+
+    public void disableScissor() {
+        raw.disableScissor();
+    }
+
     // ---- transformaciones (en 26.x son 2D: la z se ignora)
 
     public void push() {
