@@ -256,7 +256,11 @@ public final class Sacrificio {
         if (conDiscurso) {
             fase = Fase.HABLANDO;
             cambio = true;
-            Pantallas.hablar(s, "sacrificio", () -> ofrecer(s));
+            Pantallas.hablar(s, "sacrificio", () -> {
+                if (fase == Fase.HABLANDO) {
+                    ofrecer(s);
+                }
+            });
         } else {
             Pantallas.callar(s);
             ofrecer(s);
@@ -565,6 +569,9 @@ public final class Sacrificio {
     }
 
     public static void terminar(MinecraftServer s) {
+        if (fase == Fase.HABLANDO) {
+            Pantallas.callar(s);
+        }
         if (Complejo.construido(s, "capilla")) {
             for (int k = 1; k <= Capilla.CUARTOS; k++) {
                 jaula(s, k, false);

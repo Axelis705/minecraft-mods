@@ -189,7 +189,11 @@ public final class LasCopas {
         if (conDiscurso) {
             fase = Fase.HABLANDO;
             cambio = true;
-            Pantallas.hablar(s, "copas", () -> primerTurno(s));
+            Pantallas.hablar(s, "copas", () -> {
+                if (fase == Fase.HABLANDO) {
+                    primerTurno(s);
+                }
+            });
         } else {
             Pantallas.callar(s);
             primerTurno(s);
@@ -383,6 +387,9 @@ public final class LasCopas {
     }
 
     public static void terminar(MinecraftServer s) {
+        if (fase == Fase.HABLANDO) {
+            Pantallas.callar(s);
+        }
         if (Complejo.construido(s, "final")) {
             quitarCopas(s);
         }

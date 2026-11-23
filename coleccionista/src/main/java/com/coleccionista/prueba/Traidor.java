@@ -264,7 +264,11 @@ public final class Traidor {
         if (conDiscurso) {
             fase = Fase.HABLANDO;
             cambio = true;
-            Pantallas.hablar(s, "traidor", () -> roles(s));
+            Pantallas.hablar(s, "traidor", () -> {
+                if (fase == Fase.HABLANDO) {
+                    roles(s);
+                }
+            });
         } else {
             Pantallas.callar(s);
             roles(s);
@@ -585,6 +589,9 @@ public final class Traidor {
     }
 
     public static void terminar(MinecraftServer s) {
+        if (fase == Fase.HABLANDO) {
+            Pantallas.callar(s);
+        }
         if (Complejo.construido(s, "archivo")) {
             for (int k = 1; k <= Archivo.SALAS; k++) {
                 reja(s, "arc.sala." + k + ".reja", true);

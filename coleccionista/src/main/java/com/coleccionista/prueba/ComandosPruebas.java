@@ -149,6 +149,8 @@ public final class ComandosPruebas {
                     Component e = LasPuertas.preparar(c.getSource().getServer());
                     return e == null ? ok(c, Component.translatable(MOD + ".pue.cmd.preparada", LasPuertas.rondas)) : error(c, e);
                 }))
+                .then(Commands.literal("discurso").executes(c -> LasPuertas.discurso(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".pue.cmd.discurso")) : error(c, Component.translatable(MOD + ".pue.cmd.no_toca"))))
                 .then(Commands.literal("ronda").executes(c -> LasPuertas.ronda(c.getSource().getServer()) ? ok(c,
                         Component.translatable(MOD + ".pue.cmd.ronda")) : error(c, Component.translatable(MOD + ".pue.cmd.no_toca"))))
                 .then(Commands.literal("cerrar").executes(c -> LasPuertas.cerrar(c.getSource().getServer()) ? ok(c,

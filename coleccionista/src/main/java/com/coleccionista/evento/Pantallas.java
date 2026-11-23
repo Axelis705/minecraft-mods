@@ -53,35 +53,35 @@ public final class Pantallas {
         l.add(new Frase("no_sabes", 90, null, 1F));
         l.add(new Frase("coleccion", 70, null, 1F));
         l.add(new Frase("piezas", 100, null, 1F));
-        l.add(new Frase("una_sale", 100, null, 1F));
+        l.add(new Frase("una_sale", 120, null, 1F));
         l.add(new Frase("listo", 80, null, 1F));
         l.add(new Frase("risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
-        l.add(new Frase("candado", 110, null, 1F));
+        l.add(new Frase("candado", 160, null, 1F));
         return l;
     }
 
     /** La explicación de Encadenados (en la Sala de los grilletes, antes de abrir la reja). */
     public static List<Frase> encadenados() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hola", 60, null, 1F));
-        l.add(new Frase("cadena", 100, null, 1F));
+        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("cadena", 110, null, 1F));
         l.add(new Frase("llaves", 110, null, 1F));
         l.add(new Frase("lanzar", 90, null, 1F));
-        l.add(new Frase("gas", 110, null, 1F));
+        l.add(new Frase("gas", 150, null, 1F));
         l.add(new Frase("cupo", 100, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
-        l.add(new Frase("suerte", 80, null, 1F));
+        l.add(new Frase("suerte", 90, null, 1F));
         return l;
     }
 
     /** La explicación de Compartir o robar (en el Salón de las mesas). */
     public static List<Frase> compartir() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("hola", 110, null, 1F));
         l.add(new Frase("mesa", 90, null, 1F));
-        l.add(new Frase("hablen", 90, null, 1F));
+        l.add(new Frase("hablen", 100, null, 1F));
         l.add(new Frase("elijan", 110, null, 1F));
-        l.add(new Frase("reglas", 130, null, 1F));
+        l.add(new Frase("reglas", 190, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
         l.add(new Frase("confianza", 90, null, 1F));
         return l;
@@ -90,11 +90,11 @@ public final class Pantallas {
     /** La final: Las copas. */
     public static List<Frase> copas() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("hola", 90, null, 1F));
         l.add(new Frase("llegaron", 90, null, 1F));
         l.add(new Frase("copas", 100, null, 1F));
         l.add(new Frase("veneno", 90, null, 1F));
-        l.add(new Frase("turnos", 100, null, 1F));
+        l.add(new Frase("turnos", 110, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.5F));
         l.add(new Frase("salud", 70, null, 1F));
         return l;
@@ -103,9 +103,9 @@ public final class Pantallas {
     /** El sacrificio (en la Capilla). */
     public static List<Frase> sacrificio() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hola", 70, null, 1F));
-        l.add(new Frase("puerta", 90, null, 1F));
-        l.add(new Frase("altar", 110, null, 1F));
+        l.add(new Frase("hola", 100, null, 1F));
+        l.add(new Frase("puerta", 110, null, 1F));
+        l.add(new Frase("altar", 130, null, 1F));
         l.add(new Frase("votar", 100, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
         l.add(new Frase("valiente", 80, null, 1F));
@@ -115,11 +115,11 @@ public final class Pantallas {
     /** El traidor (en el Archivo). */
     public static List<Frase> traidor() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("hola", 100, null, 1F));
         l.add(new Frase("boveda", 100, null, 1F));
-        l.add(new Frase("notas", 100, null, 1F));
+        l.add(new Frase("notas", 130, null, 1F));
         l.add(new Frase("traidor", 110, null, 1F));
-        l.add(new Frase("intentos", 110, null, 1F));
+        l.add(new Frase("intentos", 170, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
         l.add(new Frase("confien", 80, null, 1F));
         return l;
@@ -130,11 +130,23 @@ public final class Pantallas {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("hola", 70, null, 1F));
         l.add(new Frase("venda", 100, null, 1F));
-        l.add(new Frase("guia", 110, null, 1F));
+        l.add(new Frase("guia", 140, null, 1F));
         l.add(new Frase("trampas", 100, null, 1F));
         l.add(new Frase("ultimo", 110, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
         l.add(new Frase("escuchen", 70, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> puertas() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("tres", 90, null, 1F));
+        l.add(new Frase("piso", 120, null, 1F));
+        l.add(new Frase("pista", 120, null, 1F));
+        l.add(new Frase("tiempo", 150, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("suerte", 70, null, 1F));
         return l;
     }
 
@@ -147,6 +159,7 @@ public final class Pantallas {
             case "sacrificio" -> sacrificio();
             case "traidor" -> traidor();
             case "ciegas" -> ciegas();
+            case "puertas" -> puertas();
             default -> null;
         };
     }

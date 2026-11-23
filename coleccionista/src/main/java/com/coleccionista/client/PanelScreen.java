@@ -296,6 +296,7 @@ public class PanelScreen extends UiScreen {
         } else {
             String f = PuertasCliente.fase();
             l.add(new Op("pue_preparar", () -> "NADA".equals(f) || "LISTA".equals(f) || "FIN".equals(f)));
+            l.add(new Op("pue_discurso", () -> "LISTA".equals(f)));
             l.add(new Op("pue_ronda", () -> "LISTA".equals(f) || "ENTRE".equals(f)));
             l.add(new Op("pue_cerrar", () -> "ELEGIR".equals(f)));
             l.add(new Op("pue_terminar", PuertasCliente::activa));

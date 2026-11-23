@@ -49,7 +49,7 @@ public final class LasPuertas {
     public static float verdad = 0.7F;
 
     public enum Fase {
-        NADA, LISTA, ELEGIR, REDOBLE, CAE, ENTRE, FIN
+        NADA, LISTA, HABLANDO, ELEGIR, REDOBLE, CAE, ENTRE, FIN
     }
 
     /** Los colores posibles: nombre (clave de idioma), concreto del marco y color del texto. */
@@ -231,6 +231,22 @@ public final class LasPuertas {
     }
 
     // ------------------------------------------------------------------ las rondas
+
+    /** El Coleccionista explica la prueba en las pantallas y al terminar empieza la primera ronda. */
+    public static boolean discurso(MinecraftServer s) {
+        if (fase != Fase.LISTA || ronda > 0) {
+            return false;
+        }
+        fase = Fase.HABLANDO;
+        cambio = true;
+        Pantallas.hablar(s, "puertas", () -> {
+            if (fase == Fase.HABLANDO) {
+                fase = Fase.LISTA;
+                ronda(s);
+            }
+        });
+        return true;
+    }
 
     /** Empieza una ronda: colores nuevos, la pista y las rejas abiertas. */
     public static boolean ronda(MinecraftServer s) {
@@ -439,6 +455,9 @@ public final class LasPuertas {
     }
 
     public static void terminar(MinecraftServer s) {
+        if (fase == Fase.HABLANDO) {
+            Pantallas.callar(s);
+        }
         if (Complejo.construido(s, "puertas")) {
             pisos(s, false);
             rejas(s, true);

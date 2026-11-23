@@ -586,5 +586,16 @@
   "coleccionista.panel.cie_estado.juego": "¡En juego! (a ciegas)",
   "coleccionista.panel.cie_estado.fin": "Terminada",
   "coleccionista.panel.cie_nota": "Cada equipo en su laberinto. El guía camina arriba, sobre el vidrio, y ve todo (las trampas en rojo); los demás caminan con los ojos vendados y solo oyen su voz. Pisar una trampa regresa al inicio. El equipo más lento (o los que no terminen) pierde a su guía.",
-  "coleccionista.cie.cmd.guia": "Ahora %s es el guía de su equipo."
+  "coleccionista.cie.cmd.guia": "Ahora %s es el guía de su equipo.",
+  "coleccionista.pue.cmd.discurso": "El Coleccionista explica Las puertas; al terminar empieza la primera ronda.",
+  "coleccionista.panel.pue_discurso": "Discurso y primera ronda",
+  "coleccionista.panel.pue_discurso_ayuda": "El Coleccionista explica la prueba en las pantallas y luego empieza la ronda 1 (o usa Siguiente ronda para saltarlo).",
+  "coleccionista.panel.pue_estado.hablando": "El Coleccionista está explicando…",
+  "coleccionista.voz.puertas.hola": "Bienvenidos a la Sala de las puertas.",
+  "coleccionista.voz.puertas.tres": "Tres puertas. Detrás de cada una, una cabina.",
+  "coleccionista.voz.puertas.piso": "En una de ellas el piso se abre… y abajo el agua es muy, muy honda.",
+  "coleccionista.voz.puertas.pista": "Antes de cada ronda les daré una pista. Casi siempre digo la verdad.",
+  "coleccionista.voz.puertas.tiempo": "Elijan rápido: quien no entre antes de que se cierren las rejas… dejará que yo elija.",
+  "coleccionista.voz.puertas.risa": "Je, je, je…",
+  "coleccionista.voz.puertas.suerte": "Que la suerte los acompañe."
 }

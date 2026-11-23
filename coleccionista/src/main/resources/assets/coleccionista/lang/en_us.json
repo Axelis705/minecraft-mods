@@ -586,5 +586,16 @@
   "coleccionista.panel.cie_estado.juego": "Running! (blind)",
   "coleccionista.panel.cie_estado.fin": "Finished",
   "coleccionista.panel.cie_nota": "Each team in its maze. The guide walks above on the glass and sees everything (traps in red); the rest walk blindfolded and only hear their voice. Stepping on a trap sends you back to the start. The slowest team (or those that don't finish) loses its guide.",
-  "coleccionista.cie.cmd.guia": "%s is now their team's guide."
+  "coleccionista.cie.cmd.guia": "%s is now their team's guide.",
+  "coleccionista.pue.cmd.discurso": "The Collector explains The Doors; round one starts when he's done.",
+  "coleccionista.panel.pue_discurso": "Speech and first round",
+  "coleccionista.panel.pue_discurso_ayuda": "The Collector explains the trial on the screens and then round 1 starts (or use Next round to skip it).",
+  "coleccionista.panel.pue_estado.hablando": "The Collector is explaining…",
+  "coleccionista.voz.puertas.hola": "Welcome to the Hall of Doors.",
+  "coleccionista.voz.puertas.tres": "Three doors. Behind each one, a booth.",
+  "coleccionista.voz.puertas.piso": "In one of them the floor opens… and the water below is very, very deep.",
+  "coleccionista.voz.puertas.pista": "Before each round I'll give you a hint. I almost always tell the truth.",
+  "coleccionista.voz.puertas.tiempo": "Choose quickly: whoever isn't inside before the bars close… lets me choose.",
+  "coleccionista.voz.puertas.risa": "Heh, heh, heh…",
+  "coleccionista.voz.puertas.suerte": "May luck be with you."
 }

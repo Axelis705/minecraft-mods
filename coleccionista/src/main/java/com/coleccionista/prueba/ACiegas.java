@@ -186,7 +186,11 @@ public final class ACiegas {
         if (conDiscurso) {
             fase = Fase.HABLANDO;
             cambio = true;
-            Pantallas.hablar(s, "ciegas", () -> arrancar(s));
+            Pantallas.hablar(s, "ciegas", () -> {
+                if (fase == Fase.HABLANDO) {
+                    arrancar(s);
+                }
+            });
         } else {
             Pantallas.callar(s);
             arrancar(s);
@@ -411,6 +415,9 @@ public final class ACiegas {
     }
 
     public static void terminar(MinecraftServer s) {
+        if (fase == Fase.HABLANDO) {
+            Pantallas.callar(s);
+        }
         limpiar(s);
         enviar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_CIEGAS terminada");

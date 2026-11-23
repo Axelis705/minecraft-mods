@@ -927,6 +927,9 @@ public final class Encadenados {
 
     /** El organizador termina la prueba (sin eliminar a nadie): quita cadenas, abre todo y borra las llaves. */
     public static void terminar(MinecraftServer s) {
+        if (fase == Fase.HABLANDO) {
+            Pantallas.callar(s);
+        }
         limpiar(s, true);
         Coleccionista.LOGGER.info("COLECCIONISTA_ENCADENADOS terminada");
     }

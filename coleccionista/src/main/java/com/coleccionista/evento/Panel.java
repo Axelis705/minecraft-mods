@@ -138,6 +138,7 @@ public final class Panel {
                     Plat.msg(p, e, true);
                 }
             }
+            case "pue_discurso" -> com.coleccionista.prueba.LasPuertas.discurso(s);
             case "pue_ronda" -> com.coleccionista.prueba.LasPuertas.ronda(s);
             case "pue_cerrar" -> com.coleccionista.prueba.LasPuertas.cerrar(s);
             case "pue_terminar" -> com.coleccionista.prueba.LasPuertas.terminar(s);

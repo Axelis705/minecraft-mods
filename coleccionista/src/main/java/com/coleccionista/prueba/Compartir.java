@@ -193,7 +193,11 @@ public final class Compartir {
         if (conDiscurso) {
             fase = Fase.HABLANDO_COLECCIONISTA;
             cambio = true;
-            Pantallas.hablar(s, "compartir", () -> hablar(s));
+            Pantallas.hablar(s, "compartir", () -> {
+                if (fase == Fase.HABLANDO_COLECCIONISTA) {
+                    hablar(s);
+                }
+            });
         } else {
             Pantallas.callar(s);
             hablar(s);
@@ -462,6 +466,9 @@ public final class Compartir {
     // ------------------------------------------------------------------ terminar
 
     public static void terminar(MinecraftServer s) {
+        if (fase == Fase.HABLANDO_COLECCIONISTA) {
+            Pantallas.callar(s);
+        }
         limpiar(s);
         enviar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_COMPARTIR terminada");
