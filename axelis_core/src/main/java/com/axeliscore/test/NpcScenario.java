@@ -106,7 +106,7 @@ final class NpcScenario {
             t.cmd("summon minecraft:zombie 7.5 -60 9.5 {NoAI:1b}");
             t.cmd("summon minecraft:zombie 8.5 -60 9.5 {NoAI:1b}");
         });
-        t.add("derrotar", 1500, () -> t.cmd("damage @e[type=minecraft:zombie] 100 minecraft:player_attack by @p"));
+        t.add("derrotar", 1500, () -> t.cmd("execute as @e[type=minecraft:zombie] run damage @s 100 minecraft:player_attack by @p"));
         t.waitFor("cuenta los zombis", 4000, () -> {
             int[] p = NpcCliente.progreso("axelis_core:zombis");
             return p.length == 1 && p[0] == 2;
