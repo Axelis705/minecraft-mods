@@ -71,6 +71,9 @@ Todo el complejo se está pasando a **bloques nuevos del mod** (nada de bloques 
 ## Antes de cada prueba
 Fundido → presentación de cine ("PRUEBA N · TÍTULO") → **tarjeta de reglas** (3-4 puntos: qué hacer, cómo se gana, qué pasa si pierdes; también queda en el chat) → discurso del Coleccionista → la prueba.
 
+## El Coleccionista en las pantallas
+Sale **en vivo y en 3D** (medio cuerpo, sentado en su sillón de terciopelo capitonado): máscara de porcelana con grieta, lágrima y sonrisa con puntadas, ojos huecos con un punto rojo que brilla (más cuando habla), sombrero de copa con cinta roja, frac con solapas de satín, moño rojo, pañuelo, prendedor del ojo y guantes blancos. Mientras espera junta las manos, tamborilea los dedos, respira y ladea la cabeza de golpe como muñeco; al hablar asiente y hace un ademán distinto en cada frase (mano arriba, brazos abiertos, la otra mano); en las risas echa la cabeza atrás y se sacude. A veces la señal "brinca". Va aplanado sobre el vidrio (se ve como una imagen de verdad) y con la luz de frente en cualquier pared; el subtítulo lleva una franja oscura detrás. Modelo y textura: `herramientas/personajes/coleccionista_tv.py` (con `--vista todas` dibuja vistas previas). Si el modelo no cargara, sale el retrato plano de antes.
+
 ## Voz (Simple Voice Chat, opcional)
 Si el servidor tiene Simple Voice Chat, el mod se conecta solo:
 - **Vivos:** voz por cercanía normal. No pueden crear ni entrar a grupos (nadie habla en secreto desde lejos). `/evento voz grupos si` lo permite.
@@ -83,13 +86,12 @@ Si el servidor tiene Simple Voice Chat, el mod se conecta solo:
 `claude/evento-coleccionista-guion-voces.md`: 57 líneas (≈5 min) para grabar, un archivo por línea (`<guion>_<clave>.ogg`), con el tiempo de cada una. Los subtítulos ya tienen tiempo para leerse (≈12 letras por segundo).
 
 ## Pruebas automáticas
-- **Servidor (CI, bots):** despertar, Encadenados ×2, Compartir (bots sin elegir solos para que sea exacto), Las puertas, Las copas, El sacrificio, El traidor ×2, A ciegas (guía elegido, caminantes que salen, el guía del último cae) y las reglas de voz.
+- **Servidor (CI, bots):** despertar (pistas que aparecen tras el apagón, sin bichos en el complejo, uniforme que se gasta con cada prueba), Encadenados ×2, Compartir (bots sin elegir solos para que sea exacto), Las puertas, Las copas, El sacrificio, El traidor ×2, A ciegas (guía elegido, caminantes que salen, el guía del último cae) y las reglas de voz.
 - **Pruebas sin Minecraft** (`tests/run.sh`): la cadena que se enreda en los postes.
 - **Cliente con fotos** (`cliente-core.yml`, `mod=coleccionista`, `escenario=coleccionista`): HUD, eliminación, fantasma, panel, sala de espera, cinemática, tele, zoom, candado, cuerpos, disfraz y las 7 pruebas (presentación, mapa, pantallas de elegir/votar/teclado, venda y vista del guía, finales).
 
 ## Pendiente
-- Pasar el estilo nuevo a las demás zonas (después de que Axelis apruebe el piloto del Ala de celdas).
 - Grabar las voces (Axelis) y meterlas al mod.
-- El Coleccionista como personaje para las cinemáticas.
+- El Coleccionista como personaje fuera de las pantallas (en las cinemáticas); en las pantallas ya sale en 3D.
 - Ensayo completo con bots y prueba en la instancia `test` (con Simple Voice Chat).
 - Launcher para los amigos.
