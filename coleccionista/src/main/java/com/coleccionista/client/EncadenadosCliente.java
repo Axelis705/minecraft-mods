@@ -249,7 +249,7 @@ public final class EncadenadosCliente {
         UUID yo = mc.player.getUUID();
         // el aviso del grillete
         Grillete gr = grilletes.get(yo);
-        if (gr != null && enJuego()) {
+        if (gr != null && enJuego() && !Presentacion.reglasVisibles()) {
             String l1 = Component.translatable(MOD + ".enc.hud.grillete").getString();
             String l2 = Component.translatable(MOD + ".enc.hud.tu_llave", String.format("%02d", gr.tiene())).getString();
             String l3 = Component.translatable(MOD + ".enc.hud.su_llave").getString();

@@ -125,7 +125,8 @@ public final class Presentacion {
             t = REGLAS_DURA - 0.8F;
         }
         float a = suave(t / 0.5F) * (1 - suave((t - (REGLAS_DURA - 0.8F)) / 0.8F));
-        if (a < 0.02F) {
+        // con una pantalla abierta (el papel del traidor, el teclado...) no se dibuja detrás
+        if (a < 0.02F || Minecraft.getInstance().screen != null) {
             return;
         }
         int cw = Math.min(w - 40, 300);
