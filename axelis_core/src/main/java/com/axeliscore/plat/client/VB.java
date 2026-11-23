@@ -71,6 +71,22 @@ public final class VB {
         return v(ps.last(), x, y, z, r, g, b, a, u, w, overlay, light, nx, ny, nz);
     }
 
+    /** Un pincel que solo graba (para vistas previas fuera del juego, por ejemplo herramientas/visor). */
+    public static VB recorder() {
+        return new VB(null);
+    }
+
+    /** Vértices grabados. */
+    public int size() {
+        return n;
+    }
+
+    /** Vértice k grabado: x y z u v nx ny nz (ya transformados) y el color ARGB. */
+    public void read(int k, float[] out8, int[] argbLightOverlay) {
+        System.arraycopy(f, k * 8, out8, 0, 8);
+        System.arraycopy(i, k * 3, argbLightOverlay, 0, 3);
+    }
+
     /** Entrega lo grabado a un VertexConsumer de Minecraft (26.x). */
     void replay(VertexConsumer out) {
         for (int k = 0; k < n; k++) {

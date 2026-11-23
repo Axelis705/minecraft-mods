@@ -15,6 +15,15 @@ public final class Ids {
         //#endif
     }
 
+    /** "mod:ruta" (o solo "ruta", que es de minecraft). */
+    public static ResourceLocation parse(String s) {
+        //#if MC >= 1.21
+        //$$ return ResourceLocation.parse(s);
+        //#else
+        return new ResourceLocation(s);
+        //#endif
+    }
+
     /** Un id del propio Core (axelis_core:ruta). */
     public static ResourceLocation core(String path) {
         return rl("axelis_core", path);

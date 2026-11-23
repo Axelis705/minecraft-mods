@@ -1,0 +1,63 @@
+package com.axeliscore.test;
+
+/**
+ * La prueba del propio Core ("core"): galería de Personas con gestos, primer plano de la cara hablando, cada gesto por separado,
+ * caminar y correr de lado (para ver que los pies no resbalan) y el destello rojo al recibir daño.
+ * El mundo de prueba es plano: el suelo está en y = -60.
+ */
+public final class CoreScenario {
+    static final double G = -60;
+
+    private CoreScenario() {
+    }
+
+    static void register() {
+        ClientTest.scenario("core", t -> {
+            t.add("preparar", 2500, () -> {
+                t.hud(false);
+                t.cmd("time set 6000");
+                t.cmd("weather clear");
+                t.cmd("kill @e[type=axelis_core:persona]");
+                t.lookFrom(0.5, G, -6.5, 0.5, G + 1.0, 0.5);
+            });
+            t.add("galeria", 3500, () -> t.cmd("axeliscore galeria 0.5 -60 0.5 180"));
+            for (int i = 1; i <= 3; i++) {
+                t.photo("1_galeria_" + i, 450, () -> {
+                });
+            }
+            t.photo("2_galeria_34", 1500, () -> t.lookFrom(6.5, G, -4.5, 0.5, G + 1.0, 0.5));
+            t.photo("2_galeria_espalda", 1500, () -> t.lookFrom(0.5, G, 6.5, 0.5, G + 1.0, 0.5));
+            // primer plano de quien habla (la segunda, x = -1.5)
+            for (int i = 1; i <= 3; i++) {
+                final int k = i;
+                t.photo("3_cara_habla_" + k, k == 1 ? 1500 : 300, () -> t.lookFrom(-1.5, G, -1.4, -1.5, G + 1.6, 0.5));
+            }
+            // cada gesto por separado: todas lo hacen a la vez, se ve desde 3/4
+            String[][] gestos = {{"sit", "900"}, {"point", "900"}, {"think", "1100"}, {"laugh", "700"}, {"attack", "180"}, {"fish_cast", "330"},
+                    {"cheer", "450"}, {"nod", "200"}, {"wave", "700"}, {"death", "1600"}};
+            for (String[] g : gestos) {
+                t.photo("4_gesto_" + g[0], Long.parseLong(g[1]), () -> {
+                    t.lookFrom(4.5, G, -4.0, 0.5, G + 0.9, 0.5);
+                    t.cmd("axeliscore probar " + g[0]);
+                });
+            }
+            // caminar y correr (de lado)
+            t.add("limpiar", 1200, () -> {
+                t.cmd("kill @e[type=axelis_core:persona]");
+                t.cmd("summon axelis_core:persona -8.5 -60 6.5");
+                t.lookFrom(0.5, G, -1.5, 0.5, G + 1.0, 6.5);
+            });
+            t.add("ir caminando", 2200, () -> t.cmd("axeliscore ir 10.5 -60 6.5 0.6"));
+            for (int i = 1; i <= 3; i++) {
+                t.photo("5_camina_" + i, 280, () -> {
+                });
+            }
+            t.add("ir corriendo", 1800, () -> t.cmd("axeliscore ir -10.5 -60 6.5 1.6"));
+            for (int i = 1; i <= 3; i++) {
+                t.photo("6_corre_" + i, 220, () -> {
+                });
+            }
+            t.photo("7_dano", 120, () -> t.cmd("damage @e[type=axelis_core:persona,limit=1] 1"));
+        });
+    }
+}

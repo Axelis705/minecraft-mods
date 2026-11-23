@@ -37,6 +37,7 @@ public class AxelisCore {
         IEventBus bus = context.getModEventBus();
         bus.addListener(this::commonSetup);
         //#endif
+        com.axeliscore.registry.CoreEntities.ENTITIES.register(bus);
         LOGGER.info("Axelis Core {} (API {})", VERSION, API);
     }
 
