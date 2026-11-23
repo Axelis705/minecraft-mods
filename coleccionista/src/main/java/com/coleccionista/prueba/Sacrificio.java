@@ -270,6 +270,13 @@ public final class Sacrificio {
 
     private static void ofrecer(MinecraftServer s) {
         fase = Fase.OFRECER;
+        java.util.Map<UUID, Integer> voz = new java.util.HashMap<>();
+        for (var g : cuartos) {
+            for (UUID id : g.ids) {
+                voz.put(id, g.k);
+            }
+        }
+        com.coleccionista.voz.Voz.separar(voz);
         Evento ev = Evento.get(s);
         ev.reloj(s, segundosOfrecer);
         Pantallas.modo(s, "texto", Component.translatable(MOD + ".sac.pantalla.ofrecer").getString());
@@ -558,6 +565,7 @@ public final class Sacrificio {
 
     private static void fin(MinecraftServer s) {
         fase = Fase.FIN;
+        com.coleccionista.voz.Voz.juntar();
         Evento.get(s).reloj(s, 0);
         Pantallas.modo(s, "coleccionista", "");
         for (Cuarto c : cuartos) {
@@ -590,6 +598,7 @@ public final class Sacrificio {
     }
 
     private static void limpiar(MinecraftServer s) {
+        com.coleccionista.voz.Voz.juntar();
         fase = Fase.NADA;
         cuartos.clear();
         botEn.clear();

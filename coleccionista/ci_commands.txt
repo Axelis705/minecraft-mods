@@ -11,6 +11,9 @@ evento prueba Encadenados
 evento reloj 600
 evento eliminar Bot_01
 evento eliminar Bot_02 Encadenados
+evento voz
+evento voz probar Bot_02 Bot_03
+evento voz probar Bot_03 Bot_02
 evento pausar
 #pausa 1
 evento reanudar
@@ -63,8 +66,9 @@ evento revivir Bot_02
 evento revivir Bot_03
 evento revivir Bot_04
 evento compartir hablar 5
-evento compartir tiempo_elegir 5
+evento compartir tiempo_elegir 12
 evento compartir ritmo 60
+evento compartir bots_eligen no
 evento compartir preparar
 #pausa 4
 evento compartir empezar ya
@@ -76,6 +80,7 @@ evento compartir elige Bot_03 compartir
 evento compartir elige Bot_04 compartir
 #pausa 30
 evento compartir terminar
+evento compartir bots_eligen si
 evento revivir Bot_01
 evento revivir Bot_02
 evento revivir Bot_03
@@ -240,3 +245,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CIEGAS termino lab=
 #expect COLECCIONISTA_CIEGAS fin eliminados=1
 #expect COLECCIONISTA_CIEGAS terminada
+#expect COLECCIONISTA_VOZ probar Bot_02 -> Bot_03 oye=false
+#expect COLECCIONISTA_VOZ probar Bot_03 -> Bot_02 oye=true
+#expect COLECCIONISTA_VOZ separados=4
+#expect COLECCIONISTA_VOZ juntos

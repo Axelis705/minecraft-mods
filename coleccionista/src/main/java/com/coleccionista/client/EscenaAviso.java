@@ -33,6 +33,7 @@ public final class EscenaAviso {
     private static final Deque<Aviso> COLA = new ArrayDeque<>();
     private static Aviso actual;
     private static Aviso propia;
+    private static long ultimo;
 
     private record Aviso(String tipo, UUID id, String nombre, int numero, int orden, int quedan, String motivo, float dur, long[] inicio) {
     }
@@ -76,8 +77,20 @@ public final class EscenaAviso {
                 return;
             }
         }
+        // durante una presentación o un fundido, las franjas esperan (no tapan el título de la prueba)
+        if (Presentacion.activa()) {
+            if (actual != null) {
+                actual.inicio[0] += now - ultimo;
+            }
+            ultimo = now;
+            return;
+        }
+        ultimo = now;
         if (actual == null && !COLA.isEmpty()) {
-            actual = COLA.poll();
+            Aviso a = COLA.poll();
+            // si hay varias en fila, cada una dura menos (para que no tapen el inicio de la siguiente prueba)
+            float dur = "ganador".equals(a.tipo) ? a.dur : Math.max(2.2F, a.dur - 0.6F * COLA.size());
+            actual = new Aviso(a.tipo, a.id, a.nombre, a.numero, a.orden, a.quedan, a.motivo, dur, a.inicio);
             actual.inicio[0] = now;
         }
         if (actual == null) {

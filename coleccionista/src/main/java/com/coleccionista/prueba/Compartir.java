@@ -54,6 +54,8 @@ public final class Compartir {
     public static int segundosHablar = 60, segundosElegir = 20;
     /** Ticks que dura cada revelación y cuándo se aplica el resultado (se puede acelerar para las pruebas). */
     public static int REVELA = 150, RESULTADO = 95;
+    /** ¿Los bots eligen solos? (las pruebas automáticas lo apagan para decidir ellas) */
+    public static boolean botsEligen = true;
 
     public enum Fase {
         NADA, LISTA, HABLANDO_COLECCIONISTA, HABLAR, ELEGIR, REVELAR, FIN
@@ -233,7 +235,7 @@ public final class Compartir {
                 if (p == null || !p.vivo()) {
                     continue;
                 }
-                if (p.bot) {
+                if (p.bot && botsEligen) {
                     botDecide.put(id, now + 40 + r.nextInt(Math.max(1, segundosElegir * 20 - 80)));
                 } else {
                     ServerPlayer sp = s.getPlayerList().getPlayer(id);

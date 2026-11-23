@@ -31,6 +31,12 @@ public final class EventoCliente {
 
     public static void init() {
         ClientData.listen(Evento.KEY, EventoCliente::recibir);
+        // durante el evento no salen avisos del juego en la esquina (recetas nuevas, logros, tutorial): tapan la presentación y el HUD
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.event.TickEvent.ClientTickEvent e) -> {
+            if (e.phase == net.minecraftforge.event.TickEvent.Phase.END && activo()) {
+                net.minecraft.client.Minecraft.getInstance().getToasts().clear();
+            }
+        });
     }
 
     private static void recibir(CompoundTag t) {

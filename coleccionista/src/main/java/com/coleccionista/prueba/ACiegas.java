@@ -200,6 +200,13 @@ public final class ACiegas {
 
     private static void arrancar(MinecraftServer s) {
         fase = Fase.JUEGO;
+        java.util.Map<UUID, Integer> voz = new java.util.HashMap<>();
+        for (var g : equipos) {
+            for (UUID id : g.ids) {
+                voz.put(id, g.k);
+            }
+        }
+        com.coleccionista.voz.Voz.separar(voz);
         t = 0;
         Evento ev = Evento.get(s);
         ev.reloj(s, segundos);
@@ -347,6 +354,7 @@ public final class ACiegas {
         }
         Evento ev = Evento.get(s);
         fase = Fase.FIN;
+        com.coleccionista.voz.Voz.juntar();
         ev.reloj(s, 0);
         // orden: primero los que no terminaron (menos salidos primero), luego los que terminaron más tarde
         List<Equipo> orden = new ArrayList<>(equipos);
@@ -430,6 +438,7 @@ public final class ACiegas {
     }
 
     private static void limpiar(MinecraftServer s) {
+        com.coleccionista.voz.Voz.juntar();
         fase = Fase.NADA;
         equipos.clear();
         trampasPos.clear();

@@ -226,10 +226,11 @@ public class PanelScreen extends UiScreen {
         // el guion del inicio: sala de espera → ¡pum! → discurso → abrir celdas; y aparecer como el Coleccionista
         y += 36;
         String[][] guion = {{"sala", "g_sala"}, {"despertar", "g_despertar"}, {"discurso", "g_discurso"}, {"abrir_celdas", "g_abrir"},
-                {"disfraz", "g_disfraz"}};
+                {"disfraz", "g_disfraz"}, {"altavoz", "g_altavoz"}};
+        int gw = (w - (guion.length - 1) * 6) / guion.length;
         for (int i = 0; i < guion.length; i++) {
             String op = guion[i][0];
-            add(new Button(x + (bw + 6) * i, y, bw, 16, tr(guion[i][1]), () -> pedir(op, null)))
+            add(new Button(x + (gw + 6) * i, y, gw, 16, tr(guion[i][1]), () -> pedir(op, null)))
                     .help(Component.translatable(MOD + ".panel." + guion[i][1] + "_ayuda"));
         }
     }

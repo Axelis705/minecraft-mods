@@ -128,6 +128,15 @@ public final class ComandosPruebas {
                     Compartir.segundosHablar = IntegerArgumentType.getInteger(c, "segundos");
                     return ok(c, Component.translatable(MOD + ".com.cmd.tiempos", Compartir.segundosHablar, Compartir.segundosElegir));
                 })))
+                .then(Commands.literal("bots_eligen")
+                        .then(Commands.literal("si").executes(c -> {
+                            Compartir.botsEligen = true;
+                            return ok(c, Component.literal("bots_eligen = si"));
+                        }))
+                        .then(Commands.literal("no").executes(c -> {
+                            Compartir.botsEligen = false;
+                            return ok(c, Component.literal("bots_eligen = no"));
+                        })))
                 .then(Commands.literal("ritmo").then(Commands.argument("ticks", IntegerArgumentType.integer(40, 400)).executes(c -> {
                     Compartir.REVELA = IntegerArgumentType.getInteger(c, "ticks");
                     Compartir.RESULTADO = Compartir.REVELA * 95 / 150;

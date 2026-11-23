@@ -99,6 +99,12 @@ public final class Panel {
                 ev.disfraz(s, p.getUUID(), si);
                 p.setGameMode(si ? net.minecraft.world.level.GameType.CREATIVE : net.minecraft.world.level.GameType.SPECTATOR);
             }
+            case "altavoz" -> {
+                boolean si = !com.coleccionista.voz.Voz.altavoz(p.getUUID());
+                com.coleccionista.voz.Voz.altavoz(p.getUUID(), si);
+                Plat.msg(p, Component.translatable(Coleccionista.MODID + (!com.coleccionista.voz.VozPuente.disponible ? ".voz.no_instalado"
+                        : si ? ".voz.altavoz_si" : ".voz.altavoz_no")), true);
+            }
             case "sala" -> {
                 if (Complejo.construido(s)) {
                     Despertar.esperar(s);

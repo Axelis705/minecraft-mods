@@ -279,6 +279,13 @@ public final class Traidor {
     /** Cada uno ve en secreto su papel (todos al mismo tiempo, para que nadie se delate). */
     private static void roles(MinecraftServer s) {
         fase = Fase.ROLES;
+        java.util.Map<UUID, Integer> voz = new java.util.HashMap<>();
+        for (var g : salas) {
+            for (UUID id : g.ids) {
+                voz.put(id, g.k);
+            }
+        }
+        com.coleccionista.voz.Voz.separar(voz);
         rolesHasta = t + 150;
         for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
             mia(s, sp);
@@ -568,6 +575,7 @@ public final class Traidor {
 
     private static void fin(MinecraftServer s) {
         fase = Fase.FIN;
+        com.coleccionista.voz.Voz.juntar();
         Evento ev = Evento.get(s);
         ev.reloj(s, 0);
         Pantallas.modo(s, "coleccionista", "");
@@ -616,6 +624,7 @@ public final class Traidor {
     }
 
     private static void limpiar(MinecraftServer s) {
+        com.coleccionista.voz.Voz.juntar();
         fase = Fase.NADA;
         salas.clear();
         botEn.clear();

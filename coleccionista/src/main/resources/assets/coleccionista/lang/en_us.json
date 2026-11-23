@@ -597,5 +597,21 @@
   "coleccionista.voz.puertas.pista": "Before each round I'll give you a hint. I almost always tell the truth.",
   "coleccionista.voz.puertas.tiempo": "Choose quickly: whoever isn't inside before the bars close… lets me choose.",
   "coleccionista.voz.puertas.risa": "Heh, heh, heh…",
-  "coleccionista.voz.puertas.suerte": "May luck be with you."
+  "coleccionista.voz.puertas.suerte": "May luck be with you.",
+  "coleccionista.fantasma.voz": "Your voice now goes to the ghost channel: only other ghosts hear you. You can still hear the living nearby.",
+  "coleccionista.voz.estado": "Voice chat: %s · living: %s · ghosts: %s · on loudspeaker: %s · groups for the living: %s",
+  "coleccionista.voz.si": "yes",
+  "coleccionista.voz.no": "no",
+  "coleccionista.voz.no_instalado": "Simple Voice Chat isn't installed on the server: no voice.",
+  "coleccionista.voz.solo_jugador": "Only a player can use this.",
+  "coleccionista.voz.altavoz_si": "Loudspeaker on: everyone hears you wherever they are (press again to turn it off).",
+  "coleccionista.voz.altavoz_no": "Loudspeaker off: your voice is proximity again.",
+  "coleccionista.voz.grupos_si": "The living can now use voice groups.",
+  "coleccionista.voz.grupos_no": "The living can't use voice groups: proximity only.",
+  "coleccionista.voz.org_si": "Organizers hear the ghost channel.",
+  "coleccionista.voz.org_no": "Organizers no longer hear the ghost channel.",
+  "coleccionista.voz.oye": "%s does hear %s.",
+  "coleccionista.voz.no_oye": "%s doesn't hear %s.",
+  "coleccionista.panel.g_altavoz": "Loudspeaker",
+  "coleccionista.panel.g_altavoz_ayuda": "Your voice reaches everyone wherever they are (like the complex's speakers). Press again to go back to proximity voice."
 }

@@ -597,5 +597,21 @@
   "coleccionista.voz.puertas.pista": "Antes de cada ronda les daré una pista. Casi siempre digo la verdad.",
   "coleccionista.voz.puertas.tiempo": "Elijan rápido: quien no entre antes de que se cierren las rejas… dejará que yo elija.",
   "coleccionista.voz.puertas.risa": "Je, je, je…",
-  "coleccionista.voz.puertas.suerte": "Que la suerte los acompañe."
+  "coleccionista.voz.puertas.suerte": "Que la suerte los acompañe.",
+  "coleccionista.fantasma.voz": "Tu voz ahora va al canal de los fantasmas: solo te oyen los demás fantasmas. Tú sí oyes a los vivos que estén cerca.",
+  "coleccionista.voz.estado": "Chat de voz: %s · vivos: %s · fantasmas: %s · con altavoz: %s · grupos para los vivos: %s",
+  "coleccionista.voz.si": "sí",
+  "coleccionista.voz.no": "no",
+  "coleccionista.voz.no_instalado": "Simple Voice Chat no está instalado en el servidor: no hay voz.",
+  "coleccionista.voz.solo_jugador": "Esto solo lo puede usar un jugador.",
+  "coleccionista.voz.altavoz_si": "Altavoz encendido: todos te oyen, estén donde estén (pulsa otra vez para apagarlo).",
+  "coleccionista.voz.altavoz_no": "Altavoz apagado: tu voz vuelve a ser por cercanía.",
+  "coleccionista.voz.grupos_si": "Los vivos ya pueden usar los grupos de voz.",
+  "coleccionista.voz.grupos_no": "Los vivos no pueden usar grupos de voz: solo por cercanía.",
+  "coleccionista.voz.org_si": "Los organizadores oyen el canal de los fantasmas.",
+  "coleccionista.voz.org_no": "Los organizadores ya no oyen el canal de los fantasmas.",
+  "coleccionista.voz.oye": "%s sí oye a %s.",
+  "coleccionista.voz.no_oye": "%s no oye a %s.",
+  "coleccionista.panel.g_altavoz": "Altavoz",
+  "coleccionista.panel.g_altavoz_ayuda": "Tu voz le llega a todos, estén donde estén (como las bocinas del complejo). Pulsa otra vez para volver a la voz por cercanía."
 }

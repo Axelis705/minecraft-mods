@@ -42,6 +42,7 @@ public class Coleccionista {
         com.coleccionista.evento.Pantallas.init();
         com.coleccionista.evento.Despertar.init();
         com.coleccionista.prueba.Pruebas.init();
+        com.coleccionista.voz.Voz.init();
         com.axeliscore.ui.Teclas.nueva(MODID, "acercarse", 'R', () -> com.coleccionista.client.Atajos.acercarse());
         com.axeliscore.ui.Teclas.nueva(MODID, "panel", 'O', () -> com.coleccionista.client.Atajos.panel());
         com.axeliscore.ui.Teclas.nueva(MODID, "hud", 'K', () -> com.coleccionista.client.Atajos.hud());

@@ -51,7 +51,10 @@ public final class Fantasmas {
             }
             b.fantasma(true);
         }
-        Voz.actualizar(s, ev);
+        com.coleccionista.voz.Voz.actualizar(s);
+        if (e instanceof ServerPlayer sp && com.coleccionista.voz.VozPuente.disponible) {
+            Plat.msg(sp, Component.translatable(MOD + ".fantasma.voz").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.ITALIC), false);
+        }
     }
 
     /** Vuelve a ser jugador normal (al revivir o al terminar el evento). */
@@ -63,7 +66,7 @@ public final class Fantasmas {
         if (p.bot && Evento.entidad(s, p) instanceof com.coleccionista.bot.PiezaBot b) {
             b.fantasma(false);
         }
-        Voz.actualizar(s, Evento.get(s));
+        com.coleccionista.voz.Voz.actualizar(s);
     }
 
     /** Al conectarse: si ya era fantasma, sigue siéndolo. */
