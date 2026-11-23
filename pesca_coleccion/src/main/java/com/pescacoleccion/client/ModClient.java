@@ -19,6 +19,17 @@ public final class ModClient {
         e.registerEntityRenderer(com.pescacoleccion.registry.ModRegistry.ANZUELO.get(), AnzueloRenderer::new);
     }
 
+    /** ¿Tiene el jugador un pez de la colección (de esa rareza; -1 = cualquiera)? */
+    static boolean tienePez(int rareza) {
+        var inv = net.minecraft.client.Minecraft.getInstance().player.getInventory();
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            if (inv.getItem(i).getItem() instanceof com.pescacoleccion.pesca.PezItem pz && (rareza < 0 || pz.especie().rareza() == rareza)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** El corcho del jugador visto en el cliente (para las pruebas). */
     static com.pescacoleccion.pesca.Anzuelo corcho() {
         var mc = net.minecraft.client.Minecraft.getInstance();
@@ -34,6 +45,12 @@ public final class ModClient {
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent e) {
+        // estrellas de maestría del jugador (la copia que manda el servidor) para los cuadros de los peces
+        com.pescacoleccion.pesca.PezItem.estrellas = id -> {
+            var d = com.axeliscore.data.client.ClientData.player(PescaColeccion.MODID);
+            var peces = com.axeliscore.plat.Nbt.c(d, "peces");
+            return com.axeliscore.plat.Nbt.i(com.axeliscore.plat.Nbt.c(peces, id), "e");
+        };
         // prueba con fotos: cliente-core.yml con mod=pesca_coleccion y escenario=pesca_coleccion
         ClientTest.scenario(PescaColeccion.MODID, t -> {
             t.add("preparar", 2000, () -> {
@@ -68,16 +85,7 @@ public final class ModClient {
             t.photo("pelea_corcho", 2500, () -> {
             });
             t.waitFor("termina la pelea del corcho", 90000, () -> !(com.axeliscore.plat.client.Screens.current() instanceof PeleaScreen));
-            t.add("premio del corcho", 2500, () -> {
-                var inv = net.minecraft.client.Minecraft.getInstance().player.getInventory();
-                boolean any = false;
-                for (var it : new net.minecraft.world.item.Item[] {net.minecraft.world.item.Items.COD, net.minecraft.world.item.Items.SALMON,
-                        net.minecraft.world.item.Items.TROPICAL_FISH, net.minecraft.world.item.Items.PUFFERFISH,
-                        net.minecraft.world.item.Items.HEART_OF_THE_SEA}) {
-                    any |= inv.contains(new net.minecraft.world.item.ItemStack(it));
-                }
-                t.check(any, "el pez del corcho llegó al inventario");
-            });
+            t.add("premio del corcho", 2500, () -> t.check(tienePez(-1), "el pez del corcho llegó al inventario"));
             t.add("vaciar", 300, () -> t.cmd("clear @p"));
             // pelea de un pez raro: fotos del ritmo, del salto y del final
             t.add("pelea rara", 300, () -> {
@@ -94,8 +102,7 @@ public final class ModClient {
                     && ps.sim().phase == com.pescacoleccion.pelea.PeleaSim.FINAL);
             t.add("final (foto)", 150, () -> t.shot("pelea_final"));
             t.waitFor("termina la pelea rara", 30000, () -> !(com.axeliscore.plat.client.Screens.current() instanceof PeleaScreen));
-            t.add("premio raro", 1200, () -> t.check(net.minecraft.client.Minecraft.getInstance().player.getInventory()
-                    .contains(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.TROPICAL_FISH)), "el pez raro llegó al inventario"));
+            t.add("premio raro", 1200, () -> t.check(tienePez(2), "el pez raro llegó al inventario"));
             t.add("foto del aviso", 100, () -> t.shot("pelea_premio"));
             // legendario: más rápido, trampas y flechas fantasma
             t.add("pelea legendaria", 300, () -> t.cmd("execute as @p run " + PescaColeccion.MODID + " pelea 4"));
@@ -103,8 +110,7 @@ public final class ModClient {
             t.photo("pelea_legendaria", 4000, () -> {
             });
             t.waitFor("termina la legendaria", 120000, () -> !(com.axeliscore.plat.client.Screens.current() instanceof PeleaScreen));
-            t.add("premio legendario", 1500, () -> t.check(net.minecraft.client.Minecraft.getInstance().player.getInventory()
-                    .contains(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.HEART_OF_THE_SEA)), "el pez legendario llegó"));
+            t.add("premio legendario", 1500, () -> t.check(tienePez(4), "el pez legendario llegó"));
             t.add("título", 100, () -> t.shot("pelea_legendaria_premio"));
             t.add("sin juego solo", 100, () -> PeleaScreen.autoplay = false);
         });

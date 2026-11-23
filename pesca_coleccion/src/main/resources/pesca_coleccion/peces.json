@@ -1,0 +1,541 @@
+[
+ {
+  "id": "charalito",
+  "rareza": 0,
+  "lugar": [
+   "cualquiera"
+  ],
+  "hora": [
+   "cualquiera"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   4,
+   11
+  ],
+  "kg": 6,
+  "pelea": {
+   "bpm": -6,
+   "tiron": 0.8,
+   "energia": 0.7
+  }
+ },
+ {
+  "id": "mojarra",
+  "rareza": 0,
+  "lugar": [
+   "rio"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   12,
+   28
+  ],
+  "kg": 14,
+  "pelea": {}
+ },
+ {
+  "id": "carpa",
+  "rareza": 0,
+  "lugar": [
+   "lago"
+  ],
+  "hora": [
+   "cualquiera"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   25,
+   60
+  ],
+  "kg": 13,
+  "pelea": {
+   "tiron": 1.1,
+   "descansos": true
+  }
+ },
+ {
+  "id": "bagre",
+  "rareza": 0,
+  "lugar": [
+   "pantano",
+   "rio"
+  ],
+  "hora": [
+   "noche"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   20,
+   55
+  ],
+  "kg": 12,
+  "pelea": {
+   "bpm": -4,
+   "tiron": 1.15,
+   "descansos": true
+  }
+ },
+ {
+  "id": "sardina",
+  "rareza": 0,
+  "lugar": [
+   "oceano"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   10,
+   22
+  ],
+  "kg": 7,
+  "pelea": {
+   "bpm": 8,
+   "tiron": 0.85,
+   "zigzag": true
+  }
+ },
+ {
+  "id": "perca",
+  "rareza": 0,
+  "lugar": [
+   "rio",
+   "lago"
+  ],
+  "hora": [
+   "amanecer",
+   "atardecer"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   15,
+   35
+  ],
+  "kg": 13,
+  "pelea": {}
+ },
+ {
+  "id": "lenguado",
+  "rareza": 0,
+  "lugar": [
+   "playa",
+   "oceano_calido"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   18,
+   45
+  ],
+  "kg": 11,
+  "pelea": {
+   "tiron": 0.9,
+   "cambio": 1.3
+  }
+ },
+ {
+  "id": "trucha_montana",
+  "rareza": 0,
+  "lugar": [
+   "montana",
+   "frio"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   18,
+   40
+  ],
+  "kg": 12,
+  "pelea": {
+   "saltos": 1,
+   "bpm": 4
+  }
+ },
+ {
+  "id": "trucha_arcoiris",
+  "rareza": 1,
+  "lugar": [
+   "rio"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "lluvia",
+  "luna": "cualquiera",
+  "cm": [
+   25,
+   55
+  ],
+  "kg": 12,
+  "pelea": {
+   "saltos": 1
+  }
+ },
+ {
+  "id": "lucio",
+  "rareza": 1,
+  "lugar": [
+   "lago"
+  ],
+  "hora": [
+   "atardecer"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   40,
+   95
+  ],
+  "kg": 9,
+  "pelea": {
+   "tiron": 1.2,
+   "rafagas": true
+  }
+ },
+ {
+  "id": "payaso",
+  "rareza": 1,
+  "lugar": [
+   "oceano_calido"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "despejado",
+  "luna": "cualquiera",
+  "cm": [
+   7,
+   14
+  ],
+  "kg": 10,
+  "pelea": {
+   "bpm": 10,
+   "zigzag": true,
+   "energia": 0.8
+  }
+ },
+ {
+  "id": "salmon_rojo",
+  "rareza": 1,
+  "lugar": [
+   "rio",
+   "frio"
+  ],
+  "hora": [
+   "amanecer"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   45,
+   85
+  ],
+  "kg": 11,
+  "pelea": {
+   "saltos": 2,
+   "tiron": 1.1
+  }
+ },
+ {
+  "id": "pez_globo",
+  "rareza": 1,
+  "lugar": [
+   "oceano_calido",
+   "playa"
+  ],
+  "hora": [
+   "noche"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   12,
+   30
+  ],
+  "kg": 16,
+  "pelea": {
+   "inflar": true
+  }
+ },
+ {
+  "id": "pez_luna",
+  "rareza": 1,
+  "lugar": [
+   "lago"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "despejado",
+  "luna": "cualquiera",
+  "cm": [
+   12,
+   25
+  ],
+  "kg": 18,
+  "pelea": {
+   "cambio": 0.8,
+   "bpm": 6
+  }
+ },
+ {
+  "id": "pez_espada",
+  "rareza": 2,
+  "lugar": [
+   "oceano_profundo"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "despejado",
+  "luna": "cualquiera",
+  "cm": [
+   120,
+   300
+  ],
+  "kg": 9,
+  "pelea": {
+   "tiron": 1.2,
+   "zigzag": true,
+   "saltos": 1
+  }
+ },
+ {
+  "id": "anguila_cueva",
+  "rareza": 2,
+  "lugar": [
+   "cueva"
+  ],
+  "hora": [
+   "cualquiera"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   50,
+   140
+  ],
+  "kg": 4,
+  "pelea": {
+   "zigzag": true,
+   "cambio": 0.6,
+   "bpm": -6
+  }
+ },
+ {
+  "id": "pez_linterna",
+  "rareza": 2,
+  "lugar": [
+   "oceano_profundo"
+  ],
+  "hora": [
+   "noche"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   8,
+   20
+  ],
+  "kg": 10,
+  "pelea": {
+   "fantasma": true,
+   "tiron": 0.9
+  }
+ },
+ {
+  "id": "koi_cerezo",
+  "rareza": 2,
+  "lugar": [
+   "cerezo"
+  ],
+  "hora": [
+   "dia"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   30,
+   70
+  ],
+  "kg": 12,
+  "pelea": {
+   "bpm": -4,
+   "descansos": true,
+   "saltos": 1
+  }
+ },
+ {
+  "id": "pirana",
+  "rareza": 2,
+  "lugar": [
+   "selva"
+  ],
+  "hora": [
+   "cualquiera"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   15,
+   35
+  ],
+  "kg": 16,
+  "pelea": {
+   "bpm": 16,
+   "rafagas": true,
+   "energia": 0.75
+  }
+ },
+ {
+  "id": "pez_fantasma",
+  "rareza": 3,
+  "lugar": [
+   "pantano",
+   "lago"
+  ],
+  "hora": [
+   "noche"
+  ],
+  "clima": "lluvia",
+  "luna": "cualquiera",
+  "cm": [
+   25,
+   60
+  ],
+  "kg": 8,
+  "pelea": {
+   "fantasma": true,
+   "descansos": true
+  }
+ },
+ {
+  "id": "esturion",
+  "rareza": 3,
+  "lugar": [
+   "rio"
+  ],
+  "hora": [
+   "amanecer"
+  ],
+  "clima": "cualquiera",
+  "luna": "cualquiera",
+  "cm": [
+   150,
+   350
+  ],
+  "kg": 7,
+  "pelea": {
+   "bpm": -10,
+   "tiron": 1.25,
+   "energia": 1.35,
+   "descansos": true
+  }
+ },
+ {
+  "id": "pez_volador",
+  "rareza": 3,
+  "lugar": [
+   "oceano"
+  ],
+  "hora": [
+   "cualquiera"
+  ],
+  "clima": "tormenta",
+  "luna": "cualquiera",
+  "cm": [
+   20,
+   45
+  ],
+  "kg": 9,
+  "pelea": {
+   "saltos": 2,
+   "zigzag": true,
+   "bpm": 6
+  }
+ },
+ {
+  "id": "patriarca",
+  "rareza": 4,
+  "lugar": [
+   "rio"
+  ],
+  "hora": [
+   "noche"
+  ],
+  "clima": "cualquiera",
+  "luna": "llena",
+  "cm": [
+   180,
+   320
+  ],
+  "kg": 12,
+  "pelea": {
+   "tiron": 1.15,
+   "descansos": true,
+   "energia": 1.1
+  }
+ },
+ {
+  "id": "dragon_jade",
+  "rareza": 4,
+  "lugar": [
+   "selva"
+  ],
+  "hora": [
+   "amanecer"
+  ],
+  "clima": "tormenta",
+  "luna": "cualquiera",
+  "cm": [
+   80,
+   140
+  ],
+  "kg": 9,
+  "pelea": {
+   "saltos": 1,
+   "rafagas": true,
+   "zigzag": true
+  }
+ },
+ {
+  "id": "celacanto",
+  "rareza": 4,
+  "lugar": [
+   "oceano_profundo"
+  ],
+  "hora": [
+   "noche"
+  ],
+  "clima": "cualquiera",
+  "luna": "nueva",
+  "cm": [
+   120,
+   200
+  ],
+  "kg": 10,
+  "pelea": {
+   "fantasma": true,
+   "inflar": true,
+   "energia": 1.1
+  }
+ }
+]

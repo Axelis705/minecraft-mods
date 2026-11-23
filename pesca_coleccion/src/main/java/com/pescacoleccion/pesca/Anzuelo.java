@@ -49,6 +49,8 @@ public class Anzuelo extends Entity implements Animated {
     // servidor
     private Cana cana = Cana.BAMBU;
     private int espera = -1, t, rareza = -1, idx, piqueteHasta, picaHasta;
+    private Especie especie;
+    private float tamano;
     private int[] picadas;
     private Vec3 llegada, centro, destino;
 
@@ -191,28 +193,32 @@ public class Anzuelo extends Entity implements Animated {
         this.entityData.set(PULSE, pulse() + 1);
         centro = position();
         destino = centro;
-        int r = rareza < 0 ? 0 : rareza;
-        PeleaSim.Params params = Niveles.base(r, random.nextLong());
-        Niveles.cana(params, cana.zone, cana.control, cana.lineHp, cana.damage);
+        if (especie == null) {
+            especie = Especies.get("charalito");
+            tamano = especie.tamano(random.nextDouble());
+        }
+        Especie e = especie;
+        float cm = tamano;
+        float rel = (cm - e.cmMin()) / Math.max(1, e.cmMax() - e.cmMin());
+        PeleaSim.Params params = Especies.params(e, random.nextLong(), cana, rel);
         if (PescaColeccion.facil()) {
             Niveles.facil(params);
         }
         level().playSound(null, getX(), getY(), getZ(), SoundEvents.FISHING_BOBBER_SPLASH, SoundSource.NEUTRAL, 0.9F, 0.8F);
-        Peleas.start(p, params, PescaColeccion.MODID + ".prueba.pez_" + r, r, sim -> terminar(p, r, sim));
+        Peleas.start(p, params, "item." + PescaColeccion.MODID + "." + e.itemId(), e.rareza(), sim -> terminar(p, e, cm, sim));
     }
 
-    private void terminar(ServerPlayer p, int r, PeleaSim sim) {
+    private void terminar(ServerPlayer p, Especie e, float cm, PeleaSim sim) {
         if (isRemoved()) {
             return;
         }
         if (sim.result == PeleaSim.PESCADO) {
-            ItemStack st = com.pescacoleccion.pelea.Prueba.premio(r);
+            ItemStack st = Pesca.pescado(p, e, cm, sim.flawless());
             ItemEntity it = new ItemEntity(level(), getX(), getY(), getZ(), st);
             double dx = p.getX() - getX(), dy = p.getY() - getY(), dz = p.getZ() - getZ();
             it.setDeltaMovement(dx * 0.1, dy * 0.1 + Math.sqrt(Math.sqrt(dx * dx + dy * dy + dz * dz)) * 0.08, dz * 0.1);
             level().addFreshEntity(it);
-            p.giveExperiencePoints(1 + r * 2 + random.nextInt(3));
-            com.pescacoleccion.pelea.Prueba.avisar(p, r, st, sim.flawless());
+            p.giveExperiencePoints(1 + e.rareza() * 2 + random.nextInt(3));
             splash(20, 0.4);
         } else if (sim.result == PeleaSim.HILO_ROTO) {
             level().playSound(null, getX(), getY(), getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1F, 0.5F);
@@ -288,7 +294,9 @@ public class Anzuelo extends Entity implements Animated {
     private void timeline() {
         if (picadas == null) {
             if (espera > 0 && --espera == 0) {
-                rareza = Captura.rareza(random, cana.suerte);
+                especie = Especies.elegir(level(), blockPosition(), random, cana.suerte);
+                rareza = especie.rareza();
+                tamano = especie.tamano(random.nextDouble());
                 picadas = Captura.picadas(random, rareza);
                 idx = 0;
                 t = 0;

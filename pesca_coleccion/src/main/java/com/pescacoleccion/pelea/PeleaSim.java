@@ -52,6 +52,8 @@ public final class PeleaSim {
         public int good = 100, perfect = 45;  // ventanas en ms (modo fácil las agranda)
         public float missHp = 4;           // hilo que se pierde por cada flecha fallada
         public float mashGain = 0.09F;     // lo que sube la barra del final con cada tecla alternada
+        public boolean inflate;            // pez globo: la zona verde se encoge en la parte media de la pelea
+        public boolean rests;              // deja de jalar de vez en cuando (respiro para acomodar la aguja)
         public int mashMs = 4000;          // tiempo para llenarla
     }
 
@@ -183,11 +185,25 @@ public final class PeleaSim {
         float base = prev + (cur - prev) * k;
         float wob = (float) Math.sin(t / 310.0) * 0.18F + (float) Math.sin(t / 97.0) * 0.07F;
         float strength = p.pull * (p.burstFromMs >= 0 && t >= p.burstFromMs ? 1.25F : 1F);
+        if (p.rests && t % 7000 > 5600) {
+            strength *= 0.15F;   // respiro de 1.4 s cada 7 s
+        }
         return (base + wob) * strength;
     }
 
+    /** La zona verde ahora (el pez globo la encoge cuando se infla). */
+    public float zone() {
+        if (p.inflate) {
+            int e = expectedMs();
+            if (now > e * 0.3F && now < e * 0.7F) {
+                return p.zone * 0.65F;
+            }
+        }
+        return p.zone;
+    }
+
     public boolean inZone() {
-        return Math.abs(needle) <= p.zone;
+        return Math.abs(needle) <= zone();
     }
 
     /** Avanza la aguja (y todo lo que depende del tiempo) hasta {@code ms}. */
@@ -232,7 +248,8 @@ public final class PeleaSim {
         }
         // fuera de la zona verde el hilo se gasta (más cerca del borde, más rápido)
         if (phase != FINAL) {
-            float out = (Math.abs(needle) - p.zone) / Math.max(0.05F, 1 - p.zone);
+            float z = zone();
+            float out = (Math.abs(needle) - z) / Math.max(0.05F, 1 - z);
             if (out > 0) {
                 hurt(dt * (8 + 26 * out * out));
             }

@@ -12,7 +12,7 @@ public final class Pelea {
         b.putLong(p.seed).putInt(p.bpm).putInt(p.keys).putFloat(p.trapChance).putInt(p.jumps).putFloat(p.pull).putInt(p.switchMs)
                 .putFloat(p.stamina).putInt(p.approachMs).putInt(p.durationMs).putInt(p.ghostFromMs).putInt(p.burstFromMs).putFloat(p.zone)
                 .putFloat(p.control).putFloat(p.lineHp).putFloat(p.damage).putInt(p.good).putInt(p.perfect).putFloat(p.missHp)
-                .putFloat(p.mashGain).putInt(p.mashMs);
+                .putFloat(p.mashGain).putInt(p.mashMs).put((byte) ((p.inflate ? 1 : 0) | (p.rests ? 2 : 0)));
         b.put((byte) p.patterns.length);
         for (String s : p.patterns) {
             byte[] by = s.getBytes(java.nio.charset.StandardCharsets.US_ASCII);
@@ -48,6 +48,9 @@ public final class Pelea {
         p.missHp = b.getFloat();
         p.mashGain = b.getFloat();
         p.mashMs = b.getInt();
+        byte flags = b.get();
+        p.inflate = (flags & 1) != 0;
+        p.rests = (flags & 2) != 0;
         int n = b.get();
         p.patterns = new String[n];
         for (int i = 0; i < n; i++) {

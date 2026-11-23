@@ -334,7 +334,7 @@ public class PeleaScreen extends CoreScreen {
         int x0 = px + 34, x1 = px + PW - 34, y = py + 33, h = 10, cx = (x0 + x1) / 2, half = (x1 - x0) / 2;
         g.fill(x0 - 1, y - 1, x1 + 1, y + h + 1, 0xFF04121A);
         // rojo en las orillas, verde al centro
-        int zw = Math.round(half * sim.p.zone);
+        int zw = Math.round(half * sim.zone());
         g.fillGradient(x0, y, x1, y + h, 0xFF5A1E1E, 0xFF3A1010);
         g.fillGradient(cx - zw, y, cx + zw, y + h, 0xFF3FAF5A, 0xFF1E7A38);
         g.fill(cx - zw, y, cx + zw, y + 1, 0x60FFFFFF);
