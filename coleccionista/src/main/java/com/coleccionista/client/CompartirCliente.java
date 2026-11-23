@@ -140,6 +140,14 @@ public final class CompartirCliente {
         return x * x * (3 - 2 * x);
     }
 
+    /** ¿Se está viendo la revelación de una mesa? (las franjas de eliminación esperan a que termine) */
+    public static boolean revelandoMesa() {
+        if (revelando < 0 || !"REVELAR".equals(fase()) || estado == null) {
+            return false;
+        }
+        return revelando < estado.getList("mesas", Tag.TAG_COMPOUND).size() && System.currentTimeMillis() - revelaDesde <= 7400L;
+    }
+
     private static void revelacion(G g, int w, int h) {
         if (revelando < 0 || !"REVELAR".equals(fase())) {
             return;

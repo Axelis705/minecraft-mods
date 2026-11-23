@@ -44,6 +44,12 @@ public final class EscenaAviso {
     public static void init() {
         ClientData.listen(Evento.KEY_AVISO, EscenaAviso::recibir);
         com.axeliscore.fx.client.Hud.add(EscenaAviso::render);
+        // en la escena del propio eliminado el chat se esconde (tapaba las letras de abajo); los mensajes siguen ahí al terminar
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.client.event.RenderGuiOverlayEvent.Pre e) -> {
+            if (propia != null && e.getOverlay().id().equals(net.minecraftforge.client.gui.overlay.VanillaGuiOverlay.CHAT_PANEL.id())) {
+                e.setCanceled(true);
+            }
+        });
     }
 
     private static void recibir(CompoundTag t) {
@@ -77,8 +83,8 @@ public final class EscenaAviso {
                 return;
             }
         }
-        // durante una presentación o un fundido, las franjas esperan (no tapan el título de la prueba)
-        if (Presentacion.activa() || Presentacion.reglasVisibles()) {
+        // durante una presentación, un fundido o la revelación de una mesa, las franjas esperan (no tapan lo que se está viendo)
+        if (Presentacion.activa() || Presentacion.reglasVisibles() || CompartirCliente.revelandoMesa()) {
             if (actual != null) {
                 actual.inicio[0] += now - ultimo;
             }
@@ -115,8 +121,13 @@ public final class EscenaAviso {
         Font f = Ui.font();
         boolean gana = "ganador".equals(a.tipo);
         float entra = suave(t / 0.35F), sale = t > a.dur - 0.4F ? suave((a.dur - t) / 0.4F) : 1F, al = entra * sale;
-        int cy = (int) (h * (gana ? 0.42F : 0.30F));
         int alto = gana ? 70 : 46;
+        int cy = (int) (h * (gana ? 0.42F : 0.30F));
+        // debajo de lo de arriba (tarjeta, placa y avisos del centro) para no taparlos en pantallas bajitas
+        int arriba = EventoHud.abajoHud() + 6;
+        if (cy - alto / 2 < arriba) {
+            cy = Math.min(arriba + alto / 2, (int) (h * 0.56F));
+        }
         int y0 = cy - alto / 2, y1 = cy + alto / 2;
         int linea = gana ? EventoHud.ORO : EventoHud.ROJO;
         int fondo = gana ? 0x3A2A10 : 0x0C0608;
@@ -187,7 +198,7 @@ public final class EscenaAviso {
         if (ap <= 0.02F) {
             return;
         }
-        // arriba del centro: abajo a la izquierda está el chat
+        // arriba del centro (el chat se esconde mientras)
         int cx = w / 2, cy = (int) (h * 0.30F);
         int lado = 64;
         int x = cx - lado / 2, y = cy - lado / 2;

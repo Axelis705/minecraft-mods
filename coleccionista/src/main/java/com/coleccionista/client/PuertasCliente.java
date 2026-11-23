@@ -52,13 +52,13 @@ public final class PuertasCliente {
         String fase = fase();
         String linea = null;
         int color = 0xFFD8D0C8;
+        String ronda = null;
         switch (fase) {
             case "ELEGIR" -> {
                 String pc = Component.translatable(MOD + ".pue.color." + Nbt.s(estado, "pista_color")).getString();
                 linea = Component.translatable(MOD + ".pue." + Nbt.s(estado, "pista"), pc).getString();
                 color = Nbt.i(estado, "pista_rgb") | 0xFF000000;
-                String r = Component.translatable(MOD + ".pue.hud.elige", ronda(), rondas()).getString();
-                g.drawCenteredString(f, r, w / 2, 58, 0xFFA89E96);
+                ronda = Component.translatable(MOD + ".pue.hud.elige", ronda(), rondas()).getString();
             }
             case "REDOBLE" -> linea = Component.translatable(MOD + ".pue.hud.redoble").getString();
             case "CAE", "ENTRE" -> {
@@ -75,6 +75,11 @@ public final class PuertasCliente {
             int lw = f.width(linea) + 16, y = EventoHud.lineaY(w, lw);
             g.fillGradient(w / 2 - lw / 2, y, w / 2 + lw / 2, y + 13, 0xB0140C0E, 0x90080506);
             g.drawCenteredString(f, linea, w / 2, y + 3, color);
+            // la ronda y qué hacer, debajo de la pista (sin encimarse con la tarjeta de arriba a la izquierda)
+            if (ronda != null) {
+                int rw = f.width(ronda) + 8, ry = EventoHud.debajo(w, rw, y + 16);
+                g.drawCenteredString(f, ronda, w / 2, ry + 2, 0xFFA89E96);
+            }
         }
     }
 }

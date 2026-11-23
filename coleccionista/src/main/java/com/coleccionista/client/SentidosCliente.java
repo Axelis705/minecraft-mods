@@ -251,6 +251,7 @@ public final class SentidosCliente {
             String nom = p == null ? "?" : Nbt.s(p, "nombre");
             String r = t.roles().get(i);
             String s = nom + " · " + ("NADA".equals(r) ? "…" : Component.translatable(MOD + ".tres.rol." + r.toLowerCase()).getString());
+            yy = EventoHud.debajo(w, Ui.font().width(s) + 4, yy);
             g.drawCenteredString(Ui.font(), s, w / 2, yy, 0xFFA89E94);
             yy += 10;
         }

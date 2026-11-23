@@ -29,6 +29,8 @@ public final class EventoHud {
     private static int tarjetaDer, tarjetaAbajo;
     /** Dónde empieza la placa del centro (la tarjeta no debe llegar ahí en pantallas angostas). */
     private static int placaIzq = Integer.MAX_VALUE;
+    /** Hasta dónde baja lo de arriba (placa, tarjeta y avisos del centro) en este cuadro y en el anterior (las franjas van debajo). */
+    private static int abajo, abajoPrevio;
 
     private EventoHud() {
     }
@@ -47,6 +49,8 @@ public final class EventoHud {
     private static void render(G g, int w, int h) {
         tarjetaDer = 0;
         tarjetaAbajo = 0;
+        abajoPrevio = abajo;
+        abajo = 0;
         if (!visible()) {
             return;
         }
@@ -73,6 +77,7 @@ public final class EventoHud {
         int ph = grande ? 34 : 16;
         int x0 = w / 2 - pw / 2, x1 = w / 2 + pw / 2, y0 = 3, y1 = y0 + ph;
         placaIzq = x0;
+        abajo = Math.max(abajo, y1);
         g.fillGradient(x0, y0, x1, y1, FONDO, FONDO2);
         g.fill(x0, y0, x1, y0 + 1, Ui.alpha(PORCELANA, 0.35F));
         g.fill(x0, y1 - 1, x1, y1, ROJO);
@@ -148,6 +153,7 @@ public final class EventoHud {
                 String t = Component.translatable(MOD + ".hud.organizador").getString();
                 int cw = Math.max((int) (f.width(t) * 1.25F), f.width("/evento  ·  O")) + 18;
                 fondo(g, x, y, cw, 30, ORO);
+                abajo = Math.max(abajo, y + 30);
                 izq(g, f, t, x + 9, y + 5, 1.25F, ORO, true);
                 g.drawString(f, "/evento  ·  O", x + 9, y + 18, 0xFF9A9090, false);
             }
@@ -195,6 +201,7 @@ public final class EventoHud {
         fondo(g, x, y, ancho, alto, acento);
         tarjetaDer = x + ancho;
         tarjetaAbajo = y + alto;
+        abajo = Math.max(abajo, tarjetaAbajo);
         // la cara en su marco
         int fx = x + 8, fy = y + 6;
         g.fill(fx - 2, fy - 2, fx + cara + 2, fy + cara + 2, vivo ? 0xFF2A1A1C : 0xFF1E3A44);
@@ -228,7 +235,22 @@ public final class EventoHud {
      * angosta se le encimaría.
      */
     public static int lineaY(int w, int lw) {
-        return w / 2 - lw / 2 < tarjetaDer + 4 && tarjetaAbajo > 39 ? tarjetaAbajo + 4 : 41;
+        return debajo(w, lw, 41);
+    }
+
+    /**
+     * Altura para otro aviso centrado de ancho {@code lw} (de 13 de alto) desde {@code desde} hacia abajo, sin encimarse con la tarjeta
+     * (por ejemplo, la segunda línea debajo de la primera).
+     */
+    public static int debajo(int w, int lw, int desde) {
+        int y = w / 2 - lw / 2 < tarjetaDer + 4 && desde < tarjetaAbajo + 4 ? tarjetaAbajo + 4 : desde;
+        abajo = Math.max(abajo, y + 13);
+        return y;
+    }
+
+    /** Hasta dónde llega lo de arriba de la pantalla (0 si no se dibuja el HUD): las franjas grandes se ponen debajo. */
+    public static int abajoHud() {
+        return visible() ? Math.max(abajo, abajoPrevio) : 0;
     }
 
     /** El fondo de las tarjetas: degradado oscuro, una barra de color a la izquierda, el filo de arriba claro y la línea de abajo. */
