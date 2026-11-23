@@ -20,6 +20,8 @@ Mod nuevo de Axelis (`coleccionista/` en el repo, mod id `coleccionista`) para u
 6. **Las puertas** (la Sala de las puertas) — 3 puertas, una sin piso; una pista que a veces miente.
 7. **Final: Las copas** — una copa envenenada; la última pieza gana.
 
+**Prueba extra (comodín): Encadenados de tres** (la Galería de los postes). Ver abajo.
+
 **Regla de seguridad:** las pruebas 1–6 nunca dejan menos de **2 piezas vivas** (si alguien "caería" y quedarían menos, se salva: "Necesito piezas para mi final"). El ganador solo sale de la final. Las eliminaciones a mano del organizador no tienen ese límite.
 
 ## Cómo se corre cada prueba
@@ -35,6 +37,22 @@ Todas igual: **Preparar** (fundido a negro, todos a su lugar, presentación "PRU
 | 6 Las puertas | Sala de las puertas | Cada ronda las 3 puertas cambian de color y el Coleccionista da una pista (miente 30 %). Todos entran a una cabina antes de que cierren las rejas; en una se abre el piso al agua. Si todos eligen la misma, esa vez aguanta. | `rondas`, `tiempo`, `discurso`, `ronda`, `cerrar` |
 | 7 Las copas | Cámara final | 2–4 piezas; hay dos copas más que piezas y una tiene veneno. Por turnos, clic derecho para beber; si alguien cae y quedan varios, se vuelve a servir. | `tiempo`, `beber` |
 
+### Encadenados de tres (extra)
+Tríos al azar (si sobran, tríos de cuatro), cada uno en su carril de la **Galería de los postes** (6 carriles separados por barrotes).
+1. **La mesa:** en su sala hay una **venda** (casi no ve), una **cinta** (no puede hablar ni escribir; con Simple Voice Chat se le corta el micrófono) y unas **esposas** (no puede tocar nada: palancas, puertas, golpes). La pantalla lo explica, tienen 90 s para decidir y cada uno hace clic derecho a su objeto; lo que sobre se reparte solo.
+2. **El recorrido:** se abren las rejas y van **encadenados en fila** (cadena de 4 bloques). La cadena **se atora en los postes** si cada quien pasa por un lado y hay que regresar para soltarla. Obstáculos: bosque de postes, zigzag de un bloque, túnel bajo (agachados) y una reja que se abre con **dos palancas a la vez**, lejos una de la otra (las esposas no pueden jalar).
+3. **El último trío en salir pierde** (el trío completo, o uno al azar con `/evento tres pierde uno`).
+Comandos: `/evento tres preparar|empezar [ya]|arrancar|tiempo <elegir> <recorrido>|largo N|pierde trio|uno|terminar`. Panel: pestaña Pruebas, "★ Encadenados de tres".
+
+## Estilo del complejo (bloques propios)
+Todo el complejo se está pasando a **bloques nuevos del mod** (nada de bloques de Minecraft): una vieja institución abandonada, mitad prisión y mitad manicomio, con las salas del Coleccionista elegantes pero podridas. Texturas de 32×32, sucias y oxidadas, hechas por código (`herramientas/deco/`: `materiales.py` para los bloques enteros, `props_celdas.py` para muebles 3D, `build.py` lo genera todo y el mod lo registra desde `data/coleccionista/deco.json`).
+- **Hecho:** el **Ala de celdas** completa (azulejo de hospital, yeso descarapelado, concreto, piso de cuadros, alfombra roja, barrotes oxidados, puertas de celda, catre que sirve de cama, retrete, lavabo, espejo, baúl de las pistas, rayones y placas con texto, lámparas fluorescentes que fallan y zumban, focos de jaula, tuberías, vigas, rejilla de pasarela, cámaras, bocinas, reloj, telarañas, manchas, grilletes, rayitas contando días, camilla, silla de ruedas, escenario con cortinas de terciopelo, candelabros y vitrinas con muñecas de porcelana) y la **Galería de los postes**.
+- **Ambiente:** ruidos del edificio a lo lejos (metal, cadenas, puertas, goteras), lámparas que parpadean solas, sin coordenadas en F3 y sin avisos del juego en la esquina durante el evento.
+- **Falta:** pasar el estilo a Cloacas, Salón, Archivo, Capilla, Laberintos, Sala de las puertas y la Cámara final.
+
+## Antes de cada prueba
+Fundido → presentación de cine ("PRUEBA N · TÍTULO") → **tarjeta de reglas** (3-4 puntos: qué hacer, cómo se gana, qué pasa si pierdes; también queda en el chat) → discurso del Coleccionista → la prueba.
+
 ## Voz (Simple Voice Chat, opcional)
 Si el servidor tiene Simple Voice Chat, el mod se conecta solo:
 - **Vivos:** voz por cercanía normal. No pueden crear ni entrar a grupos (nadie habla en secreto desde lejos). `/evento voz grupos si` lo permite.
@@ -48,9 +66,11 @@ Si el servidor tiene Simple Voice Chat, el mod se conecta solo:
 
 ## Pruebas automáticas
 - **Servidor (CI, bots):** despertar, Encadenados ×2, Compartir (bots sin elegir solos para que sea exacto), Las puertas, Las copas, El sacrificio, El traidor ×2, A ciegas (guía elegido, caminantes que salen, el guía del último cae) y las reglas de voz.
+- **Pruebas sin Minecraft** (`tests/run.sh`): la cadena que se enreda en los postes.
 - **Cliente con fotos** (`cliente-core.yml`, `mod=coleccionista`, `escenario=coleccionista`): HUD, eliminación, fantasma, panel, sala de espera, cinemática, tele, zoom, candado, cuerpos, disfraz y las 7 pruebas (presentación, mapa, pantallas de elegir/votar/teclado, venda y vista del guía, finales).
 
 ## Pendiente
+- Pasar el estilo nuevo a las demás zonas (después de que Axelis apruebe el piloto del Ala de celdas).
 - Grabar las voces (Axelis) y meterlas al mod.
 - El Coleccionista como personaje para las cinemáticas.
 - Ensayo completo con bots y prueba en la instancia `test` (con Simple Voice Chat).
