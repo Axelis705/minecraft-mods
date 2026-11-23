@@ -1,5 +1,7 @@
 coreprueba
 axeliscore
+axeliscore datos
 #expect COREPRUEBA_OK Axelis Core
 #expect AXCORE_INFO Axelis Core
 #expect usuarios=[core_prueba]
+#expect AXCORE_DATOS mundo=true config=true

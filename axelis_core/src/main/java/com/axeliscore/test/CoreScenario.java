@@ -124,6 +124,9 @@ public final class CoreScenario {
             });
             t.photo("12_fx_vineta", 500, () -> t.cmd("axeliscore efecto vineta"));
             t.photo("12_fx_destello", 120, () -> t.cmd("axeliscore efecto destello"));
+            t.add("datos", 1500, () -> t.cmd("axeliscore datos"));
+            t.add("datos en el cliente", 100, () -> t.check(com.axeliscore.plat.Nbt.i(
+                    com.axeliscore.data.client.ClientData.player("axelis_core_prueba"), "visitas") > 0, "los datos del jugador llegaron al cliente"));
             t.add("listo", 300, () -> t.hud(false));
         });
     }

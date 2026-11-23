@@ -2,6 +2,7 @@ package com.axeliscore.net;
 
 import com.axeliscore.AxelisCore;
 import com.axeliscore.plat.Net;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.ArrayList;
@@ -107,6 +108,34 @@ public final class CoreNet {
         }
     }
 
+    /** Datos para el cliente, por clave ({@link com.axeliscore.data.PlayerStore.Sync}). */
+    public record DataMsg(String key, CompoundTag tag) {
+        void write(FriendlyByteBuf b) {
+            b.writeUtf(key);
+            b.writeNbt(tag);
+        }
+
+        static DataMsg read(FriendlyByteBuf b) {
+            String k = b.readUtf();
+            CompoundTag t = b.readNbt();
+            return new DataMsg(k, t == null ? new CompoundTag() : t);
+        }
+    }
+
+    /** Una acción del cliente para el servidor, por clave ({@link com.axeliscore.data.Actions}). */
+    public record ActionMsg(String key, CompoundTag tag) {
+        void write(FriendlyByteBuf b) {
+            b.writeUtf(key);
+            b.writeNbt(tag);
+        }
+
+        static ActionMsg read(FriendlyByteBuf b) {
+            String k = b.readUtf();
+            CompoundTag t = b.readNbt();
+            return new ActionMsg(k, t == null ? new CompoundTag() : t);
+        }
+    }
+
     /** Se llama una vez al arrancar (dentro de enqueueWork del arranque común). */
     public static void register() {
         NET.register(FxMsg.class, FxMsg::write, FxMsg::read, (m, sender) -> Net.onClient(() -> ClientSide.fx(m)));
@@ -119,6 +148,12 @@ public final class CoreNet {
             }
         });
         NET.register(OpenMsg.class, OpenMsg::write, OpenMsg::read, (m, sender) -> Net.onClient(() -> ClientSide.open(m)));
+        NET.register(DataMsg.class, DataMsg::write, DataMsg::read, (m, sender) -> Net.onClient(() -> ClientSide.data(m)));
+        NET.register(ActionMsg.class, ActionMsg::write, ActionMsg::read, (m, sender) -> {
+            if (sender != null) {
+                com.axeliscore.data.Actions.receive(sender, m.key(), m.tag());
+            }
+        });
         NET.done();
     }
 
@@ -142,6 +177,10 @@ public final class CoreNet {
 
         static void dialog(DialogMsg m) {
             com.axeliscore.ui.DialogScreen.open(m);
+        }
+
+        static void data(DataMsg m) {
+            com.axeliscore.data.client.ClientData.receive(m.key(), m.tag());
         }
     }
 }

@@ -1,10 +1,13 @@
 axeliscore
+forceload add ~-24 ~-24 ~24 ~24
 axeliscore galeria
 axeliscore probar wave
 axeliscore criaturas
 axeliscore probar slam
+axeliscore datos
 kill @e[type=!player]
 #expect AXCORE_INFO Axelis Core
 #expect AXCORE_GALERIA 5
 #expect AXCORE_CRIATURAS 5
 #expect AXCORE_PROBAR slam personajes=10
+#expect AXCORE_DATOS mundo=true config=true
