@@ -48,7 +48,7 @@ public class AxelisCore {
         com.axeliscore.combat.CoreProyectiles.init();
         com.axeliscore.npc.Misiones.init();
         com.axeliscore.npc.NpcAcciones.init();
-        com.axeliscore.anim.EstudioServidor.init();
+        com.axeliscore.anim.mc.EstudioServidor.init();
         if (Ejemplos.activos()) {
             com.axeliscore.npc.CoreNpcs.init();
         }

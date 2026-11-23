@@ -141,10 +141,72 @@ public class AnimTest {
         } catch (IllegalArgumentException ex) {
             // bien
         }
+        bbmodel();
+        mezcla();
         if (fails > 0) {
             System.out.println("AnimTest: " + fails + " fallos");
             System.exit(1);
         }
         System.out.println("AnimTest: todo bien");
+    }
+
+    /**
+     * Un .bbmodel de Blockbench 5 (grupos aparte, cubo girado, UV por cara, Bézier, catmullrom, paso): debe quedar igual que lo que
+     * exporta el propio Blockbench (valores sacados de su exportador Bedrock).
+     */
+    static void bbmodel() {
+        String bb = """
+                {"meta":{"format_version":"5.0","model_format":"bedrock","box_uv":true},"name":"prueba_conversion","model_identifier":"","resolution":{"width":16,"height":16},"elements":[{"name":"c1","box_uv":false,"from":[-2,0,-1],"to":[3,4,2],"inflate":0.25,"rotation":[0,22.5,0],"origin":[0.5,1,0.5],"faces":{"north":{"uv":[1,2,6,6]},"east":{"uv":[0,0,3,4]},"south":{"uv":[6,0,11,4]},"west":{"uv":[3,0,6,4]},"up":{"uv":[10,12,15,9]},"down":{"uv":[20,21,25,24]}},"type":"cube","uuid":"c47751ab-891e-4d06-6836-6b8a93476555"},{"name":"c2","box_uv":true,"from":[3,8,-1],"to":[5,12,1],"mirror_uv":true,"origin":[0,0,0],"uv_offset":[16,32],"type":"cube","uuid":"69be3dc8-aec3-d715-f13a-8f968f79280a"}],"groups":[{"name":"body","uuid":"85539e00-1170-38f4-c8be-224f3ec02488","origin":[1,2,3],"rotation":[10,20,30]},{"name":"arm","uuid":"f0d47077-e2a7-4ed3-39d1-14f72d5ca9e5","origin":[4,10,0],"rotation":[0,0,-15]}],"outliner":[{"uuid":"85539e00-1170-38f4-c8be-224f3ec02488","isOpen":false,"children":[{"uuid":"f0d47077-e2a7-4ed3-39d1-14f72d5ca9e5","isOpen":false,"children":["69be3dc8-aec3-d715-f13a-8f968f79280a"]},"c47751ab-891e-4d06-6836-6b8a93476555"]}],"textures":[],"animations":[{"uuid":"70b374fe","name":"animation.test.a","loop":"loop","length":1,"animators":{"85539e00-1170-38f4-c8be-224f3ec02488":{"name":"body","type":"bone","keyframes":[{"channel":"rotation","data_points":[{"x":"0","y":"0","z":"0"}],"time":0,"interpolation":"linear"},{"channel":"rotation","data_points":[{"x":"10","y":"-20","z":"30"}],"time":0.5,"interpolation":"bezier","bezier_left_time":[-0.2,-0.1,-0.15],"bezier_left_value":[5,0,-3],"bezier_right_time":[0.1,0.2,0.1],"bezier_right_value":[-2,1,0]},{"channel":"rotation","data_points":[{"x":"0","y":"math.sin(q.anim_time*90)*4","z":"0"}],"time":1,"interpolation":"catmullrom"},{"channel":"position","data_points":[{"x":"1","y":"2","z":"3"},{"x":"4","y":"5","z":"6"}],"time":0.25,"interpolation":"step"}]},"f0d47077-e2a7-4ed3-39d1-14f72d5ca9e5":{"name":"arm","type":"bone","keyframes":[{"channel":"scale","data_points":[{"x":"1.5","y":"1","z":"0.5"}],"time":0.75,"interpolation":"linear"}]}}}]}
+                """;
+        BbModel.Resultado r = BbModel.parse(bb);
+        Geo g = GeoLoader.parse(r.geo);
+        eq("bb huesos", g.bones.length, 2);
+        Geo.Bone body = g.bones[g.bone("body")];
+        // pivote de Bedrock [-1, 2, 3] -> Java (x, 24 - y, z)
+        eq("bb pivote x", body.px, -1);
+        eq("bb pivote y", body.py, 22);
+        eq("bb giro x", Math.toDegrees(body.rx), -10);
+        eq("bb giro y", Math.toDegrees(body.ry), -20);
+        eq("bb giro z", Math.toDegrees(body.rz), 30);
+        Geo.Cube c1 = body.cubes.get(0);
+        eq("bb cubo x0", c1.x0, -3);
+        eq("bb cubo ancho", c1.sx, 5);
+        eq("bb cubo giro y", Math.toDegrees(c1.cry), -22.5);
+        Clip clip = ClipLoader.parse(r.animaciones).get("animation.test.a");
+        float[] out = new float[3];
+        Clip.Track tr = null;
+        for (Clip.Track t : clip.tracks) {
+            if (t.bone.equals("body")) {
+                tr = t;
+            }
+        }
+        // lo que da Blockbench al exportar (hornea la curva a 24 cuadros por segundo)
+        float[][] esperado = {{0.25F, -8.1403F, 10.0F, 15.2975F}, {0.125F, -3.5221F, 3.9486F, 5.9998F}, {0.75F, -4.25F, 11.6698F, 15.0F}};
+        for (float[] e : esperado) {
+            tr.rot.sample(e[0], n -> 0, out);
+            eq("bezier x en " + e[0], out[0], e[1]);
+            eq("bezier y en " + e[0], out[1], e[2]);
+            eq("bezier z en " + e[0], out[2], e[3]);
+        }
+        tr.pos.sample(0.3F, n -> 0, out);
+        eq("paso: después del cuadro usa el valor de salida", out[0], -4);
+    }
+
+    /** Mezcla por valor: a mitad de camino entre dos animaciones queda en medio. */
+    static void mezcla() {
+        Geo g = GeoLoader.parse("""
+                {"format_version":"1.12.0","minecraft:geometry":[{"description":{"identifier":"geometry.m","texture_width":16,"texture_height":16},
+                 "bones":[{"name":"a","pivot":[0,0,0]}]}]}
+                """);
+        var lib = ClipLoader.parse("""
+                {"animations":{"animation.m.lento":{"loop":true,"animation_length":1,"bones":{"a":{"rotation":[10,0,0]}}},
+                 "animation.m.rapido":{"loop":true,"animation_length":0.5,"bones":{"a":{"rotation":[30,0,0]}}}}}
+                """);
+        Animator an = new Animator(g);
+        an.layer("base").mezcla(new Clip[] {lib.get("animation.m.lento"), lib.get("animation.m.rapido")}, new float[] {1, 3}).valor(2);
+        an.tick(0.1F);
+        Pose p = new Pose(g.bones.length);
+        an.sample(p);
+        eq("mezcla a la mitad", Math.toDegrees(p.rot[0]), 20);
     }
 }

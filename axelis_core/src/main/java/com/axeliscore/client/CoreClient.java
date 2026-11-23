@@ -45,7 +45,7 @@ public final class CoreClient {
         com.axeliscore.npc.client.NpcCliente.init();
         com.axeliscore.fx.client.Hud.add((g, w, h) -> com.axeliscore.anim.client.EstudioArchivos.revisar());
         com.axeliscore.ui.ScreenRegistry.register(AxelisCore.MODID + ":demo", com.axeliscore.ui.DemoScreen::new);
-        com.axeliscore.ui.ScreenRegistry.register(com.axeliscore.anim.EstudioServidor.PANTALLA, com.axeliscore.anim.client.EstudioScreen::new);
+        com.axeliscore.ui.ScreenRegistry.register(com.axeliscore.anim.mc.EstudioServidor.PANTALLA, com.axeliscore.anim.client.EstudioScreen::new);
         com.axeliscore.test.ClientTest.startIfEnabled();
     }
 

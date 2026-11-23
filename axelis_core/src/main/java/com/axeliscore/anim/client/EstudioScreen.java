@@ -1,7 +1,7 @@
 package com.axeliscore.anim.client;
 
 import com.axeliscore.anim.AnimHost;
-import com.axeliscore.anim.EstudioServidor;
+import com.axeliscore.anim.mc.EstudioServidor;
 import com.axeliscore.anim.Geo;
 import com.axeliscore.combat.client.Proyeccion;
 import com.axeliscore.data.client.ClientData;

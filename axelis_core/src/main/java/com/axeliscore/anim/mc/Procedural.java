@@ -1,4 +1,7 @@
-package com.axeliscore.anim;
+package com.axeliscore.anim.mc;
+
+import com.axeliscore.anim.AnimHost;
+import com.axeliscore.anim.Pose;
 
 /**
  * Movimiento hecho con código encima de las animaciones (se usa en {@code axPose}, después de muestrear): resortes para lo que cuelga

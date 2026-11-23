@@ -63,8 +63,13 @@ public final class Clip {
         /** Valor (x, y, z) en el tiempo t, en las unidades de Blockbench. */
         public void sample(float t, Expr.Ctx c, float[] out) {
             Key[] k = keys;
-            if (k.length == 1 || t <= k[0].t) {
+            if (t <= k[0].t || k.length == 1 && t < k[0].t) {
                 k[0].value(k[0].pre, c, out);
+                return;
+            }
+            if (k.length == 1) {
+                // un solo cuadro: antes de él vale "pre", después "post"
+                k[0].value(k[0].post, c, out);
                 return;
             }
             int n = k.length;

@@ -1,5 +1,6 @@
-package com.axeliscore.anim;
+package com.axeliscore.anim.mc;
 
+import com.axeliscore.anim.Animated;
 import com.axeliscore.AxelisCore;
 import com.axeliscore.data.Actions;
 import com.axeliscore.data.PlayerStore;

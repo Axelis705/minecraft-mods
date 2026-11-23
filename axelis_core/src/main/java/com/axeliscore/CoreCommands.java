@@ -92,7 +92,7 @@ public final class CoreCommands {
                         .executes(c -> dataTest(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores"))));
         d.register(Commands.literal("axeliscore").executes(CoreCommands::info).then(galeria).then(criaturas).then(probar).then(ir).then(efecto)
                 .then(datos).then(com.axeliscore.combat.CombateComandos.nodo()).then(com.axeliscore.npc.NpcComandos.nodo())
-                .then(com.axeliscore.anim.EstudioServidor.nodo()));
+                .then(com.axeliscore.anim.mc.EstudioServidor.nodo()));
         var node = d.getRoot().getChild("axeliscore");
         StringBuilder sb = new StringBuilder();
         if (node != null) {
