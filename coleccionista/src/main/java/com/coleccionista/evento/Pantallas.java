@@ -56,7 +56,7 @@ public final class Pantallas {
         l.add(new Frase("una_sale", 120, null, 1F));
         l.add(new Frase("listo", 80, null, 1F));
         l.add(new Frase("risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
-        l.add(new Frase("candado", 160, null, 1F));
+        l.add(new Frase("candado", 190, null, 1F));
         return l;
     }
 

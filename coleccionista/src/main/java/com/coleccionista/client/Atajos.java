@@ -46,6 +46,23 @@ public final class Atajos {
         return ultima;
     }
 
+    /** ¿Se ve la pantalla desde mis ojos? (sin muros en medio: los barrotes y el vidrio no tapan) */
+    private static boolean seVe(Minecraft mc, net.minecraft.world.phys.Vec3 ojo, net.minecraft.world.phys.Vec3 a, net.minecraft.core.BlockPos pantalla) {
+        net.minecraft.world.phys.Vec3 d = a.subtract(ojo);
+        double largo = d.length();
+        d = d.normalize();
+        for (double t = 0.2; t < largo; t += 0.2) {
+            net.minecraft.core.BlockPos b = net.minecraft.core.BlockPos.containing(ojo.add(d.scale(t)));
+            if (b.equals(pantalla)) {
+                return true;
+            }
+            if (mc.level.getBlockState(b).isSolidRender(mc.level, b)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private static net.minecraft.world.phys.Vec3[] buscar(Minecraft mc) {
         net.minecraft.core.BlockPos yo = mc.player.blockPosition();
         net.minecraft.world.phys.Vec3 ojo = mc.player.getEyePosition();
@@ -64,7 +81,7 @@ public final class Atajos {
                 continue; // la pantalla mira hacia el otro lado
             }
             double dd = ojo.distanceToSqr(centro);
-            if (dd < dist) {
+            if (dd < dist && seVe(mc, ojo, centro.add(n.scale(0.3)), p)) {
                 dist = dd;
                 mejor = centro;
                 frente = centro.add(n.scale(grande ? 7.5 : 1.7));

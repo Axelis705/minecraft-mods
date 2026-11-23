@@ -67,6 +67,11 @@ public final class EventoCliente {
         return estado.getBoolean("sala");
     }
 
+    /** ¿El organizador cerró el chat? */
+    public static boolean chatCerrado() {
+        return estado.getBoolean("chatCerrado");
+    }
+
     public static String fase() {
         return Nbt.s(estado, "fase");
     }

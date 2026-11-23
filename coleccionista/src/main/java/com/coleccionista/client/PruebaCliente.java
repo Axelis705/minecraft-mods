@@ -3,6 +3,7 @@ package com.coleccionista.client;
 import com.axeliscore.test.ClientTest;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
 
 /**
  * La prueba con el juego de verdad y fotos (cliente-core.yml con mod=coleccionista y escenario=coleccionista): HUD, parejas, eliminación
@@ -114,6 +115,26 @@ final class PruebaCliente {
         });
     }
 
+    /** Para la foto: la cámara frente a uno de los números escondidos de la celda 1 (como lo vería alguien buscándolo). */
+    private static void mirarPista(ClientTest.Script t, int k) {
+        var l = InscripcionesCliente.de(1);
+        if (k >= l.size()) {
+            return;
+        }
+        var i = l.get(k);
+        t.cmd("gamemode spectator @a");
+        net.minecraft.world.phys.Vec3 p = i.pos(), ojo;
+        double r = Math.toRadians(i.ang());
+        net.minecraft.world.phys.Vec3 n = new net.minecraft.world.phys.Vec3(Math.sin(r), 0, Math.cos(r));
+        switch (i.plano()) {
+            case com.coleccionista.evento.Pistas.PISO -> ojo = "bajo_catre".equals(i.lugar()) ? p.add(1.9, 0.3, 0) : p.add(n.scale(0.55)).add(0, 0.95, 0);
+            case com.coleccionista.evento.Pistas.TECHO -> ojo = p.add(n.scale(0.6)).add(0, -1.45, 0);
+            default -> ojo = p.add(n.scale(0.95)).add(0, 0.06, 0);
+        }
+        t.lookFrom(ojo.x, ojo.y - 1.62, ojo.z, p.x, p.y, p.z);
+        com.coleccionista.Coleccionista.LOGGER.info("COLECCIONISTA_PRUEBA_PISTA {} '{}'", i.lugar(), i.texto());
+    }
+
     /** El Ala de celdas: construir, sala de espera, ¡pum!, cinemática, discurso, acercarse a la tele, candado, cuerpos. */
     private static void mapa(ClientTest.Script t) {
         // el mapa queda con el origen en (0, -61, 30): celda 1 en (3, -60, 34), pasillo en z 41
@@ -146,8 +167,35 @@ final class PruebaCliente {
             t.check(!Minecraft.getInstance().player.isSleeping(), "ya me levanté");
             t.check(!Cine.activo(), "terminó la cinemática");
         });
-        // a los 22 segundos se prende la tele y habla el Coleccionista
-        t.photo("24_tele_habla", 17000, () -> {
+        // a los 22 segundos se acaba la espera: apagón y, al volver la luz, los tres números escondidos en cada celda
+        t.photo("24a_apagon", 15300, () -> {
+        });
+        t.add("apagon", 100, () -> {
+            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(3, -57, 33));
+            t.check(st.getBlock() instanceof com.coleccionista.bloque.FocoBlock && !com.coleccionista.bloque.FocoBlock.prendido(st),
+                    "se fue la luz de mi celda");
+            t.check(InscripcionesCliente.cuantas(0) == 0, "todavía no hay números escritos");
+        });
+        t.photo("24b_pistas", 4200, () -> {
+        });
+        t.add("pistas", 100, () -> {
+            t.check(InscripcionesCliente.cuantas(1) == 3, "mi celda tiene sus 3 números escondidos (" + InscripcionesCliente.cuantas(1) + ")");
+            t.check(InscripcionesCliente.cuantas(0) >= 24, "las demás celdas también (" + InscripcionesCliente.cuantas(0) + ")");
+            java.util.Set<String> pos = new java.util.HashSet<>();
+            for (var i : InscripcionesCliente.de(1)) {
+                pos.add(i.texto().replaceAll("[0-9]", "#"));
+            }
+            t.check(pos.size() == 3, "cada número dice su lugar (" + pos + ")");
+        });
+        for (int i = 0; i < 3; i++) {
+            final int k = i;
+            t.photo("24c_pista_" + (i + 1), 1500, () -> mirarPista(t, k));
+        }
+        t.add("regresar a la celda", 900, () -> {
+            t.cmd("gamemode adventure @a");
+            t.lookFrom(3.5, -60, 34.5, 3.5, -57.5, 31);
+        });
+        t.photo("24_tele_habla", 1500, () -> {
         });
         t.add("habla", 100, () -> {
             var st = com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Pantallas.KEY);
@@ -158,10 +206,35 @@ final class PruebaCliente {
         t.photo("25b_zoom_subtitulo", 5000, () -> {
         });
         t.add("volver", 1200, Atajos::acercarse);
-        t.add("esperar discurso", 26000, () -> {
+        t.add("esperar discurso", 25500, () -> {
         });
-        t.photo("26_candado", 900, () -> com.axeliscore.plat.client.Screens.open(new CandadoScreen()));
-        t.add("cerrar candado", 500, () -> com.axeliscore.plat.client.Screens.close());
+        // el candado de la celda 1, de cerca: la mano gira las ruedas (arrastrando) y aprieta el botón
+        t.add("abrir candado", 1400, () -> {
+            CompoundTag c = new CompoundTag();
+            c.putInt("celda", 1);
+            c.putInt("x", 4);
+            c.putInt("y", -59);
+            c.putInt("z", 35);
+            c.putString("f", "north");
+            c.putString("res", "");
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.evento.Celdas.KEY_CANDADO, c);
+            com.axeliscore.plat.client.Screens.open(new CandadoScreen());
+        });
+        t.add("candado de cerca", 100, () -> {
+            t.check(CandadoScreen.actual() != null, "está abierta la vista del candado");
+            t.check(Cine.enCandado(), "la cámara está frente al candado");
+            CandadoScreen.actual().arrastrarPrueba(0, 0, false);
+        });
+        t.photo("26_candado", 600, () -> CandadoScreen.actual().arrastrarPrueba(0, 2.0, false));
+        t.photo("26e_candado_girando", 500, () -> CandadoScreen.actual().arrastrarPrueba(0, 4.4, false));
+        t.add("soltar rueda", 600, () -> {
+            CandadoScreen.actual().arrastrarPrueba(0, 4.4, true);
+            CandadoScreen.actual().arrastrarPrueba(2, -3.1, true);
+        });
+        t.add("ruedas", 100, () -> t.check(CandadoScreen.actual().codigo() == 308, "las ruedas quedaron en 3 _ 8 (" + CandadoScreen.actual().codigo() + ")"));
+        t.photo("26f_candado_mal", 450, () -> CandadoScreen.actual().probarPrueba());
+        t.add("cerrar candado", 700, () -> com.axeliscore.plat.client.Screens.close());
+        t.add("candado cerrado", 100, () -> t.check(!Cine.activo(), "la cámara regresó a mis ojos"));
         // la reja de la celda 1: cerrada, corriéndose y abierta (con visión nocturna para que se vea en la foto)
         t.photo("26b_reja_cerrada", 1500, () -> {
             t.cmd("gamemode spectator @a");

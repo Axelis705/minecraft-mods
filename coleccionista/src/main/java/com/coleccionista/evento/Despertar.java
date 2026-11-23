@@ -25,8 +25,9 @@ import net.minecraftforge.eventbus.api.Event;
  *     poder tocar nada. Las luces de las celdas están apagadas.</li>
  *     <li>El "¡pum!" del organizador ({@code /evento despertar}): golpe de electricidad, se prenden las luces y cada uno ve su cinemática
  *     (la cámara arriba en la esquina, viéndose acostado, se acerca y pasa a sus ojos con un parpadeo). Luego se levanta.</li>
- *     <li>10 minutos para investigar la celda (notas, diario, pistas). El candado está muerto.</li>
- *     <li>Al acabar el reloj se prenden las pantallas y habla el Coleccionista; al terminar, los candados funcionan.</li>
+ *     <li>10 minutos de espera en la celda: todavía no hay nada (ni pistas ni notas) y el candado está muerto.</li>
+ *     <li>Al acabar el reloj hay un apagón; cuando vuelve la luz, los tres números de cada celda ya están escondidos en ella
+ *     ({@link Pistas}). Se prenden las pantallas y habla el Coleccionista; al terminar, los candados funcionan.</li>
  * </ol>
  */
 public final class Despertar {
@@ -36,7 +37,9 @@ public final class Despertar {
     public static final String PRUEBA = "El despertar";
     /** Segundos para investigar antes de que hable el Coleccionista (Axelis pidió 10 minutos). */
     public static int segundosInvestigar = 600;
-    private static long levantarEn = -1, cineEn = -1;
+    private static long levantarEn = -1, cineEn = -1, apagonFin = -1, hablarEn = -1;
+    /** Cuánto dura el apagón antes de que aparezcan las pistas (ticks). */
+    private static final int APAGON = 60;
     private static boolean esperandoDiscurso;
 
     private Despertar() {
@@ -47,6 +50,19 @@ public final class Despertar {
         AxelisCore.onLogin(Despertar::alEntrar);
         MinecraftForge.EVENT_BUS.addListener(Despertar::interactuar);
         MinecraftForge.EVENT_BUS.addListener(Despertar::interactuarEntidad);
+        MinecraftForge.EVENT_BUS.addListener(Despertar::dormir);
+    }
+
+    /**
+     * Las piezas no se acuestan solas en el catre (el evento las acuesta en la sala de espera): si se pudiera, se quedarían dormidas sin
+     * poder levantarse a media prueba.
+     */
+    private static void dormir(net.minecraftforge.event.entity.player.PlayerSleepInBedEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p && Evento.get(p.server).pieza(p) != null) {
+            e.setResult(net.minecraft.world.entity.player.Player.BedSleepingProblem.OTHER_PROBLEM);
+            Plat.msg(p, Component.translatable(MOD + ".cama.no").withStyle(net.minecraft.ChatFormatting.DARK_GRAY,
+                    net.minecraft.ChatFormatting.ITALIC), true);
+        }
     }
 
     private static boolean enSala(MinecraftServer s) {
@@ -192,9 +208,43 @@ public final class Despertar {
         return true;
     }
 
-    /** Se prenden las pantallas y habla el Coleccionista; al terminar, los candados funcionan. */
+    /**
+     * Fin de la espera: si las pistas no han salido, primero el apagón (y al volver la luz ya están escritas); luego se prenden las
+     * pantallas y habla el Coleccionista. Al terminar, los candados funcionan.
+     */
     public static void discurso(MinecraftServer s) {
         esperandoDiscurso = false;
+        if (apagonFin > 0 || hablarEn > 0) {
+            return;
+        }
+        if (!Pistas.reveladas(s)) {
+            apagon(s);
+            return;
+        }
+        hablar(s);
+    }
+
+    /** Se va la luz de todo el ala unos segundos. */
+    private static void apagon(MinecraftServer s) {
+        Celdas.luces(s, false);
+        Anuncio.sonido(s, SoundEvents.BEACON_DEACTIVATE, 1F, 0.5F);
+        Anuncio.sonido(s, com.coleccionista.registry.ModRegistry.CHISPA.get(), 1F, 0.7F);
+        Anuncio.sonido(s, SoundEvents.AMBIENT_CAVE.get(), 0.9F, 0.7F);
+        apagonFin = s.overworld().getGameTime() + APAGON;
+        Coleccionista.LOGGER.info("COLECCIONISTA_APAGON");
+    }
+
+    /** Vuelve la luz: ya están las pistas en cada celda (y la hoja del diario en el baúl). */
+    private static void vuelveLaLuz(MinecraftServer s) {
+        Pistas.revelar(s);
+        Celdas.llenarBaules(s);
+        Celdas.luces(s, true);
+        Anuncio.sonido(s, SoundEvents.IRON_TRAPDOOR_CLOSE, 1F, 0.5F);
+        Anuncio.sonido(s, SoundEvents.BEACON_ACTIVATE, 1F, 0.6F);
+        hablarEn = s.overworld().getGameTime() + 50;
+    }
+
+    private static void hablar(MinecraftServer s) {
         Pantallas.hablar(s, "bienvenida", () -> {
             Celdas.candados(s, true);
             Evento ev = Evento.get(s);
@@ -211,6 +261,14 @@ public final class Despertar {
         if (cineEn > 0 && now >= cineEn) {
             cineEn = -1;
             despiertan(s);
+        }
+        if (apagonFin > 0 && now >= apagonFin) {
+            apagonFin = -1;
+            vuelveLaLuz(s);
+        }
+        if (hablarEn > 0 && now >= hablarEn) {
+            hablarEn = -1;
+            hablar(s);
         }
         if (levantarEn > 0 && now >= levantarEn) {
             levantarEn = -1;
@@ -232,6 +290,8 @@ public final class Despertar {
     static void reiniciar() {
         levantarEn = -1;
         cineEn = -1;
+        apagonFin = -1;
+        hablarEn = -1;
         esperandoDiscurso = false;
     }
 }

@@ -44,6 +44,8 @@ public final class ModClient {
         EncadenadosCliente.init();
         Gas.init();
         CadenaRender.init();
+        InscripcionesCliente.init();
+        CandadoScreen.registrar();
         CompartirCliente.init();
         PuertasCliente.init();
         CopasCliente.init();

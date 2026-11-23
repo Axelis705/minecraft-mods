@@ -218,6 +218,7 @@ public final class Complejo {
             datos(level.getServer()).putBoolean(z.id(), true);
             WorldStore.get(level.getServer(), MOD).dirty();
             Coleccionista.LOGGER.info("COLECCIONISTA_CONSTRUIDO {} bloques={}", z.id(), p.m.size());
+            Proteccion.alConstruir(level);
             if (fin != null) {
                 fin.run();
             }

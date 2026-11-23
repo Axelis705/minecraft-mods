@@ -59,11 +59,21 @@ def nombre(bid, es, en):
 # ---------------------------------------------------------------- bloques enteros
 
 
+CONTINUOS = {'azulejo', 'azulejo_sucio', 'azulejo_remate', 'yeso', 'concreto', 'concreto_piso', 'linoleo', 'ladrillo_viejo', 'ladrillo_cloaca',
+             'ladrillo_oscuro', 'piso_cloaca', 'lodo', 'concreto_humedo', 'papel_tapiz', 'marmol_negro', 'marmol_crema', 'marmol_oro', 'acolchado',
+             'linoleo_verde', 'piedra_capilla', 'losa_piedra', 'parquet', 'madera_pulida', 'tapete_rojo'}
+
+
 def cubo(bid, es, en, fn, variantes=4, sonido='stone', top=None, render=None, dureza=2.0, luz=0):
-    """Bloque entero con `variantes` texturas al azar (fn(seed) -> imagen). `top`: funcion aparte para arriba y abajo."""
+    """Bloque entero con `variantes` texturas al azar (fn(seed) -> imagen). `top`: funcion aparte para arriba y abajo. Los de CONTINUOS
+    (muros y pisos) comparten las orillas: la variante 0 es la base y las demas solo cambian en el centro, asi no se ven los bloques."""
     models = []
+    base = fn(1) if bid in CONTINUOS and variantes > 1 else None
     for i in range(variantes):
-        t = tex(f'{bid}_{i}' if variantes > 1 else bid, fn(i * 13 + 1))
+        img = fn(i * 13 + 1)
+        if base is not None and i > 0:
+            img = M.continuo(base, img)
+        t = tex(f'{bid}_{i}' if variantes > 1 else bid, img)
         if top:
             tt = tex(f'{bid}_tapa_{i}' if variantes > 1 else f'{bid}_tapa', top(i * 13 + 1))
             m = {'parent': 'minecraft:block/cube_column', 'textures': {'side': t, 'end': tt}}
@@ -73,7 +83,7 @@ def cubo(bid, es, en, fn, variantes=4, sonido='stone', top=None, render=None, du
             m['render_type'] = 'minecraft:' + render
         mn = f'{bid}_{i}' if variantes > 1 else bid
         dump(f'models/block/{mn}.json', m)
-        models.append({'model': f'{NS}:block/{mn}'})
+        models.append({'model': f'{NS}:block/{mn}'} if base is None or i > 0 else {'model': f'{NS}:block/{mn}', 'weight': 2})
     dump(f'blockstates/{bid}.json', {'variants': {'': models if len(models) > 1 else models[0]}})
     dump(f'models/item/{bid}.json', {'parent': models[0]['model']})
     ficha.append({'id': bid, 'kind': 'cubo', 'sound': sonido, 'strength': dureza, 'light': luz})
@@ -375,7 +385,7 @@ def solo_modelos(p):
 def catalogo():
     # paredes y pisos
     cubo('azulejo', 'Azulejo de hospital', 'Hospital tile', lambda s: M.azulejo(s))
-    cubo('azulejo_sucio', 'Azulejo sucio', 'Dirty tile', lambda s: M.azulejo(s, sucio=0.55, bajo=0.55, faltan=0.12))
+    cubo('azulejo_sucio', 'Azulejo sucio', 'Dirty tile', lambda s: M.azulejo(s, sucio=0.65, faltan=0.12))
     cubo('azulejo_remate', 'Azulejo de remate', 'Tile trim', lambda s: M.remate(s))
     cubo('yeso', 'Yeso viejo', 'Old plaster', lambda s: M.yeso(s))
     cubo('concreto', 'Concreto', 'Concrete', lambda s: M.concreto(s))
@@ -393,6 +403,7 @@ def catalogo():
     escalera('escalera_metal', 'Escalera de metal', 'Metal stairs', lambda s: M.metal_placa(s, '#2e2f2c', pintado=0.3), 'metal_placa')
     barrotes('barrotes', 'Barrotes oxidados', 'Rusty bars', lambda s: M.barrotes(s))
     barrotes('barandal', 'Barandal', 'Railing', lambda s: barandal_tex(s))
+    ficha[-1]['alto'] = True  # choca como cerca: nadie se sube
     puerta_reja(props_celdas.puerta_reja())
     alfombra('alfombra_roja', 'Alfombra roja', 'Red carpet', lambda s: M.alfombra(s))
     tubo('tubo', 'Tubería oxidada', 'Rusty pipe', lambda s: M.metal_placa(s, '#4d5249', pintado=0.5, remaches=False))
@@ -496,6 +507,30 @@ def catalogo():
     for p in P.focos():
         solo_modelos(p)
     solo_modelos(P.candado())
+    solo_modelos(P.candado_ruedas())
+    candado_en_reja()
+
+
+def candado_en_reja():
+    """El candado de la celda va colgado de los barrotes: los barrotes estan al centro de su bloque (7 px atras de la orilla), asi que el
+    modelo del candado de ruedas se recorre 7 px hacia atras (el teclado de la boveda sigue pegado al muro con su modelo de botones)."""
+    m = json.load(open(os.path.join(A, 'models/block/candado_ruedas.json')))
+    for e in m['elements']:
+        e['from'][2] = round(e['from'][2] + 7, 4)
+        e['to'][2] = round(e['to'][2] + 7, 4)
+        if 'rotation' in e:
+            e['rotation']['origin'][2] += 7
+        for f in e['faces'].values():
+            f.pop('cullface', None)
+    dump('models/block/candado_reja.json', m)
+    rot = {'north': 0, 'east': 90, 'south': 180, 'west': 270}
+    v = {}
+    for f, y in rot.items():
+        x = {'model': f'{NS}:block/candado_reja'}
+        if y:
+            x['y'] = y
+        v[f'facing={f}'] = x
+    dump('blockstates/candado.json', {'variants': v})
 
 
 def palanca(bid, es, en):

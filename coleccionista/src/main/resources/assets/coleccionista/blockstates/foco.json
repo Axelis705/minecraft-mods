@@ -1,10 +1,16 @@
 {
   "variants": {
-    "encendido=false": {
+    "encendido=false,falla=false": {
       "model": "coleccionista:block/foco_apagado"
     },
-    "encendido=true": {
+    "encendido=false,falla=true": {
+      "model": "coleccionista:block/foco_apagado"
+    },
+    "encendido=true,falla=false": {
       "model": "coleccionista:block/foco_encendido"
+    },
+    "encendido=true,falla=true": {
+      "model": "coleccionista:block/foco_apagado"
     }
   }
 }

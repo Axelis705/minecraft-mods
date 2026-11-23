@@ -2,7 +2,8 @@
  "variants": {
   "": [
    {
-    "model": "coleccionista:block/piedra_capilla_0"
+    "model": "coleccionista:block/piedra_capilla_0",
+    "weight": 2
    },
    {
     "model": "coleccionista:block/piedra_capilla_1"

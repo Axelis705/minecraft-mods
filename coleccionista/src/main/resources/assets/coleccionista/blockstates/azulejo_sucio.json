@@ -2,7 +2,8 @@
  "variants": {
   "": [
    {
-    "model": "coleccionista:block/azulejo_sucio_0"
+    "model": "coleccionista:block/azulejo_sucio_0",
+    "weight": 2
    },
    {
     "model": "coleccionista:block/azulejo_sucio_1"

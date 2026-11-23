@@ -1,20 +1,19 @@
 {
-  "variants": {
-    "facing=south": {
-      "model": "coleccionista:block/candado",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "coleccionista:block/candado",
-      "y": 270
-    },
-    "facing=north": {
-      "model": "coleccionista:block/candado",
-      "y": 0
-    },
-    "facing=east": {
-      "model": "coleccionista:block/candado",
-      "y": 90
-    }
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/candado_reja"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/candado_reja",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/candado_reja",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/candado_reja",
+   "y": 270
   }
+ }
 }

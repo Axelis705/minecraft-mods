@@ -40,12 +40,15 @@ public final class Celdas {
     /** Al jugador: qué candado está usando (para la ventana del código). */
     public static final String KEY_CANDADO = MOD + ":candado";
     public static final String ACCION_CODIGO = MOD + ":codigo";
+    /** La mano toca el candado (gira una rueda o aprieta el botón): los demás ven el brazo moverse y oyen el clic. */
+    public static final String ACCION_TOQUE = MOD + ":toque";
 
     private Celdas() {
     }
 
     public static void init() {
         Actions.on(ACCION_CODIGO, Celdas::probarCodigo);
+        Actions.on(ACCION_TOQUE, Celdas::toque);
     }
 
     private static CompoundTag datos(MinecraftServer s) {
@@ -193,42 +196,46 @@ public final class Celdas {
     }
 
     /**
-     * Prepara el acertijo de todas las celdas: un código de 3 números por celda y sus pistas (una nota en el barril, dos rayones en las
-     * paredes) más una página del diario de alguna "pieza anterior" para leer mientras esperan.
+     * Prepara el acertijo de todas las celdas (sala de espera): un código de 3 números distinto en cada celda. Todavía no hay nada que
+     * encontrar: el baúl queda vacío y los números no están escritos; salen en el apagón del final de la espera ({@link Pistas}).
      */
     public static void prepararPistas(MinecraftServer s) {
         ServerLevel l = mundo(s);
         Random r = new Random(l.getGameTime() ^ 0x5EEDL);
         CompoundTag d = datos(s);
+        Set<Integer> usados = new HashSet<>();
         for (int n = 1; n <= com.coleccionista.mapa.AlaCeldas.CELDAS; n++) {
-            int a = 1 + r.nextInt(9), b = r.nextInt(10), c = r.nextInt(10);
-            d.putInt("codigo" + n, a * 100 + b * 10 + c);
-            BlockPos barril = Complejo.pos(s, "celda." + n + ".barril");
-            // el baúl de la celda (o un barril en mapas viejos)
-            if (barril != null && l.getBlockEntity(barril) instanceof net.minecraft.world.Container be && be.getContainerSize() >= 16) {
+            int cod;
+            do {
+                cod = 100 + r.nextInt(900);
+            } while (!usados.add(cod));
+            d.putInt("codigo" + n, cod);
+            if (baul(l, Complejo.pos(s, "celda." + n + ".barril")) instanceof net.minecraft.world.Container be) {
                 be.clearContent();
-                be.setItem(11, nota(Component.translatable(MOD + ".pista.nota_titulo"), Component.translatable(MOD + ".pista.nota1", a)));
-                be.setItem(15, diario(n, r));
                 be.setChanged();
             }
-            rayon(l, Complejo.pos(s, "celda." + n + ".letrero"), "west", "·  " + b + "  ·", Component.translatable(MOD + ".pista.rayon_medio")
-                    .getString());
-            rayon(l, Complejo.pos(s, "celda." + n + ".letrero2"), "east", "·  ·  " + c, Component.translatable(MOD + ".pista.rayon_fin")
-                    .getString());
+            // los rayones con pistas de antes (ya no se usan) se quitan si quedaron en el mundo
+            quitarRayon(l, Complejo.pos(s, "celda." + n + ".letrero"));
+            quitarRayon(l, Complejo.pos(s, "celda." + n + ".letrero2"));
         }
         d.putBoolean("candados", false);
         sucio(s);
+        Pistas.ocultar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_PISTAS listas");
     }
 
-    private static ItemStack nota(Component titulo, Component texto) {
-        ItemStack st = new ItemStack(Items.PAPER);
-        st.setHoverName(titulo.copy().withStyle(s -> s.withItalic(false).withColor(ChatFormatting.GOLD)));
-        CompoundTag disp = st.getOrCreateTagElement("display");
-        ListTag lore = new ListTag();
-        lore.add(StringTag.valueOf(Component.Serializer.toJson(texto.copy().withStyle(s -> s.withItalic(true).withColor(ChatFormatting.GRAY)))));
-        disp.put("Lore", lore);
-        return st;
+    /** Al volver la luz: en el baúl de cada celda, una hoja del diario de alguna "pieza anterior". */
+    public static void llenarBaules(MinecraftServer s) {
+        ServerLevel l = mundo(s);
+        Random r = new Random(l.getGameTime() ^ 0xD1A10L);
+        for (int n = 1; n <= com.coleccionista.mapa.AlaCeldas.CELDAS; n++) {
+            if (baul(l, Complejo.pos(s, "celda." + n + ".barril")) instanceof net.minecraft.world.Container be
+                    && be.getContainerSize() > 13) {
+                be.clearContent();
+                be.setItem(13, diario(n, r));
+                be.setChanged();
+            }
+        }
     }
 
     /** Una página del diario de una "pieza anterior" (hay varias; cada celda tiene una al azar). */
@@ -245,18 +252,13 @@ public final class Celdas {
         return st;
     }
 
-    /** Rayones en la pared de la celda (una pista): se escriben encima del muro, como raspados con algo filoso. */
-    private static void rayon(ServerLevel l, BlockPos p, String facing, String linea, String sub) {
-        if (p == null) {
-            return;
-        }
-        BlockState st = Complejo.estado("coleccionista:rayon[facing=" + facing + "]");
-        if (st.isAir()) {
-            return;
-        }
-        l.setBlock(p, st, 2);
-        if (l.getBlockEntity(p) instanceof com.coleccionista.bloque.deco.TextoBE be) {
-            be.escribir(0xC9C2B4, linea, sub);
+    private static BlockEntity baul(ServerLevel l, BlockPos p) {
+        return p == null ? null : l.getBlockEntity(p);
+    }
+
+    private static void quitarRayon(ServerLevel l, BlockPos p) {
+        if (p != null && net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(l.getBlockState(p).getBlock()).getPath().equals("rayon")) {
+            l.setBlock(p, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 2);
         }
     }
 
@@ -277,11 +279,41 @@ public final class Celdas {
             p.playNotifySound(SoundEvents.STONE_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 0.6F, 0.6F);
             return;
         }
+        PlayerStore.Sync.toPlayer(p, KEY_CANDADO, candado(p, celda, pos, ""));
+        CoreScreens.open(p, MOD + ":candado");
+        p.swing(net.minecraft.world.InteractionHand.MAIN_HAND, true);
+    }
+
+    /** Lo que sabe el cliente del candado que está usando: la celda, dónde está, hacia dónde mira y cómo salió el último intento. */
+    private static CompoundTag candado(ServerPlayer p, int celda, BlockPos pos, String res) {
         CompoundTag t = new CompoundTag();
         t.putInt("celda", celda);
         t.putLong("cuando", p.level().getGameTime());
-        PlayerStore.Sync.toPlayer(p, KEY_CANDADO, t);
-        CoreScreens.open(p, MOD + ":candado");
+        t.putInt("x", pos.getX());
+        t.putInt("y", pos.getY());
+        t.putInt("z", pos.getZ());
+        BlockState st = p.level().getBlockState(pos);
+        t.putString("f", st.hasProperty(com.coleccionista.bloque.CandadoBlock.FACING) ? st.getValue(com.coleccionista.bloque.CandadoBlock.FACING)
+                .getName() : "north");
+        t.putString("res", res);
+        return t;
+    }
+
+    /** La mano movió una rueda o apretó el botón: el brazo se mueve para los demás y se oye el clic ahí. */
+    private static void toque(ServerPlayer p, CompoundTag d) {
+        MinecraftServer s = Plat.server(p);
+        int celda = Nbt.i(d, "celda");
+        BlockPos c = Complejo.pos(s, "celda." + celda + ".candado");
+        long now = p.level().getGameTime();
+        if (c == null || p.distanceToSqr(c.getX() + 0.5, c.getY() + 0.5, c.getZ() + 0.5) > 36
+                || now - p.getPersistentData().getLong(MOD + ":toque") < 2) {
+            return;
+        }
+        p.getPersistentData().putLong(MOD + ":toque", now);
+        p.swing(net.minecraft.world.InteractionHand.MAIN_HAND, true);
+        boolean boton = "boton".equals(d.getString("tipo"));
+        p.level().playSound(p, c, boton ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF, SoundSource.BLOCKS,
+                boton ? 0.7F : 0.35F, boton ? 0.8F : 1.9F);
     }
 
     private static void probarCodigo(ServerPlayer p, CompoundTag d) {
@@ -292,15 +324,19 @@ public final class Celdas {
             return;
         }
         int puesto = Nbt.i(d, "codigo");
-        if (puesto == codigo(s, celda)) {
+        boolean bueno = puesto == codigo(s, celda);
+        PlayerStore.Sync.toPlayer(p, KEY_CANDADO, candado(p, celda, c, bueno ? "ok" : "mal"));
+        if (bueno) {
             Coleccionista.LOGGER.info("COLECCIONISTA_CELDA_ABIERTA {} por {}", celda, p.getGameProfile().getName());
             puertas(s, celda, true);
             p.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.MASTER, 0.6F, 0.7F);
+            p.level().playSound(p, c, SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS, 0.8F, 1.3F);
             Plat.msg(p, Component.translatable(MOD + ".candado.abierto").withStyle(ChatFormatting.GREEN), true);
         } else {
+            Coleccionista.LOGGER.info("COLECCIONISTA_CANDADO_MAL celda={} puso={}", celda, puesto);
             p.playNotifySound(SoundEvents.NOTE_BLOCK_BASS.get(), SoundSource.MASTER, 1F, 0.5F);
+            p.level().playSound(p, c, SoundEvents.NOTE_BLOCK_BASS.get(), SoundSource.BLOCKS, 0.7F, 0.5F);
             Plat.msg(p, Component.translatable(MOD + ".candado.mal").withStyle(ChatFormatting.RED), true);
-            com.axeliscore.fx.Fx.shake(p, 0.4F, 6);
         }
     }
 

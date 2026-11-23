@@ -2,7 +2,8 @@
  "variants": {
   "": [
    {
-    "model": "coleccionista:block/parquet_0"
+    "model": "coleccionista:block/parquet_0",
+    "weight": 2
    },
    {
     "model": "coleccionista:block/parquet_1"

@@ -53,8 +53,8 @@ public final class Cine {
         // la ventana de "Salir de la cama": no en la sala de espera ni durante la cinemática
         MinecraftForge.EVENT_BUS.addListener((ScreenEvent.Opening e) -> {
             Minecraft mc = Minecraft.getInstance();
-            boolean pieza = mc.player != null && EventoCliente.activo() && EventoCliente.vivo(EventoCliente.yo());
-            if (e.getNewScreen() instanceof InBedChatScreen && (activo || EventoCliente.sala() || pieza)) {
+            // solo cuando el evento te tiene acostado a propósito (sala de espera y cinemática); si no, siempre puedes levantarte
+            if (e.getNewScreen() instanceof InBedChatScreen && (activo || EventoCliente.sala())) {
                 e.setCanceled(true);
             }
         });
@@ -70,6 +70,60 @@ public final class Cine {
             }
         });
         com.axeliscore.fx.client.Hud.add(Cine::dibujar);
+        MinecraftForge.EVENT_BUS.addListener(Cine::dibujarDormido);
+        MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.client.event.RenderPlayerEvent.Pre e) -> {
+            if (e.getEntity() == Minecraft.getInstance().player) {
+                yoDibujado = true;
+            }
+        });
+    }
+
+    /** ¿El juego dibujó a mi jugador en este cuadro? (si no, se dibuja la copia dormida) */
+    private static boolean yoDibujado;
+    private static long ultimoAviso;
+
+    /** Una copia de mi personaje para verme dormido en la cinemática (la cámara de cine no dibuja al jugador propio). */
+    private static net.minecraft.client.player.RemotePlayer doble;
+
+    private static void dibujarDormido(net.minecraftforge.client.event.RenderLevelStageEvent e) {
+        if (e.getStage() != net.minecraftforge.client.event.RenderLevelStageEvent.Stage.AFTER_ENTITIES || !activo || !"despertar".equals(tipo)) {
+            return;
+        }
+        Minecraft mc = Minecraft.getInstance();
+        net.minecraft.client.player.LocalPlayer yo = mc.player;
+        boolean dibujado = yoDibujado;
+        yoDibujado = false;
+        if (yo == null || mc.level == null) {
+            return;
+        }
+        if (System.currentTimeMillis() - ultimoAviso > 1500) {
+            ultimoAviso = System.currentTimeMillis();
+            com.coleccionista.Coleccionista.LOGGER.info("COLECCIONISTA_CINE dormido={} dibujado={} pos={} cama={}", yo.isSleeping(), dibujado,
+                    yo.blockPosition(), yo.getSleepingPos().orElse(null));
+        }
+        if (!yo.isSleeping() || dibujado) {
+            return;
+        }
+        if (doble == null || doble.level() != mc.level) {
+            doble = new net.minecraft.client.player.RemotePlayer(mc.level, yo.getGameProfile());
+        }
+        float pt = e.getPartialTick();
+        yo.getSleepingPos().ifPresent(doble::setSleepingPos);
+        doble.setPose(net.minecraft.world.entity.Pose.SLEEPING);
+        doble.setPos(yo.getX(), yo.getY(), yo.getZ());
+        doble.xo = doble.xOld = yo.getX();
+        doble.yo = doble.yOld = yo.getY();
+        doble.zo = doble.zOld = yo.getZ();
+        doble.setYRot(yo.getYRot());
+        doble.yRotO = yo.getYRot();
+        doble.yBodyRot = doble.yBodyRotO = yo.yBodyRot;
+        doble.yHeadRot = doble.yHeadRotO = yo.yHeadRot;
+        Vec3 c = e.getCamera().getPosition();
+        var buf = mc.renderBuffers().bufferSource();
+        var disp = mc.getEntityRenderDispatcher();
+        disp.render(doble, yo.getX() - c.x, yo.getY() - c.y, yo.getZ() - c.z, yo.getYRot(), pt, e.getPoseStack(), buf,
+                disp.getPackedLightCoords(doble, pt));
+        buf.endBatch();
     }
 
     public static boolean activo() {
@@ -127,8 +181,38 @@ public final class Cine {
         if (activo || mc.player == null) {
             return;
         }
-        empezar("pantalla", mc.player.getEyePosition(), frente, centro, 1.8F);
+        // la cámara sale un poco delante de los ojos (si sale de adentro de la cabeza, se ve el propio cuerpo)
+        Vec3 ojo = mc.player.getEyePosition();
+        Vec3 desde = ojo.add(centro.subtract(ojo).normalize().scale(0.45));
+        empezar("pantalla", desde, frente, centro, 1.8F);
         mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BEACON_POWER_SELECT, 1.4F, 0.25F));
+    }
+
+    /** El candado: la cámara va de mis ojos hasta quedar frente a él y se queda ahí mientras esté abierta su vista. */
+    public static void acercarCandado(Vec3 frente, Vec3 centro) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) {
+            return;
+        }
+        if (activo) {
+            terminar(false);
+        }
+        Vec3 ojo = mc.player.getEyePosition();
+        Vec3 d = frente.subtract(ojo);
+        Vec3 desde = d.length() > 0.6 ? ojo.add(d.normalize().scale(0.45)) : frente;
+        empezar("candado", desde, frente, centro, 0.7F);
+    }
+
+    /** ¿La cámara está en el candado? */
+    public static boolean enCandado() {
+        return activo && "candado".equals(tipo);
+    }
+
+    /** Se cierra la vista del candado: la cámara regresa a mis ojos. */
+    public static void soltarCandado() {
+        if (enCandado()) {
+            terminar(false);
+        }
     }
 
     private static void terminar(boolean conParpadeo) {
@@ -177,7 +261,9 @@ public final class Cine {
             return;
         }
         float t = (System.currentTimeMillis() - inicio) / 1000F;
-        if ("pantalla".equals(tipo)) {
+        if ("candado".equals(tipo)) {
+            poner(a.lerp(b, suave(t / dur)), mira);
+        } else if ("pantalla".equals(tipo)) {
             var o = mc.options;
             if (mc.screen == null && (o.keyUp.isDown() || o.keyDown.isDown() || o.keyLeft.isDown() || o.keyRight.isDown() || o.keyJump.isDown())) {
                 terminar(false);

@@ -148,7 +148,7 @@ public final class Deco {
             case "palanca" -> new net.minecraft.world.level.block.LeverBlock(p.noCollission());
             case "losa" -> new SlabBlock(d.flag("transparente") ? p.noOcclusion() : p);
             case "escalera" -> new StairBlock(() -> BLOCKS.get(d.str("base")).defaultBlockState(), p);
-            case "barrotes" -> new IronBarsBlock(p.noOcclusion());
+            case "barrotes" -> d.flag("alto") ? new DecoBarandal(p.noOcclusion()) : new IronBarsBlock(p.noOcclusion());
             case "puerta" -> new DoorBlock(p.noOcclusion(), BlockSetType.IRON);
             case "reja" -> new DecoReja(p.noOcclusion());
             case "cadena" -> new net.minecraft.world.level.block.ChainBlock(p.noOcclusion());

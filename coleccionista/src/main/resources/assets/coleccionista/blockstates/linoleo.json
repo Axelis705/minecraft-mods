@@ -2,7 +2,8 @@
  "variants": {
   "": [
    {
-    "model": "coleccionista:block/linoleo_0"
+    "model": "coleccionista:block/linoleo_0",
+    "weight": 2
    },
    {
     "model": "coleccionista:block/linoleo_1"

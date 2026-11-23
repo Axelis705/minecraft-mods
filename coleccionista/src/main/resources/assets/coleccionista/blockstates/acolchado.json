@@ -2,7 +2,8 @@
  "variants": {
   "": [
    {
-    "model": "coleccionista:block/acolchado_0"
+    "model": "coleccionista:block/acolchado_0",
+    "weight": 2
    },
    {
     "model": "coleccionista:block/acolchado_1"

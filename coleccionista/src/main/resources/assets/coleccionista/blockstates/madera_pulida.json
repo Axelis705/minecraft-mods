@@ -2,7 +2,8 @@
  "variants": {
   "": [
    {
-    "model": "coleccionista:block/madera_pulida_0"
+    "model": "coleccionista:block/madera_pulida_0",
+    "weight": 2
    },
    {
     "model": "coleccionista:block/madera_pulida_1"

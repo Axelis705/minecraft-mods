@@ -105,6 +105,7 @@ public final class Panel {
                 Plat.msg(p, Component.translatable(Coleccionista.MODID + (!com.coleccionista.voz.VozPuente.disponible ? ".voz.no_instalado"
                         : si ? ".voz.altavoz_si" : ".voz.altavoz_no")), true);
             }
+            case "chat" -> Chat.cerrar(s, !Chat.cerrado(s));
             case "sala" -> {
                 if (Complejo.construido(s)) {
                     Despertar.esperar(s);

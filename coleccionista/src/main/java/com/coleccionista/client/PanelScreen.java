@@ -226,7 +226,7 @@ public class PanelScreen extends UiScreen {
         // el guion del inicio: sala de espera → ¡pum! → discurso → abrir celdas; y aparecer como el Coleccionista
         y += 36;
         String[][] guion = {{"sala", "g_sala"}, {"despertar", "g_despertar"}, {"discurso", "g_discurso"}, {"abrir_celdas", "g_abrir"},
-                {"disfraz", "g_disfraz"}, {"altavoz", "g_altavoz"}};
+                {"disfraz", "g_disfraz"}, {"altavoz", "g_altavoz"}, {"chat", EventoCliente.chatCerrado() ? "g_chat_abrir" : "g_chat_cerrar"}};
         int gw = (w - (guion.length - 1) * 6) / guion.length;
         for (int i = 0; i < guion.length; i++) {
             String op = guion[i][0];

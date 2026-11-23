@@ -25,12 +25,13 @@ def _h(ix, iy, seed):
 def vnoise(w, h, cell, seed, period_x=None, period_y=None):
     """Ruido de valor suave que se repite cada period (en celdas) para que la textura encaje con el bloque vecino."""
     y, x = np.mgrid[0:h, 0:w].astype(np.float32)
-    gx, gy = x / cell, y / cell
+    px = period_x or max(1, int(round(w / cell)))
+    py = period_y or max(1, int(round(h / cell)))
+    # la celda se ajusta para que el ruido se repita justo cada bloque (asi la textura encaja con la del bloque de al lado)
+    gx, gy = x * px / w, y * py / h
     ix, iy = np.floor(gx), np.floor(gy)
     fx, fy = gx - ix, gy - iy
     fx, fy = fx * fx * (3 - 2 * fx), fy * fy * (3 - 2 * fy)
-    px = period_x or max(1, int(round(w / cell)))
-    py = period_y or max(1, int(round(h / cell)))
 
     def g(a, b):
         return _h(np.mod(a, px), np.mod(b, py), seed)
@@ -198,7 +199,7 @@ def yeso(seed=0, color='#a39a82', pelado=0.5, manchas=4):
     out = streaks(out, seed + 16, n=manchas, color='#5a4a32', strength=0.3)
     out = cracks(out, seed + 17, n=r.randint(0, 2), dark=0.7)
     out = envejecer(out, seed + 19, 0.8)
-    out = grime(out, seed + 20, amount=0.3, top=0.15)
+    out = grime(out, seed + 20, amount=0.3)
     return img(out)
 
 
@@ -219,7 +220,7 @@ def remate(seed=0, azul='#8fa597', yes='#b3a88f'):
     return img(grime(out, seed + 5, amount=0.15))
 
 
-def concreto(seed=0, color='#66645c', poros=0.012, cimbra=True, oxido=1):
+def concreto(seed=0, color='#66645c', poros=0.012, cimbra=False, oxido=1):
     """Concreto: moteado, poros, juntas de la cimbra y escurrimientos de oxido."""
     r = np.random.RandomState(seed + 2000)
     n = fbm(N, N, 6, seed + 20) * 0.7 + white(N, N, seed + 21) * 0.3
@@ -492,7 +493,8 @@ def _ladrillos(seed, ancho=16, alto=8, color='#4f5047', mortero='#2b2a25', jitte
     ly = y % alto
     mort = (lx == 0) | (ly == 0)
     bid = ((x + off) // ancho) + row * 7
-    v = np.vectorize(lambda b: 1 - jitter / 2 + ((b * 2654435761 + seed * 7919) % 101) / 101 * jitter)(bid).astype(np.float32)
+    # el tono de cada ladrillo no depende de la variante: asi las variantes encajan entre si
+    v = np.vectorize(lambda b: 1 - jitter / 2 + ((b * 2654435761 + 7919) % 101) / 101 * jitter)(bid).astype(np.float32)
     rgb = hexc(color) * v[..., None] * (0.82 + 0.3 * fbm(N, N, 4, seed + 100))[..., None]
     rgb = np.where(mort[..., None], hexc(mortero) * (0.8 + 0.35 * white(N, N, seed)[..., None]), rgb)
     # canto de arriba claro y de abajo oscuro (relieve)
@@ -512,7 +514,7 @@ def ladrillo_cloaca(seed=0):
     tipo = seed % 4
     if tipo == 1:   # musgo en las juntas y abajo
         m = fbm(N, N, 6, seed + 8101)
-        k = np.clip((m - 0.45) * 2.2, 0, 1) * (0.5 + 0.5 * (y / N)) + mort * 0.35
+        k = np.clip((m - 0.45) * 2.2, 0, 1) * 0.75 + mort * 0.35
         rgb = mix(rgb, ramp(white(N, N, seed + 8102), '#2f3f22', '#3d4f29', '#4a5c30')[...], np.clip(k, 0, 0.85))
     elif tipo == 2:  # agrietado
         rgb = cracks(rgb, seed + 8103, n=2, dark=0.6)
@@ -520,7 +522,7 @@ def ladrillo_cloaca(seed=0):
         rgb = streaks(rgb, seed + 8104, n=4, color='#b8b5a3', strength=0.35)
     rgb = streaks(rgb, seed + 8105, n=r.randint(2, 5), color='#181a14', strength=0.5)
     rgb = envejecer(rgb, seed + 8106, 0.55)
-    rgb = grime(rgb, seed + 8107, amount=0.35, bottom=0.4)
+    rgb = grime(rgb, seed + 8107, amount=0.4)
     return img(rgb)
 
 
@@ -534,10 +536,9 @@ def ladrillo_oscuro(seed=0):
 
 def piso_cloaca(seed=0):
     """Piso de laja de la alcantarilla: lajas irregulares, lodo en las juntas y charquitos brillosos."""
-    r = np.random.RandomState(seed + 8300)
     y, x = np.mgrid[0:N, 0:N]
-    # lajas: celdas de Voronoi que se repiten
-    pts = r.rand(7, 2) * N
+    # lajas: celdas de Voronoi que se repiten (el mismo acomodo en todas las variantes, para que encajen)
+    pts = np.random.RandomState(8300).rand(7, 2) * N
     d1 = np.full((N, N), 1e9)
     d2 = np.full((N, N), 1e9)
     idx = np.zeros((N, N), int)
@@ -817,7 +818,7 @@ def papel_tapiz(seed=0, fondo='#3a0e12', dibujo='#5c1a1e'):
         orilla = d & ~np.roll(d, 1, 0)
         rgb = np.where(orilla[..., None], hexc('#1f0a0b'), rgb)
     rgb = streaks(rgb, seed + 9704, n=r.randint(0, 3), color='#1a1410', strength=0.4)
-    rgb = grime(rgb, seed + 9705, amount=0.3, top=0.15)
+    rgb = grime(rgb, seed + 9705, amount=0.32)
     return img(rgb)
 
 
@@ -890,7 +891,7 @@ def acolchado(seed=0):
         hole = np.hypot(x - cx, (y - cy) * 1.6) < 3.2
         rgb = np.where(hole[..., None], hexc('#d9d1bc') * (0.7 + 0.4 * white(N, N, seed)[..., None]), rgb)
         rgb = np.where((np.abs(np.hypot(x - cx, (y - cy) * 1.6) - 3.4) < 0.6)[..., None], hexc('#3b3427'), rgb)
-    rgb = grime(rgb, seed + 10103, amount=0.3, bottom=0.35)
+    rgb = grime(rgb, seed + 10103, amount=0.35)
     return img(rgb)
 
 
@@ -953,10 +954,10 @@ def piedra_capilla(seed=0):
     if tipo == 1:
         rgb = cracks(rgb, seed + 10501, n=2, dark=0.6)
     elif tipo == 2:   # hollin que sube
-        rgb = mix(rgb, np.broadcast_to(hexc('#1d1a16'), rgb.shape), np.clip((fbm(N, N, 8, seed + 10502) - 0.4) * 1.5 * (1 - y / N), 0, 0.6))
+        rgb = mix(rgb, np.broadcast_to(hexc('#1d1a16'), rgb.shape), np.clip((fbm(N, N, 8, seed + 10502) - 0.45) * 1.4, 0, 0.55))
     elif tipo == 3:   # humedad y musgo abajo
         m = fbm(N, N, 6, seed + 10503)
-        rgb = mix(rgb, np.broadcast_to(hexc('#3c4a2c'), rgb.shape), np.clip((m - 0.5) * 2 * (y / N), 0, 0.6))
+        rgb = mix(rgb, np.broadcast_to(hexc('#3c4a2c'), rgb.shape), np.clip((m - 0.55) * 1.6, 0, 0.5))
     rgb = envejecer(rgb, seed + 10504, 0.5)
     rgb = grime(rgb, seed + 10505, amount=0.3)
     rgb = streaks(rgb, seed + 10506, n=r.randint(0, 3), color='#2a2620', strength=0.35)
@@ -1014,3 +1015,17 @@ def madera_pulida(seed=0, color='#2b180d'):
     rgb = hexc(color) * (0.78 + 0.35 * veta)[..., None] * (0.95 + 0.1 * white(N, N, seed + 10802))[..., None]
     rgb = np.where((((x + y) % 29) < 1)[..., None], rgb * 1.2 + 8, rgb)
     return img(rgb)
+
+
+def continuo(base, otra, margen=2.0, ancho=6.0):
+    """Mezcla una variante con la base solo en el centro del bloque: las orillas quedan iguales a la base, asi un muro hecho de
+    variantes al azar se ve como una sola pared (no como bloques sueltos)."""
+    a = np.array(base).astype(np.float32)
+    b = np.array(otra).astype(np.float32)
+    h, w = a.shape[:2]
+    y, x = np.mgrid[0:h, 0:w]
+    d = np.minimum(np.minimum(x, w - 1 - x), np.minimum(y, h - 1 - y)).astype(np.float32)
+    m = np.clip((d - margen) / ancho, 0, 1)
+    m = m * m * (3 - 2 * m)
+    out = a * (1 - m[..., None]) + b * m[..., None]
+    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), 'RGBA')

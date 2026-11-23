@@ -2,7 +2,8 @@
  "variants": {
   "": [
    {
-    "model": "coleccionista:block/marmol_oro_0"
+    "model": "coleccionista:block/marmol_oro_0",
+    "weight": 2
    },
    {
     "model": "coleccionista:block/marmol_oro_1"

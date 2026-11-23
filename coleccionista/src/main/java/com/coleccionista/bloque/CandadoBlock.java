@@ -19,12 +19,16 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * El candado de la celda: un teclado de 3 números junto a la puerta, por dentro. Al usarlo se abre la ventana para escribir el código
- * (las 3 pistas están en la celda); si es el bueno, se abre la puerta.
+ * El candado de la celda: un candado de combinación con tres ruedas, colgado de los barrotes junto a la puerta, por dentro. Al usarlo la
+ * cámara se acerca y la mano del jugador gira las ruedas (los 3 números están escondidos en la celda); si es el bueno, se abre la puerta.
  */
 public class CandadoBlock extends HorizontalDirectionalBlock {
-    private static final VoxelShape N = Block.box(4, 2, 13, 12, 14, 16), S = Block.box(4, 2, 0, 12, 14, 3), E = Block.box(0, 2, 4, 3, 14, 12),
-            W = Block.box(13, 2, 4, 16, 14, 12);
+    /**
+     * El candado cuelga de los barrotes del bloque de enfrente (el modelo está corrido 7 px hacia los barrotes): su forma también, para
+     * que se pueda apuntar y hacer clic en él donde se ve.
+     */
+    private static final VoxelShape N = Block.box(3.5, 1.5, 19, 12.5, 14.5, 23), S = Block.box(3.5, 1.5, -7, 12.5, 14.5, -3),
+            E = Block.box(-7, 1.5, 3.5, -3, 14.5, 12.5), W = Block.box(19, 1.5, 3.5, 23, 14.5, 12.5);
 
     public CandadoBlock(Properties p) {
         super(p);

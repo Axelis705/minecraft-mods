@@ -61,6 +61,8 @@ public final class Evento {
     int siguienteNumero = 1;
     /** Sala de espera: todos en su celda, acostados y con la pantalla en negro. */
     boolean sala;
+    /** Chat cerrado: solo el organizador, los organizadores y los operadores pueden escribir. */
+    public boolean chatCerrado;
     /** Quién está disfrazado del Coleccionista (el organizador cuando aparece). */
     final Set<UUID> disfraz = new LinkedHashSet<>();
 
@@ -410,6 +412,8 @@ public final class Evento {
         Cuerpos.limpiar(s);
         Pantallas.modo(s, "apagada", "");
         Celdas.candados(s, false);
+        Pistas.ocultar(s);
+        chatCerrado = false;
         fase = Fase.ESPERA;
         prueba = "";
         relojFin = 0;
@@ -468,6 +472,7 @@ public final class Evento {
         t.putInt("coleccionados", coleccionados);
         t.putInt("siguiente", siguienteNumero);
         t.putBoolean("sala", sala);
+        t.putBoolean("chatCerrado", chatCerrado);
         ListTag dz = new ListTag();
         for (UUID id : disfraz) {
             CompoundTag x = new CompoundTag();
@@ -498,6 +503,7 @@ public final class Evento {
         coleccionados = Nbt.i(t, "coleccionados");
         siguienteNumero = Math.max(1, Nbt.i(t, "siguiente"));
         sala = t.getBoolean("sala");
+        chatCerrado = t.getBoolean("chatCerrado");
         for (Tag x : t.getList("disfraz", Tag.TAG_COMPOUND)) {
             disfraz.add(((CompoundTag) x).getUUID("id"));
         }
@@ -511,6 +517,7 @@ public final class Evento {
         t.putLong("fin", relojFin);
         t.putLong("resta", relojResta);
         t.putBoolean("sala", sala);
+        t.putBoolean("chatCerrado", chatCerrado);
         ListTag l = new ListTag();
         int vivos = 0;
         for (Pieza p : piezas.values()) {

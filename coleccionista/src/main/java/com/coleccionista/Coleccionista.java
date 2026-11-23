@@ -41,6 +41,9 @@ public class Coleccionista {
         com.coleccionista.evento.Celdas.init();
         com.coleccionista.evento.Pantallas.init();
         com.coleccionista.evento.Despertar.init();
+        com.coleccionista.evento.Chat.init();
+        com.coleccionista.evento.Proteccion.init();
+        com.coleccionista.evento.Pistas.init();
         com.coleccionista.prueba.Pruebas.init();
         com.coleccionista.voz.Voz.init();
         com.axeliscore.ui.Teclas.nueva(MODID, "acercarse", 'R', () -> com.coleccionista.client.Atajos.acercarse());

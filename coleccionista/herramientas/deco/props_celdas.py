@@ -181,19 +181,25 @@ def retrete():
 def lavabo():
     p = Prop('lavabo', 'Lavabo de celda', 'Cell sink', kind='wall', sound='metal', seed=23)
     s = acero(23, sucio=0.5)
-    p.box(3, 6, 8, 13, 10, 16, s)
-    p.box(4, 9.5, 9, 12, 10, 15, solid('#2b2b26'))
-    p.box(7, 10, 14, 9, 13, 16, s)
-    p.box(7.5, 12, 11, 8.5, 13, 14, s)     # llave
-    p.box(5, 4, 14, 11, 6, 16, oxido(23))  # tubo de abajo
+    # a la altura de la cintura (como uno de verdad): la taza arriba, el tubo baja hasta el piso
+    p.box(3, 11, 8, 13, 14, 16, s)         # el cuerpo de la taza
+    p.box(3, 14, 8, 4, 15, 16, s)          # la orilla (cuatro lados): la taza se ve hueca
+    p.box(12, 14, 8, 13, 15, 16, s)
+    p.box(4, 14, 8, 12, 15, 9, s)
+    p.box(4, 14, 15, 12, 15, 16, s)
+    p.box(4, 14, 9, 12, 14.15, 15, solid('#2b2b26'))   # el fondo oscuro
+    p.box(7.5, 14.15, 11.5, 8.5, 14.25, 12.5, solid('#14130f'))  # la coladera
+    p.box(7, 15, 14, 9, 18, 16, s)         # la llave sale de la pared
+    p.box(7.5, 17, 11, 8.5, 18, 14, s)
+    p.box(7, 0, 13, 9, 11, 15, oxido(23))  # el tubo hasta el piso
     return p
 
 
 def espejo():
     p = Prop('espejo', 'Espejo roto', 'Broken mirror', kind='wall', sound='glass', seed=24)
-    p.box(4, 3, 15, 12, 13, 16, pintado(NEGRO, seed=24))
+    p.box(4, 6, 15, 12, 16, 16, pintado(NEGRO, seed=24))
     ref = kit.metal(Ramp('#56605d', '#6a7572', '#7f8986', '#939d99'), streak=0.2, seed=24, sparkle=0.1)
-    p.box(5, 4, 14.8, 11, 12, 15, ref)
+    p.box(5, 7, 14.8, 11, 15, 15, ref, skip=('south',))
     return p
 
 
@@ -478,6 +484,50 @@ def candado():
         for j in range(3):
             p.box(5 + i * 2.2, 3.5 + j * 2.2, 12.6, 6.6 + i * 2.2, 5.1 + j * 2.2, 13, kit.metal(Ramp('#6a6a62', '#7d7d74', '#8e8e84'), seed=56 + i + j))
     p.box(7.5, 14, 14, 8.5, 16, 15, oxido(57))
+    return p
+
+
+def rueda_numeros(y0, y1, seed=60):
+    """Las ruedas del candado: hueso viejo, mas oscuro arriba y abajo (se ven redondas). Los numeros los dibuja el juego encima."""
+    r = Ramp('#3a352b', '#8a8270', '#c9c0a6', '#ddd5bb')
+
+    def f(P):
+        X, Y, Z = P['X'], P['Y'], P['Z']
+        c = np.clip((Y - y0) / (y1 - y0), 0, 1)
+        t = np.sin(c * np.pi) ** 0.7
+        rgb = r(np.clip(t * 0.95 + 0.05 * rnd(X, Y, Z, seed), 0, 1))
+        # estrias finas (el borde moleteado de la rueda)
+        estria = (np.floor(Y * 4) % 2 == 0) & ((X % 2.3) < 0.25)
+        rgb = np.where(estria[..., None], rgb * 0.8, rgb)
+        return with_alpha(rgb)
+    return f
+
+
+def candado_ruedas():
+    """El candado de la celda: un candadote de combinacion colgado de los barrotes, con tres ruedas de numeros y un boton rojo para
+    probar. Las ruedas se giran con la mano (arrastrando hacia arriba o hacia abajo); los numeros los dibuja el juego."""
+    p = Prop('candado_ruedas', 'Candado de combinación', 'Combination lock', kind='wall', sound='metal', seed=61)
+    cuerpo = pintado('#2f3430', oxido=0.4, seed=61)
+    marco = kit.metal(Ramp('#2a2b29', '#3a3b38', '#4a4b47', '#5a5b56'), seed=62)
+    p.box(3.5, 1.5, 14.5, 12.5, 14.5, 16, marco)                        # la placa de atras (contra los barrotes)
+    p.box(4, 2.5, 12.6, 12, 13.5, 14.5, cuerpo, bevel=0.15)              # el cuerpo
+    # el marco de la ventanita de las ruedas (sobresale): izquierda, derecha, arriba y abajo
+    p.box(4, 5.4, 12, 4.6, 10.6, 12.6, marco)
+    p.box(11.4, 5.4, 12, 12, 10.6, 12.6, marco)
+    p.box(4, 10.6, 12, 12, 13.5, 12.6, cuerpo)
+    p.box(4, 2.5, 12, 12, 5.4, 12.6, cuerpo)
+    for i in range(3):
+        x0 = 4.85 + i * 2.15
+        p.box(x0, 5.55, 12.15, x0 + 1.95, 10.45, 12.6, rueda_numeros(5.55, 10.45, 60 + i))
+    p.box(7.3, 11.3, 11.85, 8.7, 12.5, 12, luz('#6a1d16'))              # el foquito
+    p.box(6.8, 3.0, 11.4, 9.2, 4.8, 12, pintado('#8e1c18', oxido=0.15, seed=63))   # el boton para probar
+    # el arco que abraza el barrote de atras
+    arco = kit.metal(Ramp('#55574f', '#6b6d64', '#80827a', '#979990'), seed=64, sparkle=0.1)
+    p.box(5.2, 13.5, 13.4, 6.4, 17, 14.6, arco)
+    p.box(9.6, 13.5, 13.4, 10.8, 17, 14.6, arco)
+    p.box(5.2, 16.2, 13.4, 10.8, 17.4, 19.2, arco)
+    p.box(5.2, 13.5, 18.2, 6.4, 17, 19.2, arco)
+    p.box(9.6, 13.5, 18.2, 10.8, 17, 19.2, arco)
     return p
 
 

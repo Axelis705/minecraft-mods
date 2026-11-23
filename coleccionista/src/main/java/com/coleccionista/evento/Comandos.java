@@ -147,6 +147,15 @@ public final class Comandos {
                                 .then(Commands.argument("n", IntegerArgumentType.integer(1, 24))
                                         .executes(c -> celdas(c, IntegerArgumentType.getInteger(c, "n"), true))))
                         .then(Commands.literal("cerrar").executes(c -> celdas(c, 0, false))))
+                .then(Commands.literal("chat")
+                        .then(Commands.literal("cerrar").executes(c -> {
+                            Chat.cerrar(c.getSource().getServer(), true);
+                            return 1;
+                        }))
+                        .then(Commands.literal("abrir").executes(c -> {
+                            Chat.cerrar(c.getSource().getServer(), false);
+                            return 1;
+                        })))
                 .then(Commands.literal("candados")
                         .then(Commands.literal("si").executes(c -> {
                             Celdas.candados(c.getSource().getServer(), true);
