@@ -1,0 +1,255 @@
+[23Nov2026 07:46:12.072] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forge_userdev_client, --version, MOD_DEV, --assetIndex, 17, --assetsDir, /home/runner/.minecraft/assets, --gameDir, ., --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[23Nov2026 07:46:12.075] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.13+9-LTS
+[23Nov2026 07:46:12.075] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.2.4 starting: java version 21.0.13 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1020-azure
+[23Nov2026 07:46:12.181] [main/WARN] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/pesca_coleccion-1.21.1/run/config/fml.toml is not correct. Correcting
+[23Nov2026 07:46:12.183] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowHeight] was corrected from null to 480
+[23Nov2026 07:46:12.183] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [versionCheck] was corrected from null to true
+[23Nov2026 07:46:12.184] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowFBScale] was corrected from null to 1
+[23Nov2026 07:46:12.184] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowProvider] was corrected from null to fmlearlywindow
+[23Nov2026 07:46:12.184] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowWidth] was corrected from null to 854
+[23Nov2026 07:46:12.185] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowMaximized] was corrected from null to false
+[23Nov2026 07:46:12.185] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [defaultConfigPath] was corrected from null to defaultconfigs
+[23Nov2026 07:46:12.185] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [disableOptimizedDFU] was corrected from null to true
+[23Nov2026 07:46:12.186] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[23Nov2026 07:46:12.186] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[23Nov2026 07:46:12.188] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [maxThreads] was corrected from null to -1
+[23Nov2026 07:46:12.188] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[23Nov2026 07:46:12.188] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[23Nov2026 07:46:12.211] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because splash screen is disabled
+[23Nov2026 07:46:12.293] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.7/8ab114ac385e6dbdad5efafe28aba4df8120915f/mixin-0.8.7.jar!/ Service=ModLauncher Env=CLIENT
+[23Nov2026 07:46:13.144] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[23Nov2026 07:46:13.798] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forge_userdev_client' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.minecraft/assets, --assetIndex, 17, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[23Nov2026 07:46:15.192] [main/WARN] [oshi.util.FileUtil/]: Configuration conflict: there is more than one oshi.properties file on the classpath: [jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.4.10/b1d8ab82d11d92fd639b56d639f8f46f739dd5fa/oshi-core-6.4.10.jar!/oshi.properties, jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.4.10/b1d8ab82d11d92fd639b56d639f8f46f739dd5fa/oshi-core-6.4.10.jar!/oshi.properties, jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.4.10/b1d8ab82d11d92fd639b56d639f8f46f739dd5fa/oshi-core-6.4.10.jar!/oshi.properties, jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.4.10/b1d8ab82d11d92fd639b56d639f8f46f739dd5fa/oshi-core-6.4.10.jar!/oshi.properties]
+[23Nov2026 07:46:15.548] [main/WARN] [oshi.util.FileUtil/]: Configuration conflict: there is more than one oshi.architecture.properties file on the classpath: [jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.4.10/b1d8ab82d11d92fd639b56d639f8f46f739dd5fa/oshi-core-6.4.10.jar!/oshi.architecture.properties, jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.4.10/b1d8ab82d11d92fd639b56d639f8f46f739dd5fa/oshi-core-6.4.10.jar!/oshi.architecture.properties, jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.4.10/b1d8ab82d11d92fd639b56d639f8f46f739dd5fa/oshi-core-6.4.10.jar!/oshi.architecture.properties, jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.4.10/b1d8ab82d11d92fd639b56d639f8f46f739dd5fa/oshi-core-6.4.10.jar!/oshi.architecture.properties]
+[23Nov2026 07:46:15.549] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 226 Datafixer optimizations took 380 milliseconds
+[23Nov2026 07:46:19.747] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/pesca_coleccion-1.21.1/.gradle/mavenizer/repo/net/minecraftforge/forge/1.21.1-52.1.20/forge-1.21.1-52.1.20.jar%230!/assets/.mcassetsroot' uses unexpected schema
+[23Nov2026 07:46:19.748] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/pesca_coleccion-1.21.1/.gradle/mavenizer/repo/net/minecraftforge/forge/1.21.1-52.1.20/forge-1.21.1-52.1.20.jar%230!/data/.mcassetsroot' uses unexpected schema
+[23Nov2026 07:46:19.766] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[23Nov2026 07:46:19.777] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[23Nov2026 07:46:19.884] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[23Nov2026 07:46:21.666] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 52.1.20, for MC 1.21.1 with MCP 20240808.132146
+[23Nov2026 07:46:21.666] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v52.1.20 Initialized
+[23Nov2026 07:46:21.667] [modloading-worker-0/INFO] [com.axeliscore.AxelisCore/]: pesca_coleccion usa Axelis Core 1.1.0 (API 2)
+[23Nov2026 07:46:21.706] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
+[23Nov2026 07:46:21.717] [modloading-worker-0/INFO] [com.axeliscore.AxelisCore/]: Axelis Core 1.1.0 (API 2)
+[23Nov2026 07:46:22.444] [Render thread/INFO] [net.minecraftforge.gametest.ForgeGameTestHooks/]: Enabled Gametest Namespaces: []
+[23Nov2026 07:46:22.813] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources
+[23Nov2026 07:46:22.839] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/pesca_coleccion-1.21.1/run/config/forge-client.toml is not correct. Correcting
+[23Nov2026 07:46:22.840] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SynchronizedConfig{DataHolder:{}}. 
+[23Nov2026 07:46:22.840] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.alwaysSetupTerrainOffThread was corrected from null to its default, false. 
+[23Nov2026 07:46:22.841] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.experimentalForgeLightPipelineEnabled was corrected from null to its default, false. 
+[23Nov2026 07:46:22.842] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[23Nov2026 07:46:22.842] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.useCombinedDepthStencilAttachment was corrected from null to its default, false. 
+[23Nov2026 07:46:22.842] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.calculateAllNormals was corrected from null to its default, false. 
+[23Nov2026 07:46:22.842] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.stabilizeDirectionGetNearest was corrected from null to its default, true. 
+[23Nov2026 07:46:22.842] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.allowMipmapLowering was corrected from null to its default, false. 
+[23Nov2026 07:46:22.991] [Worker-Main-1/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
+[23Nov2026 07:46:23.601] [Worker-Main-1/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
+[23Nov2026 07:46:24.355] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[23Nov2026 07:46:24.596] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: UP_TO_DATE Current: 52.1.20 Target: null
+[23Nov2026 07:46:27.070] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[23Nov2026 07:46:27.071] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[23Nov2026 07:46:27.105] [Render thread/ERROR] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:207) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.audio.Library.init(Library.java:74) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:107) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:99) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:130) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:44) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:19) ~[forge-1.21.1-52.1.20.jar:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:718) ~[?:?]
+	at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$new$3(SimpleReloadInstance.java:80) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:143) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:24) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:117) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:106) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1141) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:795) ~[forge-1.21.1-52.1.20.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:228) ~[forge-1.21.1-52.1.20.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@1.21.1-52.1.20/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:85) ~[fmlloader-1.21.1-52.1.20.jar!/:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@1.21.1-52.1.20/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:69) ~[fmlloader-1.21.1-52.1.20.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:77) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:97) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.Launcher.run(Launcher.java:116) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.Launcher.main(Launcher.java:75) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) [modlauncher-10.2.4.jar!/:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) [bootstrap-2.1.8.jar!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+[23Nov2026 07:46:27.293] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[23Nov2026 07:46:27.315] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[23Nov2026 07:46:27.315] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[23Nov2026 07:46:27.317] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[23Nov2026 07:46:27.318] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[23Nov2026 07:46:27.326] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[23Nov2026 07:46:27.327] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[23Nov2026 07:46:27.327] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[23Nov2026 07:46:27.328] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[23Nov2026 07:46:27.414] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[23Nov2026 07:46:27.417] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[23Nov2026 07:46:27.418] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[23Nov2026 07:46:27.418] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[23Nov2026 07:46:27.418] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[23Nov2026 07:46:27.505] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[23Nov2026 07:46:29.654] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1298 recipes
+[23Nov2026 07:46:29.862] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1399 advancements
+[23Nov2026 07:46:30.760] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
+[23Nov2026 07:46:30.760] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[23Nov2026 07:46:31.149] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[23Nov2026 07:46:31.721] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[23Nov2026 07:46:31.757] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[23Nov2026 07:46:31.850] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 6, from 10
+[23Nov2026 07:46:31.850] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 5, from 0
+[23Nov2026 07:46:32.140] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 739 ms
+[23Nov2026 07:46:32.851] [Render thread/INFO] [net.minecraftforge.common.ForgeHooks/]: Connected to a modded server.
+[23Nov2026 07:46:32.940] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:bd255c83] logged in with entity id 1 at (-7.5, -60.0, -4.5)
+[23Nov2026 07:46:32.971] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[23Nov2026 07:46:33.523] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST inicio pasos=115
+[23Nov2026 07:46:33.564] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2 advancements
+[23Nov2026 07:46:43.553] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[23Nov2026 07:46:43.557] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: The difficulty has been set to Peaceful
+[23Nov2026 07:46:43.562] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Reloading!
+[23Nov2026 07:46:43.586] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[23Nov2026 07:46:43.783] [Worker-Main-3/INFO] [com.axeliscore.AxelisCore/]: DIAG_AXCORE_REGISTRO INTEGRATED
+[23Nov2026 07:46:43.785] [Worker-Main-3/INFO] [com.axeliscore.AxelisCore/]: AXCORE_COMANDOS galeria* criaturas* probar ir efecto datos*
+[23Nov2026 07:46:43.996] [Server thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1298 recipes
+[23Nov2026 07:46:44.110] [Server thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1399 advancements
+[23Nov2026 07:46:44.703] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[23Nov2026 07:46:44.705] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the weather to clear
+[23Nov2026 07:46:44.808] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2 advancements
+[23Nov2026 07:46:45.581] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Pesca de colección works with Axelis Core 1.1.0 (API 2)
+[23Nov2026 07:46:45.585] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PRUEBA_PESCA_COLECCION_OK Axelis Core 1.1.0 (API 2)
+[23Nov2026 07:46:47.251] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 144 block(s)
+[23Nov2026 07:46:47.261] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Bamboo Rod]
+[23Nov2026 07:46:47.262] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Glowing Bait]
+[23Nov2026 07:46:47.276] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[23Nov2026 07:46:47.278] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -1.500000
+[23Nov2026 07:46:47.299] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[23Nov2026 07:46:50.538] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la caña se dibuja lanzada (sin el hilo que cuelga)
+[23Nov2026 07:46:50.538] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la carnada no se gasta al lanzar
+[23Nov2026 07:46:52.913] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_corcho_flota
+[23Nov2026 07:46:55.989] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: picada buena
+[23Nov2026 07:46:56.081] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_corcho_pica
+[23Nov2026 07:46:56.274] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la pelea del corcho
+[23Nov2026 07:46:56.275] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pez se comió una carnada al picar
+[23Nov2026 07:46:58.889] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_corcho
+[23Nov2026 07:47:03.838] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_PELEA rareza=0 resultado=1 perfecto=true teclas=30 fallos=0 hilo=100
+[23Nov2026 07:47:03.857] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] You got the Fishing Journal: your collection lives there.
+[23Nov2026 07:47:05.479] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: termina la pelea del corcho
+[23Nov2026 07:47:05.536] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pez del corcho llegó al inventario
+[23Nov2026 07:47:05.536] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la caña vuelve a tener su hilo
+[23Nov2026 07:47:05.921] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: llega Nilo
+[23Nov2026 07:47:11.327] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Nilo saluda
+[23Nov2026 07:47:13.300] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_saludo
+[23Nov2026 07:47:14.153] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: muelle listo
+[23Nov2026 07:47:17.970] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Nilo en su muelle
+[23Nov2026 07:47:17.972] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 6.500000, -60.000000, 0.500000
+[23Nov2026 07:47:20.635] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_muelle
+[23Nov2026 07:47:20.975] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, 1.500000
+[23Nov2026 07:47:22.345] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la ventana de Nilo
+[23Nov2026 07:47:23.610] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_encargos
+[23Nov2026 07:47:23.981] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_NILO_COBRO tipo=noche esmeraldas=5 amistad=3
+[23Nov2026 07:47:24.120] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 3 advancements
+[23Nov2026 07:47:25.572] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Nilo pagó el encargo con esmeraldas
+[23Nov2026 07:47:26.879] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_cobrado
+[23Nov2026 07:47:29.065] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_tienda
+[23Nov2026 07:47:29.446] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_NILO_COMPRA oferta=0 precio=1
+[23Nov2026 07:47:30.564] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: le compró 8 lombrices a Nilo
+[23Nov2026 07:47:30.985] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_NILO_VENTA esmeraldas=6
+[23Nov2026 07:47:32.035] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: le vendió el pez a Nilo
+[23Nov2026 07:47:32.386] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_NILO_NIVEL 1
+[23Nov2026 07:47:32.386] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_NILO_NIVEL 2
+[23Nov2026 07:47:32.386] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_NILO_NIVEL 3
+[23Nov2026 07:47:32.386] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_NILO_NIVEL 4
+[23Nov2026 07:47:35.108] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_amistad
+[23Nov2026 07:47:35.470] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Nilo regaló su caña
+[23Nov2026 07:47:36.425] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 4.500000, -60.000000, 2.500000
+[23Nov2026 07:47:39.993] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_pescando
+[23Nov2026 07:47:40.331] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the weather to rain
+[23Nov2026 07:47:42.915] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_ROMPER primer bloque roto (mods que escuchan: 1)
+[23Nov2026 07:47:42.916] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_LOMBRICES primer bloque (tierra=true lluvia=true creativo=false)
+[23Nov2026 07:47:43.522] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: salen lombrices al cavar pasto bajo la lluvia (9 de 40)
+[23Nov2026 07:47:44.139] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the weather to clear
+[23Nov2026 07:47:44.140] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[23Nov2026 07:47:44.143] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 37 entities
+[23Nov2026 07:47:44.149] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Removed 45 item(s) from player Dev
+[23Nov2026 07:47:44.187] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[23Nov2026 07:47:44.457] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -4.500000
+[23Nov2026 07:47:44.856] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la pelea
+[23Nov2026 07:47:48.164] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_ritmo
+[23Nov2026 07:47:53.333] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: salto
+[23Nov2026 07:47:53.381] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_salto
+[23Nov2026 07:47:57.638] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: final
+[23Nov2026 07:47:57.682] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_final
+[23Nov2026 07:47:59.240] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_PELEA rareza=2 resultado=1 perfecto=false teclas=52 fallos=1 hilo=95
+[23Nov2026 07:48:00.887] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: termina la pelea rara
+[23Nov2026 07:48:00.888] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pez raro llegó al inventario
+[23Nov2026 07:48:02.176] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_premio
+[23Nov2026 07:48:02.689] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la legendaria
+[23Nov2026 07:48:06.780] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_legendaria
+[23Nov2026 07:48:31.743] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_PELEA rareza=4 resultado=1 perfecto=false teclas=98 fallos=2 hilo=82
+[23Nov2026 07:48:33.379] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: termina la legendaria
+[23Nov2026 07:48:33.379] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pez legendario llegó
+[23Nov2026 07:48:34.966] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_legendaria_premio
+[23Nov2026 07:48:36.728] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_peces
+[23Nov2026 07:48:38.102] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_cuadro
+[23Nov2026 07:48:39.480] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_pista
+[23Nov2026 07:48:40.838] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_mejoras
+[23Nov2026 07:48:42.169] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_carnada
+[23Nov2026 07:48:43.811] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_deco
+[23Nov2026 07:48:45.204] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_records
+[23Nov2026 07:48:45.892] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 36 block(s)
+[23Nov2026 07:48:45.895] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 10, -58, -5
+[23Nov2026 07:48:45.895] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 12, -58, -5
+[23Nov2026 07:48:45.895] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 14, -58, -5
+[23Nov2026 07:48:45.896] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 10, -60, -3
+[23Nov2026 07:48:45.896] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 14, -60, -3
+[23Nov2026 07:48:47.933] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el trofeo llegó al cliente con su pez
+[23Nov2026 07:48:47.934] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: 6 peces en los acuarios (6)
+[23Nov2026 07:48:47.934] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el acuario llegó al cliente con sus peces
+[23Nov2026 07:48:48.573] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 12.500000, -60.000000, 1.500000
+[23Nov2026 07:48:50.625] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_trofeos_acuarios
+[23Nov2026 07:48:50.942] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 14.500000, -60.000000, -0.300000
+[23Nov2026 07:48:53.034] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_acuario_cerca
+[23Nov2026 07:48:53.378] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 12.500000, -60.000000, -2.500000
+[23Nov2026 07:48:54.931] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_trofeo_cuadro
+[23Nov2026 07:48:55.273] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -4.500000
+[23Nov2026 07:48:55.274] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_TORNEO_EMPIEZA modo=puntos minutos=3 por=Dev
+[23Nov2026 07:48:56.820] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la pelea del torneo
+[23Nov2026 07:49:12.493] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_PELEA rareza=2 resultado=1 perfecto=false teclas=52 fallos=1 hilo=95
+[23Nov2026 07:49:14.121] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: termina la pelea del torneo
+[23Nov2026 07:49:14.121] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el marcador del torneo tiene al jugador
+[23Nov2026 07:49:16.328] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_torneo_marcador
+[23Nov2026 07:49:17.163] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: ventana de Nilo (torneo)
+[23Nov2026 07:49:18.521] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_torneo_nilo
+[23Nov2026 07:49:18.866] [Server thread/INFO] [com.pescacoleccion.PescaColeccion/]: PESCA_TORNEO_FIN modo=puntos jugadores=1 ganador=Dev
+[23Nov2026 07:49:18.887] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] #1 Dev — 6
+[23Nov2026 07:49:20.385] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el ganador recibió la copa de oro
+[23Nov2026 07:49:21.228] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_torneo_fin
+[23Nov2026 07:49:22.375] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 12.500000, -60.000000, 0.200000
+[23Nov2026 07:49:24.227] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_copa
+[23Nov2026 07:49:24.539] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST AXCORE_AUTOTEST_FIN fotos=30 fallos=0
+[23Nov2026 07:49:24.565] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[23Nov2026 07:49:24.614] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[23Nov2026 07:49:24.614] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[23Nov2026 07:49:24.628] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[23Nov2026 07:49:24.679] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[23Nov2026 07:49:24.681] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[23Nov2026 07:49:24.681] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[23Nov2026 07:49:25.214] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[23Nov2026 07:49:25.291] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[23Nov2026 07:49:25.296] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[23Nov2026 07:49:25.325] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (prueba): All chunks are saved
+[23Nov2026 07:49:25.325] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[23Nov2026 07:49:25.325] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[23Nov2026 07:49:25.325] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
