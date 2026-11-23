@@ -36,6 +36,7 @@ if [ $ok -eq 1 ]; then
     case "$line" in
       ''|'#expect '*) continue;;
       '#wait '*) sleep "${line#\#wait }"; continue;;
+      '#pausa '*) sleep "${line#\#pausa }"; continue;;
     esac
     echo "$line" >&3; sleep 1
   done < "$cmds"
