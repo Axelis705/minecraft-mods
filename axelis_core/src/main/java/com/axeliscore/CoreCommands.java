@@ -91,7 +91,8 @@ public final class CoreCommands {
                 .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.players())
                         .executes(c -> dataTest(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores"))));
         d.register(Commands.literal("axeliscore").executes(CoreCommands::info).then(galeria).then(criaturas).then(probar).then(ir).then(efecto)
-                .then(datos).then(com.axeliscore.combat.CombateComandos.nodo()).then(com.axeliscore.npc.NpcComandos.nodo()));
+                .then(datos).then(com.axeliscore.combat.CombateComandos.nodo()).then(com.axeliscore.npc.NpcComandos.nodo())
+                .then(com.axeliscore.anim.EstudioServidor.nodo()));
         var node = d.getRoot().getChild("axeliscore");
         StringBuilder sb = new StringBuilder();
         if (node != null) {
@@ -162,6 +163,9 @@ public final class CoreCommands {
     }
 
     private static int gallery(CommandContext<CommandSourceStack> c, Vec3 at, float yaw) {
+        if (!com.axeliscore.Ejemplos.activos()) {
+            return com.axeliscore.Ejemplos.noEstan(c.getSource());
+        }
         ServerLevel level = c.getSource().getLevel();
         // en fila, perpendicular a hacia donde miran
         double rad = Math.toRadians(yaw);
@@ -190,6 +194,9 @@ public final class CoreCommands {
 
     /** Las criaturas de muestra en fila: bestia, ave (en el aire), gelatina, mascota y el coloso al final. */
     private static int creatures(CommandContext<CommandSourceStack> c, Vec3 at, float yaw) {
+        if (!com.axeliscore.Ejemplos.activos()) {
+            return com.axeliscore.Ejemplos.noEstan(c.getSource());
+        }
         ServerLevel level = c.getSource().getLevel();
         double rad = Math.toRadians(yaw);
         double rx = Math.cos(rad), rz = Math.sin(rad);

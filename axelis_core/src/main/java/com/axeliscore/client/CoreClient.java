@@ -23,13 +23,15 @@ public final class CoreClient {
 
     @SubscribeEvent
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
-        e.registerEntityRenderer(CoreEntities.PERSONA.get(), PersonaRenderer::new);
         String ns = AxelisCore.MODID;
-        e.registerEntityRenderer(CoreEntities.BESTIA.get(), c -> new SimpleGeoRenderer<>(c, ns, "bestia", 0.6F, 1F));
-        e.registerEntityRenderer(CoreEntities.ALADO.get(), c -> new SimpleGeoRenderer<>(c, ns, "alado", 0.4F, 1F));
-        e.registerEntityRenderer(CoreEntities.GELATINA.get(), c -> new SimpleGeoRenderer<>(c, ns, "gelatina", 0.5F, 1F));
-        e.registerEntityRenderer(CoreEntities.COLOSO.get(), c -> new com.axeliscore.combat.client.JefeRenderer<>(c, ns, "coloso", 1.2F, 1F, 3));
-        e.registerEntityRenderer(CoreEntities.CHISPA.get(), c -> new SimpleGeoRenderer<>(c, ns, "chispa", 0.3F, 1F));
+        if (com.axeliscore.Ejemplos.activos()) {
+            e.registerEntityRenderer(CoreEntities.PERSONA.get(), PersonaRenderer::new);
+            e.registerEntityRenderer(CoreEntities.BESTIA.get(), c -> new SimpleGeoRenderer<>(c, ns, "bestia", 0.6F, 1F));
+            e.registerEntityRenderer(CoreEntities.ALADO.get(), c -> new SimpleGeoRenderer<>(c, ns, "alado", 0.4F, 1F));
+            e.registerEntityRenderer(CoreEntities.GELATINA.get(), c -> new SimpleGeoRenderer<>(c, ns, "gelatina", 0.5F, 1F));
+            e.registerEntityRenderer(CoreEntities.COLOSO.get(), c -> new com.axeliscore.combat.client.JefeRenderer<>(c, ns, "coloso", 1.2F, 1F, 3));
+            e.registerEntityRenderer(CoreEntities.CHISPA.get(), c -> new SimpleGeoRenderer<>(c, ns, "chispa", 0.3F, 1F));
+        }
         e.registerEntityRenderer(CoreEntities.NPC.get(), c -> new PersonaRenderer<>(c, com.axeliscore.npc.client.NpcCliente::piel));
         e.registerEntityRenderer(CoreEntities.AVISO.get(), com.axeliscore.combat.client.AvisoRenderer::new);
         e.registerEntityRenderer(CoreEntities.PROYECTIL.get(), com.axeliscore.combat.client.ProyectilRenderer::new);
@@ -41,7 +43,9 @@ public final class CoreClient {
         com.axeliscore.combat.client.CombateHud.init();
         com.axeliscore.combat.client.MusicaJefe.init();
         com.axeliscore.npc.client.NpcCliente.init();
+        com.axeliscore.fx.client.Hud.add((g, w, h) -> com.axeliscore.anim.client.EstudioArchivos.revisar());
         com.axeliscore.ui.ScreenRegistry.register(AxelisCore.MODID + ":demo", com.axeliscore.ui.DemoScreen::new);
+        com.axeliscore.ui.ScreenRegistry.register(com.axeliscore.anim.EstudioServidor.PANTALLA, com.axeliscore.anim.client.EstudioScreen::new);
         com.axeliscore.test.ClientTest.startIfEnabled();
     }
 

@@ -10,6 +10,16 @@ public class Tabs extends Widget {
     public int active;
     private final IntConsumer onChange;
     private final float[] hov;
+    private float sel = -1;
+    private Theme base, activa;
+
+    private Theme activa(Theme t) {
+        if (base != t) {
+            base = t;
+            activa = Theme.of(t.bgTop | 0xFF000000, t.accent);
+        }
+        return activa;
+    }
 
     public Tabs(int x, int y, int w, int h, IntConsumer onChange, String... names) {
         super(x, y, w, h);
@@ -28,21 +38,30 @@ public class Tabs extends Widget {
     protected void draw(G g, int mx, int my, Theme t) {
         int n = names.length, tw = w / n;
         int over = inside(mx, my) ? tabAt(mx) : -1;
+        if (sel < 0) {
+            sel = active;
+        }
+        // la marca de la pestaña elegida se desliza de una a otra
+        sel += (active - sel) * 0.25F;
         for (int i = 0; i < n; i++) {
             hov[i] += ((i == over ? 1 : 0) - hov[i]) * 0.3F;
             int tx = x + i * tw;
             boolean on = i == active;
-            int top = on ? y : y + 2;
-            int col = on ? t.bgTop : Ui.mix(t.button, t.buttonHover, hov[i]);
-            g.fill(tx + 1, top, tx + tw - 1, y + h, t.border);
-            g.fillGradient(tx + 2, top + 1, tx + tw - 2, y + h, Ui.mix(col, 0xFFFFFFFF, 0.08F), col);
+            int top = on ? y - 1 : y + 2 - (int) (hov[i] * 1.5F);
             if (on) {
-                g.fill(tx + 3, top + 1, tx + tw - 3, top + 2, t.accent);
+                // la elegida: del color del panel, sin borde abajo (queda unida al contenido)
+                Ui.boton(g, tx + 1, top, tw - 2, y + h - top + 2, 0, false, true, activa(t));
+                g.fill(tx + 2, y + h, tx + tw - 2, y + h + 2, Ui.mix(t.bgTop | 0xFF000000, 0xFFFFFFFF, 0.06F));
+            } else {
+                Ui.boton(g, tx + 1, top, tw - 2, y + h - top, hov[i], false, true, t);
             }
             var f = Ui.font();
-            String s = names[i];
-            g.drawString(f, s, tx + (tw - f.width(s)) / 2, top + (h - (top - y) - 8) / 2 + 1, on ? t.title : t.textDim, true);
+            String s = Ui.fit(names[i], tw - 6);
+            g.drawString(f, s, tx + (tw - f.width(s)) / 2, top + (y + h - top - 8) / 2 + 1, on ? t.title : Ui.mix(t.textDim, 0xFFFFFFFF, hov[i] * 0.5F),
+                    true);
         }
+        int lx = x + (int) (sel * tw) + 4;
+        g.fill(lx, y + h - 2, lx + tw - 8, y + h - 1, t.accent);
     }
 
     @Override

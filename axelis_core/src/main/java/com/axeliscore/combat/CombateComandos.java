@@ -58,6 +58,9 @@ public final class CombateComandos {
      * pasa a la fase 2. {@code revisar} (unos segundos después) mira que la bestia sí recibió los golpes.
      */
     private static int prueba(CommandContext<CommandSourceStack> c) {
+        if (!com.axeliscore.Ejemplos.activos()) {
+            return com.axeliscore.Ejemplos.noEstan(c.getSource());
+        }
         CommandSourceStack s = c.getSource();
         ServerLevel l = s.getLevel();
         Vec3 p = s.getPosition().add(3, 0, 3);
@@ -85,6 +88,9 @@ public final class CombateComandos {
     }
 
     private static int revisar(CommandContext<CommandSourceStack> c) {
+        if (!com.axeliscore.Ejemplos.activos()) {
+            return com.axeliscore.Ejemplos.noEstan(c.getSource());
+        }
         boolean ok = blancoPrueba != null && blancoPrueba.getHealth() < vidaPrueba;
         String r = "AXCORE_COMBATE_GOLPES " + (ok ? "ok" : "MAL") + " vida=" + (blancoPrueba == null ? -1 : blancoPrueba.getHealth()) + "/" + vidaPrueba
                 + " quemado=" + (blancoPrueba != null && Estados.tiene(blancoPrueba, Estados.QUEMADO));
@@ -101,6 +107,9 @@ public final class CombateComandos {
     }
 
     private static int estados(CommandContext<CommandSourceStack> c) {
+        if (!com.axeliscore.Ejemplos.activos()) {
+            return com.axeliscore.Ejemplos.noEstan(c.getSource());
+        }
         CommandSourceStack s = c.getSource();
         ServerLevel l = s.getLevel();
         float yaw = s.getRotation().y;
@@ -184,6 +193,9 @@ public final class CombateComandos {
     }
 
     private static int jefe(CommandContext<CommandSourceStack> c) {
+        if (!com.axeliscore.Ejemplos.activos()) {
+            return com.axeliscore.Ejemplos.noEstan(c.getSource());
+        }
         CommandSourceStack s = c.getSource();
         ServerLevel l = s.getLevel();
         Vec3 p = delante(s, 10);

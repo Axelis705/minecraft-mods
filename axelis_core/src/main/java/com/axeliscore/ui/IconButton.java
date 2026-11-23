@@ -35,16 +35,19 @@ public class IconButton extends Widget {
     @Override
     protected void draw(G g, int mx, int my, Theme t) {
         int dy = pressed && inside(mx, my) ? 1 : 0;
-        Ui.round(g, x, y + 1, w, h, Ui.alpha(0xFF000000, 0.45F));
-        int base = selected ? Ui.mix(t.button, t.accent, 0.35F) : Ui.mix(t.button, t.buttonHover, hover);
-        Ui.round(g, x, y + dy, w, h - 1, t.border);
-        g.fillGradient(x + 1, y + 1 + dy, x + w - 1, y + h - 2 + dy, Ui.mix(base, 0xFFFFFFFF, 0.12F), Ui.mix(base, 0xFF000000, 0.2F));
-        g.fill(x + 2, y + 1 + dy, x + w - 2, y + 2 + dy, Ui.alpha(0xFFFFFFFF, 0.2F + 0.2F * hover));
+        Ui.boton(g, x, y, w, h, hover, dy > 0, enabled, t);
         if (selected) {
-            g.fill(x + 1, y + h - 3 + dy, x + w - 1, y + h - 2 + dy, t.accent);
+            // elegido: marco del color de acento que late suave
+            int c = Ui.alpha(t.accent, 0.75F + 0.25F * (float) Math.sin(Ui.tiempo() * 4));
+            g.fill(x + 1, y + 1, x + w - 1, y + 2, c);
+            g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, c);
+            g.fill(x + 1, y + 2, x + 2, y + h - 2, c);
+            g.fill(x + w - 2, y + 2, x + w - 1, y + h - 2, c);
         }
         int s = tex != null ? texSize : 16;
         int ix = x + (w - s) / 2, iy = y + (h - 1 - s) / 2 + dy;
+        // el ícono sube un pixel con el mouse encima
+        iy -= Math.round(hover);
         if (tex != null) {
             g.blit(tex, ix, iy, s, s, 0, 0, s, s, s, s);
         } else if (!icon.isEmpty()) {

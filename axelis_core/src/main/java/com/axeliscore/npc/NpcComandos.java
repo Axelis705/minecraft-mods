@@ -177,6 +177,9 @@ public final class NpcComandos {
      * vender, nivel pedido), cazar (zombis de Iker), diaria (trigo) y una misión suelta que se entrega sola (revisar).
      */
     private static int prueba(CommandContext<CommandSourceStack> c) {
+        if (!com.axeliscore.Ejemplos.activos()) {
+            return com.axeliscore.Ejemplos.noEstan(c.getSource());
+        }
         ServerLevel l = c.getSource().getLevel();
         ServerPlayer p = jugadorPrueba(l);
         borrar(p);
@@ -239,6 +242,9 @@ public final class NpcComandos {
     }
 
     private static int revisar(CommandContext<CommandSourceStack> c) {
+        if (!com.axeliscore.Ejemplos.activos()) {
+            return com.axeliscore.Ejemplos.noEstan(c.getSource());
+        }
         ServerPlayer p = jugadorPrueba(c.getSource().getLevel());
         boolean sola = Misiones.vecesHecha(p, CoreNpcs.PRUEBA.id) == 1 && !Misiones.activa(p, CoreNpcs.PRUEBA.id);
         boolean vivo = npcPrueba != null && npcPrueba.isAlive() && npcPrueba.def() == CoreNpcs.MARA;

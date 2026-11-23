@@ -22,6 +22,7 @@ public class ListView<T> extends Widget {
     private final java.util.function.Consumer<T> onPick;
     private float scroll, scrollTarget;
     private boolean dragging;
+    private float nacio = -1;
 
     public ListView(int x, int y, int w, int h, int rowH, Row<T> row, java.util.function.Consumer<T> onPick) {
         super(x, y, w, h);
@@ -43,8 +44,15 @@ public class ListView<T> extends Widget {
         int iw = w - (bar ? 6 : 0);
         g.enableScissor(x + 1, y + 1, x + iw - 1, y + h - 1);
         int first = (int) (scroll / rowH);
+        if (nacio < 0) {
+            nacio = Ui.tiempo();
+        }
+        float edad = Ui.tiempo() - nacio;
         for (int i = first; i < items.size(); i++) {
             int ry = y + i * rowH - (int) scroll;
+            // al aparecer, cada renglón entra deslizándose un poco después del anterior
+            float k = Ui.ease(Math.min(1, Math.max(0, (edad - (i - first) * 0.03F) / 0.18F)));
+            int ox = Math.round((1 - k) * 10);
             if (ry > y + h) {
                 break;
             }
@@ -58,15 +66,15 @@ public class ListView<T> extends Widget {
             } else if (hov) {
                 g.fill(x + 1, ry, x + iw - 1, ry + rowH, Ui.alpha(0xFFFFFFFF, 0.07F));
             }
-            row.draw(g, items.get(i), x + 4, ry, iw - 8, rowH, i == selected, hov, t);
+            row.draw(g, items.get(i), x + 4 + ox, ry, iw - 8 - ox, rowH, i == selected, hov, t);
         }
         g.disableScissor();
         if (bar) {
             float frac = h / (float) (items.size() * rowH);
             int bh = Math.max(12, (int) (h * frac));
             int by = y + (int) ((h - bh) * (scroll / maxScroll()));
-            g.fill(x + w - 5, y + 1, x + w - 1, y + h - 1, Ui.alpha(0xFF000000, 0.3F));
-            g.fill(x + w - 5, by, x + w - 1, by + bh, Ui.mix(t.button, t.accent, dragging ? 0.8F : 0.4F));
+            g.fill(x + w - 6, y + 1, x + w - 1, y + h - 1, Ui.alpha(0xFF000000, 0.35F));
+            Ui.boton(g, x + w - 6, by, 6, bh, dragging ? 1F : 0F, false, true, t);
         }
     }
 

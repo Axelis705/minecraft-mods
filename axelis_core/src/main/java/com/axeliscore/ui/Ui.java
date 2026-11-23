@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Pinceles de la interfaz del Core (todo con rectángulos y degradados: se ve igual en 1.20.1, 1.21.1 y 26.3 y no necesita texturas).
+ * Pinceles de la interfaz del Core, estilo "Minecraft pulido": paneles con fondo de pixel art y relieve, botones con textura que se
+ * tiñe del color del tema (brillan y se hunden), ranuras como las del inventario, barras con brillo. Se ve igual en 1.20.1, 1.21.1 y
+ * 26.3.
  */
 public final class Ui {
     private Ui() {
@@ -58,16 +60,28 @@ public final class Ui {
     public static void panel(G g, int x, int y, int w, int h, Theme t, float open) {
         float a = Math.max(0, Math.min(1, open));
         if (t.frame != null) {
-            // con marco de textura: sombra, fondo con degradado y el marco por fuera (no tapa el contenido)
+            // con marco de textura: sombra, fondo (pixel art + degradado), relieve y el marco por fuera (no tapa el contenido)
             round(g, x + 2, y + 5, w + 4, h + 2, alpha(t.shadow, a));
-            g.fillGradient(x - 1, y - 1, x + w + 1, y + h + 1, alpha(t.bgTop, a), alpha(t.bgBottom, a));
+            if (t.fondo != null) {
+                fondo(g, t, x - 1, y - 1, w + 2, h + 2, a);
+                int top = alpha(t.bgTop, a * t.fondoVelo * 1.6F), bottom = alpha(t.bgBottom, a * Math.min(1, t.fondoVelo * 2.2F));
+                g.fillGradient(x - 1, y - 1, x + w + 1, y + h + 1, top, bottom);
+                relieve(g, x - 1, y - 1, w + 2, h + 2, a);
+            } else {
+                g.fillGradient(x - 1, y - 1, x + w + 1, y + h + 1, alpha(t.bgTop, a), alpha(t.bgBottom, a));
+            }
             g.fill(x + 4, y + 3, x + w - 4, y + 4, alpha(t.accent, a * 0.85F));
             frame(g, t.frame, x - 5, y - 5, w + 10, h + 10, a);
             return;
         }
         round(g, x + 3, y + 4, w, h, alpha(t.shadow, a));
         round(g, x - 1, y - 1, w + 2, h + 2, alpha(t.border, a));
-        g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, alpha(t.bgTop, a), alpha(t.bgBottom, a));
+        if (t.fondo != null) {
+            fondo(g, t, x + 1, y + 1, w - 2, h - 2, a);
+            g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, alpha(t.bgTop, a * t.fondoVelo * 1.6F), alpha(t.bgBottom, a * Math.min(1, t.fondoVelo * 2.2F)));
+        } else {
+            g.fillGradient(x + 1, y + 1, x + w - 1, y + h - 1, alpha(t.bgTop, a), alpha(t.bgBottom, a));
+        }
         // filo claro arriba e izquierda, oscuro abajo y derecha (relieve)
         g.fill(x + 1, y + 1, x + w - 1, y + 2, alpha(t.borderLight, a * 0.8F));
         g.fill(x + 1, y + 2, x + 2, y + h - 1, alpha(t.borderLight, a * 0.4F));
@@ -108,13 +122,116 @@ public final class Ui {
         }
     }
 
+    /** Segundos desde que arrancó el juego (para las animaciones de la interfaz). */
+    public static float tiempo() {
+        return (System.nanoTime() / 1_000_000L % 10_000_000L) / 1000F;
+    }
+
+    /** El fondo de pixel art del tema, repetido y al doble (como el fondo de tierra de Minecraft), con su animación. */
+    public static void fondo(G g, Theme t, int x, int y, int w, int h, float a) {
+        if (t.fondo == null) {
+            return;
+        }
+        final int tex = 128, esc = 2, lado = tex * esc;
+        int ox = 0, oy = 0;
+        float tm = tiempo();
+        if (t.fondoAnim == 2) {
+            // agua: el dibujo se mueve despacio
+            ox = (int) (tm * 6) % lado;
+            oy = (int) (tm * 2) % lado;
+        }
+        g.enableScissor(x, y, x + w, y + h);
+        int col = alpha(0xFFFFFFFF, a);
+        for (int ty = y - oy; ty < y + h; ty += lado) {
+            for (int tx = x - ox; tx < x + w; tx += lado) {
+                g.blitTint(t.fondo, tx, ty, lado, lado, 0, 0, tex, tex, tex, tex, col);
+            }
+        }
+        if (t.fondoAnim == 1) {
+            // estrellas que titilan (siempre en los mismos lugares)
+            for (int i = 0; i < 24; i++) {
+                int sx = x + (int) ((i * 97L + 13) % Math.max(1, w)), sy = y + (int) ((i * 61L + 7) % Math.max(1, h));
+                float b = 0.5F + 0.5F * (float) Math.sin(tm * (1.3 + (i % 5) * 0.4) + i);
+                if (b > 0.55F) {
+                    int c = alpha(0xFFFFF6D8, a * (b - 0.5F) * 1.6F);
+                    g.fill(sx, sy, sx + 1, sy + 1, c);
+                    if (b > 0.9F && i % 3 == 0) {
+                        g.fill(sx - 1, sy, sx + 2, sy + 1, alpha(0xFFFFF6D8, a * 0.35F));
+                        g.fill(sx, sy - 1, sx + 1, sy + 2, alpha(0xFFFFF6D8, a * 0.35F));
+                    }
+                }
+            }
+        }
+        g.disableScissor();
+    }
+
+    /** Relieve como los paneles de Minecraft: luz arriba e izquierda, sombra abajo y derecha. */
+    public static void relieve(G g, int x, int y, int w, int h, float a) {
+        g.fill(x, y, x + w, y + 1, alpha(0xFFFFFFFF, a * 0.22F));
+        g.fill(x, y + 1, x + 1, y + h, alpha(0xFFFFFFFF, a * 0.14F));
+        g.fill(x, y + h - 1, x + w, y + h, alpha(0xFF000000, a * 0.45F));
+        g.fill(x + w - 1, y, x + w, y + h - 1, alpha(0xFF000000, a * 0.35F));
+    }
+
+    public static final net.minecraft.resources.ResourceLocation BOTON = com.axeliscore.plat.Ids.core("textures/gui/boton.png");
+    public static final net.minecraft.resources.ResourceLocation RANURA = com.axeliscore.plat.Ids.core("textures/gui/ranura.png");
+
+    /**
+     * Dibuja una textura estirada en nueve partes: las esquinas de {@code c} píxeles quedan iguales, los bordes y el centro se repiten
+     * (sin deformar el dibujo). {@code argb} tiñe (0xFFFFFFFF = como está).
+     */
+    public static void nueve(G g, net.minecraft.resources.ResourceLocation tex, int x, int y, int w, int h, int tw, int th, int c, int argb) {
+        if (w <= 0 || h <= 0) {
+            return;
+        }
+        int cw = Math.min(c, w / 2), ch = Math.min(c, h / 2);
+        int mw = tw - 2 * c, mh = th - 2 * c;
+        // filas: arriba, en medio (repetido) y abajo
+        int[][] filas = {{y, ch, 0}, {y + h - ch, ch, th - ch}};
+        for (int[] f : filas) {
+            tira(g, tex, x, f[0], w, f[1], f[2], f[1], tw, th, cw, mw, argb);
+        }
+        for (int yy = y + ch; yy < y + h - ch; yy += mh) {
+            int alto = Math.min(mh, y + h - ch - yy);
+            tira(g, tex, x, yy, w, alto, c, alto, tw, th, cw, mw, argb);
+        }
+    }
+
+    private static void tira(G g, net.minecraft.resources.ResourceLocation tex, int x, int y, int w, int h, int v, int vh, int tw, int th, int cw,
+            int mw, int argb) {
+        g.blitTint(tex, x, y, cw, h, 0, v, cw, vh, tw, th, argb);
+        g.blitTint(tex, x + w - cw, y, cw, h, tw - cw, v, cw, vh, tw, th, argb);
+        for (int xx = x + cw; xx < x + w - cw; xx += mw) {
+            int ancho = Math.min(mw, x + w - cw - xx);
+            g.blitTint(tex, xx, y, ancho, h, cw, v, ancho, vh, tw, th, argb);
+        }
+    }
+
+    /** Color para teñir la textura del botón (que es gris medio) y que quede del color pedido. */
+    static int tinte(int argb) {
+        float k = 255F / 160F;
+        int r = Math.min(255, (int) (((argb >> 16) & 255) * k)), gg = Math.min(255, (int) (((argb >> 8) & 255) * k)),
+                b = Math.min(255, (int) ((argb & 255) * k));
+        return (argb & 0xFF000000) | r << 16 | gg << 8 | b;
+    }
+
+    /** Ranura de objeto como la del inventario (teñida un poco con el tema). */
+    public static void ranura(G g, int x, int y, Theme t, boolean resaltada) {
+        g.blitTint(RANURA, x, y, 18, 18, 0, 0, 18, 18, 18, 18, mix(0xFFFFFFFF, t.bgTop | 0xFF000000, 0.25F));
+        if (resaltada) {
+            g.fill(x + 1, y + 1, x + 17, y + 17, 0x80FFFFFF);
+        }
+    }
+
     /** Un hueco hundido (para listas, retratos, ranuras). */
     public static void inset(G g, int x, int y, int w, int h, Theme t) {
-        g.fill(x, y, x + w, y + h, alpha(0xFF000000, 0.35F));
-        g.fill(x, y, x + w, y + 1, alpha(0xFF000000, 0.5F));
-        g.fill(x, y, x + 1, y + h, alpha(0xFF000000, 0.5F));
-        g.fill(x, y + h - 1, x + w, y + h, alpha(t.borderLight, 0.35F));
-        g.fill(x + w - 1, y, x + w, y + h, alpha(t.borderLight, 0.35F));
+        // como las ranuras de Minecraft: hundido con sombra arriba e izquierda y luz abajo y derecha
+        g.fill(x, y, x + w, y + h, alpha(0xFF000000, 0.38F));
+        g.fill(x, y, x + w, y + 1, alpha(0xFF000000, 0.6F));
+        g.fill(x, y + 1, x + 1, y + h, alpha(0xFF000000, 0.6F));
+        g.fill(x + 1, y + 1, x + w - 1, y + 2, alpha(0xFF000000, 0.2F));
+        g.fill(x + 1, y + h - 1, x + w, y + h, alpha(mix(t.borderLight, 0xFFFFFFFF, 0.3F), 0.5F));
+        g.fill(x + w - 1, y + 1, x + w, y + h - 1, alpha(mix(t.borderLight, 0xFFFFFFFF, 0.3F), 0.5F));
     }
 
     /** Título centrado con sombra y una línea de adorno a cada lado. */
@@ -131,18 +248,43 @@ public final class Ui {
 
     /** Botón: degradado, brillo al pasar el mouse, se hunde al apretarlo, gris si está apagado. */
     public static void button(G g, int x, int y, int w, int h, String label, float hover, boolean pressed, boolean enabled, Theme t) {
-        int base = enabled ? mix(t.button, t.buttonHover, hover) : mix(t.button, 0xFF555555, 0.6F);
-        int dy = pressed ? 1 : 0;
-        round(g, x, y + 1, w, h, alpha(0xFF000000, 0.45F));
-        round(g, x, y + dy, w, h - 1, t.border);
-        g.fillGradient(x + 1, y + 1 + dy, x + w - 1, y + h - 2 + dy, mix(base, 0xFFFFFFFF, 0.12F), mix(base, 0xFF000000, 0.18F));
-        g.fill(x + 2, y + 1 + dy, x + w - 2, y + 2 + dy, alpha(0xFFFFFFFF, 0.25F + 0.2F * hover));
-        if (hover > 0.01F && enabled) {
-            g.fill(x + 1, y + h - 3 + dy, x + w - 1, y + h - 2 + dy, alpha(t.accent, hover));
-        }
+        boton(g, x, y, w, h, hover, pressed, enabled, t);
         Font f = font();
-        int col = enabled ? t.buttonText : 0xFF9A9A9A;
-        g.drawString(f, label, x + (w - f.width(label)) / 2, y + (h - 9) / 2 + dy, col, true);
+        int dy = pressed ? 1 : 0;
+        int col = enabled ? mix(t.buttonText, 0xFFFFFFA0, hover * 0.35F) : 0xFFA0A0A0;
+        String s = fit(label, w - 6);
+        g.drawString(f, s, x + (w - f.width(s)) / 2, y + (h - 8) / 2 + dy, col, true);
+    }
+
+    /**
+     * El cuerpo de un botón: textura de Minecraft teñida del color del tema; al pasar el mouse se aclara, sale el filo blanco y pasa un
+     * brillo; al apretarlo se hunde. Sirve también para pestañas y botones con ícono.
+     */
+    public static void boton(G g, int x, int y, int w, int h, float hover, boolean pressed, boolean enabled, Theme t) {
+        int base = enabled ? mix(t.button, t.buttonHover, hover) : mix(t.button, 0xFF5A5A5A, 0.7F);
+        if (pressed) {
+            base = mix(base, 0xFF000000, 0.18F);
+        }
+        // sombra pegada abajo (crece un poco con el mouse)
+        g.fill(x + 1, y + h, x + w - 1, y + h + 1, alpha(0xFF000000, 0.35F + 0.2F * hover));
+        nueve(g, BOTON, x, y, w, h, 200, 20, 3, tinte(base | 0xFF000000));
+        if (enabled && hover > 0.02F) {
+            int c = alpha(0xFFFFFFFF, hover * 0.9F);
+            // filo blanco por dentro del borde negro (como los botones de Minecraft al pasar el mouse)
+            g.fill(x + 1, y + 1, x + w - 1, y + 2, c);
+            g.fill(x + 1, y + h - 2, x + w - 1, y + h - 1, c);
+            g.fill(x + 1, y + 2, x + 2, y + h - 2, c);
+            g.fill(x + w - 2, y + 2, x + w - 1, y + h - 2, c);
+            // brillo en diagonal que cruza el botón
+            float tm = tiempo() * 1.2F % 2.2F;
+            int bx = x + (int) (tm * (w + h)) - h;
+            g.enableScissor(x + 2, y + 2, x + w - 2, y + h - 2);
+            for (int i = 0; i < h; i++) {
+                int px = bx + i;
+                g.fill(px, y + h - 2 - i, px + 3, y + h - 1 - i, alpha(0xFFFFFFFF, 0.18F * hover));
+            }
+            g.disableScissor();
+        }
     }
 
     /** Barra de progreso con brillo que la recorre; {@code frac} de 0 a 1. */
@@ -150,10 +292,23 @@ public final class Ui {
         frac = Math.max(0, Math.min(1, frac));
         g.fill(x - 1, y - 1, x + w + 1, y + h + 1, 0xFF000000);
         g.fill(x, y, x + w, y + h, 0xFF22252E);
+        g.fill(x, y + h - 1, x + w, y + h, 0xFF2E323C);
         int fw = (int) (w * frac);
         if (fw > 0) {
             g.fillGradient(x, y, x + fw, y + h, mix(from, 0xFFFFFFFF, 0.15F), to);
             g.fill(x, y, x + fw, y + 1, alpha(0xFFFFFFFF, 0.35F));
+            g.fill(x, y + h - 1, x + fw, y + h, alpha(0xFF000000, 0.3F));
+            // marcas cada 10 % (como la barra de experiencia)
+            if (w >= 40 && h >= 4) {
+                for (int i = 1; i < 10; i++) {
+                    int mx = x + w * i / 10;
+                    if (mx < x + fw) {
+                        g.fill(mx, y + 1, mx + 1, y + h - 1, alpha(0xFF000000, 0.18F));
+                    }
+                }
+            }
+            // punta que brilla
+            g.fill(x + fw - 1, y, x + fw, y + h, alpha(0xFFFFFFFF, 0.5F));
             // brillo que pasa
             int sx = x + (int) ((time * 40) % (w + 30)) - 15;
             for (int i = 0; i < 6; i++) {

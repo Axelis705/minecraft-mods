@@ -32,14 +32,15 @@ public class Toggle extends Widget {
             g.fill(x - 2, y - 1, x + w + 2, y + h + 1, Ui.alpha(0xFFFFFFFF, 0.05F * hover));
         }
         g.drawString(Ui.font(), label, x, y + 3, enabled ? t.text : t.textDim, false);
-        int sw = 24, sx = x + w - sw, sy = y + 1;
+        int sw = 26, sx = x + w - sw, sy = y + 1;
         int on = t.good, off = 0xFF4A4F5C;
-        Ui.round(g, sx - 1, sy - 1, sw + 2, 14, t.border);
-        Ui.round(g, sx, sy, sw, 12, Ui.mix(off, on, knob));
-        g.fill(sx + 2, sy + 1, sx + sw - 2, sy + 2, Ui.alpha(0xFFFFFFFF, 0.2F));
-        int kx = sx + 1 + Math.round(knob * (sw - 12));
-        Ui.round(g, kx, sy + 1, 10, 10, 0xFFF4F4F4);
-        g.fill(kx + 2, sy + 8, kx + 8, sy + 10, 0x30000000);
+        // carril hundido (como una ranura) que se llena de color, y una palanca con la textura de botón
+        Ui.inset(g, sx, sy, sw, 12, t);
+        g.fill(sx + 1, sy + 1, sx + 1 + Math.round(knob * (sw - 2)), sy + 11, Ui.alpha(Ui.mix(off, on, knob), 0.85F));
+        int kx = sx + Math.round(knob * (sw - 12));
+        Ui.boton(g, kx, sy - 1, 12, 14, hover, false, enabled, t);
+        g.fill(kx + 4, sy + 3, kx + 5, sy + 9, Ui.alpha(0xFF000000, 0.35F));
+        g.fill(kx + 7, sy + 3, kx + 8, sy + 9, Ui.alpha(0xFF000000, 0.35F));
     }
 
     @Override

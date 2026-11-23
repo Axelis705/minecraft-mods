@@ -54,6 +54,27 @@ public final class Pose {
         }
     }
 
+    /** Mezcla con un peso por hueso (máscara suave). */
+    public void blendTo(Pose o, float w, float[] pesos) {
+        if (w <= 0) {
+            return;
+        }
+        for (int b = 0; b < n; b++) {
+            float wb = w * pesos[b];
+            if (wb <= 0) {
+                continue;
+            }
+            for (int k = b * 3; k < b * 3 + 3; k++) {
+                rot[k] += (o.rot[k] - rot[k]) * wb;
+                pos[k] += (o.pos[k] - pos[k]) * wb;
+                scl[k] += (o.scl[k] - scl[k]) * wb;
+            }
+            if (wb >= 0.5F) {
+                hidden[b] = o.hidden[b];
+            }
+        }
+    }
+
     public void addRot(int bone, float x, float y, float z) {
         if (bone < 0) {
             return;

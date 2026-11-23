@@ -20,11 +20,33 @@ public abstract class Widget {
         return visible && mx >= x && mx < x + w && my >= y && my < y + h;
     }
 
-    /** Dibuja (y anima el hover). */
+    /** Cuándo apareció (para entrar con una pequeña animación); ver {@link #entrada}. */
+    private float nacio = -1;
+    /** Retraso de la entrada (segundos), para que varios aparezcan uno tras otro. */
+    public float retraso;
+
+    /** Dibuja (y anima el hover y la entrada). */
     public void render(G g, int mx, int my, float dt, Theme t) {
         float target = inside(mx, my) && enabled ? 1 : 0;
         hover += (target - hover) * Math.min(1, dt * 12);
-        draw(g, mx, my, t);
+        float k = entrada();
+        if (k < 1) {
+            g.push();
+            g.translate(0, (1 - k) * 6, 0);
+            draw(g, mx, my, t);
+            g.pop();
+        } else {
+            draw(g, mx, my, t);
+        }
+    }
+
+    /** 0 → 1 mientras entra (sube 6 píxeles en 0.16 s). */
+    protected float entrada() {
+        float now = Ui.tiempo();
+        if (nacio < 0) {
+            nacio = now;
+        }
+        return Ui.ease(Math.max(0, Math.min(1, (now - nacio - retraso) / 0.16F)));
     }
 
     protected abstract void draw(G g, int mx, int my, Theme t);

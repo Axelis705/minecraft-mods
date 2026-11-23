@@ -20,7 +20,9 @@ public final class Clip {
     }
 
     public enum Lerp {
-        LINEAR, CATMULLROM, STEP
+        LINEAR, CATMULLROM, STEP,
+        /** Curva con manijas (como en el editor de gráficas de Blockbench): ver {@link Key#bezier}. */
+        BEZIER
     }
 
     public final String name;
@@ -84,6 +86,20 @@ public final class Clip {
             float[] va = new float[3], vb = new float[3];
             a.value(a.post, c, va);
             b.value(b.pre, c, vb);
+            if (a.lerp == Lerp.BEZIER || b.lerp == Lerp.BEZIER) {
+                for (int j = 0; j < 3; j++) {
+                    // manija derecha de a y manija izquierda de b (en segundos y en valor, relativas a cada cuadro)
+                    // un cuadro sin manijas usa las de Blockbench por defecto (0.1 s, sin cambiar el valor)
+                    float rt = a.bezier != null ? Math.max(0, a.bezier[6 + j]) : 0.1F, rv = a.bezier != null ? a.bezier[9 + j] : 0;
+                    float lt = b.bezier != null ? Math.min(0, b.bezier[j]) : -0.1F, lv = b.bezier != null ? b.bezier[3 + j] : 0;
+                    float x1 = span <= 0 ? 0 : Math.min(1, rt / span), x2 = span <= 0 ? 1 : Math.max(0, 1 + lt / span);
+                    float s = Ease.solveBezier(f, x1, x2);
+                    float u = 1 - s;
+                    float p1 = va[j] + rv, p2 = vb[j] + lv;
+                    out[j] = u * u * u * va[j] + 3 * u * u * s * p1 + 3 * u * s * s * p2 + s * s * s * vb[j];
+                }
+                return;
+            }
             if (a.lerp == Lerp.CATMULLROM || b.lerp == Lerp.CATMULLROM) {
                 float[] v0 = new float[3], v3 = new float[3];
                 if (i > 0) {
@@ -122,8 +138,18 @@ public final class Clip {
         public final Ease.Fn ease;
         /** Si los tres valores son números fijos (para no evaluar expresiones). */
         private final float[] constPre, constPost;
+        /**
+         * Manijas de la curva (solo con {@link Lerp#BEZIER}): 12 números, en este orden: tiempo izquierdo x/y/z (segundos, negativos),
+         * valor izquierdo x/y/z, tiempo derecho x/y/z (positivos), valor derecho x/y/z. Igual que bezier_left_time... de Blockbench.
+         */
+        public final float[] bezier;
 
         public Key(float t, Expr[] pre, Expr[] post, Lerp lerp, Ease.Fn ease) {
+            this(t, pre, post, lerp, ease, null);
+        }
+
+        public Key(float t, Expr[] pre, Expr[] post, Lerp lerp, Ease.Fn ease, float[] bezier) {
+            this.bezier = bezier;
             this.t = t;
             this.pre = pre;
             this.post = post;

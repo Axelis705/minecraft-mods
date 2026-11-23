@@ -35,20 +35,32 @@ public class Slider extends Widget {
         return max > min ? (value - min) / (max - min) : 0;
     }
 
+    private float shown = -1;
+
     @Override
     protected void draw(G g, int mx, int my, Theme t) {
+        if (shown < 0) {
+            shown = frac();
+        }
         g.drawString(Ui.font(), label, x, y, t.text, false);
         String v = fmt != null ? fmt.apply(value) : String.valueOf(value);
         g.drawString(Ui.font(), v, x + w - Ui.font().width(v), y, t.accent, true);
-        int ty = y + 14;
-        g.fill(x - 1, ty - 1, x + w + 1, ty + 4, t.border);
-        g.fill(x, ty, x + w, ty + 3, 0xFF262A36);
-        int fw = Math.round(w * frac());
-        g.fillGradient(x, ty, x + fw, ty + 3, Ui.mix(t.accent, 0xFFFFFFFF, 0.3F), t.accent);
-        int kx = x + fw - 3;
-        Ui.round(g, kx - 1, ty - 4, 8, 11, t.border);
-        Ui.round(g, kx, ty - 3, 6, 9, Ui.mix(0xFFE8E8E8, 0xFFFFFFFF, hover));
-        g.fill(kx + 1, ty + 3, kx + 5, ty + 5, 0x30000000);
+        int ty = y + 13;
+        Ui.inset(g, x, ty, w, 6, t);
+        shown += (frac() - shown) * 0.4F;
+        int fw = Math.round((w - 2) * shown);
+        g.fillGradient(x + 1, ty + 1, x + 1 + fw, ty + 5, Ui.mix(t.accent, 0xFFFFFFFF, 0.3F), t.accent);
+        // marcas de los pasos (si son pocos)
+        if (step > 0 && (max - min) / step <= 12) {
+            int n = Math.round((max - min) / step);
+            for (int i = 1; i < n; i++) {
+                int mx2 = x + 1 + (w - 2) * i / n;
+                g.fill(mx2, ty + 1, mx2 + 1, ty + 5, Ui.alpha(0xFF000000, 0.3F));
+            }
+        }
+        int kx = x + 1 + fw - 4;
+        Ui.boton(g, kx, ty - 4, 9, 14, hover, false, enabled, t);
+        g.fill(kx + 4, ty - 1, kx + 5, ty + 7, Ui.alpha(0xFF000000, 0.3F));
     }
 
     private void setFrom(double mx) {

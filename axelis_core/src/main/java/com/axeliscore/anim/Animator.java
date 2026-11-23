@@ -34,6 +34,11 @@ public final class Animator {
         /** Peso de la capa y hacia dónde va (para que se desvanezca sola). */
         float weight = 1, weightTarget = 1, weightSpeed;
         boolean ended;
+        /** Peso por hueso (máscara suave), o null. */
+        float[] maskW;
+        Clip[] blendClips;
+        float[] blendPts;
+        float blendVal, phase;
 
         Layer(String name, boolean additive) {
             this.name = name;
@@ -50,6 +55,89 @@ public final class Animator {
 
         public boolean playing() {
             return clip != null && weightTarget > 0 && !ended;
+        }
+
+        /** Peso de la capa de una vez (0 = no se ve, 1 = completa), sin desvanecer. */
+        public Layer peso(float w) {
+            this.weight = this.weightTarget = Math.max(0, Math.min(1, w));
+            return this;
+        }
+
+        public float peso() {
+            return weight;
+        }
+
+        /** Pone la animación en ese segundo (para el editor o para sincronizar). */
+        public Layer tiempo(float t) {
+            this.time = clip == null ? 0 : Math.max(0, Math.min(clip.length, t));
+            this.ended = false;
+            return this;
+        }
+
+        public Layer velocidad(float s) {
+            this.speed = s;
+            return this;
+        }
+
+        public float velocidad() {
+            return speed;
+        }
+
+        /** Máscara suave: cuánto afecta la capa a cada hueso (0..1); los que no se nombran, nada. Los hijos heredan el peso. */
+        public Layer mascara(Geo geo, java.util.Map<String, Float> pesos) {
+            float[] m = new float[geo.bones.length];
+            for (java.util.Map.Entry<String, Float> e : pesos.entrySet()) {
+                int rb = geo.bone(e.getKey());
+                if (rb < 0) {
+                    continue;
+                }
+                for (int b = 0; b < m.length; b++) {
+                    if (geo.isUnder(b, rb)) {
+                        // el hueso más cercano manda (si "brazo" pesa 1 y "mano" 0.3, la mano queda en 0.3)
+                        int d = depth(geo, b, rb);
+                        if (d < maskDepth(b)) {
+                            m[b] = e.getValue();
+                            setMaskDepth(b, d, m.length);
+                        }
+                    }
+                }
+            }
+            this.maskW = m;
+            this.mask = null;
+            maskDepths = null;
+            return this;
+        }
+
+        private int[] maskDepths;
+
+        private int maskDepth(int b) {
+            return maskDepths == null ? Integer.MAX_VALUE : maskDepths[b];
+        }
+
+        private void setMaskDepth(int b, int d, int n) {
+            if (maskDepths == null) {
+                maskDepths = new int[n];
+                java.util.Arrays.fill(maskDepths, Integer.MAX_VALUE);
+            }
+            maskDepths[b] = d;
+        }
+
+        /**
+         * Mezcla por un valor (por ejemplo la velocidad): las animaciones van en orden con su punto ({@code walk} en 1.3, {@code run} en
+         * 3.7) y se mezclan las dos más cercanas, con el paso sincronizado (los pies no resbalan al cambiar). Se cambia el valor con
+         * {@link #valor(float)}.
+         */
+        public Layer mezcla(Clip[] clips, float[] puntos) {
+            this.blendClips = clips;
+            this.blendPts = puntos;
+            this.weightTarget = 1;
+            this.ended = false;
+            return this;
+        }
+
+        public Layer valor(float v) {
+            this.blendVal = v;
+            return this;
         }
 
         /** Solo afecta a estos huesos (y a los que cuelgan de ellos). */
@@ -71,8 +159,20 @@ public final class Animator {
         }
     }
 
+    static int depth(Geo geo, int b, int ancestor) {
+        int d = 0;
+        while (b >= 0 && b != ancestor) {
+            b = geo.bones[b].parent;
+            d++;
+        }
+        return d;
+    }
+
     private final Geo geo;
     private final List<Layer> layers = new ArrayList<>();
+    /** Para el editor: todo quieto o más lento. */
+    private boolean pausado;
+    private float escala = 1;
     private final Map<String, Layer> byName = new HashMap<>();
     private final Map<Clip, int[]> binds = new IdentityHashMap<>();
     private final Pose tmpA, tmpB;
@@ -112,6 +212,29 @@ public final class Animator {
 
     public void var(String name, double v) {
         vars.put("variable." + name, v);
+    }
+
+    /** Valor que las expresiones leen como query.X (lo llenan los renderizadores: ground_speed, health...). */
+    public void query(String name, double v) {
+        vars.put("query." + name, v);
+    }
+
+    /** Detiene todas las capas (el editor de animaciones). */
+    public void pausar(boolean p) {
+        this.pausado = p;
+    }
+
+    public boolean pausado() {
+        return pausado;
+    }
+
+    /** Cámara lenta (1 = normal). */
+    public void escala(float e) {
+        this.escala = e;
+    }
+
+    public java.util.List<Layer> capas() {
+        return java.util.Collections.unmodifiableList(layers);
     }
 
     /** Pone una animación en una capa con mezcla suave. Si ya está sonando la misma, no la reinicia (salvo restart). */
@@ -167,8 +290,20 @@ public final class Animator {
 
     /** Avanza el tiempo (segundos) y manda los eventos por los que se pasó. */
     public void tick(float dt) {
+        dt = pausado ? 0 : dt * escala;
         lifeTime += dt;
         for (Layer l : layers) {
+            if (l.blendClips != null) {
+                if (l.weight != l.weightTarget) {
+                    float step = l.weightSpeed * dt;
+                    l.weight = l.weight < l.weightTarget ? Math.min(l.weightTarget, l.weight + step) : Math.max(l.weightTarget, l.weight - step);
+                }
+                float len = blendLen(l);
+                if (len > 0) {
+                    l.phase = (l.phase + dt * l.speed / len) % 1F;
+                }
+                continue;
+            }
             if (l.weight != l.weightTarget) {
                 float step = l.weightSpeed * dt;
                 l.weight = l.weight < l.weightTarget ? Math.min(l.weightTarget, l.weight + step) : Math.max(l.weightTarget, l.weight - step);
@@ -234,10 +369,56 @@ public final class Animator {
         return l == null || l.clip == null || l.ended;
     }
 
+    /** Las dos animaciones de la mezcla que tocan y cuánto de la segunda. */
+    private static int blendIndex(Layer l, float[] f) {
+        float[] p = l.blendPts;
+        int n = p.length;
+        if (n == 1 || l.blendVal <= p[0]) {
+            f[0] = 0;
+            return 0;
+        }
+        if (l.blendVal >= p[n - 1]) {
+            f[0] = 0;
+            return n - 1;
+        }
+        int i = 0;
+        while (i < n - 2 && l.blendVal > p[i + 1]) {
+            i++;
+        }
+        f[0] = (l.blendVal - p[i]) / Math.max(1e-4F, p[i + 1] - p[i]);
+        return i;
+    }
+
+    private static float blendLen(Layer l) {
+        float[] f = new float[1];
+        int i = blendIndex(l, f);
+        float a = l.blendClips[i].length;
+        float b = i + 1 < l.blendClips.length ? l.blendClips[i + 1].length : a;
+        return a + (b - a) * f[0];
+    }
+
     /** Calcula la postura: empieza en reposo y aplica las capas en orden. */
     public void sample(Pose out) {
         out.reset();
         for (Layer l : layers) {
+            if (l.blendClips != null) {
+                if (l.weight <= 0.001F) {
+                    continue;
+                }
+                float[] f = new float[1];
+                int i = blendIndex(l, f);
+                tmpB.copyFrom(out);
+                Clip a = l.blendClips[i];
+                apply(a, l.phase * a.length, tmpB);
+                if (f[0] > 0.001F && i + 1 < l.blendClips.length) {
+                    Clip b = l.blendClips[i + 1];
+                    tmpA.copyFrom(out);
+                    apply(b, l.phase * b.length, tmpA);
+                    tmpB.blendTo(tmpA, f[0], (boolean[]) null);
+                }
+                blend(out, tmpB, Ease.smooth(l.weight), l);
+                continue;
+            }
             if (l.clip == null || l.weight <= 0.001F) {
                 continue;
             }
@@ -249,10 +430,11 @@ public final class Animator {
                     if (l.mask != null && !l.mask[b]) {
                         continue;
                     }
+                    float wb = l.maskW != null ? w * l.maskW[b] : w;
                     for (int k = b * 3; k < b * 3 + 3; k++) {
-                        out.rot[k] += tmpA.rot[k] * w;
-                        out.pos[k] += tmpA.pos[k] * w;
-                        out.scl[k] *= 1 + (tmpA.scl[k] - 1) * w;
+                        out.rot[k] += tmpA.rot[k] * wb;
+                        out.pos[k] += tmpA.pos[k] * wb;
+                        out.scl[k] *= 1 + (tmpA.scl[k] - 1) * wb;
                     }
                 }
                 continue;
@@ -262,11 +444,19 @@ public final class Animator {
             if (l.prev != null && l.fade < 1) {
                 tmpA.copyFrom(out);
                 apply(l.prev, l.prevTime, tmpA);
-                tmpA.blendTo(tmpB, Ease.smooth(l.fade), null);
-                out.blendTo(tmpA, Ease.smooth(l.weight), l.mask);
+                tmpA.blendTo(tmpB, Ease.smooth(l.fade), (boolean[]) null);
+                blend(out, tmpA, Ease.smooth(l.weight), l);
             } else {
-                out.blendTo(tmpB, Ease.smooth(l.weight), l.mask);
+                blend(out, tmpB, Ease.smooth(l.weight), l);
             }
+        }
+    }
+
+    private static void blend(Pose out, Pose o, float w, Layer l) {
+        if (l.maskW != null) {
+            out.blendTo(o, w, l.maskW);
+        } else {
+            out.blendTo(o, w, l.mask);
         }
     }
 

@@ -8,6 +8,15 @@ public final class Theme {
             good, bad;
     /** Marco con textura alrededor de los paneles (null = el borde dibujado de siempre). Ver {@link Ui#frame}. */
     public final net.minecraft.resources.ResourceLocation frame;
+    /**
+     * Fondo de pixel art que se repite dentro del panel (128x128, se dibuja al doble como el fondo de tierra de Minecraft); null = solo
+     * el degradado. Ver {@link #withFondo}.
+     */
+    public net.minecraft.resources.ResourceLocation fondo;
+    /** Cuánto tapa el degradado al fondo (0 = se ve todo el dibujo, 1 = nada). */
+    public float fondoVelo = 0.45F;
+    /** Animación del fondo: 0 nada, 1 estrellas que titilan, 2 agua que se mueve. */
+    public int fondoAnim;
 
     public Theme(int bgTop, int bgBottom, int border, int borderLight, int accent, int accent2, int text, int textDim, int title, int shadow,
             int button, int buttonHover, int buttonText, int good, int bad) {
@@ -51,14 +60,42 @@ public final class Theme {
     public static final Theme PIEDRA = new Theme(0xF02E3034, 0xF01C1D20, 0xFF0C0C0E, 0xFF6A6C72, 0xFF9FD86E, 0xFFFFD166, 0xFFEDEEF0,
             0xFFA4A7AE, 0xFFD8F5B8, 0x80000000, 0xFF44474E, 0xFF585C66, 0xFFFFFFFF, 0xFF8EE07A, 0xFFFF7A6A, marco("piedra"));
 
+    static {
+        NOCHE.fondo("noche", 0.35F, 1);
+        PERGAMINO.fondo("pergamino", 0.15F, 0);
+        MAR.fondo("mar", 0.35F, 2);
+        MADERA.fondo("madera", 0.30F, 0);
+        PIEDRA.fondo("piedra", 0.35F, 0);
+    }
+
+    private void fondo(String name, float velo, int anim) {
+        this.fondo = com.axeliscore.plat.Ids.core("textures/gui/fondo_" + name + ".png");
+        this.fondoVelo = velo;
+        this.fondoAnim = anim;
+    }
+
+    /** El mismo tema con otro fondo de pixel art (textura de 128x128 que se repite; null = sin fondo). */
+    public Theme withFondo(net.minecraft.resources.ResourceLocation f, float velo, int anim) {
+        Theme t = new Theme(bgTop, bgBottom, border, borderLight, accent, accent2, text, textDim, title, shadow, button, buttonHover, buttonText,
+                good, bad, frame);
+        t.fondo = f;
+        t.fondoVelo = velo;
+        t.fondoAnim = anim;
+        return t;
+    }
+
     private static net.minecraft.resources.ResourceLocation marco(String name) {
         return com.axeliscore.plat.Ids.core("textures/gui/marco_" + name + ".png");
     }
 
     /** El mismo tema con otro marco (null = sin marco). */
     public Theme withFrame(net.minecraft.resources.ResourceLocation f) {
-        return new Theme(bgTop, bgBottom, border, borderLight, accent, accent2, text, textDim, title, shadow, button, buttonHover, buttonText,
+        Theme t = new Theme(bgTop, bgBottom, border, borderLight, accent, accent2, text, textDim, title, shadow, button, buttonHover, buttonText,
                 good, bad, f);
+        t.fondo = fondo;
+        t.fondoVelo = fondoVelo;
+        t.fondoAnim = fondoAnim;
+        return t;
     }
 
     /** Un tema a partir de un color de fondo y uno de acento (lo demás se calcula). */

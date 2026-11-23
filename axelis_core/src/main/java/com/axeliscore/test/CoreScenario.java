@@ -333,6 +333,7 @@ public final class CoreScenario {
             t.add("limpiar coloso", 300, () -> t.cmd("kill @e[type=!player]"));
             combate(t);
             NpcScenario.npcs(t);
+            EstudioScenario.estudio(t);
             t.add("datos", 1500, () -> t.cmd("axeliscore datos @a"));
             t.add("datos en el cliente", 100, () -> t.check(com.axeliscore.plat.Nbt.i(
                     com.axeliscore.data.client.ClientData.player("axelis_core_prueba"), "visitas") > 0, "los datos del jugador llegaron al cliente"));

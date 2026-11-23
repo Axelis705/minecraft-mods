@@ -34,11 +34,15 @@ public final class GeoAssets {
     public static void clear() {
         GEOS.clear();
         CLIPS.clear();
+        JUNTAS.clear();
     }
 
     public static Geo geo(ResourceLocation id) {
         return GEOS.computeIfAbsent(id, k -> {
-            String txt = read(k);
+            String txt = EstudioArchivos.geo(k);
+            if (txt == null) {
+                txt = read(k);
+            }
             if (txt != null) {
                 try {
                     return GeoLoader.parse(txt);
@@ -55,18 +59,26 @@ public final class GeoAssets {
         if (ids.length == 1) {
             return clips1(ids[0]);
         }
-        Map<String, Clip> all = new LinkedHashMap<>();
-        for (ResourceLocation id : ids) {
-            for (Clip c : new ArrayList<>(clips1(id).all().values())) {
-                all.putIfAbsent(c.name, c);
+        // varias juntas: se guardan también (si no, el personaje se volvería a preparar en cada cuadro)
+        return JUNTAS.computeIfAbsent(java.util.List.of(ids), k -> {
+            Map<String, Clip> all = new LinkedHashMap<>();
+            for (ResourceLocation id : ids) {
+                for (Clip c : new ArrayList<>(clips1(id).all().values())) {
+                    all.putIfAbsent(c.name, c);
+                }
             }
-        }
-        return ClipLoader.library(all);
+            return ClipLoader.library(all);
+        });
     }
+
+    private static final Map<java.util.List<ResourceLocation>, Clip.Library> JUNTAS = new HashMap<>();
 
     private static Clip.Library clips1(ResourceLocation id) {
         return CLIPS.computeIfAbsent(id, k -> {
-            String txt = read(k);
+            String txt = EstudioArchivos.animaciones(k);
+            if (txt == null) {
+                txt = read(k);
+            }
             if (txt != null) {
                 try {
                     return ClipLoader.library(ClipLoader.parse(txt));
@@ -76,6 +88,11 @@ public final class GeoAssets {
             }
             return ClipLoader.library(new LinkedHashMap<>());
         });
+    }
+
+    /** El texto de un archivo de los recursos (sin el estudio); null si no existe. */
+    public static String texto(ResourceLocation id) {
+        return read(id);
     }
 
     private static String read(ResourceLocation id) {

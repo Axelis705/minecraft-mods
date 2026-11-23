@@ -196,16 +196,34 @@ public final class ClipLoader {
         Clip.Lerp lerp = Clip.Lerp.LINEAR;
         if (o.has("lerp_mode")) {
             String m = o.get("lerp_mode").getAsString().toLowerCase(Locale.ROOT);
-            lerp = m.equals("catmullrom") ? Clip.Lerp.CATMULLROM : m.equals("step") ? Clip.Lerp.STEP : Clip.Lerp.LINEAR;
+            lerp = m.equals("catmullrom") ? Clip.Lerp.CATMULLROM : m.equals("step") ? Clip.Lerp.STEP : m.equals("bezier") ? Clip.Lerp.BEZIER : Clip.Lerp.LINEAR;
         }
-        Ease.Fn ease = o.has("easing") ? Ease.get(o.get("easing").getAsString()) : Ease.LINEAR;
+        float arg = Float.NaN;
+        if (o.has("easingArgs") && o.get("easingArgs").isJsonArray() && o.getAsJsonArray("easingArgs").size() > 0) {
+            arg = o.getAsJsonArray("easingArgs").get(0).getAsFloat();
+        }
+        Ease.Fn ease = o.has("easing") ? Ease.get(o.get("easing").getAsString(), arg) : Ease.LINEAR;
         if (o.has("easing") && "catmullrom".equalsIgnoreCase(o.get("easing").getAsString())) {
             lerp = Clip.Lerp.CATMULLROM;
         }
         if (o.has("easing") && "step".equalsIgnoreCase(o.get("easing").getAsString())) {
             lerp = Clip.Lerp.STEP;
         }
-        return new Clip.Key(t, pre, post, lerp, ease);
+        float[] bz = null;
+        if (o.has("axelis_bezier")) {
+            // extensión propia (la escribe el lector de .bbmodel): {"lt": [...], "lv": [...], "rt": [...], "rv": [...]}
+            JsonObject b = o.getAsJsonObject("axelis_bezier");
+            bz = new float[12];
+            String[] ks = {"lt", "lv", "rt", "rv"};
+            float[] defs = {-0.1F, 0, 0.1F, 0};
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 3; j++) {
+                    bz[i * 3 + j] = b.has(ks[i]) && b.getAsJsonArray(ks[i]).size() > j ? b.getAsJsonArray(ks[i]).get(j).getAsFloat() : defs[i];
+                }
+            }
+            lerp = Clip.Lerp.BEZIER;
+        }
+        return new Clip.Key(t, pre, post, lerp, ease, bz);
     }
 
     /** [x, y, z] (números o expresiones) o un solo valor para los tres. */

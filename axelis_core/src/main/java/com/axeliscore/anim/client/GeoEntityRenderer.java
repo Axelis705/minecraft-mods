@@ -77,6 +77,26 @@ public abstract class GeoEntityRenderer<T extends Entity & Animated> extends Ent
     /** La textura de esta entidad. */
     protected abstract ResourceLocation texture(T e);
 
+    /** El modelo que usa (para el editor de animaciones). */
+    public ResourceLocation geoId() {
+        return geoId;
+    }
+
+    /** Sus archivos de animaciones (para el editor). */
+    public ResourceLocation[] animIds() {
+        return animIds.clone();
+    }
+
+    /** El tamaño del modelo para esa entidad (para el editor). */
+    @SuppressWarnings("unchecked")
+    public float escalaPara(Entity e) {
+        try {
+            return modelScale((T) e);
+        } catch (ClassCastException ex) {
+            return 1F;
+        }
+    }
+
     /** Textura de las partes que brillan (null = la misma). */
     protected ResourceLocation glowTexture(T e) {
         return null;
@@ -102,18 +122,27 @@ public abstract class GeoEntityRenderer<T extends Entity & Animated> extends Ent
     /** Prepara la animación y llena {@code s} (lo común a todas las versiones). */
     protected void fill(T e, float pt, Snap s) {
         AnimHost h = e.axHost();
+        if (frames.size() > 16) {
+            frames.clear(); // modelos viejos (recargados desde el estudio)
+        }
         if (h.bind(GeoAssets.geo(geoId), GeoAssets.clips(animIds))) {
             setupLayers(h);
             h.animator().listen((layer, clip, ev) -> onEvent(e, h, layer, clip, ev));
         }
-        e.axAnimate(h, pt);
+        consultas(e, h, pt);
+        boolean editor = EstudioEditor.controla(e, h);
+        if (!editor) {
+            e.axAnimate(h, pt);
+        }
         h.advance((e.tickCount + pt) / 20F);
-        e.axPose(h, h.pose(), pt);
+        if (!editor || EstudioEditor.conCodigo()) {
+            e.axPose(h, h.pose(), pt);
+        }
         s.host = h;
         s.scale = modelScale(e);
         s.tint = tint(e);
-        s.texture = texture(e);
-        s.glowTexture = glowTexture(e);
+        s.texture = EstudioArchivos.textura(texture(e));
+        s.glowTexture = EstudioArchivos.textura(glowTexture(e));
         s.invisible = e.isInvisible();
         s.deathTilt = 0;
         s.overlay = OverlayTexture.NO_OVERLAY;
@@ -132,6 +161,33 @@ public abstract class GeoEntityRenderer<T extends Entity & Animated> extends Ent
             s.leftHanded = le instanceof net.minecraft.world.entity.Mob m && m.isLeftHanded();
         } else {
             s.bodyYaw = Mth.rotLerp(pt, e.yRotO, e.getYRot());
+        }
+        if (editor) {
+            s.bodyYaw = EstudioEditor.giro(s.bodyYaw);
+        }
+    }
+
+    /**
+     * Lo que las animaciones pueden leer como {@code query.X} (o {@code q.X}) en Blockbench: ground_speed (bloques/s),
+     * vertical_speed, is_on_ground, is_in_water, is_sneaking, is_sprinting, health, max_health, hurt_time, yaw_speed (grados/s),
+     * head_x_rotation y head_y_rotation (grados, relativos al cuerpo).
+     */
+    protected void consultas(T e, AnimHost h, float pt) {
+        com.axeliscore.anim.Animator a = h.animator();
+        double dx = e.getX() - e.xo, dz = e.getZ() - e.zo;
+        a.query("ground_speed", Math.sqrt(dx * dx + dz * dz) * 20);
+        a.query("vertical_speed", (e.getY() - e.yo) * 20);
+        a.query("is_on_ground", e.onGround() ? 1 : 0);
+        a.query("is_in_water", e.isInWater() ? 1 : 0);
+        a.query("is_sneaking", e.isShiftKeyDown() ? 1 : 0);
+        a.query("is_sprinting", e.isSprinting() ? 1 : 0);
+        if (e instanceof LivingEntity le) {
+            a.query("health", le.getHealth());
+            a.query("max_health", le.getMaxHealth());
+            a.query("hurt_time", le.hurtTime);
+            a.query("yaw_speed", Mth.wrapDegrees(le.yBodyRot - le.yBodyRotO) * 20);
+            a.query("head_y_rotation", Mth.wrapDegrees(Mth.rotLerp(pt, le.yHeadRotO, le.yHeadRot) - Mth.rotLerp(pt, le.yBodyRotO, le.yBodyRot)));
+            a.query("head_x_rotation", Mth.lerp(pt, le.xRotO, le.getXRot()));
         }
     }
 

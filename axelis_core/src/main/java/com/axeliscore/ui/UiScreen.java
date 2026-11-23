@@ -21,6 +21,11 @@ public abstract class UiScreen extends CoreScreen {
     protected final List<Widget> widgets = new ArrayList<>();
     private long opened = -1, last;
     protected float time;
+    /**
+     * false: sin el panel del centro ni el fondo oscuro (la pantalla dibuja sus propios paneles en {@link #content} y se ve el mundo
+     * detrás, como el editor de animaciones).
+     */
+    protected boolean panelPrincipal = true;
 
     protected UiScreen(Component title, int pw, int ph, Theme theme) {
         super(title);
@@ -58,6 +63,11 @@ public abstract class UiScreen extends CoreScreen {
         return (System.currentTimeMillis() - opened) / 1000F;
     }
 
+    /** Vuelve a armar la pantalla (por ejemplo, después de cambiar datos desde afuera). */
+    public void reconstruir() {
+        init();
+    }
+
     /** Cambia el tema (colores y marco) y vuelve a armar la pantalla. */
     public void setTheme(Theme t) {
         this.theme = t;
@@ -74,15 +84,19 @@ public abstract class UiScreen extends CoreScreen {
         float dt = last == 0 ? 0 : Math.min(0.1F, (now - last) / 1000F);
         last = now;
         time += dt;
-        drawBackground(g, mx, my, pt);
+        if (panelPrincipal) {
+            drawBackground(g, mx, my, pt);
+        }
         float a = Ui.pop(Math.min(1F, openTime() / 0.22F));
         g.push();
-        float s = 0.9F + 0.1F * a;
-        g.translate(width / 2F, height / 2F, 0);
-        g.scale(s, s, 1);
-        g.translate(-width / 2F, -height / 2F, 0);
-        Ui.panel(g, px, py, pw, ph, theme, Math.min(1F, openTime() / 0.12F));
-        Ui.title(g, getTitle().getString(), px + pw / 2, py + 8, theme);
+        if (panelPrincipal) {
+            float s = 0.9F + 0.1F * a;
+            g.translate(width / 2F, height / 2F, 0);
+            g.scale(s, s, 1);
+            g.translate(-width / 2F, -height / 2F, 0);
+            Ui.panel(g, px, py, pw, ph, theme, Math.min(1F, openTime() / 0.12F));
+            Ui.title(g, getTitle().getString(), px + pw / 2, py + 8, theme);
+        }
         content(g, mx, my, pt);
         for (Widget w : widgets) {
             if (w.visible) {
@@ -90,6 +104,7 @@ public abstract class UiScreen extends CoreScreen {
             }
         }
         g.pop();
+        ondas(g);
         // cuadro de información de lo que está bajo el mouse (el de más arriba), que aparece suave
         InfoCard card = null;
         Object key = null;
@@ -127,8 +142,30 @@ public abstract class UiScreen extends CoreScreen {
     // Se recorre una copia: un botón puede rehacer la pantalla (pestaña, comprar, vender) y cambiar la lista mientras se recorre
     // (en 26.3 tiraba ConcurrentModificationException al soltar el clic).
 
+    /** Ondas de los clics (x, y, cuándo). */
+    private final List<float[]> ondas = new ArrayList<>();
+
+    private void ondas(G g) {
+        float now = Ui.tiempo();
+        ondas.removeIf(o -> now - o[2] > 0.3F);
+        for (float[] o : ondas) {
+            float k = (now - o[2]) / 0.3F;
+            int r = 2 + Math.round(k * 10);
+            int c = Ui.alpha(0xFFFFFFFF, (1 - k) * 0.55F);
+            int x = (int) o[0], y = (int) o[1];
+            // cuadro que se abre (al estilo de pixel art)
+            g.fill(x - r, y - r, x + r, y - r + 1, c);
+            g.fill(x - r, y + r - 1, x + r, y + r, c);
+            g.fill(x - r, y - r + 1, x - r + 1, y + r - 1, c);
+            g.fill(x + r - 1, y - r + 1, x + r, y + r - 1, c);
+        }
+    }
+
     @Override
     protected boolean onClick(double x, double y, int b) {
+        if (b == 0) {
+            ondas.add(new float[] {(float) x, (float) y, Ui.tiempo()});
+        }
         List<Widget> l = new ArrayList<>(widgets);
         for (int i = l.size() - 1; i >= 0; i--) {
             if (l.get(i).click(x, y, b)) {
