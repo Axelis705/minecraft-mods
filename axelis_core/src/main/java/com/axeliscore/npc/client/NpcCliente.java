@@ -245,7 +245,7 @@ public final class NpcCliente {
         String titulo = Ui.fit(m.titulo().getString(), ancho - 8);
         int lineas = objs.size() + (e == Misiones.Estado.LISTA && !m.npc().isEmpty() ? 1 : 0);
         int alto = 16 + lineas * 10 + 4;
-        int x = w - ancho - 6, y = h / 2 - alto / 2 - 20;
+        int x = w - ancho - 6, y = Math.max(56, h / 4); // debajo de los íconos de efectos
         g.fill(x - 2, y - 2, x + ancho, y + alto, 0x80000000);
         g.fill(x - 2, y - 2, x, y + alto, m.rareza().light);
         g.drawString(f, titulo, x + 4, y + 2, 0xFFFFD166, true);

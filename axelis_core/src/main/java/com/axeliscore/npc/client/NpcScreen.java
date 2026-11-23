@@ -249,7 +249,7 @@ public class NpcScreen extends UiScreen {
             Ui.text(g, por.getString(), x, y + 14, w, theme.textDim, 10);
             return;
         }
-        g.drawString(f, Ui.fit(m.titulo().getString(), w - 50), x, y, m.rareza().light, true);
+        g.drawString(f, Ui.fit(m.titulo().getString(), w - 50), x, y, colorRareza(m.rareza(), theme), !claro(theme));
         String tipo = m.esDiaria() ? Component.translatable("axelis_core.mision.diaria").getString() : "";
         if (!tipo.isEmpty()) {
             g.drawString(f, tipo, x + w - f.width(tipo), y, theme.accent2, false);
@@ -284,6 +284,21 @@ public class NpcScreen extends UiScreen {
                 ix += 22;
             }
         }
+    }
+
+    /** ¿El fondo del tema es claro (pergamino)? Entonces los colores claros no se leen. */
+    static boolean claro(Theme t) {
+        int c = t.bgTop;
+        float lum = (0.299F * ((c >> 16) & 255) + 0.587F * ((c >> 8) & 255) + 0.114F * (c & 255)) / 255F;
+        return lum > 0.6F;
+    }
+
+    /** Color del título según la rareza, que se lea en cualquier tema. */
+    static int colorRareza(com.axeliscore.ui.Rareza r, Theme t) {
+        if (r == com.axeliscore.ui.Rareza.COMUN) {
+            return t.title;
+        }
+        return claro(t) ? r.dark : r.light;
     }
 
     /** Cuadro de información de un premio (al pasar el mouse). */
@@ -460,9 +475,6 @@ public class NpcScreen extends UiScreen {
                 .getString();
         int alto = Math.max(40, Ui.wrap(s, w - 20).size() * 10 + 16);
         Ui.round(g, x, y, w, alto, Ui.alpha(0xFFFFFFFF, 0.88F));
-        // piquito hacia el retrato
-        g.fill(x + 16, y - 4, x + 24, y, Ui.alpha(0xFFFFFFFF, 0.88F));
-        g.fill(x + 18, y - 6, x + 22, y - 4, Ui.alpha(0xFFFFFFFF, 0.88F));
         // el texto aparece letra por letra
         int letras = (int) (openTime() * 60);
         String vis = s.substring(0, Math.min(s.length(), letras));

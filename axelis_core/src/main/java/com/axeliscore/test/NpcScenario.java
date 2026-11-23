@@ -69,7 +69,10 @@ final class NpcScenario {
         t.photo("21_npc_hablar", 1600, () -> hablarCon("axelis_core:mara"));
         t.add("abrió en misiones", 100, () -> conPantalla(s -> t.check(s.pestana() == 1, "con una misión nueva abre en Misiones")));
         t.photo("21_npc_hablar_saludo", 1400, () -> conPantalla(s -> s.mostrar(0)));
-        t.photo("22_npc_misiones", 600, () -> conPantalla(s -> s.elegir("axelis_core:pan", -1)));
+        t.photo("22_npc_misiones", 600, () -> conPantalla(s -> {
+            s.mostrar(1);
+            s.elegir("axelis_core:pan", -1);
+        }));
         t.add("aceptar", 900, () -> conPantalla(s -> {
             s.mostrar(1);
             t.check(s.pulsar("axelis_core.mision.aceptar"), "se puede aceptar la misión del pan");
@@ -89,7 +92,7 @@ final class NpcScenario {
         t.photo("25_npc_tienda", 700, () -> conPantalla(s -> {
             s.mostrar(2);
             s.elegir("", 0);
-            com.axeliscore.ui.UiScreen.fakeMouse = s.fila(5);
+            com.axeliscore.ui.UiScreen.fakeMouse = s.fila(2);
         }));
         t.add("comprar", 100, () -> conPantalla(s -> {
             com.axeliscore.ui.UiScreen.fakeMouse = null;
