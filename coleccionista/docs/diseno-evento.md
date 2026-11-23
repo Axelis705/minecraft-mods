@@ -1,6 +1,6 @@
 # Evento "Los Juegos del Coleccionista" — diseño (actualizado 23-nov-2026)
 
-Mod nuevo de Axelis (`coleccionista/` en el repo, mod id `coleccionista`) para un **evento en vivo** con sus amigos, inspirado en los eventos de juegos macabros de Minecraft, pero **todo original**: anfitrión, nombres, pruebas y trampas propias. Macabro y tenso al estilo Minecraft, **sin sangre**. Usa **Axelis Core** por dentro. Solo 1.20.1 (Forge 47.4.10, Java 17).
+Mod nuevo de Axelis (`coleccionista/` en el repo, mod id `coleccionista`) para un **evento en vivo** con sus amigos, inspirado en los eventos de juegos macabros de Minecraft, pero **todo original**: anfitrión, nombres, pruebas y trampas propias. Macabro y tenso al estilo Minecraft, **casi sin sangre** (solo unas manchas pequeñas en el uniforme, por decisión de Axelis). Usa **Axelis Core** por dentro. Solo 1.20.1 (Forge 47.4.10, Java 17).
 
 ## Decisiones de Axelis
 - **15–20 amigos, un solo día, 2–3 horas**, servidor abierto por Axelis, **mundo nuevo** (superplano) y todo en el overworld. Se transmite.
@@ -50,6 +50,10 @@ Comandos: `/evento tres preparar|empezar [ya]|arrancar|tiempo <elegir> <recorrid
 - **Candado de combinación:** cuelga de los barrotes junto a la puerta. Al usarlo la cámara se acerca y **la mano del jugador es el mouse**: se arrastra una rueda hacia arriba para subir el número y hacia abajo para bajarlo (también la ruedita del mouse, o flechas/números); el botón rojo prueba. Foquito verde si abre, rojo si no. Los demás ven el brazo del jugador moverse y oyen los clics. Esc regresa.
 - **Chat:** `/evento chat cerrar|abrir` (o el botón del panel): con el chat cerrado solo escriben el host, los organizadores y los operadores (tampoco /msg, /me, /say). La voz no se toca.
 - **El mapa se cuida solo:** dentro del complejo no aparece ningún bicho que no ponga el evento (murciélagos, zombis, patrullas...), y en supervivencia nadie rompe ni pone bloques. El barandal de las pasarelas choca como cerca (no se puede subir para caer).
+- **Uniforme de pieza** (Vestuario del Core): todos llevan encima de su skin una camisa color hueso gastada, pantalón gris y tenis de lona,
+  con una tela cosida con su **número** en el pecho y en la espalda y unas manchas rojas pequeñas (6 variantes, distintas por persona;
+  también con brazos delgados). Cada quien conserva su cara. No se quita, no ocupa la armadura; se pone al inscribirse y se quita al salir
+  del evento; el cuerpo de una pieza eliminada lo sigue llevando. `/evento uniforme si|no`. Texturas: `herramientas/prendas/uniforme.py`.
 - **El catre** no sirve para dormir (el evento acuesta a las piezas en la sala de espera y las levanta).
 
 ## Estilo del complejo (bloques propios)
