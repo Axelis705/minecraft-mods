@@ -38,6 +38,9 @@ public final class Fantasmas {
     /** La pieza ya es fantasma: el jugador pasa a espectador; el bot se desvanece. */
     static void convertir(MinecraftServer s, Evento ev, Pieza p) {
         Entity e = Evento.entidad(s, p);
+        if (e != null) {
+            Cuerpos.dejar(e, p);
+        }
         if (e instanceof ServerPlayer sp) {
             sp.setGameMode(GameType.SPECTATOR);
             Plat.msg(sp, Component.translatable(MOD + ".fantasma.eres").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);

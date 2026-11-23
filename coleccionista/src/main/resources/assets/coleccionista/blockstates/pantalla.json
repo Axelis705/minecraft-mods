@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "facing=south,grande=true": {
+      "model": "coleccionista:block/pantalla",
+      "y": 0
+    },
+    "facing=south,grande=false": {
+      "model": "coleccionista:block/pantalla",
+      "y": 0
+    },
+    "facing=west,grande=true": {
+      "model": "coleccionista:block/pantalla",
+      "y": 90
+    },
+    "facing=west,grande=false": {
+      "model": "coleccionista:block/pantalla",
+      "y": 90
+    },
+    "facing=north,grande=true": {
+      "model": "coleccionista:block/pantalla",
+      "y": 180
+    },
+    "facing=north,grande=false": {
+      "model": "coleccionista:block/pantalla",
+      "y": 180
+    },
+    "facing=east,grande=true": {
+      "model": "coleccionista:block/pantalla",
+      "y": 270
+    },
+    "facing=east,grande=false": {
+      "model": "coleccionista:block/pantalla",
+      "y": 270
+    }
+  }
+}

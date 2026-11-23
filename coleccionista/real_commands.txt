@@ -1,6 +1,6 @@
 axeliscore
 coleccionista
-forceload add -16 -16 16 16
+forceload add -16 -16 64 80
 #pausa 3
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
@@ -10,7 +10,6 @@ evento prueba Encadenados
 evento reloj 600
 evento eliminar Bot_01
 evento eliminar Bot_02 Encadenados
-evento eliminar Bot_02
 evento pausar
 #pausa 1
 evento reanudar
@@ -22,6 +21,18 @@ evento eliminar Bot_04
 evento eliminar Bot_05
 #pausa 1
 evento reiniciar confirmar
+execute in minecraft:overworld positioned 0 -60 40 run evento construir
+#pausa 6
+execute in minecraft:overworld positioned 18 -60 51 run evento bots 4
+evento investigar 5
+evento sala
+#pausa 2
+evento despertar
+#pausa 42
+evento celdas abrir
+evento eliminar Bot_02
+evento cuerpos limpiar
+evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
@@ -32,3 +43,12 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_ELIMINADO 05 Bot_05 quedan=1
 #expect COLECCIONISTA_GANADOR 06 Bot_06
 #expect COLECCIONISTA_REINICIADO
+#expect COLECCIONISTA_CONSTRUIDO celdas
+#expect COLECCIONISTA_PISTAS listas
+#expect COLECCIONISTA_CELDA 04 Bot_04 -> 4
+#expect COLECCIONISTA_SALA_ESPERA piezas=4
+#expect COLECCIONISTA_DESPERTAR piezas=4
+#expect COLECCIONISTA_DISCURSO bienvenida
+#expect COLECCIONISTA_DISCURSO_FIN bienvenida
+#expect COLECCIONISTA_CANDADOS activos
+#expect COLECCIONISTA_CUERPO 02 Bot_02

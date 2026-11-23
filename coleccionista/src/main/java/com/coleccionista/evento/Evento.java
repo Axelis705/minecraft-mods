@@ -59,6 +59,8 @@ public final class Evento {
     long relojResta;
     int coleccionados;
     int siguienteNumero = 1;
+    /** Sala de espera: todos en su celda, acostados y con la pantalla en negro. */
+    boolean sala;
 
     private Evento() {
     }
@@ -369,6 +371,11 @@ public final class Evento {
             }
         }
         piezas.clear();
+        sala = false;
+        Despertar.reiniciar();
+        Cuerpos.limpiar(s);
+        Pantallas.modo(s, "apagada", "");
+        Celdas.candados(s, false);
         fase = Fase.ESPERA;
         prueba = "";
         relojFin = 0;
@@ -387,7 +394,9 @@ public final class Evento {
         if (e.relojFin > 0 && s.overworld().getGameTime() >= e.relojFin) {
             e.relojFin = 0;
             Coleccionista.LOGGER.info("COLECCIONISTA_TIEMPO {}", e.prueba);
-            Anuncio.tiempo(s);
+            if (!Despertar.alAcabarReloj(s)) {
+                Anuncio.tiempo(s);
+            }
             e.cambio(s);
         }
         if (e.fase == Fase.PAUSA && s.getTickCount() % 10 == 0) {
@@ -424,6 +433,7 @@ public final class Evento {
         t.putLong("relojResta", relojResta);
         t.putInt("coleccionados", coleccionados);
         t.putInt("siguiente", siguienteNumero);
+        t.putBoolean("sala", sala);
         ws.global().put("evento", t);
         ws.dirty();
     }
@@ -446,6 +456,7 @@ public final class Evento {
         relojResta = Nbt.l(t, "relojResta");
         coleccionados = Nbt.i(t, "coleccionados");
         siguienteNumero = Math.max(1, Nbt.i(t, "siguiente"));
+        sala = t.getBoolean("sala");
     }
 
     /** Lo que se manda a los clientes. */
@@ -455,6 +466,7 @@ public final class Evento {
         t.putString("prueba", prueba);
         t.putLong("fin", relojFin);
         t.putLong("resta", relojResta);
+        t.putBoolean("sala", sala);
         ListTag l = new ListTag();
         int vivos = 0;
         for (Pieza p : piezas.values()) {

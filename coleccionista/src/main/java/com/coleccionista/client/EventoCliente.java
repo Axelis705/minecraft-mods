@@ -51,6 +51,11 @@ public final class EventoCliente {
         return !PIEZAS.isEmpty();
     }
 
+    /** ¿Estamos en la sala de espera? */
+    public static boolean sala() {
+        return estado.getBoolean("sala");
+    }
+
     public static String fase() {
         return Nbt.s(estado, "fase");
     }

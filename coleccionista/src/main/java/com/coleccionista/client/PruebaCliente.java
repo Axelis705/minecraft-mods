@@ -107,9 +107,70 @@ final class PruebaCliente {
         t.photo("10_ganador", 1500, () -> {
         });
         t.add("hay ganador", 100, () -> t.check(EventoCliente.vivos() == 1 && "FIN".equals(EventoCliente.fase()), "queda una sola pieza"));
+        mapa(t);
         t.add("limpiar", 1500, () -> {
             t.cmd("evento reiniciar confirmar");
             t.cmd("gamemode creative @a");
         });
+    }
+
+    /** El Ala de celdas: construir, sala de espera, ¡pum!, cinemática, discurso, acercarse a la tele, candado, cuerpos. */
+    private static void mapa(ClientTest.Script t) {
+        // el mapa queda con el origen en (0, -61, 30): celda 1 en (3, -60, 34), pasillo en z 41
+        t.add("mapa: construir", 9000, () -> {
+            t.cmd("evento reiniciar confirmar");
+            t.cmd("kill @e[type=!player]");
+            t.cmd("gamemode creative @a");
+            t.lookFrom(18, -50, 20, 18, -60, 41);
+            t.cmd("execute positioned 0 -60 30 run evento construir");
+        });
+        t.add("mapa: piezas", 2500, () -> {
+            t.cmd("evento inscribir @a");
+            t.cmd("execute positioned 18 -60 41 run evento bots 7");
+            t.cmd("evento investigar 22");
+        });
+        t.photo("20_sala_espera", 3000, () -> t.cmd("evento sala"));
+        t.add("en la sala", 100, () -> {
+            t.check(EventoCliente.sala(), "estamos en la sala de espera");
+            t.check(Minecraft.getInstance().player.isSleeping(), "estoy acostado en mi cama");
+            t.check(Espera.activa(), "veo la pantalla de espera");
+        });
+        t.photo("21_despertar_cine", 2000, () -> t.cmd("evento despertar"));
+        t.add("cinematica", 100, () -> t.check(Cine.activo(), "está la cinemática del despertar"));
+        t.photo("22_parpadeo", 2900, () -> {
+        });
+        t.photo("23_celda_luz", 3200, () -> {
+        });
+        t.add("despierto", 100, () -> {
+            t.check(!Minecraft.getInstance().player.isSleeping(), "ya me levanté");
+            t.check(!Cine.activo(), "terminó la cinemática");
+        });
+        // a los 22 segundos se prende la tele y habla el Coleccionista
+        t.photo("24_tele_habla", 15500, () -> {
+        });
+        t.add("habla", 100, () -> {
+            var st = com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Pantallas.KEY);
+            t.check(st != null && "coleccionista".equals(st.getString("modo")), "las pantallas muestran al Coleccionista");
+        });
+        t.photo("25_zoom_tele", 2600, Atajos::acercarse);
+        t.add("zoom", 100, () -> t.check(Cine.enPantalla(), "la cámara está frente a la tele"));
+        t.photo("25b_zoom_subtitulo", 5000, () -> {
+        });
+        t.add("volver", 1200, Atajos::acercarse);
+        t.add("esperar discurso", 26000, () -> {
+        });
+        t.photo("26_candado", 900, () -> com.axeliscore.plat.client.Screens.open(new CandadoScreen()));
+        t.add("cerrar candado", 500, () -> com.axeliscore.plat.client.Screens.close());
+        t.photo("27_pasillo", 2500, () -> {
+            t.cmd("evento celdas abrir");
+            t.cmd("gamemode spectator @a");
+            t.lookFrom(-4.5, -60, 41.5, 40, -59.2, 41.5);
+        });
+        t.photo("28_cuerpo", 2500, () -> {
+            t.cmd("evento eliminar Bot_02 Encadenados");
+            t.lookFrom(9.5, -59.4, 39.5, 9.5, -60.6, 34.5);
+        });
+        t.photo("29_pantalla_grande", 2000, () -> t.lookFrom(10.5, -57, 41.5, -7, -56, 41.5));
+        t.photo("30_pasarela", 1500, () -> t.lookFrom(35.5, -54.4, 38, 0, -55, 38));
     }
 }

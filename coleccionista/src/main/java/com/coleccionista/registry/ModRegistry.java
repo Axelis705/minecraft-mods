@@ -25,6 +25,33 @@ public final class ModRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Coleccionista.MODID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Coleccionista.MODID);
 
+    // ---------------------------------------------------------------- bloques del mapa
+    public static final net.minecraftforge.registries.RegistryObject<Block> PANTALLA = BLOCKS.register("pantalla",
+            () -> new com.coleccionista.bloque.PantallaBlock(com.axeliscore.plat.Reg.block(Coleccionista.MODID, "pantalla")
+                    .strength(-1F, 3600000F).noOcclusion().lightLevel(s -> 3).sound(net.minecraft.world.level.block.SoundType.GLASS)));
+    public static final net.minecraftforge.registries.RegistryObject<Block> CANDADO = BLOCKS.register("candado",
+            () -> new com.coleccionista.bloque.CandadoBlock(com.axeliscore.plat.Reg.block(Coleccionista.MODID, "candado")
+                    .strength(-1F, 3600000F).noOcclusion().sound(net.minecraft.world.level.block.SoundType.METAL)));
+    public static final net.minecraftforge.registries.RegistryObject<Block> FOCO = BLOCKS.register("foco",
+            () -> new com.coleccionista.bloque.FocoBlock(com.axeliscore.plat.Reg.block(Coleccionista.MODID, "foco")
+                    .strength(-1F, 3600000F).noOcclusion().sound(net.minecraft.world.level.block.SoundType.LANTERN)
+                    .lightLevel(s -> s.getValue(com.coleccionista.bloque.FocoBlock.ENCENDIDO) ? 13 : 0)));
+    public static final net.minecraftforge.registries.RegistryObject<Item> PANTALLA_ITEM = ITEMS.register("pantalla",
+            () -> new net.minecraft.world.item.BlockItem(PANTALLA.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "pantalla")));
+    public static final net.minecraftforge.registries.RegistryObject<Item> CANDADO_ITEM = ITEMS.register("candado",
+            () -> new net.minecraft.world.item.BlockItem(CANDADO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "candado")));
+    public static final net.minecraftforge.registries.RegistryObject<Item> FOCO_ITEM = ITEMS.register("foco",
+            () -> new net.minecraft.world.item.BlockItem(FOCO.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "foco")));
+    public static final DeferredRegister<net.minecraft.world.level.block.entity.BlockEntityType<?>> BLOCK_ENTITIES =
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Coleccionista.MODID);
+    public static final net.minecraftforge.registries.RegistryObject<net.minecraft.world.level.block.entity.BlockEntityType<
+            com.coleccionista.bloque.PantallaBE>> PANTALLA_BE = BLOCK_ENTITIES.register("pantalla",
+            () -> com.axeliscore.plat.Reg.blockEntity(com.coleccionista.bloque.PantallaBE::new, PANTALLA.get()));
+    /** El cuerpo de una pieza eliminada. */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.Cadaver>> CADAVER =
+            ENTITIES.register("cadaver", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "cadaver",
+                    EntityType.Builder.<com.coleccionista.evento.Cadaver>of(com.coleccionista.evento.Cadaver::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(1.6F, 0.4F).clientTrackingRange(10)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(
@@ -43,5 +70,6 @@ public final class ModRegistry {
         BLOCKS.register(bus);
         ENTITIES.register(bus);
         SOUNDS.register(bus);
+        BLOCK_ENTITIES.register(bus);
     }
 }

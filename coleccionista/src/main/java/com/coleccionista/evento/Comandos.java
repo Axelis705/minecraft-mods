@@ -108,7 +108,59 @@ public final class Comandos {
                             return ok(c, Component.translatable(MOD + ".cmd.reiniciado"));
                         })))
                 .then(Commands.literal("bots").then(Commands.argument("cantidad", IntegerArgumentType.integer(1, 30))
-                        .executes(c -> bots(c, IntegerArgumentType.getInteger(c, "cantidad"))))));
+                        .executes(c -> bots(c, IntegerArgumentType.getInteger(c, "cantidad")))))
+                // ---- el mapa y el despertar
+                .then(Commands.literal("construir").executes(Comandos::construir))
+                .then(Commands.literal("sala").executes(c -> {
+                    if (!Complejo.construido(c.getSource().getServer())) {
+                        return error(c, Component.translatable(MOD + ".cmd.sin_mapa"));
+                    }
+                    Despertar.esperar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".cmd.sala"));
+                }))
+                .then(Commands.literal("despertar").executes(c -> Despertar.despertar(c.getSource().getServer())
+                        ? ok(c, Component.translatable(MOD + ".cmd.despertar")) : error(c, Component.translatable(MOD + ".cmd.no_sala"))))
+                .then(Commands.literal("investigar").then(Commands.argument("segundos", IntegerArgumentType.integer(10, 3600)).executes(c -> {
+                    Despertar.segundosInvestigar = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.translatable(MOD + ".cmd.investigar", Despertar.segundosInvestigar));
+                })))
+                .then(Commands.literal("discurso").executes(c -> {
+                    Despertar.discurso(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".cmd.discurso"));
+                }))
+                .then(Commands.literal("pantalla")
+                        .then(Commands.literal("apagada").executes(c -> pantalla(c, "apagada", "")))
+                        .then(Commands.literal("estatica").executes(c -> pantalla(c, "estatica", "")))
+                        .then(Commands.literal("coleccionista").executes(c -> pantalla(c, "coleccionista", "")))
+                        .then(Commands.literal("texto").then(Commands.argument("texto", StringArgumentType.greedyString())
+                                .executes(c -> pantalla(c, "texto", StringArgumentType.getString(c, "texto"))))))
+                .then(Commands.literal("celdas")
+                        .then(Commands.literal("abrir").executes(c -> celdas(c, 0, true))
+                                .then(Commands.argument("n", IntegerArgumentType.integer(1, 24))
+                                        .executes(c -> celdas(c, IntegerArgumentType.getInteger(c, "n"), true))))
+                        .then(Commands.literal("cerrar").executes(c -> celdas(c, 0, false))))
+                .then(Commands.literal("candados")
+                        .then(Commands.literal("si").executes(c -> {
+                            Celdas.candados(c.getSource().getServer(), true);
+                            return ok(c, Component.translatable(MOD + ".cmd.candados_si"));
+                        }))
+                        .then(Commands.literal("no").executes(c -> {
+                            Celdas.candados(c.getSource().getServer(), false);
+                            return ok(c, Component.translatable(MOD + ".cmd.candados_no"));
+                        })))
+                .then(Commands.literal("luces")
+                        .then(Commands.literal("si").executes(c -> {
+                            Celdas.luces(c.getSource().getServer(), true);
+                            return ok(c, Component.translatable(MOD + ".cmd.luces"));
+                        }))
+                        .then(Commands.literal("no").executes(c -> {
+                            Celdas.luces(c.getSource().getServer(), false);
+                            return ok(c, Component.translatable(MOD + ".cmd.luces"));
+                        })))
+                .then(Commands.literal("cuerpos").then(Commands.literal("limpiar").executes(c -> {
+                    int n = Cuerpos.limpiar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".cmd.cuerpos", n));
+                }))));
     }
 
     private static int ok(CommandContext<CommandSourceStack> c, Component m) {
@@ -238,6 +290,32 @@ public final class Comandos {
     private static int reloj(CommandContext<CommandSourceStack> c, int seg) {
         Evento.get(c.getSource().getServer()).reloj(c.getSource().getServer(), seg);
         return ok(c, Component.translatable(MOD + ".cmd.reloj", seg / 60, String.format("%02d", seg % 60)));
+    }
+
+    private static int construir(CommandContext<CommandSourceStack> c) {
+        ServerLevel l = c.getSource().getLevel();
+        if (l != c.getSource().getServer().overworld()) {
+            return error(c, Component.translatable(MOD + ".cmd.solo_overworld"));
+        }
+        if (Complejo.construyendo()) {
+            return error(c, Complejo.avance());
+        }
+        net.minecraft.core.BlockPos o = net.minecraft.core.BlockPos.containing(c.getSource().getPosition()).below();
+        CommandSourceStack src = c.getSource();
+        Complejo.construir(l, o, () -> src.sendSuccess(() -> Component.translatable(MOD + ".cmd.construido", o.getX(), o.getY(), o.getZ()),
+                true));
+        return ok(c, Component.translatable(MOD + ".cmd.construyendo", 0));
+    }
+
+    private static int pantalla(CommandContext<CommandSourceStack> c, String modo, String texto) {
+        Pantallas.callar(c.getSource().getServer());
+        Pantallas.modo(c.getSource().getServer(), modo, texto);
+        return ok(c, Component.translatable(MOD + ".cmd.pantalla", modo));
+    }
+
+    private static int celdas(CommandContext<CommandSourceStack> c, int n, boolean abrir) {
+        Celdas.puertas(c.getSource().getServer(), n, abrir);
+        return ok(c, Component.translatable(MOD + (abrir ? ".cmd.celdas_abiertas" : ".cmd.celdas_cerradas")));
     }
 
     /** Pone jugadores de prueba en círculo alrededor de quien manda el comando y los inscribe. */

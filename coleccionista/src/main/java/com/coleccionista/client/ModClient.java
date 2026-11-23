@@ -18,6 +18,8 @@ public final class ModClient {
     @SubscribeEvent
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerEntityRenderer(ModRegistry.BOT.get(), BotRenderer::new);
+        e.registerEntityRenderer(ModRegistry.CADAVER.get(), CadaverRenderer::new);
+        e.registerBlockEntityRenderer(ModRegistry.PANTALLA_BE.get(), PantallaRenderer::new);
     }
 
     @SubscribeEvent
@@ -27,6 +29,10 @@ public final class ModClient {
         EscenaAviso.init();
         FantasmaRender.init();
         Camara.init();
+        Cine.init();
+        Espera.init();
+        Filtro.init();
+        com.axeliscore.ui.ScreenRegistry.register(Coleccionista.MODID + ":candado", CandadoScreen::new);
         // prueba con fotos: cliente-core.yml con mod=coleccionista y escenario=coleccionista
         ClientTest.scenario(Coleccionista.MODID, PruebaCliente::escenario);
     }

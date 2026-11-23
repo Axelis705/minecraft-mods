@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "encendido=false": {
+      "model": "coleccionista:block/foco_apagado"
+    },
+    "encendido=true": {
+      "model": "coleccionista:block/foco_encendido"
+    }
+  }
+}

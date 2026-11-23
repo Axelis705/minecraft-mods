@@ -35,7 +35,7 @@ public final class EventoHud {
 
     private static void render(G g, int w, int h) {
         Minecraft mc = Minecraft.getInstance();
-        if (oculto || mc.options.hideGui || mc.player == null || EscenaAviso.pantallaCompleta()
+        if (oculto || mc.options.hideGui || mc.player == null || EscenaAviso.pantallaCompleta() || Espera.activa() || Cine.activo()
                 || (!EventoCliente.activo() && !EventoCliente.soyOrganizador())) {
             return;
         }

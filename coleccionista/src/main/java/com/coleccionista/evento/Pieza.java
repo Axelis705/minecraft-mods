@@ -26,6 +26,8 @@ public final class Pieza {
     public int orden;
     /** Jugador de prueba (no es una persona). */
     public boolean bot;
+    /** Su celda en el Ala de celdas (0: ninguna). */
+    public int celda;
 
     public Pieza(UUID id, String nombre, int numero, boolean bot) {
         this.id = id;
@@ -53,6 +55,7 @@ public final class Pieza {
         t.putString("motivo", motivo);
         t.putInt("orden", orden);
         t.putBoolean("bot", bot);
+        t.putInt("celda", celda);
         return t;
     }
 
@@ -66,6 +69,7 @@ public final class Pieza {
         p.equipo = t.contains("equipo") ? t.getInt("equipo") : -1;
         p.motivo = Nbt.s(t, "motivo");
         p.orden = Nbt.i(t, "orden");
+        p.celda = Nbt.i(t, "celda");
         return p;
     }
 }
