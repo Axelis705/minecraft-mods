@@ -850,7 +850,8 @@ final class DesignForja {
         mob(b, -6, 0, 40, "escoria", null);
         mob(b, 5, 0, 58, "escoria", null);
         mob(b, -12, 0, 52, "chispero", null);
-        mob(b, 0, 0, 64, "fundidor", null);
+        // etapa 293: en la nave de colada manda el Capataz (mini-jefe), junto al crisol
+        mob(b, 0, 0, 64, "capataz", null);
         mob(b, -12, FY + 1, 44, "escoria", null);
         mob(b, 12, FY + 1, 66, "chispero", null);
         mob(b, 0, FY + 3, 57, "fundidor", "llave_celda");

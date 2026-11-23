@@ -293,6 +293,7 @@ execute if block 1989 -61 92 minecraft:iron_door run say PRUEBA_FUNDICION_CELDA_
 execute if block 1987 -61 92 minecraft:iron_bars run say PRUEBA_FUNDICION_CELDA_BARROTES_OK
 execute if entity @e[type=mundos_de_axelis:escoria,x=1934,y=-70,z=-16,dx=132,dy=60,dz=142] run say PRUEBA_FUNDICION_ESCORIAS_OK
 execute if entity @e[type=mundos_de_axelis:chispero,x=1934,y=-70,z=-16,dx=132,dy=60,dz=142] run say PRUEBA_FUNDICION_CHISPEROS_OK
+execute if entity @e[type=mundos_de_axelis:capataz,x=1934,y=-70,z=-16,dx=132,dy=60,dz=142] run say PRUEBA_FUNDICION_CAPATAZ_OK
 execute if entity @e[type=mundos_de_axelis:fundidor,x=1990,y=-64,z=65,dx=20,dy=10,dz=20,nbt={ForgeData:{MundosTag:"llave_celda"}}] run say PRUEBA_FUNDICION_FUNDIDOR_LLAVE_OK
 execute if entity @e[type=mundos_de_axelis:habitante,x=1984,y=-63,z=91,dx=6,dy=4,dz=6,nbt={NpcState:0,Npc:"hilda"}] run say PRUEBA_HILDA_PRESA_OK
 kill @e[type=mundos_de_axelis:fundidor,x=1990,y=-64,z=65,dx=20,dy=10,dz=20,nbt={ForgeData:{MundosTag:"llave_celda"}}]
@@ -444,6 +445,7 @@ execute if data block 1101 -58 82 {Kind:"LOCKED",Stage:1,LockLevel:3} run say PR
 execute if data block 1104 -20 63 {Kind:"TRIAL",Stage:1} run say PRUEBA_TEMPLO_COFRE_JARDIN_OK
 execute if data block 1091 -48 59 {LootTable:"mundos_de_axelis:chests/barril_bosque"} run say PRUEBA_TEMPLO_BARRIL_OK
 execute if entity @e[type=mundos_de_axelis:raizal,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_RAIZAL_OK
+execute if entity @e[type=mundos_de_axelis:guardian_musgo,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_GUARDIAN_OK
 execute if entity @e[type=mundos_de_axelis:brote,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_BROTES_OK
 execute if entity @e[type=mundos_de_axelis:espinoso,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_ESPINOSOS_OK
 execute unless entity @e[type=mundos_de_axelis:habitante,x=1050,y=-60,z=10,dx=100,dy=90,dz=120] run say PRUEBA_TEMPLO_SIN_NPC_OK
@@ -602,6 +604,8 @@ mundos prueba construir 2
 #expect PRUEBA_TEO_CASA_DESARMADA_OK
 #expect PRUEBA_TORRE_ARCANA_NATURAL_ESBIRROS_OK
 #expect PRUEBA_TEMPLO_PIEDRA_OK
+#expect PRUEBA_TEMPLO_GUARDIAN_OK
+#expect PRUEBA_FUNDICION_CAPATAZ_OK
 #expect PRUEBA_TEMPLO_COFRE_OK
 #expect PRUEBA_TEMPLO_RAIZAL_OK
 #expect PRUEBA_TEMPLO_BROTES_OK

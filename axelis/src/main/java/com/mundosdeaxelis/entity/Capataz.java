@@ -159,6 +159,7 @@ public class Capataz extends Monster {
             return;
         }
         this.bossEvent.setProgress(Mth.clamp(getHealth() / getMaxHealth(), 0.0F, 1.0F));
+        barraCerca();
         if (!enraged && getHealth() <= getMaxHealth() * 0.5F) {
             enraged = true;
             this.bossEvent.setColor(BossEvent.BossBarColor.RED);
@@ -294,10 +295,24 @@ public class Capataz extends Monster {
         return super.hurt(source, amount);
     }
 
-    @Override
-    public void startSeenByPlayer(ServerPlayer player) {
-        super.startSeenByPlayer(player);
-        this.bossEvent.addPlayer(player);
+    /**
+     * Etapa 293: la barra solo se ve de cerca (a 28 bloques; se quita a más de 36), también cuando guarda una estructura del mundo
+     * (antes salía en cuanto el jugador lo «veía», a muchos chunks).
+     */
+    private void barraCerca() {
+        if (this.tickCount % 10 != 0 || !(this.level() instanceof net.minecraft.server.level.ServerLevel sl)) {
+            return;
+        }
+        for (ServerPlayer p : new java.util.ArrayList<>(this.bossEvent.getPlayers())) {
+            if (p.isRemoved() || p.level() != sl || p.distanceToSqr(this) > 36 * 36) {
+                this.bossEvent.removePlayer(p);
+            }
+        }
+        for (ServerPlayer p : sl.getEntitiesOfClass(ServerPlayer.class, getBoundingBox().inflate(28))) {
+            if (p.distanceToSqr(this) <= 28 * 28 && !p.isSpectator()) {
+                this.bossEvent.addPlayer(p);
+            }
+        }
     }
 
     @Override

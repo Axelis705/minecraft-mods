@@ -14,7 +14,7 @@ import java.util.List;
  * <li><b>Biblioteca de corteza</b> (y = 14), <b>Jardín de setas</b> (y = 28) y <b>Armería de los guardianes</b> (y = 42): plataformas
  * redondas en el centro del tronco, con ventanas (agujeros de nudo) hacia fuera.</li>
  * <li><b>La Copa</b> (y = 56): el tronco se abre en una plataforma entre ramas gruesas, bajo las hojas; allí está la Piedra de
- * Portal: Naturaleza, el tesoro y el Raizal que la guarda.</li>
+ * Portal: Naturaleza, el tesoro y el Guardián de Musgo que la guarda (etapa 293).</li>
  * </ul>
  * Coordenadas: el tronco está en (0, CZ); la entrada en z = CZ - radio de la base.
  */
@@ -705,6 +705,8 @@ final class DesignBosque {
         mob(b, -1, L2, CZ - 1, "espinoso");
         mob(b, 2, L3, CZ - 2, "espinoso");
         mob(b, -1, L3, CZ - 2, "brote");
-        mob(b, 2, COPA, CZ - 3, "raizal");
+        // etapa 293: la Copa la guarda el Guardián de Musgo (mini-jefe); el Raizal vigila la armería
+        mob(b, 0, COPA, CZ + 6, "guardian_musgo");
+        mob(b, 1, L3, CZ + 2, "raizal");
     }
 }

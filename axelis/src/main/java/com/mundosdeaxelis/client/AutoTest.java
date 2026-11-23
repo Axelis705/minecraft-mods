@@ -1160,7 +1160,7 @@ public final class AutoTest {
         add("templo (biblioteca, foto)", 300, () -> shot("46f_templo_biblioteca"));
         add("templo (altar)", 2500, () -> standLooking(TPX + 0.5, TPY + 57, TPZ0 + 39.5, TPX + 0.5, TPY + 56.5, TPZ0 + 47.5));
         add("templo (altar, foto)", 300, () -> {
-            check("el Raizal guarda la Copa del árbol", clientCount(com.mundosdeaxelis.entity.Raizal.class) >= 1);
+            check("el Guardián de Musgo guarda la Copa del árbol", clientCount(com.mundosdeaxelis.entity.GuardianMusgo.class) >= 1);
             shot("46d_templo_altar");
         });
         add("templo (deshacer)", 2500, () -> {
