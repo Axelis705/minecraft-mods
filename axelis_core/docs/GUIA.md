@@ -289,6 +289,43 @@ Todo se guarda con el jugador (`PlayerStore` del Core: `misiones`, `amistad`, `t
 **Teclas propias** (`ui/Teclas`): `Teclas.nueva(mod, "accion", 'J', () -> ...)` en el constructor del mod; salen en Controles
 (`key.<mod>.accion`, categoría `key.categories.<mod>`) y funcionan igual en todas las versiones (en 26.3 cambiaron los códigos).
 
+## Vestuario: ropa y accesorios encima del jugador (`vestir/`, API 6)
+Ropa, uniformes, disfraces y accesorios que se dibujan **encima** de un jugador (o de un personaje del Core), sin tocar su skin y sin
+ocupar la armadura. El servidor decide quién lleva qué; cada cliente lo dibuja con la prenda registrada con ese nombre.
+```java
+// servidor: ponerle algo a alguien (con datos que la prenda sepa leer)
+CompoundTag d = new CompoundTag();
+d.putString("numero", "07");
+Vestuario.poner(server, jugador.getUUID(), Ids.rl("mimod", "uniforme"), d);
+Vestuario.quitar(server, uuid, id);  Vestuario.quitarTodo(server, uuid);  Vestuario.quitarDeTodos(server, id);
+
+// cliente (al iniciar): cómo se ve
+VestuarioCliente.registrar(Ids.rl("mimod", "uniforme"), Prenda.piel(Ids.rl("mimod", "textures/prenda/uniforme.png"))
+        .delgada(Ids.rl("mimod", "textures/prenda/uniforme_delgado.png"))   // brazos de 3 px (skin "Alex")
+        .sin(Prenda.Parte.CABEZA)                                           // que se vea la cara
+        .textura(c -> variantes[Math.floorMod(c.semilla(), 6)])            // una variante fija por persona
+        .tinte(c -> 0xFFFFFFFF)                                             // color (con alfa: transparente)
+        .decorar((c, l) -> l.texto(Prenda.Parte.CUERPO, c.datos().getString("numero"), 2F, 3.5F, -2.35F, 0.3F, 0xFF222222, false)));
+VestuarioCliente.registrar(Ids.rl("mimod", "sombrero"), Prenda.modelo(Ids.rl("mimod", "geo/sombrero.geo.json"),
+        Ids.rl("mimod", "textures/prenda/sombrero.png")));
+```
+- **Tipo piel:** una textura con el acomodo de una skin de 64x64 (puede ser al doble, 128x128); se dibuja un poco más grande que el cuerpo
+  (`inflar`, 0.3 px tapa la segunda capa de la skin; la cabeza va 0.3 más). Lo transparente deja ver la skin (manos, cara, cuello).
+  `segundaCapa()` también dibuja la segunda capa de la textura.
+- **Tipo modelo:** un geo.json (o `.bbmodel` en la carpeta del estudio) hecho sobre la plantilla de jugador de Blockbench; cada grupo de
+  arriba se llama como una parte (`cabeza/head`, `cuerpo/body`, `brazo_der/right_arm`, `brazo_izq/left_arm`, `pierna_der/right_leg`,
+  `pierna_izq/left_leg`) y la sigue. Un grupo con otro nombre va con el cuerpo. Huesos que brillan, cubos girados y texturas del
+  estudio funcionan igual que en los personajes.
+- **Decorador / `Lienzo`:** dibuja encima en el espacio de una parte, en píxeles del modelo de jugador (y hacia abajo; en el cuerpo el
+  pecho está en z = -2 y la espalda en z = 2; hombros y = 0, cintura y = 12). `texto(parte, s, x, y, z, escala, color, espalda)`, o
+  `en(parte)` para dibujar lo que sea.
+- Se ve sobre los jugadores (capa en los dos modelos), en la mano de primera persona (`sinPrimeraPersona()` lo apaga), en los
+  personajes del Core (`PersonaRenderer`/`GeoEntityRenderer`) y donde un mod llame a `VestuarioCliente.dibujarJugador` (por ejemplo,
+  un cuerpo en el suelo hecho con `PlayerModel`).
+- Se guarda con el mundo y les llega a todos al entrar. Probar: `/axeliscore vestir <quién> <prenda> [numero=07,otra=x]` y
+  `/axeliscore desvestir <quién> [prenda]`. Muestras (solo en pruebas): `axelis_core:overol` y `axelis_core:sombrero`
+  (`herramientas/prendas.py`).
+
 ## Comandos de prueba
 
 `/axeliscore` (versión y quién lo usa), `galeria`, `criaturas`, `probar <animación>`, `ir x y z [velocidad]`,
