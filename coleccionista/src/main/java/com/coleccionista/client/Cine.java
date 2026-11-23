@@ -74,6 +74,11 @@ public final class Cine {
         MinecraftForge.EVENT_BUS.addListener(Cine::dibujarDormido);
         MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.client.event.RenderPlayerEvent.Pre e) -> {
             if (e.getEntity() == Minecraft.getInstance().player) {
+                // con la cámara en el candado (o acercándose a una pantalla) mi propio cuerpo no se dibuja: si estoy pegado, me taparía
+                if (enCandado() || enPantalla()) {
+                    e.setCanceled(true);
+                    return;
+                }
                 yoDibujado = true;
             }
         });

@@ -93,6 +93,8 @@ public final class Montacargas {
         if (!Complejo.construido(s, "ante_" + z)) {
             return Component.translatable(MOD + ".cmd.montacargas_no", nombre(z));
         }
+        // la prueba de antes se cierra (sin eliminar a nadie) para que sus avisos no viajen con ellas
+        com.coleccionista.prueba.Pruebas.cerrarOtras(s, prueba(z));
         servidor = s;
         zona = z;
         fase = Fase.GAS;
@@ -107,6 +109,20 @@ public final class Montacargas {
         enviar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_MONTACARGAS gas {} piezas={}", z, VIAJAN.size());
         return null;
+    }
+
+    /** La prueba que se juega en la zona de esa parada. */
+    static String prueba(String z) {
+        return switch (z) {
+            case "cloacas" -> "encadenados";
+            case "archivo" -> "traidor";
+            case "salon" -> "compartir";
+            case "laberintos" -> "ciegas";
+            case "capilla" -> "sacrificio";
+            case "final" -> "copas";
+            case "galeria" -> "tres";
+            default -> z;
+        };
     }
 
     private static void tick(MinecraftServer s) {

@@ -102,6 +102,11 @@ public final class Sacrificio {
 
     // ------------------------------------------------------------------ preparar
 
+    /** ¿La prueba está abierta (preparada, en juego o terminada sin limpiar)? */
+    public static boolean abierta() {
+        return fase != Fase.NADA;
+    }
+
     public static Component preparar(MinecraftServer s) {
         if (!Complejo.construido(s, "capilla")) {
             return Component.translatable(MOD + ".sac.sin_mapa");
@@ -114,6 +119,7 @@ public final class Sacrificio {
         if (v.size() < 2) {
             return Component.translatable(MOD + ".enc.pocos");
         }
+        Pruebas.cerrarOtras(s, "sacrificio");
         limpiar(s);
         // equipos al azar del tamaño pedido (como mucho 6 cuartos: si son muchos, los equipos crecen)
         int n = Math.max(1, Math.min(Capilla.CUARTOS, v.size() / Math.max(2, tamano)));

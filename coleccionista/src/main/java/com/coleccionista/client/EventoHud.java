@@ -31,6 +31,8 @@ public final class EventoHud {
     private static int placaIzq = Integer.MAX_VALUE;
     /** Hasta dónde baja lo de arriba (placa, tarjeta y avisos del centro) en este cuadro y en el anterior (las franjas van debajo). */
     private static int abajo, abajoPrevio;
+    /** Dónde puede ir el siguiente aviso del centro en este cuadro (si dos pruebas avisan a la vez, el segundo va debajo, no encima). */
+    private static int siguienteLinea;
 
     private EventoHud() {
     }
@@ -54,6 +56,7 @@ public final class EventoHud {
         tarjetaAbajo = 0;
         abajoPrevio = abajo;
         abajo = 0;
+        siguienteLinea = 41;
         if (!visible()) {
             return;
         }
@@ -238,7 +241,7 @@ public final class EventoHud {
      * angosta se le encimaría.
      */
     public static int lineaY(int w, int lw) {
-        return debajo(w, lw, 41);
+        return debajo(w, lw, Math.max(41, siguienteLinea));
     }
 
     /**
@@ -248,6 +251,7 @@ public final class EventoHud {
     public static int debajo(int w, int lw, int desde) {
         int y = w / 2 - lw / 2 < tarjetaDer + 4 && desde < tarjetaAbajo + 4 ? tarjetaAbajo + 4 : desde;
         abajo = Math.max(abajo, y + 13);
+        siguienteLinea = Math.max(siguienteLinea, y + 16);
         return y;
     }
 

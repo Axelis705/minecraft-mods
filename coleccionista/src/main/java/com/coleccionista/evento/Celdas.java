@@ -57,12 +57,19 @@ public final class Celdas {
     /** Ticks que espera el Coleccionista desde que la última pieza salió de su celda hasta que habla en la pantalla grande. */
     public static int esperaSalida = 100;
     private static long salidaEn = -1;
+    /** Se pidió el discurso de salida (a mano) mientras el Coleccionista hablaba: lo dice en cuanto se desocupen las pantallas. */
+    private static boolean salidaPendiente;
 
     /**
      * Ya funcionan los candados: cuando todas las piezas vivas (las personas conectadas) están fuera de las celdas, a los pocos segundos el
      * Coleccionista habla en la pantalla grande del escenario (una sola vez por despertar).
      */
     private static void vigilarSalida(MinecraftServer s) {
+        if (salidaPendiente && s.getTickCount() % 10 == 0 && !Pantallas.ocupado()) {
+            salidaPendiente = false;
+            hablarSalida(s);
+            return;
+        }
         if (s.getTickCount() % 10 != 0 || !candados(s) || datos(s).getBoolean("salida") || !Complejo.construido(s)) {
             salidaEn = -1;
             return;
@@ -94,11 +101,17 @@ public final class Celdas {
         }
     }
 
-    /** El discurso de cuando todas salieron (también a mano: {@code /evento salida}). */
+    /**
+     * El discurso de cuando todas salieron (también a mano: {@code /evento salida}). Si el Coleccionista está hablando, queda en espera y lo
+     * dice al terminar; devuelve si empezó ya.
+     */
     public static boolean hablarSalida(MinecraftServer s) {
         if (Pantallas.ocupado()) {
+            salidaPendiente = true;
+            Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA en espera");
             return false;
         }
+        salidaPendiente = false;
         datos(s).putBoolean("salida", true);
         sucio(s);
         salidaEn = -1;
@@ -272,6 +285,7 @@ public final class Celdas {
         Random r = new Random(l.getGameTime() ^ 0x5EEDL);
         CompoundTag d = datos(s);
         d.putBoolean("salida", false);
+        salidaPendiente = false;
         Set<Integer> usados = new HashSet<>();
         for (int n = 1; n <= com.coleccionista.mapa.AlaCeldas.CELDAS; n++) {
             int cod;

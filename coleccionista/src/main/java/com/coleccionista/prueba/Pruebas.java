@@ -24,6 +24,28 @@ public final class Pruebas {
                 || Traidor.alAcabarReloj(s) || ACiegas.alAcabarReloj(s) || TresSentidos.alAcabarReloj(s);
     }
 
+    /**
+     * Antes de preparar una prueba: las demás que quedaron abiertas (por ejemplo, una que terminó y no se limpió) se cierran sin eliminar a
+     * nadie, para que no se encimen sus avisos, sus voces ni sus rejas con la nueva.
+     */
+    public static void cerrarOtras(MinecraftServer s, String nueva) {
+        cerrar(s, nueva, "encadenados", Encadenados.abierta(), () -> Encadenados.terminar(s));
+        cerrar(s, nueva, "compartir", Compartir.abierta(), () -> Compartir.terminar(s));
+        cerrar(s, nueva, "puertas", LasPuertas.abierta(), () -> LasPuertas.terminar(s));
+        cerrar(s, nueva, "copas", LasCopas.abierta(), () -> LasCopas.terminar(s));
+        cerrar(s, nueva, "sacrificio", Sacrificio.abierta(), () -> Sacrificio.terminar(s));
+        cerrar(s, nueva, "traidor", Traidor.abierta(), () -> Traidor.terminar(s));
+        cerrar(s, nueva, "ciegas", ACiegas.abierta(), () -> ACiegas.terminar(s));
+        cerrar(s, nueva, "tres", TresSentidos.abierta(), () -> TresSentidos.terminar(s));
+    }
+
+    private static void cerrar(MinecraftServer s, String nueva, String id, boolean abierta, Runnable terminar) {
+        if (abierta && !id.equals(nueva)) {
+            terminar.run();
+            com.coleccionista.Coleccionista.LOGGER.info("COLECCIONISTA_PRUEBAS cerrada {} (se prepara {})", id, nueva);
+        }
+    }
+
     public static void reiniciar(MinecraftServer s) {
         Encadenados.reiniciar(s);
         Compartir.reiniciar(s);

@@ -85,6 +85,11 @@ public final class LasPuertas {
 
     // ------------------------------------------------------------------ preparar
 
+    /** ¿La prueba está abierta (preparada, en juego o terminada sin limpiar)? */
+    public static boolean abierta() {
+        return fase != Fase.NADA;
+    }
+
     public static Component preparar(MinecraftServer s) {
         if (!Complejo.construido(s, "puertas")) {
             return Component.translatable(MOD + ".pue.sin_mapa");
@@ -96,6 +101,7 @@ public final class LasPuertas {
         if (ev.vivos().size() < 2) {
             return Component.translatable(MOD + ".enc.pocos");
         }
+        Pruebas.cerrarOtras(s, "puertas");
         limpiar(s);
         ev.prueba(s, PRUEBA);
         ev.reloj(s, 0);

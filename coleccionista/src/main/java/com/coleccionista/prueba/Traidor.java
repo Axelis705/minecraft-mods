@@ -110,6 +110,11 @@ public final class Traidor {
 
     // ------------------------------------------------------------------ preparar
 
+    /** ¿La prueba está abierta (preparada, en juego o terminada sin limpiar)? */
+    public static boolean abierta() {
+        return fase != Fase.NADA;
+    }
+
     public static Component preparar(MinecraftServer s) {
         if (!Complejo.construido(s, "archivo")) {
             return Component.translatable(MOD + ".tra.sin_mapa");
@@ -122,6 +127,7 @@ public final class Traidor {
         if (v.size() < 3) {
             return Component.translatable(MOD + ".tra.pocos");
         }
+        Pruebas.cerrarOtras(s, "traidor");
         limpiar(s);
         Random r = new Random(s.overworld().getRandom().nextLong());
         int n = Math.max(1, Math.min(Archivo.SALAS, v.size() / Math.max(3, tamano)));

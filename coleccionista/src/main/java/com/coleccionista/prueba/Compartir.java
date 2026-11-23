@@ -104,6 +104,11 @@ public final class Compartir {
 
     // ------------------------------------------------------------------ preparar
 
+    /** ¿La prueba está abierta (preparada, en juego o terminada sin limpiar)? */
+    public static boolean abierta() {
+        return fase != Fase.NADA;
+    }
+
     public static Component preparar(MinecraftServer s) {
         if (!Complejo.construido(s, "salon")) {
             return Component.translatable(MOD + ".com.sin_mapa");
@@ -116,6 +121,7 @@ public final class Compartir {
         if (v.size() < 2) {
             return Component.translatable(MOD + ".enc.pocos");
         }
+        Pruebas.cerrarOtras(s, "compartir");
         limpiar(s);
         Collections.shuffle(v, new Random(s.overworld().getRandom().nextLong()));
         if (v.size() % 2 == 1) {

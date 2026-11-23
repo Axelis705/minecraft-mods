@@ -144,7 +144,7 @@ public final class Comandos {
                             return no == null ? ok(c, Component.translatable(MOD + ".cmd.montacargas", Montacargas.nombre(z))) : error(c, no);
                         })))
                 .then(Commands.literal("salida").executes(c -> Celdas.hablarSalida(c.getSource().getServer())
-                        ? ok(c, Component.translatable(MOD + ".cmd.salida")) : error(c, Component.translatable(MOD + ".cmd.pantalla_ocupada"))))
+                        ? ok(c, Component.translatable(MOD + ".cmd.salida")) : ok(c, Component.translatable(MOD + ".cmd.salida_espera"))))
                 .then(Commands.literal("pantalla")
                         .then(Commands.literal("apagada").executes(c -> pantalla(c, "apagada", "")))
                         .then(Commands.literal("estatica").executes(c -> pantalla(c, "estatica", "")))

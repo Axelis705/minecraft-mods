@@ -179,6 +179,11 @@ public final class Encadenados {
         return m;
     }
 
+    /** ¿La prueba está abierta (preparada, en juego o terminada sin limpiar)? */
+    public static boolean abierta() {
+        return fase != Fase.NADA;
+    }
+
     /**
      * Lleva a todas las piezas (con un fundido a negro) a la Sala de los grilletes: cada pareja junta, encadenadas a la pared, con la
      * llave de su pareja en su barril. Si no hay parejas, las arma. Devuelve el error, o null si salió bien.
@@ -194,6 +199,7 @@ public final class Encadenados {
         if (ev.vivos().size() < 2) {
             return Component.translatable(MOD + ".enc.pocos");
         }
+        Pruebas.cerrarOtras(s, "encadenados");
         limpiar(s, false);
         Map<Integer, List<Pieza>> grupos = agrupar(ev);
         boolean armar = grupos.containsKey(-1) || grupos.values().stream().anyMatch(l -> l.size() < 2);

@@ -73,6 +73,11 @@ public final class LasCopas {
 
     // ------------------------------------------------------------------ preparar
 
+    /** ¿La prueba está abierta (preparada, en juego o terminada sin limpiar)? */
+    public static boolean abierta() {
+        return fase != Fase.NADA;
+    }
+
     public static Component preparar(MinecraftServer s) {
         if (!Complejo.construido(s, "final")) {
             return Component.translatable(MOD + ".cop.sin_mapa");
@@ -88,6 +93,7 @@ public final class LasCopas {
         if (v.size() > Final.LUGARES) {
             return Component.translatable(MOD + ".cop.muchos", v.size(), Final.LUGARES);
         }
+        Pruebas.cerrarOtras(s, "copas");
         limpiar(s);
         Collections.shuffle(v, new Random(s.overworld().getRandom().nextLong()));
         for (Pieza p : v) {

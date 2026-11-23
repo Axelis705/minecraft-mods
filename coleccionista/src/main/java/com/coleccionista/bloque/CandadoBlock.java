@@ -57,6 +57,13 @@ public class CandadoBlock extends HorizontalDirectionalBlock {
         };
     }
 
+    /** No estorba al caminar (cuelga de los barrotes): solo se apunta. Así nadie se atora ni lo empuja al pegarse a la reja. */
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState s, BlockGetter g, BlockPos p, CollisionContext c) {
+        return net.minecraft.world.phys.shapes.Shapes.empty();
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState s, Level l, BlockPos pos, Player p, InteractionHand h, BlockHitResult hit) {

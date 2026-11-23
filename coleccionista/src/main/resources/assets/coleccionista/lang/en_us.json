@@ -877,6 +877,7 @@
   "coleccionista.cmd.montacargas_no": "Can't: the waiting hall of %s isn't built (use /evento construir).",
   "coleccionista.cmd.montacargas_ya": "The elevator is already on its way.",
   "coleccionista.cmd.salida": "The Collector speaks: everyone left their cells.",
+  "coleccionista.cmd.salida_espera": "The Collector is talking: he will give the exit speech as soon as he finishes.",
   "coleccionista.cmd.pantalla_ocupada": "The screens are busy (the Collector is already talking).",
   "coleccionista.cine.cerrar": "He's done talking · Press R to close the screen",
   "coleccionista.sub.nombre": "THE COLLECTOR",

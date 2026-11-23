@@ -167,6 +167,11 @@ public final class TresSentidos {
 
     // ------------------------------------------------------------------ preparar
 
+    /** ¿La prueba está abierta (preparada, en juego o terminada sin limpiar)? */
+    public static boolean abierta() {
+        return fase != Fase.NADA;
+    }
+
     public static Component preparar(MinecraftServer s) {
         if (!Complejo.construido(s, "galeria")) {
             return Component.translatable(MOD + ".tres.sin_mapa");
@@ -179,6 +184,7 @@ public final class TresSentidos {
         if (v.size() < 3) {
             return Component.translatable(MOD + ".tres.pocos");
         }
+        Pruebas.cerrarOtras(s, "tres");
         limpiar(s);
         Random r = new Random(s.overworld().getRandom().nextLong());
         Collections.shuffle(v, r);

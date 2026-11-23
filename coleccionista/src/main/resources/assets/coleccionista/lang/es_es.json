@@ -877,6 +877,7 @@
   "coleccionista.cmd.montacargas_no": "No se puede: la antesala de %s no está construida (usa /evento construir).",
   "coleccionista.cmd.montacargas_ya": "El montacargas ya va en camino.",
   "coleccionista.cmd.salida": "El Coleccionista habla: todas salieron de sus celdas.",
+  "coleccionista.cmd.salida_espera": "El Coleccionista está hablando: dirá lo de la salida en cuanto termine.",
   "coleccionista.cmd.pantalla_ocupada": "Las pantallas están ocupadas (el Coleccionista ya está hablando).",
   "coleccionista.cine.cerrar": "Terminó de hablar · Pulsa R para cerrar la pantalla",
   "coleccionista.sub.nombre": "EL COLECCIONISTA",

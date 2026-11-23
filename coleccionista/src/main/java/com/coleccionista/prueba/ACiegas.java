@@ -88,6 +88,11 @@ public final class ACiegas {
 
     // ------------------------------------------------------------------ preparar
 
+    /** ¿La prueba está abierta (preparada, en juego o terminada sin limpiar)? */
+    public static boolean abierta() {
+        return fase != Fase.NADA;
+    }
+
     public static Component preparar(MinecraftServer s) {
         if (!Complejo.construido(s, "laberintos")) {
             return Component.translatable(MOD + ".cie.sin_mapa");
@@ -100,6 +105,7 @@ public final class ACiegas {
         if (v.size() < 4) {
             return Component.translatable(MOD + ".cie.pocos");
         }
+        Pruebas.cerrarOtras(s, "ciegas");
         limpiar(s);
         Random r = new Random(s.overworld().getRandom().nextLong());
         int n = Math.max(2, Math.min(Laberintos.LABERINTOS, v.size() / Math.max(2, tamano)));
