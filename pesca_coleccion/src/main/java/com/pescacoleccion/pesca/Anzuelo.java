@@ -241,6 +241,8 @@ public class Anzuelo extends Entity implements Animated {
             double dx = p.getX() - getX(), dy = p.getY() - getY(), dz = p.getZ() - getZ();
             it.setDeltaMovement(dx * 0.1, dy * 0.1 + Math.sqrt(Math.sqrt(dx * dx + dy * dy + dz * dz)) * 0.08, dz * 0.1);
             level().addFreshEntity(it);
+            // si se queda corto o se pasa, al ratito llega solo a los pies del pescador
+            PezVolador.seguir(it, p);
             p.giveExperiencePoints(1 + e.rareza() * 2 + random.nextInt(3));
             splash(20, 0.4);
             // la primera vez que alguien saca un pez en este mundo, llega Nilo

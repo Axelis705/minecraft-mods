@@ -36,6 +36,7 @@ public class PescaColeccion {
         com.axeliscore.data.PlayerStore.syncOnLogin(MODID);
         com.pescacoleccion.pesca.Libro.init();
         com.pescacoleccion.pesca.Lombrices.init();
+        com.pescacoleccion.pesca.PezVolador.init();
         com.pescacoleccion.nilo.Encargos.init();
         com.pescacoleccion.nilo.Tienda.init();
         com.pescacoleccion.torneo.Torneo.init();
