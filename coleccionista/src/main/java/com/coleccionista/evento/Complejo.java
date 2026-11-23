@@ -87,6 +87,8 @@ public final class Complejo {
             l.add(new Zona("archivo", com.coleccionista.mapa.Archivo.crear(SEMILLA), -10, 0, 66, 0));
             // los Laberintos (A ciegas), al oeste del Ala de celdas
             l.add(new Zona("laberintos", com.coleccionista.mapa.Laberintos.crear(SEMILLA), -96, 0, 0, 0));
+            // la Galería de los postes (Encadenados de tres), al sur de los Laberintos
+            l.add(new Zona("galeria", com.coleccionista.mapa.Galeria.crear(SEMILLA), -96, 0, 30, 0));
             zonas = l;
         }
         return zonas;

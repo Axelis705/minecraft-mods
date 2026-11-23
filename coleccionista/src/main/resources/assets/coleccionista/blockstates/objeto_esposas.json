@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/objeto_esposas"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/objeto_esposas",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/objeto_esposas",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/objeto_esposas",
+   "y": 270
+  }
+ }
+}

@@ -90,7 +90,7 @@ public final class CadenaRender {
      * Una cadena de {@code a} a {@code b}: cuelga más mientras más floja está (largo menos la distancia) y no baja del piso. Cada tramo son
      * dos tiras cruzadas con la textura de la cadena (como el bloque de cadena de Minecraft).
      */
-    private static void cadena(VertexConsumer vc, PoseStack ps, Vec3 a, Vec3 b, double largo, double piso) {
+    static void cadena(VertexConsumer vc, PoseStack ps, Vec3 a, Vec3 b, double largo, double piso) {
         double d = a.distanceTo(b);
         if (d < 0.05) {
             return;

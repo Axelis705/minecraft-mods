@@ -114,7 +114,8 @@ public final class CiegasCliente {
     public static boolean vendado() {
         CompoundTag e = miEquipo();
         Minecraft mc = Minecraft.getInstance();
-        return e != null && "JUEGO".equals(fase()) && !soyGuia(e) && !sali(e) && mc.player != null && EventoCliente.vivo(EventoCliente.yo());
+        return e != null && "JUEGO".equals(fase()) && !soyGuia(e) && !sali(e) && mc.player != null && EventoCliente.vivo(EventoCliente.yo())
+                || SentidosCliente.vendado();
     }
 
     private static void niebla(ViewportEvent.RenderFog e) {
@@ -181,10 +182,10 @@ public final class CiegasCliente {
 
     private static void hud(G g, int w, int h) {
         Minecraft mc = Minecraft.getInstance();
-        if (!activa() || mc.player == null) {
+        if (mc.player == null) {
             return;
         }
-        // la venda: orillas negras que dejan un círculo chiquito
+        // la venda: orillas negras que dejan un círculo chiquito (también la de Encadenados de tres)
         if (venda > 0.01F) {
             int borde = (int) (Math.min(w, h) * 0.38F * venda);
             int c = Ui.alpha(0xFF000000, 0.92F * venda);
@@ -193,7 +194,7 @@ public final class CiegasCliente {
             g.fill(0, 0, borde / 2, h, c);
             g.fill(w - borde / 2, 0, w, h, c);
         }
-        if (!EventoHud.visible()) {
+        if (!activa() || !EventoHud.visible()) {
             return;
         }
         Font f = Ui.font();

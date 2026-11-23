@@ -212,7 +212,7 @@ public final class EncadenadosCliente {
         return new Vec3(x + nx * f, v.y, z + nz * f);
     }
 
-    private static void regresar(LocalPlayer me, Vec3 centro, double max, double parte) {
+    static void regresar(LocalPlayer me, Vec3 centro, double max, double parte) {
         double dx = centro.x - me.getX(), dz = centro.z - me.getZ();
         double h = Math.hypot(dx, dz);
         if (h <= max || h < 1e-4) {

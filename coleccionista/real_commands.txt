@@ -2,6 +2,7 @@ axeliscore
 coleccionista
 forceload add -16 -48 224 144
 forceload add -112 32 -16 80
+forceload add -112 64 -32 128
 #pausa 3
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
@@ -160,6 +161,24 @@ evento ciegas sacar Bot_03
 evento ciegas sacar Bot_04
 #pausa 3
 evento ciegas terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+execute in minecraft:overworld positioned -60 -60 80 run evento bots 2
+#pausa 2
+evento tres bots_salen no
+evento tres tiempo 20 60
+evento tres preparar
+#pausa 6
+evento tres empezar ya
+#pausa 2
+evento tres toma Bot_01 0
+evento tres arrancar
+#pausa 3
+evento tres sacar Bot_01
+#pausa 3
+evento tres terminar
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect usuarios=[coleccionista]
@@ -249,3 +268,13 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_VOZ probar Bot_03 -> Bot_02 oye=true
 #expect COLECCIONISTA_VOZ separados=4
 #expect COLECCIONISTA_VOZ juntos
+#expect COLECCIONISTA_CONSTRUIDO galeria
+#expect COLECCIONISTA_TRES preparada trios=2
+#expect COLECCIONISTA_PRESENTACION EXTRA
+#expect COLECCIONISTA_TRES elegir
+#expect COLECCIONISTA_TRES rol
+#expect COLECCIONISTA_TRES empieza
+#expect COLECCIONISTA_VOZ mudos=
+#expect COLECCIONISTA_TRES salio trio=
+#expect COLECCIONISTA_TRES fin eliminados=3
+#expect COLECCIONISTA_TRES terminada

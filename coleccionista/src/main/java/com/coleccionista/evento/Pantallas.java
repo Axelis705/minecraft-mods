@@ -150,6 +150,20 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> tres() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hola", 70, null, 1F));
+        l.add(new Frase("objetos", 130, null, 1F));
+        l.add(new Frase("venda", 100, null, 1F));
+        l.add(new Frase("cinta", 100, null, 1F));
+        l.add(new Frase("esposas", 110, null, 1F));
+        l.add(new Frase("decidan", 120, null, 1F));
+        l.add(new Frase("cadena", 130, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("suerte", 70, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -159,6 +173,7 @@ public final class Pantallas {
             case "sacrificio" -> sacrificio();
             case "traidor" -> traidor();
             case "ciegas" -> ciegas();
+            case "tres" -> tres();
             case "puertas" -> puertas();
             default -> null;
         };

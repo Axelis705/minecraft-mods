@@ -139,6 +139,7 @@ public final class Deco {
             case "vidrio" -> new GlassBlock(p.noOcclusion().isViewBlocking((s, g, q) -> false).isSuffocating((s, g, q) -> false));
             case "pilar" -> new RotatedPillarBlock(p);
             case "tubo" -> new DecoTubo(p.noOcclusion());
+            case "palanca" -> new net.minecraft.world.level.block.LeverBlock(p.noCollission());
             case "losa" -> new SlabBlock(d.flag("transparente") ? p.noOcclusion() : p);
             case "escalera" -> new StairBlock(() -> BLOCKS.get(d.str("base")).defaultBlockState(), p);
             case "barrotes" -> new IronBarsBlock(p.noOcclusion());

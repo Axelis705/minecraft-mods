@@ -91,6 +91,10 @@ public class VozPlugin implements VoicechatPlugin {
             return;
         }
         UUID yo = de.getPlayer().getUuid();
+        if (VozPuente.mudos.contains(yo)) {
+            e.cancel(); // tiene la cinta en la boca: nadie lo oye
+            return;
+        }
         boolean fantasma = VozPuente.fantasmas.contains(yo), altavoz = VozPuente.altavoz.contains(yo);
         if (!fantasma && !altavoz) {
             return;

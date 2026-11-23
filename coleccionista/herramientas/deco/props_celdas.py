@@ -532,6 +532,43 @@ def camilla():
     return p
 
 
+def mesa():
+    """Mesa de metal (la de los tres objetos en Encadenados de tres)."""
+    p = Prop('mesa', 'Mesa de metal', 'Metal table', kind='floor', sound='metal', seed=61)
+    m = pintado('#3a3f3a', oxido=0.35, seed=61)
+    p.box(0, 14, 0, 16, 16, 16, acero(61, sucio=0.55), bevel=0.15)
+    for x0, z0 in ((1, 1), (13, 1), (1, 13), (13, 13)):
+        p.box(x0, 0, z0, x0 + 2, 14, z0 + 2, m)
+    p.box(2, 4, 2, 14, 5, 14, m, skip=('up',))
+    return p
+
+
+def objeto(tipo):
+    """Uno de los tres objetos de la mesa: la venda (ojos), la cinta (boca) o las esposas (manos)."""
+    if tipo == 'venda':
+        p = Prop('objeto_venda', 'Venda', 'Blindfold', kind='floor', sound='wool', seed=62, collide=False)
+        t = tela('#1c1a19', sucio=0.2)
+        p.box(3, 0, 6, 13, 1.2, 10, t)
+        p.box(4, 1.2, 6.5, 12, 2.2, 9.5, t)
+        p.box(12, 0, 7.5, 16, 0.6, 8.5, t)
+    elif tipo == 'cinta':
+        p = Prop('objeto_cinta', 'Cinta', 'Tape', kind='floor', sound='wool', seed=63, collide=False)
+        c = tela('#8f9089', sucio=0.3)
+        p.box(5, 0, 5, 11, 3, 11, c)
+        p.box(6.5, 0, 6.5, 9.5, 3.05, 9.5, solid('#4a3a28'))
+        p.box(10.5, 0, 6.5, 14, 0.3, 9.5, c)
+    else:
+        p = Prop('objeto_esposas', 'Esposas', 'Handcuffs', kind='floor', sound='chain', seed=64, collide=False)
+        m = acero(64, sucio=0.3)
+        for x0 in (3, 10):
+            p.box(x0, 0, 6, x0 + 4, 1, 7, m)
+            p.box(x0, 0, 10, x0 + 4, 1, 11, m)
+            p.box(x0, 0, 7, x0 + 1, 1, 10, m)
+            p.box(x0 + 3, 0, 7, x0 + 4, 1, 10, m)
+        p.box(7, 0.2, 8, 10, 0.8, 9, m)
+    return p
+
+
 def all_props():
     return [catre(), retrete(), lavabo(), espejo(), cajon(), silla(), lampara_tubo(True), lampara_tubo(False), lampara_jaula(True),
             lampara_jaula(False), rejilla_ventilacion(), camara(), bocina(), reloj(), telarana(),

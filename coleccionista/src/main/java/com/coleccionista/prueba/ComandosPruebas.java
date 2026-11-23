@@ -318,6 +318,65 @@ public final class ComandosPruebas {
                 }));
     }
 
+    public static LiteralArgumentBuilder<CommandSourceStack> tres(SuggestionProvider<CommandSourceStack> vivas) {
+        return Commands.literal("tres")
+                .then(Commands.literal("preparar").executes(c -> {
+                    Component e = TresSentidos.preparar(c.getSource().getServer());
+                    return e == null ? ok(c, Component.translatable(MOD + ".tres.cmd.preparada")) : error(c, e);
+                }))
+                .then(Commands.literal("empezar").executes(c -> TresSentidos.empezar(c.getSource().getServer(), true) ? ok(c,
+                        Component.translatable(MOD + ".tres.cmd.empieza")) : error(c, Component.translatable(MOD + ".tres.cmd.no_toca")))
+                        .then(Commands.literal("ya").executes(c -> TresSentidos.empezar(c.getSource().getServer(), false) ? ok(c,
+                                Component.translatable(MOD + ".tres.cmd.empieza")) : error(c, Component.translatable(MOD + ".tres.cmd.no_toca")))))
+                .then(Commands.literal("arrancar").executes(c -> TresSentidos.alAcabarReloj(c.getSource().getServer()) ? ok(c,
+                        Component.translatable(MOD + ".tres.cmd.arranca")) : error(c, Component.translatable(MOD + ".tres.cmd.no_toca"))))
+                .then(Commands.literal("toma").then(Commands.argument("pieza", StringArgumentType.word()).suggests(vivas)
+                        .then(Commands.argument("objeto", IntegerArgumentType.integer(0, 3)).executes(c -> {
+                            Pieza p = pieza(c);
+                            return p != null && TresSentidos.tomarComo(c.getSource().getServer(), p, IntegerArgumentType.getInteger(c, "objeto"))
+                                    ? ok(c, Component.literal("ok")) : error(c, Component.translatable(MOD + ".tres.cmd.no_toca"));
+                        }))))
+                .then(Commands.literal("sacar").then(Commands.argument("pieza", StringArgumentType.word()).suggests(vivas).executes(c -> {
+                    Pieza p = pieza(c);
+                    return p != null && TresSentidos.sacar(c.getSource().getServer(), p) ? ok(c, Component.translatable(MOD + ".tres.cmd.sacado", p.nombre))
+                            : error(c, Component.translatable(MOD + ".tres.cmd.no_toca"));
+                })))
+                .then(Commands.literal("bots_salen")
+                        .then(Commands.literal("si").executes(c -> {
+                            TresSentidos.botsSalen = true;
+                            return ok(c, Component.literal("bots_salen = si"));
+                        }))
+                        .then(Commands.literal("no").executes(c -> {
+                            TresSentidos.botsSalen = false;
+                            return ok(c, Component.literal("bots_salen = no"));
+                        })))
+                .then(Commands.literal("pierde")
+                        .then(Commands.literal("trio").executes(c -> {
+                            TresSentidos.pierdeEquipo = true;
+                            return ok(c, Component.translatable(MOD + ".tres.cmd.pierde_trio"));
+                        }))
+                        .then(Commands.literal("uno").executes(c -> {
+                            TresSentidos.pierdeEquipo = false;
+                            return ok(c, Component.translatable(MOD + ".tres.cmd.pierde_uno"));
+                        })))
+                .then(Commands.literal("tiempo").then(Commands.argument("elegir", IntegerArgumentType.integer(10, 600))
+                        .then(Commands.argument("recorrido", IntegerArgumentType.integer(30, 1800)).executes(c -> {
+                            TresSentidos.segundosElegir = IntegerArgumentType.getInteger(c, "elegir");
+                            TresSentidos.segundos = IntegerArgumentType.getInteger(c, "recorrido");
+                            return ok(c, Component.translatable(MOD + ".tres.cmd.ajustes", TresSentidos.segundosElegir, TresSentidos.segundos,
+                                    String.format("%.1f", TresSentidos.largo)));
+                        }))))
+                .then(Commands.literal("largo").then(Commands.argument("bloques", IntegerArgumentType.integer(2, 10)).executes(c -> {
+                    TresSentidos.largo = IntegerArgumentType.getInteger(c, "bloques");
+                    return ok(c, Component.translatable(MOD + ".tres.cmd.ajustes", TresSentidos.segundosElegir, TresSentidos.segundos,
+                            String.format("%.1f", TresSentidos.largo)));
+                })))
+                .then(Commands.literal("terminar").executes(c -> {
+                    TresSentidos.terminar(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".tres.cmd.terminada"));
+                }));
+    }
+
     private static int forzar(CommandContext<CommandSourceStack> c, boolean robar) {
         Pieza p = pieza(c);
         if (p == null) {

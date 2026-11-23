@@ -159,12 +159,12 @@ def puerta(bid, es, en, abajo, arriba, sonido='metal'):
     nombre(bid, es, en)
 
 
-def tubo(bid, es, en, fn, sonido='metal'):
-    """Tubo con bridas que va en cualquier eje (por el techo y las paredes)."""
+def tubo(bid, es, en, fn, sonido='metal', a=5.5, b=10.5, brida=1.0):
+    """Tubo con bridas que va en cualquier eje (por el techo y las paredes). Con a/b mas gordos sirve de poste."""
     t = tex(bid, fn(1))
-    els = [{'from': [5.5, 0, 5.5], 'to': [10.5, 16, 10.5], 'faces': {f: {'texture': '#t'} for f in ('north', 'south', 'west', 'east')}},
-           {'from': [4.5, 0, 4.5], 'to': [11.5, 1.5, 11.5], 'faces': {f: {'texture': '#t'} for f in ('north', 'south', 'west', 'east', 'down', 'up')}},
-           {'from': [4.5, 14.5, 4.5], 'to': [11.5, 16, 11.5], 'faces': {f: {'texture': '#t'} for f in ('north', 'south', 'west', 'east', 'down', 'up')}}]
+    els = [{'from': [a, 0, a], 'to': [b, 16, b], 'faces': {f: {'texture': '#t'} for f in ('north', 'south', 'west', 'east')}},
+           {'from': [a - brida, 0, a - brida], 'to': [b + brida, 1.5, b + brida], 'faces': {f: {'texture': '#t'} for f in ('north', 'south', 'west', 'east', 'down', 'up')}},
+           {'from': [a - brida, 14.5, a - brida], 'to': [b + brida, 16, b + brida], 'faces': {f: {'texture': '#t'} for f in ('north', 'south', 'west', 'east', 'down', 'up')}}]
     els[1]['faces']['down']['cullface'] = 'down'
     els[2]['faces']['up']['cullface'] = 'up'
     dump(f'models/block/{bid}.json', {'textures': {'t': t, 'particle': t}, 'elements': els})
@@ -293,6 +293,8 @@ def catalogo():
     puerta('puerta_celda', 'Puerta de celda', 'Cell door', lambda s: M.puerta(s, 'abajo'), lambda s: M.puerta(s, 'arriba'))
     alfombra('alfombra_roja', 'Alfombra roja', 'Red carpet', lambda s: M.alfombra(s))
     tubo('tubo', 'Tubería oxidada', 'Rusty pipe', lambda s: M.metal_placa(s, '#4d5249', pintado=0.5, remaches=False))
+    tubo('poste', 'Poste de acero', 'Steel post', lambda s: poste_tex(s), a=4.5, b=11.5, brida=0.6)
+    palanca('palanca', 'Palanca', 'Lever')
     # muebles y adornos
     P = props_celdas
     cama(P.catre())
@@ -314,9 +316,48 @@ def catalogo():
     prop(P.placa(), {'texto': 'placa'})
     prop(P.letrero(), {'texto': 'letrero'})
     prop(P.rayon(), {'texto': 'rayon'})
+    prop(P.mesa())
+    for t in ('venda', 'cinta', 'esposas'):
+        prop(P.objeto(t), {'objeto': t})
     for p in P.focos():
         solo_modelos(p)
     solo_modelos(P.candado())
+
+
+def palanca(bid, es, en):
+    """Palanca de pared (abre rejas en los juegos): la de Minecraft con base de acero y mango rojo."""
+    import numpy as np
+    from PIL import Image
+    base = tex(bid + '_base', M.metal_placa(3, '#2c2d2a', pintado=0.6, remaches=False))
+    y, x = np.mgrid[0:32, 0:32]
+    img = np.zeros((32, 32, 4), np.uint8)
+    mango = (x >= 14) & (x <= 17) & (y >= 12)
+    bola = (x >= 14) & (x <= 17) & (y >= 12) & (y <= 16)
+    img[mango] = (88, 88, 84, 255)
+    img[(x == 14) & (y >= 12)] = (120, 120, 114, 255)
+    img[bola] = (150, 24, 20, 255)
+    img[(y == 12) & (x >= 14) & (x <= 17)] = (190, 50, 40, 255)
+    lv = tex(bid + '_mango', Image.fromarray(img, 'RGBA'))
+    for suf, par in (('', 'lever'), ('_on', 'lever_on')):
+        dump(f'models/block/{bid}{suf}.json', {'parent': f'minecraft:block/{par}', 'textures': {'particle': base, 'base': base, 'lever': lv}})
+    vb = json.load(open('/tmp/mcassets/assets/minecraft/blockstates/lever.json'))
+    txt = json.dumps(vb).replace('minecraft:block/lever', f'{NS}:block/{bid}')
+    dump(f'blockstates/{bid}.json', json.loads(txt))
+    dump(f'models/item/{bid}.json', {'parent': 'minecraft:item/generated', 'textures': {'layer0': lv}})
+    ficha.append({'id': bid, 'kind': 'palanca', 'sound': 'metal', 'strength': 1.0})
+    nombre(bid, es, en)
+
+
+def poste_tex(seed):
+    """Poste pintado de amarillo y negro abajo (como en las fabricas), gris y oxidado arriba."""
+    import numpy as np
+    from PIL import Image
+    base = np.array(M.metal_placa(seed, '#5a5d55', pintado=0.6, remaches=False)).astype(np.float32)
+    y, x = np.mgrid[0:32, 0:32]
+    franja = (((x + y) // 6) % 2 == 0)
+    peligro = np.where(franja[..., None], np.array([196, 160, 40, 255], np.float32), np.array([30, 28, 24, 255], np.float32))
+    base = np.where((y >= 20)[..., None], peligro * 0.8 + base * 0.2, base)
+    return Image.fromarray(np.clip(base, 0, 255).astype('uint8'), 'RGBA')
 
 
 def coladera_tapa(seed):

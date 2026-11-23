@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/lever_on",
+ "textures": {
+  "particle": "coleccionista:block/palanca_base",
+  "base": "coleccionista:block/palanca_base",
+  "lever": "coleccionista:block/palanca_mango"
+ }
+}

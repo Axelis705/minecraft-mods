@@ -79,6 +79,12 @@ public final class Voz {
         }
     }
 
+    /** A quién se le corta el micrófono (vacío = a nadie). */
+    public static void mudos(Set<UUID> ids) {
+        VozPuente.mudos = Set.copyOf(ids);
+        Coleccionista.LOGGER.info("COLECCIONISTA_VOZ mudos={}", ids.size());
+    }
+
     public static boolean altavoz(UUID id) {
         return ALTAVOZ.contains(id);
     }

@@ -181,6 +181,17 @@ public final class Panel {
             case "tra_ya" -> com.coleccionista.prueba.Traidor.empezar(s, false);
             case "tra_cortar" -> com.coleccionista.prueba.Traidor.cortar(s);
             case "tra_terminar" -> com.coleccionista.prueba.Traidor.terminar(s);
+            // ---- Encadenados de tres (extra)
+            case "tres_preparar" -> {
+                Component e = com.coleccionista.prueba.TresSentidos.preparar(s);
+                if (e != null) {
+                    Plat.msg(p, e, true);
+                }
+            }
+            case "tres_empezar" -> com.coleccionista.prueba.TresSentidos.empezar(s, true);
+            case "tres_ya" -> com.coleccionista.prueba.TresSentidos.empezar(s, false);
+            case "tres_arrancar" -> com.coleccionista.prueba.TresSentidos.alAcabarReloj(s);
+            case "tres_terminar" -> com.coleccionista.prueba.TresSentidos.terminar(s);
             // ---- A ciegas
             case "cie_preparar" -> {
                 Component e = com.coleccionista.prueba.ACiegas.preparar(s);

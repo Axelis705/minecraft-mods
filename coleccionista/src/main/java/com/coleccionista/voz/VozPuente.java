@@ -14,6 +14,8 @@ public final class VozPuente {
     /** ¿Simple Voice Chat cargó nuestro complemento? */
     public static volatile boolean disponible;
     public static volatile Set<UUID> vivos = Set.of(), fantasmas = Set.of(), organizadores = Set.of(), altavoz = Set.of();
+    /** A quién se le cortó el micrófono (la cinta en la boca de Encadenados de tres). */
+    public static volatile Set<UUID> mudos = Set.of();
     /** Durante algunas pruebas, cada pieza viva en su grupo (sala, cuarto, laberinto): solo se oyen los del mismo grupo. */
     public static volatile Map<UUID, Integer> separados = Map.of();
     /** ¿Los vivos pueden usar los grupos de Simple Voice Chat? (no: así la voz es solo por cercanía, como debe ser en el evento) */

@@ -32,12 +32,13 @@ public final class Volcar {
             case "capilla", "capilla_corte" -> Capilla.crear(1234L);
             case "archivo", "archivo_corte" -> Archivo.crear(1234L);
             case "laberintos", "laberintos_corte" -> Laberintos.crear(1234L);
+            case "galeria", "galeria_corte" -> com.coleccionista.mapa.Galeria.crear(1234L);
             default -> throw new IllegalArgumentException("plano desconocido: " + a[0]);
         };
         int n = 0;
         try (PrintWriter w = new PrintWriter(a[1], StandardCharsets.UTF_8)) {
             for (Map.Entry<Long, String> e : p.m.entrySet()) {
-                if (e.getValue().equals("air") || a[0].endsWith("_corte") && Plano.ky(e.getKey()) >= (a[0].startsWith("salon") ? 7 : a[0].startsWith("puertas") ? 13 : a[0].startsWith("final") ? 6 : a[0].startsWith("capilla") || a[0].startsWith("archivo") ? 6 : a[0].startsWith("laberintos") ? 8 : 5)) {
+                if (e.getValue().equals("air") || a[0].endsWith("_corte") && Plano.ky(e.getKey()) >= (a[0].startsWith("salon") ? 7 : a[0].startsWith("puertas") ? 13 : a[0].startsWith("final") ? 6 : a[0].startsWith("capilla") || a[0].startsWith("archivo") ? 6 : a[0].startsWith("laberintos") ? 8 : a[0].startsWith("galeria") ? 4 : 5)) {
                     continue;
                 }
                 w.println(Plano.kx(e.getKey()) + " " + Plano.ky(e.getKey()) + " " + Plano.kz(e.getKey()) + " " + e.getValue());
