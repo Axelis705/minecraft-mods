@@ -220,6 +220,9 @@ final class PruebaCliente {
         });
         t.photo("33_presentacion", 5700, () -> {
         });
+        t.photo("33b_reglas", 6000, () -> {
+        });
+        t.add("reglas", 100, () -> t.check(Presentacion.reglasVisibles(), "sale la tarjeta de reglas después del título"));
         t.add("encadenado", 100, () -> {
             t.check("LISTA".equals(EncadenadosCliente.fase), "Encadenados está lista");
             t.check(EncadenadosCliente.encadenado(), "estoy encadenado a la pared");

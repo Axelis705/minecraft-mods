@@ -25,7 +25,11 @@ public final class Presentacion {
     private static final float DURA = 7.5F;
     private static long fundidoDesde, presDesde;
     private static int fundidoTicks;
-    private static String fundidoTexto = "", numero = "", titulo = "", lema = "";
+    private static String fundidoTexto = "", numero = "", titulo = "", lema = "", tituloClave = "";
+    /** La tarjeta de reglas que sale después del título (lo necesario para jugar, sin decir cómo resolver la prueba). */
+    private static final float REGLAS_DURA = 16F;
+    private static long reglasDesde;
+    private static java.util.List<String> reglas = java.util.List.of();
     private static int letrasSonadas;
 
     private Presentacion() {
@@ -44,10 +48,17 @@ public final class Presentacion {
     private static void presentar(CompoundTag t) {
         presDesde = System.currentTimeMillis();
         numero = Nbt.s(t, "numero");
-        titulo = Component.translatable(Nbt.s(t, "titulo")).getString();
+        tituloClave = Nbt.s(t, "titulo");
+        titulo = Component.translatable(tituloClave).getString();
+        reglasDesde = 0;
         lema = Component.translatable(Nbt.s(t, "lema")).getString();
         letrasSonadas = 0;
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.WARDEN_HEARTBEAT, 0.7F, 1F));
+    }
+
+    /** ¿Se está viendo la tarjeta de reglas? (para la prueba automática) */
+    public static boolean reglasVisibles() {
+        return reglasDesde > 0 && !reglas.isEmpty();
     }
 
     /** ¿Hay una presentación o un fundido en pantalla? (el HUD del evento se esconde) */
@@ -61,14 +72,79 @@ public final class Presentacion {
         return x * x * (3 - 2 * x);
     }
 
+    /** Junta las reglas de la prueba ("...titulo" → "...regla.1..5") y las deja también en el chat para releerlas. */
+    private static void empezarReglas() {
+        String pre = tituloClave.endsWith(".titulo") ? tituloClave.substring(0, tituloClave.length() - "titulo".length()) + "regla." : "";
+        java.util.List<String> l = new java.util.ArrayList<>();
+        for (int i = 1; i <= 5 && !pre.isEmpty(); i++) {
+            if (net.minecraft.client.resources.language.I18n.exists(pre + i)) {
+                l.add(Component.translatable(pre + i).getString());
+            }
+        }
+        reglas = l;
+        if (l.isEmpty()) {
+            return;
+        }
+        reglasDesde = System.currentTimeMillis();
+        Minecraft mc = Minecraft.getInstance();
+        mc.gui.getChat().addMessage(Component.literal("— " + Component.translatable("coleccionista.reglas.titulo", titulo).getString() + " —")
+                .withStyle(net.minecraft.ChatFormatting.DARK_RED, net.minecraft.ChatFormatting.BOLD));
+        for (String r : l) {
+            mc.gui.getChat().addMessage(Component.literal(" • " + r).withStyle(net.minecraft.ChatFormatting.GRAY));
+        }
+        mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 0.9F, 0.8F));
+    }
+
+    /** La tarjeta de reglas: panel oscuro con borde rojo, el título y las reglas numeradas. */
+    private static void tarjeta(G g, int w, int h, Font f, long now) {
+        float t = (now - reglasDesde) / 1000F;
+        if (t > REGLAS_DURA) {
+            reglasDesde = 0;
+            return;
+        }
+        float a = suave(t / 0.5F) * (1 - suave((t - (REGLAS_DURA - 0.8F)) / 0.8F));
+        if (a < 0.02F) {
+            return;
+        }
+        int cw = Math.min(w - 40, 300);
+        java.util.List<net.minecraft.util.FormattedCharSequence> lineas = new java.util.ArrayList<>();
+        java.util.List<Integer> numeros = new java.util.ArrayList<>();
+        for (int i = 0; i < reglas.size(); i++) {
+            java.util.List<net.minecraft.util.FormattedCharSequence> partes = f.split(Component.literal(reglas.get(i)), cw - 34);
+            for (int j = 0; j < partes.size(); j++) {
+                lineas.add(partes.get(j));
+                numeros.add(j == 0 ? i + 1 : 0);
+            }
+        }
+        int ch = 30 + lineas.size() * 11 + 8;
+        int x0 = w / 2 - cw / 2, y0 = (int) (h * 0.22F);
+        g.fillGradient(x0, y0, x0 + cw, y0 + ch, Ui.alpha(0xF0120A0C, a), Ui.alpha(0xE0080506, a));
+        g.fill(x0, y0, x0 + cw, y0 + 1, Ui.alpha(EventoHud.ROJO, a));
+        g.fill(x0, y0 + ch - 1, x0 + cw, y0 + ch, Ui.alpha(EventoHud.ROJO, a));
+        String cab = Component.translatable("coleccionista.reglas.titulo", titulo).getString();
+        EventoHud.texto(g, f, cab, w / 2, y0 + 8, 1.0F, Ui.alpha(EventoHud.ROJO_CL, a));
+        int y = y0 + 26;
+        for (int i = 0; i < lineas.size(); i++) {
+            if (numeros.get(i) > 0) {
+                g.drawString(f, numeros.get(i) + ".", x0 + 12, y, Ui.alpha(EventoHud.ROJO_CL, a), false);
+            }
+            g.drawString(f, lineas.get(i), x0 + 26, y, Ui.alpha(EventoHud.PORCELANA, a), false);
+            y += 11;
+        }
+    }
+
     private static void dibujar(G g, int w, int h) {
         long now = System.currentTimeMillis();
         Font f = Ui.font();
+        if (reglasDesde > 0) {
+            tarjeta(g, w, h, f, now);
+        }
         // ---- presentación
         if (presDesde > 0) {
             float t = (now - presDesde) / 1000F;
             if (t > DURA) {
                 presDesde = 0;
+                empezarReglas();
             } else {
                 float salida = 1 - suave((t - (DURA - 0.9F)) / 0.9F);
                 float entra = suave(t / 0.6F);
