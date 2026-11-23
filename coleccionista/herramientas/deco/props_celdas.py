@@ -224,7 +224,7 @@ def silla():
 def lampara_tubo(on=True):
     """Lampara fluorescente que cuelga del techo (dos tubos)."""
     pid = 'lampara_tubo' if on else 'lampara_tubo_apagada'
-    p = Prop(pid, 'Lámpara fluorescente', 'Fluorescent lamp', kind='hang', sound='metal', seed=28, collide=False, light=14)
+    p = Prop(pid, 'Lámpara fluorescente', 'Fluorescent lamp', kind='hang', sound='metal', seed=28, collide=False, light=15)
     m = pintado('#5d625e', oxido=0.25, seed=28)
     p.box(7.5, 13, 7.5, 8.5, 16, 8.5, m)                 # varilla
     p.box(0, 11, 5, 16, 13, 11, m)                       # caja

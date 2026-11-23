@@ -39,7 +39,7 @@ public final class ModRegistry {
     public static final net.minecraftforge.registries.RegistryObject<Block> FOCO = BLOCKS.register("foco",
             () -> new com.coleccionista.bloque.FocoBlock(com.axeliscore.plat.Reg.block(Coleccionista.MODID, "foco")
                     .strength(-1F, 3600000F).noOcclusion().sound(net.minecraft.world.level.block.SoundType.LANTERN)
-                    .lightLevel(s -> s.getValue(com.coleccionista.bloque.FocoBlock.ENCENDIDO) ? 13 : 0)));
+                    .lightLevel(s -> s.getValue(com.coleccionista.bloque.FocoBlock.ENCENDIDO) ? 15 : 0)));
     public static final net.minecraftforge.registries.RegistryObject<Item> PANTALLA_ITEM = ITEMS.register("pantalla",
             () -> new net.minecraft.world.item.BlockItem(PANTALLA.get(), com.axeliscore.plat.Reg.blockItem(Coleccionista.MODID, "pantalla")));
     public static final net.minecraftforge.registries.RegistryObject<Item> CANDADO_ITEM = ITEMS.register("candado",

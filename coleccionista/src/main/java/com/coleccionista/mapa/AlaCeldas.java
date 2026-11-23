@@ -314,8 +314,10 @@ public final class AlaCeldas {
 
     private static void lucesPasillo(Plano p) {
         // lámparas fluorescentes colgando sobre el pasillo (luz fría; algunas fallan)
-        for (int x = -4; x <= 40; x += 6) {
-            luz(p, x, 9, 11, C + "lampara_tubo[facing=north,encendida=true,falla=false]");
+        for (int x = -4; x <= 40; x += 3) {
+            // cuelgan de un tubo que baja del techo
+            p.set(x, 9, 11, C + "tubo[axis=y]");
+            luz(p, x, 8, 11, C + "lampara_tubo[facing=north,encendida=true,falla=false]");
         }
         // focos de jaula en las columnas, abajo y arriba, mirando al pasillo
         for (int k = 0; k <= 6; k++) {

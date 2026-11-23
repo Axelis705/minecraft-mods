@@ -440,7 +440,7 @@
    "id": "lampara_tubo",
    "kind": "prop",
    "tall": false,
-   "light": 14,
+   "light": 15,
    "collide": false,
    "sound": "metal",
    "shape": [
