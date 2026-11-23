@@ -1,0 +1,400 @@
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by net.minecraftforge.unsafe.UnsafeHacks (file:/home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/unsafe/0.9.2/33bad02861cabd77c54a8c9d1205e8638bbbbb4f/unsafe-0.9.2.jar)
+WARNING: Please consider reporting this to the maintainers of class net.minecraftforge.unsafe.UnsafeHacks
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by com.sun.jna.Native in module com.sun.jna (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.17.0/33d12735bef894440780fce64f9758d420c7bae2/jna-5.17.0.jar!/)
+WARNING: Use --enable-native-access=com.sun.jna to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.jline.nativ.JLineNativeLoader in module org.jline.nativ (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.jline/jline-native/3.25.1/7f58e474f7d94db5bf87b1fddf4fa646475779f2/jline-native-3.25.1.jar!/)
+WARNING: Use --enable-native-access=org.jline.nativ to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-11-23T07:45:57.359048759Z main WARN Advanced terminal features are not available in this environment
+[07:45:57] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher running: args [--gameDir, ., --launchTarget, forge_userdev_client, --version, MOD_DEV, --assetIndex, 34, --assetsDir, /home/runner/.minecraft/assets, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[07:45:57] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 25.0.5+8-LTS
+[07:45:57] [main/INFO] [cp.mo.mo.Launcher/MODLAUNCHER]: ModLauncher 10.2.6 starting: java version 25.0.5 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1020-azure
+[07:45:57] [main/WARN] [ne.mi.fm.lo.FMLConfig/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/pesca_coleccion-26.3/run/config/fml.toml is not correct. Correcting
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowHeight] was corrected from null to 480
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [versionCheck] was corrected from null to true
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowFBScale] was corrected from null to 1
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowProvider] was corrected from null to fmlearlywindow
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowWidth] was corrected from null to 854
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowMaximized] was corrected from null to false
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [defaultConfigPath] was corrected from null to defaultconfigs
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [disableOptimizedDFU] was corrected from null to true
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [maxThreads] was corrected from null to -1
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[07:45:57] [main/INFO] [ne.mi.fm.lo.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[07:45:57] [main/INFO] [ne.mi.fm.lo.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because splash screen is disabled
+[07:45:57] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.7/8ab114ac385e6dbdad5efafe28aba4df8120915f/mixin-0.8.7.jar!/ Service=ModLauncher Env=CLIENT
+[07:45:58] [main/INFO] [ne.mi.fm.lo.mo.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[07:45:58] [main/INFO] [cp.mo.mo.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forge_userdev_client' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.minecraft/assets, --assetIndex, 34, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.lwjgl.system.Library$$Lambda/0x000000007a673000 in module org.lwjgl (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.4.3/7ab5265a73d8a959ed62332d546536ae6be2f0d5/lwjgl-3.4.3.jar!/)
+WARNING: Use --enable-native-access=org.lwjgl to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.lwjgl.opengl.GL$$Lambda/0x000000007a6b2800 in module org.lwjgl.opengl (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.4.3/b81769ee48050f8c71e70839505f350bf9219d90/lwjgl-opengl-3.4.3.jar!/)
+WARNING: Use --enable-native-access=org.lwjgl.opengl to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.lwjgl.stb.LibSTB$$Lambda/0x000000007a6b5000 in module org.lwjgl.stb (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.4.3/cdce54785bd3758e44a81f345d6260774d921c78/lwjgl-stb-3.4.3.jar!/)
+WARNING: Use --enable-native-access=org.lwjgl.stb to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.lwjgl.util.vma.LibVma$$Lambda/0x000000007a6b8400 in module org.lwjgl.vma (jar:file:///home/runner/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-vma/3.4.3/816a6ac87f1e447e5346ca0e7a1078353f51fbd6/lwjgl-vma-3.4.3.jar!/)
+WARNING: Use --enable-native-access=org.lwjgl.vma to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+[07:46:00] [Datafixer Bootstrap #0/INFO] [mojang/DataFixerBuilder]: 307 Datafixer optimizations took 580 milliseconds
+[07:46:04] [Render thread/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/pesca_coleccion-26.3/.gradle/mavenizer/repo/net/minecraftforge/forge/26.3-66.1.5/forge-26.3-66.1.5.jar%230!/assets/.mcassetsroot' uses unexpected schema
+[07:46:04] [Render thread/WARN] [minecraft/VanillaPackResourcesBuilder]: Assets URL 'union:/home/runner/work/minecraft-mods/minecraft-mods/gen/pesca_coleccion-26.3/.gradle/mavenizer/repo/net/minecraftforge/forge/26.3-66.1.5/forge-26.3-66.1.5.jar%230!/data/.mcassetsroot' uses unexpected schema
+[07:46:04] [Render thread/INFO] [mojang/MinecraftServicesDiscoveryService]: Environment: Environment[discoveryUrl=https://discovery.minecraftservices.com/minecraft/client, name=PROD]
+[07:46:04] [Render thread/INFO] [minecraft/Minecraft]: Setting user: Dev
+[07:46:04] [Render thread/INFO] [minecraft/Minecraft]: Backend library: LWJGL version 3.4.3+4
+[07:46:04] [Render thread/INFO] [mojang/SdlDebug]: SDL [SYSTEM]: App name: Minecraft
+[07:46:04] [Render thread/INFO] [mojang/SdlDebug]: SDL [SYSTEM]: App version: 26.3
+[07:46:04] [Render thread/INFO] [mojang/SdlDebug]: SDL [SYSTEM]: App ID: com.mojang.minecraft
+[07:46:04] [Render thread/INFO] [mojang/SdlDebug]: SDL [SYSTEM]: SDL revision: SDL-3.4.14--128-NOTFOUND
+[07:46:05] [Render thread/ERROR] [minecraft/Minecraft]: Failed to create backend OpenGL
+com.mojang.renderpearl.api.device.BackendCreationException: Failed to create window for OpenGL context: Couldn't find matching GLX visual
+	at TRANSFORMER/minecraft@26.3/com.mojang.renderpearl.backend.opengl.GlDevice.<init>(GlDevice.java:77) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.renderpearl.backend.opengl.GlBackend.createDevice(GlBackend.java:76) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.<init>(Minecraft.java:491) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.main.Main.main(Main.java:272) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:96) [fmlloader-26.3-66.1.5.jar!/:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:79) [fmlloader-26.3-66.1.5.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:84) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:104) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.run(Launcher.java:151) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.main(Launcher.java:110) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) [modlauncher-10.2.6.jar!/:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) [bootstrap-2.1.8.jar!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+Transformer Audit:
+  com.mojang.renderpearl.backend.opengl.GlBackend
+    REASON: classloading
+  com.mojang.renderpearl.backend.opengl.GlDevice
+    REASON: classloading
+  net.minecraft.client.Minecraft
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.client.main.Main
+    REASON: classloading
+[07:46:05] [Render thread/INFO] [mojang/VulkanBackend]: Enabling optional FeatureSet [EXT MultiDraw]
+[07:46:05] [Render thread/INFO] [mojang/VulkanBackend]: Optional FeatureSet [AMD Buffer Marker] not supported
+[07:46:05] [Render thread/INFO] [mojang/VulkanBackend]: Enabling optional FeatureSet [Calibrated Timestamps]
+[07:46:05] [Render thread/INFO] [mojang/VulkanBackend]: Enabling optional FeatureSet [Wireframe]
+[07:46:05] [Render thread/INFO] [mojang/VulkanBackend]: Optional FeatureSet [NV Diagnostic Checkpoint] not supported
+[07:46:05] [Render thread/INFO] [minecraft/Minecraft]: Using graphics backend Vulkan, using drivers: 1.4.335 llvmpipe Mesa 26.0.8-1ubuntu0.3 (LLVM 21.1.8)
+[07:46:05] [Render thread/INFO] [minecraft/Minecraft]: Using graphics device: llvmpipe (LLVM 21.1.8, 256 bits) (0x10005)
+[07:46:05] [Render thread/INFO] [minecraft/Minecraft]: Using graphics device extensions: VK_EXT_calibrated_timestamps (D), VK_KHR_synchronization2 (D), VK_EXT_multi_draw (D), VK_EXT_vertex_attribute_divisor (D), VK_KHR_swapchain (D), VK_KHR_surface (I), VK_KHR_push_descriptor (D), VK_KHR_xlib_surface (I), VK_EXT_debug_utils (I), VK_KHR_dynamic_rendering (D)
+[07:46:05] [Render thread/INFO] [mojang/Window]: Created window using SDL video driver: x11
+[07:46:05] [modloading-worker-0/INFO] [co.ax.AxelisCore/]: Axelis Core 1.1.0 (API 2)
+[07:46:05] [modloading-worker-0/INFO] [ne.mi.co.ForgeMod/FORGEMOD]: Forge mod loading, version 66.1.5, for MC 26.3 with MCP 20260918.230105
+[07:46:05] [modloading-worker-0/INFO] [ne.mi.co.MinecraftForge/FORGE]: MinecraftForge v66.1.5 Initialized
+[07:46:05] [modloading-worker-0/INFO] [ne.mi.co.ForgeMod/FORGEMOD]: Opening jdk.naming.dns/com.sun.jndi.dns to java.naming
+[07:46:05] [modloading-worker-0/INFO] [co.ax.AxelisCore/]: pesca_coleccion usa Axelis Core 1.1.0 (API 2)
+[W][07:46:05.604712] pw.conf      | [          conf.c: 1182 try_load_conf()] can't load config client.conf: No such file or directory
+[E][07:46:05.604779] pw.conf      | [          conf.c: 1215 pw_conf_load_conf_for_context()] can't load config client.conf: No such file or directory
+[ALSOFT] (EE) Failed to create PipeWire event context (errno: 2)
+[07:46:05] [Download-1/INFO] [mojang/RealmsClient]: Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: 0
+[07:46:05] [Download-1/ERROR] [mojang/RealmsClient]: Failed to fetch Realms feature flags
+com.mojang.realmsclient.exception.RealmsServiceException: Realms authentication error with message 'java.lang.RuntimeException: Failed to parse into SignedJWT: 0'
+	at TRANSFORMER/minecraft@26.3/com.mojang.realmsclient.client.RealmsClient.execute(RealmsClient.java:622) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.realmsclient.client.RealmsClient.fetchFeatureFlags(RealmsClient.java:177) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1789) [?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090) [?:?]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614) [?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1474) [?:?]
+Transformer Audit:
+  com.mojang.realmsclient.client.RealmsClient
+    REASON: classloading
+[07:46:06] [Render thread/INFO] [minecraft/ReloadableResourceManager]: Reloading ResourceManager: vanilla, vanilla, mod:forge, mod:axelis_core, mod:pesca_coleccion
+[07:46:06] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/gen/pesca_coleccion-26.3/run/config/forge-client.toml is not correct. Correcting
+[07:46:06] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SynchronizedConfig{DataHolder:{}}. 
+[07:46:06] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[07:46:06] [modloading-worker-0/WARN] [ne.mi.co.ForgeConfigSpec/CORE]: Incorrect key client.allowMipmapLowering was corrected from null to its default, false. 
+[07:46:06] [Worker-Main-2/INFO] [minecraft/UnihexProvider]: Found unifont_all_no_pua-17.0.01.hex, loading
+[07:46:06] [Worker-Main-1/INFO] [minecraft/UnihexProvider]: Found unifont_pua-17.0.01.hex, loading
+[07:46:06] [Worker-Main-2/INFO] [minecraft/UnihexProvider]: Found unifont_jp_patch-17.0.01.hex, loading
+[07:46:07] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[07:46:07] [Forge Version Check/INFO] [ne.mi.fm.VersionChecker/]: [forge] Found status: OUTDATED Current: 66.1.5 Target: 66.1.9
+ALSA lib confmisc.c:855:(parse_card) [error.core] cannot find card '0'
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) [error.core] error evaluating strings
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) [error.core] error evaluating name
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5734:(snd_config_expand) [error.core] Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) [error.pcm] Unknown PCM default
+ALSA lib confmisc.c:855:(parse_card) [error.core] cannot find card '0'
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) [error.core] error evaluating strings
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) [error.core] error evaluating name
+ALSA lib conf.c:5211:(_snd_config_evaluate) [error.core] function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5734:(snd_config_expand) [error.core] Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) [error.pcm] Unknown PCM default
+[07:46:10] [Render thread/ERROR] [minecraft/SoundEngine]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at TRANSFORMER/minecraft@26.3/com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:185) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/com.mojang.blaze3d.audio.Library.init(Library.java:66) ~[forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:112) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:103) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:120) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:43) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:19) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:739) [?:?]
+	at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:503) [?:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$prepareTasks$3(SimpleReloadInstance.java:75) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:160) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:24) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:135) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:116) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.runTick(Minecraft.java:1190) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.Minecraft.run(Minecraft.java:928) [forge-26.3-66.1.5.jar%230!/:?]
+	at TRANSFORMER/minecraft@26.3/net.minecraft.client.main.Main.main(Main.java:286) [forge-26.3-66.1.5.jar%230!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:96) [fmlloader-26.3-66.1.5.jar!/:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@26.3-66.1.5/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:79) [fmlloader-26.3-66.1.5.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:84) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:104) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.run(Launcher.java:151) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.Launcher.main(Launcher.java:110) [modlauncher-10.2.6.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.6/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) [modlauncher-10.2.6.jar!/:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) [bootstrap-2.1.8.jar!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.launcher.Main$Launcher.run(Main.java:282) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main$Launcher.access$000(Main.java:268) [slime-launcher-0.2.3.jar:0.2.3]
+	at net.minecraftforge.launcher.Main.main(Main.java:57) [slime-launcher-0.2.3.jar:0.2.3]
+Transformer Audit:
+  com.mojang.blaze3d.audio.Library
+    REASON: classloading
+  net.minecraft.client.Minecraft
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.client.main.Main
+    REASON: classloading
+  net.minecraft.client.sounds.SoundEngine
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.client.sounds.SoundManager
+    REASON: classloading
+  net.minecraft.server.packs.resources.SimplePreparableReloadListener
+    REASON: classloading
+  net.minecraft.server.packs.resources.SimpleReloadInstance
+    REASON: classloading
+  net.minecraft.util.thread.BlockableEventLoop
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.util.thread.ReentrantBlockableEventLoop
+    REASON: classloading
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[07:46:10] [Render thread/INFO] [minecraft/TextureAtlas]: Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[07:46:13] [Worker-Main-2/INFO] [co.ax.AxelisCore/]: DIAG_AXCORE_REGISTRO INTEGRATED
+[07:46:13] [Worker-Main-2/INFO] [co.ax.AxelisCore/]: AXCORE_COMANDOS galeria* criaturas* probar ir efecto datos*
+[07:46:13] [Worker-Main-2/INFO] [minecraft/AdvancementTree]: Loaded 1866 advancements
+[07:46:13] [Server thread/INFO] [minecraft/IntegratedServer]: Starting integrated minecraft server version 26.3
+[07:46:13] [Server thread/INFO] [minecraft/MinecraftServer]: Generating keypair
+[07:46:14] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Loading 36 persistent chunks...
+[07:46:14] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 10%
+[07:46:14] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[07:46:14] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[07:46:14] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[07:46:14] [Server thread/INFO] [ne.mi.se.pe.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[07:46:15] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Loading 39 chunks for player spawn...
+[07:46:15] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 48%
+[07:46:15] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 48%
+[07:46:15] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 48%
+[07:46:16] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Preparing spawn area: 57%
+[07:46:16] [Server thread/INFO] [minecraft/LoggingLevelLoadListener]: Time elapsed: 2171 ms
+[07:46:16] [Server thread/INFO] [minecraft/PlayerList]: Dev[local:E:b12b9d3d] logged in with entity id 1 at (-9.5, -60.0, -3.5)
+[07:46:16] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dev joined the game
+[07:46:16] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST inicio pasos=115
+[07:46:16] [Server thread/INFO] [minecraft/IntegratedServer]: Changing view distance to 6, from 10
+[07:46:16] [Server thread/INFO] [minecraft/IntegratedServer]: Changing simulation distance to 5, from 0
+[07:46:16] [Render thread/WARN] [minecraft/ShaderManager]: Requested post effect does not exist: minecraft:end_of_frame
+[07:46:16] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[07:46:17] [Render thread/INFO] [minecraft/AdvancementTree]: Loaded 2 advancements
+[07:46:17] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[07:46:17] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[07:46:18] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 2 reached during a single frame. New capacity will be 8.
+[07:46:18] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 2 reached during a single frame. New capacity will be 8.
+[07:46:18] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[07:46:18] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[07:46:19] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[07:46:19] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[07:46:19] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[07:46:19] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[07:46:20] [Render thread/INFO] [minecraft/DynamicGpuDataStorageMapped]: Resizing Chunk Sections Command Buffer, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[07:46:20] [Render thread/INFO] [minecraft/DynamicGpuDataStorageNonMapped]: Resizing Chunk Sections Instanced, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[07:46:26] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set Dev's game mode to Creative Mode
+[07:46:26] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: The difficulty has been set to Peaceful
+[07:46:26] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Reloading!
+[07:46:26] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[07:46:27] [Worker-Main-3/INFO] [co.ax.AxelisCore/]: DIAG_AXCORE_REGISTRO INTEGRATED
+[07:46:27] [Worker-Main-3/INFO] [co.ax.AxelisCore/]: AXCORE_COMANDOS galeria* criaturas* probar ir efecto datos*
+[07:46:27] [Worker-Main-3/INFO] [minecraft/AdvancementTree]: Loaded 1866 advancements
+[07:46:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set minecraft:overworld to 6000 tick(s)
+[07:46:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set the weather to clear
+[07:46:27] [Render thread/INFO] [minecraft/AdvancementTree]: Loaded 2 advancements
+[07:46:28] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Pesca de colección works with Axelis Core 1.1.0 (API 2)
+[07:46:28] [Server thread/INFO] [co.pe.PescaColeccion/]: PRUEBA_PESCA_COLECCION_OK Axelis Core 1.1.0 (API 2)
+[07:46:30] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 144 block(s)
+[07:46:30] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Replaced 1 slot(s) on Dev with [Bamboo Rod]
+[07:46:30] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Replaced 1 slot(s) on Dev with [Glowing Bait]
+[07:46:30] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set Dev's game mode to Survival Mode
+[07:46:30] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 0.500000, -60.000000, -1.500000
+[07:46:30] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[07:46:33] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: la caña se dibuja lanzada (sin el hilo que cuelga)
+[07:46:33] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: la carnada no se gasta al lanzar
+[07:46:35] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_corcho_flota
+[07:46:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: picada buena
+[07:46:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_corcho_pica
+[07:46:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la pelea del corcho
+[07:46:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el pez se comió una carnada al picar
+[07:46:44] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_corcho
+[07:46:47] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_PELEA rareza=0 resultado=1 perfecto=true teclas=27 fallos=0 hilo=100
+[07:46:48] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] You got the Fishing Journal: your collection lives there.
+[07:46:49] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: termina la pelea del corcho
+[07:46:49] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el pez del corcho llegó al inventario
+[07:46:49] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: la caña vuelve a tener su hilo
+[07:46:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: llega Nilo
+[07:46:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: Nilo saluda
+[07:46:57] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_saludo
+[07:46:57] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: muelle listo
+[07:47:01] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: Nilo en su muelle
+[07:47:01] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 6.500000, -60.000000, 0.500000
+[07:47:04] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_muelle
+[07:47:04] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 0.500000, -60.000000, 1.500000
+[07:47:06] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la ventana de Nilo
+[07:47:07] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_encargos
+[07:47:07] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_NILO_COBRO tipo=noche esmeraldas=5 amistad=3
+[07:47:07] [Render thread/INFO] [minecraft/AdvancementTree]: Loaded 3 advancements
+[07:47:09] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: Nilo pagó el encargo con esmeraldas
+[07:47:10] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_cobrado
+[07:47:12] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_tienda
+[07:47:13] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_NILO_COMPRA oferta=0 precio=1
+[07:47:14] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: le compró 8 lombrices a Nilo
+[07:47:14] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_NILO_VENTA esmeraldas=6
+[07:47:15] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: le vendió el pez a Nilo
+[07:47:15] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_NILO_NIVEL 1
+[07:47:15] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_NILO_NIVEL 2
+[07:47:15] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_NILO_NIVEL 3
+[07:47:15] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_NILO_NIVEL 4
+[07:47:18] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_amistad
+[07:47:18] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: Nilo regaló su caña
+[07:47:19] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 4.500000, -60.000000, 2.500000
+[07:47:23] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_nilo_pescando
+[07:47:23] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set the weather to rain
+[07:47:26] [Server thread/INFO] [co.ax.AxelisCore/]: AXCORE_ROMPER primer bloque roto (mods que escuchan: 1)
+[07:47:26] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_LOMBRICES primer bloque (tierra=true lluvia=true creativo=false)
+[07:47:26] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: salen lombrices al cavar pasto bajo la lluvia (9 de 40)
+[07:47:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set the weather to clear
+[07:47:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set Dev's game mode to Creative Mode
+[07:47:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed 34 entities
+[07:47:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Removed 45 item(s) from player Dev
+[07:47:27] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[07:47:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 0.500000, -60.000000, -4.500000
+[07:47:28] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la pelea
+[07:47:31] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_ritmo
+[07:47:36] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: salto
+[07:47:36] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_salto
+[07:47:40] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: final
+[07:47:40] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_final
+[07:47:42] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_PELEA rareza=2 resultado=1 perfecto=false teclas=48 fallos=1 hilo=95
+[07:47:44] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: termina la pelea rara
+[07:47:44] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el pez raro llegó al inventario
+[07:47:45] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_premio
+[07:47:46] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la legendaria
+[07:47:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_legendaria
+[07:48:14] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_PELEA rareza=4 resultado=1 perfecto=false teclas=100 fallos=5 hilo=55
+[07:48:15] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: termina la legendaria
+[07:48:15] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el pez legendario llegó
+[07:48:17] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_pelea_legendaria_premio
+[07:48:19] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_peces
+[07:48:20] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_cuadro
+[07:48:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_pista
+[07:48:23] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_mejoras
+[07:48:24] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_carnada
+[07:48:25] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_deco
+[07:48:27] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_libro_records
+[07:48:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 36 block(s)
+[07:48:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 10, -58, -5
+[07:48:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 12, -58, -5
+[07:48:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 14, -58, -5
+[07:48:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 10, -60, -3
+[07:48:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 14, -60, -3
+[07:48:29] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el trofeo llegó al cliente con su pez
+[07:48:29] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: 6 peces en los acuarios (6)
+[07:48:29] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el acuario llegó al cliente con sus peces
+[07:48:30] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 12.500000, -60.000000, 1.500000
+[07:48:32] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_trofeos_acuarios
+[07:48:32] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 14.500000, -60.000000, -0.300000
+[07:48:34] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_acuario_cerca
+[07:48:35] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 12.500000, -60.000000, -2.500000
+[07:48:36] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_trofeo_cuadro
+[07:48:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 0.500000, -60.000000, -4.500000
+[07:48:37] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_TORNEO_EMPIEZA modo=puntos minutos=3 por=Dev
+[07:48:38] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se abre la pelea del torneo
+[07:48:52] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_PELEA rareza=2 resultado=1 perfecto=false teclas=48 fallos=1 hilo=95
+[07:48:53] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: termina la pelea del torneo
+[07:48:53] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el marcador del torneo tiene al jugador
+[07:48:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_torneo_marcador
+[07:48:56] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: ventana de Nilo (torneo)
+[07:48:58] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_torneo_nilo
+[07:48:58] [Server thread/INFO] [co.pe.PescaColeccion/]: PESCA_TORNEO_FIN modo=puntos jugadores=1 ganador=Dev
+[07:48:58] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] #1 Dev — 6
+[07:48:59] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el ganador recibió la copa de oro
+[07:49:00] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_torneo_fin
+[07:49:01] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Teleported Dev to 12.500000, -60.000000, 0.200000
+[07:49:03] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto pesca_coleccion_copa
+[07:49:03] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST AXCORE_AUTOTEST_FIN fotos=30 fallos=0
+[07:49:03] [Render thread/INFO] [minecraft/Minecraft]: Stopping!
+[07:49:03] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Dev lost connection: Disconnected
+[07:49:03] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dev left the game
+[07:49:03] [Server thread/INFO] [minecraft/ServerCommonPacketListenerImpl]: Stopping singleplayer server as player logged out
+[07:49:03] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[07:49:03] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[07:49:03] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[07:49:04] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[07:49:04] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[07:49:04] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_7-1795419938488.json
+
+BUILD SUCCESSFUL in 3m 30s
+4 actionable tasks: 1 executed, 3 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.7.1/userguide/configuration_cache_enabling.html
