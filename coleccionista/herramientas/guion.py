@@ -27,9 +27,6 @@ for gid, titulo in orden:
     if not m:
         continue
     fr = re.findall(r'new Frase\("([a-z_]+)", (\d+)', m.group(1))
-    if gid == "montacargas":
-        # la segunda frase es la parada (una por zona)
-        fr += [(z, "110") for z in ("cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria")]
     out.append(f"## {titulo}\n")
     out.append("| # | Archivo | Dura | Texto |\n|---|---|---|---|")
     for i, (k, t) in enumerate(fr, 1):

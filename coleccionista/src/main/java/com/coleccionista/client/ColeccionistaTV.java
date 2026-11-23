@@ -159,25 +159,25 @@ public final class ColeccionistaTV {
         if (risa) {
             OBJ[CX] = 0.06F;
             set3(KX, -0.38F, 0F, 0.1F);
-            brazos(-0.45F, 0.25F, -0.3F, -1.75F, -0.45F, -0.25F, -0.3F, 1.75F);
+            brazos(-0.45F, 0.25F, -0.3F, -1.5F, -0.45F, -0.25F, -0.3F, 1.5F);
         } else if (habla) {
-            // un ademán por frase (siempre el mismo para la misma frase)
+            // un ademán por frase (siempre el mismo para la misma frase); los antebrazos nunca se doblan de más ni pasan al otro lado
             int g = Math.floorMod(linea.hashCode(), 3);
             if (g == 0) {
                 set3(KX, 0.02F, 0.22F, -0.08F);
-                brazos(-0.75F, 0.35F, -0.2F, -2.75F, -0.55F, -0.12F, -0.35F, 2.0F);
+                brazos(-0.7F, 0.4F, -0.25F, -2.15F, -0.55F, -0.12F, -0.35F, 1.9F);
             } else if (g == 1) {
                 set3(KX, 0F, -0.1F, 0.05F);
-                brazos(-0.3F, 0.5F, -0.6F, 1.0F, -0.3F, -0.5F, -0.6F, -1.0F);
+                brazos(-0.3F, 0.45F, -0.5F, -0.75F, -0.3F, -0.45F, -0.5F, 0.75F);
             } else {
                 set3(KX, 0.02F, -0.22F, 0.08F);
-                brazos(-0.55F, 0.12F, -0.35F, -2.0F, -0.75F, -0.35F, -0.2F, 2.75F);
+                brazos(-0.55F, 0.12F, -0.35F, -1.9F, -0.7F, -0.4F, -0.25F, 2.15F);
             }
         } else {
             // esperando: manos juntas y la cabeza ladeada; cada tanto la ladea al otro lado de golpe, como muñeco
             float lado = ((int) (t / 6.5F)) % 2 == 0 ? 0.2F : -0.12F;
             set3(KX, 0.08F, 0F, lado);
-            brazos(-0.55F, 0.12F, -0.35F, -2.0F, -0.55F, -0.12F, -0.35F, 2.0F);
+            brazos(-0.55F, 0.12F, -0.35F, -1.9F, -0.55F, -0.12F, -0.35F, 1.9F);
         }
         // ---- se acerca suave (la cabeza ladeada va rápido, como muñeco)
         if (!empezado) {

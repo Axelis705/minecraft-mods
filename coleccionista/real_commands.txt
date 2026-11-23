@@ -34,7 +34,7 @@ evento investigar 5
 evento sala
 #pausa 2
 evento despertar
-#pausa 66
+#pausa 96
 evento celdas abrir
 evento salida
 #pausa 2

@@ -152,7 +152,7 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         // líneas de TV vieja
         for (int i = 0; i < (int) (h * 24); i++) {
             float y = -h / 2 + (i + 0.5F) * h / (h * 24F);
-            quad(d.translucent(BLANCO), ps, -w / 2, y, w / 2, y + h / (h * 24F) * 0.35F, z + 0.006F, 0, 0, 1, 1, 0x22000000, 0x22000000);
+            quad(d.translucent(BLANCO), ps, -w / 2, y, w / 2, y + h / (h * 24F) * 0.2F, z + 0.006F, 0, 0, 1, 1, 0x12000000, 0x12000000);
         }
         // subtítulo dentro de la pantalla
         if (habla && !clave.isEmpty() && !Cine.enPantalla()) {
@@ -163,18 +163,19 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
     /** Lo que va delante del Coleccionista en 3D: barras de la voz, rayas de tele vieja, franja de abajo y el subtítulo. */
     private static void encima(Draw d, PoseStack ps, float w, float h, float z, boolean habla, String clave, long ms) {
         if (habla) {
-            int n = 9;
-            float bw = w * 0.022F, x0 = w / 2 - n * bw * 1.6F - w * 0.04F, y0 = -h / 2 + h * 0.06F;
+            // las barras de la voz: chiquitas, en la esquina de abajo a la derecha (no tapan al Coleccionista)
+            int n = 7;
+            float bw = w * 0.012F, x0 = w / 2 - n * bw * 1.7F - w * 0.025F, y0 = -h / 2 + h * 0.045F;
             for (int i = 0; i < n; i++) {
                 float k = (float) Math.abs(Math.sin(ms / (90.0 + i * 17) + i));
-                float bh = h * (0.05F + 0.22F * k);
-                float x = x0 + i * bw * 1.6F;
-                quad(d.translucent(BLANCO), ps, x, y0, x + bw, y0 + bh, z + 0.002F, 0, 0, 1, 1, 0xFFB3121A, 0xFFFF5A5A);
+                float bh = h * (0.02F + 0.08F * k);
+                float x = x0 + i * bw * 1.7F;
+                quad(d.translucent(BLANCO), ps, x, y0, x + bw, y0 + bh, z + 0.002F, 0, 0, 1, 1, 0x90B3121A, 0xA0FF5A5A);
             }
         }
         for (int i = 0; i < (int) (h * 24); i++) {
             float y = -h / 2 + (i + 0.5F) * h / (h * 24F);
-            quad(d.translucent(BLANCO), ps, -w / 2, y, w / 2, y + h / (h * 24F) * 0.35F, z + 0.003F, 0, 0, 1, 1, 0x22000000, 0x22000000);
+            quad(d.translucent(BLANCO), ps, -w / 2, y, w / 2, y + h / (h * 24F) * 0.2F, z + 0.003F, 0, 0, 1, 1, 0x12000000, 0x12000000);
         }
         // la orilla de abajo (como el borde de una transmisión): tapa donde se corta el sillón
         quad(d.translucent(BLANCO), ps, -w / 2, -h / 2, w / 2, -h / 2 + h * 0.025F, z + 0.004F, 0, 0, 1, 1, 0xFF0A0406, 0xFF14070A);

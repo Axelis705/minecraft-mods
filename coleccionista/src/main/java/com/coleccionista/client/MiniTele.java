@@ -56,7 +56,7 @@ public final class MiniTele {
         g.push();
         g.translate(0, 0, 400);
         for (int y = y0; y < y1; y += 2) {
-            g.fill(x0, y, x1, y + 1, 0x22000000);
+            g.fill(x0, y, x1, y + 1, 0x12000000);
         }
         float prende = Mth.clamp((abierta - 0.55F) / 0.35F, 0F, 1F);
         if (prende < 1F) {

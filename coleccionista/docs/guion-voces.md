@@ -11,141 +11,152 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `bienvenida_silencio.ogg` | 2.5 s | … |
-| 2 | `bienvenida_hola.ogg` | 3.0 s | Hola… |
-| 3 | `bienvenida_que_tenemos.ogg` | 4.2 s | Vaya, vaya… ¿qué tenemos aquí? |
-| 4 | `bienvenida_acerquense.ogg` | 6.0 s | No sean tímidos. Acérquense a la pantalla… (pulsa R para verme de cerca) |
-| 5 | `bienvenida_durmieron.ogg` | 4.5 s | Veo que ya despertaron. ¿Durmieron bien? Yo no duermo… nunca. |
-| 6 | `bienvenida_no_sabes.ogg` | 4.5 s | Yo sé que no sabes quién eres… ni qué haces aquí. |
-| 7 | `bienvenida_coleccion.ogg` | 3.5 s | Bienvenido a mi colección. |
-| 8 | `bienvenida_piezas.ogg` | 5.0 s | Cada uno de ustedes es una pieza. Única. Frágil. Mía. |
-| 9 | `bienvenida_una_sale.ogg` | 6.0 s | Esta noche jugaremos varios juegos… y solo una pieza saldrá de aquí. |
-| 10 | `bienvenida_listo.ogg` | 4.0 s | Pero dime… ¿estás listo para jugar un juego? |
-| 11 | `bienvenida_risa.ogg` | 3.5 s | Je, je, je… ¡Ja, ja, ja, ja! |
-| 12 | `bienvenida_candado.ogg` | 9.5 s | Tu celda tiene un candado. El código son tres números… y los tres están escondidos en tu celda. Que empiece la colección. |
+| 2 | `bienvenida_hola.ogg` | 2.5 s | Hola… |
+| 3 | `bienvenida_que_tenemos.ogg` | 4.0 s | Vaya, vaya… ¿Qué tenemos aquí? |
+| 4 | `bienvenida_acerquense.ogg` | 6.2 s | No sean tímidas. Acérquense… pulsen la R y véanme de cerca. |
+| 5 | `bienvenida_durmieron.ogg` | 7.5 s | Veo que ya despertaron. ¿Durmieron bien? Las camas eran de las piezas anteriores. |
+| 6 | `bienvenida_no_sabes.ogg` | 7.0 s | No recuerdan cómo llegaron aquí. No se preocupen… nadie lo recuerda. |
+| 7 | `bienvenida_presento.ogg` | 5.2 s | Permítanme presentarme. Soy… el Coleccionista. |
+| 8 | `bienvenida_piezas.ogg` | 7.2 s | Y ustedes son mis piezas nuevas. Cada una con su número, cosido en el pecho. |
+| 9 | `bienvenida_fragiles.ogg` | 7.0 s | Las piezas finas son frágiles. Por eso hay que probarlas… una por una. |
+| 10 | `bienvenida_una_sale.ogg` | 8.2 s | Esta noche habrá varias pruebas. Y al final, solo una pieza saldrá por la puerta principal. |
+| 11 | `bienvenida_las_demas.ogg` | 6.2 s | Las demás… se quedan conmigo. En mi colección. Para siempre. |
+| 12 | `bienvenida_risa.ogg` | 3.5 s | Je… je, je, je. ¡Ja, ja, ja! |
+| 13 | `bienvenida_candado.ogg` | 7.8 s | Su primera prueba es sencilla: salir de su celda. El candado tiene tres números… |
+| 14 | `bienvenida_escondidos.ogg` | 7.0 s | …y los tres están escondidos ahí adentro, con ustedes. Busquen bien. |
+| 15 | `bienvenida_vitrina.ogg` | 3.2 s | La vitrina está abierta. |
 
 ## El despertar: cuando todas salen de sus celdas (pantalla grande)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `salida_bien.ogg` | 3.5 s | Bien… muy bien. |
-| 2 | `salida_todas.ogg` | 4.5 s | Todas mis piezas fuera de sus cajas. Ni una sola se quedó atrás. |
-| 3 | `salida_museo.ogg` | 5.5 s | Miren a su alrededor. Esto fue una prisión… ahora es mi museo. |
-| 4 | `salida_pruebas.ogg` | 6.0 s | Pronto empezará la primera prueba. Las piezas que fallen… se quedan en mi colección. Para siempre. |
+| 1 | `salida_bravo.ogg` | 2.8 s | Bravo… bravo. |
+| 2 | `salida_todas.ogg` | 6.2 s | Todas fuera de su celda. Ninguna se quedó atrás… qué lástima. |
+| 3 | `salida_museo.ogg` | 8.2 s | Esto que ven es la entrada de mi museo. Caminen con cuidado: el piso es viejo… como yo. |
+| 4 | `salida_salas.ogg` | 6.2 s | Detrás de cada puerta hay una sala. Y en cada sala, una prueba. |
 | 5 | `salida_risa.ogg` | 3.0 s | Je, je, je… |
-| 6 | `salida_esperen.ogg` | 5.0 s | Esperen aquí. Y no se separen… todavía. |
+| 6 | `salida_esperen.ogg` | 6.2 s | Pónganse cómodas. El montacargas vendrá por ustedes muy pronto. |
 
 ## El montacargas (entre pruebas)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `montacargas_viaje.ogg` | 4.5 s | Tranquilas, piezas. Mi montacargas es viejo… pero casi nunca se cae. |
-| 2 | `montacargas_cloacas.ogg` | 5.5 s | Siguiente parada: las Cloacas. Cuiden sus tobillos. |
-| 3 | `montacargas_archivo.ogg` | 5.5 s | Siguiente parada: el Archivo. Ahí guardo los secretos… y a los mentirosos. |
-| 4 | `montacargas_salon.ogg` | 5.5 s | Siguiente parada: el Salón. Pónganse elegantes: hoy se juega con la confianza. |
-| 5 | `montacargas_laberintos.ogg` | 5.5 s | Siguiente parada: los Laberintos. Ojalá confíen en la voz correcta. |
-| 6 | `montacargas_capilla.ogg` | 5.5 s | Siguiente parada: la Capilla. Recen, si todavía se acuerdan cómo. |
-| 7 | `montacargas_puertas.ogg` | 5.5 s | Siguiente parada: la Sala de las puertas. No todas llevan a algún lado. |
-| 8 | `montacargas_final.ogg` | 5.5 s | Última parada: mi Cámara. Solo las mejores piezas llegan hasta aquí. |
-| 9 | `montacargas_galeria.ogg` | 5.5 s | Siguiente parada: la Galería de los postes. Tres piezas, una cadena. |
+| 1 | `montacargas_viaje.ogg` | 4.8 s | Respiren hondo… es solo un poco de gas. |
+| 2 | `montacargas_cloacas.ogg` | 5.8 s | Próxima parada: las cloacas. Ahí abajo nada se seca nunca. |
+| 3 | `montacargas_archivo.ogg` | 6.8 s | Próxima parada: mi archivo. Ahí guardo los secretos de todas mis piezas. |
+| 4 | `montacargas_salon.ogg` | 6.5 s | Próxima parada: el salón de juego. Vayan pensando en quién confían. |
+| 5 | `montacargas_laberintos.ogg` | 5.5 s | Próxima parada: los laberintos. Vayan cerrando los ojos. |
+| 6 | `montacargas_capilla.ogg` | 7.0 s | Próxima parada: la capilla. Un buen lugar para rezar… o para ofrecerse. |
+| 7 | `montacargas_puertas.ogg` | 7.2 s | Próxima parada: la sala de las puertas. Tres caminos… y uno no tiene piso. |
+| 8 | `montacargas_final.ogg` | 6.5 s | Última parada: mi cámara privada. Muy pocas piezas llegan hasta aquí. |
+| 9 | `montacargas_galeria.ogg` | 7.2 s | Parada especial: la galería de los postes. Vayan en fila… y no se enreden. |
 
 ## Prueba 1 · Encadenados
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `encadenados_hola.ogg` | 3.5 s | Buenos días, piezas. ¿Durmieron bien? |
-| 2 | `encadenados_cadena.ogg` | 5.5 s | Cada uno de ustedes está atado a alguien. No lo eligieron… yo sí. |
-| 3 | `encadenados_llaves.ogg` | 5.5 s | Sus llaves no están con ustedes. Están en el barril de su pareja. |
-| 4 | `encadenados_lanzar.ogg` | 4.5 s | Pidan, confíen… y lancen bien. |
-| 5 | `encadenados_gas.ogg` | 7.5 s | Cuando se abra la reja, el gas empezará a llenar las cloacas. No lo respiren mucho tiempo. |
-| 6 | `encadenados_cupo.ogg` | 5.0 s | Al final del túnel hay un refugio. No hay lugar para todos. |
-| 7 | `encadenados_risa.ogg` | 3.0 s | Je, je, je… |
-| 8 | `encadenados_suerte.ogg` | 4.5 s | Lo que te ata… también te salva. Que empiece el juego. |
+| 1 | `encadenados_hola.ogg` | 5.0 s | Buenas noches, piezas. Bienvenidas a las cloacas. |
+| 2 | `encadenados_cadena.ogg` | 5.8 s | Cada una está encadenada a la pared… y a otra pieza. |
+| 3 | `encadenados_pareja.ogg` | 6.0 s | Su pareja de esta noche. No la eligieron ustedes. La elegí yo. |
+| 4 | `encadenados_llaves.ogg` | 6.0 s | Su llave no la tienen ustedes. Está en el barril de su pareja. |
+| 5 | `encadenados_lanzar.ogg` | 7.0 s | Pídanla con cortesía. Y cuando la tengan… láncenla con buena puntería. |
+| 6 | `encadenados_gas.ogg` | 8.8 s | Cuando se abra la reja, el gas empezará a bajar por los túneles. Yo no lo respiraría mucho tiempo. |
+| 7 | `encadenados_refugio.ogg` | 5.2 s | Al final hay un refugio. Es pequeño. No caben todas. |
+| 8 | `encadenados_risa.ogg` | 3.0 s | Je, je, je… |
+| 9 | `encadenados_vitrina.ogg` | 6.8 s | Lo que las ata… también puede salvarlas. La vitrina está abierta. |
 
 ## Prueba 2 · El traidor
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `traidor_hola.ogg` | 5.0 s | Bienvenidos a mi archivo. Aquí guardo secretos… y mentiras. |
+| 1 | `traidor_hola.ogg` | 7.8 s | Bienvenidas a mi archivo. Aquí guardo todo lo que sé de ustedes… que es mucho. |
 | 2 | `traidor_boveda.ogg` | 5.0 s | Cada sala tiene una bóveda cerrada con un código. |
-| 3 | `traidor_notas.ogg` | 6.5 s | Cada uno de ustedes tiene una nota con dos números. Juntos, tienen el código. |
-| 4 | `traidor_traidor.ogg` | 5.5 s | Pero en cada sala hay un traidor. Su nota miente… y él lo sabe. |
-| 5 | `traidor_intentos.ogg` | 8.5 s | Tienen tres intentos. Si abren la bóveda, el traidor es mío. Si no, el traidor elige a quién me llevo. |
-| 6 | `traidor_risa.ogg` | 3.0 s | Je, je, je… |
-| 7 | `traidor_confien.ogg` | 4.0 s | ¿En quién confían? |
+| 3 | `traidor_notas.ogg` | 7.0 s | Cada una tiene una nota con dos números. Juntas, tienen el código completo. |
+| 4 | `traidor_traidor.ogg` | 7.2 s | Pero en cada sala hay un traidor. Una réplica barata entre piezas originales. |
+| 5 | `traidor_miente.ogg` | 4.5 s | Su nota miente… y el traidor lo sabe. |
+| 6 | `traidor_intentos.ogg` | 6.0 s | Tienen tres intentos. Si abren la bóveda, el traidor es mío. |
+| 7 | `traidor_si_no.ogg` | 5.5 s | Si no la abren… el traidor elige a quién me llevo. |
+| 8 | `traidor_risa.ogg` | 3.0 s | Je, je, je… |
+| 9 | `traidor_vitrina.ogg` | 5.8 s | Díganme… ¿en quién confían? La vitrina está abierta. |
 
 ## Prueba 3 · Compartir o robar
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `compartir_hola.ogg` | 5.5 s | Bienvenidos a mi salón. Tomen asiento… o mejor, quédense de pie. |
-| 2 | `compartir_mesa.ogg` | 4.5 s | Frente a ustedes está su pareja de esta noche. |
-| 3 | `compartir_hablen.ogg` | 5.0 s | Tendrán un minuto para hablar. Prometan lo que quieran. |
-| 4 | `compartir_elijan.ogg` | 5.5 s | Después, cada uno elegirá en secreto: compartir… o robar. |
-| 5 | `compartir_reglas.ogg` | 9.5 s | Si los dos comparten, siguen los dos. Si uno roba, solo sigue él. Si los dos roban… los dos se quedan conmigo. |
-| 6 | `compartir_risa.ogg` | 3.0 s | Je, je, je… |
-| 7 | `compartir_confianza.ogg` | 4.5 s | La confianza es hermosa. También se cobra. |
+| 1 | `compartir_hola.ogg` | 6.5 s | Bienvenidas a mi salón de juego. Tomen asiento… frente a frente. |
+| 2 | `compartir_mesa.ogg` | 5.5 s | La pieza que tienen enfrente es su pareja en esta mesa. |
+| 3 | `compartir_hablen.ogg` | 7.8 s | Tienen un minuto para hablar. Prometan lo que quieran: las promesas no cuestan nada. |
+| 4 | `compartir_elijan.ogg` | 6.0 s | Después, cada una elegirá en secreto: compartir… o robar. |
+| 5 | `compartir_comparten.ogg` | 4.2 s | Si las dos comparten, siguen las dos. |
+| 6 | `compartir_roba.ogg` | 4.0 s | Si una roba, solo sigue la que robó. |
+| 7 | `compartir_roban.ogg` | 5.2 s | Y si las dos roban… las dos se quedan conmigo. |
+| 8 | `compartir_risa.ogg` | 3.0 s | Je, je, je… |
+| 9 | `compartir_vitrina.ogg` | 7.5 s | La confianza es una pieza muy fina: se rompe con nada. La vitrina está abierta. |
 
 ## Prueba 4 · A ciegas
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `ciegas_hola.ogg` | 3.5 s | Bienvenidos a mis laberintos. |
-| 2 | `ciegas_venda.ogg` | 5.0 s | Casi todos ustedes caminarán con los ojos vendados. |
-| 3 | `ciegas_guia.ogg` | 7.0 s | Uno de cada equipo será el guía: verá todo desde arriba… y solo podrá usar su voz. |
-| 4 | `ciegas_trampas.ogg` | 5.0 s | Hay trampas en el piso. Quien las pise vuelve al principio. |
-| 5 | `ciegas_baldosas.ogg` | 6.5 s | Y en el camino bueno… hay baldosas que se encienden. Esperen a que se apaguen… o vuelven al principio. |
-| 6 | `ciegas_mueven.ogg` | 5.0 s | Ah… y de vez en cuando, muevo mis trampas. |
-| 7 | `ciegas_ultimo.ogg` | 5.5 s | El último equipo en salir pierde a su guía. Por guiar mal. |
-| 8 | `ciegas_risa.ogg` | 3.0 s | Je, je, je… |
-| 9 | `ciegas_escuchen.ogg` | 3.5 s | Escuchen bien. |
+| 1 | `ciegas_hola.ogg` | 7.8 s | Bienvenidas a mis laberintos. Paredes acolchadas… para que nadie se despostille. |
+| 2 | `ciegas_venda.ogg` | 8.2 s | Casi todas caminarán con los ojos vendados. Solo verán un destello… de vez en cuando. |
+| 3 | `ciegas_guia.ogg` | 8.2 s | En cada equipo, una pieza será la guía. Caminará arriba, sobre el vidrio, y lo verá todo. |
+| 4 | `ciegas_voz.ogg` | 4.5 s | Pero no podrá bajar. Solo tendrá su voz. |
+| 5 | `ciegas_trampas.ogg` | 6.0 s | En el piso hay trampas. Quien pise una, regresa a la entrada. |
+| 6 | `ciegas_mueven.ogg` | 6.2 s | Y como me aburro fácil… de vez en cuando las cambio de lugar. |
+| 7 | `ciegas_baldosas.ogg` | 7.8 s | En el camino también hay baldosas que se encienden. Crúcenlas cuando estén apagadas. |
+| 8 | `ciegas_ultimo.ogg` | 5.8 s | El último equipo en salir pierde a su guía. Por guiar mal. |
+| 9 | `ciegas_risa.ogg` | 3.0 s | Je, je, je… |
+| 10 | `ciegas_vitrina.ogg` | 4.2 s | Escuchen bien. La vitrina está abierta. |
 
 ## Prueba 5 · El sacrificio
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `sacrificio_hola.ogg` | 5.0 s | Bienvenidos a mi capilla. Aquí se viene a pedir… y a dar. |
-| 2 | `sacrificio_puerta.ogg` | 5.5 s | Cada cuarto tiene una reja. Solo se abre si alguien se queda. |
-| 3 | `sacrificio_altar.ogg` | 6.5 s | Quien se pare en el altar cinco segundos se quedará. Los demás saldrán libres. |
-| 4 | `sacrificio_votar.ogg` | 5.0 s | Si nadie se ofrece, ustedes votarán. El más votado se queda. |
+| 1 | `sacrificio_hola.ogg` | 6.0 s | Bienvenidas a mi capilla. Aquí se viene a pedir… y a dar. |
+| 2 | `sacrificio_reja.ogg` | 6.5 s | Cada cuarto tiene una reja. Solo se abre si alguien se queda adentro. |
+| 3 | `sacrificio_altar.ogg` | 7.2 s | Quien se pare cinco segundos en el altar, se ofrece. Las demás salen libres. |
+| 4 | `sacrificio_votar.ogg` | 6.5 s | Si nadie se ofrece, votarán en secreto. La pieza más votada se queda. |
 | 5 | `sacrificio_risa.ogg` | 3.0 s | Je, je, je… |
-| 6 | `sacrificio_valiente.ogg` | 4.0 s | ¿Quién será el valiente? |
+| 6 | `sacrificio_vitrina.ogg` | 7.5 s | Las piezas valientes son las más bonitas de mi colección. La vitrina está abierta. |
 
 ## Prueba 6 · Las puertas
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `puertas_hola.ogg` | 3.5 s | Bienvenidos a la Sala de las puertas. |
-| 2 | `puertas_tres.ogg` | 4.5 s | Tres puertas. Detrás de cada una, una cabina. |
-| 3 | `puertas_piso.ogg` | 6.0 s | En una de ellas el piso se abre… y abajo el agua es muy, muy honda. |
-| 4 | `puertas_pista.ogg` | 6.0 s | Antes de cada ronda les daré una pista. Casi siempre digo la verdad. |
-| 5 | `puertas_tiempo.ogg` | 7.5 s | Elijan rápido: quien no entre antes de que se cierren las rejas… dejará que yo elija. |
-| 6 | `puertas_risa.ogg` | 3.0 s | Je, je, je… |
-| 7 | `puertas_suerte.ogg` | 3.5 s | Que la suerte los acompañe. |
+| 1 | `puertas_hola.ogg` | 4.2 s | Bienvenidas a la sala de las puertas. |
+| 2 | `puertas_tres.ogg` | 4.8 s | Tres puertas. Detrás de cada una, una cabina. |
+| 3 | `puertas_piso.ogg` | 7.0 s | En una de ellas el piso se abre… y el agua de abajo es muy, muy honda. |
+| 4 | `puertas_pista.ogg` | 7.0 s | Antes de cada ronda les daré una pista. Casi siempre digo la verdad. Casi. |
+| 5 | `puertas_juntas.ogg` | 8.5 s | Si todas eligen la misma puerta, esa vez el piso aguanta. Pónganse de acuerdo… si pueden. |
+| 6 | `puertas_tiempo.ogg` | 8.0 s | Elijan rápido: la que no entre antes de que bajen las rejas, deja que yo elija por ella. |
+| 7 | `puertas_risa.ogg` | 3.0 s | Je, je, je… |
+| 8 | `puertas_vitrina.ogg` | 5.2 s | Que la suerte las acompañe. La vitrina está abierta. |
 
 ## Prueba 7 (final) · Las copas
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `copas_hola.ogg` | 4.5 s | Bienvenidos a mi cámara. Pocos llegan hasta aquí. |
-| 2 | `copas_llegaron.ogg` | 4.5 s | Ustedes son las piezas más valiosas de mi colección. |
-| 3 | `copas_copas.ogg` | 5.0 s | Sobre la mesa hay varias copas. Todas huelen igual. |
-| 4 | `copas_veneno.ogg` | 4.5 s | Solo una tiene veneno. |
-| 5 | `copas_turnos.ogg` | 5.5 s | Por turnos, cada uno beberá una. La última pieza en pie… es libre. |
-| 6 | `copas_risa.ogg` | 3.0 s | Je, je, je… |
-| 7 | `copas_salud.ogg` | 3.5 s | ¡Salud! |
+| 1 | `copas_hola.ogg` | 6.5 s | Bienvenidas a mi cámara privada. Muy pocas piezas llegan hasta aquí. |
+| 2 | `copas_llegaron.ogg` | 6.8 s | Ustedes son lo mejor de mi colección. Las más fuertes. Las más bonitas. |
+| 3 | `copas_copas.ogg` | 6.2 s | Sobre la mesa hay copas. Todas huelen igual. Todas brillan igual. |
+| 4 | `copas_veneno.ogg` | 3.0 s | Solo una tiene veneno. |
+| 5 | `copas_turnos.ogg` | 7.2 s | Por turnos, cada una beberá una copa. La última pieza en pie… sale libre. |
+| 6 | `copas_promesa.ogg` | 3.8 s | Y yo siempre cumplo mis promesas. |
+| 7 | `copas_risa.ogg` | 3.0 s | Je, je, je… |
+| 8 | `copas_salud.ogg` | 2.5 s | ¡Salud! |
 
 ## Prueba extra · Encadenados de tres
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `tres_hola.ogg` | 3.5 s | Bienvenidos a mi galería. |
-| 2 | `tres_objetos.ogg` | 6.5 s | En su mesa hay tres regalos: una venda, una cinta y unas esposas. |
-| 3 | `tres_venda.ogg` | 5.0 s | Quien se ponga la venda no verá nada. |
-| 4 | `tres_cinta.ogg` | 5.0 s | Quien se ponga la cinta no podrá decir ni una palabra. |
+| 1 | `tres_hola.ogg` | 4.2 s | Bienvenidas a mi galería de los postes. |
+| 2 | `tres_objetos.ogg` | 6.2 s | En su mesa hay tres regalos: una venda, una cinta y unas esposas. |
+| 3 | `tres_venda.ogg` | 7.0 s | Quien se ponga la venda no verá nada. Solo un destello, de vez en cuando. |
+| 4 | `tres_cinta.ogg` | 5.5 s | Quien se ponga la cinta no podrá decir ni una palabra. |
 | 5 | `tres_esposas.ogg` | 5.5 s | Y quien se ponga las esposas… no podrá tocar nada. |
-| 6 | `tres_decidan.ogg` | 6.0 s | Decidan entre ustedes quién se pone qué. Si no lo deciden, lo decido yo. |
-| 7 | `tres_cadena.ogg` | 6.5 s | Luego cruzarán mi galería encadenados. Cuidado con los postes: las cadenas se enredan. |
+| 6 | `tres_decidan.ogg` | 6.5 s | Decidan entre ustedes quién se pone qué. Si no deciden, decido yo. |
+| 7 | `tres_cadena.ogg` | 8.5 s | Luego cruzarán la galería encadenadas en fila. Cuidado con los postes: las cadenas se enredan. |
 | 8 | `tres_risa.ogg` | 3.0 s | Je, je, je… |
-| 9 | `tres_suerte.ogg` | 3.5 s | El último trío en salir se queda conmigo. |
+| 9 | `tres_vitrina.ogg` | 6.5 s | El último trío en salir se queda conmigo. La vitrina está abierta. |
 
-**Total: 87 líneas (≈7 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+**Total: 98 líneas (≈9 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
