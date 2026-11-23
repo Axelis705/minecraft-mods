@@ -267,7 +267,7 @@ public final class CiegasCliente {
         }
         Font f = Ui.font();
         CompoundTag e = miEquipo();
-        String linea = null;
+        String linea = null, linea2 = null;
         if (e != null) {
             int salieron = 0, total = 0;
             for (Tag y : e.getList("miembros", Tag.TAG_COMPOUND)) {
@@ -287,6 +287,11 @@ public final class CiegasCliente {
                 guia = p == null ? "?" : "Pieza " + String.format("%02d", Nbt.i(p, "numero")) + " · " + Nbt.s(p, "nombre");
             }
             if ("JUEGO".equals(fase())) {
+                if (soyGuia(e)) {
+                    int cada = Nbt.i(estado, "cambio");
+                    linea2 = Component.translatable(MOD + ".cie.hud.colores").getString() + (cada > 0 ? Component.translatable(MOD
+                            + ".cie.hud.mueven", cada - (int) ((estado.getLong("t") / 20) % cada)).getString() : "");
+                }
                 linea = soyGuia(e) ? Component.translatable(MOD + ".cie.hud.guia", Nbt.i(e, "k"), salieron, total).getString()
                         : sali(e) ? Component.translatable(MOD + ".cie.hud.saliste", salieron, total).getString()
                         : Component.translatable(MOD + ".cie.hud.vendado", guia).getString();
@@ -299,6 +304,10 @@ public final class CiegasCliente {
             int lw = f.width(linea) + 16, y = EventoHud.lineaY(w, lw);
             g.fillGradient(w / 2 - lw / 2, y, w / 2 + lw / 2, y + 13, 0xB0140C0E, 0x90080506);
             g.drawCenteredString(f, linea, w / 2, y + 3, 0xFFD8D0C8);
+            if (linea2 != null) {
+                int y2 = EventoHud.debajo(w, f.width(linea2) + 8, y + 16);
+                g.drawCenteredString(f, linea2, w / 2, y2 + 2, 0xFFB8A898);
+            }
         }
     }
 }

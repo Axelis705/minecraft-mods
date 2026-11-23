@@ -553,7 +553,7 @@
   "coleccionista.cie.cmd.sacado": "%s got out of the maze.",
   "coleccionista.cie.cmd.ajustes": "Teams of %s · time: %s s · traps: %s.",
   "coleccionista.cie.cmd.terminada": "Blind ended.",
-  "coleccionista.cie.hud.guia": "You guide maze %s · %s of %s out · traps in red · flashing tiles in orange",
+  "coleccionista.cie.hud.guia": "You guide maze %s · %s of %s out",
   "coleccionista.cie.hud.saliste": "You're out · your team: %s of %s out",
   "coleccionista.cie.hud.vendado": "You're blindfolded: listen to your guide (%s)",
   "coleccionista.cie.hud.eres_guia": "You're the GUIDE: you'll see everything from above",
@@ -897,5 +897,7 @@
   "coleccionista.cie.cmd.ajustes2": "Light pulse every %s s · traps move every %s s (0 = never) · flashing tiles: %s.",
   "coleccionista.voz.ciegas.baldosas": "And on the right path… some tiles light up. Wait until they go dark… or back to the start you go.",
   "coleccionista.voz.ciegas.mueven": "Oh… and every now and then, I move my traps.",
-  "coleccionista.cie.regla.5": "The last team out loses its guide."
+  "coleccionista.cie.regla.5": "The last team out loses its guide.",
+  "coleccionista.cie.hud.mueven": " · they move in %s s",
+  "coleccionista.cie.hud.colores": "Traps in red · flashing tiles in orange"
 }

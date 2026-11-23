@@ -553,7 +553,7 @@
   "coleccionista.cie.cmd.sacado": "%s salió del laberinto.",
   "coleccionista.cie.cmd.ajustes": "Equipos de %s · tiempo: %s s · trampas: %s.",
   "coleccionista.cie.cmd.terminada": "A ciegas terminada.",
-  "coleccionista.cie.hud.guia": "Eres el guía del laberinto %s · salieron %s de %s · trampas en rojo · baldosas que se encienden en naranja",
+  "coleccionista.cie.hud.guia": "Eres el guía del laberinto %s · salieron %s de %s",
   "coleccionista.cie.hud.saliste": "Saliste · tu equipo: %s de %s afuera",
   "coleccionista.cie.hud.vendado": "Tienes los ojos vendados: escucha a tu guía (%s)",
   "coleccionista.cie.hud.eres_guia": "Eres el GUÍA: vas a ver todo desde arriba",
@@ -897,5 +897,7 @@
   "coleccionista.cie.cmd.ajustes2": "Pulso de luz cada %s s · las trampas cambian cada %s s (0 = nunca) · baldosas intermitentes: %s.",
   "coleccionista.voz.ciegas.baldosas": "Y en el camino bueno… hay baldosas que se encienden. Esperen a que se apaguen… o vuelven al principio.",
   "coleccionista.voz.ciegas.mueven": "Ah… y de vez en cuando, muevo mis trampas.",
-  "coleccionista.cie.regla.5": "El último equipo en salir pierde a su guía."
+  "coleccionista.cie.regla.5": "El último equipo en salir pierde a su guía.",
+  "coleccionista.cie.hud.mueven": " · se mueven en %s s",
+  "coleccionista.cie.hud.colores": "Trampas en rojo · baldosas que se encienden en naranja"
 }

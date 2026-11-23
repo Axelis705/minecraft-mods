@@ -619,6 +619,8 @@ public final class ACiegas {
         c0.putInt("ciclo", CICLO);
         c0.putInt("encendida", ENCENDIDA);
         c0.putInt("pulso", pulso);
+        c0.putInt("cambio", cambio);
+        c0.putLong("t", t);
         return c0;
     }
 
