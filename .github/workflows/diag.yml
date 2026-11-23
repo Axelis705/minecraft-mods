@@ -17,6 +17,9 @@ on:
       codigo:
         required: false
         default: ""
+      jar:
+        required: false
+        default: ""
 jobs:
   diag:
     runs-on: ubuntu-latest
@@ -49,5 +52,6 @@ jobs:
           DIAG_METODO: ${{ github.event.inputs.metodo }}
           DIAG_MC: ${{ matrix.mc }}
           DIAG_CODIGO: ${{ github.event.inputs.codigo }}
+          DIAG_JAR: ${{ github.event.inputs.jar }}
           DIAG_LINEAS: '260'
         run: bash tools/javap_diag.sh gen/p ${{ github.event.inputs.clases }}

@@ -6,9 +6,15 @@ jar=""
 # con DIAG_MC=<versión> se prefieren los jar de esa versión (la caché de gradle puede traer los de otras)
 cands=$(find "$HOME/.gradle" "$HOME/.m2" "$HOME/.mavenizer" "$dir" -name '*.jar' -size +8M 2>/dev/null)
 [ -n "${DIAG_MC:-}" ] && cands="$(echo "$cands" | grep -F -- "${DIAG_MC}") $(echo "$cands" | grep -vF -- "${DIAG_MC}")"
+# con DIAG_JAR=<texto> se usa el primer jar cuyo nombre lo contenga (por ejemplo "eventbus" para las clases del bus de eventos)
+if [ -n "${DIAG_JAR:-}" ]; then
+  jar=$(find "$HOME/.gradle" "$HOME/.m2" "$HOME/.mavenizer" "$dir" -name "*${DIAG_JAR}*.jar" 2>/dev/null | grep -v sources | head -1)
+fi
+if [ -z "$jar" ]; then
 for j in $cands; do
   if unzip -l "$j" 2>/dev/null | grep -q 'net/minecraft/client/Minecraft.class'; then jar="$j"; break; fi
 done
+fi
 [ -z "$jar" ] && { echo "no encontré el jar de Minecraft"; exit 0; }
 echo "JAR: $jar"
 for c in "$@"; do
