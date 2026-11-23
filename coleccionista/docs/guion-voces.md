@@ -1,12 +1,10 @@
 # Guion de voces del Coleccionista (para grabar)
 
-Generado desde el mod (`Pantallas.java` + `es_mx.json`). Cada línea es **un archivo de audio**; el texto es el subtítulo que sale en la tele y abajo en pantalla. Puedes decirlo con tus palabras si suena mejor: avísame y cambio el subtítulo.
+Generado desde el mod (`herramientas/guion.py`). Cada línea es **un archivo de audio**; el texto es el subtítulo que sale en la tele y abajo en pantalla. Puedes decirlo con tus palabras si suena mejor: avísame y cambio el subtítulo.
 
-**Cómo grabar:** un archivo por línea, voz sola (sin música), con un poco de silencio al principio y al final. Mejor en **OGG**; si grabas en MP3 o WAV yo los convierto. El nombre del archivo es la columna *Archivo*. *Dura* es el tiempo que la línea está en pantalla ahora: si tu grabación dura más, ajusto el tiempo a tu audio.
+**Cómo grabar:** un archivo por línea, voz sola (sin música), con un poco de silencio al principio y al final. Mejor en **OGG**; si grabas en MP3 o WAV yo los convierto (`herramientas/voces.py`). El nombre del archivo es la columna *Archivo*. *Dura* es el tiempo que la línea está en pantalla ahora: si tu grabación dura más, se ajusta solo a tu audio.
 
-Las risas por ahora suenan con un efecto del juego; si grabas tu risa, la uso en su lugar.
-
-**Cómo suena en el juego:** cada frase se oye para todos a la vez (no por distancia) mientras sale su subtítulo. Ids de sonido: `coleccionista:voz.<guion>.<clave>`; los archivos irán en `assets/coleccionista/sounds/voz/` y el `sounds.json` se genera solo con los que existan.
+Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la tuya.
 
 ## El despertar: el discurso de la tele (después de investigar)
 
@@ -105,5 +103,18 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, la uso en
 | 6 | `copas_risa.ogg` | 3.0 s | Je, je, je… |
 | 7 | `copas_salud.ogg` | 3.5 s | ¡Salud! |
 
-**Total: 57 líneas (≈5 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+## Prueba extra · Encadenados de tres
 
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `tres_hola.ogg` | 3.5 s | Bienvenidos a mi galería. |
+| 2 | `tres_objetos.ogg` | 6.5 s | En su mesa hay tres regalos: una venda, una cinta y unas esposas. |
+| 3 | `tres_venda.ogg` | 5.0 s | Quien se ponga la venda no verá nada. |
+| 4 | `tres_cinta.ogg` | 5.0 s | Quien se ponga la cinta no podrá decir ni una palabra. |
+| 5 | `tres_esposas.ogg` | 5.5 s | Y quien se ponga las esposas… no podrá tocar nada. |
+| 6 | `tres_decidan.ogg` | 6.0 s | Decidan entre ustedes quién se pone qué. Si no lo deciden, lo decido yo. |
+| 7 | `tres_cadena.ogg` | 6.5 s | Luego cruzarán mi galería encadenados. Cuidado con los postes: las cadenas se enredan. |
+| 8 | `tres_risa.ogg` | 3.0 s | Je, je, je… |
+| 9 | `tres_suerte.ogg` | 3.5 s | El último trío en salir se queda conmigo. |
+
+**Total: 66 líneas (≈5 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
