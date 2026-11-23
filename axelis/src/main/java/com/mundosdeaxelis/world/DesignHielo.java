@@ -98,7 +98,6 @@ final class DesignHielo {
                     b.set(s * 6, y, z, y == 0 ? CQ : QP);
                 }
                 b.set(s * 6, 4, z, SOUL + "[hanging=false]");
-                crystalPatch(b, s * 10, z + 3);
             }
         }
         // pórtico de hielo en la entrada del camino
@@ -126,10 +125,67 @@ final class DesignHielo {
         }
     }
 
-    private static void crystalPatch(StructBp b, int x, int z) {
-        crystal(b, x, z, 0, 5 + b.r.nextInt(4), 2, b.r.nextBoolean() ? 1 : -1, 0, 3, BI, PI, "light_blue_stained_glass");
-        crystal(b, x + 2, z + 1, 0, 3 + b.r.nextInt(3), 1, 0, 1, 2, PI, BI);
-        crystal(b, x - 2, z - 1, 0, 3 + b.r.nextInt(3), 1, 0, -1, 2, PI, BI);
+    /**
+     * Etapa 292: un grupo de cristales de hielo de verdad: un cristal grande casi vertical y cinco más pequeños que salen inclinados
+     * hacia fuera, sobre un montículo de hielo y nieve. Cada cristal es un prisma con punta: corazón de hielo azul (con alguna luz
+     * dentro), capa de hielo compacto y la punta de cristal celeste.
+     */
+    static void cluster(StructBp b, int cx, int cz, double scale, long seed) {
+        java.util.Random r = new java.util.Random(seed);
+        int base = (int) Math.round(2 + 2 * scale);
+        for (int dx = -base; dx <= base; dx++) {
+            for (int dz = -base; dz <= base; dz++) {
+                double d = Math.hypot(dx, dz);
+                if (d <= base) {
+                    int h = d < base * 0.5 ? 1 : 0;
+                    for (int y = 0; y <= h; y++) {
+                        b.set(cx + dx, y, cz + dz, y == h ? (r.nextDouble() < 0.4 ? SNOW : PI) : PI);
+                    }
+                }
+            }
+        }
+        double tilt0 = r.nextDouble() * Math.PI * 2;
+        spike(b, cx, 1, cz, Math.cos(tilt0) * 0.18, 1, Math.sin(tilt0) * 0.18, 11 * scale + 3, 1.9 * scale + 0.4, r);
+        int n = 5;
+        for (int i = 0; i < n; i++) {
+            double a = tilt0 + i * 2 * Math.PI / n + r.nextDouble() * 0.6;
+            double up = 0.9 + r.nextDouble() * 0.9;
+            spike(b, cx + (int) Math.round(Math.cos(a) * 1.5), 0, cz + (int) Math.round(Math.sin(a) * 1.5), Math.cos(a), up, Math.sin(a),
+                    (4 + r.nextDouble() * 4) * scale + 2, (0.8 + r.nextDouble() * 0.6) * scale + 0.3, r);
+        }
+    }
+
+    /** Un cristal: de (x,y,z) en la dirección (dx,dy,dz), largo len y radio rad; los últimos 35 % se afilan en punta. */
+    private static void spike(StructBp b, int x, int y, int z, double dx, double dy, double dz, double len, double rad, java.util.Random r) {
+        double n = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        dx /= n;
+        dy /= n;
+        dz /= n;
+        for (double t = 0; t <= len; t += 0.4) {
+            double k = t / len;
+            double rr = k < 0.65 ? rad : rad * (1 - (k - 0.65) / 0.35);
+            if (rr < 0.35) {
+                rr = 0.35;
+            }
+            double px = x + dx * t, py = y + dy * t, pz = z + dz * t;
+            int R = (int) Math.ceil(rr);
+            for (int ax = -R; ax <= R; ax++) {
+                for (int ay = -R; ay <= R; ay++) {
+                    for (int az = -R; az <= R; az++) {
+                        double d2 = ax * ax + ay * ay + az * az;
+                        if (d2 > rr * rr + 0.2) {
+                            continue;
+                        }
+                        int bx = (int) Math.round(px) + ax, by = (int) Math.round(py) + ay, bz = (int) Math.round(pz) + az;
+                        if (by < 0) {
+                            continue;
+                        }
+                        String m = k > 0.72 ? "light_blue_stained_glass" : d2 < (rr - 1) * (rr - 1) ? (r.nextDouble() < 0.04 ? "sea_lantern" : BI) : PI;
+                        b.set(bx, by, bz, m);
+                    }
+                }
+            }
+        }
     }
 
     private static void crystal(StructBp b, int x, int z, int y0, int h, int w, int dx, int dz, int every, String... pal) {
@@ -824,8 +880,31 @@ final class DesignHielo {
         for (int[] t : trees) {
             spruce(b, t[0], t[1], 13 + b.r.nextInt(7), "spruce_log", "spruce_leaves[persistent=true]");
         }
-        for (int i = 0; i < 20; i++) {
-            crystalPatch(b, -40 + b.r.nextInt(80), -10 + b.r.nextInt(8) * 12 + b.r.nextInt(5));
+        // etapa 292: en lugar de 20 manchas de hielo al azar (también dentro del patio), grupos de cristales puestos con intención:
+        // a los lados del camino, en las esquinas de delante y a los costados, fuera de la muralla
+        int[][] grupos = {{-11, -9, 6}, {11, -7, 6}, {-26, -11, 9}, {26, -12, 9}, {-41, 16, 10}, {41, 18, 10}, {-41, 64, 9}, {41, 62, 9}};
+        for (int i = 0; i < grupos.length; i++) {
+            cluster(b, grupos[i][0], grupos[i][1], grupos[i][2] / 10.0, 2920 + i);
+        }
+        // etapa 292: escarcha en la muralla y en las torres: vetas de hielo que bajan desde arriba por las piedras de fuera
+        for (java.util.Map.Entry<Long, String> e : new java.util.ArrayList<>(b.m.entrySet())) {
+            long k = e.getKey();
+            int x = StructBp.kx(k), y = StructBp.ky(k), z = StructBp.kz(k);
+            if (y < 9 || y > 13 || !(e.getValue().equals(Q) || e.getValue().equals(SQ))) {
+                continue;
+            }
+            boolean fuera = (Math.abs(x) == 28 && z >= 18 && z <= 74) || ((z == 18 || z == 74) && Math.abs(x) <= 28);
+            if (!fuera || StructKit.hash01(2930, x, z) > 0.12 || b.get(x + Integer.signum(x) * (Math.abs(x) == 28 ? 1 : 0), y, z + (z == 18 ? -1 : z == 74 ? 1 : 0)) != null
+                    && !"air".equals(b.get(x + Integer.signum(x) * (Math.abs(x) == 28 ? 1 : 0), y, z + (z == 18 ? -1 : z == 74 ? 1 : 0)))) {
+                continue;
+            }
+            int len = 2 + (int) (StructKit.hash01(2931, x, z) * 6);
+            for (int i = 0; i < len; i++) {
+                String cur = b.get(x, y - i, z);
+                if (cur != null && (cur.equals(Q) || cur.equals(SQ) || cur.equals(CAL))) {
+                    b.set(x, y - i, z, i == 0 ? BI : PI);
+                }
+            }
         }
         // carámbanos bajo los aleros y nieve en lo alto
         icicles(b, "quartz_stairs", 12, 0.18, 3, "ice");

@@ -46,11 +46,15 @@ final class DesignForja {
         StructBp b = new StructBp(5005);
         b.foundation(-40, -16, 40, 84, BLK);
         ground(b);
-        wall(b);
-        gatehouse(b);
-        cornerTowers(b);
+        // etapa 291: ya no es un castillo (con muralla y torres de tejado picudo, igual que la Ciudadela): es una fundición de
+        // verdad, con cerca de hierro, cuatro altos hornos con chimeneas que echan humo, portón de grúa, vías y montones de carbón,
+        // mineral y escoria en el patio, y la nave con tejado de dientes de sierra y claraboyas
+        perimeter(b);
+        factoryGate(b);
+        blastFurnaces(b);
         hall(b);
         yardBuildings(b);
+        yardWork(b);
         basement(b);
         finishing(b);
         Linker.link(b, 0, 0, -3, 10, PBB, PBS);
@@ -144,148 +148,183 @@ final class DesignForja {
         }
     }
 
-    // ================================================================== muralla
+    // ================================================================== etapa 291: la fundición industrial
 
-    private static void wall(StructBp b) {
-        b.box(-30, -1, 16, 30, 16, 74, PBB);
-        b.air(-27, 0, 19, 27, 16, 71);
-        b.walls(-31, -1, 15, 31, 2, 75, BLK);
-        ring(b, -31, 15, 31, 75, 3, PBS, false);
-        b.walls(-30, 8, 16, 30, 8, 74, CPB);
-        ring(b, -31, 15, 31, 75, 15, PBS, true);
-        b.box(-30, 16, 16, 30, 16, 74, DT);
-        b.air(-27, 16, 19, 27, 16, 71);
-        crenel(b, -30, 16, 30, 74, 17, 2, PBB);
-        for (java.util.Map.Entry<Long, String> e : new java.util.ArrayList<>(b.m.entrySet())) {
-            long k = e.getKey();
-            if (e.getValue().equals(PBB) && StructBp.ky(k) == 18 && !b.m.containsKey(StructBp.key(StructBp.kx(k), 19, StructBp.kz(k)))) {
-                b.set(StructBp.kx(k), 19, StructBp.kz(k), PBW);
-                b.set(StructBp.kx(k), 20, StructBp.kz(k), PBW);
+    private static final String BR = "bricks";
+    private static final String IRON = "iron_block";
+
+    /** Cerca del recinto: zócalo de piedra negra con barrotes de hierro encima, postes con faroles, y el hueco del portón. */
+    private static void perimeter(StructBp b) {
+        int x0 = -31, x1 = 31, z0 = 15, z1 = 75;
+        for (int x = x0; x <= x1; x++) {
+            for (int z = z0; z <= z1; z++) {
+                boolean edge = x == x0 || x == x1 || z == z0 || z == z1;
+                if (!edge || (z == z0 && Math.abs(x) <= 6)) {
+                    continue;
+                }
+                boolean post = (x - x0) % 6 == 0 && (z == z0 || z == z1) || (z - z0) % 6 == 0 && (x == x0 || x == x1);
+                b.set(x, -1, z, BLK);
+                b.set(x, 0, z, PBB);
+                b.set(x, 1, z, CPB);
+                for (int y = 2; y <= 4; y++) {
+                    b.set(x, y, z, post ? PBB : "iron_bars");
+                }
+                if (post) {
+                    b.set(x, 5, z, PBW);
+                    b.set(x, 6, z, "lantern[hanging=false]");
+                }
             }
         }
-        // contrafuertes con forma de espolón hacia fuera
-        for (int x = -24; x <= 24; x += 8) {
-            if (Math.abs(x) >= 16) {
-                buttress(b, x, 15, "-z", 3, 13, 3, PBS, PBB);
+    }
+
+    /** El portón: dos pilares de ladrillo con una viga de acero arriba, cadenas y ganchos colgando, y las vías que entran. */
+    private static void factoryGate(StructBp b) {
+        for (int s = -1; s <= 1; s += 2) {
+            for (int y = -1; y <= 13; y++) {
+                for (int dx = 0; dx <= 2; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        b.set(s * (7 + dx), y, 15 + dz, y % 5 == 4 ? PBB : BR);
+                    }
+                }
             }
-            buttress(b, x, 75, "+z", 3, 13, 3, PBS, PBB);
-        }
-        for (int z = 24; z <= 66; z += 8) {
-            for (int s : new int[]{-1, 1}) {
-                buttress(b, s * 31, z, s > 0 ? "+x" : "-x", 3, 13, 3, PBS, PBB);
+            b.set(s * 8, 14, 15, "campfire[lit=true]");
+            // la puerta corrediza, abierta: barrotes plegados junto al pilar
+            for (int y = 0; y <= 6; y++) {
+                b.set(s * 6, y, 14, "iron_bars");
             }
         }
-        // ventanas de rendija con luz naranja
-        for (int x = -22; x <= 22; x += 4) {
-            if (Math.abs(x) >= 18) {
-                openZ(b, x, 9, 15, 18, 0, 4, 0, CPB, "orange_stained_glass_pane");
-            }
-            openZ(b, x, 9, 72, 75, 0, 4, 0, CPB, "orange_stained_glass_pane");
+        for (int x = -9; x <= 9; x++) {
+            b.set(x, 12, 15, "polished_basalt[axis=x]");
+            b.set(x, 13, 15, x % 3 == 0 ? IRON : PBL + "[type=bottom]");
         }
-        // escaleras a la muralla
-        for (int s : new int[]{-1, 1}) {
-            for (int k = 0; k < 16; k++) {
-                for (int w = 24; w <= 26; w++) {
-                    b.set(s * w, k, 22 + k, st(PBS, "+z"));
-                    for (int yy = 0; yy < k; yy++) {
-                        b.set(s * w, yy, 22 + k, PBB);
+        for (int x : new int[]{-3, 3}) {
+            for (int y = 9; y <= 11; y++) {
+                b.set(x, y, 15, "chain[axis=y]");
+            }
+            b.set(x, 8, 15, "lantern[hanging=true]");
+        }
+        // vías de mineral: del portón a la nave
+        for (int z = 14; z <= 30; z++) {
+            for (int x : new int[]{-2, 2}) {
+                b.set(x, -1, z, "polished_blackstone");
+                b.set(x, 0, z, "rail[shape=north_south]");
+            }
+        }
+    }
+
+    /**
+     * Cuatro altos hornos en las esquinas del recinto: torres redondas de ladrillo que se estrechan hacia arriba, con aros de hierro,
+     * la boca del horno brillando hacia el patio y una chimenea que echa humo.
+     */
+    private static void blastFurnaces(StructBp b) {
+        int[][] t = {{-31, 16}, {31, 16}, {-31, 74}, {31, 74}};
+        for (int[] c : t) {
+            int cx = c[0], cz = c[1];
+            int top = 26;
+            for (int y = -1; y <= top; y++) {
+                double r = 6.2 - 2.0 * y / top;
+                for (int dx = -7; dx <= 7; dx++) {
+                    for (int dz = -7; dz <= 7; dz++) {
+                        double d = Math.hypot(dx, dz);
+                        if (d > r) {
+                            continue;
+                        }
+                        String m = y % 7 == 3 && d > r - 1.1 ? IRON : (d < r - 1.2 ? BLK : (StructKit.hash01(2910 + y, dx, dz) < 0.12 ? "cracked_stone_bricks" : BR));
+                        b.set(cx + dx, y, cz + dz, m);
+                    }
+                }
+            }
+            // la chimenea de arriba (con humo)
+            for (int y = top + 1; y <= top + 14; y++) {
+                for (int dx = -2; dx <= 2; dx++) {
+                    for (int dz = -2; dz <= 2; dz++) {
+                        if (Math.abs(dx) == 2 || Math.abs(dz) == 2) {
+                            b.set(cx + dx, y, cz + dz, y % 6 == 0 ? PBB : BR);
+                        } else {
+                            b.set(cx + dx, y, cz + dz, y == top + 13 ? "hay_block[axis=y]" : "air");
+                        }
+                    }
+                }
+            }
+            b.set(cx, top + 14, cz, "campfire[lit=true,signal_fire=true]");
+            // la boca del horno, hacia el patio: magma detrás de una reja
+            int ix = cx < 0 ? 1 : -1, iz = cz < 40 ? 1 : -1;
+            for (int k = -1; k <= 1; k++) {
+                for (int y = 0; y <= 2; y++) {
+                    int mx = cx + ix * 5 + (k * iz), mz = cz + iz * 5 - (k * ix);
+                    b.set(mx, y, mz, "iron_bars");
+                    b.set(mx - ix, y, mz - iz, "magma_block");
+                }
+            }
+            b.set(cx + ix * 6, -1, cz + iz * 6, "magma_block");
+        }
+    }
+
+    /** El patio de trabajo: montones de carbón y de escoria, cajas de mineral, una grúa sobre las vías y yunques al aire libre. */
+    private static void yardWork(StructBp b) {
+        heap(b, -14, 22, 3.2, 4, "coal_block", BLK, 2911);
+        heap(b, 14, 22, 3.0, 3, "raw_iron_block", "raw_copper_block", 2912);
+        heap(b, -13, 69, 2.6, 3, BLK, "magma_block", 2913);
+        heap(b, 13, 69, 2.6, 3, "basalt[axis=y]", "magma_block", 2914);
+        // cajas de mineral junto a las vías
+        for (int[] c : new int[][]{{-5, 24}, {5, 24}, {-5, 27}, {5, 27}}) {
+            b.set(c[0], 0, c[1], "barrel[facing=up]");
+            b.set(c[0], 1, c[1], StructKit.hash01(2915, c[0], c[1]) < 0.5 ? "raw_gold_block" : "raw_iron_block");
+        }
+        // grúa de pórtico sobre las vías: dos patas de acero, viga, y un gancho con un cubo
+        for (int s = -1; s <= 1; s += 2) {
+            for (int y = 0; y <= 10; y++) {
+                b.set(s * 6, y, 20, "polished_basalt[axis=y]");
+            }
+        }
+        for (int x = -6; x <= 6; x++) {
+            b.set(x, 11, 20, IRON);
+        }
+        for (int y = 7; y <= 10; y++) {
+            b.set(0, y, 20, "chain[axis=y]");
+        }
+        b.set(0, 6, 20, "cauldron");
+    }
+
+    /** Un montón redondeado (carbón, mineral, escoria) de radio r y altura h, con dos materiales mezclados. */
+    private static void heap(StructBp b, int cx, int cz, double r, int h, String a, String c, long seed) {
+        for (int y = 0; y < h; y++) {
+            double rr = r * (1 - (double) y / h) + 0.4;
+            for (int dx = (int) -Math.ceil(rr); dx <= rr; dx++) {
+                for (int dz = (int) -Math.ceil(rr); dz <= rr; dz++) {
+                    if (Math.hypot(dx, dz) <= rr) {
+                        b.set(cx + dx, y, cz + dz, StructKit.hash01(seed + y, dx, dz) < 0.7 ? a : c);
                     }
                 }
             }
         }
-        // antorchas en el paseo
-        for (int x = -24; x <= 24; x += 6) {
-            b.set(x, 17, 20, "lantern[hanging=false]");
-            b.set(x, 17, 70, "lantern[hanging=false]");
-        }
     }
 
-    // ================================================================== torres
-
-    private static void cornerTowers(StructBp b) {
-        int[][] t = {{-31, 16}, {31, 16}, {-31, 74}, {31, 74}};
-        for (int[] c : t) {
-            sqTower(b, c[0], c[1], 5, 36, 14);
-        }
-    }
-
-    private static void sqTower(StructBp b, int cx, int cz, int r, int top, int roofH) {
-        b.box(cx - r, -1, cz - r, cx + r, top, cz + r, PBB);
-        b.air(cx - r + 2, 0, cz - r + 2, cx + r - 2, top - 1, cz + r - 2);
-        b.walls(cx - r - 1, -1, cz - r - 1, cx + r + 1, 2, cz + r + 1, BLK);
-        ring(b, cx - r - 1, cz - r - 1, cx + r + 1, cz + r + 1, 3, PBS, false);
-        for (int y : new int[]{10, 20, 30}) {
-            b.walls(cx - r - 1, y, cz - r - 1, cx + r + 1, y, cz + r + 1, CPB);
-        }
-        ring(b, cx - r - 1, cz - r - 1, cx + r + 1, cz + r + 1, top, PBS, true);
-        b.box(cx - r - 1, top + 1, cz - r - 1, cx + r + 1, top + 1, cz + r + 1, DT);
-        hipRoof(b, cx - r, cz - r, cx + r, cz + r, top + 2, 2, CUS, CU, CUL, 2);
-        int peak = top + 2 + r + 2;
-        for (int i = 0; i < 9; i++) {
-            b.set(cx, peak + 1 + i, cz, i < 6 ? "chain[axis=y]" : (i == 6 ? GB : (i == 7 ? "lantern[hanging=false]" : "lightning_rod[facing=up]")));
-        }
-        // pilares en las esquinas
-        for (int dx : new int[]{-r - 1, r + 1}) {
-            for (int dz : new int[]{-r - 1, r + 1}) {
-                for (int y = 4; y <= top - 1; y++) {
-                    b.set(cx + dx, y, cz + dz, y % 10 == 0 ? CPB : BLK);
+    /**
+     * Tejado de dientes de sierra a lo largo de Z: cada diente (8 bloques) sube de golpe con una cara de cristal que mira a la entrada
+     * (la claraboya) y baja en pendiente hacia el fondo. Por dentro, el techo queda plano.
+     */
+    private static void sawtooth(StructBp b, int x0, int x1, int z0, int z1, int y) {
+        int tooth = 8, hgt = 4;
+        for (int z = z0; z <= z1; z++) {
+            int k = (z - z0) % tooth;
+            int h = (int) Math.round(hgt * (1.0 - k / (double) tooth));
+            for (int x = x0; x <= x1; x++) {
+                boolean edgeX = x == x0 || x == x1;
+                for (int dy = 0; dy < h; dy++) {
+                    String m;
+                    if (k == 0 && !edgeX) {
+                        m = dy == 0 ? DT : "glass"; // la claraboya
+                    } else if (dy == h - 1) {
+                        m = k == 0 ? DT : DTS + "[facing=north,half=bottom]";
+                    } else {
+                        m = DT;
+                    }
+                    b.set(x, y + dy, z, m);
                 }
-                b.set(cx + dx, top, cz + dz, BLK);
-                for (int j = 1; j <= 4; j++) {
-                    b.set(cx + dx, top + j, cz + dz, PBW);
+                if (h == 0) {
+                    b.set(x, y, z, DTL + "[type=bottom]");
                 }
-            }
-        }
-        // ventanas naranjas
-        for (int y : new int[]{6, 16, 26}) {
-            for (int[] d : new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
-                int wx = cx + d[0] * r;
-                int wz = cz + d[1] * r;
-                for (int dy = 0; dy < 4; dy++) {
-                    b.set(wx, y + dy, wz, "orange_stained_glass_pane");
-                    b.set(wx - d[0], y + dy, wz - d[1], "air");
-                }
-            }
-        }
-        spiral(b, cx, cz, 0, top - 2, PBS, CPB, true);
-        for (int y : new int[]{8, 18, 28}) {
-            hangLantern(b, cx, y + 6, cz, 0, "lantern");
-        }
-    }
-
-    private static void gatehouse(StructBp b) {
-        for (int s : new int[]{-1, 1}) {
-            sqTower(b, s * 12, 17, 5, 32, 12);
-        }
-        openZ(b, 0, 0, 15, 20, 4, 11, 2, CPB, null);
-        for (int x = -4; x <= 4; x++) {
-            for (int y = 6; y <= 10; y++) { // rastrillo levantado: se pasa por debajo
-                if (Math.abs(x) <= 4 - (y > 7 ? y - 7 : 0)) {
-                    b.set(x, y, 17, "iron_bars");
-                }
-            }
-        }
-        for (int s : new int[]{-1, 1}) {
-            for (int y = 10; y <= 15; y++) {
-                b.set(s * 3, y, 15, "chain[axis=y]");
-            }
-        }
-        // cara de ogro sobre la puerta: ojos de fuego y dientes
-        for (int x = -4; x <= 4; x++) {
-            b.set(x, 14, 15, CPB);
-        }
-        for (int s : new int[]{-1, 1}) {
-            b.box(s * 2, 16, 15, s * 2 + s, 17, 15, "shroomlight");
-            b.set(s * 2, 18, 15, st(PBS, s > 0 ? "-x" : "+x"));
-        }
-        for (int x = -3; x <= 3; x++) {
-            b.set(x, 15, 15, (x & 1) == 0 ? sti(PBS, "+z") : PBB);
-        }
-        hangLantern(b, 0, 11, 17, 2, "lantern");
-        // pasarela de la puerta (puente levadizo recogido) con cadenas largas
-        for (int s : new int[]{-1, 1}) {
-            for (int y = 2; y <= 9; y++) {
-                b.set(s * 4, y, 14, "chain[axis=y]");
             }
         }
     }
@@ -301,8 +340,8 @@ final class DesignForja {
         b.walls(-18, 10, 32, 18, 10, 72, CPB);
         b.walls(-18, 18, 32, 18, 18, 72, GB);
         ring(b, -19, 31, 19, 73, 24, PBS, true);
-        // tejado oscuro a dos aguas con cumbrera a lo largo de Z
-        gableZ(b, -18, 18, 32, 72, 25, 2, 2, DTS, DT, DTL, true, 1);
+        // etapa 291: tejado industrial de dientes de sierra, con claraboyas mirando a la entrada
+        sawtooth(b, -19, 19, 31, 73, 25);
         // chimeneas
         chimney(b, -10, 40, 3, 52);
         chimney(b, 10, 52, 3, 58);
@@ -806,7 +845,7 @@ final class DesignForja {
 
     /** Escorias en los patios y la nave, chisperos en la nave y los hornos, el Fundidor con la llave en la isla, y Hilda presa. */
     private static void mobs(StructBp b) {
-        mob(b, -28, 0, 19, "escoria", null);
+        mob(b, -17, 0, 28, "escoria", null);
         mob(b, 27, 0, 46, "escoria", null);
         mob(b, -6, 0, 40, "escoria", null);
         mob(b, 5, 0, 58, "escoria", null);

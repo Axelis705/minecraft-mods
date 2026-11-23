@@ -3210,6 +3210,12 @@ public final class AutoTest {
             if (solo.contains("templo")) {
                 templo();
             }
+            if (solo.contains("ciudadela")) {
+                ciudadela();
+            }
+            if (solo.contains("fragua")) {
+                fragua(); // la Fragua Olvidada y la Gran Fundición
+            }
             add("fin", 2000, () -> {
                 open(null);
                 log("AUTOTEST_FIN fotos=" + shots + " comprobaciones=" + checks + " fallos=" + fails);

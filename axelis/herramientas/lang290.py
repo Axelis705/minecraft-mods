@@ -20,6 +20,11 @@ k(e + "espectral", "Espectral", "Spectral")
 k(e + "invocador", "Invocador", "Summoner")
 k(e + "erizado", "Erizado", "Thorned")
 k(e + "tormentoso", "Tormentoso", "Stormborn")
+# etapa 291: la Fundición ahora se reconoce por sus chimeneas
+CES["npc.%s.ruda.hint.forja" % P] = ("Las raíces notan un golpeteo hacia %s, a unos %s bloques: es la gran fundición. Busca las cuatro chimeneas "
+                                     "que echan humo. Ten cuidado, allí la roca camina.")
+CEN["npc.%s.ruda.hint.forja" % P] = ("The roots feel a pounding to the %s, about %s blocks away: it's the great foundry. Look for the four smoking "
+                                     "chimneys. Careful, the rock walks there.")
 
 
 def patch(path, add, change):
