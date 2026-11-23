@@ -29,7 +29,7 @@ public final class Peleas {
 
     /** Empieza una pelea; {@code alTerminar} recibe la simulación ya jugada por el servidor (con su resultado). */
     public static synchronized void start(ServerPlayer p, PeleaSim.Params params, String pez, int rareza, Consumer<PeleaSim> alTerminar) {
-        cleanup(p.getServer());
+        cleanup(com.axeliscore.plat.Plat.server(p));
         int id = nextId++;
         ACTIVAS.put(p.getUUID(), new Activa(id, params, pez, rareza, System.currentTimeMillis(), alTerminar));
         PeleaNet.send(p, new PeleaNet.Abrir(id, pez, rareza, Pelea.params(params)));

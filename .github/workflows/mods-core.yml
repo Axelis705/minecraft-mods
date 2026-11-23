@@ -62,7 +62,6 @@ jobs:
     env:
       CORE: ${{ matrix.mc == '1.20.1' && 'axelis_core' || format('gen/axelis_core-{0}', matrix.mc) }}
       MOD: ${{ matrix.mc == '1.20.1' && matrix.mod || format('gen/{0}-{1}', matrix.mod, matrix.mc) }}
-      SUF: ${{ matrix.mc == '1.20.1' && '1.0.0' || format('1.0.0+{0}', matrix.mc) }}
     steps:
       - uses: actions/checkout@v4
       - name: Revisar marcas, recursos y texturas
@@ -108,9 +107,13 @@ jobs:
       - name: Servidor de desarrollo con ${{ matrix.mod }}
         run: bash tools/boot_server.sh $MOD
       - name: Meter el Core dentro (Jar-in-Jar)
-        run: python3 tools/jarjar.py $MOD/build/libs/${{ matrix.mod }}-$SUF.jar $CORE/build/libs/axelis_core-$SUF.jar
+        run: |
+          MODJAR=$(ls $MOD/build/libs/${{ matrix.mod }}-*.jar | grep -vE -- '-(dev|sources|slim)\.jar$' | head -1)
+          COREJAR=$(ls $CORE/build/libs/axelis_core-*.jar | grep -vE -- '-(dev|sources|slim)\.jar$' | head -1)
+          echo "MODJAR=$MODJAR" >> "$GITHUB_ENV"
+          python3 tools/jarjar.py "$MODJAR" "$COREJAR"
       - name: Servidor Forge real solo con ${{ matrix.mod }}
-        run: bash tools/real_server.sh ${{ matrix.mc }} ${{ matrix.forge }} srv-real ${{ matrix.mod }}/real_commands.txt $MOD/build/libs/${{ matrix.mod }}-$SUF.jar
+        run: bash tools/real_server.sh ${{ matrix.mc }} ${{ matrix.forge }} srv-real ${{ matrix.mod }}/real_commands.txt "$MODJAR"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

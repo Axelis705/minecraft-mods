@@ -45,6 +45,12 @@ public class PescaColeccion {
                                 com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "rareza"), true)))))));
     }
 
+    /** Modo fácil (config/pesca_coleccion.json): peleas más fáciles para quien lo prefiera. */
+    public static boolean facil() {
+        return com.axeliscore.data.Config.of(MODID).bool("modo_facil", false,
+                "Peleas más fáciles: ventanas más grandes, el pez jala menos y quita menos hilo");
+    }
+
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             com.pescacoleccion.pelea.PeleaNet.register(NET);

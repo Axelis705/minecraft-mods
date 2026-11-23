@@ -131,7 +131,9 @@ dependencies {
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     // Axelis Core: se compila y se prueba con su jar de desarrollo; el jar final lo lleva dentro (tools/jarjar.py)
-    def core = file("../axelis_core/build/libs/axelis_core-1.0.0-dev.jar")
+    def coreProps = new Properties()
+    file("../axelis_core/gradle.properties").withInputStream { coreProps.load(it) }
+    def core = file("../axelis_core/build/libs/axelis_core-${coreProps.getProperty('mod_version')}-dev.jar")
     compileOnly files(core)
     runtimeOnly files(core)
 

@@ -1,0 +1,214 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.anzuelo.flota": {
+      "loop": true,
+      "animation_length": 2.4,
+      "bones": {
+        "flotador": {
+          "position": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "1.2": {
+              "vector": [
+                0,
+                -0.6,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "2.4": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            }
+          },
+          "rotation": [
+            "math.sin(q.anim_time * 150) * 4",
+            0,
+            "math.cos(q.anim_time * 110) * 3"
+          ]
+        }
+      }
+    },
+    "animation.anzuelo.vuela": {
+      "loop": true,
+      "animation_length": 1.0,
+      "bones": {
+        "flotador": {
+          "rotation": [
+            0,
+            "q.anim_time * 360",
+            0
+          ]
+        }
+      }
+    },
+    "animation.anzuelo.piquete": {
+      "animation_length": 0.3,
+      "bones": {
+        "flotador": {
+          "position": {
+            "0.00": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.07": {
+              "vector": [
+                0,
+                -1.6,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.30": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            }
+          },
+          "rotation": {
+            "0.00": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.07": {
+              "vector": [
+                12,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.30": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            }
+          }
+        }
+      }
+    },
+    "animation.anzuelo.pica": {
+      "animation_length": 0.8,
+      "bones": {
+        "flotador": {
+          "position": {
+            "0.00": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.06": {
+              "vector": [
+                0,
+                -4.5,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.50": {
+              "vector": [
+                0,
+                -4,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.80": {
+              "vector": [
+                0,
+                -1,
+                0
+              ],
+              "easing": "easeInOutSine"
+            }
+          },
+          "rotation": {
+            "0.00": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.06": {
+              "vector": [
+                25,
+                0,
+                10
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.30": {
+              "vector": [
+                -15,
+                0,
+                -10
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.50": {
+              "vector": [
+                20,
+                0,
+                8
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.80": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            }
+          }
+        }
+      }
+    },
+    "animation.anzuelo.pelea": {
+      "loop": true,
+      "animation_length": 0.6,
+      "bones": {
+        "flotador": {
+          "position": [
+            0,
+            "-1.5 + math.sin(q.anim_time * 900) * 0.8",
+            0
+          ],
+          "rotation": [
+            "math.sin(q.anim_time * 700) * 22",
+            0,
+            "math.cos(q.anim_time * 560) * 18"
+          ]
+        }
+      }
+    }
+  }
+}

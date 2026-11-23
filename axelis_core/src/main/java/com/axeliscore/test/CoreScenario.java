@@ -178,10 +178,10 @@ public final class CoreScenario {
             t.photo("12_fx_vineta", 500, () -> t.cmd("axeliscore efecto vineta"));
             t.photo("12_fx_destello", 120, () -> t.cmd("axeliscore efecto destello"));
             // la tarjeta al mirar un personaje y un jefe
-            t.add("mirar", 900, () -> {
+            t.add("mirar", 1800, () -> {
                 com.axeliscore.plat.client.Screens.close();
                 t.cmd("kill @e[type=!player]");
-                t.cmd("summon axelis_core:persona 0.5 -60 3.5 {NoAI:1b}");
+                t.cmd("summon axelis_core:persona 0.5 -60 3.5 {NoAI:1b,Rotation:[180f,0f]}");
                 onServer(l -> l.getEntitiesOfClass(com.axeliscore.character.Persona.class, new net.minecraft.world.phys.AABB(-4, -62, 0, 5, -56, 8))
                         .forEach(p -> p.setCustomName(net.minecraft.network.chat.Component.literal("Nilo"))));
                 t.lookFrom(0.5, G, 0.5, 0.5, G + 1.1, 3.5);
@@ -190,7 +190,7 @@ public final class CoreScenario {
             });
             t.add("coloso", 1200, () -> {
                 t.cmd("kill @e[type=!player]");
-                t.cmd("summon axelis_core:coloso 0.5 -60 6.5 {NoAI:1b}");
+                t.cmd("summon axelis_core:coloso 0.5 -60 6.5 {NoAI:1b,Rotation:[180f,0f]}");
                 t.lookFrom(0.5, G, 0.5, 0.5, G + 2.2, 6.5);
             });
             t.photo("14_mirar_coloso", 1000, () -> {

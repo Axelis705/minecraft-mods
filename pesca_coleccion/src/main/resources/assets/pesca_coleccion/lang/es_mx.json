@@ -9,5 +9,22 @@
   "pesca_coleccion.prueba.pez_2": "Pez de prueba raro",
   "pesca_coleccion.prueba.pez_3": "Pez de prueba épico",
   "pesca_coleccion.prueba.pez_4": "Pez de prueba legendario",
-  "pesca_coleccion.prueba.pez_5": "Pez de prueba mítico"
+  "pesca_coleccion.prueba.pez_5": "Pez de prueba mítico",
+  "entity.pesca_coleccion.anzuelo": "Corcho",
+  "item.pesca_coleccion.cana_bambu": "Caña de bambú",
+  "item.pesca_coleccion.cana_roble": "Caña de roble",
+  "item.pesca_coleccion.cana_hierro": "Caña de hierro",
+  "item.pesca_coleccion.cana_coral": "Caña de coral",
+  "item.pesca_coleccion.cana_cristal": "Caña de cristal",
+  "pesca_coleccion.cana.tipo": "Caña de pescar",
+  "pesca_coleccion.cana.control": "Control",
+  "pesca_coleccion.cana.hilo": "Hilo",
+  "pesca_coleccion.cana.fuerza": "Fuerza",
+  "pesca_coleccion.cana.cebo": "Pican antes",
+  "pesca_coleccion.cana.suerte": "Suerte",
+  "pesca_coleccion.cana.ayuda": "Clic derecho para lanzar. Espera la picada buena (el corcho se hunde de golpe) y tira con clic derecho: si tiras en un piquete falso, el pez se asusta.",
+  "pesca_coleccion.pesca.asustado": "¡Muy pronto! El pez se asustó",
+  "pesca_coleccion.pesca.hilo_roto": "Se rompió el hilo",
+  "pesca_coleccion.pesca.escapo": "El pez se escapó",
+  "pesca_coleccion.pelea.perfecta": "¡Pesca perfecta!"
 }

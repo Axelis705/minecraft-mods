@@ -29,20 +29,29 @@ public final class Prueba {
             Niveles.facil(params);
         }
         Peleas.start(p, params, PescaColeccion.MODID + ".prueba.pez_" + rareza, rareza, sim -> {
-            Rareza r = Rareza.of(rareza);
             if (sim.result == PeleaSim.PESCADO) {
-                ItemStack st = new ItemStack(PREMIO[Math.min(rareza, PREMIO.length - 1)]);
-                if (!p.getInventory().add(st)) {
-                    p.drop(st, false);
-                }
-                Fx.toast(p, st, Component.translatable(PescaColeccion.MODID + ".pelea.pescado"),
-                        Component.translatable(PescaColeccion.MODID + ".prueba.pez_" + rareza), r.light & 0xFFFFFF);
-                if (rareza >= 3) {
-                    Fx.title(p, Component.translatable(PescaColeccion.MODID + ".pelea.gran_pez"),
-                            Component.translatable(PescaColeccion.MODID + ".prueba.pez_" + rareza), r.light & 0xFFFFFF);
-                }
+                ItemStack st = premio(rareza);
+                ItemStack shown = st.copy();
+                com.axeliscore.plat.Plat.give(p, st);
+                avisar(p, rareza, shown, sim.flawless());
             }
         });
         return 1;
+    }
+
+    /** El premio de prueba por rareza (mientras llegan los peces de verdad). */
+    public static ItemStack premio(int rareza) {
+        return new ItemStack(PREMIO[Math.max(0, Math.min(rareza, PREMIO.length - 1))]);
+    }
+
+    /** Aviso de pez sacado (y título si es grande o se sacó perfecto). */
+    public static void avisar(ServerPlayer p, int rareza, ItemStack st, boolean perfecto) {
+        Rareza r = Rareza.of(rareza);
+        Fx.toast(p, st, Component.translatable(PescaColeccion.MODID + ".pelea.pescado"),
+                Component.translatable(PescaColeccion.MODID + ".prueba.pez_" + rareza), r.light & 0xFFFFFF);
+        if (rareza >= 3 || perfecto) {
+            Fx.title(p, Component.translatable(PescaColeccion.MODID + (perfecto ? ".pelea.perfecta" : ".pelea.gran_pez")),
+                    Component.translatable(PescaColeccion.MODID + ".prueba.pez_" + rareza), r.light & 0xFFFFFF);
+        }
     }
 }

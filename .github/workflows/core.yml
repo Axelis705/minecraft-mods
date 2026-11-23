@@ -40,7 +40,6 @@ jobs:
     env:
       CORE: ${{ matrix.mc == '1.20.1' && 'axelis_core' || format('gen/axelis_core-{0}', matrix.mc) }}
       PRUEBA: ${{ matrix.mc == '1.20.1' && 'core_prueba' || format('gen/core_prueba-{0}', matrix.mc) }}
-      SUF: ${{ matrix.mc == '1.20.1' && '1.0.0' || format('1.0.0+{0}', matrix.mc) }}
     steps:
       - uses: actions/checkout@v4
       - name: Revisar marcas de versión
@@ -97,11 +96,14 @@ jobs:
       - name: Meter el Core dentro de core_prueba (Jar-in-Jar)
         run: |
           ls -la $CORE/build/libs $PRUEBA/build/libs
-          python3 tools/jarjar.py $PRUEBA/build/libs/core_prueba-$SUF.jar $CORE/build/libs/axelis_core-$SUF.jar
-          unzip -l $PRUEBA/build/libs/core_prueba-$SUF.jar | grep -i jarjar
-          unzip -p $PRUEBA/build/libs/core_prueba-$SUF.jar META-INF/jarjar/metadata.json
+          PJAR=$(ls $PRUEBA/build/libs/core_prueba-*.jar | grep -vE -- '-(dev|sources|slim)\.jar$' | head -1)
+          COREJAR=$(ls $CORE/build/libs/axelis_core-*.jar | grep -vE -- '-(dev|sources|slim)\.jar$' | head -1)
+          echo "PJAR=$PJAR" >> "$GITHUB_ENV"
+          python3 tools/jarjar.py "$PJAR" "$COREJAR"
+          unzip -l "$PJAR" | grep -i jarjar
+          unzip -p "$PJAR" META-INF/jarjar/metadata.json
       - name: Servidor Forge real solo con core_prueba (el Core va dentro)
-        run: bash tools/real_server.sh ${{ matrix.mc }} ${{ matrix.forge }} srv-real core_prueba/real_commands.txt $PRUEBA/build/libs/core_prueba-$SUF.jar
+        run: bash tools/real_server.sh ${{ matrix.mc }} ${{ matrix.forge }} srv-real core_prueba/real_commands.txt "$PJAR"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

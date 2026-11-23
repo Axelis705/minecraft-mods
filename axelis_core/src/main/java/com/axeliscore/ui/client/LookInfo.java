@@ -86,21 +86,21 @@ public final class LookInfo {
             return;
         }
         InfoCard c = current(CoreScreen.shift());
-        Object k = c == null ? null : keyOf();
-        if (k != null && !k.equals(key)) {
-            key = k;
-            lookSince = now;
-        }
-        if (c != null) {
+        if (c == null) {
+            key = null;
+        } else {
+            Object k = keyOf();
+            if (k != null && !k.equals(key)) {
+                key = k;
+                lookSince = now;
+            }
             card = c;
             lastSeen = now;
         }
+        // aparece después de mirar un momento (para que no parpadee al pasar la vista) y se va suave
         boolean show = c != null && now - lookSince > 180;
         shown += ((show ? 1 : 0) - shown) * Math.min(1, dt * (show ? 10 : 7));
-        if (card == null || shown < 0.02F || now - lastSeen > 1000) {
-            if (!show && shown < 0.02F) {
-                key = null;
-            }
+        if (card == null || shown < 0.02F) {
             return;
         }
         Cards.Layout l = Cards.measure(card);

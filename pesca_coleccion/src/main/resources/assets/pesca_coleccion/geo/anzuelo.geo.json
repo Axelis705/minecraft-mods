@@ -1,0 +1,97 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.pesca_coleccion.anzuelo",
+        "texture_width": 32,
+        "texture_height": 32
+      },
+      "bones": [
+        {
+          "name": "root",
+          "pivot": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "flotador",
+          "parent": "root",
+          "pivot": [
+            0,
+            1,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -1.5,
+                0,
+                -1.5
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            },
+            {
+              "origin": [
+                -1.5,
+                2,
+                -1.5
+              ],
+              "size": [
+                3,
+                2,
+                3
+              ],
+              "uv": [
+                0,
+                8
+              ]
+            },
+            {
+              "origin": [
+                -0.5,
+                4,
+                -0.5
+              ],
+              "size": [
+                1,
+                3,
+                1
+              ],
+              "uv": [
+                16,
+                0
+              ]
+            },
+            {
+              "origin": [
+                -0.5,
+                -2,
+                -0.5
+              ],
+              "size": [
+                1,
+                2,
+                1
+              ],
+              "uv": [
+                16,
+                8
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

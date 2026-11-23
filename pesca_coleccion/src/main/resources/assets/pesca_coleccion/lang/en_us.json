@@ -1,5 +1,5 @@
 {
-  "itemGroup.pesca_coleccion": "Pesca de colección",
+  "itemGroup.pesca_coleccion": "Fishing Collection",
   "pesca_coleccion.hola": "Pesca de colección works with %s",
   "pesca_coleccion.pelea.titulo": "Fish fight",
   "pesca_coleccion.pelea.pescado": "You caught it!",
@@ -9,5 +9,22 @@
   "pesca_coleccion.prueba.pez_2": "Rare test fish",
   "pesca_coleccion.prueba.pez_3": "Epic test fish",
   "pesca_coleccion.prueba.pez_4": "Legendary test fish",
-  "pesca_coleccion.prueba.pez_5": "Mythic test fish"
+  "pesca_coleccion.prueba.pez_5": "Mythic test fish",
+  "entity.pesca_coleccion.anzuelo": "Bobber",
+  "item.pesca_coleccion.cana_bambu": "Bamboo Rod",
+  "item.pesca_coleccion.cana_roble": "Oak Rod",
+  "item.pesca_coleccion.cana_hierro": "Iron Rod",
+  "item.pesca_coleccion.cana_coral": "Coral Rod",
+  "item.pesca_coleccion.cana_cristal": "Crystal Rod",
+  "pesca_coleccion.cana.tipo": "Fishing rod",
+  "pesca_coleccion.cana.control": "Control",
+  "pesca_coleccion.cana.hilo": "Line",
+  "pesca_coleccion.cana.fuerza": "Power",
+  "pesca_coleccion.cana.cebo": "Faster bites",
+  "pesca_coleccion.cana.suerte": "Luck",
+  "pesca_coleccion.cana.ayuda": "Right-click to cast. Wait for the real bite (the bobber sinks hard) and right-click to strike: strike on a fake nibble and the fish gets scared.",
+  "pesca_coleccion.pesca.asustado": "Too soon! The fish got scared",
+  "pesca_coleccion.pesca.hilo_roto": "The line snapped",
+  "pesca_coleccion.pesca.escapo": "The fish got away",
+  "pesca_coleccion.pelea.perfecta": "Perfect catch!"
 }

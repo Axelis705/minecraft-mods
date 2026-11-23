@@ -70,6 +70,19 @@ public final class Plat {
         //#endif
     }
 
+    /** Da un objeto al jugador; si no cabe, lo deja caer a sus pies (listo para recoger). */
+    public static void give(Player p, ItemStack st) {
+        if (st == null || st.isEmpty()) {
+            return;
+        }
+        if (!p.getInventory().add(st) && !st.isEmpty()) {
+            net.minecraft.world.entity.item.ItemEntity e = new net.minecraft.world.entity.item.ItemEntity(p.level(), p.getX(), p.getY() + 0.5,
+                    p.getZ(), st);
+            e.setNoPickUpDelay();
+            p.level().addFreshEntity(e);
+        }
+    }
+
     /** El servidor de una entidad (null en el cliente). */
     public static MinecraftServer server(Entity e) {
         //#if MC >= 26.1

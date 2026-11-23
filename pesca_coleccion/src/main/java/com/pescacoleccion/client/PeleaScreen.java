@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * </ul>
  */
 public class PeleaScreen extends CoreScreen {
-    private static final int PW = 300, PH = 124;
+    private static final int PW = 300, PH = 112;
     private static final int[] KEY_COLOR = {0xFF5FB7FF, 0xFF7CE38B, 0xFFFFC14D, 0xFFFF7AC8};
     /** Flecha hacia arriba de 7x7 (las demás se giran). */
     private static final String[] ARROW = {"...#...", "..###..", ".#####.", "#######", "..###..", "..###..", "..###.."};
@@ -161,7 +161,7 @@ public class PeleaScreen extends CoreScreen {
     }
 
     private void feedback() {
-        int hitX = px + 46;
+        int hitX = px + 74;
         long t = System.currentTimeMillis();
         if (sim.perfects > lastPerfects) {
             pops.add(new Pop("¡Perfecto!", 0xFFFFE680, t, hitX));
@@ -210,7 +210,7 @@ public class PeleaScreen extends CoreScreen {
 
     /** Solo para las pruebas automáticas: la pelea se juega sola (como un jugador muy bueno) por el mismo camino que las teclas. */
     public static boolean autoplay;
-    private int autoNote;
+    private int autoNote, autoMash;
     private boolean autoUp;
 
     private void autoPlay() {
@@ -239,11 +239,10 @@ public class PeleaScreen extends CoreScreen {
             held[PeleaSim.D] = wantD;
             feed(PeleaSim.D, wantD);
         }
-        if (sim.phase == PeleaSim.FINAL) {
-            for (int i = 0; i < 2; i++) {
-                feed(autoUp ? PeleaSim.UP : PeleaSim.DOWN, true);
-                autoUp = !autoUp;
-            }
+        if (sim.phase == PeleaSim.FINAL && t - autoMash >= 110) {
+            autoMash = t;
+            feed(autoUp ? PeleaSim.UP : PeleaSim.DOWN, true);
+            autoUp = !autoUp;
         }
     }
 
@@ -315,12 +314,12 @@ public class PeleaScreen extends CoreScreen {
         // racha y textos
         if (sim.combo >= 3) {
             String c = "x" + sim.combo;
-            g.drawString(Ui.font(), c, px + PW - 12 - Ui.font().width(c), py + PH - 16, 0xFFFFE680, true);
+            g.drawString(Ui.font(), c, px + PW - 12 - 4 * 15 - 8 - Ui.font().width(c), py + PH - 15, 0xFFFFE680, true);
         }
         long t = System.currentTimeMillis();
         for (Pop p : pops) {
             float k = (t - p.at()) / 700F;
-            int y = py + 46 - (int) (k * 12);
+            int y = py + 47 - (int) (k * 8);
             int w = Ui.font().width(p.text());
             g.drawString(Ui.font(), p.text(), p.x() - w / 2, y, Ui.alpha(p.color(), 1 - k * k), true);
         }
@@ -429,8 +428,8 @@ public class PeleaScreen extends CoreScreen {
             Ui.round(g, bx, ky, 13, 13, held[order[i]] ? KEY_COLOR[order[i]] : 0x60000000);
             arrow(g, bx + 3, ky + 3, order[i], held[order[i]] ? 0xFF04121A : Ui.alpha(KEY_COLOR[order[i]], 0.8F), 1);
         }
-        if (sim.combo < 3) {
-            g.drawString(Ui.font(), "A/D: aguja · flechas: ritmo", px + 12, py + PH - 15, 0xFF8FB8C4, false);
+        if (sim.now < 6000 || sim.combo < 2) {
+            g.drawString(Ui.font(), "A/D: aguja verde · ← ↑ ↓ →: flechas", px + 12, py + PH - 15, 0xFF8FB8C4, false);
         }
     }
 

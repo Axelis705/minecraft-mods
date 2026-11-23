@@ -25,6 +25,9 @@ public final class Cards {
     /** Cómo queda armado un cuadro (ancho, alto y los renglones ya cortados). */
     public static final class Layout {
         public int w, h, headerH, textW;
+        /** La etiqueta (rareza) va abajo del título porque no cabe al lado; el título ya recortado si era muy largo. */
+        boolean tagBelow;
+        String titleText;
         final List<List<String>> wrapped = new ArrayList<>();
     }
 
@@ -41,8 +44,25 @@ public final class Cards {
         Component tag = tag(c);
         int tagW = tag == null ? 0 : f.width(tag) + 10;
         int subW = c.subtitle == null ? 0 : f.width(c.subtitle);
+        int maxHead = Math.max(96, c.maxWidth - PAD * 2);
         int head = iconW + Math.max(titleW + (tagW > 0 ? tagW + 6 : 0), subW);
-        int inner = Math.max(96, head);
+        if (head > maxHead && tagW > 0) {
+            // no cabe la etiqueta junto al título: va en su propio renglón
+            l.tagBelow = true;
+            head = iconW + Math.max(Math.max(titleW, tagW), subW);
+        }
+        l.titleText = c.title == null ? null : c.title.getString();
+        if (head > maxHead && l.titleText != null) {
+            // título demasiado largo: se recorta con "…"
+            int room = maxHead - iconW;
+            String t = l.titleText;
+            while (t.length() > 2 && f.width(t + "…") > room) {
+                t = t.substring(0, t.length() - 1);
+            }
+            l.titleText = t + "…";
+            head = iconW + Math.max(Math.max(f.width(l.titleText), l.tagBelow ? tagW : 0), Math.min(subW, room));
+        }
+        int inner = Math.max(96, Math.min(head, maxHead));
         for (InfoCard.Part p : c.parts) {
             switch (p.kind) {
                 case BAR -> inner = Math.max(inner, f.width(p.a) + 6 + BAR_W + 6 + (p.valueText == null ? 0 : f.width(p.valueText)));
@@ -70,7 +90,7 @@ public final class Cards {
         l.textW = inner;
         l.w = inner + PAD * 2;
         int hh = PAD;
-        int titleBlock = (c.title == null ? 0 : LINE) + (c.subtitle == null ? 0 : LINE);
+        int titleBlock = (c.title == null ? 0 : LINE) + (c.subtitle == null ? 0 : LINE) + (l.tagBelow ? LINE + 1 : 0);
         hh += Math.max(titleBlock, hasIcon ? Math.max(20, c.imageSize + 4) : 0);
         l.headerH = hh;
         int y = hh + (c.parts.isEmpty() ? 0 : 5);
@@ -137,18 +157,19 @@ public final class Cards {
             }
             tx = cx + box + 5;
         }
-        int ty = cy + (hasIcon ? Math.max(0, (Math.max(20, c.imageSize + 4) - (c.subtitle == null ? 9 : 19)) / 2) : 0);
+        int lines = (c.subtitle == null ? 1 : 2) + (l.tagBelow ? 1 : 0);
+        int ty = cy + (hasIcon ? Math.max(0, (Math.max(20, c.imageSize + 4) - (lines * LINE - 1)) / 2) : 0);
+        Component tag = tag(c);
         if (c.title != null) {
-            g.drawString(f, c.title, tx, ty, Ui.alpha(border, a), true);
-            Component tag = tag(c);
-            if (tag != null) {
-                int tw = f.width(tag) + 8;
-                int px = x + w - PAD - tw;
-                g.fill(px, ty - 1, px + tw, ty + 9, Ui.alpha(Ui.mix(dark, 0xFF000000, 0.35F), a));
-                g.fill(px, ty - 1, px + tw, ty, Ui.alpha(border, a * 0.6F));
-                g.drawString(f, tag, px + 4, ty, Ui.alpha(border, a), false);
+            g.drawString(f, l.titleText != null ? l.titleText : c.title.getString(), tx, ty, Ui.alpha(border, a), true);
+            if (tag != null && !l.tagBelow) {
+                pill(g, f, tag, x + w - PAD - (f.width(tag) + 8), ty, border, dark, a);
             }
             ty += LINE;
+        }
+        if (tag != null && l.tagBelow) {
+            pill(g, f, tag, tx, ty, border, dark, a);
+            ty += LINE + 1;
         }
         if (c.subtitle != null) {
             g.drawString(f, c.subtitle, tx, ty, Ui.alpha(DIM, a), false);
@@ -220,6 +241,14 @@ public final class Cards {
                 }
             }
         }
+    }
+
+    /** Etiqueta con fondo (la rareza, "Jefe", "Mascota"...). */
+    private static void pill(G g, Font f, Component tag, int px, int ty, int border, int dark, float a) {
+        int tw = f.width(tag) + 8;
+        g.fill(px, ty - 1, px + tw, ty + 9, Ui.alpha(Ui.mix(dark, 0xFF000000, 0.35F), a));
+        g.fill(px, ty - 1, px + tw, ty, Ui.alpha(border, a * 0.6F));
+        g.drawString(f, tag, px + 4, ty, Ui.alpha(border, a), false);
     }
 
     /** Línea horizontal que se desvanece en las puntas. */

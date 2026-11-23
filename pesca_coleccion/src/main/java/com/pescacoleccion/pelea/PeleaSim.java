@@ -97,11 +97,12 @@ public final class PeleaSim {
         this.hp = p.lineHp;
         this.stamina = p.stamina;
         Random r = new Random(p.seed);
-        // saltos repartidos en la parte media de la pelea (con un hueco sin flechas alrededor)
+        // saltos repartidos a lo largo de lo que suele durar la pelea (con un hueco sin flechas alrededor)
         jumpTimes = new int[p.jumps];
+        int expected = expectedMs();
         for (int i = 0; i < p.jumps; i++) {
             float f = (i + 1F) / (p.jumps + 1F);
-            jumpTimes[i] = 4000 + Math.round((Math.min(p.durationMs, 40000) - 8000) * f) + r.nextInt(1200) - 600;
+            jumpTimes[i] = Math.max(3500 + i * 2500, Math.round(expected * f) + r.nextInt(800) - 400);
         }
         // flechas
         int beat = 60000 / Math.max(30, p.bpm), eighth = beat / 2;
@@ -143,6 +144,21 @@ public final class PeleaSim {
         for (int i = 0; i < sd.size(); i++) {
             switchDir[i] = sd.get(i);
         }
+    }
+
+    /** Lo que suele durar la pelea jugando bien (flechas por segundo según el ritmo y los patrones, y la energía del pez). */
+    public int expectedMs() {
+        float perBar = 0;
+        for (String pat : p.patterns) {
+            for (int i = 0; i < pat.length(); i++) {
+                perBar += pat.charAt(i) == 'x' ? 1 : 0;
+            }
+        }
+        perBar /= Math.max(1, p.patterns.length);
+        float barMs = 240000F / Math.max(30, p.bpm);
+        float rate = perBar / barMs * 1000F;
+        float dps = Math.max(0.5F, rate * p.damage * 1.35F);
+        return Math.round(1600 + p.stamina / dps * 1000F);
     }
 
     private boolean nearJump(int t) {
@@ -291,6 +307,7 @@ public final class PeleaSim {
 
     /** Una tecla (apretada o soltada) en el milisegundo {@code ms} (en orden). */
     public void input(int ms, int key, boolean down) {
+        ms = Math.max(ms, now);   // nunca hacia atrás (así el cliente y el servidor siempre coinciden)
         advanceTo(ms);
         if (result != PELEANDO) {
             return;

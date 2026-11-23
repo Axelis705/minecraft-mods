@@ -83,10 +83,9 @@ public class PeleaBots {
                 if (sim.phase == PeleaSim.FINAL) {
                     continue;
                 }
+                // como el juego: solo se manda cuando se aprieta (soltar una flecha no cuenta) y siempre en orden
                 ev.add(new int[] {ms, pr[1], 1});
                 sim.input(ms, pr[1], true);
-                ev.add(new int[] {ms + 40, pr[1], 0});
-                sim.input(ms + 40, pr[1], false);
             }
             // final: alternar
             if (sim.phase == PeleaSim.FINAL) {
