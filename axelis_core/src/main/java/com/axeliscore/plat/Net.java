@@ -78,6 +78,9 @@ public final class Net {
     }
 
     public void toPlayer(ServerPlayer p, Object msg) {
+        if (p.connection == null) {
+            return; // jugador de prueba (no conectado)
+        }
         //#if MC >= 1.21
         //$$ channel.send(msg, PacketDistributor.PLAYER.with(p));
         //#else

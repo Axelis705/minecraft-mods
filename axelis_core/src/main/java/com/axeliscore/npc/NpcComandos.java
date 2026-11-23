@@ -152,6 +152,21 @@ public final class NpcComandos {
     // ------------------------------------------------------------------ prueba automática
 
     private static Npc npcPrueba;
+    private static ServerPlayer prueba;
+
+    /** Un jugador que no está conectado (para probar sin nadie en el servidor). Lo que se le manda por la red no sale a ningún lado. */
+    private static ServerPlayer jugadorPrueba(ServerLevel l) {
+        if (prueba != null && prueba.level() == l) {
+            return prueba;
+        }
+        var perfil = new com.mojang.authlib.GameProfile(java.util.UUID.fromString("a7e1c0de-0000-4000-8000-00000000c0de"), "[prueba_npc]");
+        //#if MC >= 1.21
+        //$$ prueba = new ServerPlayer(l.getServer(), l, perfil, net.minecraft.server.level.ClientInformation.createDefault());
+        //#else
+        prueba = net.minecraftforge.common.util.FakePlayerFactory.get(l, perfil);
+        //#endif
+        return prueba;
+    }
 
     private static int contar(Player p, String id) {
         return p instanceof ServerPlayer sp ? Misiones.contar(sp, id) : 0;
@@ -163,7 +178,7 @@ public final class NpcComandos {
      */
     private static int prueba(CommandContext<CommandSourceStack> c) {
         ServerLevel l = c.getSource().getLevel();
-        ServerPlayer p = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(l);
+        ServerPlayer p = jugadorPrueba(l);
         borrar(p);
         p.getInventory().clearContent();
         BlockPos pos = BlockPos.containing(c.getSource().getPosition()).offset(2, 0, 2);
@@ -199,9 +214,8 @@ public final class NpcComandos {
         // 4. cazar: zombis de Iker
         Mision zombis = Misiones.porId(AxelisCore.MODID + ":zombis");
         Misiones.aceptar(p, zombis.id);
-        net.minecraft.world.entity.LivingEntity z = Plat.create(net.minecraft.world.entity.EntityType.ZOMBIE, l);
         for (int i = 0; i < 5; i++) {
-            Misiones.alDerrotar(p, z);
+            Misiones.contarDerrota(p, "minecraft:zombie", true);
         }
         ok &= ver(r, "cazar", Misiones.estado(p, zombis) == Misiones.Estado.LISTA);
         // 5. diaria: trigo (16) → hecha hoy
@@ -225,7 +239,7 @@ public final class NpcComandos {
     }
 
     private static int revisar(CommandContext<CommandSourceStack> c) {
-        ServerPlayer p = net.minecraftforge.common.util.FakePlayerFactory.getMinecraft(c.getSource().getLevel());
+        ServerPlayer p = jugadorPrueba(c.getSource().getLevel());
         boolean sola = Misiones.vecesHecha(p, CoreNpcs.PRUEBA.id) == 1 && !Misiones.activa(p, CoreNpcs.PRUEBA.id);
         boolean vivo = npcPrueba != null && npcPrueba.isAlive() && npcPrueba.def() == CoreNpcs.MARA;
         String r = "AXCORE_NPC_REVISAR " + (sola && vivo ? "ok" : "MAL") + " sola=" + sola + " npc=" + vivo;

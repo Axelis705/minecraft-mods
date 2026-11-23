@@ -174,7 +174,7 @@ public final class NpcCliente {
         if (marcas) {
             marcas(g, w, h, mc);
         }
-        if (rastreador && mc.screen == null) {
+        if (rastreador && com.axeliscore.plat.client.Screens.current() == null) {
             rastreador(g, w, h);
         }
     }

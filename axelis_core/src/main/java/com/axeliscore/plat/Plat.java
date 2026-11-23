@@ -59,6 +59,9 @@ public final class Plat {
 
     /** Mensaje al jugador: arriba de la barra (overlay) o en el chat. */
     public static void msg(Player p, Component c, boolean overlay) {
+        if (p instanceof net.minecraft.server.level.ServerPlayer sp && sp.connection == null) {
+            return; // jugador de prueba (no conectado)
+        }
         //#if MC >= 26.1
         //$$ if (overlay) {
         //$$     p.sendOverlayMessage(c);
@@ -166,7 +169,7 @@ public final class Plat {
     /** Empuja una entidad (se suma a su velocidad) y, si es un jugador, se lo avisa a su cliente para que se mueva de verdad. */
     public static void push(Entity e, double x, double y, double z) {
         e.setDeltaMovement(e.getDeltaMovement().add(x, y, z));
-        if (e instanceof net.minecraft.server.level.ServerPlayer sp) {
+        if (e instanceof net.minecraft.server.level.ServerPlayer sp && sp.connection != null) {
             sp.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(sp));
         }
     }

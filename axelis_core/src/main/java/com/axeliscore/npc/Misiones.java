@@ -294,7 +294,11 @@ public final class Misiones {
     /** (Core) Un jugador derrotó a una criatura. */
     public static void alDerrotar(ServerPlayer p, LivingEntity e) {
         String tipo = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString();
-        boolean hostil = e.getType().getCategory() == net.minecraft.world.entity.MobCategory.MONSTER;
+        contarDerrota(p, tipo, e.getType().getCategory() == net.minecraft.world.entity.MobCategory.MONSTER);
+    }
+
+    /** Cuenta una criatura derrotada por su id ("minecraft:zombie"); {@code hostil} para los objetivos de "cualquier monstruo". */
+    public static void contarDerrota(ServerPlayer p, String tipo, boolean hostil) {
         sumar(p, o -> o.tipo == Objetivo.Tipo.CAZAR && o.cuenta(tipo, hostil), 1);
     }
 

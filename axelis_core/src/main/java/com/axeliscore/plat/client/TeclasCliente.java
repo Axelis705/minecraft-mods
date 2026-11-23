@@ -79,7 +79,7 @@ public final class TeclasCliente {
                 continue;
             }
             while (k.consumeClick()) {
-                if (mc.player != null && mc.screen == null && t.alPulsar != null) {
+                if (mc.player != null && com.axeliscore.plat.client.Screens.current() == null && t.alPulsar != null) {
                     try {
                         t.alPulsar.run();
                     } catch (RuntimeException ex) {

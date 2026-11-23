@@ -211,7 +211,6 @@ public class Npc extends Persona {
             super.axInfo(card, detail);
             return;
         }
-        card.subtitle(Component.translatable("axelis_core.npc.subtitulo"));
         INFO.accept(card, d);
         card.hint(Component.translatable("axelis_core.npc.pista"));
     }
