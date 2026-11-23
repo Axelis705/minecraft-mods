@@ -1087,9 +1087,12 @@ public final class AutoTest {
             }
         });
         add("tienda con tres vecinos (comprobar)", 1500, () -> {
-            check("con tres vecinos se puede comprar el sobre de oro (" + essBefore + " -> " + TableClient.essence + ")",
-                    TableClient.essence == essBefore - lastPrice
-                            && invCount(com.mundosdeaxelis.cartas.CartasItems.PACKS.get("oro").get()) >= 1);
+            // en una prueba «solo» no se rescató antes a Ruda ni a Bruno: no hay tres vecinos y el sobre sigue cerrado
+            if (SOLO.isEmpty()) {
+                check("con tres vecinos se puede comprar el sobre de oro (" + essBefore + " -> " + TableClient.essence + ")",
+                        TableClient.essence == essBefore - lastPrice
+                                && invCount(com.mundosdeaxelis.cartas.CartasItems.PACKS.get("oro").get()) >= 1);
+            }
             open(null);
             cmd("gamemode spectator @a");
             // Ruda, Bruno e Hilda se quedan con su casa: con Teo (la torre) serán cuatro
