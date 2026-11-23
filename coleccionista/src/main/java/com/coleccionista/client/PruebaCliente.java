@@ -539,5 +539,42 @@ final class PruebaCliente {
             t.check("FIN".equals(CiegasCliente.fase()), "terminó A ciegas");
             t.cmd("evento ciegas terminar");
         });
+        tres(t);
+    }
+
+    /** Prueba extra, Encadenados de tres: la sala de la mesa, elegir las esposas, la cadena entre el trío y la salida. */
+    private static void tres(ClientTest.Script t) {
+        t.add("tres: preparar", 1600, () -> {
+            t.cmd("evento revivir " + yo());
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("gamemode adventure @a");
+            t.cmd("forceload add -112 64 -32 128");
+            t.cmd("evento tres bots_salen no");
+            t.cmd("evento tres tiempo 60 120");
+            t.cmd("evento tres preparar");
+        });
+        t.photo("78_tres_presentacion", 5700, () -> {
+        });
+        t.photo("79_tres_mesa", 9000, () -> Minecraft.getInstance().player.setXRot(25));
+        t.add("tres lista", 100, () -> t.check("LISTA".equals(SentidosCliente.fase()), "Encadenados de tres está lista"));
+        t.photo("80_tres_elegir", 2000, () -> t.cmd("evento tres empezar ya"));
+        t.add("tres: tomar esposas", 1500, () -> t.cmd("evento tres toma " + yo() + " 2"));
+        t.add("tres: rol", 100, () -> t.check("ESPOSAS".equals(SentidosCliente.miRol()), "me puse las esposas"));
+        t.add("tres: arrancar", 3500, () -> t.cmd("evento tres arrancar"));
+        t.photo("81_tres_recorrido", 1500, () -> Minecraft.getInstance().player.setXRot(10));
+        t.add("tres: juego", 100, () -> t.check("JUEGO".equals(SentidosCliente.fase()), "se abrieron las rejas: a cruzar encadenados"));
+        t.photo("82_tres_cadena", 1500, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+        t.add("tres: sacar", 1500, () -> {
+            Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
+            t.cmd("evento tres sacar " + yo());
+        });
+        t.photo("83_tres_fin", 3000, () -> {
+        });
+        t.add("fin tres", 100, () -> {
+            t.check("FIN".equals(SentidosCliente.fase()), "terminó Encadenados de tres");
+            t.cmd("evento tres terminar");
+        });
     }
 }
