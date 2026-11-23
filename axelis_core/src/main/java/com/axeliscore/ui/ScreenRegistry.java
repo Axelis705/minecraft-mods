@@ -1,6 +1,5 @@
 package com.axeliscore.ui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
 import java.util.HashMap;
@@ -24,7 +23,7 @@ public final class ScreenRegistry {
     public static void open(String id) {
         Supplier<Screen> f = SCREENS.get(id);
         if (f != null) {
-            Minecraft.getInstance().setScreen(f.get());
+            com.axeliscore.plat.client.Screens.open(f.get());
         }
     }
 }

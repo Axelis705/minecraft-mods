@@ -12,7 +12,7 @@ public final class CoreScenario {
     }
 
     static void demoTab(int i) {
-        if (net.minecraft.client.Minecraft.getInstance().screen instanceof com.axeliscore.ui.DemoScreen d) {
+        if (com.axeliscore.plat.client.Screens.current() instanceof com.axeliscore.ui.DemoScreen d) {
             d.showTab(i);
         }
     }
@@ -117,7 +117,7 @@ public final class CoreScenario {
             t.photo("10_ui_demo_lista", 600, () -> demoTab(1));
             t.photo("10_ui_demo_barras", 900, () -> demoTab(2));
             t.photo("11_ui_dialogo", 3600, () -> t.cmd("axeliscore efecto dialogo"));
-            t.add("cerrar", 600, () -> net.minecraft.client.Minecraft.getInstance().setScreen(null));
+            t.add("cerrar", 600, () -> com.axeliscore.plat.client.Screens.close());
             t.photo("12_fx_titulo_aviso", 700, () -> {
                 t.cmd("axeliscore efecto titulo");
                 t.cmd("axeliscore efecto aviso");

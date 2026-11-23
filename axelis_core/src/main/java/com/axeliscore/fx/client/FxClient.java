@@ -98,6 +98,23 @@ public final class FxClient {
             float a = Math.min(1, Math.min(age / 0.25F, left / 0.6F));
             float pop = Ui.pop(Math.min(1, age / 0.35F));
             String ts = title.getString(), ss = sub.getString();
+            // franja de cine detrás del texto: oscura al centro y transparente hacia los lados, con dos líneas del color del título
+            int cy = (int) (h * 0.32F), top = cy - 24, bot = cy + (ss.isEmpty() ? 20 : 42), half = w / 2;
+            float reach = half * (0.55F + 0.45F * pop);
+            for (int x = 0; x < w; x += 4) {
+                float d = Math.abs(x + 2 - half) / reach;
+                if (d >= 1) {
+                    continue;
+                }
+                float k = (1 - d * d) * a;
+                int c = Ui.alpha(0xFF000000, k * 0.5F);
+                int mid = (top + bot) / 2;
+                g.fillGradient(x, top, x + 4, mid, c & 0x00FFFFFF, c);
+                g.fillGradient(x, mid, x + 4, bot, c, c & 0x00FFFFFF);
+                int line = Ui.alpha(titleColor, (1 - d) * a * 0.85F);
+                g.fill(x, top + 2, x + 4, top + 3, line);
+                g.fill(x, bot - 3, x + 4, bot - 2, line);
+            }
             g.push();
             g.translate(w / 2F, h * 0.32F, 0);
             float sc = 2.6F * (0.7F + 0.3F * pop);

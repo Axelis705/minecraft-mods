@@ -207,7 +207,11 @@ public abstract class CoreMob extends PathfinderMob implements Animated {
     /** Cuando ataca (el brazo/mordida que manda Minecraft al pegar): reproduce {@code clip}. */
     protected void axSwing(AnimHost h, String clip, String layer) {
         // el golpe empieza cuando el "ataque" de Minecraft pasa de 0 a más (sirve en todas las versiones)
+        //#if MC >= 26.3
+        //$$ float now = getSwingAnimation(0F);
+        //#else
         float now = getAttackAnim(0F);
+        //#endif
         Object prev = h.data.get("atk");
         h.data.put("atk", now);
         if (now > 0F && prev instanceof Float p && p == 0F && !Integer.valueOf(tickCount).equals(h.data.get("swingAt"))) {

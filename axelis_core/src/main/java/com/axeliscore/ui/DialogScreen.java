@@ -41,7 +41,7 @@ public class DialogScreen extends UiScreen {
     }
 
     public static void open(CoreNet.DialogMsg m) {
-        Minecraft.getInstance().setScreen(new DialogScreen(m));
+        com.axeliscore.plat.client.Screens.open(new DialogScreen(m));
     }
 
     private int textX() {
