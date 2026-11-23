@@ -115,8 +115,20 @@ jobs:
           COREJAR=$(ls $CORE/build/libs/axelis_core-*.jar | grep -vE -- '-(dev|sources|slim)\.jar$' | head -1)
           echo "MODJAR=$MODJAR" >> "$GITHUB_ENV"
           python3 tools/jarjar.py "$MODJAR" "$COREJAR"
+      # mods de otros que la prueba necesita (por ejemplo Simple Voice Chat para el evento): <mod>/real_mods_<versión>.txt, una dirección por línea
+      - name: Mods de otros para la prueba (si el mod los pide)
+        run: |
+          f="${{ matrix.mod }}/real_mods_${{ matrix.mc }}.txt"
+          mkdir -p extra_mods
+          if [ -f "$f" ]; then
+            grep -vE '^\s*(#|$)' "$f" | while read -r u; do
+              n=$(basename "${u%%\?*}")
+              curl -sSfL --retry 3 -o "extra_mods/$n" "$u" && sha256sum "extra_mods/$n" || echo "::warning title=Mod de otros::no se pudo bajar $u"
+            done
+          fi
+          ls -la extra_mods
       - name: Servidor Forge real solo con ${{ matrix.mod }}
-        run: bash tools/real_server.sh ${{ matrix.mc }} ${{ matrix.forge }} srv-real ${{ matrix.mod }}/real_commands.txt "$MODJAR"
+        run: bash tools/real_server.sh ${{ matrix.mc }} ${{ matrix.forge }} srv-real ${{ matrix.mod }}/real_commands.txt "$MODJAR" $(ls extra_mods/*.jar 2>/dev/null)
       - uses: actions/upload-artifact@v4
         if: always()
         with:

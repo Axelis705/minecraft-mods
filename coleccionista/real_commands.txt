@@ -264,6 +264,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CIEGAS termino lab=
 #expect COLECCIONISTA_CIEGAS fin eliminados=1
 #expect COLECCIONISTA_CIEGAS terminada
+#expect COLECCIONISTA_VOZ Simple Voice Chat listo
 #expect COLECCIONISTA_VOZ probar Bot_02 -> Bot_03 oye=false
 #expect COLECCIONISTA_VOZ probar Bot_03 -> Bot_02 oye=true
 #expect COLECCIONISTA_VOZ separados=4
