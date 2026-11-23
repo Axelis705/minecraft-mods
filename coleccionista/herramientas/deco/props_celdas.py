@@ -481,6 +481,57 @@ def candado():
     return p
 
 
+def grilletes():
+    """Grilletes con cadena colgando de una argolla en la pared."""
+    p = Prop('grilletes', 'Grilletes de pared', 'Wall shackles', kind='wall', sound='chain', seed=58, collide=False)
+    m = kit.metal(Ramp('#2d2c2a', '#3b3a37', '#4a4945', '#58564f'), seed=58)
+    p.box(6, 12, 15, 10, 14, 16, m)
+    p.box(7.5, 11, 14, 8.5, 13, 15, m)
+    for i in range(5):
+        y = 10 - i * 1.6
+        p.box(7.4, y, 13.6, 8.6, y + 1.2, 14.4, m)
+    p.box(5, 2, 12.5, 11, 3, 15, m)
+    p.box(5, 2, 12.5, 6, 4.5, 15, m)
+    p.box(10, 2, 12.5, 11, 4.5, 15, m)
+    return p
+
+
+def silla_ruedas():
+    """Silla de ruedas vieja de hospital."""
+    p = Prop('silla_ruedas', 'Silla de ruedas', 'Wheelchair', kind='floor', sound='metal', seed=59)
+    m = acero(59, sucio=0.5)
+    cuero = tela('#3b2d22', sucio=0.4)
+    for x0 in (1, 14):
+        p.box(x0, 1, 3, x0 + 1, 13, 15, m, skip=('up', 'down'))      # ruedas (aros)
+        p.box(x0 - 0.2, 6, 7, x0 + 1.2, 8, 11, m)
+    p.box(3, 6, 4, 13, 7, 13, m)
+    p.box(3.5, 7, 4.5, 12.5, 8.5, 12.5, cuero)                       # asiento
+    p.box(3.5, 8.5, 12, 12.5, 17, 13, cuero)                          # respaldo
+    p.box(3, 8, 12.5, 4, 18, 13.5, m)
+    p.box(12, 8, 12.5, 13, 18, 13.5, m)
+    p.box(4, 1, 1, 6, 2, 4, m)                                        # pedales
+    p.box(10, 1, 1, 12, 2, 4, m)
+    p.box(4.5, 2, 3, 5.5, 6, 4, m)
+    p.box(10.5, 2, 3, 11.5, 6, 4, m)
+    return p
+
+
+def camilla():
+    """Camilla de hospital con sabana manchada (dos bloques de largo: se pone como cama sin dormir)."""
+    p = Prop('camilla', 'Camilla', 'Gurney', kind='floor', sound='metal', seed=60)
+    m = acero(60, sucio=0.45)
+    sab = tela('#b5ae9a', sucio=0.5)
+    for x0, z0 in ((1, 1), (14, 1), (1, 14), (14, 14)):
+        p.box(x0, 1, z0, x0 + 1, 8, z0 + 1, m)
+        p.box(x0 - 0.3, 0, z0 - 0.3, x0 + 1.3, 1.2, z0 + 1.3, solid('#151514'))
+    p.box(0.5, 8, 0.5, 15.5, 9, 15.5, m)
+    p.box(1, 9, 1, 15, 11, 15, sab)
+    p.box(4, 11, 1.5, 12, 12.5, 5, tela('#c9c3b2', sucio=0.35))
+    p.box(0.5, 9, 0.5, 1, 12, 15.5, m)
+    p.box(15, 9, 0.5, 15.5, 12, 15.5, m)
+    return p
+
+
 def all_props():
     return [catre(), retrete(), lavabo(), espejo(), cajon(), silla(), lampara_tubo(True), lampara_tubo(False), lampara_jaula(True),
             lampara_jaula(False), rejilla_ventilacion(), camara(), bocina(), reloj(), telarana(),

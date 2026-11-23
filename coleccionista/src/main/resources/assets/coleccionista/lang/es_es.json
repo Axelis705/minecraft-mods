@@ -690,5 +690,8 @@
   "coleccionista.cop.regla.1": "Una de las copas de la mesa está envenenada.",
   "coleccionista.cop.regla.2": "Por turnos, cada uno bebe una copa (clic derecho).",
   "coleccionista.cop.regla.3": "Si nadie cae, se vuelve a servir.",
-  "coleccionista.cop.regla.4": "La última pieza en pie gana."
+  "coleccionista.cop.regla.4": "La última pieza en pie gana.",
+  "block.coleccionista.grilletes": "Grilletes de pared",
+  "block.coleccionista.silla_ruedas": "Silla de ruedas",
+  "block.coleccionista.camilla": "Camilla"
 }

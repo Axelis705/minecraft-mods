@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/camilla"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/camilla",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/camilla",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/camilla",
+   "y": 270
+  }
+ }
+}

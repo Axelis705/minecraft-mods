@@ -303,7 +303,7 @@ def catalogo():
     prop(P.silla())
     con_apagado(P.lampara_tubo(True), P.lampara_tubo(False), {'parpadeo': True, 'zumbido': True})
     con_apagado(P.lampara_jaula(True), P.lampara_jaula(False), {'parpadeo': True})
-    for p in (P.rejilla_ventilacion(), P.camara(), P.bocina(), P.reloj(), P.telarana()):
+    for p in (P.rejilla_ventilacion(), P.camara(), P.bocina(), P.reloj(), P.telarana(), P.grilletes(), P.silla_ruedas(), P.camilla()):
         prop(p)
     prop(P.calcomania('mancha', 'Mancha', 'Stain', P.mancha_mat(), 40))
     prop(P.calcomania('charco', 'Charco', 'Puddle', P.mancha_mat('#28343a', 150, 41), 41), {'goteo': True})

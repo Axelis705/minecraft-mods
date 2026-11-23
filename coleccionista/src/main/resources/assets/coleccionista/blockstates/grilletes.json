@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/grilletes"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/grilletes",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/grilletes",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/grilletes",
+   "y": 270
+  }
+ }
+}

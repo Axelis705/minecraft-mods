@@ -690,5 +690,8 @@
   "coleccionista.cop.regla.1": "One of the cups on the table is poisoned.",
   "coleccionista.cop.regla.2": "Taking turns, each one drinks a cup (right click).",
   "coleccionista.cop.regla.3": "If nobody falls, the cups are poured again.",
-  "coleccionista.cop.regla.4": "The last piece standing wins."
+  "coleccionista.cop.regla.4": "The last piece standing wins.",
+  "block.coleccionista.grilletes": "Wall shackles",
+  "block.coleccionista.silla_ruedas": "Wheelchair",
+  "block.coleccionista.camilla": "Gurney"
 }

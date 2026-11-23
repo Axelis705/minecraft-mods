@@ -169,6 +169,19 @@ public final class AlaCeldas {
         if (p.azar(0.7)) {
             p.set(xs, y0 + 4, zFondo, C + "telarana");
         }
+        // lo que dejaron las "piezas anteriores": grilletes en la pared y rayitas contando los días
+        if (p.azar(0.35)) {
+            p.set(xs, y0 + 3, zFondo + 2 * dz, C + "grilletes[facing=east]");
+        }
+        if (p.azar(0.45)) {
+            int dias = 4 + p.r.nextInt(18);
+            StringBuilder l1 = new StringBuilder(), l2 = new StringBuilder();
+            for (int i = 0; i < dias; i++) {
+                StringBuilder l = i < 10 ? l1 : l2;
+                l.append(i % 5 == 4 ? "/ " : "I");
+            }
+            p.texto(xs + 1, y0 + 2, zFondo, "rayon", haciaPasillo, 0xB9B2A2, l1.toString().trim(), l2.toString().trim());
+        }
         if (p.azar(0.4)) {
             p.set(xs + 4, y0 + 4, zFrente, C + "telarana");
         }
@@ -253,6 +266,7 @@ public final class AlaCeldas {
         vitrina(p, -5, 20);
         vitrina(p, -2, 2);
         vitrina(p, -2, 20);
+        p.set(-4, 1, 9, C + "silla[facing=east]");
         // cámaras vigilando el pasillo
         p.set(-7, 8, 2, C + "camara[facing=east]");
         p.set(-7, 8, 20, C + "camara[facing=east]");
@@ -290,6 +304,9 @@ public final class AlaCeldas {
         p.texto(43, 6, 11, "letrero", "west", 0xB3272A, "LA COLECCIÓN", "continúa");
         p.set(43, 8, 11, C + "reloj[facing=west]");
         p.set(43, 8, 2, C + "camara[facing=west]");
+        // una camilla y una silla de ruedas abandonadas en las esquinas
+        p.set(40, 1, 3, C + "camilla[facing=east]");
+        p.set(41, 1, 19, C + "silla_ruedas[facing=" + p.elegir("west", "north") + "]");
         p.set(43, 8, 20, C + "camara[facing=west]");
     }
 
