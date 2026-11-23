@@ -137,9 +137,17 @@ jobs:
       # el 8 lo pide el lanzador del servidor de ForgeGradle (si no está, Gradle intenta bajarlo y a veces falla); si no se
       # puede instalar, se sigue igual (Gradle lo intentará por su cuenta, como antes)
       - uses: actions/setup-java@v4
+        id: j8
         continue-on-error: true
         with:
           distribution: temurin
+          java-version: 8
+      # si la descarga de Temurin falla (a veces llega dañada), se prueba con otra distribución
+      - uses: actions/setup-java@v4
+        if: steps.j8.outcome == 'failure'
+        continue-on-error: true
+        with:
+          distribution: zulu
           java-version: 8
       - uses: actions/setup-java@v4
         with:
