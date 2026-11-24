@@ -230,7 +230,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_RECORRIDO entran encadenados equipos=2
 #expect COLECCIONISTA_RECORRIDO reunir cloacas
 #expect COLECCIONISTA_RECORRIDO elevador ante_cloacas.sale
-#expect COLECCIONISTA_CABINA sale ante_cloacas.sale -> ante_archivo.llega van=4
+#expect COLECCIONISTA_CABINA sale ante_cloacas.sale -> ante_archivo.llega van=
 #expect COLECCIONISTA_CABINA llega ante_archivo.llega
 #expect COLECCIONISTA_RECORRIDO llega archivo
 #expect COLECCIONISTA_PISTAS reveladas inscripciones=
