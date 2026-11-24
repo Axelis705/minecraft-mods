@@ -263,6 +263,7 @@ public final class Recorrido {
         fase = Fase.DISCURSO;
         desde = ahora(s);
         Evento.get(s).reloj(s, 0);
+        Evento.get(s).prueba(s, nombre(e.prueba()));
         if (!Pantallas.hablar(s, e.prueba(), () -> {
             if (fase == Fase.DISCURSO) {
                 formar(s);
@@ -710,6 +711,20 @@ public final class Recorrido {
     public static void reiniciar(MinecraftServer s) {
         parar(s);
         Cabina.reiniciar(s);
+    }
+
+    /** El nombre de la prueba (el que sale arriba en el HUD). */
+    private static String nombre(String prueba) {
+        return switch (prueba) {
+            case "encadenados" -> Encadenados.PRUEBA;
+            case "traidor" -> Traidor.PRUEBA;
+            case "compartir" -> Compartir.PRUEBA;
+            case "ciegas" -> ACiegas.PRUEBA;
+            case "sacrificio" -> Sacrificio.PRUEBA;
+            case "puertas" -> LasPuertas.PRUEBA;
+            case "tres" -> TresSentidos.PRUEBA;
+            default -> LasCopas.PRUEBA;
+        };
     }
 
     static List<String> pruebas() {

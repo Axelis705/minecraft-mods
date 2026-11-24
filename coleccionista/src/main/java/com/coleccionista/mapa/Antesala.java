@@ -86,6 +86,14 @@ public final class Antesala {
             }
         }
         salon(p, t, pre, id);
+        // luz pareja (invisible) en las dos salas, a media altura: que se vea todo
+        for (int x = 3; x < X1; x += 4) {
+            for (int z = 3; z < Z1; z += 4) {
+                if (x != XA) {
+                    p.set(x, 6, z, "light[level=14]");
+                }
+            }
+        }
         Cabinas.elevador(p, "ante_" + id + ".llega", 6, 7, 90, null);
         cubiculos(p, t, pre);
         espera(p, t, pre, id);

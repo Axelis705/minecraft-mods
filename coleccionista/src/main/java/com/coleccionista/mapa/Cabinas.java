@@ -46,10 +46,11 @@ public final class Cabinas {
                 }
             }
         }
-        // la luz en el techo y el barandal del fondo
+        // la luz en el techo (y una luz invisible pegada a él) y el barandal del fondo
         for (int i = 2; i <= ANCHO - 3; i += 3) {
             int[] b = celda(ox, oz, yaw, i, FONDO / 2);
             p.set(b[0], ALTO + 1, b[1], C + "panel_luz");
+            p.set(b[0], ALTO, b[1], "light[level=13]");
         }
         for (int i = 0; i < ANCHO; i++) {
             int[] b = celda(ox, oz, yaw, i, FONDO);
