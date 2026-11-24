@@ -1,20 +1,30 @@
 package com.coleccionista.mapa;
 
 /**
- * La antesala de una prueba: a donde llega el montacargas del Coleccionista. Una sala grande con el estilo de su zona: al oeste el
- * montacargas (una jaula de barrotes en su cubo oscuro, con su reja corrediza, su foco y una pantalla), en medio el salón con casilleros,
- * candelabros, letreros y una alfombra que lleva al portón de la prueba (al este), con el título de la prueba y otra pantalla encima. Las piezas despiertan en la jaula, el montacargas "viaja" y al abrirse la reja salen a la antesala; desde aquí el organizador
- * prepara la prueba.
+ * La antesala de una prueba: a donde llega el elevador del Coleccionista y de donde sale el siguiente. Dos salas que no se tocan:
+ * <ul>
+ * <li><b>Sala de llegada</b> (x 0..31): al oeste el elevador de llegada; en los muros largos, diez cubículos con puerta (las "puertas de
+ * equipo": cada equipo se mete en uno y la puerta se cierra sola al llenarse); al este el portón de la prueba con su título y la pantalla
+ * (ahí se paran las pruebas de uno por uno).</li>
+ * <li><b>Sala de espera</b> (x 32..56): a donde llegan al terminar la prueba; aquí esperan a que terminen todos y al este sale el elevador a
+ * la siguiente prueba.</li>
+ * </ul>
  * <pre>
- *   x: 0 ... 30 (jaula: interior x 3..9, z 7..15; reja en x 10, z 10..11)   z: 0 ... 22   y: -1 ... 12 (piso en y 0)
+ *   x: 0 ... 56   z: 0 ... 22   y: -1 ... 12 (piso en y 0)
+ *   elevador de llegada: interior x 2..5, z 7..14 (puerta en x 6)   cubículos: interior z 1..3 y 19..21, x 9+4b .. 11+4b (b = 0..4)
+ *   elevador de salida: interior x 52..55, z 7..14 (puerta en x 51)
  * </pre>
- * Marcas (con {@code id} la zona de la prueba): {@code ante.<id>.lugar.N} (dentro de la jaula, mirando a la reja), {@code ante.<id>.reja.a}
- * y {@code .reja.b}, {@code ante.<id>.foco.a} y {@code .foco.b}, {@code ante.<id>.centro} (en medio del salón), {@code ante.<id>.pantalla}.
+ * Marcas (con {@code id} la zona de la prueba): {@code cab.ante_<id>.llega} y {@code cab.ante_<id>.sale} (los elevadores),
+ * {@code ante.<id>.cub.N} (esquina del interior del cubículo N, 1..10) y {@code .cub.N.puerta} / {@code .cub.N.foco},
+ * {@code ante.<id>.frente.a/.b} (el área frente al portón), {@code ante.<id>.espera.N} (lugares en la sala de espera), {@code ante.<id>.centro},
+ * {@code ante.<id>.pantalla} y {@code ante.<id>.pantalla2}.
  */
 public final class Antesala {
-    public static final int X0 = 0, X1 = 30, Z0 = 0, Z1 = 22, Y0 = -1, Y1 = 12;
-    /** Lugares en la jaula (sobra para 24 piezas). */
-    public static final int LUGARES = 32;
+    public static final int X0 = 0, X1 = 56, Z0 = 0, Z1 = 22, Y0 = -1, Y1 = 12;
+    /** El muro que separa la sala de llegada de la de espera. */
+    public static final int XA = 31;
+    /** Cubículos (puertas de equipo) y lugares en la sala de espera. */
+    public static final int CUBICULOS = 10, LUGARES = 40;
     private static final String C = "coleccionista:";
 
     /** Cómo se ve la antesala de cada prueba. */
@@ -69,91 +79,18 @@ public final class Antesala {
                 }
             }
         }
-        jaula(p, t, pre);
+        // el muro entre las dos salas
+        for (int z = Z0; z <= Z1; z++) {
+            for (int y = 1; y < Y1; y++) {
+                p.set(XA, y, z, y == 1 ? C + t.zocalo : y >= Y1 - 2 ? C + t.muro2 : C + t.muro);
+            }
+        }
         salon(p, t, pre, id);
+        Cabinas.elevador(p, "ante_" + id + ".llega", 6, 7, 90, null);
+        cubiculos(p, t, pre);
+        espera(p, t, pre, id);
         Estilo.aplicar(p, java.util.Map.of());
         return p;
-    }
-
-    /** El montacargas: el cubo oscuro, la jaula de barrotes con su reja corrediza, el foco, las cadenas y la pantalla. */
-    private static void jaula(Plano p, Tema t, String pre) {
-        // el cubo (x 1..11, z 4..18): muro oscuro hasta el techo; por dentro un hueco de un bloque alrededor de la jaula
-        for (int x = 1; x <= 11; x++) {
-            for (int z = 4; z <= 18; z++) {
-                boolean muro = x == 11 || z == 4 || z == 18;
-                for (int y = 1; y < Y1; y++) {
-                    if (x == 11) {
-                        // la fachada del montacargas (lado del salón) con los muros de la zona
-                        p.set(x, y, z, y == 1 ? C + t.zocalo : y >= Y1 - 2 ? C + t.muro2 : C + t.muro);
-                    } else if (muro) {
-                        p.set(x, y, z, C + "ladrillo_oscuro");
-                    }
-                }
-                p.set(x, 0, z, C + "metal_negro");
-            }
-        }
-        // la jaula: piso de placa, barrotes al oeste, norte y sur, techo de rejilla y la reja al este (x 10)
-        for (int x = 2; x <= 10; x++) {
-            for (int z = 6; z <= 16; z++) {
-                p.set(x, 0, z, C + (x == 2 || x == 10 || z == 6 || z == 16 ? "metal_placa" : (x + z) % 3 == 0 ? "rejilla_piso[type=double]" : "metal_placa"));
-                p.set(x, 6, z, C + (x == 2 || x == 10 || z == 6 || z == 16 ? "viga[axis=y]" : "rejilla_piso[type=bottom]"));
-                boolean lado = x == 2 || x == 10 || z == 6 || z == 16;
-                for (int y = 1; y <= 5; y++) {
-                    if (!lado) {
-                        p.set(x, y, z, "air");
-                    } else if ((x == 2 || x == 10) && (z == 6 || z == 16)) {
-                        p.set(x, y, z, C + "viga[axis=y]");
-                    } else {
-                        p.set(x, y, z, C + "barrotes");
-                    }
-                }
-            }
-        }
-        // la reja corrediza (dos hojas: la de z 10 corre al norte, la de z 11 al sur)
-        p.set(10, 1, 10, C + "puerta_celda[facing=west,half=lower,hinge=left,open=false]");
-        p.set(10, 2, 10, C + "puerta_celda[facing=west,half=upper,hinge=left,open=false]");
-        p.set(10, 1, 11, C + "puerta_celda[facing=west,half=lower,hinge=right,open=false]");
-        p.set(10, 2, 11, C + "puerta_celda[facing=west,half=upper,hinge=right,open=false]");
-        p.marca(pre + "reja.a", 10, 1, 10, 270);
-        p.marca(pre + "reja.b", 10, 1, 11, 270);
-        // la salida del cubo hacia el salón (x 11, frente a la reja), con su marco y la placa encima
-        for (int z = 8; z <= 13; z++) {
-            for (int y = 1; y <= 4; y++) {
-                boolean marco = z == 8 || z == 13 || y == 4;
-                p.set(11, y, z, marco ? C + t.marco : "air");
-            }
-        }
-        p.texto(12, 5, 10, "placa", "east", 0xD9A93A, "MONTACARGAS", "Nº 7");
-        p.texto(12, 5, 11, "placa", "east", 0xC0281F, "NO ABRIR", "EN MARCHA");
-        p.set(12, 3, 7, C + "lampara_jaula[facing=east,encendida=true,falla=false]");
-        p.set(12, 3, 14, C + "lampara_jaula[facing=east,encendida=true,falla=false]");
-        // los focos de la jaula (en los barrotes de atrás) y las cadenas que suben del techo de la jaula
-        p.set(3, 4, 9, C + "lampara_jaula[facing=east,encendida=true,falla=false]");
-        p.set(3, 4, 13, C + "lampara_jaula[facing=east,encendida=true,falla=false]");
-        p.marca(pre + "foco.a", 3, 4, 9, 0);
-        p.marca(pre + "foco.b", 3, 4, 13, 0);
-        for (int[] c : new int[][] {{4, 8}, {8, 8}, {4, 14}, {8, 14}, {6, 11}}) {
-            for (int y = 7; y < Y1; y++) {
-                p.set(c[0], y, c[1], "chain[axis=y]");
-            }
-        }
-        // la pantallita sobre la reja (por dentro): el Coleccionista anuncia la parada
-        p.set(9, 4, 11, "coleccionista:pantalla[facing=west]");
-        p.marca(pre + "pantalla.jaula", 9, 4, 11, 0);
-        // una mancha en el piso de la jaula (otros ya viajaron aquí)
-        p.set(6, 1, 15, C + "mancha[facing=north]");
-        // los lugares: una cuadrícula que mira a la reja (este)
-        int n = 0;
-        for (int z = 7; z <= 15 && n < LUGARES; z += 2) {
-            for (int x = 3; x <= 9 && n < LUGARES; x += 2) {
-                p.marca(pre + "lugar." + n++, x, 1, z, 270);
-            }
-        }
-        for (int z = 8; z <= 14 && n < LUGARES; z += 2) {
-            for (int x = 4; x <= 8 && n < LUGARES; x += 2) {
-                p.marca(pre + "lugar." + n++, x, 1, z, 270);
-            }
-        }
     }
 
     /** El salón: alfombra, casilleros, candelabros, arañas, letreros y el portón de la prueba con su pantalla. */
@@ -214,10 +151,8 @@ public final class Antesala {
             p.set(x, 1, cz + 4, C + "silla[facing=north]");
         }
         // letreros con historia en el muro de la jaula (lado del salón)
-        p.letrero(12, 3, 4, "", "east", "gold", "SALA DE ESPERA", "DE LAS PIEZAS");
-        p.letrero(12, 3, Z1 - 4, "", "east", "white", "Sus cosas", "ya no son suyas.", "Ustedes tampoco.");
-        p.letrero(18, 3, 1, "", "south", "gray", "Cada pieza que", "pasó por aquí", "sigue aquí.");
-        p.letrero(24, 3, Z1 - 1, "", "north", "red", "Sonrían.", "Los estoy viendo.");
+        p.letrero(7, 3, 5, "", "east", "white", "Sus cosas", "ya no son suyas.", "Ustedes tampoco.");
+        p.letrero(7, 3, 16, "", "east", "red", "Sonrían.", "Los estoy viendo.");
         p.set(13, Y1 - 2, 1, C + "camara[facing=south]");
         p.set(27, Y1 - 2, Z1 - 1, C + "camara[facing=north]");
         // detalles de la zona
@@ -226,20 +161,99 @@ public final class Antesala {
         for (int z = cz - 3; z <= cz + 2; z++) {
             for (int y = 1; y <= 6; y++) {
                 boolean marco = z == cz - 3 || z == cz + 2 || y == 6;
-                p.set(X1 - 1, y, z, marco ? C + t.marco : C + "barrotes");
-                p.set(X1, y, z, C + "ladrillo_oscuro");
+                p.set(XA - 1, y, z, marco ? C + t.marco : C + "barrotes");
             }
         }
-        p.set(X1 - 1, 1, cz - 4, C + "candelabro[facing=west,half=lower]");
-        p.set(X1 - 1, 2, cz - 4, C + "candelabro[facing=west,half=upper]");
-        p.set(X1 - 1, 1, cz + 3, C + "candelabro[facing=west,half=lower]");
-        p.set(X1 - 1, 2, cz + 3, C + "candelabro[facing=west,half=upper]");
-        p.texto(X1 - 1, 7, cz - 1, "letrero", "west", 0xC0281F, t.numero);
-        p.texto(X1 - 1, 7, cz, "letrero", "west", 0xE8E2D0, t.titulo);
-        p.letrero(X1 - 1, 3, cz - 5, "", "west", "gray", t.lema);
-        p.set(X1 - 1, 9, cz, "coleccionista:pantalla[facing=west]");
-        p.marca(pre + "pantalla", X1 - 1, 9, cz, 0);
+        p.set(XA - 1, 1, cz - 4, C + "candelabro[facing=west,half=lower]");
+        p.set(XA - 1, 2, cz - 4, C + "candelabro[facing=west,half=upper]");
+        p.set(XA - 1, 1, cz + 3, C + "candelabro[facing=west,half=lower]");
+        p.set(XA - 1, 2, cz + 3, C + "candelabro[facing=west,half=upper]");
+        p.texto(XA - 1, 7, cz - 1, "letrero", "west", 0xC0281F, t.numero);
+        p.texto(XA - 1, 7, cz, "letrero", "west", 0xE8E2D0, t.titulo);
+        p.letrero(XA - 2, 3, cz - 5, "", "west", "gray", t.lema);
+        p.set(XA - 1, 9, cz, "coleccionista:pantalla[facing=west]");
+        p.marca(pre + "pantalla", XA - 1, 9, cz, 0);
         p.marca(pre + "centro", 20, 1, cz, 90);
+    }
+
+    /** Los cubículos de equipo: cinco en cada muro largo, con su puerta, su número y un foco que se prende al llenarse. */
+    private static void cubiculos(Plano p, Tema t, String pre) {
+        int n = 0;
+        for (int lado = 0; lado < 2; lado++) {
+            boolean norte = lado == 0;
+            int zi = norte ? 1 : Z1 - 3, zf = norte ? 4 : Z1 - 4, zh = norte ? 5 : Z1 - 5;
+            String adentro = norte ? "north" : "south", afuera = norte ? "south" : "north";
+            for (int b = 0; b < 5; b++) {
+                int x0 = 9 + 4 * b;
+                n++;
+                for (int x = x0 - 1; x <= x0 + 3; x++) {
+                    for (int z = Math.min(zi, zf); z <= Math.max(zi + 2, zf); z++) {
+                        boolean muro = x == x0 - 1 || x == x0 + 3 || z == zf;
+                        p.set(x, 0, z, C + (muro ? "metal_placa" : t.piso2));
+                        for (int y = 1; y <= 3; y++) {
+                            p.set(x, y, z, muro ? C + "metal_negro" : "air");
+                        }
+                        p.set(x, 4, z, C + "metal_negro");
+                    }
+                }
+                // los lugares marcados en el piso
+                for (int i = 0; i < 3; i++) {
+                    for (int k = 0; k < 3; k++) {
+                        if ((i + k) % 2 == 0) {
+                            p.set(x0 + i, 0, zi + k, C + "marca_roja");
+                        }
+                    }
+                }
+                p.set(x0 + 1, 1, zf, C + "puerta_celda[facing=" + adentro + ",half=lower,hinge=left,open=false]");
+                p.set(x0 + 1, 2, zf, C + "puerta_celda[facing=" + adentro + ",half=upper,hinge=left,open=false]");
+                p.set(x0, 3, zh, C + "lampara_jaula[facing=" + afuera + ",encendida=false,falla=false]");
+                p.texto(x0 + 2, 3, zh, "placa", afuera, 0xD9A93A, "EQUIPO", String.valueOf(n));
+                p.marca(pre + "cub." + n, x0, 1, zi, 0);
+                p.marca(pre + "cub." + n + ".puerta", x0 + 1, 1, zf, 0);
+                p.marca(pre + "cub." + n + ".foco", x0, 3, zh, 0);
+            }
+        }
+        // el área frente al portón (las pruebas de uno por uno se juntan aquí)
+        p.marca(pre + "frente.a", XA - 6, 1, 7, 0);
+        p.marca(pre + "frente.b", XA - 1, 3, 15, 0);
+        for (int x = XA - 6; x <= XA - 1; x++) {
+            p.set(x, 0, 7, C + "marca_roja");
+            p.set(x, 0, 15, C + "marca_roja");
+        }
+    }
+
+    /** La sala de espera: a donde llegan al terminar la prueba; bancas, pantalla y el elevador a la siguiente prueba. */
+    private static void espera(Plano p, Tema t, String pre, String id) {
+        int cz = 11;
+        if (t.alfombra != null) {
+            for (int x = XA + 2; x <= 50; x++) {
+                for (int z = cz - 1; z <= cz; z++) {
+                    p.set(x, 1, z, C + t.alfombra);
+                }
+            }
+        }
+        for (int x = XA + 3; x <= 49; x += 4) {
+            p.set(x, 1, 2, C + "silla[facing=south]");
+            p.set(x, 1, Z1 - 2, C + "silla[facing=north]");
+        }
+        for (int x = XA + 3; x <= 50; x += 5) {
+            p.set(x, Y1 - 1, 5, C + "lampara_tubo[facing=south,encendida=true,falla=false]");
+            p.set(x, Y1 - 1, Z1 - 5, C + "lampara_tubo[facing=north,encendida=true,falla=false]");
+            p.set(x, Y1 - 1, cz, C + "lampara_tubo[facing=north,encendida=true,falla=false]");
+        }
+        p.set(XA + 1, 6, cz, "coleccionista:pantalla[facing=east]");
+        p.marca(pre + "pantalla2", XA + 1, 6, cz, 0);
+        p.letrero(XA + 1, 3, cz - 4, "", "east", "gold", "SALA DE ESPERA", "", "Nadie sale", "hasta que terminen todos.");
+        p.letrero(XA + 1, 3, cz + 4, "", "east", "white", "La colección", "sigue adelante.");
+        p.set(XA + 1, Y1 - 2, 1, C + "camara[facing=south]");
+        int n = 0;
+        for (int z = 3; z <= 19 && n < LUGARES; z += 4) {
+            for (int x = XA + 4; x <= 49 && n < LUGARES; x += 2) {
+                p.marca(pre + "espera." + n++, x, 1, z, 270);
+            }
+        }
+        p.marca(pre + "centro2", 42, 1, cz, 270);
+        Cabinas.elevador(p, "ante_" + id + ".sale", 52, 15, 270, null);
     }
 
     /** Lo que distingue a cada antesala. */

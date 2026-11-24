@@ -44,6 +44,8 @@ public class Coleccionista {
         com.coleccionista.evento.Chat.init();
         com.coleccionista.evento.Proteccion.init();
         com.coleccionista.evento.Montacargas.init();
+        com.coleccionista.evento.Cabina.init();
+        com.coleccionista.evento.Recorrido.init();
         com.coleccionista.evento.Pistas.init();
         com.coleccionista.prueba.Pruebas.init();
         com.coleccionista.voz.Voz.init();

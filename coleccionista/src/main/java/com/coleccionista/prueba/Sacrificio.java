@@ -123,15 +123,30 @@ public final class Sacrificio {
         limpiar(s);
         // equipos al azar del tamaño pedido (como mucho 6 cuartos: si son muchos, los equipos crecen)
         int n = Math.max(1, Math.min(Capilla.CUARTOS, v.size() / Math.max(2, tamano)));
-        Collections.shuffle(v, new Random(s.overworld().getRandom().nextLong()));
-        for (int i = 0; i < n; i++) {
-            cuartos.add(new Cuarto(i + 1));
-        }
-        for (int i = 0; i < v.size(); i++) {
-            Cuarto c = cuartos.get(i % n);
-            if (c.ids.size() < Capilla.LUGARES) {
-                c.ids.add(v.get(i).id);
-                v.get(i).equipo = c.k - 1;
+        List<List<Pieza>> dados = Pruebas.dados(ev);
+        if (dados != null) {
+            n = Math.min(Capilla.CUARTOS, dados.size());
+            for (int i = 0; i < n; i++) {
+                Cuarto c = new Cuarto(i + 1);
+                cuartos.add(c);
+                for (Pieza p : dados.get(i)) {
+                    if (c.ids.size() < Capilla.LUGARES) {
+                        c.ids.add(p.id);
+                        p.equipo = c.k - 1;
+                    }
+                }
+            }
+        } else {
+            Collections.shuffle(v, new Random(s.overworld().getRandom().nextLong()));
+            for (int i = 0; i < n; i++) {
+                cuartos.add(new Cuarto(i + 1));
+            }
+            for (int i = 0; i < v.size(); i++) {
+                Cuarto c = cuartos.get(i % n);
+                if (c.ids.size() < Capilla.LUGARES) {
+                    c.ids.add(v.get(i).id);
+                    v.get(i).equipo = c.k - 1;
+                }
             }
         }
         ev.cambio(s);

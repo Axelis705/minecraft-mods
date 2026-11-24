@@ -115,7 +115,8 @@ public final class Celdas {
         datos(s).putBoolean("salida", true);
         sucio(s);
         salidaEn = -1;
-        Pantallas.hablar(s, "salida", null);
+        // al terminar de hablar se abre el elevador a la primera prueba (el recorrido sigue solo)
+        Pantallas.hablar(s, "salida", () -> Recorrido.alSalirDeLasCeldas(s));
         Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA discurso");
         return true;
     }

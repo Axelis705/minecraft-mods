@@ -77,9 +77,9 @@ public final class Complejo {
             List<Zona> l = new ArrayList<>();
             l.add(new Zona("celdas", planoCeldas(), 0, 0, 0, 1));
             // las Cloacas empiezan justo al este del portón del Ala (x 44): su pasillo (x local -5) queda en x 45
-            l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 50, 0, -11, 0));
+            l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 56, 0, -11, 0));
             // el Salón de las mesas, pegado al este de las Cloacas (su pared oeste junto al Refugio)
-            l.add(new Zona("salon", com.coleccionista.mapa.Salon.crear(SEMILLA), 163, 0, -10, 0));
+            l.add(new Zona("salon", com.coleccionista.mapa.Salon.crear(SEMILLA), 170, 0, -10, 0));
             // la Sala de las puertas, al norte del Ala de celdas (elevada: su piso queda 6 bloques arriba)
             l.add(new Zona("puertas", com.coleccionista.mapa.Puertas.crear(SEMILLA), 2, 0, -50, 0));
             // la Cámara final (Las copas), al norte de la Sala de las puertas
@@ -92,8 +92,12 @@ public final class Complejo {
             l.add(new Zona("laberintos", com.coleccionista.mapa.Laberintos.crear(SEMILLA), -156, 0, 0, 0));
             // la Galería de los postes (Encadenados de tres), al sur de los Laberintos
             l.add(new Zona("galeria", com.coleccionista.mapa.Galeria.crear(SEMILLA), -96, 0, 30, 0));
-            // las antesalas (a donde llega el montacargas antes de cada prueba), afuera de cada zona y sin tocarse con nada
-            int[][] ante = {{100, 36}, {66, 64}, {212, -10}, {-70, -30}, {66, 38}, {-34, -52}, {-28, -86}, {-96, 82}};
+            // las antesalas (sala de llegada con sus puertas de equipo y sala de espera con el elevador a la siguiente prueba)
+            // (en fila al sur de todo: cada una mide 57 x 23)
+            int[][] ante = new int[8][];
+            for (int i = 0; i < ante.length; i++) {
+                ante[i] = new int[] {-100 + 62 * i, 160};
+            }
             for (int i = 0; i < com.coleccionista.mapa.Antesala.ZONAS.length; i++) {
                 String z = com.coleccionista.mapa.Antesala.ZONAS[i];
                 l.add(new Zona("ante_" + z, com.coleccionista.mapa.Antesala.crear(SEMILLA, z), ante[i][0], 0, ante[i][1], 1));

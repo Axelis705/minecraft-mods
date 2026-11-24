@@ -909,5 +909,22 @@
   "coleccionista.cie.cmd.ajustes2": "Pulso de luz cada %s s · las trampas cambian cada %s s (0 = nunca) · baldosas intermitentes: %s.",
   "coleccionista.cie.regla.5": "El último equipo en salir pierde a su guía.",
   "coleccionista.cie.hud.mueven": " · se mueven en %s s",
-  "coleccionista.cie.hud.colores": "Trampas en rojo · baldosas que se encienden en naranja"
+  "coleccionista.cie.hud.colores": "Trampas en rojo · baldosas que se encienden en naranja",
+  "coleccionista.rec.suban": "Suban al elevador. Todos.",
+  "coleccionista.rec.atras": "%s se quedó atrás…",
+  "coleccionista.rec.motivo.atras": "se quedó atrás",
+  "coleccionista.rec.todos_arriba": "Todos arriba. Agárrense.",
+  "coleccionista.rec.equipos": "Formen equipos de %s. Métanse a un cubículo: la puerta se cierra sola cuando el equipo está completo.",
+  "coleccionista.rec.pantalla.equipos": "EQUIPOS DE %s",
+  "coleccionista.rec.porton": "Párense frente al portón.",
+  "coleccionista.rec.pantalla.porton": "AL PORTÓN",
+  "coleccionista.rec.sin_equipo": "%s no encontró equipo… se queda conmigo.",
+  "coleccionista.rec.motivo.sin_equipo": "se quedó sin equipo",
+  "coleccionista.rec.listos": "Todos en su lugar. Que empiece.",
+  "coleccionista.rec.error": "El recorrido se detuvo: %s (usa /evento recorrido seguir o saltar).",
+  "coleccionista.rec.fundido": "Se apagan las luces…",
+  "coleccionista.cmd.recorrido": "Recorrido: %s",
+  "coleccionista.cmd.recorrido_inicia": "El recorrido empieza: se abre el elevador del Ala de celdas.",
+  "coleccionista.cmd.recorrido_no": "No se puede ahora (¿está construido el complejo? ¿hay un recorrido en marcha?).",
+  "coleccionista.cmd.recorrido_ajustes": "Recorrido · empieza solo: %s · prueba extra: %s · formar equipos: %s s · subir al elevador: %s s"
 }

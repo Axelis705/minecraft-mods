@@ -909,5 +909,22 @@
   "coleccionista.cie.cmd.ajustes2": "Light pulse every %s s · traps move every %s s (0 = never) · flashing tiles: %s.",
   "coleccionista.cie.regla.5": "The last team out loses its guide.",
   "coleccionista.cie.hud.mueven": " · they move in %s s",
-  "coleccionista.cie.hud.colores": "Traps in red · flashing tiles in orange"
+  "coleccionista.cie.hud.colores": "Traps in red · flashing tiles in orange",
+  "coleccionista.rec.suban": "Get in the lift. All of you.",
+  "coleccionista.rec.atras": "%s was left behind…",
+  "coleccionista.rec.motivo.atras": "was left behind",
+  "coleccionista.rec.todos_arriba": "Everyone aboard. Hold on.",
+  "coleccionista.rec.equipos": "Form teams of %s. Get into a booth: the door closes by itself when the team is complete.",
+  "coleccionista.rec.pantalla.equipos": "TEAMS OF %s",
+  "coleccionista.rec.porton": "Stand in front of the gate.",
+  "coleccionista.rec.pantalla.porton": "TO THE GATE",
+  "coleccionista.rec.sin_equipo": "%s found no team… and stays with me.",
+  "coleccionista.rec.motivo.sin_equipo": "had no team",
+  "coleccionista.rec.listos": "Everyone in place. Let it begin.",
+  "coleccionista.rec.error": "The route stopped: %s (use /evento recorrido seguir or saltar).",
+  "coleccionista.rec.fundido": "The lights go out…",
+  "coleccionista.cmd.recorrido": "Route: %s",
+  "coleccionista.cmd.recorrido_inicia": "The route begins: the cell wing lift opens.",
+  "coleccionista.cmd.recorrido_no": "Not possible now (is the complex built? is a route already running?).",
+  "coleccionista.cmd.recorrido_ajustes": "Route · starts by itself: %s · extra trial: %s · team forming: %s s · boarding: %s s"
 }

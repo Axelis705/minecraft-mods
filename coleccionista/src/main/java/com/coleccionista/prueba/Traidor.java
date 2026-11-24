@@ -131,15 +131,31 @@ public final class Traidor {
         limpiar(s);
         Random r = new Random(s.overworld().getRandom().nextLong());
         int n = Math.max(1, Math.min(Archivo.SALAS, v.size() / Math.max(3, tamano)));
-        Collections.shuffle(v, r);
-        for (int i = 0; i < n; i++) {
-            salas.add(new Sala(i + 1));
-        }
-        for (int i = 0; i < v.size(); i++) {
-            Sala sa = salas.get(i % n);
-            if (sa.ids.size() < Archivo.LUGARES) {
-                sa.ids.add(v.get(i).id);
-                v.get(i).equipo = sa.k - 1;
+        List<List<Pieza>> dados = Pruebas.dados(ev);
+        if (dados != null) {
+            // los equipos que ellos mismos formaron en los cubículos
+            n = Math.min(Archivo.SALAS, dados.size());
+            for (int i = 0; i < n; i++) {
+                Sala sa = new Sala(i + 1);
+                salas.add(sa);
+                for (Pieza p : dados.get(i)) {
+                    if (sa.ids.size() < Archivo.LUGARES) {
+                        sa.ids.add(p.id);
+                        p.equipo = sa.k - 1;
+                    }
+                }
+            }
+        } else {
+            Collections.shuffle(v, r);
+            for (int i = 0; i < n; i++) {
+                salas.add(new Sala(i + 1));
+            }
+            for (int i = 0; i < v.size(); i++) {
+                Sala sa = salas.get(i % n);
+                if (sa.ids.size() < Archivo.LUGARES) {
+                    sa.ids.add(v.get(i).id);
+                    v.get(i).equipo = sa.k - 1;
+                }
             }
         }
         for (Sala sa : salas) {

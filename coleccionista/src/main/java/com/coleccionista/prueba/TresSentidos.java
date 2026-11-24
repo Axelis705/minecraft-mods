@@ -189,14 +189,30 @@ public final class TresSentidos {
         Random r = new Random(s.overworld().getRandom().nextLong());
         Collections.shuffle(v, r);
         int n = Math.max(1, Math.min(Galeria.CARRILES, v.size() / Math.max(3, tamano)));
-        for (int i = 0; i < n; i++) {
-            trios.add(new Trio(i + 1));
-        }
-        for (int i = 0; i < v.size() && i < n * 4; i++) {
-            Trio tr = trios.get(i % n);
-            tr.ids.add(v.get(i).id);
-            tr.roles.put(v.get(i).id, Rol.NADA);
-            v.get(i).equipo = tr.k - 1;
+        List<List<Pieza>> dados = Pruebas.dados(ev);
+        if (dados != null) {
+            n = Math.min(Galeria.CARRILES, dados.size());
+            for (int i = 0; i < n; i++) {
+                Trio tr = new Trio(i + 1);
+                trios.add(tr);
+                for (Pieza p : dados.get(i)) {
+                    if (tr.ids.size() < 4) {
+                        tr.ids.add(p.id);
+                        tr.roles.put(p.id, Rol.NADA);
+                        p.equipo = tr.k - 1;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                trios.add(new Trio(i + 1));
+            }
+            for (int i = 0; i < v.size() && i < n * 4; i++) {
+                Trio tr = trios.get(i % n);
+                tr.ids.add(v.get(i).id);
+                tr.roles.put(v.get(i).id, Rol.NADA);
+                v.get(i).equipo = tr.k - 1;
+            }
         }
         for (Trio tr : trios) {
             for (int i = 0; i + 1 < tr.ids.size(); i++) {

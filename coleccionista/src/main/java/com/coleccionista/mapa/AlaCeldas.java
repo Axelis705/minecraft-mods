@@ -4,7 +4,7 @@ package com.coleccionista.mapa;
  * El Ala de celdas: donde despiertan las piezas. Un pabellón de una vieja institución (mitad prisión, mitad manicomio) que el Coleccionista
  * convirtió en su "vitrina": dos pisos de celdas con azulejo de hospital, yeso descarapelado, barrotes oxidados y pasarelas de rejilla; al
  * oeste, su escenario (la pantalla gigante entre cortinas de terciopelo, casilleros, escritorio del guardia y el reglamento); al este, la escalera y el
- * portón de salida. Todo con bloques propios del mod.
+ * portón de salida con el elevador a la primera prueba (x 45..49). Todo con bloques propios del mod.
  * <pre>
  *   x: -8 ... 44 (vestíbulo oeste -7..-1, celdas 0..36, vestíbulo este 37..43)
  *   z: 0 ... 22 (celdas sur 1..5, pasillo 7..15, celdas norte 17..21)
@@ -314,6 +314,8 @@ public final class AlaCeldas {
             p.set(44, 5, z, VIGA + "[axis=z]");
         }
         p.marca("salida", 43, 1, 11, 270);
+        // detrás del portón, el elevador que lleva a la primera prueba (se abre cuando todas salieron de su celda)
+        Cabinas.elevador(p, "inicio", 45, 16, 270, null);
         p.texto(43, 6, 11, "letrero", "west", 0xB3272A, "LA COLECCIÓN", "continúa");
         p.set(43, 8, 11, C + "reloj[facing=west]");
         p.set(43, 8, 2, C + "camara[facing=west]");

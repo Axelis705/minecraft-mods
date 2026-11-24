@@ -87,6 +87,10 @@ public final class Montacargas {
         if (!tieneAntesala(z)) {
             return Component.literal(z + "?");
         }
+        // ahora el viaje es el del recorrido: en elevador a la sala de llegada de esa prueba, y de ahí sigue solo
+        if (true) {
+            return Recorrido.ir(s, prueba(z)) ? null : Component.translatable(MOD + ".cmd.recorrido_no");
+        }
         if (activo()) {
             return Component.translatable(MOD + ".cmd.montacargas_ya");
         }

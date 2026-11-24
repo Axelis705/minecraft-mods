@@ -417,6 +417,7 @@ public final class Evento {
         Pistas.ocultar(s);
         Uniforme.quitarTodos(s);
         Montacargas.reiniciar(s);
+        Recorrido.reiniciar(s);
         chatCerrado = false;
         fase = Fase.ESPERA;
         prueba = "";
@@ -436,7 +437,7 @@ public final class Evento {
         if (e.relojFin > 0 && s.overworld().getGameTime() >= e.relojFin) {
             e.relojFin = 0;
             Coleccionista.LOGGER.info("COLECCIONISTA_TIEMPO {}", e.prueba);
-            if (!Despertar.alAcabarReloj(s) && !com.coleccionista.prueba.Pruebas.alAcabarReloj(s)) {
+            if (!Recorrido.alAcabarReloj(s) && !Despertar.alAcabarReloj(s) && !com.coleccionista.prueba.Pruebas.alAcabarReloj(s)) {
                 Anuncio.tiempo(s);
             }
             e.cambio(s);

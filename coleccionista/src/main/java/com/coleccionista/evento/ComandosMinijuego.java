@@ -37,10 +37,13 @@ public final class ComandosMinijuego {
             m.put("discurso", "evento discurso");
             m.put("abrir", "evento celdas abrir");
             m.put("salida", "evento salida");
+            m.put("recorrido", "evento recorrido iniciar");
             return m;
         }
         String p = PRUEBA[n];
-        m.put("montacargas", "evento montacargas " + ZONA[n]);
+        // llevarlas a la sala de llegada de la prueba (en el elevador) y seguir el recorrido desde ahí
+        m.put("ir", "evento recorrido ir " + p);
+        m.put("montacargas", "evento recorrido ir " + p);
         m.put("preparar", "evento " + p + " preparar");
         m.put("empezar", n == 6 ? "evento puertas discurso" : "evento " + p + " empezar");
         m.put("ya", n == 6 ? "evento puertas ronda" : "evento " + p + " empezar ya");

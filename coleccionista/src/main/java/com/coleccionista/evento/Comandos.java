@@ -143,6 +143,38 @@ public final class Comandos {
                             Component no = Montacargas.viajar(c.getSource().getServer(), z);
                             return no == null ? ok(c, Component.translatable(MOD + ".cmd.montacargas", Montacargas.nombre(z))) : error(c, no);
                         })))
+                .then(Commands.literal("recorrido")
+                        .executes(c -> ok(c, Component.translatable(MOD + ".cmd.recorrido", Recorrido.estado())))
+                        .then(Commands.literal("iniciar").executes(c -> Recorrido.iniciar(c.getSource().getServer())
+                                ? ok(c, Component.translatable(MOD + ".cmd.recorrido_inicia")) : error(c, Component.translatable(MOD + ".cmd.recorrido_no"))))
+                        .then(Commands.literal("pausa").executes(c -> Recorrido.pausar(c.getSource().getServer(), true)
+                                ? ok(c, Component.translatable(MOD + ".cmd.recorrido", Recorrido.estado())) : error(c, Component.translatable(MOD + ".cmd.recorrido_no"))))
+                        .then(Commands.literal("seguir").executes(c -> Recorrido.pausar(c.getSource().getServer(), false)
+                                ? ok(c, Component.translatable(MOD + ".cmd.recorrido", Recorrido.estado())) : error(c, Component.translatable(MOD + ".cmd.recorrido_no"))))
+                        .then(Commands.literal("saltar").executes(c -> Recorrido.saltar(c.getSource().getServer())
+                                ? ok(c, Component.translatable(MOD + ".cmd.recorrido", Recorrido.estado())) : error(c, Component.translatable(MOD + ".cmd.recorrido_no"))))
+                        .then(Commands.literal("parar").executes(c -> {
+                            Recorrido.parar(c.getSource().getServer());
+                            return ok(c, Component.translatable(MOD + ".cmd.recorrido", Recorrido.estado()));
+                        }))
+                        .then(Commands.literal("ir").then(Commands.argument("prueba", StringArgumentType.word())
+                                .suggests((c, b) -> net.minecraft.commands.SharedSuggestionProvider.suggest(Recorrido.pruebas(), b))
+                                .executes(c -> Recorrido.ir(c.getSource().getServer(), StringArgumentType.getString(c, "prueba"))
+                                        ? ok(c, Component.translatable(MOD + ".cmd.recorrido", Recorrido.estado())) : error(c, Component.translatable(MOD + ".cmd.recorrido_no")))))
+                        .then(Commands.literal("auto").then(Commands.argument("si", com.mojang.brigadier.arguments.BoolArgumentType.bool()).executes(c -> {
+                            Recorrido.auto = com.mojang.brigadier.arguments.BoolArgumentType.getBool(c, "si");
+                            return ok(c, Component.translatable(MOD + ".cmd.recorrido_ajustes", Recorrido.auto, Recorrido.extra, Recorrido.formarSeg, Recorrido.elevadorSeg));
+                        })))
+                        .then(Commands.literal("extra").then(Commands.argument("si", com.mojang.brigadier.arguments.BoolArgumentType.bool()).executes(c -> {
+                            Recorrido.extra = com.mojang.brigadier.arguments.BoolArgumentType.getBool(c, "si");
+                            return ok(c, Component.translatable(MOD + ".cmd.recorrido_ajustes", Recorrido.auto, Recorrido.extra, Recorrido.formarSeg, Recorrido.elevadorSeg));
+                        })))
+                        .then(Commands.literal("tiempos").then(Commands.argument("formar", com.mojang.brigadier.arguments.IntegerArgumentType.integer(10, 600))
+                                .then(Commands.argument("elevador", com.mojang.brigadier.arguments.IntegerArgumentType.integer(10, 600)).executes(c -> {
+                                    Recorrido.formarSeg = com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "formar");
+                                    Recorrido.elevadorSeg = com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "elevador");
+                                    return ok(c, Component.translatable(MOD + ".cmd.recorrido_ajustes", Recorrido.auto, Recorrido.extra, Recorrido.formarSeg, Recorrido.elevadorSeg));
+                                })))))
                 .then(Commands.literal("salida").executes(c -> Celdas.hablarSalida(c.getSource().getServer())
                         ? ok(c, Component.translatable(MOD + ".cmd.salida")) : ok(c, Component.translatable(MOD + ".cmd.salida_espera"))))
                 .then(Commands.literal("pantalla")

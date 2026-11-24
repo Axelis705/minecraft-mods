@@ -124,6 +124,28 @@ public final class Compartir {
         Pruebas.cerrarOtras(s, "compartir");
         limpiar(s);
         Collections.shuffle(v, new Random(s.overworld().getRandom().nextLong()));
+        List<List<Pieza>> dados = Pruebas.dados(ev);
+        if (dados != null) {
+            // las parejas que ellos formaron (en orden); quien quedó sola es la perdonada
+            v.clear();
+            List<Pieza> solas = new ArrayList<>();
+            for (List<Pieza> eq : dados) {
+                if (eq.size() >= 2) {
+                    v.add(eq.get(0));
+                    v.add(eq.get(1));
+                    solas.addAll(eq.subList(2, eq.size()));
+                } else {
+                    solas.addAll(eq);
+                }
+            }
+            for (int i = 0; i + 1 < solas.size(); i += 2) {
+                v.add(solas.get(i));
+                v.add(solas.get(i + 1));
+            }
+            if (solas.size() % 2 == 1) {
+                v.add(solas.get(solas.size() - 1));
+            }
+        }
         if (v.size() % 2 == 1) {
             perdonado = v.remove(v.size() - 1).id;
         }

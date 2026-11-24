@@ -119,14 +119,30 @@ public final class ACiegas {
         limpiar(s);
         Random r = new Random(s.overworld().getRandom().nextLong());
         int n = Math.max(2, Math.min(Laberintos.LABERINTOS, v.size() / Math.max(2, tamano)));
-        Collections.shuffle(v, r);
-        for (int i = 0; i < n; i++) {
-            equipos.add(new Equipo(i + 1));
-        }
-        for (int i = 0; i < v.size(); i++) {
-            Equipo e = equipos.get(i % n);
-            e.ids.add(v.get(i).id);
-            v.get(i).equipo = e.k - 1;
+        List<List<Pieza>> dados = Pruebas.dados(ev);
+        if (dados != null) {
+            // los equipos que ellos formaron; si hay más que laberintos, los que sobran se reparten
+            n = Math.min(Laberintos.LABERINTOS, dados.size());
+            for (int i = 0; i < n; i++) {
+                equipos.add(new Equipo(i + 1));
+            }
+            for (int i = 0; i < dados.size(); i++) {
+                Equipo e = equipos.get(i % n);
+                for (Pieza p : dados.get(i)) {
+                    e.ids.add(p.id);
+                    p.equipo = e.k - 1;
+                }
+            }
+        } else {
+            Collections.shuffle(v, r);
+            for (int i = 0; i < n; i++) {
+                equipos.add(new Equipo(i + 1));
+            }
+            for (int i = 0; i < v.size(); i++) {
+                Equipo e = equipos.get(i % n);
+                e.ids.add(v.get(i).id);
+                v.get(i).equipo = e.k - 1;
+            }
         }
         for (Equipo e : equipos) {
             e.guia = e.ids.get(r.nextInt(e.ids.size()));

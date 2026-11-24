@@ -2,6 +2,9 @@ package com.coleccionista.prueba;
 
 import net.minecraft.server.MinecraftServer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Todas las pruebas juntas: arrancan, se enteran cuando se acaba el reloj y se borran al reiniciar el evento. */
 public final class Pruebas {
     private Pruebas() {
@@ -44,6 +47,35 @@ public final class Pruebas {
             terminar.run();
             com.coleccionista.Coleccionista.LOGGER.info("COLECCIONISTA_PRUEBAS cerrada {} (se prepara {})", id, nueva);
         }
+    }
+
+    /** Los equipos que formaron las piezas en los cubículos (los usa el siguiente "preparar" en lugar de hacerlos al azar). */
+    private static List<List<java.util.UUID>> dados;
+
+    public static void darEquipos(List<List<java.util.UUID>> equipos) {
+        dados = equipos;
+    }
+
+    /** Los equipos dados (solo piezas vivas, sin equipos vacíos), o null si no hay; se usan una sola vez. */
+    public static List<List<com.coleccionista.evento.Pieza>> dados(com.coleccionista.evento.Evento ev) {
+        if (dados == null) {
+            return null;
+        }
+        List<List<com.coleccionista.evento.Pieza>> out = new ArrayList<>();
+        for (List<java.util.UUID> eq : dados) {
+            List<com.coleccionista.evento.Pieza> l = new ArrayList<>();
+            for (java.util.UUID id : eq) {
+                com.coleccionista.evento.Pieza p = ev.pieza(id);
+                if (p != null && p.vivo()) {
+                    l.add(p);
+                }
+            }
+            if (!l.isEmpty()) {
+                out.add(l);
+            }
+        }
+        dados = null;
+        return out.isEmpty() ? null : out;
     }
 
     public static void reiniciar(MinecraftServer s) {

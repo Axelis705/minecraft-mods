@@ -4,8 +4,10 @@ forceload add -16 -48 224 144
 forceload add -160 32 -16 80
 forceload add -112 64 -32 128
 forceload add 208 24 256 64
+forceload add -100 190 390 222
 #pausa 3
 evento reiniciar confirmar
+evento recorrido auto false
 execute in minecraft:overworld positioned 0.5 -60 0.5 run evento bots 6
 #pausa 2
 evento parejas
@@ -73,8 +75,6 @@ evento compartir hablar 5
 evento compartir tiempo_elegir 12
 evento compartir ritmo 60
 evento compartir bots_eligen no
-minijuego 3 montacargas
-#pausa 20
 minijuego 3 preparar
 #pausa 4
 evento compartir empezar ya
@@ -187,6 +187,18 @@ evento tres arrancar
 evento tres sacar Bot_01
 #pausa 3
 evento tres terminar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento recorrido ir encadenados
+#pausa 2
+evento recorrido saltar
+#pausa 14
+evento encadenados terminar
+#pausa 14
+#pausa 18
+evento recorrido parar
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect usuarios=[coleccionista]
@@ -208,12 +220,19 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CANDADOS activos
 #expect COLECCIONISTA_SALIDA discurso
 #expect COLECCIONISTA_DISCURSO salida
-#expect COLECCIONISTA_MONTACARGAS gas salon
-#expect COLECCIONISTA_MINIJUEGO 3 montacargas
 #expect COLECCIONISTA_MINIJUEGO 3 preparar
 #expect COLECCIONISTA_MINIJUEGO 3 terminar
-#expect COLECCIONISTA_MONTACARGAS llegada salon
 #expect COLECCIONISTA_CONSTRUIDO ante_salon
+#expect COLECCIONISTA_RECORRIDO ir encadenados
+#expect COLECCIONISTA_RECORRIDO formar encadenados tam=2
+#expect COLECCIONISTA_RECORRIDO cubiculo 1 lleno
+#expect COLECCIONISTA_RECORRIDO cubiculo 2 lleno
+#expect COLECCIONISTA_RECORRIDO entran encadenados equipos=2
+#expect COLECCIONISTA_RECORRIDO reunir cloacas
+#expect COLECCIONISTA_RECORRIDO elevador ante_cloacas.sale
+#expect COLECCIONISTA_CABINA sale ante_cloacas.sale -> ante_archivo.llega van=4
+#expect COLECCIONISTA_CABINA llega ante_archivo.llega
+#expect COLECCIONISTA_RECORRIDO llega archivo
 #expect COLECCIONISTA_PISTAS reveladas inscripciones=
 #expect COLECCIONISTA_PROTECCION bichos_quitados=
 #expect COLECCIONISTA_CUERPO 02 Bot_02

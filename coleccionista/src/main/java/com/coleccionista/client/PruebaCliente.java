@@ -409,25 +409,25 @@ final class PruebaCliente {
 
     /** Prueba 3, Compartir o robar: el Salón, la mesa, la pantalla para elegir, la revelación de una mesa y el final. */
     private static void compartir(ClientTest.Script t) {
-        // el montacargas: gas, viaje y llegada a la antesala del Salón
-        t.add("montacargas", 600, () -> {
+        // el recorrido: en el elevador a la sala de llegada del Salón, los cubículos para formar equipos y la sala de espera
+        t.add("recorrido", 600, () -> {
             for (int i = 2; i <= 8; i++) {
                 t.cmd("evento revivir Bot_0" + i);
             }
-            t.cmd("forceload add 208 16 248 48");
+            t.cmd("forceload add 24 190 80 212");
             t.cmd("gamemode adventure @a");
-            t.cmd("evento montacargas salon");
+            t.cmd("evento recorrido ir compartir");
         });
-        t.photo("41b_mont_gas", 2400, () -> {
+        t.photo("41b_elevador_llegada", 2500, () -> {
         });
-        t.photo("41c_mont_viaje", 6400, () -> {
+        t.add("rec: equipos", 1500, () -> t.cmd("evento recorrido saltar"));
+        t.photo("41c_cubiculos", 1500, () -> t.lookFrom(44.5, -60, 203.5, 40, -58.5, 193.5));
+        t.photo("41d_cubiculos_sur", 1200, () -> t.lookFrom(44.5, -60, 199.5, 40, -58.5, 209.5));
+        t.photo("41e_sala_espera", 1200, () -> t.lookFrom(60.5, -60, 201.5, 75, -58.5, 201.5));
+        t.add("rec: parar", 600, () -> {
+            t.cmd("evento recorrido parar");
+            t.cmd("evento reloj 0");
         });
-        t.add("viajando", 100, () -> t.check("VIAJE".equals(MontacargasCliente.fase()), "el montacargas va bajando"));
-        t.photo("41d_mont_llegada", 11200, () -> {
-        });
-        t.add("llegó", 100, () -> t.check(!"VIAJE".equals(MontacargasCliente.fase()), "el montacargas llegó"));
-        t.photo("41e_antesala", 1500, () -> t.lookFrom(225.5, -60, 31.5, 241, -57, 31.5));
-        t.photo("41f_antesala_jaula", 1200, () -> t.lookFrom(238.5, -60, 31.5, 222, -58, 31.5));
         // de espaldas a las pantallas: el Coleccionista habla en la mini tele de arriba a la derecha
         t.add("habla sin tele enfrente", 600, () -> t.cmd("minijuego 0 salida"));
         t.photo("41g_mini_tele", 4200, () -> {
