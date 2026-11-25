@@ -50,8 +50,8 @@ import java.util.UUID;
 /**
  * Capítulo 2 · La mascota: las escondidas en la casa del Coleccionista ({@link Mansion}). Llegan por el pasillo de servicio (pasan sin que se
  * note desde el del teatro) y entran al vestíbulo; cuando están todos, el Coleccionista cuenta que se le escapó su mascota, Cascabel (se oye
- * rugir detrás de la reja), y les da un minuto para esconderse. Luego el organizador se convierte en Cascabel (una fiera disecada y cosida,
- * con máscara de porcelana y un cascabel en el collar) y sale de su jaula: a quien atrapa (un golpe), se lo come. Si se acaba el tiempo, los
+ * rugir detrás de la reja), y les da un minuto para esconderse. Luego el organizador se convierte en Cascabel (un oso de peluche gigante y
+ * roto, con garras de hueso, un ojo de botón y un moño con cascabel) y sale de su jaula: a quien atrapa (un golpe), se lo come. Si se acaba el tiempo, los
  * que quedan se salvan y Cascabel vuelve a su jaula.
  * <p>
  * Cascabel ruge (tecla G: a los que están cerca les tiembla la pantalla) y olfatea (tecla H: oye el corazón de los que están escondidos
@@ -524,10 +524,10 @@ public final class Mascota {
         s.overworld().sendParticles(ParticleTypes.SPIT, t.getX(), t.getY() + 1, t.getZ(), 20, 0.3, 0.3, 0.3, 0.2);
     }
 
-    /** Dónde queda el hocico de Cascabel (un poco al frente de su pecho, a la altura de la cabeza). */
+    /** Dónde la sostiene Cascabel para morderla: enfrente de su cara, con las dos garras. */
     private static Vec3 boca(ServerPlayer p) {
         double r = Math.toRadians(p.getYRot());
-        return new Vec3(p.getX() - Math.sin(r) * 2.1, p.getY() + 0.9, p.getZ() + Math.cos(r) * 2.1);
+        return new Vec3(p.getX() - Math.sin(r) * 1.1, p.getY() + 1.1, p.getZ() + Math.cos(r) * 1.1);
     }
 
     /** Las teclas de Cascabel (las manda el cliente del organizador transformado). */

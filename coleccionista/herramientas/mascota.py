@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Cascabel, la mascota del Coleccionista: el modelo (.geo.json), sus animaciones (.animation.json) y su textura, hechos por código.
 
-Una fiera disecada y vuelta a coser: el cuerpo de un tigre viejo (el pelo desteñido, con remiendos de otra piel y costuras de hilo
-dorado), una máscara de porcelana agrietada como la de su dueño (con dos ojos de vidrio ámbar que brillan en la oscuridad), un collar de
-cuero rojo con un cascabel de latón (lo oye quien se esconde) y una llave de cuerda en la espalda que gira sola: es un juguete al que le
-dieron cuerda.
+Un oso de peluche gigante y roto: parado en dos patas, encorvado, con brazos largos que le llegan a las rodillas. Le falta un botón
+(cuelga de un hilo) y por el hueco se asoma un ojo rojo; la oreja derecha está descosida y por la panza se le sale el relleno. Por las
+costuras de las patas le salen garras de hueso. La boca cosida se abre como una mordida llena de dientes. Lleva un moño rojo con un
+cascabel de latón (lo oye quien se esconde), un parche de cuadros cosido en el hombro y una llave de cuerda en la espalda: es un juguete
+de la colección al que le dieron cuerda.
 
 Uso: python3 herramientas/mascota.py [--vista carpeta]   (con --vista también dibuja una vista previa en PNG)
 Escribe en src/main/resources/assets/coleccionista: geo/cascabel.geo.json, animations/cascabel.animation.json y
@@ -20,8 +21,8 @@ from PIL import Image, ImageDraw
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 A = os.path.join(AQUI, '..', 'src', 'main', 'resources', 'assets', 'coleccionista')
-TW, TH = 256, 128
-DZ = 10  # todo se corre hacia atrás: así el jugador (la cámara) queda a la altura del pecho y no del lomo
+TW, TH = 256, 256
+DZ = 0  # (en dos patas el jugador queda en medio)
 
 # ---------------------------------------------------------------- el modelo
 # cada cubo: (hueso, origen x y z, tamaño x y z, material, extra)  (unidades de Blockbench: 16 = 1 bloque, y hacia arriba, frente = -z)
@@ -43,64 +44,76 @@ def cubo(h, o, t, mat, inflar=0.0, giro=None, pivote=None, espejo=False):
 
 def modelo():
     hueso('root', None, (0, 0, 0))
-    hueso('body', 'root', (0, 20, 2))
-    cubo('body', (-10, 14, -12), (20, 14, 32), 'piel')                 # el lomo, largo y bajo
-    cubo('body', (-11, 13, -16), (22, 17, 12), 'pecho')                # el pecho y la joroba de los hombros
-    cubo('body', (-8, 12, 4), (16, 4, 12), 'panza')                    # la panza que cuelga
-    cubo('body', (-1, 28, -4), (2, 0.6, 24), 'costura')                # la costura del espinazo
-    hueso('key', 'body', (0, 28, 6))
-    cubo('key', (-1, 28, 5), (2, 4, 2), 'laton')                       # la llave de cuerda
-    cubo('key', (-6, 32, 5.5), (12, 7, 1), 'llave')                    # su mango (dos orejas)
-    hueso('neck', 'body', (0, 25, -14), (-10, 0, 0))
-    cubo('neck', (-6, 21, -24), (12, 11, 12), 'piel')
-    hueso('collar', 'neck', (0, 24, -19))
-    cubo('collar', (-6.5, 21.5, -21), (13, 3, 6), 'cuero', inflar=0.6)
-    hueso('bell', 'collar', (0, 21.5, -21))
-    cubo('bell', (-2, 17.5, -23.5), (4, 4, 4), 'cascabel')
-    hueso('head', 'neck', (0, 28, -24), (10, 0, 0))
-    cubo('head', (-8.5, 22, -38), (17, 14, 14), 'cabeza')              # el cráneo
-    cubo('head', (-8, 25, -39), (16, 11, 1), 'mascara')                # la máscara de porcelana
-    cubo('head', (-5, 21.5, -44), (10, 5, 7), 'hocico')                # el hocico (arriba de la boca)
-    cubo('head', (-3.8, 19.5, -43.5), (1, 2.2, 1), 'diente')           # colmillos de arriba
-    cubo('head', (2.8, 19.5, -43.5), (1, 2.2, 1), 'diente')
-    cubo('head', (-1, 25.2, -44.5), (2, 1.2, 0.6), 'nariz')
-    hueso('eyes', 'head', (0, 30, -39))
-    cubo('eyes', (-5.4, 29.2, -39.3), (3, 2, 0.4), 'ojo')
-    cubo('eyes', (2.4, 29.2, -39.3), (3, 2, 0.4), 'ojo')
-    hueso('jaw', 'head', (0, 23, -37))
-    cubo('jaw', (-4.5, 19, -44), (9, 3, 7), 'quijada')
-    cubo('jaw', (-3.5, 22, -43.5), (1, 1.4, 1), 'diente')
-    cubo('jaw', (2.5, 22, -43.5), (1, 1.4, 1), 'diente')
-    hueso('mouth', 'jaw', (0, 21, -43))                                # donde queda la presa (localizador)
-    hueso('ear_l', 'head', (6.5, 36, -29), (0, 0, -20))
-    cubo('ear_l', (5, 35.5, -30.5), (4, 5, 2), 'oreja')
-    hueso('ear_r', 'head', (-6.5, 36, -29), (0, 0, 20))
-    cubo('ear_r', (-9, 35.5, -30.5), (4, 5, 2), 'oreja_rota')
-    # las patas: gruesas y cortas, de fiera
+    hueso('body', 'root', (0, 13, 0), (8, 0, 0))                          # encorvado hacia adelante
+    cubo('body', (-9, 12, -6), (18, 17, 13), 'pelo')                      # la panza redonda
+    cubo('body', (-10, 26, -5.5), (20, 9, 12), 'pelo')                    # el pecho y los hombros
+    cubo('body', (-6.5, 14, -6.5), (13, 13, 0.5), 'pelo_claro')           # la panza clarita
+    cubo('body', (-0.4, 13, -6.9), (0.8, 15, 0.4), 'costura')             # la costura de en medio, abierta abajo
+    cubo('body', (-3, 15, -8.5), (6, 5, 2.5), 'relleno')                  # el relleno que se sale
+    cubo('body', (-1.5, 13.5, -9.5), (3, 2.5, 1.5), 'relleno')
+    cubo('body', (2, 19.5, -7.6), (2, 2, 1.5), 'relleno')
+    cubo('body', (5.5, 27.5, -6), (5, 6, 0.6), 'parche')                  # un parche de cuadros en el pecho
+    cubo('body', (-2, 13, 6.5), (4, 4, 3), 'pelo')                        # la colita
+    hueso('key', 'body', (0, 24, 6.5))
+    cubo('key', (-1, 23, 6.5), (2, 2, 4), 'laton')                        # la llave de cuerda (en la espalda)
+    cubo('key', (-5, 20.5, 10.5), (10, 7, 1), 'llave')
+    hueso('head', 'body', (0, 34, -1))
+    cubo('head', (-9, 33, -9), (18, 15, 15), 'pelo')                      # la cabezota
+    cubo('head', (-4.5, 36, -12.5), (9, 5, 4), 'hocico')                  # el hocico (arriba de la boca)
+    cubo('head', (-1.5, 39.5, -13), (3, 2, 1), 'nariz')
+    cubo('head', (-0.25, 37.5, -12.8), (0.5, 2, 0.3), 'costura')          # el hilo de la nariz a la boca
+    for k, x in enumerate((-4, -2.4, -0.8, 0.8, 2.4)):
+        cubo('head', (x, 34.6 - (k % 2) * 0.6, -12.3), (0.9, 1.6 + (k % 2) * 0.6, 0.9), 'hueso')   # colmillos de arriba
+    cubo('head', (2.5, 41, -9.6), (3.5, 3.5, 0.8), 'boton')               # su ojo: un botón
+    cubo('head', (-6.5, 41, -9.3), (3.5, 3.5, 0.4), 'cuenca')             # el otro se cayó: un hueco
+    cubo('head', (-8.4, 34.2, -9.7), (2.6, 2.6, 0.6), 'boton')            # ... y cuelga de un hilo
+    cubo('head', (-7.3, 36.8, -9.55), (0.4, 4.4, 0.3), 'hilo')
+    cubo('head', (-9.5, 40, -3), (0.6, 4, 6), 'costura_x')                # costuras en la cabeza
+    hueso('eyes', 'head', (0, 42.5, -9.6))
+    cubo('eyes', (-5.9, 41.6, -9.6), (2.2, 2.2, 0.3), 'ojo')              # el ojo rojo que se asoma por el hueco
+    cubo('eyes', (3.8, 42.4, -10.05), (0.8, 0.8, 0.1), 'ojo_chico')       # un brillo rojo en el botón
+    hueso('jaw', 'head', (0, 35.5, -8))
+    cubo('jaw', (-4.5, 32.5, -12.5), (9, 3.5, 4), 'quijada')
+    for k, x in enumerate((-3.6, -2, -0.4, 1.2, 2.8)):
+        cubo('jaw', (x, 35.6, -12.1), (0.9, 1.4 + (k % 2) * 0.5, 0.9), 'hueso')   # colmillos de abajo
+    hueso('mouth', 'jaw', (0, 33, -12))                                   # donde queda la presa (localizador)
+    hueso('ear_l', 'head', (6.5, 47, -2))
+    cubo('ear_l', (4, 45.5, -3), (5, 5, 2), 'oreja')
+    hueso('ear_r', 'head', (-6.5, 47, -2), (0, 0, 25))                    # la descosida: chueca y con relleno
+    cubo('ear_r', (-9, 45.5, -3), (5, 4, 2), 'oreja')
+    cubo('ear_r', (-8, 44.6, -2.6), (3, 1.4, 1.2), 'relleno')
+    # el moño rojo con el cascabel
+    hueso('collar', 'body', (0, 33, -6))
+    cubo('collar', (-1.5, 31.5, -8), (3, 3, 2), 'cinta')
+    cubo('collar', (-6, 31.8, -7.5), (4.5, 3.4, 1), 'cinta')
+    cubo('collar', (1.5, 31.8, -7.5), (4.5, 3.4, 1), 'cinta')
+    cubo('collar', (-2.5, 28.5, -7.4), (1.5, 3.2, 0.6), 'cinta', giro=(0, 0, -15), pivote=(-1.75, 31.5, -7.1))
+    cubo('collar', (1, 28.5, -7.4), (1.5, 3.2, 0.6), 'cinta', giro=(0, 0, 15), pivote=(1.75, 31.5, -7.1))
+    hueso('bell', 'collar', (0, 31.5, -8.5))
+    cubo('bell', (-1.5, 28.6, -10), (3, 3, 3), 'cascabel')
+    # los brazos: largos, con garras de hueso que salen por las costuras de las manos
     for lado, x in (('l', 1), ('r', -1)):
-        xi = 5 if x > 0 else -11
-        hueso('front_' + lado, 'body', (8 * x, 18, -10))
-        cubo('front_' + lado, (xi, 8, -13), (6, 11, 6), 'pata')
-        hueso('front_' + lado + '_low', 'front_' + lado, (8 * x, 9, -10))
-        cubo('front_' + lado + '_low', (xi + 0.5, 1.5, -12.5), (5, 8, 5), 'pata')
-        cubo('front_' + lado + '_low', (xi, 0, -14.5), (6, 3, 7), 'garra')
+        xa = 9.5 if x > 0 else -14.5
+        hueso('arm_' + lado, 'body', (12 * x, 32, -0.5))
+        cubo('arm_' + lado, (xa, 20, -3.5), (5, 13, 6), 'pelo')
+        if lado == 'r':
+            cubo('arm_' + lado, (xa - 0.3, 27, -3.8), (5.6, 1, 6.6), 'costura_x')   # el hombro cosido
+            cubo('arm_' + lado, (xa - 0.8, 28, -2), (1.2, 2.5, 3), 'relleno')
+        hueso('arm_' + lado + '_low', 'arm_' + lado, (12 * x, 21, -0.5))
+        cubo('arm_' + lado + '_low', (xa + 0.25, 9, -3.25), (4.5, 12, 5.5), 'pelo')
+        cubo('arm_' + lado + '_low', (xa - 0.5, 4.5, -4), (6, 5, 7), 'pelo')     # la mano (zarpa)
+        cubo('arm_' + lado + '_low', (xa - 0.6, 4.5, -4.3), (6.2, 3, 0.6), 'pelo_claro')
         for k in range(3):
-            cubo('front_' + lado + '_low', (xi + 0.6 + 1.9 * k, 0, -15.6), (1, 1.4, 1.3), 'una')
-        hueso('back_' + lado, 'body', (8 * x, 19, 14))
-        cubo('back_' + lado, (xi - 0.5, 8, 9), (7, 13, 9), 'pierna' if lado == 'l' else 'remiendo')
-        hueso('back_' + lado + '_low', 'back_' + lado, (8 * x, 9, 15))
-        cubo('back_' + lado + '_low', (xi + 0.5, 1.5, 13), (5, 8, 5), 'pata')
-        cubo('back_' + lado + '_low', (xi, 0, 11.5), (6, 3, 7), 'garra')
+            cubo('arm_' + lado + '_low', (xa + 0.3 + 1.9 * k, 1, -4.4), (1, 4, 1.3), 'hueso',
+                 giro=(-20, 0, 0), pivote=(xa + 0.8 + 1.9 * k, 5, -3.75))
+        # las piernas: cortas y gordas, con la planta clarita y garras
+        xl = 1.5 if x > 0 else -8.5
+        hueso('leg_' + lado, 'root', (5 * x, 13, 0))
+        cubo('leg_' + lado, (xl, 3, -3.5), (7, 11, 7), 'pelo' if lado == 'r' else 'parche_pierna')
+        cubo('leg_' + lado, (xl - 0.5, 0, -6), (8, 4, 10), 'pelo')
+        cubo('leg_' + lado, (xl + 0.5, 0.5, -6.3), (6, 3, 0.4), 'pelo_claro')
         for k in range(3):
-            cubo('back_' + lado + '_low', (xi + 0.6 + 1.9 * k, 0, 10.4), (1, 1.4, 1.3), 'una')
-    # la cola en tres pedazos: cae y se curva hacia arriba al final
-    hueso('tail1', 'body', (0, 25, 19), (-30, 0, 0))
-    cubo('tail1', (-2, 23, 19), (4, 4, 10), 'cola')
-    hueso('tail2', 'tail1', (0, 25, 29), (14, 0, 0))
-    cubo('tail2', (-1.5, 23.5, 29), (3, 3, 10), 'cola')
-    hueso('tail3', 'tail2', (0, 25, 39), (22, 0, 0))
-    cubo('tail3', (-1.2, 23.8, 39), (2.4, 2.4, 8), 'cola')
-    cubo('tail3', (-1.8, 23.2, 46), (3.6, 3.6, 4), 'mechon')
+            cubo('leg_' + lado, (xl + 0.5 + 2.2 * k, 0, -8), (1, 1.4, 2.2), 'hueso')
 
 
 # ---------------------------------------------------------------- texturas
@@ -147,94 +160,144 @@ def porcelana(w, h, s):
     return rgb
 
 
+def peluche(w, h, s, base='#7c5232', oscuro=0.0):
+    """Pelo de peluche viejo: pelusa fina, mugre y partes gastadas (calvas) más claras."""
+    n = ruido(w, h, 2, s) * 0.45 + R.rand(h, w) * 0.4 + ruido(w, h, 5, s + 3) * 0.15
+    rgb = hexc(base) * (0.74 + 0.36 * n)[..., None]
+    mugre = ruido(w, h, 4, s + 9) > 0.7
+    rgb = np.where(mugre[..., None], rgb * 0.7 + hexc('#3a2a1c') * 0.3, rgb)
+    gastado = ruido(w, h, 3, s + 17) > 0.8
+    rgb = np.where(gastado[..., None], rgb * 0.8 + hexc('#b89a76') * 0.2, rgb)
+    return rgb * (1 - oscuro)
+
+
+def cuadros(w, h, s):
+    """Tela de cuadros (roja y azul marino), para los parches."""
+    y, x = np.mgrid[0:h, 0:w]
+    rgb = np.broadcast_to(hexc('#7a1820'), (h, w, 3)).copy()
+    rgb[(x % 4) < 1] = hexc('#1c2240')
+    rgb[(y % 4) < 1] = hexc('#1c2240')
+    rgb[((x % 4) < 1) & ((y % 4) < 1)] = hexc('#0e1020')
+    return rgb * (0.82 + 0.25 * R.rand(h, w))[..., None]
+
+
+def puntadas(rgb, horizontal=True, color='#2a1a12'):
+    """Puntadas en cruz por el borde (de arriba si horizontal, de la izquierda si no)."""
+    h, w = rgb.shape[:2]
+    c = hexc(color)
+    if horizontal:
+        for xx in range(0, w, 2):
+            rgb[0 if xx % 4 == 0 else min(1, h - 1), xx] = c
+    else:
+        for yy in range(0, h, 2):
+            rgb[yy, 0 if yy % 4 == 0 else min(1, w - 1)] = c
+
+
 def pintar_cara(img, x, y, w, h, mat, cara, s):
     """Pinta una cara del cubo (x, y = esquina en la textura; w, h = tamaño en texeles)."""
     if w <= 0 or h <= 0:
         return
-    if mat in ('piel', 'pecho', 'cabeza', 'pata', 'pierna', 'cola'):
-        claro = '#c9ae86' if mat in ('pecho',) and cara in ('north', 'down') else None
-        rgb = pelaje(w, h, s, claro=claro, rayas=mat != 'pata' or cara != 'down')
-        if mat == 'pata':
-            rgb = pelaje(w, h, s, base='#8c6230', rayas=True)
-    elif mat == 'panza':
-        rgb = pelaje(w, h, s, base='#c2a77e', rayas=False)
-    elif mat == 'remiendo':
-        # una pierna de otro animal: gris oscuro con manchas, cosida al cuerpo
-        rgb = pelaje(w, h, s, base='#5b5650', raya='#2c2a28', rayas=False)
-        manch = ruido(w, h, 3, s + 3) > 0.62
-        rgb = np.where(manch[..., None], hexc('#2c2a28'), rgb)
-    elif mat == 'mechon':
-        rgb = pelaje(w, h, s, base='#2a1d14', rayas=False)
-    elif mat == 'costura':
-        rgb = np.broadcast_to(hexc('#6a4a2a'), (h, w, 3)).copy()
-    elif mat == 'cuero':
-        rgb = hexc('#6a1418') * (0.8 + 0.3 * ruido(w, h, 2, s))[..., None]
+    a = np.full((h, w), 255, np.uint8)
+    if mat == 'pelo':
+        rgb = peluche(w, h, s, oscuro=0.12 if cara == 'down' else 0.0)
+    elif mat == 'parche_pierna':
+        rgb = peluche(w, h, s)
+        if cara == 'north' and w >= 5 and h >= 6:
+            px, py, pw, ph = 1, 2, w - 2, h - 5
+            rgb[py:py + ph, px:px + pw] = cuadros(pw, ph, s)
+            for xx in range(px, px + pw, 2):
+                rgb[py, xx] = hexc('#e2d6b8')
+                rgb[py + ph - 1, xx] = hexc('#e2d6b8')
+    elif mat == 'pelo_claro':
+        rgb = peluche(w, h, s, base='#cfab7e')
+    elif mat in ('hocico', 'quijada'):
+        rgb = peluche(w, h, s, base='#c9a174')
+        if (mat == 'hocico' and cara == 'down') or (mat == 'quijada' and cara == 'up'):
+            rgb = hexc('#4a0a12') * (0.7 + 0.5 * ruido(w, h, 1, s))[..., None]   # la boca por dentro
+        elif cara in ('north', 'east', 'west'):
+            # la boca cosida: una raya de puntadas donde se abre
+            fila = h - 1 if mat == 'hocico' else 0
+            rgb[fila, :] = hexc('#2a1410')
+            for xx in range(0, w, 2):
+                rgb[max(0, min(h - 1, fila + (-1 if mat == 'hocico' else 1))), xx] = hexc('#2a1410')
+    elif mat == 'oreja':
+        rgb = peluche(w, h, s)
+        if cara == 'north' and w > 2 and h > 2:
+            rgb[1:h - 1, 1:w - 1] = peluche(w - 2, h - 2, s + 1, base='#c9a174')
+    elif mat == 'relleno':
+        n = ruido(w, h, 1, s) * 0.6 + R.rand(h, w) * 0.4
+        rgb = hexc('#ece5d2') * (0.82 + 0.2 * n)[..., None]
+        a[(R.rand(h, w) < 0.12)] = 0          # borde de pelusa
+    elif mat == 'parche':
+        rgb = cuadros(w, h, s)
+        puntadas(rgb, True, '#e2d6b8')
+    elif mat in ('costura', 'costura_x'):
+        rgb = peluche(w, h, s, base='#6a4428')
+        c = hexc('#2a1a12')
+        if mat == 'costura':
+            rgb[:, :] = rgb * 0.6
+            for yy in range(0, h, 2):
+                rgb[yy, :] = c
+        else:
+            for xx in range(0, w, 2):
+                rgb[:, xx] = np.where((np.arange(h) % 2 == xx % 4 // 2)[:, None], c, rgb[:, xx])
+    elif mat == 'boton':
+        rgb = np.broadcast_to(hexc('#1c1616'), (h, w, 3)).copy()
+        if cara == 'north' and w >= 3 and h >= 3:
+            rgb[0, :] = rgb[-1, :] = rgb[:, 0] = rgb[:, -1] = hexc('#3a3232')     # el borde
+            rgb[h // 2 - 1:h // 2 + 1, w // 2 - 1:w // 2 + 1] = hexc('#4a4040') # los agujeros
+            rgb[h // 2 - 1, w // 2 - 1] = rgb[h // 2, w // 2] = hexc('#0a0808')
+    elif mat == 'cuenca':
+        rgb = np.broadcast_to(hexc('#0c0606'), (h, w, 3)).copy()
+        if cara == 'north':
+            rgb[0, :] = rgb[:, 0] = hexc('#ece5d2')   # el relleno a la orilla del hueco
+    elif mat == 'hilo':
+        rgb = np.broadcast_to(hexc('#d8ccb0'), (h, w, 3)).copy()
+    elif mat == 'cinta':
+        n = ruido(w, h, 2, s)
+        rgb = hexc('#a8141e') * (0.7 + 0.45 * n)[..., None]
+        if h > 2:
+            rgb[h // 3, :] = rgb[h // 3, :] * 1.25       # brillo del listón
     elif mat == 'cascabel':
         rgb = hexc('#c9a240') * (0.75 + 0.4 * ruido(w, h, 2, s))[..., None]
+        if cara in ('north', 'south', 'east', 'west'):
+            rgb[int(h * 0.5):int(h * 0.62), :] = hexc('#2a1e0a')
+            rgb[int(h * 0.62):, int(w * 0.4):int(w * 0.6) + 1] = hexc('#2a1e0a')
     elif mat in ('laton', 'llave'):
         rgb = hexc('#b08a3a') * (0.75 + 0.35 * ruido(w, h, 2, s))[..., None]
-    elif mat == 'mascara':
-        rgb = porcelana(w, h, s)
-    elif mat in ('hocico', 'quijada'):
-        rgb = pelaje(w, h, s, base='#b28a5a', rayas=False)
-        if (mat == 'hocico' and cara == 'down') or (mat == 'quijada' and cara == 'up'):
-            rgb = np.broadcast_to(hexc('#3a0c0c'), (h, w, 3)).copy()
-    elif mat in ('diente', 'una'):
-        rgb = np.broadcast_to(hexc('#e6dcc2'), (h, w, 3)).copy()
+    elif mat == 'hueso':
+        n = ruido(w, h, 2, s) * 0.6 + R.rand(h, w) * 0.4
+        rgb = hexc('#ddd2b6') * (0.8 + 0.25 * n)[..., None]
+        if cara in ('east', 'west', 'north', 'south') and h > 2:
+            k = np.linspace(0, 1, h)[:, None]
+            rgb = rgb * (1 - 0.2 * k[..., None])
     elif mat == 'nariz':
-        rgb = np.broadcast_to(hexc('#1a1210'), (h, w, 3)).copy()
-    elif mat == 'ojo':
-        rgb = np.broadcast_to(hexc('#ffb020'), (h, w, 3)).copy()
-    elif mat in ('oreja', 'oreja_rota'):
-        rgb = pelaje(w, h, s, rayas=False)
+        rgb = hexc('#1e1410') * (0.8 + 0.3 * R.rand(h, w))[..., None]
         if cara == 'north':
-            rgb = hexc('#7a4e40') * (0.85 + 0.2 * ruido(w, h, 2, s))[..., None]
-    elif mat == 'garra':
-        rgb = pelaje(w, h, s, base='#7a5428', rayas=False)
+            for xx in range(0, w, 2):
+                rgb[:, xx] = hexc('#3a2a22')
+    elif mat == 'ojo':
+        rgb = np.broadcast_to(hexc('#ff2a18'), (h, w, 3)).copy()
+        if w >= 2 and h >= 2:
+            rgb[:, w // 2] = hexc('#ffd24a')
+    elif mat == 'ojo_chico':
+        rgb = np.broadcast_to(hexc('#ff3a20'), (h, w, 3)).copy()
     else:
         rgb = np.broadcast_to(hexc('#ff00ff'), (h, w, 3)).copy()
-    a = np.full((h, w), 255, np.uint8)
-    # detalles por material y cara
-    if mat == 'mascara' and cara == 'north':
-        # dos huecos negros para los ojos, una grieta y una lágrima pintada
-        for ex in (int(w * 0.14), int(w * 0.62)):
-            rgb[int(h * 0.34):int(h * 0.62), ex:ex + max(2, int(w * 0.24))] = hexc('#120c0a')
-        yy = int(h * 0.05)
-        xx = int(w * 0.68)
-        for i in range(int(h * 0.9)):
-            xx += R.randint(-1, 2)
-            if 0 <= xx < w and yy + i < h:
-                rgb[yy + i, xx] = rgb[yy + i, xx] * 0.45
-        rgb[int(h * 0.62):int(h * 0.9), int(w * 0.2)] = hexc('#3a2a5a')
-        rgb[int(h * 0.75):int(h * 0.8), int(w * 0.4):int(w * 0.6)] = hexc('#7a2a2a')   # boca pintada
+    # el mango de la llave: dos aros (con hueco)
     if mat == 'llave' and cara in ('north', 'south'):
-        # el mango de la llave: dos aros (con hueco)
         yy, xx = np.mgrid[0:h, 0:w]
         for cx in (w * 0.27, w * 0.73):
             d = np.hypot((xx + 0.5 - cx) / (w * 0.22), (yy + 0.5 - h * 0.5) / (h * 0.42))
             a[d < 0.55] = 0
         a[:, int(w * 0.46):int(w * 0.54)] = 255
-    if mat == 'cascabel' and cara in ('north', 'south', 'east', 'west'):
-        rgb[int(h * 0.55):int(h * 0.65), :] = hexc('#2a1e0a')
-        rgb[int(h * 0.65):, int(w * 0.45):int(w * 0.55)] = hexc('#2a1e0a')
-    if mat == 'cuero' and cara in ('north', 'south', 'east', 'west'):
-        for x0 in range(1, w, 4):
-            rgb[max(0, h // 2 - 1):h // 2 + 1, x0:x0 + 2] = hexc('#d8b04a')
-    if mat in ('piel', 'pecho', 'cabeza', 'pierna', 'remiendo') and cara in ('east', 'west', 'up'):
-        # costuras de hilo dorado (puntadas en cruz) donde se cosieron los pedazos
-        rs = np.random.RandomState(s + 99)
-        for _ in range(1 if w * h < 300 else 2):
-            vertical = rs.rand() < 0.5
-            pos = rs.randint(2, (w if vertical else h) - 2) if (w if vertical else h) > 4 else 1
-            largo = w if not vertical else h
-            for i in range(0, largo - 1, 3):
-                for d in (0, 1):
-                    if vertical:
-                        yy, xx = i + d, pos + (d if i % 6 == 0 else -d)
-                    else:
-                        yy, xx = pos + (d if i % 6 == 0 else -d), i + d
-                    if 0 <= yy < h and 0 <= xx < w:
-                        rgb[yy, xx] = hexc('#e2cc8a')
+    # una costura en un costado del pelo (donde se cosieron los pedazos): raya oscura con puntadas
+    if mat in ('pelo', 'parche_pierna') and cara in ('east', 'west') and w >= 5 and h >= 8 and s % 3 == 0:
+        xx = w // 2
+        rgb[1:h - 1, xx] = rgb[1:h - 1, xx] * 0.55
+        for yy in range(2, h - 2, 3):
+            rgb[yy, max(0, xx - 1)] = hexc('#2a1a12')
+            rgb[yy, min(w - 1, xx + 1)] = hexc('#2a1a12')
     out = np.dstack([np.clip(rgb, 0, 255).astype(np.uint8), a])
     img.paste(Image.fromarray(out, 'RGBA'), (x, y))
 
@@ -310,112 +373,104 @@ def geo():
 def anims():
     T = 'q.anim_time'
     a = {}
-    # quieta: respira, mira alrededor, mueve la cola, parpadea una oreja; la llave de cuerda gira sola
+    AF = 6  # los brazos cuelgan un poco hacia afuera
+    # quieto: respira, la cabeza se ladea despacio (y de pronto da un tirón), los brazos cuelgan y se mecen, la llave gira sola
     a['animation.cascabel.idle'] = {'loop': True, 'animation_length': 4.0, 'bones': {
-        'body': {'position': [0, f'math.sin({T}*90)*0.35', 0]},
-        'neck': {'rotation': [f'math.sin({T}*90)*2', 0, 0]},
-        'head': {'rotation': [f'math.sin({T}*45)*3', f'math.sin({T}*30)*12', f'math.sin({T}*22)*3']},
-        'jaw': {'rotation': [f'math.max(0, math.sin({T}*90 - 60))*5', 0, 0]},
-        'tail1': {'rotation': [0, f'math.sin({T}*120)*14', 0]},
-        'tail2': {'rotation': [f'math.sin({T}*60)*6', f'math.sin({T}*120 - 40)*16', 0]},
-        'tail3': {'rotation': [0, f'math.sin({T}*120 - 80)*20', 0]},
-        'key': {'rotation': [0, f'{T}*90', 0]},
-        'ear_l': {'rotation': [0, 0, {'0.0': [0], '2.6': [0], '2.75': [-18], '2.9': [0]}]},
-        'bell': {'rotation': [f'math.sin({T}*90)*4', 0, 0]},
+        'body': {'position': [0, f'math.sin({T}*90)*0.3', 0], 'rotation': [f'math.sin({T}*90)*1.5', 0, 0]},
+        'head': {'rotation': [f'math.sin({T}*45)*3', f'math.sin({T}*30)*10',
+                              f'({T} > 2.6 && {T} < 3.5) ? -13 : math.sin({T}*45)*7']},   # se ladea y de pronto da un tirón
+        'jaw': {'rotation': [f'math.max(0, math.sin({T}*90 - 60))*4', 0, 0]},
+        'arm_l': {'rotation': [f'math.sin({T}*90)*3', 0, f'{AF} + math.sin({T}*90)*1.5']},
+        'arm_r': {'rotation': [f'math.sin({T}*90 + 40)*3', 0, f'-{AF} - math.sin({T}*90)*1.5']},
+        'arm_l_low': {'rotation': [-6, 0, 0]}, 'arm_r_low': {'rotation': [-6, 0, 0]},
+        'ear_r': {'rotation': [0, 0, f'({T} > 2.9 && {T} < 3.3) ? 16 : 0']},
+        'bell': {'rotation': [f'math.sin({T}*90)*5', 0, 0]},
+        'key': {'rotation': [0, 0, f'{T}*90']},
     }}
-    # camina: las patas en cruz, el lomo sube y baja, la cabeza baja, el cascabel suena
+    # camina: se bambolea de lado a lado como un peluche pesado, los brazos se mecen al revés de las piernas
     w = 300
     a['animation.cascabel.walk'] = {'loop': True, 'animation_length': 1.2, 'bones': {
-        'body': {'position': [0, f'math.abs(math.sin({T}*{w}))*1.0', 0], 'rotation': [0, 0, f'math.sin({T}*{w})*2.5']},
-        'neck': {'rotation': [f'6 + math.sin({T}*{w*2})*2.5', 0, 0]},
-        'head': {'rotation': [f'-4 + math.sin({T}*{w*2} + 60)*3', f'math.sin({T}*{w})*4', 0]},
-        'front_l': {'rotation': [f'math.sin({T}*{w})*26', 0, 0]},
-        'front_r': {'rotation': [f'-math.sin({T}*{w})*26', 0, 0]},
-        'front_l_low': {'rotation': [f'math.max(0, -math.sin({T}*{w} + 70))*-32', 0, 0]},
-        'front_r_low': {'rotation': [f'math.max(0, math.sin({T}*{w} + 70))*-32', 0, 0]},
-        'back_l': {'rotation': [f'-math.sin({T}*{w})*24', 0, 0]},
-        'back_r': {'rotation': [f'math.sin({T}*{w})*24', 0, 0]},
-        'back_l_low': {'rotation': [f'math.max(0, math.sin({T}*{w} + 70))*30', 0, 0]},
-        'back_r_low': {'rotation': [f'math.max(0, -math.sin({T}*{w} + 70))*30', 0, 0]},
-        'tail1': {'rotation': [0, f'math.sin({T}*{w})*16', 0]},
-        'tail2': {'rotation': [0, f'math.sin({T}*{w} - 50)*20', 0]},
-        'tail3': {'rotation': [0, f'math.sin({T}*{w} - 100)*24', 0]},
-        'key': {'rotation': [0, f'{T}*180', 0]},
-        'bell': {'rotation': [f'math.sin({T}*{w*2})*24', 0, f'math.sin({T}*{w})*10']},
-    }, 'sound_effects': {'0.0': {'effect': 'coleccionista:cascabel'}, '0.6': {'effect': 'coleccionista:cascabel'}}}
-    # corre: galope (las de adelante juntas y las de atrás juntas), el lomo se mece
+        'body': {'position': [0, f'math.abs(math.sin({T}*{w}))*0.8', 0],
+                 'rotation': [0, f'math.sin({T}*{w})*5', f'math.sin({T}*{w})*5']},
+        'head': {'rotation': [f'math.sin({T}*{w*2})*3', 0, f'-math.sin({T}*{w})*5']},
+        'leg_l': {'rotation': [f'math.sin({T}*{w})*28', 0, 0]},
+        'leg_r': {'rotation': [f'-math.sin({T}*{w})*28', 0, 0]},
+        'arm_l': {'rotation': [f'-math.sin({T}*{w})*22', 0, AF]},
+        'arm_r': {'rotation': [f'math.sin({T}*{w})*22', 0, -AF]},
+        'arm_l_low': {'rotation': [f'-10 - math.max(0, math.sin({T}*{w}))*14', 0, 0]},
+        'arm_r_low': {'rotation': [f'-10 - math.max(0, -math.sin({T}*{w}))*14', 0, 0]},
+        'bell': {'rotation': [f'math.sin({T}*{w*2})*26', 0, f'math.sin({T}*{w})*12']},
+        'ear_r': {'rotation': [0, 0, f'math.sin({T}*{w*2})*8']},
+        'key': {'rotation': [0, 0, f'{T}*180']},
+    }}
+    # corre: se va de frente, con los brazos estirados hacia adelante y la boca abierta
     r = 600
     a['animation.cascabel.run'] = {'loop': True, 'animation_length': 0.6, 'bones': {
-        'body': {'position': [0, f'math.abs(math.sin({T}*{r}))*2.2', 0], 'rotation': [f'math.sin({T}*{r})*6', 0, 0]},
-        'neck': {'rotation': [f'10 + math.sin({T}*{r} + 90)*5', 0, 0]},
-        'head': {'rotation': [f'-8 + math.sin({T}*{r} + 140)*5', 0, 0]},
-        'front_l': {'rotation': [f'math.sin({T}*{r})*48', 0, 0]},
-        'front_r': {'rotation': [f'math.sin({T}*{r} + 25)*48', 0, 0]},
-        'front_l_low': {'rotation': [f'math.max(0, -math.sin({T}*{r} + 80))*-50', 0, 0]},
-        'front_r_low': {'rotation': [f'math.max(0, -math.sin({T}*{r} + 105))*-50', 0, 0]},
-        'back_l': {'rotation': [f'math.sin({T}*{r} + 180)*44', 0, 0]},
-        'back_r': {'rotation': [f'math.sin({T}*{r} + 205)*44', 0, 0]},
-        'back_l_low': {'rotation': [f'math.max(0, math.sin({T}*{r} + 260))*46', 0, 0]},
-        'back_r_low': {'rotation': [f'math.max(0, math.sin({T}*{r} + 285))*46', 0, 0]},
-        'tail1': {'rotation': [-20, f'math.sin({T}*{r})*8', 0]},
-        'tail2': {'rotation': [10, f'math.sin({T}*{r} - 50)*10', 0]},
-        'key': {'rotation': [0, f'{T}*360', 0]},
+        'body': {'position': [0, f'math.abs(math.sin({T}*{r}))*1.4', 0], 'rotation': [14, 0, f'math.sin({T}*{r})*4']},
+        'head': {'rotation': [-14, 0, f'-math.sin({T}*{r})*4']},
+        'jaw': {'rotation': [f'16 + math.sin({T}*{r*2})*6', 0, 0]},
+        'leg_l': {'rotation': [f'math.sin({T}*{r})*46', 0, 0]},
+        'leg_r': {'rotation': [f'-math.sin({T}*{r})*46', 0, 0]},
+        'arm_l': {'rotation': [f'-70 + math.sin({T}*{r})*22', 0, 10]},
+        'arm_r': {'rotation': [f'-70 - math.sin({T}*{r})*22', 0, -10]},
+        'arm_l_low': {'rotation': [-20, 0, 0]}, 'arm_r_low': {'rotation': [-20, 0, 0]},
         'bell': {'rotation': [f'math.sin({T}*{r*2})*38', 0, f'math.sin({T}*{r})*16']},
-        'ear_l': {'rotation': [-25, 0, 0]}, 'ear_r': {'rotation': [-25, 0, 0]},
-    }, 'sound_effects': {'0.0': {'effect': 'coleccionista:cascabel'}, '0.3': {'effect': 'coleccionista:cascabel'}}}
-    # olfatea: la cabeza baja al piso y huele en golpecitos, de un lado a otro
+        'ear_l': {'rotation': [-20, 0, 0]}, 'ear_r': {'rotation': [-20, 0, 0]},
+        'key': {'rotation': [0, 0, f'{T}*360']},
+    }}
+    # olfatea: se agacha, la cabeza baja y huele a golpecitos de un lado a otro
     a['animation.cascabel.olfatear'] = {'loop': False, 'animation_length': 2.4, 'bones': {
-        'neck': {'rotation': {'0.0': [0, 0, 0], '0.35': {'vector': [32, 0, 0], 'easing': 'easeOutQuad'},
-                              '2.0': {'vector': [32, 0, 0]}, '2.4': {'vector': [0, 0, 0], 'easing': 'easeInOutSine'}}},
-        'head': {'rotation': {'0.0': [0, 0, 0], '0.35': [18, 0, 0],
-                              '0.6': [22, -14, 0], '0.75': [18, -12, 0], '0.9': [22, -10, 0],
-                              '1.2': [20, 12, 0], '1.35': [24, 14, 0], '1.5': [20, 10, 0],
-                              '1.8': [22, 0, 0], '2.0': [18, 0, 0], '2.4': [0, 0, 0]}},
-        'jaw': {'rotation': [f'math.max(0, math.sin({T}*1400))*4', 0, 0]},
-        'ear_l': {'rotation': [-15, 0, 0]}, 'ear_r': {'rotation': [-15, 0, 0]},
-        'tail1': {'rotation': [-10, f'math.sin({T}*400)*20', 0]},
-        'body': {'position': [0, -1.2, 0]},
-    }, 'sound_effects': {'0.5': {'effect': 'coleccionista:olfatea'}, '1.2': {'effect': 'coleccionista:olfatea'}}}
-    # ruge: se para en las patas de atrás, abre el hocico, tiembla, y vuelve
+        'body': {'rotation': {'0.0': [0, 0, 0], '0.35': {'vector': [24, 0, 0], 'easing': 'easeOutQuad'}, '2.0': [24, 0, 0],
+                              '2.4': {'vector': [0, 0, 0], 'easing': 'easeInOutSine'}},
+                 'position': {'0.0': [0, 0, 0], '0.35': [0, -1.5, 0], '2.0': [0, -1.5, 0], '2.4': [0, 0, 0]}},
+        'head': {'rotation': {'0.0': [0, 0, 0], '0.35': [16, 0, 0], '0.6': [20, -18, 0], '0.75': [16, -16, 6], '0.9': [20, -14, 0],
+                              '1.2': [18, 16, 0], '1.35': [22, 18, -6], '1.5': [18, 14, 0], '1.8': [20, 0, 0], '2.0': [16, 0, 0],
+                              '2.4': [0, 0, 0]}},
+        'jaw': {'rotation': [f'math.max(0, math.sin({T}*1400))*5', 0, 0]},
+        'arm_l': {'rotation': {'0.0': [0, 0, AF], '0.35': [-22, 0, 4], '2.0': [-22, 0, 4], '2.4': [0, 0, AF]}},
+        'arm_r': {'rotation': {'0.0': [0, 0, -AF], '0.35': [-22, 0, -4], '2.0': [-22, 0, -4], '2.4': [0, 0, -AF]}},
+        'ear_l': {'rotation': [-12, 0, 0]},
+    }}
+    # ruge: se echa para atrás, levanta los brazos con las garras abiertas, abre la boca de golpe y sacude la cabeza
     a['animation.cascabel.rugir'] = {'loop': False, 'animation_length': 2.2, 'bones': {
         'body': {'rotation': {'0.0': [0, 0, 0], '0.4': {'vector': [-14, 0, 0], 'easing': 'easeOutBack'}, '1.6': [-12, 0, 0],
-                              '2.2': {'vector': [0, 0, 0], 'easing': 'easeInOutSine'}},
-                 'position': {'0.0': [0, 0, 0], '0.4': [0, 2, 2], '1.6': [0, 2, 2], '2.2': [0, 0, 0]}},
-        'neck': {'rotation': {'0.0': [0, 0, 0], '0.4': [-28, 0, 0], '0.7': [-10, 0, 0], '1.6': [-8, 0, 0], '2.2': [0, 0, 0]}},
-        'head': {'rotation': {'0.0': [0, 0, 0], '0.4': [-20, 0, 0], '0.7': [6, 0, 0], '1.6': [4, 0, 0], '2.2': [0, 0, 0]},
-                 'position': [f'math.sin({T}*2400)*(({T} > 0.6 && {T} < 1.6) ? 0.4 : 0)', 0, 0]},
-        'jaw': {'rotation': {'0.0': [0, 0, 0], '0.45': {'vector': [48, 0, 0], 'easing': 'easeOutQuad'}, '1.55': [44, 0, 0],
+                              '2.2': {'vector': [0, 0, 0], 'easing': 'easeInOutSine'}}},
+        'head': {'rotation': {'0.0': [0, 0, 0], '0.4': [-22, 0, 0], '0.7': [6, 0, 0], '1.6': [4, 0, 0], '2.2': [0, 0, 0]},
+                 'position': [f'math.sin({T}*2400)*(({T} > 0.6 && {T} < 1.6) ? 0.35 : 0)', 0, 0]},
+        'jaw': {'rotation': {'0.0': [0, 0, 0], '0.45': {'vector': [55, 0, 0], 'easing': 'easeOutQuad'}, '1.55': [50, 0, 0],
                              '1.9': {'vector': [0, 0, 0], 'easing': 'easeInQuad'}}},
-        'front_l': {'rotation': {'0.0': [0, 0, 0], '0.4': [-30, 0, 0], '1.6': [-26, 0, 0], '2.2': [0, 0, 0]}},
-        'front_r': {'rotation': {'0.0': [0, 0, 0], '0.4': [-22, 0, 0], '1.6': [-20, 0, 0], '2.2': [0, 0, 0]}},
-        'ear_l': {'rotation': [-35, 0, 0]}, 'ear_r': {'rotation': [-35, 0, 0]},
-        'tail1': {'rotation': [-30, f'math.sin({T}*900)*12', 0]},
+        'arm_l': {'rotation': {'0.0': [0, 0, AF], '0.4': {'vector': [-135, 0, 38], 'easing': 'easeOutBack'}, '1.6': [-128, 0, 34],
+                               '2.2': {'vector': [0, 0, AF], 'easing': 'easeInOutSine'}}},
+        'arm_r': {'rotation': {'0.0': [0, 0, -AF], '0.4': {'vector': [-135, 0, -38], 'easing': 'easeOutBack'}, '1.6': [-128, 0, -34],
+                               '2.2': {'vector': [0, 0, -AF], 'easing': 'easeInOutSine'}}},
+        'arm_l_low': {'rotation': {'0.0': [0, 0, 0], '0.4': [-35, 0, 0], '1.6': [-35, 0, 0], '2.2': [0, 0, 0]}},
+        'arm_r_low': {'rotation': {'0.0': [0, 0, 0], '0.4': [-35, 0, 0], '1.6': [-35, 0, 0], '2.2': [0, 0, 0]}},
+        'ear_l': {'rotation': [-30, 0, 0]}, 'ear_r': {'rotation': [-30, 0, 30]},
         'bell': {'rotation': [f'math.sin({T}*1800)*30', 0, 0]},
-        'eyes': {'scale': {'0.0': [1, 1, 1], '0.4': [1.3, 1.3, 1], '1.6': [1.3, 1.3, 1], '2.2': [1, 1, 1]}},
-    }, 'sound_effects': {'0.35': {'effect': 'coleccionista:rugido'}}}
-    # come: se lanza, abre, muerde y sacude la cabeza, levanta la cabeza para tragar y vuelve
+        'eyes': {'scale': {'0.0': [1, 1, 1], '0.4': [1.5, 1.5, 1], '1.6': [1.5, 1.5, 1], '2.2': [1, 1, 1]}},
+    }}
+    # come: se lanza, agarra con las dos garras, lo sube a la boca, muerde varias veces sacudiendo la cabeza y se lo traga
     a['animation.cascabel.comer'] = {'loop': False, 'animation_length': 2.6, 'bones': {
-        'body': {'position': {'0.0': [0, 0, 0], '0.3': {'vector': [0, -1, -6], 'easing': 'easeOutQuad'}, '1.4': [0, -1, -4],
-                              '2.6': {'vector': [0, 0, 0], 'easing': 'easeInOutSine'}},
-                 'rotation': {'0.0': [0, 0, 0], '0.3': [6, 0, 0], '1.4': [4, 0, 0], '1.8': [-8, 0, 0], '2.6': [0, 0, 0]}},
-        'neck': {'rotation': {'0.0': [0, 0, 0], '0.3': {'vector': [24, 0, 0], 'easing': 'easeOutQuad'},
-                              '0.55': [18, -14, 0], '0.75': [18, 14, 0], '0.95': [18, -12, 0], '1.15': [18, 12, 0],
-                              '1.4': [10, 0, 0], '1.8': {'vector': [-34, 0, 0], 'easing': 'easeOutQuad'}, '2.2': [-30, 0, 0],
-                              '2.6': {'vector': [0, 0, 0], 'easing': 'easeInOutSine'}}},
-        'head': {'rotation': {'0.0': [0, 0, 0], '0.3': [10, 0, 0], '0.55': [8, 0, -12], '0.75': [8, 0, 12], '0.95': [8, 0, -10],
-                              '1.15': [8, 0, 10], '1.4': [0, 0, 0], '1.8': [-24, 0, 0], '2.2': [-22, 0, 0], '2.6': [0, 0, 0]}},
-        'jaw': {'rotation': {'0.0': [0, 0, 0], '0.25': {'vector': [52, 0, 0], 'easing': 'easeOutQuad'},
-                             '0.4': {'vector': [2, 0, 0], 'easing': 'easeInQuad'}, '1.6': [4, 0, 0], '1.85': [22, 0, 0],
-                             '2.0': [0, 0, 0], '2.6': [0, 0, 0]}},
-        'neck_gulp': {},
-        'front_l': {'rotation': {'0.0': [0, 0, 0], '0.3': [-34, 0, 0], '0.5': [10, 0, 0], '2.6': [0, 0, 0]}},
-        'front_r': {'rotation': {'0.0': [0, 0, 0], '0.3': [-30, 0, 0], '0.5': [8, 0, 0], '2.6': [0, 0, 0]}},
+        'body': {'rotation': {'0.0': [0, 0, 0], '0.25': {'vector': [24, 0, 0], 'easing': 'easeOutQuad'}, '0.55': [6, 0, 0],
+                              '1.5': [6, 0, 0], '1.8': [-10, 0, 0], '2.6': {'vector': [0, 0, 0], 'easing': 'easeInOutSine'}},
+                 'scale': {'0.0': [1, 1, 1], '1.85': [1, 1, 1], '2.05': [1.08, 1.04, 1.12], '2.4': [1, 1, 1]}},
+        'arm_l': {'rotation': {'0.0': [0, 0, AF], '0.25': {'vector': [-88, 0, -6], 'easing': 'easeOutQuad'}, '0.55': [-98, 0, -16],
+                               '1.5': [-96, 0, -14], '2.0': [-30, 0, 0], '2.6': {'vector': [0, 0, AF], 'easing': 'easeInOutSine'}}},
+        'arm_r': {'rotation': {'0.0': [0, 0, -AF], '0.25': {'vector': [-88, 0, 6], 'easing': 'easeOutQuad'}, '0.55': [-98, 0, 16],
+                               '1.5': [-96, 0, 14], '2.0': [-30, 0, 0], '2.6': {'vector': [0, 0, -AF], 'easing': 'easeInOutSine'}}},
+        'arm_l_low': {'rotation': {'0.0': [0, 0, 0], '0.25': [-10, 0, 0], '0.55': [-55, 0, 0], '1.5': [-50, 0, 0], '2.0': [-10, 0, 0],
+                                   '2.6': [0, 0, 0]}},
+        'arm_r_low': {'rotation': {'0.0': [0, 0, 0], '0.25': [-10, 0, 0], '0.55': [-55, 0, 0], '1.5': [-50, 0, 0], '2.0': [-10, 0, 0],
+                                   '2.6': [0, 0, 0]}},
+        'head': {'rotation': {'0.0': [0, 0, 0], '0.3': [8, 0, 0], '0.55': [10, 0, -12], '0.75': [10, 0, 12], '0.95': [10, 0, -10],
+                              '1.15': [10, 0, 10], '1.4': [6, 0, 0], '1.8': [-26, 0, 0], '2.2': [-22, 0, 0], '2.6': [0, 0, 0]}},
+        'jaw': {'rotation': {'0.0': [0, 0, 0], '0.35': {'vector': [60, 0, 0], 'easing': 'easeOutQuad'}, '0.55': [4, 0, 0],
+                             '0.7': [42, 0, 0], '0.85': [4, 0, 0], '1.0': [40, 0, 0], '1.15': [4, 0, 0], '1.3': [34, 0, 0],
+                             '1.45': [0, 0, 0], '1.85': [22, 0, 0], '2.0': [0, 0, 0]}},
         'collar': {'scale': {'0.0': [1, 1, 1], '1.85': [1, 1, 1], '2.0': [1.15, 1.25, 1.1], '2.25': [1, 1, 1]}},
-        'tail1': {'rotation': [-15, f'math.sin({T}*700)*18', 0]},
         'bell': {'rotation': [f'math.sin({T}*1600)*30', 0, 0]},
-    }, 'sound_effects': {'0.2': {'effect': 'coleccionista:rugido_corto'}, '0.4': {'effect': 'coleccionista:mordida'},
-                         '1.9': {'effect': 'coleccionista:trago'}}}
-    del a['animation.cascabel.comer']['bones']['neck_gulp']
+        'eyes': {'scale': {'0.0': [1, 1, 1], '0.3': [1.4, 1.4, 1], '1.5': [1.4, 1.4, 1], '1.8': [1, 1, 1]}},
+    }}
     return {'format_version': '1.8.0', 'animations': a}
 
 
@@ -515,8 +570,8 @@ def main():
         vista(tex, os.path.join(out, 'cascabel_34.png'), 35, 15)
         vista(tex, os.path.join(out, 'cascabel_lado.png'), 90, 0)
         vista(tex, os.path.join(out, 'cascabel_frente.png'), 180 + 20, 10)
-        vista(tex, os.path.join(out, 'cascabel_ruge.png'), 60, 10, {'body': (-14, 0, 0), 'neck': (-28, 0, 0), 'head': (-20, 0, 0),
-                                                                    'jaw': (48, 0, 0), 'front_l': (-30, 0, 0), 'front_r': (-22, 0, 0)})
+        vista(tex, os.path.join(out, 'cascabel_ruge.png'), 60, 10, {'body': (-14, 0, 0), 'head': (-20, 0, 0), 'jaw': (55, 0, 0),
+                                                                    'arm_l': (-135, 0, -38), 'arm_r': (-135, 0, 38)})
         tex.resize((TW * 2, TH * 2), Image.NEAREST).save(os.path.join(out, 'cascabel_textura.png'))
 
 

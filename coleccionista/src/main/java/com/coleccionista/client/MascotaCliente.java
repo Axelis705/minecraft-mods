@@ -40,7 +40,7 @@ public final class MascotaCliente {
 
     public static void init() {
         FormasCliente.registrar(Mascota.FORMA, new FormaGeo(Ids.rl(MOD, "geo/cascabel.geo.json"), Ids.rl(MOD, "textures/entity/cascabel.png"),
-                Ids.rl(MOD, "animations/cascabel.animation.json")).escala(1.1F).rapidez(0.8F, 5.2F));
+                Ids.rl(MOD, "animations/cascabel.animation.json")).escala(1.0F).rapidez(0.8F, 5.2F));
         ClientData.listen(Mascota.KEY, t -> {
             d = t;
             camara();

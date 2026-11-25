@@ -57,7 +57,7 @@ public final class Pasaje {
             m.set(p, ANCHO - 1, 2, k, C + "sillon[facing=west,half=upper]");
         }
         for (int k = 2; k < LARGO; k += 4) {
-            m.set(p, 3, ALTO, k, "light[level=10]");
+            m.set(p, 3, ALTO, k, "light[level=13]");
         }
         m.set(p, 0, 4, 11, C + "camara[facing=east]");
         m.marca(p, id + ".centro", 3, 1, 6, 0);
