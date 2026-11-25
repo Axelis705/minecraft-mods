@@ -107,14 +107,14 @@ public final class CajaCliente {
                     }
                     // en la espalda (z = 2), arriba (y 1.5 a 7), un poco despegada; se ve desde atrás sin espejo
                     float z = (2F + l.inflado() + 0.35F) / 16F, x0 = -2.75F / 16F, x1 = 2.75F / 16F, y0 = 1.3F / 16F, y1 = 6.8F / 16F;
-                    VB vb = l.draw().glow(TARJETA[s]);
+                    // con su luz propia (pintura que brilla un poco): se lee en la góndola oscura y el negro de la pica se ve negro
+                    VB vb = l.draw().cutout(TARJETA[s]);
                     PoseStack.Pose p = st.last();
-                    int luz = 0xA000A0;
+                    int luz = 0xF000F0;
                     vb.v(p, x1, y0, z, 255, 255, 255, 255, 0, 0, OverlayTexture.NO_OVERLAY, luz, 0, 0, 1);
                     vb.v(p, x1, y1, z, 255, 255, 255, 255, 0, 1, OverlayTexture.NO_OVERLAY, luz, 0, 0, 1);
                     vb.v(p, x0, y1, z, 255, 255, 255, 255, 1, 1, OverlayTexture.NO_OVERLAY, luz, 0, 0, 1);
                     vb.v(p, x0, y0, z, 255, 255, 255, 255, 1, 0, OverlayTexture.NO_OVERLAY, luz, 0, 0, 1);
-                    // el reverso (por si alguien la ve de frente a través de algo): papel liso
                     st.popPose();
                 }));
         VestuarioCliente.registrar(Caja.MASCARA, Prenda.piel(Ids.rl(MOD, "textures/prenda/caja_mascara.png"))
