@@ -67,7 +67,7 @@ public final class Complejo {
     public static final int CIRCUITO_Z = 400;
 
     public static int circuitoX(int k) {
-        return 120 * (k - 1);
+        return 70 * (k - 1);
     }
 
     /** El plano del Ala de celdas (siempre el mismo: la semilla es fija). */
@@ -84,7 +84,7 @@ public final class Complejo {
             List<Zona> l = new ArrayList<>();
             l.add(new Zona("celdas", planoCeldas(), 0, 0, 0, 1));
             // capítulo 1: la sala grande (pegada al portón del patio, en x 54), los circuitos de los sentidos (uno por equipo, en fila al
-            // sur, a 120 bloques uno de otro para que no se vean ni se oigan) y la galería de la vitrina
+            // sur, a 70 bloques uno de otro: no se ven ni se oyen) y la galería de la vitrina
             l.add(new Zona("sala", com.coleccionista.mapa.SalaGrande.crear(SEMILLA), 55, 0, 0, 0));
             for (int k = 1; k <= com.coleccionista.mapa.Circuito.CIRCUITOS; k++) {
                 l.add(new Zona("circ_" + k, com.coleccionista.mapa.Circuito.crear(SEMILLA, k), circuitoX(k), 0, CIRCUITO_Z, 1));

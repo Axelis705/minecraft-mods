@@ -6,8 +6,8 @@ forceload add -112 64 -32 128
 forceload add 208 24 256 64
 forceload add -100 190 390 222
 forceload add 48 268 170 316
-forceload add 0 436 20 532
-forceload add 120 436 140 532
+forceload add 0 436 340 532
+forceload add 341 436 660 532
 forceload add -82 438 -46 472
 #pausa 3
 evento reiniciar confirmar
@@ -218,6 +218,7 @@ evento sentidos saltar
 #pausa 14
 #pausa 40
 #pausa 25
+#pausa 30
 evento capitulo1
 evento sentidos
 #pausa 2

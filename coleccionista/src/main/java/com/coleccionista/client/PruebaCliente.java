@@ -314,7 +314,7 @@ final class PruebaCliente {
             }
             t.cmd("evento sentidos bots si 25 26");
             t.cmd("evento sentidos tiempos 20 300");
-            t.cmd("forceload add 0 428 260 522");
+            t.cmd("forceload add 0 428 160 522");
             t.cmd("forceload add -82 428 -46 462");
             t.lookFrom(36.5, -60, 48.5, 24, -55.5, 48.5);
         });
@@ -354,7 +354,7 @@ final class PruebaCliente {
         t.add("en la mesa", 100, () -> t.check("ELEGIR".equals(SentidosCliente.fase()), "estamos eligiendo objetos (" + SentidosCliente.fase() + ")"));
         t.photo("56_mesa", 900, () -> {
             t.cmd("evento sentidos toma " + yo() + " 2");
-            t.lookFrom(249.5, -60, 436.5, 249.5, -59.5, 441);
+            t.lookFrom(149.5, -60, 436.5, 149.5, -59.5, 441);
         });
         // a los demás les toca lo que sobró y se abre la puerta (así el tiempo de los bots queda fijo)
         t.add("tomar esposas", 4000, () -> t.cmd("evento sentidos saltar"));
@@ -364,22 +364,22 @@ final class PruebaCliente {
         });
         t.photo("57_cadena_tercera", 1500, () -> {
             Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
-            t.lookFrom(249.5, -60, 443.5, 249.5, -59.5, 438);
+            t.lookFrom(149.5, -60, 443.5, 149.5, -59.5, 438);
         });
         t.add("primera", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
         t.add("mostrar", 600, () -> {
             t.cmd("gamemode spectator @a");
             t.cmd("evento sentidos mostrar");
         });
-        t.photo("58_postes", 1200, () -> t.lookFrom(249.5, -59, 446.5, 249.5, -59.5, 460));
-        t.photo("59_puente", 1200, () -> t.lookFrom(249.5, -58.5, 461, 249.5, -61, 470));
-        t.photo("60_baldosas", 1200, () -> t.lookFrom(249.5, -57.5, 476.2, 248.5, -61, 481));
-        t.photo("61_palancas", 1200, () -> t.lookFrom(247, -60, 487, 256, -59, 491));
+        t.photo("58_postes", 1200, () -> t.lookFrom(149.5, -59, 446.5, 149.5, -59.5, 460));
+        t.photo("59_puente", 1200, () -> t.lookFrom(149.5, -58.5, 461, 149.5, -61, 470));
+        t.photo("60_baldosas", 1200, () -> t.lookFrom(149.5, -57.5, 476.2, 148.5, -61, 481));
+        t.photo("61_palancas", 1200, () -> t.lookFrom(147, -60, 487, 156, -59, 491));
         t.add("a la salida", 2500, () -> {
             t.cmd("gamemode adventure @a");
             t.cmd("evento sentidos salida " + yo());
         });
-        t.photo("62_salida_sillas", 1200, () -> t.lookFrom(249.5, -60, 498.5, 249.5, -60, 503));
+        t.photo("62_salida_sillas", 1200, () -> t.lookFrom(149.5, -60, 498.5, 149.5, -60, 503));
         t.add("sentarme", 2500, () -> t.cmd("execute as " + yo() + " at @s run ride @s mount @e[type=coleccionista:silla,sort=nearest,limit=1]"));
         t.add("sentado", 100, () -> t.check(Minecraft.getInstance().player.getVehicle() instanceof com.coleccionista.evento.Silla,
                 "estoy sentado en la silla de la salida"));
