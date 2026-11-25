@@ -91,11 +91,15 @@ public final class ComandosCaja {
                         Caja.llegar(s);
                     }
                     Caja.roles(s);
-                    return si(c, Caja.fase() == Caja.Fase.ROLES);
+                    return si(c, Caja.fase() == Caja.Fase.ROLES || Caja.fase() == Caja.Fase.APAGON);
                 }))
                 .then(Commands.literal("encadenar").then(Commands.argument("si", BoolArgumentType.bool()).executes(c -> {
                     Caja.encadenar = BoolArgumentType.getBool(c, "si");
                     return ok(c, Component.literal("encadenar=" + Caja.encadenar));
+                })))
+                .then(Commands.literal("sentarse").then(Commands.argument("segundos", IntegerArgumentType.integer(10, 600)).executes(c -> {
+                    Caja.segundosSentarse = IntegerArgumentType.getInteger(c, "segundos");
+                    return ok(c, Component.literal("sentarse=" + Caja.segundosSentarse));
                 })))
                 .then(Commands.literal("tiempos").then(Commands.argument("turno", IntegerArgumentType.integer(5, 600))
                         .then(Commands.argument("elegir", IntegerArgumentType.integer(5, 300)).executes(c -> {

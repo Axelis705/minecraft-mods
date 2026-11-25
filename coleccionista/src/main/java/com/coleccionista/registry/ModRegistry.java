@@ -79,10 +79,10 @@ public final class ModRegistry {
             ENTITIES.register("silla", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "silla",
                     EntityType.Builder.<com.coleccionista.evento.Silla>of(com.coleccionista.evento.Silla::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(0.8F, 0.9F).clientTrackingRange(10).updateInterval(1)));
-    /** El arma que baja del techo en la caja de música (capítulo 3). */
-    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.ArmaTecho>> ARMA =
-            ENTITIES.register("arma_techo", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "arma_techo",
-                    EntityType.Builder.<com.coleccionista.evento.ArmaTecho>of(com.coleccionista.evento.ArmaTecho::new,
+    /** La escopeta que sale del piso en la caja de música (capítulo 3). */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.Escopeta>> ESCOPETA =
+            ENTITIES.register("escopeta", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "escopeta",
+                    EntityType.Builder.<com.coleccionista.evento.Escopeta>of(com.coleccionista.evento.Escopeta::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",

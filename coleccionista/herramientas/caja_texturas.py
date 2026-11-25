@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Las texturas de la caja de música (capítulo 3):
 
-- textures/gui/caja_<simbolo>.png      los cuatro símbolos grandes (pantallas y avisos), fondo transparente
+- textures/gui/caja_<simbolo>.png      los cuatro símbolos (sombrero, llave, cascabel y muñeca), fondo transparente
 - textures/prenda/caja_etiqueta_<s>.png la tarjeta que cada pieza lleva en la espalda (papel viejo, el símbolo y un seguro)
 - textures/prenda/caja_mascara.png     la máscara de muñeco de caja de música (solo la cabeza, acomodo de skin 64x64)
 - textures/prenda/vacia.png            una piel transparente (la etiqueta se dibuja aparte)
@@ -16,38 +16,60 @@ from PIL import Image, ImageDraw, ImageFilter
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 A = os.path.join(AQUI, '..', 'src', 'main', 'resources', 'assets', 'coleccionista', 'textures')
-SIMBOLOS = ['pica', 'corazon', 'diamante', 'trebol']
-ROJO, NEGRO = (178, 22, 30), (24, 20, 22)
+SIMBOLOS = ['sombrero', 'llave', 'cascabel', 'muneca']
+COLOR = {'sombrero': (26, 22, 24), 'llave': (176, 124, 30), 'cascabel': (36, 92, 158), 'muneca': (178, 22, 30)}
+DETALLE = {'sombrero': (160, 28, 40), 'llave': (110, 70, 14), 'cascabel': (14, 30, 60), 'muneca': (60, 6, 10)}
+HUECO = (0, 0, 0, 0)
 
 
-def forma(d, s, x0, y0, tam, color):
-    """Dibuja un símbolo en (x0, y0) de tamaño tam (cuadro), con el color dado."""
+def forma(d, s, x0, y0, tam, color, detalle=None):
+    """Dibuja un símbolo en (x0, y0) de tamaño tam (cuadro), con el color dado (y sus detalles, si se dan)."""
     cx, cy, r = x0 + tam / 2, y0 + tam / 2, tam / 2
-    if s == 'corazon':
-        a = r * 0.52
-        d.ellipse([cx - 2 * a + a * 0.05, cy - r * 0.62, cx + a * 0.05, cy - r * 0.62 + 2 * a], fill=color)
-        d.ellipse([cx - a * 0.05, cy - r * 0.62, cx + 2 * a - a * 0.05, cy - r * 0.62 + 2 * a], fill=color)
-        d.polygon([(cx - r * 0.98, cy - r * 0.05), (cx + r * 0.98, cy - r * 0.05), (cx, cy + r * 0.92)], fill=color)
-    elif s == 'diamante':
-        d.polygon([(cx, cy - r * 0.95), (cx + r * 0.68, cy), (cx, cy + r * 0.95), (cx - r * 0.68, cy)], fill=color)
-    elif s == 'pica':
-        a = r * 0.5
-        d.ellipse([cx - 2 * a + a * 0.1, cy - r * 0.2, cx + a * 0.1, cy - r * 0.2 + 2 * a * 0.95], fill=color)
-        d.ellipse([cx - a * 0.1, cy - r * 0.2, cx + 2 * a - a * 0.1, cy - r * 0.2 + 2 * a * 0.95], fill=color)
-        d.polygon([(cx - r * 0.96, cy + r * 0.2), (cx + r * 0.96, cy + r * 0.2), (cx, cy - r * 0.95)], fill=color)
-        d.polygon([(cx - r * 0.12, cy + r * 0.35), (cx + r * 0.12, cy + r * 0.35), (cx + r * 0.38, cy + r * 0.95),
-                   (cx - r * 0.38, cy + r * 0.95)], fill=color)
-    elif s == 'trebol':
-        b = r * 0.36
-        for (dx, dy) in ((0, -0.48), (-0.5, 0.08), (0.5, 0.08)):
-            d.ellipse([cx + dx * r - b, cy + dy * r - b, cx + dx * r + b, cy + dy * r + b], fill=color)
-        d.ellipse([cx - b * 0.6, cy - b * 0.6, cx + b * 0.6, cy + b * 0.6], fill=color)
-        d.polygon([(cx - r * 0.1, cy + r * 0.1), (cx + r * 0.1, cy + r * 0.1), (cx + r * 0.36, cy + r * 0.95),
-                   (cx - r * 0.36, cy + r * 0.95)], fill=color)
+    if s == 'sombrero':
+        # sombrero de copa: el ala, la copa y su listón
+        d.ellipse([cx - r * 0.96, cy + r * 0.42, cx + r * 0.96, cy + r * 0.8], fill=color)
+        d.polygon([(cx - r * 0.56, cy + r * 0.62), (cx + r * 0.56, cy + r * 0.62), (cx + r * 0.5, cy - r * 0.78),
+                   (cx - r * 0.5, cy - r * 0.78)], fill=color)
+        d.ellipse([cx - r * 0.5, cy - r * 0.92, cx + r * 0.5, cy - r * 0.66], fill=color)
+        if detalle:
+            d.polygon([(cx - r * 0.55, cy + r * 0.22), (cx + r * 0.55, cy + r * 0.22), (cx + r * 0.555, cy + r * 0.44),
+                       (cx - r * 0.555, cy + r * 0.44)], fill=detalle)
+    elif s == 'llave':
+        # llave antigua: el ojo (con hueco), el tubo y los dientes
+        d.ellipse([cx - r * 0.42, cy - r * 0.96, cx + r * 0.42, cy - r * 0.16], fill=color)
+        d.rectangle([cx - r * 0.12, cy - r * 0.3, cx + r * 0.12, cy + r * 0.96], fill=color)
+        d.rectangle([cx + r * 0.1, cy + r * 0.5, cx + r * 0.5, cy + r * 0.66], fill=color)
+        d.rectangle([cx + r * 0.1, cy + r * 0.76, cx + r * 0.38, cy + r * 0.92], fill=color)
+        d.ellipse([cx - r * 0.2, cy - r * 0.74, cx + r * 0.2, cy - r * 0.38], fill=detalle if detalle else HUECO)
+    elif s == 'cascabel':
+        # cascabel: la bola, el aro de arriba, la raya del medio y la ranura de abajo
+        d.ellipse([cx - r * 0.2, cy - r * 0.98, cx + r * 0.2, cy - r * 0.56], fill=color)
+        d.ellipse([cx - r * 0.78, cy - r * 0.66, cx + r * 0.78, cy + r * 0.92], fill=color)
+        if detalle:
+            d.ellipse([cx - r * 0.09, cy - r * 0.86, cx + r * 0.09, cy - r * 0.68], fill=detalle)
+            d.rectangle([cx - r * 0.76, cy + r * 0.06, cx + r * 0.76, cy + r * 0.16], fill=detalle)
+            d.rectangle([cx - r * 0.07, cy + r * 0.16, cx + r * 0.07, cy + r * 0.66], fill=detalle)
+            d.ellipse([cx - r * 0.16, cy + r * 0.56, cx + r * 0.16, cy + r * 0.84], fill=detalle)
+    elif s == 'muneca':
+        # muñeca: la cabeza con su moño, el vestido, los brazos y las piernas
+        d.ellipse([cx - r * 0.3, cy - r * 0.86, cx + r * 0.3, cy - r * 0.28], fill=color)
+        d.polygon([(cx - r * 0.2, cy - r * 0.32), (cx + r * 0.2, cy - r * 0.32), (cx + r * 0.72, cy + r * 0.56),
+                   (cx - r * 0.72, cy + r * 0.56)], fill=color)
+        d.polygon([(cx - r * 0.18, cy - r * 0.26), (cx - r * 0.72, cy + r * 0.1), (cx - r * 0.62, cy + r * 0.22),
+                   (cx - r * 0.12, cy - r * 0.1)], fill=color)
+        d.polygon([(cx + r * 0.18, cy - r * 0.26), (cx + r * 0.72, cy + r * 0.1), (cx + r * 0.62, cy + r * 0.22),
+                   (cx + r * 0.12, cy - r * 0.1)], fill=color)
+        d.rectangle([cx - r * 0.3, cy + r * 0.5, cx - r * 0.12, cy + r * 0.96], fill=color)
+        d.rectangle([cx + r * 0.12, cy + r * 0.5, cx + r * 0.3, cy + r * 0.96], fill=color)
+        if detalle:
+            d.polygon([(cx, cy - r * 0.86), (cx - r * 0.34, cy - r * 1.0), (cx - r * 0.34, cy - r * 0.72)], fill=detalle)
+            d.polygon([(cx, cy - r * 0.86), (cx + r * 0.34, cy - r * 1.0), (cx + r * 0.34, cy - r * 0.72)], fill=detalle)
+            d.ellipse([cx - r * 0.14, cy - r * 0.64, cx - r * 0.04, cy - r * 0.54], fill=(240, 232, 220))
+            d.ellipse([cx + r * 0.04, cy - r * 0.64, cx + r * 0.14, cy - r * 0.54], fill=(240, 232, 220))
 
 
 def color(s):
-    return ROJO if s in ('corazon', 'diamante') else NEGRO
+    return COLOR[s]
 
 
 def icono(s, tam=64):
@@ -58,7 +80,7 @@ def icono(s, tam=64):
     forma(d, s, 3 * k, 3 * k, (tam - 6) * k, (236, 226, 208, 255))
     im = im.filter(ImageFilter.MaxFilter(2 * k + 1))
     d = ImageDraw.Draw(im)
-    forma(d, s, 3 * k, 3 * k, (tam - 6) * k, color(s) + (255,))
+    forma(d, s, 3 * k, 3 * k, (tam - 6) * k, color(s) + (255,), DETALLE[s] + (255,))
     return im.resize((tam, tam), Image.LANCZOS)
 
 
@@ -84,7 +106,7 @@ def tarjeta(s, tam=32):
     d = ImageDraw.Draw(im)
     d.rectangle([2, 2, tam - 3, tam - 3], outline=(150, 40, 40, 255))
     sim = Image.new('RGBA', (tam * k, tam * k), (0, 0, 0, 0))
-    forma(ImageDraw.Draw(sim), s, 6 * k, 7 * k, (tam - 12) * k, color(s) + (255,))
+    forma(ImageDraw.Draw(sim), s, 6 * k, 7 * k, (tam - 12) * k, color(s) + (255,), DETALLE[s] + (255,))
     sim = sim.resize((tam, tam), Image.LANCZOS)
     im.alpha_composite(sim)
     # el seguro (arriba al centro)

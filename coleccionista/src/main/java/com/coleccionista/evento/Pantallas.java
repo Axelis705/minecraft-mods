@@ -305,23 +305,24 @@ public final class Pantallas {
     public static List<Frase> caja() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("bienvenidos", 75, null, 1F));
-        l.add(new Frase("carrusel", 95, null, 1F));
-        l.add(new Frase("espalda", 140, null, 1F));
+        l.add(new Frase("gondolas", 110, null, 1F));
+        l.add(new Frase("espalda", 160, null, 1F));
         l.add(new Frase("no_se_ve", 100, null, 1F));
         l.add(new Frase("diganse", 170, null, 1F));
-        l.add(new Frase("gira", 135, null, 1F));
+        l.add(new Frase("gira", 125, null, 1F));
         l.add(new Frase("voces", 130, null, 1F));
         l.add(new Frase("traidores", 130, null, 1F));
         l.add(new Frase("al_final", 105, null, 1F));
         l.add(new Frase("si_fallan", 85, null, 1F));
         l.add(new Frase("traidor_bala", 100, null, 1F));
-        l.add(new Frase("abierta", 65, null, 1F));
+        l.add(new Frase("sientense", 70, null, 1F));
         return l;
     }
 
     public static List<Frase> caja_revision() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("circulo", 85, null, 1F));
+        l.add(new Frase("juguete", 95, null, 1F));
         l.add(new Frase("uno_por_uno", 110, null, 1F));
         l.add(new Frase("fuerte", 65, null, 1F));
         return l;

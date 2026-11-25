@@ -9,9 +9,10 @@ import com.axeliscore.vestir.Vestuario;
 import com.coleccionista.Coleccionista;
 import com.coleccionista.bot.PiezaBot;
 import com.coleccionista.evento.Anuncio;
-import com.coleccionista.evento.ArmaTecho;
 import com.coleccionista.evento.Cabina;
 import com.coleccionista.evento.Complejo;
+import com.coleccionista.evento.Cuerpos;
+import com.coleccionista.evento.Escopeta;
 import com.coleccionista.evento.Evento;
 import com.coleccionista.evento.Objetivo;
 import com.coleccionista.evento.Pantallas;
@@ -40,6 +41,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -54,16 +56,20 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Capítulo 3 · La caja de música (El traidor, rehecho). Llegan por el pasillo de servicio al salón del carrusel; el Coleccionista explica
- * y cada pieza recibe un símbolo en la espalda (pica, corazón, diamante o trébol: el suyo no lo puede ver) y su papel: hay dos traidores
- * que se conocen. Luego, en seis turnos con apagones entre ellos, se sientan de dos en dos en las góndolas del carrusel: el de atrás le ve
- * la espalda al de adelante y le dice (en voz alta: cada góndola es un grupo privado de voz, con la voz cambiada) qué símbolo lleva; los
- * traidores pueden mentir. Dos turnos por pareja (cambian de asiento) y tres parejas distintas.
+ * Capítulo 3 · La caja de música (El traidor, rehecho). Llegan por el pasillo de servicio al salón; el Coleccionista explica y cada pieza
+ * busca una góndola (abiertas, alrededor del salón) y se sienta sola. Cuando ya están todos sentados (o se acaba el tiempo) se cierran las
+ * correas y se va la luz: en lo oscuro cada pieza recibe un símbolo en la espalda (sombrero, llave, cascabel o muñeca: el suyo no lo puede
+ * ver), su máscara y su papel (hay dos traidores que se conocen), y la caja los cambia de lugar. Luego, en seis turnos con apagones entre
+ * ellos, van de dos en dos en las góndolas: el de atrás le ve la espalda al de adelante y le dice (en voz alta: cada góndola es un grupo
+ * privado de voz, con la voz cambiada) qué símbolo lleva; los traidores pueden mentir. Dos turnos por pareja (cambian de asiento) y tres
+ * parejas distintas.
  * <p>
- * Al final, otro apagón: todos aparecen sentados y atados en círculo en el escenario del centro, sin máscaras. Baja el arma del techo,
- * gira y apunta a cada pieza: dice su símbolo (y lo marca); el organizador (que ve el símbolo real) decide: <b>Bien</b> o <b>Bala</b>
- * ({@code /bala <pieza>}). Si no hay organizador (o con {@code auto}), decide solo según lo que marcó. Después, el traidor que no hizo caer
- * a ninguno de los que tuvo enfrente se lleva la última bala. Una sola vez: los que sobreviven, sobreviven.
+ * Al final, otro apagón: todos aparecen sentados y atados en círculo en el escenario del centro, sin máscaras. Se abre la compuerta del
+ * piso y sube la escopeta, girando. Se bajan las luces. La escopeta amaga, gira despacio y apunta a cada pieza (con un foco encima): dice
+ * su símbolo (y lo marca); el organizador (que ve el símbolo real) decide: <b>Bien</b> o <b>Bala</b> ({@code /bala <pieza>}). Pase lo que
+ * pase, primero viene la misma tensión (el zumbido, el latido, la carga): al final, o el disparo (y la silla se va de espaldas con la
+ * pieza) o un clic en vacío. Si no hay organizador (o con {@code auto}), decide solo según lo que marcó. Después, el traidor que no hizo
+ * caer a ninguno de los que tuvo enfrente se lleva la última bala. Una sola vez: los que sobreviven, sobreviven.
  */
 public final class Caja {
     private static final String MOD = Coleccionista.MODID;
@@ -74,10 +80,10 @@ public final class Caja {
     public static final ResourceLocation ETIQUETA = new ResourceLocation(MOD, "caja_etiqueta");
     public static final ResourceLocation MASCARA = new ResourceLocation(MOD, "caja_mascara");
     public static final String PRUEBA = "La caja de música";
-    public static final String[] SIMBOLOS = {"pica", "corazon", "diamante", "trebol"};
+    public static final String[] SIMBOLOS = {"sombrero", "llave", "cascabel", "muneca"};
     public static final int TURNOS = 6;
     /** Ajustes (los cambia el organizador con /evento caja ...). */
-    public static int segundosTurno = 45, segundosElegir = 25, traidores = 2;
+    public static int segundosTurno = 45, segundosElegir = 25, traidores = 2, segundosSentarse = 75;
     /** Decide solo (según lo que marcó cada pieza) aunque haya organizador. */
     public static boolean auto;
     /** Para las pruebas: nunca decide sola (espera a /evento caja bien o bala). */
@@ -91,10 +97,10 @@ public final class Caja {
     private static final float[] TONOS = {0.72F, 0.8F, 1.3F, 1.42F};
 
     public enum Fase {
-        NADA, PASILLO, LLEGANDO, HABLANDO, ROLES, APAGON, TURNO, CIRCULO, REVISION, TRAIDORES, FIN
+        NADA, PASILLO, LLEGANDO, HABLANDO, SENTARSE, ROLES, APAGON, TURNO, CIRCULO, REVISION, TRAIDORES, FIN
     }
 
-    /** Lo que pasa con la pieza apuntada: el arma gira, espera la respuesta, o ejecuta lo que se decidió. */
+    /** Lo que pasa con la pieza apuntada: el arma gira, espera la respuesta, o (tras la misma tensión) dispara o hace clic. */
     enum Paso {
         GIRAR, ESPERA, BIEN, BALA
     }
@@ -103,7 +109,8 @@ public final class Caja {
     /** Reloj propio (ticks, se detiene con la pausa del evento). */
     private static long t, desde;
     private static int turno = -1, apagones;
-    private static long apagonMedio, apagonFin, turnoFin, susurroEn;
+    private static long apagonMedio, apagonFin, turnoFin, susurroEn, sentarseFin;
+    private static int sentados, total;
     private static Fase trasApagon = Fase.TURNO;
     private static final Random R = new Random();
 
@@ -130,7 +137,17 @@ public final class Caja {
     private static long pasoDesde;
     private static final Map<UUID, Integer> eligio = new HashMap<>();
     private static final Set<UUID> fusilados = new HashSet<>();
-    private static ArmaTecho arma;
+    private static Escopeta arma;
+    /** El foco (una luz fuerte) sobre la pieza apuntada, y si las luces del salón están bajas. */
+    private static BlockPos foco;
+    private static boolean lucesBajas;
+    /** El amago: antes de apuntarle a quien sigue, a veces le apunta un momento a otro. 0 sin decidir, 1 va al falso, 2 se queda, 3 va al bueno. */
+    private static int amagoEtapa;
+    private static long amagoHasta;
+    private static UUID amago;
+    /** Los bots, al sentarse: desde cuándo caminan y a qué asiento ({góndola, lado}). */
+    private static final Map<UUID, Long> botDesde = new HashMap<>();
+    private static final Map<UUID, int[]> botVa = new HashMap<>();
     private static final List<BlockPos> sangre = new ArrayList<>();
     private static int balas, salvados;
 
@@ -147,6 +164,17 @@ public final class Caja {
             }
         });
         Actions.on(ACCION, Caja::accion);
+        // para sentarse basta con darle clic derecho al sillón o al banquito (el asiento de verdad es invisible)
+        MinecraftForge.EVENT_BUS.addListener((PlayerInteractEvent.RightClickBlock e) -> {
+            if (fase != Fase.SENTARSE || e.getLevel().isClientSide() || !(e.getEntity() instanceof ServerPlayer sp)) {
+                return;
+            }
+            int[] a = asientoEn(e.getPos());
+            if (a != null) {
+                e.setCanceled(true);
+                intentarSentar(sp, a);
+            }
+        });
         // en la caja nadie se lastima: aquí solo se muere de un balazo
         MinecraftForge.EVENT_BUS.addListener((LivingHurtEvent e) -> {
             if (fase != Fase.NADA && fase != Fase.PASILLO && e.getEntity() instanceof ServerPlayer) {
@@ -286,20 +314,255 @@ public final class Caja {
         puertas(s, "pas_caj", false);
         Escena.presentacion(s, "III", MOD + ".caja.titulo", MOD + ".caja.lema");
         Pantallas.soloGrande(s, true);
-        Pantallas.hablar(s, "caja", () -> roles(s));
+        Pantallas.hablar(s, "caja", () -> sentarse(s));
         Evento.get(s).prueba(s, PRUEBA);
         enviar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_CAJA habla");
     }
 
-    /** Cada pieza recibe su símbolo (en la espalda), su máscara y su papel; dos traidores (que se conocen). */
-    public static void roles(MinecraftServer s) {
+    // ------------------------------------------------------------------ a sentarse
+
+    /** Se acabó el discurso: aparecen los asientos de las góndolas y cada quien busca uno y se sienta (los bots caminan solos). */
+    public static void sentarse(MinecraftServer s) {
         if (fase != Fase.HABLANDO && fase != Fase.LLEGANDO) {
             return;
         }
         if (fase == Fase.HABLANDO) {
             Pantallas.callar(s);
         }
+        crearAsientos(s);
+        fase = Fase.SENTARSE;
+        desde = t;
+        sentarseFin = t + segundosSentarse * 20L;
+        botDesde.clear();
+        botVa.clear();
+        Evento ev = Evento.get(s);
+        int n = 0;
+        for (Pieza p : ev.vivos()) {
+            if (p.bot) {
+                botDesde.put(p.id, t + 30 + R.nextInt(170));
+            }
+            n++;
+        }
+        sentados = 0;
+        total = n;
+        puertas(s, "pas_caj", false);
+        ev.reloj(s, segundosSentarse);
+        ev.prueba(s, Component.translatable(MOD + ".caja.prueba_sentarse").getString());
+        Pantallas.modo(s, "texto", Component.translatable(MOD + ".caja.pantalla.sentarse").getString());
+        Anuncio.titulo(s, Component.empty(), Component.translatable(MOD + ".caja.sientense"));
+        enviar(s);
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA sentarse piezas={}", n);
+    }
+
+    /** Los 24 asientos de las góndolas (invisibles: el mueble es del mapa). */
+    private static void crearAsientos(MinecraftServer s) {
+        ServerLevel l = s.overworld();
+        for (int g = 0; g < CajaMusica.GONDOLAS; g++) {
+            for (int lado = 0; lado < 2; lado++) {
+                if (asientos[g][lado] != null && asientos[g][lado].isAlive()) {
+                    continue;
+                }
+                String m = "caja.gon." + g + (lado == 0 ? ".atras" : ".frente");
+                BlockPos b = Complejo.pos(s, m);
+                Silla si = ModRegistry.SILLA.get().create(l);
+                if (b == null || si == null) {
+                    continue;
+                }
+                float yaw = Complejo.yaw(m);
+                si.moveTo(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, yaw, 0F);
+                si.setYHeadRot(yaw);
+                si.grupo = "caja";
+                si.oculta(true);
+                l.addFreshEntity(si);
+                asientos[g][lado] = si;
+            }
+        }
+    }
+
+    /** ¿Ese bloque es un asiento de góndola (el sillón, su respaldo o el banquito)? Devuelve {góndola, lado}. */
+    private static int[] asientoEn(BlockPos p) {
+        for (int g = 0; g < asientos.length; g++) {
+            for (int lado = 0; lado < 2; lado++) {
+                Silla si = asientos[g][lado];
+                if (si != null && si.isAlive() && (si.blockPosition().equals(p) || si.blockPosition().equals(p.below()))) {
+                    return new int[] {g, lado};
+                }
+            }
+        }
+        return null;
+    }
+
+    /** ¿Puede sentarse en una góndola? (solo mientras buscan asiento, y si sigue viva). */
+    public static boolean puedeSentarse(ServerPlayer sp) {
+        Pieza p = Evento.get(sp.server).pieza(sp);
+        return fase == Fase.SENTARSE && p != null && p.vivo();
+    }
+
+    private static void intentarSentar(ServerPlayer sp, int[] a) {
+        Silla si = asientos[a[0]][a[1]];
+        if (si == null || !si.isAlive() || sp.getVehicle() == si || !puedeSentarse(sp)) {
+            return;
+        }
+        if (si.isVehicle()) {
+            Plat.msg(sp, Component.translatable(MOD + ".caja.ocupado").withStyle(ChatFormatting.GRAY), true);
+            return;
+        }
+        sp.startRiding(si, true);
+        sp.level().playSound(null, si.blockPosition(), SoundEvents.CHAIN_STEP, SoundSource.BLOCKS, 0.7F, 0.7F);
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA sienta {} gondola={} {}", sp.getGameProfile().getName(), a[0] + 1, a[1] == 0 ? "atras" : "frente");
+    }
+
+    /** ¿En qué asiento va sentado? ({góndola, lado} o null). */
+    private static int[] sentadoEn(Entity e) {
+        if (!(e.getVehicle() instanceof Silla v)) {
+            return null;
+        }
+        for (int g = 0; g < asientos.length; g++) {
+            for (int lado = 0; lado < 2; lado++) {
+                if (asientos[g][lado] == v) {
+                    return new int[] {g, lado};
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Un asiento libre para alguien que no se ha sentado: de preferencia junto a alguien que va solo (para que nadie se quede sin pareja), si
+     * no, en una góndola vacía (el de atrás). No toma los que ya escogió algún bot que va caminando.
+     */
+    private static int[] elegirAsiento() {
+        List<int[]> conUno = new ArrayList<>(), vacias = new ArrayList<>();
+        for (int g = 0; g < asientos.length; g++) {
+            int ocupados = 0;
+            int libre = -1;
+            for (int lado = 0; lado < 2; lado++) {
+                Silla si = asientos[g][lado];
+                if (si == null || !si.isAlive()) {
+                    ocupados = 9;
+                    break;
+                }
+                if (si.isVehicle() || reservado(g, lado)) {
+                    ocupados++;
+                } else {
+                    libre = lado;
+                }
+            }
+            if (ocupados == 1 && libre >= 0) {
+                conUno.add(new int[] {g, libre});
+            } else if (ocupados == 0) {
+                vacias.add(new int[] {g, 0});
+            }
+        }
+        if (!conUno.isEmpty()) {
+            return conUno.get(R.nextInt(conUno.size()));
+        }
+        return vacias.isEmpty() ? null : vacias.get(R.nextInt(vacias.size()));
+    }
+
+    private static boolean reservado(int g, int lado) {
+        for (int[] v : botVa.values()) {
+            if (v[0] == g && v[1] == lado) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Mientras buscan asiento: cuenta a los sentados y lleva a los bots (caminando) a su góndola. */
+    private static void sentarseTick(MinecraftServer s) {
+        Evento ev = Evento.get(s);
+        int n = 0, sent = 0;
+        for (Pieza p : ev.vivos()) {
+            Entity e = Evento.entidad(s, p);
+            if (e == null) {
+                continue;
+            }
+            n++;
+            if (sentadoEn(e) != null) {
+                sent++;
+                botVa.remove(p.id);
+                continue;
+            }
+            Long d = botDesde.get(p.id);
+            if (!p.bot || d == null || t < d) {
+                continue;
+            }
+            int[] va = botVa.get(p.id);
+            if (va == null || asientos[va[0]][va[1]] == null || asientos[va[0]][va[1]].isVehicle()) {
+                botVa.remove(p.id);
+                va = elegirAsiento();
+                if (va == null) {
+                    continue;
+                }
+                botVa.put(p.id, va);
+            }
+            BlockPos ent = Complejo.pos(s, "caja.gon." + va[0] + ".entrada");
+            Silla si = asientos[va[0]][va[1]];
+            double dist = ent == null ? 0 : e.distanceToSqr(ent.getX() + 0.5, ent.getY(), ent.getZ() + 0.5);
+            if (dist < 2.5 * 2.5 || t - d > 220) {
+                sentar(s, e, si);
+                botVa.remove(p.id);
+                sent++;
+            } else if (e instanceof PiezaBot b && ent != null && (t - d) % 20 == 0) {
+                b.getNavigation().moveTo(ent.getX() + 0.5, ent.getY(), ent.getZ() + 0.5, 1.0);
+            }
+        }
+        boolean cambio = sent != sentados || n != total;
+        sentados = sent;
+        total = n;
+        if (cambio) {
+            enviar(s);
+        }
+        if (n > 0 && sent >= n || t >= sentarseFin) {
+            todosSentados(s);
+        }
+    }
+
+    /** Ya se sentaron (o se acabó el tiempo: a los que faltan los sienta la caja). Se cierran las correas y se va la luz. */
+    private static void todosSentados(MinecraftServer s) {
+        if (fase != Fase.SENTARSE) {
+            return;
+        }
+        Evento ev = Evento.get(s);
+        int auto = 0;
+        botVa.clear();
+        for (Pieza p : ev.vivos()) {
+            Entity e = Evento.entidad(s, p);
+            if (e == null || sentadoEn(e) != null) {
+                continue;
+            }
+            int[] a = elegirAsiento();
+            if (a == null) {
+                continue;
+            }
+            sentar(s, e, asientos[a[0]][a[1]]);
+            auto++;
+        }
+        for (Silla[] gg : asientos) {
+            for (Silla si : gg) {
+                if (si != null && si.isVehicle()) {
+                    si.cerrar(true, true);
+                }
+            }
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA sentados auto={}", auto);
+        apagar(s, Fase.ROLES);
+    }
+
+    /** Para el organizador (y las pruebas): de donde vaya, directo a dar los papeles (sentando a todos). */
+    public static void roles(MinecraftServer s) {
+        if (fase == Fase.HABLANDO || fase == Fase.LLEGANDO) {
+            sentarse(s);
+        }
+        if (fase == Fase.SENTARSE) {
+            todosSentados(s);
+        }
+    }
+
+    /** En lo oscuro: cada pieza recibe su símbolo (en la espalda), su máscara y su papel; dos traidores (que se conocen). */
+    private static void asignarRoles(MinecraftServer s) {
         Evento ev = Evento.get(s);
         List<Pieza> v = new ArrayList<>(ev.vivos());
         simbolo.clear();
@@ -317,10 +580,20 @@ public final class Caja {
         for (int i = 0; i < nt && i < v.size(); i++) {
             traidoresIds.add(v.get(i).id);
         }
+        StringBuilder sb = new StringBuilder();
+        for (UUID id : traidoresIds) {
+            Pieza p = ev.pieza(id);
+            sb.append(p == null ? id : p.nombre).append(' ');
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA roles piezas={} traidores={} [{}]", v.size(), traidoresIds.size(), sb.toString().trim());
+    }
+
+    /** Se prende la luz: cada quien ya está en su lugar del primer turno y ve su carta (con su papel). */
+    private static void mostrarRoles(MinecraftServer s) {
         fase = Fase.ROLES;
         desde = t;
         Pantallas.modo(s, "texto", Component.translatable(MOD + ".caja.pantalla.roles").getString());
-        for (Pieza p : v) {
+        for (Pieza p : Evento.get(s).vivos()) {
             if (Evento.entidad(s, p) instanceof ServerPlayer sp) {
                 mio(s, sp);
                 sp.playNotifySound(SoundEvents.WARDEN_HEARTBEAT, SoundSource.MASTER, 1F, 1F);
@@ -328,12 +601,6 @@ public final class Caja {
         }
         org(s);
         enviar(s);
-        StringBuilder sb = new StringBuilder();
-        for (UUID id : traidoresIds) {
-            Pieza p = ev.pieza(id);
-            sb.append(p == null ? id : p.nombre).append(' ');
-        }
-        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA roles piezas={} traidores={} [{}]", v.size(), traidoresIds.size(), sb.toString().trim());
     }
 
     // ------------------------------------------------------------------ las parejas y los turnos
@@ -404,8 +671,8 @@ public final class Caja {
         return a.compareTo(b) < 0 ? a + "|" + b : b + "|" + a;
     }
 
-    /** Se acabó la carta del papel: aparecen los asientos y, con el primer apagón, cada quien a su góndola. */
-    private static void empezarTurnos(MinecraftServer s) {
+    /** En el primer apagón: las parejas de las tres rondas y la voz cambiada de cada quien (toda la prueba). */
+    private static void prepararTurnos(MinecraftServer s) {
         Evento ev = Evento.get(s);
         List<UUID> ids = new ArrayList<>();
         for (Pieza p : ev.vivos()) {
@@ -416,31 +683,12 @@ public final class Caja {
         parejas(ids);
         dichos.clear();
         oyentes.clear();
-        ServerLevel l = s.overworld();
-        for (int g = 0; g < CajaMusica.GONDOLAS; g++) {
-            for (int lado = 0; lado < 2; lado++) {
-                BlockPos b = Complejo.pos(s, "caja.gon." + g + (lado == 0 ? ".atras" : ".frente"));
-                Silla si = ModRegistry.SILLA.get().create(l);
-                if (b == null || si == null) {
-                    continue;
-                }
-                float yaw = Complejo.yaw("caja.gon." + g + (lado == 0 ? ".atras" : ".frente"));
-                si.moveTo(b.getX() + 0.5, b.getY() + (lado == 0 ? 0.0 : 0.0), b.getZ() + 0.5, yaw, 0F);
-                si.setYHeadRot(yaw);
-                si.grupo = "caja";
-                si.oculta(true);
-                l.addFreshEntity(si);
-                asientos[g][lado] = si;
-            }
-        }
-        // las voces cambiadas (cada pieza la suya, toda la prueba)
         Map<UUID, Float> tonos = new HashMap<>();
         for (UUID id : ids) {
             tonos.put(id, TONOS[R.nextInt(TONOS.length)]);
         }
         Voz.tonos(tonos);
         turno = -1;
-        apagar(s, Fase.TURNO);
         Coleccionista.LOGGER.info("COLECCIONISTA_CAJA turnos piezas={} parejas={}", ids.size(), rondas.isEmpty() ? 0 : rondas.get(0).size());
     }
 
@@ -473,6 +721,10 @@ public final class Caja {
         if (trasApagon == Fase.CIRCULO) {
             alCirculo(s);
             return;
+        }
+        if (trasApagon == Fase.ROLES) {
+            asignarRoles(s);
+            prepararTurnos(s);
         }
         turno++;
         acomodar(s);
@@ -706,12 +958,12 @@ public final class Caja {
             }
             si.cerrar(true, false);
         }
-        // el arma: aparece arriba, metida en el techo
+        // la escopeta: guardada en el foso, parada (apuntando al techo), con la culata hacia un lado
         BlockPos ap = Complejo.pos(s, "caja.arma");
-        if (ap != null) {
-            ArmaTecho a = ModRegistry.ARMA.get().create(l);
+        if (ap != null && arma == null) {
+            Escopeta a = ModRegistry.ESCOPETA.get().create(l);
             if (a != null) {
-                a.moveTo(ap.getX() + 0.5, ap.getY() + 1.0, ap.getZ() + 0.5, 0F, 0F);
+                a.moveTo(ap.getX() + 0.5, ap.getY(), ap.getZ() + 0.5, 90F, -90F);
                 l.addFreshEntity(a);
                 arma = a;
             }
@@ -724,7 +976,7 @@ public final class Caja {
         Coleccionista.LOGGER.info("COLECCIONISTA_CAJA circulo piezas={}", circulo.size());
     }
 
-    /** Se prende la luz en el escenario: el Coleccionista habla y baja el arma. */
+    /** Se prende la luz en el escenario: el Coleccionista habla, se abre la compuerta y sube la escopeta (ver el tick del círculo). */
     private static void enCirculo(MinecraftServer s) {
         fase = Fase.CIRCULO;
         desde = t;
@@ -734,16 +986,99 @@ public final class Caja {
                 revisar(s);
             }
         });
-        if (arma != null) {
-            arma.bajar();
-        }
         enviar(s);
+    }
+
+    /** Abre o cierra la compuerta del piso (las 9 trampillas). */
+    private static void compuerta(MinecraftServer s, boolean abrir) {
+        ServerLevel l = s.overworld();
+        int cambian = 0;
+        for (int k = 0; k < 9; k++) {
+            BlockPos p = Complejo.pos(s, "caja.compuerta." + k);
+            if (p == null) {
+                continue;
+            }
+            BlockState st = l.getBlockState(p);
+            if (st.getBlock() instanceof net.minecraft.world.level.block.TrapDoorBlock
+                    && st.getValue(net.minecraft.world.level.block.TrapDoorBlock.OPEN) != abrir) {
+                l.setBlock(p, st.setValue(net.minecraft.world.level.block.TrapDoorBlock.OPEN, abrir), 2);
+                cambian++;
+            }
+        }
+        if (cambian == 0) {
+            return;
+        }
+        BlockPos c = Complejo.pos(s, "caja.escenario");
+        if (c != null) {
+            l.playSound(null, c, propio("caja_compuerta"), SoundSource.HOSTILE, 2.5F, abrir ? 1F : 0.8F);
+            l.playSound(null, c, abrir ? SoundEvents.IRON_TRAPDOOR_OPEN : SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.HOSTILE, 1.5F, 0.5F);
+            if (abrir) {
+                l.sendParticles(ParticleTypes.CLOUD, c.getX() + 0.5, c.getY() + 0.1, c.getZ() + 0.5, 30, 0.8, 0.1, 0.8, 0.02);
+                l.sendParticles(ParticleTypes.LARGE_SMOKE, c.getX() + 0.5, c.getY(), c.getZ() + 0.5, 12, 0.6, 0.1, 0.6, 0.01);
+            }
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA compuerta {}", abrir ? "abre" : "cierra");
+    }
+
+    /** Baja (o vuelve a subir) las luces del salón: en la revisión casi todo queda a oscuras, menos el foco. */
+    private static void luces(MinecraftServer s, boolean bajas) {
+        if (lucesBajas == bajas) {
+            return;
+        }
+        lucesBajas = bajas;
+        ServerLevel l = s.overworld();
+        for (int i = 0; i < 400; i++) {
+            BlockPos p = Complejo.pos(s, "caja.luz." + i);
+            if (p == null) {
+                break;
+            }
+            int nivel = Math.round(Complejo.yaw("caja.luz." + i));
+            int n = bajas ? Math.max(1, nivel / 5) : net.minecraft.util.Mth.clamp(nivel, 0, 15);
+            BlockState st = l.getBlockState(p);
+            if (st.isAir() || st.is(Blocks.LIGHT)) {
+                l.setBlock(p, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, n), 2);
+            }
+        }
+        if (bajas) {
+            for (Pieza p : Evento.get(s).vivos()) {
+                if (Evento.entidad(s, p) instanceof ServerPlayer sp) {
+                    sp.playNotifySound(SoundEvents.BEACON_DEACTIVATE, SoundSource.MASTER, 0.8F, 0.5F);
+                }
+            }
+        }
+    }
+
+    /** El foco: una luz fuerte arriba de la silla de la pieza apuntada (null: se apaga). */
+    private static void foco(MinecraftServer s, Entity e) {
+        ServerLevel l = s.overworld();
+        if (foco != null && l.getBlockState(foco).is(Blocks.LIGHT)) {
+            l.setBlock(foco, Blocks.AIR.defaultBlockState(), 2);
+        }
+        foco = null;
+        if (e == null) {
+            return;
+        }
+        BlockPos p = BlockPos.containing(e.getX(), (e.getVehicle() != null ? e.getVehicle().getY() : e.getY()) + 3, e.getZ());
+        if (l.getBlockState(p).isAir()) {
+            l.setBlock(p, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, 15), 2);
+            foco = p;
+            l.playSound(null, p, SoundEvents.LEVER_CLICK, SoundSource.HOSTILE, 1F, 0.6F);
+        }
+    }
+
+    private static net.minecraft.sounds.SoundEvent propio(String id) {
+        return net.minecraft.sounds.SoundEvent.createVariableRangeEvent(new ResourceLocation(MOD, id));
     }
 
     private static void revisar(MinecraftServer s) {
         fase = Fase.REVISION;
         desde = t;
         idx = -1;
+        if (arma != null && arma.guardada()) {
+            compuerta(s, true);
+            arma.subir();
+        }
+        luces(s, true);
         for (int i = primero.size() - 1; i >= 0; i--) {
             if (orden.remove(primero.get(i))) {
                 orden.add(0, primero.get(i));
@@ -776,13 +1111,36 @@ public final class Caja {
         }
         paso = Paso.GIRAR;
         pasoDesde = t;
-        UUID id = apuntado();
-        Entity e = id == null ? null : Evento.entidad(s, ev.pieza(id));
-        if (arma != null && e != null) {
-            arma.apuntarA(e.getEyePosition());
-        }
+        amagoEtapa = 0;
+        amago = null;
+        foco(s, null);
         enviar(s);
         org(s);
+    }
+
+    /** La escopeta ya está arriba: a veces primero le apunta a otro (un momento), y luego al que sigue. */
+    private static void empezarApunte(MinecraftServer s, UUID id) {
+        Evento ev = Evento.get(s);
+        Entity real = Evento.entidad(s, ev.pieza(id));
+        List<Entity> otros = new ArrayList<>();
+        for (UUID o : circulo.keySet()) {
+            Pieza p = ev.pieza(o);
+            Entity e = p == null || !p.vivo() || o.equals(id) ? null : Evento.entidad(s, p);
+            if (e != null) {
+                otros.add(e);
+            }
+        }
+        if (!otros.isEmpty() && R.nextFloat() < 0.6F) {
+            Entity f = otros.get(R.nextInt(otros.size()));
+            amago = f.getUUID();
+            arma.apuntarA(f.getEyePosition());
+            amagoEtapa = 1;
+        } else if (real != null) {
+            arma.apuntarA(real.getEyePosition());
+            amagoEtapa = 3;
+        } else {
+            amagoEtapa = 3;
+        }
     }
 
     /** La pieza a la que apunta el arma ahora (null: a nadie). */
@@ -819,20 +1177,8 @@ public final class Caja {
         pasoDesde = t;
         Evento ev = Evento.get(s);
         Pieza p = ev.pieza(id);
-        if (bala) {
-            // la tensión: el martillo se echa atrás y se oye el corazón
-            sonidoArma(s, SoundEvents.CROSSBOW_LOADING_END, 1.2F, 0.6F);
-            for (Pieza v : ev.vivos()) {
-                if (Evento.entidad(s, v) instanceof ServerPlayer sp) {
-                    sp.playNotifySound(SoundEvents.WARDEN_HEARTBEAT, SoundSource.MASTER, 1F, 1F);
-                }
-            }
-        } else {
-            sonidoArma(s, SoundEvents.DISPENSER_FAIL, 1.4F, 1.6F);
-            if (p != null && Evento.entidad(s, p) instanceof ServerPlayer sp) {
-                Plat.msg(sp, Component.translatable(MOD + ".caja.bien").withStyle(ChatFormatting.GREEN), true);
-            }
-        }
+        // pase lo que pase, primero la misma tensión (nadie sabe qué viene): el zumbido que sube y el latido
+        sonidoArma(s, propio("caja_tension"), 3F, 1F);
         sinElegir(s, id);
         enviar(s);
         org(s);
@@ -860,7 +1206,7 @@ public final class Caja {
         }
     }
 
-    /** ¡Bang! Fogonazo, sangre, la pieza cae (si no se trabó el arma por ser de las últimas). */
+    /** ¡Bang! Fogonazo, sangre, y la silla se va de espaldas con la pieza (si no se trabó el arma por ser de las últimas). */
     private static void disparar(MinecraftServer s, UUID id) {
         Evento ev = Evento.get(s);
         Pieza p = ev.pieza(id);
@@ -868,6 +1214,9 @@ public final class Caja {
         ServerLevel l = s.overworld();
         boolean traidor = traidoresIds.contains(id);
         String motivo = Component.translatable(MOD + (traidor ? ".caja.motivo_traidor" : ".caja.motivo")).getString();
+        if (e != null && e.getVehicle() instanceof Silla) {
+            Cuerpos.EN_SILLA.add(id);
+        }
         if (p != null && ev.eliminarEnPrueba(s, p, motivo)) {
             balas++;
             fusilados.add(id);
@@ -875,11 +1224,11 @@ public final class Caja {
                 arma.disparar();
                 Vec3 m = arma.punta();
                 l.sendParticles(ParticleTypes.FLASH, m.x, m.y, m.z, 1, 0, 0, 0, 0);
-                l.sendParticles(ParticleTypes.LARGE_SMOKE, m.x, m.y, m.z, 8, 0.1, 0.1, 0.1, 0.02);
+                l.sendParticles(ParticleTypes.LARGE_SMOKE, m.x, m.y, m.z, 14, 0.15, 0.15, 0.15, 0.03);
+                l.sendParticles(ParticleTypes.SMOKE, m.x, m.y, m.z, 20, 0.3, 0.2, 0.3, 0.05);
             }
-            sonidoArma(s, SoundEvents.GENERIC_EXPLODE, 2.2F, 1.9F);
-            sonidoArma(s, SoundEvents.FIREWORK_ROCKET_BLAST, 2.5F, 0.5F);
-            sonidoArma(s, SoundEvents.TRIDENT_HIT, 1.5F, 0.6F);
+            sonidoArma(s, propio("caja_disparo"), 6F, 1F);
+            sonidoArma(s, SoundEvents.GENERIC_EXPLODE, 1.2F, 1.6F);
             if (e != null) {
                 Vec3 c = e.getEyePosition();
                 DustParticleOptions rojo = new DustParticleOptions(new Vector3f(0.55F, 0.02F, 0.03F), 1.6F);
@@ -903,6 +1252,10 @@ public final class Caja {
             Coleccionista.LOGGER.info("COLECCIONISTA_CAJA bang {} {}{}", p.etiqueta(), p.nombre, traidor ? " (traidor)" : "");
         } else {
             // se trabó: quedan muy pocos para lo que sigue (o ya no estaba)
+            Cuerpos.EN_SILLA.remove(id);
+            if (arma != null) {
+                arma.clic();
+            }
             salvados++;
             sonidoArma(s, SoundEvents.DISPENSER_FAIL, 1.6F, 0.7F);
             sonidoArma(s, SoundEvents.CHAIN_BREAK, 1.2F, 0.6F);
@@ -936,7 +1289,7 @@ public final class Caja {
     }
 
     private static void sonidoArma(MinecraftServer s, net.minecraft.sounds.SoundEvent e, float vol, float tono) {
-        BlockPos p = arma != null ? BlockPos.containing(arma.canon()) : Complejo.pos(s, "caja.escenario");
+        BlockPos p = arma != null && arma.arriba() ? BlockPos.containing(arma.canon()) : Complejo.pos(s, "caja.escenario");
         if (p != null) {
             s.overworld().playSound(null, p, e, SoundSource.HOSTILE, vol, tono);
         }
@@ -973,11 +1326,10 @@ public final class Caja {
         paso = Paso.GIRAR;
         pasoDesde = t + 100000;
         if (arma != null) {
-            BlockPos c = Complejo.pos(s, "caja.escenario");
-            if (c != null) {
-                arma.apuntar(arma.getYRot() + 180F, 20F);
-            }
+            // se voltea despacio, apuntando al piso: busca a sus traidores
+            arma.apuntar(arma.getYRot() + 180F, 35F);
         }
+        foco(s, null);
         enviar(s);
         org(s);
         Pantallas.hablar(s, "caja_traidores", () -> {
@@ -998,8 +1350,10 @@ public final class Caja {
         Evento ev = Evento.get(s);
         ev.reloj(s, 0);
         if (arma != null) {
-            arma.subir();
+            arma.bajar();
         }
+        foco(s, null);
+        luces(s, false);
         for (Silla si : circulo.values()) {
             si.cerrar(false);
         }
@@ -1119,9 +1473,17 @@ public final class Caja {
                     }
                 }
             }
+            case SENTARSE -> {
+                if (t % 10 == 0) {
+                    sentarseTick(s);
+                }
+            }
             case ROLES -> {
+                if (t % 20 == 0) {
+                    vigilarAsientos(s);
+                }
                 if (t - desde >= 170) {
-                    empezarTurnos(s);
+                    empezarTurno(s);
                 }
             }
             case APAGON -> {
@@ -1131,6 +1493,8 @@ public final class Caja {
                 if (t >= apagonFin) {
                     if (trasApagon == Fase.CIRCULO) {
                         enCirculo(s);
+                    } else if (trasApagon == Fase.ROLES) {
+                        mostrarRoles(s);
                     } else {
                         empezarTurno(s);
                     }
@@ -1159,6 +1523,13 @@ public final class Caja {
                 if (t % 20 == 0) {
                     vigilarCirculo(s);
                 }
+                // se abre la compuerta y sube la escopeta (girando) mientras habla el Coleccionista
+                if (t - desde == 50) {
+                    compuerta(s, true);
+                }
+                if (t - desde == 75 && arma != null) {
+                    arma.subir();
+                }
             }
             case REVISION, TRAIDORES -> {
                 if (t % 20 == 0) {
@@ -1167,9 +1538,10 @@ public final class Caja {
                 revisionTick(s);
             }
             case FIN -> {
-                if (arma != null && arma.estado() == 0 && t - desde > ArmaTecho.TICKS_SUBIR + 10) {
+                if (arma != null && arma.guardada() && t - desde > Escopeta.TICKS_BAJAR + 10) {
                     arma.discard();
                     arma = null;
+                    compuerta(s, false);
                 }
             }
             default -> {
@@ -1188,8 +1560,39 @@ public final class Caja {
         long dt = t - pasoDesde;
         switch (paso) {
             case GIRAR -> {
-                boolean listo = arma == null || arma.abajo() && arma.apuntando();
+                boolean listo;
+                if (arma == null) {
+                    listo = true;
+                } else if (!arma.arriba()) {
+                    listo = false;
+                } else if (amagoEtapa == 0) {
+                    empezarApunte(s, id);
+                    listo = false;
+                } else if (amagoEtapa == 1) {
+                    // llegó al falso: se queda un momento (al otro se le para el corazón)
+                    if (arma.apuntando()) {
+                        amagoEtapa = 2;
+                        amagoHasta = t + 25 + R.nextInt(25);
+                        Pieza f = amago == null ? null : Evento.get(s).pieza(amago);
+                        if (f != null && Evento.entidad(s, f) instanceof ServerPlayer sp) {
+                            sp.playNotifySound(SoundEvents.WARDEN_HEARTBEAT, SoundSource.MASTER, 1F, 1.3F);
+                        }
+                    }
+                    listo = false;
+                } else if (amagoEtapa == 2) {
+                    if (t >= amagoHasta) {
+                        Entity e = Evento.entidad(s, Evento.get(s).pieza(id));
+                        if (e != null) {
+                            arma.apuntarA(e.getEyePosition());
+                        }
+                        amagoEtapa = 3;
+                    }
+                    listo = false;
+                } else {
+                    listo = arma.apuntando();
+                }
                 if (listo && dt >= 20) {
+                    foco(s, Evento.entidad(s, Evento.get(s).pieza(id)));
                     paso = Paso.ESPERA;
                     pasoDesde = t;
                     eligio.remove(id);
@@ -1222,16 +1625,30 @@ public final class Caja {
                     org(s);
                 }
             }
-            case BIEN -> {
-                if (dt >= 45) {
-                    siguiente(s);
+            case BIEN, BALA -> {
+                // la misma tensión para los dos: el zumbido y el latido, la carga (los cañones se quiebran y se cierran)... y al final
+                if (dt == 64 && arma != null) {
+                    arma.cargar();
+                    sonidoArma(s, propio("caja_cerrojo"), 2F, 1F);
                 }
-            }
-            case BALA -> {
-                if (dt == 45) {
-                    disparar(s, id);
+                if (dt == 104) {
+                    if (paso == Paso.BALA) {
+                        disparar(s, id);
+                    } else {
+                        // clic: los martillos caen y no sale nada
+                        if (arma != null) {
+                            arma.clic();
+                        }
+                        sonidoArma(s, SoundEvents.DISPENSER_FAIL, 2F, 0.8F);
+                        sonidoArma(s, SoundEvents.LEVER_CLICK, 1.5F, 1.4F);
+                        Pieza p = Evento.get(s).pieza(id);
+                        if (p != null && Evento.entidad(s, p) instanceof ServerPlayer sp) {
+                            Plat.msg(sp, Component.translatable(MOD + ".caja.bien").withStyle(ChatFormatting.GREEN), true);
+                        }
+                        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA clic {}", p == null ? id : p.nombre);
+                    }
                 }
-                if (dt >= 100) {
+                if (dt >= (paso == Paso.BALA ? 190 : 150)) {
                     siguiente(s);
                 }
             }
@@ -1284,6 +1701,10 @@ public final class Caja {
     }
 
     public static boolean alAcabarReloj(MinecraftServer s) {
+        if (fase == Fase.SENTARSE) {
+            todosSentados(s);
+            return true;
+        }
         if (fase == Fase.TURNO) {
             finTurno(s);
             return true;
@@ -1338,7 +1759,11 @@ public final class Caja {
         UUID a = apuntado();
         if (a != null) {
             t0.putUUID("apuntado", a);
-            t0.putString("paso", paso.name());
+            t0.putString("paso", paso == Paso.BIEN || paso == Paso.BALA ? "TENSION" : paso.name());
+        }
+        if (fase == Fase.SENTARSE) {
+            t0.putInt("sentados", sentados);
+            t0.putInt("total", total);
         }
         return t0;
     }
@@ -1350,7 +1775,8 @@ public final class Caja {
     /** Lo de cada pieza: su papel, con quién (si es traidor), dónde va sentada y si le toca decir su símbolo. */
     private static void mio(MinecraftServer s, ServerPlayer sp) {
         CompoundTag d = new CompoundTag();
-        if (fase != Fase.NADA && simbolo.containsKey(sp.getUUID())) {
+        // (la carta se ve al prenderse la luz, no en el apagón)
+        if (fase != Fase.NADA && simbolo.containsKey(sp.getUUID()) && !(fase == Fase.APAGON && trasApagon == Fase.ROLES)) {
             boolean tr = traidoresIds.contains(sp.getUUID());
             d.putString("rol", tr ? "traidor" : "inocente");
             if (tr) {
@@ -1423,6 +1849,30 @@ public final class Caja {
         if (fase == Fase.LLEGANDO && desde <= t && !enSalon(s, sp)) {
             return Objetivo.Meta.en(Complejo.pos(s, "caja.centro"), 1.5, MOD + ".obj.carrusel");
         }
+        if (fase == Fase.SENTARSE && sentadoEn(sp) == null) {
+            // la góndola con asiento libre más cercana (de preferencia donde ya hay alguien solo)
+            BlockPos mejor = null;
+            double dm = Double.MAX_VALUE;
+            for (int g = 0; g < asientos.length; g++) {
+                boolean libre = false, uno = false;
+                for (Silla si : asientos[g]) {
+                    if (si != null && si.isAlive()) {
+                        libre |= !si.isVehicle();
+                        uno |= si.isVehicle();
+                    }
+                }
+                BlockPos b = Complejo.pos(s, "caja.gon." + g + ".entrada");
+                if (!libre || b == null) {
+                    continue;
+                }
+                double d = sp.distanceToSqr(b.getX() + 0.5, b.getY(), b.getZ() + 0.5) * (uno ? 0.4 : 1.0);
+                if (d < dm) {
+                    dm = d;
+                    mejor = b;
+                }
+            }
+            return mejor == null ? null : Objetivo.Meta.en(mejor, 1.2, MOD + ".obj.gondola");
+        }
         return null;
     }
 
@@ -1479,13 +1929,19 @@ public final class Caja {
                 si.soltar();
                 si.discard();
             }
-            for (ArmaTecho a : l.getEntitiesOfClass(ArmaTecho.class, box)) {
+            for (Escopeta a : l.getEntitiesOfClass(Escopeta.class, box)) {
                 a.discard();
             }
         }
         if (arma != null) {
             arma.discard();
             arma = null;
+        }
+        if (o != null) {
+            compuerta(s, false);
+            lucesBajas = true;
+            luces(s, false);
+            foco(s, null);
         }
         for (BlockPos q : sangre) {
             if (l.getBlockState(q).getBlock() != Blocks.AIR) {
@@ -1508,15 +1964,23 @@ public final class Caja {
         pendientesTraidores.clear();
         eligio.clear();
         fusilados.clear();
+        botDesde.clear();
+        botVa.clear();
+        Cuerpos.EN_SILLA.clear();
         turno = -1;
         idx = -1;
         balas = 0;
         salvados = 0;
+        sentados = 0;
+        total = 0;
     }
 
     public static void reiniciar(MinecraftServer s) {
         if (fase == Fase.HABLANDO || fase == Fase.CIRCULO || fase == Fase.TRAIDORES || fase == Fase.FIN) {
             Pantallas.callar(s);
+        }
+        if (fase != Fase.NADA) {
+            Pantallas.modo(s, "apagada", "");
         }
         limpiarTodo(s);
         fase = Fase.NADA;
@@ -1539,11 +2003,15 @@ public final class Caja {
                 return true;
             }
             case HABLANDO -> {
-                roles(s);
+                sentarse(s);
+                return true;
+            }
+            case SENTARSE -> {
+                todosSentados(s);
                 return true;
             }
             case ROLES -> {
-                empezarTurnos(s);
+                empezarTurno(s);
                 return true;
             }
             case TURNO -> {
@@ -1552,9 +2020,6 @@ public final class Caja {
             }
             case CIRCULO -> {
                 Pantallas.callar(s);
-                if (arma != null && !arma.abajo()) {
-                    arma.bajar();
-                }
                 revisar(s);
                 return true;
             }

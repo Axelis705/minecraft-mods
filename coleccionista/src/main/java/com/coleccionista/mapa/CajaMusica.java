@@ -1,43 +1,48 @@
 package com.coleccionista.mapa;
 
 /**
- * La caja de música (capítulo 3): un salón forrado como el interior de una caja de música, con un carrusel enorme en medio. El carrusel
- * tiene {@link #GONDOLAS} góndolas cerradas y numeradas (tres por lado, cada una mirando hacia afuera) y, escondido en su centro, el
- * escenario redondo donde al final se sientan todos en círculo y baja el arma del techo. Se llega por el pasillo de servicio
- * ({@link Pasaje}, idéntico al de la casa).
+ * La caja de música (capítulo 3): un salón forrado como el interior de una caja de música. Pegadas a los muros del norte, del este y del
+ * sur hay {@link #GONDOLAS} góndolas abiertas (como casetas de feria, con su toldo de rayas y su número): cada una con dos asientos en fila
+ * mirando hacia la pared (el de atrás le ve la espalda al de adelante). Las piezas entran y se sientan solas. En medio, el escenario redondo
+ * con una compuerta en el piso: de ahí sale la escopeta al final. Se llega por el pasillo de servicio ({@link Pasaje}, idéntico al de la
+ * casa), por el muro del oeste.
  * <pre>
- *   x: 0 ... 64   z: -1 ... 43   y: -1 ... 14
- *   el pasillo x 1..16 (entra al salón por x 16), el salón x 17..63 / z 0..42 (alto 12),
- *   el carrusel x 27..53 / z 8..34 (hasta y 11), su escenario (adentro) x 33..47 / z 14..28 (alto 9)
+ *   x: 0 ... 61   z: -1 ... 43   y: -3 ... 14
+ *   el pasillo x 2..15 (entra al salón por x 16), el salón x 17..59 / z 0..42 (alto 12), su centro (38, 21)
+ *   las góndolas: 4 al norte (z 0..4), 4 al este (x 55..59) y 4 al sur (z 38..42)
+ *   la compuerta: x 37..39 / z 20..22 (trampillas a ras del piso) y abajo el foso (y -2..-1; el fondo en y -3)
  * </pre>
- * Cada góndola por dentro (ancho 3, largo 4, alto 3): el asiento de atrás (un sillón con respaldo contra la pared del escenario), el de
- * adelante (un banquito sin respaldo: así el de atrás le ve la espalda) y, en la pared del frente, su número y una vela. Marcas:
- * {@code caja.gon.N.atras} y {@code caja.gon.N.frente} (N = 0..11, con el yaw hacia el frente), {@code caja.escenario} (el centro del
- * círculo), {@code caja.arma} (de donde cuelga el arma), {@code caja.centro}, {@code caja.entrada}, {@code caja.pantalla} y el pasillo
- * {@code pas_caj}.
+ * Cada góndola por dentro (ancho 3, fondo 5, alto 3): la entrada (del lado del salón), el sillón de atrás (con respaldo), el banquito de
+ * adelante (sin respaldo: así se le ve la espalda) y la pared con su número y una vela. Marcas: {@code caja.gon.N.atras},
+ * {@code caja.gon.N.frente} (N = 0..11, con el yaw hacia la pared) y {@code caja.gon.N.entrada}; {@code caja.escenario} (el centro del
+ * círculo), {@code caja.arma} (el fondo del foso, donde va la escopeta), {@code caja.compuerta.K} (las 9 trampillas), {@code caja.luz.K}
+ * (las luces del salón; su yaw es el nivel de luz, para bajarlas y volver a subirlas), {@code caja.centro}, {@code caja.entrada},
+ * {@code caja.pantalla} y el pasillo {@code pas_caj}.
  */
 public final class CajaMusica {
     private static final String C = "coleccionista:";
     public static final int GONDOLAS = 12;
     /** El salón (interior). */
-    public static final int HX0 = 17, HX1 = 63, HZ0 = 0, HZ1 = 42, ALTO = 12;
-    /** El carrusel (por fuera) y su escenario (por dentro). */
-    public static final int CX0 = 27, CX1 = 53, CZ0 = 8, CZ1 = 34, CARRUSEL_ALTO = 11;
-    public static final int EX0 = 33, EX1 = 47, EZ0 = 14, EZ1 = 28, ESCENARIO_ALTO = 9;
+    public static final int HX0 = 17, HX1 = 59, HZ0 = 0, HZ1 = 42, ALTO = 12;
     /** El centro del escenario (bloque). */
-    public static final int MX = 40, MZ = 21;
+    public static final int MX = 38, MZ = 21;
     /** Qué tan lejos del centro van las sillas del círculo. */
     public static final double RADIO_CIRCULO = 5.2;
+    /** Cuántas luces del salón tienen marca (caja.luz.0 .. N-1). */
+    public static int luces;
 
     private CajaMusica() {
     }
 
     public static Plano crear(long semilla) {
         Plano p = new Plano(semilla);
-        p.caja(0, -1, -1, 64, ALTO + 2, 43, C + "ladrillo_oscuro");
+        luces = 0;
+        // abajo del piso, tierra firme (y más hondo junto a la compuerta, para el foso)
+        p.caja(0, -1, -1, 61, -1, 43, C + "ladrillo_oscuro");
+        p.caja(MX - 3, -3, MZ - 3, MX + 3, -2, MZ + 3, C + "ladrillo_oscuro");
+        p.caja(0, 0, -1, 61, ALTO + 2, 43, C + "ladrillo_oscuro");
         Pasaje.pasillo(p, "pas_caj", new Marco(2, 26, 270));
         salon(p);
-        carrusel(p);
         escenario(p);
         int[][] gs = gondolas();
         for (int n = 0; n < gs.length; n++) {
@@ -46,16 +51,18 @@ public final class CajaMusica {
         return p;
     }
 
-    /** Las góndolas: {x, z del asiento de atrás, yaw hacia el frente}, numeradas en el sentido del reloj desde el norte. */
+    /**
+     * Las góndolas: {x, z del bloque de la entrada (por dentro), yaw hacia la pared}, numeradas en el sentido del reloj: 1..4 al norte (de
+     * oeste a este), 5..8 al este (de norte a sur) y 9..12 al sur (de este a oeste).
+     */
     public static int[][] gondolas() {
         return new int[][] {
-                {36, 12, 180}, {40, 12, 180}, {44, 12, 180},
-                {49, 17, 270}, {49, 21, 270}, {49, 25, 270},
-                {44, 30, 0}, {40, 30, 0}, {36, 30, 0},
-                {31, 25, 90}, {31, 21, 90}, {31, 17, 90}};
+                {32, 4, 180}, {36, 4, 180}, {40, 4, 180}, {44, 4, 180},
+                {55, 15, 270}, {55, 19, 270}, {55, 23, 270}, {55, 27, 270},
+                {44, 38, 0}, {40, 38, 0}, {36, 38, 0}, {32, 38, 0}};
     }
 
-    /** El marco local de una góndola: k crece hacia el frente (el asiento de atrás es k 0), i de lado a lado (-1..1). */
+    /** El marco local de una góndola: k crece hacia la pared (k 0 es la entrada, por dentro), i de lado a lado (-1..1). */
     private static Marco marco(int bx, int bz, int yaw) {
         Marco tmp = new Marco(0, 0, yaw);
         int cx = bx + (1 - (tmp.ux + tmp.wx)) / 2, cz = bz + (1 - (tmp.uz + tmp.wz)) / 2;
@@ -89,30 +96,31 @@ public final class CajaMusica {
                 p.set(HX1 + 1, y, z, b);
             }
         }
-        // un tapete rojo alrededor del carrusel y otro de la entrada hasta él
-        for (int x = CX0 - 2; x <= CX1 + 2; x++) {
-            for (int z = CZ0 - 2; z <= CZ1 + 2; z++) {
-                boolean orilla = x == CX0 - 2 || x == CX1 + 2 || z == CZ0 - 2 || z == CZ1 + 2;
-                if (x < CX0 || x > CX1 || z < CZ0 || z > CZ1) {
-                    p.set(x, 0, z, C + (orilla ? "tapete_orilla" : "tapete_rojo"));
-                }
+        // el tapete de la entrada hasta el escenario, y uno alrededor del escenario
+        for (int x = HX0; x <= MX - 9; x++) {
+            for (int z = MZ - 2; z <= MZ + 2; z++) {
+                p.set(x, 0, z, C + (z == MZ - 2 || z == MZ + 2 ? "tapete_orilla" : "tapete_rojo"));
             }
         }
-        for (int x = HX0; x < CX0 - 2; x++) {
-            for (int z = 19; z <= 23; z++) {
-                p.set(x, 0, z, C + (z == 19 || z == 23 ? "tapete_orilla" : "tapete_rojo"));
-            }
-        }
-        // repisas con bailarinas de porcelana en los muros del norte y del sur (miran al carrusel)
+        // repisas con bailarinas de porcelana arriba de las góndolas (norte y sur) y en el muro del oeste
         for (int x = HX0 + 2; x <= HX1 - 2; x++) {
-            p.set(x, 4, HZ0, C + "losa_madera[type=top]");
-            p.set(x, 4, HZ1, C + "losa_madera[type=top]");
+            p.set(x, 7, HZ0, C + "losa_madera[type=top]");
+            p.set(x, 7, HZ1, C + "losa_madera[type=top]");
             if (x % 3 == 0) {
-                p.set(x, 5, HZ0, C + "muneca[facing=south]");
-                p.set(x, 5, HZ1, C + "muneca[facing=north]");
+                p.set(x, 8, HZ0, C + "muneca[facing=south]");
+                p.set(x, 8, HZ1, C + "muneca[facing=north]");
             }
         }
-        // columnas doradas en las esquinas y candelabros
+        for (int z = HZ0 + 3; z <= HZ1 - 3; z++) {
+            if (z >= MZ - 6 && z <= MZ + 6) {
+                continue;
+            }
+            p.set(HX0, 7, z, C + "losa_madera[type=top]");
+            if (z % 3 == 0) {
+                p.set(HX0, 8, z, C + "muneca[facing=east]");
+            }
+        }
+        // columnas en las esquinas y candelabros junto a la entrada
         for (int x : new int[] {HX0, HX1}) {
             for (int z : new int[] {HZ0, HZ1}) {
                 for (int y = 1; y <= ALTO; y++) {
@@ -120,93 +128,111 @@ public final class CajaMusica {
                 }
             }
         }
-        for (int z : new int[] {6, 36}) {
+        for (int z : new int[] {MZ - 6, MZ + 6}) {
             p.set(HX0, 1, z, C + "candelabro[facing=east,half=lower]");
             p.set(HX0, 2, z, C + "candelabro[facing=east,half=upper]");
-            p.set(HX1, 1, z, C + "candelabro[facing=west,half=lower]");
-            p.set(HX1, 2, z, C + "candelabro[facing=west,half=upper]");
         }
-        // luz tibia y baja (como dentro de una caja cerrada): alcanza para ver, no más
-        for (int x = HX0 + 3; x <= HX1 - 2; x += 7) {
-            for (int z = HZ0 + 3; z <= HZ1 - 2; z += 7) {
-                if (x >= CX0 - 1 && x <= CX1 + 1 && z >= CZ0 - 1 && z <= CZ1 + 1) {
-                    continue;
-                }
-                p.set(x, 3, z, "light[level=12]");
-                p.set(x, ALTO - 1, z, "light[level=11]");
+        // relojes viejos (el mecanismo de la caja) en las esquinas libres
+        p.set(HX0 + 4, 6, HZ0, C + "reloj[facing=south]");
+        p.set(HX1, 6, HZ0 + 6, C + "reloj[facing=west]");
+        p.set(HX1, 6, HZ1 - 6, C + "reloj[facing=west]");
+        p.set(HX0 + 4, 6, HZ1, C + "reloj[facing=north]");
+        // luz tibia (se baja en la revisión: cada luz tiene su marca, con su nivel en el yaw)
+        for (int x = HX0 + 4; x <= HX1 - 3; x += 7) {
+            for (int z = HZ0 + 7; z <= HZ1 - 6; z += 7) {
+                luz(p, x, ALTO - 1, z, 12);
             }
         }
+        for (int z = HZ0 + 6; z <= HZ1 - 5; z += 6) {
+            luz(p, HX0 + 2, 3, z, 11);
+        }
+        for (int x = HX0 + 9; x <= HX1 - 9; x += 6) {
+            luz(p, x, 3, MZ - 12, 10);
+            luz(p, x, 3, MZ + 12, 10);
+        }
+        luz(p, HX1 - 12, 3, MZ, 10);
         p.marca("caja.centro", HX0 + 4, 1, MZ, 270);
         p.marca("caja.entrada", HX0 + 2, 1, MZ, 270);
+        // la pantalla grande del Coleccionista: en el muro del este, arriba de las góndolas (la ven todos al entrar)
+        p.set(HX1, 9, MZ, C + "pantalla[facing=west,grande=true]");
+        p.marca("caja.pantalla", HX1, 9, MZ, 90);
     }
 
-    // ------------------------------------------------------------------ el carrusel
-
-    private static void carrusel(Plano p) {
-        // el cuerpo macizo (luego se le cavan el escenario y las góndolas)
-        for (int x = CX0; x <= CX1; x++) {
-            for (int z = CZ0; z <= CZ1; z++) {
-                boolean orilla = x == CX0 || x == CX1 || z == CZ0 || z == CZ1;
-                p.set(x, 0, z, C + "marmol_oro");
-                for (int y = 1; y <= CARRUSEL_ALTO; y++) {
-                    String b;
-                    if (!orilla) {
-                        b = y == CARRUSEL_ALTO ? C + "metal_negro" : C + "panel_madera";
-                    } else if (y == 1 || y == 5 || y == CARRUSEL_ALTO) {
-                        b = C + "marco_dorado";
-                    } else if (y <= 4) {
-                        b = C + "madera_pulida";
-                    } else {
-                        // la lona del carrusel: rayas rojas y blancas
-                        int t = (x + z) / 2;
-                        b = t % 2 == 0 ? "minecraft:red_wool" : "minecraft:white_wool";
-                    }
-                    p.set(x, y, z, b);
-                }
-            }
-        }
-        // las esquinas redondeadas (casi un octágono)
-        int[][] esq = {{CX0, CZ0, 1, 1}, {CX1, CZ0, -1, 1}, {CX0, CZ1, 1, -1}, {CX1, CZ1, -1, -1}};
-        for (int[] e : esq) {
-            for (int a = 0; a < 3; a++) {
-                for (int b = 0; b < 3 - a; b++) {
-                    int x = e[0] + a * e[2], z = e[1] + b * e[3];
-                    for (int y = 1; y <= CARRUSEL_ALTO; y++) {
-                        p.set(x, y, z, "air");
-                    }
-                    p.set(x, 0, z, C + "tapete_rojo");
-                }
-            }
-            // el borde nuevo de la esquina (diagonal) también dorado y con lona
-            for (int a = 0; a <= 3; a++) {
-                int x = e[0] + a * e[2], z = e[1] + (3 - a) * e[3];
-                for (int y = 1; y <= CARRUSEL_ALTO; y++) {
-                    p.set(x, y, z, y == 1 || y == 5 || y == CARRUSEL_ALTO ? C + "marco_dorado"
-                            : y <= 4 ? C + "madera_pulida" : a % 2 == 0 ? "minecraft:red_wool" : "minecraft:white_wool");
-                }
-            }
-        }
-        // arriba: una corona de focos (luces de feria) alrededor del techo del carrusel
-        for (int x = CX0 + 2; x <= CX1 - 2; x += 3) {
-            p.set(x, CARRUSEL_ALTO + 1, CZ0 + 1, C + "foco");
-            p.set(x, CARRUSEL_ALTO + 1, CZ1 - 1, C + "foco");
-        }
-        for (int z = CZ0 + 2; z <= CZ1 - 2; z += 3) {
-            p.set(CX0 + 1, CARRUSEL_ALTO + 1, z, C + "foco");
-            p.set(CX1 - 1, CARRUSEL_ALTO + 1, z, C + "foco");
-        }
-        // la pantalla grande del Coleccionista, colgada en la cara del oeste del carrusel (la que ven al entrar)
-        p.set(CX0 - 1, 8, MZ, C + "pantalla[facing=west,grande=true]");
-        p.marca("caja.pantalla", CX0 - 1, 8, MZ, 90);
+    private static void luz(Plano p, int x, int y, int z, int nivel) {
+        p.set(x, y, z, "light[level=" + nivel + "]");
+        p.marca("caja.luz." + luces++, x, y, z, nivel);
     }
 
-    /** Una góndola: el hueco, el piso, los dos asientos, el número (adentro y afuera) y una vela. */
+    // ------------------------------------------------------------------ el escenario del centro
+
+    private static void escenario(Plano p) {
+        for (int x = MX - 9; x <= MX + 9; x++) {
+            for (int z = MZ - 9; z <= MZ + 9; z++) {
+                double d = Math.sqrt((x - MX) * (x - MX) + (z - MZ) * (z - MZ));
+                if (d > 8.6) {
+                    continue;
+                }
+                String piso = d < 2.6 ? "metal_negro" : d < 3.6 ? "marco_dorado" : d < 7.6 ? ((x + z) % 2 == 0 ? "marmol_negro" : "marmol_crema")
+                        : "marmol_oro";
+                p.set(x, 0, z, C + piso);
+            }
+        }
+        // la compuerta (3 x 3): trampillas de hierro cerradas a ras del piso; al abrirse, cada una queda parada contra la orilla de afuera
+        int k = 0;
+        for (int x = MX - 1; x <= MX + 1; x++) {
+            for (int z = MZ - 1; z <= MZ + 1; z++) {
+                String hacia = x < MX ? "east" : x > MX ? "west" : z < MZ ? "south" : z > MZ ? "north" : "south";
+                p.set(x, 0, z, C + "trampilla[facing=" + hacia + ",half=top,open=false]");
+                p.marca("caja.compuerta." + k++, x, 0, z, 0);
+                p.set(x, -1, z, "air");
+                p.set(x, -2, z, "air");
+                p.set(x, -3, z, C + "metal_negro");
+            }
+        }
+        // las paredes del foso: metal y cobre viejo (se ven al abrirse la compuerta)
+        for (int x = MX - 2; x <= MX + 2; x++) {
+            for (int z = MZ - 2; z <= MZ + 2; z++) {
+                if (Math.abs(x - MX) == 2 || Math.abs(z - MZ) == 2) {
+                    p.set(x, -1, z, C + "metal_negro");
+                    p.set(x, -2, z, C + "cobre_viejo");
+                }
+            }
+        }
+        p.set(MX - 1, -2, MZ - 1, "light[level=6]");
+        // arriba del escenario: el toldo de rayas en el techo y una araña
+        for (int x = MX - 6; x <= MX + 6; x++) {
+            for (int z = MZ - 6; z <= MZ + 6; z++) {
+                double d = Math.sqrt((x - MX) * (x - MX) + (z - MZ) * (z - MZ));
+                if (d <= 6.4) {
+                    int t = (int) Math.floor((Math.atan2(z - MZ, x - MX) + Math.PI) / (Math.PI / 6));
+                    p.set(x, ALTO, z, t % 2 == 0 ? "minecraft:red_wool" : "minecraft:white_wool");
+                }
+            }
+        }
+        p.set(MX, ALTO - 1, MZ, C + "cadena");
+        p.set(MX, ALTO - 2, MZ, C + "arana");
+        // cuatro candelabros alrededor del escenario (en el piso, fuera del círculo de sillas)
+        for (int[] c : new int[][] {{MX - 8, MZ - 3}, {MX - 8, MZ + 3}, {MX + 8, MZ - 3}, {MX + 8, MZ + 3}}) {
+            String hacia = c[0] < MX ? "east" : "west";
+            p.set(c[0], 1, c[1], C + "candelabro[facing=" + hacia + ",half=lower]");
+            p.set(c[0], 2, c[1], C + "candelabro[facing=" + hacia + ",half=upper]");
+        }
+        for (int[] c : new int[][] {{MX + 5, MZ}, {MX - 5, MZ}, {MX, MZ + 5}, {MX, MZ - 5}}) {
+            luz(p, c[0], 7, c[1], 13);
+        }
+        p.marca("caja.escenario", MX, 1, MZ, 0);
+        p.marca("caja.arma", MX, -2, MZ, 0);
+    }
+
+    // ------------------------------------------------------------------ las góndolas
+
+    /** Una góndola abierta: el hueco, el piso, los dos asientos, el número (adentro y afuera), una vela y su toldo de rayas. */
     private static void gondola(Plano p, int n, int bx, int bz, int yaw) {
         Marco m = marco(bx, bz, yaw);
         String num = String.valueOf(n + 1);
-        // adentro: de la pared del escenario (k -1) a la del frente (k 4); de lado, i -1..1
+        // adentro: de la entrada (k 0) a la pared del salón (k 5); de lado, i -1..1
         for (int i = -1; i <= 1; i++) {
-            for (int k = 0; k <= 3; k++) {
+            for (int k = 0; k <= 4; k++) {
                 m.set(p, i, 0, k, C + "tapete_rojo");
                 for (int y = 1; y <= 3; y++) {
                     m.set(p, i, y, k, "air");
@@ -214,81 +240,34 @@ public final class CajaMusica {
                 m.set(p, i, 4, k, C + "madera_pulida");
             }
         }
-        // los lados (la pared de atrás es la del escenario: se queda como está)
+        // los lados (acolchados, con moldura dorada abajo) y el arco de la entrada
         for (int k = 0; k <= 4; k++) {
             for (int y = 1; y <= 4; y++) {
                 for (int i : new int[] {-2, 2}) {
-                    m.set(p, i, y, k, y == 1 ? C + "marco_dorado" : C + "acolchado");
+                    m.set(p, i, y, k, y == 1 ? C + "marco_dorado" : y == 4 ? C + "madera_pulida" : C + "acolchado");
                 }
             }
         }
-        // el asiento de atrás: un sillón con respaldo (contra la pared); el de adelante: un banquito (sin respaldo: se le ve la espalda)
-        m.set(p, 0, 1, 0, C + "sillon[facing=south,half=lower]");
-        m.set(p, 0, 2, 0, C + "sillon[facing=south,half=upper]");
-        m.set(p, 0, 1, 2, C + "losa_madera[type=bottom]");
-        // la pared del frente: su número grande, una vela en una repisa y una luz bajita (se ven las espaldas, no mucho más)
-        m.texto(p, 0, 3, 3, "placa", "north", 0xD9A93A, num);
-        m.set(p, 1, 1, 3, C + "losa_madera[type=top]");
-        m.set(p, 1, 2, 3, C + "vela");
-        m.set(p, 0, 3, 1, "light[level=10]");
-        // afuera: el número pintado en el frente de la góndola
-        m.texto(p, 0, 3, 5, "placa", "south", 0xD9A93A, num);
-        m.marca(p, "caja.gon." + n + ".atras", 0, 1, 0, 0);
-        m.marca(p, "caja.gon." + n + ".frente", 0, 1, 2, 0);
-    }
-
-    // ------------------------------------------------------------------ el escenario del centro
-
-    private static void escenario(Plano p) {
-        for (int x = EX0; x <= EX1; x++) {
-            for (int z = EZ0; z <= EZ1; z++) {
-                double d = Math.sqrt((x - MX) * (x - MX) + (z - MZ) * (z - MZ));
-                String piso = d < 2.6 ? "tapete_rojo" : d < 7.6 ? ((x + z) % 2 == 0 ? "marmol_negro" : "marmol_crema") : "parquet";
-                p.set(x, 0, z, C + piso);
-                for (int y = 1; y <= ESCENARIO_ALTO; y++) {
-                    p.set(x, y, z, "air");
-                }
-                p.set(x, ESCENARIO_ALTO + 1, z, C + "madera_pulida");
+        for (int i = -2; i <= 2; i++) {
+            m.set(p, i, 4, 0, C + "marco_dorado");
+            // el toldo de rayas arriba de cada góndola (como las casetas de una feria)
+            for (int k = -1; k <= 4; k++) {
+                m.set(p, i, 5, k, (i + 2) % 2 == 0 ? "minecraft:red_wool" : "minecraft:white_wool");
             }
         }
-        for (int y = 1; y <= ESCENARIO_ALTO; y++) {
-            String b = y <= 2 ? C + "panel_madera" : y == 3 || y == ESCENARIO_ALTO ? C + "marco_dorado" : C + "papel_tapiz";
-            for (int x = EX0 - 1; x <= EX1 + 1; x++) {
-                p.set(x, y, EZ0 - 1, b);
-                p.set(x, y, EZ1 + 1, b);
-            }
-            for (int z = EZ0; z <= EZ1; z++) {
-                p.set(EX0 - 1, y, z, b);
-                p.set(EX1 + 1, y, z, b);
-            }
-        }
-        // el hueco del techo de donde baja el arma (oscuro, con cadenas)
-        for (int x = MX - 1; x <= MX + 1; x++) {
-            for (int z = MZ - 1; z <= MZ + 1; z++) {
-                p.set(x, ESCENARIO_ALTO + 1, z, "air");
-            }
-        }
-        p.set(MX - 1, ESCENARIO_ALTO + 1, MZ - 1, C + "cadena");
-        p.set(MX + 1, ESCENARIO_ALTO + 1, MZ + 1, C + "cadena");
-        // en las esquinas, candelabros y engranes viejos (relojes) en las paredes
-        for (int[] c : new int[][] {{EX0, EZ0}, {EX1, EZ0}, {EX0, EZ1}, {EX1, EZ1}}) {
-            p.set(c[0], 1, c[1], C + "candelabro[facing=" + (c[1] == EZ0 ? "south" : "north") + ",half=lower]");
-            p.set(c[0], 2, c[1], C + "candelabro[facing=" + (c[1] == EZ0 ? "south" : "north") + ",half=upper]");
-        }
-        p.set(MX, 6, EZ0, C + "reloj[facing=south]");
-        p.set(MX, 6, EZ1, C + "reloj[facing=north]");
-        p.set(EX0, 6, MZ, C + "reloj[facing=east]");
-        p.set(EX1, 6, MZ, C + "reloj[facing=west]");
-        // luz: la del centro (sobre el círculo) un poco más fuerte
-        for (int[] c : new int[][] {{EX0 + 2, EZ0 + 2}, {EX1 - 2, EZ0 + 2}, {EX0 + 2, EZ1 - 2}, {EX1 - 2, EZ1 - 2}}) {
-            p.set(c[0], 7, c[1], "light[level=12]");
-            p.set(c[0], 2, c[1] + (c[1] == EZ0 ? 1 : -1), "light[level=11]");
-        }
-        p.set(MX + 2, 7, MZ, "light[level=15]");
-        p.set(MX - 2, 7, MZ, "light[level=15]");
-        p.set(MX, 7, MZ + 2, "light[level=14]");
-        p.set(MX, 7, MZ - 2, "light[level=14]");
-        p.marca("caja.escenario", MX, 1, MZ, 0);
-        p.marca("caja.arma", MX, ESCENARIO_ALTO, MZ, 0);
+        // el asiento de atrás: un sillón con respaldo; el de adelante: un banquito (sin respaldo: se le ve la espalda)
+        m.set(p, 0, 1, 1, C + "sillon[facing=south,half=lower]");
+        m.set(p, 0, 2, 1, C + "sillon[facing=south,half=upper]");
+        m.set(p, 0, 1, 3, C + "losa_madera[type=bottom]");
+        // la pared del fondo: su número grande, una vela en una repisa y una luz bajita
+        m.texto(p, 0, 3, 4, "placa", "north", 0xD9A93A, num);
+        m.set(p, 1, 1, 4, C + "losa_madera[type=top]");
+        m.set(p, 1, 2, 4, C + "vela");
+        m.set(p, 0, 3, 2, "light[level=10]");
+        // afuera: el número arriba de la entrada (bajo el toldo)
+        m.texto(p, 0, 4, -1, "placa", "north", 0xD9A93A, num);
+        m.marca(p, "caja.gon." + n + ".atras", 0, 1, 1, 0);
+        m.marca(p, "caja.gon." + n + ".frente", 0, 1, 3, 0);
+        m.marca(p, "caja.gon." + n + ".entrada", 0, 1, 0, 180);
     }
 }

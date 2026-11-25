@@ -73,13 +73,20 @@ public class Cadaver extends Entity {
     public static final int ESTATUA = 100;
 
     public boolean estatua() {
-        return postura() >= ESTATUA;
+        return postura() >= ESTATUA && postura() < EN_SILLA;
+    }
+
+    /** Postura desde la que el cuerpo va sentado en su silla y se va de espaldas con ella (la caja de música): no cae por gravedad. */
+    public static final int EN_SILLA = 200;
+
+    public boolean enSilla() {
+        return postura() >= EN_SILLA && postura() < EN_SILLA + 100;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (estatua()) {
+        if (estatua() || enSilla()) {
             setDeltaMovement(Vec3.ZERO);
             return;
         }

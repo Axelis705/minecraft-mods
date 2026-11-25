@@ -56,6 +56,11 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         m.crouching = false;
         m.riding = false;
         int pos = c.postura();
+        if (c.enSilla()) {
+            enSilla(c, m, slim, id, ps, buf, light, pt);
+            super.render(c, yaw, pt, ps, buf, light);
+            return;
+        }
         if (c.estatua()) {
             estatua(c, m, slim, id, ps, buf, light, pt);
             super.render(c, yaw, pt, ps, buf, light);
@@ -89,6 +94,73 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         d.flush();
         ps.popPose();
         super.render(c, yaw, pt, ps, buf, light);
+    }
+
+    private static net.minecraft.world.level.block.state.BlockState silla, correa;
+
+    /**
+     * El que recibió el balazo en el círculo: sentado en su silla (atado), con la cabeza echada para atrás y los brazos colgando. Desde el
+     * disparo, la silla se va de espaldas con él (gira sobre las patas de atrás, cada vez más rápido), pega en el piso y rebota un poquito.
+     */
+    private void enSilla(Cadaver c, PlayerModel<AbstractClientPlayer> m, boolean slim, UUID id, PoseStack ps, MultiBufferSource buf, int light,
+            float pt) {
+        if (silla == null) {
+            silla = com.coleccionista.evento.Complejo.estado("coleccionista:silla[facing=north]");
+            correa = com.coleccionista.evento.Complejo.estado("coleccionista:cadena[axis=x]");
+        }
+        int v = c.postura() - Cadaver.EN_SILLA;
+        ps.pushPose();
+        ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
+        float ang = 0F;
+        if (c.cae() > 0 && c.level() != null) {
+            float t = (c.level().getGameTime() - c.cae() + pt) / 9F;
+            if (t < 1F) {
+                ang = 84F * t * t;
+            } else {
+                float r = Math.min(1F, (t - 1F) / 0.45F);
+                ang = 84F - 9F * (float) Math.sin(r * Math.PI);
+            }
+        }
+        // gira sobre la orilla de atrás (las patas de atrás): atrás es +z aquí
+        ps.translate(0, 0, 0.42F);
+        ps.mulPose(Axis.XP.rotationDegrees(ang));
+        ps.translate(0, 0, -0.42F);
+        // la silla (con sus correas)
+        if (silla != null) {
+            ps.pushPose();
+            ps.translate(-0.5, 0, -0.5);
+            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(silla, ps, buf, light, OverlayTexture.NO_OVERLAY);
+            if (correa != null) {
+                ps.translate(0, 0.38, 0.08);
+                ps.scale(1F, 0.6F, 0.6F);
+                Minecraft.getInstance().getBlockRenderer().renderSingleBlock(correa, ps, buf, light, OverlayTexture.NO_OVERLAY);
+            }
+            ps.popPose();
+        }
+        // el cuerpo, sentado: como uno vivo en la silla, pero flojo
+        m.head.setRotation(-0.55F - 0.08F * v, 0.18F * (v - 1), 0.1F * (v - 1));
+        m.body.setRotation(0, 0, 0);
+        m.rightArm.setRotation(0.15F + 0.1F * v, 0, 0.22F);
+        m.leftArm.setRotation(0.1F, 0, -0.2F - 0.06F * v);
+        m.rightLeg.setRotation(-1.4137167F, 0.31415927F, 0.07853982F);
+        m.leftLeg.setRotation(-1.4137167F, -0.31415927F, -0.07853982F);
+        m.hat.copyFrom(m.head);
+        m.jacket.copyFrom(m.body);
+        m.rightSleeve.copyFrom(m.rightArm);
+        m.leftSleeve.copyFrom(m.leftArm);
+        m.rightPants.copyFrom(m.rightLeg);
+        m.leftPants.copyFrom(m.leftLeg);
+        ps.translate(0, 0.07, 0);
+        ps.scale(-1, -1, 1);
+        ps.scale(0.9375F, 0.9375F, 0.9375F);
+        ps.translate(0, -1.501, 0);
+        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, 0.86F,
+                0.82F, 0.82F, 1F);
+        com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
+        com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
+                m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);
+        d.flush();
+        ps.popPose();
     }
 
     private static final ResourceLocation PIEDRA = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID,

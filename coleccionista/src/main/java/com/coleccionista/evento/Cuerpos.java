@@ -17,6 +17,8 @@ public final class Cuerpos {
 
     /** Quiénes, al ser eliminados, quedan como estatua de cera sentada (la vitrina) en lugar de tirados en el suelo. */
     public static final java.util.Set<java.util.UUID> ESTATUAS = new java.util.HashSet<>();
+    /** Quiénes, al ser eliminados, se van de espaldas con su silla (la caja de música: el balazo). */
+    public static final java.util.Set<java.util.UUID> EN_SILLA = new java.util.HashSet<>();
     /** Quiénes, al ser eliminados, no dejan cuerpo (se los comió Cascabel). */
     public static final java.util.Set<java.util.UUID> SIN_CUERPO = new java.util.HashSet<>();
 
@@ -31,6 +33,19 @@ public final class Cuerpos {
         }
         Cadaver c = ModRegistry.CADAVER.get().create(l);
         if (c == null) {
+            return;
+        }
+        if (EN_SILLA.remove(p.id) && e.getVehicle() instanceof Silla si) {
+            // la silla se va de espaldas con la pieza (la dibuja el cliente); la silla de verdad se quita
+            c.moveTo(si.getX(), si.getY(), si.getZ(), si.getYRot(), 0);
+            c.de(p.id, p.nombre, Cadaver.EN_SILLA + Math.abs(p.id.hashCode()) % 3);
+            c.setYRot(si.getYRot());
+            c.setNoGravity(true);
+            c.caer((int) l.getGameTime());
+            si.soltar();
+            si.discard();
+            l.addFreshEntity(c);
+            Coleccionista.LOGGER.info("COLECCIONISTA_CUERPO silla {} {}", p.etiqueta(), p.nombre);
             return;
         }
         boolean estatua = ESTATUAS.remove(p.id);

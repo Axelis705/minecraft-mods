@@ -208,6 +208,9 @@ public final class Sentidos {
 
     /** ¿Ese jugador se puede sentar en esa silla? (las del circuito, solo los de su equipo al llegar a la salida; las demás, cualquiera) */
     private static boolean puedeSentarse(ServerPlayer sp, Silla s) {
+        if (s.grupo.equals("caja")) {
+            return Caja.puedeSentarse(sp);
+        }
         if (!s.grupo.startsWith("circ.")) {
             return !s.grupo.equals("vitrina");
         }

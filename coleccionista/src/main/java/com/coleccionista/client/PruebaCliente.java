@@ -578,17 +578,19 @@ final class PruebaCliente {
     }
 
     /**
-     * Capítulo 3 · La caja de música: el pasillo, el salón con el carrusel, la carta del papel, la máscara y la tarjeta de la espalda, un
-     * apagón, dos turnos en la góndola (atrás y adelante), el círculo con el arma bajando, un balazo a un bot (con su sangre), mi turno
-     * (la pantalla de los símbolos), la pantalla del organizador y el final.
-     * La caja está en (790, -61, 430): el pasillo en x 791..806 / z 447..456, el salón en x 807..853 / z 430..472, el escenario en
-     * x 823..837 / z 444..458 (centro 830, 451).
+     * Capítulo 3 · La caja de música: el pasillo, el salón con las góndolas, buscar asiento (me siento yo solo con clic derecho en el
+     * sillón; los bots caminan y se sientan), el apagón y la carta del papel, la máscara, dos turnos en la góndola (atrás y adelante), el
+     * círculo con la compuerta que se abre y la escopeta que sube, un balazo a un bot (la tensión, la carga, el disparo y la silla que se va
+     * de espaldas), mi turno (la pantalla de los símbolos y el clic en vacío), la pantalla del organizador y el final.
+     * La caja está en (790, -61, 430): el pasillo en x 792..805 / z 448..455, el salón en x 807..849 / z 430..472, el escenario al centro
+     * (828, 451) con la compuerta en x 827..829 / z 450..452; las góndolas 1..4 al norte (entradas en z 434, centros x 822..834).
      */
     private static void capitulo3(ClientTest.Script t) {
         t.add("cap3: preparar", 600, () -> {
             t.cmd("gamemode adventure @a");
             t.cmd("forceload add 784 424 864 480");
             t.cmd("evento caja tiempos 10 20");
+            t.cmd("evento caja sentarse 60");
             t.cmd("evento caja esperar true");
             t.cmd("evento pocos true");
             t.cmd("evento caja llegar");
@@ -598,45 +600,69 @@ final class PruebaCliente {
         t.add("puertas de la caja", 100, () -> {
             var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(806, -60, 455));
             t.check(st.getBlock() instanceof net.minecraft.world.level.block.DoorBlock && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN),
-                    "se abrieron las puertas del pasillo al salón del carrusel");
+                    "se abrieron las puertas del pasillo al salón");
         });
         t.add("al salon", 300, () -> t.lookFrom(811.5, -60, 451.5, 817, -55, 451.5));
         t.waitFor("cap3: habla", 15000, () -> "HABLANDO".equals(CajaCliente.fase()));
-        t.photo("c3_02_carrusel", 5000, () -> t.lookFrom(808.5, -59, 433.5, 830, -56, 451));
-        t.photo("c3_02b_pantalla", 2500, () -> t.lookFrom(809.5, -60, 451.5, 816, -53, 451.5));
-        t.photo("c3_02c_gondolas", 2000, () -> t.lookFrom(830.5, -60, 432.5, 830.5, -58.5, 438));
-        t.photo("c3_03_carta", 1500, () -> {
-            t.lookFrom(811.5, -60, 451.5, 817, -59, 451.5);
+        t.photo("c3_02_salon", 5000, () -> t.lookFrom(809.5, -58, 434.5, 830, -57, 451));
+        t.photo("c3_02b_pantalla", 2500, () -> t.lookFrom(811.5, -60, 451.5, 849, -52, 451.5));
+        t.photo("c3_02c_gondolas", 2000, () -> t.lookFrom(828.5, -60, 444.5, 828.5, -58.5, 433));
+        // a sentarse: yo, con clic derecho en el sillón de la góndola 3 (entrada en 830, 434; el sillón en 830, 433)
+        t.photo("c3_03_sentarse", 1500, () -> {
             t.cmd("evento caja saltar");
+            t.cmd("tp @s 830.5 -60 434.6 180 35");
+        });
+        t.add("cap3: buscar asiento", 200, () -> t.check("SENTARSE".equals(CajaCliente.fase()), "toca buscar asiento (" + CajaCliente.fase() + ")"));
+        t.add("cap3: me siento", 600, () -> {
+            var mc = Minecraft.getInstance();
+            var pos = new net.minecraft.core.BlockPos(830, -60, 433);
+            mc.gameMode.useItemOn(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.phys.BlockHitResult(
+                    net.minecraft.world.phys.Vec3.atCenterOf(pos).add(0, 0.3, 0.5), net.minecraft.core.Direction.SOUTH, pos, false));
+        });
+        t.add("sentado yo", 100, () -> t.check(Minecraft.getInstance().player.getVehicle() instanceof com.coleccionista.evento.Silla,
+                "me senté solo en la góndola (clic derecho en el sillón)"));
+        t.photo("c3_03b_sentado", 1200, () -> {
+            var me = Minecraft.getInstance().player;
+            me.setYRot(180F);
+            me.setXRot(8F);
+            me.yRotO = me.getYRot();
+            me.xRotO = me.getXRot();
+        });
+        t.photo("c3_03c_salon_bots", 3500, () -> {
+            var me = Minecraft.getInstance().player;
+            me.setYRot(0F);
+            me.setXRot(10F);
+            me.yRotO = me.getYRot();
+            me.xRotO = me.getXRot();
+        });
+        t.waitFor("cap3: todos sentados", 40000, () -> "APAGON".equals(CajaCliente.fase()));
+        t.photo("c3_04_apagon", 1200, () -> {
+        });
+        t.waitFor("cap3: papeles", 8000, () -> "ROLES".equals(CajaCliente.fase()));
+        t.photo("c3_05_carta", 1500, () -> {
         });
         t.add("papel", 100, () -> {
-            t.check("ROLES".equals(CajaCliente.fase()), "se repartieron los papeles (" + CajaCliente.fase() + ")");
             t.check(!CajaCliente.rol().isEmpty(), "tengo papel: " + CajaCliente.rol());
             t.check(CajaCliente.anonimo(), "es la parte a ciegas (sin nombres)");
+            t.check(Minecraft.getInstance().player.getVehicle() instanceof com.coleccionista.evento.Silla, "sigo sentado en una góndola");
         });
-        // sin HUD: un bot de espaldas frente a mí (su tarjeta y su máscara) y yo de frente (mi máscara)
-        t.photo("c3_03c_espalda", 1200, () -> {
+        t.photo("c3_05b_mascara", 6500, () -> {
             Minecraft.getInstance().options.hideGui = true;
-            t.cmd("tp @a 811.5 -60 451.5 270 8");
-            t.cmd("tp @e[type=coleccionista:bot,limit=1,sort=nearest] 813.3 -60 451.5 270 0");
+            Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
         });
-        t.photo("c3_03b_mascara", 1000, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
         t.add("sin hud", 200, () -> {
             Minecraft.getInstance().options.hideGui = false;
             Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
         });
-        t.waitFor("cap3: apagon", 12000, () -> "APAGON".equals(CajaCliente.fase()));
-        t.photo("c3_04_apagon", 1200, () -> {
-        });
         t.waitFor("cap3: turno 1", 8000, () -> "TURNO".equals(CajaCliente.fase()));
-        t.photo("c3_05_gondola", 1500, PruebaCliente::mirarEnGondola);
+        t.photo("c3_06_gondola", 1500, PruebaCliente::mirarEnGondola);
         t.add("sentado", 100, () -> {
             var me = Minecraft.getInstance().player;
             t.check(me.getVehicle() instanceof com.coleccionista.evento.Silla, "voy sentado en mi góndola");
             t.check(com.axeliscore.plat.Nbt.i(CajaCliente.mio(), "gondola") > 0, "sé en qué góndola voy");
             t.check(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON, "en primera persona");
-            // mi pareja (si no voy solo) está sentada en la misma góndola, a 2 bloques
-            int cerca = 0;
+            // mi pareja (si no voy solo) está sentada en la misma góndola, a 2 bloques (y se ve donde está su asiento)
+            int cerca = 0, lejos = 0;
             for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
                 if (e instanceof com.coleccionista.bot.PiezaBot b) {
                     com.axeliscore.AxelisCore.LOGGER.info("COLECCIONISTA_CAJA_BOT {} en {} {} {} vehiculo={} {}", b.getName().getString(),
@@ -646,14 +672,18 @@ final class PruebaCliente {
                     if (b.distanceTo(me) < 3.5) {
                         cerca++;
                     }
+                    if (b.getVehicle() != null && b.distanceToSqr(b.getVehicle()) > 4) {
+                        lejos++;
+                    }
                 }
             }
             if (!"solo".equals(com.axeliscore.plat.Nbt.s(CajaCliente.mio(), "lado"))) {
                 t.check(cerca >= 1, "mi pareja va sentada conmigo en la góndola (" + cerca + ")");
             }
+            t.check(lejos == 0, "todos los bots sentados se ven en su asiento (" + lejos + " lejos)");
         });
         t.waitFor("cap3: turno 2", 20000, () -> "TURNO".equals(CajaCliente.fase()) && com.axeliscore.plat.Nbt.i(CajaCliente.estado(), "turno") == 2);
-        t.photo("c3_06_gondola2", 1500, PruebaCliente::mirarEnGondola);
+        t.photo("c3_07_gondola2", 1500, PruebaCliente::mirarEnGondola);
         // los demás turnos, rápido
         for (int i = 0; i < 5; i++) {
             t.add("cap3: saltar turno " + (i + 3), 4600, () -> t.cmd("evento caja saltar"));
@@ -663,18 +693,39 @@ final class PruebaCliente {
             t.cmd("evento caja primero Bot_03");
             t.cmd("evento caja primero " + yo());
         });
-        t.photo("c3_07_circulo", 1500, () -> mirarA(830.5, -55.5, 451.5));
-        t.photo("c3_08_arma_baja", 4000, () -> mirarA(830.5, -56.5, 451.5));
-        t.photo("c3_08b_tercera", 1000, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
+        t.photo("c3_08_circulo", 2000, () -> mirarA(828.5, -55.5, 451.5));
+        t.photo("c3_09_compuerta", 2200, () -> mirarA(828.5, -60.5, 451.5));
+        t.add("compuerta", 100, () -> {
+            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(827, -61, 451));
+            t.check(st.getBlock() instanceof net.minecraft.world.level.block.TrapDoorBlock
+                    && st.getValue(net.minecraft.world.level.block.TrapDoorBlock.OPEN), "se abrió la compuerta del piso");
+        });
+        t.photo("c3_09b_sube", 3500, () -> mirarA(828.5, -58.5, 451.5));
+        t.photo("c3_09c_arriba", 3500, () -> mirarA(828.5, -57, 451.5));
+        t.photo("c3_09d_tercera", 1000, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
         t.add("primera", 200, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
-        t.waitFor("cap3: apunta al bot", 40000, () -> apuntaA("Bot_03"));
-        t.photo("c3_09_apunta_bot", 600, () -> mirarA(830.5, -56.5, 451.5));
-        t.photo("c3_10_tension", 1000, () -> t.cmd("evento caja bala"));
-        t.photo("c3_11_bang", 1250, () -> {
+        t.waitFor("cap3: apunta al bot", 60000, () -> apuntaA("Bot_03"));
+        t.photo("c3_10_apunta_bot", 600, () -> mirarA(828.5, -57, 451.5));
+        // la tensión (igual para Bien y para Bala), la carga a los 3.2 s y el disparo a los 5.2 s
+        t.photo("c3_11_tension", 2500, () -> t.cmd("evento caja bala"));
+        t.photo("c3_11b_carga", 900, () -> {
         });
-        t.photo("c3_12_sangre", 2500, () -> {
+        t.photo("c3_12_bang", 1850, () -> {
         });
-        t.waitFor("cap3: me apunta", 30000, () -> apuntaA(yo()));
+        t.photo("c3_12b_silla_cae", 700, () -> {
+        });
+        t.add("silla cae", 100, () -> {
+            int sillas = 0;
+            for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (e instanceof com.coleccionista.evento.Cadaver c && c.enSilla() && c.cae() > 0) {
+                    sillas++;
+                }
+            }
+            t.check(sillas >= 1, "la silla se fue de espaldas con el bot (" + sillas + ")");
+        });
+        t.photo("c3_12c_sangre", 2000, () -> {
+        });
+        t.waitFor("cap3: me apunta", 60000, () -> apuntaA(yo()));
         t.photo("c3_13_elige", 1200, () -> {
         });
         t.add("elige", 300, () -> {
@@ -692,8 +743,8 @@ final class PruebaCliente {
             CompoundTag o = new CompoundTag();
             o.putString("nombre", "Bot_05");
             o.putString("etiqueta", "05");
-            o.putString("real", "trebol");
-            o.putString("marco", "corazon");
+            o.putString("real", "llave");
+            o.putString("marco", "sombrero");
             o.putBoolean("traidor", false);
             o.putString("paso", "ESPERA");
             o.putInt("i", 3);
@@ -703,18 +754,23 @@ final class PruebaCliente {
             com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Caja.KEY_ORG, o);
             com.axeliscore.plat.client.Screens.open(new RevisionScreen());
         });
-        t.add("fin organizador", 200, () -> {
+        t.photo("c3_14b_me_salvo", 5600, () -> {
             com.axeliscore.plat.client.Screens.close();
             com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Caja.KEY_ORG, new CompoundTag());
             t.cmd("evento caja bien");
+            mirarA(828.5, -57, 451.5);
+        });
+        t.add("sigo vivo", 100, () -> t.check(!Minecraft.getInstance().player.isSpectator(), "con Bien: clic en vacío y sigo vivo"));
+        t.add("auto", 200, () -> {
             t.cmd("evento caja esperar false");
             t.cmd("evento caja auto true");
         });
-        t.waitFor("cap3: fin", 150000, () -> "FIN".equals(CajaCliente.fase()));
-        t.photo("c3_15_fin", 3000, () -> mirarA(830.5, -55, 451.5));
+        t.waitFor("cap3: fin", 240000, () -> "FIN".equals(CajaCliente.fase()));
+        t.photo("c3_15_fin", 5000, () -> mirarA(828.5, -55, 451.5));
         t.add("cap3: limpiar", 1500, () -> {
             t.cmd("evento caja limpiar");
             t.cmd("evento caja auto false");
+            t.cmd("evento caja sentarse 75");
             t.cmd("evento pocos false");
             t.cmd("gamemode adventure @a");
             for (int i = 2; i <= 8; i++) {

@@ -28,7 +28,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
- * (Cliente) La caja de música: la carta del papel (y con quién, si eres traidor), los apagones, dónde vas sentado y qué te toca, los
+ * (Cliente) La caja de música: buscar asiento, la carta del papel (y con quién, si eres traidor), los apagones, dónde vas sentado y qué te toca, los
  * susurros de los bots, la tarjeta con el símbolo en la espalda de cada quien (brilla un poco: se lee en la góndola oscura), la máscara
  * de muñeco, sin nombres ni números mientras dura la parte a ciegas, la pantalla para marcar tu símbolo y la del organizador.
  */
@@ -263,6 +263,13 @@ public final class CajaCliente {
             return;
         }
         String fase = fase();
+        // a sentarse: qué hacer y cuántos van
+        if ("SENTARSE".equals(fase)) {
+            boolean sentado = mc.player.getVehicle() != null;
+            EventoHud.lado(g, Component.translatable(MOD + (sentado ? ".caja.hud.sentado" : ".caja.hud.sentarse")).getString(), EventoHud.ORO, true);
+            EventoHud.lado(g, Component.translatable(MOD + ".caja.hud.sentados", Nbt.i(estado, "sentados"), Nbt.i(estado, "total")).getString(),
+                    0xFFD8D0C8, false);
+        }
         // dónde voy sentado y qué me toca
         if ("TURNO".equals(fase) && mio.contains("gondola")) {
             String lado = Nbt.s(mio, "lado");

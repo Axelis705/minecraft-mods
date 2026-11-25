@@ -95,20 +95,38 @@ public class PiezaBot extends Persona {
         }
     }
 
+    /** Lo movieron lejos de golpe: en el siguiente tick se vuelve a presentar a los clientes (ver {@link #moveTo}). */
+    private boolean representar;
+
     @Override
     public void tick() {
         super.tick();
         if (!level().isClientSide() && tickCount % 20 == 0) {
             cargar();
         }
+        if (representar && level() instanceof net.minecraft.server.level.ServerLevel sl && isAddedToWorld() && !isRemoved()) {
+            representar = false;
+            // el cliente lo quita y lo vuelve a crear donde está ahora (y, si va sentado, ya sentado en su silla)
+            sl.getChunkSource().removeEntity(this);
+            sl.getChunkSource().addEntity(this);
+        }
     }
 
-    /** Lo llevan a otro lado (las pruebas lo mueven): ese lugar se carga ya, para que no se pierda en un pedazo sin cargar. */
+    /**
+     * Lo llevan a otro lado (las pruebas lo mueven): ese lugar se carga ya, para que no se pierda en un pedazo sin cargar. Si el salto es
+     * largo, el cliente puede quedarse con el bot donde estaba (en un pedazo que ya no se mueve, sobre todo si luego se sienta: a los que
+     * van sentados el servidor no les manda su posición), así que en el siguiente tick se le vuelve a presentar.
+     */
     @Override
     public void moveTo(double x, double y, double z, float yRot, float xRot) {
+        double dx = x - getX(), dz = z - getZ();
+        boolean lejos = dx * dx + dz * dz > 24 * 24;
         super.moveTo(x, y, z, yRot, xRot);
         if (level() != null && !level().isClientSide()) {
             cargar();
+            if (lejos && tickCount > 0) {
+                representar = true;
+            }
         }
     }
 

@@ -248,7 +248,7 @@ evento caja roles
 evento caja
 #pausa 60
 evento caja
-#pausa 95
+#pausa 200
 evento caja
 evento caja limpiar
 evento pocos false
@@ -318,6 +318,8 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CAJA llamar
 #expect COLECCIONISTA_CABINA traslada pas_man -> pas_caj
 #expect COLECCIONISTA_CAJA llegan
+#expect COLECCIONISTA_CAJA sentarse piezas=
+#expect COLECCIONISTA_CAJA sentados auto=
 #expect COLECCIONISTA_CAJA roles piezas=
 #expect COLECCIONISTA_VOZ tonos=
 #expect COLECCIONISTA_CAJA turnos piezas=
@@ -327,9 +329,11 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CAJA luz turno=6
 #expect COLECCIONISTA_CAJA circulo piezas=
 #expect COLECCIONISTA_DISCURSO caja_revision
+#expect COLECCIONISTA_CAJA compuerta abre
 #expect COLECCIONISTA_CAJA revision piezas=
 #expect COLECCIONISTA_CAJA decide
 #expect COLECCIONISTA_CAJA fin balas=
+#expect COLECCIONISTA_CAJA compuerta cierra
 #expect COLECCIONISTA_DISCURSO caja_fin
 #expect COLECCIONISTA_CAPITULO3 fin
 #expect usuarios=[coleccionista]
