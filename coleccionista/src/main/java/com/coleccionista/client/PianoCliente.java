@@ -128,6 +128,7 @@ public final class PianoCliente {
         ps.pushPose();
         ps.translate(-cam.x, -cam.y, -cam.z);
         RenderType rt = RenderType.entityTranslucent(com.axeliscore.plat.client.Draw.BLANCO);
+        java.util.List<float[]> cols = new java.util.ArrayList<>();
         VertexConsumer vc = buf.getBuffer(rt);
         long gt = ahora();
         int i = notaMuestra();
@@ -145,8 +146,8 @@ public final class PianoCliente {
             boolean juega = Nbt.b(c, "juega");
             if (i >= 0 && i < mel.length && juega) {
                 float a = brilloMuestra();
-                tecla(vc, ps, p, mel[i], y + 0.005F, SalaPiano.BRILLO[mel[i]], 0.75F * a);
-                columna(vc, ps, p, mel[i], y, SalaPiano.BRILLO[mel[i]], 0.38F * a);
+                tecla(vc, ps, p, mel[i], y + 0.005F, SalaPiano.BRILLO[mel[i]], 0.95F * a);
+                cols.add(new float[] {p[0], p[1], p[2], mel[i], y, SalaPiano.BRILLO[mel[i]], 0.7F * a});
             }
             if (("TOCA".equals(f) || "REVISA".equals(f)) && juega) {
                 int d = Nbt.i(c, "destello");
@@ -155,7 +156,7 @@ public final class PianoCliente {
                     float a = 1F - (gt - en) / 14F;
                     boolean bien = Nbt.b(c, "destelloBien");
                     tecla(vc, ps, p, d, y + 0.006F, bien ? SalaPiano.BRILLO[d] : 0xFF2020, 0.85F * a);
-                    columna(vc, ps, p, d, y, bien ? SalaPiano.BRILLO[d] : 0xFF2020, 0.32F * a);
+                    cols.add(new float[] {p[0], p[1], p[2], d, y, bien ? SalaPiano.BRILLO[d] : 0xFF2020, 0.6F * a});
                 }
                 if (Nbt.b(c, "mal")) {
                     float a = (float) (0.28 + 0.14 * Math.sin(gt * 0.5));
@@ -167,8 +168,16 @@ public final class PianoCliente {
                 }
             }
         }
-        ps.popPose();
         buf.endBatch(rt);
+        // las columnas de luz: con mezcla aditiva (brillan de verdad en lo oscuro)
+        if (!cols.isEmpty()) {
+            VertexConsumer lv = buf.getBuffer(RenderType.lightning());
+            for (float[] c : cols) {
+                columna(lv, ps, new int[] {(int) c[0], (int) c[1], (int) c[2]}, (int) c[3], c[4], (int) c[5], c[6]);
+            }
+            buf.endBatch(RenderType.lightning());
+        }
+        ps.popPose();
     }
 
     private static void tecla(VertexConsumer vc, PoseStack ps, int[] p, int k, float y, int rgb, float a) {
@@ -191,26 +200,40 @@ public final class PianoCliente {
         vc.vertex(m, x + lado, y, z).color(r, g, b, al).uv(1, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(luz).normal(n, 0, 1, 0).endVertex();
     }
 
-    /** Una columna de luz sobre la tecla (cuatro caras que se desvanecen hacia arriba). */
+    /**
+     * Una columna de luz sobre la tecla (cuatro caras que se desvanecen hacia arriba, y un brillo encima de la tecla), para el tipo de
+     * dibujo aditivo (posición y color).
+     */
     private static void columna(VertexConsumer vc, PoseStack ps, int[] p, int k, float y, int rgb, float a) {
         if (a <= 0.01F) {
             return;
         }
         int[] t = SalaPiano.TECLA[k];
-        float x0 = p[0] + t[0] + 0.15F, z0 = p[2] + t[1] + 0.15F, x1 = x0 + 1.7F, z1 = z0 + 1.7F, alto = 2.6F;
+        float x0 = p[0] + t[0] + 0.1F, z0 = p[2] + t[1] + 0.1F, x1 = x0 + 1.8F, z1 = z0 + 1.8F, alto = 3.2F;
         Matrix4f m = ps.last().pose();
-        Matrix3f n = ps.last().normal();
         int r = rgb >> 16 & 255, g = rgb >> 8 & 255, b = rgb & 255, al = (int) (Math.min(1F, a) * 255);
-        int luz = 0xF000F0;
         float[][] caras = {{x0, z0, x1, z0}, {x1, z0, x1, z1}, {x1, z1, x0, z1}, {x0, z1, x0, z0}};
         for (float[] c : caras) {
-            vc.vertex(m, c[0], y, c[1]).color(r, g, b, al).uv(0, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(luz).normal(n, 0, 1, 0).endVertex();
-            vc.vertex(m, c[2], y, c[3]).color(r, g, b, al).uv(1, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(luz).normal(n, 0, 1, 0).endVertex();
-            vc.vertex(m, c[2], y + alto, c[3]).color(r, g, b, 0).uv(1, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(luz).normal(n, 0, 1, 0)
-                    .endVertex();
-            vc.vertex(m, c[0], y + alto, c[1]).color(r, g, b, 0).uv(0, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(luz).normal(n, 0, 1, 0)
-                    .endVertex();
+            // las dos caras (por dentro y por fuera)
+            vc.vertex(m, c[0], y, c[1]).color(r, g, b, al).endVertex();
+            vc.vertex(m, c[2], y, c[3]).color(r, g, b, al).endVertex();
+            vc.vertex(m, c[2], y + alto, c[3]).color(r, g, b, 0).endVertex();
+            vc.vertex(m, c[0], y + alto, c[1]).color(r, g, b, 0).endVertex();
+            vc.vertex(m, c[0], y + alto, c[1]).color(r, g, b, 0).endVertex();
+            vc.vertex(m, c[2], y + alto, c[3]).color(r, g, b, 0).endVertex();
+            vc.vertex(m, c[2], y, c[3]).color(r, g, b, al).endVertex();
+            vc.vertex(m, c[0], y, c[1]).color(r, g, b, al).endVertex();
         }
+        // el brillo sobre la tecla (las dos caras)
+        float yy = y + 0.01F;
+        vc.vertex(m, x0, yy, z0).color(r, g, b, al).endVertex();
+        vc.vertex(m, x0, yy, z1).color(r, g, b, al).endVertex();
+        vc.vertex(m, x1, yy, z1).color(r, g, b, al).endVertex();
+        vc.vertex(m, x1, yy, z0).color(r, g, b, al).endVertex();
+        vc.vertex(m, x1, yy, z0).color(r, g, b, al).endVertex();
+        vc.vertex(m, x1, yy, z1).color(r, g, b, al).endVertex();
+        vc.vertex(m, x0, yy, z1).color(r, g, b, al).endVertex();
+        vc.vertex(m, x0, yy, z0).color(r, g, b, al).endVertex();
     }
 
     // ------------------------------------------------------------------ el HUD

@@ -105,7 +105,7 @@ public final class SalaVeintiuno {
         // la luz: tenue en el cuarto (para que la mesa resalte)
         for (int x = HX0 + 3; x <= HX1 - 3; x += 7) {
             for (int z = HZ0 + 3; z <= HZ1 - 3; z += 7) {
-                luz(p, x, 5, z, 7);
+                luz(p, x, 5, z, 10);
             }
         }
         p.marca("v21.entrada", HX0 + 2, 1, 21, 270);
@@ -131,8 +131,13 @@ public final class SalaVeintiuno {
         p.set((int) Math.floor(CX) - 1, 6, z, C + "lampara_billar[facing=east]");
         // la luz de la mesa: fuerte, no se baja nunca
         luz(p, (int) Math.floor(CX), 5, z, 15);
-        luz(p, MX0 - 1, 5, z, 13);
-        luz(p, MX1 + 1, 5, z, 13);
+        luz(p, MX0 - 1, 5, z, 14);
+        luz(p, MX1 + 1, 5, z, 14);
+        // alrededor de la mesa: que se vean las máquinas, las cartas y las caras
+        for (int x : new int[] {MX0, MX1}) {
+            luz(p, x, 4, MZ0 - 1, 13);
+            luz(p, x, 4, MZ1 + 1, 13);
+        }
         // velas en las esquinas de la mesa
         p.set(MX0, 2, MZ0, C + "vela");
         p.set(MX1, 2, MZ1, C + "vela");

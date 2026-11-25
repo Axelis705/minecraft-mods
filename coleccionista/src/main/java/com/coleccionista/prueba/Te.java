@@ -1249,7 +1249,7 @@ public final class Te {
             }
             int nivel = Math.round(Complejo.yaw("te.luz." + i));
             // la luz de la mesa (13 y 14) y la de las jaulas (9) no se bajan
-            int n = bajas && nivel >= 10 && nivel < 13 ? 4 : nivel;
+            int n = bajas && nivel >= 10 && nivel < 13 ? 7 : nivel;
             BlockState st = l.getBlockState(p);
             if (st.isAir() || st.is(Blocks.LIGHT)) {
                 l.setBlock(p, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, n), 2);

@@ -201,8 +201,11 @@ public final class SalaPiano {
                 }
             }
         }
-        // una luz sobre cada piano (no se baja)
-        luz(p, cx, PISO + 5, cz, 13);
+        // la luz de cada piano (no se baja): fuerte, para que las teclas se vean bien; y una tenue en el foso
+        luz(p, cx, PISO + 5, cz, 15);
+        luz(p, cx, PISO + 3, cz + 1, 14);
+        luz(p, cx + 1, PISO + 3, cz, 14);
+        luz(p, cx, 0, cz, 9);
         p.marca("piano.anillo." + k, cx, PISO, cz, 180);
     }
 }

@@ -18,7 +18,6 @@ import com.coleccionista.evento.Pieza;
 import com.coleccionista.mapa.Pasaje;
 import com.coleccionista.mapa.SalaPiano;
 import com.coleccionista.registry.ModRegistry;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -798,7 +797,6 @@ public final class Piano {
                     if (bailarina != null) {
                         bailarina.estado(Bailarina.QUIETA);
                     }
-                    Anuncio.titulo(s, Component.translatable(MOD + ".piano.ahora").withStyle(ChatFormatting.GOLD), Component.empty());
                     Anuncio.sonido(s, SoundEvents.NOTE_BLOCK_BELL.get(), 1F, 1.4F);
                     Pantallas.modo(s, "texto", Component.translatable(MOD + ".piano.pantalla.toquen").getString());
                     enviar(s);
@@ -890,7 +888,7 @@ public final class Piano {
                 break;
             }
             int nivel = Math.round(Complejo.yaw("piano.luz." + i));
-            int n = bajas && nivel < 13 ? 4 : nivel;
+            int n = bajas && nivel < 13 ? 8 : nivel;
             BlockState st = l.getBlockState(p);
             if (st.isAir() || st.is(Blocks.LIGHT)) {
                 l.setBlock(p, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, n), 2);
