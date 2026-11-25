@@ -458,7 +458,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_PIANO llegan
 #expect COLECCIONISTA_PIANO habla
 #expect COLECCIONISTA_PRESENTACION VI
-#expect COLECCIONISTA_PIANO pianos=4 extras=2 caen=1
+#expect COLECCIONISTA_PIANO pianos=4 extras=0 caen=1
 #expect COLECCIONISTA_PIANO ronda 1 notas=3 juegan=4
 #expect COLECCIONISTA_PIANO mal
 #expect COLECCIONISTA_PIANO revisa ronda=1

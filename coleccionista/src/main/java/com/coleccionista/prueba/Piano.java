@@ -1079,8 +1079,6 @@ public final class Piano {
         desempate = false;
         resultado = "";
         aFinal = 0;
-        fallan.clear();
-        fallanPorRonda.clear();
     }
 
     public static void reiniciar(MinecraftServer s) {
@@ -1091,6 +1089,9 @@ public final class Piano {
             Pantallas.modo(s, "apagada", "");
         }
         limpiarTodo(s);
+        // lo de las pruebas (quién falla a propósito) solo se borra al limpiar a mano
+        fallan.clear();
+        fallanPorRonda.clear();
         fase = Fase.NADA;
         enviar(s);
     }
