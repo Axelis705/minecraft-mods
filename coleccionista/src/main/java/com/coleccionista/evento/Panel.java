@@ -253,6 +253,23 @@ public final class Panel {
                 }
             }
             case "te_limpiar" -> com.coleccionista.prueba.Te.reiniciar(s);
+            case "piano_llamar", "piano_llegar" -> {
+                Component no = "piano_llamar".equals(op) ? com.coleccionista.prueba.Piano.llamar(s) : com.coleccionista.prueba.Piano.llegar(s);
+                if (no != null) {
+                    Plat.msg(p, no, true);
+                }
+            }
+            case "piano_saltar" -> {
+                if (!com.coleccionista.prueba.Piano.saltar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".piano.cmd.no"), true);
+                }
+            }
+            case "piano_terminar" -> {
+                if (!com.coleccionista.prueba.Piano.terminar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".piano.cmd.no"), true);
+                }
+            }
+            case "piano_limpiar" -> com.coleccionista.prueba.Piano.reiniciar(s);
             case "pocos" -> {
                 ev.pocos = d.getBoolean("si");
                 ev.cambio(s);

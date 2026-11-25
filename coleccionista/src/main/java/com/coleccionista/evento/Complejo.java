@@ -98,6 +98,8 @@ public final class Complejo {
             l.add(new Zona("sorpresa", com.coleccionista.mapa.SalaSorpresa.crear(SEMILLA), 870, 0, 400, 1));
             // capítulo 5: el salón de té (las parejas, las jaulas colgadas y los cálices)
             l.add(new Zona("te", com.coleccionista.mapa.SalaTe.crear(SEMILLA), 950, 0, 400, 1));
+            // capítulo 6: el salón de baile del piano gigante (la bailarina y los cuatro pianos de piso)
+            l.add(new Zona("piano", com.coleccionista.mapa.SalaPiano.crear(SEMILLA), 1030, 0, 400, 1));
             // las Cloacas (el Encadenados de antes) quedaron lejos, al sur de las antesalas
             l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 56, 0, 230, 0));
             // el Salón de las mesas, pegado al este de las Cloacas (su pared oeste junto al Refugio)

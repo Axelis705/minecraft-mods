@@ -94,6 +94,11 @@ public final class ModRegistry {
             ENTITIES.register("mano_gigante", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "mano_gigante",
                     EntityType.Builder.<com.coleccionista.evento.ManoGigante>of(com.coleccionista.evento.ManoGigante::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(0.8F, 0.8F).clientTrackingRange(10).updateInterval(2)));
+    /** La bailarina de la caja de música gigante (capítulo 6, el piano). */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.Bailarina>> BAILARINA =
+            ENTITIES.register("bailarina", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bailarina",
+                    EntityType.Builder.<com.coleccionista.evento.Bailarina>of(com.coleccionista.evento.Bailarina::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(2.4F, 5F).clientTrackingRange(10).updateInterval(2)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(

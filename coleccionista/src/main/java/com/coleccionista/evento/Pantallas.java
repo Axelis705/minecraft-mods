@@ -390,6 +390,27 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> piano() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("bienvenidos", 75, null, 1F));
+        l.add(new Frase("bailarina", 135, null, 1F));
+        l.add(new Frase("melodia", 140, null, 1F));
+        l.add(new Frase("centro", 90, null, 1F));
+        l.add(new Frase("a_la_vez", 90, null, 1F));
+        l.add(new Frase("se_abre", 90, SoundEvents.WITCH_CELEBRATE, 0.5F));
+        l.add(new Frase("varios", 155, null, 1F));
+        l.add(new Frase("baile", 60, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> piano_fin() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("cansada", 65, null, 1F));
+        l.add(new Frase("ultimo", 95, null, 1F));
+        l.add(new Frase("enteros", 80, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -420,6 +441,8 @@ public final class Pantallas {
             case "te" -> te();
             case "te_reglas" -> te_reglas();
             case "te_fin" -> te_fin();
+            case "piano" -> piano();
+            case "piano_fin" -> piano_fin();
             default -> null;
         };
     }

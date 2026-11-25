@@ -84,6 +84,9 @@ public final class Objetivo {
         if (m != null) {
             return m;
         }
+        if (com.coleccionista.prueba.Piano.abierta()) {
+            return com.coleccionista.prueba.Piano.objetivo(s, sp);
+        }
         if (com.coleccionista.prueba.Te.abierta()) {
             return com.coleccionista.prueba.Te.objetivo(s, sp);
         }

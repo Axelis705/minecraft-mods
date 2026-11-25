@@ -541,6 +541,7 @@ final class PruebaCliente {
         capitulo3(t);
         capitulo4(t);
         capitulo5(t);
+        capitulo6(t);
     }
 
     /**
@@ -556,6 +557,7 @@ final class PruebaCliente {
             t.cmd("forceload add 944 424 1016 480");
             t.cmd("evento pocos true");
             t.cmd("evento te encadenar false");
+            t.cmd("evento piano encadenar false");
             t.cmd("evento te rapido true");
             t.cmd("evento te veneno 1");
             t.cmd("evento eliminar " + yo());
@@ -655,6 +657,121 @@ final class PruebaCliente {
             t.cmd("evento te encadenar true");
             t.cmd("evento pocos false");
             for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("evento revivir " + yo());
+            t.cmd("gamemode adventure @a");
+        });
+    }
+
+    /** Dónde me paro en mi piano (el centro del tapete): x, y, z; null si no toco. */
+    private static double[] miTapete() {
+        CompoundTag m = PianoCliente.mio();
+        int[] p = m == null ? new int[0] : m.getIntArray("pos");
+        return p.length < 3 ? null : new double[] {p[0] + 1.0, p[1] + 1.0, p[2] + 1.0};
+    }
+
+    /**
+     * Capítulo 6 · El piano gigante (yo toco, con tres bots): el pasillo, el salón de baile (el escenario con la bailarina, los cuatro
+     * pianos de piso con sus cortinas), la bailarina, mi piano mientras ella toca (la tecla de cada nota brilla con su columna de luz), yo
+     * tocando (con /evento piano bien), el desempate (dos bots se equivocan a propósito y yo me salvo: lo veo desde arriba), el piso que se
+     * abre y el foso. El salón está en (1030, -61, 430): el pasillo x 1032..1045 / z 448..455, el salón x 1047..1091 / z 430..472, el
+     * escenario x 1057..1081 / z 431..439 (la bailarina en 1069.5, 435.5), los pianos (tapete) en x 1053, 1062, 1071, 1080 / z 452 con las
+     * teclas en y -58.
+     */
+    private static void capitulo6(ClientTest.Script t) {
+        t.add("cap6: preparar", 800, () -> {
+            t.cmd("forceload add 1024 424 1096 480");
+            t.cmd("evento pocos true");
+            t.cmd("evento piano encadenar false");
+            t.cmd("evento piano rapido true");
+            t.cmd("evento piano caen 1");
+            for (String b : new String[] {"Bot_01", "Bot_05", "Bot_06", "Bot_07", "Bot_08"}) {
+                t.cmd("evento eliminar " + b);
+            }
+            t.cmd("evento piano fallar Bot_02");
+            t.cmd("evento piano fallar Bot_03");
+            t.cmd("gamemode spectator @a");
+        });
+        t.add("cap6: llegar", 600, () -> t.cmd("evento piano llegar"));
+        t.waitFor("cap6: llegando", 15000, () -> "LLEGANDO".equals(PianoCliente.fase()));
+        t.photo("c6_01_pasillo", 1500, () -> t.lookFrom(1038.5, -60, 451.5, 1047, -59, 451.5));
+        t.photo("c6_02_salon", 3500, () -> {
+            t.cmd("evento piano saltar");
+            t.lookFrom(1050.5, -53, 471.5, 1068, -58, 445);
+        });
+        t.photo("c6_03_bailarina", 2500, () -> t.lookFrom(1069.5, -59, 442.5, 1069.5, -56, 435.5));
+        t.add("cap6: a los pianos", 400, () -> {
+            t.cmd("gamemode adventure @a");
+            t.cmd("evento piano saltar");
+        });
+        t.waitFor("cap6: muestra", 20000, () -> "MUESTRA".equals(PianoCliente.fase()));
+        t.add("cap6: mi piano", 1700, () -> {
+            double[] c = miTapete();
+            t.check(c != null, "me tocó un piano");
+            t.check(PianoCliente.estado().getIntArray("melodia").length == 3, "la melodía de la primera ronda tiene 3 notas");
+            if (c != null) {
+                t.lookFrom(c[0], c[1], c[2], c[0], c[1] - 1, c[2] - 2.3);
+            }
+        });
+        t.photo("c6_04_muestra", 200, () -> {
+        });
+        t.waitFor("cap6: toca", 15000, () -> "TOCA".equals(PianoCliente.fase()));
+        t.photo("c6_05_toca", 500, () -> {
+        });
+        t.add("cap6: nota 1", 250, () -> t.cmd("evento piano bien " + yo()));
+        t.photo("c6_06_bien", 150, () -> {
+        });
+        t.add("cap6: nota 2", 400, () -> t.cmd("evento piano bien " + yo()));
+        t.add("cap6: nota 3", 600, () -> t.cmd("evento piano bien " + yo()));
+        t.add("cap6: terminé", 200, () -> {
+            CompoundTag m = PianoCliente.mio();
+            t.check(m != null && m.getBoolean("listo"), "toqué las 3 notas bien");
+        });
+        t.waitFor("cap6: revisa", 15000, () -> "REVISA".equals(PianoCliente.fase()));
+        t.photo("c6_07_desempate", 900, () -> {
+            t.check("desempate".equals(PianoCliente.estado().getString("resultado")), "dos se equivocaron: desempate");
+        });
+        t.add("cap6: desde arriba", 300, () -> t.cmd("gamemode spectator @a"));
+        t.waitFor("cap6: segunda ronda", 15000, () -> "MUESTRA".equals(PianoCliente.fase()));
+        t.photo("c6_08_desde_arriba", 2200, () -> {
+            t.cmd("evento piano fallar Bot_02");
+            t.lookFrom(1066.5, -49, 466.5, 1066.5, -58, 452.5);
+        });
+        t.waitFor("cap6: cae", 20000, () -> "CAE".equals(PianoCliente.fase()));
+        t.photo("c6_09_se_abre", 500, () -> {
+        });
+        t.waitFor("cap6: el cuerpo", 8000, () -> {
+            for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (e instanceof com.coleccionista.evento.Cadaver c && c.getX() > 1030 && c.getX() < 1094) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        t.add("cap6: el foso", 1200, () -> {
+            com.coleccionista.evento.Cadaver muerto = null;
+            for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (e instanceof com.coleccionista.evento.Cadaver c && c.getX() > 1030 && c.getX() < 1094) {
+                    muerto = c;
+                }
+            }
+            t.check(muerto != null, "el que se equivocó quedó en el foso");
+            if (muerto != null) {
+                t.lookFrom(muerto.getX() + 0.5, -57.5, muerto.getZ() + 3.2, muerto.getX(), -63, muerto.getZ());
+            }
+        });
+        t.photo("c6_10_foso", 900, () -> {
+        });
+        t.waitFor("cap6: fin", 20000, () -> "FIN".equals(PianoCliente.fase()));
+        t.photo("c6_11_fin", 6000, () -> t.lookFrom(1050.5, -53, 471.5, 1068, -58, 445));
+        t.add("cap6: limpiar", 1500, () -> {
+            t.cmd("evento piano limpiar");
+            t.cmd("evento piano rapido false");
+            t.cmd("evento piano caen 0");
+            t.cmd("evento piano encadenar true");
+            t.cmd("evento pocos false");
+            for (int i = 1; i <= 8; i++) {
                 t.cmd("evento revivir Bot_0" + i);
             }
             t.cmd("evento revivir " + yo());

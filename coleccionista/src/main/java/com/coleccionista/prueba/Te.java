@@ -80,6 +80,8 @@ public final class Te {
     /** Para las pruebas: cuál cáliz tiene el veneno (-1: al azar) y que los bots jueguen al instante. */
     public static int venenoFijo = -1;
     public static boolean rapido;
+    /** Cuándo (tick de la prueba) se llama al salón de baile, al terminar. */
+    private static long aPiano;
     /** Cuántos cálices tiene cada quien. */
     public static final int CALICES = 5;
     /** Cuánto dura beber (ticks): a salvo, se marea y sigue; envenenado, a los {@link #T_MUERE} se lo lleva el Coleccionista. */
@@ -1192,6 +1194,13 @@ public final class Te {
                     }
                 }
             }
+            case FIN -> {
+                if (aPiano > 0 && t >= aPiano) {
+                    aPiano = 0;
+                    Piano.llamar(s);
+                    return;
+                }
+            }
             default -> {
             }
         }
@@ -1309,6 +1318,10 @@ public final class Te {
             }
             Evento.get(s).prueba(s, Component.translatable(MOD + ".te.fin_capitulo").getString());
             Coleccionista.LOGGER.info("COLECCIONISTA_CAPITULO5 fin vivos={}", ev.vivos().size());
+            // y de aquí, solos, al salón de baile (el piano gigante)
+            if (Piano.encadenar && Complejo.construido(s, "piano") && fase == Fase.FIN) {
+                aPiano = t + 80;
+            }
         });
     }
 
@@ -1490,6 +1503,7 @@ public final class Te {
 
     /** Quita todo: sillones, sillas, manos y cuerpos de las jaulas; vuelve la luz. */
     private static void limpiarTodo(MinecraftServer s) {
+        aPiano = 0;
         ServerLevel l = s.overworld();
         for (Silla si : sofa) {
             si.soltar();

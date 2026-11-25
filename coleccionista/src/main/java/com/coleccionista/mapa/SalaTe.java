@@ -149,7 +149,7 @@ public final class SalaTe {
             }
         }
         p.marca("te.entrada", HX0 + 2, 1, pz, 270);
-        p.marca("te.salida", HX1 - 2, 1, pz, 270);
+        p.marca("te.salida", HX0 + 5, 1, pz, 270);
         p.marca("te.centro", (int) Math.floor(CX), 1, pz, 270);
     }
 

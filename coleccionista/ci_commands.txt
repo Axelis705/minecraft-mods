@@ -266,6 +266,7 @@ evento revivir Bot_03
 evento revivir Bot_04
 evento revivir Bot_05
 evento revivir Bot_06
+evento piano encadenar false
 evento te rapido true
 evento te veneno 1
 evento te tiempos 8 5 5
@@ -282,6 +283,26 @@ evento te limpiar
 evento te rapido false
 evento te veneno 0
 evento te encadenar true
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento revivir Bot_05
+evento revivir Bot_06
+evento piano rapido true
+evento piano caen 1
+evento piano fallan 2 1
+evento piano llegar
+#pausa 4
+evento piano saltar
+#pausa 3
+evento piano saltar
+#pausa 55
+evento piano
+evento piano limpiar
+evento piano rapido false
+evento piano caen 0
+evento piano encadenar true
 evento sorpresa limpiar
 evento sorpresa rapido false
 evento sorpresa comer 0
@@ -400,6 +421,21 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_TE fin vivos=
 #expect COLECCIONISTA_DISCURSO te_fin
 #expect COLECCIONISTA_CAPITULO5 fin
+#expect COLECCIONISTA_CONSTRUIDO piano
+#expect COLECCIONISTA_PIANO llegan
+#expect COLECCIONISTA_PIANO habla
+#expect COLECCIONISTA_PRESENTACION VI
+#expect COLECCIONISTA_PIANO pianos=4 extras=2 caen=1
+#expect COLECCIONISTA_PIANO ronda 1 notas=3 juegan=4
+#expect COLECCIONISTA_PIANO mal
+#expect COLECCIONISTA_PIANO revisa ronda=1
+#expect ] desempate
+#expect COLECCIONISTA_PIANO ronda 2 notas=3 juegan=2 desempate=true
+#expect ] cae
+#expect COLECCIONISTA_PIANO cae
+#expect COLECCIONISTA_PIANO fin cayeron=1
+#expect COLECCIONISTA_DISCURSO piano_fin
+#expect COLECCIONISTA_CAPITULO6 fin
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
 #expect COLECCIONISTA_EQUIPOS tam=2 equipos=3
@@ -449,7 +485,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_ENCADENADOS terminada
 #expect COLECCIONISTA_CONSTRUIDO salon
 #expect COLECCIONISTA_COMPARTIR preparada mesas=2 perdonado=false
-#expect COLECCIONISTA_PRESENTACION VI
+#expect COLECCIONISTA_PRESENTACION VII
 #expect COLECCIONISTA_COMPARTIR elegir
 #expect COLECCIONISTA_COMPARTIR revelar
 #expect uno caen=1
@@ -458,7 +494,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_COMPARTIR terminada
 #expect COLECCIONISTA_CONSTRUIDO puertas
 #expect COLECCIONISTA_PUERTAS preparada rondas=1
-#expect COLECCIONISTA_PRESENTACION IX
+#expect COLECCIONISTA_PRESENTACION X
 #expect COLECCIONISTA_PUERTAS ronda=1 trampa=
 #expect COLECCIONISTA_PUERTAS cerradas ronda=1
 #expect COLECCIONISTA_PUERTAS trampa=
@@ -467,7 +503,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CONSTRUIDO final
 #expect COLECCIONISTA_COPAS preparada piezas=2
 #expect COLECCIONISTA_COPAS servidas=4
-#expect COLECCIONISTA_PRESENTACION X
+#expect COLECCIONISTA_PRESENTACION XI
 #expect COLECCIONISTA_COPAS turno
 #expect COLECCIONISTA_COPAS bebe
 #expect COLECCIONISTA_COPAS veneno
@@ -475,7 +511,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_COPAS terminada
 #expect COLECCIONISTA_CONSTRUIDO capilla
 #expect COLECCIONISTA_SACRIFICIO preparada cuartos=2
-#expect COLECCIONISTA_PRESENTACION VIII
+#expect COLECCIONISTA_PRESENTACION IX
 #expect COLECCIONISTA_SACRIFICIO ofrecer
 #expect COLECCIONISTA_SACRIFICIO votar
 #expect COLECCIONISTA_SACRIFICIO cuarto=

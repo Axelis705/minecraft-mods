@@ -296,5 +296,105 @@
     "attenuation_distance": 48
    }
   ]
+ },
+ "piano_0": {
+  "category": "record",
+  "subtitle": "coleccionista.sub.piano_nota",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_0",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "piano_1": {
+  "category": "record",
+  "subtitle": "coleccionista.sub.piano_nota",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_1",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "piano_2": {
+  "category": "record",
+  "subtitle": "coleccionista.sub.piano_nota",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_2",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "piano_3": {
+  "category": "record",
+  "subtitle": "coleccionista.sub.piano_nota",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_3",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "piano_4": {
+  "category": "record",
+  "subtitle": "coleccionista.sub.piano_nota",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_4",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "piano_5": {
+  "category": "record",
+  "subtitle": "coleccionista.sub.piano_nota",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_5",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "piano_6": {
+  "category": "record",
+  "subtitle": "coleccionista.sub.piano_nota",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_6",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "piano_7": {
+  "category": "record",
+  "subtitle": "coleccionista.sub.piano_nota",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_7",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "piano_mal": {
+  "category": "hostile",
+  "subtitle": "coleccionista.sub.piano_mal",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_mal",
+    "attenuation_distance": 64
+   }
+  ]
+ },
+ "piano_abre": {
+  "category": "hostile",
+  "subtitle": "coleccionista.sub.piano_abre",
+  "sounds": [
+   {
+    "name": "coleccionista:piano/piano_abre",
+    "attenuation_distance": 64
+   }
+  ]
  }
 }

@@ -392,6 +392,7 @@ public final class Comandos {
                 .then(com.coleccionista.prueba.ComandosCaja.probar())
                 .then(com.coleccionista.prueba.ComandosSorpresa.sorpresa(vivas))
                 .then(com.coleccionista.prueba.ComandosTe.te())
+                .then(com.coleccionista.prueba.ComandosPiano.piano(vivas))
                 .then(com.coleccionista.prueba.ComandosPruebas.ciegas(vivas))
                 .then(com.coleccionista.prueba.ComandosPruebas.tres(vivas))
                 .then(com.coleccionista.voz.ComandosVoz.voz(piezas(p -> true)))

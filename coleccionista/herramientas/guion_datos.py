@@ -188,6 +188,28 @@ GUIONES = {
         ("terminado", "Se acabó el té.", "Tea time is over.", "Satisfecho, dejando la taza."),
         ("enteros", "Los que siguen enteros… síganme.", "Those still in one piece… follow me.", "Cortés, con humor negro."),
     ],
+    "piano": [
+        ("bienvenidos", "Bienvenidos a mi salón de baile.", "Welcome to my ballroom.", "Elegante, de anfitrión de gala."),
+        ("bailarina", "Ella es mi bailarina. Lleva años esperando a alguien que siga su música.",
+         "This is my ballerina. She has waited years for someone to follow her music.", "Tierno, casi nostálgico."),
+        ("melodia", "Ella toca una melodía. Ustedes la repiten, pisando las teclas de su piano.",
+         "She plays a melody. You repeat it by stepping on the keys of your piano.", "Claro, como maestro de música."),
+        ("centro", "Después de cada tecla, vuelvan al centro.", "After each key, step back to the center.",
+         "Paciente; marcando «al centro»."),
+        ("a_la_vez", "Todos tocan a la vez. Nadie tiene ventaja.", "You all play at once. No one has the advantage.",
+         "Justo, casi orgulloso de serlo."),
+        ("se_abre", "Si uno se equivoca… el piso se abre.", "If one of you misses a note… the floor opens.",
+         "Pausa en «equivoca…»; luego frío. Risita al final.", "WITCH_CELEBRATE"),
+        ("varios", "Si se equivocan varios, los que acertaron se salvan. Los demás… vuelven a tocar.",
+         "If several of you miss, the ones who got it right are safe. The rest… play again.", "Didáctico; con gusto en «los demás…»."),
+        ("baile", "Que empiece el baile.", "Let the dance begin.", "Corto, con gusto; como quien levanta el telón."),
+    ],
+    "piano_fin": [
+        ("cansada", "Mi bailarina está cansada.", "My ballerina is tired.", "Suave, como quien arropa a alguien."),
+        ("ultimo", "La noche casi termina. Queda un último juego.", "The night is almost over. One last game remains.",
+         "Solemne; pausa antes de «un último juego»."),
+        ("enteros", "Los que siguen enteros… síganme.", "Those still in one piece… follow me.", "Cortés, con humor negro."),
+    ],
     "montacargas": [
         ("viaje", "Respiren hondo… es solo un poco de gas.", "Breathe deep… it's just a little gas.",
          "Susurrado, como quien arrulla a alguien."),
@@ -371,6 +393,8 @@ TITULOS = {
     "te": "Capítulo 5 · La hora del té: al entrar al salón (eligen pareja)",
     "te_reglas": "Capítulo 5 · La hora del té: ya en las jaulas (la tele explica el juego)",
     "te_fin": "Capítulo 5 · La hora del té: el final (salen los ganadores)",
+    "piano": "Capítulo 6 · El piano gigante: en el salón de baile (cuando ya entraron todos)",
+    "piano_fin": "Capítulo 6 · El piano gigante: el final (antes de la última prueba)",
 }
 ZONAS = ["cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria"]
 

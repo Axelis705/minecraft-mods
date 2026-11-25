@@ -317,4 +317,25 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 1 | `te_fin_terminado.ogg` | 2.5 s | Se acabó el té. |
 | 2 | `te_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
 
-**Total: 176 líneas (≈15 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+## Capítulo 6 · El piano gigante: en el salón de baile (cuando ya entraron todos)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `piano_bienvenidos.ogg` | 3.8 s | Bienvenidos a mi salón de baile. |
+| 2 | `piano_bailarina.ogg` | 6.8 s | Ella es mi bailarina. Lleva años esperando a alguien que siga su música. |
+| 3 | `piano_melodia.ogg` | 7.0 s | Ella toca una melodía. Ustedes la repiten, pisando las teclas de su piano. |
+| 4 | `piano_centro.ogg` | 4.5 s | Después de cada tecla, vuelvan al centro. |
+| 5 | `piano_a_la_vez.ogg` | 4.5 s | Todos tocan a la vez. Nadie tiene ventaja. |
+| 6 | `piano_se_abre.ogg` | 4.5 s | Si uno se equivoca… el piso se abre. |
+| 7 | `piano_varios.ogg` | 7.8 s | Si se equivocan varios, los que acertaron se salvan. Los demás… vuelven a tocar. |
+| 8 | `piano_baile.ogg` | 3.0 s | Que empiece el baile. |
+
+## Capítulo 6 · El piano gigante: el final (antes de la última prueba)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `piano_fin_cansada.ogg` | 3.2 s | Mi bailarina está cansada. |
+| 2 | `piano_fin_ultimo.ogg` | 4.8 s | La noche casi termina. Queda un último juego. |
+| 3 | `piano_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
+
+**Total: 187 líneas (≈16 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
