@@ -396,5 +396,53 @@
     "attenuation_distance": 64
    }
   ]
+ },
+ "maquina_cierra": {
+  "sounds": [
+   {
+    "name": "coleccionista:veintiuno/maquina_cierra"
+   }
+  ],
+  "subtitle": "coleccionista.sub.maquina_cierra"
+ },
+ "maquina_aprieta": {
+  "sounds": [
+   {
+    "name": "coleccionista:veintiuno/maquina_aprieta"
+   }
+  ],
+  "subtitle": "coleccionista.sub.maquina_aprieta"
+ },
+ "maquina_chispas": {
+  "sounds": [
+   {
+    "name": "coleccionista:veintiuno/maquina_chispas"
+   }
+  ],
+  "subtitle": "coleccionista.sub.maquina_chispas"
+ },
+ "maquina_pum": {
+  "sounds": [
+   {
+    "name": "coleccionista:veintiuno/maquina_pum"
+   }
+  ],
+  "subtitle": "coleccionista.sub.maquina_pum"
+ },
+ "maquina_abre": {
+  "sounds": [
+   {
+    "name": "coleccionista:veintiuno/maquina_abre"
+   }
+  ],
+  "subtitle": "coleccionista.sub.maquina_abre"
+ },
+ "carta": {
+  "sounds": [
+   {
+    "name": "coleccionista:veintiuno/carta"
+   }
+  ],
+  "subtitle": "coleccionista.sub.carta"
  }
 }

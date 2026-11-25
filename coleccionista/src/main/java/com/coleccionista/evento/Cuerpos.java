@@ -21,6 +21,8 @@ public final class Cuerpos {
     public static final java.util.Set<java.util.UUID> EN_SILLA = new java.util.HashSet<>();
     /** Quiénes, al ser eliminados, se envenenaron en el salón de té: verdes, y se van de espaldas con su silla. */
     public static final java.util.Set<java.util.UUID> VENENO = new java.util.HashSet<>();
+    /** Quiénes, al ser eliminados, perdieron la final: se quedan en su silla, echados sobre la mesa, sin el brazo izquierdo. */
+    public static final java.util.Set<java.util.UUID> MANCO = new java.util.HashSet<>();
     /** Quiénes, al ser eliminados, no dejan cuerpo (se los comió Cascabel). */
     public static final java.util.Set<java.util.UUID> SIN_CUERPO = new java.util.HashSet<>();
 
@@ -48,6 +50,18 @@ public final class Cuerpos {
             sv.discard();
             l.addFreshEntity(c);
             Coleccionista.LOGGER.info("COLECCIONISTA_CUERPO veneno {} {}", p.etiqueta(), p.nombre);
+            return;
+        }
+        if (MANCO.remove(p.id) && e.getVehicle() instanceof Silla sm) {
+            // la final: se queda sentado (la silla la dibuja el cuerpo), echado sobre la mesa; el brazo se quedó en la máquina
+            c.moveTo(sm.getX(), sm.getY(), sm.getZ(), sm.getYRot(), 0);
+            c.de(p.id, p.nombre, Cadaver.MANCO + Math.abs(p.id.hashCode()) % 3);
+            c.setYRot(sm.getYRot());
+            c.setNoGravity(true);
+            sm.soltar();
+            sm.discard();
+            l.addFreshEntity(c);
+            Coleccionista.LOGGER.info("COLECCIONISTA_CUERPO manco {} {}", p.etiqueta(), p.nombre);
             return;
         }
         if (EN_SILLA.remove(p.id) && e.getVehicle() instanceof Silla si) {

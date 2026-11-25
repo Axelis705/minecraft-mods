@@ -61,6 +61,11 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
             super.render(c, yaw, pt, ps, buf, light);
             return;
         }
+        if (c.manco()) {
+            manco(c, m, slim, id, ps, buf, light);
+            super.render(c, yaw, pt, ps, buf, light);
+            return;
+        }
         if (c.veneno() || c.enJaula()) {
             envenenado(c, m, slim, id, ps, buf, light, pt);
             super.render(c, yaw, pt, ps, buf, light);
@@ -235,6 +240,61 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         ps.translate(0, -1.501, 0);
         m.renderToBuffer(ps, buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, VERDE_R,
                 VERDE_G, VERDE_B, 1F);
+        com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
+        com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
+                m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);
+        d.flush();
+        ps.popPose();
+    }
+
+    /**
+     * El que perdió la final: sentado en su silla, echado hacia adelante sobre la mesa, la cabeza de lado, el brazo derecho colgando; del
+     * izquierdo solo queda un muñón ensangrentado (el resto se quedó en la máquina).
+     */
+    private void manco(Cadaver c, PlayerModel<AbstractClientPlayer> m, boolean slim, UUID id, PoseStack ps, MultiBufferSource buf, int light) {
+        int v = c.postura() - Cadaver.MANCO;
+        if (silla == null) {
+            silla = com.coleccionista.evento.Complejo.estado("coleccionista:silla[facing=north]");
+            correa = com.coleccionista.evento.Complejo.estado("coleccionista:cadena[axis=x]");
+        }
+        ps.pushPose();
+        ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
+        if (silla != null) {
+            ps.pushPose();
+            ps.translate(-0.5, 0, -0.5);
+            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(silla, ps, buf, light, OverlayTexture.NO_OVERLAY);
+            ps.popPose();
+        }
+        ps.translate(0, 0.07, 0);
+        // echado hacia adelante (sobre la mesa), girando desde la cadera
+        ps.translate(0, 0.75, 0);
+        ps.mulPose(Axis.XP.rotationDegrees(-38F - 3F * v));
+        ps.translate(0, -0.75, 0);
+        m.head.setRotation(0.35F, 0.55F * (v % 2 == 0 ? 1 : -1), 0.3F * (v % 2 == 0 ? 1 : -1));
+        m.body.setRotation(0, 0, 0);
+        m.rightArm.setRotation(0.25F, 0, 0.12F);
+        m.leftArm.setRotation(-1.25F, 0, -0.05F);
+        m.rightLeg.setRotation(-1.4137167F, 0.31415927F, 0.07853982F);
+        m.leftLeg.setRotation(-1.4137167F, -0.31415927F, -0.07853982F);
+        m.hat.copyFrom(m.head);
+        m.jacket.copyFrom(m.body);
+        m.rightSleeve.copyFrom(m.rightArm);
+        m.leftSleeve.copyFrom(m.leftArm);
+        m.rightPants.copyFrom(m.rightLeg);
+        m.leftPants.copyFrom(m.leftLeg);
+        ps.scale(-1, -1, 1);
+        ps.scale(0.9375F, 0.9375F, 0.9375F);
+        ps.translate(0, -1.501, 0);
+        m.leftArm.visible = false;
+        m.leftSleeve.visible = false;
+        var vc = buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c)));
+        m.renderToBuffer(ps, vc, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+        // el muñón: el brazo izquierdo cortito y ensangrentado
+        m.leftArm.visible = true;
+        m.leftArm.yScale = 0.32F;
+        m.leftArm.render(ps, vc, light, OverlayTexture.NO_OVERLAY, 0.62F, 0.1F, 0.1F, 1F);
+        m.leftArm.yScale = 1F;
+        m.leftSleeve.visible = true;
         com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
         com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
                 m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);

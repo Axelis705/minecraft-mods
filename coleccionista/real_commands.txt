@@ -267,6 +267,7 @@ evento revivir Bot_04
 evento revivir Bot_05
 evento revivir Bot_06
 evento piano encadenar false
+evento veintiuno encadenar false
 evento te rapido true
 evento te veneno 1
 evento te tiempos 8 5 5
@@ -303,6 +304,38 @@ evento piano limpiar
 evento piano rapido false
 evento piano caen 0
 evento piano encadenar true
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento revivir Bot_05
+evento revivir Bot_06
+evento eliminar Bot_04
+evento eliminar Bot_05
+evento eliminar Bot_06
+evento veintiuno rapido true
+evento veintiuno golpes 1
+evento veintiuno mazo 10 1 11 2 3 4 9
+evento veintiuno llegar
+#pausa 4
+evento veintiuno saltar
+#pausa 3
+evento veintiuno saltar
+#pausa 8
+evento veintiuno saltar
+#pausa 70
+evento veintiuno
+evento veintiuno limpiar
+evento veintiuno rapido false
+evento veintiuno golpes 3
+evento veintiuno mazo azar
+evento veintiuno encadenar true
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento revivir Bot_05
+evento revivir Bot_06
 evento sorpresa limpiar
 evento sorpresa rapido false
 evento sorpresa comer 0
@@ -436,6 +469,25 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_PIANO fin cayeron=1
 #expect COLECCIONISTA_DISCURSO piano_fin
 #expect COLECCIONISTA_CAPITULO6 fin
+#expect COLECCIONISTA_CONSTRUIDO veintiuno
+#expect COLECCIONISTA_V21 llegan
+#expect COLECCIONISTA_V21 habla
+#expect COLECCIONISTA_DISCURSO veintiuno
+#expect COLECCIONISTA_V21 sentados duelo=1
+#expect COLECCIONISTA_V21 reglas
+#expect COLECCIONISTA_V21 ronda 1
+#expect COLECCIONISTA_V21 pide
+#expect COLECCIONISTA_V21 planta
+#expect COLECCIONISTA_V21 revela ronda=1
+#expect COLECCIONISTA_V21 castigo
+#expect golpes=1/1 corta
+#expect COLECCIONISTA_CUERPO manco
+#expect COLECCIONISTA_V21 siguiente esperan=1
+#expect COLECCIONISTA_V21 sentados duelo=2
+#expect COLECCIONISTA_GANADOR
+#expect COLECCIONISTA_V21 fin ganador=
+#expect COLECCIONISTA_DISCURSO veintiuno_fin
+#expect COLECCIONISTA_CAPITULO7 fin
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
 #expect COLECCIONISTA_EQUIPOS tam=2 equipos=3
@@ -485,7 +537,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_ENCADENADOS terminada
 #expect COLECCIONISTA_CONSTRUIDO salon
 #expect COLECCIONISTA_COMPARTIR preparada mesas=2 perdonado=false
-#expect COLECCIONISTA_PRESENTACION VII
+#expect COLECCIONISTA_PRESENTACION VIII
 #expect COLECCIONISTA_COMPARTIR elegir
 #expect COLECCIONISTA_COMPARTIR revelar
 #expect uno caen=1
@@ -494,7 +546,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_COMPARTIR terminada
 #expect COLECCIONISTA_CONSTRUIDO puertas
 #expect COLECCIONISTA_PUERTAS preparada rondas=1
-#expect COLECCIONISTA_PRESENTACION X
+#expect COLECCIONISTA_PRESENTACION XI
 #expect COLECCIONISTA_PUERTAS ronda=1 trampa=
 #expect COLECCIONISTA_PUERTAS cerradas ronda=1
 #expect COLECCIONISTA_PUERTAS trampa=
@@ -503,7 +555,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CONSTRUIDO final
 #expect COLECCIONISTA_COPAS preparada piezas=2
 #expect COLECCIONISTA_COPAS servidas=4
-#expect COLECCIONISTA_PRESENTACION XI
+#expect COLECCIONISTA_PRESENTACION XII
 #expect COLECCIONISTA_COPAS turno
 #expect COLECCIONISTA_COPAS bebe
 #expect COLECCIONISTA_COPAS veneno
@@ -511,7 +563,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_COPAS terminada
 #expect COLECCIONISTA_CONSTRUIDO capilla
 #expect COLECCIONISTA_SACRIFICIO preparada cuartos=2
-#expect COLECCIONISTA_PRESENTACION IX
+#expect COLECCIONISTA_PRESENTACION X
 #expect COLECCIONISTA_SACRIFICIO ofrecer
 #expect COLECCIONISTA_SACRIFICIO votar
 #expect COLECCIONISTA_SACRIFICIO cuarto=

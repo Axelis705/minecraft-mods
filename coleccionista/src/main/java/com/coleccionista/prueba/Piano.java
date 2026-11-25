@@ -843,7 +843,11 @@ public final class Piano {
             case FIN -> {
                 if (aFinal > 0 && t >= aFinal) {
                     aFinal = 0;
-                    Coleccionista.LOGGER.info("COLECCIONISTA_PIANO a_la_final");
+                    if (Veintiuno.encadenar && Complejo.construido(s, "veintiuno")) {
+                        Coleccionista.LOGGER.info("COLECCIONISTA_PIANO a_la_final");
+                        Veintiuno.llamar(s);
+                        return;
+                    }
                 }
             }
             default -> {

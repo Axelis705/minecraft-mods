@@ -338,4 +338,33 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 2 | `piano_fin_ultimo.ogg` | 4.8 s | La noche casi termina. Queda un último juego. |
 | 3 | `piano_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
 
-**Total: 187 líneas (≈16 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+## Capítulo 7 (final) · Veintiuno: en la mesa de juego (cuando ya entraron todos)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `veintiuno_mesa.ogg` | 5.8 s | Bienvenidos a mi mesa de juego. Aquí nadie había llegado. |
+| 2 | `veintiuno_dos.ogg` | 6.2 s | Uno de ustedes se lleva todo. El otro… me deja un recuerdo. |
+| 3 | `veintiuno_sientense.ogg` | 4.8 s | Siéntense. La mano izquierda, en la máquina. |
+
+## Capítulo 7 (final) · Veintiuno: ya sentados con la mano en la máquina (la tele explica el juego)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `veintiuno_reglas_veintiuno.ogg` | 5.5 s | Vamos a jugar veintiuno. Once cartas, del uno al once. |
+| 2 | `veintiuno_reglas_dos_cartas.ogg` | 5.0 s | Cada uno recibe dos: una tapada y una a la vista. |
+| 3 | `veintiuno_reglas_pedir.ogg` | 7.5 s | En su turno, pidan carta o plántense. Gana el más cerca de veintiuno, sin pasarse. |
+| 4 | `veintiuno_reglas_pasarse.ogg` | 5.0 s | Si los dos se pasan, gana el que se pasó menos. |
+| 5 | `veintiuno_reglas_comodines.ogg` | 8.5 s | Tienen dos comodines: espiar la carta tapada del otro y regresar su última carta. Solo una vez. |
+| 6 | `veintiuno_reglas_aprieta.ogg` | 6.8 s | Pierdan una ronda… y la máquina aprieta. Pierdan dos… y duele. |
+| 7 | `veintiuno_reglas_tres.ogg` | 4.5 s | Pierdan tres… y me quedo con su brazo. |
+| 8 | `veintiuno_reglas_suerte.ogg` | 2.8 s | Que gane el mejor. |
+
+## Capítulo 7 (final) · Veintiuno: el ganador
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `veintiuno_fin_ganador.ogg` | 2.8 s | Tenemos un ganador. |
+| 2 | `veintiuno_fin_completa.ogg` | 5.0 s | Mi colección está completa… por esta noche. |
+| 3 | `veintiuno_fin_puerta.ogg` | 5.2 s | Puedes irte. La puerta está abierta… esta vez. |
+
+**Total: 201 líneas (≈17 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

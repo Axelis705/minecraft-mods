@@ -99,6 +99,11 @@ public final class ModRegistry {
             ENTITIES.register("bailarina", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bailarina",
                     EntityType.Builder.<com.coleccionista.evento.Bailarina>of(com.coleccionista.evento.Bailarina::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(2.4F, 5F).clientTrackingRange(10).updateInterval(2)));
+    /** La máquina de latón de la final (veintiuno): el cepo donde cada finalista mete la mano. */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.Maquina>> MAQUINA =
+            ENTITIES.register("maquina", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "maquina",
+                    EntityType.Builder.<com.coleccionista.evento.Maquina>of(com.coleccionista.evento.Maquina::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.8F, 0.6F).clientTrackingRange(10).updateInterval(2)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(

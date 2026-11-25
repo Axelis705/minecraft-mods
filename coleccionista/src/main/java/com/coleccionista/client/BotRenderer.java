@@ -22,7 +22,7 @@ public class BotRenderer extends PersonaRenderer<PiezaBot> {
     @Override
     public void render(PiezaBot b, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
         // en el salón de té, el que bebe se dibuja aparte (sentado, con el cáliz)
-        if (TeCliente.oculto(b.getUUID())) {
+        if (TeCliente.oculto(b.getUUID()) || VeintiunoCliente.oculto(b)) {
             return;
         }
         if (b.fantasma()) {

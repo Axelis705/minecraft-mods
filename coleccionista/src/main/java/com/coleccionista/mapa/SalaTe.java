@@ -180,6 +180,11 @@ public final class SalaTe {
         luz(p, (int) Math.floor(CX), 6, z, 14);
         luz(p, MX0 - 1, 5, z, 13);
         luz(p, MX1 + 1, 5, z, 13);
+        // y alrededor de la mesa (tampoco se bajan): que la mesa y los que beben se vean bien aunque el salón esté oscuro
+        for (int x = MX0; x <= MX1; x += 2) {
+            luz(p, x, 4, MZ0 - 2, 13);
+            luz(p, x, 4, MZ1 + 2, 13);
+        }
     }
 
     // ------------------------------------------------------------------ las jaulas colgadas

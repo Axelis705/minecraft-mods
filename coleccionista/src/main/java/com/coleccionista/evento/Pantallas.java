@@ -411,6 +411,35 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> veintiuno() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("mesa", 115, null, 1F));
+        l.add(new Frase("dos", 125, null, 1F));
+        l.add(new Frase("sientense", 95, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> veintiuno_reglas() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("veintiuno", 110, null, 1F));
+        l.add(new Frase("dos_cartas", 100, null, 1F));
+        l.add(new Frase("pedir", 150, null, 1F));
+        l.add(new Frase("pasarse", 100, null, 1F));
+        l.add(new Frase("comodines", 170, null, 1F));
+        l.add(new Frase("aprieta", 135, null, 1F));
+        l.add(new Frase("tres", 90, SoundEvents.WITCH_CELEBRATE, 0.5F));
+        l.add(new Frase("suerte", 55, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> veintiuno_fin() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("ganador", 55, null, 1F));
+        l.add(new Frase("completa", 100, null, 1F));
+        l.add(new Frase("puerta", 105, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -443,6 +472,9 @@ public final class Pantallas {
             case "te_fin" -> te_fin();
             case "piano" -> piano();
             case "piano_fin" -> piano_fin();
+            case "veintiuno" -> veintiuno();
+            case "veintiuno_reglas" -> veintiuno_reglas();
+            case "veintiuno_fin" -> veintiuno_fin();
             default -> null;
         };
     }

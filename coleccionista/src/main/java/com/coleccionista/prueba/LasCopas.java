@@ -353,7 +353,7 @@ public final class LasCopas {
         }
         if (presentarEn > 0 && now >= presentarEn) {
             presentarEn = -1;
-            Escena.presentacion(s, "XI", MOD + ".cop.titulo", MOD + ".cop.lema");
+            Escena.presentacion(s, "XII", MOD + ".cop.titulo", MOD + ".cop.lema");
             Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.4F);
         }
         Evento ev = Evento.get(s);

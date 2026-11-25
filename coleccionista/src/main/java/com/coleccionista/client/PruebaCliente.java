@@ -542,6 +542,7 @@ final class PruebaCliente {
         capitulo4(t);
         capitulo5(t);
         capitulo6(t);
+        capitulo7(t);
     }
 
     /**
@@ -615,9 +616,10 @@ final class PruebaCliente {
             int l = com.axeliscore.plat.Nbt.i(TeCliente.estado(), "perdedor");
             double[] s = TeCliente.silla(l);
             if (s != null) {
+                // desde un lado de la mesa (al norte), parado en el piso, mirando al que bebe
                 double r = Math.toRadians(s[3]);
                 double fx = -Math.sin(r), fz = Math.cos(r);
-                t.lookFrom(s[0] + fx * 1.7 - fz * 1.0, s[1] - 0.4, s[2] + fz * 1.7 + fx * 1.0, s[0], s[1] + 1.2, s[2]);
+                t.lookFrom(s[0] + fx * 1.2 + fz * 2.6, s[1], s[2] + fz * 1.2 - fx * 2.6, s[0], s[1] + 1.25, s[2]);
             }
         });
         t.photo("c5_08_bebe", 1400, () -> {
@@ -684,6 +686,7 @@ final class PruebaCliente {
             t.cmd("forceload add 1024 424 1096 480");
             t.cmd("evento pocos true");
             t.cmd("evento piano encadenar false");
+            t.cmd("evento veintiuno encadenar false");
             t.cmd("evento piano rapido true");
             t.cmd("evento piano caen 1");
             for (String b : new String[] {"Bot_01", "Bot_05", "Bot_06", "Bot_07", "Bot_08"}) {
@@ -770,6 +773,135 @@ final class PruebaCliente {
             t.cmd("evento piano rapido false");
             t.cmd("evento piano caen 0");
             t.cmd("evento piano encadenar true");
+            t.cmd("evento pocos false");
+            for (int i = 1; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("evento revivir " + yo());
+            t.cmd("gamemode adventure @a");
+        });
+    }
+
+    /** De qué lado de la mesa estoy en la final (0 oeste, 1 este; -1 si no estoy). */
+    private static int miLadoV21() {
+        var mc = Minecraft.getInstance();
+        CompoundTag e = VeintiunoCliente.estado();
+        for (int l = 0; l < 2; l++) {
+            if (e.hasUUID("id" + l) && mc.player != null && e.getUUID("id" + l).equals(mc.player.getUUID())) {
+                return l;
+            }
+        }
+        return -1;
+    }
+
+    /** El mazo para que la ronda salga como queremos: yo (tapada, visible), el bot (tapada, visible) y lo que sigue. */
+    private static String mazoV21(int yoH, int yoV, int botH, int botV, String resto) {
+        int l = miLadoV21();
+        String m = l == 1 ? botH + " " + yoH + " " + botV + " " + yoV : yoH + " " + botH + " " + yoV + " " + botV;
+        return "evento veintiuno mazo " + m + " " + resto;
+    }
+
+    /** Mientras no se volteen las cartas: si es mi turno, me planto. */
+    private static boolean plantarmeHasta(String fase) {
+        if (Minecraft.getInstance().screen instanceof VeintiunoScreen v) {
+            v.elegirPrueba(1);
+        }
+        return fase.equals(VeintiunoCliente.fase());
+    }
+
+    /**
+     * Capítulo 7 · Veintiuno (la final): yo contra un bot. El pasillo, el cuarto (la mesa con las dos máquinas y la lámpara), sentado en
+     * primera persona (mi brazo metido en la máquina, mis cartas y las del otro), el reparto, mi turno (la pantalla), voltear las cartas,
+     * la máquina que me aprieta, la vista en tercera persona, y la última ronda: ¡pum! al bot. Con dos rondas perdidas se corta (para que
+     * sea corto) y el mazo puesto para que pierda yo la primera y el bot las otras dos.
+     * El cuarto está en (1110, -61, 430): el pasillo x 1112..1125 / z 448..455, el cuarto x 1127..1157 / z 436..466, la mesa x 1141..1144 /
+     * z 450..452 (centro 1143.0, 451.5).
+     */
+    private static void capitulo7(ClientTest.Script t) {
+        t.add("cap7: preparar", 800, () -> {
+            t.cmd("forceload add 1104 424 1168 480");
+            t.cmd("evento pocos true");
+            t.cmd("evento veintiuno encadenar false");
+            t.cmd("evento veintiuno rapido true");
+            t.cmd("evento veintiuno golpes 2");
+            for (int i = 1; i <= 8; i++) {
+                if (i != 2) {
+                    t.cmd("evento eliminar Bot_0" + i);
+                }
+            }
+            t.cmd("evento revivir Bot_02");
+            t.cmd("evento revivir " + yo());
+            t.cmd("gamemode spectator @a");
+        });
+        t.add("cap7: llegar", 600, () -> t.cmd("evento veintiuno llegar"));
+        t.waitFor("cap7: llegando", 15000, () -> "LLEGANDO".equals(VeintiunoCliente.fase()));
+        t.photo("c7_01_pasillo", 1500, () -> t.lookFrom(1118.5, -60, 451.5, 1127, -59, 451.5));
+        t.photo("c7_02_cuarto", 3500, () -> {
+            t.cmd("evento veintiuno saltar");
+            t.lookFrom(1129.5, -57, 462.5, 1143, -59.5, 451.5);
+        });
+        t.photo("c7_03_mesa", 1500, () -> t.lookFrom(1143.0, -58.2, 447.6, 1143.0, -59.2, 451.5));
+        t.add("cap7: sentarse", 400, () -> {
+            t.cmd("gamemode adventure @a");
+            t.cmd("evento veintiuno saltar");
+        });
+        t.waitFor("cap7: reglas", 20000, () -> "REGLAS".equals(VeintiunoCliente.fase()));
+        t.add("cap7: el mazo de la ronda 1", 800, () -> {
+            t.check(miLadoV21() >= 0, "estoy sentado en la final");
+            // la primera la pierdo yo (5 contra 19)
+            t.cmd(mazoV21(2, 3, 10, 9, "1 4 5"));
+        });
+        t.photo("c7_04_sentado", 1500, () -> {
+        });
+        t.add("cap7: empezar", 300, () -> t.cmd("evento veintiuno saltar"));
+        t.waitFor("cap7: reparte", 15000, () -> "REPARTE".equals(VeintiunoCliente.fase()));
+        t.photo("c7_05_reparte", 1200, () -> {
+        });
+        t.waitFor("cap7: mi turno", 20000, () -> Minecraft.getInstance().screen instanceof VeintiunoScreen);
+        t.photo("c7_06_mi_turno", 800, () -> {
+        });
+        t.waitFor("cap7: revela", 20000, () -> plantarmeHasta("REVELA"));
+        t.photo("c7_07_revela", 2200, () -> {
+            CompoundTag e = VeintiunoCliente.estado();
+            t.check(e.getInt("perdedor") == miLadoV21(), "la primera ronda la pierdo yo");
+        });
+        t.add("cap7: el mazo de las otras", 200, () -> t.cmd(mazoV21(10, 11, 1, 2, "3 4 9")));
+        t.waitFor("cap7: castigo", 15000, () -> "CASTIGO".equals(VeintiunoCliente.fase()));
+        t.photo("c7_08_aprieta", 900, () -> {
+        });
+        t.waitFor("cap7: ronda 2", 20000, () -> "TURNO".equals(VeintiunoCliente.fase()) && VeintiunoCliente.estado().getInt("ronda") == 2);
+        t.photo("c7_09_tercera", 900, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
+        t.add("cap7: primera persona", 200, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
+        t.waitFor("cap7: revela 2", 30000, () -> plantarmeHasta("REVELA"));
+        t.waitFor("cap7: ronda 3", 30000, () -> "TURNO".equals(VeintiunoCliente.fase()) && VeintiunoCliente.estado().getInt("ronda") == 3);
+        t.waitFor("cap7: castigo 3", 30000, () -> plantarmeHasta("CASTIGO"));
+        t.photo("c7_10_pum", 900, () -> {
+            t.check(VeintiunoCliente.estado().getBoolean("cortado"), "a la segunda ronda perdida, la máquina corta");
+        });
+        t.photo("c7_11_sangre", 1500, () -> {
+        });
+        t.waitFor("cap7: fin", 20000, () -> "FIN".equals(VeintiunoCliente.fase()));
+        t.photo("c7_12_fin", 4000, () -> {
+        });
+        t.add("cap7: el cuerpo", 600, () -> {
+            boolean manco = false;
+            for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (e instanceof com.coleccionista.evento.Cadaver c && c.manco()) {
+                    manco = true;
+                }
+            }
+            t.check(manco, "el que perdió se quedó en su silla, sin el brazo");
+            t.cmd("gamemode spectator @a");
+            t.lookFrom(1143.0, -58.0, 447.2, 1143.0, -59.3, 451.5);
+        });
+        t.photo("c7_13_la_mesa_al_final", 1500, () -> {
+        });
+        t.add("cap7: limpiar", 1500, () -> {
+            t.cmd("evento veintiuno limpiar");
+            t.cmd("evento veintiuno rapido false");
+            t.cmd("evento veintiuno golpes 3");
+            t.cmd("evento veintiuno mazo azar");
+            t.cmd("evento veintiuno encadenar true");
             t.cmd("evento pocos false");
             for (int i = 1; i <= 8; i++) {
                 t.cmd("evento revivir Bot_0" + i);

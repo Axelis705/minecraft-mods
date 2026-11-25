@@ -23,6 +23,7 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.CAJA_SORPRESA.get(), CajaSorpresaRenderer::new);
         e.registerEntityRenderer(ModRegistry.MANO_GIGANTE.get(), ManoGiganteRenderer::new);
         e.registerEntityRenderer(ModRegistry.BAILARINA.get(), BailarinaRenderer::new);
+        e.registerEntityRenderer(ModRegistry.MAQUINA.get(), MaquinaRenderer::new);
         e.registerEntityRenderer(ModRegistry.ESCOPETA.get(), EscopetaRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.PANTALLA_BE.get(), PantallaRenderer::new);
         e.registerBlockEntityRenderer(com.coleccionista.bloque.deco.Deco.TEXTO_BE, TextoRenderer::new);
@@ -74,6 +75,7 @@ public final class ModClient {
         SorpresaCliente.init();
         TeCliente.init();
         PianoCliente.init();
+        VeintiunoCliente.init();
         SoloPrimera.init();
         ViajeCliente.init();
         CeraCliente.init();

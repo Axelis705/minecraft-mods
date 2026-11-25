@@ -204,6 +204,38 @@ GUIONES = {
          "If several of you miss, the ones who got it right are safe. The rest… play again.", "Didáctico; con gusto en «los demás…»."),
         ("baile", "Que empiece el baile.", "Let the dance begin.", "Corto, con gusto; como quien levanta el telón."),
     ],
+    "veintiuno": [
+        ("mesa", "Bienvenidos a mi mesa de juego. Aquí nadie había llegado.", "Welcome to my gaming table. No one has ever made it this far.",
+         "Íntimo, casi orgulloso de ellos."),
+        ("dos", "Uno de ustedes se lleva todo. El otro… me deja un recuerdo.", "One of you takes everything. The other… leaves me a keepsake.",
+         "Pausa en «el otro…»; luego dulce y cruel."),
+        ("sientense", "Siéntense. La mano izquierda, en la máquina.", "Sit down. Your left hand goes in the machine.",
+         "Firme, como quien da una orden amable."),
+    ],
+    "veintiuno_reglas": [
+        ("veintiuno", "Vamos a jugar veintiuno. Once cartas, del uno al once.", "We'll play twenty-one. Eleven cards, one to eleven.",
+         "Tranquilo, barajando."),
+        ("dos_cartas", "Cada uno recibe dos: una tapada y una a la vista.", "Each of you gets two: one face down and one face up.",
+         "Claro, sin prisa."),
+        ("pedir", "En su turno, pidan carta o plántense. Gana el más cerca de veintiuno, sin pasarse.",
+         "On your turn, take a card or stand. Closest to twenty-one without going over wins.", "Didáctico."),
+        ("pasarse", "Si los dos se pasan, gana el que se pasó menos.", "If you both go over, the one who went over less wins.",
+         "Con una sonrisa en la voz."),
+        ("comodines", "Tienen dos comodines: espiar la carta tapada del otro y regresar su última carta. Solo una vez.",
+         "You have two wild cards: peek at the other's hidden card, and return your last card. Only once.", "Cómplice, como un secreto."),
+        ("aprieta", "Pierdan una ronda… y la máquina aprieta. Pierdan dos… y duele.",
+         "Lose one round… and the machine squeezes. Lose two… and it hurts.", "Lento; disfrutándolo."),
+        ("tres", "Pierdan tres… y me quedo con su brazo.", "Lose three… and I keep your arm.",
+         "Pausa larga antes de «y me quedo»; risita al final.", "WITCH_CELEBRATE"),
+        ("suerte", "Que gane el mejor.", "May the best one win.", "Corto, elegante."),
+    ],
+    "veintiuno_fin": [
+        ("ganador", "Tenemos un ganador.", "We have a winner.", "Solemne, casi emocionado."),
+        ("completa", "Mi colección está completa… por esta noche.", "My collection is complete… for tonight.",
+         "Satisfecho; pausa antes de «por esta noche»."),
+        ("puerta", "Puedes irte. La puerta está abierta… esta vez.", "You may go. The door is open… this time.",
+         "Cortés, con humor negro. Su despedida."),
+    ],
     "piano_fin": [
         ("cansada", "Mi bailarina está cansada.", "My ballerina is tired.", "Suave, como quien arropa a alguien."),
         ("ultimo", "La noche casi termina. Queda un último juego.", "The night is almost over. One last game remains.",
@@ -395,6 +427,9 @@ TITULOS = {
     "te_fin": "Capítulo 5 · La hora del té: el final (salen los ganadores)",
     "piano": "Capítulo 6 · El piano gigante: en el salón de baile (cuando ya entraron todos)",
     "piano_fin": "Capítulo 6 · El piano gigante: el final (antes de la última prueba)",
+    "veintiuno": "Capítulo 7 (final) · Veintiuno: en la mesa de juego (cuando ya entraron todos)",
+    "veintiuno_reglas": "Capítulo 7 (final) · Veintiuno: ya sentados con la mano en la máquina (la tele explica el juego)",
+    "veintiuno_fin": "Capítulo 7 (final) · Veintiuno: el ganador",
 }
 ZONAS = ["cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria"]
 
