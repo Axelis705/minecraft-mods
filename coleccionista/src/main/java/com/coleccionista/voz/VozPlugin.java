@@ -118,7 +118,9 @@ public class VozPlugin implements VoicechatPlugin {
             e.cancel(); // tiene la cinta en la boca: nadie lo oye
             return;
         }
-        disfrazar(api, yo, e);
+        if (disfrazar(api, de, yo, e)) {
+            return;
+        }
         boolean fantasma = VozPuente.fantasmas.contains(yo), altavoz = VozPuente.altavoz.contains(yo);
         if (!fantasma && !altavoz) {
             return;
@@ -140,8 +142,15 @@ public class VozPlugin implements VoicechatPlugin {
         }
     }
 
-    /** Si a esta persona le toca la voz cambiada: decodifica, le cambia el tono y lo vuelve a codificar (en el mismo paquete). */
-    private static void disfrazar(VoicechatServerApi api, UUID yo, MicrophonePacketEvent e) {
+    /** Hasta dónde se oye la voz cambiada (bloques; la de Simple Voice Chat por defecto es 48). */
+    private static final double DISTANCIA_TONO = 32;
+
+    /**
+     * Si a esta persona le toca la voz cambiada: se calla el paquete original, se decodifica, se le cambia el tono, se vuelve a codificar y
+     * se le manda (por canales directos) a quien lo oiría: los que están cerca y en su mismo grupo (su góndola), los fantasmas y el
+     * organizador cercanos. Devuelve si se encargó del paquete.
+     */
+    private static boolean disfrazar(VoicechatServerApi api, VoicechatConnection de, UUID yo, MicrophonePacketEvent e) {
         Float razon = VozPuente.tonos.get(yo);
         Disfraz d = DISFRACES.get(yo);
         if (razon == null || Math.abs(razon - 1F) < 0.01F) {
@@ -149,7 +158,7 @@ public class VozPlugin implements VoicechatPlugin {
                 DISFRACES.remove(yo);
                 d.cerrar();
             }
-            return;
+            return false;
         }
         if (d == null || Math.abs(d.tono.razon() - razon) > 0.001F) {
             if (d != null) {
@@ -159,28 +168,48 @@ public class VozPlugin implements VoicechatPlugin {
             DISFRACES.put(yo, d);
         }
         byte[] data = e.getPacket().getOpusEncodedData();
+        e.cancel();
+        byte[] nuevo;
         synchronized (d) {
             if (data == null || data.length == 0) {
                 // dejó de hablar: todo de cero para la próxima
                 d.dec.resetState();
                 d.enc.resetState();
                 d.tono.reiniciar();
-                return;
+                return true;
             }
             try {
                 short[] pcm = d.dec.decode(data);
                 if (pcm == null || pcm.length == 0) {
-                    return;
+                    return true;
                 }
-                byte[] nuevo = d.enc.encode(d.tono.procesar(pcm));
-                if (nuevo != null && nuevo.length > 0) {
-                    e.getPacket().setOpusEncodedData(nuevo);
-                }
+                nuevo = d.enc.encode(d.tono.procesar(pcm));
             } catch (RuntimeException ex) {
-                // si algo falla, que hable con su voz (mejor que callarlo)
+                // si algo falla, que se oiga su voz normal (mejor que callarlo)
                 Coleccionista.LOGGER.debug("COLECCIONISTA_VOZ no se pudo cambiar el tono: {}", ex.toString());
+                nuevo = data;
             }
         }
+        if (nuevo == null || nuevo.length == 0) {
+            return true;
+        }
+        de.maxhenkel.voicechat.api.Position p = de.getPlayer().getPosition();
+        for (VoicechatConnection c : conectados(api)) {
+            UUID otro = c.getPlayer().getUuid();
+            if (otro.equals(yo) || !VozPuente.oye(yo, otro)) {
+                continue;
+            }
+            de.maxhenkel.voicechat.api.Position q = c.getPlayer().getPosition();
+            double dx = p.getX() - q.getX(), dy = p.getY() - q.getY(), dz = p.getZ() - q.getZ();
+            if (dx * dx + dy * dy + dz * dz > DISTANCIA_TONO * DISTANCIA_TONO) {
+                continue;
+            }
+            StaticAudioChannel canal = canal(api, yo, c);
+            if (canal != null) {
+                canal.send(nuevo);
+            }
+        }
+        return true;
     }
 
     private static Iterable<VoicechatConnection> conectados(VoicechatServerApi api) {
