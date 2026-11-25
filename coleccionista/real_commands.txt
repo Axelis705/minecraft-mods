@@ -208,7 +208,7 @@ evento recorrido parar
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 85 -60 58 run evento bots 4
 #pausa 2
-evento sentidos bots si 3 4
+evento sentidos bots true 3 4
 evento sentidos tiempos 8 120
 evento mascota tiempos 8 120
 evento porton abrir

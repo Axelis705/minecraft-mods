@@ -331,7 +331,7 @@ final class PruebaCliente {
             for (int i = 2; i <= 8; i++) {
                 t.cmd("evento revivir Bot_0" + i);
             }
-            t.cmd("evento sentidos bots si 25 26");
+            t.cmd("evento sentidos bots true 25 26");
             t.cmd("evento sentidos tiempos 20 300");
             t.cmd("evento mascota tiempos 6 90");
             t.cmd("forceload add 704 424 784 488");
