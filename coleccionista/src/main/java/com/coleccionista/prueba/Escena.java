@@ -27,6 +27,17 @@ public final class Escena {
         PlayerStore.Sync.toAll(s, KEY_FUNDIDO, t);
     }
 
+    /** Solo esos jugadores a negro por {@code ticks}. */
+    public static void fundido(java.util.Collection<net.minecraft.server.level.ServerPlayer> quienes, String clave, int ticks) {
+        CompoundTag t = new CompoundTag();
+        t.putString("texto", clave == null ? "" : clave);
+        t.putInt("ticks", ticks);
+        t.putInt("n", ++contador);
+        for (net.minecraft.server.level.ServerPlayer p : quienes) {
+            PlayerStore.Sync.toPlayer(p, KEY_FUNDIDO, t);
+        }
+    }
+
     /** La presentación de una prueba: "PRUEBA I", el nombre en grande y su frase. */
     public static void presentacion(MinecraftServer s, String numero, String claveTitulo, String claveLema) {
         CompoundTag t = new CompoundTag();

@@ -1,0 +1,433 @@
+package com.coleccionista.evento;
+
+import com.axeliscore.AxelisCore;
+import com.axeliscore.plat.Plat;
+import com.coleccionista.Coleccionista;
+import com.coleccionista.bot.PiezaBot;
+import com.coleccionista.mapa.Cabinas;
+import com.coleccionista.mapa.SalaGrande;
+import com.coleccionista.prueba.Sentidos;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Capítulo 1, en la sala grande (después del portón del patio): el organizador pide equipos ({@code /evento capitulo1 equipos}) y el
+ * Coleccionista habla. Se abren los diez ascensores; cada equipo de 2 o de 3 se mete en uno (el foco de arriba se prende cuando está
+ * bien). Cuando todos están en un ascensor bien formado, cuenta 5 segundos y bajan; si se acaba el tiempo (o el organizador lo pide), bajan
+ * los que estén dentro y quien se quedó afuera queda eliminado. El viaje es una caída violenta; cada ascensor llega al ascensor falso de su
+ * circuito, donde empieza {@link Sentidos}.
+ */
+public final class Capitulo1 {
+    private static final String MOD = Coleccionista.MODID;
+    public static final String PRUEBA = "La sala grande";
+    public static int formarSeg = 150, viajeTicks = 240, cuentaTicks = 100;
+
+    public enum Fase {
+        NADA, SALA, HABLANDO, FORMAR, CUENTA, BAJANDO
+    }
+
+    private static Fase fase = Fase.NADA;
+    private static long cuentaFin = -1;
+    private static int viajes, llegados;
+    /** Quién está en qué ascensor (lo último que se revisó). */
+    private static final Map<Integer, List<Entity>> dentro = new HashMap<>();
+
+    private Capitulo1() {
+    }
+
+    public static void init() {
+        AxelisCore.onServerTick(Capitulo1::tick);
+    }
+
+    public static Fase fase() {
+        return fase;
+    }
+
+    /** El portón del patio subió: todos a la sala grande (el organizador decide cuándo pedir equipos). */
+    public static void alAbrirPorton(MinecraftServer s) {
+        if (fase == Fase.NADA) {
+            fase = Fase.SALA;
+            Evento.get(s).prueba(s, PRUEBA);
+            Pantallas.modo(s, "coleccionista", "");
+            Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 sala");
+        }
+    }
+
+    /** El organizador pide equipos: habla el Coleccionista y luego se abren los ascensores. */
+    public static Component equipos(MinecraftServer s) {
+        if (!Complejo.construido(s, "sala")) {
+            return Component.translatable(MOD + ".cap1.sin_mapa");
+        }
+        if (fase == Fase.HABLANDO || fase == Fase.FORMAR || fase == Fase.CUENTA || fase == Fase.BAJANDO) {
+            return Component.translatable(MOD + ".cap1.ya");
+        }
+        if (!Celdas.portonAbierto(s)) {
+            Celdas.porton(s, true);
+        }
+        fase = Fase.HABLANDO;
+        Evento.get(s).prueba(s, PRUEBA);
+        Pantallas.soloGrande(s, true);
+        Pantallas.hablar(s, "equipos", () -> formar(s));
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 equipos");
+        return null;
+    }
+
+    /** Se abren los ascensores y corre el reloj para formar equipos. */
+    public static void formar(MinecraftServer s) {
+        if (fase != Fase.HABLANDO && fase != Fase.SALA && fase != Fase.NADA) {
+            return;
+        }
+        Pantallas.callar(s);
+        fase = Fase.FORMAR;
+        for (int n = 1; n <= SalaGrande.ASCENSORES; n++) {
+            Cabina.puerta(s, "sala_" + n, true);
+        }
+        Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.7F);
+        Pantallas.modo(s, "texto", Component.translatable(MOD + ".cap1.pantalla").getString());
+        Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".cap1.chat.formen", formarSeg)));
+        Evento.get(s).reloj(s, formarSeg);
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 formar");
+    }
+
+    private static boolean pieza(Evento ev, Entity e) {
+        Pieza p = ev.pieza(e);
+        return p != null && p.vivo();
+    }
+
+    private static void tick(MinecraftServer s) {
+        if (fase != Fase.FORMAR && fase != Fase.CUENTA) {
+            return;
+        }
+        long now = s.overworld().getGameTime();
+        if (fase == Fase.CUENTA && now >= cuentaFin) {
+            bajar(s, false);
+            return;
+        }
+        if (now % 10 != 0) {
+            return;
+        }
+        Evento ev = Evento.get(s);
+        if (ev.fase() == Evento.Fase.PAUSA) {
+            return;
+        }
+        ServerLevel l = s.overworld();
+        dentro.clear();
+        int adentro = 0;
+        boolean bien = true;
+        for (int n = 1; n <= SalaGrande.ASCENSORES; n++) {
+            AABB c = Cabina.caja(s, "sala_" + n, Cabinas.EQ_ANCHO, Cabinas.ALTO, Cabinas.EQ_FONDO);
+            List<Entity> l2 = c == null ? new ArrayList<>()
+                    : new ArrayList<>(l.getEntitiesOfClass(Entity.class, c, e -> (e instanceof ServerPlayer || e instanceof PiezaBot) && pieza(ev, e)));
+            dentro.put(n, l2);
+            adentro += l2.size();
+            boolean ok = l2.size() >= 2 && l2.size() <= 3;
+            if (!l2.isEmpty() && !ok) {
+                bien = false;
+            }
+            foco(s, n, ok);
+            // a quien está adentro: cómo va su ascensor
+            for (Entity e : l2) {
+                if (e instanceof ServerPlayer sp) {
+                    String k = l2.size() == 1 ? ".cap1.falta" : l2.size() > 3 ? ".cap1.sobra" : ".cap1.listo";
+                    Plat.msg(sp, Component.translatable(MOD + k).withStyle(ok ? ChatFormatting.GREEN : ChatFormatting.GOLD), true);
+                }
+            }
+        }
+        int vivos = 0;
+        for (Pieza p : ev.vivos()) {
+            if (Evento.entidad(s, p) != null) {
+                vivos++;
+            }
+        }
+        // los bots se suben solos (uno cada medio segundo) a un ascensor donde quepan
+        if (now % 10 == 0) {
+            botsSuben(s, ev);
+        }
+        boolean todos = bien && adentro >= vivos && vivos > 0;
+        if (todos && fase == Fase.FORMAR) {
+            fase = Fase.CUENTA;
+            cuentaFin = now + cuentaTicks;
+            Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".cap1.chat.listos")));
+            Anuncio.sonido(s, SoundEvents.NOTE_BLOCK_BELL.get(), 1F, 0.8F);
+            Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 cuenta");
+        } else if (!todos && fase == Fase.CUENTA) {
+            fase = Fase.FORMAR;
+            cuentaFin = -1;
+            Anuncio.sonido(s, SoundEvents.NOTE_BLOCK_BASS.get(), 1F, 0.5F);
+        }
+        if (fase == Fase.CUENTA) {
+            int seg = (int) Math.max(0, (cuentaFin - now + 19) / 20);
+            for (List<Entity> l2 : dentro.values()) {
+                for (Entity e : l2) {
+                    if (e instanceof ServerPlayer sp) {
+                        Plat.msg(sp, Component.translatable(MOD + ".cap1.bajan", seg).withStyle(ChatFormatting.RED), true);
+                        if (now % 20 == 0) {
+                            sp.playNotifySound(SoundEvents.NOTE_BLOCK_HAT.get(), SoundSource.MASTER, 1F, 0.7F);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void foco(MinecraftServer s, int n, boolean on) {
+        BlockPos p = Complejo.pos(s, "sala.asc." + n + ".luz");
+        if (p == null) {
+            return;
+        }
+        BlockState st = s.overworld().getBlockState(p);
+        if (st.hasProperty(com.coleccionista.bloque.deco.DecoBlock.ENCENDIDA) && st.getValue(com.coleccionista.bloque.deco.DecoBlock.ENCENDIDA) != on) {
+            s.overworld().setBlock(p, st.setValue(com.coleccionista.bloque.deco.DecoBlock.ENCENDIDA, on), 3);
+        }
+    }
+
+    /**
+     * Un bot que no está en ningún ascensor se mete en uno: primero completa una pareja (un ascensor con uno), si no empieza otro; si es
+     * el último que falta y no hay pareja que completar, hace un trío (para no quedarse solo).
+     */
+    private static void botsSuben(MinecraftServer s, Evento ev) {
+        List<PiezaBot> fuera = new ArrayList<>();
+        for (Pieza p : ev.vivos()) {
+            if (p.bot && Evento.entidad(s, p) instanceof PiezaBot b) {
+                boolean ya = false;
+                for (List<Entity> l2 : dentro.values()) {
+                    ya |= l2.contains(b);
+                }
+                if (!ya) {
+                    fuera.add(b);
+                }
+            }
+        }
+        if (fuera.isEmpty()) {
+            return;
+        }
+        PiezaBot b = fuera.get(0);
+        int[] orden = fuera.size() == 1 ? new int[] {1, 2, 0} : new int[] {1, 0};
+        int mejor = -1;
+        for (int quiero : orden) {
+            for (int n = 1; n <= SalaGrande.ASCENSORES && mejor < 0; n++) {
+                if (dentro.getOrDefault(n, List.of()).size() == quiero) {
+                    mejor = n;
+                }
+            }
+            if (mejor > 0) {
+                break;
+            }
+        }
+        AABB c = mejor < 0 ? null : Cabina.caja(s, "sala_" + mejor, Cabinas.EQ_ANCHO, Cabinas.ALTO, Cabinas.EQ_FONDO);
+        if (c == null) {
+            return;
+        }
+        int i = dentro.get(mejor).size();
+        double x = c.minX + 0.6 + (c.maxX - c.minX - 1.2) * (i % 3) / 2.0, z = c.minZ + 0.6 + (c.maxZ - c.minZ - 1.2) * ((i + 1) % 2);
+        b.getNavigation().stop();
+        b.moveTo(x, c.minY + 0.05, z, b.getYRot(), 0);
+        dentro.get(mejor).add(b);
+    }
+
+    /** Se acabó el reloj de formar: bajan los que están dentro. */
+    static boolean alAcabarReloj(MinecraftServer s) {
+        if (fase != Fase.FORMAR && fase != Fase.CUENTA) {
+            return false;
+        }
+        bajar(s, true);
+        return true;
+    }
+
+    /**
+     * Bajan los ascensores. Los equipos de 1 se juntan con otro (o entre sí) y los de 4 o más se parten (cada quien viaja desde su
+     * ascensor al circuito de su equipo); con {@code forzado}, quien se quedó afuera de los ascensores queda eliminado.
+     */
+    public static boolean bajar(MinecraftServer s, boolean forzado) {
+        if (fase != Fase.FORMAR && fase != Fase.CUENTA) {
+            return false;
+        }
+        Evento ev = Evento.get(s);
+        // quién está en cuál (revisado ahora)
+        ServerLevel l = s.overworld();
+        List<int[]> origen = new ArrayList<>();
+        List<List<Entity>> grupos = new ArrayList<>();
+        java.util.Set<Entity> subidos = new java.util.HashSet<>();
+        for (int n = 1; n <= SalaGrande.ASCENSORES; n++) {
+            AABB c = Cabina.caja(s, "sala_" + n, Cabinas.EQ_ANCHO, Cabinas.ALTO, Cabinas.EQ_FONDO);
+            if (c == null) {
+                continue;
+            }
+            List<Entity> l2 = new ArrayList<>(l.getEntitiesOfClass(Entity.class, c, e -> (e instanceof ServerPlayer || e instanceof PiezaBot) && pieza(ev, e)));
+            if (!l2.isEmpty()) {
+                grupos.add(l2);
+                origen.add(new int[] {n});
+                subidos.addAll(l2);
+            }
+        }
+        if (grupos.isEmpty()) {
+            Anuncio.organizadores(s, Component.translatable(MOD + ".cap1.nadie"));
+            return false;
+        }
+        // los que se quedaron afuera
+        if (forzado) {
+            for (Pieza p : new ArrayList<>(ev.vivos())) {
+                Entity e = Evento.entidad(s, p);
+                if (e != null && !subidos.contains(e) && ev.vivos().size() > 2) {
+                    Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".cap1.chat.solo", Anuncio.nombre(p))));
+                    ev.eliminar(s, p, Component.translatable(MOD + ".cap1.motivo").getString());
+                }
+            }
+        }
+        // equipos finales: cada miembro con el ascensor del que sale
+        List<List<Entity>> equipos = new ArrayList<>();
+        Map<Entity, Integer> sale = new HashMap<>();
+        for (int i = 0; i < grupos.size(); i++) {
+            for (Entity e : grupos.get(i)) {
+                sale.put(e, origen.get(i)[0]);
+            }
+            List<Entity> g = grupos.get(i);
+            // los de 4 o más se parten en grupos de 3 y 2
+            while (g.size() > 3) {
+                int corte = g.size() == 4 ? 2 : 3;
+                equipos.add(new ArrayList<>(g.subList(0, corte)));
+                g = new ArrayList<>(g.subList(corte, g.size()));
+            }
+            equipos.add(new ArrayList<>(g));
+        }
+        // los de 1: con una pareja (queda de 3) o con otro solo; si no, le quitan uno a un trío
+        for (int i = 0; i < equipos.size(); i++) {
+            if (equipos.get(i).size() != 1) {
+                continue;
+            }
+            List<Entity> solo = equipos.get(i);
+            int destino = -1;
+            for (int want : new int[] {2, 1, 3}) {
+                for (int j = 0; j < equipos.size() && destino < 0; j++) {
+                    if (j != i && equipos.get(j).size() == want) {
+                        destino = j;
+                    }
+                }
+                if (destino >= 0) {
+                    break;
+                }
+            }
+            if (destino < 0) {
+                continue;
+            }
+            List<Entity> d = equipos.get(destino);
+            if (d.size() == 3) {
+                solo.add(d.remove(2));
+            } else {
+                d.addAll(solo);
+                equipos.remove(i);
+                i = -1;
+            }
+        }
+        equipos.removeIf(List::isEmpty);
+        // a cada equipo, su circuito
+        List<List<Pieza>> piezas = new ArrayList<>();
+        for (List<Entity> eq : equipos) {
+            List<Pieza> lp = new ArrayList<>();
+            for (Entity e : eq) {
+                Pieza p = ev.pieza(e);
+                if (p != null) {
+                    lp.add(p);
+                }
+            }
+            piezas.add(lp);
+        }
+        Component no = Sentidos.preparar(s, piezas);
+        if (no != null) {
+            Anuncio.organizadores(s, no);
+            return false;
+        }
+        fase = Fase.BAJANDO;
+        ev.reloj(s, 0);
+        Pantallas.modo(s, "estatica", "");
+        viajes = 0;
+        llegados = 0;
+        // cada miembro viaja desde su ascensor al falso de su circuito (agrupados por par ascensor-circuito)
+        Map<String, List<Entity>> pares = new HashMap<>();
+        for (int k = 0; k < equipos.size() && k < com.coleccionista.mapa.Circuito.CIRCUITOS; k++) {
+            for (Entity e : equipos.get(k)) {
+                pares.computeIfAbsent(sale.get(e) + ">" + (k + 1), x -> new ArrayList<>()).add(e);
+            }
+        }
+        for (Map.Entry<String, List<Entity>> par : pares.entrySet()) {
+            String[] ab = par.getKey().split(">");
+            boolean ok = Cabina.viajar(s, "sala_" + ab[0], "circ_" + ab[1], Cabina.Tipo.CAIDA, viajeTicks, Cabinas.EQ_ANCHO, Cabinas.ALTO,
+                    Cabinas.EQ_FONDO, par.getValue(), () -> llego(s));
+            if (ok) {
+                viajes++;
+            }
+        }
+        for (int n = 1; n <= SalaGrande.ASCENSORES; n++) {
+            Cabina.puerta(s, "sala_" + n, false);
+            foco(s, n, false);
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 bajan equipos={} viajes={} forzado={}", equipos.size(), viajes, forzado);
+        if (viajes == 0) {
+            fase = Fase.NADA;
+        }
+        return true;
+    }
+
+    private static void llego(MinecraftServer s) {
+        llegados++;
+        if (llegados >= viajes && fase == Fase.BAJANDO) {
+            fase = Fase.NADA;
+            Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 llegaron");
+            Sentidos.alLlegar(s, true);
+        }
+    }
+
+    public static void reiniciar(MinecraftServer s) {
+        fase = Fase.NADA;
+        cuentaFin = -1;
+        viajes = 0;
+        llegados = 0;
+        dentro.clear();
+    }
+
+    /** Para el panel: en qué va. */
+    public static String resumen() {
+        return fase.name();
+    }
+
+    /** Para probar: lleva a todas las piezas vivas a la sala grande (como si hubieran cruzado el portón). */
+    public static int aLaSala(MinecraftServer s) {
+        BlockPos c = Complejo.pos(s, "sala.centro");
+        if (c == null) {
+            return 0;
+        }
+        Evento ev = Evento.get(s);
+        int n = 0;
+        for (Pieza p : ev.vivos()) {
+            Entity e = Evento.entidad(s, p);
+            if (e == null) {
+                continue;
+            }
+            double x = c.getX() + 0.5 - (n % 6) * 1.5, z = c.getZ() + 0.5 + (n / 6 - 1) * 1.5;
+            if (e instanceof ServerPlayer sp) {
+                sp.teleportTo(s.overworld(), x, c.getY(), z, 90F, 0F);
+            } else {
+                e.moveTo(x, c.getY(), z, 90F, 0F);
+            }
+            n++;
+        }
+        if (fase == Fase.NADA) {
+            fase = Fase.SALA;
+        }
+        return n;
+    }
+}

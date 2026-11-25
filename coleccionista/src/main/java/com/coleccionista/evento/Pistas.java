@@ -120,68 +120,66 @@ public final class Pistas {
         return String.join(" ", p);
     }
 
-    /** Dónde está todo en una celda (sale de las marcas del plano: el catre, el baúl y el candado). */
-    record Celda(double xs, double y1, double zb, int dz) {
+    /**
+     * Dónde está todo en una celda (sale de la marca de su esquina: el punto de atrás a la izquierda del interior y el giro de la celda). Las
+     * inscripciones se describen como en una celda que mira al sur ({@code u} hacia la derecha, {@code w} desde la pared del fondo hacia los
+     * barrotes) y se giran al mundo.
+     */
+    record Celda(double cx, double y1, double cz, float giro) {
         static Celda de(MinecraftServer s, int n) {
-            BlockPos cama = Complejo.pos(s, "celda." + n + ".cama"), candado = Complejo.pos(s, "celda." + n + ".candado");
-            if (cama == null || candado == null) {
+            BlockPos e = Complejo.pos(s, "celda." + n + ".esquina");
+            if (e == null) {
                 return null;
             }
-            int dz = candado.getZ() > cama.getZ() ? 1 : -1;
-            // la pared del fondo: del lado sur la cara está en z del catre; del lado norte, una más
-            return new Celda(cama.getX(), cama.getY(), cama.getZ() + (dz > 0 ? 0 : 1), dz);
-        }
-
-        /** z a {@code w} bloques de la pared del fondo hacia los barrotes. */
-        double z(double w) {
-            return zb + dz * w;
-        }
-
-        /** Hacia dónde se lee algo acostado (piso o techo): quien lo lee mira hacia la pared del fondo. */
-        float plano() {
-            return dz > 0 ? 0 : 180;
+            return new Celda(e.getX(), e.getY(), e.getZ(), Complejo.yaw("celda." + n + ".esquina"));
         }
 
         CompoundTag inscripcion(String lugar, String texto, Random r) {
             final double e = 0.006; // despegado de la superficie
-            double x, y, z;
+            double u, y, w;
             int plano = PARED, estilo;
             float ang, esc;
+            y = y1;
             switch (lugar) {
                 case "colchon_lado" -> { // el costado del colchón, del lado de la celda
-                    x = xs + 14.5 / 16 + e; y = y1 + 7.75 / 16; z = z(1.0); ang = 90; esc = 0.0085F; estilo = NEGRO;
+                    u = 14.5 / 16 + e; y = y1 + 7.75 / 16; w = 1.0; ang = 90; esc = 0.0085F; estilo = NEGRO;
                 }
                 case "bajo_catre" -> { // en el piso, debajo del catre (hay que agacharse)
-                    x = xs + 0.5; y = y1 + e; z = z(1.1); plano = PISO; ang = plano(); esc = 0.011F; estilo = TIZA;
+                    u = 0.5; y = y1 + e; w = 1.1; plano = PISO; ang = 0; esc = 0.011F; estilo = TIZA;
                 }
                 case "colchon" -> { // encima del colchón, a los pies
-                    x = xs + 0.5; y = y1 + 9.0 / 16 + e; z = z(1.6); plano = PISO; ang = plano(); esc = 0.009F; estilo = NEGRO;
+                    u = 0.5; y = y1 + 9.0 / 16 + e; w = 1.6; plano = PISO; ang = 0; esc = 0.009F; estilo = NEGRO;
                 }
                 case "techo" -> { // en el techo, encima del catre
-                    x = xs + 0.5; y = y1 + 4 - e; z = z(1.6); plano = TECHO; ang = plano(); esc = 0.013F; estilo = RAYADO;
+                    u = 0.5; y = y1 + 4 - e; w = 1.6; plano = TECHO; ang = 0; esc = 0.013F; estilo = RAYADO;
                 }
                 case "espejo" -> { // en el vidrio del espejo, con plumón rojo
-                    x = xs + 4 + 14.8 / 16 - e; y = y1 + 1 + 11.0 / 16; z = z(3.5); ang = 270; esc = 0.0095F; estilo = ROJO;
+                    u = 4 + 14.8 / 16 - e; y = y1 + 1 + 11.0 / 16; w = 3.5; ang = 270; esc = 0.0095F; estilo = ROJO;
                 }
                 case "bajo_lavabo" -> { // en la pared, debajo del lavabo (a un lado del tubo)
-                    x = xs + 5 - e; y = y1 + 0.32; z = Math.floor(z(3.5)) + 0.77; ang = 270; esc = 0.0085F; estilo = RAYADO;
+                    u = 5 - e; y = y1 + 0.32; w = 3.77; ang = 270; esc = 0.0085F; estilo = RAYADO;
                 }
                 case "tanque" -> { // el frente del tanque del retrete
-                    x = xs + 4 + 9.0 / 16 - e; y = y1 + 10.0 / 16; z = z(2.5); ang = 270; esc = 0.0085F; estilo = RAYADO;
+                    u = 4 + 9.0 / 16 - e; y = y1 + 10.0 / 16; w = 2.5; ang = 270; esc = 0.0085F; estilo = RAYADO;
                 }
-                case "oeste_bajo" -> { // pared oeste, abajo, junto a los barrotes
-                    x = xs + e; y = y1 + 0.3; z = z(4.4); ang = 90; esc = 0.011F; estilo = TIZA;
+                case "oeste_bajo" -> { // pared de la izquierda, abajo, junto a los barrotes
+                    u = e; y = y1 + 0.3; w = 4.4; ang = 90; esc = 0.011F; estilo = TIZA;
                 }
                 case "fondo_bajo" -> { // pared del fondo, abajo, entre el catre y el baúl
-                    x = xs + 2.6; y = y1 + 0.28; z = z(e); ang = dz > 0 ? 0 : 180; esc = 0.011F; estilo = TIZA;
+                    u = 2.6; y = y1 + 0.28; w = e; ang = 0; esc = 0.011F; estilo = TIZA;
                 }
                 case "dintel" -> { // la viga de arriba de los barrotes, por dentro
-                    x = xs + 0.9; y = y1 + 3.5; z = z(5 - e); ang = dz > 0 ? 180 : 0; esc = 0.012F; estilo = RAYADO;
+                    u = 0.9; y = y1 + 3.5; w = 5 - e; ang = 180; esc = 0.012F; estilo = RAYADO;
                 }
                 default -> { // "tapa_cajon": rayado en la tapa del baúl
-                    x = xs + 4.5; y = y1 + 9.0 / 16 + e; z = z(0.5); plano = PISO; ang = plano(); esc = 0.011F; estilo = RAYADO;
+                    u = 4.5; y = y1 + 9.0 / 16 + e; w = 0.5; plano = PISO; ang = 0; esc = 0.011F; estilo = RAYADO;
                 }
             }
+            // de la celda "que mira al sur" al mundo: la posición se gira con la celda y el ángulo (0 = cara hacia +z, 90 = hacia +x) también
+            double rad = Math.toRadians(giro);
+            int c = (int) Math.round(Math.cos(rad)), sn = (int) Math.round(Math.sin(rad));
+            double x = cx + u * c - w * sn, z = cz + u * sn + w * c;
+            ang = ((ang - giro) % 360 + 360) % 360;
             CompoundTag t = new CompoundTag();
             t.putDouble("x", x);
             t.putDouble("y", y);

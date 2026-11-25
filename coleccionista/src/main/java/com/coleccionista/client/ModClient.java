@@ -19,6 +19,7 @@ public final class ModClient {
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerEntityRenderer(ModRegistry.BOT.get(), BotRenderer::new);
         e.registerEntityRenderer(ModRegistry.CADAVER.get(), CadaverRenderer::new);
+        e.registerEntityRenderer(ModRegistry.SILLA.get(), SillaRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.PANTALLA_BE.get(), PantallaRenderer::new);
         e.registerBlockEntityRenderer(com.coleccionista.bloque.deco.Deco.TEXTO_BE, TextoRenderer::new);
         e.registerBlockEntityRenderer(com.coleccionista.bloque.deco.Deco.REJA_BE, RejaRenderer::new);
@@ -27,6 +28,7 @@ public final class ModClient {
     @SubscribeEvent
     public static void onLayers(EntityRenderersEvent.AddLayers e) {
         DisfrazRender.capas(e);
+        RolesCapa.capas(e);
     }
 
     @SubscribeEvent
@@ -57,6 +59,8 @@ public final class ModClient {
         TraidorCliente.init();
         CiegasCliente.init();
         SentidosCliente.init();
+        ViajeCliente.init();
+        CeraCliente.init();
         Ambiente.init();
         com.axeliscore.ui.ScreenRegistry.register(Coleccionista.MODID + ":candado", CandadoScreen::new);
         // prueba con fotos: cliente-core.yml con mod=coleccionista y escenario=coleccionista

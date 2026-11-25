@@ -74,6 +74,11 @@ public final class ModRegistry {
             ENTITIES.register("cadaver", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "cadaver",
                     EntityType.Builder.<com.coleccionista.evento.Cadaver>of(com.coleccionista.evento.Cadaver::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(1.6F, 0.4F).clientTrackingRange(10)));
+    /** La silla que se mueve sola (la salida de los circuitos de los sentidos). */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.Silla>> SILLA =
+            ENTITIES.register("silla", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "silla",
+                    EntityType.Builder.<com.coleccionista.evento.Silla>of(com.coleccionista.evento.Silla::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.8F, 0.9F).clientTrackingRange(10).updateInterval(1)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(

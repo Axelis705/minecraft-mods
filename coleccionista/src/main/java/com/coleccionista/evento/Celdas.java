@@ -50,20 +50,25 @@ public final class Celdas {
         Actions.on(ACCION_CODIGO, Celdas::probarCodigo);
         Actions.on(ACCION_TOQUE, Celdas::toque);
         com.axeliscore.AxelisCore.onServerTick(Celdas::vigilarSalida);
+        com.axeliscore.AxelisCore.onServerTick(Celdas::tickPorton);
     }
 
     // ------------------------------------------------------------------ cuando todas salen de su celda
 
     /** Ticks que espera el Coleccionista desde que la última pieza salió de su celda hasta que habla en la pantalla grande. */
     public static int esperaSalida = 100;
+    /**
+     * false (lo normal): cuando todas salen de su celda solo se le avisa al organizador, que prende la pantalla grande cuando quiera (botón
+     * de la línea de tiempo o {@code /evento salida}). true: habla solo a los pocos segundos (como antes).
+     */
+    public static boolean salidaSola = false;
     private static long salidaEn = -1;
     /** Se pidió el discurso de salida (a mano) mientras el Coleccionista hablaba: lo dice en cuanto se desocupen las pantallas. */
     private static boolean salidaPendiente;
+    /** Ya se avisó al organizador que todas salieron (una vez por despertar). */
+    private static boolean avisado;
 
-    /**
-     * Ya funcionan los candados: cuando todas las piezas vivas (las personas conectadas) están fuera de las celdas, a los pocos segundos el
-     * Coleccionista habla en la pantalla grande del escenario (una sola vez por despertar).
-     */
+    /** Ya funcionan los candados: cuando todas las piezas vivas (las personas conectadas) están fuera de las celdas, se avisa. */
     private static void vigilarSalida(MinecraftServer s) {
         if (salidaPendiente && s.getTickCount() % 10 == 0 && !Pantallas.ocupado()) {
             salidaPendiente = false;
@@ -74,36 +79,47 @@ public final class Celdas {
             salidaEn = -1;
             return;
         }
-        Evento ev = Evento.get(s);
+        if (!todasFuera(s)) {
+            salidaEn = -1;
+            avisado = false;
+            return;
+        }
+        long now = s.overworld().getGameTime();
+        if (!avisado) {
+            avisado = true;
+            Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA todas fuera piezas={}", Evento.get(s).vivos().size());
+            Anuncio.organizadores(s, Component.translatable(MOD + ".salida.aviso").withStyle(ChatFormatting.GOLD));
+        }
+        if (!salidaSola) {
+            return;
+        }
+        if (salidaEn < 0) {
+            salidaEn = now + esperaSalida;
+        } else if (now >= salidaEn && !Pantallas.ocupado()) {
+            hablarSalida(s);
+        }
+    }
+
+    /** ¿Ya no queda ninguna pieza viva (de las conectadas) dentro de una celda? */
+    public static boolean todasFuera(MinecraftServer s) {
         int personas = 0;
-        boolean todas = true;
-        for (Pieza p : ev.vivos()) {
+        for (Pieza p : Evento.get(s).vivos()) {
             net.minecraft.server.level.ServerPlayer sp = p.bot ? null : s.getPlayerList().getPlayer(p.id);
             if (sp == null) {
                 continue;
             }
             personas++;
             if (enCelda(s, sp.blockPosition())) {
-                todas = false;
-                break;
+                return false;
             }
         }
-        long now = s.overworld().getGameTime();
-        if (personas == 0 || !todas) {
-            salidaEn = -1;
-            return;
-        }
-        if (salidaEn < 0) {
-            salidaEn = now + esperaSalida;
-            Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA todas fuera piezas={}", personas);
-        } else if (now >= salidaEn && !Pantallas.ocupado()) {
-            hablarSalida(s);
-        }
+        return personas > 0;
     }
 
     /**
-     * El discurso de cuando todas salieron (también a mano: {@code /evento salida}). Si el Coleccionista está hablando, queda en espera y lo
-     * dice al terminar; devuelve si empezó ya.
+     * El discurso de cuando todas salieron (el organizador lo pide: {@code /evento salida} o la línea de tiempo). Se apagan las pantallas
+     * chicas de las celdas y habla solo en las grandes de la torre; al terminar sube el portón. Si el Coleccionista está hablando, queda en
+     * espera y lo dice al terminar; devuelve si empezó ya.
      */
     public static boolean hablarSalida(MinecraftServer s) {
         if (Pantallas.ocupado()) {
@@ -115,20 +131,109 @@ public final class Celdas {
         datos(s).putBoolean("salida", true);
         sucio(s);
         salidaEn = -1;
-        // al terminar de hablar se abre el elevador a la primera prueba (el recorrido sigue solo)
-        Pantallas.hablar(s, "salida", () -> Recorrido.alSalirDeLasCeldas(s));
+        Pantallas.soloGrande(s, true);
+        Pantallas.hablar(s, "salida", () -> {
+            porton(s, true);
+            com.coleccionista.evento.Capitulo1.alAbrirPorton(s);
+        });
         Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA discurso");
         return true;
     }
 
-    /** ¿Ese punto cae dentro de alguna celda del Ala (las dos filas, los dos pisos)? */
-    public static boolean enCelda(MinecraftServer s, BlockPos b) {
-        BlockPos o = Complejo.origen(s, "celdas");
-        if (o == null) {
-            return false;
+    // ------------------------------------------------------------------ el portón del patio
+
+    /** Hacia dónde va el portón (1 sube, -1 baja, 0 quieto) y en qué paso va (0 cerrado .. ALTO abierto). */
+    private static int portonDir, portonPaso;
+    private static long portonSig;
+
+    /** Sube (abre) o baja (cierra) el portón de barrotes del patio, poco a poco y con ruido de cadenas. */
+    public static void porton(MinecraftServer s, boolean abrir) {
+        portonDir = abrir ? 1 : -1;
+        portonSig = s.overworld().getGameTime();
+        datos(s).putBoolean("porton", abrir);
+        sucio(s);
+        Coleccionista.LOGGER.info("COLECCIONISTA_PORTON {}", abrir ? "sube" : "baja");
+    }
+
+    public static boolean portonAbierto(MinecraftServer s) {
+        return datos(s).getBoolean("porton");
+    }
+
+    /** Cierra el portón de golpe (al preparar la sala de espera). */
+    public static void portonCerrado(MinecraftServer s) {
+        portonDir = 0;
+        portonPaso = 0;
+        datos(s).putBoolean("porton", false);
+        sucio(s);
+        ponerPorton(s, 0);
+    }
+
+    private static void tickPorton(MinecraftServer s) {
+        if (portonDir == 0 || s.overworld().getGameTime() < portonSig) {
+            return;
         }
-        int x = b.getX() - o.getX(), y = b.getY() - o.getY(), z = b.getZ() - o.getZ();
-        return x >= 1 && x <= 35 && Math.floorMod(x, 6) != 0 && y >= 0 && y <= 10 && (z >= 1 && z <= 5 || z >= 17 && z <= 21);
+        portonSig = s.overworld().getGameTime() + 9;
+        portonPaso = Math.max(0, Math.min(com.coleccionista.mapa.AlaCeldas.PORTON_ALTO, portonPaso + portonDir));
+        ponerPorton(s, portonPaso);
+        BlockPos c = Complejo.pos(s, "porton.2");
+        if (c != null) {
+            ServerLevel l = mundo(s);
+            l.playSound(null, c, SoundEvents.CHAIN_PLACE, SoundSource.BLOCKS, 1.6F, 0.5F);
+            l.playSound(null, c, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 0.9F, 0.5F + 0.05F * portonPaso);
+        }
+        if (portonPaso == 0 || portonPaso == com.coleccionista.mapa.AlaCeldas.PORTON_ALTO) {
+            if (c != null) {
+                mundo(s).playSound(null, c, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.8F, 0.5F);
+            }
+            portonDir = 0;
+        }
+    }
+
+    /** El portón con {@code paso} bloques subidos: los barrotes de abajo se quitan (el resto queda metido en el muro de arriba). */
+    private static void ponerPorton(MinecraftServer s, int paso) {
+        ServerLevel l = mundo(s);
+        BlockState bar = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getValue(new net.minecraft.resources.ResourceLocation(MOD, "barrotes"))
+                .defaultBlockState();
+        for (int k = 0; k < 5; k++) {
+            BlockPos b = Complejo.pos(s, "porton." + k);
+            if (b == null) {
+                continue;
+            }
+            for (int y = 0; y < com.coleccionista.mapa.AlaCeldas.PORTON_ALTO; y++) {
+                BlockPos q = b.above(y);
+                BlockState want = y < paso ? net.minecraft.world.level.block.Blocks.AIR.defaultBlockState() : bar;
+                BlockState have = l.getBlockState(q);
+                if (have.getBlock() != want.getBlock()) {
+                    l.setBlock(q, want.getBlock() == bar.getBlock() ? net.minecraft.world.level.block.Block.updateFromNeighbourShapes(want, l, q)
+                            : want, 3);
+                }
+            }
+        }
+    }
+
+    /** ¿Ese punto cae dentro de alguna celda? (el interior de 5 x 5 de cada una, sacado de la marca de su esquina) */
+    public static boolean enCelda(MinecraftServer s, BlockPos b) {
+        return celdaEn(s, b) > 0;
+    }
+
+    /** El número de la celda en la que está ese punto (0 si en ninguna). */
+    public static int celdaEn(MinecraftServer s, BlockPos b) {
+        for (int n = 1; n <= com.coleccionista.mapa.AlaCeldas.CELDAS; n++) {
+            BlockPos e = Complejo.pos(s, "celda." + n + ".esquina");
+            if (e == null) {
+                continue;
+            }
+            double r = Math.toRadians(Complejo.yaw("celda." + n + ".esquina"));
+            int c = (int) Math.round(Math.cos(r)), sn = (int) Math.round(Math.sin(r));
+            // la esquina opuesta del interior (5 a lo ancho, 5 al fondo)
+            int x2 = e.getX() + 5 * c - 5 * sn, z2 = e.getZ() + 5 * sn + 5 * c;
+            double x = b.getX() + 0.5, z = b.getZ() + 0.5;
+            if (x > Math.min(e.getX(), x2) && x < Math.max(e.getX(), x2) && z > Math.min(e.getZ(), z2) && z < Math.max(e.getZ(), z2)
+                    && b.getY() >= e.getY() - 1 && b.getY() <= e.getY() + 4) {
+                return n;
+            }
+        }
+        return 0;
     }
 
     private static CompoundTag datos(MinecraftServer s) {
@@ -287,6 +392,7 @@ public final class Celdas {
         CompoundTag d = datos(s);
         d.putBoolean("salida", false);
         salidaPendiente = false;
+        avisado = false;
         Set<Integer> usados = new HashSet<>();
         for (int n = 1; n <= com.coleccionista.mapa.AlaCeldas.CELDAS; n++) {
             int cod;

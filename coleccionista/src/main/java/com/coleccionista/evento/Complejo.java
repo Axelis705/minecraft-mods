@@ -63,6 +63,13 @@ public final class Complejo {
         AxelisCore.onServerTick(Complejo::tick);
     }
 
+    /** Dónde empieza (respecto al origen) el circuito K de los sentidos. */
+    public static final int CIRCUITO_Z = 400;
+
+    public static int circuitoX(int k) {
+        return 120 * (k - 1);
+    }
+
     /** El plano del Ala de celdas (siempre el mismo: la semilla es fija). */
     public static Plano planoCeldas() {
         if (celdas == null) {
@@ -76,8 +83,15 @@ public final class Complejo {
         if (zonas == null) {
             List<Zona> l = new ArrayList<>();
             l.add(new Zona("celdas", planoCeldas(), 0, 0, 0, 1));
-            // las Cloacas empiezan justo al este del portón del Ala (x 44): su pasillo (x local -5) queda en x 45
-            l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 56, 0, -11, 0));
+            // capítulo 1: la sala grande (pegada al portón del patio, en x 54), los circuitos de los sentidos (uno por equipo, en fila al
+            // sur, a 120 bloques uno de otro para que no se vean ni se oigan) y la galería de la vitrina
+            l.add(new Zona("sala", com.coleccionista.mapa.SalaGrande.crear(SEMILLA), 55, 0, 0, 0));
+            for (int k = 1; k <= com.coleccionista.mapa.Circuito.CIRCUITOS; k++) {
+                l.add(new Zona("circ_" + k, com.coleccionista.mapa.Circuito.crear(SEMILLA, k), circuitoX(k), 0, CIRCUITO_Z, 1));
+            }
+            l.add(new Zona("vitrina", com.coleccionista.mapa.SalaVitrina.crear(SEMILLA), -80, 0, 400, 1));
+            // las Cloacas (el Encadenados de antes) quedaron lejos, al sur de las antesalas
+            l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 56, 0, 230, 0));
             // el Salón de las mesas, pegado al este de las Cloacas (su pared oeste junto al Refugio)
             l.add(new Zona("salon", com.coleccionista.mapa.Salon.crear(SEMILLA), 170, 0, -10, 0));
             // la Sala de las puertas, al norte del Ala de celdas (elevada: su piso queda 6 bloques arriba)

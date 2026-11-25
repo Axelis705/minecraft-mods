@@ -68,6 +68,11 @@ public final class EventoCliente {
     }
 
     /** ¿El organizador cerró el chat? */
+    /** ¿Está prendida la inscripción automática al entrar? */
+    public static boolean autoInscribir() {
+        return !estado.contains("autoInscribir") || estado.getBoolean("autoInscribir");
+    }
+
     public static boolean chatCerrado() {
         return estado.getBoolean("chatCerrado");
     }

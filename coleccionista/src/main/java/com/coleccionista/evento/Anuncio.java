@@ -31,6 +31,17 @@ public final class Anuncio {
         }
     }
 
+    /** Un aviso solo para quien organiza (operadores, el anfitrión y los organizadores), con un "ding". */
+    public static void organizadores(MinecraftServer s, Component c) {
+        Evento ev = Evento.get(s);
+        for (ServerPlayer p : s.getPlayerList().getPlayers()) {
+            if (Plat.isOp(p) || Plat.isHost(p) || ev.esOrganizador(p.getUUID())) {
+                Plat.msg(p, Component.literal("[Organizador] ").withStyle(ChatFormatting.DARK_GRAY).append(c), false);
+                p.playNotifySound(net.minecraft.sounds.SoundEvents.NOTE_BLOCK_PLING.get(), SoundSource.MASTER, 0.7F, 1.4F);
+            }
+        }
+    }
+
     public static void sonido(MinecraftServer s, SoundEvent e, float vol, float tono) {
         for (ServerPlayer p : s.getPlayerList().getPlayers()) {
             p.playNotifySound(e, SoundSource.MASTER, vol, tono);

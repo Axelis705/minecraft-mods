@@ -175,6 +175,84 @@ public final class Comandos {
                                     Recorrido.elevadorSeg = com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(c, "elevador");
                                     return ok(c, Component.translatable(MOD + ".cmd.recorrido_ajustes", Recorrido.auto, Recorrido.extra, Recorrido.formarSeg, Recorrido.elevadorSeg));
                                 })))))
+                // ---- capítulo 1: el portón, la sala grande, los ascensores y los circuitos de los sentidos
+                .then(Commands.literal("porton")
+                        .then(Commands.literal("abrir").executes(c -> {
+                            Celdas.porton(c.getSource().getServer(), true);
+                            Capitulo1.alAbrirPorton(c.getSource().getServer());
+                            return ok(c, Component.translatable(MOD + ".cmd.porton", "↑"));
+                        }))
+                        .then(Commands.literal("cerrar").executes(c -> {
+                            Celdas.porton(c.getSource().getServer(), false);
+                            return ok(c, Component.translatable(MOD + ".cmd.porton", "↓"));
+                        })))
+                .then(Commands.literal("inscripcion").then(Commands.argument("auto", com.mojang.brigadier.arguments.BoolArgumentType.bool()).executes(c -> {
+                    Evento ev = Evento.get(c.getSource().getServer());
+                    ev.autoInscribir = com.mojang.brigadier.arguments.BoolArgumentType.getBool(c, "auto");
+                    ev.cambio(c.getSource().getServer());
+                    return ok(c, Component.translatable(MOD + ".cmd.inscripcion", ev.autoInscribir));
+                })))
+                .then(Commands.literal("capitulo1")
+                        .executes(c -> ok(c, Component.literal("cap1=" + Capitulo1.resumen() + " sentidos=" + com.coleccionista.prueba.Sentidos.resumen())))
+                        .then(Commands.literal("sala").executes(c -> ok(c, Component.translatable(MOD + ".cmd.cap1_sala",
+                                Capitulo1.aLaSala(c.getSource().getServer())))))
+                        .then(Commands.literal("equipos").executes(c -> {
+                            Component no = Capitulo1.equipos(c.getSource().getServer());
+                            return no == null ? ok(c, Component.translatable(MOD + ".cmd.cap1_equipos")) : error(c, no);
+                        }))
+                        .then(Commands.literal("formar").executes(c -> {
+                            Capitulo1.formar(c.getSource().getServer());
+                            return ok(c, Component.literal("cap1=" + Capitulo1.resumen()));
+                        }))
+                        .then(Commands.literal("bajar").executes(c -> Capitulo1.bajar(c.getSource().getServer(), true)
+                                ? ok(c, Component.translatable(MOD + ".cmd.cap1_bajan")) : error(c, Component.translatable(MOD + ".cap1.no_bajan")))))
+                .then(Commands.literal("sentidos")
+                        .executes(c -> ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen())))
+                        .then(Commands.literal("saltar").executes(c -> com.coleccionista.prueba.Sentidos.saltar(c.getSource().getServer())
+                                ? ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen())) : error(c, Component.translatable(MOD + ".sen.no"))))
+                        .then(Commands.literal("terminar").executes(c -> com.coleccionista.prueba.Sentidos.terminarYa(c.getSource().getServer())
+                                ? ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen())) : error(c, Component.translatable(MOD + ".sen.no"))))
+                        .then(Commands.literal("limpiar").executes(c -> {
+                            com.coleccionista.prueba.Sentidos.reiniciar(c.getSource().getServer());
+                            return ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen()));
+                        }))
+                        .then(Commands.literal("bots").then(Commands.argument("salen", com.mojang.brigadier.arguments.BoolArgumentType.bool())
+                                .executes(c -> {
+                                    com.coleccionista.prueba.Sentidos.botsSalen = com.mojang.brigadier.arguments.BoolArgumentType.getBool(c, "salen");
+                                    return ok(c, Component.literal("botsSalen=" + com.coleccionista.prueba.Sentidos.botsSalen));
+                                })
+                                .then(Commands.argument("min", IntegerArgumentType.integer(1, 600)).then(Commands.argument("max", IntegerArgumentType.integer(2, 900))
+                                        .executes(c -> {
+                                            com.coleccionista.prueba.Sentidos.botsSalen = com.mojang.brigadier.arguments.BoolArgumentType.getBool(c, "salen");
+                                            com.coleccionista.prueba.Sentidos.botMin = IntegerArgumentType.getInteger(c, "min");
+                                            com.coleccionista.prueba.Sentidos.botMax = Math.max(com.coleccionista.prueba.Sentidos.botMin + 1,
+                                                    IntegerArgumentType.getInteger(c, "max"));
+                                            return ok(c, Component.literal("bots " + com.coleccionista.prueba.Sentidos.botMin + ".."
+                                                    + com.coleccionista.prueba.Sentidos.botMax));
+                                        })))))
+                        .then(Commands.literal("mostrar").executes(c -> {
+                            com.coleccionista.prueba.Sentidos.mostrar(c.getSource().getServer());
+                            return ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen()));
+                        }))
+                        .then(Commands.literal("toma").then(Commands.argument("pieza", StringArgumentType.word())
+                                .then(Commands.argument("i", IntegerArgumentType.integer(0, 2)).executes(c -> {
+                                    Pieza p = Evento.get(c.getSource().getServer()).buscar(StringArgumentType.getString(c, "pieza"));
+                                    return p != null && com.coleccionista.prueba.Sentidos.tomarComo(c.getSource().getServer(), p,
+                                            IntegerArgumentType.getInteger(c, "i")) ? ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen()))
+                                            : error(c, Component.translatable(MOD + ".sen.no"));
+                                }))))
+                        .then(Commands.literal("salida").then(Commands.argument("pieza", StringArgumentType.word()).executes(c -> {
+                            Pieza p = Evento.get(c.getSource().getServer()).buscar(StringArgumentType.getString(c, "pieza"));
+                            return p != null && com.coleccionista.prueba.Sentidos.aLaSalida(c.getSource().getServer(), p)
+                                    ? ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen())) : error(c, Component.translatable(MOD + ".sen.no"));
+                        })))
+                        .then(Commands.literal("tiempos").then(Commands.argument("elegir", IntegerArgumentType.integer(5, 600))
+                                .then(Commands.argument("juego", IntegerArgumentType.integer(30, 3600)).executes(c -> {
+                                    com.coleccionista.prueba.Sentidos.segundosElegir = IntegerArgumentType.getInteger(c, "elegir");
+                                    com.coleccionista.prueba.Sentidos.segundos = IntegerArgumentType.getInteger(c, "juego");
+                                    return ok(c, Component.literal("elegir=" + com.coleccionista.prueba.Sentidos.segundosElegir + " juego="
+                                            + com.coleccionista.prueba.Sentidos.segundos));
+                                })))))
                 .then(Commands.literal("salida").executes(c -> Celdas.hablarSalida(c.getSource().getServer())
                         ? ok(c, Component.translatable(MOD + ".cmd.salida")) : ok(c, Component.translatable(MOD + ".cmd.salida_espera"))))
                 .then(Commands.literal("pantalla")
@@ -185,7 +263,7 @@ public final class Comandos {
                                 .executes(c -> pantalla(c, "texto", StringArgumentType.getString(c, "texto"))))))
                 .then(Commands.literal("celdas")
                         .then(Commands.literal("abrir").executes(c -> celdas(c, 0, true))
-                                .then(Commands.argument("n", IntegerArgumentType.integer(1, 24))
+                                .then(Commands.argument("n", IntegerArgumentType.integer(1, com.coleccionista.mapa.AlaCeldas.CELDAS))
                                         .executes(c -> celdas(c, IntegerArgumentType.getInteger(c, "n"), true))))
                         .then(Commands.literal("cerrar").executes(c -> celdas(c, 0, false))))
                 .then(Commands.literal("uniforme")

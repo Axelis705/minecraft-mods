@@ -30,6 +30,8 @@ public final class Pantallas {
 
     private static String modo = "apagada", texto = "", linea = "";
     private static boolean hablando;
+    /** Solo se prenden las pantallas grandes (la torre del patio, la sala): las chicas de las celdas se quedan apagadas. */
+    private static boolean soloGrande;
     private static List<Frase> guion;
     private static String guionId = "";
     private static int indice = -1, quedan;
@@ -188,7 +190,7 @@ public final class Pantallas {
         l.add(new Frase("museo", 165, null, 1F));
         l.add(new Frase("salas", 125, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
-        l.add(new Frase("esperen", 125, null, 1F));
+        l.add(new Frase("porton", 125, null, 1F));
         return l;
     }
 
@@ -214,6 +216,52 @@ public final class Pantallas {
         return l;
     }
 
+    /** Capítulo 1, en la sala grande: que formen equipos de 2 o de 3 y se suban a un ascensor. */
+    public static List<Frase> equipos() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("bienvenidos", 85, null, 1F));
+        l.add(new Frase("formen", 95, null, 1F));
+        l.add(new Frase("ascensor", 115, null, 1F));
+        l.add(new Frase("solos", 100, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        return l;
+    }
+
+    /** Capítulo 1, en el taller (cada equipo en su circuito): la mesa de la venda, la cinta y las esposas. */
+    public static List<Frase> sentidos() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("taller", 65, null, 1F));
+        l.add(new Frase("mesa", 135, null, 1F));
+        l.add(new Frase("venda", 75, null, 1F));
+        l.add(new Frase("cinta", 80, null, 1F));
+        l.add(new Frase("esposas", 105, null, 1F));
+        l.add(new Frase("parejas", 120, null, 1F));
+        l.add(new Frase("cadena", 105, null, 1F));
+        l.add(new Frase("ultimo", 110, null, 1F));
+        l.add(new Frase("abierta", 65, null, 1F));
+        return l;
+    }
+
+    /** Capítulo 1, la vitrina: llegan las sillas del último equipo. */
+    public static List<Frase> vitrina() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("ultimos", 65, null, 1F));
+        l.add(new Frase("quietos", 115, null, 1F));
+        l.add(new Frase("piezas", 105, null, 1F));
+        l.add(new Frase("cera", 105, null, 1F));
+        l.add(new Frase("risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        return l;
+    }
+
+    /** Capítulo 1, después de la cera: las estatuas nuevas. */
+    public static List<Frase> vitrina_fin() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hermosas", 50, null, 1F));
+        l.add(new Frase("siguen", 90, null, 1F));
+        l.add(new Frase("abierta", 65, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -227,11 +275,26 @@ public final class Pantallas {
             case "ciegas" -> ciegas();
             case "tres" -> tres();
             case "puertas" -> puertas();
+            case "equipos" -> equipos();
+            case "sentidos" -> sentidos();
+            case "vitrina" -> vitrina();
+            case "vitrina_fin" -> vitrina_fin();
             default -> null;
         };
     }
 
     // ------------------------------------------------------------------ control
+
+    /** Prende solo las pantallas grandes (las chicas de las celdas se apagan) o todas otra vez. */
+    public static void soloGrande(MinecraftServer s, boolean si) {
+        servidor = s;
+        soloGrande = si;
+        enviar(s);
+    }
+
+    public static boolean soloGrande() {
+        return soloGrande;
+    }
 
     public static void modo(MinecraftServer s, String m, String t) {
         servidor = s;
@@ -325,6 +388,7 @@ public final class Pantallas {
         t.putString("texto", texto);
         t.putString("linea", linea);
         t.putBoolean("hablando", hablando);
+        t.putBoolean("soloGrande", soloGrande);
         t.putLong("desde", servidor == null ? 0 : servidor.overworld().getGameTime());
         return t;
     }

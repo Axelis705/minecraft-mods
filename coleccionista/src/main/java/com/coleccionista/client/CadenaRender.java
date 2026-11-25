@@ -87,34 +87,52 @@ public final class CadenaRender {
     }
 
     /**
-     * Una cadena de {@code a} a {@code b}: cuelga más mientras más floja está (largo menos la distancia) y no baja del piso. Cada tramo son
-     * dos tiras cruzadas con la textura de la cadena (como el bloque de cadena de Minecraft).
+     * Una cadena de {@code a} a {@code b} que cuelga como una de verdad: la flecha sale del largo que sobra (una catenaria aproximada:
+     * flecha = raíz de 3·distancia·sobrante/8), se mece apenas de lado cuando está floja, vibra cuando está tirante y no baja del piso
+     * (lo que sobra queda arrastrando). Los eslabones siguen la textura de la cadena de Minecraft sin cortes de un tramo a otro.
      */
     static void cadena(VertexConsumer vc, PoseStack ps, Vec3 a, Vec3 b, double largo, double piso) {
+        cadena(vc, ps, a, b, largo, piso, -1);
+    }
+
+    /** Lo mismo con una luz fija ({@code luzFija} &lt; 0: la del mundo en cada tramo). */
+    static void cadena(VertexConsumer vc, PoseStack ps, Vec3 a, Vec3 b, double largo, double piso, int luzFija) {
         double d = a.distanceTo(b);
         if (d < 0.05) {
             return;
         }
         double floja = Math.max(0, largo - d);
-        double cuelga = 0.12 + floja * 0.42;
-        int n = Math.max(4, (int) Math.ceil((d + floja) / 0.3));
+        double flecha = 0.03 + Math.sqrt(3 * d * floja / 8.0);
+        double tension = Math.min(1, d / Math.max(0.1, largo));
+        double ms = System.currentTimeMillis() / 1000.0;
+        // de lado: la cadena floja se mece (cada una con su ritmo); tirante, vibra
+        Vec3 dir = b.subtract(a).scale(1 / d);
+        Vec3 lado = Math.abs(dir.y) > 0.95 ? new Vec3(1, 0, 0) : dir.cross(new Vec3(0, 1, 0)).normalize();
+        double fase = (a.x + b.z) * 1.7;
+        double mece = Math.sin(ms * 1.6 + fase) * 0.06 * Math.min(1, flecha);
+        double vibra = tension > 0.97 ? Math.sin(ms * 47 + fase) * 0.012 : 0;
+        int n = Math.max(6, (int) Math.ceil((d + floja) / 0.22));
         Vec3 prev = null;
+        double acc = 0;
         Minecraft mc = Minecraft.getInstance();
         for (int i = 0; i <= n; i++) {
             double t = i / (double) n;
-            Vec3 p = a.lerp(b, t).add(0, -4 * cuelga * t * (1 - t), 0);
+            double curva = 4 * t * (1 - t);
+            Vec3 p = a.lerp(b, t).add(0, -flecha * curva + vibra * curva, 0).add(lado.scale(mece * curva));
             if (p.y < piso) {
                 p = new Vec3(p.x, piso, p.z);
             }
             if (prev != null) {
-                int luz = LevelRenderer.getLightColor(mc.level, BlockPos.containing(prev.lerp(p, 0.5)));
-                tramo(vc, ps, prev, p, luz);
+                int luz = luzFija >= 0 ? luzFija : LevelRenderer.getLightColor(mc.level, BlockPos.containing(prev.lerp(p, 0.5)));
+                double len = prev.distanceTo(p);
+                tramo(vc, ps, prev, p, luz, (float) acc, (float) (acc + len));
+                acc += len;
             }
             prev = p;
         }
     }
 
-    private static void tramo(VertexConsumer vc, PoseStack ps, Vec3 p0, Vec3 p1, int luz) {
+    private static void tramo(VertexConsumer vc, PoseStack ps, Vec3 p0, Vec3 p1, int luz, float v0, float v1) {
         Vec3 dir = p1.subtract(p0);
         double len = dir.length();
         if (len < 1e-4) {
@@ -124,17 +142,16 @@ public final class CadenaRender {
         Vec3 arriba = Math.abs(dir.y) > 0.95 ? new Vec3(1, 0, 0) : new Vec3(0, 1, 0);
         Vec3 l1 = dir.cross(arriba).normalize().scale(0.095);
         Vec3 l2 = dir.cross(l1).normalize().scale(0.095);
-        float v1 = (float) Math.min(1, len);
-        tira(vc, ps, p0, p1, l1, 0F, 3 / 16F, v1, luz);
-        tira(vc, ps, p0, p1, l2, 3 / 16F, 6 / 16F, v1, luz);
+        tira(vc, ps, p0, p1, l1, 0F, 3 / 16F, v0, v1, luz);
+        tira(vc, ps, p0, p1, l2, 3 / 16F, 6 / 16F, v0, v1, luz);
     }
 
-    private static void tira(VertexConsumer vc, PoseStack ps, Vec3 p0, Vec3 p1, Vec3 lado, float u0, float u1, float v1, int luz) {
+    private static void tira(VertexConsumer vc, PoseStack ps, Vec3 p0, Vec3 p1, Vec3 lado, float u0, float u1, float v0, float v1, int luz) {
         Matrix4f m = ps.last().pose();
         Matrix3f n = ps.last().normal();
         Vec3 nn = lado.normalize();
-        v(vc, m, n, p0.subtract(lado), u0, 0, luz, nn);
-        v(vc, m, n, p0.add(lado), u1, 0, luz, nn);
+        v(vc, m, n, p0.subtract(lado), u0, v0, luz, nn);
+        v(vc, m, n, p0.add(lado), u1, v0, luz, nn);
         v(vc, m, n, p1.add(lado), u1, v1, luz, nn);
         v(vc, m, n, p1.subtract(lado), u0, v1, luz, nn);
     }

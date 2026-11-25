@@ -61,6 +61,11 @@ public final class Evento {
     int siguienteNumero = 1;
     /** Sala de espera: todos en su celda, acostados y con la pantalla en negro. */
     boolean sala;
+    /**
+     * Inscripción automática: quien entra al servidor (si no es operador ni organizador) antes de que empiece el evento queda inscrito, va
+     * a su celda y ve "Esperando jugadores".
+     */
+    public boolean autoInscribir = true;
     /** Chat cerrado: solo el organizador, los organizadores y los operadores pueden escribir. */
     public boolean chatCerrado;
     /** Quién está disfrazado del Coleccionista (el organizador cuando aparece). */
@@ -192,6 +197,11 @@ public final class Evento {
     }
 
     // ------------------------------------------------------------------ inscripción
+
+    /** ¿El evento no ha empezado? (nadie ha despertado: sin prueba en curso y en espera) */
+    public boolean sinEmpezar() {
+        return fase == Fase.ESPERA && (prueba == null || prueba.isEmpty());
+    }
 
     /** Agrega a alguien al evento (si no estaba). Devuelve su pieza. */
     public Pieza inscribir(MinecraftServer s, UUID id, String nombre, boolean bot) {
@@ -418,6 +428,10 @@ public final class Evento {
         Uniforme.quitarTodos(s);
         Montacargas.reiniciar(s);
         Recorrido.reiniciar(s);
+        Capitulo1.reiniciar(s);
+        com.coleccionista.prueba.Sentidos.quitarSillas(s);
+        com.coleccionista.prueba.Sentidos.vitrinaComoNueva(s);
+        Pantallas.soloGrande(s, false);
         chatCerrado = false;
         fase = Fase.ESPERA;
         prueba = "";
@@ -437,7 +451,7 @@ public final class Evento {
         if (e.relojFin > 0 && s.overworld().getGameTime() >= e.relojFin) {
             e.relojFin = 0;
             Coleccionista.LOGGER.info("COLECCIONISTA_TIEMPO {}", e.prueba);
-            if (!Recorrido.alAcabarReloj(s) && !Despertar.alAcabarReloj(s) && !com.coleccionista.prueba.Pruebas.alAcabarReloj(s)) {
+            if (!Capitulo1.alAcabarReloj(s) && !Recorrido.alAcabarReloj(s) && !Despertar.alAcabarReloj(s) && !com.coleccionista.prueba.Pruebas.alAcabarReloj(s)) {
                 Anuncio.tiempo(s);
             }
             e.cambio(s);
@@ -478,6 +492,7 @@ public final class Evento {
         t.putInt("siguiente", siguienteNumero);
         t.putBoolean("sala", sala);
         t.putBoolean("chatCerrado", chatCerrado);
+        t.putBoolean("autoInscribir", autoInscribir);
         ListTag dz = new ListTag();
         for (UUID id : disfraz) {
             CompoundTag x = new CompoundTag();
@@ -509,6 +524,7 @@ public final class Evento {
         siguienteNumero = Math.max(1, Nbt.i(t, "siguiente"));
         sala = t.getBoolean("sala");
         chatCerrado = t.getBoolean("chatCerrado");
+        autoInscribir = !t.contains("autoInscribir") || t.getBoolean("autoInscribir");
         for (Tag x : t.getList("disfraz", Tag.TAG_COMPOUND)) {
             disfraz.add(((CompoundTag) x).getUUID("id"));
         }
@@ -523,6 +539,7 @@ public final class Evento {
         t.putLong("resta", relojResta);
         t.putBoolean("sala", sala);
         t.putBoolean("chatCerrado", chatCerrado);
+        t.putBoolean("autoInscribir", autoInscribir);
         ListTag l = new ListTag();
         int vivos = 0;
         for (Pieza p : piezas.values()) {

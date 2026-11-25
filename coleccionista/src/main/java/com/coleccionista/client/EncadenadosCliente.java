@@ -190,11 +190,22 @@ public final class EncadenadosCliente {
         }
     }
 
-    /** Quita la parte de la velocidad que aleja del centro y jala un poco hacia él (solo de lado; lo vertical lo hace la gravedad). */
+    /** Último sonido de la cadena (para no repetirlo) y cuánto se ha caminado desde el último tintineo. */
+    private static long ultimoSonido;
+    private static double caminado;
+    private static boolean tensa;
+
+    /**
+     * La cadena se siente pesada: desde el 80% del largo, alejarse cuesta cada vez más (la velocidad que aleja se va frenando); pasando el
+     * largo todavía se puede avanzar despacio (así se arrastra al compañero, cuyo propio juego lo jala hacia acá) y un resorte suave regresa
+     * hacia el centro. Solo de lado; lo vertical lo hace la gravedad.
+     */
     static Vec3 restringir(Vec3 pos, Vec3 v, Vec3 centro, double max) {
         double dx = centro.x - pos.x, dz = centro.z - pos.z, dy = centro.y - pos.y;
         double dist = Math.sqrt(dx * dx + dz * dz + dy * dy * 0.25);
-        if (dist <= max || dist < 1e-4) {
+        double suave = max * 0.8;
+        sentir(pos, v, dist / Math.max(0.5, max));
+        if (dist <= suave || dist < 1e-4) {
             return v;
         }
         double h = Math.hypot(dx, dz);
@@ -205,21 +216,57 @@ public final class EncadenadosCliente {
         double vr = v.x * nx + v.z * nz;
         double x = v.x, z = v.z;
         if (vr < 0) {
-            x -= nx * vr;
-            z -= nz * vr;
+            // la parte que aleja: frenada poco a poco (entre 80% y 100% del largo) y casi del todo pasando el largo
+            double k = dist >= max ? 0.75 : (dist - suave) / (max - suave) * 0.6;
+            x -= nx * vr * k;
+            z -= nz * vr * k;
         }
-        double f = Math.min((dist - max) * 0.35, 0.45);
-        return new Vec3(x + nx * f, v.y, z + nz * f);
+        if (dist > max) {
+            // el resorte: jala hacia el centro, más mientras más se pasa (sin tirones)
+            double f = Math.min((dist - max) * 0.22, 0.32);
+            x += nx * f;
+            z += nz * f;
+        }
+        return new Vec3(x, v.y, z);
     }
 
+    /** Si a pesar de todo quedó muy lejos (un salto, lag), se le regresa de golpe hasta el límite. */
     static void regresar(LocalPlayer me, Vec3 centro, double max, double parte) {
         double dx = centro.x - me.getX(), dz = centro.z - me.getZ();
         double h = Math.hypot(dx, dz);
-        if (h <= max || h < 1e-4) {
+        // con un compañero se puede pasar un poco (lo va arrastrando); con la argolla de la pared, no
+        double limite = parte < 1 ? max + 0.9 : max;
+        if (h <= limite || h < 1e-4) {
             return;
         }
-        double k = (h - max) * parte / h;
+        double k = (h - limite) * parte / h;
         me.move(MoverType.SELF, new Vec3(dx * k, 0, dz * k));
+    }
+
+    /** Lo que se oye: un tirón cuando se estira de golpe y un tintineo suave al caminar con la cadena floja. */
+    private static void sentir(Vec3 pos, Vec3 v, double r) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null || mc.player == null) {
+            return;
+        }
+        long ms = System.currentTimeMillis();
+        boolean ahora = r > 0.95;
+        if (ahora && !tensa && ms - ultimoSonido > 350) {
+            ultimoSonido = ms;
+            mc.level.playLocalSound(pos.x, pos.y + 1, pos.z, net.minecraft.sounds.SoundEvents.CHAIN_HIT, net.minecraft.sounds.SoundSource.PLAYERS,
+                    0.55F, 0.75F + mc.level.random.nextFloat() * 0.2F, false);
+        }
+        tensa = ahora ? true : r < 0.85 ? false : tensa;
+        caminado += Math.hypot(v.x, v.z);
+        if (caminado > 1.3) {
+            caminado = 0;
+            if (ms - ultimoSonido > 250) {
+                ultimoSonido = ms;
+                mc.level.playLocalSound(pos.x, pos.y + 0.6, pos.z, net.minecraft.sounds.SoundEvents.CHAIN_STEP,
+                        net.minecraft.sounds.SoundSource.PLAYERS, 0.18F + (float) Math.min(0.2, r * 0.15), 0.9F + mc.level.random.nextFloat() * 0.3F,
+                        false);
+            }
+        }
     }
 
     // ------------------------------------------------------------------ HUD

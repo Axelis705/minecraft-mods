@@ -25,7 +25,7 @@ import net.minecraftforge.eventbus.api.Event;
  *     poder tocar nada. Las luces de las celdas están apagadas.</li>
  *     <li>El "¡pum!" del organizador ({@code /evento despertar}): golpe de electricidad, se prenden las luces y cada uno ve su cinemática
  *     (la cámara arriba en la esquina, viéndose acostado, se acerca y pasa a sus ojos con un parpadeo). Luego se levanta.</li>
- *     <li>10 minutos de espera en la celda: todavía no hay nada (ni pistas ni notas) y el candado está muerto.</li>
+ *     <li>5 minutos de espera en la celda: todavía no hay nada (ni pistas ni notas) y el candado está muerto.</li>
  *     <li>Al acabar el reloj hay un apagón; cuando vuelve la luz, los tres números de cada celda ya están escondidos en ella
  *     ({@link Pistas}). Se prenden las pantallas y habla el Coleccionista; al terminar, los candados funcionan.</li>
  * </ol>
@@ -35,8 +35,8 @@ public final class Despertar {
     /** A cada jugador: su cinemática (tipo, puntos de cámara y hacia dónde mira). */
     public static final String KEY_CINE = MOD + ":cine";
     public static final String PRUEBA = "El despertar";
-    /** Segundos para investigar antes de que hable el Coleccionista (Axelis pidió 10 minutos). */
-    public static int segundosInvestigar = 600;
+    /** Segundos para investigar antes de que hable el Coleccionista (Axelis pidió 5 minutos). */
+    public static int segundosInvestigar = 300;
     private static long levantarEn = -1, cineEn = -1, apagonFin = -1, hablarEn = -1;
     /** Cuánto dura el apagón antes de que aparezcan las pistas (ticks). */
     private static final int APAGON = 60;
@@ -88,7 +88,9 @@ public final class Despertar {
         s.overworld().setDayTime(18000);
         Celdas.luces(s, false);
         Celdas.puertas(s, 0, false);
+        Celdas.portonCerrado(s);
         Celdas.prepararPistas(s);
+        Pantallas.soloGrande(s, false);
         Pantallas.modo(s, "apagada", "");
         ev.sala = true;
         ev.fase = Evento.Fase.ESPERA;
@@ -106,12 +108,20 @@ public final class Despertar {
         Coleccionista.LOGGER.info("COLECCIONISTA_SALA_ESPERA piezas={}", ev.vivos().size());
     }
 
-    /** Al entrar al servidor durante la sala de espera: se inscribe (si no es operador ni organizador) y va a su celda. */
+    /**
+     * Al entrar al servidor durante la sala de espera: se inscribe (si no es operador ni organizador) y va a su celda. Con la inscripción
+     * automática, si el evento todavía no empieza (nadie ha despertado), la sala de espera se abre sola con el primero que entra.
+     */
     private static void alEntrar(ServerPlayer p) {
         MinecraftServer s = Plat.server(p);
         Evento ev = Evento.get(s);
         if (!ev.sala) {
-            return;
+            boolean organiza = Plat.isOp(p) || Plat.isHost(p) || ev.esOrganizador(p.getUUID());
+            if (!ev.autoInscribir || organiza || !ev.sinEmpezar() || !Complejo.construido(s)) {
+                return;
+            }
+            Coleccionista.LOGGER.info("COLECCIONISTA_AUTO_SALA por {}", p.getGameProfile().getName());
+            esperar(s);
         }
         Pieza x = ev.pieza(p);
         if (x == null) {

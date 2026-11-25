@@ -56,6 +56,11 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         m.crouching = false;
         m.riding = false;
         int pos = c.postura();
+        if (c.estatua()) {
+            estatua(c, m, slim, id, ps, buf, light);
+            super.render(c, yaw, pt, ps, buf, light);
+            return;
+        }
         m.head.setRotation(-0.25F, (pos - 1.5F) * 0.35F, 0);
         m.body.setRotation(0, 0, 0);
         m.rightArm.setRotation(-0.15F, 0, 0.4F + pos * 0.1F);
@@ -84,6 +89,42 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         d.flush();
         ps.popPose();
         super.render(c, yaw, pt, ps, buf, light);
+    }
+
+    /**
+     * La estatua de cera de la vitrina: sentada (como quien va en la silla), con las manos agarradas a los brazos de la silla, la cabeza
+     * echada para atrás (el grito) y todo color cera, con un brillo húmedo.
+     */
+    private void estatua(Cadaver c, PlayerModel<AbstractClientPlayer> m, boolean slim, UUID id, PoseStack ps, MultiBufferSource buf, int light) {
+        int v = c.postura() - Cadaver.ESTATUA;
+        m.head.setRotation(-0.45F - 0.05F * (v % 3), 0.12F * ((v % 3) - 1), 0);
+        m.body.setRotation(0.05F, 0, 0);
+        m.rightArm.setRotation(-0.75F, 0.1F, 0.05F);
+        m.leftArm.setRotation(-0.75F, -0.1F, -0.05F);
+        m.rightLeg.setRotation(-1.4137F, 0.31416F, 0.07F);
+        m.leftLeg.setRotation(-1.4137F, -0.31416F, -0.07F);
+        m.hat.copyFrom(m.head);
+        m.jacket.copyFrom(m.body);
+        m.rightSleeve.copyFrom(m.rightArm);
+        m.leftSleeve.copyFrom(m.leftArm);
+        m.rightPants.copyFrom(m.rightLeg);
+        m.leftPants.copyFrom(m.leftLeg);
+        ps.pushPose();
+        ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
+        ps.scale(-1, -1, 1);
+        ps.translate(0, -1.501, 0);
+        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, 1F, 0.78F,
+                0.46F, 1F);
+        com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
+        com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
+                m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);
+        d.flush();
+        // una capa de cera encima, un poquito más grande y translúcida
+        ps.scale(1.04F, 1.02F, 1.04F);
+        ps.translate(0, -0.02, 0);
+        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityTranslucent(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, 1F, 0.72F,
+                0.30F, 0.45F);
+        ps.popPose();
     }
 
     @Override

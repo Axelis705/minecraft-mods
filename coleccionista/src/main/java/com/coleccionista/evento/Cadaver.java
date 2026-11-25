@@ -56,9 +56,20 @@ public class Cadaver extends Entity {
         return this.entityData.get(POSTURA);
     }
 
+    /** Postura desde la que el cuerpo es una estatua de cera sentada (la vitrina): no cae y se dibuja color cera. */
+    public static final int ESTATUA = 100;
+
+    public boolean estatua() {
+        return postura() >= ESTATUA;
+    }
+
     @Override
     public void tick() {
         super.tick();
+        if (estatua()) {
+            setDeltaMovement(Vec3.ZERO);
+            return;
+        }
         if (!onGround()) {
             Vec3 v = getDeltaMovement().add(0, -0.04, 0);
             move(MoverType.SELF, v);

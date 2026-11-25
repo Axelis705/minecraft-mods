@@ -13,7 +13,7 @@ public final class Atajos {
     public static void panel() {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null && (mc.player.hasPermissions(2) || EventoCliente.soyOrganizador() || mc.hasSingleplayerServer())) {
-            com.axeliscore.plat.client.Screens.open(new PanelScreen());
+            com.axeliscore.plat.client.Screens.open(new LineaScreen());
         }
     }
 

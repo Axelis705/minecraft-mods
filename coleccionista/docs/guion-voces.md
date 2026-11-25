@@ -34,7 +34,7 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 3 | `salida_museo.ogg` | 8.2 s | Esto que ven es la entrada de mi museo. Caminen con cuidado: el piso es viejo… como yo. |
 | 4 | `salida_salas.ogg` | 6.2 s | Detrás de cada puerta hay una sala. Y en cada sala, una prueba. |
 | 5 | `salida_risa.ogg` | 3.0 s | Je, je, je… |
-| 6 | `salida_esperen.ogg` | 6.2 s | Pónganse cómodos. El montacargas vendrá por ustedes muy pronto. |
+| 6 | `salida_porton.ogg` | 6.2 s | Sigan la alfombra roja. Del otro lado del portón… los espero. |
 
 ## El montacargas (entre pruebas)
 

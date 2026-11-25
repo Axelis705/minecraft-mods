@@ -59,7 +59,8 @@ public final class Proteccion {
         }
         net.minecraft.core.BlockPos o = Complejo.origen(s);
         int dx = p.getX() - o.getX(), dy = p.getY() - o.getY(), dz = p.getZ() - o.getZ();
-        return dx >= -170 && dx <= 400 && dy >= -30 && dy <= 70 && dz >= -130 && dz <= 200;
+        return dx >= -170 && dx <= 1120 && dy >= -30 && dy <= 70 && dz >= -130 && dz <= 500
+                && (dz <= 270 && dx <= 400 || dz >= 390);
     }
 
     private static void aparecer(MobSpawnEvent.FinalizeSpawn e) {

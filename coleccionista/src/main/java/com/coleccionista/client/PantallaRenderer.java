@@ -37,7 +37,9 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
     private static final ResourceLocation RETRATO = Ids.rl(MOD, "textures/pantalla/coleccionista.png");
     private static final ResourceLocation ESTATICA = Ids.rl(MOD, "textures/pantalla/estatica.png");
     private static final int LUZ = 0xF000F0;
-    private static String modoAnterior = "";
+    /** El último modo y cuándo cambió, aparte para las chicas [0] y las grandes [1] (pueden estar en modos distintos). */
+    private static final String[] modoAnterior = {"", ""};
+    private static final long[] cambioK = new long[2];
     private static long cambio;
 
     public PantallaRenderer(BlockEntityRendererProvider.Context c) {
@@ -70,14 +72,16 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         float w = grande ? 11F : 3F, h = grande ? 7F : 2F;
         CompoundTag t = estado();
         String modo = Nbt.s(t, "modo");
-        if (modo.isEmpty()) {
+        if (modo.isEmpty() || !grande && t.getBoolean("soloGrande")) {
             modo = "apagada";
         }
         long ms = System.currentTimeMillis();
-        if (!modo.equals(modoAnterior)) {
-            modoAnterior = modo;
-            cambio = ms;
+        int kk = grande ? 1 : 0;
+        if (!modo.equals(modoAnterior[kk])) {
+            modoAnterior[kk] = modo;
+            cambioK[kk] = ms;
         }
+        cambio = cambioK[kk];
         buf0 = buf;
         ps.pushPose();
         ps.translate(0.5, 0.5, 0.5);

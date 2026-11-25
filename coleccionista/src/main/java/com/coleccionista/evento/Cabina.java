@@ -31,8 +31,16 @@ import java.util.Random;
  */
 public final class Cabina {
     public enum Tipo {
-        ELEVADOR, TREN
+        /** Elevador tranquilo (cables, motor). */
+        ELEVADOR,
+        /** Vagón de tren (traqueteo de las vías). */
+        TREN,
+        /** Ascensor viejo que baja a toda velocidad: sacudidas fuertes, chirridos, chispas y luces que parpadean. */
+        CAIDA
     }
+
+    /** A cada pasajero: el viaje en curso (para el parpadeo de las luces y las rayas de velocidad en su pantalla). */
+    public static final String KEY_VIAJE = com.coleccionista.Coleccionista.MODID + ":viaje";
 
     /** Un viaje en curso. */
     private static final class Viaje {
@@ -103,12 +111,32 @@ public final class Cabina {
      */
     public static boolean viajar(MinecraftServer s, String desde, String hasta, Tipo tipo, int dura, int ancho, int alto, int fondo,
             Runnable alLlegar) {
+        return viajar(s, desde, hasta, tipo, dura, ancho, alto, fondo, null, alLlegar);
+    }
+
+    /** Lo mismo, pero solo con esas entidades (null: todos los que estén dentro). */
+    public static boolean viajar(MinecraftServer s, String desde, String hasta, Tipo tipo, int dura, int ancho, int alto, int fondo,
+            List<? extends Entity> quienes, Runnable alLlegar) {
         AABB c = caja(s, desde, ancho, alto, fondo);
         if (c == null || Complejo.pos(s, "cab." + hasta + ".origen") == null) {
             return false;
         }
         Viaje v = new Viaje(desde, hasta, tipo, dura, ancho, alto, fondo, alLlegar);
-        v.van.addAll(s.overworld().getEntitiesOfClass(Entity.class, c, e -> e instanceof ServerPlayer || e instanceof com.coleccionista.bot.PiezaBot));
+        if (quienes != null) {
+            v.van.addAll(quienes);
+        } else {
+            v.van.addAll(s.overworld().getEntitiesOfClass(Entity.class, c, e -> e instanceof ServerPlayer || e instanceof com.coleccionista.bot.PiezaBot));
+        }
+        long now = s.overworld().getGameTime();
+        for (Entity e : v.van) {
+            if (e instanceof ServerPlayer sp) {
+                net.minecraft.nbt.CompoundTag t = new net.minecraft.nbt.CompoundTag();
+                t.putString("tipo", tipo.name());
+                t.putLong("desde", now + CIERRA);
+                t.putInt("dura", dura);
+                com.axeliscore.data.PlayerStore.Sync.toPlayer(sp, KEY_VIAJE, t);
+            }
+        }
         puerta(s, desde, false);
         sonido(s, v, SoundEvents.IRON_DOOR_CLOSE, 1F, 0.6F);
         VIAJES.add(v);
@@ -126,9 +154,37 @@ public final class Cabina {
             if (t == 0) {
                 // arranca: un jalón
                 sonido(s, v, v.tipo == Tipo.TREN ? SoundEvents.MINECART_RIDING : SoundEvents.ANVIL_PLACE, 0.8F, 0.5F);
-                sacudir(v, 0.8F, 8);
+                sacudir(v, v.tipo == Tipo.CAIDA ? 1.4F : 0.8F, 8);
+                if (v.tipo == Tipo.CAIDA) {
+                    // se suelta: chirrido de metal, el estómago al aire
+                    sonido(s, v, SoundEvents.GRINDSTONE_USE, 1F, 0.5F);
+                    sonido(s, v, SoundEvents.ELYTRA_FLYING, 0.7F, 1.3F);
+                }
             }
-            if (t > 0 && t < v.dura) {
+            if (t > 0 && t < v.dura && v.tipo == Tipo.CAIDA) {
+                // cae a toda velocidad: tiembla todo el tiempo, golpes fuertes al azar, chispas y el viento
+                if (t % 8 == 0) {
+                    sacudir(v, 0.45F + R.nextFloat() * 0.2F, 10);
+                }
+                if (t % 37 == 11 || R.nextInt(70) == 0) {
+                    sacudir(v, 1.1F, 7);
+                    sonido(s, v, R.nextBoolean() ? SoundEvents.ANVIL_LAND : SoundEvents.CHAIN_HIT, 0.7F, 0.5F + R.nextFloat() * 0.3F);
+                }
+                if (t % 23 == 5) {
+                    sonido(s, v, com.coleccionista.registry.ModRegistry.CHISPA.get(), 0.8F, 0.7F + R.nextFloat() * 0.5F);
+                }
+                if (t % 50 == 25) {
+                    sonido(s, v, SoundEvents.ELYTRA_FLYING, 0.6F, 1.2F + R.nextFloat() * 0.3F);
+                }
+                if (t % 31 == 17) {
+                    sonido(s, v, SoundEvents.GRINDSTONE_USE, 0.6F, 0.45F + R.nextFloat() * 0.2F);
+                }
+                if (!v.pasaron && t >= v.dura / 2) {
+                    pasar(s, v);
+                    sonido(s, v, SoundEvents.ANVIL_LAND, 0.6F, 0.5F);
+                    sacudir(v, 1.3F, 12);
+                }
+            } else if (t > 0 && t < v.dura) {
                 if (v.tipo == Tipo.TREN) {
                     // el traqueteo de las vías
                     if (t % 9 == 0 || t % 9 == 3) {
@@ -162,6 +218,11 @@ public final class Cabina {
             if (t == v.dura) {
                 if (!v.pasaron) {
                     pasar(s, v);
+                }
+                if (v.tipo == Tipo.CAIDA) {
+                    // el frenón: chirrido largo y el golpe del final
+                    sonido(s, v, SoundEvents.GRINDSTONE_USE, 1F, 0.4F);
+                    sacudir(v, 1.6F, 14);
                 }
                 sonido(s, v, SoundEvents.ANVIL_LAND, 0.7F, 0.5F);
                 sonido(s, v, SoundEvents.BELL_BLOCK, 0.8F, 0.9F);

@@ -19,12 +19,14 @@ public final class Pruebas {
         Traidor.init();
         ACiegas.init();
         TresSentidos.init();
+        Sentidos.init();
     }
 
     /** El reloj del evento llegó a cero: le toca a la prueba que esté en marcha. Devuelve si alguna lo atendió. */
     public static boolean alAcabarReloj(MinecraftServer s) {
         return Encadenados.alAcabarReloj(s) || Compartir.alAcabarReloj(s) || LasPuertas.alAcabarReloj(s) || LasCopas.alAcabarReloj(s) || Sacrificio.alAcabarReloj(s)
-                || Traidor.alAcabarReloj(s) || ACiegas.alAcabarReloj(s) || TresSentidos.alAcabarReloj(s);
+                || Traidor.alAcabarReloj(s) || ACiegas.alAcabarReloj(s) || TresSentidos.alAcabarReloj(s)
+                || Sentidos.alAcabarReloj(s);
     }
 
     /**
@@ -40,6 +42,7 @@ public final class Pruebas {
         cerrar(s, nueva, "traidor", Traidor.abierta(), () -> Traidor.terminar(s));
         cerrar(s, nueva, "ciegas", ACiegas.abierta(), () -> ACiegas.terminar(s));
         cerrar(s, nueva, "tres", TresSentidos.abierta(), () -> TresSentidos.terminar(s));
+        cerrar(s, nueva, "sentidos", Sentidos.abierta(), () -> Sentidos.terminar(s));
     }
 
     private static void cerrar(MinecraftServer s, String nueva, String id, boolean abierta, Runnable terminar) {
@@ -87,5 +90,6 @@ public final class Pruebas {
         Traidor.reiniciar(s);
         ACiegas.reiniciar(s);
         TresSentidos.reiniciar(s);
+        Sentidos.reiniciar(s);
     }
 }

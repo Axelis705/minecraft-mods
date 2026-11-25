@@ -49,7 +49,14 @@ public final class SentidosCliente {
     }
 
     public static void init() {
-        ClientData.listen(TresSentidos.KEY, SentidosCliente::recibir);
+        ClientData.listen(TresSentidos.KEY, t -> {
+            tres = t;
+            recibir(activo());
+        });
+        ClientData.listen(com.coleccionista.prueba.Sentidos.KEY, t -> {
+            sen = t;
+            recibir(activo());
+        });
         MinecraftForge.EVENT_BUS.addListener(SentidosCliente::tickJugador);
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent e) -> {
             if (e.phase == TickEvent.Phase.END) {
@@ -58,6 +65,31 @@ public final class SentidosCliente {
         });
         MinecraftForge.EVENT_BUS.addListener(SentidosCliente::dibujar);
         com.axeliscore.fx.client.Hud.add(SentidosCliente::hud);
+    }
+
+    /** Lo último de cada prueba (Encadenados de tres y Los sentidos del capítulo 1): se dibuja la que esté en marcha. */
+    private static CompoundTag tres = new CompoundTag(), sen = new CompoundTag();
+
+    private static CompoundTag activo() {
+        String f = Nbt.s(sen, "fase");
+        return !f.isEmpty() && !"NADA".equals(f) ? sen : tres;
+    }
+
+    /** En qué cuarto del circuito va mi equipo (capítulo 1), o vacío. */
+    public static String miEtapa() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) {
+            return "";
+        }
+        for (Tag x : estado.getList("trios", Tag.TAG_COMPOUND)) {
+            CompoundTag c = (CompoundTag) x;
+            for (Tag y : c.getList("miembros", Tag.TAG_COMPOUND)) {
+                if (((CompoundTag) y).getUUID("id").equals(mc.player.getUUID())) {
+                    return Nbt.s(c, "etapa");
+                }
+            }
+        }
+        return "";
     }
 
     private static void recibir(CompoundTag t) {
@@ -109,6 +141,21 @@ public final class SentidosCliente {
             }
         }
         return null;
+    }
+
+    /** El papel de cualquier jugador (para dibujarle la venda, la cinta o las esposas), o vacío. */
+    public static String rolDe(UUID id) {
+        String f = fase();
+        if (!"ELEGIR".equals(f) && !"JUEGO".equals(f)) {
+            return "";
+        }
+        for (Trio t : trios) {
+            int i = t.ids().indexOf(id);
+            if (i >= 0) {
+                return t.salio() ? "" : t.roles().get(i);
+            }
+        }
+        return "";
     }
 
     public static String miRol() {
@@ -254,6 +301,13 @@ public final class SentidosCliente {
             yy = EventoHud.debajo(w, Ui.font().width(s) + 4, yy);
             g.drawCenteredString(Ui.font(), s, w / 2, yy, 0xFFA89E94);
             yy += 10;
+        }
+        // capítulo 1: qué hay que hacer en el cuarto donde va el equipo
+        String et = miEtapa();
+        if ("JUEGO".equals(fase()) && !et.isEmpty() && !t.salio()) {
+            String s = Component.translatable(MOD + ".sen.etapa." + et.toLowerCase()).getString();
+            yy = EventoHud.debajo(w, Ui.font().width(s) + 4, yy + 2);
+            g.drawCenteredString(Ui.font(), s, w / 2, yy, 0xFFE0B050);
         }
     }
 }

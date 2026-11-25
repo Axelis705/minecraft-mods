@@ -112,6 +112,44 @@ public final class Panel {
                 }
             }
             case "despertar" -> Despertar.despertar(s);
+            case "salida" -> {
+                if (!Celdas.hablarSalida(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".cmd.salida_espera"), true);
+                }
+            }
+            case "porton" -> {
+                Celdas.porton(s, true);
+                Capitulo1.alAbrirPorton(s);
+            }
+            case "cap1_equipos" -> {
+                Component no = Capitulo1.equipos(s);
+                if (no != null) {
+                    Plat.msg(p, no, true);
+                }
+            }
+            case "cap1_bajar" -> {
+                if (!Capitulo1.bajar(s, true)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".cap1.no_bajan"), true);
+                }
+            }
+            case "sen_saltar" -> {
+                if (!com.coleccionista.prueba.Sentidos.saltar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".sen.no"), true);
+                }
+            }
+            case "sen_terminar" -> {
+                if (!com.coleccionista.prueba.Sentidos.terminarYa(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".sen.no"), true);
+                }
+            }
+            case "sen_limpiar" -> {
+                com.coleccionista.prueba.Sentidos.reiniciar(s);
+                Capitulo1.reiniciar(s);
+            }
+            case "auto_inscripcion" -> {
+                ev.autoInscribir = d.getBoolean("si");
+                ev.cambio(s);
+            }
             case "discurso" -> Despertar.discurso(s);
             case "llevar" -> {
                 Component no = Montacargas.viajar(s, Nbt.s(d, "zona"));

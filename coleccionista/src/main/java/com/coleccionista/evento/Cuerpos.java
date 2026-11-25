@@ -15,6 +15,9 @@ public final class Cuerpos {
     private Cuerpos() {
     }
 
+    /** Quiénes, al ser eliminados, quedan como estatua de cera sentada (la vitrina) en lugar de tirados en el suelo. */
+    public static final java.util.Set<java.util.UUID> ESTATUAS = new java.util.HashSet<>();
+
     /** Deja el cuerpo de la pieza donde está su entidad (antes de volverse fantasma). */
     static void dejar(Entity e, Pieza p) {
         if (!(e.level() instanceof ServerLevel l)) {
@@ -25,7 +28,12 @@ public final class Cuerpos {
             return;
         }
         c.moveTo(e.getX(), e.getY(), e.getZ(), e.getYRot(), 0);
-        c.de(p.id, p.nombre, Math.abs(p.id.hashCode()) % 4);
+        boolean estatua = ESTATUAS.remove(p.id);
+        c.de(p.id, p.nombre, estatua ? Cadaver.ESTATUA + Math.abs(p.id.hashCode()) % 3 : Math.abs(p.id.hashCode()) % 4);
+        if (estatua) {
+            c.setYRot(e.getVehicle() != null ? e.getVehicle().getYRot() : e.getYRot());
+            c.setNoGravity(true);
+        }
         l.addFreshEntity(c);
         l.sendParticles(ParticleTypes.SOUL, e.getX(), e.getY() + 0.4, e.getZ(), 14, 0.3, 0.2, 0.3, 0.03);
         Coleccionista.LOGGER.info("COLECCIONISTA_CUERPO {} {}", p.etiqueta(), p.nombre);

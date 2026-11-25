@@ -5,6 +5,10 @@ forceload add -160 32 -16 80
 forceload add -112 64 -32 128
 forceload add 208 24 256 64
 forceload add -100 190 390 222
+forceload add 48 268 170 316
+forceload add 0 436 20 532
+forceload add 120 436 140 532
+forceload add -82 438 -46 472
 #pausa 3
 evento reiniciar confirmar
 evento recorrido auto false
@@ -200,7 +204,57 @@ evento encadenados terminar
 #pausa 18
 evento recorrido parar
 evento reiniciar confirmar
+execute in minecraft:overworld positioned 85 -60 58 run evento bots 4
+#pausa 2
+evento sentidos bots si 3 4
+evento sentidos tiempos 8 120
+evento porton abrir
+evento capitulo1 sala
+evento capitulo1 equipos
+#pausa 30
+#pausa 22
+evento sentidos saltar
+#pausa 8
+#pausa 14
+#pausa 40
+#pausa 25
+evento capitulo1
+evento sentidos
+#pausa 2
+evento sentidos limpiar
+evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
+#expect COLECCIONISTA_CONSTRUIDO sala
+#expect COLECCIONISTA_CONSTRUIDO circ_1
+#expect COLECCIONISTA_CONSTRUIDO circ_10
+#expect COLECCIONISTA_CONSTRUIDO vitrina
+#expect COLECCIONISTA_PORTON sube
+#expect COLECCIONISTA_CAP1 equipos
+#expect COLECCIONISTA_DISCURSO equipos
+#expect COLECCIONISTA_CAP1 formar
+#expect COLECCIONISTA_CAP1 cuenta
+#expect COLECCIONISTA_SENTIDOS preparada equipos=2
+#expect COLECCIONISTA_CAP1 bajan equipos=2
+#expect COLECCIONISTA_CABINA sale sala_1 -> circ_1
+#expect COLECCIONISTA_CABINA llega circ_2
+#expect COLECCIONISTA_CAP1 llegaron
+#expect COLECCIONISTA_SENTIDOS llegaron
+#expect COLECCIONISTA_DISCURSO sentidos
+#expect COLECCIONISTA_SENTIDOS elegir
+#expect COLECCIONISTA_SENTIDOS rol
+#expect COLECCIONISTA_SENTIDOS empieza
+#expect COLECCIONISTA_SENTIDOS salida equipo=
+#expect COLECCIONISTA_SENTIDOS sentados equipo=
+#expect ultimo=false
+#expect ultimo=true
+#expect COLECCIONISTA_SENTIDOS galeria equipo=
+#expect COLECCIONISTA_SENTIDOS vitrina equipo=
+#expect COLECCIONISTA_SENTIDOS todos fuera victimas=2
+#expect COLECCIONISTA_SENTIDOS vitrina cierra
+#expect COLECCIONISTA_DISCURSO vitrina
+#expect COLECCIONISTA_SENTIDOS cera
+#expect COLECCIONISTA_SENTIDOS estatuas=2
+#expect COLECCIONISTA_CAPITULO1 fin
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
 #expect COLECCIONISTA_EQUIPOS tam=2 equipos=3

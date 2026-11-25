@@ -137,7 +137,7 @@ final class PruebaCliente {
 
     /** El Ala de celdas: construir, sala de espera, ¡pum!, cinemática, discurso, acercarse a la tele, candado, cuerpos. */
     private static void mapa(ClientTest.Script t) {
-        // el mapa queda con el origen en (0, -61, 30): celda 1 en (3, -60, 34), pasillo en z 41
+        // el mapa queda con el origen en (0, -61, 30): celda 1 en x 7..11 (z 31..35, puerta en z 36), el patio en x 7..53 y z 37..59
         t.add("mapa: construir", 9000, () -> {
             t.cmd("evento reiniciar confirmar");
             t.cmd("kill @e[type=!player]");
@@ -171,7 +171,7 @@ final class PruebaCliente {
         t.photo("24a_apagon", 13800, () -> {
         });
         t.add("apagon", 100, () -> {
-            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(3, -57, 33));
+            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(9, -57, 33));
             t.check(st.getBlock() instanceof com.coleccionista.bloque.FocoBlock && !com.coleccionista.bloque.FocoBlock.prendido(st),
                     "se fue la luz de mi celda");
             t.check(InscripcionesCliente.cuantas(0) == 0, "todavía no hay números escritos");
@@ -193,7 +193,7 @@ final class PruebaCliente {
         }
         t.add("regresar a la celda", 900, () -> {
             t.cmd("gamemode adventure @a");
-            t.lookFrom(3.5, -60, 34.5, 3.5, -57.5, 31);
+            t.lookFrom(9.5, -60, 34.5, 9.5, -57.5, 31);
         });
         // el uniforme de pieza (con su número) visto de frente y de espaldas
         t.photo("24d_uniforme_frente", 900, () -> {
@@ -224,7 +224,7 @@ final class PruebaCliente {
         t.add("abrir candado", 1400, () -> {
             CompoundTag c = new CompoundTag();
             c.putInt("celda", 1);
-            c.putInt("x", 4);
+            c.putInt("x", 10);
             c.putInt("y", -59);
             c.putInt("z", 35);
             c.putString("f", "north");
@@ -251,14 +251,14 @@ final class PruebaCliente {
         t.photo("26b_reja_cerrada", 1500, () -> {
             t.cmd("gamemode spectator @a");
             t.cmd("effect give @a night_vision 30 0 true");
-            t.lookFrom(3.5, G, 39.3, 3.5, G + 1, 36.5);
+            t.lookFrom(9.5, G, 39.3, 9.5, G + 1, 36.5);
         });
         t.photo("26c_reja_abriendo", 650, () -> t.cmd("evento celdas abrir 1"));
         t.photo("26d_reja_abierta", 1600, () -> {
         });
         t.add("reja", 100, () -> {
             var l = Minecraft.getInstance().level;
-            net.minecraft.core.BlockPos q = new net.minecraft.core.BlockPos(3, (int) G, 36);
+            net.minecraft.core.BlockPos q = new net.minecraft.core.BlockPos(9, (int) G, 36);
             var st = l.getBlockState(q);
             t.check(st.getBlock() instanceof com.coleccionista.bloque.deco.DecoReja && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN),
                     "la reja de la celda 1 está abierta");
@@ -268,15 +268,15 @@ final class PruebaCliente {
         t.photo("27_pasillo", 2500, () -> {
             t.cmd("evento celdas abrir");
             t.cmd("gamemode spectator @a");
-            t.lookFrom(-4.5, -60, 41.5, 40, -59.2, 41.5);
+            t.lookFrom(52.5, -59, 48.5, 7, -57.5, 48.5);
             muestrearLamparas(true);
         });
         t.photo("28_cuerpo", 2500, () -> {
             t.cmd("evento eliminar Bot_02 Encadenados");
-            t.lookFrom(9.5, -59.4, 39.5, 9.5, -60.6, 34.5);
+            t.lookFrom(15.5, -59.4, 39.5, 15.5, -60.6, 34.5);
         });
-        t.photo("29_pantalla_grande", 2000, () -> t.lookFrom(10.5, -57, 41.5, -7, -56, 41.5));
-        t.photo("30_pasarela", 1500, () -> t.lookFrom(35.5, -54.4, 38, 0, -55, 38));
+        t.photo("29_pantalla_grande", 2000, () -> t.lookFrom(12.5, -59, 48.5, 24, -55, 48.5));
+        t.photo("30_patio", 1500, () -> t.lookFrom(52, -52, 38, 30, -58, 48));
         t.add("lamparas", 100, () -> {
             muestrearLamparas(false);
             t.check(lamparasFallando > 0, "algunas lámparas del pasillo parpadean solas (" + lamparasFallando + " ticks con alguna apagada)");
@@ -287,7 +287,7 @@ final class PruebaCliente {
             t.cmd("evento disfraz si @a");
         });
         t.photo("31_disfraz", 1800, () -> {
-            t.lookFrom(14.5, -60, 41.5, 0, -58.4, 41.5);
+            t.lookFrom(44.5, -60, 48.5, 30, -58.4, 48.5);
             Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
         });
         t.add("disfrazado", 100, () -> {
@@ -296,7 +296,148 @@ final class PruebaCliente {
             Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
             t.cmd("evento disfraz no @a");
         });
+        capitulo1(t);
         encadenados(t);
+    }
+
+    /**
+     * Capítulo 1: la pantalla grande sola, el portón que sube, la sala grande con sus ascensores, el viaje que cae, el taller de los
+     * sentidos (la mesa, la cadena, los cuartos), la salida en sillas, la galería y la vitrina de cera; al final, la línea de tiempo.
+     * Mi equipo (yo y un bot) sale primero; de los dos equipos de bots, el último va a la vitrina.
+     */
+    private static void capitulo1(ClientTest.Script t) {
+        t.add("cap1: preparar", 1500, () -> {
+            t.cmd("gamemode adventure @a");
+            t.cmd("evento inscribir @a");
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("evento sentidos bots si 25 26");
+            t.cmd("evento sentidos tiempos 20 300");
+            t.cmd("forceload add 0 428 260 522");
+            t.cmd("forceload add -82 428 -46 462");
+            t.lookFrom(36.5, -60, 48.5, 24, -55.5, 48.5);
+        });
+        t.photo("50_pantalla_grande_sola", 2500, () -> t.cmd("evento salida"));
+        t.add("solo la grande", 100, () -> {
+            var st = com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Pantallas.KEY);
+            t.check(st != null && st.getBoolean("soloGrande"), "solo están prendidas las pantallas grandes");
+        });
+        t.photo("50b_celda_apagada", 1200, () -> t.lookFrom(9.5, -60, 39.5, 9.5, -57.5, 31));
+        t.add("subir porton", 600, () -> {
+            t.cmd("evento porton abrir");
+            t.lookFrom(46.5, -60, 48.5, 54, -58.5, 48.5);
+        });
+        t.photo("51_porton", 2600, () -> {
+        });
+        t.add("porton arriba", 100, () -> t.check(Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(54, -60, 48)).isAir(),
+                "el portón subió (ya no hay barrotes abajo)"));
+        t.photo("52_sala_grande", 1500, () -> {
+            t.cmd("evento capitulo1 sala");
+            t.lookFrom(57.5, -59, 48.5, 111, -55, 48.5);
+        });
+        t.photo("53_ascensores", 4500, () -> {
+            t.cmd("evento capitulo1 formar");
+            t.lookFrom(86.5, -60, 40.5, 86.5, -59, 29);
+        });
+        t.add("al ascensor", 200, () -> t.lookFrom(86.5, -60, 27.5, 86.5, -59.5, 31));
+        t.photo("54_ascensor_listo", 1800, () -> {
+        });
+        t.add("bajando", 5500, () -> {
+        });
+        t.add("cae", 100, () -> t.check(ViajeCliente.cayendo(), "voy en el ascensor que cae"));
+        t.photo("55_cayendo", 900, () -> {
+        });
+        t.add("llegar", 12000, () -> {
+        });
+        t.add("saltar discurso", 1200, () -> t.cmd("evento sentidos saltar"));
+        t.add("en la mesa", 100, () -> t.check("ELEGIR".equals(SentidosCliente.fase()), "estamos eligiendo objetos (" + SentidosCliente.fase() + ")"));
+        t.photo("56_mesa", 900, () -> {
+            t.cmd("evento sentidos toma " + yo() + " 2");
+            t.lookFrom(249.5, -60, 436.5, 249.5, -59.5, 441);
+        });
+        // a los demás les toca lo que sobró y se abre la puerta (así el tiempo de los bots queda fijo)
+        t.add("tomar esposas", 4000, () -> t.cmd("evento sentidos saltar"));
+        t.add("con esposas", 100, () -> {
+            t.check("ESPOSAS".equals(SentidosCliente.miRol()), "me tocaron las esposas (" + SentidosCliente.miRol() + ")");
+            t.check("JUEGO".equals(SentidosCliente.fase()), "ya empezó el recorrido (" + SentidosCliente.fase() + ")");
+        });
+        t.photo("57_cadena_tercera", 1500, () -> {
+            Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
+            t.lookFrom(249.5, -60, 443.5, 249.5, -59.5, 438);
+        });
+        t.add("primera", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
+        t.add("mostrar", 600, () -> {
+            t.cmd("gamemode spectator @a");
+            t.cmd("evento sentidos mostrar");
+        });
+        t.photo("58_postes", 1200, () -> t.lookFrom(249.5, -59, 446.5, 249.5, -59.5, 460));
+        t.photo("59_puente", 1200, () -> t.lookFrom(249.5, -58.5, 461, 249.5, -61, 470));
+        t.photo("60_baldosas", 1200, () -> t.lookFrom(249.5, -57.5, 476.2, 248.5, -61, 481));
+        t.photo("61_palancas", 1200, () -> t.lookFrom(247, -60, 487, 256, -59, 491));
+        t.add("a la salida", 2500, () -> {
+            t.cmd("gamemode adventure @a");
+            t.cmd("evento sentidos salida " + yo());
+        });
+        t.photo("62_salida_sillas", 1200, () -> t.lookFrom(249.5, -60, 498.5, 249.5, -60, 503));
+        t.add("sentarme", 2500, () -> t.cmd("execute as " + yo() + " at @s run ride @s mount @e[type=coleccionista:silla,sort=nearest,limit=1]"));
+        t.add("sentado", 100, () -> t.check(Minecraft.getInstance().player.getVehicle() instanceof com.coleccionista.evento.Silla,
+                "estoy sentado en la silla de la salida"));
+        t.photo("63_sillas_ruedan", 1200, () -> {
+        });
+        t.add("a la galeria", 4500, () -> {
+        });
+        t.photo("64_galeria", 1500, () -> {
+        });
+        t.add("en la galeria", 100, () -> {
+            var p = Minecraft.getInstance().player;
+            t.check(p.getX() < -40 && p.getZ() > 425, "llegué a la galería (" + (int) p.getX() + ", " + (int) p.getZ() + ")");
+            t.cmd("gamemode spectator @a");
+            t.lookFrom(-64.5, -59, 436.5, -64.5, -58.5, 446);
+        });
+        // los dos equipos de bots salen solos a los 25-30 s; el último va a la vitrina y empieza la cera
+        t.add("esperar bots", 24000, () -> {
+        });
+        t.photo("65_vitrina_llegan", 3000, () -> {
+        });
+        t.add("esperar cera", 9000, () -> {
+        });
+        t.photo("66_cera", 2000, () -> {
+        });
+        t.add("esperar estatuas", 4500, () -> {
+        });
+        t.photo("67_estatuas", 2500, () -> {
+        });
+        t.add("estatuas", 100, () -> {
+            int n = 0;
+            for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (e instanceof com.coleccionista.evento.Cadaver c && c.estatua()) {
+                    n++;
+                }
+            }
+            t.check(n >= 3, "hay estatuas de cera en la vitrina (" + n + ")");
+        });
+        t.photo("68_linea_tiempo", 1500, () -> {
+            LineaScreen s = new LineaScreen();
+            com.axeliscore.plat.client.Screens.open(s);
+            int[] c = s.nodo(4);
+            com.axeliscore.ui.UiScreen.fakeMouse = c;
+        });
+        t.photo("69_linea_cap3", 1200, () -> {
+            com.axeliscore.ui.UiScreen.fakeMouse = null;
+            if (com.axeliscore.plat.client.Screens.current() instanceof LineaScreen s) {
+                s.capitulo(2);
+            }
+        });
+        t.add("cerrar linea", 500, () -> {
+            com.axeliscore.plat.client.Screens.close();
+            t.cmd("evento sentidos limpiar");
+            t.cmd("gamemode adventure @a");
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("evento revivir " + yo());
+        });
     }
 
     private static boolean escuchando, muestreando;
@@ -311,7 +452,7 @@ final class PruebaCliente {
                 if (!muestreando || e.phase != net.minecraftforge.event.TickEvent.Phase.END || l == null) {
                     return;
                 }
-                for (net.minecraft.core.BlockPos p : net.minecraft.core.BlockPos.betweenClosed(-8, -60, 37, 44, -52, 45)) {
+                for (net.minecraft.core.BlockPos p : net.minecraft.core.BlockPos.betweenClosed(7, -60, 37, 53, -50, 59)) {
                     var s = l.getBlockState(p);
                     if (s.hasProperty(com.coleccionista.bloque.deco.DecoBlock.FALLA) && s.getValue(com.coleccionista.bloque.deco.DecoBlock.FALLA)) {
                         lamparasFallando++;

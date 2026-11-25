@@ -26,6 +26,47 @@ public final class Cabinas {
         return y == 0 ? "south" : y == 90 ? "west" : y == 180 ? "north" : "east";
     }
 
+    /** El ascensor de un equipo (de 2 o 3): por dentro mide {@link #EQ_ANCHO} x {@link #ALTO} x {@link #EQ_FONDO}. */
+    public static final int EQ_ANCHO = 4, EQ_FONDO = 3;
+
+    /**
+     * El ascensor de un equipo: viejo y feo (cobre oxidado, rejilla, un foco que parpadea), con la puerta de dos hojas al centro del frente.
+     * El de la sala grande y el "falso" de cada circuito son idénticos por dentro. {@code m}: el marco (la esquina de atrás del interior está
+     * en el bloque local (0, 0); el frente, con la puerta, en k = -1). Marcas: {@code cab.<id>.origen} y {@code cab.<id>.puerta.a/.b}.
+     */
+    public static void ascensor(Plano p, String id, Marco m) {
+        for (int i = -1; i <= EQ_ANCHO; i++) {
+            for (int k = -1; k <= EQ_FONDO; k++) {
+                m.set(p, i, 0, k, C + ((i + k) % 2 == 0 ? "rejilla_piso[type=double]" : "metal_placa"));
+                m.set(p, i, ALTO + 1, k, C + "metal_negro");
+                boolean muro = i == -1 || i == EQ_ANCHO || k == -1 || k == EQ_FONDO;
+                for (int y = 1; y <= ALTO; y++) {
+                    if (muro) {
+                        boolean franja = y == 2 && k == EQ_FONDO;
+                        m.set(p, i, y, k, C + (y == ALTO ? "viga[axis=y]" : franja ? "metal_placa" : (i + y + k) % 3 == 0 ? "cobre_viejo" : "metal_negro"));
+                    } else {
+                        m.set(p, i, y, k, "air");
+                    }
+                }
+            }
+        }
+        // el foco del techo (con una luz pegada) y una rejilla de ventilación
+        m.set(p, 1, ALTO + 1, 1, C + "panel_luz");
+        m.set(p, 1, ALTO, 1, "light[level=11]");
+        m.set(p, 3, ALTO, EQ_FONDO - 1, C + "telarana");
+        m.set(p, 0, ALTO, EQ_FONDO - 1, C + "ventila[facing=north]");
+        // la puerta: dos hojas al centro del frente (por dentro se ven igual en todos)
+        m.set(p, 1, 1, -1, C + "puerta_celda[facing=south,half=lower,hinge=left,open=false]");
+        m.set(p, 1, 2, -1, C + "puerta_celda[facing=south,half=upper,hinge=left,open=false]");
+        m.set(p, 2, 1, -1, C + "puerta_celda[facing=south,half=lower,hinge=right,open=false]");
+        m.set(p, 2, 2, -1, C + "puerta_celda[facing=south,half=upper,hinge=right,open=false]");
+        m.set(p, 1, 3, -1, C + "metal_negro");
+        m.set(p, 2, 3, -1, C + "metal_negro");
+        m.marca(p, "cab." + id + ".puerta.a", 1, 1, -1, 0);
+        m.marca(p, "cab." + id + ".puerta.b", 2, 1, -1, 0);
+        p.marca("cab." + id + ".origen", m.cx, 1, m.cz, m.yaw);
+    }
+
     /** Un elevador: muros de metal negro, piso de placa, luz en el techo, barandal atrás y la puerta corrediza al frente. */
     public static void elevador(Plano p, String id, int ox, int oz, float yaw, String numero) {
         String f = haciaDentro(yaw);
