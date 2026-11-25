@@ -89,7 +89,7 @@ GUIONES = {
     ],
     "vitrina_fin": [
         ("hermosas", "Hermosas.", "Beautiful.", "Un suspiro, enamorado."),
-        ("siguen", "Los demás… descansen. Mañana seguimos.", "The rest of you… rest. Tomorrow we continue.", "Anfitrión, despidiéndose."),
+        ("siguen", "Los demás… acompáñenme. La función continúa.", "The rest of you… follow me. The show goes on.", "Anfitrión, invitando a seguir."),
         ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
     "montacargas": [

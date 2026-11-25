@@ -257,7 +257,7 @@ public final class Pantallas {
     public static List<Frase> vitrina_fin() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("hermosas", 50, null, 1F));
-        l.add(new Frase("siguen", 90, null, 1F));
+        l.add(new Frase("siguen", 100, null, 1F));
         l.add(new Frase("abierta", 65, null, 1F));
         return l;
     }

@@ -83,6 +83,8 @@ public final class Sentidos {
         final Rol[] objetos = new Rol[3];
         Etapa etapa = Etapa.MESA;
         long termino = -1, sentadosEn = -1, verHasta = -1, trampaHasta = -1, botListo = -1;
+        /** En qué paso va el viaje de las sillas (0 cortina, 1 ruedan, 2 negro, 3 del otro lado). */
+        int paso;
         boolean perdio, vistoCamino;
         int[] trampa;
         final int[] camino = new int[Circuito.BALD_FILAS];
@@ -112,6 +114,8 @@ public final class Sentidos {
     private static int cajas;
     private static long vitT0 = -1, ceraT0 = -1, negroT0 = -1;
     private static int capas;
+    /** Los pasos de la vitrina que ya pasaron (cada uno una sola vez). */
+    private static boolean vitCerrada, ceraAviso, negro, estatuas;
 
     private Sentidos() {
     }
@@ -893,17 +897,21 @@ public final class Sentidos {
 
     /** Las sillas se los llevan por el túnel; a negro, y del otro lado: la galería (o la vitrina, si eran los últimos). */
     private static void sentadosTick(MinecraftServer s, Equipo eq, long now) {
+        // cada paso una sola vez, en cuanto llega su momento (aunque se haya brincado un tick o hubo pausa)
         long dt = now - eq.sentadosEn;
-        if (dt == 20) {
+        if (eq.paso == 0 && dt >= 20) {
+            eq.paso = 1;
             cortina(s, eq, false);
             sonar(s, eq, SoundEvents.IRON_DOOR_OPEN, 1F, 0.5F);
         }
-        if (dt == 30) {
+        if (eq.paso == 1 && dt >= 30) {
+            eq.paso = 2;
             for (Silla si : eq.sillas) {
                 si.irA(si.position().add(0, 0, 9), 0.11);
             }
         }
-        if (dt == 92) {
+        if (eq.paso == 2 && dt >= 92) {
+            eq.paso = 3;
             List<ServerPlayer> ps = new ArrayList<>();
             for (UUID id : eq.ids) {
                 if (ent(s, id) instanceof ServerPlayer sp) {
@@ -912,7 +920,8 @@ public final class Sentidos {
             }
             Escena.fundido(ps, "", 70);
         }
-        if (dt == 115) {
+        if (eq.paso == 3 && dt >= 115) {
+            eq.paso = 4;
             if (eq.perdio) {
                 aLaVitrina(s, eq);
             } else {
@@ -990,6 +999,11 @@ public final class Sentidos {
         Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS vitrina equipo={} victimas={}", eq.k, victimas.size());
         if (vitT0 < 0) {
             vitT0 = s.overworld().getGameTime();
+            vitCerrada = false;
+            ceraAviso = false;
+            negro = false;
+            estatuas = false;
+            capas = 0;
         }
     }
 
@@ -1080,7 +1094,8 @@ public final class Sentidos {
         }
         ServerLevel l = s.overworld();
         long dt = now - vitT0;
-        if (dt == 40) {
+        if (!vitCerrada && dt >= 40) {
+            vitCerrada = true;
             // se cierra el frente de cada vitrina, se prenden sus reflectores y la placa dice quién es
             BlockState vidrio = Complejo.estado(MOD + ":vidrio_armado");
             Evento ev = Evento.get(s);
@@ -1106,7 +1121,8 @@ public final class Sentidos {
         }
         if (ceraT0 > 0) {
             long ct = now - ceraT0;
-            if (ct == 0) {
+            if (!ceraAviso) {
+                ceraAviso = true;
                 for (Victima v : victimas) {
                     ServerPlayer sp = s.getPlayerList().getPlayer(v.id);
                     if (sp != null) {
@@ -1140,7 +1156,7 @@ public final class Sentidos {
                     }
                 }
             }
-            if (ct > 0 && ct % 30 == 0 && capas < 4) {
+            if (capas < 4 && ct >= 30L * (capas + 1)) {
                 capas++;
                 BlockState miel = Blocks.HONEY_BLOCK.defaultBlockState();
                 for (Victima v : victimas) {
@@ -1150,14 +1166,16 @@ public final class Sentidos {
                     }
                 }
             }
-            if (ct == 165) {
+            if (!negro && ct >= 165) {
+                negro = true;
                 // a negro para todos los que miran; en medio, las víctimas se vuelven estatuas
                 Escena.fundido(s, "", 60);
                 Anuncio.sonido(s, SoundEvents.BEACON_DEACTIVATE, 1F, 0.5F);
                 negroT0 = now;
             }
         }
-        if (negroT0 > 0 && now - negroT0 == 25) {
+        if (negroT0 > 0 && !estatuas && now - negroT0 >= 25) {
+            estatuas = true;
             Evento ev = Evento.get(s);
             int muertos = 0;
             for (Victima v : victimas) {
@@ -1179,7 +1197,7 @@ public final class Sentidos {
             }
             Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS estatuas={}", muertos);
         }
-        if (negroT0 > 0 && now - negroT0 == 70) {
+        if (negroT0 > 0 && now - negroT0 >= 70) {
             negroT0 = -1;
             ceraT0 = -1;
             vitT0 = -1;
@@ -1331,6 +1349,10 @@ public final class Sentidos {
         vitT0 = -1;
         ceraT0 = -1;
         negroT0 = -1;
+        vitCerrada = false;
+        ceraAviso = false;
+        negro = false;
+        estatuas = false;
         t = 0;
         cambio = true;
     }

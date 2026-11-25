@@ -49,8 +49,11 @@ public class Silla extends Entity {
         MinecraftForge.EVENT_BUS.addListener(Silla::alBajar);
     }
 
-    /** Nadie se levanta de una silla cerrada (ni en el cliente: así no "parpadea" al intentarlo). */
+    /** Nadie se levanta de una silla cerrada (lo decide el servidor; el cliente solo obedece lo que le dicen). */
     private static void alBajar(EntityMountEvent e) {
+        if (e.getLevel() == null || e.getLevel().isClientSide()) {
+            return;
+        }
         if (e.isDismounting() && e.getEntityBeingMounted() instanceof Silla s && s.cerrada() && !soltando && s.isAlive()) {
             e.setCanceled(true);
         }
