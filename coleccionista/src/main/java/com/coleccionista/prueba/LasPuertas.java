@@ -421,7 +421,7 @@ public final class LasPuertas {
         }
         if (presentarEn > 0 && now >= presentarEn) {
             presentarEn = -1;
-            Escena.presentacion(s, "VII", MOD + ".pue.titulo", MOD + ".pue.lema");
+            Escena.presentacion(s, "IX", MOD + ".pue.titulo", MOD + ".pue.lema");
             Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.45F);
         }
         Evento ev = Evento.get(s);
