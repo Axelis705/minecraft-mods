@@ -54,7 +54,8 @@ public final class SoloPrimera {
             return;
         }
         if (e.getNewScreen() instanceof InventoryScreen || e.getNewScreen() instanceof CreativeModeInventoryScreen) {
-            e.setNewScreen(new BolsilloScreen());
+            // si el arma me apunta y no he marcado mi símbolo, la E abre eso
+            e.setNewScreen(CajaCliente.elige() ? new EligeSimboloScreen() : new BolsilloScreen());
         }
     }
 }

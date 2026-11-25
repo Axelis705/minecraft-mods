@@ -10,6 +10,7 @@ forceload add 0 436 340 590
 forceload add 341 436 690 590
 forceload add -82 438 -8 502
 forceload add 704 432 784 496
+forceload add 784 432 864 496
 #pausa 3
 evento reiniciar confirmar
 evento recorrido auto false
@@ -234,6 +235,23 @@ evento mascota terminar
 #pausa 20
 evento mascota
 evento mascota limpiar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento caja
+evento caja tiempos 6 8
+evento pocos true
+#pausa 6
+evento caja roles
+#pausa 12
+evento caja
+#pausa 60
+evento caja
+#pausa 95
+evento caja
+evento caja limpiar
+evento pocos false
 evento capitulo1
 evento sentidos
 #pausa 2
@@ -296,6 +314,24 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_MASCOTA fin comidos=1
 #expect COLECCIONISTA_DISCURSO mansion_fin
 #expect COLECCIONISTA_CAPITULO2 fin
+#expect COLECCIONISTA_CONSTRUIDO caja
+#expect COLECCIONISTA_CAJA llamar
+#expect COLECCIONISTA_CABINA traslada pas_man -> pas_caj
+#expect COLECCIONISTA_CAJA llegan
+#expect COLECCIONISTA_CAJA roles piezas=
+#expect COLECCIONISTA_VOZ tonos=
+#expect COLECCIONISTA_CAJA turnos piezas=
+#expect COLECCIONISTA_CAJA turno 1 ronda=1
+#expect COLECCIONISTA_CAJA luz turno=1
+#expect COLECCIONISTA_CAJA turno 6 ronda=3
+#expect COLECCIONISTA_CAJA luz turno=6
+#expect COLECCIONISTA_CAJA circulo piezas=
+#expect COLECCIONISTA_DISCURSO caja_revision
+#expect COLECCIONISTA_CAJA revision piezas=
+#expect COLECCIONISTA_CAJA decide
+#expect COLECCIONISTA_CAJA fin balas=
+#expect COLECCIONISTA_DISCURSO caja_fin
+#expect COLECCIONISTA_CAPITULO3 fin
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
 #expect COLECCIONISTA_EQUIPOS tam=2 equipos=3

@@ -40,7 +40,8 @@ public final class UniformeCliente {
                 })
                 .decorar((c, l) -> {
                     String n = c.datos().getString("numero");
-                    if (n.isEmpty() || c.primeraPersona()) {
+                    // en la caja de música (la parte a ciegas) nadie lleva número: no se sabe quién es quién
+                    if (n.isEmpty() || c.primeraPersona() || CajaCliente.anonimo()) {
                         return;
                     }
                     float z = 2F + l.inflado() + 0.03F;

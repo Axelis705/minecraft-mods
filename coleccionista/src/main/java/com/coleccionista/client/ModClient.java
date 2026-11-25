@@ -20,6 +20,7 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.BOT.get(), BotRenderer::new);
         e.registerEntityRenderer(ModRegistry.CADAVER.get(), CadaverRenderer::new);
         e.registerEntityRenderer(ModRegistry.SILLA.get(), SillaRenderer::new);
+        e.registerEntityRenderer(ModRegistry.ARMA.get(), ArmaTechoRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.PANTALLA_BE.get(), PantallaRenderer::new);
         e.registerBlockEntityRenderer(com.coleccionista.bloque.deco.Deco.TEXTO_BE, TextoRenderer::new);
         e.registerBlockEntityRenderer(com.coleccionista.bloque.deco.Deco.REJA_BE, RejaRenderer::new);
@@ -52,6 +53,7 @@ public final class ModClient {
         InscripcionesCliente.init();
         CandadoScreen.registrar();
         UniformeCliente.registrar();
+        CajaCliente.prendas();
         CompartirCliente.init();
         PuertasCliente.init();
         CopasCliente.init();
@@ -62,6 +64,7 @@ public final class ModClient {
         ObjetivoCliente.init();
         DesmayoCliente.init();
         MascotaCliente.init();
+        CajaCliente.init();
         SoloPrimera.init();
         ViajeCliente.init();
         CeraCliente.init();

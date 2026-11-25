@@ -229,4 +229,44 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 3 | `mansion_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
 | 4 | `mansion_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
 
-**Total: 133 líneas (≈12 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+## Capítulo 3 · La caja de música: en el salón del carrusel (cuando ya entraron todos)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `caja_bienvenidos.ogg` | 3.8 s | Bienvenidos a mi caja de música. |
+| 2 | `caja_carrusel.ogg` | 4.8 s | Se van a subir a mi carrusel. De dos en dos. |
+| 3 | `caja_espalda.ogg` | 7.0 s | Cada uno lleva un símbolo en la espalda: pica, corazón, diamante o trébol. |
+| 4 | `caja_no_se_ve.ogg` | 5.0 s | El suyo no lo pueden ver. El de atrás… sí. |
+| 5 | `caja_diganse.ogg` | 8.5 s | En la góndola, el de atrás le dice al de adelante qué símbolo lleva. Luego cambian de lugar. |
+| 6 | `caja_gira.ogg` | 6.8 s | Cuando se apague la luz, el carrusel gira… y les toca otra pareja. |
+| 7 | `caja_voces.ogg` | 6.5 s | Ah, y no se asusten de sus voces. Ahí adentro nadie suena como es. |
+| 8 | `caja_traidores.ogg` | 6.5 s | Pero cuidado: entre ustedes hay dos traidores. Y ellos pueden mentir. |
+| 9 | `caja_al_final.ogg` | 5.2 s | Al final, cada uno me dirá su símbolo. En voz alta. |
+| 10 | `caja_si_fallan.ogg` | 4.2 s | Si se equivocan… se quedan conmigo. |
+| 11 | `caja_traidor_bala.ogg` | 5.0 s | Y el traidor que no engañe a nadie… también. |
+| 12 | `caja_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+
+## Capítulo 3 · La caja de música: todos sentados en círculo (antes de que baje el arma)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `caja_revision_circulo.ogg` | 4.2 s | Qué bonitos se ven. Todos en círculo. |
+| 2 | `caja_revision_uno_por_uno.ogg` | 5.5 s | Uno por uno. Cuando los mire… díganme su símbolo. |
+| 3 | `caja_revision_fuerte.ogg` | 3.2 s | En voz alta. Y márquenlo. |
+
+## Capítulo 3 · La caja de música: después de revisar a todos (le toca a los traidores)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `caja_traidores_ahora.ogg` | 3.5 s | Y ahora… mis traidores. |
+
+## Capítulo 3 · La caja de música: el final (sube el arma y se dicen los traidores)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `caja_fin_se_acabo.ogg` | 3.2 s | ¿Oyen? Se acabó la música. |
+| 2 | `caja_fin_eran.ogg` | 3.0 s | Mis traidores eran… |
+| 3 | `caja_fin_enteros.ogg` | 5.0 s | Los que siguen enteros… gracias por el paseo. |
+| 4 | `caja_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+
+**Total: 153 líneas (≈13 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

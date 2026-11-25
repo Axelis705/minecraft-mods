@@ -526,6 +526,7 @@ def catalogo():
     prop(P.calcomania('mancha', 'Mancha', 'Stain', P.mancha_mat(), 40))
     prop(P.calcomania('charco', 'Charco', 'Puddle', P.mancha_mat('#28343a', 150, 41), 41), {'goteo': True})
     prop(P.calcomania('papeles', 'Papeles tirados', 'Scattered papers', P.papeles_mat(), 42))
+    prop(P.calcomania('sangre', 'Salpicadura roja', 'Red splatter', P.sangre_mat(), 44))
     prop(P.vitrina())
     prop(P.candelabro())
     prop(P.cortina())

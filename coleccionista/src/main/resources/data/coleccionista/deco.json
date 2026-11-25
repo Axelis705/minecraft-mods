@@ -1539,6 +1539,29 @@
    "sub": "floor"
   },
   {
+   "id": "sangre",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     0.0,
+     0.05,
+     0.0,
+     16.0,
+     0.05,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Salpicadura roja",
+   "en": "Red splatter",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
    "id": "vitrina",
    "kind": "prop",
    "tall": true,

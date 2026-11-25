@@ -39,6 +39,25 @@ public class VozPlugin implements VoicechatPlugin {
     private static volatile VoicechatServerApi server;
     /** Los canales directos de quien habla a quien oye (fantasmas y altavoz). */
     private static final Map<String, StaticAudioChannel> CANALES = new ConcurrentHashMap<>();
+    /** Para cambiar la voz: lo que hace falta de cada quien que habla (decodificador, cambio de tono y codificador). */
+    private static final Map<UUID, Disfraz> DISFRACES = new ConcurrentHashMap<>();
+
+    private static final class Disfraz {
+        final de.maxhenkel.voicechat.api.opus.OpusDecoder dec;
+        final de.maxhenkel.voicechat.api.opus.OpusEncoder enc;
+        final Tono tono;
+
+        Disfraz(VoicechatServerApi api, float razon) {
+            dec = api.createDecoder();
+            enc = api.createEncoder(de.maxhenkel.voicechat.api.opus.OpusEncoderMode.VOIP);
+            tono = new Tono(razon);
+        }
+
+        void cerrar() {
+            dec.close();
+            enc.close();
+        }
+    }
 
     @Override
     public String getPluginId() {
@@ -73,6 +92,10 @@ public class VozPlugin implements VoicechatPlugin {
         r.registerEvent(PlayerDisconnectedEvent.class, e -> {
             String id = e.getPlayerUuid().toString();
             CANALES.keySet().removeIf(k -> k.contains(id));
+            Disfraz d = DISFRACES.remove(e.getPlayerUuid());
+            if (d != null) {
+                d.cerrar();
+            }
         });
     }
 
@@ -95,6 +118,7 @@ public class VozPlugin implements VoicechatPlugin {
             e.cancel(); // tiene la cinta en la boca: nadie lo oye
             return;
         }
+        disfrazar(api, yo, e);
         boolean fantasma = VozPuente.fantasmas.contains(yo), altavoz = VozPuente.altavoz.contains(yo);
         if (!fantasma && !altavoz) {
             return;
@@ -112,6 +136,49 @@ public class VozPlugin implements VoicechatPlugin {
             StaticAudioChannel canal = canal(api, yo, c);
             if (canal != null) {
                 canal.send(data);
+            }
+        }
+    }
+
+    /** Si a esta persona le toca la voz cambiada: decodifica, le cambia el tono y lo vuelve a codificar (en el mismo paquete). */
+    private static void disfrazar(VoicechatServerApi api, UUID yo, MicrophonePacketEvent e) {
+        Float razon = VozPuente.tonos.get(yo);
+        Disfraz d = DISFRACES.get(yo);
+        if (razon == null || Math.abs(razon - 1F) < 0.01F) {
+            if (d != null) {
+                DISFRACES.remove(yo);
+                d.cerrar();
+            }
+            return;
+        }
+        if (d == null || Math.abs(d.tono.razon() - razon) > 0.001F) {
+            if (d != null) {
+                d.cerrar();
+            }
+            d = new Disfraz(api, razon);
+            DISFRACES.put(yo, d);
+        }
+        byte[] data = e.getPacket().getOpusEncodedData();
+        synchronized (d) {
+            if (data == null || data.length == 0) {
+                // dejó de hablar: todo de cero para la próxima
+                d.dec.resetState();
+                d.enc.resetState();
+                d.tono.reiniciar();
+                return;
+            }
+            try {
+                short[] pcm = d.dec.decode(data);
+                if (pcm == null || pcm.length == 0) {
+                    return;
+                }
+                byte[] nuevo = d.enc.encode(d.tono.procesar(pcm));
+                if (nuevo != null && nuevo.length > 0) {
+                    e.getPacket().setOpusEncodedData(nuevo);
+                }
+            } catch (RuntimeException ex) {
+                // si algo falla, que hable con su voz (mejor que callarlo)
+                Coleccionista.LOGGER.debug("COLECCIONISTA_VOZ no se pudo cambiar el tono: {}", ex.toString());
             }
         }
     }

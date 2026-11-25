@@ -193,6 +193,32 @@ public final class Panel {
                 }
             }
             case "man_limpiar" -> com.coleccionista.prueba.Mascota.reiniciar(s);
+            case "caja_llamar", "caja_llegar" -> {
+                Component no = "caja_llamar".equals(op) ? com.coleccionista.prueba.Caja.llamar(s) : com.coleccionista.prueba.Caja.llegar(s);
+                if (no != null) {
+                    Plat.msg(p, no, true);
+                }
+            }
+            case "caja_saltar" -> {
+                if (!com.coleccionista.prueba.Caja.saltar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".caja.cmd.no"), true);
+                }
+            }
+            case "caja_bien", "caja_bala" -> {
+                if (!com.coleccionista.prueba.Caja.decidir(s, "caja_bala".equals(op))) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".caja.cmd.nadie"), true);
+                }
+            }
+            case "caja_auto" -> {
+                com.coleccionista.prueba.Caja.auto = !com.coleccionista.prueba.Caja.auto;
+                Plat.msg(p, Component.literal("auto=" + com.coleccionista.prueba.Caja.auto), true);
+            }
+            case "caja_terminar" -> {
+                if (!com.coleccionista.prueba.Caja.terminar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".caja.cmd.no"), true);
+                }
+            }
+            case "caja_limpiar" -> com.coleccionista.prueba.Caja.reiniciar(s);
             case "pocos" -> {
                 ev.pocos = d.getBoolean("si");
                 ev.cambio(s);

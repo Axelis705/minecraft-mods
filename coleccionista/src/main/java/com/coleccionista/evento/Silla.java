@@ -30,6 +30,8 @@ import java.util.function.BiPredicate;
  */
 public class Silla extends Entity {
     private static final EntityDataAccessor<Boolean> CERRADA = SynchedEntityData.defineId(Silla.class, EntityDataSerializers.BOOLEAN);
+    /** Sin modelo: un asiento invisible (el mueble ya está en el mapa, como los de las góndolas de la caja de música). */
+    private static final EntityDataAccessor<Boolean> OCULTA = SynchedEntityData.defineId(Silla.class, EntityDataSerializers.BOOLEAN);
     /** Quién se puede sentar en cuál (lo decide la prueba); si es null, cualquiera. */
     public static BiPredicate<ServerPlayer, Silla> permiso;
     /** Para que el propio evento pueda bajar a alguien de una silla cerrada. */
@@ -62,6 +64,15 @@ public class Silla extends Entity {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(CERRADA, false);
+        this.entityData.define(OCULTA, false);
+    }
+
+    public boolean oculta() {
+        return this.entityData.get(OCULTA);
+    }
+
+    public void oculta(boolean si) {
+        this.entityData.set(OCULTA, si);
     }
 
     public boolean cerrada() {

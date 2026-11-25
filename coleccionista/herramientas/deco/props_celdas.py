@@ -356,6 +356,28 @@ def mancha_mat(color='#2a1f14', a=200, seed=40):
     return f
 
 
+def sangre_mat(seed=44):
+    """Salpicadura roja (la sangre de mentira de la caja de música): una mancha central y gotas alrededor."""
+    def f(P):
+        X, Z = P['X'], P['Z']
+        out = np.zeros(X.shape + (4,), np.float32)
+        r = np.random.RandomState(seed)
+        d = np.sqrt((X - 8) ** 2 + (Z - 8) ** 2) / 8
+        n = fbm(X, X * 0, Z, 3.0, P['seed'] + seed, 3)
+        m = (n * 1.2 - d * 1.05) > 0.05
+        for _ in range(9):
+            a, rr = r.rand() * 6.28, 4 + r.rand() * 3.5
+            cx, cz, rad = 8 + math.cos(a) * rr, 8 + math.sin(a) * rr, 0.5 + r.rand() * 0.9
+            m |= ((X - cx) ** 2 + (Z - cz) ** 2) < rad ** 2
+        col = np.array(hexc('#7a0a10'), np.float32)
+        brillo = 0.75 + 0.45 * n[..., None]
+        out[..., :3] = col * brillo
+        out[..., 3] = np.where(m, 235, 0)
+        return out
+    f.cutout = True
+    return f
+
+
 def papeles_mat(seed=42):
     def f(P):
         X, Z = P['X'], P['Z']

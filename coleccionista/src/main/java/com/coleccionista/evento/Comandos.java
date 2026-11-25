@@ -329,7 +329,7 @@ public final class Comandos {
                         // que el Coleccionista diga uno de sus discursos (para repetirlo o probarlo)
                         .then(Commands.literal("hablar").then(Commands.argument("guion", StringArgumentType.word())
                                 .suggests((c, b) -> SharedSuggestionProvider.suggest(List.of("bienvenida", "equipos", "sentidos", "vitrina", "vitrina_fin",
-                                        "antesala", "mansion", "mansion_suelta", "mansion_fin", "montacargas", "encadenados", "traidor", "compartir",
+                                        "antesala", "mansion", "mansion_suelta", "mansion_fin", "caja", "caja_revision", "caja_traidores", "caja_fin", "montacargas", "encadenados", "traidor", "compartir",
                                         "ciegas", "sacrificio", "puertas", "copas", "tres"), b))
                                 .executes(c -> Pantallas.hablar(c.getSource().getServer(), StringArgumentType.getString(c, "guion"), null)
                                         ? ok(c, Component.literal("habla: " + StringArgumentType.getString(c, "guion")))
@@ -388,6 +388,7 @@ public final class Comandos {
                 .then(com.coleccionista.prueba.ComandosPruebas.copas())
                 .then(com.coleccionista.prueba.ComandosPruebas.sacrificio())
                 .then(com.coleccionista.prueba.ComandosPruebas.traidor(vivas))
+                .then(com.coleccionista.prueba.ComandosCaja.caja(vivas))
                 .then(com.coleccionista.prueba.ComandosPruebas.ciegas(vivas))
                 .then(com.coleccionista.prueba.ComandosPruebas.tres(vivas))
                 .then(com.coleccionista.voz.ComandosVoz.voz(piezas(p -> true)))
@@ -395,6 +396,7 @@ public final class Comandos {
                     int n = Cuerpos.limpiar(c.getSource().getServer());
                     return ok(c, Component.translatable(MOD + ".cmd.cuerpos", n));
                 }))));
+        com.coleccionista.prueba.ComandosCaja.registrarBala(d, vivas);
     }
 
     private static int ok(CommandContext<CommandSourceStack> c, Component m) {

@@ -79,6 +79,12 @@ public final class Voz {
         }
     }
 
+    /** Las voces cambiadas: a quién y con qué tono (vacío = todos con su voz). */
+    public static void tonos(Map<UUID, Float> t) {
+        VozPuente.tonos = Map.copyOf(t);
+        Coleccionista.LOGGER.info("COLECCIONISTA_VOZ tonos={}", t.size());
+    }
+
     /** A quién se le corta el micrófono (vacío = a nadie). */
     public static void mudos(Set<UUID> ids) {
         VozPuente.mudos = Set.copyOf(ids);

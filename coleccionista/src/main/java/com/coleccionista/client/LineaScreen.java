@@ -81,8 +81,18 @@ public class LineaScreen extends UiScreen {
                 new Paso("man_soltar", "man_soltar", null),
                 new Paso("man_terminar", "man_terminar", null),
                 new Paso("man_limpiar", "man_limpiar", null))));
+        l.add(new Capitulo("c3", List.of(
+                new Paso("caja_llamar", "caja_llamar", null),
+                new Paso("caja_llegar", "caja_llegar", null),
+                new Paso("caja_saltar", "caja_saltar", null),
+                new Paso("caja_bien", "caja_bien", null),
+                new Paso("caja_bala", "caja_bala", null),
+                new Paso("caja_auto", "caja_auto", null),
+                new Paso("caja_terminar", "caja_terminar", null),
+                new Paso("caja_limpiar", "caja_limpiar", null))));
+        // (el traidor de antes, en el Archivo, sigue en el panel y en /evento traidor)
         String[][] p = {
-                {"c3", "archivo", "tra"}, {"c4", "salon", "com"}, {"c5", "laberintos", "cie"}, {"c6", "capilla", "sac"},
+                {"c4", "salon", "com"}, {"c5", "laberintos", "cie"}, {"c6", "capilla", "sac"},
                 {"c7", "puertas", "pue"}, {"c8", "final", "cop"}};
         for (String[] c : p) {
             List<Paso> ps = new ArrayList<>();

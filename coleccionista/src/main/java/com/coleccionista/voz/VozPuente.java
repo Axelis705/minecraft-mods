@@ -16,6 +16,8 @@ public final class VozPuente {
     public static volatile Set<UUID> vivos = Set.of(), fantasmas = Set.of(), organizadores = Set.of(), altavoz = Set.of();
     /** A quién se le cortó el micrófono (la cinta en la boca de Encadenados de tres). */
     public static volatile Set<UUID> mudos = Set.of();
+    /** Las voces cambiadas (la caja de música): quién habla con otro tono (menos de 1, más grave; más de 1, más aguda). */
+    public static volatile Map<UUID, Float> tonos = Map.of();
     /** Durante algunas pruebas, cada pieza viva en su grupo (sala, cuarto, laberinto): solo se oyen los del mismo grupo. */
     public static volatile Map<UUID, Integer> separados = Map.of();
     /** ¿Los vivos pueden usar los grupos de Simple Voice Chat? (no: así la voz es solo por cercanía, como debe ser en el evento) */

@@ -302,6 +302,46 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> caja() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("bienvenidos", 75, null, 1F));
+        l.add(new Frase("carrusel", 95, null, 1F));
+        l.add(new Frase("espalda", 140, null, 1F));
+        l.add(new Frase("no_se_ve", 100, null, 1F));
+        l.add(new Frase("diganse", 170, null, 1F));
+        l.add(new Frase("gira", 135, null, 1F));
+        l.add(new Frase("voces", 130, null, 1F));
+        l.add(new Frase("traidores", 130, null, 1F));
+        l.add(new Frase("al_final", 105, null, 1F));
+        l.add(new Frase("si_fallan", 85, null, 1F));
+        l.add(new Frase("traidor_bala", 100, null, 1F));
+        l.add(new Frase("abierta", 65, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> caja_revision() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("circulo", 85, null, 1F));
+        l.add(new Frase("uno_por_uno", 110, null, 1F));
+        l.add(new Frase("fuerte", 65, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> caja_traidores() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("ahora", 70, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> caja_fin() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("se_acabo", 65, null, 1F));
+        l.add(new Frase("eran", 60, null, 1F));
+        l.add(new Frase("enteros", 100, null, 1F));
+        l.add(new Frase("abierta", 65, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -323,6 +363,10 @@ public final class Pantallas {
             case "mansion" -> mansion();
             case "mansion_suelta" -> mansion_suelta();
             case "mansion_fin" -> mansion_fin();
+            case "caja" -> caja();
+            case "caja_revision" -> caja_revision();
+            case "caja_traidores" -> caja_traidores();
+            case "caja_fin" -> caja_fin();
             default -> null;
         };
     }

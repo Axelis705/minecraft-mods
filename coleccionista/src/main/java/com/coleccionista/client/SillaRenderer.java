@@ -32,6 +32,12 @@ public class SillaRenderer extends EntityRenderer<Silla> {
 
     @Override
     public void render(Silla s, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
+        if (s.oculta()) {
+            // un asiento invisible: el mueble es del mapa
+            shadowRadius = 0F;
+            return;
+        }
+        shadowRadius = 0.4F;
         if (silla == null) {
             silla = Complejo.estado("coleccionista:silla[facing=north]");
             correa = Complejo.estado("coleccionista:cadena[axis=x]");

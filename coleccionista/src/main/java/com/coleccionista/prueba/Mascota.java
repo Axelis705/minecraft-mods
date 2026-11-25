@@ -87,6 +87,8 @@ public final class Mascota {
     private static final Map<UUID, Long> comiendo = new HashMap<>();
     private static final Map<UUID, Vec3> quieto = new HashMap<>();
     private static int comidos;
+    /** Al terminar de hablar, pasan a la caja de música (cuando Cascabel ya volvió a ser el organizador). */
+    private static boolean finEnCaja;
     private static final Random R = new Random();
 
     private Mascota() {
@@ -663,6 +665,10 @@ public final class Mascota {
                     finEn = 0;
                     volverCazador(s);
                 }
+                if (finEnCaja && finEn == 0) {
+                    finEnCaja = false;
+                    Caja.llamar(s);
+                }
             }
             default -> {
             }
@@ -723,6 +729,10 @@ public final class Mascota {
         Pantallas.hablar(s, "mansion_fin", () -> {
             Evento.get(s).prueba(s, Component.translatable(MOD + ".man.fin_capitulo").getString());
             Coleccionista.LOGGER.info("COLECCIONISTA_CAPITULO2 fin vivos={}", Evento.get(s).vivos().size());
+            // "los que siguen enteros… síganme": el capítulo 3 (se abre el pasillo hacia la caja de música)
+            if (Caja.encadenar && Complejo.construido(s, "caja") && fase == Fase.FIN) {
+                finEnCaja = true;
+            }
         });
         Anuncio.titulo(s, Component.translatable(MOD + ".man.fin.titulo"), Component.translatable(MOD + ".man.fin.sub", ev.vivos().size()));
         enviar(s);
@@ -807,6 +817,7 @@ public final class Mascota {
         quieto.clear();
         comidos = 0;
         finEn = 0;
+        finEnCaja = false;
         sacudio = false;
         reiniciarCasa(s);
         enviar(s);
