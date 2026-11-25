@@ -324,14 +324,14 @@ public final class Traidor {
         Pantallas.modo(s, "texto", Component.translatable(MOD + ".tra.pantalla.buscar").getString());
         Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".tra.chat.buscar", intentosMax, segundosBuscar / 60)));
         Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.6F);
-        // los bots: el que no es traidor a veces acierta (para las pruebas), en un momento al azar
+        // los bots: el que no es traidor a veces acierta (para las pruebas), en un momento al azar (no antes de 15 s)
         Random r = new Random(s.overworld().getRandom().nextLong());
         long now = s.overworld().getGameTime();
         for (Sala sa : salas) {
             for (UUID id : sa.ids) {
                 Pieza p = ev.pieza(id);
                 if (p != null && p.bot) {
-                    botEn.put(id, now + 100 + r.nextInt(Math.max(1, segundosBuscar * 20 / 2)));
+                    botEn.put(id, now + 300 + r.nextInt(Math.max(1, segundosBuscar * 20 / 2)));
                 }
             }
         }
