@@ -274,11 +274,9 @@ evento te llegar
 evento te saltar
 #pausa 3
 evento te saltar
-#pausa 4
+#pausa 7
 evento te saltar
-#pausa 6
-evento te saltar
-#pausa 100
+#pausa 110
 evento te
 evento te limpiar
 evento te rapido false
