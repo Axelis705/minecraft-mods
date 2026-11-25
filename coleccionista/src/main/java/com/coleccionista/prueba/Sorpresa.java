@@ -102,6 +102,7 @@ public final class Sorpresa {
     private static BlockPos foco;
     private static final List<BlockPos> puestos = new ArrayList<>();
     private static boolean lucesBajas;
+    private static int sustos;
 
     private Sorpresa() {
     }
@@ -521,6 +522,7 @@ public final class Sorpresa {
         Pieza p = ev.pieza(turno);
         Entity e = p == null ? null : Evento.entidad(s, p);
         sonidoCaja(s, SoundEvents.PISTON_EXTEND, 3F, 0.5F);
+        sonidoCaja(s, propio("sor_salta"), 4F, 1F);
         sonidoCaja(s, SoundEvents.WITCH_CELEBRATE, 3F, 0.6F);
         sonidoCaja(s, SoundEvents.EVOKER_PREPARE_ATTACK, 3F, 0.7F);
         sonidoCaja(s, propio("caja_compuerta"), 2F, 1.6F);
@@ -712,6 +714,9 @@ public final class Sorpresa {
             case MUERDE -> {
                 // mastica: crujidos y sangre que escurre de la boca
                 if (dt > 4 && dt % 9 == 2 && caja != null) {
+                    if (dt % 27 == 2) {
+                        sonidoCaja(s, propio("sor_mordida"), 2.5F, 0.85F + R.nextFloat() * 0.3F);
+                    }
                     sonidoCaja(s, SoundEvents.GENERIC_EAT, 3F, 0.5F + R.nextFloat() * 0.2F);
                     sonidoCaja(s, SoundEvents.SKELETON_HURT, 1.6F, 0.4F);
                     sonidoCaja(s, SoundEvents.SLIME_SQUISH, 2F, 0.5F);
@@ -744,11 +749,22 @@ public final class Sorpresa {
                 if (dt == 22) {
                     // los zapatos caen en su lugar, al frente del escenario
                     BlockPos z = Complejo.pos(s, "sor.zapatos." + zapatosK);
-                    BlockState st = Complejo.estado("coleccionista:zapatos[facing=west]");
+                    String[] lados = {"south", "west", "north", "east"};
+                    BlockState st = Complejo.estado("coleccionista:zapatos[facing="
+                            + lados[Math.floorMod(Math.round(Complejo.yaw("sor.zapatos." + zapatosK) / 90F), 4)] + "]");
                     if (z != null && st != null && s.overworld().getBlockState(z).isAir()) {
                         s.overworld().setBlock(z, st, 2);
                         puestos.add(z);
                         s.overworld().playSound(null, z, SoundEvents.ARMOR_EQUIP_LEATHER, SoundSource.HOSTILE, 2F, 0.7F);
+                        s.overworld().playSound(null, z, SoundEvents.SLIME_SQUISH, SoundSource.HOSTILE, 2F, 0.6F);
+                        BlockState mancha = Complejo.estado("coleccionista:sangre[facing=north]");
+                        for (BlockPos q : new BlockPos[] {z.east(), z.south()}) {
+                            if (mancha != null && s.overworld().getBlockState(q).isAir()
+                                    && s.overworld().getBlockState(q.below()).isSolidRender(s.overworld(), q.below())) {
+                                s.overworld().setBlock(q, mancha, 2);
+                                puestos.add(q);
+                            }
+                        }
                         s.overworld().sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.defaultBlockState()),
                                 z.getX() + 0.5, z.getY() + 0.2, z.getZ() + 0.5, 12, 0.2, 0.1, 0.2, 0.1);
                     }
@@ -798,7 +814,19 @@ public final class Sorpresa {
         Pieza p = ev.pieza(turno);
         Entity e = p == null ? null : Evento.entidad(s, p);
         sonidoCaja(s, SoundEvents.EVOKER_FANGS_ATTACK, 3F, 0.5F);
+        sonidoCaja(s, propio("sor_mordida"), 4F, 1F);
         sonidoCaja(s, SoundEvents.PLAYER_ATTACK_CRIT, 3F, 0.5F);
+        // ¡pam!: a todos los demás, el susto (la cara de Don Resorte de golpe en la pantalla, el golpe de sonido y la sacudida)
+        sustos++;
+        CompoundTag su = new CompoundTag();
+        su.putInt("n", sustos);
+        su.putLong("en", s.overworld().getGameTime());
+        for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
+            if (!sp.getUUID().equals(turno)) {
+                PlayerStore.Sync.toPlayer(sp, KEY + "_susto", su);
+                sp.playNotifySound(propio("sor_susto"), SoundSource.MASTER, 1F, 1F);
+            }
+        }
         sonidoCaja(s, SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR, 1.5F, 0.6F);
         if (caja != null) {
             sangre(s, caja.boca(), 90, 0.6);

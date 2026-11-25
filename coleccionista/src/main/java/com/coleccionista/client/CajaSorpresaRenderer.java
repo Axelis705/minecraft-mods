@@ -49,7 +49,7 @@ public class CajaSorpresaRenderer extends SimpleGeoRenderer<CajaSorpresa> {
         float x = (t - 8) / 14F;
         Vec3 a = c.boca().subtract(c.position()), b = c.zapatos().subtract(c.position());
         double px = a.x + (b.x - a.x) * x, pz = a.z + (b.z - a.z) * x;
-        double py = a.y + (b.y - a.y) * x + 2.2 * 4 * x * (1 - x);
+        double py = a.y + (b.y - a.y) * x + 5.0 * 4 * x * (1 - x);
         ps.pushPose();
         ps.translate(px, py, pz);
         ps.mulPose(Axis.XP.rotationDegrees(x * 540F));

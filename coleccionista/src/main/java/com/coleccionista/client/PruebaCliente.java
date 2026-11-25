@@ -545,7 +545,8 @@ final class PruebaCliente {
     /**
      * Capítulo 4 · La caja sorpresa: el pasillo, el teatrito (la herradura de gradas y el escenario con la caja), el apagón y todos
      * sentados, el turno de un bot (su silla gira y lo levanta, va a la manivela, le da 2 vueltas) y Don Resorte: salta, lo agarra, lo
-     * muerde, mastica y escupe los zapatos; la pantalla para elegir las vueltas (obligado a 3) y el final.
+     * muerde (y a los demás les da el susto), mastica y escupe los zapatos al centro; la pantalla para elegir las vueltas (obligado a 3)
+     * y el final.
      * El teatrito está en (870, -61, 430): el pasillo x 872..885 / z 448..455, el salón x 887..931 / z 430..472, el centro de la herradura
      * (905, 451), el escenario x 916..928 (se pisa en y -58) y la caja en (922, 451).
      */
@@ -589,15 +590,17 @@ final class PruebaCliente {
         t.waitFor("cap4: escupe", 8000, () -> "ESCUPE".equals(SorpresaCliente.fase()));
         t.photo("c4_09_escupe", 700, () -> {
         });
-        t.photo("c4_10_zapatos", 2600, () -> mirarA(917.5, -57.5, 444.5));
+        t.photo("c4_10_zapatos", 2600, () -> mirarA(905.5, -60.5, 451.5));
         t.add("zapatos", 100, () -> {
             boolean hay = false;
             var lvl = Minecraft.getInstance().level;
-            for (int z = 440; z <= 448 && !hay; z++) {
-                var st = lvl.getBlockState(new net.minecraft.core.BlockPos(917, -58, z));
-                hay = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(st.getBlock()).getPath().equals("zapatos");
+            for (int x = 901; x <= 909 && !hay; x++) {
+                for (int z = 447; z <= 455 && !hay; z++) {
+                    var st = lvl.getBlockState(new net.minecraft.core.BlockPos(x, -60, z));
+                    hay = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(st.getBlock()).getPath().equals("zapatos");
+                }
             }
-            t.check(hay, "quedaron los zapatos al frente del escenario");
+            t.check(hay, "los zapatos cayeron en el piso del centro, en medio de todos");
         });
         // la pantalla de las vueltas (simulada en mi pantalla), obligado a dar 3
         t.photo("c4_11_vueltas", 900, () -> {
@@ -695,7 +698,7 @@ final class PruebaCliente {
         // a sentarse: yo, con clic derecho en el sillón de la góndola 3 (entrada en 830, 434; el sillón en 830, 433)
         t.photo("c3_03_sentarse", 1500, () -> {
             t.cmd("evento caja saltar");
-            t.cmd("tp @s 830.5 -60 434.6 180 35");
+            t.cmd("tp @a 830.5 -60 434.6 180 35");
         });
         t.add("cap3: buscar asiento", 200, () -> t.check("SENTARSE".equals(CajaCliente.fase()), "toca buscar asiento (" + CajaCliente.fase() + ")"));
         t.add("cap3: me siento", 600, () -> {

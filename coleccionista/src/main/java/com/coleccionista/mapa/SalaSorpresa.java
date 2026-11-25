@@ -13,7 +13,7 @@ package com.coleccionista.mapa;
  * </pre>
  * Marcas: {@code sor.silla.N} (las sillas, con el yaw hacia el centro), {@code sor.centro}, {@code sor.entrada}, {@code sor.caja} (donde
  * va la caja, en el piso del escenario), {@code sor.manivela} (donde se para quien le da cuerda), {@code sor.subida} (al pie de los
- * escalones), {@code sor.zapatos.K} (la fila de zapatos al frente del escenario), {@code sor.luz.K} (las luces; el yaw es el nivel),
+ * escalones), {@code sor.zapatos.K} (donde caen los zapatos: el piso redondo del centro), {@code sor.luz.K} (las luces; el yaw es el nivel),
  * {@code sor.pantalla} y el pasillo {@code pas_sor}.
  */
 public final class SalaSorpresa {
@@ -247,12 +247,15 @@ public final class SalaSorpresa {
         p.marca("sor.caja", BX, PISO_ESCENARIO, BZ, 90);
         p.marca("sor.manivela", BX - 3, PISO_ESCENARIO, BZ, 270);
         p.marca("sor.subida", x0 - 3, 1, CZ, 270);
-        // la fila de zapatos: al frente del escenario, de los dos lados de los escalones
-        for (int z = z0 + 1; z <= z1 - 1; z++) {
-            if (z >= CZ - 4 && z <= CZ + 4) {
-                continue;
-            }
-            p.marca("sor.zapatos." + zapatos++, x0 + 1, PISO_ESCENARIO, z, 270);
+        // los zapatos: los avienta al piso redondo del centro, en medio de todos (primero al centro y luego alrededor)
+        p.marca("sor.zapatos." + zapatos++, CX, 1, CZ, 270);
+        for (int k = 0; k < 8; k++) {
+            double a = Math.toRadians(k * 45 + 22.5);
+            p.marca("sor.zapatos." + zapatos++, (int) Math.round(CX + Math.cos(a) * 2.4), 1, (int) Math.round(CZ + Math.sin(a) * 2.4), k * 45);
+        }
+        for (int k = 0; k < 8; k++) {
+            double a = Math.toRadians(k * 45);
+            p.marca("sor.zapatos." + zapatos++, (int) Math.round(CX + Math.cos(a) * 3.6), 1, (int) Math.round(CZ + Math.sin(a) * 3.6), k * 45 + 90);
         }
         // candelabros en las esquinas del escenario y la luz de arriba (fuerte sobre la caja)
         for (int z : new int[] {z0 + 1, z1 - 1}) {

@@ -26,6 +26,9 @@ public final class SorpresaCliente {
     private static boolean pantallaVista;
     private static Float yawSilla;
     private static Silla sillaAntes;
+    private static final net.minecraft.resources.ResourceLocation SUSTO = com.axeliscore.plat.Ids.rl(MOD, "textures/gui/susto_resorte.png");
+    private static int sustoN = -1;
+    private static long sustoDesde;
 
     private SorpresaCliente() {
     }
@@ -37,6 +40,15 @@ public final class SorpresaCliente {
             if (!Nbt.b(t, "elige")) {
                 pantallaVista = false;
             }
+        });
+        ClientData.listen(Sorpresa.KEY + "_susto", t -> {
+            int n = Nbt.i(t, "n");
+            var lvl = Minecraft.getInstance().level;
+            // solo si es de ahorita (al volver a entrar no se repite el susto)
+            if (n != sustoN && lvl != null && Math.abs(lvl.getGameTime() - t.getLong("en")) < 80) {
+                sustoDesde = System.currentTimeMillis();
+            }
+            sustoN = n;
         });
         com.axeliscore.fx.client.Hud.add(SorpresaCliente::hud);
         MinecraftForge.EVENT_BUS.addListener(SorpresaCliente::tick);
@@ -100,7 +112,26 @@ public final class SorpresaCliente {
 
     private static void hud(G g, int w, int h) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || !activa() || !EventoHud.visible()) {
+        if (mc.player == null || !activa()) {
+            return;
+        }
+        // ¡pam! la cara de Don Resorte de golpe, toda la pantalla, medio segundo (y un destello rojo que se va)
+        float ts = (System.currentTimeMillis() - sustoDesde) / 1000F;
+        if (sustoDesde > 0 && ts < 1.1F) {
+            if (ts < 0.55F) {
+                float esc = 1.25F - 0.25F * Math.min(1F, ts / 0.12F);
+                int iw = (int) (w * esc), ih = (int) (iw * 400F / 512F);
+                if (ih < h * esc) {
+                    ih = (int) (h * esc);
+                    iw = (int) (ih * 512F / 400F);
+                }
+                float sx = (float) Math.sin(ts * 90) * 6;
+                g.blit(SUSTO, (int) (w / 2 - iw / 2 + sx), h / 2 - ih / 2, iw, ih, 0, 0, 512, 400, 512, 400);
+            }
+            float a = ts < 0.55F ? 0.25F : 0.55F * (1F - (ts - 0.55F) / 0.55F);
+            g.fill(0, 0, w, h, Ui.alpha(0xFF8A0008, Math.max(0F, a)));
+        }
+        if (!EventoHud.visible()) {
             return;
         }
         String f = fase();

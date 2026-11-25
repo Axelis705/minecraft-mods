@@ -1359,5 +1359,8 @@
   "coleccionista.voz.sorpresa_fin.zapatos": "Qué bonita colección de zapatos.",
   "coleccionista.voz.sorpresa_fin.enteros": "Los que siguen enteros… síganme.",
   "entity.coleccionista.caja_sorpresa": "Caja sorpresa",
-  "entity.coleccionista.escopeta": "Escopeta"
+  "entity.coleccionista.escopeta": "Escopeta",
+  "coleccionista.sub.sor_susto": "¡Un golpe de susto!",
+  "coleccionista.sub.sor_mordida": "Algo cruje y mastica",
+  "coleccionista.sub.sor_salta": "¡Boing! Salta el resorte"
 }

@@ -594,6 +594,7 @@ public final class Caja {
     private static void mostrarRoles(MinecraftServer s) {
         fase = Fase.ROLES;
         desde = t;
+        Evento.get(s).prueba(s, PRUEBA);
         Pantallas.modo(s, "texto", Component.translatable(MOD + ".caja.pantalla.roles").getString());
         for (Pieza p : Evento.get(s).vivos()) {
             if (Evento.entidad(s, p) instanceof ServerPlayer sp) {
@@ -1035,10 +1036,22 @@ public final class Caja {
                 break;
             }
             int nivel = Math.round(Complejo.yaw("caja.luz." + i));
-            int n = bajas ? Math.max(1, nivel / 5) : net.minecraft.util.Mth.clamp(nivel, 0, 15);
+            // el salón casi a oscuras; las del escenario (13) se quedan a media luz
+            int n = bajas ? (nivel >= 13 ? 8 : Math.max(2, nivel / 4)) : net.minecraft.util.Mth.clamp(nivel, 0, 15);
             BlockState st = l.getBlockState(p);
             if (st.isAir() || st.is(Blocks.LIGHT)) {
                 l.setBlock(p, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, n), 2);
+            }
+        }
+        // una luz junto a la escopeta (para que siempre se vea, aunque todo lo demás esté oscuro)
+        BlockPos esc = Complejo.pos(s, "caja.escenario");
+        if (esc != null) {
+            BlockPos q = esc.above(4);
+            BlockState st = l.getBlockState(q);
+            if (bajas && st.isAir()) {
+                l.setBlock(q, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, 11), 2);
+            } else if (!bajas && st.is(Blocks.LIGHT)) {
+                l.setBlock(q, Blocks.AIR.defaultBlockState(), 2);
             }
         }
         if (bajas) {

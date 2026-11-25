@@ -1359,5 +1359,8 @@
   "coleccionista.voz.sorpresa_fin.zapatos": "What a lovely shoe collection.",
   "coleccionista.voz.sorpresa_fin.enteros": "Those still in one piece… follow me.",
   "entity.coleccionista.caja_sorpresa": "Surprise box",
-  "entity.coleccionista.escopeta": "Shotgun"
+  "entity.coleccionista.escopeta": "Shotgun",
+  "coleccionista.sub.sor_susto": "A jolt of terror!",
+  "coleccionista.sub.sor_mordida": "Something crunches and chews",
+  "coleccionista.sub.sor_salta": "Boing! The spring pops"
 }

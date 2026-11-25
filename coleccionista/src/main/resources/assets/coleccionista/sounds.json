@@ -266,5 +266,35 @@
     "attenuation_distance": 40
    }
   ]
+ },
+ "sor_susto": {
+  "category": "hostile",
+  "subtitle": "coleccionista.sub.sor_susto",
+  "sounds": [
+   {
+    "name": "coleccionista:sorpresa/sor_susto",
+    "attenuation_distance": 64
+   }
+  ]
+ },
+ "sor_mordida": {
+  "category": "hostile",
+  "subtitle": "coleccionista.sub.sor_mordida",
+  "sounds": [
+   {
+    "name": "coleccionista:sorpresa/sor_mordida",
+    "attenuation_distance": 48
+   }
+  ]
+ },
+ "sor_salta": {
+  "category": "hostile",
+  "subtitle": "coleccionista.sub.sor_salta",
+  "sounds": [
+   {
+    "name": "coleccionista:sorpresa/sor_salta",
+    "attenuation_distance": 48
+   }
+  ]
  }
 }
