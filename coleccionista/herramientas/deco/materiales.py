@@ -1029,3 +1029,39 @@ def continuo(base, otra, margen=2.0, ancho=6.0):
     m = m * m * (3 - 2 * m)
     out = a * (1 - m[..., None]) + b * m[..., None]
     return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8), 'RGBA')
+
+
+# ---------------------------------------------------------------- el final del capítulo 1: el teatro de la colección
+def cera(seed=0):
+    """Cera de vela vieja (no miel): marfil cremoso, opaca, con escurrimientos y burbujas atrapadas."""
+    y, x = np.mgrid[0:N, 0:N]
+    n = fbm(N, N, 8, seed + 12000)
+    base = ramp(n * 0.7 + white(N, N, seed + 12001) * 0.3, '#c9bc9a', '#d6caa8', '#e0d5b5', '#e8dfc2')
+    # escurrimientos verticales, un poco más oscuros
+    gotas = np.sin(x / N * math.pi * 6 + fbm(N, N, 6, seed + 12002) * 4) > 0.82
+    rgb = np.where(gotas[..., None], base * 0.9, base)
+    # burbujas: puntitos claros con sombra abajo
+    r = np.random.RandomState(seed + 12003)
+    for _ in range(6):
+        bx, by = r.randint(2, N - 2), r.randint(2, N - 2)
+        rgb[by, bx] = rgb[by, bx] * 1.08 + 8
+        rgb[min(N - 1, by + 1), bx] = rgb[min(N - 1, by + 1), bx] * 0.86
+    return img(rgb)
+
+
+def telon(seed=0, borde=False):
+    """El telón de terciopelo rojo del teatro: pliegues hondos y verticales (encajan de bloque a bloque), polvo. Con `borde`, la franja
+    de abajo lleva el fleco dorado."""
+    y, x = np.mgrid[0:N, 0:N]
+    fold = 0.55 + 0.45 * (np.sin(x / N * math.pi * 4) * 0.5 + 0.5) ** 1.4
+    n = vnoise(N, N, 6, seed + 12100)
+    rgb = hexc('#6a0e16') * (fold * (0.88 + 0.22 * n))[..., None]
+    rgb *= (0.94 + 0.1 * white(N, N, seed + 12101))[..., None]
+    if borde:
+        oro = ramp(white(N, N, seed + 12102), '#6a4f1e', '#8a6a2a', '#b08a3a', '#cfa64a')
+        franja = y >= N - 7
+        fleco = (y >= N - 4) & (x % 3 != 1)
+        rgb = np.where(franja[..., None], oro * 0.85, rgb)
+        rgb = np.where(fleco[..., None], oro, rgb)
+        rgb = np.where(((y >= N - 4) & (x % 3 == 1))[..., None], rgb * 0.3, rgb)
+    return img(rgb)

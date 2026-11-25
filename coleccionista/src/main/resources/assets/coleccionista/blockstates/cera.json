@@ -1,0 +1,28 @@
+{
+ "variants": {
+  "layers=1": {
+   "model": "coleccionista:block/cera_1"
+  },
+  "layers=2": {
+   "model": "coleccionista:block/cera_2"
+  },
+  "layers=3": {
+   "model": "coleccionista:block/cera_3"
+  },
+  "layers=4": {
+   "model": "coleccionista:block/cera_4"
+  },
+  "layers=5": {
+   "model": "coleccionista:block/cera_5"
+  },
+  "layers=6": {
+   "model": "coleccionista:block/cera_6"
+  },
+  "layers=7": {
+   "model": "coleccionista:block/cera_7"
+  },
+  "layers=8": {
+   "model": "coleccionista:block/cera_8"
+  }
+ }
+}

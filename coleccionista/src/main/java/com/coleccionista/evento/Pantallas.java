@@ -62,9 +62,6 @@ public final class Pantallas {
         l.add(new Frase("solo_uno", 98, null, 1F));
         l.add(new Frase("los_demas", 100, null, 1F));
         l.add(new Frase("risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
-        l.add(new Frase("candado", 195, null, 1F));
-        l.add(new Frase("escondidos", 115, null, 1F));
-        l.add(new Frase("final_risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
         return l;
     }
 
@@ -262,6 +259,15 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> antesala() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("polvo", 90, null, 1F));
+        l.add(new Frase("servian", 95, null, 1F));
+        l.add(new Frase("casa", 85, null, 1F));
+        l.add(new Frase("abierta", 65, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -279,6 +285,7 @@ public final class Pantallas {
             case "sentidos" -> sentidos();
             case "vitrina" -> vitrina();
             case "vitrina_fin" -> vitrina_fin();
+            case "antesala" -> antesala();
             default -> null;
         };
     }

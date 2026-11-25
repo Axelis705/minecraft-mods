@@ -69,6 +69,11 @@ public final class EventoCliente {
 
     /** ¿El organizador cerró el chat? */
     /** ¿Está prendida la inscripción automática al entrar? */
+    /** ¿Está el modo para probar con pocos jugadores? */
+    public static boolean pocos() {
+        return estado.getBoolean("pocos");
+    }
+
     public static boolean autoInscribir() {
         return !estado.contains("autoInscribir") || estado.getBoolean("autoInscribir");
     }

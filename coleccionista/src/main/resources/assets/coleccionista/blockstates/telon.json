@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/telon_0"
+   },
+   {
+    "model": "coleccionista:block/telon_1"
+   }
+  ]
+ }
+}

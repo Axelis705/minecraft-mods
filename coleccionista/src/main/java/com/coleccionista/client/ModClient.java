@@ -59,6 +59,8 @@ public final class ModClient {
         TraidorCliente.init();
         CiegasCliente.init();
         SentidosCliente.init();
+        ObjetivoCliente.init();
+        DesmayoCliente.init();
         ViajeCliente.init();
         CeraCliente.init();
         Ambiente.init();

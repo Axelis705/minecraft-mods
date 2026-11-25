@@ -139,7 +139,7 @@ public class LineaScreen extends UiScreen {
         }));
         der.enabled = desde + VISIBLES < n;
         // abajo: lo de siempre
-        int by = py + ph - 52, bw = (pw - 24 - 5 * 6) / 6, bx = px + 12;
+        int by = py + ph - 52, bw = (pw - 24 - 6 * 6) / 7, bx = px + 12;
         boolean pausa = "PAUSA".equals(EventoCliente.fase());
         add(new Button(bx, by, bw, 16, pausa ? tr("reanudar") : tr("pausar"), () -> pedir("pausa", null)))
                 .help(Component.translatable(MOD + ".linea.pausar_ayuda"));
@@ -158,7 +158,13 @@ public class LineaScreen extends UiScreen {
             d.putBoolean("si", !auto);
             pedir("auto_inscripcion", d);
         })).help(Component.translatable(MOD + ".linea.auto_ayuda"));
-        add(new Button(bx + (bw + 6) * 5, by, bw, 16, tr("panel"), () -> com.axeliscore.plat.client.Screens.open(new PanelScreen())))
+        boolean pocos = EventoCliente.pocos();
+        add(new Button(bx + (bw + 6) * 5, by, bw, 16, pocos ? tr("pocos_si") : tr("pocos_no"), () -> {
+            CompoundTag d = new CompoundTag();
+            d.putBoolean("si", !pocos);
+            pedir("pocos", d);
+        })).help(Component.translatable(MOD + ".linea.pocos_ayuda"));
+        add(new Button(bx + (bw + 6) * 6, by, bw, 16, tr("panel"), () -> com.axeliscore.plat.client.Screens.open(new PanelScreen())))
                 .help(Component.translatable(MOD + ".linea.panel_ayuda"));
         add(new Button(bx, by + 22, pw - 24, 16, tr("sesion"), () -> {
             hechos.clear();

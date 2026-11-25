@@ -55,11 +55,11 @@ public final class Cabinas {
         m.set(p, 1, ALTO, 1, "light[level=11]");
         m.set(p, 3, ALTO, EQ_FONDO - 1, C + "telarana");
         m.set(p, 0, ALTO, EQ_FONDO - 1, C + "ventila[facing=north]");
-        // la puerta: dos hojas al centro del frente (por dentro se ven igual en todos)
-        m.set(p, 1, 1, -1, C + "puerta_celda[facing=south,half=lower,hinge=left,open=false]");
-        m.set(p, 1, 2, -1, C + "puerta_celda[facing=south,half=upper,hinge=left,open=false]");
-        m.set(p, 2, 1, -1, C + "puerta_celda[facing=south,half=lower,hinge=right,open=false]");
-        m.set(p, 2, 2, -1, C + "puerta_celda[facing=south,half=upper,hinge=right,open=false]");
+        // la puerta: dos hojas de latón al centro del frente, opacas (por dentro se ven igual en todos y no se ve que no se mueve)
+        m.set(p, 1, 1, -1, C + "puerta_ascensor[facing=south,half=lower,hinge=left,open=false]");
+        m.set(p, 1, 2, -1, C + "puerta_ascensor[facing=south,half=upper,hinge=left,open=false]");
+        m.set(p, 2, 1, -1, C + "puerta_ascensor[facing=south,half=lower,hinge=right,open=false]");
+        m.set(p, 2, 2, -1, C + "puerta_ascensor[facing=south,half=upper,hinge=right,open=false]");
         m.set(p, 1, 3, -1, C + "metal_negro");
         m.set(p, 2, 3, -1, C + "metal_negro");
         m.marca(p, "cab." + id + ".puerta.a", 1, 1, -1, 0);
@@ -99,10 +99,10 @@ public final class Cabinas {
         }
         // la puerta corrediza: dos hojas al centro del frente
         int[] a = celda(ox, oz, yaw, ANCHO / 2 - 1, -1), b = celda(ox, oz, yaw, ANCHO / 2, -1);
-        p.set(a[0], 1, a[1], C + "puerta_celda[facing=" + f + ",half=lower,hinge=left,open=false]");
-        p.set(a[0], 2, a[1], C + "puerta_celda[facing=" + f + ",half=upper,hinge=left,open=false]");
-        p.set(b[0], 1, b[1], C + "puerta_celda[facing=" + f + ",half=lower,hinge=right,open=false]");
-        p.set(b[0], 2, b[1], C + "puerta_celda[facing=" + f + ",half=upper,hinge=right,open=false]");
+        p.set(a[0], 1, a[1], C + "puerta_ascensor[facing=" + f + ",half=lower,hinge=left,open=false]");
+        p.set(a[0], 2, a[1], C + "puerta_ascensor[facing=" + f + ",half=upper,hinge=left,open=false]");
+        p.set(b[0], 1, b[1], C + "puerta_ascensor[facing=" + f + ",half=lower,hinge=right,open=false]");
+        p.set(b[0], 2, b[1], C + "puerta_ascensor[facing=" + f + ",half=upper,hinge=right,open=false]");
         p.set(a[0], 3, a[1], C + "metal_negro");
         p.set(b[0], 3, b[1], C + "metal_negro");
         p.marca("cab." + id + ".puerta.a", a[0], 1, a[1], yaw);

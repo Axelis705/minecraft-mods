@@ -25,8 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Capítulo 1, en la sala grande (después del portón del patio): el organizador pide equipos ({@code /evento capitulo1 equipos}) y el
- * Coleccionista habla. Se abren los diez ascensores; cada equipo de 2 o de 3 se mete en uno (el foco de arriba se prende cuando está
+ * Capítulo 1, en la sala grande (después del portón del patio). Cuando ya están todos dentro (o pasa un rato), el portón baja detrás de
+ * ellos, se prende la pantalla y habla el Coleccionista: la bienvenida y luego "formen equipos" (el organizador lo puede adelantar con
+ * {@code /evento capitulo1 equipos}). Se abren los diez ascensores; cada equipo de 2 o de 3 se mete en uno (el foco de arriba se prende cuando está
  * bien). Cuando todos están en un ascensor bien formado, cuenta 5 segundos y bajan; si se acaba el tiempo (o el organizador lo pide), bajan
  * los que estén dentro y quien se quedó afuera queda eliminado. El viaje es una caída violenta; cada ascensor llega al ascensor falso de su
  * circuito, donde empieza {@link Sentidos}.
@@ -35,6 +36,8 @@ public final class Capitulo1 {
     private static final String MOD = Coleccionista.MODID;
     public static final String PRUEBA = "La sala grande";
     public static int formarSeg = 150, viajeTicks = 240, cuentaTicks = 100;
+    /** Segundos que espera el Coleccionista a que entren todos a la sala antes de hablar de todos modos. */
+    public static int salaEspera = 90;
 
     public enum Fase {
         NADA, SALA, HABLANDO, FORMAR, CUENTA, BAJANDO
@@ -42,6 +45,8 @@ public final class Capitulo1 {
 
     private static Fase fase = Fase.NADA;
     private static long cuentaFin = -1;
+    /** Cuándo subió el portón, cuándo se cierra (todos dentro) y cuándo empieza a hablar (-1: todavía no). */
+    private static long salaDesde = -1, cierraEn = -1, hablaEn = -1;
     private static int viajes, llegados;
     /** Quién está en qué ascensor (lo último que se revisó). */
     private static final Map<Integer, List<Entity>> dentro = new HashMap<>();
@@ -57,17 +62,30 @@ public final class Capitulo1 {
         return fase;
     }
 
-    /** El portón del patio subió: todos a la sala grande (el organizador decide cuándo pedir equipos). */
+    /** El portón del patio subió: todos a la sala grande; cuando estén todos dentro (o pase un rato), habla el Coleccionista. */
     public static void alAbrirPorton(MinecraftServer s) {
         if (fase == Fase.NADA) {
             fase = Fase.SALA;
-            Evento.get(s).prueba(s, PRUEBA);
-            Pantallas.modo(s, "coleccionista", "");
+            salaDesde = s.overworld().getGameTime();
+            cierraEn = -1;
+            hablaEn = -1;
+            Evento.get(s).prueba(s, Component.translatable(MOD + ".cap1.prueba_sala").getString());
+            Pantallas.modo(s, "apagada", "");
             Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 sala");
         }
     }
 
-    /** El organizador pide equipos: habla el Coleccionista y luego se abren los ascensores. */
+    /** ¿Ya está dentro de la sala grande (pasó el portón)? */
+    public static boolean enSala(MinecraftServer s, Entity e) {
+        BlockPos o = Complejo.origen(s, "sala");
+        if (o == null) {
+            return false;
+        }
+        double x = e.getX() - o.getX(), z = e.getZ() - o.getZ(), y = e.getY() - o.getY();
+        return x >= 2 && x <= 57 && z >= -0.2 && z <= 35.2 && y >= -1 && y <= 13;
+    }
+
+    /** El organizador pide equipos (o ya están todos en la sala): baja el portón, la bienvenida y "formen equipos". */
     public static Component equipos(MinecraftServer s) {
         if (!Complejo.construido(s, "sala")) {
             return Component.translatable(MOD + ".cap1.sin_mapa");
@@ -75,15 +93,72 @@ public final class Capitulo1 {
         if (fase == Fase.HABLANDO || fase == Fase.FORMAR || fase == Fase.CUENTA || fase == Fase.BAJANDO) {
             return Component.translatable(MOD + ".cap1.ya");
         }
-        if (!Celdas.portonAbierto(s)) {
-            Celdas.porton(s, true);
-        }
         fase = Fase.HABLANDO;
+        cierraEn = -1;
+        hablaEn = -1;
         Evento.get(s).prueba(s, PRUEBA);
+        // los bots que siguieran en el patio entran (solo hay bots en las pruebas)
+        botsALaSala(s);
+        if (Celdas.portonAbierto(s)) {
+            Celdas.porton(s, false);
+        }
         Pantallas.soloGrande(s, true);
-        Pantallas.hablar(s, "equipos", () -> formar(s));
+        Pantallas.hablar(s, "bienvenida", () -> hablaEn = s.overworld().getGameTime() + 50);
         Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 equipos");
         return null;
+    }
+
+    /** Los bots pasan del patio a la sala (en el juego real no hay bots; en las pruebas automáticas no caminan solos). */
+    private static void botsALaSala(MinecraftServer s) {
+        BlockPos c = Complejo.pos(s, "sala.entrada");
+        if (c == null) {
+            return;
+        }
+        Evento ev = Evento.get(s);
+        int n = 0;
+        for (Pieza p : ev.vivos()) {
+            if (p.bot && Evento.entidad(s, p) instanceof PiezaBot b && !enSala(s, b)) {
+                b.getNavigation().stop();
+                b.moveTo(c.getX() + 3.5 + (n % 4), c.getY(), c.getZ() - 1.5 + (n / 4) % 4, 270F, 0F);
+                n++;
+            }
+        }
+    }
+
+    /** En la sala: cuando están todos dentro (o pasó el rato de espera), el portón baja detrás de ellos y luego habla. */
+    private static void tickSala(MinecraftServer s, long now) {
+        if (now % 10 != 0) {
+            return;
+        }
+        Evento ev = Evento.get(s);
+        if (ev.fase() == Evento.Fase.PAUSA) {
+            return;
+        }
+        // los bots entran solos un momento después de que sube el portón
+        if (now - salaDesde >= 80 && (now - salaDesde) % 40 == 0) {
+            botsALaSala(s);
+        }
+        int vivos = 0, dentro = 0;
+        for (Pieza p : ev.vivos()) {
+            Entity e = Evento.entidad(s, p);
+            if (e == null) {
+                continue;
+            }
+            vivos++;
+            if (enSala(s, e)) {
+                dentro++;
+            }
+        }
+        boolean todos = vivos > 0 && dentro >= vivos;
+        if (cierraEn < 0 && (todos || now - salaDesde >= salaEspera * 20L)) {
+            // una pausa para que miren la sala antes de que baje el portón
+            cierraEn = now + 60;
+            Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 todos_en_sala={} dentro={} vivos={}", todos, dentro, vivos);
+        }
+        if (cierraEn > 0 && now >= cierraEn) {
+            cierraEn = -1;
+            equipos(s);
+        }
     }
 
     /** Se abren los ascensores y corre el reloj para formar equipos. */
@@ -109,10 +184,19 @@ public final class Capitulo1 {
     }
 
     private static void tick(MinecraftServer s) {
+        long now = s.overworld().getGameTime();
+        if (fase == Fase.SALA) {
+            tickSala(s, now);
+            return;
+        }
+        if (fase == Fase.HABLANDO && hablaEn > 0 && now >= hablaEn && !Pantallas.ocupado()) {
+            hablaEn = -1;
+            Pantallas.hablar(s, "equipos", () -> formar(s));
+            return;
+        }
         if (fase != Fase.FORMAR && fase != Fase.CUENTA) {
             return;
         }
-        long now = s.overworld().getGameTime();
         if (fase == Fase.CUENTA && now >= cuentaFin) {
             bajar(s, false);
             return;
@@ -391,9 +475,40 @@ public final class Capitulo1 {
         }
     }
 
+    /** Para el indicador de "ir acá": mientras se forman los equipos, a quien no está en un ascensor, el más cercano donde cabe. */
+    public static Objetivo.Meta objetivo(MinecraftServer s, ServerPlayer sp) {
+        if (fase != Fase.FORMAR && fase != Fase.CUENTA) {
+            return null;
+        }
+        Objetivo.Meta mejor = null;
+        double dm = Double.MAX_VALUE;
+        for (int n = 1; n <= SalaGrande.ASCENSORES; n++) {
+            AABB c = Cabina.caja(s, "sala_" + n, Cabinas.EQ_ANCHO, Cabinas.ALTO, Cabinas.EQ_FONDO);
+            if (c == null) {
+                continue;
+            }
+            if (c.contains(sp.position())) {
+                return null;
+            }
+            if (dentro.getOrDefault(n, List.of()).size() >= 3) {
+                continue;
+            }
+            net.minecraft.world.phys.Vec3 m = c.getCenter();
+            double d = m.distanceToSqr(sp.position());
+            if (d < dm) {
+                dm = d;
+                mejor = new Objetivo.Meta(m.x, c.minY + 1.4, m.z, MOD + ".obj.ascensor");
+            }
+        }
+        return mejor;
+    }
+
     public static void reiniciar(MinecraftServer s) {
         fase = Fase.NADA;
         cuentaFin = -1;
+        salaDesde = -1;
+        cierraEn = -1;
+        hablaEn = -1;
         viajes = 0;
         llegados = 0;
         dentro.clear();
@@ -427,6 +542,7 @@ public final class Capitulo1 {
         }
         if (fase == Fase.NADA) {
             fase = Fase.SALA;
+            salaDesde = s.overworld().getGameTime();
         }
         return n;
     }

@@ -240,6 +240,7 @@ public final class Complejo {
         pasos.addAll(uniones);
         COLA.add(new Trabajo(level, base, pasos, p, new int[] {0}, () -> {
             datos(level.getServer()).putBoolean(z.id(), true);
+            datos(level.getServer()).putInt("huella." + z.id(), huella(p));
             WorldStore.get(level.getServer(), MOD).dirty();
             Coleccionista.LOGGER.info("COLECCIONISTA_CONSTRUIDO {} bloques={}", z.id(), p.m.size());
             Proteccion.alConstruir(level);
@@ -249,7 +250,53 @@ public final class Complejo {
         }));
     }
 
+    /** La "huella" de un plano: cambia si cambia cualquier bloque o marca (así se sabe qué zonas hay que volver a construir). */
+    public static int huella(Plano p) {
+        return p.m.hashCode() * 31 + p.nbt.hashCode() * 17 + p.marcas.hashCode();
+    }
+
+    private static MinecraftServer revisado;
+
+    /**
+     * Al abrir el mundo: si el mapa ya estaba construido pero el mod trae zonas nuevas o cambiadas (otra versión del mod), se vuelven a
+     * construir solas, con el mismo origen (así Axelis no tiene que hacer nada al actualizar el mod).
+     */
+    private static void actualizar(MinecraftServer s) {
+        if (!construido(s) || construyendo()) {
+            return;
+        }
+        CompoundTag d = datos(s);
+        List<Zona> cambian = new ArrayList<>();
+        for (Zona z : zonas()) {
+            String k = "huella." + z.id();
+            if (!d.getBoolean(z.id()) || !d.contains(k) || d.getInt(k) != huella(z.plano())) {
+                cambian.add(z);
+            }
+        }
+        if (cambian.isEmpty()) {
+            return;
+        }
+        ServerLevel level = s.overworld();
+        BlockPos o = origen(s);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < cambian.size(); i++) {
+            Zona z = cambian.get(i);
+            sb.append(i == 0 ? "" : ", ").append(z.id());
+            boolean ultima = i == cambian.size() - 1;
+            encolar(level, o.offset(z.dx(), z.dy(), z.dz()), z, ultima ? () -> {
+                Coleccionista.LOGGER.info("COLECCIONISTA_MAPA_ACTUALIZADO");
+                Anuncio.organizadores(s, Component.translatable(MOD + ".cmd.mapa_listo"));
+            } : null);
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_MAPA_ACTUALIZA {}", sb);
+        Anuncio.organizadores(s, Component.translatable(MOD + ".cmd.mapa_actualiza", cambian.size()));
+    }
+
     private static void tick(MinecraftServer s) {
+        if (revisado != s && s.getTickCount() > 60) {
+            revisado = s;
+            actualizar(s);
+        }
         Trabajo t = COLA.peek();
         if (t == null) {
             return;

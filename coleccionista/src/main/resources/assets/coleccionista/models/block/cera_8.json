@@ -1,0 +1,83 @@
+{
+ "parent": "minecraft:block/block",
+ "textures": {
+  "0": "coleccionista:block/cera",
+  "particle": "coleccionista:block/cera"
+ },
+ "elements": [
+  {
+   "from": [
+    0,
+    0,
+    0
+   ],
+   "to": [
+    16,
+    16,
+    16
+   ],
+   "faces": {
+    "north": {
+     "texture": "#0",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ],
+     "cullface": "north"
+    },
+    "south": {
+     "texture": "#0",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ],
+     "cullface": "south"
+    },
+    "east": {
+     "texture": "#0",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ],
+     "cullface": "east"
+    },
+    "west": {
+     "texture": "#0",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ],
+     "cullface": "west"
+    },
+    "down": {
+     "texture": "#0",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ],
+     "cullface": "down"
+    },
+    "up": {
+     "texture": "#0",
+     "uv": [
+      0,
+      0,
+      16,
+      16
+     ],
+     "cullface": "up"
+    }
+   }
+  }
+ ]
+}

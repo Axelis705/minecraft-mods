@@ -288,10 +288,7 @@ public final class EncadenadosCliente {
                                 .getString();
             }
             String linea = gs.isEmpty() ? s : s + "   " + gs;
-            int lw = f.width(linea) + 16;
-            int y = EventoHud.lineaY(w, lw);
-            g.fillGradient(w / 2 - lw / 2, y, w / 2 + lw / 2, y + 13, 0xB0140C0E, 0x90080506);
-            g.drawCenteredString(f, linea, w / 2, y + 3, Nbt.b(gas, "on") ? 0xFFB8D86A : 0xFFD8D0C8);
+            EventoHud.lado(g, linea, Nbt.b(gas, "on") ? 0xFFB8D86A : 0xFFD8D0C8, true);
         }
         UUID yo = mc.player.getUUID();
         // el aviso del grillete

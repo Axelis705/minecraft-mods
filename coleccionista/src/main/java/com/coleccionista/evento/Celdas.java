@@ -55,49 +55,70 @@ public final class Celdas {
 
     // ------------------------------------------------------------------ cuando todas salen de su celda
 
-    /** Ticks que espera el Coleccionista desde que la última pieza salió de su celda hasta que habla en la pantalla grande. */
-    public static int esperaSalida = 100;
-    /**
-     * false (lo normal): cuando todas salen de su celda solo se le avisa al organizador, que prende la pantalla grande cuando quiera (botón
-     * de la línea de tiempo o {@code /evento salida}). true: habla solo a los pocos segundos (como antes).
-     */
-    public static boolean salidaSola = false;
-    private static long salidaEn = -1;
-    /** Se pidió el discurso de salida (a mano) mientras el Coleccionista hablaba: lo dice en cuanto se desocupen las pantallas. */
-    private static boolean salidaPendiente;
+    /** Segundos que deja el reloj cuando ya salió la última pieza (para que no tengan que esperar los 2 minutos completos). */
+    public static int segundosUltimo = 10;
     /** Ya se avisó al organizador que todas salieron (una vez por despertar). */
     private static boolean avisado;
 
-    /** Ya funcionan los candados: cuando todas las piezas vivas (las personas conectadas) están fuera de las celdas, se avisa. */
+    /**
+     * Mientras corre el reloj para salir: cuando todas las piezas vivas (las personas conectadas) están fuera de las celdas, el reloj
+     * baja a 10 segundos. A quien sale de su celda se le quita la hoja del diario (ya no la usa).
+     */
     private static void vigilarSalida(MinecraftServer s) {
-        if (salidaPendiente && s.getTickCount() % 10 == 0 && !Pantallas.ocupado()) {
-            salidaPendiente = false;
-            hablarSalida(s);
+        if (s.getTickCount() % 10 != 0 || !Complejo.construido(s)) {
             return;
         }
-        if (s.getTickCount() % 10 != 0 || !candados(s) || datos(s).getBoolean("salida") || !Complejo.construido(s)) {
-            salidaEn = -1;
+        Evento ev = Evento.get(s);
+        if (candados(s) || datos(s).getBoolean("salida")) {
+            for (Pieza p : ev.vivos()) {
+                ServerPlayer sp = p.bot ? null : s.getPlayerList().getPlayer(p.id);
+                if (sp != null && !enCelda(s, sp.blockPosition())) {
+                    quitarDiario(sp);
+                }
+            }
+        }
+        if (!Despertar.saliendo() || datos(s).getBoolean("salida")) {
             return;
         }
         if (!todasFuera(s)) {
-            salidaEn = -1;
             avisado = false;
             return;
         }
-        long now = s.overworld().getGameTime();
         if (!avisado) {
             avisado = true;
-            Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA todas fuera piezas={}", Evento.get(s).vivos().size());
+            Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA todas fuera piezas={}", ev.vivos().size());
             Anuncio.organizadores(s, Component.translatable(MOD + ".salida.aviso").withStyle(ChatFormatting.GOLD));
+            if (ev.resta(s) > segundosUltimo) {
+                ev.reloj(s, segundosUltimo);
+                Anuncio.sonido(s, SoundEvents.NOTE_BLOCK_BELL.get(), 0.8F, 0.7F);
+            }
         }
-        if (!salidaSola) {
-            return;
+    }
+
+    /** Le quita la hoja del diario (el libro del baúl de su celda) a quien ya salió. */
+    public static void quitarDiario(ServerPlayer sp) {
+        net.minecraft.world.entity.player.Inventory inv = sp.getInventory();
+        boolean quito = false;
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack st = inv.getItem(i);
+            if (esDiario(st)) {
+                inv.setItem(i, ItemStack.EMPTY);
+                quito = true;
+            }
         }
-        if (salidaEn < 0) {
-            salidaEn = now + esperaSalida;
-        } else if (now >= salidaEn && !Pantallas.ocupado()) {
-            hablarSalida(s);
+        if (esDiario(sp.containerMenu.getCarried())) {
+            sp.containerMenu.setCarried(ItemStack.EMPTY);
+            quito = true;
         }
+        if (quito) {
+            sp.containerMenu.broadcastChanges();
+            Plat.msg(sp, Component.translatable(MOD + ".diario.quitado").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC), true);
+        }
+    }
+
+    private static boolean esDiario(ItemStack st) {
+        return !st.isEmpty() && st.is(Items.WRITTEN_BOOK) && st.hasTag() && (st.getTag().getBoolean(MOD + "_diario")
+                || st.getTag().getString("author").startsWith("Pieza 0"));
     }
 
     /** ¿Ya no queda ninguna pieza viva (de las conectadas) dentro de una celda? */
@@ -117,26 +138,37 @@ public final class Celdas {
     }
 
     /**
-     * El discurso de cuando todas salieron (el organizador lo pide: {@code /evento salida} o la línea de tiempo). Se apagan las pantallas
-     * chicas de las celdas y habla solo en las grandes de la torre; al terminar sube el portón. Si el Coleccionista está hablando, queda en
-     * espera y lo dice al terminar; devuelve si empezó ya.
+     * Se acabó el reloj para salir (o el organizador lo pide): las celdas que sigan cerradas se abren solas (sin castigo), y sube el portón
+     * del patio. Del otro lado, en la sala grande, habla el Coleccionista ({@link Capitulo1}).
      */
-    public static boolean hablarSalida(MinecraftServer s) {
-        if (Pantallas.ocupado()) {
-            salidaPendiente = true;
-            Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA en espera");
-            return false;
+    public static void finSalida(MinecraftServer s) {
+        if (datos(s).getBoolean("salida")) {
+            return;
         }
-        salidaPendiente = false;
         datos(s).putBoolean("salida", true);
         sucio(s);
-        salidaEn = -1;
-        Pantallas.soloGrande(s, true);
-        Pantallas.hablar(s, "salida", () -> {
-            porton(s, true);
-            com.coleccionista.evento.Capitulo1.alAbrirPorton(s);
-        });
-        Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA discurso");
+        Evento ev = Evento.get(s);
+        int abiertas = 0;
+        for (Pieza p : ev.vivos()) {
+            ServerPlayer sp = p.bot ? null : s.getPlayerList().getPlayer(p.id);
+            if (sp != null && enCelda(s, sp.blockPosition())) {
+                abiertas++;
+                Plat.msg(sp, Component.translatable(MOD + ".salida.abierta_sola").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), false);
+            }
+        }
+        puertas(s, 0, true);
+        ev.reloj(s, 0);
+        porton(s, true);
+        Capitulo1.alAbrirPorton(s);
+        Coleccionista.LOGGER.info("COLECCIONISTA_SALIDA porton abiertas_solas={}", abiertas);
+    }
+
+    /** Para el organizador ({@code /evento salida} o la línea de tiempo): termina ya el tiempo de salir. Devuelve si hizo algo. */
+    public static boolean hablarSalida(MinecraftServer s) {
+        if (datos(s).getBoolean("salida")) {
+            return false;
+        }
+        finSalida(s);
         return true;
     }
 
@@ -391,7 +423,6 @@ public final class Celdas {
         Random r = new Random(l.getGameTime() ^ 0x5EEDL);
         CompoundTag d = datos(s);
         d.putBoolean("salida", false);
-        salidaPendiente = false;
         avisado = false;
         Set<Integer> usados = new HashSet<>();
         for (int n = 1; n <= com.coleccionista.mapa.AlaCeldas.CELDAS; n++) {
@@ -439,6 +470,7 @@ public final class Celdas {
         pages.add(StringTag.valueOf(Component.Serializer.toJson(Component.translatable(MOD + ".diario." + i))));
         t.put("pages", pages);
         t.putBoolean("resolved", true);
+        t.putBoolean(MOD + "_diario", true);
         return st;
     }
 

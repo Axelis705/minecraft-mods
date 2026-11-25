@@ -33,6 +33,8 @@ public final class EventoHud {
     private static int abajo, abajoPrevio;
     /** Dónde puede ir el siguiente aviso del centro en este cuadro (si dos pruebas avisan a la vez, el segundo va debajo, no encima). */
     private static int siguienteLinea;
+    /** Dónde va el siguiente renglón de las pruebas a la izquierda, debajo de la tarjeta (0: todavía ninguno en este cuadro). */
+    private static int ladoY;
 
     private EventoHud() {
     }
@@ -57,6 +59,7 @@ public final class EventoHud {
         abajoPrevio = abajo;
         abajo = 0;
         siguienteLinea = 41;
+        ladoY = 0;
         if (!visible()) {
             return;
         }
@@ -240,6 +243,42 @@ public final class EventoHud {
      * Altura para un aviso centrado de ancho {@code lw} debajo de la placa del centro: 41, o debajo de la tarjeta si en una pantalla
      * angosta se le encimaría.
      */
+    /**
+     * Un renglón de una prueba (tu equipo, tu papel, qué hacer ahora) a la izquierda, debajo de tu tarjeta, para no tapar el centro de la
+     * pantalla. Uno debajo de otro. {@code fuerte}: el renglón principal, en su caja con la raya roja; si no, texto más discreto. Si no
+     * cabe, se parte en varios renglones.
+     */
+    public static void lado(G g, String s, int color, boolean fuerte) {
+        if (s == null || s.isEmpty()) {
+            return;
+        }
+        Font f = Ui.font();
+        int x = 5;
+        if (ladoY == 0) {
+            ladoY = (tarjetaAbajo > 0 ? tarjetaAbajo : 38) + 5;
+        }
+        int max = Math.max(150, Math.min(230, (tarjetaDer > 0 ? tarjetaDer - x : 200)));
+        List<net.minecraft.util.FormattedCharSequence> ls = f.split(Component.literal(s), max - 12);
+        int ancho = 0;
+        for (net.minecraft.util.FormattedCharSequence l : ls) {
+            ancho = Math.max(ancho, f.width(l));
+        }
+        int alto = ls.size() * 10 + (fuerte ? 5 : 2);
+        int y = ladoY;
+        if (fuerte) {
+            g.fillGradient(x, y, x + ancho + 12, y + alto, 0xC0140C0E, 0xA0080506);
+            g.fill(x, y, x + 2, y + alto, ROJO);
+        } else {
+            g.fill(x, y, x + ancho + 12, y + alto, 0x70080506);
+        }
+        int ty = y + (fuerte ? 3 : 1);
+        for (net.minecraft.util.FormattedCharSequence l : ls) {
+            g.drawString(f, l, x + 7, ty, color, true);
+            ty += 10;
+        }
+        ladoY = y + alto + (fuerte ? 3 : 1);
+    }
+
     public static int lineaY(int w, int lw) {
         return debajo(w, lw, Math.max(41, siguienteLinea));
     }

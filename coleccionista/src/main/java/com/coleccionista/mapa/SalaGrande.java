@@ -37,8 +37,9 @@ public final class SalaGrande {
             for (int z = 0; z <= Z1; z++) {
                 p.set(x, 0, z, C + ((x / 2 + z / 2) % 2 == 0 ? "marmol_negro" : "marmol_crema"));
             }
+            // el tapete va en el piso (a ras), no encima
             for (int z = 16; z <= 20; z++) {
-                p.set(x, 1, z, C + (z == 16 || z == 20 ? "tapete_orilla" : "tapete_rojo"));
+                p.set(x, 0, z, C + (z == 16 || z == 20 ? "tapete_orilla" : "tapete_rojo"));
             }
         }
         // las paredes: madera pulida abajo, papel tapiz arriba, con moldura dorada

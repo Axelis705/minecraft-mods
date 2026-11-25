@@ -2,22 +2,28 @@ package com.coleccionista.prueba;
 
 import com.axeliscore.AxelisCore;
 import com.axeliscore.data.PlayerStore;
+import com.axeliscore.fx.Fx;
 import com.axeliscore.plat.Plat;
 import com.coleccionista.Coleccionista;
 import com.coleccionista.bot.PiezaBot;
 import com.coleccionista.evento.Anuncio;
+import com.coleccionista.evento.Cabina;
+import com.coleccionista.evento.Cadaver;
 import com.coleccionista.evento.Complejo;
 import com.coleccionista.evento.Cuerpos;
 import com.coleccionista.evento.Evento;
+import com.coleccionista.evento.Objetivo;
 import com.coleccionista.evento.Pantallas;
 import com.coleccionista.evento.Pieza;
 import com.coleccionista.evento.Silla;
 import com.coleccionista.mapa.Circuito;
+import com.coleccionista.mapa.Salidas;
 import com.coleccionista.mapa.SalaVitrina;
 import com.coleccionista.prueba.TresSentidos.Rol;
 import com.coleccionista.registry.ModRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -35,6 +41,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
@@ -50,29 +57,39 @@ import java.util.UUID;
 
 /**
  * Capítulo 1 · Los sentidos: cada equipo (de 2 o de 3) llega en su ascensor a su propio circuito (el taller, ver {@link Circuito}), lejos de
- * los demás. En la mesa cada uno toma un objeto: la <b>venda</b> (no ve), la <b>cinta</b> (no habla ni escribe) o las <b>esposas</b> (no
- * toca nada); en parejas no hay cinta. Encadenados en fila cruzan los postes, el puente, las baldosas y las palancas hasta la salida, donde
- * se sientan en unas sillas que se los llevan. Los que salieron llegan a la galería; el <b>último equipo</b> no lo sabe, pero sus sillas los
- * llevan a la vitrina, donde la cera los vuelve piezas de la colección frente a todos.
+ * los demás. Cuando están todos fuera del ascensor habla el Coleccionista. En la mesa cada uno toma un objeto: la <b>venda</b> (no ve),
+ * la <b>cinta</b> (no habla ni escribe) o las <b>esposas</b> (no toca nada); en parejas no hay cinta. Encadenados cruzan los pasillos, los
+ * postes, la pasarela, las baldosas y las palancas hasta la salida, donde se sientan y esperan a los demás (en el circuito nadie se puede
+ * lastimar ni morir).
+ * <p>
+ * El final, en el teatro de la colección ({@link SalaVitrina}): los que se salvaron pasan sentados (sin que se note) a una copia de su
+ * cuarto en el teatro y se les abre la puerta frente a un telón. Al <b>último equipo</b> se le llena el cuarto de gas: se desmaya y
+ * despierta sentado en una vitrina del escenario. Se abre el telón, cae la cera, se vuelven estatuas de piedra y caen frente a todos.
  */
 public final class Sentidos {
     private static final String MOD = Coleccionista.MODID;
     public static final String KEY = MOD + ":sentidos";
     /** A cada víctima de la vitrina: desde cuándo sube la cera (para su pantalla). */
     public static final String KEY_CERA = MOD + ":cera";
+    /** Al último equipo: el gas del cuarto (desmayo) y luego el despertar en la vitrina. */
+    public static final String KEY_GAS = MOD + ":desmayo";
     public static final String PRUEBA = "Los sentidos";
     public static int segundosElegir = 60, segundos = 900;
     public static double largo = 4.0;
     /** Para las pruebas automáticas: los equipos de puros bots llegan solos a la salida y se sientan. */
     public static boolean botsSalen = true;
     public static int botMin = 20, botMax = 60;
+    /** Para probar con un solo equipo: si es el único, también pierde (así se ve el final de la vitrina). */
+    public static boolean pierdeSolo = false;
+    /** Cuánto espera el Coleccionista a que salgan todos del ascensor antes de hablar de todos modos (ticks). */
+    public static int esperaTaller = 600;
 
     public enum Fase {
-        NADA, LISTA, HABLANDO, ELEGIR, JUEGO, FIN
+        NADA, LISTA, ESPERA, HABLANDO, ELEGIR, JUEGO, FINAL, FIN
     }
 
     public enum Etapa {
-        MESA, POSTES, BALDOSAS, PALANCAS, SALIDA, SENTADOS, FUERA
+        MESA, POSTES, PASARELA, BALDOSAS, PALANCAS, SALIDA, SENTADOS, FUERA
     }
 
     static final class Equipo {
@@ -82,13 +99,13 @@ public final class Sentidos {
         final List<Cuerda> cuerdas = new ArrayList<>();
         final Rol[] objetos = new Rol[3];
         Etapa etapa = Etapa.MESA;
-        long termino = -1, sentadosEn = -1, verHasta = -1, trampaHasta = -1, botListo = -1;
-        /** En qué paso va el viaje de las sillas (0 cortina, 1 ruedan, 2 negro, 3 del otro lado). */
-        int paso;
-        boolean perdio, vistoCamino;
+        long termino = -1, verHasta = -1, trampaHasta = -1, botListo = -1;
+        boolean perdio, avisoEspera;
         int[] trampa;
-        final int[] camino = new int[Circuito.BALD_FILAS];
+        /** El camino de las baldosas: qué baldosas son seguras [fila][columna] (nunca en diagonal). */
+        final boolean[][] seguro = new boolean[Circuito.BALD_FILAS][Circuito.BALD_ANCHO];
         final boolean[] patron = new boolean[Circuito.PALANCAS];
+        boolean tablero;
         final List<Silla> sillas = new ArrayList<>();
 
         Equipo(int k) {
@@ -97,6 +114,14 @@ public final class Sentidos {
 
         String pre() {
             return "circ." + k + ".";
+        }
+
+        String cuarto() {
+            return "sal_circ_" + k;
+        }
+
+        String palco() {
+            return "sal_tea_" + k;
         }
     }
 
@@ -107,15 +132,18 @@ public final class Sentidos {
     private static Fase fase = Fase.NADA;
     private static final List<Equipo> equipos = new ArrayList<>();
     private static final Map<UUID, Long> botElige = new HashMap<>();
-    private static long t;
+    /** En qué punto del camino (el indicador de "ir acá") va cada quien. */
+    private static final Map<UUID, Integer> paso = new HashMap<>();
+    private static long t, esperaDesde;
     private static boolean cambio;
-    // la vitrina
+    // el final
     private static final List<Victima> victimas = new ArrayList<>();
     private static int cajas;
-    private static long vitT0 = -1, ceraT0 = -1, negroT0 = -1;
-    private static int capas;
-    /** Los pasos de la vitrina que ya pasaron (cada uno una sola vez). */
-    private static boolean vitCerrada, ceraAviso, negro, estatuas;
+    private static long finT0 = -1, telonT0 = -1, ceraT0 = -1, finalFin = -1;
+    private static int telonPaso, capas;
+    private static boolean palcos, levantan, gas, aVitrinas, despiertan, telon, hablo, ceraAviso, endurecida, rotas, caen, golpe,
+            salidaAbierta, antesala;
+    private static final List<Cadaver> estatuas = new ArrayList<>();
 
     private Sentidos() {
     }
@@ -140,6 +168,12 @@ public final class Sentidos {
             if (fase == Fase.JUEGO && rol(e.getPlayer().getUUID()) == Rol.CINTA && !salio(e.getPlayer().getUUID())) {
                 e.setCanceled(true);
                 Plat.msg(e.getPlayer(), Component.translatable(MOD + ".tres.no_hablar").withStyle(ChatFormatting.DARK_GRAY), true);
+            }
+        });
+        // en todo el capítulo (circuito, cuartos y teatro) nadie se lastima: aquí se muere solo en la vitrina
+        MinecraftForge.EVENT_BUS.addListener((LivingHurtEvent e) -> {
+            if (fase != Fase.NADA && e.getEntity() instanceof ServerPlayer sp && equipoDe(sp.getUUID()) != null) {
+                e.setCanceled(true);
             }
         });
         Silla.permiso = Sentidos::puedeSentarse;
@@ -209,7 +243,7 @@ public final class Sentidos {
 
     /**
      * Prepara un circuito por equipo (el equipo i va al circuito i+1): la mesa con sus objetos, las puertas cerradas, el camino de las
-     * baldosas y el tablero de las palancas al azar, la cortina de la salida cerrada. Devuelve null si se pudo.
+     * baldosas y el tablero de las palancas al azar. Devuelve null si se pudo.
      */
     public static Component preparar(MinecraftServer s, List<List<Pieza>> grupos) {
         if (!Complejo.construido(s, "circ_1")) {
@@ -220,6 +254,7 @@ public final class Sentidos {
         }
         Pruebas.cerrarOtras(s, "sentidos");
         limpiar(s);
+        teatroComoNuevo(s);
         Evento ev = Evento.get(s);
         Random r = new Random(s.overworld().getRandom().nextLong());
         int n = Math.min(Circuito.CIRCUITOS, grupos.size());
@@ -239,12 +274,7 @@ public final class Sentidos {
             eq.objetos[0] = Rol.VENDA;
             eq.objetos[1] = eq.ids.size() >= 3 ? Rol.CINTA : null;
             eq.objetos[2] = Rol.ESPOSAS;
-            // el camino de las baldosas: una por fila, de lado a lado sin saltar
-            int c = r.nextInt(Circuito.BALD_ANCHO);
-            for (int f = 0; f < Circuito.BALD_FILAS; f++) {
-                eq.camino[f] = c;
-                c = Math.max(0, Math.min(Circuito.BALD_ANCHO - 1, c + r.nextInt(3) - 1));
-            }
+            caminoBaldosas(eq, r);
             // el tablero: al menos dos arriba y dos abajo
             int arriba;
             do {
@@ -267,7 +297,36 @@ public final class Sentidos {
         return null;
     }
 
-    /** Deja el circuito del equipo como nuevo. */
+    /**
+     * El camino seguro de las baldosas: de la orilla de arriba a la de abajo, pasando siempre a la baldosa de enfrente o a la de al lado
+     * (nunca en diagonal). En algunas filas el camino da un paso de lado (dos o tres baldosas seguidas en la misma fila).
+     */
+    static void caminoBaldosas(Equipo eq, Random r) {
+        int w = Circuito.BALD_ANCHO, c = r.nextInt(w), vueltas = 0;
+        for (boolean[] fila : eq.seguro) {
+            java.util.Arrays.fill(fila, false);
+        }
+        for (int f = 0; f < Circuito.BALD_FILAS; f++) {
+            eq.seguro[f][c] = true;
+            // la primera y la última fila no se mueven de lado; en las demás, a veces sí (al menos 4 veces en todo el campo)
+            boolean puede = f > 0 && f < Circuito.BALD_FILAS - 1;
+            int faltan = Circuito.BALD_FILAS - 1 - f;
+            if (puede && (r.nextFloat() < 0.55F || 4 - vueltas >= faltan)) {
+                int d;
+                do {
+                    d = (r.nextBoolean() ? 1 : -1) * (1 + r.nextInt(3));
+                } while (c + d < 0 || c + d >= w);
+                int a = Math.min(c, c + d), b = Math.max(c, c + d);
+                for (int x = a; x <= b; x++) {
+                    eq.seguro[f][x] = true;
+                }
+                c += d;
+                vueltas++;
+            }
+        }
+    }
+
+    /** Deja el circuito (y el cuarto del teatro) del equipo como nuevos. */
     private static void reponer(MinecraftServer s, Equipo eq) {
         ServerLevel l = s.overworld();
         for (int i = 0; i < 3; i++) {
@@ -281,26 +340,24 @@ public final class Sentidos {
         for (String d : new String[] {"puerta1", "puerta3", "puerta4"}) {
             puerta(s, eq.pre() + d, false);
         }
+        puerta(s, eq.cuarto() + ".entrada", true);
+        Cabina.puerta(s, eq.cuarto(), false);
+        puerta(s, eq.palco() + ".entrada", false);
+        Cabina.puerta(s, eq.palco(), false);
         baldosas(s, eq, false, null);
-        BlockState apagada = Complejo.estado(MOD + ":marco_luz_apagado");
         for (int j = 0; j < Circuito.PALANCAS; j++) {
             BlockPos p = Complejo.pos(s, eq.pre() + "palanca." + j);
             BlockState st = p == null ? null : l.getBlockState(p);
             if (st != null && st.hasProperty(BlockStateProperties.POWERED) && st.getValue(BlockStateProperties.POWERED)) {
                 l.setBlock(p, st.setValue(BlockStateProperties.POWERED, false), 3);
             }
-            BlockPos q = Complejo.pos(s, eq.pre() + "tablero." + j);
-            if (q != null) {
-                l.setBlock(q, apagada, 3);
-            }
         }
-        cortina(s, eq, true);
+        tablero(s, eq, false);
     }
 
-    /** Las dos hojas de una puerta del circuito. */
+    /** Las dos hojas de una puerta ({@code marca.a} y {@code marca.b}). */
     private static void puerta(MinecraftServer s, String marca, boolean abrir) {
         ServerLevel l = s.overworld();
-        boolean cambio = false;
         for (String h : new String[] {".a", ".b"}) {
             BlockPos p = Complejo.pos(s, marca + h);
             if (p == null) {
@@ -310,33 +367,7 @@ public final class Sentidos {
                 BlockState st = l.getBlockState(q);
                 if (st.getBlock() instanceof DoorBlock && st.getValue(DoorBlock.OPEN) != abrir) {
                     l.setBlock(q, st.setValue(DoorBlock.OPEN, abrir), 2 | 16);
-                    cambio = true;
                 }
-            }
-            if (cambio && h.equals(".a")) {
-                l.playSound(null, p, abrir ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1F, 0.6F);
-            }
-        }
-    }
-
-    /** La cortina de barrotes de la salida (cerrada o abierta). */
-    private static void cortina(MinecraftServer s, Equipo eq, boolean cerrada) {
-        ServerLevel l = s.overworld();
-        BlockState bar = Complejo.estado(MOD + ":barrotes");
-        List<BlockPos> ps = new ArrayList<>();
-        for (int x = 0; x < 7; x++) {
-            for (int y = 0; y < 3; y++) {
-                BlockPos p = Complejo.pos(s, eq.pre() + "cortina." + x + "." + y);
-                if (p != null) {
-                    l.setBlock(p, cerrada ? bar : Blocks.AIR.defaultBlockState(), 2 | 16);
-                    ps.add(p);
-                }
-            }
-        }
-        for (BlockPos p : ps) {
-            BlockState st = l.getBlockState(p);
-            if (cerrada) {
-                l.setBlock(p, net.minecraft.world.level.block.Block.updateFromNeighbourShapes(st, l, p), 2 | 16);
             }
         }
     }
@@ -352,7 +383,7 @@ public final class Sentidos {
                 rojo = Complejo.estado(MOD + ":marco_luz_roja");
         for (int f = 0; f < Circuito.BALD_FILAS; f++) {
             for (int c = 0; c < Circuito.BALD_ANCHO; c++) {
-                BlockState st = roja != null && roja[0] == c && roja[1] == f ? rojo : camino && eq.camino[f] == c ? verde : off;
+                BlockState st = roja != null && roja[0] == c && roja[1] == f ? rojo : camino && eq.seguro[f][c] ? verde : off;
                 BlockPos p = b.offset(c, 0, f);
                 if (l.getBlockState(p) != st) {
                     l.setBlock(p, st, 3);
@@ -361,45 +392,120 @@ public final class Sentidos {
         }
     }
 
+    /** El tablero de la casilla de las palancas: prendido (verde arriba, rojo abajo) solo si alguien del equipo está adentro. */
+    private static void tablero(MinecraftServer s, Equipo eq, boolean on) {
+        ServerLevel l = s.overworld();
+        BlockState off = Complejo.estado(MOD + ":marco_luz_apagado"), verde = Complejo.estado(MOD + ":marco_luz_verde"),
+                rojo = Complejo.estado(MOD + ":marco_luz_roja");
+        for (int j = 0; j < Circuito.PALANCAS; j++) {
+            BlockPos q = Complejo.pos(s, eq.pre() + "tablero." + j);
+            BlockState st = !on ? off : eq.patron[j] ? verde : rojo;
+            if (q != null && l.getBlockState(q) != st) {
+                l.setBlock(q, st, 3);
+            }
+        }
+        eq.tablero = on;
+    }
+
     // ------------------------------------------------------------------ llegada, discurso y la mesa
 
-    /** Ya llegaron los ascensores a todos los circuitos: habla el Coleccionista (en las pantallas chicas de cada taller). */
+    /** Ya llegaron los ascensores: el Coleccionista espera a que todos salgan al taller (o lo habla ya, sin discurso). */
     public static void alLlegar(MinecraftServer s, boolean conDiscurso) {
         if (fase != Fase.LISTA) {
             return;
         }
         Pantallas.soloGrande(s, false);
-        Escena.presentacion(s, "I", MOD + ".sen.titulo", MOD + ".sen.lema");
-        if (conDiscurso) {
-            fase = Fase.HABLANDO;
-            cambio = true;
-            Pantallas.hablar(s, "sentidos", () -> {
-                if (fase == Fase.HABLANDO) {
-                    elegir(s);
+        // los bots (solo en las pruebas) salen solos del ascensor a la mesa
+        for (Equipo eq : equipos) {
+            for (int i = 0; i < eq.ids.size(); i++) {
+                Pieza p = Evento.get(s).pieza(eq.ids.get(i));
+                BlockPos b = Complejo.pos(s, eq.pre() + "lugar." + Math.min(i, 2));
+                if (p != null && p.bot && b != null && Evento.entidad(s, p) instanceof PiezaBot bot) {
+                    bot.getNavigation().stop();
+                    bot.moveTo(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, 0F, 0F);
                 }
-            });
+            }
+        }
+        if (conDiscurso) {
+            fase = Fase.ESPERA;
+            esperaDesde = s.overworld().getGameTime();
+            cambio = true;
         } else {
             elegir(s);
         }
         Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS llegaron");
     }
 
-    /** Para el organizador: corta el discurso y pasa a la mesa (o de la mesa al recorrido). */
+    /** Todos salieron del ascensor al taller: el título del capítulo y habla el Coleccionista. */
+    private static void hablar(MinecraftServer s) {
+        fase = Fase.HABLANDO;
+        cambio = true;
+        Escena.presentacion(s, "I", MOD + ".sen.titulo", MOD + ".sen.lema");
+        Pantallas.hablar(s, "sentidos", () -> {
+            if (fase == Fase.HABLANDO) {
+                elegir(s);
+            }
+        });
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS habla");
+    }
+
+    /** ¿Ya están todos (los vivos de cada equipo) en el taller, fuera del ascensor? */
+    private static boolean todosEnTaller(MinecraftServer s) {
+        for (Equipo eq : equipos) {
+            BlockPos a = Complejo.pos(s, eq.pre() + "taller.a"), b = Complejo.pos(s, eq.pre() + "taller.b");
+            if (a == null || b == null) {
+                continue;
+            }
+            for (UUID id : eq.ids) {
+                Entity e = ent(s, id);
+                if (e == null) {
+                    continue;
+                }
+                if (e.getX() < a.getX() || e.getX() > b.getX() + 1 || e.getZ() < a.getZ() || e.getZ() > b.getZ() + 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /** Para el organizador: corta el discurso y pasa a la mesa (o de la mesa al recorrido, o adelanta el final). */
     public static boolean saltar(MinecraftServer s) {
-        if (fase == Fase.LISTA) {
-            alLlegar(s, false);
-            return true;
+        switch (fase) {
+            case LISTA -> {
+                alLlegar(s, false);
+                return true;
+            }
+            case ESPERA -> {
+                hablar(s);
+                return true;
+            }
+            case HABLANDO -> {
+                Pantallas.callar(s);
+                elegir(s);
+                return true;
+            }
+            case ELEGIR -> {
+                arrancar(s);
+                return true;
+            }
+            case FINAL -> {
+                // el telón ya, aunque falte alguien por salir de su cuarto
+                if (!telon && aVitrinas) {
+                    telonT0 = s.overworld().getGameTime();
+                    telon = true;
+                    return true;
+                }
+                return false;
+            }
+            case FIN -> {
+                cerrarSalida(s);
+                return true;
+            }
+            default -> {
+                return false;
+            }
         }
-        if (fase == Fase.HABLANDO) {
-            Pantallas.callar(s);
-            elegir(s);
-            return true;
-        }
-        if (fase == Fase.ELEGIR) {
-            arrancar(s);
-            return true;
-        }
-        return false;
     }
 
     private static void elegir(MinecraftServer s) {
@@ -528,15 +634,15 @@ public final class Sentidos {
         Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS empieza");
     }
 
-    /** Cada equipo solo se oye entre sí (los que ya salieron se oyen en la galería); la cinta corta el micrófono. */
+    /** Cada equipo solo se oye entre sí; la cinta corta el micrófono. Desde que se abre el telón, todos se oyen. */
     private static void actualizarVoz(MinecraftServer s) {
         Map<UUID, Integer> voz = new HashMap<>();
         Set<UUID> mudos = new HashSet<>();
         for (Equipo eq : equipos) {
-            boolean fuera = eq.etapa.ordinal() >= Etapa.SENTADOS.ordinal() && !eq.perdio;
+            boolean juntos = telon || fase == Fase.FIN;
             for (UUID id : eq.ids) {
-                voz.put(id, fuera ? 99 : eq.k);
-                if (!fuera && fase == Fase.JUEGO && eq.roles.get(id) == Rol.CINTA) {
+                voz.put(id, juntos ? 99 : eq.k);
+                if (fase == Fase.JUEGO && !salio(id) && eq.roles.get(id) == Rol.CINTA) {
                     mudos.add(id);
                 }
             }
@@ -567,6 +673,9 @@ public final class Sentidos {
             }
             return;
         }
+        if (fase == Fase.ESPERA && now % 10 == 0 && (todosEnTaller(s) || now - esperaDesde >= esperaTaller)) {
+            hablar(s);
+        }
         if (fase == Fase.ELEGIR) {
             for (Map.Entry<UUID, Long> b : new ArrayList<>(botElige.entrySet())) {
                 if (now >= b.getValue()) {
@@ -587,15 +696,16 @@ public final class Sentidos {
                 arrancar(s);
             }
         }
-        if (fase == Fase.JUEGO || fase == Fase.FIN) {
+        if (fase == Fase.JUEGO) {
             t++;
             for (Equipo eq : equipos) {
                 circuito(s, eq, now);
             }
-            if (fase == Fase.JUEGO) {
-                revisarFin(s);
-            }
-            vitrina(s, now);
+            revisarFin(s);
+        }
+        if (fase == Fase.FINAL || fase == Fase.FIN) {
+            t++;
+            elFinal(s, now);
         }
         if (cambio || now % 10 == 0 && fase == Fase.JUEGO || now % 40 == 0) {
             enviar(s);
@@ -639,6 +749,16 @@ public final class Sentidos {
                 }
             }
         }
+        // red de seguridad: nadie se queda abajo del piso (si algo falla, regresa al último punto seguro con su equipo)
+        if (now % 10 == 0 && eq.etapa.ordinal() < Etapa.SENTADOS.ordinal()) {
+            for (Entity e : ents) {
+                if (juega(e) && e.getY() - o.getY() < -3.5) {
+                    volver(s, eq, ck(eq));
+                    Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS red equipo={}", eq.k);
+                    break;
+                }
+            }
+        }
         // bots: llegan solos a la salida (solo para las pruebas)
         if (eq.botListo > 0 && now >= eq.botListo && eq.etapa.ordinal() < Etapa.SALIDA.ordinal()) {
             eq.botListo = -1;
@@ -649,21 +769,29 @@ public final class Sentidos {
         }
         switch (eq.etapa) {
             case POSTES -> {
-                // el puente: si alguien cae al foso, todo el equipo regresa al principio del puente
+                if (todosMas(ents, o, Circuito.Z_PASARELA)) {
+                    eq.etapa = Etapa.PASARELA;
+                    avisar(s, eq, MOD + ".sen.pasarela");
+                    cambio = true;
+                    Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS pasarela equipo={}", eq.k);
+                }
+            }
+            case PASARELA -> {
+                // si alguien cae a la zanja (no se lastima), todo el equipo regresa al principio de la pasarela
                 for (Entity e : ents) {
                     if (!juega(e)) {
                         continue;
                     }
-                    double lz = e.getZ() - o.getZ(), ly = e.getY() - o.getY();
-                    if (ly < -0.6 && lz >= Circuito.Z_PUENTE0 - 0.5 && lz <= Circuito.Z_PUENTE1 + 1) {
-                        cayo(s, eq, e, "ck.puente", MOD + ".sen.cayo");
+                    double lx = e.getX() - o.getX(), lz = e.getZ() - o.getZ(), ly = e.getY() - o.getY();
+                    if (ly < 0.4 && lx >= Circuito.ZANJA_X0 && lx <= Circuito.ZANJA_X1 + 1 && lz >= Circuito.ZANJA_Z0 - 0.3
+                            && lz <= Circuito.ZANJA_Z1 + 1.3) {
+                        cayo(s, eq, "ck.pasarela", MOD + ".sen.cayo");
                         return;
                     }
                 }
-                if (todosMas(ents, o, Circuito.Z_PUENTE1 + 1.2)) {
+                if (todosMas(ents, o, Circuito.Z_PASARELA_FIN)) {
                     eq.etapa = Etapa.BALDOSAS;
                     eq.verHasta = now + 120;
-                    eq.vistoCamino = true;
                     baldosas(s, eq, true, null);
                     avisar(s, eq, MOD + ".sen.baldosas");
                     sonar(s, eq, SoundEvents.BEACON_POWER_SELECT, 1F, 1.2F);
@@ -676,6 +804,18 @@ public final class Sentidos {
                 if (now % 10 != 0) {
                     return;
                 }
+                // el tablero solo se ve si alguien del equipo está dentro de la casilla
+                boolean dentro = false;
+                for (Entity e : ents) {
+                    double lx = e.getX() - o.getX(), lz = e.getZ() - o.getZ();
+                    dentro |= lx >= Circuito.CAS_X0 && lx <= Circuito.CAS_X1 + 1 && lz >= Circuito.CAS_Z0 && lz <= Circuito.CAS_Z1 + 1;
+                }
+                if (dentro != eq.tablero) {
+                    tablero(s, eq, dentro);
+                    if (dentro) {
+                        sonar(s, eq, SoundEvents.BEACON_POWER_SELECT, 0.5F, 1.6F);
+                    }
+                }
                 boolean bien = true;
                 for (int j = 0; j < Circuito.PALANCAS; j++) {
                     BlockPos p = Complejo.pos(s, eq.pre() + "palanca." + j);
@@ -686,14 +826,30 @@ public final class Sentidos {
                 if (bien) {
                     puerta(s, eq.pre() + "puerta4", true);
                     sonar(s, eq, SoundEvents.PLAYER_LEVELUP, 0.6F, 0.6F);
+                    sonar(s, eq, SoundEvents.IRON_DOOR_OPEN, 1F, 0.6F);
                     alaSalida(s, eq);
                 }
             }
             case SALIDA -> salidaTick(s, eq, ents, now);
-            case SENTADOS -> sentadosTick(s, eq, now);
+            case SENTADOS -> {
+                if (!eq.avisoEspera && now - eq.termino > 60) {
+                    eq.avisoEspera = true;
+                    avisar(s, eq, MOD + ".sen.esperen");
+                }
+            }
             default -> {
             }
         }
+    }
+
+    /** El último punto seguro según en qué va el equipo. */
+    private static String ck(Equipo eq) {
+        return switch (eq.etapa) {
+            case PASARELA -> "ck.pasarela";
+            case BALDOSAS -> "ck.baldosas";
+            case PALANCAS, SALIDA -> "ck.palancas";
+            default -> "ck.postes";
+        };
     }
 
     /** ¿Todos los del equipo ya pasaron de esa z (local)? */
@@ -709,14 +865,13 @@ public final class Sentidos {
         return true;
     }
 
-    private static void cayo(MinecraftServer s, Equipo eq, Entity quien, String ck, String aviso) {
+    /** Alguien se equivocó (cayó a la zanja o pisó una baldosa mala): todo el equipo regresa al punto seguro, sin lastimarse. */
+    private static void cayo(MinecraftServer s, Equipo eq, String ck, String aviso) {
         volver(s, eq, ck);
         for (UUID id : eq.ids) {
             if (ent(s, id) instanceof ServerPlayer sp) {
-                if (sp.getHealth() > 6) {
-                    sp.hurt(sp.damageSources().magic(), 2F);
-                }
                 sp.playNotifySound(SoundEvents.PLAYER_HURT, SoundSource.PLAYERS, 1F, 0.6F);
+                Fx.shake(sp, 0.6F, 8);
             }
         }
         avisar(s, eq, aviso);
@@ -760,12 +915,12 @@ public final class Sentidos {
             eq.trampa = null;
             baldosas(s, eq, eq.verHasta > 0, null);
         }
-        // la palanca de "ver otra vez" (la jala quien tenga manos): enseña el camino 3 segundos y se regresa sola
+        // la palanca de "ver otra vez" (la jala quien tenga manos): enseña el camino 4 segundos y se regresa sola
         BlockPos ver = Complejo.pos(s, eq.pre() + "ver");
         BlockState vs = ver == null ? null : s.overworld().getBlockState(ver);
         if (vs != null && vs.hasProperty(BlockStateProperties.POWERED) && vs.getValue(BlockStateProperties.POWERED)) {
             s.overworld().setBlock(ver, vs.setValue(BlockStateProperties.POWERED, false), 3);
-            eq.verHasta = now + 60;
+            eq.verHasta = now + 80;
             baldosas(s, eq, true, null);
             sonar(s, eq, SoundEvents.BEACON_POWER_SELECT, 0.8F, 1.3F);
         }
@@ -781,55 +936,65 @@ public final class Sentidos {
                 if (ly < 0.9 || ly > 1.3 || !e.onGround() || f < 0 || f >= Circuito.BALD_FILAS || c < 0 || c >= Circuito.BALD_ANCHO) {
                     continue;
                 }
-                if (eq.camino[f] != c) {
+                if (!eq.seguro[f][c]) {
                     eq.trampa = new int[] {c, f};
                     eq.trampaHasta = now + 30;
                     baldosas(s, eq, false, eq.trampa);
                     BlockPos p = b.offset(c, 1, f);
                     s.overworld().sendParticles(ParticleTypes.FLAME, p.getX() + 0.5, p.getY() + 0.2, p.getZ() + 0.5, 30, 0.3, 0.4, 0.3, 0.05);
                     s.overworld().playSound(null, p, SoundEvents.BLAZE_SHOOT, SoundSource.BLOCKS, 1F, 0.6F);
-                    cayo(s, eq, e, "ck.baldosas", MOD + ".sen.trampa");
+                    cayo(s, eq, "ck.baldosas", MOD + ".sen.trampa");
                     return;
                 }
             }
         }
-        if (todosMas(ents, o, Circuito.Z_BALD0 + Circuito.BALD_FILAS + 0.3)) {
+        if (todosMas(ents, o, Circuito.Z_BALD_FIN)) {
             puerta(s, eq.pre() + "puerta3", true);
             eq.etapa = Etapa.PALANCAS;
             baldosas(s, eq, false, null);
-            // el tablero: verde arriba, rojo abajo
-            BlockState verde = Complejo.estado(MOD + ":marco_luz_verde"), rojo = Complejo.estado(MOD + ":marco_luz_roja");
-            for (int j = 0; j < Circuito.PALANCAS; j++) {
-                BlockPos q = Complejo.pos(s, eq.pre() + "tablero." + j);
-                if (q != null) {
-                    s.overworld().setBlock(q, eq.patron[j] ? verde : rojo, 3);
-                }
-            }
+            tablero(s, eq, false);
             avisar(s, eq, MOD + ".sen.palancas");
             cambio = true;
             Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS palancas equipo={}", eq.k);
         }
     }
 
-    /** Se abrió la última puerta: aparecen las sillas de la salida (una por persona). */
+    /** Una silla en su lugar (el punto local u, w de un cuarto de salida o de su copia del teatro). */
+    private static Silla silla(MinecraftServer s, String cuarto, int i, String grupo) {
+        ServerLevel l = s.overworld();
+        BlockPos o = Complejo.pos(s, "cab." + cuarto + ".origen");
+        Silla si = ModRegistry.SILLA.get().create(l);
+        if (o == null || si == null) {
+            return null;
+        }
+        Vec3 p = local(o, Complejo.yaw("cab." + cuarto + ".origen"), Salidas.silla(i)[0], Salidas.silla(i)[1]);
+        float yaw = Complejo.yaw("cab." + cuarto + ".origen");
+        si.moveTo(p.x, o.getY(), p.z, yaw, 0F);
+        si.setYHeadRot(yaw);
+        si.grupo = grupo;
+        l.addFreshEntity(si);
+        return si;
+    }
+
+    private static Vec3 local(BlockPos o, float yaw, double u, double w) {
+        double r = Math.toRadians(yaw), c = Math.round(Math.cos(r)), sn = Math.round(Math.sin(r));
+        return new Vec3(o.getX() + u * c - w * sn, o.getY(), o.getZ() + u * sn + w * c);
+    }
+
+    /** Se abrió la última puerta: aparecen las sillas en el cuarto de la salida (una por persona). */
     private static void alaSalida(MinecraftServer s, Equipo eq) {
         eq.etapa = Etapa.SALIDA;
-        ServerLevel l = s.overworld();
         for (Silla si : eq.sillas) {
             si.discard();
         }
         eq.sillas.clear();
         for (int i = 0; i < eq.ids.size() && i < 3; i++) {
-            BlockPos p = Complejo.pos(s, eq.pre() + "silla." + i);
-            Silla si = ModRegistry.SILLA.get().create(l);
-            if (p == null || si == null) {
-                continue;
+            Silla si = silla(s, eq.cuarto(), i, "circ." + eq.k);
+            if (si != null) {
+                eq.sillas.add(si);
             }
-            si.moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0F, 0F);
-            si.grupo = "circ." + eq.k;
-            l.addFreshEntity(si);
-            eq.sillas.add(si);
         }
+        puerta(s, eq.cuarto() + ".entrada", true);
         avisar(s, eq, MOD + ".sen.salida");
         cambio = true;
         Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS salida equipo={} sillas={}", eq.k, eq.sillas.size());
@@ -871,20 +1036,20 @@ public final class Sentidos {
         if (ents.isEmpty() || sentados < ents.size()) {
             return;
         }
-        // las correas se cierran: ¿son los últimos?
+        // las correas se cierran y la puerta de atrás también: ¿son los últimos?
         int faltan = 0;
         for (Equipo o : equipos) {
             if (o != eq && o.etapa.ordinal() < Etapa.SENTADOS.ordinal()) {
                 faltan++;
             }
         }
-        eq.perdio = faltan == 0 && equipos.size() > 1;
+        eq.perdio = faltan == 0 && (equipos.size() > 1 || pierdeSolo || Evento.get(s).pocos);
         eq.etapa = Etapa.SENTADOS;
-        eq.termino = t;
-        eq.sentadosEn = now;
+        eq.termino = now;
         for (Silla si : eq.sillas) {
             si.cerrar(true);
         }
+        puerta(s, eq.cuarto() + ".entrada", false);
         sonar(s, eq, SoundEvents.IRON_TRAPDOOR_CLOSE, 1F, 0.5F);
         if (!eq.perdio) {
             Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".sen.chat.salio", eq.k)));
@@ -895,132 +1060,37 @@ public final class Sentidos {
         Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS sentados equipo={} ultimo={}", eq.k, eq.perdio);
     }
 
-    /** Las sillas se los llevan por el túnel; a negro, y del otro lado: la galería (o la vitrina, si eran los últimos). */
-    private static void sentadosTick(MinecraftServer s, Equipo eq, long now) {
-        // cada paso una sola vez, en cuanto llega su momento (aunque se haya brincado un tick o hubo pausa)
-        long dt = now - eq.sentadosEn;
-        if (eq.paso == 0 && dt >= 20) {
-            eq.paso = 1;
-            cortina(s, eq, false);
-            sonar(s, eq, SoundEvents.IRON_DOOR_OPEN, 1F, 0.5F);
-        }
-        if (eq.paso == 1 && dt >= 30) {
-            eq.paso = 2;
-            for (Silla si : eq.sillas) {
-                si.irA(si.position().add(0, 0, 9), 0.11);
-            }
-        }
-        if (eq.paso == 2 && dt >= 92) {
-            eq.paso = 3;
-            List<ServerPlayer> ps = new ArrayList<>();
-            for (UUID id : eq.ids) {
-                if (ent(s, id) instanceof ServerPlayer sp) {
-                    ps.add(sp);
-                }
-            }
-            Escena.fundido(ps, "", 70);
-        }
-        if (eq.paso == 3 && dt >= 115) {
-            eq.paso = 4;
-            if (eq.perdio) {
-                aLaVitrina(s, eq);
-            } else {
-                aLaGaleria(s, eq);
-            }
-            cortina(s, eq, true);
-            eq.etapa = Etapa.FUERA;
-            cambio = true;
-        }
-    }
-
     /** Pasa a alguien sentado de una silla a otro lugar, sentado en la misma silla. */
-    private static void llevarSentado(MinecraftServer s, Silla si, BlockPos dest, float yaw) {
+    private static void llevarSentado(MinecraftServer s, Silla si, Vec3 dest, float yaw) {
         List<Entity> pas = new ArrayList<>(si.getPassengers());
+        boolean cerrada = si.cerrada();
         si.soltar();
         si.irA(null, 0);
-        si.moveTo(dest.getX() + 0.5, dest.getY(), dest.getZ() + 0.5, yaw, 0F);
+        si.moveTo(dest.x, dest.y, dest.z, yaw, 0F);
         si.setYHeadRot(yaw);
         for (Entity e : pas) {
             e.fallDistance = 0;
             if (e instanceof ServerPlayer sp) {
-                sp.teleportTo(s.overworld(), dest.getX() + 0.5, dest.getY() + 0.5, dest.getZ() + 0.5, yaw, 0F);
+                sp.teleportTo(s.overworld(), dest.x, dest.y + 0.5, dest.z, yaw, 0F);
             } else {
-                e.moveTo(dest.getX() + 0.5, dest.getY() + 0.5, dest.getZ() + 0.5, yaw, 0F);
+                e.moveTo(dest.x, dest.y + 0.5, dest.z, yaw, 0F);
             }
             e.startRiding(si, true);
         }
+        si.cerrar(cerrada, false);
     }
 
-    private static void aLaGaleria(MinecraftServer s, Equipo eq) {
-        for (int i = 0; i < eq.sillas.size(); i++) {
-            Silla si = eq.sillas.get(i);
-            BlockPos d = Complejo.pos(s, "vit.llega." + eq.k + "." + i);
-            if (d == null) {
-                continue;
-            }
-            llevarSentado(s, si, d, 0F);
-            si.grupo = "galeria";
-            si.cerrar(false);
-        }
-        for (UUID id : eq.ids) {
-            Entity e = ent(s, id);
-            if (e != null && !e.isPassenger()) {
-                BlockPos d = Complejo.pos(s, "vit.centro");
-                if (d != null) {
-                    e.teleportTo(d.getX() + 0.5, d.getY(), d.getZ() + 0.5);
-                }
-            }
-        }
-        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS galeria equipo={}", eq.k);
-    }
-
-    /** El último equipo: cada silla a su vitrina (con la correa puesta). */
-    private static void aLaVitrina(MinecraftServer s, Equipo eq) {
-        for (Silla si : eq.sillas) {
-            if (cajas >= SalaVitrina.VITRINAS) {
-                break;
-            }
-            BlockPos d = Complejo.pos(s, "vit.caja." + cajas);
-            if (d == null) {
-                continue;
-            }
-            Entity quien = si.getPassengers().isEmpty() ? null : si.getPassengers().get(0);
-            llevarSentado(s, si, d, 180F);
-            si.grupo = "vitrina";
-            si.cerrar(true);
-            if (quien != null) {
-                victimas.add(new Victima(quien.getUUID(), si, cajas));
-                if (quien instanceof ServerPlayer sp) {
-                    sp.setInvulnerable(true);
-                }
-            }
-            cajas++;
-        }
-        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS vitrina equipo={} victimas={}", eq.k, victimas.size());
-        if (vitT0 < 0) {
-            vitT0 = s.overworld().getGameTime();
-            vitCerrada = false;
-            ceraAviso = false;
-            negro = false;
-            estatuas = false;
-            capas = 0;
-        }
-    }
-
-    /** ¿Ya terminaron todos? Al acabar el tiempo, los que no salieron pierden (sus sillas van directo a la vitrina). */
+    /** ¿Ya terminaron todos (sentados en su cuarto)? Entonces empieza el final. */
     private static void revisarFin(MinecraftServer s) {
+        if (fase != Fase.JUEGO) {
+            return;
+        }
         for (Equipo eq : equipos) {
-            if (eq.etapa != Etapa.FUERA) {
+            if (eq.etapa.ordinal() < Etapa.SENTADOS.ordinal()) {
                 return;
             }
         }
-        fase = Fase.FIN;
-        Evento.get(s).reloj(s, 0);
-        cambio = true;
-        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS todos fuera victimas={}", victimas.size());
-        if (victimas.isEmpty()) {
-            finCapitulo(s);
-        }
+        iniciarFinal(s);
     }
 
     public static boolean alAcabarReloj(MinecraftServer s) {
@@ -1035,159 +1105,376 @@ public final class Sentidos {
         return true;
     }
 
-    /** Se acabó el tiempo (o lo pide el organizador): los equipos que no salieron pierden y van sentados directo a la vitrina. */
+    /**
+     * Se acabó el tiempo (o lo pide el organizador): los equipos que no llegaron pierden. Se les va la vista un momento y aparecen sentados
+     * en su cuarto de la salida (ahí les llega el gas, como al último equipo).
+     */
     public static boolean terminarYa(MinecraftServer s) {
         if (fase != Fase.JUEGO) {
             return false;
         }
-        ServerLevel l = s.overworld();
         List<Equipo> faltan = new ArrayList<>();
         for (Equipo eq : equipos) {
             if (eq.etapa.ordinal() < Etapa.SENTADOS.ordinal()) {
                 faltan.add(eq);
             }
         }
-        // si todos los demás ya salieron y solo falta uno, ese es el último; si faltan varios, pierden todos
         for (Equipo eq : faltan) {
             eq.perdio = true;
-            eq.etapa = Etapa.FUERA;
-            eq.termino = t;
+            eq.etapa = Etapa.SENTADOS;
+            eq.termino = s.overworld().getGameTime();
             for (Silla si : eq.sillas) {
                 si.discard();
             }
             eq.sillas.clear();
             List<ServerPlayer> ps = new ArrayList<>();
-            for (UUID id : eq.ids) {
-                Entity e = ent(s, id);
-                if (e == null) {
+            for (int i = 0; i < eq.ids.size(); i++) {
+                Entity e = ent(s, eq.ids.get(i));
+                Silla si = silla(s, eq.cuarto(), Math.min(i, 2), "circ." + eq.k);
+                if (e == null || si == null) {
                     continue;
                 }
                 if (e instanceof ServerPlayer sp) {
                     ps.add(sp);
                 }
-                Silla si = ModRegistry.SILLA.get().create(l);
-                if (si == null) {
-                    continue;
+                eq.sillas.add(si);
+                if (e.isPassenger()) {
+                    e.stopRiding();
                 }
-                si.moveTo(e.getX(), e.getY(), e.getZ(), 0F, 0F);
-                l.addFreshEntity(si);
+                if (e instanceof ServerPlayer sp) {
+                    sp.teleportTo(s.overworld(), si.getX(), si.getY() + 0.5, si.getZ(), si.getYRot(), 0F);
+                } else {
+                    e.moveTo(si.getX(), si.getY() + 0.5, si.getZ(), si.getYRot(), 0F);
+                }
                 e.startRiding(si, true);
                 si.cerrar(true);
-                eq.sillas.add(si);
             }
-            Escena.fundido(ps, "", 70);
-            aLaVitrina(s, eq);
+            puerta(s, eq.cuarto() + ".entrada", false);
+            Escena.fundido(ps, "", 50);
         }
         Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".sen.chat.tiempo")));
-        actualizarVoz(s);
         cambio = true;
         Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS tiempo pierden={}", faltan.size());
         revisarFin(s);
         return true;
     }
 
-    // ------------------------------------------------------------------ la vitrina
+    // ------------------------------------------------------------------ el final: el teatro de la colección
 
-    private static void vitrina(MinecraftServer s, long now) {
-        if (vitT0 < 0 || fase != Fase.FIN || victimas.isEmpty()) {
-            return;
+    private static void iniciarFinal(MinecraftServer s) {
+        fase = Fase.FINAL;
+        finT0 = s.overworld().getGameTime();
+        Evento.get(s).reloj(s, 0);
+        Evento.get(s).prueba(s, Component.translatable(MOD + ".sen.prueba_final").getString());
+        Pantallas.modo(s, "apagada", "");
+        palcos = levantan = gas = aVitrinas = despiertan = telon = hablo = ceraAviso = endurecida = rotas = caen = golpe = salidaAbierta = antesala = false;
+        telonT0 = ceraT0 = finalFin = -1;
+        telonPaso = 0;
+        capas = 0;
+        cajas = 0;
+        victimas.clear();
+        estatuas.clear();
+        cambio = true;
+        int pierden = 0;
+        for (Equipo eq : equipos) {
+            pierden += eq.perdio ? 1 : 0;
         }
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS final equipos={} pierden={}", equipos.size(), pierden);
+    }
+
+    /** El final, paso a paso (cada paso una sola vez, en cuanto llega su momento). */
+    private static void elFinal(MinecraftServer s, long now) {
+        long dt = now - finT0;
         ServerLevel l = s.overworld();
-        long dt = now - vitT0;
-        if (!vitCerrada && dt >= 40) {
-            vitCerrada = true;
-            // se cierra el frente de cada vitrina, se prenden sus reflectores y la placa dice quién es
-            BlockState vidrio = Complejo.estado(MOD + ":vidrio_armado");
-            Evento ev = Evento.get(s);
+        // 1) los que se salvaron pasan (sentados, sin que se note) a su cuarto del teatro; un momento después se abre la puerta
+        if (!palcos && dt >= 40) {
+            palcos = true;
+            for (Equipo eq : equipos) {
+                if (!eq.perdio) {
+                    List<Entity> van = new ArrayList<>();
+                    for (UUID id : eq.ids) {
+                        Entity e = ent(s, id);
+                        if (e != null) {
+                            van.add(e);
+                        }
+                    }
+                    Cabina.trasladar(s, eq.cuarto(), eq.palco(), van, eq.sillas);
+                    for (Silla si : eq.sillas) {
+                        si.grupo = "teatro";
+                    }
+                    eq.etapa = Etapa.FUERA;
+                }
+            }
+            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS palcos");
+        }
+        if (!levantan && dt >= 80) {
+            levantan = true;
+            for (Equipo eq : equipos) {
+                if (!eq.perdio) {
+                    for (Silla si : eq.sillas) {
+                        si.cerrar(false);
+                    }
+                    Cabina.puerta(s, eq.palco(), true);
+                    avisar(s, eq, MOD + ".sen.final.salgan");
+                    sonar(s, eq, SoundEvents.IRON_TRAPDOOR_OPEN, 1F, 0.6F);
+                }
+            }
+        }
+        // 2) al último equipo se le llena el cuarto de gas: se desmaya
+        if (!gas && dt >= 40) {
+            gas = true;
+            for (Equipo eq : equipos) {
+                if (eq.perdio) {
+                    for (UUID id : eq.ids) {
+                        ServerPlayer sp = s.getPlayerList().getPlayer(id);
+                        if (sp != null) {
+                            CompoundTag g = new CompoundTag();
+                            g.putString("fase", "gas");
+                            g.putLong("desde", now);
+                            g.putInt("dura", 150);
+                            PlayerStore.Sync.toPlayer(sp, KEY_GAS, g);
+                        }
+                    }
+                }
+            }
+            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS gas");
+        }
+        if (gas && !aVitrinas && dt < 200 && dt % 3 == 0) {
+            for (Equipo eq : equipos) {
+                if (!eq.perdio) {
+                    continue;
+                }
+                for (int n = 0; n < 4; n++) {
+                    BlockPos v = Complejo.pos(s, eq.cuarto() + ".ventila." + n);
+                    if (v == null) {
+                        continue;
+                    }
+                    for (int i = 0; i < 4; i++) {
+                        l.sendParticles(ParticleTypes.ENTITY_EFFECT, v.getX() + 0.5 + (l.random.nextDouble() - 0.5) * 2, v.getY() - 0.3
+                                - l.random.nextDouble() * 2.5, v.getZ() + 0.5 + (l.random.nextDouble() - 0.5) * 2, 0, 0.42, 0.72, 0.22, 1);
+                    }
+                    if (dt % 12 == 0) {
+                        l.playSound(null, v, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.7F, 0.45F + l.random.nextFloat() * 0.1F);
+                    }
+                }
+            }
+        }
+        // 3) dormidos: a las vitrinas del escenario (sentados, con la correa); el frente se cierra
+        if (!aVitrinas && dt >= 210) {
+            aVitrinas = true;
+            aLasVitrinas(s);
+        }
+        // 4) despiertan en la vitrina, con el mensajito
+        if (!despiertan && dt >= 250) {
+            despiertan = true;
             for (Victima v : victimas) {
-                BlockPos f = Complejo.pos(s, "vit.frente." + v.caja);
+                ServerPlayer sp = s.getPlayerList().getPlayer(v.id);
+                if (sp != null) {
+                    CompoundTag g = new CompoundTag();
+                    g.putString("fase", "despierta");
+                    g.putLong("desde", now);
+                    g.putInt("dura", 160);
+                    PlayerStore.Sync.toPlayer(sp, KEY_GAS, g);
+                }
+            }
+        }
+        // 5) el telón: cuando ya salieron todos de su cuarto (o pasó un buen rato)
+        if (aVitrinas && !telon && dt >= 340 && (todosEnLaSala(s) || dt >= 1000)) {
+            telon = true;
+            telonT0 = now;
+        }
+        if (telon && telonT0 > 0) {
+            abrirTelon(s, now);
+        }
+        // 6) la cera (o, si no hay nadie en las vitrinas, directo a la salida)
+        if (hablo && ceraT0 > 0) {
+            cera(s, now);
+        }
+        if (finalFin < 0 && telon && telonPaso > (SalaVitrina.TELON_X1 - SalaVitrina.TELON_X0) / 2 + 2 && victimas.isEmpty() && !salidaAbierta) {
+            abrirSalida(s);
+        }
+        if (fase == Fase.FIN && now % 10 == 0) {
+            vigilarSalida(s);
+        }
+    }
+
+    /** ¿Ya salieron todos los que se salvaron de su cuarto del teatro (al palco o a la sala)? */
+    private static boolean todosEnLaSala(MinecraftServer s) {
+        BlockPos o = Complejo.origen(s, "vitrina");
+        if (o == null) {
+            return true;
+        }
+        for (Equipo eq : equipos) {
+            if (eq.perdio) {
+                continue;
+            }
+            for (UUID id : eq.ids) {
+                Entity e = ent(s, id);
+                if (e instanceof ServerPlayer && (e.isPassenger() || e.getZ() - o.getZ() < 10.2)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /** El último equipo (dormido): cada silla a su vitrina, con la correa puesta, y se cierra el frente con su placa. */
+    private static void aLasVitrinas(MinecraftServer s) {
+        ServerLevel l = s.overworld();
+        Evento ev = Evento.get(s);
+        BlockState vidrio = Complejo.estado(MOD + ":vidrio_armado");
+        for (Equipo eq : equipos) {
+            if (!eq.perdio) {
+                continue;
+            }
+            for (Silla si : eq.sillas) {
+                if (cajas >= SalaVitrina.VITRINAS) {
+                    break;
+                }
+                BlockPos d = Complejo.pos(s, "vit.caja." + cajas);
+                if (d == null || si.getPassengers().isEmpty()) {
+                    continue;
+                }
+                Entity quien = si.getPassengers().get(0);
+                llevarSentado(s, si, Vec3.atBottomCenterOf(d), 180F);
+                si.grupo = "vitrina";
+                si.cerrar(true);
+                victimas.add(new Victima(quien.getUUID(), si, cajas));
+                if (quien instanceof ServerPlayer sp) {
+                    sp.setInvulnerable(true);
+                }
+                BlockPos f = Complejo.pos(s, "vit.frente." + cajas);
                 if (f != null) {
                     for (int y = 0; y < 3; y++) {
                         l.setBlock(f.above(y), vidrio, 3);
                     }
-                    l.playSound(null, f, SoundEvents.GLASS_PLACE, SoundSource.BLOCKS, 1F, 0.6F);
                 }
+                BlockPos pl = Complejo.pos(s, "vit.placa." + cajas);
+                Pieza p = ev.pieza(quien.getUUID());
+                if (pl != null && p != null && l.getBlockEntity(pl) instanceof com.coleccionista.bloque.deco.TextoBE be) {
+                    be.escribir(0xD9A93A, "PIEZA " + p.etiqueta(), p.nombre);
+                }
+                cajas++;
+            }
+            eq.etapa = Etapa.FUERA;
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS vitrina victimas={}", victimas.size());
+    }
+
+    /** El telón se abre del centro hacia los lados (una columna de cada lado cada 2 ticks); al terminar se prenden las vitrinas y habla. */
+    private static void abrirTelon(MinecraftServer s, long now) {
+        BlockPos o = Complejo.origen(s, "vitrina");
+        if (o == null) {
+            return;
+        }
+        ServerLevel l = s.overworld();
+        int mitad = (SalaVitrina.TELON_X1 - SalaVitrina.TELON_X0) / 2 + 1;
+        if (telonPaso == 0) {
+            actualizarVoz(s);
+            Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 0.8F, 0.5F);
+            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS telon");
+        }
+        if (telonPaso <= mitad && (now - telonT0) % 2 == 0) {
+            int c0 = (SalaVitrina.TELON_X0 + SalaVitrina.TELON_X1) / 2;
+            for (int x : new int[] {c0 - telonPaso, c0 + 1 + telonPaso}) {
+                if (x < SalaVitrina.TELON_X0 || x > SalaVitrina.TELON_X1) {
+                    continue;
+                }
+                for (int y = 1; y <= SalaVitrina.TELON_Y1; y++) {
+                    l.setBlock(o.offset(x, y, SalaVitrina.TELON_Z), Blocks.AIR.defaultBlockState(), 2 | 16);
+                }
+                if (telonPaso % 3 == 0) {
+                    l.playSound(null, o.offset(x, 5, SalaVitrina.TELON_Z), SoundEvents.ARMOR_EQUIP_LEATHER, SoundSource.BLOCKS, 1F, 0.6F);
+                }
+            }
+            telonPaso++;
+        }
+        if (telonPaso == mitad + 1 && !hablo) {
+            telonPaso++;
+            hablo = true;
+            // los reflectores de cada vitrina con alguien
+            for (Victima v : victimas) {
                 luz(s, "vit.luz." + v.caja, true);
                 BlockPos fo = Complejo.pos(s, "vit.foco." + v.caja);
                 if (fo != null) {
                     l.setBlock(fo, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, 15), 3);
                 }
-                BlockPos pl = Complejo.pos(s, "vit.placa." + v.caja);
-                Pieza p = ev.pieza(v.id);
-                if (pl != null && p != null && l.getBlockEntity(pl) instanceof com.coleccionista.bloque.deco.TextoBE be) {
-                    be.escribir(0xD9A93A, "PIEZA " + p.etiqueta(), p.nombre);
-                }
             }
-            Pantallas.soloGrande(s, true);
-            Pantallas.hablar(s, "vitrina", () -> ceraT0 = s.overworld().getGameTime());
-            Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.4F);
-            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS vitrina cierra");
+            if (!victimas.isEmpty()) {
+                Pantallas.soloGrande(s, true);
+                Pantallas.hablar(s, "vitrina", () -> ceraT0 = s.overworld().getGameTime());
+            }
         }
-        if (ceraT0 > 0) {
-            long ct = now - ceraT0;
-            if (!ceraAviso) {
-                ceraAviso = true;
-                for (Victima v : victimas) {
-                    ServerPlayer sp = s.getPlayerList().getPlayer(v.id);
-                    if (sp != null) {
-                        CompoundTag t = new CompoundTag();
-                        t.putLong("desde", now);
-                        t.putInt("dura", 140);
-                        PlayerStore.Sync.toPlayer(sp, KEY_CERA, t);
-                    }
+    }
+
+    /** La cera sube capa por capa en cada vitrina; se endurece en piedra; se rompen los vidrios y las estatuas caen frente a todos. */
+    private static void cera(MinecraftServer s, long now) {
+        ServerLevel l = s.overworld();
+        long ct = now - ceraT0;
+        final int dura = 160, total = 24;
+        BlockState capa = Complejo.estado(MOD + ":cera");
+        if (!ceraAviso) {
+            ceraAviso = true;
+            for (Victima v : victimas) {
+                ServerPlayer sp = s.getPlayerList().getPlayer(v.id);
+                if (sp != null) {
+                    CompoundTag g = new CompoundTag();
+                    g.putLong("desde", now);
+                    g.putInt("dura", dura);
+                    PlayerStore.Sync.toPlayer(sp, KEY_CERA, g);
                 }
-                Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS cera");
             }
-            // la cera cae de la boquilla y va subiendo, capa por capa
+            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS cera");
+        }
+        if (ct <= dura) {
+            int quiero = (int) Math.min(total, ct * total / dura + 1);
             for (Victima v : victimas) {
                 BlockPos b = Complejo.pos(s, "vit.boquilla." + v.caja), c = Complejo.pos(s, "vit.caja." + v.caja);
                 if (b == null || c == null) {
                     continue;
                 }
-                if (ct < 140 && ct % 2 == 0) {
-                    l.sendParticles(ParticleTypes.FALLING_HONEY, b.getX() + 0.5, b.getY() + 0.8, b.getZ() + 0.5, 3, 0.15, 0.05, 0.15, 0);
-                    l.sendParticles(ParticleTypes.DRIPPING_HONEY, b.getX() + 0.5, b.getY() + 0.9, b.getZ() + 0.5, 2, 0.2, 0.05, 0.2, 0);
+                if (ct % 2 == 0) {
+                    l.sendParticles(new BlockParticleOption(ParticleTypes.FALLING_DUST, capa), b.getX() + 0.5, b.getY() + 0.8, b.getZ() + 0.5, 4,
+                            0.18, 0.05, 0.18, 0);
                 }
-                if (ct % 9 == 0 && ct < 140) {
-                    l.playSound(null, c, SoundEvents.HONEY_BLOCK_SLIDE, SoundSource.BLOCKS, 0.8F, 0.6F);
-                    l.playSound(null, c, SoundEvents.LAVA_POP, SoundSource.BLOCKS, 0.5F, 0.6F);
+                if (ct % 9 == 0) {
+                    l.playSound(null, c, SoundEvents.LAVA_POP, SoundSource.BLOCKS, 0.6F, 0.5F);
+                    l.playSound(null, c, SoundEvents.HONEY_BLOCK_SLIDE, SoundSource.BLOCKS, 0.5F, 0.5F);
                 }
-                if (ct % 25 == 0 && ct < 140) {
-                    l.playSound(null, c, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.9F, 0.6F);
+                if (ct % 25 == 0) {
+                    l.playSound(null, c, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.8F, 0.6F);
                     ServerPlayer sp = s.getPlayerList().getPlayer(v.id);
                     if (sp != null) {
                         sp.playNotifySound(SoundEvents.WARDEN_HEARTBEAT, SoundSource.PLAYERS, 1F, 1F);
                     }
                 }
-            }
-            if (capas < 4 && ct >= 30L * (capas + 1)) {
-                capas++;
-                BlockState miel = Blocks.HONEY_BLOCK.defaultBlockState();
-                for (Victima v : victimas) {
-                    BlockPos c = Complejo.pos(s, "vit.caja." + v.caja);
-                    if (c != null) {
-                        l.setBlock(c.above(capas - 1), miel, 2 | 16);
-                    }
+                for (int n = capas + 1; n <= quiero; n++) {
+                    int alto = (n - 1) / 8, k = (n - 1) % 8 + 1;
+                    l.setBlock(c.above(alto), capa.setValue(com.coleccionista.bloque.deco.DecoCapas.CAPAS, k), 2 | 16);
                 }
             }
-            if (!negro && ct >= 165) {
-                negro = true;
-                // a negro para todos los que miran; en medio, las víctimas se vuelven estatuas
-                Escena.fundido(s, "", 60);
-                Anuncio.sonido(s, SoundEvents.BEACON_DEACTIVATE, 1F, 0.5F);
-                negroT0 = now;
-            }
+            capas = Math.max(capas, quiero);
         }
-        if (negroT0 > 0 && !estatuas && now - negroT0 >= 25) {
-            estatuas = true;
+        // se endurece: la cera se vuelve piedra con su forma (las estatuas) y la pieza pasa a la colección
+        if (!endurecida && ct >= dura + 20) {
+            endurecida = true;
             Evento ev = Evento.get(s);
             int muertos = 0;
             for (Victima v : victimas) {
+                BlockPos c = Complejo.pos(s, "vit.caja." + v.caja);
+                if (c != null) {
+                    for (int y = 0; y < 3; y++) {
+                        l.setBlock(c.above(y), Blocks.AIR.defaultBlockState(), 2 | 16);
+                    }
+                    l.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()), c.getX() + 0.5, c.getY() + 1.2,
+                            c.getZ() + 0.5, 60, 0.4, 0.8, 0.4, 0.05);
+                    l.playSound(null, c, SoundEvents.DEEPSLATE_PLACE, SoundSource.BLOCKS, 1.2F, 0.5F);
+                    l.playSound(null, c, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1F, 0.5F);
+                }
                 Pieza p = ev.pieza(v.id);
                 if (p == null || !p.vivo()) {
                     continue;
                 }
-                v.silla.cerrar(false);
                 Cuerpos.ESTATUAS.add(v.id);
                 Entity e = Evento.entidad(s, p);
                 if (ev.eliminarEnPrueba(s, p, PRUEBA)) {
@@ -1199,14 +1486,125 @@ public final class Sentidos {
                     sp.setInvulnerable(false);
                 }
             }
+            // las estatuas que quedaron (para hacerlas caer)
+            for (Victima v : victimas) {
+                BlockPos c = Complejo.pos(s, "vit.caja." + v.caja);
+                if (c == null) {
+                    continue;
+                }
+                for (Cadaver cd : l.getEntitiesOfClass(Cadaver.class, new net.minecraft.world.phys.AABB(c).inflate(1.2, 1.5, 1.2))) {
+                    if (cd.estatua() && !estatuas.contains(cd)) {
+                        estatuas.add(cd);
+                    }
+                }
+            }
             Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS estatuas={}", muertos);
         }
-        if (negroT0 > 0 && now - negroT0 >= 70) {
-            negroT0 = -1;
-            ceraT0 = -1;
-            vitT0 = -1;
-            Pantallas.hablar(s, "vitrina_fin", () -> finCapitulo(s));
+        // los vidrios del frente revientan
+        if (!rotas && ct >= dura + 50) {
+            rotas = true;
+            for (Victima v : victimas) {
+                BlockPos f = Complejo.pos(s, "vit.frente." + v.caja);
+                if (f == null) {
+                    continue;
+                }
+                for (int y = 0; y < 3; y++) {
+                    l.setBlock(f.above(y), Blocks.AIR.defaultBlockState(), 3);
+                    l.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Complejo.estado(MOD + ":vidrio_armado")), f.getX() + 0.5,
+                            f.getY() + y + 0.5, f.getZ() + 0.5, 25, 0.3, 0.3, 0.1, 0.1);
+                }
+                l.playSound(null, f, SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 1.4F, 0.6F);
+            }
         }
+        // y las estatuas caen de frente, hacia el público
+        if (!caen && ct >= dura + 62) {
+            caen = true;
+            for (Victima v : victimas) {
+                v.silla.soltar();
+                v.silla.discard();
+            }
+            for (Cadaver cd : estatuas) {
+                cd.caer((int) now);
+            }
+            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS caen={}", estatuas.size());
+        }
+        if (caen && !golpe && ct >= dura + 72) {
+            golpe = true;
+            for (Cadaver cd : estatuas) {
+                l.playSound(null, cd.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.9F, 0.4F);
+                l.playSound(null, cd.blockPosition(), SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 1.2F, 0.6F);
+                l.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE.defaultBlockState()), cd.getX(), cd.getY() + 0.2, cd.getZ() - 1,
+                        50, 0.6, 0.1, 0.6, 0.1);
+            }
+            for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
+                Fx.shake(sp, 0.5F, 8);
+            }
+        }
+        if (!salidaAbierta && ct >= dura + 110) {
+            Pantallas.hablar(s, "vitrina_fin", () -> abrirSalida(s));
+            salidaAbierta = true;
+        }
+    }
+
+    /** Se abre la salida del teatro (hacia la antesala). */
+    private static void abrirSalida(MinecraftServer s) {
+        salidaAbierta = true;
+        fase = Fase.FIN;
+        finalFin = s.overworld().getGameTime();
+        puerta(s, "vit.salida", true);
+        BlockPos p = Complejo.pos(s, "vit.salida.a");
+        if (p != null) {
+            s.overworld().playSound(null, p, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 1.2F, 0.5F);
+        }
+        Evento.get(s).prueba(s, Component.translatable(MOD + ".sen.prueba_salida").getString());
+        Pantallas.modo(s, "apagada", "");
+        BlockPos a = Complejo.pos(s, "vit.antesala");
+        int n = 0;
+        for (Pieza pz : Evento.get(s).vivos()) {
+            if (pz.bot && a != null && Evento.entidad(s, pz) instanceof PiezaBot bot) {
+                bot.stopRiding();
+                bot.moveTo(a.getX() + 0.5 + n % 4, a.getY(), a.getZ() - 1.5 + n / 4, 90F, 0F);
+                n++;
+            }
+        }
+        com.coleccionista.voz.Voz.juntar();
+        com.coleccionista.voz.Voz.mudos(Set.of());
+        cambio = true;
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS salida_teatro");
+    }
+
+    /** Cuando ya pasaron todos los vivos a la antesala, la puerta se cierra detrás y habla la pantalla de la antesala. */
+    private static void vigilarSalida(MinecraftServer s) {
+        if (antesala) {
+            return;
+        }
+        BlockPos o = Complejo.origen(s, "vitrina");
+        if (o == null) {
+            cerrarSalida(s);
+            return;
+        }
+        for (Pieza p : Evento.get(s).vivos()) {
+            Entity e = Evento.entidad(s, p);
+            if (e != null && e.getX() - o.getX() < SalaVitrina.SALIDA_X + 1.6) {
+                return;
+            }
+        }
+        cerrarSalida(s);
+    }
+
+    private static void cerrarSalida(MinecraftServer s) {
+        if (antesala) {
+            return;
+        }
+        antesala = true;
+        puerta(s, "vit.salida", false);
+        BlockPos p = Complejo.pos(s, "vit.salida.a");
+        if (p != null) {
+            s.overworld().playSound(null, p, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1.2F, 0.5F);
+        }
+        Pantallas.soloGrande(s, true);
+        Pantallas.hablar(s, "antesala", () -> finCapitulo(s));
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS antesala");
     }
 
     private static void luz(MinecraftServer s, String marca, boolean on) {
@@ -1220,16 +1618,16 @@ public final class Sentidos {
         }
     }
 
+    /** Fin del capítulo 1: las sillas del teatro se quitan y todos se oyen otra vez. (Aquí empieza el capítulo 2.) */
     private static void finCapitulo(MinecraftServer s) {
         Evento ev = Evento.get(s);
-        // los de la galería se pueden levantar (y los bots se bajan solos de su silla)
         for (Equipo eq : equipos) {
-            if (!eq.perdio) {
-                for (Silla si : eq.sillas) {
-                    si.cerrar(false);
-                    si.soltar();
-                }
+            for (Silla si : eq.sillas) {
+                si.cerrar(false);
+                si.soltar();
+                si.discard();
             }
+            eq.sillas.clear();
         }
         ev.prueba(s, Component.translatable(MOD + ".sen.fin_capitulo").getString());
         com.coleccionista.voz.Voz.juntar();
@@ -1237,6 +1635,68 @@ public final class Sentidos {
         Pantallas.modo(s, "coleccionista", "");
         cambio = true;
         Coleccionista.LOGGER.info("COLECCIONISTA_CAPITULO1 fin vivos={}", ev.vivos().size());
+    }
+
+    // ------------------------------------------------------------------ el indicador de "ir acá"
+
+    /** A dónde tiene que ir esa pieza ahora en el capítulo (la siguiente vuelta del camino, una silla, el telón o la salida). */
+    public static Objetivo.Meta objetivo(MinecraftServer s, ServerPlayer sp) {
+        Equipo eq = equipoDe(sp.getUUID());
+        if (eq == null || fase == Fase.NADA) {
+            return null;
+        }
+        if (fase == Fase.ELEGIR && eq.roles.getOrDefault(sp.getUUID(), Rol.NADA) == Rol.NADA) {
+            Objetivo.Meta m = null;
+            double dm = Double.MAX_VALUE;
+            for (int i = 0; i < 3; i++) {
+                BlockPos p = eq.objetos[i] == null ? null : Complejo.pos(s, eq.pre() + "objeto." + i);
+                if (p != null && p.distToCenterSqr(sp.position()) < dm) {
+                    dm = p.distToCenterSqr(sp.position());
+                    m = Objetivo.Meta.en(p, 0.6, MOD + ".obj.objeto");
+                }
+            }
+            return m;
+        }
+        if (fase == Fase.JUEGO && eq.etapa.ordinal() >= Etapa.POSTES.ordinal() && eq.etapa.ordinal() < Etapa.SALIDA.ordinal()) {
+            BlockPos o = Complejo.origen(s, "circ_" + eq.k);
+            if (o == null) {
+                return null;
+            }
+            List<double[]> cam = Circuito.camino();
+            int i = paso.getOrDefault(sp.getUUID(), 0);
+            while (i < cam.size() - 1) {
+                double[] q = cam.get(i);
+                double dx = sp.getX() - (o.getX() + q[0]), dz = sp.getZ() - (o.getZ() + q[2]);
+                if (dx * dx + dz * dz > 9) {
+                    break;
+                }
+                i++;
+            }
+            paso.put(sp.getUUID(), i);
+            double[] q = cam.get(i);
+            return new Objetivo.Meta(o.getX() + q[0], o.getY() + q[1], o.getZ() + q[2], MOD + ".obj.sigue");
+        }
+        if (fase == Fase.JUEGO && eq.etapa == Etapa.SALIDA && !sp.isPassenger()) {
+            for (Silla si : eq.sillas) {
+                if (si.isAlive() && !si.isVehicle()) {
+                    return new Objetivo.Meta(si.getX(), si.getY() + 1, si.getZ(), MOD + ".obj.silla");
+                }
+            }
+        }
+        if (fase == Fase.FINAL && levantan && !eq.perdio && !sp.isPassenger()) {
+            BlockPos o = Complejo.origen(s, "vitrina");
+            if (o != null && sp.getZ() - o.getZ() < 10.2) {
+                return new Objetivo.Meta(o.getX() + 28, o.getY() + 5, o.getZ() + 38.5, MOD + ".obj.telon");
+            }
+        }
+        if (fase == Fase.FIN && !antesala) {
+            BlockPos a = Complejo.pos(s, "vit.salida.a");
+            BlockPos o = Complejo.origen(s, "vitrina");
+            if (a != null && o != null && sp.getX() - o.getX() < SalaVitrina.SALIDA_X + 1.6) {
+                return new Objetivo.Meta(a.getX() + 0.5, a.getY() + 1.5, a.getZ() + 1, MOD + ".obj.salida");
+            }
+        }
+        return null;
     }
 
     // ------------------------------------------------------------------ avisos
@@ -1274,18 +1734,12 @@ public final class Sentidos {
     /** Para revisar (y para las fotos): enciende en todos los circuitos el camino de las baldosas (5 s si están ahí) y el tablero. */
     public static void mostrar(MinecraftServer s) {
         long now = s.overworld().getGameTime();
-        BlockState verde = Complejo.estado(MOD + ":marco_luz_verde"), rojo = Complejo.estado(MOD + ":marco_luz_roja");
         for (Equipo eq : equipos) {
             baldosas(s, eq, true, null);
             if (eq.etapa == Etapa.BALDOSAS) {
                 eq.verHasta = now + 100;
             }
-            for (int j = 0; j < Circuito.PALANCAS; j++) {
-                BlockPos q = Complejo.pos(s, eq.pre() + "tablero." + j);
-                if (q != null) {
-                    s.overworld().setBlock(q, eq.patron[j] ? verde : rojo, 3);
-                }
-            }
+            tablero(s, eq, true);
         }
     }
 
@@ -1314,8 +1768,12 @@ public final class Sentidos {
         vitrinaComoNueva(s);
     }
 
-    /** Quita la cera, abre los frentes de las vitrinas y apaga sus luces. */
+    /** Deja el teatro como nuevo: el telón cerrado, las vitrinas vacías y abiertas, la salida cerrada. */
     public static void vitrinaComoNueva(MinecraftServer s) {
+        teatroComoNuevo(s);
+    }
+
+    private static void teatroComoNuevo(MinecraftServer s) {
         if (!Complejo.construido(s, "vitrina")) {
             return;
         }
@@ -1338,12 +1796,37 @@ public final class Sentidos {
                 be.escribir(0xD9A93A, "PIEZA", "—");
             }
         }
+        BlockPos o = Complejo.origen(s, "vitrina");
+        if (o != null) {
+            BlockState tel = Complejo.estado(MOD + ":telon"), borde = Complejo.estado(MOD + ":telon_borde");
+            for (int x = SalaVitrina.TELON_X0; x <= SalaVitrina.TELON_X1; x++) {
+                for (int y = 1; y <= SalaVitrina.TELON_Y1; y++) {
+                    BlockPos q = o.offset(x, y, SalaVitrina.TELON_Z);
+                    BlockState want = y == 1 ? borde : tel;
+                    if (l.getBlockState(q).getBlock() != want.getBlock()) {
+                        l.setBlock(q, want, 2 | 16);
+                    }
+                }
+            }
+        }
+        puerta(s, "vit.salida", false);
+        for (int n = 1; n <= SalaVitrina.CUARTOS; n++) {
+            Cabina.puerta(s, "sal_tea_" + n, false);
+        }
+        // las estatuas de la función anterior
+        if (o != null) {
+            for (Cadaver c : l.getEntitiesOfClass(Cadaver.class, new net.minecraft.world.phys.AABB(o, o.offset(SalaVitrina.ANTESALA_X1 + 2, 18, 61)))) {
+                if (c.estatua()) {
+                    c.discard();
+                }
+            }
+        }
     }
 
     private static void limpiar(MinecraftServer s) {
         com.coleccionista.voz.Voz.juntar();
         com.coleccionista.voz.Voz.mudos(Set.of());
-        // todas las sillas fuera (también las de la galería y la vitrina): nadie se queda sentado para la siguiente prueba
+        // todas las sillas fuera (también las del teatro y la vitrina): nadie se queda sentado para la siguiente prueba
         for (Equipo eq : equipos) {
             for (Silla si : eq.sillas) {
                 si.soltar();
@@ -1352,23 +1835,21 @@ public final class Sentidos {
         }
         for (Victima v : victimas) {
             ServerPlayer sp = s.getPlayerList().getPlayer(v.id);
-                    if (sp != null) {
+            if (sp != null) {
                 sp.setInvulnerable(false);
             }
         }
         fase = Fase.NADA;
         equipos.clear();
         botElige.clear();
+        paso.clear();
         victimas.clear();
+        estatuas.clear();
         cajas = 0;
         capas = 0;
-        vitT0 = -1;
-        ceraT0 = -1;
-        negroT0 = -1;
-        vitCerrada = false;
-        ceraAviso = false;
-        negro = false;
-        estatuas = false;
+        finT0 = telonT0 = ceraT0 = finalFin = -1;
+        telonPaso = 0;
+        palcos = levantan = gas = aVitrinas = despiertan = telon = hablo = ceraAviso = endurecida = rotas = caen = golpe = salidaAbierta = antesala = false;
         t = 0;
         cambio = true;
     }
@@ -1418,6 +1899,7 @@ public final class Sentidos {
             }
             x.put("cuerdas", cs);
             x.putBoolean("salio", eq.etapa.ordinal() >= Etapa.SENTADOS.ordinal());
+            x.putBoolean("perdio", eq.perdio && fase.ordinal() >= Fase.FINAL.ordinal());
             l.add(x);
         }
         c0.put("trios", l);

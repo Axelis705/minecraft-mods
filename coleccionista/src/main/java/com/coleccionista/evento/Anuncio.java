@@ -42,6 +42,17 @@ public final class Anuncio {
         }
     }
 
+    /** Un título grande para todas las piezas vivas (no para quien organiza ni los fantasmas). */
+    public static void titulo(MinecraftServer s, Component t, Component sub) {
+        Evento ev = Evento.get(s);
+        for (Pieza pz : ev.vivos()) {
+            ServerPlayer p = pz.bot ? null : s.getPlayerList().getPlayer(pz.id);
+            if (p != null) {
+                Fx.title(p, t, sub, 0xE8E2D8);
+            }
+        }
+    }
+
     public static void sonido(MinecraftServer s, SoundEvent e, float vol, float tono) {
         for (ServerPlayer p : s.getPlayerList().getPlayers()) {
             p.playNotifySound(e, SoundSource.MASTER, vol, tono);

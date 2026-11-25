@@ -656,6 +656,91 @@ def puerta_reja():
     return p
 
 
+def _puerta_panel(p, panel, borde, filete, rejillas=False, remaches=None):
+    """Una hoja lisa de puerta corrediza (opaca: no se ve del otro lado), en la linea z 7..9 como la reja. Las dos mitades."""
+    z0, z1 = 7.2, 8.8
+    abajo = ('down',)
+    p.at('lower')
+    p.box(0, 0, z0, 16, 16, z1, panel, skip=abajo)
+    p.box(0, 0, 6.8, 16, 2.5, 9.2, borde, skip=abajo)                  # zoclo
+    p.box(0, 0, 6.9, 1.2, 16, 9.1, borde, skip=abajo)                  # cantos
+    p.box(14.8, 0, 6.9, 16, 16, 9.1, borde, skip=abajo)
+    p.box(2.5, 8, 7.05, 13.5, 8.6, 8.95, filete)                       # filete del panel de abajo
+    p.box(2.5, 4, 7.05, 3.1, 8, 8.95, filete)
+    p.box(12.9, 4, 7.05, 13.5, 8, 8.95, filete)
+    p.box(2.5, 4, 7.05, 13.5, 4.6, 8.95, filete)
+    if remaches:
+        for x in (2.2, 13.8):
+            for y in (3.5, 9.5, 14.5):
+                p.box(x - 0.4, y - 0.4, 6.95, x + 0.4, y + 0.4, 9.05, remaches)
+    p.at('upper')
+    p.box(0, 0, z0, 16, 14.5, z1, panel)
+    p.box(0, 0, 6.9, 1.2, 14.5, 9.1, borde)
+    p.box(14.8, 0, 6.9, 16, 14.5, 9.1, borde)
+    p.box(0, 14.5, 6.6, 16, 16, 9.4, borde)                           # riel de arriba
+    p.box(2.5, 3, 7.05, 13.5, 3.6, 8.95, filete)                       # el marco del panel de arriba
+    p.box(2.5, 11, 7.05, 13.5, 11.6, 8.95, filete)
+    p.box(2.5, 3, 7.05, 3.1, 11.6, 8.95, filete)
+    p.box(12.9, 3, 7.05, 13.5, 11.6, 8.95, filete)
+    if rejillas:
+        # abanico art deco en el panel de arriba
+        for i, x in enumerate((5.0, 6.5, 8.0, 9.5, 11.0)):
+            h = 4.5 + (2 - abs(i - 2)) * 1.6
+            p.box(x - 0.25, 3.6, 7.0, x + 0.25, 3.6 + h, 9.0, filete)
+    if remaches:
+        for x in (2.2, 13.8):
+            for y in (2.0, 7.0, 12.5):
+                p.box(x - 0.4, y - 0.4, 6.95, x + 0.4, y + 0.4, 9.05, remaches)
+    return p
+
+
+def puerta_ascensor():
+    """Puerta de ascensor de laton (dos hojas, se corren hacia los lados y se meten en el muro): opaca, para que no se vea que la cabina
+    no se mueve."""
+    p = Prop('puerta_ascensor', 'Puerta de ascensor', 'Lift door', kind='floor', tall=True, sound='metal', seed=70)
+    laton = kit.metal(Ramp('#5c4520', '#6f5428', '#836431', '#97753a', '#a98543'), streak=0.7, seed=70, sparkle=0.03)
+    borde = pintado('#2a2723', oxido=0.12, seed=71, saltado=0.05)
+    filete = kit.metal(Ramp('#7a5f2c', '#9a7a3a', '#b8954a', '#cfab5a'), streak=0.4, seed=72, sparkle=0.08)
+    return _puerta_panel(p, laton, borde, filete, rejillas=True)
+
+
+def puerta_metal():
+    """Puerta corrediza de acero remachado (la salida de los circuitos y los pasillos del Coleccionista): opaca."""
+    p = Prop('puerta_metal', 'Puerta de acero', 'Steel sliding door', kind='floor', tall=True, sound='metal', seed=73)
+    chapa = pintado('#39433a', oxido=0.3, seed=73, saltado=0.12)
+    borde = pintado('#262a25', oxido=0.25, seed=74, saltado=0.08)
+    filete = pintado('#2f362f', oxido=0.35, seed=75, saltado=0.1)
+    rem = acero(seed=76, sucio=0.5)
+    return _puerta_panel(p, chapa, borde, filete, remaches=rem)
+
+
+def muneca():
+    """Una muneca de porcelana sentada (vestido de encaje viejo, ojos negros, una grieta): para los estantes del taller."""
+    p = Prop('muneca', 'Muñeca de porcelana', 'Porcelain doll', kind='floor', sound='glass', seed=77, collide=False)
+    por = porcelana(77, sucio=0.3)
+    vestido = tela('#6a5a52', seed=78, sucio=0.35)
+    encaje = tela('#cfc6b0', seed=79, sucio=0.4)
+    pelo = tela('#3a2416', seed=80, sucio=0.2)
+    negro = solid('#0b0a0a')
+    # sentada mirando al frente (norte): piernas hacia z 0
+    p.box(5.5, 0, 6, 10.5, 3, 11, vestido)                  # falda
+    p.box(5, 0, 3.5, 7.2, 1.6, 6.5, por)                    # piernas
+    p.box(8.8, 0, 3.5, 11, 1.6, 6.5, por)
+    p.box(5.2, 0, 3.0, 7.0, 1.2, 3.6, solid('#2a1a14'))     # zapatos
+    p.box(9.0, 0, 3.0, 10.8, 1.2, 3.6, solid('#2a1a14'))
+    p.box(6, 3, 7, 10, 7, 10, vestido)                      # torso
+    p.box(6, 6.4, 6.9, 10, 7.2, 10.1, encaje)               # cuello de encaje
+    p.box(4.6, 3.6, 7.5, 6, 6.8, 9.2, por)                  # brazos
+    p.box(10, 3.6, 7.5, 11.4, 6.8, 9.2, por)
+    p.box(6.2, 7.2, 6.6, 9.8, 11.2, 10.2, por)              # cabeza
+    p.box(6.9, 9.2, 6.45, 7.7, 10.0, 6.6, negro)            # ojos
+    p.box(8.3, 9.2, 6.45, 9.1, 10.0, 6.6, negro)
+    p.box(7.5, 7.9, 6.45, 8.5, 8.3, 6.6, solid('#7a2020'))  # boca
+    p.box(5.9, 10.2, 6.4, 10.1, 11.8, 10.5, pelo)           # pelo
+    p.box(5.9, 7.6, 9.4, 10.1, 11.0, 10.6, pelo)
+    return p
+
+
 def all_props():
     return [catre(), retrete(), lavabo(), espejo(), cajon(), silla(), lampara_tubo(True), lampara_tubo(False), lampara_jaula(True),
             lampara_jaula(False), rejilla_ventilacion(), camara(), bocina(), reloj(), telarana(),

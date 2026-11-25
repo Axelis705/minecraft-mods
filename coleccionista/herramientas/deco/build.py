@@ -171,7 +171,7 @@ def puerta(bid, es, en, abajo, arriba, sonido='metal'):
     nombre(bid, es, en)
 
 
-def puerta_reja(p, corre=15, sale=2.5):
+def puerta_reja(p, corre=15, sale=2.5, ascensor=False, icono=None):
     """Puerta corrediza de reja (kit, dos bloques de alto). Modelos cerrados (los que dibuja el juego moviendolos) y abiertos (ya corrida
     a un lado y un poco hacia afuera: los usa el visor y el bloque si no hay animacion). bisagra izquierda corre a +x, derecha a -x."""
     import copy
@@ -210,8 +210,15 @@ def puerta_reja(p, corre=15, sale=2.5):
                         e['y'] = y
                     v[f'facing={f},half={part},hinge={hinge},open={op}'] = e
     dump(f'blockstates/{p.id}.json', {'variants': v})
-    # el objeto: dibujo plano de la reja
+    # el objeto: dibujo plano de la reja (o el que se pida)
     ic = Image.new('RGBA', (32, 32))
+    if icono:
+        icono(ic)
+        tex(p.id + '_objeto', ic)
+        dump(f'models/item/{p.id}.json', {'parent': 'minecraft:item/generated', 'textures': {'layer0': f'{NS}:block/{p.id}_objeto'}})
+        ficha.append({'id': p.id, 'kind': 'reja', 'sound': 'metal', 'strength': 5.0, 'ascensor': ascensor})
+        nombre(p.id, p.es, p.en)
+        return
     d = ImageDraw.Draw(ic)
     marco, barra, chapa = (58, 64, 62, 255), (44, 48, 46, 255), (64, 72, 64, 255)
     d.rectangle((9, 1, 22, 31), outline=marco, width=2)
@@ -237,6 +244,42 @@ def puerta_reja(p, corre=15, sale=2.5):
             os.remove(os.path.join(A, f'textures/block/{p.id}{t}.png'))
         except FileNotFoundError:
             pass
+
+
+def icono_puerta(fondo, filete):
+    """El dibujo del objeto de una puerta corrediza opaca: dos hojas con su filete."""
+    def f(ic):
+        from PIL import ImageDraw
+        d = ImageDraw.Draw(ic)
+        d.rectangle((7, 1, 24, 31), fill=fondo, outline=(30, 28, 25, 255))
+        d.line((15, 2, 15, 30), fill=(30, 28, 25, 255))
+        d.line((16, 2, 16, 30), fill=(30, 28, 25, 255))
+        for x0 in (9, 18):
+            d.rectangle((x0, 5, x0 + 4, 14), outline=filete)
+            d.rectangle((x0, 18, x0 + 4, 27), outline=filete)
+    return f
+
+
+def capas(bid, es, en, fn, sonido='wool', dureza=0.6):
+    """Bloque por capas (como la nieve, 8 capas de 2 px): la cera que sube en las vitrinas. No se derrite ni se cae."""
+    t = tex(bid, fn(1))
+    v = {}
+    for n in range(1, 9):
+        h = 2 * n
+        caras = {}
+        for f in ('north', 'south', 'east', 'west'):
+            caras[f] = {'texture': '#0', 'uv': [0, 16 - h, 16, 16], 'cullface': f}
+        caras['down'] = {'texture': '#0', 'uv': [0, 0, 16, 16], 'cullface': 'down'}
+        caras['up'] = {'texture': '#0', 'uv': [0, 0, 16, 16]}
+        if h == 16:
+            caras['up']['cullface'] = 'up'
+        dump(f'models/block/{bid}_{n}.json', {'parent': 'minecraft:block/block', 'textures': {'0': t, 'particle': t},
+                                              'elements': [{'from': [0, 0, 0], 'to': [16, h, 16], 'faces': caras}]})
+        v[f'layers={n}'] = {'model': f'{NS}:block/{bid}_{n}'}
+    dump(f'blockstates/{bid}.json', {'variants': v})
+    dump(f'models/item/{bid}.json', {'parent': f'{NS}:block/{bid}_2'})
+    ficha.append({'id': bid, 'kind': 'capas', 'sound': sonido, 'strength': dureza})
+    nombre(bid, es, en)
 
 
 def cadena_blk(bid, es, en, fn):
@@ -405,6 +448,8 @@ def catalogo():
     barrotes('barandal', 'Barandal', 'Railing', lambda s: barandal_tex(s))
     ficha[-1]['alto'] = True  # choca como cerca: nadie se sube
     puerta_reja(props_celdas.puerta_reja())
+    puerta_reja(props_celdas.puerta_ascensor(), ascensor=True, icono=icono_puerta((150, 117, 58, 255), (210, 172, 90, 255)))
+    puerta_reja(props_celdas.puerta_metal(), ascensor=True, icono=icono_puerta((58, 67, 58, 255), (40, 46, 40, 255)))
     alfombra('alfombra_roja', 'Alfombra roja', 'Red carpet', lambda s: M.alfombra(s))
     tubo('tubo', 'Tubería oxidada', 'Rusty pipe', lambda s: M.metal_placa(s, '#4d5249', pintado=0.5, remaches=False))
     tubo('poste', 'Poste de acero', 'Steel post', lambda s: poste_tex(s), a=4.5, b=11.5, brida=0.6)
@@ -457,6 +502,10 @@ def catalogo():
     cubo('marmol_oro', 'Mármol negro y oro', 'Gold-veined marble', lambda s: M.marmol(s, veta='#b08a3a', brillo=1.0), variantes=3)
     cubo('madera_pulida', 'Madera pulida', 'Polished wood', lambda s: M.madera_pulida(s), variantes=2, sonido='wood')
     losa('losa_marmol', 'Losa de mármol', 'Marble slab', lambda s: M.marmol(s, brillo=1.0), sonido='stone')
+    # ---- el teatro de la colección (final del capítulo 1)
+    capas('cera', 'Cera', 'Wax', lambda s: M.cera(s))
+    cubo('telon', 'Telón de terciopelo', 'Velvet stage curtain', lambda s: M.telon(s), variantes=2, sonido='wool', dureza=0.8)
+    cubo('telon_borde', 'Telón (orilla con fleco)', 'Stage curtain (fringe)', lambda s: M.telon(s, borde=True), variantes=1, sonido='wool', dureza=0.8)
     # ---- la Sala de las puertas: marcos de luz que cambian de color
     cubo('marco_luz_apagado', 'Marco de luz (apagado)', 'Light frame (off)', lambda s: M.marco_luz(s), variantes=1, sonido='metal')
     for cid, ces, cen, col in (('roja', 'rojo', 'red', '#ff3b3b'), ('azul', 'azul', 'blue', '#4a86ff'), ('verde', 'verde', 'green', '#6cff4a'),
@@ -484,6 +533,7 @@ def catalogo():
     prop(P.letrero(), {'texto': 'letrero'})
     prop(P.rayon(), {'texto': 'rayon'})
     prop(P.mesa())
+    prop(P.muneca())
     for t in ('venda', 'cinta', 'esposas'):
         prop(P.objeto(t), {'objeto': t})
     Q = props_complejo

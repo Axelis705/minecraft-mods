@@ -131,6 +131,20 @@
    "strength": 5.0
   },
   {
+   "id": "puerta_ascensor",
+   "kind": "reja",
+   "sound": "metal",
+   "strength": 5.0,
+   "ascensor": true
+  },
+  {
+   "id": "puerta_metal",
+   "kind": "reja",
+   "sound": "metal",
+   "strength": 5.0,
+   "ascensor": true
+  },
+  {
    "id": "alfombra_roja",
    "kind": "alfombra",
    "sound": "wool",
@@ -420,6 +434,26 @@
    "sound": "stone",
    "strength": 2.0,
    "transparente": false
+  },
+  {
+   "id": "cera",
+   "kind": "capas",
+   "sound": "wool",
+   "strength": 0.6
+  },
+  {
+   "id": "telon",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 0.8,
+   "light": 0
+  },
+  {
+   "id": "telon_borde",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 0.8,
+   "light": 0
   },
   {
    "id": "marco_luz_apagado",
@@ -1932,6 +1966,141 @@
    "particles": [],
    "es": "Mesa de metal",
    "en": "Metal table",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "muneca",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "glass",
+   "shape": [
+    [
+     5.5,
+     0.0,
+     6.0,
+     10.5,
+     3.0,
+     11.0
+    ],
+    [
+     5.0,
+     0.0,
+     3.5,
+     7.2,
+     1.6,
+     6.5
+    ],
+    [
+     8.8,
+     0.0,
+     3.5,
+     11.0,
+     1.6,
+     6.5
+    ],
+    [
+     5.2,
+     0.0,
+     3.0,
+     7.0,
+     1.2,
+     3.6
+    ],
+    [
+     9.0,
+     0.0,
+     3.0,
+     10.8,
+     1.2,
+     3.6
+    ],
+    [
+     6.0,
+     3.0,
+     7.0,
+     10.0,
+     7.0,
+     10.0
+    ],
+    [
+     6.0,
+     6.4,
+     6.9,
+     10.0,
+     7.2,
+     10.1
+    ],
+    [
+     4.6,
+     3.6,
+     7.5,
+     6.0,
+     6.8,
+     9.2
+    ],
+    [
+     10.0,
+     3.6,
+     7.5,
+     11.4,
+     6.8,
+     9.2
+    ],
+    [
+     6.2,
+     7.2,
+     6.6,
+     9.8,
+     11.2,
+     10.2
+    ],
+    [
+     6.9,
+     9.2,
+     6.45,
+     7.7,
+     10.0,
+     6.6
+    ],
+    [
+     8.3,
+     9.2,
+     6.45,
+     9.1,
+     10.0,
+     6.6
+    ],
+    [
+     7.5,
+     7.9,
+     6.45,
+     8.5,
+     8.3,
+     6.6
+    ],
+    [
+     5.9,
+     10.2,
+     6.4,
+     10.1,
+     11.8,
+     10.5
+    ],
+    [
+     5.9,
+     7.6,
+     9.4,
+     10.1,
+     11.0,
+     10.6
+    ]
+   ],
+   "particles": [],
+   "es": "Muñeca de porcelana",
+   "en": "Porcelain doll",
    "soft": false,
    "sub": "floor"
   },

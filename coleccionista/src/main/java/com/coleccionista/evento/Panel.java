@@ -146,6 +146,11 @@ public final class Panel {
                 com.coleccionista.prueba.Sentidos.reiniciar(s);
                 Capitulo1.reiniciar(s);
             }
+            case "pocos" -> {
+                ev.pocos = d.getBoolean("si");
+                ev.cambio(s);
+                Coleccionista.LOGGER.info("COLECCIONISTA_POCOS {}", ev.pocos);
+            }
             case "auto_inscripcion" -> {
                 ev.autoInscribir = d.getBoolean("si");
                 ev.cambio(s);

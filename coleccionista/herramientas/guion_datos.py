@@ -39,11 +39,6 @@ GUIONES = {
         ("solo_uno", "Y al final… solo uno podrá salir.", "And in the end… only one will be able to leave.", "Pausa larga antes de «solo uno»."),
         ("los_demas", "Los demás… se quedan conmigo para siempre.", "The rest… stay with me forever.", "Bajando la voz en «para siempre»."),
         ("risa", "Je, je, je… ¡Ja, ja, ja!", "Heh, heh, heh… Ha, ha, ha!", "Empieza contenida y se le escapa al final."),
-        ("candado", "Primero necesitan salir de su celda. El candado tiene tres números… y los tres números están escondidos.",
-         "First you need to get out of your cell. The lock has three numbers… and all three numbers are hidden.", "Ya compuesto. Explica."),
-        ("escondidos", "Si no puedes pasar de aquí… je… te deseo suerte.", "If you can't get past this… heh… good luck.",
-         "Burlón; el «je» es una risita."),
-        ("final_risa", "¡Ja, ja, ja!", "Ha, ha, ha!", "Carcajada para cerrar."),
     ],
     "salida": [
         ("bravo", "Bravo… bravo.", "Bravo… bravo.", "Aplaudiendo despacio (si quieres, aplaude de verdad)."),
@@ -90,6 +85,12 @@ GUIONES = {
     "vitrina_fin": [
         ("hermosas", "Hermosas.", "Beautiful.", "Un suspiro, enamorado."),
         ("siguen", "Los demás… acompáñenme. La función continúa.", "The rest of you… follow me. The show goes on.", "Anfitrión, invitando a seguir."),
+        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
+    ],
+    "antesala": [
+        ("polvo", "Las piezas lentas… solo juntan polvo.", "Slow pieces… only gather dust.", "Despectivo, sin levantar la voz."),
+        ("servian", "Esas no me servían. Ustedes… todavía sí.", "Those were no use to me. You… still are.", "Pausa antes de «todavía sí»."),
+        ("casa", "Sigan el pasillo. Mi casa los espera.", "Follow the hallway. My house awaits.", "Anfitrión; «mi casa» con cariño."),
         ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
     "montacargas": [
@@ -247,8 +248,8 @@ GUIONES = {
 }
 
 TITULOS = {
-    "bienvenida": "El despertar: el discurso de la tele (después de investigar)",
-    "salida": "El despertar: cuando todas salen de sus celdas (pantalla grande)",
+    "bienvenida": "Capítulo 1 · La sala grande: la bienvenida (cuando ya entraron todos; en el patio ya no habla)",
+    "salida": "(Ya no se usa: en el patio el Coleccionista no habla)",
     "montacargas": "El montacargas (entre pruebas: el viaje y una parada por zona)",
     "encadenados": "Prueba 1 · Encadenados",
     "traidor": "Prueba 2 · El traidor",
@@ -262,6 +263,7 @@ TITULOS = {
     "sentidos": "Capítulo 1 · El taller de los sentidos (la mesa)",
     "vitrina": "Capítulo 1 · La vitrina (el último equipo)",
     "vitrina_fin": "Capítulo 1 · Después de la cera",
+    "antesala": "Capítulo 1 · La antesala (después del teatro: la puerta se cierra detrás de todos)",
 }
 ZONAS = ["cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria"]
 

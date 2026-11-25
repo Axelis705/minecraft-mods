@@ -6,9 +6,9 @@ forceload add -112 64 -32 128
 forceload add 208 24 256 64
 forceload add -100 190 390 222
 forceload add 48 268 170 316
-forceload add 0 436 340 532
-forceload add 341 436 660 532
-forceload add -82 438 -46 472
+forceload add 0 436 340 590
+forceload add 341 436 690 590
+forceload add -82 438 -8 502
 #pausa 3
 evento reiniciar confirmar
 evento recorrido auto false
@@ -40,9 +40,10 @@ evento investigar 5
 evento sala
 #pausa 2
 evento despertar
-#pausa 96
+#pausa 14
 evento celdas abrir
 evento salida
+evento capitulo1 parar
 #pausa 2
 evento eliminar Bot_02
 evento cuerpos limpiar
@@ -210,13 +211,15 @@ evento sentidos bots si 3 4
 evento sentidos tiempos 8 120
 evento porton abrir
 evento capitulo1 sala
-evento capitulo1 equipos
 #pausa 30
-#pausa 22
-evento sentidos saltar
-#pausa 8
-#pausa 14
-#pausa 40
+#pausa 30
+#pausa 25
+#pausa 30
+#pausa 30
+#pausa 25
+#pausa 15
+#pausa 25
+#pausa 30
 #pausa 25
 #pausa 30
 evento capitulo1
@@ -230,7 +233,9 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CONSTRUIDO circ_10
 #expect COLECCIONISTA_CONSTRUIDO vitrina
 #expect COLECCIONISTA_PORTON sube
+#expect COLECCIONISTA_CAP1 todos_en_sala=true
 #expect COLECCIONISTA_CAP1 equipos
+#expect COLECCIONISTA_PORTON baja
 #expect COLECCIONISTA_DISCURSO equipos
 #expect COLECCIONISTA_CAP1 formar
 #expect COLECCIONISTA_CAP1 cuenta
@@ -240,6 +245,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CABINA llega circ_2
 #expect COLECCIONISTA_CAP1 llegaron
 #expect COLECCIONISTA_SENTIDOS llegaron
+#expect COLECCIONISTA_SENTIDOS habla
 #expect COLECCIONISTA_DISCURSO sentidos
 #expect COLECCIONISTA_SENTIDOS elegir
 #expect COLECCIONISTA_SENTIDOS rol
@@ -248,13 +254,20 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_SENTIDOS sentados equipo=
 #expect ultimo=false
 #expect ultimo=true
-#expect COLECCIONISTA_SENTIDOS galeria equipo=
-#expect COLECCIONISTA_SENTIDOS vitrina equipo=
-#expect COLECCIONISTA_SENTIDOS todos fuera victimas=2
-#expect COLECCIONISTA_SENTIDOS vitrina cierra
+#expect COLECCIONISTA_SENTIDOS final equipos=2 pierden=1
+#expect COLECCIONISTA_CABINA traslada sal_circ_
+#expect COLECCIONISTA_SENTIDOS palcos
+#expect COLECCIONISTA_SENTIDOS gas
+#expect COLECCIONISTA_SENTIDOS vitrina victimas=2
+#expect COLECCIONISTA_SENTIDOS telon
 #expect COLECCIONISTA_DISCURSO vitrina
 #expect COLECCIONISTA_SENTIDOS cera
 #expect COLECCIONISTA_SENTIDOS estatuas=2
+#expect COLECCIONISTA_SENTIDOS caen=2
+#expect COLECCIONISTA_DISCURSO vitrina_fin
+#expect COLECCIONISTA_SENTIDOS salida_teatro
+#expect COLECCIONISTA_SENTIDOS antesala
+#expect COLECCIONISTA_DISCURSO antesala
 #expect COLECCIONISTA_CAPITULO1 fin
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
@@ -272,9 +285,8 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_DESPERTAR piezas=4
 #expect COLECCIONISTA_DISCURSO bienvenida
 #expect COLECCIONISTA_DISCURSO_FIN bienvenida
-#expect COLECCIONISTA_CANDADOS activos
-#expect COLECCIONISTA_SALIDA discurso
-#expect COLECCIONISTA_DISCURSO salida
+#expect COLECCIONISTA_CANDADOS activos segundos=120
+#expect COLECCIONISTA_SALIDA porton abiertas_solas=
 #expect COLECCIONISTA_MINIJUEGO 3 preparar
 #expect COLECCIONISTA_MINIJUEGO 3 terminar
 #expect COLECCIONISTA_CONSTRUIDO ante_salon

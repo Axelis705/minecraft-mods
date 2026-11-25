@@ -269,6 +269,60 @@ public final class Cabina {
         }
     }
 
+    /**
+     * Pasa a esas entidades (y a esas sillas, con quien vaya sentado en ellas) de la cabina o cuarto {@code desde} al idéntico {@code hasta},
+     * en el mismo lugar relativo y mirando igual, sin viaje ni puertas: para los cuartos que tienen una copia exacta en otro lado.
+     */
+    public static void trasladar(MinecraftServer s, String desde, String hasta, List<? extends Entity> van, List<com.coleccionista.evento.Silla> sillas) {
+        ServerLevel l = s.overworld();
+        BlockPos a = Complejo.pos(s, "cab." + desde + ".origen"), b = Complejo.pos(s, "cab." + hasta + ".origen");
+        if (a == null || b == null) {
+            return;
+        }
+        float giro = Complejo.yaw("cab." + hasta + ".origen") - Complejo.yaw("cab." + desde + ".origen");
+        java.util.Set<Entity> movidos = new java.util.HashSet<>();
+        for (com.coleccionista.evento.Silla si : sillas) {
+            if (!si.isAlive()) {
+                continue;
+            }
+            List<Entity> pas = new ArrayList<>(si.getPassengers());
+            boolean cerrada = si.cerrada();
+            Vec3 nuevo = Vec3.atLowerCornerOf(b).add(local(si.getX() - a.getX(), si.getY() - a.getY(), si.getZ() - a.getZ(), giro));
+            float yaw = si.getYRot() + giro;
+            si.soltar();
+            si.moveTo(nuevo.x, nuevo.y, nuevo.z, yaw, 0F);
+            si.setYHeadRot(yaw);
+            for (Entity e : pas) {
+                float ey = e.getYRot() + giro;
+                e.fallDistance = 0;
+                if (e instanceof ServerPlayer sp) {
+                    sp.teleportTo(l, nuevo.x, nuevo.y + 0.5, nuevo.z, ey, sp.getXRot());
+                } else {
+                    e.moveTo(nuevo.x, nuevo.y + 0.5, nuevo.z, ey, e.getXRot());
+                }
+                e.startRiding(si, true);
+                movidos.add(e);
+            }
+            si.cerrar(cerrada, false);
+        }
+        for (Entity e : van) {
+            if (!e.isAlive() || movidos.contains(e) || e.isPassenger()) {
+                continue;
+            }
+            Vec3 nuevo = Vec3.atLowerCornerOf(b).add(local(e.getX() - a.getX(), e.getY() - a.getY(), e.getZ() - a.getZ(), giro));
+            float yaw = e.getYRot() + giro;
+            e.fallDistance = 0;
+            if (e instanceof ServerPlayer sp) {
+                sp.teleportTo(l, nuevo.x, nuevo.y, nuevo.z, yaw, sp.getXRot());
+            } else {
+                e.moveTo(nuevo.x, nuevo.y, nuevo.z, yaw, e.getXRot());
+                e.setYHeadRot(yaw);
+            }
+            e.setDeltaMovement(Vec3.ZERO);
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_CABINA traslada {} -> {} van={} sillas={}", desde, hasta, van.size(), sillas.size());
+    }
+
     /** Abre o cierra la puerta de una cabina (sus hojas, de arriba y de abajo). */
     public static void puerta(MinecraftServer s, String id, boolean abrir) {
         ServerLevel l = s.overworld();

@@ -57,7 +57,7 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         m.riding = false;
         int pos = c.postura();
         if (c.estatua()) {
-            estatua(c, m, slim, id, ps, buf, light);
+            estatua(c, m, slim, id, ps, buf, light, pt);
             super.render(c, yaw, pt, ps, buf, light);
             return;
         }
@@ -91,11 +91,16 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         super.render(c, yaw, pt, ps, buf, light);
     }
 
+    private static final ResourceLocation PIEDRA = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID,
+            "textures/entity/estatua_piedra.png");
+
     /**
-     * La estatua de cera de la vitrina: sentada (como quien va en la silla), con las manos agarradas a los brazos de la silla, la cabeza
-     * echada para atrás (el grito) y todo color cera, con un brillo húmedo.
+     * La estatua de la vitrina: la cera endurecida en piedra con la forma de la pieza (y su piel, gris). Sentada (como quien va en la silla),
+     * con las manos agarradas a los brazos de la silla y la cabeza echada para atrás (el grito). Cuando se abre la vitrina se va de frente
+     * (gira sobre las rodillas, cada vez más rápido) y queda tirada en el piso.
      */
-    private void estatua(Cadaver c, PlayerModel<AbstractClientPlayer> m, boolean slim, UUID id, PoseStack ps, MultiBufferSource buf, int light) {
+    private void estatua(Cadaver c, PlayerModel<AbstractClientPlayer> m, boolean slim, UUID id, PoseStack ps, MultiBufferSource buf, int light,
+            float pt) {
         int v = c.postura() - Cadaver.ESTATUA;
         m.head.setRotation(-0.45F - 0.05F * (v % 3), 0.12F * ((v % 3) - 1), 0);
         m.body.setRotation(0.05F, 0, 0);
@@ -111,19 +116,29 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         m.leftPants.copyFrom(m.leftLeg);
         ps.pushPose();
         ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
+        if (c.cae() > 0 && c.level() != null) {
+            // de frente (hacia -z aquí): baja del asiento al piso y gira sobre la orilla de enfrente de las rodillas
+            float t = net.minecraft.util.Mth.clamp((c.level().getGameTime() - c.cae() + pt) / 10F, 0F, 1F);
+            float k = t * t;
+            float ang = 74F * k;
+            ps.translate(0, -0.42F * k, 0);
+            ps.translate(0, 0.42F, -0.72F);
+            ps.mulPose(Axis.XP.rotationDegrees(-ang));
+            ps.translate(0, -0.42F, 0.72F);
+        }
         ps.scale(-1, -1, 1);
         ps.translate(0, -1.501, 0);
-        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, 1F, 0.78F,
-                0.46F, 1F);
+        // la piel, gris como piedra
+        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, 0.62F,
+                0.61F, 0.6F, 1F);
         com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
         com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
                 m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);
         d.flush();
-        // una capa de cera encima, un poquito más grande y translúcida
-        ps.scale(1.04F, 1.02F, 1.04F);
-        ps.translate(0, -0.02, 0);
-        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityTranslucent(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, 1F, 0.72F,
-                0.30F, 0.45F);
+        // y una capa de piedra encima, un poquito más grande (grietas y grano)
+        ps.scale(1.03F, 1.015F, 1.03F);
+        ps.translate(0, -0.01, 0);
+        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityTranslucent(PIEDRA)), light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 0.62F);
         ps.popPose();
     }
 

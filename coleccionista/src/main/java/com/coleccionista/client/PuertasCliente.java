@@ -72,13 +72,10 @@ public final class PuertasCliente {
             }
         }
         if (linea != null) {
-            int lw = f.width(linea) + 16, y = EventoHud.lineaY(w, lw);
-            g.fillGradient(w / 2 - lw / 2, y, w / 2 + lw / 2, y + 13, 0xB0140C0E, 0x90080506);
-            g.drawCenteredString(f, linea, w / 2, y + 3, color);
-            // la ronda y qué hacer, debajo de la pista (sin encimarse con la tarjeta de arriba a la izquierda)
+            EventoHud.lado(g, linea, color, true);
+            // la ronda y qué hacer, debajo de la pista
             if (ronda != null) {
-                int rw = f.width(ronda) + 8, ry = EventoHud.debajo(w, rw, y + 16);
-                g.drawCenteredString(f, ronda, w / 2, ry + 2, 0xFFA89E96);
+                EventoHud.lado(g, ronda, 0xFFA89E96, false);
             }
         }
     }

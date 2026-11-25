@@ -44,21 +44,32 @@ public class RejaBE extends BlockEntity {
             return;
         }
         boolean abre = meta > prog;
+        boolean asc = s.getBlock() instanceof DecoReja r && r.ascensor;
         if (prog == 0F || prog == 1F) {
-            // arranca: el pestillo y el chirrido del riel
-            sonar(l, p, abre ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, 0.9F, 0.55F);
-            sonar(l, p, SoundEvents.GRINDSTONE_USE, 0.35F, 0.5F);
+            if (asc) {
+                // la campanita del ascensor y el motor de la puerta
+                if (abre) {
+                    sonar(l, p, SoundEvents.NOTE_BLOCK_BELL.get(), 0.7F, 1.2F);
+                }
+                sonar(l, p, abre ? SoundEvents.PISTON_EXTEND : SoundEvents.PISTON_CONTRACT, 0.35F, 0.55F);
+            } else {
+                // arranca: el pestillo y el chirrido del riel
+                sonar(l, p, abre ? SoundEvents.IRON_DOOR_OPEN : SoundEvents.IRON_DOOR_CLOSE, 0.9F, 0.55F);
+                sonar(l, p, SoundEvents.GRINDSTONE_USE, 0.35F, 0.5F);
+            }
             pasos = 0;
         }
         prog = abre ? Math.min(meta, prog + VEL) : Math.max(meta, prog - VEL);
         // las ruedas en el riel
-        if (++pasos % 4 == 0 && prog > 0.12F && prog < 0.95F) {
+        if (!asc && ++pasos % 4 == 0 && prog > 0.12F && prog < 0.95F) {
             sonar(l, p, SoundEvents.CHAIN_STEP, 0.45F, 0.55F + l.random.nextFloat() * 0.15F);
         }
         if (prog == meta) {
             // el golpe al llegar al tope
-            sonar(l, p, SoundEvents.IRON_TRAPDOOR_CLOSE, 1F, abre ? 0.5F : 0.42F);
-            sonar(l, p, SoundEvents.ANVIL_LAND, 0.12F, abre ? 1.5F : 1.3F);
+            sonar(l, p, SoundEvents.IRON_TRAPDOOR_CLOSE, asc ? 0.5F : 1F, abre ? 0.5F : 0.42F);
+            if (!asc) {
+                sonar(l, p, SoundEvents.ANVIL_LAND, 0.12F, abre ? 1.5F : 1.3F);
+            }
         }
     }
 

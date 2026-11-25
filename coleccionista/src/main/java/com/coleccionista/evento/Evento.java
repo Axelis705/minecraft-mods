@@ -66,6 +66,11 @@ public final class Evento {
      * a su celda y ve "Esperando jugadores".
      */
     public boolean autoInscribir = true;
+    /**
+     * Para probar con pocos (Axelis y una o dos personas más): no se salva nadie por ser de los últimos y, si hay un solo equipo en los
+     * sentidos, también pierde (así se ve el final completo).
+     */
+    public boolean pocos = false;
     /** Chat cerrado: solo el organizador, los organizadores y los operadores pueden escribir. */
     public boolean chatCerrado;
     /** Quién está disfrazado del Coleccionista (el organizador cuando aparece). */
@@ -284,7 +289,7 @@ public final class Evento {
         if (!p.vivo()) {
             return false;
         }
-        if (vivos().size() <= minimoParaLaFinal) {
+        if (!pocos && vivos().size() <= minimoParaLaFinal) {
             Coleccionista.LOGGER.info("COLECCIONISTA_SALVADO_FINAL {} {}", p.etiqueta(), p.nombre);
             Anuncio.todos(s, Anuncio.coleccionista(net.minecraft.network.chat.Component.translatable(MOD + ".chat.salvado_final",
                     Anuncio.nombre(p))));
@@ -493,6 +498,7 @@ public final class Evento {
         t.putBoolean("sala", sala);
         t.putBoolean("chatCerrado", chatCerrado);
         t.putBoolean("autoInscribir", autoInscribir);
+        t.putBoolean("pocos", pocos);
         ListTag dz = new ListTag();
         for (UUID id : disfraz) {
             CompoundTag x = new CompoundTag();
@@ -525,6 +531,7 @@ public final class Evento {
         sala = t.getBoolean("sala");
         chatCerrado = t.getBoolean("chatCerrado");
         autoInscribir = !t.contains("autoInscribir") || t.getBoolean("autoInscribir");
+        pocos = t.getBoolean("pocos");
         for (Tag x : t.getList("disfraz", Tag.TAG_COMPOUND)) {
             disfraz.add(((CompoundTag) x).getUUID("id"));
         }
@@ -540,6 +547,7 @@ public final class Evento {
         t.putBoolean("sala", sala);
         t.putBoolean("chatCerrado", chatCerrado);
         t.putBoolean("autoInscribir", autoInscribir);
+        t.putBoolean("pocos", pocos);
         ListTag l = new ListTag();
         int vivos = 0;
         for (Pieza p : piezas.values()) {

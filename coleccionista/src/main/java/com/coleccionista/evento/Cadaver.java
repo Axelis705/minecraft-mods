@@ -26,6 +26,8 @@ public class Cadaver extends Entity {
     private static final EntityDataAccessor<String> NOMBRE = SynchedEntityData.defineId(Cadaver.class, EntityDataSerializers.STRING);
     /** Un número para variar la postura (brazos y piernas). */
     private static final EntityDataAccessor<Integer> POSTURA = SynchedEntityData.defineId(Cadaver.class, EntityDataSerializers.INT);
+    /** La estatua cae de frente: desde qué tick del mundo (0: no ha caído). */
+    private static final EntityDataAccessor<Integer> CAE = SynchedEntityData.defineId(Cadaver.class, EntityDataSerializers.INT);
 
     public Cadaver(EntityType<?> type, Level level) {
         super(type, level);
@@ -36,6 +38,17 @@ public class Cadaver extends Entity {
         this.entityData.define(DUENO, Optional.empty());
         this.entityData.define(NOMBRE, "");
         this.entityData.define(POSTURA, 0);
+        this.entityData.define(CAE, 0);
+    }
+
+    /** La estatua se va de frente (hacia donde mira) y queda tirada, de piedra (la dibuja el cliente). */
+    public void caer(int tick) {
+        this.entityData.set(CAE, Math.max(1, tick));
+    }
+
+    /** Desde qué tick cae (0: sigue sentada). */
+    public int cae() {
+        return this.entityData.get(CAE);
     }
 
     public void de(UUID id, String nombre, int postura) {
@@ -96,6 +109,7 @@ public class Cadaver extends Entity {
         }
         this.entityData.set(NOMBRE, t.getString("Nombre"));
         this.entityData.set(POSTURA, t.getInt("Postura"));
+        this.entityData.set(CAE, t.getInt("Cae"));
     }
 
     @Override
@@ -106,6 +120,7 @@ public class Cadaver extends Entity {
         }
         t.putString("Nombre", nombre());
         t.putInt("Postura", postura());
+        t.putInt("Cae", cae());
     }
 
     @Override

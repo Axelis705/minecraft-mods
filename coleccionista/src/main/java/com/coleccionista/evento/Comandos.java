@@ -204,8 +204,20 @@ public final class Comandos {
                             Capitulo1.formar(c.getSource().getServer());
                             return ok(c, Component.literal("cap1=" + Capitulo1.resumen()));
                         }))
+                        .then(Commands.literal("parar").executes(c -> {
+                            Capitulo1.reiniciar(c.getSource().getServer());
+                            Pantallas.callar(c.getSource().getServer());
+                            return ok(c, Component.literal("cap1=" + Capitulo1.resumen()));
+                        }))
                         .then(Commands.literal("bajar").executes(c -> Capitulo1.bajar(c.getSource().getServer(), true)
                                 ? ok(c, Component.translatable(MOD + ".cmd.cap1_bajan")) : error(c, Component.translatable(MOD + ".cap1.no_bajan")))))
+                .then(Commands.literal("pocos").then(Commands.argument("si", com.mojang.brigadier.arguments.BoolArgumentType.bool())
+                        .executes(c -> {
+                            Evento ev = Evento.get(c.getSource().getServer());
+                            ev.pocos = com.mojang.brigadier.arguments.BoolArgumentType.getBool(c, "si");
+                            ev.cambio(c.getSource().getServer());
+                            return ok(c, Component.translatable(MOD + ".cmd.pocos", ev.pocos));
+                        })))
                 .then(Commands.literal("sentidos")
                         .executes(c -> ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen())))
                         .then(Commands.literal("saltar").executes(c -> com.coleccionista.prueba.Sentidos.saltar(c.getSource().getServer())

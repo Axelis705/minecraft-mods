@@ -1,86 +1,163 @@
 package com.coleccionista.mapa;
 
 /**
- * La galería de la vitrina: adonde llegan los que salieron de los circuitos y desde donde ven, tras un vidrio, la sala de exhibición del
- * Coleccionista. Ahí llegan las sillas del último equipo, cada una dentro de su vitrina de vidrio; cae la cera y se quedan para siempre.
+ * El teatro de la colección: el final del capítulo 1. Diez cuartos de "salida" (copias idénticas de los de los circuitos, ver
+ * {@link Salidas}) dan al teatro: cinco abajo y cinco en el palco de arriba. Cuando todos terminan, los que se salvaron pasan sentados
+ * de su cuarto del circuito a su copia de aquí (sin que se note) y se les abre la puerta: frente a ellos, un vidrio enorme con un telón
+ * rojo cerrado. Detrás del telón, el escenario con seis vitrinas, donde despierta el último equipo.
  * <pre>
- *   x: 0 ... 32   z: 0 ... 30   y: 0 ... 10
- *   galería (los vivos) z 1..10, el vidrio en z 11, la exhibición z 12..29
+ *   x: 0 ... 72   z: 0 ... 60   y: 0 ... 17
+ *   cuartos z 2..8 (abajo y en el palco, y 7), la sala z 10..38, el vidrio en z 39, el telón en z 40, el escenario z 41..58,
+ *   la salida en el muro del este (x 55) y la antesala detrás (x 56..70)
  * </pre>
- * Marcas: {@code vit.llega.K.i} (las sillas de llegada del equipo K, 1..10, i 0..2), {@code vit.caja.N} (el centro de la vitrina N,
- * 0..5, donde queda la silla), {@code vit.boquilla.N} (de donde cae la cera), {@code vit.luz.N} (el reflector de cada vitrina),
- * {@code vit.placa.N}, {@code vit.pantalla} y {@code vit.centro}.
+ * Marcas: {@code cab.sal_tea_N.*} (los cuartos, N = 1..10), {@code vit.caja.N}, {@code vit.frente.N}, {@code vit.boquilla.N},
+ * {@code vit.luz.N}, {@code vit.foco.N}, {@code vit.placa.N} y {@code vit.cae.N} (las vitrinas, 0..5), {@code vit.pantalla},
+ * {@code vit.centro}, {@code vit.salida.a/.b} y {@code vit.antesala} (con su pantalla, {@code vit.antesala.pantalla}).
  */
 public final class SalaVitrina {
-    public static final int VITRINAS = 6;
+    public static final int VITRINAS = 6, CUARTOS = 10;
+    /** El telón: de x 4 a 51 en z 40, de y 1 a 11. */
+    public static final int TELON_X0 = 4, TELON_X1 = 51, TELON_Z = 40, TELON_Y1 = 11;
+    /** La salida del teatro (muro del este) y hasta dónde llega la antesala. */
+    public static final int SALIDA_X = 55, ANTESALA_X1 = 70;
     private static final String C = "coleccionista:";
+    private static final int X1 = 54, TECHO = 16;
 
     private SalaVitrina() {
     }
 
+    /** El marco del cuarto N del teatro (1..5 abajo, 6..10 en el palco, de oeste a este) y el piso donde está. */
+    public static Marco marco(int n) {
+        return new Marco(3 + 10 * ((n - 1) % 5), 2, 0);
+    }
+
+    public static int piso(int n) {
+        return n <= 5 ? 0 : 7;
+    }
+
     public static Plano crear(long semilla) {
         Plano p = new Plano(semilla);
-        p.caja(0, 0, 0, 32, 10, 30, C + "marmol_negro");
-        // la galería: alfombra negra, terciopelo, butacas en filas mirando al vidrio
-        p.caja(1, 1, 1, 31, 8, 10, "air");
-        for (int x = 1; x <= 31; x++) {
-            for (int z = 1; z <= 10; z++) {
-                p.set(x, 0, z, C + "parquet");
-            }
-            for (int y = 1; y <= 8; y++) {
-                p.set(x, y, 0, C + (y <= 2 ? "madera_pulida" : "acolchado"));
+        p.caja(0, 0, 0, ANTESALA_X1 + 1, TECHO + 1, 60, C + "marmol_negro");
+        // la sala: piso de parquet con pasillo de tapete, muros de papel tapiz con moldura dorada
+        p.caja(1, 1, 10, X1, TECHO - 1, 38, "air");
+        for (int x = 1; x <= X1; x++) {
+            for (int z = 10; z <= 38; z++) {
+                p.set(x, 0, z, C + (x >= 25 && x <= 30 ? (x == 25 || x == 30 ? "tapete_orilla" : "tapete_rojo") : "parquet"));
             }
         }
-        // las llegadas: 10 equipos de hasta 3, en dos filas de cinco grupos (mirando al vidrio, hacia el sur)
-        for (int k = 1; k <= 10; k++) {
-            int fila = (k - 1) / 5, g = (k - 1) % 5;
-            int x0 = 2 + 6 * g, z = 7 - 3 * fila;
-            for (int i = 0; i < 3; i++) {
-                p.marca("vit.llega." + k + "." + i, x0 + 2 * i, 1, z, 0);
-            }
-            p.texto(x0 + 2, 1, z + 1, "placa", "north", 0x9A958A, "EQUIPO " + k);
-        }
-        // el vidrio grande
-        for (int x = 1; x <= 31; x++) {
-            for (int y = 1; y <= 8; y++) {
-                p.set(x, y, 11, y == 1 || y == 8 ? C + "marco_dorado" : C + "vidrio_armado");
+        for (int y = 1; y < TECHO; y++) {
+            String b = y <= 2 ? C + "madera_pulida" : y == 3 ? C + "marco_dorado" : C + "papel_tapiz";
+            for (int z = 10; z <= 38; z++) {
+                p.set(0, y, z, b);
+                p.set(X1 + 1, y, z, b);
             }
         }
-        // la sala de exhibición: piso de mármol crema, vitrinas en fila, la pantalla del Coleccionista al fondo
-        p.caja(1, 1, 12, 31, 9, 29, "air");
-        for (int x = 1; x <= 31; x++) {
-            for (int z = 12; z <= 29; z++) {
+        // los cuartos de la salida: cinco abajo y cinco en el palco
+        for (int n = 1; n <= CUARTOS; n++) {
+            Salidas.sala(p, "sal_tea_" + n, marco(n), piso(n));
+            // el número sobre la puerta, por fuera
+            p.texto(marco(n).cx + 3, piso(n) + 4, 10, "placa", "south", 0xD9A93A, "PALCO " + n);
+        }
+        palco(p);
+        butacas(p);
+        escenario(p);
+        salida(p);
+        luces(p);
+        p.marca("vit.centro", 27, 1, 30, 0);
+        return p;
+    }
+
+    /** El palco: el piso de arriba (y 7) frente a los cuartos 6..10, con barandal dorado y una escalera en cada orilla. */
+    private static void palco(Plano p) {
+        for (int x = 1; x <= X1; x++) {
+            for (int z = 10; z <= 14; z++) {
+                p.set(x, 7, z, C + "madera_pulida");
+            }
+            if (x >= 4 && x <= X1 - 3) {
+                p.set(x, 8, 14, C + "barandal");
+            }
+        }
+        // columnas que lo sostienen
+        for (int x = 8; x <= X1 - 4; x += 10) {
+            for (int y = 1; y <= 6; y++) {
+                p.set(x, y, 14, C + "viga_madera[axis=y]");
+            }
+        }
+        // las escaleras: de la orilla del palco hacia el escenario, en las dos esquinas
+        for (int x : new int[] {1, 2, X1 - 1, X1}) {
+            for (int i = 0; i < 7; i++) {
+                int y = 7 - i, z = 15 + i;
+                p.set(x, y, z, C + "escalera_tablon[facing=north]");
+                for (int yy = 0; yy < y; yy++) {
+                    p.set(x, yy, z, C + "madera_pulida");
+                }
+            }
+            p.set(x, 8, 14, "air");
+        }
+        p.set(3, 8, 14, C + "barandal");
+        p.set(X1 - 2, 8, 14, C + "barandal");
+    }
+
+    /** Filas de butacas de terciopelo frente al vidrio (adorno), con pasillos al centro y a los lados. */
+    private static void butacas(Plano p) {
+        for (int z = 20; z <= 32; z += 3) {
+            for (int x = 5; x <= X1 - 4; x += 2) {
+                if (x >= 23 && x <= 32) {
+                    continue;
+                }
+                p.set(x, 1, z, C + "sillon[facing=south,half=lower]");
+                p.set(x, 2, z, C + "sillon[facing=south,half=upper]");
+            }
+        }
+    }
+
+    /** El vidrio, el telón y el escenario con sus seis vitrinas. */
+    private static void escenario(Plano p) {
+        // el escenario
+        p.caja(2, 1, 41, X1 - 1, TECHO - 1, 58, "air");
+        for (int x = 2; x <= X1 - 1; x++) {
+            for (int z = 41; z <= 58; z++) {
                 p.set(x, 0, z, C + ((x + z) % 2 == 0 ? "marmol_crema" : "marmol_oro"));
             }
+            for (int y = 1; y < TECHO; y++) {
+                p.set(x, y, 59, C + (y <= 2 ? "madera_pulida" : "papel_tapiz"));
+            }
+        }
+        // el vidrio con su marco dorado
+        for (int x = TELON_X0 - 1; x <= TELON_X1 + 1; x++) {
+            for (int y = 1; y <= TELON_Y1 + 1; y++) {
+                boolean marco = x == TELON_X0 - 1 || x == TELON_X1 + 1 || y == TELON_Y1 + 1;
+                p.set(x, y, 39, C + (marco ? "marco_dorado" : "vidrio_armado"));
+            }
+        }
+        // el telón: terciopelo rojo con fleco dorado abajo (el evento lo abre del centro hacia los lados)
+        for (int x = TELON_X0; x <= TELON_X1; x++) {
+            for (int y = 1; y <= TELON_Y1; y++) {
+                p.set(x, y, TELON_Z, C + (y == 1 ? "telon_borde" : "telon"));
+            }
+            p.set(x, TELON_Y1 + 1, TELON_Z, C + "telon_borde");
         }
         for (int n = 0; n < VITRINAS; n++) {
             vitrina(p, n);
         }
-        p.set(16, 6, 28, C + "pantalla[facing=north,grande=true]");
-        p.marca("vit.pantalla", 16, 6, 28, 180);
-        for (int x : new int[] {8, 24}) {
-            p.set(x, 1, 28, C + "candelabro[facing=north,half=lower]");
-            p.set(x, 2, 28, C + "candelabro[facing=north,half=upper]");
+        // la pantalla del Coleccionista al fondo, con candelabros y cortinas a los lados
+        p.set(27, 8, 58, C + "pantalla[facing=north,grande=true]");
+        p.marca("vit.pantalla", 27, 8, 58, 180);
+        for (int x : new int[] {6, 49}) {
+            p.set(x, 1, 58, C + "candelabro[facing=north,half=lower]");
+            p.set(x, 2, 58, C + "candelabro[facing=north,half=upper]");
         }
-        for (int x = 1; x <= 31; x++) {
-            p.set(x, 1, 29, C + "cortina[facing=north,half=lower]");
-            p.set(x, 2, 29, C + "cortina[facing=north,half=upper]");
+        for (int x = 2; x <= X1 - 1; x++) {
+            if (x % 6 == 0) {
+                p.set(x, 1, 58, C + "cortina[facing=north,half=lower]");
+                p.set(x, 2, 58, C + "cortina[facing=north,half=upper]");
+            }
         }
-        // poca luz en la galería (los vivos están en penumbra); la exhibición se ilumina con los reflectores
-        for (int x = 4; x <= 28; x += 6) {
-            p.set(x, 5, 4, "light[level=10]");
-            p.set(x, 5, 9, "light[level=9]");
-            p.set(x, 7, 13, "light[level=11]");
-            p.set(x, 7, 24, "light[level=11]");
-        }
-        p.letrero(16, 6, 1, "", "south", "gold", "GALERÍA", "DE LA COLECCIÓN");
-        p.marca("vit.centro", 16, 1, 5, 0);
-        return p;
     }
 
     /** Una vitrina: caja de vidrio de 3 x 3 sobre una tarima, la boquilla de la cera arriba, el reflector y la placa con el nombre. */
     private static void vitrina(Plano p, int n) {
-        int x0 = 2 + 5 * n, z0 = 15;
+        int x0 = 9 + 7 * n, z0 = 47;
         for (int x = x0; x <= x0 + 2; x++) {
             for (int z = z0; z <= z0 + 2; z++) {
                 p.set(x, 0, z, C + "metal_negro");
@@ -92,14 +169,15 @@ public final class SalaVitrina {
                 }
             }
         }
-        // el frente (hacia la galería) se queda abierto hasta que llega la silla: lo cierra el evento
+        // el frente (hacia el público) se queda abierto hasta que llega la silla: lo cierra el evento
         p.marca("vit.frente." + n, x0 + 1, 1, z0, 0);
-        p.set(x0 + 1, 1, z0, "air");
-        p.set(x0 + 1, 2, z0, "air");
-        p.set(x0 + 1, 3, z0, "air");
+        for (int y = 1; y <= 3; y++) {
+            p.set(x0 + 1, y, z0, "air");
+        }
         p.marca("vit.caja." + n, x0 + 1, 1, z0 + 1, 0);
-        p.set(x0 + 1, 5, z0 + 1, C + "tubo[axis=y]");
-        p.set(x0 + 1, 6, z0 + 1, C + "tubo[axis=y]");
+        for (int y = 6; y <= 9; y++) {
+            p.set(x0 + 1, y, z0 + 1, C + "tubo[axis=y]");
+        }
         p.marca("vit.boquilla." + n, x0 + 1, 4, z0 + 1, 0);
         p.set(x0 + 1, 5, z0 - 1, C + "lampara_jaula[facing=north,encendida=false,falla=false]");
         p.marca("vit.luz." + n, x0 + 1, 5, z0 - 1, 0);
@@ -107,5 +185,57 @@ public final class SalaVitrina {
         p.marca("vit.foco." + n, x0 + 1, 3, z0 - 1, 0);
         p.texto(x0, 1, z0 - 1, "placa", "north", 0xD9A93A, "PIEZA", "—");
         p.marca("vit.placa." + n, x0, 1, z0 - 1, 0);
+        // donde cae la estatua cuando se abre la vitrina
+        p.marca("vit.cae." + n, x0 + 1, 1, z0 - 2, 180);
+    }
+
+    /** La salida del teatro (en el muro del este, cerca del vidrio) y la antesala detrás, con su pantalla. */
+    private static void salida(Plano p) {
+        int x = SALIDA_X;
+        p.set(x, 1, 34, C + "puerta_metal[facing=east,half=lower,hinge=right,open=false]");
+        p.set(x, 2, 34, C + "puerta_metal[facing=east,half=upper,hinge=right,open=false]");
+        p.set(x, 1, 35, C + "puerta_metal[facing=east,half=lower,hinge=left,open=false]");
+        p.set(x, 2, 35, C + "puerta_metal[facing=east,half=upper,hinge=left,open=false]");
+        p.set(x, 3, 34, C + "metal_negro");
+        p.set(x, 3, 35, C + "metal_negro");
+        p.marca("vit.salida.a", x, 1, 34, 270);
+        p.marca("vit.salida.b", x, 1, 35, 270);
+        p.texto(x - 1, 4, 34, "letrero", "west", 0xB3272A, "LA FUNCIÓN", "continúa");
+        // la antesala: un pasillo de servicio con una pantalla al fondo
+        p.caja(x + 1, 1, 31, ANTESALA_X1 - 1, 5, 38, "air");
+        for (int xx = x + 1; xx <= ANTESALA_X1 - 1; xx++) {
+            for (int z = 31; z <= 38; z++) {
+                p.set(xx, 0, z, C + "concreto_piso");
+                if ((xx + z) % 4 == 0) {
+                    p.set(xx, 5, z, "light[level=10]");
+                }
+            }
+        }
+        p.set(ANTESALA_X1 - 1, 3, 34, C + "pantalla[facing=west,grande=true]");
+        p.marca("vit.antesala.pantalla", ANTESALA_X1 - 1, 3, 34, 90);
+        p.marca("vit.antesala", x + 6, 1, 34, 270);
+    }
+
+    /** Luz: la sala bien iluminada (arañas y luz pareja), el escenario en penumbra hasta que se prenden los reflectores. */
+    private static void luces(Plano p) {
+        for (int x = 4; x <= X1 - 2; x += 6) {
+            for (int z = 12; z <= 37; z += 5) {
+                if (p.vacio(x, 5, z)) {
+                    p.set(x, 5, z, "light[level=12]");
+                }
+                if (p.vacio(x, 12, z)) {
+                    p.set(x, 12, z, "light[level=11]");
+                }
+            }
+            for (int z = 43; z <= 57; z += 7) {
+                p.set(x, 10, z, "light[level=7]");
+            }
+        }
+        for (int x = 9; x <= X1 - 4; x += 12) {
+            p.set(x, TECHO - 1, 26, C + "cadena");
+            p.set(x, TECHO - 2, 26, C + "arana");
+        }
+        p.set(1, 13, 37, C + "camara[facing=east]");
+        p.set(X1, 13, 37, C + "camara[facing=west]");
     }
 }

@@ -122,8 +122,11 @@ public final class CiegasCliente {
                 || SentidosCliente.vendado();
     }
 
-    /** Cada cuántos ticks llega el pulso. */
+    /** Cada cuántos ticks llega el pulso (en los sentidos del capítulo 1, cada 7 segundos y se queda más tiempo). */
     private static int periodo() {
+        if (SentidosCliente.vendado()) {
+            return 7 * 20;
+        }
         int seg = Nbt.i(estado, "pulso");
         return Math.max(20, (seg <= 0 ? 4 : seg) * 20);
     }
@@ -137,9 +140,15 @@ public final class CiegasCliente {
         return (Math.floorMod(mc.level.getGameTime(), periodo()) + pt) / 20F;
     }
 
-    /** Qué tan fuerte está el pulso (0..1): sube rápido y se apaga suave. */
+    /**
+     * Qué tan fuerte está el pulso (0..1): sube rápido y se apaga suave. En los sentidos (Axelis: "que si sea ciego y tenga sus momentos
+     * en los que ve más, pero que dure un poquito más") se queda casi dos segundos abierto antes de apagarse.
+     */
     private static float pulso(float pt) {
         float f = desdePulso(pt);
+        if (SentidosCliente.vendado()) {
+            return f < 0.15F ? f / 0.15F : f < 1.7F ? 1F : (float) Math.exp(-(f - 1.7F) * 2.2F);
+        }
         return f < 0.12F ? f / 0.12F : (float) Math.exp(-(f - 0.12F) * 3.2F);
     }
 
@@ -150,7 +159,7 @@ public final class CiegasCliente {
         }
         float k = pulso((float) e.getPartialTick());
         e.setNearPlaneDistance(Mth.lerp(venda, e.getNearPlaneDistance(), 0F));
-        e.setFarPlaneDistance(Mth.lerp(venda, e.getFarPlaneDistance(), Mth.lerp(k, 1.3F, 7F)));
+        e.setFarPlaneDistance(Mth.lerp(venda, e.getFarPlaneDistance(), Mth.lerp(k, 1.3F, SentidosCliente.vendado() ? 9F : 7F)));
         e.setCanceled(true);
     }
 
@@ -301,12 +310,9 @@ public final class CiegasCliente {
             }
         }
         if (linea != null) {
-            int lw = f.width(linea) + 16, y = EventoHud.lineaY(w, lw);
-            g.fillGradient(w / 2 - lw / 2, y, w / 2 + lw / 2, y + 13, 0xB0140C0E, 0x90080506);
-            g.drawCenteredString(f, linea, w / 2, y + 3, 0xFFD8D0C8);
+            EventoHud.lado(g, linea, 0xFFD8D0C8, true);
             if (linea2 != null) {
-                int y2 = EventoHud.debajo(w, f.width(linea2) + 8, y + 16);
-                g.drawCenteredString(f, linea2, w / 2, y2 + 2, 0xFFB8A898);
+                EventoHud.lado(g, linea2, 0xFFB8A898, false);
             }
         }
     }

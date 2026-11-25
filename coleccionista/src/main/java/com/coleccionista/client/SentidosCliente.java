@@ -288,26 +288,19 @@ public final class SentidosCliente {
         } else {
             return;
         }
-        int lw = Ui.font().width(linea) + 16, y = EventoHud.lineaY(w, lw);
-        g.fillGradient(w / 2 - lw / 2, y, w / 2 + lw / 2, y + 13, 0xB0140C0E, 0x90080506);
-        g.drawCenteredString(Ui.font(), linea, w / 2, y + 3, 0xFFD8D0C8);
-        // el trío: quién trae qué
-        int yy = y + 17;
+        EventoHud.lado(g, linea, 0xFFD8D0C8, true);
+        // el equipo: quién trae qué
         for (int i = 0; i < t.ids().size(); i++) {
             CompoundTag p = EventoCliente.pieza(t.ids().get(i));
             String nom = p == null ? "?" : Nbt.s(p, "nombre");
             String r = t.roles().get(i);
             String s = nom + " · " + ("NADA".equals(r) ? "…" : Component.translatable(MOD + ".tres.rol." + r.toLowerCase()).getString());
-            yy = EventoHud.debajo(w, Ui.font().width(s) + 4, yy);
-            g.drawCenteredString(Ui.font(), s, w / 2, yy, 0xFFA89E94);
-            yy += 10;
+            EventoHud.lado(g, s, 0xFFA89E94, false);
         }
         // capítulo 1: qué hay que hacer en el cuarto donde va el equipo
         String et = miEtapa();
         if ("JUEGO".equals(fase()) && !et.isEmpty() && !t.salio()) {
-            String s = Component.translatable(MOD + ".sen.etapa." + et.toLowerCase()).getString();
-            yy = EventoHud.debajo(w, Ui.font().width(s) + 4, yy + 2);
-            g.drawCenteredString(Ui.font(), s, w / 2, yy, 0xFFE0B050);
+            EventoHud.lado(g, Component.translatable(MOD + ".sen.etapa." + et.toLowerCase()).getString(), 0xFFE0B050, true);
         }
     }
 }

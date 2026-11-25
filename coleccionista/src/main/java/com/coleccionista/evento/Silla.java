@@ -69,8 +69,13 @@ public class Silla extends Entity {
     }
 
     public void cerrar(boolean si) {
+        cerrar(si, true);
+    }
+
+    /** Cierra o abre las correas; sin {@code sonido}, en silencio (al pasar la silla de un cuarto a otro sin que se note). */
+    public void cerrar(boolean si, boolean sonido) {
         this.entityData.set(CERRADA, si);
-        if (si && !level().isClientSide) {
+        if (si && sonido && !level().isClientSide) {
             level().playSound(null, blockPosition(), SoundEvents.CHAIN_PLACE, SoundSource.BLOCKS, 1F, 0.6F);
             level().playSound(null, blockPosition(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 0.8F, 0.5F);
         }

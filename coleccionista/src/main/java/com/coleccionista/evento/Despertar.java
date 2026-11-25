@@ -27,7 +27,9 @@ import net.minecraftforge.eventbus.api.Event;
  *     (la cámara arriba en la esquina, viéndose acostado, se acerca y pasa a sus ojos con un parpadeo). Luego se levanta.</li>
  *     <li>5 minutos de espera en la celda: todavía no hay nada (ni pistas ni notas) y el candado está muerto.</li>
  *     <li>Al acabar el reloj hay un apagón; cuando vuelve la luz, los tres números de cada celda ya están escondidos en ella
- *     ({@link Pistas}). Se prenden las pantallas y habla el Coleccionista; al terminar, los candados funcionan.</li>
+ *     ({@link Pistas}) y los candados ya funcionan. En el patio nadie habla (no hay pantallas): solo corre el reloj de 2 minutos para
+ *     salir. Cuando sale el último, el reloj baja a 10 segundos; al llegar a cero se abren solas las celdas que sigan cerradas y sube el
+ *     portón ({@link Celdas#finSalida}). El Coleccionista habla del otro lado, en la sala grande ({@link Capitulo1}).</li>
  * </ol>
  */
 public final class Despertar {
@@ -37,7 +39,11 @@ public final class Despertar {
     public static final String PRUEBA = "El despertar";
     /** Segundos para investigar antes de que hable el Coleccionista (Axelis pidió 5 minutos). */
     public static int segundosInvestigar = 300;
-    private static long levantarEn = -1, cineEn = -1, apagonFin = -1, hablarEn = -1;
+    /** Segundos para salir de la celda cuando ya funcionan los candados (Axelis pidió 2 minutos). */
+    public static int segundosSalir = 120;
+    private static long levantarEn = -1, cineEn = -1, apagonFin = -1;
+    /** Corre el reloj para salir de las celdas (al acabarse, se abren solas y sube el portón). */
+    private static boolean esperandoSalida;
     /** Cuánto dura el apagón antes de que aparezcan las pistas (ticks). */
     private static final int APAGON = 60;
     private static boolean esperandoDiscurso;
@@ -209,8 +215,16 @@ public final class Despertar {
         return l;
     }
 
-    /** Lo llama el evento cuando se acaba el reloj: si era el del despertar, empieza el discurso. Devuelve si lo atendió. */
+    /**
+     * Lo llama el evento cuando se acaba el reloj: si era el del despertar, el apagón; si era el de salir de las celdas, se abren las que
+     * sigan cerradas y sube el portón. Devuelve si lo atendió.
+     */
     static boolean alAcabarReloj(MinecraftServer s) {
+        if (esperandoSalida) {
+            esperandoSalida = false;
+            Celdas.finSalida(s);
+            return true;
+        }
         Evento ev = Evento.get(s);
         if (!esperandoDiscurso || !PRUEBA.equals(ev.prueba)) {
             return false;
@@ -219,20 +233,25 @@ public final class Despertar {
         return true;
     }
 
+    /** ¿Está corriendo el reloj para salir de las celdas? */
+    public static boolean saliendo() {
+        return esperandoSalida;
+    }
+
     /**
-     * Fin de la espera: si las pistas no han salido, primero el apagón (y al volver la luz ya están escritas); luego se prenden las
-     * pantallas y habla el Coleccionista. Al terminar, los candados funcionan.
+     * Fin de la espera (o el organizador la corta): si las pistas no han salido, primero el apagón (y al volver la luz ya están escritas y
+     * los candados funcionan); si ya salieron, los candados funcionan ya.
      */
     public static void discurso(MinecraftServer s) {
         esperandoDiscurso = false;
-        if (apagonFin > 0 || hablarEn > 0) {
+        if (apagonFin > 0 || esperandoSalida) {
             return;
         }
         if (!Pistas.reveladas(s)) {
             apagon(s);
             return;
         }
-        hablar(s);
+        candadosListos(s);
     }
 
     /** Se va la luz de todo el ala unos segundos. */
@@ -245,25 +264,27 @@ public final class Despertar {
         Coleccionista.LOGGER.info("COLECCIONISTA_APAGON");
     }
 
-    /** Vuelve la luz: ya están las pistas en cada celda (y la hoja del diario en el baúl). */
+    /** Vuelve la luz: ya están las pistas en cada celda (y la hoja del diario en el baúl) y los candados funcionan. */
     private static void vuelveLaLuz(MinecraftServer s) {
         Pistas.revelar(s);
         Celdas.llenarBaules(s);
         Celdas.luces(s, true);
         Anuncio.sonido(s, SoundEvents.IRON_TRAPDOOR_CLOSE, 1F, 0.5F);
         Anuncio.sonido(s, SoundEvents.BEACON_ACTIVATE, 1F, 0.6F);
-        hablarEn = s.overworld().getGameTime() + 50;
+        candadosListos(s);
     }
 
-    private static void hablar(MinecraftServer s) {
-        Pantallas.hablar(s, "bienvenida", () -> {
-            Celdas.candados(s, true);
-            Evento ev = Evento.get(s);
-            ev.prueba(s, Component.translatable(MOD + ".prueba.salir").getString());
-            Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".chat.candados")));
-            Anuncio.sonido(s, SoundEvents.ENDER_EYE_DEATH, 0.8F, 0.6F);
-            Coleccionista.LOGGER.info("COLECCIONISTA_CANDADOS activos");
-        });
+    /** Los candados ya funcionan y corre el reloj para salir (sin discurso: en el patio nadie habla). */
+    private static void candadosListos(MinecraftServer s) {
+        Celdas.candados(s, true);
+        Evento ev = Evento.get(s);
+        ev.prueba(s, Component.translatable(MOD + ".prueba.salir").getString());
+        ev.reloj(s, segundosSalir);
+        esperandoSalida = true;
+        Anuncio.titulo(s, Component.translatable(MOD + ".salir.titulo"), Component.translatable(MOD + ".salir.sub", segundosSalir / 60));
+        Anuncio.sonido(s, SoundEvents.ENDER_EYE_DEATH, 0.8F, 0.6F);
+        Anuncio.sonido(s, SoundEvents.IRON_TRAPDOOR_OPEN, 0.8F, 0.5F);
+        Coleccionista.LOGGER.info("COLECCIONISTA_CANDADOS activos segundos={}", segundosSalir);
     }
 
     private static void tick(MinecraftServer s) {
@@ -276,10 +297,6 @@ public final class Despertar {
         if (apagonFin > 0 && now >= apagonFin) {
             apagonFin = -1;
             vuelveLaLuz(s);
-        }
-        if (hablarEn > 0 && now >= hablarEn) {
-            hablarEn = -1;
-            hablar(s);
         }
         if (levantarEn > 0 && now >= levantarEn) {
             levantarEn = -1;
@@ -302,7 +319,7 @@ public final class Despertar {
         levantarEn = -1;
         cineEn = -1;
         apagonFin = -1;
-        hablarEn = -1;
         esperandoDiscurso = false;
+        esperandoSalida = false;
     }
 }

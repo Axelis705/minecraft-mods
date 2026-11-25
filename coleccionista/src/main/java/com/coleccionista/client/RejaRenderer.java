@@ -47,7 +47,9 @@ public class RejaRenderer implements BlockEntityRenderer<RejaBE> {
             return;
         }
         float t = be.avance(pt);
-        float fuera = suave(t / 0.25F) * SALE, lado = suave((t - 0.15F) / 0.85F) * CORRE;
+        boolean asc = ((DecoReja) s.getBlock()).ascensor;
+        // la reja sale un poco y se corre; la puerta de ascensor solo se corre (hasta meterse entera en el muro)
+        float fuera = asc ? 0F : suave(t / 0.25F) * SALE, lado = asc ? suave(t) * 1F : suave((t - 0.15F) / 0.85F) * CORRE;
         Direction f = s.getValue(DoorBlock.FACING);
         Direction corre = s.getValue(DoorBlock.HINGE) == DoorHingeSide.LEFT ? f.getClockWise() : f.getCounterClockWise();
         Direction sale = f.getOpposite();

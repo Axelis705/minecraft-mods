@@ -32,8 +32,16 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class DecoReja extends DoorBlock implements EntityBlock {
     private static final VoxelShape NS = Block.box(0, 0, 7, 16, 16, 9), EW = Block.box(7, 0, 0, 9, 16, 16);
 
+    /** Puerta de ascensor o de acero (opaca): no sale hacia el pasillo, solo se corre de lado y se mete en el muro. */
+    public final boolean ascensor;
+
     public DecoReja(BlockBehaviour.Properties p) {
+        this(p, false);
+    }
+
+    public DecoReja(BlockBehaviour.Properties p, boolean ascensor) {
         super(p, BlockSetType.IRON);
+        this.ascensor = ascensor;
     }
 
     @Override
