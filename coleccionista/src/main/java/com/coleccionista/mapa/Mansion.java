@@ -87,9 +87,9 @@ public final class Mansion {
             }
         }
         // luz de casa vieja: alcanza para ver los muebles, pero los rincones (y los armarios) quedan oscuros
-        for (int x = x0 + 2; x <= x1 - 1; x += 5) {
-            for (int z = z0 + 2; z <= z1 - 1; z += 5) {
-                p.set(x, y0 + Math.min(3, alto), z, "light[level=11]");
+        for (int x = x0 + 2; x <= x1 - 1; x += 6) {
+            for (int z = z0 + 2; z <= z1 - 1; z += 6) {
+                p.set(x, y0 + Math.min(3, alto), z, "light[level=10]");
             }
         }
     }
@@ -208,8 +208,8 @@ public final class Mansion {
         p.set(28, ALTO_HALL - 1, 21, C + "arana");
         for (int x = HX0 + 2; x <= HX1 - 1; x += 6) {
             for (int z = HZ0 + 3; z <= HZ1 - 1; z += 6) {
-                p.set(x, 3, z, "light[level=12]");
-                p.set(x, 10, z, "light[level=11]");
+                p.set(x, 3, z, "light[level=11]");
+                p.set(x, 10, z, "light[level=10]");
             }
         }
         // cuatro armarios bajo las galerías

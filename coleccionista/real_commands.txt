@@ -35,7 +35,7 @@ evento eliminar Bot_05
 #pausa 1
 evento reiniciar confirmar
 execute in minecraft:overworld positioned 0 -60 40 run evento construir
-#pausa 6
+#pausa 40
 execute in minecraft:overworld positioned 18 -60 51 run evento bots 4
 evento investigar 5
 evento sala
