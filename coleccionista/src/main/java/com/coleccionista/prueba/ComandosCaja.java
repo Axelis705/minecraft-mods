@@ -105,6 +105,23 @@ public final class ComandosCaja {
                         }))));
     }
 
+    /** {@code /evento probar venda|cinta|esposas|nada [jugadores]}: los papeles de los sentidos, para probarlos. */
+    public static LiteralArgumentBuilder<CommandSourceStack> probar() {
+        LiteralArgumentBuilder<CommandSourceStack> b = Commands.literal("probar");
+        for (String r : new String[] {"venda", "cinta", "esposas", "nada"}) {
+            b.then(Commands.literal(r).executes(c -> {
+                RolesPrueba.poner(c.getSource().getServer(), c.getSource().getPlayerOrException(), r.toUpperCase(java.util.Locale.ROOT));
+                return ok(c, Component.literal(r));
+            }).then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.players()).executes(c -> {
+                for (net.minecraft.server.level.ServerPlayer p : net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores")) {
+                    RolesPrueba.poner(c.getSource().getServer(), p, r.toUpperCase(java.util.Locale.ROOT));
+                }
+                return ok(c, Component.literal(r));
+            })));
+        }
+        return b;
+    }
+
     /** {@code /bala [pieza]}: para el organizador, sin escribir /evento. */
     public static void registrarBala(CommandDispatcher<CommandSourceStack> d, SuggestionProvider<CommandSourceStack> vivas) {
         d.register(Commands.literal("bala").requires(s -> s.hasPermission(2))

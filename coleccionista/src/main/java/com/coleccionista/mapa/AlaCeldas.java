@@ -262,17 +262,18 @@ public final class AlaCeldas {
             p.set(x0 - 1, 1, z, C + "escalera_metal[facing=east]");
             p.set(x1 + 1, 1, z, C + "escalera_metal[facing=west]");
         }
+        // los candelabros, en el piso al pie del escalón (no encima: el escalón es medio bloque)
         for (int x : new int[] {x0 + 1, x1 - 1}) {
-            p.set(x, 2, z0 - 1, C + "candelabro[facing=north,half=lower]");
-            p.set(x, 3, z0 - 1, C + "candelabro[facing=north,half=upper]");
-            p.set(x, 2, z1 + 1, C + "candelabro[facing=south,half=lower]");
-            p.set(x, 3, z1 + 1, C + "candelabro[facing=south,half=upper]");
+            p.set(x, 1, z0 - 2, C + "candelabro[facing=north,half=lower]");
+            p.set(x, 2, z0 - 2, C + "candelabro[facing=north,half=upper]");
+            p.set(x, 1, z1 + 2, C + "candelabro[facing=south,half=lower]");
+            p.set(x, 2, z1 + 2, C + "candelabro[facing=south,half=upper]");
         }
         for (int z : new int[] {z0 + 1, z1 - 1}) {
-            p.set(x0 - 1, 2, z, C + "candelabro[facing=west,half=lower]");
-            p.set(x0 - 1, 3, z, C + "candelabro[facing=west,half=upper]");
-            p.set(x1 + 1, 2, z, C + "candelabro[facing=east,half=lower]");
-            p.set(x1 + 1, 3, z, C + "candelabro[facing=east,half=upper]");
+            p.set(x0 - 2, 1, z, C + "candelabro[facing=west,half=lower]");
+            p.set(x0 - 2, 2, z, C + "candelabro[facing=west,half=upper]");
+            p.set(x1 + 2, 1, z, C + "candelabro[facing=east,half=lower]");
+            p.set(x1 + 2, 2, z, C + "candelabro[facing=east,half=upper]");
         }
         // bocinas y cámaras arriba en las esquinas de la torre
         p.set(x0 - 1, 11, z0 - 1, C + "camara[facing=north]");

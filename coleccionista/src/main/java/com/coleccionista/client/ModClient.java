@@ -44,6 +44,9 @@ public final class ModClient {
         Camara.init();
         Cine.init();
         Espera.init();
+        ChatVisible.init();
+        Nombres.init();
+        ApagonCliente.init();
         Filtro.init();
         DisfrazRender.init();
         Presentacion.init();

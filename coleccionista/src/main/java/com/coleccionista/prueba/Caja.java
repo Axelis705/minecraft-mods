@@ -1091,7 +1091,10 @@ public final class Caja {
             }
             case LLEGANDO -> {
                 if (desde > t && t >= apagonFin) {
-                    llegar(s);
+                    // se va la luz un momento y, en lo oscuro, pasan al pasillo de la caja
+                    desde = t + 2000000;
+                    apagonFin = Long.MAX_VALUE;
+                    com.coleccionista.evento.Apagon.hacer(s, s.getPlayerList().getPlayers(), 60, () -> llegar(s));
                     break;
                 }
                 if (desde <= t && t % 10 == 0) {

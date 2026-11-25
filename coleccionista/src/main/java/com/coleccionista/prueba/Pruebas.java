@@ -22,6 +22,7 @@ public final class Pruebas {
         Sentidos.init();
         Mascota.init();
         Caja.init();
+        RolesPrueba.init();
     }
 
     /** El reloj del evento llegó a cero: le toca a la prueba que esté en marcha. Devuelve si alguna lo atendió. */

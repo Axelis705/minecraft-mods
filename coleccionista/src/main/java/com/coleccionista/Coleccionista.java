@@ -35,6 +35,7 @@ public class Coleccionista {
         com.coleccionista.registry.ModRegistry.register(bus);
         com.coleccionista.evento.Evento.init();
         com.coleccionista.evento.Fantasmas.init();
+        com.coleccionista.evento.Apagon.init();
         com.coleccionista.evento.Panel.init();
         com.coleccionista.evento.Tomas.init();
         com.coleccionista.evento.Complejo.init();

@@ -132,6 +132,16 @@ public final class Mascota {
         if (!Complejo.construido(s, "mansion")) {
             return Component.translatable(MOD + ".man.sin_mapa");
         }
+        // se va la luz un momento (parpadea y negro): en lo oscuro pasan al otro pasillo, así nadie ve el cambio
+        List<ServerPlayer> ven = new ArrayList<>(s.getPlayerList().getPlayers());
+        com.coleccionista.evento.Apagon.hacer(s, ven, 60, () -> llegarYa(s));
+        return null;
+    }
+
+    private static void llegarYa(MinecraftServer s) {
+        if (!Complejo.construido(s, "mansion")) {
+            return;
+        }
         Evento ev = Evento.get(s);
         Pruebas.cerrarOtras(s, "mascota");
         reiniciarCasa(s);
@@ -178,7 +188,6 @@ public final class Mascota {
         Pantallas.modo(s, "apagada", "");
         enviar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_MASCOTA llegan pasillo={} fuera={}", enPasillo.size(), fuera.size());
-        return null;
     }
 
     private static void puertasPasillo(MinecraftServer s, boolean abrir) {

@@ -40,12 +40,20 @@ public final class Espera {
     }
 
     private static void dibujar(G g, int w, int h) {
-        if (activa()) {
-            sala(g, w, h);
-        }
-        if (!Cine.enPantalla()) {
-            subtitulo(g, w, h);
-            aviso(g, w, h);
+        // por encima del chat (Minecraft dibuja sus letras un poco "más adelante"): la sala de espera tapa el chat y los subtítulos
+        // nunca quedan debajo de él
+        g.push();
+        g.translate(0, 0, 300);
+        try {
+            if (activa()) {
+                sala(g, w, h);
+            }
+            if (!Cine.enPantalla()) {
+                subtitulo(g, w, h);
+                aviso(g, w, h);
+            }
+        } finally {
+            g.pop();
         }
     }
 
@@ -115,6 +123,18 @@ public final class Espera {
         if (EventoHud.oculto) {
             return;
         }
-        Subtitulo.dibujar(g, w / 2, h - 64, Math.min(420, w - 40), 1.25F, true);
+        // si se está viendo el chat (abajo a la izquierda), el subtítulo se hace a un lado o sube para no quedar encimado
+        int ancho = Math.min(420, w - 40), cx = w / 2, abajo = h - 64;
+        int der = ChatVisible.derecha();
+        if (der > 0 && !Espera.activa()) {
+            int libre = w - der - 12;
+            if (libre >= 240) {
+                ancho = Math.min(ancho, libre - 20);
+                cx = Math.max(cx, der + 10 + ancho / 2);
+            } else {
+                abajo = Math.min(abajo, h - ChatVisible.arriba() - 8);
+            }
+        }
+        Subtitulo.dibujar(g, cx, abajo, ancho, 1.25F, true);
     }
 }

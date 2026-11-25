@@ -1289,5 +1289,11 @@
   "coleccionista.linea.p.caja_terminar": "Finish",
   "coleccionista.linea.p.caja_terminar.ayuda": "The gun goes up, the traitors are revealed and the straps open.",
   "coleccionista.linea.p.caja_limpiar": "Clean up",
-  "coleccionista.linea.p.caja_limpiar.ayuda": "Removes gondolas, chairs, gun, masks, symbols and blood (eliminates no one)."
+  "coleccionista.linea.p.caja_limpiar.ayuda": "Removes gondolas, chairs, gun, masks, symbols and blood (eliminates no one).",
+  "coleccionista.fantasmas.titulo": "Ghosts (%s)",
+  "coleccionista.sub.caja_disparo": "Shotgun blast",
+  "coleccionista.sub.caja_tension": "Heartbeat and a rising hum",
+  "coleccionista.sub.caja_cerrojo": "The gun racks",
+  "coleccionista.sub.caja_tictac": "Tick... tock...",
+  "coleccionista.sub.caja_compuerta": "A hatch opens"
 }

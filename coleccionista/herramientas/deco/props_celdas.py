@@ -288,9 +288,10 @@ def camara():
     k = pintado(NEGRO, seed=33)
     p.box(6, 9, 14, 10, 13, 16, k)
     p.box(7.5, 10, 9, 8.5, 11, 14, k)
-    p.box(5, 9, 2, 11, 14, 11, m, rot=('x', 22.5, (8, 11, 9)))
-    p.box(6, 10, 1, 10, 13, 2, solid('#0e0e10'), rot=('x', 22.5, (8, 11, 9)))
-    p.box(9.5, 13.4, 9, 10.5, 14.4, 10, luz('#ff2a1a'), rot=('x', 22.5, (8, 11, 9)))
+    # inclinada hacia abajo (mira al piso del cuarto, como una cámara de vigilancia de verdad)
+    p.box(5, 9, 2, 11, 14, 11, m, rot=('x', -22.5, (8, 11, 9)))
+    p.box(6, 10, 1, 10, 13, 2, solid('#0e0e10'), rot=('x', -22.5, (8, 11, 9)))
+    p.box(9.5, 13.4, 9, 10.5, 14.4, 10, luz('#ff2a1a'), rot=('x', -22.5, (8, 11, 9)))
     return p
 
 

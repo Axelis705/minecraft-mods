@@ -89,6 +89,19 @@ public class VozPlugin implements VoicechatPlugin {
                 e.cancel();
             }
         });
+        // (cliente) para que los fantasmas vean quién está hablando
+        r.registerEvent(de.maxhenkel.voicechat.api.events.ClientReceiveSoundEvent.StaticSound.class, e -> {
+            java.util.function.Consumer<UUID> c = VozPuente.alOirCanal;
+            if (c != null && e.getId() != null) {
+                c.accept(e.getId());
+            }
+        });
+        r.registerEvent(de.maxhenkel.voicechat.api.events.ClientSoundEvent.class, e -> {
+            Runnable c = VozPuente.alHablarYo;
+            if (c != null) {
+                c.run();
+            }
+        });
         r.registerEvent(PlayerDisconnectedEvent.class, e -> {
             String id = e.getPlayerUuid().toString();
             CANALES.keySet().removeIf(k -> k.contains(id));
@@ -114,7 +127,7 @@ public class VozPlugin implements VoicechatPlugin {
             return;
         }
         UUID yo = de.getPlayer().getUuid();
-        if (VozPuente.mudos.contains(yo)) {
+        if (VozPuente.mudos.contains(yo) || VozPuente.mudosPrueba.contains(yo)) {
             e.cancel(); // tiene la cinta en la boca: nadie lo oye
             return;
         }

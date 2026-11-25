@@ -236,11 +236,13 @@ public final class Complejo {
         for (long k : p.m.keySet()) {
             pasos.add(new long[] {Plano.kx(k), Plano.ky(k), Plano.kz(k), 1});
             BlockState st = estado(p.m.get(k));
-            if (st != null && (st.getBlock() instanceof CrossCollisionBlock || st.getBlock() instanceof WallBlock)) {
+            if (st != null && (st.getBlock() instanceof CrossCollisionBlock || st.getBlock() instanceof WallBlock
+                    || st.getBlock() instanceof net.minecraft.world.level.block.StairBlock)) {
                 uniones.add(new long[] {Plano.kx(k), Plano.ky(k), Plano.kz(k), 2});
             }
         }
-        // al final, los barrotes, rejas, cercas y muros se unen con lo que tienen al lado (se pusieron sin avisar a los vecinos)
+        // al final, los barrotes, rejas, cercas y muros se unen con lo que tienen al lado, y las escaleras hacen sus esquinas (se pusieron
+        // sin avisar a los vecinos)
         pasos.addAll(uniones);
         COLA.add(new Trabajo(level, base, pasos, p, new int[] {0}, () -> {
             datos(level.getServer()).putBoolean(z.id(), true);

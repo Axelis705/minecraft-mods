@@ -146,9 +146,21 @@ public final class SalaVitrina {
         for (int n = 0; n < VITRINAS; n++) {
             vitrina(p, n);
         }
-        // la pantalla del Coleccionista al fondo, con candelabros y cortinas a los lados
-        p.set(27, 8, 58, C + "pantalla[facing=north,grande=true]");
-        p.marca("vit.pantalla", 27, 8, 58, 180);
+        // los tubos de la cera: uno grande que corre sobre las vitrinas (y 6) y sube al techo por las dos orillas
+        for (int x = 18; x <= 38; x++) {
+            p.set(x, 6, 44, C + "tubo[axis=x]");
+        }
+        for (int x : new int[] {18, 38}) {
+            for (int y = 6; y < TECHO; y++) {
+                p.set(x, y, 44, C + "tubo[axis=y]");
+            }
+        }
+        // la pantalla del Coleccionista, colgada del techo justo detrás de las vitrinas (se ve bien desde las butacas), con sus cadenas
+        p.set(28, 11, 48, C + "pantalla[facing=north,grande=true]");
+        p.marca("vit.pantalla", 28, 11, 48, 180);
+        for (int x : new int[] {23, 33}) {
+            p.set(x, TECHO - 1, 48, C + "cadena");
+        }
         for (int x : new int[] {6, 49}) {
             p.set(x, 1, 58, C + "candelabro[facing=north,half=lower]");
             p.set(x, 2, 58, C + "candelabro[facing=north,half=upper]");
@@ -181,9 +193,7 @@ public final class SalaVitrina {
             p.set(x0 + 1, y, z0, "air");
         }
         p.marca("vit.caja." + n, x0 + 1, 1, z0 + 1, 0);
-        for (int y = 6; y <= 9; y++) {
-            p.set(x0 + 1, y, z0 + 1, C + "tubo[axis=y]");
-        }
+        // el tubo de la cera sale del techo de la vitrina y se une al tubo grande que corre por arriba (ver escenario)
         p.marca("vit.boquilla." + n, x0 + 1, 4, z0 + 1, 0);
         p.set(x0 + 1, 5, z0 - 1, C + "lampara_jaula[facing=north,encendida=false,falla=false]");
         p.marca("vit.luz." + n, x0 + 1, 5, z0 - 1, 0);

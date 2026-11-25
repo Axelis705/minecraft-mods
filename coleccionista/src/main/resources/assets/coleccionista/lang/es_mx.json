@@ -1289,5 +1289,11 @@
   "coleccionista.linea.p.caja_terminar": "Terminar",
   "coleccionista.linea.p.caja_terminar.ayuda": "Sube el arma, se dicen los traidores y se sueltan las correas.",
   "coleccionista.linea.p.caja_limpiar": "Limpiar",
-  "coleccionista.linea.p.caja_limpiar.ayuda": "Quita góndolas, sillas, arma, máscaras, símbolos y sangre (no elimina a nadie)."
+  "coleccionista.linea.p.caja_limpiar.ayuda": "Quita góndolas, sillas, arma, máscaras, símbolos y sangre (no elimina a nadie).",
+  "coleccionista.fantasmas.titulo": "Fantasmas (%s)",
+  "coleccionista.sub.caja_disparo": "Escopetazo",
+  "coleccionista.sub.caja_tension": "Latidos y un zumbido que sube",
+  "coleccionista.sub.caja_cerrojo": "El arma se arma",
+  "coleccionista.sub.caja_tictac": "Tic... tac...",
+  "coleccionista.sub.caja_compuerta": "Se abre una compuerta"
 }

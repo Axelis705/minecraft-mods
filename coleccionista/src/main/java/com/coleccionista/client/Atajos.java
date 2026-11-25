@@ -113,7 +113,8 @@ public final class Atajos {
             if (pts < puntos && seVe(mc, ojo, centro.add(n.scale(0.3)), p)) {
                 puntos = pts;
                 mejor = centro;
-                frente = centro.add(n.scale(grande ? 7.5 : 1.7));
+                boolean mediana = grande && mc.level.getBlockEntity(p) instanceof com.coleccionista.bloque.PantallaBE pb && pb.tam() == 1;
+                frente = centro.add(n.scale(mediana ? 4.6 : grande ? 7.5 : 1.7));
             }
         }
         return mejor == null ? null : new net.minecraft.world.phys.Vec3[] {frente, mejor};

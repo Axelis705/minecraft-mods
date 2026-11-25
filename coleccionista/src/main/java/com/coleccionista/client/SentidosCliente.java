@@ -145,6 +145,10 @@ public final class SentidosCliente {
 
     /** El papel de cualquier jugador (para dibujarle la venda, la cinta o las esposas), o vacío. */
     public static String rolDe(UUID id) {
+        String pr = rolPrueba(id);
+        if (!pr.isEmpty()) {
+            return pr;
+        }
         String f = fase();
         if (!"ELEGIR".equals(f) && !"JUEGO".equals(f)) {
             return "";
@@ -158,14 +162,28 @@ public final class SentidosCliente {
         return "";
     }
 
+    /** El papel puesto para probar ({@code /evento probar ...}), o vacío. */
+    public static String rolPrueba(UUID id) {
+        net.minecraft.nbt.CompoundTag t = com.axeliscore.data.client.ClientData.get(com.coleccionista.prueba.RolesPrueba.KEY);
+        return t == null || id == null ? "" : t.getString(id.toString());
+    }
+
     public static String miRol() {
-        Trio t = miTrio();
         Minecraft mc = Minecraft.getInstance();
+        String pr = mc.player == null ? "" : rolPrueba(mc.player.getUUID());
+        if (!pr.isEmpty()) {
+            return pr;
+        }
+        Trio t = miTrio();
         return t == null || mc.player == null ? "NADA" : t.roles().get(t.ids().indexOf(mc.player.getUUID()));
     }
 
     /** ¿Traigo la venda puesta? (la dibuja la misma venda de A ciegas) */
     public static boolean vendado() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null && "VENDA".equals(rolPrueba(mc.player.getUUID()))) {
+            return true;
+        }
         return "JUEGO".equals(fase()) && "VENDA".equals(miRol()) && EventoCliente.vivo(EventoCliente.yo());
     }
 

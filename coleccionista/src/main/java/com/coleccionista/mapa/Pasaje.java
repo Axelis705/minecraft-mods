@@ -39,7 +39,10 @@ public final class Pasaje {
         m.marca(p, id + ".der.b", 7, 1, LARGO, 0);
         p.marca("cab." + id + ".origen", m.cx, 1, m.cz, m.yaw);
         // la pantalla grande al fondo, al centro, con dos candelabros
+        // la pantalla mediana (7 x 4: la grande de 11 x 7 no cabe en el pasillo y se cortaba)
         m.set(p, 3, 3, LARGO - 1, C + "pantalla[facing=north,grande=true]");
+        int[] pb = m.b(3, LARGO - 1);
+        p.nbt(pb[0], 3, pb[1], "{tam:1}");
         m.marca(p, id + ".pantalla", 3, 3, LARGO - 1, 180);
         m.set(p, 2, 1, LARGO - 1, C + "candelabro[facing=north,half=lower]");
         m.set(p, 2, 2, LARGO - 1, C + "candelabro[facing=north,half=upper]");

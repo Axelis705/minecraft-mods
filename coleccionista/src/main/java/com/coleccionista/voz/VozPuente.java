@@ -16,6 +16,8 @@ public final class VozPuente {
     public static volatile Set<UUID> vivos = Set.of(), fantasmas = Set.of(), organizadores = Set.of(), altavoz = Set.of();
     /** A quién se le cortó el micrófono (la cinta en la boca de Encadenados de tres). */
     public static volatile Set<UUID> mudos = Set.of();
+    /** A quién se le puso la cinta para probar ({@code /evento probar cinta}). */
+    public static volatile Set<UUID> mudosPrueba = Set.of();
     /** Las voces cambiadas (la caja de música): quién habla con otro tono (menos de 1, más grave; más de 1, más aguda). */
     public static volatile Map<UUID, Float> tonos = Map.of();
     /** Durante algunas pruebas, cada pieza viva en su grupo (sala, cuarto, laberinto): solo se oyen los del mismo grupo. */
@@ -26,6 +28,10 @@ public final class VozPuente {
     public static volatile boolean organizadorOyeFantasmas = true;
     /** ¿Separar la voz por salas en las pruebas por equipos? */
     public static volatile boolean separarSalas = true;
+    /** (Cliente) Llegó voz por un canal directo (el de los fantasmas): su id. Lo pone el mod del lado del cliente. */
+    public static volatile java.util.function.Consumer<UUID> alOirCanal;
+    /** (Cliente) Estoy mandando voz (hablo). */
+    public static volatile Runnable alHablarYo;
     /** Lo pone el complemento: saca de sus grupos a las piezas (lo llama el hilo del servidor). */
     public static volatile Runnable sincronizar;
 

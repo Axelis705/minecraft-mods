@@ -257,6 +257,9 @@ public final class Mansion {
         p.set(HX1, 9, 21, C + "pantalla[facing=west,grande=true]");
         p.marca("man.pantalla", HX1, 9, 21, 90);
         p.texto(HX1, 7, 21, "letrero", "west", 0xD9A93A, "CASCABEL");
+        // los candelabros van sobre una repisa pegada al muro (no flotando)
+        p.set(HX1, 6, 17, C + "losa_madera[type=top]");
+        p.set(HX1, 6, 26, C + "losa_madera[type=top]");
         p.set(HX1, 7, 17, C + "candelabro[facing=west,half=lower]");
         p.set(HX1, 8, 17, C + "candelabro[facing=west,half=upper]");
         p.set(HX1, 7, 26, C + "candelabro[facing=west,half=lower]");

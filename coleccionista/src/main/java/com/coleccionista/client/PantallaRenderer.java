@@ -69,7 +69,8 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         Direction f = st.getValue(PantallaBlock.FACING);
         boolean grande = st.getValue(PantallaBlock.GRANDE);
         Atajos.vista(be.getBlockPos());
-        float w = grande ? 11F : 3F, h = grande ? 7F : 2F;
+        boolean mediana = grande && be.tam() == 1;
+        float w = mediana ? 7F : grande ? 11F : 3F, h = mediana ? 4F : grande ? 7F : 2F;
         CompoundTag t = estado();
         String modo = Nbt.s(t, "modo");
         if (modo.isEmpty() || !grande && t.getBoolean("soloGrande")) {
