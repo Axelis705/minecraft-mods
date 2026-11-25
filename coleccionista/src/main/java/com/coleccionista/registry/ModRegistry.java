@@ -84,6 +84,11 @@ public final class ModRegistry {
             ENTITIES.register("escopeta", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "escopeta",
                     EntityType.Builder.<com.coleccionista.evento.Escopeta>of(com.coleccionista.evento.Escopeta::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1)));
+    /** La caja sorpresa gigante con Don Resorte adentro (capítulo 4). */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.CajaSorpresa>> CAJA_SORPRESA =
+            ENTITIES.register("caja_sorpresa", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "caja_sorpresa",
+                    EntityType.Builder.<com.coleccionista.evento.CajaSorpresa>of(com.coleccionista.evento.CajaSorpresa::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(2.5F, 2.6F).clientTrackingRange(10).updateInterval(1)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(

@@ -22,6 +22,7 @@ public final class Pruebas {
         Sentidos.init();
         Mascota.init();
         Caja.init();
+        Sorpresa.init();
         RolesPrueba.init();
     }
 
@@ -29,7 +30,8 @@ public final class Pruebas {
     public static boolean alAcabarReloj(MinecraftServer s) {
         return Encadenados.alAcabarReloj(s) || Compartir.alAcabarReloj(s) || LasPuertas.alAcabarReloj(s) || LasCopas.alAcabarReloj(s) || Sacrificio.alAcabarReloj(s)
                 || Traidor.alAcabarReloj(s) || ACiegas.alAcabarReloj(s) || TresSentidos.alAcabarReloj(s)
-                || Sentidos.alAcabarReloj(s) || Mascota.alAcabarReloj(s) || Caja.alAcabarReloj(s);
+                || Sentidos.alAcabarReloj(s) || Mascota.alAcabarReloj(s) || Caja.alAcabarReloj(s)
+                || Sorpresa.alAcabarReloj(s);
     }
 
     /**
@@ -48,6 +50,7 @@ public final class Pruebas {
         cerrar(s, nueva, "sentidos", Sentidos.abierta(), () -> Sentidos.terminar(s));
         cerrar(s, nueva, "mascota", Mascota.abierta(), () -> Mascota.reiniciar(s));
         cerrar(s, nueva, "caja", Caja.abierta(), () -> Caja.reiniciar(s));
+        cerrar(s, nueva, "sorpresa", Sorpresa.abierta(), () -> Sorpresa.reiniciar(s));
     }
 
     private static void cerrar(MinecraftServer s, String nueva, String id, boolean abierta, Runnable terminar) {
@@ -98,5 +101,6 @@ public final class Pruebas {
         Sentidos.reiniciar(s);
         Mascota.reiniciar(s);
         Caja.reiniciar(s);
+        Sorpresa.reiniciar(s);
     }
 }

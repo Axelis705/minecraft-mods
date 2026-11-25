@@ -84,6 +84,9 @@ public final class Objetivo {
         if (m != null) {
             return m;
         }
+        if (com.coleccionista.prueba.Sorpresa.abierta()) {
+            return com.coleccionista.prueba.Sorpresa.objetivo(s, sp);
+        }
         if (com.coleccionista.prueba.Caja.abierta()) {
             return com.coleccionista.prueba.Caja.objetivo(s, sp);
         }

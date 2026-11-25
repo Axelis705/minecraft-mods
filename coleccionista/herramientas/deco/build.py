@@ -555,6 +555,7 @@ def catalogo():
     prop(Q.placa_altar())
     prop(Q.trono())
     prop(Q.craneo())
+    prop(Q.zapatos())
     for p in P.focos():
         solo_modelos(p)
     solo_modelos(P.candado())

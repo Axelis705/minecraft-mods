@@ -58,7 +58,7 @@ import java.util.UUID;
 /**
  * Capítulo 3 · La caja de música (El traidor, rehecho). Llegan por el pasillo de servicio al salón; el Coleccionista explica y cada pieza
  * busca una góndola (abiertas, alrededor del salón) y se sienta sola. Cuando ya están todos sentados (o se acaba el tiempo) se cierran las
- * correas y se va la luz: en lo oscuro cada pieza recibe un símbolo en la espalda (sombrero, llave, cascabel o muñeca: el suyo no lo puede
+ * correas y se va la luz: en lo oscuro cada pieza recibe un símbolo en la espalda (círculo, cuadrado, triángulo o rombo: el suyo no lo puede
  * ver), su máscara y su papel (hay dos traidores que se conocen), y la caja los cambia de lugar. Luego, en seis turnos con apagones entre
  * ellos, van de dos en dos en las góndolas: el de atrás le ve la espalda al de adelante y le dice (en voz alta: cada góndola es un grupo
  * privado de voz, con la voz cambiada) qué símbolo lleva; los traidores pueden mentir. Dos turnos por pareja (cambian de asiento) y tres
@@ -80,7 +80,7 @@ public final class Caja {
     public static final ResourceLocation ETIQUETA = new ResourceLocation(MOD, "caja_etiqueta");
     public static final ResourceLocation MASCARA = new ResourceLocation(MOD, "caja_mascara");
     public static final String PRUEBA = "La caja de música";
-    public static final String[] SIMBOLOS = {"sombrero", "llave", "cascabel", "muneca"};
+    public static final String[] SIMBOLOS = {"circulo", "cuadrado", "triangulo", "rombo"};
     public static final int TURNOS = 6;
     /** Ajustes (los cambia el organizador con /evento caja ...). */
     public static int segundosTurno = 45, segundosElegir = 25, traidores = 2, segundosSentarse = 75;
@@ -150,6 +150,8 @@ public final class Caja {
     private static final Map<UUID, int[]> botVa = new HashMap<>();
     private static final List<BlockPos> sangre = new ArrayList<>();
     private static int balas, salvados;
+    /** Cuándo pasar al capítulo 4 (0: no). */
+    private static long aSorpresa;
 
     private Caja() {
     }
@@ -1379,6 +1381,10 @@ public final class Caja {
         Pantallas.hablar(s, "caja_fin", () -> {
             Evento.get(s).prueba(s, Component.translatable(MOD + ".caja.fin_capitulo").getString());
             Coleccionista.LOGGER.info("COLECCIONISTA_CAPITULO3 fin vivos={}", Evento.get(s).vivos().size());
+            // "los que siguen enteros…": el capítulo 4 (se abre el pasillo hacia el teatrito de Don Resorte)
+            if (Sorpresa.encadenar && Complejo.construido(s, "sorpresa") && fase == Fase.FIN) {
+                aSorpresa = t + 60;
+            }
         });
         Anuncio.titulo(s, Component.translatable(MOD + ".caja.fin.titulo"), Component.translatable(MOD + ".caja.fin.traidores", tr));
         Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".caja.fin.traidores", tr)));
@@ -1538,6 +1544,15 @@ public final class Caja {
                 revisionTick(s);
             }
             case FIN -> {
+                if (aSorpresa > 0 && t >= aSorpresa) {
+                    aSorpresa = 0;
+                    // primero se suelta a todos de sus sillas (el círculo), luego llama la caja sorpresa
+                    for (Silla si : circulo.values()) {
+                        si.soltar();
+                    }
+                    Sorpresa.llamar(s);
+                    return;
+                }
                 if (arma != null && arma.guardada() && t - desde > Escopeta.TICKS_BAJAR + 10) {
                     arma.discard();
                     arma = null;
@@ -1967,6 +1982,7 @@ public final class Caja {
         botDesde.clear();
         botVa.clear();
         Cuerpos.EN_SILLA.clear();
+        aSorpresa = 0;
         turno = -1;
         idx = -1;
         balas = 0;

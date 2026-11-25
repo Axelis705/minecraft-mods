@@ -4,10 +4,11 @@ package com.coleccionista.mapa;
  * La casa del Coleccionista (capítulo 2, "La mascota"): una mansión vieja de dos pisos donde se esconden las piezas mientras Cascabel, la
  * mascota del Coleccionista, las busca. Se llega por el pasillo de servicio ({@link Pasaje}, idéntico al de detrás del teatro).
  * <pre>
- *   x: 0 ... 54   z: -1 ... 45   y: -1 ... 14
+ *   x: 0 ... 54   z: -18 ... 61   y: -1 ... 19
  *   el pasillo x 2..15 (entra al vestíbulo por x 16), el vestíbulo x 17..40 / z 10..33 (doble altura, con galerías arriba en y 7),
  *   abajo: comedor y cocina al norte, salón de música y biblioteca al sur; arriba: dos recámaras, el cuarto de las muñecas y el baño;
  *   la jaula de Cascabel al este (x 42..52), con su reja hacia el vestíbulo
+ *   las alas ({@link MansionAlas}): al norte (z -17..-2) y al sur (z 45..60), x 6..50, con pasillo, tres cuartos por piso y ático
  * </pre>
  * Marcas: {@code man.centro}, {@code man.pantalla}, {@code man.jaula} (donde aparece Cascabel), {@code man.reja.K} (las columnas de la reja
  * de la jaula, de abajo), {@code man.esc.N} (escondites: armarios, nichos con cortina, la chimenea, la tina...) y el pasillo {@code pas_man}.
@@ -27,7 +28,7 @@ public final class Mansion {
     public static Plano crear(long semilla) {
         Plano p = new Plano(semilla);
         escondites = 0;
-        p.caja(0, -1, -2, 54, 15, 45, C + "ladrillo_viejo");
+        p.caja(0, -1, -18, 54, 19, 61, C + "ladrillo_viejo");
         // el pasillo de servicio, idéntico al del teatro: sus dos puertas del fondo dan al vestíbulo
         Pasaje.pasillo(p, "pas_man", new Marco(2, 26, 270));
         vestibulo(p);
@@ -61,11 +62,13 @@ public final class Mansion {
         hueco(p, 37, 9, 8, 2, true);
         hueco(p, 23, 34, 8, 2, true);
         hueco(p, 37, 34, 8, 2, true);
+        // las alas del norte y del sur (pasillos, más cuartos, escaleras de servicio y áticos)
+        MansionAlas.construir(p);
         return p;
     }
 
     /** Vacía un cuarto (interior de x0..x1, z0..z1, de y0+1 a y0+alto) con su piso y sus paredes. */
-    private static void cuarto(Plano p, int x0, int z0, int y0, int x1, int z1, int alto, String piso, String muro) {
+    static void cuarto(Plano p, int x0, int z0, int y0, int x1, int z1, int alto, String piso, String muro) {
         for (int x = x0 - 1; x <= x1 + 1; x++) {
             for (int z = z0 - 1; z <= z1 + 1; z++) {
                 boolean borde = x < x0 || x > x1 || z < z0 || z > z1;
@@ -95,7 +98,7 @@ public final class Mansion {
     }
 
     /** Un hueco de puerta (2 de ancho, 3 de alto) en un muro: en z (a lo largo de x) o en x (a lo largo de z). */
-    private static void hueco(Plano p, int x, int z, int y, int ancho, boolean muroEnZ) {
+    static void hueco(Plano p, int x, int z, int y, int ancho, boolean muroEnZ) {
         for (int a = 0; a < ancho; a++) {
             for (int yy = y; yy < y + 3; yy++) {
                 p.set(muroEnZ ? x + a : x, yy, muroEnZ ? z : z + a, "air");
@@ -107,7 +110,7 @@ public final class Mansion {
     /**
      * Un armario de madera para esconderse: el hueco (x, z) de 1 x 2 de alto con su puerta (que abre cualquiera) del lado {@code mira}.
      */
-    private static void armario(Plano p, int x, int y0, int z, String mira) {
+    static void armario(Plano p, int x, int y0, int z, String mira) {
         int dx = mira.equals("east") ? 1 : mira.equals("west") ? -1 : 0, dz = mira.equals("south") ? 1 : mira.equals("north") ? -1 : 0;
         for (int y = y0 + 1; y <= y0 + 3; y++) {
             // los lados y la espalda
@@ -127,7 +130,7 @@ public final class Mansion {
     }
 
     /** Un nicho en la pared tapado con una cortina de terciopelo (se puede entrar y quedarse detrás). */
-    private static void nicho(Plano p, int x, int y0, int z, int mx, int mz, String mira) {
+    static void nicho(Plano p, int x, int y0, int z, int mx, int mz, String mira) {
         // (x, z): delante del muro, donde va la cortina; (mx, mz): el hueco dentro del muro
         p.set(mx, y0 + 1, mz, "air");
         p.set(mx, y0 + 2, mz, "air");
@@ -137,7 +140,7 @@ public final class Mansion {
         escondite(p, mx, y0 + 1, mz);
     }
 
-    private static void escondite(Plano p, int x, int y, int z) {
+    static void escondite(Plano p, int x, int y, int z) {
         p.marca("man.esc." + escondites++, x, y, z, 0);
     }
 

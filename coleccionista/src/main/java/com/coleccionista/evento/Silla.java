@@ -38,6 +38,9 @@ public class Silla extends Entity {
     private static boolean soltando;
     private Vec3 destino;
     private double rapidez;
+    /** Hacia dónde gira (yaw) y qué tan rápido (grados por tick); null: no gira. */
+    private Float giroObj;
+    private float giroVel = 3F;
     public String grupo = "";
 
     public Silla(EntityType<?> type, Level level) {
@@ -112,10 +115,36 @@ public class Silla extends Entity {
         return destino == null;
     }
 
+    /** Que gire despacio (sobre su lugar) hasta mirar a {@code yaw}; quien va sentado gira con ella (el cliente le gira la vista). */
+    public void girarA(float yaw, float gradosPorTick) {
+        this.giroObj = yaw;
+        this.giroVel = gradosPorTick;
+    }
+
+    public boolean girando() {
+        return giroObj != null;
+    }
+
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide || destino == null) {
+        if (level().isClientSide) {
+            return;
+        }
+        if (giroObj != null) {
+            float d = net.minecraft.util.Mth.wrapDegrees(giroObj - getYRot());
+            if (Math.abs(d) <= giroVel) {
+                setYRot(giroObj);
+                giroObj = null;
+            } else {
+                setYRot(getYRot() + Math.signum(d) * giroVel);
+                if (tickCount % 8 == 0) {
+                    level().playSound(null, blockPosition(), SoundEvents.CHAIN_STEP, SoundSource.BLOCKS, 0.35F, 0.6F);
+                }
+            }
+            setYHeadRot(getYRot());
+        }
+        if (destino == null) {
             return;
         }
         Vec3 d = destino.subtract(position());

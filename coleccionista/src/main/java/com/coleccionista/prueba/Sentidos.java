@@ -211,6 +211,9 @@ public final class Sentidos {
         if (s.grupo.equals("caja")) {
             return Caja.puedeSentarse(sp);
         }
+        if (s.grupo.equals("sorpresa")) {
+            return Sorpresa.puedeSentarse(sp, s);
+        }
         if (!s.grupo.startsWith("circ.")) {
             return !s.grupo.equals("vitrina");
         }

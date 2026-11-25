@@ -250,6 +250,18 @@ evento caja
 evento caja
 #pausa 200
 evento caja
+evento sorpresa comer 2
+evento sorpresa rapido true
+evento sorpresa llegar
+#pausa 4
+evento sorpresa saltar
+#pausa 3
+evento sorpresa saltar
+#pausa 110
+evento sorpresa
+evento sorpresa limpiar
+evento sorpresa rapido false
+evento sorpresa comer 0
 evento caja limpiar
 evento pocos false
 evento capitulo1
@@ -336,6 +348,18 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CAJA compuerta cierra
 #expect COLECCIONISTA_DISCURSO caja_fin
 #expect COLECCIONISTA_CAPITULO3 fin
+#expect COLECCIONISTA_CONSTRUIDO sorpresa
+#expect COLECCIONISTA_SORPRESA llegan
+#expect COLECCIONISTA_SORPRESA habla
+#expect COLECCIONISTA_DISCURSO sorpresa
+#expect COLECCIONISTA_SORPRESA sentados=
+#expect COLECCIONISTA_SORPRESA turno
+#expect COLECCIONISTA_SORPRESA vueltas
+#expect COLECCIONISTA_SORPRESA salta
+#expect COLECCIONISTA_SORPRESA come
+#expect COLECCIONISTA_SORPRESA fin comidos=
+#expect COLECCIONISTA_DISCURSO sorpresa_fin
+#expect COLECCIONISTA_CAPITULO4 fin
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
 #expect COLECCIONISTA_EQUIPOS tam=2 equipos=3

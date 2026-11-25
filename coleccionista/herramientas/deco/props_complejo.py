@@ -277,3 +277,20 @@ def craneo():
     for i in range(4):
         p.box(6 + i * 1.1, 1.1, 3.1, 6.7 + i * 1.1, 1.9, 3.25, solid('#d8d0b8'))
     return p
+
+
+def zapatos():
+    """Un par de zapatos viejos (lo único que deja Don Resorte), con las agujetas sueltas y manchados de sangre."""
+    p = Prop('zapatos', 'Zapatos', 'Shoes', kind='floor', sound='wool', seed=99, collide=False)
+    cuero = kit.stone(Ramp('#2a1810', '#3a2216', '#4a2c1c', '#5a3824'), scale=1.5, seed=99)
+    suela = solid('#141010')
+    sangre = kit.stone(Ramp('#3a0408', '#5a0a10', '#7a1018'), scale=1.2, seed=100)
+    agujeta = solid('#c8c0b0')
+    for (x0, dz) in ((3.2, 0.0), (9.0, 1.2)):
+        p.box(x0, 0, 3 + dz, x0 + 3.6, 0.8, 11.5 + dz, suela)            # la suela
+        p.box(x0 + 0.2, 0.8, 3.4 + dz, x0 + 3.4, 2.6, 11.2 + dz, cuero)  # el empeine
+        p.box(x0 + 0.3, 2.6, 7.6 + dz, x0 + 3.3, 4.6, 11.2 + dz, cuero)  # el talón (la caña)
+        p.box(x0 + 0.8, 2.6, 5.0 + dz, x0 + 2.8, 2.9, 7.4 + dz, agujeta)
+        p.box(x0 + 0.4, 4.4, 7.8 + dz, x0 + 3.2, 4.65, 11.0 + dz, sangre)   # sangre en el borde
+    p.box(5.5, 0, 1.5, 11.5, 0.15, 6.5, sangre)                                # el charquito
+    return p

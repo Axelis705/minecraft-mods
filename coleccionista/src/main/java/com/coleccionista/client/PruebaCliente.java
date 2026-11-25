@@ -539,6 +539,91 @@ final class PruebaCliente {
             t.cmd("evento revivir " + yo());
         });
         capitulo3(t);
+        capitulo4(t);
+    }
+
+    /**
+     * Capítulo 4 · La caja sorpresa: el pasillo, el teatrito (la herradura de gradas y el escenario con la caja), el apagón y todos
+     * sentados, el turno de un bot (su silla gira y lo levanta, va a la manivela, le da 2 vueltas) y Don Resorte: salta, lo agarra, lo
+     * muerde, mastica y escupe los zapatos; la pantalla para elegir las vueltas (obligado a 3) y el final.
+     * El teatrito está en (870, -61, 430): el pasillo x 872..885 / z 448..455, el salón x 887..931 / z 430..472, el centro de la herradura
+     * (905, 451), el escenario x 916..928 (se pisa en y -58) y la caja en (922, 451).
+     */
+    private static void capitulo4(ClientTest.Script t) {
+        t.add("cap4: preparar", 600, () -> {
+            t.cmd("gamemode adventure @a");
+            t.cmd("forceload add 864 424 936 480");
+            t.cmd("evento pocos true");
+            t.cmd("evento sorpresa comer 1");
+            t.cmd("evento sorpresa primero Bot_03");
+            t.cmd("evento sorpresa secreto 2");
+            t.cmd("evento sorpresa llegar");
+        });
+        t.waitFor("cap4: llegando", 15000, () -> "LLEGANDO".equals(SorpresaCliente.fase()));
+        t.photo("c4_01_pasillo", 1500, () -> t.lookFrom(878.5, -60, 451.5, 887, -59, 451.5));
+        t.photo("c4_02_teatro", 3000, () -> {
+            t.cmd("evento sorpresa saltar");
+            t.lookFrom(889.5, -59, 451.5, 922, -56.5, 451.5);
+        });
+        t.photo("c4_02b_caja", 2500, () -> t.lookFrom(912.5, -57.5, 451.5, 922, -56.5, 451.5));
+        t.photo("c4_02c_gradas", 1500, () -> t.lookFrom(914.5, -57.5, 444.5, 900, -59, 451.5));
+        t.add("cap4: a las gradas", 200, () -> t.cmd("evento sorpresa saltar"));
+        t.waitFor("cap4: turno", 15000, () -> "IR".equals(SorpresaCliente.fase()));
+        t.photo("c4_03_sentados", 1500, () -> mirarA(922.5, -56.5, 451.5));
+        t.add("sentado en la grada", 100, () -> t.check(Minecraft.getInstance().player.getVehicle() instanceof com.coleccionista.evento.Silla,
+                "voy sentado en mi silla de la grada"));
+        t.waitFor("cap4: el bot elige", 25000, () -> "ELIGE".equals(SorpresaCliente.fase()));
+        t.photo("c4_04_manivela", 400, () -> {
+            t.cmd("evento sorpresa vueltas 2");
+            mirarA(921.5, -56.5, 451.5);
+        });
+        t.waitFor("cap4: salta", 8000, () -> "SALTO".equals(SorpresaCliente.fase()));
+        t.photo("c4_05_salta", 900, () -> mirarA(922.5, -55, 451.5));
+        t.waitFor("cap4: agarra", 5000, () -> "AGARRA".equals(SorpresaCliente.fase()));
+        t.photo("c4_06_agarra", 900, () -> mirarA(922.5, -55, 451.5));
+        t.waitFor("cap4: muerde", 5000, () -> "MUERDE".equals(SorpresaCliente.fase()));
+        t.photo("c4_07_mordida", 150, () -> {
+        });
+        t.photo("c4_08_mastica", 2200, () -> {
+        });
+        t.waitFor("cap4: escupe", 8000, () -> "ESCUPE".equals(SorpresaCliente.fase()));
+        t.photo("c4_09_escupe", 700, () -> {
+        });
+        t.photo("c4_10_zapatos", 2600, () -> mirarA(917.5, -57.5, 444.5));
+        t.add("zapatos", 100, () -> {
+            boolean hay = false;
+            var lvl = Minecraft.getInstance().level;
+            for (int z = 440; z <= 448 && !hay; z++) {
+                var st = lvl.getBlockState(new net.minecraft.core.BlockPos(917, -58, z));
+                hay = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(st.getBlock()).getPath().equals("zapatos");
+            }
+            t.check(hay, "quedaron los zapatos al frente del escenario");
+        });
+        // la pantalla de las vueltas (simulada en mi pantalla), obligado a dar 3
+        t.photo("c4_11_vueltas", 900, () -> {
+            CompoundTag m = new CompoundTag();
+            m.putBoolean("turno", true);
+            m.putBoolean("elige", true);
+            m.putBoolean("obligado", true);
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Sorpresa.KEY_MIO, m);
+        });
+        t.add("vueltas", 300, () -> {
+            t.check(Minecraft.getInstance().screen instanceof VueltasScreen, "salió la pantalla para elegir las vueltas");
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Sorpresa.KEY_MIO, new CompoundTag());
+            com.axeliscore.plat.client.Screens.close();
+        });
+        t.waitFor("cap4: fin", 40000, () -> "FIN".equals(SorpresaCliente.fase()));
+        t.photo("c4_12_fin", 3000, () -> mirarA(922.5, -56, 451.5));
+        t.add("cap4: limpiar", 1500, () -> {
+            t.cmd("evento sorpresa limpiar");
+            t.cmd("evento sorpresa comer 0");
+            t.cmd("evento pocos false");
+            t.cmd("gamemode adventure @a");
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("evento revivir " + yo());
+        });
     }
 
     /** Mira (sentado) según dónde voy en la góndola: atrás, a la espalda del de adelante; adelante, hacia atrás. */
@@ -743,8 +828,8 @@ final class PruebaCliente {
             CompoundTag o = new CompoundTag();
             o.putString("nombre", "Bot_05");
             o.putString("etiqueta", "05");
-            o.putString("real", "llave");
-            o.putString("marco", "sombrero");
+            o.putString("real", "cuadrado");
+            o.putString("marco", "circulo");
             o.putBoolean("traidor", false);
             o.putString("paso", "ESPERA");
             o.putInt("i", 3);
@@ -803,6 +888,10 @@ final class PruebaCliente {
         t.photo("c2_02_vestibulo", 9000, () -> t.lookFrom(741.5, -60, 451.5, 760, -53.5, 451.5));
         t.photo("c2_03_jaula", 4000, () -> t.lookFrom(756.5, -60, 451.5, 768, -59, 451.5));
         t.photo("c2_04_galeria", 2500, () -> t.lookFrom(739.5, -53, 442.5, 752, -60, 455));
+        // las alas nuevas: el pasillo del norte, el salón de baile (sur) y el ático del norte
+        t.photo("c2_04b_ala_norte", 1800, () -> t.lookFrom(765.5, -60, 426.5, 730, -58.5, 426.5));
+        t.photo("c2_04c_baile", 1500, () -> t.lookFrom(729.5, -60, 482.5, 755, -58, 486));
+        t.photo("c2_04d_atico", 1500, () -> t.lookFrom(762.5, -47, 418.5, 730, -46, 416));
         t.photo("c2_05_esconder", 1800, () -> {
             t.cmd("evento mascota saltar");
             t.lookFrom(744.5, -60, 451.5, 737, -59, 444);

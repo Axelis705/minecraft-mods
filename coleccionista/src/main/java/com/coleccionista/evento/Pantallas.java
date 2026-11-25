@@ -343,6 +343,26 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> sorpresa() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("bienvenidos", 70, null, 1F));
+        l.add(new Frase("amigo", 110, null, 1F));
+        l.add(new Frase("cuerda", 140, null, 1F));
+        l.add(new Frase("una_tres", 120, null, 1F));
+        l.add(new Frase("hambre", 110, SoundEvents.WITCH_CELEBRATE, 0.5F));
+        l.add(new Frase("zapatos", 90, null, 1F));
+        l.add(new Frase("empecemos", 60, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> sorpresa_fin() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("lleno", 80, null, 1F));
+        l.add(new Frase("zapatos", 90, null, 1F));
+        l.add(new Frase("enteros", 90, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -368,6 +388,8 @@ public final class Pantallas {
             case "caja_revision" -> caja_revision();
             case "caja_traidores" -> caja_traidores();
             case "caja_fin" -> caja_fin();
+            case "sorpresa" -> sorpresa();
+            case "sorpresa_fin" -> sorpresa_fin();
             default -> null;
         };
     }

@@ -39,6 +39,9 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
     private static final int LUZ = 0xF000F0;
     /** El último modo y cuándo cambió, aparte para las chicas [0] y las grandes [1] (pueden estar en modos distintos). */
     private static final String[] modoAnterior = {"", ""};
+    /** La línea que dice ahora el Coleccionista y desde cuándo (para que las figuras de la caja aparezcan una por una). */
+    private static String lineaVista = "";
+    private static long lineaDesde;
     private static final long[] cambioK = new long[2];
     private static long cambio;
 
@@ -123,11 +126,17 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         String clave = Nbt.s(t, "linea");
         // fondo de terciopelo rojo oscuro (más claro arriba)
         quad(d.translucent(BLANCO), ps, -w / 2, -h / 2, w / 2, h / 2, z, 0, 0, 1, 1, 0xFF180406, 0xFF3A0A10);
+        if (!clave.equals(lineaVista)) {
+            lineaVista = clave;
+            lineaDesde = ms;
+        }
         // él, en vivo y en 3D (si el modelo no cargara, el retrato de antes)
         if (ColeccionistaTV.dibujar(ps, buf0, w, h, z, habla, clave, ms, giro)) {
             encima(d, ps, w, h, z + ColeccionistaTV.FRENTE, habla, clave, ms);
+            figuras(d, ps, w, h, z + ColeccionistaTV.FRENTE + 0.01F, clave, ms);
             return;
         }
+        figuras(d, ps, w, h, z + 0.01F, clave, ms);
         // el retrato: cuadrado, un poco a la izquierda en la grande; se mece apenas
         float lado = h * 0.92F;
         float s = (float) Math.sin(ms / 700.0) * 0.02F * h, giro = habla ? (float) Math.sin(ms / 230.0) * 1.6F : 0F;
@@ -162,6 +171,48 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         // subtítulo dentro de la pantalla
         if (habla && !clave.isEmpty() && !Cine.enPantalla()) {
             texto(d, ps, w, h, z + 0.008F, Component.translatable(clave).getString(), -h / 2 + h * 0.18F, w * 0.9F, 0.85F);
+        }
+    }
+
+    private static final ResourceLocation[] TARJETAS = new ResourceLocation[com.coleccionista.prueba.Caja.SIMBOLOS.length];
+
+    static {
+        for (int i = 0; i < TARJETAS.length; i++) {
+            TARJETAS[i] = Ids.rl(MOD, "textures/prenda/caja_etiqueta_" + com.coleccionista.prueba.Caja.SIMBOLOS[i] + ".png");
+        }
+    }
+
+    /**
+     * Mientras el Coleccionista explica la caja de música (las figuras de la espalda, que el de atrás te la dice y que los traidores
+     * mienten), arriba de la pantalla aparecen, una por una, las cuatro tarjetas que alguien puede llevar en la espalda (con su nombre).
+     */
+    private static void figuras(Draw d, PoseStack ps, float w, float h, float z, String clave, long ms) {
+        if (!clave.startsWith(MOD + ".voz.caja.") || !(clave.endsWith(".espalda") || clave.endsWith(".no_se_ve") || clave.endsWith(".diganse")
+                || clave.endsWith(".traidores"))) {
+            return;
+        }
+        boolean primera = clave.endsWith(".espalda");
+        float lado = h * 0.2F, sep = lado * 0.28F;
+        float total = TARJETAS.length * lado + (TARJETAS.length - 1) * sep;
+        float cy = h / 2 - lado / 2 - h * 0.07F;
+        for (int i = 0; i < TARJETAS.length; i++) {
+            // en la primera línea salen una por una (cada medio segundo), con un saltito
+            float t = primera ? (ms - lineaDesde) / 1000F - 0.3F - i * 0.5F : 9F;
+            if (t <= 0) {
+                continue;
+            }
+            float e = Math.min(1F, t / 0.25F);
+            float esc = e < 1F ? e * 1.15F : 1F + 0.15F * (float) Math.max(0, Math.cos(Math.min(1F, (t - 0.25F) / 0.3F) * Math.PI / 2)) - 0.15F;
+            esc = Math.max(0.05F, Math.min(1.15F, esc));
+            float cx = -total / 2 + lado / 2 + i * (lado + sep);
+            float m = lado / 2 * esc;
+            float bam = (float) Math.sin(ms / 600.0 + i) * h * 0.006F;
+            quad(d.translucent(BLANCO), ps, cx - m - lado * 0.04F, cy - m - lado * 0.04F + bam, cx + m + lado * 0.04F, cy + m + lado * 0.04F + bam, z,
+                    0, 0, 1, 1, 0xC0000000, 0xC0000000);
+            quad(d.translucent(TARJETAS[i]), ps, cx - m, cy - m + bam, cx + m, cy + m + bam, z + 0.002F, 0, 0, 1, 1, 0xFFFFFFFF, 0xFFFFFFFF);
+            if (e >= 1F) {
+                texto(d, ps, w, h, z + 0.004F, CajaCliente.nombreSimbolo(i), cy - lado / 2 - h * 0.035F, lado * 1.3F, 0.32F);
+            }
         }
     }
 
