@@ -103,6 +103,8 @@ public final class SalaVitrina {
         p.marca("vit.boquilla." + n, x0 + 1, 4, z0 + 1, 0);
         p.set(x0 + 1, 5, z0 - 1, C + "lampara_jaula[facing=north,encendida=false,falla=false]");
         p.marca("vit.luz." + n, x0 + 1, 5, z0 - 1, 0);
+        // el reflector de verdad (una luz invisible que el evento prende frente al vidrio cuando hay alguien dentro)
+        p.marca("vit.foco." + n, x0 + 1, 3, z0 - 1, 0);
         p.texto(x0, 1, z0 - 1, "placa", "north", 0xD9A93A, "PIEZA", "—");
         p.marca("vit.placa." + n, x0, 1, z0 - 1, 0);
     }

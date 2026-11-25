@@ -362,11 +362,12 @@ final class PruebaCliente {
             t.check("ESPOSAS".equals(SentidosCliente.miRol()), "me tocaron las esposas (" + SentidosCliente.miRol() + ")");
             t.check("JUEGO".equals(SentidosCliente.fase()), "ya empezó el recorrido (" + SentidosCliente.fase() + ")");
         });
-        t.photo("c1_57_cadena_tercera", 1500, () -> {
-            Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
-            t.lookFrom(149.5, -60, 443.5, 149.5, -59.5, 438);
+        // mi equipo visto desde un lado: la venda, la cinta, mis esposas y la cadena entre todos
+        t.photo("c1_57_equipo_encadenado", 1500, () -> {
+            t.cmd("gamemode spectator @a");
+            t.lookFrom(153.5, -59, 440.5, 149.5, -59.5, 437.5);
         });
-        t.add("primera", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
+        t.add("primera", 300, () -> t.cmd("gamemode adventure @a"));
         t.add("mostrar", 600, () -> {
             t.cmd("gamemode spectator @a");
             t.cmd("evento sentidos mostrar");
@@ -379,7 +380,7 @@ final class PruebaCliente {
             t.cmd("gamemode adventure @a");
             t.cmd("evento sentidos salida " + yo());
         });
-        t.photo("c1_62_salida_sillas", 1200, () -> t.lookFrom(149.5, -60, 498.5, 149.5, -60, 503));
+        t.photo("c1_62_salida_sillas", 1200, () -> t.lookFrom(149.5, -59.5, 496.5, 149.5, -60.3, 501.5));
         t.add("sentarme", 2500, () -> t.cmd("execute as " + yo() + " at @s run ride @s mount @e[type=coleccionista:silla,sort=nearest,limit=1]"));
         t.add("sentado", 100, () -> t.check(Minecraft.getInstance().player.getVehicle() instanceof com.coleccionista.evento.Silla,
                 "estoy sentado en la silla de la salida"));
@@ -412,7 +413,7 @@ final class PruebaCliente {
             }
             return n >= 2;
         });
-        t.photo("c1_67_estatuas", 3500, () -> {
+        t.photo("c1_67_estatuas", 9000, () -> {
         });
         t.add("estatuas", 100, () -> {
             int n = 0;

@@ -1108,6 +1108,10 @@ public final class Sentidos {
                     l.playSound(null, f, SoundEvents.GLASS_PLACE, SoundSource.BLOCKS, 1F, 0.6F);
                 }
                 luz(s, "vit.luz." + v.caja, true);
+                BlockPos fo = Complejo.pos(s, "vit.foco." + v.caja);
+                if (fo != null) {
+                    l.setBlock(fo, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, 15), 3);
+                }
                 BlockPos pl = Complejo.pos(s, "vit.placa." + v.caja);
                 Pieza p = ev.pieza(v.id);
                 if (pl != null && p != null && l.getBlockEntity(pl) instanceof com.coleccionista.bloque.deco.TextoBE be) {
@@ -1325,6 +1329,10 @@ public final class Sentidos {
                 l.setBlock(f.above(y), Blocks.AIR.defaultBlockState(), 3);
             }
             luz(s, "vit.luz." + n, false);
+            BlockPos fo = Complejo.pos(s, "vit.foco." + n);
+            if (fo != null) {
+                l.setBlock(fo, Blocks.AIR.defaultBlockState(), 3);
+            }
             BlockPos pl = Complejo.pos(s, "vit.placa." + n);
             if (pl != null && l.getBlockEntity(pl) instanceof com.coleccionista.bloque.deco.TextoBE be) {
                 be.escribir(0xD9A93A, "PIEZA", "—");

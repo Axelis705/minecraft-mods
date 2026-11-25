@@ -106,8 +106,8 @@ public final class Circuito {
         for (int z = z0 + 1; z <= z1; z += 4) {
             p.set(x0, 3, z, C + "vela");
             p.set(x1, 3, z, C + "vela");
-            for (int x = x0 + 2; x <= x1 - 1; x += 5) {
-                p.set(x, 4, z, "light[level=12]");
+            for (int x = x0 + 1; x <= x1 - 1; x += 4) {
+                p.set(x, 3, z, "light[level=15]");
             }
         }
     }

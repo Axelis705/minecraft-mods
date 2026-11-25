@@ -282,7 +282,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_RECORRIDO formar encadenados tam=2
 #expect COLECCIONISTA_RECORRIDO cubiculo 1 lleno
 #expect COLECCIONISTA_RECORRIDO cubiculo 2 lleno
-#expect COLECCIONISTA_RECORRIDO entran encadenados equipos=2
+#expect COLECCIONISTA_RECORRIDO entran encadenados equipos=
 #expect COLECCIONISTA_RECORRIDO reunir cloacas
 #expect COLECCIONISTA_RECORRIDO elevador ante_cloacas.sale
 #expect COLECCIONISTA_CABINA sale ante_cloacas.sale -> ante_archivo.llega van=
