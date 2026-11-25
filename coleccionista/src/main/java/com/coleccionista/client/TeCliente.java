@@ -147,7 +147,16 @@ public final class TeCliente {
 
     /** ¿Ese jugador (o bot) está bebiendo y se dibuja aparte? */
     public static boolean oculto(UUID id) {
-        if (!activa() || !bebiendo()) {
+        if (!activa()) {
+            return false;
+        }
+        if (CalizScreen.actual() != null) {
+            int yo = miLado();
+            if (yo >= 0 && estado.hasUUID("id" + yo) && estado.getUUID("id" + yo).equals(id)) {
+                return true;
+            }
+        }
+        if (!bebiendo()) {
             return false;
         }
         int l = lado(id);
@@ -354,13 +363,13 @@ public final class TeCliente {
                 if (queda) {
                     float sube = l == miLado() && senalado == k && "CALIZ".equals(fase()) ? 0.06F : 0F;
                     ps.translate(0, sube, 0);
-                    ps.scale(0.8F, 0.8F, 0.8F);
+                    ps.scale(0.62F, 0.62F, 0.62F);
                     ps.translate(-0.5, 0, -0.5);
                 } else {
                     // tirado: acostado sobre el mantel
-                    ps.translate(0, 0.16, 0);
+                    ps.translate(0, 0.12, 0);
                     ps.mulPose(Axis.ZP.rotationDegrees(90));
-                    ps.scale(0.8F, 0.8F, 0.8F);
+                    ps.scale(0.62F, 0.62F, 0.62F);
                     ps.translate(-0.5, -0.3, -0.5);
                 }
                 mc.getBlockRenderer().renderSingleBlock(copa, ps, buf, luz(mc, p), OverlayTexture.NO_OVERLAY);

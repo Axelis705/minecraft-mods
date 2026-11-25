@@ -137,10 +137,15 @@ public final class SalaTe {
         int pz = (int) Math.floor(CZ);
         p.set(HX1, 9, pz, C + "pantalla[facing=west,grande=true]");
         p.marca("te.pantalla", HX1, 9, pz, 90);
-        // la luz del salón (tenue; se baja durante los duelos)
+        // la luz del salón: arriba (para el techo y las jaulas) y a media altura (para el piso); se baja durante los duelos
         for (int x = HX0 + 3; x <= HX1 - 3; x += 7) {
             for (int z = HZ0 + 4; z <= HZ1 - 3; z += 7) {
                 luz(p, x, ALTO - 2, z, 11);
+            }
+        }
+        for (int x = HX0 + 2; x <= HX1 - 2; x += 6) {
+            for (int z = HZ0 + 3; z <= HZ1 - 2; z += 6) {
+                luz(p, x, 4, z, 12);
             }
         }
         p.marca("te.entrada", HX0 + 2, 1, pz, 270);
@@ -207,8 +212,8 @@ public final class SalaTe {
             for (int y = y0 + 5; y <= ALTO - 1; y++) {
                 p.set(x, y, z, C + "cadena");
             }
-            // la luz de adentro (tenue: se ven las caras)
-            luz(p, x, y0 + 3, z, 8);
+            // la luz de adentro (se ven las caras y, si queda un muerto, se ve verde)
+            luz(p, x, y0 + 3, z, 9);
             float yaw = (float) Math.toDegrees(Math.atan2(-(CX - (x + 0.5)), CZ - (z + 0.5)));
             p.marca("te.jaula." + jaulas++, x, PISO_JAULA, z, yaw);
         }

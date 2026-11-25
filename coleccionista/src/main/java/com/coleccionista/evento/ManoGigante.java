@@ -103,6 +103,17 @@ public class ManoGigante extends Entity implements Animated {
         h.play("base", "idle", 0.3F);
     }
 
+    /** Qué tanto está afuera de la mesa (0 metida, 1 arriba). El renderizador la baja (en bloques) según esto. */
+    public float fuera(float pt) {
+        float t = level().getGameTime() + pt - entityData.get(DESDE);
+        return switch (estado()) {
+            case SUBE -> suave(t / T_SUBE);
+            case LISTA, SACUDE -> 1F;
+            case BAJA -> 1F - suave(t / T_BAJA);
+            default -> 0F;
+        };
+    }
+
     private static float suave(float x) {
         x = Mth.clamp(x, 0F, 1F);
         return x * x * (3 - 2 * x);
@@ -142,10 +153,7 @@ public class ManoGigante extends Entity implements Animated {
             case BAJA -> fuera = 1F - suave(t / T_BAJA);
             default -> fuera = 0F;
         }
-        // metida en la mesa: todo baja 22 px (debajo del mantel no se ve)
-        float baja = -22F * (1F - fuera);
-        pose.addPos(geo.bone("base"), 0, baja, 0);
-        pose.addPos(geo.bone("brazo"), 0, baja, 0);
+        // (lo de meterse en la mesa lo hace el renderizador: baja todo el modelo)
         pose.addRot(geo.bone("brazo"), brazo * r, 0, 0);
         // los dedos: empuñados (piedra) o abiertos según la jugada
         float[] cierra = new float[4];

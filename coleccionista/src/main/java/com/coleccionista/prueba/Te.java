@@ -1239,7 +1239,7 @@ public final class Te {
                 break;
             }
             int nivel = Math.round(Complejo.yaw("te.luz." + i));
-            // la luz de la mesa (13 y 14) y la de las jaulas (8) no se bajan
+            // la luz de la mesa (13 y 14) y la de las jaulas (9) no se bajan
             int n = bajas && nivel >= 10 && nivel < 13 ? 4 : nivel;
             BlockState st = l.getBlockState(p);
             if (st.isAir() || st.is(Blocks.LIGHT)) {
@@ -1451,7 +1451,7 @@ public final class Te {
         double fx = -Math.sin(r), fz = Math.cos(r);
         double rx = -fz, rz = fx;
         double c = k - (CALICES - 1) / 2.0;
-        double adelante = 0.98 - 0.07 * c * c, lado = c * 0.36;
+        double adelante = 1.18 - 0.06 * c * c, lado = c * 0.3;
         return new Vec3(sx + fx * adelante + rx * lado, sy + 0.975, sz + fz * adelante + rz * lado);
     }
 

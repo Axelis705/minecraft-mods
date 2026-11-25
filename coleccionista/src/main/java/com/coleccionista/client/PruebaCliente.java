@@ -572,6 +572,7 @@ final class PruebaCliente {
         t.waitFor("cap5: reglas", 15000, () -> "REGLAS".equals(TeCliente.fase()));
         t.photo("c5_04_jaulas", 2000, () -> t.lookFrom(1008.5, -53, 467.5, 994.5, -56.5, 451.5));
         t.photo("c5_05_mesa", 1500, () -> t.lookFrom(994.5, -57.5, 444.5, 994.5, -58.8, 451.5));
+        t.photo("c5_05b_desde_jaula", 1200, () -> t.lookFrom(1004.5, -55, 454.5, 994.5, -59, 451.5));
         // mientras habla la tele: las pantallas (simuladas en la mía): elegir jugada y elegir cáliz con la mano
         t.photo("c5_13_jugada", 900, () -> {
             CompoundTag m = new CompoundTag();

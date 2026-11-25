@@ -25,10 +25,15 @@ public class ManoGiganteRenderer extends SimpleGeoRenderer<ManoGigante> {
 
     @Override
     public void render(ManoGigante m, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int luzMundo) {
-        if (m.estado() == ManoGigante.GUARDADA) {
+        float fuera = m.fuera(pt);
+        if (m.estado() == ManoGigante.GUARDADA || fuera <= 0.01F) {
             return;
         }
         int light = LightTexture.pack(Math.max(LightTexture.block(luzMundo), 13), LightTexture.sky(luzMundo));
+        // metida en la mesa: baja (debajo del mantel no se ve)
+        ps.pushPose();
+        ps.translate(0, -1.7F * (1F - fuera), 0);
         super.render(m, yaw, pt, ps, buf, light);
+        ps.popPose();
     }
 }

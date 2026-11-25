@@ -78,7 +78,7 @@ public class CalizScreen extends CoreScreen {
         frente = new Vec3(-Math.sin(r), 0, Math.cos(r));
         derecha = new Vec3(-frente.z, 0, frente.x);
         Vec3 c = TeCliente.caliz(lado, (Te.CALICES - 1) / 2);
-        alto = c.y + 0.42;
+        alto = c.y + 0.33;
         abierta = this;
         abiertaEn = System.currentTimeMillis();
         // la cámara: arriba de la cabeza, un poco al frente, mirando los cálices
@@ -143,7 +143,7 @@ public class CalizScreen extends CoreScreen {
             return -1;
         }
         int mejor = -1;
-        double d = 0.28 * 0.28;
+        double d = 0.2 * 0.2;
         int copas = TeCliente.copas(lado);
         for (int k = 0; k < Te.CALICES; k++) {
             Vec3 c = TeCliente.caliz(lado, k);
@@ -200,7 +200,7 @@ public class CalizScreen extends CoreScreen {
         TeCliente.senalado = k;
         Vec3 c = TeCliente.caliz(lado, k);
         if (c != null) {
-            mano = c.add(0, 0.42, 0);
+            mano = c.add(0, 0.33, 0);
         }
         CompoundTag t = new CompoundTag();
         t.putString("que", "caliz");
@@ -217,7 +217,7 @@ public class CalizScreen extends CoreScreen {
     public void senalarPrueba(int k) {
         Vec3 c = TeCliente.caliz(lado, k);
         if (c != null) {
-            mano = c.add(0, 0.42, 0);
+            mano = c.add(0, 0.33, 0);
             TeCliente.senalado = k;
         }
     }
@@ -258,7 +258,7 @@ public class CalizScreen extends CoreScreen {
             if (c != null) {
                 // sobre el cáliz: la mano baja hasta la orilla (y lo agarra si ya lo tomaste)
                 double baja = tomo >= 0 ? Math.min(1, (System.currentTimeMillis() - tomoEn) / 200.0) : 0.4;
-                meta = c.add(0, 0.62 - 0.22 * baja, 0).subtract(frente.scale(0.1));
+                meta = c.add(0, 0.5 - 0.18 * baja, 0).subtract(frente.scale(0.08));
             }
         } else {
             meta = mano.add(0, 0.18, 0);
