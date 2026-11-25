@@ -132,8 +132,8 @@ public final class CajaMusica {
                 if (x >= CX0 - 1 && x <= CX1 + 1 && z >= CZ0 - 1 && z <= CZ1 + 1) {
                     continue;
                 }
-                p.set(x, 3, z, "light[level=9]");
-                p.set(x, ALTO - 1, z, "light[level=8]");
+                p.set(x, 3, z, "light[level=12]");
+                p.set(x, ALTO - 1, z, "light[level=11]");
             }
         }
         p.marca("caja.centro", HX0 + 4, 1, MZ, 270);
@@ -230,7 +230,7 @@ public final class CajaMusica {
         m.texto(p, 0, 3, 3, "placa", "north", 0xD9A93A, num);
         m.set(p, 1, 1, 3, C + "losa_madera[type=top]");
         m.set(p, 1, 2, 3, C + "vela");
-        m.set(p, 0, 3, 1, "light[level=6]");
+        m.set(p, 0, 3, 1, "light[level=10]");
         // afuera: el número pintado en el frente de la góndola
         m.texto(p, 0, 3, 5, "placa", "south", 0xD9A93A, num);
         m.marca(p, "caja.gon." + n + ".atras", 0, 1, 0, 0);
@@ -281,10 +281,13 @@ public final class CajaMusica {
         p.set(EX1, 6, MZ, C + "reloj[facing=west]");
         // luz: la del centro (sobre el círculo) un poco más fuerte
         for (int[] c : new int[][] {{EX0 + 2, EZ0 + 2}, {EX1 - 2, EZ0 + 2}, {EX0 + 2, EZ1 - 2}, {EX1 - 2, EZ1 - 2}}) {
-            p.set(c[0], 7, c[1], "light[level=9]");
+            p.set(c[0], 7, c[1], "light[level=12]");
+            p.set(c[0], 2, c[1] + (c[1] == EZ0 ? 1 : -1), "light[level=11]");
         }
-        p.set(MX + 2, 7, MZ, "light[level=12]");
-        p.set(MX - 2, 7, MZ, "light[level=12]");
+        p.set(MX + 2, 7, MZ, "light[level=15]");
+        p.set(MX - 2, 7, MZ, "light[level=15]");
+        p.set(MX, 7, MZ + 2, "light[level=14]");
+        p.set(MX, 7, MZ - 2, "light[level=14]");
         p.marca("caja.escenario", MX, 1, MZ, 0);
         p.marca("caja.arma", MX, ESCENARIO_ALTO, MZ, 0);
     }

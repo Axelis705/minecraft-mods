@@ -635,6 +635,22 @@ final class PruebaCliente {
             t.check(me.getVehicle() instanceof com.coleccionista.evento.Silla, "voy sentado en mi góndola");
             t.check(com.axeliscore.plat.Nbt.i(CajaCliente.mio(), "gondola") > 0, "sé en qué góndola voy");
             t.check(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON, "en primera persona");
+            // mi pareja (si no voy solo) está sentada en la misma góndola, a 2 bloques
+            int cerca = 0;
+            for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (e instanceof com.coleccionista.bot.PiezaBot b) {
+                    com.axeliscore.AxelisCore.LOGGER.info("COLECCIONISTA_CAJA_BOT {} en {} {} {} vehiculo={} {}", b.getName().getString(),
+                            (int) Math.floor(b.getX()), (int) Math.floor(b.getY()), (int) Math.floor(b.getZ()),
+                            b.getVehicle() == null ? "-" : b.getVehicle().getClass().getSimpleName(),
+                            b.getVehicle() == null ? "" : (int) b.getVehicle().getX() + "," + (int) b.getVehicle().getZ());
+                    if (b.distanceTo(me) < 3.5) {
+                        cerca++;
+                    }
+                }
+            }
+            if (!"solo".equals(com.axeliscore.plat.Nbt.s(CajaCliente.mio(), "lado"))) {
+                t.check(cerca >= 1, "mi pareja va sentada conmigo en la góndola (" + cerca + ")");
+            }
         });
         t.waitFor("cap3: turno 2", 20000, () -> "TURNO".equals(CajaCliente.fase()) && com.axeliscore.plat.Nbt.i(CajaCliente.estado(), "turno") == 2);
         t.photo("c3_06_gondola2", 1500, PruebaCliente::mirarEnGondola);

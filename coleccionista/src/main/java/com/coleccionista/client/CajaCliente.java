@@ -303,7 +303,7 @@ public final class CajaCliente {
             }
         }
         // el organizador: a quién apunta, su símbolo real y lo que marcó
-        if (decido()) {
+        if (decido() && !(mc.screen instanceof RevisionScreen)) {
             organizador(g, f, w, h);
         }
     }

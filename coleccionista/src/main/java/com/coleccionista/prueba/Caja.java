@@ -520,10 +520,12 @@ public final class Caja {
                 sentar(s, ent, asiento(e.getValue()));
             }
         }
+        int montados = 0;
         for (Silla[] gg : asientos) {
             for (Silla si : gg) {
                 if (si != null && si.isVehicle()) {
                     si.cerrar(true, false);
+                    montados += si.getPassengers().size();
                 }
             }
         }
@@ -532,7 +534,7 @@ public final class Caja {
                 mio(s, sp);
             }
         }
-        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA turno {} ronda={} sentados={}", turno + 1, r + 1, lugar.size());
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAJA turno {} ronda={} sentados={} montados={}", turno + 1, r + 1, lugar.size(), montados);
     }
 
     private static Silla asiento(int[] lu) {
