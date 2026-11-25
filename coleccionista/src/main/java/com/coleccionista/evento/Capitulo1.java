@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * Capítulo 1, en la sala grande (después del portón del patio). Cuando ya están todos dentro (o pasa un rato), el portón baja detrás de
- * ellos, se prende la pantalla y habla el Coleccionista: la bienvenida y luego "formen equipos" (el organizador lo puede adelantar con
+ * ellos, se prende la pantalla y el Coleccionista pide equipos (el organizador lo puede adelantar con
  * {@code /evento capitulo1 equipos}). Se abren los diez ascensores; cada equipo de 2 o de 3 se mete en uno (el foco de arriba se prende cuando está
  * bien). Cuando todos están en un ascensor bien formado, cuenta 5 segundos y bajan; si se acaba el tiempo (o el organizador lo pide), bajan
  * los que estén dentro y quien se quedó afuera queda eliminado. El viaje es una caída violenta; cada ascensor llega al ascensor falso de su
@@ -85,7 +85,7 @@ public final class Capitulo1 {
         return x >= 2 && x <= 57 && z >= -0.2 && z <= 35.2 && y >= -1 && y <= 13;
     }
 
-    /** El organizador pide equipos (o ya están todos en la sala): baja el portón, la bienvenida y "formen equipos". */
+    /** El organizador pide equipos (o ya están todos en la sala): baja el portón y "formen equipos". */
     public static Component equipos(MinecraftServer s) {
         if (!Complejo.construido(s, "sala")) {
             return Component.translatable(MOD + ".cap1.sin_mapa");
@@ -103,7 +103,7 @@ public final class Capitulo1 {
             Celdas.porton(s, false);
         }
         Pantallas.soloGrande(s, true);
-        Pantallas.hablar(s, "bienvenida", () -> hablaEn = s.overworld().getGameTime() + 50);
+        Pantallas.hablar(s, "equipos", () -> formar(s));
         Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 equipos");
         return null;
     }
@@ -187,11 +187,6 @@ public final class Capitulo1 {
         long now = s.overworld().getGameTime();
         if (fase == Fase.SALA) {
             tickSala(s, now);
-            return;
-        }
-        if (fase == Fase.HABLANDO && hablaEn > 0 && now >= hablaEn && !Pantallas.ocupado()) {
-            hablaEn = -1;
-            Pantallas.hablar(s, "equipos", () -> formar(s));
             return;
         }
         if (fase != Fase.FORMAR && fase != Fase.CUENTA) {

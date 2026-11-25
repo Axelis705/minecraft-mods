@@ -21,6 +21,9 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 9 | `bienvenida_solo_uno.ogg` | 4.9 s | Y al final… solo uno podrá salir. |
 | 10 | `bienvenida_los_demas.ogg` | 5.0 s | Los demás… se quedan conmigo para siempre. |
 | 11 | `bienvenida_risa.ogg` | 3.5 s | Je, je, je… ¡Ja, ja, ja! |
+| 12 | `bienvenida_candado.ogg` | 9.8 s | Primero necesitan salir de su celda. El candado tiene tres números… y los tres números están escondidos. |
+| 13 | `bienvenida_escondidos.ogg` | 5.8 s | Si no puedes pasar de aquí… je… te deseo suerte. |
+| 14 | `bienvenida_final_risa.ogg` | 3.5 s | ¡Ja, ja, ja! |
 
 ## El despertar: cuando todas salen de sus celdas (pantalla grande)
 
@@ -155,4 +158,4 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 8 | `tres_risa.ogg` | 3.0 s | Je, je, je… |
 | 9 | `tres_vitrina.ogg` | 6.5 s | El último trío en salir se queda conmigo. La vitrina está abierta. |
 
-**Total: 94 líneas (≈9 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+**Total: 97 líneas (≈9 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

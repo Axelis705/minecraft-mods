@@ -62,6 +62,9 @@ public final class Pantallas {
         l.add(new Frase("solo_uno", 98, null, 1F));
         l.add(new Frase("los_demas", 100, null, 1F));
         l.add(new Frase("risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("candado", 195, null, 1F));
+        l.add(new Frase("escondidos", 115, null, 1F));
+        l.add(new Frase("final_risa", 70, SoundEvents.WITCH_CELEBRATE, 0.55F));
         return l;
     }
 

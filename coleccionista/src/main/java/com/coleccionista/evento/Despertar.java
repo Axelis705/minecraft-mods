@@ -27,9 +27,10 @@ import net.minecraftforge.eventbus.api.Event;
  *     (la cámara arriba en la esquina, viéndose acostado, se acerca y pasa a sus ojos con un parpadeo). Luego se levanta.</li>
  *     <li>5 minutos de espera en la celda: todavía no hay nada (ni pistas ni notas) y el candado está muerto.</li>
  *     <li>Al acabar el reloj hay un apagón; cuando vuelve la luz, los tres números de cada celda ya están escondidos en ella
- *     ({@link Pistas}) y los candados ya funcionan. En el patio nadie habla (no hay pantallas): solo corre el reloj de 2 minutos para
- *     salir. Cuando sale el último, el reloj baja a 10 segundos; al llegar a cero se abren solas las celdas que sigan cerradas y sube el
- *     portón ({@link Celdas#finSalida}). El Coleccionista habla del otro lado, en la sala grande ({@link Capitulo1}).</li>
+ *     ({@link Pistas}). Habla el Coleccionista en la pantalla chica de cada celda (en el patio no hay pantallas grandes); al terminar,
+ *     los candados funcionan y corre el reloj de 2 minutos para salir. Cuando sale el último, el reloj baja a 10 segundos; al llegar a
+ *     cero se abren solas las celdas que sigan cerradas y sube el portón ({@link Celdas#finSalida}). En la sala grande pide equipos
+ *     ({@link Capitulo1}).</li>
  * </ol>
  */
 public final class Despertar {
@@ -41,7 +42,7 @@ public final class Despertar {
     public static int segundosInvestigar = 300;
     /** Segundos para salir de la celda cuando ya funcionan los candados (Axelis pidió 2 minutos). */
     public static int segundosSalir = 120;
-    private static long levantarEn = -1, cineEn = -1, apagonFin = -1;
+    private static long levantarEn = -1, cineEn = -1, apagonFin = -1, hablarEn = -1;
     /** Corre el reloj para salir de las celdas (al acabarse, se abren solas y sube el portón). */
     private static boolean esperandoSalida;
     /** Cuánto dura el apagón antes de que aparezcan las pistas (ticks). */
@@ -244,14 +245,14 @@ public final class Despertar {
      */
     public static void discurso(MinecraftServer s) {
         esperandoDiscurso = false;
-        if (apagonFin > 0 || esperandoSalida) {
+        if (apagonFin > 0 || hablarEn > 0 || esperandoSalida) {
             return;
         }
         if (!Pistas.reveladas(s)) {
             apagon(s);
             return;
         }
-        candadosListos(s);
+        hablar(s);
     }
 
     /** Se va la luz de todo el ala unos segundos. */
@@ -271,10 +272,16 @@ public final class Despertar {
         Celdas.luces(s, true);
         Anuncio.sonido(s, SoundEvents.IRON_TRAPDOOR_CLOSE, 1F, 0.5F);
         Anuncio.sonido(s, SoundEvents.BEACON_ACTIVATE, 1F, 0.6F);
-        candadosListos(s);
+        hablarEn = s.overworld().getGameTime() + 50;
     }
 
-    /** Los candados ya funcionan y corre el reloj para salir (sin discurso: en el patio nadie habla). */
+    /** La bienvenida en la pantalla chica de cada celda; al terminar, los candados funcionan. */
+    private static void hablar(MinecraftServer s) {
+        Pantallas.soloGrande(s, false);
+        Pantallas.hablar(s, "bienvenida", () -> candadosListos(s));
+    }
+
+    /** Los candados ya funcionan y corre el reloj para salir. */
     private static void candadosListos(MinecraftServer s) {
         Celdas.candados(s, true);
         Evento ev = Evento.get(s);
@@ -298,6 +305,10 @@ public final class Despertar {
             apagonFin = -1;
             vuelveLaLuz(s);
         }
+        if (hablarEn > 0 && now >= hablarEn) {
+            hablarEn = -1;
+            hablar(s);
+        }
         if (levantarEn > 0 && now >= levantarEn) {
             levantarEn = -1;
             for (Pieza p : ev.vivos()) {
@@ -319,6 +330,7 @@ public final class Despertar {
         levantarEn = -1;
         cineEn = -1;
         apagonFin = -1;
+        hablarEn = -1;
         esperandoDiscurso = false;
         esperandoSalida = false;
     }

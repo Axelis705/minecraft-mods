@@ -203,15 +203,32 @@ final class PruebaCliente {
         });
         t.photo("24e_uniforme_espalda", 900, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
         t.add("primera persona", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
-        // en el patio ya no hay pantallas ni discurso: al volver la luz ya funcionan los candados y corre el reloj de 2 minutos
-        t.add("sin tele", 100, () -> {
+        t.photo("24_tele_habla", 300, () -> {
+        });
+        t.add("habla", 100, () -> {
+            var st = com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Pantallas.KEY);
+            t.check(st != null && "coleccionista".equals(st.getString("modo")), "las pantallas muestran al Coleccionista");
+        });
+        t.photo("25_zoom_tele", 2600, Atajos::acercarse);
+        t.add("zoom", 100, () -> t.check(Cine.enPantalla(), "la cámara está frente a la tele"));
+        t.photo("25b_zoom_subtitulo", 5000, () -> {
+        });
+        t.add("volver", 1200, Atajos::acercarse);
+        t.add("esperar discurso", 60000, () -> {
+        });
+        // de cerca otra vez cuando ya terminó de hablar: debe decir que con R se cierra
+        t.photo("25c_zoom_fin", 1800, Atajos::acercarse);
+        t.add("zoom fin", 100, () -> t.check(Subtitulo.termino(), "ya terminó de hablar (aviso de cerrar con R)"));
+        t.add("volver 2", 600, Atajos::acercarse);
+        // al terminar de hablar: los candados funcionan y corre el reloj de 2 minutos para salir; en el patio no hay pantallas grandes
+        t.add("reloj para salir", 100, () -> {
             var l = Minecraft.getInstance().level;
-            t.check(!(l.getBlockState(new net.minecraft.core.BlockPos(9, -58, 31)).getBlock() instanceof com.coleccionista.bloque.PantallaBlock),
-                    "la celda ya no tiene pantalla");
+            t.check(!(l.getBlockState(new net.minecraft.core.BlockPos(24, -55, 48)).getBlock() instanceof com.coleccionista.bloque.PantallaBlock),
+                    "la torre del patio ya no tiene pantalla grande");
             int r = EventoCliente.resta();
             t.check(r > 60 && r <= 120, "corre el reloj para salir de la celda (" + r + " s)");
         });
-        t.photo("24_reloj_salir", 600, () -> {
+        t.photo("24f_reloj_salir", 600, () -> {
         });
         // el candado de la celda 1, de cerca: la mano gira las ruedas (arrastrando) y aprieta el botón
         t.add("abrir candado", 1400, () -> {
@@ -334,7 +351,7 @@ final class PruebaCliente {
             String m = st == null ? "" : st.getString("modo");
             t.check("estatica".equals(m) || "coleccionista".equals(m), "la pantalla de la sala grande se prendió (" + m + ")");
         });
-        t.photo("c1_52b_bienvenida", 3500, () -> t.lookFrom(96.5, -59, 48.5, 111, -55, 48.5));
+        t.photo("c1_52b_equipos", 3500, () -> t.lookFrom(96.5, -59, 48.5, 111, -55, 48.5));
         t.add("porton cerrado", 100, () -> t.check(!Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(54, -60, 48)).isAir(),
                 "el portón bajó detrás de todos"));
         t.add("piso", 100, () -> t.check(!Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(80, -60, 48)).is(

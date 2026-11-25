@@ -40,7 +40,7 @@ evento investigar 5
 evento sala
 #pausa 2
 evento despertar
-#pausa 14
+#pausa 90
 evento celdas abrir
 evento salida
 evento capitulo1 parar
@@ -212,9 +212,7 @@ evento sentidos tiempos 8 120
 evento porton abrir
 evento capitulo1 sala
 #pausa 30
-#pausa 30
 #pausa 25
-#pausa 30
 #pausa 30
 #pausa 25
 #pausa 15

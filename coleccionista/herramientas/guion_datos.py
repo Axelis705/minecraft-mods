@@ -39,6 +39,11 @@ GUIONES = {
         ("solo_uno", "Y al final… solo uno podrá salir.", "And in the end… only one will be able to leave.", "Pausa larga antes de «solo uno»."),
         ("los_demas", "Los demás… se quedan conmigo para siempre.", "The rest… stay with me forever.", "Bajando la voz en «para siempre»."),
         ("risa", "Je, je, je… ¡Ja, ja, ja!", "Heh, heh, heh… Ha, ha, ha!", "Empieza contenida y se le escapa al final."),
+        ("candado", "Primero necesitan salir de su celda. El candado tiene tres números… y los tres números están escondidos.",
+         "First you need to get out of your cell. The lock has three numbers… and all three numbers are hidden.", "Ya compuesto. Explica."),
+        ("escondidos", "Si no puedes pasar de aquí… je… te deseo suerte.", "If you can't get past this… heh… good luck.",
+         "Burlón; el «je» es una risita."),
+        ("final_risa", "¡Ja, ja, ja!", "Ha, ha, ha!", "Carcajada para cerrar."),
     ],
     "salida": [
         ("bravo", "Bravo… bravo.", "Bravo… bravo.", "Aplaudiendo despacio (si quieres, aplaude de verdad)."),
@@ -248,8 +253,8 @@ GUIONES = {
 }
 
 TITULOS = {
-    "bienvenida": "Capítulo 1 · La sala grande: la bienvenida (cuando ya entraron todos; en el patio ya no habla)",
-    "salida": "(Ya no se usa: en el patio el Coleccionista no habla)",
+    "bienvenida": "El despertar: el discurso en la pantalla de cada celda (después del apagón)",
+    "salida": "(Ya no se usa: cuando salen de las celdas no habla; en el patio ya no hay pantallas grandes)",
     "montacargas": "El montacargas (entre pruebas: el viaje y una parada por zona)",
     "encadenados": "Prueba 1 · Encadenados",
     "traidor": "Prueba 2 · El traidor",

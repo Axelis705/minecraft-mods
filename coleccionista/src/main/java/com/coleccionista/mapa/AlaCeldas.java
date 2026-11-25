@@ -2,7 +2,7 @@ package com.coleccionista.mapa;
 
 /**
  * El Patio de las celdas: donde despiertan las piezas. Un solo piso, fácil de entender: 20 celdas alrededor de un patio largo (8 al norte, 8
- * al sur y 4 al oeste) que miran todas a la torre del centro, una torre negra con cámaras (aquí no hay pantallas: el Coleccionista no dice nada hasta la sala grande). Al
+ * al sur y 4 al oeste) que miran todas a la torre del centro, una torre negra con cámaras (el Coleccionista habla en la pantalla chica de cada celda). Al
  * este, el único camino: el portón de barrotes que sube y lleva a la sala grande. Azulejo de hospital, yeso descarapelado, barrotes
  * oxidados y lámparas que zumban; todo con bloques propios del mod.
  * <pre>
@@ -178,8 +178,8 @@ public final class AlaCeldas {
         m.set(p, 4, y0 + 1, 2, C + "retrete[facing=west]");
         m.set(p, 4, y0 + 1, 3, C + "lavabo[facing=west]");
         m.set(p, 4, y0 + 2, 3, C + "espejo[facing=west]");
-        // un reloj viejo en la pared del fondo (aquí no hay pantallas: en el patio nadie habla) y una rejilla de ventilación arriba
-        m.set(p, 2, y0 + 3, 0, C + "reloj[facing=south]");
+        // la pantalla chica en la pared del fondo, al centro (ahí habla el Coleccionista), y una rejilla de ventilación arriba
+        m.set(p, 2, y0 + 3, 0, C + "pantalla[facing=south]");
         m.marca(p, "celda." + n + ".pantalla", 2, y0 + 3, 0, 0);
         m.set(p, 4, y0 + 4, 0, C + "ventila[facing=south]");
         // el candado junto a la puerta, por dentro
@@ -244,7 +244,7 @@ public final class AlaCeldas {
                 }
             }
         }
-        // sin pantallas (en el patio el Coleccionista no dice nada): una cámara por cara, a media altura, que mira a las celdas
+        // sin pantallas grandes (el Coleccionista habla en la pantalla de cada celda, no en el patio): una cámara por cara, que mira a las celdas
         p.set(30, 6, z0 - 1, C + "camara[facing=north]");
         p.set(30, 6, z1 + 1, C + "camara[facing=south]");
         p.set(x0 - 1, 6, 18, C + "camara[facing=west]");
