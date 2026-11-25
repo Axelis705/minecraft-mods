@@ -86,7 +86,9 @@ public final class SalaSorpresa {
         for (int x = HX0; x <= HX1; x++) {
             for (int z = HZ0; z <= HZ1; z++) {
                 int t = (int) Math.floor((ang(x, z) + 180) / 15.0);
-                p.set(x, ALTO, z, t % 2 == 0 ? "minecraft:red_wool" : "minecraft:white_wool");
+                // encima del escenario la carpa va un bloque más arriba: cuando Don Resorte salta (con el rebote) no la atraviesa
+                boolean escenario = x >= 46 && z >= 11 && z <= 31;
+                p.set(x, escenario ? ALTO + 1 : ALTO, z, t % 2 == 0 ? "minecraft:red_wool" : "minecraft:white_wool");
             }
         }
         p.set(CX, ALTO - 1, CZ, C + "cadena");
@@ -233,8 +235,8 @@ public final class SalaSorpresa {
         }
         // el telón del fondo y los de los lados (rojo, con flecos)
         for (int z = z0; z <= z1; z++) {
-            for (int y = 3; y <= ALTO - 1; y++) {
-                p.set(x1 + 1, y, z, y == ALTO - 1 ? C + "telon_borde" : C + "telon");
+            for (int y = 3; y <= ALTO; y++) {
+                p.set(x1 + 1, y, z, y == ALTO ? C + "telon_borde" : C + "telon");
             }
         }
         for (int x = x0 + 2; x <= x1; x++) {
@@ -245,7 +247,7 @@ public final class SalaSorpresa {
         }
         // la caja sorpresa (la pone la prueba) y donde se para quien le da cuerda (al frente de la manivela)
         p.marca("sor.caja", BX, PISO_ESCENARIO, BZ, 90);
-        p.marca("sor.manivela", BX - 3, PISO_ESCENARIO, BZ, 270);
+        p.marca("sor.manivela", BX - 4, PISO_ESCENARIO, BZ, 270);
         p.marca("sor.subida", x0 - 3, 1, CZ, 270);
         // los zapatos: los avienta al piso redondo del centro, en medio de todos (primero al centro y luego alrededor)
         p.marca("sor.zapatos." + zapatos++, CX, 1, CZ, 270);
@@ -263,6 +265,10 @@ public final class SalaSorpresa {
             p.set(x1 - 1, 4, z, C + "candelabro[facing=west,half=upper]");
         }
         luz(p, BX, 9, BZ, 13);
+        // reflectores al frente del escenario (13: no se bajan con el apagón; así desde las gradas siempre se ve lo que pasa en la caja)
+        luz(p, x0 + 1, 6, BZ - 5, 13);
+        luz(p, x0 + 1, 6, BZ + 5, 13);
+        luz(p, x0 + 2, 7, BZ, 13);
         luz(p, BX - 4, 8, BZ - 6, 10);
         luz(p, BX - 4, 8, BZ + 6, 10);
         // la pantalla grande arriba del telón

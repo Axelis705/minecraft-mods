@@ -39,6 +39,8 @@ public class CajaSorpresa extends Entity implements Animated {
     public static final int T_SALTO = 34, T_AGARRA = 28, T_MUERDE = 80, T_ESCUPE = 34, T_GUARDA = 30;
     /** Cuánto se estira el resorte (px) y cuántos ticks tarda una vuelta de manivela. */
     public static final float ESTIRA = 36F;
+    /** Qué tan grande se dibuja (y qué tan grande es): 1.4 veces el modelo, para que desde las gradas se vea bien la mordida. */
+    public static final float ESCALA = 1.4F;
     public static final int TICKS_VUELTA = 30;
     private static final EntityDataAccessor<Integer> ESTADO = SynchedEntityData.defineId(CajaSorpresa.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DESDE = SynchedEntityData.defineId(CajaSorpresa.class, EntityDataSerializers.INT);
@@ -111,7 +113,7 @@ public class CajaSorpresa extends Entity implements Animated {
 
     /** Dónde queda la boca de Don Resorte (arriba de la caja, un poco al frente), para la sangre y para llevar ahí a la víctima. */
     public Vec3 boca() {
-        return position().add(frente().scale(1.0)).add(0, (34 + ESTIRA) / 16.0 + 0.2, 0);
+        return position().add(frente().scale(1.0 * ESCALA)).add(0, (34 + ESTIRA) / 16.0 * ESCALA + 0.2, 0);
     }
 
     @Override

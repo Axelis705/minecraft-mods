@@ -8,6 +8,7 @@ import com.coleccionista.evento.Complejo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -22,7 +23,7 @@ public class CajaSorpresaRenderer extends SimpleGeoRenderer<CajaSorpresa> {
     private static BlockState zapatos;
 
     public CajaSorpresaRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, Coleccionista.MODID, "caja_sorpresa", 0.9F, 1F);
+        super(ctx, Coleccionista.MODID, "caja_sorpresa", 1.3F, CajaSorpresa.ESCALA);
     }
 
     @Override
@@ -31,7 +32,9 @@ public class CajaSorpresaRenderer extends SimpleGeoRenderer<CajaSorpresa> {
     }
 
     @Override
-    public void render(CajaSorpresa c, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
+    public void render(CajaSorpresa c, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int luzMundo) {
+        // como si tuviera un reflector encima: aunque el teatro esté a oscuras, la caja y Don Resorte siempre se ven desde las gradas
+        int light = LightTexture.pack(Math.max(LightTexture.block(luzMundo), 12), LightTexture.sky(luzMundo));
         super.render(c, yaw, pt, ps, buf, light);
         if (c.estado() != CajaSorpresa.ESCUPE) {
             return;

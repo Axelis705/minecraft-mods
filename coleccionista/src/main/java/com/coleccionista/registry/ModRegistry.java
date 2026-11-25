@@ -88,7 +88,7 @@ public final class ModRegistry {
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.CajaSorpresa>> CAJA_SORPRESA =
             ENTITIES.register("caja_sorpresa", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "caja_sorpresa",
                     EntityType.Builder.<com.coleccionista.evento.CajaSorpresa>of(com.coleccionista.evento.CajaSorpresa::new,
-                            net.minecraft.world.entity.MobCategory.MISC).sized(2.5F, 2.6F).clientTrackingRange(10).updateInterval(1)));
+                            net.minecraft.world.entity.MobCategory.MISC).sized(3.5F, 3.6F).clientTrackingRange(10).updateInterval(1)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(
