@@ -89,10 +89,8 @@ public class Tabs extends Widget {
             } else {
                 Ui.boton(g, tx + 1, top, tw - 2, y + h - top, hov[i], false, true, t);
             }
-            var f = Ui.font();
-            String s = Ui.fit(names[i], tw - 6);
-            Ui.textoGrabado(g, s, tx + (tw - f.width(s)) / 2, top + (y + h - top - 8) / 2 + 1, on ? t.title : Ui.mix(t.textDim, 0xFFFFFFFF,
-                    hov[i] * 0.5F));
+            Ui.textoQueCabe(g, names[i], tx + 3, top + 1, tw - 6, y + h - top, on ? t.title : Ui.mix(t.textDim, 0xFFFFFFFF, hov[i] * 0.5F),
+                    true, true);
         }
         // la marca se desliza entre los bordes de las pestañas (que pueden ser de distinto ancho)
         int i0 = Math.max(0, Math.min(n - 1, (int) Math.floor(sel))), i1 = Math.min(n - 1, i0 + 1);

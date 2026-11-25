@@ -41,10 +41,43 @@ public final class Ui {
         if (font().width(s) <= w) {
             return s;
         }
+        RECORTADOS.add(s);
         while (s.length() > 1 && font().width(s + "…") > w) {
             s = s.substring(0, s.length() - 1);
         }
         return s.trim() + "…";
+    }
+
+    /** Los textos que no cupieron (para las pruebas automáticas: así se encuentran los que se salen en algún idioma). */
+    public static final java.util.Set<String> RECORTADOS = new java.util.LinkedHashSet<>(), APRETADOS = new java.util.LinkedHashSet<>();
+    /** Qué tanto se puede achicar un texto para que quepa antes de recortarlo. */
+    public static float minEscala = 0.6F;
+
+    /**
+     * Dibuja un texto en {@code maxW} píxeles: si no cabe, se achica (hasta {@link #minEscala}) y solo si aun así no cabe se recorta.
+     * {@code alto} es el alto del renglón donde va (para que quede centrado verticalmente al achicarse).
+     */
+    public static void textoQueCabe(G g, String s, int x, int y, int maxW, int alto, int col, boolean centrado, boolean grabado) {
+        Font f = font();
+        int w = f.width(s);
+        float k = w <= maxW ? 1F : Math.max(minEscala, maxW / (float) w);
+        if (k < 1F) {
+            APRETADOS.add(s);
+        }
+        String t = k <= minEscala && w * k > maxW ? fit(s, (int) (maxW / k)) : s;
+        int tw = f.width(t);
+        float dx = centrado ? (maxW - tw * k) / 2F : 0F, dy = (alto - 8 * k) / 2F;
+        g.push();
+        g.translate(x + dx, y + dy, 0);
+        if (k < 1F) {
+            g.scale(k, k, 1F);
+        }
+        if (grabado) {
+            textoGrabado(g, t, 0, 0, col);
+        } else {
+            g.drawString(f, t, 0, 0, col, true);
+        }
+        g.pop();
     }
 
     public static void round(G g, int x, int y, int w, int h, int c) {
@@ -249,11 +282,10 @@ public final class Ui {
     /** Botón: degradado, brillo al pasar el mouse, se hunde al apretarlo, gris si está apagado. */
     public static void button(G g, int x, int y, int w, int h, String label, float hover, boolean pressed, boolean enabled, Theme t) {
         boton(g, x, y, w, h, hover, pressed, enabled, t);
-        Font f = font();
         int dy = pressed ? 1 : 0;
         int col = enabled ? mix(t.buttonText, 0xFFFFFFA0, hover * 0.35F) : 0xFFA0A0A0;
-        String s = fit(label, w - 6);
-        textoGrabado(g, s, x + (w - f.width(s)) / 2, y + (h - 8) / 2 + dy, col);
+        // si no cabe, se achica (y solo si aun así no cabe, se recorta)
+        textoQueCabe(g, label, x + 3, y + dy, w - 6, h, col, true, true);
     }
 
     /** Qué tan claro es un color (0 negro, 1 blanco). */

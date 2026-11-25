@@ -147,6 +147,14 @@ public final class Cine {
     }
 
     private static void recibir(CompoundTag t) {
+        if ("estatua".equals(t.getString("tipo"))) {
+            // el que se volvió estatua se ve a sí mismo: la cámara se acerca a su vitrina mientras se rompe el vidrio y cae
+            Vec3 pa = v(t, "a"), pb = v(t, "b"), pm = v(t, "mira");
+            if (pa != null && pb != null && pm != null) {
+                empezar("estatua", pa, pb, pm, 6.5F);
+            }
+            return;
+        }
         if ("despertar".equals(t.getString("tipo"))) {
             Vec3 pa = v(t, "a"), pb = v(t, "b"), pm = v(t, "mira");
             if (pa != null && pb != null && pm != null) {

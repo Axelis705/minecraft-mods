@@ -174,10 +174,18 @@ public class LineaScreen extends UiScreen {
         })).help(Component.translatable(MOD + ".linea.pocos_ayuda"));
         add(new Button(bx + (bw + 6) * 6, by, bw, 16, tr("panel"), () -> com.axeliscore.plat.client.Screens.open(new PanelScreen())))
                 .help(Component.translatable(MOD + ".linea.panel_ayuda"));
-        add(new Button(bx, by + 22, pw - 24, 16, tr("sesion"), () -> {
+        int mitad = (pw - 24 - 6) / 2;
+        add(new Button(bx, by + 22, mitad, 16, tr("sesion"), () -> {
             hechos.clear();
             init();
         })).help(Component.translatable(MOD + ".linea.sesion_ayuda"));
+        // yo: organizador o pieza (sin salir del mundo)
+        boolean soyPieza = EventoCliente.yo() != null;
+        add(new Button(bx + mitad + 6, by + 22, mitad, 16, Component.translatable(MOD + ".panel." + (soyPieza ? "yo_organizador" : "yo_pieza")).getString(),
+                () -> {
+                    pedir(soyPieza ? "yo_organizador" : "yo_pieza", null);
+                    com.axeliscore.plat.client.Screens.close();
+                })).help(Component.translatable(MOD + ".panel." + (soyPieza ? "yo_organizador" : "yo_pieza") + "_ayuda"));
     }
 
     /** Para la prueba automática: dónde queda (en la pantalla) el paso visible número i (empezando en 0). */
@@ -216,14 +224,14 @@ public class LineaScreen extends UiScreen {
         Capitulo cap = capitulos().get(capitulo);
         // el título del capítulo y su resumen
         g.drawString(f, Component.translatable(MOD + ".linea." + cap.clave() + ".titulo").withStyle(ChatFormatting.BOLD), px + 14, py + 50, 0xFFE8D8C0);
-        g.drawString(f, Ui.fit(tr(cap.clave() + ".resumen"), pw - 28), px + 14, py + 62, 0xFFA89E94);
+        Ui.textoQueCabe(g, tr(cap.clave() + ".resumen"), px + 14, py + 60, pw - 28, 12, 0xFFA89E94, false, false);
         // la línea que une los pasos (y se sigue a los lados si hay más)
         int y = py + 88 + 11, n = cap.pasos().size();
         int xa = px + 30 + 11, xb = px + 30 + (Math.min(n, desde + VISIBLES) - desde - 1) * NODO + 11;
         g.fill(desde > 0 ? px + 28 : xa, y - 1, desde + VISIBLES < n ? px + pw - 28 : xb, y + 1, 0xFF6A2A30);
         // en qué va el evento
         String est = tr("estado", EventoCliente.prueba().isEmpty() ? "—" : EventoCliente.prueba(), SentidosCliente.fase());
-        g.drawString(f, Ui.fit(est, pw - 28), px + 14, py + ph - 70, 0xFF8FA0A8);
+        Ui.textoQueCabe(g, est, px + 14, py + ph - 72, pw - 28, 12, 0xFF8FA0A8, false, false);
     }
 
     /** Un paso de la línea: un círculo con su número y el nombre corto debajo (dos renglones); con clic se hace. */
@@ -255,11 +263,42 @@ public class LineaScreen extends UiScreen {
             Ui.round(g, cx - 9, cy - 9, 18, 18, fondo);
             String num = hecho ? "✔" : String.valueOf(numero);
             g.drawCenteredString(f, num, cx, cy - 4, hecho ? 0xFF9FE0A0 : 0xFFF0E0D0);
-            // el nombre corto, centrado y en dos renglones
-            List<String> ls = Ui.wrap(tr("p." + paso.clave()), NODO - 6);
-            for (int i = 0; i < ls.size() && i < 3; i++) {
-                g.drawCenteredString(f, ls.get(i), cx + (NODO - 6) / 2 - 11, cy + 15 + i * 10, hover > 0.5F ? 0xFFFFE8B0 : 0xFFD8CCC0);
+            // el nombre corto, centrado y en hasta tres renglones (si no cabe, la letra se achica)
+            String nom = tr("p." + paso.clave());
+            int ancho = NODO - 6, col = hover > 0.5F ? 0xFFFFE8B0 : 0xFFD8CCC0;
+            float k = 1F;
+            List<String> ls = Ui.wrap(nom, ancho);
+            while (k > 0.65F && !cabe(f, ls, k, ancho)) {
+                k -= 0.1F;
+                ls = Ui.wrap(nom, (int) (ancho / k));
             }
+            if (k < 1F) {
+                Ui.APRETADOS.add(nom);
+            }
+            int mid = cx + ancho / 2 - 11;
+            for (int i = 0; i < ls.size() && i < 3; i++) {
+                g.push();
+                g.translate(mid, cy + 15 + i * 10 * k, 0);
+                g.scale(k, k, 1F);
+                String l = ls.get(i);
+                if (f.width(l) * k > ancho) {
+                    l = Ui.fit(l, (int) (ancho / k));
+                }
+                g.drawString(f, l, -f.width(l) / 2, 0, col, true);
+                g.pop();
+            }
+        }
+
+        private static boolean cabe(Font f, List<String> ls, float k, int ancho) {
+            if (ls.size() > 3) {
+                return false;
+            }
+            for (String l : ls) {
+                if (f.width(l) * k > ancho) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         @Override

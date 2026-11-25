@@ -81,6 +81,37 @@ public class PiezaBot extends Persona {
         return false;
     }
 
+    /**
+     * El bot mantiene cargado su pedazo de mundo (como un jugador): así sigue en el mundo aunque no haya nadie cerca y el organizador
+     * puede ir con él o seguirlo. El permiso dura 3 segundos y se renueva cada segundo.
+     */
+    private static final net.minecraft.server.level.TicketType<net.minecraft.world.level.ChunkPos> CARGA = net.minecraft.server.level.TicketType.create(
+            "coleccionista_bot", java.util.Comparator.comparingLong(net.minecraft.world.level.ChunkPos::toLong), 60);
+
+    private void cargar() {
+        if (level() instanceof net.minecraft.server.level.ServerLevel l) {
+            net.minecraft.world.level.ChunkPos c = new net.minecraft.world.level.ChunkPos(blockPosition());
+            l.getChunkSource().addRegionTicket(CARGA, c, 2, c);
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide() && tickCount % 20 == 0) {
+            cargar();
+        }
+    }
+
+    /** Lo llevan a otro lado (las pruebas lo mueven): ese lugar se carga ya, para que no se pierda en un pedazo sin cargar. */
+    @Override
+    public void moveTo(double x, double y, double z, float yRot, float xRot) {
+        super.moveTo(x, y, z, yRot, xRot);
+        if (level() != null && !level().isClientSide()) {
+            cargar();
+        }
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag t) {
         super.addAdditionalSaveData(t);

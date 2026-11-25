@@ -1183,5 +1183,12 @@
   "coleccionista.linea.p.man_limpiar": "Limpiar",
   "coleccionista.linea.p.man_limpiar.ayuda": "Deja la casa como nueva (reja cerrada, puertas cerradas) y te regresa a tu forma (no elimina a nadie).",
   "key.coleccionista.rugir": "Cascabel: rugir",
-  "key.coleccionista.olfatear": "Cascabel: olfatear"
+  "key.coleccionista.olfatear": "Cascabel: olfatear",
+  "coleccionista.panel.ir_no": "No encuentro a %s en el mundo (¿se desconectó?).",
+  "coleccionista.panel.yo_pieza": "Inscribirme",
+  "coleccionista.panel.yo_pieza_ayuda": "Dejas de ser organizador y entras como pieza (si la sala de espera está abierta, vas a tu celda).",
+  "coleccionista.bolsillo.titulo": "Tu bolsillo",
+  "coleccionista.bolsillo.logo": "EL COLECCIONISTA",
+  "coleccionista.bolsillo.por": "por Axelis",
+  "coleccionista.bolsillo.cerrar": "E · cerrar"
 }

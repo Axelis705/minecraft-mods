@@ -33,6 +33,101 @@ public final class Fantasmas {
     public static void init() {
         MinecraftForge.EVENT_BUS.addListener(Fantasmas::chat);
         MinecraftForge.EVENT_BUS.addListener(Fantasmas::comando);
+        com.axeliscore.AxelisCore.onServerTick(Fantasmas::rondar);
+    }
+
+    // ------------------------------------------------------------------ los fantasmas no se salen del mapa
+
+    /** Qué tan lejos del vivo más cercano puede andar un fantasma (bloques). */
+    public static double radio = 14;
+    /** El último lugar bueno de cada fantasma (fuera de las paredes). */
+    private static final java.util.Map<java.util.UUID, net.minecraft.world.phys.Vec3> BUENO = new java.util.HashMap<>();
+
+    /**
+     * Cada tick: un fantasma no atraviesa paredes (si se mete en un bloque o lo cruza, regresa a donde estaba) y no se aleja del grupo (si
+     * no hay ningún vivo cerca, aparece junto al vivo más cercano). Así sigue al grupo solo cuando los pasan a otra sala y no ve el mundo
+     * vacío de afuera.
+     */
+    private static void rondar(MinecraftServer s) {
+        Evento ev = Evento.get(s);
+        if (ev.piezas.isEmpty()) {
+            BUENO.clear();
+            return;
+        }
+        long now = s.overworld().getGameTime();
+        for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
+            Pieza p = ev.pieza(sp);
+            if (p == null || p.vivo() || !sp.isSpectator() || sp.getCamera() != sp) {
+                BUENO.remove(sp.getUUID());
+                continue;
+            }
+            ServerLevel l = sp.serverLevel();
+            net.minecraft.world.phys.Vec3 aqui = sp.position(), antes = BUENO.get(sp.getUUID());
+            boolean dentro = metido(l, sp, aqui);
+            if (antes != null) {
+                boolean salto = aqui.distanceTo(antes) > 6;
+                boolean cruzo = !salto && cruza(l, sp, antes, aqui);
+                if (dentro || cruzo) {
+                    sp.teleportTo(l, antes.x, antes.y, antes.z, sp.getYRot(), sp.getXRot());
+                    sp.setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+                    continue;
+                }
+            }
+            if (!dentro) {
+                BUENO.put(sp.getUUID(), aqui);
+            }
+            // lejos de todos los vivos: aparece detrás del más cercano
+            if (now % 10 == 0) {
+                Entity cerca = null;
+                double dm = Double.MAX_VALUE;
+                for (Pieza v : ev.vivos()) {
+                    Entity e = Evento.entidad(s, v);
+                    if (e != null && e.level() == l) {
+                        double d = e.distanceToSqr(sp);
+                        if (d < dm) {
+                            dm = d;
+                            cerca = e;
+                        }
+                    }
+                }
+                if (cerca != null && dm > radio * radio) {
+                    double r = Math.toRadians(cerca.getYRot());
+                    net.minecraft.world.phys.Vec3 a = cerca.position().add(Math.sin(r) * 2, 0.4, -Math.cos(r) * 2);
+                    if (metido(l, sp, a)) {
+                        a = cerca.position().add(0, 0.1, 0);
+                    }
+                    sp.teleportTo(l, a.x, a.y, a.z, cerca.getYRot(), 10F);
+                    BUENO.put(sp.getUUID(), a);
+                }
+            }
+        }
+    }
+
+    /** ¿Ese lugar (los pies o los ojos del fantasma) está dentro de un bloque sólido? */
+    private static boolean metido(ServerLevel l, ServerPlayer sp, net.minecraft.world.phys.Vec3 pies) {
+        for (double dy : new double[] {0.1, sp.getEyeHeight()}) {
+            net.minecraft.core.BlockPos b = net.minecraft.core.BlockPos.containing(pies.x, pies.y + dy, pies.z);
+            if (!l.getBlockState(b).getCollisionShape(l, b).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** ¿Entre esos dos lugares hay una pared (a la altura de los ojos o de los pies)? */
+    private static boolean cruza(ServerLevel l, ServerPlayer sp, net.minecraft.world.phys.Vec3 a, net.minecraft.world.phys.Vec3 b) {
+        for (double dy : new double[] {0.2, sp.getEyeHeight()}) {
+            net.minecraft.world.phys.Vec3 x = a.add(0, dy, 0), y = b.add(0, dy, 0);
+            if (x.distanceToSqr(y) < 1.0E-6) {
+                continue;
+            }
+            net.minecraft.world.phys.BlockHitResult h = l.clip(new net.minecraft.world.level.ClipContext(x, y,
+                    net.minecraft.world.level.ClipContext.Block.COLLIDER, net.minecraft.world.level.ClipContext.Fluid.NONE, sp));
+            if (h.getType() != net.minecraft.world.phys.HitResult.Type.MISS) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** La pieza ya es fantasma: el jugador pasa a espectador; el bot se desvanece. */

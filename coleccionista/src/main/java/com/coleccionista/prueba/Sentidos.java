@@ -78,7 +78,7 @@ public final class Sentidos {
     public static double largo = 4.0;
     /** Para las pruebas automáticas: los equipos de puros bots llegan solos a la salida y se sientan. */
     public static boolean botsSalen = true;
-    public static int botMin = 20, botMax = 60;
+    public static int botMin = 90, botMax = 240;
     /** Para probar con un solo equipo: si es el único, también pierde (así se ve el final de la vitrina). */
     public static boolean pierdeSolo = false;
     /** Cuánto espera el Coleccionista a que salgan todos del ascensor antes de hablar de todos modos (ticks). */
@@ -759,6 +759,11 @@ public final class Sentidos {
                 }
             }
         }
+        // bots en un equipo con personas (para probar con pocos): van pegados a la persona más cercana de su equipo y nunca la hacen
+        // perder (no pisan baldosas malas ni caen a la zanja)
+        if (now % 20 == 0 && eq.etapa.ordinal() < Etapa.SALIDA.ordinal()) {
+            seguirPersona(eq, ents);
+        }
         // bots: llegan solos a la salida (solo para las pruebas)
         if (eq.botListo > 0 && now >= eq.botListo && eq.etapa.ordinal() < Etapa.SALIDA.ordinal()) {
             eq.botListo = -1;
@@ -779,7 +784,7 @@ public final class Sentidos {
             case PASARELA -> {
                 // si alguien cae a la zanja (no se lastima), todo el equipo regresa al principio de la pasarela
                 for (Entity e : ents) {
-                    if (!juega(e)) {
+                    if (!juega(e) || acompanante(eq, e, ents)) {
                         continue;
                     }
                     double lx = e.getX() - o.getX(), lz = e.getZ() - o.getZ(), ly = e.getY() - o.getY();
@@ -840,6 +845,51 @@ public final class Sentidos {
             default -> {
             }
         }
+    }
+
+    /** Los bots del equipo se juntan con la persona más cercana del equipo (si hay alguna). */
+    private static void seguirPersona(Equipo eq, List<Entity> ents) {
+        List<Entity> personas = new ArrayList<>();
+        for (Entity e : ents) {
+            if (e instanceof ServerPlayer sp && juega(sp)) {
+                personas.add(e);
+            }
+        }
+        if (personas.isEmpty()) {
+            return;
+        }
+        int k = 0;
+        for (Entity e : ents) {
+            if (!(e instanceof PiezaBot b) || b.isPassenger()) {
+                continue;
+            }
+            Entity cerca = personas.get(0);
+            for (Entity p : personas) {
+                if (p.distanceToSqr(b) < cerca.distanceToSqr(b)) {
+                    cerca = p;
+                }
+            }
+            if (cerca.distanceToSqr(b) > 9 || Math.abs(cerca.getY() - b.getY()) > 1.5) {
+                double r = Math.toRadians(cerca.getYRot() + 180 + (k % 2 == 0 ? 25 : -25));
+                b.getNavigation().stop();
+                b.moveTo(cerca.getX() - Math.sin(r) * 0.6, cerca.getY(), cerca.getZ() + Math.cos(r) * 0.6, cerca.getYRot(), 0F);
+                b.setDeltaMovement(Vec3.ZERO);
+                k++;
+            }
+        }
+    }
+
+    /** ¿Ese bot va con una persona de su equipo? (entonces no cuenta para caer ni para pisar baldosas). */
+    private static boolean acompanante(Equipo eq, Entity e, List<Entity> ents) {
+        if (!(e instanceof PiezaBot)) {
+            return false;
+        }
+        for (Entity o : ents) {
+            if (o instanceof ServerPlayer sp && juega(sp)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** El último punto seguro según en qué va el equipo. */
@@ -928,7 +978,7 @@ public final class Sentidos {
         BlockPos b = Complejo.pos(s, eq.pre() + "baldosa.0.0");
         if (b != null && eq.trampaHasta < 0) {
             for (Entity e : ents) {
-                if (!juega(e)) {
+                if (!juega(e) || acompanante(eq, e, ents)) {
                     continue;
                 }
                 double ly = e.getY() - b.getY();
@@ -1119,8 +1169,22 @@ public final class Sentidos {
                 faltan.add(eq);
             }
         }
+        // solo pierde UN equipo: el que va más atrás (si ya hay un último sentado, nadie más pierde); los demás que no llegaron se
+        // salvan y aparecen sentados en su salida como los que sí llegaron
+        boolean yaHayUltimo = false;
+        for (Equipo eq : equipos) {
+            yaHayUltimo |= eq.perdio;
+        }
+        Equipo peor = null;
+        if (!yaHayUltimo && (equipos.size() > 1 || pierdeSolo || Evento.get(s).pocos)) {
+            for (Equipo eq : faltan) {
+                if (peor == null || avance(s, eq) < avance(s, peor)) {
+                    peor = eq;
+                }
+            }
+        }
         for (Equipo eq : faltan) {
-            eq.perdio = true;
+            eq.perdio = eq == peor;
             eq.etapa = Etapa.SENTADOS;
             eq.termino = s.overworld().getGameTime();
             for (Silla si : eq.sillas) {
@@ -1154,9 +1218,30 @@ public final class Sentidos {
         }
         Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".sen.chat.tiempo")));
         cambio = true;
-        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS tiempo pierden={}", faltan.size());
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS tiempo faltaban={} pierde={}", faltan.size(), peor == null ? "-" : peor.k);
         revisarFin(s);
         return true;
+    }
+
+    private static net.minecraft.nbt.ListTag punto(double x, double y, double z) {
+        net.minecraft.nbt.ListTag l = new net.minecraft.nbt.ListTag();
+        l.add(net.minecraft.nbt.DoubleTag.valueOf(x));
+        l.add(net.minecraft.nbt.DoubleTag.valueOf(y));
+        l.add(net.minecraft.nbt.DoubleTag.valueOf(z));
+        return l;
+    }
+
+    /** Qué tan lejos llegó un equipo (la etapa y, dentro de ella, lo que avanzó el más atrasado). */
+    private static double avance(MinecraftServer s, Equipo eq) {
+        BlockPos o = Complejo.origen(s, "circ_" + eq.k);
+        double z = 1000;
+        for (UUID id : eq.ids) {
+            Entity e = ent(s, id);
+            if (e != null && o != null) {
+                z = Math.min(z, e.getZ() - o.getZ());
+            }
+        }
+        return eq.etapa.ordinal() * 1000 + (z >= 1000 ? 0 : z);
     }
 
     // ------------------------------------------------------------------ el final: el teatro de la colección
@@ -1215,6 +1300,7 @@ public final class Sentidos {
                         si.cerrar(false);
                     }
                     Cabina.puerta(s, eq.palco(), true);
+                    botsALaSala(s, eq);
                     avisar(s, eq, MOD + ".sen.final.salgan");
                     sonar(s, eq, SoundEvents.IRON_TRAPDOOR_OPEN, 1F, 0.6F);
                 }
@@ -1279,7 +1365,7 @@ public final class Sentidos {
             }
         }
         // 5) el telón: cuando ya salieron todos de su cuarto (o pasó un buen rato)
-        if (aVitrinas && !telon && dt >= 340 && (todosEnLaSala(s) || dt >= 1000)) {
+        if (aVitrinas && !telon && dt >= 450 && (todosEnLaSala(s) || dt >= 1200)) {
             telon = true;
             telonT0 = now;
         }
@@ -1298,6 +1384,23 @@ public final class Sentidos {
         }
     }
 
+    /** Los bots que se salvaron (solo en pruebas) se levantan y bajan a la sala, frente al vidrio, cada uno en su lugar. */
+    private static void botsALaSala(MinecraftServer s, Equipo eq) {
+        BlockPos o = Complejo.origen(s, "vitrina");
+        if (o == null) {
+            return;
+        }
+        int i = 0;
+        for (UUID id : eq.ids) {
+            if (ent(s, id) instanceof PiezaBot b) {
+                b.stopRiding();
+                double x = o.getX() + 8 + ((eq.k * 3 + i) * 3) % 40, z = o.getZ() + 34.5;
+                b.moveTo(x + 0.5, o.getY() + 1, z, 0F, 0F);
+                i++;
+            }
+        }
+    }
+
     /** ¿Ya salieron todos los que se salvaron de su cuarto del teatro (al palco o a la sala)? */
     private static boolean todosEnLaSala(MinecraftServer s) {
         BlockPos o = Complejo.origen(s, "vitrina");
@@ -1310,7 +1413,7 @@ public final class Sentidos {
             }
             for (UUID id : eq.ids) {
                 Entity e = ent(s, id);
-                if (e instanceof ServerPlayer && (e.isPassenger() || e.getZ() - o.getZ() < 10.2)) {
+                if (e != null && (e.isPassenger() || e.getZ() - o.getZ() < 10.2)) {
                     return false;
                 }
             }
@@ -1331,7 +1434,8 @@ public final class Sentidos {
                 if (cajas >= SalaVitrina.VITRINAS) {
                     break;
                 }
-                BlockPos d = Complejo.pos(s, "vit.caja." + cajas);
+                int n = SalaVitrina.orden(cajas);
+                BlockPos d = Complejo.pos(s, "vit.caja." + n);
                 if (d == null || si.getPassengers().isEmpty()) {
                     continue;
                 }
@@ -1339,17 +1443,17 @@ public final class Sentidos {
                 llevarSentado(s, si, Vec3.atBottomCenterOf(d), 180F);
                 si.grupo = "vitrina";
                 si.cerrar(true);
-                victimas.add(new Victima(quien.getUUID(), si, cajas));
+                victimas.add(new Victima(quien.getUUID(), si, n));
                 if (quien instanceof ServerPlayer sp) {
                     sp.setInvulnerable(true);
                 }
-                BlockPos f = Complejo.pos(s, "vit.frente." + cajas);
+                BlockPos f = Complejo.pos(s, "vit.frente." + n);
                 if (f != null) {
                     for (int y = 0; y < 3; y++) {
                         l.setBlock(f.above(y), vidrio, 3);
                     }
                 }
-                BlockPos pl = Complejo.pos(s, "vit.placa." + cajas);
+                BlockPos pl = Complejo.pos(s, "vit.placa." + n);
                 Pieza p = ev.pieza(quien.getUUID());
                 if (pl != null && p != null && l.getBlockEntity(pl) instanceof com.coleccionista.bloque.deco.TextoBE be) {
                     be.escribir(0xD9A93A, "PIEZA " + p.etiqueta(), p.nombre);
@@ -1496,6 +1600,19 @@ public final class Sentidos {
                     if (cd.estatua() && !estatuas.contains(cd)) {
                         estatuas.add(cd);
                     }
+                }
+            }
+            // cada uno se ve a sí mismo hecho piedra (la cámara frente a su vitrina) mientras se rompe el vidrio y la estatua cae
+            for (Victima v : victimas) {
+                ServerPlayer sp = s.getPlayerList().getPlayer(v.id);
+                BlockPos c = Complejo.pos(s, "vit.caja." + v.caja);
+                if (sp != null && c != null) {
+                    CompoundTag t = new CompoundTag();
+                    t.putString("tipo", "estatua");
+                    t.put("a", punto(c.getX() + 0.5, c.getY() + 2.3, c.getZ() - 5.5));
+                    t.put("b", punto(c.getX() + 0.5, c.getY() + 1.7, c.getZ() - 3.6));
+                    t.put("mira", punto(c.getX() + 0.5, c.getY() + 0.9, c.getZ() + 0.2));
+                    PlayerStore.Sync.toPlayer(sp, com.coleccionista.evento.Despertar.KEY_CINE, t);
                 }
             }
             Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS estatuas={}", muertos);

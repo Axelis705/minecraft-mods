@@ -95,19 +95,19 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
             "textures/entity/estatua_piedra.png");
 
     /**
-     * La estatua de la vitrina: la cera endurecida en piedra con la forma de la pieza (y su piel, gris). Sentada (como quien va en la silla),
-     * con las manos agarradas a los brazos de la silla y la cabeza echada para atrás (el grito). Cuando se abre la vitrina se va de frente
-     * (gira sobre las rodillas, cada vez más rápido) y queda tirada en el piso.
+     * La estatua de la vitrina: la cera endurecida en piedra con la forma de la pieza. Es su piel hecha piedra (los claros y oscuros de la
+     * piel, en gris: se reconoce quién es) con grano y grietas encima. De pie, rígida, con la cabeza echada para atrás y los brazos a medio
+     * subir (el grito). Cuando se rompe el vidrio se va de frente, cada vez más rápido, y queda acostada boca abajo (con un rebote).
      */
     private void estatua(Cadaver c, PlayerModel<AbstractClientPlayer> m, boolean slim, UUID id, PoseStack ps, MultiBufferSource buf, int light,
             float pt) {
         int v = c.postura() - Cadaver.ESTATUA;
-        m.head.setRotation(-0.45F - 0.05F * (v % 3), 0.12F * ((v % 3) - 1), 0);
-        m.body.setRotation(0.05F, 0, 0);
-        m.rightArm.setRotation(-0.75F, 0.1F, 0.05F);
-        m.leftArm.setRotation(-0.75F, -0.1F, -0.05F);
-        m.rightLeg.setRotation(-1.4137F, 0.31416F, 0.07F);
-        m.leftLeg.setRotation(-1.4137F, -0.31416F, -0.07F);
+        m.head.setRotation(-0.35F - 0.05F * (v % 3), 0.12F * ((v % 3) - 1), 0);
+        m.body.setRotation(0, 0, 0);
+        m.rightArm.setRotation(-0.9F - 0.15F * (v % 2), 0.15F, 0.12F);
+        m.leftArm.setRotation(-0.7F + 0.1F * (v % 2), -0.15F, -0.12F);
+        m.rightLeg.setRotation(0, 0, 0.03F);
+        m.leftLeg.setRotation(0, 0, -0.03F);
         m.hat.copyFrom(m.head);
         m.jacket.copyFrom(m.body);
         m.rightSleeve.copyFrom(m.rightArm);
@@ -117,28 +117,28 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         ps.pushPose();
         ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
         if (c.cae() > 0 && c.level() != null) {
-            // de frente (hacia -z aquí): baja del asiento al piso y gira sobre la orilla de enfrente de las rodillas
-            float t = net.minecraft.util.Mth.clamp((c.level().getGameTime() - c.cae() + pt) / 10F, 0F, 1F);
-            float k = t * t;
-            float ang = 74F * k;
-            ps.translate(0, -0.42F * k, 0);
-            ps.translate(0, 0.42F, -0.72F);
+            // de frente (hacia -z aquí), girando sobre la punta de los pies: acelera, pega en el piso y rebota un poquito
+            float t = (c.level().getGameTime() - c.cae() + pt) / 10F;
+            float ang;
+            if (t < 1F) {
+                ang = 90F * t * t;
+            } else {
+                float r = Math.min(1F, (t - 1F) / 0.4F);
+                ang = 90F - 7F * (float) Math.sin(r * Math.PI);
+            }
+            ps.translate(0, 0, -0.16F);
             ps.mulPose(Axis.XP.rotationDegrees(-ang));
-            ps.translate(0, -0.42F, 0.72F);
+            ps.translate(0, 0, 0.16F);
         }
         ps.scale(-1, -1, 1);
         ps.translate(0, -1.501, 0);
-        // la piel, gris como piedra
-        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c))), light, OverlayTexture.NO_OVERLAY, 0.62F,
-                0.61F, 0.6F, 1F);
-        com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
-        com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
-                m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);
-        d.flush();
-        // y una capa de piedra encima, un poquito más grande (grietas y grano)
+        // la piel hecha piedra (en gris, con sus claros y oscuros)
+        ResourceLocation piel = EstatuaPiel.de(getTextureLocation(c));
+        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityCutoutNoCull(piel)), light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+        // y una capa de piedra encima, un poquito más grande (grietas y grano), casi transparente para que se vea quién es
         ps.scale(1.03F, 1.015F, 1.03F);
         ps.translate(0, -0.01, 0);
-        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityTranslucent(PIEDRA)), light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 0.62F);
+        m.renderToBuffer(ps, buf.getBuffer(RenderType.entityTranslucent(PIEDRA)), light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 0.32F);
         ps.popPose();
     }
 

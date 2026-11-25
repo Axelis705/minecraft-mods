@@ -222,7 +222,7 @@ evento capitulo1 sala
 #pausa 30
 #pausa 25
 #pausa 30
-#pausa 70
+#pausa 80
 evento mascota
 evento mascota comer
 #pausa 4

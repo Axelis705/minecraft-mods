@@ -21,6 +21,7 @@ final class PruebaCliente {
 
     static void escenario(ClientTest.Script t) {
         t.add("preparar", 2500, () -> {
+            SoloPrimera.permitir = true;
             t.hud(true);
             t.cmd("evento reiniciar confirmar");
             t.cmd("kill @e[type=!player]");
@@ -494,6 +495,35 @@ final class PruebaCliente {
                 s.capitulo(1);
             }
         });
+        // los textos de todas las pantallas del organizador: ninguno se puede quedar cortado (en el idioma del juego)
+        t.add("textos: limpiar", 300, () -> {
+            com.axeliscore.ui.Ui.RECORTADOS.clear();
+            com.axeliscore.ui.Ui.APRETADOS.clear();
+        });
+        for (int c = 0; c < LineaScreen.capitulos().size(); c++) {
+            final int cc = c;
+            t.add("textos: linea " + (c + 1), 350, () -> {
+                if (com.axeliscore.plat.client.Screens.current() instanceof LineaScreen s) {
+                    s.capitulo(cc);
+                }
+            });
+        }
+        t.add("textos: panel", 300, () -> com.axeliscore.plat.client.Screens.open(new PanelScreen()));
+        for (int p = 0; p < 4; p++) {
+            final int pp = p;
+            t.add("textos: panel " + (p + 1), 350, () -> {
+                if (com.axeliscore.plat.client.Screens.current() instanceof PanelScreen s) {
+                    s.pestana(pp);
+                }
+            });
+        }
+        t.add("textos: revisar", 100, () -> {
+            com.axeliscore.AxelisCore.LOGGER.info("COLECCIONISTA_TEXTOS achicados={} {}", com.axeliscore.ui.Ui.APRETADOS.size(),
+                    com.axeliscore.ui.Ui.APRETADOS);
+            com.axeliscore.AxelisCore.LOGGER.info("COLECCIONISTA_TEXTOS cortados={} {}", com.axeliscore.ui.Ui.RECORTADOS.size(),
+                    com.axeliscore.ui.Ui.RECORTADOS);
+            t.check(com.axeliscore.ui.Ui.RECORTADOS.isEmpty(), "ningún texto de las pantallas del organizador se corta: " + com.axeliscore.ui.Ui.RECORTADOS);
+        });
         t.add("cerrar linea", 500, () -> com.axeliscore.plat.client.Screens.close());
         capitulo2(t);
         t.add("cap2: limpiar", 500, () -> {
@@ -537,6 +567,20 @@ final class PruebaCliente {
             t.lookFrom(744.5, -60, 451.5, 737, -59, 444);
         });
         t.add("esconder", 100, () -> t.check("ESCONDER".equals(MascotaCliente.fase()), "corre el minuto para esconderse (" + MascotaCliente.fase() + ")"));
+        // una pieza solo ve en primera persona y, en lugar del inventario, su bolsillo con el logo
+        t.add("solo primera", 400, () -> {
+            SoloPrimera.permitir = false;
+            Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK);
+        });
+        t.add("primera persona", 100, () -> t.check(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON,
+                "una pieza no puede ver en tercera persona"));
+        t.photo("c2_05b_bolsillo", 900, () -> com.axeliscore.plat.client.Screens.open(
+                new net.minecraft.client.gui.screens.inventory.InventoryScreen(Minecraft.getInstance().player)));
+        t.add("bolsillo", 300, () -> {
+            t.check(Minecraft.getInstance().screen instanceof BolsilloScreen, "en lugar del inventario sale el bolsillo");
+            com.axeliscore.plat.client.Screens.close();
+            SoloPrimera.permitir = true;
+        });
         // yo soy Cascabel
         t.add("cap2: soy cascabel", 300, () -> {
             t.cmd("evento pocos true");

@@ -33,8 +33,10 @@ public final class Cuerpos {
         if (c == null) {
             return;
         }
-        c.moveTo(e.getX(), e.getY(), e.getZ(), e.getYRot(), 0);
         boolean estatua = ESTATUAS.remove(p.id);
+        // la estatua queda de pie en el piso de la vitrina (aunque la pieza iba sentada)
+        double y = estatua && e.getVehicle() != null ? e.getVehicle().getY() : e.getY();
+        c.moveTo(e.getX(), y, e.getZ(), e.getYRot(), 0);
         c.de(p.id, p.nombre, estatua ? Cadaver.ESTATUA + Math.abs(p.id.hashCode()) % 3 : Math.abs(p.id.hashCode()) % 4);
         if (estatua) {
             c.setYRot(e.getVehicle() != null ? e.getVehicle().getYRot() : e.getYRot());

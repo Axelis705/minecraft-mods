@@ -15,7 +15,8 @@ package com.coleccionista.mapa;
  * {@code vit.centro}, {@code vit.salida.a/.b} y {@code vit.antesala} (el pasillo de servicio {@code pas_tea}, ver {@link Pasaje}).
  */
 public final class SalaVitrina {
-    public static final int VITRINAS = 6, CUARTOS = 10;
+    /** Tres vitrinas (en un equipo hay de 2 a 3 piezas y solo pierde un equipo), cerca del vidrio para que se vean bien. */
+    public static final int VITRINAS = 3, CUARTOS = 10;
     /** El telón: de x 4 a 51 en z 40, de y 1 a 11. */
     public static final int TELON_X0 = 4, TELON_X1 = 51, TELON_Z = 40, TELON_Y1 = 11;
     /** La salida del teatro (muro del este) y hasta dónde llega la antesala. */
@@ -29,6 +30,11 @@ public final class SalaVitrina {
     /** El marco del cuarto N del teatro (1..5 abajo, 6..10 en el palco, de oeste a este) y el piso donde está. */
     public static Marco marco(int n) {
         return new Marco(3 + 10 * ((n - 1) % 5), 2, 0);
+    }
+
+    /** En qué orden se llenan las vitrinas: primero la del centro. */
+    public static int orden(int i) {
+        return new int[] {1, 0, 2}[Math.max(0, Math.min(2, i))];
     }
 
     public static int piso(int n) {
@@ -111,7 +117,7 @@ public final class SalaVitrina {
         }
     }
 
-    /** El vidrio, el telón y el escenario con sus seis vitrinas. */
+    /** El vidrio, el telón y el escenario con sus tres vitrinas. */
     private static void escenario(Plano p) {
         // el escenario
         p.caja(2, 1, 41, X1 - 1, TECHO - 1, 58, "air");
@@ -157,7 +163,7 @@ public final class SalaVitrina {
 
     /** Una vitrina: caja de vidrio de 3 x 3 sobre una tarima, la boquilla de la cera arriba, el reflector y la placa con el nombre. */
     private static void vitrina(Plano p, int n) {
-        int x0 = 9 + 7 * n, z0 = 47;
+        int x0 = 19 + 8 * n, z0 = 43;
         for (int x = x0; x <= x0 + 2; x++) {
             for (int z = z0; z <= z0 + 2; z++) {
                 p.set(x, 0, z, C + "metal_negro");

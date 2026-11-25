@@ -1183,5 +1183,12 @@
   "coleccionista.linea.p.man_limpiar": "Clean up",
   "coleccionista.linea.p.man_limpiar.ayuda": "Resets the house (cage and doors closed) and turns you back (doesn't eliminate anyone).",
   "key.coleccionista.rugir": "Cascabel: roar",
-  "key.coleccionista.olfatear": "Cascabel: sniff"
+  "key.coleccionista.olfatear": "Cascabel: sniff",
+  "coleccionista.panel.ir_no": "Can't find %s in the world (disconnected?).",
+  "coleccionista.panel.yo_pieza": "Sign me up",
+  "coleccionista.panel.yo_pieza_ayuda": "You stop being an organizer and join as a piece (if the waiting room is open, you go to your cell).",
+  "coleccionista.bolsillo.titulo": "Your pocket",
+  "coleccionista.bolsillo.logo": "EL COLECCIONISTA",
+  "coleccionista.bolsillo.por": "by Axelis",
+  "coleccionista.bolsillo.cerrar": "E · close"
 }

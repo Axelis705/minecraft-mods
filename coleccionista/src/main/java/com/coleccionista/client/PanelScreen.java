@@ -134,8 +134,13 @@ public class PanelScreen extends UiScreen {
         int by = py + ph - 30;
         add(new Button(px + 12, by, 96, 16, tr("inscribir_todos"), () -> pedir("inscribir_todos", null)))
                 .help(Component.translatable(MOD + ".panel.inscribir_todos_ayuda"));
-        add(new Button(px + 112, by, 96, 16, tr("yo_organizador"), () -> pedir("yo_organizador", null)))
-                .help(Component.translatable(MOD + ".panel.yo_organizador_ayuda"));
+        if (EventoCliente.yo() == null) {
+            add(new Button(px + 112, by, 96, 16, tr("yo_pieza"), () -> pedir("yo_pieza", null)))
+                    .help(Component.translatable(MOD + ".panel.yo_pieza_ayuda"));
+        } else {
+            add(new Button(px + 112, by, 96, 16, tr("yo_organizador"), () -> pedir("yo_organizador", null)))
+                    .help(Component.translatable(MOD + ".panel.yo_organizador_ayuda"));
+        }
         CompoundTag p = EventoCliente.pieza(elegida);
         if (p == null) {
             return;

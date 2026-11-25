@@ -57,6 +57,9 @@ public final class Panel {
                     Entity e = Evento.entidad(s, x);
                     if (e != null && e.level() instanceof ServerLevel l) {
                         p.teleportTo(l, e.getX(), e.getY() + 1.5, e.getZ(), p.getYRot(), p.getXRot());
+                        Coleccionista.LOGGER.info("COLECCIONISTA_IR {} -> {}", p.getGameProfile().getName(), x.nombre);
+                    } else {
+                        Plat.msg(p, Component.translatable(Coleccionista.MODID + ".panel.ir_no", x.nombre), true);
                     }
                 }
             }
@@ -66,6 +69,24 @@ public final class Panel {
                         ev.inscribir(s, o.getUUID(), o.getGameProfile().getName(), false);
                     }
                 }
+            }
+            case "yo_pieza" -> {
+                // deja de organizar y entra como pieza (si la sala de espera está abierta, va a su celda como cualquiera)
+                ev.organizador(s, p.getUUID(), false);
+                Pieza yo = ev.pieza(p);
+                if (yo == null) {
+                    yo = ev.inscribir(s, p.getUUID(), p.getGameProfile().getName(), false);
+                }
+                if (yo.vivo() && ev.sala) {
+                    Celdas.asignar(s, ev, yo);
+                    p.setGameMode(net.minecraft.world.level.GameType.ADVENTURE);
+                    Celdas.llevar(s, yo, true);
+                } else if (yo.vivo() && p.isSpectator()) {
+                    p.setGameMode(net.minecraft.world.level.GameType.ADVENTURE);
+                }
+                ev.disfraz(s, p.getUUID(), false);
+                ev.cambio(s);
+                Coleccionista.LOGGER.info("COLECCIONISTA_YO_PIEZA {}", p.getGameProfile().getName());
             }
             case "yo_organizador" -> {
                 Pieza yo = ev.pieza(p);
