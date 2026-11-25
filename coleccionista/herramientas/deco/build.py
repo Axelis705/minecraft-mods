@@ -446,6 +446,7 @@ def catalogo():
     escalera('escalera_metal', 'Escalera de metal', 'Metal stairs', lambda s: M.metal_placa(s, '#2e2f2c', pintado=0.3), 'metal_placa')
     barrotes('barrotes', 'Barrotes oxidados', 'Rusty bars', lambda s: M.barrotes(s))
     barrotes('barandal', 'Barandal', 'Railing', lambda s: barandal_tex(s))
+    barrotes('barrotes_dorados', 'Barrotes dorados', 'Golden bars', lambda s: jaula_tex(s))
     ficha[-1]['alto'] = True  # choca como cerca: nadie se sube
     puerta_reja(props_celdas.puerta_reja())
     puerta_reja(props_celdas.puerta_ascensor(), ascensor=True, icono=icono_puerta((150, 117, 58, 255), (210, 172, 90, 255)))
@@ -645,6 +646,31 @@ def barandal_tex(seed):
     solid = rail | post | bal
     rgb = np.array(M.metal_placa(seed, '#2e3a33', pintado=0.8, remaches=False)).astype(np.float32)[..., :3]
     rgb = np.where((y == 0)[..., None], rgb * 1.3 + 8, rgb)
+    out = np.zeros((32, 32, 4), np.uint8)
+    out[..., :3] = np.clip(rgb, 0, 255)
+    out[..., 3] = np.where(solid, 255, 0)
+    return Image.fromarray(out, 'RGBA')
+
+
+def jaula_tex(seed):
+    """Las jaulas de pájaro del salón de té: varillas doradas muy delgadas (dos por bloque) y un aro abajo; casi todo transparente, para
+    que desde adentro se vea bien la mesa."""
+    import numpy as np
+    from PIL import Image
+    y, x = np.mgrid[0:32, 0:32]
+    varilla = (x == 0) | (x == 31) | (x == 15) | (x == 16)
+    aro = y >= 30
+    solid = varilla | aro
+    rgb = np.zeros((32, 32, 3), np.float32)
+    rgb[...] = (212, 168, 56)
+    luz = (x == 15) | (x == 0)
+    rgb = np.where(luz[..., None], np.array((246, 214, 112), np.float32), rgb)
+    sombra = (x == 16) | (x == 31)
+    rgb = np.where(sombra[..., None], np.array((150, 112, 34), np.float32), rgb)
+    rgb = np.where((aro & (y == 30))[..., None], np.array((240, 205, 100), np.float32), rgb)
+    rgb = np.where((aro & (y == 31))[..., None], np.array((138, 102, 30), np.float32), rgb)
+    # un poco de brillo que cambia a lo largo de la varilla (como metal pulido)
+    rgb = rgb * (0.92 + 0.08 * np.sin(y / 3.0 + seed))[..., None]
     out = np.zeros((32, 32, 4), np.uint8)
     out[..., :3] = np.clip(rgb, 0, 255)
     out[..., 3] = np.where(solid, 255, 0)

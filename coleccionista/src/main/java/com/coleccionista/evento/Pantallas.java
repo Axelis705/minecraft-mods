@@ -363,6 +363,33 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> te() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("bienvenidos", 70, null, 1F));
+        l.add(new Frase("parejas", 70, null, 1F));
+        l.add(new Frase("confien", 100, null, 1F));
+        l.add(new Frase("minuto", 70, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> te_reglas() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("hechas", 85, null, 1F));
+        l.add(new Frase("piedra", 80, null, 1F));
+        l.add(new Frase("caliz", 80, null, 1F));
+        l.add(new Frase("cinco", 105, null, 1F));
+        l.add(new Frase("solo_uno", 125, SoundEvents.WITCH_CELEBRATE, 0.5F));
+        l.add(new Frase("salud", 50, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> te_fin() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("terminado", 50, null, 1F));
+        l.add(new Frase("enteros", 80, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -390,6 +417,9 @@ public final class Pantallas {
             case "caja_fin" -> caja_fin();
             case "sorpresa" -> sorpresa();
             case "sorpresa_fin" -> sorpresa_fin();
+            case "te" -> te();
+            case "te_reglas" -> te_reglas();
+            case "te_fin" -> te_fin();
             default -> null;
         };
     }

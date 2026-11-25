@@ -290,4 +290,31 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 2 | `sorpresa_fin_zapatos.ogg` | 3.8 s | Qué bonita colección de zapatos. |
 | 3 | `sorpresa_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
 
-**Total: 164 líneas (≈14 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+## Capítulo 5 · La hora del té: al entrar al salón (eligen pareja)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `te_bienvenidos.ogg` | 3.5 s | Bienvenidos a mi salón de té. |
+| 2 | `te_parejas.ogg` | 3.5 s | Esta noche juegan en parejas. |
+| 3 | `te_confien.ogg` | 5.0 s | Siéntense con la persona en la que más confíen. |
+| 4 | `te_minuto.ogg` | 3.5 s | Tienen un minuto. Elijan bien. |
+
+## Capítulo 5 · La hora del té: ya en las jaulas (la tele explica el juego)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `te_reglas_hechas.ogg` | 4.2 s | Las parejas están hechas. Qué tiernos. |
+| 2 | `te_reglas_piedra.ogg` | 4.0 s | Van a jugar piedra, papel o tijera. |
+| 3 | `te_reglas_caliz.ogg` | 4.0 s | El que pierda, beberá de un cáliz. |
+| 4 | `te_reglas_cinco.ogg` | 5.2 s | Cada uno tiene cinco cálices. Uno está envenenado. |
+| 5 | `te_reglas_solo_uno.ogg` | 6.2 s | Ah, se me olvidaba… solo uno de cada pareja saldrá de aquí. |
+| 6 | `te_reglas_salud.ogg` | 2.5 s | ¡Salud! |
+
+## Capítulo 5 · La hora del té: el final (salen los ganadores)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `te_fin_terminado.ogg` | 2.5 s | Se acabó el té. |
+| 2 | `te_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
+
+**Total: 176 líneas (≈15 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

@@ -83,10 +83,24 @@ public class Cadaver extends Entity {
         return postura() >= EN_SILLA && postura() < EN_SILLA + 100;
     }
 
+    /** Postura desde la que el cuerpo es el envenenado del salón de té: sentado, verde, y se va de espaldas con su silla. */
+    public static final int VENENO = 300;
+
+    public boolean veneno() {
+        return postura() >= VENENO && postura() < VENENO + 100;
+    }
+
+    /** Postura desde la que el cuerpo es el envenenado ya en su jaula colgada: sentado en el piso de la jaula, verde, tieso. */
+    public static final int JAULA = 400;
+
+    public boolean enJaula() {
+        return postura() >= JAULA && postura() < JAULA + 100;
+    }
+
     @Override
     public void tick() {
         super.tick();
-        if (estatua() || enSilla()) {
+        if (estatua() || enSilla() || veneno() || enJaula()) {
             setDeltaMovement(Vec3.ZERO);
             return;
         }

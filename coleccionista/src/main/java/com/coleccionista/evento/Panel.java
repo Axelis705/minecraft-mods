@@ -236,6 +236,23 @@ public final class Panel {
                 }
             }
             case "sor_limpiar" -> com.coleccionista.prueba.Sorpresa.reiniciar(s);
+            case "te_llamar", "te_llegar" -> {
+                Component no = "te_llamar".equals(op) ? com.coleccionista.prueba.Te.llamar(s) : com.coleccionista.prueba.Te.llegar(s);
+                if (no != null) {
+                    Plat.msg(p, no, true);
+                }
+            }
+            case "te_saltar" -> {
+                if (!com.coleccionista.prueba.Te.saltar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".te.cmd.no"), true);
+                }
+            }
+            case "te_terminar" -> {
+                if (!com.coleccionista.prueba.Te.terminar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".te.cmd.no"), true);
+                }
+            }
+            case "te_limpiar" -> com.coleccionista.prueba.Te.reiniciar(s);
             case "pocos" -> {
                 ev.pocos = d.getBoolean("si");
                 ev.cambio(s);

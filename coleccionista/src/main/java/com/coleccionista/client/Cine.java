@@ -217,6 +217,25 @@ public final class Cine {
         empezar("candado", desde, frente, centro, 0.7F);
     }
 
+    /**
+     * Bebiendo en el salón de té: la cámara sale del cuerpo (de enfrente, un poco de lado) y se aleja despacio mientras se ve beber (y lo que
+     * pasa después). Al terminar regresa a los ojos.
+     */
+    public static void beber(Vec3 cabeza, float yaw, float segundos) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) {
+            return;
+        }
+        if (activo) {
+            terminar(false);
+        }
+        double r = Math.toRadians(yaw);
+        Vec3 f = new Vec3(-Math.sin(r), 0, Math.cos(r)), d = new Vec3(-f.z, 0, f.x);
+        Vec3 desde = cabeza.add(f.scale(0.85)).add(d.scale(0.6)).add(0, 0.05, 0);
+        Vec3 hasta = cabeza.add(f.scale(1.9)).add(d.scale(1.35)).add(0, 0.55, 0);
+        empezar("beber", desde, hasta, cabeza.add(0, -0.2, 0), segundos);
+    }
+
     /** ¿La cámara está en el candado? */
     public static boolean enCandado() {
         return activo && "candado".equals(tipo);
@@ -276,6 +295,12 @@ public final class Cine {
         }
         float t = (System.currentTimeMillis() - inicio) / 1000F;
         if ("candado".equals(tipo)) {
+            poner(a.lerp(b, suave(t / dur)), mira);
+        } else if ("beber".equals(tipo)) {
+            if (t >= dur) {
+                terminar(false);
+                return;
+            }
             poner(a.lerp(b, suave(t / dur)), mira);
         } else if ("pantalla".equals(tipo)) {
             var o = mc.options;

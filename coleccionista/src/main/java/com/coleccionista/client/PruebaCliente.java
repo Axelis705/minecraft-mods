@@ -540,6 +540,125 @@ final class PruebaCliente {
         });
         capitulo3(t);
         capitulo4(t);
+        capitulo5(t);
+    }
+
+    /**
+     * Capítulo 5 · La hora del té (yo miro como fantasma, para poder mover la cámara): el pasillo, el salón con los sillones (los bots se
+     * sientan en pareja), las jaulas colgadas, el primer duelo (las manos se sacuden y muestran la jugada, el que pierde bebe, el veneno lo
+     * pone verde y se va de espaldas con la silla), el cambio (el muerto en una jaula) y las pantallas de elegir jugada y cáliz (simuladas).
+     * El salón está en (950, -61, 430): el pasillo x 952..965 / z 448..455, el salón x 967..1011 / z 430..472, la mesa x 990..998 /
+     * z 450..452 (centro 994.5, 451.5; el mantel arriba en y -59.03), las sillas en x 989 y 999, las jaulas en un anillo de radio 10.
+     */
+    private static void capitulo5(ClientTest.Script t) {
+        t.add("cap5: preparar", 800, () -> {
+            t.cmd("gamemode adventure @a");
+            t.cmd("forceload add 944 424 1016 480");
+            t.cmd("evento pocos true");
+            t.cmd("evento te encadenar false");
+            t.cmd("evento te rapido true");
+            t.cmd("evento te veneno 1");
+            t.cmd("evento eliminar " + yo());
+        });
+        t.add("cap5: llegar", 600, () -> t.cmd("evento te llegar"));
+        t.waitFor("cap5: llegando", 15000, () -> "LLEGANDO".equals(TeCliente.fase()));
+        t.photo("c5_01_pasillo", 1500, () -> t.lookFrom(958.5, -60, 451.5, 967, -59, 451.5));
+        t.photo("c5_02_salon", 3500, () -> {
+            t.cmd("evento te saltar");
+            t.lookFrom(969.5, -59, 451.5, 994.5, -58, 451.5);
+        });
+        t.photo("c5_03_sillones", 2500, () -> t.lookFrom(986.5, -58.5, 451.5, 975, -59.5, 444));
+        t.add("cap5: formar parejas", 400, () -> t.cmd("evento te saltar"));
+        t.waitFor("cap5: reglas", 15000, () -> "REGLAS".equals(TeCliente.fase()));
+        t.photo("c5_04_jaulas", 2000, () -> t.lookFrom(1008.5, -53, 467.5, 994.5, -56.5, 451.5));
+        t.photo("c5_05_mesa", 1500, () -> t.lookFrom(994.5, -57.5, 444.5, 994.5, -58.8, 451.5));
+        // mientras habla la tele: las pantallas (simuladas en la mía): elegir jugada y elegir cáliz con la mano
+        t.photo("c5_13_jugada", 900, () -> {
+            CompoundTag m = new CompoundTag();
+            m.putInt("lado", 0);
+            m.putBoolean("jugar", true);
+            m.putInt("segundos", 12);
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Te.KEY_MIO, m);
+        });
+        t.add("jugada", 300, () -> {
+            t.check(Minecraft.getInstance().screen instanceof JugadaScreen, "salió la pantalla de piedra, papel o tijera");
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Te.KEY_MIO, new CompoundTag());
+            com.axeliscore.plat.client.Screens.close();
+        });
+        t.add("caliz", 1500, () -> {
+            CompoundTag m = new CompoundTag();
+            m.putInt("lado", 0);
+            m.putBoolean("caliz", true);
+            m.putInt("segundos", 20);
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Te.KEY_MIO, m);
+        });
+        t.photo("c5_14_caliz", 1200, () -> {
+            if (CalizScreen.actual() != null) {
+                CalizScreen.actual().senalarPrueba(2);
+            }
+        });
+        t.add("caliz cerrar", 300, () -> {
+            t.check(Minecraft.getInstance().screen instanceof CalizScreen, "salió la pantalla para elegir el cáliz con la mano");
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Te.KEY_MIO, new CompoundTag());
+            com.axeliscore.plat.client.Screens.close();
+        });
+        t.add("cap5: duelo", 300, () -> t.cmd("evento te saltar"));
+        t.waitFor("cap5: manos", 15000, () -> "MANOS".equals(TeCliente.fase()));
+        t.photo("c5_06_manos", 700, () -> t.lookFrom(994.5, -59.8, 447.0, 994.5, -58.3, 451.5));
+        t.photo("c5_07_jugadas", 1400, () -> {
+        });
+        t.waitFor("cap5: bebe", 30000, () -> "BEBE".equals(TeCliente.fase()));
+        t.add("cap5: mirar al que bebe", 50, () -> {
+            int l = com.axeliscore.plat.Nbt.i(TeCliente.estado(), "perdedor");
+            double[] s = TeCliente.silla(l);
+            if (s != null) {
+                double r = Math.toRadians(s[3]);
+                double fx = -Math.sin(r), fz = Math.cos(r);
+                t.lookFrom(s[0] + fx * 1.7 - fz * 1.0, s[1] - 0.4, s[2] + fz * 1.7 + fx * 1.0, s[0], s[1] + 1.2, s[2]);
+            }
+        });
+        t.photo("c5_08_bebe", 1400, () -> {
+        });
+        t.photo("c5_09_veneno", 2600, () -> {
+        });
+        t.waitFor("cap5: muere", 15000, () -> "MUERE".equals(TeCliente.fase()));
+        t.photo("c5_10_cae", 1200, () -> {
+        });
+        t.waitFor("cap5: cambio", 15000, () -> "CAMBIO".equals(TeCliente.fase()));
+        t.waitFor("cap5: siguiente duelo", 15000, () -> !"CAMBIO".equals(TeCliente.fase()));
+        t.add("cap5: el muerto en su jaula", 400, () -> {
+            com.coleccionista.evento.Cadaver muerto = null;
+            for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (e instanceof com.coleccionista.evento.Cadaver c && c.enJaula()) {
+                    muerto = c;
+                }
+            }
+            t.check(muerto != null, "el envenenado quedó en una jaula");
+            if (muerto != null) {
+                double dx = 994.5 - muerto.getX(), dz = 451.5 - muerto.getZ();
+                double d = Math.hypot(dx, dz);
+                t.lookFrom(muerto.getX() + dx / d * 3.2, muerto.getY() - 0.6, muerto.getZ() + dz / d * 3.2, muerto.getX(), muerto.getY() + 0.5,
+                        muerto.getZ());
+            }
+        });
+        t.photo("c5_11_jaula_muerto", 1500, () -> {
+        });
+        t.photo("c5_12_cambio", 1200, () -> t.lookFrom(994.5, -57.5, 444.5, 994.5, -58.8, 451.5));
+        t.add("cap5: terminar", 1500, () -> t.cmd("evento te terminar"));
+        t.waitFor("cap5: fin", 20000, () -> "FIN".equals(TeCliente.fase()));
+        t.photo("c5_15_fin", 9000, () -> t.lookFrom(1008.5, -53, 467.5, 994.5, -56.5, 451.5));
+        t.add("cap5: limpiar", 1500, () -> {
+            t.cmd("evento te limpiar");
+            t.cmd("evento te rapido false");
+            t.cmd("evento te veneno 0");
+            t.cmd("evento te encadenar true");
+            t.cmd("evento pocos false");
+            for (int i = 2; i <= 8; i++) {
+                t.cmd("evento revivir Bot_0" + i);
+            }
+            t.cmd("evento revivir " + yo());
+            t.cmd("gamemode adventure @a");
+        });
     }
 
     /**

@@ -167,6 +167,27 @@ GUIONES = {
         ('zapatos', "Qué bonita colección de zapatos.", "What a lovely shoe collection.", "Admirando, como ante una vitrina."),
         ('enteros', "Los que siguen enteros… síganme.", "Those still in one piece… follow me.", "Cortés, con humor negro."),
     ],
+    "te": [
+        ("bienvenidos", "Bienvenidos a mi salón de té.", "Welcome to my tea room.", "Cortés, de anfitrión elegante."),
+        ("parejas", "Esta noche juegan en parejas.", "Tonight you play in pairs.", "Contento, como quien anuncia un juego."),
+        ("confien", "Siéntense con la persona en la que más confíen.", "Sit with the person you trust the most.",
+         "Dulce, casi tierno; la trampa se esconde aquí."),
+        ("minuto", "Tienen un minuto. Elijan bien.", "You have one minute. Choose well.", "Pausa antes de «elijan bien»."),
+    ],
+    "te_reglas": [
+        ("hechas", "Las parejas están hechas. Qué tiernos.", "The pairs are made. How sweet.", "Encantado, como ante una vitrina."),
+        ("piedra", "Van a jugar piedra, papel o tijera.", "You will play rock, paper, scissors.", "Juguetón, como a niños."),
+        ("caliz", "El que pierda, beberá de un cáliz.", "Whoever loses drinks from a chalice.", "Tranquilo, sirviendo el té."),
+        ("cinco", "Cada uno tiene cinco cálices. Uno está envenenado.", "Each of you has five chalices. One is poisoned.",
+         "Bajando la voz en «envenenado»."),
+        ("solo_uno", "Ah, se me olvidaba… solo uno de cada pareja saldrá de aquí.",
+         "Oh, I almost forgot… only one of each pair leaves this room.", "Pausa larga; con gusto. Risita al final.", "WITCH_CELEBRATE"),
+        ("salud", "¡Salud!", "Cheers!", "Alzando la taza."),
+    ],
+    "te_fin": [
+        ("terminado", "Se acabó el té.", "Tea time is over.", "Satisfecho, dejando la taza."),
+        ("enteros", "Los que siguen enteros… síganme.", "Those still in one piece… follow me.", "Cortés, con humor negro."),
+    ],
     "montacargas": [
         ("viaje", "Respiren hondo… es solo un poco de gas.", "Breathe deep… it's just a little gas.",
          "Susurrado, como quien arrulla a alguien."),
@@ -347,6 +368,9 @@ TITULOS = {
     "caja_fin": "Capítulo 3 · La caja de música: el final (sube el arma y se dicen los traidores)",
     "sorpresa": "Capítulo 4 · La caja sorpresa: en el teatrito (cuando ya entraron todos)",
     "sorpresa_fin": "Capítulo 4 · La caja sorpresa: el final (Don Resorte ya está lleno)",
+    "te": "Capítulo 5 · La hora del té: al entrar al salón (eligen pareja)",
+    "te_reglas": "Capítulo 5 · La hora del té: ya en las jaulas (la tele explica el juego)",
+    "te_fin": "Capítulo 5 · La hora del té: el final (salen los ganadores)",
 }
 ZONAS = ["cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria"]
 

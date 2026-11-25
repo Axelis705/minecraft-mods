@@ -250,6 +250,7 @@ evento caja
 evento caja
 #pausa 200
 evento caja
+evento te encadenar false
 evento sorpresa comer 2
 evento sorpresa rapido true
 evento sorpresa llegar
@@ -259,6 +260,30 @@ evento sorpresa saltar
 evento sorpresa saltar
 #pausa 110
 evento sorpresa
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento revivir Bot_05
+evento revivir Bot_06
+evento te rapido true
+evento te veneno 1
+evento te tiempos 8 5 5
+evento te llegar
+#pausa 4
+evento te saltar
+#pausa 3
+evento te saltar
+#pausa 4
+evento te saltar
+#pausa 6
+evento te saltar
+#pausa 100
+evento te
+evento te limpiar
+evento te rapido false
+evento te veneno 0
+evento te encadenar true
 evento sorpresa limpiar
 evento sorpresa rapido false
 evento sorpresa comer 0
@@ -360,6 +385,23 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_SORPRESA fin comidos=
 #expect COLECCIONISTA_DISCURSO sorpresa_fin
 #expect COLECCIONISTA_CAPITULO4 fin
+#expect COLECCIONISTA_CONSTRUIDO te
+#expect COLECCIONISTA_TE llegan
+#expect COLECCIONISTA_TE habla
+#expect COLECCIONISTA_DISCURSO te
+#expect COLECCIONISTA_TE parejas=
+#expect COLECCIONISTA_TE jaulas=
+#expect COLECCIONISTA_TE reglas
+#expect COLECCIONISTA_TE duelo 1
+#expect COLECCIONISTA_TE elige
+#expect COLECCIONISTA_TE jugada
+#expect COLECCIONISTA_TE bebe
+#expect COLECCIONISTA_TE veneno
+#expect COLECCIONISTA_CUERPO veneno
+#expect COLECCIONISTA_TE cambio
+#expect COLECCIONISTA_TE fin vivos=
+#expect COLECCIONISTA_DISCURSO te_fin
+#expect COLECCIONISTA_CAPITULO5 fin
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
 #expect COLECCIONISTA_EQUIPOS tam=2 equipos=3

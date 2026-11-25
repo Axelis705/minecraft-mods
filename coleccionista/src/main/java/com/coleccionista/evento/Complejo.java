@@ -96,6 +96,8 @@ public final class Complejo {
             l.add(new Zona("caja", com.coleccionista.mapa.CajaMusica.crear(SEMILLA), 790, 0, 400, 1));
             // capítulo 4: la caja sorpresa (el teatrito de Don Resorte), al este de la caja de música
             l.add(new Zona("sorpresa", com.coleccionista.mapa.SalaSorpresa.crear(SEMILLA), 870, 0, 400, 1));
+            // capítulo 5: el salón de té (las parejas, las jaulas colgadas y los cálices)
+            l.add(new Zona("te", com.coleccionista.mapa.SalaTe.crear(SEMILLA), 950, 0, 400, 1));
             // las Cloacas (el Encadenados de antes) quedaron lejos, al sur de las antesalas
             l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 56, 0, 230, 0));
             // el Salón de las mesas, pegado al este de las Cloacas (su pared oeste junto al Refugio)

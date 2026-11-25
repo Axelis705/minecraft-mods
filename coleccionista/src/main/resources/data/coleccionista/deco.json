@@ -121,6 +121,12 @@
    "id": "barandal",
    "kind": "barrotes",
    "sound": "metal",
+   "strength": 5.0
+  },
+  {
+   "id": "barrotes_dorados",
+   "kind": "barrotes",
+   "sound": "metal",
    "strength": 5.0,
    "alto": true
   },

@@ -21,6 +21,10 @@ public class BotRenderer extends PersonaRenderer<PiezaBot> {
 
     @Override
     public void render(PiezaBot b, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int light) {
+        // en el salón de té, el que bebe se dibuja aparte (sentado, con el cáliz)
+        if (TeCliente.oculto(b.getUUID())) {
+            return;
+        }
         if (b.fantasma()) {
             if (FantasmaRender.veoFantasmas()) {
                 CompoundTag pz = EventoCliente.pieza(b.getUUID());

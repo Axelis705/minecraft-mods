@@ -214,6 +214,9 @@ public final class Sentidos {
         if (s.grupo.equals("sorpresa")) {
             return Sorpresa.puedeSentarse(sp, s);
         }
+        if (s.grupo.equals("te")) {
+            return Te.puedeSentarse(sp, s);
+        }
         if (!s.grupo.startsWith("circ.")) {
             return !s.grupo.equals("vitrina");
         }

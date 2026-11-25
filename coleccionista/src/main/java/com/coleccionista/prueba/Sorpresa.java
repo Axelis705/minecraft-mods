@@ -103,6 +103,8 @@ public final class Sorpresa {
     private static final List<BlockPos> puestos = new ArrayList<>();
     private static boolean lucesBajas;
     private static int sustos;
+    /** Cuándo se llama al capítulo 5 (el salón de té) después de que habló el Coleccionista (0: no). */
+    private static long aTe;
 
     private Sorpresa() {
     }
@@ -692,6 +694,7 @@ public final class Sorpresa {
                         caja.estado(CajaSorpresa.AGARRA);
                         sonidoCaja(s, SoundEvents.ZOMBIE_INFECT, 3F, 0.5F);
                     }
+                    enviar(s);
                 }
             }
             case AGARRA -> {
@@ -736,6 +739,7 @@ public final class Sorpresa {
                         }
                         caja.estado(CajaSorpresa.ESCUPE);
                     }
+                    enviar(s);
                 }
             }
             case ESCUPE -> {
@@ -776,6 +780,18 @@ public final class Sorpresa {
                     if (caja != null) {
                         caja.estado(CajaSorpresa.GUARDA);
                     }
+                    enviar(s);
+                }
+            }
+            case FIN -> {
+                if (aTe > 0 && t >= aTe) {
+                    aTe = 0;
+                    // primero se suelta a todos de sus sillas, luego llama el salón de té
+                    for (Silla si : sillas.values()) {
+                        si.soltar();
+                    }
+                    Te.llamar(s);
+                    return;
                 }
             }
             case GUARDA -> {
@@ -1058,6 +1074,10 @@ public final class Sorpresa {
         Pantallas.hablar(s, "sorpresa_fin", () -> {
             Evento.get(s).prueba(s, Component.translatable(MOD + ".sor.fin_capitulo").getString());
             Coleccionista.LOGGER.info("COLECCIONISTA_CAPITULO4 fin vivos={}", Evento.get(s).vivos().size());
+            // "los que siguen enteros…": el capítulo 5 (se abre el pasillo hacia el salón de té)
+            if (Te.encadenar && Complejo.construido(s, "te") && fase == Fase.FIN) {
+                aTe = t + 60;
+            }
         });
         Anuncio.titulo(s, Component.translatable(MOD + ".sor.fin.titulo"), Component.translatable(MOD + ".sor.fin.sub", comidos));
         for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
@@ -1215,6 +1235,7 @@ public final class Sorpresa {
         orden.clear();
         yawCentro.clear();
         turno = null;
+        aTe = 0;
         idx = -1;
         comidos = 0;
         cuota = 0;

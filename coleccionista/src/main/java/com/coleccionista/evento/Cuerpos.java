@@ -19,6 +19,8 @@ public final class Cuerpos {
     public static final java.util.Set<java.util.UUID> ESTATUAS = new java.util.HashSet<>();
     /** Quiénes, al ser eliminados, se van de espaldas con su silla (la caja de música: el balazo). */
     public static final java.util.Set<java.util.UUID> EN_SILLA = new java.util.HashSet<>();
+    /** Quiénes, al ser eliminados, se envenenaron en el salón de té: verdes, y se van de espaldas con su silla. */
+    public static final java.util.Set<java.util.UUID> VENENO = new java.util.HashSet<>();
     /** Quiénes, al ser eliminados, no dejan cuerpo (se los comió Cascabel). */
     public static final java.util.Set<java.util.UUID> SIN_CUERPO = new java.util.HashSet<>();
 
@@ -33,6 +35,19 @@ public final class Cuerpos {
         }
         Cadaver c = ModRegistry.CADAVER.get().create(l);
         if (c == null) {
+            return;
+        }
+        if (VENENO.remove(p.id) && e.getVehicle() instanceof Silla sv) {
+            // el veneno: el cuerpo verde se va de espaldas con la silla (la dibuja el cliente); la silla de verdad se quita
+            c.moveTo(sv.getX(), sv.getY(), sv.getZ(), sv.getYRot(), 0);
+            c.de(p.id, p.nombre, Cadaver.VENENO + Math.abs(p.id.hashCode()) % 3);
+            c.setYRot(sv.getYRot());
+            c.setNoGravity(true);
+            c.caer((int) l.getGameTime());
+            sv.soltar();
+            sv.discard();
+            l.addFreshEntity(c);
+            Coleccionista.LOGGER.info("COLECCIONISTA_CUERPO veneno {} {}", p.etiqueta(), p.nombre);
             return;
         }
         if (EN_SILLA.remove(p.id) && e.getVehicle() instanceof Silla si) {

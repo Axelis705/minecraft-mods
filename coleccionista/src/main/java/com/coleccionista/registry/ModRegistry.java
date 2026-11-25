@@ -89,6 +89,11 @@ public final class ModRegistry {
             ENTITIES.register("caja_sorpresa", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "caja_sorpresa",
                     EntityType.Builder.<com.coleccionista.evento.CajaSorpresa>of(com.coleccionista.evento.CajaSorpresa::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(3.5F, 3.6F).clientTrackingRange(10).updateInterval(1)));
+    /** Las manos gigantes de porcelana del salón de té (capítulo 5): juegan piedra, papel o tijera. */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.evento.ManoGigante>> MANO_GIGANTE =
+            ENTITIES.register("mano_gigante", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "mano_gigante",
+                    EntityType.Builder.<com.coleccionista.evento.ManoGigante>of(com.coleccionista.evento.ManoGigante::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.8F, 0.8F).clientTrackingRange(10).updateInterval(2)));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(
