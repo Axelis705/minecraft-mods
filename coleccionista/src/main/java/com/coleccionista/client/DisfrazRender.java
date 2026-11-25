@@ -51,7 +51,7 @@ public final class DisfrazRender {
 
     private static void antes(RenderPlayerEvent.Pre e) {
         if (dibujando || renderer == null || !EventoCliente.disfrazado(e.getEntity().getUUID())
-                || EventoCliente.esFantasma(e.getEntity().getUUID())) {
+                || EventoCliente.esFantasma(e.getEntity().getUUID()) || com.axeliscore.forma.client.FormasCliente.transformado(e.getEntity())) {
             return;
         }
         if (!(e.getEntity() instanceof AbstractClientPlayer p)) {

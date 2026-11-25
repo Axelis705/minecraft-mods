@@ -265,6 +265,59 @@ public final class Comandos {
                                     return ok(c, Component.literal("elegir=" + com.coleccionista.prueba.Sentidos.segundosElegir + " juego="
                                             + com.coleccionista.prueba.Sentidos.segundos));
                                 })))))
+                .then(Commands.literal("mascota")
+                        .executes(c -> ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen())))
+                        .then(Commands.literal("llegar").executes(c -> {
+                            Component no = com.coleccionista.prueba.Mascota.llegar(c.getSource().getServer());
+                            return no == null ? ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen())) : error(c, no);
+                        }))
+                        .then(Commands.literal("saltar").executes(c -> com.coleccionista.prueba.Mascota.saltar(c.getSource().getServer())
+                                ? ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen())) : error(c, Component.translatable(MOD + ".man.no"))))
+                        .then(Commands.literal("soltar").executes(c -> com.coleccionista.prueba.Mascota.soltar(c.getSource().getServer())
+                                ? ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen())) : error(c, Component.translatable(MOD + ".man.no"))))
+                        .then(Commands.literal("terminar").executes(c -> com.coleccionista.prueba.Mascota.terminar(c.getSource().getServer())
+                                ? ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen())) : error(c, Component.translatable(MOD + ".man.no"))))
+                        .then(Commands.literal("limpiar").executes(c -> {
+                            com.coleccionista.prueba.Mascota.reiniciar(c.getSource().getServer());
+                            return ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen()));
+                        }))
+                        .then(Commands.literal("cazador")
+                                .then(Commands.literal("nadie").executes(c -> {
+                                    com.coleccionista.prueba.Mascota.elegir(null);
+                                    return ok(c, Component.translatable(MOD + ".cmd.cazador_nadie"));
+                                }))
+                                .then(Commands.argument("jugador", EntityArgument.player()).executes(c -> {
+                                    ServerPlayer p = EntityArgument.getPlayer(c, "jugador");
+                                    com.coleccionista.prueba.Mascota.elegir(p.getUUID());
+                                    return ok(c, Component.translatable(MOD + ".cmd.cazador", p.getGameProfile().getName()));
+                                })))
+                        .then(Commands.literal("comer").executes(c -> {
+                            // la primera pieza viva (para la prueba automática)
+                            Pieza presa = null;
+                            for (Pieza v : Evento.get(c.getSource().getServer()).vivos()) {
+                                if (!v.id.equals(com.coleccionista.prueba.Mascota.cazador())) {
+                                    presa = v;
+                                    break;
+                                }
+                            }
+                            return presa != null && com.coleccionista.prueba.Mascota.comerA(c.getSource().getServer(), presa) ? ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen()))
+                                    : error(c, Component.translatable(MOD + ".man.no"));
+                        }).then(Commands.argument("pieza", StringArgumentType.word()).executes(c -> {
+                            Pieza p = Evento.get(c.getSource().getServer()).buscar(StringArgumentType.getString(c, "pieza"));
+                            return p != null && com.coleccionista.prueba.Mascota.comerA(c.getSource().getServer(), p) ? ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen()))
+                                    : error(c, Component.translatable(MOD + ".man.no"));
+                        })))
+                        .then(Commands.literal("auto").then(Commands.argument("si", com.mojang.brigadier.arguments.BoolArgumentType.bool())
+                                .executes(c -> {
+                                    com.coleccionista.prueba.Mascota.auto = com.mojang.brigadier.arguments.BoolArgumentType.getBool(c, "si");
+                                    return ok(c, Component.literal("auto=" + com.coleccionista.prueba.Mascota.auto));
+                                })))
+                        .then(Commands.literal("tiempos").then(Commands.argument("esconder", IntegerArgumentType.integer(5, 600))
+                                .then(Commands.argument("cazar", IntegerArgumentType.integer(20, 3600)).executes(c -> {
+                                    com.coleccionista.prueba.Mascota.segundosEsconder = IntegerArgumentType.getInteger(c, "esconder");
+                                    com.coleccionista.prueba.Mascota.segundosCazar = IntegerArgumentType.getInteger(c, "cazar");
+                                    return ok(c, Component.literal("esconder=" + com.coleccionista.prueba.Mascota.segundosEsconder + " cazar=" + com.coleccionista.prueba.Mascota.segundosCazar));
+                                })))))
                 .then(Commands.literal("salida").executes(c -> Celdas.hablarSalida(c.getSource().getServer())
                         ? ok(c, Component.translatable(MOD + ".cmd.salida")) : ok(c, Component.translatable(MOD + ".cmd.salida_espera"))))
                 .then(Commands.literal("pantalla")
@@ -272,7 +325,19 @@ public final class Comandos {
                         .then(Commands.literal("estatica").executes(c -> pantalla(c, "estatica", "")))
                         .then(Commands.literal("coleccionista").executes(c -> pantalla(c, "coleccionista", "")))
                         .then(Commands.literal("texto").then(Commands.argument("texto", StringArgumentType.greedyString())
-                                .executes(c -> pantalla(c, "texto", StringArgumentType.getString(c, "texto"))))))
+                                .executes(c -> pantalla(c, "texto", StringArgumentType.getString(c, "texto")))))
+                        // que el Coleccionista diga uno de sus discursos (para repetirlo o probarlo)
+                        .then(Commands.literal("hablar").then(Commands.argument("guion", StringArgumentType.word())
+                                .suggests((c, b) -> SharedSuggestionProvider.suggest(List.of("bienvenida", "equipos", "sentidos", "vitrina", "vitrina_fin",
+                                        "antesala", "mansion", "mansion_suelta", "mansion_fin", "montacargas", "encadenados", "traidor", "compartir",
+                                        "ciegas", "sacrificio", "puertas", "copas", "tres"), b))
+                                .executes(c -> Pantallas.hablar(c.getSource().getServer(), StringArgumentType.getString(c, "guion"), null)
+                                        ? ok(c, Component.literal("habla: " + StringArgumentType.getString(c, "guion")))
+                                        : error(c, Component.literal("no existe ese discurso")))))
+                        .then(Commands.literal("callar").executes(c -> {
+                            Pantallas.callar(c.getSource().getServer());
+                            return ok(c, Component.literal("callado"));
+                        })))
                 .then(Commands.literal("celdas")
                         .then(Commands.literal("abrir").executes(c -> celdas(c, 0, true))
                                 .then(Commands.argument("n", IntegerArgumentType.integer(1, com.coleccionista.mapa.AlaCeldas.CELDAS))

@@ -67,6 +67,7 @@ public final class CoreClient {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent e) {
         com.axeliscore.vestir.client.VestuarioCliente.init();
+        com.axeliscore.forma.client.FormasCliente.init();
         if (com.axeliscore.Ejemplos.activos()) {
             // prendas de muestra (para las pruebas y como ejemplo): un overol tipo piel con número y un sombrero de Blockbench
             com.axeliscore.vestir.client.VestuarioCliente.registrar(Ids.core("overol"), com.axeliscore.vestir.client.Prenda

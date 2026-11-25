@@ -1635,6 +1635,10 @@ public final class Sentidos {
         Pantallas.modo(s, "coleccionista", "");
         cambio = true;
         Coleccionista.LOGGER.info("COLECCIONISTA_CAPITULO1 fin vivos={}", ev.vivos().size());
+        // y sigue la casa: del pasillo pasan (sin que se note) al de la mansión
+        if (Mascota.auto && Complejo.construido(s, "mansion")) {
+            Mascota.llegar(s);
+        }
     }
 
     // ------------------------------------------------------------------ el indicador de "ir acá"

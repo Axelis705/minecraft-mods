@@ -25,7 +25,8 @@ import java.util.List;
  * sobre un paso sale qué hace, y con clic se hace. Abajo, lo de siempre: pausa, reloj, chat, disfraz y el panel completo.
  * <ul>
  *     <li>Capítulo 1 · El despertar y Los sentidos (lo nuevo).</li>
- *     <li>Capítulos 2 a 7 · las pruebas que ya existen, cada una con "llevar", preparar, empezar y terminar.</li>
+ *     <li>Capítulo 2 · La mascota (las escondidas en la casa; el organizador es Cascabel).</li>
+ *     <li>Capítulos 3 a 8 · las pruebas que ya existen, cada una con "llevar", preparar, empezar y terminar.</li>
  * </ul>
  */
 public class LineaScreen extends UiScreen {
@@ -73,9 +74,16 @@ public class LineaScreen extends UiScreen {
                 new Paso("sen_saltar", "saltar", null),
                 new Paso("sen_terminar", "terminar", null),
                 new Paso("sen_limpiar", "limpiar", null))));
+        l.add(new Capitulo("c2", List.of(
+                new Paso("man_llegar", "man_llegar", null),
+                new Paso("man_soy", "man_soy", null),
+                new Paso("man_saltar", "man_saltar", null),
+                new Paso("man_soltar", "man_soltar", null),
+                new Paso("man_terminar", "man_terminar", null),
+                new Paso("man_limpiar", "man_limpiar", null))));
         String[][] p = {
-                {"c2", "archivo", "tra"}, {"c3", "salon", "com"}, {"c4", "laberintos", "cie"}, {"c5", "capilla", "sac"},
-                {"c6", "puertas", "pue"}, {"c7", "final", "cop"}};
+                {"c3", "archivo", "tra"}, {"c4", "salon", "com"}, {"c5", "laberintos", "cie"}, {"c6", "capilla", "sac"},
+                {"c7", "puertas", "pue"}, {"c8", "final", "cop"}};
         for (String[] c : p) {
             List<Paso> ps = new ArrayList<>();
             ps.add(new Paso("llevar", "llevar", zona(c[1])));

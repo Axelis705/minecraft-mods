@@ -61,6 +61,7 @@ public final class ModClient {
         SentidosCliente.init();
         ObjetivoCliente.init();
         DesmayoCliente.init();
+        MascotaCliente.init();
         ViajeCliente.init();
         CeraCliente.init();
         Ambiente.init();

@@ -140,5 +140,81 @@
         "stream": true
       }
     ]
+  },
+  "cascabel": {
+    "subtitle": "coleccionista.sub.cascabel",
+    "sounds": [
+      {
+        "name": "coleccionista:mascota/cascabel1",
+        "volume": 0.55,
+        "attenuation_distance": 24
+      },
+      {
+        "name": "coleccionista:mascota/cascabel2",
+        "volume": 0.55,
+        "attenuation_distance": 24
+      },
+      {
+        "name": "coleccionista:mascota/cascabel3",
+        "volume": 0.55,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "olfatea": {
+    "subtitle": "coleccionista.sub.olfatea",
+    "sounds": [
+      {
+        "name": "minecraft:entity.fox.sniff",
+        "type": "event",
+        "pitch": 0.55,
+        "volume": 1.0
+      }
+    ]
+  },
+  "rugido": {
+    "subtitle": "coleccionista.sub.rugido",
+    "sounds": [
+      {
+        "name": "minecraft:entity.ravager.roar",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.0,
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "rugido_corto": {
+    "subtitle": "coleccionista.sub.gruñe",
+    "sounds": [
+      {
+        "name": "minecraft:entity.polar_bear.warning",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.0
+      }
+    ]
+  },
+  "mordida": {
+    "subtitle": "coleccionista.sub.mordida",
+    "sounds": [
+      {
+        "name": "minecraft:entity.ravager.attack",
+        "type": "event",
+        "pitch": 0.8,
+        "volume": 1.0
+      }
+    ]
+  },
+  "trago": {
+    "subtitle": "coleccionista.sub.trago",
+    "sounds": [
+      {
+        "name": "minecraft:entity.player.burp",
+        "type": "event",
+        "pitch": 0.5,
+        "volume": 0.9
+      }
+    ]
   }
 }

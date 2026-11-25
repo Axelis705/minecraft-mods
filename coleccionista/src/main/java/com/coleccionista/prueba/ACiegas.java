@@ -343,7 +343,7 @@ public final class ACiegas {
         }
         if (presentarEn > 0 && now >= presentarEn) {
             presentarEn = -1;
-            Escena.presentacion(s, "IV", MOD + ".cie.titulo", MOD + ".cie.lema");
+            Escena.presentacion(s, "V", MOD + ".cie.titulo", MOD + ".cie.lema");
             Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.45F);
         }
         Evento ev = Evento.get(s);

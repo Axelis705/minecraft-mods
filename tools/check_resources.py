@@ -118,6 +118,8 @@ for ns in sorted(os.listdir(assets)):
         s = load(sj)
         for name, ent in (s or {}).items():
             for snd in ent.get("sounds", []):
+                if isinstance(snd, dict) and snd.get("type") == "event":
+                    continue  # otro evento de sonido (por ejemplo uno del juego): no es un archivo
                 n = snd["name"] if isinstance(snd, dict) else snd
                 sn, sp = split(n, ns)
                 if not os.path.isfile(os.path.join(assets, sn, "sounds", sp + ".ogg")):

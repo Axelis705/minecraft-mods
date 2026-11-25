@@ -84,6 +84,9 @@ public final class Objetivo {
         if (m != null) {
             return m;
         }
+        if (com.coleccionista.prueba.Mascota.abierta()) {
+            return com.coleccionista.prueba.Mascota.objetivo(s, sp);
+        }
         return com.coleccionista.prueba.Sentidos.objetivo(s, sp);
     }
 }

@@ -17,10 +17,16 @@ public final class Cuerpos {
 
     /** Quiénes, al ser eliminados, quedan como estatua de cera sentada (la vitrina) en lugar de tirados en el suelo. */
     public static final java.util.Set<java.util.UUID> ESTATUAS = new java.util.HashSet<>();
+    /** Quiénes, al ser eliminados, no dejan cuerpo (se los comió Cascabel). */
+    public static final java.util.Set<java.util.UUID> SIN_CUERPO = new java.util.HashSet<>();
 
     /** Deja el cuerpo de la pieza donde está su entidad (antes de volverse fantasma). */
     static void dejar(Entity e, Pieza p) {
         if (!(e.level() instanceof ServerLevel l)) {
+            return;
+        }
+        if (SIN_CUERPO.remove(p.id)) {
+            Coleccionista.LOGGER.info("COLECCIONISTA_CUERPO sin_cuerpo {} {}", p.etiqueta(), p.nombre);
             return;
         }
         Cadaver c = ModRegistry.CADAVER.get().create(l);

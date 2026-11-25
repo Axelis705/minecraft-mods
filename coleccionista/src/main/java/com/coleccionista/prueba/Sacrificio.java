@@ -492,7 +492,7 @@ public final class Sacrificio {
         }
         if (presentarEn > 0 && now >= presentarEn) {
             presentarEn = -1;
-            Escena.presentacion(s, "V", MOD + ".sac.titulo", MOD + ".sac.lema");
+            Escena.presentacion(s, "VI", MOD + ".sac.titulo", MOD + ".sac.lema");
             Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.45F);
         }
         Evento ev = Evento.get(s);

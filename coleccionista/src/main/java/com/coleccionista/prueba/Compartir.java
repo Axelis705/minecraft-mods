@@ -447,7 +447,7 @@ public final class Compartir {
         }
         if (presentarEn > 0 && now >= presentarEn) {
             presentarEn = -1;
-            Escena.presentacion(s, "III", MOD + ".com.titulo", MOD + ".com.lema");
+            Escena.presentacion(s, "IV", MOD + ".com.titulo", MOD + ".com.lema");
             Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.45F);
         }
         Evento ev = Evento.get(s);

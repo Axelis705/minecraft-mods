@@ -6,7 +6,7 @@ Generado desde el mod (`herramientas/guion.py`). Cada línea es **un archivo de 
 
 Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la tuya.
 
-## El despertar: el discurso de la tele (después de investigar)
+## El despertar: el discurso en la pantalla de cada celda (después del apagón)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
@@ -25,18 +25,7 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 13 | `bienvenida_escondidos.ogg` | 5.8 s | Si no puedes pasar de aquí… je… te deseo suerte. |
 | 14 | `bienvenida_final_risa.ogg` | 3.5 s | ¡Ja, ja, ja! |
 
-## El despertar: cuando todas salen de sus celdas (pantalla grande)
-
-| # | Archivo | Dura | Texto |
-|---|---|---|---|
-| 1 | `salida_bravo.ogg` | 2.8 s | Bravo… bravo. |
-| 2 | `salida_todas.ogg` | 6.2 s | Todos fuera de su celda. Ninguno se quedó atrás… qué lástima. |
-| 3 | `salida_museo.ogg` | 8.2 s | Esto que ven es la entrada de mi museo. Caminen con cuidado: el piso es viejo… como yo. |
-| 4 | `salida_salas.ogg` | 6.2 s | Detrás de cada puerta hay una sala. Y en cada sala, una prueba. |
-| 5 | `salida_risa.ogg` | 3.0 s | Je, je, je… |
-| 6 | `salida_porton.ogg` | 6.2 s | Sigan la alfombra roja. Del otro lado del portón… los espero. |
-
-## El montacargas (entre pruebas)
+## El montacargas (entre pruebas: el viaje y una parada por zona)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
@@ -158,4 +147,86 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 8 | `tres_risa.ogg` | 3.0 s | Je, je, je… |
 | 9 | `tres_vitrina.ogg` | 6.5 s | El último trío en salir se queda conmigo. La vitrina está abierta. |
 
-**Total: 97 líneas (≈9 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+## Capítulo 1 · La sala grande (formen equipos)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `equipos_bienvenidos.ogg` | 4.2 s | Bienvenidos… a mi gran vestíbulo. |
+| 2 | `equipos_formen.ogg` | 4.8 s | Ahora formen equipos. De dos… o de tres. |
+| 3 | `equipos_ascensor.ogg` | 5.8 s | Cada equipo, a un ascensor. Ni uno más… ni uno menos. |
+| 4 | `equipos_solos.ogg` | 5.0 s | Los que se queden solos… se quedan conmigo. |
+| 5 | `equipos_risa.ogg` | 3.0 s | Je, je… |
+
+## Capítulo 1 · El taller de los sentidos (la mesa)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `sentidos_taller.ogg` | 3.2 s | Bienvenidos a mi taller. |
+| 2 | `sentidos_mesa.ogg` | 6.8 s | En la mesa hay tres regalos: una venda, una cinta… y unas esposas. |
+| 3 | `sentidos_venda.ogg` | 3.8 s | Quien tome la venda no verá nada. |
+| 4 | `sentidos_cinta.ogg` | 4.0 s | Quien tome la cinta no podrá hablar. |
+| 5 | `sentidos_esposas.ogg` | 5.2 s | Y quien tome las esposas… no podrá tocar nada. |
+| 6 | `sentidos_parejas.ogg` | 6.0 s | Si son dos, no hay cinta: uno no ve… y el otro no toca. |
+| 7 | `sentidos_cadena.ogg` | 5.2 s | Y van a estar encadenados. Juntos hasta la salida. |
+| 8 | `sentidos_ultimo.ogg` | 5.5 s | El último equipo en salir… se queda en mi vitrina. |
+| 9 | `sentidos_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+
+## Capítulo 1 · La vitrina (el último equipo)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `vitrina_ultimos.ogg` | 3.2 s | Ah… el último equipo. |
+| 2 | `vitrina_quietos.ogg` | 5.8 s | No se muevan. Las correas son viejas… pero aguantan. |
+| 3 | `vitrina_piezas.ogg` | 5.2 s | Siempre quise unas piezas así: con miedo en la cara. |
+| 4 | `vitrina_cera.ogg` | 5.2 s | La cera está caliente. Va a doler… un poquito. |
+| 5 | `vitrina_risa.ogg` | 3.5 s | Je, je, je… ¡Ja, ja, ja! |
+
+## Capítulo 1 · Después de la cera
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `vitrina_fin_hermosas.ogg` | 2.5 s | Hermosas. |
+| 2 | `vitrina_fin_siguen.ogg` | 5.0 s | Los demás… acompáñenme. La función continúa. |
+| 3 | `vitrina_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+
+## Capítulo 1 · La antesala (después del teatro: la puerta se cierra detrás de todos)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `antesala_polvo.ogg` | 4.5 s | Las piezas lentas… solo juntan polvo. |
+| 2 | `antesala_servian.ogg` | 4.8 s | Esas no me servían. Ustedes… todavía sí. |
+| 3 | `antesala_casa.ogg` | 4.2 s | Sigan el pasillo. Mi casa los espera. |
+| 4 | `antesala_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+
+## Capítulo 2 · La mascota: en el vestíbulo de la casa (cuando ya entraron todos)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `mansion_bienvenidos.ogg` | 3.0 s | Bienvenidos a mi casa. |
+| 2 | `mansion_no_toquen.ogg` | 4.0 s | Pasen, pasen… no toquen nada. |
+| 3 | `mansion_presentar.ogg` | 4.8 s | Quiero presentarles a alguien… ¿Cascabel? |
+| 4 | `mansion_se_escapo.ogg` | 4.2 s | Uy… creo que se escapó mi mascota. |
+| 5 | `mansion_ahi_esta.ogg` | 2.5 s | Ah, no. Ahí está. |
+| 6 | `mansion_no_ha_comido.ogg` | 5.2 s | No ha comido en días. Se pone un poco… nerviosa. |
+| 7 | `mansion_minuto.ogg` | 6.0 s | Les doy un minuto para esconderse. Después… abro la jaula. |
+| 8 | `mansion_cascabel.ogg` | 4.2 s | Si oyen un cascabel… no respiren. |
+| 9 | `mansion_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+
+## Capítulo 2 · La mascota: se acabó el minuto (se abre la jaula)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `mansion_suelta_se_acabo.ogg` | 2.8 s | Se acabó el minuto. |
+| 2 | `mansion_suelta_a_jugar.ogg` | 3.0 s | ¡Cascabel… a jugar! |
+| 3 | `mansion_suelta_risa.ogg` | 3.0 s | Je, je, je… |
+
+## Capítulo 2 · La mascota: se acabó el tiempo (Cascabel vuelve a su jaula)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `mansion_fin_a_tu_jaula.ogg` | 3.0 s | ¡Cascabel! A tu jaula. |
+| 2 | `mansion_fin_buena.ogg` | 2.5 s | Buena chica. |
+| 3 | `mansion_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
+| 4 | `mansion_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+
+**Total: 133 líneas (≈12 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

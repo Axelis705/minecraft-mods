@@ -142,6 +142,8 @@ public final class Celdas {
      * del patio. Del otro lado, en la sala grande, habla el Coleccionista ({@link Capitulo1}).
      */
     public static void finSalida(MinecraftServer s) {
+        // el reloj para salir ya no cuenta (si no, se comería el reloj de la siguiente prueba)
+        Despertar.yaSalieron();
         if (datos(s).getBoolean("salida")) {
             return;
         }

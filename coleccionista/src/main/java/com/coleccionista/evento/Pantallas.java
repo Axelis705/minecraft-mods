@@ -271,6 +271,37 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> mansion() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("bienvenidos", 60, null, 1F));
+        l.add(new Frase("no_toquen", 80, null, 1F));
+        l.add(new Frase("presentar", 95, null, 1F));
+        l.add(new Frase("se_escapo", 85, null, 1F));
+        l.add(new Frase("ahi_esta", 50, null, 1F));
+        l.add(new Frase("no_ha_comido", 105, null, 1F));
+        l.add(new Frase("minuto", 120, null, 1F));
+        l.add(new Frase("cascabel", 85, null, 1F));
+        l.add(new Frase("abierta", 65, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> mansion_suelta() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("se_acabo", 55, null, 1F));
+        l.add(new Frase("a_jugar", 60, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        return l;
+    }
+
+    public static List<Frase> mansion_fin() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("a_tu_jaula", 60, null, 1F));
+        l.add(new Frase("buena", 50, null, 1F));
+        l.add(new Frase("enteros", 80, null, 1F));
+        l.add(new Frase("abierta", 65, null, 1F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -289,6 +320,9 @@ public final class Pantallas {
             case "vitrina" -> vitrina();
             case "vitrina_fin" -> vitrina_fin();
             case "antesala" -> antesala();
+            case "mansion" -> mansion();
+            case "mansion_suelta" -> mansion_suelta();
+            case "mansion_fin" -> mansion_fin();
             default -> null;
         };
     }
@@ -405,6 +439,11 @@ public final class Pantallas {
 
     private static void enviar(MinecraftServer s) {
         PlayerStore.Sync.toAll(s, KEY, estado());
+    }
+
+    /** La clave de la frase que se está diciendo ("coleccionista.voz.<guion>.<clave>"; vacía si no habla). */
+    public static String clave() {
+        return guion == null ? "" : linea;
     }
 
     /** La frase actual como texto (para el chat del organizador). */

@@ -90,6 +90,8 @@ public final class Complejo {
                 l.add(new Zona("circ_" + k, com.coleccionista.mapa.Circuito.crear(SEMILLA, k), circuitoX(k), 0, CIRCUITO_Z, 1));
             }
             l.add(new Zona("vitrina", com.coleccionista.mapa.SalaVitrina.crear(SEMILLA), -80, 0, 400, 1));
+            // capítulo 2: la casa del Coleccionista (La mascota), al este del último circuito
+            l.add(new Zona("mansion", com.coleccionista.mapa.Mansion.crear(SEMILLA), 720, 0, 400, 1));
             // las Cloacas (el Encadenados de antes) quedaron lejos, al sur de las antesalas
             l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 56, 0, 230, 0));
             // el Salón de las mesas, pegado al este de las Cloacas (su pared oeste junto al Refugio)

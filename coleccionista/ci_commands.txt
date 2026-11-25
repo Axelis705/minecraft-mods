@@ -9,6 +9,7 @@ forceload add 48 268 170 316
 forceload add 0 436 340 590
 forceload add 341 436 690 590
 forceload add -82 438 -8 502
+forceload add 704 432 784 496
 #pausa 3
 evento reiniciar confirmar
 evento recorrido auto false
@@ -209,6 +210,7 @@ execute in minecraft:overworld positioned 85 -60 58 run evento bots 4
 #pausa 2
 evento sentidos bots si 3 4
 evento sentidos tiempos 8 120
+evento mascota tiempos 8 120
 evento porton abrir
 evento capitulo1 sala
 #pausa 30
@@ -220,6 +222,18 @@ evento capitulo1 sala
 #pausa 30
 #pausa 25
 #pausa 30
+#pausa 50
+evento mascota
+evento mascota comer
+#pausa 4
+evento pocos true
+evento mascota comer
+#pausa 4
+evento pocos false
+evento mascota terminar
+#pausa 20
+evento mascota
+evento mascota limpiar
 evento capitulo1
 evento sentidos
 #pausa 2
@@ -267,6 +281,21 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_SENTIDOS antesala
 #expect COLECCIONISTA_DISCURSO antesala
 #expect COLECCIONISTA_CAPITULO1 fin
+#expect COLECCIONISTA_CONSTRUIDO mansion
+#expect COLECCIONISTA_MASCOTA llegan pasillo=
+#expect COLECCIONISTA_CABINA traslada pas_tea -> pas_man
+#expect COLECCIONISTA_MASCOTA habla
+#expect COLECCIONISTA_DISCURSO mansion
+#expect COLECCIONISTA_MASCOTA esconder segundos=8
+#expect COLECCIONISTA_MASCOTA sin_cazador
+#expect COLECCIONISTA_DISCURSO mansion_suelta
+#expect COLECCIONISTA_MASCOTA atrapa
+#expect COLECCIONISTA_MASCOTA escupe
+#expect COLECCIONISTA_MASCOTA comio
+#expect COLECCIONISTA_CUERPO sin_cuerpo
+#expect COLECCIONISTA_MASCOTA fin comidos=1
+#expect COLECCIONISTA_DISCURSO mansion_fin
+#expect COLECCIONISTA_CAPITULO2 fin
 #expect usuarios=[coleccionista]
 #expect COLECCIONISTA_INSCRITO 06 Bot_06 bot=true
 #expect COLECCIONISTA_EQUIPOS tam=2 equipos=3
@@ -315,7 +344,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_ENCADENADOS terminada
 #expect COLECCIONISTA_CONSTRUIDO salon
 #expect COLECCIONISTA_COMPARTIR preparada mesas=2 perdonado=false
-#expect COLECCIONISTA_PRESENTACION III
+#expect COLECCIONISTA_PRESENTACION IV
 #expect COLECCIONISTA_COMPARTIR elegir
 #expect COLECCIONISTA_COMPARTIR revelar
 #expect uno caen=1
@@ -324,7 +353,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_COMPARTIR terminada
 #expect COLECCIONISTA_CONSTRUIDO puertas
 #expect COLECCIONISTA_PUERTAS preparada rondas=1
-#expect COLECCIONISTA_PRESENTACION VI
+#expect COLECCIONISTA_PRESENTACION VII
 #expect COLECCIONISTA_PUERTAS ronda=1 trampa=
 #expect COLECCIONISTA_PUERTAS cerradas ronda=1
 #expect COLECCIONISTA_PUERTAS trampa=
@@ -333,7 +362,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CONSTRUIDO final
 #expect COLECCIONISTA_COPAS preparada piezas=2
 #expect COLECCIONISTA_COPAS servidas=4
-#expect COLECCIONISTA_PRESENTACION VII
+#expect COLECCIONISTA_PRESENTACION VIII
 #expect COLECCIONISTA_COPAS turno
 #expect COLECCIONISTA_COPAS bebe
 #expect COLECCIONISTA_COPAS veneno
@@ -341,7 +370,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_COPAS terminada
 #expect COLECCIONISTA_CONSTRUIDO capilla
 #expect COLECCIONISTA_SACRIFICIO preparada cuartos=2
-#expect COLECCIONISTA_PRESENTACION V
+#expect COLECCIONISTA_PRESENTACION VI
 #expect COLECCIONISTA_SACRIFICIO ofrecer
 #expect COLECCIONISTA_SACRIFICIO votar
 #expect COLECCIONISTA_SACRIFICIO cuarto=
@@ -349,7 +378,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_SACRIFICIO terminada
 #expect COLECCIONISTA_CONSTRUIDO archivo
 #expect COLECCIONISTA_TRAIDOR preparada salas=1
-#expect COLECCIONISTA_PRESENTACION II
+#expect COLECCIONISTA_PRESENTACION III
 #expect COLECCIONISTA_TRAIDOR roles
 #expect COLECCIONISTA_TRAIDOR buscar
 #expect COLECCIONISTA_TRAIDOR sala=1 abierta
@@ -360,7 +389,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_TRAIDOR terminada
 #expect COLECCIONISTA_CONSTRUIDO laberintos
 #expect COLECCIONISTA_CIEGAS preparada equipos=2 trampas=8
-#expect COLECCIONISTA_PRESENTACION IV
+#expect COLECCIONISTA_PRESENTACION V
 #expect COLECCIONISTA_CIEGAS guia
 #expect intermitentes=3
 #expect COLECCIONISTA_CIEGAS trampas cambian

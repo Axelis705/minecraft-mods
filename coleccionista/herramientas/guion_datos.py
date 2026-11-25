@@ -98,6 +98,31 @@ GUIONES = {
         ("casa", "Sigan el pasillo. Mi casa los espera.", "Follow the hallway. My house awaits.", "Anfitrión; «mi casa» con cariño."),
         ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
+    "mansion": [
+        ("bienvenidos", "Bienvenidos a mi casa.", "Welcome to my home.", "Anfitrión orgulloso, cálido."),
+        ("no_toquen", "Pasen, pasen… no toquen nada.", "Come in, come in… don't touch anything.", "Amable, con advertencia en «nada»."),
+        ("presentar", "Quiero presentarles a alguien… ¿Cascabel?", "I'd like you to meet someone… Cascabel?",
+         "Mirando hacia la jaula; llama con cariño."),
+        ("se_escapo", "Uy… creo que se escapó mi mascota.", "Oops… I think my pet got out.", "Fingiendo sorpresa; «uy» juguetón."),
+        ("ahi_esta", "Ah, no. Ahí está.", "Ah, no. There she is.", "Aliviado y divertido (se oye un rugido y los barrotes)."),
+        ("no_ha_comido", "No ha comido en días. Se pone un poco… nerviosa.", "She hasn't eaten in days. She gets a little… restless.",
+         "Como quien habla de un gato consentido."),
+        ("minuto", "Les doy un minuto para esconderse. Después… abro la jaula.",
+         "I'll give you one minute to hide. Then… I open the cage.", "Pausa larga antes de «abro la jaula»."),
+        ("cascabel", "Si oyen un cascabel… no respiren.", "If you hear a bell… don't breathe.", "Susurrado, casi un secreto."),
+        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
+    ],
+    "mansion_suelta": [
+        ("se_acabo", "Se acabó el minuto.", "Time's up.", "Seco, como quien cierra un reloj de bolsillo."),
+        ("a_jugar", "¡Cascabel… a jugar!", "Cascabel… playtime!", "La única vez que sube la voz: alegre, de dueño orgulloso."),
+        ("risa", "Je, je, je…", "Heh, heh, heh…", "Risa corta y contenta."),
+    ],
+    "mansion_fin": [
+        ("a_tu_jaula", "¡Cascabel! A tu jaula.", "Cascabel! Back in your cage.", "Firme, como a una mascota; sin enojo."),
+        ("buena", "Buena chica.", "Good girl.", "Tierno."),
+        ("enteros", "Los que siguen enteros… síganme.", "Those of you still in one piece… follow me.", "Cortés, con humor negro."),
+        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
+    ],
     "montacargas": [
         ("viaje", "Respiren hondo… es solo un poco de gas.", "Breathe deep… it's just a little gas.",
          "Susurrado, como quien arrulla a alguien."),
@@ -269,6 +294,9 @@ TITULOS = {
     "vitrina": "Capítulo 1 · La vitrina (el último equipo)",
     "vitrina_fin": "Capítulo 1 · Después de la cera",
     "antesala": "Capítulo 1 · La antesala (después del teatro: la puerta se cierra detrás de todos)",
+    "mansion": "Capítulo 2 · La mascota: en el vestíbulo de la casa (cuando ya entraron todos)",
+    "mansion_suelta": "Capítulo 2 · La mascota: se acabó el minuto (se abre la jaula)",
+    "mansion_fin": "Capítulo 2 · La mascota: se acabó el tiempo (Cascabel vuelve a su jaula)",
 }
 ZONAS = ["cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria"]
 

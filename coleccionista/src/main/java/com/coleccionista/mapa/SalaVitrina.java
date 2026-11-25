@@ -12,7 +12,7 @@ package com.coleccionista.mapa;
  * </pre>
  * Marcas: {@code cab.sal_tea_N.*} (los cuartos, N = 1..10), {@code vit.caja.N}, {@code vit.frente.N}, {@code vit.boquilla.N},
  * {@code vit.luz.N}, {@code vit.foco.N}, {@code vit.placa.N} y {@code vit.cae.N} (las vitrinas, 0..5), {@code vit.pantalla},
- * {@code vit.centro}, {@code vit.salida.a/.b} y {@code vit.antesala} (con su pantalla, {@code vit.antesala.pantalla}).
+ * {@code vit.centro}, {@code vit.salida.a/.b} y {@code vit.antesala} (el pasillo de servicio {@code pas_tea}, ver {@link Pasaje}).
  */
 public final class SalaVitrina {
     public static final int VITRINAS = 6, CUARTOS = 10;
@@ -189,30 +189,16 @@ public final class SalaVitrina {
         p.marca("vit.cae." + n, x0 + 1, 1, z0 - 2, 180);
     }
 
-    /** La salida del teatro (en el muro del este, cerca del vidrio) y la antesala detrás, con su pantalla. */
+    /**
+     * La salida del teatro (en el muro del este, cerca del vidrio) y la antesala detrás: el pasillo de servicio ({@link Pasaje}), idéntico
+     * al de la entrada de la mansión. Su puerta de atrás es la salida del teatro.
+     */
     private static void salida(Plano p) {
         int x = SALIDA_X;
-        p.set(x, 1, 34, C + "puerta_metal[facing=east,half=lower,hinge=right,open=false]");
-        p.set(x, 2, 34, C + "puerta_metal[facing=east,half=upper,hinge=right,open=false]");
-        p.set(x, 1, 35, C + "puerta_metal[facing=east,half=lower,hinge=left,open=false]");
-        p.set(x, 2, 35, C + "puerta_metal[facing=east,half=upper,hinge=left,open=false]");
-        p.set(x, 3, 34, C + "metal_negro");
-        p.set(x, 3, 35, C + "metal_negro");
+        Pasaje.pasillo(p, "pas_tea", new Marco(x + 1, 39, 270));
         p.marca("vit.salida.a", x, 1, 34, 270);
         p.marca("vit.salida.b", x, 1, 35, 270);
         p.texto(x - 1, 4, 34, "letrero", "west", 0xB3272A, "LA FUNCIÓN", "continúa");
-        // la antesala: un pasillo de servicio con una pantalla al fondo
-        p.caja(x + 1, 1, 31, ANTESALA_X1 - 1, 5, 38, "air");
-        for (int xx = x + 1; xx <= ANTESALA_X1 - 1; xx++) {
-            for (int z = 31; z <= 38; z++) {
-                p.set(xx, 0, z, C + "concreto_piso");
-                if ((xx + z) % 4 == 0) {
-                    p.set(xx, 5, z, "light[level=10]");
-                }
-            }
-        }
-        p.set(ANTESALA_X1 - 1, 3, 34, C + "pantalla[facing=west,grande=true]");
-        p.marca("vit.antesala.pantalla", ANTESALA_X1 - 1, 3, 34, 90);
         p.marca("vit.antesala", x + 6, 1, 34, 270);
     }
 

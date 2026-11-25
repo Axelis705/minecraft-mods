@@ -8,12 +8,10 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 MOD = os.path.dirname(AQUI)
 src = open(os.path.join(MOD, "src/main/java/com/coleccionista/evento/Pantallas.java"), encoding="utf-8").read()
 lang = json.load(open(os.path.join(MOD, "src/main/resources/assets/coleccionista/lang/es_mx.json"), encoding="utf-8"))
-orden = [("bienvenida", "El despertar: el discurso de la tele (después de investigar)"),
-         ("salida", "El despertar: cuando todas salen de sus celdas (pantalla grande)"), ("montacargas", "El montacargas (entre pruebas)"),
-         ("encadenados", "Prueba 1 · Encadenados"),
-         ("traidor", "Prueba 2 · El traidor"), ("compartir", "Prueba 3 · Compartir o robar"), ("ciegas", "Prueba 4 · A ciegas"),
-         ("sacrificio", "Prueba 5 · El sacrificio"), ("puertas", "Prueba 6 · Las puertas"), ("copas", "Prueba 7 (final) · Las copas"),
-         ("tres", "Prueba extra · Encadenados de tres")]
+import sys
+sys.path.insert(0, AQUI)
+import guion_datos  # noqa: E402  (los títulos y el orden de los guiones están ahí)
+orden = [(g, t) for g, t in guion_datos.TITULOS.items() if not t.startswith("(Ya no se usa")]
 out = ["# Guion de voces del Coleccionista (para grabar)\n",
        "Generado desde el mod (`herramientas/guion.py`). Cada línea es **un archivo de audio**; el texto es el subtítulo que sale en la tele y "
        "abajo en pantalla. Puedes decirlo con tus palabras si suena mejor: avísame y cambio el subtítulo.\n",

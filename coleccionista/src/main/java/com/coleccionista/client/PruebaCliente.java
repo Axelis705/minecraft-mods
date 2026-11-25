@@ -214,7 +214,7 @@ final class PruebaCliente {
         t.photo("25b_zoom_subtitulo", 5000, () -> {
         });
         t.add("volver", 1200, Atajos::acercarse);
-        t.add("esperar discurso", 60000, () -> {
+        t.add("esperar discurso", 64000, () -> {
         });
         // de cerca otra vez cuando ya terminó de hablar: debe decir que con R se cierra
         t.photo("25c_zoom_fin", 1800, Atajos::acercarse);
@@ -332,6 +332,8 @@ final class PruebaCliente {
             }
             t.cmd("evento sentidos bots si 25 26");
             t.cmd("evento sentidos tiempos 20 300");
+            t.cmd("evento mascota tiempos 6 90");
+            t.cmd("forceload add 704 424 784 488");
             t.cmd("forceload add 0 428 200 576");
             t.cmd("forceload add -82 428 -8 492");
             t.lookFrom(46.5, -60, 48.5, 54, -58.5, 48.5);
@@ -486,14 +488,17 @@ final class PruebaCliente {
             int[] c = s.nodo(4);
             com.axeliscore.ui.UiScreen.fakeMouse = c;
         });
-        t.photo("c1_74_linea_cap3", 1200, () -> {
+        t.photo("c1_74_linea_cap2", 1200, () -> {
             com.axeliscore.ui.UiScreen.fakeMouse = null;
             if (com.axeliscore.plat.client.Screens.current() instanceof LineaScreen s) {
-                s.capitulo(2);
+                s.capitulo(1);
             }
         });
-        t.add("cerrar linea", 500, () -> {
-            com.axeliscore.plat.client.Screens.close();
+        t.add("cerrar linea", 500, () -> com.axeliscore.plat.client.Screens.close());
+        capitulo2(t);
+        t.add("cap2: limpiar", 500, () -> {
+            t.cmd("evento mascota limpiar");
+            t.cmd("evento pocos false");
             t.cmd("evento sentidos limpiar");
             t.cmd("evento capitulo1 parar");
             t.cmd("gamemode adventure @a");
@@ -501,6 +506,92 @@ final class PruebaCliente {
                 t.cmd("evento revivir Bot_0" + i);
             }
             t.cmd("evento revivir " + yo());
+        });
+    }
+
+    /**
+     * Capítulo 2 · La mascota: al terminar la antesala del teatro pasan (sin que se note) al pasillo de la casa; se abren las puertas y,
+     * ya en el vestíbulo, habla el Coleccionista (Cascabel ruge detrás de la reja). Luego el minuto para esconderse y yo me convierto en
+     * Cascabel: la cámara se va detrás, ruge, olfatea y se come a una pieza; al final vuelve a su jaula y vuelvo a ser yo.
+     */
+    private static void capitulo2(ClientTest.Script t) {
+        // la casa está en (720, -61, 430): el pasillo en x 722..735 y z 448..455, el vestíbulo en x 737..760 y z 440..463, la jaula detrás
+        t.waitFor("cap2: a la casa", 30000, () -> !"".equals(MascotaCliente.fase()) && !"NADA".equals(MascotaCliente.fase()));
+        t.photo("c2_01_pasillo_casa", 1800, () -> {
+            t.cmd("gamemode adventure @a");
+            t.lookFrom(724.5, -60, 451.5, 737, -59, 451.5);
+        });
+        t.add("puertas de la casa", 100, () -> {
+            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(736, -60, 455));
+            t.check(st.getBlock() instanceof net.minecraft.world.level.block.DoorBlock && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN),
+                    "se abrieron las puertas del pasillo al vestíbulo");
+            t.check("LLEGANDO".equals(MascotaCliente.fase()) || "HABLANDO".equals(MascotaCliente.fase()), "llegamos a la casa (" + MascotaCliente.fase() + ")");
+        });
+        t.add("al vestibulo", 200, () -> t.lookFrom(744.5, -60, 451.5, 760, -53, 451.5));
+        t.waitFor("cap2: habla", 15000, () -> "HABLANDO".equals(MascotaCliente.fase()));
+        t.photo("c2_02_vestibulo", 9000, () -> t.lookFrom(741.5, -60, 451.5, 760, -53.5, 451.5));
+        t.photo("c2_03_jaula", 4000, () -> t.lookFrom(756.5, -60, 451.5, 768, -59, 451.5));
+        t.photo("c2_04_galeria", 2500, () -> t.lookFrom(739.5, -53, 442.5, 752, -60, 455));
+        t.photo("c2_05_esconder", 1800, () -> {
+            t.cmd("evento mascota saltar");
+            t.lookFrom(744.5, -60, 451.5, 737, -59, 444);
+        });
+        t.add("esconder", 100, () -> t.check("ESCONDER".equals(MascotaCliente.fase()), "corre el minuto para esconderse (" + MascotaCliente.fase() + ")"));
+        // yo soy Cascabel
+        t.add("cap2: soy cascabel", 300, () -> {
+            t.cmd("evento pocos true");
+            t.cmd("evento mascota cazador @p");
+        });
+        t.photo("c2_06_cascabel", 2500, () -> t.cmd("evento mascota soltar"));
+        t.add("transformado", 100, () -> {
+            var me = Minecraft.getInstance().player;
+            t.check(com.axeliscore.forma.client.FormasCliente.transformado(me), "me veo como Cascabel");
+            t.check(MascotaCliente.soyCazador(), "soy Cascabel");
+            t.check(Minecraft.getInstance().options.getCameraType() == CameraType.THIRD_PERSON_BACK, "la cámara se fue detrás para verme");
+            t.check(me.getBbHeight() > 1.85F, "mi caja es la de Cascabel (" + me.getBbHeight() + ")");
+        });
+        t.photo("c2_07_cascabel_frente", 1200, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+        t.photo("c2_08_ruge", 700, MascotaCliente::rugir);
+        t.photo("c2_09_olfatea", 1500, () -> {
+            t.cmd("tp @a 762.5 -60 451.5 90 10");
+            MascotaCliente.olfatear();
+        });
+        // se come a una pieza (la acerco primero para que se vea)
+        t.add("presa cerca", 600, () -> t.cmd("tp @e[type=coleccionista:bot] 759.5 -60 451.5"));
+        t.photo("c2_10_atrapa", 450, () -> t.cmd("evento mascota comer"));
+        t.photo("c2_11_traga", 900, () -> {
+        });
+        t.add("comio", 2500, () -> {
+        });
+        t.add("se lo comio", 100, () -> {
+            var d = com.axeliscore.data.client.ClientData.get(com.coleccionista.prueba.Mascota.KEY);
+            t.check(d != null && d.getInt("comidos") >= 1, "Cascabel se comió a una pieza (" + (d == null ? -1 : d.getInt("comidos")) + ")");
+        });
+        t.photo("c2_12_hud_cascabel", 900, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
+        // lo que ve quien se comen (simulado en mi pantalla): los dientes y lo negro
+        t.photo("c2_13_comido_dientes", 300, () -> {
+            CompoundTag c = new CompoundTag();
+            c.putLong("desde", Minecraft.getInstance().level.getGameTime() - 15);
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Mascota.KEY_COMIDO, c);
+        });
+        t.photo("c2_14_comido_negro", 300, () -> {
+            CompoundTag c = new CompoundTag();
+            c.putLong("desde", Minecraft.getInstance().level.getGameTime() - 34);
+            com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Mascota.KEY_COMIDO, c);
+        });
+        t.add("sin comido", 300, () -> com.axeliscore.data.client.ClientData.receive(com.coleccionista.prueba.Mascota.KEY_COMIDO, new CompoundTag()));
+        // se acaba: Cascabel a su jaula, se cierra la reja y vuelvo a ser yo
+        t.photo("c2_15_a_su_jaula", 1500, () -> {
+            Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK);
+            t.cmd("evento mascota terminar");
+        });
+        t.add("reja cerrada", 100, () -> t.check(!Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(761, -60, 451)).isAir(),
+                "se cerró la reja de la jaula"));
+        t.add("vuelvo a ser yo", 3500, () -> {
+        });
+        t.add("normal", 100, () -> {
+            t.check(!com.axeliscore.forma.client.FormasCliente.transformado(Minecraft.getInstance().player), "volví a ser yo");
+            t.check(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON, "la cámara regresó a mis ojos");
         });
     }
 
@@ -634,7 +725,7 @@ final class PruebaCliente {
             t.cmd("evento reloj 0");
         });
         // de espaldas a las pantallas: el Coleccionista habla en la mini tele de arriba a la derecha
-        t.add("habla sin tele enfrente", 600, () -> t.cmd("minijuego 0 salida"));
+        t.add("habla sin tele enfrente", 600, () -> t.cmd("evento pantalla hablar antesala"));
         t.photo("41g_mini_tele", 4200, () -> {
         });
         t.add("mini tele", 100, () -> t.check(MiniTele.visible(), "sale la mini tele con el Coleccionista"));

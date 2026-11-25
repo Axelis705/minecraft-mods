@@ -21,12 +21,12 @@ import org.slf4j.Logger;
 public class AxelisCore {
     public static final String MODID = "axelis_core";
     /** Versión del Core (la misma que la del jar). */
-    public static final String VERSION = "1.5.0";
+    public static final String VERSION = "1.6.0";
     /**
      * Nivel de la API: sube cada vez que se agrega algo público. Un mod puede comprobar {@code AxelisCore.API >= n} si necesita algo
      * nuevo (Forge ya se encarga de cargar la versión más alta que haya).
      */
-    public static final int API = 6;
+    public static final int API = 7;
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public AxelisCore(FMLJavaModLoadingContext context) {
@@ -50,6 +50,7 @@ public class AxelisCore {
         com.axeliscore.npc.NpcAcciones.init();
         com.axeliscore.anim.mc.EstudioServidor.init();
         com.axeliscore.vestir.Vestuario.init();
+        com.axeliscore.forma.Formas.init();
         if (Ejemplos.activos()) {
             com.axeliscore.npc.CoreNpcs.init();
         }

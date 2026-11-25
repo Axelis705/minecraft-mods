@@ -146,6 +146,32 @@ public final class Panel {
                 com.coleccionista.prueba.Sentidos.reiniciar(s);
                 Capitulo1.reiniciar(s);
             }
+            case "man_llegar" -> {
+                Component no = com.coleccionista.prueba.Mascota.llegar(s);
+                if (no != null) {
+                    Plat.msg(p, no, true);
+                }
+            }
+            case "man_soy" -> {
+                com.coleccionista.prueba.Mascota.elegir(p.getUUID());
+                Plat.msg(p, Component.translatable(Coleccionista.MODID + ".cmd.cazador", p.getGameProfile().getName()), true);
+            }
+            case "man_saltar" -> {
+                if (!com.coleccionista.prueba.Mascota.saltar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".man.no"), true);
+                }
+            }
+            case "man_soltar" -> {
+                if (!com.coleccionista.prueba.Mascota.soltar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".man.no"), true);
+                }
+            }
+            case "man_terminar" -> {
+                if (!com.coleccionista.prueba.Mascota.terminar(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".man.no"), true);
+                }
+            }
+            case "man_limpiar" -> com.coleccionista.prueba.Mascota.reiniciar(s);
             case "pocos" -> {
                 ev.pocos = d.getBoolean("si");
                 ev.cambio(s);

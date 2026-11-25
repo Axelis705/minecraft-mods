@@ -542,7 +542,7 @@ public final class Traidor {
         }
         if (presentarEn > 0 && now >= presentarEn) {
             presentarEn = -1;
-            Escena.presentacion(s, "II", MOD + ".tra.titulo", MOD + ".tra.lema");
+            Escena.presentacion(s, "III", MOD + ".tra.titulo", MOD + ".tra.lema");
             Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 0.45F);
         }
         Evento ev = Evento.get(s);

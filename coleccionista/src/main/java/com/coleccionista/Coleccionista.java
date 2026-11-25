@@ -55,6 +55,8 @@ public class Coleccionista {
         com.axeliscore.ui.Teclas.nueva(MODID, "acercarse", 'R', () -> com.coleccionista.client.Atajos.acercarse());
         com.axeliscore.ui.Teclas.nueva(MODID, "panel", 'O', () -> com.coleccionista.client.Atajos.panel());
         com.axeliscore.ui.Teclas.nueva(MODID, "hud", 'K', () -> com.coleccionista.client.Atajos.hud());
+        com.axeliscore.ui.Teclas.nueva(MODID, "rugir", 'G', () -> com.coleccionista.client.MascotaCliente.rugir());
+        com.axeliscore.ui.Teclas.nueva(MODID, "olfatear", 'H', () -> com.coleccionista.client.MascotaCliente.olfatear());
         AxelisCore.commands(com.coleccionista.evento.Comandos::registrar);
         AxelisCore.commands(com.coleccionista.evento.ComandosMinijuego::registrar);
         AxelisCore.commands(d -> d.register(Commands.literal(MODID).executes(c -> {

@@ -234,6 +234,11 @@ public final class Despertar {
         return true;
     }
 
+    /** Ya se abrió todo (por el reloj, porque salieron todas o porque el organizador lo pidió): el reloj para salir ya no es suyo. */
+    static void yaSalieron() {
+        esperandoSalida = false;
+    }
+
     /** ¿Está corriendo el reloj para salir de las celdas? */
     public static boolean saliendo() {
         return esperandoSalida;

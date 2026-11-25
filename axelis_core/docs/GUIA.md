@@ -326,6 +326,28 @@ VestuarioCliente.registrar(Ids.rl("mimod", "sombrero"), Prenda.modelo(Ids.rl("mi
   `/axeliscore desvestir <quién> [prenda]`. Muestras (solo en pruebas): `axelis_core:overol` y `axelis_core:sombrero`
   (`herramientas/prendas.py`).
 
+## Formas: transformar a un jugador en otra cosa (`forma/`, API 7)
+Un jugador se convierte en un monstruo, un animal o un personaje con su propio modelo de Blockbench y sus animaciones. El servidor
+decide quién trae qué forma; todos los clientes lo ven igual. La forma cambia la caja del cuerpo (por dónde cabe) y la altura de los
+ojos, y puede tocar gestos (una animación de una vez: rugir, comer...) que ven todos.
+```java
+// en los dos lados, al arrancar: el tamaño (ancho, alto y ojos, en bloques)
+Formas.registrar(new Formas.Def(Ids.rl("mimod", "bestia"), 0.9F, 1.95F, 1.75F));
+// servidor
+Formas.poner(jugador, Ids.rl("mimod", "bestia"));   Formas.accion(jugador, "rugir");   Formas.quitar(jugador);
+// cliente (al iniciar): cómo se dibuja
+FormasCliente.registrar(Ids.rl("mimod", "bestia"), new FormaGeo(Ids.rl("mimod", "geo/bestia.geo.json"),
+        Ids.rl("mimod", "textures/entity/bestia.png"), Ids.rl("mimod", "animations/bestia.animation.json")).escala(1.1F).rapidez(0.8F, 5.2F));
+```
+- `FormaGeo` toca `idle`, `walk` o `run` según qué tan rápido va el jugador (con `animaciones(...)` se cambian los nombres), gira con el
+  cuerpo y la cabeza (`head`, o `cabeza("hueso")`) sigue a donde mira. Un gesto es el nombre corto de una animación del archivo; se
+  toca encima (capa "gesto") y se quita solo al terminar. Los huesos que brillan (`axelis_glow`) brillan.
+- Para algo más, extiende `FormaGeo` (`extra(...)` dibuja pegado a un hueso, `textura(p)` cambia la textura) o implementa
+  `FormasCliente.Dibujo` desde cero.
+- Transformado no se ven las manos en primera persona ni la etiqueta del nombre. Por ahora el dibujo y el tamaño solo están en 1.20.1
+  (en las otras versiones el jugador se sigue viendo como jugador).
+- Ejemplo: Cascabel, la mascota del Coleccionista (`coleccionista/herramientas/mascota.py` hace el modelo, la textura y las animaciones).
+
 ## Comandos de prueba
 
 `/axeliscore` (versión y quién lo usa), `galeria`, `criaturas`, `probar <animación>`, `ir x y z [velocidad]`,
