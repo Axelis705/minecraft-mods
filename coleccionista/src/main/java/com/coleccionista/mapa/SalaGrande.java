@@ -107,6 +107,13 @@ public final class SalaGrande {
 
     /** Arañas de velas colgando y una luz pareja (invisible) para que no quede negro. */
     private static void lamparas(Plano p) {
+        for (int x = 3; x <= X1 - 1; x += 6) {
+            for (int z = 3; z <= Z1 - 1; z += 6) {
+                if (p.vacio(x, 5, z)) {
+                    p.set(x, 5, z, "light[level=14]");
+                }
+            }
+        }
         for (int x = 8; x <= X1 - 4; x += 12) {
             for (int z : new int[] {9, 27}) {
                 p.set(x, TECHO - 1, z, C + "cadena");

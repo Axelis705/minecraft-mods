@@ -1218,6 +1218,15 @@ public final class Sentidos {
 
     private static void finCapitulo(MinecraftServer s) {
         Evento ev = Evento.get(s);
+        // los de la galería se pueden levantar (y los bots se bajan solos de su silla)
+        for (Equipo eq : equipos) {
+            if (!eq.perdio) {
+                for (Silla si : eq.sillas) {
+                    si.cerrar(false);
+                    si.soltar();
+                }
+            }
+        }
         ev.prueba(s, Component.translatable(MOD + ".sen.fin_capitulo").getString());
         com.coleccionista.voz.Voz.juntar();
         com.coleccionista.voz.Voz.mudos(Set.of());
@@ -1326,12 +1335,11 @@ public final class Sentidos {
     private static void limpiar(MinecraftServer s) {
         com.coleccionista.voz.Voz.juntar();
         com.coleccionista.voz.Voz.mudos(Set.of());
+        // todas las sillas fuera (también las de la galería y la vitrina): nadie se queda sentado para la siguiente prueba
         for (Equipo eq : equipos) {
             for (Silla si : eq.sillas) {
-                if (!si.grupo.equals("galeria") && !si.grupo.equals("vitrina")) {
-                    si.soltar();
-                    si.discard();
-                }
+                si.soltar();
+                si.discard();
             }
         }
         for (Victima v : victimas) {

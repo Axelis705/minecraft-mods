@@ -61,6 +61,7 @@ public final class AlaCeldas {
         porton(p);
         guardia(p);
         lucesPatio(p);
+        luzPareja(p);
         p.marca("centro", 40, 1, 18, 90);
         return p;
     }
@@ -366,6 +367,17 @@ public final class AlaCeldas {
             int[] b = m.b(-1, 6);
             if (b[0] >= XA && b[0] <= XB && b[1] >= ZA && b[1] <= ZB) {
                 luz(p, b[0], 4, b[1], m.bloque(C + "lampara_jaula[facing=south,encendida=true,falla=false]"));
+            }
+        }
+    }
+
+    /** Luz invisible pareja a media altura (que se vea el patio sin quitarle lo tétrico). */
+    private static void luzPareja(Plano p) {
+        for (int x = XA + 2; x <= XB - 1; x += 6) {
+            for (int z = ZA + 2; z <= ZB - 1; z += 6) {
+                if (p.vacio(x, 5, z)) {
+                    p.set(x, 5, z, "light[level=12]");
+                }
             }
         }
     }

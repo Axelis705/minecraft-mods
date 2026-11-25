@@ -67,8 +67,11 @@ public final class SalaVitrina {
             p.set(x, 2, 29, C + "cortina[facing=north,half=upper]");
         }
         // poca luz en la galería (los vivos están en penumbra); la exhibición se ilumina con los reflectores
-        for (int x = 4; x <= 28; x += 8) {
-            p.set(x, 8, 5, "light[level=6]");
+        for (int x = 4; x <= 28; x += 6) {
+            p.set(x, 5, 4, "light[level=10]");
+            p.set(x, 5, 9, "light[level=9]");
+            p.set(x, 7, 13, "light[level=11]");
+            p.set(x, 7, 24, "light[level=11]");
         }
         p.letrero(16, 6, 1, "", "south", "gold", "GALERÍA", "DE LA COLECCIÓN");
         p.marca("vit.centro", 16, 1, 5, 0);
