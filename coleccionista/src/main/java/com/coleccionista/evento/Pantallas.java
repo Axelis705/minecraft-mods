@@ -305,24 +305,24 @@ public final class Pantallas {
     public static List<Frase> caja() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("bienvenidos", 75, null, 1F));
-        l.add(new Frase("gondolas", 110, null, 1F));
-        l.add(new Frase("espalda", 160, null, 1F));
+        l.add(new Frase("gondolas", 115, null, 1F));
+        l.add(new Frase("espalda", 210, null, 1F));
         l.add(new Frase("no_se_ve", 100, null, 1F));
         l.add(new Frase("diganse", 170, null, 1F));
-        l.add(new Frase("gira", 125, null, 1F));
+        l.add(new Frase("gira", 135, null, 1F));
         l.add(new Frase("voces", 130, null, 1F));
         l.add(new Frase("traidores", 130, null, 1F));
         l.add(new Frase("al_final", 105, null, 1F));
         l.add(new Frase("si_fallan", 85, null, 1F));
         l.add(new Frase("traidor_bala", 100, null, 1F));
-        l.add(new Frase("sientense", 70, null, 1F));
+        l.add(new Frase("sientense", 60, null, 1F));
         return l;
     }
 
     public static List<Frase> caja_revision() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("circulo", 85, null, 1F));
-        l.add(new Frase("juguete", 95, null, 1F));
+        l.add(new Frase("juguete", 80, null, 1F));
         l.add(new Frase("uno_por_uno", 110, null, 1F));
         l.add(new Frase("fuerte", 65, null, 1F));
         return l;
@@ -345,21 +345,21 @@ public final class Pantallas {
 
     public static List<Frase> sorpresa() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("bienvenidos", 70, null, 1F));
-        l.add(new Frase("amigo", 110, null, 1F));
-        l.add(new Frase("cuerda", 140, null, 1F));
-        l.add(new Frase("una_tres", 120, null, 1F));
-        l.add(new Frase("hambre", 110, SoundEvents.WITCH_CELEBRATE, 0.5F));
-        l.add(new Frase("zapatos", 90, null, 1F));
-        l.add(new Frase("empecemos", 60, null, 1F));
+        l.add(new Frase("bienvenidos", 65, null, 1F));
+        l.add(new Frase("amigo", 125, null, 1F));
+        l.add(new Frase("cuerda", 175, null, 1F));
+        l.add(new Frase("una_tres", 135, null, 1F));
+        l.add(new Frase("hambre", 125, SoundEvents.WITCH_CELEBRATE, 0.5F));
+        l.add(new Frase("zapatos", 100, null, 1F));
+        l.add(new Frase("empecemos", 50, null, 1F));
         return l;
     }
 
     public static List<Frase> sorpresa_fin() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("lleno", 80, null, 1F));
-        l.add(new Frase("zapatos", 90, null, 1F));
-        l.add(new Frase("enteros", 90, null, 1F));
+        l.add(new Frase("zapatos", 75, null, 1F));
+        l.add(new Frase("enteros", 80, null, 1F));
         return l;
     }
 

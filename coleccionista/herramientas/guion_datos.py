@@ -124,33 +124,24 @@ GUIONES = {
         ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
     "caja": [
-        ("bienvenidos", "Bienvenidos a mi caja de música.", "Welcome to my music box.",
-         "Orgulloso, como quien enseña su pieza favorita."),
-        ("carrusel", "Se van a subir a mi carrusel. De dos en dos.", "You're going to ride my carousel. Two by two.", "Amable, de feria."),
-        ("espalda", "Cada uno lleva un símbolo en la espalda: pica, corazón, diamante o trébol.",
-         "Each of you wears a symbol on your back: spade, heart, diamond or club.", "Claro, como contando con los dedos."),
-        ("no_se_ve", "El suyo no lo pueden ver. El de atrás… sí.", "You can't see your own. The one behind you… can.",
-         "Pausa antes de «sí»."),
-        ("diganse", "En la góndola, el de atrás le dice al de adelante qué símbolo lleva. Luego cambian de lugar.",
-         "In the gondola, the one in back tells the one in front which symbol they wear. Then you switch seats.",
-         "Despacio, que se entienda bien."),
-        ("gira", "Cuando se apague la luz, el carrusel gira… y les toca otra pareja.", "When the lights go out, the carousel turns… and you get a new partner.",
-         "Misterioso en «gira»."),
-        ("voces", "Ah, y no se asusten de sus voces. Ahí adentro nadie suena como es.",
-         "Oh, and don't be scared of your voices. In there, nobody sounds like themselves.", "Divertido, en confianza."),
-        ("traidores", "Pero cuidado: entre ustedes hay dos traidores. Y ellos pueden mentir.",
-         "But careful: there are two traitors among you. And they may lie.", "Bajando la voz."),
-        ("al_final", "Al final, cada uno me dirá su símbolo. En voz alta.", "In the end, each of you will tell me your symbol. Out loud.",
-         "Cortés."),
-        ("si_fallan", "Si se equivocan… se quedan conmigo.", "If you're wrong… you stay with me.", "Suave, casi tierno."),
-        ("traidor_bala", "Y el traidor que no engañe a nadie… también.", "And the traitor who fools no one… stays too.", "Con humor negro."),
-        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
+        ('bienvenidos', "Bienvenidos a mi caja de música.", "Welcome to my music box.", "Orgulloso, como quien enseña su pieza favorita."),
+        ('gondolas', "¿Ven mis góndolas? Busquen una y siéntense. De dos en dos.", "See my gondolas? Find one and sit down. Two by two.", "Amable, como anfitrión de feria."),
+        ('espalda', "Cuando estén todos sentados, cada uno llevará una figura en la espalda: un círculo, un cuadrado, un triángulo o un rombo.", "Once you are all seated, each of you will wear a shape on your back: a circle, a square, a triangle or a diamond.", "Claro, como contando con los dedos."),
+        ('no_se_ve', "El suyo no lo pueden ver. El de atrás… sí.", "You can't see your own. The one behind you… can.", "Pausa antes de «sí»."),
+        ('diganse', "En la góndola, el de atrás le dice al de adelante qué símbolo lleva. Luego cambian de lugar.", "In the gondola, the one in back tells the one in front which symbol they wear. Then you switch seats.", "Despacio, que se entienda bien."),
+        ('gira', "Cada vez que se apague la luz… les toca otro lugar. Y otra pareja.", "Every time the lights go out… you get another seat. And another partner.", "Misterioso en «otro lugar»."),
+        ('voces', "Ah, y no se asusten de sus voces. Ahí adentro nadie suena como es.", "Oh, and don't be scared of your voices. In there, nobody sounds like themselves.", "Divertido, en confianza."),
+        ('traidores', "Pero cuidado: entre ustedes hay dos traidores. Y ellos pueden mentir.", "But careful: there are two traitors among you. And they may lie.", "Bajando la voz."),
+        ('al_final', "Al final, cada uno me dirá su símbolo. En voz alta.", "In the end, each of you will tell me your symbol. Out loud.", "Cortés."),
+        ('si_fallan', "Si se equivocan… se quedan conmigo.", "If you're wrong… you stay with me.", "Suave, casi tierno."),
+        ('traidor_bala', "Y el traidor que no engañe a nadie… también.", "And the traitor who fools no one… stays too.", "Con humor negro."),
+        ('sientense', "Ahora… siéntense.", "Now… sit down.", "Lento: una orden suave."),
     ],
     "caja_revision": [
-        ("circulo", "Qué bonitos se ven. Todos en círculo.", "How lovely you look. All in a circle.", "Encantado, como ante una vitrina."),
-        ("uno_por_uno", "Uno por uno. Cuando los mire… díganme su símbolo.", "One by one. When I look at you… tell me your symbol.",
-         "Pausa larga antes de «díganme»."),
-        ("fuerte", "En voz alta. Y márquenlo.", "Out loud. And mark it.", "Firme, sin subir la voz."),
+        ('circulo', "Qué bonitos se ven. Todos en círculo.", "How lovely you look. All in a circle.", "Encantado, como ante una vitrina."),
+        ('juguete', "¿Oyen eso? Es mi juguete favorito.", "Do you hear that? It's my favorite toy.", "Encantado; casi susurrando «favorito»."),
+        ('uno_por_uno', "Uno por uno. Cuando los mire… díganme su símbolo.", "One by one. When I look at you… tell me your symbol.", "Pausa larga antes de «díganme»."),
+        ('fuerte', "En voz alta. Y márquenlo.", "Out loud. And mark it.", "Firme, sin subir la voz."),
     ],
     "caja_traidores": [
         ("ahora", "Y ahora… mis traidores.", "And now… my traitors.", "Susurro, con gusto."),
@@ -161,6 +152,20 @@ GUIONES = {
         ("enteros", "Los que siguen enteros… gracias por el paseo.", "Those still in one piece… thank you for the ride.",
          "Cortés, con humor negro."),
         ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
+    ],
+    "sorpresa": [
+        ('bienvenidos', "Bienvenidos a mi teatrito.", "Welcome to my little theater.", "Orgulloso, como presentador de teatro viejo."),
+        ('amigo', "Les presento a mi amigo más viejo: Don Resorte. Vive en esa caja.", "Meet my oldest friend: Mr. Spring. He lives in that box.", "Cariñoso, como si hablara de su mascota."),
+        ('cuerda', "Le gusta que le den cuerda. Uno por uno van a subir y darle una, dos o tres vueltas a la manivela.", "He likes to be wound up. One by one, you'll go up and give the crank one, two or three turns.", "Juguetón, explicando un juego de niños."),
+        ('una_tres', "Pero si alguien le da solo una… el que sigue tendrá que darle tres.", "But if someone gives only one… the next one will have to give three.", "Pausa en «una…»; luego firme."),
+        ('hambre', "Don Resorte siempre sale con hambre. Y nadie sabe en qué vuelta.", "Mr. Spring always comes out hungry. And nobody knows on which turn.", "Bajando la voz; risita al final.", "WITCH_CELEBRATE"),
+        ('zapatos', "No se preocupen… siempre deja los zapatos.", "Don't worry… he always leaves the shoes.", "Tranquilizador, con humor negro."),
+        ('empecemos', "Empecemos.", "Let's begin.", "Corto, con gusto."),
+    ],
+    "sorpresa_fin": [
+        ('lleno', "Don Resorte ya está lleno. Por hoy.", "Mr. Spring is full. For today.", "Satisfecho, como después de una gran cena."),
+        ('zapatos', "Qué bonita colección de zapatos.", "What a lovely shoe collection.", "Admirando, como ante una vitrina."),
+        ('enteros', "Los que siguen enteros… síganme.", "Those still in one piece… follow me.", "Cortés, con humor negro."),
     ],
     "montacargas": [
         ("viaje", "Respiren hondo… es solo un poco de gas.", "Breathe deep… it's just a little gas.",
@@ -336,10 +341,12 @@ TITULOS = {
     "mansion": "Capítulo 2 · La mascota: en el vestíbulo de la casa (cuando ya entraron todos)",
     "mansion_suelta": "Capítulo 2 · La mascota: se acabó el minuto (se abre la jaula)",
     "mansion_fin": "Capítulo 2 · La mascota: se acabó el tiempo (Cascabel vuelve a su jaula)",
-    "caja": "Capítulo 3 · La caja de música: en el salón del carrusel (cuando ya entraron todos)",
+    "caja": "Capítulo 3 · La caja de música: en el salón de las góndolas (cuando ya entraron todos)",
     "caja_revision": "Capítulo 3 · La caja de música: todos sentados en círculo (antes de que baje el arma)",
     "caja_traidores": "Capítulo 3 · La caja de música: después de revisar a todos (le toca a los traidores)",
     "caja_fin": "Capítulo 3 · La caja de música: el final (sube el arma y se dicen los traidores)",
+    "sorpresa": "Capítulo 4 · La caja sorpresa: en el teatrito (cuando ya entraron todos)",
+    "sorpresa_fin": "Capítulo 4 · La caja sorpresa: el final (Don Resorte ya está lleno)",
 }
 ZONAS = ["cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria"]
 
@@ -403,7 +410,9 @@ def escribir():
         else:
             for f in frases:
                 t = con_audio(gid, f[0], ticks(f[0], f[1]))
-                if f[0].endswith("risa") and not os.path.exists(os.path.join(MOD, "src/main/resources/assets/coleccionista/sounds/voz",
+                if len(f) > 4:
+                    cuerpo.append(f'        l.add(new Frase("{f[0]}", {t}, SoundEvents.{f[4]}, 0.5F));')
+                elif f[0].endswith("risa") and not os.path.exists(os.path.join(MOD, "src/main/resources/assets/coleccionista/sounds/voz",
                                                                                  f"{gid}_{f[0]}.ogg")):
                     cuerpo.append(f'        l.add(new Frase("{f[0]}", {t}, SoundEvents.WITCH_CELEBRATE, 0.55F));')
                 else:

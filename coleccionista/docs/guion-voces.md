@@ -229,30 +229,31 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 3 | `mansion_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
 | 4 | `mansion_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
 
-## Capítulo 3 · La caja de música: en el salón del carrusel (cuando ya entraron todos)
+## Capítulo 3 · La caja de música: en el salón de las góndolas (cuando ya entraron todos)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `caja_bienvenidos.ogg` | 3.8 s | Bienvenidos a mi caja de música. |
-| 2 | `caja_carrusel.ogg` | 4.8 s | Se van a subir a mi carrusel. De dos en dos. |
-| 3 | `caja_espalda.ogg` | 7.0 s | Cada uno lleva un símbolo en la espalda: pica, corazón, diamante o trébol. |
+| 2 | `caja_gondolas.ogg` | 5.8 s | ¿Ven mis góndolas? Busquen una y siéntense. De dos en dos. |
+| 3 | `caja_espalda.ogg` | 10.5 s | Cuando estén todos sentados, cada uno llevará una figura en la espalda: un círculo, un cuadrado, un triángulo o un rombo. |
 | 4 | `caja_no_se_ve.ogg` | 5.0 s | El suyo no lo pueden ver. El de atrás… sí. |
 | 5 | `caja_diganse.ogg` | 8.5 s | En la góndola, el de atrás le dice al de adelante qué símbolo lleva. Luego cambian de lugar. |
-| 6 | `caja_gira.ogg` | 6.8 s | Cuando se apague la luz, el carrusel gira… y les toca otra pareja. |
+| 6 | `caja_gira.ogg` | 6.8 s | Cada vez que se apague la luz… les toca otro lugar. Y otra pareja. |
 | 7 | `caja_voces.ogg` | 6.5 s | Ah, y no se asusten de sus voces. Ahí adentro nadie suena como es. |
 | 8 | `caja_traidores.ogg` | 6.5 s | Pero cuidado: entre ustedes hay dos traidores. Y ellos pueden mentir. |
 | 9 | `caja_al_final.ogg` | 5.2 s | Al final, cada uno me dirá su símbolo. En voz alta. |
 | 10 | `caja_si_fallan.ogg` | 4.2 s | Si se equivocan… se quedan conmigo. |
 | 11 | `caja_traidor_bala.ogg` | 5.0 s | Y el traidor que no engañe a nadie… también. |
-| 12 | `caja_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+| 12 | `caja_sientense.ogg` | 3.0 s | Ahora… siéntense. |
 
 ## Capítulo 3 · La caja de música: todos sentados en círculo (antes de que baje el arma)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `caja_revision_circulo.ogg` | 4.2 s | Qué bonitos se ven. Todos en círculo. |
-| 2 | `caja_revision_uno_por_uno.ogg` | 5.5 s | Uno por uno. Cuando los mire… díganme su símbolo. |
-| 3 | `caja_revision_fuerte.ogg` | 3.2 s | En voz alta. Y márquenlo. |
+| 2 | `caja_revision_juguete.ogg` | 4.0 s | ¿Oyen eso? Es mi juguete favorito. |
+| 3 | `caja_revision_uno_por_uno.ogg` | 5.5 s | Uno por uno. Cuando los mire… díganme su símbolo. |
+| 4 | `caja_revision_fuerte.ogg` | 3.2 s | En voz alta. Y márquenlo. |
 
 ## Capítulo 3 · La caja de música: después de revisar a todos (le toca a los traidores)
 
@@ -269,4 +270,24 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 3 | `caja_fin_enteros.ogg` | 5.0 s | Los que siguen enteros… gracias por el paseo. |
 | 4 | `caja_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
 
-**Total: 153 líneas (≈13 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+## Capítulo 4 · La caja sorpresa: en el teatrito (cuando ya entraron todos)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `sorpresa_bienvenidos.ogg` | 3.2 s | Bienvenidos a mi teatrito. |
+| 2 | `sorpresa_amigo.ogg` | 6.2 s | Les presento a mi amigo más viejo: Don Resorte. Vive en esa caja. |
+| 3 | `sorpresa_cuerda.ogg` | 8.8 s | Le gusta que le den cuerda. Uno por uno van a subir y darle una, dos o tres vueltas a la manivela. |
+| 4 | `sorpresa_una_tres.ogg` | 6.8 s | Pero si alguien le da solo una… el que sigue tendrá que darle tres. |
+| 5 | `sorpresa_hambre.ogg` | 6.2 s | Don Resorte siempre sale con hambre. Y nadie sabe en qué vuelta. |
+| 6 | `sorpresa_zapatos.ogg` | 5.0 s | No se preocupen… siempre deja los zapatos. |
+| 7 | `sorpresa_empecemos.ogg` | 2.5 s | Empecemos. |
+
+## Capítulo 4 · La caja sorpresa: el final (Don Resorte ya está lleno)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `sorpresa_fin_lleno.ogg` | 4.0 s | Don Resorte ya está lleno. Por hoy. |
+| 2 | `sorpresa_fin_zapatos.ogg` | 3.8 s | Qué bonita colección de zapatos. |
+| 3 | `sorpresa_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
+
+**Total: 164 líneas (≈14 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
