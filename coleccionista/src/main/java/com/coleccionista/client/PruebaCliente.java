@@ -429,9 +429,10 @@ final class PruebaCliente {
         });
         t.waitFor("telon abierto", 40000, () -> Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(-53, -56, 470)).isAir());
         t.photo("c1_66_vitrinas", 2500, () -> t.lookFrom(-53, -57.5, 462, -53, -58.5, 477));
+        // la cera sube en la vitrina del centro (la primera víctima); las vitrinas están en x -60, -52 y -44, z 474
         t.waitFor("cera", 40000, () -> net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level
-                .getBlockState(new net.minecraft.core.BlockPos(-70, -60, 478)).getBlock()).getPath().equals("cera"));
-        t.photo("c1_67_cera", 3500, () -> t.lookFrom(-70, -58.3, 472, -70, -59, 478));
+                .getBlockState(new net.minecraft.core.BlockPos(-52, -60, 474)).getBlock()).getPath().equals("cera"));
+        t.photo("c1_67_cera", 3500, () -> t.lookFrom(-56, -58.3, 467.5, -56, -59, 474));
         t.waitFor("caen", 30000, () -> {
             for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
                 if (e instanceof com.coleccionista.evento.Cadaver c && c.estatua() && c.cae() > 0) {
@@ -440,7 +441,7 @@ final class PruebaCliente {
             }
             return false;
         });
-        t.photo("c1_68_estatuas_caen", 300, () -> t.lookFrom(-66, -58.5, 471, -70, -59.5, 476.5));
+        t.photo("c1_68_estatuas_caen", 300, () -> t.lookFrom(-56, -58, 465.5, -56, -59.6, 471.5));
         t.photo("c1_68b_estatuas_tiradas", 2200, () -> {
         });
         t.add("estatuas", 100, () -> {
