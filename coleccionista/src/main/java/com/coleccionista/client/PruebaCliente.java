@@ -148,7 +148,7 @@ final class PruebaCliente {
         t.add("mapa: piezas", 2500, () -> {
             t.cmd("evento inscribir @a");
             t.cmd("execute positioned 18 -60 41 run evento bots 7");
-            t.cmd("evento investigar 22");
+            t.cmd("evento investigar 15");
         });
         t.photo("20_sala_espera", 3000, () -> t.cmd("evento sala"));
         t.add("en la sala", 100, () -> {
@@ -167,7 +167,7 @@ final class PruebaCliente {
             t.check(!Minecraft.getInstance().player.isSleeping(), "ya me levanté");
             t.check(!Cine.activo(), "terminó la cinemática");
         });
-        // a los 22 segundos se acaba la espera: apagón y, al volver la luz, los tres números escondidos en cada celda
+        // a los 15 segundos de levantarse se acaba el tiempo libre: apagón y, al volver la luz, los tres números escondidos en cada celda
         t.photo("24a_apagon", 13800, () -> {
         });
         t.add("apagon", 100, () -> {

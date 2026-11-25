@@ -38,8 +38,11 @@ public final class Despertar {
     /** A cada jugador: su cinemática (tipo, puntos de cámara y hacia dónde mira). */
     public static final String KEY_CINE = MOD + ":cine";
     public static final String PRUEBA = "El despertar";
-    /** Segundos para investigar antes de que hable el Coleccionista (Axelis pidió 5 minutos). */
-    public static int segundosInvestigar = 300;
+    /**
+     * Segundos libres en la celda antes de que empiecen las pantallas (Axelis pidió 1 minuto). Corren desde que se levantan de la cama
+     * (al terminar la cinemática del despertar).
+     */
+    public static int segundosInvestigar = 60;
     /** Segundos para salir de la celda cuando ya funcionan los candados (Axelis pidió 2 minutos). */
     public static int segundosSalir = 120;
     private static long levantarEn = -1, cineEn = -1, apagonFin = -1, hablarEn = -1;
@@ -189,7 +192,8 @@ public final class Despertar {
         levantarEn = now + 130;
         esperandoDiscurso = true;
         ev.prueba(s, PRUEBA);
-        ev.reloj(s, segundosInvestigar);
+        // el minuto libre empieza cuando ya se levantaron (no durante la cinemática)
+        ev.reloj(s, 0);
         ev.cambio(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_DESPERTAR piezas={}", ev.vivos().size());
     }
@@ -316,6 +320,10 @@ public final class Despertar {
         }
         if (levantarEn > 0 && now >= levantarEn) {
             levantarEn = -1;
+            if (esperandoDiscurso && apagonFin < 0 && hablarEn < 0) {
+                ev.reloj(s, segundosInvestigar);
+                Coleccionista.LOGGER.info("COLECCIONISTA_LIBRES segundos={}", segundosInvestigar);
+            }
             for (Pieza p : ev.vivos()) {
                 Celdas.llevar(s, p, false);
             }

@@ -41,7 +41,7 @@ evento investigar 5
 evento sala
 #pausa 2
 evento despertar
-#pausa 90
+#pausa 100
 evento celdas abrir
 evento salida
 evento capitulo1 parar
@@ -310,6 +310,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CELDA 04 Bot_04 -> 4
 #expect COLECCIONISTA_SALA_ESPERA piezas=4
 #expect COLECCIONISTA_DESPERTAR piezas=4
+#expect COLECCIONISTA_LIBRES segundos=5
 #expect COLECCIONISTA_DISCURSO bienvenida
 #expect COLECCIONISTA_DISCURSO_FIN bienvenida
 #expect COLECCIONISTA_CANDADOS activos segundos=120
