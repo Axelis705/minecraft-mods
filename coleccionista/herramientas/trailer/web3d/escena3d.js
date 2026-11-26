@@ -275,6 +275,12 @@ window.dibujar = function (toma, t, dur) {
     cuerpo(t, [0.08, 0, lado], MANOS_JUNTAS, {});
     const s = suave(k);
     camaraEn(lerp(-8, 6, s), 40, lerp(-215, -200, s), 0, 34, 0);
+  } else if (toma === 'retrato') {
+    // para las portadas: de medio cuerpo, un poco de lado, bien iluminado, viendo a la cámara
+    cuerpo(t, [0.05, -0.16, 0.03], MANOS_JUNTAS, { fijo: true });
+    ojos = 1;
+    luz = 1;
+    camaraEn(window.RX || 16, window.RY || 46, window.RZ || -92, 0, window.RTY || 40, 0);
   } else if (toma === 'ojos') {
     apagado = true; luz = 0;
     ojos = 0.78 + 0.22 * Math.abs(Math.sin(t * 1.3)) * (Math.floor(t * 8) % 23 === 0 ? 0.2 : 1);

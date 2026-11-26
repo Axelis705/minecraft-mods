@@ -12,3 +12,7 @@ El guion (qué toma va en qué segundo, los letreros y los sonidos) está arriba
 ## Cuenta regresiva (7, 5, 3 y 1 día)
 `bash entregar_cuenta.sh`: cuatro videos de unos 12 s (tres tomas de un capítulo con una frase del Coleccionista y el letrero
 "FALTAN N DÍAS" / "MAÑANA"). Salen en vertical (alta calidad) y en horizontal para Discord. El guion de cada uno está en `VIDEOS` de `cuenta.py`.
+
+## Portadas
+`python3 portadas.py [trailer teaser faltan7 faltan5 faltan3 manana]`: una por video, horizontal 1280x720 (YouTube) y vertical 1080x1920,
+en `out/portadas/`. El fondo es un cuadro de la toma y el Coleccionista sale en 3D sin fondo (toma `retrato` de `escena3d.js`).
