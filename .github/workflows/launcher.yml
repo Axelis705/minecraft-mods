@@ -30,7 +30,7 @@ jobs:
       - name: Armar el .exe
         working-directory: launcher
         run: >
-          pyinstaller --noconfirm --onefile --windowed --name ElColeccionista --icon arte/icono.ico
+          pyinstaller --noconfirm --onefile --windowed --name ElColeccionista --icon arte/icono.ico --splash arte/splash.png
           --add-data "web;web" --add-data "arte/perfil.png;arte" --add-data "arte/icono.ico;arte"
           --add-data "manifiesto.json;." --add-data "usuarios.json;."
           --collect-all webview --hidden-import clr --hidden-import PIL.ImageGrab coleccionista.py

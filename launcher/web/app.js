@@ -551,6 +551,7 @@ async function arrancar() {
   });
   setTimeout(() => { $('negro').style.opacity = 0; }, 250);
   setTimeout(() => decir('que_tenemos'), 2000);
+  window.paginaLista = true;
 }
 
 // en un navegador (para probar el diseño) no hay Python: una API de mentira
@@ -579,6 +580,10 @@ function apiDeMentira() {
   }
   requestAnimationFrame(paso);
   if (location.search.includes('demo')) apiDeMentira();
-  if (API()) arrancar();
-  else window.addEventListener('pywebviewready', arrancar);
+  // pywebview avisa con 'pywebviewready' cuando ya están las funciones de Python (a veces el objeto existe antes, vacío)
+  let arrancado = false;
+  const una = () => { if (!arrancado && API() && API().iniciar) { arrancado = true; arrancar(); } };
+  window.addEventListener('pywebviewready', una);
+  una();
+  const espera = setInterval(() => { una(); if (arrancado) clearInterval(espera); }, 200);
 })();

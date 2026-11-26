@@ -6,7 +6,7 @@
   "forge": {
     "version": "1.20.1-forge-47.4.10",
     "instalador": "https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.4.10/forge-1.20.1-47.4.10-installer.jar",
-    "sha1": ""
+    "sha1": "66bfea9963bfa60d88bab6b2750e74a958392715"
   },
   "mods": [
     {
@@ -17,7 +17,8 @@
     },
     {
       "archivo": "voicechat-forge-1.20.1-2.6.27.jar",
-      "url": "https://edge.forgecdn.net/files/9350/450/voicechat-forge-1.20.1-2.6.27.jar"
+      "url": "https://edge.forgecdn.net/files/9350/450/voicechat-forge-1.20.1-2.6.27.jar",
+      "sha1": "5eb3ace18a6b7cdb56e80f12bb763d9f593183d0"
     }
   ],
   "opciones": {

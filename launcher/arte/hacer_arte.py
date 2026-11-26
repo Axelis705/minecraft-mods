@@ -94,9 +94,20 @@ def icono(c):
     cuadro.resize((128, 128), Image.NEAREST).save(os.path.join(AQUI, 'perfil.png'))
 
 
+def splash():
+    """La imagen que pone el .exe mientras arranca (unos segundos la primera vez)."""
+    img = Image.open(os.path.join(AQUI, 'fondo.png')).convert('RGB').resize((480, 270), Image.LANCZOS)
+    d = ImageDraw.Draw(img)
+    f = ImageFont.truetype(FUENTE2, 14)
+    d.rectangle([0, 238, 480, 270], fill=(10, 4, 6))
+    d.text((28, 245), 'Abriendo el telón…', font=f, fill=(217, 169, 58))
+    img.save(os.path.join(AQUI, 'splash.png'))
+
+
 def main():
     c = fondo()
     icono(c)
+    splash()
     print('listo: fondo.png, icono.ico, icono.png, perfil.png')
 
 

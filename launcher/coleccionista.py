@@ -134,9 +134,13 @@ def prueba(carpeta, ventana):
         log.flush()
 
     def foto(nombre):
+        import ctypes
+        from ctypes import wintypes
         try:
-            x, y = ventana.x, ventana.y
-            ImageGrab.grab(bbox=(x, y, x + W, y + H), all_screens=True).save(os.path.join(carpeta, nombre + '.png'))
+            h = ctypes.windll.user32.FindWindowW(None, 'El Coleccionista')
+            rc = wintypes.RECT()
+            ctypes.windll.user32.GetWindowRect(h, ctypes.byref(rc))
+            ImageGrab.grab(bbox=(rc.left, rc.top, rc.right, rc.bottom), all_screens=True).save(os.path.join(carpeta, nombre + '.png'))
         except Exception as e:  # noqa: BLE001
             ImageGrab.grab(all_screens=True).save(os.path.join(carpeta, nombre + '.png'))
             anota('foto completa', nombre, e)
@@ -146,7 +150,18 @@ def prueba(carpeta, ventana):
         return ventana.evaluate_js(codigo)
 
     try:
-        time.sleep(5)
+        # espera a que la página esté lista (la primera vez el .exe tarda en desempacar y WebView2 en arrancar)
+        listo = False
+        for _ in range(120):
+            try:
+                listo = bool(js('window.paginaLista === true'))
+            except Exception:  # noqa: BLE001
+                listo = False
+            if listo:
+                break
+            time.sleep(0.5)
+        anota('pagina lista', listo)
+        time.sleep(2.5)
         foto('1_inicio')
         anota('webgl', js("!!(window.THREE && document.getElementById('escena').getContext('webgl2'))"))
         js("document.getElementById('usuario').value='prueba'; document.getElementById('clave').value='mal'; "
@@ -157,8 +172,8 @@ def prueba(carpeta, ventana):
         anota('aviso', aviso)
         if 'incorrect' not in aviso:
             fallos.append('no avisó de la clave mala')
-        js("document.getElementById('clave').value='%s'; document.getElementById('b-entrar').click()"
-           % os.environ.get('COLECCIONISTA_CLAVE', 'prueba123'))
+        js("document.getElementById('usuario').value='prueba'; document.getElementById('clave').value='%s'; "
+           "document.getElementById('b-entrar').click()" % os.environ.get('COLECCIONISTA_CLAVE', 'prueba123'))
         time.sleep(3.5)
         foto('3_jugar')
         if js("document.getElementById('p-jugar').hidden"):
@@ -204,6 +219,15 @@ def main():
     ventana = webview.create_window('El Coleccionista', url=ins.recurso(os.path.join('web', 'index.html')), js_api=api, width=W,
                                     height=H, resizable=False, frameless=True, easy_drag=False, background_color='#070304')
     api._ventana = ventana
+
+    # la imagen de "cargando" que pone el .exe mientras se desempaca: se quita cuando la página ya cargó
+    def sin_splash():
+        try:
+            import pyi_splash
+            pyi_splash.close()
+        except Exception:  # noqa: BLE001
+            pass
+    ventana.events.loaded += sin_splash
     opciones = dict(gui='edgechromium', http_server=True, private_mode=False, storage_path=os.path.join(ins.carpeta_juego(), 'webview'))
     try:
         if carpeta_prueba:
