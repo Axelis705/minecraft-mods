@@ -468,6 +468,86 @@
       }
     ]
   },
+  "voz.piano.a_la_vez": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano.a_la_vez",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_a_la_vez",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano.bailarina": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano.bailarina",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_bailarina",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano.baile": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano.baile",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_baile",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano.bienvenidos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano.bienvenidos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_bienvenidos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano.centro": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano.centro",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_centro",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano.melodia": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano.melodia",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_melodia",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano.se_abre": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano.se_abre",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_se_abre",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano.varios": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano.varios",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_varios",
+        "stream": true
+      }
+    ]
+  },
   "voz.te.bienvenidos": {
     "category": "voice",
     "subtitle": "coleccionista.voz.te.bienvenidos",
@@ -484,6 +564,26 @@
     "sounds": [
       {
         "name": "coleccionista:voz/te_confien",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te_fin.enteros": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te_fin.enteros",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_fin_enteros",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te_fin.terminado": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te_fin.terminado",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_fin_terminado",
         "stream": true
       }
     ]
