@@ -273,15 +273,15 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 2 | `sorpresa_amigo.ogg` | 7.6 s | Les presento a mi amigo más viejo: Resortes. Vive en esta caja. |
 | 3 | `sorpresa_cuerda.ogg` | 10.3 s | Le gusta que le den cuerda. Uno por uno van a subir y darle una, dos o tres vueltas a la manivela. |
 | 4 | `sorpresa_una_tres.ogg` | 7.2 s | Pero si alguien le da solo una… la siguiente vez tendrá que darle tres. |
-| 5 | `sorpresa_hambre.ogg` | 6.2 s | Don Resorte siempre sale con hambre. Y nadie sabe en qué vuelta. |
+| 5 | `sorpresa_hambre.ogg` | 6.0 s | Resortes siempre sale con hambre. Y nadie sabe en qué vuelta. |
 | 6 | `sorpresa_zapatos.ogg` | 5.0 s | No se preocupen… siempre deja los zapatos. |
 | 7 | `sorpresa_empecemos.ogg` | 2.5 s | Empecemos. |
 
-## Capítulo 4 · La caja sorpresa: el final (Don Resorte ya está lleno)
+## Capítulo 4 · La caja sorpresa: el final (Resortes ya está lleno)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `sorpresa_fin_lleno.ogg` | 4.0 s | Don Resorte ya está lleno. Por hoy. |
+| 1 | `sorpresa_fin_lleno.ogg` | 4.0 s | Resortes ya está lleno. Por hoy. |
 | 2 | `sorpresa_fin_zapatos.ogg` | 3.8 s | Qué bonita colección de zapatos. |
 | 3 | `sorpresa_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
 

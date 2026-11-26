@@ -280,7 +280,7 @@ def craneo():
 
 
 def zapatos():
-    """Un par de zapatos viejos (lo único que deja Don Resorte), con las agujetas sueltas y manchados de sangre."""
+    """Un par de zapatos viejos (lo único que deja Resortes), con las agujetas sueltas y manchados de sangre."""
     p = Prop('zapatos', 'Zapatos', 'Shoes', kind='floor', sound='wool', seed=99, collide=False)
     cuero = kit.stone(Ramp('#2a1810', '#3a2216', '#4a2c1c', '#5a3824'), scale=1.5, seed=99)
     suela = solid('#141010')

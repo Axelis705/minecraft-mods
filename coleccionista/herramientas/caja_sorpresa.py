@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""La caja sorpresa gigante (capítulo 4) y Don Resorte, el payaso que vive adentro.
+"""La caja sorpresa gigante (capítulo 4) y Resortes, el payaso que vive adentro.
 
 Escribe geo/caja_sorpresa.geo.json, animations/caja_sorpresa.animation.json y textures/entity/caja_sorpresa.png.
 La entidad está en el piso del escenario (y = 0 del modelo), al centro de la caja. La caja mide 40 px de lado (2.5 bloques) y 36 de alto
-sobre cuatro patitas; la tapa tiene la bisagra atrás (+z) y la manivela sale del frente (-z), donde se para quien le da cuerda. Adentro, Don Resorte: el resorte
+sobre cuatro patitas; la tapa tiene la bisagra atrás (+z) y la manivela sale del frente (-z), donde se para quien le da cuerda. Adentro, Resortes: el resorte
 (8 anillos que se estiran), el cuerpo con su gola, la cabeza grande (con la quijada que se abre), el sombrerito y los brazos largos con
 guantes. Todo lo mueve el código (CajaSorpresa.axPose): guardado, el payaso queda agachado dentro de la caja.
 
@@ -79,7 +79,7 @@ def modelo():
         cubo(n, (-r, y, r - 1), (2 * r, 0.8, 1), 'resorte')
         cubo(n, (-r, y, -r + 1), (1, 0.8, 2 * r - 2), 'resorte')
         cubo(n, (r - 1, y, -r + 1), (1, 0.8, 2 * r - 2), 'resorte')
-    # Don Resorte: guardado, agachado dentro de la caja (de y 14 a 39)
+    # Resortes: guardado, agachado dentro de la caja (de y 14 a 39)
     hueso('payaso', 'raiz', (0, 14, 0))
     hueso('giro', 'payaso', (0, 14, 0))
     hueso('cuerpo', 'giro', (0, 14, 0))

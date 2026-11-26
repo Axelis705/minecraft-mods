@@ -30,7 +30,7 @@ public final class Pasaje {
     /** La caja de música: terciopelo y oro. */
     public static final Tema CAJA = new Tema(C + "parquet", C + "madera_pulida", C + "panel_madera", C + "marco_dorado", C + "acolchado",
             C + "madera_pulida", C + "tapete_rojo", C + "sillon", 12);
-    /** El teatrito de Don Resorte: telón rojo y focos de feria. */
+    /** El teatrito de Resortes: telón rojo y focos de feria. */
     public static final Tema CIRCO = new Tema(C + "madera_pulida", C + "tablon", C + "panel_madera", C + "marco_luz_amarilla", C + "telon",
             C + "telon_borde", C + "tapete_rojo", C + "silla", 12);
     /** El salón de té: azulejo y mármol. */

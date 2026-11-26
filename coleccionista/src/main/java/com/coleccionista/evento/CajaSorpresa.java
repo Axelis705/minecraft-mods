@@ -21,10 +21,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * La caja sorpresa gigante del capítulo 4, con Don Resorte adentro. La prueba ({@code Sorpresa}) decide qué pasa; la entidad solo guarda
+ * La caja sorpresa gigante del capítulo 4, con Resortes adentro. La prueba ({@code Sorpresa}) decide qué pasa; la entidad solo guarda
  * el estado (y desde cuándo) y cuántas vueltas lleva la manivela, y el cliente lo dibuja ({@code geo/caja_sorpresa.geo.json}):
  * <ul>
- * <li>{@link #CERRADA}: quieta (Don Resorte aplastado adentro: su cabeza gigante no tiene cómo caber).</li>
+ * <li>{@link #CERRADA}: quieta (Resortes aplastado adentro: su cabeza gigante no tiene cómo caber).</li>
  * <li>{@link #SALTO}: la tapa revienta, el resorte se estira, la cabeza se infla y rebota; los brazos se agitan.</li>
  * <li>{@link #AGARRA}: se inclina hacia quien le dio cuerda, lo agarra con los guantes y abre la boca enorme.</li>
  * <li>{@link #MUERDE}: la mordida (la quijada se cierra de golpe) y luego mastica, sacudiendo la cabeza.</li>
@@ -111,7 +111,7 @@ public class CajaSorpresa extends Entity implements Animated {
         return new Vec3(-Math.sin(r), 0, Math.cos(r));
     }
 
-    /** Dónde queda la boca de Don Resorte (arriba de la caja, un poco al frente), para la sangre y para llevar ahí a la víctima. */
+    /** Dónde queda la boca de Resortes (arriba de la caja, un poco al frente), para la sangre y para llevar ahí a la víctima. */
     public Vec3 boca() {
         return position().add(frente().scale(1.0 * ESCALA)).add(0, (34 + ESTIRA) / 16.0 * ESCALA + 0.2, 0);
     }

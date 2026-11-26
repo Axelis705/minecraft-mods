@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Los sonidos de la caja sorpresa (capítulo 4), hechos a mano (sin descargar nada):
 
-- sor_susto.ogg    el golpe del susto cuando Don Resorte muerde: un estallido grave, un chillido de cuerdas desafinadas y el eco
+- sor_susto.ogg    el golpe del susto cuando Resortes muerde: un estallido grave, un chillido de cuerdas desafinadas y el eco
 - sor_mordida.ogg  la mordida: crujido de huesos, algo húmedo que se aplasta y un gruñido
 - sor_salta.ogg    el resorte: ¡boing! que se estira y tiembla, con una risa ahogada de juguete
 

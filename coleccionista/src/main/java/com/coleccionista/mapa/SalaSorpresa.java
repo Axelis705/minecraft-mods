@@ -90,7 +90,7 @@ public final class SalaSorpresa {
         for (int x = HX0; x <= HX1; x++) {
             for (int z = HZ0; z <= HZ1; z++) {
                 int t = (int) Math.floor((ang(x, z) + 180) / 15.0);
-                // encima del escenario la carpa va un bloque más arriba: cuando Don Resorte salta (con el rebote) no la atraviesa
+                // encima del escenario la carpa va un bloque más arriba: cuando Resortes salta (con el rebote) no la atraviesa
                 boolean escenario = x >= 46 && z >= 11 && z <= 31;
                 p.set(x, escenario ? ALTO + 1 : ALTO, z, t % 2 == 0 ? "minecraft:red_wool" : "minecraft:white_wool");
             }

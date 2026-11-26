@@ -56,13 +56,13 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Capítulo 4 · La caja sorpresa. Del salón de la caja de música pasan (por el pasillo de servicio) al teatrito de Don Resorte. El
+ * Capítulo 4 · La caja sorpresa. Del salón de la caja de música pasan (por el pasillo de servicio) al teatrito de Resortes. El
  * Coleccionista explica y, en un apagón, aparecen sentados en las gradas, mirando al centro. Por turnos (en el sentido del reloj, desde
  * uno al azar) a cada quien se le gira la silla hacia el escenario y se le sueltan las correas: baja, sube los escalones y le da a la
  * manivela de la caja 1, 2 o 3 vueltas (las que quiera; pero quien da 1, la próxima vez que le toque está obligado a dar 3). La caja salta en una
- * vuelta secreta: Don Resorte sale (con su cabeza gigante), agarra a quien le dio cuerda, se lo come (sangre y todo) y escupe sus zapatos,
+ * vuelta secreta: Resortes sale (con su cabeza gigante), agarra a quien le dio cuerda, se lo come (sangre y todo) y escupe sus zapatos,
  * que quedan en fila al frente del escenario. Luego se vuelve a meter, se le da cuerda con un número secreto nuevo y sigue el que sigue.
- * Se acaba cuando Don Resorte ya se comió a los que puso el organizador ({@code /evento sorpresa comer <n>}; si no, el 40% de los vivos).
+ * Se acaba cuando Resortes ya se comió a los que puso el organizador ({@code /evento sorpresa comer <n>}; si no, el 40% de los vivos).
  */
 public final class Sorpresa {
     private static final String MOD = Coleccionista.MODID;
@@ -123,7 +123,7 @@ public final class Sorpresa {
             mio(Plat.server(p), p);
         });
         Actions.on(ACCION, Sorpresa::accion);
-        // aquí nadie se lastima: solo se muere en la boca de Don Resorte
+        // aquí nadie se lastima: solo se muere en la boca de Resortes
         MinecraftForge.EVENT_BUS.addListener((LivingHurtEvent e) -> {
             if (fase != Fase.NADA && fase != Fase.PASILLO && e.getEntity() instanceof ServerPlayer) {
                 e.setCanceled(true);
@@ -860,7 +860,7 @@ public final class Sorpresa {
         sonidoCaja(s, SoundEvents.EVOKER_FANGS_ATTACK, 3F, 0.5F);
         sonidoCaja(s, propio("sor_mordida"), 4F, 1F);
         sonidoCaja(s, SoundEvents.PLAYER_ATTACK_CRIT, 3F, 0.5F);
-        // ¡pam!: el que se come ve la cara de Don Resorte de golpe en toda la pantalla (el screamer). Los demás se llevan el susto sin
+        // ¡pam!: el que se come ve la cara de Resortes de golpe en toda la pantalla (el screamer). Los demás se llevan el susto sin
         // dejar de ver cómo se lo come: el golpe de sonido, la sacudida y un destello rojo en las orillas de la pantalla.
         sustos++;
         for (ServerPlayer sp : s.getPlayerList().getPlayers()) {

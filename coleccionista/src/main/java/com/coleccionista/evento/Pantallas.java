@@ -344,7 +344,7 @@ public final class Pantallas {
         l.add(new Frase("amigo", 152, null, 1F));
         l.add(new Frase("cuerda", 206, null, 1F));
         l.add(new Frase("una_tres", 144, null, 1F));
-        l.add(new Frase("hambre", 125, SoundEvents.WITCH_CELEBRATE, 0.5F));
+        l.add(new Frase("hambre", 120, SoundEvents.WITCH_CELEBRATE, 0.5F));
         l.add(new Frase("zapatos", 100, null, 1F));
         l.add(new Frase("empecemos", 50, null, 1F));
         return l;

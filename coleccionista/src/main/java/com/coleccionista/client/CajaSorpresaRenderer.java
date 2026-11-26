@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * (Cliente) La caja sorpresa con Don Resorte (se mueve con {@link CajaSorpresa#axPose}). Cuando escupe, los zapatos salen volando de su
+ * (Cliente) La caja sorpresa con Resortes (se mueve con {@link CajaSorpresa#axPose}). Cuando escupe, los zapatos salen volando de su
  * boca (en arco, girando) hasta su lugar al frente del escenario, donde la prueba pone el bloque.
  */
 public class CajaSorpresaRenderer extends SimpleGeoRenderer<CajaSorpresa> {
@@ -33,7 +33,7 @@ public class CajaSorpresaRenderer extends SimpleGeoRenderer<CajaSorpresa> {
 
     @Override
     public void render(CajaSorpresa c, float yaw, float pt, PoseStack ps, MultiBufferSource buf, int luzMundo) {
-        // como si tuviera un reflector encima: aunque el teatro esté a oscuras, la caja y Don Resorte siempre se ven desde las gradas
+        // como si tuviera un reflector encima: aunque el teatro esté a oscuras, la caja y Resortes siempre se ven desde las gradas
         int light = LightTexture.pack(Math.max(LightTexture.block(luzMundo), 12), LightTexture.sky(luzMundo));
         super.render(c, yaw, pt, ps, buf, light);
         if (c.estado() != CajaSorpresa.ESCUPE) {

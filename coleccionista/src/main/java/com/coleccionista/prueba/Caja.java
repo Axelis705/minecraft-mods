@@ -1534,7 +1534,7 @@ public final class Caja {
         Pantallas.hablar(s, "caja_fin", () -> {
             Evento.get(s).prueba(s, Component.translatable(MOD + ".caja.fin_capitulo").getString());
             Coleccionista.LOGGER.info("COLECCIONISTA_CAPITULO3 fin vivos={}", Evento.get(s).vivos().size());
-            // "los que siguen enteros…": el capítulo 4 (se abre el pasillo hacia el teatrito de Don Resorte)
+            // "los que siguen enteros…": el capítulo 4 (se abre el pasillo hacia el teatrito de Resortes)
             if (Sorpresa.encadenar && Complejo.construido(s, "sorpresa") && fase == Fase.FIN) {
                 aSorpresa = t + 60;
             }

@@ -952,7 +952,7 @@ final class PruebaCliente {
 
     /**
      * Capítulo 4 · La caja sorpresa: el pasillo, el teatrito (la herradura de gradas y el escenario con la caja), el apagón y todos
-     * sentados, el turno de un bot (su silla gira y lo levanta, va a la manivela, le da 2 vueltas) y Don Resorte: salta, lo agarra, lo
+     * sentados, el turno de un bot (su silla gira y lo levanta, va a la manivela, le da 2 vueltas) y Resortes: salta, lo agarra, lo
      * muerde (y a los demás les da el susto), mastica y escupe los zapatos al centro; la pantalla para elegir las vueltas (obligado a 3)
      * y el final.
      * El teatrito está en (870, -61, 430): el pasillo x 872..885 / z 448..455, el salón x 887..931 / z 430..472, el centro de la herradura
@@ -988,7 +988,7 @@ final class PruebaCliente {
             Minecraft.getInstance().options.fov().set(40);
         });
         t.waitFor("cap4: salta", 8000, () -> "SALTO".equals(SorpresaCliente.fase()));
-        // con zoom (menos campo de visión) para ver bien que Don Resorte sale hacia arriba
+        // con zoom (menos campo de visión) para ver bien que Resortes sale hacia arriba
         t.photo("c4_05_salta", 900, () -> {
             mirarA(922.5, -55, 451.5);
             Minecraft.getInstance().options.fov().set(32);

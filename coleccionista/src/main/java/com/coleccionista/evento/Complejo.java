@@ -94,7 +94,7 @@ public final class Complejo {
             l.add(new Zona("mansion", com.coleccionista.mapa.Mansion.crear(SEMILLA), 720, 0, 400, 1));
             // capítulo 3: la caja de música (el carrusel de las góndolas), al este de la casa
             l.add(new Zona("caja", com.coleccionista.mapa.CajaMusica.crear(SEMILLA), 790, 0, 400, 1));
-            // capítulo 4: la caja sorpresa (el teatrito de Don Resorte), al este de la caja de música
+            // capítulo 4: la caja sorpresa (el teatrito de Resortes), al este de la caja de música
             l.add(new Zona("sorpresa", com.coleccionista.mapa.SalaSorpresa.crear(SEMILLA), 870, 0, 400, 1));
             // capítulo 5: el salón de té (las parejas, las jaulas colgadas y los cálices)
             l.add(new Zona("te", com.coleccionista.mapa.SalaTe.crear(SEMILLA), 950, 0, 400, 1));

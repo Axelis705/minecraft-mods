@@ -16,7 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 
 /**
- * (Cliente) La caja sorpresa: a quién le toca, cuántos se ha comido Don Resorte (y cuántos faltan), si el siguiente está obligado a dar 3,
+ * (Cliente) La caja sorpresa: a quién le toca, cuántos se ha comido Resortes (y cuántos faltan), si el siguiente está obligado a dar 3,
  * qué hacer cuando te toca, y la pantalla para elegir las vueltas. También: cuando la silla en la que vas sentado gira, tu vista gira con
  * ella (sirve para cualquier silla).
  */
@@ -29,7 +29,7 @@ public final class SorpresaCliente {
     private static final net.minecraft.resources.ResourceLocation SUSTO = com.axeliscore.plat.Ids.rl(MOD, "textures/gui/susto_resorte.png");
     private static int sustoN = -1;
     private static long sustoDesde;
-    /** true: la cara de Don Resorte en toda la pantalla (solo al que se come); false: el susto de los demás (orillas rojas). */
+    /** true: la cara de Resortes en toda la pantalla (solo al que se come); false: el susto de los demás (orillas rojas). */
     private static boolean sustoCara;
 
     private SorpresaCliente() {
@@ -134,7 +134,7 @@ public final class SorpresaCliente {
         }
         float ts = (System.currentTimeMillis() - sustoDesde) / 1000F;
         if (sustoDesde > 0 && sustoCara && ts < 1.1F) {
-            // ¡pam! al que se come: la cara de Don Resorte de golpe, toda la pantalla, medio segundo (y un destello rojo que se va)
+            // ¡pam! al que se come: la cara de Resortes de golpe, toda la pantalla, medio segundo (y un destello rojo que se va)
             if (ts < 0.55F) {
                 float esc = 1.25F - 0.25F * Math.min(1F, ts / 0.12F);
                 int iw = (int) (w * esc), ih = (int) (iw * 400F / 512F);

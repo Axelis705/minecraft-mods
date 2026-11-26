@@ -54,7 +54,7 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * Capítulo 5 · La hora del té. Del teatrito de Don Resorte pasan (por el pasillo de servicio) al salón de té. El Coleccionista les pide
+ * Capítulo 5 · La hora del té. Del teatrito de Resortes pasan (por el pasillo de servicio) al salón de té. El Coleccionista les pide
  * que se sienten (en los sillones de dos) con la persona en la que más confíen. Ya hechas las parejas, un apagón: todos aparecen en jaulas
  * de pájaro colgadas del techo alrededor de la mesa, menos la primera pareja, sentada frente a frente en las sillas de la mesa. La tele
  * explica: piedra, papel o tijera; el que pierde bebe de uno de sus cinco cálices, y uno de los cinco está envenenado (al azar). Ah, y solo
