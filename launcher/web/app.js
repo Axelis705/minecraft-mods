@@ -503,7 +503,7 @@ window.listo = (res) => {
   $('estado').className = 'estado bien';
   $('estado').textContent = res.abierto
     ? '¡Listo! Se abrió el launcher de Minecraft: junto al botón JUGAR elige “El Coleccionista” (el del sombrero) y presiona JUGAR. '
-      + 'Cuando se abra el juego, esta ventana se cierra sola.'
+      + 'Esta ventana se cierra sola.'
     : '¡Listo! Abre el launcher de Minecraft, junto al botón JUGAR elige “El Coleccionista” y presiona JUGAR.';
   // (cuando se abra el juego, Python cierra esta ventana: antes, un fundido a negro con estática)
 };

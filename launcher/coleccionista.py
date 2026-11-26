@@ -109,7 +109,11 @@ class Api:
                 res = ins.preparar(int(ram), lambda k, txt: js('avance', k, txt), abrir=not self._prueba)
                 js('listo', {'abierto': res.get('abierto', False)})
                 if res.get('abierto'):
-                    threading.Thread(target=self._esperar_juego, args=(t0,), daemon=True).start()
+                    # ya se abrió el launcher de Minecraft: se ve el aviso unos segundos, fundido a negro y se cierra
+                    time.sleep(5)
+                    js('adios')
+                    time.sleep(1.3)
+                    self._ventana.destroy()
             except ins.Fallo as e:
                 js('fallo', str(e))
             except Exception as e:  # noqa: BLE001
@@ -119,23 +123,6 @@ class Api:
         threading.Thread(target=trabajo, daemon=True).start()
         return True
 
-
-    def _esperar_juego(self, t0):
-        """Cuando el juego del evento ya abrió, este launcher se despide (fundido a negro) y se cierra solo."""
-        fin = time.time() + 3 * 3600
-        while time.time() < fin:
-            if ins.juego_abierto_desde(t0):
-                try:
-                    self._ventana.evaluate_js('adios()')
-                except Exception:  # noqa: BLE001
-                    pass
-                time.sleep(1.4)
-                try:
-                    self._ventana.destroy()
-                except Exception:  # noqa: BLE001
-                    pass
-                return
-            time.sleep(2)
 
 
 def sin_webview2():
