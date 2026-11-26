@@ -442,6 +442,14 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> desenlace() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("pieza", 80, null, 1F));
+        l.add(new Frase("proxima", 75, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        return l;
+    }
+
     public static List<Frase> guion(String id) {
         return switch (id) {
             case "bienvenida" -> bienvenida();
@@ -478,6 +486,7 @@ public final class Pantallas {
             case "veintiuno" -> veintiuno();
             case "veintiuno_reglas" -> veintiuno_reglas();
             case "veintiuno_fin" -> veintiuno_fin();
+            case "desenlace" -> desenlace();
             default -> null;
         };
     }

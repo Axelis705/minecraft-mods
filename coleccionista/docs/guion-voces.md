@@ -369,4 +369,12 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 2 | `veintiuno_fin_completa.ogg` | 5.8 s | Mi colección ahora está completa… solo por esta noche. |
 | 3 | `veintiuno_fin_puerta.ogg` | 5.9 s | Puedes irte. La puerta está abierta… esta vez. |
 
-**Total: 198 líneas (≈17 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+## Después de los créditos: la vitrina nueva
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `desenlace_pieza.ogg` | 4.0 s | Una pieza nueva para mi colección. |
+| 2 | `desenlace_proxima.ogg` | 3.8 s | Hasta la próxima colección… |
+| 3 | `desenlace_risa.ogg` | 3.0 s | Je, je, je… |
+
+**Total: 201 líneas (≈18 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

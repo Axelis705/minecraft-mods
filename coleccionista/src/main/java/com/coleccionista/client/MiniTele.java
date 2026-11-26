@@ -37,7 +37,7 @@ public final class MiniTele {
         ultimo = now;
         String linea = Subtitulo.linea();
         boolean habla = !linea.isEmpty();
-        boolean ver = habla && EventoHud.visible() && !Cine.enPantalla() && !Presentacion.activa() && !Presentacion.reglasVisibles()
+        boolean ver = habla && EventoHud.visible() && !Cine.enPantalla() && !DesenlaceCliente.cine() && !Presentacion.activa() && !Presentacion.reglasVisibles()
                 && !Atajos.pantallaEnfrente();
         abierta = Mth.clamp(abierta + (ver ? dt * 3.2F : -dt * 4F), 0F, 1F);
         if (abierta <= 0.01F) {

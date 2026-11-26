@@ -80,6 +80,9 @@ public final class Objetivo {
             }
             return Meta.en(Complejo.pos(s, "porton.2"), 1.5, MOD + ".obj.porton");
         }
+        if (Desenlace.activo()) {
+            return Desenlace.objetivo(s, sp);
+        }
         Meta m = Capitulo1.objetivo(s, sp);
         if (m != null) {
             return m;

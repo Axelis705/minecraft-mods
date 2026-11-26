@@ -957,6 +957,13 @@ public final class Veintiuno {
                         }
                     }
                     Coleccionista.LOGGER.info("COLECCIONISTA_V21 sueltan");
+                    // y el ganador se va: la puerta del este se abre (el desenlace, si está construido su pasillo)
+                    if (com.coleccionista.evento.Desenlace.hay(s) && !com.coleccionista.evento.Desenlace.activo()) {
+                        Component no = com.coleccionista.evento.Desenlace.empezar(s);
+                        if (no != null) {
+                            Coleccionista.LOGGER.info("COLECCIONISTA_DESENLACE no {}", no.getString());
+                        }
+                    }
                 }
             }
             default -> {
@@ -1267,6 +1274,7 @@ public final class Veintiuno {
     }
 
     public static void reiniciar(MinecraftServer s) {
+        com.coleccionista.evento.Desenlace.limpiar(s);
         if (fase == Fase.HABLANDO || fase == Fase.REGLAS || fase == Fase.FIN) {
             Pantallas.callar(s);
         }

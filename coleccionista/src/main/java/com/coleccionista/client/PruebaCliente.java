@@ -944,6 +944,7 @@ final class PruebaCliente {
         });
         foto(t, "c7_13_la_mesa_al_final", 1500, () -> {
         });
+        desenlace(t);
         t.add("cap7: limpiar", 1500, () -> {
             t.cmd("evento veintiuno limpiar");
             t.cmd("evento veintiuno rapido false");
@@ -957,6 +958,48 @@ final class PruebaCliente {
             t.cmd("evento revivir " + yo());
             t.cmd("gamemode adventure @a");
         });
+    }
+
+    /**
+     * El desenlace (yo gané la final): se abre la puerta del este y me voy por el pasillo (la casa, el sótano, el yeso cada vez más claro)
+     * hasta la luz; los créditos (el título, la colección, el ganador, Axelis); la vitrina junto al trono ya con mi estatua y la pantalla
+     * hablando; el FIN. El pasillo está en (1160, -61, 430): se camina por z 452.0 (el centro), la luz empieza en x 1238.
+     */
+    private static void desenlace(ClientTest.Script t) {
+        t.add("des: preparar", 400, () -> t.cmd("forceload add 1156 440 1262 464"));
+        t.waitFor("des: camina", 90000, () -> "CAMINA".equals(DesenlaceCliente.fase()));
+        foto(t, "d_01_puerta", 2500, () -> t.lookFrom(1152.5, -60, 452.0, 1162, -59, 452.0));
+        foto(t, "d_02_casa", 1500, () -> t.lookFrom(1165.5, -60, 452.0, 1180, -58.8, 452.0));
+        foto(t, "d_03_sotano", 1500, () -> t.lookFrom(1190.5, -60, 452.0, 1206, -58.8, 452.0));
+        foto(t, "d_04_yeso", 1500, () -> t.lookFrom(1226.5, -60, 452.0, 1245, -58.0, 452.0));
+        t.add("des: a la luz", 300, () -> t.lookFrom(1243.5, -60, 452.0, 1255, -58, 452.0));
+        t.waitFor("des: luz", 15000, () -> "LUZ".equals(DesenlaceCliente.fase()));
+        foto(t, "d_05_luz", 1600, () -> {
+        });
+        t.waitFor("des: créditos", 15000, () -> Minecraft.getInstance().screen instanceof Creditos);
+        foto(t, "d_06_creditos_titulo", 8500, () -> {
+        });
+        foto(t, "d_07_creditos_coleccion", 6500, () -> {
+        });
+        foto(t, "d_08_creditos_ganador", 7500, () -> {
+        });
+        foto(t, "d_09_creditos_axelis", 9000, () -> {
+        });
+        t.waitFor("des: la vitrina", 60000, () -> "POST".equals(DesenlaceCliente.fase()));
+        foto(t, "d_10_vitrina", 6000, () -> {
+            boolean hay = false;
+            for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                if (e instanceof com.coleccionista.evento.Cadaver c && c.estatua() && Minecraft.getInstance().player.getUUID().equals(c.dueno())) {
+                    hay = true;
+                }
+            }
+            t.check(hay, "en la vitrina está mi estatua");
+            t.check(DesenlaceCliente.camara(), "la cámara está frente a la vitrina");
+        });
+        t.waitFor("des: fin", 60000, () -> "FIN".equals(DesenlaceCliente.fase()));
+        foto(t, "d_11_fin", 2600, () -> {
+        });
+        t.waitFor("des: se acabó", 20000, () -> "NADA".equals(DesenlaceCliente.fase()) && !DesenlaceCliente.camara());
     }
 
     /**

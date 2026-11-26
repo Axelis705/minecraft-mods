@@ -136,7 +136,26 @@ public final class RevisarMapas {
             v.iso(new File(out, "camino_" + hacia + ".png"), 4, 0, new int[] {x0, pp.z0 - 6, x1, pp.z1 + 6}, 14,
                     "Camino: " + de + " → " + hacia);
         }
+        fallas += desenlace(out, deco, tex);
         return fallas;
+    }
+
+    /** El desenlace: de la mesa de juego, por la puerta del este, todo el pasillo de la salida hasta la luz. */
+    private static int desenlace(File out, Map<String, Revisor.Forma> deco, Path tex) throws Exception {
+        Plano p = new Plano(1L);
+        copiar(sala("veintiuno"), p, 0);
+        copiar(SalidaFinal.crear(1234L), p, 50);
+        Plano.Marca ini = p.marcas.get("v21.entrada");
+        Revisor r = new Revisor(p, deco).caminar(ini.x(), ini.y(), ini.z());
+        r.marcas("salida.veintiuno.").marcas("sf.");
+        r.pisos(50, 13, 50 + SalidaFinal.LARGO, 30, 0, 12);
+        System.out.print(r.informe("El desenlace (de la mesa a la luz)", 8));
+        int f = (int) (r.cuantos("no se llega") + r.cuantos("no cabe nadie"));
+        System.out.println("CAMINO veintiuno -> luz" + (f == 0 ? " OK" : " FALLA " + f));
+        Vista v = new Vista(p, r, tex);
+        v.iso(new File(out, "camino_desenlace.png"), 6, 0, new int[] {36, 4, 50 + SalidaFinal.LARGO + 2, 38}, 9, "Desenlace: la mesa → la luz");
+        v.iso(new File(out, "desenlace_vitrina.png"), 6, 0, new int[] {26, 2, 50, 14}, 18, "La vitrina vacía junto al trono");
+        return f;
     }
 
     public static void main(String[] a) throws Exception {

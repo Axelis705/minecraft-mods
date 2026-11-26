@@ -101,6 +101,8 @@ public final class Complejo {
             // capítulo 6: el salón de baile del piano gigante (la bailarina y los cuatro pianos de piso)
             l.add(new Zona("piano", com.coleccionista.mapa.SalaPiano.crear(SEMILLA), 1030, 0, 400, 1));
             l.add(new Zona("veintiuno", com.coleccionista.mapa.SalaVeintiuno.crear(SEMILLA), 1110, 0, 400, 1));
+            // el desenlace: el pasillo largo hacia la luz, pegado al este de la mesa de juego (sin margen: lo limpia la de junto)
+            l.add(new Zona("salida_final", com.coleccionista.mapa.SalidaFinal.crear(SEMILLA), 1160, 0, 400, 0));
             // las Cloacas (el Encadenados de antes) quedaron lejos, al sur de las antesalas
             l.add(new Zona("cloacas", Cloacas.crear(SEMILLA), 56, 0, 230, 0));
             // el Salón de las mesas, pegado al este de las Cloacas (su pared oeste junto al Refugio)
@@ -143,6 +145,10 @@ public final class Complejo {
      */
     public static List<Zona> dependientes(String id) {
         List<Zona> l = new ArrayList<>();
+        // la mesa de juego limpia (con su margen) la primera columna del pasillo de la salida: si se vuelve a construir, él también
+        if ("veintiuno".equals(id) && zona("salida_final") != null) {
+            l.add(zona("salida_final"));
+        }
         for (String[] ps : com.coleccionista.mapa.Pasos.PASOS) {
             if (ps[0].equals(id) || ps[1].equals(id)) {
                 Zona z = zona("paso_" + ps[0]);

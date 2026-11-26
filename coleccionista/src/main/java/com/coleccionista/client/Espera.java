@@ -48,7 +48,7 @@ public final class Espera {
             if (activa()) {
                 sala(g, w, h);
             }
-            if (!Cine.enPantalla()) {
+            if (!Cine.enPantalla() && !DesenlaceCliente.cine()) {
                 subtitulo(g, w, h);
                 aviso(g, w, h);
             }

@@ -237,6 +237,11 @@ GUIONES = {
         ("puerta", "Puedes irte. La puerta está abierta… esta vez.", "You may go. The door is open… this time.",
          "Cortés, con humor negro. Su despedida."),
     ],
+    "desenlace": [
+        ("pieza", "Una pieza nueva para mi colección.", "A new piece for my collection.", "Satisfecho, admirándola a través del vidrio."),
+        ("proxima", "Hasta la próxima colección…", "Until the next collection…", "Despedida lenta, casi un susurro."),
+        ("risa", "Je, je, je…", "Heh, heh, heh…", "Risa baja que se va apagando."),
+    ],
     "piano_fin": [
         ("cansada", "Mi bailarina está cansada.", "My ballerina is tired.", "Suave, como quien arropa a alguien."),
         ("ultimo", "La noche casi termina. Queda un último juego.", "The night is almost over. One last game remains.",
@@ -432,6 +437,7 @@ TITULOS = {
     "veintiuno": "Capítulo 7 (final) · Veintiuno: en la mesa de juego (cuando ya entraron todos)",
     "veintiuno_reglas": "Capítulo 7 (final) · Veintiuno: ya sentados con la mano en la máquina (la tele explica el juego)",
     "veintiuno_fin": "Capítulo 7 (final) · Veintiuno: el ganador",
+    "desenlace": "Después de los créditos: la vitrina nueva",
 }
 ZONAS = ["cloacas", "archivo", "salon", "laberintos", "capilla", "puertas", "final", "galeria"]
 

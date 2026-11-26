@@ -394,6 +394,30 @@ public final class Comandos {
                 .then(com.coleccionista.prueba.ComandosTe.te())
                 .then(com.coleccionista.prueba.ComandosPiano.piano(vivas))
                 .then(com.coleccionista.prueba.ComandosVeintiuno.veintiuno())
+                .then(Commands.literal("desenlace")
+                        .executes(c -> {
+                            Component no = Desenlace.empezar(c.getSource().getServer());
+                            if (no != null) {
+                                c.getSource().sendFailure(no);
+                                return 0;
+                            }
+                            c.getSource().sendSuccess(() -> Component.literal(Desenlace.resumen()), true);
+                            return 1;
+                        })
+                        .then(Commands.literal("saltar").executes(c -> {
+                            boolean si = Desenlace.saltar(c.getSource().getServer());
+                            c.getSource().sendSuccess(() -> Component.literal(Desenlace.resumen()), true);
+                            return si ? 1 : 0;
+                        }))
+                        .then(Commands.literal("estado").executes(c -> {
+                            c.getSource().sendSuccess(() -> Component.literal(Desenlace.resumen()), false);
+                            return 1;
+                        }))
+                        .then(Commands.literal("limpiar").executes(c -> {
+                            Desenlace.limpiar(c.getSource().getServer());
+                            c.getSource().sendSuccess(() -> Component.literal(Desenlace.resumen()), true);
+                            return 1;
+                        })))
                 .then(com.coleccionista.prueba.ComandosPruebas.ciegas(vivas))
                 .then(com.coleccionista.prueba.ComandosPruebas.tres(vivas))
                 .then(com.coleccionista.voz.ComandosVoz.voz(piezas(p -> true)))

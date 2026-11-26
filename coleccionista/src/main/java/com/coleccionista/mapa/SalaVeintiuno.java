@@ -12,7 +12,8 @@ package com.coleccionista.mapa;
  *   (este, mira al oeste)
  * </pre>
  * Marcas: {@code v21.silla.0/1} (con su yaw), {@code v21.mesa} (el bloque del centro de la mesa), {@code v21.entrada},
- * {@code v21.salida}, {@code v21.trono}, {@code v21.luz.K} (el yaw es el nivel), {@code v21.pantalla} y el pasillo {@code pas_veintiuno}.
+ * {@code v21.salida}, {@code v21.trono}, {@code v21.luz.K} (el yaw es el nivel), {@code v21.pantalla}, {@code v21.vitrina} (la vitrina vacía
+ * junto al trono), el pasillo {@code pas_veintiuno} y la puerta del este {@code salida.veintiuno.a/.b} (la salida del ganador).
  */
 public final class SalaVeintiuno {
     private static final String C = "coleccionista:";
@@ -35,6 +36,9 @@ public final class SalaVeintiuno {
         cuarto(p);
         mesa(p);
         trono(p);
+        vitrinaNueva(p);
+        // la puerta del este: por ahí se va el ganador (el pasillo de la salida, la zona "salida_final")
+        Salida.puerta(p, "salida.veintiuno", HX1 + 1, 21, 49, C + "madera_pulida");
         return p;
     }
 
@@ -79,6 +83,10 @@ public final class SalaVeintiuno {
         }
         // vitrinas con sus piezas favoritas (muñecas) al este y al sur; estandartes rojos entre ellas
         for (int z = HZ0 + 3; z <= HZ1 - 3; z += 4) {
+            if (z == 21) {
+                // ahí va la puerta de la salida
+                continue;
+            }
             p.set(HX1, 1, z, C + "vitrina[facing=west,half=lower]");
             p.set(HX1, 2, z, C + "vitrina[facing=west,half=upper]");
             if (z + 2 <= HZ1 - 2) {
@@ -143,6 +151,27 @@ public final class SalaVeintiuno {
         // velas en las esquinas de la mesa
         p.set(MX0, 2, MZ0, C + "vela");
         p.set(MX1, 2, MZ1, C + "vela");
+    }
+
+    /**
+     * La vitrina vacía junto al trono (a su derecha, pegada al muro del norte): un pedestal de mármol negro con su caja de vidrio y marco
+     * dorado. Toda la final está vacía, esperando… y después de los créditos aparece ahí la pieza nueva: el ganador, hecho piedra.
+     * Marca {@code v21.vitrina} (donde se para la estatua, mirando al sur) y {@code v21.vitrina.luz} (su foco).
+     */
+    private static void vitrinaNueva(Plano p) {
+        int x0 = 37, x1 = 39, z0 = HZ0, z1 = HZ0 + 2;
+        for (int x = x0; x <= x1; x++) {
+            for (int z = z0; z <= z1; z++) {
+                p.set(x, 1, z, C + "marmol_negro");
+                p.set(x, 5, z, C + "marco_dorado");
+                boolean adentro = x == 38 && z < z1;
+                for (int y = 2; y <= 4; y++) {
+                    p.set(x, y, z, adentro ? "air" : "glass");
+                }
+            }
+        }
+        p.marca("v21.vitrina", 38, 2, HZ0 + 1, 0);
+        p.marca("v21.vitrina.luz", 38, 4, HZ0 + 1, 0);
     }
 
     private static void trono(Plano p) {

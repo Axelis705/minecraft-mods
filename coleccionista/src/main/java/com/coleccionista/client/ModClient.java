@@ -47,6 +47,7 @@ public final class ModClient {
         FantasmaRender.init();
         Camara.init();
         Cine.init();
+        DesenlaceCliente.init();
         Rodaje.init();
         Espera.init();
         ChatVisible.init();
