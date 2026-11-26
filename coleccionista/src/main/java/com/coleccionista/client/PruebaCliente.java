@@ -543,6 +543,36 @@ final class PruebaCliente {
         capitulo5(t);
         capitulo6(t);
         capitulo7(t);
+        menus(t);
+    }
+
+    /**
+     * Los menús del evento (en la prueba no reemplazan a los de Minecraft, así que se abren a mano): la pantalla de inicio (recién abierta
+     * con la tele que se prende, y luego con el ratón encima de "Salir", que lo hace reír), Configurar y la pausa.
+     */
+    private static void menus(ClientTest.Script t) {
+        t.add("menus: inicio", 300, () -> {
+            com.coleccionista.client.inicio.Inicio.organizador = false;
+            Minecraft.getInstance().setScreen(new com.coleccionista.client.inicio.InicioScreen());
+        });
+        t.photo("m_01_inicio_prende", 700, () -> {
+        });
+        t.photo("m_02_inicio", 3200, () -> {
+        });
+        t.photo("m_02b_inicio_salir", 1500, () -> {
+            // el ratón sobre "Salir" (se ríe) — se mueve el cursor de la ventana
+            Minecraft mc = Minecraft.getInstance();
+            double k = mc.getWindow().getGuiScale();
+            int w = mc.getWindow().getGuiScaledWidth(), h = mc.getWindow().getGuiScaledHeight();
+            double x = Math.max(14, (int) (w * 0.07F)) + 30, y = (int) (h * 0.47F) + 2 * 20 + 16 + 8;
+            org.lwjgl.glfw.GLFW.glfwSetCursorPos(mc.getWindow().getWindow(), x * k, y * k);
+        });
+        t.add("menus: hay pantalla", 100, () -> t.check(Minecraft.getInstance().screen instanceof com.coleccionista.client.inicio.InicioScreen,
+                "se abrió la pantalla de inicio"));
+        t.photo("m_03_configurar", 1200, () -> Minecraft.getInstance().setScreen(
+                new com.coleccionista.client.inicio.ConfigurarScreen(Minecraft.getInstance().screen)));
+        t.photo("m_04_pausa", 1200, () -> Minecraft.getInstance().setScreen(new com.coleccionista.client.inicio.PausaScreen()));
+        t.add("menus: cerrar", 300, () -> Minecraft.getInstance().setScreen(null));
     }
 
     /**

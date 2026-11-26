@@ -444,5 +444,28 @@
    }
   ],
   "subtitle": "coleccionista.sub.carta"
+ },
+ "menu.musica": {
+  "sounds": [
+   {
+    "name": "coleccionista:menu/musica",
+    "stream": true
+   }
+  ]
+ },
+ "menu.encima": {
+  "sounds": [
+   "coleccionista:menu/encima"
+  ]
+ },
+ "menu.clic": {
+  "sounds": [
+   "coleccionista:menu/clic"
+  ]
+ },
+ "menu.estatica": {
+  "sounds": [
+   "coleccionista:menu/estatica"
+  ]
  }
 }

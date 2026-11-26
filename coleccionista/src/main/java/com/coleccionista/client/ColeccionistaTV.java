@@ -41,6 +41,8 @@ public final class ColeccionistaTV {
     private static int cuerpo, cabeza, bd, ad, bi, ai;
     private static long ultimo;
     private static boolean empezado;
+    /** Hacia dónde voltea la cabeza (radianes, de lado y de arriba a abajo): lo usa la pantalla de inicio para que siga al ratón. */
+    public static float mirarLado, mirarAlto;
 
     private ColeccionistaTV() {
     }
@@ -100,7 +102,7 @@ public final class ColeccionistaTV {
      * El Coleccionista en la mini tele del HUD (arriba a la derecha), en el rectángulo {@code x0, y0, w, h} de la interfaz. Misma
      * animación que las pantallas. La luz se pone de frente solo para este dibujo y luego se regresa la de la interfaz.
      */
-    static boolean dibujarHud(com.axeliscore.plat.client.G g, int x0, int y0, int w, int h, boolean habla, String linea) {
+    public static boolean dibujarHud(com.axeliscore.plat.client.G g, int x0, int y0, int w, int h, boolean habla, String linea) {
         Geo gg = GeoAssets.geo(GEO);
         if (gg == null || gg.bones.length == 0) {
             return false;
@@ -179,6 +181,8 @@ public final class ColeccionistaTV {
             set3(KX, 0.08F, 0F, lado);
             brazos(-0.55F, 0.12F, -0.35F, -1.9F, -0.55F, -0.12F, -0.35F, 1.9F);
         }
+        OBJ[KY] += mirarLado;
+        OBJ[KX] += mirarAlto;
         // ---- se acerca suave (la cabeza ladeada va rápido, como muñeco)
         if (!empezado) {
             System.arraycopy(OBJ, 0, ACT, 0, N);
