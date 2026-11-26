@@ -997,5 +997,45 @@
         "stream": true
       }
     ]
+  },
+  "voz.vitrina.cera": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.vitrina.cera",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/vitrina_cera",
+        "stream": true
+      }
+    ]
+  },
+  "voz.vitrina.piezas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.vitrina.piezas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/vitrina_piezas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.vitrina.quietos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.vitrina.quietos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/vitrina_quietos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.vitrina.ultimos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.vitrina.ultimos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/vitrina_ultimos",
+        "stream": true
+      }
+    ]
   }
 }
