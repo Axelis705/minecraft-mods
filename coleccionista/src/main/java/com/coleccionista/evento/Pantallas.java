@@ -332,7 +332,7 @@ public final class Pantallas {
 
     public static List<Frase> caja_fin() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("se_acabo", 65, null, 1F));
+        l.add(new Frase("se_acabo", 74, null, 1F));
         l.add(new Frase("eran", 60, null, 1F));
         l.add(new Frase("enteros", 100, null, 1F));
         return l;

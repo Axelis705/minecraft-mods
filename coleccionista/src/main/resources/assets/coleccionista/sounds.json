@@ -538,6 +538,36 @@
       }
     ]
   },
+  "voz.caja_fin.enteros": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja_fin.enteros",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_fin_enteros",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja_fin.eran": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja_fin.eran",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_fin_eran",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja_fin.se_acabo": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja_fin.se_acabo",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_fin_se_acabo",
+        "stream": true
+      }
+    ]
+  },
   "voz.caja.gira": {
     "category": "voice",
     "subtitle": "coleccionista.voz.caja.gira",

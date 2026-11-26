@@ -261,7 +261,7 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `caja_fin_se_acabo.ogg` | 3.2 s | ¿Oyen? Se acabó la música. |
+| 1 | `caja_fin_se_acabo.ogg` | 3.7 s | ¿Oyen? Se acabó la música. |
 | 2 | `caja_fin_eran.ogg` | 3.0 s | Mis traidores eran… |
 | 3 | `caja_fin_enteros.ogg` | 5.0 s | Los que siguen enteros… gracias por el paseo. |
 
