@@ -220,6 +220,10 @@ public final class Sentidos {
         if (s.grupo.equals("veintiuno")) {
             return Veintiuno.puedeSentarse(sp, s);
         }
+        if (s.grupo.equals("trono")) {
+            // el trono del Coleccionista: solo el organizador (disfrazado)
+            return com.coleccionista.evento.Evento.get(sp.server).esOrganizador(sp.getUUID());
+        }
         if (!s.grupo.startsWith("circ.")) {
             return !s.grupo.equals("vitrina");
         }

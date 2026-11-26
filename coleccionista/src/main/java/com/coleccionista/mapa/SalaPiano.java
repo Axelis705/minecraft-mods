@@ -2,7 +2,8 @@ package com.coleccionista.mapa;
 
 /**
  * El salón de baile del piano gigante (capítulo 6). Al norte, un escenario con la bailarina de la caja de música gigante y la pantalla
- * grande arriba. En medio, cuatro pianos de piso, uno para cada pieza, separados por cortinas altas (para que nadie copie): cada piano es un
+ * grande arriba. En medio, cuatro pianos de piso, uno para cada pieza, con cortinas altas a los dos lados (para que nadie copie) y una
+ * escalera al frente con su número (cada quien sube a su pista): cada piano es un
  * cuadro de 6×6 con un tapete de 2×2 al centro (donde se para la pieza) y ocho teclas de colores de 2×2 alrededor (do, re, mi… en el
  * sentido del reloj, empezando al norte). Debajo de cada piano, un foso con picos: cuando alguien pierde, se abre el piso de su piano.
  * <pre>
@@ -187,15 +188,28 @@ public final class SalaPiano {
                 }
             }
         }
-        // los escalones al sur de la tarima (de adorno: a los pianos se llega en el apagón)
+        // la escalera al sur de la tarima: tres escalones (de 2 de ancho) para subir a la pista, con su número arriba
         for (int x = cx; x <= cx + 1; x++) {
-            p.set(x, 1, cz + 5, C + "escalera_tablon[facing=north]");
-            p.set(x, 2, cz + 5, "air");
+            for (int i = 0; i < 3; i++) {
+                int z = cz + 5 + i, y = PISO - i;
+                p.set(x, y, z, C + "escalera_tablon[facing=north]");
+                for (int yy = 1; yy < y; yy++) {
+                    p.set(x, yy, z, C + "panel_madera");
+                }
+                for (int yy = y + 1; yy <= y + 3; yy++) {
+                    p.set(x, yy, z, "air");
+                }
+            }
         }
-        // las cortinas entre pianos (no entre el último y la pared): altas, para que nadie vea las teclas del otro
-        if (k < PIANOS - 1) {
-            int xc = (CX[k] + CX[k + 1]) / 2 + 1;
-            for (int z = cz - 5; z <= cz + 6; z++) {
+        // el número de la pista, en la pared de la tarima a los dos lados de la escalera
+        p.texto(cx - 1, 2, cz + 5, "placa", "south", 0xD9A93A, String.valueOf(k + 1));
+        p.texto(cx + 2, 2, cz + 5, "placa", "south", 0xD9A93A, String.valueOf(k + 1));
+        // las cortinas a los DOS lados de cada piano (entre dos pianos, una sola): altas, para que nadie vea las teclas del otro, y parejas
+        // (el primero y el último también tienen la suya hacia la pared)
+        int oeste = k == 0 ? cx - 4 : (CX[k - 1] + CX[k]) / 2 + 1;
+        int este = k == PIANOS - 1 ? cx + 5 : (CX[k] + CX[k + 1]) / 2 + 1;
+        for (int xc : new int[] {oeste, este}) {
+            for (int z = cz - 5; z <= cz + 7; z++) {
                 for (int y = 1; y <= PISO + 5; y++) {
                     p.set(xc, y, z, y == PISO + 5 ? C + "telon_borde" : C + "telon");
                 }

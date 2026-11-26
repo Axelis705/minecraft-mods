@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""La máquina de la final (veintiuno): un cepo de latón viejo, con remaches, donde cada finalista mete la mano izquierda. Por dentro, dos
-prensas (aprietan a la primera ronda perdida); arriba, una guillotina entre dos postes (baja a la tercera); al frente, tres focos rojos
-(uno por ronda perdida); a un lado, un engrane y un cuadrante con su aguja. Cuando corta, aparece la sangre.
+"""La máquina de la final (veintiuno), chica y pegada al brazo: una plancha de latón con un cojín de cuero donde se apoya el antebrazo
+izquierdo (el brazo queda ENCIMA, a la vista), dos correas de latón que lo sujetan (una arriba del codo y otra en la muñeca), una guillotina
+chiquita entre dos postes justo a la mitad del brazo, tres focos rojos al frente (uno por ronda perdida), un engrane a un lado y un
+cuadrante con su aguja al otro. Cuando corta, aparece la sangre (en el cojín, escurriendo por los lados, en la mesa y en la hoja).
 
 Escribe geo/maquina.geo.json, animations/maquina.animation.json y textures/entity/maquina.png.
-La entidad está sobre la mesa (y = 0 del modelo); mira a -z (hacia el rival): el brazo entra por atrás (+z).
-Mide 12 px de ancho, 16 de largo y 22 de alto (con la guillotina arriba).
+La entidad está sobre la mesa (y = 0 del modelo), debajo del antebrazo; mira a -z (hacia el rival): el hombro queda atrás (+z) y la mano
+adelante (-z). El brazo se apoya en el cojín (arriba en y 4.3). La hoja cae en z = +1.75 (la mitad del brazo).
+Mide 8 px de ancho, 13 de largo y 16 de alto.
 
-Huesos: raiz, base, prensa_izq, prensa_der, cuchilla, engrane, aguja, luz0..2 (los focos encendidos), sangre. Todo lo mueve el código
-(Maquina.axPose).
+Huesos: raiz, base, correa_a (arriba del codo), correa_b (la muñeca), cuchilla (con sangre_hoja), engrane, aguja, luz0..2 (los focos
+encendidos), sangre. Todo lo mueve el código (Maquina.axPose).
 
 Uso: python3 herramientas/maquina.py
 """
@@ -37,54 +39,52 @@ def cubo(h, o, t, mat, inflar=0.0):
 def modelo():
     hueso('raiz', None, (0, 0, 0))
     hueso('base', 'raiz', (0, 0, 0))
-    # la plancha de abajo y el túnel (por donde entra el brazo, de +z a -z)
-    cubo('base', (-6, 0, -8), (12, 1, 16), 'laton_oscuro')
-    cubo('base', (-5, 1, -7), (1.5, 6, 14), 'laton')                 # pared izquierda (x-)
-    cubo('base', (3.5, 1, -7), (1.5, 6, 14), 'laton')                # pared derecha (x+)
-    cubo('base', (-5, 7, -7), (10, 1.5, 9.5), 'laton')               # el techo, adelante de la ranura
-    cubo('base', (-5, 7, 3.7), (10, 1.5, 3.3), 'laton')              # el techo, atrás de la ranura
-    cubo('base', (-5, 1, -8), (10, 6.5, 1), 'laton_oscuro')          # la tapa del frente (ahí topan los dedos)
-    # el collar de cobre de la entrada
-    cubo('base', (-5.6, 7, 7), (11.2, 1.8, 1.2), 'cobre')
-    cubo('base', (-5.6, 1, 7), (1.8, 6, 1.2), 'cobre')
-    cubo('base', (3.8, 1, 7), (1.8, 6, 1.2), 'cobre')
-    # remaches en el techo
-    for x in (-4.2, 3.2):
-        for z in (-6, -2, 5):
-            cubo('base', (x, 8.5, z), (1, 0.5, 1), 'remache')
-    # la caja de los focos, al frente arriba
-    cubo('base', (-4.5, 8.5, -7), (9, 1.5, 3.4), 'laton_oscuro')
-    for k, x in enumerate((-3.6, -0.8, 2.0)):
-        cubo('base', (x, 10, -6.2), (1.6, 1.6, 1.6), 'foco_apagado')
-    # los postes y la viga de la guillotina (sobre la ranura del techo)
-    cubo('base', (-5.2, 8.5, 2.4), (1.3, 13, 1.4), 'hierro')
-    cubo('base', (3.9, 8.5, 2.4), (1.3, 13, 1.4), 'hierro')
-    cubo('base', (-5.6, 21.5, 2.2), (11.2, 1.6, 1.8), 'hierro')
-    # el cuadrante a la derecha
-    cubo('base', (5, 2.5, -3.5), (0.6, 4.5, 4.5), 'cuadrante')
+    # la plancha, el pedestal y el cojín de cuero (donde se apoya el antebrazo)
+    cubo('base', (-3.5, 0, -5), (7, 1, 10), 'laton_oscuro')
+    cubo('base', (-3, 1, -4.5), (6, 2.8, 9), 'laton')
+    cubo('base', (-2.3, 3.8, -4.5), (4.6, 0.5, 9), 'cuero')
+    # el tope del frente (ahí quedan los dedos) con los tres focos arriba
+    cubo('base', (-3.5, 1, -6.5), (7, 4.2, 1.6), 'laton_oscuro')
+    for k, x in enumerate((-2.6, -0.8, 1.0)):
+        cubo('base', (x, 5.2, -6.2), (1.6, 1.2, 1.2), 'foco_apagado')
+    # remaches
+    for x in (-2.9, 2.1):
+        for z in (-4, 3.2):
+            cubo('base', (x, 3.8, z), (0.8, 0.4, 0.8), 'remache')
+    # los postes y la viga de la guillotina (a los lados del brazo, a la mitad)
+    cubo('base', (-3.7, 3.8, 1.0), (0.9, 11.4, 1.5), 'hierro')
+    cubo('base', (2.8, 3.8, 1.0), (0.9, 11.4, 1.5), 'hierro')
+    cubo('base', (-4.0, 15.2, 0.8), (8.0, 1.2, 1.9), 'hierro')
+    # el cuadrante a un lado y el engrane al otro
+    cubo('base', (-3.6, 1.2, -2.2), (0.6, 2.6, 2.6), 'cuadrante')
     # los focos encendidos (se ven solo cuando hay rondas perdidas)
-    for k, x in enumerate((-3.6, -0.8, 2.0)):
-        hueso('luz%d' % k, 'base', (x + 0.8, 10.8, -5.4))
-        cubo('luz%d' % k, (x, 10, -6.2), (1.6, 1.6, 1.6), 'foco_encendido', 0.18)
-    # las prensas de adentro (se cierran sobre el brazo)
-    hueso('prensa_izq', 'base', (-3.5, 4, -1))
-    cubo('prensa_izq', (-3.5, 2, -5.5), (1, 4.5, 9), 'acero_oscuro')
-    hueso('prensa_der', 'base', (3.5, 4, -1))
-    cubo('prensa_der', (2.5, 2, -5.5), (1, 4.5, 9), 'acero_oscuro')
-    # la guillotina (arriba, lista para bajar)
-    hueso('cuchilla', 'base', (0, 19, 3.1))
-    cubo('cuchilla', (-3.9, 14.5, 2.8), (7.8, 4.5, 0.6), 'cuchilla')
-    cubo('cuchilla', (-3.2, 19, 2.5), (6.4, 2, 1.2), 'hierro')
-    # el engrane del lado izquierdo y la aguja del cuadrante
-    hueso('engrane', 'base', (-5.6, 4.5, -1.2))
-    cubo('engrane', (-6.1, 2, -3.7), (0.8, 5, 5), 'engrane')
-    hueso('aguja', 'base', (5.7, 4.75, -1.25))
-    cubo('aguja', (5.6, 4.6, -1.35), (0.3, 1.9, 0.2), 'aguja')
-    # la sangre (solo después del corte)
-    hueso('sangre', 'base', (0, 1, 6))
-    cubo('sangre', (-4.8, 1.02, 3), (9.6, 0.1, 7.5), 'sangre')
-    cubo('sangre', (-5.7, 3, 8.25), (11.4, 4, 0.1), 'sangre_gotas')
-    cubo('sangre', (-3.9, 14.4, 2.75), (7.8, 1.6, 0.7), 'sangre')
+    for k, x in enumerate((-2.6, -0.8, 1.0)):
+        hueso('luz%d' % k, 'base', (x + 0.8, 5.8, -5.6))
+        cubo('luz%d' % k, (x, 5.2, -6.2), (1.6, 1.2, 1.2), 'foco_encendido', 0.15)
+    # las correas (arcos de latón sobre el brazo; la bisagra en la orilla de abajo de un lado: se abren girando)
+    for nombre, z in (('correa_a', 3.4), ('correa_b', -2.9)):
+        hueso(nombre, 'base', (0, 4.3, z + 0.6))
+        cubo(nombre, (-3.0, 4.3, z), (0.8, 4.2, 1.2), 'laton')
+        cubo(nombre, (2.2, 4.3, z), (0.8, 4.2, 1.2), 'laton')
+        cubo(nombre, (-3.0, 8.3, z), (6.0, 0.8, 1.2), 'laton')
+        cubo(nombre, (-0.5, 8.7, z - 0.1), (1.0, 0.6, 1.4), 'remache')
+    # la guillotina (arriba, lista para caer a la mitad del brazo)
+    hueso('cuchilla', 'base', (0, 11, 1.75))
+    cubo('cuchilla', (-2.7, 9.8, 1.5), (5.4, 3.2, 0.5), 'cuchilla')
+    cubo('cuchilla', (-2.2, 13.0, 1.25), (4.4, 1.6, 1.0), 'hierro')
+    hueso('sangre_hoja', 'cuchilla', (0, 10, 1.75))
+    cubo('sangre_hoja', (-2.7, 9.8, 1.42), (5.4, 1.3, 0.66), 'sangre')
+    # el engrane del otro lado y la aguja del cuadrante
+    hueso('engrane', 'base', (3.4, 2.5, -0.9))
+    cubo('engrane', (3.0, 1.0, -2.4), (0.8, 3, 3), 'engrane')
+    hueso('aguja', 'base', (-3.7, 2.5, -0.9))
+    cubo('aguja', (-3.75, 2.4, -1.0), (0.2, 1.3, 0.2), 'aguja')
+    # la sangre (solo después del corte): en el cojín, escurriendo por los lados y en la mesa
+    hueso('sangre', 'base', (0, 4.3, 1.75))
+    cubo('sangre', (-2.4, 4.32, -1.2), (4.8, 0.1, 5.4), 'sangre')
+    cubo('sangre', (-3.06, 1.2, -0.5), (0.1, 3.0, 3.6), 'sangre_gotas')
+    cubo('sangre', (2.96, 1.2, -0.5), (0.1, 3.0, 3.6), 'sangre_gotas')
+    cubo('sangre', (-5.5, 0.03, -3.0), (11.0, 0.1, 8.0), 'sangre')
 
 
 # ---------------------------------------------------------------- textura
@@ -109,6 +109,10 @@ def mat(nombre, w, h, cara, s):
             rgb[0, :] *= 1.25
             rgb[-1, :] *= 0.7
             rgb[(xx == w // 2) & (yy % 3 == 0)] *= 0.85
+    elif nombre == 'cuero':
+        rgb = np.array(hexc('#4a1418'), float) * (0.8 + 0.35 * ruido)
+        if w >= 3:
+            rgb[:, (xx[0] % 3 == 0)] *= 0.8
     elif nombre == 'remache':
         rgb = np.array(hexc('#d8b860'), float) * (0.85 + 0.2 * ruido)
     elif nombre == 'hierro':

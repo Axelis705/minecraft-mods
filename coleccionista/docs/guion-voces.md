@@ -330,6 +330,13 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 7 | `piano_varios.ogg` | 7.8 s | Si se equivocan varios, los que acertaron se salvan. Los demás… vuelven a tocar. |
 | 8 | `piano_baile.ogg` | 3.0 s | Que empiece el baile. |
 
+## Capítulo 6 · El piano gigante: después de explicar (cada quien sube a su pista)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `piano_pistas_pistas.ogg` | 5.2 s | Cada quien tiene su pista. Suban por las escaleras. |
+| 2 | `piano_pistas_numero.ogg` | 6.2 s | Su número está en los escalones. No se equivoquen de pista… |
+
 ## Capítulo 6 · El piano gigante: el final (antes de la última prueba)
 
 | # | Archivo | Dura | Texto |
@@ -367,4 +374,4 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 2 | `veintiuno_fin_completa.ogg` | 5.0 s | Mi colección está completa… por esta noche. |
 | 3 | `veintiuno_fin_puerta.ogg` | 5.2 s | Puedes irte. La puerta está abierta… esta vez. |
 
-**Total: 201 líneas (≈17 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+**Total: 203 líneas (≈17 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

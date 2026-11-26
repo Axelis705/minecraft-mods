@@ -67,7 +67,9 @@ public final class Piano {
      * Ajustes (los cambia el organizador con /evento piano ...): cuántos caen (0: los que hagan falta para que lleguen dos a la final), los
      * segundos para cada nota y con cuántas notas empieza.
      */
-    public static int caer = 0, segundosNota = 4, notasInicio = 3;
+    public static int caer = 0, segundosNota = 6, notasInicio = 3;
+    /** Cuánto tienen para subir cada quien a su pista (segundos); luego la caja sube a los que falten. */
+    public static int segundosSubir = 45;
     public static int esperaPasillo = 1200, esperaSalon = 900;
     /** Al terminar el salón de té, pasan solos al salón de baile; {@code rapido}: los bots tocan al instante y no se equivocan solos. */
     public static boolean encadenar = true, rapido;
@@ -75,14 +77,16 @@ public final class Piano {
     private static final java.util.Set<UUID> fallan = new java.util.HashSet<>();
     private static final java.util.ArrayDeque<Integer> fallanPorRonda = new java.util.ArrayDeque<>();
     /** Ticks entre nota y nota cuando toca la bailarina, y cuántos tiene que estar en una tecla para que cuente. */
-    public static final int T_NOTA = 13, T_PISA = 4;
+    public static final int T_NOTA = 19, T_PISA = 4;
+    /** Pausas (ticks): antes de que toque la bailarina, al revisar quién falló y cuando se abre el piso. */
+    public static final int T_ANTES = 50, T_REVISA = 80, T_ELIMINA = 40, T_CAE = 100;
 
     public enum Fase {
         NADA, PASILLO, LLEGANDO, HABLANDO, LUGARES, MUESTRA, TOCA, REVISA, CAE, FIN
     }
 
     private static Fase fase = Fase.NADA;
-    private static long t, desde, apagonFin;
+    private static long t, desde, apagonFin, lugaresFin, todosArriba = -1;
     private static final Random R = new Random();
     private static MinecraftServer srv;
 
@@ -273,7 +277,11 @@ public final class Piano {
         Coleccionista.LOGGER.info("COLECCIONISTA_PIANO habla");
     }
 
-    /** Un apagón y, en lo oscuro, cada pieza a su piano (si son más de cuatro, los que sobran se salvan esta vez). */
+    /**
+     * El Coleccionista: "cada quien a su pista". A cada pieza le toca un piano (al azar; si son más de cuatro, los que sobran se salvan esta
+     * vez) y sube sola por las escaleras de su tarima. Cuando están todos arriba (o se acaba el tiempo y la caja sube a los que falten),
+     * empieza la primera ronda.
+     */
     private static void aLosPianos(MinecraftServer s) {
         if (fase != Fase.HABLANDO && fase != Fase.LLEGANDO) {
             return;
@@ -281,9 +289,63 @@ public final class Piano {
         Pantallas.callar(s);
         fase = Fase.LUGARES;
         desde = t;
-        apagonFin = t + 70;
-        Apagon.hacer(s, s.getPlayerList().getPlayers(), 60, () -> acomodar(s));
+        lugaresFin = t + segundosSubir * 20L;
+        todosArriba = -1;
+        acomodar(s);
+        Pantallas.modo(s, "texto", Component.translatable(MOD + ".piano.pantalla.suban").getString());
+        Pantallas.hablar(s, "piano_pistas", () -> {
+        });
+        Evento.get(s).reloj(s, segundosSubir);
         enviar(s);
+    }
+
+    /** ¿Ya está arriba de su piano (en la tarima, sobre las teclas)? */
+    private static boolean arriba(MinecraftServer s, Entity e, int k) {
+        BlockPos a = Complejo.pos(s, "piano.anillo." + k);
+        if (a == null) {
+            return false;
+        }
+        double x = e.getX() - a.getX(), z = e.getZ() - a.getZ(), y = e.getY() - a.getY();
+        return x >= -2 && x <= 4 && z >= -2 && z <= 4 && y >= 0.5 && y <= 3;
+    }
+
+    /** Subiendo: los bots caminan a su piano (si se atoran, la caja los sube); al acabarse el tiempo sube a los que falten. */
+    private static void lugaresTick(MinecraftServer s, long dt) {
+        Evento ev = Evento.get(s);
+        boolean todos = true;
+        for (Map.Entry<UUID, Integer> en : piano.entrySet()) {
+            Pieza p = ev.pieza(en.getKey());
+            Entity e = p == null ? null : Evento.entidad(s, p);
+            if (e == null) {
+                continue;
+            }
+            int k = en.getValue();
+            if (arriba(s, e, k)) {
+                continue;
+            }
+            todos = false;
+            double[] c = tapete(s, k);
+            if (c == null) {
+                continue;
+            }
+            if (t >= lugaresFin || p.bot && (rapido || dt > 30 * 20)) {
+                alTapete(s, e, k);
+            } else if (p.bot && e instanceof com.coleccionista.bot.PiezaBot b && dt % 20 == 0) {
+                b.getNavigation().moveTo(c[0], c[1], c[2], 1.0);
+            }
+        }
+        if (todos && todosArriba < 0) {
+            todosArriba = t;
+            Evento.get(s).reloj(s, 0);
+            Anuncio.sonido(s, SoundEvents.NOTE_BLOCK_BELL.get(), 1F, 1.2F);
+            Coleccionista.LOGGER.info("COLECCIONISTA_PIANO arriba en={}s", dt / 20);
+        }
+        if (todosArriba >= 0 && t - todosArriba >= 40) {
+            if (Pantallas.ocupado()) {
+                Pantallas.callar(s);
+            }
+            nuevaRonda(s, true);
+        }
     }
 
     private static void acomodar(MinecraftServer s) {
@@ -303,12 +365,6 @@ public final class Piano {
                 juegan.add(p.id);
             } else {
                 extras.add(p.id);
-            }
-        }
-        for (UUID id : piano.keySet()) {
-            Entity e = Evento.entidad(s, ev.pieza(id));
-            if (e != null) {
-                alTapete(s, e, piano.get(id));
             }
         }
         BlockPos sal = Complejo.pos(s, "piano.salida");
@@ -769,13 +825,14 @@ public final class Piano {
                 }
             }
             case LUGARES -> {
-                if (t >= apagonFin) {
-                    nuevaRonda(s, true);
+                lugaresTick(s, dt);
+                if (dt % 10 == 0) {
+                    enviar(s);
                 }
             }
             case MUESTRA -> {
                 // la bailarina toca: cada T_NOTA ticks se ilumina la siguiente tecla (en todos los pianos) y suena
-                long fin0 = 30;
+                long fin0 = T_ANTES;
                 if (dt >= fin0 && (dt - fin0) % T_NOTA == 0) {
                     int i = (int) ((dt - fin0) / T_NOTA);
                     if (i < melodia.size()) {
@@ -804,16 +861,16 @@ public final class Piano {
             }
             case TOCA -> tocaTick(s);
             case REVISA -> {
-                if (dt >= 60) {
+                if (dt >= T_REVISA) {
                     despues(s);
                 }
             }
             case CAE -> {
-                if (dt == 30) {
+                if (dt == T_ELIMINA) {
                     eliminarCaidos(s);
                     enviar(s);
                 }
-                if (dt >= 70) {
+                if (dt >= T_CAE) {
                     if (cayeron >= cuota || juegan.size() <= 1) {
                         fin(s);
                     } else {
@@ -967,6 +1024,10 @@ public final class Piano {
                     c.putIntArray("pos", new int[] {b.getX(), b.getY(), b.getZ()});
                 }
                 c.putBoolean("juega", juegan.contains(id));
+                if (fase == Fase.LUGARES) {
+                    Entity quien = p == null ? null : Evento.entidad(srv, p);
+                    c.putBoolean("arriba", quien != null && arriba(srv, quien, en.getValue()));
+                }
                 c.putBoolean("salvado", salvados.contains(id));
                 c.putBoolean("caido", caidos.contains(id) || cae.contains(id));
                 c.putBoolean("vivo", p != null && p.vivo());
@@ -1004,6 +1065,11 @@ public final class Piano {
         }
         if (fase == Fase.LLEGANDO && desde <= t && !enSalon(s, sp)) {
             return Objetivo.Meta.en(Complejo.pos(s, "piano.entrada"), 1.5, MOD + ".obj.salon_baile");
+        }
+        Integer k = piano.get(sp.getUUID());
+        if (fase == Fase.LUGARES && k != null && !arriba(s, sp, k)) {
+            BlockPos a = Complejo.pos(s, "piano.anillo." + k);
+            return a == null ? null : Objetivo.Meta.en(a.above(), 0.5, MOD + ".obj.pista");
         }
         return null;
     }
@@ -1106,6 +1172,11 @@ public final class Piano {
             }
             case HABLANDO -> {
                 aLosPianos(s);
+                return true;
+            }
+            case LUGARES -> {
+                // la caja sube ya a los que falten
+                lugaresFin = t;
                 return true;
             }
             case MUESTRA -> {

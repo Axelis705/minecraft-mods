@@ -403,6 +403,13 @@ public final class Pantallas {
         return l;
     }
 
+    public static List<Frase> piano_pistas() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("pistas", 105, null, 1F));
+        l.add(new Frase("numero", 125, null, 1F));
+        return l;
+    }
+
     public static List<Frase> piano_fin() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("cansada", 65, null, 1F));
@@ -471,6 +478,7 @@ public final class Pantallas {
             case "te_reglas" -> te_reglas();
             case "te_fin" -> te_fin();
             case "piano" -> piano();
+            case "piano_pistas" -> piano_pistas();
             case "piano_fin" -> piano_fin();
             case "veintiuno" -> veintiuno();
             case "veintiuno_reglas" -> veintiuno_reglas();

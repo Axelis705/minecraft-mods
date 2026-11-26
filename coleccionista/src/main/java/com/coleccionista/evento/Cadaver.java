@@ -97,7 +97,7 @@ public class Cadaver extends Entity {
         return postura() >= JAULA && postura() < JAULA + 100;
     }
 
-    /** Postura desde la que el cuerpo es el que perdió la final: sentado en su silla, echado sobre la mesa, sin el brazo izquierdo. */
+    /** Postura desde la que el cuerpo es el que perdió la final: sentado en su silla, desangrado y echado hacia atrás, con medio brazo izquierdo. */
     public static final int MANCO = 500;
 
     public boolean manco() {

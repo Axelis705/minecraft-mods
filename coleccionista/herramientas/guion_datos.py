@@ -204,6 +204,12 @@ GUIONES = {
          "If several of you miss, the ones who got it right are safe. The rest… play again.", "Didáctico; con gusto en «los demás…»."),
         ("baile", "Que empiece el baile.", "Let the dance begin.", "Corto, con gusto; como quien levanta el telón."),
     ],
+    "piano_pistas": [
+        ("pistas", "Cada quien tiene su pista. Suban por las escaleras.", "Each of you has your own floor. Take the stairs up.",
+         "Anfitrión; como quien acomoda a sus invitados."),
+        ("numero", "Su número está en los escalones. No se equivoquen de pista…", "Your number is on the steps. Don't pick the wrong floor…",
+         "Juguetón; pausa al final."),
+    ],
     "veintiuno": [
         ("mesa", "Bienvenidos a mi mesa de juego. Aquí nadie había llegado.", "Welcome to my gaming table. No one has ever made it this far.",
          "Íntimo, casi orgulloso de ellos."),
@@ -426,6 +432,7 @@ TITULOS = {
     "te_reglas": "Capítulo 5 · La hora del té: ya en las jaulas (la tele explica el juego)",
     "te_fin": "Capítulo 5 · La hora del té: el final (salen los ganadores)",
     "piano": "Capítulo 6 · El piano gigante: en el salón de baile (cuando ya entraron todos)",
+    "piano_pistas": "Capítulo 6 · El piano gigante: después de explicar (cada quien sube a su pista)",
     "piano_fin": "Capítulo 6 · El piano gigante: el final (antes de la última prueba)",
     "veintiuno": "Capítulo 7 (final) · Veintiuno: en la mesa de juego (cuando ya entraron todos)",
     "veintiuno_reglas": "Capítulo 7 (final) · Veintiuno: ya sentados con la mano en la máquina (la tele explica el juego)",

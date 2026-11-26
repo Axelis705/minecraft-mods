@@ -19,13 +19,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 /**
- * La máquina de latón de la final (veintiuno): un cepo sobre la mesa donde cada finalista tiene metida la mano izquierda. La prueba
+ * La máquina de latón de la final (veintiuno), chica, sobre la mesa: el antebrazo izquierdo de cada finalista va ENCIMA, sujeto con dos
+ * correas, y una guillotina chiquita a la mitad del brazo. La prueba
  * ({@code Veintiuno}) dice en qué estado está y cuántas rondas lleva perdidas (los focos rojos); el cliente la dibuja
  * ({@code geo/maquina.geo.json}) y la mueve aquí:
  * <ul>
- * <li>{@link #ABIERTA}: las prensas abiertas (todavía no hay brazo, o ya soltó al ganador).</li>
- * <li>{@link #CERRADA}: atrapa el brazo (las prensas se cierran con un golpe).</li>
- * <li>{@link #APRIETA}: primera ronda perdida: las prensas aprietan (y tiembla todo).</li>
+ * <li>{@link #ABIERTA}: las correas abiertas, arriba (todavía no hay brazo, o ya soltó al ganador).</li>
+ * <li>{@link #CERRADA}: las correas bajan de golpe sobre el brazo.</li>
+ * <li>{@link #APRIETA}: primera ronda perdida: las correas aprietan (y tiembla todo).</li>
  * <li>{@link #CHISPAS}: segunda: tiembla y la aguja se vuelve loca (las chispas las pone el servidor).</li>
  * <li>{@link #CORTA}: tercera: la guillotina sube un poquito y ¡pum!; aparece la sangre.</li>
  * </ul>
@@ -35,9 +36,14 @@ public class Maquina extends Entity implements Animated {
     public static final int ABIERTA = 0, CERRADA = 1, APRIETA = 2, CHISPAS = 3, CORTA = 4;
     /** Cuándo baja la guillotina (ticks desde que empieza a cortar). */
     public static final int T_CAE = 12;
+    /** Cuánto baja la hoja (px): del reposo hasta el cojín, atravesando el brazo. */
+    public static final float CAIDA = 5.5F;
     private static final EntityDataAccessor<Integer> ESTADO = SynchedEntityData.defineId(Maquina.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DESDE = SynchedEntityData.defineId(Maquina.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> GOLPES = SynchedEntityData.defineId(Maquina.class, EntityDataSerializers.INT);
+    /** De quién es el brazo que tiene encima (para dibujar, ya cortado, la mitad que se queda en la máquina con su piel). */
+    private static final EntityDataAccessor<java.util.Optional<java.util.UUID>> DUENO = SynchedEntityData.defineId(Maquina.class,
+            EntityDataSerializers.OPTIONAL_UUID);
     private final AnimHost anim = new AnimHost();
 
     public Maquina(EntityType<?> type, Level level) {
@@ -52,6 +58,15 @@ public class Maquina extends Entity implements Animated {
         this.entityData.define(ESTADO, ABIERTA);
         this.entityData.define(DESDE, 0);
         this.entityData.define(GOLPES, 0);
+        this.entityData.define(DUENO, java.util.Optional.empty());
+    }
+
+    public java.util.Optional<java.util.UUID> dueno() {
+        return entityData.get(DUENO);
+    }
+
+    public void dueno(java.util.UUID id) {
+        entityData.set(DUENO, java.util.Optional.ofNullable(id));
     }
 
     public int estado() {
@@ -105,47 +120,48 @@ public class Maquina extends Entity implements Animated {
         float ahora = level().getGameTime() + pt;
         float t = desde(pt);
         int e = estado();
-        // las prensas: abiertas (-1 px), cerradas (0) o apretando (+1.3 px hacia el brazo)
-        float prensa, temblor = 0F, aguja = -40F, engrane = 0F, cuchilla = 0F;
+        // ojo: en Pose.addPos la y positiva va hacia ABAJO. Las correas: abiertas van 4 px arriba del brazo; cerradas, sobre el brazo;
+        // apretando, medio px más abajo (se le hunden). La hoja: arriba; al cortar sube un poquito y cae 5.3 px (atraviesa el brazo).
+        float correa, temblor = 0F, aguja = -40F, engrane = 0F, cuchilla = 0F;
         switch (e) {
             case CERRADA -> {
-                prensa = -1F + suave(t / 4F);
-                temblor = t < 6 ? 0.25F * (1F - t / 6F) : 0F;
+                // ¡clac! bajan de golpe y rebotan un poquito
+                correa = t < 3 ? -4F * (1F - suave(t / 3F)) : -0.4F * (float) Math.exp(-(t - 3) / 2F) * (float) Math.cos((t - 3) * 1.6F);
+                temblor = t < 6 ? 0.2F * (1F - t / 6F) : 0F;
                 aguja = -40F + 20F * suave(t / 6F);
             }
             case APRIETA -> {
-                prensa = 0.2F + 1.1F * suave(t / 22F);
-                temblor = t < 30 ? 0.35F : 0.08F;
+                correa = 0.55F * suave(t / 18F);
+                temblor = t < 30 ? 0.3F : 0.06F;
                 engrane = Math.min(t, 22F) * 14F;
                 aguja = -20F + 70F * suave(t / 22F);
             }
             case CHISPAS -> {
-                prensa = 1.3F;
-                temblor = t < 40 ? 0.45F : 0.1F;
+                correa = 0.6F;
+                temblor = t < 40 ? 0.4F : 0.08F;
                 aguja = 50F + 60F * (float) Math.sin(ahora * 2.1F) * (t < 40 ? 1F : 0.2F);
                 engrane = t * 9F;
             }
             case CORTA -> {
-                prensa = 1.3F;
-                // la guillotina: sube un poquito (se prepara) y cae de golpe; luego se queda abajo
+                correa = 0.6F;
                 if (t < T_CAE - 3) {
-                    cuchilla = -1.5F * suave(t / (T_CAE - 3));
+                    cuchilla = -1.2F * suave(t / (T_CAE - 3));
                 } else if (t < T_CAE) {
                     float c = (t - (T_CAE - 3)) / 3F;
-                    cuchilla = -1.5F + 14.5F * c * c;
+                    cuchilla = -1.2F + (CAIDA + 1.2F) * c * c;
                 } else {
-                    cuchilla = 13F;
+                    cuchilla = CAIDA;
                 }
-                temblor = t >= T_CAE && t < T_CAE + 10 ? 0.6F * (1F - (t - T_CAE) / 10F) : 0F;
+                temblor = t >= T_CAE && t < T_CAE + 10 ? 0.5F * (1F - (t - T_CAE) / 10F) : 0F;
                 aguja = 110F;
             }
-            default -> prensa = -1F;
+            default -> correa = -4F;
         }
         if (temblor > 0F) {
             pose.addPos(geo.bone("raiz"), temblor * (float) Math.sin(ahora * 7.1F), 0, temblor * (float) Math.cos(ahora * 6.3F));
         }
-        pose.addPos(geo.bone("prensa_izq"), prensa, 0, 0);
-        pose.addPos(geo.bone("prensa_der"), -prensa, 0, 0);
+        pose.addPos(geo.bone("correa_a"), 0, correa, 0);
+        pose.addPos(geo.bone("correa_b"), 0, correa, 0);
         pose.addPos(geo.bone("cuchilla"), 0, cuchilla, 0);
         pose.addRot(geo.bone("engrane"), engrane * r, 0, 0);
         pose.addRot(geo.bone("aguja"), aguja * r, 0, 0);
@@ -153,7 +169,9 @@ public class Maquina extends Entity implements Animated {
         for (int k = 0; k < 3; k++) {
             pose.hide(geo.bone("luz" + k), k >= g);
         }
-        pose.hide(geo.bone("sangre"), !cortado(pt));
+        boolean sangre = cortado(pt);
+        pose.hide(geo.bone("sangre"), !sangre);
+        pose.hide(geo.bone("sangre_hoja"), !sangre);
     }
 
     // ------------------------------------------------------------------ como entidad

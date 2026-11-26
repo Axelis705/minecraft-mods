@@ -159,8 +159,9 @@ public final class SalaVeintiuno {
             p.set(x + dx, 3, z, C + "candelabro[facing=south,half=upper]");
         }
         luz(p, x, 4, z + 2, 11);
-        // la pantalla grande arriba del trono, en el muro del norte
-        p.set(x, 7, HZ0 - 1, C + "pantalla[facing=south,grande=true]");
-        p.marca("v21.pantalla", x, 7, HZ0 - 1, 0);
+        // la pantalla grande arriba del trono, pegada al muro del norte (adentro del cuarto, como en los otros cuartos: si va metida en el
+        // muro, la tapa la pared y solo se ve un pedazo)
+        p.set(x, 7, HZ0, C + "pantalla[facing=south,grande=true]");
+        p.marca("v21.pantalla", x, 7, HZ0, 0);
     }
 }

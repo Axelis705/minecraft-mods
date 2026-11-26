@@ -118,7 +118,7 @@ public final class PianoCliente {
             return;
         }
         String f = fase();
-        if (!"MUESTRA".equals(f) && !"TOCA".equals(f) && !"REVISA".equals(f) && !"CAE".equals(f)) {
+        if (!"LUGARES".equals(f) && !"MUESTRA".equals(f) && !"TOCA".equals(f) && !"REVISA".equals(f) && !"CAE".equals(f)) {
             return;
         }
         Minecraft mc = Minecraft.getInstance();
@@ -248,7 +248,7 @@ public final class PianoCliente {
             return;
         }
         String f = fase();
-        if (!"MUESTRA".equals(f) && !"TOCA".equals(f) && !"REVISA".equals(f) && !"CAE".equals(f)) {
+        if (!"LUGARES".equals(f) && !"MUESTRA".equals(f) && !"TOCA".equals(f) && !"REVISA".equals(f) && !"CAE".equals(f)) {
             return;
         }
         Font font = Ui.font();
@@ -256,6 +256,20 @@ public final class PianoCliente {
         boolean desempate = Nbt.b(estado, "desempate");
         CompoundTag yo = mio();
         boolean juego = yo != null && Nbt.b(yo, "juega");
+        if ("LUGARES".equals(f)) {
+            // subiendo: a qué pista le toca (está numerada en sus escaleras)
+            if (yo != null && juego) {
+                boolean arriba = Nbt.b(yo, "arriba");
+                EventoHud.texto(g, font, arriba ? t("arriba") : t("sube", Nbt.i(yo, "piano") + 1), w / 2, h / 2 - 72, 2.0F,
+                        arriba ? EventoHud.PORCELANA : EventoHud.ORO);
+                if (!arriba) {
+                    g.drawCenteredString(font, t("sube_ayuda"), w / 2, h / 2 - 50, 0xFFD8D0C8);
+                }
+            } else if (yo == null) {
+                EventoHud.lado(g, t("no_tocas"), 0xFFA89E96, false);
+            }
+            return;
+        }
         // arriba a la izquierda: la ronda
         EventoHud.lado(g, t(desempate ? "ronda_desempate" : "ronda", ronda, largo), EventoHud.ORO, true);
         if (yo == null) {

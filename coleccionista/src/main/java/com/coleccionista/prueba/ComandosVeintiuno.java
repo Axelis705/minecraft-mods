@@ -91,6 +91,18 @@ public final class ComandosVeintiuno {
                     Veintiuno.comodines = BoolArgumentType.getBool(c, "si");
                     return ok(c, Component.literal("comodines=" + Veintiuno.comodines));
                 })))
+                // el organizador disfrazado en el trono: ahora mismo, o si se hace solo al empezar la final
+                .then(Commands.literal("trono").executes(c -> ok(c, Component.literal("trono=" + Veintiuno.alTrono(c.getSource().getServer()))))
+                        .then(Commands.argument("si", BoolArgumentType.bool()).executes(c -> {
+                            Veintiuno.trono = BoolArgumentType.getBool(c, "si");
+                            return ok(c, Component.literal("trono=" + Veintiuno.trono));
+                        })))
+                // qué tan grave suena el Coleccionista disfrazado (1 = su voz normal)
+                .then(Commands.literal("voz").then(Commands.argument("tono", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(0.5F, 1.5F))
+                        .executes(c -> {
+                            com.coleccionista.voz.Voz.tonoDisfraz = com.mojang.brigadier.arguments.FloatArgumentType.getFloat(c, "tono");
+                            return ok(c, Component.literal("voz=" + com.coleccionista.voz.Voz.tonoDisfraz));
+                        })))
                 .then(Commands.literal("encadenar").then(Commands.argument("si", BoolArgumentType.bool()).executes(c -> {
                     Veintiuno.encadenar = BoolArgumentType.getBool(c, "si");
                     return ok(c, Component.literal("encadenar=" + Veintiuno.encadenar));

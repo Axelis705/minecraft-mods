@@ -22,6 +22,8 @@ public final class Voz {
     private static final Set<UUID> ALTAVOZ = new LinkedHashSet<>();
     private static Map<UUID, Integer> separados = Map.of();
     private static long n;
+    /** Qué tan grave suena el Coleccionista disfrazado (menos de 1: más grave; 1: su voz normal). */
+    public static float tonoDisfraz = 0.78F;
 
     private Voz() {
     }
@@ -50,6 +52,13 @@ public final class Voz {
                 org.add(sp.getUUID());
             }
         }
+        Map<UUID, Float> disfrazados = new HashMap<>();
+        if (tonoDisfraz > 0F && Math.abs(tonoDisfraz - 1F) > 0.01F) {
+            for (UUID id : ev.disfrazados()) {
+                disfrazados.put(id, tonoDisfraz);
+            }
+        }
+        VozPuente.tonosDisfraz = Map.copyOf(disfrazados);
         VozPuente.vivos = Set.copyOf(vivos);
         VozPuente.fantasmas = Set.copyOf(fantasmas);
         VozPuente.organizadores = Set.copyOf(org);
@@ -86,8 +95,26 @@ public final class Voz {
     }
 
     /** A quién se le corta el micrófono (vacío = a nadie). */
+    /** La clave con que cada jugador sabe si lleva la cinta (para su micrófono y su aviso). */
+    public static final String KEY_MUDO = Coleccionista.MODID + ":mudo";
+
+    /** Le avisa a cada jugador conectado si lleva la cinta (la de la prueba o la de {@code /evento probar cinta}). */
+    public static void avisarMudos() {
+        MinecraftServer s = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
+        if (s == null) {
+            return;
+        }
+        for (net.minecraft.server.level.ServerPlayer sp : s.getPlayerList().getPlayers()) {
+            boolean m = VozPuente.mudos.contains(sp.getUUID()) || VozPuente.mudosPrueba.contains(sp.getUUID());
+            net.minecraft.nbt.CompoundTag t = new net.minecraft.nbt.CompoundTag();
+            t.putBoolean("mudo", m);
+            com.axeliscore.data.PlayerStore.Sync.toPlayer(sp, KEY_MUDO, t);
+        }
+    }
+
     public static void mudos(Set<UUID> ids) {
         VozPuente.mudos = Set.copyOf(ids);
+        avisarMudos();
         Coleccionista.LOGGER.info("COLECCIONISTA_VOZ mudos={}", ids.size());
     }
 

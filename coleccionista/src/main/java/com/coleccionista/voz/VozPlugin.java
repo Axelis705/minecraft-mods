@@ -97,6 +97,12 @@ public class VozPlugin implements VoicechatPlugin {
             }
         });
         r.registerEvent(de.maxhenkel.voicechat.api.events.ClientSoundEvent.class, e -> {
+            if (VozPuente.yoMudo) {
+                // la cinta: desde mi propio micrófono sale puro silencio (y el servidor además lo calla)
+                short[] a = e.getRawAudio();
+                e.setRawAudio(new short[a == null ? 0 : a.length]);
+                return;
+            }
             Runnable c = VozPuente.alHablarYo;
             if (c != null) {
                 c.run();
@@ -165,6 +171,9 @@ public class VozPlugin implements VoicechatPlugin {
      */
     private static boolean disfrazar(VoicechatServerApi api, VoicechatConnection de, UUID yo, MicrophonePacketEvent e) {
         Float razon = VozPuente.tonos.get(yo);
+        if (razon == null) {
+            razon = VozPuente.tonosDisfraz.get(yo);
+        }
         Disfraz d = DISFRACES.get(yo);
         if (razon == null || Math.abs(razon - 1F) < 0.01F) {
             if (d != null) {

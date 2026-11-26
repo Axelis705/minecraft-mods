@@ -266,14 +266,14 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
             ps.popPose();
         }
         ps.translate(0, 0.07, 0);
-        // echado hacia adelante (sobre la mesa), girando desde la cadera
-        ps.translate(0, 0.75, 0);
-        ps.mulPose(Axis.XP.rotationDegrees(-38F - 3F * v));
-        ps.translate(0, -0.75, 0);
-        m.head.setRotation(0.35F, 0.55F * (v % 2 == 0 ? 1 : -1), 0.3F * (v % 2 == 0 ? 1 : -1));
+        // desangrado: echado hacia atrás en la silla (girando desde la cadera, como lo dejó la final), la cabeza colgando para atrás y los
+        // brazos caídos; del izquierdo le queda la mitad
+        ps.mulPose(Axis.XP.rotationDegrees(Corte.MUERTO_INCLINA));
+        float[] cab = Corte.cabezaMuerto(Math.abs(id.hashCode()) % 3);
+        m.head.setRotation(cab[0], cab[1], cab[2]);
         m.body.setRotation(0, 0, 0);
-        m.rightArm.setRotation(0.25F, 0, 0.12F);
-        m.leftArm.setRotation(-1.25F, 0, -0.05F);
+        m.rightArm.setRotation(Corte.MUERTO_BRAZO, 0, 0.15F);
+        m.leftArm.setRotation(Corte.MUERTO_BRAZO, Corte.AY, Corte.AZ);
         m.rightLeg.setRotation(-1.4137167F, 0.31415927F, 0.07853982F);
         m.leftLeg.setRotation(-1.4137167F, -0.31415927F, -0.07853982F);
         m.hat.copyFrom(m.head);
@@ -289,16 +289,16 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         m.leftSleeve.visible = false;
         var vc = buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c)));
         m.renderToBuffer(ps, vc, light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
-        // el muñón: el brazo izquierdo cortito y ensangrentado
-        m.leftArm.visible = true;
-        m.leftArm.yScale = 0.32F;
-        m.leftArm.render(ps, vc, light, OverlayTexture.NO_OVERLAY, 0.62F, 0.1F, 0.1F, 1F);
-        m.leftArm.yScale = 1F;
-        m.leftSleeve.visible = true;
+        // el muñón: la mitad de arriba del brazo izquierdo, con el corte
+        Corte.munon(m, ps, vc, light);
+        m.leftArm.visible = false;
+        m.leftSleeve.visible = false;
         com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
         com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
                 m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);
         d.flush();
+        m.leftArm.visible = true;
+        m.leftSleeve.visible = true;
         ps.popPose();
     }
 

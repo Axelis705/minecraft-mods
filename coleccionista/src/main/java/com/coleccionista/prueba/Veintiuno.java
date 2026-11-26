@@ -49,7 +49,9 @@ import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -76,6 +78,11 @@ public final class Veintiuno {
     public static int golpesMax = 3, segundosTurno = 25;
     public static int esperaPasillo = 1200, esperaSalon = 900;
     public static boolean comodines = true;
+    /** ¿Al empezar la final, el organizador se disfraza del Coleccionista y se sienta en el trono? (se puede levantar y caminar) */
+    public static boolean trono = true;
+    /** La silla invisible del trono y a quién se le cambió el modo de juego para que se vea (para regresárselo). */
+    private static Silla sillaTrono;
+    private static final Map<UUID, net.minecraft.world.level.GameType> modoAntes = new HashMap<>();
     /** Al terminar el piano, pasan solos a la mesa de juego; {@code rapido}: los bots juegan al instante. */
     public static boolean encadenar = true, rapido;
     /** Para las pruebas: el mazo en este orden (las primeras cuatro son la tapada y la visible de cada uno), en lugar de barajar. */
@@ -239,6 +246,55 @@ public final class Veintiuno {
 
     // ------------------------------------------------------------------ el discurso, las sillas y las máquinas
 
+    /**
+     * El organizador (el que no juega) se pone el traje del Coleccionista y se sienta en su trono, frente a la mesa. Se puede levantar
+     * (Shift) y caminar alrededor para ponerlos nerviosos; mientras lleve el traje, su voz se oye más grave. Si estaba en espectador, pasa a
+     * aventura para que lo vean (al limpiar se le regresa su modo).
+     */
+    public static int alTrono(MinecraftServer s) {
+        if (!trono) {
+            return 0;
+        }
+        Evento ev = Evento.get(s);
+        BlockPos b = Complejo.pos(s, "v21.trono");
+        if (b == null) {
+            return 0;
+        }
+        int n = 0;
+        for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
+            if (!ev.esOrganizador(sp.getUUID()) || ev.pieza(sp.getUUID()) != null) {
+                continue;
+            }
+            ev.disfraz(s, sp.getUUID(), true);
+            if (sp.isSpectator()) {
+                modoAntes.putIfAbsent(sp.getUUID(), sp.gameMode.getGameModeForPlayer());
+                sp.setGameMode(net.minecraft.world.level.GameType.ADVENTURE);
+            }
+            if (n == 0) {
+                ServerLevel l = s.overworld();
+                if (sillaTrono == null || !sillaTrono.isAlive()) {
+                    sillaTrono = ModRegistry.SILLA.get().create(l);
+                    if (sillaTrono != null) {
+                        float yaw = Complejo.yaw("v21.trono");
+                        sillaTrono.moveTo(b.getX() + 0.5, b.getY() + 0.12, b.getZ() + 0.5, yaw, 0F);
+                        sillaTrono.setYHeadRot(yaw);
+                        sillaTrono.grupo = "trono";
+                        sillaTrono.oculta(true);
+                        l.addFreshEntity(sillaTrono);
+                    }
+                }
+                if (sillaTrono != null) {
+                    sp.stopRiding();
+                    sp.teleportTo(l, sillaTrono.getX(), sillaTrono.getY() + 0.3, sillaTrono.getZ(), sillaTrono.getYRot(), 0F);
+                    sp.startRiding(sillaTrono, true);
+                }
+            }
+            n++;
+            Coleccionista.LOGGER.info("COLECCIONISTA_V21 trono {}", sp.getGameProfile().getName());
+        }
+        return n;
+    }
+
     private static void hablar(MinecraftServer s) {
         fase = Fase.HABLANDO;
         desde = t;
@@ -251,6 +307,7 @@ public final class Veintiuno {
         }
         puertas(s, "pas_veintiuno", false);
         crearMaquinas(s);
+        alTrono(s);
         Escena.presentacion(s, "VII", MOD + ".v21.titulo", MOD + ".v21.lema");
         Pantallas.soloGrande(s, true);
         Pantallas.hablar(s, "veintiuno", () -> {
@@ -276,13 +333,19 @@ public final class Veintiuno {
         return new double[] {b.getX() + 0.5 + fx * 0.3, b.getY(), b.getZ() + 0.5 + fz * 0.3, yaw};
     }
 
-    /** La máquina va frente al hombro izquierdo de cada uno, sobre la mesa (con la entrada hacia él). */
+    /**
+     * Dónde va la máquina respecto al lugar de la silla (bloques hacia adelante y a la izquierda): justo debajo del antebrazo izquierdo
+     * estirado sobre la mesa (con la hoja a la mitad del brazo).
+     */
+    public static final double MAQ_FRENTE = 0.556, MAQ_LADO = 0.348;
+
+    /** La máquina va debajo del antebrazo izquierdo de cada uno, sobre la mesa (el brazo queda encima). */
     public static Vec3 posMaquina(double[] silla) {
         double r = Math.toRadians(silla[3]);
         double fx = -Math.sin(r), fz = Math.cos(r);
         // a la izquierda de quien mira hacia (fx, fz) está (fz, -fx)
         double ix = fz, iz = -fx;
-        return new Vec3(silla[0] + fx * 1.17 + ix * 0.29, silla[1] - 1 + SalaVeintiuno.TAPETE + 0.0, silla[2] + fz * 1.17 + iz * 0.29);
+        return new Vec3(silla[0] + fx * MAQ_FRENTE + ix * MAQ_LADO, silla[1] - 1 + SalaVeintiuno.TAPETE, silla[2] + fz * MAQ_FRENTE + iz * MAQ_LADO);
     }
 
     private static void crearMaquinas(MinecraftServer s) {
@@ -372,6 +435,8 @@ public final class Veintiuno {
                 if (maquina[k].estado() == Maquina.ABIERTA || maquina[k].estado() == Maquina.CORTA) {
                     maquina[k].estado(Maquina.CERRADA);
                 }
+                // en el apagón se llevan el brazo cortado del anterior: ahora es el brazo del que se sienta
+                maquina[k].dueno(jugador[k]);
             }
         }
         // los que esperan, de pie a los lados de la mesa (miran)
@@ -603,6 +668,7 @@ public final class Veintiuno {
         if (m != null) {
             m.golpes(g);
             m.estado(estado);
+            m.dueno(jugador[l]);
             ServerLevel lv = s.overworld();
             String son = estado == Maquina.CORTA ? "maquina_pum" : estado == Maquina.CHISPAS ? "maquina_chispas" : "maquina_aprieta";
             lv.playSound(null, m.getX(), m.getY(), m.getZ(), propio(son), SoundSource.HOSTILE, 3F, 1F);
@@ -657,6 +723,15 @@ public final class Veintiuno {
             if (dt > Maquina.T_CAE && dt < Maquina.T_CAE + 40 && dt % 4 == 0) {
                 lv.sendParticles(new DustParticleOptions(new Vector3f(0.5F, 0.02F, 0.03F), 1.0F), m.getX(), m.getY() + 0.15, m.getZ(), 3, 0.25,
                         0.02, 0.25, 0.0);
+            }
+            // se desangra: del muñón (a la mitad del brazo) gotea sangre hasta el piso mientras se queda quieto
+            double[] c = lugar(s, l);
+            if (c != null && dt > Maquina.T_CAE && dt < Maquina.T_CAE + 95 && dt % 3 == 0) {
+                double r = Math.toRadians(c[3]);
+                double fx = -Math.sin(r), fz = Math.cos(r), ix = fz, iz = -fx;
+                double adelante = dt < Maquina.T_CAE + 45 ? 0.42 : 0.2;
+                lv.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.defaultBlockState()),
+                        c[0] + fx * adelante + ix * 0.36, c[1] + 1.15, c[2] + fz * adelante + iz * 0.36, 2, 0.04, 0.02, 0.04, 0.0);
             }
         }
     }
@@ -1096,6 +1171,18 @@ public final class Veintiuno {
     /** Quita todo: sillas, máquinas, la sangre y los cuerpos de la mesa. */
     private static void limpiarTodo(MinecraftServer s) {
         ServerLevel l = s.overworld();
+        if (sillaTrono != null) {
+            sillaTrono.soltar();
+            sillaTrono.discard();
+            sillaTrono = null;
+        }
+        for (Map.Entry<UUID, net.minecraft.world.level.GameType> e : modoAntes.entrySet()) {
+            ServerPlayer sp = s.getPlayerList().getPlayer(e.getKey());
+            if (sp != null) {
+                sp.setGameMode(e.getValue());
+            }
+        }
+        modoAntes.clear();
         for (int k = 0; k < 2; k++) {
             if (silla[k] != null) {
                 silla[k].soltar();
@@ -1118,7 +1205,7 @@ public final class Veintiuno {
                 m.discard();
             }
             for (Silla si : l.getEntitiesOfClass(Silla.class, box)) {
-                if ("veintiuno".equals(si.grupo)) {
+                if ("veintiuno".equals(si.grupo) || "trono".equals(si.grupo)) {
                     si.soltar();
                     si.discard();
                 }

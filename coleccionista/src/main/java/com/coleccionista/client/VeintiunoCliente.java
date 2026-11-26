@@ -365,8 +365,8 @@ public final class VeintiunoCliente {
         String f = fase();
         boolean miTurno = "TURNO".equals(f) && Nbt.i(estado, "turno") == l;
         // la pose de siempre
-        float inclina = -9F, cuerpo = 0F, hx = 0.18F, hy = 0F, hz = 0F;
-        float ax = -1.5F, ay = 0.02F, bx = -1.05F, by = 0.22F;
+        float inclina = Corte.INCLINA, cuerpo = 0F, hx = 0.18F, hy = 0F, hz = 0F;
+        float ax = Corte.AX, ay = Corte.AY, bx = -1.05F, by = 0.22F, bz = 0.05F;
         if (miTurno) {
             // pensando: tamborilea con los dedos (el brazo derecho sube y baja un poquito) y mira sus cartas
             bx += 0.06F * (float) Math.sin(ahora * 0.9F);
@@ -390,15 +390,30 @@ public final class VeintiunoCliente {
             hx = 0.18F - 0.65F * Math.min(1F, fuerza) + 0.15F * fuerza * sac;
             hz = 0.2F * fuerza * sac;
             cuerpo = 7F * fuerza * sac;
-            inclina = -9F + 12F * Math.min(1F, fuerza);
+            inclina = Corte.INCLINA + 12F * Math.min(1F, fuerza);
             bx = -1.05F - 0.9F * Math.min(1F, fuerza);
             by = 0.22F + 0.5F * fuerza;
-            ax = -1.5F + 0.04F * fuerza * sac;
+            ax = Corte.AX + 0.04F * fuerza * sac;
+            if (corto) {
+                // se desangra: deja de moverse y se va quedando echado hacia atrás, la cabeza colgando y los brazos caídos (como su cuerpo)
+                float muere = t < Maquina.T_CAE + 35 ? 0F : Math.min(1F, (t - Maquina.T_CAE - 35) / 30F);
+                muere = muere * muere * (3 - 2 * muere);
+                float[] cab = Corte.cabezaMuerto(Math.abs(id.hashCode()) % 3);
+                inclina += (Corte.MUERTO_INCLINA - inclina) * muere;
+                cuerpo *= 1F - muere;
+                hx += (cab[0] - hx) * muere;
+                hy += (cab[1] - hy) * muere;
+                hz += (cab[2] - hz) * muere;
+                bx += (Corte.MUERTO_BRAZO - bx) * muere;
+                by += (0F - by) * muere;
+                bz += (0.15F - bz) * muere;
+                ax += (Corte.MUERTO_BRAZO - ax) * muere;
+            }
         }
         m.head.setRotation(hx, hy, hz);
         m.body.setRotation(0, 0, 0);
-        m.leftArm.setRotation(ax, ay, -0.02F);
-        m.rightArm.setRotation(bx, by, 0.05F);
+        m.leftArm.setRotation(ax, ay, Corte.AZ);
+        m.rightArm.setRotation(bx, by, bz);
         m.rightLeg.setRotation(-1.4137167F, 0.31415927F, 0.07853982F);
         m.leftLeg.setRotation(-1.4137167F, -0.31415927F, -0.07853982F);
         m.hat.copyFrom(m.head);
@@ -429,11 +444,8 @@ public final class VeintiunoCliente {
         }
         m.renderToBuffer(ps, vc, luz, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
         if (corto) {
-            // el muñón
-            m.leftArm.visible = true;
-            m.leftArm.yScale = 0.4F;
-            m.leftArm.render(ps, vc, luz, OverlayTexture.NO_OVERLAY, 0.62F, 0.1F, 0.1F, 1F);
-            m.leftArm.yScale = 1F;
+            // el muñón (la mitad de arriba del brazo, con el corte); la otra mitad se quedó en la máquina
+            Corte.munon(m, ps, vc, luz);
         }
         if (!soloBrazos) {
             com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);

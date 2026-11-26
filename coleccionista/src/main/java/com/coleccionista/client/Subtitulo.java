@@ -53,6 +53,19 @@ public final class Subtitulo {
      * Dibuja la frase actual centrada en {@code cx}, con su parte de abajo en {@code abajo}, en un ancho máximo {@code ancho} (pixeles de la
      * interfaz) y a escala {@code esc}. {@code caja}: con fondo oscuro y la raya roja (si no, solo letras con sombra).
      */
+    /** Qué tan alta queda la caja del subtítulo (del filo de arriba a la última línea), o 0 si no está hablando. */
+    static int alto(int ancho, float esc) {
+        String l = linea();
+        if (l.isEmpty()) {
+            return 0;
+        }
+        Font f = Ui.font();
+        String texto = Component.translatable(l).getString();
+        int n = f.getSplitter().splitLines(texto, Math.max(60, (int) (ancho / esc)), Style.EMPTY).size();
+        float escNom = Math.max(0.75F, esc * 0.72F);
+        return (int) Math.ceil(5 + 9F * escNom + 3 + n * 10F * esc);
+    }
+
     static void dibujar(G g, int cx, int abajo, int ancho, float esc, boolean caja) {
         String l = linea();
         if (l.isEmpty()) {

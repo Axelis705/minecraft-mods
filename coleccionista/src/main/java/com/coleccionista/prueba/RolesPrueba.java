@@ -72,6 +72,7 @@ public final class RolesPrueba {
             }
         }
         VozPuente.mudosPrueba = Set.copyOf(mudos);
+        com.coleccionista.voz.Voz.avisarMudos();
         PlayerStore.Sync.toAll(s, KEY, estado());
         Coleccionista.LOGGER.info("COLECCIONISTA_ROL_PRUEBA {} {}", p.getGameProfile().getName(), rol);
     }

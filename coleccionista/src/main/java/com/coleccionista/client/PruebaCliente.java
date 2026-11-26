@@ -708,6 +708,15 @@ final class PruebaCliente {
             t.cmd("gamemode adventure @a");
             t.cmd("evento piano saltar");
         });
+        // cada quien sube a su pista por su escalera (con su número); los bots suben solos
+        t.waitFor("cap6: subiendo", 8000, () -> "LUGARES".equals(PianoCliente.fase()));
+        t.photo("c6_03b_pistas", 2500, () -> t.lookFrom(1066.5, -57.5, 469.5, 1066.5, -58.5, 455.5));
+        t.photo("c6_03c_escalera", 1200, () -> t.lookFrom(1056.5, -59.5, 463.5, 1054, -58.5, 456));
+        t.add("cap6: me falta subir", 100, () -> {
+            CompoundTag m = PianoCliente.mio();
+            t.check(m != null && !m.getBoolean("arriba"), "todavía no subo a mi pista (la caja no me sube)");
+        });
+        t.add("cap6: que suba la caja", 300, () -> t.cmd("evento piano saltar"));
         t.waitFor("cap6: muestra", 20000, () -> "MUESTRA".equals(PianoCliente.fase()));
         t.add("cap6: mi piano", 1700, () -> {
             double[] c = miTapete();

@@ -20,6 +20,8 @@ public final class VozPuente {
     public static volatile Set<UUID> mudosPrueba = Set.of();
     /** Las voces cambiadas (la caja de música): quién habla con otro tono (menos de 1, más grave; más de 1, más aguda). */
     public static volatile Map<UUID, Float> tonos = Map.of();
+    /** El modulador del disfraz: quien va vestido del Coleccionista habla más grave (si no tiene ya otro tono por la prueba). */
+    public static volatile Map<UUID, Float> tonosDisfraz = Map.of();
     /** Durante algunas pruebas, cada pieza viva en su grupo (sala, cuarto, laberinto): solo se oyen los del mismo grupo. */
     public static volatile Map<UUID, Integer> separados = Map.of();
     /** ¿Los vivos pueden usar los grupos de Simple Voice Chat? (no: así la voz es solo por cercanía, como debe ser en el evento) */
@@ -30,6 +32,8 @@ public final class VozPuente {
     public static volatile boolean separarSalas = true;
     /** (Cliente) Llegó voz por un canal directo (el de los fantasmas): su id. Lo pone el mod del lado del cliente. */
     public static volatile java.util.function.Consumer<UUID> alOirCanal;
+    /** (Cliente) Llevo la cinta en la boca: el micrófono manda silencio (y no cuento como que hablo). */
+    public static volatile boolean yoMudo;
     /** (Cliente) Estoy mandando voz (hablo). */
     public static volatile Runnable alHablarYo;
     /** Lo pone el complemento: saca de sus grupos a las piezas (lo llama el hilo del servidor). */

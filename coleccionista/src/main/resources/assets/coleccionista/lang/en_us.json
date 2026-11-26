@@ -229,6 +229,8 @@
   "coleccionista.voz.piano.se_abre": "If one of you misses a note… the floor opens.",
   "coleccionista.voz.piano.varios": "If several of you miss, the ones who got it right are safe. The rest… play again.",
   "coleccionista.voz.piano.baile": "Let the dance begin.",
+  "coleccionista.voz.piano_pistas.pistas": "Each of you has your own floor. Take the stairs up.",
+  "coleccionista.voz.piano_pistas.numero": "Your number is on the steps. Don't pick the wrong floor…",
   "coleccionista.voz.veintiuno.mesa": "Welcome to my gaming table. No one has ever made it this far.",
   "coleccionista.voz.veintiuno.dos": "One of you takes everything. The other… leaves me a keepsake.",
   "coleccionista.voz.veintiuno.sientense": "Sit down. Your left hand goes in the machine.",
@@ -1564,5 +1566,11 @@
   "coleccionista.sub.maquina_pum": "The guillotine drops!",
   "coleccionista.sub.maquina_abre": "The machine opens",
   "coleccionista.sub.carta": "A card",
-  "entity.coleccionista.maquina": "Brass machine"
+  "entity.coleccionista.maquina": "Brass machine",
+  "coleccionista.piano.pantalla.suban": "Everyone to your floor",
+  "coleccionista.obj.pista": "To your floor",
+  "coleccionista.piano.hud.sube": "Go up to floor %s",
+  "coleccionista.piano.hud.sube_ayuda": "Use the stairs in front (they have its number)",
+  "coleccionista.piano.hud.arriba": "Wait for the others…",
+  "coleccionista.mudo.aviso": "✕ Your mouth is taped: no one can hear you"
 }

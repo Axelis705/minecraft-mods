@@ -417,7 +417,26 @@ public final class TresSentidos {
             }
         }
         cambio = true;
+        if (r == Rol.CINTA) {
+            // en cuanto se pone la cinta ya no puede hablar (no hasta que se abran las puertas)
+            mudosAhora();
+        }
         Coleccionista.LOGGER.info("COLECCIONISTA_TRES rol {} {}", pz == null ? id : pz.etiqueta(), r);
+    }
+
+    /** Los que llevan la cinta (mientras eligen y mientras juegan): nadie los oye. */
+    private static void mudosAhora() {
+        Set<UUID> mudos = new HashSet<>();
+        if (fase == Fase.ELEGIR || fase == Fase.JUEGO) {
+            for (Trio tr : trios) {
+                for (UUID id : tr.ids) {
+                    if (tr.roles.get(id) == Rol.CINTA) {
+                        mudos.add(id);
+                    }
+                }
+            }
+        }
+        com.coleccionista.voz.Voz.mudos(mudos);
     }
 
     /** A quien no eligió le toca lo que sobró en su mesa. */

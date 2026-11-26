@@ -298,7 +298,7 @@ evento piano llegar
 evento piano saltar
 #pausa 3
 evento piano saltar
-#pausa 55
+#pausa 85
 evento piano
 evento piano limpiar
 evento piano rapido false
@@ -461,6 +461,8 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_PIANO habla
 #expect COLECCIONISTA_PRESENTACION VI
 #expect COLECCIONISTA_PIANO pianos=4 extras=0 caen=1
+#expect COLECCIONISTA_DISCURSO piano_pistas
+#expect COLECCIONISTA_PIANO arriba en=
 #expect COLECCIONISTA_PIANO ronda 1 notas=3 juegan=4
 #expect COLECCIONISTA_PIANO mal
 #expect COLECCIONISTA_PIANO revisa ronda=1

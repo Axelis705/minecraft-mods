@@ -160,6 +160,11 @@ public final class Evento {
         return organizadores.contains(id);
     }
 
+    /** Quiénes están disfrazados del Coleccionista ahora. */
+    public java.util.Set<UUID> disfrazados() {
+        return java.util.Set.copyOf(disfraz);
+    }
+
     /** Pone o quita el disfraz del Coleccionista. */
     public void disfraz(MinecraftServer s, UUID id, boolean si) {
         if (si) {

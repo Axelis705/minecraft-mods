@@ -229,6 +229,8 @@
   "coleccionista.voz.piano.se_abre": "Si uno se equivoca… el piso se abre.",
   "coleccionista.voz.piano.varios": "Si se equivocan varios, los que acertaron se salvan. Los demás… vuelven a tocar.",
   "coleccionista.voz.piano.baile": "Que empiece el baile.",
+  "coleccionista.voz.piano_pistas.pistas": "Cada quien tiene su pista. Suban por las escaleras.",
+  "coleccionista.voz.piano_pistas.numero": "Su número está en los escalones. No se equivoquen de pista…",
   "coleccionista.voz.veintiuno.mesa": "Bienvenidos a mi mesa de juego. Aquí nadie había llegado.",
   "coleccionista.voz.veintiuno.dos": "Uno de ustedes se lleva todo. El otro… me deja un recuerdo.",
   "coleccionista.voz.veintiuno.sientense": "Siéntense. La mano izquierda, en la máquina.",
@@ -1564,5 +1566,11 @@
   "coleccionista.sub.maquina_pum": "¡Cae la guillotina!",
   "coleccionista.sub.maquina_abre": "La máquina se abre",
   "coleccionista.sub.carta": "Una carta",
-  "entity.coleccionista.maquina": "Máquina de latón"
+  "entity.coleccionista.maquina": "Máquina de latón",
+  "coleccionista.piano.pantalla.suban": "Cada quien a su pista",
+  "coleccionista.obj.pista": "A tu pista",
+  "coleccionista.piano.hud.sube": "Sube a la pista %s",
+  "coleccionista.piano.hud.sube_ayuda": "Por las escaleras de enfrente (tiene su número)",
+  "coleccionista.piano.hud.arriba": "Espera a los demás…",
+  "coleccionista.mudo.aviso": "✕ Llevas la cinta en la boca: nadie te oye"
 }
