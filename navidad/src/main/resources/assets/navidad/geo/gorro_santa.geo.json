@@ -1,0 +1,152 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.navidad.gorro_santa",
+    "texture_width": 64,
+    "texture_height": 64
+   },
+   "bones": [
+    {
+     "name": "cabeza",
+     "pivot": [
+      0,
+      24,
+      0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -4.6,
+        30.6,
+        -4.6
+       ],
+       "size": [
+        9.2,
+        2.2,
+        9.2
+       ],
+       "uv": [
+        0,
+        0
+       ]
+      },
+      {
+       "origin": [
+        -4.1,
+        32.6,
+        -4.1
+       ],
+       "size": [
+        8.2,
+        2,
+        8.2
+       ],
+       "uv": [
+        0,
+        13
+       ]
+      }
+     ]
+    },
+    {
+     "name": "punta",
+     "pivot": [
+      0,
+      34.4,
+      0
+     ],
+     "parent": "cabeza",
+     "rotation": [
+      -22,
+      0,
+      8
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -3.2,
+        34.4,
+        -3.0
+       ],
+       "size": [
+        6.4,
+        2,
+        6.4
+       ],
+       "uv": [
+        36,
+        13
+       ]
+      },
+      {
+       "origin": [
+        -2.3,
+        36.2,
+        -1.6
+       ],
+       "size": [
+        4.6,
+        2,
+        4.6
+       ],
+       "uv": [
+        0,
+        24
+       ]
+      }
+     ]
+    },
+    {
+     "name": "punta2",
+     "pivot": [
+      0,
+      38,
+      0.6
+     ],
+     "parent": "punta",
+     "rotation": [
+      -38,
+      0,
+      0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -1.4,
+        38,
+        -0.6
+       ],
+       "size": [
+        2.8,
+        2.2,
+        2.8
+       ],
+       "uv": [
+        20,
+        24
+       ]
+      },
+      {
+       "origin": [
+        -1.3,
+        39.8,
+        -0.3
+       ],
+       "size": [
+        2.6,
+        2.6,
+        2.6
+       ],
+       "uv": [
+        32,
+        24
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

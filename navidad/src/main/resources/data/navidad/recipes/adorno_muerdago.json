@@ -1,0 +1,8 @@
+{
+ "type": "minecraft:stonecutting",
+ "ingredient": {
+  "item": "navidad:caja_adornos"
+ },
+ "result": "navidad:muerdago",
+ "count": 1
+}

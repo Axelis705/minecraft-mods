@@ -3,8 +3,6 @@ package com.navidad;
 import com.axeliscore.AxelisCore;
 import com.axeliscore.plat.Net;
 import com.mojang.logging.LogUtils;
-import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 //#if MC >= 26.1
 //$$ import net.minecraftforge.eventbus.api.bus.BusGroup;
 //#else
@@ -33,11 +31,7 @@ public class Navidad {
         bus.addListener(this::commonSetup);
         //#endif
         com.navidad.registry.ModRegistry.register(bus);
-        AxelisCore.commands(d -> d.register(Commands.literal(MODID).executes(c -> {
-            c.getSource().sendSuccess(() -> Component.translatable(MODID + ".hola", AxelisCore.version()), false);
-            LOGGER.info("PRUEBA_NAVIDAD_OK {}", AxelisCore.version());
-            return 1;
-        })));
+        AxelisCore.commands(Comandos::registrar);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

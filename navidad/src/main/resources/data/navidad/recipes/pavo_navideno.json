@@ -1,0 +1,25 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:cooked_chicken"
+  },
+  {
+   "item": "minecraft:cooked_chicken"
+  },
+  {
+   "item": "minecraft:baked_potato"
+  },
+  {
+   "item": "minecraft:carrot"
+  },
+  {
+   "item": "minecraft:apple"
+  }
+ ],
+ "result": {
+  "item": "navidad:pavo_navideno",
+  "count": 1
+ }
+}

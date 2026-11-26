@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  " G ",
+  "PAP",
+  "PAP"
+ ],
+ "key": {
+  "G": {
+   "item": "minecraft:gold_nugget"
+  },
+  "P": {
+   "tag": "minecraft:planks"
+  },
+  "A": {
+   "item": "minecraft:paper"
+  }
+ },
+ "result": {
+  "item": "navidad:calendario_adviento",
+  "count": 1
+ }
+}

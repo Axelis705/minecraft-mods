@@ -1,0 +1,25 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:chest"
+  },
+  {
+   "item": "minecraft:paper"
+  },
+  {
+   "item": "minecraft:paper"
+  },
+  {
+   "item": "minecraft:red_dye"
+  },
+  {
+   "item": "minecraft:string"
+  }
+ ],
+ "result": {
+  "item": "navidad:caja_regalo",
+  "count": 1
+ }
+}

@@ -922,8 +922,68 @@ def catalogo():
     prop(reno_adorno())
 
 
+# ---------------------------------------------------------------- bloques con código propio (no son de decoración)
+
+def especiales():
+    """La caja de regalo (envuelta y vacía) y el calendario de Adviento: los modelos salen del mismo kit, pero los bloques son clases
+    propias (CajaRegalo, Calendario), así que no van al manifiesto; aquí se arreglan su estado de bloque y su botín."""
+    llena = regalo('caja_regalo', 'Caja de regalo', 'Gift box', '#c8202e', '#f0c43a', 70)
+    kit.write_prop(llena, ROOT)
+    v = Prop('caja_regalo_vacia', 'Caja de regalo', 'Gift box', kind='floor', sound='wool', seed=71)
+    pap = cloth('#c8202e', weave=0.08, seed=71)
+    dentro = cloth('#f4ecd8', weave=0.05, seed=72)
+    v.box(3, 0, 3, 13, 1, 13, pap)
+    v.box(3, 1, 3, 13, 9, 4, pap)
+    v.box(3, 1, 12, 13, 9, 13, pap)
+    v.box(3, 1, 4, 4, 9, 12, pap)
+    v.box(12, 1, 4, 13, 9, 12, pap)
+    v.box(4, 1, 4, 12, 6, 12, dentro)
+    v.box(5, 6, 6, 9, 8.5, 8, dentro, rot=('y', 22.5, (7, 7, 7)))
+    kit.write_prop(v, ROOT)
+    for sub in ('blockstates/caja_regalo_vacia.json', 'models/item/caja_regalo_vacia.json'):
+        os.remove(os.path.join(A, sub))
+    os.remove(os.path.join(ROOT, 'data', NS, 'loot_tables', 'blocks', 'caja_regalo_vacia.json'))
+    rot = {'north': 0, 'east': 90, 'south': 180, 'west': 270}
+    var = {}
+    for f, y in rot.items():
+        for ll, m in (('true', 'caja_regalo'), ('false', 'caja_regalo_vacia')):
+            e = {'model': f'{NS}:block/{m}'}
+            if y:
+                e['y'] = y
+            var[f'facing={f},llena={ll}'] = e
+    dump('blockstates/caja_regalo.json', {'variants': var})
+    botin = {'type': 'minecraft:block', 'pools': [{'rolls': 1, 'entries': [{'type': 'minecraft:item', 'name': f'{NS}:caja_regalo', 'functions': [
+        {'function': 'minecraft:copy_nbt', 'source': 'block_entity', 'ops': [
+            {'source': 'Contenido', 'target': 'BlockEntityTag.Contenido', 'op': 'replace'},
+            {'source': 'De', 'target': 'BlockEntityTag.De', 'op': 'replace'},
+            {'source': 'Para', 'target': 'BlockEntityTag.Para', 'op': 'replace'}]}]}],
+        'conditions': [{'condition': 'minecraft:survives_explosion'}]}]}
+    json.dump(botin, open(os.path.join(ROOT, 'data', NS, 'loot_tables', 'blocks', 'caja_regalo.json'), 'w'), indent=1)
+    # el calendario: una casita de madera con 24 puertitas de colores, techo nevado y estrella
+    c = Prop('calendario_adviento', 'Calendario de Adviento', 'Advent calendar', kind='floor', sound='wood', seed=73, light=6)
+    c.box(1, 0, 5, 15, 11, 11, MADERA_CLARA)
+    colores = ['#c8202e', '#2a8a40', '#f0c43a', '#2a5ab0', '#e8e8f0', '#d6408a']
+    for i in range(24):
+        fila, col = divmod(i, 6)
+        x0 = 2 + col * 2.1
+        y0 = 8.4 - fila * 2.4
+        c.box(x0, y0, 4.6, x0 + 1.6, y0 + 1.8, 5, cloth(colores[(i * 5 + fila) % 6], weave=0.04, seed=80 + i))
+    c.box(0, 11, 4, 16, 12, 12, MADERA)
+    c.box(1, 12, 4.5, 15, 13, 11.5, MADERA)
+    c.box(3, 13, 5, 13, 14, 11, MADERA)
+    c.box(0, 12, 4, 16, 12.6, 12, cloth('#f4f6fa', weave=0.04, seed=74))
+    c.box(2, 13, 4.5, 14, 13.5, 11.5, cloth('#f4f6fa', weave=0.04, seed=75))
+    c.box(7, 14, 7.5, 9, 16, 8.5, brillo('#ffd84a'))
+    kit.write_prop(c, ROOT)
+    for f in (llena, v, c):
+        pass
+    nombre('caja_regalo', 'Caja de regalo', 'Gift box')
+    nombre('calendario_adviento', 'Calendario de Adviento', 'Advent calendar')
+
+
 def main():
     catalogo()
+    especiales()
     os.makedirs(os.path.join(ROOT, 'data', NS), exist_ok=True)
     with open(os.path.join(ROOT, 'data', NS, 'deco.json'), 'w', encoding='utf-8') as f:
         json.dump({'blocks': ficha}, f, indent=1, ensure_ascii=False)

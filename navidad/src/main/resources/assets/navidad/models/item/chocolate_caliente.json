@@ -1,3 +1,6 @@
 {
- "parent": "navidad:block/chocolate_caliente"
+ "parent": "minecraft:item/generated",
+ "textures": {
+  "layer0": "navidad:item/chocolate_caliente"
+ }
 }

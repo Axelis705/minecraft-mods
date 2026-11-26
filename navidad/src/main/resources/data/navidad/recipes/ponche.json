@@ -1,0 +1,28 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "navidad:tejocote"
+  },
+  {
+   "item": "navidad:mandarina"
+  },
+  {
+   "item": "navidad:cana"
+  },
+  {
+   "item": "minecraft:apple"
+  },
+  {
+   "item": "minecraft:sugar"
+  },
+  {
+   "item": "minecraft:water_bucket"
+  }
+ ],
+ "result": {
+  "item": "navidad:ponche",
+  "count": 3
+ }
+}

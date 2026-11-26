@@ -1,0 +1,25 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:wheat"
+  },
+  {
+   "item": "minecraft:wheat"
+  },
+  {
+   "item": "minecraft:cooked_porkchop"
+  },
+  {
+   "item": "minecraft:red_dye"
+  },
+  {
+   "item": "minecraft:paper"
+  }
+ ],
+ "result": {
+  "item": "navidad:tamal",
+  "count": 3
+ }
+}

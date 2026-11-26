@@ -1,0 +1,81 @@
+{
+ "villancico_campanas": {
+  "sounds": [
+   {
+    "name": "navidad:villancico_campanas",
+    "stream": true
+   }
+  ]
+ },
+ "villancico_navidad": {
+  "sounds": [
+   {
+    "name": "navidad:villancico_navidad",
+    "stream": true
+   }
+  ]
+ },
+ "villancico_noche_paz": {
+  "sounds": [
+   {
+    "name": "navidad:villancico_noche_paz",
+    "stream": true
+   }
+  ]
+ },
+ "villancico_adornen": {
+  "sounds": [
+   {
+    "name": "navidad:villancico_adornen",
+    "stream": true
+   }
+  ]
+ },
+ "cancion_pinata": {
+  "sounds": [
+   {
+    "name": "navidad:cancion_pinata",
+    "stream": true
+   }
+  ],
+  "subtitle": "navidad.sub.pinata"
+ },
+ "krampus_musica": {
+  "sounds": [
+   {
+    "name": "navidad:krampus_musica",
+    "stream": true
+   }
+  ]
+ },
+ "cascabeles": {
+  "sounds": [
+   "navidad:cascabeles"
+  ],
+  "subtitle": "navidad.sub.cascabeles"
+ },
+ "risa_santa": {
+  "sounds": [
+   "navidad:risa_santa"
+  ],
+  "subtitle": "navidad.sub.risa"
+ },
+ "krampus_ruge": {
+  "sounds": [
+   "navidad:krampus_ruge"
+  ],
+  "subtitle": "navidad.sub.krampus"
+ },
+ "calendario_abre": {
+  "sounds": [
+   "navidad:calendario_abre"
+  ],
+  "subtitle": "navidad.sub.calendario"
+ },
+ "regalo_abre": {
+  "sounds": [
+   "navidad:regalo_abre"
+  ],
+  "subtitle": "navidad.sub.regalo"
+ }
+}

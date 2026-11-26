@@ -8,6 +8,7 @@ on:
     paths-ignore:
       - 'axelis_core/**'
       - 'core_prueba/**'
+      - 'navidad/**'
       - 'coleccionista/**'
       - 'pesca_coleccion/**'
       - 'tools/mkmod.py'

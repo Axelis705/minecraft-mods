@@ -1,0 +1,26 @@
+{
+  "sonido": "minecraft:block.snow.break",
+  "volumen": 0.8,
+  "tono": 1.0,
+  "capas": [
+    {
+      "particula": "nieve",
+      "forma": "esfera",
+      "radio": 0.6,
+      "cuantas": 30,
+      "velocidad": 0.3,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "polvo",
+      "color": "#FFFFFF",
+      "color2": "#CFE8FF",
+      "tam": 1.4,
+      "forma": "esfera",
+      "radio": 0.5,
+      "cuantas": 25,
+      "velocidad": 0.25,
+      "hacia": "afuera"
+    }
+  ]
+}

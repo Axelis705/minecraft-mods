@@ -1,0 +1,34 @@
+{
+ "variants": {
+  "facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo"
+  },
+  "facing=north,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia"
+  },
+  "facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo",
+   "y": 90
+  },
+  "facing=east,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 90
+  },
+  "facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo",
+   "y": 180
+  },
+  "facing=south,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 180
+  },
+  "facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo",
+   "y": 270
+  },
+  "facing=west,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 270
+  }
+ }
+}

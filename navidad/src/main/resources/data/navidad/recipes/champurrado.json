@@ -1,0 +1,22 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:cocoa_beans"
+  },
+  {
+   "item": "minecraft:wheat"
+  },
+  {
+   "item": "minecraft:sugar"
+  },
+  {
+   "item": "minecraft:milk_bucket"
+  }
+ ],
+ "result": {
+  "item": "navidad:champurrado",
+  "count": 3
+ }
+}

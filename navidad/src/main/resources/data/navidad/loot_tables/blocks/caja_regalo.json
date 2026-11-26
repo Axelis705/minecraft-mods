@@ -1,0 +1,42 @@
+{
+ "type": "minecraft:block",
+ "pools": [
+  {
+   "rolls": 1,
+   "entries": [
+    {
+     "type": "minecraft:item",
+     "name": "navidad:caja_regalo",
+     "functions": [
+      {
+       "function": "minecraft:copy_nbt",
+       "source": "block_entity",
+       "ops": [
+        {
+         "source": "Contenido",
+         "target": "BlockEntityTag.Contenido",
+         "op": "replace"
+        },
+        {
+         "source": "De",
+         "target": "BlockEntityTag.De",
+         "op": "replace"
+        },
+        {
+         "source": "Para",
+         "target": "BlockEntityTag.Para",
+         "op": "replace"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "condition": "minecraft:survives_explosion"
+    }
+   ]
+  }
+ ]
+}

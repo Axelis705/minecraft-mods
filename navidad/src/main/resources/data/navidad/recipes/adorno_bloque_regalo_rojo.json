@@ -1,0 +1,8 @@
+{
+ "type": "minecraft:stonecutting",
+ "ingredient": {
+  "item": "navidad:caja_adornos"
+ },
+ "result": "navidad:bloque_regalo_rojo",
+ "count": 8
+}
