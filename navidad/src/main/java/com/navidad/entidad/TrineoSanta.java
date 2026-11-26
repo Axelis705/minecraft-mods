@@ -78,7 +78,9 @@ public class TrineoSanta extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag t) {
-        vida = t.getInt("Vida");
+        if (t.contains("Vida")) {
+            vida = t.getInt("Vida");
+        }
     }
 
     @Override
