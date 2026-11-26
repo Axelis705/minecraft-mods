@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/guirnalda_luces"
+  },
+  "facing=east": {
+   "model": "navidad:block/guirnalda_luces",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/guirnalda_luces",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/guirnalda_luces",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,4 @@
+axeliscore
+navidad
+#expect PRUEBA_NAVIDAD_OK Axelis Core
+#expect usuarios=[navidad]

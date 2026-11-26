@@ -1,0 +1,34 @@
+{
+ "variants": {
+  "facing=north,half=lower": {
+   "model": "navidad:block/muneco_nieve_lower"
+  },
+  "facing=east,half=lower": {
+   "model": "navidad:block/muneco_nieve_lower",
+   "y": 90
+  },
+  "facing=south,half=lower": {
+   "model": "navidad:block/muneco_nieve_lower",
+   "y": 180
+  },
+  "facing=west,half=lower": {
+   "model": "navidad:block/muneco_nieve_lower",
+   "y": 270
+  },
+  "facing=north,half=upper": {
+   "model": "navidad:block/muneco_nieve_upper"
+  },
+  "facing=east,half=upper": {
+   "model": "navidad:block/muneco_nieve_upper",
+   "y": 90
+  },
+  "facing=south,half=upper": {
+   "model": "navidad:block/muneco_nieve_upper",
+   "y": 180
+  },
+  "facing=west,half=upper": {
+   "model": "navidad:block/muneco_nieve_upper",
+   "y": 270
+  }
+ }
+}

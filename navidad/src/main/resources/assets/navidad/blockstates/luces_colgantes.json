@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/luces_colgantes"
+  },
+  "facing=east": {
+   "model": "navidad:block/luces_colgantes",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/luces_colgantes",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/luces_colgantes",
+   "y": 270
+  }
+ }
+}

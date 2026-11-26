@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "navidad:block/nieve_brillante_0"
+   },
+   {
+    "model": "navidad:block/nieve_brillante_1"
+   },
+   {
+    "model": "navidad:block/nieve_brillante_2"
+   }
+  ]
+ }
+}

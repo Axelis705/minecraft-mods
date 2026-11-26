@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "navidad:block/bloque_jengibre_0"
+   },
+   {
+    "model": "navidad:block/bloque_jengibre_1"
+   },
+   {
+    "model": "navidad:block/bloque_jengibre_2"
+   }
+  ]
+ }
+}

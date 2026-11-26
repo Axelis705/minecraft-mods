@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/pila_regalos"
+  },
+  "facing=east": {
+   "model": "navidad:block/pila_regalos",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/pila_regalos",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/pila_regalos",
+   "y": 270
+  }
+ }
+}

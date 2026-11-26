@@ -2,3 +2,4 @@
 # con versiones después del nombre, solo en esas: por ejemplo "evento 1.20.1")
 pesca_coleccion
 coleccionista 1.20.1
+navidad 1.20.1

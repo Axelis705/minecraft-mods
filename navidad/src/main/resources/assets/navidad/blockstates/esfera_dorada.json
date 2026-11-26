@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/esfera_dorada"
+  },
+  "facing=east": {
+   "model": "navidad:block/esfera_dorada",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/esfera_dorada",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/esfera_dorada",
+   "y": 270
+  }
+ }
+}

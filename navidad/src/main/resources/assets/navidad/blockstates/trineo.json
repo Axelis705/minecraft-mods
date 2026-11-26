@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/trineo"
+  },
+  "facing=east": {
+   "model": "navidad:block/trineo",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/trineo",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/trineo",
+   "y": 270
+  }
+ }
+}

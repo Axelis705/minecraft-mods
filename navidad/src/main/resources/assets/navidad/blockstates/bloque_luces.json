@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "navidad:block/bloque_luces_0"
+   },
+   {
+    "model": "navidad:block/bloque_luces_1"
+   },
+   {
+    "model": "navidad:block/bloque_luces_2"
+   }
+  ]
+ }
+}

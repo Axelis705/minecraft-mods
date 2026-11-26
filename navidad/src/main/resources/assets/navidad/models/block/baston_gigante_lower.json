@@ -1,0 +1,164 @@
+{
+ "credit": "Mundos de Axelis - decoracion de estructuras",
+ "textures": {
+  "0": "navidad:block/baston_gigante",
+  "particle": "navidad:block/baston_gigante"
+ },
+ "elements": [
+  {
+   "from": [
+    6.5,
+    0.0,
+    6.5
+   ],
+   "to": [
+    9.5,
+    16.0,
+    9.5
+   ],
+   "faces": {
+    "north": {
+     "uv": [
+      0.0,
+      0.0,
+      1.5,
+      8.0
+     ],
+     "texture": "#0"
+    },
+    "south": {
+     "uv": [
+      1.5,
+      0.0,
+      3.0,
+      8.0
+     ],
+     "texture": "#0"
+    },
+    "west": {
+     "uv": [
+      3.0,
+      0.0,
+      4.5,
+      8.0
+     ],
+     "texture": "#0"
+    },
+    "east": {
+     "uv": [
+      4.5,
+      0.0,
+      6.0,
+      8.0
+     ],
+     "texture": "#0"
+    },
+    "up": {
+     "uv": [
+      0.0,
+      8.0,
+      1.5,
+      9.5
+     ],
+     "texture": "#0"
+    },
+    "down": {
+     "uv": [
+      1.5,
+      8.0,
+      3.0,
+      9.5
+     ],
+     "texture": "#0"
+    }
+   }
+  }
+ ],
+ "display": {
+  "gui": {
+   "rotation": [
+    30,
+    225,
+    0
+   ],
+   "translation": [
+    0,
+    0,
+    0
+   ],
+   "scale": [
+    0.62,
+    0.62,
+    0.62
+   ]
+  },
+  "ground": {
+   "rotation": [
+    0,
+    0,
+    0
+   ],
+   "translation": [
+    0,
+    3,
+    0
+   ],
+   "scale": [
+    0.4,
+    0.4,
+    0.4
+   ]
+  },
+  "fixed": {
+   "rotation": [
+    0,
+    180,
+    0
+   ],
+   "translation": [
+    0,
+    0,
+    0
+   ],
+   "scale": [
+    0.6,
+    0.6,
+    0.6
+   ]
+  },
+  "thirdperson_righthand": {
+   "rotation": [
+    75,
+    45,
+    0
+   ],
+   "translation": [
+    0,
+    2.5,
+    0
+   ],
+   "scale": [
+    0.375,
+    0.375,
+    0.375
+   ]
+  },
+  "firstperson_righthand": {
+   "rotation": [
+    0,
+    45,
+    0
+   ],
+   "translation": [
+    0,
+    0,
+    0
+   ],
+   "scale": [
+    0.4,
+    0.4,
+    0.4
+   ]
+  }
+ }
+}

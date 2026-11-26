@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/corona_adviento"
+  },
+  "facing=east": {
+   "model": "navidad:block/corona_adviento",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/corona_adviento",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/corona_adviento",
+   "y": 270
+  }
+ }
+}

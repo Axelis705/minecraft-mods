@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/nochebuena"
+  },
+  "facing=east": {
+   "model": "navidad:block/nochebuena",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/nochebuena",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/nochebuena",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/muerdago"
+  },
+  "facing=east": {
+   "model": "navidad:block/muerdago",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/muerdago",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/muerdago",
+   "y": 270
+  }
+ }
+}

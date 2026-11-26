@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "navidad:block/madera_cabana_0"
+   },
+   {
+    "model": "navidad:block/madera_cabana_1"
+   }
+  ]
+ }
+}

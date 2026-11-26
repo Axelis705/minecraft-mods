@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/chimenea"
+  },
+  "facing=east": {
+   "model": "navidad:block/chimenea",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/chimenea",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/chimenea",
+   "y": 270
+  }
+ }
+}

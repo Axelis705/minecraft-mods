@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/papel_picado"
+  },
+  "facing=east": {
+   "model": "navidad:block/papel_picado",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/papel_picado",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/papel_picado",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/olla_ponche"
+  },
+  "facing=east": {
+   "model": "navidad:block/olla_ponche",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/olla_ponche",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/olla_ponche",
+   "y": 270
+  }
+ }
+}

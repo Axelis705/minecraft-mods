@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/farolito"
+  },
+  "facing=east": {
+   "model": "navidad:block/farolito",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/farolito",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/farolito",
+   "y": 270
+  }
+ }
+}

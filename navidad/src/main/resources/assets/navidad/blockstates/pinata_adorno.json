@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/pinata_adorno"
+  },
+  "facing=east": {
+   "model": "navidad:block/pinata_adorno",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/pinata_adorno",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/pinata_adorno",
+   "y": 270
+  }
+ }
+}

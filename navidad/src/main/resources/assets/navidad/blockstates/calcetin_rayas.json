@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/calcetin_rayas"
+  },
+  "facing=east": {
+   "model": "navidad:block/calcetin_rayas",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/calcetin_rayas",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/calcetin_rayas",
+   "y": 270
+  }
+ }
+}

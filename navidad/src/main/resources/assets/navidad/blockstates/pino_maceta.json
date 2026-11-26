@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/pino_maceta"
+  },
+  "facing=east": {
+   "model": "navidad:block/pino_maceta",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/pino_maceta",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/pino_maceta",
+   "y": 270
+  }
+ }
+}
