@@ -318,15 +318,15 @@ public final class Pantallas {
     public static List<Frase> caja_revision() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("circulo", 85, null, 1F));
-        l.add(new Frase("juguete", 80, null, 1F));
-        l.add(new Frase("uno_por_uno", 110, null, 1F));
-        l.add(new Frase("fuerte", 65, null, 1F));
+        l.add(new Frase("juguete", 96, null, 1F));
+        l.add(new Frase("uno_por_uno", 112, null, 1F));
+        l.add(new Frase("fuerte", 69, null, 1F));
         return l;
     }
 
     public static List<Frase> caja_traidores() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("ahora", 70, null, 1F));
+        l.add(new Frase("ahora", 78, null, 1F));
         return l;
     }
 

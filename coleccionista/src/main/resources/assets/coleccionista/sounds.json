@@ -568,6 +568,46 @@
       }
     ]
   },
+  "voz.caja_revision.circulo": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja_revision.circulo",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_revision_circulo",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja_revision.fuerte": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja_revision.fuerte",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_revision_fuerte",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja_revision.juguete": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja_revision.juguete",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_revision_juguete",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja_revision.uno_por_uno": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja_revision.uno_por_uno",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_revision_uno_por_uno",
+        "stream": true
+      }
+    ]
+  },
   "voz.caja.si_fallan": {
     "category": "voice",
     "subtitle": "coleccionista.voz.caja.si_fallan",
@@ -604,6 +644,16 @@
     "sounds": [
       {
         "name": "coleccionista:voz/caja_traidores",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja_traidores.ahora": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja_traidores.ahora",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_traidores_ahora",
         "stream": true
       }
     ]

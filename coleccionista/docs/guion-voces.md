@@ -247,15 +247,15 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `caja_revision_circulo.ogg` | 4.2 s | Qué bonitos se ven. Todos en círculo. |
-| 2 | `caja_revision_juguete.ogg` | 4.0 s | ¿Oyen eso? Es mi juguete favorito. |
-| 3 | `caja_revision_uno_por_uno.ogg` | 5.5 s | Uno por uno. Cuando los mire… díganme su símbolo. |
-| 4 | `caja_revision_fuerte.ogg` | 3.2 s | En voz alta. Y márquenlo. |
+| 2 | `caja_revision_juguete.ogg` | 4.8 s | ¿Oyen eso? Es mi juguete favorito. |
+| 3 | `caja_revision_uno_por_uno.ogg` | 5.6 s | Uno por uno. Cuando los mire… díganme su símbolo. |
+| 4 | `caja_revision_fuerte.ogg` | 3.5 s | En voz alta. Y márquenlo. |
 
 ## Capítulo 3 · La caja de música: después de revisar a todos (le toca a los traidores)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `caja_traidores_ahora.ogg` | 3.5 s | Y ahora… mis traidores. |
+| 1 | `caja_traidores_ahora.ogg` | 3.9 s | Y ahora… mis traidores. |
 
 ## Capítulo 3 · La caja de música: el final (sube el arma y se dicen los traidores)
 
