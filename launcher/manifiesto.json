@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "launcher": "1.0.0",
+  "nombre": "El Coleccionista",
+  "servidor": "",
+  "forge": {
+    "version": "1.20.1-forge-47.4.10",
+    "instalador": "https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.4.10/forge-1.20.1-47.4.10-installer.jar",
+    "sha1": ""
+  },
+  "mods": [
+    {
+      "archivo": "coleccionista-1.0.0.jar",
+      "url": "https://raw.githubusercontent.com/Axelis705/minecraft-mods/70000c8e678d48f30383fee45bd8822ea66d39e1/coleccionista-1.0.0.jar",
+      "sha1": "0f83214819e0851e7389d7877a5f586ad51b65a8",
+      "tam": 5601689
+    },
+    {
+      "archivo": "voicechat-forge-1.20.1-2.6.27.jar",
+      "url": "https://edge.forgecdn.net/files/9350/450/voicechat-forge-1.20.1-2.6.27.jar"
+    }
+  ],
+  "opciones": {
+    "lang": "es_mx",
+    "guiScale": "3",
+    "onboardAccessibility": "false",
+    "skipMultiplayerWarning": "true",
+    "joinedFirstServer": "true",
+    "tutorialStep": "none",
+    "narrator": "0",
+    "renderDistance": "10",
+    "simulationDistance": "8",
+    "soundCategory_music": "0.6",
+    "soundCategory_voice": "1.0"
+  }
+}

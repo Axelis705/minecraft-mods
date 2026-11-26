@@ -1,0 +1,91 @@
+name: Launcher del Coleccionista
+
+# Arma el .exe del launcher (Windows, PyInstaller + pywebview/WebView2, la escena en 3D con three.js) y lo prueba de verdad en una
+# máquina Windows: abre la ventana, entra con un usuario de prueba, instala Forge y los mods en una carpeta de prueba (con el
+# instalador oficial de Forge), revisa el perfil y saca fotos de cada pantalla. El .exe, las fotos y el registro quedan en la rama launcher-exe (la nube de Claude no puede bajar artefactos).
+on:
+  push:
+    paths:
+      - 'launcher/**'
+      - '.github/workflows/launcher.yml'
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Herramientas
+        run: python -m pip install pyinstaller==6.11.1 pillow==11.0.0 pywebview==5.3.2
+      - name: Armar el .exe
+        working-directory: launcher
+        run: >
+          pyinstaller --noconfirm --onefile --windowed --name ElColeccionista --icon arte/icono.ico
+          --add-data "web;web" --add-data "arte/perfil.png;arte" --add-data "arte/icono.ico;arte"
+          --add-data "manifiesto.json;." --add-data "usuarios.json;."
+          --collect-all webview --hidden-import clr --hidden-import PIL.ImageGrab coleccionista.py
+      - name: Los sha1 de lo que se baja de afuera (Forge y los mods externos)
+        shell: bash
+        run: |
+          python - <<'EOF'
+          import hashlib, json, urllib.request
+          man = json.load(open('launcher/manifiesto.json', encoding='utf-8'))
+          def sha(u):
+              req = urllib.request.Request(u, headers={'User-Agent': 'ElColeccionista-CI'})
+              return hashlib.sha1(urllib.request.urlopen(req, timeout=120).read()).hexdigest()
+          for nombre, url, esperado in [('forge', man['forge']['instalador'], man['forge'].get('sha1'))] + [
+                  (m['archivo'], m['url'], m.get('sha1')) for m in man['mods']]:
+              s = sha(url)
+              print('SHA1', nombre, s, 'ok' if not esperado or esperado == s else 'DISTINTO (esperado %s)' % esperado)
+              assert not esperado or esperado == s, nombre
+          EOF
+      - name: Probar el .exe (instala de verdad en una carpeta de prueba)
+        shell: pwsh
+        run: |
+          $base = Join-Path $env:RUNNER_TEMP 'appdata'
+          New-Item -ItemType Directory -Force -Path (Join-Path $base '.minecraft') | Out-Null
+          '{"profiles": {"otro": {"name": "Perfil de antes", "type": "custom", "lastVersionId": "latest-release"}}, "settings": {}, "version": 3}' |
+            Set-Content -Encoding utf8 (Join-Path $base '.minecraft\launcher_profiles.json')
+          $env:COLECCIONISTA_APPDATA = $base
+          $env:COLECCIONISTA_USUARIOS = Join-Path $env:RUNNER_TEMP 'usuarios_prueba.json'
+          python launcher/usuarios.py agregar prueba prueba123
+          $fotos = Join-Path $env:GITHUB_WORKSPACE 'fotos'
+          $p = Start-Process -FilePath 'launcher\dist\ElColeccionista.exe' -ArgumentList @('--prueba', $fotos) -PassThru
+          if (-not $p.WaitForExit(1800000)) { Stop-Process -Id $p.Id -Force; Write-Host 'se tardó demasiado' }
+          Get-Content (Join-Path $fotos 'prueba.log') -ErrorAction SilentlyContinue
+          $res = Get-Content (Join-Path $fotos 'resultado.txt') -ErrorAction SilentlyContinue
+          Write-Host "resultado: $res"
+          $v = Join-Path $base '.minecraft\versions\1.20.1-forge-47.4.10\1.20.1-forge-47.4.10.json'
+          Write-Host "forge: $(Test-Path $v)"
+          Get-ChildItem (Join-Path $base '.coleccionista\mods') | ForEach-Object { Write-Host "mod: $($_.Name) $($_.Length)" }
+          $perf = Get-Content (Join-Path $base '.minecraft\launcher_profiles.json') -Raw | ConvertFrom-Json
+          Write-Host "perfiles: $($perf.profiles.PSObject.Properties.Name -join ', ')"
+          Write-Host "args: $($perf.profiles.el_coleccionista.javaArgs)"
+          Get-Content (Join-Path $base '.coleccionista\config\coleccionista-inicio.properties')
+          if (Test-Path (Join-Path $base '.coleccionista\forge-instalador.log')) { Get-Content (Join-Path $base '.coleccionista\forge-instalador.log') -Tail 15 }
+          Copy-Item (Join-Path $base '.coleccionista\forge-instalador.log') $fotos -ErrorAction SilentlyContinue
+          if ($res -ne 'ok' -or -not (Test-Path $v) -or -not $perf.profiles.el_coleccionista) { throw 'la prueba del launcher falló' }
+      - name: Guardar el .exe y las fotos en la rama launcher-exe
+        if: always() && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          d=$(mktemp -d)
+          cp launcher/dist/ElColeccionista.exe "$d/" 2>/dev/null || true
+          mkdir -p "$d/fotos"; cp -r fotos/* "$d/fotos/" 2>/dev/null || true
+          echo "launcher ${{ github.sha }} (${{ job.status }})" > "$d/LEEME.txt"
+          cd "$d"
+          git init -q -b launcher-exe
+          git config user.name ci; git config user.email ci@example.com
+          git add -A; git commit -qm "launcher (${{ github.sha }})"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" launcher-exe
+          ls -la . fotos
