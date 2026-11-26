@@ -117,6 +117,14 @@ public final class EscenaAviso {
 
     // ------------------------------------------------------------------ la franja que ven todos
 
+    private static int franjaAbajo;
+    private static long franjaVista;
+
+    /** Hasta dónde llega la franja (eliminado / ganador) si se está viendo, o 0: el subtítulo del Coleccionista se pone debajo. */
+    public static int abajoFranja() {
+        return System.currentTimeMillis() - franjaVista < 200 ? franjaAbajo : 0;
+    }
+
     private static void franja(G g, int w, int h, Aviso a, float t) {
         Font f = Ui.font();
         boolean gana = "ganador".equals(a.tipo);
@@ -129,6 +137,8 @@ public final class EscenaAviso {
             cy = Math.min(arriba + alto / 2, (int) (h * 0.56F));
         }
         int y0 = cy - alto / 2, y1 = cy + alto / 2;
+        franjaAbajo = y1;
+        franjaVista = System.currentTimeMillis();
         int linea = gana ? EventoHud.ORO : EventoHud.ROJO;
         int fondo = gana ? 0x3A2A10 : 0x0C0608;
         g.fillGradient(0, y0, w, cy, Ui.alpha(0xFF000000 | fondo, 0.55F * al), Ui.alpha(0xFF000000 | fondo, 0.88F * al));

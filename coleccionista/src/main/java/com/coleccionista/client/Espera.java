@@ -126,6 +126,11 @@ public final class Espera {
         // arriba, debajo de la placa de la prueba y el reloj (y de las tarjetas): así no lo tapa el chat ni lo de abajo de la pantalla
         int ancho = Math.min(420, w - 40), cx = w / 2;
         int arriba = Math.max(EventoHud.abajoHud(), 34) + 6;
+        // si está la franja de "eliminado" (o la del ganador), debajo de ella
+        int franja = EscenaAviso.abajoFranja();
+        if (franja > 0) {
+            arriba = Math.max(arriba, franja + 6);
+        }
         int abajo = arriba + Subtitulo.alto(ancho, 1.25F);
         Subtitulo.dibujar(g, cx, abajo, ancho, 1.25F, true);
     }
