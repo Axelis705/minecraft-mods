@@ -1618,5 +1618,7 @@
   "coleccionista.des.creditos.organizacion": "La organización",
   "coleccionista.des.creditos.voz": "La voz del Coleccionista",
   "coleccionista.des.creditos.gracias": "Gracias por jugar.",
-  "coleccionista.des.creditos.saltar": "Esc: saltar los créditos"
+  "coleccionista.des.creditos.saltar": "Esc: saltar los créditos",
+  "coleccionista.des.probar_jugador": "Este comando lo tiene que usar un jugador (el que va a ganar).",
+  "coleccionista.des.probando": "Listo: vas a la final contra un bot, a una sola ronda y con las cartas a tu favor (10 y 11). Plántate y, al ganar, sigue el final completo."
 }

@@ -109,6 +109,43 @@ public final class Desenlace {
         return null;
     }
 
+    /**
+     * Para ver el final como ganador (en un mundo de prueba): reinicia el evento, inscribe solo a quien lo pide y un bot, y los lleva a la
+     * final (veintiuno) a una sola ronda, con las cartas puestas para que gane quien lo pidió. Al ganar sigue solo: el discurso, la puerta,
+     * el pasillo, la luz, los créditos y la vitrina.
+     */
+    public static Component probar(net.minecraft.commands.CommandSourceStack src) {
+        MinecraftServer s = src.getServer();
+        ServerPlayer yo = src.getPlayer();
+        if (yo == null) {
+            return Component.translatable(MOD + ".des.probar_jugador");
+        }
+        if (!Complejo.construido(s, "veintiuno") || !hay(s)) {
+            return Component.translatable(MOD + ".des.sin_mapa");
+        }
+        // fuera los bots que hubiera
+        for (ServerLevel l : s.getAllLevels()) {
+            List<Entity> quitar = new ArrayList<>();
+            for (Entity e : l.getAllEntities()) {
+                if (e instanceof com.coleccionista.bot.PiezaBot) {
+                    quitar.add(e);
+                }
+            }
+            quitar.forEach(Entity::discard);
+        }
+        String n = yo.getGameProfile().getName();
+        net.minecraft.commands.CommandSourceStack c = src.withSuppressedOutput().withPermission(4);
+        for (String cmd : new String[] {"evento reiniciar confirmar", "evento pocos true", "evento inscribir " + n, "evento bots 1",
+                "evento veintiuno limpiar", "evento veintiuno encadenar false", "evento veintiuno rapido false", "evento veintiuno golpes 1",
+                "evento veintiuno mazo azar", "gamemode adventure " + n}) {
+            s.getCommands().performPrefixedCommand(c, cmd);
+        }
+        com.coleccionista.prueba.Veintiuno.favorito = yo.getUUID();
+        s.getCommands().performPrefixedCommand(c, "evento veintiuno llegar");
+        Coleccionista.LOGGER.info("COLECCIONISTA_DESENLACE probar ganador={}", n);
+        return null;
+    }
+
     /** Salta a la siguiente parte (para probar o si algo se atora). */
     public static boolean saltar(MinecraftServer s) {
         switch (fase) {

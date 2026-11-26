@@ -404,6 +404,15 @@ public final class Comandos {
                             c.getSource().sendSuccess(() -> Component.literal(Desenlace.resumen()), true);
                             return 1;
                         })
+                        .then(Commands.literal("probar").executes(c -> {
+                            Component no = Desenlace.probar(c.getSource());
+                            if (no != null) {
+                                c.getSource().sendFailure(no);
+                                return 0;
+                            }
+                            c.getSource().sendSuccess(() -> Component.translatable(MOD + ".des.probando"), true);
+                            return 1;
+                        }))
                         .then(Commands.literal("saltar").executes(c -> {
                             boolean si = Desenlace.saltar(c.getSource().getServer());
                             c.getSource().sendSuccess(() -> Component.literal(Desenlace.resumen()), true);

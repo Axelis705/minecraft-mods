@@ -87,6 +87,11 @@ public final class Veintiuno {
     public static boolean encadenar = true, rapido;
     /** Para las pruebas: el mazo en este orden (las primeras cuatro son la tapada y la visible de cada uno), en lugar de barajar. */
     public static List<Integer> mazoFijo;
+    /**
+     * Para probar el desenlace ({@code /evento desenlace probar}): esta pieza gana la final. Sus cartas son 10 y 11 (veintiuno) y las del
+     * otro, 9 y 8; lo que queda del mazo va de mayor a menor (si el otro pide, se pasa). Se borra al terminar la final o al limpiarla.
+     */
+    public static UUID favorito;
     public static final int CARTAS = 11, META = 21;
     /** Cuánto dura repartir, voltear las tapadas y cada castigo (ticks). */
     public static final int T_REPARTE = 44, T_REVELA = 80, T_CASTIGO = 90, T_CORTE = 110;
@@ -505,7 +510,13 @@ public final class Veintiuno {
         Pantallas.callar(s);
         ronda++;
         mazo.clear();
-        if (mazoFijo != null && !mazoFijo.isEmpty()) {
+        int fav = favorito == null ? -1 : favorito.equals(jugador[0]) ? 0 : favorito.equals(jugador[1]) ? 1 : -1;
+        if (fav >= 0) {
+            mazo.addAll(fav == 0 ? List.of(10, 9, 11, 8) : List.of(9, 10, 8, 11));
+            for (int c = 7; c >= 1; c--) {
+                mazo.add(c);
+            }
+        } else if (mazoFijo != null && !mazoFijo.isEmpty()) {
             mazo.addAll(mazoFijo);
             for (int c = 1; c <= CARTAS; c++) {
                 if (!mazo.contains(c)) {
@@ -1002,6 +1013,7 @@ public final class Veintiuno {
     }
 
     private static void fin(MinecraftServer s) {
+        favorito = null;
         Pantallas.callar(s);
         fase = Fase.FIN;
         desde = t;
@@ -1275,6 +1287,7 @@ public final class Veintiuno {
 
     public static void reiniciar(MinecraftServer s) {
         com.coleccionista.evento.Desenlace.limpiar(s);
+        favorito = null;
         if (fase == Fase.HABLANDO || fase == Fase.REGLAS || fase == Fase.FIN) {
             Pantallas.callar(s);
         }

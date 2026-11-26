@@ -1618,5 +1618,7 @@
   "coleccionista.des.creditos.organizacion": "The organization",
   "coleccionista.des.creditos.voz": "The Collector's voice",
   "coleccionista.des.creditos.gracias": "Thanks for playing.",
-  "coleccionista.des.creditos.saltar": "Esc: skip the credits"
+  "coleccionista.des.creditos.saltar": "Esc: skip the credits",
+  "coleccionista.des.probar_jugador": "This command must be used by a player (the one who will win).",
+  "coleccionista.des.probando": "Done: you go to the final against a bot, one round only, with the cards in your favor (10 and 11). Stand and, when you win, the whole ending plays."
 }
