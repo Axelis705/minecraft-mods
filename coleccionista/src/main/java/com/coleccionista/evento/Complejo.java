@@ -127,9 +127,31 @@ public final class Complejo {
                 String z = com.coleccionista.mapa.Antesala.ZONAS[i];
                 l.add(new Zona("ante_" + z, com.coleccionista.mapa.Antesala.crear(SEMILLA, z), ante[i][0], 0, ante[i][1], 1));
             }
+            // los pasillos hacia adelante: de la puerta de salida de cada sala a la puerta de atrás del pasillo de la siguiente (van al
+            // final: si se vuelve a construir una sala, después se vuelve a construir su pasillo, ver dependientes)
+            for (String[] ps : com.coleccionista.mapa.Pasos.PASOS) {
+                l.add(new Zona("paso_" + ps[0], com.coleccionista.mapa.Pasos.crear(SEMILLA, ps[0]), Integer.parseInt(ps[2]), 0, 400, 0));
+            }
             zonas = l;
         }
         return zonas;
+    }
+
+    /**
+     * Las zonas que hay que volver a construir después de {@code id} (los pasillos que tocan su muro): al limpiar su caja, una sala se lleva
+     * el pedacito del pasillo que queda en su orilla.
+     */
+    public static List<Zona> dependientes(String id) {
+        List<Zona> l = new ArrayList<>();
+        for (String[] ps : com.coleccionista.mapa.Pasos.PASOS) {
+            if (ps[0].equals(id) || ps[1].equals(id)) {
+                Zona z = zona("paso_" + ps[0]);
+                if (z != null) {
+                    l.add(z);
+                }
+            }
+        }
+        return l;
     }
 
     public static Zona zona(String id) {
@@ -223,7 +245,12 @@ public final class Complejo {
             return false;
         }
         datos(level.getServer()).putBoolean(id, false);
-        encolar(level, origen(level.getServer()).offset(z.dx(), z.dy(), z.dz()), z, fin);
+        List<Zona> dep = dependientes(id);
+        encolar(level, origen(level.getServer()).offset(z.dx(), z.dy(), z.dz()), z, dep.isEmpty() ? fin : null);
+        for (int i = 0; i < dep.size(); i++) {
+            Zona d = dep.get(i);
+            encolar(level, origen(level.getServer()).offset(d.dx(), d.dy(), d.dz()), d, i == dep.size() - 1 ? fin : null);
+        }
         return true;
     }
 
@@ -288,6 +315,13 @@ public final class Complejo {
         }
         if (cambian.isEmpty()) {
             return;
+        }
+        for (Zona z : new ArrayList<>(cambian)) {
+            for (Zona dep : dependientes(z.id())) {
+                if (!cambian.contains(dep)) {
+                    cambian.add(dep);
+                }
+            }
         }
         ServerLevel level = s.overworld();
         BlockPos o = origen(s);

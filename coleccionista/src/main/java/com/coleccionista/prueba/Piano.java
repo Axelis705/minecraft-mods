@@ -86,6 +86,8 @@ public final class Piano {
     }
 
     private static Fase fase = Fase.NADA;
+    /** Si esta vez se llega caminando hacia adelante (por el pasillo de la sala anterior a la puerta de atrás del de servicio). */
+    private static boolean adelante;
     private static long t, desde, apagonFin, lugaresFin, todosArriba = -1;
     private static final Random R = new Random();
     private static MinecraftServer srv;
@@ -149,13 +151,18 @@ public final class Piano {
         }
         Pruebas.cerrarOtras(s, "piano");
         limpiarTodo(s);
-        puertas(s, "pas_te", true);
+        adelante = Adelante.hay(s, "piano");
+        if (adelante) {
+            Adelante.abrir(s, "piano", "pas_piano", true);
+        } else {
+            puertas(s, "pas_te", true);
+        }
         fase = Fase.PASILLO;
         desde = t;
         Evento ev = Evento.get(s);
-        ev.prueba(s, Component.translatable(MOD + ".caja.prueba_pasillo").getString());
+        ev.prueba(s, Component.translatable(MOD + (adelante ? ".adelante.prueba" : ".caja.prueba_pasillo")).getString());
         ev.reloj(s, 0);
-        Anuncio.titulo(s, Component.empty(), Component.translatable(MOD + ".caja.al_pasillo"));
+        Anuncio.titulo(s, Component.empty(), Component.translatable(MOD + (adelante ? ".adelante.titulo" : ".caja.al_pasillo")));
         enviar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_PIANO llamar");
         return null;
@@ -170,11 +177,15 @@ public final class Piano {
             limpiarTodo(s);
         }
         Evento ev = Evento.get(s);
+        boolean ad = Adelante.hay(s, "piano");
         List<Entity> enPasillo = new ArrayList<>(), fuera = new ArrayList<>();
         for (Pieza p : ev.vivos()) {
             Entity e = Evento.entidad(s, p);
             if (e == null) {
                 continue;
+            }
+            if (ad && Cabina.dentro(s, "pas_piano", e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
+                continue; // ya llegó caminando
             }
             if (Complejo.construido(s, "te") && Cabina.dentro(s, "pas_te", e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
                 enPasillo.add(e);
@@ -761,6 +772,7 @@ public final class Piano {
         long dt = t - desde;
         switch (fase) {
             case PASILLO -> {
+                String pas = adelante ? "pas_piano" : "pas_te";
                 if (t % 10 == 0) {
                     boolean todos = true;
                     int n = 0;
@@ -770,9 +782,9 @@ public final class Piano {
                             continue;
                         }
                         n++;
-                        boolean dentro = Cabina.dentro(s, "pas_te", e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO);
+                        boolean dentro = Cabina.dentro(s, pas, e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO);
                         if (p.bot && !dentro && dt >= 60) {
-                            BlockPos c = Complejo.pos(s, "pas_te.centro");
+                            BlockPos c = Complejo.pos(s, pas + ".centro");
                             if (c != null) {
                                 ir(s, e, c.getX() + 0.5 + R.nextInt(3) - 1, c.getY(), c.getZ() + 0.5 + R.nextInt(3) - 1, 90F);
                                 dentro = true;
@@ -781,17 +793,21 @@ public final class Piano {
                         todos &= dentro;
                     }
                     if (n > 0 && todos || dt >= esperaPasillo) {
-                        BlockPos c = Complejo.pos(s, "pas_te.centro");
+                        BlockPos c = Complejo.pos(s, pas + ".centro");
                         for (Pieza p : ev.vivos()) {
                             Entity e = Evento.entidad(s, p);
-                            if (e != null && c != null && !Cabina.dentro(s, "pas_te", e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
+                            if (e != null && c != null && !Cabina.dentro(s, pas, e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
                                 ir(s, e, c.getX() + 0.5, c.getY(), c.getZ() + 0.5, 90F);
                             }
                         }
-                        puertas(s, "pas_te", false);
+                        if (adelante) {
+                            Adelante.abrir(s, "piano", "pas_piano", false);
+                        } else {
+                            puertas(s, pas, false);
+                        }
                         fase = Fase.LLEGANDO;
                         desde = t + 1000000;
-                        apagonFin = t + 50;
+                        apagonFin = t + (adelante ? 30 : 50);
                     }
                 }
             }
@@ -799,7 +815,11 @@ public final class Piano {
                 if (desde > t && t >= apagonFin) {
                     desde = t + 2000000;
                     apagonFin = Long.MAX_VALUE;
-                    Apagon.hacer(s, s.getPlayerList().getPlayers(), 60, () -> llegar(s));
+                    if (adelante) {
+                        llegar(s);
+                    } else {
+                        Apagon.hacer(s, s.getPlayerList().getPlayers(), 60, () -> llegar(s));
+                    }
                     break;
                 }
                 if (desde <= t && t % 10 == 0) {
@@ -1060,7 +1080,12 @@ public final class Piano {
     }
 
     public static Objetivo.Meta objetivo(MinecraftServer s, ServerPlayer sp) {
-        if (fase == Fase.PASILLO && !Cabina.dentro(s, "pas_te", sp, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
+        if (fase == Fase.PASILLO && adelante) {
+            Objetivo.Meta m = Adelante.meta(s, sp, "piano", "pas_piano");
+            if (m != null) {
+                return m;
+            }
+        } else if (fase == Fase.PASILLO && !Cabina.dentro(s, "pas_te", sp, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
             return Objetivo.Meta.en(Complejo.pos(s, "pas_te.centro"), 1.5, MOD + ".obj.pasillo");
         }
         if (fase == Fase.LLEGANDO && desde <= t && !enSalon(s, sp)) {

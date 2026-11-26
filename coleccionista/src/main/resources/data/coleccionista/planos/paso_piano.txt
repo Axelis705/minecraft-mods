@@ -1,0 +1,45 @@
+# Un pasillo hacia adelante (lo arma herramientas/mapas/pasos_plano.py; lo lee Casa.java). Cada letra, una columna de bloques.
+mueble V coleccionista:vitrina doble
+mueble C coleccionista:candelabro doble
+mueble K coleccionista:cajon encima=coleccionista:muneca[facing={mira}]
+mueble O coleccionista:barril
+mueble x coleccionista:craneo
+mueble z coleccionista:zapatos
+mueble M coleccionista:mesa encima=coleccionista:copa
+mueble Y minecraft:cauldron[-]
+mueble E coleccionista:espejo y=2
+mueble T coleccionista:mesa_tapete
+mueble H coleccionista:sillon doble
+mueble S coleccionista:estandarte_rojo doble
+
+estilo a nombre=Galería_de_espejos piso=coleccionista:parquet pared=coleccionista:marmol_crema zoclo=coleccionista:marmol_negro luz=8
+
+punto 1 paso_piano.inicio 270
+punto 2 paso_piano.codo1 0
+punto 3 paso_piano.codo2 0
+punto 4 paso_piano.fin 270
+
+# el pasillo (x del mundo 1014..1029; sale en z 4..5, llega en z 21..22)
+piso 0 alto 4 origen 0 3
+###########
+1aaaaaaa2a#
+aaaaaaaaaa#
+#######Eaa#
+      #aaa#
+      #aaC#
+      #aaa#
+      #Eaa#
+      #aaa#
+      #aaK#
+      #aaa#
+      #Eaa#
+      #aaa#
+      #aaC#
+      #aaa#
+      #Eaa#
+      #aaa#
+      #aaK######
+      #a3aaaaaa4
+      #aaaaaaaaa
+      ##########
+fin

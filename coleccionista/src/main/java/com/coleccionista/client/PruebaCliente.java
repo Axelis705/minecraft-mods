@@ -678,7 +678,7 @@ final class PruebaCliente {
      * pianos de piso con sus cortinas), la bailarina, mi piano mientras ella toca (la tecla de cada nota brilla con su columna de luz), yo
      * tocando (con /evento piano bien), el desempate (dos bots se equivocan a propósito y yo me salvo: lo veo desde arriba), el piso que se
      * abre y el foso. El salón está en (1030, -61, 430): el pasillo x 1032..1045 / z 448..455, el salón x 1047..1091 / z 430..472, el
-     * escenario x 1057..1081 / z 431..439 (la bailarina en 1069.5, 435.5), los pianos (tapete) en x 1053, 1062, 1071, 1080 / z 452 con las
+     * escenario x 1057..1081 / z 431..439 (la bailarina en 1069.5, 435.5), los pianos (tapete) en x 1056, 1065, 1074, 1083 / z 452 con las
      * teclas en y -58.
      */
     private static void capitulo6(ClientTest.Script t) {
@@ -710,8 +710,8 @@ final class PruebaCliente {
         });
         // cada quien sube a su pista por su escalera (con su número); los bots suben solos
         t.waitFor("cap6: subiendo", 8000, () -> "LUGARES".equals(PianoCliente.fase()));
-        t.photo("c6_03b_pistas", 2500, () -> t.lookFrom(1066.5, -57.5, 469.5, 1066.5, -58.5, 455.5));
-        t.photo("c6_03c_escalera", 1200, () -> t.lookFrom(1056.5, -59.5, 463.5, 1054, -58.5, 456));
+        t.photo("c6_03b_pistas", 2500, () -> t.lookFrom(1069.5, -57.5, 469.5, 1069.5, -58.5, 455.5));
+        t.photo("c6_03c_escalera", 1200, () -> t.lookFrom(1059.5, -59.5, 463.5, 1057, -58.5, 456));
         t.add("cap6: me falta subir", 100, () -> {
             CompoundTag m = PianoCliente.mio();
             t.check(m != null && !m.getBoolean("arriba"), "todavía no subo a mi pista (la caja no me sube)");
@@ -748,7 +748,7 @@ final class PruebaCliente {
         t.waitFor("cap6: segunda ronda", 15000, () -> "MUESTRA".equals(PianoCliente.fase()));
         t.photo("c6_08_desde_arriba", 2200, () -> {
             t.cmd("evento piano fallar Bot_02");
-            t.lookFrom(1066.5, -49, 466.5, 1066.5, -58, 452.5);
+            t.lookFrom(1069.5, -49, 466.5, 1069.5, -58, 452.5);
         });
         t.waitFor("cap6: cae", 20000, () -> "CAE".equals(PianoCliente.fase()));
         t.photo("c6_09_se_abre", 500, () -> {
@@ -1057,6 +1057,18 @@ final class PruebaCliente {
      * La caja está en (790, -61, 430): el pasillo en x 792..805 / z 448..455, el salón en x 807..849 / z 430..472, el escenario al centro
      * (828, 451) con la compuerta en x 827..829 / z 450..452; las góndolas 1..4 al norte (entradas en z 434, centros x 822..834).
      */
+    /** Fotos de un pasillo hacia adelante: el tramo largo desde el primer codo y el último, hacia la puerta de atrás de la sala siguiente. */
+    private static void fotosPaso(ClientTest.Script t, String nombre, int dx, int ancho, int zin) {
+        double cx = dx + ancho / 2 + 0.5;
+        t.photo(nombre + "_1", 1600, () -> t.lookFrom(cx, -60, 430 + zin + 0.5, cx, -59.4, 451.5));
+        t.photo(nombre + "_2", 1200, () -> t.lookFrom(cx, -60, 451.9, dx + ancho + 1.5, -59.4, 451.9));
+    }
+
+    private static boolean puertaAbierta(int x, int y, int z) {
+        var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(x, y, z));
+        return st.getBlock() instanceof net.minecraft.world.level.block.DoorBlock && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN);
+    }
+
     private static void capitulo3(ClientTest.Script t) {
         t.add("cap3: preparar", 600, () -> {
             t.cmd("gamemode adventure @a");
@@ -1065,9 +1077,28 @@ final class PruebaCliente {
             t.cmd("evento caja sentarse 60");
             t.cmd("evento caja esperar true");
             t.cmd("evento pocos true");
-            t.cmd("evento caja llegar");
         });
+        // los pasillos hacia adelante entre capítulos (zonas paso_*): fotos de cada uno antes de recorrer el de la caja
+        fotosPaso(t, "c3_00c_sorpresa", 852, 18, 8);
+        fotosPaso(t, "c3_00d_te", 934, 16, 39);
+        fotosPaso(t, "c3_00e_piano", 1014, 16, 4);
+        fotosPaso(t, "c3_00f_veintiuno", 1094, 16, 37);
+        // de la mansión a la caja caminando: se abre la puerta de salida de la mansión (773, 438) y la de atrás del pasillo de la caja
+        // (791, 451); al entrar todos, se cierran las dos y, sin apagón, se abren las del salón
+        t.add("cap3: llamar", 600, () -> t.cmd("evento caja llamar"));
+        t.waitFor("cap3: camino", 8000, () -> "PASILLO".equals(CajaCliente.fase()));
+        t.photo("c3_00a_salida_mansion", 1800, () -> t.lookFrom(767.5, -60, 439, 774, -59.6, 439));
+        t.add("se abre la salida", 100, () -> {
+            t.check(puertaAbierta(773, -60, 438), "se abrió la puerta de salida de la mansión");
+            t.check(puertaAbierta(791, -60, 451), "se abrió la puerta de atrás del pasillo de la caja");
+        });
+        fotosPaso(t, "c3_00b_caja", 775, 15, 8);
+        t.add("cap3: entrar al pasillo", 400, () -> t.cmd("tp @a 794.5 -60 451.5 90 0"));
         t.waitFor("cap3: llegando", 15000, () -> "LLEGANDO".equals(CajaCliente.fase()));
+        t.add("se cierra detrás", 2500, () -> {
+            t.check(!puertaAbierta(773, -60, 438), "se cerró la salida de la mansión");
+            t.check(!puertaAbierta(791, -60, 451), "se cerró la puerta de atrás del pasillo");
+        });
         t.photo("c3_01_pasillo", 1500, () -> t.lookFrom(799.5, -60, 451.5, 807, -59, 451.5));
         t.add("puertas de la caja", 100, () -> {
             var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(806, -60, 455));

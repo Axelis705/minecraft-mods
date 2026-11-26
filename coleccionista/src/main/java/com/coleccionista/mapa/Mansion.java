@@ -39,6 +39,8 @@ public final class Mansion {
         Casa casa = Casa.leer(PLANO);
         casa.construir(p);
         jaula(p);
+        // la salida de la casa (hacia la caja de música): por la puerta de atrás del cuarto de servicio
+        Salida.puerta(p, "salida.mansion", 53, 8, 54, C + "tablon");
         // la araña grande colgando en medio del vestíbulo
         p.set(28, ALTO_HALL, 21, C + "cadena");
         p.set(28, ALTO_HALL - 1, 21, C + "arana");

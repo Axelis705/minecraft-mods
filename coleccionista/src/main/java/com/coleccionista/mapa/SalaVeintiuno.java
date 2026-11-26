@@ -29,7 +29,9 @@ public final class SalaVeintiuno {
         Plano p = new Plano(semilla);
         luces = 0;
         p.caja(0, -1, -1, 49, ALTO + 2, 43, C + "ladrillo_oscuro");
-        Pasaje.pasillo(p, "pas_veintiuno", new Marco(2, 26, 270));
+        Pasaje.pasillo(p, "pas_veintiuno", new Marco(2, 26, 270), Pasaje.CARTAS);
+        // se llega caminando desde la sala anterior (el pasillo de en medio es la zona "paso_...")
+        Salida.llegada(p, C + "madera_pulida");
         cuarto(p);
         mesa(p);
         trono(p);

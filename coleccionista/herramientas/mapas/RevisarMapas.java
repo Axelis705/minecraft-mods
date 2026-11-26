@@ -15,6 +15,130 @@ public final class RevisarMapas {
     private RevisarMapas() {
     }
 
+    /** Dónde está cada sala en el mundo (x de su zona, como en Complejo) y cómo se construye. */
+    private static Plano sala(String id) {
+        return switch (id) {
+            case "mansion" -> Mansion.crear(1234L);
+            case "caja" -> CajaMusica.crear(1234L);
+            case "sorpresa" -> SalaSorpresa.crear(1234L);
+            case "te" -> SalaTe.crear(1234L);
+            case "piano" -> SalaPiano.crear(1234L);
+            case "veintiuno" -> SalaVeintiuno.crear(1234L);
+            default -> throw new IllegalArgumentException(id);
+        };
+    }
+
+    private static int dx(String id) {
+        return switch (id) {
+            case "mansion" -> 720;
+            case "caja" -> 790;
+            case "sorpresa" -> 870;
+            case "te" -> 950;
+            case "piano" -> 1030;
+            case "veintiuno" -> 1110;
+            default -> throw new IllegalArgumentException(id);
+        };
+    }
+
+    /** El pasillo de servicio de cada sala (al que se llega por la puerta de atrás). */
+    private static String pasillo(String id) {
+        return switch (id) {
+            case "caja" -> "pas_caj";
+            case "sorpresa" -> "pas_sor";
+            case "te" -> "pas_te";
+            case "piano" -> "pas_piano";
+            case "veintiuno" -> "pas_veintiuno";
+            default -> "pas_man";
+        };
+    }
+
+    /** Dónde están todos al terminar cada sala (de ahí tienen que poder caminar a la salida). */
+    private static String[] alTerminar(String id) {
+        return switch (id) {
+            case "mansion" -> new String[] {"man.entrada"};
+            case "caja" -> new String[] {"caja.centro"};
+            case "sorpresa" -> new String[] {"sor.centro"};
+            case "te" -> new String[] {"te.centro"};
+            case "piano" -> new String[] {"piano.entrada", "piano.anillo."};
+            default -> new String[] {};
+        };
+    }
+
+    /**
+     * Las marcas que no son un lugar para pararse (el centro de una mesa, la pista de un piano): basta con que se llegue a alguna casilla a
+     * {@code radio} o menos (y de una altura parecida). Devuelve cuántas quedan lejos.
+     */
+    private static int cerca(Revisor r, Plano p, String prefijo, int radio) {
+        int lejos = 0;
+        for (Map.Entry<String, Plano.Marca> e : p.marcas.entrySet()) {
+            if (!e.getKey().startsWith(prefijo)) {
+                continue;
+            }
+            Plano.Marca m = e.getValue();
+            boolean hay = false;
+            for (int x = m.x() - radio; x <= m.x() + radio && !hay; x++) {
+                for (int z = m.z() - radio; z <= m.z() + radio && !hay; z++) {
+                    for (int y = m.y() - 1; y <= m.y() + 2 && !hay; y++) {
+                        hay = r.alcanzado.contains(Plano.key(x, y, z));
+                    }
+                }
+            }
+            if (!hay) {
+                lejos++;
+                System.out.println("  lejos: no se llega cerca de " + e.getKey() + " (" + m.x() + ", " + m.y() + ", " + m.z() + ")");
+            }
+        }
+        return lejos;
+    }
+
+    /** Copia un plano (bloques y marcas) corrido {@code ox} en x. */
+    private static void copiar(Plano de, Plano a, int ox) {
+        for (Map.Entry<Long, String> e : de.m.entrySet()) {
+            long k = e.getKey();
+            a.set(Plano.kx(k) + ox, Plano.ky(k), Plano.kz(k), e.getValue());
+        }
+        for (Map.Entry<String, Plano.Marca> e : de.marcas.entrySet()) {
+            Plano.Marca m = e.getValue();
+            a.marca(e.getKey(), m.x() + ox, m.y(), m.z(), m.yaw());
+        }
+    }
+
+    /**
+     * Los caminos hacia adelante: para cada capítulo, la sala que se deja, su pasillo y la que sigue, juntas como en el mundo; desde donde
+     * terminan todos se tiene que llegar a la salida, recorrer el pasillo y entrar al de servicio de la siguiente.
+     */
+    private static int caminos(File out, Map<String, Revisor.Forma> deco, Path tex) throws Exception {
+        int fallas = 0;
+        for (String[] ps : Pasos.PASOS) {
+            String hacia = ps[0], de = ps[1];
+            int dxp = Integer.parseInt(ps[2]);
+            Plano p = new Plano(1L);
+            Plano pa = sala(de), pb = sala(hacia), pp = Pasos.crear(1L, hacia);
+            // en el mundo: primero las salas y luego el pasillo (que se vuelve a construir después de ellas)
+            copiar(pa, p, 0);
+            copiar(pb, p, dx(hacia) - dx(de));
+            copiar(pp, p, dxp - dx(de));
+            Plano.Marca ini = p.marcas.get("paso_" + hacia + ".inicio");
+            Revisor r = new Revisor(p, deco).caminar(ini.x(), ini.y(), ini.z());
+            r.marcas("paso_" + hacia + ".").marcas("salida." + de + ".").marcas(pasillo(hacia) + ".centro").marcas(pasillo(hacia) + ".entrada.");
+            int lejos = 0;
+            for (String m : alTerminar(de)) {
+                lejos += cerca(r, p, m, 3);
+            }
+            int x0 = dxp - dx(de) - 12, x1 = dxp - dx(de) + pp.x1 + 12;
+            // los escalones raros solo en el pasillo (en las salas hay mesitas y losas de adorno)
+            r.pisos(dxp - dx(de) - 1, pp.z0 - 1, dxp - dx(de) + pp.x1 + 1, pp.z1 + 1, 0, 6);
+            System.out.print(r.informe("Hacia " + hacia + " (desde " + de + ")", 8));
+            int f = (int) (r.cuantos("no se llega") + r.cuantos("no cabe nadie")) + lejos;
+            fallas += f;
+            System.out.println("CAMINO " + de + " -> " + hacia + (f == 0 ? " OK" : " FALLA " + f));
+            Vista v = new Vista(p, r, tex);
+            v.iso(new File(out, "camino_" + hacia + ".png"), 4, 0, new int[] {x0, pp.z0 - 6, x1, pp.z1 + 6}, 14,
+                    "Camino: " + de + " → " + hacia);
+        }
+        return fallas;
+    }
+
     public static void main(String[] a) throws Exception {
         File out = new File(a.length > 0 ? a[0] : "mapas_revision");
         out.mkdirs();
@@ -47,6 +171,9 @@ public final class RevisarMapas {
             v.iso(new File(out, "mansion_cerca_sur_alta.png"), 12, 0, new int[] {5, 34, 53, 61}, 12, "Planta alta · sur");
             v.iso(new File(out, "mansion_cerca_atico.png"), 17, 0, new int[] {5, -18, 53, -1}, 12, "Ático norte");
             fallas += r.cuantos("cuarto inaccesible") + r.cuantos("no se llega") + r.cuantos("no cabe nadie");
+        }
+        if (cual.equals("caminos") || cual.equals("todo")) {
+            fallas += caminos(out, deco, tex);
         }
         if (estricto && fallas > 0) {
             System.out.println("REVISION_MAPAS_FALLO " + fallas);

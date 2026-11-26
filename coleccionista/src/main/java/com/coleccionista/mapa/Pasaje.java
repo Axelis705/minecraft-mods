@@ -16,14 +16,45 @@ public final class Pasaje {
     private Pasaje() {
     }
 
+    /**
+     * Cómo se ve un pasillo: el piso (dos, en ajedrez), la parte de abajo del muro, la moldura, la de arriba, el techo, el tapete del
+     * centro y los cuatro asientos. El de siempre ({@link #CLASICO}) es igual en todos lados (para pasar de uno a otro sin que se note);
+     * los de las salas a las que se llega caminando tienen el suyo, para que no parezca que se regresa al mismo lugar.
+     */
+    public record Tema(String pisoA, String pisoB, String bajo, String moldura, String alto, String techo, String tapete, String asiento,
+                       int luz) {
+    }
+
+    public static final Tema CLASICO = new Tema(C + "linoleo", C + "linoleo", C + "panel_madera", C + "marco_dorado", C + "papel_tapiz",
+            C + "concreto", C + "tapete_rojo", C + "sillon", 13);
+    /** La caja de música: terciopelo y oro. */
+    public static final Tema CAJA = new Tema(C + "parquet", C + "madera_pulida", C + "panel_madera", C + "marco_dorado", C + "acolchado",
+            C + "madera_pulida", C + "tapete_rojo", C + "sillon", 12);
+    /** El teatrito de Don Resorte: telón rojo y focos de feria. */
+    public static final Tema CIRCO = new Tema(C + "madera_pulida", C + "tablon", C + "panel_madera", C + "marco_luz_amarilla", C + "telon",
+            C + "telon_borde", C + "tapete_rojo", C + "silla", 12);
+    /** El salón de té: azulejo y mármol. */
+    public static final Tema TE = new Tema(C + "marmol_crema", C + "marmol_negro", C + "azulejo", C + "marco_dorado", C + "papel_tapiz",
+            C + "yeso", C + "tapete_orilla", C + "silla", 12);
+    /** El salón de baile: mármol claro y espejos. */
+    public static final Tema BAILE = new Tema(C + "parquet", C + "parquet", C + "marmol_negro", C + "marco_dorado", C + "marmol_crema",
+            C + "marmol_crema", C + "alfombra_roja", C + "sillon", 13);
+    /** La mesa de juego: madera oscura y tapete verde. */
+    public static final Tema CARTAS = new Tema(C + "marmol_negro", C + "tapete_rojo", C + "panel_madera", C + "marco_dorado",
+            C + "linoleo_verde", C + "madera_pulida", C + "alfombra_negra", C + "sillon", 11);
+
     public static void pasillo(Plano p, String id, Marco m) {
+        pasillo(p, id, m, CLASICO);
+    }
+
+    public static void pasillo(Plano p, String id, Marco m, Tema t) {
         for (int i = -1; i <= ANCHO; i++) {
             for (int k = -1; k <= LARGO; k++) {
                 boolean muro = i == -1 || i == ANCHO || k == -1 || k == LARGO;
-                m.set(p, i, 0, k, C + ((i + k) % 2 == 0 ? "linoleo" : "linoleo"));
-                m.set(p, i, ALTO + 1, k, C + "concreto");
+                m.set(p, i, 0, k, (i + k) % 2 == 0 ? t.pisoA() : t.pisoB());
+                m.set(p, i, ALTO + 1, k, t.techo());
                 for (int y = 1; y <= ALTO; y++) {
-                    m.set(p, i, y, k, muro ? C + (y <= 2 ? "panel_madera" : y == 3 ? "marco_dorado" : "papel_tapiz") : "air");
+                    m.set(p, i, y, k, muro ? (y <= 2 ? t.bajo() : y == 3 ? t.moldura() : t.alto()) : "air");
                 }
             }
         }
@@ -49,18 +80,26 @@ public final class Pasaje {
         m.set(p, 5, 1, LARGO - 1, C + "candelabro[facing=north,half=lower]");
         m.set(p, 5, 2, LARGO - 1, C + "candelabro[facing=north,half=upper]");
         // un tapete al centro, sillones contra las paredes, cuadros vacíos y luz baja
+        boolean alfombra = t.tapete().contains("alfombra");
         for (int k = 1; k <= LARGO - 2; k++) {
-            m.set(p, 3, 0, k, C + "tapete_rojo");
-            m.set(p, 4, 0, k, C + "tapete_rojo");
+            // el tapete: si es de bloque va en el piso; si es alfombra, encima
+            m.set(p, 3, alfombra ? 1 : 0, k, t.tapete());
+            m.set(p, 4, alfombra ? 1 : 0, k, t.tapete());
         }
+        boolean alto = t.asiento().endsWith("sillon");
         for (int k : new int[] {3, 8}) {
-            m.set(p, 0, 1, k, C + "sillon[facing=east,half=lower]");
-            m.set(p, 0, 2, k, C + "sillon[facing=east,half=upper]");
-            m.set(p, ANCHO - 1, 1, k, C + "sillon[facing=west,half=lower]");
-            m.set(p, ANCHO - 1, 2, k, C + "sillon[facing=west,half=upper]");
+            if (alto) {
+                m.set(p, 0, 1, k, t.asiento() + "[facing=east,half=lower]");
+                m.set(p, 0, 2, k, t.asiento() + "[facing=east,half=upper]");
+                m.set(p, ANCHO - 1, 1, k, t.asiento() + "[facing=west,half=lower]");
+                m.set(p, ANCHO - 1, 2, k, t.asiento() + "[facing=west,half=upper]");
+            } else {
+                m.set(p, 0, 1, k, t.asiento() + "[facing=east]");
+                m.set(p, ANCHO - 1, 1, k, t.asiento() + "[facing=west]");
+            }
         }
         for (int k = 2; k < LARGO; k += 4) {
-            m.set(p, 3, ALTO, k, "light[level=13]");
+            m.set(p, 3, ALTO, k, "light[level=" + t.luz() + "]");
         }
         m.set(p, 0, 4, 11, C + "camara[facing=east]");
         m.marca(p, id + ".centro", 3, 1, 6, 0);

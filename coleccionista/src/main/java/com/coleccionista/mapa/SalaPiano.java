@@ -8,7 +8,8 @@ package com.coleccionista.mapa;
  * sentido del reloj, empezando al norte). Debajo de cada piano, un foso con picos: cuando alguien pierde, se abre el piso de su piano.
  * <pre>
  *   x: 0 ... 63   z: -1 ... 43   y: -3 ... 16
- *   el pasillo x 2..15 (entra al salón por x 16), el salón x 17..61 / z 0..42 (alto 14)
+ *   el pasillo x 2..15 (entra al salón por x 16), el salón x 17..61 / z 0..42 (alto 14); entre la pared y la cortina del primer
+ *   piano quedan 5 de ancho para entrar (x 17..21)
  *   el escenario x 27..51 / z 1..9 (y 1); la bailarina en (39, 5)
  *   los pianos: tarimas de 3 de alto (las teclas en y 3, se para en y 4); el tapete del piano k en (CX[k], CZ) y (CX[k]+1, CZ+1); el
  *   piano ocupa de CX[k]-2 a CX[k]+3 (y lo mismo en z); el foso, dentro de la tarima, de y 2 a y -2 (picos al fondo)
@@ -20,7 +21,7 @@ public final class SalaPiano {
     private static final String C = "coleccionista:";
     public static final int HX0 = 17, HX1 = 61, HZ0 = 0, HZ1 = 42, ALTO = 14;
     /** Los tapetes de los cuatro pianos (esquina noroeste) y su fila. */
-    public static final int[] CX = {23, 32, 41, 50};
+    public static final int[] CX = {26, 35, 44, 53};
     public static final int CZ = 22, PIANOS = 4, PISO = 3;
     /** Las teclas, en el sentido del reloj desde el norte: esquina noroeste de cada una, relativa a la del tapete. */
     public static final int[][] TECLA = {{0, -2}, {2, -2}, {2, 0}, {2, 2}, {0, 2}, {-2, 2}, {-2, 0}, {-2, -2}};
@@ -37,12 +38,16 @@ public final class SalaPiano {
         Plano p = new Plano(semilla);
         luces = 0;
         p.caja(0, -3, -1, 63, ALTO + 2, 43, C + "ladrillo_oscuro");
-        Pasaje.pasillo(p, "pas_piano", new Marco(2, 26, 270));
+        Pasaje.pasillo(p, "pas_piano", new Marco(2, 26, 270), Pasaje.BAILE);
+        // se llega caminando desde la sala anterior (el pasillo de en medio es la zona "paso_...")
+        Salida.llegada(p, C + "madera_pulida");
         salon(p);
         escenario(p);
         for (int k = 0; k < PIANOS; k++) {
             piano(p, k);
         }
+        // la puerta de salida hacia el capítulo siguiente (hacia adelante)
+        Salida.puerta(p, "salida.piano", 62, 37, 63, C + "madera_pulida");
         return p;
     }
 

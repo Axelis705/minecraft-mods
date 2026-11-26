@@ -34,10 +34,14 @@ public final class SalaSorpresa {
         zapatos = 0;
         luces = 0;
         p.caja(0, -1, -1, 63, ALTO + 2, 43, C + "ladrillo_oscuro");
-        Pasaje.pasillo(p, "pas_sor", new Marco(2, 26, 270));
+        Pasaje.pasillo(p, "pas_sor", new Marco(2, 26, 270), Pasaje.CIRCO);
+        // se llega caminando desde la sala anterior (el pasillo de en medio es la zona "paso_...")
+        Salida.llegada(p, C + "madera_pulida");
         salon(p);
         herradura(p);
         escenario(p);
+        // la puerta de salida hacia el capítulo siguiente (hacia adelante)
+        Salida.puerta(p, "salida.sorpresa", 62, 39, 63, C + "madera_pulida");
         return p;
     }
 

@@ -107,6 +107,8 @@ public final class Caja {
     }
 
     private static Fase fase = Fase.NADA;
+    /** Si esta vez se llega caminando hacia adelante (por el pasillo de la sala anterior a la puerta de atrás del de servicio). */
+    private static boolean adelante;
     /** Reloj propio (ticks, se detiene con la pausa del evento). */
     private static long t, desde;
     private static int turno = -1, apagones;
@@ -217,13 +219,18 @@ public final class Caja {
         }
         Pruebas.cerrarOtras(s, "caja");
         limpiarTodo(s);
-        puertas(s, "pas_man", true);
+        adelante = Adelante.hay(s, "caja");
+        if (adelante) {
+            Adelante.abrir(s, "caja", "pas_caj", true);
+        } else {
+            puertas(s, "pas_man", true);
+        }
         fase = Fase.PASILLO;
         desde = t;
         Evento ev = Evento.get(s);
-        ev.prueba(s, Component.translatable(MOD + ".caja.prueba_pasillo").getString());
+        ev.prueba(s, Component.translatable(MOD + (adelante ? ".adelante.prueba" : ".caja.prueba_pasillo")).getString());
         ev.reloj(s, 0);
-        Anuncio.titulo(s, Component.empty(), Component.translatable(MOD + ".caja.al_pasillo"));
+        Anuncio.titulo(s, Component.empty(), Component.translatable(MOD + (adelante ? ".adelante.titulo" : ".caja.al_pasillo")));
         enviar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_CAJA llamar");
         return null;
@@ -239,11 +246,15 @@ public final class Caja {
             limpiarTodo(s);
         }
         Evento ev = Evento.get(s);
+        boolean ad = Adelante.hay(s, "caja");
         List<Entity> enPasillo = new ArrayList<>(), fuera = new ArrayList<>();
         for (Pieza p : ev.vivos()) {
             Entity e = Evento.entidad(s, p);
             if (e == null) {
                 continue;
+            }
+            if (ad && Cabina.dentro(s, "pas_caj", e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
+                continue; // ya llegó caminando
             }
             if (Complejo.construido(s, "mansion") && Cabina.dentro(s, "pas_man", e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
                 enPasillo.add(e);
@@ -1555,6 +1566,7 @@ public final class Caja {
         cortinasTick(s);
         switch (fase) {
             case PASILLO -> {
+                String pas = adelante ? "pas_caj" : "pas_man";
                 if (t % 10 == 0) {
                     boolean todos = true;
                     int n = 0;
@@ -1564,10 +1576,10 @@ public final class Caja {
                             continue;
                         }
                         n++;
-                        boolean dentro = Cabina.dentro(s, "pas_man", e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO);
+                        boolean dentro = Cabina.dentro(s, pas, e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO);
                         // los bots (solo en las pruebas) caminan solos
                         if (p.bot && !dentro && t - desde >= 60) {
-                            BlockPos c = Complejo.pos(s, "pas_man.centro");
+                            BlockPos c = Complejo.pos(s, pas + ".centro");
                             if (c != null) {
                                 ir(s, e, c.getX() + 0.5 + R.nextInt(3) - 1, c.getY(), c.getZ() + 0.5 + R.nextInt(3) - 1, 90F);
                                 dentro = true;
@@ -1577,17 +1589,21 @@ public final class Caja {
                     }
                     if (n > 0 && todos || t - desde >= esperaPasillo) {
                         // los que se quedaron afuera llegan con los demás; se cierra la puerta y pasan
-                        BlockPos c = Complejo.pos(s, "pas_man.centro");
+                        BlockPos c = Complejo.pos(s, pas + ".centro");
                         for (Pieza p : ev.vivos()) {
                             Entity e = Evento.entidad(s, p);
-                            if (e != null && c != null && !Cabina.dentro(s, "pas_man", e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
+                            if (e != null && c != null && !Cabina.dentro(s, pas, e, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
                                 ir(s, e, c.getX() + 0.5, c.getY(), c.getZ() + 0.5, 90F);
                             }
                         }
-                        puertas(s, "pas_man", false);
+                        if (adelante) {
+                            Adelante.abrir(s, "caja", "pas_caj", false);
+                        } else {
+                            puertas(s, pas, false);
+                        }
                         fase = Fase.LLEGANDO;
                         desde = t + 1000000; // espera a que se cierren las puertas
-                        apagonFin = t + 50;
+                        apagonFin = t + (adelante ? 30 : 50);
                     }
                 }
                 break;
@@ -1597,7 +1613,11 @@ public final class Caja {
                     // se va la luz un momento y, en lo oscuro, pasan al pasillo de la caja
                     desde = t + 2000000;
                     apagonFin = Long.MAX_VALUE;
-                    com.coleccionista.evento.Apagon.hacer(s, s.getPlayerList().getPlayers(), 60, () -> llegar(s));
+                    if (adelante) {
+                        llegar(s);
+                    } else {
+                        com.coleccionista.evento.Apagon.hacer(s, s.getPlayerList().getPlayers(), 60, () -> llegar(s));
+                    }
                     break;
                 }
                 if (desde <= t && t % 10 == 0) {
@@ -2001,7 +2021,12 @@ public final class Caja {
 
     /** A dónde ir: al pasillo (desde la casa) y luego al salón. */
     public static Objetivo.Meta objetivo(MinecraftServer s, ServerPlayer sp) {
-        if (fase == Fase.PASILLO && !Cabina.dentro(s, "pas_man", sp, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
+        if (fase == Fase.PASILLO && adelante) {
+            Objetivo.Meta m = Adelante.meta(s, sp, "caja", "pas_caj");
+            if (m != null) {
+                return m;
+            }
+        } else if (fase == Fase.PASILLO && !Cabina.dentro(s, "pas_man", sp, Pasaje.ANCHO, Pasaje.ALTO, Pasaje.LARGO)) {
             return Objetivo.Meta.en(Complejo.pos(s, "pas_man.centro"), 1.5, MOD + ".obj.pasillo");
         }
         if (fase == Fase.LLEGANDO && desde <= t && !enSalon(s, sp)) {

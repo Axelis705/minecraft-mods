@@ -38,11 +38,15 @@ public final class SalaTe {
         sofas = 0;
         luces = 0;
         p.caja(0, -1, -1, 63, ALTO + 2, 43, C + "ladrillo_oscuro");
-        Pasaje.pasillo(p, "pas_te", new Marco(2, 26, 270));
+        Pasaje.pasillo(p, "pas_te", new Marco(2, 26, 270), Pasaje.TE);
+        // se llega caminando desde la sala anterior (el pasillo de en medio es la zona "paso_...")
+        Salida.llegada(p, C + "madera_pulida");
         salon(p);
         mesa(p);
         jaulas(p);
         sillones(p);
+        // la puerta de salida hacia el capítulo siguiente (hacia adelante)
+        Salida.puerta(p, "salida.te", 62, 4, 63, C + "madera_pulida");
         return p;
     }
 

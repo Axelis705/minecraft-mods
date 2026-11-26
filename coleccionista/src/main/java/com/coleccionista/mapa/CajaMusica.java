@@ -41,13 +41,17 @@ public final class CajaMusica {
         p.caja(0, -1, -1, 61, -1, 43, C + "ladrillo_oscuro");
         p.caja(MX - 3, -3, MZ - 3, MX + 3, -2, MZ + 3, C + "ladrillo_oscuro");
         p.caja(0, 0, -1, 61, ALTO + 2, 43, C + "ladrillo_oscuro");
-        Pasaje.pasillo(p, "pas_caj", new Marco(2, 26, 270));
+        Pasaje.pasillo(p, "pas_caj", new Marco(2, 26, 270), Pasaje.CAJA);
+        // se llega caminando desde la sala anterior (el pasillo de en medio es la zona "paso_...")
+        Salida.llegada(p, C + "madera_pulida");
         salon(p);
         escenario(p);
         int[][] gs = gondolas();
         for (int n = 0; n < gs.length; n++) {
             gondola(p, n, gs[n][0], gs[n][1], gs[n][2]);
         }
+        // la puerta de salida hacia el capítulo siguiente (hacia adelante)
+        Salida.puerta(p, "salida.caja", 60, 8, 61, C + "madera_pulida");
         return p;
     }
 

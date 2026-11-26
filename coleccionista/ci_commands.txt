@@ -405,7 +405,8 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CAPITULO2 fin
 #expect COLECCIONISTA_CONSTRUIDO caja
 #expect COLECCIONISTA_CAJA llamar
-#expect COLECCIONISTA_CABINA traslada pas_man -> pas_caj
+#expect COLECCIONISTA_ADELANTE caja abre
+#expect COLECCIONISTA_ADELANTE caja cierra
 #expect COLECCIONISTA_CAJA llegan
 #expect COLECCIONISTA_CAJA sentarse piezas=
 #expect COLECCIONISTA_CAJA sentados auto=
@@ -474,6 +475,11 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_DISCURSO piano_fin
 #expect COLECCIONISTA_CAPITULO6 fin
 #expect COLECCIONISTA_CONSTRUIDO veintiuno
+#expect COLECCIONISTA_CONSTRUIDO paso_caja
+#expect COLECCIONISTA_CONSTRUIDO paso_sorpresa
+#expect COLECCIONISTA_CONSTRUIDO paso_te
+#expect COLECCIONISTA_CONSTRUIDO paso_piano
+#expect COLECCIONISTA_CONSTRUIDO paso_veintiuno
 #expect COLECCIONISTA_V21 llegan
 #expect COLECCIONISTA_V21 habla
 #expect COLECCIONISTA_DISCURSO veintiuno

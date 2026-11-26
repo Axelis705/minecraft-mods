@@ -48,7 +48,8 @@ public final class Casa {
     }
 
     /** Un mueble: su bloque, cuántos de alto, hacia dónde mira, si es cama (dos casillas) y si es un escondite. */
-    public record Mueble(char letra, String bloque, int alto, String mira, boolean cama, boolean escondite, boolean doble) {
+    public record Mueble(char letra, String bloque, int alto, String mira, boolean cama, boolean escondite, boolean doble, String encima,
+                         int y) {
     }
 
     /** Un piso del dibujo: su altura (el bloque del piso), qué tan alto es por dentro y sus filas. */
@@ -100,6 +101,12 @@ public final class Casa {
                 }
                 String[] p = t.split("\\s+");
                 switch (p[0]) {
+                    case "incluir" -> {
+                        Casa o = leer(p[1]);
+                        c.estilos.putAll(o.estilos);
+                        c.muebles.putAll(o.muebles);
+                        c.puntos.putAll(o.puntos);
+                    }
                     case "estilo" -> c.estilo(p);
                     case "mueble" -> c.mueble(p);
                     case "punto" -> c.puntos.put(p[1].charAt(0), new String[] {p[2], p.length > 3 ? p[3] : "0"});
@@ -135,7 +142,8 @@ public final class Casa {
     private void mueble(String[] p) {
         Map<String, String> m = pares(p, 3);
         muebles.put(p[1].charAt(0), new Mueble(p[1].charAt(0), p[2], Integer.parseInt(m.getOrDefault("alto", "1")), m.getOrDefault("mira", "pared"),
-                m.containsKey("cama"), m.containsKey("escondite"), m.containsKey("doble")));
+                m.containsKey("cama"), m.containsKey("escondite"), m.containsKey("doble"), m.getOrDefault("encima", ""),
+                Integer.parseInt(m.getOrDefault("y", "1"))));
     }
 
     // ------------------------------------------------------------------ construir
@@ -357,13 +365,18 @@ public final class Casa {
         String conMira = props.isEmpty() ? "facing=" + mira : props;
         boolean sinMira = b.endsWith("bookshelf") || b.endsWith("_planks") || b.endsWith("barrel") && props.isEmpty() || props.equals("-");
         String bloque = sinMira ? b : b + "[" + conMira + "]";
+        int yb = y0 + m.y();
         if (m.doble()) {
-            p.set(x, y0 + 1, z, b + "[" + conMira + ",half=lower]");
-            p.set(x, y0 + 2, z, b + "[" + conMira + ",half=upper]");
+            p.set(x, yb, z, b + "[" + conMira + ",half=lower]");
+            p.set(x, yb + 1, z, b + "[" + conMira + ",half=upper]");
         } else {
             for (int i = 0; i < m.alto(); i++) {
-                p.set(x, y0 + 1 + i, z, bloque);
+                p.set(x, yb + i, z, bloque);
             }
+        }
+        if (!m.encima().isEmpty()) {
+            // algo encima del mueble (una copa sobre la mesa, una muñeca sobre el cajón)
+            p.set(x, yb + (m.doble() ? 2 : m.alto()), z, m.encima().replace("{mira}", mira));
         }
         if (m.escondite()) {
             p.marca(prefijoEscondites + escondites++, x, y0 + 1, z, 0);
