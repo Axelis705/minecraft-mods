@@ -211,7 +211,7 @@ function acomodar() {
   render.setSize(w, h, false);
   camara.aspect = w / h;
   // él a la derecha (en la luz del fondo): se corre el centro de la vista
-  camara.setViewOffset(w, h, -w * 0.17, h * 0.02, w, h);
+  camara.setViewOffset(w, h, -w * 0.15, -h * 0.15, w, h);
   camara.updateProjectionMatrix();
 }
 window.addEventListener('resize', acomodar);
@@ -392,7 +392,7 @@ function paso(ahora) {
   polvoGeo.attributes.position.needsUpdate = true;
   // la cámara se mece un poquito y sigue al ratón (el fondo se mueve menos: profundidad)
   const ox = Math.sin(t * 0.21) * 4 + raton.x * 7, oy = Math.sin(t * 0.17) * 2 - raton.y * 4;
-  camara.position.set(ox, 41 + oy, -240);
+  camara.position.set(ox, 38 + oy, -180);
   camara.lookAt(MIRA);
   $('fondo').style.transform = `translate(${(-raton.x * 6).toFixed(1)}px, ${(-raton.y * 4).toFixed(1)}px)`;
   $('luz').style.transform = $('fondo').style.transform;
@@ -502,10 +502,22 @@ window.listo = (res) => {
   $('barra-avance').style.width = '100%';
   $('estado').className = 'estado bien';
   $('estado').textContent = res.abierto
-    ? '¡Listo! Se abrió el launcher de Minecraft: entra con tu cuenta, elige el perfil “El Coleccionista” y presiona JUGAR.'
+    ? '¡Listo! Se abrió el launcher de Minecraft: entra con tu cuenta, elige el perfil “El Coleccionista” y presiona JUGAR. '
+      + 'Cuando se abra el juego, esta ventana se cierra sola.'
     : '¡Listo! Abre el launcher de Minecraft, elige el perfil “El Coleccionista” y presiona JUGAR.';
-  decir('coleccion');
-  setTimeout(() => sonido('risa', 0.5), 3800);
+  // (cuando se abra el juego, Python cierra esta ventana: antes, un fundido a negro con estática)
+};
+window.adios = () => {
+  sonido('estatica', 0.4);
+  $('negro').style.transition = 'opacity .9s ease';
+  $('negro').style.opacity = 1;
+  for (const n of ['musica', 'ambiente', 'latido']) {
+    const a = SONIDOS[n];
+    if (!a) continue;
+    const v0 = a.volume;
+    let k = 0;
+    const id = setInterval(() => { k += 0.1; a.volume = Math.max(0, v0 * (1 - k)); if (k >= 1) { clearInterval(id); a.pause(); } }, 90);
+  }
 };
 window.fallo = (msg) => {
   terminado();

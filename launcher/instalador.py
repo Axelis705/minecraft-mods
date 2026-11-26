@@ -374,6 +374,18 @@ def abrir_launcher():
         return False
 
 
+def juego_abierto_desde(t0):
+    """¿Ya arrancó el juego del evento después de {@code t0}? (el juego escribe su registro en su carpeta en cuanto abre)."""
+    for nombre in ('latest.log', 'debug.log'):
+        ruta = os.path.join(carpeta_juego(), 'logs', nombre)
+        try:
+            if os.path.getmtime(ruta) > t0:
+                return True
+        except OSError:
+            pass
+    return False
+
+
 # ---------------------------------------------------------------------------------------------------- todo junto
 
 def preparar(ram, avance=lambda k, txt: None, abrir=True):
