@@ -1,1 +1,41 @@
-{"iteraciones": 200000, "usuarios": {}}
+{
+  "iteraciones": 200000,
+  "usuarios": {
+    "angel": {
+      "hash": "46c42cf7ff577c788d002f85cdc4a1bea2a91af9a219651d1ae41a9dad6c8f9a",
+      "sal": "40bed67e5160bacdb1c41dc3b1bf654d"
+    },
+    "asht": {
+      "hash": "faba205e2ce30892084325e6d272706ca64e7b4fa2bc4c77bcfce95e06065536",
+      "sal": "a4b52fef754403bc27266eb114631dd1"
+    },
+    "axelis": {
+      "hash": "ed704124b1e8c4cc6936d5171fa54fcbbf329f7587e441659c8cc572b8292994",
+      "sal": "2c7d21e021ec202d12b1df5961e6aaf6"
+    },
+    "mari": {
+      "hash": "224c58eafe5b6bbbb79846b69f4bb23980fd177d8260f7ccd3a41190d1d847a1",
+      "sal": "084e8c367e79ea8d6293fe21d16541ea"
+    },
+    "odette": {
+      "hash": "3f4f2d51955b07ed5454094f456c705ff67935c813c87615fd146d08cefacfc4",
+      "sal": "50f459e8cd134ff3b604ab95cca053a5"
+    },
+    "rafa": {
+      "hash": "5263c05c8a8183964d10ebe68f40cc531a08c5eb2df340137e9df2a18f65c2e9",
+      "sal": "9d42367b14d1741f1952ffd59ba5be02"
+    },
+    "roier": {
+      "hash": "13312da851aabccc16d633a9ca977982374345db70ed0600ea8b07a9653b74fb",
+      "sal": "69e74dfe3ec1d79bd579dc02776d94b6"
+    },
+    "scardax": {
+      "hash": "8a4e78310bad4f4c45432b826098f3b5c06b9ef50c4eb7fcb0c18153f805a1a0",
+      "sal": "1f64dbbb481138df42ba0f8dd5dddbb7"
+    },
+    "ushio": {
+      "hash": "5514b7f3208831cab32a5f23bc8c4aa80b86bca7d49922076bbabdaa872dbc88",
+      "sal": "aba743b61ba89958953d6df8dfe357f8"
+    }
+  }
+}
