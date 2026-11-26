@@ -278,7 +278,8 @@ public class Escopeta extends Entity implements Animated {
         float r = (float) Math.PI / 180F;
         float sub = subida(pt);
         // el mástil sube y baja (el modelo, no la entidad); los engranes de la base giran con él
-        pose.addPos(geo.bone("mastil"), 0, -(1F - Math.min(1F, sub)) * SUBE, 0);
+        // (en Pose.addPos la y positiva va hacia ABAJO: guardada, el mástil baja SUBE px dentro del foso)
+        pose.addPos(geo.bone("mastil"), 0, (1F - Math.min(1F, sub)) * SUBE, 0);
         pose.addRot(geo.bone("engrane"), sub * 720F * r, 0, 0);
         pose.addRot(geo.bone("engrane2"), -sub * 720F * r, 0, 0);
         // al salir del foso da una vuelta completa (despacio, como una bailarina de caja de música)

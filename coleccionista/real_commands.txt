@@ -409,6 +409,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CAJA llegan
 #expect COLECCIONISTA_CAJA sentarse piezas=
 #expect COLECCIONISTA_CAJA sentados auto=
+#expect COLECCIONISTA_CAJA cortinas cerradas
 #expect COLECCIONISTA_CAJA roles piezas=
 #expect COLECCIONISTA_VOZ tonos=
 #expect COLECCIONISTA_CAJA turnos piezas=
@@ -433,6 +434,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_SORPRESA turno
 #expect COLECCIONISTA_SORPRESA vueltas
 #expect COLECCIONISTA_SORPRESA salta
+#expect COLECCIONISTA_SORPRESA susto cara=
 #expect COLECCIONISTA_SORPRESA come
 #expect COLECCIONISTA_SORPRESA fin comidos=
 #expect COLECCIONISTA_DISCURSO sorpresa_fin

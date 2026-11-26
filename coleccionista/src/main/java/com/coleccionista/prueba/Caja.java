@@ -36,6 +36,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -152,6 +153,12 @@ public final class Caja {
     private static int balas, salvados;
     /** Cuándo pasar al capítulo 4 (0: no). */
     private static long aSorpresa;
+    /** Cuántos grados a cada lado puede voltear la cabeza el de adelante de una góndola. */
+    public static final float LIMITE_FRENTE = 50F;
+    /** Las cortinas de las góndolas: cuándo se empezaron a correr (o -1) y si se cierran o se abren. */
+    private static long cortinasEn = -1;
+    private static boolean cortinasCerrar;
+    private static final List<BlockPos> cortinas = new ArrayList<>();
 
     private Caja() {
     }
@@ -376,6 +383,8 @@ public final class Caja {
                 si.setYHeadRot(yaw);
                 si.grupo = "caja";
                 si.oculta(true);
+                // el de adelante no se puede dar la vuelta (solo voltear un poco a los lados); el de atrás, libre
+                si.limite(lado == 1 ? LIMITE_FRENTE : 0F);
                 l.addFreshEntity(si);
                 asientos[g][lado] = si;
             }
@@ -550,6 +559,7 @@ public final class Caja {
             }
         }
         Coleccionista.LOGGER.info("COLECCIONISTA_CAJA sentados auto={}", auto);
+        correrCortinas(true);
         apagar(s, Fase.ROLES);
     }
 
@@ -909,6 +919,124 @@ public final class Caja {
         }
     }
 
+    // ------------------------------------------------------------------ las cortinas de las góndolas
+
+    /** Empieza a correr las cortinas de todas las góndolas (se cierran de las orillas al centro, como en un vestidor). */
+    private static void correrCortinas(boolean cerrar) {
+        cortinasEn = t;
+        cortinasCerrar = cerrar;
+    }
+
+    private static void cortinasTick(MinecraftServer s) {
+        if (cortinasEn < 0) {
+            return;
+        }
+        long dt = t - cortinasEn;
+        // primero las dos orillas, luego el centro
+        if (dt == 0) {
+            cortinas(s, cortinasCerrar, 0);
+        } else if (dt == 5) {
+            cortinas(s, cortinasCerrar, 1);
+            cortinasEn = -1;
+            Coleccionista.LOGGER.info("COLECCIONISTA_CAJA cortinas {} {}", cortinasCerrar ? "cerradas" : "abiertas", cortinas.size());
+        }
+    }
+
+    /**
+     * Cierra o abre la cortina de terciopelo en la entrada de cada góndola (dos cortinas altas una sobre otra, de 3 de ancho, justo afuera:
+     * tapan del piso al toldo). {@code paso} 0: las orillas, 1: el centro, -1: todo de una vez (sin sonido).
+     */
+    private static void cortinas(MinecraftServer s, boolean cerrar, int paso) {
+        ServerLevel l = s.overworld();
+        Block b = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD, "cortina"));
+        if (!cerrar) {
+            if (paso != 0 && b != null) {
+                // las que puso esta vez y, por si el servidor se reinició a la mitad, las de todas las entradas
+                List<BlockPos> todas = new ArrayList<>(cortinas);
+                int[][] gs = CajaMusica.gondolas();
+                for (int g = 0; g < gs.length; g++) {
+                    BlockPos ent = Complejo.pos(s, "caja.gon." + g + ".entrada");
+                    if (ent == null) {
+                        continue;
+                    }
+                    int yaw = gs[g][2];
+                    int dx = yaw == 270 ? 1 : yaw == 90 ? -1 : 0, dz = yaw == 180 ? -1 : yaw == 0 ? 1 : 0;
+                    int lx = dz != 0 ? 1 : 0, lz = dx != 0 ? 1 : 0;
+                    for (int i = -1; i <= 1; i++) {
+                        for (int y = 0; y <= 3; y++) {
+                            todas.add(ent.offset(-dx + i * lx, y, -dz + i * lz));
+                        }
+                    }
+                }
+                int quitadas = 0;
+                for (BlockPos q : todas) {
+                    if (l.getBlockState(q).is(b)) {
+                        l.setBlock(q, Blocks.AIR.defaultBlockState(), 2 | 16);
+                        quitadas++;
+                    }
+                }
+                if (quitadas > 0 && paso >= 0) {
+                    sonidoCortinas(s);
+                }
+                cortinas.clear();
+            }
+            return;
+        }
+        if (b == null || b == Blocks.AIR) {
+            return;
+        }
+        int[][] gs = CajaMusica.gondolas();
+        for (int g = 0; g < gs.length; g++) {
+            BlockPos ent = Complejo.pos(s, "caja.gon." + g + ".entrada");
+            if (ent == null) {
+                continue;
+            }
+            int yaw = gs[g][2];
+            // hacia la pared de la góndola; la cortina va un bloque afuera y mira hacia el salón (su tela queda en la entrada)
+            int dx = yaw == 270 ? 1 : yaw == 90 ? -1 : 0, dz = yaw == 180 ? -1 : yaw == 0 ? 1 : 0;
+            net.minecraft.core.Direction afuera = net.minecraft.core.Direction.fromYRot(yaw).getOpposite();
+            int lx = dz != 0 ? 1 : 0, lz = dx != 0 ? 1 : 0;
+            for (int i = -1; i <= 1; i++) {
+                if ((paso == 0 && i == 0) || (paso == 1 && i != 0)) {
+                    continue;
+                }
+                for (int y = 0; y <= 2; y += 2) {
+                    BlockPos lo = ent.offset(-dx + i * lx, y, -dz + i * lz);
+                    if (!l.getBlockState(lo).isAir() || !l.getBlockState(lo.above()).isAir()) {
+                        continue;
+                    }
+                    BlockState st = b.defaultBlockState();
+                    if (st.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING)) {
+                        st = st.setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, afuera);
+                    }
+                    BlockState arriba = st;
+                    if (st.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF)) {
+                        st = st.setValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF,
+                                net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER);
+                        arriba = st.setValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF,
+                                net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER);
+                    }
+                    l.setBlock(lo, st, 2 | 16);
+                    l.setBlock(lo.above(), arriba, 2 | 16);
+                    cortinas.add(lo);
+                    cortinas.add(lo.above());
+                }
+            }
+        }
+        if (paso >= 0) {
+            sonidoCortinas(s);
+        }
+    }
+
+    private static void sonidoCortinas(MinecraftServer s) {
+        for (Pieza p : Evento.get(s).vivos()) {
+            if (Evento.entidad(s, p) instanceof ServerPlayer sp) {
+                sp.playNotifySound(SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 0.9F, 0.7F);
+                sp.playNotifySound(SoundEvents.ARMOR_EQUIP_LEATHER, SoundSource.BLOCKS, 0.8F, 0.6F);
+            }
+        }
+    }
+
     // ------------------------------------------------------------------ el círculo y el arma
 
     private static void alCirculo(MinecraftServer s) {
@@ -925,6 +1053,7 @@ public final class Caja {
             }
         }
         lugar.clear();
+        cortinas(s, false, -1);
         Voz.juntar();
         Voz.tonos(Map.of());
         Vestuario.quitarDeTodos(s, MASCARA);
@@ -1423,6 +1552,7 @@ public final class Caja {
             return;
         }
         t++;
+        cortinasTick(s);
         switch (fase) {
             case PASILLO -> {
                 if (t % 10 == 0) {
@@ -1933,6 +2063,8 @@ public final class Caja {
 
     /** Quita todo lo de la caja: asientos, sillas, arma, máscaras, etiquetas, sangre, voces. */
     private static void limpiarTodo(MinecraftServer s) {
+        cortinas(s, false, -1);
+        cortinasEn = -1;
         for (Silla[] gg : asientos) {
             for (int i = 0; i < gg.length; i++) {
                 if (gg[i] != null) {

@@ -946,11 +946,17 @@ final class PruebaCliente {
         t.photo("c4_04_manivela", 400, () -> {
             t.cmd("evento sorpresa vueltas 2");
             mirarA(921.5, -56.5, 451.5);
+            Minecraft.getInstance().options.fov().set(40);
         });
         t.waitFor("cap4: salta", 8000, () -> "SALTO".equals(SorpresaCliente.fase()));
-        t.photo("c4_05_salta", 900, () -> mirarA(922.5, -55, 451.5));
+        // con zoom (menos campo de visión) para ver bien que Don Resorte sale hacia arriba
+        t.photo("c4_05_salta", 900, () -> {
+            mirarA(922.5, -55, 451.5);
+            Minecraft.getInstance().options.fov().set(32);
+        });
         t.waitFor("cap4: agarra", 5000, () -> "AGARRA".equals(SorpresaCliente.fase()));
         t.photo("c4_06_agarra", 900, () -> mirarA(922.5, -55, 451.5));
+        t.add("sin zoom", 50, () -> Minecraft.getInstance().options.fov().set(70));
         t.waitFor("cap4: muerde", 5000, () -> "MUERDE".equals(SorpresaCliente.fase()));
         t.photo("c4_07_mordida", 150, () -> {
         });
@@ -1141,6 +1147,35 @@ final class PruebaCliente {
         });
         t.waitFor("cap3: turno 2", 20000, () -> "TURNO".equals(CajaCliente.fase()) && com.axeliscore.plat.Nbt.i(CajaCliente.estado(), "turno") == 2);
         t.photo("c3_07_gondola2", 1500, PruebaCliente::mirarEnGondola);
+        // me intento dar la vuelta: el de adelante no puede (la silla lo limita); el de atrás ve la cortina cerrada de la entrada
+        t.photo("c3_07b_vuelta", 1200, () -> {
+            var me = Minecraft.getInstance().player;
+            if (me != null && me.getVehicle() != null) {
+                me.setYRot(me.getVehicle().getYRot() + 180F);
+                me.setXRot(5F);
+                me.yRotO = me.getYRot();
+                me.xRotO = me.getXRot();
+            }
+        });
+        t.add("no me doy la vuelta", 100, () -> {
+            var me = Minecraft.getInstance().player;
+            String lado = com.axeliscore.plat.Nbt.s(CajaCliente.mio(), "lado");
+            if (me != null && me.getVehicle() != null && "frente".equals(lado)) {
+                float d = Math.abs(net.minecraft.util.Mth.wrapDegrees(me.getYRot() - me.getVehicle().getYRot()));
+                t.check(d <= com.coleccionista.prueba.Caja.LIMITE_FRENTE + 1F, "adelante no me puedo dar la vuelta (giro " + (int) d + "°)");
+            }
+            // la cortina de mi góndola (a 2 bloques detrás del asiento de atrás) está puesta
+            if (me != null && me.getVehicle() != null) {
+                var v = me.getVehicle();
+                double r = Math.toRadians(v.getYRot());
+                double fx = -Math.sin(r), fz = Math.cos(r);
+                double atras = "frente".equals(lado) ? 4.0 : 2.0;
+                var bp = net.minecraft.core.BlockPos.containing(v.getX() - fx * atras, v.getY() + 0.5, v.getZ() - fz * atras);
+                var st = Minecraft.getInstance().level.getBlockState(bp);
+                com.axeliscore.AxelisCore.LOGGER.info("COLECCIONISTA_CAJA_CORTINA {} {} {} -> {}", bp.getX(), bp.getY(), bp.getZ(), st);
+                t.check(st.getBlock().getDescriptionId().contains("cortina"), "la cortina de la góndola está cerrada (" + st.getBlock().getDescriptionId() + ")");
+            }
+        });
         // los demás turnos, rápido
         for (int i = 0; i < 5; i++) {
             t.add("cap3: saltar turno " + (i + 3), 4600, () -> t.cmd("evento caja saltar"));

@@ -32,6 +32,8 @@ public class Silla extends Entity {
     private static final EntityDataAccessor<Boolean> CERRADA = SynchedEntityData.defineId(Silla.class, EntityDataSerializers.BOOLEAN);
     /** Sin modelo: un asiento invisible (el mueble ya está en el mapa, como los de las góndolas de la caja de música). */
     private static final EntityDataAccessor<Boolean> OCULTA = SynchedEntityData.defineId(Silla.class, EntityDataSerializers.BOOLEAN);
+    /** Hasta cuántos grados a cada lado puede voltear la cabeza quien va sentado (0: lo que quiera). */
+    private static final EntityDataAccessor<Float> LIMITE = SynchedEntityData.defineId(Silla.class, EntityDataSerializers.FLOAT);
     /** Quién se puede sentar en cuál (lo decide la prueba); si es null, cualquiera. */
     public static BiPredicate<ServerPlayer, Silla> permiso;
     /** Para que el propio evento pueda bajar a alguien de una silla cerrada. */
@@ -68,6 +70,48 @@ public class Silla extends Entity {
     protected void defineSynchedData() {
         this.entityData.define(CERRADA, false);
         this.entityData.define(OCULTA, false);
+        this.entityData.define(LIMITE, 0F);
+    }
+
+    /**
+     * Que quien va sentado no pueda voltear la vista más de {@code grados} a cada lado de hacia donde mira la silla (0: libre). Así el de
+     * adelante de una góndola no se puede dar la vuelta.
+     */
+    public void limite(float grados) {
+        this.entityData.set(LIMITE, Math.max(0F, grados));
+    }
+
+    public float limite() {
+        return this.entityData.get(LIMITE);
+    }
+
+    /** Lo llama el juego cada vez que quien va sentado mueve el ratón (en su cliente) y al acomodarlo cada tick. */
+    @Override
+    public void onPassengerTurned(Entity e) {
+        limitar(e);
+    }
+
+    @Override
+    protected void positionRider(Entity e, Entity.MoveFunction f) {
+        super.positionRider(e, f);
+        limitar(e);
+    }
+
+    private void limitar(Entity e) {
+        float lim = limite();
+        if (lim <= 0F) {
+            return;
+        }
+        float d = net.minecraft.util.Mth.wrapDegrees(e.getYRot() - getYRot());
+        float c = net.minecraft.util.Mth.clamp(d, -lim, lim);
+        if (c != d) {
+            e.yRotO += c - d;
+            e.setYRot(e.getYRot() + c - d);
+        }
+        e.setYHeadRot(e.getYRot());
+        if (e instanceof net.minecraft.world.entity.LivingEntity le) {
+            le.setYBodyRot(getYRot());
+        }
     }
 
     public boolean oculta() {

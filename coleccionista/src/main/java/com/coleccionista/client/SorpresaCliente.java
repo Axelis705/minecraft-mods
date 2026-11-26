@@ -29,6 +29,8 @@ public final class SorpresaCliente {
     private static final net.minecraft.resources.ResourceLocation SUSTO = com.axeliscore.plat.Ids.rl(MOD, "textures/gui/susto_resorte.png");
     private static int sustoN = -1;
     private static long sustoDesde;
+    /** true: la cara de Don Resorte en toda la pantalla (solo al que se come); false: el susto de los demás (orillas rojas). */
+    private static boolean sustoCara;
 
     private SorpresaCliente() {
     }
@@ -47,6 +49,7 @@ public final class SorpresaCliente {
             // solo si es de ahorita (al volver a entrar no se repite el susto)
             if (n != sustoN && lvl != null && Math.abs(lvl.getGameTime() - t.getLong("en")) < 80) {
                 sustoDesde = System.currentTimeMillis();
+                sustoCara = Nbt.b(t, "cara");
             }
             sustoN = n;
         });
@@ -110,14 +113,28 @@ public final class SorpresaCliente {
         }
     }
 
+    /** Las orillas de la pantalla en rojo (más fuerte en el borde, nada en el centro): el susto sin taparle la vista a nadie. */
+    private static void orillas(G g, int w, int h, float a) {
+        int capas = 12, grueso = Math.max(2, Math.min(w, h) / 40);
+        for (int i = 0; i < capas; i++) {
+            float k = 1F - i / (float) capas;
+            int c = Ui.alpha(0xFF9A000C, a * 0.5F * k * k);
+            int o = i * grueso;
+            g.fill(o, o, w - o, o + grueso, c);
+            g.fill(o, h - o - grueso, w - o, h - o, c);
+            g.fill(o, o + grueso, o + grueso, h - o - grueso, c);
+            g.fill(w - o - grueso, o + grueso, w - o, h - o - grueso, c);
+        }
+    }
+
     private static void hud(G g, int w, int h) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || !activa()) {
             return;
         }
-        // ¡pam! la cara de Don Resorte de golpe, toda la pantalla, medio segundo (y un destello rojo que se va)
         float ts = (System.currentTimeMillis() - sustoDesde) / 1000F;
-        if (sustoDesde > 0 && ts < 1.1F) {
+        if (sustoDesde > 0 && sustoCara && ts < 1.1F) {
+            // ¡pam! al que se come: la cara de Don Resorte de golpe, toda la pantalla, medio segundo (y un destello rojo que se va)
             if (ts < 0.55F) {
                 float esc = 1.25F - 0.25F * Math.min(1F, ts / 0.12F);
                 int iw = (int) (w * esc), ih = (int) (iw * 400F / 512F);
@@ -130,6 +147,11 @@ public final class SorpresaCliente {
             }
             float a = ts < 0.55F ? 0.25F : 0.55F * (1F - (ts - 0.55F) / 0.55F);
             g.fill(0, 0, w, h, Ui.alpha(0xFF8A0008, Math.max(0F, a)));
+        } else if (sustoDesde > 0 && !sustoCara && ts < 1.4F) {
+            // a los demás: siguen viendo cómo se lo come; solo las orillas de la pantalla se ponen rojas de golpe (latido) y se van
+            float a = ts < 0.08F ? ts / 0.08F : 1F - (ts - 0.08F) / 1.32F;
+            a *= 1F + 0.25F * (float) Math.sin(ts * 18F) * (1F - Math.min(1F, ts));
+            orillas(g, w, h, Math.max(0F, Math.min(1F, a)));
         }
         if (!EventoHud.visible()) {
             return;

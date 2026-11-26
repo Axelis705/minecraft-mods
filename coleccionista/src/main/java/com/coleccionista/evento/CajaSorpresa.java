@@ -214,11 +214,12 @@ public class CajaSorpresa extends Entity implements Animated {
             }
         }
         pose.addRot(geo.bone("tapa"), tapa * r, 0, 0);
-        // el payaso sube con el resorte; guardado va hundido (y la cabeza aplastada)
+        // el payaso sube con el resorte; guardado va hundido (y la cabeza aplastada). Ojo: en Pose.addPos la y positiva va hacia ABAJO
+        // (como en los modelos de Minecraft), así que subir es negativo.
         float hund = 9F;
-        pose.addPos(geo.bone("payaso"), 0, fuera * ESTIRA - hund * (1F - fuera), 0);
+        pose.addPos(geo.bone("payaso"), 0, -fuera * ESTIRA + hund * (1F - fuera), 0);
         for (int k = 0; k < 8; k++) {
-            pose.addPos(geo.bone("anillo" + k), 0, fuera * ESTIRA * (k + 1) / 8F, 0);
+            pose.addPos(geo.bone("anillo" + k), 0, -fuera * ESTIRA * (k + 1) / 8F, 0);
         }
         int cab = geo.bone("cabeza");
         pose.mulScale(cab, escala, escala * (e == CERRADA ? 0.8F : 1F), escala);

@@ -832,17 +832,19 @@ public final class Sorpresa {
         sonidoCaja(s, SoundEvents.EVOKER_FANGS_ATTACK, 3F, 0.5F);
         sonidoCaja(s, propio("sor_mordida"), 4F, 1F);
         sonidoCaja(s, SoundEvents.PLAYER_ATTACK_CRIT, 3F, 0.5F);
-        // ¡pam!: a todos los demás, el susto (la cara de Don Resorte de golpe en la pantalla, el golpe de sonido y la sacudida)
+        // ¡pam!: el que se come ve la cara de Don Resorte de golpe en toda la pantalla (el screamer). Los demás se llevan el susto sin
+        // dejar de ver cómo se lo come: el golpe de sonido, la sacudida y un destello rojo en las orillas de la pantalla.
         sustos++;
-        CompoundTag su = new CompoundTag();
-        su.putInt("n", sustos);
-        su.putLong("en", s.overworld().getGameTime());
         for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
-            if (!sp.getUUID().equals(turno)) {
-                PlayerStore.Sync.toPlayer(sp, KEY + "_susto", su);
-                sp.playNotifySound(propio("sor_susto"), SoundSource.MASTER, 1F, 1F);
-            }
+            boolean victima = sp.getUUID().equals(turno);
+            CompoundTag su = new CompoundTag();
+            su.putInt("n", sustos);
+            su.putLong("en", s.overworld().getGameTime());
+            su.putBoolean("cara", victima);
+            PlayerStore.Sync.toPlayer(sp, KEY + "_susto", su);
+            sp.playNotifySound(propio("sor_susto"), SoundSource.MASTER, victima ? 1.4F : 0.8F, 1F);
         }
+        Coleccionista.LOGGER.info("COLECCIONISTA_SORPRESA susto cara={}", turno);
         sonidoCaja(s, SoundEvents.ZOMBIE_BREAK_WOODEN_DOOR, 1.5F, 0.6F);
         if (caja != null) {
             sangre(s, caja.boca(), 90, 0.6);
