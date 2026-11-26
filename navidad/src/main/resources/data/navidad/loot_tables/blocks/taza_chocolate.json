@@ -6,7 +6,7 @@
    "entries": [
     {
      "type": "minecraft:item",
-     "name": "navidad:chocolate_caliente"
+     "name": "navidad:taza_chocolate"
     }
    ],
    "conditions": [

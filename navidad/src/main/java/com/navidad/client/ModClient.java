@@ -1,6 +1,7 @@
 package com.navidad.client;
 
-import com.axeliscore.test.ClientTest;
+import com.axeliscore.client.SimpleGeoRenderer;
+import com.axeliscore.combat.client.JefeRenderer;
 import com.axeliscore.vestir.client.Prenda;
 import com.axeliscore.vestir.client.VestuarioCliente;
 import com.navidad.Navidad;
@@ -26,6 +27,10 @@ public final class ModClient {
     @SubscribeEvent
     public static void onRenderers(EntityRenderersEvent.RegisterRenderers e) {
         e.registerEntityRenderer(ModRegistry.PINATA_ENT.get(), PinataRenderer::new);
+        e.registerEntityRenderer(ModRegistry.MUNECO_MALVADO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "muneco_malvado", 0.5F, 1F));
+        e.registerEntityRenderer(ModRegistry.RENO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "reno", 0.6F, 1.05F));
+        e.registerEntityRenderer(ModRegistry.HOMBRE_JENGIBRE.get(), JengibreRenderer::new);
+        e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
     }
 
     @SubscribeEvent

@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/taza_chocolate"
+  },
+  "facing=east": {
+   "model": "navidad:block/taza_chocolate",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/taza_chocolate",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/taza_chocolate",
+   "y": 270
+  }
+ }
+}

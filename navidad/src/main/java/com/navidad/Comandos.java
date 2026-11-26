@@ -59,6 +59,28 @@ public final class Comandos {
                         .then(Commands.argument("quien", EntityArgument.players())
                                 .executes(c -> regalo(c, new ArrayList<>(EntityArgument.getPlayers(c, "quien"))))))
                 .then(Commands.literal("pinata").requires(s -> s.hasPermission(2)).executes(Comandos::pinata))
+                .then(Commands.literal("aldea").requires(s -> s.hasPermission(2))
+                        .executes(c -> aldea(c, true))
+                        .then(Commands.literal("sin_gente").executes(c -> aldea(c, false))))
+                .then(Commands.literal("gente").requires(s -> s.hasPermission(2))
+                        .then(Commands.argument("quien", StringArgumentType.word())
+                                .suggests((c, b) -> SharedSuggestionProvider.suggest(GENTE, b))
+                                .executes(c -> {
+                                    var def = com.navidad.gente.Gente.porNombre(StringArgumentType.getString(c, "quien"));
+                                    if (def == null) {
+                                        c.getSource().sendFailure(Component.literal(String.join(" | ", GENTE)));
+                                        return 0;
+                                    }
+                                    com.navidad.gente.Gente.poner(c.getSource().getLevel(), def, net.minecraft.core.BlockPos.containing(c.getSource().getPosition()));
+                                    return 1;
+                                })))
+                .then(Commands.literal("krampus").requires(s -> s.hasPermission(2)).executes(c -> {
+                    Vec3 pos = c.getSource().getPosition();
+                    Vec3 mira = Vec3.directionFromRotation(0, c.getSource().getRotation().y).scale(10);
+                    com.navidad.entidad.Krampus.llamar(c.getSource().getLevel(), pos.add(mira), c.getSource().getEntity() instanceof
+                            net.minecraft.world.entity.LivingEntity le ? le : null);
+                    return 1;
+                }))
                 .then(Commands.literal("ropa").requires(s -> s.hasPermission(2))
                         .then(Commands.argument("prenda", StringArgumentType.word())
                                 .suggests((c, b) -> SharedSuggestionProvider.suggest(ropa, b))
@@ -72,6 +94,17 @@ public final class Comandos {
                                     Ropa.alternar(c.getSource().getServer(), sp, p);
                                     return 1;
                                 }))));
+    }
+
+    static final List<String> GENTE = List.of("santa", "senora_claus", "duende_juguetero", "duende_sastre", "duende_renos");
+
+    private static int aldea(CommandContext<CommandSourceStack> c, boolean gente) {
+        net.minecraft.core.BlockPos p = net.minecraft.core.BlockPos.containing(c.getSource().getPosition());
+        long t0 = System.currentTimeMillis();
+        int n = com.navidad.aldea.Aldea.construir(c.getSource().getLevel(), p, gente);
+        long ms = System.currentTimeMillis() - t0;
+        c.getSource().sendSuccess(() -> Component.translatable("navidad.aldea.lista", n, ms), true);
+        return 1;
     }
 
     private static int regalo(CommandContext<CommandSourceStack> c, List<ServerPlayer> ps) {

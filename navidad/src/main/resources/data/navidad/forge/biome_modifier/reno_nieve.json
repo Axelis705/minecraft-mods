@@ -1,0 +1,12 @@
+{
+ "type": "forge:add_spawns",
+ "biomes": "#forge:is_snowy",
+ "spawners": [
+  {
+   "type": "navidad:reno",
+   "weight": 10,
+   "minCount": 2,
+   "maxCount": 4
+  }
+ ]
+}

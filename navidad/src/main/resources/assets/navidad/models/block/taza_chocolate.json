@@ -1,8 +1,8 @@
 {
  "credit": "Mundos de Axelis - decoracion de estructuras",
  "textures": {
-  "0": "navidad:block/chocolate_caliente",
-  "particle": "navidad:block/chocolate_caliente"
+  "0": "navidad:block/taza_chocolate",
+  "particle": "navidad:block/taza_chocolate"
  },
  "elements": [
   {

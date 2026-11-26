@@ -1,0 +1,38 @@
+package com.navidad;
+
+import com.navidad.entidad.HombreJengibre;
+import com.navidad.entidad.Krampus;
+import com.navidad.entidad.MunecoMalvado;
+import com.navidad.entidad.Reno;
+import com.navidad.registry.ModRegistry;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+
+/** Eventos del bus del mod: atributos de las criaturas y dónde pueden aparecer solas. */
+@Mod.EventBusSubscriber(modid = Navidad.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public final class Eventos {
+    private Eventos() {
+    }
+
+    @SubscribeEvent
+    public static void atributos(EntityAttributeCreationEvent e) {
+        e.put(ModRegistry.MUNECO_MALVADO.get(), MunecoMalvado.createAttributes().build());
+        e.put(ModRegistry.RENO.get(), Reno.createAttributes().build());
+        e.put(ModRegistry.HOMBRE_JENGIBRE.get(), HombreJengibre.createAttributes().build());
+        e.put(ModRegistry.KRAMPUS.get(), Krampus.createAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void apariciones(SpawnPlacementRegisterEvent e) {
+        e.register(ModRegistry.MUNECO_MALVADO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                MunecoMalvado::puedeSalir, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        e.register(ModRegistry.RENO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Reno::puedeSalir, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        e.register(ModRegistry.HOMBRE_JENGIBRE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                HombreJengibre::puedeSalir, SpawnPlacementRegisterEvent.Operation.REPLACE);
+    }
+}

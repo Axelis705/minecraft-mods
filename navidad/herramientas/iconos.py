@@ -179,6 +179,16 @@ if __name__ == '__main__':
         '..zZz.pPp..vVv..', '.nnnnnnnnnnnnnn.', '.nNNNNNNNNNNNNn.', '.nNnnnnnnnnnnNn.', '.nNNNNNNNNNNNNn.', '.nNnnnnnnnnnnNn.',
         '.nNNNNNNNNNNNNn.', '.nnnnnnnnnnnnnn.', '................', '................'],
         {'Z': '#2a5ab0', 'P': '#b8408a', 'V': '#6a2aa8', 'N': '#a87a4a'})
+    dibujo('campana_krampus', [
+        '................', '.......kk.......', '......k..k......', '.......kk.......', '......kKKk......', '.....kKKKKk.....',
+        '.....kKrKKk.....', '....kKKKKKKk....', '....kKKKKKKk....', '...kKKKKKrKKk...', '...kKrKKKKKKk...', '..kkkkkkkkkkkk..',
+        '..kYYYYYYYYYYk..', '...kkkkkkkkkk...', '.......kk.......', '.......kk.......'], {'k': '#141012', 'K': '#3a2a30', 'r': '#c82020', 'Y': '#8a6a20'})
+    dibujo('cuerno_krampus', [
+        '................', '..........ll....', '.........lLl....', '........lLl.....', '.......lLl......', '.......lLl......',
+        '......lLLl......', '......lLLl......', '.....lLLLl......', '.....lLLLl......', '....lLLLLl......', '....lLLLLLl.....',
+        '...lLLLLLLl.....', '...kkkkkkkk.....', '................', '................'], {'l': '#e8dcc0', 'L': '#b8a07a', 'k': '#3a2a20'})
+    for h in ('huevo_muneco_malvado', 'huevo_reno', 'huevo_hombre_jengibre', 'huevo_krampus'):
+        json.dump({'parent': 'minecraft:item/template_spawn_egg'}, open(os.path.join(A, 'models', 'item', h + '.json'), 'w'), indent=1)
     # la caja y el calendario usan el modelo de su bloque
     for b in ('caja_regalo', 'calendario_adviento'):
         json.dump({'parent': f'navidad:block/{b}'}, open(os.path.join(A, 'models', 'item', b + '.json'), 'w'), indent=1)

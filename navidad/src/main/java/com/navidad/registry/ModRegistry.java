@@ -5,7 +5,13 @@ import com.navidad.bloque.CajaRegalo;
 import com.navidad.bloque.CajaRegaloBE;
 import com.navidad.bloque.CajaRegaloItem;
 import com.navidad.bloque.Calendario;
+import com.navidad.entidad.HombreJengibre;
+import com.navidad.entidad.Krampus;
+import com.navidad.entidad.MunecoMalvado;
 import com.navidad.entidad.Pinata;
+import com.navidad.entidad.Reno;
+import com.navidad.objeto.CampanaKrampus;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import com.navidad.objeto.Bebida;
 import com.navidad.objeto.PinataItem;
 import com.navidad.objeto.RegaloMisterioso;
@@ -152,6 +158,27 @@ public final class ModRegistry {
             .rarity(Rarity.RARE), Musica.LARGO_NOCHE_PAZ));
     public static final RegistryObject<Item> DISCO_ADORNEN = item("disco_adornen", () -> new RecordItem(4, ADORNEN, props().stacksTo(1)
             .rarity(Rarity.RARE), Musica.LARGO_ADORNEN));
+
+    // ------------------------------------------------------------------ criaturas
+
+    public static final RegistryObject<EntityType<MunecoMalvado>> MUNECO_MALVADO = ENTITIES.register("muneco_malvado",
+            () -> EntityType.Builder.<MunecoMalvado>of(MunecoMalvado::new, MobCategory.MONSTER).sized(0.8F, 1.8F).clientTrackingRange(10)
+                    .build("navidad:muneco_malvado"));
+    public static final RegistryObject<EntityType<Reno>> RENO = ENTITIES.register("reno",
+            () -> EntityType.Builder.<Reno>of(Reno::new, MobCategory.CREATURE).sized(1.0F, 1.6F).clientTrackingRange(10).build("navidad:reno"));
+    public static final RegistryObject<EntityType<HombreJengibre>> HOMBRE_JENGIBRE = ENTITIES.register("hombre_jengibre",
+            () -> EntityType.Builder.<HombreJengibre>of(HombreJengibre::new, MobCategory.CREATURE).sized(0.4F, 1.0F).clientTrackingRange(10)
+                    .build("navidad:hombre_jengibre"));
+    public static final RegistryObject<EntityType<Krampus>> KRAMPUS = ENTITIES.register("krampus",
+            () -> EntityType.Builder.<Krampus>of(Krampus::new, MobCategory.MONSTER).sized(1.6F, 3.0F).fireImmune().clientTrackingRange(12)
+                    .build("navidad:krampus"));
+
+    public static final RegistryObject<Item> CAMPANA_KRAMPUS = item("campana_krampus", () -> new CampanaKrampus(props().stacksTo(1).rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> CUERNO_KRAMPUS = item("cuerno_krampus", () -> new Item(props().stacksTo(16).rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> HUEVO_MUNECO = item("huevo_muneco_malvado", () -> new ForgeSpawnEggItem(MUNECO_MALVADO, 0xF0F4FA, 0xC81E2A, props()));
+    public static final RegistryObject<Item> HUEVO_RENO = item("huevo_reno", () -> new ForgeSpawnEggItem(RENO, 0x8C603A, 0xE4D6BA, props()));
+    public static final RegistryObject<Item> HUEVO_JENGIBRE = item("huevo_hombre_jengibre", () -> new ForgeSpawnEggItem(HOMBRE_JENGIBRE, 0xB8743A, 0xF6F6F2, props()));
+    public static final RegistryObject<Item> HUEVO_KRAMPUS = item("huevo_krampus", () -> new ForgeSpawnEggItem(KRAMPUS, 0x34261F, 0xFFBE28, props()));
 
     // ------------------------------------------------------------------ la pestaña
 

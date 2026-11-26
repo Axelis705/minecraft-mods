@@ -764,7 +764,7 @@ def galletas_leche():
 
 
 def chocolate():
-    p = Prop('chocolate_caliente', 'Taza de chocolate caliente', 'Mug of hot chocolate', kind='floor', sound='glass', seed=35,
+    p = Prop('taza_chocolate', 'Taza de chocolate caliente', 'Mug of hot chocolate', kind='floor', sound='glass', seed=35,
              collide=False, particles=[{'type': 'minecraft:cloud', 'pos': [8, 7, 8], 'rate': 0.05}])
     p.box(5, 0, 5, 11, 6, 11, cloth('#c81c28', 0.05, 35))
     p.box(5.5, 5.5, 5.5, 10.5, 5.8, 10.5, solid('#5a2e16'))

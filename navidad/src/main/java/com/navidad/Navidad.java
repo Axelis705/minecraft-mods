@@ -31,6 +31,8 @@ public class Navidad {
         bus.addListener(this::commonSetup);
         //#endif
         com.navidad.registry.ModRegistry.register(bus);
+        com.navidad.entidad.Proyectiles.init();
+        com.navidad.gente.Gente.init();
         AxelisCore.commands(Comandos::registrar);
     }
 

@@ -113,6 +113,11 @@ public class CajaRegalo extends HorizontalDirectionalBlock implements EntityBloc
             if (!sp.getInventory().add(dentro)) {
                 sp.drop(dentro, false);
             }
+            // quien lo envolvió cuenta un regalo entregado (para la misión de Santa), si lo abre otra persona
+            ServerPlayer envolvio = sp.server.getPlayerList().getPlayerByName(deQuien);
+            if (envolvio != null && envolvio != sp) {
+                com.axeliscore.npc.Misiones.evento(envolvio, com.navidad.Navidad.MODID + ":regalo_entregado", 1);
+            }
         }
         Premios.confeti((ServerLevel) l, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, true);
         l.playSound(null, pos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7F, 1.3F);

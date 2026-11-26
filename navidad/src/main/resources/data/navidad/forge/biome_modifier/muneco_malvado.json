@@ -1,0 +1,12 @@
+{
+ "type": "forge:add_spawns",
+ "biomes": "#forge:is_snowy",
+ "spawners": [
+  {
+   "type": "navidad:muneco_malvado",
+   "weight": 40,
+   "minCount": 1,
+   "maxCount": 2
+  }
+ ]
+}
