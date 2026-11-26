@@ -518,12 +518,62 @@
       }
     ]
   },
+  "voz.piano_fin.cansada": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano_fin.cansada",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_fin_cansada",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano_fin.enteros": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano_fin.enteros",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_fin_enteros",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano_fin.ultimo": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano_fin.ultimo",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_fin_ultimo",
+        "stream": true
+      }
+    ]
+  },
   "voz.piano.melodia": {
     "category": "voice",
     "subtitle": "coleccionista.voz.piano.melodia",
     "sounds": [
       {
         "name": "coleccionista:voz/piano_melodia",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano_pistas.numero": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano_pistas.numero",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_pistas_numero",
+        "stream": true
+      }
+    ]
+  },
+  "voz.piano_pistas.pistas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.piano_pistas.pistas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/piano_pistas_pistas",
         "stream": true
       }
     ]
