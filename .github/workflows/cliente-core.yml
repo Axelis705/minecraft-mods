@@ -38,7 +38,7 @@ jobs:
   cliente:
     needs: preparar
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 85
     permissions:
       contents: write
     strategy:
