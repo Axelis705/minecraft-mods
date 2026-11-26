@@ -578,6 +578,36 @@
       }
     ]
   },
+  "voz.mansion_fin.a_tu_jaula": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion_fin.a_tu_jaula",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_fin_a_tu_jaula",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion_fin.buena": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion_fin.buena",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_fin_buena",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion_fin.enteros": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion_fin.enteros",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_fin_enteros",
+        "stream": true
+      }
+    ]
+  },
   "voz.mansion.minuto": {
     "category": "voice",
     "subtitle": "coleccionista.voz.mansion.minuto",
@@ -624,6 +654,26 @@
     "sounds": [
       {
         "name": "coleccionista:voz/mansion_se_escapo",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion_suelta.a_jugar": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion_suelta.a_jugar",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_suelta_a_jugar",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion_suelta.se_acabo": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion_suelta.se_acabo",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_suelta_se_acabo",
         "stream": true
       }
     ]

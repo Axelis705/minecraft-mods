@@ -214,14 +214,14 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `mansion_suelta_se_acabo.ogg` | 2.8 s | Se acabó el minuto. |
-| 2 | `mansion_suelta_a_jugar.ogg` | 3.0 s | ¡Cascabel… a jugar! |
+| 2 | `mansion_suelta_a_jugar.ogg` | 4.3 s | ¡Cascabel… a jugar! |
 | 3 | `mansion_suelta_risa.ogg` | 3.0 s | Je, je, je… |
 
 ## Capítulo 2 · La mascota: se acabó el tiempo (Cascabel vuelve a su jaula)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
-| 1 | `mansion_fin_a_tu_jaula.ogg` | 3.0 s | ¡Cascabel! A tu jaula. |
+| 1 | `mansion_fin_a_tu_jaula.ogg` | 3.1 s | ¡Cascabel! A tu jaula. |
 | 2 | `mansion_fin_buena.ogg` | 2.5 s | Buena chica. |
 | 3 | `mansion_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
 

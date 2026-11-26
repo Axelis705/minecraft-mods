@@ -285,14 +285,14 @@ public final class Pantallas {
     public static List<Frase> mansion_suelta() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("se_acabo", 55, null, 1F));
-        l.add(new Frase("a_jugar", 60, null, 1F));
+        l.add(new Frase("a_jugar", 87, null, 1F));
         l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
         return l;
     }
 
     public static List<Frase> mansion_fin() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("a_tu_jaula", 60, null, 1F));
+        l.add(new Frase("a_tu_jaula", 63, null, 1F));
         l.add(new Frase("buena", 50, null, 1F));
         l.add(new Frase("enteros", 80, null, 1F));
         return l;
