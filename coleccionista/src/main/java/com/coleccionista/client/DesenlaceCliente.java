@@ -63,9 +63,11 @@ public final class DesenlaceCliente {
                 e.setCanceled(true);
             }
         });
+        // en las escenas (la cámara de cine, la luz, los créditos, la vitrina y el FIN) no se ve nada del juego encima: ni corazones, ni
+        // barra, ni mira (el chat sí)
         MinecraftForge.EVENT_BUS.addListener((RenderGuiOverlayEvent.Pre e) -> {
-            if (camara && (e.getOverlay().id().equals(VanillaGuiOverlay.CROSSHAIR.id())
-                    || e.getOverlay().id().equals(VanillaGuiOverlay.HOTBAR.id()))) {
+            var id = e.getOverlay().id();
+            if (escena() && "minecraft".equals(id.getNamespace()) && !id.equals(VanillaGuiOverlay.CHAT_PANEL.id())) {
                 e.setCanceled(true);
             }
         });
@@ -83,6 +85,11 @@ public final class DesenlaceCliente {
     /** ¿Está la escena de la vitrina (después de los créditos)? Ahí los subtítulos van grandes en la franja de abajo. */
     public static boolean cine() {
         return camara && ("POST".equals(fase) || "FIN".equals(fase));
+    }
+
+    /** ¿Hay una escena del desenlace en pantalla? (la cámara de cine, la luz, los créditos, la vitrina o el FIN): se esconde el HUD. */
+    public static boolean escena() {
+        return camara || "LUZ".equals(fase) || "CREDITOS".equals(fase) || "POST".equals(fase) || "FIN".equals(fase);
     }
 
     /** ¿La cámara de cine del desenlace está puesta? */

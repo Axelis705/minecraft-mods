@@ -49,7 +49,7 @@ public final class EventoHud {
      */
     public static boolean visible() {
         Minecraft mc = Minecraft.getInstance();
-        return !(oculto || mc.options.hideGui || mc.player == null || EscenaAviso.pantallaCompleta() || Espera.activa() || Cine.activo()
+        return !(oculto || mc.options.hideGui || mc.player == null || EscenaAviso.pantallaCompleta() || Espera.activa() || Cine.activo() || DesenlaceCliente.escena()
                 || Presentacion.activa() || CompartirCliente.revelandoMesa() || (!EventoCliente.activo() && !EventoCliente.soyOrganizador()));
     }
 
