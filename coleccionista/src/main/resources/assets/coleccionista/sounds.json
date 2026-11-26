@@ -548,6 +548,86 @@
       }
     ]
   },
+  "voz.mansion.ahi_esta": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion.ahi_esta",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_ahi_esta",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion.bienvenidos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion.bienvenidos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_bienvenidos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion.cascabel": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion.cascabel",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_cascabel",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion.minuto": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion.minuto",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_minuto",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion.no_ha_comido": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion.no_ha_comido",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_no_ha_comido",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion.no_toquen": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion.no_toquen",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_no_toquen",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion.presentar": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion.presentar",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_presentar",
+        "stream": true
+      }
+    ]
+  },
+  "voz.mansion.se_escapo": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.mansion.se_escapo",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/mansion_se_escapo",
+        "stream": true
+      }
+    ]
+  },
   "voz.piano.a_la_vez": {
     "category": "voice",
     "subtitle": "coleccionista.voz.piano.a_la_vez",

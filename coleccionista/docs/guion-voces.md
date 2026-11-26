@@ -203,11 +203,11 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 1 | `mansion_bienvenidos.ogg` | 3.0 s | Bienvenidos a mi casa. |
 | 2 | `mansion_no_toquen.ogg` | 4.0 s | Pasen, pasen… no toquen nada. |
 | 3 | `mansion_presentar.ogg` | 4.8 s | Quiero presentarles a alguien… ¿Cascabel? |
-| 4 | `mansion_se_escapo.ogg` | 4.2 s | Uy… creo que se escapó mi mascota. |
-| 5 | `mansion_ahi_esta.ogg` | 2.5 s | Ah, no. Ahí está. |
-| 6 | `mansion_no_ha_comido.ogg` | 5.2 s | No ha comido en días. Se pone un poco… nerviosa. |
-| 7 | `mansion_minuto.ogg` | 6.0 s | Les doy un minuto para esconderse. Después… abro la jaula. |
-| 8 | `mansion_cascabel.ogg` | 4.2 s | Si oyen un cascabel… no respiren. |
+| 4 | `mansion_se_escapo.ogg` | 4.4 s | Uy… creo que se escapó mi mascota. |
+| 5 | `mansion_ahi_esta.ogg` | 3.2 s | Ah, no. Ahí está. |
+| 6 | `mansion_no_ha_comido.ogg` | 6.3 s | No ha comido en días. Se pone un poco… nerviosa. |
+| 7 | `mansion_minuto.ogg` | 6.4 s | Les doy un minuto para esconderse. Después… abro la jaula. |
+| 8 | `mansion_cascabel.ogg` | 4.5 s | Si oyen un cascabel… no respiren. |
 
 ## Capítulo 2 · La mascota: se acabó el minuto (se abre la jaula)
 

@@ -274,11 +274,11 @@ public final class Pantallas {
         l.add(new Frase("bienvenidos", 60, null, 1F));
         l.add(new Frase("no_toquen", 80, null, 1F));
         l.add(new Frase("presentar", 95, null, 1F));
-        l.add(new Frase("se_escapo", 85, null, 1F));
-        l.add(new Frase("ahi_esta", 50, null, 1F));
-        l.add(new Frase("no_ha_comido", 105, null, 1F));
-        l.add(new Frase("minuto", 120, null, 1F));
-        l.add(new Frase("cascabel", 85, null, 1F));
+        l.add(new Frase("se_escapo", 88, null, 1F));
+        l.add(new Frase("ahi_esta", 65, null, 1F));
+        l.add(new Frase("no_ha_comido", 126, null, 1F));
+        l.add(new Frase("minuto", 128, null, 1F));
+        l.add(new Frase("cascabel", 90, null, 1F));
         return l;
     }
 
