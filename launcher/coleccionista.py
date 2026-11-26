@@ -45,7 +45,8 @@ class Api:
         self._trabajando = False
 
     def iniciar(self):
-        return {'version': VERSION, 'usuario': self._prefs.get('usuario', ''), 'musica': self._prefs.get('musica', True)}
+        return {'version': VERSION, 'usuario': self._prefs.get('usuario', ''), 'musica': self._prefs.get('musica', True),
+                'carpeta': ins.carpeta_juego()}
 
     def entrar(self, usuario, clave):
         try:
@@ -79,6 +80,10 @@ class Api:
         self._prefs.pop('usuario', None)
         guardar_prefs(self._prefs)
         return True
+
+    def carpeta(self):
+        ins.abrir_carpeta()
+        return ins.carpeta_juego()
 
     def minimizar(self):
         self._ventana.minimize()

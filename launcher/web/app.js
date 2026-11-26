@@ -502,9 +502,9 @@ window.listo = (res) => {
   $('barra-avance').style.width = '100%';
   $('estado').className = 'estado bien';
   $('estado').textContent = res.abierto
-    ? '¡Listo! Se abrió el launcher de Minecraft: entra con tu cuenta, elige el perfil “El Coleccionista” y presiona JUGAR. '
+    ? '¡Listo! Se abrió el launcher de Minecraft: junto al botón JUGAR elige “El Coleccionista” (el del sombrero) y presiona JUGAR. '
       + 'Cuando se abra el juego, esta ventana se cierra sola.'
-    : '¡Listo! Abre el launcher de Minecraft, elige el perfil “El Coleccionista” y presiona JUGAR.';
+    : '¡Listo! Abre el launcher de Minecraft, junto al botón JUGAR elige “El Coleccionista” y presiona JUGAR.';
   // (cuando se abra el juego, Python cierra esta ventana: antes, un fundido a negro con estática)
 };
 window.adios = () => {
@@ -550,6 +550,7 @@ async function arrancar() {
   $('clave').addEventListener('keydown', (e) => { if (e.key === 'Enter') entrar(); });
   $('usuario').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('clave').focus(); });
   $('b-jugar').onclick = jugar;
+  $('b-carpeta').onclick = () => API().carpeta();
   $('b-salir').onclick = () => { API().salir_sesion(); $('clave').value = ''; mostrar('p-entrar'); };
   botonesConSonido();
   // se prende como una tele vieja: un destello blanco, la estática y luego él saluda
@@ -578,7 +579,7 @@ function apiDeMentira() {
         let k = 0;
         const id = setInterval(() => { k += 0.1; window.avance(k, 'Mods: coleccionista-1.0.0.jar'); if (k >= 1) { clearInterval(id); window.listo({ abierto: true }); } }, 300);
       },
-      salir_sesion: () => espera(true, 1), musica: () => espera(true, 1), minimizar: () => {}, cerrar: () => {},
+      salir_sesion: () => espera(true, 1), musica: () => espera(true, 1), minimizar: () => {}, cerrar: () => {}, carpeta: () => {},
     },
   };
 }

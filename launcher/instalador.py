@@ -342,6 +342,11 @@ def poner_perfil(man, ram):
         if PERFIL_ID in perfiles and 'created' in perfiles[PERFIL_ID]:
             perfil['created'] = perfiles[PERFIL_ID]['created']
         perfiles[PERFIL_ID] = dict(perfil)
+        # el instalador de Forge agrega su propio perfil "forge" (con la carpeta normal de Minecraft, sin los mods del evento): se
+        # quita para que nadie juegue en ese por error
+        for k in [k for k, v in perfiles.items() if k != PERFIL_ID and v.get('lastVersionId') == man['forge']['version']
+                  and not v.get('gameDir') and (k == 'forge' or v.get('name') == 'forge')]:
+            del perfiles[k]
         tmp = ruta + '.tmp'
         with open(tmp, 'w', encoding='utf-8') as f:
             json.dump(datos, f, indent=2)
@@ -353,6 +358,13 @@ def poner_perfil(man, ram):
 
 
 # ---------------------------------------------------------------------------------------------------- abrir el launcher oficial
+
+def abrir_carpeta():
+    """Abre la carpeta del evento (ahí están los mods, la configuración y los registros del juego)."""
+    os.makedirs(carpeta_juego(), exist_ok=True)
+    if os.name == 'nt':
+        os.startfile(carpeta_juego())  # noqa: S606
+
 
 def abrir_launcher():
     if os.name != 'nt':
