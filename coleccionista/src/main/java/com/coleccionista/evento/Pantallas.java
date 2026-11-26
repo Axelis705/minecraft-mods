@@ -236,7 +236,7 @@ public final class Pantallas {
         l.add(new Frase("cinta", 80, null, 1F));
         l.add(new Frase("esposas", 105, null, 1F));
         l.add(new Frase("parejas", 120, null, 1F));
-        l.add(new Frase("cadena", 105, null, 1F));
+        l.add(new Frase("cadena", 125, null, 1F));
         l.add(new Frase("ultimo", 110, null, 1F));
         l.add(new Frase("abierta", 65, null, 1F));
         return l;

@@ -648,6 +648,96 @@
       }
     ]
   },
+  "voz.sentidos.abierta": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.abierta",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_abierta",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sentidos.cadena": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.cadena",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_cadena",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sentidos.cinta": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.cinta",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_cinta",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sentidos.esposas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.esposas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_esposas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sentidos.mesa": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.mesa",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_mesa",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sentidos.parejas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.parejas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_parejas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sentidos.taller": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.taller",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_taller",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sentidos.ultimo": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.ultimo",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_ultimo",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sentidos.venda": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sentidos.venda",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sentidos_venda",
+        "stream": true
+      }
+    ]
+  },
   "voz.te.bienvenidos": {
     "category": "voice",
     "subtitle": "coleccionista.voz.te.bienvenidos",

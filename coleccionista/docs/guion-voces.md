@@ -167,7 +167,7 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 4 | `sentidos_cinta.ogg` | 4.0 s | Quien tome la cinta no podrá hablar. |
 | 5 | `sentidos_esposas.ogg` | 5.2 s | Y quien tome las esposas… no podrá tocar nada. |
 | 6 | `sentidos_parejas.ogg` | 6.0 s | Si son dos, no hay cinta: uno no ve… y el otro no toca. |
-| 7 | `sentidos_cadena.ogg` | 5.2 s | Y van a estar encadenados. Juntos hasta la salida. |
+| 7 | `sentidos_cadena.ogg` | 6.2 s | Ah, por cierto: van a estar encadenados. Juntos hasta la salida. |
 | 8 | `sentidos_ultimo.ogg` | 5.5 s | El último equipo en salir… se queda en mi vitrina. |
 | 9 | `sentidos_abierta.ogg` | 3.2 s | La vitrina está abierta. |
 

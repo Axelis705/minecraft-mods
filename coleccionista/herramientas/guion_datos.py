@@ -75,7 +75,7 @@ GUIONES = {
          "Con una pausa antes de «no podrá»."),
         ("parejas", "Si son dos, no hay cinta: uno no ve… y el otro no toca.", "If you are two, there is no tape: one can't see… and the other can't touch.",
          "Explicando, paciente."),
-        ("cadena", "Y van a estar encadenados. Juntos hasta la salida.", "And you will be chained. Together until the exit.", "Con gusto."),
+        ("cadena", "Ah, por cierto: van a estar encadenados. Juntos hasta la salida.", "Oh, by the way: you will be chained together. Together until the exit.", "Con gusto."),
         ("ultimo", "El último equipo en salir… se queda en mi vitrina.", "The last team out… stays in my display case.", "Bajando la voz."),
         ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
