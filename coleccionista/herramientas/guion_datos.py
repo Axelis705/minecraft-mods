@@ -178,7 +178,7 @@ GUIONES = {
         ("hechas", "Las parejas están hechas. Qué tiernos.", "The pairs are made. How sweet.", "Encantado, como ante una vitrina."),
         ("piedra", "Van a jugar piedra, papel o tijera.", "You will play rock, paper, scissors.", "Juguetón, como a niños."),
         ("caliz", "El que pierda, beberá de un cáliz.", "Whoever loses drinks from a chalice.", "Tranquilo, sirviendo el té."),
-        ("cinco", "Cada uno tiene cinco cálices. Uno está envenenado.", "Each of you has five chalices. One is poisoned.",
+        ("cinco", "Cada uno tiene cinco cálices… y uno está envenenado.", "Each of you has five chalices… and one is poisoned.",
          "Bajando la voz en «envenenado»."),
         ("solo_uno", "Ah, se me olvidaba… solo uno de cada pareja saldrá de aquí.",
          "Oh, I almost forgot… only one of each pair leaves this room.", "Pausa larga; con gusto. Risita al final.", "WITCH_CELEBRATE"),

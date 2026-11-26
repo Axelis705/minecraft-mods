@@ -1,471 +1,571 @@
 {
- "zumbido": {
-  "category": "block",
-  "subtitle": "coleccionista.sub.zumbido",
-  "sounds": [
-   {
-    "name": "coleccionista:zumbido",
-    "volume": 0.6,
-    "attenuation_distance": 8
-   }
-  ]
- },
- "chispa": {
-  "category": "block",
-  "subtitle": "coleccionista.sub.chispa",
-  "sounds": [
-   {
-    "name": "coleccionista:chispa1",
-    "volume": 0.7,
-    "attenuation_distance": 12
-   },
-   {
-    "name": "coleccionista:chispa2",
-    "volume": 0.7,
-    "attenuation_distance": 12
-   },
-   {
-    "name": "coleccionista:chispa3",
-    "volume": 0.7,
-    "attenuation_distance": 12
-   }
-  ]
- },
- "voz.bienvenida.acerquense": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.acerquense",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_acerquense",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.candado": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.candado",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_candado",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.coleccion": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.coleccion",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_coleccion",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.durmieron": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.durmieron",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_durmieron",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.escondidos": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.escondidos",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_escondidos",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.hola": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.hola",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_hola",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.los_demas": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.los_demas",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_los_demas",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.presento": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.presento",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_presento",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.pruebas": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.pruebas",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_pruebas",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.que_tenemos": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.que_tenemos",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_que_tenemos",
-    "stream": true
-   }
-  ]
- },
- "voz.bienvenida.solo_uno": {
-  "category": "voice",
-  "subtitle": "coleccionista.voz.bienvenida.solo_uno",
-  "sounds": [
-   {
-    "name": "coleccionista:voz/bienvenida_solo_uno",
-    "stream": true
-   }
-  ]
- },
- "cascabel": {
-  "subtitle": "coleccionista.sub.cascabel",
-  "sounds": [
-   {
-    "name": "coleccionista:mascota/cascabel1",
-    "volume": 0.55,
-    "attenuation_distance": 24
-   },
-   {
-    "name": "coleccionista:mascota/cascabel2",
-    "volume": 0.55,
-    "attenuation_distance": 24
-   },
-   {
-    "name": "coleccionista:mascota/cascabel3",
-    "volume": 0.55,
-    "attenuation_distance": 24
-   }
-  ]
- },
- "olfatea": {
-  "subtitle": "coleccionista.sub.olfatea",
-  "sounds": [
-   {
-    "name": "minecraft:entity.fox.sniff",
-    "type": "event",
-    "pitch": 0.55,
-    "volume": 1.0
-   }
-  ]
- },
- "rugido": {
-  "subtitle": "coleccionista.sub.rugido",
-  "sounds": [
-   {
-    "name": "minecraft:entity.ravager.roar",
-    "type": "event",
-    "pitch": 0.72,
-    "volume": 1.0,
-    "attenuation_distance": 48
-   }
-  ]
- },
- "rugido_corto": {
-  "subtitle": "coleccionista.sub.gruñe",
-  "sounds": [
-   {
-    "name": "minecraft:entity.polar_bear.warning",
-    "type": "event",
-    "pitch": 0.7,
-    "volume": 1.0
-   }
-  ]
- },
- "mordida": {
-  "subtitle": "coleccionista.sub.mordida",
-  "sounds": [
-   {
-    "name": "minecraft:entity.ravager.attack",
-    "type": "event",
-    "pitch": 0.8,
-    "volume": 1.0
-   }
-  ]
- },
- "trago": {
-  "subtitle": "coleccionista.sub.trago",
-  "sounds": [
-   {
-    "name": "minecraft:entity.player.burp",
-    "type": "event",
-    "pitch": 0.5,
-    "volume": 0.9
-   }
-  ]
- },
- "caja_disparo": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.caja_disparo",
-  "sounds": [
-   {
-    "name": "coleccionista:caja/caja_disparo",
-    "attenuation_distance": 96
-   }
-  ]
- },
- "caja_tension": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.caja_tension",
-  "sounds": [
-   {
-    "name": "coleccionista:caja/caja_tension",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "caja_cerrojo": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.caja_cerrojo",
-  "sounds": [
-   {
-    "name": "coleccionista:caja/caja_cerrojo",
-    "attenuation_distance": 32
-   }
-  ]
- },
- "caja_tictac": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.caja_tictac",
-  "sounds": [
-   {
-    "name": "coleccionista:caja/caja_tictac",
-    "attenuation_distance": 24
-   }
-  ]
- },
- "caja_compuerta": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.caja_compuerta",
-  "sounds": [
-   {
-    "name": "coleccionista:caja/caja_compuerta",
-    "attenuation_distance": 40
-   }
-  ]
- },
- "sor_susto": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.sor_susto",
-  "sounds": [
-   {
-    "name": "coleccionista:sorpresa/sor_susto",
-    "attenuation_distance": 64
-   }
-  ]
- },
- "sor_mordida": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.sor_mordida",
-  "sounds": [
-   {
-    "name": "coleccionista:sorpresa/sor_mordida",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "sor_salta": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.sor_salta",
-  "sounds": [
-   {
-    "name": "coleccionista:sorpresa/sor_salta",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_0": {
-  "category": "record",
-  "subtitle": "coleccionista.sub.piano_nota",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_0",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_1": {
-  "category": "record",
-  "subtitle": "coleccionista.sub.piano_nota",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_1",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_2": {
-  "category": "record",
-  "subtitle": "coleccionista.sub.piano_nota",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_2",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_3": {
-  "category": "record",
-  "subtitle": "coleccionista.sub.piano_nota",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_3",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_4": {
-  "category": "record",
-  "subtitle": "coleccionista.sub.piano_nota",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_4",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_5": {
-  "category": "record",
-  "subtitle": "coleccionista.sub.piano_nota",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_5",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_6": {
-  "category": "record",
-  "subtitle": "coleccionista.sub.piano_nota",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_6",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_7": {
-  "category": "record",
-  "subtitle": "coleccionista.sub.piano_nota",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_7",
-    "attenuation_distance": 48
-   }
-  ]
- },
- "piano_mal": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.piano_mal",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_mal",
-    "attenuation_distance": 64
-   }
-  ]
- },
- "piano_abre": {
-  "category": "hostile",
-  "subtitle": "coleccionista.sub.piano_abre",
-  "sounds": [
-   {
-    "name": "coleccionista:piano/piano_abre",
-    "attenuation_distance": 64
-   }
-  ]
- },
- "maquina_cierra": {
-  "sounds": [
-   {
-    "name": "coleccionista:veintiuno/maquina_cierra"
-   }
-  ],
-  "subtitle": "coleccionista.sub.maquina_cierra"
- },
- "maquina_aprieta": {
-  "sounds": [
-   {
-    "name": "coleccionista:veintiuno/maquina_aprieta"
-   }
-  ],
-  "subtitle": "coleccionista.sub.maquina_aprieta"
- },
- "maquina_chispas": {
-  "sounds": [
-   {
-    "name": "coleccionista:veintiuno/maquina_chispas"
-   }
-  ],
-  "subtitle": "coleccionista.sub.maquina_chispas"
- },
- "maquina_pum": {
-  "sounds": [
-   {
-    "name": "coleccionista:veintiuno/maquina_pum"
-   }
-  ],
-  "subtitle": "coleccionista.sub.maquina_pum"
- },
- "maquina_abre": {
-  "sounds": [
-   {
-    "name": "coleccionista:veintiuno/maquina_abre"
-   }
-  ],
-  "subtitle": "coleccionista.sub.maquina_abre"
- },
- "carta": {
-  "sounds": [
-   {
-    "name": "coleccionista:veintiuno/carta"
-   }
-  ],
-  "subtitle": "coleccionista.sub.carta"
- },
- "menu.musica": {
-  "sounds": [
-   {
-    "name": "coleccionista:menu/musica",
-    "stream": true
-   }
-  ]
- },
- "menu.encima": {
-  "sounds": [
-   "coleccionista:menu/encima"
-  ]
- },
- "menu.clic": {
-  "sounds": [
-   "coleccionista:menu/clic"
-  ]
- },
- "menu.estatica": {
-  "sounds": [
-   "coleccionista:menu/estatica"
-  ]
- }
+  "zumbido": {
+    "category": "block",
+    "subtitle": "coleccionista.sub.zumbido",
+    "sounds": [
+      {
+        "name": "coleccionista:zumbido",
+        "volume": 0.6,
+        "attenuation_distance": 8
+      }
+    ]
+  },
+  "chispa": {
+    "category": "block",
+    "subtitle": "coleccionista.sub.chispa",
+    "sounds": [
+      {
+        "name": "coleccionista:chispa1",
+        "volume": 0.7,
+        "attenuation_distance": 12
+      },
+      {
+        "name": "coleccionista:chispa2",
+        "volume": 0.7,
+        "attenuation_distance": 12
+      },
+      {
+        "name": "coleccionista:chispa3",
+        "volume": 0.7,
+        "attenuation_distance": 12
+      }
+    ]
+  },
+  "cascabel": {
+    "subtitle": "coleccionista.sub.cascabel",
+    "sounds": [
+      {
+        "name": "coleccionista:mascota/cascabel1",
+        "volume": 0.55,
+        "attenuation_distance": 24
+      },
+      {
+        "name": "coleccionista:mascota/cascabel2",
+        "volume": 0.55,
+        "attenuation_distance": 24
+      },
+      {
+        "name": "coleccionista:mascota/cascabel3",
+        "volume": 0.55,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "olfatea": {
+    "subtitle": "coleccionista.sub.olfatea",
+    "sounds": [
+      {
+        "name": "minecraft:entity.fox.sniff",
+        "type": "event",
+        "pitch": 0.55,
+        "volume": 1.0
+      }
+    ]
+  },
+  "rugido": {
+    "subtitle": "coleccionista.sub.rugido",
+    "sounds": [
+      {
+        "name": "minecraft:entity.ravager.roar",
+        "type": "event",
+        "pitch": 0.72,
+        "volume": 1.0,
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "rugido_corto": {
+    "subtitle": "coleccionista.sub.gruñe",
+    "sounds": [
+      {
+        "name": "minecraft:entity.polar_bear.warning",
+        "type": "event",
+        "pitch": 0.7,
+        "volume": 1.0
+      }
+    ]
+  },
+  "mordida": {
+    "subtitle": "coleccionista.sub.mordida",
+    "sounds": [
+      {
+        "name": "minecraft:entity.ravager.attack",
+        "type": "event",
+        "pitch": 0.8,
+        "volume": 1.0
+      }
+    ]
+  },
+  "trago": {
+    "subtitle": "coleccionista.sub.trago",
+    "sounds": [
+      {
+        "name": "minecraft:entity.player.burp",
+        "type": "event",
+        "pitch": 0.5,
+        "volume": 0.9
+      }
+    ]
+  },
+  "caja_disparo": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.caja_disparo",
+    "sounds": [
+      {
+        "name": "coleccionista:caja/caja_disparo",
+        "attenuation_distance": 96
+      }
+    ]
+  },
+  "caja_tension": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.caja_tension",
+    "sounds": [
+      {
+        "name": "coleccionista:caja/caja_tension",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "caja_cerrojo": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.caja_cerrojo",
+    "sounds": [
+      {
+        "name": "coleccionista:caja/caja_cerrojo",
+        "attenuation_distance": 32
+      }
+    ]
+  },
+  "caja_tictac": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.caja_tictac",
+    "sounds": [
+      {
+        "name": "coleccionista:caja/caja_tictac",
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "caja_compuerta": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.caja_compuerta",
+    "sounds": [
+      {
+        "name": "coleccionista:caja/caja_compuerta",
+        "attenuation_distance": 40
+      }
+    ]
+  },
+  "sor_susto": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.sor_susto",
+    "sounds": [
+      {
+        "name": "coleccionista:sorpresa/sor_susto",
+        "attenuation_distance": 64
+      }
+    ]
+  },
+  "sor_mordida": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.sor_mordida",
+    "sounds": [
+      {
+        "name": "coleccionista:sorpresa/sor_mordida",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "sor_salta": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.sor_salta",
+    "sounds": [
+      {
+        "name": "coleccionista:sorpresa/sor_salta",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_0": {
+    "category": "record",
+    "subtitle": "coleccionista.sub.piano_nota",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_0",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_1": {
+    "category": "record",
+    "subtitle": "coleccionista.sub.piano_nota",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_1",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_2": {
+    "category": "record",
+    "subtitle": "coleccionista.sub.piano_nota",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_2",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_3": {
+    "category": "record",
+    "subtitle": "coleccionista.sub.piano_nota",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_3",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_4": {
+    "category": "record",
+    "subtitle": "coleccionista.sub.piano_nota",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_4",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_5": {
+    "category": "record",
+    "subtitle": "coleccionista.sub.piano_nota",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_5",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_6": {
+    "category": "record",
+    "subtitle": "coleccionista.sub.piano_nota",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_6",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_7": {
+    "category": "record",
+    "subtitle": "coleccionista.sub.piano_nota",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_7",
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "piano_mal": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.piano_mal",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_mal",
+        "attenuation_distance": 64
+      }
+    ]
+  },
+  "piano_abre": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.piano_abre",
+    "sounds": [
+      {
+        "name": "coleccionista:piano/piano_abre",
+        "attenuation_distance": 64
+      }
+    ]
+  },
+  "maquina_cierra": {
+    "sounds": [
+      {
+        "name": "coleccionista:veintiuno/maquina_cierra"
+      }
+    ],
+    "subtitle": "coleccionista.sub.maquina_cierra"
+  },
+  "maquina_aprieta": {
+    "sounds": [
+      {
+        "name": "coleccionista:veintiuno/maquina_aprieta"
+      }
+    ],
+    "subtitle": "coleccionista.sub.maquina_aprieta"
+  },
+  "maquina_chispas": {
+    "sounds": [
+      {
+        "name": "coleccionista:veintiuno/maquina_chispas"
+      }
+    ],
+    "subtitle": "coleccionista.sub.maquina_chispas"
+  },
+  "maquina_pum": {
+    "sounds": [
+      {
+        "name": "coleccionista:veintiuno/maquina_pum"
+      }
+    ],
+    "subtitle": "coleccionista.sub.maquina_pum"
+  },
+  "maquina_abre": {
+    "sounds": [
+      {
+        "name": "coleccionista:veintiuno/maquina_abre"
+      }
+    ],
+    "subtitle": "coleccionista.sub.maquina_abre"
+  },
+  "carta": {
+    "sounds": [
+      {
+        "name": "coleccionista:veintiuno/carta"
+      }
+    ],
+    "subtitle": "coleccionista.sub.carta"
+  },
+  "menu.musica": {
+    "sounds": [
+      {
+        "name": "coleccionista:menu/musica",
+        "stream": true
+      }
+    ]
+  },
+  "menu.encima": {
+    "sounds": [
+      "coleccionista:menu/encima"
+    ]
+  },
+  "menu.clic": {
+    "sounds": [
+      "coleccionista:menu/clic"
+    ]
+  },
+  "menu.estatica": {
+    "sounds": [
+      "coleccionista:menu/estatica"
+    ]
+  },
+  "voz.bienvenida.acerquense": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.acerquense",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_acerquense",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.candado": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.candado",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_candado",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.coleccion": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.coleccion",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_coleccion",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.durmieron": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.durmieron",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_durmieron",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.escondidos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.escondidos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_escondidos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.hola": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.hola",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_hola",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.los_demas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.los_demas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_los_demas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.presento": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.presento",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_presento",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.pruebas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.pruebas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_pruebas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.que_tenemos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.que_tenemos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_que_tenemos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.bienvenida.solo_uno": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.bienvenida.solo_uno",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/bienvenida_solo_uno",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te.bienvenidos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te.bienvenidos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_bienvenidos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te.confien": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te.confien",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_confien",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te.minuto": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te.minuto",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_minuto",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te.parejas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te.parejas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_parejas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te_reglas.caliz": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te_reglas.caliz",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_reglas_caliz",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te_reglas.cinco": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te_reglas.cinco",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_reglas_cinco",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te_reglas.hechas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te_reglas.hechas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_reglas_hechas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te_reglas.piedra": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te_reglas.piedra",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_reglas_piedra",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te_reglas.salud": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te_reglas.salud",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_reglas_salud",
+        "stream": true
+      }
+    ]
+  },
+  "voz.te_reglas.solo_uno": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.te_reglas.solo_uno",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/te_reglas_solo_uno",
+        "stream": true
+      }
+    ]
+  }
 }

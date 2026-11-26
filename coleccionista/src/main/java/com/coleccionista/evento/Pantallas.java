@@ -366,18 +366,18 @@ public final class Pantallas {
     public static List<Frase> te() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("bienvenidos", 70, null, 1F));
-        l.add(new Frase("parejas", 70, null, 1F));
+        l.add(new Frase("parejas", 76, null, 1F));
         l.add(new Frase("confien", 100, null, 1F));
-        l.add(new Frase("minuto", 70, null, 1F));
+        l.add(new Frase("minuto", 85, null, 1F));
         return l;
     }
 
     public static List<Frase> te_reglas() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("hechas", 85, null, 1F));
+        l.add(new Frase("hechas", 92, null, 1F));
         l.add(new Frase("piedra", 80, null, 1F));
         l.add(new Frase("caliz", 80, null, 1F));
-        l.add(new Frase("cinco", 105, null, 1F));
+        l.add(new Frase("cinco", 115, null, 1F));
         l.add(new Frase("solo_uno", 125, SoundEvents.WITCH_CELEBRATE, 0.5F));
         l.add(new Frase("salud", 50, null, 1F));
         return l;
