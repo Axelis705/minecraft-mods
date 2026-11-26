@@ -237,7 +237,7 @@ GUIONES = {
     ],
     "veintiuno_fin": [
         ("ganador", "Tenemos un ganador.", "We have a winner.", "Solemne, casi emocionado."),
-        ("completa", "Mi colección está completa… por esta noche.", "My collection is complete… for tonight.",
+        ("completa", "Mi colección ahora está completa… solo por esta noche.", "My collection is now complete… just for tonight.",
          "Satisfecho; pausa antes de «por esta noche»."),
         ("puerta", "Puedes irte. La puerta está abierta… esta vez.", "You may go. The door is open… this time.",
          "Cortés, con humor negro. Su despedida."),

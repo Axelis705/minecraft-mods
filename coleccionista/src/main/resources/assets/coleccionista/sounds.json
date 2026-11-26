@@ -728,6 +728,36 @@
       }
     ]
   },
+  "voz.veintiuno_fin.completa": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_fin.completa",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_fin_completa",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_fin.ganador": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_fin.ganador",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_fin_ganador",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_fin.puerta": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_fin.puerta",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_fin_puerta",
+        "stream": true
+      }
+    ]
+  },
   "voz.veintiuno.mesa": {
     "category": "voice",
     "subtitle": "coleccionista.voz.veintiuno.mesa",

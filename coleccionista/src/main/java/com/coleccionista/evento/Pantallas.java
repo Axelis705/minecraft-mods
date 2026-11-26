@@ -442,8 +442,8 @@ public final class Pantallas {
     public static List<Frase> veintiuno_fin() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("ganador", 55, null, 1F));
-        l.add(new Frase("completa", 100, null, 1F));
-        l.add(new Frase("puerta", 105, null, 1F));
+        l.add(new Frase("completa", 116, null, 1F));
+        l.add(new Frase("puerta", 118, null, 1F));
         return l;
     }
 

@@ -371,7 +371,7 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `veintiuno_fin_ganador.ogg` | 2.8 s | Tenemos un ganador. |
-| 2 | `veintiuno_fin_completa.ogg` | 5.0 s | Mi colección está completa… por esta noche. |
-| 3 | `veintiuno_fin_puerta.ogg` | 5.2 s | Puedes irte. La puerta está abierta… esta vez. |
+| 2 | `veintiuno_fin_completa.ogg` | 5.8 s | Mi colección ahora está completa… solo por esta noche. |
+| 3 | `veintiuno_fin_puerta.ogg` | 5.9 s | Puedes irte. La puerta está abierta… esta vez. |
 
 **Total: 203 líneas (≈17 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
