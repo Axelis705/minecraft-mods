@@ -1,0 +1,300 @@
+[11:21:32] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Cuarto 1: los votos eligieron a Pieza 02 · Bot_02. Los demás, salgan.
+[11:21:32] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Cuarto 2: los votos eligieron a Pieza 03 · Bot_03. Los demás, salgan.
+[11:21:39] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_65_salgan
+[11:21:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 02 Bot_02 quedan=7
+[11:21:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 02 Bot_02
+[11:21:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 03 Bot_03 quedan=6
+[11:21:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 03 Bot_03
+[11:21:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ juntos
+[11:21:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_SACRIFICIO fin eliminados=2
+[11:21:42] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 02 · Bot_02 ha sido eliminado y ahora es parte de la colección. (El sacrificio) Quedan 7.
+[11:21:42] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 03 · Bot_03 ha sido eliminado y ahora es parte de la colección. (El sacrificio) Quedan 6.
+[11:21:42] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Cada cuarto pagó su precio. 2 piezas nuevas en mis vitrinas.
+[11:21:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_66_sacrificio_fin
+[11:21:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: terminó El sacrificio (cada cuarto perdió una pieza)
+[11:21:50] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_SACRIFICIO terminada
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: El sacrificio terminada.
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Dev sigue vivo.
+[11:21:50] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_REVIVIDO 02 Bot_02
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_02 volvió al juego.
+[11:21:50] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_REVIVIDO 03 Bot_03
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_03 volvió al juego.
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_04 sigue vivo.
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_05 sigue vivo.
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_06 sigue vivo.
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_07 sigue vivo.
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_08 sigue vivo.
+[11:21:50] [Server thread/INFO] [minecraft/MinecraftServer]: Nada cambió: no se activó la carga forzosa en ningún chunk
+[11:21:51] [Server thread/INFO] [minecraft/MinecraftServer]: Equipos de 4 · tiempo: 240 s.
+[11:21:51] [Server thread/INFO] [minecraft/MinecraftServer]: Equipos de 4 · tiempo: 90 s.
+[11:21:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR preparada salas=2
+[11:21:51] [Server thread/INFO] [minecraft/MinecraftServer]: El traidor lista: cada equipo a su sala del Archivo, con sus notas.
+[11:21:51] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ↺ Pieza 02 · Bot_02 vuelve al juego.
+[11:21:51] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ↺ Pieza 03 · Bot_03 vuelve al juego.
+[11:21:52] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 4 advancements
+[11:21:55] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_UNIFORME desgaste piezas=8 pruebas=13
+[11:21:55] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PRESENTACION III
+[11:21:58] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_67_traidor_presentacion
+[11:22:04] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_68_sala_archivo
+[11:22:04] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: El traidor está lista
+[11:22:04] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ separados=8
+[11:22:04] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR roles
+[11:22:04] [Server thread/INFO] [minecraft/MinecraftServer]: El traidor empieza.
+[11:22:07] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_69_papel
+[11:22:07] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: me tocó un papel (leal o traidor)
+[11:22:12] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR buscar
+[11:22:12] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Cada uno tiene una nota con dos números del código. Tienen 3 intentos y 1 minutos. Uno de ustedes miente.
+[11:22:14] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_70_nota
+[11:22:14] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: empezó la búsqueda del código
+[11:22:15] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_71_teclado
+[11:22:15] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR sala=1 fallida
+[11:22:15] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR sala=2 fallida
+[11:22:15] [Server thread/INFO] [minecraft/MinecraftServer]: Se acabó el tiempo: las salas que no abrieron, fallaron.
+[11:22:16] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: La sala 1 no abrió la bóveda. Ahora el traidor elige.
+[11:22:16] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: La sala 2 no abrió la bóveda. Ahora el traidor elige.
+[11:22:19] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_72_castigo
+[11:22:20] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 03 Bot_03 quedan=7
+[11:22:20] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 03 Bot_03
+[11:22:20] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR sala=2 castigo
+[11:22:20] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: En la sala 2, el traidor eligió a Pieza 03 · Bot_03.
+[11:22:20] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 03 · Bot_03 ha sido eliminado y ahora es parte de la colección. (El traidor) Quedan 7.
+[11:22:30] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] — Reglas · EL TRAIDOR —
+[11:22:30] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Cada uno tiene una nota con parte del código de la bóveda.
+[11:22:30] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Uno de ustedes es el traidor: sus números son falsos.
+[11:22:30] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Tienen 3 intentos en el teclado para abrir la bóveda.
+[11:22:30] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Si la abren, cae el traidor. Si no, el traidor elige a quién me llevo.
+[11:22:35] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 08 Bot_08 quedan=6
+[11:22:35] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 08 Bot_08
+[11:22:35] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR sala=1 castigo
+[11:22:35] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ juntos
+[11:22:35] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR fin eliminados=2
+[11:22:36] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: En la sala 1, el traidor eligió a Pieza 08 · Bot_08.
+[11:22:36] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 08 · Bot_08 ha sido eliminado y ahora es parte de la colección. (El traidor) Quedan 6.
+[11:22:36] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Se acabó el Archivo. 2 piezas nuevas en mi colección. Los traidores eran:
+[11:22:36] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]   Sala 1: Pieza 09 · Dev
+[11:22:36] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]   Sala 2: Pieza 07 · Bot_07
+[11:22:42] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_73_traidor_fin
+[11:22:43] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: terminó El traidor
+[11:22:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRAIDOR terminada
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: El traidor terminada.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Dev sigue vivo.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_02 sigue vivo.
+[11:22:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_REVIVIDO 03 Bot_03
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_03 volvió al juego.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_04 sigue vivo.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_05 sigue vivo.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_06 sigue vivo.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_07 sigue vivo.
+[11:22:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_REVIVIDO 08 Bot_08
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_08 volvió al juego.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Carga forzosa activada para [-10, 1] chunks en minecraft:overworld (de [-10, 1] a [-1, 4])
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Equipos de 2 · tiempo: 300 s · trampas: 12.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Equipos de 2 · tiempo: 120 s · trampas: 12.
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: Equipos de 2 · tiempo: 120 s · trampas: 10.
+[11:22:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS preparada equipos=4 trampas=10 intermitentes=3
+[11:22:43] [Server thread/INFO] [minecraft/MinecraftServer]: A ciegas lista: cada equipo a su laberinto (un guía arriba, los demás adentro).
+[11:22:43] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ↺ Pieza 03 · Bot_03 vuelve al juego.
+[11:22:43] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ↺ Pieza 08 · Bot_08 vuelve al juego.
+[11:22:47] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_UNIFORME desgaste piezas=8 pruebas=14
+[11:22:47] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PRESENTACION IX
+[11:22:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_74_ciegas_presentacion
+[11:22:51] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: A ciegas está lista
+[11:22:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS guia 06 lab=3
+[11:22:51] [Server thread/INFO] [minecraft/MinecraftServer]: Ahora Bot_06 es el guía de su equipo.
+[11:22:56] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ separados=8
+[11:22:56] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS empieza
+[11:22:56] [Server thread/INFO] [minecraft/MinecraftServer]: A ciegas empieza.
+[11:22:56] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Los guías ven todo desde arriba. Los demás, a ciegas. Tienen 2 minutos. El último equipo en salir… pierde a su guía.
+[11:23:00] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_75_vendado
+[11:23:00] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: camino con los ojos vendados
+[11:23:01] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ juntos
+[11:23:01] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS terminada
+[11:23:01] [Server thread/INFO] [minecraft/MinecraftServer]: A ciegas terminada.
+[11:23:01] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS preparada equipos=4 trampas=10 intermitentes=3
+[11:23:01] [Server thread/INFO] [minecraft/MinecraftServer]: A ciegas lista: cada equipo a su laberinto (un guía arriba, los demás adentro).
+[11:23:02] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS guia 09 lab=1
+[11:23:02] [Server thread/INFO] [minecraft/MinecraftServer]: Ahora Dev es el guía de su equipo.
+[11:23:05] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_UNIFORME desgaste piezas=8 pruebas=15
+[11:23:05] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PRESENTACION IX
+[11:23:05] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] — Reglas · A CIEGAS —
+[11:23:05] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Uno de tu equipo es el guía: camina arriba y ve todo el laberinto.
+[11:23:05] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Los demás caminan vendados: todo negro, solo un pulso de luz de vez en cuando. Escucha a tu guía.
+[11:23:05] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Pisar una trampa te regresa a la entrada. Las trampas cambian de lugar.
+[11:23:05] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • En el camino hay baldosas que se encienden: crúzalas cuando estén apagadas.
+[11:23:05] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • El último equipo en salir pierde a su guía.
+[11:23:13] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ separados=8
+[11:23:13] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS empieza
+[11:23:13] [Server thread/INFO] [minecraft/MinecraftServer]: A ciegas empieza.
+[11:23:13] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Los guías ven todo desde arriba. Los demás, a ciegas. Tienen 2 minutos. El último equipo en salir… pierde a su guía.
+[11:23:17] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_76_guia
+[11:23:18] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: soy el guía: veo todo y las trampas en rojo
+[11:23:18] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ juntos
+[11:23:18] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 09 Dev quedan=7
+[11:23:18] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 09 Dev
+[11:23:18] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS fin eliminados=1 tiempo=true
+[11:23:18] [Server thread/INFO] [minecraft/MinecraftServer]: Se acabó el tiempo de A ciegas.
+[11:23:18] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Laberinto 1: Pieza 09 · Dev guió mal… y se queda conmigo.
+[11:23:18] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 09 · Dev ha sido eliminado y ahora es parte de la colección. (A ciegas) Quedan 7.
+[11:23:18] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Ahora eres un fantasma: ves todo, pero los vivos no te ven ni te oyen.
+[11:23:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_77_ciegas_fin
+[11:23:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: terminó A ciegas
+[11:23:21] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CIEGAS terminada
+[11:23:21] [Server thread/INFO] [minecraft/MinecraftServer]: A ciegas terminada.
+[11:23:22] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_REVIVIDO 09 Dev
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Dev volvió al juego.
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_02 sigue vivo.
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_03 sigue vivo.
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_04 sigue vivo.
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_05 sigue vivo.
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_06 sigue vivo.
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_07 sigue vivo.
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Bot_08 sigue vivo.
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Nada cambió: no se activó la carga forzosa en ningún chunk
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: bots_salen = no
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Elegir: 60 s · recorrido: 120 s · cadena: 4.0 bloques.
+[11:23:22] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ mudos=0
+[11:23:22] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES preparada trios=2
+[11:23:22] [Server thread/INFO] [minecraft/MinecraftServer]: Encadenados de tres lista: cada trío en su sala de la mesa.
+[11:23:22] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ↺ Pieza 09 · Dev vuelve al juego.
+[11:23:26] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_UNIFORME desgaste piezas=8 pruebas=16
+[11:23:26] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PRESENTACION EXTRA
+[11:23:26] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] — Reglas · ENCADENADOS DE TRES —
+[11:23:26] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Uno de tu equipo es el guía: camina arriba y ve todo el laberinto.
+[11:23:26] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Los demás caminan vendados: todo negro, solo un pulso de luz de vez en cuando. Escucha a tu guía.
+[11:23:26] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Pisar una trampa te regresa a la entrada. Las trampas cambian de lugar.
+[11:23:26] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • En el camino hay baldosas que se encienden: crúzalas cuando estén apagadas.
+[11:23:26] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • El último equipo en salir pierde a su guía.
+[11:23:29] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_78_tres_presentacion
+[11:23:39] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_79_tres_mesa
+[11:23:39] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: Encadenados de tres está lista
+[11:23:39] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ separados=8
+[11:23:39] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES elegir
+[11:23:39] [Server thread/INFO] [minecraft/MinecraftServer]: Encadenados de tres: a elegir.
+[11:23:39] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: En la mesa hay una venda, una cinta y unas esposas. Decidan quién se pone qué: tienen 60 segundos.
+[11:23:41] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_80_tres_elegir
+[11:23:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES rol 09 ESPOSAS
+[11:23:42] [Server thread/INFO] [minecraft/MinecraftServer]: ok
+[11:23:42] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Pieza 09 · Dev se puso las ESPOSAS (no podrá tocar nada).
+[11:23:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES rol 06 VENDA
+[11:23:42] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Pieza 06 · Bot_06 se puso la VENDA (no verá nada).
+[11:23:43] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: me puse las esposas
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ mudos=1
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES rol 02 CINTA
+[11:23:43] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Pieza 02 · Bot_02 se puso la CINTA (no podrá hablar).
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES rol 05 VENDA
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES rol 04 VENDA
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ mudos=2
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES rol 08 CINTA
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES rol 07 ESPOSAS
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES rol 03 VENDA
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ mudos=2
+[11:23:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES empieza
+[11:23:43] [Server thread/INFO] [minecraft/MinecraftServer]: Encadenados de tres: siguiente paso.
+[11:23:43] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Pieza 05 · Bot_05 se puso la VENDA (no verá nada).
+[11:23:43] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Las rejas se abren. Tienen 2 minutos. El último trío en salir… se queda conmigo.
+[11:23:48] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_81_tres_recorrido
+[11:23:49] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se abrieron las rejas: a cruzar encadenados
+[11:23:51] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_82_tres_cadena
+[11:23:51] [Server thread/INFO] [minecraft/MinecraftServer]: El trío de Dev salió.
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES salio trio=1
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ juntos
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ mudos=0
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 04 Bot_04 quedan=7
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 04 Bot_04
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 08 Bot_08 quedan=6
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 08 Bot_08
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 07 Bot_07 quedan=5
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 07 Bot_07
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 03 Bot_03 quedan=4
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 03 Bot_03
+[11:23:51] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES fin eliminados=4 tiempo=false
+[11:23:51] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: ¡El trío 1 salió!
+[11:23:51] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: El trío 2 llegó tarde… y se queda en mi colección.
+[11:23:51] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 04 · Bot_04 ha sido eliminado y ahora es parte de la colección. (Encadenados de tres) Quedan 7.
+[11:23:51] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 08 · Bot_08 ha sido eliminado y ahora es parte de la colección. (Encadenados de tres) Quedan 6.
+[11:23:51] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 07 · Bot_07 ha sido eliminado y ahora es parte de la colección. (Encadenados de tres) Quedan 5.
+[11:23:51] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 03 · Bot_03 ha sido eliminado y ahora es parte de la colección. (Encadenados de tres) Quedan 4.
+[11:23:56] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_83_tres_fin
+[11:23:56] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: terminó Encadenados de tres
+[11:23:56] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ mudos=0
+[11:23:56] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_TRES terminada
+[11:23:56] [Server thread/INFO] [minecraft/MinecraftServer]: Encadenados de tres terminada.
+[11:23:56] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ tonos=0
+[11:23:56] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_REINICIADO
+[11:23:56] [Server thread/INFO] [minecraft/MinecraftServer]: El evento se borró: todos vuelven a la normalidad.
+[11:23:56] [Server thread/INFO] [minecraft/MinecraftServer]: Modo de juego de Dev cambiado a Creativo
+[11:23:56] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Modo de juego cambiado a Creativo
+[11:23:57] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] — Reglas · ENCADENADOS DE TRES —
+[11:23:57] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Su trío elige en la mesa: uno se pone la venda, otro la cinta y otro las esposas.
+[11:23:57] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Venda: casi no ves. Cinta: no puedes hablar ni escribir. Esposas: no puedes tocar nada.
+[11:23:57] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • Van encadenados en fila: la cadena se atora en los postes si cada uno pasa por un lado.
+[11:23:57] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT]  • El último trío en salir pierde.
+[11:23:58] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST AXCORE_AUTOTEST_FIN fotos=255 fallos=2
+[11:23:58] [Render thread/INFO] [minecraft/Minecraft]: Stopping!
+[11:23:58] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Dev lost connection: Desconectado/a
+[11:23:58] [Server thread/INFO] [minecraft/MinecraftServer]: Dev se desconectó
+[11:23:58] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Stopping singleplayer server as player logged out
+[11:23:58] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[11:23:58] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[11:23:58] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[11:23:59] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[11:23:59] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[11:23:59] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[11:23:59] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: Gathering id map for writing to world save world
+[11:23:59] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: ID Map collection complete world
+[11:23:59] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (prueba): All chunks are saved
+[11:23:59] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[11:23:59] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[11:23:59] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.GameData/REGISTRIES]: Reverting to FROZEN data state.
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:block Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:fluid Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:item Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:mob_effect Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:sound_event Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:potion Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:enchantment Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:entity_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:block_entity_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:particle_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:menu Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:painting_variant Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:recipe_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:recipe_serializer Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:attribute Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:stat_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:command_argument_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:villager_profession Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:point_of_interest_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:memory_module_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:sensor_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:schedule Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:activity Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/carver Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/feature Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:chunk_status Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/block_state_provider_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/foliage_placer_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/tree_decorator_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/biome Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:entity_data_serializers Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:global_loot_modifier_serializers Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:biome_modifier_serializers Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:fluid_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:structure_modifier_serializers Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:holder_set_type Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:display_contexts Sync: ACTIVE -> FROZEN
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ObjectHolderRegistry/REGISTRIES]: Applying holder lookups
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.ObjectHolderRegistry/REGISTRIES]: Holder lookups applied
+[11:23:59] [Server thread/DEBUG] [ne.mi.re.GameData/REGISTRIES]: FROZEN state restored.
+[11:23:59] [Server thread/DEBUG] [ne.mi.fm.co.ConfigTracker/CONFIG]: Unloading configs type SERVER
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_6-1795690339227.json
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 31m 43s
+10 actionable tasks: 3 executed, 7 up-to-date
