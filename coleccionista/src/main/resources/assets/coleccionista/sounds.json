@@ -358,6 +358,36 @@
       "coleccionista:menu/estatica"
     ]
   },
+  "voz.antesala.casa": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.antesala.casa",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/antesala_casa",
+        "stream": true
+      }
+    ]
+  },
+  "voz.antesala.polvo": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.antesala.polvo",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/antesala_polvo",
+        "stream": true
+      }
+    ]
+  },
+  "voz.antesala.servian": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.antesala.servian",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/antesala_servian",
+        "stream": true
+      }
+    ]
+  },
   "voz.bienvenida.acerquense": {
     "category": "voice",
     "subtitle": "coleccionista.voz.bienvenida.acerquense",
@@ -1004,6 +1034,26 @@
     "sounds": [
       {
         "name": "coleccionista:voz/vitrina_cera",
+        "stream": true
+      }
+    ]
+  },
+  "voz.vitrina_fin.hermosas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.vitrina_fin.hermosas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/vitrina_fin_hermosas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.vitrina_fin.siguen": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.vitrina_fin.siguen",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/vitrina_fin_siguen",
         "stream": true
       }
     ]

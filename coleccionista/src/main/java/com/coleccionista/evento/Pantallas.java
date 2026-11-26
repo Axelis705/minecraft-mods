@@ -257,17 +257,15 @@ public final class Pantallas {
     public static List<Frase> vitrina_fin() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("hermosas", 50, null, 1F));
-        l.add(new Frase("siguen", 100, null, 1F));
-        l.add(new Frase("abierta", 65, null, 1F));
+        l.add(new Frase("siguen", 110, null, 1F));
         return l;
     }
 
     public static List<Frase> antesala() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("polvo", 90, null, 1F));
-        l.add(new Frase("servian", 95, null, 1F));
+        l.add(new Frase("servian", 104, null, 1F));
         l.add(new Frase("casa", 85, null, 1F));
-        l.add(new Frase("abierta", 65, null, 1F));
         return l;
     }
 
@@ -281,7 +279,6 @@ public final class Pantallas {
         l.add(new Frase("no_ha_comido", 105, null, 1F));
         l.add(new Frase("minuto", 120, null, 1F));
         l.add(new Frase("cascabel", 85, null, 1F));
-        l.add(new Frase("abierta", 65, null, 1F));
         return l;
     }
 
@@ -298,7 +295,6 @@ public final class Pantallas {
         l.add(new Frase("a_tu_jaula", 60, null, 1F));
         l.add(new Frase("buena", 50, null, 1F));
         l.add(new Frase("enteros", 80, null, 1F));
-        l.add(new Frase("abierta", 65, null, 1F));
         return l;
     }
 
@@ -339,7 +335,6 @@ public final class Pantallas {
         l.add(new Frase("se_acabo", 65, null, 1F));
         l.add(new Frase("eran", 60, null, 1F));
         l.add(new Frase("enteros", 100, null, 1F));
-        l.add(new Frase("abierta", 65, null, 1F));
         return l;
     }
 

@@ -186,17 +186,15 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `vitrina_fin_hermosas.ogg` | 2.5 s | Hermosas. |
-| 2 | `vitrina_fin_siguen.ogg` | 5.0 s | Los demás… acompáñenme. La función continúa. |
-| 3 | `vitrina_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
+| 2 | `vitrina_fin_siguen.ogg` | 5.5 s | Los demás… acompáñenme. La función continúa. |
 
 ## Capítulo 1 · La antesala (después del teatro: la puerta se cierra detrás de todos)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `antesala_polvo.ogg` | 4.5 s | Las piezas lentas… solo juntan polvo. |
-| 2 | `antesala_servian.ogg` | 4.8 s | Esas no me servían. Ustedes… todavía sí. |
+| 2 | `antesala_servian.ogg` | 5.2 s | Esas no me servían. Ustedes… todavía sí. |
 | 3 | `antesala_casa.ogg` | 4.2 s | Sigan el pasillo. Mi casa los espera. |
-| 4 | `antesala_abierta.ogg` | 3.2 s | La vitrina está abierta. |
 
 ## Capítulo 2 · La mascota: en el vestíbulo de la casa (cuando ya entraron todos)
 
@@ -210,7 +208,6 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 6 | `mansion_no_ha_comido.ogg` | 5.2 s | No ha comido en días. Se pone un poco… nerviosa. |
 | 7 | `mansion_minuto.ogg` | 6.0 s | Les doy un minuto para esconderse. Después… abro la jaula. |
 | 8 | `mansion_cascabel.ogg` | 4.2 s | Si oyen un cascabel… no respiren. |
-| 9 | `mansion_abierta.ogg` | 3.2 s | La vitrina está abierta. |
 
 ## Capítulo 2 · La mascota: se acabó el minuto (se abre la jaula)
 
@@ -227,7 +224,6 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 1 | `mansion_fin_a_tu_jaula.ogg` | 3.0 s | ¡Cascabel! A tu jaula. |
 | 2 | `mansion_fin_buena.ogg` | 2.5 s | Buena chica. |
 | 3 | `mansion_fin_enteros.ogg` | 4.0 s | Los que siguen enteros… síganme. |
-| 4 | `mansion_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
 
 ## Capítulo 3 · La caja de música: en el salón de las góndolas (cuando ya entraron todos)
 
@@ -268,7 +264,6 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 1 | `caja_fin_se_acabo.ogg` | 3.2 s | ¿Oyen? Se acabó la música. |
 | 2 | `caja_fin_eran.ogg` | 3.0 s | Mis traidores eran… |
 | 3 | `caja_fin_enteros.ogg` | 5.0 s | Los que siguen enteros… gracias por el paseo. |
-| 4 | `caja_fin_abierta.ogg` | 3.2 s | La vitrina está abierta. |
 
 ## Capítulo 4 · La caja sorpresa: en el teatrito (cuando ya entraron todos)
 
@@ -374,4 +369,4 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 2 | `veintiuno_fin_completa.ogg` | 5.8 s | Mi colección ahora está completa… solo por esta noche. |
 | 3 | `veintiuno_fin_puerta.ogg` | 5.9 s | Puedes irte. La puerta está abierta… esta vez. |
 
-**Total: 203 líneas (≈17 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+**Total: 198 líneas (≈17 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.

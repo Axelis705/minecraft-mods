@@ -90,13 +90,11 @@ GUIONES = {
     "vitrina_fin": [
         ("hermosas", "Hermosas.", "Beautiful.", "Un suspiro, enamorado."),
         ("siguen", "Los demás… acompáñenme. La función continúa.", "The rest of you… follow me. The show goes on.", "Anfitrión, invitando a seguir."),
-        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
     "antesala": [
         ("polvo", "Las piezas lentas… solo juntan polvo.", "Slow pieces… only gather dust.", "Despectivo, sin levantar la voz."),
         ("servian", "Esas no me servían. Ustedes… todavía sí.", "Those were no use to me. You… still are.", "Pausa antes de «todavía sí»."),
         ("casa", "Sigan el pasillo. Mi casa los espera.", "Follow the hallway. My house awaits.", "Anfitrión; «mi casa» con cariño."),
-        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
     "mansion": [
         ("bienvenidos", "Bienvenidos a mi casa.", "Welcome to my home.", "Anfitrión orgulloso, cálido."),
@@ -110,7 +108,6 @@ GUIONES = {
         ("minuto", "Les doy un minuto para esconderse. Después… abro la jaula.",
          "I'll give you one minute to hide. Then… I open the cage.", "Pausa larga antes de «abro la jaula»."),
         ("cascabel", "Si oyen un cascabel… no respiren.", "If you hear a bell… don't breathe.", "Susurrado, casi un secreto."),
-        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
     "mansion_suelta": [
         ("se_acabo", "Se acabó el minuto.", "Time's up.", "Seco, como quien cierra un reloj de bolsillo."),
@@ -121,7 +118,6 @@ GUIONES = {
         ("a_tu_jaula", "¡Cascabel! A tu jaula.", "Cascabel! Back in your cage.", "Firme, como a una mascota; sin enojo."),
         ("buena", "Buena chica.", "Good girl.", "Tierno."),
         ("enteros", "Los que siguen enteros… síganme.", "Those of you still in one piece… follow me.", "Cortés, con humor negro."),
-        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
     "caja": [
         ('bienvenidos', "Bienvenidos a mi caja de música.", "Welcome to my music box.", "Orgulloso, como quien enseña su pieza favorita."),
@@ -151,7 +147,6 @@ GUIONES = {
         ("eran", "Mis traidores eran…", "My traitors were…", "Pausa larga al final: los nombres salen en pantalla."),
         ("enteros", "Los que siguen enteros… gracias por el paseo.", "Those still in one piece… thank you for the ride.",
          "Cortés, con humor negro."),
-        ("abierta", "La vitrina está abierta.", "The display case is open.", "Su cierre de siempre."),
     ],
     "sorpresa": [
         ('bienvenidos', "Bienvenidos a mi teatrito.", "Welcome to my little theater.", "Orgulloso, como presentador de teatro viejo."),
