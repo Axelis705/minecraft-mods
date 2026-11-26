@@ -33,6 +33,7 @@ public class Navidad {
         com.navidad.registry.ModRegistry.register(bus);
         com.navidad.entidad.Proyectiles.init();
         com.navidad.gente.Gente.init();
+        Fiestas.init();
         AxelisCore.commands(Comandos::registrar);
     }
 

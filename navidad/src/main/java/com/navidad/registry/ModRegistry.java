@@ -10,6 +10,9 @@ import com.navidad.entidad.Krampus;
 import com.navidad.entidad.MunecoMalvado;
 import com.navidad.entidad.Pinata;
 import com.navidad.entidad.Reno;
+import com.navidad.entidad.TrineoSanta;
+import com.navidad.objeto.Bengala;
+import com.navidad.objeto.Rosca;
 import com.navidad.objeto.CampanaKrampus;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import com.navidad.objeto.Bebida;
@@ -112,6 +115,8 @@ public final class ModRegistry {
             .food(comida(5, 0.6F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1F).build())));
     public static final RegistryObject<Item> PONCHE = item("ponche", () -> new Bebida(props().stacksTo(16)
             .food(comida(4, 0.5F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 160, 0), 1F).build())));
+    public static final RegistryObject<Item> ROSCA = item("rosca_reyes", () -> new Rosca(props().stacksTo(16).food(comida(8, 0.8F)
+            .effect(() -> new MobEffectInstance(MobEffects.LUCK, 2400, 0), 1F).build())));
     public static final RegistryObject<Item> CHAMPURRADO = item("champurrado", () -> new Bebida(props().stacksTo(16)
             .food(comida(6, 0.7F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 1F).build())));
 
@@ -122,6 +127,7 @@ public final class ModRegistry {
     public static final RegistryObject<Item> PINATA = item("pinata", () -> new PinataItem(props().stacksTo(4)));
     public static final RegistryObject<Item> PALO_PINATA = item("palo_pinata", () -> new Item(props().stacksTo(1)));
     public static final RegistryObject<Item> VENDA = item("venda", () -> new Venda(props().stacksTo(1)));
+    public static final RegistryObject<Item> BENGALA = item("bengala", () -> new Bengala(props().stacksTo(16)));
     /** En el cortapiedras se vuelve cualquier bloque de decoración. */
     public static final RegistryObject<Item> CAJA_ADORNOS = item("caja_adornos", () -> new Item(props()));
 
@@ -172,6 +178,10 @@ public final class ModRegistry {
     public static final RegistryObject<EntityType<Krampus>> KRAMPUS = ENTITIES.register("krampus",
             () -> EntityType.Builder.<Krampus>of(Krampus::new, MobCategory.MONSTER).sized(1.6F, 3.0F).fireImmune().clientTrackingRange(12)
                     .build("navidad:krampus"));
+
+    public static final RegistryObject<EntityType<TrineoSanta>> TRINEO = ENTITIES.register("trineo_santa",
+            () -> EntityType.Builder.<TrineoSanta>of(TrineoSanta::new, MobCategory.MISC).sized(3F, 2F).clientTrackingRange(20).updateInterval(2)
+                    .build("navidad:trineo_santa"));
 
     public static final RegistryObject<Item> CAMPANA_KRAMPUS = item("campana_krampus", () -> new CampanaKrampus(props().stacksTo(1).rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> CUERNO_KRAMPUS = item("cuerno_krampus", () -> new Item(props().stacksTo(16).rarity(Rarity.EPIC)));

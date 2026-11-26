@@ -74,6 +74,23 @@ public final class Comandos {
                                     com.navidad.gente.Gente.poner(c.getSource().getLevel(), def, net.minecraft.core.BlockPos.containing(c.getSource().getPosition()));
                                     return 1;
                                 })))
+                .then(Commands.literal("trineo").requires(s -> s.hasPermission(2)).executes(c -> {
+                    Fiestas.trineo(c.getSource().getLevel(), c.getSource().getPlayerOrException());
+                    return 1;
+                }))
+                .then(Commands.literal("posada").requires(s -> s.hasPermission(2)).executes(c -> {
+                    Fiestas.posada(c.getSource().getLevel(), c.getSource().getPlayerOrException());
+                    return 1;
+                }))
+                .then(Commands.literal("intercambio").requires(s -> s.hasPermission(2)).executes(c -> {
+                    int n = Fiestas.intercambio(c.getSource().getServer());
+                    if (n == 0) {
+                        c.getSource().sendFailure(Component.translatable("navidad.fiesta.intercambio_pocos"));
+                    } else {
+                        c.getSource().sendSuccess(() -> Component.translatable("navidad.fiesta.intercambio_listo", n), true);
+                    }
+                    return n;
+                }))
                 .then(Commands.literal("krampus").requires(s -> s.hasPermission(2)).executes(c -> {
                     Vec3 pos = c.getSource().getPosition();
                     Vec3 mira = Vec3.directionFromRotation(0, c.getSource().getRotation().y).scale(10);

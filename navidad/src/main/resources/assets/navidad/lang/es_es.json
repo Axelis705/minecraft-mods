@@ -207,5 +207,20 @@
   "axelis_core.obj.evento.navidad.krampus": "Vencer al Krampus",
   "axelis_core.obj.evento.navidad.reno_amigo": "Hacerte amigo de un reno",
   "block.navidad.taza_chocolate": "Taza de chocolate caliente",
-  "navidad.aldea.lista": "🎄 ¡La aldea de Santa está lista! (%s bloques en %s ms)"
+  "navidad.aldea.lista": "🎄 ¡La aldea de Santa está lista! (%s bloques en %s ms)",
+  "item.navidad.rosca_reyes": "Rosca de Reyes",
+  "navidad.rosca.muneco": "👶 ¡A %s le salió el muñequito! Le toca invitar los tamales el 2 de febrero.",
+  "navidad.rosca.nada": "Mmm... esta vez no te salió el muñequito.",
+  "item.navidad.bengala": "Luz de bengala",
+  "navidad.bengala.ayuda": "Clic derecho para encenderla. ¡Chispas en tu mano!",
+  "entity.navidad.trineo_santa": "Trineo de Santa",
+  "navidad.fiesta.faltan": "🎄 ¡Faltan %s días para Navidad!",
+  "navidad.fiesta.nochebuena": "🌟 ¡Hoy es Nochebuena! Esta noche el trineo de Santa pasa varias veces...",
+  "navidad.fiesta.navidad": "🎄 ¡Feliz Navidad! Santa te dejó un regalo en tu inventario.",
+  "navidad.fiesta.reyes": "👑 ¡Feliz Día de Reyes! Te tocó una rosca... ¿te saldrá el muñequito?",
+  "navidad.fiesta.trineo": "🛷 ¡Se escuchan cascabeles! ¡Mira al cielo: es el trineo de Santa!",
+  "navidad.fiesta.posada": "🪅 ¡%s armó una posada! A romper la piñata: dale, dale, dale...",
+  "navidad.fiesta.intercambio": "🎁 Intercambio de regalos: a ti te toca regalarle a %s. ¡Es secreto, no le digas!",
+  "navidad.fiesta.intercambio_pocos": "Para el intercambio hacen falta al menos dos personas conectadas.",
+  "navidad.fiesta.intercambio_listo": "Intercambio sorteado entre %s personas (a cada quien le llegó un mensaje secreto)."
 }

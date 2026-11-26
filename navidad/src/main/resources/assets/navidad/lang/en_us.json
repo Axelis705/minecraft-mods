@@ -207,5 +207,20 @@
   "axelis_core.obj.evento.navidad.krampus": "Defeat the Krampus",
   "axelis_core.obj.evento.navidad.reno_amigo": "Befriend a reindeer",
   "block.navidad.taza_chocolate": "Mug of hot chocolate",
-  "navidad.aldea.lista": "🎄 Santa's village is ready! (%s blocks in %s ms)"
+  "navidad.aldea.lista": "🎄 Santa's village is ready! (%s blocks in %s ms)",
+  "item.navidad.rosca_reyes": "Kings' cake (rosca de reyes)",
+  "navidad.rosca.muneco": "👶 %s found the baby figurine! Now they have to buy the tamales on February 2nd.",
+  "navidad.rosca.nada": "Mmm... no baby figurine this time.",
+  "item.navidad.bengala": "Sparkler",
+  "navidad.bengala.ayuda": "Right-click to light it. Sparks in your hand!",
+  "entity.navidad.trineo_santa": "Santa's sleigh",
+  "navidad.fiesta.faltan": "🎄 %s days until Christmas!",
+  "navidad.fiesta.nochebuena": "🌟 It's Christmas Eve! Tonight Santa's sleigh will fly by several times...",
+  "navidad.fiesta.navidad": "🎄 Merry Christmas! Santa left a gift in your inventory.",
+  "navidad.fiesta.reyes": "👑 Happy Three Kings' Day! You got a rosca... will you find the baby figurine?",
+  "navidad.fiesta.trineo": "🛷 Sleigh bells! Look at the sky: it's Santa's sleigh!",
+  "navidad.fiesta.posada": "🪅 %s started a posada! Time to break the piñata!",
+  "navidad.fiesta.intercambio": "🎁 Gift exchange: you're giving a gift to %s. It's a secret, don't tell!",
+  "navidad.fiesta.intercambio_pocos": "The gift exchange needs at least two players online.",
+  "navidad.fiesta.intercambio_listo": "Gift exchange drawn among %s players (everyone got a secret message)."
 }

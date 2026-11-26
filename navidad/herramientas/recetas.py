@@ -45,6 +45,8 @@ if __name__ == '__main__':
     sin_forma('champurrado', 'champurrado', 3, ['cocoa_beans', 'wheat', 'sugar', 'milk_bucket'])
     sin_forma('ponche', 'ponche', 3, ['navidad:tejocote', 'navidad:mandarina', 'navidad:cana', 'apple', 'sugar', 'water_bucket'])
     sin_forma('ponche_manzana', 'ponche', 2, ['apple', 'apple', 'sweet_berries', 'sugar', 'water_bucket'])
+    sin_forma('rosca_reyes', 'rosca_reyes', 1, ['wheat', 'wheat', 'wheat', 'sugar', 'egg', 'sweet_berries', 'glow_berries'])
+    sin_forma('bengala', 'bengala', 4, ['gunpowder', 'stick', 'glowstone_dust'])
     sin_forma('pavo_navideno', 'pavo_navideno', 1, ['cooked_chicken', 'cooked_chicken', 'baked_potato', 'carrot', 'apple'])
     # regalos y posadas
     sin_forma('pinata', 'pinata', 1, ['paper', 'paper', 'paper', 'paper', 'red_dye', 'yellow_dye', 'green_dye', 'string', 'sugar'])

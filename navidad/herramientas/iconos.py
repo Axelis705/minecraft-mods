@@ -187,6 +187,15 @@ if __name__ == '__main__':
         '................', '..........ll....', '.........lLl....', '........lLl.....', '.......lLl......', '.......lLl......',
         '......lLLl......', '......lLLl......', '.....lLLLl......', '.....lLLLl......', '....lLLLLl......', '....lLLLLLl.....',
         '...lLLLLLLl.....', '...kkkkkkkk.....', '................', '................'], {'l': '#e8dcc0', 'L': '#b8a07a', 'k': '#3a2a20'})
+    dibujo('rosca_reyes', [
+        '................', '................', '.....LLLLLL.....', '...LLcrcgcyLL...', '..LcgcLLLLcrcL..', '.LcrcL....LcgcL.',
+        '.LcycL....LcycL.', '.LcgcL....LcrcL.', '.LcrcL....LcgcL.', '..LcycLLLLcycL..', '...LLcrcgcrLL...', '.....LLLLLL.....',
+        '................', '................', '................', '................'],
+        {'L': '#a8682a', 'c': '#e8b060', 'r': '#d42a2a', 'g': '#2a9a3a', 'y': '#f0c43a'})
+    dibujo('bengala', [
+        '...........y.w..', '.........w.yy...', '..........yWy.w.', '.........yWWy...', '.......w..yy.y..', '.........k......',
+        '........k.......', '.......k........', '......s.........', '.....s..........', '....s...........', '...s............',
+        '..s.............', '.s..............', '................', '................'], {'W': '#fff8c0', 'k': '#3a3a3a', 's': '#8a8a90'})
     for h in ('huevo_muneco_malvado', 'huevo_reno', 'huevo_hombre_jengibre', 'huevo_krampus'):
         json.dump({'parent': 'minecraft:item/template_spawn_egg'}, open(os.path.join(A, 'models', 'item', h + '.json'), 'w'), indent=1)
     # la caja y el calendario usan el modelo de su bloque

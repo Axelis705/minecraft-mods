@@ -30,6 +30,7 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.MUNECO_MALVADO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "muneco_malvado", 0.5F, 1F));
         e.registerEntityRenderer(ModRegistry.RENO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "reno", 0.6F, 1.05F));
         e.registerEntityRenderer(ModRegistry.HOMBRE_JENGIBRE.get(), JengibreRenderer::new);
+        e.registerEntityRenderer(ModRegistry.TRINEO.get(), TrineoRenderer::new);
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
     }
 

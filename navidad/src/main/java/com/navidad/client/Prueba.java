@@ -161,6 +161,8 @@ final class Prueba {
                 t.lookFrom(300.5, -40, 40, 300.5, -56, 0);
             });
             t.photo("aldea_pino_noche", 3000, () -> t.lookFrom(300.5, -58, 12, 300.5, -51, 0));
+            t.add("trineo", 1500, () -> t.cmd("summon navidad:trineo_santa 300 -46 -14 {Motion:[0.0,0.0,0.25]}"));
+            t.photo("trineo_noche", 200, () -> t.lookFrom(309, -58, 8, 300, -46, -6));
             t.add("dia otra vez", 1000, () -> t.cmd("time set 6000"));
             t.add("hud fin", 200, () -> t.hud(true));
         });
