@@ -498,6 +498,126 @@
       }
     ]
   },
+  "voz.caja.al_final": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.al_final",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_al_final",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.bienvenidos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.bienvenidos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_bienvenidos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.diganse": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.diganse",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_diganse",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.espalda": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.espalda",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_espalda",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.gira": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.gira",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_gira",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.gondolas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.gondolas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_gondolas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.no_se_ve": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.no_se_ve",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_no_se_ve",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.si_fallan": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.si_fallan",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_si_fallan",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.sientense": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.sientense",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_sientense",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.traidor_bala": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.traidor_bala",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_traidor_bala",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.traidores": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.traidores",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_traidores",
+        "stream": true
+      }
+    ]
+  },
+  "voz.caja.voces": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.caja.voces",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/caja_voces",
+        "stream": true
+      }
+    ]
+  },
   "voz.equipos.ascensor": {
     "category": "voice",
     "subtitle": "coleccionista.voz.equipos.ascensor",

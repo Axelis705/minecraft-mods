@@ -301,17 +301,17 @@ public final class Pantallas {
     public static List<Frase> caja() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("bienvenidos", 75, null, 1F));
-        l.add(new Frase("gondolas", 115, null, 1F));
+        l.add(new Frase("gondolas", 126, null, 1F));
         l.add(new Frase("espalda", 210, null, 1F));
-        l.add(new Frase("no_se_ve", 100, null, 1F));
-        l.add(new Frase("diganse", 170, null, 1F));
+        l.add(new Frase("no_se_ve", 130, null, 1F));
+        l.add(new Frase("diganse", 165, null, 1F));
         l.add(new Frase("gira", 135, null, 1F));
-        l.add(new Frase("voces", 130, null, 1F));
-        l.add(new Frase("traidores", 130, null, 1F));
+        l.add(new Frase("voces", 140, null, 1F));
+        l.add(new Frase("traidores", 162, null, 1F));
         l.add(new Frase("al_final", 105, null, 1F));
         l.add(new Frase("si_fallan", 85, null, 1F));
         l.add(new Frase("traidor_bala", 100, null, 1F));
-        l.add(new Frase("sientense", 60, null, 1F));
+        l.add(new Frase("sientense", 66, null, 1F));
         return l;
     }
 

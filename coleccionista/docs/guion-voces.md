@@ -230,17 +230,17 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `caja_bienvenidos.ogg` | 3.8 s | Bienvenidos a mi caja de música. |
-| 2 | `caja_gondolas.ogg` | 5.8 s | ¿Ven mis góndolas? Busquen una y siéntense. De dos en dos. |
+| 2 | `caja_gondolas.ogg` | 6.3 s | ¿Ven mis góndolas? Busquen una y siéntense. De dos en dos. |
 | 3 | `caja_espalda.ogg` | 10.5 s | Cuando estén todos sentados, cada uno llevará una figura en la espalda: un círculo, un cuadrado, un triángulo o un rombo. |
-| 4 | `caja_no_se_ve.ogg` | 5.0 s | El suyo no lo pueden ver. El de atrás… sí. |
-| 5 | `caja_diganse.ogg` | 8.5 s | En la góndola, el de atrás le dice al de adelante qué símbolo lleva. Luego cambian de lugar. |
+| 4 | `caja_no_se_ve.ogg` | 6.5 s | El suyo no lo pueden ver. Pero el que esté atrás de ustedes… sí. |
+| 5 | `caja_diganse.ogg` | 8.2 s | En el cuarto, el de atrás le dice al de adelante qué símbolo lleva. Luego cambian de lugar. |
 | 6 | `caja_gira.ogg` | 6.8 s | Cada vez que se apague la luz… les toca otro lugar. Y otra pareja. |
-| 7 | `caja_voces.ogg` | 6.5 s | Ah, y no se asusten de sus voces. Ahí adentro nadie suena como es. |
-| 8 | `caja_traidores.ogg` | 6.5 s | Pero cuidado: entre ustedes hay dos traidores. Y ellos pueden mentir. |
+| 7 | `caja_voces.ogg` | 7.0 s | Ah, y no se asusten de sus voces. Ahí adentro nadie suena como es. |
+| 8 | `caja_traidores.ogg` | 8.1 s | Pero cuidado: entre ustedes hay dos traidores. Y ellos tienen que mentir. |
 | 9 | `caja_al_final.ogg` | 5.2 s | Al final, cada uno me dirá su símbolo. En voz alta. |
 | 10 | `caja_si_fallan.ogg` | 4.2 s | Si se equivocan… se quedan conmigo. |
 | 11 | `caja_traidor_bala.ogg` | 5.0 s | Y el traidor que no engañe a nadie… también. |
-| 12 | `caja_sientense.ogg` | 3.0 s | Ahora… siéntense. |
+| 12 | `caja_sientense.ogg` | 3.3 s | Ahora… siéntense. |
 
 ## Capítulo 3 · La caja de música: todos sentados en círculo (antes de que baje el arma)
 
