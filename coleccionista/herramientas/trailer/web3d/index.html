@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Coleccionista 3D</title>
+<style>
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #050203; }
+  #fondo, #luz { position: absolute; inset: -30px; background-size: cover; background-position: center; image-rendering: pixelated; }
+  #fondo { background-image: url(inicio_fondo.png); filter: brightness(var(--fb, .8)); }
+  #luz { background-image: url(inicio_luz.png); mix-blend-mode: screen; opacity: var(--lo, .9); }
+  #escena { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+  #rayas { position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(to bottom, rgba(0,0,0,.16) 0 2px, transparent 2px 5px); mix-blend-mode: multiply; }
+  #grano { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .08; mix-blend-mode: screen; }
+  #vineta { position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(0,0,0,.6) 75%, rgba(0,0,0,.95) 100%); }
+  #negro { position: absolute; inset: 0; background: #000; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="fondo"></div>
+<div id="luz"></div>
+<canvas id="escena" width="1920" height="1080"></canvas>
+<script>
+  if (location.search.indexOf('v=1') >= 0) {
+    for (const el of [document.documentElement, document.body]) { el.style.width = '1080px'; el.style.height = '1920px'; }
+    const c = document.getElementById('escena');
+    c.width = 1080; c.height = 1920; c.style.width = '1080px'; c.style.height = '1920px';
+  }
+</script>
+<canvas id="grano" width="480" height="270"></canvas>
+<div id="rayas"></div>
+<div id="vineta"></div>
+<div id="negro"></div>
+<script src="three.min.js"></script>
+<script src="escena3d.js"></script>
+</body>
+</html>
