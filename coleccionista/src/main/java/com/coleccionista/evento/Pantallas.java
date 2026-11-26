@@ -341,9 +341,9 @@ public final class Pantallas {
     public static List<Frase> sorpresa() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("bienvenidos", 65, null, 1F));
-        l.add(new Frase("amigo", 125, null, 1F));
-        l.add(new Frase("cuerda", 175, null, 1F));
-        l.add(new Frase("una_tres", 135, null, 1F));
+        l.add(new Frase("amigo", 152, null, 1F));
+        l.add(new Frase("cuerda", 206, null, 1F));
+        l.add(new Frase("una_tres", 144, null, 1F));
         l.add(new Frase("hambre", 125, SoundEvents.WITCH_CELEBRATE, 0.5F));
         l.add(new Frase("zapatos", 100, null, 1F));
         l.add(new Frase("empecemos", 50, null, 1F));
@@ -352,7 +352,7 @@ public final class Pantallas {
 
     public static List<Frase> sorpresa_fin() {
         List<Frase> l = new ArrayList<>();
-        l.add(new Frase("lleno", 80, null, 1F));
+        l.add(new Frase("lleno", 81, null, 1F));
         l.add(new Frase("zapatos", 75, null, 1F));
         l.add(new Frase("enteros", 80, null, 1F));
         return l;

@@ -47,17 +47,19 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 /**
  * Capítulo 4 · La caja sorpresa. Del salón de la caja de música pasan (por el pasillo de servicio) al teatrito de Don Resorte. El
  * Coleccionista explica y, en un apagón, aparecen sentados en las gradas, mirando al centro. Por turnos (en el sentido del reloj, desde
  * uno al azar) a cada quien se le gira la silla hacia el escenario y se le sueltan las correas: baja, sube los escalones y le da a la
- * manivela de la caja 1, 2 o 3 vueltas (las que quiera; pero si alguien da 1, el siguiente está obligado a dar 3). La caja salta en una
+ * manivela de la caja 1, 2 o 3 vueltas (las que quiera; pero quien da 1, la próxima vez que le toque está obligado a dar 3). La caja salta en una
  * vuelta secreta: Don Resorte sale (con su cabeza gigante), agarra a quien le dio cuerda, se lo come (sangre y todo) y escupe sus zapatos,
  * que quedan en fila al frente del escenario. Luego se vuelve a meter, se le da cuerda con un número secreto nuevo y sigue el que sigue.
  * Se acaba cuando Don Resorte ya se comió a los que puso el organizador ({@code /evento sorpresa comer <n>}; si no, el 40% de los vivos).
@@ -96,9 +98,12 @@ public final class Sorpresa {
     private static int idx = -1;
     private static UUID turno;
     private static String turnoNombre = "";
-    /** La caja: su número secreto, cuántas vueltas lleva y si el que sigue está obligado a dar 3. */
+    /** La caja: su número secreto y cuántas vueltas lleva. */
     private static int secreto, cuenta, quiere, dadas, comidos, cuota, zapatosK, nota;
-    private static boolean obligado, obligadoAhora;
+    /** Quienes dieron solo 1 vuelta: la próxima vez que les toque están obligados a dar 3 (aunque ya sea otra caja). */
+    private static final Set<UUID> deben = new HashSet<>();
+    /** Si al que tiene el turno ahora le toca dar 3. */
+    private static boolean obligadoAhora;
     private static CajaSorpresa caja;
     private static Silla agarre;
     private static BlockPos foco;
@@ -386,7 +391,6 @@ public final class Sorpresa {
         secreto = rapido ? 2 : secretoFijo > 0 ? secretoFijo : 3 + R.nextInt(10);
         secretoFijo = 0;
         cuenta = 0;
-        obligado = false;
     }
 
     // ------------------------------------------------------------------ los turnos
@@ -414,7 +418,7 @@ public final class Sorpresa {
         turno = id;
         Pieza pt = ev.pieza(id);
         turnoNombre = pt == null ? "" : pt.nombre;
-        obligadoAhora = obligado;
+        obligadoAhora = deben.contains(id);
         quiere = 0;
         dadas = 0;
         fase = Fase.IR;
@@ -490,8 +494,12 @@ public final class Sorpresa {
             return;
         }
         if (dadas >= quiere) {
-            // listo: a su silla (y si dio 1, el siguiente da 3)
-            obligado = quiere == 1;
+            // listo: a su silla (y si dio 1, la próxima vez que le toque da 3; si ya dio 3, queda libre)
+            if (quiere == 1) {
+                deben.add(turno);
+            } else {
+                deben.remove(turno);
+            }
             fase = Fase.VOLVER;
             desde = t;
             Evento.get(s).reloj(s, segundosVolver);
@@ -499,7 +507,7 @@ public final class Sorpresa {
                 mio(s, sp);
             }
             enviar(s);
-            Coleccionista.LOGGER.info("COLECCIONISTA_SORPRESA se_salva cuenta={} obligado_siguiente={}", cuenta, obligado);
+            Coleccionista.LOGGER.info("COLECCIONISTA_SORPRESA se_salva cuenta={} debe_tres={}", cuenta, quiere == 1);
         }
     }
 
@@ -1127,7 +1135,7 @@ public final class Sorpresa {
         e.putString("fase", fase.name());
         e.putInt("comidos", comidos);
         e.putInt("cuota", cuota);
-        e.putBoolean("obligado", fase == Fase.IR || fase == Fase.ELIGE ? obligadoAhora : obligado);
+        e.putBoolean("obligado", (fase == Fase.IR || fase == Fase.ELIGE) && obligadoAhora);
         if (turno != null) {
             e.putUUID("turno", turno);
             e.putString("nombre", turnoNombre);
@@ -1156,7 +1164,7 @@ public final class Sorpresa {
     }
 
     public static String resumen() {
-        return fase.name() + " comidos=" + comidos + "/" + cuota + " cuenta=" + cuenta + " secreto=" + secreto + " obligado=" + obligado;
+        return fase.name() + " comidos=" + comidos + "/" + cuota + " cuenta=" + cuenta + " secreto=" + secreto + " deben_tres=" + deben.size();
     }
 
     /** A dónde ir: al pasillo, al salón, a la caja (si te toca) o de regreso a tu silla. */
@@ -1268,7 +1276,7 @@ public final class Sorpresa {
         cuota = 0;
         zapatosK = 0;
         cuenta = 0;
-        obligado = false;
+        deben.clear();
         obligadoAhora = false;
     }
 

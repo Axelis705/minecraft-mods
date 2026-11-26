@@ -1098,6 +1098,106 @@
       }
     ]
   },
+  "voz.sorpresa.amigo": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa.amigo",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_amigo",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa.bienvenidos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa.bienvenidos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_bienvenidos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa.cuerda": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa.cuerda",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_cuerda",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa.empecemos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa.empecemos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_empecemos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa_fin.enteros": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa_fin.enteros",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_fin_enteros",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa_fin.lleno": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa_fin.lleno",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_fin_lleno",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa_fin.zapatos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa_fin.zapatos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_fin_zapatos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa.hambre": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa.hambre",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_hambre",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa.una_tres": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa.una_tres",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_una_tres",
+        "stream": true
+      }
+    ]
+  },
+  "voz.sorpresa.zapatos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.sorpresa.zapatos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/sorpresa_zapatos",
+        "stream": true
+      }
+    ]
+  },
   "voz.te.bienvenidos": {
     "category": "voice",
     "subtitle": "coleccionista.voz.te.bienvenidos",

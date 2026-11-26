@@ -270,9 +270,9 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `sorpresa_bienvenidos.ogg` | 3.2 s | Bienvenidos a mi teatrito. |
-| 2 | `sorpresa_amigo.ogg` | 6.2 s | Les presento a mi amigo más viejo: Don Resorte. Vive en esa caja. |
-| 3 | `sorpresa_cuerda.ogg` | 8.8 s | Le gusta que le den cuerda. Uno por uno van a subir y darle una, dos o tres vueltas a la manivela. |
-| 4 | `sorpresa_una_tres.ogg` | 6.8 s | Pero si alguien le da solo una… el que sigue tendrá que darle tres. |
+| 2 | `sorpresa_amigo.ogg` | 7.6 s | Les presento a mi amigo más viejo: Resortes. Vive en esta caja. |
+| 3 | `sorpresa_cuerda.ogg` | 10.3 s | Le gusta que le den cuerda. Uno por uno van a subir y darle una, dos o tres vueltas a la manivela. |
+| 4 | `sorpresa_una_tres.ogg` | 7.2 s | Pero si alguien le da solo una… la siguiente vez tendrá que darle tres. |
 | 5 | `sorpresa_hambre.ogg` | 6.2 s | Don Resorte siempre sale con hambre. Y nadie sabe en qué vuelta. |
 | 6 | `sorpresa_zapatos.ogg` | 5.0 s | No se preocupen… siempre deja los zapatos. |
 | 7 | `sorpresa_empecemos.ogg` | 2.5 s | Empecemos. |

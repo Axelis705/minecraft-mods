@@ -150,9 +150,9 @@ GUIONES = {
     ],
     "sorpresa": [
         ('bienvenidos', "Bienvenidos a mi teatrito.", "Welcome to my little theater.", "Orgulloso, como presentador de teatro viejo."),
-        ('amigo', "Les presento a mi amigo más viejo: Don Resorte. Vive en esa caja.", "Meet my oldest friend: Mr. Spring. He lives in that box.", "Cariñoso, como si hablara de su mascota."),
+        ('amigo', "Les presento a mi amigo más viejo: Resortes. Vive en esta caja.", "Meet my oldest friend: Springs. He lives in this box.", "Cariñoso, como si hablara de su mascota."),
         ('cuerda', "Le gusta que le den cuerda. Uno por uno van a subir y darle una, dos o tres vueltas a la manivela.", "He likes to be wound up. One by one, you'll go up and give the crank one, two or three turns.", "Juguetón, explicando un juego de niños."),
-        ('una_tres', "Pero si alguien le da solo una… el que sigue tendrá que darle tres.", "But if someone gives only one… the next one will have to give three.", "Pausa en «una…»; luego firme."),
+        ('una_tres', "Pero si alguien le da solo una… la siguiente vez tendrá que darle tres.", "But if someone gives only one… the next time, they will have to give three.", "Pausa en «una…»; luego firme."),
         ('hambre', "Don Resorte siempre sale con hambre. Y nadie sabe en qué vuelta.", "Mr. Spring always comes out hungry. And nobody knows on which turn.", "Bajando la voz; risita al final.", "WITCH_CELEBRATE"),
         ('zapatos', "No se preocupen… siempre deja los zapatos.", "Don't worry… he always leaves the shoes.", "Tranquilizador, con humor negro."),
         ('empecemos', "Empecemos.", "Let's begin.", "Corto, con gusto."),
