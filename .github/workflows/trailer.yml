@@ -1,0 +1,128 @@
+name: Tráiler del Coleccionista (rodaje)
+
+# Abre el juego de verdad (sin pantalla, 1920x1080, en español) con el mod coleccionista y corre su escenario de prueba con el
+# rodaje prendido (-Dcoleccionista.rodaje=si): en ciertas fotos el mundo se congela y una cámara de cine graba la toma cuadro por
+# cuadro. Al final cada toma se junta en un video (30 cuadros por segundo) y los videos quedan en la rama trailer-coleccionista.
+on:
+  workflow_dispatch:
+
+jobs:
+  cliente:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    permissions:
+      contents: write
+    env:
+      P: coleccionista
+      CORE: axelis_core
+    steps:
+      - uses: actions/checkout@v4
+      # el 8 lo pide el lanzador de ForgeGradle 7 (si falta, Gradle intenta bajarlo y a veces falla)
+      - uses: actions/setup-java@v4
+        id: j8
+        continue-on-error: true
+        with:
+          distribution: temurin
+          java-version: 8
+      # si la descarga de Temurin falla (a veces llega dañada), se prueba con otra distribución
+      - uses: actions/setup-java@v4
+        if: steps.j8.outcome == 'failure'
+        continue-on-error: true
+        with:
+          distribution: zulu
+          java-version: 8
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Java 8 visible para Gradle (toolchain del lanzador)
+        run: mkdir -p ~/.gradle && echo "org.gradle.java.installations.fromEnv=JAVA_HOME_8_X64" >> ~/.gradle/gradle.properties
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Paquetes para dibujar sin pantalla
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q xvfb libgl1-mesa-dri libglx-mesa0 mesa-utils mesa-vulkan-drivers ffmpeg
+      - name: Compilar Axelis Core (el mod lo usa)
+        working-directory: ${{ env.CORE }}
+        run: ./gradlew build --no-daemon
+      - name: Mundo plano (lo crea el servidor de prueba)
+        run: |
+          mkdir -p $P/run
+          cat > $P/run/server.properties <<'EOF'
+          level-type=minecraft\:flat
+          generator-settings={"layers"\:[{"block"\:"minecraft\:bedrock","height"\:1},{"block"\:"minecraft\:dirt","height"\:2},{"block"\:"minecraft\:grass_block","height"\:1}],"biome"\:"minecraft\:plains"}
+          generate-structures=false
+          spawn-protection=0
+          online-mode=false
+          spawn-monsters=false
+          spawn-animals=false
+          spawn-npcs=false
+          EOF
+          bash tools/boot_server.sh $P
+          mkdir -p $P/run/saves
+          rm -rf $P/run/saves/prueba
+          cp -r $P/run/world $P/run/saves/prueba
+          rm -f $P/run/saves/prueba/session.lock
+      - name: Opciones del juego y de la prueba
+        run: |
+          mkdir -p $P/run/config
+          cat > $P/run/options.txt <<'EOF'
+          onboardAccessibility:false
+          tutorialStep:none
+          pauseOnLostFocus:false
+          renderDistance:6
+          simulationDistance:5
+          guiScale:3
+          renderClouds:"false"
+          soundCategory_master:0.0
+          skipMultiplayerWarning:true
+          joinedFirstServer:true
+          narrator:0
+          maxFps:260
+          lang:es_mx
+          EOF
+          printf 'earlyWindowControl = false\n' > $P/run/config/fml.toml
+          cat >> $P/build.gradle <<'EOF'
+
+          minecraft {
+              runs {
+                  client {
+                      property 'axcore.autotest', 'coleccionista'
+                      property 'coleccionista.rodaje', 'si'
+                      args '--quickPlaySingleplayer', 'prueba', '--width', '1920', '--height', '1080'
+                  }
+              }
+          }
+          EOF
+      - name: Abrir el juego y grabar las tomas
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set +e
+          cd $P
+          timeout 6000 xvfb-run -a -s "-screen 0 1920x1080x24" ./gradlew runClient --no-daemon > cliente.log 2>&1
+          echo "salida del juego: $?"
+          grep -E "COLECCIONISTA_RODAJE|AXCORE_AUTOTEST_FIN" run/logs/latest.log | sed 's/^.*COLECCIONISTA_/COLECCIONISTA_/' | head -120
+          ls run/screenshots/trailer || true
+      - name: Juntar cada toma en un video y subirlas a trailer-coleccionista
+        if: always()
+        run: |
+          d=$(mktemp -d)
+          for t in $P/run/screenshots/trailer/*/; do
+            n=$(basename "$t")
+            c=$(ls "$t" | wc -l)
+            [ "$c" -lt 2 ] && continue
+            ffmpeg -v error -y -framerate 30 -i "$t/%04d.jpg" -c:v libx264 -crf 15 -preset medium -pix_fmt yuv420p "$d/$n.mp4"
+            m=$(printf "%04d" $(( (c + 1) / 2 )))
+            cp "$t/$m.jpg" "$d/$n.jpg" 2>/dev/null || true
+            echo "$n $c" >> "$d/tomas.txt"
+          done
+          cp $P/run/logs/latest.log "$d"/ 2>/dev/null || true
+          tail -300 $P/cliente.log > "$d/cliente_tail.log" 2>/dev/null || true
+          cd "$d"
+          echo "${{ github.sha }}" > LEEME.txt
+          git init -q -b trailer-coleccionista
+          git config user.name ci; git config user.email ci@example.com
+          git add -A; git commit -qm "tomas ${{ github.sha }}"
+          git push -f -q "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" trailer-coleccionista
+          cat tomas.txt; du -sh .
