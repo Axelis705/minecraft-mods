@@ -45,12 +45,14 @@ public final class Comandos {
                                         return 0;
                                     }
                                     Temporada.modo(c.getSource().getServer(), m);
+                                    Fiestas.avisar(c.getSource().getServer());
                                     c.getSource().sendSuccess(() -> Component.translatable("navidad.temporada.modo", m), true);
                                     return 1;
                                 })))
                 .then(Commands.literal("calendario").requires(s -> s.hasPermission(2))
                         .then(Commands.literal("dia").then(Commands.argument("dia", IntegerArgumentType.integer(0, 31)).executes(c -> {
                             Temporada.diaPrueba = IntegerArgumentType.getInteger(c, "dia");
+                            Fiestas.avisar(c.getSource().getServer());
                             c.getSource().sendSuccess(() -> Component.translatable("navidad.calendario.fingido", Temporada.diaPrueba), true);
                             return 1;
                         }))))

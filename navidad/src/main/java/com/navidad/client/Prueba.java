@@ -82,7 +82,7 @@ final class Prueba {
                 List<String> os = objetos();
                 t.log("objetos: " + os.size());
                 for (int i = 0; i < os.size(); i++) {
-                    int x = -9 + (i % 12) * 1 + (i % 12 >= 6 ? 6 : 0) - 3, y = -56 - (i / 12);
+                    int x = -6 + (i % 12), y = -56 - (i / 12);
                     t.cmd(String.format(Locale.ROOT, "summon item_frame %d %d 26 {Facing:2b,Fixed:1b,Invisible:0b,Item:{id:\"navidad:%s\",Count:1b}}",
                             x, y, os.get(i)));
                 }
@@ -118,17 +118,18 @@ final class Prueba {
             });
             t.photo("pinata", 2000, () -> t.lookFrom(0.5, -60, -38.5, 0.5, -58.6, -34));
             t.add("golpes", 500, () -> {
+                t.cmd("item replace entity @p weapon.mainhand with navidad:palo_pinata");
                 for (int i = 0; i < 4; i++) {
                     t.cmd("damage @e[type=navidad:pinata,limit=1] 1 minecraft:player_attack by @p");
                 }
             });
             t.photo("pinata_columpio", 250, () -> {
             });
-            t.add("rompe", 300, () -> {
-                for (int i = 0; i < 12; i++) {
-                    t.cmd("damage @e[type=navidad:pinata,limit=1] 1 minecraft:player_attack by @p");
-                }
-            });
+            for (int k = 0; k < 9; k++) {
+                t.add("golpe " + k, 120, () -> t.cmd("damage @e[type=navidad:pinata,limit=1] 1 minecraft:player_attack by @p"));
+            }
+            t.add("rota?", 200, () -> t.log("pinatas que quedan: " + Minecraft.getInstance().level.getEntitiesOfClass(
+                    com.navidad.entidad.Pinata.class, Minecraft.getInstance().player.getBoundingBox().inflate(20)).size()));
             t.photo("pinata_rota", 500, () -> {
             });
             t.photo("pinata_dulces", 2500, () -> t.lookFrom(0.5, -58.5, -38, 0.5, -60.5, -34));
@@ -147,7 +148,10 @@ final class Prueba {
             // la aldea de Santa, lejos de lo demás
             t.add("ir a la aldea", 4000, () -> t.cmd("tp @a 300.5 -40 45.5 180 30"));
             t.add("aldea", 6000, () -> t.cmd("execute positioned 300 -60 0 run navidad aldea"));
+            t.add("volar", 500, () -> t.cmd("gamemode spectator @a"));
             t.photo("aldea_arriba", 5000, () -> t.lookFrom(300.5, -28, 44, 300.5, -58, 2));
+            t.photo("aldea_arriba_lado", 3000, () -> t.lookFrom(338, -32, -30, 300.5, -58, 0));
+            t.add("caminar", 500, () -> t.cmd("gamemode creative @a"));
             t.photo("aldea_plaza", 3000, () -> t.lookFrom(300.5, -59, 13, 300.5, -54, 0));
             t.photo("aldea_santa", 3000, () -> t.lookFrom(300.5, -59, -12, 300.5, -59, -20));
             t.photo("aldea_casa_dentro", 3000, () -> t.lookFrom(300.5, -59, -18.5, 300.5, -59.5, -26));
@@ -158,11 +162,21 @@ final class Prueba {
             t.photo("aldea_establo", 3000, () -> t.lookFrom(300.5, -57, 12, 300.5, -59, 22));
             t.photo("aldea_noche", 4000, () -> {
                 t.cmd("time set 18000");
+                t.cmd("gamemode spectator @a");
                 t.lookFrom(300.5, -40, 40, 300.5, -56, 0);
             });
+            t.add("caminar 2", 500, () -> t.cmd("gamemode creative @a"));
             t.photo("aldea_pino_noche", 3000, () -> t.lookFrom(300.5, -58, 12, 300.5, -51, 0));
-            t.add("trineo", 1500, () -> t.cmd("summon navidad:trineo_santa 300 -46 -14 {Motion:[0.0,0.0,0.25]}"));
-            t.photo("trineo_noche", 200, () -> t.lookFrom(309, -58, 8, 300, -46, -6));
+            t.add("trineo", 1500, () -> {
+                t.cmd("gamemode spectator @a");
+                t.lookFrom(352, -52, 2, 340, -46, -10);
+                t.cmd("summon navidad:trineo_santa 340 -44 -22 {Motion:[0.0,0.0,0.25]}");
+            });
+            t.photo("trineo_noche", 200, () -> {
+            });
+            t.photo("trineo_noche_2", 1200, () -> {
+            });
+            t.add("caminar 3", 300, () -> t.cmd("gamemode creative @a"));
             t.add("dia otra vez", 1000, () -> t.cmd("time set 6000"));
             t.add("hud fin", 200, () -> t.hud(true));
         });

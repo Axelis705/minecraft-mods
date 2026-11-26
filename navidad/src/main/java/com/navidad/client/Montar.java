@@ -16,6 +16,9 @@ public final class Montar {
     }
 
     public static boolean temporada() {
+        if (com.axeliscore.data.client.ClientData.has(com.navidad.Fiestas.KEY)) {
+            return com.axeliscore.data.client.ClientData.get(com.navidad.Fiestas.KEY).getBoolean("si");
+        }
         LocalDate h = LocalDate.now(com.navidad.Temporada.ZONA);
         return h.getMonth() == Month.DECEMBER || (h.getMonth() == Month.JANUARY && h.getDayOfMonth() <= 6) || com.navidad.Temporada.diaPrueba > 0;
     }

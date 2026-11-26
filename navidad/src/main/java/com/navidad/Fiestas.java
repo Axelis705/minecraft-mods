@@ -38,8 +38,24 @@ public final class Fiestas {
 
     // ------------------------------------------------------------------ al entrar
 
+    /** Lo que sabe el cliente de la temporada (para la nieve que cae y los renos). */
+    public static final String KEY = Navidad.MODID + ":temporada";
+
+    static CompoundTag estado(MinecraftServer s) {
+        CompoundTag t = new CompoundTag();
+        t.putBoolean("si", Temporada.activa(s));
+        t.putInt("dia", Temporada.diaDiciembre());
+        return t;
+    }
+
+    /** Avisa a todos si cambió la temporada (por ejemplo con el comando). */
+    public static void avisar(MinecraftServer s) {
+        com.axeliscore.data.PlayerStore.Sync.toAll(s, KEY, estado(s));
+    }
+
     static void alEntrar(ServerPlayer p) {
         MinecraftServer s = p.server;
+        com.axeliscore.data.PlayerStore.Sync.toPlayer(p, KEY, estado(s));
         LocalDate h = Temporada.hoy();
         LocalDate navidad = LocalDate.of(h.getYear(), 12, 25);
         long faltan = ChronoUnit.DAYS.between(h, navidad);
@@ -85,6 +101,9 @@ public final class Fiestas {
 
     static void cadaTick(MinecraftServer s) {
         ServerLevel l = s.overworld();
+        if (l.getGameTime() % 1200 == 0) {
+            avisar(s);
+        }
         if (l.getGameTime() % 200 != 0 || !Temporada.activa(s) || l.players().isEmpty()) {
             return;
         }

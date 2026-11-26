@@ -139,11 +139,11 @@ public final class Aldea {
         o.techo(-6, 6, -27, -17, 5, true, "red_nether_brick_stairs", Blocks.RED_NETHER_BRICKS.defaultBlockState(), pared);
         o.puerta(0, 0, -17, "spruce_door", Direction.SOUTH);
         for (int x : new int[]{-3, 3}) {
-            o.fill(x, 1, -17, x, 2, -17, Blocks.GLASS_PANE.defaultBlockState());
+            o.fill(x, 1, -17, x, 2, -17, Blocks.GLASS.defaultBlockState());
         }
         for (int z : new int[]{-24, -20}) {
-            o.fill(-6, 1, z, -6, 2, z, Blocks.GLASS_PANE.defaultBlockState());
-            o.fill(6, 1, z, 6, 2, z, Blocks.GLASS_PANE.defaultBlockState());
+            o.fill(-6, 1, z, -6, 2, z, Blocks.GLASS.defaultBlockState());
+            o.fill(6, 1, z, 6, 2, z, Blocks.GLASS.defaultBlockState());
         }
         // adentro: chimenea con calcetines, árbol, alfombra, mesa con galletas y leche, sillón rojo
         o.deco(0, 0, -26, "chimenea", Direction.SOUTH);
@@ -193,8 +193,8 @@ public final class Aldea {
         o.set(17, 0, 0, Blocks.AIR.defaultBlockState());
         o.puerta(17, 0, 0, "spruce_door", Direction.WEST);
         for (int z : new int[]{-4, 4}) {
-            o.fill(17, 1, z, 17, 2, z, Blocks.GLASS_PANE.defaultBlockState());
-            o.fill(27, 1, z, 27, 2, z, Blocks.GLASS_PANE.defaultBlockState());
+            o.fill(17, 1, z, 17, 2, z, Blocks.GLASS.defaultBlockState());
+            o.fill(27, 1, z, 27, 2, z, Blocks.GLASS.defaultBlockState());
         }
         // mesas de trabajo, juguetes y regalos
         for (int z = -5; z <= -2; z++) {
@@ -239,8 +239,8 @@ public final class Aldea {
         o.puerta(-17, 0, 0, "jungle_door", Direction.EAST);
         o.fill(-17, 2, -1, -17, 2, 1, Obra.nav("bloque_caramelo_verde"));
         for (int z : new int[]{-3, 3}) {
-            o.fill(-17, 1, z, -17, 2, z, Blocks.GLASS_PANE.defaultBlockState());
-            o.fill(-27, 1, z, -27, 2, z, Blocks.GLASS_PANE.defaultBlockState());
+            o.fill(-17, 1, z, -17, 2, z, Blocks.GLASS.defaultBlockState());
+            o.fill(-27, 1, z, -27, 2, z, Blocks.GLASS.defaultBlockState());
         }
         // la cocina: hornos, mesa con postres, ponche y chocolate
         o.set(-26, 0, -4, Blocks.SMOKER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.EAST));
