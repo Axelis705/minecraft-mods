@@ -20,11 +20,13 @@ public final class Salida {
      * y el pedazo de pasillo que atraviesa el ladrillo de afuera (x + 1 hasta {@code hastaX}). Marcas {@code <marca>.a} y {@code .b}.
      */
     public static void puerta(Plano p, String marca, int x, int z, int hastaX, String piso) {
+        // (las hojas se corren de lado al abrir: la de z, con bisagra derecha, hacia el norte; la de z + 1, con la izquierda, hacia el sur;
+        // al revés se encimaban y la puerta abierta se veía cerrada)
         for (int i = 0; i < 2; i++) {
             int zz = z + i;
             p.set(x, 0, zz, piso);
-            p.set(x, 1, zz, C + "puerta_metal[facing=east,half=lower,hinge=" + (i == 0 ? "left" : "right") + ",open=false]");
-            p.set(x, 2, zz, C + "puerta_metal[facing=east,half=upper,hinge=" + (i == 0 ? "left" : "right") + ",open=false]");
+            p.set(x, 1, zz, C + "puerta_metal[facing=east,half=lower,hinge=" + (i == 0 ? "right" : "left") + ",open=false]");
+            p.set(x, 2, zz, C + "puerta_metal[facing=east,half=upper,hinge=" + (i == 0 ? "right" : "left") + ",open=false]");
             p.set(x, 3, zz, C + "metal_negro");
             for (int xx = x + 1; xx <= hastaX; xx++) {
                 p.set(xx, 0, zz, piso);

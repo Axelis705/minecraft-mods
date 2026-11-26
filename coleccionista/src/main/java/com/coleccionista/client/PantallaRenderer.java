@@ -72,8 +72,8 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         Direction f = st.getValue(PantallaBlock.FACING);
         boolean grande = st.getValue(PantallaBlock.GRANDE);
         Atajos.vista(be.getBlockPos());
-        boolean mediana = grande && be.tam() == 1;
-        float w = mediana ? 7F : grande ? 11F : 3F, h = mediana ? 4F : grande ? 7F : 2F;
+        boolean mediana = grande && be.tam() == 1, chica = grande && be.tam() == 2;
+        float w = chica ? 4F : mediana ? 7F : grande ? 11F : 3F, h = chica ? 3F : mediana ? 4F : grande ? 7F : 2F;
         CompoundTag t = estado();
         String modo = Nbt.s(t, "modo");
         if (modo.isEmpty() || !grande && t.getBoolean("soloGrande")) {
@@ -90,6 +90,8 @@ public class PantallaRenderer implements BlockEntityRenderer<PantallaBE> {
         ps.pushPose();
         ps.translate(0.5, 0.5, 0.5);
         ps.mulPose(Axis.YP.rotationDegrees(-f.toYRot()));
+        // corrida a la derecha de quien la ve (después del giro, x local es "a la derecha")
+        ps.translate(be.dx(), 0, 0);
         giro = -f.toYRot();
         float z = -0.5F + 2.05F / 16F;
         Draw d = new Draw(buf);

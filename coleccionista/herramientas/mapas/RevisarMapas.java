@@ -158,6 +158,52 @@ public final class RevisarMapas {
         return f;
     }
 
+    /** Todos los mapas del evento (como en Complejo.zonas()), con su nombre. */
+    private static Map<String, Plano> todos() {
+        Map<String, Plano> t = new java.util.LinkedHashMap<>();
+        t.put("celdas", AlaCeldas.crear(1234L));
+        t.put("sala", SalaGrande.crear(1234L));
+        for (int k = 1; k <= Circuito.CIRCUITOS; k++) {
+            t.put("circ_" + k, Circuito.crear(1234L, k));
+        }
+        t.put("vitrina", SalaVitrina.crear(1234L));
+        for (String id : new String[] {"mansion", "caja", "sorpresa", "te", "piano", "veintiuno"}) {
+            t.put(id, sala(id));
+        }
+        t.put("salida_final", SalidaFinal.crear(1234L));
+        t.put("cloacas", Cloacas.crear(1234L));
+        t.put("salon", Salon.crear(1234L));
+        t.put("puertas", Puertas.crear(1234L));
+        t.put("final", Final.crear(1234L));
+        t.put("capilla", Capilla.crear(1234L));
+        t.put("archivo", Archivo.crear(1234L));
+        t.put("laberintos", Laberintos.crear(1234L));
+        t.put("galeria", Galeria.crear(1234L));
+        for (String z : Antesala.ZONAS) {
+            t.put("ante_" + z, Antesala.crear(1234L, z));
+        }
+        for (String[] ps : Pasos.PASOS) {
+            t.put("paso_" + ps[0], Pasos.crear(1234L, ps[0]));
+        }
+        return t;
+    }
+
+    /** Las pantallas de todos los mapas: que su imagen no tape una puerta o un paso, ni se meta en un muro. */
+    private static int pantallas(Map<String, Revisor.Forma> deco) {
+        int fallas = 0, total = 0;
+        for (Map.Entry<String, Plano> e : todos().entrySet()) {
+            Revisor r = new Revisor(e.getValue(), deco).pantallas().corredizas();
+            total += e.getValue().m.values().stream().filter(b -> b.startsWith("coleccionista:pantalla")).count();
+            int f = r.problemas.size();
+            if (f > 0) {
+                System.out.print(r.informe("Pantallas y puertas de " + e.getKey(), 8));
+            }
+            fallas += f;
+        }
+        System.out.println("PANTALLAS Y PUERTAS (" + total + " pantallas)" + (fallas == 0 ? " OK" : " FALLA " + fallas));
+        return fallas;
+    }
+
     public static void main(String[] a) throws Exception {
         File out = new File(a.length > 0 ? a[0] : "mapas_revision");
         out.mkdirs();
@@ -193,6 +239,9 @@ public final class RevisarMapas {
         }
         if (cual.equals("caminos") || cual.equals("todo")) {
             fallas += caminos(out, deco, tex);
+        }
+        if (cual.equals("pantallas") || cual.equals("caminos") || cual.equals("todo")) {
+            fallas += pantallas(deco);
         }
         if (estricto && fallas > 0) {
             System.out.println("REVISION_MAPAS_FALLO " + fallas);

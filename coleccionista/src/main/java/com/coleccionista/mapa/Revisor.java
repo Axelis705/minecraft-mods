@@ -478,6 +478,119 @@ public final class Revisor {
         return cabe(x, y, z) || cabe(x, y + 1, z) || cabe(x, y - 1, z);
     }
 
+    /**
+     * Las puertas corredizas (de acero, de celda, de elevador): al abrirse, cada hoja se corre de lado. La hoja con bisagra izquierda se
+     * corre hacia (según hacia dónde mire) el este si mira al norte, el sur si mira al este, el oeste si mira al sur y el norte si mira al
+     * oeste; la derecha, al revés (así están los modelos "abierta_i" y "abierta_d"). Tiene que meterse en el muro: si se corre encima de la
+     * otra hoja, la puerta abierta se ve cerrada y la gente la atraviesa como fantasma.
+     */
+    public Revisor corredizas() {
+        for (Map.Entry<Long, String> e : p.m.entrySet()) {
+            String s = e.getValue();
+            if (!(s.startsWith("coleccionista:puerta_metal[") || s.startsWith("coleccionista:puerta_celda[")
+                    || s.startsWith("coleccionista:puerta_ascensor[")) || !s.contains("half=lower")) {
+                continue;
+            }
+            long k = e.getKey();
+            int x = Plano.kx(k), y = Plano.ky(k), z = Plano.kz(k);
+            int[] d = s.contains("facing=north") ? new int[] {1, 0} : s.contains("facing=east") ? new int[] {0, 1}
+                    : s.contains("facing=south") ? new int[] {-1, 0} : new int[] {0, -1};
+            if (s.contains("hinge=right")) {
+                d = new int[] {-d[0], -d[1]};
+            }
+            String al = p.get(x + d[0], y, z + d[1]);
+            if (al != null && (al.contains("puerta") || al.contains("door"))) {
+                problemas.add(new Problema("puerta corrediza abre encima de la otra hoja", x, y, z, s));
+            } else if (!forma(x + d[0], y, z + d[1]).choca()) {
+                problemas.add(new Problema("puerta corrediza abre al paso", x, y, z, s));
+            }
+        }
+        return this;
+    }
+
+    // ------------------------------------------------------------------ las pantallas
+
+    /** El tamaño de la imagen de una pantalla, como la dibuja el cliente (PantallaRenderer): {ancho, alto}. */
+    public static float[] tamPantalla(String bloque, String nbt) {
+        boolean grande = bloque.contains("grande=true");
+        int tam = numero(nbt, "tam");
+        if (grande && tam == 1) {
+            return new float[] {7F, 4F};
+        }
+        if (grande && tam == 2) {
+            return new float[] {4F, 3F};
+        }
+        return grande ? new float[] {11F, 7F} : new float[] {3F, 2F};
+    }
+
+    private static int numero(String nbt, String clave) {
+        java.util.regex.Matcher mm = Pattern.compile(clave + ":(-?[0-9]+)").matcher(nbt == null ? "" : nbt);
+        return mm.find() ? Integer.parseInt(mm.group(1)) : 0;
+    }
+
+    /** El corrimiento a la derecha (de quien la ve) de la imagen, en bloques ({@code dx} en el NBT). */
+    public static float dxPantalla(String nbt) {
+        java.util.regex.Matcher mm = Pattern.compile("dx:(-?[0-9.]+)f?").matcher(nbt == null ? "" : nbt);
+        return mm.find() ? Float.parseFloat(mm.group(1)) : 0F;
+    }
+
+    /**
+     * Las pantallas: la imagen (más grande que su bloque) no debe tapar una puerta ni un hueco por donde se camina (si no, la gente la
+     * atraviesa), ni meterse en un muro (se corta). Se mira la capa de la pantalla y la de atrás, casilla por casilla.
+     */
+    public Revisor pantallas() {
+        for (Map.Entry<Long, String> e : p.m.entrySet()) {
+            String s = e.getValue();
+            if (!s.startsWith("coleccionista:pantalla")) {
+                continue;
+            }
+            long k = e.getKey();
+            int x = Plano.kx(k), y = Plano.ky(k), z = Plano.kz(k);
+            int nx = s.contains("facing=east") ? 1 : s.contains("facing=west") ? -1 : 0;
+            int nz = s.contains("facing=south") ? 1 : s.contains("facing=north") ? -1 : 0;
+            int rx = nz, rz = -nx;
+            String nbt = p.nbt.get(k);
+            float[] wh = tamPantalla(s, nbt);
+            float w = wh[0], h = wh[1], dx = dxPantalla(nbt);
+            double cx = x + 0.5 + rx * dx, cz = z + 0.5 + rz * dx, y0 = y + 0.5 - h / 2, y1 = y + 0.5 + h / 2;
+            int alcance = (int) Math.ceil(w / 2 + Math.abs(dx)) + 1;
+            int tapa = 0, corta = 0;
+            String ejemplo = "";
+            for (int capa = 0; capa <= 1; capa++) {
+                for (int t = -alcance; t <= alcance; t++) {
+                    int bx = x + rx * t - nx * capa, bz = z + rz * t - nz * capa;
+                    double u = (bx + 0.5 - cx) * rx + (bz + 0.5 - cz) * rz;
+                    double oh = Math.min(u + 0.5, w / 2.0) - Math.max(u - 0.5, -w / 2.0);
+                    if (oh < 0.5) {
+                        continue;
+                    }
+                    for (int by = (int) Math.floor(y0); by < y1; by++) {
+                        double ov = Math.min(by + 1, y1) - Math.max(by, y0);
+                        if (ov < 0.5 || capa == 0 && bx == x && by == y && bz == z) {
+                            continue;
+                        }
+                        Forma f = forma(bx, by, bz);
+                        String b = p.get(bx, by, bz);
+                        boolean puerta = f.puerta() || b != null && (b.contains("door") || b.contains("puerta")) && !b.contains("trapdoor");
+                        if (capa == 1 && (puerta || !f.choca() && (cabe(bx, by, bz) || cabe(bx, by - 1, bz)))) {
+                            tapa++;
+                            ejemplo = bx + " " + by + " " + bz + (puerta ? " (puerta)" : " (hueco)");
+                        } else if (capa == 0 && f.choca() && f.alto() >= 1 && !f.mueble() && !b.startsWith("coleccionista:pantalla")) {
+                            corta++;
+                        }
+                    }
+                }
+            }
+            if (tapa > 0) {
+                problemas.add(new Problema("pantalla tapa el paso", x, y, z, tapa + " casillas detrás de la imagen, p. ej. " + ejemplo));
+            }
+            if (corta > 0) {
+                problemas.add(new Problema("pantalla metida en el muro", x, y, z, corta + " casillas de muro dentro de la imagen"));
+            }
+        }
+        return this;
+    }
+
     /** Un resumen por tipo (y los primeros de cada uno). */
     public String informe(String titulo, int porTipo) {
         Map<String, List<Problema>> t = new LinkedHashMap<>();

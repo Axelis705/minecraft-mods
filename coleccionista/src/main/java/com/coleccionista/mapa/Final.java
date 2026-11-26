@@ -70,8 +70,9 @@ public final class Final {
         p.set(CX + 2, 2, 4, C + "candelabro[facing=south,half=lower]");
         p.set(CX + 2, 3, 4, C + "candelabro[facing=south,half=upper]");
         p.marca("fin.trono", CX, 2, 4, 0);
-        p.set(CX, 8, 3, "coleccionista:pantalla[facing=south,grande=true]");
-        p.marca("fin.pantalla", CX, 8, 3, 0);
+        // (un bloque más abajo que antes: las esquinas de arriba de la imagen se metían en el arco)
+        p.set(CX, 7, 3, "coleccionista:pantalla[facing=south,grande=true]");
+        p.marca("fin.pantalla", CX, 7, 3, 0);
         // vitrinas con recuerdos alrededor y velas altas
         for (int i = 0; i < 12; i++) {
             double a = i * Math.PI * 2 / 12;

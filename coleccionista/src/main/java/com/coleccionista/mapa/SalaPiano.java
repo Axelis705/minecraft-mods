@@ -160,9 +160,9 @@ public final class SalaPiano {
         luz(p, BX, 9, BZ + 2, 14);
         luz(p, BX - 4, 6, BZ + 3, 13);
         luz(p, BX + 4, 6, BZ + 3, 13);
-        // la pantalla grande arriba del escenario, en el muro del norte
-        p.set(BX, 10, HZ0, C + "pantalla[facing=south,grande=true]");
-        p.marca("piano.pantalla", BX, 10, HZ0, 0);
+        // la pantalla grande arriba del escenario, delante del telón del muro del norte (metida en el telón, la tapaba)
+        p.set(BX, 10, HZ0 + 1, C + "pantalla[facing=south,grande=true]");
+        p.marca("piano.pantalla", BX, 10, HZ0 + 1, 0);
     }
 
     // ------------------------------------------------------------------ un piano de piso (con su foso)

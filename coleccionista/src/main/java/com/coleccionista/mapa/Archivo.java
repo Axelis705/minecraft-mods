@@ -47,6 +47,8 @@ public final class Archivo {
             p.set(x, 6, 16, "lantern[hanging=true]");
         }
         p.set(X1 - 1, 3, 16, "coleccionista:pantalla[facing=west,grande=true]");
+        // (el fondo mide 5 de ancho: la de 11 x 7 se metía en los muros; esta es de 4 x 3)
+        p.nbt(X1 - 1, 3, 16, "{tam:2}");
         p.marca("arc.pantalla", X1 - 1, 3, 16, 90);
         for (int k = 1; k <= SALAS; k++) {
             sala(p, k);

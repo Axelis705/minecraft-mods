@@ -49,6 +49,8 @@ public final class Capilla {
             p.set(x, 6, 13, "lantern[hanging=true]");
         }
         p.set(X1 - 1, 3, 13, "coleccionista:pantalla[facing=west,grande=true]");
+        // (el fondo mide 5 de ancho: la de 11 x 7 se metía en los muros; esta es de 4 x 3)
+        p.nbt(X1 - 1, 3, 13, "{tam:2}");
         p.marca("cap.pantalla", X1 - 1, 3, 13, 90);
         for (int k = 1; k <= CUARTOS; k++) {
             cuarto(p, k);

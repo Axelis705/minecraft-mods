@@ -159,19 +159,20 @@ public final class SalaVeintiuno {
      * Marca {@code v21.vitrina} (donde se para la estatua, mirando al sur) y {@code v21.vitrina.luz} (su foco).
      */
     private static void vitrinaNueva(Plano p) {
-        int x0 = 37, x1 = 39, z0 = HZ0, z1 = HZ0 + 2;
+        // (x 40..42: más cerca, su techo se metía en la esquina de abajo de la pantalla grande, que llega a x 39)
+        int x0 = 40, x1 = 42, z0 = HZ0, z1 = HZ0 + 2;
         for (int x = x0; x <= x1; x++) {
             for (int z = z0; z <= z1; z++) {
                 p.set(x, 1, z, C + "marmol_negro");
                 p.set(x, 5, z, C + "marco_dorado");
-                boolean adentro = x == 38 && z < z1;
+                boolean adentro = x == 41 && z < z1;
                 for (int y = 2; y <= 4; y++) {
                     p.set(x, y, z, adentro ? "air" : "glass");
                 }
             }
         }
-        p.marca("v21.vitrina", 38, 2, HZ0 + 1, 0);
-        p.marca("v21.vitrina.luz", 38, 4, HZ0 + 1, 0);
+        p.marca("v21.vitrina", 41, 2, HZ0 + 1, 0);
+        p.marca("v21.vitrina.luz", 41, 4, HZ0 + 1, 0);
     }
 
     private static void trono(Plano p) {
