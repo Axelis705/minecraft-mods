@@ -717,5 +717,115 @@
         "stream": true
       }
     ]
+  },
+  "voz.veintiuno.dos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno.dos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_dos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno.mesa": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno.mesa",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_mesa",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_reglas.aprieta": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_reglas.aprieta",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_reglas_aprieta",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_reglas.comodines": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_reglas.comodines",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_reglas_comodines",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_reglas.dos_cartas": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_reglas.dos_cartas",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_reglas_dos_cartas",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_reglas.pasarse": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_reglas.pasarse",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_reglas_pasarse",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_reglas.pedir": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_reglas.pedir",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_reglas_pedir",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_reglas.suerte": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_reglas.suerte",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_reglas_suerte",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_reglas.tres": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_reglas.tres",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_reglas_tres",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno_reglas.veintiuno": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno_reglas.veintiuno",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_reglas_veintiuno",
+        "stream": true
+      }
+    ]
+  },
+  "voz.veintiuno.sientense": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.veintiuno.sientense",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/veintiuno_sientense",
+        "stream": true
+      }
+    ]
   }
 }

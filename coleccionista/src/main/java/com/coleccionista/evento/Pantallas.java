@@ -430,10 +430,10 @@ public final class Pantallas {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("veintiuno", 110, null, 1F));
         l.add(new Frase("dos_cartas", 100, null, 1F));
-        l.add(new Frase("pedir", 150, null, 1F));
+        l.add(new Frase("pedir", 180, null, 1F));
         l.add(new Frase("pasarse", 100, null, 1F));
-        l.add(new Frase("comodines", 170, null, 1F));
-        l.add(new Frase("aprieta", 135, null, 1F));
+        l.add(new Frase("comodines", 180, null, 1F));
+        l.add(new Frase("aprieta", 142, null, 1F));
         l.add(new Frase("tres", 90, SoundEvents.WITCH_CELEBRATE, 0.5F));
         l.add(new Frase("suerte", 55, null, 1F));
         return l;

@@ -359,10 +359,10 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 |---|---|---|---|
 | 1 | `veintiuno_reglas_veintiuno.ogg` | 5.5 s | Vamos a jugar veintiuno. Once cartas, del uno al once. |
 | 2 | `veintiuno_reglas_dos_cartas.ogg` | 5.0 s | Cada uno recibe dos: una tapada y una a la vista. |
-| 3 | `veintiuno_reglas_pedir.ogg` | 7.5 s | En su turno, pidan carta o plántense. Gana el más cerca de veintiuno, sin pasarse. |
+| 3 | `veintiuno_reglas_pedir.ogg` | 9.0 s | En su turno, pidan carta o plántense. Gana el más cerca de veintiuno, sin pasarse. |
 | 4 | `veintiuno_reglas_pasarse.ogg` | 5.0 s | Si los dos se pasan, gana el que se pasó menos. |
-| 5 | `veintiuno_reglas_comodines.ogg` | 8.5 s | Tienen dos comodines: espiar la carta tapada del otro y regresar su última carta. Solo una vez. |
-| 6 | `veintiuno_reglas_aprieta.ogg` | 6.8 s | Pierdan una ronda… y la máquina aprieta. Pierdan dos… y duele. |
+| 5 | `veintiuno_reglas_comodines.ogg` | 9.0 s | Tienen dos comodines: espiar la carta tapada del otro y regresar su última carta. Solo una vez. |
+| 6 | `veintiuno_reglas_aprieta.ogg` | 7.1 s | Pierdan una ronda… y la máquina aprieta. Pierdan dos… y duele. |
 | 7 | `veintiuno_reglas_tres.ogg` | 4.5 s | Pierdan tres… y me quedo con su brazo. |
 | 8 | `veintiuno_reglas_suerte.ogg` | 2.8 s | Que gane el mejor. |
 
