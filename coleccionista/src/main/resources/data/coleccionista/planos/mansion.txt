@@ -2,28 +2,28 @@
 # Cada piso es un dibujo: cada letra, una columna de bloques (x a la derecha, z hacia abajo). Ver Casa.java para las letras.
 
 # ---- los cuartos (minúsculas)
-estilo f nombre=Vestíbulo piso=coleccionista:marmol_negro|coleccionista:marmol_crema pared=coleccionista:papel_tapiz luz=10
-estilo g nombre=Galería piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=9
-estilo c nombre=Comedor piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=9
-estilo k nombre=Cocina piso=coleccionista:linoleo|coleccionista:azulejo pared=coleccionista:azulejo luz=9
-estilo d nombre=Despensa piso=coleccionista:tablon pared=coleccionista:panel_madera luz=5
-estilo s nombre=Servicio piso=coleccionista:tablon pared=coleccionista:yeso luz=7
-estilo m nombre=Música piso=coleccionista:parquet pared=coleccionista:acolchado luz=9
-estilo b nombre=Biblioteca piso=coleccionista:parquet pared=coleccionista:panel_madera luz=8
-estilo e nombre=Estudio piso=coleccionista:parquet alfombra=coleccionista:alfombra_roja pared=coleccionista:panel_madera luz=7
-estilo h nombre=Pasillo piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=7
-estilo i nombre=Invernadero piso=coleccionista:losa_piedra pared=coleccionista:yeso luz=10
-estilo a nombre=Lavandería piso=coleccionista:azulejo_sucio pared=coleccionista:azulejo luz=8
-estilo q nombre=Calderas piso=coleccionista:concreto_piso pared=coleccionista:ladrillo_oscuro luz=5
-estilo l nombre=Billar piso=coleccionista:parquet pared=coleccionista:panel_madera luz=8
-estilo p nombre=Retratos piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=8
-estilo y nombre=Trofeos piso=coleccionista:marmol_crema pared=coleccionista:panel_madera luz=8
-estilo r nombre=Recámara piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=8
-estilo z nombre=Baño piso=coleccionista:azulejo pared=coleccionista:azulejo luz=9
-estilo u nombre=Muñecas piso=coleccionista:parquet pared=coleccionista:acolchado luz=8
-estilo n nombre=Bebé piso=coleccionista:parquet alfombra=coleccionista:alfombra_cafe pared=coleccionista:papel_tapiz luz=7
-estilo o nombre=Costura piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=8
-estilo t nombre=Ático piso=coleccionista:tablon pared=coleccionista:tablon techo=coleccionista:viga_madera luz=5
+estilo f nombre=Vestíbulo piso=coleccionista:marmol_negro|coleccionista:marmol_crema pared=coleccionista:papel_tapiz luz=12
+estilo g nombre=Galería piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=11
+estilo c nombre=Comedor piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=11
+estilo k nombre=Cocina piso=coleccionista:linoleo|coleccionista:azulejo pared=coleccionista:azulejo luz=11
+estilo d nombre=Despensa piso=coleccionista:tablon pared=coleccionista:panel_madera luz=7
+estilo s nombre=Servicio piso=coleccionista:tablon pared=coleccionista:yeso luz=9
+estilo m nombre=Música piso=coleccionista:parquet pared=coleccionista:acolchado luz=11
+estilo b nombre=Biblioteca piso=coleccionista:parquet pared=coleccionista:panel_madera luz=10
+estilo e nombre=Estudio piso=coleccionista:parquet alfombra=coleccionista:alfombra_roja pared=coleccionista:panel_madera luz=9
+estilo h nombre=Pasillo piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=9
+estilo i nombre=Invernadero piso=coleccionista:losa_piedra pared=coleccionista:yeso luz=12
+estilo a nombre=Lavandería piso=coleccionista:azulejo_sucio pared=coleccionista:azulejo luz=10
+estilo q nombre=Calderas piso=coleccionista:concreto_piso pared=coleccionista:ladrillo_oscuro luz=7
+estilo l nombre=Billar piso=coleccionista:parquet pared=coleccionista:panel_madera luz=10
+estilo p nombre=Retratos piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=10
+estilo y nombre=Trofeos piso=coleccionista:marmol_crema pared=coleccionista:panel_madera luz=10
+estilo r nombre=Recámara piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=10
+estilo z nombre=Baño piso=coleccionista:azulejo pared=coleccionista:azulejo luz=11
+estilo u nombre=Muñecas piso=coleccionista:parquet pared=coleccionista:acolchado luz=10
+estilo n nombre=Bebé piso=coleccionista:parquet alfombra=coleccionista:alfombra_cafe pared=coleccionista:papel_tapiz luz=9
+estilo o nombre=Costura piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=10
+estilo t nombre=Ático piso=coleccionista:tablon pared=coleccionista:tablon techo=coleccionista:viga_madera luz=7
 
 # ---- los muebles (mayúsculas y signos)
 mueble L minecraft:bookshelf alto=3

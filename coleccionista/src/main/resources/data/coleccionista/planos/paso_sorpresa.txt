@@ -12,7 +12,7 @@ mueble T coleccionista:mesa_tapete
 mueble H coleccionista:sillon doble
 mueble S coleccionista:estandarte_rojo doble
 
-estilo a nombre=Pasillo_de_los_payasos piso=coleccionista:madera_pulida|coleccionista:tablon pared=coleccionista:telon techo=coleccionista:marco_luz_amarilla luz=0
+estilo a nombre=Pasillo_de_los_payasos piso=coleccionista:madera_pulida|coleccionista:tablon pared=coleccionista:telon techo=coleccionista:marco_luz_amarilla luz=10
 
 punto 1 paso_sorpresa.inicio 270
 punto 2 paso_sorpresa.codo1 0

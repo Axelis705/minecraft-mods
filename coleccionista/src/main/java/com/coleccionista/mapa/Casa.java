@@ -410,7 +410,10 @@ public final class Casa {
         }
     }
 
-    /** La luz: bloques de luz invisibles bajo el techo de cada cuarto, cada 5 (oscuro en los rincones, como una casa vieja). */
+    /**
+     * La luz: bloques de luz invisibles cada 5 (oscuro en los rincones, como una casa vieja), a 4 del piso (o bajo el techo si el cuarto
+     * es más bajo o ahí hay algo): en los cuartos altos, desde el techo casi no llegaba al piso.
+     */
     private void luces(Plano p, Piso f) {
         for (int fi = 0; fi < f.filas().size(); fi++) {
             String fila = f.filas().get(fi);
@@ -420,7 +423,12 @@ public final class Casa {
                 if (e == null || e.luz() <= 0 || Math.floorMod(x, 5) != 2 || Math.floorMod(z, 5) != 2) {
                     continue;
                 }
-                p.set(x, f.y() + f.alto(), z, "light[level=" + e.luz() + "]");
+                int y = f.y() + Math.min(f.alto(), 4);
+                String ahi = p.get(x, y, z);
+                if (ahi != null && !ahi.equals("air")) {
+                    y = f.y() + f.alto();
+                }
+                p.set(x, y, z, "light[level=" + e.luz() + "]");
             }
         }
     }

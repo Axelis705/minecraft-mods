@@ -12,7 +12,7 @@ mueble T coleccionista:mesa_tapete
 mueble H coleccionista:sillon doble
 mueble S coleccionista:estandarte_rojo doble
 
-estilo a nombre=La_merienda piso=coleccionista:marmol_crema|coleccionista:marmol_negro pared=coleccionista:azulejo luz=7
+estilo a nombre=La_merienda piso=coleccionista:marmol_crema|coleccionista:marmol_negro pared=coleccionista:azulejo luz=11
 
 punto 1 paso_te.inicio 270
 punto 2 paso_te.codo1 0

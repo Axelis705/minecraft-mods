@@ -141,8 +141,10 @@ public final class Estilo {
             int lleno = (int) ((width - 2) * value);
             g.fillGradient(x0 + 1, y0 + 1, x0 + 1 + lleno, y1 - 1, 0xC05A0D16, 0xC08E1726);
             marco(g, x0, y0, x1, y1, encima ? ORO : ORO_OSCURO);
-            int px = x0 + 1 + lleno;
-            g.fill(px - 2, y0, px + 2, y1, encima ? ORO : 0xFFB08A34);
+            // la perilla: dos muescas (arriba y abajo) para no tapar el texto
+            int px = x0 + 1 + lleno, cp = encima ? ORO : 0xFFB08A34;
+            g.fill(px - 2, y0, px + 2, y0 + 3, cp);
+            g.fill(px - 2, y1 - 3, px + 2, y1, cp);
             Font f = Minecraft.getInstance().font;
             String s = getMessage().getString();
             g.drawString(f, s, x0 + (width - f.width(s)) / 2, y0 + (height - 8) / 2, encima ? TEXTO : TEXTO_APAGADO, true);

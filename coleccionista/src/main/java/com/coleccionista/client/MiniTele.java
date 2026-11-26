@@ -19,6 +19,9 @@ public final class MiniTele {
     private MiniTele() {
     }
 
+    /** Dónde está ahora (para que el subtítulo no se le encime): su orilla izquierda y la de abajo; MAX/0 si no se ve. */
+    public static int bordeIzq = Integer.MAX_VALUE, bordeAbajo;
+
     /** ¿Se está viendo la mini tele? (para la prueba automática) */
     public static boolean visible() {
         return abierta > 0.5F;
@@ -38,12 +41,16 @@ public final class MiniTele {
                 && !Atajos.pantallaEnfrente();
         abierta = Mth.clamp(abierta + (ver ? dt * 3.2F : -dt * 4F), 0F, 1F);
         if (abierta <= 0.01F) {
+            bordeIzq = Integer.MAX_VALUE;
+            bordeAbajo = 0;
             return;
         }
         float e = abierta * abierta * (3 - 2 * abierta);
         int tw = Math.min(110, Math.max(84, w / 5)), th = tw * 3 / 4;
         int x1 = w - 6 + (int) ((1 - e) * (tw + 14)), x0 = x1 - tw;
         int y0 = Presentacion.arribaDerecha(), y1 = y0 + th;
+        bordeIzq = x0 - 4;
+        bordeAbajo = y1 + 10;
         // el marco de la tele (plástico oscuro con tornillos) y la pantalla con terciopelo
         g.fill(x0 - 4, y0 - 4, x1 + 4, y1 + 10, 0xF0141214);
         g.fill(x0 - 3, y0 - 3, x1 + 3, y1 + 9, 0xF0262326);

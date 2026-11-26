@@ -132,6 +132,13 @@ public final class Espera {
             arriba = Math.max(arriba, franja + 6);
         }
         int abajo = arriba + Subtitulo.alto(ancho, 1.25F);
+        // si la mini tele del Coleccionista está a la derecha a esa altura, el subtítulo se corre a la izquierda (no se le encima)
+        if (MiniTele.bordeIzq < cx + ancho / 2 + 4 && arriba < MiniTele.bordeAbajo) {
+            int libre = MiniTele.bordeIzq - 6 - 8;
+            ancho = Math.min(ancho, libre);
+            cx = 8 + libre / 2;
+            abajo = arriba + Subtitulo.alto(ancho, 1.25F);
+        }
         Subtitulo.dibujar(g, cx, abajo, ancho, 1.25F, true);
     }
 }

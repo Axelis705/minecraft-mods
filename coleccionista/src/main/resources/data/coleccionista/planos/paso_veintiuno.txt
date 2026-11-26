@@ -12,7 +12,7 @@ mueble T coleccionista:mesa_tapete
 mueble H coleccionista:sillon doble
 mueble S coleccionista:estandarte_rojo doble
 
-estilo a nombre=El_pasillo_de_las_cartas piso=coleccionista:marmol_negro|coleccionista:tapete_rojo pared=coleccionista:panel_madera luz=6
+estilo a nombre=El_pasillo_de_las_cartas piso=coleccionista:marmol_negro|coleccionista:tapete_rojo pared=coleccionista:panel_madera luz=10
 
 punto 1 paso_veintiuno.inicio 270
 punto 2 paso_veintiuno.codo1 0

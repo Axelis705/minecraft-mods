@@ -12,7 +12,7 @@ mueble T coleccionista:mesa_tapete
 mueble H coleccionista:sillon doble
 mueble S coleccionista:estandarte_rojo doble
 
-estilo a nombre=Taller_de_cajas_de_música piso=coleccionista:parquet alfombra=coleccionista:alfombra_roja pared=coleccionista:acolchado luz=6
+estilo a nombre=Taller_de_cajas_de_música piso=coleccionista:parquet alfombra=coleccionista:alfombra_roja pared=coleccionista:acolchado luz=11
 
 punto 1 paso_caja.inicio 270
 punto 2 paso_caja.codo1 0

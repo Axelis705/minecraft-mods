@@ -25,15 +25,15 @@ Z_LLEGA = 21
 TEMAS = {
     # estilo del pasillo y cómo se decora la parte larga (las dos orillas, alternando)
     'cajas': ('estilo a nombre=Taller_de_cajas_de_música piso=coleccionista:parquet alfombra=coleccionista:alfombra_roja '
-              'pared=coleccionista:acolchado luz=6', 'VCKC'),
+              'pared=coleccionista:acolchado luz=11', 'VCKC'),
     'payasos': ('estilo a nombre=Pasillo_de_los_payasos piso=coleccionista:madera_pulida|coleccionista:tablon pared=coleccionista:telon '
-                'techo=coleccionista:marco_luz_amarilla luz=0', 'zOxz'),
+                'techo=coleccionista:marco_luz_amarilla luz=10', 'zOxz'),
     'merienda': ('estilo a nombre=La_merienda piso=coleccionista:marmol_crema|coleccionista:marmol_negro pared=coleccionista:azulejo '
-                 'luz=7', 'MYMO'),
+                 'luz=11', 'MYMO'),
     'espejos': ('estilo a nombre=Galería_de_espejos piso=coleccionista:parquet pared=coleccionista:marmol_crema '
-                'zoclo=coleccionista:marmol_negro luz=8', 'ECEK'),
+                'zoclo=coleccionista:marmol_negro luz=12', 'ECEK'),
     'cartas': ('estilo a nombre=El_pasillo_de_las_cartas piso=coleccionista:marmol_negro|coleccionista:tapete_rojo '
-               'pared=coleccionista:panel_madera luz=6', 'THSH'),
+               'pared=coleccionista:panel_madera luz=10', 'THSH'),
 }
 
 LEYENDA = """\

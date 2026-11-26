@@ -260,10 +260,11 @@ public final class PianoCliente {
             // subiendo: a qué pista le toca (está numerada en sus escaleras)
             if (yo != null && juego) {
                 boolean arriba = Nbt.b(yo, "arriba");
-                EventoHud.texto(g, font, arriba ? t("arriba") : t("sube", Nbt.i(yo, "piano") + 1), w / 2, h / 2 - 72, 2.0F,
+                // debajo de la mira (arriba van la placa, las franjas de "eliminado" y lo que dice el Coleccionista)
+                EventoHud.texto(g, font, arriba ? t("arriba") : t("sube", Nbt.i(yo, "piano") + 1), w / 2, h / 2 + 22, 2.0F,
                         arriba ? EventoHud.PORCELANA : EventoHud.ORO);
                 if (!arriba) {
-                    g.drawCenteredString(font, t("sube_ayuda"), w / 2, h / 2 - 50, 0xFFD8D0C8);
+                    g.drawCenteredString(font, t("sube_ayuda"), w / 2, h / 2 + 44, 0xFFD8D0C8);
                 }
             } else if (yo == null) {
                 EventoHud.lado(g, t("no_tocas"), 0xFFA89E96, false);
