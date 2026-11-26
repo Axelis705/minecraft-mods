@@ -8,3 +8,7 @@
    menos de 10 MB para Discord.
 
 El guion (qué toma va en qué segundo, los letreros y los sonidos) está arriba de `montar.py` y de `teaser.py`. `VOZ` sube o baja la voz.
+
+## Cuenta regresiva (7, 5, 3 y 1 día)
+`bash entregar_cuenta.sh`: cuatro videos de unos 12 s (tres tomas de un capítulo con una frase del Coleccionista y el letrero
+"FALTAN N DÍAS" / "MAÑANA"). Salen en vertical (alta calidad) y en horizontal para Discord. El guion de cada uno está en `VIDEOS` de `cuenta.py`.

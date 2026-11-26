@@ -13,6 +13,7 @@ ESTILO = """
   .c { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .abajo { justify-content: flex-end; padding-bottom: 158px; box-sizing: border-box; }
   .bajo { padding-top: 330px; box-sizing: border-box; }
+  .bajo2 { padding-top: 260px; box-sizing: border-box; }
   .serif { font-family: 'Latin Modern Roman', 'GFS Baskerville', 'DejaVu Serif', serif; }
   .chico { font: 600 34px 'Latin Modern Roman Caps', 'Latin Modern Roman', serif; letter-spacing: 18px; color: #c9a25a;
     text-shadow: 0 0 18px rgba(0,0,0,.9); }
@@ -42,6 +43,14 @@ CARTAS = {
     'discord': '<div class="c"><div class="chico">ENTRA A LA COLECCIÓN</div><div class="enlace">discord.gg/sttQcQsc7m</div></div>',
     'fecha': '<div class="c"><div class="chico">JUEVES</div><div class="medio">10 DE DICIEMBRE</div><div class="linea"></div>'
              '<div class="lema">7:00 PM · hora del centro de México</div></div>',
+    'faltan7': '<div class="c"><div class="chico">EL COLECCIONISTA</div><div class="medio">FALTAN <span class="rojo">7</span> DÍAS</div>'
+               '<div class="linea"></div><div class="lema">jueves 10 de diciembre · 7:00 PM</div></div>',
+    'faltan5': '<div class="c"><div class="chico">EL COLECCIONISTA</div><div class="medio">FALTAN <span class="rojo">5</span> DÍAS</div>'
+               '<div class="linea"></div><div class="lema">jueves 10 de diciembre · 7:00 PM</div></div>',
+    'faltan3': '<div class="c"><div class="chico">EL COLECCIONISTA</div><div class="medio">FALTAN <span class="rojo">3</span> DÍAS</div>'
+               '<div class="linea"></div><div class="lema">jueves 10 de diciembre · 7:00 PM</div></div>',
+    'manana': '<div class="c bajo2"><div class="chico">EL COLECCIONISTA</div><div class="medio"><span class="rojo">MAÑANA</span></div>'
+              '<div class="linea"></div><div class="lema">jueves 10 de diciembre · 7:00 PM</div></div>',
     'pronto': '<div class="c"><div class="medio" style="font-size:84px;letter-spacing:30px">PRÓXIMAMENTE</div></div>',
 }
 
@@ -58,6 +67,7 @@ VERTICAL = """
   .enlace { font-size: 44px; padding: 14px 30px; }
   .abajo { padding-bottom: 250px; }
   .bajo { padding-top: 520px; }
+  .bajo2 { padding-top: 420px; }
 </style>
 """
 
