@@ -468,6 +468,56 @@
       }
     ]
   },
+  "voz.equipos.ascensor": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.equipos.ascensor",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/equipos_ascensor",
+        "stream": true
+      }
+    ]
+  },
+  "voz.equipos.bienvenidos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.equipos.bienvenidos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/equipos_bienvenidos",
+        "stream": true
+      }
+    ]
+  },
+  "voz.equipos.formen": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.equipos.formen",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/equipos_formen",
+        "stream": true
+      }
+    ]
+  },
+  "voz.equipos.risa": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.equipos.risa",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/equipos_risa",
+        "stream": true
+      }
+    ]
+  },
+  "voz.equipos.solos": {
+    "category": "voice",
+    "subtitle": "coleccionista.voz.equipos.solos",
+    "sounds": [
+      {
+        "name": "coleccionista:voz/equipos_solos",
+        "stream": true
+      }
+    ]
+  },
   "voz.piano.a_la_vez": {
     "category": "voice",
     "subtitle": "coleccionista.voz.piano.a_la_vez",

@@ -220,10 +220,10 @@ public final class Pantallas {
     public static List<Frase> equipos() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("bienvenidos", 85, null, 1F));
-        l.add(new Frase("formen", 95, null, 1F));
+        l.add(new Frase("formen", 98, null, 1F));
         l.add(new Frase("ascensor", 115, null, 1F));
         l.add(new Frase("solos", 100, null, 1F));
-        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        l.add(new Frase("risa", 60, null, 1F));
         return l;
     }
 

@@ -152,7 +152,7 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `equipos_bienvenidos.ogg` | 4.2 s | Bienvenidos… a mi gran vestíbulo. |
-| 2 | `equipos_formen.ogg` | 4.8 s | Ahora formen equipos. De dos… o de tres. |
+| 2 | `equipos_formen.ogg` | 4.9 s | Ahora formen equipos. De dos… o de tres. |
 | 3 | `equipos_ascensor.ogg` | 5.8 s | Cada equipo, a un ascensor. Ni uno más… ni uno menos. |
 | 4 | `equipos_solos.ogg` | 5.0 s | Los que se queden solos… se quedan conmigo. |
 | 5 | `equipos_risa.ogg` | 3.0 s | Je, je… |
