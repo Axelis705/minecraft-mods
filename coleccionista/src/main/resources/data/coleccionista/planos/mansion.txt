@@ -1,0 +1,309 @@
+# El plano de la mansión del Coleccionista (capítulo 2, "La mascota"). Lo lee Casa.java; lo arma herramientas/mapas/mansion_plano.py.
+# Cada piso es un dibujo: cada letra, una columna de bloques (x a la derecha, z hacia abajo). Ver Casa.java para las letras.
+
+# ---- los cuartos (minúsculas)
+estilo f nombre=Vestíbulo piso=coleccionista:marmol_negro|coleccionista:marmol_crema pared=coleccionista:papel_tapiz luz=10
+estilo g nombre=Galería piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=9
+estilo c nombre=Comedor piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=9
+estilo k nombre=Cocina piso=coleccionista:linoleo|coleccionista:azulejo pared=coleccionista:azulejo luz=9
+estilo d nombre=Despensa piso=coleccionista:tablon pared=coleccionista:panel_madera luz=5
+estilo s nombre=Servicio piso=coleccionista:tablon pared=coleccionista:yeso luz=7
+estilo m nombre=Música piso=coleccionista:parquet pared=coleccionista:acolchado luz=9
+estilo b nombre=Biblioteca piso=coleccionista:parquet pared=coleccionista:panel_madera luz=8
+estilo e nombre=Estudio piso=coleccionista:parquet alfombra=coleccionista:alfombra_roja pared=coleccionista:panel_madera luz=7
+estilo h nombre=Pasillo piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=7
+estilo i nombre=Invernadero piso=coleccionista:losa_piedra pared=coleccionista:yeso luz=10
+estilo a nombre=Lavandería piso=coleccionista:azulejo_sucio pared=coleccionista:azulejo luz=8
+estilo q nombre=Calderas piso=coleccionista:concreto_piso pared=coleccionista:ladrillo_oscuro luz=5
+estilo l nombre=Billar piso=coleccionista:parquet pared=coleccionista:panel_madera luz=8
+estilo p nombre=Retratos piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=8
+estilo y nombre=Trofeos piso=coleccionista:marmol_crema pared=coleccionista:panel_madera luz=8
+estilo r nombre=Recámara piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=8
+estilo z nombre=Baño piso=coleccionista:azulejo pared=coleccionista:azulejo luz=9
+estilo u nombre=Muñecas piso=coleccionista:parquet pared=coleccionista:acolchado luz=8
+estilo n nombre=Bebé piso=coleccionista:parquet alfombra=coleccionista:alfombra_cafe pared=coleccionista:papel_tapiz luz=7
+estilo o nombre=Costura piso=coleccionista:parquet pared=coleccionista:papel_tapiz luz=8
+estilo t nombre=Ático piso=coleccionista:tablon pared=coleccionista:tablon techo=coleccionista:viga_madera luz=5
+
+# ---- los muebles (mayúsculas y signos)
+mueble L minecraft:bookshelf alto=3
+mueble M coleccionista:mesa
+mueble S coleccionista:silla mira=mesa
+mueble B minecraft:red_bed cama
+mueble A minecraft:white_bed cama
+mueble T coleccionista:mesa_tapete
+mueble C coleccionista:candelabro doble
+mueble H coleccionista:sillon doble
+mueble R coleccionista:reloj
+mueble V coleccionista:vitrina doble
+mueble E coleccionista:espejo
+mueble K coleccionista:cajon
+mueble O coleccionista:barril
+mueble U coleccionista:muneca
+mueble Q coleccionista:retrete
+mueble N coleccionista:lavabo
+mueble Y minecraft:cauldron[-]
+mueble G minecraft:smoker[facing=south,lit=false]
+mueble I coleccionista:atril
+mueble P minecraft:note_block[-]
+mueble J minecraft:jukebox[-]
+mueble F minecraft:potted_fern[-]
+mueble Z minecraft:azalea_leaves[persistent=true] alto=2
+mueble x coleccionista:craneo
+mueble * coleccionista:telarana
+mueble = coleccionista:tubo
+mueble $ coleccionista:metal_negro alto=3
+mueble ! coleccionista:farol
+
+punto 1 man.entrada 270
+punto 2 man.centro 270
+marcas man.esc.
+
+piso 0 alto 6 origen 0 -18
+     #################################################
+     #@iiiiiiiiiii@#aYYYYYaaaaaO#qqqqqq@qqqqq@qqqqq@q#
+     #iiiiiiiiiiiii#aaaaaaaaaaaO#qqqqqqqqqqqqqqqqqqqq#
+     #iiZFiZFiZFiZF#aaaaaaaaaaaa#qqq$$qqqq$$qqqq$$qqq#
+     #iiiiiiiiiiiii#aaaaaaaaaaaa#qqq$$qqqq$$qqqq$$qqq#
+     #iiiiiiiiiiiii#aaaaaaaaaaaa#qqq$$qqqq$$qqqq$$qqq#
+     #iiZFiZFiZFiZF#aaa@aaa@aaaa#qqq=qqqqq=qqqqq=qqqq#
+     #iiiiiiiiiiiii#aaa%aaa%aaaa#qqqqqqqqqqqqqqqqqqqq#
+     #iiiiiiiiiiiii#aaaaaaaaaaaa#qqqqqqqqqqqqqqqqqqqq#
+     #iiZFiZFiZFiZF#aaaaaaaaaaaa#qqqqqqqqqqqqqqqqqqqq#
+     #iiiiiiiiiiiii#aaaaaaaaaaaa#qqqqqqqqqqqqqqqqqqqq#
+     #iiiiiiiiiiiii#aaaaaaaaaaaa#qqqqqqqqqqqqqqqqqqqq#
+     #iiiiiiiiiiiii#aaaaaaaaaaaa#qqqqqqqqqqqqqqqqqqqq#
+     #iiiiiiiiiiiii#aaaaaaaaaaaa#Oqqqqqqqqqqqqqqqqqqq#
+     #######D############D##############D#############
+     #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh>>>>>>hh#
+     #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh#
+     ###############D###################D#############
+                #@#cccccRcccc#@#kGGGKKKKKkkk#OOOOO#
+                #D#cccccccccc#D#kkkkkkkkkkkk#ddddd#
+                #cccccccccccccc#kkkkkkkkkkkkDddddO#
+                #cccSSSSSSSSccc#kkkkSkkkkkkk#ddddd#
+                #ccSMMMMMMMMSccDkkkkMMMMkkkk#Oddd@#
+                #cccSSSSSSSSccc#kkkkkkkSkkkk###D######
+                #cccccccccccccc#kkkkkkkkkkkO#sssssss=#
+                #cccccccccccccc#kkkkkkkkkkkO#sssssss=#
+                #CccccccccccccC#OkkkkkkkkkkkDssssssss#
+                #######D#############D#######ssssssss#
+                #fffVfffVfffVfffVfRffffff#  #ssssss%@#
+                #ffffffffffffffffffffffff#  #AAsOOOss#
+                #Hfffffffffffffffffffffff#  ##########
+                #ffffffffffffffffffffffff#
+                #fffffffffffffffffff^^^fC#
+                #Cffffffffffffffffff^^^ff#
+                #fffffffffffffffffff^^^ff#
+                 fffffffffffffffffff^^^ff#
+                 fffffffffffffffffff^^^ff
+                 fffffffffffffffffff^^^ff
+                 ffffffffffffffffffffffff
+                 fff1ffffff2fffffCfffffff
+                 ffffffffffffffffCfffffff
+                 ffffffffffffffffffffffff
+                 fffffffffffffffffffvvvff
+                 fffffffffffffffffffvvvff
+                 fffffffffffffffffffvvvff#
+                #fffffffffffffffffffvvvff#
+                #Cffffffffffffffffffvvvff#
+                #fffffffffffffffffffvvvfC#
+                #ffffffffffffffffffffffff#
+                #Hfffffffffffffffffffffff#
+                #ffffffffffffffffffffffff#
+                #fffVfffVfffVfffVffffffff#
+                #######D#############D################
+                #CmmmmmmmmmmmmC#bbbbbbbbbbbb@#eeeeee@#
+                #mmmmmmmmmmmmmm#bbbbbbbbbbbbb#eeeeeee#
+                #mmmmmmmmmIIImm#bLLLLbbLLLLLb#eeeHeee#
+                #mmmmPPPmmmmmmm#bbbbbbbbbbbbb#eexMeee#
+                #mmmmmSmmmSSSmmDbbbbbbbbbbbbbDeeeeeee#
+                #mmmmmmmmmmmmmm#bLLLLbbLLLLLb#eeeeeee#
+                @%mmmmmmmmmmmmm#bbbbbbbbbbbbb#eeeeeee#
+                #mmmmmmmmmmmmmm#bbbSMbbbbHbbb#eeeeeee#
+                #mmmmmmmmmmmmmJ#@bbbbbbbbbbbI#VVVVVVV#
+     ###############D###################D#############
+     #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh>>>>>>hh#
+     #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh#
+     #######D############D##############D#############
+     #lllllllllllll#pppppppppppU#xyyyyyyyyyyyyyyyyyyC#
+     #lllllllllllll#pppppppppppp#yyyyyyyyyyyyyyyyyyyy#
+     #lllllllllll%@#pppppppppppp#yyyyyyyyyyyyyyyyyyyy#
+     #lllllllllllll#pppppppppppp#yyyyyyyyyyyyyyyyyyyy#
+     #llllTTTllllll#ppVppVppVppp#yyyVyyyVyyyVyyyVyyyy#
+     #llllTTTllllll#pppppppppppp#yyyyyyyyyyyyyyyyyyyy#
+     #lllllllllllll#pppppppppppp#yyyyyyyyyyyyyyyyyyyy#
+     #lllllllllllll#pppppppppppp#yyyyyyyyyyyyyyyyyyyy#
+     #llllTTTllllll#ppVppVppVppp#yyyyyyyyyyyyyyyyyyyy#
+     #llllTTTllllll#pppppppppppp#yyyVyyyVyyyVyyyVyyyy#
+     #lllllllllllll#pppppppppppp#yyyyyyyyyyyyyyyyyyyy#
+     #lllllllllllll#pppppppppppp#yyyyyyyyyyyyyyyyyyyy#
+     #HlllllllllllR#@pppppppppp@#@yyyyyyyyyyyyyyyyyy@#
+     #################################################
+fin
+
+piso 7 alto 5 origen 0 -18
+     #################################################
+     #@DrrrrBrrrrD@#sAssAssAssAs#HrrrrrrrrBBrrrrrrrr@#
+     ###rrrrBrrrr###sAssAssAssAs#rrrrrrrrrBBrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #rrrrrrrrrrrrr#ssssssssssss#rrrrrrrrrrrrrrrrrrrr#
+     #Krrrrrrrrrrrr#Ossssssssss@#*rrrrrrrrrrrrrrrrrr@#
+     ##########D#########D##############D#############
+     #hh<<<<<hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~hh#
+     #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh#
+     ###############D########################D########
+                #@#rrrKBBKrrr#@#YYzzzQ#@VuuVuuVuuVuuu#
+                #D#rrrrBBrrrr#D#@zzzzz#uuuuuuuuuuuuuu#
+                #rrrrrrrrrrrrrr#%%zzzz#uuuuuuuuuuuuuu#
+                #rrrrrrrrrrrrrr#zzzzzN#uuuuuuuuuuuuuu#
+                #rrrrrrrrrrrrrr#zzzzzE#uuUuuuUuuuUuuu#
+                #rrrrrrrrrrrrrrDzzzzzz#uuuuuuuuuuuuuu#
+                #rrrrrrrrrrrrrr#zzzzzz#uuuuuuuuuuuuuu#
+                #rrrrrrrrrrrrrr#zzzzzz#uuuuuuuuuuuuuu#
+                #HrrrrrrrrrrrES#zzzzzz#uuuuuuuuuuuuu@#
+                #######D##########D####D##############
+                #gggggggggggggggggggggggg#
+                #gggggggggggggggggggggggg#
+                #gggggggggggggggggggggggg#
+                #:::::::::::::::::::ggg::#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #~~~~~~~~~~~~~~~~~~~~~~~~#
+                #:::::::::::::::::::ggg::#
+                #gggggggggggggggggggggggg#
+                #gggggggggggggggggggggggg#
+                #gggggggggggggggggggggggg#
+                #######D#############D################
+                #Rnnnnnnnnnnn#@#ooooooooooooU#LLLLLLL#
+                #nnnnnnnnnnnn#D#ooooooooooooo#eeeeeee#
+                #nnnnnnnnnnnnnn#ooooooooooooo#eeeeeee#
+                #nnnnnnnnnnnnnn#ooMMMoooMMMoo#eeeMeee#
+                #nnnnnnnnnnnnnn#oooSoooooSoooDeeeSeee#
+                #nnnnnnnnnnnnnn#ooooooooooooo#eeeeeee#
+                #nnnnnnnnnnnnnn#ooooooooooooo#eeeeeee#
+                #nnnnnnAnnnnnnn#oo@ooo@ooo@oo#eeeeeee#
+                #KnnnnnAnnUUUUn#oo%ooo%ooo%oo#eeeeee@#
+     ###############D###################D#############
+     #hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh~~~~~~hh#
+     #hh<<<<<hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh#
+     ##########D#########D##############D#############
+     #rrrrrrrrrrrrr#@uuuuuuuuuuu#pppppppppppppppppppp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#pppppppppppppppppppp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#pppppppppppppppppppp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#pppppppppppppppppppp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#ppVppppVppppVppppVpp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#pppppppppppppppppppp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuu@#pppppppppppppppppppp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#pppppppppppppppppppp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#ppVppppVppppVppppVpp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#pppppppppppppppppppp#
+     #rrrrrrrrrrrrr#uuuuuuuuuuuu#pppppppppppppppppppp#
+     ###rrrrBrrrr###uuuuuuuuuuuu#pppppppppppppppppppp#
+     #@DrrrrBrrrrD@#uUUUUUUUUUUu#@pppppppppppppppppp@#
+     #################################################
+fin
+
+piso 13 alto 3 origen 0 -18
+     #################################################
+     #tttttttttttt*ttttt*ttttt*ttttt*ttttt*ttttt*tttU#
+     #ttttttttttOtt@ttOtt@ttOtt@ttOtt@ttOtt@ttOtt@ttt#
+     #ttttttttttttttttttttttttttttttttttttttttttttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttttttttttttttttttttttttttttttttttttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttttttttttttttttttttttttttttttttttttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #tt~~~~~tttOtt@ttOtt@ttOtt@ttOtt@ttOtt@ttOtt@ttt#
+     #ttttttttttttttttttttttttttttttttttttttttttttttU#
+     #################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     #################################################
+     #tttttttttttt*ttttt*ttttt*ttttt*ttttt*ttttt*tttU#
+     #tt~~~~~tttOtt@ttOtt@ttOtt@ttOtt@ttOtt@ttOtt@ttt#
+     #ttttttttttttttttttttttttttttttttttttttttttttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttttttttttttttttttttttttttttttttttttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttttttttttttttttttttttttttttttttttttttt#
+     #ttttttttttOtttttOtttttOtttttOtttttOtttttOtttttt#
+     #ttttttttttOtt@ttOtt@ttOtt@ttOtt@ttOtt@ttOtt@ttt#
+     #ttttttttttttttttttttttttttttttttttttttttttttttU#
+     #################################################
+fin

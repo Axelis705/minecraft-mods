@@ -277,7 +277,7 @@ public final class Mascota {
 
     private static List<BlockPos> escondites(MinecraftServer s) {
         List<BlockPos> l = new ArrayList<>();
-        for (int n = 0; n < 64; n++) {
+        for (int n = 0; n < 200; n++) {
             BlockPos q = Complejo.pos(s, "man.esc." + n);
             if (q == null) {
                 break;

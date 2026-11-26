@@ -1304,10 +1304,21 @@ final class PruebaCliente {
         t.photo("c2_02_vestibulo", 9000, () -> t.lookFrom(741.5, -60, 451.5, 760, -53.5, 451.5));
         t.photo("c2_03_jaula", 4000, () -> t.lookFrom(756.5, -60, 451.5, 768, -59, 451.5));
         t.photo("c2_04_galeria", 2500, () -> t.lookFrom(739.5, -53, 442.5, 752, -60, 455));
-        // las alas nuevas: el pasillo del norte, el salón de baile (sur) y el ático del norte
-        t.photo("c2_04b_ala_norte", 1800, () -> t.lookFrom(765.5, -60, 426.5, 730, -58.5, 426.5));
-        t.photo("c2_04c_baile", 1500, () -> t.lookFrom(729.5, -60, 482.5, 755, -58, 486));
-        t.photo("c2_04d_atico", 1500, () -> t.lookFrom(762.5, -47, 418.5, 730, -46, 416));
+        // un recorrido por los cuartos de la mansión nueva (planos a mano: data/coleccionista/planos/mansion.txt)
+        t.photo("c2_04b_comedor", 1300, () -> t.lookFrom(738.5, -58, 437.5, 747, -60, 432));
+        t.photo("c2_04c_cocina", 1300, () -> t.lookFrom(762.5, -58, 437.5, 755, -60, 431));
+        t.photo("c2_04d_biblioteca", 1300, () -> t.lookFrom(753.5, -58, 472.5, 762, -59, 466));
+        t.photo("c2_04e_estudio", 1300, () -> t.lookFrom(771.5, -58, 472, 767, -60, 466));
+        t.photo("c2_04f_pasillo_norte", 1300, () -> t.lookFrom(771.5, -58.4, 428.5, 730, -59, 427.5));
+        t.photo("c2_04g_invernadero", 1300, () -> t.lookFrom(737.5, -58, 424.5, 728, -60, 415));
+        t.photo("c2_04h_calderas", 1300, () -> t.lookFrom(771.5, -58, 424.5, 756, -60, 415));
+        t.photo("c2_04i_billar", 1300, () -> t.lookFrom(737.5, -58, 479, 730, -60, 486));
+        t.photo("c2_04j_trofeos", 1300, () -> t.lookFrom(771.5, -58, 479, 755, -60, 487));
+        t.photo("c2_04k_recamara", 1300, () -> t.lookFrom(749.5, -51, 437.5, 743, -53, 431));
+        t.photo("c2_04l_munecas", 1300, () -> t.lookFrom(771.5, -51, 437.5, 761, -53, 431));
+        t.photo("c2_04m_costura", 1300, () -> t.lookFrom(752.5, -51, 472.5, 763, -53, 467));
+        t.photo("c2_04n_atico", 1300, () -> t.lookFrom(771.5, -45.4, 427, 730, -47, 418));
+        t.photo("c2_04o_escalera_atico", 1300, () -> t.lookFrom(734.5, -51.4, 427.5, 727, -48, 427));
         t.photo("c2_05_esconder", 1800, () -> {
             t.cmd("evento mascota saltar");
             t.lookFrom(744.5, -60, 451.5, 737, -59, 444);
