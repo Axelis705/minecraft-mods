@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "launcher": "1.0.0",
   "nombre": "El Coleccionista",
   "servidor": "",
@@ -11,9 +11,9 @@
   "mods": [
     {
       "archivo": "coleccionista-1.0.0.jar",
-      "url": "https://raw.githubusercontent.com/Axelis705/minecraft-mods/70000c8e678d48f30383fee45bd8822ea66d39e1/coleccionista-1.0.0.jar",
-      "sha1": "0f83214819e0851e7389d7877a5f586ad51b65a8",
-      "tam": 5601689
+      "url": "https://raw.githubusercontent.com/Axelis705/minecraft-mods/89dc12a33df2e93c0f1782a173d0c876b86f6bf7/coleccionista-1.0.0.jar",
+      "sha1": "1596001506f2c9834682ad8b2b8d2fb8c5c1d0d5",
+      "tam": 7014675
     },
     {
       "archivo": "voicechat-forge-1.20.1-2.6.27.jar",
