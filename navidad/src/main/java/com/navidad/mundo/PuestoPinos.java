@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -71,6 +70,18 @@ public class PuestoPinos extends Feature<NoneFeatureConfiguration> {
         };
     }
 
+    /** La altura del piso (el primer bloque sólido de verdad, sin hojas ni troncos) cerca de {@code yRef}, o MIN_VALUE si no hay. */
+    private static int suelo(WorldGenLevel l, int x, int z, int yRef) {
+        BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+        for (int y = yRef + 8; y >= yRef - 12; y--) {
+            BlockState b = l.getBlockState(p.set(x, y, z));
+            if (b.blocksMotion() && !b.is(net.minecraft.tags.BlockTags.LEAVES) && !b.is(net.minecraft.tags.BlockTags.LOGS)) {
+                return y + 1;
+            }
+        }
+        return Integer.MIN_VALUE;
+    }
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
         WorldGenLevel l = ctx.level();
@@ -80,7 +91,10 @@ public class PuestoPinos extends Feature<NoneFeatureConfiguration> {
         int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
         for (int x = -7; x <= 7; x += 2) {
             for (int z = -6; z <= 7; z += 2) {
-                int h = l.getHeight(Heightmap.Types.WORLD_SURFACE_WG, o0.getX() + x, o0.getZ() + z);
+                int h = suelo(l, o0.getX() + x, o0.getZ() + z, o0.getY());
+                if (h == Integer.MIN_VALUE) {
+                    return false;
+                }
                 min = Math.min(min, h);
                 max = Math.max(max, h);
                 BlockPos s = new BlockPos(o0.getX() + x, h - 1, o0.getZ() + z);

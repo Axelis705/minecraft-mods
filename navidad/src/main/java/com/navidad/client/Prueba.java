@@ -435,7 +435,10 @@ final class Prueba {
                     t.lookFrom(pg.getX() + 2.6, pg.getY() + 1.6, pg.getZ() + 2.6, pg.getX(), pg.getY() + 0.2, pg.getZ());
                 }
             });
-            t.add("fin pinguino", 300, () -> t.cmd("gamemode creative @a"));
+            t.add("fin pinguino", 300, () -> {
+                t.cmd("gamemode creative @a");
+                t.cmd("kill @e[type=navidad:pinguino]");
+            });
             // ---------------------------------------------------------------- el renito de nariz roja: con una zanahoria dorada es tuyo
             t.add("renito", 1200, () -> {
                 t.cmd("time set 6000");
@@ -456,17 +459,31 @@ final class Prueba {
                 }
             });
             t.waitFor("el renito es mío", 3000, () -> com.navidad.entidad.Renito.domados > 0);
-            t.photo("renito", 1500, () -> {
+            t.add("sentar al renito", 800, () -> {
+                Minecraft mc = Minecraft.getInstance();
                 t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
+                for (var e : mc.level.entitiesForRendering()) {
+                    if (e instanceof com.navidad.entidad.Renito r) {
+                        mc.gameMode.interact(mc.player, r, InteractionHand.MAIN_HAND);
+                        break;
+                    }
+                }
+            });
+            t.photo("renito", 1500, () -> {
                 for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
                     if (e instanceof com.navidad.entidad.Renito r) {
-                        t.lookFrom(r.getX() - 1.3, r.getY() + 0.5, r.getZ() - 1.6, r.getX(), r.getY() + 0.45, r.getZ());
+                        double a = Math.toRadians(r.yBodyRot);
+                        t.lookFrom(r.getX() - Math.sin(a) * 2.0 + 0.6, r.getY() + 0.7, r.getZ() + Math.cos(a) * 2.0 + 0.6, r.getX(), r.getY() + 0.45,
+                                r.getZ());
                         break;
                     }
                 }
             });
             t.photo("renito_noche", 1500, () -> t.cmd("time set 18000"));
-            t.add("renito dia", 300, () -> t.cmd("time set 6000"));
+            t.add("renito dia", 300, () -> {
+                t.cmd("time set 6000");
+                t.cmd("kill @e[type=navidad:renito]");
+            });
             // ---------------------------------------------------------------- tu árbol: lo pongo, lo adorno y en la mañana hay regalos;
             // de noche llega el duende ladrón, se roba uno y lo atrapo
             t.add("arbol", 1500, () -> {
@@ -547,8 +564,8 @@ final class Prueba {
             t.add("acercarme a Don Abeto", 800, () -> {
                 var n = abeto();
                 if (n != null) {
-                    double a2 = Math.toRadians(n.getYRot());
-                    t.lookFrom(n.getX() - Math.sin(a2) * 2.4, n.getY(), n.getZ() + Math.cos(a2) * 2.4, n.getX(), n.getY() + 1.5, n.getZ());
+                    double a2 = Math.toRadians(n.yBodyRot);
+                    t.lookFrom(n.getX() - Math.sin(a2) * 3.4, n.getY() + 0.4, n.getZ() + Math.cos(a2) * 3.4, n.getX(), n.getY() + 1.2, n.getZ());
                 }
             });
             t.photo("don_abeto", 1500, () -> {
@@ -584,7 +601,7 @@ final class Prueba {
                 if (n != null) {
                     var mc = Minecraft.getInstance();
                     double dx = mc.player.getX() - n.getX(), dz = mc.player.getZ() - n.getZ(), d = Math.max(0.1, Math.sqrt(dx * dx + dz * dz));
-                    t.lookFrom(n.getX() + dx / d * 4.5 + 1, n.getY() + 1.6, n.getZ() + dz / d * 4.5 + 1, n.getX() + 0.6, n.getY() + 0.8, n.getZ());
+                    t.lookFrom(n.getX() + dx / d * 6.5 + 1.5, n.getY() + 1.4, n.getZ() + dz / d * 6.5 + 1.5, n.getX() + 0.6, n.getY() + 0.9, n.getZ());
                 }
             });
             // ---------------------------------------------------------------- el buzón y la carta a Santa
