@@ -41,7 +41,7 @@ import java.util.UUID;
  * </ul>
  * La visita: se oyen cadenas a lo lejos, sube la niebla, aparecen huellas de pezuña que se acercan a ti, llegan krampusillos y, al final,
  * sale él donde acaban las huellas. Mientras dura no se puede dormir. Si lo vences o llega el día, sobreviviste a la Noche del Krampus.
- * Se apaga con {@code /navidad krampus visitas no}; en pacífico no viene.
+ * Se apaga con {@code /navidad krampus visitas no}; en pacífico (o sin aparición de criaturas) no viene.
  */
 public final class NocheKrampus {
     /** Etapas de la visita (segundos desde que empieza). */
@@ -106,7 +106,8 @@ public final class NocheKrampus {
         }
         for (ServerPlayer p : s.getPlayerList().getPlayers()) {
             ServerLevel l = p.serverLevel();
-            if (l.dimension() != Level.OVERWORLD || l.getDifficulty() == Difficulty.PEACEFUL || p.isCreative() || p.isSpectator()) {
+            if (l.dimension() != Level.OVERWORLD || l.getDifficulty() == Difficulty.PEACEFUL || p.isCreative() || p.isSpectator()
+                    || !l.getGameRules().getBoolean(net.minecraft.world.level.GameRules.RULE_DOMOBSPAWNING)) {
                 continue;
             }
             long hora = l.getDayTime() % 24000L, dia = l.getDayTime() / 24000L;

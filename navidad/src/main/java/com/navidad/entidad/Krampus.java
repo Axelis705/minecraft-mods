@@ -221,10 +221,10 @@ public class Krampus extends Jefe {
         return entityData.get(OCULTO);
     }
 
-    /** La textura: la de la fase, o la de solo ojos (_f4) cuando está escondido en lo oscuro. */
+    /** La textura: escondido en lo oscuro usa la de la sombra (y el dibujo lo pinta todo negro menos los ojos). */
     @Override
     public int aspecto() {
-        return oculto() ? 3 : super.aspecto();
+        return oculto() ? 2 : super.aspecto();
     }
 
     /** Ticks que le faltan para tener saco otra vez (0 = tiene saco). */
@@ -488,6 +488,10 @@ public class Krampus extends Jefe {
                 continue;
             }
             e[0]++;
+            if (e[0] == 3) {
+                // tapa el "agáchate para bajarte" de Minecraft: aquí agacharse no sirve, hay que forcejear
+                p.displayClientMessage(Component.translatable("navidad.krampus.saco.sub").withStyle(ChatFormatting.GOLD), true);
+            }
             if (e[0] % 20 == 10) {
                 apretando = true;
                 try {
@@ -1026,6 +1030,18 @@ public class Krampus extends Jefe {
             axLook(h, pose, pt, "head", "neck", 0.7F);
         }
         Geo g = h.geo();
+        if (oculto()) {
+            // escondido en lo oscuro: una sombra negra; solo brillan los ojos
+            for (int b = 0; b < g.bones.length; b++) {
+                if (!"ojos".equals(g.bones[b].name)) {
+                    pose.tinte(b, 0xFF000000);
+                }
+            }
+            int ojos = g.bone("ojos");
+            if (ojos >= 0) {
+                pose.mulScale(ojos, 1.35F, 1.6F, 1F);
+            }
+        }
         int saco = g.bone("saco");
         if (saco >= 0) {
             if (sinSaco() > 0) {

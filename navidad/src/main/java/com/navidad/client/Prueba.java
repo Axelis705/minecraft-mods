@@ -1327,6 +1327,7 @@ final class Prueba {
         t.add("noche", 1500, () -> {
             t.cmd("item replace entity @p armor.head with minecraft:air");
             t.cmd("kill @e[type=item]");
+            t.cmd("kill @e[type=navidad:gancho_cadena]");
             t.cmd("gamemode survival @a");
             t.cmd("time set 13800");
             t.cmd("tp @a 600.5 -60 6.5 0 0");

@@ -121,14 +121,18 @@ def mascara():
         cubo([4, 2, -1.2], [5, 5, -0.2], [14, 4, 14.5, 5.5]),                                      # colmillos
         cubo([11, 2, -1.2], [12, 5, -0.2], [14, 4, 14.5, 5.5]),
     ]
-    # cuernos: tres pedazos de cada lado que suben, se abren y se doblan para atrás
+    # cuernos: base gruesa que sale de la greña abriéndose hacia afuera y una punta más abierta (las dos piezas se tocan)
+    import math
     for s in (-1, 1):
-        x0 = 3 if s < 0 else 11
-        for i, (dy, ancho, ang) in enumerate(((0, 2.5, 22.5), (5, 2.0, 45), (9, 1.6, 45))):
-            ox = x0 + s * i * 2.2 - ancho / 2
-            els.append(cubo([ox, 15 + dy, 5 + i * 1.5], [ox + ancho, 21 + dy, 5 + i * 1.5 + ancho], [8, 4, 12, 8],
-                            rot={'angle': ang * (1 if s > 0 else -1) if i else (22.5 if s > 0 else -22.5), 'axis': 'z',
-                                 'origin': [x0 + s * i * 2.2, 15 + dy, 6]}))
+        x0 = 4 if s < 0 else 12
+        # base: de y 13 a 20, girada 22.5 grados hacia afuera desde abajo
+        els.append(cubo([x0 - 1.5, 13, 5], [x0 + 1.5, 20, 8], [8, 4, 12, 8],
+                        rot={'angle': -22.5 * s, 'axis': 'z', 'origin': [x0, 13, 6.5]}))
+        # dónde quedó la punta de la base
+        xt = x0 + s * 7 * math.sin(math.radians(22.5))
+        yt = 13 + 7 * math.cos(math.radians(22.5))
+        els.append(cubo([xt - 1, yt - 0.5, 5.5], [xt + 1, yt + 5, 7.5], [8, 4, 12, 8],
+                        rot={'angle': -45 * s, 'axis': 'z', 'origin': [xt, yt - 0.5, 6.5]}))
     modelo = {'textures': {'m': 'navidad:item/mascara_krampus', 'particle': 'navidad:item/mascara_krampus'}, 'elements': els,
               'gui_light': 'front',
               'display': {

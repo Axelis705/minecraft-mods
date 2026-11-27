@@ -193,7 +193,7 @@ public class GanchoCadena extends Projectile {
         jalando++;
         Vec3 d = position().subtract(dueno.position().add(0, 1.0, 0));
         double dist = d.length();
-        if (dist < 1.4 || jalando > 30 || dueno.isShiftKeyDown()) {
+        if (dist < 1.4 || jalando > 30 || dueno.isShiftKeyDown() || dist > alcance + 6) {
             dueno.fallDistance = 0;
             terminar(null);
             return;
