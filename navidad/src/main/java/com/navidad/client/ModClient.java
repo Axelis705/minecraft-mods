@@ -49,8 +49,8 @@ public final class ModClient {
                 return p.isBaby() ? 0.55F : 1F;
             }
         });
-        // el Krampus: normal, furioso (_f2) y la sombra del apagón (_f3)
-        e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.3F, 1.0F, 3));
+        // el Krampus: normal, furioso (_f2), la sombra del apagón (_f3) y escondido en lo oscuro, solo los ojos (_f4)
+        e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.3F, 1.0F, 4));
         e.registerEntityRenderer(ModRegistry.KRAMPUSILLO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "krampusillo", 0.4F, 1F));
         e.registerEntityRenderer(ModRegistry.GANCHO_CADENA.get(), GanchoRenderer::new);
         e.registerEntityRenderer(ModRegistry.HUELLA_KRAMPUS.get(), HuellaRenderer::new);

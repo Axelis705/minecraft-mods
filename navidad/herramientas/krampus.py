@@ -7,7 +7,7 @@ costal en la espalda (con parches y amarrado arriba), la vara de abedul (un mano
 la cadena con su gancho colgando de la izquierda.
 
 Texturas (mismo acomodo): krampus.png (ojos ámbar), krampus_f2.png (furia: ojos rojos, más oscuro), krampus_f3.png (la sombra del
-apagón: casi negro con un brillo morado y ojos rojos). En el apagón, cuando está oculto, el código deja ver solo los ojos.
+apagón: casi negro con un brillo morado y ojos rojos) y krampus_f4.png (escondido en lo oscuro: solo los ojos).
 
 Animaciones (los tiempos coinciden con los golpes del código, en ticks): idle, walk, run, varazos (golpes 0.5/0.9/1.4 s), cadena
 (lanza a 0.7 s), pisoton (0.6), lanza (carbones, 0.75), rugido (0.4), agarre (agarra a 0.9 y lo mete al saco), giro (0.8), soplido
@@ -349,6 +349,12 @@ def construir():
     for nombre, pal in (('krampus', BASE), ('krampus_f2', FURIA), ('krampus_f3', sombra(FURIA))):
         P = dict(pal)
         modelo().build(geo, os.path.join(tex, nombre + '.png'))
+    # _f4: escondido en lo oscuro (apagón): todo transparente menos los ojos
+    P = dict(sombra(FURIA))
+    c = modelo()
+    ojos_cubos = [id(cu) for b in c.m.bones if b['name'] == 'ojos' for cu in b['cubes']]
+    c.parts = [p if id(p[0]) in ojos_cubos else (p[0], p[1], (lambda *a: None)) + tuple(p[3:]) for p in c.parts]
+    c.build(geo, os.path.join(tex, 'krampus_f4.png'))
 
 
 # ------------------------------------------------------------------ animaciones

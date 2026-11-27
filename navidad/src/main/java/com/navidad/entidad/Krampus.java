@@ -108,7 +108,7 @@ public class Krampus extends Jefe {
     private int revelado, sinNadie, soploEn = -1, quemadoAviso, sinSacoTicks;
     private boolean enLaLuz, agarroAlguien;
     private BlockPos farolObjetivo;
-    private Vec3 dirGancho = Vec3.ZERO;
+    private Vec3 apuntaGancho;
     /** Si vino de visita o con la campana: al amanecer al aire libre se va. */
     public boolean seVaDeDia;
 
@@ -221,6 +221,12 @@ public class Krampus extends Jefe {
         return entityData.get(OCULTO);
     }
 
+    /** La textura: la de la fase, o la de solo ojos (_f4) cuando está escondido en lo oscuro. */
+    @Override
+    public int aspecto() {
+        return oculto() ? 3 : super.aspecto();
+    }
+
     /** Ticks que le faltan para tener saco otra vez (0 = tiene saco). */
     public int sinSaco() {
         return level().isClientSide ? (entityData.get(SIN_SACO) ? 1 : 0) : sinSacoTicks;
@@ -279,22 +285,32 @@ public class Krampus extends Jefe {
                 .empuje(ultimo ? 1.2 : 0.35, ultimo ? 0.4 : 0.1).particulas("crit").lanzar();
     }
 
+    /** Dónde sale el gancho: su mano izquierda, un poco al frente. */
+    private Vec3 manoGancho() {
+        Vec3 lado = Vec3.directionFromRotation(0, yBodyRot - 90F).scale(0.8);
+        return position().add(lado).add(0, 1.8, 0).add(Vec3.directionFromRotation(0, yBodyRot).scale(0.6));
+    }
+
+    /** Avisa con una línea desde su mano hasta donde estás AHORA: ahí va a llegar el gancho (hazte a un lado). */
     void avisarGancho(LivingEntity t) {
         if (t == null) {
-            dirGancho = Vec3.directionFromRotation(0, getYRot());
+            apuntaGancho = null;
             return;
         }
-        Vec3 d = t.position().add(0, t.getBbHeight() * 0.5, 0).subtract(position().add(0, 1.6, 0));
-        dirGancho = d.lengthSqr() < 1.0E-4 ? Vec3.directionFromRotation(0, getYRot()) : d.normalize();
-        float largo = (float) Math.min(22, distanceTo(t) + 3);
-        Aviso.linea(level(), position(), Combate.giro(position(), t.position()), largo, 1.6F, 14).color(Aviso.MORADO).lanzar();
+        mirarA(t);
+        apuntaGancho = t.position().add(0, t.getBbHeight() * 0.5, 0);
+        Vec3 mano = manoGancho();
+        float largo = (float) Math.min(24, Math.sqrt(mano.distanceToSqr(apuntaGancho.x, mano.y, apuntaGancho.z)) + 3);
+        Aviso.linea(level(), new Vec3(mano.x, getY(), mano.z), Combate.giro(mano, apuntaGancho), largo, 1.6F, 14).color(Aviso.MORADO).lanzar();
     }
 
     void lanzarGancho() {
-        // la cadena va en su mano izquierda
-        Vec3 lado = Vec3.directionFromRotation(0, yBodyRot - 90F).scale(0.8);
-        Vec3 desde = position().add(lado).add(0, 1.8, 0).add(dirGancho.scale(0.8));
-        GanchoCadena g = GanchoCadena.lanzar(level(), this, desde, dirGancho, 1.5F, 22);
+        Vec3 desde = manoGancho();
+        Vec3 dir = apuntaGancho == null ? Vec3.directionFromRotation(0, yBodyRot) : apuntaGancho.subtract(desde);
+        if (dir.lengthSqr() < 1.0E-4) {
+            dir = Vec3.directionFromRotation(0, yBodyRot);
+        }
+        GanchoCadena g = GanchoCadena.lanzar(level(), this, desde, dir.normalize(), 1.5F, 24);
         if (g != null) {
             entityData.set(GANCHO_FUERA, true);
         }
@@ -1010,14 +1026,6 @@ public class Krampus extends Jefe {
             axLook(h, pose, pt, "head", "neck", 0.7F);
         }
         Geo g = h.geo();
-        if (oculto()) {
-            // en lo oscuro solo se le ven los ojos
-            for (int b = 0; b < g.bones.length; b++) {
-                if (!"ojos".equals(g.bones[b].name)) {
-                    pose.tinte(b, 0x00FFFFFF);
-                }
-            }
-        }
         int saco = g.bone("saco");
         if (saco >= 0) {
             if (sinSaco() > 0) {
