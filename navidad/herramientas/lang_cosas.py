@@ -366,6 +366,8 @@ T9 = {
     'navidad.galletas.puestas': ('★ Le dejaste galletas y leche a Santa. Esta noche pasará por ellas...',
                                  '★ You left cookies and milk for Santa. He\'ll come by tonight...'),
     'navidad.galletas.ya': ('Santa ya tiene tus galletas de esta noche.', 'Santa already has your cookies for tonight.'),
+    'navidad.galletas.manana': ('Santa ya pasó por tus galletas hace poco. Déjale otras la próxima noche.',
+                                'Santa already came for your cookies. Leave him more next night.'),
     'navidad.galletas.comidas': ('★ ¡Santa se comió tus galletas y te dejó un regalo junto al plato!',
                                  '★ Santa ate your cookies and left you a gift next to the plate!'),
 }

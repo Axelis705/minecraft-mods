@@ -63,6 +63,13 @@ public final class GalletasSanta {
             return;
         }
         WorldStore w = WorldStore.get(s, Navidad.MODID);
+        // Santa pasa una vez por noche: si ya se comió tus galletas hace poco (medio día del juego y media hora de verdad), espera
+        CompoundTag yo = w.player(p.getUUID());
+        if (yo.contains("galletasCuando") && l.getDayTime() - yo.getLong("galletasTick") < 12000L
+                && System.currentTimeMillis() - yo.getLong("galletasCuando") < ESPERA_REAL) {
+            p.displayClientMessage(Component.translatable("navidad.galletas.manana").withStyle(ChatFormatting.GRAY), true);
+            return;
+        }
         ListTag lista = w.global().getList("galletas", Tag.TAG_COMPOUND);
         for (int i = 0; i < lista.size(); i++) {
             if (lista.getCompound(i).getUUID("quien").equals(p.getUUID())) {
@@ -151,6 +158,9 @@ public final class GalletasSanta {
         }
         var premio = Premios.sacar(r.nextInt(8) == 0 ? Premios.Rareza.EPICO : Premios.Rareza.RARO, r);
         ServerPlayer p = l.getServer().getPlayerList().getPlayer(c.getUUID("quien"));
+        CompoundTag yo = WorldStore.get(l.getServer(), Navidad.MODID).player(c.getUUID("quien"));
+        yo.putLong("galletasTick", l.getDayTime());
+        yo.putLong("galletasCuando", System.currentTimeMillis());
         if (caja != null) {
             l.setBlock(caja, ModRegistry.CAJA_REGALO.get().defaultBlockState().setValue(CajaRegalo.LLENA, true), 3);
             BlockEntity be = l.getBlockEntity(caja);
