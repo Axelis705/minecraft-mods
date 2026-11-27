@@ -150,7 +150,7 @@ public final class NocheKrampus {
     }
 
     /** El piso en (x, z): arriba de lo firme y, si hay capas de nieve, arriba de la nieve (ahí se ve la huella). */
-    private static Vec3 alPiso(ServerLevel l, Vec3 p) {
+    public static Vec3 alPiso(ServerLevel l, Vec3 p) {
         int x = (int) Math.floor(p.x), z = (int) Math.floor(p.z);
         int y = l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
         BlockPos b = new BlockPos(x, y, z);

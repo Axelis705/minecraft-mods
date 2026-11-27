@@ -75,6 +75,9 @@ final class Prueba {
     }
 
     /** El pingüino más cercano (de alguien o sin dueño, adulto). */
+    /** Dónde estaba el pingüino cuando me alejé (x, z) y a qué hora (para reintentar si no arranca de panza). */
+    private static final double[] inicioPanza = new double[3];
+
     static com.navidad.entidad.Pinguino pinguino(boolean domado) {
         var mc = Minecraft.getInstance();
         com.navidad.entidad.Pinguino mejor = null;
@@ -527,12 +530,33 @@ final class Prueba {
                 // me alejo por el hielo: me sigue con prisa (de panza)
                 t.cmd("gamemode survival @a");
                 if (pg != null) {
+                    inicioPanza[0] = pg.getX();
+                    inicioPanza[1] = pg.getZ();
+                    inicioPanza[2] = System.currentTimeMillis();
                     t.cmd(String.format(Locale.ROOT, "tp @a %.1f -60 %.1f 0 20", pg.getX() + 1.5, pg.getZ() + 11.0));
                 }
             });
-            t.waitFor("el pingüino va de panza", 5000, () -> {
+            t.waitFor("el pingüino va de panza", 9000, () -> {
                 var pg = pinguino(true);
-                return pg != null && pg.deslizando();
+                if (pg != null && pg.deslizando()) {
+                    return true;
+                }
+                // si a los 3 s no arrancó (a veces se queda sentado o ya me alcanzó), lo paro desde el servidor y me alejo otra vez
+                if (pg != null && inicioPanza[2] > 0 && System.currentTimeMillis() - inicioPanza[2] > 3000) {
+                    inicioPanza[2] = 0;
+                    int id = pg.getId();
+                    sv(sp -> {
+                        if (sp.serverLevel().getEntity(id) instanceof com.navidad.entidad.Pinguino p) {
+                            p.setOrderedToSit(false);
+                            p.setInSittingPose(false);
+                        }
+                    });
+                    double lejosZ = Math.abs(pg.getZ() - inicioPanza[1]) > Math.abs(pg.getZ() - (inicioPanza[1] + 11)) ? inicioPanza[1]
+                            : inicioPanza[1] + 11;
+                    t.log("el pingüino no arrancaba: lo paro y me alejo otra vez");
+                    t.cmd(String.format(Locale.ROOT, "tp @a %.1f -60 %.1f 0 20", inicioPanza[0] + 1.5, lejosZ));
+                }
+                return false;
             });
             t.photo("pinguino_de_panza", 100, () -> {
                 var pg = pinguino(true);
@@ -1326,8 +1350,9 @@ final class Prueba {
         // huellas de pezuña de día, en fila enfrente (para ver que se dibujan)
         t.add("huellas de dia", 1200, () -> sv(sp -> {
             for (int i = 0; i < 6; i++) {
-                com.navidad.entidad.HuellaKrampus.poner(sp.serverLevel(), new Vec3(600.5 + (i % 2 == 0 ? 0.3 : -0.3), -60, 10.5 - i * 0.9), 180F,
-                        i % 2 == 0);
+                // con el mismo "al piso" que la Noche: encima de las capas de nieve
+                com.navidad.entidad.HuellaKrampus.poner(sp.serverLevel(), com.navidad.krampus.NocheKrampus.alPiso(sp.serverLevel(),
+                        new Vec3(600.5 + (i % 2 == 0 ? 0.3 : -0.3), -60, 10.5 - i * 0.9)), 180F, i % 2 == 0);
             }
             sp.teleportTo(600.5, -60, 15.5);
         }));
