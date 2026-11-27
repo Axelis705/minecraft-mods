@@ -205,6 +205,33 @@ def patines():
     c.build(os.path.join(RES, 'geo', 'patines.geo.json'), os.path.join(RES, 'textures', 'prenda', 'patines.png'))
 
 
+def invierno():
+    """Bufanda de rayas (en el cuello, con las puntas colgando al frente) y orejeras peluditas con su diadema."""
+    rojo, blanco, verde = (196, 30, 42), (242, 240, 234), (44, 140, 64)
+    c = G.Creature('geometry.navidad.bufanda', 64, 64, seed=9)
+    c.bone('cuerpo', [0, 24, 0])
+    c.part('cuerpo', [-4.7, 22.2, -2.7], [9.4, 2.4, 5.4], G.solid(rojo))
+    c.part('cuerpo', [-4.75, 23.0, -2.75], [9.5, 0.6, 5.5], G.solid(blanco))
+    c.part('cuerpo', [0.8, 15.2, -3.1], [2.4, 7.2, 0.9], G.solid(rojo))
+    c.part('cuerpo', [2.3, 16.6, -3.0], [2.2, 5.8, 0.8], G.solid(verde))
+    for y in (17.2, 19.6):
+        c.part('cuerpo', [0.75, y, -3.15], [2.5, 0.7, 1.0], G.solid(blanco))
+    c.part('cuerpo', [0.8, 14.4, -3.1], [2.4, 0.8, 0.9], G.solid(blanco))
+    c.part('cuerpo', [2.3, 15.8, -3.0], [2.2, 0.8, 0.8], G.solid(blanco))
+    c.build(os.path.join(RES, 'geo', 'bufanda.geo.json'), os.path.join(RES, 'textures', 'prenda', 'bufanda.png'))
+    c = G.Creature('geometry.navidad.orejeras', 64, 64, seed=10)
+    rosa, diadema = (240, 176, 196), (230, 230, 236)
+    c.bone('cabeza', [0, 24, 0])
+    c.part('cabeza', [-4.5, 32.1, -0.6], [9.0, 0.8, 1.2], G.solid(diadema))
+    c.part('cabeza', [-4.8, 29.2, -0.5], [0.8, 3.4, 1.0], G.solid(diadema))
+    c.part('cabeza', [4.0, 29.2, -0.5], [0.8, 3.4, 1.0], G.solid(diadema))
+    c.part('cabeza', [-5.9, 25.8, -1.9], [1.9, 3.8, 3.8], G.solid(rosa))
+    c.part('cabeza', [4.0, 25.8, -1.9], [1.9, 3.8, 3.8], G.solid(rosa))
+    c.part('cabeza', [-6.1, 26.4, -1.3], [0.4, 2.6, 2.6], G.solid(blanco))
+    c.part('cabeza', [5.7, 26.4, -1.3], [0.4, 2.6, 2.6], G.solid(blanco))
+    c.build(os.path.join(RES, 'geo', 'orejeras.geo.json'), os.path.join(RES, 'textures', 'prenda', 'orejeras.png'))
+
+
 if __name__ == '__main__':
     R, W, V, D, N, Ca, Cn = '#b81e2a', '#f2f2ee', '#2a8a40', '#e8c040', '#1a2a5a', '#7a4a2a', '#d8b878'
     reno = mapa(['........', '.c....c.', '..c..c..', '..aaaa..', '.aaaaaa.', '..aEEa..', '..aaaa..', '...rr...', '........'],
@@ -219,4 +246,5 @@ if __name__ == '__main__':
     traje_santa()
     gorros()
     patines()
+    invierno()
     print('ok')

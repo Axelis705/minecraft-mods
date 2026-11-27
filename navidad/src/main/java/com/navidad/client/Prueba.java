@@ -152,6 +152,12 @@ final class Prueba {
                 t.cmd("execute as @p run navidad ropa cuernos_reno");
             });
             t.photo("ropa_lado", 1500, () -> t.cmd("tp @a 0.5 -60 -20.5 60 5"));
+            t.photo("ropa_bufanda_orejeras", 2000, () -> {
+                t.cmd("execute as @p run navidad ropa sueter_pinos");
+                t.cmd("execute as @p run navidad ropa orejeras");
+                t.cmd("execute as @p run navidad ropa bufanda");
+                t.cmd("tp @a 0.5 -60 -20.5 20 5");
+            });
             t.add("camara normal", 500, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
             // la piñata
             t.add("pinata", 2500, () -> {

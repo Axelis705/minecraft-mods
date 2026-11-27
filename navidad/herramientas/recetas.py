@@ -67,6 +67,8 @@ if __name__ == '__main__':
     # invierno y Año Nuevo
     con_forma('trineo_madera', 'trineo_madera', 1, ['S S', 'PPP', 'I I'], {'S': 'stick', 'P': '#minecraft:planks', 'I': 'iron_ingot'})
     sin_forma('patines', 'patines', 1, ['leather', 'leather', 'white_wool', 'iron_ingot', 'iron_ingot'])
+    sin_forma('bufanda', 'bufanda', 1, ['red_wool', 'white_wool', 'green_wool', 'string'])
+    sin_forma('orejeras', 'orejeras', 1, ['pink_wool', 'pink_wool', 'white_wool', 'iron_nugget'])
     sin_forma('uvas', 'uvas', 6, ['sweet_berries', 'sweet_berries', 'purple_dye'])
     con_forma('buzon_santa', 'buzon_santa', 1, ['IRI', 'IPI', ' S '], {'I': 'iron_ingot', 'R': 'red_dye', 'P': 'paper', 'S': 'stick'})
     # decoración: caja de adornos -> cualquier bloque en el cortapiedras

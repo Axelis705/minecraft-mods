@@ -64,6 +64,8 @@ public final class ModClient {
             }
             // los patines: una bota con cuchilla en cada pierna
             VestuarioCliente.registrar(Ropa.id("patines"), Prenda.modelo(rl("geo/patines.geo.json"), rl("textures/prenda/patines.png")));
+            // la bufanda: en el cuello, con las puntas al frente
+            VestuarioCliente.registrar(Ropa.id("bufanda"), Prenda.modelo(rl("geo/bufanda.geo.json"), rl("textures/prenda/bufanda.png")));
             // el traje de Santa: todo el cuerpo y la barba
             VestuarioCliente.registrar(Ropa.id("traje_santa"), Prenda.piel(rl("textures/prenda/traje_santa.png")));
         });

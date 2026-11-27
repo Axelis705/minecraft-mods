@@ -356,5 +356,7 @@
   "advancement.navidad.nacimiento": "Silent night",
   "advancement.navidad.nacimiento.desc": "Place the manger with the Child in your nativity scene",
   "advancement.navidad.casita": "Knock knock, elf",
-  "advancement.navidad.casita.desc": "Find an elf cottage in the snow and open its chest"
+  "advancement.navidad.casita.desc": "Find an elf cottage in the snow and open its chest",
+  "item.navidad.bufanda": "Christmas scarf",
+  "item.navidad.orejeras": "Earmuffs"
 }

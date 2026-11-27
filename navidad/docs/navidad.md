@@ -32,7 +32,8 @@ fecha: `/navidad temporada si` (o `no`, o `auto` para volver a la fecha real).
 - **Calendario de Adviento**: una puerta por día del 1 al 24 de diciembre (el 24 es la grande). Cada quien lleva su cuenta con el mundo.
 - **Piñata** (se cuelga del techo), **palo de piñata** y **venda** (te tapa los ojos y te marea).
 - **Ropa** (se ve encima de tu skin, clic derecho para ponértela o quitártela): gorro de Santa, gorro de duende, cuernos de reno,
-  suéter de reno, de pinos y de copos, traje de Santa (con barba).
+  orejeras, suéter de reno, de pinos y de copos, traje de Santa (con barba), **bufanda** de rayas (va con cualquier suéter) y patines.
+  Recetas: bufanda = lana roja + blanca + verde + hilo; orejeras = 2 lanas rosas + lana blanca + pepita de hierro.
 - **Discos** (villancicos de dominio público en caja de música): Jingle Bells, We Wish You a Merry Christmas, Noche de paz, Deck the Halls.
 - **Luz de bengala**: chispas en tu mano.
 - **Patines de hielo** (ropa de los pies, se ven puestos): en el hielo vas mucho más rápido y suena el filo; fuera del hielo caminas torpe.

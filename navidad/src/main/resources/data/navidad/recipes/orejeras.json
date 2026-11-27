@@ -1,0 +1,22 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:pink_wool"
+  },
+  {
+   "item": "minecraft:pink_wool"
+  },
+  {
+   "item": "minecraft:white_wool"
+  },
+  {
+   "item": "minecraft:iron_nugget"
+  }
+ ],
+ "result": {
+  "item": "navidad:orejeras",
+  "count": 1
+ }
+}

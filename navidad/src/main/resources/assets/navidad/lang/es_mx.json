@@ -356,5 +356,7 @@
   "advancement.navidad.nacimiento": "Noche de paz",
   "advancement.navidad.nacimiento.desc": "Pon el pesebre con el Niño en tu nacimiento",
   "advancement.navidad.casita": "Toc, toc, duende",
-  "advancement.navidad.casita.desc": "Encuentra una casita de duende en la nieve y abre su cofre"
+  "advancement.navidad.casita.desc": "Encuentra una casita de duende en la nieve y abre su cofre",
+  "item.navidad.bufanda": "Bufanda navideña",
+  "item.navidad.orejeras": "Orejeras"
 }

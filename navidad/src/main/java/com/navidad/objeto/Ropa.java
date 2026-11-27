@@ -26,10 +26,12 @@ import java.util.function.Consumer;
  */
 public class Ropa extends CoreItem {
     /** Los grupos: lo que va en la cabeza y lo que va en el cuerpo. */
-    public static final List<String> CABEZA = List.of("gorro_santa", "gorro_duende", "cuernos_reno");
+    public static final List<String> CABEZA = List.of("gorro_santa", "gorro_duende", "cuernos_reno", "orejeras");
     public static final List<String> CUERPO = List.of("sueter_reno", "sueter_pinos", "sueter_copos", "traje_santa");
     /** Lo de los pies (los patines de hielo: en el hielo vas más rápido, fuera de él caminas torpe). */
     public static final List<String> PIES = List.of("patines");
+    /** Lo del cuello (la bufanda: va con cualquier suéter o traje). */
+    public static final List<String> CUELLO = List.of("bufanda");
 
     private final String prenda;
 
@@ -76,7 +78,7 @@ public class Ropa extends CoreItem {
 
     public static void poner(MinecraftServer s, ServerPlayer sp, String prenda) {
         UUID u = sp.getUUID();
-        List<String> grupo = CABEZA.contains(prenda) ? CABEZA : PIES.contains(prenda) ? PIES : CUERPO;
+        List<String> grupo = CABEZA.contains(prenda) ? CABEZA : PIES.contains(prenda) ? PIES : CUELLO.contains(prenda) ? CUELLO : CUERPO;
         for (String otra : grupo) {
             if (!otra.equals(prenda) && Vestuario.tiene(s, u, id(otra))) {
                 Vestuario.quitar(s, u, id(otra));

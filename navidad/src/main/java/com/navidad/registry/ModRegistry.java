@@ -180,6 +180,8 @@ public final class ModRegistry {
     public static final RegistryObject<Item> SUETER_COPOS = item("sueter_copos", () -> new Ropa(props().stacksTo(1), "sueter_copos"));
     public static final RegistryObject<Item> TRAJE_SANTA = item("traje_santa", () -> new Ropa(props().stacksTo(1).rarity(Rarity.RARE), "traje_santa"));
     public static final RegistryObject<Item> PATINES = item("patines", () -> new Ropa(props().stacksTo(1), "patines"));
+    public static final RegistryObject<Item> BUFANDA = item("bufanda", () -> new Ropa(props().stacksTo(1), "bufanda"));
+    public static final RegistryObject<Item> OREJERAS = item("orejeras", () -> new Ropa(props().stacksTo(1), "orejeras"));
 
     // ------------------------------------------------------------------ discos (villancicos de dominio público en caja de música)
 

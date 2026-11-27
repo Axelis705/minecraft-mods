@@ -29,6 +29,7 @@ public final class Comandos {
         List<String> ropa = new ArrayList<>(Ropa.CABEZA);
         ropa.addAll(Ropa.CUERPO);
         ropa.addAll(Ropa.PIES);
+        ropa.addAll(Ropa.CUELLO);
         d.register(Commands.literal(Navidad.MODID)
                 .executes(c -> {
                     c.getSource().sendSuccess(() -> Component.translatable("navidad.hola", com.axeliscore.AxelisCore.version(),

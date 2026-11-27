@@ -392,3 +392,12 @@ T11 = {
 if __name__ == '__main__':
     aplicar(T11)
     print(len(T11), 'textos de los adornos que responden')
+
+T12 = {
+    'item.navidad.bufanda': ('Bufanda navideña', 'Christmas scarf'),
+    'item.navidad.orejeras': ('Orejeras', 'Earmuffs'),
+}
+
+if __name__ == '__main__':
+    aplicar(T12)
+    print(len(T12), 'textos de la bufanda y las orejeras')
