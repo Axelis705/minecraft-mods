@@ -40,6 +40,7 @@ public class Navidad {
         GuerraNieve.init();
         Calcetines.init();
         GalletasSanta.init();
+        DecoViva.init();
         AxelisCore.commands(Comandos::registrar);
     }
 

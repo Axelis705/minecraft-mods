@@ -382,3 +382,13 @@ T10 = {
 if __name__ == '__main__':
     aplicar(T10)
     print(len(T10), 'textos de los ángeles de nieve')
+
+T11 = {
+    'navidad.deco.regalo_vacio': ('Está vacío... es de adorno.', 'It\'s empty... just a decoration.'),
+    'navidad.deco.bebida': ('★ ¡Qué rico! Ya se te quitó el frío.', '★ Delicious! You\'re not cold anymore.'),
+    'navidad.deco.bebida_espera': ('Espera un ratito para otro sorbo.', 'Wait a little for another sip.'),
+}
+
+if __name__ == '__main__':
+    aplicar(T11)
+    print(len(T11), 'textos de los adornos que responden')

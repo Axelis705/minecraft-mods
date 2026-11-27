@@ -48,6 +48,12 @@ fecha: `/navidad temporada si` (o `no`, o `auto` para volver a la fecha real).
 En temporada, a 8 de cada 10 mobs con cabeza de persona (zombis, esqueletos, aldeanos, saqueadores, piglins... también de otros mods)
 les sale un gorro: casi siempre el de Santa y a veces el de duende. Los bebés y los que traen casco no.
 
+## Adornos que responden
+
+Con clic derecho: la **esfera de nieve** se sacude y nieva adentro, las **campanas** suenan, el **cascanueces** truena, los **regalos de
+adorno** suenan a vacío (¡son de adorno!), y la **taza de chocolate** y la **olla de ponche** se pueden probar (quitan el frío y el fuego, un
+sorbo cada medio minuto). Agachado, el clic derecho pone bloques normales junto a ellos.
+
 ## Ángeles de nieve
 
 En temporada, **agáchate sobre la nieve mirando al cielo** y quédate quieto 3 segundos: al levantarte queda la huella de un ángel de nieve

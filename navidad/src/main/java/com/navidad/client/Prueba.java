@@ -317,6 +317,18 @@ final class Prueba {
                 t.cmd("gamemode creative @a");
             });
             t.photo("angel_nieve", 1500, () -> t.lookFrom(265.5, -57.2, 9.6, 265.5, -60.6, 7.4));
+            // ---------------------------------------------------------------- adornos que responden: la esfera de nieve se sacude
+            t.add("esfera", 1000, () -> {
+                t.cmd("setblock 268 -60 4 navidad:esfera_nieve[facing=south]");
+                t.cmd("tp @a 268.5 -60 6.5 180 35");
+            });
+            t.add("sacudir esfera", 300, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
+                        new BlockHitResult(new Vec3(268.5, -59.7, 4.8), Direction.SOUTH, new BlockPos(268, -60, 4), false));
+            });
+            t.photo("esfera_sacudida", 400, () -> t.lookFrom(268.5, -59, 5.9, 268.5, -59.7, 4.5));
+            t.add("la esfera respondio", 300, () -> t.check(com.navidad.DecoViva.usos > 0, "la esfera de nieve se sacudió"));
             // ---------------------------------------------------------------- la colina de trineos
             t.add("colina", 1000, () -> {
                 t.cmd("time set 6000");

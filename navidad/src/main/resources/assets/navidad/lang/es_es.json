@@ -309,5 +309,8 @@
   "navidad.galletas.comidas": "★ ¡Santa se comió tus galletas y te dejó un regalo junto al plato!",
   "block.navidad.angel_nieve": "Ángel de nieve",
   "navidad.angel.haciendo": "❄ Haciendo un ángel de nieve... (no te muevas)",
-  "navidad.angel.listo": "❄ ¡Hiciste un ángel de nieve!"
+  "navidad.angel.listo": "❄ ¡Hiciste un ángel de nieve!",
+  "navidad.deco.regalo_vacio": "Está vacío... es de adorno.",
+  "navidad.deco.bebida": "★ ¡Qué rico! Ya se te quitó el frío.",
+  "navidad.deco.bebida_espera": "Espera un ratito para otro sorbo."
 }

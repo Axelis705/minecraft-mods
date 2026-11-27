@@ -309,5 +309,8 @@
   "navidad.galletas.comidas": "★ Santa ate your cookies and left you a gift next to the plate!",
   "block.navidad.angel_nieve": "Snow angel",
   "navidad.angel.haciendo": "❄ Making a snow angel... (don't move)",
-  "navidad.angel.listo": "❄ You made a snow angel!"
+  "navidad.angel.listo": "❄ You made a snow angel!",
+  "navidad.deco.regalo_vacio": "It's empty... just a decoration.",
+  "navidad.deco.bebida": "★ Delicious! You're not cold anymore.",
+  "navidad.deco.bebida_espera": "Wait a little for another sip."
 }
