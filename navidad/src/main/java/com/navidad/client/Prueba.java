@@ -66,15 +66,39 @@ final class Prueba {
                 t.cmd("fill -14 -60 27 14 -55 27 minecraft:spruce_planks");
             });
             t.add("comando", 1200, () -> t.cmd(Navidad.MODID));
-            // ¿la letra del juego trae los emojis que usan los mensajes? (si miden igual que un carácter que no existe, salen como cajita)
-            t.add("emojis", 200, () -> {
-                var f = net.minecraft.client.Minecraft.getInstance().font;
-                int falta = f.width(new String(Character.toChars(0x10FFFD)));
-                StringBuilder sb = new StringBuilder("NAVIDAD_EMOJI falta=" + falta);
-                for (int cp : new int[]{0x1F514, 0x1F381, 0x1F384, 0x1F6F7, 0x1F947, 0x1F347, 0x1F385, 0x2744, 0x2605, 0x266A}) {
-                    sb.append(' ').append(Integer.toHexString(cp)).append('=').append(f.width(new String(Character.toChars(cp))));
+            // ¿la letra del juego trae los símbolos y emojis que usan los textos del mod? (los que no, salen como cajita)
+            t.add("emojis", 300, () -> {
+                try {
+                    var f = net.minecraft.client.Minecraft.getInstance().font;
+                    net.minecraft.client.gui.font.FontSet fs = null;
+                    for (var fld : net.minecraft.client.gui.Font.class.getDeclaredFields()) {
+                        if (java.util.function.Function.class.isAssignableFrom(fld.getType())) {
+                            fld.setAccessible(true);
+                            fs = (net.minecraft.client.gui.font.FontSet) ((java.util.function.Function<Object, Object>) fld.get(f))
+                                    .apply(net.minecraft.network.chat.Style.DEFAULT_FONT);
+                        }
+                    }
+                    var rm = net.minecraft.client.Minecraft.getInstance().getResourceManager();
+                    java.util.TreeSet<Integer> usados = new java.util.TreeSet<>();
+                    for (String code : new String[]{"es_mx", "en_us"}) {
+                        var r = rm.getResource(new net.minecraft.resources.ResourceLocation(Navidad.MODID, "lang/" + code + ".json"));
+                        if (r.isPresent()) {
+                            try (var in = r.get().open()) {
+                                new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8).codePoints()
+                                        .filter(c -> c >= 0x2000 && c != 0x2026 && c != 0x2014 && c != 0x2013).forEach(usados::add);
+                            }
+                        }
+                    }
+                    StringBuilder faltan = new StringBuilder();
+                    for (int cp : usados) {
+                        if (fs != null && fs.getGlyphInfo(cp, false) == net.minecraft.client.gui.font.glyphs.SpecialGlyphs.MISSING) {
+                            faltan.append(' ').append(Integer.toHexString(cp));
+                        }
+                    }
+                    Navidad.LOGGER.info("NAVIDAD_EMOJI usados={} faltan:{}", usados.size(), faltan.length() == 0 ? " ninguno" : faltan);
+                } catch (Exception e) {
+                    Navidad.LOGGER.info("NAVIDAD_EMOJI no se pudo revisar: {}", e.toString());
                 }
-                Navidad.LOGGER.info(sb.toString());
             });
             // galería: diez por fila, cada dos bloques; filas cada tres
             t.add("galeria", 2500, () -> {
