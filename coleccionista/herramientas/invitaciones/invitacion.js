@@ -262,5 +262,10 @@ function grano() {
   placa.style.left = ((p.x + 1) / 2 * W) + 'px';
   placa.style.top = ((1 - p.y) / 2 * H) + 'px';
   await document.fonts.ready;
+  // si el nombre es muy largo, se achica hasta caber (con orillas de 70 px)
+  const n = document.getElementById('nombre');
+  n.style.display = 'inline-block';
+  let tam = 104;
+  while (n.offsetWidth > W - 140 && tam > 48) { tam -= 4; n.style.fontSize = tam + 'px'; }
   window.listo = true;
 })().catch((e) => { document.title = 'ERROR ' + e; window.listo = true; });
