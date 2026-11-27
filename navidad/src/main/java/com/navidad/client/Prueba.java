@@ -382,27 +382,26 @@ final class Prueba {
                     t.lookFrom(q.getX() + 2.2, -60, q.getZ() + 2.2, q.getX() + 0.5, -59.4, q.getZ() + 0.5);
                 }
             };
-            t.add("buscar la caja", 1200, () -> {
+            // la caja se pone en el servidor; hay que esperar a que el cliente la vea antes de buscarla
+            t.waitFor("la caja llegó al cliente", 4000, () -> {
                 var l = Minecraft.getInstance().level;
                 for (BlockPos q : BlockPos.betweenClosed(425, -60, 65, 455, -58, 95)) {
                     if (l.getBlockState(q).is(com.navidad.registry.ModRegistry.CAJA_REGALO.get())) {
                         cajaVista[0] = q.immutable();
-                        verCaja.run();
-                        break;
+                        return true;
                     }
                 }
+                return false;
             });
+            t.add("buscar la caja", 1200, verCaja);
             t.photo("regalo_aterrizo", 600, () -> {
             });
             t.add("abrir el regalo", 150, () -> {
                 Minecraft mc = Minecraft.getInstance();
-                var l = mc.level;
-                for (BlockPos q : BlockPos.betweenClosed(425, -60, 65, 455, -58, 95)) {
-                    if (l.getBlockState(q).is(com.navidad.registry.ModRegistry.CAJA_REGALO.get())) {
-                        mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND, new BlockHitResult(new Vec3(q.getX() + 0.5, q.getY() + 0.5,
-                                q.getZ() + 0.5), Direction.UP, q.immutable(), false));
-                        break;
-                    }
+                BlockPos q = cajaVista[0];
+                if (q != null) {
+                    mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND, new BlockHitResult(new Vec3(q.getX() + 0.5, q.getY() + 0.5,
+                            q.getZ() + 0.5), Direction.UP, q, false));
                 }
             });
             t.photo("regalo_tiembla", 300, verCaja);
@@ -703,7 +702,7 @@ final class Prueba {
             t.photo("cascanueces_guardia", 1200, () -> t.lookFrom(507.5, -60, 148.5, 505.5, -58.8, 145.5));
             t.add("otro ladron", 1500, () -> {
                 t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
-                t.cmd("tp @a 508.5 -60 151.5 150 15");
+                t.lookFrom(498.5, -60, 151.5, 503.5, -60.3, 143.5);    // de lado, para que el árbol no tape al cascanueces
                 t.cmd("execute as @p run navidad ladron");
             });
             t.photo("cascanueces_persigue", 2500, () -> {
