@@ -138,6 +138,30 @@ public final class Comandos {
                     com.navidad.entidad.Krampus.llamar(c.getSource().getLevel(), pos.add(mira), c.getSource().getEntity() instanceof
                             net.minecraft.world.entity.LivingEntity le ? le : null);
                     return 1;
+                })
+                        // la Noche del Krampus ya (para quien se diga, o para ti)
+                        .then(Commands.literal("noche").executes(c -> nocheKrampus(c, java.util.List.of(c.getSource().getPlayerOrException())))
+                                .then(Commands.argument("jugadores", net.minecraft.commands.arguments.EntityArgument.players())
+                                        .executes(c -> nocheKrampus(c, net.minecraft.commands.arguments.EntityArgument.getPlayers(c, "jugadores")))))
+                        .then(Commands.literal("visitas")
+                                .then(Commands.literal("si").executes(c -> visitas(c, true)))
+                                .then(Commands.literal("no").executes(c -> visitas(c, false))))
+                        .then(Commands.literal("krampusillos").executes(c -> {
+                            ServerPlayer sp = c.getSource().getPlayerOrException();
+                            boolean arbol = com.navidad.krampus.NocheKrampus.diablitosAlArbol(sp);
+                            if (!arbol) {
+                                for (int i = 0; i < 2; i++) {
+                                    Vec3 lado = Vec3.directionFromRotation(0, sp.getYRot() + (i == 0 ? 30 : -30)).scale(6);
+                                    com.navidad.entidad.Krampusillo.llamar(sp.serverLevel(), sp.position().add(lado), sp, null);
+                                }
+                            }
+                            return 1;
+                        })))
+                .then(Commands.literal("guarida").requires(s -> s.hasPermission(2)).executes(c -> {
+                    net.minecraft.core.BlockPos p = net.minecraft.core.BlockPos.containing(c.getSource().getPosition());
+                    boolean ok = com.navidad.mundo.Guarida.construir(c.getSource().getLevel(), p, c.getSource().getLevel().random, true);
+                    c.getSource().sendSuccess(() -> Component.translatable("navidad.guarida.lista"), true);
+                    return ok ? 1 : 0;
                 }))
                 .then(Commands.literal("reiniciar").requires(s -> s.hasPermission(2))
                         .then(reiniciar("libro", Reinicio::libro))
@@ -175,6 +199,24 @@ public final class Comandos {
     }
 
     static final List<String> GENTE = List.of("santa", "senora_claus", "duende_juguetero", "duende_sastre", "duende_renos");
+
+    private static int nocheKrampus(CommandContext<CommandSourceStack> c, java.util.Collection<ServerPlayer> quienes) {
+        int n = 0;
+        for (ServerPlayer p : quienes) {
+            if (com.navidad.krampus.NocheKrampus.empezar(p)) {
+                n++;
+            }
+        }
+        int k = n;
+        c.getSource().sendSuccess(() -> Component.translatable("navidad.noche_krampus.comando", k), true);
+        return n;
+    }
+
+    private static int visitas(CommandContext<CommandSourceStack> c, boolean si) {
+        com.navidad.krampus.NocheKrampus.visitas(c.getSource().getServer(), si);
+        c.getSource().sendSuccess(() -> Component.translatable(si ? "navidad.noche_krampus.visitas_si" : "navidad.noche_krampus.visitas_no"), true);
+        return 1;
+    }
 
     private static int aldea(CommandContext<CommandSourceStack> c, boolean gente) {
         net.minecraft.core.BlockPos p = net.minecraft.core.BlockPos.containing(c.getSource().getPosition());

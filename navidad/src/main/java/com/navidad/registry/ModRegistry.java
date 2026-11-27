@@ -77,6 +77,9 @@ public final class ModRegistry {
     /** El puesto de árboles de Navidad con Don Abeto (data/navidad/forge/biome_modifier/puesto_pinos.json). */
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> PUESTO_PINOS = FEATURES.register("puesto_pinos",
             () -> new com.navidad.mundo.PuestoPinos(NoneFeatureConfiguration.CODEC));
+    /** La guarida del Krampus (data/navidad/forge/biome_modifier/guarida_krampus.json). */
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> GUARIDA = FEATURES.register("guarida_krampus",
+            () -> new com.navidad.mundo.Guarida(NoneFeatureConfiguration.CODEC));
 
     /** En qué orden salen en la pestaña creativa. */
     private static final List<RegistryObject<? extends Item>> ORDEN = new ArrayList<>();
@@ -135,6 +138,21 @@ public final class ModRegistry {
     public static final RegistryObject<SoundEvent> LANZANIEVES_ASPIRA = sonido("lanzanieves_aspira");
     public static final RegistryObject<SoundEvent> LANZANIEVES_VACIO = sonido("lanzanieves_vacio");
     public static final RegistryObject<SoundEvent> CASCANUECES_CLAC = sonido("cascanueces_clac");
+    // el Krampus renovado (herramientas/sonidos_krampus.py)
+    public static final RegistryObject<SoundEvent> KRAMPUS_CADENAS = sonido("krampus_cadenas");
+    public static final RegistryObject<SoundEvent> KRAMPUS_CASCABELES = sonido("krampus_cascabeles");
+    public static final RegistryObject<SoundEvent> KRAMPUS_LATIGO = sonido("krampus_latigo");
+    public static final RegistryObject<SoundEvent> KRAMPUS_SACO = sonido("krampus_saco");
+    public static final RegistryObject<SoundEvent> KRAMPUS_PEZUNA = sonido("krampus_pezuna");
+    public static final RegistryObject<SoundEvent> KRAMPUS_SOPLIDO = sonido("krampus_soplido");
+    public static final RegistryObject<SoundEvent> KRAMPUS_APAGON = sonido("krampus_apagon");
+    public static final RegistryObject<SoundEvent> KRAMPUS_APAGON_MUSICA = sonido("krampus_apagon_musica");
+    public static final RegistryObject<SoundEvent> KRAMPUS_RISA = sonido("krampus_risa");
+    public static final RegistryObject<SoundEvent> KRAMPUSILLO_RISA = sonido("krampusillo_risa");
+    public static final RegistryObject<SoundEvent> KRAMPUSILLO_DOLOR = sonido("krampusillo_dolor");
+    public static final RegistryObject<SoundEvent> CAMPANITA = sonido("campanita");
+    public static final RegistryObject<SoundEvent> GANCHO = sonido("gancho");
+    public static final RegistryObject<SoundEvent> NOCHE_KRAMPUS = sonido("noche_krampus");
 
     // ------------------------------------------------------------------ comida
 
@@ -288,6 +306,18 @@ public final class ModRegistry {
     public static final RegistryObject<EntityType<Krampus>> KRAMPUS = ENTITIES.register("krampus",
             () -> EntityType.Builder.<Krampus>of(Krampus::new, MobCategory.MONSTER).sized(1.6F, 3.0F).fireImmune().clientTrackingRange(12)
                     .build("navidad:krampus"));
+    /** Los diablitos del Krampus. */
+    public static final RegistryObject<EntityType<com.navidad.entidad.Krampusillo>> KRAMPUSILLO = ENTITIES.register("krampusillo",
+            () -> EntityType.Builder.<com.navidad.entidad.Krampusillo>of(com.navidad.entidad.Krampusillo::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.1F).clientTrackingRange(10).build("navidad:krampusillo"));
+    /** La cadena con gancho (del Krampus y la de su botín). */
+    public static final RegistryObject<EntityType<com.navidad.entidad.GanchoCadena>> GANCHO_CADENA = ENTITIES.register("gancho_cadena",
+            () -> EntityType.Builder.<com.navidad.entidad.GanchoCadena>of(com.navidad.entidad.GanchoCadena::new, MobCategory.MISC)
+                    .sized(0.4F, 0.4F).clientTrackingRange(8).updateInterval(1).build("navidad:gancho_cadena"));
+    /** Las huellas de pezuña de la Noche del Krampus. */
+    public static final RegistryObject<EntityType<com.navidad.entidad.HuellaKrampus>> HUELLA_KRAMPUS = ENTITIES.register("huella_krampus",
+            () -> EntityType.Builder.<com.navidad.entidad.HuellaKrampus>of(com.navidad.entidad.HuellaKrampus::new, MobCategory.MISC)
+                    .sized(0.5F, 0.05F).clientTrackingRange(6).updateInterval(100).noSave().build("navidad:huella_krampus"));
 
     /** La mascota: el pingüino. */
     public static final RegistryObject<EntityType<com.navidad.entidad.Pinguino>> PINGUINO = ENTITIES.register("pinguino",
@@ -318,10 +348,31 @@ public final class ModRegistry {
 
     public static final RegistryObject<Item> CAMPANA_KRAMPUS = item("campana_krampus", () -> new CampanaKrampus(props().stacksTo(1).rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> CUERNO_KRAMPUS = item("cuerno_krampus", () -> new Item(props().stacksTo(16).rarity(Rarity.EPIC)));
+    // el botín del Krampus y lo de su guarida
+    public static final RegistryObject<Item> CADENA_KRAMPUS = item("cadena_krampus", () -> new com.navidad.objeto.CadenaKrampus(props()
+            .rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> VARA_ABEDUL = item("vara_abedul", () -> new com.navidad.objeto.VaraAbedul(props().rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> MASCARA_KRAMPUS = item("mascara_krampus", () -> new com.navidad.objeto.MascaraKrampus(props()
+            .stacksTo(1).rarity(Rarity.EPIC)));
+    public static final RegistryObject<Item> SACO_KRAMPUS = item("saco_krampus", () -> new com.navidad.objeto.SacoKrampusItem(props()
+            .stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    public static final RegistryObject<Item> CAMPANITA_SANTA = item("campanita_santa", () -> new com.navidad.objeto.CampanitaSanta(props()
+            .stacksTo(1).rarity(Rarity.RARE)));
+    public static final RegistryObject<Block> FAROL_NOCHEBUENA = BLOCKS.register("farol_nochebuena", () -> new com.navidad.bloque.FarolNochebuena(
+            BlockBehaviour.Properties.of().strength(1.5F).sound(net.minecraft.world.level.block.SoundType.LANTERN).noOcclusion()));
+    public static final RegistryObject<Item> FAROL_NOCHEBUENA_ITEM = item("farol_nochebuena", () -> new BlockItem(ModRegistry.FAROL_NOCHEBUENA.get(),
+            props()));
+    public static final RegistryObject<Block> ALTAR_KRAMPUS = BLOCKS.register("altar_krampus", () -> new com.navidad.bloque.AltarKrampus(
+            BlockBehaviour.Properties.of().strength(6F, 1200F).sound(net.minecraft.world.level.block.SoundType.POLISHED_DEEPSLATE).noOcclusion()
+                    .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Item> ALTAR_KRAMPUS_ITEM = item("altar_krampus", () -> new BlockItem(ModRegistry.ALTAR_KRAMPUS.get(),
+            props().rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> HUEVO_MUNECO = item("huevo_muneco_malvado", () -> new ForgeSpawnEggItem(MUNECO_MALVADO, 0xF0F4FA, 0xC81E2A, props()));
     public static final RegistryObject<Item> HUEVO_RENO = item("huevo_reno", () -> new ForgeSpawnEggItem(RENO, 0x8C603A, 0xE4D6BA, props()));
     public static final RegistryObject<Item> HUEVO_JENGIBRE = item("huevo_hombre_jengibre", () -> new ForgeSpawnEggItem(HOMBRE_JENGIBRE, 0xB8743A, 0xF6F6F2, props()));
     public static final RegistryObject<Item> HUEVO_KRAMPUS = item("huevo_krampus", () -> new ForgeSpawnEggItem(KRAMPUS, 0x34261F, 0xFFBE28, props()));
+    public static final RegistryObject<Item> HUEVO_KRAMPUSILLO = item("huevo_krampusillo", () -> new ForgeSpawnEggItem(ModRegistry.KRAMPUSILLO,
+            0x58301F, 0xFFDE28, props()));
     public static final RegistryObject<Item> HUEVO_RENITO = item("huevo_renito", () -> new ForgeSpawnEggItem(RENITO, 0xA6744A, 0xEC2830, props()));
     public static final RegistryObject<Item> HUEVO_PINGUINO = item("huevo_pinguino", () -> new ForgeSpawnEggItem(PINGUINO, 0x1A1C26, 0xF69424, props()));
 

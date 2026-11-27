@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "lit=true,temporal=true": {
+   "model": "navidad:block/farol_nochebuena"
+  },
+  "lit=true,temporal=false": {
+   "model": "navidad:block/farol_nochebuena"
+  },
+  "lit=false,temporal=true": {
+   "model": "navidad:block/farol_nochebuena_apagado"
+  },
+  "lit=false,temporal=false": {
+   "model": "navidad:block/farol_nochebuena_apagado"
+  }
+ }
+}

@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  "NGN",
+  "NTN",
+  "NNN"
+ ],
+ "key": {
+  "N": {
+   "item": "minecraft:iron_nugget"
+  },
+  "G": {
+   "item": "minecraft:gold_nugget"
+  },
+  "T": {
+   "item": "minecraft:torch"
+  }
+ },
+ "result": {
+  "item": "navidad:farol_nochebuena",
+  "count": 1
+ }
+}

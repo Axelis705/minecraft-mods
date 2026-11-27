@@ -28,6 +28,7 @@ public final class Eventos {
         e.put(ModRegistry.CASCANUECES.get(), com.navidad.entidad.Cascanueces.createAttributes().build());
         e.put(ModRegistry.RENITO.get(), com.navidad.entidad.Renito.createAttributes().build());
         e.put(ModRegistry.DUENDE_LADRON.get(), com.navidad.entidad.DuendeLadron.createAttributes().build());
+        e.put(ModRegistry.KRAMPUSILLO.get(), com.navidad.entidad.Krampusillo.createAttributes().build());
     }
 
     @SubscribeEvent

@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  " R ",
+  " G ",
+  "GNG"
+ ],
+ "key": {
+  "R": {
+   "item": "minecraft:red_dye"
+  },
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "N": {
+   "item": "minecraft:gold_nugget"
+  }
+ },
+ "result": {
+  "item": "navidad:campanita_santa",
+  "count": 1
+ }
+}

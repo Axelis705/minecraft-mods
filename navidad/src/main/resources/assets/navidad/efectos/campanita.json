@@ -1,0 +1,31 @@
+{
+ "capas": [
+  {
+   "particula": "polvo",
+   "color": "#FFE070",
+   "color2": "#FFFFFF",
+   "tam": 1.0,
+   "forma": "anillo",
+   "radio": 2.0,
+   "cuantas": 40,
+   "velocidad": 0.3,
+   "hacia": "afuera"
+  },
+  {
+   "particula": "nota",
+   "forma": "esfera",
+   "radio": 0.6,
+   "cuantas": 6,
+   "velocidad": 0.1,
+   "hacia": "arriba"
+  },
+  {
+   "particula": "brillo",
+   "forma": "esfera",
+   "radio": 1.5,
+   "cuantas": 24,
+   "velocidad": 0.12,
+   "hacia": "afuera"
+  }
+ ]
+}

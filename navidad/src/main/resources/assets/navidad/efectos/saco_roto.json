@@ -1,0 +1,34 @@
+{
+ "sonido": "minecraft:block.wool.break",
+ "volumen": 1.4,
+ "tono": 0.7,
+ "capas": [
+  {
+   "particula": "polvo",
+   "color": "#9A7848",
+   "color2": "#6E5430",
+   "tam": 1.2,
+   "forma": "esfera",
+   "radio": 0.8,
+   "cuantas": 40,
+   "velocidad": 0.25,
+   "hacia": "afuera"
+  },
+  {
+   "particula": "brillo",
+   "forma": "esfera",
+   "radio": 1.0,
+   "cuantas": 20,
+   "velocidad": 0.15,
+   "hacia": "afuera"
+  },
+  {
+   "particula": "humo",
+   "forma": "esfera",
+   "radio": 0.6,
+   "cuantas": 14,
+   "velocidad": 0.05,
+   "hacia": "arriba"
+  }
+ ]
+}

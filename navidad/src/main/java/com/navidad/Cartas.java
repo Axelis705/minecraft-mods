@@ -75,6 +75,11 @@ public final class Cartas {
         return sb.toString();
     }
 
+    /** (Para la Noche del Krampus) Cuántas veces ha lastimado a los que no se debe. */
+    public static int malosDe(ServerPlayer p) {
+        return malos(p);
+    }
+
     /** Cuántas veces ha lastimado a los que no se debe (aldeanos, gólems, gatos, renos...). */
     static int malos(ServerPlayer p) {
         int n = 0;

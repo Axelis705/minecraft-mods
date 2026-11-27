@@ -44,4 +44,22 @@ fill -210 -61 25 -190 -61 45 minecraft:grass_block
 fill -210 -60 25 -190 -50 45 minecraft:air
 place feature navidad:puesto_pinos -200 -60 35
 #expect navidad:puesto_pinos
+forceload add -250 -60 -190 -20
+#pausa 2
+fill -236 -61 -58 -204 -61 -22 minecraft:snow_block
+fill -236 -60 -58 -204 -40 -22 minecraft:air
+place feature navidad:guarida_krampus -220 -60 -40
+#expect navidad:guarida_krampus
+execute if block -220 -60 -40 navidad:altar_krampus run say PRUEBA_NAVIDAD_ALTAR_KRAMPUS
+#expect PRUEBA_NAVIDAD_ALTAR_KRAMPUS
+execute if block -215 -59 -35 navidad:farol_nochebuena[lit=true] run say PRUEBA_NAVIDAD_FAROL
+#expect PRUEBA_NAVIDAD_FAROL
+summon navidad:krampusillo -214 -60 -30
+#expect Summoned new
+summon navidad:krampus -226 -60 -30 {NoAI:1b}
+#expect Summoned new
+give @a navidad:cadena_krampus
+give @a navidad:saco_krampus
+navidad krampus visitas no
+navidad krampus visitas si
 navidad temporada auto

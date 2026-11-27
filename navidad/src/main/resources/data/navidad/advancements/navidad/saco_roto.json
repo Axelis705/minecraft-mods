@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:vara_abedul"
+  },
+  "title": {
+   "translate": "advancement.navidad.saco_roto"
+  },
+  "description": {
+   "translate": "advancement.navidad.saco_roto.desc"
+  },
+  "frame": "goal",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/krampus"
+}

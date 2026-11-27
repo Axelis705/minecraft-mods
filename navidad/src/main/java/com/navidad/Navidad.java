@@ -19,7 +19,7 @@ public class Navidad {
     public static final String MODID = "navidad";
     public static final Logger LOGGER = LogUtils.getLogger();
     /** Canal de mensajes del mod: si cambias qué mensajes hay, sube el número. */
-    public static final Net NET = new Net(MODID, "main", 1);
+    public static final Net NET = new Net(MODID, "main", 2);
 
     public Navidad(FMLJavaModLoadingContext context) {
         AxelisCore.use(MODID);
@@ -45,12 +45,15 @@ public class Navidad {
         Viajero.init();
         com.navidad.libro.Libro.init();
         com.navidad.nieve.Nieve.init();
+        com.navidad.krampus.KrampusEventos.init();
+        com.navidad.krampus.NocheKrampus.init();
         AxelisCore.commands(Comandos::registrar);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            // aquí se registran los mensajes de red: NET.register(Mensaje.class, Mensaje::write, Mensaje::read, (m, jugador) -> ...);
+            // los mensajes de red (si cambian, sube el número del canal)
+            com.navidad.krampus.KrampusMsg.registrar();
             NET.done();
         });
     }

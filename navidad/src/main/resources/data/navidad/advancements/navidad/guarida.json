@@ -1,0 +1,26 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:altar_krampus"
+  },
+  "title": {
+   "translate": "advancement.navidad.guarida"
+  },
+  "description": {
+   "translate": "advancement.navidad.guarida.desc"
+  },
+  "frame": "goal",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:player_generates_container_loot",
+   "conditions": {
+    "loot_table": "navidad:chests/guarida_krampus"
+   }
+  }
+ },
+ "parent": "navidad:navidad/krampusillo"
+}

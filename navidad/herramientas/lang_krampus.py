@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+"""Textos del Krampus renovado (27-nov-2026): la pelea en tres fases, el saco, el apagón, la Noche del Krampus, los krampusillos,
+la guarida y su botín. Sin emojis (Minecraft no los dibuja). Uso: python3 herramientas/lang_krampus.py"""
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from lang_cosas import aplicar  # noqa: E402
+
+T = {
+    # la pelea
+    'navidad.krampus.llega': ('Se oyen cadenas en la oscuridad... el Krampus viene por los que se portaron mal.',
+                              'Chains rattle in the dark... the Krampus has come for the naughty ones.'),
+    'navidad.krampus.fase2': ('¡Al saco!', 'Into the sack!'),
+    'navidad.krampus.fase2_sub': ('Si te mete en su saco, machaca saltar... o que tus amigos le peguen por la espalda',
+                                  'If he bags you, mash jump... or have your friends hit him from behind'),
+    'navidad.krampus.fase3': ('Apagón', 'Blackout'),
+    'navidad.krampus.fase3_sub': ('En lo oscuro no le haces nada: enciende los faroles', "In the dark you can't hurt him: light the lanterns"),
+    'navidad.krampus.vencido': ('¡Vencieron al Krampus! ¡Salvaron la Navidad!', 'The Krampus is defeated! Christmas is saved!'),
+    'navidad.krampus.robados': ('Su saco reventó: soltó %s regalos que se habían robado sus krampusillos.',
+                                'His sack burst: %s gifts stolen by his imps fell out.'),
+    'navidad.krampus.botin': ('Del botín del Krampus: %s', "From the Krampus's loot: %s"),
+    'navidad.krampus.se_fue': ('El Krampus se fue riéndose entre el humo... volverá por los traviesos.',
+                               'The Krampus left laughing in the smoke... he will come back for the naughty ones.'),
+    'navidad.krampus.enganchado': ('¡Te agarró con su cadena!', 'His chain caught you!'),
+    'navidad.krampus.luz': ('¡La luz lo quema! Ahora sí le haces daño.', 'The light burns him! Now you can hurt him.'),
+    'navidad.krampus.deslumbrado': ('¡Lo deslumbraste con el farol!', 'You dazzled him with the lantern!'),
+    'navidad.krampus.apago_farol': ('El Krampus apagó un farol de un soplido...', 'The Krampus blew out a lantern...'),
+    'navidad.krampus.saco.titulo': ('¡Te metió en su saco!', 'He put you in his sack!'),
+    'navidad.krampus.saco.sub': ('Machaca la tecla de saltar para salir', 'Mash the jump key to get out'),
+    'navidad.krampus.saco.otros': ('¡El Krampus metió a %s en su saco! Péguenle al saco por la espalda para sacarlo.',
+                                   'The Krampus put %s in his sack! Hit the sack from behind to get them out.'),
+    'navidad.krampus.saco.forcejea': ('Forcejeas: %s de %s (te avienta en %s s)', 'Struggling: %s of %s (he throws you out in %s s)'),
+    'navidad.krampus.saco.escapaste': ('¡Te escapaste del saco!', 'You escaped the sack!'),
+    'navidad.krampus.saco.golpe': ('¡Le pegaste al saco! Aguanta %s%%', 'You hit the sack! %s%% left'),
+    'navidad.krampus.saco.roto': ('¡Le rompieron el saco al Krampus! Se le cayeron regalos.', "The Krampus's sack ripped! Gifts fell out."),
+    'navidad.krampus.saco.hud': ('Estás en el saco del Krampus', "You're in the Krampus's sack"),
+    'navidad.krampus.saco.hud2': ('Machaca %s para salir', 'Mash %s to get out'),
+    'navidad.krampus.saco.hud3': ('Te avienta en %s s', 'He throws you out in %s s'),
+    # krampusillos
+    'entity.navidad.krampusillo': ('Krampusillo', 'Krampus imp'),
+    'entity.navidad.gancho_cadena': ('Cadena con gancho', 'Chain hook'),
+    'entity.navidad.huella_krampus': ('Huella de pezuña', 'Hoof print'),
+    'item.navidad.huevo_krampusillo': ('Huevo de krampusillo', 'Krampus imp spawn egg'),
+    'navidad.krampusillo.robo': ('¡Un krampusillo se robó un regalo de tu árbol! Atrápalo antes de que se escape.',
+                                 'A Krampus imp stole a gift from your tree! Catch it before it gets away.'),
+    'navidad.krampusillo.atrapado': ('¡Lo atrapaste! Soltó el regalo.', 'Caught it! It dropped the gift.'),
+    'navidad.krampusillo.escapo': ('El krampusillo se escapó con el regalo... ahora está en el saco del Krampus.',
+                                   "The imp got away with the gift... now it's in the Krampus's sack."),
+    # la Noche del Krampus
+    'navidad.noche_krampus.empieza': ('A lo lejos se oyen cadenas... y cascabeles que no suenan a Navidad.',
+                                      "Chains rattle in the distance... and bells that don't sound like Christmas."),
+    'navidad.noche_krampus.risitas': ('Se oyen risitas entre los árboles...', 'Giggles among the trees...'),
+    'navidad.noche_krampus.llego': ('¡El Krampus vino por %s!', 'The Krampus has come for %s!'),
+    'navidad.noche_krampus.sobreviviste': ('Sobreviviste a la Noche del Krampus.', 'You survived the Night of the Krampus.'),
+    'navidad.noche_krampus.no_dormir': ('No puedes dormir: el Krampus anda cerca...', "You can't sleep: the Krampus is near..."),
+    'navidad.noche_krampus.comando': ('La Noche del Krampus empezó para %s jugador(es)', 'The Night of the Krampus started for %s player(s)'),
+    'navidad.noche_krampus.visitas_si': ('El Krampus puede venir de visita en las noches de la temporada.',
+                                         'The Krampus may visit on nights during the season.'),
+    'navidad.noche_krampus.visitas_no': ('El Krampus ya no viene de visita (solo si lo llaman).',
+                                         'The Krampus no longer visits (only if summoned).'),
+    # la guarida y el altar
+    'block.navidad.farol_nochebuena': ('Farol de Nochebuena', 'Christmas Eve lantern'),
+    'block.navidad.altar_krampus': ('Altar del Krampus', 'Krampus altar'),
+    'navidad.altar.ayuda': ('El altar quiere la campana del Krampus o %s carbones... y que sea de noche.',
+                            'The altar wants the Krampus bell or %s coal... and it must be night.'),
+    'navidad.altar.dia': ('El altar está frío. Solo responde de noche.', 'The altar is cold. It only answers at night.'),
+    'navidad.altar.ya': ('Ya está aquí...', "He's already here..."),
+    'navidad.guarida.lista': ('Guarida del Krampus construida', 'Krampus lair built'),
+    'navidad.libro.como.krampus': ('Llámalo con su campana o en el altar de su guarida... si te atreves.',
+                                   'Summon him with his bell or at the altar of his lair... if you dare.'),
+    # el botín
+    'item.navidad.cadena_krampus': ('Cadena del Krampus', "Krampus's chain"),
+    'item.navidad.cadena_krampus.ayuda': ('Clic derecho: avienta el gancho. Jala criaturas; en bloques o jefes, te jala a ti.',
+                                          'Right-click: throw the hook. Pulls mobs; on blocks or bosses, it pulls you.'),
+    'item.navidad.vara_abedul': ('Vara de abedul', 'Birch switch'),
+    'item.navidad.vara_abedul.ayuda': ('Rápida. Cada tercer golpe seguido al mismo: ¡varazo!', 'Fast. Every third hit in a row on the same target: a lash!'),
+    'item.navidad.vara_abedul.varazo': ('¡Varazo!', 'Lash!'),
+    'item.navidad.mascara_krampus': ('Máscara del Krampus', 'Krampus mask'),
+    'item.navidad.mascara_krampus.ayuda': ('En la cabeza: los krampusillos no te atacan y el apagón no te deja a oscuras.',
+                                           "On your head: imps won't attack you and the blackout won't blind you."),
+    'item.navidad.saco_krampus': ('Saco del Krampus', "Krampus's sack"),
+    'item.navidad.saco_krampus.ayuda': ('Mochila de costal: clic derecho para abrirla (%s de %s espacios con algo).',
+                                        'Burlap backpack: right-click to open it (%s of %s slots used).'),
+    'item.navidad.campanita_santa': ('Campanita de Santa', "Santa's little bell"),
+    'item.navidad.campanita_santa.ayuda': ('Tócala cerca del Krampus para verlo y aturdirlo; espanta a los krampusillos.',
+                                           'Ring it near the Krampus to reveal and stun him; it scares imps away.'),
+    'item.navidad.campanita_santa.krampus': ('¡La campanita lo dejó a la vista!', 'The bell revealed him!'),
+    'item.navidad.campanita_santa.diablitos': ('¡Los krampusillos salieron huyendo!', 'The imps ran away!'),
+    # subtítulos
+    'navidad.sub.krampus_cadenas': ('Suenan cadenas', 'Chains rattle'),
+    'navidad.sub.krampus_cascabeles': ('Cascabeles malditos', 'Cursed bells'),
+    'navidad.sub.krampus_latigo': ('Varazo', 'Lash'),
+    'navidad.sub.krampus_saco': ('Se sacude un costal', 'A sack shakes'),
+    'navidad.sub.krampus_pezuna': ('Pezuñas en la nieve', 'Hooves in the snow'),
+    'navidad.sub.krampus_soplido': ('Algo sopla', 'Something blows'),
+    'navidad.sub.krampus_apagon': ('Todo se apaga', 'Everything goes dark'),
+    'navidad.sub.krampus_risa': ('El Krampus se ríe', 'The Krampus laughs'),
+    'navidad.sub.krampusillo_risa': ('Risita de diablito', 'Imp giggles'),
+    'navidad.sub.krampusillo_dolor': ('Chilla un krampusillo', 'Imp squeals'),
+    'navidad.sub.campanita': ('Suena una campanita', 'A little bell rings'),
+    'navidad.sub.gancho': ('Vuela una cadena', 'A chain flies'),
+    'navidad.sub.noche_krampus': ('Cadenas a lo lejos', 'Distant chains'),
+}
+
+if __name__ == '__main__':
+    aplicar(T)
+    print(len(T), 'textos')

@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:saco_krampus"
+  },
+  "title": {
+   "translate": "advancement.navidad.saco"
+  },
+  "description": {
+   "translate": "advancement.navidad.saco.desc"
+  },
+  "frame": "goal",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/krampus"
+}

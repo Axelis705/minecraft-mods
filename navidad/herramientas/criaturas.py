@@ -2,7 +2,7 @@
 """Criaturas de Navidad de Axelis (modelo, textura y animaciones):
 - muneco_malvado: muñeco de nieve con sombrero de copa, bufanda, ojos rojos y brazos de palo (lanza bolas de nieve).
 - reno: hecho sobre la Bestia del Core (mismos huesos y animaciones), con pelaje café, pecho blanco y cornamenta.
-- krampus: hecho sobre el Coloso del Core (mismos huesos y animaciones): peludo, negro, cuernos de cabra, lengua y cadenas.
+- (el Krampus tiene su propio modelo: herramientas/krampus.py)
 Uso: python3 herramientas/criaturas.py"""
 import os, re, sys
 
@@ -247,10 +247,5 @@ if __name__ == '__main__':
     muneco()
     derivar('bestia', RENO)()
     derivar('bestia', RENITO)()
-    derivar('coloso', KRAMPUS)(cry=(255, 190, 40))
-    # el Krampus furioso (segunda fase): ojos rojos
-    k2 = KRAMPUS + [('c.build(geo_p, png_p)', 'c.build(os.path.join(os.path.dirname(geo_p), "_tmp.geo.json"), png_p[:-4] + "_f2.png"); return')]
-    k2 = [(a, b) for a, b in k2]
-    derivar('coloso', k2)(cry=(255, 50, 30))
-    os.remove(os.path.join(A, 'geo', '_tmp.geo.json'))
+    # el Krampus ya no sale del Coloso: tiene su propio modelo hecho a mano (herramientas/krampus.py)
     print('ok')

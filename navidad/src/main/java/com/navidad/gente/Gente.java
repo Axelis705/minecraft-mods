@@ -112,6 +112,8 @@ public final class Gente {
                         .vende(nv("calendario_adviento"), 1, 10)
                         .vende(nv("trineo_madera"), 1, 20)
                         .vende(nv("caja_musica"), 1, 40)
+                        .vende(nv("farol_nochebuena"), 2, 6)
+                        .vende(nv("campanita_santa"), 1, 30, 1, 2)
                         .vende(nv("disco_campanas"), 1, 50, 1, 2)
                         .vende(nv("disco_adornen"), 1, 50, 1, 3)
                         .compra("minecraft:snowball", 16, 1)

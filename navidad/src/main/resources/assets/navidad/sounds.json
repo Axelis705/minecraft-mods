@@ -225,5 +225,99 @@
    }
   ],
   "subtitle": "navidad.sub.caja_musica"
+ },
+ "krampus_cadenas": {
+  "sounds": [
+   "navidad:krampus_cadenas1",
+   "navidad:krampus_cadenas2",
+   "navidad:krampus_cadenas3"
+  ],
+  "subtitle": "navidad.sub.krampus_cadenas"
+ },
+ "krampus_cascabeles": {
+  "sounds": [
+   "navidad:krampus_cascabeles1",
+   "navidad:krampus_cascabeles2"
+  ],
+  "subtitle": "navidad.sub.krampus_cascabeles"
+ },
+ "krampus_latigo": {
+  "sounds": [
+   "navidad:krampus_latigo1",
+   "navidad:krampus_latigo2"
+  ],
+  "subtitle": "navidad.sub.krampus_latigo"
+ },
+ "krampus_saco": {
+  "sounds": [
+   "navidad:krampus_saco"
+  ],
+  "subtitle": "navidad.sub.krampus_saco"
+ },
+ "krampus_pezuna": {
+  "sounds": [
+   "navidad:krampus_pezuna1",
+   "navidad:krampus_pezuna2",
+   "navidad:krampus_pezuna3"
+  ],
+  "subtitle": "navidad.sub.krampus_pezuna"
+ },
+ "krampus_soplido": {
+  "sounds": [
+   "navidad:krampus_soplido"
+  ],
+  "subtitle": "navidad.sub.krampus_soplido"
+ },
+ "krampus_apagon": {
+  "sounds": [
+   "navidad:krampus_apagon"
+  ],
+  "subtitle": "navidad.sub.krampus_apagon"
+ },
+ "krampus_apagon_musica": {
+  "sounds": [
+   {
+    "name": "navidad:krampus_apagon_musica",
+    "stream": true
+   }
+  ]
+ },
+ "krampus_risa": {
+  "sounds": [
+   "navidad:krampus_risa1",
+   "navidad:krampus_risa2"
+  ],
+  "subtitle": "navidad.sub.krampus_risa"
+ },
+ "krampusillo_risa": {
+  "sounds": [
+   "navidad:krampusillo_risa1",
+   "navidad:krampusillo_risa2"
+  ],
+  "subtitle": "navidad.sub.krampusillo_risa"
+ },
+ "krampusillo_dolor": {
+  "sounds": [
+   "navidad:krampusillo_dolor"
+  ],
+  "subtitle": "navidad.sub.krampusillo_dolor"
+ },
+ "campanita": {
+  "sounds": [
+   "navidad:campanita"
+  ],
+  "subtitle": "navidad.sub.campanita"
+ },
+ "gancho": {
+  "sounds": [
+   "navidad:gancho"
+  ],
+  "subtitle": "navidad.sub.gancho"
+ },
+ "noche_krampus": {
+  "sounds": [
+   "navidad:noche_krampus"
+  ],
+  "subtitle": "navidad.sub.noche_krampus"
  }
 }

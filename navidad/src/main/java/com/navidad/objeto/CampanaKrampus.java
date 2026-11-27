@@ -41,7 +41,7 @@ public class CampanaKrampus extends CoreItem {
         Vec3 donde = p.position().add(frente);
         int y = sl.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int) Math.floor(donde.x),
                 (int) Math.floor(donde.z));
-        Krampus.llamar(sl, new Vec3(donde.x, Math.max(y, p.getY()), donde.z), p);
+        Krampus.llamar(sl, new Vec3(donde.x, Math.max(y, p.getY()), donde.z), p, true);
         if (!p.getAbilities().instabuild) {
             p.getItemInHand(hand).shrink(1);
         }

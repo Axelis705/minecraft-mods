@@ -1078,6 +1078,8 @@ final class Prueba {
             t.photo("casita_duende", 2500, () -> t.lookFrom(410, -57, -5, 402, -58, -16));
             t.photo("casita_duende_dentro", 2500, () -> t.lookFrom(402.5, -59.5, -15.5, 402.5, -59.6, -19));
             t.photo("pino_adornado_noche", 3500, () -> t.cmd("time set 18000"));
+            // ---------------------------------------------------------------- el Krampus renovado
+            krampus(t);
             // ---------------------------------------------------------------- Año Nuevo: cuenta, 12 campanadas con uvas y fuegos
             t.add("anio nuevo", 1200, () -> {
                 t.cmd("gamemode creative @a");
@@ -1108,4 +1110,267 @@ final class Prueba {
             t.add("hud fin", 200, () -> t.hud(true));
         });
     }
+
+    /** Corre algo en el servidor con el primer jugador. */
+    static void sv(java.util.function.Consumer<net.minecraft.server.level.ServerPlayer> c) {
+        var sv = Minecraft.getInstance().getSingleplayerServer();
+        sv.execute(() -> c.accept(sv.getPlayerList().getPlayers().get(0)));
+    }
+
+    /** (En el servidor) El Krampus más cercano al jugador. */
+    static com.navidad.entidad.Krampus krampusDe(net.minecraft.server.level.ServerPlayer sp) {
+        var l = sp.serverLevel().getEntitiesOfClass(com.navidad.entidad.Krampus.class, sp.getBoundingBox().inflate(80));
+        return l.isEmpty() ? null : l.get(0);
+    }
+
+    /** El Krampus renovado: su guarida, el modelo nuevo y sus fases, el gancho, el saco, el apagón, los krampusillos, la Noche del
+     *  Krampus y su botín. */
+    static void krampus(ClientTest.Script t) {
+        t.add("krampus: guarida", 2500, () -> {
+            t.cmd("gamemode creative @a");
+            t.cmd("time set 6000");
+            t.cmd("tp @a 600.5 -60 18.5 180 0");
+            t.cmd("fill 582 -61 -18 618 -61 18 minecraft:grass_block");
+            t.cmd("fill 582 -60 -18 618 -40 18 minecraft:air");
+        });
+        t.add("construir guarida", 2500, () -> t.cmd("execute positioned 600 -60 0 run navidad guarida"));
+        t.add("guarida?", 300, () -> t.check(com.navidad.mundo.Guarida.construidas > 0, "se construyó la guarida"));
+        t.photo("krampus_guarida", 1500, () -> t.lookFrom(600.5, -56, 16, 600.5, -59, -4));
+        t.photo("krampus_guarida_cabana", 1200, () -> t.lookFrom(600.5, -59.4, -10.5, 600.5, -59.6, -14));
+        // el modelo nuevo, de día para que se vea bien
+        t.add("krampus quieto", 1800, () -> {
+            t.cmd("summon navidad:krampus 600.5 -60 4.5 {NoAI:1b,Rotation:[180f,0f]}");
+            t.cmd("tp @a 600.5 -60 12 180 0");
+        });
+        t.photo("krampus_frente", 800, () -> t.lookFrom(603.5, -58.6, 10.5, 600.5, -58.4, 4.5));
+        t.photo("krampus_lado", 600, () -> t.lookFrom(607, -58.6, 4.5, 600.5, -58.4, 4.5));
+        t.photo("krampus_espalda", 600, () -> t.lookFrom(598, -58.4, -1.5, 600.5, -58.4, 4.5));
+        t.add("varazos", 100, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            if (k != null) {
+                k.showcase("varazos", 32);
+            }
+        }));
+        t.photo("krampus_varazos", 250, () -> t.lookFrom(604, -58.6, 9.5, 600.5, -58.4, 4.5));
+        t.add("agarre", 100, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            if (k != null) {
+                k.showcase("agarre", 36);
+            }
+        }));
+        t.photo("krampus_agarre", 1150, () -> {
+        });
+        t.add("rugido", 100, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            if (k != null) {
+                k.showcase("rugido", 44);
+            }
+        }));
+        t.photo("krampus_rugido", 700, () -> {
+        });
+        // fase 2 (furia) y fase 3 (apagón), de noche
+        t.add("furia", 3200, () -> {
+            t.cmd("time set 18000");
+            sv(sp -> {
+                var k = krampusDe(sp);
+                if (k != null) {
+                    k.forzarFase(1);
+                }
+            });
+        });
+        t.photo("krampus_furia", 400, () -> t.lookFrom(603.5, -58.6, 10.5, 600.5, -58.4, 4.5));
+        t.add("apagon", 3500, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            if (k != null) {
+                k.forzarFase(2);
+            }
+        }));
+        t.photo("krampus_apagon", 500, () -> t.lookFrom(600.5, -60, 12.5, 600.5, -58.4, 4.5));
+        t.add("oculto?", 300, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            t.log("krampus oculto=" + (k != null && k.oculto()) + " niebla=" + KrampusCliente.niebla());
+        }));
+        t.photo("krampus_oculto_cerca", 300, () -> t.lookFrom(601.5, -59.6, 8, 600.5, -58, 4.5));
+        t.add("a la luz", 1200, () -> t.cmd("tp @e[type=navidad:krampus] 603.5 -60 3.5 135 0"));
+        t.photo("krampus_luz", 400, () -> t.lookFrom(600.5, -59.4, 11, 603.5, -58.4, 3.5));
+        t.add("lejos de la luz", 800, () -> t.cmd("tp @e[type=navidad:krampus] 600.5 -60 6.5 180 0"));
+        t.add("campanita", 400, () -> {
+            t.cmd("gamemode survival @a");
+            t.cmd("effect give @a minecraft:resistance 600 4 true");
+            t.cmd("effect give @a minecraft:regeneration 600 2 true");
+            t.cmd("tp @a 600.5 -60 12.5 180 0");
+            sv(sp -> com.navidad.objeto.CampanitaSanta.tocar(sp.serverLevel(), sp));
+        });
+        t.photo("krampus_campanita", 600, () -> {
+        });
+        t.add("campanita?", 200, () -> t.check(com.navidad.objeto.CampanitaSanta.toques > 0, "sonó la campanita"));
+        // el saco: me mete, veo desde adentro, forcejeo con la tecla de saltar (por la red) y salgo
+        t.add("de dia otra vez", 1500, () -> {
+            t.cmd("time set 6000");
+            t.cmd("effect clear @a minecraft:darkness");
+            sv(sp -> {
+                var k = krampusDe(sp);
+                if (k != null) {
+                    k.forzarFase(1);
+                    k.showcase("idle", 80);
+                }
+            });
+        });
+        t.add("al saco", 1200, () -> {
+            t.hud(true);
+            sv(sp -> {
+                var k = krampusDe(sp);
+                if (k != null) {
+                    k.meterAlSaco(sp);
+                }
+            });
+        });
+        t.photo("krampus_saco_dentro", 400, () -> {
+        });
+        t.add("en el saco?", 200, () -> t.check(com.navidad.entidad.Krampus.ensacadosTotal > 0 && KrampusCliente.enSaco(), "estoy en el saco"));
+        t.add("vista de afuera", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
+        t.photo("krampus_saco_afuera", 800, () -> {
+        });
+        t.add("forcejear", 300, () -> {
+            Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
+            for (int i = 0; i < 14; i++) {
+                net.minecraft.client.KeyMapping.click(Minecraft.getInstance().options.keyJump.getKey());
+            }
+        });
+        t.waitFor("me escapé del saco", 4000, () -> com.navidad.entidad.Krampus.escapados > 0);
+        t.photo("krampus_saco_escape", 600, () -> {
+        });
+        // otra vez adentro, y ahora le pegan por la espalda: se rompe el saco
+        t.add("al saco otra vez", 800, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            if (k != null) {
+                k.meterAlSaco(sp);
+            }
+        }));
+        t.add("romper el saco", 800, () -> t.cmd("damage @e[type=navidad:krampus,limit=1] 40 minecraft:player_attack by @p"));
+        t.waitFor("se rompió el saco", 3000, () -> com.navidad.entidad.Krampus.sacosRotos > 0);
+        t.photo("krampus_saco_roto", 900, () -> t.lookFrom(600.5, -58.5, 10.5, 600.5, -59.5, 3));
+        // con la IA prendida: la cadena con gancho y el agarre de verdad
+        t.add("ia", 1500, () -> {
+            t.hud(false);
+            t.cmd("kill @e[type=navidad:krampus]");
+            t.cmd("kill @e[type=item]");
+            t.cmd("tp @a 600.5 -60 14.5 180 0");
+            t.cmd("summon navidad:krampus 600.5 -60 2.5 {Rotation:[0f,0f]}");
+        });
+        t.add("cadena", 100, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            if (k != null) {
+                k.setTarget(sp);
+                k.probar("cadena", sp);
+            }
+        }));
+        t.photo("krampus_cadena", 900, () -> t.lookFrom(605, -58.5, 13, 600.5, -58.5, 5));
+        t.waitFor("el gancho me agarró", 4000, () -> com.navidad.entidad.GanchoCadena.enganches > 0);
+        t.photo("krampus_jalon", 300, () -> {
+        });
+        t.add("agarre de verdad", 2500, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            if (k != null) {
+                k.forzarFase(1);
+            }
+        }));
+        t.add("agarre ya", 100, () -> sv(sp -> {
+            var k = krampusDe(sp);
+            if (k != null) {
+                k.probar("agarre", sp);
+            }
+        }));
+        t.waitFor("me agarró al saco", 5000, () -> com.navidad.entidad.Krampus.ensacadosTotal >= 3);
+        t.add("salir otra vez", 600, () -> {
+            for (int i = 0; i < 14; i++) {
+                net.minecraft.client.KeyMapping.click(Minecraft.getInstance().options.keyJump.getKey());
+            }
+        });
+        // muere: revienta el saco
+        t.add("vencerlo", 1500, () -> {
+            t.cmd("gamemode creative @a");
+            t.cmd("kill @e[type=navidad:krampus]");
+        });
+        t.photo("krampus_vencido", 2500, () -> t.lookFrom(600.5, -58, 12, 600.5, -59.6, 3));
+        // krampusillos: uno se roba un regalo, otro pelea
+        t.add("krampusillos", 1500, () -> {
+            t.cmd("kill @e[type=item]");
+            t.cmd("setblock 596 -60 10 navidad:caja_regalo[color=1,llena=true]");
+            t.cmd("data merge block 596 -60 10 {Contenido:{id:\"minecraft:diamond\",Count:1b}}");
+            sv(sp -> {
+                var ki = com.navidad.entidad.Krampusillo.llamar(sp.serverLevel(), new Vec3(592, -60, 14), null, null);
+                if (ki != null) {
+                    ki.robarA(new BlockPos(596, -60, 10), sp);
+                }
+                com.navidad.entidad.Krampusillo.llamar(sp.serverLevel(), new Vec3(604, -60, 14), null, null);
+            });
+            t.cmd("tp @a 600.5 -60 20 180 10");
+        });
+        t.photo("krampusillos", 1800, () -> t.lookFrom(600.5, -58.6, 19, 598, -59.5, 12));
+        t.add("krampusillo cerca", 100, () -> t.cmd("summon navidad:krampusillo 600.5 -60 15.5 {NoAI:1b,Rotation:[180f,0f]}"));
+        t.photo("krampusillo_cerca", 900, () -> t.lookFrom(600.5, -59.3, 18, 600.5, -59.4, 15.5));
+        t.add("robó?", 200, () -> t.log("krampusillos: robos=" + com.navidad.entidad.Krampusillo.robos));
+        // el botín: máscara, saco en la espalda, vara y cadena
+        t.add("botin", 1500, () -> {
+            t.cmd("kill @e[type=navidad:krampusillo]");
+            t.cmd("tp @a 600.5 -60 16.5 180 0");
+            t.cmd("item replace entity @p armor.head with navidad:mascara_krampus");
+            t.cmd("item replace entity @p weapon.mainhand with navidad:vara_abedul");
+            t.cmd("item replace entity @p weapon.offhand with navidad:cadena_krampus");
+            t.cmd("give @p navidad:saco_krampus");
+            t.cmd("give @p navidad:campanita_santa");
+        });
+        t.add("tercera persona", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+        t.photo("krampus_mascara", 900, () -> {
+        });
+        t.add("de espaldas", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
+        t.photo("krampus_saco_espalda", 600, () -> {
+        });
+        t.add("primera persona", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
+        t.add("gancho a un bloque", 100, () -> sv(sp -> {
+            sp.teleportTo(600.5, -60, 16.5);
+            sp.setYRot(180);
+            sp.setXRot(-12);
+            Vec3 o = sp.getEyePosition();
+            com.navidad.entidad.GanchoCadena.lanzar(sp.serverLevel(), sp, o.add(0, -0.25, 0), new Vec3(0, 0.2, -1), 1.8F, 30);
+        }));
+        t.photo("krampus_gancho_jugador", 350, () -> {
+        });
+        t.waitFor("el gancho se clavó", 4000, () -> com.navidad.entidad.GanchoCadena.anclajes > 0);
+        // la Noche del Krampus (rápida)
+        t.add("noche", 1500, () -> {
+            t.cmd("item replace entity @p armor.head with minecraft:air");
+            t.cmd("kill @e[type=item]");
+            t.cmd("gamemode survival @a");
+            t.cmd("time set 18000");
+            t.cmd("tp @a 600.5 -60 14.5 0 0");
+            com.navidad.krampus.NocheKrampus.rapidez = 6F;
+            t.cmd("navidad krampus noche @a");
+        });
+        t.waitFor("hay huellas", 8000, () -> com.navidad.krampus.NocheKrampus.huellas >= 6);
+        t.photo("krampus_noche_huellas", 900, () -> {
+        });
+        t.waitFor("llegó el Krampus", 12000, () -> {
+            var l = Minecraft.getInstance().level;
+            return l != null && !l.getEntitiesOfClass(com.navidad.entidad.Krampus.class, Minecraft.getInstance().player.getBoundingBox()
+                    .inflate(40)).isEmpty();
+        });
+        t.photo("krampus_noche_llega", 1500, () -> {
+        });
+        t.add("fin krampus", 1500, () -> {
+            com.navidad.krampus.NocheKrampus.rapidez = 1F;
+            t.cmd("gamemode creative @a");
+            t.cmd("kill @e[type=navidad:krampus]");
+            t.cmd("kill @e[type=navidad:krampusillo]");
+            t.cmd("effect clear @a");
+            t.cmd("clear @a");
+            t.hud(false);
+        });
+        t.add("krampus resumen", 200, () -> t.log("KRAMPUS ensacados=" + com.navidad.entidad.Krampus.ensacadosTotal + " escapados="
+                + com.navidad.entidad.Krampus.escapados + " sacosRotos=" + com.navidad.entidad.Krampus.sacosRotos + " enganches="
+                + com.navidad.entidad.GanchoCadena.enganches + " anclajes=" + com.navidad.entidad.GanchoCadena.anclajes + " huellas="
+                + com.navidad.krampus.NocheKrampus.huellas + " robos=" + com.navidad.entidad.Krampusillo.robos));
+    }
+
 }

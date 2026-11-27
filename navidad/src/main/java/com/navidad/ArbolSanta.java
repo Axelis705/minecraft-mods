@@ -422,6 +422,22 @@ public final class ArbolSanta {
         }
     }
 
+    /** El árbol de {@code p} en su mundo que tenga cajas de regalo llenas alrededor (null si no hay): para los krampusillos. */
+    public static BlockPos arbolConRegalos(ServerPlayer p) {
+        ListTag ls = lista(p.server);
+        for (int i = 0; i < ls.size(); i++) {
+            CompoundTag c = ls.getCompound(i);
+            ServerLevel l = nivel(p.server, c);
+            if (l != p.serverLevel() || !c.getUUID("quien").equals(p.getUUID()) || !l.isLoaded(pos(c))) {
+                continue;
+            }
+            if (p.distanceToSqr(pos(c).getX(), pos(c).getY(), pos(c).getZ()) < 64 * 64 && !cajasCerca(l, pos(c)).isEmpty()) {
+                return pos(c);
+            }
+        }
+        return null;
+    }
+
     /** (Comando de prueba) Manda al duende ladrón ya, si hay regalos bajo el árbol de alguien. */
     public static boolean ladronYa(ServerPlayer p) {
         ListTag ls = lista(p.server);

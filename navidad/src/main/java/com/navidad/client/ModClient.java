@@ -49,7 +49,11 @@ public final class ModClient {
                 return p.isBaby() ? 0.55F : 1F;
             }
         });
-        e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
+        // el Krampus: normal, furioso (_f2) y la sombra del apagón (_f3)
+        e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.3F, 1.0F, 3));
+        e.registerEntityRenderer(ModRegistry.KRAMPUSILLO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "krampusillo", 0.4F, 1F));
+        e.registerEntityRenderer(ModRegistry.GANCHO_CADENA.get(), GanchoRenderer::new);
+        e.registerEntityRenderer(ModRegistry.HUELLA_KRAMPUS.get(), HuellaRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.PINO_NAVIDAD_BE.get(), PinoRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.CAJA_REGALO_BE.get(), CajaRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.CAJA_MUSICA_BE.get(), CajaMusicaRenderer::new);
@@ -102,12 +106,16 @@ public final class ModClient {
             // la mochila de viaje de Ramiro (solo la trae él)
             VestuarioCliente.registrar(Ropa.id("mochila_viajero"), Prenda.modelo(rl("geo/mochila_viajero.geo.json"),
                     rl("textures/prenda/mochila_viajero.png")));
+            // el saco del Krampus colgado en la espalda (si lo traes en el inventario)
+            VestuarioCliente.registrar(com.navidad.krampus.KrampusEventos.PRENDA_SACO, Prenda.modelo(rl("geo/saco_krampus.geo.json"),
+                    rl("textures/prenda/saco_krampus.png")));
             // el traje de Santa: todo el cuerpo y la barba
             VestuarioCliente.registrar(Ropa.id("traje_santa"), Prenda.piel(rl("textures/prenda/traje_santa.png")));
         });
         SantaAviso.init();
         PlacaNombre.init();
         MunicionHud.init();
+        KrampusCliente.init();
         e.enqueueWork(() -> net.minecraft.client.gui.screens.MenuScreens.register(ModRegistry.TANQUE_MENU.get(), TanquePantalla::new));
         Prueba.registrar();
     }
