@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:pino_atado"
+  },
+  "title": {
+   "translate": "advancement.navidad.puesto"
+  },
+  "description": {
+   "translate": "advancement.navidad.puesto.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/raiz"
+}

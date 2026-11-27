@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:cuernos_reno"
+  },
+  "title": {
+   "translate": "advancement.navidad.viajero"
+  },
+  "description": {
+   "translate": "advancement.navidad.viajero.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/puesto"
+}

@@ -1,9 +1,46 @@
 # Navidad de Axelis
 
-Una Navidad enorme para Minecraft 1.20.1 (Forge 47.4.10): decoraciones, regalos, posadas con piñatas, comida navideña, Santa y sus
-duendes, renos que se montan, muñecos de nieve malvados, el Krampus de jefe, villancicos y la aldea de Santa.
+Una Navidad enorme para Minecraft 1.20.1 (Forge 47.4.10), hecha para **jugar en Survival**: Santa pasa solo y te suelta regalos en
+paracaídas, pones tu árbol y cada mañana hay regalos debajo, un duende ladrón intenta robártelos, hay pingüinos que puedes domar, un
+puesto de árboles de Navidad con su vendedor, un duende viajero con su reno, aldeanos que venden cosas navideñas... y además
+decoraciones, posadas con piñatas, comida navideña, renos que se montan, muñecos de nieve malvados, el Krampus de jefe, villancicos y la
+aldea de Santa.
 
 Usa Axelis Core (va dentro del jar).
+
+## En Survival, sin comandos
+
+Todo esto pasa solo mientras juegas:
+
+- **Santa pasa una vez al día** (en Nochebuena, tres): a una hora al azar entre el mediodía y la madrugada, cuando estás afuera (si estás
+  en una cueva, espera a que salgas). Se oyen los cascabeles, pasa a unos 20 bloques de altura, te saluda en pantalla ("¡Jo, jo, jo!
+  ¡Feliz Navidad!") y te suelta **dos regalos en paracaídas** que bajan meciéndose hacia ti. Al tocar el suelo quedan como una **caja de
+  regalo con tu nombre** (casi siempre algo sencillo, a veces algo bueno y muy de vez en cuando algo increíble). Los puedes **atrapar en
+  el aire** con un clic.
+- **Tu árbol de Navidad**: el último árbol que pones (de Navidad, nevado, dorado, pino en maceta) es *tu árbol*. **Cada mañana** Santa te
+  deja regalos debajo. Entre más **adornos navideños** tenga alrededor (a 5 bloques: luces, esferas, guirnaldas, coronas, regalos de
+  adorno, muñecos...), más y mejores regalos: ★☆☆☆ 1 regalo, ★★☆☆ (3+ adornos) 1 o 2, ★★★☆ (8+) 2, ★★★★ (15+) 3. El 25 de diciembre, uno
+  extra y épico. Clic derecho con la mano vacía en tu árbol para ver cuántos adornos tiene. Si mataste aldeanos, gólems, gatos o renos,
+  carbón. Si ya hay 4 regalos sin abrir, Santa espera a que los abras.
+- **El duende ladrón**: algunas noches, si hay regalos sin abrir bajo tu árbol y andas cerca, llega a escondidas, se roba uno y sale
+  corriendo riéndose. **Pégale una vez** y se rinde: suelta tu regalo y te deja dulces de disculpa. Si no lo alcanzas en poco más de un
+  minuto (o amanece), se escapa con él.
+- **Pingüinos** (en la nieve y en las costas heladas, en grupitos con bebés): dales **pescado** y a veces se hacen tuyos (entonces llevan
+  bufanda y gorrito de Santa). Te siguen, se sientan con un clic con la mano vacía (y de noche se duermen), nadan rapidísimo, y cuando van
+  con prisa sobre hielo o nieve **se avientan de panza**. Si tienen agua cerca, de vez en cuando pescan algo y te lo traen. Con pescado
+  también se cruzan.
+- **Puesto de árboles de Navidad**: sale solo en praderas, bosques, taigas y la nieve. Un terrenito con cerca y faroles, pinos recién
+  cortados y arbolitos adornados, y el puestito con techo de lona a rayas y luces. Lo atiende **Don Abeto**, que vende árboles
+  (de Navidad, nevado, dorado, pino recién cortado, pino en maceta), cajas de adornos, luces, esferas, coronas, calcetines, galletas para
+  Santa y chocolate por **esmeraldas**; compra troncos y retoños de abeto y tiene encargos.
+- **Ramiro, el duende viajero**: cada dos o tres días, de día, llega cerca de alguien con su reno **Cometa** amarrado. Vende cosas que no
+  hay en otro lado (trineo, patines, árbol dorado, traje de Santa, discos, regalos misteriosos, esfera de nieve...) y al día siguiente se
+  va en una nube de nieve.
+- **Los aldeanos** también celebran: el granjero vende galletas de jengibre y bastones de caramelo, el carnicero pavo navideño, el pastor
+  gorro de Santa y suéter, el bibliotecario el calendario de Adviento; el comerciante errante trae adornos, chocolate, pinitos y a veces un
+  regalo misterioso.
+- Y lo de siempre: calcetines que Santa llena cada noche, galletas y leche para Santa, carta a Santa en el buzón, pinos adornados y
+  casitas de duende en la nieve, gorros en los mobs, nieve que cae.
 
 ## La temporada
 
@@ -15,7 +52,7 @@ van con la fecha de verdad.
 - Al entrar: "Faltan N días para Navidad" (desde 30 días antes); el 24 avisa que es Nochebuena.
 - **25 de diciembre**: al entrar, Santa deja una caja de regalo envuelta a tu nombre con un premio épico.
 - **6 de enero**: rosca de Reyes. Al comerla, a veces sale el muñequito (y te toca invitar los tamales).
-- **De noche**: el trineo de Santa cruza el cielo con cascabeles y suelta regalos misteriosos sobre los jugadores (en Nochebuena, tres veces).
+- **Una vez al día**: el trineo de Santa cruza el cielo y suelta regalos en paracaídas (en Nochebuena, tres veces).
 - Muñecos de nieve malvados (de noche, en la nieve) y hombres de jengibre (de día, en praderas y bosques) solo salen solos en temporada.
 
 ## Cosas
@@ -113,6 +150,9 @@ esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario 
 
 ## Criaturas
 
+- **Pingüino** (mascota): ver arriba. Huevo generador en la pestaña creativa.
+- **Duende ladrón**: ver arriba. Nunca muere ni lastima: se rinde al primer golpe.
+
 - **Muñeco de nieve malvado**: avienta bolas de nieve que congelan. Suelta nieve, carbón, dulces y a veces la campana del Krampus.
 - **Reno**: con 3 zanahorias (o manzanas, trigo) se hace tu amigo; con la mano vacía lo montas. Corre rápido, salta alto y de noche en
   temporada cae despacito, como si volara.
@@ -156,13 +196,16 @@ vencer al Krampus, poner el pesebre y encontrar una casita de duende. Los textos
 | Comando | Qué hace |
 |---|---|
 | `/navidad` | Dice si funciona y si es temporada |
-| `/navidad temporada si\|no\|auto` | Forzar la temporada |
+| `/navidad temporada si\|no\|auto` | Temporada siempre (`si`, lo normal), apagada (`no`) o solo de diciembre a Reyes (`auto`) |
 | `/navidad calendario dia <n>` | Fingir el día de diciembre (0 = el de verdad) |
 | `/navidad regalo [jugadores]` | Dar regalos misteriosos |
 | `/navidad pinata` | Poner una piñata enfrente |
 | `/navidad posada` | Posada: piñata, palo y venda para todos, la canción y confeti |
 | `/navidad intercambio` | Amigo secreto: a cada quien le llega en secreto a quién le regala |
-| `/navidad trineo` | Mandar el trineo de Santa sobre ti |
+| `/navidad trineo` | Mandar el trineo de Santa sobre ti (con sus regalos en paracaídas) |
+| `/navidad arbol` | Que Santa pase ya por todos los árboles (regalos de la mañana) |
+| `/navidad ladron` | Mandar ya al duende ladrón a tu árbol (si tiene regalos sin abrir) |
+| `/navidad viajero` | Que llegue ya el duende viajero |
 | `/navidad krampus` | Llamar al Krampus |
 | `/navidad aldea [sin_gente]` | Construir la aldea de Santa |
 | `/navidad gente <quien>` | Poner a alguien del Polo Norte |

@@ -424,3 +424,54 @@ T15 = {
 if __name__ == '__main__':
     aplicar(T15)
     print(len(T15), 'textos del árbol y el duende ladrón')
+
+T16 = {
+    'npc.navidad.pinero': ('Don Abeto, el del puesto de árboles', 'Mr. Fir, the Christmas tree seller'),
+    'npc.navidad.pinero.hola1': ('¡Pásele, pásele! Arbolitos frescos, recién cortados del bosque.',
+                                 'Come on in! Fresh trees, just cut from the forest.'),
+    'npc.navidad.pinero.hola2': ('Un árbol bien adornado hace que Santa traiga mejores regalos, ¿sabía?',
+                                 'A well-decorated tree makes Santa bring better gifts, did you know?'),
+    'npc.navidad.pinero.hola3': ('Si me trae troncos de abeto, le guardo el mejor pino.', 'Bring me spruce logs and I will save you the best pine.'),
+    'mision.navidad.troncos': ('Leña para el puesto', 'Wood for the stand'),
+    'mision.navidad.troncos.desc': ('Se me acabaron las bases para los pinos. Tráigame troncos de abeto.', 'I ran out of stands for the pines. Bring me spruce logs.'),
+    'mision.navidad.retonos': ('Para el año que entra', 'For next year'),
+    'mision.navidad.retonos.desc': ('Por cada pino que corto, planto otro. Ayúdeme con retoños de abeto.',
+                                    'For every pine I cut, I plant another. Help me with spruce saplings.'),
+    'mision.navidad.adornar': ('El árbol más bonito', 'The prettiest tree'),
+    'mision.navidad.adornar.desc': ('Ponga su árbol, adórnelo bien y espere a que Santa le deje regalos debajo.',
+                                    'Place your tree, decorate it well and wait for Santa to leave gifts under it.'),
+    'mision.navidad.chocolate': ('Chocolate para el frío', 'Chocolate for the cold'),
+    'mision.navidad.chocolate.desc': ('Aquí afuera hace mucho frío. ¿Me consigue cacao para el chocolate?',
+                                      "It's very cold out here. Can you get me cocoa beans for hot chocolate?"),
+}
+
+if __name__ == '__main__':
+    aplicar(T16)
+    print(len(T16), 'textos de Don Abeto')
+
+T17 = {
+    'npc.navidad.duende_viajero': ('Ramiro, el duende viajero', 'Ramiro, the traveling elf'),
+    'npc.navidad.duende_viajero.hola1': ('¡Hola, hola! Vengo de muy lejos con mi reno Cometa. Mira lo que traigo.',
+                                         'Hello, hello! I come from far away with my reindeer Comet. Look what I brought.'),
+    'npc.navidad.duende_viajero.hola2': ('Mañana ya me voy a otro pueblo... ¡aprovecha!', "Tomorrow I'm off to another town... don't miss out!"),
+    'npc.navidad.duende_viajero.hola3': ('Cometa no muerde. Bueno, a veces las zanahorias.', "Comet doesn't bite. Well, sometimes carrots."),
+    'navidad.viajero.llega': ('♪ Se oyen cascabeles... ¡Llegó Ramiro, el duende viajero, con su reno! Vende cosas que no encuentras en otro lado.',
+                              '♪ Jingle bells nearby... Ramiro, the traveling elf, arrived with his reindeer! He sells things you can\'t find anywhere else.'),
+    'navidad.viajero.se_va': ('El duende viajero y su reno se fueron a otro pueblo.', 'The traveling elf and his reindeer left for another town.'),
+}
+
+if __name__ == '__main__':
+    aplicar(T17)
+    print(len(T17), 'textos del duende viajero')
+
+T18 = {
+    'entity.navidad.renito': ('Renito de nariz roja', 'Red-nosed baby reindeer'),
+    'item.navidad.huevo_renito': ('Huevo generador de renito', 'Baby Reindeer Spawn Egg'),
+    'navidad.renito.tuyo': ('★ ¡El renito ahora es tuyo! Su nariz te va a alumbrar en las noches.', '★ The baby reindeer is yours now! Its nose will light your nights.'),
+    'navidad.renito.sienta': ('Tu renito se quedará aquí sentadito.', 'Your baby reindeer will stay sitting here.'),
+    'navidad.renito.sigue': ('Tu renito te sigue otra vez.', 'Your baby reindeer follows you again.'),
+}
+
+if __name__ == '__main__':
+    aplicar(T18)
+    print(len(T18), 'textos del renito')

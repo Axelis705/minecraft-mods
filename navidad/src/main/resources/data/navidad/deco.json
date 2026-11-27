@@ -331,6 +331,39 @@
    "sub": "floor"
   },
   {
+   "id": "pino_atado",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wool",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     16,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Pino recién cortado",
+   "en": "Freshly cut pine",
+   "soft": false,
+   "shape_upper": [
+    [
+     4,
+     0,
+     4,
+     12,
+     15,
+     12
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
    "id": "esfera_roja",
    "kind": "prop",
    "tall": false,

@@ -88,6 +88,28 @@ final class Prueba {
         return null;
     }
 
+    /** Don Abeto (el del puesto de árboles), si está cargado. */
+    static com.axeliscore.npc.Npc abeto() {
+        var mc = Minecraft.getInstance();
+        for (var e : mc.level.entitiesForRendering()) {
+            if (e instanceof com.axeliscore.npc.Npc n && n.def() == com.navidad.gente.Gente.PINERO) {
+                return n;
+            }
+        }
+        return null;
+    }
+
+    /** El duende viajero, si está cargado. */
+    static com.axeliscore.npc.Npc viajero() {
+        var mc = Minecraft.getInstance();
+        for (var e : mc.level.entitiesForRendering()) {
+            if (e instanceof com.axeliscore.npc.Npc n && n.def() == com.navidad.gente.Gente.VIAJERO) {
+                return n;
+            }
+        }
+        return null;
+    }
+
     static void registrar() {
         ClientTest.scenario(Navidad.MODID, t -> {
             t.add("preparar", 2500, () -> {
@@ -325,9 +347,9 @@ final class Prueba {
                 t.cmd("fill 450 -61 90 490 -61 130 minecraft:packed_ice");
                 t.cmd("fill 476 -61 112 486 -61 124 minecraft:water");
                 t.cmd("kill @e[type=navidad:pinguino]");
-                t.cmd("summon navidad:pinguino 460 -60 100 {NoAI:1b,Rotation:[150f,0f]}");
-                t.cmd("summon navidad:pinguino 461.5 -60 101 {NoAI:1b,Rotation:[170f,0f]}");
-                t.cmd("summon navidad:pinguino 459 -60 101.5 {NoAI:1b,Age:-24000,Rotation:[140f,0f]}");
+                t.cmd("summon navidad:pinguino 460 -60 100 {NoAI:1b,Rotation:[20f,0f]}");
+                t.cmd("summon navidad:pinguino 461.5 -60 101 {NoAI:1b,Rotation:[40f,0f]}");
+                t.cmd("summon navidad:pinguino 459 -60 101.5 {NoAI:1b,Age:-24000,Rotation:[10f,0f]}");
             });
             t.photo("pinguinos", 1500, () -> t.lookFrom(462.6, -59.0, 104.2, 460.2, -59.5, 100.6));
             t.add("despertar pinguinos", 300, () -> t.cmd("execute as @e[type=navidad:pinguino] run data merge entity @s {NoAI:0b}"));
@@ -381,18 +403,28 @@ final class Prueba {
                 // me alejo por el hielo: me sigue con prisa (de panza)
                 t.cmd("gamemode survival @a");
                 if (pg != null) {
-                    t.cmd(String.format(Locale.ROOT, "tp @a %.1f -60 %.1f 0 20", pg.getX() + 1.5, pg.getZ() + 10.5));
+                    t.cmd(String.format(Locale.ROOT, "tp @a %.1f -60 %.1f 0 20", pg.getX() + 1.5, pg.getZ() + 11.0));
                 }
             });
-            t.photo("pinguino_de_panza", 1300, () -> {
+            t.waitFor("el pingüino va de panza", 5000, () -> {
+                var pg = pinguino(true);
+                return pg != null && pg.deslizando();
+            });
+            t.photo("pinguino_de_panza", 100, () -> {
                 var pg = pinguino(true);
                 if (pg != null) {
-                    t.lookFrom(pg.getX() + 3.2, pg.getY() + 0.8, pg.getZ() + 1.0, pg.getX(), pg.getY() + 0.3, pg.getZ());
+                    t.lookFrom(pg.getX() + 3.0, pg.getY() + 0.9, pg.getZ() + 1.2, pg.getX(), pg.getY() + 0.2, pg.getZ());
                 }
             });
-            // del otro lado del estanque: se mete a nadar
-            t.add("al agua", 300, () -> t.cmd("tp @a 481.5 -60 127.5 180 20"));
-            t.waitFor("el pingüino está nadando", 12000, () -> {
+            // al agua: lo pongo en el estanque y nada
+            t.add("al agua", 600, () -> {
+                t.cmd("tp @a 481.5 -60 126.5 180 25");
+                var pg = pinguino(true);
+                if (pg != null) {
+                    t.cmd("tp " + pg.getStringUUID() + " 481.5 -61 119.5");
+                }
+            });
+            t.waitFor("el pingüino está nadando", 6000, () -> {
                 var pg = pinguino(true);
                 return pg != null && pg.isInWater();
             });
@@ -403,6 +435,37 @@ final class Prueba {
                 }
             });
             t.add("fin pinguino", 300, () -> t.cmd("gamemode creative @a"));
+            // ---------------------------------------------------------------- el renito de nariz roja: con una zanahoria dorada es tuyo
+            t.add("renito", 1200, () -> {
+                t.cmd("time set 6000");
+                t.cmd("kill @e[type=navidad:renito]");
+                t.cmd("fill 455 -61 135 470 -61 150 minecraft:snow_block");
+                t.cmd("summon navidad:renito 462 -60 142 {Rotation:[200f,0f]}");
+                t.cmd("tp @a 462.5 -60 145.5 180 15");
+                t.cmd("item replace entity @p weapon.mainhand with minecraft:golden_carrot 4");
+            });
+            t.add("darle zanahoria", 800, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                for (var e : mc.level.entitiesForRendering()) {
+                    if (e instanceof com.navidad.entidad.Renito r) {
+                        t.lookFrom(r.getX() + 1.5, r.getY(), r.getZ() + 1.5, r.getX(), r.getY() + 0.4, r.getZ());
+                        mc.gameMode.interact(mc.player, r, InteractionHand.MAIN_HAND);
+                        break;
+                    }
+                }
+            });
+            t.waitFor("el renito es mío", 3000, () -> com.navidad.entidad.Renito.domados > 0);
+            t.photo("renito", 1500, () -> {
+                t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
+                for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+                    if (e instanceof com.navidad.entidad.Renito r) {
+                        t.lookFrom(r.getX() - 1.3, r.getY() + 0.5, r.getZ() - 1.6, r.getX(), r.getY() + 0.45, r.getZ());
+                        break;
+                    }
+                }
+            });
+            t.photo("renito_noche", 1500, () -> t.cmd("time set 18000"));
+            t.add("renito dia", 300, () -> t.cmd("time set 6000"));
             // ---------------------------------------------------------------- tu árbol: lo pongo, lo adorno y en la mañana hay regalos;
             // de noche llega el duende ladrón, se roba uno y lo atrapo
             t.add("arbol", 1500, () -> {
@@ -454,6 +517,75 @@ final class Prueba {
             t.photo("ladron_atrapado", 800, () -> {
             });
             t.add("fin arbol", 500, () -> t.cmd("time set 6000"));
+            // ---------------------------------------------------------------- el puesto de árboles de Navidad (sale solo en el mundo) y Don Abeto
+            t.add("puesto", 2500, () -> {
+                t.cmd("time set 6000");
+                t.cmd("fill 530 -61 170 560 -61 200 minecraft:grass_block");
+                t.cmd("fill 530 -60 170 560 -50 200 minecraft:air");
+                t.cmd("place feature navidad:puesto_pinos 545 -60 185");
+            });
+            t.waitFor("llegó Don Abeto", 15000, () -> abeto() != null);
+            t.add("buscar el puesto", 800, () -> {
+                var n = abeto();
+                if (n != null) {
+                    // de frente al puesto: el letrero queda del lado de la entrada; me paro afuera viendo hacia Don Abeto
+                    var l = Minecraft.getInstance().level;
+                    BlockPos letrero = null;
+                    for (BlockPos q : BlockPos.betweenClosed(530, -60, 170, 560, -60, 200)) {
+                        if (l.getBlockState(q).is(com.navidad.registry.ModRegistry.LETRERO_PINOS.get())) {
+                            letrero = q.immutable();
+                        }
+                    }
+                    double dx = letrero == null ? 0 : letrero.getX() + 0.5 - n.getX(), dz = letrero == null ? 10 : letrero.getZ() + 0.5 - n.getZ();
+                    double d = Math.sqrt(dx * dx + dz * dz);
+                    t.lookFrom(n.getX() + dx / d * 13 + 2, n.getY() + 5.5, n.getZ() + dz / d * 13 + 2, n.getX(), n.getY() + 0.5, n.getZ());
+                }
+            });
+            t.photo("puesto_pinos", 2500, () -> {
+            });
+            t.add("acercarme a Don Abeto", 800, () -> {
+                var n = abeto();
+                if (n != null) {
+                    double a2 = Math.toRadians(n.getYRot());
+                    t.lookFrom(n.getX() - Math.sin(a2) * 2.4, n.getY(), n.getZ() + Math.cos(a2) * 2.4, n.getX(), n.getY() + 1.5, n.getZ());
+                }
+            });
+            t.photo("don_abeto", 1500, () -> {
+            });
+            t.add("su tienda", 1500, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                var n = abeto();
+                if (n != null) {
+                    mc.gameMode.interact(mc.player, n, InteractionHand.MAIN_HAND);
+                }
+            });
+            t.photo("don_abeto_tienda", 1500, () -> {
+            });
+            t.add("cerrar tienda", 600, () -> Minecraft.getInstance().setScreen(null));
+            t.photo("puesto_noche", 2500, () -> {
+                t.cmd("time set 18000");
+                var n = abeto();
+                if (n != null) {
+                    t.lookFrom(n.getX() + 7, n.getY() + 3.5, n.getZ() + 9, n.getX(), n.getY() + 0.5, n.getZ() + 1);
+                }
+            });
+            t.add("fin puesto", 600, () -> t.cmd("time set 6000"));
+            // ---------------------------------------------------------------- el duende viajero llega con su reno
+            t.add("viajero", 1500, () -> {
+                t.cmd("fill 580 -61 200 610 -61 230 minecraft:grass_block");
+                t.cmd("fill 580 -60 200 610 -50 230 minecraft:air");
+                t.cmd("tp @a 595.5 -60 215.5 0 10");
+                t.cmd("execute as @p run navidad viajero");
+            });
+            t.waitFor("llegó el duende viajero", 5000, () -> com.navidad.Viajero.llegadas > 0 && viajero() != null);
+            t.photo("duende_viajero", 2000, () -> {
+                var n = viajero();
+                if (n != null) {
+                    var mc = Minecraft.getInstance();
+                    double dx = mc.player.getX() - n.getX(), dz = mc.player.getZ() - n.getZ(), d = Math.max(0.1, Math.sqrt(dx * dx + dz * dz));
+                    t.lookFrom(n.getX() + dx / d * 4.5 + 1, n.getY() + 1.6, n.getZ() + dz / d * 4.5 + 1, n.getX() + 0.6, n.getY() + 0.8, n.getZ());
+                }
+            });
             // ---------------------------------------------------------------- el buzón y la carta a Santa
             t.add("buzon", 1000, () -> {
                 t.cmd("time set 1000");

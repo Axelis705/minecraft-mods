@@ -42,6 +42,7 @@ public class Navidad {
         DecoViva.init();
         Logros.init();
         ArbolSanta.init();
+        Viajero.init();
         AxelisCore.commands(Comandos::registrar);
     }
 

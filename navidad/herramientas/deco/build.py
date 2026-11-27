@@ -488,6 +488,30 @@ def pino_maceta():
     return p
 
 
+def pino_atado():
+    """Un pino recién cortado, amarrado con mecate para llevártelo a casa, parado en su base de cruz (como en los puestos de árboles).
+    Mide dos bloques: se arma por pisos en coordenadas de 0 a 32 y cada caja se reparte en la mitad que le toca."""
+    p = Prop('pino_atado', 'Pino recién cortado', 'Freshly cut pine', kind='floor', tall=True, sound='wool', seed=60, collide=True,
+             shape=[[3, 0, 3, 13, 16, 13]], shape_upper=[[4, 0, 4, 12, 15, 12]])
+    ag = agujas(seed=60, nieve=0.08)
+    mecate = solid('#d8c49a')
+    cajas = [(1.5, 0, 7, 14.5, 1.5, 9, MADERA), (7, 0, 1.5, 9, 1.5, 14.5, MADERA), (7.2, 0, 7.2, 8.8, 4, 8.8, MADERA)]
+    for m, y0, y1 in [(3.2, 4, 9), (3.8, 9, 14), (4.4, 14, 16), (4.4, 16, 19), (5.2, 19, 23.5), (6.0, 23.5, 27.5), (6.8, 27.5, 30.5),
+                      (7.4, 30.5, 32)]:
+        cajas.append((m, y0, m, 16 - m, y1, 16 - m, ag))
+    for y, m in ((7.5, 3.0), (13, 3.6), (18, 4.2), (22.5, 5.0), (26.5, 5.8)):
+        cajas.append((m, y, m, 16 - m, y + 0.5, 16 - m, mecate))
+    cajas.append((12.9, 10, 7.4, 13.6, 12.4, 9.4, solid('#c41e2a')))
+    cajas.append((13.6, 10.4, 7.8, 13.7, 12.0, 9.0, solid('#f4f0ea')))
+    for parte, base in (('lower', 0), ('upper', 16)):
+        p.at(parte)
+        for (x0, y0, z0, x1, y1, z1, tx) in cajas:
+            a, b = max(y0, base), min(y1, base + 16)
+            if b > a:
+                p.box(x0, a - base, z0, x1, b - base, z1, tx)
+    return p
+
+
 def esfera(pid, es, en, color, seed):
     p = Prop(pid, es, en, kind='hang', sound='glass', seed=seed, collide=False, light=4)
     p.box(7.75, 12, 7.75, 8.25, 16, 8.25, solid('#c8a040'))
@@ -1163,6 +1187,7 @@ def catalogo():
                seed=7))
     prop(arbol('arbol_dorado', 'Árbol de Navidad dorado', 'Golden Christmas tree', colores=['#e8b830', '#f4e2a0', '#d42030'], seed=9))
     prop(pino_maceta())
+    prop(pino_atado())
     for pid, es, en, c, s in (('esfera_roja', 'Esfera roja', 'Red bauble', '#d42030', 51), ('esfera_dorada', 'Esfera dorada', 'Gold bauble',
                               '#e8b830', 52), ('esfera_azul', 'Esfera azul', 'Blue bauble', '#2a6ae0', 53),
                               ('esfera_plata', 'Esfera plateada', 'Silver bauble', '#c8ccd4', 54), ('esfera_verde', 'Esfera verde',
@@ -1282,6 +1307,24 @@ def especiales():
     esferas(b, [(7.8, 16.6, 9.4)], colores=['#d42030'])
     kit.write_prop(b, ROOT)
     nombre('buzon_santa', 'Buzón de Santa', "Santa's mailbox")
+    # el letrero del puesto de árboles: tabla con un pinito pintado, borde rojo y nieve encima (en el juego trae al vendedor)
+    s = Prop('letrero_pinos', 'Letrero del puesto de árboles', 'Christmas tree lot sign', kind='floor', sound='wood', seed=130)
+    s.box(1, 0, 7, 2.5, 13, 8.5, MADERA)
+    s.box(13.5, 0, 7, 15, 13, 8.5, MADERA)
+    s.box(0.5, 6.6, 6.8, 15.5, 14.4, 8.2, MADERA_CLARA)
+    rojo_l = cloth('#c41e2a', weave=0.06, seed=131)
+    s.box(0.4, 14.4, 6.7, 15.6, 15.1, 8.3, rojo_l)
+    s.box(0.4, 5.9, 6.7, 15.6, 6.6, 8.3, rojo_l)
+    verde_l = agujas(seed=132, nieve=0.0)
+    for (x0, y0, x1, y1) in ((4.5, 8, 11.5, 9.8), (5.5, 9.8, 10.5, 11.4), (6.5, 11.4, 9.5, 12.8), (7.3, 12.8, 8.7, 13.6)):
+        s.box(x0, y0, 6.5, x1, y1, 6.8, verde_l)
+    s.box(7.4, 7.0, 6.5, 8.6, 8.0, 6.8, MADERA)
+    s.box(7.5, 13.6, 6.5, 8.5, 14.3, 6.8, brillo('#ffd84a'))
+    for (x, y, c_) in ((5.6, 8.6, '#e02a3a'), (9.8, 9.2, '#3a7ad8'), (7.0, 10.4, '#f0c43a'), (8.6, 11.8, '#e02a3a')):
+        s.box(x, y, 6.4, x + 0.7, y + 0.7, 6.6, brillo(c_))
+    s.box(0.3, 15.1, 6.6, 15.7, 15.8, 8.4, NIEVE)
+    kit.write_prop(s, ROOT)
+    nombre('letrero_pinos', 'Letrero del puesto de árboles', 'Christmas tree lot sign')
     nombre('caja_regalo', 'Caja de regalo', 'Gift box')
     nombre('calendario_adviento', 'Calendario de Adviento', 'Advent calendar')
 

@@ -23,6 +23,12 @@ GENTE = {
                           zapatos=(150, 30, 40), tirantes=True, manga=11, puno=VERDE, flequillo=True),
     'duende_cocinero': dict(piel=2, pelo=(60, 40, 30), ojos=(70, 50, 30), ropa=VERDE, ropa2=BLANCO, pantalon=(150, 30, 40), zapatos=(30, 110, 50),
                             delantal=True, manga=4, flequillo=True),
+    # Don Abeto, el del puesto de árboles: camisa de leñador (roja con negro), pantalón de mezclilla, botas y barba café
+    'pinero': dict(piel=0, pelo=(110, 72, 40), ojos=(70, 100, 60), ropa=(176, 32, 36), ropa2=(30, 26, 28), pantalon=(52, 76, 120),
+                   zapatos=(84, 52, 30), barba=True, cinturon=(70, 46, 26), puno=(30, 26, 28), manga=11, botones=True),
+    # Ramiro, el duende viajero: abrigo café de viaje con bufanda roja, mochila (tirantes) y botas
+    'duende_viajero': dict(piel=2, pelo=(170, 110, 50), ojos=(60, 110, 150), ropa=(122, 84, 46), ropa2=(196, 30, 42), pantalon=(46, 90, 52),
+                           zapatos=(70, 44, 26), tirantes=True, cinturon=(60, 40, 22), puno=(196, 30, 42), manga=11, flequillo=True),
     # el duende ladrón: ropa oscura (para esconderse de noche), bufanda morada y botas puntiagudas moradas
     'duende_ladron': dict(piel=1, pelo=(40, 30, 28), ojos=(150, 60, 170), ropa=(34, 62, 44), ropa2=(112, 44, 132), pantalon=(26, 26, 32),
                           zapatos=(112, 44, 132), cinturon=(70, 50, 30), puno=(112, 44, 132), manga=11, flequillo=True, tirantes=True),
@@ -103,6 +109,13 @@ if __name__ == '__main__':
                     s.px(0 + 4 + x, 8 + y, BLANCO)   # lado derecho, mitad de enfrente
                     s.px(16 + x, 8 + y, BLANCO)      # lado izquierdo, mitad de enfrente
             # expresiones con barba: boca abierta y sonrisa solo en la boca
+        if n == 'pinero':
+            # camisa de cuadros de leñador: líneas negras cada 4 pixeles sobre lo rojo
+            for y in range(16, 64):
+                for x in range(16, 64):
+                    c_ = s.get(x, y)
+                    if c_[3] and abs(c_[0] - 176) < 30 and c_[1] < 70 and c_[2] < 70 and (x % 4 == 0 or y % 4 == 0):
+                        s.px(x, y, (44, 20, 22) if (x % 4 == 0) != (y % 4 == 0) else (24, 18, 20))
         s.save(os.path.join(E, n + '.png'))
     jengibre()
     print('ok')

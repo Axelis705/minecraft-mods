@@ -278,6 +278,7 @@ public final class ArbolSanta {
                     .withStyle(malo ? ChatFormatting.DARK_GRAY : ChatFormatting.GOLD, ChatFormatting.BOLD));
             if (!malo && puestos > 0) {
                 Logros.dar(p, "arbol");
+                com.axeliscore.npc.Misiones.evento(p, Navidad.MODID + ":regalos_arbol", 1);
             }
         }
         Navidad.LOGGER.info("NAVIDAD_ARBOL regalos para {}: {} (adornos={}, nivel={}, malo={})", nombre, puestos, n, nv, malo);

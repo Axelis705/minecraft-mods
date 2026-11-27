@@ -25,4 +25,10 @@ summon navidad:pinguino -196 -60 12
 summon navidad:regalo_cayendo -196 -40 14
 navidad arbol
 #expect rboles
+forceload add -216 20 -180 50
+#pausa 2
+fill -210 -61 25 -190 -61 45 minecraft:grass_block
+fill -210 -60 25 -190 -50 45 minecraft:air
+place feature navidad:puesto_pinos -200 -60 35
+#expect navidad:puesto_pinos
 navidad temporada auto

@@ -113,6 +113,12 @@ public class Pinguino extends TamableAnimal implements Animated {
     }
 
     @Override
+    /** ¿Va de panza? (para la prueba con fotos) */
+    public boolean deslizando() {
+        return this.entityData.get(DESLIZA);
+    }
+
+    @Override
     public boolean isFood(ItemStack st) {
         return PESCADO.test(st);
     }

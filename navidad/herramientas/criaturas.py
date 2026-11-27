@@ -72,6 +72,35 @@ RENO = [
     ('c.part("tail3", [-1.2, 13.8, 17], [2.4, 2.4, 3.5], tail(0.75))', 'c.part("tail3", [-0.2, 14.8, 10.5], [0.4, 0.4, 0.4], tail(0.9))'),
 ]
 
+# ---------------------------------------------------------------- renito (el reno bebé de nariz roja: la otra mascota)
+
+NARIZ = '''
+    def nariz_p(face, x, y, w, h):
+        return (236, 40, 48) if face != "bottom" else (170, 20, 30)
+    c.bone("nariz", [0, 14.8, -18.6], "head")
+    c.part("nariz", [-1.1, 14.4, -19.4], [2.2, 1.8, 1.2], nariz_p, inflate=0.1)
+    c.glow("nariz")
+    def collar_p(face, x, y, w, h):
+        return (200, 30, 44) if face != "bottom" else (150, 20, 30)
+    def oro_p(face, x, y, w, h):
+        return (240, 200, 70)
+    c.bone("collar", [0, 13, -7.5], "neck")
+    c.part("collar", [-2.9, 12.2, -9.9], [5.8, 1.4, 4.8], collar_p)
+    c.part("collar", [-0.8, 10.8, -10.4], [1.6, 1.6, 1.6], oro_p)
+    c.bone("eyes"'''
+
+RENITO = [(a, b) for a, b in RENO if not a.startswith('c.build') and not a.startswith('save_anims') and a != '"geometry.axelis_core.bestia"'
+          and a != '    c.bone("eyes"'] + [
+    ('"geometry.axelis_core.bestia"', '"geometry.navidad.renito"'),
+    ('    c.bone("eyes"', ASTAS.replace('    c.bone("eyes"', NARIZ)),
+    ('c.build(*out("bestia"))', 'c.build(*out("renito"))'),
+    ('save_anims("bestia", an, os.path.join(A, "animations", "bestia.animation.json"))',
+     'save_anims("renito", an, os.path.join(A, "animations", "renito.animation.json"))'),
+    # pelaje un poquito más claro y con manchitas, como de bebé
+    ('fur, dark, belly, mane, ember = (140, 96, 58), (86, 56, 34), (228, 214, 186), (236, 230, 216), (250, 248, 240)',
+     'fur, dark, belly, mane, ember = (166, 116, 70), (104, 70, 42), (240, 228, 204), (240, 234, 222), (250, 248, 240)'),
+]
+
 # ---------------------------------------------------------------- krampus
 
 CUERNOS = '''
@@ -215,6 +244,7 @@ def muneco():
 if __name__ == '__main__':
     muneco()
     derivar('bestia', RENO)()
+    derivar('bestia', RENITO)()
     derivar('coloso', KRAMPUS)(cry=(255, 190, 40))
     # el Krampus furioso (segunda fase): ojos rojos
     k2 = KRAMPUS + [('c.build(geo_p, png_p)', 'c.build(os.path.join(os.path.dirname(geo_p), "_tmp.geo.json"), png_p[:-4] + "_f2.png"); return')]

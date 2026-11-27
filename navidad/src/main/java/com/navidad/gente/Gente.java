@@ -25,7 +25,7 @@ public final class Gente {
     /** Rojo navideño con detalles dorados y el marco de madera del Core. */
     public static final Theme TEMA = new Theme(0xF23A1216, 0xF2200A0C, 0xFF120405, 0xFF8A2A30, 0xFFF0C040, 0xFF7AE08A, 0xFFF8EEE6,
             0xFFC8AAA4, 0xFFFFE6A0, 0x80000000, 0xFF6A1E24, 0xFF8A2A30, 0xFFFFFFFF, 0xFF7AE08A, 0xFFFF7A6A, Theme.MADERA.frame);
-    public static NpcDef SANTA, SENORA, JUGUETERO, SASTRE, RENOS;
+    public static NpcDef SANTA, SENORA, JUGUETERO, SASTRE, RENOS, PINERO, VIAJERO;
     private static boolean iniciado;
 
     private Gente() {
@@ -156,6 +156,69 @@ public final class Gente {
                 .mision(m("amigo_reno").objetivo(Objetivo.evento(nv("reno_amigo"), 1))
                         .premio(Mision.Premio.objeto(nv("cuernos_reno"), 1)).premio(Mision.Premio.esmeraldas(3)).amistad(12))
                 .regalo(1, p -> dar(p, "minecraft:golden_carrot", 8)));
+        pinero();
+        viajero();
+    }
+
+    /**
+     * Don Abeto, el del puesto de árboles de Navidad (sale solo en el mundo, con el puesto): vende arbolitos, pinos recién cortados,
+     * adornos y luces por esmeraldas, y compra troncos y retoños de abeto.
+     */
+    private static void pinero() {
+        PINERO = NpcDef.registrar(new NpcDef(Navidad.MODID, "pinero").piel(piel("pinero")).tema(TEMA).rutina(NpcDef.Rutina.QUIETO)
+                .saludos(saludos("pinero"))
+                .tienda(new Tienda()
+                        .vende(nv("arbol_navidad"), 1, 6)
+                        .vende(nv("arbol_nevado"), 1, 7)
+                        .vende(nv("pino_atado"), 1, 4)
+                        .vende(nv("pino_maceta"), 1, 2)
+                        .vende(nv("arbol_dorado"), 1, 24, 1, 2)
+                        .vende(nv("caja_adornos"), 4, 1)
+                        .vende(nv("luces_colgantes"), 4, 1)
+                        .vende(nv("guirnalda_luces"), 3, 1)
+                        .vende(nv("esfera_roja"), 4, 1)
+                        .vende(nv("esfera_dorada"), 4, 1)
+                        .vende(nv("corona_navidad"), 1, 2)
+                        .vende(nv("calcetin_rojo"), 1, 2)
+                        .vende(nv("galletas_leche"), 1, 3)
+                        .vende(nv("chocolate_caliente"), 2, 1)
+                        .compra("minecraft:spruce_log", 12, 1)
+                        .compra("minecraft:spruce_sapling", 10, 1)
+                        .compra("minecraft:sweet_berries", 16, 1))
+                .mision(m("troncos").objetivo(Objetivo.entregar("minecraft:spruce_log", 32))
+                        .premio(Mision.Premio.objeto(nv("arbol_navidad"), 1)).premio(Mision.Premio.esmeraldas(2)).amistad(10))
+                .mision(m("retonos").objetivo(Objetivo.entregar("minecraft:spruce_sapling", 8))
+                        .premio(Mision.Premio.objeto(nv("pino_maceta"), 2)).amistad(8))
+                .mision(m("adornar").requiere(nv("troncos")).objetivo(Objetivo.evento(nv("regalos_arbol"), 1))
+                        .premio(Mision.Premio.objeto(nv("caja_adornos"), 12)).premio(Mision.Premio.esmeraldas(3)).amistad(12))
+                .mision(m("chocolate").diaria().objetivo(Objetivo.entregar("minecraft:cocoa_beans", 6))
+                        .premio(Mision.Premio.objeto(nv("chocolate_caliente"), 3)).amistad(4))
+                .regalo(1, p -> dar(p, nv("luces_colgantes"), 8))
+                .regalo(2, p -> dar(p, nv("arbol_nevado"), 1))
+                .regalo(3, p -> dar(p, nv("arbol_dorado"), 1)));
+    }
+
+    /** Ramiro, el duende viajero (llega solo, como el comerciante errante, con su reno): cosas que no hay en otro lado. */
+    private static void viajero() {
+        VIAJERO = NpcDef.registrar(new NpcDef(Navidad.MODID, "duende_viajero").piel(piel("duende_viajero")).tema(TEMA)
+                .rutina(NpcDef.Rutina.QUIETO).saludos(saludos("duende_viajero"))
+                .tienda(new Tienda()
+                        .vende(nv("trineo_madera"), 1, 8, 1, 1)
+                        .vende(nv("patines"), 1, 4, 1, 2)
+                        .vende(nv("arbol_dorado"), 1, 16, 1, 1)
+                        .vende(nv("regalo_misterioso"), 1, 3, 1, 3)
+                        .vende(nv("traje_santa"), 1, 14, 1, 1)
+                        .vende(nv("disco_navidad"), 1, 6, 1, 1)
+                        .vende(nv("disco_campanas"), 1, 6, 1, 1)
+                        .vende(nv("calendario_adviento"), 1, 5, 1, 1)
+                        .vende(nv("cuernos_reno"), 1, 3, 1, 2)
+                        .vende(nv("bufanda"), 1, 2, 1, 2)
+                        .vende(nv("orejeras"), 1, 2, 1, 2)
+                        .vende(nv("uvas"), 12, 2, 1, 2)
+                        .vende(nv("esfera_nieve"), 1, 3, 1, 2)
+                        .compra("minecraft:cocoa_beans", 12, 1)
+                        .compra("minecraft:sweet_berries", 16, 1))
+                .regalo(1, p -> dar(p, nv("dulce"), 16)));
     }
 
     /** El gorro (o lo que lleve en la cabeza) de cada quien. */
@@ -169,6 +232,9 @@ public final class Gente {
         if (d == RENOS) {
             return "cuernos_reno";
         }
+        if (d == PINERO) {
+            return "orejeras";
+        }
         return "gorro_duende";
     }
 
@@ -178,6 +244,9 @@ public final class Gente {
         String g = gorroDe(d);
         if (n != null && g != null) {
             Vestuario.poner(l.getServer(), n.getUUID(), Ropa.id(g), null);
+        }
+        if (n != null && d == PINERO) {
+            Vestuario.poner(l.getServer(), n.getUUID(), Ropa.id("bufanda"), null);
         }
         return n;
     }

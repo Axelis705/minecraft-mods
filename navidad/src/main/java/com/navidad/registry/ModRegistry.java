@@ -72,6 +72,9 @@ public final class ModRegistry {
     /** La casita de duende (muy rara) de los biomas nevados (data/navidad/forge/biome_modifier/casita_duende.json). */
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> CASITA_DUENDE = FEATURES.register("casita_duende",
             () -> new CasitaDuende(NoneFeatureConfiguration.CODEC));
+    /** El puesto de árboles de Navidad con Don Abeto (data/navidad/forge/biome_modifier/puesto_pinos.json). */
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> PUESTO_PINOS = FEATURES.register("puesto_pinos",
+            () -> new com.navidad.mundo.PuestoPinos(NoneFeatureConfiguration.CODEC));
 
     /** En qué orden salen en la pestaña creativa. */
     private static final List<RegistryObject<? extends Item>> ORDEN = new ArrayList<>();
@@ -166,6 +169,11 @@ public final class ModRegistry {
     public static final RegistryObject<Block> BUZON = BLOCKS.register("buzon_santa", () -> new Buzon(BlockBehaviour.Properties.of()
             .strength(1.5F).sound(SoundType.METAL).noOcclusion()));
     public static final RegistryObject<Item> BUZON_ITEM = item("buzon_santa", () -> new BlockItem(BUZON.get(), props()));
+    public static final RegistryObject<Block> LETRERO_PINOS = BLOCKS.register("letrero_pinos", () -> new com.navidad.bloque.LetreroPinos(
+            BlockBehaviour.Properties.of().strength(1.5F).sound(SoundType.WOOD).noOcclusion()));
+    public static final RegistryObject<Item> LETRERO_PINOS_ITEM = item("letrero_pinos", () -> new BlockItem(LETRERO_PINOS.get(), props()));
+    public static final RegistryObject<BlockEntityType<com.navidad.bloque.LetreroPinosBE>> LETRERO_PINOS_BE = BES.register("letrero_pinos",
+            () -> BlockEntityType.Builder.of(com.navidad.bloque.LetreroPinosBE::new, LETRERO_PINOS.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<CajaRegaloBE>> CAJA_REGALO_BE = BES.register("caja_regalo",
             () -> BlockEntityType.Builder.of(CajaRegaloBE::new, CAJA_REGALO.get()).build(null));
@@ -215,6 +223,10 @@ public final class ModRegistry {
     public static final RegistryObject<EntityType<com.navidad.entidad.Pinguino>> PINGUINO = ENTITIES.register("pinguino",
             () -> EntityType.Builder.<com.navidad.entidad.Pinguino>of(com.navidad.entidad.Pinguino::new, MobCategory.CREATURE).sized(0.55F, 0.95F)
                     .clientTrackingRange(10).build("navidad:pinguino"));
+    /** La otra mascota: el renito de nariz roja. */
+    public static final RegistryObject<EntityType<com.navidad.entidad.Renito>> RENITO = ENTITIES.register("renito",
+            () -> EntityType.Builder.<com.navidad.entidad.Renito>of(com.navidad.entidad.Renito::new, MobCategory.CREATURE).sized(0.6F, 0.9F)
+                    .clientTrackingRange(10).build("navidad:renito"));
     /** El duende que se roba regalos de tu árbol. */
     public static final RegistryObject<EntityType<com.navidad.entidad.DuendeLadron>> DUENDE_LADRON = ENTITIES.register("duende_ladron",
             () -> EntityType.Builder.<com.navidad.entidad.DuendeLadron>of(com.navidad.entidad.DuendeLadron::new, MobCategory.MISC)
@@ -240,6 +252,7 @@ public final class ModRegistry {
     public static final RegistryObject<Item> HUEVO_RENO = item("huevo_reno", () -> new ForgeSpawnEggItem(RENO, 0x8C603A, 0xE4D6BA, props()));
     public static final RegistryObject<Item> HUEVO_JENGIBRE = item("huevo_hombre_jengibre", () -> new ForgeSpawnEggItem(HOMBRE_JENGIBRE, 0xB8743A, 0xF6F6F2, props()));
     public static final RegistryObject<Item> HUEVO_KRAMPUS = item("huevo_krampus", () -> new ForgeSpawnEggItem(KRAMPUS, 0x34261F, 0xFFBE28, props()));
+    public static final RegistryObject<Item> HUEVO_RENITO = item("huevo_renito", () -> new ForgeSpawnEggItem(RENITO, 0xA6744A, 0xEC2830, props()));
     public static final RegistryObject<Item> HUEVO_PINGUINO = item("huevo_pinguino", () -> new ForgeSpawnEggItem(PINGUINO, 0x1A1C26, 0xF69424, props()));
 
     // ------------------------------------------------------------------ la pestaña

@@ -42,6 +42,7 @@ public final class ModClient {
                 return 0.6F;
             }
         });
+        e.registerEntityRenderer(ModRegistry.RENITO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "renito", 0.4F, 0.55F));
         e.registerEntityRenderer(ModRegistry.PINGUINO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "pinguino", 0.35F, 1F) {
             @Override
             protected float modelScale(com.navidad.entidad.Pinguino p) {
