@@ -323,8 +323,9 @@ def pila_libros():
 
     # tres libros apilados de verdad (cada uno justo encima del anterior, sin solaparse) y girados poco
     bk(2, 0, 3, 12, 9, 3, '#7a1f1f')
-    bk(2.5, 3, 3.5, 11, 8.5, 2.6, '#1f3f7a', 10)
-    bk(3, 5.6, 4, 10, 8, 2.2, '#2d5a2a', -9)
+    # (Minecraft solo acepta giros de 22.5 en 22.5: con 10 y -9 el modelo no cargaba y la pila salía morada)
+    bk(2.5, 3, 3.5, 11, 8.5, 2.6, '#1f3f7a', 22.5)
+    bk(3, 5.6, 4, 10, 8, 2.2, '#2d5a2a', -22.5)
     return p
 
 

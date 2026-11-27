@@ -24,6 +24,7 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -157,7 +158,8 @@ public final class AnioNuevo {
                     Component.translatable("navidad.anio.feliz2", sh.anio).withStyle(ChatFormatting.YELLOW), 10, 100, 30);
             p.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.MASTER, 1F, 0.8F);
             p.playNotifySound(ModRegistry.CASCABELES.get(), SoundSource.MASTER, 1F, 1F);
-            Premios.confeti(p.serverLevel(), p.getX(), p.getY() + 3.4, p.getZ(), true);
+            Vec3 f = Vec3.directionFromRotation(0, p.getYRot()).scale(5);
+            Premios.confeti(p.serverLevel(), p.getX() + f.x, p.getY() + 4.5, p.getZ() + f.z, true);
             int n = Math.min(12, sh.uvas.getOrDefault(p.getUUID(), 0));
             if (n >= 12) {
                 p.sendSystemMessage(Component.translatable("navidad.anio.doce").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));

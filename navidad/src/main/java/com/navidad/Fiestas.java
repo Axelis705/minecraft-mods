@@ -94,7 +94,9 @@ public final class Fiestas {
         if (!p.getInventory().add(caja)) {
             p.drop(caja, false);
         }
-        Premios.confeti(p.serverLevel(), p.getX(), p.getY() + 1.2, p.getZ(), true);
+        // el confeti, un poco enfrente (si sale en la cara no se ve nada)
+        Vec3 f = Vec3.directionFromRotation(0, p.getYRot()).scale(2.2);
+        Premios.confeti(p.serverLevel(), p.getX() + f.x, p.getY() + 1.6, p.getZ() + f.z, true);
     }
 
     // ------------------------------------------------------------------ el trineo de noche

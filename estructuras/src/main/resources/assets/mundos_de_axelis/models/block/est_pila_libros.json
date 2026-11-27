@@ -345,7 +345,7 @@
     }
    },
    "rotation": {
-    "angle": 10,
+    "angle": 22.5,
     "axis": "y",
     "origin": [
      8.0,
@@ -422,7 +422,7 @@
     }
    },
    "rotation": {
-    "angle": 10,
+    "angle": 22.5,
     "axis": "y",
     "origin": [
      8.0,
@@ -499,7 +499,7 @@
     }
    },
    "rotation": {
-    "angle": 10,
+    "angle": 22.5,
     "axis": "y",
     "origin": [
      8.0,
@@ -576,7 +576,7 @@
     }
    },
    "rotation": {
-    "angle": 10,
+    "angle": 22.5,
     "axis": "y",
     "origin": [
      8.0,
@@ -653,7 +653,7 @@
     }
    },
    "rotation": {
-    "angle": -9,
+    "angle": -22.5,
     "axis": "y",
     "origin": [
      8.0,
@@ -730,7 +730,7 @@
     }
    },
    "rotation": {
-    "angle": -9,
+    "angle": -22.5,
     "axis": "y",
     "origin": [
      8.0,
@@ -807,7 +807,7 @@
     }
    },
    "rotation": {
-    "angle": -9,
+    "angle": -22.5,
     "axis": "y",
     "origin": [
      8.0,
@@ -884,7 +884,7 @@
     }
    },
    "rotation": {
-    "angle": -9,
+    "angle": -22.5,
     "axis": "y",
     "origin": [
      8.0,

@@ -219,8 +219,8 @@ final class Prueba {
             });
             t.waitFor("la carta salió volando", 4000, () -> Minecraft.getInstance().player.getMainHandItem().isEmpty());
             t.add("respuesta de Santa", 1500, () -> t.cmd("execute as @p run navidad carta entregar"));
-            t.waitFor("llegó la respuesta", 5000, () -> Minecraft.getInstance().player.getInventory().contains(new net.minecraft.world.item.ItemStack(
-                    Items.WRITTEN_BOOK)));
+            t.waitFor("llegó la respuesta", 5000, () -> Minecraft.getInstance().player.getInventory().items.stream()
+                    .anyMatch(st -> st.is(Items.WRITTEN_BOOK)));
             t.add("hud carta", 300, () -> t.hud(true));
             t.photo("carta_respuesta", 1500, () -> t.lookFrom(300.5, -60, -13.5, 302.5, -59.5, -13.5));
             t.add("hud carta fin", 300, () -> t.hud(false));

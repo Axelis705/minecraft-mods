@@ -139,15 +139,20 @@ public final class Invierno {
         Integer ini = SALIDA.get(p.getUUID());
         Double antes = ANTES.put(p.getUUID(), lz);
         if (ini == null) {
-            if (enCarril && lz >= Aldea.COLINA_CIMA - 1 && lz <= Aldea.COLINA_CIMA + 1 && antes != null && lz - antes > 0.02) {
+            // la línea de salida está al borde de la cima: arranca quien la cruza bajando
+            double linea = Aldea.COLINA_CIMA + 0.6;
+            if (enCarril && antes != null && antes < linea && lz >= linea) {
                 SALIDA.put(p.getUUID(), s.getTickCount());
                 p.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("navidad.carrera.sale").withStyle(ChatFormatting.AQUA)));
+                Navidad.LOGGER.info("NAVIDAD_CARRERA sale {}", p.getGameProfile().getName());
             }
             return;
         }
         double seg = (s.getTickCount() - ini) / 20.0;
         if (!enCarril || seg > 40 || lz < Aldea.COLINA_CIMA - 2) {
             SALIDA.remove(p.getUUID());
+            Navidad.LOGGER.info("NAVIDAD_CARRERA se salió {} ({}, {}, {}) a los {} s", p.getGameProfile().getName(), String.format(Locale.ROOT,
+                    "%.1f", lx), String.format(Locale.ROOT, "%.1f", ly), String.format(Locale.ROOT, "%.1f", lz), seg);
             return;
         }
         if (lz >= Aldea.COLINA_PIE + 1) {
