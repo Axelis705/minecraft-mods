@@ -343,8 +343,8 @@
   "item.navidad.bufanda": "Bufanda navideña",
   "item.navidad.orejeras": "Orejeras",
   "navidad.galletas.manana": "Santa ya pasó por tus galletas hace poco. Déjale otras la próxima noche.",
-  "navidad.santa.jojojo": "¡Jo, jo, jo!",
-  "navidad.santa.feliz": "¡Feliz Navidad, %s! Te dejé un regalito...",
+  "navidad.santa.jojojo": "¡JO, JO, JO!",
+  "navidad.santa.feliz": "¡Feliz Navidad, %s! Ahí te van unos regalos...",
   "navidad.regalo_cielo.aterrizo": "★ ¡Un regalo de Santa aterrizó cerca de ti!",
   "navidad.regalo_cielo.atrapado": "★ ¡Atrapaste un regalo en el aire!",
   "entity.navidad.regalo_cayendo": "Regalo de Santa",
@@ -539,5 +539,8 @@
   "item.navidad.punta_estrella": "Estrella para la punta",
   "item.navidad.punta_angel": "Ángel para la punta",
   "item.navidad.punta_polar": "Estrella polar de cristal",
-  "navidad.libro.te_llega": "★ Santa te mandó tu Libro de Navidad: ábrelo (clic derecho) para ver tus tareas y cómo va tu árbol."
+  "navidad.libro.te_llega": "★ Santa te mandó tu Libro de Navidad: ábrelo (clic derecho) para ver tus tareas y cómo va tu árbol.",
+  "navidad.aviso.viene": "¡Santa Claus se acerca!",
+  "navidad.aviso.mira": "¡Mira al cielo!",
+  "navidad.aviso.lejos": "viene a %s bloques"
 }

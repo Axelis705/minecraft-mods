@@ -51,6 +51,7 @@ public final class ModClient {
         });
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
         e.registerBlockEntityRenderer(ModRegistry.PINO_NAVIDAD_BE.get(), PinoRenderer::new);
+        e.registerBlockEntityRenderer(ModRegistry.CAJA_REGALO_BE.get(), CajaRenderer::new);
     }
 
     /** En temporada, los mobs con cabeza de persona salen con gorro de Santa o de duende. */
@@ -64,6 +65,11 @@ public final class ModClient {
     public static void onModelos(ModelEvent.RegisterAdditional e) {
         e.register(TrineoMaderaRenderer.MODELO);
         e.register(RegaloCayendoRenderer.PARACAIDAS);
+        for (int c = 0; c < 4; c++) {
+            e.register(CajaRenderer.CUERPO[c]);
+            e.register(CajaRenderer.TAPA[c]);
+            e.register(RegaloCayendoRenderer.CAJA[c]);
+        }
     }
 
     @SubscribeEvent
@@ -86,6 +92,7 @@ public final class ModClient {
             // el traje de Santa: todo el cuerpo y la barba
             VestuarioCliente.registrar(Ropa.id("traje_santa"), Prenda.piel(rl("textures/prenda/traje_santa.png")));
         });
+        SantaAviso.init();
         Prueba.registrar();
     }
 }

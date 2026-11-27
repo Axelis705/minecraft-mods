@@ -157,9 +157,10 @@ def bayas(cx, cy):
                     put(cx + bx + x, cy + by + y, c)
 
 
-for cx, cy, sx in ((34, 34, 1), (566, 34, -1)):
-    hoja(cx, cy, math.radians(0 if sx > 0 else 180), 22)
-    hoja(cx, cy, math.radians(70 if sx > 0 else 110), 18)
+# (solo abajo a la izquierda: arriba van los títulos y a la derecha las tareas)
+for cx, cy, sx in ((34, 352, 1),):
+    hoja(cx, cy, math.radians(-20), 22)
+    hoja(cx, cy, math.radians(-75), 18)
     bayas(cx - 2, cy - 2)
 
 # ================================================================ las cintas de los capítulos (40 x 56) en x=608 (normal) y x=652 (elegida)

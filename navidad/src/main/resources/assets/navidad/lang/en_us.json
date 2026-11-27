@@ -343,8 +343,8 @@
   "item.navidad.bufanda": "Christmas scarf",
   "item.navidad.orejeras": "Earmuffs",
   "navidad.galletas.manana": "Santa already came for your cookies. Leave him more next night.",
-  "navidad.santa.jojojo": "Ho, ho, ho!",
-  "navidad.santa.feliz": "Merry Christmas, %s! I left you a little something...",
+  "navidad.santa.jojojo": "HO, HO, HO!",
+  "navidad.santa.feliz": "Merry Christmas, %s! Here come some gifts...",
   "navidad.regalo_cielo.aterrizo": "★ A gift from Santa landed near you!",
   "navidad.regalo_cielo.atrapado": "★ You caught a gift in mid-air!",
   "entity.navidad.regalo_cayendo": "Gift from Santa",
@@ -539,5 +539,8 @@
   "item.navidad.punta_estrella": "Tree-top star",
   "item.navidad.punta_angel": "Tree-top angel",
   "item.navidad.punta_polar": "Crystal north star",
-  "navidad.libro.te_llega": "★ Santa sent you your Christmas Book: open it (right click) to see your tasks and how your tree is doing."
+  "navidad.libro.te_llega": "★ Santa sent you your Christmas Book: open it (right click) to see your tasks and how your tree is doing.",
+  "navidad.aviso.viene": "Santa Claus is coming!",
+  "navidad.aviso.mira": "Look up at the sky!",
+  "navidad.aviso.lejos": "%s blocks away"
 }

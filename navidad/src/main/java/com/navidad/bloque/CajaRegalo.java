@@ -35,23 +35,30 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  */
 public class CajaRegalo extends HorizontalDirectionalBlock implements EntityBlock {
     public static final BooleanProperty LLENA = BooleanProperty.create("llena");
+    /** Mientras se abre (la dibuja el renderizador con la tapa saliendo volando). */
+    public static final BooleanProperty ABRIENDO = BooleanProperty.create("abriendo");
+    /** La envoltura: 0 rojo y dorado, 1 verde y rojo, 2 azul y plata, 3 dorado y rojo. */
+    public static final net.minecraft.world.level.block.state.properties.IntegerProperty COLOR =
+            net.minecraft.world.level.block.state.properties.IntegerProperty.create("color", 0, 3);
     private static final VoxelShape FORMA = Block.box(3, 0, 3, 13, 11, 13);
 
     public CajaRegalo(Properties p) {
         super(p);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LLENA, false));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LLENA, false).setValue(ABRIENDO, false)
+                .setValue(COLOR, 0));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> b) {
-        b.add(FACING, LLENA);
+        b.add(FACING, LLENA, ABRIENDO, COLOR);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext c) {
         boolean llena = c.getItemInHand().getTagElement("BlockEntityTag") != null
                 && c.getItemInHand().getTagElement("BlockEntityTag").contains("Contenido");
-        return defaultBlockState().setValue(FACING, c.getHorizontalDirection().getOpposite()).setValue(LLENA, llena);
+        int color = Math.floorMod(c.getClickedPos().hashCode() * 31 + (int) (c.getLevel().getGameTime() / 7), 4);
+        return defaultBlockState().setValue(FACING, c.getHorizontalDirection().getOpposite()).setValue(LLENA, llena).setValue(COLOR, color);
     }
 
     @Override
@@ -72,11 +79,17 @@ public class CajaRegalo extends HorizontalDirectionalBlock implements EntityBloc
 
     /** (Servidor) Pone una caja de regalo llena en {@code pos} si cabe ahí (lugar libre con piso firme). Devuelve si la pudo poner. */
     public static boolean poner(Level l, BlockPos pos, Direction mira, ItemStack contenido, String de, String para) {
+        return poner(l, pos, mira, contenido, de, para, l.random.nextInt(4));
+    }
+
+    /** Igual, con la envoltura (0 a 3) que se quiere. */
+    public static boolean poner(Level l, BlockPos pos, Direction mira, ItemStack contenido, String de, String para, int color) {
         if (!l.getBlockState(pos).canBeReplaced() || !l.getFluidState(pos).isEmpty()
                 || !l.getBlockState(pos.below()).isFaceSturdy(l, pos.below(), Direction.UP)) {
             return false;
         }
-        l.setBlock(pos, com.navidad.registry.ModRegistry.CAJA_REGALO.get().defaultBlockState().setValue(FACING, mira).setValue(LLENA, true), 3);
+        l.setBlock(pos, com.navidad.registry.ModRegistry.CAJA_REGALO.get().defaultBlockState().setValue(FACING, mira).setValue(LLENA, true)
+                .setValue(COLOR, Math.floorMod(color, 4)), 3);
         if (l.getBlockEntity(pos) instanceof CajaRegaloBE be) {
             be.contenido = contenido.copy();
             be.de = de;
@@ -92,6 +105,15 @@ public class CajaRegalo extends HorizontalDirectionalBlock implements EntityBloc
     }
 
     @Override
+    public <T extends BlockEntity> net.minecraft.world.level.block.entity.BlockEntityTicker<T> getTicker(Level l, BlockState s,
+            net.minecraft.world.level.block.entity.BlockEntityType<T> t) {
+        if (!s.getValue(ABRIENDO) || t != com.navidad.registry.ModRegistry.CAJA_REGALO_BE.get()) {
+            return null;
+        }
+        return (lv, p, st, be) -> ((CajaRegaloBE) be).tick();
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState s, Level l, BlockPos pos, Player p, InteractionHand h, BlockHitResult hit) {
         if (l.isClientSide) {
@@ -99,6 +121,9 @@ public class CajaRegalo extends HorizontalDirectionalBlock implements EntityBloc
         }
         if (!(l.getBlockEntity(pos) instanceof CajaRegaloBE be)) {
             return InteractionResult.PASS;
+        }
+        if (s.getValue(ABRIENDO)) {
+            return InteractionResult.CONSUME;
         }
         ItemStack mano = p.getItemInHand(h);
         String yo = p.getGameProfile().getName();
@@ -129,28 +154,11 @@ public class CajaRegalo extends HorizontalDirectionalBlock implements EntityBloc
             l.playSound(null, pos, SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 0.6F, 1.4F);
             return InteractionResult.CONSUME;
         }
-        // ¡a abrirlo!
-        ItemStack dentro = be.contenido.copy();
-        String deQuien = be.de;
-        be.contenido = ItemStack.EMPTY;
-        l.removeBlock(pos, false);
-        if (p instanceof ServerPlayer sp) {
-            com.navidad.Logros.dar(sp, "regalo");
-            com.navidad.libro.Libro.evento(sp, "regalo_abierto", 1);
-            sp.displayClientMessage(Component.translatable("navidad.caja.abierta", deQuien,
-                    Component.literal(dentro.getCount() + "× ").append(dentro.getHoverName()).withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD)), false);
-            if (!sp.getInventory().add(dentro)) {
-                sp.drop(dentro, false);
-            }
-            // quien lo envolvió cuenta un regalo entregado (para la misión de Santa), si lo abre otra persona
-            ServerPlayer envolvio = sp.server.getPlayerList().getPlayerByName(deQuien);
-            if (envolvio != null && envolvio != sp) {
-                com.axeliscore.npc.Misiones.evento(envolvio, com.navidad.Navidad.MODID + ":regalo_entregado", 1);
-            }
-        }
-        Premios.confeti((ServerLevel) l, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, true);
-        l.playSound(null, pos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7F, 1.3F);
-        l.playSound(null, pos, com.navidad.registry.ModRegistry.REGALO_ABRE.get(), SoundSource.BLOCKS, 1F, 1F);
+        // ¡a abrirlo! (la caja tiembla, la tapa sale volando y el regalo sube; a los 30 ticks se entrega: CajaRegaloBE.tick)
+        be.abrir(p);
+        l.setBlock(pos, s.setValue(ABRIENDO, true), 3);
+        l.playSound(null, pos, SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1F, 0.6F);
+        l.playSound(null, pos, SoundEvents.WOOL_HIT, SoundSource.BLOCKS, 1F, 1.2F);
         return InteractionResult.CONSUME;
     }
 }

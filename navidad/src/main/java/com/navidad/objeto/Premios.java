@@ -53,6 +53,23 @@ public final class Premios {
     private Premios() {
     }
 
+    /** En qué lista está un objeto (para el color de la luz al abrir un regalo). */
+    public static Rareza rarezaDe(ItemStack st) {
+        ResourceLocation k = ForgeRegistries.ITEMS.getKey(st.getItem());
+        String id = k == null ? "" : k.toString();
+        for (Premio p : EPICOS) {
+            if (p.id().equals(id)) {
+                return Rareza.EPICO;
+            }
+        }
+        for (Premio p : RAROS) {
+            if (p.id().equals(id)) {
+                return Rareza.RARO;
+            }
+        }
+        return Rareza.COMUN;
+    }
+
     public static Rareza rareza(RandomSource r) {
         float x = r.nextFloat();
         return x < 0.08F ? Rareza.EPICO : x < 0.36F ? Rareza.RARO : Rareza.COMUN;

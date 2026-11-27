@@ -172,21 +172,29 @@ public final class Fiestas {
 
     /** Manda el trineo para que pase encima de alguien. */
     public static void trineo(ServerLevel l, ServerPlayer sobre) {
-        double a = l.random.nextDouble() * Math.PI * 2;
+        trineoDesde(l, sobre, l.random.nextDouble() * Math.PI * 2, 140);
+    }
+
+    /** El trineo sale a {@code distancia} bloques de alguien, en dirección {@code angulo} (radianes), y pasa justo encima. */
+    public static TrineoSanta trineoDesde(ServerLevel l, ServerPlayer sobre, double angulo, double distancia) {
+        double a = angulo;
         Vec3 dir = new Vec3(Math.cos(a), 0, Math.sin(a));
-        Vec3 desde = sobre.position().add(dir.scale(-140)).add(0, 22, 0);
+        Vec3 desde = sobre.position().add(dir.scale(-distancia)).add(0, 22, 0);
         TrineoSanta tr = ModRegistry.TRINEO.get().create(l);
         if (tr == null) {
-            return;
+            return null;
         }
-        tr.moveTo(desde.x, Math.min(desde.y, l.getMaxBuildHeight() - 4), desde.z, 0, 0);
-        tr.setDeltaMovement(dir.scale(0.5));
+        float yaw = (float) Math.toDegrees(Math.atan2(-dir.x, dir.z));
+        tr.moveTo(desde.x, Math.min(desde.y, l.getMaxBuildHeight() - 4), desde.z, yaw, 0);
+        tr.setDeltaMovement(dir.scale(0.55));
         l.addFreshEntity(tr);
         for (ServerPlayer p : l.players()) {
             if (p.distanceTo(sobre) < 96) {
                 p.sendSystemMessage(Component.translatable("navidad.fiesta.trineo").withStyle(ChatFormatting.AQUA));
+                TrineoSanta.avisar(p, "viene", tr);
             }
         }
+        return tr;
     }
 
     // ------------------------------------------------------------------ posada e intercambio

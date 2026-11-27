@@ -56,7 +56,18 @@
  },
  "risa_santa": {
   "sounds": [
-   "navidad:risa_santa"
+   {
+    "name": "navidad:risa_santa1",
+    "attenuation_distance": 64
+   },
+   {
+    "name": "navidad:risa_santa2",
+    "attenuation_distance": 64
+   },
+   {
+    "name": "navidad:risa_santa3",
+    "attenuation_distance": 64
+   }
   ],
   "subtitle": "navidad.sub.risa"
  },

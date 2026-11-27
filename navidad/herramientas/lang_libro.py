@@ -78,6 +78,9 @@ T = {
                              'Tu Libro de Navidad te dice qué hacer.',
                              '• Place your Christmas pine and hang ornaments on it: the prettier it is, the better the gifts Santa leaves '
                              'every morning. Your Christmas Book tells you what to do.'),
+    'navidad.aviso.viene': ('¡Santa Claus se acerca!', 'Santa Claus is coming!'),
+    'navidad.aviso.mira': ('¡Mira al cielo!', 'Look up at the sky!'),
+    'navidad.aviso.lejos': ('viene a %s bloques', '%s blocks away'),
     # capítulos
     'navidad.libro.cap.0': ('Preparativos', 'Getting ready'),
     'navidad.libro.cap.0.texto': ('Querido amigo: la Navidad empieza en casa. Pon tu pino, cuélgale adornos y llena tu casa de luces. Santa '

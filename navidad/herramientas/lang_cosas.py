@@ -374,8 +374,9 @@ if __name__ == '__main__':
     print(len(T12), 'textos de la bufanda y las orejeras')
 
 T13 = {
-    'navidad.santa.jojojo': ('¡Jo, jo, jo!', 'Ho, ho, ho!'),
-    'navidad.santa.feliz': ('¡Feliz Navidad, %s! Te dejé un regalito...', 'Merry Christmas, %s! I left you a little something...'),
+    'navidad.santa.jojojo': ('¡JO, JO, JO!', 'HO, HO, HO!'),
+    'navidad.santa.feliz': ('¡Feliz Navidad, %s! Ahí te van unos regalos...', 'Merry Christmas, %s! Here come some gifts...',
+                            '¡Feliz Navidad, %s! Ahí van unos regalos...'),
     'navidad.regalo_cielo.aterrizo': ('★ ¡Un regalo de Santa aterrizó cerca de ti!', '★ A gift from Santa landed near you!'),
     'navidad.regalo_cielo.atrapado': ('★ ¡Atrapaste un regalo en el aire!', '★ You caught a gift in mid-air!'),
     'entity.navidad.regalo_cayendo': ('Regalo de Santa', 'Gift from Santa'),

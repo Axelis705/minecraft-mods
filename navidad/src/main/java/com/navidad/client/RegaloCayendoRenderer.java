@@ -23,6 +23,14 @@ import net.minecraft.world.level.block.Block;
  */
 public class RegaloCayendoRenderer extends EntityRenderer<RegaloCayendo> {
     public static final ResourceLocation PARACAIDAS = new ResourceLocation(Navidad.MODID, "block/paracaidas");
+    /** Las cajas de regalo enteras (las mismas que quedan al aterrizar). */
+    public static final ResourceLocation[] CAJA = new ResourceLocation[4];
+
+    static {
+        for (int c = 0; c < 4; c++) {
+            CAJA[c] = new ResourceLocation(Navidad.MODID, "block/caja_regalo_" + c);
+        }
+    }
 
     public RegaloCayendoRenderer(EntityRendererProvider.Context c) {
         super(c);
@@ -49,10 +57,8 @@ public class RegaloCayendoRenderer extends EntityRenderer<RegaloCayendo> {
         ps.mulPose(Axis.YP.rotationDegrees(e.getYRot()));
         ps.scale(0.8F, 0.8F, 0.8F);
         ps.translate(-0.5, 0, -0.5);
-        Block regalo = Deco.block(RegaloCayendo.COLORES[e.color()]);
-        if (regalo != null) {
-            mc.getBlockRenderer().renderSingleBlock(regalo.defaultBlockState(), ps, buf, luz, OverlayTexture.NO_OVERLAY);
-        }
+        mc.getBlockRenderer().getModelRenderer().renderModel(ps.last(), buf.getBuffer(Sheets.cutoutBlockSheet()), null,
+                mc.getModelManager().getModel(CAJA[Math.floorMod(e.color(), 4)]), 1F, 1F, 1F, luz, OverlayTexture.NO_OVERLAY);
         if (abierto > 0.02F) {
             BakedModel m = mc.getModelManager().getModel(PARACAIDAS);
             ps.translate(0.5, 1.375, 0.5);

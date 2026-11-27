@@ -64,6 +64,16 @@ final class Prueba {
         return mejor;
     }
 
+    /** El trineo de Santa, si se ve. */
+    static com.navidad.entidad.TrineoSanta trineo() {
+        for (var e : Minecraft.getInstance().level.entitiesForRendering()) {
+            if (e instanceof com.navidad.entidad.TrineoSanta tr) {
+                return tr;
+            }
+        }
+        return null;
+    }
+
     /** El pingüino más cercano (de alguien o sin dueño, adulto). */
     static com.navidad.entidad.Pinguino pinguino(boolean domado) {
         var mc = Minecraft.getInstance();
@@ -311,10 +321,47 @@ final class Prueba {
                 t.cmd("gamemode survival @a");
                 t.cmd("kill @e[type=navidad:regalo_cayendo]");
                 com.navidad.entidad.RegaloCayendo.aterrizados = 0;
-                t.cmd("tp @a 440.5 -60 80.5 90 -25");
-                t.cmd("summon navidad:trineo_santa 400 -40 80.5 {Motion:[0.5,0.0,0.0]}");
+                t.cmd("tp @a 440.5 -60 80.5 90 -12");
             });
-            t.photo("santa_viene", 2200, () -> {
+            t.add("hud santa", 200, () -> t.hud(true));
+            t.add("llega santa", 300, () -> {
+                var sv = Minecraft.getInstance().getSingleplayerServer();
+                sv.execute(() -> {
+                    var sp = sv.getPlayerList().getPlayers().get(0);
+                    com.navidad.Fiestas.trineoDesde(sp.serverLevel(), sp, 0, 70);
+                });
+            });
+            t.photo("santa_aviso", 1400, () -> {
+            });
+            t.waitFor("Santa saluda", 12000, () -> SantaAviso.vistos >= 2);
+            t.photo("santa_jojo", 1100, () -> {
+                var tr = trineo();
+                if (tr != null) {
+                    t.lookFrom(440.5, -60, 80.5, tr.getX(), tr.getY() + 1, tr.getZ());
+                }
+            });
+            t.add("hud santa fin", 200, () -> t.hud(false));
+            t.add("volar al trineo", 300, () -> t.cmd("gamemode spectator @a"));
+            t.photo("santa_trineo_cerca", 400, () -> {
+                var tr = trineo();
+                if (tr != null) {
+                    double a = Math.toRadians(tr.getYRot());
+                    // de lado y un poco adelante, para ver a Santa y a los renos
+                    t.lookFrom(tr.getX() + Math.cos(a) * 6.5 - Math.sin(a) * 2.5, tr.getY() - 0.4, tr.getZ() + Math.sin(a) * 6.5 + Math.cos(a) * 2.5,
+                            tr.getX() - Math.sin(a) * 1.2, tr.getY() + 1.2, tr.getZ() + Math.cos(a) * 1.2);
+                }
+            });
+            t.photo("santa_trineo_frente", 900, () -> {
+                var tr = trineo();
+                if (tr != null) {
+                    double a = Math.toRadians(tr.getYRot());
+                    t.lookFrom(tr.getX() - Math.sin(a) * 9 + Math.cos(a) * 3, tr.getY() + 0.5, tr.getZ() + Math.cos(a) * 9 + Math.sin(a) * 3,
+                            tr.getX(), tr.getY() + 1.2, tr.getZ());
+                }
+            });
+            t.add("al piso", 300, () -> {
+                t.cmd("gamemode survival @a");
+                t.cmd("tp @a 440.5 -60 80.5 90 -25");
             });
             t.waitFor("se abrió un paracaídas", 15000, () -> regaloAbierto() != null);
             t.add("que baje un poco", 1500, () -> {
@@ -338,6 +385,28 @@ final class Prueba {
             });
             t.photo("regalo_aterrizo", 600, () -> {
             });
+            t.add("abrir el regalo", 150, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                var l = mc.level;
+                for (BlockPos q : BlockPos.betweenClosed(425, -60, 65, 455, -58, 95)) {
+                    if (l.getBlockState(q).is(com.navidad.registry.ModRegistry.CAJA_REGALO.get())) {
+                        mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND, new BlockHitResult(new Vec3(q.getX() + 0.5, q.getY() + 0.5,
+                                q.getZ() + 0.5), Direction.UP, q.immutable(), false));
+                        break;
+                    }
+                }
+            });
+            t.photo("regalo_tiembla", 300, () -> {
+            });
+            t.photo("regalo_tapa_vuela", 450, () -> {
+            });
+            t.photo("regalo_sube", 450, () -> {
+            });
+            t.waitFor("se abrió el regalo", 4000, () -> com.navidad.bloque.CajaRegaloBE.abiertas > 0);
+            t.add("hud regalo", 200, () -> t.hud(true));
+            t.photo("regalo_aviso", 600, () -> {
+            });
+            t.add("hud regalo fin", 200, () -> t.hud(false));
             t.add("fin santa", 300, () -> t.cmd("gamemode creative @a"));
             // ---------------------------------------------------------------- el pingüino: en grupito con un bebé, domarlo con pescado, sentarlo,
             // verlo deslizarse de panza en el hielo y nadar
@@ -498,7 +567,7 @@ final class Prueba {
                 mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
                         new BlockHitResult(new Vec3(503.5, -61, 143.5), Direction.UP, new BlockPos(503, -61, 143), false));
             });
-            t.photo("pino_solo", 1200, () -> t.lookFrom(503.5, -58.6, 147.2, 503.5, -59.0, 143.5));
+            t.photo("pinonav_solo", 1200, () -> t.lookFrom(503.5, -60, 147.6, 503.5, -58.8, 143.5));
             // le cuelgo adornos haciendo clic en distintas ramas (cada uno cae en la rama más cerca del clic)
             String[] ads = {"adorno_esfera_roja", "adorno_esfera_azul", "adorno_esfera_dorada", "adorno_baston", "adorno_mono",
                     "adorno_campanita", "adorno_copo", "adorno_galleta", "adorno_pina", "adorno_cristal", "adorno_pajarito",
@@ -528,8 +597,7 @@ final class Prueba {
                             new BlockHitResult(new Vec3(503.5, -58.2, 144.0), Direction.SOUTH, new BlockPos(503, -59, 143), false));
                 });
             }
-            t.photo("pino_sube_nivel", 600, () -> {
-            });
+            t.photo("pinonav_sube_nivel", 600, () -> t.lookFrom(503.5, -60, 147.6, 503.5, -58.8, 143.5));
             t.add("adornar la casa", 1200, () -> {
                 t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
                 t.cmd("setblock 500 -60 143 navidad:muneco_nieve[facing=south]");
@@ -543,12 +611,12 @@ final class Prueba {
             t.add("pino puntos", 300, () -> t.check(Minecraft.getInstance().level.getBlockEntity(new BlockPos(503, -60, 143))
                     instanceof com.navidad.arbol.PinoBE be && be.colgados() >= 15 && be.luces == 2 && be.guirnaldas == 2
                     && be.punta.equals("punta_estrella"), "el pino tiene adornos, luces, guirnaldas y estrella"));
-            t.photo("pino_adornado", 1500, () -> t.lookFrom(503.5, -58.4, 147.0, 503.5, -58.9, 143.5));
-            t.photo("pino_adornado_cerca", 1500, () -> t.lookFrom(502.2, -58.9, 145.0, 503.5, -59.2, 143.5));
-            t.photo("pino_adornado_lado", 1500, () -> t.lookFrom(506.8, -58.3, 145.5, 503.5, -59.0, 143.5));
-            t.photo("pino_noche", 2500, () -> {
+            t.photo("pinonav_adornado", 1500, () -> t.lookFrom(503.5, -60, 147.4, 503.5, -58.8, 143.5));
+            t.photo("pinonav_cerca", 1500, () -> t.lookFrom(502.2, -60, 145.9, 503.4, -59.0, 143.4));
+            t.photo("pinonav_lado", 1500, () -> t.lookFrom(506.4, -60, 146.0, 503.5, -58.8, 143.5));
+            t.photo("pinonav_noche", 2500, () -> {
                 t.cmd("time set 18000");
-                t.lookFrom(503.5, -58.4, 147.4, 503.5, -58.9, 143.5);
+                t.lookFrom(503.5, -60, 147.4, 503.5, -58.8, 143.5);
             });
             t.add("pino de dia", 600, () -> t.cmd("time set 6000"));
             // el libro: un capítulo, reclamar una tarea (cae el sello) y la página de mi árbol

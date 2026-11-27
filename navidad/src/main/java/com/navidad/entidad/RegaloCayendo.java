@@ -138,7 +138,7 @@ public class RegaloCayendo extends Entity {
         boolean caja = false;
         if (!isInWater() && !isInLava()) {
             for (BlockPos p : new BlockPos[]{base, base.above(), base.north(), base.south(), base.east(), base.west()}) {
-                if (CajaRegalo.poner(l, p, mira, contenido, "Santa", para)) {
+                if (CajaRegalo.poner(l, p, mira, contenido, "Santa", para, Math.floorMod(color(), 4))) {
                     caja = true;
                     base = p;
                     break;

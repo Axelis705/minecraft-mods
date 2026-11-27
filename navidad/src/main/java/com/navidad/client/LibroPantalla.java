@@ -298,7 +298,7 @@ public class LibroPantalla extends Screen {
         boolean lista = n >= t.meta(), reclamada = rec.getBoolean(t.id());
         g.renderItem(Libro.pila(t.icono(), 1), x, y + 3);
         Component nom = Component.translatable("navidad.libro.tarea." + t.id());
-        List<FormattedCharSequence> ls = font.split(nom, reclamada ? 104 : 74);
+        List<FormattedCharSequence> ls = font.split(nom, reclamada ? 104 : lista ? 58 : 74);
         int color = reclamada ? 0xFF7A8A6A : TINTA;
         g.drawString(font, ls.get(0), x + 19, y + 1, color, false);
         if (ls.size() > 1) {
@@ -372,11 +372,11 @@ public class LibroPantalla extends Screen {
             for (int i = 0; i < NivelArbol.DESDE.length; i++) {
                 g.blit(TEX, lx + i * 11, ly + 17, 10, 10, i < nivel ? 720 : 740, 176, 16, 16, TW, TH);
             }
-            g.drawString(font, Component.translatable("navidad.arbol.nivel." + nivel).withStyle(ChatFormatting.BOLD), lx + 70, ly + 18,
+            g.drawString(font, Component.translatable("navidad.arbol.nivel." + nivel).withStyle(ChatFormatting.BOLD), lx, ly + 30,
                     0xFFB8860B, false);
             // el árbol de verdad, girando
-            arbol3d(g, a, lx + 32, ly + 118, ahora);
-            int y = ly + 32;
+            arbol3d(g, a, lx + 32, ly + 134, ahora);
+            int y = ly + 44;
             int rx = lx + 66;
             g.drawString(font, Component.translatable("navidad.libro.puntos_total", a.getInt("total")), rx, y, TINTA, false);
             y += 12;
@@ -396,12 +396,11 @@ public class LibroPantalla extends Screen {
         }
         // la derecha: qué regalos da cada nivel y consejos
         int rx = x0 + 158, ry = y0 + 14;
-        g.drawString(font, Component.translatable("navidad.libro.regalos_nivel"), rx, ry, oscuro(0xC81E2A, 0.8F), false);
-        ry += 13;
+        ry = texto(g, Component.translatable("navidad.libro.regalos_nivel"), rx, ry, 128, oscuro(0xC81E2A, 0.8F)) + 3;
         int actual = a.getBoolean("tiene") ? Math.max(1, a.getInt("nivel")) : 0;
         for (int n = 1; n <= NivelArbol.DESDE.length; n++) {
             if (n == actual) {
-                g.fill(rx - 2, ry - 2, rx + 130, ry + 18, 0x40FFC040);
+                g.fill(rx - 2, ry - 2, rx + 130, ry + 16, 0x40FFC040);
             }
             g.drawString(font, Component.literal(NivelArbol.DESDE[n - 1] + "+ ").append(Component.translatable("navidad.arbol.nivel." + n)),
                     rx, ry, n <= actual ? TINTA : TINTA_SUAVE, false);
@@ -410,10 +409,13 @@ public class LibroPantalla extends Screen {
             g.pose().scale(0.75F, 0.75F, 1);
             g.drawString(font, Component.translatable("navidad.libro.da." + n), 0, 0, TINTA_SUAVE, false);
             g.pose().popPose();
-            ry += 20;
+            ry += 18;
         }
-        ry += 2;
-        texto(g, Component.translatable("navidad.libro.consejo"), rx, ry, 128, 0xFF2E6A3A);
+        g.pose().pushPose();
+        g.pose().translate(rx, ry + 1, 0);
+        g.pose().scale(0.75F, 0.75F, 1);
+        texto(g, Component.translatable("navidad.libro.consejo"), 0, 0, 170, 0xFF2E6A3A);
+        g.pose().popPose();
     }
 
     /** El árbol del jugador (con sus adornos de verdad) girando despacio, como en el inventario. */

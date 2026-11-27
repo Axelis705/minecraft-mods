@@ -1,32 +1,218 @@
 {
  "variants": {
-  "facing=north,llena=true": {
-   "model": "navidad:block/caja_regalo"
+  "abriendo=true,color=0,facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
   },
-  "facing=north,llena=false": {
+  "abriendo=false,color=0,facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo_0"
+  },
+  "abriendo=true,color=1,facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=1,facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo_1"
+  },
+  "abriendo=true,color=2,facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=2,facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo_2"
+  },
+  "abriendo=true,color=3,facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=3,facing=north,llena=true": {
+   "model": "navidad:block/caja_regalo_3"
+  },
+  "abriendo=true,color=0,facing=north,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=0,facing=north,llena=false": {
    "model": "navidad:block/caja_regalo_vacia"
   },
-  "facing=east,llena=true": {
-   "model": "navidad:block/caja_regalo",
+  "abriendo=true,color=1,facing=north,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=1,facing=north,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia"
+  },
+  "abriendo=true,color=2,facing=north,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=2,facing=north,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia"
+  },
+  "abriendo=true,color=3,facing=north,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=3,facing=north,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia"
+  },
+  "abriendo=true,color=0,facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=0,facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo_0",
    "y": 90
   },
-  "facing=east,llena=false": {
+  "abriendo=true,color=1,facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=1,facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo_1",
+   "y": 90
+  },
+  "abriendo=true,color=2,facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=2,facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo_2",
+   "y": 90
+  },
+  "abriendo=true,color=3,facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=3,facing=east,llena=true": {
+   "model": "navidad:block/caja_regalo_3",
+   "y": 90
+  },
+  "abriendo=true,color=0,facing=east,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=0,facing=east,llena=false": {
    "model": "navidad:block/caja_regalo_vacia",
    "y": 90
   },
-  "facing=south,llena=true": {
-   "model": "navidad:block/caja_regalo",
+  "abriendo=true,color=1,facing=east,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=1,facing=east,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 90
+  },
+  "abriendo=true,color=2,facing=east,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=2,facing=east,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 90
+  },
+  "abriendo=true,color=3,facing=east,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=3,facing=east,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 90
+  },
+  "abriendo=true,color=0,facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=0,facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo_0",
    "y": 180
   },
-  "facing=south,llena=false": {
+  "abriendo=true,color=1,facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=1,facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo_1",
+   "y": 180
+  },
+  "abriendo=true,color=2,facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=2,facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo_2",
+   "y": 180
+  },
+  "abriendo=true,color=3,facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=3,facing=south,llena=true": {
+   "model": "navidad:block/caja_regalo_3",
+   "y": 180
+  },
+  "abriendo=true,color=0,facing=south,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=0,facing=south,llena=false": {
    "model": "navidad:block/caja_regalo_vacia",
    "y": 180
   },
-  "facing=west,llena=true": {
-   "model": "navidad:block/caja_regalo",
+  "abriendo=true,color=1,facing=south,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=1,facing=south,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 180
+  },
+  "abriendo=true,color=2,facing=south,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=2,facing=south,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 180
+  },
+  "abriendo=true,color=3,facing=south,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=3,facing=south,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 180
+  },
+  "abriendo=true,color=0,facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=0,facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo_0",
    "y": 270
   },
-  "facing=west,llena=false": {
+  "abriendo=true,color=1,facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=1,facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo_1",
+   "y": 270
+  },
+  "abriendo=true,color=2,facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=2,facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo_2",
+   "y": 270
+  },
+  "abriendo=true,color=3,facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=3,facing=west,llena=true": {
+   "model": "navidad:block/caja_regalo_3",
+   "y": 270
+  },
+  "abriendo=true,color=0,facing=west,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=0,facing=west,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 270
+  },
+  "abriendo=true,color=1,facing=west,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=1,facing=west,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 270
+  },
+  "abriendo=true,color=2,facing=west,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=2,facing=west,llena=false": {
+   "model": "navidad:block/caja_regalo_vacia",
+   "y": 270
+  },
+  "abriendo=true,color=3,facing=west,llena=false": {
+   "model": "navidad:block/caja_regalo_abriendo"
+  },
+  "abriendo=false,color=3,facing=west,llena=false": {
    "model": "navidad:block/caja_regalo_vacia",
    "y": 270
   }
