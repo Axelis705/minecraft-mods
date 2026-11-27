@@ -18,7 +18,7 @@ fecha: `/navidad temporada si` (o `no`, o `auto` para volver a la fecha real).
 
 ## Cosas
 
-- **70 bloques de decoración** (pestaña "Navidad: decoración"): árboles, esferas, luces, coronas, calcetines, muérdago, nochebuenas,
+- **71 bloques de decoración** (pestaña "Navidad: decoración"): árboles, esferas, luces, coronas, calcetines, muérdago, nochebuenas,
   regalos, muñeco de nieve, cascanueces, bastones gigantes, trineo, chimenea, ponche, farolitos, papel picado, piñata de estrella...
   y un **nacimiento** completo: portal de Belén, pesebre con el Niño, la Virgen, San José, pastores, borreguitos, el buey, el burrito,
   los tres Reyes Magos (Melchor, Gaspar y Baltasar), la estrella de Belén que brilla y musgo con heno para el piso.
@@ -59,6 +59,12 @@ Los **calcetines navideños** (rojo, verde y de rayas) se cuelgan en la pared. E
 sacas lo de hoy (dulces, bastones de caramelo, galletas o fruta, y a veces un regalo misterioso). Una vez por día del juego (o cada 20 horas
 de verdad si el tiempo está detenido). Si desde la última vez lastimaste aldeanos, gólems, gatos o renos... solo hay carbón. Agachado,
 el clic derecho pone bloques normales junto al calcetín.
+
+## Galletas y leche para Santa
+
+En temporada, pon el adorno de **galletas y leche para Santa** (de la caja de adornos). Esa noche, Santa pasa: se come las galletas (queda
+el plato con migajas y una notita) y te deja junto una **caja de regalo a tu nombre** (algo raro, y a veces épico). Si duermes, en la mañana
+ya pasó. Una vez por noche por persona; si el tiempo está detenido, llega a la media hora.
 
 ## Guerra de bolas de nieve
 
@@ -155,6 +161,7 @@ Se pueden poner sueltos: `/navidad gente santa|senora_claus|duende_juguetero|due
 | `/navidad anio_nuevo [segundos]` | Año Nuevo ahora: cuenta regresiva, 12 campanadas y fuegos |
 | `/navidad guerra_nieve [segundos]` | Guerra de bolas de nieve todos contra todos (2 minutos si no dices) |
 | `/navidad guerra_nieve [segundos] equipos` | La guerra por equipos (Rojo contra Verde, cada uno en su fuerte si la aldea está cerca) |
+| `/navidad galletas` | Que Santa pase ya por todas las galletas y leche que le dejaron (para probar) |
 | `/navidad carta entregar` | Que llegue ya la respuesta de Santa a tu carta (para probar) |
 
 ## Herramientas (para regenerar los recursos)

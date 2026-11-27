@@ -807,6 +807,23 @@ def galletas_leche():
     return p
 
 
+def plato_migajas():
+    """Lo que queda después de que Santa pasa: el plato con migajas, el vaso casi vacío y una notita de gracias."""
+    p = Prop('plato_migajas', 'Plato con migajas', 'Plate with crumbs', kind='floor', sound='glass', seed=44, collide=False)
+    p.box(1.5, 0, 3, 10.5, 0.8, 12, solid('#f4f4f6'))
+    p.box(2, 0.8, 3.5, 10, 1.1, 11.5, solid('#d8dce4'))
+    for x, z in ((3.2, 5.2), (5.6, 8.4), (7.8, 6.1), (4.4, 10.2), (8.4, 9.6), (6.6, 4.6)):
+        p.box(x - 0.4, 1.1, z - 0.4, x + 0.3, 1.4, z + 0.3, JENGIBRE)
+    p.box(5.6, 1.1, 6.6, 7.4, 1.6, 8.4, JENGIBRE)
+    p.box(11, 0, 8, 14.5, 6, 11.5, solid('#e8f2fa', 170))
+    p.box(11.3, 0.2, 8.3, 14.2, 0.9, 11.2, solid('#fbfbf6'))
+    p.box(10.8, 0, 2.5, 15, 0.3, 6.5, CREMA)
+    p.box(11.4, 0.3, 3.2, 14.2, 0.35, 3.5, solid('#b81d2a'))
+    p.box(11.4, 0.3, 4.2, 13.6, 0.35, 4.5, solid('#3a3a44'))
+    p.box(11.4, 0.3, 5.2, 14, 0.35, 5.5, solid('#3a3a44'))
+    return p
+
+
 def chocolate():
     p = Prop('taza_chocolate', 'Taza de chocolate caliente', 'Mug of hot chocolate', kind='floor', sound='glass', seed=35,
              collide=False, particles=[{'type': 'minecraft:cloud', 'pos': [8, 7, 8], 'rate': 0.05}])
@@ -1152,6 +1169,7 @@ def catalogo():
     prop(chimenea())
     prop(esfera_nieve())
     prop(galletas_leche())
+    prop(plato_migajas())
     prop(chocolate())
     prop(ponche())
     prop(farolito())

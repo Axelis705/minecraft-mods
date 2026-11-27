@@ -292,6 +292,18 @@ final class Prueba {
             t.add("hud calcetin", 300, () -> t.hud(true));
             t.photo("calcetin", 1200, () -> t.lookFrom(260.5, -58.4, 3.5, 260.5, -58.6, 1));
             t.add("hud calcetin fin", 300, () -> t.hud(false));
+            // ---------------------------------------------------------------- galletas y leche para Santa
+            t.add("galletas", 800, () -> t.cmd("item replace entity @p weapon.mainhand with navidad:galletas_leche"));
+            t.add("poner galletas", 1000, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
+                        new BlockHitResult(new Vec3(262.5, -61, 2.5), Direction.UP, new BlockPos(262, -61, 2), false));
+            });
+            t.photo("galletas_puestas", 1200, () -> t.lookFrom(264.5, -58.8, 5.5, 262.5, -60, 2.5));
+            t.add("santa pasa", 1500, () -> t.cmd("navidad galletas"));
+            t.waitFor("Santa se comió las galletas", 4000, () -> Minecraft.getInstance().level.getBlockState(new BlockPos(262, -60, 2)).getBlock()
+                    == com.navidad.bloque.deco.Deco.block("plato_migajas"));
+            t.photo("galletas_comidas", 1500, () -> t.lookFrom(264.5, -58.8, 5.5, 262.5, -60, 2.5));
             // ---------------------------------------------------------------- la colina de trineos
             t.add("colina", 1000, () -> {
                 t.cmd("time set 6000");

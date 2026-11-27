@@ -361,3 +361,15 @@ T8 = {
 if __name__ == '__main__':
     aplicar(T8)
     print(len(T8), 'textos de la guerra por equipos')
+
+T9 = {
+    'navidad.galletas.puestas': ('★ Le dejaste galletas y leche a Santa. Esta noche pasará por ellas...',
+                                 '★ You left cookies and milk for Santa. He\'ll come by tonight...'),
+    'navidad.galletas.ya': ('Santa ya tiene tus galletas de esta noche.', 'Santa already has your cookies for tonight.'),
+    'navidad.galletas.comidas': ('★ ¡Santa se comió tus galletas y te dejó un regalo junto al plato!',
+                                 '★ Santa ate your cookies and left you a gift next to the plate!'),
+}
+
+if __name__ == '__main__':
+    aplicar(T9)
+    print(len(T9), 'textos de las galletas para Santa')

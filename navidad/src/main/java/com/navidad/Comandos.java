@@ -103,6 +103,11 @@ public final class Comandos {
                             AnioNuevo.empezar(c.getSource().getServer(), IntegerArgumentType.getInteger(c, "segundos"));
                             return 1;
                         })))
+                .then(Commands.literal("galletas").requires(s -> s.hasPermission(2)).executes(c -> {
+                    int n = GalletasSanta.revisar(c.getSource().getServer(), true);
+                    c.getSource().sendSuccess(() -> Component.literal("Santa pasó por " + n + " platos de galletas"), true);
+                    return n;
+                }))
                 .then(Commands.literal("guerra_nieve").requires(s -> s.hasPermission(2))
                         .executes(c -> {
                             GuerraNieve.empezar(c.getSource().getServer(), 120);

@@ -302,5 +302,9 @@
   "navidad.guerra.punto_equipo": "❄ ¡Bolazo a %s! Llevas %s · Rojo %s - %s Verde",
   "navidad.guerra.marcador": "Rojo %s - %s Verde",
   "navidad.guerra.gana_equipo": "¡Ganó el %s! Todo el equipo se lleva un regalo.",
-  "navidad.guerra.empate": "¡Empate! Nadie se lleva el regalo esta vez."
+  "navidad.guerra.empate": "¡Empate! Nadie se lleva el regalo esta vez.",
+  "block.navidad.plato_migajas": "Plato con migajas",
+  "navidad.galletas.puestas": "★ Le dejaste galletas y leche a Santa. Esta noche pasará por ellas...",
+  "navidad.galletas.ya": "Santa ya tiene tus galletas de esta noche.",
+  "navidad.galletas.comidas": "★ ¡Santa se comió tus galletas y te dejó un regalo junto al plato!"
 }

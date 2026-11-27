@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/plato_migajas"
+  },
+  "facing=east": {
+   "model": "navidad:block/plato_migajas",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/plato_migajas",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/plato_migajas",
+   "y": 270
+  }
+ }
+}
