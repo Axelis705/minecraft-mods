@@ -28,13 +28,32 @@ import java.util.List;
 public final class Transbordo {
     private static final String MOD = Coleccionista.MODID;
 
-    /** Un vehículo: sus dos cabinas idénticas, cómo viaja, su interior, cuánto dura el viaje y lo que dice el Coleccionista en él. */
+    /**
+     * Un vehículo: sus dos cabinas idénticas, cómo viaja, su interior, cuánto dura el viaje, lo que dice el Coleccionista en él, las luces
+     * que se apagan al salir y {@code paso}: si es de un pasillo (se sube caminando, hace los viajes que hagan falta mientras el pasillo
+     * esté abierto y no sube a nadie a la fuerza) o el autobús (suben todos, a la fuerza si se tardan, y hace un solo viaje).
+     */
     public record Vehiculo(String id, String sale, String llega, Cabina.Tipo tipo, int ancho, int alto, int largo, int viaje, String guion,
-                           String luces) {
+                           String luces, boolean paso) {
     }
 
     public static final Vehiculo AUTOBUS = new Vehiculo("autobus", "bus_tea", "bus_man", Cabina.Tipo.AUTOBUS, Vehiculos.BUS_ANCHO,
-            Vehiculos.BUS_ALTO, Vehiculos.BUS_LARGO, 470, "autobus", "coch.luz.");
+            Vehiculos.BUS_ALTO, Vehiculos.BUS_LARGO, 470, "autobus", "coch.luz.", false);
+    /** El tren fantasma del pasillo de los payasos (de la caja de música a la caja sorpresa). */
+    public static final Vehiculo TREN = new Vehiculo("tren", "tren_a", "tren_b", Cabina.Tipo.TREN, Vehiculos.CAB_ANCHO,
+            Vehiculos.Estilo.TREN.alto, Vehiculos.CAB_FONDO, 200, null, null, true);
+    /** El elevador de la merienda (de la caja sorpresa al salón de té). */
+    public static final Vehiculo ELEVADOR = new Vehiculo("elevador", "elev_a", "elev_b", Cabina.Tipo.ELEVADOR, Vehiculos.CAB_ANCHO,
+            Vehiculos.Estilo.ELEVADOR.alto, Vehiculos.CAB_FONDO, 180, null, null, true);
+
+    /** El vehículo del pasillo hacia esa sala (o null si se camina todo). */
+    public static Vehiculo delPaso(String hacia) {
+        return switch (hacia) {
+            case "sorpresa" -> TREN;
+            case "te" -> ELEVADOR;
+            default -> null;
+        };
+    }
     /** Cuánto espera a que suban todos antes de irse de todos modos (los de afuera suben solos). */
     public static int esperaAbordar = 1200;
 
@@ -42,7 +61,7 @@ public final class Transbordo {
 
     private static Fase fase = Fase.NADA;
     private static Vehiculo activo;
-    private static long desde;
+    private static long desde, primero = -1;
     private static Runnable alLlegar;
 
     private Transbordo() {
@@ -75,9 +94,14 @@ public final class Transbordo {
         alLlegar = fin;
         fase = Fase.ABORDAR;
         desde = s.overworld().getGameTime();
+        primero = -1;
         luces(s, v, true);
         Cabina.puerta(s, v.llega(), false);
         Cabina.puerta(s, v.sale(), true);
+        if (v.paso()) {
+            Coleccionista.LOGGER.info("COLECCIONISTA_TRANSBORDO abre {}", v.id());
+            return;
+        }
         BlockPos c = Complejo.pos(s, v.id().equals("autobus") ? "vit.antesala" : v.sale() + ".subir");
         int n = 0;
         for (Entity e : vivos(s)) {
@@ -98,6 +122,10 @@ public final class Transbordo {
             return;
         }
         Vehiculo v = activo;
+        if (v.paso()) {
+            tickPaso(s, v, now);
+            return;
+        }
         List<Entity> todos = vivos(s);
         boolean listos = !todos.isEmpty();
         for (Entity e : todos) {
@@ -105,6 +133,61 @@ public final class Transbordo {
         }
         if (listos && now - desde >= 40 || now - desde >= esperaAbordar) {
             partir(s, v, todos);
+        }
+    }
+
+    /**
+     * El vehículo de un pasillo: se va cuando ya subieron todas las personas que vienen atrás (las que están más cerca de su puerta que de la
+     * de llegada) o cuando lleva rato esperando con alguien adentro; al llegar vuelve a abrir por si alguien se quedó. Los bots no lo usan
+     * (en las pruebas pasan solos al pasillo de servicio).
+     */
+    private static void tickPaso(MinecraftServer s, Vehiculo v, long now) {
+        BlockPos sube = Complejo.pos(s, v.sale() + ".subir"), baja = Complejo.pos(s, v.llega() + ".subir");
+        if (sube == null || baja == null) {
+            return;
+        }
+        List<Entity> dentro = new ArrayList<>();
+        int faltan = 0;
+        for (Entity e : vivos(s)) {
+            if (!(e instanceof ServerPlayer sp) || sp.isSpectator()) {
+                continue;
+            }
+            if (dentro(s, v, e)) {
+                dentro.add(e);
+            } else if (e.distanceToSqr(Vec3.atCenterOf(sube)) < e.distanceToSqr(Vec3.atCenterOf(baja))) {
+                faltan++;
+            }
+        }
+        if (dentro.isEmpty()) {
+            primero = -1;
+            return;
+        }
+        if (primero < 0) {
+            primero = now;
+        }
+        if (faltan == 0 && now - primero >= 40 || now - primero >= 900) {
+            fase = Fase.VIAJE;
+            boolean ok = Cabina.viajar(s, v.sale(), v.llega(), v.tipo(), v.viaje(), v.ancho(), v.alto(), v.largo(), dentro, () -> {
+                // de vuelta: por si alguien se quedó atrás, la puerta de salida se abre otra vez
+                if (activo == v && fase == Fase.VIAJE) {
+                    fase = Fase.ABORDAR;
+                    primero = -1;
+                    Cabina.puerta(s, v.sale(), true);
+                }
+            });
+            if (!ok) {
+                fase = Fase.ABORDAR;
+            }
+            Coleccionista.LOGGER.info("COLECCIONISTA_TRANSBORDO sale {} van={} faltan={}", v.id(), dentro.size(), faltan);
+        }
+    }
+
+    /** Se cerró el pasillo (ya llegaron todos): el vehículo deja de dar vueltas. */
+    public static void terminar(MinecraftServer s, Vehiculo v) {
+        if (activo == v) {
+            fase = Fase.NADA;
+            activo = null;
+            Cabina.puerta(s, v.sale(), false);
         }
     }
 
@@ -199,7 +282,7 @@ public final class Transbordo {
 
     /** A dónde ir mientras se espera para subir: la puerta del vehículo (null si ya está adentro o no hay nada que abordar). */
     public static Objetivo.Meta objetivo(MinecraftServer s, ServerPlayer sp) {
-        if (fase != Fase.ABORDAR || activo == null || dentro(s, activo, sp)) {
+        if (fase != Fase.ABORDAR || activo == null || activo.paso() || dentro(s, activo, sp)) {
             return null;
         }
         return Objetivo.Meta.en(Complejo.pos(s, activo.sale() + ".subir"), 1, MOD + ".obj." + activo.id());

@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/trompo"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/trompo",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/trompo",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/trompo",
+   "y": 270
+  }
+ }
+}

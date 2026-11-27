@@ -1201,7 +1201,10 @@ final class PruebaCliente {
         });
         // los pasillos hacia adelante entre capítulos (zonas paso_*): fotos de cada uno antes de recorrer el de la caja
         fotosPaso(t, "c3_00c_sorpresa", 852, 18, 8);
+        // adentro del tren fantasma (pasillo de los payasos) y del elevador (pasillo de la merienda), mirando a su puerta
+        foto(t, "c3_00c_sorpresa_tren", 1200, () -> t.lookFrom(861.5, -60, 443.6, 860.5, -58.8, 440.0));
         fotosPaso(t, "c3_00d_te", 934, 16, 39);
+        foto(t, "c3_00d_te_elevador", 1200, () -> t.lookFrom(942.5, -60, 463.4, 941.5, -58.6, 467.0));
         fotosPaso(t, "c3_00e_piano", 1014, 16, 4);
         fotosPaso(t, "c3_00f_veintiuno", 1094, 16, 37);
         // de la mansión a la caja caminando: se abre la puerta de salida de la mansión (773, 438) y la de atrás del pasillo de la caja

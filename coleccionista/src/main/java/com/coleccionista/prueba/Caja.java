@@ -93,7 +93,7 @@ public final class Caja {
     public static final List<UUID> primero = new ArrayList<>();
     /** Al terminar La mascota, pasan solos a la caja. */
     public static boolean encadenar = true;
-    public static int esperaPasillo = 1200, esperaSalon = 900;
+    public static int esperaPasillo = 1800, esperaSalon = 900;
     /** Los tonos de voz para disfrazar (más grave o más aguda). */
     private static final float[] TONOS = {0.72F, 0.8F, 1.3F, 1.42F};
 

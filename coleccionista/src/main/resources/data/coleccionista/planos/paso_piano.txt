@@ -11,6 +11,18 @@ mueble E coleccionista:espejo y=2
 mueble T coleccionista:mesa_tapete
 mueble H coleccionista:sillon doble
 mueble S coleccionista:estandarte_rojo doble
+mueble B coleccionista:bailarina_figura doble
+mueble W coleccionista:soldadito doble
+mueble J coleccionista:caja_juguete
+mueble G coleccionista:globos doble
+mueble D coleccionista:tambor
+mueble L coleccionista:cubos_letras
+mueble P coleccionista:mesa encima=coleccionista:pastelero
+mueble Q coleccionista:mesa encima=coleccionista:tetera
+mueble A coleccionista:arpa doble
+mueble U coleccionista:busto doble
+mueble F coleccionista:mesa encima=coleccionista:fichas
+mueble R coleccionista:mesa encima=coleccionista:botella
 
 estilo a nombre=Galería_de_espejos piso=coleccionista:parquet pared=coleccionista:marmol_crema zoclo=coleccionista:marmol_negro luz=12
 
@@ -26,7 +38,11 @@ piso 0 alto 4 origen 0 3
 aaaaaaaaaa#
 #######Eaa#
       #aaa#
-      #aaC#
+      #aaA#
+      #aaa#
+      #Caa#
+      #aaa#
+      #aaU#
       #aaa#
       #Eaa#
       #aaa#
@@ -34,11 +50,7 @@ aaaaaaaaaa#
       #aaa#
       #Eaa#
       #aaa#
-      #aaC#
-      #aaa#
-      #Eaa#
-      #aaa#
-      #aaK######
+      #aaA######
       #a3aaaaaa4
       #aaaaaaaaa
       ##########

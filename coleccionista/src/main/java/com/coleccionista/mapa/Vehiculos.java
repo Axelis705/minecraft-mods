@@ -115,4 +115,92 @@ public final class Vehiculos {
         }
         return i >= 1 && i <= BUS_ANCHO - 2 ? C + "vidrio_sucio" : C + "carroceria";
     }
+
+    /** Una cabina de un pasillo (elevador o vagón): 3 de ancho, 3 de fondo; las dos van espalda con espalda en el pasillo de 3. */
+    public static final int CAB_ANCHO = 3, CAB_FONDO = 3;
+
+    /** Cómo se ve por dentro una cabina de pasillo. */
+    public enum Estilo {
+        /** El elevador de la merienda: madera, papel rosa, puertas de latón y un espejo. */
+        ELEVADOR(4),
+        /** El vagón del tren fantasma de los payasos: rayas rojas y blancas, focos amarillos y una banca. */
+        TREN(3);
+
+        public final int alto;
+
+        Estilo(int alto) {
+            this.alto = alto;
+        }
+    }
+
+    /**
+     * Dos cabinas idénticas espalda con espalda a lo largo de un pasillo de 3 de ancho (x0..x0+2) que se camina hacia +z ({@code dir} = 1)
+     * o hacia -z (-1): la puerta de la de salida ({@code a}) está en z = {@code d} (de frente a quien llega), y la de llegada ({@code b})
+     * abre del otro lado, hacia lo que sigue del pasillo. Entre las dos, un muro (la marca {@code trans.<a>.hueco}: por ahí la revisión de
+     * mapas las da por unidas, porque se viaja de una a la otra).
+     */
+    public static void cabinaDoble(Plano p, String a, String b, int x0, int d, int dir, Estilo e) {
+        Marco ma = dir > 0 ? new Marco(x0, d + 1, 0) : new Marco(x0 + 3, d, 180);
+        Marco mb = dir > 0 ? new Marco(x0 + 3, d + 8, 180) : new Marco(x0, d - 7, 0);
+        cabina(p, a, ma, e);
+        cabina(p, b, mb, e);
+        p.marca("trans." + a + ".hueco", x0 + 1, 1, d + 4 * dir, 0);
+    }
+
+    /** Una cabina de pasillo: la puerta (dos hojas) en el frente (k = -1, del lado izquierdo), el fondo en k = CAB_FONDO. */
+    private static void cabina(Plano p, String id, Marco m, Estilo e) {
+        int h = e.alto;
+        boolean tren = e == Estilo.TREN;
+        for (int i = -1; i <= CAB_ANCHO; i++) {
+            for (int k = -1; k <= CAB_FONDO; k++) {
+                boolean muro = i == -1 || i == CAB_ANCHO || k == -1 || k == CAB_FONDO;
+                m.set(p, i, 0, k, tren ? C + "tablon" : C + "parquet");
+                m.set(p, i, h + 1, k, tren ? (muro ? C + "telon_borde" : C + "marco_luz_amarilla") : (muro ? C + "marco_dorado" : C + "techo_yeso"));
+                for (int y = 1; y <= h; y++) {
+                    String w;
+                    if (tren) {
+                        w = y == 1 ? C + "panel_madera" : (i + k + y) % 2 == 0 ? "minecraft:red_wool" : "minecraft:white_wool";
+                    } else {
+                        w = y == 1 ? C + "panel_madera" : y == h ? C + "marco_dorado" : C + "papel_rosa";
+                    }
+                    m.set(p, i, y, k, muro ? w : "air");
+                }
+            }
+        }
+        // la puerta: dos hojas del lado izquierdo del frente (la tercera columna es el tablero de botones)
+        String hoja = tren ? "puerta_metal" : "puerta_ascensor";
+        m.set(p, 0, 1, -1, C + hoja + "[facing=south,half=lower,hinge=left,open=false]");
+        m.set(p, 0, 2, -1, C + hoja + "[facing=south,half=upper,hinge=left,open=false]");
+        m.set(p, 1, 1, -1, C + hoja + "[facing=south,half=lower,hinge=right,open=false]");
+        m.set(p, 1, 2, -1, C + hoja + "[facing=south,half=upper,hinge=right,open=false]");
+        for (int y = 3; y <= h; y++) {
+            m.set(p, 0, y, -1, tren ? C + "telon" : C + "marco_dorado");
+            m.set(p, 1, y, -1, tren ? C + "telon" : C + "marco_dorado");
+        }
+        m.marca(p, "cab." + id + ".puerta.a", 0, 1, -1, 0);
+        m.marca(p, "cab." + id + ".puerta.b", 1, 1, -1, 0);
+        p.marca("cab." + id + ".origen", m.cx, 1, m.cz, m.yaw);
+        m.marca(p, id + ".subir", 0, 1, -2, 0);
+        m.marca(p, id + ".centro", 1, 1, 1, 0);
+        // adentro
+        if (tren) {
+            for (int k = 1; k < CAB_FONDO; k++) {
+                m.set(p, 0, 1, k, C + "losa_madera[type=bottom]");
+                m.set(p, CAB_ANCHO - 1, 1, k, C + "losa_madera[type=bottom]");
+            }
+            m.set(p, CAB_ANCHO - 1, h, 0, C + "marioneta[facing=north]");
+            m.set(p, 2, 2, -1, C + "panel_madera");
+            m.texto(p, 0, h, CAB_FONDO - 1, "placa", "north", 0xD9A93A, "NO SAQUEN", "LAS MANOS");
+            m.set(p, 1, h, 1, "light[level=11]");
+        } else {
+            m.set(p, CAB_ANCHO - 1, 1, CAB_FONDO - 1, C + "sillon[facing=north,half=lower]");
+            m.set(p, CAB_ANCHO - 1, 2, CAB_FONDO - 1, C + "sillon[facing=north,half=upper]");
+            m.set(p, 1, 3, CAB_FONDO - 1, C + "reloj[facing=north]");
+            m.set(p, 0, 2, CAB_FONDO - 1, C + "espejo[facing=north]");
+            m.set(p, 1, h, 1, "light[level=12]");
+        }
+        // afuera, arriba de la puerta: el letrero
+        int[] q = m.b(1, -2);
+        p.letrero(q[0], h, q[1], "", m.f("north"), "gold", tren ? "TREN" : "ASCENSOR", tren ? "FANTASMA" : "LA MERIENDA");
+    }
 }

@@ -147,6 +147,18 @@ public final class SalaGrande {
             p.set(x, 5, 0, C + "estandarte_rojo[facing=south]");
             p.set(x, 5, Z1, C + "estandarte_rojo[facing=north]");
         }
+        // equipaje olvidado junto a cada sillón, palmas en las esquinas del fondo y relojes de pie junto al portón
+        for (int j = 0; j < 5; j++) {
+            int x = 12 + 9 * j - 2;
+            p.set(x, 1, 0, C + "maleta[facing=south]");
+            p.set(x, 1, Z1, C + "maleta[facing=north]");
+        }
+        for (int z : new int[] {1, Z1 - 1}) {
+            p.set(X1 - 1, 1, z, C + "planta[facing=west,half=lower]");
+            p.set(X1 - 1, 2, z, C + "planta[facing=west,half=upper]");
+            p.set(1, 1, z, C + "reloj_pie[facing=east,half=lower]");
+            p.set(1, 2, z, C + "reloj_pie[facing=east,half=upper]");
+        }
         p.letrero(2, 4, 0, "", "south", "gold", "BIENVENIDOS", "AL GRAN", "VESTÍBULO");
         p.set(1, 9, 0, C + "camara[facing=south]");
         p.set(1, 9, Z1, C + "camara[facing=north]");

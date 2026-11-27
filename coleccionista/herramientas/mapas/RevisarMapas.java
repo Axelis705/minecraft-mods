@@ -118,6 +118,15 @@ public final class RevisarMapas {
             copiar(pa, p, 0);
             copiar(pb, p, dx(hacia) - dx(de));
             copiar(pp, p, dxp - dx(de));
+            // un vehículo (tren, elevador): se sube en una cabina y se baja de la otra; para caminar el mapa, el muro de en medio se abre
+            for (Map.Entry<String, Plano.Marca> e : new java.util.ArrayList<>(p.marcas.entrySet())) {
+                if (e.getKey().startsWith("trans.") && e.getKey().endsWith(".hueco")) {
+                    Plano.Marca h = e.getValue();
+                    for (int y = h.y(); y <= h.y() + 1; y++) {
+                        p.set(h.x(), y, h.z(), "air");
+                    }
+                }
+            }
             Plano.Marca ini = p.marcas.get("paso_" + hacia + ".inicio");
             Revisor r = new Revisor(p, deco).caminar(ini.x(), ini.y(), ini.z());
             r.marcas("paso_" + hacia + ".").marcas("salida." + de + ".").marcas(pasillo(hacia) + ".centro").marcas(pasillo(hacia) + ".entrada.");

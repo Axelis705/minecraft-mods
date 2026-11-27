@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/nota_musical"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/nota_musical",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/nota_musical",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/nota_musical",
+   "y": 270
+  }
+ }
+}

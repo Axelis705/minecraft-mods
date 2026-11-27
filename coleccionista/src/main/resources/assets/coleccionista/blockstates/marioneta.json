@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/marioneta"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/marioneta",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/marioneta",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/marioneta",
+   "y": 270
+  }
+ }
+}

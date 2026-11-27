@@ -39,7 +39,22 @@ public final class SalaVeintiuno {
         vitrinaNueva(p);
         // la puerta del este: por ahí se va el ganador (el pasillo de la salida, la zona "salida_final")
         Salida.puerta(p, "salida.veintiuno", HX1 + 1, 21, 49, C + "madera_pulida");
+        adornos(p);
         return p;
+    }
+
+    // ------------------------------------------------------------------ los adornos: el cuarto de juego
+
+    /** Mesitas con fichas, cartas y una botella a medias (de otras noches de juego), y un reloj de pie que no deja de sonar. */
+    private static void adornos(Plano p) {
+        p.set(HX0 + 3, 1, HZ0 + 1, C + "mesa[facing=south]");
+        p.set(HX0 + 3, 2, HZ0 + 1, C + "fichas[facing=south]");
+        p.set(HX0 + 3, 1, HZ1 - 1, C + "mesa[facing=north]");
+        p.set(HX0 + 3, 2, HZ1 - 1, C + "botella[facing=north]");
+        p.set(HX1 - 3, 1, HZ1 - 2, C + "mesa[facing=west]");
+        p.set(HX1 - 3, 2, HZ1 - 2, C + "fichas[facing=west]");
+        p.set(HX0 + 5, 1, HZ0, C + "reloj_pie[facing=south,half=lower]");
+        p.set(HX0 + 5, 2, HZ0, C + "reloj_pie[facing=south,half=upper]");
     }
 
     private static void luz(Plano p, int x, int y, int z, int nivel) {

@@ -36,6 +36,15 @@ public final class Adelante {
     public static void abrir(MinecraftServer s, String hacia, String pasillo, boolean abrir) {
         puerta(s, "salida." + Pasos.anterior(hacia), abrir);
         puerta(s, pasillo + ".entrada", abrir);
+        // si en el pasillo hay un vehículo (el tren fantasma, el elevador de la merienda), se abre al abrir el camino y para al cerrarlo
+        com.coleccionista.evento.Transbordo.Vehiculo v = com.coleccionista.evento.Transbordo.delPaso(hacia);
+        if (v != null && com.coleccionista.evento.Transbordo.hay(s, v)) {
+            if (abrir) {
+                com.coleccionista.evento.Transbordo.abordar(s, v, null);
+            } else {
+                com.coleccionista.evento.Transbordo.terminar(s, v);
+            }
+        }
         Coleccionista.LOGGER.info("COLECCIONISTA_ADELANTE {} {}", hacia, abrir ? "abre" : "cierra");
     }
 

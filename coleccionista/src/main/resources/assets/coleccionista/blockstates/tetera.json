@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/tetera"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/tetera",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/tetera",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/tetera",
+   "y": 270
+  }
+ }
+}

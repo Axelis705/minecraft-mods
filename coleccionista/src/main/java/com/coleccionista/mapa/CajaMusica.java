@@ -52,7 +52,77 @@ public final class CajaMusica {
         }
         // la puerta de salida hacia el capítulo siguiente (hacia adelante)
         Salida.puerta(p, "salida.caja", 60, 8, 61, C + "madera_pulida");
+        adornos(p);
         return p;
+    }
+
+    // ------------------------------------------------------------------ los adornos: el mecanismo de la caja
+
+    /**
+     * Lo que hace que se sienta adentro de una caja de música: la llave de cuerda gigante saliendo del muro del oeste (arriba de la entrada),
+     * engranes de latón en los muros, notas musicales colgando del techo, bailarinas de porcelana en las cuatro esquinas, soldaditos de
+     * plomo cuidando la entrada y partituras tiradas. Nada estorba: todo va arriba de las cabezas, en las esquinas o pegado a los muros.
+     */
+    private static void adornos(Plano p) {
+        String oro = C + "marco_dorado";
+        // la llave de cuerda: el eje sale del muro, un collar y el moño de dos ojos (en el plano del muro)
+        int ky = 9, kz = MZ;
+        for (int x = HX0; x <= HX0 + 2; x++) {
+            p.set(x, ky, kz, oro);
+        }
+        for (int y = ky - 1; y <= ky + 1; y++) {
+            for (int z = kz - 1; z <= kz + 1; z++) {
+                p.set(HX0 + 1, y, z, oro);
+            }
+        }
+        for (int y = ky - 3; y <= ky + 3; y++) {
+            for (int z = kz - 6; z <= kz + 6; z++) {
+                double d1 = Math.hypot(y - ky, z - (kz - 3.5)), d2 = Math.hypot(y - ky, z - (kz + 3.5));
+                boolean aro = d1 >= 1.5 && d1 <= 2.9 || d2 >= 1.5 && d2 <= 2.9;
+                boolean centro = Math.abs(z - kz) <= 1 && Math.abs(y - ky) <= 1;
+                if (aro || centro) {
+                    p.set(HX0 + 3, y, z, oro);
+                }
+            }
+        }
+        // engranes de latón en los muros del norte y del sur (arriba de las repisas) y en el del este (a los lados de la pantalla)
+        for (int x = HX0 + 3; x <= HX1 - 6; x += 6) {
+            p.set(x, 10, HZ0, C + "engrane[facing=south]");
+            p.set(x + 1, 11, HZ0, C + "engrane[facing=south]");
+            p.set(x + 1, 9, HZ0, C + "engrane[facing=south]");
+            p.set(x + 3, 10, HZ1, C + "engrane[facing=north]");
+            p.set(x + 4, 11, HZ1, C + "engrane[facing=north]");
+            p.set(x + 4, 9, HZ1, C + "engrane[facing=north]");
+        }
+        for (int z : new int[] {HZ0 + 4, HZ0 + 9, HZ1 - 9, HZ1 - 4}) {
+            p.set(HX1, 10, z, C + "engrane[facing=west]");
+            p.set(HX1, 11, z + 1, C + "engrane[facing=west]");
+        }
+        // notas musicales colgando del techo: un anillo alrededor del escenario y unas en las esquinas
+        for (int k = 0; k < 12; k++) {
+            double a = Math.toRadians(k * 30 + 15);
+            int x = (int) Math.round(MX + Math.cos(a) * 11), z = (int) Math.round(MZ + Math.sin(a) * 11);
+            p.set(x, ALTO, z, C + "nota_musical[facing=" + (k % 2 == 0 ? "south" : "east") + "]");
+        }
+        for (int[] q : new int[][] {{HX0 + 4, HZ0 + 6}, {HX0 + 5, HZ1 - 7}, {HX1 - 6, HZ0 + 6}, {HX1 - 5, HZ1 - 7}}) {
+            p.set(q[0], ALTO, q[1], C + "nota_musical[facing=south]");
+            p.set(q[0] + 2, ALTO - 1, q[1] + 1, C + "nota_musical[facing=east]");
+        }
+        // las bailarinas de porcelana, en las cuatro esquinas (mirando al centro), con partituras a su alrededor
+        for (int[] q : new int[][] {{HX0 + 4, HZ0 + 4, 0}, {HX0 + 4, HZ1 - 4, 1}, {HX1 - 7, HZ0 + 6, 2}, {HX1 - 7, HZ1 - 6, 3}}) {
+            String mira = q[2] == 0 ? "east" : q[2] == 1 ? "east" : "west";
+            p.set(q[0], 1, q[1], C + "bailarina_figura[facing=" + mira + ",half=lower]");
+            p.set(q[0], 2, q[1], C + "bailarina_figura[facing=" + mira + ",half=upper]");
+            p.set(q[0] + 1, 1, q[1] + 1, C + "papeles");
+            p.set(q[0] - 1, 1, q[1] - 1, C + "papeles");
+        }
+        // los soldaditos de plomo, a los dos lados de la alfombra de la entrada (mirando al escenario)
+        for (int x : new int[] {HX0 + 3, HX0 + 9}) {
+            for (int z : new int[] {MZ - 3, MZ + 3}) {
+                p.set(x, 1, z, C + "soldadito[facing=east,half=lower]");
+                p.set(x, 2, z, C + "soldadito[facing=east,half=upper]");
+            }
+        }
     }
 
     /**

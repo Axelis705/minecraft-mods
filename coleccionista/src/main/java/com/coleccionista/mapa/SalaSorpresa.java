@@ -42,7 +42,77 @@ public final class SalaSorpresa {
         escenario(p);
         // la puerta de salida hacia el capítulo siguiente (hacia adelante)
         Salida.puerta(p, "salida.sorpresa", 62, 39, 63, C + "madera_pulida");
+        adornos(p);
         return p;
+    }
+
+    // ------------------------------------------------------------------ los adornos: un teatro de juguetes
+
+    /**
+     * Juguetes por todos lados: tiras de banderines cruzando el techo, marionetas de payaso colgando, ruedas de la fortuna en el muro de la
+     * entrada, montones de juguetes en las esquinas (cubos, tambores, trompos, caballitos, cajitas sorpresa y globos), soldaditos en fila
+     * contra los muros y regalos gigantes a los lados del escenario. Nada en el camino a las gradas, al escenario ni a la salida.
+     */
+    private static void adornos(Plano p) {
+        // banderines (cuatro tiras a lo largo, debajo de la carpa)
+        for (int z : new int[] {HZ0 + 5, HZ0 + 13, HZ1 - 13, HZ1 - 5}) {
+            for (int x = HX0 + 1; x <= 44; x++) {
+                if (p.vacio(x, ALTO - 1, z)) {
+                    p.set(x, ALTO - 1, z, C + "banderines[facing=north]");
+                }
+            }
+        }
+        // marionetas colgando frente a los muros del norte y del sur (arriba de los estandartes)
+        for (int x = HX0 + 6; x <= 42; x += 6) {
+            p.set(x, 10, HZ0 + 2, C + "marioneta[facing=south]");
+            p.set(x + 3, 10, HZ1 - 2, C + "marioneta[facing=north]");
+        }
+        // ruedas de la fortuna en el muro de la entrada y el letrero de la función arriba de la puerta
+        p.set(HX0, 8, CZ - 6, C + "ruleta[facing=east]");
+        p.set(HX0, 8, CZ + 6, C + "ruleta[facing=east]");
+        p.letrero(HX0, 4, CZ, "", "east", "gold", "¡GRAN FUNCIÓN!", "Don Resorte");
+        // los montones de juguetes en las esquinas del oeste (y su espejo al sur)
+        for (int lado = 0; lado < 2; lado++) {
+            boolean sur = lado == 1;
+            int zb = sur ? HZ1 : HZ0, d = sur ? -1 : 1;
+            String hacia = sur ? "north" : "south";
+            p.set(HX0 + 2, 1, zb + d, C + "cubos_letras[facing=" + hacia + "]");
+            p.set(HX0 + 4, 1, zb, C + "cubos_letras[facing=east]");
+            p.set(HX0 + 6, 1, zb + d, C + "tambor[facing=" + hacia + "]");
+            p.set(HX0 + 3, 1, zb + 4 * d, C + "caballito[facing=east]");
+            p.set(HX0 + 7, 1, zb + 4 * d, C + "trompo[facing=" + hacia + "]");
+            p.set(HX0 + 8, 1, zb, C + "caja_juguete[facing=" + hacia + "]");
+            p.set(HX0 + 1, 1, zb + 7 * d, C + "globos[facing=east,half=lower]");
+            p.set(HX0 + 1, 2, zb + 7 * d, C + "globos[facing=east,half=upper]");
+            p.set(HX0 + 9, 1, zb + 2 * d, C + "trompo[facing=east]");
+            // soldaditos en fila contra el muro (del norte y del sur), mirando al centro
+            for (int x = HX0 + 13; x <= 43; x += 5) {
+                p.set(x, 1, zb, C + "soldadito[facing=" + hacia + ",half=lower]");
+                p.set(x, 2, zb, C + "soldadito[facing=" + hacia + ",half=upper]");
+            }
+            // regalos gigantes junto al escenario (lana de colores con su listón) y globos
+            int z0 = sur ? HZ1 - 7 : HZ0 + 3;
+            regalo(p, 49, z0, 2, "minecraft:red_wool", "minecraft:yellow_wool");
+            regalo(p, 52, z0 + 1, 1, "minecraft:blue_wool", "minecraft:white_wool");
+            regalo(p, 54, z0 - (sur ? -2 : 1), 2, "minecraft:lime_wool", "minecraft:red_wool");
+            p.set(47, 1, z0 + 2, C + "caja_juguete[facing=" + hacia + "]");
+            p.set(56, 1, z0 + (sur ? 3 : -1), C + "globos[facing=west,half=lower]");
+            p.set(56, 2, z0 + (sur ? 3 : -1), C + "globos[facing=west,half=upper]");
+        }
+    }
+
+    /** Un regalo gigante de {@code t} x {@code t} x {@code t}: caja de lana con un listón en cruz y moño arriba. */
+    private static void regalo(Plano p, int x0, int z0, int t, String caja, String liston) {
+        int mx = x0 + t / 2, mz = z0 + t / 2;
+        for (int x = x0; x < x0 + t; x++) {
+            for (int z = z0; z < z0 + t; z++) {
+                for (int y = 1; y <= t; y++) {
+                    boolean cinta = t > 1 ? (x == mx || z == mz) : false;
+                    p.set(x, y, z, cinta ? liston : caja);
+                }
+            }
+        }
+        p.set(mx, t + 1, mz, liston.replace("wool", "carpet"));
     }
 
     private static void luz(Plano p, int x, int y, int z, int nivel) {

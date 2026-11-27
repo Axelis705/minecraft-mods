@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/tambor"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/tambor",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/tambor",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/tambor",
+   "y": 270
+  }
+ }
+}

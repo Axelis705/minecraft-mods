@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/violin"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/violin",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/violin",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/violin",
+   "y": 270
+  }
+ }
+}

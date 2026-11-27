@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/caja_juguete"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/caja_juguete",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/caja_juguete",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/caja_juguete",
+   "y": 270
+  }
+ }
+}

@@ -281,6 +281,13 @@ public final class Circuito {
             p.set(16, 3, z, C + "losa_madera[type=top]");
             p.set(16, 4, z, C + "muneca[facing=west]");
         }
+        // las cosas del taller: la máquina de coser, un maniquí a medio vestir, baúles y maletas
+        p.set(4, 1, 13, C + "maquina_coser[facing=east]");
+        p.set(15, 1, 13, C + "maniqui[facing=west,half=lower]");
+        p.set(15, 2, 13, C + "maniqui[facing=west,half=upper]");
+        p.set(4, 1, 6, C + "cajon[facing=east]");
+        p.set(15, 1, 6, C + "maleta[facing=west]");
+        p.set(14, 1, 14, C + "papeles");
         // el taller: dentro del cuarto (todos fuera del ascensor) es donde explica el Coleccionista
         p.marca(pre + "taller.a", 3, 1, 5, 0);
         p.marca(pre + "taller.b", 16, 1, 14, 0);

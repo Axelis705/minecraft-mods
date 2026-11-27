@@ -76,7 +76,7 @@ public final class Veintiuno {
     public static final String PRUEBA = "Veintiuno";
     /** Ajustes: cuántas rondas perdidas cortan, los segundos de cada turno, si hay comodines. */
     public static int golpesMax = 3, segundosTurno = 25;
-    public static int esperaPasillo = 1200, esperaSalon = 900;
+    public static int esperaPasillo = 1800, esperaSalon = 900;
     public static boolean comodines = true;
     /** ¿Al empezar la final, el organizador se disfraza del Coleccionista y se sienta en el trono? (se puede levantar y caminar) */
     public static boolean trono = true;

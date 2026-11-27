@@ -25,15 +25,15 @@ Z_LLEGA = 21
 TEMAS = {
     # estilo del pasillo y cómo se decora la parte larga (las dos orillas, alternando)
     'cajas': ('estilo a nombre=Taller_de_cajas_de_música piso=coleccionista:parquet alfombra=coleccionista:alfombra_roja '
-              'pared=coleccionista:acolchado luz=11', 'VCKC'),
+              'pared=coleccionista:acolchado luz=11', 'VCBKWC'),
     'payasos': ('estilo a nombre=Pasillo_de_los_payasos piso=coleccionista:madera_pulida|coleccionista:tablon pared=coleccionista:telon '
-                'techo=coleccionista:marco_luz_amarilla luz=10', 'zOxz'),
+                'techo=coleccionista:marco_luz_amarilla luz=10', 'JzGOLxDz'),
     'merienda': ('estilo a nombre=La_merienda piso=coleccionista:marmol_crema|coleccionista:marmol_negro pared=coleccionista:azulejo '
-                 'luz=11', 'MYMO'),
+                 'luz=11', 'MPYQMO'),
     'espejos': ('estilo a nombre=Galería_de_espejos piso=coleccionista:parquet pared=coleccionista:marmol_crema '
-                'zoclo=coleccionista:marmol_negro luz=12', 'ECEK'),
+                'zoclo=coleccionista:marmol_negro luz=12', 'EACUEK'),
     'cartas': ('estilo a nombre=El_pasillo_de_las_cartas piso=coleccionista:marmol_negro|coleccionista:tapete_rojo '
-               'pared=coleccionista:panel_madera luz=10', 'THSH'),
+               'pared=coleccionista:panel_madera luz=10', 'THFSRH'),
 }
 
 LEYENDA = """\
@@ -50,6 +50,18 @@ mueble E coleccionista:espejo y=2
 mueble T coleccionista:mesa_tapete
 mueble H coleccionista:sillon doble
 mueble S coleccionista:estandarte_rojo doble
+mueble B coleccionista:bailarina_figura doble
+mueble W coleccionista:soldadito doble
+mueble J coleccionista:caja_juguete
+mueble G coleccionista:globos doble
+mueble D coleccionista:tambor
+mueble L coleccionista:cubos_letras
+mueble P coleccionista:mesa encima=coleccionista:pastelero
+mueble Q coleccionista:mesa encima=coleccionista:tetera
+mueble A coleccionista:arpa doble
+mueble U coleccionista:busto doble
+mueble F coleccionista:mesa encima=coleccionista:fichas
+mueble R coleccionista:mesa encima=coleccionista:botella
 """
 
 

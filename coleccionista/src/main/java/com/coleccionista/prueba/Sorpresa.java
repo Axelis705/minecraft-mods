@@ -72,7 +72,7 @@ public final class Sorpresa {
     public static final String PRUEBA = "La caja sorpresa";
     /** Ajustes (los cambia el organizador con /evento sorpresa ...). */
     public static int comer = 0, segundosIr = 45, segundosElegir = 20, segundosVolver = 40;
-    public static int esperaPasillo = 1200, esperaSalon = 900;
+    public static int esperaPasillo = 1800, esperaSalon = 900;
     /** Al terminar la caja de música, pasan solos a la caja sorpresa. */
     public static boolean encadenar = true;
     /** Para las pruebas: el número secreto de la siguiente caja (0: al azar) y quién va primero. */

@@ -47,7 +47,35 @@ public final class SalaTe {
         sillones(p);
         // la puerta de salida hacia el capítulo siguiente (hacia adelante)
         Salida.puerta(p, "salida.te", 62, 4, 63, C + "madera_pulida");
+        adornos(p);
         return p;
+    }
+
+    // ------------------------------------------------------------------ los adornos: la merienda
+
+    /**
+     * La merienda servida: mesitas con juegos de té y platones de pastelitos contra los muros del norte y del sur, dos arpas junto a la
+     * pantalla, violines colgados y relojes de pie en las esquinas del fondo.
+     */
+    private static void adornos(Plano p) {
+        for (int x = 34; x <= 55; x += 6) {
+            p.set(x, 1, HZ0 + 1, C + "mesa[facing=south]");
+            p.set(x, 2, HZ0 + 1, C + ((x / 6) % 2 == 0 ? "tetera[facing=south]" : "pastelero[facing=south]"));
+            p.set(x + 3, 1, HZ1 - 1, C + "mesa[facing=north]");
+            p.set(x + 3, 2, HZ1 - 1, C + ((x / 6) % 2 == 0 ? "pastelero[facing=north]" : "tetera[facing=north]"));
+        }
+        for (int z : new int[] {17, 26}) {
+            p.set(HX1, 1, z, C + "arpa[facing=west,half=lower]");
+            p.set(HX1, 2, z, C + "arpa[facing=west,half=upper]");
+        }
+        for (int x : new int[] {36, 50}) {
+            p.set(x, 3, HZ0, C + "violin[facing=south]");
+            p.set(x + 2, 3, HZ1, C + "violin[facing=north]");
+        }
+        p.set(HX1, 1, HZ1, C + "reloj_pie[facing=west,half=lower]");
+        p.set(HX1, 2, HZ1, C + "reloj_pie[facing=west,half=upper]");
+        p.set(33, 1, HZ0, C + "reloj_pie[facing=south,half=lower]");
+        p.set(33, 2, HZ0, C + "reloj_pie[facing=south,half=upper]");
     }
 
     private static void luz(Plano p, int x, int y, int z, int nivel) {

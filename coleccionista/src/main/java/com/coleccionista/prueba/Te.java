@@ -74,7 +74,7 @@ public final class Te {
     public static final String PRUEBA = "La hora del té";
     /** Ajustes (los cambia el organizador con /evento te ...). */
     public static int segundosParejas = 60, segundosJugada = 12, segundosCaliz = 20;
-    public static int esperaPasillo = 1200, esperaSalon = 900;
+    public static int esperaPasillo = 1800, esperaSalon = 900;
     /** Al terminar la caja sorpresa, pasan solos al salón de té. */
     public static boolean encadenar = true;
     /** Para las pruebas: cuál cáliz tiene el veneno (-1: al azar) y que los bots jueguen al instante. */

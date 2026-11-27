@@ -70,7 +70,7 @@ public final class Piano {
     public static int caer = 0, segundosNota = 6, notasInicio = 3;
     /** Cuánto tienen para subir cada quien a su pista (segundos); luego la caja sube a los que falten. */
     public static int segundosSubir = 45;
-    public static int esperaPasillo = 1200, esperaSalon = 900;
+    public static int esperaPasillo = 1800, esperaSalon = 900;
     /** Al terminar el salón de té, pasan solos al salón de baile; {@code rapido}: los bots tocan al instante y no se equivocan solos. */
     public static boolean encadenar = true, rapido;
     /** Para las pruebas: las piezas que se equivocan (a propósito) en su siguiente nota, y cuántas (al azar) en cada ronda que sigue. */

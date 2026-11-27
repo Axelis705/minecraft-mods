@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/cubos_letras"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/cubos_letras",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/cubos_letras",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/cubos_letras",
+   "y": 270
+  }
+ }
+}

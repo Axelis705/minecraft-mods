@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/pastelero"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/pastelero",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/pastelero",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/pastelero",
+   "y": 270
+  }
+ }
+}

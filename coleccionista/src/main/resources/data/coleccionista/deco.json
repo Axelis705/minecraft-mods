@@ -5740,6 +5740,460 @@
    "sub": "floor"
   },
   {
+   "id": "engrane",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     0,
+     0,
+     14,
+     16,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Engrane de latón",
+   "en": "Brass gear",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "nota_musical",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     4,
+     0,
+     7,
+     12,
+     16,
+     9
+    ]
+   ],
+   "particles": [],
+   "es": "Nota musical",
+   "en": "Music note",
+   "soft": false,
+   "sub": "hang"
+  },
+  {
+   "id": "soldadito",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     4,
+     0,
+     5,
+     12,
+     16,
+     11
+    ]
+   ],
+   "particles": [],
+   "es": "Soldadito de plomo",
+   "en": "Tin soldier",
+   "soft": false,
+   "shape_upper": [
+    [
+     4,
+     0,
+     5,
+     12,
+     14,
+     11
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "bailarina_figura",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "glass",
+   "shape": [
+    [
+     2,
+     0,
+     2,
+     14,
+     16,
+     14
+    ]
+   ],
+   "particles": [],
+   "es": "Bailarina de porcelana",
+   "en": "Porcelain ballerina",
+   "soft": false,
+   "shape_upper": [
+    [
+     4,
+     0,
+     4,
+     12,
+     14,
+     12
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "cubos_letras",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     1,
+     0,
+     1,
+     15,
+     15,
+     15
+    ]
+   ],
+   "particles": [],
+   "es": "Cubos con letras",
+   "en": "Alphabet blocks",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "tambor",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     2,
+     0,
+     2,
+     14,
+     10,
+     14
+    ]
+   ],
+   "particles": [],
+   "es": "Tambor de juguete",
+   "en": "Toy drum",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "trompo",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     10,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Trompo",
+   "en": "Spinning top",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "globos",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     6,
+     0,
+     6,
+     10,
+     4,
+     10
+    ]
+   ],
+   "particles": [],
+   "es": "Globos",
+   "en": "Balloons",
+   "soft": false,
+   "shape_upper": [
+    [
+     2,
+     0,
+     2,
+     14,
+     15,
+     14
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "banderines",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     0,
+     9,
+     7.5,
+     16,
+     16,
+     8.5
+    ]
+   ],
+   "particles": [],
+   "es": "Banderines",
+   "en": "Bunting",
+   "soft": false,
+   "sub": "hang"
+  },
+  {
+   "id": "marioneta",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     4,
+     0,
+     6,
+     12,
+     16,
+     10
+    ]
+   ],
+   "particles": [],
+   "es": "Marioneta de payaso",
+   "en": "Clown marionette",
+   "soft": false,
+   "sub": "hang"
+  },
+  {
+   "id": "caja_juguete",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     15,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Cajita sorpresa",
+   "en": "Toy jack-in-the-box",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "tetera",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "glass",
+   "shape": [
+    [
+     1,
+     0,
+     1,
+     15,
+     9,
+     15
+    ]
+   ],
+   "particles": [],
+   "es": "Juego de té",
+   "en": "Tea set",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "pastelero",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "glass",
+   "shape": [
+    [
+     2,
+     0,
+     2,
+     14,
+     14,
+     14
+    ]
+   ],
+   "particles": [],
+   "es": "Platón de pastelitos",
+   "en": "Cake stand",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "arpa",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     3,
+     0,
+     6,
+     13,
+     16,
+     10
+    ]
+   ],
+   "particles": [],
+   "es": "Arpa",
+   "en": "Harp",
+   "soft": false,
+   "shape_upper": [
+    [
+     3,
+     0,
+     6,
+     13,
+     13,
+     10
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "violin",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     3,
+     1,
+     14,
+     13,
+     15,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Violín",
+   "en": "Violin",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "fichas",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     1,
+     0,
+     1,
+     15,
+     6,
+     15
+    ]
+   ],
+   "particles": [],
+   "es": "Fichas y cartas",
+   "en": "Chips and cards",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "ruleta",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     0,
+     14,
+     16,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Rueda de la fortuna",
+   "en": "Wheel of fortune",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "botella",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "glass",
+   "shape": [
+    [
+     3,
+     0,
+     5,
+     13,
+     13,
+     11
+    ]
+   ],
+   "particles": [],
+   "es": "Botella y copa",
+   "en": "Bottle and glass",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
    "id": "cama_antigua",
    "kind": "cama",
    "sound": "wood",

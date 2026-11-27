@@ -50,7 +50,37 @@ public final class SalaPiano {
         }
         // la puerta de salida hacia el capítulo siguiente (hacia adelante)
         Salida.puerta(p, "salida.piano", 62, 37, 63, C + "madera_pulida");
+        adornos(p);
         return p;
+    }
+
+    // ------------------------------------------------------------------ los adornos: el salón de música
+
+    /**
+     * El salón de música: arpas y atriles con partituras en el escenario de la bailarina, bustos de mármol y palmas en las esquinas,
+     * violines en el muro de la entrada y notas musicales colgando del techo sobre la parte de atrás del salón.
+     */
+    private static void adornos(Plano p) {
+        p.set(29, 2, 3, C + "arpa[facing=south,half=lower]");
+        p.set(29, 3, 3, C + "arpa[facing=south,half=upper]");
+        p.set(49, 2, 3, C + "arpa[facing=south,half=lower]");
+        p.set(49, 3, 3, C + "arpa[facing=south,half=upper]");
+        p.set(32, 2, 6, C + "atril[facing=south]");
+        p.set(46, 2, 6, C + "atril[facing=south]");
+        p.set(31, 2, 2, C + "papeles");
+        p.set(47, 2, 2, C + "papeles");
+        for (int x : new int[] {HX0 + 2, HX1 - 2}) {
+            p.set(x, 1, HZ0 + 2, C + "busto[facing=south,half=lower]");
+            p.set(x, 2, HZ0 + 2, C + "busto[facing=south,half=upper]");
+            p.set(x + (x < 39 ? 3 : -3), 1, HZ0 + 1, C + "planta[facing=south,half=lower]");
+            p.set(x + (x < 39 ? 3 : -3), 2, HZ0 + 1, C + "planta[facing=south,half=upper]");
+        }
+        for (int z : new int[] {6, 36}) {
+            p.set(HX0, 6, z, C + "violin[facing=east]");
+        }
+        for (int[] q : new int[][] {{22, 36}, {30, 38}, {34, 35}, {44, 38}, {48, 35}, {56, 36}, {39, 40}}) {
+            p.set(q[0], ALTO - 1, q[1], C + "nota_musical[facing=" + (q[0] % 2 == 0 ? "south" : "east") + "]");
+        }
     }
 
     private static void luz(Plano p, int x, int y, int z, int nivel) {
