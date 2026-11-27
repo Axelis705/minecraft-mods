@@ -34,6 +34,7 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.HOMBRE_JENGIBRE.get(), JengibreRenderer::new);
         e.registerEntityRenderer(ModRegistry.TRINEO.get(), TrineoRenderer::new);
         e.registerEntityRenderer(ModRegistry.TRINEO_MADERA.get(), TrineoMaderaRenderer::new);
+        e.registerEntityRenderer(ModRegistry.REGALO_CAYENDO.get(), RegaloCayendoRenderer::new);
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
     }
 
@@ -47,6 +48,7 @@ public final class ModClient {
     @SubscribeEvent
     public static void onModelos(ModelEvent.RegisterAdditional e) {
         e.register(TrineoMaderaRenderer.MODELO);
+        e.register(RegaloCayendoRenderer.PARACAIDAS);
     }
 
     @SubscribeEvent

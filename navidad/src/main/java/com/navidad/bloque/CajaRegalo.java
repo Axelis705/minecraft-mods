@@ -59,6 +59,33 @@ public class CajaRegalo extends HorizontalDirectionalBlock implements EntityBloc
         return FORMA;
     }
 
+    /** Una caja de regalo ya envuelta, como objeto (al ponerla queda llena, con quién la manda y para quién es). */
+    public static ItemStack envuelta(ItemStack contenido, String de, String para) {
+        ItemStack st = new ItemStack(com.navidad.registry.ModRegistry.CAJA_REGALO_ITEM.get());
+        net.minecraft.nbt.CompoundTag be = new net.minecraft.nbt.CompoundTag();
+        be.put("Contenido", contenido.save(new net.minecraft.nbt.CompoundTag()));
+        be.putString("De", de);
+        be.putString("Para", para == null ? "" : para);
+        st.addTagElement("BlockEntityTag", be);
+        return st;
+    }
+
+    /** (Servidor) Pone una caja de regalo llena en {@code pos} si cabe ahí (lugar libre con piso firme). Devuelve si la pudo poner. */
+    public static boolean poner(Level l, BlockPos pos, Direction mira, ItemStack contenido, String de, String para) {
+        if (!l.getBlockState(pos).canBeReplaced() || !l.getFluidState(pos).isEmpty()
+                || !l.getBlockState(pos.below()).isFaceSturdy(l, pos.below(), Direction.UP)) {
+            return false;
+        }
+        l.setBlock(pos, com.navidad.registry.ModRegistry.CAJA_REGALO.get().defaultBlockState().setValue(FACING, mira).setValue(LLENA, true), 3);
+        if (l.getBlockEntity(pos) instanceof CajaRegaloBE be) {
+            be.contenido = contenido.copy();
+            be.de = de;
+            be.para = para == null ? "" : para;
+            be.setChanged();
+        }
+        return true;
+    }
+
     @Override
     public BlockEntity newBlockEntity(BlockPos p, BlockState s) {
         return new CajaRegaloBE(p, s);

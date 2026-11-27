@@ -51,6 +51,19 @@ final class Prueba {
         return out;
     }
 
+    /** Un regalo de Santa que ya abrió su paracaídas (el más cercano), o null. */
+    static com.navidad.entidad.RegaloCayendo regaloAbierto() {
+        var mc = Minecraft.getInstance();
+        com.navidad.entidad.RegaloCayendo mejor = null;
+        for (var e : mc.level.entitiesForRendering()) {
+            if (e instanceof com.navidad.entidad.RegaloCayendo r && r.abierto() && r.getY() > -57
+                    && (mejor == null || r.distanceToSqr(mc.player) < mejor.distanceToSqr(mc.player))) {
+                mejor = r;
+            }
+        }
+        return mejor;
+    }
+
     static void registrar() {
         ClientTest.scenario(Navidad.MODID, t -> {
             t.add("preparar", 2500, () -> {
@@ -225,22 +238,6 @@ final class Prueba {
             t.photo("aldea_establo", 3000, () -> t.lookFrom(300.5, -57, 12, 300.5, -59, 22));
             t.photo("aldea_nacimiento", 3000, () -> t.lookFrom(280.5, -56.2, -11, 280.5, -59.5, -21.5));
             t.photo("aldea_nacimiento_cerca", 2500, () -> t.lookFrom(283.5, -57.6, -17.5, 280.5, -59, -21.5));
-            t.photo("aldea_fuertes", 2500, () -> t.lookFrom(270, -53, 19, 281, -59.5, 19));
-            // guerra de nieve por equipos: aparezco en el fuerte rojo con el título de mi equipo
-            t.add("guerra equipos", 1500, () -> {
-                t.cmd("gamemode survival @a");
-                t.cmd("navidad guerra_nieve 10 equipos");
-            });
-            t.add("hud guerra", 200, () -> t.hud(true));
-            t.photo("guerra_equipo", 600, () -> {
-            });
-            t.add("en el fuerte", 200, () -> {
-                var pl = Minecraft.getInstance().player;
-                t.check(Math.abs(pl.getZ() - 11.5) < 1.5 && Math.abs(pl.getX() - 280.5) < 3, "aparecí detrás del fuerte rojo ("
-                        + String.format(Locale.ROOT, "%.1f, %.1f", pl.getX(), pl.getZ()) + ")");
-            });
-            t.add("hud guerra fin", 200, () -> t.hud(false));
-            t.add("fin de la guerra", 11000, () -> t.cmd("gamemode creative @a"));
             t.photo("aldea_noche", 4000, () -> {
                 t.cmd("time set 18000");
                 t.cmd("gamemode spectator @a");
@@ -260,6 +257,39 @@ final class Prueba {
             });
             t.add("caminar 3", 300, () -> t.cmd("gamemode creative @a"));
             t.add("dia otra vez", 1000, () -> t.cmd("time set 6000"));
+            // ---------------------------------------------------------------- Santa en survival: pasa de día y suelta regalos con paracaídas
+            t.add("santa de dia", 1500, () -> {
+                t.cmd("time set 9000");
+                t.cmd("gamemode survival @a");
+                t.cmd("kill @e[type=navidad:regalo_cayendo]");
+                t.cmd("tp @a 440.5 -60 80.5 -90 -25");
+                t.cmd("summon navidad:trineo_santa 400 -40 80.5 {Motion:[0.5,0.0,0.0]}");
+            });
+            t.photo("santa_viene", 2200, () -> {
+            });
+            t.waitFor("se abrió un paracaídas", 15000, () -> regaloAbierto() != null);
+            t.add("mirar el regalo", 1800, () -> {
+                var r = regaloAbierto();
+                if (r != null) {
+                    t.lookFrom(r.getX() + 3.2, r.getY() - 0.6, r.getZ() + 3.2, r.getX(), r.getY() + 0.9, r.getZ());
+                }
+            });
+            t.photo("regalo_paracaidas", 300, () -> {
+            });
+            t.add("volver al piso", 300, () -> t.cmd("tp @a 440.5 -60 80.5 -90 30"));
+            t.waitFor("el regalo aterrizó como caja", 40000, () -> com.navidad.entidad.RegaloCayendo.aterrizados > 0);
+            t.add("buscar la caja", 1200, () -> {
+                var l = Minecraft.getInstance().level;
+                for (BlockPos q : BlockPos.betweenClosed(425, -60, 65, 455, -58, 95)) {
+                    if (l.getBlockState(q).is(com.navidad.registry.ModRegistry.CAJA_REGALO.get())) {
+                        t.lookFrom(q.getX() + 2.5, -58.8, q.getZ() + 2.5, q.getX() + 0.5, -59.7, q.getZ() + 0.5);
+                        break;
+                    }
+                }
+            });
+            t.photo("regalo_aterrizo", 600, () -> {
+            });
+            t.add("fin santa", 300, () -> t.cmd("gamemode creative @a"));
             // ---------------------------------------------------------------- el buzón y la carta a Santa
             t.add("buzon", 1000, () -> {
                 t.cmd("time set 1000");

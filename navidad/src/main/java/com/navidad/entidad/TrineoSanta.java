@@ -10,17 +10,18 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * El trineo de Santa cruzando el cielo de noche: pasa en línea recta, suenan los cascabeles, Santa se ríe y va soltando regalos
- * misteriosos cerca de los jugadores que están abajo. Se va solo al terminar su recorrido.
+ * El trineo de Santa cruzando el cielo: pasa en línea recta, suenan los cascabeles, Santa se ríe, saluda ("¡Jo, jo, jo! ¡Feliz
+ * Navidad!") a quien está abajo y le suelta dos regalos con paracaídas. Se va solo al terminar su recorrido.
  */
 public class TrineoSanta extends Entity {
-    private int vida = 520, regalos;
+    private int vida = 560, regalos;
+    /** Cuántos regalos le soltó a cada quien en este viaje. */
+    private final java.util.Map<java.util.UUID, Integer> DADOS = new java.util.HashMap<>();
 
     public TrineoSanta(EntityType<?> type, Level level) {
         super(type, level);
@@ -51,16 +52,20 @@ public class TrineoSanta extends Entity {
         if (tickCount % 160 == 60) {
             l.playSound(null, blockPosition(), ModRegistry.RISA_SANTA.get(), SoundSource.AMBIENT, 6F, 1F);
         }
-        // suelta regalos cuando pasa encima de alguien (como mucho 6 por viaje)
-        if (tickCount % 25 == 0 && regalos < 6) {
+        // al pasar encima de alguien: lo saluda y suelta regalos con paracaídas (2 por persona, como mucho 8 por viaje)
+        if (tickCount % 12 == 0 && regalos < 8) {
             for (ServerPlayer p : l.players()) {
                 double dx = p.getX() - getX(), dz = p.getZ() - getZ();
-                if (dx * dx + dz * dz < 18 * 18 && Math.abs(p.getY() - getY()) < 60) {
-                    ItemEntity it = new ItemEntity(l, getX(), getY() - 1, getZ(), new ItemStack(ModRegistry.REGALO_MISTERIOSO.get()));
-                    it.setDeltaMovement((p.getX() - getX()) * 0.02, -0.1, (p.getZ() - getZ()) * 0.02);
-                    it.setNoPickUpDelay();
-                    it.setGlowingTag(true);
-                    l.addFreshEntity(it);
+                if (dx * dx + dz * dz > 26 * 26 || Math.abs(p.getY() - getY()) > 80) {
+                    continue;
+                }
+                int ya = DADOS.getOrDefault(p.getUUID(), 0);
+                if (ya == 0) {
+                    saludar(p);
+                }
+                if (ya < 2) {
+                    DADOS.put(p.getUUID(), ya + 1);
+                    RegaloCayendo.soltar(l, getX(), getY() - 1.2, getZ(), premio(l.random), p);
                     regalos++;
                     break;
                 }
@@ -69,6 +74,25 @@ public class TrineoSanta extends Entity {
         if (--vida <= 0) {
             discard();
         }
+    }
+
+    /** Lo que trae cada regalo: casi siempre algo sencillo, a veces algo bueno y muy de vez en cuando algo increíble. */
+    static ItemStack premio(net.minecraft.util.RandomSource r) {
+        float x = r.nextFloat();
+        var rz = x < 0.03F ? com.navidad.objeto.Premios.Rareza.EPICO : x < 0.25F ? com.navidad.objeto.Premios.Rareza.RARO
+                : com.navidad.objeto.Premios.Rareza.COMUN;
+        return com.navidad.objeto.Premios.sacar(rz, r);
+    }
+
+    private void saludar(ServerPlayer p) {
+        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket(6, 50, 20));
+        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket(
+                net.minecraft.network.chat.Component.translatable("navidad.santa.jojojo").withStyle(net.minecraft.ChatFormatting.RED,
+                        net.minecraft.ChatFormatting.BOLD)));
+        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket(
+                net.minecraft.network.chat.Component.translatable("navidad.santa.feliz", p.getDisplayName())
+                        .withStyle(net.minecraft.ChatFormatting.GOLD)));
+        com.navidad.Navidad.LOGGER.info("NAVIDAD_SANTA saluda a {}", p.getGameProfile().getName());
     }
 
     @Override

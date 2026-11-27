@@ -8,8 +8,10 @@ import java.time.Month;
 import java.time.ZoneId;
 
 /**
- * La temporada navideña: sola del 1 de diciembre al 6 de enero (hora del centro de México, de donde son Axelis y sus amigos), o
- * forzada con {@code /navidad temporada si|no|auto} (se guarda con el mundo).
+ * La temporada navideña. Por defecto está <b>siempre</b> activa (quien instala un mod de Navidad quiere sentir la Navidad al jugar);
+ * con {@code /navidad temporada auto} queda solo del 1 de diciembre al 6 de enero (hora del centro de México, de donde son Axelis y sus
+ * amigos) y con {@code no} se apaga (se guarda con el mundo). Los días especiales (Nochebuena, Navidad, Año Nuevo, Reyes) siempre
+ * dependen de la fecha de verdad.
  */
 public final class Temporada {
     public static final ZoneId ZONA = ZoneId.of("America/Mexico_City");
@@ -34,7 +36,7 @@ public final class Temporada {
 
     public static String modo(MinecraftServer s) {
         String m = WorldStore.get(s, Navidad.MODID).global().getString("temporada");
-        return m.isEmpty() ? "auto" : m;
+        return m.isEmpty() ? "si" : m;
     }
 
     public static void modo(MinecraftServer s, String m) {

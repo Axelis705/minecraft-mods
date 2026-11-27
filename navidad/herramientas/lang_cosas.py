@@ -317,20 +317,6 @@ if __name__ == '__main__':
     aplicar(T5)
     print(len(T5), 'texto del muérdago')
 
-T6 = {
-    'navidad.guerra.empieza': ('❄ ¡Guerra de bolas de nieve! Dura %s segundos. Cada bolazo a otra persona es un punto.',
-                               '❄ Snowball fight! It lasts %s seconds. Every hit on someone else is a point.'),
-    'navidad.guerra.punto': ('❄ ¡Bolazo a %s! Llevas %s', '❄ You hit %s! Score: %s'),
-    'navidad.guerra.te_dieron': ('❄ ¡%s te dio un bolazo!', '❄ %s hit you with a snowball!'),
-    'navidad.guerra.faltan': ('❄ Quedan %s segundos de guerra de nieve.', '❄ %s seconds left in the snowball fight.'),
-    'navidad.guerra.fin': ('❄ ¡Se acabó la guerra de bolas de nieve! El podio:', '❄ The snowball fight is over! The podium:'),
-    'navidad.guerra.nadie': ('Nadie le atinó a nadie... ¡a practicar!', 'Nobody hit anybody... time to practice!'),
-}
-
-if __name__ == '__main__':
-    aplicar(T6)
-    print(len(T6), 'textos de la guerra de nieve')
-
 T7 = {
     'navidad.calcetin.lleno': ('★ ¡Santa te dejó algo en el calcetín!', '★ Santa left something in the stocking!'),
     'navidad.calcetin.vacio': ('El calcetín está vacío... Santa lo vuelve a llenar por la noche.',
@@ -344,23 +330,6 @@ T7 = {
 if __name__ == '__main__':
     aplicar(T7)
     print(len(T7), 'textos de los calcetines')
-
-T8 = {
-    'navidad.guerra.empieza_equipos': ('❄ ¡Guerra de bolas de nieve por equipos! Dura %s segundos. Los bolazos a tu propio equipo no cuentan.',
-                                       '❄ Team snowball fight! It lasts %s seconds. Hits on your own team don\'t count.'),
-    'navidad.guerra.rojo': ('Equipo Rojo', 'Red Team'),
-    'navidad.guerra.verde': ('Equipo Verde', 'Green Team'),
-    'navidad.guerra.equipo_sub': ('¡A defender tu fuerte de nieve!', 'Defend your snow fort!'),
-    'navidad.guerra.mismo': ('%s es de tu equipo...', '%s is on your team...'),
-    'navidad.guerra.punto_equipo': ('❄ ¡Bolazo a %s! Llevas %s · Rojo %s - %s Verde', '❄ You hit %s! Score: %s · Red %s - %s Green'),
-    'navidad.guerra.marcador': ('Rojo %s - %s Verde', 'Red %s - %s Green'),
-    'navidad.guerra.gana_equipo': ('¡Ganó el %s! Todo el equipo se lleva un regalo.', 'The %s wins! The whole team gets a gift.'),
-    'navidad.guerra.empate': ('¡Empate! Nadie se lleva el regalo esta vez.', 'It\'s a tie! No gift this time.'),
-}
-
-if __name__ == '__main__':
-    aplicar(T8)
-    print(len(T8), 'textos de la guerra por equipos')
 
 T9 = {
     'navidad.galletas.puestas': ('★ Le dejaste galletas y leche a Santa. Esta noche pasará por ellas...',
@@ -403,3 +372,16 @@ T12 = {
 if __name__ == '__main__':
     aplicar(T12)
     print(len(T12), 'textos de la bufanda y las orejeras')
+
+T13 = {
+    'navidad.santa.jojojo': ('¡Jo, jo, jo!', 'Ho, ho, ho!'),
+    'navidad.santa.feliz': ('¡Feliz Navidad, %s! Te dejé un regalito...', 'Merry Christmas, %s! I left you a little something...'),
+    'navidad.regalo_cielo.aterrizo': ('★ ¡Un regalo de Santa aterrizó cerca de ti!', '★ A gift from Santa landed near you!'),
+    'navidad.regalo_cielo.atrapado': ('★ ¡Atrapaste un regalo en el aire!', '★ You caught a gift in mid-air!'),
+    'entity.navidad.regalo_cayendo': ('Regalo de Santa', 'Gift from Santa'),
+    'entity.navidad.trineo_santa': ('Trineo de Santa', "Santa's sleigh"),
+}
+
+if __name__ == '__main__':
+    aplicar(T13)
+    print(len(T13), 'textos de Santa en survival')

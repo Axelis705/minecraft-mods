@@ -1,15 +1,15 @@
 {
  "display": {
   "icon": {
-   "item": "minecraft:snowball"
+   "item": "minecraft:feather"
   },
   "title": {
-   "translate": "advancement.navidad.guerra"
+   "translate": "advancement.navidad.regalo_cielo"
   },
   "description": {
-   "translate": "advancement.navidad.guerra.desc"
+   "translate": "advancement.navidad.regalo_cielo.desc"
   },
-  "frame": "goal",
+  "frame": "task",
   "show_toast": true,
   "announce_to_chat": true,
   "hidden": false
@@ -19,5 +19,5 @@
    "trigger": "minecraft:impossible"
   }
  },
- "parent": "navidad:navidad/angel"
+ "parent": "navidad:navidad/regalo"
 }

@@ -52,7 +52,6 @@ public final class Aldea {
         establo(o);
         alrededores(o, rnd);
         nacimiento(o);
-        fuertes(o);
         colina(o);
         pista(o);
         if (conGente) {
@@ -373,48 +372,6 @@ public final class Aldea {
         o.deco(-16, 1, -15, "farolito", Direction.SOUTH);
         o.deco(-24, 1, -25, "pino_maceta", Direction.SOUTH);
         o.deco(-16, 1, -25, "pino_maceta", Direction.SOUTH);
-    }
-
-    // ------------------------------------------------------------------ campo de guerra de nieve (suroeste): dos fuertes frente a frente
-
-    /** Dónde aparece cada equipo en la guerra de nieve con equipos (x, z de la aldea): detrás de su fuerte. */
-    public static final int[] FUERTE_ROJO = {-20, 11}, FUERTE_VERDE = {-20, 27};
-
-    static void fuertes(Obra o) {
-        BlockState nieve = Blocks.SNOW_BLOCK.defaultBlockState();
-        for (int lado = 0; lado < 2; lado++) {
-            int zm = lado == 0 ? 13 : 25, zw = lado == 0 ? -1 : 1;
-            BlockState bandera = (lado == 0 ? Blocks.RED_BANNER : Blocks.GREEN_BANNER).defaultBlockState()
-                    .setValue(net.minecraft.world.level.block.BannerBlock.ROTATION, lado == 0 ? 0 : 8);
-            BlockState lana = (lado == 0 ? Blocks.RED_WOOL : Blocks.LIME_WOOL).defaultBlockState();
-            // muro de dos de alto con almenas, y alas hacia atrás
-            o.fill(-24, 0, zm, -16, 1, zm, nieve);
-            for (int x = -24; x <= -16; x += 2) {
-                o.set(x, 2, zm, nieve);
-            }
-            o.fill(-24, 0, zm + zw, -24, 1, zm + 2 * zw, nieve);
-            o.fill(-16, 0, zm + zw, -16, 1, zm + 2 * zw, nieve);
-            // esquinas con lana del color del equipo y su bandera
-            for (int x : new int[]{-24, -16}) {
-                o.set(x, 2, zm + 2 * zw, lana);
-                o.set(x, 3, zm + 2 * zw, bandera);
-            }
-            o.set(-20, 3, zm, lana);
-            o.set(-20, 4, zm, bandera);
-            // montoncitos de nieve para agarrar bolas detrás del muro
-            for (int x : new int[]{-22, -18}) {
-                o.set(x, 0, zm + zw, Blocks.SNOW.defaultBlockState().setValue(net.minecraft.world.level.block.SnowLayerBlock.LAYERS, 3));
-            }
-        }
-        // en medio: muñecos de nieve y montones para cubrirse
-        o.deco(-23, 0, 19, "muneco_nieve", Direction.EAST);
-        o.deco(-17, 0, 19, "muneco_nieve", Direction.WEST);
-        o.fill(-21, 0, 17, -19, 0, 17, nieve);
-        o.fill(-21, 0, 21, -19, 0, 21, nieve);
-        o.set(-20, 0, 19, nieve);
-        o.set(-20, 1, 19, Blocks.SNOW.defaultBlockState().setValue(net.minecraft.world.level.block.SnowLayerBlock.LAYERS, 4));
-        o.farol(-26, 0, 19);
-        o.farol(-14, 0, 19);
     }
 
     // ------------------------------------------------------------------ colina de trineos (noreste)

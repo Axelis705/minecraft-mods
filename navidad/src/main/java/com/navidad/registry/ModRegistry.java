@@ -211,6 +211,10 @@ public final class ModRegistry {
     public static final RegistryObject<EntityType<TrineoSanta>> TRINEO = ENTITIES.register("trineo_santa",
             () -> EntityType.Builder.<TrineoSanta>of(TrineoSanta::new, MobCategory.MISC).sized(3F, 2F).clientTrackingRange(20).updateInterval(2)
                     .build("navidad:trineo_santa"));
+    /** Los regalos que suelta Santa, con paracaídas. */
+    public static final RegistryObject<EntityType<com.navidad.entidad.RegaloCayendo>> REGALO_CAYENDO = ENTITIES.register("regalo_cayendo",
+            () -> EntityType.Builder.<com.navidad.entidad.RegaloCayendo>of(com.navidad.entidad.RegaloCayendo::new, MobCategory.MISC)
+                    .sized(0.7F, 0.7F).clientTrackingRange(10).updateInterval(2).build("navidad:regalo_cayendo"));
 
     // ------------------------------------------------------------------ invierno: trineo de madera
 

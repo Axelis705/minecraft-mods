@@ -1344,10 +1344,42 @@ def modelos_sueltos():
         'firstperson_lefthand': {'rotation': [0, 135, 0], 'translation': [0, 1, 0], 'scale': [0.3, 0.3, 0.3]}}})
 
 
+def paracaidas():
+    """El paracaídas de los regalos que suelta Santa (lo dibuja RegaloCayendoRenderer arriba del regalo). Domo de gajos rojos y blancos
+    de 40 px de ancho (de -12 a 28) entre y=22 y y=32, con cuatro cordones que bajan al regalo (cuyo moño queda en y≈11)."""
+    t = Prop('paracaidas', 'Paracaídas de regalo', 'Gift parachute', kind='floor', sound='wool', seed=120)
+    rojo = cloth('#c41e2a', weave=0.08, seed=121, fold=0.25)
+    blanco = cloth('#f4f0ea', weave=0.08, seed=122, fold=0.25)
+    verde = cloth('#2a8a40', weave=0.08, seed=123, fold=0.25)
+    cordon = solid('#e8dcc0')
+    # el domo: cuatro pisos que se van cerrando, en gajos alternados
+    for (a, b, y0, y1) in ((-12, 28, 22, 24.5), (-9, 25, 24.5, 27.5), (-5, 21, 27.5, 30), (0, 16, 30, 31.6)):
+        w = (b - a) / 5.0
+        for k in range(5):
+            x0, x1 = a + k * w, a + (k + 1) * w
+            t.box(x0, y0, a, x1, y1, b, (rojo, blanco)[k % 2])
+    t.box(5, 31.6, 5, 11, 32, 11, verde)
+    # la orilla de abajo, un poquito más ancha (como tela que cuelga)
+    for (x0, z0, x1, z1) in ((-12.4, -12.4, 28.4, -11.6), (-12.4, 27.6, 28.4, 28.4), (-12.4, -11.6, -11.6, 27.6), (27.6, -11.6, 28.4, 27.6)):
+        t.box(x0, 21.2, z0, x1, 22.4, z1, rojo)
+    # cuatro cordones a 45 grados, de la orilla del domo al moño del regalo
+    largo = 17.0
+    for (cx, cz, eje, ang) in ((-2.5, 8, 'z', -45), (18.5, 8, 'z', 45), (8, -2.5, 'x', 45), (8, 18.5, 'x', -45)):
+        cy = 16.5
+        t.box(cx - 0.25, cy - largo / 2, cz - 0.25, cx + 0.25, cy + largo / 2, cz + 0.25, cordon, rot=(eje, ang, (cx, cy, cz)))
+    kit.write_prop(t, ROOT)
+    os.remove(os.path.join(A, 'blockstates/paracaidas.json'))
+    os.remove(os.path.join(ROOT, 'data', NS, 'loot_tables', 'blocks', 'paracaidas.json'))
+    for d in ('models/item/paracaidas.json',):
+        if os.path.exists(os.path.join(A, d)):
+            os.remove(os.path.join(A, d))
+
+
 def main():
     catalogo()
     especiales()
     modelos_sueltos()
+    paracaidas()
     os.makedirs(os.path.join(ROOT, 'data', NS), exist_ok=True)
     with open(os.path.join(ROOT, 'data', NS, 'deco.json'), 'w', encoding='utf-8') as f:
         json.dump({'blocks': ficha}, f, indent=1, ensure_ascii=False)

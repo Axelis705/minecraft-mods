@@ -37,7 +37,6 @@ public class Navidad {
         Invierno.init();
         AnioNuevo.init();
         Cartas.init();
-        GuerraNieve.init();
         Calcetines.init();
         GalletasSanta.init();
         DecoViva.init();
