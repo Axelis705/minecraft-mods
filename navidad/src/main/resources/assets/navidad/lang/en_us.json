@@ -264,5 +264,10 @@
   "navidad.carta.resp.bonito": "Some wishes don't fit in a box. Those you take care of, with the people you love.",
   "navidad.carta.resp.trae": "I brought you:",
   "navidad.carta.resp.carbon": "I brought you:",
-  "navidad.carta.resp.firma": "Merry Christmas!\n— Santa"
+  "navidad.carta.resp.firma": "Merry Christmas!\n— Santa",
+  "navidad.carrera.sale": "🛷 Go! The clock is running...",
+  "navidad.carrera.llega": "🛷 You reached the bottom in %s seconds!",
+  "navidad.carrera.record": "🏆 New sled hill record: %s, %s seconds!",
+  "navidad.carrera.record_es": "The record belongs to %s: %s seconds.",
+  "navidad.muerdago": "🌿 %s and %s are under the mistletoe! Christmas hug 🤗"
 }

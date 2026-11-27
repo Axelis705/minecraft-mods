@@ -4,11 +4,14 @@ navidad
 #expect usuarios=[navidad]
 navidad temporada si
 navidad anio_nuevo 0
-#wait NAVIDAD_ANIO feliz 40
+#pausa 24
 #expect NAVIDAD_ANIO campanada 12
 #expect NAVIDAD_ANIO feliz
 forceload add -16 -16 16 16
 #pausa 2
+fill -4 -61 -4 4 -61 4 minecraft:snow_block
+fill -4 -60 -4 4 -44 4 minecraft:air
 place feature navidad:pino_adornado 0 -60 0
+#expect navidad:pino_adornado
 summon navidad:trineo_madera 4 -60 4 {Motion:[0.0,0.0,0.3]}
 navidad temporada auto

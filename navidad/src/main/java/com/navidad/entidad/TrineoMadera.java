@@ -32,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.function.Consumer;
 
 /**
- * El trineo de madera para pasear: se pone en el suelo, se monta con clic derecho (caben dos) y se desliza solo cuesta abajo. En la nieve y
+ * El trineo de madera para pasear: se pone en el suelo, se monta con clic derecho (caben dos) y se desliza cuesta abajo (sube escalones de medio bloque, no de uno entero). En la nieve y
  * en el hielo resbala mucho (en el hielo todavía más); en pasto o tierra casi no avanza. Cada vez que cae de un escalón de la ladera, la
  * caída se vuelve velocidad, así que bajar una montaña nevada es cada vez más rápido.
  * <p>Controles: A y D lo voltean, W empuja con los pies (solo despacio, como de verdad), S frena metiendo los pies, Shift para bajarse.
@@ -78,7 +78,7 @@ public class TrineoMadera extends Entity {
     public TrineoMadera(EntityType<?> type, Level level) {
         super(type, level);
         this.blocksBuilding = true;
-        setMaxUpStep(1.0F);
+        setMaxUpStep(0.6F);
     }
 
     @Override

@@ -32,6 +32,12 @@ public final class Aldea {
     public static int construir(ServerLevel l, BlockPos centro, boolean conGente) {
         Obra o = new Obra(l, centro);
         RandomSource rnd = RandomSource.create(1225L);
+        // dónde quedó (para la carrera de trineos de la colina)
+        com.axeliscore.data.WorldStore w = com.axeliscore.data.WorldStore.get(l.getServer(), Navidad.MODID);
+        w.global().putInt("aldeaX", centro.getX());
+        w.global().putInt("aldeaY", centro.getY());
+        w.global().putInt("aldeaZ", centro.getZ());
+        w.dirty();
         // quitar a los que estorban (menos jugadores) y limpiar
         for (Entity e : l.getEntities((Entity) null, new AABB(centro).inflate(R + 2, 24, R + 2), e -> !(e instanceof net.minecraft.world.entity.player.Player))) {
             e.discard();
@@ -329,7 +335,7 @@ public final class Aldea {
     // ------------------------------------------------------------------ colina de trineos (noreste)
 
     /** Fondo del carril (z) donde empieza la subida, la cima (z) y el carril en x (con paredes de nieve a los lados). */
-    static final int COLINA_PIE = -14, COLINA_CIMA = -27, CARRIL_X0 = 15, CARRIL_X1 = 21;
+    public static final int COLINA_PIE = -14, COLINA_CIMA = -27, CARRIL_X0 = 15, CARRIL_X1 = 21;
 
     /** Altura de la colina en medios bloques en cada fila (0 al pie, 14 = 7 bloques en la cima). */
     static int mediosColina(int z) {
@@ -381,6 +387,7 @@ public final class Aldea {
             o.set(x, -1, -11, Blocks.SPRUCE_PLANKS.defaultBlockState());
             o.set(x, -1, -10, Blocks.SPRUCE_PLANKS.defaultBlockState());
             o.set(x, 0, -9, Blocks.HAY_BLOCK.defaultBlockState());
+            o.set(x, 1, -9, Blocks.HAY_BLOCK.defaultBlockState());
         }
         o.deco(CARRIL_X0 - 2, 0, -12, "baston_gigante", Direction.SOUTH);
         o.deco(CARRIL_X1 + 2, 0, -12, "baston_gigante", Direction.SOUTH);
@@ -403,13 +410,13 @@ public final class Aldea {
                     o.set(x, -1, z, Blocks.PACKED_ICE.defaultBlockState());
                     o.set(x, 0, z, Blocks.AIR.defaultBlockState());
                 } else if (enPista(x, z, 1.1)) {
-                    // la barda: tablones blancos con luces de colores cada tanto
+                    // la barda: cerca blanca con linternas cada tanto
                     o.set(x, -1, z, Blocks.SPRUCE_PLANKS.defaultBlockState());
                     boolean entrada = z == PISTA_Z && x < PISTA_X;
                     if (!entrada) {
                         o.set(x, 0, z, Blocks.BIRCH_FENCE.defaultBlockState());
-                        if ((x + z) % 3 == 0) {
-                            o.bloqueNav(x, 1, z, "bloque_luces");
+                        if (Math.floorMod(x + z, 3) == 0) {
+                            o.set(x, 1, z, Blocks.LANTERN.defaultBlockState());
                         }
                     }
                 }

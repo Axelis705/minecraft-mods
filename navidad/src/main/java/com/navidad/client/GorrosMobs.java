@@ -12,6 +12,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.IllagerModel;
 import net.minecraft.client.model.VillagerModel;
+import net.minecraft.client.model.ZombieVillagerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -102,11 +103,12 @@ public final class GorrosMobs {
             if (geo == null || geo.bones.length == 0) {
                 return;
             }
-            // la matriz de la cabeza (como ModelPart.translateAndRotate); las cabezas de aldeano y saqueador son 2 más altas
+            // la matriz de la cabeza (como ModelPart.translateAndRotate); las cabezas de aldeano, zombi aldeano y saqueador son 2 más altas
             Quaternionf q = new Quaternionf().rotationZYX(cabeza.zRot, cabeza.yRot, cabeza.xRot);
             Matrix4f m = new Matrix4f(ps.last().pose()).translate(cabeza.x / 16F, cabeza.y / 16F, cabeza.z / 16F).rotate(q)
                     .scale(cabeza.xScale, cabeza.yScale, cabeza.zScale);
-            if (getParentModel() instanceof VillagerModel || getParentModel() instanceof IllagerModel) {
+            if (getParentModel() instanceof VillagerModel || getParentModel() instanceof IllagerModel
+                    || getParentModel() instanceof ZombieVillagerModel) {
                 m.translate(0, -2 / 16F, 0);
             }
             Matrix3f n = new Matrix3f(ps.last().normal()).rotate(q);

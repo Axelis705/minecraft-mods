@@ -83,7 +83,8 @@ public final class AnioNuevo {
     /** Empieza el show con una cuenta regresiva de tantos segundos. */
     public static void empezar(MinecraftServer s, int segundos) {
         LocalDateTime h = LocalDateTime.now(Temporada.ZONA);
-        int anio = h.getMonth() == Month.DECEMBER ? h.getYear() + 1 : h.getYear();
+        // el año que empieza: en la segunda mitad del año es el que sigue; en enero (pasada la medianoche) es este
+        int anio = h.getMonthValue() >= 7 ? h.getYear() + 1 : h.getYear();
         show = new Show(Math.max(0, segundos), anio);
         for (ServerPlayer p : s.getPlayerList().getPlayers()) {
             p.sendSystemMessage(Component.translatable("navidad.anio.prepara").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
@@ -127,7 +128,7 @@ public final class AnioNuevo {
             int k = dc / ENTRE + 1;
             for (ServerPlayer p : s.getPlayerList().getPlayers()) {
                 p.playNotifySound(ModRegistry.CAMPANADA.get(), SoundSource.MASTER, 1.2F, 1F);
-                titulo(p, Component.literal("🔔 " + k).withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD),
+                titulo(p, Component.literal("♪ " + k + " ♪").withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD),
                         Component.translatable(k == 1 ? "navidad.anio.come" : "navidad.anio.campanada", k), 0, ENTRE, 4);
             }
             Navidad.LOGGER.info("NAVIDAD_ANIO campanada {}", k);
@@ -156,7 +157,7 @@ public final class AnioNuevo {
                     Component.translatable("navidad.anio.feliz2", sh.anio).withStyle(ChatFormatting.YELLOW), 10, 100, 30);
             p.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.MASTER, 1F, 0.8F);
             p.playNotifySound(ModRegistry.CASCABELES.get(), SoundSource.MASTER, 1F, 1F);
-            Premios.confeti(p.serverLevel(), p.getX(), p.getY() + 2.2, p.getZ(), true);
+            Premios.confeti(p.serverLevel(), p.getX(), p.getY() + 3.4, p.getZ(), true);
             int n = Math.min(12, sh.uvas.getOrDefault(p.getUUID(), 0));
             if (n >= 12) {
                 p.sendSystemMessage(Component.translatable("navidad.anio.doce").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));

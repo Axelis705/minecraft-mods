@@ -264,5 +264,10 @@
   "navidad.carta.resp.bonito": "Hay deseos que no caben en una caja. Esos los cuidas tú, con los que quieres.",
   "navidad.carta.resp.trae": "Te traje:",
   "navidad.carta.resp.carbon": "Te traje:",
-  "navidad.carta.resp.firma": "¡Feliz Navidad!\n— Santa"
+  "navidad.carta.resp.firma": "¡Feliz Navidad!\n— Santa",
+  "navidad.carrera.sale": "🛷 ¡Arrancaste! El cronómetro corre...",
+  "navidad.carrera.llega": "🛷 ¡Llegaste abajo en %s segundos!",
+  "navidad.carrera.record": "🏆 ¡Nuevo récord de la colina de trineos: %s, %s segundos!",
+  "navidad.carrera.record_es": "El récord es de %s: %s segundos.",
+  "navidad.muerdago": "🌿 ¡%s y %s quedaron bajo el muérdago! Abrazo navideño 🤗"
 }

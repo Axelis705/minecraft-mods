@@ -70,6 +70,10 @@ for ns in sorted(os.listdir(assets)):
                     if any(v < -16 or v > 32 for v in el.get(k, [])):
                         E(f"{rel(p)}: '{k}' {el[k]} se sale de -16..32")
                         break
+                # ni con giros que no sean de 22.5 en 22.5 (de -45 a 45)
+                rot = el.get("rotation")
+                if isinstance(rot, dict) and rot.get("angle", 0) not in (-45, -22.5, 0, 22.5, 45):
+                    E(f"{rel(p)}: giro {rot.get('angle')} no permitido (solo -45/-22.5/0/22.5/45)")
             # texturas usadas por elementos pero no definidas
             used = set()
             for el in m.get("elements", []) or []:

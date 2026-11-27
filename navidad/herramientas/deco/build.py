@@ -129,7 +129,12 @@ def t_nieve(seed):
     return img(rgb)
 
 
-def t_luces(seed):
+def t_luces_anim(seed):
+    """El bloque de luces con sus focos cambiando de color (CUADROS_LUZ cuadros, uno debajo del otro)."""
+    return np.concatenate([np.array(t_luces(seed, f)) for f in range(CUADROS_LUZ)], axis=0)
+
+
+def t_luces(seed, cuadro=0):
     x, y = grid()
     t = ruido(x, y, 3.0, seed, 2)
     rgb = Ramp('#0f2a16', '#173a20', '#1f4a28')(t)
@@ -137,7 +142,9 @@ def t_luces(seed):
     k = 0
     for cy in (4, 12, 20, 28):
         for cx in (4, 12, 20, 28):
-            c = cs[(k + seed) % len(cs)]
+            c = cs[(k + seed + cuadro) % len(cs)]
+            if (k * 7 + cuadro + seed) % 5 == 0 and cuadro > 0:
+                c = c * 0.35 + 20
             k += 1
             dx, dy = x - (cx + (cy // 8) % 2 * 0), y - cy
             d = np.sqrt(dx * dx + dy * dy)
@@ -287,6 +294,7 @@ def alfombra(bid, es, en, fn):
 
 def prop(p, extra=None):
     f = kit.write_prop(p, ROOT)
+    parpadear(p)
     f['kind'] = 'prop'
     f['sub'] = p.kind
     f.update(extra or {})
@@ -393,7 +401,43 @@ def esferas(p, puntos, seed=0, colores=None):
 
 def focos(p, puntos, seed=0):
     for i, (x, y, z) in enumerate(puntos):
-        p.box(x - 0.45, y - 0.45, z - 0.45, x + 0.45, y + 0.45, z + 0.45, brillo(FOCOS[(i + seed) % len(FOCOS)]))
+        b = p.box(x - 0.45, y - 0.45, z - 0.45, x + 0.45, y + 0.45, z + 0.45, brillo(FOCOS[(i + seed) % len(FOCOS)]))
+        b.foco = i + seed
+
+
+CUADROS_LUZ = 4
+
+
+def parpadear(p):
+    """Si el adorno tiene focos, su textura se vuelve animada: cada foco cambia de color por turnos y a veces se apaga un momento
+    (CUADROS_LUZ cuadros de 0.6 s). Se hace después de escribir la textura, con los lugares que el kit le dio a cada cara."""
+    focos_ = [b for _, b in p.boxes if hasattr(b, 'foco') and b.rects]
+    if not focos_:
+        return
+    ruta = os.path.join(A, 'textures/block', kit.PREFIX + p.id + '.png')
+    base = np.array(Image.open(ruta).convert('RGBA'), np.float32)
+    S = base.shape[0]
+    esc = S / 16.0 * 16 / S  # las coordenadas de b.rects ya vienen en pixeles de la textura
+    cuadros = []
+    for f in range(CUADROS_LUZ):
+        im = base.copy()
+        for b in focos_:
+            c = np.array(hexc(FOCOS[(b.foco + f) % len(FOCOS)]), np.float32)
+            apagado = (b.foco * 7 + f) % 5 == 0
+            for face, (x, y, w, h) in b.rects.items():
+                x0, y0 = int(round(x * esc)), int(round(y * esc))
+                x1, y1 = max(x0 + 1, int(round((x + w) * esc))), max(y0 + 1, int(round((y + h) * esc)))
+                reg = base[y0:y1, x0:x1, :3]
+                lum = reg.mean(axis=2, keepdims=True) / max(1.0, reg.mean())
+                nuevo = np.clip(c * lum, 0, 255)
+                if apagado:
+                    nuevo = nuevo * 0.35 + 20
+                im[y0:y1, x0:x1, :3] = nuevo
+        cuadros.append(im)
+    tira = np.concatenate(cuadros, axis=0)
+    Image.fromarray(np.clip(tira, 0, 255).astype(np.uint8), 'RGBA').save(ruta)
+    with open(ruta + '.mcmeta', 'w') as fh:
+        json.dump({'animation': {'frametime': 12}}, fh)
 
 
 def anillo(cx, cy, cz, r, n, fase=0.0):
@@ -863,8 +907,11 @@ def catalogo():
     cubo('glaseado', 'Glaseado', 'Icing', lambda s: t_glaseado(s), sonido='wool', dureza=0.8)
     cubo('glaseado_chispas', 'Glaseado con chispas', 'Sprinkled icing', lambda s: t_glaseado(s, True), sonido='wool', dureza=0.8)
     cubo('nieve_brillante', 'Nieve brillante', 'Sparkling snow', lambda s: t_nieve(s), variantes=3, sonido='wool', dureza=0.4, luz=6)
-    cubo('bloque_luces', 'Bloque de luces navideñas', 'Christmas lights block', lambda s: t_luces(s), variantes=3, sonido='glass',
-         dureza=0.8, luz=14)
+    cubo('bloque_luces', 'Bloque de luces navideñas', 'Christmas lights block', lambda s: Image.fromarray(t_luces_anim(s), 'RGBA'),
+         variantes=3, sonido='glass', dureza=0.8, luz=14)
+    for i in range(3):
+        with open(os.path.join(A, 'textures/block', f'bloque_luces_{i}.png.mcmeta'), 'w') as fh:
+            json.dump({'animation': {'frametime': 12}}, fh)
     cubo('papel_tapiz_navidad', 'Papel tapiz navideño', 'Christmas wallpaper', lambda s: t_papel_tapiz(s), sonido='wool')
     cubo('papel_tapiz_dorado', 'Papel tapiz verde y dorado', 'Green and gold wallpaper', lambda s: t_papel_tapiz(s, '#174a26', '#e0b23a'),
          sonido='wool')
@@ -994,7 +1041,7 @@ def especiales():
     b.box(6.9, 10.5, 3.05, 8.0, 10.65, 3.12, solid('#c8202e'), rot=('z', -22.5, (8, 10.6, 3.1)))
     b.box(8.0, 10.5, 3.05, 9.1, 10.65, 3.12, solid('#c8202e'), rot=('z', 22.5, (8, 10.6, 3.1)))
     b.box(6.0, 12.3, 2.9, 9.6, 14.2, 3.4, cloth('#efe4c8', weave=0.05, seed=104), rot=('x', -22.5, (8, 12.3, 3.2)))
-    b.box(7.6, 12.3, 3.1, 10.6, 13.6, 3.5, cloth('#f8f4ea', weave=0.05, seed=105), rot=('x', -10, (9, 12.3, 3.3)))
+    b.box(7.6, 12.3, 3.1, 10.6, 13.6, 3.5, cloth('#f8f4ea', weave=0.05, seed=105), rot=('x', -22.5, (9, 12.3, 3.3)))
     b.box(13, 10, 9, 13.6, 15, 9.6, PLATA)
     b.box(13, 12.8, 5.6, 13.4, 15, 9, cloth('#f0c43a', weave=0.08, seed=106))
     b.box(5, 15.9, 8.5, 8, 16.4, 10.5, cloth('#1e6a32', weave=0.1, seed=107), rot=('y', 22.5, (6.5, 16, 9.5)))

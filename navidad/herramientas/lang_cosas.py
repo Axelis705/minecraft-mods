@@ -297,3 +297,22 @@ T3 = {
 if __name__ == '__main__':
     aplicar(T3)
     print(len(T3), 'textos del invierno')
+
+T4 = {
+    'navidad.carrera.sale': ('🛷 ¡Arrancaste! El cronómetro corre...', '🛷 Go! The clock is running...'),
+    'navidad.carrera.llega': ('🛷 ¡Llegaste abajo en %s segundos!', '🛷 You reached the bottom in %s seconds!'),
+    'navidad.carrera.record': ('🏆 ¡Nuevo récord de la colina de trineos: %s, %s segundos!', '🏆 New sled hill record: %s, %s seconds!'),
+    'navidad.carrera.record_es': ('El récord es de %s: %s segundos.', 'The record belongs to %s: %s seconds.'),
+}
+
+if __name__ == '__main__':
+    aplicar(T4)
+    print(len(T4), 'textos de la carrera')
+
+T5 = {
+    'navidad.muerdago': ('🌿 ¡%s y %s quedaron bajo el muérdago! Abrazo navideño 🤗', '🌿 %s and %s are under the mistletoe! Christmas hug 🤗'),
+}
+
+if __name__ == '__main__':
+    aplicar(T5)
+    print(len(T5), 'texto del muérdago')

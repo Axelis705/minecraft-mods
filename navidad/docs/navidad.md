@@ -21,6 +21,7 @@ fecha: `/navidad temporada si` (o `no`, o `auto` para volver a la fecha real).
 - **57 bloques de decoración** (pestaña "Navidad: decoración"): árboles, esferas, luces, coronas, calcetines, muérdago, nochebuenas,
   regalos, muñeco de nieve, cascanueces, bastones gigantes, trineo, chimenea, ponche, farolitos, papel picado, piñata de estrella...
   Se consiguen con la **caja de adornos** (papel + tinte rojo + tinte verde + pepita de oro = 4) en el **cortapiedras**.
+  Los focos de los árboles, las guirnaldas, las luces colgantes y el bloque de luces parpadean y cambian de color.
 - **Comida**: galleta de jengibre, bastón de caramelo, dulce, tejocote, mandarina, caña, tamal, buñuelo, pavo navideño, rosca de Reyes;
   bebidas que quitan el frío: chocolate caliente, ponche, champurrado.
 - **Regalo misterioso**: común, raro (azul) o épico (morado), con confeti.
@@ -44,6 +45,11 @@ fecha: `/navidad temporada si` (o `no`, o `auto` para volver a la fecha real).
 
 En temporada, a 8 de cada 10 mobs con cabeza de persona (zombis, esqueletos, aldeanos, saqueadores, piglins... también de otros mods)
 les sale un gorro: casi siempre el de Santa y a veces el de duende. Los bebés y los que traen casco no.
+
+## Muérdago
+
+Si dos personas se paran juntas bajo el mismo **muérdago** (el adorno que cuelga), salen corazones, les llega un "abrazo navideño" y un
+poquito de regeneración (una vez por minuto por pareja).
 
 ## Carta a Santa
 
@@ -88,6 +94,8 @@ verdad**, sin dueño, con algo raro o épico adentro.
 regalos, casa de Santa (chimenea, calcetines, árbol, su buzón afuera), taller de juguetes, casita de jengibre de la Señora Claus, establo con renos,
 **colina de trineos** (carril con paredes de nieve, dos trineos esperando arriba, escalones para volver a subir y pacas de paja al pie)
 y **pista de hielo** (con barda iluminada, un pinito en medio y un barril con patines para prestar).
+En la colina hay **carrera de trineos**: al bajar manejando un trineo, se cronometra solo de la cima al pie y el mundo guarda el récord
+(se anuncia a todos cuando alguien lo rompe).
 `/navidad aldea sin_gente` la hace sin poner a nadie.
 
 ### La gente (tienda, misiones, amistad)

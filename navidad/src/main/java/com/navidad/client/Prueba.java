@@ -61,12 +61,14 @@ final class Prueba {
                 t.cmd("gamerule doMobSpawning false");
                 t.cmd("gamerule doWeatherCycle false");
                 t.cmd("navidad temporada si");
+                t.cmd("kill @e[type=minecraft:slime]");
                 t.cmd("fill -14 -61 0 14 -61 26 minecraft:snow_block");
                 t.cmd("fill -14 -60 27 14 -55 27 minecraft:spruce_planks");
             });
             t.add("comando", 1200, () -> t.cmd(Navidad.MODID));
             // galería: diez por fila, cada dos bloques; filas cada tres
             t.add("galeria", 2500, () -> {
+                t.cmd("kill @e[type=minecraft:slime]");
                 List<String> bs = bloques();
                 t.log("bloques: " + bs.size());
                 for (int i = 0; i < bs.size(); i++) {
@@ -85,6 +87,7 @@ final class Prueba {
             t.add("dia", 1000, () -> t.cmd("time set 6000"));
             // todos los objetos en marcos, en la pared de tablones
             t.add("marcos", 2500, () -> {
+                t.cmd("kill @e[type=minecraft:slime]");
                 List<String> os = objetos();
                 t.log("objetos: " + os.size());
                 for (int i = 0; i < os.size(); i++) {
@@ -142,6 +145,7 @@ final class Prueba {
             // las criaturas (quietas, en fila)
             t.add("criaturas", 2500, () -> {
                 t.cmd("fill -10 -61 -66 10 -61 -54 minecraft:snow_block");
+                t.cmd("kill @e[type=minecraft:slime]");
                 t.cmd("tp @a 0.5 -60 -50.5 180 0");
                 t.cmd("summon navidad:muneco_malvado -5 -60 -60 {NoAI:1b,Rotation:[0f,0f]}");
                 t.cmd("summon navidad:reno -1 -60 -60 {NoAI:1b,Rotation:[20f,0f]}");
@@ -151,6 +155,19 @@ final class Prueba {
             t.photo("criaturas", 3000, () -> t.lookFrom(0.5, -58, -51, 0.5, -59, -61));
             t.photo("krampus_cerca", 2000, () -> t.lookFrom(4, -58, -56, 7, -58, -62));
             t.add("quitar criaturas", 500, () -> t.cmd("kill @e[type=!player,x=0,y=-60,z=-60,distance=..20]"));
+            // en temporada, los mobs con cabeza de persona traen gorro (bajo techo, para que no se quemen con el sol)
+            t.add("gorros", 2500, () -> {
+                t.cmd("fill -25 -61 -64 -9 -61 -54 minecraft:snow_block");
+                t.cmd("fill -25 -56 -64 -9 -56 -57 minecraft:spruce_slab");
+                String nbt = "{NoAI:1b,PersistenceRequired:1b,Rotation:[0f,0f]}";
+                t.cmd("summon minecraft:zombie -22 -60 -60 " + nbt);
+                t.cmd("summon minecraft:villager -19.5 -60 -60 " + nbt);
+                t.cmd("summon minecraft:skeleton -17 -60 -60 " + nbt);
+                t.cmd("summon minecraft:pillager -14.5 -60 -60 " + nbt);
+                t.cmd("summon minecraft:zombie_villager -12 -60 -60 " + nbt);
+            });
+            t.photo("gorros_mobs", 2000, () -> t.lookFrom(-17, -59.2, -54.5, -17, -58.6, -60));
+            t.add("quitar gorros", 500, () -> t.cmd("kill @e[type=!player,x=-17,y=-60,z=-60,distance=..9]"));
             // la aldea de Santa, lejos de lo demás
             t.add("ir a la aldea", 4000, () -> t.cmd("tp @a 300.5 -40 45.5 180 30"));
             t.add("aldea", 6000, () -> t.cmd("execute positioned 300 -60 0 run navidad aldea"));
@@ -201,7 +218,7 @@ final class Prueba {
                         new BlockHitResult(new Vec3(302.05, -59.4, -13.5), Direction.WEST, new BlockPos(302, -60, -14), false));
             });
             t.waitFor("la carta salió volando", 4000, () -> Minecraft.getInstance().player.getMainHandItem().isEmpty());
-            t.add("respuesta de Santa", 1500, () -> t.cmd("navidad carta entregar"));
+            t.add("respuesta de Santa", 1500, () -> t.cmd("execute as @p run navidad carta entregar"));
             t.waitFor("llegó la respuesta", 5000, () -> Minecraft.getInstance().player.getInventory().contains(new net.minecraft.world.item.ItemStack(
                     Items.WRITTEN_BOOK)));
             t.add("hud carta", 300, () -> t.hud(true));
@@ -212,7 +229,7 @@ final class Prueba {
                 t.cmd("time set 6000");
                 t.cmd("gamemode spectator @a");
             });
-            t.photo("colina", 2500, () -> t.lookFrom(328, -48, -5, 318, -55, -20));
+            t.photo("colina", 2500, () -> t.lookFrom(309, -50, -9, 318, -55, -21));
             t.add("trineo solo", 300, () -> t.cmd("summon navidad:trineo_madera 318.5 -53.4 -26.5 {Motion:[0.0,0.0,0.35]}"));
             t.photo("colina_bajando", 1000, () -> {
             });
@@ -242,6 +259,8 @@ final class Prueba {
             });
             t.photo("trineo_abajo", 1500, () -> {
             });
+            t.add("carrera", 300, () -> t.check(com.navidad.Invierno.ultimaCarrera > 0, "carrera cronometrada (" + String.format(Locale.ROOT,
+                    "%.2f", com.navidad.Invierno.ultimaCarrera) + " s)"));
             t.add("bajarse", 800, () -> {
                 t.cmd("execute as @p run ride @s dismount");
                 Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
