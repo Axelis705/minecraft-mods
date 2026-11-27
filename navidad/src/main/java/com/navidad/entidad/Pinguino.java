@@ -112,7 +112,6 @@ public class Pinguino extends TamableAnimal implements Animated {
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
 
-    @Override
     /** ¿Va de panza? (para la prueba con fotos) */
     public boolean deslizando() {
         return this.entityData.get(DESLIZA);
