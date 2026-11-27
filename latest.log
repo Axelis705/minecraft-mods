@@ -1,0 +1,1170 @@
+[27Nov2026 21:29:17.223] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientuserdev, --version, MOD_DEV, --assetIndex, 5, --assetsDir, /home/runner/.gradle/caches/forge_gradle/assets, --gameDir, ., --fml.forgeVersion, 47.4.10, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[27Nov2026 21:29:17.227] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.21.1 by Eclipse Adoptium; OS Linux arch amd64 version 7.0.0-1020-azure
+[27Nov2026 21:29:17.309] [main/WARN] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/navidad/run/config/fml.toml is not correct. Correcting
+[27Nov2026 21:29:17.311] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowHeight] was corrected from null to 480
+[27Nov2026 21:29:17.311] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [versionCheck] was corrected from null to true
+[27Nov2026 21:29:17.312] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowFBScale] was corrected from null to 1
+[27Nov2026 21:29:17.312] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowProvider] was corrected from null to fmlearlywindow
+[27Nov2026 21:29:17.312] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowWidth] was corrected from null to 854
+[27Nov2026 21:29:17.312] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowMaximized] was corrected from null to false
+[27Nov2026 21:29:17.313] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [defaultConfigPath] was corrected from null to defaultconfigs
+[27Nov2026 21:29:17.313] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [disableOptimizedDFU] was corrected from null to true
+[27Nov2026 21:29:17.313] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSkipGLVersions] was corrected from null to []
+[27Nov2026 21:29:17.313] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowLogHelpMessage] was corrected from null to true
+[27Nov2026 21:29:17.314] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [maxThreads] was corrected from null to -1
+[27Nov2026 21:29:17.314] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowSquir] was corrected from null to false
+[27Nov2026 21:29:17.314] [main/INFO] [net.minecraftforge.fml.loading.FMLConfig/CORE]: Incorrect key [earlyWindowShowCPU] was corrected from null to false
+[27Nov2026 21:29:17.330] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because splash screen is disabled
+[27Nov2026 21:29:17.380] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/home/runner/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23116!/ Service=ModLauncher Env=CLIENT
+[27Nov2026 21:29:17.653] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.4.10/ccc533c7dd67e0983217197d7549c8b49e7ab453/javafmllanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[27Nov2026 21:29:17.654] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.4.10/e9a2879fe3612ea34b9728ec2633304a1e67d480/lowcodelanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[27Nov2026 21:29:17.655] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.4.10/ec5cefbbc65c67302b8fac317010faab85fa14b9/mclanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[27Nov2026 21:29:17.656] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file /home/runner/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.4.10/94dae566be650566ea9115a1414ab76bfcf5a804/fmlcore-1.20.1-47.4.10.jar is missing mods.toml file
+[27Nov2026 21:29:17.716] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: No dependencies to load found. Skipping!
+[27Nov2026 21:29:18.882] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientuserdev' with arguments [--version, MOD_DEV, --gameDir, ., --assetsDir, /home/runner/.gradle/caches/forge_gradle/assets, --assetIndex, 5, --quickPlaySingleplayer, prueba, --width, 1280, --height, 720]
+[27Nov2026 21:29:22.124] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 188 Datafixer optimizations took 234 milliseconds
+[27Nov2026 21:29:23.538] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_official_1.20.1/forge-1.20.1-47.4.10_mapped_official_1.20.1.jar%23181!/assets/.mcassetsroot' uses unexpected schema
+[27Nov2026 21:29:23.538] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/runner/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_official_1.20.1/forge-1.20.1-47.4.10_mapped_official_1.20.1.jar%23181!/data/.mcassetsroot' uses unexpected schema
+[27Nov2026 21:29:23.549] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[27Nov2026 21:29:23.554] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[27Nov2026 21:29:23.669] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.1 build 7
+[27Nov2026 21:29:24.426] [modloading-worker-0/INFO] [com.axeliscore.AxelisCore/]: navidad usa Axelis Core 1.6.2 (API 8)
+[27Nov2026 21:29:24.461] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.4.10, for MC 1.20.1 with MCP 20230612.114412
+[27Nov2026 21:29:24.461] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.4.10 Initialized
+[27Nov2026 21:29:24.542] [modloading-worker-0/INFO] [com.axeliscore.AxelisCore/]: Axelis Core 1.6.2 (API 8)
+[27Nov2026 21:29:25.509] [Render thread/INFO] [net.minecraftforge.gametest.ForgeGameTestHooks/]: Enabled Gametest Namespaces: [navidad]
+[27Nov2026 21:29:25.932] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources
+[27Nov2026 21:29:25.958] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Configuration file /home/runner/work/minecraft-mods/minecraft-mods/navidad/run/config/forge-client.toml is not correct. Correcting
+[27Nov2026 21:29:25.959] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client was corrected from null to its default, SimpleCommentedConfig:{}. 
+[27Nov2026 21:29:25.960] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.alwaysSetupTerrainOffThread was corrected from null to its default, false. 
+[27Nov2026 21:29:25.960] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.experimentalForgeLightPipelineEnabled was corrected from null to its default, false. 
+[27Nov2026 21:29:25.961] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.showLoadWarnings was corrected from null to its default, true. 
+[27Nov2026 21:29:25.961] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.useCombinedDepthStencilAttachment was corrected from null to its default, false. 
+[27Nov2026 21:29:25.961] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.compressLanIPv6Addresses was corrected from null to its default, true. 
+[27Nov2026 21:29:25.961] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.calculateAllNormals was corrected from null to its default, false. 
+[27Nov2026 21:29:25.961] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.stabilizeDirectionGetNearest was corrected from null to its default, true. 
+[27Nov2026 21:29:25.961] [modloading-worker-0/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Incorrect key client.allowMipmapLowering was corrected from null to its default, false. 
+[27Nov2026 21:29:26.071] [Worker-Main-1/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.0.06.hex, loading
+[27Nov2026 21:29:26.970] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Starting version check at https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
+[27Nov2026 21:29:27.337] [Forge Version Check/INFO] [net.minecraftforge.fml.VersionChecker/]: [forge] Found status: OUTDATED Current: 47.4.10 Target: 47.4.28
+[27Nov2026 21:29:29.582] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[27Nov2026 21:29:29.583] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[27Nov2026 21:29:29.647] [Render thread/ERROR] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Error starting SoundSystem. Turning off sounds & music
+java.lang.IllegalStateException: Failed to open OpenAL device
+	at com.mojang.blaze3d.audio.Library.openDeviceOrFallback(Library.java:283) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at com.mojang.blaze3d.audio.Library.init(Library.java:153) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundEngine.loadLibrary(SoundEngine.java:104) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundEngine.reload(SoundEngine.java:96) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:125) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.sounds.SoundManager.apply(SoundManager.java:40) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.server.packs.resources.SimplePreparableReloadListener.lambda$reload$1(SimplePreparableReloadListener.java:13) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:718) ~[?:?]
+	at java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?]
+	at net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$new$3(SimpleReloadInstance.java:69) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:156) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:23) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:130) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:115) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1106) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.Minecraft.run(Minecraft.java:718) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[forge-1.20.1-47.4.10_mapped_official_1.20.1.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:569) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.ForgeClientUserdevLaunchHandler.devService(ForgeClientUserdevLaunchHandler.java:19) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonDevLaunchHandler.lambda$makeService$7(CommonDevLaunchHandler.java:135) ~[fmlloader-1.20.1-47.4.10.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+[27Nov2026 21:29:29.801] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x4 minecraft:textures/atlas/blocks.png-atlas
+[27Nov2026 21:29:29.819] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[27Nov2026 21:29:29.819] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[27Nov2026 21:29:29.820] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[27Nov2026 21:29:29.821] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[27Nov2026 21:29:29.826] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[27Nov2026 21:29:29.826] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[27Nov2026 21:29:29.827] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[27Nov2026 21:29:29.827] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[27Nov2026 21:29:29.895] [Render thread/INFO] [com.navidad.Navidad/]: NAVIDAD_GORROS capas=38
+[27Nov2026 21:29:29.986] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[27Nov2026 21:29:30.184] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
+[27Nov2026 21:29:30.185] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[27Nov2026 21:29:30.185] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[27Nov2026 21:29:30.285] [Render thread/INFO] [net.minecraftforge.registries.GameData/REGISTRIES]: Injecting existing registry data into this CLIENT instance
+[27Nov2026 21:29:31.700] [Render thread/INFO] [com.axeliscore.AxelisCore/]: DIAG_AXCORE_REGISTRO INTEGRATED
+[27Nov2026 21:29:31.704] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_COMANDOS galeria* criaturas* probar ir efecto datos* combate npc estudio* vestir desvestir particulas
+[27Nov2026 21:29:32.075] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 7 recipes
+[27Nov2026 21:29:32.169] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 1304 advancements
+[27Nov2026 21:29:32.581] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.20.1
+[27Nov2026 21:29:32.581] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[27Nov2026 21:29:32.949] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[27Nov2026 21:29:35.221] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[27Nov2026 21:29:35.221] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[27Nov2026 21:29:35.221] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[27Nov2026 21:29:35.221] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[27Nov2026 21:29:35.221] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[27Nov2026 21:29:35.488] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[27Nov2026 21:29:35.968] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 81%
+[27Nov2026 21:29:36.067] [Server thread/INFO] [net.minecraftforge.server.permission.PermissionAPI/]: Successfully initialized permission handler forge:default_handler
+[27Nov2026 21:29:36.089] [Render thread/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 3135 ms
+[27Nov2026 21:29:36.181] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 6, from 10
+[27Nov2026 21:29:36.184] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 5, from 0
+[27Nov2026 21:29:36.266] [Render thread/WARN] [io.netty.util.internal.SystemPropertyUtil/]: Unable to parse the boolean system property 'java.net.preferIPv6Addresses':system - using the default value: false
+[27Nov2026 21:29:36.814] [Netty Local Client IO #0/INFO] [net.minecraftforge.network.NetworkHooks/]: Connected to a modded server.
+[27Nov2026 21:29:36.840] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:bb4bee02] logged in with entity id 12 at (4.5, -60.0, -9.5)
+[27Nov2026 21:29:36.875] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[27Nov2026 21:29:36.941] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO libro para Dev
+[27Nov2026 21:29:37.447] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST inicio pasos=596
+[27Nov2026 21:29:37.464] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎄 28 days until Christmas!
+[27Nov2026 21:29:37.474] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ★ Santa sent you your Christmas Book: open it (right click) to see your tasks and how your tree is doing.
+[27Nov2026 21:29:37.478] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 28 advancements
+[27Nov2026 21:29:37.939] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=0 animaciones=0 texturas=0 errores=0
+[27Nov2026 21:29:47.493] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:29:47.499] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Removed 1 item(s) from player Dev
+[27Nov2026 21:29:47.499] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:29:47.500] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the weather to clear
+[27Nov2026 21:29:47.502] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule doDaylightCycle is now set to: false
+[27Nov2026 21:29:47.502] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule doMobSpawning is now set to: false
+[27Nov2026 21:29:47.502] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gamerule doWeatherCycle is now set to: false
+[27Nov2026 21:29:47.504] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Christmas season: si
+[27Nov2026 21:29:47.510] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:29:47.531] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 68 entities
+[27Nov2026 21:29:47.594] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 783 block(s)
+[27Nov2026 21:29:47.645] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 174 block(s)
+[27Nov2026 21:29:50.029] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Navidad de Axelis runs on Axelis Core 1.6.2 (API 8). It's Christmas season!
+[27Nov2026 21:29:50.029] [Server thread/INFO] [com.navidad.Navidad/]: PRUEBA_NAVIDAD_OK Axelis Core 1.6.2 (API 8)
+[27Nov2026 21:29:51.299] [Render thread/INFO] [com.navidad.Navidad/]: NAVIDAD_EMOJI usados=22 faltan: ninguno
+[27Nov2026 21:29:51.632] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST bloques: 81
+[27Nov2026 21:29:51.649] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 135 entities
+[27Nov2026 21:29:51.652] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 3
+[27Nov2026 21:29:51.653] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -7, -60, 3
+[27Nov2026 21:29:51.654] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -5, -60, 3
+[27Nov2026 21:29:51.654] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -3, -60, 3
+[27Nov2026 21:29:51.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -1, -60, 3
+[27Nov2026 21:29:51.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 1, -60, 3
+[27Nov2026 21:29:51.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 3, -60, 3
+[27Nov2026 21:29:51.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 5, -60, 3
+[27Nov2026 21:29:51.656] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, 3
+[27Nov2026 21:29:51.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 9, -60, 3
+[27Nov2026 21:29:51.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 6
+[27Nov2026 21:29:51.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -7, -60, 6
+[27Nov2026 21:29:51.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -5, -60, 6
+[27Nov2026 21:29:51.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -3, -60, 6
+[27Nov2026 21:29:51.658] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -1, -60, 6
+[27Nov2026 21:29:51.658] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 1, -60, 6
+[27Nov2026 21:29:51.658] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 3, -60, 6
+[27Nov2026 21:29:51.658] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 5, -60, 6
+[27Nov2026 21:29:51.658] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, 6
+[27Nov2026 21:29:51.658] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 9, -60, 6
+[27Nov2026 21:29:51.658] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 9
+[27Nov2026 21:29:51.662] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -7, -60, 9
+[27Nov2026 21:29:51.663] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -5, -60, 9
+[27Nov2026 21:29:51.663] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -3, -60, 9
+[27Nov2026 21:29:51.664] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -1, -60, 9
+[27Nov2026 21:29:51.664] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 1, -60, 9
+[27Nov2026 21:29:51.667] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 3, -60, 9
+[27Nov2026 21:29:51.667] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 5, -60, 9
+[27Nov2026 21:29:51.667] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, 9
+[27Nov2026 21:29:51.670] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 9, -60, 9
+[27Nov2026 21:29:51.670] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 12
+[27Nov2026 21:29:51.670] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -7, -60, 12
+[27Nov2026 21:29:51.670] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -5, -60, 12
+[27Nov2026 21:29:51.670] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -3, -60, 12
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -1, -60, 12
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 1, -60, 12
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 3, -60, 12
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 5, -60, 12
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, 12
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 9, -60, 12
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 15
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -7, -60, 15
+[27Nov2026 21:29:51.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -5, -60, 15
+[27Nov2026 21:29:51.672] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -3, -60, 15
+[27Nov2026 21:29:51.672] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -1, -60, 15
+[27Nov2026 21:29:51.672] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 1, -60, 15
+[27Nov2026 21:29:51.672] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 3, -60, 15
+[27Nov2026 21:29:51.672] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 5, -60, 15
+[27Nov2026 21:29:51.672] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, 15
+[27Nov2026 21:29:51.673] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 9, -60, 15
+[27Nov2026 21:29:51.673] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 18
+[27Nov2026 21:29:51.673] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -7, -60, 18
+[27Nov2026 21:29:51.673] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -5, -60, 18
+[27Nov2026 21:29:51.673] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -3, -60, 18
+[27Nov2026 21:29:51.673] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -1, -60, 18
+[27Nov2026 21:29:51.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 1, -60, 18
+[27Nov2026 21:29:51.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 3, -60, 18
+[27Nov2026 21:29:51.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 5, -60, 18
+[27Nov2026 21:29:51.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, 18
+[27Nov2026 21:29:51.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 9, -60, 18
+[27Nov2026 21:29:51.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 21
+[27Nov2026 21:29:51.681] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -7, -60, 21
+[27Nov2026 21:29:51.682] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -5, -60, 21
+[27Nov2026 21:29:51.682] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -3, -60, 21
+[27Nov2026 21:29:51.682] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -1, -60, 21
+[27Nov2026 21:29:51.683] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 1, -60, 21
+[27Nov2026 21:29:51.683] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 3, -60, 21
+[27Nov2026 21:29:51.684] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 5, -60, 21
+[27Nov2026 21:29:51.684] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, 21
+[27Nov2026 21:29:51.684] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 9, -60, 21
+[27Nov2026 21:29:51.685] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 24
+[27Nov2026 21:29:51.685] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -7, -60, 24
+[27Nov2026 21:29:51.685] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -5, -60, 24
+[27Nov2026 21:29:51.685] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -3, -60, 24
+[27Nov2026 21:29:51.685] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -1, -60, 24
+[27Nov2026 21:29:51.686] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 1, -60, 24
+[27Nov2026 21:29:51.686] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 3, -60, 24
+[27Nov2026 21:29:51.686] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 5, -60, 24
+[27Nov2026 21:29:51.687] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 7, -60, 24
+[27Nov2026 21:29:51.687] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 9, -60, 24
+[27Nov2026 21:29:51.687] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -9, -60, 27
+[27Nov2026 21:29:54.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -54.000000, -5.000000
+[27Nov2026 21:29:58.195] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_galeria_1
+[27Nov2026 21:29:58.541] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -54.000000, 4.000000
+[27Nov2026 21:30:01.130] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_galeria_2
+[27Nov2026 21:30:01.434] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to -3.500000, -58.500000, -1.500000
+[27Nov2026 21:30:04.034] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_galeria_cerca
+[27Nov2026 21:30:04.373] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[27Nov2026 21:30:04.373] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -55.000000, -3.000000
+[27Nov2026 21:30:07.926] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_galeria_noche
+[27Nov2026 21:30:07.971] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS se fue (sin nadie=true, de día=false)
+[27Nov2026 21:30:08.228] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:30:09.238] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST objetos: 73
+[27Nov2026 21:30:09.247] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 103 entities
+[27Nov2026 21:30:09.251] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.252] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.252] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.256] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.256] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.256] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.257] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.259] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.260] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.260] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.260] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.260] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.261] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.261] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.261] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.261] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.262] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.263] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.263] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.264] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.265] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.265] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.266] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.267] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.271] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.271] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.271] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.272] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.278] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.279] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.279] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.279] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.280] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.280] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.281] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.281] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.284] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.285] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.286] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.286] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.286] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.287] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.287] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.287] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.288] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.288] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.288] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.289] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.289] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.289] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.289] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.290] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.290] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.290] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.290] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.290] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.291] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.291] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.291] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.291] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.291] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.292] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.292] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.292] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.292] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.292] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.293] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.293] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:09.293] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Item Frame
+[27Nov2026 21:30:11.783] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -59.600000, 19.500000
+[27Nov2026 21:30:14.866] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_objetos
+[27Nov2026 21:30:15.175] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -20.500000
+[27Nov2026 21:30:16.683] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -20.500000
+[27Nov2026 21:30:18.769] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_ropa_reno_gorro
+[27Nov2026 21:30:21.116] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_ropa_santa
+[27Nov2026 21:30:23.512] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_ropa_pinos_duende
+[27Nov2026 21:30:25.873] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_ropa_copos_cuernos
+[27Nov2026 21:30:26.182] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -20.500000
+[27Nov2026 21:30:27.765] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_ropa_lado
+[27Nov2026 21:30:28.076] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -20.500000
+[27Nov2026 21:30:30.113] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_ropa_bufanda_orejeras
+[27Nov2026 21:30:30.935] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 49 block(s)
+[27Nov2026 21:30:30.936] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -36.500000
+[27Nov2026 21:30:33.479] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -38.500000
+[27Nov2026 21:30:35.523] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinata
+[27Nov2026 21:30:35.834] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Piñata stick]
+[27Nov2026 21:30:35.836] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:35.836] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:35.836] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:35.837] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:36.720] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinata_columpio
+[27Nov2026 21:30:37.041] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:37.189] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:37.333] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:37.480] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:37.632] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:37.786] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:37.935] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:38.091] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Hit it, hit it!]
+[27Nov2026 21:30:38.092] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev pinata
+[27Nov2026 21:30:38.119] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Hit it, hit it!]
+[27Nov2026 21:30:38.119] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 1.0 damage to Piñata
+[27Nov2026 21:30:38.144] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 28 advancements
+[27Nov2026 21:30:38.228] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No entity was found
+[27Nov2026 21:30:38.372] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST pinatas que quedan: 0
+[27Nov2026 21:30:39.120] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinata_rota
+[27Nov2026 21:30:39.443] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -58.500000, -38.000000
+[27Nov2026 21:30:42.021] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinata_dulces
+[27Nov2026 21:30:42.339] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 273 block(s)
+[27Nov2026 21:30:42.340] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No entity was found
+[27Nov2026 21:30:42.340] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -60.000000, -50.500000
+[27Nov2026 21:30:42.341] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Evil snowman
+[27Nov2026 21:30:42.342] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Reindeer
+[27Nov2026 21:30:42.378] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Gingerbread man
+[27Nov2026 21:30:42.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Krampus
+[27Nov2026 21:30:44.886] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 0.500000, -58.000000, -51.000000
+[27Nov2026 21:30:47.922] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_criaturas
+[27Nov2026 21:30:48.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 4.000000, -58.000000, -56.000000
+[27Nov2026 21:30:50.312] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_cerca
+[27Nov2026 21:30:50.640] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has completed the challenge [Christmas saved!]
+[27Nov2026 21:30:50.640] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev krampus
+[27Nov2026 21:30:50.641] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea krampus
+[27Nov2026 21:30:50.641] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS vencido (robados=0, peleadores=0)
+[27Nov2026 21:30:50.641] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 17 entities
+[27Nov2026 21:30:50.653] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The Krampus is defeated! Christmas is saved!
+[27Nov2026 21:30:50.653] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 1× Totem of Undying!
+[27Nov2026 21:30:50.653] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 1× Netherite Scrap!
+[27Nov2026 21:30:50.654] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] From the Krampus's loot: 1× Krampus's chain
+[27Nov2026 21:30:50.654] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has completed the challenge [Christmas saved!]
+[27Nov2026 21:30:50.702] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 31 advancements
+[27Nov2026 21:30:51.174] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 165 block(s)
+[27Nov2026 21:30:51.176] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 136 block(s)
+[27Nov2026 21:30:51.179] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Zombie
+[27Nov2026 21:30:51.260] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Villager
+[27Nov2026 21:30:51.265] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Skeleton
+[27Nov2026 21:30:51.267] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Pillager
+[27Nov2026 21:30:51.268] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Zombie Villager
+[27Nov2026 21:30:53.686] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to -17.000000, -59.200000, -54.500000
+[27Nov2026 21:30:55.725] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_gorros_mobs
+[27Nov2026 21:30:56.037] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/1052, l='ServerLevel[world]', x=-19.50, y=-60.00, z=-59.50] died, message: 'Villager was killed'
+[27Nov2026 21:30:56.041] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 5 entities
+[27Nov2026 21:30:56.057] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager Villager['Villager'/1052, l='ClientLevel', x=-19.50, y=-60.00, z=-59.50] died, message: 'Villager died'
+[27Nov2026 21:30:56.590] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 445 block(s)
+[27Nov2026 21:30:56.593] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 259 block(s)
+[27Nov2026 21:30:56.595] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Cow
+[27Nov2026 21:30:56.596] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Pig
+[27Nov2026 21:30:56.597] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Sheep
+[27Nov2026 21:30:56.619] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Horse
+[27Nov2026 21:30:56.622] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Wolf
+[27Nov2026 21:30:56.632] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Chicken
+[27Nov2026 21:30:56.635] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Cat
+[27Nov2026 21:30:56.641] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Fox
+[27Nov2026 21:30:56.642] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Iron Golem
+[27Nov2026 21:30:56.643] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Creeper
+[27Nov2026 21:30:56.644] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Panda
+[27Nov2026 21:30:56.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Polar Bear
+[27Nov2026 21:30:59.146] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to -22.000000, -58.600000, -64.500000
+[27Nov2026 21:31:01.720] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_animales_adornados
+[27Nov2026 21:31:02.022] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to -31.000000, -59.000000, -68.500000
+[27Nov2026 21:31:03.575] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_animales_adornados_cerca
+[27Nov2026 21:31:03.889] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 16 entities
+[27Nov2026 21:31:04.387] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 169 block(s)
+[27Nov2026 21:31:04.389] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No blocks were filled
+[27Nov2026 21:31:04.390] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -60, -60, -60
+[27Nov2026 21:31:04.392] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Air]
+[27Nov2026 21:31:04.394] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Christmas music box]
+[27Nov2026 21:31:04.394] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Christmas pine to decorate]
+[27Nov2026 21:31:04.395] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to -59.200000, -60.000000, -58.100000
+[27Nov2026 21:31:06.507] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_caja_musica_cerrada
+[27Nov2026 21:31:07.316] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_caja_musica_abre
+[27Nov2026 21:31:09.917] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_caja_musica_suena
+[27Nov2026 21:31:10.233] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la caja de música tocó
+[27Nov2026 21:31:11.072] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la caja pasó al siguiente villancico
+[27Nov2026 21:31:11.524] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to -57.600000, -60.000000, -59.000000
+[27Nov2026 21:31:12.366] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_caja_musica_lado
+[27Nov2026 21:31:12.873] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at -60, -60, -60
+[27Nov2026 21:31:13.336] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -40.000000, 45.500000
+[27Nov2026 21:31:17.408] [Server thread/INFO] [com.navidad.Navidad/]: aldea de Santa lista en BlockPos{x=300, y=-60, z=0}
+[27Nov2026 21:31:17.411] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: 🎄 Santa's village is ready! (105744 blocks in 178 ms)
+[27Nov2026 21:31:23.238] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Spectator Mode
+[27Nov2026 21:31:23.261] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Spectator Mode
+[27Nov2026 21:31:23.780] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -28.000000, 44.000000
+[27Nov2026 21:31:28.840] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_arriba
+[27Nov2026 21:31:29.183] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 338.000000, -32.000000, -30.000000
+[27Nov2026 21:31:32.289] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_arriba_lado
+[27Nov2026 21:31:32.634] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:31:32.659] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:31:33.177] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -59.000000, 13.000000
+[27Nov2026 21:31:36.250] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_plaza
+[27Nov2026 21:31:36.574] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -59.000000, -12.000000
+[27Nov2026 21:31:39.612] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_santa
+[27Nov2026 21:31:39.923] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -59.000000, -18.500000
+[27Nov2026 21:31:42.980] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_casa_dentro
+[27Nov2026 21:31:43.286] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 312.000000, -57.000000, -6.000000
+[27Nov2026 21:31:46.340] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_taller
+[27Nov2026 21:31:46.677] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 318.500000, -59.000000, 0.500000
+[27Nov2026 21:31:49.729] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_taller_dentro
+[27Nov2026 21:31:50.031] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 288.000000, -57.000000, 6.000000
+[27Nov2026 21:31:53.087] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_cocina
+[27Nov2026 21:31:53.432] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 282.500000, -59.000000, 0.500000
+[27Nov2026 21:31:56.536] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_cocina_dentro
+[27Nov2026 21:31:56.872] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -57.000000, 12.000000
+[27Nov2026 21:31:59.933] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_establo
+[27Nov2026 21:32:00.235] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 280.500000, -56.200000, -11.000000
+[27Nov2026 21:32:03.286] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_nacimiento
+[27Nov2026 21:32:03.633] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 283.500000, -57.600000, -17.500000
+[27Nov2026 21:32:06.220] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_nacimiento_cerca
+[27Nov2026 21:32:06.545] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[27Nov2026 21:32:06.546] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Spectator Mode
+[27Nov2026 21:32:06.547] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -40.000000, 40.000000
+[27Nov2026 21:32:06.567] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Spectator Mode
+[27Nov2026 21:32:10.642] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_noche
+[27Nov2026 21:32:10.996] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:32:11.021] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:32:11.529] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -58.000000, 12.000000
+[27Nov2026 21:32:14.587] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_pino_noche
+[27Nov2026 21:32:14.899] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 280.500000, -56.200000, -12.000000
+[27Nov2026 21:32:17.967] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_aldea_nacimiento_noche
+[27Nov2026 21:32:18.278] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Spectator Mode
+[27Nov2026 21:32:18.279] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 352.000000, -52.000000, 2.000000
+[27Nov2026 21:32:18.279] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Santa's sleigh
+[27Nov2026 21:32:18.298] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Spectator Mode
+[27Nov2026 21:32:18.329] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_SANTA saluda a Dev
+[27Nov2026 21:32:20.083] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_trineo_noche
+[27Nov2026 21:32:21.665] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_trineo_noche_2
+[27Nov2026 21:32:21.977] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:32:21.999] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:32:22.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:32:23.285] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 9000
+[27Nov2026 21:32:23.286] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[27Nov2026 21:32:23.286] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed Gift from Santa
+[27Nov2026 21:32:23.287] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 440.500000, -60.000000, 80.500000
+[27Nov2026 21:32:23.307] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[27Nov2026 21:32:25.111] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🛷 Sleigh bells! Look at the sky: it's Santa's sleigh!
+[27Nov2026 21:32:26.830] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_santa_aviso
+[27Nov2026 21:32:29.123] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_SANTA saluda a Dev
+[27Nov2026 21:32:29.174] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Santa saluda
+[27Nov2026 21:32:29.176] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 440.500000, -60.000000, 80.500000
+[27Nov2026 21:32:30.308] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_santa_jojo
+[27Nov2026 21:32:30.873] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Spectator Mode
+[27Nov2026 21:32:30.889] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Spectator Mode
+[27Nov2026 21:32:31.175] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 429.966000, -37.666000, 74.000000
+[27Nov2026 21:32:31.671] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_santa_trineo_cerca
+[27Nov2026 21:32:31.982] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 440.234000, -37.127000, 77.500000
+[27Nov2026 21:32:32.929] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_santa_trineo_frente
+[27Nov2026 21:32:33.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[27Nov2026 21:32:33.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 440.500000, -60.000000, 80.500000
+[27Nov2026 21:32:33.251] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[27Nov2026 21:32:34.883] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abrió un paracaídas
+[27Nov2026 21:32:36.425] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 446.771000, -42.593000, 84.340000
+[27Nov2026 21:32:36.632] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_regalo_paracaidas
+[27Nov2026 21:32:36.975] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 440.500000, -60.000000, 80.500000
+[27Nov2026 21:32:48.271] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Fell from the sky]
+[27Nov2026 21:32:48.271] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev regalo_cielo
+[27Nov2026 21:32:48.274] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea regalo_aire
+[27Nov2026 21:32:48.276] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_REGALO_CAYO 442, -60, 79 caja=true para=Dev
+[27Nov2026 21:32:48.286] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el regalo aterrizó como caja
+[27Nov2026 21:32:48.287] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Fell from the sky]
+[27Nov2026 21:32:48.321] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la caja llegó al cliente
+[27Nov2026 21:32:48.322] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 31 advancements
+[27Nov2026 21:32:48.322] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 444.200000, -60.000000, 81.200000
+[27Nov2026 21:32:49.721] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_REGALO_CAYO 442, -60, 80 caja=true para=Dev
+[27Nov2026 21:32:50.227] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_regalo_aterrizo
+[27Nov2026 21:32:50.683] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 444.200000, -60.000000, 81.200000
+[27Nov2026 21:32:51.026] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_regalo_tiembla
+[27Nov2026 21:32:51.336] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 444.200000, -60.000000, 81.200000
+[27Nov2026 21:32:51.871] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_regalo_tapa_vuela
+[27Nov2026 21:32:52.123] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [It's for me]
+[27Nov2026 21:32:52.123] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev regalo
+[27Nov2026 21:32:52.123] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [It's for me]
+[27Nov2026 21:32:52.140] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 Gift from Santa: 3× Candy cane
+[27Nov2026 21:32:52.175] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 32 advancements
+[27Nov2026 21:32:52.175] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 444.200000, -60.000000, 81.200000
+[27Nov2026 21:32:52.674] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_regalo_sube
+[27Nov2026 21:32:53.026] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abrió el regalo
+[27Nov2026 21:32:53.911] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_regalo_aviso
+[27Nov2026 21:32:54.477] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:32:54.493] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:32:54.787] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:32:54.796] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No blocks were filled
+[27Nov2026 21:32:54.804] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 1681 block(s)
+[27Nov2026 21:32:54.814] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 143 block(s)
+[27Nov2026 21:32:54.814] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No entity was found
+[27Nov2026 21:32:54.817] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Penguin
+[27Nov2026 21:32:54.819] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Penguin
+[27Nov2026 21:32:54.819] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Penguin
+[27Nov2026 21:32:56.332] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 462.600000, -59.000000, 104.200000
+[27Nov2026 21:32:57.915] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinguinos
+[27Nov2026 21:32:58.236] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modified entity data of Penguin
+[27Nov2026 21:32:58.237] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modified entity data of Penguin
+[27Nov2026 21:32:58.237] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modified entity data of Penguin
+[27Nov2026 21:32:58.579] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Raw Cod]
+[27Nov2026 21:32:58.580] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 463.100000, -60.000000, 103.100000
+[27Nov2026 21:32:58.638] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 35 advancements
+[27Nov2026 21:32:59.587] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Raw Cod]
+[27Nov2026 21:32:59.588] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 463.406000, -60.000000, 103.406000
+[27Nov2026 21:33:00.627] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Raw Cod]
+[27Nov2026 21:33:00.627] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 464.240000, -60.000000, 104.240000
+[27Nov2026 21:33:01.336] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Best Friends Forever]
+[27Nov2026 21:33:01.336] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has reached the goal [Friend in a tuxedo]
+[27Nov2026 21:33:01.337] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev pinguino
+[27Nov2026 21:33:01.337] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea pinguino
+[27Nov2026 21:33:01.337] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_PINGUINO domado por Dev
+[27Nov2026 21:33:01.353] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Best Friends Forever]
+[27Nov2026 21:33:01.353] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has reached the goal [Friend in a tuxedo]
+[27Nov2026 21:33:01.387] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 38 advancements
+[27Nov2026 21:33:11.332] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pingüino es mío
+[27Nov2026 21:33:11.333] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Air]
+[27Nov2026 21:33:11.333] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 462.371000, -59.600000, 101.343000
+[27Nov2026 21:33:13.522] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinguino_mio
+[27Nov2026 21:33:15.375] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pingüino se sentó
+[27Nov2026 21:33:16.062] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinguino_sentado
+[27Nov2026 21:33:16.374] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[27Nov2026 21:33:16.374] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 465.300000, -60.000000, 114.100000
+[27Nov2026 21:33:16.390] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[27Nov2026 21:33:19.421] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST el pingüino no arrancaba: lo paro y me alejo otra vez
+[27Nov2026 21:33:19.423] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 465.300000, -60.000000, 114.100000
+[27Nov2026 21:33:21.621] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pingüino va de panza
+[27Nov2026 21:33:21.622] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 466.653000, -59.100000, 107.068000
+[27Nov2026 21:33:21.775] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinguino_de_panza
+[27Nov2026 21:33:22.083] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 481.500000, -60.000000, 126.500000
+[27Nov2026 21:33:22.084] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Penguin to 481.500000, -61.000000, 119.500000
+[27Nov2026 21:33:22.772] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pingüino está nadando
+[27Nov2026 21:33:22.773] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 484.289000, -58.770000, 123.089000
+[27Nov2026 21:33:23.132] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinguino_nadando
+[27Nov2026 21:33:23.134] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 47 advancements
+[27Nov2026 21:33:23.477] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:33:23.477] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 3 entities
+[27Nov2026 21:33:23.495] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:33:23.495] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Penguin was killed
+[27Nov2026 21:33:23.784] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:33:23.785] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No entity was found
+[27Nov2026 21:33:23.786] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 256 block(s)
+[27Nov2026 21:33:23.786] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Red-nosed baby reindeer
+[27Nov2026 21:33:23.787] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 462.500000, -60.000000, 145.500000
+[27Nov2026 21:33:23.787] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Golden Carrot]
+[27Nov2026 21:33:25.027] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 464.007000, -60.000000, 145.085000
+[27Nov2026 21:33:25.028] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has reached the goal [Red nose]
+[27Nov2026 21:33:25.028] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev renito
+[27Nov2026 21:33:25.028] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea renito
+[27Nov2026 21:33:25.028] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_RENITO domado por Dev
+[27Nov2026 21:33:25.044] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has reached the goal [Red nose]
+[27Nov2026 21:33:25.073] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 47 advancements
+[27Nov2026 21:33:25.925] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el renito es mío
+[27Nov2026 21:33:25.925] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Air]
+[27Nov2026 21:33:26.738] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 463.918000, -59.300000, 146.014000
+[27Nov2026 21:33:28.311] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_renito
+[27Nov2026 21:33:28.624] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[27Nov2026 21:33:30.162] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_renito_noche
+[27Nov2026 21:33:30.482] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:33:30.483] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed Red-nosed baby reindeer
+[27Nov2026 21:33:30.499] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Red-nosed baby reindeer was killed
+[27Nov2026 21:33:30.830] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:33:30.831] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No blocks were filled
+[27Nov2026 21:33:30.836] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 361 block(s)
+[27Nov2026 21:33:30.837] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 503.500000, -60.000000, 147.500000
+[27Nov2026 21:33:30.837] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Christmas pine to decorate]
+[27Nov2026 21:33:32.377] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea poner_arbol
+[27Nov2026 21:33:32.379] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ARBOL Dev puso su árbol en 503, -60, 143
+[27Nov2026 21:33:32.394] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ★ This is your Christmas tree! Every morning Santa will leave gifts under it. The more decorated, the better the gifts.
+[27Nov2026 21:33:33.180] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 503.500000, -60.000000, 148.900000
+[27Nov2026 21:33:34.417] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinonav_solo
+[27Nov2026 21:33:34.732] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Red tree bauble]
+[27Nov2026 21:33:35.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Snowy blue bauble]
+[27Nov2026 21:33:35.734] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Gold bauble]
+[27Nov2026 21:33:36.227] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Little candy cane]
+[27Nov2026 21:33:36.722] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Red bow]
+[27Nov2026 21:33:36.980] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_PINO Dev subió su árbol a nivel 2 (10 puntos)
+[27Nov2026 21:33:36.981] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea colgar
+[27Nov2026 21:33:37.234] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Little gold bell]
+[27Nov2026 21:33:37.724] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Shining snowflake]
+[27Nov2026 21:33:38.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Gingerbread ornament]
+[27Nov2026 21:33:38.722] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Snowy pinecone]
+[27Nov2026 21:33:39.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Snow globe bauble]
+[27Nov2026 21:33:39.478] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea nivel_3
+[27Nov2026 21:33:39.478] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_PINO Dev subió su árbol a nivel 3 (27 puntos)
+[27Nov2026 21:33:39.724] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Little red bird]
+[27Nov2026 21:33:40.227] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Penguin ornament]
+[27Nov2026 21:33:40.477] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea variedad
+[27Nov2026 21:33:40.721] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Little reindeer ornament]
+[27Nov2026 21:33:41.230] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Red tree bauble]
+[27Nov2026 21:33:41.731] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Gold bauble]
+[27Nov2026 21:33:42.234] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Shining snowflake]
+[27Nov2026 21:33:42.473] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_PINO Dev subió su árbol a nivel 4 (46 puntos)
+[27Nov2026 21:33:42.731] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Little gold bell]
+[27Nov2026 21:33:43.228] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Snowy blue bauble]
+[27Nov2026 21:33:43.734] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Little candy cane]
+[27Nov2026 21:33:44.227] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Snow globe bauble]
+[27Nov2026 21:33:44.729] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Gingerbread ornament]
+[27Nov2026 21:33:45.228] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Red tree bauble]
+[27Nov2026 21:33:45.739] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [String of colored lights]
+[27Nov2026 21:33:46.486] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [String of colored lights]
+[27Nov2026 21:33:47.237] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Gold garland]
+[27Nov2026 21:33:47.973] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Gold garland]
+[27Nov2026 21:33:48.676] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Tree-top star]
+[27Nov2026 21:33:49.029] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea nivel_5
+[27Nov2026 21:33:49.029] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_PINO Dev subió su árbol a nivel 5 (76 puntos)
+[27Nov2026 21:33:49.424] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 503.500000, -60.000000, 148.900000
+[27Nov2026 21:33:50.065] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinonav_sube_nivel
+[27Nov2026 21:33:50.377] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Air]
+[27Nov2026 21:33:50.377] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 500, -60, 143
+[27Nov2026 21:33:50.378] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 500, -60, 140
+[27Nov2026 21:33:50.379] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 506, -60, 140
+[27Nov2026 21:33:50.379] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 503, -60, 139
+[27Nov2026 21:33:50.379] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 506, -60, 143
+[27Nov2026 21:33:50.380] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 499, -60, 146
+[27Nov2026 21:33:50.380] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 507, -60, 146
+[27Nov2026 21:33:51.632] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el pino tiene adornos, luces, guirnaldas y estrella
+[27Nov2026 21:33:51.984] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 503.500000, -60.000000, 148.900000
+[27Nov2026 21:33:53.568] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinonav_adornado
+[27Nov2026 21:33:53.885] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 502.200000, -60.000000, 145.900000
+[27Nov2026 21:33:55.475] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinonav_cerca
+[27Nov2026 21:33:55.843] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 507.200000, -60.000000, 146.800000
+[27Nov2026 21:33:57.426] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinonav_lado
+[27Nov2026 21:33:57.731] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[27Nov2026 21:33:57.732] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 503.500000, -60.000000, 148.900000
+[27Nov2026 21:34:00.321] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pinonav_noche
+[27Nov2026 21:34:00.633] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:34:01.289] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Christmas Book]
+[27Nov2026 21:34:01.289] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 503.500000, -58.400000, 147.000000
+[27Nov2026 21:34:03.127] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abrió el libro
+[27Nov2026 21:34:04.434] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_libro_capitulo
+[27Nov2026 21:34:04.789] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev reclamó poner_arbol
+[27Nov2026 21:34:05.910] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_libro_reclamado
+[27Nov2026 21:34:06.240] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se reclamó la tarea del libro
+[27Nov2026 21:34:09.023] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_libro_mi_arbol
+[27Nov2026 21:34:11.183] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_libro_invierno
+[27Nov2026 21:34:11.540] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Air]
+[27Nov2026 21:34:12.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Under the tree]
+[27Nov2026 21:34:12.141] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev arbol
+[27Nov2026 21:34:12.141] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ARBOL regalos para Dev: 4 (puntos=83, nivel=5, malo=false)
+[27Nov2026 21:34:12.142] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Santa pasó por 1 árboles
+[27Nov2026 21:34:12.168] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ★ Santa came by your tree and left you 4 gifts!
+[27Nov2026 21:34:12.169] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Under the tree]
+[27Nov2026 21:34:12.191] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 47 advancements
+[27Nov2026 21:34:13.739] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Santa dejó regalos bajo mi árbol
+[27Nov2026 21:34:13.739] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 506.500000, -58.000000, 148.500000
+[27Nov2026 21:34:15.323] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_arbol_regalos
+[27Nov2026 21:34:15.623] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 15000
+[27Nov2026 21:34:15.624] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 503.500000, -60.000000, 149.500000
+[27Nov2026 21:34:17.136] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LADRON llega por la caja de Dev en 502, -60, 142
+[27Nov2026 21:34:17.137] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Ahí viene el duende ladrón
+[27Nov2026 21:34:20.121] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LADRON se robó un regalo en 502, -60, 142
+[27Nov2026 21:34:20.137] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el duende ladrón se robó un regalo
+[27Nov2026 21:34:20.138] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The thieving elf stole a gift from your tree! Catch him!
+[27Nov2026 21:34:20.138] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 504.700000, -59.000000, 142.641000
+[27Nov2026 21:34:20.418] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_ladron_con_regalo
+[27Nov2026 21:34:20.736] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 503.069000, -60.000000, 142.983000
+[27Nov2026 21:34:20.741] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has reached the goal [Catch him!]
+[27Nov2026 21:34:20.741] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev ladron
+[27Nov2026 21:34:20.742] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea ladron
+[27Nov2026 21:34:20.742] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LADRON atrapado por Dev (regalo=true)
+[27Nov2026 21:34:20.763] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ★ You caught the thieving elf! He dropped your gift and left some candy to say sorry.
+[27Nov2026 21:34:20.764] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has reached the goal [Catch him!]
+[27Nov2026 21:34:20.790] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 47 advancements
+[27Nov2026 21:34:21.427] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: atrapé al duende ladrón
+[27Nov2026 21:34:22.270] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_ladron_atrapado
+[27Nov2026 21:34:22.572] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Nutcracker guard]
+[27Nov2026 21:34:23.985] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se puso el cascanueces
+[27Nov2026 21:34:24.334] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 507.500000, -60.000000, 148.500000
+[27Nov2026 21:34:25.574] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_cascanueces_guardia
+[27Nov2026 21:34:25.888] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Air]
+[27Nov2026 21:34:25.889] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 498.500000, -60.000000, 151.500000
+[27Nov2026 21:34:25.889] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LADRON llega por la caja de Dev en 503, -60, 142
+[27Nov2026 21:34:25.889] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Ahí viene el duende ladrón
+[27Nov2026 21:34:27.973] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LADRON atrapado por Dev (su cascanueces) (regalo=false)
+[27Nov2026 21:34:27.978] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ★ Your nutcracker caught the thief elf and got the gift back!
+[27Nov2026 21:34:29.964] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_cascanueces_persigue
+[27Nov2026 21:34:30.324] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el cascanueces atrapó al ladrón
+[27Nov2026 21:34:30.819] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_cascanueces_atrapo
+[27Nov2026 21:34:31.124] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:34:31.636] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:34:31.638] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No blocks were filled
+[27Nov2026 21:34:31.648] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No blocks were filled
+[27Nov2026 21:34:31.666] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Placed "navidad:puesto_pinos" at 545, -60, 185
+[27Nov2026 21:34:32.621] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_PUESTO llega Don Abeto a 545, -60, 188
+[27Nov2026 21:34:34.175] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: llegó Don Abeto
+[27Nov2026 21:34:34.176] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 544.950000, -54.500000, 177.752000
+[27Nov2026 21:34:37.577] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_puesto_pinos
+[27Nov2026 21:34:37.885] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 547.783000, -59.600000, 191.019000
+[27Nov2026 21:34:40.325] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_don_abeto
+[27Nov2026 21:34:42.621] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Come on in!]
+[27Nov2026 21:34:42.621] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev puesto
+[27Nov2026 21:34:42.621] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea abeto
+[27Nov2026 21:34:42.632] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Come on in!]
+[27Nov2026 21:34:42.696] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 47 advancements
+[27Nov2026 21:34:43.757] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_don_abeto_tienda
+[27Nov2026 21:34:44.737] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[27Nov2026 21:34:44.737] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 552.500000, -56.500000, 197.500000
+[27Nov2026 21:34:47.333] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_puesto_noche
+[27Nov2026 21:34:47.686] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:34:48.323] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No blocks were filled
+[27Nov2026 21:34:48.330] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No blocks were filled
+[27Nov2026 21:34:48.331] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 595.500000, -60.000000, 215.500000
+[27Nov2026 21:34:48.331] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_VIAJERO llega cerca de Dev en 590, -60, 225
+[27Nov2026 21:34:48.332] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Llegó el duende viajero
+[27Nov2026 21:34:48.348] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ♪ Jingle bells nearby... Ramiro, the traveling elf, arrived with his reindeer! He sells things you can't find anywhere else.
+[27Nov2026 21:34:49.877] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: llegó el duende viajero
+[27Nov2026 21:34:49.877] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 594.805000, -58.600000, 221.223000
+[27Nov2026 21:34:51.923] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_duende_viajero
+[27Nov2026 21:34:52.477] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 585.996000, -59.800000, 225.572000
+[27Nov2026 21:34:52.626] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Unexpected visit]
+[27Nov2026 21:34:52.627] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev viajero
+[27Nov2026 21:34:52.628] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea viajero
+[27Nov2026 21:34:52.673] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Unexpected visit]
+[27Nov2026 21:34:52.674] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 47 advancements
+[27Nov2026 21:34:53.435] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_duende_viajero_nombre
+[27Nov2026 21:34:53.787] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 593.194000, -59.700000, 225.425000
+[27Nov2026 21:34:54.731] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_duende_viajero_mochila
+[27Nov2026 21:34:55.277] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:34:55.279] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No blocks were filled
+[27Nov2026 21:34:55.280] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 529 block(s)
+[27Nov2026 21:34:55.280] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 21 block(s)
+[27Nov2026 21:34:55.281] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 601.500000, -60.000000, 254.500000
+[27Nov2026 21:34:55.281] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[27Nov2026 21:34:55.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Removed 8 item(s) from player Dev
+[27Nov2026 21:34:55.284] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Snow tank]
+[27Nov2026 21:34:55.284] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Snow Blaster]
+[27Nov2026 21:34:55.285] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Zombie
+[27Nov2026 21:34:55.285] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Husk
+[27Nov2026 21:34:55.297] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[27Nov2026 21:34:57.434] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 601.500000, -60.000000, 254.500000
+[27Nov2026 21:34:58.669] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_tanque_espalda
+[27Nov2026 21:34:58.979] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 601.500000, -60.000000, 254.500000
+[27Nov2026 21:35:00.219] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_tanque_frente
+[27Nov2026 21:35:01.187] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 601.500000, -60.000000, 254.500000
+[27Nov2026 21:35:02.824] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_lanzanieves_rafaga
+[27Nov2026 21:35:03.925] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_lanzanieves_rafaga_atras
+[27Nov2026 21:35:04.723] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el lanzanieves disparó (16)
+[27Nov2026 21:35:05.527] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_lanzanieves_escarcha
+[27Nov2026 21:35:05.873] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 601.500000, -60.000000, 254.500000
+[27Nov2026 21:35:07.969] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_lanzanieves_aspira
+[27Nov2026 21:35:08.679] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el lanzanieves aspiró nieve (9)
+[27Nov2026 21:35:08.984] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 601.500000, -60.000000, 254.500000
+[27Nov2026 21:35:11.117] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_lanzanieves_carga
+[27Nov2026 21:35:11.572] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Monster Hunter]
+[27Nov2026 21:35:11.594] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Monster Hunter]
+[27Nov2026 21:35:11.643] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 78 advancements
+[27Nov2026 21:35:12.123] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_bola_gigante
+[27Nov2026 21:35:13.364] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_bola_gigante_nevada
+[27Nov2026 21:35:13.687] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: salió la bola gigante
+[27Nov2026 21:35:14.944] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se abrió el tanque
+[27Nov2026 21:35:15.910] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_tanque_ventana
+[27Nov2026 21:35:16.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gave 1 [Christmas Book] to Dev
+[27Nov2026 21:35:16.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gave 1 [Christmas pine to decorate] to Dev
+[27Nov2026 21:35:16.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gave 1 [Tree-top star] to Dev
+[27Nov2026 21:35:16.230] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gave 3 [Snow globe bauble] to Dev
+[27Nov2026 21:35:16.230] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gave 2 [Penguin ornament] to Dev
+[27Nov2026 21:35:16.230] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gave 1 [Gift box] to Dev
+[27Nov2026 21:35:18.586] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_inventario_nuevo
+[27Nov2026 21:35:18.942] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:35:18.943] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Removed 11 item(s) from player Dev
+[27Nov2026 21:35:18.943] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No entity was found
+[27Nov2026 21:35:18.944] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed Husk
+[27Nov2026 21:35:18.961] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:35:19.480] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 1000
+[27Nov2026 21:35:20.528] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 299.600000, -59.200000, -11.600000
+[27Nov2026 21:35:23.077] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_buzon
+[27Nov2026 21:35:23.434] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -60.000000, -13.500000
+[27Nov2026 21:35:23.434] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Book and Quill]
+[27Nov2026 21:35:24.995] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARTA enviada de=Dev deseos=[trineo, diamante, galletas]
+[27Nov2026 21:35:24.995] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Dear Santa...]
+[27Nov2026 21:35:24.995] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev carta
+[27Nov2026 21:35:24.995] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea carta
+[27Nov2026 21:35:25.012] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ✉ Your letter flew off to the North Pole. Santa will read it tonight... be good!
+[27Nov2026 21:35:25.012] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Dear Santa...]
+[27Nov2026 21:35:25.033] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 78 advancements
+[27Nov2026 21:35:26.587] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la carta salió volando
+[27Nov2026 21:35:26.589] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARTA entregada a=Dev regalos=3 malo=false
+[27Nov2026 21:35:26.589] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [He wrote back!]
+[27Nov2026 21:35:26.589] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev respuesta
+[27Nov2026 21:35:26.589] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: carta entregada
+[27Nov2026 21:35:26.617] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎅 Santa's answer arrived! Check your inventory.
+[27Nov2026 21:35:26.617] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [He wrote back!]
+[27Nov2026 21:35:26.644] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 78 advancements
+[27Nov2026 21:35:28.187] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: llegó la respuesta
+[27Nov2026 21:35:28.490] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -60.000000, -13.500000
+[27Nov2026 21:35:30.037] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_carta_respuesta
+[27Nov2026 21:35:30.733] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 260, -59, 0
+[27Nov2026 21:35:30.734] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 260, -59, 1
+[27Nov2026 21:35:30.734] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 260.500000, -60.000000, 3.500000
+[27Nov2026 21:35:31.935] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CALCETIN Dev carbon=false cosas=4
+[27Nov2026 21:35:31.935] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Stuffed stocking]
+[27Nov2026 21:35:31.936] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev calcetin
+[27Nov2026 21:35:31.936] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea calcetin
+[27Nov2026 21:35:31.955] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Stuffed stocking]
+[27Nov2026 21:35:31.975] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 78 advancements
+[27Nov2026 21:35:33.175] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Santa llenó el calcetín
+[27Nov2026 21:35:33.484] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 260.500000, -58.400000, 3.500000
+[27Nov2026 21:35:34.723] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_calcetin
+[27Nov2026 21:35:35.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Cookies and milk for Santa]
+[27Nov2026 21:35:36.227] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_GALLETAS puestas Dev en 262, -60, 2
+[27Nov2026 21:35:37.234] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 264.500000, -58.800000, 5.500000
+[27Nov2026 21:35:38.475] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_galletas_puestas
+[27Nov2026 21:35:38.825] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Santa was here]
+[27Nov2026 21:35:38.826] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev galletas
+[27Nov2026 21:35:38.826] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea galletas
+[27Nov2026 21:35:38.826] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_GALLETAS comidas Dev caja=true
+[27Nov2026 21:35:38.826] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Santa pasó por 1 platos de galletas
+[27Nov2026 21:35:38.842] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Santa was here]
+[27Nov2026 21:35:38.842] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] ★ Santa ate your cookies and left you a gift next to the plate!
+[27Nov2026 21:35:38.875] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 78 advancements
+[27Nov2026 21:35:40.423] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: Santa se comió las galletas
+[27Nov2026 21:35:40.424] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 264.500000, -58.800000, 5.500000
+[27Nov2026 21:35:41.966] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_galletas_comidas
+[27Nov2026 21:35:42.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 9 block(s)
+[27Nov2026 21:35:42.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[27Nov2026 21:35:42.284] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 265.500000, -60.000000, 7.500000
+[27Nov2026 21:35:42.300] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[27Nov2026 21:35:46.772] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Snow angel]
+[27Nov2026 21:35:46.772] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev angel
+[27Nov2026 21:35:46.772] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LIBRO Dev completó la tarea angel
+[27Nov2026 21:35:46.773] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANGEL Dev 265, -60, 7
+[27Nov2026 21:35:46.780] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Snow angel]
+[27Nov2026 21:35:46.830] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 79 advancements
+[27Nov2026 21:35:48.328] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: hice un ángel de nieve
+[27Nov2026 21:35:48.329] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:35:48.345] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:35:48.832] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 265.500000, -57.200000, 9.600000
+[27Nov2026 21:35:50.409] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_angel_nieve
+[27Nov2026 21:35:50.723] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 268, -60, 4
+[27Nov2026 21:35:50.723] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 268.500000, -60.000000, 6.500000
+[27Nov2026 21:35:52.027] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 268.500000, -59.000000, 5.900000
+[27Nov2026 21:35:52.469] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_esfera_sacudida
+[27Nov2026 21:35:52.784] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: la esfera de nieve se sacudió
+[27Nov2026 21:35:53.086] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:35:53.086] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Spectator Mode
+[27Nov2026 21:35:53.103] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Spectator Mode
+[27Nov2026 21:35:54.133] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 309.000000, -50.000000, -9.000000
+[27Nov2026 21:35:56.744] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_colina
+[27Nov2026 21:35:57.087] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Wooden sled
+[27Nov2026 21:35:58.482] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_colina_bajando
+[27Nov2026 21:35:59.883] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_colina_bajando_2
+[27Nov2026 21:36:00.183] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:36:00.183] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 4 entities
+[27Nov2026 21:36:00.184] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Wooden sled
+[27Nov2026 21:36:00.184] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 316.500000, -53.000000, -26.500000
+[27Nov2026 21:36:00.203] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:36:02.930] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev started riding Wooden sled
+[27Nov2026 21:36:03.071] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 6.38, -25.64) carril=true antes=-25.63823608519627
+[27Nov2026 21:36:03.570] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 6.38, -25.64) carril=true antes=-25.640380859375
+[27Nov2026 21:36:04.072] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 6.38, -25.64) carril=true antes=-25.640380859375
+[27Nov2026 21:36:04.133] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: arriba del trineo
+[27Nov2026 21:36:04.270] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA sale Dev
+[27Nov2026 21:36:04.571] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 6.38, -25.53) carril=true antes=-25.567215035375
+[27Nov2026 21:36:05.072] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 6.00, -25.05) carril=true antes=-25.351604329380837
+[27Nov2026 21:36:05.571] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 5.32, -23.18) carril=true antes=-23.529732918329834
+[27Nov2026 21:36:06.027] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_trineo_montado
+[27Nov2026 21:36:06.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 4.14, -20.96) carril=true antes=-21.451690601119672
+[27Nov2026 21:36:06.570] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 2.38, -17.15) carril=true antes=-17.93113073104495
+[27Nov2026 21:36:07.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 1.00, -14.34) carril=true antes=-14.823974551396102
+[27Nov2026 21:36:07.273] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Downhill!]
+[27Nov2026 21:36:07.273] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev colina
+[27Nov2026 21:36:07.276] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA Dev 3.00 s
+[27Nov2026 21:36:07.285] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Downhill!]
+[27Nov2026 21:36:07.285] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🛷 You reached the bottom in 3.00 seconds!
+[27Nov2026 21:36:07.285] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🏆 New sled hill record: Dev, 3.00 seconds!
+[27Nov2026 21:36:07.338] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 80 advancements
+[27Nov2026 21:36:07.570] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -10.42) carril=true antes=-11.286942012991739
+[27Nov2026 21:36:08.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:08.571] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:09.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:09.572] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:09.892] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST trineo: z=-9.630000011920929
+[27Nov2026 21:36:09.893] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el trineo bajó la colina (z=-9.6)
+[27Nov2026 21:36:10.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:10.572] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:11.072] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:11.570] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:11.816] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_trineo_abajo
+[27Nov2026 21:36:12.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CARRERA trineo (16.50, 0.00, -9.55) carril=true antes=-9.550000011920929
+[27Nov2026 21:36:12.137] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: carrera cronometrada (3.00 s)
+[27Nov2026 21:36:12.439] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev stopped riding Wooden sled
+[27Nov2026 21:36:13.243] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 317.500000, -60.000000, 19.500000
+[27Nov2026 21:36:14.778] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 317.500000, -60.000000, 19.500000
+[27Nov2026 21:36:16.822] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_patines_pista
+[27Nov2026 21:36:17.142] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Spectator Mode
+[27Nov2026 21:36:17.162] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Spectator Mode
+[27Nov2026 21:36:17.677] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 321.000000, -46.000000, 33.000000
+[27Nov2026 21:36:20.248] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pista
+[27Nov2026 21:36:20.579] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 567 block(s)
+[27Nov2026 21:36:20.581] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Placed "navidad:pino_adornado" at 380, -60, 0
+[27Nov2026 21:36:20.582] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Placed "navidad:pino_adornado" at 389, -60, 5
+[27Nov2026 21:36:20.583] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Placed "navidad:pino_adornado" at 372, -60, 6
+[27Nov2026 21:36:23.583] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 380.500000, -57.000000, 17.000000
+[27Nov2026 21:36:26.638] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pino_adornado
+[27Nov2026 21:36:26.980] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Successfully filled 272 block(s)
+[27Nov2026 21:36:26.982] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Placed "navidad:casita_duende" at 402, -60, -16
+[27Nov2026 21:36:29.529] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 410.000000, -57.000000, -5.000000
+[27Nov2026 21:36:32.130] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_casita_duende
+[27Nov2026 21:36:32.437] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 402.500000, -59.500000, -15.500000
+[27Nov2026 21:36:35.027] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_casita_duende_dentro
+[27Nov2026 21:36:35.330] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[27Nov2026 21:36:38.923] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_pino_adornado_noche
+[27Nov2026 21:36:39.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:36:39.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:36:39.261] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:36:39.284] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 18.500000
+[27Nov2026 21:36:39.286] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: That position is not loaded
+[27Nov2026 21:36:39.286] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: That position is not loaded
+[27Nov2026 21:36:41.779] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_GUARIDA en 600, -60, 0
+[27Nov2026 21:36:41.779] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Krampus lair built
+[27Nov2026 21:36:44.271] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se construyó la guarida
+[27Nov2026 21:36:44.573] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -56.000000, 16.000000
+[27Nov2026 21:36:46.120] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_guarida
+[27Nov2026 21:36:46.433] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -59.400000, -10.500000
+[27Nov2026 21:36:47.713] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_guarida_cabana
+[27Nov2026 21:36:48.022] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Krampus
+[27Nov2026 21:36:49.826] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 602.500000, -58.600000, 10.500000
+[27Nov2026 21:36:50.682] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_frente
+[27Nov2026 21:36:50.983] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 607.000000, -58.600000, 4.500000
+[27Nov2026 21:36:51.625] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_lado
+[27Nov2026 21:36:51.935] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 598.000000, -58.400000, -1.500000
+[27Nov2026 21:36:52.619] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_espalda
+[27Nov2026 21:36:53.030] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 603.500000, -58.600000, 10.500000
+[27Nov2026 21:36:53.330] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_varazos
+[27Nov2026 21:36:53.836] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 603.500000, -58.600000, 10.500000
+[27Nov2026 21:36:55.072] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_agarre
+[27Nov2026 21:36:55.534] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 603.500000, -58.600000, 10.500000
+[27Nov2026 21:36:56.326] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_rugido
+[27Nov2026 21:36:56.830] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 603.500000, -58.600000, 10.500000
+[27Nov2026 21:36:57.483] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_cadena
+[27Nov2026 21:36:57.831] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[27Nov2026 21:36:57.831] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[27Nov2026 21:36:57.832] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied effect Resistance to Dev
+[27Nov2026 21:36:57.832] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied effect Regeneration to Dev
+[27Nov2026 21:36:57.833] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 9.500000
+[27Nov2026 21:36:57.833] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS_SACO metió a Dev
+[27Nov2026 21:36:59.532] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_saco_dentro
+[27Nov2026 21:36:59.833] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: estoy en el saco
+[27Nov2026 21:37:00.189] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has reached the goal [Let me out!]
+[27Nov2026 21:37:00.189] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev saco
+[27Nov2026 21:37:00.189] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS_SACO Dev se escapó
+[27Nov2026 21:37:00.215] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has reached the goal [Let me out!]
+[27Nov2026 21:37:00.246] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 80 advancements
+[27Nov2026 21:37:00.442] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: me escapé del saco
+[27Nov2026 21:37:01.116] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_saco_escape
+[27Nov2026 21:37:01.449] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS_SACO metió a Dev
+[27Nov2026 21:37:02.292] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has reached the goal [From behind]
+[27Nov2026 21:37:02.292] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev saco_roto
+[27Nov2026 21:37:02.292] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS_SACO roto (por Dev)
+[27Nov2026 21:37:02.292] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied 40.0 damage to Krampus
+[27Nov2026 21:37:02.292] [Server thread/WARN] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev moved wrongly!
+[27Nov2026 21:37:02.321] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The Krampus's sack ripped! Gifts fell out.
+[27Nov2026 21:37:02.321] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has reached the goal [From behind]
+[27Nov2026 21:37:02.321] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 80 advancements
+[27Nov2026 21:37:03.076] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 82 advancements
+[27Nov2026 21:37:03.183] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: se rompió el saco
+[27Nov2026 21:37:03.184] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 603.000000, -58.500000, 10.500000
+[27Nov2026 21:37:04.170] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_saco_roto
+[27Nov2026 21:37:04.492] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:37:04.493] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS vencido (robados=0, peleadores=1)
+[27Nov2026 21:37:04.493] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed Krampus
+[27Nov2026 21:37:04.494] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 8 entities
+[27Nov2026 21:37:04.494] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[27Nov2026 21:37:04.494] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Krampus
+[27Nov2026 21:37:04.495] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 12.500000
+[27Nov2026 21:37:04.517] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:37:04.518] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The Krampus is defeated! Christmas is saved!
+[27Nov2026 21:37:04.518] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 1× Totem of Undying!
+[27Nov2026 21:37:04.518] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 6× Diamond!
+[27Nov2026 21:37:04.519] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] From the Krampus's loot: 1× Krampus's sack
+[27Nov2026 21:37:04.521] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has made the advancement [Diamonds!]
+[27Nov2026 21:37:04.539] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has made the advancement [Diamonds!]
+[27Nov2026 21:37:04.539] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 102 advancements
+[27Nov2026 21:37:06.034] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Applied effect Slowness to Krampus
+[27Nov2026 21:37:06.240] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_JEFE_FASE Krampus fase=1
+[27Nov2026 21:37:09.476] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 602.500000, -58.600000, 10.500000
+[27Nov2026 21:37:09.982] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_furia
+[27Nov2026 21:37:10.287] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS_APAGON faroles puestos=0 cerca=4
+[27Nov2026 21:37:10.287] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_JEFE_FASE Krampus fase=2
+[27Nov2026 21:37:14.132] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST krampus oculto=true niebla=0.89303726
+[27Nov2026 21:37:14.480] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 12.000000
+[27Nov2026 21:37:14.821] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_apagon
+[27Nov2026 21:37:15.135] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 601.000000, -59.600000, 8.500000
+[27Nov2026 21:37:15.575] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_oculto_cerca
+[27Nov2026 21:37:15.882] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Krampus to 604.500000, -60.000000, 4.500000
+[27Nov2026 21:37:17.139] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -59.400000, 11.000000
+[27Nov2026 21:37:17.609] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_luz
+[27Nov2026 21:37:17.933] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Krampus to 600.500000, -60.000000, 6.500000
+[27Nov2026 21:37:18.985] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 12.500000
+[27Nov2026 21:37:18.986] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_CAMPANITA Dev krampus=1 krampusillos=0
+[27Nov2026 21:37:20.075] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_campanita
+[27Nov2026 21:37:20.395] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: sonó la campanita
+[27Nov2026 21:37:20.626] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS vencido (robados=0, peleadores=0)
+[27Nov2026 21:37:20.627] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed Krampus
+[27Nov2026 21:37:20.628] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 4 entities
+[27Nov2026 21:37:20.628] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:37:20.629] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Target doesn't have the requested effect
+[27Nov2026 21:37:20.629] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[27Nov2026 21:37:20.630] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 14.500000
+[27Nov2026 21:37:20.630] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Krampus
+[27Nov2026 21:37:20.662] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The Krampus is defeated! Christmas is saved!
+[27Nov2026 21:37:20.662] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 1× Enchanted Golden Apple!
+[27Nov2026 21:37:20.662] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 1× Totem of Undying!
+[27Nov2026 21:37:20.662] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] From the Krampus's loot: 1× Krampus mask
+[27Nov2026 21:37:20.662] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[27Nov2026 21:37:20.707] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 103 advancements
+[27Nov2026 21:37:23.182] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_cadena_lanza
+[27Nov2026 21:37:23.236] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_GANCHO enganchó a Dev (de Krampus)
+[27Nov2026 21:37:23.587] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el gancho me agarró
+[27Nov2026 21:37:23.869] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_jalon
+[27Nov2026 21:37:24.182] [Server thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_JEFE_FASE Krampus fase=1
+[27Nov2026 21:37:28.371] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS_SACO metió a Dev
+[27Nov2026 21:37:28.385] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: me agarró al saco
+[27Nov2026 21:37:29.030] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:37:29.031] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS vencido (robados=0, peleadores=0)
+[27Nov2026 21:37:29.031] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed Krampus
+[27Nov2026 21:37:29.050] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:37:29.050] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The Krampus is defeated! Christmas is saved!
+[27Nov2026 21:37:29.051] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 1× Totem of Undying!
+[27Nov2026 21:37:29.051] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 9× Diamond!
+[27Nov2026 21:37:29.051] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] From the Krampus's loot: 1× Birch switch
+[27Nov2026 21:37:30.537] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -58.000000, 12.000000
+[27Nov2026 21:37:33.120] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_vencido
+[27Nov2026 21:37:33.434] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: ya no hay Krampus
+[27Nov2026 21:37:33.686] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 3 entities
+[27Nov2026 21:37:33.687] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Changed the block at 596, -60, 10
+[27Nov2026 21:37:33.687] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Modified block data of 596, -60, 10
+[27Nov2026 21:37:33.688] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 20.500000
+[27Nov2026 21:37:34.870] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUSILLO se robó un regalo en 596, -60, 10
+[27Nov2026 21:37:34.884] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] A Krampus imp stole a gift from your tree! Catch it before it gets away.
+[27Nov2026 21:37:35.224] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -58.600000, 19.000000
+[27Nov2026 21:37:37.072] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampusillos
+[27Nov2026 21:37:37.378] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Summoned new Krampus imp
+[27Nov2026 21:37:37.532] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -59.300000, 18.000000
+[27Nov2026 21:37:38.473] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampusillo_cerca
+[27Nov2026 21:37:38.774] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: un krampusillo se robó el regalo
+[27Nov2026 21:37:39.030] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 3 entities
+[27Nov2026 21:37:39.031] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 16.500000
+[27Nov2026 21:37:39.032] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Krampus mask]
+[27Nov2026 21:37:39.032] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Birch switch]
+[27Nov2026 21:37:39.032] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Krampus's chain]
+[27Nov2026 21:37:39.032] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gave 1 [Krampus's sack] to Dev
+[27Nov2026 21:37:39.033] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Gave 1 [Santa's little bell] to Dev
+[27Nov2026 21:37:41.820] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_mascara
+[27Nov2026 21:37:43.120] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_saco_espalda
+[27Nov2026 21:37:44.318] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_gancho_jugador
+[27Nov2026 21:37:44.676] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: el gancho se clavó
+[27Nov2026 21:37:45.879] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -59.600000, 15.500000
+[27Nov2026 21:37:46.818] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_huellas_dia
+[27Nov2026 21:37:47.135] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST huellas en el cliente: 6 y=-59.74 alfa=1.0
+[27Nov2026 21:37:47.135] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: las huellas llegan al cliente
+[27Nov2026 21:37:47.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [Air]
+[27Nov2026 21:37:47.383] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 3 entities
+[27Nov2026 21:37:47.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: No entity was found
+[27Nov2026 21:37:47.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Survival Mode
+[27Nov2026 21:37:47.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 13800
+[27Nov2026 21:37:47.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -60.000000, 6.500000
+[27Nov2026 21:37:47.385] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_NOCHE_KRAMPUS empieza para Dev
+[27Nov2026 21:37:47.385] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: The Night of the Krampus started for 1 player(s)
+[27Nov2026 21:37:47.402] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Survival Mode
+[27Nov2026 21:37:47.402] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Chains rattle in the distance... and bells that don't sound like Christmas.
+[27Nov2026 21:37:49.072] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: hay huellas
+[27Nov2026 21:37:49.073] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.500000, -59.000000, 6.500000
+[27Nov2026 21:37:49.425] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_noche_huellas
+[27Nov2026 21:37:54.037] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Chains rattle in the dark... the Krampus has come for the naughty ones.
+[27Nov2026 21:37:54.038] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The Krampus has come for Dev!
+[27Nov2026 21:37:54.076] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: llegó el Krampus
+[27Nov2026 21:37:54.076] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 600.954000, -60.000000, 4.764000
+[27Nov2026 21:37:55.380] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_krampus_noche_llega
+[27Nov2026 21:37:55.729] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set Dev's game mode to Creative Mode
+[27Nov2026 21:37:55.729] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Removed every effect from Dev
+[27Nov2026 21:37:55.731] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Removed 48 item(s) from player Dev
+[27Nov2026 21:37:55.751] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[27Nov2026 21:37:59.237] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_KRAMPUS vencido (robados=0, peleadores=0)
+[27Nov2026 21:37:59.237] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed Krampus
+[27Nov2026 21:37:59.238] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Killed 2 entities
+[27Nov2026 21:37:59.238] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 18000
+[27Nov2026 21:37:59.258] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The Krampus is defeated! Christmas is saved!
+[27Nov2026 21:37:59.259] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 8× Diamond!
+[27Nov2026 21:37:59.259] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🎁 You got 1× Enchanted Golden Apple!
+[27Nov2026 21:37:59.259] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] From the Krampus's loot: 1× Krampus mask
+[27Nov2026 21:37:59.274] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has reached the goal [Krampus Night]
+[27Nov2026 21:37:59.274] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev noche_krampus
+[27Nov2026 21:37:59.275] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_NOCHE_KRAMPUS termina (sobrevivió=true)
+[27Nov2026 21:37:59.286] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has reached the goal [Krampus Night]
+[27Nov2026 21:37:59.287] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] You survived the Night of the Krampus.
+[27Nov2026 21:37:59.330] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 103 advancements
+[27Nov2026 21:38:00.284] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST KRAMPUS ensacados=3 escapados=1 sacosRotos=1 enganches=1 anclajes=1 huellas=20 robos=1
+[27Nov2026 21:38:00.523] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -60.000000, 8.500000
+[27Nov2026 21:38:00.523] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Replaced a slot on Dev with [New Year's grapes]
+[27Nov2026 21:38:00.524] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO empieza cuenta=3 anio=2027
+[27Nov2026 21:38:00.555] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🍇 It's almost New Year! Get your 12 grapes ready: one per bell toll.
+[27Nov2026 21:38:01.818] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_anio_cuenta
+[27Nov2026 21:38:02.798] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 117 advancements
+[27Nov2026 21:38:03.570] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 1
+[27Nov2026 21:38:04.714] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_anio_campanada
+[27Nov2026 21:38:05.072] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 2
+[27Nov2026 21:38:06.570] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 3
+[27Nov2026 21:38:08.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 4
+[27Nov2026 21:38:09.575] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 5
+[27Nov2026 21:38:11.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 6
+[27Nov2026 21:38:12.571] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 7
+[27Nov2026 21:38:14.071] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 8
+[27Nov2026 21:38:15.570] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 9
+[27Nov2026 21:38:17.071] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 10
+[27Nov2026 21:38:18.572] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 11
+[27Nov2026 21:38:20.070] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO campanada 12
+[27Nov2026 21:38:22.571] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev has reached the goal [Twelve wishes]
+[27Nov2026 21:38:22.571] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_LOGRO Dev uvas
+[27Nov2026 21:38:22.574] [Server thread/INFO] [com.navidad.Navidad/]: NAVIDAD_ANIO feliz anio=2027 uvas=[31]
+[27Nov2026 21:38:22.591] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Dev has reached the goal [Twelve wishes]
+[27Nov2026 21:38:22.592] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] 🍇 You ate all 12 grapes in time! Your 12 wishes will come true (and you are very lucky for a while).
+[27Nov2026 21:38:22.633] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 117 advancements
+[27Nov2026 21:38:22.841] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_anio_feliz
+[27Nov2026 21:38:23.173] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST ok: doce uvas en las campanadas (31)
+[27Nov2026 21:38:23.503] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Teleported Dev to 300.500000, -59.000000, 8.500000
+[27Nov2026 21:38:26.586] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_anio_fuegos
+[27Nov2026 21:38:29.472] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST foto navidad_anio_fuegos_2
+[27Nov2026 21:38:30.093] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Set the time to 6000
+[27Nov2026 21:38:31.386] [Render thread/INFO] [com.axeliscore.AxelisCore/]: AXCORE_AUTOTEST AXCORE_AUTOTEST_FIN fotos=143 fallos=0
+[27Nov2026 21:38:31.417] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[27Nov2026 21:38:31.421] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[27Nov2026 21:38:31.421] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[27Nov2026 21:38:31.425] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[27Nov2026 21:38:31.468] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[27Nov2026 21:38:31.468] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[27Nov2026 21:38:31.469] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[27Nov2026 21:38:31.861] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[27Nov2026 21:38:31.949] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[27Nov2026 21:38:31.952] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[27Nov2026 21:38:31.978] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (prueba): All chunks are saved
+[27Nov2026 21:38:31.978] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[27Nov2026 21:38:31.978] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[27Nov2026 21:38:31.978] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
