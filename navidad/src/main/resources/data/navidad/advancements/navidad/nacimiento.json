@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:pesebre"
+  },
+  "title": {
+   "translate": "advancement.navidad.nacimiento"
+  },
+  "description": {
+   "translate": "advancement.navidad.nacimiento.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/raiz"
+}

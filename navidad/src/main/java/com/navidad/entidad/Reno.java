@@ -98,6 +98,7 @@ public class Reno extends CoreMob {
                 if (c == 3) {
                     p.displayClientMessage(Component.translatable("navidad.reno.amigo"), true);
                     if (p instanceof net.minecraft.server.level.ServerPlayer sp) {
+                        com.navidad.Logros.dar(sp, "reno");
                         com.axeliscore.npc.Misiones.evento(sp, com.navidad.Navidad.MODID + ":reno_amigo", 1);
                     }
                 }

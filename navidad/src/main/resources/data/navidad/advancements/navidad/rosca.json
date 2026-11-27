@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:rosca_reyes"
+  },
+  "title": {
+   "translate": "advancement.navidad.rosca"
+  },
+  "description": {
+   "translate": "advancement.navidad.rosca.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/pinata"
+}

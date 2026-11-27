@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:cuerno_krampus"
+  },
+  "title": {
+   "translate": "advancement.navidad.krampus"
+  },
+  "description": {
+   "translate": "advancement.navidad.krampus.desc"
+  },
+  "frame": "challenge",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/reno"
+}

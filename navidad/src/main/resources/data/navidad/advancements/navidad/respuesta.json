@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "minecraft:written_book"
+  },
+  "title": {
+   "translate": "advancement.navidad.respuesta"
+  },
+  "description": {
+   "translate": "advancement.navidad.respuesta.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/carta"
+}

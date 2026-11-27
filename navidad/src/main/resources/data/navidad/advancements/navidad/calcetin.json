@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:calcetin_rojo"
+  },
+  "title": {
+   "translate": "advancement.navidad.calcetin"
+  },
+  "description": {
+   "translate": "advancement.navidad.calcetin.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/regalo"
+}

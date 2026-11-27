@@ -108,6 +108,7 @@ public final class Invierno {
         l.playSound(null, pies, net.minecraft.sounds.SoundEvents.SNOW_PLACE, SoundSource.PLAYERS, 1F, 0.8F);
         p.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("navidad.angel.listo").withStyle(ChatFormatting.WHITE)));
         angeles++;
+        Logros.dar(p, "angel");
         Navidad.LOGGER.info("NAVIDAD_ANGEL {} {}", p.getGameProfile().getName(), pies.toShortString());
     }
 
@@ -158,6 +159,7 @@ public final class Invierno {
                 for (ServerPlayer x : new ServerPlayer[]{a, b}) {
                     x.serverLevel().sendParticles(ParticleTypes.HEART, x.getX(), x.getY() + 2.1, x.getZ(), 5, 0.4, 0.2, 0.4, 0.02);
                     x.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.REGENERATION, 100, 0));
+                    Logros.dar(x, "muerdago");
                     x.sendSystemMessage(Component.translatable("navidad.muerdago", a.getDisplayName(), b.getDisplayName())
                             .withStyle(ChatFormatting.LIGHT_PURPLE));
                 }
@@ -220,6 +222,7 @@ public final class Invierno {
         if (lz >= Aldea.COLINA_PIE + 1) {
             SALIDA.remove(p.getUUID());
             ultimaCarrera = seg;
+            Logros.dar(p, "colina");
             String tiempo = String.format(Locale.ROOT, "%.2f", seg);
             p.sendSystemMessage(Component.translatable("navidad.carrera.llega", tiempo).withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
             WorldStore w = WorldStore.get(s, Navidad.MODID);
@@ -227,6 +230,9 @@ public final class Invierno {
             if (seg < rec) {
                 g.putDouble("colinaRecord", seg);
                 g.putString("colinaQuien", p.getGameProfile().getName());
+                if (rec < 999) {
+                    Logros.dar(p, "record");
+                }
                 w.dirty();
                 for (ServerPlayer o : s.getPlayerList().getPlayers()) {
                     o.sendSystemMessage(Component.translatable("navidad.carrera.record", p.getDisplayName(), tiempo)
@@ -274,6 +280,9 @@ public final class Invierno {
             double dx = p.getX() - p.xOld, dz = p.getZ() - p.zOld;
             double rap = Math.sqrt(dx * dx + dz * dz);
             if (rap > 0.12) {
+                if (p.tickCount % 20 < 2) {
+                    Logros.dar(p, "patines");
+                }
                 if (p.tickCount % 12 < 2) {
                     p.level().playSound(null, p.getX(), p.getY(), p.getZ(), ModRegistry.PATIN.get(), SoundSource.PLAYERS,
                             (float) Math.min(0.8, 0.3 + rap), 0.9F + p.getRandom().nextFloat() * 0.25F);

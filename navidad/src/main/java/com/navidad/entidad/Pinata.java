@@ -126,6 +126,9 @@ public class Pinata extends Entity {
         for (Player cerca : l.players()) {
             if (cerca.distanceTo(this) < 24) {
                 cerca.displayClientMessage(Component.translatable("navidad.pinata.rota", p.getDisplayName()), true);
+                if (cerca == p && cerca instanceof net.minecraft.server.level.ServerPlayer yo) {
+                    com.navidad.Logros.dar(yo, "pinata");
+                }
                 if (cerca instanceof net.minecraft.server.level.ServerPlayer sp) {
                     com.axeliscore.npc.Misiones.evento(sp, com.navidad.Navidad.MODID + ":pinata", 1);
                 }

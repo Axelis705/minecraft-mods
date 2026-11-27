@@ -41,6 +41,7 @@ public class Navidad {
         Calcetines.init();
         GalletasSanta.init();
         DecoViva.init();
+        Logros.init();
         AxelisCore.commands(Comandos::registrar);
     }
 

@@ -169,6 +169,7 @@ public final class GalletasSanta {
         l.playSound(null, pos, ModRegistry.CASCABELES.get(), SoundSource.BLOCKS, 0.9F, 1.0F);
         l.playSound(null, pos, ModRegistry.RISA_SANTA.get(), SoundSource.BLOCKS, 0.7F, 1.0F);
         if (p != null) {
+            Logros.dar(p, "galletas");
             p.sendSystemMessage(Component.translatable("navidad.galletas.comidas").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
         }
         Navidad.LOGGER.info("NAVIDAD_GALLETAS comidas {} caja={}", nombre, caja != null);

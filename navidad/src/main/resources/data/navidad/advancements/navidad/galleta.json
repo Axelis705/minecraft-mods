@@ -1,0 +1,30 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:galleta_jengibre"
+  },
+  "title": {
+   "translate": "advancement.navidad.galleta"
+  },
+  "description": {
+   "translate": "advancement.navidad.galleta.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:consume_item",
+   "conditions": {
+    "item": {
+     "items": [
+      "navidad:galleta_jengibre"
+     ]
+    }
+   }
+  }
+ },
+ "parent": "navidad:navidad/raiz"
+}

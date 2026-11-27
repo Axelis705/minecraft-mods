@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:muerdago"
+  },
+  "title": {
+   "translate": "advancement.navidad.muerdago"
+  },
+  "description": {
+   "translate": "advancement.navidad.muerdago.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/angel"
+}

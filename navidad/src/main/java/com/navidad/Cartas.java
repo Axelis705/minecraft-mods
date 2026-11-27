@@ -138,6 +138,7 @@ public final class Cartas {
         l.sendParticles(ParticleTypes.SNOWFLAKE, buzon.getX() + 0.5, buzon.getY() + 1.3, buzon.getZ() + 0.5, 20, 0.4, 0.6, 0.4, 0.04);
         p.sendSystemMessage(Component.translatable("navidad.carta.enviada").withStyle(ChatFormatting.AQUA));
         Navidad.LOGGER.info("NAVIDAD_CARTA enviada de={} deseos={}", p.getGameProfile().getName(), claves);
+        Logros.dar(p, "carta");
         return true;
     }
 
@@ -192,6 +193,7 @@ public final class Cartas {
         p.sendSystemMessage(Component.translatable(malo ? "navidad.carta.llego_malo" : "navidad.carta.llego")
                 .withStyle(malo ? ChatFormatting.DARK_GRAY : ChatFormatting.RED, ChatFormatting.BOLD));
         Navidad.LOGGER.info("NAVIDAD_CARTA entregada a={} regalos={} malo={}", p.getGameProfile().getName(), regalos.size(), malo);
+        Logros.dar(p, malo ? "carbon" : "respuesta");
         return true;
     }
 

@@ -153,6 +153,13 @@ En la colina hay **carrera de trineos**: el cronómetro arranca en cuanto empiez
 
 Se pueden poner sueltos: `/navidad gente santa|senora_claus|duende_juguetero|duende_sastre|duende_renos`.
 
+## Logros
+
+Hay una **pestaña de logros navideños** (tecla L): galleta de jengibre, gorro de Santa, carta a Santa (y su respuesta... o carbón),
+abrir un regalo, el calcetín, las galletas para Santa, romper una piñata, el muñequito de la rosca, las 12 uvas, un ángel de nieve, el
+abrazo bajo el muérdago, ganar la guerra de nieve, patinar, bajar la colina con cronómetro, romper el récord, hacerte amigo de un reno,
+vencer al Krampus, poner el pesebre y encontrar una casita de duende. Los textos y archivos salen de `herramientas/logros.py`.
+
 ## Comandos (operadores)
 
 | Comando | Qué hace |

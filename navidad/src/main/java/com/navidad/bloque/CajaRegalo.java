@@ -108,6 +108,7 @@ public class CajaRegalo extends HorizontalDirectionalBlock implements EntityBloc
         be.contenido = ItemStack.EMPTY;
         l.removeBlock(pos, false);
         if (p instanceof ServerPlayer sp) {
+            com.navidad.Logros.dar(sp, "regalo");
             sp.displayClientMessage(Component.translatable("navidad.caja.abierta", deQuien,
                     Component.literal(dentro.getCount() + "× ").append(dentro.getHoverName()).withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD)), false);
             if (!sp.getInventory().add(dentro)) {

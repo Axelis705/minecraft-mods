@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:gorro_santa"
+  },
+  "title": {
+   "translate": "advancement.navidad.raiz"
+  },
+  "description": {
+   "translate": "advancement.navidad.raiz.desc"
+  },
+  "frame": "task",
+  "show_toast": false,
+  "announce_to_chat": false,
+  "hidden": false,
+  "background": "minecraft:textures/block/snow.png"
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:tick"
+  }
+ }
+}

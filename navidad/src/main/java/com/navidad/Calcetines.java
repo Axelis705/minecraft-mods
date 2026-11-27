@@ -120,6 +120,9 @@ public final class Calcetines {
             p.displayClientMessage(Component.translatable("navidad.calcetin.lleno").withStyle(ChatFormatting.GOLD), true);
         }
         Navidad.LOGGER.info("NAVIDAD_CALCETIN {} carbon={} cosas={}", p.getGameProfile().getName(), carbon, cosas.size());
+        if (!carbon) {
+            Logros.dar(p, "calcetin");
+        }
         return true;
     }
 }

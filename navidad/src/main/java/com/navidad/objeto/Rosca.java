@@ -18,6 +18,7 @@ public class Rosca extends Item {
     public ItemStack finishUsingItem(ItemStack st, Level l, LivingEntity e) {
         if (!l.isClientSide && e instanceof ServerPlayer sp) {
             if (l.random.nextInt(5) == 0) {
+                com.navidad.Logros.dar(sp, "rosca");
                 for (ServerPlayer o : sp.serverLevel().players()) {
                     if (o.distanceTo(sp) < 32) {
                         o.sendSystemMessage(Component.translatable("navidad.rosca.muneco", sp.getDisplayName()).withStyle(ChatFormatting.GOLD));

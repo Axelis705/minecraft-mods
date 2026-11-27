@@ -148,6 +148,7 @@ public class Krampus extends Jefe {
                     Premios.dar(p, new net.minecraft.world.item.ItemStack(ModRegistry.REGALO_MISTERIOSO.get(), 3), Premios.Rareza.EPICO,
                             "navidad.regalo.te_toco");
                     com.axeliscore.npc.Misiones.evento(p, Navidad.MODID + ":krampus", 1);
+                    com.navidad.Logros.dar(p, "krampus");
                 }
             }
         }

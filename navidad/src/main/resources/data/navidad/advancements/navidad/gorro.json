@@ -1,0 +1,32 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:gorro_santa"
+  },
+  "title": {
+   "translate": "advancement.navidad.gorro"
+  },
+  "description": {
+   "translate": "advancement.navidad.gorro.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:inventory_changed",
+   "conditions": {
+    "items": [
+     {
+      "items": [
+       "navidad:gorro_santa"
+      ]
+     }
+    ]
+   }
+  }
+ },
+ "parent": "navidad:navidad/raiz"
+}

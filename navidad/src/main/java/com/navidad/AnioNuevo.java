@@ -162,6 +162,7 @@ public final class AnioNuevo {
             Premios.confeti(p.serverLevel(), p.getX() + f.x, p.getY() + 4.5, p.getZ() + f.z, true);
             int n = Math.min(12, sh.uvas.getOrDefault(p.getUUID(), 0));
             if (n >= 12) {
+                Logros.dar(p, "uvas");
                 p.sendSystemMessage(Component.translatable("navidad.anio.doce").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
                 p.addEffect(new MobEffectInstance(MobEffects.LUCK, 20 * 60 * 60, 1));
                 p.addEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, 20 * 60 * 30, 0));

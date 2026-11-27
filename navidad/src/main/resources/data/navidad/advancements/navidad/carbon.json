@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "minecraft:coal"
+  },
+  "title": {
+   "translate": "advancement.navidad.carbon"
+  },
+  "description": {
+   "translate": "advancement.navidad.carbon.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": true
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/carta"
+}

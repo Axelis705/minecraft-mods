@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:huevo_reno"
+  },
+  "title": {
+   "translate": "advancement.navidad.reno"
+  },
+  "description": {
+   "translate": "advancement.navidad.reno.desc"
+  },
+  "frame": "task",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/raiz"
+}

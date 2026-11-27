@@ -235,12 +235,14 @@ public final class GuerraNieve {
             for (Map.Entry<UUID, Integer> en : EQUIPO.entrySet()) {
                 ServerPlayer g = s.getPlayerList().getPlayer(en.getKey());
                 if (g != null && en.getValue() == gana) {
+                    Logros.dar(g, "guerra");
                     Fiestas.darCaja(g, Premios.sacar(Premios.Rareza.RARO, g.getRandom()), "Santa");
                 }
             }
         } else if (!equipos && !orden.isEmpty() && orden.get(0).getValue() > 0) {
             ServerPlayer g = s.getPlayerList().getPlayer(orden.get(0).getKey());
             if (g != null) {
+                Logros.dar(g, "guerra");
                 Fiestas.darCaja(g, Premios.sacar(Premios.Rareza.RARO, g.getRandom()), "Santa");
             }
         }

@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "minecraft:snowball"
+  },
+  "title": {
+   "translate": "advancement.navidad.guerra"
+  },
+  "description": {
+   "translate": "advancement.navidad.guerra.desc"
+  },
+  "frame": "goal",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/angel"
+}
