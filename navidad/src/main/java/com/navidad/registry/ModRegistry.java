@@ -13,6 +13,7 @@ import com.navidad.entidad.Pinata;
 import com.navidad.entidad.Reno;
 import com.navidad.entidad.TrineoMadera;
 import com.navidad.entidad.TrineoSanta;
+import com.navidad.mundo.CasitaDuende;
 import com.navidad.mundo.PinoAdornado;
 import com.navidad.objeto.Bengala;
 import com.navidad.objeto.Rosca;
@@ -68,6 +69,9 @@ public final class ModRegistry {
     /** El pino adornado que sale solo en los biomas nevados (data/navidad/forge/biome_modifier/pino_adornado.json). */
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> PINO_ADORNADO = FEATURES.register("pino_adornado",
             () -> new PinoAdornado(NoneFeatureConfiguration.CODEC));
+    /** La casita de duende (muy rara) de los biomas nevados (data/navidad/forge/biome_modifier/casita_duende.json). */
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> CASITA_DUENDE = FEATURES.register("casita_duende",
+            () -> new CasitaDuende(NoneFeatureConfiguration.CODEC));
 
     /** En qué orden salen en la pestaña creativa. */
     private static final List<RegistryObject<? extends Item>> ORDEN = new ArrayList<>();

@@ -7,11 +7,18 @@ navidad anio_nuevo 0
 #pausa 24
 #expect NAVIDAD_ANIO campanada 12
 #expect NAVIDAD_ANIO feliz
-forceload add -16 -16 16 16
+forceload add -16 -16 31 16
 #pausa 2
 fill -4 -61 -4 4 -61 4 minecraft:snow_block
 fill -4 -60 -4 4 -44 4 minecraft:air
 place feature navidad:pino_adornado 0 -60 0
 #expect navidad:pino_adornado
+fill 7 -61 -5 17 -61 5 minecraft:snow_block
+fill 7 -60 -5 17 -50 6 minecraft:air
+place feature navidad:casita_duende 12 -60 0
+#expect navidad:casita_duende
 summon navidad:trineo_madera 4 -60 4 {Motion:[0.0,0.0,0.3]}
+navidad guerra_nieve 10
+#pausa 12
+#expect NAVIDAD_GUERRA fin
 navidad temporada auto

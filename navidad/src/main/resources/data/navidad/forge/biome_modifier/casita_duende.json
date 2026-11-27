@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#forge:is_snowy",
+  "features": "navidad:casita_duende",
+  "step": "surface_structures"
+}

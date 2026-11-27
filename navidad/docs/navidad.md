@@ -51,6 +51,12 @@ les sale un gorro: casi siempre el de Santa y a veces el de duende. Los bebés y
 Si dos personas se paran juntas bajo el mismo **muérdago** (el adorno que cuelga), salen corazones, les llega un "abrazo navideño" y un
 poquito de regeneración (una vez por minuto por pareja).
 
+## Guerra de bolas de nieve
+
+`/navidad guerra_nieve` (un operador la empieza): todos contra todos por 2 minutos (o los segundos que digas). A todos les llegan 16 bolas
+de nieve y 8 más cada 15 segundos. Cada bolazo a otra persona es un punto (y le salpica nieve y un poquito de frío). Al final sale el
+podio en el chat y quien ganó se lleva una caja de regalo con algo raro.
+
 ## Carta a Santa
 
 Escribe tu carta en un **libro y pluma** ("Querido Santa: quiero un trineo, diamantes y galletas") y dale clic con ella al **buzón de
@@ -77,6 +83,10 @@ grandes. El 31, al entrar, a cada quien le tocan sus 12 uvas. Para hacerlo cuand
 En los biomas nevados (llanuras, taiga y playas nevadas, arboledas, laderas y picos, púas de hielo) aparece de vez en cuando un **pino
 adornado**: esferas de colores colgando de las ramas, una luz en la punta y regalos al pie. Uno de ellos es una **caja de regalo de
 verdad**, sin dueño, con algo raro o épico adentro.
+
+Muy de vez en cuando también hay una **casita de duende**: paredes de jengibre con esquinas de caramelo, techo de glaseado, chimenea que
+echa humo, y adentro una chimenea navideña, alfombra, pinito y un **cofre** con galletas, dulces, adornos, regalos misteriosos, uvas,
+esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario o un disco.
 
 ## Criaturas
 
@@ -127,6 +137,7 @@ Se pueden poner sueltos: `/navidad gente santa|senora_claus|duende_juguetero|due
 | `/navidad gente <quien>` | Poner a alguien del Polo Norte |
 | `/navidad ropa <prenda>` | Ponerte o quitarte una prenda (también `patines`) |
 | `/navidad anio_nuevo [segundos]` | Año Nuevo ahora: cuenta regresiva, 12 campanadas y fuegos |
+| `/navidad guerra_nieve [segundos]` | Guerra de bolas de nieve todos contra todos (2 minutos si no dices) |
 | `/navidad carta entregar` | Que llegue ya la respuesta de Santa a tu carta (para probar) |
 
 ## Herramientas (para regenerar los recursos)

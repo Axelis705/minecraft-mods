@@ -286,6 +286,12 @@ final class Prueba {
                 t.cmd("place feature navidad:pino_adornado 372 -60 6");
             });
             t.photo("pino_adornado", 3000, () -> t.lookFrom(380.5, -57, 17, 380.5, -54, 0));
+            t.add("casita", 2500, () -> {
+                t.cmd("fill 395 -61 -24 410 -61 -8 minecraft:snow_block");
+                t.cmd("place feature navidad:casita_duende 402 -60 -16");
+            });
+            t.photo("casita_duende", 2500, () -> t.lookFrom(410, -57, -5, 402, -58, -16));
+            t.photo("casita_duende_dentro", 2500, () -> t.lookFrom(402.5, -59.5, -15.5, 402.5, -59.6, -19));
             t.photo("pino_adornado_noche", 3500, () -> t.cmd("time set 18000"));
             // ---------------------------------------------------------------- Año Nuevo: cuenta, 12 campanadas con uvas y fuegos
             t.add("anio nuevo", 1200, () -> {

@@ -269,5 +269,11 @@
   "navidad.carrera.llega": "🛷 You reached the bottom in %s seconds!",
   "navidad.carrera.record": "🏆 New sled hill record: %s, %s seconds!",
   "navidad.carrera.record_es": "The record belongs to %s: %s seconds.",
-  "navidad.muerdago": "🌿 %s and %s are under the mistletoe! Christmas hug 🤗"
+  "navidad.muerdago": "🌿 %s and %s are under the mistletoe! Christmas hug 🤗",
+  "navidad.guerra.empieza": "❄ Snowball fight! It lasts %s seconds. Every hit on someone else is a point.",
+  "navidad.guerra.punto": "❄ You hit %s! Score: %s",
+  "navidad.guerra.te_dieron": "❄ %s hit you with a snowball!",
+  "navidad.guerra.faltan": "❄ %s seconds left in the snowball fight.",
+  "navidad.guerra.fin": "❄ The snowball fight is over! The podium:",
+  "navidad.guerra.nadie": "Nobody hit anybody... time to practice!"
 }

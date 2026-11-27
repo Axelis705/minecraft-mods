@@ -316,3 +316,17 @@ T5 = {
 if __name__ == '__main__':
     aplicar(T5)
     print(len(T5), 'texto del muérdago')
+
+T6 = {
+    'navidad.guerra.empieza': ('❄ ¡Guerra de bolas de nieve! Dura %s segundos. Cada bolazo a otra persona es un punto.',
+                               '❄ Snowball fight! It lasts %s seconds. Every hit on someone else is a point.'),
+    'navidad.guerra.punto': ('❄ ¡Bolazo a %s! Llevas %s', '❄ You hit %s! Score: %s'),
+    'navidad.guerra.te_dieron': ('❄ ¡%s te dio un bolazo!', '❄ %s hit you with a snowball!'),
+    'navidad.guerra.faltan': ('❄ Quedan %s segundos de guerra de nieve.', '❄ %s seconds left in the snowball fight.'),
+    'navidad.guerra.fin': ('❄ ¡Se acabó la guerra de bolas de nieve! El podio:', '❄ The snowball fight is over! The podium:'),
+    'navidad.guerra.nadie': ('Nadie le atinó a nadie... ¡a practicar!', 'Nobody hit anybody... time to practice!'),
+}
+
+if __name__ == '__main__':
+    aplicar(T6)
+    print(len(T6), 'textos de la guerra de nieve')
