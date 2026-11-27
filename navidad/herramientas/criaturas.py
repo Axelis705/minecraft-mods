@@ -93,7 +93,8 @@ RENITO = [(a, b) for a, b in RENO if not a.startswith('c.build') and not a.start
           and a != '    c.bone("eyes"'] + [
     ('"geometry.axelis_core.bestia"', '"geometry.navidad.renito"'),
     ('    c.bone("eyes"', ASTAS.replace('    c.bone("eyes"', NARIZ)),
-    ('c.build(*out("bestia"))', 'c.build(*out("renito"))'),
+    # el modelo del renito ya es propio (herramientas/renito.py): de aquí solo salen sus animaciones
+    ('c.build(*out("bestia"))', 'pass  # c.build(*out("renito"))'),
     ('save_anims("bestia", an, os.path.join(A, "animations", "bestia.animation.json"))',
      'save_anims("renito", an, os.path.join(A, "animations", "renito.animation.json"))'),
     # pelaje un poquito más claro y con manchitas, como de bebé

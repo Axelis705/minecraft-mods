@@ -325,6 +325,7 @@ final class Prueba {
             });
             t.add("hud santa", 200, () -> t.hud(true));
             t.add("llega santa", 300, () -> {
+                SantaAviso.vistos = 0;
                 var sv = Minecraft.getInstance().getSingleplayerServer();
                 sv.execute(() -> {
                     var sp = sv.getPlayerList().getPlayers().get(0);
@@ -378,7 +379,7 @@ final class Prueba {
                 var l = Minecraft.getInstance().level;
                 for (BlockPos q : BlockPos.betweenClosed(425, -60, 65, 455, -58, 95)) {
                     if (l.getBlockState(q).is(com.navidad.registry.ModRegistry.CAJA_REGALO.get())) {
-                        t.lookFrom(q.getX() + 2.5, -58.8, q.getZ() + 2.5, q.getX() + 0.5, -59.7, q.getZ() + 0.5);
+                        t.lookFrom(q.getX() + 2.2, -60, q.getZ() + 2.2, q.getX() + 0.5, -59.6, q.getZ() + 0.5);
                         break;
                     }
                 }
@@ -757,6 +758,92 @@ final class Prueba {
                 }
             });
             // ---------------------------------------------------------------- el buzón y la carta a Santa
+            // ---------------------------------------------------------------- el lanzanieves con su tanque en la espalda
+            t.add("lanzanieves", 1500, () -> {
+                t.cmd("time set 6000");
+                t.cmd("fill 590 -60 240 612 -55 262 minecraft:air");
+                t.cmd("fill 590 -61 240 612 -61 262 minecraft:snow_block");
+                t.cmd("fill 598 -60 244 604 -60 246 minecraft:snow_block");
+                t.cmd("tp @a 601.5 -60 254.5 180 0");
+                t.cmd("gamemode survival @a");
+                t.cmd("clear @a");
+                t.cmd("item replace entity @p armor.chest with navidad:tanque_nieve{Items:[{Slot:0b,id:\"minecraft:snowball\",Count:16b},"
+                        + "{Slot:1b,id:\"minecraft:snowball\",Count:16b},{Slot:2b,id:\"minecraft:snow_block\",Count:20b}],Suelta:30}");
+                t.cmd("item replace entity @p weapon.mainhand with navidad:lanzanieves");
+                t.cmd("summon minecraft:zombie 601.5 -60 247.5 {NoAI:1b,Rotation:[0f,0f]}");
+                t.cmd("summon minecraft:husk 603.5 -60 248.5 {NoAI:1b,Rotation:[20f,0f]}");
+            });
+            t.add("camara atras", 600, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
+            t.photo("tanque_espalda", 1200, () -> t.cmd("tp @a 601.5 -60 254.5 200 15"));
+            t.photo("tanque_frente", 1200, () -> {
+                Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
+                t.cmd("tp @a 601.5 -60 254.5 200 5");
+            });
+            t.add("camara normal 3", 400, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
+            t.add("hud lanzanieves", 200, () -> t.hud(true));
+            t.add("apuntar", 400, () -> t.lookFrom(601.5, -60, 254.5, 602, -59, 247.5));
+            t.add("disparar", 900, () -> Minecraft.getInstance().options.keyUse.setDown(true));
+            t.photo("lanzanieves_rafaga", 250, () -> {
+            });
+            t.add("camara lado", 200, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK));
+            t.photo("lanzanieves_rafaga_atras", 500, () -> {
+            });
+            t.add("soltar", 400, () -> {
+                Minecraft.getInstance().options.keyUse.setDown(false);
+                Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
+            });
+            t.add("disparo?", 300, () -> t.check(com.navidad.nieve.Lanzanieves.disparos > 3, "el lanzanieves disparó ("
+                    + com.navidad.nieve.Lanzanieves.disparos + ")"));
+            t.photo("lanzanieves_escarcha", 400, () -> {
+            });
+            // aspirar la nieve del piso
+            t.add("mirar la nieve", 400, () -> t.lookFrom(601.5, -60, 254.5, 601.5, -61, 252.2));
+            t.add("aspirar", 1400, () -> Minecraft.getInstance().options.keyUse.setDown(true));
+            t.photo("lanzanieves_aspira", 200, () -> {
+            });
+            t.add("soltar 2", 400, () -> Minecraft.getInstance().options.keyUse.setDown(false));
+            t.add("aspiro?", 300, () -> t.check(com.navidad.nieve.Lanzanieves.aspiradas > 0, "el lanzanieves aspiró nieve ("
+                    + com.navidad.nieve.Lanzanieves.aspiradas + ")"));
+            // la bola gigante (agachado)
+            t.add("apuntar 2", 400, () -> t.lookFrom(601.5, -60, 254.5, 602.5, -60, 246));
+            t.add("agacharse", 200, () -> Minecraft.getInstance().options.keyShift.setDown(true));
+            t.add("cargar", 1300, () -> Minecraft.getInstance().options.keyUse.setDown(true));
+            t.photo("lanzanieves_carga", 100, () -> {
+            });
+            t.add("lanzar", 250, () -> Minecraft.getInstance().options.keyUse.setDown(false));
+            t.photo("bola_gigante", 350, () -> Minecraft.getInstance().options.keyShift.setDown(false));
+            t.photo("bola_gigante_nevada", 900, () -> {
+            });
+            t.add("gigante?", 300, () -> t.check(com.navidad.nieve.Lanzanieves.gigantes > 0, "salió la bola gigante"));
+            // la ventana del tanque y el inventario con los objetos nuevos
+            t.add("abrir tanque", 900, () -> com.axeliscore.data.client.ClientData.send(Navidad.MODID + ":tanque_abrir"));
+            t.add("tanque abierto?", 300, () -> t.check(Minecraft.getInstance().screen instanceof TanquePantalla, "se abrió el tanque"));
+            t.photo("tanque_ventana", 600, () -> {
+            });
+            t.add("inventario", 800, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.setScreen(null);
+                t.cmd("give @p navidad:libro_navidad");
+                t.cmd("give @p navidad:pino_navidad");
+                t.cmd("give @p navidad:punta_estrella");
+                t.cmd("give @p navidad:adorno_cristal 3");
+                t.cmd("give @p navidad:adorno_pinguino 2");
+                t.cmd("give @p navidad:caja_regalo");
+            });
+            t.add("abrir inventario", 800, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.setScreen(new net.minecraft.client.gui.screens.inventory.InventoryScreen(mc.player));
+            });
+            t.photo("inventario_nuevo", 600, () -> {
+            });
+            t.add("fin lanzanieves", 500, () -> {
+                Minecraft.getInstance().setScreen(null);
+                t.hud(false);
+                t.cmd("gamemode creative @a");
+                t.cmd("clear @a");
+                t.cmd("kill @e[type=minecraft:zombie]");
+                t.cmd("kill @e[type=minecraft:husk]");
+            });
             t.add("buzon", 1000, () -> {
                 t.cmd("time set 1000");
                 t.cmd("gamemode creative @a");

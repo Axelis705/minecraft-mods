@@ -122,3 +122,41 @@ sin_forma('arbol_luces', 'adorno_luces', 1, ['glowstone_dust', 'glowstone_dust',
 sin_forma('arbol_guirnalda', 'adorno_guirnalda', 1, ['gold_nugget', 'gold_nugget', 'gold_nugget', 'gold_nugget', 'string', 'string'])
 con_forma('arbol_estrella', 'punta_estrella', 1, [' G ', 'GLG', ' I '], {'G': 'gold_ingot', 'L': 'glowstone', 'I': 'iron_nugget'})
 print('libro, pino, botín y recetas listos')
+
+# ================================================================ el lanzanieves (3D, lo dibuja el juego) y el ícono del tanque
+escribir(os.path.join(A, 'models', 'item', 'lanzanieves.json'), {
+    'parent': 'minecraft:builtin/entity', 'gui_light': 'front',
+    'textures': {'particle': 'minecraft:block/snow'},
+    'display': {
+        'gui': {'rotation': [15, 115, 0], 'translation': [0, 1.8, 0], 'scale': [0.62, 0.62, 0.62]},
+        'ground': {'rotation': [0, 0, 0], 'translation': [0, 3, 0], 'scale': [0.4, 0.4, 0.4]},
+        'fixed': {'rotation': [0, 90, 0], 'translation': [0, 1.5, 0], 'scale': [0.6, 0.6, 0.6]},
+        'head': {'rotation': [0, 0, 0], 'translation': [0, 10, 0], 'scale': [0.8, 0.8, 0.8]},
+        'thirdperson_righthand': {'rotation': [0, 0, 0], 'translation': [0, 4, 1.5], 'scale': [0.75, 0.75, 0.75]},
+        'thirdperson_lefthand': {'rotation': [0, 0, 0], 'translation': [0, 4, 1.5], 'scale': [0.75, 0.75, 0.75]},
+        'firstperson_righthand': {'rotation': [0, 0, 0], 'translation': [0, 3, 0], 'scale': [0.62, 0.62, 0.62]},
+        'firstperson_lefthand': {'rotation': [0, 0, 0], 'translation': [0, 3, 0], 'scale': [0.62, 0.62, 0.62]},
+    }})
+dibujo('tanque_nieve', [
+    '......YYYY......',
+    '.......YY.......',
+    '.....RRRRRR.....',
+    '....YYYYYYYY....',
+    '...rRwrRwrRwr...',
+    '...RwrRsssRwR...',
+    '...wrRwsbsRwR...',
+    '...rRwrsbswrR...',
+    '...RwrRsbsRwR...',
+    '...wrRwsbswrR...',
+    '...rRwrsssRwR...',
+    '...RwrRwrRwrR...',
+    '...YYYYYYYYYY...',
+    '..kk.......YYk..',
+    '..k..........k..',
+    '................',
+], pal={'b': '#f4f8ff', 's': '#9aa4b0'})
+con_forma('arbol_lanzanieves', 'lanzanieves', 1, ['IPI', 'IDR', ' S '], {'I': 'iron_ingot', 'P': 'packed_ice', 'D': 'dispenser',
+                                                                          'R': 'red_dye', 'S': 'stick'})
+con_forma('arbol_tanque_nieve', 'tanque_nieve', 1, ['LSL', 'IGI', 'IBI'], {'L': 'leather', 'S': 'string', 'I': 'iron_ingot', 'G': 'glass',
+                                                                           'B': 'bucket'})
+print('lanzanieves y tanque: modelos y recetas')

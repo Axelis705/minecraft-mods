@@ -42,7 +42,7 @@ public final class ModClient {
                 return 0.6F;
             }
         });
-        e.registerEntityRenderer(ModRegistry.RENITO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "renito", 0.4F, 0.55F));
+        e.registerEntityRenderer(ModRegistry.RENITO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "renito", 0.4F, 0.6F));
         e.registerEntityRenderer(ModRegistry.PINGUINO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "pinguino", 0.35F, 1F) {
             @Override
             protected float modelScale(com.navidad.entidad.Pinguino p) {
@@ -52,12 +52,20 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
         e.registerBlockEntityRenderer(ModRegistry.PINO_NAVIDAD_BE.get(), PinoRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.CAJA_REGALO_BE.get(), CajaRenderer::new);
+        e.registerEntityRenderer(ModRegistry.BOLA_GIGANTE.get(), c -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(c, 2.8F, true));
     }
 
     /** En temporada, los mobs con cabeza de persona salen con gorro de Santa o de duende. */
     @SubscribeEvent
     public static void onLayers(EntityRenderersEvent.AddLayers e) {
         GorrosMobs.agregar(e);
+        // el tanque de nieve en la espalda (y su manguera)
+        for (String piel : e.getSkins()) {
+            net.minecraft.client.renderer.entity.LivingEntityRenderer<?, ?> r = e.getSkin(piel);
+            if (r instanceof net.minecraft.client.renderer.entity.player.PlayerRenderer pr) {
+                pr.addLayer(new TanqueCapa(pr));
+            }
+        }
     }
 
     /** Modelos sueltos (no son de ningún bloque): el trineo de madera. */
@@ -93,6 +101,8 @@ public final class ModClient {
             VestuarioCliente.registrar(Ropa.id("traje_santa"), Prenda.piel(rl("textures/prenda/traje_santa.png")));
         });
         SantaAviso.init();
+        MunicionHud.init();
+        e.enqueueWork(() -> net.minecraft.client.gui.screens.MenuScreens.register(ModRegistry.TANQUE_MENU.get(), TanquePantalla::new));
         Prueba.registrar();
     }
 }

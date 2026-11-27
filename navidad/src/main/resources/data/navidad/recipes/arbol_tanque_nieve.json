@@ -1,0 +1,30 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  "LSL",
+  "IGI",
+  "IBI"
+ ],
+ "key": {
+  "L": {
+   "item": "minecraft:leather"
+  },
+  "S": {
+   "item": "minecraft:string"
+  },
+  "I": {
+   "item": "minecraft:iron_ingot"
+  },
+  "G": {
+   "item": "minecraft:glass"
+  },
+  "B": {
+   "item": "minecraft:bucket"
+  }
+ },
+ "result": {
+  "item": "navidad:tanque_nieve",
+  "count": 1
+ }
+}

@@ -65,6 +65,8 @@ public final class ModRegistry {
     public static final DeferredRegister<BlockEntityType<?>> BES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Navidad.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Navidad.MODID);
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Navidad.MODID);
+    public static final DeferredRegister<net.minecraft.world.inventory.MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES,
+            Navidad.MODID);
 
     /** El pino adornado que sale solo en los biomas nevados (data/navidad/forge/biome_modifier/pino_adornado.json). */
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> PINO_ADORNADO = FEATURES.register("pino_adornado",
@@ -121,6 +123,10 @@ public final class ModRegistry {
     public static final RegistryObject<SoundEvent> PATIN = sonido("patin");
     public static final RegistryObject<SoundEvent> CAMPANADA = sonido("campanada");
     public static final RegistryObject<SoundEvent> CARTA_VUELA = sonido("carta_vuela");
+    public static final RegistryObject<SoundEvent> LANZANIEVES_DISPARA = sonido("lanzanieves_dispara");
+    public static final RegistryObject<SoundEvent> LANZANIEVES_GIRA = sonido("lanzanieves_gira");
+    public static final RegistryObject<SoundEvent> LANZANIEVES_CARGA = sonido("lanzanieves_carga");
+    public static final RegistryObject<SoundEvent> LANZANIEVES_BOLA = sonido("lanzanieves_bola");
 
     // ------------------------------------------------------------------ comida
 
@@ -207,6 +213,18 @@ public final class ModRegistry {
             ADORNOS.put(d.id(), item(d.id(), () -> new com.navidad.arbol.AdornoItem(props().stacksTo(pila).rarity(rz), d.id())));
         }
     }
+
+    // ------------------------------------------------------------------ el lanzanieves y su tanque
+
+    public static final RegistryObject<Item> LANZANIEVES = item("lanzanieves", () -> new com.navidad.nieve.Lanzanieves(props().stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> TANQUE_NIEVE = item("tanque_nieve", () -> new com.navidad.nieve.TanqueNieve(props().stacksTo(1)));
+    public static final RegistryObject<EntityType<com.navidad.nieve.BolaGigante>> BOLA_GIGANTE = ENTITIES.register("bola_gigante",
+            () -> EntityType.Builder.<com.navidad.nieve.BolaGigante>of(com.navidad.nieve.BolaGigante::new, MobCategory.MISC).sized(0.7F, 0.7F)
+                    .clientTrackingRange(8).updateInterval(5).build("navidad:bola_gigante"));
+    public static final RegistryObject<net.minecraft.world.inventory.MenuType<com.navidad.nieve.TanqueMenu>> TANQUE_MENU = MENUS.register(
+            "tanque", () -> net.minecraftforge.common.extensions.IForgeMenuType.create((id, inv, buf) -> new com.navidad.nieve.TanqueMenu(id, inv,
+                    buf.readByte())));
 
     // ------------------------------------------------------------------ ropa (se pone encima con el vestuario del Core)
 
@@ -297,5 +315,6 @@ public final class ModRegistry {
         BES.register(bus);
         TABS.register(bus);
         FEATURES.register(bus);
+        MENUS.register(bus);
     }
 }

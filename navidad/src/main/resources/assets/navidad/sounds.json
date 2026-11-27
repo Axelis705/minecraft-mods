@@ -138,5 +138,31 @@
    "navidad:pinguino_feliz"
   ],
   "subtitle": "navidad.sub.pinguino_feliz"
+ },
+ "lanzanieves_dispara": {
+  "sounds": [
+   "navidad:lanzanieves_dispara1",
+   "navidad:lanzanieves_dispara2",
+   "navidad:lanzanieves_dispara3"
+  ],
+  "subtitle": "navidad.sub.lanzanieves"
+ },
+ "lanzanieves_gira": {
+  "sounds": [
+   "navidad:lanzanieves_gira"
+  ],
+  "subtitle": "navidad.sub.lanzanieves_gira"
+ },
+ "lanzanieves_carga": {
+  "sounds": [
+   "navidad:lanzanieves_carga"
+  ],
+  "subtitle": "navidad.sub.lanzanieves_carga"
+ },
+ "lanzanieves_bola": {
+  "sounds": [
+   "navidad:lanzanieves_bola"
+  ],
+  "subtitle": "navidad.sub.lanzanieves_bola"
  }
 }

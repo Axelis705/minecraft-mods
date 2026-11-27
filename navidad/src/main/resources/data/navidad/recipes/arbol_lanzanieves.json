@@ -1,0 +1,30 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  "IPI",
+  "IDR",
+  " S "
+ ],
+ "key": {
+  "I": {
+   "item": "minecraft:iron_ingot"
+  },
+  "P": {
+   "item": "minecraft:packed_ice"
+  },
+  "D": {
+   "item": "minecraft:dispenser"
+  },
+  "R": {
+   "item": "minecraft:red_dye"
+  },
+  "S": {
+   "item": "minecraft:stick"
+  }
+ },
+ "result": {
+  "item": "navidad:lanzanieves",
+  "count": 1
+ }
+}

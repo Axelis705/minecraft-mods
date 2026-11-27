@@ -156,7 +156,7 @@ public class PinoRenderer implements BlockEntityRenderer<PinoBE> {
             }
             float[] q = lg[i];
             int piso = (int) q[3];
-            float esc = new float[]{0.5F, 0.46F, 0.42F, 0.37F, 0.32F}[Math.min(4, piso)];
+            float esc = new float[]{0.64F, 0.6F, 0.54F, 0.47F, 0.4F}[Math.min(4, piso)];
             esc *= salto(t, aparecio == null ? 0 : aparecio[i]);
             if (esc <= 0.001F) {
                 continue;

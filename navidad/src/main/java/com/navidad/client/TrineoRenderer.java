@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
  * (es magia), y el farol y la punta de la estela brillan.
  */
 public class TrineoRenderer extends SimpleGeoRenderer<TrineoSanta> {
-    private static final float ESCALA = 1.4F, ESCALA_RENOS = 1.2F;
+    private static final float ESCALA = 1.4F, ESCALA_RENOS = 1.0F;
     private final Reno[] renos = new Reno[4];
     private Level nivel;
     private int ultimoTick = -1;
@@ -84,7 +84,7 @@ public class TrineoRenderer extends SimpleGeoRenderer<TrineoSanta> {
                 pilas++;
                 // en el espacio del trineo (ya girado): -z es hacia adelante
                 float galope = Mth.sin(t * 0.45F + i * 1.1F) * 0.1F;
-                ps.translate(i % 2 == 0 ? -0.62 : 0.62, 0.15 + galope + (i / 2) * 0.12, -2.35 - (i / 2) * 1.9);
+                ps.translate(i % 2 == 0 ? -0.72 : 0.72, 0.15 + galope + (i / 2) * 0.12, -3.1 - (i / 2) * 2.5);
                 ps.mulPose(Axis.YP.rotationDegrees(rumbo - 180));
                 ps.scale(ESCALA_RENOS, ESCALA_RENOS, ESCALA_RENOS);
                 rr.render(r, rumbo, pt, ps, buf, LightTexture.FULL_BRIGHT);

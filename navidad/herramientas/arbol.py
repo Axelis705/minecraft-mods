@@ -191,8 +191,10 @@ for t, (ya, largo, n, caida, grueso, ancho, giro0) in enumerate(PISOS):
             c.part('ramas', [mb[0] - ancho * 0.3, mb[1] - grueso * 0.35, mb[2]], [ancho * 0.6, grueso * 0.7, la * 0.45], agujas(True),
                    rotation=[-(ca + 8), giro + lado * 38, 0], pivot=list(mb))
         # el lugar para colgar: abajo de la rama, cerca de la punta
-        cuelga = a_bloque((0, ya - grueso / 2, z0 + la - 1.2), rot, piv)
-        lugares.append((cuelga[0], cuelga[1] - 0.01, cuelga[2], t, giro))
+        # (al final de la puntita de la rama, por abajo: así el adorno queda afuera y se ve)
+        cuelga = a_bloque((pb[0], pb[1] - grueso * 0.35, pb[2] + 2.2), rot2, pb)
+        if t > 0:  # (las del piso de abajo casi tocan el suelo: ahí no se cuelga nada)
+            lugares.append((cuelga[0], cuelga[1] - 0.015, cuelga[2], t, giro))
         tip = a_bloque((0, ya - grueso * 0.2, z0 + la + 1.5), rot2, pb if False else piv)
         ps.append((a_bloque((0, ya, z0 + la + 1.0), rot, piv), giro))
         # puntos encima de la rama para los focos
