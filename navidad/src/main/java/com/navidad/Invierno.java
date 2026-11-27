@@ -148,9 +148,10 @@ public final class Invierno {
         Integer ini = SALIDA.get(p.getUUID());
         Double antes = ANTES.put(p.getUUID(), lz);
         if (ini == null) {
-            // la línea de salida está al borde de la cima: arranca quien la cruza bajando
-            double linea = Aldea.COLINA_CIMA + 0.6;
-            if (enCarril && antes != null && antes < linea && lz >= linea) {
+            // arranca quien empieza a bajar estando en la cima (la plataforma de arriba y el primer tramo antes de la bajada); así cuenta
+            // aunque te subas al trineo ya un poquito adelante de la orilla
+            boolean enCima = antes != null && antes <= Aldea.COLINA_CIMA + 2.5 && antes >= Aldea.COLINA_CIMA - 4;
+            if (enCarril && enCima && lz - antes > 0.01) {
                 SALIDA.put(p.getUUID(), s.getTickCount());
                 p.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("navidad.carrera.sale").withStyle(ChatFormatting.AQUA)));
                 Navidad.LOGGER.info("NAVIDAD_CARRERA sale {}", p.getGameProfile().getName());
@@ -186,7 +187,7 @@ public final class Invierno {
             }
             Navidad.LOGGER.info("NAVIDAD_CARRERA {} {} s", p.getGameProfile().getName(), tiempo);
         } else if (s.getTickCount() % 4 == 0) {
-            p.connection.send(new ClientboundSetActionBarTextPacket(Component.literal(String.format(Locale.ROOT, "🛷 %.1f s", seg))
+            p.connection.send(new ClientboundSetActionBarTextPacket(Component.literal(String.format(Locale.ROOT, "❄ %.1f s", seg))
                     .withStyle(ChatFormatting.AQUA)));
         }
     }

@@ -66,6 +66,16 @@ final class Prueba {
                 t.cmd("fill -14 -60 27 14 -55 27 minecraft:spruce_planks");
             });
             t.add("comando", 1200, () -> t.cmd(Navidad.MODID));
+            // ¿la letra del juego trae los emojis que usan los mensajes? (si miden igual que un carácter que no existe, salen como cajita)
+            t.add("emojis", 200, () -> {
+                var f = net.minecraft.client.Minecraft.getInstance().font;
+                int falta = f.width(new String(Character.toChars(0x10FFFD)));
+                StringBuilder sb = new StringBuilder("NAVIDAD_EMOJI falta=" + falta);
+                for (int cp : new int[]{0x1F514, 0x1F381, 0x1F384, 0x1F6F7, 0x1F947, 0x1F347, 0x1F385, 0x2744, 0x2605, 0x266A}) {
+                    sb.append(' ').append(Integer.toHexString(cp)).append('=').append(f.width(new String(Character.toChars(cp))));
+                }
+                Navidad.LOGGER.info(sb.toString());
+            });
             // galería: diez por fila, cada dos bloques; filas cada tres
             t.add("galeria", 2500, () -> {
                 t.cmd("kill @e[type=minecraft:slime]");

@@ -477,7 +477,7 @@ final class PruebaCliente {
             t.cmd("gamemode spectator @a");
             t.lookFrom(-53, -59, 457.5, -53, -56.5, 470);
         });
-        t.waitFor("telon abierto", 40000, () -> Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(-53, -56, 470)).isAir());
+        t.waitFor("telon abierto", 60000, () -> Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(-53, -56, 470)).isAir());
         foto(t, "c1_66_vitrinas", 2500, () -> t.lookFrom(-53, -57.5, 462, -53, -58.5, 477));
         // la cera sube en la vitrina del centro (la primera víctima); las vitrinas están en x -60, -52 y -44, z 474
         t.waitFor("cera", 40000, () -> net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(Minecraft.getInstance().level

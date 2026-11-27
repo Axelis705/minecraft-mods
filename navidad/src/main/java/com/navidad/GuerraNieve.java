@@ -113,7 +113,7 @@ public final class GuerraNieve {
         List<ServerPlayer> todos = s.getPlayerList().getPlayers();
         for (ServerPlayer p : todos) {
             p.sendSystemMessage(Component.translatable("navidad.guerra.fin").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
-            String[] medallas = {"🥇", "🥈", "🥉"};
+            String[] medallas = {"★ 1º", "2º", "3º"};
             for (int i = 0; i < Math.min(3, orden.size()); i++) {
                 var en = orden.get(i);
                 p.sendSystemMessage(Component.literal(medallas[i] + " " + NOMBRES.getOrDefault(en.getKey(), "?") + ": " + en.getValue())
