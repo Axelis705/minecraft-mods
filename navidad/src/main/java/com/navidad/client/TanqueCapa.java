@@ -91,22 +91,26 @@ public class TanqueCapa extends RenderLayer<AbstractClientPlayer, PlayerModel<Ab
     }
 
     private static void manguera(PoseStack ps, MultiBufferSource buf, int luz, ModelPart cuerpo, ModelPart brazo, boolean derecha) {
-        // de la boquilla del tanque (abajo, del lado de la mano del arma) a la mano
-        Vector3f a = punto(cuerpo, derecha ? -2.7F : 2.7F, 14.6F, 4.7F);
+        // de la boquilla del tanque (abajo, del lado de la mano del arma): sale hacia el lado, rodea la cadera por fuera del cuerpo y sube
+        // por debajo hasta la mano (curva con dos puntos de control, en el espacio del modelo: y crece hacia abajo)
+        float lado = derecha ? -1F : 1F;
+        Vector3f a = punto(cuerpo, lado * 3.0F, 14.4F, 4.6F);
         Vector3f b = punto(brazo, derecha ? -1F : 1F, 10.5F, 1.5F);
-        Vector3f c = new Vector3f((a.x + b.x) / 2F, Math.max(a.y, b.y) + 0.32F, (a.z + b.z) / 2F + 0.18F);
+        Vector3f c1 = new Vector3f(a).add(lado * 3.2F / 16F, 3.0F / 16F, -1.0F / 16F);
+        Vector3f c2 = new Vector3f(b).add(lado * 2.6F / 16F, 7.0F / 16F, 2.5F / 16F);
         VertexConsumer vc = buf.getBuffer(RenderType.entityCutoutNoCull(Draw.BLANCO));
         Matrix4f m = ps.last().pose();
         Matrix3f n = ps.last().normal();
-        int partes = 14;
+        int partes = 20;
         float r = 0.034F;
         Vector3f antes = null;
         Vector3f[] anillo0 = null;
         for (int i = 0; i <= partes; i++) {
             float k = i / (float) partes;
             float u = 1 - k;
-            Vector3f q = new Vector3f(u * u * a.x + 2 * u * k * c.x + k * k * b.x, u * u * a.y + 2 * u * k * c.y + k * k * b.y,
-                    u * u * a.z + 2 * u * k * c.z + k * k * b.z);
+            float w0 = u * u * u, w1 = 3 * u * u * k, w2 = 3 * u * k * k, w3 = k * k * k;
+            Vector3f q = new Vector3f(w0 * a.x + w1 * c1.x + w2 * c2.x + w3 * b.x, w0 * a.y + w1 * c1.y + w2 * c2.y + w3 * b.y,
+                    w0 * a.z + w1 * c1.z + w2 * c2.z + w3 * b.z);
             if (antes != null) {
                 Vector3f dir = new Vector3f(q).sub(antes).normalize();
                 Vector3f ref = Math.abs(dir.y) < 0.9F ? new Vector3f(0, 1, 0) : new Vector3f(1, 0, 0);

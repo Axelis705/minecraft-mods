@@ -134,8 +134,8 @@ escribir(os.path.join(A, 'models', 'item', 'lanzanieves.json'), {
         'head': {'rotation': [0, 0, 0], 'translation': [0, 10, 0], 'scale': [0.8, 0.8, 0.8]},
         'thirdperson_righthand': {'rotation': [0, 0, 0], 'translation': [0, 4, 1.5], 'scale': [0.75, 0.75, 0.75]},
         'thirdperson_lefthand': {'rotation': [0, 0, 0], 'translation': [0, 4, 1.5], 'scale': [0.75, 0.75, 0.75]},
-        'firstperson_righthand': {'rotation': [0, 0, 0], 'translation': [0, 3, 0], 'scale': [0.62, 0.62, 0.62]},
-        'firstperson_lefthand': {'rotation': [0, 0, 0], 'translation': [0, 3, 0], 'scale': [0.62, 0.62, 0.62]},
+        'firstperson_righthand': {'rotation': [0, 0, 0], 'translation': [0, 0, 0], 'scale': [0.45, 0.45, 0.45]},
+        'firstperson_lefthand': {'rotation': [0, 0, 0], 'translation': [0, 0, 0], 'scale': [0.45, 0.45, 0.45]},
     }})
 dibujo('tanque_nieve', [
     '......YYYY......',

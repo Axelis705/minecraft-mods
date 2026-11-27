@@ -74,7 +74,7 @@ public final class LanzanievesObjeto extends BlockEntityWithoutLevelRenderer {
                     int lado = arm == HumanoidArm.RIGHT ? 1 : -1;
                     float culatazo = culatazo(p, pt);
                     float c = p.isUsingItem() ? 1 : 0;
-                    ps.translate(lado * 0.42F, -0.46F + equip * -0.6F, -0.62F + culatazo * 0.07F);
+                    ps.translate(lado * 0.38F, -0.25F + equip * -0.6F, -0.86F + culatazo * 0.07F);
                     ps.mulPose(Axis.XP.rotationDegrees(culatazo * 4F + c * Mth.sin((p.tickCount + pt) * 0.9F) * 0.4F));
                     return true;
                 }

@@ -375,11 +375,19 @@ final class Prueba {
             });
             t.add("volver al piso", 300, () -> t.cmd("tp @a 440.5 -60 80.5 -90 30"));
             t.waitFor("el regalo aterrizó como caja", 40000, () -> com.navidad.entidad.RegaloCayendo.aterrizados > 0);
+            BlockPos[] cajaVista = {null};
+            Runnable verCaja = () -> {
+                BlockPos q = cajaVista[0];
+                if (q != null) {
+                    t.lookFrom(q.getX() + 2.2, -60, q.getZ() + 2.2, q.getX() + 0.5, -59.4, q.getZ() + 0.5);
+                }
+            };
             t.add("buscar la caja", 1200, () -> {
                 var l = Minecraft.getInstance().level;
                 for (BlockPos q : BlockPos.betweenClosed(425, -60, 65, 455, -58, 95)) {
                     if (l.getBlockState(q).is(com.navidad.registry.ModRegistry.CAJA_REGALO.get())) {
-                        t.lookFrom(q.getX() + 2.2, -60, q.getZ() + 2.2, q.getX() + 0.5, -59.6, q.getZ() + 0.5);
+                        cajaVista[0] = q.immutable();
+                        verCaja.run();
                         break;
                     }
                 }
@@ -397,12 +405,9 @@ final class Prueba {
                     }
                 }
             });
-            t.photo("regalo_tiembla", 300, () -> {
-            });
-            t.photo("regalo_tapa_vuela", 450, () -> {
-            });
-            t.photo("regalo_sube", 450, () -> {
-            });
+            t.photo("regalo_tiembla", 300, verCaja);
+            t.photo("regalo_tapa_vuela", 450, verCaja);
+            t.photo("regalo_sube", 450, verCaja);
             t.waitFor("se abrió el regalo", 4000, () -> com.navidad.bloque.CajaRegaloBE.abiertas > 0);
             t.add("hud regalo", 200, () -> t.hud(true));
             t.photo("regalo_aviso", 600, () -> {

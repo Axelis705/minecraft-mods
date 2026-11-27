@@ -63,7 +63,8 @@ public class TanquePantalla extends AbstractContainerScreen<TanqueMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics g, int mx, int my) {
-        super.renderLabels(g, mx, my);
+        // el título va arriba de las ranuras (a la izquierda está el dibujo del tanque) y no se escribe "Inventario" (lo taparía)
+        g.drawString(font, title, 97, 12, 0x404040, false);
         g.drawString(font, Component.translatable("navidad.tanque.tiros", tiros()), 97, 64, 0xFF3A5A7A, false);
     }
 
