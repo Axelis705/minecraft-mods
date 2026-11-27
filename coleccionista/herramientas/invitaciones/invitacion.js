@@ -4,7 +4,7 @@
 const P = new URLSearchParams(location.search);
 const NOMBRE = P.get('nombre') || 'Scardax';
 const SKIN = P.get('skin') || 'skin.png';
-const NUM = P.get('num') || '07';
+const NUM = P.get('num') || '02';
 const W = 1080, H = 1350;
 const r = (d) => d * Math.PI / 180;
 let semilla = 11;
@@ -12,7 +12,7 @@ const azar = () => { semilla = (semilla * 1664525 + 1013904223) >>> 0; return se
 
 document.getElementById('nombre').textContent = NOMBRE;
 document.getElementById('placaNombre').textContent = NOMBRE.toUpperCase();
-document.getElementById('num').textContent = 'INVITACIÓN N.º ' + NUM;
+document.getElementById('num').textContent = 'JUGADOR ' + NUM;
 
 const ren = new THREE.WebGLRenderer({ canvas: document.getElementById('escena'), antialias: true, preserveDrawingBuffer: true });
 ren.setSize(W, H, false);

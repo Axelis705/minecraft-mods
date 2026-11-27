@@ -8,6 +8,6 @@ Uso:
 ```
 node hacer.js lista.json salida/
 ```
-`lista.json`: `[{"nombre": "Scardax", "skin": "/ruta/Scardax.png", "num": "07"}]`. La skin es el PNG de 64x64 (o 64x32 de las
+`lista.json`: `[{"nombre": "Scardax", "skin": "/ruta/Scardax.png", "num": "02"}]`. La skin es el PNG de 64x64 (o 64x32 de las
 viejas); los brazos delgados se detectan solos. Usa `../trailer/web3d/three.min.js` y Chromium de Playwright con SwiftShader.
 Las skins de los amigos no se guardan en el repo.
