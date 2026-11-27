@@ -1,10 +1,11 @@
 # Navidad de Axelis
 
-Una Navidad enorme para Minecraft 1.20.1 (Forge 47.4.10), hecha para **jugar en Survival**: Santa pasa solo y te suelta regalos en
-paracaídas, pones tu árbol y cada mañana hay regalos debajo, un duende ladrón intenta robártelos, hay pingüinos que puedes domar, un
-puesto de árboles de Navidad con su vendedor, un duende viajero con su reno, aldeanos que venden cosas navideñas... y además
-decoraciones, posadas con piñatas, comida navideña, renos que se montan, muñecos de nieve malvados, el Krampus de jefe, villancicos y la
-aldea de Santa.
+Una Navidad enorme para Minecraft 1.20.1 (Forge 47.4.10), hecha para **jugar en Survival**: Santa pasa solo con su trineo y te avienta
+regalos en paracaídas, decoras **tu propio pino** colgándole adornos y entre más bonito esté mejores regalos te deja cada mañana, un
+**Libro de Navidad** te va dando tareas que te dan adornos, hay pingüinos y renitos que puedes hacer tuyos, un **lanzanieves** con tanque
+en la espalda, un **cascanueces guardián** que cuida tu árbol, un duende ladrón, un puesto de árboles con su vendedor, un duende viajero...
+y además decoraciones, posadas con piñatas, comida navideña, renos que se montan, muñecos de nieve malvados, el Krampus de jefe,
+villancicos y la aldea de Santa.
 
 Usa Axelis Core (va dentro del jar).
 
@@ -12,40 +13,88 @@ Usa Axelis Core (va dentro del jar).
 
 Todo esto pasa solo mientras juegas:
 
-- **Santa pasa una vez al día** (en Nochebuena, tres): a una hora al azar entre el mediodía y la madrugada, cuando estás afuera (si estás
-  en una cueva, espera a que salgas). Se oyen los cascabeles, pasa a unos 20 bloques de altura, te saluda en pantalla ("¡Jo, jo, jo!
-  ¡Feliz Navidad!") y te suelta **dos regalos en paracaídas** que bajan meciéndose hacia ti. Al tocar el suelo quedan como una **caja de
-  regalo con tu nombre** (casi siempre algo sencillo, a veces algo bueno y muy de vez en cuando algo increíble). Los puedes **atrapar en
-  el aire** con un clic.
-- **Tu árbol de Navidad**: el último árbol que pones (de Navidad, nevado, dorado, pino en maceta) es *tu árbol*. **Cada mañana** Santa te
-  deja regalos debajo. Entre más **adornos navideños** tenga alrededor (a 5 bloques: luces, esferas, guirnaldas, coronas, regalos de
-  adorno, muñecos...), más y mejores regalos: ★☆☆☆ 1 regalo, ★★☆☆ (3+ adornos) 1 o 2, ★★★☆ (8+) 2, ★★★★ (15+) 3. El 25 de diciembre, uno
-  extra y épico. Clic derecho con la mano vacía en tu árbol para ver cuántos adornos tiene. Si mataste aldeanos, gólems, gatos o renos,
-  carbón. Si ya hay 4 regalos sin abrir, Santa espera a que los abras.
-- **El duende ladrón**: algunas noches, si hay regalos sin abrir bajo tu árbol y andas cerca, llega a escondidas, se roba uno y sale
-  corriendo riéndose. **Pégale una vez** y se rinde: suelta tu regalo y te deja dulces de disculpa. Si no lo alcanzas en poco más de un
-  minuto (o amanece), se escapa con él.
-- **Pingüinos** (en la nieve y en las costas heladas, en grupitos con bebés): dales **pescado** y a veces se hacen tuyos (entonces llevan
-  bufanda y gorrito de Santa). Te siguen, se sientan con un clic con la mano vacía (y de noche se duermen), nadan rapidísimo, y cuando van
-  con prisa sobre hielo o nieve **se avientan de panza**. Si tienen agua cerca, de vez en cuando pescan algo y te lo traen. Con pescado
-  también se cruzan.
-- **Renito de nariz roja** (en la nieve, poco común): su nariz brilla en la oscuridad. Con zanahorias a veces se hace tuyo, con una
-  **zanahoria dorada** siempre; entonces lleva collar con cascabel, te sigue dando brinquitos, se sienta con un clic y de noche su nariz
-  deja una estelita de brillos.
-- **Puesto de árboles de Navidad**: sale solo en praderas, bosques, taigas y la nieve. Un terrenito con cerca y faroles, pinos recién
-  cortados y arbolitos adornados, y el puestito con techo de lona a rayas y luces. Lo atiende **Don Abeto**, que vende árboles
-  (de Navidad, nevado, dorado, pino recién cortado, pino en maceta), cajas de adornos, luces, esferas, coronas, calcetines, galletas para
-  Santa y chocolate por **esmeraldas**; compra troncos y retoños de abeto y tiene encargos.
-- **Ramiro, el duende viajero**: cada dos o tres días, de día, llega cerca de alguien con su reno **Cometa** amarrado. Vende cosas que no
-  hay en otro lado (trineo, patines, árbol dorado, traje de Santa, discos, regalos misteriosos, esfera de nieve...) y al día siguiente se
-  va en una nube de nieve.
-- **Los aldeanos** también celebran: el granjero vende galletas de jengibre y bastones de caramelo, el carnicero pavo navideño, el pastor
-  gorro de Santa y suéter, el bibliotecario el calendario de Adviento; el comerciante errante trae adornos, chocolate, pinitos y a veces un
-  regalo misterioso.
-- **La primera vez que entras**, Santa te da la bienvenida con lo que puedes hacer y te manda un pinito en maceta para tu árbol.
-- La **nieve que cae** depende del lugar: más en lo frío, poquita en lo templado y nada en el desierto, la sabana o las tierras baldías.
-- Y lo de siempre: calcetines que Santa llena cada noche, galletas y leche para Santa, carta a Santa en el buzón, pinos adornados y
-  casitas de duende en la nieve, gorros en los mobs, nieve que cae.
+- **La primera vez que entras**, Santa te da la bienvenida y te manda tu **Pino de Navidad** para decorar, unas esferas y tu **Libro de
+  Navidad** (a los que ya jugaban antes también les llega el libro).
+- **Santa pasa una vez al día** (en Nochebuena, tres), cuando estás afuera. Primero baja un **aviso animado** arriba de la pantalla
+  ("¡Santa Claus se acerca!", a cuántos bloques viene y una **flecha dorada** que señala hacia dónde mirar). Se oyen los cascabeles, el
+  trineo **baja la velocidad encima de ti**, Santa **se ríe** ("¡JO, JO, JO!" grande en la pantalla, con las letras brincando y confeti),
+  te **saluda con la mano** y **saca regalos de su costal y te los avienta**: bajan en paracaídas y al tocar el suelo quedan como una caja
+  de regalo con tu nombre. Los puedes **atrapar en el aire** con un clic.
+- **Abrir regalos** es una fiesta: la caja **tiembla**, la **tapa con el moño sale volando**, salen **rayos de luz** del color de lo que
+  trae (dorado común, azul cielo raro, morado épico), el regalo **sube girando** y te sale un aviso con lo que te tocó. Hay cajas en cuatro
+  envolturas (roja, verde, azul y dorada). El **regalo misterioso** se desenvuelve en la mano: mantén clic derecho y tiembla hasta que
+  revienta en confeti.
+
+### Tu Pino de Navidad
+
+- Es un pino de dos bloques y medio (con falda roja). Lo pones en tu casa y es **tu árbol** (solo cuenta el último que pones).
+- **Cuélgale adornos con clic derecho**: cada uno queda en la rama más cerca de donde hiciste clic, mirando hacia afuera y meciéndose
+  poquito (aparece con un saltito). Las **luces** se enredan en todo el árbol (hasta 3 tiras; titilan de colores) y las **guirnaldas**
+  doradas cuelgan de punta a punta (hasta 3). En la **punta** va una **estrella**, un **ángel** o la **estrella polar de cristal**:
+  brillan y giran despacio.
+- **Agachado con la mano vacía** descuelgas el adorno más cercano. **Con la mano vacía** te dice su nivel y sus puntos.
+- Si lo rompes, **sale con todos sus adornos** puestos (en el inventario se ve adornado).
+- **Puntos y niveles**: cada adorno suma puntos (comunes 1, bonitos 2, raros 4; luces 3 por tira, guirnalda 2, estrella 6, ángel 8,
+  estrella polar 15), **+1 por cada adorno distinto**, y **los adornos navideños de tu casa** cerca del árbol suman hasta 25. Niveles:
+  Arbolito (0), Adornado (10), Bonito (25), Precioso (45), Espectacular (70) y Legendario (100). Al subir de nivel hay fiesta (título,
+  confeti y sonido).
+- **Cada mañana** Santa te deja regalos debajo **según el nivel**: 1 sencillo al principio y hasta 3 o 4 con más raros y épicos; desde
+  "Bonito" a veces un **adorno**, desde "Espectacular" siempre uno. El 25 de diciembre, uno épico de más. Si lastimaste aldeanos, gólems,
+  gatos o renos: carbón. Si ya hay 4 regalos sin abrir, espera a que los abras.
+- **18 adornos** con modelo 3D: esferas roja, azul nevada y dorada, bastoncito, moño (comunes); campanita, copo de nieve, galletita de
+  jengibre, piña nevada, tira de luces (bonitos); esfera de cristal con nieve, pajarito rojo, pingüinito, renito (raros); guirnalda;
+  estrella, ángel y estrella polar de cristal para la punta.
+- De dónde salen: los comunes y algunos bonitos **se fabrican** (ver recetas), Don Abeto los vende, Ramiro trae los raros, los da el
+  **Libro de Navidad** y, en niveles altos, **tu propio árbol**.
+
+### El Libro de Navidad
+
+Clic derecho para abrirlo: un libro con cintas de colores. **Cuatro capítulos** (Preparativos, Espíritu de invierno, La magia de Santa y
+Nochebuena) con **seis tareas** de survival cada uno (poner tu pino, colgar adornos, cortar abetos, adornar tu casa, tomar algo
+calientito, visitar a Don Abeto, hacer tuyo un pingüino, armar un gólem de nieve, pescar, hacer un ángel de nieve, lanzar bolas de nieve,
+hacer tuyo un renito, atrapar un regalo en el aire, abrir regalos, galletas para Santa, la carta, el calcetín, atrapar al duende ladrón,
+llevar tu árbol a "Bonito" y a "Espectacular", 12 adornos distintos, vencer muñecos malvados, encontrar a Ramiro y vencer a Krampus).
+Cuando una tarea queda lista te sale un aviso; en el libro aprietas **Reclamar** (cae un sello de cera, saltan chispas y los premios vuelan
+a tu inventario). Al terminar un capítulo, su premio grande: **la estrella**, **el lanzanieves**, **el ángel** y **la estrella polar de
+cristal**. La cinta **Mi árbol** muestra tu árbol de verdad girando en 3D, su nivel, sus puntos y qué regalos da cada nivel. Si lo pierdes:
+libro, tinte rojo y un retoño de abeto.
+
+### El lanzanieves y su tanque
+
+- **Lanzanieves**: mantén clic derecho, los cuatro cañones de hielo **toman vuelo** y disparan **bolas de nieve en ráfaga**. Empujan y
+  **escarchan** a lo que pegan (se alentan); a los mobs malos les duele un poquito y a los blazes bastante; a la gente y a los animales
+  solo los empujan y a tus mascotas ni eso. Apagan el fuego y a veces dejan nieve.
+- **Agachado** cargas una **bola gigante** (8 tiros): suelta y sale en arco; al pegar revienta en una nevada que empuja y escarcha todo
+  alrededor y deja el piso nevado.
+- **Tanque de nieve**: clic derecho para ponértelo en la **espalda** (va en el lugar del peto). Tiene 6 ranuras para **bolas de nieve**
+  (1 tiro) o **bloques de nieve** (4 tiros); se abre agachado con clic derecho o con la **tecla K** si lo traes puesto. Con el tanque
+  puesto, **apunta a la nieve** con el lanzanieves y la **aspira** para rellenarlo. Se ve en tu espalda con su ventanita de nieve y una
+  **manguera de bastón de caramelo** hasta el arma. Junto a la mira ves cuántos tiros te quedan.
+
+### El cascanueces guardián
+
+Un soldadito de madera: clic derecho en el piso para ponerlo de **guardia** (junto a tu árbol, por ejemplo). De día se queda firme; **de
+noche hace su ronda** marchando alrededor; si se acerca un **monstruo** (menos los creepers) lo saca a **sablazos de bastón de caramelo**,
+y si llega el **duende ladrón, lo atrapa** y recupera el regalo. Con la mano vacía te **saluda**; agachado lo levantas. Si lo tumban, suelta
+su figura para volverlo a poner; se cura solo.
+
+### Más cosas que pasan solas
+
+- **El duende ladrón**: algunas noches, si hay regalos sin abrir bajo tu árbol y andas cerca, se roba uno y sale corriendo. **Pégale una
+  vez** y se rinde (o tu cascanueces lo atrapa).
+- **Pingüinos** (en la nieve y costas heladas, en grupitos con bebés): con **pescado** a veces se hacen tuyos (bufanda y gorrito de Santa).
+  Te siguen, se sientan con un clic con la mano vacía (de noche se duermen), nadan rapidísimo y en hielo o nieve **se avientan de panza**.
+  A veces te traen un pescado.
+- **Renito de nariz roja**: un reno bebé con manchitas y nariz que brilla. Con zanahorias a veces se hace tuyo, con una **zanahoria
+  dorada** siempre; entonces lleva collar con cascabel y de noche su nariz deja una estelita de brillos.
+- **Puesto de árboles de Navidad** (praderas, bosques, taigas y nieve) con **Don Abeto**: vende el Pino de Navidad, adornos, luces,
+  guirnaldas, la estrella, árboles ya adornados y más por **esmeraldas**; compra troncos y retoños de abeto y tiene encargos.
+- **Ramiro, el duende viajero**: cada dos o tres días llega con su reno Cometa. Vende el lanzanieves, el tanque, adornos raros, trineo,
+  patines, traje de Santa, discos y regalos misteriosos; al día siguiente se va.
+- **Los aldeanos** venden galletas, bastones, pavo, gorros, suéteres y el calendario de Adviento; el comerciante errante, adornos y a
+  veces un regalo misterioso.
+- La **nieve que cae** depende del lugar. Y lo de siempre: calcetines que Santa llena, galletas y leche para Santa, carta a Santa, pinos
+  adornados y casitas de duende en la nieve, gorros en los mobs.
 
 ## La temporada
 
@@ -227,9 +276,28 @@ duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puest
 - `herramientas/criaturas.py`: muñeco malvado, reno (sobre la Bestia del Core) y Krampus (sobre el Coloso del Core).
 - `herramientas/musica.py`: villancicos y efectos (tarda unos 5 minutos). `herramientas/recetas.py`, `herramientas/lang_cosas.py`.
 - `herramientas/sonidos_invierno.py`: el roce del trineo, el cascabel, el patín, la campanada y la carta que vuela.
+- `herramientas/arbol.py`: el Pino de Navidad (modelo, luces, guirnaldas y los lugares de los adornos → `PuntosArbol.java`).
+- `herramientas/adornos.py`: los 18 adornos. `herramientas/libro.py`: la textura del libro. `herramientas/caja_regalo.py`: las cajas
+  de regalo (cuerpo y tapa aparte, 4 envolturas). `herramientas/trineo_santa.py`: el trineo con Santa y sus animaciones.
+  `herramientas/aviso_santa.py`: la cinta del aviso. `herramientas/voz_santa.py`: la risa "¡Jo, jo, jo!" (3 variantes).
+- `herramientas/lanzanieves.py`: el lanzanieves y el tanque. `herramientas/tanque_gui.py`: la ventana del tanque.
+  `herramientas/sonidos_lanzanieves.py`: sus sonidos. `herramientas/cascanueces.py`: el cascanueces guardián.
+- `herramientas/pinguino.py` y `herramientas/renito.py`: las mascotas (las animaciones del renito salen de `criaturas.py`).
+- `herramientas/iconos2.py`: íconos, modelos y recetas de lo nuevo; `herramientas/lang_libro.py`: sus textos.
 - El trineo de madera y el buzón salen de `herramientas/deco/build.py` (modelos sueltos y especiales); los patines, de `ropa.py`.
 
 ## Recetas nuevas
+
+- **Pino de Navidad**: retoño de abeto arriba, 3 hojas de abeto en medio y un tronco de abeto abajo (` S ` / `LLL` / ` T `).
+- **Libro de Navidad**: libro, tinte rojo y retoño de abeto (sin forma).
+- Esferas (3): panel de vidrio, pepita de oro y tinte (roja: tinte rojo; azul: tinte azul y bola de nieve; dorada: 2 pepitas y tinte
+  amarillo). Bastoncito (3): bastón de caramelo e hilo. Moño (2): lana roja e hilo. Campanita (2): 3 pepitas de oro, tinte rojo e hilo.
+  Copo (2): 2 bolas de nieve, cuarzo e hilo. Galletita (2): 2 galletas de jengibre e hilo. Piña (2): retoño de abeto, bola de nieve e
+  hilo. Luces: 2 polvos de piedra luminosa, tintes rojo, azul y amarillo y 2 hilos. Guirnalda: 4 pepitas de oro y 2 hilos.
+- **Estrella para la punta**: ` G ` / `GLG` / ` I ` (lingotes de oro, piedra luminosa y una pepita de hierro).
+- **Lanzanieves**: `IPI` / `IDR` / ` S ` (hierro, hielo compacto, dispensador, tinte rojo, palo).
+- **Tanque de nieve**: `LSL` / `IGI` / `IBI` (cuero, hilo, hierro, vidrio, cubeta).
+- **Cascanueces guardián**: ` B ` / `RWR` / ` W ` (lana negra, tinte rojo, tablones).
 
 - Trineo de madera: palos arriba (`S S`), tablones en medio (`PPP`), lingotes de hierro abajo (`I I`).
 - Patines: 2 cueros, lana blanca y 2 lingotes de hierro (sin forma).

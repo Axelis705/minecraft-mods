@@ -160,3 +160,36 @@ con_forma('arbol_lanzanieves', 'lanzanieves', 1, ['IPI', 'IDR', ' S '], {'I': 'i
 con_forma('arbol_tanque_nieve', 'tanque_nieve', 1, ['LSL', 'IGI', 'IBI'], {'L': 'leather', 'S': 'string', 'I': 'iron_ingot', 'G': 'glass',
                                                                            'B': 'bucket'})
 print('lanzanieves y tanque: modelos y recetas')
+
+# ================================================================ el regalo misterioso: en 3D (la caja dorada), para desenvolverlo en la mano
+escribir(os.path.join(A, 'models', 'item', 'regalo_misterioso.json'), {'parent': 'navidad:block/caja_regalo_3', 'display': {
+    'gui': {'rotation': [30, 225, 0], 'translation': [0, 0, 0], 'scale': [0.85, 0.85, 0.85]},
+    'ground': {'rotation': [0, 0, 0], 'translation': [0, 3, 0], 'scale': [0.5, 0.5, 0.5]},
+    'fixed': {'rotation': [0, 180, 0], 'translation': [0, 0, 0], 'scale': [0.8, 0.8, 0.8]},
+    'thirdperson_righthand': {'rotation': [75, 45, 0], 'translation': [0, 2.5, 0], 'scale': [0.45, 0.45, 0.45]},
+    'thirdperson_lefthand': {'rotation': [75, 45, 0], 'translation': [0, 2.5, 0], 'scale': [0.45, 0.45, 0.45]},
+    'firstperson_righthand': {'rotation': [0, 35, 0], 'translation': [0, 1, 0], 'scale': [0.55, 0.55, 0.55]},
+    'firstperson_lefthand': {'rotation': [0, 35, 0], 'translation': [0, 1, 0], 'scale': [0.55, 0.55, 0.55]}}})
+print('regalo misterioso en 3D')
+
+# ================================================================ el cascanueces guardián (ícono y receta)
+dibujo('cascanueces_guardian', [
+    '......kkkk......',
+    '.....kkkkkk.r...',
+    '.....kYYYYk.r...',
+    '.....kkYYkk.....',
+    '.....YYYYYY.....',
+    '.....wlzzlw.....',
+    '.....wlllww.....',
+    '.....wwwwww.....',
+    '....YrrrrrrY....',
+    '...rrryrrrrrr...',
+    '...rwrryrrrwr...',
+    '....rrrYrrrr....',
+    '.....zzzzzz.....',
+    '.....zz..zz.....',
+    '.....kk..kk.....',
+    '....kkk..kkk....',
+], pal={'l': '#ecc496'})
+con_forma('arbol_cascanueces', 'cascanueces_guardian', 1, [' B ', 'RWR', ' W '], {'B': 'black_wool', 'R': 'red_dye', 'W': '#minecraft:planks'})
+print('cascanueces: ícono y receta')

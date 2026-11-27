@@ -63,7 +63,8 @@ RENO = [
     ('"geometry.axelis_core.bestia"', '"geometry.navidad.reno"'),
     ('return ember + (255,) if', 'return (26, 20, 18, 255) if'),
     ('    c.bone("eyes"', ASTAS),
-    ('c.build(*out("bestia"))', 'c.build(*out("reno"))'),
+    # el modelo del reno ya es propio (herramientas/reno.py): de aquí solo salen sus animaciones
+    ('c.build(*out("bestia"))', 'pass  # c.build(*out("reno"))'),
     ('save_anims("bestia", an, os.path.join(A, "animations", "bestia.animation.json"))',
      'save_anims("reno", an, os.path.join(A, "animations", "reno.animation.json"))'),
     ('    a.sound(0.6, "minecraft:entity.wolf.howl")\n', ''),

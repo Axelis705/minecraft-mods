@@ -568,5 +568,15 @@
   "navidad.sub.lanzanieves": "Lanzanieves dispara",
   "navidad.sub.lanzanieves_gira": "Cañones girando",
   "navidad.sub.lanzanieves_carga": "Bola gigante cargando",
-  "navidad.sub.lanzanieves_bola": "Bola gigante"
+  "navidad.sub.lanzanieves_bola": "Bola gigante",
+  "entity.navidad.cascanueces": "Cascanueces guardián",
+  "item.navidad.cascanueces_guardian": "Cascanueces guardián",
+  "navidad.cascanueces.ayuda1": "Clic derecho en el piso: lo pones de guardia ahí (junto a tu árbol, por ejemplo).",
+  "navidad.cascanueces.ayuda2": "De noche hace su ronda, saca a los monstruos y atrapa al duende ladrón.",
+  "navidad.cascanueces.puesto": "¡El cascanueces está de guardia!",
+  "navidad.cascanueces.ordenes": "¡A sus órdenes! (agáchate y haz clic para levantarlo)",
+  "navidad.cascanueces.de_otro": "Este cascanueces cuida la casa de alguien más.",
+  "navidad.cascanueces.cayo": "¡Tumbaron a tu cascanueces! Recoge su figura y vuélvelo a poner.",
+  "navidad.cascanueces.atrapo": "★ ¡Tu cascanueces atrapó al duende ladrón y recuperó el regalo!",
+  "navidad.sub.cascanueces": "Cascanueces truena la quijada"
 }

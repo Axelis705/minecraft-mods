@@ -687,6 +687,25 @@ final class Prueba {
             t.waitFor("atrapé al duende ladrón", 3000, () -> com.navidad.entidad.DuendeLadron.atrapados > 0);
             t.photo("ladron_atrapado", 800, () -> {
             });
+            // el cascanueces guardián junto al árbol: atrapa al duende ladrón solito
+            t.add("cascanueces", 600, () -> t.cmd("item replace entity @p weapon.mainhand with navidad:cascanueces_guardian"));
+            t.add("poner cascanueces", 800, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
+                        new BlockHitResult(new Vec3(505.5, -61, 145.5), Direction.UP, new BlockPos(505, -61, 145), false));
+            });
+            t.add("puesto?", 300, () -> t.check(com.navidad.entidad.Cascanueces.puestos > 0, "se puso el cascanueces"));
+            t.photo("cascanueces_guardia", 1200, () -> t.lookFrom(507.5, -60, 148.5, 505.5, -58.8, 145.5));
+            t.add("otro ladron", 1500, () -> {
+                t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
+                t.cmd("tp @a 508.5 -60 151.5 150 15");
+                t.cmd("execute as @p run navidad ladron");
+            });
+            t.photo("cascanueces_persigue", 2500, () -> {
+            });
+            t.waitFor("el cascanueces atrapó al ladrón", 25000, () -> com.navidad.entidad.DuendeLadron.atrapados > 1);
+            t.photo("cascanueces_atrapo", 400, () -> {
+            });
             t.add("fin arbol", 500, () -> t.cmd("time set 6000"));
             // ---------------------------------------------------------------- el puesto de árboles de Navidad (sale solo en el mundo) y Don Abeto
             t.add("puesto", 2500, () -> {

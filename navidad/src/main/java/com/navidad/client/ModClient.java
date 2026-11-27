@@ -52,6 +52,7 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
         e.registerBlockEntityRenderer(ModRegistry.PINO_NAVIDAD_BE.get(), PinoRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.CAJA_REGALO_BE.get(), CajaRenderer::new);
+        e.registerEntityRenderer(ModRegistry.CASCANUECES.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "cascanueces", 0.4F, 0.85F));
         e.registerEntityRenderer(ModRegistry.BOLA_GIGANTE.get(), c -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(c, 2.8F, true));
     }
 

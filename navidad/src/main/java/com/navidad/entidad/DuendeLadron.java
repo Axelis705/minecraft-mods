@@ -173,6 +173,11 @@ public class DuendeLadron extends Persona {
 
     /** Lo atraparon: suelta el regalo, deja dulces de disculpa y desaparece. */
     private void atrapado(Player p) {
+        atrapado(p, false);
+    }
+
+    /** Lo atraparon (una persona, o el cascanueces guardián de {@code p}, que puede no estar conectado). */
+    private void atrapado(Player p, boolean guardia) {
         ServerLevel l = (ServerLevel) level();
         if (!botin.isEmpty()) {
             ItemEntity it = new ItemEntity(l, getX(), getY() + 0.6, getZ(), botin);
@@ -184,13 +189,16 @@ public class DuendeLadron extends Persona {
         l.sendParticles(ParticleTypes.SNOWFLAKE, getX(), getY() + 0.8, getZ(), 16, 0.4, 0.4, 0.4, 0.04);
         l.playSound(null, blockPosition(), SoundEvents.FOX_SCREECH, SoundSource.HOSTILE, 0.8F, 1.8F);
         l.playSound(null, blockPosition(), ModRegistry.CASCABEL.get(), SoundSource.HOSTILE, 0.8F, 1.6F);
-        p.displayClientMessage(Component.translatable(botin.isEmpty() ? "navidad.ladron.atrapado_nada" : "navidad.ladron.atrapado")
-                .withStyle(ChatFormatting.GOLD), false);
-        if (p instanceof ServerPlayer sp) {
-            Logros.dar(sp, "ladron");
+        if (p != null) {
+            p.displayClientMessage(Component.translatable(guardia ? "navidad.cascanueces.atrapo" : botin.isEmpty()
+                    ? "navidad.ladron.atrapado_nada" : "navidad.ladron.atrapado").withStyle(ChatFormatting.GOLD), false);
+            if (p instanceof ServerPlayer sp) {
+                Logros.dar(sp, "ladron");
+            }
         }
         atrapados++;
-        Navidad.LOGGER.info("NAVIDAD_LADRON atrapado por {} (regalo={})", p.getGameProfile().getName(), !botin.isEmpty());
+        Navidad.LOGGER.info("NAVIDAD_LADRON atrapado por {}{} (regalo={})", p == null ? "?" : p.getGameProfile().getName(),
+                guardia ? " (su cascanueces)" : "", !botin.isEmpty());
         botin = ItemStack.EMPTY;
         Vestuario.quitarTodo(l.getServer(), getUUID());
         discard();
@@ -200,6 +208,10 @@ public class DuendeLadron extends Persona {
     public boolean hurt(DamageSource src, float amount) {
         if (!level().isClientSide && src.getEntity() instanceof Player p && !isRemoved()) {
             atrapado(p);
+            return true;
+        }
+        if (!level().isClientSide && src.getEntity() instanceof Cascanueces c && !isRemoved()) {
+            atrapado(c.dueno(), true);
             return true;
         }
         return false;

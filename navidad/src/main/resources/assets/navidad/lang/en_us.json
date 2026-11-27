@@ -568,5 +568,15 @@
   "navidad.sub.lanzanieves": "Snow blaster fires",
   "navidad.sub.lanzanieves_gira": "Barrels spin",
   "navidad.sub.lanzanieves_carga": "Giant snowball charging",
-  "navidad.sub.lanzanieves_bola": "Giant snowball"
+  "navidad.sub.lanzanieves_bola": "Giant snowball",
+  "entity.navidad.cascanueces": "Nutcracker guard",
+  "item.navidad.cascanueces_guardian": "Nutcracker guard",
+  "navidad.cascanueces.ayuda1": "Right click the ground: he stands guard there (next to your tree, for example).",
+  "navidad.cascanueces.ayuda2": "At night he patrols, fights off monsters and catches the thief elf.",
+  "navidad.cascanueces.puesto": "The nutcracker is on guard!",
+  "navidad.cascanueces.ordenes": "At your service! (sneak and click to pick him up)",
+  "navidad.cascanueces.de_otro": "This nutcracker guards someone else's home.",
+  "navidad.cascanueces.cayo": "Your nutcracker was knocked down! Pick up his figure and place him again.",
+  "navidad.cascanueces.atrapo": "★ Your nutcracker caught the thief elf and got the gift back!",
+  "navidad.sub.cascanueces": "Nutcracker clacks"
 }

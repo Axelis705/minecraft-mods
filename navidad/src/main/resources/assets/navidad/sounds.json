@@ -164,5 +164,11 @@
    "navidad:lanzanieves_bola"
   ],
   "subtitle": "navidad.sub.lanzanieves_bola"
+ },
+ "cascanueces_clac": {
+  "sounds": [
+   "navidad:cascanueces_clac"
+  ],
+  "subtitle": "navidad.sub.cascanueces"
  }
 }

@@ -127,6 +127,7 @@ public final class ModRegistry {
     public static final RegistryObject<SoundEvent> LANZANIEVES_GIRA = sonido("lanzanieves_gira");
     public static final RegistryObject<SoundEvent> LANZANIEVES_CARGA = sonido("lanzanieves_carga");
     public static final RegistryObject<SoundEvent> LANZANIEVES_BOLA = sonido("lanzanieves_bola");
+    public static final RegistryObject<SoundEvent> CASCANUECES_CLAC = sonido("cascanueces_clac");
 
     // ------------------------------------------------------------------ comida
 
@@ -225,6 +226,14 @@ public final class ModRegistry {
     public static final RegistryObject<net.minecraft.world.inventory.MenuType<com.navidad.nieve.TanqueMenu>> TANQUE_MENU = MENUS.register(
             "tanque", () -> net.minecraftforge.common.extensions.IForgeMenuType.create((id, inv, buf) -> new com.navidad.nieve.TanqueMenu(id, inv,
                     buf.readByte())));
+
+    // ------------------------------------------------------------------ el cascanueces guardián
+
+    public static final RegistryObject<EntityType<com.navidad.entidad.Cascanueces>> CASCANUECES = ENTITIES.register("cascanueces",
+            () -> EntityType.Builder.<com.navidad.entidad.Cascanueces>of(com.navidad.entidad.Cascanueces::new, MobCategory.MISC).sized(0.55F, 1.95F)
+                    .clientTrackingRange(10).build("navidad:cascanueces"));
+    public static final RegistryObject<Item> CASCANUECES_ITEM = item("cascanueces_guardian", () -> new com.navidad.objeto.CascanuecesItem(props()
+            .stacksTo(4).rarity(Rarity.UNCOMMON)));
 
     // ------------------------------------------------------------------ ropa (se pone encima con el vestuario del Core)
 
