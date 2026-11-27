@@ -1517,5 +1517,45 @@
         "stream": true
       }
     ]
+  },
+  "bus_motor": {
+    "sounds": [
+      {
+        "name": "coleccionista:transporte/bus_motor"
+      }
+    ],
+    "subtitle": "coleccionista.sub.bus_motor"
+  },
+  "bus_arranca": {
+    "sounds": [
+      {
+        "name": "coleccionista:transporte/bus_arranca"
+      }
+    ],
+    "subtitle": "coleccionista.sub.bus_arranca"
+  },
+  "bus_frena": {
+    "sounds": [
+      {
+        "name": "coleccionista:transporte/bus_frena"
+      }
+    ],
+    "subtitle": "coleccionista.sub.bus_frena"
+  },
+  "bus_puerta": {
+    "sounds": [
+      {
+        "name": "coleccionista:transporte/bus_puerta"
+      }
+    ],
+    "subtitle": "coleccionista.sub.bus_puerta"
+  },
+  "montacargas": {
+    "sounds": [
+      {
+        "name": "coleccionista:transporte/montacargas"
+      }
+    ],
+    "subtitle": "coleccionista.sub.montacargas"
   }
 }

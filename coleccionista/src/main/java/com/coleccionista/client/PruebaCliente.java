@@ -412,18 +412,58 @@ final class PruebaCliente {
         foto(t, "c1_59_postes", 1200, () -> t.lookFrom(153.5, -58.5, 467, 161, -59.5, 476));
         foto(t, "c1_60_pasarela", 1200, () -> t.lookFrom(181.5, -57, 489.2, 181.5, -61.5, 496));
         foto(t, "c1_61_baldosas", 1200, () -> t.lookFrom(167, -55.5, 515, 166.5, -61, 523));
-        foto(t, "c1_62_casilla", 1200, () -> t.lookFrom(179.5, -59, 546.2, 179.5, -58, 549));
-        foto(t, "c1_62b_palancas", 1200, () -> t.lookFrom(171.5, -59, 547.5, 176, -59.2, 547.5));
+        // el cuarto a oscuras: mi equipo pasa a la entrada; yo traigo las esposas, así que llevo el farol (la luz me sigue)
+        t.add("al cuarto oscuro", 2500, () -> {
+            t.cmd("gamemode adventure @a");
+            t.cmd("evento sentidos oscuro " + yo());
+        });
+        t.add("con farol", 100, () -> {
+            t.check("OSCURO".equals(SentidosCliente.miEtapa()), "mi equipo va en el cuarto a oscuras (" + SentidosCliente.miEtapa() + ")");
+            t.check(Minecraft.getInstance().player.getMainHandItem().is(net.minecraft.world.item.Items.LANTERN), "llevo el farol en la mano");
+        });
+        foto(t, "c1_62_oscuro", 1500, () -> t.lookFrom(180.5, -60, 543.5, 171, -59.4, 543.5));
+        foto(t, "c1_62b_rincon", 1500, () -> t.lookFrom(181.5, -60, 543.5, 189, -59.6, 543.2));
+        // choco con una muñeca: su cara en mi pantalla y todo el equipo de regreso a la entrada del cuarto
+        foto(t, "c1_62c_susto", 300, () -> {
+            var mc = Minecraft.getInstance();
+            net.minecraft.core.BlockPos yo = mc.player.blockPosition(), mejor = null;
+            for (net.minecraft.core.BlockPos q : net.minecraft.core.BlockPos.betweenClosed(yo.offset(-12, -1, -2), yo.offset(12, 1, 14))) {
+                var id = net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(mc.level.getBlockState(q).getBlock());
+                if (id != null && id.getPath().equals("muneca_grande") && (mejor == null || q.distSqr(yo) < mejor.distSqr(yo))) {
+                    mejor = q.immutable();
+                }
+            }
+            t.check(mejor != null, "hay muñecas en el cuarto a oscuras");
+            if (mejor != null) {
+                if (mc.level.getBlockState(mejor.below()).getBlock() == mc.level.getBlockState(mejor).getBlock()) {
+                    mejor = mejor.below();
+                }
+                t.cmd(String.format(java.util.Locale.ROOT, "tp @a %.2f %d %.2f", mejor.getX() + 0.5, mejor.getY(), mejor.getZ() + 0.5));
+            }
+        });
+        t.add("de regreso", 2500, () -> {
+        });
+        t.add("en la entrada", 100, () -> {
+            var p = Minecraft.getInstance().player;
+            t.check(Math.abs(p.getZ() - 543.5) < 1.6 && Math.abs(p.getX() - 179.5) < 2.6,
+                    String.format(java.util.Locale.ROOT, "tras el susto, de vuelta a la entrada del cuarto (%.1f, %.1f)", p.getX(), p.getZ()));
+        });
         t.add("a la salida", 2500, () -> {
             t.cmd("gamemode adventure @a");
             t.cmd("evento sentidos salida " + yo());
         });
+        t.add("sin farol", 100, () -> t.check(!Minecraft.getInstance().player.getMainHandItem().is(net.minecraft.world.item.Items.LANTERN),
+                "al salir ya no traigo el farol"));
         foto(t, "c1_63_salida_sillas", 1200, () -> t.lookFrom(166, -59.5, 565, 166, -60.3, 569));
         t.add("sentarme", 2500, () -> t.cmd("execute as " + yo() + " at @s run ride @s mount @e[type=coleccionista:silla,sort=nearest,limit=1]"));
         t.add("sentado", 100, () -> t.check(Minecraft.getInstance().player.getVehicle() instanceof com.coleccionista.evento.Silla,
                 "estoy sentado en la silla de la salida"));
         // cuando terminan todos, los que se salvaron pasan (sentados, sin que se note) a su cuarto del teatro y se abre la puerta
-        t.waitFor("al teatro", 70000, () -> Minecraft.getInstance().player.getX() < -40);
+        // cuando terminan todos, los que se salvaron suben sentados en su cuarto (que es un montacargas) hasta su palco del teatro
+        t.waitFor("montacargas", 70000, () -> ViajeCliente.viaje("MONTACARGAS"));
+        foto(t, "c1_63b_montacargas", 2500, () -> {
+        });
+        t.waitFor("al teatro", 30000, () -> Minecraft.getInstance().player.getX() < -40);
         foto(t, "c1_64_palco_puerta", 3500, () -> {
         });
         t.add("en el teatro", 100, () -> {
@@ -475,8 +515,7 @@ final class PruebaCliente {
             var st = com.axeliscore.data.client.ClientData.get(com.coleccionista.evento.Pantallas.KEY);
             return st != null && st.getBoolean("hablando");
         });
-        foto(t, "c1_70_antesala", 2500, () -> {
-        });
+        foto(t, "c1_70_antesala", 2500, () -> t.lookFrom(-19, -60, 464.5, -4, -56.5, 459.5));
         // lo que ve el último equipo (simulado en mi pantalla): el gas y el despertar en la vitrina con su mensaje
         foto(t, "c1_71_gas", 500, () -> {
             CompoundTag g = new CompoundTag();
@@ -1402,21 +1441,34 @@ final class PruebaCliente {
     private static void capitulo2(ClientTest.Script t) {
         // la casa está en (720, -61, 430) (local + eso = mundo): el pasillo de la cripta en x 743..750 y z 368..381 (sus puertas en z 382),
         // el vestíbulo en x 737..756 y z 431..452 (pies en y -53), la jaula al fondo (reja en z 447) y la pantalla arriba de ella
-        t.waitFor("cap2: a la casa", 30000, () -> !"".equals(MascotaCliente.fase()) && !"NADA".equals(MascotaCliente.fase()));
-        foto(t, "c2_01_pasillo_casa", 1800, () -> {
+        // la cochera del teatro (theater local + (-80, -61, 430)): el autobús con la puerta abierta; los bots ya subieron, yo subo y arranca
+        t.waitFor("cap2: al autobús", 30000, () -> !"".equals(MascotaCliente.fase()) && !"NADA".equals(MascotaCliente.fase()));
+        foto(t, "c2_00_cochera", 1500, () -> {
             t.cmd("gamemode adventure @a");
-            t.lookFrom(747.0, -60, 370.5, 747.0, -59, 382);
+            t.lookFrom(-18.5, -60, 459.5, -10.5, -58.6, 467.0);
         });
-        t.add("puertas de la casa", 100, () -> {
-            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(743, -60, 382));
+        t.add("cochera: puerta del autobús", 100, () -> {
+            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(-11, -60, 468));
             t.check(st.getBlock() instanceof net.minecraft.world.level.block.DoorBlock && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN),
-                    "se abrieron las puertas del pasillo al vestíbulo");
-            t.check("LLEGANDO".equals(MascotaCliente.fase()) || "HABLANDO".equals(MascotaCliente.fase()), "llegamos a la casa (" + MascotaCliente.fase() + ")");
+                    "el autobús espera con la puerta abierta");
         });
-        // la llegada: de la cripta al jardín y la casa al fondo
-        foto(t, "c2_01b_cripta", 900, () -> t.lookFrom(747.0, -60, 384.5, 747.0, -58, 393));
-        foto(t, "c2_01c_llegada_casa", 1500, () -> t.lookFrom(747.0, -53, 400.5, 747.0, -44, 430));
+        t.add("subir al autobús", 3500, () -> t.lookFrom(-15.5, -60, 471.5, -7.0, -58.4, 471.5));
+        foto(t, "c2_00b_autobus", 2500, () -> t.check(ViajeCliente.viaje("AUTOBUS"), "voy en el autobús"));
+        t.waitFor("cap2: a la parada", 45000, () -> "LLEGANDO".equals(MascotaCliente.fase()) || "HABLANDO".equals(MascotaCliente.fase()));
+        t.add("parada: puerta abierta", 1200, () -> {
+            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(718, -54, 411));
+            t.check(st.getBlock() instanceof net.minecraft.world.level.block.DoorBlock && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN),
+                    "en la parada se abre la puerta del autobús frente a la reja");
+            var p = Minecraft.getInstance().player;
+            t.check(p.getX() > 711 && p.getX() < 719 && p.getZ() > 401 && p.getZ() < 415, String.format(java.util.Locale.ROOT,
+                    "bajé del autobús en la parada de la casa (%.1f, %.1f)", p.getX(), p.getZ()));
+        });
+        // la parada (la casa en (720, -61, 430)): el autobús en la calle, la reja del muro y el camino a la fuente
+        foto(t, "c2_01_parada", 1500, () -> t.lookFrom(719.5, -54, 404.5, 721.0, -53.5, 413.0));
+        foto(t, "c2_01b_autobus_fuera", 1500, () -> t.lookFrom(709.5, -54, 420.5, 715.0, -53.5, 408.0));
+        foto(t, "c2_01c_llegada_casa", 1500, () -> t.lookFrom(722.5, -54, 412.5, 746.0, -49, 430.0));
         foto(t, "c2_01d_fachada", 1200, () -> t.lookFrom(747.0, -52, 417.5, 747.0, -40, 430));
+        foto(t, "c2_01e_cripta", 900, () -> t.lookFrom(747.0, -60, 384.5, 747.0, -58, 393));
         t.add("al vestibulo", 200, () -> t.lookFrom(747.0, -53, 438.5, 747.0, -43.5, 446.9));
         t.waitFor("cap2: habla", 15000, () -> "HABLANDO".equals(MascotaCliente.fase()));
         foto(t, "c2_02_vestibulo", 9000, () -> t.lookFrom(747.0, -53, 436.5, 747.0, -43.5, 446.9));

@@ -1,0 +1,124 @@
+{
+ "variants": {
+  "facing=north,half=lower,hinge=left,open=false": {
+   "model": "coleccionista:block/puerta_autobus_lower"
+  },
+  "facing=north,half=lower,hinge=left,open=true": {
+   "model": "coleccionista:block/puerta_autobus_lower_abierta_i"
+  },
+  "facing=north,half=lower,hinge=right,open=false": {
+   "model": "coleccionista:block/puerta_autobus_lower"
+  },
+  "facing=north,half=lower,hinge=right,open=true": {
+   "model": "coleccionista:block/puerta_autobus_lower_abierta_d"
+  },
+  "facing=north,half=upper,hinge=left,open=false": {
+   "model": "coleccionista:block/puerta_autobus_upper"
+  },
+  "facing=north,half=upper,hinge=left,open=true": {
+   "model": "coleccionista:block/puerta_autobus_upper_abierta_i"
+  },
+  "facing=north,half=upper,hinge=right,open=false": {
+   "model": "coleccionista:block/puerta_autobus_upper"
+  },
+  "facing=north,half=upper,hinge=right,open=true": {
+   "model": "coleccionista:block/puerta_autobus_upper_abierta_d"
+  },
+  "facing=east,half=lower,hinge=left,open=false": {
+   "model": "coleccionista:block/puerta_autobus_lower",
+   "y": 90
+  },
+  "facing=east,half=lower,hinge=left,open=true": {
+   "model": "coleccionista:block/puerta_autobus_lower_abierta_i",
+   "y": 90
+  },
+  "facing=east,half=lower,hinge=right,open=false": {
+   "model": "coleccionista:block/puerta_autobus_lower",
+   "y": 90
+  },
+  "facing=east,half=lower,hinge=right,open=true": {
+   "model": "coleccionista:block/puerta_autobus_lower_abierta_d",
+   "y": 90
+  },
+  "facing=east,half=upper,hinge=left,open=false": {
+   "model": "coleccionista:block/puerta_autobus_upper",
+   "y": 90
+  },
+  "facing=east,half=upper,hinge=left,open=true": {
+   "model": "coleccionista:block/puerta_autobus_upper_abierta_i",
+   "y": 90
+  },
+  "facing=east,half=upper,hinge=right,open=false": {
+   "model": "coleccionista:block/puerta_autobus_upper",
+   "y": 90
+  },
+  "facing=east,half=upper,hinge=right,open=true": {
+   "model": "coleccionista:block/puerta_autobus_upper_abierta_d",
+   "y": 90
+  },
+  "facing=south,half=lower,hinge=left,open=false": {
+   "model": "coleccionista:block/puerta_autobus_lower",
+   "y": 180
+  },
+  "facing=south,half=lower,hinge=left,open=true": {
+   "model": "coleccionista:block/puerta_autobus_lower_abierta_i",
+   "y": 180
+  },
+  "facing=south,half=lower,hinge=right,open=false": {
+   "model": "coleccionista:block/puerta_autobus_lower",
+   "y": 180
+  },
+  "facing=south,half=lower,hinge=right,open=true": {
+   "model": "coleccionista:block/puerta_autobus_lower_abierta_d",
+   "y": 180
+  },
+  "facing=south,half=upper,hinge=left,open=false": {
+   "model": "coleccionista:block/puerta_autobus_upper",
+   "y": 180
+  },
+  "facing=south,half=upper,hinge=left,open=true": {
+   "model": "coleccionista:block/puerta_autobus_upper_abierta_i",
+   "y": 180
+  },
+  "facing=south,half=upper,hinge=right,open=false": {
+   "model": "coleccionista:block/puerta_autobus_upper",
+   "y": 180
+  },
+  "facing=south,half=upper,hinge=right,open=true": {
+   "model": "coleccionista:block/puerta_autobus_upper_abierta_d",
+   "y": 180
+  },
+  "facing=west,half=lower,hinge=left,open=false": {
+   "model": "coleccionista:block/puerta_autobus_lower",
+   "y": 270
+  },
+  "facing=west,half=lower,hinge=left,open=true": {
+   "model": "coleccionista:block/puerta_autobus_lower_abierta_i",
+   "y": 270
+  },
+  "facing=west,half=lower,hinge=right,open=false": {
+   "model": "coleccionista:block/puerta_autobus_lower",
+   "y": 270
+  },
+  "facing=west,half=lower,hinge=right,open=true": {
+   "model": "coleccionista:block/puerta_autobus_lower_abierta_d",
+   "y": 270
+  },
+  "facing=west,half=upper,hinge=left,open=false": {
+   "model": "coleccionista:block/puerta_autobus_upper",
+   "y": 270
+  },
+  "facing=west,half=upper,hinge=left,open=true": {
+   "model": "coleccionista:block/puerta_autobus_upper_abierta_i",
+   "y": 270
+  },
+  "facing=west,half=upper,hinge=right,open=false": {
+   "model": "coleccionista:block/puerta_autobus_upper",
+   "y": 270
+  },
+  "facing=west,half=upper,hinge=right,open=true": {
+   "model": "coleccionista:block/puerta_autobus_upper_abierta_d",
+   "y": 270
+  }
+ }
+}

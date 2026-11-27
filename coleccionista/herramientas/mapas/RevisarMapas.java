@@ -158,6 +158,20 @@ public final class RevisarMapas {
         return f;
     }
 
+    /** La cochera del teatro: de la puerta del teatro se llega al andén y adentro del autobús. */
+    private static int cochera(File out, Map<String, Revisor.Forma> deco, Path tex) throws java.io.IOException {
+        Plano p = SalaVitrina.crear(1234L);
+        Revisor r = new Revisor(p, deco).caminar(SalaVitrina.SALIDA_X - 1, 1, 34);
+        r.marcas("bus_tea.subir").marcas("bus_tea.centro").marcas("vit.antesala").mitades();
+        System.out.print(r.informe("La cochera del teatro (del teatro al autobús)", 8));
+        int f = (int) (r.cuantos("no se llega") + r.cuantos("no cabe nadie") + r.cuantos("mueble partido"));
+        System.out.println("CAMINO teatro -> autobus" + (f == 0 ? " OK" : " FALLA " + f));
+        Vista v = new Vista(p, r, tex);
+        v.iso(new File(out, "cochera.png"), 9, 0, new int[] {50, 18, 80, 50}, 16, "La cochera y el autobús");
+        v.iso(new File(out, "cochera_dentro.png"), 3, 0, new int[] {56, 36, 76, 47}, 22, "El autobús por dentro");
+        return f;
+    }
+
     /** Todos los mapas del evento (como en Complejo.zonas()), con su nombre. */
     private static Map<String, Plano> todos() {
         Map<String, Plano> t = new java.util.LinkedHashMap<>();
@@ -220,7 +234,7 @@ public final class RevisarMapas {
             // la jaula de Cascabel está cerrada a propósito (la reja se abre en el juego); los techos, bardas y setos no son cuartos
             r.cerrado(Mansion.REJA_X0 - 1, Mansion.REJA_Z, Mansion.REJA_X0 + Mansion.REJA_Z1 + 1, Mansion.HZ1)
                     .ignorarIslas(c -> Mansion.enTecho(p, c[0], c[1], c[2])).islas(8, 0, 60).marcas("man.esc.").marcas("man.entrada")
-                    .marcas("salida.mansion").pisos(p.x0, p.z0, p.x1, p.z1, 0, 40).puertas().mitades();
+                    .marcas("salida.mansion").marcas("bus_man.subir").marcas("bus_man.centro").pisos(p.x0, p.z0, p.x1, p.z1, 0, 40).puertas().mitades();
             System.out.print(r.informe("La mansión", 12));
             System.out.println("escondites: " + p.marcas.keySet().stream().filter(k -> k.startsWith("man.esc.")).count());
             Vista v = new Vista(p, r, tex);
@@ -240,10 +254,14 @@ public final class RevisarMapas {
             v.iso(new File(out, "mansion_corte_alta.png"), 20, 0, casa, 9, "Planta alta");
             v.iso(new File(out, "mansion_corte_atico.png"), 29, 0, casa, 9, "Ático");
             v.iso(new File(out, "mansion_vestibulo.png"), 20, 0, new int[] {15, -6, 38, 24}, 18, "Vestíbulo");
+            v.iso(new File(out, "mansion_parada.png"), 14, 0, new int[] {-14, -36, 22, -1}, 16, "La parada del autobús y la reja");
             fallas += r.cuantos("cuarto inaccesible") + r.cuantos("no se llega") + r.cuantos("no cabe nadie") + r.cuantos("mueble partido");
         }
         if (cual.equals("caminos") || cual.equals("todo")) {
             fallas += caminos(out, deco, tex);
+        }
+        if (cual.equals("caminos") || cual.equals("todo")) {
+            fallas += cochera(out, deco, tex);
         }
         if (cual.equals("pantallas") || cual.equals("caminos") || cual.equals("todo")) {
             fallas += pantallas(deco);

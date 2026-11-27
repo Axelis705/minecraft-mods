@@ -46,6 +46,7 @@ public class Coleccionista {
         com.coleccionista.evento.Proteccion.init();
         com.coleccionista.evento.Montacargas.init();
         com.coleccionista.evento.Cabina.init();
+        com.coleccionista.evento.Transbordo.init();
         com.coleccionista.evento.Capitulo1.init();
         com.coleccionista.evento.Silla.init();
         com.coleccionista.evento.Objetivo.init();

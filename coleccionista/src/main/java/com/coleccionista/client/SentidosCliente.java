@@ -57,6 +57,16 @@ public final class SentidosCliente {
             sen = t;
             recibir(activo());
         });
+        ClientData.listen(com.coleccionista.prueba.Sentidos.KEY + "_susto", t -> {
+            int n = Nbt.i(t, "n");
+            var lvl = Minecraft.getInstance().level;
+            // solo si es de ahorita (al volver a entrar no se repite el susto)
+            if (n != sustoN && lvl != null && Math.abs(lvl.getGameTime() - t.getLong("en")) < 80) {
+                sustoDesde = System.currentTimeMillis();
+                sustoCara = Nbt.b(t, "cara");
+            }
+            sustoN = n;
+        });
         MinecraftForge.EVENT_BUS.addListener(SentidosCliente::tickJugador);
         MinecraftForge.EVENT_BUS.addListener((TickEvent.ClientTickEvent e) -> {
             if (e.phase == TickEvent.Phase.END) {
@@ -283,8 +293,49 @@ public final class SentidosCliente {
 
     // ------------------------------------------------------------------ HUD
 
+    /** El susto del cuarto a oscuras: la cara de la muñeca de golpe (al que chocó) o las orillas rojas (a los demás del equipo). */
+    private static final ResourceLocation SUSTO = com.axeliscore.plat.Ids.rl(MOD, "textures/gui/susto_muneca.png");
+    private static int sustoN = -1;
+    private static long sustoDesde;
+    private static boolean sustoCara;
+
+    private static void susto(G g, int w, int h) {
+        float ts = (System.currentTimeMillis() - sustoDesde) / 1000F;
+        if (sustoDesde <= 0 || ts > 1.4F) {
+            return;
+        }
+        if (sustoCara && ts < 1.1F) {
+            if (ts < 0.6F) {
+                float esc = 1.3F - 0.3F * Math.min(1F, ts / 0.1F);
+                int iw = (int) (w * esc), ih = (int) (iw * 400F / 512F);
+                if (ih < h * esc) {
+                    ih = (int) (h * esc);
+                    iw = (int) (ih * 512F / 400F);
+                }
+                float sx = (float) Math.sin(ts * 80) * 5;
+                g.fill(0, 0, w, h, 0xFF000000);
+                g.blit(SUSTO, (int) (w / 2 - iw / 2 + sx), h / 2 - ih / 2, iw, ih, 0, 0, 512, 400, 512, 400);
+            }
+            float a = ts < 0.6F ? 0.15F : 0.6F * (1F - (ts - 0.6F) / 0.5F);
+            g.fill(0, 0, w, h, Ui.alpha(0xFF000000, Math.max(0F, a)));
+        } else if (!sustoCara) {
+            float a = ts < 0.08F ? ts / 0.08F : 1F - (ts - 0.08F) / 1.32F;
+            int capas = 12, grueso = Math.max(2, Math.min(w, h) / 40);
+            for (int i = 0; i < capas; i++) {
+                float k = 1F - i / (float) capas;
+                int c = Ui.alpha(0xFF9A000C, Math.max(0F, Math.min(1F, a)) * 0.5F * k * k);
+                int o = i * grueso;
+                g.fill(o, o, w - o, o + grueso, c);
+                g.fill(o, h - o - grueso, w - o, h - o, c);
+                g.fill(o, o + grueso, o + grueso, h - o - grueso, c);
+                g.fill(w - o - grueso, o + grueso, w - o, h - o - grueso, c);
+            }
+        }
+    }
+
     private static void hud(G g, int w, int h) {
         Minecraft mc = Minecraft.getInstance();
+        susto(g, w, h);
         // mientras está la presentación (título y tarjeta de reglas) no se encima nada
         if (!activa() || mc.player == null || !EventoHud.visible() || Presentacion.activa() || Presentacion.reglasVisibles()) {
             return;

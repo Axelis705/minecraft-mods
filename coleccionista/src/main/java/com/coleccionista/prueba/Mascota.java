@@ -69,10 +69,10 @@ public final class Mascota {
     /** Al terminar el capítulo 1 (la antesala del teatro), pasan solos a la casa. */
     public static boolean auto = true;
     /** Cuánto espera a que entren todos al vestíbulo antes de hablar de todos modos (ticks). */
-    public static int esperaVestibulo = 900;
+    public static int esperaVestibulo = 1500;
 
     public enum Fase {
-        NADA, LLEGANDO, HABLANDO, ESCONDER, CAZA, FIN
+        NADA, AUTOBUS, LLEGANDO, HABLANDO, ESCONDER, CAZA, FIN
     }
 
     private static Fase fase = Fase.NADA;
@@ -132,7 +132,24 @@ public final class Mascota {
         if (!Complejo.construido(s, "mansion")) {
             return Component.translatable(MOD + ".man.sin_mapa");
         }
-        // se va la luz un momento (parpadea y negro): en lo oscuro pasan al otro pasillo, así nadie ve el cambio
+        // en el autobús del Coleccionista: de la cochera del teatro a la parada de la casa (sin apagón)
+        if (com.coleccionista.evento.Transbordo.hay(s, com.coleccionista.evento.Transbordo.AUTOBUS)) {
+            if (fase == Fase.AUTOBUS) {
+                return null;
+            }
+            Pruebas.cerrarOtras(s, "mascota");
+            reiniciarCasa(s);
+            fase = Fase.AUTOBUS;
+            desde = s.overworld().getGameTime();
+            Evento ev = Evento.get(s);
+            ev.prueba(s, Component.translatable(MOD + ".trans.autobus.prueba").getString());
+            ev.reloj(s, 0);
+            enviar(s);
+            com.coleccionista.evento.Transbordo.abordar(s, com.coleccionista.evento.Transbordo.AUTOBUS, () -> bajarDelAutobus(s));
+            Coleccionista.LOGGER.info("COLECCIONISTA_MASCOTA autobus");
+            return null;
+        }
+        // (mapa viejo, sin autobús) se va la luz un momento (parpadea y negro): en lo oscuro pasan al otro pasillo, así nadie ve el cambio
         List<ServerPlayer> ven = new ArrayList<>(s.getPlayerList().getPlayers());
         com.coleccionista.evento.Apagon.hacer(s, ven, 60, () -> llegarYa(s));
         return null;
@@ -188,6 +205,21 @@ public final class Mascota {
         Pantallas.modo(s, "apagada", "");
         enviar(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_MASCOTA llegan pasillo={} fuera={}", enPasillo.size(), fuera.size());
+    }
+
+    /** El autobús llegó a la parada: se abre la puerta frente a la reja del jardín y caminan a la casa. */
+    private static void bajarDelAutobus(MinecraftServer s) {
+        if (fase != Fase.AUTOBUS) {
+            return;
+        }
+        fase = Fase.LLEGANDO;
+        desde = s.overworld().getGameTime();
+        Evento ev = Evento.get(s);
+        ev.prueba(s, Component.translatable(MOD + ".man.prueba_llegar").getString());
+        ev.reloj(s, 0);
+        Pantallas.modo(s, "apagada", "");
+        enviar(s);
+        Coleccionista.LOGGER.info("COLECCIONISTA_MASCOTA en la parada");
     }
 
     private static void puertasPasillo(MinecraftServer s, boolean abrir) {
@@ -779,6 +811,20 @@ public final class Mascota {
     /** A dónde ir: al llegar, al vestíbulo. (Para esconderse no se dice nada.) */
     public static Objetivo.Meta objetivo(MinecraftServer s, ServerPlayer sp) {
         if (fase == Fase.LLEGANDO && !enVestibulo(s, sp)) {
+            // de la parada del autobús: a la reja, por el camino a la fuente y al pórtico
+            BlockPos o = Complejo.origen(s, "mansion");
+            if (o != null) {
+                double x = sp.getX() - o.getX(), z = sp.getZ() - o.getZ();
+                if (x < 1.5) {
+                    return Objetivo.Meta.en(o.offset(1, 7, -18), 1, MOD + ".obj.reja");
+                }
+                if (z < -8 && x < 19) {
+                    return Objetivo.Meta.en(o.offset(20, 7, -18), 1, MOD + ".obj.vestibulo");
+                }
+                if (z < -1) {
+                    return Objetivo.Meta.en(o.offset(26, 8, -1), 1, MOD + ".obj.vestibulo");
+                }
+            }
             return Objetivo.Meta.en(Complejo.pos(s, "man.centro"), 1.5, MOD + ".obj.vestibulo");
         }
         return null;

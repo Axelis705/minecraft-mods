@@ -711,6 +711,7 @@ public final class Recorrido {
     public static void reiniciar(MinecraftServer s) {
         parar(s);
         Cabina.reiniciar(s);
+        Transbordo.reiniciar(s);
     }
 
     /** El nombre de la prueba (el que sale arriba en el HUD). */

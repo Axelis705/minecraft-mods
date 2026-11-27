@@ -269,6 +269,16 @@ public final class Pantallas {
         return l;
     }
 
+    /** En el autobús, de la cochera del teatro a la casa (lo que dura el viaje). */
+    public static List<Frase> autobus() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("comodos", 95, null, 1F));
+        l.add(new Frase("chofer", 85, null, 1F));
+        l.add(new Frase("ventanas", 130, null, 1F));
+        l.add(new Frase("llegamos", 115, null, 1F));
+        return l;
+    }
+
     public static List<Frase> mansion() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("bienvenidos", 60, null, 1F));
@@ -468,6 +478,7 @@ public final class Pantallas {
             case "vitrina" -> vitrina();
             case "vitrina_fin" -> vitrina_fin();
             case "antesala" -> antesala();
+            case "autobus" -> autobus();
             case "mansion" -> mansion();
             case "mansion_suelta" -> mansion_suelta();
             case "mansion_fin" -> mansion_fin();

@@ -12,7 +12,8 @@ package com.coleccionista.mapa;
  * </pre>
  * Marcas: {@code cab.sal_tea_N.*} (los cuartos, N = 1..10), {@code vit.caja.N}, {@code vit.frente.N}, {@code vit.boquilla.N},
  * {@code vit.luz.N}, {@code vit.foco.N}, {@code vit.placa.N} y {@code vit.cae.N} (las vitrinas, 0..5), {@code vit.pantalla},
- * {@code vit.centro}, {@code vit.salida.a/.b} y {@code vit.antesala} (el pasillo de servicio {@code pas_tea}, ver {@link Pasaje}).
+ * {@code vit.centro}, {@code vit.salida.a/.b}, {@code vit.antesala} (la cochera del autobús {@code bus_tea}, ver {@link Vehiculos}) y
+ * {@code coch.luz.N} (los focos de la cochera).
  */
 public final class SalaVitrina {
     /** Tres vitrinas (en un equipo hay de 2 a 3 piezas y solo pierde un equipo), cerca del vidrio para que se vean bien. */
@@ -206,16 +207,112 @@ public final class SalaVitrina {
     }
 
     /**
-     * La salida del teatro (en el muro del este, cerca del vidrio) y la antesala detrás: el pasillo de servicio ({@link Pasaje}), idéntico
-     * al de la entrada de la mansión. Su puerta de atrás es la salida del teatro.
+     * La salida del teatro (en el muro del este, cerca del vidrio) y detrás la cochera: ahí espera, con la puerta abierta, el autobús del
+     * Coleccionista ({@link Vehiculos#autobus}), idéntico al que llega a la parada de la casa. La pantalla de la cochera habla cuando se
+     * cierra la puerta del teatro; luego todos suben y el autobús sale (se apagan las luces de la cochera: por las ventanas ya no se ve
+     * nada más que las luces de la calle que pasan).
      */
     private static void salida(Plano p) {
         int x = SALIDA_X;
-        Pasaje.pasillo(p, "pas_tea", new Marco(x + 1, 39, 270));
+        cochera(p);
+        // la puerta del teatro: dos hojas de acero
+        p.set(x, 1, 35, C + "puerta_metal[facing=east,half=lower,hinge=left,open=false]");
+        p.set(x, 2, 35, C + "puerta_metal[facing=east,half=upper,hinge=left,open=false]");
+        p.set(x, 1, 34, C + "puerta_metal[facing=east,half=lower,hinge=right,open=false]");
+        p.set(x, 2, 34, C + "puerta_metal[facing=east,half=upper,hinge=right,open=false]");
+        p.set(x, 3, 34, C + "metal_negro");
+        p.set(x, 3, 35, C + "metal_negro");
         p.marca("vit.salida.a", x, 1, 34, 270);
         p.marca("vit.salida.b", x, 1, 35, 270);
         p.texto(x - 1, 4, 34, "letrero", "west", 0xB3272A, "LA FUNCIÓN", "continúa");
         p.marca("vit.antesala", x + 6, 1, 34, 270);
+    }
+
+    /** La cochera: x 56 a 76, z 22 a 47 (adentro), concreto, focos de tubo, la taquilla, bancas y maletas; el autobús al sur. */
+    private static void cochera(Plano p) {
+        int x0 = SALIDA_X + 1, x1 = 76, z0 = 22, z1 = 47, techo = 8;
+        for (int x = x0 - 1; x <= x1 + 1; x++) {
+            for (int z = z0 - 1; z <= z1 + 1; z++) {
+                boolean muro = x == x0 - 1 || x == x1 + 1 || z == z0 - 1 || z == z1 + 1;
+                if (x == x0 - 1) {
+                    continue; // el muro del teatro
+                }
+                p.set(x, 0, z, muro ? C + "concreto" : C + "concreto_piso");
+                p.set(x, techo, z, C + "concreto");
+                for (int y = 1; y < techo; y++) {
+                    p.set(x, y, z, muro ? (y <= 2 ? C + "concreto" : C + "ladrillo_viejo") : "air");
+                }
+            }
+        }
+        // vigas del techo
+        for (int x = x0; x <= x1; x += 5) {
+            for (int z = z0; z <= z1; z++) {
+                p.set(x, techo - 1, z, C + "viga[axis=z]");
+            }
+        }
+        // la cortina de la cochera (frente al autobús): lámina en franjas
+        for (int z = 37; z <= 45; z++) {
+            for (int y = 1; y <= 6; y++) {
+                p.set(x1 + 1, y, z, y % 2 == 0 ? C + "metal_negro" : C + "metal_placa");
+            }
+        }
+        p.letrero(x1, 6, 41, "", "west", "white", "SALIDA DE", "AUTOBUSES");
+        // el autobús, de frente a la cortina; su puerta da al andén (al norte)
+        Vehiculos.autobus(p, "bus_tea", new Marco(60, 44, 270), 0);
+        // las rayas amarillas del andén
+        for (int x = 59; x <= 74; x++) {
+            p.set(x, 0, 36, C + "marco_luz_apagado");
+        }
+        // los focos de tubo del techo (el evento los apaga cuando el autobús arranca)
+        int n = 0;
+        for (int x = x0 + 3; x <= x1 - 2; x += 5) {
+            for (int z : new int[] {26, 32, 41}) {
+                p.set(x, techo - 1, z, C + "lampara_tubo[facing=north,encendida=true,falla=false]");
+                p.marca("coch.luz." + n++, x, techo - 1, z, 0);
+            }
+        }
+        // la pantalla de la cochera (en el muro del este, frente a la puerta del teatro)
+        p.set(x1, 4, 29, C + "pantalla[facing=west,grande=true]");
+        p.nbt(x1, 4, 29, "{tam:1,dx:0.0f}");
+        p.marca("coch.pantalla", x1, 4, 29, 90);
+        // la taquilla: un cuartito de madera con ventanilla, el letrero de BOLETOS y un foco adentro
+        for (int x = x0; x <= x0 + 4; x++) {
+            for (int z = z0; z <= z0 + 3; z++) {
+                boolean borde = x == x0 + 4 || z == z0 + 3;
+                for (int y = 1; y <= 3; y++) {
+                    if (borde) {
+                        boolean ventanilla = y == 2 && (z == z0 + 3 && x >= x0 + 1 && x <= x0 + 3 || x == x0 + 4 && z == z0 + 1);
+                        p.set(x, y, z, ventanilla ? C + "vidrio_sucio" : C + "panel_madera");
+                    }
+                }
+                p.set(x, 4, z, C + "losa_madera[type=bottom]");
+            }
+        }
+        p.set(x0 + 1, 1, z0 + 1, C + "silla[facing=south]");
+        p.set(x0 + 2, 1, z0 + 1, C + "mesa[facing=south]");
+        p.set(x0 + 2, 2, z0 + 1, C + "lampara_mesa[facing=south]");
+        p.letrero(x0 + 2, 3, z0 + 4, "", "south", "gold", "BOLETOS");
+        p.texto(x0 + 4, 3, z0 + 4, "placa", "south", 0xE8E2D0, "SOLO IDA");
+        // el tablero de salidas, el reloj, bancas con maletas, barriles y manchas de aceite
+        p.letrero(x0 + 10, 4, z0, "", "south", "white", "SALIDAS", "23:13 LA CASA", "SIN REGRESO");
+        p.set(x0 + 14, 4, z0, C + "reloj[facing=south]");
+        for (int x = x0 + 8; x <= x0 + 15; x += 4) {
+            p.set(x, 1, z0 + 1, C + "banca[facing=south]");
+            p.set(x + 1, 1, z0 + 1, C + "maleta[facing=south]");
+        }
+        p.set(x0 + 18, 1, z0, C + "barril[facing=south]");
+        p.set(x0 + 19, 1, z0, C + "barril[facing=south]");
+        p.set(x0 + 19, 1, z0 + 1, C + "barril[facing=south]");
+        p.set(x0 + 19, 2, z0, C + "maleta[facing=west]");
+        p.set(x1, 1, z0, C + "cajon[facing=west]");
+        p.set(x1, 1, z0 + 2, C + "maleta[facing=west]");
+        for (int[] q : new int[][] {{x0 + 6, 30}, {x0 + 12, 34}, {x0 + 17, 28}, {x0 + 3, 33}}) {
+            p.set(q[0], 1, q[1], C + "mancha");
+        }
+        p.set(x0 + 9, 1, 31, C + "charco");
+        for (int[] q : new int[][] {{x0, z0}, {x1, z0}, {x0, z1}, {x1, z1}}) {
+            p.set(q[0], techo - 2, q[1], C + "telarana");
+        }
     }
 
     /** Luz: la sala bien iluminada (arañas y luz pareja), el escenario en penumbra hasta que se prenden los reflectores. */

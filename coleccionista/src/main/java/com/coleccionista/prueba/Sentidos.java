@@ -59,7 +59,7 @@ import java.util.UUID;
  * Capítulo 1 · Los sentidos: cada equipo (de 2 o de 3) llega en su ascensor a su propio circuito (el taller, ver {@link Circuito}), lejos de
  * los demás. Cuando están todos fuera del ascensor habla el Coleccionista. En la mesa cada uno toma un objeto: la <b>venda</b> (no ve),
  * la <b>cinta</b> (no habla ni escribe) o las <b>esposas</b> (no toca nada); en parejas no hay cinta. Encadenados cruzan los pasillos, los
- * postes, la pasarela, las baldosas y las palancas hasta la salida, donde se sientan y esperan a los demás (en el circuito nadie se puede
+ * postes, la pasarela, las baldosas y el cuarto a oscuras hasta la salida, donde se sientan y esperan a los demás (en el circuito nadie se puede
  * lastimar ni morir).
  * <p>
  * El final, en el teatro de la colección ({@link SalaVitrina}): los que se salvaron pasan sentados (sin que se note) a una copia de su
@@ -89,7 +89,7 @@ public final class Sentidos {
     }
 
     public enum Etapa {
-        MESA, POSTES, PASARELA, BALDOSAS, PALANCAS, SALIDA, SENTADOS, FUERA
+        MESA, POSTES, PASARELA, BALDOSAS, OSCURO, SALIDA, SENTADOS, FUERA
     }
 
     static final class Equipo {
@@ -104,8 +104,10 @@ public final class Sentidos {
         int[] trampa;
         /** El camino de las baldosas: qué baldosas son seguras [fila][columna] (nunca en diagonal). */
         final boolean[][] seguro = new boolean[Circuito.BALD_FILAS][Circuito.BALD_ANCHO];
-        final boolean[] patron = new boolean[Circuito.PALANCAS];
-        boolean tablero;
+        /** El cuarto a oscuras: dónde quedaron las muñecas (x, z locales), dónde está la luz del farol y el susto en curso. */
+        final List<int[]> munecas = new ArrayList<>();
+        BlockPos farol;
+        long sustoHasta = -1;
         final List<Silla> sillas = new ArrayList<>();
 
         Equipo(int k) {
@@ -177,6 +179,12 @@ public final class Sentidos {
             }
         });
         Silla.permiso = Sentidos::puedeSentarse;
+        // el farol del cuarto a oscuras no se tira (si lo suelta, desaparece y al rato tiene otro en la mano)
+        MinecraftForge.EVENT_BUS.addListener((net.minecraftforge.event.entity.item.ItemTossEvent e) -> {
+            if (esFarol(e.getEntity().getItem())) {
+                e.setCanceled(true);
+            }
+        });
     }
 
     public static Fase fase() {
@@ -259,7 +267,7 @@ public final class Sentidos {
 
     /**
      * Prepara un circuito por equipo (el equipo i va al circuito i+1): la mesa con sus objetos, las puertas cerradas, el camino de las
-     * baldosas y el tablero de las palancas al azar. Devuelve null si se pudo.
+     * baldosas y las muñecas del cuarto a oscuras al azar. Devuelve null si se pudo.
      */
     public static Component preparar(MinecraftServer s, List<List<Pieza>> grupos) {
         if (!Complejo.construido(s, "circ_1")) {
@@ -291,15 +299,7 @@ public final class Sentidos {
             eq.objetos[1] = eq.ids.size() >= 3 ? Rol.CINTA : null;
             eq.objetos[2] = Rol.ESPOSAS;
             caminoBaldosas(eq, r);
-            // el tablero: al menos dos arriba y dos abajo
-            int arriba;
-            do {
-                arriba = 0;
-                for (int j = 0; j < Circuito.PALANCAS; j++) {
-                    eq.patron[j] = r.nextBoolean();
-                    arriba += eq.patron[j] ? 1 : 0;
-                }
-            } while (arriba < 2 || arriba > Circuito.PALANCAS - 2);
+            munecasAlAzar(eq, r);
             equipos.add(eq);
             reponer(s, eq);
         }
@@ -342,6 +342,24 @@ public final class Sentidos {
         }
     }
 
+    /**
+     * Dónde van las muñecas del cuarto a oscuras: en cada tramo del camino, en columnas separadas (al menos 3 bloques), una por columna y
+     * en cualquiera de los carriles (siempre queda por dónde pasar); y una o dos en los rincones sin salida.
+     */
+    static void munecasAlAzar(Equipo eq, Random r) {
+        eq.munecas.clear();
+        for (int[] t : Circuito.OSC_TRAMOS) {
+            int x = t[2] + r.nextInt(2);
+            while (x <= t[3]) {
+                eq.munecas.add(new int[] {x, t[0] + r.nextInt(t[1] - t[0] + 1)});
+                x += 3 + r.nextInt(2);
+            }
+        }
+        for (int[] t : Circuito.OSC_RINCONES) {
+            eq.munecas.add(new int[] {t[2] + r.nextInt(t[3] - t[2] + 1), t[0] + r.nextInt(t[1] - t[0] + 1)});
+        }
+    }
+
     /** Deja el circuito (y el cuarto del teatro) del equipo como nuevos. */
     private static void reponer(MinecraftServer s, Equipo eq) {
         ServerLevel l = s.overworld();
@@ -361,14 +379,8 @@ public final class Sentidos {
         puerta(s, eq.palco() + ".entrada", false);
         Cabina.puerta(s, eq.palco(), false);
         baldosas(s, eq, false, null);
-        for (int j = 0; j < Circuito.PALANCAS; j++) {
-            BlockPos p = Complejo.pos(s, eq.pre() + "palanca." + j);
-            BlockState st = p == null ? null : l.getBlockState(p);
-            if (st != null && st.hasProperty(BlockStateProperties.POWERED) && st.getValue(BlockStateProperties.POWERED)) {
-                l.setBlock(p, st.setValue(BlockStateProperties.POWERED, false), 3);
-            }
-        }
-        tablero(s, eq, false);
+        apagarFarol(s, eq);
+        ponerMunecas(s, eq);
     }
 
     /** Las dos hojas de una puerta ({@code marca.a} y {@code marca.b}). */
@@ -408,19 +420,190 @@ public final class Sentidos {
         }
     }
 
-    /** El tablero de la casilla de las palancas: prendido (verde arriba, rojo abajo) solo si alguien del equipo está adentro. */
-    private static void tablero(MinecraftServer s, Equipo eq, boolean on) {
+    /** El bloque de la muñeca grande del cuarto a oscuras, mirando hacia algún lado (mitad de abajo o de arriba). */
+    private static BlockState muneca(String mira, boolean arriba) {
+        return Complejo.estado(MOD + ":muneca_grande[facing=" + mira + ",half=" + (arriba ? "upper" : "lower") + "]");
+    }
+
+    /** Quita las muñecas que haya en el cuarto a oscuras del equipo y pone las suyas (mirando a la entrada). */
+    private static void ponerMunecas(MinecraftServer s, Equipo eq) {
         ServerLevel l = s.overworld();
-        BlockState off = Complejo.estado(MOD + ":marco_luz_apagado"), verde = Complejo.estado(MOD + ":marco_luz_verde"),
-                rojo = Complejo.estado(MOD + ":marco_luz_roja");
-        for (int j = 0; j < Circuito.PALANCAS; j++) {
-            BlockPos q = Complejo.pos(s, eq.pre() + "tablero." + j);
-            BlockState st = !on ? off : eq.patron[j] ? verde : rojo;
-            if (q != null && l.getBlockState(q) != st) {
-                l.setBlock(q, st, 3);
+        BlockPos o = Complejo.origen(s, "circ_" + eq.k);
+        if (o == null) {
+            return;
+        }
+        for (int x = Circuito.OSC_X0; x <= Circuito.OSC_X1; x++) {
+            for (int z = Circuito.OSC_Z0; z <= Circuito.OSC_Z1; z++) {
+                for (int y = 1; y <= 2; y++) {
+                    BlockPos q = o.offset(x, y, z);
+                    if (l.getBlockState(q).getBlock() == muneca("north", false).getBlock()) {
+                        l.setBlock(q, Blocks.AIR.defaultBlockState(), 2 | 16);
+                    }
+                }
             }
         }
-        eq.tablero = on;
+        for (int[] m : eq.munecas) {
+            BlockPos q = o.offset(m[0], 1, m[1]);
+            if (l.getBlockState(q).isAir() && l.getBlockState(q.above()).isAir()) {
+                l.setBlock(q, muneca("north", false), 2 | 16);
+                l.setBlock(q.above(), muneca("north", true), 2 | 16);
+            }
+        }
+    }
+
+    /** Quien lleva el farol: el de las esposas (ve y habla, pero no toca); si no está, cualquiera del equipo. */
+    private static Entity conFarol(MinecraftServer s, Equipo eq) {
+        Entity otro = null;
+        for (UUID id : eq.ids) {
+            Entity e = ent(s, id);
+            if (e == null) {
+                continue;
+            }
+            if (eq.roles.get(id) == Rol.ESPOSAS) {
+                return e;
+            }
+            if (otro == null || eq.roles.get(id) != Rol.VENDA) {
+                otro = e;
+            }
+        }
+        return otro;
+    }
+
+    /** ¿Es el farol que da el evento? (para no tocar las cosas del jugador) */
+    private static boolean esFarol(net.minecraft.world.item.ItemStack st) {
+        return st.is(net.minecraft.world.item.Items.LANTERN) && st.hasTag() && st.getTag().getBoolean("coleccionista_farol");
+    }
+
+    /** La luz que sigue al del farol (un bloque de luz invisible a la altura de su cabeza), el farol en su mano y la ceguera de los demás. */
+    private static void farol(MinecraftServer s, Equipo eq, List<Entity> ents, long now) {
+        ServerLevel l = s.overworld();
+        Entity f = conFarol(s, eq);
+        BlockPos q = f == null ? null : BlockPos.containing(f.getX(), f.getY() + 1.2, f.getZ());
+        if (q != null && !q.equals(eq.farol) && l.getBlockState(q).isAir()) {
+            apagarFarol(s, eq);
+            l.setBlock(q, Blocks.LIGHT.defaultBlockState().setValue(net.minecraft.world.level.block.LightBlock.LEVEL, 14), 2);
+            eq.farol = q;
+        }
+        if (now % 20 != 0) {
+            return;
+        }
+        for (Entity e : ents) {
+            if (!(e instanceof ServerPlayer sp)) {
+                continue;
+            }
+            if (e == f) {
+                // el farol en la mano (si no trae otra cosa); si lo tiró, se le da otro
+                if (!esFarol(sp.getMainHandItem()) && sp.getMainHandItem().isEmpty()) {
+                    net.minecraft.world.item.ItemStack st = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.LANTERN);
+                    st.getOrCreateTag().putBoolean("coleccionista_farol", true);
+                    st.setHoverName(Component.translatable(MOD + ".sen.farol").withStyle(ChatFormatting.GOLD));
+                    sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, st);
+                }
+            } else if (juega(sp)) {
+                sp.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.BLINDNESS, 50, 0, false, false,
+                        false));
+            }
+        }
+        // las muñecas voltean a ver la luz
+        BlockPos o = Complejo.origen(s, "circ_" + eq.k);
+        if (f != null && o != null) {
+            for (int[] m : eq.munecas) {
+                BlockPos b = o.offset(m[0], 1, m[1]);
+                double dx = f.getX() - (b.getX() + 0.5), dz = f.getZ() - (b.getZ() + 0.5);
+                if (dx * dx + dz * dz > 100) {
+                    continue;
+                }
+                String mira = Math.abs(dx) > Math.abs(dz) ? (dx > 0 ? "east" : "west") : (dz > 0 ? "south" : "north");
+                BlockState st = l.getBlockState(b);
+                if (st.getBlock() == muneca(mira, false).getBlock() && st != muneca(mira, false)) {
+                    l.setBlock(b, muneca(mira, false), 2 | 16);
+                    l.setBlock(b.above(), muneca(mira, true), 2 | 16);
+                }
+            }
+        }
+    }
+
+    /** Quita la luz del farol (si sigue ahí). */
+    private static void apagarFarol(MinecraftServer s, Equipo eq) {
+        if (eq.farol != null) {
+            ServerLevel l = s.overworld();
+            if (l.getBlockState(eq.farol).is(Blocks.LIGHT)) {
+                l.setBlock(eq.farol, Blocks.AIR.defaultBlockState(), 2);
+            }
+            eq.farol = null;
+        }
+    }
+
+    /** Salieron del cuarto a oscuras (o se acabó la prueba): sin luz, sin farol en la mano y sin ceguera. */
+    private static void salirOscuro(MinecraftServer s, Equipo eq) {
+        apagarFarol(s, eq);
+        for (UUID id : eq.ids) {
+            if (ent(s, id) instanceof ServerPlayer sp) {
+                sp.removeEffect(net.minecraft.world.effect.MobEffects.BLINDNESS);
+                var inv = sp.getInventory();
+                for (int i = 0; i < inv.getContainerSize(); i++) {
+                    if (esFarol(inv.getItem(i))) {
+                        inv.setItem(i, net.minecraft.world.item.ItemStack.EMPTY);
+                    }
+                }
+            }
+        }
+    }
+
+    private static int sustos;
+
+    /** Alguien chocó con una muñeca: la cara de la muñeca en su pantalla, un grito, y al rato todos a la entrada del cuarto. */
+    private static void susto(MinecraftServer s, Equipo eq, Entity quien, int[] m, long now) {
+        eq.sustoHasta = now + 24;
+        sustos++;
+        for (UUID id : eq.ids) {
+            if (ent(s, id) instanceof ServerPlayer sp) {
+                CompoundTag su = new CompoundTag();
+                su.putInt("n", sustos);
+                su.putLong("en", s.overworld().getGameTime());
+                su.putBoolean("cara", sp == quien);
+                PlayerStore.Sync.toPlayer(sp, KEY + "_susto", su);
+                sp.playNotifySound(net.minecraft.sounds.SoundEvent.createVariableRangeEvent(com.axeliscore.plat.Ids.rl(MOD, "sor_susto")),
+                        SoundSource.MASTER, sp == quien ? 1.3F : 0.7F, 1.25F);
+                Fx.shake(sp, 0.8F, 10);
+            }
+        }
+        BlockPos o = Complejo.origen(s, "circ_" + eq.k);
+        if (o != null) {
+            BlockPos b = o.offset(m[0], 1, m[1]);
+            s.overworld().playSound(null, b, SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 0.6F, 1.6F);
+        }
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS muneca equipo={} x={} z={}", eq.k, m[0], m[1]);
+    }
+
+    /** El cuarto a oscuras: el farol, las muñecas (quien choca con una: susto y todos a la entrada) y la salida. */
+    private static void oscuroTick(MinecraftServer s, Equipo eq, List<Entity> ents, BlockPos o, long now) {
+        farol(s, eq, ents, now);
+        if (eq.sustoHasta > 0) {
+            if (now >= eq.sustoHasta) {
+                eq.sustoHasta = -1;
+                cayo(s, eq, "ck.oscuro", MOD + ".sen.muneca");
+            }
+            return;
+        }
+        for (Entity e : ents) {
+            if (!juega(e) || acompanante(eq, e, ents) || e.getY() - o.getY() > 2.5) {
+                continue;
+            }
+            for (int[] m : eq.munecas) {
+                double dx = e.getX() - (o.getX() + m[0] + 0.5), dz = e.getZ() - (o.getZ() + m[1] + 0.5);
+                if (dx * dx + dz * dz < 0.36) {
+                    susto(s, eq, e, m, now);
+                    return;
+                }
+            }
+        }
+        if (todosMas(ents, o, Circuito.Z_OSCURO_FIN)) {
+            puerta(s, eq.pre() + "puerta4", true);
+            sonar(s, eq, SoundEvents.PLAYER_LEVELUP, 0.6F, 0.6F);
+            sonar(s, eq, SoundEvents.IRON_DOOR_OPEN, 1F, 0.6F);
+            alaSalida(s, eq);
+        }
     }
 
     // ------------------------------------------------------------------ llegada, discurso y la mesa
@@ -821,36 +1004,7 @@ public final class Sentidos {
                 }
             }
             case BALDOSAS -> baldosasTick(s, eq, ents, o, now);
-            case PALANCAS -> {
-                if (now % 10 != 0) {
-                    return;
-                }
-                // el tablero solo se ve si alguien del equipo está dentro de la casilla
-                boolean dentro = false;
-                for (Entity e : ents) {
-                    double lx = e.getX() - o.getX(), lz = e.getZ() - o.getZ();
-                    dentro |= lx >= Circuito.CAS_X0 && lx <= Circuito.CAS_X1 + 1 && lz >= Circuito.CAS_Z0 && lz <= Circuito.CAS_Z1 + 1;
-                }
-                if (dentro != eq.tablero) {
-                    tablero(s, eq, dentro);
-                    if (dentro) {
-                        sonar(s, eq, SoundEvents.BEACON_POWER_SELECT, 0.5F, 1.6F);
-                    }
-                }
-                boolean bien = true;
-                for (int j = 0; j < Circuito.PALANCAS; j++) {
-                    BlockPos p = Complejo.pos(s, eq.pre() + "palanca." + j);
-                    BlockState st = p == null ? null : s.overworld().getBlockState(p);
-                    boolean arriba = st != null && st.hasProperty(BlockStateProperties.POWERED) && st.getValue(BlockStateProperties.POWERED);
-                    bien &= arriba == eq.patron[j];
-                }
-                if (bien) {
-                    puerta(s, eq.pre() + "puerta4", true);
-                    sonar(s, eq, SoundEvents.PLAYER_LEVELUP, 0.6F, 0.6F);
-                    sonar(s, eq, SoundEvents.IRON_DOOR_OPEN, 1F, 0.6F);
-                    alaSalida(s, eq);
-                }
-            }
+            case OSCURO -> oscuroTick(s, eq, ents, o, now);
             case SALIDA -> salidaTick(s, eq, ents, now);
             case SENTADOS -> {
                 if (!eq.avisoEspera && now - eq.termino > 60) {
@@ -913,7 +1067,8 @@ public final class Sentidos {
         return switch (eq.etapa) {
             case PASARELA -> "ck.pasarela";
             case BALDOSAS -> "ck.baldosas";
-            case PALANCAS, SALIDA -> "ck.palancas";
+            case OSCURO -> "ck.oscuro";
+            case SALIDA -> "ck.salida";
             default -> "ck.postes";
         };
     }
@@ -1016,12 +1171,12 @@ public final class Sentidos {
         }
         if (todosMas(ents, o, Circuito.Z_BALD_FIN)) {
             puerta(s, eq.pre() + "puerta3", true);
-            eq.etapa = Etapa.PALANCAS;
+            eq.etapa = Etapa.OSCURO;
             baldosas(s, eq, false, null);
-            tablero(s, eq, false);
-            avisar(s, eq, MOD + ".sen.palancas");
+            avisar(s, eq, MOD + ".sen.oscuro");
+            sonar(s, eq, SoundEvents.LANTERN_PLACE, 1F, 0.8F);
             cambio = true;
-            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS palancas equipo={}", eq.k);
+            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS oscuro equipo={}", eq.k);
         }
     }
 
@@ -1050,6 +1205,8 @@ public final class Sentidos {
     /** Se abrió la última puerta: aparecen las sillas en el cuarto de la salida (una por persona). */
     private static void alaSalida(MinecraftServer s, Equipo eq) {
         eq.etapa = Etapa.SALIDA;
+        eq.sustoHasta = -1;
+        salirOscuro(s, eq);
         for (Silla si : eq.sillas) {
             si.discard();
         }
@@ -1287,7 +1444,8 @@ public final class Sentidos {
     private static void elFinal(MinecraftServer s, long now) {
         long dt = now - finT0;
         ServerLevel l = s.overworld();
-        // 1) los que se salvaron pasan (sentados, sin que se note) a su cuarto del teatro; un momento después se abre la puerta
+        // 1) los que se salvaron suben (sentados y amarrados) en su cuarto, que es un montacargas: engranes, cadenas y las luces de los
+        // pisos que bajan; arriba se abre la puerta a su palco del teatro y se sueltan las correas
         if (!palcos && dt >= 40) {
             palcos = true;
             for (Equipo eq : equipos) {
@@ -1299,28 +1457,20 @@ public final class Sentidos {
                             van.add(e);
                         }
                     }
-                    Cabina.trasladar(s, eq.cuarto(), eq.palco(), van, eq.sillas);
                     for (Silla si : eq.sillas) {
                         si.grupo = "teatro";
                     }
                     eq.etapa = Etapa.FUERA;
-                }
-            }
-            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS palcos");
-        }
-        if (!levantan && dt >= 80) {
-            levantan = true;
-            for (Equipo eq : equipos) {
-                if (!eq.perdio) {
-                    for (Silla si : eq.sillas) {
-                        si.cerrar(false);
+                    boolean sube = Cabina.viajar(s, eq.cuarto(), eq.palco(), Cabina.Tipo.MONTACARGAS, 170, Salidas.ANCHO, Salidas.ALTO,
+                            Salidas.FONDO, van, eq.sillas, () -> levantar(s, eq));
+                    if (!sube) {
+                        Cabina.trasladar(s, eq.cuarto(), eq.palco(), van, eq.sillas);
+                        Cabina.puerta(s, eq.palco(), true);
+                        levantar(s, eq);
                     }
-                    Cabina.puerta(s, eq.palco(), true);
-                    botsALaSala(s, eq);
-                    avisar(s, eq, MOD + ".sen.final.salgan");
-                    sonar(s, eq, SoundEvents.IRON_TRAPDOOR_OPEN, 1F, 0.6F);
                 }
             }
+            Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS palcos (montacargas)");
         }
         // 2) al último equipo se le llena el cuarto de gas: se desmaya
         if (!gas && dt >= 40) {
@@ -1398,6 +1548,19 @@ public final class Sentidos {
         if (fase == Fase.FIN && now % 10 == 0) {
             vigilarSalida(s);
         }
+    }
+
+    /** Llegó arriba el montacargas de un equipo que se salvó: se abren las correas y salen a la sala (los bots bajan solos). */
+    private static void levantar(MinecraftServer s, Equipo eq) {
+        levantan = true;
+        for (Silla si : eq.sillas) {
+            si.cerrar(false);
+        }
+        botsALaSala(s, eq);
+        avisar(s, eq, MOD + ".sen.final.salgan");
+        sonar(s, eq, SoundEvents.IRON_TRAPDOOR_OPEN, 1F, 0.6F);
+        cambio = true;
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS arriba equipo={}", eq.k);
     }
 
     /** Los bots que se salvaron (solo en pruebas) se levantan y bajan a la sala, frente al vidrio, cada uno en su lugar. */
@@ -1868,7 +2031,26 @@ public final class Sentidos {
         return true;
     }
 
-    /** Para revisar (y para las fotos): enciende en todos los circuitos el camino de las baldosas (5 s si están ahí) y el tablero. */
+    /** El equipo de esa pieza, directo a la entrada del cuarto a oscuras (para probar). */
+    public static boolean alOscuro(MinecraftServer s, Pieza p) {
+        Equipo eq = equipoDe(p.id);
+        if (eq == null || fase != Fase.JUEGO || eq.etapa.ordinal() >= Etapa.SALIDA.ordinal()) {
+            return false;
+        }
+        for (String d : new String[] {"puerta1", "puerta3"}) {
+            puerta(s, eq.pre() + d, true);
+        }
+        baldosas(s, eq, false, null);
+        eq.etapa = Etapa.OSCURO;
+        eq.sustoHasta = -1;
+        volver(s, eq, "ck.oscuro");
+        avisar(s, eq, MOD + ".sen.oscuro");
+        cambio = true;
+        Coleccionista.LOGGER.info("COLECCIONISTA_SENTIDOS oscuro equipo={} (a mano)", eq.k);
+        return true;
+    }
+
+    /** Para revisar (y para las fotos): enciende en todos los circuitos el camino de las baldosas (5 s si están ahí). */
     public static void mostrar(MinecraftServer s) {
         long now = s.overworld().getGameTime();
         for (Equipo eq : equipos) {
@@ -1876,7 +2058,6 @@ public final class Sentidos {
             if (eq.etapa == Etapa.BALDOSAS) {
                 eq.verHasta = now + 100;
             }
-            tablero(s, eq, true);
         }
     }
 
@@ -1963,8 +2144,9 @@ public final class Sentidos {
     private static void limpiar(MinecraftServer s) {
         com.coleccionista.voz.Voz.juntar();
         com.coleccionista.voz.Voz.mudos(Set.of());
-        // todas las sillas fuera (también las del teatro y la vitrina): nadie se queda sentado para la siguiente prueba
+        // todas las sillas fuera (también las del teatro y la vitrina): nadie se queda sentado para la siguiente prueba; sin farol ni ceguera
         for (Equipo eq : equipos) {
+            salirOscuro(s, eq);
             for (Silla si : eq.sillas) {
                 si.soltar();
                 si.discard();

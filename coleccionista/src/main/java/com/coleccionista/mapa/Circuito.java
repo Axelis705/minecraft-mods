@@ -14,8 +14,9 @@ import java.util.List;
  *     alguien cae, todo el equipo regresa al principio de la pasarela.</li>
  *     <li>Las baldosas: un campo largo; el camino seguro se ve unos segundos y nunca va en diagonal (de una baldosa a la de enfrente o a
  *     la de al lado). Si alguien pisa una mala, todo el equipo regresa a la orilla (lejos de todo peligro).</li>
- *     <li>Las palancas: el tablero está dentro de una casilla y solo se enciende si alguien está adentro; las palancas están afuera, en
- *     las dos paredes de la casilla. Uno ve y dice, los otros las mueven.</li>
+ *     <li>El cuarto a oscuras: sin una sola luz, con muros de muebles que lo vuelven un zigzag y muñecas grandes en el camino (cambian
+ *     de lugar en cada equipo). Solo el de las esposas lleva farol: ve, guía con la voz y no toca nada. Si alguien choca con una muñeca,
+ *     susto y todo el equipo regresa a la entrada del cuarto.</li>
  *     <li>La salida ({@link Salidas}): tres sillas frente a una puerta de SALIDA.</li>
  * </ol>
  * Sin vacíos: en ningún lado se puede caer más de dos bloques. Marcas con {@code circ.K.} (K = número del circuito); el ascensor es
@@ -31,9 +32,17 @@ public final class Circuito {
     public static final int ZANJA_X0 = 32, ZANJA_X1 = 49, ZANJA_Z0 = 61, ZANJA_Z1 = 70;
     /** Las baldosas: 6 de ancho (x 24..29) por 12 filas (z 88..99). */
     public static final int BALD_X0 = 24, BALD_Z0 = 88, BALD_ANCHO = 6, BALD_FILAS = 12;
-    /** La casilla de las palancas: el interior (x, z locales). */
-    public static final int CAS_X0 = 37, CAS_X1 = 42, CAS_Z0 = 116, CAS_Z1 = 118;
-    public static final int PALANCAS = 6;
+    /** El cuarto a oscuras: su interior (x, z locales). Tres muros de muebles (en z 115, 119 y 123) lo vuelven un zigzag de 4 filas. */
+    public static final int OSC_X0 = 30, OSC_X1 = 49, OSC_Z0 = 112, OSC_Z1 = 125;
+    /** Al pasar todos de esta z (local) ya están en la última fila, frente a la salida: se abre la puerta. */
+    public static final double Z_OSCURO_FIN = 124.0;
+    /**
+     * Los tramos del camino donde se ponen las muñecas: {z0, z1, x0, x1} (fila del cuarto y las columnas x donde puede ir una). Lejos de
+     * la entrada, de las vueltas y de la salida, para que siempre se pueda pasar por un lado.
+     */
+    public static final int[][] OSC_TRAMOS = {{112, 114, 34, 35}, {116, 118, 35, 44}, {120, 122, 35, 44}, {124, 125, 34, 36}};
+    /** Los rincones sin salida (la punta este de la primera y la última fila): ahí también espera alguna muñeca. */
+    public static final int[][] OSC_RINCONES = {{112, 114, 44, 48}, {124, 125, 43, 48}};
     /** El cuarto de la salida: su marco (la esquina de su interior). */
     public static final int SAL_CX = 22, SAL_CZ = 134;
 
@@ -83,7 +92,8 @@ public final class Circuito {
         double y = 1.6;
         double[][] p = {{10, 15.5}, {10, 19.5}, {24, 20}, {24, 30}, {14, 30}, {14, 37}, {25, 47.5}, {32, 47.5}, {32, 38}, {42, 38},
                 {42, 59}, {41.5, 61}, {41.5, 72}, {42, 77.5}, {28, 77.5}, {28, 86}, {27, 100.5}, {27, 105}, {40, 106.5}, {40, 112},
-                {39.5, 114.5}, {40, 127}, {40, 128.5}, {26, 128.5}, {26, 133}};
+                {39.5, 113.5}, {32, 113.5}, {32, 117.5}, {47.5, 117.5}, {47.5, 121.5}, {32, 121.5}, {32, 124.8}, {40, 124.8}, {40, 127},
+                {40, 128.5}, {26, 128.5}, {26, 133}};
         for (double[] q : p) {
             l.add(new double[] {q[0], y, q[1]});
         }
@@ -131,14 +141,20 @@ public final class Circuito {
         // las baldosas
         baldosas(p, pre);
         puerta(p, pre + "puerta3", 26, 104);
-        // pasillo a las palancas
+        // pasillo al cuarto a oscuras (cada vez con menos luz)
         pasillo(p, 25, 105, 28, 108);
         pasillo(p, 25, 105, 41, 108);
         pasillo(p, 38, 105, 41, 111);
         munecas(p, 25, 105, 41, 108);
-        // las palancas
-        cuarto(p, 30, 112, 49, 125, 13);
-        palancas(p, pre);
+        for (int x = 38; x <= 41; x++) {
+            for (int z = 108; z <= 111; z++) {
+                if (p.get(x, 4, z) != null && p.get(x, 4, z).startsWith("light")) {
+                    p.set(x, 4, z, "air");
+                }
+            }
+        }
+        // el cuarto a oscuras
+        oscuro(p, pre);
         puerta(p, pre + "puerta4", 39, 126);
         // pasillo a la salida
         pasillo(p, 38, 127, 41, 130);
@@ -340,48 +356,66 @@ public final class Circuito {
         p.caja(26, 1, 83, 29, 4, 83, "air");
     }
 
-    private static void palancas(Plano p, String pre) {
-        // la casilla: muros de acero, entrada al norte y el tablero (6 focos) por dentro en el muro del sur (doble: no se ve de afuera)
-        int a = CAS_X0 - 1, b = CAS_X1 + 1;
-        for (int x = a; x <= b; x++) {
-            for (int z = CAS_Z0 - 1; z <= CAS_Z1 + 2; z++) {
-                for (int y = 1; y <= 4; y++) {
-                    boolean dentro = x >= CAS_X0 && x <= CAS_X1 && z >= CAS_Z0 && z <= CAS_Z1;
-                    p.set(x, y, z, dentro ? "air" : C + (y == 4 ? "viga[axis=y]" : "metal_placa"));
+    /**
+     * El cuarto a oscuras: ni una sola luz. Tres muros de muebles hasta el techo (libreros, archiveros, barriles) lo vuelven un zigzag de
+     * cuatro filas de 3 de ancho: se entra a la mitad de la primera, las vueltas van al oeste, al este y al oeste, y la salida queda a la
+     * mitad de la última. En las puntas sin salida hay juguetes y muebles viejos. Las muñecas grandes las pone el evento (cambian de
+     * lugar con cada equipo), ver {@link #OSC_TRAMOS}.
+     */
+    private static void oscuro(Plano p, String pre) {
+        p.caja(OSC_X0, 1, OSC_Z0, OSC_X1, 4, OSC_Z1, "air");
+        for (int x = OSC_X0; x <= OSC_X1; x++) {
+            for (int z = OSC_Z0; z <= OSC_Z1; z++) {
+                p.set(x, 0, z, C + "parquet");
+                if (z % 3 == 1) {
+                    p.set(x, 5, z, TECHO_B + "[axis=x]");
                 }
-                p.set(x, 5, z, C + "metal_negro");
             }
         }
-        // la entrada (2 de ancho) en el muro del norte
-        for (int y = 1; y <= 3; y++) {
-            p.set(39, y, CAS_Z0 - 1, "air");
-            p.set(40, y, CAS_Z0 - 1, "air");
+        muroMuebles(p, 34, OSC_X1, 115);
+        muroMuebles(p, OSC_X0, 45, 119);
+        muroMuebles(p, 34, OSC_X1, 123);
+        // las puntas sin salida: el cuarto de juguetes olvidado
+        p.set(49, 1, 112, C + "ropero[facing=west,half=lower]");
+        p.set(49, 2, 112, C + "ropero[facing=west,half=upper]");
+        p.set(49, 1, 113, C + "cuna[facing=west]");
+        p.set(49, 1, 114, C + "caballito[facing=west]");
+        p.set(49, 1, 124, C + "maniqui[facing=west,half=lower]");
+        p.set(49, 2, 124, C + "maniqui[facing=west,half=upper]");
+        p.set(49, 1, 125, C + "cajon[facing=west]");
+        p.set(49, 2, 125, C + "muneca[facing=west]");
+        // retratos de niñas y relojes (arriba de la cabeza: nadie se pega con ellos), telarañas en las esquinas
+        p.set(OSC_X0, 3, 113, C + "retrato_nina[facing=east]");
+        p.set(OSC_X0, 3, 121, C + "retrato_nina[facing=east]");
+        p.set(OSC_X1, 3, 117, C + "retrato_nina[facing=west]");
+        p.set(40, 3, 116, C + "reloj[facing=south]");
+        p.set(37, 3, 122, C + "reloj[facing=north]");
+        for (int[] q : new int[][] {{OSC_X0, OSC_Z0}, {OSC_X1, OSC_Z0}, {OSC_X0, OSC_Z1}, {OSC_X1, OSC_Z1}, {OSC_X0, 118}, {OSC_X1, 120}}) {
+            p.set(q[0], 4, q[1], C + "telarana");
         }
-        for (int x = CAS_X0; x <= CAS_X1; x++) {
-            for (int z = CAS_Z0; z <= CAS_Z1; z++) {
-                p.set(x, 0, z, C + "metal_placa");
+        p.letrero(38, 3, 109, "", "east", "white", "Solo uno lleva luz.", "No toquen", "a las muñecas.");
+        p.marca(pre + "ck.oscuro", 39, 1, 113, 0);
+        p.marca(pre + "oscuro", OSC_X0, 1, OSC_Z0, 0);
+        p.marca(pre + "ck.salida", 40, 1, 128, 0);
+    }
+
+    /** Un muro de muebles de un bloque de grueso hasta el techo (y 1 a 4) en la fila z, de x0 a x1: libreros, archiveros y barriles. */
+    private static void muroMuebles(Plano p, int x0, int x1, int z) {
+        for (int x = x0; x <= x1; x++) {
+            String r = p.elegir("libros", "libros", "libros", "libros", "archivo", "archivo", "barril", "barril", "panel");
+            String[] col;
+            if (r.equals("libros")) {
+                col = new String[] {"minecraft:bookshelf", "minecraft:bookshelf", "minecraft:bookshelf", "minecraft:bookshelf"};
+            } else if (r.equals("archivo")) {
+                col = new String[] {C + "estante_archivo", C + "estante_archivo", C + "estante_archivo", C + "panel_madera"};
+            } else if (r.equals("barril")) {
+                col = new String[] {"minecraft:barrel[facing=up]", "minecraft:barrel[facing=up]", "minecraft:bookshelf", "minecraft:bookshelf"};
+            } else {
+                col = new String[] {C + "panel_madera", C + "panel_madera", "minecraft:bookshelf", C + "panel_madera"};
+            }
+            for (int y = 1; y <= 4; y++) {
+                p.set(x, y, z, col[y - 1]);
             }
         }
-        p.set(38, 1, 117, C + "placa_presion");
-        p.set(41, 1, 117, C + "placa_presion");
-        for (int j = 0; j < PALANCAS; j++) {
-            int x = CAS_X0 + j;
-            p.set(x, 3, CAS_Z1 + 1, C + "marco_luz_apagado");
-            p.marca(pre + "tablero." + j, x, 3, CAS_Z1 + 1, 0);
-            p.texto(x, 2, CAS_Z1, "placa", "north", 0xE8E2D0, String.valueOf(j + 1));
-        }
-        p.set(39, 4, 117, "light[level=13]");
-        p.letrero(CAS_X0, 3, CAS_Z0, "", "east", "white", "Solo se ve", "desde adentro.");
-        // las palancas: 1 a 3 por fuera del muro del oeste, 4 a 6 por fuera del muro del este
-        for (int j = 0; j < PALANCAS; j++) {
-            boolean oeste = j < 3;
-            int x = oeste ? a - 1 : b + 1, z = CAS_Z0 + (j % 3);
-            p.set(x, 2, z, C + "palanca[face=wall,facing=" + (oeste ? "west" : "east") + ",powered=false]");
-            p.marca(pre + "palanca." + j, x, 2, z, 0);
-            p.texto(x, 3, z, "placa", oeste ? "west" : "east", 0xE8E2D0, String.valueOf(j + 1));
-        }
-        p.letrero(30, 3, 113, "", "east", "white", "VERDE: arriba", "ROJO: abajo");
-        p.marca(pre + "ck.palancas", 40, 1, 113, 0);
-        p.marca(pre + "casilla", CAS_X0, 1, CAS_Z0, 0);
     }
 }

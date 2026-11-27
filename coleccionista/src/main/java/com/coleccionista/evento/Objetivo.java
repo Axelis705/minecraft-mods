@@ -83,6 +83,13 @@ public final class Objetivo {
         if (Desenlace.activo()) {
             return Desenlace.objetivo(s, sp);
         }
+        // subiéndose a un vehículo (el autobús de la casa): a su puerta
+        if (Transbordo.activo()) {
+            Meta t = Transbordo.objetivo(s, sp);
+            if (t != null) {
+                return t;
+            }
+        }
         Meta m = Capitulo1.objetivo(s, sp);
         if (m != null) {
             return m;

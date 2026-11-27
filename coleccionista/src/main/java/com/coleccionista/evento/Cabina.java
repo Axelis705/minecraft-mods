@@ -36,7 +36,11 @@ public final class Cabina {
         /** Vagón de tren (traqueteo de las vías). */
         TREN,
         /** Ascensor viejo que baja a toda velocidad: sacudidas fuertes, chirridos, chispas y luces que parpadean. */
-        CAIDA
+        CAIDA,
+        /** El autobús del Coleccionista: el motor, los baches, las luces de la calle que pasan por las ventanas y el frenón. */
+        AUTOBUS,
+        /** Montacargas de jaula que sube despacio: engranes, cadenas y las franjas de luz de cada piso que se quedan abajo. */
+        MONTACARGAS
     }
 
     /** A cada pasajero: el viaje en curso (para el parpadeo de las luces y las rayas de velocidad en su pantalla). */
@@ -52,6 +56,8 @@ public final class Cabina {
         int t;
         boolean pasaron;
         final List<Entity> van = new ArrayList<>();
+        /** Sillas que viajan con quien vaya sentado en ellas (el montacargas de las sillas del capítulo 1). */
+        final List<Silla> sillas = new ArrayList<>();
 
         Viaje(String desde, String hasta, Tipo tipo, int dura, int ancho, int alto, int fondo, Runnable alLlegar) {
             this.desde = desde;
@@ -117,11 +123,18 @@ public final class Cabina {
     /** Lo mismo, pero solo con esas entidades (null: todos los que estén dentro). */
     public static boolean viajar(MinecraftServer s, String desde, String hasta, Tipo tipo, int dura, int ancho, int alto, int fondo,
             List<? extends Entity> quienes, Runnable alLlegar) {
+        return viajar(s, desde, hasta, tipo, dura, ancho, alto, fondo, quienes, List.of(), alLlegar);
+    }
+
+    /** Lo mismo, con sillas que viajan con quien vaya sentado en ellas (y siguen igual de cerradas). */
+    public static boolean viajar(MinecraftServer s, String desde, String hasta, Tipo tipo, int dura, int ancho, int alto, int fondo,
+            List<? extends Entity> quienes, List<Silla> sillas, Runnable alLlegar) {
         AABB c = caja(s, desde, ancho, alto, fondo);
         if (c == null || Complejo.pos(s, "cab." + hasta + ".origen") == null) {
             return false;
         }
         Viaje v = new Viaje(desde, hasta, tipo, dura, ancho, alto, fondo, alLlegar);
+        v.sillas.addAll(sillas);
         if (quienes != null) {
             v.van.addAll(quienes);
         } else {
@@ -138,7 +151,11 @@ public final class Cabina {
             }
         }
         puerta(s, desde, false);
-        sonido(s, v, SoundEvents.IRON_DOOR_CLOSE, 1F, 0.6F);
+        if (tipo == Tipo.AUTOBUS) {
+            sonido(s, v, propio("bus_puerta"), 1F, 1F);
+        } else {
+            sonido(s, v, SoundEvents.IRON_DOOR_CLOSE, 1F, 0.6F);
+        }
         VIAJES.add(v);
         Coleccionista.LOGGER.info("COLECCIONISTA_CABINA sale {} -> {} van={}", desde, hasta, v.van.size());
         return true;
@@ -151,7 +168,16 @@ public final class Cabina {
         for (Viaje v : new ArrayList<>(VIAJES)) {
             v.t++;
             int t = v.t - CIERRA;
-            if (t == 0) {
+            if (t == 0 && v.tipo == Tipo.AUTOBUS) {
+                // el motor arranca (marcha y acelerón) y el primer jalón
+                sonido(s, v, propio("bus_arranca"), 1F, 1F);
+                sacudir(v, 0.5F, 10);
+            } else if (t == 0 && v.tipo == Tipo.MONTACARGAS) {
+                // se sueltan los frenos: golpe de engranes y cadenas tensándose
+                sonido(s, v, SoundEvents.CHAIN_PLACE, 1F, 0.5F);
+                sonido(s, v, propio("montacargas"), 1F, 1F);
+                sacudir(v, 0.7F, 10);
+            } else if (t == 0) {
                 // arranca: un jalón
                 sonido(s, v, v.tipo == Tipo.TREN ? SoundEvents.MINECART_RIDING : SoundEvents.ANVIL_PLACE, 0.8F, 0.5F);
                 sacudir(v, v.tipo == Tipo.CAIDA ? 1.4F : 0.8F, 8);
@@ -183,6 +209,41 @@ public final class Cabina {
                     pasar(s, v);
                     sonido(s, v, SoundEvents.ANVIL_LAND, 0.6F, 0.5F);
                     sacudir(v, 1.3F, 12);
+                }
+            } else if (t > 0 && t < v.dura && v.tipo == Tipo.AUTOBUS) {
+                // el autobús: el motor (en ciclo), baches chicos todo el tiempo y de vez en cuando uno grande; a la mitad, en un bache
+                // fuerte que lo disimula, pasan al de la llegada
+                if (t % 58 == 20) {
+                    sonido(s, v, propio("bus_motor"), 0.9F, 0.95F + R.nextFloat() * 0.1F);
+                }
+                if (t % 11 == 0) {
+                    sacudir(v, 0.08F + R.nextFloat() * 0.1F, 9);
+                }
+                if (t % 83 == 41 || R.nextInt(160) == 0) {
+                    sacudir(v, 0.55F, 8);
+                    sonido(s, v, SoundEvents.WOOD_FALL, 0.7F, 0.5F);
+                    sonido(s, v, SoundEvents.CHAIN_FALL, 0.5F, 0.6F);
+                }
+                if (!v.pasaron && t >= v.dura / 2) {
+                    pasar(s, v);
+                    sacudir(v, 0.8F, 10);
+                    sonido(s, v, SoundEvents.WOOD_FALL, 0.8F, 0.45F);
+                }
+            } else if (t > 0 && t < v.dura && v.tipo == Tipo.MONTACARGAS) {
+                // sube despacio: el motor de engranes en ciclo, la jaula que cruje y alguna cadena
+                if (t % 50 == 49) {
+                    sonido(s, v, propio("montacargas"), 0.9F, 1F);
+                }
+                if (t % 20 == 1) {
+                    sacudir(v, 0.16F, 18);
+                }
+                if (t % 33 == 15) {
+                    sonido(s, v, R.nextBoolean() ? SoundEvents.CHAIN_STEP : SoundEvents.CHAIN_HIT, 0.8F, 0.5F + R.nextFloat() * 0.3F);
+                }
+                if (!v.pasaron && t >= v.dura / 2) {
+                    pasar(s, v);
+                    sacudir(v, 0.6F, 8);
+                    sonido(s, v, SoundEvents.CHAIN_FALL, 0.6F, 0.6F);
                 }
             } else if (t > 0 && t < v.dura) {
                 if (v.tipo == Tipo.TREN) {
@@ -224,13 +285,23 @@ public final class Cabina {
                     sonido(s, v, SoundEvents.GRINDSTONE_USE, 1F, 0.4F);
                     sacudir(v, 1.6F, 14);
                 }
-                sonido(s, v, SoundEvents.ANVIL_LAND, 0.7F, 0.5F);
-                sonido(s, v, SoundEvents.BELL_BLOCK, 0.8F, 0.9F);
-                sacudir(v, 0.9F, 8);
+                if (v.tipo == Tipo.AUTOBUS) {
+                    // el frenón: rechinido y el aire de los frenos
+                    sonido(s, v, propio("bus_frena"), 1F, 1F);
+                    sacudir(v, 0.9F, 12);
+                } else {
+                    sonido(s, v, SoundEvents.ANVIL_LAND, 0.7F, 0.5F);
+                    sonido(s, v, SoundEvents.BELL_BLOCK, 0.8F, 0.9F);
+                    sacudir(v, 0.9F, 8);
+                }
             }
             if (t >= v.dura + FRENA) {
                 puerta(s, v.hasta, true);
-                sonido(s, v, SoundEvents.IRON_DOOR_OPEN, 1F, 0.6F);
+                if (v.tipo == Tipo.AUTOBUS) {
+                    sonido(s, v, propio("bus_puerta"), 1F, 1.1F);
+                } else {
+                    sonido(s, v, SoundEvents.IRON_DOOR_OPEN, 1F, 0.6F);
+                }
                 VIAJES.remove(v);
                 Coleccionista.LOGGER.info("COLECCIONISTA_CABINA llega {}", v.hasta);
                 if (v.alLlegar != null) {
@@ -243,6 +314,10 @@ public final class Cabina {
     /** Cada quien pasa a la cabina de llegada en el mismo lugar relativo y mirando igual. */
     private static void pasar(MinecraftServer s, Viaje v) {
         v.pasaron = true;
+        if (!v.sillas.isEmpty()) {
+            trasladar(s, v.desde, v.hasta, v.van, v.sillas);
+            return;
+        }
         ServerLevel l = s.overworld();
         BlockPos a = Complejo.pos(s, "cab." + v.desde + ".origen"), b = Complejo.pos(s, "cab." + v.hasta + ".origen");
         if (a == null || b == null) {
@@ -358,5 +433,20 @@ public final class Cabina {
 
     public static void reiniciar(MinecraftServer s) {
         VIAJES.clear();
+    }
+
+    /** Un sonido del mod (los del autobús y el montacargas están en sounds.json). */
+    private static SoundEvent propio(String id) {
+        return SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, id));
+    }
+
+    /** ¿Ya llegó (o no existe) el viaje que sale de {@code desde}? */
+    public static boolean llego(String desde) {
+        for (Viaje v : VIAJES) {
+            if (v.desde.equals(desde)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

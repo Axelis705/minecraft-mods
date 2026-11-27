@@ -253,6 +253,11 @@ public final class Comandos {
                                             IntegerArgumentType.getInteger(c, "i")) ? ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen()))
                                             : error(c, Component.translatable(MOD + ".sen.no"));
                                 }))))
+                        .then(Commands.literal("oscuro").then(Commands.argument("pieza", StringArgumentType.word()).executes(c -> {
+                            Pieza p = Evento.get(c.getSource().getServer()).buscar(StringArgumentType.getString(c, "pieza"));
+                            return p != null && com.coleccionista.prueba.Sentidos.alOscuro(c.getSource().getServer(), p)
+                                    ? ok(c, Component.literal(com.coleccionista.prueba.Sentidos.resumen())) : error(c, Component.translatable(MOD + ".sen.no"));
+                        })))
                         .then(Commands.literal("salida").then(Commands.argument("pieza", StringArgumentType.word()).executes(c -> {
                             Pieza p = Evento.get(c.getSource().getServer()).buscar(StringArgumentType.getString(c, "pieza"));
                             return p != null && com.coleccionista.prueba.Sentidos.aLaSalida(c.getSource().getServer(), p)

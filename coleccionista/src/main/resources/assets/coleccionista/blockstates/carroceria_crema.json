@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/carroceria_crema_0"
+   },
+   {
+    "model": "coleccionista:block/carroceria_crema_1"
+   }
+  ]
+ }
+}

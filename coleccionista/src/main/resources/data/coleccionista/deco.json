@@ -151,6 +151,13 @@
    "ascensor": true
   },
   {
+   "id": "puerta_autobus",
+   "kind": "reja",
+   "sound": "metal",
+   "strength": 5.0,
+   "ascensor": true
+  },
+  {
    "id": "alfombra_roja",
    "kind": "alfombra",
    "sound": "wool",
@@ -217,6 +224,20 @@
   },
   {
    "id": "cobre_viejo",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "carroceria",
+   "kind": "cubo",
+   "sound": "metal",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "carroceria_crema",
    "kind": "cubo",
    "sound": "metal",
    "strength": 2.0,
@@ -5582,6 +5603,139 @@
    "particles": [],
    "es": "Tina de patas",
    "en": "Clawfoot bathtub",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "muneca_grande",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": false,
+   "sound": "glass",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     16,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Muñeca grande",
+   "en": "Life-size doll",
+   "soft": false,
+   "shape_upper": [
+    [
+     4,
+     0,
+     4,
+     12,
+     12,
+     12
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "llanta",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     0,
+     0,
+     9,
+     16,
+     15,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Rueda de autobús",
+   "en": "Bus wheel",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "asiento_bus",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wool",
+   "shape": [
+    [
+     1,
+     0,
+     2,
+     15,
+     8,
+     13
+    ],
+    [
+     1,
+     8,
+     12,
+     15,
+     16,
+     15
+    ]
+   ],
+   "particles": [],
+   "es": "Asiento de autobús",
+   "en": "Bus seat",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "volante",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3,
+     0,
+     2,
+     13,
+     13,
+     8
+    ]
+   ],
+   "particles": [],
+   "es": "Volante",
+   "en": "Steering wheel",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "maleta",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wool",
+   "shape": [
+    [
+     1.5,
+     0,
+     3,
+     14.5,
+     7.5,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Maleta vieja",
+   "en": "Old suitcase",
    "soft": false,
    "sub": "floor"
   },

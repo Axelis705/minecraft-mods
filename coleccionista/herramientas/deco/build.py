@@ -30,6 +30,7 @@ import materiales as M  # noqa: E402
 import props_celdas  # noqa: E402
 import props_complejo  # noqa: E402
 import props_mansion  # noqa: E402
+import props_salas  # noqa: E402
 import materiales_mansion as MM  # noqa: E402
 
 NS = 'coleccionista'
@@ -453,6 +454,7 @@ def catalogo():
     puerta_reja(props_celdas.puerta_reja())
     puerta_reja(props_celdas.puerta_ascensor(), ascensor=True, icono=icono_puerta((150, 117, 58, 255), (210, 172, 90, 255)))
     puerta_reja(props_celdas.puerta_metal(), ascensor=True, icono=icono_puerta((58, 67, 58, 255), (40, 46, 40, 255)))
+    puerta_reja(props_salas.puerta_autobus(), ascensor=True, icono=icono_puerta((90, 28, 30, 255), (20, 26, 32, 255)))
     alfombra('alfombra_roja', 'Alfombra roja', 'Red carpet', lambda s: M.alfombra(s))
     tubo('tubo', 'Tubería oxidada', 'Rusty pipe', lambda s: M.metal_placa(s, '#4d5249', pintado=0.5, remaches=False))
     tubo('poste', 'Poste de acero', 'Steel post', lambda s: poste_tex(s), a=4.5, b=11.5, brida=0.6)
@@ -465,6 +467,10 @@ def catalogo():
     cubo('lodo', 'Lodo', 'Mud', lambda s: M.lodo(s), variantes=2, sonido='wool', dureza=0.8)
     cubo('concreto_humedo', 'Concreto húmedo', 'Damp concrete', lambda s: M.concreto_humedo(s), variantes=3)
     cubo('cobre_viejo', 'Lámina de cobre vieja', 'Old copper plate', lambda s: M.cobre_viejo(s), variantes=3, sonido='metal')
+    cubo('carroceria', 'Carrocería vino', 'Wine-red bus body', lambda s: M.metal_placa(s, '#561a1d', pintado=0.94, remaches=False),
+         variantes=2, sonido='metal')
+    cubo('carroceria_crema', 'Carrocería crema', 'Cream bus body', lambda s: M.metal_placa(s, '#b7a47f', pintado=0.92, remaches=False),
+         variantes=2, sonido='metal')
     cubo('tablon', 'Tablones viejos', 'Old planks', lambda s: M.tablon(s), variantes=2, sonido='wood')
     losa('losa_tablon', 'Losa de tablones', 'Plank slab', lambda s: M.tablon(s), sonido='wood')
     escalera('escalera_tablon', 'Escalón de tablones', 'Plank stairs', lambda s: M.tablon(s), 'tablon', sonido='wood')
@@ -582,6 +588,9 @@ def catalogo():
     prop(Q.zapatos())
     # la mansión gótica del capítulo 2
     for p in props_mansion.todos():
+        prop(p)
+    # las salas de los capítulos, los pasillos y las transiciones
+    for p in props_salas.todos():
         prop(p)
     cama(props_mansion.cama_antigua())
     ficha[-1]['adorno'] = True  # no se duerme en ella (ni guarda el punto de aparición)

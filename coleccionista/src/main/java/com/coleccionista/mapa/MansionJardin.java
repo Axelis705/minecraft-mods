@@ -29,6 +29,7 @@ final class MansionJardin {
             }
         }
         muro(t);
+        parada(t);
         adelante(t);
         laberinto(t);
         cementerio(t);
@@ -36,14 +37,83 @@ final class MansionJardin {
         atras(t);
     }
 
+    /** La reja del oeste (por donde se entra desde la parada del autobús): z de REJA_Z0 a REJA_Z1, en el muro x = TX0. */
+    static final int REJA_Z0 = -19, REJA_Z1 = -17;
+
     private static void muro(Trazo t) {
         for (int x = TX0; x <= TX1; x++) {
             columna(t, x, TZ0, (x - TX0) % 8 == 0 || x == TX1);
             columna(t, x, TZ1, (x - TX0) % 8 == 0 || x == TX1);
         }
         for (int z = TZ0; z <= TZ1; z++) {
-            columna(t, TX0, z, (z - TZ0) % 8 == 0 || z == TZ1);
+            if (z >= REJA_Z0 && z <= REJA_Z1) {
+                continue;
+            }
+            columna(t, TX0, z, (z - TZ0) % 8 == 0 || z == TZ1 || z == REJA_Z0 - 1 || z == REJA_Z1 + 1);
             columna(t, TX1, z, (z - TZ0) % 8 == 0 || z == TZ1);
+        }
+        // la reja de entrada: el arco de sillar con su letrero y las dos hojas de hierro abiertas hacia adentro
+        int y = SUELO;
+        for (int z = REJA_Z0; z <= REJA_Z1; z++) {
+            for (int yy = SOT; yy < SUELO; yy++) {
+                t.set(TX0, yy, z, C + "tierra");
+            }
+            t.set(TX0, y, z, C + "losa_piedra");
+            t.set(TX0, y + 5, z, C + "cornisa");
+            t.set(TX0, y + 6, z, C + "piedra_capilla");
+            t.set(TX0, y + 7, z, C + "barrotes");
+        }
+        t.set(TX0, y + 4, REJA_Z0, C + "escalera_sillar[facing=north,half=top]");
+        t.set(TX0, y + 4, REJA_Z1, C + "escalera_sillar[facing=south,half=top]");
+        t.p.letrero(TX0 - 1, y + 5, (REJA_Z0 + REJA_Z1) / 2, "letrero", "west", "gold", "LA CASA");
+        for (int x = TX0 + 1; x <= TX0 + 2; x++) {
+            for (int yy = y + 1; yy <= y + 3; yy++) {
+                t.set(x, yy, REJA_Z0 - 1, C + "barrotes");
+                t.set(x, yy, REJA_Z1 + 1, C + "barrotes");
+            }
+        }
+    }
+
+    /**
+     * La parada del autobús, afuera del muro del oeste: la calle empedrada (cerrada por setos altos a los lados), la banqueta junto al muro,
+     * el letrero de la parada, faroles y el autobús que llega ({@code bus_man}, idéntico al de la cochera del teatro), con su puerta frente a
+     * la reja.
+     */
+    private static void parada(Trazo t) {
+        int y = SUELO, x0 = -13, x1 = TX0 - 1, z0 = -35, z1 = -2;
+        for (int x = x0; x <= x1; x++) {
+            for (int z = z0; z <= z1; z++) {
+                for (int yy = SOT; yy < y; yy++) {
+                    t.set(x, yy, z, C + "tierra");
+                }
+                boolean orilla = x == x0 || z == z0 || z == z1;
+                t.set(x, y, z, orilla ? C + "tierra" : x == x1 ? C + "losa_piedra" : C + "concreto_humedo");
+                if (orilla) {
+                    for (int yy = y + 1; yy <= y + 4; yy++) {
+                        t.set(x, yy, z, C + "seto");
+                    }
+                }
+            }
+        }
+        // árboles muertos detrás de los setos y faroles en la banqueta (con su propio azar: no cambia nada del resto de la casa)
+        Trazo ta = new Trazo(t.p, 1313L, t.espejo);
+        for (int[] a : new int[][] {{x0 - 2, -31, 9}, {x0 - 3, -20, 8}, {x0 - 2, -8, 10}}) {
+            arbol(ta, a[0], a[1], a[2]);
+            for (int yy = SOT; yy <= y; yy++) {
+                t.set(a[0], yy, a[1], C + "tierra");
+            }
+        }
+        farola(t, x1, -27);
+        farola(t, x1, -11);
+        t.p.letrero(x1, y + 3, -23, "", "west", "gold", "PARADA", "LA CASA");
+        Vehiculos.autobus(t.p, "bus_man", new Marco(-7, -28, 0), y);
+        // luz de la calle (un poco más fuerte junto a la reja)
+        for (int x = x0 + 2; x <= x1; x += 5) {
+            for (int z = z0 + 2; z <= z1 - 1; z += 5) {
+                if (t.p.vacio(x, y + 4, z)) {
+                    t.set(x, y + 4, z, "light[level=12]");
+                }
+            }
         }
     }
 
@@ -417,10 +487,29 @@ final class MansionJardin {
             arbol(t, a[0], a[1], a[2]);
             arbol(t, t.e(a[0]), a[1] + 2, a[2] - 1);
         }
+        // el camino de la reja del oeste (de la parada del autobús) a la fuente: grava con orilla de piedra y dos faroles
+        for (int x = TX0 + 1; x <= 19; x++) {
+            for (int z = REJA_Z0; z <= REJA_Z1; z++) {
+                if (!(x >= 19 && Math.hypot(x + 0.5 - cx, z + 0.5 - cz) < 7.4)) {
+                    t.p.set(x, SUELO, z, C + "grava");
+                }
+                for (int yy = y; yy <= y + 3; yy++) {
+                    if (!t.p.vacio(x, yy, z) && !String.valueOf(t.p.get(x, yy, z)).contains("barrotes")) {
+                        t.p.set(x, yy, z, "air");
+                    }
+                }
+            }
+            if (x % 2 == 0 && x <= 17) {
+                t.p.set(x, SUELO, REJA_Z0 - 1, C + "losa_piedra");
+                t.p.set(x, SUELO, REJA_Z1 + 1, C + "losa_piedra");
+            }
+        }
+        farola(t, 6, REJA_Z0 - 2);
+        farola(t, 14, REJA_Z1 + 2);
         // bancas mirando a la fuente y una estatua de cuervo
-        t.deco(20, y, -18, "banca", "east");
+        t.deco(20, y, -22, "banca", "east");
         t.deco(t.e(20), y, -17, "banca", "west");
-        t.deco(10, y, -18, "cuervo", "east");
+        t.deco(10, y, -23, "cuervo", "east");
         t.alto(t.e(10), y, -18, "angel", "west");
         // escondites: detrás de los arriates y de los árboles
         esc(t, 7, y, -26);

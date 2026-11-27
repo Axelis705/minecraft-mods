@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/asiento_bus"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/asiento_bus",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/asiento_bus",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/asiento_bus",
+   "y": 270
+  }
+ }
+}
