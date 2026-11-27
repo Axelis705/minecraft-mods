@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/cornisa_0"
+   },
+   {
+    "model": "coleccionista:block/cornisa_1"
+   }
+  ]
+ }
+}

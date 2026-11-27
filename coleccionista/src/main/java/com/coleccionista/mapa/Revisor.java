@@ -323,6 +323,14 @@ public final class Revisor {
         return this;
     }
 
+    /** Lo que no cuenta como isla aunque no se llegue (techos, bardas, setos...): se prueba con {x, y, z} (los pies). */
+    private java.util.function.Predicate<int[]> ignorar = c -> false;
+
+    public Revisor ignorarIslas(java.util.function.Predicate<int[]> p) {
+        ignorar = p;
+        return this;
+    }
+
     private boolean enCerrado(int x, int z) {
         for (int[] c : cerrados) {
             if (x >= c[0] && x <= c[2] && z >= c[1] && z <= c[3]) {
@@ -363,7 +371,7 @@ public final class Revisor {
             boolean enMuebles = true, cerrado = true;
             for (long a : grupo) {
                 enMuebles &= forma(Plano.kx(a), Plano.ky(a) - 1, Plano.kz(a)).mueble();
-                cerrado &= enCerrado(Plano.kx(a), Plano.kz(a));
+                cerrado &= enCerrado(Plano.kx(a), Plano.kz(a)) || ignorar.test(new int[] {Plano.kx(a), Plano.ky(a), Plano.kz(a)});
             }
             if (grupo.size() >= minimo && !enMuebles && !cerrado) {
                 int x0 = Integer.MAX_VALUE, z0 = Integer.MAX_VALUE, x1 = Integer.MIN_VALUE, z1 = Integer.MIN_VALUE, y0 = Integer.MAX_VALUE;

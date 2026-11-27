@@ -173,10 +173,10 @@ public final class Mascota {
             double x = c.getX() + 0.5 - 1.5 + (n % 3) * 1.5, z = c.getZ() + 0.5 + (n / 3 % 4);
             if (e instanceof ServerPlayer sp) {
                 sp.stopRiding();
-                sp.teleportTo(s.overworld(), x, c.getY(), z, 270F, 0F);
+                sp.teleportTo(s.overworld(), x, c.getY(), z, Complejo.yaw("pas_man.centro"), 0F);
             } else {
                 e.stopRiding();
-                e.moveTo(x, c.getY(), z, 270F, 0F);
+                e.moveTo(x, c.getY(), z, Complejo.yaw("pas_man.centro"), 0F);
             }
             n++;
         }
@@ -234,9 +234,9 @@ public final class Mascota {
             Entity e = Evento.entidad(s, p);
             if (e != null && c != null && !enVestibulo(s, e)) {
                 if (e instanceof ServerPlayer sp) {
-                    sp.teleportTo(s.overworld(), c.getX() + 0.5, c.getY(), c.getZ() + 0.5, 270F, 0F);
+                    sp.teleportTo(s.overworld(), c.getX() + 0.5, c.getY(), c.getZ() + 0.5, Complejo.yaw("man.entrada"), 0F);
                 } else {
-                    e.moveTo(c.getX() + 0.5, c.getY(), c.getZ() + 0.5, 270F, 0F);
+                    e.moveTo(c.getX() + 0.5, c.getY(), c.getZ() + 0.5, Complejo.yaw("man.entrada"), 0F);
                 }
             }
         }
@@ -331,7 +331,7 @@ public final class Mascota {
             modoAntes = p.gameMode.getGameModeForPlayer();
             p.setGameMode(GameType.ADVENTURE);
             p.stopRiding();
-            p.teleportTo(s.overworld(), j.getX() + 0.5, j.getY(), j.getZ() + 0.5, 90F, 0F);
+            p.teleportTo(s.overworld(), j.getX() + 0.5, j.getY(), j.getZ() + 0.5, Complejo.yaw("man.jaula"), 0F);
             Formas.poner(p, FORMA);
             p.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 20 * (segundosCazar + 30), 0, false, false));
             p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 20 * (segundosCazar + 30), 0, false, false));
@@ -608,7 +608,7 @@ public final class Mascota {
                         if (p.bot && !enVestibulo(s, e) && now - desde >= 60) {
                             BlockPos c = Complejo.pos(s, "man.entrada");
                             if (c != null) {
-                                e.moveTo(c.getX() + 0.5 + R.nextInt(3), c.getY(), c.getZ() + 0.5 - 2 + R.nextInt(5), 270F, 0F);
+                                e.moveTo(c.getX() - 1.5 + R.nextInt(5), c.getY(), c.getZ() + 0.5 + R.nextInt(3), Complejo.yaw("man.entrada"), 0F);
                             }
                         }
                         todos &= enVestibulo(s, e);
@@ -724,7 +724,7 @@ public final class Mascota {
         ServerPlayer p = cazador == null ? null : s.getPlayerList().getPlayer(cazador);
         BlockPos j = Complejo.pos(s, "man.jaula");
         if (p != null && j != null) {
-            p.teleportTo(s.overworld(), j.getX() + 0.5, j.getY(), j.getZ() + 0.5, 90F, 0F);
+            p.teleportTo(s.overworld(), j.getX() + 0.5, j.getY(), j.getZ() + 0.5, Complejo.yaw("man.jaula"), 0F);
             Formas.accion(p, "rugir");
             sonido(s, j, son("rugido"), 2.5F, 0.9F);
         }

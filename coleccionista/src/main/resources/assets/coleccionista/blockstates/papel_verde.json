@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/papel_verde_0"
+   },
+   {
+    "model": "coleccionista:block/papel_verde_1"
+   },
+   {
+    "model": "coleccionista:block/papel_verde_2"
+   }
+  ]
+ }
+}

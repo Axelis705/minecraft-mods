@@ -511,6 +511,137 @@
    "light": 9
   },
   {
+   "id": "pizarra",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "escalera_pizarra",
+   "kind": "escalera",
+   "base": "pizarra",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "losa_pizarra",
+   "kind": "losa",
+   "sound": "stone",
+   "strength": 2.0,
+   "transparente": false
+  },
+  {
+   "id": "escalera_sillar",
+   "kind": "escalera",
+   "base": "piedra_capilla",
+   "sound": "stone",
+   "strength": 2.0
+  },
+  {
+   "id": "losa_sillar",
+   "kind": "losa",
+   "sound": "stone",
+   "strength": 2.0,
+   "transparente": false
+  },
+  {
+   "id": "cornisa",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "escalera_madera",
+   "kind": "escalera",
+   "base": "madera_pulida",
+   "sound": "wood",
+   "strength": 2.0
+  },
+  {
+   "id": "balaustrada",
+   "kind": "barrotes",
+   "sound": "wood",
+   "strength": 5.0,
+   "alto": true
+  },
+  {
+   "id": "techo_yeso",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "papel_verde",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "papel_azul",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "papel_rosa",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "papel_dorado",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 2.0,
+   "light": 0
+  },
+  {
+   "id": "pasto",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 0.8,
+   "light": 0
+  },
+  {
+   "id": "tierra",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 0.8,
+   "light": 0
+  },
+  {
+   "id": "grava",
+   "kind": "cubo",
+   "sound": "stone",
+   "strength": 0.8,
+   "light": 0
+  },
+  {
+   "id": "seto",
+   "kind": "cubo",
+   "sound": "wool",
+   "strength": 0.6,
+   "light": 0
+  },
+  {
+   "id": "tronco",
+   "kind": "pilar",
+   "sound": "wood",
+   "strength": 3.0
+  },
+  {
+   "id": "ramas",
+   "kind": "barrotes",
+   "sound": "wood",
+   "strength": 5.0
+  },
+  {
    "id": "catre",
    "kind": "cama",
    "sound": "metal",
@@ -3768,6 +3899,1698 @@
    "en": "Shoes",
    "soft": false,
    "sub": "floor"
+  },
+  {
+   "id": "ropero",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     0,
+     3,
+     16,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Ropero antiguo",
+   "en": "Antique wardrobe",
+   "soft": false,
+   "shape_upper": [
+    [
+     0,
+     0,
+     3,
+     16,
+     14,
+     16
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "reloj_pie",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     3,
+     0,
+     4,
+     13,
+     16,
+     14
+    ]
+   ],
+   "particles": [],
+   "es": "Reloj de pie",
+   "en": "Grandfather clock",
+   "soft": false,
+   "shape_upper": [
+    [
+     2.5,
+     0,
+     3.5,
+     13.5,
+     15,
+     14.5
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "armadura",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     16,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Armadura",
+   "en": "Suit of armor",
+   "soft": false,
+   "shape_upper": [
+    [
+     3,
+     0,
+     4,
+     13,
+     14,
+     12
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "busto",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "stone",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     16,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Busto de mármol",
+   "en": "Marble bust",
+   "soft": false,
+   "shape_upper": [
+    [
+     3.5,
+     0,
+     4,
+     12.5,
+     11,
+     12
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "retrato_dama",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     0.5,
+     1.0,
+     15.0,
+     15.5,
+     15.0,
+     16.0
+    ],
+    [
+     1.5,
+     2.0,
+     14.7,
+     14.5,
+     14.0,
+     15.0
+    ],
+    [
+     3.5,
+     2.0,
+     14.6,
+     12.5,
+     6.5,
+     14.7
+    ],
+    [
+     6.0,
+     6.5,
+     14.6,
+     10.0,
+     11.0,
+     14.7
+    ],
+    [
+     5.5,
+     10.5,
+     14.55,
+     10.5,
+     12.5,
+     14.65
+    ],
+    [
+     5.5,
+     7.5,
+     14.55,
+     6.1,
+     10.5,
+     14.65
+    ],
+    [
+     9.9,
+     7.5,
+     14.55,
+     10.5,
+     10.5,
+     14.65
+    ],
+    [
+     0.0,
+     0.5,
+     14.8,
+     16.0,
+     1.2,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Retrato de una dama",
+   "en": "Portrait of a lady",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "retrato_caballero",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     0.5,
+     1.0,
+     15.0,
+     15.5,
+     15.0,
+     16.0
+    ],
+    [
+     1.5,
+     2.0,
+     14.7,
+     14.5,
+     14.0,
+     15.0
+    ],
+    [
+     3.5,
+     2.0,
+     14.6,
+     12.5,
+     6.5,
+     14.7
+    ],
+    [
+     6.0,
+     6.5,
+     14.6,
+     10.0,
+     11.0,
+     14.7
+    ],
+    [
+     5.5,
+     10.5,
+     14.55,
+     10.5,
+     12.5,
+     14.65
+    ],
+    [
+     5.5,
+     7.5,
+     14.55,
+     6.1,
+     10.5,
+     14.65
+    ],
+    [
+     9.9,
+     7.5,
+     14.55,
+     10.5,
+     10.5,
+     14.65
+    ],
+    [
+     0.0,
+     0.5,
+     14.8,
+     16.0,
+     1.2,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Retrato de un caballero",
+   "en": "Portrait of a gentleman",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "retrato_nina",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     0.5,
+     1.0,
+     15.0,
+     15.5,
+     15.0,
+     16.0
+    ],
+    [
+     1.5,
+     2.0,
+     14.7,
+     14.5,
+     14.0,
+     15.0
+    ],
+    [
+     3.5,
+     2.0,
+     14.6,
+     12.5,
+     6.5,
+     14.7
+    ],
+    [
+     6.0,
+     6.5,
+     14.6,
+     10.0,
+     11.0,
+     14.7
+    ],
+    [
+     5.5,
+     10.5,
+     14.55,
+     10.5,
+     12.5,
+     14.65
+    ],
+    [
+     5.5,
+     7.5,
+     14.55,
+     6.1,
+     10.5,
+     14.65
+    ],
+    [
+     9.9,
+     7.5,
+     14.55,
+     10.5,
+     10.5,
+     14.65
+    ],
+    [
+     0.0,
+     0.5,
+     14.8,
+     16.0,
+     1.2,
+     16.0
+    ]
+   ],
+   "particles": [],
+   "es": "Retrato de una niña",
+   "en": "Portrait of a girl",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "planta",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "grass",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     16,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Palma en urna",
+   "en": "Parlour palm",
+   "soft": false,
+   "shape_upper": [
+    [
+     1,
+     0,
+     1,
+     15,
+     10,
+     15
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "lampara_mesa",
+   "kind": "prop",
+   "tall": false,
+   "light": 11,
+   "collide": false,
+   "sound": "lantern",
+   "shape": [
+    [
+     5.0,
+     0.0,
+     5.0,
+     11.0,
+     1.0,
+     11.0
+    ],
+    [
+     7.4,
+     1.0,
+     7.4,
+     8.6,
+     8.0,
+     8.6
+    ],
+    [
+     6.5,
+     3.0,
+     6.5,
+     9.5,
+     5.0,
+     9.5
+    ],
+    [
+     3.8,
+     7.4,
+     3.8,
+     12.2,
+     8.0,
+     12.2
+    ]
+   ],
+   "particles": [],
+   "es": "Lámpara de mesa",
+   "en": "Table lamp",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "globo",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     4.5,
+     0.0,
+     4.5,
+     11.5,
+     1.0,
+     11.5
+    ],
+    [
+     7.3,
+     1.0,
+     7.3,
+     8.7,
+     4.0,
+     8.7
+    ],
+    [
+     4.0,
+     4.0,
+     4.0,
+     12.0,
+     12.0,
+     12.0
+    ],
+    [
+     4.6,
+     6.0,
+     3.8,
+     8.0,
+     10.0,
+     5.0
+    ],
+    [
+     9.0,
+     5.0,
+     8.0,
+     12.2,
+     8.5,
+     11.0
+    ],
+    [
+     5.0,
+     9.0,
+     9.0,
+     8.0,
+     11.0,
+     12.2
+    ],
+    [
+     7.6,
+     3.5,
+     3.4,
+     8.4,
+     12.6,
+     4.0
+    ],
+    [
+     7.6,
+     12.0,
+     4.0,
+     8.4,
+     12.6,
+     12.0
+    ],
+    [
+     7.6,
+     3.5,
+     12.0,
+     8.4,
+     12.6,
+     12.6
+    ]
+   ],
+   "particles": [],
+   "es": "Globo terráqueo",
+   "en": "Old globe",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "caballito",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     1.0,
+     0.0,
+     5.5,
+     15.0,
+     1.0,
+     6.5
+    ],
+    [
+     1.0,
+     0.0,
+     9.5,
+     15.0,
+     1.0,
+     10.5
+    ],
+    [
+     0.5,
+     1.0,
+     5.5,
+     1.5,
+     2.0,
+     10.5
+    ],
+    [
+     14.5,
+     1.0,
+     5.5,
+     15.5,
+     2.0,
+     10.5
+    ],
+    [
+     3.0,
+     1.0,
+     6.2,
+     4.2,
+     6.0,
+     7.4
+    ],
+    [
+     12.0,
+     1.0,
+     6.2,
+     13.2,
+     6.0,
+     7.4
+    ],
+    [
+     3.0,
+     1.0,
+     8.6,
+     4.2,
+     6.0,
+     9.799999999999999
+    ],
+    [
+     12.0,
+     1.0,
+     8.6,
+     13.2,
+     6.0,
+     9.799999999999999
+    ],
+    [
+     2.5,
+     6.0,
+     6.0,
+     13.5,
+     9.5,
+     10.0
+    ],
+    [
+     5.5,
+     9.5,
+     6.2,
+     9.5,
+     10.2,
+     9.8
+    ],
+    [
+     1.5,
+     8.5,
+     6.8,
+     4.0,
+     13.5,
+     9.2
+    ],
+    [
+     0.0,
+     11.5,
+     6.6,
+     3.5,
+     14.5,
+     9.4
+    ],
+    [
+     3.0,
+     10.0,
+     7.6,
+     4.2,
+     15.0,
+     8.4
+    ],
+    [
+     13.5,
+     6.5,
+     7.4,
+     15.0,
+     9.5,
+     8.6
+    ],
+    [
+     0.6,
+     13.0,
+     6.4,
+     1.4,
+     13.8,
+     6.6
+    ],
+    [
+     0.6,
+     13.0,
+     9.4,
+     1.4,
+     13.8,
+     9.6
+    ]
+   ],
+   "particles": [],
+   "es": "Caballito mecedor",
+   "en": "Rocking horse",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "cuna",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     1.0,
+     0.0,
+     3.0,
+     15.0,
+     1.0,
+     4.0
+    ],
+    [
+     1.0,
+     0.0,
+     12.0,
+     15.0,
+     1.0,
+     13.0
+    ],
+    [
+     1.5,
+     1.0,
+     3.5,
+     14.5,
+     3.0,
+     12.5
+    ],
+    [
+     2.0,
+     3.0,
+     4.0,
+     14.0,
+     4.0,
+     12.0
+    ],
+    [
+     1.5,
+     3.0,
+     3.5,
+     2.1,
+     9.0,
+     4.1
+    ],
+    [
+     1.5,
+     3.0,
+     11.9,
+     2.1,
+     9.0,
+     12.5
+    ],
+    [
+     4.0,
+     3.0,
+     3.5,
+     4.6,
+     9.0,
+     4.1
+    ],
+    [
+     4.0,
+     3.0,
+     11.9,
+     4.6,
+     9.0,
+     12.5
+    ],
+    [
+     6.5,
+     3.0,
+     3.5,
+     7.1,
+     9.0,
+     4.1
+    ],
+    [
+     6.5,
+     3.0,
+     11.9,
+     7.1,
+     9.0,
+     12.5
+    ],
+    [
+     9.0,
+     3.0,
+     3.5,
+     9.6,
+     9.0,
+     4.1
+    ],
+    [
+     9.0,
+     3.0,
+     11.9,
+     9.6,
+     9.0,
+     12.5
+    ],
+    [
+     11.5,
+     3.0,
+     3.5,
+     12.1,
+     9.0,
+     4.1
+    ],
+    [
+     11.5,
+     3.0,
+     11.9,
+     12.1,
+     9.0,
+     12.5
+    ],
+    [
+     14.0,
+     3.0,
+     3.5,
+     14.6,
+     9.0,
+     4.1
+    ],
+    [
+     14.0,
+     3.0,
+     11.9,
+     14.6,
+     9.0,
+     12.5
+    ],
+    [
+     1.5,
+     9.0,
+     3.5,
+     14.6,
+     10.0,
+     4.1
+    ],
+    [
+     1.5,
+     9.0,
+     11.9,
+     14.6,
+     10.0,
+     12.5
+    ],
+    [
+     1.5,
+     3.0,
+     4.0,
+     2.1,
+     12.0,
+     12.0
+    ],
+    [
+     14.0,
+     3.0,
+     4.0,
+     14.6,
+     9.5,
+     12.0
+    ]
+   ],
+   "particles": [],
+   "es": "Cuna antigua",
+   "en": "Antique cradle",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "maniqui",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wool",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     16,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Maniquí de costura",
+   "en": "Dressmaker's dummy",
+   "soft": false,
+   "shape_upper": [
+    [
+     4.5,
+     0,
+     5,
+     11.5,
+     8,
+     11
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "maquina_coser",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     1.0,
+     0.0,
+     3.0,
+     2.0,
+     9.0,
+     13.0
+    ],
+    [
+     14.0,
+     0.0,
+     3.0,
+     15.0,
+     9.0,
+     13.0
+    ],
+    [
+     2.0,
+     1.0,
+     6.0,
+     14.0,
+     2.0,
+     10.0
+    ],
+    [
+     0.5,
+     9.0,
+     2.5,
+     15.5,
+     10.0,
+     13.5
+    ],
+    [
+     3.0,
+     10.0,
+     6.0,
+     12.0,
+     11.0,
+     10.0
+    ],
+    [
+     9.0,
+     11.0,
+     6.5,
+     11.5,
+     15.0,
+     9.5
+    ],
+    [
+     3.5,
+     14.0,
+     7.0,
+     11.5,
+     15.5,
+     9.0
+    ],
+    [
+     4.0,
+     11.0,
+     7.5,
+     5.0,
+     14.0,
+     8.5
+    ],
+    [
+     4.0,
+     14.2,
+     6.9,
+     11.0,
+     14.6,
+     7.1
+    ],
+    [
+     11.6,
+     12.0,
+     6.0,
+     12.4,
+     14.0,
+     10.0
+    ]
+   ],
+   "particles": [],
+   "es": "Máquina de coser",
+   "en": "Sewing machine",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "cabeza_trofeo",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     4.0,
+     3.0,
+     15.0,
+     12.0,
+     11.0,
+     16.0
+    ],
+    [
+     6.0,
+     4.5,
+     11.0,
+     10.0,
+     9.5,
+     15.0
+    ],
+    [
+     6.2,
+     6.0,
+     6.5,
+     9.8,
+     9.5,
+     11.0
+    ],
+    [
+     6.8,
+     5.5,
+     4.0,
+     9.2,
+     7.6,
+     6.5
+    ],
+    [
+     7.2,
+     6.4,
+     3.8,
+     8.8,
+     7.2,
+     4.1
+    ],
+    [
+     5.3999999999999995,
+     9.5,
+     9.0,
+     6.2,
+     12.5,
+     9.8
+    ],
+    [
+     2.4,
+     12.0,
+     9.0,
+     6.2,
+     12.8,
+     9.8
+    ],
+    [
+     2.4,
+     12.0,
+     9.0,
+     3.1999999999999997,
+     15.5,
+     9.8
+    ],
+    [
+     4.0,
+     12.5,
+     9.0,
+     4.800000000000001,
+     15.0,
+     9.8
+    ],
+    [
+     9.799999999999999,
+     9.5,
+     9.0,
+     10.6,
+     12.5,
+     9.8
+    ],
+    [
+     9.799999999999999,
+     12.0,
+     9.0,
+     13.6,
+     12.8,
+     9.8
+    ],
+    [
+     12.799999999999999,
+     12.0,
+     9.0,
+     13.6,
+     15.5,
+     9.8
+    ],
+    [
+     11.2,
+     12.5,
+     9.0,
+     12.0,
+     15.0,
+     9.8
+    ]
+   ],
+   "particles": [],
+   "es": "Cabeza de ciervo",
+   "en": "Mounted stag head",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "telescopio",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     3,
+     0,
+     3,
+     13,
+     16,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Telescopio",
+   "en": "Telescope",
+   "soft": false,
+   "shape_upper": [
+    [
+     5,
+     0,
+     2,
+     11,
+     10,
+     12
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "lapida",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "stone",
+   "shape": [
+    [
+     2.0,
+     0.0,
+     7.0,
+     14.0,
+     1.0,
+     15.0
+    ],
+    [
+     3.0,
+     0.0,
+     3.0,
+     13.0,
+     11.0,
+     5.0
+    ],
+    [
+     4.0,
+     11.0,
+     3.0,
+     12.0,
+     12.5,
+     5.0
+    ],
+    [
+     5.5,
+     12.5,
+     3.0,
+     10.5,
+     13.3,
+     5.0
+    ],
+    [
+     4.5,
+     6.0,
+     2.8,
+     11.5,
+     9.0,
+     3.0
+    ],
+    [
+     3.0,
+     0.0,
+     4.9,
+     6.0,
+     3.0,
+     5.2
+    ]
+   ],
+   "particles": [],
+   "es": "Lápida",
+   "en": "Gravestone",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "lapida_cruz",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "stone",
+   "shape": [
+    [
+     2.0,
+     0.0,
+     7.0,
+     14.0,
+     1.0,
+     15.0
+    ],
+    [
+     7.0,
+     1.0,
+     3.0,
+     9.0,
+     15.0,
+     5.0
+    ],
+    [
+     3.5,
+     9.5,
+     3.0,
+     12.5,
+     11.5,
+     5.0
+    ],
+    [
+     5.5,
+     0.0,
+     2.5,
+     10.5,
+     2.0,
+     5.5
+    ],
+    [
+     3.0,
+     0.0,
+     4.9,
+     6.0,
+     3.0,
+     5.2
+    ]
+   ],
+   "particles": [],
+   "es": "Lápida con cruz",
+   "en": "Cross gravestone",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "angel",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "stone",
+   "shape": [
+    [
+     2,
+     0,
+     2,
+     14,
+     16,
+     14
+    ]
+   ],
+   "particles": [],
+   "es": "Ángel de piedra",
+   "en": "Weeping angel statue",
+   "soft": false,
+   "shape_upper": [
+    [
+     1,
+     0,
+     4,
+     15,
+     15,
+     13
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "banca",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     0,
+     0,
+     4,
+     16,
+     7,
+     13
+    ],
+    [
+     0,
+     7,
+     11.5,
+     16,
+     14,
+     13
+    ]
+   ],
+   "particles": [],
+   "es": "Banca de jardín",
+   "en": "Garden bench",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "cuervo",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     4.0,
+     0.0,
+     4.0,
+     12.0,
+     6.0,
+     12.0
+    ],
+    [
+     5.5,
+     6.0,
+     5.5,
+     10.5,
+     10.0,
+     11.5
+    ],
+    [
+     6.0,
+     9.0,
+     3.5,
+     10.0,
+     12.5,
+     7.0
+    ],
+    [
+     7.2,
+     10.0,
+     1.5,
+     8.8,
+     11.0,
+     3.5
+    ],
+    [
+     6.0,
+     7.0,
+     11.5,
+     10.0,
+     8.0,
+     15.0
+    ],
+    [
+     4.5,
+     7.0,
+     6.0,
+     5.5,
+     10.0,
+     11.0
+    ],
+    [
+     10.5,
+     7.0,
+     6.0,
+     11.5,
+     10.0,
+     11.0
+    ]
+   ],
+   "particles": [],
+   "es": "Cuervo de hierro",
+   "en": "Iron raven",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "brasas",
+   "kind": "prop",
+   "tall": false,
+   "light": 12,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     2.0,
+     0.0,
+     3.0,
+     14.0,
+     0.6,
+     13.0
+    ],
+    [
+     2.5,
+     0.0,
+     4.5,
+     3.5,
+     4.0,
+     5.5
+    ],
+    [
+     12.5,
+     0.0,
+     4.5,
+     13.5,
+     4.0,
+     5.5
+    ],
+    [
+     2.5,
+     1.5,
+     4.5,
+     13.5,
+     2.3,
+     5.5
+    ],
+    [
+     3.0,
+     1.2,
+     6.0,
+     13.0,
+     3.6,
+     8.4
+    ],
+    [
+     4.0,
+     1.2,
+     9.0,
+     12.5,
+     3.2,
+     11.2
+    ],
+    [
+     6.5,
+     3.2,
+     5.0,
+     9.5,
+     5.8,
+     11.5
+    ]
+   ],
+   "particles": [
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      6,
+      5,
+      8
+     ],
+     "rate": 0.5
+    },
+    {
+     "type": "minecraft:small_flame",
+     "pos": [
+      10,
+      4.5,
+      7
+     ],
+     "rate": 0.45
+    },
+    {
+     "type": "minecraft:flame",
+     "pos": [
+      8,
+      4,
+      9
+     ],
+     "rate": 0.12
+    },
+    {
+     "type": "minecraft:smoke",
+     "pos": [
+      8,
+      8,
+      8
+     ],
+     "rate": 0.18
+    }
+   ],
+   "es": "Leños con brasas",
+   "en": "Smouldering logs",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "rosal",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wool",
+   "shape": [
+    [
+     4.5,
+     0.0,
+     5.5,
+     5.5,
+     11.0,
+     6.5
+    ],
+    [
+     3.0,
+     7.0,
+     5.6,
+     7.0,
+     7.8,
+     6.4
+    ],
+    [
+     3.4,
+     8.5,
+     4.4,
+     6.6,
+     10.0,
+     7.6
+    ],
+    [
+     8.5,
+     0.0,
+     4.5,
+     9.5,
+     13.0,
+     5.5
+    ],
+    [
+     7.0,
+     9.0,
+     4.6,
+     11.0,
+     9.8,
+     5.4
+    ],
+    [
+     7.4,
+     10.5,
+     3.4,
+     10.6,
+     12.0,
+     6.6
+    ],
+    [
+     10.5,
+     0.0,
+     9.5,
+     11.5,
+     10.0,
+     10.5
+    ],
+    [
+     9.0,
+     6.0,
+     9.6,
+     13.0,
+     6.8,
+     10.4
+    ],
+    [
+     9.4,
+     7.5,
+     8.4,
+     12.6,
+     9.0,
+     11.6
+    ],
+    [
+     5.5,
+     0.0,
+     10.5,
+     6.5,
+     9.0,
+     11.5
+    ],
+    [
+     4.0,
+     5.0,
+     10.6,
+     8.0,
+     5.8,
+     11.4
+    ],
+    [
+     4.4,
+     6.5,
+     9.4,
+     7.6,
+     8.0,
+     12.6
+    ],
+    [
+     7.5,
+     0.0,
+     7.5,
+     8.5,
+     14.0,
+     8.5
+    ],
+    [
+     6.0,
+     10.0,
+     7.6,
+     10.0,
+     10.8,
+     8.4
+    ],
+    [
+     6.4,
+     11.5,
+     6.4,
+     9.6,
+     13.0,
+     9.6
+    ],
+    [
+     7.7,
+     12.4,
+     3.7,
+     10.3,
+     14.6,
+     6.3
+    ],
+    [
+     3.7,
+     10.4,
+     4.7,
+     6.3,
+     12.6,
+     7.3
+    ],
+    [
+     9.7,
+     9.4,
+     8.7,
+     12.3,
+     11.6,
+     11.3
+    ],
+    [
+     6.7,
+     13.4,
+     6.7,
+     9.3,
+     15.6,
+     9.3
+    ]
+   ],
+   "particles": [],
+   "es": "Rosal seco",
+   "en": "Withered rosebush",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "tina",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     0.5,
+     0,
+     0.5,
+     15.5,
+     10,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Tina de patas",
+   "en": "Clawfoot bathtub",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "cama_antigua",
+   "kind": "cama",
+   "sound": "wood",
+   "strength": 1.0,
+   "adorno": true
   }
  ]
 }

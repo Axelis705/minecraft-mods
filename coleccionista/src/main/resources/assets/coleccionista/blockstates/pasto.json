@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/pasto_0"
+   },
+   {
+    "model": "coleccionista:block/pasto_1"
+   },
+   {
+    "model": "coleccionista:block/pasto_2"
+   }
+  ]
+ }
+}

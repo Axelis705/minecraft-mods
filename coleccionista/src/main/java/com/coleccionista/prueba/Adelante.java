@@ -73,7 +73,35 @@ public final class Adelante {
         }
         double x = sp.getX() - o.getX();
         if (x < 0) {
-            return Objetivo.Meta.en(Complejo.pos(s, "salida." + Pasos.anterior(hacia) + ".a"), 1, MOD + ".obj.salida");
+            String de = Pasos.anterior(hacia);
+            BlockPos salida = Complejo.pos(s, "salida." + de + ".a");
+            // si la sala tiene camino marcado (la casa: la salida está en el sótano), se va de punto en punto
+            java.util.List<BlockPos> via = new java.util.ArrayList<>();
+            for (int i = 0; i < 64; i++) {
+                BlockPos v = Complejo.pos(s, "salida." + de + ".via." + i);
+                if (v == null) {
+                    break;
+                }
+                via.add(v);
+            }
+            if (!via.isEmpty() && salida != null) {
+                via.add(salida);
+                BlockPos mejor = salida;
+                double dm = Double.MAX_VALUE;
+                for (int i = 0; i + 1 < via.size(); i++) {
+                    BlockPos a = via.get(i), b = via.get(i + 1);
+                    double d = distTramo(sp.getX(), sp.getZ(), a.getX() + 0.5, a.getZ() + 0.5, b.getX() + 0.5, b.getZ() + 0.5);
+                    // otro piso cuenta como lejos (la escalera del sótano une dos)
+                    double dy = Math.max(0, Math.min(Math.abs(sp.getY() - a.getY()), Math.abs(sp.getY() - b.getY())) - 1.5);
+                    d += dy * 4;
+                    if (d <= dm + 0.01) {
+                        dm = d;
+                        mejor = b;
+                    }
+                }
+                return Objetivo.Meta.en(mejor, 1, MOD + ".obj.salida");
+            }
+            return Objetivo.Meta.en(salida, 1, MOD + ".obj.salida");
         }
         if (x > z.plano().x1 + 1) {
             return null;

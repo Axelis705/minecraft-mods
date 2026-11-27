@@ -29,6 +29,8 @@ import kit  # noqa: E402
 import materiales as M  # noqa: E402
 import props_celdas  # noqa: E402
 import props_complejo  # noqa: E402
+import props_mansion  # noqa: E402
+import materiales_mansion as MM  # noqa: E402
 
 NS = 'coleccionista'
 ROOT = os.path.abspath(os.path.join(AQUI, '..', '..', 'src', 'main', 'resources'))
@@ -512,6 +514,27 @@ def catalogo():
     for cid, ces, cen, col in (('roja', 'rojo', 'red', '#ff3b3b'), ('azul', 'azul', 'blue', '#4a86ff'), ('verde', 'verde', 'green', '#6cff4a'),
                                ('amarilla', 'amarillo', 'yellow', '#ffe14a'), ('morada', 'morado', 'purple', '#c14aff'), ('blanca', 'blanco', 'white', '#f4f4ee')):
         cubo('marco_luz_' + cid, 'Marco de luz ' + ces, cen.capitalize() + ' light frame', lambda s, col=col: M.marco_luz(s, col), variantes=1, sonido='metal', luz=9)
+    # ---- la mansión gótica (capítulo 2): techo de pizarra, cantera, madera fina, papel tapiz de cada cuarto y el jardín de noche
+    cubo('pizarra', 'Tejas de pizarra', 'Slate shingles', lambda s: MM.pizarra(s), variantes=3)
+    escalera('escalera_pizarra', 'Escalón de pizarra', 'Slate shingle stairs', lambda s: MM.pizarra(s), 'pizarra', sonido='stone')
+    losa('losa_pizarra', 'Losa de pizarra', 'Slate shingle slab', lambda s: MM.pizarra(s), sonido='stone')
+    escalera('escalera_sillar', 'Escalón de sillar', 'Ashlar stairs', lambda s: M.piedra_capilla(s), 'piedra_capilla', sonido='stone')
+    losa('losa_sillar', 'Losa de sillar', 'Ashlar slab', lambda s: M.piedra_capilla(s), sonido='stone')
+    cubo('cornisa', 'Cornisa de cantera', 'Carved stone cornice', lambda s: MM.cornisa(s), variantes=2)
+    escalera('escalera_madera', 'Escalón de madera fina', 'Polished wood stairs', lambda s: M.madera_pulida(s), 'madera_pulida', sonido='wood')
+    barrotes('balaustrada', 'Balaustrada de madera', 'Wooden balustrade', lambda s: MM.balaustrada(s), sonido='wood')
+    ficha[-1]['alto'] = True  # choca como cerca: nadie se sube
+    cubo('techo_yeso', 'Plafón de yeso', 'Plaster ceiling', lambda s: MM.techo_yeso(s), variantes=3)
+    cubo('papel_verde', 'Papel tapiz verde', 'Green wallpaper', lambda s: MM.papel(s, '#142218', '#2c4228'), variantes=3, sonido='wool')
+    cubo('papel_azul', 'Papel tapiz azul', 'Blue wallpaper', lambda s: MM.papel(s, '#141a2a', '#2c3550'), variantes=3, sonido='wool')
+    cubo('papel_rosa', 'Papel tapiz rosa', 'Faded pink wallpaper', lambda s: MM.papel(s, '#5a3a3c', '#7a5658'), variantes=3, sonido='wool')
+    cubo('papel_dorado', 'Papel tapiz dorado', 'Ochre wallpaper', lambda s: MM.papel(s, '#3a2c12', '#6a5226'), variantes=3, sonido='wool')
+    cubo('pasto', 'Pasto seco', 'Withered grass', lambda s: MM.pasto_lado(s), variantes=3, sonido='wool', top=lambda s: MM.pasto(s), dureza=0.8)
+    cubo('tierra', 'Tierra negra', 'Black soil', lambda s: MM.tierra(s), variantes=3, sonido='wool', dureza=0.8)
+    cubo('grava', 'Grava', 'Gravel path', lambda s: MM.grava(s), variantes=2, dureza=0.8)
+    cubo('seto', 'Seto', 'Hedge', lambda s: MM.seto(s), variantes=3, sonido='wool', dureza=0.6)
+    pilar('tronco', 'Tronco seco', 'Dead tree trunk', lambda s: MM.corteza(s), lambda s: MM.corte_tronco(s), sonido='wood')
+    barrotes('ramas', 'Ramas secas', 'Dry branches', lambda s: MM.ramas(s), sonido='wood')
     # muebles y adornos
     P = props_celdas
     cama(P.catre())
@@ -557,6 +580,12 @@ def catalogo():
     prop(Q.trono())
     prop(Q.craneo())
     prop(Q.zapatos())
+    # la mansión gótica del capítulo 2
+    for p in props_mansion.todos():
+        prop(p)
+    cama(props_mansion.cama_antigua())
+    ficha[-1]['adorno'] = True  # no se duerme en ella (ni guarda el punto de aparición)
+    ficha[-1]['sound'] = 'wood'
     for p in P.focos():
         solo_modelos(p)
     solo_modelos(P.candado())

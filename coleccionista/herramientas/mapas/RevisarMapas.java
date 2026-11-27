@@ -217,24 +217,29 @@ public final class RevisarMapas {
             Plano p = Mansion.crear(1234L);
             Plano.Marca e = p.marcas.get("man.entrada");
             Revisor r = new Revisor(p, deco).caminar(e.x(), e.y(), e.z());
-            // la jaula de Cascabel está cerrada a propósito (la reja se abre en el juego)
-            r.cerrado(42, 14, 52, 29).islas(8, 0, 30).marcas("man.esc.").marcas("man.entrada").pisos(p.x0, p.z0, p.x1, p.z1, 0, 30).puertas();
+            // la jaula de Cascabel está cerrada a propósito (la reja se abre en el juego); los techos, bardas y setos no son cuartos
+            r.cerrado(Mansion.REJA_X0 - 1, Mansion.REJA_Z, Mansion.REJA_X0 + Mansion.REJA_Z1 + 1, Mansion.HZ1)
+                    .ignorarIslas(c -> Mansion.enTecho(p, c[0], c[1], c[2])).islas(8, 0, 60).marcas("man.esc.").marcas("man.entrada")
+                    .marcas("salida.mansion").pisos(p.x0, p.z0, p.x1, p.z1, 0, 40).puertas();
             System.out.print(r.informe("La mansión", 12));
+            System.out.println("escondites: " + p.marcas.keySet().stream().filter(k -> k.startsWith("man.esc.")).count());
             Vista v = new Vista(p, r, tex);
-            v.planta(new File(out, "mansion_planta_baja.png"), 0, 5, "man.esc.", "Mansión · planta baja");
-            v.planta(new File(out, "mansion_planta_alta.png"), 7, 12, "man.esc.", "Mansión · planta alta");
-            v.planta(new File(out, "mansion_atico.png"), 13, 19, "man.esc.", "Mansión · ático");
+            v.planta(new File(out, "mansion_sotano.png"), 0, 5, "man.esc.", "Mansión · sótano");
+            v.planta(new File(out, "mansion_planta_baja.png"), 7, 13, "man.esc.", "Mansión · planta baja");
+            v.planta(new File(out, "mansion_planta_alta.png"), 15, 20, "man.esc.", "Mansión · planta alta");
+            v.planta(new File(out, "mansion_atico.png"), 22, 29, "man.esc.", "Mansión · ático");
+            v.planta(new File(out, "mansion_jardin.png"), 6, 12, "man.esc.", "Mansión · jardín");
             for (int esq = 0; esq < 4; esq++) {
-                v.iso(new File(out, "mansion_iso_baja_" + esq + ".png"), 5, esq, null, 7, "Mansión · planta baja · esquina " + esq);
-                v.iso(new File(out, "mansion_iso_alta_" + esq + ".png"), 12, esq, null, 7, "Mansión · planta alta · esquina " + esq);
+                v.iso(new File(out, "mansion_iso_" + esq + ".png"), 60, esq, null, 5, "Mansión y jardín · esquina " + esq);
             }
-            // de cerca: el vestíbulo y cada fila de cuartos
-            v.iso(new File(out, "mansion_cerca_vestibulo.png"), 12, 0, new int[] {14, 8, 42, 35}, 16, "Vestíbulo");
-            v.iso(new File(out, "mansion_cerca_norte.png"), 5, 0, new int[] {5, -18, 53, 9}, 12, "Planta baja · norte");
-            v.iso(new File(out, "mansion_cerca_sur.png"), 5, 0, new int[] {5, 34, 53, 61}, 12, "Planta baja · sur");
-            v.iso(new File(out, "mansion_cerca_norte_alta.png"), 12, 0, new int[] {5, -18, 53, 9}, 12, "Planta alta · norte");
-            v.iso(new File(out, "mansion_cerca_sur_alta.png"), 12, 0, new int[] {5, 34, 53, 61}, 12, "Planta alta · sur");
-            v.iso(new File(out, "mansion_cerca_atico.png"), 17, 0, new int[] {5, -18, 53, -1}, 12, "Ático norte");
+            // de cerca: la casa y cada piso
+            int[] casa = {2, -7, 51, 54};
+            v.iso(new File(out, "mansion_casa.png"), 60, 2, new int[] {-2, -8, 55, 56}, 9, "La casa");
+            v.iso(new File(out, "mansion_corte_sotano.png"), 5, 0, casa, 9, "Sótano");
+            v.iso(new File(out, "mansion_corte_baja.png"), 13, 0, casa, 9, "Planta baja");
+            v.iso(new File(out, "mansion_corte_alta.png"), 20, 0, casa, 9, "Planta alta");
+            v.iso(new File(out, "mansion_corte_atico.png"), 29, 0, casa, 9, "Ático");
+            v.iso(new File(out, "mansion_vestibulo.png"), 20, 0, new int[] {15, -6, 38, 24}, 18, "Vestíbulo");
             fallas += r.cuantos("cuarto inaccesible") + r.cuantos("no se llega") + r.cuantos("no cabe nadie");
         }
         if (cual.equals("caminos") || cual.equals("todo")) {

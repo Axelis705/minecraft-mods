@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/seto_0"
+   },
+   {
+    "model": "coleccionista:block/seto_1"
+   },
+   {
+    "model": "coleccionista:block/seto_2"
+   }
+  ]
+ }
+}

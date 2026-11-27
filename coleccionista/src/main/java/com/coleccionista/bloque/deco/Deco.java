@@ -155,7 +155,7 @@ public final class Deco {
             case "cadena" -> new net.minecraft.world.level.block.ChainBlock(p.noOcclusion());
             case "trampilla" -> new net.minecraft.world.level.block.TrapDoorBlock(p.noOcclusion(), BlockSetType.IRON);
             case "alfombra" -> new CarpetBlock(p);
-            case "cama" -> new DecoCama(p.noOcclusion());
+            case "cama" -> new DecoCama(p.noOcclusion(), !d.flag("adorno"));
             default -> DecoBlock.crear(p, d);
         };
     }

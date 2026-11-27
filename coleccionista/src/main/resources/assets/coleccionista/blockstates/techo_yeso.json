@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/techo_yeso_0"
+   },
+   {
+    "model": "coleccionista:block/techo_yeso_1"
+   },
+   {
+    "model": "coleccionista:block/techo_yeso_2"
+   }
+  ]
+ }
+}

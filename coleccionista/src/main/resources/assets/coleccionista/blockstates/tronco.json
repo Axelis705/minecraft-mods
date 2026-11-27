@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "axis=y": {
+   "model": "coleccionista:block/tronco"
+  },
+  "axis=z": {
+   "model": "coleccionista:block/tronco_horizontal",
+   "x": 90
+  },
+  "axis=x": {
+   "model": "coleccionista:block/tronco_horizontal",
+   "x": 90,
+   "y": 90
+  }
+ }
+}

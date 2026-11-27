@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/rosal"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/rosal",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/rosal",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/rosal",
+   "y": 270
+  }
+ }
+}

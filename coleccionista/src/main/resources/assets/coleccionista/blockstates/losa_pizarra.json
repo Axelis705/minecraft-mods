@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "coleccionista:block/losa_pizarra"
+  },
+  "type=top": {
+   "model": "coleccionista:block/losa_pizarra_top"
+  },
+  "type=double": {
+   "model": "coleccionista:block/losa_pizarra_doble"
+  }
+ }
+}

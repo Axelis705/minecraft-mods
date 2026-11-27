@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/maquina_coser"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/maquina_coser",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/maquina_coser",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/maquina_coser",
+   "y": 270
+  }
+ }
+}

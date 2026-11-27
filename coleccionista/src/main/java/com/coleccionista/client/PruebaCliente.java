@@ -1400,26 +1400,31 @@ final class PruebaCliente {
      * Cascabel: la cámara se va detrás, ruge, olfatea y se come a una pieza; al final vuelve a su jaula y vuelvo a ser yo.
      */
     private static void capitulo2(ClientTest.Script t) {
-        // la casa está en (720, -61, 430): el pasillo en x 722..735 y z 448..455, el vestíbulo en x 737..760 y z 440..463, la jaula detrás
+        // la casa está en (720, -61, 430) (local + eso = mundo): el pasillo de la cripta en x 743..750 y z 368..381 (sus puertas en z 382),
+        // el vestíbulo en x 737..756 y z 431..452 (pies en y -53), la jaula al fondo (reja en z 447) y la pantalla arriba de ella
         t.waitFor("cap2: a la casa", 30000, () -> !"".equals(MascotaCliente.fase()) && !"NADA".equals(MascotaCliente.fase()));
         foto(t, "c2_01_pasillo_casa", 1800, () -> {
             t.cmd("gamemode adventure @a");
-            t.lookFrom(724.5, -60, 451.5, 737, -59, 451.5);
+            t.lookFrom(747.0, -60, 370.5, 747.0, -59, 382);
         });
         t.add("puertas de la casa", 100, () -> {
-            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(736, -60, 455));
+            var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(743, -60, 382));
             t.check(st.getBlock() instanceof net.minecraft.world.level.block.DoorBlock && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN),
                     "se abrieron las puertas del pasillo al vestíbulo");
             t.check("LLEGANDO".equals(MascotaCliente.fase()) || "HABLANDO".equals(MascotaCliente.fase()), "llegamos a la casa (" + MascotaCliente.fase() + ")");
         });
-        t.add("al vestibulo", 200, () -> t.lookFrom(744.5, -60, 451.5, 760, -53, 451.5));
+        // la llegada: de la cripta al jardín y la casa al fondo
+        foto(t, "c2_01b_cripta", 900, () -> t.lookFrom(747.0, -60, 384.5, 747.0, -58, 393));
+        foto(t, "c2_01c_llegada_casa", 1500, () -> t.lookFrom(747.0, -53, 400.5, 747.0, -44, 430));
+        foto(t, "c2_01d_fachada", 1200, () -> t.lookFrom(747.0, -52, 417.5, 747.0, -40, 430));
+        t.add("al vestibulo", 200, () -> t.lookFrom(747.0, -53, 438.5, 747.0, -43, 452));
         t.waitFor("cap2: habla", 15000, () -> "HABLANDO".equals(MascotaCliente.fase()));
-        foto(t, "c2_02_vestibulo", 9000, () -> t.lookFrom(741.5, -60, 451.5, 760, -53.5, 451.5));
-        foto(t, "c2_03_jaula", 4000, () -> t.lookFrom(756.5, -60, 451.5, 768, -59, 451.5));
-        foto(t, "c2_04_galeria", 2500, () -> t.lookFrom(739.5, -53, 442.5, 752, -60, 455));
+        foto(t, "c2_02_vestibulo", 9000, () -> t.lookFrom(747.0, -53, 434.5, 747.0, -42.5, 452.9));
+        foto(t, "c2_03_jaula", 4000, () -> t.lookFrom(747.0, -53, 442.5, 747.0, -51, 447));
+        foto(t, "c2_04_galeria", 2500, () -> t.lookFrom(747.0, -45, 432.5, 747.0, -52, 448));
         foto(t, "c2_05_esconder", 1800, () -> {
             t.cmd("evento mascota saltar");
-            t.lookFrom(744.5, -60, 451.5, 737, -59, 444);
+            t.lookFrom(744.5, -53, 442.5, 736, -52, 442.5);
         });
         t.add("esconder", 100, () -> t.check("ESCONDER".equals(MascotaCliente.fase()), "corre el minuto para esconderse (" + MascotaCliente.fase() + ")"));
         // una pieza solo ve en primera persona y, en lugar del inventario, su bolsillo con el logo
@@ -1452,11 +1457,11 @@ final class PruebaCliente {
         foto(t, "c2_07_cascabel_frente", 1200, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
         foto(t, "c2_08_ruge", 700, MascotaCliente::rugir);
         foto(t, "c2_09_olfatea", 1500, () -> {
-            t.cmd("tp @a 762.5 -60 451.5 90 10");
+            t.cmd("tp @a 747.0 -53 444.5 180 10");
             MascotaCliente.olfatear();
         });
         // se come a una pieza (la acerco primero para que se vea)
-        t.add("presa cerca", 600, () -> t.cmd("tp @e[type=coleccionista:bot] 759.5 -60 451.5"));
+        t.add("presa cerca", 600, () -> t.cmd("tp @e[type=coleccionista:bot] 747.0 -53 441.5"));
         foto(t, "c2_10_atrapa", 450, () -> t.cmd("evento mascota comer"));
         foto(t, "c2_11_traga", 900, () -> {
         });
@@ -1484,7 +1489,7 @@ final class PruebaCliente {
             Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK);
             t.cmd("evento mascota terminar");
         });
-        t.add("reja cerrada", 100, () -> t.check(!Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(761, -60, 451)).isAir(),
+        t.add("reja cerrada", 100, () -> t.check(!Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(746, -53, 447)).isAir(),
                 "se cerró la reja de la jaula"));
         t.add("vuelvo a ser yo", 3500, () -> {
         });
@@ -1492,22 +1497,32 @@ final class PruebaCliente {
             t.check(!com.axeliscore.forma.client.FormasCliente.transformado(Minecraft.getInstance().player), "volví a ser yo");
             t.check(Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON, "la cámara regresó a mis ojos");
         });
-        // un recorrido por los cuartos de la mansión nueva (planos a mano: data/coleccionista/planos/mansion.txt); al final, para no
-        // atrasar el discurso y el minuto para esconderse
-        foto(t, "c2_04b_comedor", 1300, () -> t.lookFrom(738.5, -58, 437.5, 747, -60, 432));
-        foto(t, "c2_04c_cocina", 1300, () -> t.lookFrom(762.5, -58, 437.5, 755, -60, 431));
-        foto(t, "c2_04d_biblioteca", 1300, () -> t.lookFrom(753.5, -58, 472.5, 762, -59, 466));
-        foto(t, "c2_04e_estudio", 1300, () -> t.lookFrom(771.5, -58, 472, 767, -60, 466));
-        foto(t, "c2_04f_pasillo_norte", 1300, () -> t.lookFrom(771.5, -58.4, 428.5, 730, -59, 427.5));
-        foto(t, "c2_04g_invernadero", 1300, () -> t.lookFrom(737.5, -58, 424.5, 728, -60, 415));
-        foto(t, "c2_04h_calderas", 1300, () -> t.lookFrom(771.5, -58, 424.5, 756, -60, 415));
-        foto(t, "c2_04i_billar", 1300, () -> t.lookFrom(737.5, -58, 479, 730, -60, 486));
-        foto(t, "c2_04j_trofeos", 1300, () -> t.lookFrom(771.5, -58, 479, 755, -60, 487));
-        foto(t, "c2_04k_recamara", 1300, () -> t.lookFrom(749.5, -51, 437.5, 743, -53, 431));
-        foto(t, "c2_04l_munecas", 1300, () -> t.lookFrom(771.5, -51, 437.5, 761, -53, 431));
-        foto(t, "c2_04m_costura", 1300, () -> t.lookFrom(752.5, -51, 472.5, 763, -53, 467));
-        foto(t, "c2_04n_atico", 1300, () -> t.lookFrom(771.5, -45.4, 427, 730, -47, 418));
-        foto(t, "c2_04o_escalera_atico", 1300, () -> t.lookFrom(734.5, -51.4, 427.5, 727, -48, 427));
+        // un recorrido por la mansión gótica (como espectador, para no chocar con los muebles ni caer de lo alto); al final, para no atrasar
+        // el discurso y el minuto para esconderse. Local + (720, -61, 430) = mundo.
+        t.add("recorrido: espectador", 300, () -> t.cmd("gamemode spectator @a"));
+        double[][] fotos = {
+                // planta baja (pies en y -53)
+                {734.5, -51, 443.5, 727, -53, 437}, {734.5, -51, 451.5, 728, -53, 448}, {759.5, -51, 443.5, 764, -53, 434},
+                {728, -44, 455, 750, -52, 461}, {737.5, -51, 479.5, 730, -53, 474}, {747, -51, 470.5, 747, -53, 478},
+                {756.5, -51, 470.5, 762, -53, 479},
+                // planta alta (pies en y -45)
+                {727.5, -43, 441.5, 735, -45, 436}, {734.5, -43, 445.5, 729, -45, 450}, {766.5, -43, 441.5, 760, -45, 434},
+                {737.5, -43, 470.5, 730, -45, 476}, {747, -43, 470.5, 747, -45, 477},
+                // ático, una torre y el sótano
+                {746.5, -36, 456.5, 732, -38, 440}, {728.5, -28.4, 430.5, 747, -53, 410}, {761.5, -58, 443.5, 755, -59, 436},
+                {737.5, -58, 470.5, 731, -59, 476}, {760.5, -58, 460.5, 730, -60, 461},
+                // el jardín: la fuente, el laberinto, el cementerio, atrás (invernadero y estanque) y la casa desde arriba
+                {747, -52, 422.5, 747, -50, 412}, {730, -41, 402, 730, -54, 382}, {763, -49, 400, 764, -54, 380},
+                {747, -47, 486, 747, -54, 510}, {790, -20, 395, 747, -44, 455}};
+        String[] nombres = {"c2_20_biblioteca", "c2_21_musica", "c2_22_comedor", "c2_23_salon_baile", "c2_24_billar", "c2_25_trofeos",
+                "c2_26_cocina", "c2_27_recamara", "c2_28_bebe", "c2_29_estudio", "c2_30_costura", "c2_31_bano", "c2_32_atico",
+                "c2_33_torre", "c2_34_calderas", "c2_35_munecas", "c2_36_bodega", "c2_37_fuente", "c2_38_laberinto", "c2_39_cementerio",
+                "c2_40_jardin_atras", "c2_41_casa_arriba"};
+        for (int i = 0; i < fotos.length; i++) {
+            double[] f = fotos[i];
+            foto(t, nombres[i], 1100, () -> t.lookFrom(f[0], f[1], f[2], f[3], f[4], f[5]));
+        }
+        t.add("recorrido: aventura", 300, () -> t.cmd("gamemode adventure @a"));
     }
 
     private static boolean escuchando, muestreando;

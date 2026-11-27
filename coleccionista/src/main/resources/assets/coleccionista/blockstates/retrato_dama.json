@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/retrato_dama"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/retrato_dama",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/retrato_dama",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/retrato_dama",
+   "y": 270
+  }
+ }
+}

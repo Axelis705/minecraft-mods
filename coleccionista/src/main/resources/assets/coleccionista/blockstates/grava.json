@@ -1,0 +1,12 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/grava_0"
+   },
+   {
+    "model": "coleccionista:block/grava_1"
+   }
+  ]
+ }
+}

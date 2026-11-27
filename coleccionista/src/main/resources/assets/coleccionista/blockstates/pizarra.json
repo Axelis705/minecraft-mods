@@ -1,0 +1,15 @@
+{
+ "variants": {
+  "": [
+   {
+    "model": "coleccionista:block/pizarra_0"
+   },
+   {
+    "model": "coleccionista:block/pizarra_1"
+   },
+   {
+    "model": "coleccionista:block/pizarra_2"
+   }
+  ]
+ }
+}

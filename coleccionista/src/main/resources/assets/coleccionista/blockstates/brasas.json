@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/brasas"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/brasas",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/brasas",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/brasas",
+   "y": 270
+  }
+ }
+}

@@ -1,0 +1,8 @@
+{
+ "textures": {
+  "bottom": "coleccionista:block/losa_sillar",
+  "top": "coleccionista:block/losa_sillar",
+  "side": "coleccionista:block/losa_sillar"
+ },
+ "parent": "minecraft:block/slab_top"
+}

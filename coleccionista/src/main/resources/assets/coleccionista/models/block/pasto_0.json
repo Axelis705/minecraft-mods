@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/cube_column",
+ "textures": {
+  "side": "coleccionista:block/pasto_0",
+  "end": "coleccionista:block/pasto_tapa_0"
+ }
+}
