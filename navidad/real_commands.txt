@@ -28,6 +28,10 @@ navidad arbol
 summon navidad:trineo_santa -200 -40 0 {Motion:[0.5,0.0,0.0]}
 #expect Summoned new
 setblock -198 -60 14 navidad:caja_regalo[color=2,llena=true]
+setblock -206 -60 12 minecraft:jukebox
+item replace block -206 -60 12 container.0 with navidad:disco_campanas
+execute if block -206 -60 12 minecraft:jukebox[has_record=true] run say PRUEBA_NAVIDAD_DISCO_SUENA
+#expect PRUEBA_NAVIDAD_DISCO_SUENA
 #expect Changed the block
 setblock -194 -60 14 navidad:pino_navidad
 #expect Changed the block
