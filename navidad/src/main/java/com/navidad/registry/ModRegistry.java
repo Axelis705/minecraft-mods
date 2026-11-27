@@ -105,6 +105,10 @@ public final class ModRegistry {
     }
 
     public static final RegistryObject<SoundEvent> CANCION_PINATA = sonido("cancion_pinata");
+    public static final RegistryObject<SoundEvent> CAJA_CAMPANAS = sonido("caja_campanas");
+    public static final RegistryObject<SoundEvent> CAJA_NAVIDAD = sonido("caja_navidad");
+    public static final RegistryObject<SoundEvent> CAJA_NOCHE_PAZ = sonido("caja_noche_paz");
+    public static final RegistryObject<SoundEvent> CAJA_ADORNEN = sonido("caja_adornen");
     public static final RegistryObject<SoundEvent> CASCABELES = sonido("cascabeles");
     public static final RegistryObject<SoundEvent> PINGUINO_HOLA = sonido("pinguino_hola");
     public static final RegistryObject<SoundEvent> PINGUINO_LASTIMA = sonido("pinguino_lastima");
@@ -127,6 +131,9 @@ public final class ModRegistry {
     public static final RegistryObject<SoundEvent> LANZANIEVES_GIRA = sonido("lanzanieves_gira");
     public static final RegistryObject<SoundEvent> LANZANIEVES_CARGA = sonido("lanzanieves_carga");
     public static final RegistryObject<SoundEvent> LANZANIEVES_BOLA = sonido("lanzanieves_bola");
+    public static final RegistryObject<SoundEvent> LANZANIEVES_IMPACTO = sonido("lanzanieves_impacto");
+    public static final RegistryObject<SoundEvent> LANZANIEVES_ASPIRA = sonido("lanzanieves_aspira");
+    public static final RegistryObject<SoundEvent> LANZANIEVES_VACIO = sonido("lanzanieves_vacio");
     public static final RegistryObject<SoundEvent> CASCANUECES_CLAC = sonido("cascanueces_clac");
 
     // ------------------------------------------------------------------ comida
@@ -157,7 +164,9 @@ public final class ModRegistry {
 
     // ------------------------------------------------------------------ regalos y posadas
 
-    public static final RegistryObject<Item> REGALO_MISTERIOSO = item("regalo_misterioso", () -> new RegaloMisterioso(props().stacksTo(16)
+    /** Ya no se da en ningún lado (los regalos son cajas que se ponen y se abren); sigue registrado para los mundos que lo tenían:
+     *  en el inventario se convierte solo en una caja de regalo envuelta. No sale en la pestaña creativa. */
+    public static final RegistryObject<Item> REGALO_MISTERIOSO = ITEMS.register("regalo_misterioso", () -> new RegaloMisterioso(props().stacksTo(16)
             .rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> PINATA = item("pinata", () -> new PinataItem(props().stacksTo(4)));
     public static final RegistryObject<Item> PALO_PINATA = item("palo_pinata", () -> new Item(props().stacksTo(1)));
@@ -197,6 +206,13 @@ public final class ModRegistry {
             props().stacksTo(1)));
     public static final RegistryObject<BlockEntityType<com.navidad.arbol.PinoBE>> PINO_NAVIDAD_BE = BES.register("pino_navidad",
             () -> BlockEntityType.Builder.of(com.navidad.arbol.PinoBE::new, PINO_NAVIDAD.get()).build(null));
+    // ------------------------------------------------------------------ la caja de música navideña (toca los villancicos de caja)
+    public static final RegistryObject<Block> CAJA_MUSICA = BLOCKS.register("caja_musica", () -> new com.navidad.musica.CajaMusica(
+            BlockBehaviour.Properties.of().strength(0.8F).sound(SoundType.WOOD).noOcclusion()));
+    public static final RegistryObject<Item> CAJA_MUSICA_ITEM = item("caja_musica", () -> new com.navidad.musica.CajaMusicaItem(CAJA_MUSICA.get(),
+            props().stacksTo(16).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<BlockEntityType<com.navidad.musica.CajaMusicaBE>> CAJA_MUSICA_BE = BES.register("caja_musica",
+            () -> BlockEntityType.Builder.of(com.navidad.musica.CajaMusicaBE::new, CAJA_MUSICA.get()).build(null));
     public static final RegistryObject<Item> LIBRO = item("libro_navidad", () -> new com.navidad.libro.LibroItem(props().stacksTo(1)
             .rarity(Rarity.UNCOMMON)));
     /** Los adornos para colgar (uno por cada uno de {@link com.navidad.arbol.Adornos#TODOS}). */
@@ -313,7 +329,7 @@ public final class ModRegistry {
 
     public static final RegistryObject<CreativeModeTab> TAB = TABS.register("cosas", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.navidad.cosas"))
-            .icon(() -> new ItemStack(REGALO_MISTERIOSO.get()))
+            .icon(() -> new ItemStack(CAJA_REGALO_ITEM.get()))
             .displayItems((p, out) -> ORDEN.forEach(r -> out.accept(r.get()))).build());
 
     public static void register(IEventBus bus) {

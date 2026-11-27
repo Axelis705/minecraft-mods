@@ -117,7 +117,8 @@ public class Pinata extends Entity {
             soltar(l, new ItemStack(ModRegistry.CANA.get()), 0.6);
         }
         if (random.nextFloat() < 0.35F) {
-            soltar(l, new ItemStack(ModRegistry.REGALO_MISTERIOSO.get()), 0.4);
+            String[] bonitos = {"adorno_campanita", "adorno_copo", "adorno_galleta", "adorno_pina"};
+            soltar(l, new ItemStack(ModRegistry.ADORNOS.get(bonitos[random.nextInt(bonitos.length)]).get()), 0.4);
         }
         Premios.confeti(l, getX(), getY() + 0.6, getZ(), true);
         l.playSound(null, blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 1.5F, 1F);

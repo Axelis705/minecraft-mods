@@ -173,7 +173,7 @@ TAREAS = {
                'never fails).'),
     'regalo_aire': ('Atrapa un regalo en el aire', 'Catch a gift in mid-air', 'Pégale a un regalo de Santa antes de que toque el piso.',
                     "Hit one of Santa's gifts before it lands."),
-    'abrir': ('Abre 10 regalos', 'Open 10 gifts', 'Cajas de regalo y regalos misteriosos.', 'Gift boxes and mystery gifts.'),
+    'abrir': ('Abre 10 regalos', 'Open 10 gifts', 'Cajas de regalo: de Santa, de tu árbol, de las cartas...', 'Gift boxes: from Santa, from your tree, from letters...'),
     'galletas': ('Galletas y leche para Santa', 'Cookies and milk for Santa', 'Déjalas cerca de tu árbol antes de dormir.',
                  'Leave them near your tree before sleeping.'),
     'carta': ('Escríbele a Santa', 'Write to Santa', 'Echa una carta en el buzón de Santa.', "Drop a letter in Santa's mailbox."),

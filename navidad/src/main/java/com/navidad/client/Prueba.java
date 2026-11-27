@@ -279,6 +279,55 @@ final class Prueba {
             });
             t.photo("gorros_mobs", 2000, () -> t.lookFrom(-17, -59.2, -54.5, -17, -58.6, -60));
             t.add("quitar gorros", 500, () -> t.cmd("kill @e[type=!player,x=-17,y=-60,z=-60,distance=..9]"));
+            // los animales y otras criaturas de Minecraft también se adornan (en la prueba, todos)
+            t.add("animales adornados", 2500, () -> {
+                GorrosMobs.deCada10 = 12;
+                t.cmd("fill -40 -61 -76 -4 -61 -64 minecraft:snow_block");
+                t.cmd("fill -40 -56 -76 -4 -56 -70 minecraft:spruce_slab");
+                String nbt = "{NoAI:1b,PersistenceRequired:1b,Rotation:[0f,0f]}";
+                String[] fila = {"cow", "pig", "sheep", "horse", "wolf", "chicken", "cat", "fox", "iron_golem", "creeper", "panda", "polar_bear"};
+                for (int i = 0; i < fila.length; i++) {
+                    t.cmd("summon minecraft:" + fila[i] + " " + (-37.5 + i * 2.8) + " -60 -73 " + nbt);
+                }
+            });
+            t.photo("animales_adornados", 2500, () -> t.lookFrom(-22, -58.6, -64.5, -22, -59.4, -73));
+            t.photo("animales_adornados_cerca", 1500, () -> t.lookFrom(-31, -59, -68.5, -31, -59.2, -73));
+            t.add("quitar animales", 500, () -> {
+                GorrosMobs.deCada10 = 8;
+                t.cmd("kill @e[type=!player,x=-22,y=-60,z=-73,distance=..20]");
+            });
+            // la caja de música navideña: se abre, sale el pinito girando y toca; otro clic, el siguiente villancico
+            t.add("caja de musica", 1500, () -> {
+                t.cmd("fill -66 -61 -66 -54 -61 -54 minecraft:snow_block");
+                t.cmd("fill -66 -60 -66 -54 -55 -54 minecraft:air");
+                t.cmd("setblock -60 -60 -60 navidad:caja_musica[facing=south]");
+                t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
+                t.cmd("item replace entity @p hotbar.1 with navidad:caja_musica");
+                t.cmd("item replace entity @p hotbar.2 with navidad:pino_navidad");
+                t.lookFrom(-59.2, -60, -58.1, -59.5, -59.65, -59.5);
+            });
+            t.photo("caja_musica_cerrada", 500, () -> {
+            });
+            Runnable tocarCaja = () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND, new BlockHitResult(new Vec3(-59.5, -59.6, -59.5), Direction.UP,
+                        new BlockPos(-60, -60, -60), false));
+            };
+            t.add("tocar la caja", 150, tocarCaja);
+            t.photo("caja_musica_abre", 300, () -> {
+            });
+            t.photo("caja_musica_suena", 2200, () -> {
+            });
+            t.add("toco?", 200, () -> t.check(com.navidad.musica.CajaMusicaBE.tocadas > 0, "la caja de música tocó"));
+            t.add("la siguiente", 600, tocarCaja);
+            t.add("cambio?", 300, () -> {
+                var be = Minecraft.getInstance().level.getBlockEntity(new BlockPos(-60, -60, -60));
+                t.check(be instanceof com.navidad.musica.CajaMusicaBE c && c.sonando && c.cancion == 1, "la caja pasó al siguiente villancico");
+            });
+            t.add("hud caja", 150, () -> t.hud(true));
+            t.photo("caja_musica_lado", 800, () -> t.lookFrom(-57.6, -60, -59.0, -59.5, -59.6, -59.5));
+            t.add("hud caja fin", 150, () -> t.hud(false));
+            t.add("quitar caja", 300, () -> t.cmd("setblock -60 -60 -60 minecraft:air"));
             // la aldea de Santa, lejos de lo demás
             t.add("ir a la aldea", 4000, () -> t.cmd("tp @a 300.5 -40 45.5 180 30"));
             t.add("aldea", 6000, () -> t.cmd("execute positioned 300 -60 0 run navidad aldea"));
@@ -588,10 +637,11 @@ final class Prueba {
                     Minecraft mc = Minecraft.getInstance();
                     // los lugares de enfrente (los que ve la cámara) primero
                     float[] q = com.navidad.arbol.PuntosArbol.LUGARES[(kk * 8 + 3) % com.navidad.arbol.PuntosArbol.LUGARES.length];
-                    double y = -60 + q[1];
-                    BlockPos bp = new BlockPos(503, q[1] < 1 ? -60 : -59, 143);
+                    float e = com.navidad.arbol.PinoNavidad.ESCALA;      // el árbol se dibuja más grande que su modelo
+                    double y = -60 + q[1] * e;
+                    BlockPos bp = new BlockPos(503, -60 + Math.min(2, (int) Math.floor(q[1] * e)), 143);
                     mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
-                            new BlockHitResult(new Vec3(503.5 + q[0], y, 143.5 + q[2]), Direction.SOUTH, bp, false));
+                            new BlockHitResult(new Vec3(503.5 + q[0] * e, y, 143.5 + q[2] * e), Direction.SOUTH, bp, false));
                 });
             }
             for (String x : new String[]{"adorno_luces", "adorno_luces", "adorno_guirnalda", "adorno_guirnalda", "punta_estrella"}) {
@@ -780,6 +830,23 @@ final class Prueba {
                     t.lookFrom(n.getX() + dx / d * 6.5 + 1.5, n.getY() + 1.4, n.getZ() + dz / d * 6.5 + 1.5, n.getX() + 0.6, n.getY() + 0.9, n.getZ());
                 }
             });
+            // de cerca y con la interfaz: su listón con el nombre y la mochila de viaje (de espaldas)
+            t.add("hud viajero", 200, () -> t.hud(true));
+            t.photo("duende_viajero_nombre", 900, () -> {
+                var n = viajero();
+                if (n != null) {
+                    double a = Math.toRadians(n.getYRot());
+                    t.lookFrom(n.getX() - Math.sin(a) * 3.2, n.getY() + 0.2, n.getZ() + Math.cos(a) * 3.2, n.getX(), n.getY() + 2.0, n.getZ());
+                }
+            });
+            t.photo("duende_viajero_mochila", 900, () -> {
+                var n = viajero();
+                if (n != null) {
+                    double a = Math.toRadians(n.getYRot());
+                    t.lookFrom(n.getX() + Math.sin(a) * 2.8 + 1.2, n.getY() + 0.3, n.getZ() - Math.cos(a) * 2.8, n.getX(), n.getY() + 1.2, n.getZ());
+                }
+            });
+            t.add("hud viajero fin", 200, () -> t.hud(false));
             // ---------------------------------------------------------------- el buzón y la carta a Santa
             // ---------------------------------------------------------------- el lanzanieves con su tanque en la espalda
             t.add("lanzanieves", 1500, () -> {

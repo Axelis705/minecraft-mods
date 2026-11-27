@@ -166,7 +166,7 @@ def gorros():
     c.part('punta2', [-1.0, 44.2, -1.0], [2, 2, 2], G.solid((240, 200, 60)))
     c.build(os.path.join(RES, 'geo', 'gorro_duende.geo.json'), os.path.join(RES, 'textures', 'prenda', 'gorro_duende.png'))
     # diadema con cuernos de reno y nariz roja
-    c = G.Creature('geometry.navidad.cuernos_reno', 64, 64, seed=7)
+    c = G.Creature('geometry.navidad.cuernos_reno', 64, 64, seed=7)  # (también sale cuernos_animal)
     cafe, cafe2 = (122, 82, 46), (150, 104, 60)
     c.bone('cabeza', [0, 24, 0])
     c.part('cabeza', [-4.6, 31.6, -0.6], [9.2, 0.9, 1.2], G.solid((60, 60, 64)))
@@ -180,6 +180,10 @@ def gorros():
         c.part(nb, [x0 + (lado * 1.0 if lado > 0 else -1.6), 35.0, -0.5], [1.6, 1, 1], G.solid(cafe2))
         c.part(nb, [x0 + (lado * 1.4 if lado > 0 else -1.8), 35.0, -0.5], [1, 2.4, 1], G.solid(cafe2))
         c.part(nb, [x0 - (lado * 1.0 if lado > 0 else -1.0) - (0.6 if lado > 0 else 0), 36.4, -0.5], [1.2, 0.9, 1], G.solid(cafe2))
+    # (la versión sin nariz para los caballos disfrazados de reno: se construye primero, sin la nariz)
+    c.m.ident = 'geometry.navidad.cuernos_animal'
+    c.build(os.path.join(RES, 'geo', 'cuernos_animal.geo.json'), os.path.join(RES, 'textures', 'prenda', 'cuernos_animal.png'))
+    c.m.ident = 'geometry.navidad.cuernos_reno'
     c.part('cabeza', [-1.0, 26.2, -5.2], [2, 2, 1.2], G.solid((230, 30, 30)))
     c.glow('cabeza')
     c.build(os.path.join(RES, 'geo', 'cuernos_reno.geo.json'), os.path.join(RES, 'textures', 'prenda', 'cuernos_reno.png'))
@@ -232,6 +236,67 @@ def invierno():
     c.build(os.path.join(RES, 'geo', 'orejeras.geo.json'), os.path.join(RES, 'textures', 'prenda', 'orejeras.png'))
 
 
+def mochila():
+    """La mochila de viaje de Ramiro, el duende viajero (solo la usa él): mochilota de cuero con correas y hebillas, una cobija de
+    cuadros enrollada arriba, bolsas a los lados, un farolito colgando, una ollita, cascabeles y un banderín en su palito."""
+    cuero, cuero2, cuero3 = (122, 78, 42), (96, 60, 32), (150, 100, 58)
+    correa, hebilla = (70, 44, 24), (232, 192, 64)
+    rojo, verde, crema = (180, 34, 42), (40, 120, 58), (236, 224, 196)
+
+    def piel_cuero(face, x, y, w, h):
+        if face == 'top':
+            return cuero3 if (x + y) % 5 else cuero
+        if face == 'bottom':
+            return cuero2
+        if (x * 3 + y * 7) % 13 == 0:
+            return cuero3
+        return cuero if (x + y) % 4 else cuero2
+
+    def tapa(face, x, y, w, h):
+        if face in ('front', 'back') and y == h - 1:
+            return correa
+        return piel_cuero(face, x, y, w, h)
+
+    def cobija(face, x, y, w, h):
+        # cuadros rojo y verde con rayitas crema
+        if face in ('right', 'left'):
+            return crema if (x + y) % 2 == 0 else rojo       # el rollo visto de lado
+        a = (x // 2 + y) % 2
+        return rojo if a else verde if (x % 3) else crema
+
+    def cinta(face, x, y, w, h):
+        return hebilla if (face == 'back' and y == h // 2) else correa
+
+    def farol(face, x, y, w, h):
+        if face in ('top', 'bottom'):
+            return (60, 60, 64)
+        return (255, 214, 110) if 0 < y < h - 1 else (60, 60, 64)
+
+    c = G.Creature('geometry.navidad.mochila_viajero', 64, 64, seed=11)
+    c.bone('cuerpo', [0, 24, 0])
+    c.part('cuerpo', [-3.5, 12.5, 2], [7, 9, 4], piel_cuero)                    # la mochila
+    c.part('cuerpo', [-3.5, 18.5, 5.5], [7, 3, 1], tapa)                        # la tapa que cae atrás
+    c.part('cuerpo', [-2.5, 13.5, 6], [5, 4, 1], piel_cuero)                    # bolsa de atrás
+    c.part('cuerpo', [-0.5, 15, 6.5], [1, 1, 1], G.solid(hebilla))              # su hebilla
+    c.part('cuerpo', [3.5, 13.5, 2.5], [1, 4, 3], piel_cuero)                   # bolsas de los lados
+    c.part('cuerpo', [-4.5, 13.5, 2.5], [1, 4, 3], piel_cuero)
+    c.part('cuerpo', [-4.5, 21.5, 2.5], [9, 2, 3], cobija)                      # cobija enrollada
+    for x in (-2.5, 1.5):
+        c.part('cuerpo', [x, 21.3, 2.2], [1, 3, 4], cinta)                     # sus correitas
+    for x in (-3, 2):
+        c.part('cuerpo', [x, 23.5, -2.5], [1, 1, 5], G.solid(correa))          # correas sobre los hombros
+        c.part('cuerpo', [x, 15, -2.5], [1, 9, 1], G.solid(correa))             # y por el pecho
+    c.part('cuerpo', [4.5, 12, 3.5], [2, 3, 2], farol)                          # farolito colgando
+    c.part('cuerpo', [5, 15, 4], [1, 1, 1], G.solid((60, 60, 64)))              # su gancho
+    c.part('cuerpo', [-6.5, 14, 3.5], [2, 2, 2], G.solid((150, 150, 158)))      # ollita
+    c.part('cuerpo', [-6, 16, 4], [1, 1, 1], G.solid((90, 90, 96)))
+    for x, y in ((-1.5, 12), (0.5, 12.3)):
+        c.part('cuerpo', [x, y, 5.6], [1, 1, 1], G.solid(hebilla))             # cascabeles
+    c.part('cuerpo', [2.5, 21, 4], [1, 9, 1], G.solid((150, 104, 60)))          # palito del banderín
+    c.part('cuerpo', [3.5, 27, 4], [4, 2, 1], lambda f, x, y, w, h: verde if x < 2 else rojo)   # banderín
+    c.build(os.path.join(RES, 'geo', 'mochila_viajero.geo.json'), os.path.join(RES, 'textures', 'prenda', 'mochila_viajero.png'))
+
+
 if __name__ == '__main__':
     R, W, V, D, N, Ca, Cn = '#b81e2a', '#f2f2ee', '#2a8a40', '#e8c040', '#1a2a5a', '#7a4a2a', '#d8b878'
     reno = mapa(['........', '.c....c.', '..c..c..', '..aaaa..', '.aaaaaa.', '..aEEa..', '..aaaa..', '...rr...', '........'],
@@ -247,4 +312,5 @@ if __name__ == '__main__':
     gorros()
     patines()
     invierno()
+    mochila()
     print('ok')

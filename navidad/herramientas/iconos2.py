@@ -62,7 +62,7 @@ os.replace(os.path.join(A, 'textures', 'item', 'pino_navidad_hojas.png'), os.pat
 
 # el pino: estado de bloque (las dos mitades solo dan la partícula: lo dibuja el renderizador), modelo y objeto 3D
 escribir(os.path.join(A, 'blockstates', 'pino_navidad.json'), {'variants': {
-    'half=lower': {'model': 'navidad:block/pino_navidad'}, 'half=upper': {'model': 'navidad:block/pino_navidad'}}})
+    f'half={h},punta={p}': {'model': 'navidad:block/pino_navidad'} for h in ('lower', 'upper') for p in ('false', 'true')}})
 escribir(os.path.join(A, 'models', 'block', 'pino_navidad.json'), {'textures': {'particle': 'navidad:block/pino_navidad_hojas'}})
 escribir(os.path.join(A, 'models', 'item', 'pino_navidad.json'), {
     'parent': 'minecraft:builtin/entity', 'gui_light': 'front',

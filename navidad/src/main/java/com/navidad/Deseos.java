@@ -111,13 +111,13 @@ public final class Deseos {
         e("brujula", "brujula, compass", r -> uno(Items.COMPASS, 1));
         e("mapa", "mapa, map", r -> uno(Items.MAP, 1));
         e("flores", "flor, flower, rosa", r -> uno(new Item[]{Items.POPPY, Items.CORNFLOWER, Items.ALLIUM, Items.OXEYE_DAISY}[r.nextInt(4)], 8));
-        e("juguete", "juguete, toy, regalo, regalos, sorpresa, gift, present", r -> uno(nv("regalo_misterioso"), 1));
+        e("juguete", "juguete, toy, regalo, regalos, sorpresa, gift, present", r -> List.of(com.navidad.objeto.Premios.sacar(com.navidad.objeto.Premios.Rareza.RARO, r)));
         // muy difícil hasta para los duendes
         e("dificil", Tipo.DIFICIL, "elytra, elitro, elitros, ala, alas, wing, wings, netherite, netherita, tridente, trident, faro, beacon, "
-                + "estrella del nether, nether star, dragon, wither, totem", r -> uno(nv("regalo_misterioso"), 2));
+                + "estrella del nether, nether star, dragon, wither, totem", r -> List.of(com.navidad.objeto.Premios.sacar(com.navidad.objeto.Premios.Rareza.EPICO, r), com.navidad.objeto.Premios.sacar(com.navidad.objeto.Premios.Rareza.RARO, r)));
         // lo que no cabe en una caja
         e("bonito", Tipo.BONITO, "paz, amor, familia, amigo, amiga, salud, felicidad, peace, love, family, friend, health, happiness",
-                r -> uno(nv("regalo_misterioso"), 3));
+                r -> List.of(com.navidad.objeto.Premios.sacar(com.navidad.objeto.Premios.Rareza.RARO, r), com.navidad.objeto.Premios.sacar(com.navidad.objeto.Premios.Rareza.COMUN, r)));
     }
 
     private static ItemStack withCount(ItemStack s, int n) {

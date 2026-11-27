@@ -59,11 +59,11 @@ public final class Gente {
         SANTA = NpcDef.registrar(new NpcDef(Navidad.MODID, "santa").piel(piel("santa")).tema(TEMA).rutina(NpcDef.Rutina.QUIETO)
                 .saludos(saludos("santa"))
                 .mision(m("galletas_leche").objetivo(Objetivo.entregar(nv("galleta_jengibre"), 6)).objetivo(Objetivo.entregar("minecraft:milk_bucket", 1))
-                        .premio(Mision.Premio.objeto(nv("regalo_misterioso"), 2)).amistad(12))
+                        .premio(Mision.Premio.objeto(nv("adorno_campanita"), 2)).premio(Mision.Premio.objeto(nv("adorno_galleta"), 2)).amistad(12))
                 .mision(m("munecos").objetivo(Objetivo.cazar(nv("muneco_malvado"), 5))
                         .premio(Mision.Premio.objeto(nv("disco_campanas"), 1)).premio(Mision.Premio.experiencia(40)).amistad(10))
                 .mision(m("jengibre").objetivo(Objetivo.cazar(nv("hombre_jengibre"), 3))
-                        .premio(Mision.Premio.objeto(nv("galleta_jengibre"), 12)).premio(Mision.Premio.objeto(nv("regalo_misterioso"), 1)).amistad(8))
+                        .premio(Mision.Premio.objeto(nv("galleta_jengibre"), 12)).premio(Mision.Premio.objeto(nv("adorno_galleta"), 2)).amistad(8))
                 .mision(m("pinata").objetivo(Objetivo.evento(nv("pinata"), 1))
                         .premio(Mision.Premio.objeto(nv("dulce"), 24)).amistad(8))
                 .mision(m("regalos").requiere(nv("galletas_leche")).rareza(Rareza.RARO).objetivo(Objetivo.evento(nv("regalo_entregado"), 3))
@@ -71,8 +71,8 @@ public final class Gente {
                 .mision(m("krampus").nivel(2).rareza(Rareza.EPICO).objetivo(Objetivo.evento(nv("krampus"), 1))
                         .premio(Mision.Premio.objeto(nv("disco_noche_paz"), 1)).premio(Mision.Premio.objeto("minecraft:diamond", 8)).amistad(30))
                 .mision(m("carta").diaria().objetivo(Objetivo.entregar("minecraft:paper", 3)).objetivo(Objetivo.entregar("minecraft:feather", 1))
-                        .premio(Mision.Premio.objeto(nv("regalo_misterioso"), 1)).amistad(4))
-                .regalo(1, p -> dar(p, nv("regalo_misterioso"), 2))
+                        .premio(Mision.Premio.esmeraldas(4)).premio(Mision.Premio.objeto(nv("dulce"), 8)).amistad(4))
+                .regalo(1, p -> dar(p, nv("adorno_renito"), 1))
                 .regalo(2, p -> dar(p, nv("disco_navidad"), 1))
                 .regalo(3, p -> dar(p, nv("arbol_dorado"), 1))
                 .regalo(4, p -> dar(p, nv("disco_adornen"), 1)));
@@ -111,7 +111,7 @@ public final class Gente {
                         .vende(nv("caja_regalo"), 1, 6)
                         .vende(nv("calendario_adviento"), 1, 10)
                         .vende(nv("trineo_madera"), 1, 20)
-                        .vende(nv("regalo_misterioso"), 1, 30, 2, 1)
+                        .vende(nv("caja_musica"), 1, 40)
                         .vende(nv("disco_campanas"), 1, 50, 1, 2)
                         .vende(nv("disco_adornen"), 1, 50, 1, 3)
                         .compra("minecraft:snowball", 16, 1)
@@ -219,9 +219,9 @@ public final class Gente {
                         .vende(nv("trineo_madera"), 1, 8, 1, 1)
                         .vende(nv("patines"), 1, 4, 1, 2)
                         .vende(nv("arbol_dorado"), 1, 16, 1, 1)
-                        .vende(nv("regalo_misterioso"), 1, 3, 1, 3)
                         .vende(nv("traje_santa"), 1, 14, 1, 1)
                         .vende(nv("disco_navidad"), 1, 6, 1, 1)
+                        .vende(nv("caja_musica"), 1, 5, 1, 2)
                         .vende(nv("disco_campanas"), 1, 6, 1, 1)
                         .vende(nv("calendario_adviento"), 1, 5, 1, 1)
                         .vende(nv("cuernos_reno"), 1, 3, 1, 2)
@@ -259,6 +259,10 @@ public final class Gente {
             Vestuario.poner(l.getServer(), n.getUUID(), Ropa.id(g), null);
         }
         if (n != null && d == PINERO) {
+            Vestuario.poner(l.getServer(), n.getUUID(), Ropa.id("bufanda"), null);
+        }
+        if (n != null && d == VIAJERO) {
+            Vestuario.poner(l.getServer(), n.getUUID(), Ropa.id("mochila_viajero"), null);
             Vestuario.poner(l.getServer(), n.getUUID(), Ropa.id("bufanda"), null);
         }
         return n;

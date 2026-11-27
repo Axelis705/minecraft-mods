@@ -143,7 +143,8 @@
   "sounds": [
    "navidad:lanzanieves_dispara1",
    "navidad:lanzanieves_dispara2",
-   "navidad:lanzanieves_dispara3"
+   "navidad:lanzanieves_dispara3",
+   "navidad:lanzanieves_dispara4"
   ],
   "subtitle": "navidad.sub.lanzanieves"
  },
@@ -170,5 +171,59 @@
    "navidad:cascanueces_clac"
   ],
   "subtitle": "navidad.sub.cascanueces"
+ },
+ "lanzanieves_impacto": {
+  "sounds": [
+   "navidad:lanzanieves_impacto"
+  ],
+  "subtitle": "navidad.sub.lanzanieves_impacto"
+ },
+ "lanzanieves_aspira": {
+  "sounds": [
+   "navidad:lanzanieves_aspira"
+  ],
+  "subtitle": "navidad.sub.lanzanieves_aspira"
+ },
+ "lanzanieves_vacio": {
+  "sounds": [
+   "navidad:lanzanieves_vacio"
+  ],
+  "subtitle": "navidad.sub.lanzanieves_vacio"
+ },
+ "caja_campanas": {
+  "sounds": [
+   {
+    "name": "navidad:caja_campanas",
+    "stream": true
+   }
+  ],
+  "subtitle": "navidad.sub.caja_musica"
+ },
+ "caja_navidad": {
+  "sounds": [
+   {
+    "name": "navidad:caja_navidad",
+    "stream": true
+   }
+  ],
+  "subtitle": "navidad.sub.caja_musica"
+ },
+ "caja_noche_paz": {
+  "sounds": [
+   {
+    "name": "navidad:caja_noche_paz",
+    "stream": true
+   }
+  ],
+  "subtitle": "navidad.sub.caja_musica"
+ },
+ "caja_adornen": {
+  "sounds": [
+   {
+    "name": "navidad:caja_adornen",
+    "stream": true
+   }
+  ],
+  "subtitle": "navidad.sub.caja_musica"
  }
 }

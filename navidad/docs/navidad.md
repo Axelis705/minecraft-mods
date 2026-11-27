@@ -22,12 +22,13 @@ Todo esto pasa solo mientras juegas:
   de regalo con tu nombre. Los puedes **atrapar en el aire** con un clic.
 - **Abrir regalos** es una fiesta: la caja **tiembla**, la **tapa con el moño sale volando**, salen **rayos de luz** del color de lo que
   trae (dorado común, azul cielo raro, morado épico), el regalo **sube girando** y te sale un aviso con lo que te tocó. Hay cajas en cuatro
-  envolturas (roja, verde, azul y dorada). El **regalo misterioso** se desenvuelve en la mano: mantén clic derecho y tiembla hasta que
-  revienta en confeti.
+  envolturas (roja, verde, azul y dorada). **Los regalos son siempre cajas que se ponen y se abren** (o las que envuelves tú para
+  regalar): ya no hay regalos "de mano" y nunca te sale un regalo dentro de otro.
 
 ### Tu Pino de Navidad
 
-- Es un pino de dos bloques y medio (con falda roja). Lo pones en tu casa y es **tu árbol** (solo cuenta el último que pones).
+- Es un pino **grande**: tres bloques y medio con la estrella (ocupa tres bloques de alto; cabe en un cuarto con techo de 4). Lo pones
+  en tu casa y es **tu árbol** (solo cuenta el último que pones). Los pinos de antes crecen solos al darles clic.
 - **Cuélgale adornos con clic derecho**: cada uno queda en la rama más cerca de donde hiciste clic, mirando hacia afuera y meciéndose
   poquito (aparece con un saltito). Las **luces** se enredan en todo el árbol (hasta 3 tiras; titilan de colores) y las **guirnaldas**
   doradas cuelgan de punta a punta (hasta 3). En la **punta** va una **estrella**, un **ángel** o la **estrella polar de cristal**:
@@ -90,9 +91,10 @@ su figura para volverlo a poner; se cura solo.
 - **Puesto de árboles de Navidad** (praderas, bosques, taigas y nieve) con **Don Abeto**: vende el Pino de Navidad, adornos, luces,
   guirnaldas, la estrella, árboles ya adornados y más por **esmeraldas**; compra troncos y retoños de abeto y tiene encargos.
 - **Ramiro, el duende viajero**: cada dos o tres días llega con su reno Cometa. Vende el lanzanieves, el tanque, adornos raros, trineo,
-  patines, traje de Santa, discos y regalos misteriosos; al día siguiente se va.
+  patines, traje de Santa, discos y la caja de música; al día siguiente se va. Trae su **mochila de viaje** (con su cobija enrollada,
+  farolito, ollita y banderín) y, como toda la gente de Navidad, su nombre en un **listón rojo con acebo** en lugar del letrerito negro.
 - **Los aldeanos** venden galletas, bastones, pavo, gorros, suéteres y el calendario de Adviento; el comerciante errante, adornos y a
-  veces un regalo misterioso.
+  veces una esfera de cristal para tu árbol.
 - La **nieve que cae** depende del lugar. Y lo de siempre: calcetines que Santa llena, galletas y leche para Santa, carta a Santa, pinos
   adornados y casitas de duende en la nieve, gorros en los mobs.
 
@@ -119,7 +121,6 @@ van con la fecha de verdad.
   Los focos de los árboles, las guirnaldas, las luces colgantes y el bloque de luces parpadean y cambian de color.
 - **Comida**: galleta de jengibre, bastón de caramelo, dulce, tejocote, mandarina, caña, tamal, buñuelo, pavo navideño, rosca de Reyes;
   bebidas que quitan el frío: chocolate caliente, ponche, champurrado.
-- **Regalo misterioso**: común, raro (azul) o épico (morado), con confeti.
 - **Caja de regalo**: ponla y dale clic con lo que quieras regalar; con una etiqueta con nombre queda "Para: alguien" y solo esa persona la
   abre. Al romperla se lleva lo que tiene adentro.
 - **Calendario de Adviento**: una puerta por día del 1 al 24 de diciembre (el 24 es la grande). Cada quien lleva su cuenta con el mundo.
@@ -127,7 +128,12 @@ van con la fecha de verdad.
 - **Ropa** (se ve encima de tu skin, clic derecho para ponértela o quitártela): gorro de Santa, gorro de duende, cuernos de reno,
   orejeras, suéter de reno, de pinos y de copos, traje de Santa (con barba), **bufanda** de rayas (va con cualquier suéter) y patines.
   Recetas: bufanda = lana roja + blanca + verde + hilo; orejeras = 2 lanas rosas + lana blanca + pepita de hierro.
-- **Discos** (villancicos de dominio público en caja de música): Jingle Bells, We Wish You a Merry Christmas, Noche de paz, Deck the Halls.
+- **Discos** (villancicos de dominio público, **con orquesta**: piano, cuerdas, flauta, clarinete, cornos, arpa, glockenspiel, coro y
+  cascabeles): Jingle Bells, We Wish You a Merry Christmas, Noche de paz, Deck the Halls. Van en el **tocadiscos** como cualquier disco.
+- **Caja de música navideña**: ponla en tu casa y dale clic derecho: se abre la tapa, sale un pinito que gira sobre su espejo, la
+  manivela da vueltas, salen notitas y toca un villancico en versión de cajita (no necesita discos). Otro clic: el siguiente
+  villancico; agachado: se cierra. Receta: ` O ` / `TNT` / `TTT` (lingote de oro, bloque musical y tablones). También la venden
+  Chispita y Ramiro.
 - **Luz de bengala**: chispas en tu mano.
 - **Patines de hielo** (ropa de los pies, se ven puestos): en el hielo vas mucho más rápido y suena el filo; fuera del hielo caminas torpe.
 - **Trineo de madera**: ponlo en el suelo, súbete con clic derecho (caben dos) y déjate ir. En la nieve resbala y en el hielo más; en
@@ -137,10 +143,12 @@ van con la fecha de verdad.
 - **Buzón de Santa**: para mandarle tu carta (ver abajo).
 - **Campana del Krampus**: tócala de noche para llamarlo. **Cuerno del Krampus**: trofeo.
 
-## Gorros en los mobs
+## Gorros y adornos en los mobs
 
 En temporada, a 8 de cada 10 mobs con cabeza de persona (zombis, esqueletos, aldeanos, saqueadores, piglins... también de otros mods)
-les sale un gorro: casi siempre el de Santa y a veces el de duende. Los bebés y los que traen casco no.
+les sale un gorro: casi siempre el de Santa y a veces el de duende. Y a 6 de cada 10 **animales y criaturas de Minecraft** les toca un
+gorrito a su medida: vacas, cerdos, borregos, gallinas, lobos, gatos, zorros, pandas, osos polares, gólems de hierro y de nieve, creepers
+y arañas. Los **caballos, burros y mulas** se disfrazan de reno (diadema con cuernos). Los bebés y los que traen casco no.
 
 ## Adornos que responden
 
@@ -161,7 +169,7 @@ poquito de regeneración (una vez por minuto por pareja).
 ## Calcetines de Santa
 
 Los **calcetines navideños** (rojo, verde y de rayas) se cuelgan en la pared. En temporada, Santa los llena cada noche: clic derecho y
-sacas lo de hoy (dulces, bastones de caramelo, galletas o fruta, y a veces un regalo misterioso). Una vez por día del juego (o cada 20 horas
+sacas lo de hoy (dulces, bastones de caramelo, galletas o fruta, y a veces un adorno para tu árbol). Una vez por día del juego (o cada 20 horas
 de verdad si el tiempo está detenido). Si desde la última vez lastimaste aldeanos, gólems, gatos o renos... solo hay carbón. Agachado,
 el clic derecho pone bloques normales junto al calcetín.
 
@@ -199,7 +207,7 @@ adornado**: esferas de colores colgando de las ramas, una luz en la punta y rega
 verdad**, sin dueño, con algo raro o épico adentro.
 
 Muy de vez en cuando también hay una **casita de duende**: paredes de jengibre con esquinas de caramelo, techo de glaseado, chimenea que
-echa humo, y adentro una chimenea navideña, alfombra, pinito y un **cofre** con galletas, dulces, adornos, regalos misteriosos, uvas,
+echa humo, y adentro una chimenea navideña, alfombra, pinito y un **cofre** con galletas, dulces, adornos, uvas,
 esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario o un disco.
 
 ## Criaturas
@@ -232,7 +240,7 @@ En la colina hay **carrera de trineos**: el cronómetro arranca en cuanto empiez
   del Krampus, cartas diarias). Premios: regalos, discos, traje de Santa.
 - **Señora Claus**: vende comida navideña (y uvas de Año Nuevo); misiones de ingredientes, pavo y horno diario.
 - **Chispita, el duende juguetero**: cobra en **dulces**: cajas de adornos, piñatas, cajas de regalo, calendario, trineo de madera,
-  regalos misteriosos, discos.
+  la caja de música, discos.
 - **Botones, el duende sastre**: gorros, suéteres, patines y el traje de Santa.
 - **Copito, el duende de los renos**: zanahorias, manzanas, heno; misión de hacerte amigo de un reno.
 
@@ -253,7 +261,10 @@ duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puest
 | `/navidad` | Dice si funciona y si es temporada |
 | `/navidad temporada si\|no\|auto` | Temporada siempre (`si`, lo normal), apagada (`no`) o solo de diciembre a Reyes (`auto`) |
 | `/navidad calendario dia <n>` | Fingir el día de diciembre (0 = el de verdad) |
-| `/navidad regalo [jugadores]` | Dar regalos misteriosos |
+| `/navidad regalo [jugadores]` | Dar una caja de regalo envuelta con un premio al azar |
+| `/navidad reiniciar libro [jugadores]` | El Libro de Navidad vuelve a empezar (todas las tareas desde cero) |
+| `/navidad reiniciar santa [jugadores]` | Santa vuelve a pasar hoy, los calcetines se llenan otra vez y se puede mandar otra carta |
+| `/navidad reiniciar todo [jugadores]` | Las dos cosas y la bienvenida de Santa otra vez (pino y esferas) |
 | `/navidad pinata` | Poner una piñata enfrente |
 | `/navidad posada` | Posada: piñata, palo y venda para todos, la canción y confeti |
 | `/navidad intercambio` | Amigo secreto: a cada quien le llega en secreto a quién le regala |
@@ -274,15 +285,20 @@ duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puest
 - `herramientas/deco/build.py`: los 57 bloques de decoración, la caja de regalo y el calendario (modelos, texturas, botín, nombres).
 - `herramientas/iconos.py`: iconos de los objetos. `herramientas/ropa.py`: la ropa. `herramientas/pieles.py`: pieles de la gente.
 - `herramientas/criaturas.py`: muñeco malvado, reno (sobre la Bestia del Core) y Krampus (sobre el Coloso del Core).
-- `herramientas/musica.py`: villancicos y efectos (tarda unos 5 minutos). `herramientas/recetas.py`, `herramientas/lang_cosas.py`.
+- `herramientas/musica.py`: villancicos de caja de música y efectos; `herramientas/orquesta.py`: los discos con orquesta y la versión
+  de cajita para la caja de música (tarda unos 10 minutos; escribe `Musica.java` con las duraciones). `herramientas/caja_musica.py`:
+  la caja de música (modelo y recursos). `herramientas/recetas.py`, `herramientas/lang_cosas.py`.
 - `herramientas/sonidos_invierno.py`: el roce del trineo, el cascabel, el patín, la campanada y la carta que vuela.
 - `herramientas/arbol.py`: el Pino de Navidad (modelo, luces, guirnaldas y los lugares de los adornos → `PuntosArbol.java`).
 - `herramientas/adornos.py`: los 18 adornos. `herramientas/libro.py`: la textura del libro. `herramientas/caja_regalo.py`: las cajas
   de regalo (cuerpo y tapa aparte, 4 envolturas). `herramientas/trineo_santa.py`: el trineo con Santa y sus animaciones.
-  `herramientas/aviso_santa.py`: la cinta del aviso. `herramientas/voz_santa.py`: la risa "¡Jo, jo, jo!" (3 variantes).
+  `herramientas/aviso_santa.py`: la cinta del aviso. `herramientas/risa_santa.py`: la risa "¡Jo, jo, jo!" (3 variantes) a partir de una grabación de dominio público (CC0, ver `herramientas/fuentes/LEEME.md`).
 - `herramientas/lanzanieves.py`: el lanzanieves y el tanque. `herramientas/tanque_gui.py`: la ventana del tanque.
   `herramientas/sonidos_lanzanieves.py`: sus sonidos. `herramientas/cascanueces.py`: el cascanueces guardián.
-- `herramientas/pinguino.py` y `herramientas/renito.py`: las mascotas (las animaciones del renito salen de `criaturas.py`).
+- `herramientas/pinguino.py`, `herramientas/renito.py` y `herramientas/reno.py`: las mascotas y el reno (las animaciones del renito y
+  del reno salen de `criaturas.py`). Todo pintado directo en los cubos y con medidas enteras (así no hay texturas corridas).
+- `herramientas/ropa.py`: también la mochila de Ramiro y los cuernos sin nariz de los caballos. `herramientas/placa_nombre.py`: el
+  listón del nombre de la gente.
 - `herramientas/iconos2.py`: íconos, modelos y recetas de lo nuevo; `herramientas/lang_libro.py`: sus textos.
 - El trineo de madera y el buzón salen de `herramientas/deco/build.py` (modelos sueltos y especiales); los patines, de `ropa.py`.
 
@@ -298,6 +314,7 @@ duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puest
 - **Lanzanieves**: `IPI` / `IDR` / ` S ` (hierro, hielo compacto, dispensador, tinte rojo, palo).
 - **Tanque de nieve**: `LSL` / `IGI` / `IBI` (cuero, hilo, hierro, vidrio, cubeta).
 - **Cascanueces guardián**: ` B ` / `RWR` / ` W ` (lana negra, tinte rojo, tablones).
+- **Caja de música navideña**: ` O ` / `TNT` / `TTT` (lingote de oro, bloque musical, tablones).
 
 - Trineo de madera: palos arriba (`S S`), tablones en medio (`PPP`), lingotes de hierro abajo (`I I`).
 - Patines: 2 cueros, lana blanca y 2 lingotes de hierro (sin forma).

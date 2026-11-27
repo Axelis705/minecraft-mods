@@ -49,6 +49,6 @@ public final class Tratos {
         e.getGenericTrades().add(vende(ModRegistry.CAJA_ADORNOS, 4, 2, 6, 1));
         e.getGenericTrades().add(vende(ModRegistry.CHOCOLATE_CALIENTE, 3, 1, 8, 1));
         e.getGenericTrades().add(vende(() -> com.navidad.bloque.deco.Deco.block("pino_maceta").asItem(), 1, 4, 3, 1));
-        e.getRareTrades().add(vende(ModRegistry.REGALO_MISTERIOSO, 1, 8, 2, 1));
+        e.getRareTrades().add(vende(() -> ModRegistry.ADORNOS.get("adorno_cristal").get(), 1, 8, 2, 1));
     }
 }

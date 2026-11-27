@@ -1,0 +1,53 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.caja_musica.suena": {
+   "loop": true,
+   "animation_length": 2.0,
+   "bones": {
+    "tapa": {
+     "rotation": {
+      "0.0": [
+       -100,
+       0,
+       0
+      ],
+      "2.0": [
+       -100,
+       0,
+       0
+      ]
+     }
+    },
+    "escenario": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "2.0": [
+       0,
+       360,
+       0
+      ]
+     }
+    },
+    "manivela": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "2.0": [
+       720,
+       0,
+       0
+      ]
+     }
+    }
+   }
+  }
+ }
+}

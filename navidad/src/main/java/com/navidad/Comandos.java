@@ -139,6 +139,10 @@ public final class Comandos {
                             net.minecraft.world.entity.LivingEntity le ? le : null);
                     return 1;
                 }))
+                .then(Commands.literal("reiniciar").requires(s -> s.hasPermission(2))
+                        .then(reiniciar("libro", Reinicio::libro))
+                        .then(reiniciar("santa", Reinicio::santa))
+                        .then(reiniciar("todo", Reinicio::todo)))
                 .then(Commands.literal("ropa").requires(s -> s.hasPermission(2))
                         .then(Commands.argument("prenda", StringArgumentType.word())
                                 .suggests((c, b) -> SharedSuggestionProvider.suggest(ropa, b))
@@ -154,6 +158,22 @@ public final class Comandos {
                                 }))));
     }
 
+    /** {@code reiniciar <que> [jugadores]}: sin jugadores, a quien escribe el comando. */
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<CommandSourceStack> reiniciar(String que,
+            java.util.function.Consumer<ServerPlayer> hacer) {
+        return Commands.literal(que)
+                .executes(c -> {
+                    hacer.accept(c.getSource().getPlayerOrException());
+                    return 1;
+                })
+                .then(Commands.argument("jugadores", EntityArgument.players()).executes(c -> {
+                    java.util.Collection<ServerPlayer> ps = EntityArgument.getPlayers(c, "jugadores");
+                    ps.forEach(hacer);
+                    c.getSource().sendSuccess(() -> Component.translatable("navidad.reinicio.listo", que, ps.size()), true);
+                    return ps.size();
+                }));
+    }
+
     static final List<String> GENTE = List.of("santa", "senora_claus", "duende_juguetero", "duende_sastre", "duende_renos");
 
     private static int aldea(CommandContext<CommandSourceStack> c, boolean gente) {
@@ -167,7 +187,7 @@ public final class Comandos {
 
     private static int regalo(CommandContext<CommandSourceStack> c, List<ServerPlayer> ps) {
         for (ServerPlayer p : ps) {
-            ItemStack st = new ItemStack(ModRegistry.REGALO_MISTERIOSO.get());
+            ItemStack st = com.navidad.objeto.Premios.caja(p.getRandom(), null, "Santa");
             if (!p.getInventory().add(st)) {
                 p.drop(st, false);
             }

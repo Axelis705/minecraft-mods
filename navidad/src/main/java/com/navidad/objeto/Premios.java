@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-/** Los premios de los regalos misteriosos y del calendario de Adviento (con su rareza, su confeti y su sonido). */
+/** Los premios de las cajas de regalo y del calendario de Adviento (con su rareza, su confeti y su sonido). */
 public final class Premios {
     public enum Rareza {
         COMUN(ChatFormatting.WHITE), RARO(ChatFormatting.AQUA), EPICO(ChatFormatting.LIGHT_PURPLE);
@@ -37,7 +37,7 @@ public final class Premios {
             new Premio("navidad:chocolate_caliente", 1, 3, 8), new Premio("navidad:ponche", 1, 3, 8), new Premio("navidad:dulce", 6, 14, 8),
             new Premio("navidad:tamal", 2, 4, 6), new Premio("navidad:bunuelo", 2, 4, 6), new Premio("minecraft:snowball", 12, 16, 6),
             new Premio("navidad:esfera_roja", 2, 4, 5), new Premio("navidad:esfera_dorada", 2, 4, 5), new Premio("navidad:velas_navidad", 1, 2, 4),
-            new Premio("navidad:regalo_rojo", 1, 2, 4), new Premio("navidad:luces_colgantes", 2, 4, 5), new Premio("minecraft:emerald", 2, 5, 6),
+            new Premio("navidad:adorno_esfera_azul", 1, 2, 5), new Premio("navidad:luces_colgantes", 2, 4, 5), new Premio("minecraft:emerald", 2, 5, 6),
             new Premio("minecraft:gold_ingot", 2, 5, 5), new Premio("minecraft:cookie", 8, 16, 4), new Premio("navidad:nochebuena", 1, 2, 4));
     private static final List<Premio> RAROS = List.of(
             new Premio("minecraft:diamond", 1, 3, 8), new Premio("minecraft:golden_apple", 1, 3, 7), new Premio("minecraft:experience_bottle", 6, 12, 6),
@@ -68,6 +68,11 @@ public final class Premios {
             }
         }
         return Rareza.COMUN;
+    }
+
+    /** Una caja de regalo envuelta (de las que se ponen y se abren) con un premio al azar adentro, para quien sea. */
+    public static ItemStack caja(RandomSource r, Rareza rz, String de) {
+        return com.navidad.bloque.CajaRegalo.envuelta(sacar(rz == null ? rareza(r) : rz, r), de, "");
     }
 
     public static Rareza rareza(RandomSource r) {

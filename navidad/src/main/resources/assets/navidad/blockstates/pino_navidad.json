@@ -1,9 +1,15 @@
 {
  "variants": {
-  "half=lower": {
+  "half=lower,punta=false": {
    "model": "navidad:block/pino_navidad"
   },
-  "half=upper": {
+  "half=lower,punta=true": {
+   "model": "navidad:block/pino_navidad"
+  },
+  "half=upper,punta=false": {
+   "model": "navidad:block/pino_navidad"
+  },
+  "half=upper,punta=true": {
    "model": "navidad:block/pino_navidad"
   }
  }

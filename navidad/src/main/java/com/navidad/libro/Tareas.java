@@ -30,7 +30,7 @@ public final class Tareas {
             new Capitulo("invierno", "minecraft:snowball", 0x3A7AE8, List.of(p("navidad:adorno_cristal", 2), p("navidad:adorno_luces", 1),
                     p("navidad:lanzanieves", 1))),
             new Capitulo("santa", "navidad:caja_regalo", 0x2E8A48, List.of(p("navidad:punta_angel", 1), p("navidad:adorno_guirnalda", 1),
-                    p("navidad:regalo_misterioso", 2))),
+                    p("navidad:adorno_cristal", 2))),
             new Capitulo("nochebuena", "navidad:punta_polar", 0xB8860B, List.of(p("navidad:punta_polar", 1), p("minecraft:diamond", 5))));
 
     public static final List<Tarea> TODAS = new ArrayList<>();
@@ -63,7 +63,7 @@ public final class Tareas {
         t("bolas", 1, "bola_nieve", 50, "minecraft:snowball", p("navidad:adorno_guirnalda", 1), p("navidad:adorno_campanita", 1));
         t("renito", 1, "logro:renito", 1, "minecraft:golden_carrot", p("navidad:adorno_renito", 1));
         // 3. La magia de Santa
-        t("regalo_aire", 2, "logro:regalo_cielo", 1, "navidad:regalo_misterioso", p("navidad:adorno_pajarito", 1));
+        t("regalo_aire", 2, "logro:regalo_cielo", 1, "navidad:caja_regalo", p("navidad:adorno_pajarito", 1));
         t("abrir", 2, "regalo_abierto", 10, "navidad:caja_regalo", p("navidad:adorno_campanita", 2));
         t("galletas", 2, "logro:galletas", 1, "navidad:galletas_leche", p("navidad:adorno_galleta", 2));
         t("carta", 2, "logro:carta", 1, "navidad:buzon_santa", p("navidad:adorno_mono", 2), p("navidad:adorno_esfera_roja", 2));

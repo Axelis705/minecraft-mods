@@ -52,6 +52,7 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
         e.registerBlockEntityRenderer(ModRegistry.PINO_NAVIDAD_BE.get(), PinoRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.CAJA_REGALO_BE.get(), CajaRenderer::new);
+        e.registerBlockEntityRenderer(ModRegistry.CAJA_MUSICA_BE.get(), CajaMusicaRenderer::new);
         e.registerEntityRenderer(ModRegistry.CASCANUECES.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "cascanueces", 0.4F, 0.85F));
         e.registerEntityRenderer(ModRegistry.BOLA_GIGANTE.get(), c -> new net.minecraft.client.renderer.entity.ThrownItemRenderer<>(c, 2.8F, true));
     }
@@ -98,10 +99,14 @@ public final class ModClient {
             VestuarioCliente.registrar(Ropa.id("patines"), Prenda.modelo(rl("geo/patines.geo.json"), rl("textures/prenda/patines.png")));
             // la bufanda: en el cuello, con las puntas al frente
             VestuarioCliente.registrar(Ropa.id("bufanda"), Prenda.modelo(rl("geo/bufanda.geo.json"), rl("textures/prenda/bufanda.png")));
+            // la mochila de viaje de Ramiro (solo la trae él)
+            VestuarioCliente.registrar(Ropa.id("mochila_viajero"), Prenda.modelo(rl("geo/mochila_viajero.geo.json"),
+                    rl("textures/prenda/mochila_viajero.png")));
             // el traje de Santa: todo el cuerpo y la barba
             VestuarioCliente.registrar(Ropa.id("traje_santa"), Prenda.piel(rl("textures/prenda/traje_santa.png")));
         });
         SantaAviso.init();
+        PlacaNombre.init();
         MunicionHud.init();
         e.enqueueWork(() -> net.minecraft.client.gui.screens.MenuScreens.register(ModRegistry.TANQUE_MENU.get(), TanquePantalla::new));
         Prueba.registrar();

@@ -66,7 +66,8 @@ public class BolaGigante extends ThrowableItemProjectile {
         l.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SNOWBALL)), c.x, c.y + 0.3, c.z, 50, 0.6, 0.4, 0.6, 0.25);
         l.sendParticles(ParticleTypes.SNOWFLAKE, c.x, c.y + 0.5, c.z, 60, 1.4, 0.8, 1.4, 0.08);
         l.sendParticles(ParticleTypes.POOF, c.x, c.y + 0.3, c.z, 12, 0.6, 0.3, 0.6, 0.02);
-        l.playSound(null, BlockPos.containing(c), SoundEvents.SNOW_BREAK, SoundSource.PLAYERS, 1.6F, 0.6F);
+        l.playSound(null, BlockPos.containing(c), com.navidad.registry.ModRegistry.LANZANIEVES_IMPACTO.get(), SoundSource.PLAYERS, 1.6F, 1F);
+        l.playSound(null, BlockPos.containing(c), SoundEvents.SNOW_BREAK, SoundSource.PLAYERS, 1.2F, 0.6F);
         l.playSound(null, BlockPos.containing(c), SoundEvents.POWDER_SNOW_BREAK, SoundSource.PLAYERS, 1.4F, 0.8F);
         Entity quien = getOwner();
         for (Entity e : l.getEntities(this, new AABB(c, c).inflate(3.5))) {

@@ -178,7 +178,7 @@ public final class Cartas {
                 }
             }
             if (regalos.isEmpty()) {
-                regalos.add(new ItemStack(ModRegistry.REGALO_MISTERIOSO.get()));
+                regalos.add(com.navidad.objeto.Premios.sacar(com.navidad.objeto.Premios.Rareza.RARO, p.getRandom()));
             }
         }
         for (ItemStack st : regalos) {

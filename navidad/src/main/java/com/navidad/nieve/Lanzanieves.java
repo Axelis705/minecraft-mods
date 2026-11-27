@@ -114,7 +114,7 @@ public class Lanzanieves extends Item {
         }
         if (!Municion.gastar(p, 1)) {
             if ((t - ARRANQUE) % (CADA * 5) == 0) {
-                l.playSound(null, p.blockPosition(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6F, 1.6F);
+                l.playSound(null, p.blockPosition(), ModRegistry.LANZANIEVES_VACIO.get(), SoundSource.PLAYERS, 0.8F, 1F);
                 p.displayClientMessage(Component.translatable(Municion.tanque(p).isEmpty() ? "navidad.lanzanieves.sin_nieve"
                         : "navidad.lanzanieves.tanque_vacio").withStyle(ChatFormatting.AQUA), true);
             }
@@ -174,7 +174,7 @@ public class Lanzanieves extends Item {
         }
         l.playSound(null, q, SoundEvents.SNOW_BREAK, SoundSource.PLAYERS, 0.5F, 1.6F);
         if (l.random.nextInt(3) == 0) {
-            l.playSound(null, p.blockPosition(), SoundEvents.BUCKET_FILL_POWDER_SNOW, SoundSource.PLAYERS, 0.4F, 1.4F);
+            l.playSound(null, p.blockPosition(), ModRegistry.LANZANIEVES_ASPIRA.get(), SoundSource.PLAYERS, 0.6F, 0.9F + l.random.nextFloat() * 0.2F);
         }
     }
 
@@ -188,7 +188,7 @@ public class Lanzanieves extends Item {
             return;
         }
         if (!Municion.gastar(p, COSTO_GIGANTE)) {
-            l.playSound(null, p.blockPosition(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.7F, 1.2F);
+            l.playSound(null, p.blockPosition(), ModRegistry.LANZANIEVES_VACIO.get(), SoundSource.PLAYERS, 0.9F, 0.85F);
             p.displayClientMessage(Component.translatable("navidad.lanzanieves.falta_gigante", COSTO_GIGANTE).withStyle(ChatFormatting.AQUA),
                     true);
             return;

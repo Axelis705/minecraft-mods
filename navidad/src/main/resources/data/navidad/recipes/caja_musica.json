@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  " O ",
+  "TNT",
+  "TTT"
+ ],
+ "key": {
+  "O": {
+   "item": "minecraft:gold_ingot"
+  },
+  "N": {
+   "item": "minecraft:note_block"
+  },
+  "T": {
+   "tag": "minecraft:planks"
+  }
+ },
+ "result": {
+  "item": "navidad:caja_musica",
+  "count": 1
+ }
+}

@@ -11,6 +11,7 @@ import com.mojang.math.Axis;
 import com.navidad.Navidad;
 import com.navidad.arbol.Adornos;
 import com.navidad.arbol.PinoBE;
+import com.navidad.arbol.PinoNavidad;
 import com.navidad.arbol.PuntosArbol;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
@@ -53,7 +54,13 @@ public class PinoRenderer implements BlockEntityRenderer<PinoBE> {
     public void render(PinoBE be, float pt, PoseStack ps, MultiBufferSource buf, int luz, int overlay) {
         Level l = be.getLevel();
         float t = (l == null ? 0 : l.getGameTime()) + pt;
+        // en el mundo el árbol es más grande que su modelo (desde el centro de la base)
+        ps.pushPose();
+        ps.translate(0.5F, 0F, 0.5F);
+        ps.scale(PinoNavidad.ESCALA, PinoNavidad.ESCALA, PinoNavidad.ESCALA);
+        ps.translate(-0.5F, 0F, -0.5F);
         dibujar(ps, buf, luz, overlay, be.lugares, be.luces, be.guirnaldas, be.punta, t, be.aparecio, l, (int) be.getBlockPos().asLong(), true);
+        ps.popPose();
     }
 
     @Override

@@ -30,7 +30,7 @@ T = {
     'item.navidad.regalo_misterioso': ('Regalo misterioso', 'Mystery gift'),
     'navidad.regalo.ayuda': ('Clic derecho para abrirlo: ¿qué te tocará?', 'Right-click to open it: what will you get?'),
     'navidad.regalo.te_toco': ('🎁 ¡Te tocó %s!', '🎁 You got %s!'),
-    'navidad.regalo.dado': ('Regalos misteriosos entregados: %s', 'Mystery gifts handed out: %s'),
+    'navidad.regalo.dado': ('Cajas de regalo entregadas: %s', 'Gift boxes handed out: %s'),
     'item.navidad.pinata': ('Piñata', 'Piñata'),
     'navidad.pinata.ayuda': ('Clic derecho en el techo para colgarla (o en el piso). Pégale hasta romperla: ¡mejor con el palo y los ojos vendados!',
                              'Right-click a ceiling to hang it (or the floor). Hit it until it breaks: best with the stick and blindfolded!'),

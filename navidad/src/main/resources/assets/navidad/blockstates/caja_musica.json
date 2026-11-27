@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/caja_musica"
+  },
+  "facing=south": {
+   "model": "navidad:block/caja_musica"
+  },
+  "facing=east": {
+   "model": "navidad:block/caja_musica"
+  },
+  "facing=west": {
+   "model": "navidad:block/caja_musica"
+  }
+ }
+}

@@ -98,7 +98,8 @@ public final class Calcetines {
             Item[] uno = {ModRegistry.GALLETA_JENGIBRE.get(), ModRegistry.MANDARINA.get(), ModRegistry.TEJOCOTE.get(), ModRegistry.CANA.get()};
             cosas.add(new ItemStack(uno[r.nextInt(uno.length)], 1 + r.nextInt(3)));
             if (r.nextInt(6) == 0) {
-                cosas.add(new ItemStack(ModRegistry.REGALO_MISTERIOSO.get()));
+                String[] adornos = {"adorno_esfera_roja", "adorno_esfera_azul", "adorno_esfera_dorada", "adorno_baston", "adorno_campanita"};
+                cosas.add(new ItemStack(ModRegistry.ADORNOS.get(adornos[r.nextInt(adornos.length)]).get()));
             }
         }
         for (ItemStack c : cosas) {

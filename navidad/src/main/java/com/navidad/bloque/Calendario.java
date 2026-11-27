@@ -40,14 +40,14 @@ import java.time.temporal.ChronoUnit;
  */
 public class Calendario extends HorizontalDirectionalBlock {
     private static final VoxelShape FORMA = Block.box(1, 0, 4, 15, 15, 12);
-    /** El premio de cada día: id, cantidad (el 24, además, un regalo misterioso de los grandes). */
+    /** El premio de cada día: id, cantidad (el 24, además, un premio épico). */
     private static final String[][] DIAS = {
             {"navidad:galleta_jengibre", "6"}, {"navidad:esfera_roja", "4"}, {"navidad:baston_caramelo", "5"}, {"minecraft:emerald", "4"},
-            {"navidad:chocolate_caliente", "3"}, {"navidad:luces_colgantes", "4"}, {"navidad:regalo_misterioso", "1"}, {"navidad:tamal", "4"},
+            {"navidad:chocolate_caliente", "3"}, {"navidad:luces_colgantes", "4"}, {"navidad:adorno_campanita", "2"}, {"navidad:tamal", "4"},
             {"navidad:corona_navidad", "1"}, {"minecraft:gold_ingot", "6"}, {"navidad:ponche", "3"}, {"navidad:pinata", "1"},
-            {"navidad:calcetin_rojo", "2"}, {"minecraft:diamond", "2"}, {"navidad:bunuelo", "4"}, {"navidad:regalo_misterioso", "2"},
+            {"navidad:calcetin_rojo", "2"}, {"minecraft:diamond", "2"}, {"navidad:bunuelo", "4"}, {"navidad:adorno_copo", "3"},
             {"navidad:nochebuena", "2"}, {"navidad:champurrado", "3"}, {"navidad:gorro_santa", "1"}, {"minecraft:golden_apple", "2"},
-            {"navidad:muneco_nieve", "1"}, {"navidad:regalo_misterioso", "2"}, {"navidad:pavo_navideno", "2"}, {"minecraft:diamond", "5"}};
+            {"navidad:muneco_nieve", "1"}, {"navidad:adorno_renito", "1"}, {"navidad:pavo_navideno", "2"}, {"minecraft:diamond", "5"}};
 
     public Calendario(Properties p) {
         super(p);

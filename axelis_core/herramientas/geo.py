@@ -213,16 +213,22 @@ class Creature:
             c, size, paint = p[0], p[1], p[2]
             w, h, d = _ceil(size[0]), _ceil(size[1]), _ceil(size[2])
             if len(p) == 4:
-                c["uv"] = {p[3]: {"uv": [u, v], "uv_size": [size[0], size[1]]}}
+                c["uv"] = {p[3]: {"uv": [u, v], "uv_size": [w, h]}}
                 for yy in range(h):
                     for xx in range(w):
                         col = paint("front", xx, yy, w, h)
                         if col is not None:
                             img.putpixel((u + xx, v + yy), _rgba(col, self.rnd, 1.0))
                 continue
-            c["uv"] = [u, v]
             reg = {"top": (u + d, v, w, d), "bottom": (u + d + w, v, w, d), "right": (u, v + d, d, h), "front": (u + d, v + d, w, h),
                    "left": (u + d + w, v + d, d, h), "back": (u + d + w + d, v + d, w, h)}
+            if all(abs(t - round(t)) < 1e-6 for t in size):
+                c["uv"] = [u, v]
+            else:
+                # medidas con decimales: el UV de caja usaría tiras con decimales y no coincidiría con los píxeles pintados (se ven
+                # colores corridos o de otra cara); por eso cada cara apunta exacto a su pedazo pintado (y se estira un poquito)
+                caras = {"up": "top", "down": "bottom", "east": "right", "north": "front", "west": "left", "south": "back"}
+                c["uv"] = {bb: {"uv": [reg[f][0], reg[f][1]], "uv_size": [reg[f][2], reg[f][3]]} for bb, f in caras.items()}
             for face, (x0, y0, ww, hh) in reg.items():
                 k = {"top": 1.12, "bottom": 0.7, "right": 0.88, "front": 1.0, "left": 0.88, "back": 0.82}[face]
                 for yy in range(hh):
