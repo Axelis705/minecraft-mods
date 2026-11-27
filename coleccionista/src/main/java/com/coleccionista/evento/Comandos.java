@@ -292,16 +292,14 @@ public final class Comandos {
                                     return ok(c, Component.translatable(MOD + ".cmd.cazador", p.getGameProfile().getName()));
                                 })))
                         .then(Commands.literal("comer").executes(c -> {
-                            // la primera pieza viva (para la prueba automática)
-                            Pieza presa = null;
+                            // la primera pieza viva que se pueda (para la prueba automática)
                             for (Pieza v : Evento.get(c.getSource().getServer()).vivos()) {
-                                if (!v.id.equals(com.coleccionista.prueba.Mascota.cazador())) {
-                                    presa = v;
-                                    break;
+                                if (!v.id.equals(com.coleccionista.prueba.Mascota.cazador())
+                                        && com.coleccionista.prueba.Mascota.comerA(c.getSource().getServer(), v)) {
+                                    return ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen()));
                                 }
                             }
-                            return presa != null && com.coleccionista.prueba.Mascota.comerA(c.getSource().getServer(), presa) ? ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen()))
-                                    : error(c, Component.translatable(MOD + ".man.no"));
+                            return error(c, Component.translatable(MOD + ".man.no"));
                         }).then(Commands.argument("pieza", StringArgumentType.word()).executes(c -> {
                             Pieza p = Evento.get(c.getSource().getServer()).buscar(StringArgumentType.getString(c, "pieza"));
                             return p != null && com.coleccionista.prueba.Mascota.comerA(c.getSource().getServer(), p) ? ok(c, Component.literal(com.coleccionista.prueba.Mascota.resumen()))

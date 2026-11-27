@@ -446,10 +446,13 @@ public final class Mascota {
     /** Para las pruebas (y por si el organizador lo necesita): Cascabel atrapa a esa pieza aunque no esté cerca. */
     public static boolean comerA(MinecraftServer s, Pieza v) {
         if (fase != Fase.CAZA || v == null || !v.vivo() || !comiendo.isEmpty()) {
+            Coleccionista.LOGGER.info("COLECCIONISTA_MASCOTA no_come fase={} pieza={} vivo={} comiendo={}", fase, v == null ? "-" : v.nombre,
+                    v != null && v.vivo(), comiendo.size());
             return false;
         }
         Entity t = Evento.entidad(s, v);
         if (t == null) {
+            Coleccionista.LOGGER.info("COLECCIONISTA_MASCOTA no_come {} sin_entidad", v.nombre);
             return false;
         }
         ServerPlayer p = cazador == null ? null : s.getPlayerList().getPlayer(cazador);
