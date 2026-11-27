@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Invitación del Coleccionista</title>
+<style>
+  html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; background: #030102; }
+  #escena { position: absolute; inset: 0; width: 1080px; height: 1350px; }
+  #vineta { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 50%, transparent 38%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.92) 100%); }
+  #grano { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .07; mix-blend-mode: screen; pointer-events: none; }
+  .txt { position: absolute; left: 0; right: 0; text-align: center; font-family: 'Latin Modern Roman', 'DejaVu Serif', serif; }
+  #arriba { top: 74px; }
+  .num { font-family: 'Latin Modern Roman Caps', 'Latin Modern Roman', serif; font-weight: 600; font-size: 25px; letter-spacing: 12px;
+    color: #c9a25a; }
+  .nombre { font-weight: 700; font-size: 104px; line-height: 1.05; letter-spacing: 3px; color: #efe3cc; margin-top: 14px;
+    text-shadow: 0 0 22px rgba(160, 12, 12, .55), 0 0 4px #000; }
+  .lema { font-style: italic; font-size: 34px; color: #cdbb9c; margin-top: 12px; text-shadow: 0 0 10px #000; }
+  #abajo { bottom: 46px; }
+  .el { font-family: 'Latin Modern Roman Caps', serif; font-weight: 600; font-size: 30px; letter-spacing: 26px; color: #b8a888;
+    margin-bottom: -2px; padding-left: 26px; }
+  .titulo { font-weight: 700; font-size: 66px; letter-spacing: 9px; color: #efe3cc; line-height: 1;
+    text-shadow: 0 0 26px rgba(150, 10, 10, .7), 0 0 3px #000; }
+  .fecha { font-weight: 700; font-size: 29px; letter-spacing: 6px; color: #efe3cc; margin-top: 20px; }
+  .hora { font-size: 15px; letter-spacing: 7px; color: #968c78; margin-top: 8px; }
+  .regla { font-style: italic; font-size: 24px; color: #a8977c; margin-top: 14px; }
+  .firma { margin-top: 16px; opacity: .8; }
+  #placa { position: absolute; width: 230px; height: 60px; margin-left: -115px; margin-top: -30px; box-sizing: border-box;
+    border-radius: 3px; background: linear-gradient(180deg, #8a6b3a 0%, #d6b073 38%, #a8823f 62%, #6b5028 100%);
+    box-shadow: 0 2px 6px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,240,200,.5), inset 0 -1px 0 rgba(0,0,0,.4);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #placa b { font-family: 'Latin Modern Roman Caps', 'Latin Modern Roman', serif; font-size: 22px; letter-spacing: 6px; color: #2a1d0e;
+    text-shadow: 0 1px 0 rgba(255,235,190,.45); padding-left: 6px; }
+  #placa i { font-family: 'Latin Modern Roman', serif; font-size: 11px; letter-spacing: 4px; color: #3b2a14; font-style: normal;
+    margin-top: 2px; padding-left: 4px; }
+</style>
+</head>
+<body>
+<canvas id="escena" width="1080" height="1350"></canvas>
+<canvas id="grano" width="540" height="675"></canvas>
+<div id="vineta"></div>
+<div id="placa"><b id="placaNombre">SCARDAX</b><i>PIEZA NUEVA</i></div>
+<div class="txt" id="arriba">
+  <div class="num" id="num">INVITACIÓN N.º 07</div>
+  <div class="nombre" id="nombre">Scardax</div>
+  <div class="lema">Ya tengo un lugar para ti en mi colección.</div>
+</div>
+<div class="txt" id="abajo">
+  <div class="el">EL</div>
+  <div class="titulo">COLECCIONISTA</div>
+  <div class="fecha">JUEVES 10 DE DICIEMBRE · 7:00 PM</div>
+  <div class="hora">HORA DEL CENTRO DE MÉXICO</div>
+  <div class="regla">Una sola vida. Solo uno sale.</div>
+  <div class="firma"><svg width="30" height="29" viewBox="3 4 94 92" aria-hidden="true">
+    <path d="M50 4L97 96H73L50 51L27 96H3Z M50 65L59 75L50 85L41 75Z" fill="#efe3cc" fill-rule="evenodd"/></svg></div>
+</div>
+<script src="../trailer/web3d/three.min.js"></script>
+<script src="invitacion.js"></script>
+</body>
+</html>
