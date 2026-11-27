@@ -101,7 +101,7 @@ public final class KrampusCliente {
             e.setFarPlaneDistance(Mth.lerp(k, e.getFarPlaneDistance(), 4F));
             e.setNearPlaneDistance(0F);
         } else {
-            float lejos = Mth.lerp(k, e.getFarPlaneDistance(), 9F);
+            float lejos = Mth.lerp(k, e.getFarPlaneDistance(), 13F);
             e.setFarPlaneDistance(lejos);
             e.setNearPlaneDistance(Mth.lerp(k, e.getNearPlaneDistance(), -4F));
         }
@@ -142,7 +142,7 @@ public final class KrampusCliente {
         g.fillGradient(0, 0, w, h / 4, 0xC0000000, 0x00000000);
         g.fillGradient(0, h - h / 4, w, h, 0x00000000, 0xC0000000);
         // lo que dice
-        int cx = w / 2, cy = h / 2;
+        int cx = w / 2, cy = h * 2 / 3;
         g.drawCenteredString(mc.font, Component.translatable("navidad.krampus.saco.hud"), cx, cy - 26, 0xFFFFD9A0);
         g.drawCenteredString(mc.font, Component.translatable("navidad.krampus.saco.hud2", mc.options.keyJump.getTranslatedKeyMessage()),
                 cx, cy - 12, 0xFFFFFFFF);

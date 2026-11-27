@@ -142,6 +142,16 @@ van con la fecha de verdad.
 - **Uvas de Año Nuevo**: una por campanada (ver abajo).
 - **Buzón de Santa**: para mandarle tu carta (ver abajo).
 - **Campana del Krampus**: tócala de noche para llamarlo. **Cuerno del Krampus**: trofeo.
+- **Botín del Krampus** (al vencerlo, una pieza para cada quien; primero las que no te han tocado):
+  - **Cadena del Krampus**: pega como espada pesada; con clic derecho avienta el gancho: jala criaturas hacia ti, y si engancha algo
+    muy pesado (un jefe, un gólem) o lo clavas en un bloque, te jala a ti (sin daño por caída; agáchate para soltarte).
+  - **Vara de abedul**: rápida; cada tercer golpe seguido al mismo es un **varazo** (chasquido, más daño, lo empuja y lo deja lento).
+  - **Máscara del Krampus**: en la cabeza; los krampusillos no te atacan y el apagón no te deja a oscuras.
+  - **Saco del Krampus**: mochila de costal con 27 espacios (clic derecho); mientras la traes se ve en tu espalda.
+- **Campanita de Santa** (la vende el duende juguetero, sale en la guarida o con ` R ` / ` G ` / `GNG`: tinte rojo, oro, pepita):
+  revela al Krampus 8 segundos y lo aturde; los krampusillos sueltan lo que robaron y huyen. Se recarga en 15 segundos.
+- **Farol de Nochebuena** (lo vende el juguetero; `NGN` / `NTN` / `NNN`: pepitas de hierro, una de oro y una antorcha): alumbra mucho;
+  clic derecho lo enciende y agachado lo apagas. Es lo que vence al Krampus en el apagón.
 
 ## Gorros y adornos en los mobs
 
@@ -206,6 +216,11 @@ En los biomas nevados (llanuras, taiga y playas nevadas, arboledas, laderas y pi
 adornado**: esferas de colores colgando de las ramas, una luz en la punta y regalos al pie. Uno de ellos es una **caja de regalo de
 verdad**, sin dueño, con algo raro o épico adentro.
 
+Rarísima, en los bosques nevados: la **guarida del Krampus** (o con `/navidad guarida`). Un claro con árboles secos de los que cuelgan
+cadenas y faroles de almas, cuatro **faroles de Nochebuena** en postes y, en el centro, el **altar del Krampus** sobre piedra negra
+con velas rojas. Al norte, una cabaña oscura con fogata de almas, carbón, cadenas, telarañas y un cofre (siempre trae una campanita de
+Santa; a veces la campana del Krampus o su vara). El altar, **de noche**, con la campana del Krampus o 16 carbones, lo llama.
+
 Muy de vez en cuando también hay una **casita de duende**: paredes de jengibre con esquinas de caramelo, techo de glaseado, chimenea que
 echa humo, y adentro una chimenea navideña, alfombra, pinito y un **cofre** con galletas, dulces, adornos, uvas,
 esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario o un disco.
@@ -219,9 +234,32 @@ esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario 
 - **Reno**: con 3 zanahorias (o manzanas, trigo) se hace tu amigo; con la mano vacía lo montas. Corre rápido, salta alto y de noche en
   temporada cae despacito, como si volara.
 - **Hombre de jengibre**: corre y se burla. Si lo alcanzas, suelta galletas.
-- **Krampus** (jefe, 360 de vida, 2 fases): cadenazo, pisotón (salta para esquivarlo), carbones encendidos, rugido que llama muñecos de
-  nieve; a la mitad se enfurece: el saco (un círculo te persigue y te aturde) y cascabeles malditos. Al vencerlo, regalos épicos para
-  todos los que estaban cerca, su cuerno, diamantes y a veces un disco.
+- **Krampus** (jefe, 400 de vida, modelo hecho a mano: encorvado, peludo, patas de cabra, cuernos enormes, lengua larga, cadena con
+  cascabeles, saco en la espalda y vara de abedul). Da miedo de verdad: se oyen sus cadenas y pezuñas, y trae niebla. Tres fases:
+  - **La visita** (100 a 65 %): varazos (tres golpes en cono), la **cadena con gancho** (avisa con una línea morada: hazte a un lado;
+    si te agarra te jala hacia él), pisotón (salta), carbones encendidos y un rugido que llama **krampusillos**.
+  - **¡Al saco!** (65 a 30 %): se enfurece (ojos rojos). Brinca y **te mete en su saco** (dos a la vez): vas en su espalda viendo
+    desde adentro del costal; cada segundo te aprieta. Sales **machacando la tecla de saltar** (12 veces) o si tus amigos **le pegan
+    al saco por la espalda** (se rompe: te suelta, se aturde y se le caen regalos). Si nadie hace nada, a los 9 segundos te avienta.
+    También gira con la cadena y avienta cascabeles malditos que persiguen.
+  - **Apagón** (30 a 0 %): todo se oscurece (efecto de oscuridad y niebla negra) y, si no hay, pone cuatro **faroles de Nochebuena**.
+    Lejos de la luz está **oculto**: solo se le ven los ojos, se oyen sus cascabeles y casi no le haces daño (40 %). Cerca de un farol
+    encendido se le ve y le haces más daño (125 %). Aparece detrás de alguien (**emboscada**) y va a **apagar los faroles de un soplido**;
+    vuélvelos a encender con clic derecho (si lo enciendes junto a él, se deslumbra). La **campanita de Santa** lo revela y lo aturde.
+  - Pegarle **por la espalda** en cualquier fase le rompe el saco (suelta regalos; tarda 25 segundos en tener saco otra vez).
+  - Al vencerlo revienta el saco con **todos los regalos que robaron los krampusillos**, y cada quien recibe 2 regalos épicos y una
+    pieza de su botín; además suelta su cuerno y diamantes. Si vino de visita (o con la campana o el altar) y amanece al aire libre, o si
+    se queda solo, se va riéndose.
+- **Krampusillo**: diablito de cabra (16 de vida). Viene con el Krampus, en la Noche del Krampus o a robarse los regalos de tu árbol:
+  se lleva una caja y huye riéndose. Si lo matas suelta el regalo; si se escapa, el regalo se va al saco del Krampus. Araña a la gente,
+  pero no a quien trae la máscara del Krampus; la campanita de Santa lo espanta.
+
+### La Noche del Krampus
+En temporada, al caer la noche: el **5 de diciembre** (Krampusnacht, la fecha de verdad) el Krampus visita a todos; los otros días
+visita al que **se portó mal** desde la última vez (mató aldeanos, gatos, gólems, renos...). Se oyen cadenas a lo lejos, sube la
+niebla, aparecen **huellas de pezuña** en la nieve que se acercan a ti, llegan krampusillos y al final sale él donde terminan las
+huellas. Mientras dura no puedes dormir. Si lo vences o llega el día, sobreviviste (logro). Una noche de cada diez, sin que nadie se
+porte mal, solo vienen krampusillos a tu árbol. En pacífico no viene; `/navidad krampus visitas no` lo apaga.
 
 ## La aldea de Santa
 
@@ -252,7 +290,8 @@ Hay una **pestaña de logros navideños** (tecla L): galleta de jengibre, gorro 
 abrir un regalo, el calcetín, las galletas para Santa, romper una piñata, el muñequito de la rosca, las 12 uvas, un ángel de nieve, el
 abrazo bajo el muérdago, patinar, bajar la colina con cronómetro, romper el récord, hacerte amigo de un reno,
 vencer al Krampus, poner el pesebre, encontrar una casita de duende, un regalo caído del cielo, los regalos bajo tu árbol, atrapar al
-duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puesto de árboles y al duende viajero (28 en total). Los textos y archivos salen de `herramientas/logros.py`.
+duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puesto de árboles y al duende viajero, escapar del saco del
+Krampus, romperle el saco, sobrevivir a la Noche del Krampus, atrapar un krampusillo y encontrar su guarida (33 en total). Los textos y archivos salen de `herramientas/logros.py`.
 
 ## Comandos (operadores)
 
@@ -273,6 +312,10 @@ duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puest
 | `/navidad ladron` | Mandar ya al duende ladrón a tu árbol (si tiene regalos sin abrir) |
 | `/navidad viajero` | Que llegue ya el duende viajero |
 | `/navidad krampus` | Llamar al Krampus |
+| `/navidad krampus noche [jugadores]` | Empezar ya la Noche del Krampus (huellas, krampusillos y él) |
+| `/navidad krampus visitas si\|no` | Que el Krampus pueda venir de visita en las noches (lo normal) o que solo venga si lo llaman |
+| `/navidad krampus krampusillos` | Mandar krampusillos a robarse los regalos de tu árbol (o a pelear, si no tienes) |
+| `/navidad guarida` | Construir la guarida del Krampus donde estás |
 | `/navidad aldea [sin_gente]` | Construir la aldea de Santa |
 | `/navidad gente <quien>` | Poner a alguien del Polo Norte |
 | `/navidad ropa <prenda>` | Ponerte o quitarte una prenda (también `patines`) |
@@ -284,7 +327,12 @@ duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puest
 
 - `herramientas/deco/build.py`: los 57 bloques de decoración, la caja de regalo y el calendario (modelos, texturas, botín, nombres).
 - `herramientas/iconos.py`: iconos de los objetos. `herramientas/ropa.py`: la ropa. `herramientas/pieles.py`: pieles de la gente.
-- `herramientas/criaturas.py`: muñeco malvado, reno (sobre la Bestia del Core) y Krampus (sobre el Coloso del Core).
+- `herramientas/criaturas.py`: muñeco malvado y las animaciones del reno y el renito.
+- `herramientas/krampus.py`: el Krampus hecho a mano (modelo, 3 texturas y 18 animaciones). `herramientas/krampusillo.py`: el
+  krampusillo. `herramientas/sonidos_krampus.py`: cadenas, cascabeles malditos, varazos, pezuñas, saco, soplido, apagón, la música de la
+  tercera fase y las risas (la del Krampus y la de los krampusillos salen de la risa CC0 de Santa, muy grave o muy aguda).
+  `herramientas/krampus_recursos.py`: íconos, máscara, farol, altar, saco en la espalda, huella, la vista desde adentro del costal,
+  efectos, botín, recetas y la generación de la guarida. `herramientas/lang_krampus.py`: sus textos.
 - `herramientas/musica.py`: villancicos de caja de música y efectos; `herramientas/orquesta.py`: los discos con orquesta y la versión
   de cajita para la caja de música (tarda unos 10 minutos; escribe `Musica.java` con las duraciones). `herramientas/caja_musica.py`:
   la caja de música (modelo y recursos). `herramientas/recetas.py`, `herramientas/lang_cosas.py`.
@@ -315,6 +363,8 @@ duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puest
 - **Tanque de nieve**: `LSL` / `IGI` / `IBI` (cuero, hilo, hierro, vidrio, cubeta).
 - **Cascanueces guardián**: ` B ` / `RWR` / ` W ` (lana negra, tinte rojo, tablones).
 - **Caja de música navideña**: ` O ` / `TNT` / `TTT` (lingote de oro, bloque musical, tablones).
+- **Farol de Nochebuena**: `NGN` / `NTN` / `NNN` (pepitas de hierro, una pepita de oro y una antorcha).
+- **Campanita de Santa**: ` R ` / ` G ` / `GNG` (tinte rojo, lingotes de oro y una pepita de oro).
 
 - Trineo de madera: palos arriba (`S S`), tablones en medio (`PPP`), lingotes de hierro abajo (`I I`).
 - Patines: 2 cueros, lana blanca y 2 lingotes de hierro (sin forma).

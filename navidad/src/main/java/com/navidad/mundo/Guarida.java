@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -51,26 +50,26 @@ public class Guarida extends Feature<NoneFeatureConfiguration> {
      * mundo), no la pone en agua, ni en pendientes fuertes.
      */
     public static boolean construir(WorldGenLevel l, BlockPos o, RandomSource r, boolean siempre) {
-        int y0 = l.getHeight(Heightmap.Types.WORLD_SURFACE_WG, o.getX(), o.getZ());
-        if (siempre) {
-            y0 = o.getY();
-        } else {
+        int y0 = o.getY();
+        if (!siempre) {
+            // el piso de verdad (sin troncos, hojas ni nieve suelta) en una rejilla: nada de agua ni pendientes fuertes
             int min = 999, max = -999;
             for (int x = -R; x <= R; x += 4) {
                 for (int z = -R - 4; z <= R; z += 4) {
-                    int y = l.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, o.getX() + x, o.getZ() + z);
-                    int w = l.getHeight(Heightmap.Types.WORLD_SURFACE_WG, o.getX() + x, o.getZ() + z);
-                    if (w > y + 1) {
-                        return false; // agua
+                    int y = piso(l, o.offset(x, 0, z));
+                    if (y == Integer.MIN_VALUE) {
+                        Navidad.LOGGER.debug("NAVIDAD_GUARIDA no cabe en {}: agua o sin piso", o.toShortString());
+                        return false;
                     }
                     min = Math.min(min, y);
                     max = Math.max(max, y);
                 }
             }
             if (max - min > 5) {
+                Navidad.LOGGER.debug("NAVIDAD_GUARIDA no cabe en {}: pendiente {}", o.toShortString(), max - min);
                 return false;
             }
-            y0 = l.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, o.getX(), o.getZ());
+            y0 = piso(l, o);
         }
         BlockPos c = new BlockPos(o.getX(), y0, o.getZ());
         claro(l, c, r);
@@ -81,6 +80,22 @@ public class Guarida extends Feature<NoneFeatureConfiguration> {
         construidas++;
         Navidad.LOGGER.info("NAVIDAD_GUARIDA en {}", c.toShortString());
         return true;
+    }
+
+    /** La altura del piso firme en esa columna (buscando 12 bloques arriba y abajo); MIN_VALUE si hay agua o no hay piso. */
+    private static int piso(WorldGenLevel l, BlockPos p) {
+        for (int y = 12; y >= -12; y--) {
+            BlockPos q = p.above(y);
+            BlockState b = l.getBlockState(q);
+            if (!b.getFluidState().isEmpty()) {
+                return Integer.MIN_VALUE;
+            }
+            if (b.is(net.minecraft.tags.BlockTags.LOGS) || b.is(net.minecraft.tags.BlockTags.LEAVES) || !b.blocksMotion()) {
+                continue;
+            }
+            return q.getY() + 1;
+        }
+        return Integer.MIN_VALUE;
     }
 
     private static void set(WorldGenLevel l, BlockPos p, BlockState s) {

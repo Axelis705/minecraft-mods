@@ -91,7 +91,7 @@ public class Krampus extends Jefe {
     public static final double LUZ = 4.5;
 
     private static final EntityDataAccessor<Boolean> OCULTO = SynchedEntityData.defineId(Krampus.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> SIN_SACO = SynchedEntityData.defineId(Krampus.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SIN_SACO = SynchedEntityData.defineId(Krampus.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> GANCHO_FUERA = SynchedEntityData.defineId(Krampus.class, EntityDataSerializers.BOOLEAN);
 
     /** Mientras el Krampus aprieta a alguien en su saco (ese daño sí pasa; los demás no le llegan al de adentro). */
@@ -105,7 +105,7 @@ public class Krampus extends Jefe {
     private final List<BlockPos> farolesPuestos = new ArrayList<>();
     private final List<BlockPos> farolesCerca = new ArrayList<>();
     private float sacoVida = SACO_MAX;
-    private int revelado, sinNadie, soploEn = -1, quemadoAviso;
+    private int revelado, sinNadie, soploEn = -1, quemadoAviso, sinSacoTicks;
     private boolean enLaLuz, agarroAlguien;
     private BlockPos farolObjetivo;
     private Vec3 dirGancho = Vec3.ZERO;
@@ -210,7 +210,7 @@ public class Krampus extends Jefe {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(OCULTO, false);
-        this.entityData.define(SIN_SACO, 0);
+        this.entityData.define(SIN_SACO, false);
         this.entityData.define(GANCHO_FUERA, false);
     }
 
@@ -223,7 +223,7 @@ public class Krampus extends Jefe {
 
     /** Ticks que le faltan para tener saco otra vez (0 = tiene saco). */
     public int sinSaco() {
-        return entityData.get(SIN_SACO);
+        return level().isClientSide ? (entityData.get(SIN_SACO) ? 1 : 0) : sinSacoTicks;
     }
 
     public boolean ganchoFuera() {
@@ -374,7 +374,7 @@ public class Krampus extends Jefe {
         playAction("risa", 0);
         ServerLevel sl = (ServerLevel) level();
         sl.playSound(null, blockPosition(), ModRegistry.KRAMPUS_SACO.get(), SoundSource.HOSTILE, 2F, 0.8F);
-        Fx.title(p, Component.translatable("navidad.krampus.saco.titulo"), Component.translatable("navidad.krampus.saco.sub"), 0xC89060);
+        Fx.title(p, Component.translatable("navidad.krampus.saco.titulo"), Component.empty(), 0xC89060);
         Fx.shake(p, 0.6F, 20);
         for (ServerPlayer o : sl.players()) {
             if (o != p && o.distanceTo(this) < 48) {
@@ -458,8 +458,8 @@ public class Krampus extends Jefe {
     }
 
     private void tickSaco(ServerLevel sl) {
-        if (sinSaco() > 0) {
-            entityData.set(SIN_SACO, sinSaco() - 1);
+        if (sinSacoTicks > 0 && --sinSacoTicks == 0) {
+            entityData.set(SIN_SACO, false);
         }
         if (ensacados.isEmpty()) {
             return;
@@ -479,10 +479,6 @@ public class Krampus extends Jefe {
                 } finally {
                     apretando = false;
                 }
-            }
-            if (e[0] % 10 == 0) {
-                p.displayClientMessage(Component.translatable("navidad.krampus.saco.forcejea", e[1], FORCEJEOS,
-                        (SACO_TIEMPO - e[0]) / 20).withStyle(ChatFormatting.GOLD), true);
             }
             if (e[0] >= SACO_TIEMPO) {
                 aventar(p);
@@ -520,7 +516,8 @@ public class Krampus extends Jefe {
         ServerLevel sl = (ServerLevel) level();
         liberarTodos();
         sacoVida = SACO_MAX;
-        entityData.set(SIN_SACO, SACO_REGRESA);
+        sinSacoTicks = SACO_REGRESA;
+        entityData.set(SIN_SACO, true);
         sacosRotos++;
         Estados.aplicar(this, Estados.ATURDIDO, 220);
         playAction("aturdido", 48);
@@ -611,10 +608,11 @@ public class Krampus extends Jefe {
         Navidad.LOGGER.info("NAVIDAD_KRAMPUS_APAGON faroles puestos={} cerca={}", farolesPuestos.size(), farolesCerca.size());
     }
 
+    /** Un pulso de oscuridad (al apagar todo y cuando sale de la oscuridad a emboscar): no para siempre, para que se vean los faroles. */
     private void oscurecer(ServerLevel sl) {
         for (ServerPlayer p : sl.players()) {
             if (p.distanceTo(this) < 40 && !MascaraKrampus.lleva(p)) {
-                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 100, 0, false, false));
+                p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 70, 0, false, false));
             }
         }
     }
@@ -660,7 +658,7 @@ public class Krampus extends Jefe {
         if (revelado > 0) {
             revelado--;
         }
-        boolean oculto = !enLaLuz && revelado <= 0 && deathTime <= 0 && !entrando();
+        boolean oculto = !enLaLuz && revelado <= 0 && deathTime <= 0 && (isNoAi() || !entrando());
         if (oculto != oculto()) {
             entityData.set(OCULTO, oculto);
             if (!oculto && enLaLuz && quemadoAviso <= 0) {
@@ -677,9 +675,6 @@ public class Krampus extends Jefe {
             quemadoAviso--;
         }
         setGlowingTag(revelado > 0);
-        if (tickCount % 40 == 0) {
-            oscurecer(sl);
-        }
         if (oculto && tickCount % 55 == 0) {
             sl.playSound(null, blockPosition(), ModRegistry.KRAMPUS_CASCABELES.get(), SoundSource.HOSTILE, 1.3F, 0.8F + random.nextFloat() * 0.2F);
         }
@@ -771,6 +766,7 @@ public class Krampus extends Jefe {
         yHeadRot = getYRot();
         sl.playSound(null, BlockPos.containing(donde), ModRegistry.KRAMPUS_CASCABELES.get(), SoundSource.HOSTILE, 1.6F, 1.0F);
         Aviso.circulo(sl, v.position(), 2.4F, 12).color(Aviso.ROJO).dano(this, dano(EMBOSCADA_DMG)).empuje(1.2, 0.45).lanzar();
+        oscurecer(sl);
         emboscadas++;
         Navidad.LOGGER.info("NAVIDAD_KRAMPUS_EMBOSCADA detrás de {}", v.getName().getString());
     }
@@ -823,8 +819,14 @@ public class Krampus extends Jefe {
         tickSaco(sl);
         if (fase() >= 2 && deathTime <= 0) {
             tickApagon(sl);
-        } else if (oculto()) {
-            entityData.set(OCULTO, false);
+        } else {
+            if (oculto()) {
+                entityData.set(OCULTO, false);
+            }
+            if (revelado > 0) {
+                revelado--;
+            }
+            setGlowingTag(revelado > 0);
         }
         if (ganchoFuera() && tickCount % 20 == 0 && sl.getEntitiesOfClass(GanchoCadena.class, getBoundingBox().inflate(32),
                 g -> g.getOwner() == this).isEmpty()) {

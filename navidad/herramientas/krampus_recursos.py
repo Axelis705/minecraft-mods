@@ -109,24 +109,24 @@ def mascara():
             e['rotation'] = rot
         return e
 
-    PELO = [16, 0, 24, 4]
+    PELO = [8, 0, 12, 2]          # (las UV de los modelos van de 0 a 16 aunque la textura sea de 32)
     els = [
-        cubo([1.5, 1, 0], [14.5, 15, 1.5], [0, 0, 16, 16], caras=['north']),                  # la cara
+        cubo([1.5, 1, 0], [14.5, 15, 1.5], [0, 0, 8, 8], caras=['north']),                  # la cara
         cubo([1.5, 1, 0], [14.5, 15, 1.5], PELO, caras=['south', 'east', 'west', 'up', 'down']),
         cubo([1, 13, 1.5], [15, 16, 14], PELO),                                                 # la greña de arriba
         cubo([0.5, 3, 1.5], [1.5, 14, 13], PELO),                                               # los lados (cubren las orejas)
         cubo([14.5, 3, 1.5], [15.5, 14, 13], PELO),
-        cubo([5.5, 4, -1.5], [10.5, 7, 0], [0, 8, 5, 11]),                                      # el hocico
-        cubo([6.5, -6, -1.6], [9.5, 4, -0.6], [24, 8, 27, 15]),                                 # la lengua de fuera
-        cubo([4, 2, -1.2], [5, 5, -0.2], [28, 8, 29, 11]),                                      # colmillos
-        cubo([11, 2, -1.2], [12, 5, -0.2], [28, 8, 29, 11]),
+        cubo([5.5, 4, -1.5], [10.5, 7, 0], [1.5, 5, 6.5, 6.5]),                                      # el hocico
+        cubo([6.5, -6, -1.6], [9.5, 4, -0.6], [12, 4, 13.5, 7.5]),                                 # la lengua de fuera
+        cubo([4, 2, -1.2], [5, 5, -0.2], [14, 4, 14.5, 5.5]),                                      # colmillos
+        cubo([11, 2, -1.2], [12, 5, -0.2], [14, 4, 14.5, 5.5]),
     ]
     # cuernos: tres pedazos de cada lado que suben, se abren y se doblan para atrás
     for s in (-1, 1):
         x0 = 3 if s < 0 else 11
         for i, (dy, ancho, ang) in enumerate(((0, 2.5, 22.5), (5, 2.0, 45), (9, 1.6, 45))):
             ox = x0 + s * i * 2.2 - ancho / 2
-            els.append(cubo([ox, 15 + dy, 5 + i * 1.5], [ox + ancho, 21 + dy, 5 + i * 1.5 + ancho], [16, 8, 24, 16],
+            els.append(cubo([ox, 15 + dy, 5 + i * 1.5], [ox + ancho, 21 + dy, 5 + i * 1.5 + ancho], [8, 4, 12, 8],
                             rot={'angle': ang * (1 if s > 0 else -1) if i else (22.5 if s > 0 else -22.5), 'axis': 'z',
                                  'origin': [x0 + s * i * 2.2, 15 + dy, 6]}))
     modelo = {'textures': {'m': 'navidad:item/mascara_krampus', 'particle': 'navidad:item/mascara_krampus'}, 'elements': els,
