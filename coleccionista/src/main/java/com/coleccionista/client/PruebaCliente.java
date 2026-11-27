@@ -1417,11 +1417,11 @@ final class PruebaCliente {
         foto(t, "c2_01b_cripta", 900, () -> t.lookFrom(747.0, -60, 384.5, 747.0, -58, 393));
         foto(t, "c2_01c_llegada_casa", 1500, () -> t.lookFrom(747.0, -53, 400.5, 747.0, -44, 430));
         foto(t, "c2_01d_fachada", 1200, () -> t.lookFrom(747.0, -52, 417.5, 747.0, -40, 430));
-        t.add("al vestibulo", 200, () -> t.lookFrom(747.0, -53, 438.5, 747.0, -43, 452));
+        t.add("al vestibulo", 200, () -> t.lookFrom(747.0, -53, 438.5, 747.0, -43.5, 446.9));
         t.waitFor("cap2: habla", 15000, () -> "HABLANDO".equals(MascotaCliente.fase()));
-        foto(t, "c2_02_vestibulo", 9000, () -> t.lookFrom(747.0, -53, 434.5, 747.0, -42.5, 452.9));
+        foto(t, "c2_02_vestibulo", 9000, () -> t.lookFrom(747.0, -53, 436.5, 747.0, -43.5, 446.9));
         foto(t, "c2_03_jaula", 4000, () -> t.lookFrom(747.0, -53, 442.5, 747.0, -51, 447));
-        foto(t, "c2_04_galeria", 2500, () -> t.lookFrom(747.0, -45, 432.5, 747.0, -52, 448));
+        foto(t, "c2_04_galeria", 2500, () -> t.lookFrom(747.0, -45, 432.5, 747.0, -45, 446.9));
         foto(t, "c2_05_esconder", 1800, () -> {
             t.cmd("evento mascota saltar");
             t.lookFrom(744.5, -53, 442.5, 736, -52, 442.5);

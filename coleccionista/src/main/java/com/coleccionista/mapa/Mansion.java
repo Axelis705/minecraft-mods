@@ -60,6 +60,7 @@ public final class Mansion {
         MansionCuartos.atico(t);
         MansionCuartos.sotano(t);
         salida(t);
+        alumbrar(t);
         return p;
     }
 
@@ -168,9 +169,9 @@ public final class Mansion {
             t.set(x, PA + 1, HZ0, C + "alfombra_roja");
         }
         t.altoPar(22, PA + 1, HZ0, "sillon", "south");
-        // la araña grande: cuatro arañas colgando de cadenas en medio
+        // la araña grande: cuatro arañas colgando de cadenas, cerca de la entrada (no tapan la pantalla)
         for (int x = 26; x <= 27; x++) {
-            for (int z = 9; z <= 10; z++) {
+            for (int z = 5; z <= 6; z++) {
                 t.arana(x, ATI - 1, z, 3);
             }
         }
@@ -185,7 +186,7 @@ public final class Mansion {
         t.luz(18, PA - 2, 2, 8);
         t.luz(35, PA - 2, 2, 8);
         // dónde se para la gente al llegar y el centro
-        t.p.marca("man.entrada", 26, y, HZ0 + 2, 0);
+        t.p.marca("man.entrada", 26, y, 7, 0);
         t.p.marca("man.centro", 26, y, 12, 0);
     }
 
@@ -210,8 +211,6 @@ public final class Mansion {
                     }
                 }
             }
-            // la crestería de picos arriba del frente
-            t.set(x, PA, z0, C + "barrotes");
         }
         // la reja (se abre en el juego: Mascota quita y vuelve a poner los barrotes de cada columna)
         for (int k = 0; k <= REJA_Z1 - REJA_Z0; k++) {
@@ -237,13 +236,104 @@ public final class Mansion {
         t.p.texto(x1 - 1, y + 2, 20, "rayon", "west", 0x8A8070, "NO ME", "DEJES", "SALIR");
         t.luz(26, y + 3, 20, 4);
         t.p.marca("man.jaula", 26, y, 20, 180);
-        // el letrero con su nombre en la viga de enfrente y la pantalla grande arriba, con dos candelabros en el techo de la jaula
-        t.p.texto(26, PA - 1, z0 - 1, "letrero", "north", 0xD9A93A, "CASCABEL");
-        t.set(26, PA + 3, z1, C + "pantalla[facing=north,grande=true]");
-        t.p.nbt(26, PA + 3, z1, "{tam:1,dx:-0.5f}");
-        t.p.marca("man.pantalla", 26, PA + 3, z1, 180);
-        t.alto(22, PA, z1, "candelabro", "north");
-        t.alto(31, PA, z1, "candelabro", "north");
+        // arriba de la jaula, hasta el techo: un gran mueble de madera y papel tapiz con marco dorado; en su frente, la pantalla grande
+        // (11 x 7), a la vista de todo el vestíbulo (ya no la tapa el techo de la jaula)
+        for (int x = x0; x <= x1; x++) {
+            for (int z = z0; z <= z1; z++) {
+                for (int yy = PA; yy <= ATI - 2; yy++) {
+                    boolean frente = z == z0, lado = x == x0 || x == x1;
+                    String b = C + "papel_tapiz";
+                    if (frente && (lado || yy == ATI - 2)) {
+                        b = C + "marco_dorado";
+                    } else if (lado) {
+                        b = yy == ATI - 2 ? C + "marco_dorado" : C + "panel_madera";
+                    }
+                    t.set(x, yy, z, b);
+                }
+            }
+            t.set(x, PA - 1, z0, C + "madera_pulida");
+        }
+        t.set(26, PA + 2, z0 - 1, C + "pantalla[facing=north,grande=true]");
+        t.p.nbt(26, PA + 2, z0 - 1, "{dx:-0.5f}");
+        t.p.marca("man.pantalla", 26, PA + 2, z0 - 1, 180);
+        // el nombre de la mascota, adentro de la jaula (se lee entre los barrotes)
+        t.p.texto(26, y + 3, z1, "letrero", "north", 0xD9A93A, "CASCABEL");
+    }
+
+    // ------------------------------------------------------------------ la luz
+
+    /**
+     * La luz de toda la finca (luz invisible, encima de las cabezas): en cada cuarto una rejilla cada 4 bloques; en el jardín cada 5 (un
+     * claro de luna tenue); en la fachada, luz que la baña desde abajo para que se vea la casa de noche. Lo oscuro de verdad queda en los
+     * rincones, la jaula y los escondites.
+     */
+    private static void alumbrar(Trazo t) {
+        Plano p = t.p;
+        // adentro: {pies, nivel}
+        int[][] pisos = {{SOT + 1, 11}, {PB + 1, 13}, {PA + 1, 13}, {ATI + 1, 10}, {TORRE + 1, 12}};
+        for (int[] n : pisos) {
+            int y = n[0] + 2;
+            for (int x = X0 + 1; x <= X1 - 1; x++) {
+                for (int z = TZ0 + 1; z <= Z1 - 1; z++) {
+                    if (Math.floorMod(x - 2, 4) != 0 || Math.floorMod(z - 2, 4) != 0) {
+                        continue;
+                    }
+                    boolean jaula = x >= REJA_X0 && x <= REJA_X0 + REJA_Z1 && z > REJA_Z && z <= HZ1 && y < PA;
+                    if (!jaula && p.vacio(x, y, z)) {
+                        t.luz(x, y, z, n[1]);
+                    }
+                }
+            }
+        }
+        // las dos alturas del vestíbulo y del salón de baile (arriba, más luz)
+        for (int x = HX0 + 1; x <= HX1 - 1; x += 4) {
+            for (int z = HZ0 + 4; z <= HZ1; z += 4) {
+                if (p.vacio(x, PA + 4, z)) {
+                    t.luz(x, PA + 4, z, 12);
+                }
+            }
+        }
+        for (int x = BX0 + 4; x <= BX1 - 2; x += 5) {
+            for (int z = BZ0 + 2; z <= BZ1; z += 5) {
+                if (p.vacio(x, PA + 4, z)) {
+                    t.luz(x, PA + 4, z, 12);
+                }
+            }
+        }
+        // afuera: el jardín (a cielo abierto, un poco arriba de las cabezas) y la cripta
+        int yj = MansionJardin.SUELO + 3;
+        for (int x = MansionJardin.TX0 + 2; x <= MansionJardin.TX1 - 2; x += 5) {
+            for (int z = MansionJardin.TZ0 + 2; z <= MansionJardin.TZ1 - 2; z += 5) {
+                boolean casa = x >= X0 && x <= X1 && z >= TZ0 && z <= Z1;
+                if (!casa && p.vacio(x, yj, z)) {
+                    t.luz(x, yj, z, 11);
+                }
+            }
+        }
+        for (int x = 22; x <= 31; x += 4) {
+            for (int z = -46; z <= -38; z += 4) {
+                if (p.vacio(x, SOT + 3, z)) {
+                    t.luz(x, SOT + 3, z, 11);
+                }
+            }
+        }
+        // la fachada bañada de luz: al pie de los cuatro muros, cada 3, a la altura de cada piso
+        for (int yy : new int[] {PB + 2, PA + 2}) {
+            for (int x = X0 - 1; x <= X1 + 1; x += 3) {
+                for (int z : new int[] {TZ0 - 1, Z0 - 1, Z1 + 1}) {
+                    if (p.vacio(x, yy, z)) {
+                        t.luz(x, yy, z, 12);
+                    }
+                }
+            }
+            for (int z = TZ0; z <= Z1; z += 3) {
+                for (int x : new int[] {X0 - 1, X1 + 1}) {
+                    if (p.vacio(x, yy, z)) {
+                        t.luz(x, yy, z, 12);
+                    }
+                }
+            }
+        }
     }
 
     // ------------------------------------------------------------------ la salida (al túnel del sótano, hacia la caja de música)
