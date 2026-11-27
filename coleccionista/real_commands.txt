@@ -389,8 +389,12 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_DISCURSO antesala
 #expect COLECCIONISTA_CAPITULO1 fin
 #expect COLECCIONISTA_CONSTRUIDO mansion
-#expect COLECCIONISTA_MASCOTA llegan pasillo=
-#expect COLECCIONISTA_CABINA traslada pas_tea -> pas_man
+#expect COLECCIONISTA_MASCOTA autobus
+#expect COLECCIONISTA_TRANSBORDO sale autobus
+#expect COLECCIONISTA_TRANSBORDO llega autobus
+#expect COLECCIONISTA_MASCOTA en la parada
+#expect COLECCIONISTA_SENTIDOS palcos (montacargas)
+#expect COLECCIONISTA_SENTIDOS arriba equipo=
 #expect COLECCIONISTA_MASCOTA habla
 #expect COLECCIONISTA_DISCURSO mansion
 #expect COLECCIONISTA_MASCOTA esconder segundos=8
