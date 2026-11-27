@@ -108,10 +108,17 @@ public final class Comandos {
                             GuerraNieve.empezar(c.getSource().getServer(), 120);
                             return 1;
                         })
+                        .then(Commands.literal("equipos").executes(c -> {
+                            GuerraNieve.empezar(c.getSource().getServer(), 120, true);
+                            return 1;
+                        }))
                         .then(Commands.argument("segundos", IntegerArgumentType.integer(10, 1800)).executes(c -> {
                             GuerraNieve.empezar(c.getSource().getServer(), IntegerArgumentType.getInteger(c, "segundos"));
                             return 1;
-                        })))
+                        }).then(Commands.literal("equipos").executes(c -> {
+                            GuerraNieve.empezar(c.getSource().getServer(), IntegerArgumentType.getInteger(c, "segundos"), true);
+                            return 1;
+                        }))))
                 .then(Commands.literal("carta").requires(s -> s.hasPermission(2))
                         .then(Commands.literal("entregar").executes(c -> {
                             ServerPlayer sp = c.getSource().getPlayerOrException();

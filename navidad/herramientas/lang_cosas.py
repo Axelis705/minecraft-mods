@@ -344,3 +344,20 @@ T7 = {
 if __name__ == '__main__':
     aplicar(T7)
     print(len(T7), 'textos de los calcetines')
+
+T8 = {
+    'navidad.guerra.empieza_equipos': ('❄ ¡Guerra de bolas de nieve por equipos! Dura %s segundos. Los bolazos a tu propio equipo no cuentan.',
+                                       '❄ Team snowball fight! It lasts %s seconds. Hits on your own team don\'t count.'),
+    'navidad.guerra.rojo': ('Equipo Rojo', 'Red Team'),
+    'navidad.guerra.verde': ('Equipo Verde', 'Green Team'),
+    'navidad.guerra.equipo_sub': ('¡A defender tu fuerte de nieve!', 'Defend your snow fort!'),
+    'navidad.guerra.mismo': ('%s es de tu equipo...', '%s is on your team...'),
+    'navidad.guerra.punto_equipo': ('❄ ¡Bolazo a %s! Llevas %s · Rojo %s - %s Verde', '❄ You hit %s! Score: %s · Red %s - %s Green'),
+    'navidad.guerra.marcador': ('Rojo %s - %s Verde', 'Red %s - %s Green'),
+    'navidad.guerra.gana_equipo': ('¡Ganó el %s! Todo el equipo se lleva un regalo.', 'The %s wins! The whole team gets a gift.'),
+    'navidad.guerra.empate': ('¡Empate! Nadie se lleva el regalo esta vez.', 'It\'s a tie! No gift this time.'),
+}
+
+if __name__ == '__main__':
+    aplicar(T8)
+    print(len(T8), 'textos de la guerra por equipos')

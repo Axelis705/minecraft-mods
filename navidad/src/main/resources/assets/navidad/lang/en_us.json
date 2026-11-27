@@ -293,5 +293,14 @@
   "block.navidad.figura_buey": "Nativity ox",
   "block.navidad.estrella_belen": "Star of Bethlehem",
   "block.navidad.portal_belen": "Nativity stable",
-  "block.navidad.musgo_nacimiento": "Moss with Spanish moss"
+  "block.navidad.musgo_nacimiento": "Moss with Spanish moss",
+  "navidad.guerra.empieza_equipos": "❄ Team snowball fight! It lasts %s seconds. Hits on your own team don't count.",
+  "navidad.guerra.rojo": "Red Team",
+  "navidad.guerra.verde": "Green Team",
+  "navidad.guerra.equipo_sub": "Defend your snow fort!",
+  "navidad.guerra.mismo": "%s is on your team...",
+  "navidad.guerra.punto_equipo": "❄ You hit %s! Score: %s · Red %s - %s Green",
+  "navidad.guerra.marcador": "Red %s - %s Green",
+  "navidad.guerra.gana_equipo": "The %s wins! The whole team gets a gift.",
+  "navidad.guerra.empate": "It's a tie! No gift this time."
 }

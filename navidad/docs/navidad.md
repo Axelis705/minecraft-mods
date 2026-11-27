@@ -66,6 +66,11 @@ el clic derecho pone bloques normales junto al calcetín.
 de nieve y 8 más cada 15 segundos. Cada bolazo a otra persona es un punto (y le salpica nieve y un poquito de frío). Al final sale el
 podio en el chat y quien ganó se lleva una caja de regalo con algo raro.
 
+`/navidad guerra_nieve equipos` (o `/navidad guerra_nieve 180 equipos`) la hace **por equipos**: se reparten al azar en Rojo y Verde (el
+nombre de cada quien sale de su color), los bolazos a tu propio equipo no cuentan y gana el equipo con más puntos (todos los del equipo
+ganador se llevan regalo). Si la aldea de Santa está a menos de 120 bloques, cada equipo aparece detrás de su **fuerte de nieve** (el campo
+de guerra está en la aldea, al suroeste).
+
 ## Carta a Santa
 
 Escribe tu carta en un **libro y pluma** ("Querido Santa: quiero un trineo, diamantes y galletas") y dale clic con ella al **buzón de
@@ -112,6 +117,7 @@ esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario 
 `/navidad aldea` la construye donde estés parado (61 x 61 bloques, limpia el lugar): plaza nevada con un pino gigante lleno de luces y
 regalos, casa de Santa (chimenea, calcetines, árbol, su buzón afuera), taller de juguetes, casita de jengibre de la Señora Claus, establo con renos,
 **nacimiento** sobre musgo (con el portal, la estrella, la Sagrada Familia, pastores, animales y los Reyes Magos),
+**campo de guerra de nieve** con dos fuertes (rojo y verde) frente a frente,
 **colina de trineos** (carril con paredes de nieve, dos trineos esperando arriba, escalones para volver a subir y pacas de paja al pie)
 y **pista de hielo** (con barda iluminada, un pinito en medio y un barril con patines para prestar).
 En la colina hay **carrera de trineos**: el cronómetro arranca en cuanto empiezas a bajar desde la cima manejando un trineo y para al pie y el mundo guarda el récord
@@ -148,6 +154,7 @@ Se pueden poner sueltos: `/navidad gente santa|senora_claus|duende_juguetero|due
 | `/navidad ropa <prenda>` | Ponerte o quitarte una prenda (también `patines`) |
 | `/navidad anio_nuevo [segundos]` | Año Nuevo ahora: cuenta regresiva, 12 campanadas y fuegos |
 | `/navidad guerra_nieve [segundos]` | Guerra de bolas de nieve todos contra todos (2 minutos si no dices) |
+| `/navidad guerra_nieve [segundos] equipos` | La guerra por equipos (Rojo contra Verde, cada uno en su fuerte si la aldea está cerca) |
 | `/navidad carta entregar` | Que llegue ya la respuesta de Santa a tu carta (para probar) |
 
 ## Herramientas (para regenerar los recursos)

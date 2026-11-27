@@ -293,5 +293,14 @@
   "block.navidad.figura_buey": "Buey de nacimiento",
   "block.navidad.estrella_belen": "Estrella de Belén",
   "block.navidad.portal_belen": "Portal de Belén",
-  "block.navidad.musgo_nacimiento": "Musgo con heno"
+  "block.navidad.musgo_nacimiento": "Musgo con heno",
+  "navidad.guerra.empieza_equipos": "❄ ¡Guerra de bolas de nieve por equipos! Dura %s segundos. Los bolazos a tu propio equipo no cuentan.",
+  "navidad.guerra.rojo": "Equipo Rojo",
+  "navidad.guerra.verde": "Equipo Verde",
+  "navidad.guerra.equipo_sub": "¡A defender tu fuerte de nieve!",
+  "navidad.guerra.mismo": "%s es de tu equipo...",
+  "navidad.guerra.punto_equipo": "❄ ¡Bolazo a %s! Llevas %s · Rojo %s - %s Verde",
+  "navidad.guerra.marcador": "Rojo %s - %s Verde",
+  "navidad.guerra.gana_equipo": "¡Ganó el %s! Todo el equipo se lleva un regalo.",
+  "navidad.guerra.empate": "¡Empate! Nadie se lleva el regalo esta vez."
 }

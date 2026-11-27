@@ -195,6 +195,22 @@ final class Prueba {
             t.photo("aldea_establo", 3000, () -> t.lookFrom(300.5, -57, 12, 300.5, -59, 22));
             t.photo("aldea_nacimiento", 3000, () -> t.lookFrom(280.5, -56.2, -11, 280.5, -59.5, -21.5));
             t.photo("aldea_nacimiento_cerca", 2500, () -> t.lookFrom(283.5, -57.6, -17.5, 280.5, -59, -21.5));
+            t.photo("aldea_fuertes", 2500, () -> t.lookFrom(270, -53, 19, 281, -59.5, 19));
+            // guerra de nieve por equipos: aparezco en el fuerte rojo con el título de mi equipo
+            t.add("guerra equipos", 1500, () -> {
+                t.cmd("gamemode survival @a");
+                t.cmd("navidad guerra_nieve 10 equipos");
+            });
+            t.add("hud guerra", 200, () -> t.hud(true));
+            t.photo("guerra_equipo", 600, () -> {
+            });
+            t.add("en el fuerte", 200, () -> {
+                var pl = Minecraft.getInstance().player;
+                t.check(Math.abs(pl.getZ() - 11.5) < 1.5 && Math.abs(pl.getX() - 280.5) < 3, "aparecí detrás del fuerte rojo ("
+                        + String.format(Locale.ROOT, "%.1f, %.1f", pl.getX(), pl.getZ()) + ")");
+            });
+            t.add("hud guerra fin", 200, () -> t.hud(false));
+            t.add("fin de la guerra", 11000, () -> t.cmd("gamemode creative @a"));
             t.photo("aldea_noche", 4000, () -> {
                 t.cmd("time set 18000");
                 t.cmd("gamemode spectator @a");
