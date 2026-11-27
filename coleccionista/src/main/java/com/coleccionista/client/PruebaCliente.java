@@ -1459,10 +1459,12 @@ final class PruebaCliente {
         t.add("subir al autobús", 3500, () -> t.lookFrom(-15.5, -60, 471.5, -7.0, -58.4, 471.5));
         foto(t, "c2_00b_autobus", 2500, () -> t.check(ViajeCliente.viaje("AUTOBUS"), "voy en el autobús"));
         t.waitFor("cap2: a la parada", 45000, () -> "LLEGANDO".equals(MascotaCliente.fase()) || "HABLANDO".equals(MascotaCliente.fase()));
-        t.add("parada: puerta abierta", 1200, () -> {
+        // (la puerta se abre en el mismo instante en que llega; al cliente le toma unos ticks enterarse)
+        t.waitFor("en la parada se abre la puerta del autobús frente a la reja", 5000, () -> {
             var st = Minecraft.getInstance().level.getBlockState(new net.minecraft.core.BlockPos(718, -54, 411));
-            t.check(st.getBlock() instanceof net.minecraft.world.level.block.DoorBlock && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN),
-                    "en la parada se abre la puerta del autobús frente a la reja");
+            return st.getBlock() instanceof net.minecraft.world.level.block.DoorBlock && st.getValue(net.minecraft.world.level.block.DoorBlock.OPEN);
+        });
+        t.add("parada: bajé", 1200, () -> {
             var p = Minecraft.getInstance().player;
             t.check(p.getX() > 711 && p.getX() < 719 && p.getZ() > 401 && p.getZ() < 415, String.format(java.util.Locale.ROOT,
                     "bajé del autobús en la parada de la casa (%.1f, %.1f)", p.getX(), p.getZ()));
