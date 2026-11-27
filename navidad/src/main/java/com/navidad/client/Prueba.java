@@ -115,6 +115,7 @@ final class Prueba {
             t.add("preparar", 2500, () -> {
                 com.navidad.Fiestas.automatico = false;
                 t.cmd("gamemode creative @a");
+                t.cmd("clear @a");
                 t.cmd("time set 6000");
                 t.cmd("weather clear");
                 t.cmd("gamerule doDaylightCycle false");

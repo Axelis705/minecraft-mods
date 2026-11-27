@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
 import java.time.LocalDate;
@@ -74,6 +75,20 @@ public final class Fiestas {
             w.dirty();
             p.sendSystemMessage(Component.translatable("navidad.fiesta.navidad").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
             darCaja(p, Premios.sacar(Premios.Rareza.EPICO, p.getRandom()), "Santa");
+        }
+        // la primera vez que entras a un mundo con el mod: la bienvenida de Santa (qué hacer en survival) y un pinito para empezar
+        if (!yo.getBoolean("bienvenida") && Temporada.activa(s)) {
+            yo.putBoolean("bienvenida", true);
+            w.dirty();
+            p.sendSystemMessage(Component.translatable("navidad.bienvenida.titulo").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+            for (int k = 1; k <= 4; k++) {
+                p.sendSystemMessage(Component.translatable("navidad.bienvenida." + k).withStyle(ChatFormatting.WHITE));
+            }
+            Navidad.LOGGER.info("NAVIDAD_BIENVENIDA {}", p.getGameProfile().getName());
+            Block pino = com.navidad.bloque.deco.Deco.block("pino_maceta");
+            if (pino != null) {
+                darCaja(p, new ItemStack(pino.asItem()), "Santa");
+            }
         }
         if (h.getMonth() == Month.JANUARY && h.getDayOfMonth() == 6 && yo.getInt("rosca") != h.getYear()) {
             yo.putInt("rosca", h.getYear());

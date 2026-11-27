@@ -29,6 +29,9 @@ Todo esto pasa solo mientras juegas:
   bufanda y gorrito de Santa). Te siguen, se sientan con un clic con la mano vacía (y de noche se duermen), nadan rapidísimo, y cuando van
   con prisa sobre hielo o nieve **se avientan de panza**. Si tienen agua cerca, de vez en cuando pescan algo y te lo traen. Con pescado
   también se cruzan.
+- **Renito de nariz roja** (en la nieve, poco común): su nariz brilla en la oscuridad. Con zanahorias a veces se hace tuyo, con una
+  **zanahoria dorada** siempre; entonces lleva collar con cascabel, te sigue dando brinquitos, se sienta con un clic y de noche su nariz
+  deja una estelita de brillos.
 - **Puesto de árboles de Navidad**: sale solo en praderas, bosques, taigas y la nieve. Un terrenito con cerca y faroles, pinos recién
   cortados y arbolitos adornados, y el puestito con techo de lona a rayas y luces. Lo atiende **Don Abeto**, que vende árboles
   (de Navidad, nevado, dorado, pino recién cortado, pino en maceta), cajas de adornos, luces, esferas, coronas, calcetines, galletas para
@@ -39,6 +42,8 @@ Todo esto pasa solo mientras juegas:
 - **Los aldeanos** también celebran: el granjero vende galletas de jengibre y bastones de caramelo, el carnicero pavo navideño, el pastor
   gorro de Santa y suéter, el bibliotecario el calendario de Adviento; el comerciante errante trae adornos, chocolate, pinitos y a veces un
   regalo misterioso.
+- **La primera vez que entras**, Santa te da la bienvenida con lo que puedes hacer y te manda un pinito en maceta para tu árbol.
+- La **nieve que cae** depende del lugar: más en lo frío, poquita en lo templado y nada en el desierto, la sabana o las tierras baldías.
 - Y lo de siempre: calcetines que Santa llena cada noche, galletas y leche para Santa, carta a Santa en el buzón, pinos adornados y
   casitas de duende en la nieve, gorros en los mobs, nieve que cae.
 
@@ -150,7 +155,7 @@ esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario 
 
 ## Criaturas
 
-- **Pingüino** (mascota): ver arriba. Huevo generador en la pestaña creativa.
+- **Pingüino** y **renito de nariz roja** (mascotas): ver arriba. Huevos generadores en la pestaña creativa.
 - **Duende ladrón**: ver arriba. Nunca muere ni lastima: se rinde al primer golpe.
 
 - **Muñeco de nieve malvado**: avienta bolas de nieve que congelan. Suelta nieve, carbón, dulces y a veces la campana del Krampus.
@@ -189,7 +194,8 @@ Se pueden poner sueltos: `/navidad gente santa|senora_claus|duende_juguetero|due
 Hay una **pestaña de logros navideños** (tecla L): galleta de jengibre, gorro de Santa, carta a Santa (y su respuesta... o carbón),
 abrir un regalo, el calcetín, las galletas para Santa, romper una piñata, el muñequito de la rosca, las 12 uvas, un ángel de nieve, el
 abrazo bajo el muérdago, patinar, bajar la colina con cronómetro, romper el récord, hacerte amigo de un reno,
-vencer al Krampus, poner el pesebre y encontrar una casita de duende. Los textos y archivos salen de `herramientas/logros.py`.
+vencer al Krampus, poner el pesebre, encontrar una casita de duende, un regalo caído del cielo, los regalos bajo tu árbol, atrapar al
+duende ladrón, hacerte amigo de un pingüino y de un renito, encontrar un puesto de árboles y al duende viajero (28 en total). Los textos y archivos salen de `herramientas/logros.py`.
 
 ## Comandos (operadores)
 

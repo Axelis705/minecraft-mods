@@ -407,5 +407,10 @@
   "navidad.renito.sienta": "Tu renito se quedará aquí sentadito.",
   "navidad.renito.sigue": "Tu renito te sigue otra vez.",
   "advancement.navidad.renito": "Nariz roja",
-  "advancement.navidad.renito.desc": "Hazte amigo de un renito de nariz roja (con zanahorias, o una zanahoria dorada)"
+  "advancement.navidad.renito.desc": "Hazte amigo de un renito de nariz roja (con zanahorias, o una zanahoria dorada)",
+  "navidad.bienvenida.titulo": "★ ¡Feliz Navidad! ★",
+  "navidad.bienvenida.1": "• Pon tu árbol de Navidad y adórnalo: cada mañana Santa te dejará regalos debajo (te mando un pinito para empezar).",
+  "navidad.bienvenida.2": "• Santa pasa una vez al día por el cielo y suelta regalos en paracaídas. ¡Atrápalos!",
+  "navidad.bienvenida.3": "• En la nieve hay pingüinos y renitos de nariz roja que puedes hacer tuyos (con pescado y con zanahorias).",
+  "navidad.bienvenida.4": "• Busca los puestos de árboles de Navidad y al duende viajero: venden cosas navideñas por esmeraldas."
 }

@@ -475,3 +475,19 @@ T18 = {
 if __name__ == '__main__':
     aplicar(T18)
     print(len(T18), 'textos del renito')
+
+T19 = {
+    'navidad.bienvenida.titulo': ('★ ¡Feliz Navidad! ★', '★ Merry Christmas! ★'),
+    'navidad.bienvenida.1': ('• Pon tu árbol de Navidad y adórnalo: cada mañana Santa te dejará regalos debajo (te mando un pinito para empezar).',
+                             '• Place your Christmas tree and decorate it: every morning Santa will leave gifts under it (here is a little pine to start).'),
+    'navidad.bienvenida.2': ('• Santa pasa una vez al día por el cielo y suelta regalos en paracaídas. ¡Atrápalos!',
+                             '• Santa flies by once a day and drops gifts with parachutes. Catch them!'),
+    'navidad.bienvenida.3': ('• En la nieve hay pingüinos y renitos de nariz roja que puedes hacer tuyos (con pescado y con zanahorias).',
+                             '• In the snow there are penguins and red-nosed baby reindeer you can befriend (with fish and with carrots).'),
+    'navidad.bienvenida.4': ('• Busca los puestos de árboles de Navidad y al duende viajero: venden cosas navideñas por esmeraldas.',
+                             '• Look for Christmas tree lots and the traveling elf: they sell Christmas things for emeralds.'),
+}
+
+if __name__ == '__main__':
+    aplicar(T19)
+    print(len(T19), 'textos de la bienvenida')

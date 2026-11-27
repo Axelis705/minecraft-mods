@@ -407,5 +407,10 @@
   "navidad.renito.sienta": "Your baby reindeer will stay sitting here.",
   "navidad.renito.sigue": "Your baby reindeer follows you again.",
   "advancement.navidad.renito": "Red nose",
-  "advancement.navidad.renito.desc": "Befriend a red-nosed baby reindeer (with carrots, or a golden carrot)"
+  "advancement.navidad.renito.desc": "Befriend a red-nosed baby reindeer (with carrots, or a golden carrot)",
+  "navidad.bienvenida.titulo": "★ Merry Christmas! ★",
+  "navidad.bienvenida.1": "• Place your Christmas tree and decorate it: every morning Santa will leave gifts under it (here is a little pine to start).",
+  "navidad.bienvenida.2": "• Santa flies by once a day and drops gifts with parachutes. Catch them!",
+  "navidad.bienvenida.3": "• In the snow there are penguins and red-nosed baby reindeer you can befriend (with fish and with carrots).",
+  "navidad.bienvenida.4": "• Look for Christmas tree lots and the traveling elf: they sell Christmas things for emeralds."
 }
