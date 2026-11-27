@@ -39,6 +39,12 @@ public final class NpcCliente {
     private NpcCliente() {
     }
 
+    /**
+     * (API 8) Los NPC cuyo nombre dibuja su propio mod (con su placa o listón): para esos el Core no pone el letrerito del nombre
+     * sobre la cabeza (el "!" y el "?" de las misiones sí). Por defecto, ninguno.
+     */
+    public static java.util.function.Predicate<NpcDef> nombrePropio = d -> false;
+
     public static void init() {
         ScreenRegistry.register(NpcAcciones.PANTALLA, NpcScreen::new);
         ScreenRegistry.register(NpcAcciones.DIARIO, DiarioScreen::new);
@@ -192,7 +198,7 @@ public final class NpcCliente {
                 continue;
             }
             int m = marca(d);
-            boolean nombre = dist < 9;
+            boolean nombre = dist < 9 && !nombrePropio.test(d);
             if (m == 0 && !nombre) {
                 continue;
             }

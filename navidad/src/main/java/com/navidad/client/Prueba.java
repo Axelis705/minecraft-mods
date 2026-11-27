@@ -621,7 +621,7 @@ final class Prueba {
                 mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
                         new BlockHitResult(new Vec3(503.5, -61, 143.5), Direction.UP, new BlockPos(503, -61, 143), false));
             });
-            t.photo("pinonav_solo", 1200, () -> t.lookFrom(503.5, -60, 147.6, 503.5, -58.8, 143.5));
+            t.photo("pinonav_solo", 1200, () -> t.lookFrom(503.5, -60, 148.9, 503.5, -58.3, 143.5));
             // le cuelgo adornos haciendo clic en distintas ramas (cada uno cae en la rama más cerca del clic)
             String[] ads = {"adorno_esfera_roja", "adorno_esfera_azul", "adorno_esfera_dorada", "adorno_baston", "adorno_mono",
                     "adorno_campanita", "adorno_copo", "adorno_galleta", "adorno_pina", "adorno_cristal", "adorno_pajarito",
@@ -652,7 +652,7 @@ final class Prueba {
                             new BlockHitResult(new Vec3(503.5, -58.2, 144.0), Direction.SOUTH, new BlockPos(503, -59, 143), false));
                 });
             }
-            t.photo("pinonav_sube_nivel", 600, () -> t.lookFrom(503.5, -60, 147.6, 503.5, -58.8, 143.5));
+            t.photo("pinonav_sube_nivel", 600, () -> t.lookFrom(503.5, -60, 148.9, 503.5, -58.3, 143.5));
             t.add("adornar la casa", 1200, () -> {
                 t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
                 t.cmd("setblock 500 -60 143 navidad:muneco_nieve[facing=south]");
@@ -666,12 +666,12 @@ final class Prueba {
             t.add("pino puntos", 300, () -> t.check(Minecraft.getInstance().level.getBlockEntity(new BlockPos(503, -60, 143))
                     instanceof com.navidad.arbol.PinoBE be && be.colgados() >= 15 && be.luces == 2 && be.guirnaldas == 2
                     && be.punta.equals("punta_estrella"), "el pino tiene adornos, luces, guirnaldas y estrella"));
-            t.photo("pinonav_adornado", 1500, () -> t.lookFrom(503.5, -60, 147.4, 503.5, -58.8, 143.5));
+            t.photo("pinonav_adornado", 1500, () -> t.lookFrom(503.5, -60, 148.9, 503.5, -58.3, 143.5));
             t.photo("pinonav_cerca", 1500, () -> t.lookFrom(502.2, -60, 145.9, 503.4, -59.0, 143.4));
-            t.photo("pinonav_lado", 1500, () -> t.lookFrom(506.4, -60, 146.0, 503.5, -58.8, 143.5));
+            t.photo("pinonav_lado", 1500, () -> t.lookFrom(507.2, -60, 146.8, 503.5, -58.3, 143.5));
             t.photo("pinonav_noche", 2500, () -> {
                 t.cmd("time set 18000");
-                t.lookFrom(503.5, -60, 147.4, 503.5, -58.8, 143.5);
+                t.lookFrom(503.5, -60, 148.9, 503.5, -58.3, 143.5);
             });
             t.add("pino de dia", 600, () -> t.cmd("time set 6000"));
             // el libro: un capítulo, reclamar una tarea (cae el sello) y la página de mi árbol

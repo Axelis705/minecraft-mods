@@ -33,6 +33,12 @@ public final class PlacaNombre {
 
     public static void init() {
         MinecraftForge.EVENT_BUS.addListener(PlacaNombre::alNombre);
+        // el Core ya no pone su letrerito del nombre a la gente de Navidad (lo dibuja este listón); con un Core viejo no hace nada
+        try {
+            com.axeliscore.npc.client.NpcCliente.nombrePropio = d -> d.id.startsWith(Navidad.MODID + ":");
+        } catch (LinkageError viejo) {
+            Navidad.LOGGER.info("NAVIDAD_PLACA el Core es viejo: se queda también su letrerito");
+        }
     }
 
     private static void alNombre(RenderNameTagEvent e) {
@@ -59,7 +65,8 @@ public final class PlacaNombre {
                 quien = Character.toUpperCase(quien.charAt(0)) + quien.substring(1);
             }
         }
-        dibujar(e.getPoseStack(), e.getMultiBufferSource(), n.getBbHeight() + 0.55F, nombre, quien, alfa);
+        // arriba del "!" o "?" de las misiones (que el Core pone justo sobre la cabeza)
+        dibujar(e.getPoseStack(), e.getMultiBufferSource(), n.getBbHeight() + 1.05F, nombre, quien, alfa);
     }
 
     /** El listón con el nombre a {@code alto} bloques sobre los pies (la pose ya está en la entidad). */
