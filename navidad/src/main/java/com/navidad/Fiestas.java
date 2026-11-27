@@ -28,6 +28,9 @@ import java.util.List;
  * el trineo de Santa que cruza el cielo de noche (y en Nochebuena tres veces), más las posadas y el intercambio de regalos.
  */
 public final class Fiestas {
+    /** Si Santa, los regalos del árbol y el duende ladrón llegan solos (la prueba con fotos lo apaga para que no estorben). */
+    public static boolean automatico = true;
+
     private Fiestas() {
     }
 
@@ -110,7 +113,7 @@ public final class Fiestas {
         if (l.getGameTime() % 1200 == 0) {
             avisar(s);
         }
-        if (l.getGameTime() % 20 != 7 || !Temporada.activa(s) || l.players().isEmpty()) {
+        if (l.getGameTime() % 20 != 7 || !automatico || !Temporada.activa(s) || l.players().isEmpty()) {
             return;
         }
         long dia = l.getDayTime() / 24000L, hora = l.getDayTime() % 24000L;

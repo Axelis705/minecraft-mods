@@ -23,6 +23,9 @@ GENTE = {
                           zapatos=(150, 30, 40), tirantes=True, manga=11, puno=VERDE, flequillo=True),
     'duende_cocinero': dict(piel=2, pelo=(60, 40, 30), ojos=(70, 50, 30), ropa=VERDE, ropa2=BLANCO, pantalon=(150, 30, 40), zapatos=(30, 110, 50),
                             delantal=True, manga=4, flequillo=True),
+    # el duende ladrón: ropa oscura (para esconderse de noche), bufanda morada y botas puntiagudas moradas
+    'duende_ladron': dict(piel=1, pelo=(40, 30, 28), ojos=(150, 60, 170), ropa=(34, 62, 44), ropa2=(112, 44, 132), pantalon=(26, 26, 32),
+                          zapatos=(112, 44, 132), cinturon=(70, 50, 30), puno=(112, 44, 132), manga=11, flequillo=True, tirantes=True),
 }
 
 

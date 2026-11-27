@@ -35,6 +35,19 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.TRINEO.get(), TrineoRenderer::new);
         e.registerEntityRenderer(ModRegistry.TRINEO_MADERA.get(), TrineoMaderaRenderer::new);
         e.registerEntityRenderer(ModRegistry.REGALO_CAYENDO.get(), RegaloCayendoRenderer::new);
+        e.registerEntityRenderer(ModRegistry.DUENDE_LADRON.get(), c -> new com.axeliscore.client.PersonaRenderer<com.navidad.entidad.DuendeLadron>(c,
+                d -> new net.minecraft.resources.ResourceLocation(Navidad.MODID, "textures/entity/duende_ladron.png")) {
+            @Override
+            protected float modelScale(com.navidad.entidad.DuendeLadron d) {
+                return 0.6F;
+            }
+        });
+        e.registerEntityRenderer(ModRegistry.PINGUINO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "pinguino", 0.35F, 1F) {
+            @Override
+            protected float modelScale(com.navidad.entidad.Pinguino p) {
+                return p.isBaby() ? 0.55F : 1F;
+            }
+        });
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
     }
 

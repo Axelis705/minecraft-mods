@@ -64,9 +64,34 @@ final class Prueba {
         return mejor;
     }
 
+    /** El pingüino más cercano (de alguien o sin dueño, adulto). */
+    static com.navidad.entidad.Pinguino pinguino(boolean domado) {
+        var mc = Minecraft.getInstance();
+        com.navidad.entidad.Pinguino mejor = null;
+        for (var e : mc.level.entitiesForRendering()) {
+            if (e instanceof com.navidad.entidad.Pinguino p && p.isTame() == domado && !p.isBaby() && p.isAlive()
+                    && (mejor == null || p.distanceToSqr(mc.player) < mejor.distanceToSqr(mc.player))) {
+                mejor = p;
+            }
+        }
+        return mejor;
+    }
+
+    /** El duende ladrón más cercano, o null. */
+    static com.navidad.entidad.DuendeLadron ladron() {
+        var mc = Minecraft.getInstance();
+        for (var e : mc.level.entitiesForRendering()) {
+            if (e instanceof com.navidad.entidad.DuendeLadron d && d.isAlive()) {
+                return d;
+            }
+        }
+        return null;
+    }
+
     static void registrar() {
         ClientTest.scenario(Navidad.MODID, t -> {
             t.add("preparar", 2500, () -> {
+                com.navidad.Fiestas.automatico = false;
                 t.cmd("gamemode creative @a");
                 t.cmd("time set 6000");
                 t.cmd("weather clear");
@@ -262,19 +287,20 @@ final class Prueba {
                 t.cmd("time set 9000");
                 t.cmd("gamemode survival @a");
                 t.cmd("kill @e[type=navidad:regalo_cayendo]");
-                t.cmd("tp @a 440.5 -60 80.5 -90 -25");
+                com.navidad.entidad.RegaloCayendo.aterrizados = 0;
+                t.cmd("tp @a 440.5 -60 80.5 90 -25");
                 t.cmd("summon navidad:trineo_santa 400 -40 80.5 {Motion:[0.5,0.0,0.0]}");
             });
             t.photo("santa_viene", 2200, () -> {
             });
             t.waitFor("se abrió un paracaídas", 15000, () -> regaloAbierto() != null);
-            t.add("mirar el regalo", 1800, () -> {
+            t.add("que baje un poco", 1500, () -> {
+            });
+            t.photo("regalo_paracaidas", 150, () -> {
                 var r = regaloAbierto();
                 if (r != null) {
-                    t.lookFrom(r.getX() + 3.2, r.getY() - 0.6, r.getZ() + 3.2, r.getX(), r.getY() + 0.9, r.getZ());
+                    t.lookFrom(r.getX() + 3.4, r.getY() - 0.4, r.getZ() + 3.4, r.getX(), r.getY() + 0.7, r.getZ());
                 }
-            });
-            t.photo("regalo_paracaidas", 300, () -> {
             });
             t.add("volver al piso", 300, () -> t.cmd("tp @a 440.5 -60 80.5 -90 30"));
             t.waitFor("el regalo aterrizó como caja", 40000, () -> com.navidad.entidad.RegaloCayendo.aterrizados > 0);
@@ -290,6 +316,144 @@ final class Prueba {
             t.photo("regalo_aterrizo", 600, () -> {
             });
             t.add("fin santa", 300, () -> t.cmd("gamemode creative @a"));
+            // ---------------------------------------------------------------- el pingüino: en grupito con un bebé, domarlo con pescado, sentarlo,
+            // verlo deslizarse de panza en el hielo y nadar
+            t.add("pinguinos", 1500, () -> {
+                t.cmd("time set 6000");
+                t.cmd("gamemode creative @a");
+                t.cmd("fill 450 -60 90 490 -54 130 minecraft:air");
+                t.cmd("fill 450 -61 90 490 -61 130 minecraft:packed_ice");
+                t.cmd("fill 476 -61 112 486 -61 124 minecraft:water");
+                t.cmd("kill @e[type=navidad:pinguino]");
+                t.cmd("summon navidad:pinguino 460 -60 100 {NoAI:1b,Rotation:[150f,0f]}");
+                t.cmd("summon navidad:pinguino 461.5 -60 101 {NoAI:1b,Rotation:[170f,0f]}");
+                t.cmd("summon navidad:pinguino 459 -60 101.5 {NoAI:1b,Age:-24000,Rotation:[140f,0f]}");
+            });
+            t.photo("pinguinos", 1500, () -> t.lookFrom(462.6, -59.0, 104.2, 460.2, -59.5, 100.6));
+            t.add("despertar pinguinos", 300, () -> t.cmd("execute as @e[type=navidad:pinguino] run data merge entity @s {NoAI:0b}"));
+            for (int k = 0; k < 12; k++) {
+                t.add("darle pescado " + k, 700, () -> {
+                    if (com.navidad.entidad.Pinguino.domados > 0) {
+                        return;
+                    }
+                    var mc = Minecraft.getInstance();
+                    var pg = pinguino(false);
+                    if (pg != null) {
+                        t.cmd("item replace entity @p weapon.mainhand with minecraft:cod 8");
+                        t.lookFrom(pg.getX() + 1.6, pg.getY(), pg.getZ() + 1.6, pg.getX(), pg.getY() + 0.5, pg.getZ());
+                    }
+                });
+                t.add("dar " + k, 300, () -> {
+                    var mc = Minecraft.getInstance();
+                    var pg = pinguino(false);
+                    if (pg != null && com.navidad.entidad.Pinguino.domados == 0) {
+                        mc.gameMode.interact(mc.player, pg, InteractionHand.MAIN_HAND);
+                    }
+                });
+            }
+            t.waitFor("el pingüino es mío", 3000, () -> com.navidad.entidad.Pinguino.domados > 0);
+            t.add("mirar mi pinguino", 1500, () -> {
+                t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
+                var pg = pinguino(true);
+                if (pg != null) {
+                    t.lookFrom(pg.getX() - 1.4, pg.getY() + 0.4, pg.getZ() - 1.8, pg.getX(), pg.getY() + 0.55, pg.getZ());
+                }
+            });
+            t.photo("pinguino_mio", 600, () -> {
+            });
+            t.add("sentarlo", 1500, () -> {
+                var mc = Minecraft.getInstance();
+                var pg = pinguino(true);
+                if (pg != null) {
+                    mc.gameMode.interact(mc.player, pg, InteractionHand.MAIN_HAND);
+                }
+            });
+            t.photo("pinguino_sentado", 600, () -> {
+                var pg = pinguino(true);
+                t.check(pg != null && pg.isInSittingPose(), "el pingüino se sentó");
+            });
+            t.add("pararlo", 800, () -> {
+                var mc = Minecraft.getInstance();
+                var pg = pinguino(true);
+                if (pg != null) {
+                    mc.gameMode.interact(mc.player, pg, InteractionHand.MAIN_HAND);
+                }
+                // me alejo por el hielo: me sigue con prisa (de panza)
+                t.cmd("gamemode survival @a");
+                if (pg != null) {
+                    t.cmd(String.format(Locale.ROOT, "tp @a %.1f -60 %.1f 0 20", pg.getX() + 1.5, pg.getZ() + 10.5));
+                }
+            });
+            t.photo("pinguino_de_panza", 1300, () -> {
+                var pg = pinguino(true);
+                if (pg != null) {
+                    t.lookFrom(pg.getX() + 3.2, pg.getY() + 0.8, pg.getZ() + 1.0, pg.getX(), pg.getY() + 0.3, pg.getZ());
+                }
+            });
+            // del otro lado del estanque: se mete a nadar
+            t.add("al agua", 300, () -> t.cmd("tp @a 481.5 -60 127.5 180 20"));
+            t.waitFor("el pingüino está nadando", 12000, () -> {
+                var pg = pinguino(true);
+                return pg != null && pg.isInWater();
+            });
+            t.photo("pinguino_nadando", 300, () -> {
+                var pg = pinguino(true);
+                if (pg != null) {
+                    t.lookFrom(pg.getX() + 2.6, pg.getY() + 1.6, pg.getZ() + 2.6, pg.getX(), pg.getY() + 0.2, pg.getZ());
+                }
+            });
+            t.add("fin pinguino", 300, () -> t.cmd("gamemode creative @a"));
+            // ---------------------------------------------------------------- tu árbol: lo pongo, lo adorno y en la mañana hay regalos;
+            // de noche llega el duende ladrón, se roba uno y lo atrapo
+            t.add("arbol", 1500, () -> {
+                t.cmd("time set 6000");
+                t.cmd("fill 494 -60 134 512 -54 152 minecraft:air");
+                t.cmd("fill 494 -61 134 512 -61 152 minecraft:snow_block");
+                t.cmd("tp @a 503.5 -60 146.5 180 30");
+                t.cmd("item replace entity @p weapon.mainhand with navidad:arbol_navidad");
+            });
+            t.add("poner el arbol", 800, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
+                        new BlockHitResult(new Vec3(503.5, -61, 143.5), Direction.UP, new BlockPos(503, -61, 143), false));
+            });
+            t.add("adornarlo", 1200, () -> {
+                t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
+                t.cmd("setblock 501 -60 141 navidad:pino_maceta[facing=south]");
+                t.cmd("setblock 505 -60 141 navidad:muneco_nieve[facing=south]");
+                t.cmd("setblock 500 -60 144 navidad:farolito[facing=east]");
+                t.cmd("setblock 506 -60 144 navidad:farolito[facing=west]");
+                t.cmd("setblock 503 -60 140 navidad:chimenea[facing=south]");
+                t.cmd("setblock 502 -60 146 navidad:nochebuena");
+                t.cmd("setblock 504 -60 146 navidad:nochebuena");
+            });
+            t.add("santa pasa por el arbol", 1500, () -> t.cmd("navidad arbol"));
+            t.waitFor("Santa dejó regalos bajo mi árbol", 4000, () -> com.navidad.ArbolSanta.entregas > 0);
+            t.photo("arbol_regalos", 1500, () -> t.lookFrom(506.5, -58.2, 148.5, 503.5, -59.4, 143.5));
+            t.add("de noche", 1500, () -> {
+                t.cmd("time set 15000");
+                t.cmd("tp @a 503.5 -60 149.5 180 25");
+            });
+            t.add("llega el ladron", 1500, () -> t.cmd("execute as @p run navidad ladron"));
+            t.waitFor("el duende ladrón se robó un regalo", 25000, () -> com.navidad.entidad.DuendeLadron.robos > 0);
+            t.photo("ladron_con_regalo", 200, () -> {
+                var d = ladron();
+                if (d != null) {
+                    t.lookFrom(d.getX() + 2.2, d.getY() + 1.0, d.getZ() + 2.2, d.getX(), d.getY() + 0.6, d.getZ());
+                }
+            });
+            t.add("atraparlo", 600, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                var d = ladron();
+                if (d != null) {
+                    t.lookFrom(d.getX() + 1.5, d.getY(), d.getZ() + 1.5, d.getX(), d.getY() + 0.5, d.getZ());
+                    mc.gameMode.attack(mc.player, d);
+                }
+            });
+            t.waitFor("atrapé al duende ladrón", 3000, () -> com.navidad.entidad.DuendeLadron.atrapados > 0);
+            t.photo("ladron_atrapado", 800, () -> {
+            });
+            t.add("fin arbol", 500, () -> t.cmd("time set 6000"));
             // ---------------------------------------------------------------- el buzón y la carta a Santa
             t.add("buzon", 1000, () -> {
                 t.cmd("time set 1000");

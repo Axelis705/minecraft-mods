@@ -1,0 +1,12 @@
+{
+ "type": "forge:add_spawns",
+ "biomes": "#forge:is_snowy",
+ "spawners": [
+  {
+   "type": "navidad:pinguino",
+   "weight": 9,
+   "minCount": 2,
+   "maxCount": 5
+  }
+ ]
+}

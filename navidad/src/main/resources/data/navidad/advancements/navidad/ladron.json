@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:dulce"
+  },
+  "title": {
+   "translate": "advancement.navidad.ladron"
+  },
+  "description": {
+   "translate": "advancement.navidad.ladron.desc"
+  },
+  "frame": "goal",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/arbol"
+}

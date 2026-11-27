@@ -107,5 +107,25 @@
    "navidad:carta_vuela"
   ],
   "subtitle": "navidad.sub.carta"
+ },
+ "pinguino_hola": {
+  "sounds": [
+   "navidad:pinguino_hola1",
+   "navidad:pinguino_hola2",
+   "navidad:pinguino_hola3"
+  ],
+  "subtitle": "navidad.sub.pinguino_hola"
+ },
+ "pinguino_lastima": {
+  "sounds": [
+   "navidad:pinguino_lastima"
+  ],
+  "subtitle": "navidad.sub.pinguino_lastima"
+ },
+ "pinguino_feliz": {
+  "sounds": [
+   "navidad:pinguino_feliz"
+  ],
+  "subtitle": "navidad.sub.pinguino_feliz"
  }
 }

@@ -20,4 +20,9 @@ place feature navidad:casita_duende -188 -60 0
 summon navidad:trineo_madera -200 -60 8 {Motion:[0.0,0.0,0.3]}
 navidad galletas
 #expect platos de galletas
+summon navidad:pinguino -196 -60 12
+#expect Summoned new
+summon navidad:regalo_cayendo -196 -40 14
+navidad arbol
+#expect rboles
 navidad temporada auto

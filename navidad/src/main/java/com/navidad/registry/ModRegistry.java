@@ -101,6 +101,9 @@ public final class ModRegistry {
 
     public static final RegistryObject<SoundEvent> CANCION_PINATA = sonido("cancion_pinata");
     public static final RegistryObject<SoundEvent> CASCABELES = sonido("cascabeles");
+    public static final RegistryObject<SoundEvent> PINGUINO_HOLA = sonido("pinguino_hola");
+    public static final RegistryObject<SoundEvent> PINGUINO_LASTIMA = sonido("pinguino_lastima");
+    public static final RegistryObject<SoundEvent> PINGUINO_FELIZ = sonido("pinguino_feliz");
     public static final RegistryObject<SoundEvent> JINGLE_BELLS = sonido("villancico_campanas");
     public static final RegistryObject<SoundEvent> WE_WISH = sonido("villancico_navidad");
     public static final RegistryObject<SoundEvent> NOCHE_PAZ = sonido("villancico_noche_paz");
@@ -208,6 +211,14 @@ public final class ModRegistry {
             () -> EntityType.Builder.<Krampus>of(Krampus::new, MobCategory.MONSTER).sized(1.6F, 3.0F).fireImmune().clientTrackingRange(12)
                     .build("navidad:krampus"));
 
+    /** La mascota: el pingüino. */
+    public static final RegistryObject<EntityType<com.navidad.entidad.Pinguino>> PINGUINO = ENTITIES.register("pinguino",
+            () -> EntityType.Builder.<com.navidad.entidad.Pinguino>of(com.navidad.entidad.Pinguino::new, MobCategory.CREATURE).sized(0.55F, 0.95F)
+                    .clientTrackingRange(10).build("navidad:pinguino"));
+    /** El duende que se roba regalos de tu árbol. */
+    public static final RegistryObject<EntityType<com.navidad.entidad.DuendeLadron>> DUENDE_LADRON = ENTITIES.register("duende_ladron",
+            () -> EntityType.Builder.<com.navidad.entidad.DuendeLadron>of(com.navidad.entidad.DuendeLadron::new, MobCategory.MISC)
+                    .sized(0.45F, 1.15F).clientTrackingRange(10).build("navidad:duende_ladron"));
     public static final RegistryObject<EntityType<TrineoSanta>> TRINEO = ENTITIES.register("trineo_santa",
             () -> EntityType.Builder.<TrineoSanta>of(TrineoSanta::new, MobCategory.MISC).sized(3F, 2F).clientTrackingRange(20).updateInterval(2)
                     .build("navidad:trineo_santa"));
@@ -229,6 +240,7 @@ public final class ModRegistry {
     public static final RegistryObject<Item> HUEVO_RENO = item("huevo_reno", () -> new ForgeSpawnEggItem(RENO, 0x8C603A, 0xE4D6BA, props()));
     public static final RegistryObject<Item> HUEVO_JENGIBRE = item("huevo_hombre_jengibre", () -> new ForgeSpawnEggItem(HOMBRE_JENGIBRE, 0xB8743A, 0xF6F6F2, props()));
     public static final RegistryObject<Item> HUEVO_KRAMPUS = item("huevo_krampus", () -> new ForgeSpawnEggItem(KRAMPUS, 0x34261F, 0xFFBE28, props()));
+    public static final RegistryObject<Item> HUEVO_PINGUINO = item("huevo_pinguino", () -> new ForgeSpawnEggItem(PINGUINO, 0x1A1C26, 0xF69424, props()));
 
     // ------------------------------------------------------------------ la pestaña
 

@@ -385,3 +385,42 @@ T13 = {
 if __name__ == '__main__':
     aplicar(T13)
     print(len(T13), 'textos de Santa en survival')
+
+T14 = {
+    'entity.navidad.pinguino': ('Pingüino', 'Penguin'),
+    'item.navidad.huevo_pinguino': ('Huevo generador de pingüino', 'Penguin Spawn Egg'),
+    'navidad.pinguino.tuyo': ('★ ¡El pingüino ahora es tuyo! Mira su bufanda y su gorrito.', '★ The penguin is yours now! Look at its scarf and hat.'),
+    'navidad.pinguino.sienta': ('Tu pingüino se quedará aquí sentadito.', 'Your penguin will stay sitting here.'),
+    'navidad.pinguino.sigue': ('Tu pingüino te sigue otra vez.', 'Your penguin follows you again.'),
+    'navidad.pinguino.pesco': ('★ ¡Tu pingüino pescó algo y te lo trajo: %s!', '★ Your penguin caught something and brought it to you: %s!'),
+    'navidad.sub.pinguino_hola': ('Pingüino grazna', 'Penguin squawks'),
+    'navidad.sub.pinguino_lastima': ('Pingüino lastimado', 'Penguin hurts'),
+    'navidad.sub.pinguino_feliz': ('Pingüino feliz', 'Penguin is happy'),
+}
+
+if __name__ == '__main__':
+    aplicar(T14)
+    print(len(T14), 'textos del pingüino')
+
+T15 = {
+    'navidad.arbol.tuyo': ('★ ¡Este es tu árbol de Navidad! Cada mañana Santa te dejará regalos debajo. Entre más adornado, mejores regalos.',
+                           '★ This is your Christmas tree! Every morning Santa will leave gifts under it. The more decorated, the better the gifts.'),
+    'navidad.arbol.adornos': ('Tu árbol tiene %s adornos alrededor  %s', 'Your tree has %s decorations around it  %s'),
+    'navidad.arbol.regalos': ('★ ¡Santa pasó por tu árbol y te dejó %s regalos!', '★ Santa came by your tree and left you %s gifts!'),
+    'navidad.arbol.carbon': ('Santa pasó por tu árbol... y te dejó carbón. Alguien lastimó a quien no debía.',
+                             "Santa came by your tree... and left you coal. Someone hurt who they shouldn't have."),
+    'navidad.arbol.lleno': ('Santa vio que no has abierto los regalos de tu árbol: hoy no trajo más.',
+                            "Santa saw you haven't opened the gifts under your tree: no new ones today."),
+    'entity.navidad.duende_ladron': ('Duende ladrón', 'Thieving elf'),
+    'navidad.ladron.llega': ('Algo se mueve cerca de tu árbol de Navidad...', 'Something is moving near your Christmas tree...'),
+    'navidad.ladron.robo': ('¡El duende ladrón se robó un regalo de tu árbol! ¡Atrápalo!', 'The thieving elf stole a gift from your tree! Catch him!'),
+    'navidad.ladron.atrapado': ('★ ¡Atrapaste al duende ladrón! Soltó tu regalo y te dejó dulces de disculpa.',
+                                '★ You caught the thieving elf! He dropped your gift and left some candy to say sorry.'),
+    'navidad.ladron.atrapado_nada': ('★ ¡Atrapaste al duende ladrón antes de que robara nada!', '★ You caught the thieving elf before he stole anything!'),
+    'navidad.ladron.escapo': ('El duende ladrón se escapó con tu regalo...', 'The thieving elf got away with your gift...'),
+    'navidad.ladron.burla': ('¡Ji, ji, ji! ¡No me vas a alcanzar!', "Tee-hee! You'll never catch me!"),
+}
+
+if __name__ == '__main__':
+    aplicar(T15)
+    print(len(T15), 'textos del árbol y el duende ladrón')

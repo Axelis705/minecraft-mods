@@ -109,6 +109,16 @@ public final class Comandos {
                     c.getSource().sendSuccess(() -> Component.literal("Santa pasó por " + n + " platos de galletas"), true);
                     return n;
                 }))
+                .then(Commands.literal("arbol").requires(s -> s.hasPermission(2)).executes(c -> {
+                    int n = ArbolSanta.manana(c.getSource().getServer(), true);
+                    c.getSource().sendSuccess(() -> Component.literal("Santa pasó por " + n + " árboles"), true);
+                    return n;
+                }))
+                .then(Commands.literal("ladron").requires(s -> s.hasPermission(2)).executes(c -> {
+                    boolean ok = ArbolSanta.ladronYa(c.getSource().getPlayerOrException());
+                    c.getSource().sendSuccess(() -> Component.literal(ok ? "Ahí viene el duende ladrón" : "No hay regalos bajo tu árbol"), true);
+                    return ok ? 1 : 0;
+                }))
                 .then(Commands.literal("carta").requires(s -> s.hasPermission(2))
                         .then(Commands.literal("entregar").executes(c -> {
                             ServerPlayer sp = c.getSource().getPlayerOrException();

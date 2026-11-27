@@ -24,6 +24,8 @@ public final class Eventos {
         e.put(ModRegistry.RENO.get(), Reno.createAttributes().build());
         e.put(ModRegistry.HOMBRE_JENGIBRE.get(), HombreJengibre.createAttributes().build());
         e.put(ModRegistry.KRAMPUS.get(), Krampus.createAttributes().build());
+        e.put(ModRegistry.PINGUINO.get(), com.navidad.entidad.Pinguino.createAttributes().build());
+        e.put(ModRegistry.DUENDE_LADRON.get(), com.navidad.entidad.DuendeLadron.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -34,5 +36,7 @@ public final class Eventos {
                 Reno::puedeSalir, SpawnPlacementRegisterEvent.Operation.REPLACE);
         e.register(ModRegistry.HOMBRE_JENGIBRE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 HombreJengibre::puedeSalir, SpawnPlacementRegisterEvent.Operation.REPLACE);
+        e.register(ModRegistry.PINGUINO.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                com.navidad.entidad.Pinguino::puedeSalir, SpawnPlacementRegisterEvent.Operation.REPLACE);
     }
 }

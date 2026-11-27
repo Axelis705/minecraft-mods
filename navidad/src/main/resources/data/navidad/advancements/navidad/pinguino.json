@@ -1,0 +1,23 @@
+{
+ "display": {
+  "icon": {
+   "item": "navidad:huevo_pinguino"
+  },
+  "title": {
+   "translate": "advancement.navidad.pinguino"
+  },
+  "description": {
+   "translate": "advancement.navidad.pinguino.desc"
+  },
+  "frame": "goal",
+  "show_toast": true,
+  "announce_to_chat": true,
+  "hidden": false
+ },
+ "criteria": {
+  "hecho": {
+   "trigger": "minecraft:impossible"
+  }
+ },
+ "parent": "navidad:navidad/reno"
+}
