@@ -1323,6 +1323,21 @@ final class Prueba {
         t.photo("krampus_gancho_jugador", 350, () -> {
         });
         t.waitFor("el gancho se clavó", 4000, () -> com.navidad.entidad.GanchoCadena.anclajes > 0);
+        // huellas de pezuña de día, en fila enfrente (para ver que se dibujan)
+        t.add("huellas de dia", 1200, () -> sv(sp -> {
+            for (int i = 0; i < 6; i++) {
+                com.navidad.entidad.HuellaKrampus.poner(sp.serverLevel(), new Vec3(600.5 + (i % 2 == 0 ? 0.3 : -0.3), -60, 10.5 - i * 0.9), 180F,
+                        i % 2 == 0);
+            }
+            sp.teleportTo(600.5, -60, 15.5);
+        }));
+        t.photo("krampus_huellas_dia", 900, () -> t.lookFrom(600.5, -59.6, 15.5, 600.5, -60, 9));
+        t.add("huellas?", 200, () -> {
+            var mc = Minecraft.getInstance();
+            var hs = mc.level.getEntitiesOfClass(com.navidad.entidad.HuellaKrampus.class, mc.player.getBoundingBox().inflate(20));
+            t.log("huellas en el cliente: " + hs.size() + (hs.isEmpty() ? "" : " y=" + hs.get(0).getY() + " alfa=" + hs.get(0).alfa(0)));
+            t.check(!hs.isEmpty(), "las huellas llegan al cliente");
+        });
         // la Noche del Krampus (rápida), en la nieve de la guarida, al anochecer
         t.add("noche", 1500, () -> {
             t.cmd("item replace entity @p armor.head with minecraft:air");
