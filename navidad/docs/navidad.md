@@ -18,7 +18,7 @@ fecha: `/navidad temporada si` (o `no`, o `auto` para volver a la fecha real).
 
 ## Cosas
 
-- **71 bloques de decoración** (pestaña "Navidad: decoración"): árboles, esferas, luces, coronas, calcetines, muérdago, nochebuenas,
+- **72 bloques de decoración** (pestaña "Navidad: decoración"): árboles, esferas, luces, coronas, calcetines, muérdago, nochebuenas,
   regalos, muñeco de nieve, cascanueces, bastones gigantes, trineo, chimenea, ponche, farolitos, papel picado, piñata de estrella...
   y un **nacimiento** completo: portal de Belén, pesebre con el Niño, la Virgen, San José, pastores, borreguitos, el buey, el burrito,
   los tres Reyes Magos (Melchor, Gaspar y Baltasar), la estrella de Belén que brilla y musgo con heno para el piso.
@@ -47,6 +47,11 @@ fecha: `/navidad temporada si` (o `no`, o `auto` para volver a la fecha real).
 
 En temporada, a 8 de cada 10 mobs con cabeza de persona (zombis, esqueletos, aldeanos, saqueadores, piglins... también de otros mods)
 les sale un gorro: casi siempre el de Santa y a veces el de duende. Los bebés y los que traen casco no.
+
+## Ángeles de nieve
+
+En temporada, **agáchate sobre la nieve mirando al cielo** y quédate quieto 3 segundos: al levantarte queda la huella de un ángel de nieve
+(un tapete de nieve con la forma). Se puede quitar como cualquier tapete.
 
 ## Muérdago
 

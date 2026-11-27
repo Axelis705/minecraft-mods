@@ -373,3 +373,12 @@ T9 = {
 if __name__ == '__main__':
     aplicar(T9)
     print(len(T9), 'textos de las galletas para Santa')
+
+T10 = {
+    'navidad.angel.haciendo': ('❄ Haciendo un ángel de nieve... (no te muevas)', '❄ Making a snow angel... (don\'t move)'),
+    'navidad.angel.listo': ('❄ ¡Hiciste un ángel de nieve!', '❄ You made a snow angel!'),
+}
+
+if __name__ == '__main__':
+    aplicar(T10)
+    print(len(T10), 'textos de los ángeles de nieve')

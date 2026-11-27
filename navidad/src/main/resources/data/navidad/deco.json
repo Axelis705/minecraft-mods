@@ -3480,6 +3480,12 @@
    "kind": "alfombra",
    "sound": "wool",
    "strength": 0.2
+  },
+  {
+   "id": "angel_nieve",
+   "kind": "alfombra",
+   "sound": "wool",
+   "strength": 0.2
   }
  ]
 }

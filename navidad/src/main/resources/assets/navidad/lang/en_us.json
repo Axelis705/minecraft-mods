@@ -306,5 +306,8 @@
   "block.navidad.plato_migajas": "Plate with crumbs",
   "navidad.galletas.puestas": "★ You left cookies and milk for Santa. He'll come by tonight...",
   "navidad.galletas.ya": "Santa already has your cookies for tonight.",
-  "navidad.galletas.comidas": "★ Santa ate your cookies and left you a gift next to the plate!"
+  "navidad.galletas.comidas": "★ Santa ate your cookies and left you a gift next to the plate!",
+  "block.navidad.angel_nieve": "Snow angel",
+  "navidad.angel.haciendo": "❄ Making a snow angel... (don't move)",
+  "navidad.angel.listo": "❄ You made a snow angel!"
 }

@@ -31,7 +31,7 @@ import java.util.UUID;
 /**
  * Cosas del invierno que pasan solas cada tick: los patines de hielo (en el hielo vas mucho más rápido y suena el filo; fuera del hielo
  * caminas torpe, como con patines de verdad) y la carrera de trineos de la colina de la aldea (se cronometra sola de la cima al pie y se
- * guarda el récord del mundo).
+ * guarda el récord del mundo), los ángeles de nieve y el muérdago.
  */
 public final class Invierno {
     private static final UUID PATINES = UUID.fromString("6f1c1d8e-25a1-4c7e-9a0b-7d21c2b5e1a4");
@@ -50,13 +50,65 @@ public final class Invierno {
         if (s.getTickCount() % 2 != 0) {
             return;
         }
+        boolean temporada = Temporada.activa(s);
         for (ServerPlayer p : s.getPlayerList().getPlayers()) {
             patines(s, p);
             carrera(s, p);
+            if (temporada) {
+                angel(p);
+            }
         }
         if (s.getTickCount() % 20 == 0) {
             muerdago(s);
         }
+    }
+
+    // ------------------------------------------------------------------ ángeles de nieve
+
+    /** Cuánto lleva cada quien "acostado" en la nieve (ticks). */
+    private static final Map<UUID, Integer> ANGEL = new HashMap<>();
+    /** Dónde se "acostó" (si se mueve, empieza de nuevo). */
+    private static final Map<UUID, double[]> DONDE = new HashMap<>();
+    /** Cuántos ángeles de nieve se han hecho (para la prueba con fotos). */
+    public static int angeles;
+
+    /**
+     * Agachado en la nieve mirando al cielo, sin moverte, 3 segundos: queda la huella de un ángel de nieve donde estabas (en temporada).
+     */
+    private static void angel(ServerPlayer p) {
+        net.minecraft.world.level.block.Block a = com.navidad.bloque.deco.Deco.block("angel_nieve");
+        BlockPos pies = p.blockPosition();
+        BlockState aqui = p.level().getBlockState(pies), abajo = p.level().getBlockState(pies.below());
+        boolean nieve = aqui.is(net.minecraft.world.level.block.Blocks.SNOW) || aqui.isAir() && abajo.is(net.minecraft.world.level.block.Blocks.SNOW_BLOCK);
+        double[] donde = DONDE.get(p.getUUID());
+        boolean quieto = donde == null || Math.abs(p.getX() - donde[0]) < 0.3 && Math.abs(p.getZ() - donde[1]) < 0.3;
+        if (a == null || p.isSpectator() || !p.isShiftKeyDown() || !p.onGround() || p.getXRot() > -50F || !quieto || !nieve) {
+            ANGEL.remove(p.getUUID());
+            DONDE.remove(p.getUUID());
+            return;
+        }
+        if (donde == null) {
+            DONDE.put(p.getUUID(), new double[]{p.getX(), p.getZ()});
+        }
+        int n = ANGEL.merge(p.getUUID(), 2, Integer::sum);
+        var l = p.serverLevel();
+        if (n % 10 == 0) {
+            l.sendParticles(ParticleTypes.SNOWFLAKE, p.getX(), p.getY() + 0.2, p.getZ(), 6, 0.6, 0.05, 0.6, 0.02);
+        }
+        if (n == 20) {
+            p.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("navidad.angel.haciendo").withStyle(ChatFormatting.AQUA)));
+        }
+        if (n < 60) {
+            return;
+        }
+        ANGEL.remove(p.getUUID());
+        DONDE.remove(p.getUUID());
+        l.setBlock(pies, a.defaultBlockState(), 3);
+        l.sendParticles(ParticleTypes.SNOWFLAKE, p.getX(), p.getY() + 0.3, p.getZ(), 30, 0.8, 0.2, 0.8, 0.04);
+        l.playSound(null, pies, net.minecraft.sounds.SoundEvents.SNOW_PLACE, SoundSource.PLAYERS, 1F, 0.8F);
+        p.connection.send(new ClientboundSetActionBarTextPacket(Component.translatable("navidad.angel.listo").withStyle(ChatFormatting.WHITE)));
+        angeles++;
+        Navidad.LOGGER.info("NAVIDAD_ANGEL {} {}", p.getGameProfile().getName(), pies.toShortString());
     }
 
     // ------------------------------------------------------------------ el muérdago

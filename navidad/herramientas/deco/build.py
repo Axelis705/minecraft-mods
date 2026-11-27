@@ -1080,6 +1080,28 @@ def t_musgo(seed):
     return img(rgb)
 
 
+def t_angel_nieve(seed):
+    """Un ángel de nieve: la huella de alguien que se acostó en la nieve y movió brazos y piernas."""
+    x, y = grid()
+    t = ruido(x, y, 2.0, seed, 3)
+    rgb = Ramp('#dfe6ee', '#ebf0f5', '#f6f9fc', '#ffffff')(t)
+    cx = x - 15.5
+    cabeza = (cx ** 2 + (y - 5.5) ** 2) < 3.3 ** 2
+    cuerpo = (np.abs(cx) < 2.6 + (y - 10) * 0.12) & (y >= 10) & (y <= 20)
+    ang = np.arctan2(y - 12, np.abs(cx))
+    rr = np.sqrt(cx ** 2 + (y - 12) ** 2)
+    alas = (rr < 11.5) & (rr > 4.2) & (ang > -0.8) & (ang < 0.38) & (np.abs(cx) > 2.6)
+    piernas_r = np.sqrt(cx ** 2 + (y - 18) ** 2)
+    piernas = (piernas_r < 12.5) & (y > 18) & (np.abs(np.arctan2(cx, y - 18)) < 0.62)
+    huella = cabeza | cuerpo | alas | piernas
+    sombra = Ramp('#b8c6d8', '#c4d2e2', '#ccd8e6')(t)
+    rgb = np.where(huella[..., None], sombra, rgb)
+    # la orilla de la huella, un poco más oscura
+    borde = huella & ~(np.roll(huella, 1, 0) & np.roll(huella, -1, 0) & np.roll(huella, 1, 1) & np.roll(huella, -1, 1))
+    rgb = np.where(borde[..., None], col('#a8b8cc'), rgb)
+    return img(rgb)
+
+
 def nacimiento():
     prop(pesebre())
     prop(figura('figura_maria', 'Virgen María (nacimiento)', 'Mary (nativity)', 81, cloth('#d88a98', 0.06, 81), cloth('#2a5aa8', 0.06, 82),
@@ -1102,6 +1124,7 @@ def nacimiento():
     prop(estrella_belen())
     prop(portal_belen())
     alfombra('musgo_nacimiento', 'Musgo con heno', 'Moss with Spanish moss', lambda s: t_musgo(s))
+    alfombra('angel_nieve', 'Ángel de nieve', 'Snow angel', lambda s: t_angel_nieve(s))
 
 
 # ---------------------------------------------------------------- el catálogo

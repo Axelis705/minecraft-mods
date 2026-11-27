@@ -304,6 +304,19 @@ final class Prueba {
             t.waitFor("Santa se comió las galletas", 4000, () -> Minecraft.getInstance().level.getBlockState(new BlockPos(262, -60, 2)).getBlock()
                     == com.navidad.bloque.deco.Deco.block("plato_migajas"));
             t.photo("galletas_comidas", 1500, () -> t.lookFrom(264.5, -58.8, 5.5, 262.5, -60, 2.5));
+            // ---------------------------------------------------------------- un ángel de nieve: agachado mirando al cielo 3 segundos
+            t.add("angel", 1500, () -> {
+                t.cmd("fill 264 -61 6 266 -61 8 minecraft:snow_block");
+                t.cmd("gamemode survival @a");
+                t.cmd("tp @a 265.5 -60 7.5 0 -80");
+            });
+            t.add("acostarme", 4500, () -> Minecraft.getInstance().options.keyShift.setDown(true));
+            t.add("levantarme del angel", 500, () -> {
+                Minecraft.getInstance().options.keyShift.setDown(false);
+                t.check(com.navidad.Invierno.angeles > 0, "hice un ángel de nieve");
+                t.cmd("gamemode creative @a");
+            });
+            t.photo("angel_nieve", 1500, () -> t.lookFrom(265.5, -57.2, 9.6, 265.5, -60.6, 7.4));
             // ---------------------------------------------------------------- la colina de trineos
             t.add("colina", 1000, () -> {
                 t.cmd("time set 6000");
