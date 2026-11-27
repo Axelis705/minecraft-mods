@@ -1,0 +1,25 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:gold_nugget"
+  },
+  {
+   "item": "minecraft:gold_nugget"
+  },
+  {
+   "item": "minecraft:gold_nugget"
+  },
+  {
+   "item": "minecraft:red_dye"
+  },
+  {
+   "item": "minecraft:string"
+  }
+ ],
+ "result": {
+  "item": "navidad:adorno_campanita",
+  "count": 2
+ }
+}

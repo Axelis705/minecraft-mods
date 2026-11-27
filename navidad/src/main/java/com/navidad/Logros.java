@@ -28,5 +28,7 @@ public final class Logros {
         if (a != null && p.getAdvancements().award(a, "hecho")) {
             Navidad.LOGGER.info("NAVIDAD_LOGRO {} {}", p.getGameProfile().getName(), id);
         }
+        // el Libro de Navidad cuenta los logros (aunque ya lo tuviera de antes: así una tarea nueva se puede completar)
+        com.navidad.libro.Libro.evento(p, "logro:" + id, 1);
     }
 }

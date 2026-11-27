@@ -85,10 +85,19 @@ public final class Fiestas {
                 p.sendSystemMessage(Component.translatable("navidad.bienvenida." + k).withStyle(ChatFormatting.WHITE));
             }
             Navidad.LOGGER.info("NAVIDAD_BIENVENIDA {}", p.getGameProfile().getName());
-            Block pino = com.navidad.bloque.deco.Deco.block("pino_maceta");
-            if (pino != null) {
-                darCaja(p, new ItemStack(pino.asItem()), "Santa");
+            darCaja(p, new ItemStack(ModRegistry.PINO_NAVIDAD_ITEM.get()), "Santa");
+            darCaja(p, new ItemStack(ModRegistry.ADORNOS.get("adorno_esfera_roja").get(), 4), "Santa");
+        }
+        // el Libro de Navidad: a todos una vez (también a los que ya tenían la bienvenida de antes)
+        if (!yo.getBoolean("libro_dado")) {
+            yo.putBoolean("libro_dado", true);
+            w.dirty();
+            ItemStack libro = new ItemStack(ModRegistry.LIBRO.get());
+            if (!p.getInventory().add(libro)) {
+                p.drop(libro, false);
             }
+            p.sendSystemMessage(Component.translatable("navidad.libro.te_llega").withStyle(ChatFormatting.GOLD));
+            Navidad.LOGGER.info("NAVIDAD_LIBRO libro para {}", p.getGameProfile().getName());
         }
         if (h.getMonth() == Month.JANUARY && h.getDayOfMonth() == 6 && yo.getInt("rosca") != h.getYear()) {
             yo.putInt("rosca", h.getYear());

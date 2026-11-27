@@ -490,27 +490,111 @@ final class Prueba {
                 t.cmd("time set 6000");
                 t.cmd("fill 494 -60 134 512 -54 152 minecraft:air");
                 t.cmd("fill 494 -61 134 512 -61 152 minecraft:snow_block");
-                t.cmd("tp @a 503.5 -60 146.5 180 30");
-                t.cmd("item replace entity @p weapon.mainhand with navidad:arbol_navidad");
+                t.cmd("tp @a 503.5 -60 147.5 180 20");
+                t.cmd("item replace entity @p weapon.mainhand with navidad:pino_navidad");
             });
             t.add("poner el arbol", 800, () -> {
                 Minecraft mc = Minecraft.getInstance();
                 mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
                         new BlockHitResult(new Vec3(503.5, -61, 143.5), Direction.UP, new BlockPos(503, -61, 143), false));
             });
-            t.add("adornarlo", 1200, () -> {
+            t.photo("pino_solo", 1200, () -> t.lookFrom(503.5, -58.6, 147.2, 503.5, -59.0, 143.5));
+            // le cuelgo adornos haciendo clic en distintas ramas (cada uno cae en la rama más cerca del clic)
+            String[] ads = {"adorno_esfera_roja", "adorno_esfera_azul", "adorno_esfera_dorada", "adorno_baston", "adorno_mono",
+                    "adorno_campanita", "adorno_copo", "adorno_galleta", "adorno_pina", "adorno_cristal", "adorno_pajarito",
+                    "adorno_pinguino", "adorno_renito", "adorno_esfera_roja", "adorno_esfera_dorada", "adorno_copo", "adorno_campanita",
+                    "adorno_esfera_azul", "adorno_baston", "adorno_cristal", "adorno_galleta", "adorno_esfera_roja"};
+            for (int k = 0; k < ads.length; k++) {
+                final int kk = k;
+                t.add("colgar " + ads[k], 220, () -> {
+                    Minecraft mc = Minecraft.getInstance();
+                    t.cmd("item replace entity @p weapon.mainhand with navidad:" + ads[kk]);
+                });
+                t.add("clic " + k, 220, () -> {
+                    Minecraft mc = Minecraft.getInstance();
+                    // los lugares de enfrente (los que ve la cámara) primero
+                    float[] q = com.navidad.arbol.PuntosArbol.LUGARES[(kk * 8 + 3) % com.navidad.arbol.PuntosArbol.LUGARES.length];
+                    double y = -60 + q[1];
+                    BlockPos bp = new BlockPos(503, q[1] < 1 ? -60 : -59, 143);
+                    mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
+                            new BlockHitResult(new Vec3(503.5 + q[0], y, 143.5 + q[2]), Direction.SOUTH, bp, false));
+                });
+            }
+            for (String x : new String[]{"adorno_luces", "adorno_luces", "adorno_guirnalda", "adorno_guirnalda", "punta_estrella"}) {
+                t.add("poner " + x, 350, () -> t.cmd("item replace entity @p weapon.mainhand with navidad:" + x));
+                t.add("clic " + x, 350, () -> {
+                    Minecraft mc = Minecraft.getInstance();
+                    mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
+                            new BlockHitResult(new Vec3(503.5, -58.2, 144.0), Direction.SOUTH, new BlockPos(503, -59, 143), false));
+                });
+            }
+            t.photo("pino_sube_nivel", 600, () -> {
+            });
+            t.add("adornar la casa", 1200, () -> {
                 t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
-                t.cmd("setblock 501 -60 141 navidad:pino_maceta[facing=south]");
-                t.cmd("setblock 505 -60 141 navidad:muneco_nieve[facing=south]");
-                t.cmd("setblock 500 -60 144 navidad:farolito[facing=east]");
-                t.cmd("setblock 506 -60 144 navidad:farolito[facing=west]");
-                t.cmd("setblock 503 -60 140 navidad:chimenea[facing=south]");
-                t.cmd("setblock 502 -60 146 navidad:nochebuena");
-                t.cmd("setblock 504 -60 146 navidad:nochebuena");
+                t.cmd("setblock 500 -60 143 navidad:muneco_nieve[facing=south]");
+                t.cmd("setblock 500 -60 140 navidad:farolito[facing=east]");
+                t.cmd("setblock 506 -60 140 navidad:farolito[facing=west]");
+                t.cmd("setblock 503 -60 139 navidad:chimenea[facing=south]");
+                t.cmd("setblock 506 -60 143 navidad:nochebuena");
+                t.cmd("setblock 499 -60 146 navidad:nochebuena");
+                t.cmd("setblock 507 -60 146 navidad:pila_regalos[facing=south]");
+            });
+            t.add("pino puntos", 300, () -> t.check(Minecraft.getInstance().level.getBlockEntity(new BlockPos(503, -60, 143))
+                    instanceof com.navidad.arbol.PinoBE be && be.colgados() >= 15 && be.luces == 2 && be.guirnaldas == 2
+                    && be.punta.equals("punta_estrella"), "el pino tiene adornos, luces, guirnaldas y estrella"));
+            t.photo("pino_adornado", 1500, () -> t.lookFrom(503.5, -58.4, 147.0, 503.5, -58.9, 143.5));
+            t.photo("pino_adornado_cerca", 1500, () -> t.lookFrom(502.2, -58.9, 145.0, 503.5, -59.2, 143.5));
+            t.photo("pino_adornado_lado", 1500, () -> t.lookFrom(506.8, -58.3, 145.5, 503.5, -59.0, 143.5));
+            t.photo("pino_noche", 2500, () -> {
+                t.cmd("time set 18000");
+                t.lookFrom(503.5, -58.4, 147.4, 503.5, -58.9, 143.5);
+            });
+            t.add("pino de dia", 600, () -> t.cmd("time set 6000"));
+            // el libro: un capítulo, reclamar una tarea (cae el sello) y la página de mi árbol
+            t.add("libro", 600, () -> {
+                t.cmd("item replace entity @p weapon.mainhand with navidad:libro_navidad");
+                t.lookFrom(503.5, -58.4, 147.0, 503.5, -58.9, 143.5);
+            });
+            t.add("abrir libro", 1200, () -> {
+                LibroPantalla.tabPrueba = 0;
+                Minecraft mc = Minecraft.getInstance();
+                mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND);
+            });
+            t.add("libro abierto?", 300, () -> t.check(Minecraft.getInstance().screen instanceof LibroPantalla, "se abrió el libro"));
+            t.photo("libro_capitulo", 900, () -> {
+            });
+            t.add("reclamar", 900, () -> {
+                net.minecraft.nbt.CompoundTag q = new net.minecraft.nbt.CompoundTag();
+                q.putString("tarea", "poner_arbol");
+                com.axeliscore.data.client.ClientData.send(Navidad.MODID + ":libro_reclamar", q);
+            });
+            t.photo("libro_reclamado", 150, () -> {
+            });
+            t.add("reclamado?", 300, () -> t.check(com.axeliscore.data.client.ClientData.get(com.navidad.libro.Libro.KEY).getCompound("r")
+                    .getBoolean("poner_arbol"), "se reclamó la tarea del libro"));
+            t.add("libro mi arbol", 900, () -> {
+                Minecraft.getInstance().setScreen(null);
+                LibroPantalla.tabPrueba = 4;
+                LibroPantalla.abrir();
+            });
+            t.photo("libro_mi_arbol", 1500, () -> {
+            });
+            t.add("libro invierno", 900, () -> {
+                Minecraft.getInstance().setScreen(null);
+                LibroPantalla.tabPrueba = 1;
+                LibroPantalla.abrir();
+            });
+            t.photo("libro_invierno", 900, () -> {
+            });
+            t.add("cerrar libro", 600, () -> {
+                Minecraft.getInstance().setScreen(null);
+                LibroPantalla.tabPrueba = -1;
+                t.cmd("item replace entity @p weapon.mainhand with minecraft:air");
             });
             t.add("santa pasa por el arbol", 1500, () -> t.cmd("navidad arbol"));
             t.waitFor("Santa dejó regalos bajo mi árbol", 4000, () -> com.navidad.ArbolSanta.entregas > 0);
-            t.photo("arbol_regalos", 1500, () -> t.lookFrom(506.5, -58.2, 148.5, 503.5, -59.4, 143.5));
+            t.photo("arbol_regalos", 1500, () -> t.lookFrom(506.5, -58.0, 148.5, 503.5, -59.4, 143.5));
             t.add("de noche", 1500, () -> {
                 t.cmd("time set 15000");
                 t.cmd("tp @a 503.5 -60 149.5 180 25");

@@ -1,0 +1,19 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:spruce_sapling"
+  },
+  {
+   "item": "minecraft:snowball"
+  },
+  {
+   "item": "minecraft:string"
+  }
+ ],
+ "result": {
+  "item": "navidad:adorno_pina",
+  "count": 2
+ }
+}

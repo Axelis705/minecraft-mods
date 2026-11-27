@@ -1,0 +1,19 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "navidad:galleta_jengibre"
+  },
+  {
+   "item": "navidad:galleta_jengibre"
+  },
+  {
+   "item": "minecraft:string"
+  }
+ ],
+ "result": {
+  "item": "navidad:adorno_galleta",
+  "count": 2
+ }
+}

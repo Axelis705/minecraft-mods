@@ -43,6 +43,7 @@ public class Navidad {
         Logros.init();
         ArbolSanta.init();
         Viajero.init();
+        com.navidad.libro.Libro.init();
         AxelisCore.commands(Comandos::registrar);
     }
 

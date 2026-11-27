@@ -50,6 +50,7 @@ public final class ModClient {
             }
         });
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
+        e.registerBlockEntityRenderer(ModRegistry.PINO_NAVIDAD_BE.get(), PinoRenderer::new);
     }
 
     /** En temporada, los mobs con cabeza de persona salen con gorro de Santa o de duende. */

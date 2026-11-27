@@ -21,6 +21,9 @@ public class Bebida extends Item {
     public ItemStack finishUsingItem(ItemStack s, Level l, LivingEntity e) {
         e.setTicksFrozen(0);
         e.clearFire();
+        if (e instanceof net.minecraft.server.level.ServerPlayer sp) {
+            com.navidad.libro.Libro.evento(sp, "bebida", 1);
+        }
         return super.finishUsingItem(s, l, e);
     }
 }

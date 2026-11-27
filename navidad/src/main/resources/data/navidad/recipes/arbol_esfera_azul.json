@@ -1,0 +1,22 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:glass_pane"
+  },
+  {
+   "item": "minecraft:gold_nugget"
+  },
+  {
+   "item": "minecraft:blue_dye"
+  },
+  {
+   "item": "minecraft:snowball"
+  }
+ ],
+ "result": {
+  "item": "navidad:adorno_esfera_azul",
+  "count": 3
+ }
+}

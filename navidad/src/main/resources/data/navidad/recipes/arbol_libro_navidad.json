@@ -1,0 +1,19 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:book"
+  },
+  {
+   "item": "minecraft:red_dye"
+  },
+  {
+   "item": "minecraft:spruce_sapling"
+  }
+ ],
+ "result": {
+  "item": "navidad:libro_navidad",
+  "count": 1
+ }
+}

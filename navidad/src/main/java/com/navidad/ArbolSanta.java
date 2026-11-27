@@ -69,6 +69,9 @@ public final class ArbolSanta {
     }
 
     public static boolean esArbol(Block b) {
+        if (b == ModRegistry.PINO_NAVIDAD.get()) {
+            return true;
+        }
         for (String id : ARBOLES) {
             if (Deco.block(id) == b) {
                 return true;
@@ -119,6 +122,10 @@ public final class ArbolSanta {
         ls.add(c);
         WorldStore.get(p.server, Navidad.MODID).dirty();
         p.sendSystemMessage(Component.translatable("navidad.arbol.tuyo").withStyle(ChatFormatting.GOLD));
+        com.navidad.libro.Libro.evento(p, "arbol_puesto", 1);
+        if (l instanceof ServerLevel sl) {
+            recordar(p, e.getPos(), com.navidad.arbol.NivelArbol.de(sl, e.getPos()));
+        }
         Navidad.LOGGER.info("NAVIDAD_ARBOL {} puso su árbol en {}", p.getGameProfile().getName(), e.getPos().toShortString());
     }
 
@@ -145,13 +152,12 @@ public final class ArbolSanta {
             return;
         }
         BlockState st = e.getLevel().getBlockState(e.getPos());
-        if (!esArbol(st.getBlock())) {
+        if (!esArbol(st.getBlock()) || st.is(ModRegistry.PINO_NAVIDAD.get())) {
             return;
         }
-        int n = adornos(p.serverLevel(), e.getPos());
-        int nivel = nivel(n);
-        String estrellas = "★".repeat(nivel + 1) + "☆".repeat(3 - nivel);
-        p.displayClientMessage(Component.translatable("navidad.arbol.adornos", n, estrellas).withStyle(ChatFormatting.GOLD), true);
+        com.navidad.arbol.NivelArbol.Estado es = com.navidad.arbol.NivelArbol.de(p.serverLevel(), e.getPos());
+        p.displayClientMessage(com.navidad.arbol.NivelArbol.resumen(es), true);
+        recordar(p, e.getPos(), es);
         e.setCanceled(true);
     }
 
@@ -230,20 +236,17 @@ public final class ArbolSanta {
             malo = m > c.getInt("malos");
             c.putInt("malos", m);
         }
-        int n = adornos(l, arbol), nv = nivel(n);
+        com.navidad.arbol.NivelArbol.Estado es = com.navidad.arbol.NivelArbol.de(l, arbol);
+        int nv = es.nivel(), n = es.total();
+        if (p != null) {
+            recordar(p, arbol, es);
+        }
         boolean navidad = Temporada.diaDiciembre() == 25;
         List<ItemStack> regalos = new ArrayList<>();
         if (malo) {
             regalos.add(new ItemStack(Items.COAL, 2 + r.nextInt(3)));
         } else {
-            int cuantos = (nv == 0 ? 1 : nv == 1 ? 1 + r.nextInt(2) : nv == 2 ? 2 : 3) + (navidad ? 1 : 0);
-            float raro = new float[]{0.08F, 0.2F, 0.35F, 0.45F}[nv], epico = new float[]{0F, 0.01F, 0.03F, 0.06F}[nv];
-            for (int k = 0; k < cuantos; k++) {
-                float x = r.nextFloat();
-                Premios.Rareza rz = navidad && k == 0 ? Premios.Rareza.EPICO : x < epico ? Premios.Rareza.EPICO : x < epico + raro
-                        ? Premios.Rareza.RARO : Premios.Rareza.COMUN;
-                regalos.add(Premios.sacar(rz, r));
-            }
+            regalos.addAll(regalosDeNivel(nv, navidad, r));
         }
         // los lugares alrededor del árbol (primero los más cercanos)
         List<BlockPos> lugares = new ArrayList<>();
@@ -281,7 +284,93 @@ public final class ArbolSanta {
                 com.axeliscore.npc.Misiones.evento(p, Navidad.MODID + ":regalos_arbol", 1);
             }
         }
-        Navidad.LOGGER.info("NAVIDAD_ARBOL regalos para {}: {} (adornos={}, nivel={}, malo={})", nombre, puestos, n, nv, malo);
+        Navidad.LOGGER.info("NAVIDAD_ARBOL regalos para {}: {} (puntos={}, nivel={}, malo={})", nombre, puestos, n, nv, malo);
+    }
+
+    /**
+     * Lo que deja Santa según el nivel del árbol (1 a 6): más regalos y más seguido raros y épicos; desde el nivel 4, adornos para seguir
+     * adornando (del 5 en adelante, siempre uno, y en el 6 casi siempre raro). El 25 de diciembre, uno épico de más.
+     */
+    public static List<ItemStack> regalosDeNivel(int nv, boolean navidad, RandomSource r) {
+        int k = Math.max(1, Math.min(6, nv)) - 1;
+        int cuantos = new int[]{1, 1 + r.nextInt(2), 2, 2 + r.nextInt(2), 3, 3 + r.nextInt(2)}[k] + (navidad ? 1 : 0);
+        float raro = new float[]{0.10F, 0.20F, 0.30F, 0.40F, 0.45F, 0.50F}[k], epico = new float[]{0F, 0.02F, 0.04F, 0.07F, 0.10F, 0.15F}[k];
+        List<ItemStack> out = new ArrayList<>();
+        for (int i = 0; i < cuantos; i++) {
+            float x = r.nextFloat();
+            Premios.Rareza rz = navidad && i == 0 ? Premios.Rareza.EPICO : x < epico ? Premios.Rareza.EPICO : x < epico + raro
+                    ? Premios.Rareza.RARO : Premios.Rareza.COMUN;
+            out.add(Premios.sacar(rz, r));
+        }
+        float adorno = new float[]{0F, 0F, 0.1F, 0.3F, 1F, 1F}[k];
+        if (r.nextFloat() < adorno) {
+            com.navidad.arbol.Adornos.Rareza rz = k >= 5 ? (r.nextFloat() < 0.75F ? com.navidad.arbol.Adornos.Rareza.RARO
+                    : com.navidad.arbol.Adornos.Rareza.BONITO) : k == 4 ? (r.nextBoolean() ? com.navidad.arbol.Adornos.Rareza.RARO
+                    : com.navidad.arbol.Adornos.Rareza.BONITO) : com.navidad.arbol.Adornos.Rareza.BONITO;
+            List<String> ids = new ArrayList<>();
+            for (com.navidad.arbol.Adornos.Def d : com.navidad.arbol.Adornos.TODOS.values()) {
+                if (d.rareza() == rz && d.tipo() != com.navidad.arbol.Adornos.Tipo.PUNTA) {
+                    ids.add(d.id());
+                }
+            }
+            if (!ids.isEmpty()) {
+                out.add(new ItemStack(com.navidad.arbol.Adornos.item(ids.get(r.nextInt(ids.size()))), rz == com.navidad.arbol.Adornos.Rareza.BONITO ? 2 : 1));
+            }
+        }
+        return out;
+    }
+
+    // ------------------------------------------------------------------ lo que sabe el libro de tu árbol
+
+    /** Guarda cómo está el árbol de alguien (para el libro, aunque el árbol esté lejos y no cargado). */
+    public static void recordar(ServerPlayer p, BlockPos arbol, com.navidad.arbol.NivelArbol.Estado e) {
+        ListTag ls = lista(p.server);
+        for (int i = 0; i < ls.size(); i++) {
+            CompoundTag c = ls.getCompound(i);
+            if (c.getUUID("quien").equals(p.getUUID()) && pos(c).equals(arbol)) {
+                c.put("estado", e.tag());
+                WorldStore.get(p.server, Navidad.MODID).dirty();
+                com.navidad.libro.Libro.maximo(p, "variedad", e.variedad());
+                com.navidad.libro.Libro.nivelArbol(p, e.nivel());
+                return;
+            }
+        }
+    }
+
+    /** Lo último que se supo del árbol de alguien (null si no tiene árbol). */
+    public static CompoundTag estadoGuardado(ServerPlayer p) {
+        ListTag ls = lista(p.server);
+        for (int i = 0; i < ls.size(); i++) {
+            CompoundTag c = ls.getCompound(i);
+            if (c.getUUID("quien").equals(p.getUUID())) {
+                CompoundTag e = c.contains("estado") ? c.getCompound("estado").copy() : new CompoundTag();
+                e.putBoolean("tiene", true);
+                e.putString("mundo", c.getString("mundo"));
+                e.putInt("x", c.getInt("x"));
+                e.putInt("y", c.getInt("y"));
+                e.putInt("z", c.getInt("z"));
+                return e;
+            }
+        }
+        return null;
+    }
+
+    /** Si el árbol de alguien está cargado, vuelve a contar sus puntos (al abrir el libro). */
+    public static void revisarDe(ServerPlayer p) {
+        ListTag ls = lista(p.server);
+        for (int i = 0; i < ls.size(); i++) {
+            CompoundTag c = ls.getCompound(i);
+            if (!c.getUUID("quien").equals(p.getUUID())) {
+                continue;
+            }
+            ServerLevel l = nivel(p.server, c);
+            BlockPos b = pos(c);
+            if (l != null && l.isLoaded(b) && esArbol(l.getBlockState(b).getBlock())) {
+                CompoundTag e = com.navidad.arbol.NivelArbol.de(l, b).tag();
+                c.put("estado", e);
+                WorldStore.get(p.server, Navidad.MODID).dirty();
+            }
+        }
     }
 
     /** Las cajas de regalo llenas alrededor de un árbol. */

@@ -1,0 +1,54 @@
+{
+ "type": "minecraft:block",
+ "pools": [
+  {
+   "rolls": 1,
+   "entries": [
+    {
+     "type": "minecraft:item",
+     "name": "navidad:pino_navidad",
+     "functions": [
+      {
+       "function": "minecraft:copy_nbt",
+       "source": "block_entity",
+       "ops": [
+        {
+         "source": "Adornos",
+         "target": "BlockEntityTag.Adornos",
+         "op": "replace"
+        },
+        {
+         "source": "Luces",
+         "target": "BlockEntityTag.Luces",
+         "op": "replace"
+        },
+        {
+         "source": "Guirnaldas",
+         "target": "BlockEntityTag.Guirnaldas",
+         "op": "replace"
+        },
+        {
+         "source": "Punta",
+         "target": "BlockEntityTag.Punta",
+         "op": "replace"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "conditions": [
+    {
+     "condition": "minecraft:block_state_property",
+     "block": "navidad:pino_navidad",
+     "properties": {
+      "half": "lower"
+     }
+    },
+    {
+     "condition": "minecraft:survives_explosion"
+    }
+   ]
+  }
+ ]
+}

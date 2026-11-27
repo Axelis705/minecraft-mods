@@ -1,0 +1,31 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:glowstone_dust"
+  },
+  {
+   "item": "minecraft:glowstone_dust"
+  },
+  {
+   "item": "minecraft:red_dye"
+  },
+  {
+   "item": "minecraft:blue_dye"
+  },
+  {
+   "item": "minecraft:yellow_dye"
+  },
+  {
+   "item": "minecraft:string"
+  },
+  {
+   "item": "minecraft:string"
+  }
+ ],
+ "result": {
+  "item": "navidad:adorno_luces",
+  "count": 1
+ }
+}

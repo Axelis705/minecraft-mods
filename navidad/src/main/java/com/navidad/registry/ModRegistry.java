@@ -181,6 +181,33 @@ public final class ModRegistry {
     public static final RegistryObject<EntityType<Pinata>> PINATA_ENT = ENTITIES.register("pinata", () -> EntityType.Builder.<Pinata>of(Pinata::new,
             MobCategory.MISC).sized(1.2F, 1.7F).clientTrackingRange(10).build("navidad:pinata"));
 
+    // ------------------------------------------------------------------ tu árbol para decorar, sus adornos y el libro
+
+    public static final RegistryObject<Block> PINO_NAVIDAD = BLOCKS.register("pino_navidad", () -> new com.navidad.arbol.PinoNavidad(
+            BlockBehaviour.Properties.of().strength(0.6F).sound(SoundType.AZALEA_LEAVES).noOcclusion().pushReaction(
+                    net.minecraft.world.level.material.PushReaction.DESTROY)));
+    public static final RegistryObject<Item> PINO_NAVIDAD_ITEM = item("pino_navidad", () -> new com.navidad.arbol.PinoItem(PINO_NAVIDAD.get(),
+            props().stacksTo(1)));
+    public static final RegistryObject<BlockEntityType<com.navidad.arbol.PinoBE>> PINO_NAVIDAD_BE = BES.register("pino_navidad",
+            () -> BlockEntityType.Builder.of(com.navidad.arbol.PinoBE::new, PINO_NAVIDAD.get()).build(null));
+    public static final RegistryObject<Item> LIBRO = item("libro_navidad", () -> new com.navidad.libro.LibroItem(props().stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
+    /** Los adornos para colgar (uno por cada uno de {@link com.navidad.arbol.Adornos#TODOS}). */
+    public static final java.util.Map<String, RegistryObject<Item>> ADORNOS = new java.util.LinkedHashMap<>();
+
+    static {
+        for (com.navidad.arbol.Adornos.Def d : com.navidad.arbol.Adornos.TODOS.values()) {
+            int pila = d.tipo() == com.navidad.arbol.Adornos.Tipo.PUNTA ? 1 : 16;
+            Rarity rz = switch (d.rareza()) {
+                case EPICO -> Rarity.EPIC;
+                case RARO -> Rarity.RARE;
+                case BONITO -> Rarity.UNCOMMON;
+                default -> Rarity.COMMON;
+            };
+            ADORNOS.put(d.id(), item(d.id(), () -> new com.navidad.arbol.AdornoItem(props().stacksTo(pila).rarity(rz), d.id())));
+        }
+    }
+
     // ------------------------------------------------------------------ ropa (se pone encima con el vestuario del Core)
 
     public static final RegistryObject<Item> GORRO_SANTA = item("gorro_santa", () -> new Ropa(props().stacksTo(1), "gorro_santa"));

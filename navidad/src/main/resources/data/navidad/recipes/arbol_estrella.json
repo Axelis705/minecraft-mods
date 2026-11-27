@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  " G ",
+  "GLG",
+  " I "
+ ],
+ "key": {
+  "G": {
+   "item": "minecraft:gold_ingot"
+  },
+  "L": {
+   "item": "minecraft:glowstone"
+  },
+  "I": {
+   "item": "minecraft:iron_nugget"
+  }
+ },
+ "result": {
+  "item": "navidad:punta_estrella",
+  "count": 1
+ }
+}

@@ -1,0 +1,22 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:snowball"
+  },
+  {
+   "item": "minecraft:snowball"
+  },
+  {
+   "item": "minecraft:quartz"
+  },
+  {
+   "item": "minecraft:string"
+  }
+ ],
+ "result": {
+  "item": "navidad:adorno_copo",
+  "count": 2
+ }
+}

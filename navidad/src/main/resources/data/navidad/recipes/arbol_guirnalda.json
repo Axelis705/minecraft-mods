@@ -1,0 +1,28 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:gold_nugget"
+  },
+  {
+   "item": "minecraft:gold_nugget"
+  },
+  {
+   "item": "minecraft:gold_nugget"
+  },
+  {
+   "item": "minecraft:gold_nugget"
+  },
+  {
+   "item": "minecraft:string"
+  },
+  {
+   "item": "minecraft:string"
+  }
+ ],
+ "result": {
+  "item": "navidad:adorno_guirnalda",
+  "count": 1
+ }
+}

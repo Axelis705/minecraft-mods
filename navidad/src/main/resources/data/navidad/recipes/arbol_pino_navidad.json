@@ -1,0 +1,24 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "pattern": [
+  " S ",
+  "LLL",
+  " T "
+ ],
+ "key": {
+  "S": {
+   "item": "minecraft:spruce_sapling"
+  },
+  "L": {
+   "item": "minecraft:spruce_leaves"
+  },
+  "T": {
+   "item": "minecraft:spruce_log"
+  }
+ },
+ "result": {
+  "item": "navidad:pino_navidad",
+  "count": 1
+ }
+}

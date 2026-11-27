@@ -26,6 +26,7 @@ public class RegaloMisterioso extends Item {
             Premios.Rareza rz = Premios.rareza(l.random);
             l.playSound(null, p.blockPosition(), com.navidad.registry.ModRegistry.REGALO_ABRE.get(), net.minecraft.sounds.SoundSource.PLAYERS, 1F, 1F);
             Premios.dar(sp, Premios.sacar(rz, l.random), rz, "navidad.regalo.te_toco");
+            com.navidad.libro.Libro.evento(sp, "regalo_abierto", 1);
             if (!p.getAbilities().instabuild) {
                 s.shrink(1);
             }
