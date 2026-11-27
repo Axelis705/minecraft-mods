@@ -169,9 +169,9 @@ public final class Mansion {
             t.set(x, PA + 1, HZ0, C + "alfombra_roja");
         }
         t.altoPar(22, PA + 1, HZ0, "sillon", "south");
-        // la araña grande: cuatro arañas colgando de cadenas, cerca de la entrada (no tapan la pantalla)
-        for (int x = 26; x <= 27; x++) {
-            for (int z = 5; z <= 6; z++) {
+        // las arañas: a los lados (fuera de la vista de la pantalla, desde abajo y desde la galería)
+        for (int x : new int[] {21, 32}) {
+            for (int z : new int[] {7, 13}) {
                 t.arana(x, ATI - 1, z, 3);
             }
         }
@@ -270,7 +270,7 @@ public final class Mansion {
     private static void alumbrar(Trazo t) {
         Plano p = t.p;
         // adentro: {pies, nivel}
-        int[][] pisos = {{SOT + 1, 11}, {PB + 1, 13}, {PA + 1, 13}, {ATI + 1, 10}, {TORRE + 1, 12}};
+        int[][] pisos = {{SOT + 1, 14}, {PB + 1, 15}, {PA + 1, 15}, {ATI + 1, 13}, {TORRE + 1, 14}};
         for (int[] n : pisos) {
             int y = n[0] + 2;
             for (int x = X0 + 1; x <= X1 - 1; x++) {
@@ -289,14 +289,14 @@ public final class Mansion {
         for (int x = HX0 + 1; x <= HX1 - 1; x += 4) {
             for (int z = HZ0 + 4; z <= HZ1; z += 4) {
                 if (p.vacio(x, PA + 4, z)) {
-                    t.luz(x, PA + 4, z, 12);
+                    t.luz(x, PA + 4, z, 14);
                 }
             }
         }
         for (int x = BX0 + 4; x <= BX1 - 2; x += 5) {
             for (int z = BZ0 + 2; z <= BZ1; z += 5) {
                 if (p.vacio(x, PA + 4, z)) {
-                    t.luz(x, PA + 4, z, 12);
+                    t.luz(x, PA + 4, z, 14);
                 }
             }
         }
@@ -306,14 +306,14 @@ public final class Mansion {
             for (int z = MansionJardin.TZ0 + 2; z <= MansionJardin.TZ1 - 2; z += 5) {
                 boolean casa = x >= X0 && x <= X1 && z >= TZ0 && z <= Z1;
                 if (!casa && p.vacio(x, yj, z)) {
-                    t.luz(x, yj, z, 11);
+                    t.luz(x, yj, z, 13);
                 }
             }
         }
         for (int x = 22; x <= 31; x += 4) {
             for (int z = -46; z <= -38; z += 4) {
                 if (p.vacio(x, SOT + 3, z)) {
-                    t.luz(x, SOT + 3, z, 11);
+                    t.luz(x, SOT + 3, z, 13);
                 }
             }
         }
@@ -322,14 +322,14 @@ public final class Mansion {
             for (int x = X0 - 1; x <= X1 + 1; x += 3) {
                 for (int z : new int[] {TZ0 - 1, Z0 - 1, Z1 + 1}) {
                     if (p.vacio(x, yy, z)) {
-                        t.luz(x, yy, z, 12);
+                        t.luz(x, yy, z, 15);
                     }
                 }
             }
             for (int z = TZ0; z <= Z1; z += 3) {
                 for (int x : new int[] {X0 - 1, X1 + 1}) {
                     if (p.vacio(x, yy, z)) {
-                        t.luz(x, yy, z, 12);
+                        t.luz(x, yy, z, 15);
                     }
                 }
             }

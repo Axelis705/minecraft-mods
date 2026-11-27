@@ -221,6 +221,7 @@ final class MansionCuartos {
             t.deco(41, y, z, "silla", "east");
             t.deco(44, y, z, "silla", "west");
         }
+        tapete(t, 40, 2, 45, 13, PB);
         t.alto(42, y, 3, "sillon", "south");
         t.alto(43, y, 12, "sillon", "north");
         // encima: candelabros, velas, platos (cráneos de la colección...), papeles
@@ -563,6 +564,7 @@ final class MansionCuartos {
     private static void bebe(Trazo t) {
         int y = PA + 1, x0 = X0 + 1, x1 = HX0 - 2, z0 = 14, z1 = BZ0 - 2;
         paredes(t, x0, z0, x1, z1, y, ATI - 2, C + "papel_rosa", true);
+        tapete(t, 8, 16, 13, 21, PA);
         // la cuna al centro, el caballito, muñecas por todos lados mirando a la puerta, una camita y el baúl de juguetes
         t.deco(10, y, 18, "cuna", "north");
         t.deco(13, y, 20, "caballito", "west");
@@ -617,6 +619,7 @@ final class MansionCuartos {
         t.set(x0, y, 8, C + "papeles");
         t.set(x0 + 1, ATI - 2, 7, C + "telarana");
         esc(t, x0 + 1, y, 7);
+        tapete(t, 42, 2, 46, 10, PA);
         t.deco(44, y, 4, "mesa", "south");
         t.deco(45, y, 4, "mesa", "south");
         t.set(44, y + 1, 4, C + "lampara_mesa");
@@ -657,6 +660,7 @@ final class MansionCuartos {
     private static void costura(Trazo t) {
         int y = PA + 1, x0 = X0 + 1, x1 = 18, z0 = BZ1 + 2, z1 = Z1 - 1;
         paredes(t, x0, z0, x1, z1, y, ATI - 2, C + "papel_dorado", true);
+        tapete(t, 8, 41, 16, 48, PA);
         // maniquíes con vestidos, máquinas de coser, rollos de tela, cajones con hilos
         for (int[] m : new int[][] {{9, 42}, {12, 42}, {15, 42}, {11, 47}, {14, 47}}) {
             t.alto(m[0], y, m[1], "maniqui", m[1] < 45 ? "south" : "north");
