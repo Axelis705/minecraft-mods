@@ -166,7 +166,7 @@ final class MansionCuartos {
         t.set(6, y + 4, -4, C + "telarana");
         esc(t, 6, y, -4);
         // cuadros y lámparas
-        t.deco(x0, y + 3, 3, "retrato_caballero", "east");
+        t.deco(x0, y + 3, 1, "retrato_caballero", "east");
         t.deco(6, y + 4, 10, "retrato_dama", "east");
         t.arana(10, PA - 1, 7, 1);
         t.luz(12, PA - 2, 11, 9);
@@ -199,7 +199,6 @@ final class MansionCuartos {
             t.deco(14, y, z, "silla", "west");
         }
         t.alto(x1, y, z0, "vitrina", "west");
-        t.set(x1, y + 1, z0, C + "muneca");
         t.alto(x0, y, z0, "reloj_pie", "east");
         t.deco(13, y, z1, "atril", "north");
         t.deco(x1, y + 3, 18, "retrato_nina", "west");
@@ -238,7 +237,7 @@ final class MansionCuartos {
         t.set(x0, y + 1, 6, C + "vela");
         t.alto(x1, y, 14, "reloj_pie", "west");
         t.deco(x0, y + 3, 6, "retrato_dama", "east");
-        t.deco(x1, y + 3, 3, "retrato_caballero", "west");
+        t.deco(x1, y + 3, 1, "retrato_caballero", "west");
         // el mirador de la torre del este: una mesita para el té y dos sillas
         t.deco(44, y, -2, "mesa", "north");
         t.set(44, y + 1, -2, C + "vela");
@@ -409,7 +408,7 @@ final class MansionCuartos {
         t.alto(x1, y, 40, "vitrina", "west");
         esc(t, x1, y, 42);
         // trofeos de caza, sillones, un reloj
-        t.deco(x0, y + 3, 44, "cabeza_trofeo", "east");
+        t.deco(x0, y + 3, 45, "cabeza_trofeo", "east");
         t.deco(x0, y + 3, 40, "cabeza_trofeo", "east");
         t.deco(12, y + 3, z1, "cabeza_trofeo", "north");
         t.alto(x0, y, 45, "sillon", "east");
@@ -426,9 +425,7 @@ final class MansionCuartos {
         // la colección: vitrinas con muñecas en filas, pedestales con bustos y cráneos, armaduras, cabezas en los muros
         for (int x = 22; x <= 31; x += 3) {
             t.alto(x, y, 42, "vitrina", "south");
-            t.set(x, y + 1, 42, C + "muneca");
             t.alto(x, y, 47, "vitrina", "north");
-            t.set(x, y + 1, 47, C + "muneca");
         }
         t.alto(x0, y, 41, "armadura", "east");
         t.alto(x1, y, 41, "armadura", "west");
@@ -576,7 +573,6 @@ final class MansionCuartos {
             t.set(m[0], y, m[1], C + "muneca[facing=north]");
         }
         t.set(x1, y + 1, 17, C + "muneca[facing=west]");
-        t.set(10, y + 1, 18, C + "muneca[facing=north]");
         t.deco(x0, y + 2, 20, "retrato_nina", "east");
         t.deco(x1, y + 2, 18, "reloj", "west");
         t.p.texto(x0, y + 1, 15, "rayon", "east", 0x5A3A3C, "JUEGA", "CONMIGO");

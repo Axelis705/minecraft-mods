@@ -213,7 +213,6 @@ final class MansionJardin {
         t.set(21, y1 - 2, -47, C + "telarana");
         t.set(32, y1 - 2, -47, C + "telarana");
         t.luz(26, SOT + 4, -42, 6);
-        t.p.letrero(26, SOT + 4, z1 - 1, "letrero", "north", "gold", "PANTEON DE LA", "FAMILIA");
         // la escalera que sube al panteón (x 24..29, sube al sur: z -37 abajo .. -32 arriba, al ras del piso del panteón)
         for (int k = 0; k < SUELO; k++) {
             int y = SOT + 1 + k, z = z1 + k;
@@ -234,6 +233,11 @@ final class MansionJardin {
                 }
             }
         }
+        // un dintel arriba de la escalera con el letrero (alto: no estorba al subir)
+        for (int x = 24; x <= 29; x++) {
+            t.set(x, SOT + 5, z1, C + "cornisa");
+        }
+        t.p.letrero(26, SOT + 5, z1 - 1, "letrero", "north", "gold", "PANTEON DE LA", "FAMILIA");
         panteon(t);
     }
 
@@ -739,7 +743,7 @@ final class MansionJardin {
         arbol(t, 11, 71, 4);
         t.set(11, SUELO, 71, C + "tierra");
         t.set(10, y, 72, C + "rosal");
-        t.set(12, y, 70, C + "rosal");
+        t.set(12, y, 72, C + "rosal");
         t.deco(14, y, z1 - 1, "banca", "north");
         t.set(x0 + 1, y + 3, z0 + 1, C + "telarana");
         t.luz(11, y + 3, 66, 6);
@@ -800,7 +804,7 @@ final class MansionJardin {
         grava(t, 29, 66, 31, 67);
         t.set(49, SUELO + 3, 65, C + "farol");
         t.set(32, SUELO + 3, 68, C + "farol");
-        t.deco(46, SUELO + 1, 62, "banca", "south");
+        t.deco(47, SUELO + 1, 57, "banca", "south");
         t.deco(36, SUELO + 1, 80, "cuervo", "north");
         esc(t, 51, SUELO + 1, 80);
     }
@@ -889,7 +893,7 @@ final class MansionJardin {
                 tumba(t, x, z, "west", true);
             }
         }
-        t.p.texto(36, y + 1, 85, "placa", "south", 0xB5A88A, "CASCABEL I", "CASCABEL II", "CASCABEL III");
+        t.p.texto(36, y, 85, "placa", "south", 0xB5A88A, "CASCABEL I", "CASCABEL II", "CASCABEL III");
         t.set(35, y, 85, C + "vela");
         esc(t, 40, y, 92);
     }

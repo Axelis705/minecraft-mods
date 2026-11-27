@@ -192,7 +192,7 @@ public final class RevisarMapas {
     private static int pantallas(Map<String, Revisor.Forma> deco) {
         int fallas = 0, total = 0;
         for (Map.Entry<String, Plano> e : todos().entrySet()) {
-            Revisor r = new Revisor(e.getValue(), deco).pantallas().corredizas();
+            Revisor r = new Revisor(e.getValue(), deco).pantallas().corredizas().mitades();
             total += e.getValue().m.values().stream().filter(b -> b.startsWith("coleccionista:pantalla")).count();
             int f = r.problemas.size();
             if (f > 0) {
@@ -200,7 +200,7 @@ public final class RevisarMapas {
             }
             fallas += f;
         }
-        System.out.println("PANTALLAS Y PUERTAS (" + total + " pantallas)" + (fallas == 0 ? " OK" : " FALLA " + fallas));
+        System.out.println("PANTALLAS, PUERTAS Y MUEBLES (" + total + " pantallas)" + (fallas == 0 ? " OK" : " FALLA " + fallas));
         return fallas;
     }
 
@@ -220,7 +220,7 @@ public final class RevisarMapas {
             // la jaula de Cascabel está cerrada a propósito (la reja se abre en el juego); los techos, bardas y setos no son cuartos
             r.cerrado(Mansion.REJA_X0 - 1, Mansion.REJA_Z, Mansion.REJA_X0 + Mansion.REJA_Z1 + 1, Mansion.HZ1)
                     .ignorarIslas(c -> Mansion.enTecho(p, c[0], c[1], c[2])).islas(8, 0, 60).marcas("man.esc.").marcas("man.entrada")
-                    .marcas("salida.mansion").pisos(p.x0, p.z0, p.x1, p.z1, 0, 40).puertas();
+                    .marcas("salida.mansion").pisos(p.x0, p.z0, p.x1, p.z1, 0, 40).puertas().mitades();
             System.out.print(r.informe("La mansión", 12));
             System.out.println("escondites: " + p.marcas.keySet().stream().filter(k -> k.startsWith("man.esc.")).count());
             Vista v = new Vista(p, r, tex);
@@ -240,7 +240,7 @@ public final class RevisarMapas {
             v.iso(new File(out, "mansion_corte_alta.png"), 20, 0, casa, 9, "Planta alta");
             v.iso(new File(out, "mansion_corte_atico.png"), 29, 0, casa, 9, "Ático");
             v.iso(new File(out, "mansion_vestibulo.png"), 20, 0, new int[] {15, -6, 38, 24}, 18, "Vestíbulo");
-            fallas += r.cuantos("cuarto inaccesible") + r.cuantos("no se llega") + r.cuantos("no cabe nadie");
+            fallas += r.cuantos("cuarto inaccesible") + r.cuantos("no se llega") + r.cuantos("no cabe nadie") + r.cuantos("mueble partido");
         }
         if (cual.equals("caminos") || cual.equals("todo")) {
             fallas += caminos(out, deco, tex);

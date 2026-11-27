@@ -516,6 +516,42 @@ public final class Revisor {
         return this;
     }
 
+    // ------------------------------------------------------------------ muebles partidos
+
+    private static String idDe(String b) {
+        int i = b.indexOf('[');
+        return i < 0 ? b : b.substring(0, i);
+    }
+
+    /**
+     * Muebles de dos bloques partidos: la mitad de abajo de un mueble alto (o de una puerta) sin la de arriba o al revés (algo se puso
+     * encima), y camas sin pies. En el juego la mitad sola desaparece o se ve rota.
+     */
+    public Revisor mitades() {
+        for (Map.Entry<Long, String> e : p.m.entrySet()) {
+            String v = e.getValue();
+            long k = e.getKey();
+            int x = Plano.kx(k), y = Plano.ky(k), z = Plano.kz(k);
+            if (v.contains("half=lower") || v.contains("half=upper")) {
+                boolean abajo = v.contains("half=lower");
+                String o = p.get(x, y + (abajo ? 1 : -1), z);
+                if (o == null || !idDe(o).equals(idDe(v)) || !o.contains(abajo ? "half=upper" : "half=lower")) {
+                    problemas.add(new Problema("mueble partido", x, y, z, v + (abajo ? " sin su mitad de arriba (" : " sin su mitad de abajo (") + o + ")"));
+                }
+            } else if (v.contains("part=head")) {
+                boolean pies = false;
+                for (int[] d : new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
+                    String o = p.get(x + d[0], y, z + d[1]);
+                    pies |= o != null && idDe(o).equals(idDe(v)) && o.contains("part=foot");
+                }
+                if (!pies) {
+                    problemas.add(new Problema("mueble partido", x, y, z, v + " sin los pies"));
+                }
+            }
+        }
+        return this;
+    }
+
     // ------------------------------------------------------------------ las pantallas
 
     /** El tamaño de la imagen de una pantalla, como la dibuja el cliente (PantallaRenderer): {ancho, alto}. */
