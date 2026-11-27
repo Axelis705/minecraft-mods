@@ -64,6 +64,11 @@ if __name__ == '__main__':
     sin_forma('sueter_copos', 'sueter_copos', 1, ['blue_wool', 'blue_wool', 'blue_wool', 'blue_wool', 'white_wool', 'snowball'])
     sin_forma('traje_santa', 'traje_santa', 1, ['red_wool', 'red_wool', 'red_wool', 'red_wool', 'red_wool', 'white_wool', 'white_wool',
                                                 'black_wool', 'gold_ingot'])
+    # invierno y Año Nuevo
+    con_forma('trineo_madera', 'trineo_madera', 1, ['S S', 'PPP', 'I I'], {'S': 'stick', 'P': '#minecraft:planks', 'I': 'iron_ingot'})
+    sin_forma('patines', 'patines', 1, ['leather', 'leather', 'white_wool', 'iron_ingot', 'iron_ingot'])
+    sin_forma('uvas', 'uvas', 6, ['sweet_berries', 'sweet_berries', 'purple_dye'])
+    con_forma('buzon_santa', 'buzon_santa', 1, ['IRI', 'IPI', ' S '], {'I': 'iron_ingot', 'R': 'red_dye', 'P': 'paper', 'S': 'stick'})
     # decoración: caja de adornos -> cualquier bloque en el cortapiedras
     deco = json.load(open(DECO, encoding='utf-8'))['blocks']
     for b in deco:

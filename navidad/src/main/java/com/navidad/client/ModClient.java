@@ -5,11 +5,13 @@ import com.axeliscore.combat.client.JefeRenderer;
 import com.axeliscore.vestir.client.Prenda;
 import com.axeliscore.vestir.client.VestuarioCliente;
 import com.navidad.Navidad;
+import com.navidad.entidad.TrineoMadera;
 import com.navidad.objeto.Ropa;
 import com.navidad.registry.ModRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -31,11 +33,25 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.RENO.get(), c -> new SimpleGeoRenderer<>(c, Navidad.MODID, "reno", 0.6F, 1.05F));
         e.registerEntityRenderer(ModRegistry.HOMBRE_JENGIBRE.get(), JengibreRenderer::new);
         e.registerEntityRenderer(ModRegistry.TRINEO.get(), TrineoRenderer::new);
+        e.registerEntityRenderer(ModRegistry.TRINEO_MADERA.get(), TrineoMaderaRenderer::new);
         e.registerEntityRenderer(ModRegistry.KRAMPUS.get(), c -> new JefeRenderer<>(c, Navidad.MODID, "krampus", 1.2F, 1.1F, 2));
+    }
+
+    /** En temporada, los mobs con cabeza de persona salen con gorro de Santa o de duende. */
+    @SubscribeEvent
+    public static void onLayers(EntityRenderersEvent.AddLayers e) {
+        GorrosMobs.agregar(e);
+    }
+
+    /** Modelos sueltos (no son de ningún bloque): el trineo de madera. */
+    @SubscribeEvent
+    public static void onModelos(ModelEvent.RegisterAdditional e) {
+        e.register(TrineoMaderaRenderer.MODELO);
     }
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent e) {
+        TrineoMadera.alAparecer = TrineoMaderaRenderer::sonar;
         e.enqueueWork(() -> {
             // gorros y cuernos: modelos de Blockbench pegados a la cabeza
             for (String g : Ropa.CABEZA) {
@@ -46,6 +62,8 @@ public final class ModClient {
                 VestuarioCliente.registrar(Ropa.id(s), Prenda.piel(rl("textures/prenda/" + s + ".png"))
                         .sin(Prenda.Parte.CABEZA, Prenda.Parte.PIERNA_DER, Prenda.Parte.PIERNA_IZQ));
             }
+            // los patines: una bota con cuchilla en cada pierna
+            VestuarioCliente.registrar(Ropa.id("patines"), Prenda.modelo(rl("geo/patines.geo.json"), rl("textures/prenda/patines.png")));
             // el traje de Santa: todo el cuerpo y la barba
             VestuarioCliente.registrar(Ropa.id("traje_santa"), Prenda.piel(rl("textures/prenda/traje_santa.png")));
         });

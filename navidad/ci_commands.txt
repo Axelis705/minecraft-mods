@@ -2,3 +2,13 @@ axeliscore
 navidad
 #expect PRUEBA_NAVIDAD_OK Axelis Core
 #expect usuarios=[navidad]
+navidad temporada si
+navidad anio_nuevo 0
+#wait NAVIDAD_ANIO feliz 40
+#expect NAVIDAD_ANIO campanada 12
+#expect NAVIDAD_ANIO feliz
+forceload add -16 -16 16 16
+#pausa 2
+place feature navidad:pino_adornado 0 -60 0
+summon navidad:trineo_madera 4 -60 4 {Motion:[0.0,0.0,0.3]}
+navidad temporada auto

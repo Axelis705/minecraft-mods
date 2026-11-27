@@ -4,13 +4,16 @@ import com.navidad.Navidad;
 import com.navidad.bloque.CajaRegalo;
 import com.navidad.bloque.CajaRegaloBE;
 import com.navidad.bloque.CajaRegaloItem;
+import com.navidad.bloque.Buzon;
 import com.navidad.bloque.Calendario;
 import com.navidad.entidad.HombreJengibre;
 import com.navidad.entidad.Krampus;
 import com.navidad.entidad.MunecoMalvado;
 import com.navidad.entidad.Pinata;
 import com.navidad.entidad.Reno;
+import com.navidad.entidad.TrineoMadera;
 import com.navidad.entidad.TrineoSanta;
+import com.navidad.mundo.PinoAdornado;
 import com.navidad.objeto.Bengala;
 import com.navidad.objeto.Rosca;
 import com.navidad.objeto.CampanaKrampus;
@@ -18,6 +21,8 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import com.navidad.objeto.Bebida;
 import com.navidad.objeto.PinataItem;
 import com.navidad.objeto.RegaloMisterioso;
+import com.navidad.objeto.TrineoMaderaItem;
+import com.navidad.objeto.Uvas;
 import com.navidad.objeto.Ropa;
 import com.navidad.objeto.Venda;
 import net.minecraft.core.registries.Registries;
@@ -39,6 +44,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -56,6 +63,11 @@ public final class ModRegistry {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Navidad.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Navidad.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Navidad.MODID);
+    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, Navidad.MODID);
+
+    /** El pino adornado que sale solo en los biomas nevados (data/navidad/forge/biome_modifier/pino_adornado.json). */
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> PINO_ADORNADO = FEATURES.register("pino_adornado",
+            () -> new PinoAdornado(NoneFeatureConfiguration.CODEC));
 
     /** En qué orden salen en la pestaña creativa. */
     private static final List<RegistryObject<? extends Item>> ORDEN = new ArrayList<>();
@@ -94,6 +106,11 @@ public final class ModRegistry {
     public static final RegistryObject<SoundEvent> KRAMPUS_MUSICA = sonido("krampus_musica");
     public static final RegistryObject<SoundEvent> CALENDARIO_ABRE = sonido("calendario_abre");
     public static final RegistryObject<SoundEvent> REGALO_ABRE = sonido("regalo_abre");
+    public static final RegistryObject<SoundEvent> TRINEO_DESLIZA = sonido("trineo_desliza");
+    public static final RegistryObject<SoundEvent> CASCABEL = sonido("cascabel");
+    public static final RegistryObject<SoundEvent> PATIN = sonido("patin");
+    public static final RegistryObject<SoundEvent> CAMPANADA = sonido("campanada");
+    public static final RegistryObject<SoundEvent> CARTA_VUELA = sonido("carta_vuela");
 
     // ------------------------------------------------------------------ comida
 
@@ -117,6 +134,7 @@ public final class ModRegistry {
             .food(comida(4, 0.5F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 160, 0), 1F).build())));
     public static final RegistryObject<Item> ROSCA = item("rosca_reyes", () -> new Rosca(props().stacksTo(16).food(comida(8, 0.8F)
             .effect(() -> new MobEffectInstance(MobEffects.LUCK, 2400, 0), 1F).build())));
+    public static final RegistryObject<Item> UVAS = item("uvas", () -> new Uvas(props().food(comida(1, 0.1F).fast().alwaysEat().build())));
     public static final RegistryObject<Item> CHAMPURRADO = item("champurrado", () -> new Bebida(props().stacksTo(16)
             .food(comida(6, 0.7F).alwaysEat().effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 600, 0), 1F).build())));
 
@@ -138,6 +156,10 @@ public final class ModRegistry {
             .strength(1.0F).sound(SoundType.WOOD).noOcclusion().lightLevel(s -> 6)));
     public static final RegistryObject<Item> CALENDARIO_ITEM = item("calendario_adviento", () -> new BlockItem(CALENDARIO.get(), props()));
 
+    public static final RegistryObject<Block> BUZON = BLOCKS.register("buzon_santa", () -> new Buzon(BlockBehaviour.Properties.of()
+            .strength(1.5F).sound(SoundType.METAL).noOcclusion()));
+    public static final RegistryObject<Item> BUZON_ITEM = item("buzon_santa", () -> new BlockItem(BUZON.get(), props()));
+
     public static final RegistryObject<BlockEntityType<CajaRegaloBE>> CAJA_REGALO_BE = BES.register("caja_regalo",
             () -> BlockEntityType.Builder.of(CajaRegaloBE::new, CAJA_REGALO.get()).build(null));
 
@@ -153,6 +175,7 @@ public final class ModRegistry {
     public static final RegistryObject<Item> SUETER_PINOS = item("sueter_pinos", () -> new Ropa(props().stacksTo(1), "sueter_pinos"));
     public static final RegistryObject<Item> SUETER_COPOS = item("sueter_copos", () -> new Ropa(props().stacksTo(1), "sueter_copos"));
     public static final RegistryObject<Item> TRAJE_SANTA = item("traje_santa", () -> new Ropa(props().stacksTo(1).rarity(Rarity.RARE), "traje_santa"));
+    public static final RegistryObject<Item> PATINES = item("patines", () -> new Ropa(props().stacksTo(1), "patines"));
 
     // ------------------------------------------------------------------ discos (villancicos de dominio público en caja de música)
 
@@ -183,6 +206,13 @@ public final class ModRegistry {
             () -> EntityType.Builder.<TrineoSanta>of(TrineoSanta::new, MobCategory.MISC).sized(3F, 2F).clientTrackingRange(20).updateInterval(2)
                     .build("navidad:trineo_santa"));
 
+    // ------------------------------------------------------------------ invierno: trineo de madera
+
+    public static final RegistryObject<EntityType<TrineoMadera>> TRINEO_MADERA = ENTITIES.register("trineo_madera",
+            () -> EntityType.Builder.<TrineoMadera>of(TrineoMadera::new, MobCategory.MISC).sized(1.1F, 0.45F).clientTrackingRange(10)
+                    .build("navidad:trineo_madera"));
+    public static final RegistryObject<Item> TRINEO_MADERA_ITEM = item("trineo_madera", () -> new TrineoMaderaItem(props().stacksTo(1)));
+
     public static final RegistryObject<Item> CAMPANA_KRAMPUS = item("campana_krampus", () -> new CampanaKrampus(props().stacksTo(1).rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> CUERNO_KRAMPUS = item("cuerno_krampus", () -> new Item(props().stacksTo(16).rarity(Rarity.EPIC)));
     public static final RegistryObject<Item> HUEVO_MUNECO = item("huevo_muneco_malvado", () -> new ForgeSpawnEggItem(MUNECO_MALVADO, 0xF0F4FA, 0xC81E2A, props()));
@@ -204,5 +234,6 @@ public final class ModRegistry {
         SOUNDS.register(bus);
         BES.register(bus);
         TABS.register(bus);
+        FEATURES.register(bus);
     }
 }

@@ -232,3 +232,68 @@ T2 = {
 if __name__ == '__main__':
     aplicar(T2)
     print(len(T2), 'textos más')
+
+T3 = {
+    # invierno: trineo de madera, patines
+    'item.navidad.trineo_madera': ('Trineo de madera', 'Wooden sled'),
+    'entity.navidad.trineo_madera': ('Trineo de madera', 'Wooden sled'),
+    'navidad.trineo_madera.ayuda': ('Ponlo en la nieve, súbete y déjate ir cuesta abajo. Caben dos.',
+                                    'Put it on snow, hop on and slide downhill. Two can ride.'),
+    'navidad.trineo_madera.ayuda2': ('A/D voltear · W empujar · S frenar · Shift bajarse. En el hielo resbala más.',
+                                     'A/D steer · W push · S brake · Shift get off. Slides even more on ice.'),
+    'item.navidad.patines': ('Patines de hielo', 'Ice skates'),
+    'navidad.patines.ayuda': ('En el hielo vas mucho más rápido; fuera del hielo caminas torpe.',
+                              'Much faster on ice; clumsy everywhere else.'),
+    'navidad.sub.trineo': ('Se desliza un trineo', 'Sled slides'),
+    'navidad.sub.cascabel': ('Suena un cascabel', 'Little bell jingles'),
+    'navidad.sub.patin': ('Raspa un patín', 'Skate scrapes'),
+    'navidad.sub.campanada': ('Campanada', 'Bell tolls'),
+    'navidad.sub.carta': ('Sale volando una carta', 'A letter flies away'),
+    # Año Nuevo
+    'item.navidad.uvas': ('Uvas de Año Nuevo', "New Year's grapes"),
+    'navidad.uvas.ayuda': ('En Año Nuevo, cómete una con cada campanada y pide un deseo.',
+                           "On New Year's, eat one with each bell toll and make a wish."),
+    'navidad.anio.prepara': ('🍇 ¡Ya casi es Año Nuevo! Ten listas tus 12 uvas: una por cada campanada.',
+                             "🍇 It's almost New Year! Get your 12 grapes ready: one per bell toll."),
+    'navidad.anio.falta': ('para el Año Nuevo', 'until New Year'),
+    'navidad.anio.come': ('¡Cómete la primera uva!', 'Eat the first grape!'),
+    'navidad.anio.campanada': ('Campanada %s de 12', 'Bell %s of 12'),
+    'navidad.anio.uva': ('🍇 Uvas: %s de 12', '🍇 Grapes: %s of 12'),
+    'navidad.anio.feliz': ('¡Feliz Año Nuevo!', 'Happy New Year!'),
+    'navidad.anio.feliz2': ('¡Bienvenido %s!', 'Welcome %s!'),
+    'navidad.anio.doce': ('🍇 ¡Te comiste las 12 uvas a tiempo! Se cumplirán tus 12 deseos (y tienes mucha suerte este rato).',
+                          '🍇 You ate all 12 grapes in time! Your 12 wishes will come true (and you are very lucky for a while).'),
+    'navidad.anio.algunas': ('🍇 Te comiste %s uvas. ¡Algo de suerte te toca!', '🍇 You ate %s grapes. Some luck for you!'),
+    'navidad.anio.ninguna': ('No te comiste ninguna uva... ¡el próximo año!', "You didn't eat any grapes... next year!"),
+    'navidad.anio.nochevieja': ('🍇 ¡Hoy es Nochevieja! Aquí están tus 12 uvas para la medianoche.',
+                                "🍇 It's New Year's Eve! Here are your 12 grapes for midnight."),
+    # carta a Santa
+    'navidad.buzon.como': ('Escribe tu carta a Santa en un libro y pluma y dale clic al buzón con ella.',
+                           'Write your letter to Santa in a book and quill and click the mailbox with it.'),
+    'navidad.carta.vacaciones': ('Santa lee las cartas del 1 de diciembre al 6 de enero.', 'Santa reads letters from December 1 to January 6.'),
+    'navidad.carta.pendiente': ('Santa todavía no contesta tu otra carta. ¡Paciencia!', "Santa hasn't answered your other letter yet. Be patient!"),
+    'navidad.carta.hoy': ('Ya mandaste tu carta de hoy. Santa lee una al día por persona.', 'You already sent today\'s letter. Santa reads one a day per person.'),
+    'navidad.carta.vacia': ('La carta está vacía... escribe qué te gustaría.', 'The letter is empty... write what you would like.'),
+    'navidad.carta.enviada': ('✉ Tu carta salió volando rumbo al Polo Norte. Santa la leerá esta noche... ¡pórtate bien!',
+                              '✉ Your letter flew off to the North Pole. Santa will read it tonight... be good!'),
+    'navidad.carta.llego': ('🎅 ¡Llegó la respuesta de Santa! Revisa tu inventario.', "🎅 Santa's answer arrived! Check your inventory."),
+    'navidad.carta.llego_malo': ('🎅 Llegó la respuesta de Santa... y pesa como carbón.', "🎅 Santa's answer arrived... it feels heavy, like coal."),
+    'navidad.carta.resp.hola': ('Querido/a %s:', 'Dear %s,'),
+    'navidad.carta.resp.leida': ('Leí tu carta junto a la chimenea, con un chocolate calientito. Mis duendes trabajaron toda la noche.',
+                                 'I read your letter by the fireplace with a hot chocolate. My elves worked all night.'),
+    'navidad.carta.resp.nada': ('Leí tu carta, pero no entendí bien qué querías... así que te mando una sorpresa.',
+                                "I read your letter, but I couldn't quite tell what you wanted... so here's a surprise."),
+    'navidad.carta.resp.malo': ('Me contaron que lastimaste a quien no debías. Este año te tocó carbón. ¡Todavía estás a tiempo de portarte bien!',
+                                "I heard you hurt someone you shouldn't have. This year you get coal. There's still time to be good!"),
+    'navidad.carta.resp.dificil': ('Lo que pediste es difícil hasta para mis duendes, pero te mando algo para compensar.',
+                                   'What you asked for is hard even for my elves, but here is something to make up for it.'),
+    'navidad.carta.resp.bonito': ('Hay deseos que no caben en una caja. Esos los cuidas tú, con los que quieres.',
+                                  "Some wishes don't fit in a box. Those you take care of, with the people you love."),
+    'navidad.carta.resp.trae': ('Te traje:', 'I brought you:'),
+    'navidad.carta.resp.carbon': ('Te traje:', 'I brought you:'),
+    'navidad.carta.resp.firma': ('¡Feliz Navidad!\n— Santa', 'Merry Christmas!\n— Santa'),
+}
+
+if __name__ == '__main__':
+    aplicar(T3)
+    print(len(T3), 'textos del invierno')

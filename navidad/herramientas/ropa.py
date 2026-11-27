@@ -185,6 +185,26 @@ def gorros():
     c.build(os.path.join(RES, 'geo', 'cuernos_reno.geo.json'), os.path.join(RES, 'textures', 'prenda', 'cuernos_reno.png'))
 
 
+def patines():
+    """Patines de hielo: una bota blanca con puño rojo y agujetas, suela oscura y la cuchilla de metal. Cada uno sigue a su pierna."""
+    c = G.Creature('geometry.navidad.patines', 64, 64, seed=8)
+    blanco, rojo, agujeta, suela, metal = (238, 236, 230), (196, 30, 42), (90, 90, 98), (60, 44, 36), (196, 206, 218)
+    for nb, x in (('pierna_der', -1.9), ('pierna_izq', 1.9)):
+        c.bone(nb, [x, 12, 0])
+        x0 = x - 2.35
+        c.part(nb, [x0, 0, -2.35], [4.7, 5.2, 4.7], G.solid(blanco))
+        c.part(nb, [x0 - 0.1, 4.6, -2.45], [4.9, 1.2, 4.9], G.solid(rojo))
+        c.part(nb, [x0, 0, -3.3], [4.7, 2.2, 1.0], G.solid(blanco))
+        for k in range(3):
+            c.part(nb, [x - 1.2, 1.4 + k * 1.1, -2.5], [2.4, 0.4, 0.2], G.solid(agujeta))
+        c.part(nb, [x0, -0.6, -3.4], [4.7, 0.6, 5.9], G.solid(suela))
+        c.part(nb, [x - 0.3, -1.3, -2.6], [0.6, 0.7, 0.8], G.solid(metal))
+        c.part(nb, [x - 0.3, -1.3, 1.4], [0.6, 0.7, 0.8], G.solid(metal))
+        c.part(nb, [x - 0.3, -1.8, -3.6], [0.6, 0.5, 6.6], G.solid(metal))
+        c.part(nb, [x - 0.3, -1.5, -4.1], [0.6, 0.7, 0.5], G.solid(metal))
+    c.build(os.path.join(RES, 'geo', 'patines.geo.json'), os.path.join(RES, 'textures', 'prenda', 'patines.png'))
+
+
 if __name__ == '__main__':
     R, W, V, D, N, Ca, Cn = '#b81e2a', '#f2f2ee', '#2a8a40', '#e8c040', '#1a2a5a', '#7a4a2a', '#d8b878'
     reno = mapa(['........', '.c....c.', '..c..c..', '..aaaa..', '.aaaaaa.', '..aEEa..', '..aaaa..', '...rr...', '........'],
@@ -198,4 +218,5 @@ if __name__ == '__main__':
     sueter('sueter_copos', '#2a4a8a', W, '#8ab8e8', [None, None] + copo[1:9])
     traje_santa()
     gorros()
+    patines()
     print('ok')

@@ -4,6 +4,12 @@ import com.axeliscore.test.ClientTest;
 import com.navidad.Navidad;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -178,6 +184,117 @@ final class Prueba {
             });
             t.add("caminar 3", 300, () -> t.cmd("gamemode creative @a"));
             t.add("dia otra vez", 1000, () -> t.cmd("time set 6000"));
+            // ---------------------------------------------------------------- el buzón y la carta a Santa
+            t.add("buzon", 1000, () -> {
+                t.cmd("time set 1000");
+                t.cmd("gamemode creative @a");
+            });
+            t.photo("buzon", 2500, () -> t.lookFrom(299.6, -59.2, -11.6, 302.5, -59.3, -13.6));
+            t.add("carta", 1500, () -> {
+                t.cmd("tp @a 300.5 -60 -13.5 -90 20");
+                t.cmd("item replace entity @p weapon.mainhand with minecraft:writable_book{pages:[\"Querido Santa: este año me porté muy bien. "
+                        + "Quiero un trineo, diamantes y galletas. ¡Gracias!\"]}");
+            });
+            t.add("meter la carta", 1500, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
+                        new BlockHitResult(new Vec3(302.05, -59.4, -13.5), Direction.WEST, new BlockPos(302, -60, -14), false));
+            });
+            t.waitFor("la carta salió volando", 4000, () -> Minecraft.getInstance().player.getMainHandItem().isEmpty());
+            t.add("respuesta de Santa", 1500, () -> t.cmd("navidad carta entregar"));
+            t.waitFor("llegó la respuesta", 5000, () -> Minecraft.getInstance().player.getInventory().contains(new net.minecraft.world.item.ItemStack(
+                    Items.WRITTEN_BOOK)));
+            t.add("hud carta", 300, () -> t.hud(true));
+            t.photo("carta_respuesta", 1500, () -> t.lookFrom(300.5, -60, -13.5, 302.5, -59.5, -13.5));
+            t.add("hud carta fin", 300, () -> t.hud(false));
+            // ---------------------------------------------------------------- la colina de trineos
+            t.add("colina", 1000, () -> {
+                t.cmd("time set 6000");
+                t.cmd("gamemode spectator @a");
+            });
+            t.photo("colina", 2500, () -> t.lookFrom(328, -48, -5, 318, -55, -20));
+            t.add("trineo solo", 300, () -> t.cmd("summon navidad:trineo_madera 318.5 -53.4 -26.5 {Motion:[0.0,0.0,0.35]}"));
+            t.photo("colina_bajando", 1000, () -> {
+            });
+            t.photo("colina_bajando_2", 1000, () -> {
+            });
+            t.add("subir al trineo", 1500, () -> {
+                t.cmd("gamemode creative @a");
+                t.cmd("kill @e[type=navidad:trineo_madera]");
+                t.cmd("summon navidad:trineo_madera 316.5 -53.4 -26.5 {Rotation:[0f,0f]}");
+                t.cmd("tp @a 316.5 -53 -26.5 0 15");
+            });
+            t.add("montar", 1200, () -> t.cmd("execute as @p at @s run ride @s mount @e[type=navidad:trineo_madera,limit=1,sort=nearest]"));
+            t.add("empujar", 1500, () -> {
+                t.check(Minecraft.getInstance().player.getVehicle() instanceof com.navidad.entidad.TrineoMadera, "arriba del trineo");
+                Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK);
+                Minecraft.getInstance().options.keyUp.setDown(true);
+            });
+            t.photo("trineo_montado", 300, () -> {
+            });
+            t.add("bajando", 3500, () -> {
+            });
+            t.add("soltar", 300, () -> {
+                Minecraft.getInstance().options.keyUp.setDown(false);
+                double z = Minecraft.getInstance().player.getZ();
+                t.log("trineo: z=" + z);
+                t.check(z > -20, "el trineo bajó la colina (z=" + String.format(Locale.ROOT, "%.1f", z) + ")");
+            });
+            t.photo("trineo_abajo", 1500, () -> {
+            });
+            t.add("bajarse", 800, () -> {
+                t.cmd("execute as @p run ride @s dismount");
+                Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
+            });
+            // ---------------------------------------------------------------- la pista de hielo con patines
+            t.add("pista", 1500, () -> {
+                t.cmd("tp @a 317.5 -60 19.5 -90 10");
+                t.cmd("execute as @p run navidad ropa patines");
+                Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT);
+            });
+            t.photo("patines_pista", 2000, () -> t.cmd("tp @a 317.5 -60 19.5 -90 5"));
+            t.add("camara normal 2", 500, () -> {
+                Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
+                t.cmd("execute as @p run navidad ropa patines");
+                t.cmd("gamemode spectator @a");
+            });
+            t.photo("pista", 2500, () -> t.lookFrom(321, -46, 33, 321, -60, 18));
+            // ---------------------------------------------------------------- el pino adornado de los biomas nevados
+            t.add("pinos", 3000, () -> {
+                t.cmd("fill 368 -61 -8 394 -61 12 minecraft:snow_block");
+                t.cmd("place feature navidad:pino_adornado 380 -60 0");
+                t.cmd("place feature navidad:pino_adornado 389 -60 5");
+                t.cmd("place feature navidad:pino_adornado 372 -60 6");
+            });
+            t.photo("pino_adornado", 3000, () -> t.lookFrom(380.5, -57, 17, 380.5, -54, 0));
+            t.photo("pino_adornado_noche", 3500, () -> t.cmd("time set 18000"));
+            // ---------------------------------------------------------------- Año Nuevo: cuenta, 12 campanadas con uvas y fuegos
+            t.add("anio nuevo", 1200, () -> {
+                t.cmd("gamemode creative @a");
+                t.cmd("tp @a 300.5 -60 8.5 180 -20");
+                t.cmd("item replace entity @p weapon.mainhand with navidad:uvas 12");
+                t.hud(true);
+                t.cmd("navidad anio_nuevo 3");
+            });
+            t.photo("anio_cuenta", 0, () -> {
+            });
+            t.add("comer uvas", 2500, () -> Minecraft.getInstance().options.keyUse.setDown(true));
+            t.photo("anio_campanada", 0, () -> {
+            });
+            t.add("seguir comiendo", 16000, () -> {
+            });
+            t.add("ya", 1600, () -> Minecraft.getInstance().options.keyUse.setDown(false));
+            t.photo("anio_feliz", 0, () -> {
+            });
+            t.add("uvas?", 300, () -> {
+                int n = com.navidad.AnioNuevo.ultimo.getOrDefault(Minecraft.getInstance().player.getUUID(), 0);
+                t.check(n >= 12, "doce uvas en las campanadas (" + n + ")");
+            });
+            t.photo("anio_fuegos", 3000, () -> t.lookFrom(300.5, -59, 8.5, 300.5, -38, -12));
+            t.photo("anio_fuegos_2", 2500, () -> {
+            });
+            t.add("hud otra vez", 300, () -> t.hud(false));
+            t.add("dia al final", 1000, () -> t.cmd("time set 6000"));
             t.add("hud fin", 200, () -> t.hud(true));
         });
     }

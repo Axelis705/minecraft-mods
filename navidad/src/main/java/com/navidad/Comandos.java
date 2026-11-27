@@ -28,6 +28,7 @@ public final class Comandos {
     public static void registrar(CommandDispatcher<CommandSourceStack> d) {
         List<String> ropa = new ArrayList<>(Ropa.CABEZA);
         ropa.addAll(Ropa.CUERPO);
+        ropa.addAll(Ropa.PIES);
         d.register(Commands.literal(Navidad.MODID)
                 .executes(c -> {
                     c.getSource().sendSuccess(() -> Component.translatable("navidad.hola", com.axeliscore.AxelisCore.version(),
@@ -93,6 +94,22 @@ public final class Comandos {
                     }
                     return n;
                 }))
+                .then(Commands.literal("anio_nuevo").requires(s -> s.hasPermission(2))
+                        .executes(c -> {
+                            AnioNuevo.empezar(c.getSource().getServer(), AnioNuevo.CUENTA);
+                            return 1;
+                        })
+                        .then(Commands.argument("segundos", IntegerArgumentType.integer(0, 120)).executes(c -> {
+                            AnioNuevo.empezar(c.getSource().getServer(), IntegerArgumentType.getInteger(c, "segundos"));
+                            return 1;
+                        })))
+                .then(Commands.literal("carta").requires(s -> s.hasPermission(2))
+                        .then(Commands.literal("entregar").executes(c -> {
+                            ServerPlayer sp = c.getSource().getPlayerOrException();
+                            boolean ok = Cartas.entregar(sp, true);
+                            c.getSource().sendSuccess(() -> Component.literal(ok ? "carta entregada" : "no hay carta pendiente"), false);
+                            return ok ? 1 : 0;
+                        })))
                 .then(Commands.literal("krampus").requires(s -> s.hasPermission(2)).executes(c -> {
                     Vec3 pos = c.getSource().getPosition();
                     Vec3 mira = Vec3.directionFromRotation(0, c.getSource().getRotation().y).scale(10);

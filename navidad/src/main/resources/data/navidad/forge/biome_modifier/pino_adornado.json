@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#forge:is_snowy",
+  "features": "navidad:pino_adornado",
+  "step": "vegetal_decoration"
+}

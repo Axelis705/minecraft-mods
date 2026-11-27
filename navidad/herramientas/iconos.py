@@ -201,4 +201,15 @@ if __name__ == '__main__':
     # la caja y el calendario usan el modelo de su bloque
     for b in ('caja_regalo', 'calendario_adviento'):
         json.dump({'parent': f'navidad:block/{b}'}, open(os.path.join(A, 'models', 'item', b + '.json'), 'w'), indent=1)
+    # invierno y Año Nuevo
+    dibujo('patines', [
+        '................', '.....rrrr.......', '.....rRRr.......', '.....wwww.......', '.....wkkw.......', '.....wwww.......',
+        '.....wkkw.......', '.....wwwwww.....', '....wwwwwwwww...', '....wwwwwwwwww..', '....LLLLLLLLLL..', '.....S.....S..s.',
+        '...ssssssssssss.', '................', '................', '................'],
+        {'w': '#eeece6', 'k': '#5a5a62', 'L': '#3c2c24', 'S': '#8a929e', 's': '#d0d8e2', 'R': '#e04050'})
+    dibujo('uvas', [
+        '........G.......', '.......nG.......', '......n.GG......', '....vVvvVvv.....', '...vVVvVVvVv....', '...vvvVvvvVv....',
+        '....vVvvVvVv....', '....vvvVvvv.....', '.....vVvvVv.....', '.....vvVvv......', '......vVv.......', '.......v........',
+        '................', '................', '................', '................'],
+        {'v': '#5a1e8e', 'V': '#a870dc', 'G': '#4a9a3a'})
     print('ok')

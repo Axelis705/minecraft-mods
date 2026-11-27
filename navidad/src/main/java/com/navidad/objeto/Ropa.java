@@ -28,6 +28,8 @@ public class Ropa extends CoreItem {
     /** Los grupos: lo que va en la cabeza y lo que va en el cuerpo. */
     public static final List<String> CABEZA = List.of("gorro_santa", "gorro_duende", "cuernos_reno");
     public static final List<String> CUERPO = List.of("sueter_reno", "sueter_pinos", "sueter_copos", "traje_santa");
+    /** Lo de los pies (los patines de hielo: en el hielo vas más rápido, fuera de él caminas torpe). */
+    public static final List<String> PIES = List.of("patines");
 
     private final String prenda;
 
@@ -43,6 +45,9 @@ public class Ropa extends CoreItem {
     @Override
     protected void tooltip(ItemStack stack, Consumer<Component> add) {
         add.accept(Component.translatable("navidad.ropa.ayuda").withStyle(ChatFormatting.GRAY));
+        if (PIES.contains(prenda)) {
+            add.accept(Component.translatable("navidad.patines.ayuda").withStyle(ChatFormatting.AQUA));
+        }
     }
 
     @Override
@@ -71,7 +76,7 @@ public class Ropa extends CoreItem {
 
     public static void poner(MinecraftServer s, ServerPlayer sp, String prenda) {
         UUID u = sp.getUUID();
-        List<String> grupo = CABEZA.contains(prenda) ? CABEZA : CUERPO;
+        List<String> grupo = CABEZA.contains(prenda) ? CABEZA : PIES.contains(prenda) ? PIES : CUERPO;
         for (String otra : grupo) {
             if (!otra.equals(prenda) && Vestuario.tiene(s, u, id(otra))) {
                 Vestuario.quitar(s, u, id(otra));

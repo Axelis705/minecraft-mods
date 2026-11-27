@@ -1,0 +1,19 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "ingredients": [
+  {
+   "item": "minecraft:sweet_berries"
+  },
+  {
+   "item": "minecraft:sweet_berries"
+  },
+  {
+   "item": "minecraft:purple_dye"
+  }
+ ],
+ "result": {
+  "item": "navidad:uvas",
+  "count": 6
+ }
+}

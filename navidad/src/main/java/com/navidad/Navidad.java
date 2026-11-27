@@ -34,6 +34,9 @@ public class Navidad {
         com.navidad.entidad.Proyectiles.init();
         com.navidad.gente.Gente.init();
         Fiestas.init();
+        Invierno.init();
+        AnioNuevo.init();
+        Cartas.init();
         AxelisCore.commands(Comandos::registrar);
     }
 

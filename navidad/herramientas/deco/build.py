@@ -975,15 +975,99 @@ def especiales():
     c.box(2, 13, 4.5, 14, 13.5, 11.5, cloth('#f4f6fa', weave=0.04, seed=75))
     c.box(7, 14, 7.5, 9, 16, 8.5, brillo('#ffd84a'))
     kit.write_prop(c, ROOT)
-    for f in (llena, v, c):
-        pass
+    # el buzón de Santa: rojo, sobre un poste de bastón de caramelo, con nieve encima y cartas asomándose
+    b = Prop('buzon_santa', 'Buzón de Santa', "Santa's mailbox", kind='floor', sound='metal', seed=101)
+    rojo = metal(Ramp('#5a0c12', '#8a141c', '#b81d2a', '#d83a44', '#f07a80'), streak=0.3, seed=102, sparkle=0.03)
+    blanco_p = cloth('#f4f0e8', weave=0.04, seed=103)
+    b.box(5, 0, 5, 11, 1, 11, MADERA)
+    for k in range(9):
+        b.box(6.5, k, 6.5, 9.5, k + 1, 9.5, rojo if k % 2 == 0 else blanco_p)
+    b.box(3, 9, 3.5, 13, 14, 12.5, rojo)
+    b.box(3.5, 14, 4, 12.5, 15, 12, rojo)
+    b.box(4.5, 15, 4.5, 11.5, 15.5, 11.5, rojo)
+    b.box(3.2, 15.2, 3.7, 12.8, 16, 12.3, NIEVE)
+    b.box(3.0, 14.4, 3.5, 4.4, 15.4, 5.0, NIEVE)
+    b.box(11.4, 14.6, 10.8, 13.0, 15.4, 12.5, NIEVE)
+    b.box(5, 12, 3.3, 11, 12.8, 3.5, solid('#1a1012'))
+    b.box(5.5, 9.8, 3.25, 10.5, 11.6, 3.5, ORO)
+    b.box(6.8, 10.1, 3.1, 9.2, 11.3, 3.3, blanco_p)
+    b.box(6.9, 10.5, 3.05, 8.0, 10.65, 3.12, solid('#c8202e'), rot=('z', -22.5, (8, 10.6, 3.1)))
+    b.box(8.0, 10.5, 3.05, 9.1, 10.65, 3.12, solid('#c8202e'), rot=('z', 22.5, (8, 10.6, 3.1)))
+    b.box(6.0, 12.3, 2.9, 9.6, 14.2, 3.4, cloth('#efe4c8', weave=0.05, seed=104), rot=('x', -22.5, (8, 12.3, 3.2)))
+    b.box(7.6, 12.3, 3.1, 10.6, 13.6, 3.5, cloth('#f8f4ea', weave=0.05, seed=105), rot=('x', -10, (9, 12.3, 3.3)))
+    b.box(13, 10, 9, 13.6, 15, 9.6, PLATA)
+    b.box(13, 12.8, 5.6, 13.4, 15, 9, cloth('#f0c43a', weave=0.08, seed=106))
+    b.box(5, 15.9, 8.5, 8, 16.4, 10.5, cloth('#1e6a32', weave=0.1, seed=107), rot=('y', 22.5, (6.5, 16, 9.5)))
+    b.box(8, 15.9, 8.2, 11, 16.4, 10.2, cloth('#2a7a3a', weave=0.1, seed=108), rot=('y', -22.5, (9.5, 16, 9.2)))
+    esferas(b, [(7.8, 16.6, 9.4)], colores=['#d42030'])
+    kit.write_prop(b, ROOT)
+    nombre('buzon_santa', 'Buzón de Santa', "Santa's mailbox")
     nombre('caja_regalo', 'Caja de regalo', 'Gift box')
     nombre('calendario_adviento', 'Calendario de Adviento', 'Advent calendar')
+
+
+def modelos_sueltos():
+    """Modelos que no son bloques: el trineo de madera para pasear (lo dibuja TrineoMaderaRenderer y sirve de icono de su objeto).
+    Mide casi dos bloques de largo: va de z=-6 (la punta curva, adelante) a z=22; el centro queda en (8, 8)."""
+    t = Prop('trineo_madera', 'Trineo de madera', 'Wooden sled', kind='floor', sound='wood', seed=91)
+    hierro = metal(Ramp('#3a1414', '#6a1c1c', '#962626', '#c23a3a', '#e86a6a'), streak=0.5, seed=92, sparkle=0.05)
+    tabla = [MADERA_CLARA, wood(Ramp('#7a5430', '#94683c', '#ad7e4a', '#c4945a'), seed=93)]
+    for x in (1.5, 13.5):
+        # el patín (rojo de metal) y su punta que se enrosca hacia arriba
+        t.box(x, 0, -3, x + 1, 1, 21, hierro)
+        t.box(x, 1, -5, x + 1, 2, -2.5, hierro, rot=('x', 22.5, (x + 0.5, 1, -3)))
+        t.box(x, 2.2, -6.4, x + 1, 5.2, -5.4, hierro)
+        t.box(x, 5.0, -5.8, x + 1, 6.0, -3.6, hierro)
+        t.box(x, 4.2, -3.8, x + 1, 5.0, -2.8, hierro)
+        t.box(x, 0.5, 20.6, x + 1, 2.2, 21.6, hierro)
+        # los postes que sostienen la tabla
+        for z in (0, 8.5, 17):
+            t.box(x, 1, z, x + 1, 4, z + 1.2, MADERA)
+    # la tabla de listones (dos tonos) y los travesaños
+    z = -2.5
+    k = 0
+    while z < 19.5:
+        t.box(0.5, 4, z, 15.5, 5, min(z + 2.6, 20), tabla[k % 2])
+        z += 3.0
+        k += 1
+    for z in (0.2, 8.7, 17.2):
+        t.box(1, 3.2, z, 15, 4, z + 0.8, MADERA)
+    # el barandal de los lados, la barra de adelante (pintada) y el cordón para jalarlo
+    for x in (0.5, 14.5):
+        t.box(x, 5, -1, x + 1, 6.4, 19, MADERA)
+        t.box(x, 5, 18.5, x + 1, 8, 19.5, MADERA)
+    t.box(0.5, 5, -3, 15.5, 7, -1.6, cloth('#b81d2a', weave=0.06, seed=94))
+    t.box(0.5, 7, -3.2, 15.5, 7.6, -1.4, ORO)
+    t.box(1, 7.4, 18.5, 15, 8.4, 19.5, MADERA)
+    t.box(3, 6.2, -3.6, 4, 7, -3.0, solid('#e8dcc0'))
+    t.box(12, 6.2, -3.6, 13, 7, -3.0, solid('#e8dcc0'))
+    t.box(3.2, 6.4, -5.5, 12.8, 6.9, -5.0, cloth('#efe2c4', weave=0.2, seed=95))
+    t.box(3.2, 6.4, -5.2, 3.8, 6.9, -3.4, cloth('#efe2c4', weave=0.2, seed=95))
+    t.box(12.2, 6.4, -5.2, 12.8, 6.9, -3.4, cloth('#efe2c4', weave=0.2, seed=95))
+    # un cojín a cuadros, una bufanda verde echada y un cascabel
+    cuadros = cloth('#8e1820', weave=0.25, seed=96)
+    t.box(3, 5, 7.5, 13, 6, 17.5, cuadros)
+    t.box(3.4, 6, 8, 12.6, 6.4, 17, cloth('#a8222c', weave=0.2, seed=97))
+    t.box(10, 6.4, 14.5, 13.6, 6.9, 17.6, cloth('#1e6a32', weave=0.15, seed=98), rot=('y', 22.5, (12, 6.4, 16)))
+    t.box(7.4, 6.0, -4.0, 8.6, 7.2, -2.8, ORO)
+    kit.write_prop(t, ROOT)
+    for sub in ('blockstates/trineo_madera.json',):
+        os.remove(os.path.join(A, sub))
+    os.remove(os.path.join(ROOT, 'data', NS, 'loot_tables', 'blocks', 'trineo_madera.json'))
+    # el objeto usa el mismo modelo, más chico para que quepa en el inventario
+    dump('models/item/trineo_madera.json', {'parent': f'{NS}:block/trineo_madera', 'display': {
+        'gui': {'rotation': [30, 135, 0], 'translation': [0, 1, 0], 'scale': [0.42, 0.42, 0.42]},
+        'ground': {'rotation': [0, 0, 0], 'translation': [0, 3, 0], 'scale': [0.3, 0.3, 0.3]},
+        'fixed': {'rotation': [0, 90, 0], 'translation': [0, 0, 0], 'scale': [0.42, 0.42, 0.42]},
+        'thirdperson_righthand': {'rotation': [75, 135, 0], 'translation': [0, 2.5, 0], 'scale': [0.3, 0.3, 0.3]},
+        'firstperson_righthand': {'rotation': [0, 135, 0], 'translation': [0, 1, 0], 'scale': [0.3, 0.3, 0.3]},
+        'firstperson_lefthand': {'rotation': [0, 135, 0], 'translation': [0, 1, 0], 'scale': [0.3, 0.3, 0.3]}}})
 
 
 def main():
     catalogo()
     especiales()
+    modelos_sueltos()
     os.makedirs(os.path.join(ROOT, 'data', NS), exist_ok=True)
     with open(os.path.join(ROOT, 'data', NS, 'deco.json'), 'w', encoding='utf-8') as f:
         json.dump({'blocks': ficha}, f, indent=1, ensure_ascii=False)

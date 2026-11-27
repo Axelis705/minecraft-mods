@@ -20,6 +20,8 @@ import net.minecraft.world.phys.AABB;
  * La aldea de Santa: una plaza nevada con un pino gigante lleno de luces y regalos, la casa de Santa, el taller de juguetes de los
  * duendes, la casita de jengibre de la Señora Claus y el establo de los renos, con caminos de hielo, faroles y bastones de caramelo.
  * Se construye con {@code /navidad aldea} donde estés parado (ocupa 61 x 61 bloques) y pone a su gente.
+ * <p>En las esquinas: la colina de trineos (noreste, con trineos de madera arriba) y la pista de hielo (sureste, con patines para
+ * prestar). Frente a la casa de Santa, su buzón para las cartas.
  */
 public final class Aldea {
     public static final int R = 30;
@@ -43,6 +45,8 @@ public final class Aldea {
         cocina(o);
         establo(o);
         alrededores(o, rnd);
+        colina(o);
+        pista(o);
         if (conGente) {
             gente(l, o);
         }
@@ -178,6 +182,9 @@ public final class Aldea {
         for (int x = -5; x <= 5; x += 2) {
             o.deco(x, 4, -16, "guirnalda_luces", Direction.SOUTH);
         }
+        // el buzón para las cartas a Santa, junto al camino
+        o.set(2, 0, -14, ModRegistry.BUZON.get().defaultBlockState().setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING,
+                Direction.WEST));
     }
 
     // ------------------------------------------------------------------ taller de juguetes (al este)
@@ -319,6 +326,124 @@ public final class Aldea {
         o.deco(2, 0, 30, "baston_gigante", Direction.SOUTH);
     }
 
+    // ------------------------------------------------------------------ colina de trineos (noreste)
+
+    /** Fondo del carril (z) donde empieza la subida, la cima (z) y el carril en x (con paredes de nieve a los lados). */
+    static final int COLINA_PIE = -14, COLINA_CIMA = -27, CARRIL_X0 = 15, CARRIL_X1 = 21;
+
+    /** Altura de la colina en medios bloques en cada fila (0 al pie, 14 = 7 bloques en la cima). */
+    static int mediosColina(int z) {
+        return Math.max(0, Math.min(14, COLINA_PIE - z));
+    }
+
+    static void colina(Obra o) {
+        BlockState nieve = Blocks.SNOW_BLOCK.defaultBlockState();
+        BlockState media = Blocks.SNOW.defaultBlockState().setValue(BlockStateProperties.LAYERS, 4);
+        for (int z = COLINA_CIMA - 1; z <= COLINA_PIE; z++) {
+            int h2 = z < COLINA_CIMA ? 14 : mediosColina(z);
+            int lleno = h2 / 2;
+            for (int x = CARRIL_X0 - 1; x <= CARRIL_X1 + 1; x++) {
+                boolean pared = x == CARRIL_X0 - 1 || x == CARRIL_X1 + 1;
+                if (lleno > 0) {
+                    o.fill(x, 0, z, x, lleno - 1, z, nieve);
+                }
+                if (pared) {
+                    // las paredes del carril: un bloque más altas que la pista
+                    o.fill(x, lleno, z, x, lleno + (h2 % 2 == 1 ? 1 : 0), z, nieve);
+                } else if (h2 % 2 == 1) {
+                    o.set(x, lleno, z, media);
+                }
+            }
+        }
+        // la cima: plataforma con barandal, faroles, bandera y dos trineos esperando
+        int cima = 7;
+        o.fill(CARRIL_X0 - 1, 0, COLINA_CIMA - 2, CARRIL_X1 + 1, cima - 1, COLINA_CIMA - 1, nieve);
+        o.fill(CARRIL_X0 - 1, cima - 1, COLINA_CIMA - 2, CARRIL_X1 + 1, cima - 1, COLINA_CIMA - 1, Blocks.SPRUCE_PLANKS.defaultBlockState());
+        for (int x = CARRIL_X0 - 1; x <= CARRIL_X1 + 1; x++) {
+            o.set(x, cima, COLINA_CIMA - 2, Blocks.SPRUCE_FENCE.defaultBlockState());
+        }
+        o.farol(CARRIL_X0 - 1, cima, COLINA_CIMA - 1);
+        o.farol(CARRIL_X1 + 1, cima, COLINA_CIMA - 1);
+        o.set(CARRIL_X0 + 3, cima, COLINA_CIMA - 2, Blocks.SPRUCE_FENCE.defaultBlockState());
+        o.set(CARRIL_X0 + 3, cima + 1, COLINA_CIMA - 2, Blocks.SPRUCE_FENCE.defaultBlockState());
+        o.set(CARRIL_X0 + 3, cima + 2, COLINA_CIMA - 2, Blocks.RED_BANNER.defaultBlockState());
+        // escalones de madera por fuera de la pared del este para volver a subir
+        for (int z = COLINA_PIE; z >= COLINA_CIMA; z--) {
+            int h = (mediosColina(z) + 1) / 2;
+            if (h > 0) {
+                o.fill(CARRIL_X1 + 2, 0, z, CARRIL_X1 + 2, h - 1, z, Blocks.SPRUCE_PLANKS.defaultBlockState());
+            }
+            o.set(CARRIL_X1 + 2, h, z, Blocks.SNOW.defaultBlockState());
+            o.set(CARRIL_X1 + 3, h, z, Blocks.SPRUCE_FENCE.defaultBlockState());
+        }
+        // al pie: un tramo plano, el piso de tablas que frena y una barda de pacas de paja por si acaso
+        for (int x = CARRIL_X0 - 1; x <= CARRIL_X1 + 1; x++) {
+            o.set(x, -1, -11, Blocks.SPRUCE_PLANKS.defaultBlockState());
+            o.set(x, -1, -10, Blocks.SPRUCE_PLANKS.defaultBlockState());
+            o.set(x, 0, -9, Blocks.HAY_BLOCK.defaultBlockState());
+        }
+        o.deco(CARRIL_X0 - 2, 0, -12, "baston_gigante", Direction.SOUTH);
+        o.deco(CARRIL_X1 + 2, 0, -12, "baston_gigante", Direction.SOUTH);
+        o.farol(CARRIL_X1 + 4, 0, -12);
+    }
+
+    // ------------------------------------------------------------------ pista de hielo (sureste)
+
+    static final int PISTA_X = 21, PISTA_Z = 19, PISTA_RX = 6, PISTA_RZ = 7;
+
+    static boolean enPista(int x, int z, double extra) {
+        double dx = (x - PISTA_X) / (PISTA_RX + extra), dz = (z - PISTA_Z) / (PISTA_RZ + extra);
+        return dx * dx + dz * dz <= 1.0;
+    }
+
+    static void pista(Obra o) {
+        for (int x = PISTA_X - PISTA_RX - 2; x <= PISTA_X + PISTA_RX + 2; x++) {
+            for (int z = PISTA_Z - PISTA_RZ - 2; z <= PISTA_Z + PISTA_RZ + 2; z++) {
+                if (enPista(x, z, 0)) {
+                    o.set(x, -1, z, Blocks.PACKED_ICE.defaultBlockState());
+                    o.set(x, 0, z, Blocks.AIR.defaultBlockState());
+                } else if (enPista(x, z, 1.1)) {
+                    // la barda: tablones blancos con luces de colores cada tanto
+                    o.set(x, -1, z, Blocks.SPRUCE_PLANKS.defaultBlockState());
+                    boolean entrada = z == PISTA_Z && x < PISTA_X;
+                    if (!entrada) {
+                        o.set(x, 0, z, Blocks.BIRCH_FENCE.defaultBlockState());
+                        if ((x + z) % 3 == 0) {
+                            o.bloqueNav(x, 1, z, "bloque_luces");
+                        }
+                    }
+                }
+            }
+        }
+        // en medio, un pinito con regalos; afuera, bancas y el barril de los patines para prestar
+        o.deco(PISTA_X, 0, PISTA_Z, "arbol_navidad", Direction.SOUTH);
+        o.deco(PISTA_X - PISTA_RX - 3, 0, PISTA_Z + 2, "farolito", Direction.EAST);
+        o.escalon(PISTA_X - PISTA_RX - 3, 0, PISTA_Z - 3, "spruce_stairs", Direction.WEST);
+        o.escalon(PISTA_X - PISTA_RX - 3, 0, PISTA_Z - 4, "spruce_stairs", Direction.WEST);
+        BlockPos barril = o.p(PISTA_X - PISTA_RX - 3, 0, PISTA_Z - 1);
+        o.set(PISTA_X - PISTA_RX - 3, 0, PISTA_Z - 1, Blocks.BARREL.defaultBlockState().setValue(BlockStateProperties.FACING, Direction.UP));
+        if (o.l.getBlockEntity(barril) instanceof net.minecraft.world.level.block.entity.BarrelBlockEntity b) {
+            for (int i = 0; i < 4; i++) {
+                b.setItem(i, new net.minecraft.world.item.ItemStack(ModRegistry.PATINES.get()));
+            }
+            b.setItem(4, new net.minecraft.world.item.ItemStack(ModRegistry.CHOCOLATE_CALIENTE.get(), 4));
+        }
+        o.farol(PISTA_X + PISTA_RX + 2, 0, PISTA_Z - 4);
+        o.farol(PISTA_X + PISTA_RX + 2, 0, PISTA_Z + 4);
+    }
+
+    /** Los trineos de madera que esperan en la cima de la colina. */
+    static void trineos(ServerLevel l, Obra o) {
+        for (int i = 0; i < 2; i++) {
+            com.navidad.entidad.TrineoMadera t = ModRegistry.TRINEO_MADERA.get().create(l);
+            if (t != null) {
+                BlockPos p = o.p(CARRIL_X0 + 1 + i * 4, 7, COLINA_CIMA - 1);
+                t.moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, 0F, 0F);
+                l.addFreshEntity(t);
+            }
+        }
+    }
+
     // ------------------------------------------------------------------ la gente
 
     static void gente(ServerLevel l, Obra o) {
@@ -337,6 +462,7 @@ public final class Aldea {
                 l.addFreshEntity(r);
             }
         }
+        trineos(l, o);
         Navidad.LOGGER.info("aldea de Santa lista en {}", o.o);
     }
 }

@@ -77,5 +77,35 @@
    "navidad:regalo_abre"
   ],
   "subtitle": "navidad.sub.regalo"
+ },
+ "trineo_desliza": {
+  "sounds": [
+   "navidad:trineo_desliza"
+  ],
+  "subtitle": "navidad.sub.trineo"
+ },
+ "cascabel": {
+  "sounds": [
+   "navidad:cascabel"
+  ],
+  "subtitle": "navidad.sub.cascabel"
+ },
+ "patin": {
+  "sounds": [
+   "navidad:patin"
+  ],
+  "subtitle": "navidad.sub.patin"
+ },
+ "campanada": {
+  "sounds": [
+   "navidad:campanada"
+  ],
+  "subtitle": "navidad.sub.campanada"
+ },
+ "carta_vuela": {
+  "sounds": [
+   "navidad:carta_vuela"
+  ],
+  "subtitle": "navidad.sub.carta"
  }
 }
