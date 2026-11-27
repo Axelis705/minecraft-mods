@@ -1356,7 +1356,7 @@ final class Prueba {
             }
             sp.teleportTo(600.5, -60, 15.5);
         }));
-        t.photo("krampus_huellas_dia", 900, () -> t.lookFrom(600.5, -59.6, 15.5, 600.5, -60, 9));
+        t.photo("krampus_huellas_dia", 900, () -> t.lookFrom(600.5, -58.3, 13.0, 600.5, -59.8, 8.2));
         t.add("huellas?", 200, () -> {
             var mc = Minecraft.getInstance();
             var hs = mc.level.getEntitiesOfClass(com.navidad.entidad.HuellaKrampus.class, mc.player.getBoundingBox().inflate(20));
