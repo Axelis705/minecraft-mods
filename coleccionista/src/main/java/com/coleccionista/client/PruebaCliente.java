@@ -340,7 +340,8 @@ final class PruebaCliente {
             for (int i = 2; i <= 8; i++) {
                 t.cmd("evento revivir Bot_0" + i);
             }
-            t.cmd("evento sentidos bots true 25 26");
+            // (los equipos de bots llegan a la salida a los 34 s: mi equipo pasa antes por el cuarto a oscuras y tiene que ganarles)
+            t.cmd("evento sentidos bots true 34 35");
             t.cmd("evento sentidos tiempos 20 300");
             t.cmd("evento mascota tiempos 6 90");
             t.cmd("forceload add 704 424 784 488");
@@ -448,7 +449,7 @@ final class PruebaCliente {
             t.check(Math.abs(p.getZ() - 543.5) < 1.6 && Math.abs(p.getX() - 179.5) < 2.6,
                     String.format(java.util.Locale.ROOT, "tras el susto, de vuelta a la entrada del cuarto (%.1f, %.1f)", p.getX(), p.getZ()));
         });
-        t.add("a la salida", 2500, () -> {
+        t.add("a la salida", 1500, () -> {
             t.cmd("gamemode adventure @a");
             t.cmd("evento sentidos salida " + yo());
         });

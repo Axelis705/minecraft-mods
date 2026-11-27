@@ -241,7 +241,8 @@ final class Prueba {
                 t.cmd("summon navidad:trineo_madera 316.5 -53.4 -26.5 {Rotation:[0f,0f]}");
                 t.cmd("tp @a 316.5 -53 -26.5 0 15");
             });
-            t.add("montar", 1200, () -> t.cmd("execute as @p at @s run ride @s mount @e[type=navidad:trineo_madera,limit=1,sort=nearest]"));
+            t.add("montar", 1200, () -> com.navidad.Invierno.diagnostico = true);
+            t.add("montar 2", 1200, () -> t.cmd("execute as @p at @s run ride @s mount @e[type=navidad:trineo_madera,limit=1,sort=nearest]"));
             t.add("empujar", 1500, () -> {
                 t.check(Minecraft.getInstance().player.getVehicle() instanceof com.navidad.entidad.TrineoMadera, "arriba del trineo");
                 Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK);

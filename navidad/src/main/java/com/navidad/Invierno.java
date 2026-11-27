@@ -123,6 +123,8 @@ public final class Invierno {
     private static final Map<UUID, Double> ANTES = new HashMap<>();
     /** El último tiempo de alguien (segundos), para la prueba con fotos. */
     public static double ultimaCarrera;
+    /** La prueba con fotos lo prende para dejar en el registro por dónde va el trineo. */
+    public static boolean diagnostico;
 
     private static void carrera(MinecraftServer s, ServerPlayer p) {
         if (!(p.getVehicle() instanceof TrineoMadera t) || t.getControllingPassenger() != p) {
@@ -132,10 +134,17 @@ public final class Invierno {
         }
         CompoundTag g = WorldStore.get(s, Navidad.MODID).global();
         if (!g.contains("aldeaX") || p.level() != s.overworld()) {
+            if (diagnostico && s.getTickCount() % 20 == 0) {
+                Navidad.LOGGER.info("NAVIDAD_CARRERA sin aldea guardada ({})", g.getAllKeys());
+            }
             return;
         }
         double lx = t.getX() - g.getInt("aldeaX"), lz = t.getZ() - g.getInt("aldeaZ"), ly = t.getY() - g.getInt("aldeaY");
         boolean enCarril = lx >= Aldea.CARRIL_X0 - 1 && lx <= Aldea.CARRIL_X1 + 2 && ly > -3 && ly < 10;
+        if (diagnostico && s.getTickCount() % 10 == 0) {
+            Navidad.LOGGER.info("NAVIDAD_CARRERA trineo ({}, {}, {}) carril={} antes={}", String.format(Locale.ROOT, "%.2f", lx),
+                    String.format(Locale.ROOT, "%.2f", ly), String.format(Locale.ROOT, "%.2f", lz), enCarril, ANTES.get(p.getUUID()));
+        }
         Integer ini = SALIDA.get(p.getUUID());
         Double antes = ANTES.put(p.getUUID(), lz);
         if (ini == null) {
