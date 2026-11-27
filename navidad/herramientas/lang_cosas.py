@@ -330,3 +330,17 @@ T6 = {
 if __name__ == '__main__':
     aplicar(T6)
     print(len(T6), 'textos de la guerra de nieve')
+
+T7 = {
+    'navidad.calcetin.lleno': ('★ ¡Santa te dejó algo en el calcetín!', '★ Santa left something in the stocking!'),
+    'navidad.calcetin.vacio': ('El calcetín está vacío... Santa lo vuelve a llenar por la noche.',
+                               'The stocking is empty... Santa fills it again at night.'),
+    'navidad.calcetin.carbon': ('Solo hay carbón... alguien lastimó a quien no debía.', 'Only coal... someone hurt who they shouldn\'t have.'),
+    'navidad.calcetin.fuera': ('Fuera de temporada, los calcetines son solo de adorno.', 'Out of season, stockings are just decoration.'),
+    'navidad.calcetin.ayuda': ('En temporada, Santa lo llena cada noche: clic derecho para sacar lo de hoy.',
+                               'In season, Santa fills it every night: right-click to take today\'s treats.'),
+}
+
+if __name__ == '__main__':
+    aplicar(T7)
+    print(len(T7), 'textos de los calcetines')

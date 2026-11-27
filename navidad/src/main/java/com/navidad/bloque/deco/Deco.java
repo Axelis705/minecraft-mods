@@ -177,6 +177,15 @@ public final class Deco {
                     it = new BedItem(b, new Item.Properties().stacksTo(1));
                 } else if (b instanceof DoorBlock || b instanceof DecoBlock db && db.def.tall()) {
                     it = new DoubleHighBlockItem(b, new Item.Properties());
+                } else if (en.getKey().startsWith("calcetin_")) {
+                    // los calcetines se llenan solos en temporada (ver Calcetines)
+                    it = new BlockItem(b, new Item.Properties()) {
+                        @Override
+                        public void appendHoverText(ItemStack st, net.minecraft.world.level.Level l,
+                                                    List<Component> tip, net.minecraft.world.item.TooltipFlag f) {
+                            tip.add(Component.translatable("navidad.calcetin.ayuda").withStyle(net.minecraft.ChatFormatting.GRAY));
+                        }
+                    };
                 } else {
                     it = new BlockItem(b, new Item.Properties());
                 }

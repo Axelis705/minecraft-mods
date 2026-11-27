@@ -51,6 +51,7 @@ public final class Aldea {
         cocina(o);
         establo(o);
         alrededores(o, rnd);
+        nacimiento(o);
         colina(o);
         pista(o);
         if (conGente) {
@@ -330,6 +331,47 @@ public final class Aldea {
         // letrero de bienvenida con bastones a la entrada sur (y luces colgando entre ellos)
         o.deco(-2, 0, 30, "baston_gigante", Direction.SOUTH);
         o.deco(2, 0, 30, "baston_gigante", Direction.SOUTH);
+    }
+
+    // ------------------------------------------------------------------ el nacimiento (noroeste): sobre musgo, con el portal y la estrella
+
+    static void nacimiento(Obra o) {
+        o.fill(-24, 0, -25, -16, 0, -15, Blocks.MOSS_BLOCK.defaultBlockState());
+        o.fill(-25, 0, -25, -25, 0, -15, Blocks.SPRUCE_SLAB.defaultBlockState());
+        o.fill(-15, 0, -25, -15, 0, -15, Blocks.SPRUCE_SLAB.defaultBlockState());
+        o.fill(-24, 0, -26, -16, 0, -26, Blocks.SPRUCE_SLAB.defaultBlockState());
+        o.fill(-24, 0, -14, -16, 0, -14, Blocks.SPRUCE_SLAB.defaultBlockState());
+        // el portal de Belén al fondo, con la estrella encima
+        for (int x = -21; x <= -19; x++) {
+            o.deco(x, 1, -23, "portal_belen", Direction.SOUTH);
+        }
+        o.deco(-20, 3, -22, "estrella_belen", Direction.SOUTH);
+        // la Sagrada Familia y los animales que dan calor al Niño
+        o.deco(-20, 1, -21, "pesebre", Direction.SOUTH);
+        o.deco(-21, 1, -21, "figura_maria", Direction.EAST);
+        o.deco(-19, 1, -21, "figura_jose", Direction.WEST);
+        o.deco(-22, 1, -22, "figura_buey", Direction.NORTH);
+        o.deco(-18, 1, -22, "figura_burro", Direction.SOUTH);
+        // pastores y borreguitos a los lados; los Reyes Magos llegan de frente
+        o.deco(-17, 1, -19, "figura_pastor", Direction.WEST);
+        o.deco(-17, 1, -18, "borreguito", Direction.SOUTH);
+        o.deco(-23, 1, -19, "borreguito", Direction.NORTH);
+        o.deco(-23, 1, -18, "figura_pastor", Direction.EAST);
+        o.deco(-21, 1, -17, "rey_melchor", Direction.NORTH);
+        o.deco(-20, 1, -16, "rey_gaspar", Direction.NORTH);
+        o.deco(-19, 1, -17, "rey_baltasar", Direction.NORTH);
+        // musgo con heno en lo que quedó libre, y farolitos en las esquinas
+        for (int x = -24; x <= -16; x++) {
+            for (int z = -25; z <= -15; z++) {
+                if (o.l.getBlockState(o.p(x, 1, z)).isAir()) {
+                    o.bloqueNav(x, 1, z, "musgo_nacimiento");
+                }
+            }
+        }
+        o.deco(-24, 1, -15, "farolito", Direction.SOUTH);
+        o.deco(-16, 1, -15, "farolito", Direction.SOUTH);
+        o.deco(-24, 1, -25, "pino_maceta", Direction.SOUTH);
+        o.deco(-16, 1, -25, "pino_maceta", Direction.SOUTH);
     }
 
     // ------------------------------------------------------------------ colina de trineos (noreste)

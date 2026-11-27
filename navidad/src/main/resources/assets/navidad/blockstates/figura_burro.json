@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/figura_burro"
+  },
+  "facing=east": {
+   "model": "navidad:block/figura_burro",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/figura_burro",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/figura_burro",
+   "y": 270
+  }
+ }
+}

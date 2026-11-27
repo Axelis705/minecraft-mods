@@ -3063,6 +3063,288 @@
    "en": "Reindeer decoration",
    "soft": false,
    "sub": "floor"
+  },
+  {
+   "id": "pesebre",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     2,
+     0,
+     4,
+     14,
+     9,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Pesebre con el Niño",
+   "en": "Manger with the Child",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "figura_maria",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     15,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Virgen María (nacimiento)",
+   "en": "Mary (nativity)",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "figura_jose",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     15,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "San José (nacimiento)",
+   "en": "Joseph (nativity)",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "figura_pastor",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     15,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Pastor (nacimiento)",
+   "en": "Shepherd (nativity)",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "rey_melchor",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     15,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Rey Melchor",
+   "en": "King Melchior",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "rey_gaspar",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     15,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Rey Gaspar",
+   "en": "King Caspar",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "rey_baltasar",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     4,
+     0,
+     4,
+     12,
+     15,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Rey Baltasar",
+   "en": "King Balthazar",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "borreguito",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wool",
+   "shape": [
+    [
+     3,
+     0,
+     5,
+     13,
+     9,
+     11
+    ]
+   ],
+   "particles": [],
+   "es": "Borreguito de nacimiento",
+   "en": "Nativity lamb",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "figura_burro",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     1,
+     0,
+     4,
+     15,
+     13,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Burrito de nacimiento",
+   "en": "Nativity donkey",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "figura_buey",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     1,
+     0,
+     4,
+     15,
+     13,
+     12
+    ]
+   ],
+   "particles": [],
+   "es": "Buey de nacimiento",
+   "en": "Nativity ox",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "estrella_belen",
+   "kind": "prop",
+   "tall": false,
+   "light": 13,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     7.6,
+     9.0,
+     7.6,
+     8.4,
+     16.0,
+     8.4
+    ]
+   ],
+   "particles": [],
+   "es": "Estrella de Belén",
+   "en": "Star of Bethlehem",
+   "soft": false,
+   "sub": "hang"
+  },
+  {
+   "id": "portal_belen",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     0,
+     12,
+     16,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Portal de Belén",
+   "en": "Nativity stable",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "musgo_nacimiento",
+   "kind": "alfombra",
+   "sound": "wool",
+   "strength": 0.2
   }
  ]
 }

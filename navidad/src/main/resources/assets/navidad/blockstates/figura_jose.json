@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/figura_jose"
+  },
+  "facing=east": {
+   "model": "navidad:block/figura_jose",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/figura_jose",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/figura_jose",
+   "y": 270
+  }
+ }
+}

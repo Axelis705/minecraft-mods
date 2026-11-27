@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/figura_maria"
+  },
+  "facing=east": {
+   "model": "navidad:block/figura_maria",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/figura_maria",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/figura_maria",
+   "y": 270
+  }
+ }
+}

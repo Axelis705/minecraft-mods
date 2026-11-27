@@ -38,6 +38,7 @@ public class Navidad {
         AnioNuevo.init();
         Cartas.init();
         GuerraNieve.init();
+        Calcetines.init();
         AxelisCore.commands(Comandos::registrar);
     }
 

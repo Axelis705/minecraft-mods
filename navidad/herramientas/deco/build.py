@@ -896,6 +896,197 @@ def reno_adorno():
     return p
 
 
+# ---------------------------------------------------------------- el nacimiento (como los de México: con heno, musgo y los Reyes)
+
+PIEL = cloth('#d8a070', weave=0.04, seed=70)
+PIEL_MORENA = cloth('#8a5634', weave=0.04, seed=71)
+PAJA = cloth('#c8a44a', weave=0.18, seed=72, fold=0.1)
+BARBA_BLANCA = cloth('#ece8e0', weave=0.2, seed=73)
+BARBA_CAFE = cloth('#5a3a22', weave=0.2, seed=74)
+LANA = stone(Ramp('#d8d2c4', '#e6e0d2', '#f2eee4', '#fbf8f2'), scale=4, seed=75)
+
+
+def pesebre():
+    p = Prop('pesebre', 'Pesebre con el Niño', 'Manger with the Child', kind='floor', sound='wood', seed=70, collide=True,
+             shape=[[2, 0, 4, 14, 9, 12]])
+    # patas en cruz y el cajón
+    for x in (2.5, 12):
+        p.box(x, 0, 5, x + 1.5, 6, 6.2, MADERA)
+        p.box(x, 0, 9.8, x + 1.5, 6, 11, MADERA)
+    p.box(2.5, 5, 4.5, 13.5, 6, 11.5, MADERA)
+    p.box(2.5, 6, 4, 13.5, 8, 4.8, MADERA)
+    p.box(2.5, 6, 11.2, 13.5, 8, 12, MADERA)
+    p.box(2, 6, 4, 2.8, 8.5, 12, MADERA)
+    p.box(13.2, 6, 4, 14, 8.5, 12, MADERA)
+    p.box(2.8, 6, 4.8, 13.2, 7.4, 11.2, PAJA)
+    for x, z in ((3.2, 4.2), (6.5, 11.4), (11.5, 4.1), (9, 11.5)):
+        p.box(x, 7.4, z, x + 1.6, 8.6, z + 0.5, PAJA)
+    # el Niño envuelto en pañales
+    p.box(5, 7.4, 6.4, 11, 9.2, 9.6, BLANCO)
+    p.box(10.6, 7.6, 6.6, 12.6, 9.8, 9.4, PIEL)
+    p.box(10.4, 9.4, 6.4, 12.8, 10, 9.6, cloth('#6a4426', 0.1, 76))
+    p.box(4.6, 7.6, 6.2, 5.4, 9.4, 9.8, cloth('#e8dcc4', 0.1, 77))
+    p.box(12.65, 8.4, 7.4, 12.75, 8.8, 7.8, CARBON)
+    p.box(12.65, 8.4, 8.2, 12.75, 8.8, 8.6, CARBON)
+    return p
+
+
+def figura(pid, es, en, seed, cuerpo, manto, piel=PIEL, barba=None, cabeza=None, baston=False, arrodillada=False, regalo=None,
+           corona=None):
+    """Una figura de nacimiento de pie (o hincada) que mira al frente (z bajo): túnica, manto, cara, manos y lo que cargue."""
+    p = Prop(pid, es, en, kind='floor', sound='wood', seed=seed, collide=True, shape=[[4, 0, 4, 12, 15, 12]])
+    alto = 9 if arrodillada else 0
+    base = 1
+    p.box(4, 0, 4, 12, base, 12, MADERA_CLARA)
+    if arrodillada:
+        p.box(4.5, base, 4.5, 11.5, 4.5, 11.5, cuerpo)        # las rodillas bajo la túnica
+        p.box(5, 4.5, 6, 11, 9, 11, cuerpo)
+        p.box(4.6, base, 8, 11.4, 9.5, 11.6, manto)
+        y = 9
+    else:
+        p.box(5, base, 5.5, 11, 10, 10.5, cuerpo)
+        p.box(4.8, base, 8.5, 11.2, 10.5, 11, manto)
+        p.box(4.6, 6, 5.4, 5.4, 10.5, 10.6, manto)
+        p.box(10.6, 6, 5.4, 11.4, 10.5, 10.6, manto)
+        y = 10
+    # brazos y manos juntas al frente (o cargando algo)
+    p.box(4.4, y - 3.5, 6, 5.6, y, 9, manto)
+    p.box(10.4, y - 3.5, 6, 11.6, y, 9, manto)
+    if regalo is not None:
+        p.box(6, y - 3.2, 3.6, 10, y - 0.6, 6, regalo)
+        p.box(7.6, y - 0.6, 4.4, 8.4, y + 0.2, 5.2, ORO)
+        p.box(5.4, y - 3, 5.4, 6.4, y - 1.6, 6.2, piel)
+        p.box(9.6, y - 3, 5.4, 10.6, y - 1.6, 6.2, piel)
+    else:
+        p.box(7.2, y - 2.6, 4.6, 8.8, y - 0.8, 6, piel)
+    # cuello, cara y cabeza
+    p.box(6.2, y, 6.2, 9.8, y + 4, 9.8, piel)
+    p.box(6.6, y + 2.4, 6.1, 7.4, y + 3, 6.2, CARBON)
+    p.box(8.6, y + 2.4, 6.1, 9.4, y + 3, 6.2, CARBON)
+    if barba is not None:
+        p.box(6.2, y - 0.6, 5.8, 9.8, y + 1.8, 7, barba)
+        p.box(6.2, y + 3.4, 6.6, 9.8, y + 4.4, 9.8, barba)
+    if cabeza is not None:
+        p.box(5.8, y + 2, 6.8, 10.2, y + 4.8, 10.2, cabeza)
+        p.box(6, y + 3.8, 6, 10, y + 4.8, 6.8, cabeza)
+    if corona is not None:
+        p.box(6, y + 4, 6, 10, y + 5, 10, corona)
+        for x, z in ((6, 6), (9.2, 6), (6, 9.2), (9.2, 9.2), (7.6, 6)):
+            p.box(x, y + 5, z, x + 0.8, y + 6, z + 0.8, corona)
+        p.box(7.6, y + 4.2, 5.8, 8.4, y + 5, 6, brillo('#e02a3a'))
+    if baston:
+        p.box(12, base, 7, 12.8, 15, 7.8, MADERA)
+        p.box(11.6, 14, 7, 12.8, 14.8, 7.8, MADERA)
+    return p
+
+
+def borrego():
+    p = Prop('borreguito', 'Borreguito de nacimiento', 'Nativity lamb', kind='floor', sound='wool', seed=78, collide=True,
+             shape=[[3, 0, 5, 13, 9, 11]])
+    p.box(4, 3, 5.5, 11.5, 8, 10.5, LANA)
+    for x in (4.6, 10):
+        for z in (6, 9):
+            p.box(x, 0, z, x + 1, 3, z + 1, NEGRO)
+    p.box(11, 5, 6.5, 14, 8.5, 9.5, NEGRO)
+    p.box(11.2, 7.6, 6.3, 13.4, 9, 9.7, LANA)
+    p.box(11.4, 7, 5.6, 12.4, 7.8, 6.4, NEGRO)
+    p.box(11.4, 7, 9.6, 12.4, 7.8, 10.4, NEGRO)
+    p.box(3.2, 6, 7.4, 4, 7.5, 8.6, LANA)
+    return p
+
+
+def animal(pid, es, en, seed, pelo, cabeza_pelo, cuernos=None, orejas=None, nariz=None, mancha=None):
+    p = Prop(pid, es, en, kind='floor', sound='wood', seed=seed, collide=True, shape=[[1, 0, 4, 15, 13, 12]])
+    p.box(2.5, 4.5, 4.8, 12, 10, 11.2, pelo)
+    if mancha is not None:
+        p.box(5, 6, 4.7, 8.5, 9, 11.3, mancha)
+    for x in (3, 10.4):
+        for z in (5.4, 9.2):
+            p.box(x, 0, z, x + 1.6, 4.5, z + 1.4, pelo)
+            p.box(x, 0, z, x + 1.6, 0.8, z + 1.4, CARBON)
+    p.box(11, 8, 5.8, 14.5, 12, 10.2, cabeza_pelo)
+    p.box(13.6, 8, 6.4, 15.4, 10, 9.6, nariz or cabeza_pelo)
+    p.box(13.2, 10.6, 5.7, 13.8, 11.2, 6.0, CARBON)
+    p.box(13.2, 10.6, 10.0, 13.8, 11.2, 10.3, CARBON)
+    if cuernos is not None:
+        p.box(11.6, 11.4, 4, 12.6, 12.4, 12, cuernos)
+        p.box(11.6, 12.4, 3.6, 12.6, 14, 4.6, cuernos)
+        p.box(11.6, 12.4, 11.4, 12.6, 14, 12.4, cuernos)
+    if orejas is not None:
+        p.box(11.4, 11.5, 6.2, 12.4, 15.5, 7.4, orejas)
+        p.box(11.4, 11.5, 8.6, 12.4, 15.5, 9.8, orejas)
+    p.box(1.4, 7, 7.5, 2.6, 9.5, 8.5, pelo)
+    return p
+
+
+def estrella_belen():
+    p = Prop('estrella_belen', 'Estrella de Belén', 'Star of Bethlehem', kind='hang', sound='metal', seed=79, collide=False, light=13)
+    luz = brillo('#ffe27a')
+    p.box(7.6, 9, 7.6, 8.4, 16, 8.4, solid('#9a8a5a'))
+    p.box(7, 3, 7.4, 9, 9, 8.6, luz)
+    p.box(5, 5, 7.4, 11, 7, 8.6, luz)
+    p.box(5.6, 5.5, 7.5, 10.4, 6.5, 8.5, luz, rot=('z', 45, (8, 6, 8)))
+    p.box(5.6, 5.5, 7.5, 10.4, 6.5, 8.5, luz, rot=('z', -45, (8, 6, 8)))
+    p.box(6.6, 4.6, 7.3, 9.4, 7.4, 8.7, brillo('#fff2b8'))
+    p.box(7.4, 0.5, 7.6, 8.6, 3, 8.4, brillo('#fff2b8'))
+    p.box(3.5, 5.6, 7.6, 5, 6.4, 8.4, brillo('#fff2b8'))
+    p.box(11, 5.6, 7.6, 12.5, 6.4, 8.4, brillo('#fff2b8'))
+    return p
+
+
+def portal_belen():
+    p = Prop('portal_belen', 'Portal de Belén', 'Nativity stable', kind='floor', sound='wood', seed=80, collide=True,
+             shape=[[0, 0, 12, 16, 16, 16]])
+    p.box(0.5, 0, 0.5, 2, 13, 2, MADERA)
+    p.box(14, 0, 0.5, 15.5, 13, 2, MADERA)
+    p.box(0.5, 0, 13, 15.5, 11, 15.5, MADERA_CLARA)
+    for y in (2.5, 5.5, 8.5):
+        p.box(0.4, y, 12.8, 15.6, y + 0.4, 13.1, MADERA)
+    p.box(0.5, 0, 2, 1.5, 11, 13, MADERA_CLARA)
+    p.box(14.5, 0, 2, 15.5, 11, 13, MADERA_CLARA)
+    p.box(0, 13, 0, 16, 14, 16, MADERA)
+    p.box(-0.5, 14, -0.5, 16.5, 15.5, 16.5, PAJA)
+    p.box(2, 15.5, 2, 14, 16, 14, PAJA)
+    for x in (1, 5, 9, 13):
+        p.box(x, 12.2, -0.6, x + 1.4, 14, 0, PAJA)
+    p.box(7.2, 11.4, 0.2, 8.8, 13, 0.6, brillo('#ffe27a'))
+    p.box(0.5, 0, 2, 15.5, 0.5, 15, PAJA)
+    return p
+
+
+def t_musgo(seed):
+    x, y = grid()
+    t = ruido(x, y, 2.0, seed, 3)
+    rgb = Ramp('#2c4a1a', '#3c6224', '#4e7a2c', '#6a9238')(t)
+    heno = (ruido(x, y, 1.0, seed + 5, 2) > 0.72) & (((x + y * 3) % 7) < 2)
+    rgb = np.where(heno[..., None], col('#b8b4a0'), rgb)
+    return img(rgb)
+
+
+def nacimiento():
+    prop(pesebre())
+    prop(figura('figura_maria', 'Virgen María (nacimiento)', 'Mary (nativity)', 81, cloth('#d88a98', 0.06, 81), cloth('#2a5aa8', 0.06, 82),
+                cabeza=cloth('#2a5aa8', 0.06, 82), arrodillada=True))
+    prop(figura('figura_jose', 'San José (nacimiento)', 'Joseph (nativity)', 83, cloth('#7a4e2a', 0.08, 83), cloth('#a8862e', 0.08, 84),
+                barba=BARBA_CAFE, cabeza=cloth('#5a3a22', 0.1, 85), baston=True))
+    prop(figura('figura_pastor', 'Pastor (nacimiento)', 'Shepherd (nativity)', 86, cloth('#8a7a5a', 0.15, 86), cloth('#5a6a3a', 0.12, 87),
+                barba=BARBA_CAFE, cabeza=cloth('#c8b48a', 0.1, 88), baston=True))
+    prop(figura('rey_melchor', 'Rey Melchor', 'King Melchior', 89, cloth('#e8e0d0', 0.06, 89), cloth('#b01c2a', 0.06, 90),
+                barba=BARBA_BLANCA, corona=ORO, regalo=ORO))
+    prop(figura('rey_gaspar', 'Rey Gaspar', 'King Caspar', 91, cloth('#2a6a3a', 0.06, 91), cloth('#d0a030', 0.06, 92),
+                barba=BARBA_CAFE, corona=ORO, regalo=solid('#7a4a2a')))
+    prop(figura('rey_baltasar', 'Rey Baltasar', 'King Balthazar', 93, cloth('#e8c040', 0.06, 93), cloth('#5a2a8a', 0.06, 94),
+                piel=PIEL_MORENA, cabeza=cloth('#f2f0ec', 0.08, 95), corona=ORO, regalo=PLATA))
+    prop(borrego())
+    prop(animal('figura_burro', 'Burrito de nacimiento', 'Nativity donkey', 96, cloth('#8a8a8e', 0.15, 96), cloth('#7a7a80', 0.15, 97),
+                orejas=cloth('#6a6a70', 0.15, 98), nariz=cloth('#d8d4cc', 0.1, 99)))
+    prop(animal('figura_buey', 'Buey de nacimiento', 'Nativity ox', 100, cloth('#6a4428', 0.15, 100), cloth('#5a3a22', 0.15, 101),
+                cuernos=CREMA, nariz=cloth('#c8a890', 0.1, 102), mancha=cloth('#efe8dc', 0.15, 103)))
+    prop(estrella_belen())
+    prop(portal_belen())
+    alfombra('musgo_nacimiento', 'Musgo con heno', 'Moss with Spanish moss', lambda s: t_musgo(s))
+
+
 # ---------------------------------------------------------------- el catálogo
 
 def catalogo():
@@ -967,6 +1158,7 @@ def catalogo():
     prop(papel_picado())
     prop(pinata_adorno())
     prop(reno_adorno())
+    nacimiento()
 
 
 # ---------------------------------------------------------------- bloques con código propio (no son de decoración)

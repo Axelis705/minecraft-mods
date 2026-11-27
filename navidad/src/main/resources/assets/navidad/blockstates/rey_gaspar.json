@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/rey_gaspar"
+  },
+  "facing=east": {
+   "model": "navidad:block/rey_gaspar",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/rey_gaspar",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/rey_gaspar",
+   "y": 270
+  }
+ }
+}

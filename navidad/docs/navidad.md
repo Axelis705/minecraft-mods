@@ -18,8 +18,10 @@ fecha: `/navidad temporada si` (o `no`, o `auto` para volver a la fecha real).
 
 ## Cosas
 
-- **57 bloques de decoración** (pestaña "Navidad: decoración"): árboles, esferas, luces, coronas, calcetines, muérdago, nochebuenas,
+- **70 bloques de decoración** (pestaña "Navidad: decoración"): árboles, esferas, luces, coronas, calcetines, muérdago, nochebuenas,
   regalos, muñeco de nieve, cascanueces, bastones gigantes, trineo, chimenea, ponche, farolitos, papel picado, piñata de estrella...
+  y un **nacimiento** completo: portal de Belén, pesebre con el Niño, la Virgen, San José, pastores, borreguitos, el buey, el burrito,
+  los tres Reyes Magos (Melchor, Gaspar y Baltasar), la estrella de Belén que brilla y musgo con heno para el piso.
   Se consiguen con la **caja de adornos** (papel + tinte rojo + tinte verde + pepita de oro = 4) en el **cortapiedras**.
   Los focos de los árboles, las guirnaldas, las luces colgantes y el bloque de luces parpadean y cambian de color.
 - **Comida**: galleta de jengibre, bastón de caramelo, dulce, tejocote, mandarina, caña, tamal, buñuelo, pavo navideño, rosca de Reyes;
@@ -50,6 +52,13 @@ les sale un gorro: casi siempre el de Santa y a veces el de duende. Los bebés y
 
 Si dos personas se paran juntas bajo el mismo **muérdago** (el adorno que cuelga), salen corazones, les llega un "abrazo navideño" y un
 poquito de regeneración (una vez por minuto por pareja).
+
+## Calcetines de Santa
+
+Los **calcetines navideños** (rojo, verde y de rayas) se cuelgan en la pared. En temporada, Santa los llena cada noche: clic derecho y
+sacas lo de hoy (dulces, bastones de caramelo, galletas o fruta, y a veces un regalo misterioso). Una vez por día del juego (o cada 20 horas
+de verdad si el tiempo está detenido). Si desde la última vez lastimaste aldeanos, gólems, gatos o renos... solo hay carbón. Agachado,
+el clic derecho pone bloques normales junto al calcetín.
 
 ## Guerra de bolas de nieve
 
@@ -102,9 +111,10 @@ esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario 
 
 `/navidad aldea` la construye donde estés parado (61 x 61 bloques, limpia el lugar): plaza nevada con un pino gigante lleno de luces y
 regalos, casa de Santa (chimenea, calcetines, árbol, su buzón afuera), taller de juguetes, casita de jengibre de la Señora Claus, establo con renos,
+**nacimiento** sobre musgo (con el portal, la estrella, la Sagrada Familia, pastores, animales y los Reyes Magos),
 **colina de trineos** (carril con paredes de nieve, dos trineos esperando arriba, escalones para volver a subir y pacas de paja al pie)
 y **pista de hielo** (con barda iluminada, un pinito en medio y un barril con patines para prestar).
-En la colina hay **carrera de trineos**: al bajar manejando un trineo, se cronometra solo de la cima al pie y el mundo guarda el récord
+En la colina hay **carrera de trineos**: el cronómetro arranca en cuanto empiezas a bajar desde la cima manejando un trineo y para al pie y el mundo guarda el récord
 (se anuncia a todos cuando alguien lo rompe).
 `/navidad aldea sin_gente` la hace sin poner a nadie.
 

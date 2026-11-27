@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/estrella_belen"
+  },
+  "facing=east": {
+   "model": "navidad:block/estrella_belen",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/estrella_belen",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/estrella_belen",
+   "y": 270
+  }
+ }
+}

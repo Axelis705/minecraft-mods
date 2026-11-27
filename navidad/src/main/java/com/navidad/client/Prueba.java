@@ -193,6 +193,8 @@ final class Prueba {
             t.photo("aldea_cocina", 3000, () -> t.lookFrom(288, -57, 6, 278, -59, 0));
             t.photo("aldea_cocina_dentro", 3000, () -> t.lookFrom(282.5, -59, 0.5, 276, -59.5, 0));
             t.photo("aldea_establo", 3000, () -> t.lookFrom(300.5, -57, 12, 300.5, -59, 22));
+            t.photo("aldea_nacimiento", 3000, () -> t.lookFrom(280.5, -56.2, -11, 280.5, -59.5, -21.5));
+            t.photo("aldea_nacimiento_cerca", 2500, () -> t.lookFrom(283.5, -57.6, -17.5, 280.5, -59, -21.5));
             t.photo("aldea_noche", 4000, () -> {
                 t.cmd("time set 18000");
                 t.cmd("gamemode spectator @a");
@@ -200,6 +202,7 @@ final class Prueba {
             });
             t.add("caminar 2", 500, () -> t.cmd("gamemode creative @a"));
             t.photo("aldea_pino_noche", 3000, () -> t.lookFrom(300.5, -58, 12, 300.5, -51, 0));
+            t.photo("aldea_nacimiento_noche", 3000, () -> t.lookFrom(280.5, -56.2, -12, 280.5, -59, -21.5));
             t.add("trineo", 1500, () -> {
                 t.cmd("gamemode spectator @a");
                 t.lookFrom(352, -52, 2, 340, -46, -10);
@@ -234,6 +237,21 @@ final class Prueba {
             t.add("hud carta", 300, () -> t.hud(true));
             t.photo("carta_respuesta", 1500, () -> t.lookFrom(300.5, -60, -13.5, 302.5, -59.5, -13.5));
             t.add("hud carta fin", 300, () -> t.hud(false));
+            // ---------------------------------------------------------------- el calcetín que Santa llena cada noche
+            t.add("calcetin", 1200, () -> {
+                t.cmd("setblock 260 -59 0 minecraft:spruce_planks");
+                t.cmd("setblock 260 -59 1 navidad:calcetin_rojo[facing=south]");
+                t.cmd("tp @a 260.5 -60 3.5 180 15");
+            });
+            t.add("sacar del calcetin", 1200, () -> {
+                Minecraft mc = Minecraft.getInstance();
+                mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND,
+                        new BlockHitResult(new Vec3(260.5, -58.6, 1.2), Direction.SOUTH, new BlockPos(260, -59, 1), false));
+            });
+            t.waitFor("Santa llenó el calcetín", 4000, () -> !com.navidad.Calcetines.ultimo.isEmpty());
+            t.add("hud calcetin", 300, () -> t.hud(true));
+            t.photo("calcetin", 1200, () -> t.lookFrom(260.5, -58.4, 3.5, 260.5, -58.6, 1));
+            t.add("hud calcetin fin", 300, () -> t.hud(false));
             // ---------------------------------------------------------------- la colina de trineos
             t.add("colina", 1000, () -> {
                 t.cmd("time set 6000");

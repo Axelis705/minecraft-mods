@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/figura_pastor"
+  },
+  "facing=east": {
+   "model": "navidad:block/figura_pastor",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/figura_pastor",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/figura_pastor",
+   "y": 270
+  }
+ }
+}

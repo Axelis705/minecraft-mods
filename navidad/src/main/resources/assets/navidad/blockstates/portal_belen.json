@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "navidad:block/portal_belen"
+  },
+  "facing=east": {
+   "model": "navidad:block/portal_belen",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "navidad:block/portal_belen",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "navidad:block/portal_belen",
+   "y": 270
+  }
+ }
+}
