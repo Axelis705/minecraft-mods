@@ -1,7 +1,6 @@
 package com.navidad.krampus;
 
 import com.axeliscore.AxelisCore;
-import com.axeliscore.combat.Combate;
 import com.axeliscore.data.WorldStore;
 import com.navidad.ArbolSanta;
 import com.navidad.Logros;
@@ -150,10 +149,20 @@ public final class NocheKrampus {
         return true;
     }
 
+    /** El piso en (x, z): arriba de lo firme y, si hay capas de nieve, arriba de la nieve (ahí se ve la huella). */
     private static Vec3 alPiso(ServerLevel l, Vec3 p) {
         int x = (int) Math.floor(p.x), z = (int) Math.floor(p.z);
         int y = l.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
-        return Combate.alSuelo(l, new Vec3(p.x, y + 0.5, p.z));
+        BlockPos b = new BlockPos(x, y, z);
+        net.minecraft.world.level.block.state.BlockState s = l.getBlockState(b);
+        if (s.getBlock() instanceof net.minecraft.world.level.block.SnowLayerBlock) {
+            return new Vec3(p.x, y + s.getValue(net.minecraft.world.level.block.SnowLayerBlock.LAYERS) * 2 / 16.0, p.z);
+        }
+        if (l.getBlockState(b.below()).getBlock() instanceof net.minecraft.world.level.block.SnowLayerBlock) {
+            net.minecraft.world.level.block.state.BlockState d = l.getBlockState(b.below());
+            return new Vec3(p.x, y - 1 + d.getValue(net.minecraft.world.level.block.SnowLayerBlock.LAYERS) * 2 / 16.0, p.z);
+        }
+        return new Vec3(p.x, y, p.z);
     }
 
     private static int seg(float s) {

@@ -37,7 +37,7 @@ public class HuellaRenderer extends EntityRenderer<HuellaKrampus> {
         Matrix3f n = ps.last().normal();
         VertexConsumer vc = buf.getBuffer(RenderType.entityTranslucent(TEX));
         int al = (int) (a * 235);
-        float w = 0.2F, l = 0.26F;
+        float w = 0.24F, l = 0.32F;
         p(vc, m, n, -w, -l, 0, 1, al, light);
         p(vc, m, n, w, -l, 1, 1, al, light);
         p(vc, m, n, w, l, 1, 0, al, light);

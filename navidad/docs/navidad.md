@@ -242,8 +242,9 @@ esmeraldas y, con suerte, patines, un trineo, un gorro de duende, un calendario 
     desde adentro del costal; cada segundo te aprieta. Sales **machacando la tecla de saltar** (12 veces) o si tus amigos **le pegan
     al saco por la espalda** (se rompe: te suelta, se aturde y se le caen regalos). Si nadie hace nada, a los 9 segundos te avienta.
     También gira con la cadena y avienta cascabeles malditos que persiguen.
-  - **Apagón** (30 a 0 %): todo se oscurece (efecto de oscuridad y niebla negra) y, si no hay, pone cuatro **faroles de Nochebuena**.
-    Lejos de la luz está **oculto**: solo se le ven los ojos, se oyen sus cascabeles y casi no le haces daño (40 %). Cerca de un farol
+  - **Apagón** (30 a 0 %): todo se oscurece (un golpe de oscuridad y niebla negra) y, si no hay, pone cuatro **faroles de Nochebuena**.
+    Lejos de la luz está **oculto**: es una sombra negra con los ojos rojos brillando, se oyen sus cascabeles y casi no le haces
+    daño (40 %). Cerca de un farol
     encendido se le ve y le haces más daño (125 %). Aparece detrás de alguien (**emboscada**) y va a **apagar los faroles de un soplido**;
     vuélvelos a encender con clic derecho (si lo enciendes junto a él, se deslumbra). La **campanita de Santa** lo revela y lo aturde.
   - Pegarle **por la espalda** en cualquier fase le rompe el saco (suelta regalos; tarda 25 segundos en tener saco otra vez).
@@ -259,7 +260,8 @@ En temporada, al caer la noche: el **5 de diciembre** (Krampusnacht, la fecha de
 visita al que **se portó mal** desde la última vez (mató aldeanos, gatos, gólems, renos...). Se oyen cadenas a lo lejos, sube la
 niebla, aparecen **huellas de pezuña** en la nieve que se acercan a ti, llegan krampusillos y al final sale él donde terminan las
 huellas. Mientras dura no puedes dormir. Si lo vences o llega el día, sobreviviste (logro). Una noche de cada diez, sin que nadie se
-porte mal, solo vienen krampusillos a tu árbol. En pacífico no viene; `/navidad krampus visitas no` lo apaga.
+porte mal, solo vienen krampusillos a tu árbol. En pacífico (o con `doMobSpawning` apagado) no viene; `/navidad krampus visitas no`
+lo apaga.
 
 ## La aldea de Santa
 
@@ -328,7 +330,7 @@ Krampus, romperle el saco, sobrevivir a la Noche del Krampus, atrapar un krampus
 - `herramientas/deco/build.py`: los 57 bloques de decoración, la caja de regalo y el calendario (modelos, texturas, botín, nombres).
 - `herramientas/iconos.py`: iconos de los objetos. `herramientas/ropa.py`: la ropa. `herramientas/pieles.py`: pieles de la gente.
 - `herramientas/criaturas.py`: muñeco malvado y las animaciones del reno y el renito.
-- `herramientas/krampus.py`: el Krampus hecho a mano (modelo, 3 texturas y 18 animaciones). `herramientas/krampusillo.py`: el
+- `herramientas/krampus.py`: el Krampus hecho a mano (modelo, 3 texturas y 18 animaciones; escondido, el código lo pinta negro). `herramientas/krampusillo.py`: el
   krampusillo. `herramientas/sonidos_krampus.py`: cadenas, cascabeles malditos, varazos, pezuñas, saco, soplido, apagón, la música de la
   tercera fase y las risas (la del Krampus y la de los krampusillos salen de la risa CC0 de Santa, muy grave o muy aguda).
   `herramientas/krampus_recursos.py`: íconos, máscara, farol, altar, saco en la espalda, huella, la vista desde adentro del costal,
