@@ -348,7 +348,7 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         // ya en el piso: el charco de sangre que sale del cuello y se va haciendo grande (unos 5 s)
         if (t > 0.95F) {
             float r = 0.2F + 0.6F * Math.min(1F, (t - 0.95F) / 5F);
-            charco(ps, buf, light, 1.4F, r);
+            charco(ps, buf, light, 1.4F, r, encima(c));
         }
         // de espaldas (hacia +z aquí), girando sobre los talones
         ps.translate(0, 0, 0.16F);
@@ -375,15 +375,34 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
             "textures/entity/charco_sangre.png");
 
     /**
+     * A qué altura (desde los pies del cuerpo) va algo pegado al piso: un poquito arriba de lo que haya en su bloque (una alfombra mide
+     * 1 px y el cuerpo puede haber quedado hundido en ella: si no, el charco quedaría debajo de la alfombra).
+     */
+    private static float encima(Cadaver c) {
+        float y = 0.012F;
+        if (c.level() == null) {
+            return y;
+        }
+        net.minecraft.core.BlockPos bp = c.blockPosition();
+        var forma = c.level().getBlockState(bp).getCollisionShape(c.level(), bp);
+        if (!forma.isEmpty()) {
+            double tope = bp.getY() + forma.max(net.minecraft.core.Direction.Axis.Y) - c.getY();
+            if (tope > -0.01 && tope < 0.25) {
+                y = Math.max(y, (float) tope + 0.012F);
+            }
+        }
+        return y;
+    }
+
+    /**
      * Un charco de sangre en el piso (pegado al piso, a {@code z} del cuerpo y de radio {@code r}): mancha oscura y brillosa de orilla chueca
      * (la textura la hace {@code herramientas/charco_sangre.py}), que se nota hasta en la alfombra roja.
      */
-    private static void charco(PoseStack ps, MultiBufferSource buf, int light, float z, float r) {
+    private static void charco(PoseStack ps, MultiBufferSource buf, int light, float z, float r, float y) {
         com.mojang.blaze3d.vertex.VertexConsumer vc = buf.getBuffer(RenderType.entityTranslucent(SANGRE));
         PoseStack.Pose p = ps.last();
         org.joml.Matrix4f m = p.pose();
         org.joml.Matrix3f n = p.normal();
-        float y = 0.012F;
         float[][] v = {{-r, z - r, 0, 0}, {-r, z + r, 0, 1}, {r, z + r, 1, 1}, {r, z - r, 1, 0}};
         for (float[] q : v) {
             vc.vertex(m, q[0], y, q[1]).color(255, 255, 255, 235).uv(q[2], q[3]).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)

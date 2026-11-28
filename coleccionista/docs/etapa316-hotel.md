@@ -101,6 +101,9 @@ ojos de esa persona**; agacharse (Shift) para volver.
   el pizarrón y los cuadros; el monitor dijo "señal perdida" y el apagón apagó 68 lámparas. Arreglos tras verlas: el charco usa una
   textura propia (oscura y brillosa: la salpicadura no se veía sobre la alfombra roja), el pizarrón lleva letra más grande en 4 columnas
   de 9, cruces en gis rojo claro y dos lámparas arriba; las placas de los cuartos, en dorado más claro.
+- Segunda prueba con fotos (corrida 46114133111, commit 0f229b0d): **27 fotos, 0 fallos**; el pizarrón ya se lee (la cruz en rojo
+  claro y el tiempo). El charco seguía sin verse: el cuerpo quedaba hundido en la alfombra (1 px) y el charco se dibujaba debajo de ella.
+  Ahora se dibuja encima de lo que haya en el piso.
 
 ## Pendiente
 - Axelis: grabar las voces nuevas (`hotel`, `hotel_ascensor`, `hotel_fin`, `hotel_regreso`).
