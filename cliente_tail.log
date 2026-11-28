@@ -1,0 +1,400 @@
+[09:52:19] [Render thread/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.maxCachedBufferCapacity: 32768
+[09:52:19] [Render thread/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.cacheTrimInterval: 8192
+[09:52:19] [Render thread/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.cacheTrimIntervalMillis: 0
+[09:52:19] [Render thread/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.useCacheForAllThreads: false
+[09:52:19] [Render thread/DEBUG] [io.ne.bu.PooledByteBufAllocator/]: -Dio.netty.allocator.maxCachedByteBuffersPerChunk: 1023
+[09:52:19] [Render thread/DEBUG] [io.ne.bu.ByteBufUtil/]: -Dio.netty.allocator.type: pooled
+[09:52:19] [Render thread/DEBUG] [io.ne.bu.ByteBufUtil/]: -Dio.netty.threadLocalDirectBufferSize: 0
+[09:52:19] [Render thread/DEBUG] [io.ne.bu.ByteBufUtil/]: -Dio.netty.maxThreadLocalCharBufferSize: 16384
+[09:52:19] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Starting local connection.
+[09:52:19] [Netty Local Client IO #0/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.maxCapacityPerThread: 4096
+[09:52:19] [Netty Local Client IO #0/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.ratio: 8
+[09:52:19] [Netty Local Client IO #0/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.chunkSize: 32
+[09:52:19] [Netty Local Client IO #0/DEBUG] [io.ne.ut.Recycler/]: -Dio.netty.recycler.blocking: false
+[09:52:19] [Netty Server IO #1/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Starting local connection.
+[09:52:20] [Server thread/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Sending ticking packet info 'net.minecraftforge.network.HandshakeMessages$S2CModData' to 'fml:handshake' sequence 0
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 0
+[09:52:20] [Server thread/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Sending ticking packet info 'net.minecraftforge.network.HandshakeMessages$S2CModList' to 'fml:handshake' sequence 1
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 1
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Logging into server with mod list [minecraft, forge, axelis_core, coleccionista]
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'fml:loginwrapper' : Version test of 'FML3' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'forge:tier_sorting' : Version test of '1.0' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'fml:handshake' : Version test of 'FML3' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'axelis_core:main' : Version test of '1' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'minecraft:unregister' : Version test of 'FML3' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'fml:play' : Version test of 'FML3' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'minecraft:register' : Version test of 'FML3' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'forge:split' : Version test of '1.1' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'coleccionista:main' : Version test of '1' from server : ACCEPTED
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Accepting channel list from server
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.LoginWrapper/FMLHANDSHAKE]: Dispatching wrapped packet reply for channel fml:handshake with index 1
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Accepted server connection
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 1
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Received client indexed reply 1 of type net.minecraftforge.network.HandshakeMessages$C2SModListReply
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Received client connection with modlist [minecraft, forge, axelis_core, coleccionista]
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'fml:loginwrapper' : Version test of 'FML3' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'forge:tier_sorting' : Version test of '1.0' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'fml:handshake' : Version test of 'FML3' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'axelis_core:main' : Version test of '1' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'minecraft:unregister' : Version test of 'FML3' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'fml:play' : Version test of 'FML3' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'minecraft:register' : Version test of 'FML3' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'forge:split' : Version test of '1.1' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Channel 'coleccionista:main' : Version test of '1' from client : ACCEPTED
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.NetworkRegistry/NETREGISTRY]: Accepting channel list from client
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Accepted client connection mod list
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.HandshakeHandler/REGISTRIES]: Expecting 19 registries: [minecraft:command_argument_type, minecraft:recipe_serializer, minecraft:sound_event, minecraft:particle_type, minecraft:villager_profession, minecraft:item, minecraft:potion, minecraft:painting_variant, forge:fluid_type, minecraft:block_entity_type, forge:display_contexts, minecraft:block, forge:entity_data_serializers, minecraft:mob_effect, minecraft:stat_type, minecraft:menu, minecraft:enchantment, minecraft:fluid, minecraft:entity_type]
+[09:52:20] [Server thread/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Sending ticking packet info 'Config forge-server.toml' to 'fml:handshake' sequence 2
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 2
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Received config sync from server
+[09:52:20] [Netty Local Client IO #0/DEBUG] [ne.mi.ne.LoginWrapper/FMLHANDSHAKE]: Dispatching wrapped packet reply for channel fml:handshake with index 2
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.LoginWrapper/FMLHANDSHAKE]: Recieved login wrapper packet event for channel fml:handshake with index 2
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Received client indexed reply 2 of type net.minecraftforge.network.HandshakeMessages$C2SAcknowledge
+[09:52:20] [Netty Server IO #1/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Received acknowledgement from client
+[09:52:20] [Server thread/DEBUG] [ne.mi.ne.HandshakeHandler/FMLHANDSHAKE]: Handshake complete!
+[09:52:20] [Netty Local Client IO #0/INFO] [ne.mi.ne.NetworkHooks/]: Connected to a modded server.
+[09:52:20] [Server thread/INFO] [minecraft/PlayerList]: Dev[local:E:c90ab9dc] logged in with entity id 1 at (5.5, -40.0, -4.5)
+[09:52:20] [Server thread/INFO] [minecraft/MinecraftServer]: Dev joined the game
+[09:52:20] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST inicio pasos=81
+[09:52:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_ESTUDIO recargado modelos=0 animaciones=0 texturas=0 errores=0
+[09:52:21] [Render thread/INFO] [minecraft/AdvancementList]: Loaded 2 advancements
+[09:52:31] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_VOZ tonos=0
+[09:52:31] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_REINICIADO
+[09:52:31] [Server thread/INFO] [minecraft/MinecraftServer]: The event was erased: everyone is back to normal.
+[09:52:31] [Server thread/INFO] [minecraft/MinecraftServer]: No entity was found
+[09:52:31] [Server thread/INFO] [minecraft/MinecraftServer]: Set the time to 18000
+[09:52:31] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Creative Mode
+[09:52:31] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:grava[facing=south]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:grava[facing=north]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:grava[facing=east]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:archivero[facing=east,half=lower]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:archivero[facing=east,half=upper]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:archivero[facing=south,half=lower]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:archivero[facing=south,half=upper]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:archivero[facing=west,half=lower]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:archivero[facing=west,half=upper]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:estante_archivo[facing=south,half=lower]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:estante_archivo[facing=south,half=upper]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:archivero[facing=north,half=lower]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:archivero[facing=north,half=upper]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:tablon[facing=south]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:tablon[facing=east]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:tablon[facing=west]
+[09:52:31] [Server thread/WARN] [co.co.Coleccionista/]: bloque desconocido en el plano: coleccionista:placa_altar[facing=west]
+[09:52:31] [Server thread/INFO] [minecraft/MinecraftServer]: Building the Cell Wing: 0%
+[09:52:31] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 85.000000, -40.000000, 20.000000
+[09:52:31] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO celdas bloques=28490
+[09:52:31] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO sala bloques=37436
+[09:52:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:34] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO hotel bloques=132318
+[09:52:34] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:35] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO hotel_espera bloques=6436
+[09:52:35] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:36] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_1 bloques=90480
+[09:52:36] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:38] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_2 bloques=90480
+[09:52:38] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_3 bloques=90480
+[09:52:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_4 bloques=90480
+[09:52:42] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_5 bloques=90480
+[09:52:43] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:45] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_6 bloques=90480
+[09:52:45] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:47] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_7 bloques=90480
+[09:52:47] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:49] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_8 bloques=90480
+[09:52:49] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:50] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_9 bloques=90480
+[09:52:50] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:52] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO circ_10 bloques=90480
+[09:52:52] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:52:54] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO vitrina bloques=80568
+[09:52:54] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:00] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO mansion bloques=134036
+[09:53:00] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:01] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO caja bloques=44738
+[09:53:01] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:02] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO sorpresa bloques=48960
+[09:53:02] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:03] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO te bloques=60480
+[09:53:03] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:04] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO piano bloques=57600
+[09:53:04] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:05] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO veintiuno bloques=36000
+[09:53:05] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:06] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO salida_final bloques=23634
+[09:53:06] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:07] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO cloacas bloques=58410
+[09:53:07] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:07] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO salon bloques=17820
+[09:53:07] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:08] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO puertas bloques=35301
+[09:53:08] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:08] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO final bloques=17298
+[09:53:08] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:08] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO capilla bloques=16790
+[09:53:08] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:09] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO archivo bloques=15330
+[09:53:09] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:10] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO laberintos bloques=58870
+[09:53:10] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:10] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO galeria bloques=20496
+[09:53:10] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:11] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO ante_cloacas bloques=18354
+[09:53:11] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:11] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO ante_archivo bloques=18354
+[09:53:11] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:12] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO ante_salon bloques=18354
+[09:53:12] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:12] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO ante_laberintos bloques=18354
+[09:53:12] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:12] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO ante_capilla bloques=18354
+[09:53:12] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:13] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO ante_puertas bloques=18354
+[09:53:13] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:13] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO ante_final bloques=18354
+[09:53:13] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO ante_galeria bloques=18354
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO paso_caja bloques=750
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO paso_sorpresa bloques=822
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO paso_te bloques=924
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO paso_piano bloques=894
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CONSTRUIDO paso_veintiuno bloques=864
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PROTECCION bichos_quitados=0
+[09:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: Cell Wing built (origin 0 -61 30). Next: /evento sala
+[09:53:14] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: hotel: construido
+[09:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: Marked [18, -7] chunks in minecraft:overworld from [18, -7] to [25, -3] to be force loaded
+[09:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: No chunks were marked for force loading
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_INSCRITO 01 Dev bot=false
+[09:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: 1 signed up (1 pieces in total).
+[09:53:14] [Server thread/DEBUG] [io.ne.ut.in.ThreadLocalRandom/]: -Dio.netty.initialSeedUniquifier: 0x81c3f41b0d01765b
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_INSCRITO 02 Bot_02 bot=true
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_INSCRITO 03 Bot_03 bot=true
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_INSCRITO 04 Bot_04 bot=true
+[09:53:14] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_INSCRITO 05 Bot_05 bot=true
+[09:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: 4 test players placed.
+[09:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: hotel usar=true
+[09:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: hotel juego=600s entrar=30s viaje=200t
+[09:53:14] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Adventure Mode
+[09:53:14] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Adventure Mode
+[09:53:16] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 106.000000, -59.000000, 47.500000
+[09:53:18] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h01_torre
+[09:53:19] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 81.000000, -60.000000, 63.000000
+[09:53:20] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h02_torre_puertas
+[09:53:20] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL pistas=52 piso_salida=4
+[09:53:20] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_DISCURSO hotel
+[09:53:20] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL empieza salida=7 muertes=[6, 13, 14]
+[09:53:20] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: HABLANDO salida=4B trampas=4A,7B,8A salieron=0 ultimoCae=false
+[09:53:20] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] [Organizador] [Only you] The exit is SERVICE door 4B. Traps: 4A,7B,8A.
+[09:53:22] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el Coleccionista presenta el hotel: HABLANDO
+[09:53:22] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: ya hay salida: 4B
+[09:53:22] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: llegaron las pistas del hotel: 53
+[09:53:22] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL ascensores
+[09:53:22] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: ASCENSORES salida=4B trampas=4A,7B,8A salieron=0 ultimoCae=false
+[09:53:22] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Everyone into a lift in the tower. One per person. You have 30 seconds.
+[09:53:24] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 77.500000, -60.000000, 39.500000
+[09:53:27] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h03_dentro_ascensor
+[09:53:27] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA sale hotel_s1 -> hotel_h11 van=1
+[09:53:27] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA sale hotel_s2 -> hotel_h18 van=1
+[09:53:27] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA sale hotel_s3 -> hotel_h25 van=1
+[09:53:27] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA sale hotel_s4 -> hotel_h31 van=1
+[09:53:27] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA sale hotel_s5 -> hotel_h4 van=1
+[09:53:27] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_DISCURSO hotel_ascensor
+[09:53:27] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL bajan viajes=5 afuera=0
+[09:53:28] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: BAJANDO salida=4B trampas=4A,7B,8A salieron=0 ultimoCae=false
+[09:53:33] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h04_bajando
+[09:53:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA llega hotel_h11
+[09:53:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL botones_piso 4
+[09:53:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL botones_piso 9
+[09:53:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL juego salida=7 (4B) botones=2 llegaron=1
+[09:53:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA llega hotel_h18
+[09:53:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA llega hotel_h25
+[09:53:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA llega hotel_h31
+[09:53:40] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CABINA llega hotel_h4
+[09:53:40] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: hotel: llegamos
+[09:53:40] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: Welcome to my hotel. You have 10 minutes to find the way out.
+[09:53:42] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h05_llegada
+[09:53:43] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: llegué al hotel
+[09:53:43] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: hay 20 puertas de servicio: 20
+[09:53:43] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Spectator Mode
+[09:53:43] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 316.100000, -45.200000, -67.900000
+[09:53:43] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Spectator Mode
+[09:53:44] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h06_puerta_trampa
+[09:53:45] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 334.700000, -45.200000, -66.000000
+[09:53:46] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h07_puerta_salida
+[09:53:46] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 318.700000, -60.200000, -82.900000
+[09:53:48] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h08_puerta_normal
+[09:53:48] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 324.200000, -50.000000, -81.800000
+[09:53:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h08b_placa_cuarto
+[09:53:50] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new The Bellboy
+[09:53:50] [Server thread/INFO] [minecraft/MinecraftServer]: Summoned new Wind-up rat
+[09:53:50] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 325.500000, -60.000000, -77.500000
+[09:53:53] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h09_botones
+[09:53:53] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 327.500000, -59.300000, -81.500000
+[09:53:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h10_botones_cerca
+[09:53:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: hay dos Botones rondando: 2
+[09:53:55] [Render thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_PRUEBA_HOTEL pista 'THE WAY OUT'
+[09:53:55] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 333.500000, -60.314000, -89.900000
+[09:53:56] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL botones_piso 1
+[09:53:56] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL botones_piso 2
+[09:53:57] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h11_pista
+[09:53:57] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 333.500000, -60.000000, -81.800000
+[09:53:59] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h12_tubo
+[09:53:59] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Adventure Mode
+[09:53:59] [Server thread/INFO] [minecraft/MinecraftServer]: Gave 1 [Rusty pipe] to Dev
+[09:53:59] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Adventure Mode
+[09:54:00] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL botones_vio Dev
+[09:54:01] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h13_tubo_mano
+[09:54:01] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Spectator Mode
+[09:54:01] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 315.500000, -45.200000, -65.900000
+[09:54:01] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Spectator Mode
+[09:54:02] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL abre Bot_02 puerta=6 (4A) tipo=1
+[09:54:02] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: JUEGO salida=4B trampas=4A,7B,8A salieron=0 ultimoCae=false
+[09:54:03] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 02 Bot_02 quedan=4
+[09:54:03] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO sin_cabeza 02 Bot_02
+[09:54:03] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL tablero renglones=1 escritos=2
+[09:54:03] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL disparo puerta=6 victima=Bot_02 eliminado=true
+[09:54:03] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 02 · Bot_02 has been eliminated and is now part of the collection. (El hotel) 4 remain.
+[09:54:03] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h14_disparo
+[09:54:06] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h15_sin_cabeza
+[09:54:06] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el monitor del que cayó dice señal perdida
+[09:54:06] [Server thread/INFO] [minecraft/MinecraftServer]: No entity was found
+[09:54:06] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 316.000000, -44.050000, -68.500000
+[09:54:11] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h15b_charco
+[09:54:11] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: quedó el cuerpo sin cabeza
+[09:54:11] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: quedan 4 vivos (yo y 3 bots): 4
+[09:54:11] [Server thread/INFO] [minecraft/MinecraftServer]: No entity was found
+[09:54:11] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 315.700000, -45.200000, -68.300000
+[09:54:12] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_DISCURSO_FIN hotel_ascensor
+[09:54:12] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h16_trampa_adentro
+[09:54:13] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Adventure Mode
+[09:54:13] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL abre Dev puerta=7 (4B) tipo=2
+[09:54:13] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: JUEGO salida=4B trampas=4A,7B,8A salieron=0 ultimoCae=false
+[09:54:13] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Adventure Mode
+[09:54:15] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h17_salida_abierta
+[09:54:16] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL tablero renglones=2 escritos=3
+[09:54:16] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL salio Dev n=1
+[09:54:16] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: JUEGO salida=4B trampas=4A,7B,8A salieron=1 ultimoCae=false
+[09:54:16] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Pieza 01 · Dev found the way out (1).
+[09:54:16] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL botones_piso 8
+[09:54:17] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h18_tobogan
+[09:54:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h19_colchon
+[09:54:21] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: salí del hotel: 1
+[09:54:22] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 378.500000, -60.000000, -75.500000
+[09:54:23] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h20b_pizarron
+[09:54:24] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: el pizarrón tiene la cruz y mi renglón: 2
+[09:54:24] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 386.500000, -60.000000, -75.500000
+[09:54:25] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h20_sala_espera
+[09:54:26] [Server thread/INFO] [minecraft/MinecraftServer]: Teleported Dev to 386.500000, -60.000000, -84.000000
+[09:54:27] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h21_monitores
+[09:54:27] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: hay 12 monitores: 12
+[09:54:29] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h22_tercera
+[09:54:30] [Server thread/INFO] [minecraft/MinecraftServer]: Clock: 1:01
+[09:54:30] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL ultimo minuto apagadas=76
+[09:54:30] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: One minute left… and the lights are mine.
+[09:54:31] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: se apagaron lámparas: 76
+[09:54:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL tablero renglones=3 escritos=4
+[09:54:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL salio Bot_03 n=2
+[09:54:32] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: JUEGO salida=4B trampas=4A,7B,8A salieron=2 ultimoCae=false
+[09:54:32] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Pieza 03 · Bot_03 found the way out (2).
+[09:54:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 04 Bot_04 quedan=3
+[09:54:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 04 Bot_04
+[09:54:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_ELIMINADO 05 Bot_05 quedan=2
+[09:54:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CUERPO 05 Bot_05
+[09:54:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL fin salieron=2 quedaron=2 ultimo_cae=false
+[09:54:32] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_DISCURSO hotel_fin
+[09:54:32] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: FIN salida=4B trampas=4A,7B,8A salieron=2 ultimoCae=false
+[09:54:32] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 04 · Bot_04 has been eliminated and is now part of the collection. (El hotel) 3 remain.
+[09:54:32] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] ☠ Pieza 05 · Bot_05 has been eliminated and is now part of the collection. (El hotel) 2 remain.
+[09:54:32] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] El Coleccionista: The hotel is closed. 2 stayed inside.
+[09:54:35] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h23_fin
+[09:54:47] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_DISCURSO_FIN hotel_fin
+[09:54:50] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_HOTEL regreso vivos=2
+[09:54:50] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: hotel: regreso
+[09:54:52] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_DISCURSO hotel_regreso
+[09:54:52] [Server thread/INFO] [co.co.Coleccionista/]: COLECCIONISTA_CAP1 equipos
+[09:54:54] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST foto coleccionista_hotel_h24_sala_regreso
+[09:54:54] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: después del hotel se forman los equipos: HABLANDO
+[09:54:54] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST ok: quedamos 2 (yo y Bot_03): 2
+[09:54:54] [Server thread/INFO] [minecraft/MinecraftServer]: cap1=NADA
+[09:54:54] [Server thread/INFO] [minecraft/MinecraftServer]: hotel: NADA trampas= salieron=0 ultimoCae=false
+[09:54:54] [Server thread/INFO] [minecraft/MinecraftServer]: Set Dev's game mode to Creative Mode
+[09:54:54] [Render thread/INFO] [minecraft/ChatComponent]: [System] [CHAT] Your game mode has been updated to Creative Mode
+[09:54:55] [Render thread/INFO] [co.ax.AxelisCore/]: AXCORE_AUTOTEST AXCORE_AUTOTEST_FIN fotos=27 fallos=0
+[09:54:55] [Render thread/INFO] [minecraft/Minecraft]: Stopping!
+[09:54:55] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Dev lost connection: Disconnected
+[09:54:55] [Server thread/INFO] [minecraft/MinecraftServer]: Dev left the game
+[09:54:55] [Server thread/INFO] [minecraft/ServerGamePacketListenerImpl]: Stopping singleplayer server as player logged out
+[09:54:56] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[09:54:56] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[09:54:56] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[09:54:56] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[09:54:56] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[09:54:56] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[09:54:56] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: Gathering id map for writing to world save world
+[09:54:57] [Server thread/DEBUG] [ne.mi.co.ForgeHooks/WP]: ID Map collection complete world
+[09:54:57] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (prueba): All chunks are saved
+[09:54:57] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[09:54:57] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[09:54:57] [Server thread/INFO] [minecraft/MinecraftServer]: ThreadedAnvilChunkStorage: All dimensions are saved
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.GameData/REGISTRIES]: Reverting to FROZEN data state.
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:block Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:fluid Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:item Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:mob_effect Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:sound_event Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:potion Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:enchantment Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:entity_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:block_entity_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:particle_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:menu Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:painting_variant Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:recipe_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:recipe_serializer Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:attribute Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:stat_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:command_argument_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:villager_profession Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:point_of_interest_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:memory_module_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:sensor_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:schedule Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:activity Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/carver Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/feature Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:chunk_status Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/block_state_provider_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/foliage_placer_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/tree_decorator_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry minecraft:worldgen/biome Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:entity_data_serializers Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:global_loot_modifier_serializers Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:biome_modifier_serializers Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:fluid_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:structure_modifier_serializers Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:holder_set_type Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ForgeRegistry/REGISTRIES]: Registry forge:display_contexts Sync: ACTIVE -> FROZEN
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ObjectHolderRegistry/REGISTRIES]: Applying holder lookups
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.ObjectHolderRegistry/REGISTRIES]: Holder lookups applied
+[09:54:57] [Server thread/DEBUG] [ne.mi.re.GameData/REGISTRIES]: FROZEN state restored.
+[09:54:57] [Server thread/DEBUG] [ne.mi.fm.co.ConfigTracker/CONFIG]: Unloading configs type SERVER
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_7-1795859513279.json
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 3m 7s
+10 actionable tasks: 3 executed, 7 up-to-date
