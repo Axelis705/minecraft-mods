@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "coleccionista:block/colchon_brinco"
+  },
+  "facing=east": {
+   "model": "coleccionista:block/colchon_brinco",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "coleccionista:block/colchon_brinco",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "coleccionista:block/colchon_brinco",
+   "y": 270
+  }
+ }
+}

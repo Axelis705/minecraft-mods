@@ -6194,6 +6194,249 @@
    "sub": "floor"
   },
   {
+   "id": "piano_pared",
+   "kind": "prop",
+   "tall": true,
+   "light": 0,
+   "collide": true,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     0,
+     4,
+     16,
+     16,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Piano viejo",
+   "en": "Old upright piano",
+   "soft": false,
+   "shape_upper": [
+    [
+     0,
+     0,
+     7,
+     16,
+     9,
+     16
+    ]
+   ],
+   "sub": "floor"
+  },
+  {
+   "id": "tubo_suelo",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     1,
+     0,
+     6,
+     15,
+     3,
+     10
+    ]
+   ],
+   "particles": [],
+   "es": "Tubo suelto",
+   "en": "Loose pipe",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "puas",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "wood",
+   "shape": [
+    [
+     0,
+     0,
+     0,
+     16,
+     3,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Tabla con clavos",
+   "en": "Nail board",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "botiquin",
+   "kind": "prop",
+   "tall": false,
+   "light": 4,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     3.0,
+     3.0,
+     12.0,
+     13.0,
+     13.0,
+     16.0
+    ],
+    [
+     2.8,
+     2.8,
+     11.6,
+     13.2,
+     13.2,
+     12.2
+    ],
+    [
+     6.5,
+     12.6,
+     11.0,
+     9.5,
+     13.6,
+     13.0
+    ]
+   ],
+   "particles": [],
+   "es": "Botiquín",
+   "en": "First aid kit",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "botiquin_vacio",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": false,
+   "sound": "metal",
+   "shape": [
+    [
+     3.0,
+     3.0,
+     12.0,
+     13.0,
+     13.0,
+     16.0
+    ],
+    [
+     3.2,
+     3.2,
+     12.2,
+     12.8,
+     12.8,
+     12.6
+    ],
+    [
+     2.2,
+     3.0,
+     4.2,
+     3.0,
+     13.0,
+     12.0
+    ],
+    [
+     2.1,
+     6.5,
+     7.0,
+     2.2,
+     9.5,
+     9.5
+    ],
+    [
+     4.0,
+     4.0,
+     12.6,
+     8.0,
+     4.6,
+     15.0
+    ]
+   ],
+   "particles": [],
+   "es": "Botiquín vacío",
+   "en": "Empty first aid kit",
+   "soft": false,
+   "sub": "wall"
+  },
+  {
+   "id": "boca_tobogan",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     0,
+     0,
+     0,
+     16,
+     1,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Boca del tobogán",
+   "en": "Slide opening",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
+   "id": "colchon_brinco",
+   "kind": "prop",
+   "tall": false,
+   "light": 0,
+   "collide": true,
+   "sound": "wool",
+   "shape": [
+    [
+     0,
+     0,
+     0,
+     16,
+     9,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Colchón de brincolín",
+   "en": "Bouncy mattress",
+   "soft": false,
+   "sub": "floor",
+   "brinco": true
+  },
+  {
+   "id": "monitor",
+   "kind": "prop",
+   "tall": false,
+   "light": 3,
+   "collide": true,
+   "sound": "metal",
+   "shape": [
+    [
+     1,
+     0,
+     2,
+     15,
+     13,
+     16
+    ]
+   ],
+   "particles": [],
+   "es": "Monitor",
+   "en": "Monitor",
+   "soft": false,
+   "sub": "floor"
+  },
+  {
    "id": "cama_antigua",
    "kind": "cama",
    "sound": "wood",

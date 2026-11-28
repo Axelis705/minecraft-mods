@@ -86,6 +86,9 @@ public final class Complejo {
             // capítulo 1: la sala grande (pegada al portón del patio, en x 54), los circuitos de los sentidos (uno por equipo, en fila al
             // sur, a 70 bloques uno de otro: no se ven ni se oyen) y la galería de la vitrina
             l.add(new Zona("sala", com.coleccionista.mapa.SalaGrande.crear(SEMILLA), 55, 0, 0, 0));
+            // antes de los equipos: el hotel abandonado (diez pisos, lejos al noreste) y su sala de espera con el tobogán de colores
+            l.add(new Zona("hotel", com.coleccionista.mapa.Hotel.crear(SEMILLA), 300, 0, -130, 1));
+            l.add(new Zona("hotel_espera", com.coleccionista.mapa.Hotel.espera(SEMILLA), 372, 0, -118, 1));
             for (int k = 1; k <= com.coleccionista.mapa.Circuito.CIRCUITOS; k++) {
                 l.add(new Zona("circ_" + k, com.coleccionista.mapa.Circuito.crear(SEMILLA, k), circuitoX(k), 0, CIRCUITO_Z, 1));
             }

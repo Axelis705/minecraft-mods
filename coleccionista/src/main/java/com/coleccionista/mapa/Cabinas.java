@@ -67,6 +67,44 @@ public final class Cabinas {
         p.marca("cab." + id + ".origen", m.cx, 1, m.cz, m.yaw);
     }
 
+    /** El ascensor de una sola persona (el hotel): por dentro mide 1 x {@link #IND_ALTO} x 1. */
+    public static final int IND_ALTO = 3;
+
+    /**
+     * El ascensor de una persona, angosto como un ataúd parado: cobre viejo y metal negro, rejilla en el piso, un foco arriba y una sola
+     * hoja de latón al frente. Los de la torre de la sala grande y los de llegada del hotel son idénticos por dentro. {@code m}: el marco
+     * (el interior es el bloque local (0, 0); la puerta, el (0, -1)); {@code y0}: la altura del piso. Marcas: {@code cab.<id>.origen} y
+     * {@code cab.<id>.puerta.a}. {@code numero}: la placa de afuera, arriba de la puerta (null: sin placa).
+     */
+    public static void individual(Plano p, String id, Marco m, int y0, String numero) {
+        for (int i = -1; i <= 1; i++) {
+            for (int k = -1; k <= 1; k++) {
+                m.set(p, i, y0, k, C + "metal_placa");
+                m.set(p, i, y0 + IND_ALTO + 1, k, C + "metal_negro");
+                for (int y = 1; y <= IND_ALTO; y++) {
+                    if (i == 0 && k == 0) {
+                        m.set(p, 0, y0 + y, 0, "air");
+                    } else if (!(i == 0 && k == -1)) {
+                        boolean franja = y == 2 && k == 1;
+                        m.set(p, i, y0 + y, k, C + (franja ? "metal_placa" : (i + y + k) % 3 == 0 ? "cobre_viejo" : "metal_negro"));
+                    }
+                }
+            }
+        }
+        m.set(p, 0, y0, 0, C + "rejilla_piso[type=double]");
+        m.set(p, 0, y0 + IND_ALTO + 1, 0, C + "panel_luz");
+        m.set(p, 0, y0 + IND_ALTO, 0, "light[level=10]");
+        // la puerta: una sola hoja de latón (opaca: por dentro todas se ven igual)
+        m.set(p, 0, y0 + 1, -1, C + "puerta_ascensor[facing=south,half=lower,hinge=left,open=false]");
+        m.set(p, 0, y0 + 2, -1, C + "puerta_ascensor[facing=south,half=upper,hinge=left,open=false]");
+        m.set(p, 0, y0 + 3, -1, C + "metal_negro");
+        m.marca(p, "cab." + id + ".puerta.a", 0, y0 + 1, -1, 0);
+        p.marca("cab." + id + ".origen", m.cx, y0 + 1, m.cz, m.yaw);
+        if (numero != null) {
+            m.texto(p, 0, y0 + 3, -2, "placa", "north", 0xD9A93A, numero);
+        }
+    }
+
     /** Un elevador: muros de metal negro, piso de placa, luz en el techo, barandal atrás y la puerta corrediza al frente. */
     public static void elevador(Plano p, String id, int ox, int oz, float yaw, String numero) {
         String f = haciaDentro(yaw);

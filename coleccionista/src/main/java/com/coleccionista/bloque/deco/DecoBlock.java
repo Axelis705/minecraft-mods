@@ -197,6 +197,30 @@ public class DecoBlock extends HorizontalDirectionalBlock {
         return def.collide() ? getShape(s, l, p, c) : Shapes.empty();
     }
 
+    // ------------------------------------------------------------------ el colchón de brincolín (rebota como el bloque de slime)
+
+    @Override
+    public void fallOn(Level l, BlockState s, BlockPos p, net.minecraft.world.entity.Entity e, float distancia) {
+        if (def.flag("brinco") && !e.isSuppressingBounce()) {
+            e.causeFallDamage(distancia, 0F, l.damageSources().fall());
+            return;
+        }
+        super.fallOn(l, s, p, e, distancia);
+    }
+
+    @Override
+    public void updateEntityAfterFallOn(BlockGetter g, net.minecraft.world.entity.Entity e) {
+        if (def.flag("brinco") && !e.isSuppressingBounce()) {
+            net.minecraft.world.phys.Vec3 v = e.getDeltaMovement();
+            if (v.y < 0) {
+                double f = e instanceof LivingEntity ? 0.85 : 0.7;
+                e.setDeltaMovement(v.x, -v.y * f, v.z);
+            }
+            return;
+        }
+        super.updateEntityAfterFallOn(g, e);
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState s, Rotation r) {

@@ -43,7 +43,7 @@ mueble L coleccionista:archivero doble
 mueble Ñ coleccionista:estante_archivo doble
 mueble ¡ coleccionista:lavabo
 mueble ¿ coleccionista:reloj_pie doble
-mueble Ç coleccionista:piano
+mueble Ç coleccionista:piano_pared doble
 mueble Ö coleccionista:silla_ruedas
 mueble Ü coleccionista:camilla
 mueble Ä coleccionista:maquina_coser
@@ -71,10 +71,10 @@ WssssGs|ssssss#jjjjjj#iiiiiii#hhhhhh#ssssGs|ssssssW
 Xssssss|ssssss#Kjjjjj#Kiiiiii#Khhhhh#ssssss|ssssssX
 Xssssss#ssssssDjBjjjjDiBiiiii#BBh?hhDssssss#ssssssX
 Xssssss#ssAAss#jjjjjj#iiiiiii#hhhhhh#ssssss#ssAAssX
-Wssssss#ssssss#jj#####iiiiiSM#hhhhSM#ssssss#ssssssW
-XsRssss#ssssCs#jj#kk##iiiiiii#hhhhhh#sRssss#ssssCsX
-Xssssss#ssssss#jj#kk##iiiiiii#hhhhhh#ssssss#ssssssX
-X########D######D#$####D#######D#########D########X
+Wssssss#ssssss#jjj####iiiiiSM#hhhhSM#ssssss#ssssssW
+XsRssss#ssssCs#jjj#kk#iii#iii#hhhhhh#sRssss#ssssCsX
+Xssssss#ssssss#jjj#kk#ii#&#ii#hhhhhh#ssssss#ssssssX
+X########D######D##$###D#|#####D#########D########X
 WIbV#RhhhhhMhh#>>>>ccccccccccccccccc#qqqqqqqqqqqqqW
 Xbbb#hhhhhhOhh#cccccccccccccccccc+YcDqqq¡qqqMqqqqqX
 XTbb#hJhhhhhhh#cccccccccc¿cccccccccc#qqqqqqqqqqqqqX
@@ -132,10 +132,10 @@ Xssssss#ssssss#iiiii#&#hhhhhh#jjUjjj#ssssss#ssssssX
 X########D######D####|#D#######D#########D########X
 WIbV#Rjjjjj####ccccccccccccccccccccv#hhhhhKhhh#bbbW
 Xbbb#jjjjjj#kk#cYccccccc!ccccccccccvDhhhhBhhhhDbbbX
-XTbb#jjjjjj#kk$ccccccccc!ccccc+ccccv####hhhhhE#bbbX
-Xbbb#Fjjjjj####ccccccccccccccccccccv$kk#hhhhhh#bbTX
-WbbbDjjjjBjjjjDcccc:::::::::::::cccc#kk#hhhhhh#bbbW
-Xbbb#jjjKjjjj##cccc:~~~~~~~~~~~:cccc####hhhhhR#VbIX
+XTbb#jjjjjj#kk$ccccccccc!ccccc+ccccv#hhhhhhhhE#bbbX
+Xbbb#Fjjjjj####ccccccccccccccccccccv####hhhhhh#bbTX
+WbbbDjjjjBjjjjDcccc:::::::::::::cccc$kk#hhhhhh#bbbW
+Xbbb#jjjKjjjj##cccc:~~~~~~~~~~~:cccc#kk#hhhhhR#VbIX
 X########D###&|cccc:~~~~~~~~~~~:cccc##############X
 XIbV#RhhhhhMh##cccc:~~~~~~~~~~~:cccc#OOjjBKjjj#bbbX
 Wbbb#hhhhhhShh#cccc:~~~~~~~~~~~:ccccDjjjjBjjjjDbbbW
@@ -206,10 +206,10 @@ XTbb#hhhhhhhhh#ccccccccccccccccccccc#hhhhhhhhG#bbbX
 Xbbb#Ghhhhhhhh#ccccccccccccccccccccc#hhhhhhhhh#bbTX
 XbbbDhhhhBhhhhDcY+cccccccccccccccccc#hhShhhhhh#bbbX
 Wbbb#hhhKhhhhh#ccccccccccccccccc<<<<#hhMhhhhhR#VbIW
-X########D#########D#######D####$#D######D########X
-Xssssss#ssssss#jjjjjj#hhhhhhh##kk#ii#ssssss#ssssssX
-Xssssss#ssssss#jjjjjj#hhhhhhh##kk#ii#ssssss#ssssssX
-WssBBss#ssssss#MSjjjj#MShhhhh#####ii#ssBBss#ssssssW
+X########D#########D#######D###$##D######D########X
+Xssssss#ssssss#jjjjjj#hhhhhhh#kk#iii#ssssss#ssssssX
+Xssssss#ssssss#jjjjjj#hhhhhhh#kk#iii#ssssss#ssssssX
+WssBBss#ssssss#MSjjjj#MShhhhh####iii#ssBBss#ssssssW
 Xssssss#ssPsss#jjjjjj#JhhhhJh#iiiiii#ssssss#ssPsssX
 Xssssss#ssssssDjj?jBjDOhhOhBB#iiiiBiDssssss#ssssssX
 Xssssss#ssssss#jjjjjK#UhhhhhK#iiiiiK#ssssss#ssssssX
@@ -255,10 +255,10 @@ Xbbb#Hiiiiiiii#cccc:~~~~~~~~~~~:cccc#llllJll~llÆllX
 WbbbDiiiiBiiiiDcccc:~~~~~~~~~~~:cccc#lllllllllllllW
 Xbbb#iiiKBiiii#cccc:~~~~~~~~~~~:cccc##lllJlllllÄllX
 X##############cccc:~~~~~~~~~~~:cccc|&############X
-XIbV#Rjjjjj####cccc:~~~~~~~~~~~:cccc##lllJlllllÆllX
-Wbbb#jjjjjj#kk#cccc:::::::::::::ccccDlllllllllllllW
-XTbb#jjjjjj#kk$^cccccccccccccccccccc####lJlllllÄllX
-Xbbb#Ejjjjj####^cccc+ccccc!ccccccccc$kk#llllllllllX
+XIbV#Rjjjjj#kk#cccc:~~~~~~~~~~~:cccc##lllJlllllÆllX
+Wbbb#jjjjjj#kk$cccc:::::::::::::ccccDlllllllllllllW
+XTbb#jjjjjj####^cccccccccccccccccccc####lJlllllÄllX
+Xbbb#Ejjjjjjjj#^cccc+ccccc!ccccccccc$kk#llllllllllX
 XbbbDjjjjBjjjjD^cccccccccc!cccccccYc#kk#lJlllllÆllX
 Wbbb#jjjKjjjjj#^cccccccccccccccccccc####llllllllllW
 X########D#########D#######D#|####D######D########X
@@ -291,10 +291,10 @@ WssssGs|ssssss#iiiiii#hhhhhhh#jjjUjj#ssssGs|ssssssW
 Xssssss|ssssss#Kiiiii#Khhhhhh#Kjjjjj#ssssss|ssssssX
 Xssssss#ssssssDiBiiiiDhBhhhhhDjBO?jjDssssss#ssssssX
 Xssssss#ssAAss#iiiiii#hhhhhhh#Ojjjjj#ssssss#ssAAssX
-Wssssss#ssssss#ii#####hhhhhSM#JjjjSM#ssssss#ssssssW
-XsRssss#ssssCs#ii#kk##hhhhhhh#jjjjjj#sRssss#ssssCsX
-Xssssss#ssssss#ii#kk##hhhhhhh#jjjjjj#ssssss#ssssssX
-X########D######D#$####D#######D#########D########X
+Wssssss#ssssss#iii####hhhhhSM#JjjjSM#ssssss#ssssssW
+XsRssss#ssssCs#iii#kk#hhhhhhh#jjjjjj#sRssss#ssssCsX
+Xssssss#ssssss#iii#kk#hhhhhhh#jjjjjj#ssssss#ssssssX
+X########D######D##$###D#######D#########D########X
 WIbV#uuuuuuuuu#>>>>ccccccccccccccccc#hhhhhKhhh#bbbW
 Xbbb#uuuuuuuuu#cccccccccccccccccc+YcDhhhhBhhhhDbbbX
 XTbb#uuuuuYYuu#ccccccccccccccccccccc#hhhhhhhhH#bbbX
@@ -352,16 +352,16 @@ Xssssss#ssssss#hOhhh#&#jjjjjJ#iiiiii#ssssss#ssssssX
 X########D######D####|#D#######D#########D########X
 WIbV#Riiiii####ccccccccccccccccccccv#jjjjjKjjj#bbbW
 Xbbb#iiiiii#kk#cYccccccc!ccccccccccvDjjjjBjjjjDbbbX
-XTbb#iiiiii#kk$ccccccccc!ccccc+ccccv####jjjjjG#bbbX
-Xbbb#Hiiiii####ccccccccccccccccccccv$kk#jjjjjj#bbTX
-WbbbDiiiiBiiiiDcccc:::::::::::::cccc#kk#jjjjjj#bbbW
-Xbbb#iiiKBiii##cccc:~~~~~~~~~~~:cccc####jjjjjR#VbIX
+XTbb#iiiiii#kk$ccccccccc!ccccc+ccccv#jjjjjjjjG#bbbX
+Xbbb#Hiiiii####ccccccccccccccccccccv####jjjjjj#bbTX
+WbbbDiiiiBiiiiDcccc:::::::::::::cccc$kk#jjjjjj#bbbW
+Xbbb#iiiKBiii##cccc:~~~~~~~~~~~:cccc#kk#jjjjjR#VbIX
 X############&|cccc:~~~~~~~~~~~:cccc#####D########X
 XIbV#RjjjjjMj##cccc:~~~~~~~~~~~:cccc#iiiiiKiii#bbbX
 Wbbb#jjjjjjSjj#cccc:~~~~~~~~~~~:ccccDiiiiBiiiiDbbbW
-Xbbb#jjjjjjjjj#cccc:~~~~~~~~~~~:cccc#iiiiiiiiH#bbbX
-XTbb#jjjjjjjjj#cccc:~~~~~~~~~~~:cccc#iiiiiiiii#bbTX
-Xbbb#Ejjjjjjjj#cccc:~~~~~~~~~~~:cccc#iiiiiiiii#bbbX
+Xbbb#jjjjjjjjj#cccc:~~~~~~~~~~~:cccc##iiiiiiiH#bbbX
+XTbb#jjjjjjjjj#cccc:~~~~~~~~~~~:cccc|&#iiiiiii#bbTX
+Xbbb#Ejjjjjjjj#cccc:~~~~~~~~~~~:cccc##iiiiiiii#bbbX
 WbbbDjjjjBjjjjDcc+c:~~~~~~~~~~~:cccc#iiSiiiiii#bbbW
 Xbbb#jjjKBjjjj#cccc:~~~~~~~~~~~:cccc#iiMiiiiiR#VbIX
 X##############cccc:~~~~~~~~~~~:cccc#####D########X
@@ -426,10 +426,10 @@ Xooooooooooooo#ccccccccccccccccccccc#jjjjjjjjH#bbbX
 XoLÑooooMSoooo#ccccccccccccccccccccc#jjjjjjjjj#bbTX
 Xoooooooooo?ooDcY+cccccccccccccccccc#jjSjjjjjj#bbbX
 WoLLoooooooooo#ccccccccccccccccc<<<<#jjMjjjjjR#VbIW
-X########D#########D#######D####$#D######D########X
-Xssssss#ssssss#iiiiii#jjJjjjj##kk#hh#ssssss#ssssssX
-Xssssss#ssssss#Oiiiii#jjjjjjj##kk#hh#ssssss#ssssssX
-WssBBss#ssssss#MSiiii#MSjjjjU#####hh#ssBBss#ssssssW
+X########D#########D#######D###$##D######D########X
+Xssssss#ssssss#iiiiii#jjJjjjj#kk#hhh#ssssss#ssssssX
+Xssssss#ssssss#Oiiiii#jjjjjjj#kk#hhh#ssssss#ssssssX
+WssBBss#ssssss#MSiiii#MSjjjjU####hhh#ssBBss#ssssssW
 Xssssss#ssPsss#OOiiii#jjjjjjj#hhhhhh#ssssss#ssPsssX
 Xssssss#ssssssDii?iBB#jjjjjOjDhhhhBhDssssss#ssssssX
 Xssssss#ssssss#iiiiUK#jjJjjjK#hhhhhK#ssssss#ssssssX
@@ -475,10 +475,10 @@ Xbbb#Ghhhhhhhh#cccc:~~~~~~~~~~~:cc,c#mmmmmmmmm#bbbX
 WbbbDhhhhBhhhhDcccc:~~~~~~~~~~~:cccc#mmSOmmmmm#bbbW
 Xbbb#hhhKhhhhh#cccc:~~~~~~~~~~~:cccc##mJmmmmmR#VbIX
 X########D#####cccc:~~~~~~~~~~~:cccc|&###D########X
-XIbV#Riiiii####cccc:~~~~~~~~~~~:cccc##mmmmKmmm#bbbX
-Wbbb#iiiiii#kk#cccc:::::::::::::cc,cDmmmmBJ,mmDbbbW
-XTbb#iiiiii#kk$^cccccccccccccccccccc####,JmmmH#bbbX
-Xbbb#Hiiiii####^cccc+ccccc!ccccccccc$kk#mmmmJm#bbTX
+XIbV#Riiiii#kk#cccc:~~~~~~~~~~~:cccc##mmmmKmmm#bbbX
+Wbbb#iiiiii#kk$cccc:::::::::::::cc,cDmmmmBJ,mmDbbbW
+XTbb#iiiiii####^cccccccccccccccccccc####,JmmmH#bbbX
+Xbbb#Hiiiiiiii#^cccc+ccccc!ccccccccc$kk#mmmmJm#bbTX
 XbbbDiiiiBiiiiD^cccccccccc!cccccccYc#kk#mmmmmm#bbbX
 Wbbb#iiiKiiiii#^cccccccccccccccccccc####mmmmmR#VbIW
 X########D#########D#######D#|####D######D########X
@@ -511,10 +511,10 @@ WssssGs|ssssss#ssssss#sssssss#ssssss#ssssGs|ssssssW
 Xssssss|ssssss#Ksssss#Kssssss#Ksssss#ssssss|ssssssX
 Xssssss#ssssssDsBssssDsBsssss#BBs?ssDssssss#ssssssX
 Xssssss#ssAAss#sssNss#sssssss#ssNsss#ssssss#ssAAssX
-Wssssss#ssssss#ss#####sssssSM#ssssSM#ssssss#ssssssW
-XsRssss#ssssCs#ss#kk##sssssss#ssssss#sRssss#ssssCsX
-Xssssss#ssssss#ss#kk##sssssss#ssssss#ssssss#ssssssX
-X########D######D#$####D#######D#########D########X
+Wssssss#ssssss#sss####sssssSM#ssssSM#ssssss#ssssssW
+XsRssss#ssssCs#sss#kk#sssssss#ssssss#sRssss#ssssCsX
+Xssssss#ssssss#sss#kk#sssssss#ssssss#ssssss#ssssssX
+X########D######D##$###D#######D#########D########X
 WIbV#RsssssMss#>>>>ccccccccccccccccc#sssssKsss#bbbW
 Xbbb#ssssssSss#cccccccccccccccccc+YcDssssBssssDbbbX
 XTbb#sssssssss#ccccccccccccccccccccc#ssssssssH#bbbX
@@ -572,10 +572,10 @@ Xtttttt#tttttt#ttttt#&#tttttt#tttttt#tttttt#ttttttX
 X########D######D####|#D#######D#########D########X
 Wtttttttttt####ccccccccccccccccccccc#ttttttttttZttW
 Xtttttttttt#kk#ccccccccc!cccccccccccDtttttttttttttX
-XttÆttttttt#kk$ccccccccc!ccccc+ccccc####t*ttttttttX
-Xtttttttt*t####ccccccccccccccccccccc$kk#tttttttJttX
-WtttttttttttttDcccc:::::::::::::cccc#kk#ttttttttttW
-XttJttttttttt##cccc:~~~~~~~~~~~:cccc####ttttttttttX
+XttÆttttttt#kk$ccccccccc!ccccc+ccccc#tttt*ttttttttX
+Xtttttttt*t####ccccccccccccccccccccc####tttttttJttX
+WtttttttttttttDcccc:::::::::::::cccc$kk#ttttttttttW
+XttJttttttttt##cccc:~~~~~~~~~~~:cccc#kk#ttttttttttX
 X############&|cccc:~~~~~~~~~~~:cccc##############X
 XttJttttttttt##cccc:~~~~~~~~~~~:cccc#ttttttttttZttX
 Wttttttttttttt#cccc:~~~~~~~~~~~:ccccDtttttttttttttW

@@ -26,6 +26,13 @@ public final class Marco {
         wz = c;
     }
 
+    /** El marco con giro {@code yaw} cuyo bloque local (0, 0) es el bloque (x, z) del plano. */
+    public static Marco deBloque(int x, int z, float yaw) {
+        double r = Math.toRadians(yaw);
+        int c = (int) Math.round(Math.cos(r)), s = (int) Math.round(Math.sin(r));
+        return new Marco((int) Math.round(x + 0.5 - 0.5 * (c - s)), (int) Math.round(z + 0.5 - 0.5 * (s + c)), yaw);
+    }
+
     /** El bloque del mundo {x, z} del bloque local (i, k). */
     public int[] b(int i, int k) {
         double x = cx + (i + 0.5) * ux + (k + 0.5) * wx, z = cz + (i + 0.5) * uz + (k + 0.5) * wz;
@@ -137,6 +144,10 @@ public final class Marco {
         // giro 90 (frente al oeste): esquina (42, 7): (0,0) -> (41, 7)
         Marco m3 = new Marco(42, 7, 90);
         check(java.util.Arrays.equals(m3.b(0, 0), new int[] {41, 7}), "giro 90: (0,0) -> (41,7) " + java.util.Arrays.toString(m3.b(0, 0)));
+        for (float y : new float[] {0F, 90F, 180F, 270F}) {
+            Marco d = Marco.deBloque(20, 30, y);
+            check(java.util.Arrays.equals(d.b(0, 0), new int[] {20, 30}), "deBloque giro " + y + " -> " + java.util.Arrays.toString(d.b(0, 0)));
+        }
         System.out.println("MARCO_OK");
     }
 

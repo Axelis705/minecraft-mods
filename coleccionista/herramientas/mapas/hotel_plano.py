@@ -73,7 +73,7 @@ mueble L {C}archivero doble
 mueble Ñ {C}estante_archivo doble
 mueble ¡ {C}lavabo
 mueble ¿ {C}reloj_pie doble
-mueble Ç {C}piano
+mueble Ç {C}piano_pared doble
 mueble Ö {C}silla_ruedas
 mueble Ü {C}camilla
 mueble Ä {C}maquina_coser
@@ -398,10 +398,13 @@ def piso(k):
     lados_cab = [LADOS[(k + i) % 4] for i in range(3)]
     for i, L in enumerate(lados_cab):
         nicho_cabina(g, L, 21 if i % 2 == 0 else 29)
+    # dos pisos tienen uno más (32 en total, como la torre de la sala grande)
+    if k in (1, 6):
+        nicho_cabina(g, LADOS[(k + 3) % 4], 25)
     # 2 puertas de servicio (en los otros lugares)
     lados_serv = [LADOS[(k + 3) % 4], LADOS[(k + 1) % 4]]
     for i, L in enumerate(lados_serv):
-        closet(g, L, 18 if i == 0 else 33)
+        closet(g, L, 19 if i == 0 else 33)       # (en u 18 la puerta quedaría frente al primer escalón)
     # nidos de ratas, tubos, púas, pistas y un botiquín (en el pasillo y los cuartos)
     for i in range(2):
         L = LADOS[(k + i * 2) % 4]

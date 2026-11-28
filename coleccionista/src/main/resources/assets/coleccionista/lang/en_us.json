@@ -1708,5 +1708,13 @@
   "block.coleccionista.fichas": "Chips and cards",
   "block.coleccionista.ruleta": "Wheel of fortune",
   "block.coleccionista.botella": "Bottle and glass",
-  "coleccionista.sor.chat.tiempo": "Time is up. Springs will have to settle… for today."
+  "coleccionista.sor.chat.tiempo": "Time is up. Springs will have to settle… for today.",
+  "block.coleccionista.piano_pared": "Old upright piano",
+  "block.coleccionista.tubo_suelo": "Loose pipe",
+  "block.coleccionista.puas": "Nail board",
+  "block.coleccionista.botiquin": "First aid kit",
+  "block.coleccionista.botiquin_vacio": "Empty first aid kit",
+  "block.coleccionista.boca_tobogan": "Slide opening",
+  "block.coleccionista.colchon_brinco": "Bouncy mattress",
+  "block.coleccionista.monitor": "Monitor"
 }

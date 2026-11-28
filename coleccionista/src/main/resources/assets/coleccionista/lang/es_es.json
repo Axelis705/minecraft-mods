@@ -1708,5 +1708,13 @@
   "block.coleccionista.fichas": "Fichas y cartas",
   "block.coleccionista.ruleta": "Rueda de la fortuna",
   "block.coleccionista.botella": "Botella y copa",
-  "coleccionista.sor.chat.tiempo": "Se ha acabado el tiempo. Resortes tendrá que conformarse… por hoy."
+  "coleccionista.sor.chat.tiempo": "Se ha acabado el tiempo. Resortes tendrá que conformarse… por hoy.",
+  "block.coleccionista.piano_pared": "Piano viejo",
+  "block.coleccionista.tubo_suelo": "Tubo suelto",
+  "block.coleccionista.puas": "Tabla con clavos",
+  "block.coleccionista.botiquin": "Botiquín",
+  "block.coleccionista.botiquin_vacio": "Botiquín vacío",
+  "block.coleccionista.boca_tobogan": "Boca del tobogán",
+  "block.coleccionista.colchon_brinco": "Colchón de brincolín",
+  "block.coleccionista.monitor": "Monitor"
 }

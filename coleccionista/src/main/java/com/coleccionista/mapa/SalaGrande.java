@@ -8,6 +8,8 @@ package com.coleccionista.mapa;
  *   x: 0 ... 58 (la pared del oeste es la del patio, con el portón; la pantalla al este en x 57)
  *   z: -5 ... 39 (la sala en z 0..34; los ascensores del norte en z -4..-2 y los del sur en z 36..38)
  * </pre>
+ * En medio, la torre de los 32 ascensores de una persona (el hotel, antes de formar equipos: {@code cab.hotel_sN.*}, ver
+ * {@link Cabinas#individual}).
  * Marcas: {@code sala.centro}, {@code sala.entrada}, {@code sala.pantalla}, {@code sala.asc.N.luz} (el foco de arriba de cada puerta) y las
  * de cada ascensor ({@code cab.sala_N.*}, ver {@link Cabinas#ascensor}).
  */
@@ -56,12 +58,64 @@ public final class SalaGrande {
         for (int n = 1; n <= ASCENSORES; n++) {
             ascensor(p, n);
         }
+        torre(p);
         pantalla(p);
         lamparas(p);
         muebles(p);
-        p.marca("sala.centro", 30, 1, 18, 270);
+        p.marca("sala.centro", 48, 1, 18, 270);
         p.marca("sala.entrada", 2, 1, 18, 270);
         return p;
+    }
+
+    /** Cuántos ascensores de una persona tiene la torre del centro (los del hotel: "uno por persona"). */
+    public static final int INDIVIDUALES = 32;
+    /** La torre: de x 21 a 39 y de z 8 a 26 (los ascensores miran hacia afuera, nueve al norte y al sur, siete al este y al oeste). */
+    public static final int TX0 = 21, TX1 = 39, TZ0 = 8, TZ1 = 26;
+
+    /** Dónde va el ascensor de una persona N (1..32): el bloque de adentro y hacia dónde se camina al entrar. */
+    public static int[] individual(int n) {
+        int i = n - 1;
+        if (i < 9) {
+            return new int[] {TX0 + 1 + 2 * i, TZ0 + 1, 0};                 // norte: se entra hacia el sur
+        }
+        if (i < 18) {
+            return new int[] {TX1 - 1 - 2 * (i - 9), TZ1 - 1, 180};          // sur: se entra hacia el norte
+        }
+        if (i < 25) {
+            return new int[] {TX1 - 1, TZ0 + 3 + 2 * (i - 18), 90};          // este: se entra hacia el oeste
+        }
+        return new int[] {TX0 + 1, TZ1 - 3 - 2 * (i - 25), 270};             // oeste: se entra hacia el este
+    }
+
+    /**
+     * La torre de los ascensores de una persona, en medio de la sala: un bloque de mármol negro con molduras de latón, 32 puertas angostas
+     * numeradas alrededor y arriba, en cada lado, "UNO POR PERSONA". Baja (4 de alto) para que se siga viendo la pantalla del fondo.
+     */
+    private static void torre(Plano p) {
+        p.caja(TX0 + 2, 1, TZ0 + 2, TX1 - 2, 4, TZ1 - 2, C + "marmol_negro");
+        for (int n = 1; n <= INDIVIDUALES; n++) {
+            int[] c = individual(n);
+            Cabinas.individual(p, "hotel_s" + n, Marco.deBloque(c[0], c[1], c[2]), 0, String.valueOf(n));
+        }
+        // la corona: un escalón de mármol con su moldura dorada, los letreros y velas en las esquinas
+        for (int x = TX0; x <= TX1; x++) {
+            for (int z = TZ0; z <= TZ1; z++) {
+                boolean orilla = x == TX0 || x == TX1 || z == TZ0 || z == TZ1;
+                p.set(x, 5, z, C + (orilla ? "marco_dorado" : "marmol_negro"));
+                if (x > TX0 + 1 && x < TX1 - 1 && z > TZ0 + 1 && z < TZ1 - 1) {
+                    p.set(x, 6, z, C + "marmol_negro");
+                }
+            }
+        }
+        int cx = (TX0 + TX1) / 2, cz = (TZ0 + TZ1) / 2;
+        p.letrero(cx, 6, TZ0 + 1, "", "north", "gold", "UNO POR", "PERSONA");
+        p.letrero(cx, 6, TZ1 - 1, "", "south", "gold", "UNO POR", "PERSONA");
+        p.letrero(TX0 + 1, 6, cz, "", "west", "gold", "UNO POR", "PERSONA");
+        p.letrero(TX1 - 1, 6, cz, "", "east", "gold", "UNO POR", "PERSONA");
+        for (int[] e : new int[][] {{TX0 + 1, TZ0 + 1}, {TX1 - 1, TZ0 + 1}, {TX0 + 1, TZ1 - 1}, {TX1 - 1, TZ1 - 1}}) {
+            p.set(e[0], 6, e[1], C + "candelabro[facing=north,half=lower]");
+            p.set(e[0], 7, e[1], C + "candelabro[facing=north,half=upper]");
+        }
     }
 
     private static void ascensor(Plano p, int n) {

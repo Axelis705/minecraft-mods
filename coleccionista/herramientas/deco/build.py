@@ -31,6 +31,7 @@ import props_celdas  # noqa: E402
 import props_complejo  # noqa: E402
 import props_mansion  # noqa: E402
 import props_salas  # noqa: E402
+import props_hotel  # noqa: E402
 import materiales_mansion as MM  # noqa: E402
 
 NS = 'coleccionista'
@@ -592,6 +593,9 @@ def catalogo():
     # las salas de los capítulos, los pasillos y las transiciones
     for p in props_salas.todos():
         prop(p)
+    # el hotel del capítulo 1 y su sala de espera (el colchón rebota)
+    for p in props_hotel.todos():
+        prop(p, {'brinco': True} if p.id == 'colchon_brinco' else None)
     cama(props_mansion.cama_antigua())
     ficha[-1]['adorno'] = True  # no se duerme en ella (ni guarda el punto de aparición)
     ficha[-1]['sound'] = 'wood'

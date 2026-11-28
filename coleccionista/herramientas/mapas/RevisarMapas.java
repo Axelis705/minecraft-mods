@@ -69,6 +69,11 @@ public final class RevisarMapas {
      * {@code radio} o menos (y de una altura parecida). Devuelve cuántas quedan lejos.
      */
     private static int cerca(Revisor r, Plano p, String prefijo, int radio) {
+        return cerca(r, p, prefijo, radio, 1);
+    }
+
+    /** Lo mismo, pero también vale pararse hasta {@code abajo} bloques más abajo (una tele en una repisa alta). */
+    private static int cerca(Revisor r, Plano p, String prefijo, int radio, int abajo) {
         int lejos = 0;
         for (Map.Entry<String, Plano.Marca> e : p.marcas.entrySet()) {
             if (!e.getKey().startsWith(prefijo)) {
@@ -78,7 +83,7 @@ public final class RevisarMapas {
             boolean hay = false;
             for (int x = m.x() - radio; x <= m.x() + radio && !hay; x++) {
                 for (int z = m.z() - radio; z <= m.z() + radio && !hay; z++) {
-                    for (int y = m.y() - 1; y <= m.y() + 2 && !hay; y++) {
+                    for (int y = m.y() - abajo; y <= m.y() + 2 && !hay; y++) {
                         hay = r.alcanzado.contains(Plano.key(x, y, z));
                     }
                 }
@@ -186,6 +191,8 @@ public final class RevisarMapas {
         Map<String, Plano> t = new java.util.LinkedHashMap<>();
         t.put("celdas", AlaCeldas.crear(1234L));
         t.put("sala", SalaGrande.crear(1234L));
+        t.put("hotel", Hotel.crear(1234L));
+        t.put("hotel_espera", Hotel.espera(1234L));
         for (int k = 1; k <= Circuito.CIRCUITOS; k++) {
             t.put("circ_" + k, Circuito.crear(1234L, k));
         }
@@ -209,6 +216,72 @@ public final class RevisarMapas {
             t.put("paso_" + ps[0], Pasos.crear(1234L, ps[0]));
         }
         return t;
+    }
+
+    /** ¿Se llega a la casilla de enfrente de cada puerta de servicio (del lado del pasillo)? */
+    private static int frentes(Revisor r, Plano p) {
+        int lejos = 0;
+        for (Map.Entry<String, Plano.Marca> e : p.marcas.entrySet()) {
+            if (!e.getKey().matches("hotel\\.serv\\.\\d+")) {
+                continue;
+            }
+            Plano.Marca m = e.getValue();
+            double r0 = Math.toRadians(m.yaw());
+            int dx = (int) Math.round(-Math.sin(r0)), dz = (int) Math.round(Math.cos(r0));
+            if (!r.alcanzado.contains(Plano.key(m.x() - dx, m.y(), m.z() - dz))) {
+                lejos++;
+                System.out.println("  lejos: no se llega frente a " + e.getKey() + " (" + m.x() + ", " + m.y() + ", " + m.z() + ")");
+            }
+        }
+        return lejos;
+    }
+
+    /**
+     * El hotel: desde cualquier ascensor de llegada se llega a todos los demás y al frente de las 20 puertas de servicio; la torre de la
+     * sala grande (32 puertas) y la sala de espera (los monitores) también se recorren. Saca la planta de cada piso y vistas en 3D.
+     */
+    private static int hotel(File out, Map<String, Revisor.Forma> deco, Path tex) throws Exception {
+        int fallas = 0;
+        Plano p = Hotel.crear(1234L);
+        Plano.Marca ini = p.marcas.get("hotel.cab.0");
+        Revisor r = new Revisor(p, deco).caminar(ini.x(), ini.y(), ini.z());
+        // (sin revisar los escalones: las camas viejas son bajitas y el revisor las toma por escalones; las escaleras las revisa el .py)
+        r.marcas("hotel.cab.").mitades();
+        System.out.print(r.informe("El hotel", 12));
+        int f = (int) (r.cuantos("no se llega") + r.cuantos("no cabe nadie")) + frentes(r, p) + cerca(r, p, "hotel.tubo.", 1)
+                + cerca(r, p, "hotel.bot.", 1) + cerca(r, p, "hotel.nota.", 1);
+        System.out.println("HOTEL " + Hotel.ascensores + " ascensores, " + Hotel.puertas + " puertas" + (f == 0 ? " OK" : " FALLA " + f));
+        fallas += f;
+        Vista v = new Vista(p, r, tex);
+        for (int k = 1; k <= Hotel.PISOS; k++) {
+            int y = (k - 1) * Hotel.ALTO_PISO;
+            v.planta(new File(out, "hotel_piso_" + k + ".png"), y, y + 4, "hotel.", "Hotel · piso " + k);
+        }
+        v.iso(new File(out, "hotel_iso_1.png"), 4, 2, null, 7, "Hotel · piso 1 (vestíbulo)");
+        v.iso(new File(out, "hotel_iso_2.png"), 9, 1, null, 7, "Hotel · piso 2 (salón de baile)");
+        v.iso(new File(out, "hotel_iso_5.png"), 24, 0, null, 7, "Hotel · piso 5 (quemado)");
+        v.iso(new File(out, "hotel_iso_todo.png"), 52, 2, null, 5, "Hotel · por fuera");
+        // la torre de la sala grande
+        Plano sg = SalaGrande.crear(1234L);
+        Plano.Marca e = sg.marcas.get("sala.entrada");
+        Revisor rs = new Revisor(sg, deco).caminar(e.x(), e.y(), e.z());
+        int fs = cerca(rs, sg, "cab.hotel_s", 2);
+        System.out.println("SALA TORRE 32 ascensores" + (fs == 0 ? " OK" : " FALLA " + fs));
+        fallas += fs;
+        new Vista(sg, rs, tex).iso(new File(out, "sala_torre.png"), 8, 2, null, 9, "La sala grande con la torre de ascensores");
+        // la sala de espera
+        Plano pe = Hotel.espera(1234L);
+        Plano.Marca c = pe.marcas.get("hotel.espera.centro");
+        Revisor re = new Revisor(pe, deco).caminar(c.x(), c.y(), c.z());
+        re.marcas("hotel.espera.colchon").mitades();
+        int fe = (int) (re.cuantos("no se llega") + re.cuantos("no cabe nadie")) + cerca(re, pe, "hotel.monitor.", 2, 3);
+        System.out.print(re.informe("La sala de espera", 8));
+        System.out.println("ESPERA" + (fe == 0 ? " OK" : " FALLA " + fe));
+        fallas += fe;
+        Vista ve = new Vista(pe, re, tex);
+        ve.iso(new File(out, "espera.png"), 6, 2, null, 14, "La sala de espera");
+        ve.iso(new File(out, "espera_tubo.png"), 60, 2, null, 6, "La sala de espera y el tubo");
+        return fallas;
     }
 
     /** Las pantallas de todos los mapas: que su imagen no tape una puerta o un paso, ni se meta en un muro. */
@@ -265,6 +338,9 @@ public final class RevisarMapas {
             v.iso(new File(out, "mansion_vestibulo.png"), 20, 0, new int[] {15, -6, 38, 24}, 18, "Vestíbulo");
             v.iso(new File(out, "mansion_parada.png"), 14, 0, new int[] {-14, -36, 22, -1}, 16, "La parada del autobús y la reja");
             fallas += r.cuantos("cuarto inaccesible") + r.cuantos("no se llega") + r.cuantos("no cabe nadie") + r.cuantos("mueble partido");
+        }
+        if (cual.equals("hotel") || cual.equals("todo")) {
+            fallas += hotel(out, deco, tex);
         }
         if (cual.equals("caminos") || cual.equals("todo")) {
             fallas += caminos(out, deco, tex);
