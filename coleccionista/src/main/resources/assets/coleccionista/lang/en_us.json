@@ -1707,5 +1707,6 @@
   "block.coleccionista.violin": "Violin",
   "block.coleccionista.fichas": "Chips and cards",
   "block.coleccionista.ruleta": "Wheel of fortune",
-  "block.coleccionista.botella": "Bottle and glass"
+  "block.coleccionista.botella": "Bottle and glass",
+  "coleccionista.sor.chat.tiempo": "Time is up. Springs will have to settle… for today."
 }

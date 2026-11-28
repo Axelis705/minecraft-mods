@@ -72,6 +72,9 @@ public final class Sorpresa {
     public static final String PRUEBA = "La caja sorpresa";
     /** Ajustes (los cambia el organizador con /evento sorpresa ...). */
     public static int comer = 0, segundosIr = 45, segundosElegir = 20, segundosVolver = 40;
+    /** Tiempo máximo de la caja (segundos, desde que todos están sentados; 0 = sin límite): al acabarse, termina el turno que va y se acaba. */
+    public static int segundosMax = 360;
+    private static long limiteEn = -1;
     public static int esperaPasillo = 1800, esperaSalon = 900;
     /** Al terminar la caja de música, pasan solos a la caja sorpresa. */
     public static boolean encadenar = true;
@@ -376,7 +379,8 @@ public final class Sorpresa {
         }
         primero = null;
         luces(s, true);
-        Coleccionista.LOGGER.info("COLECCIONISTA_SORPRESA sentados={} cuota={} secreto={}", orden.size(), cuota, secreto);
+        limiteEn = segundosMax > 0 ? s.overworld().getGameTime() + segundosMax * 20L : -1;
+        Coleccionista.LOGGER.info("COLECCIONISTA_SORPRESA sentados={} cuota={} secreto={} maximo={}", orden.size(), cuota, secreto, segundosMax);
     }
 
     /** {@code /evento sorpresa secreto <n>}: la caja salta en la vuelta n (la de ahora, si todavía no pasa de ahí, y la siguiente). */
@@ -398,7 +402,13 @@ public final class Sorpresa {
     /** Al siguiente vivo de la herradura: su silla gira hacia el escenario y se le sueltan las correas. */
     private static void siguiente(MinecraftServer s) {
         Evento ev = Evento.get(s);
-        if (comidos >= cuota || ev.vivos().size() <= 1) {
+        boolean tiempo = limiteEn > 0 && s.overworld().getGameTime() >= limiteEn;
+        if (comidos >= cuota || ev.vivos().size() <= 1 || tiempo) {
+            if (tiempo && comidos < cuota) {
+                Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".sor.chat.tiempo")));
+                Coleccionista.LOGGER.info("COLECCIONISTA_SORPRESA se_acabo_el_tiempo comidos={}/{}", comidos, cuota);
+            }
+            limiteEn = -1;
             terminar(s);
             return;
         }

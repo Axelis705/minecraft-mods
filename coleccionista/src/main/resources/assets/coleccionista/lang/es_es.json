@@ -1707,5 +1707,6 @@
   "block.coleccionista.violin": "Violín",
   "block.coleccionista.fichas": "Fichas y cartas",
   "block.coleccionista.ruleta": "Rueda de la fortuna",
-  "block.coleccionista.botella": "Botella y copa"
+  "block.coleccionista.botella": "Botella y copa",
+  "coleccionista.sor.chat.tiempo": "Se ha acabado el tiempo. Resortes tendrá que conformarse… por hoy."
 }

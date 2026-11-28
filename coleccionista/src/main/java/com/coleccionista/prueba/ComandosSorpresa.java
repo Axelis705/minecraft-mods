@@ -83,6 +83,12 @@ public final class ComandosSorpresa {
                             Sorpresa.segundosIr = IntegerArgumentType.getInteger(c, "ir");
                             Sorpresa.segundosVolver = IntegerArgumentType.getInteger(c, "volver");
                             return ok(c, Component.literal("ir=" + Sorpresa.segundosIr + " volver=" + Sorpresa.segundosVolver));
-                        }))));
+                        }))))
+                // tiempo máximo de la caja (0 = sin límite): al acabarse, termina el turno que va y se acaba con los que ya se comió
+                .then(Commands.literal("maximo").executes(c -> ok(c, Component.literal("maximo=" + Sorpresa.segundosMax + " s")))
+                        .then(Commands.argument("segundos", IntegerArgumentType.integer(0, 3600)).executes(c -> {
+                            Sorpresa.segundosMax = IntegerArgumentType.getInteger(c, "segundos");
+                            return ok(c, Component.literal("maximo=" + Sorpresa.segundosMax + " s"));
+                        })));
     }
 }
