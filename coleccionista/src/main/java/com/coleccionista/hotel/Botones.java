@@ -206,6 +206,8 @@ public class Botones extends CoreMob {
             p.hurtMarked = true;
             level().playSound(null, p.blockPosition(), SoundEvents.GLASS_HIT, SoundSource.HOSTILE, 1.2F, 0.6F);
             com.axeliscore.fx.Fx.shake(p, 1.4F, 14);
+            // el susto da fuerzas: dos segundos para correr
+            p.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.MOVEMENT_SPEED, 50, 1, false, false));
             Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL botones_golpe {} vida={}", p.getGameProfile().getName(), p.getHealth());
         }
         if (tickCount - ultimoGolpe < 40) {
@@ -305,7 +307,10 @@ public class Botones extends CoreMob {
                 continue;
             }
             double d = distanceToSqr(p);
-            if (d < md && hasLineOfSight(p) && (d < 25 || enFrente(p))) {
+            // agachado casi no lo ve (solo de cerca); corriendo lo oye aunque no lo vea (no muy lejos)
+            boolean ve = hasLineOfSight(p) && (d < 25 || enFrente(p)) && (!p.isShiftKeyDown() || d < 7 * 7);
+            boolean oye = p.isSprinting() && d < 10 * 10;
+            if (d < md && (ve || oye)) {
                 md = d;
                 mejor = p;
             }

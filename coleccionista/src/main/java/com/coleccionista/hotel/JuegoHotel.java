@@ -827,10 +827,102 @@ public final class JuegoHotel {
         if (now % 10 == 0) {
             monitores(s, l, adentro);
         }
+        // el Coleccionista ayuda un poquito (si no, casi nadie saldría): a los 5 minutos de que acabe, si es piso par o impar; a los 2,
+        // el piso (las dos puertas de ese piso: una puede ser la trampa)
+        int resta = ev.resta(s);
+        if (ayudas && segundos >= 360 && resta == 300 && !ayudaDada.contains(300)) {
+            ayudaDada.add(300);
+            int ps = salida / 2 + 1;
+            Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 1.2F);
+            Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".hotel.chat.ayuda_par",
+                    Component.translatable(MOD + (ps % 2 == 0 ? ".hotel.par" : ".hotel.impar")))));
+            Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL ayuda par");
+        }
+        if (ayudas && segundos >= 180 && resta == 120 && !ayudaDada.contains(120)) {
+            ayudaDada.add(120);
+            Anuncio.sonido(s, SoundEvents.BELL_BLOCK, 1F, 1.2F);
+            Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".hotel.chat.ayuda_piso", salida / 2 + 1)));
+            Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL ayuda piso");
+        }
+        if (now % 20 == 0) {
+            ruidos(s, l, adentro);
+        }
         // ¿se acabó?
         boolean nadie = adentro.isEmpty() && now - faseDesde > 100;
         if (ev.resta(s) == 0 || nadie) {
             fin(s);
+        }
+    }
+
+    /** ¿El Coleccionista da pistas por la bocina a los 5 y a los 2 minutos del final? */
+    public static boolean ayudas = true;
+    private static final Set<Integer> ayudaDada = new HashSet<>();
+    private static final Map<UUID, Long> ruidoEn = new HashMap<>();
+
+    /**
+     * Los ruidos del hotel: a cada quien, de vez en cuando, algo que suena cerca (pero no se ve): una puerta que azotan, pasos, el timbre
+     * de recepción a lo lejos (aunque el Botones no esté), y lo de cada piso: el piano del salón, las lavadoras, el fuego del piso quemado,
+     * las goteras del inundado, el viento en el ático.
+     */
+    private static void ruidos(MinecraftServer s, ServerLevel l, List<Entity> adentro) {
+        BlockPos o = Complejo.origen(s, "hotel");
+        if (o == null) {
+            return;
+        }
+        long now = ahora(s);
+        for (Entity e : adentro) {
+            if (!(e instanceof ServerPlayer sp)) {
+                continue;
+            }
+            Long t = ruidoEn.get(sp.getUUID());
+            if (t == null) {
+                ruidoEn.put(sp.getUUID(), now + 100 + R.nextInt(200));
+                continue;
+            }
+            if (now < t) {
+                continue;
+            }
+            ruidoEn.put(sp.getUUID(), now + 160 + R.nextInt(300));
+            int piso = Hotel.piso((int) Math.floor(sp.getY() + 0.2 - o.getY()));
+            double ang = R.nextDouble() * Math.PI * 2, d = 6 + R.nextDouble() * 8;
+            Vec3 p = sp.position().add(Math.cos(ang) * d, 1, Math.sin(ang) * d);
+            net.minecraft.sounds.SoundEvent ev;
+            float vol = 0.8F, tono = 0.8F + R.nextFloat() * 0.3F;
+            int cual = R.nextInt(4);
+            if (cual == 0) {
+                ev = switch (piso) {
+                    case 2 -> SoundEvent3.propio("piano_" + R.nextInt(8));
+                    case 4 -> SoundEvents.PISTON_CONTRACT;
+                    case 5 -> SoundEvents.FIRE_AMBIENT;
+                    case 6, 8 -> SoundEvents.POINTED_DRIPSTONE_DRIP_WATER;
+                    case 10 -> SoundEvents.ELYTRA_FLYING;
+                    default -> SoundEvents.WOODEN_DOOR_CLOSE;
+                };
+                if (piso == 4) {
+                    tono = 0.5F;
+                }
+                if (piso == 10) {
+                    vol = 0.3F;
+                    tono = 0.5F;
+                }
+            } else if (cual == 1) {
+                ev = SoundEvents.WOODEN_DOOR_CLOSE;
+                tono = 0.6F + R.nextFloat() * 0.2F;
+            } else if (cual == 2) {
+                ev = SoundEvents.WOOD_STEP;
+                vol = 0.6F;
+            } else {
+                ev = R.nextInt(3) == 0 ? ModRegistry.HOTEL_TIMBRE.get() : SoundEvents.CHAIN_STEP;
+                vol = 0.35F;
+            }
+            l.playSound(null, p.x, p.y, p.z, ev, SoundSource.AMBIENT, vol, tono);
+        }
+    }
+
+    /** (Un sonido propio del mod sin registrar, por su nombre.) */
+    private static final class SoundEvent3 {
+        static net.minecraft.sounds.SoundEvent propio(String id) {
+            return net.minecraft.sounds.SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(MOD, id));
         }
     }
 
@@ -1274,8 +1366,8 @@ public final class JuegoHotel {
         ServerLevel l = nivel(s);
         ListTag lista = new ListTag();
         int pisoSalida = salida / 2 + 1;
-        String[] consejos = {"hotel.pista.hilo", "hotel.pista.luz", "hotel.pista.tubo", "hotel.pista.timbre", "hotel.pista.cuartos",
-                "hotel.pista.botiquin", "hotel.pista.hilo", "hotel.pista.luz"};
+        String[] consejos = {"hotel.pista.hilo", "hotel.pista.luz", "hotel.pista.agachate", "hotel.pista.tubo", "hotel.pista.correr",
+                "hotel.pista.timbre", "hotel.pista.cuartos", "hotel.pista.botiquin"};
         Map<Integer, Integer> porPiso = new HashMap<>();
         int c = 0;
         BlockPos o = Complejo.origen(s, "hotel");
@@ -1289,9 +1381,10 @@ public final class JuegoHotel {
             // (se manda la clave: cada quien la lee en su idioma; "@clave#renglón")
             String clave;
             int estilo;
-            if (cual == 1) {
+            // las dos primeras de cada piso dicen hacia dónde está la salida (una en rojo y otra en gis); las demás son consejos
+            if (cual <= 2) {
                 clave = piso < pisoSalida ? "hotel.pista.arriba" : piso > pisoSalida ? "hotel.pista.abajo" : "hotel.pista.aqui";
-                estilo = Pistas.ROJO;
+                estilo = cual == 1 ? Pistas.ROJO : Pistas.TIZA;
             } else {
                 clave = consejos[c++ % consejos.length];
                 estilo = Pistas.TIZA;
@@ -1491,6 +1584,8 @@ public final class JuegoHotel {
         cabina.clear();
         pinchado.clear();
         pisoDe.clear();
+        ayudaDada.clear();
+        ruidoEn.clear();
         caidos.clear();
         caeEn.clear();
         charcos.clear();

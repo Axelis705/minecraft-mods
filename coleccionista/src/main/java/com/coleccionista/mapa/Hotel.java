@@ -61,7 +61,7 @@ public final class Hotel {
             if (n.startsWith("hotel.cab.")) {
                 // la marca mira al pasillo; se entra al revés
                 int k = Integer.parseInt(n.substring("hotel.cab.".length()));
-                Cabinas.individual(p, "hotel_h" + k, Marco.deBloque(m.x(), m.z(), m.yaw() + 180F), y0, null);
+                Cabinas.individual(p, "hotel_h" + k, Marco.deBloque(m.x(), m.z(), m.yaw() + 180F), y0, "PISO " + piso(y0));
                 cabs++;
             } else if (n.startsWith("hotel.serv.")) {
                 servicio(p, f, n, m, y0);
@@ -80,9 +80,43 @@ public final class Hotel {
                 botiquin(p, f, n, m, y0);
             }
         }
+        lamparas(p, c);
         ascensores = cabs;
         puertas = servs;
         return p;
+    }
+
+    /**
+     * Las lámparas que se ven: una de cada tres luces de la cuadrícula del techo se vuelve lámpara de techo (faroles en el ático; los cuartos
+     * quemados, los clósets y el pasillo de servicio se quedan casi a oscuras) y en los pasillos hay apliques en la pared cada tantos
+     * pasos. Unas cuantas parpadean (las elige el bloque).
+     */
+    private static void lamparas(Plano p, Casa c) {
+        String[] mira = {"south", "north", "west", "east"};
+        for (Casa.Piso f : c.pisos) {
+            int y0 = f.y();
+            for (int z = 0; z < 51; z++) {
+                for (int x = 0; x < 51; x++) {
+                    char ch = f.en(x, z);
+                    String arriba = p.get(x, y0 + 4, z);
+                    // (una de cada tres: las demás se quedan como luz sin lámpara; así no parpadean cientos a la vez)
+                    if (arriba != null && arriba.startsWith("light[") && ch != 'u' && ch != 'k' && ch != 'e'
+                            && Math.floorMod(x / 5 + z / 5 * 2, 3) == 0) {
+                        p.set(x, y0 + 4, z, ch == 't' ? C + "farol[facing=north,encendida=true,falla=false]"
+                                : C + "plafon[facing=north,encendida=true,falla=false]");
+                    }
+                    if (ch == 'c' && Math.floorMod(x * 3 + z * 7, 5) == 0 && "air".equals(p.get(x, y0 + 2, z))) {
+                        for (int i = 0; i < 4; i++) {
+                            char w = f.en(x + DIR[i][0], z + DIR[i][1]);
+                            if (w == '#' || w == 'X') {
+                                p.set(x, y0 + 2, z, C + "aplique[facing=" + mira[i] + ",encendida=true,falla=false]");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

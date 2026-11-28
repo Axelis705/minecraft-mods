@@ -596,6 +596,8 @@ def catalogo():
     # el hotel del capítulo 1 y su sala de espera (el colchón rebota)
     for p in props_hotel.todos():
         prop(p, {'brinco': True} if p.id == 'colchon_brinco' else None)
+    con_apagado(props_hotel.aplique(True), props_hotel.aplique(False), {'parpadeo': True})
+    con_apagado(props_hotel.plafon(True), props_hotel.plafon(False), {'parpadeo': True})
     cama(props_mansion.cama_antigua())
     ficha[-1]['adorno'] = True  # no se duerme en ella (ni guarda el punto de aparición)
     ficha[-1]['sound'] = 'wood'

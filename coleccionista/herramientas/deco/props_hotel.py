@@ -16,7 +16,7 @@ import numpy as np
 
 import kit
 from kit import Prop, Ramp, solid
-from props_celdas import pintado, tela as tela_vieja
+from props_celdas import pintado, tela as tela_vieja, luz, apagado
 from props_mansion import nogal, oro, hierro
 
 
@@ -213,6 +213,43 @@ def monitor():
     luz.emit = True
     p.box(13.2, 3.2, 1.7, 14, 4, 2, luz, emit=True)
     p.box(1, 13, 7, 15, 13.4, 9, solid('#1a1a1a'))              # la antena de conejo (base)
+    return p
+
+
+def aplique(on=True):
+    """Aplique de pared del hotel: placa de latón, un brazo curvo y una pantalla de tela color crema (con su foco) que brilla cálido."""
+    pid = 'aplique' if on else 'aplique_apagado'
+    p = Prop(pid, 'Aplique de pared', 'Wall sconce', kind='wall', sound='lantern', seed=770, collide=False, light=11)
+    o = oro(770)
+    p.box(6.5, 3, 15, 9.5, 9, 16, o)                            # la placa de la pared
+    p.box(7.5, 5, 12, 8.5, 6, 15, o)                            # el brazo
+    p.box(7.5, 6, 11.5, 8.5, 8, 12.5, o)
+    p.box(7, 8, 11, 9, 8.6, 13, o)                              # el portafoco
+    if on:
+        pantalla = luz('#f2d7a0', seed=771)
+        foco = luz('#fff4d8', seed=772)
+    else:
+        pantalla = apagado('#8a7a5c', seed=771)
+        foco = apagado('#5a5040', seed=772)
+    p.box(5.5, 8.6, 9.5, 10.5, 12.5, 14.5, pantalla)            # la pantalla (de tela)
+    p.box(6.2, 12.5, 10.2, 9.8, 13, 13.8, pantalla)
+    p.box(7.3, 8.6, 11.3, 8.7, 10.2, 12.7, foco)
+    return p
+
+
+def plafon(on=True):
+    """Lámpara de techo vieja: una cadenita y un tazón de vidrio lechoso con orilla de latón (cuelga del techo)."""
+    pid = 'plafon' if on else 'plafon_apagado'
+    p = Prop(pid, 'Lámpara de techo', 'Ceiling lamp', kind='hang', sound='glass', seed=780, collide=False, light=12)
+    o = oro(780)
+    cad = pintado('#4a3a20', oxido=0.4, seed=781)
+    p.box(7.6, 13, 7.6, 8.4, 16, 8.4, cad)                      # la cadenita
+    p.box(6.5, 15.4, 6.5, 9.5, 16, 9.5, o)                      # el rosetón
+    p.box(5, 11, 5, 11, 13, 11, o)                              # el aro de latón
+    vidrio = luz('#f4ead2', seed=782) if on else apagado('#9a9484', seed=782)
+    p.box(4.5, 9, 4.5, 11.5, 11, 11.5, vidrio)                  # el tazón de vidrio
+    p.box(5.5, 8, 5.5, 10.5, 9, 10.5, vidrio)
+    p.box(7.3, 7.4, 7.3, 8.7, 8, 8.7, o)                        # la bolita de abajo
     return p
 
 

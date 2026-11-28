@@ -1800,5 +1800,13 @@
   "coleccionista.hotel.monitor.sin": "NO SIGNAL",
   "coleccionista.obj.hotel": "A free lift",
   "item.coleccionista.tubo_suelto": "Rusty pipe",
-  "coleccionista.hotel.piso": "— Floor %s —"
+  "coleccionista.hotel.piso": "— Floor %s —",
+  "block.coleccionista.aplique": "Wall sconce",
+  "block.coleccionista.plafon": "Ceiling lamp",
+  "coleccionista.hotel.pista.agachate": "CROUCH|AND HE WON'T SEE YOU FAR",
+  "coleccionista.hotel.pista.correr": "DON'T RUN|HE CAN HEAR YOU",
+  "coleccionista.hotel.chat.ayuda_par": "A little gift… the way out is on an %s floor.",
+  "coleccionista.hotel.par": "even",
+  "coleccionista.hotel.impar": "odd",
+  "coleccionista.hotel.chat.ayuda_piso": "Last hint: the way out is on floor %s. Mind its neighbor…"
 }

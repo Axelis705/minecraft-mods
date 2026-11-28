@@ -1,0 +1,64 @@
+{
+ "variants": {
+  "facing=north,encendida=true,falla=false": {
+   "model": "coleccionista:block/aplique"
+  },
+  "facing=north,encendida=true,falla=true": {
+   "model": "coleccionista:block/aplique_apagado"
+  },
+  "facing=north,encendida=false,falla=false": {
+   "model": "coleccionista:block/aplique_apagado"
+  },
+  "facing=north,encendida=false,falla=true": {
+   "model": "coleccionista:block/aplique_apagado"
+  },
+  "facing=east,encendida=true,falla=false": {
+   "model": "coleccionista:block/aplique",
+   "y": 90
+  },
+  "facing=east,encendida=true,falla=true": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 90
+  },
+  "facing=east,encendida=false,falla=false": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 90
+  },
+  "facing=east,encendida=false,falla=true": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 90
+  },
+  "facing=south,encendida=true,falla=false": {
+   "model": "coleccionista:block/aplique",
+   "y": 180
+  },
+  "facing=south,encendida=true,falla=true": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 180
+  },
+  "facing=south,encendida=false,falla=false": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 180
+  },
+  "facing=south,encendida=false,falla=true": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 180
+  },
+  "facing=west,encendida=true,falla=false": {
+   "model": "coleccionista:block/aplique",
+   "y": 270
+  },
+  "facing=west,encendida=true,falla=true": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 270
+  },
+  "facing=west,encendida=false,falla=false": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 270
+  },
+  "facing=west,encendida=false,falla=true": {
+   "model": "coleccionista:block/aplique_apagado",
+   "y": 270
+  }
+ }
+}

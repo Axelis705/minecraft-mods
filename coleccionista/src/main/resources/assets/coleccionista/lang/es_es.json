@@ -1800,5 +1800,13 @@
   "coleccionista.hotel.monitor.sin": "SIN SEÑAL",
   "coleccionista.obj.hotel": "Un ascensor libre",
   "item.coleccionista.tubo_suelto": "Tubo oxidado",
-  "coleccionista.hotel.piso": "— Planta %s —"
+  "coleccionista.hotel.piso": "— Planta %s —",
+  "block.coleccionista.aplique": "Aplique de pared",
+  "block.coleccionista.plafon": "Lámpara de techo",
+  "coleccionista.hotel.pista.agachate": "AGÁCHATE|Y NO TE VERÁ DE LEJOS",
+  "coleccionista.hotel.pista.correr": "NO CORRAS|ÉL TE ESCUCHA",
+  "coleccionista.hotel.chat.ayuda_par": "Les regalo una pista… la salida está en un piso %s.",
+  "coleccionista.hotel.par": "par",
+  "coleccionista.hotel.impar": "impar",
+  "coleccionista.hotel.chat.ayuda_piso": "Última pista: la salida está en el piso %s. Cuidado con su vecina…"
 }
