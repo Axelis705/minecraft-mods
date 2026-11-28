@@ -29,6 +29,8 @@ public final class Pistas {
     public static final String KEY = MOD + ":inscripciones";
     /** Estilos de letra (los dibuja el cliente). */
     public static final int RAYADO = 0, TIZA = 1, ROJO = 2, NEGRO = 3;
+    /** Gis rojo (el pizarrón del hotel: los que cayeron). */
+    public static final int TIZA_ROJA = 4;
     /** Planos: pared (mira hacia {@code ang}), piso / cara de arriba, techo / cara de abajo. */
     public static final int PARED = 0, PISO = 1, TECHO = 2;
     /** Escondites, en tres grupos (uno de cada grupo por celda: así quedan repartidos por la celda). */

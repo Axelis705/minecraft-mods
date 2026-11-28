@@ -1542,24 +1542,26 @@ public final class JuegoHotel {
 
     /**
      * El pizarrón del orden de salida, en la pared oeste de la sala de espera, escrito con gis: arriba el título y luego quién salió (con
-     * su tiempo) y quién cayó (con una cruz, en rojo), en tres columnas de 11. Se ve como las pistas (el cliente lo traduce).
+     * su tiempo) y quién cayó (con una cruz, en gis rojo), en cuatro columnas de 9. Se ve como las pistas (el cliente lo traduce).
      */
     private static void escribirTablero(MinecraftServer s) {
         ListTag lista = new ListTag();
         BlockPos p = Complejo.pos(s, "hotel.espera.tablero");
         if (p != null) {
             double x = p.getX() + 0.006, zc = p.getZ() + 0.5;
-            lista.add(gis(x, p.getY() + 2.72, zc, "@" + MOD + ".hotel.tablero#0", 0.022F, Pistas.TIZA));
+            lista.add(gis(x, p.getY() + 2.7, zc, "@" + MOD + ".hotel.tablero#0", 0.03F, Pistas.TIZA));
             int fila = 0, n = 0;
             for (Object[] o : orden) {
-                int seg = (int) o[1], col = fila / 11, r = fila % 11;
-                if (col > 2) {
+                int seg = (int) o[1], col = fila / 9, r = fila % 9;
+                if (col > 3) {
                     break;
                 }
-                String t = seg < 0 ? "✗ " + o[0] : (++n) + ". " + o[0] + "  " + seg / 60 + ":" + String.format("%02d", seg % 60);
+                String t = seg < 0 ? "✗ " + o[0] : (++n) + ". " + o[0] + " " + seg / 60 + ":" + String.format("%02d", seg % 60);
                 // (mirando al pizarrón, la izquierda es +z)
-                lista.add(gis(x, p.getY() + 2.42 - r * 0.21, zc + 3.4 - col * 3.4, t, 0.016F,
-                        seg < 0 || (boolean) o[2] ? Pistas.ROJO : Pistas.TIZA));
+                // (los nombres largos, con letra más chica para que no se encimen con la columna de al lado)
+                float esc = Math.min(0.02F, 2.45F / (t.length() * 6F));
+                lista.add(gis(x, p.getY() + 2.33 - r * 0.25, zc + 3.9 - col * 2.6, t, esc,
+                        seg < 0 || (boolean) o[2] ? Pistas.TIZA_ROJA : Pistas.TIZA));
                 fila++;
             }
         }

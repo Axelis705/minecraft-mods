@@ -347,9 +347,8 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
         // ya en el piso: el charco de sangre que sale del cuello y se va haciendo grande (unos 5 s)
         if (t > 0.95F) {
-            float r = 0.18F + 0.52F * Math.min(1F, (t - 0.95F) / 5F);
-            charco(ps, buf, light, 1.45F, r);
-            charco(ps, buf, light, 1.5F, r * 0.55F);
+            float r = 0.2F + 0.6F * Math.min(1F, (t - 0.95F) / 5F);
+            charco(ps, buf, light, 1.4F, r);
         }
         // de espaldas (hacia +z aquí), girando sobre los talones
         ps.translate(0, 0, 0.16F);
@@ -372,9 +371,13 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
 
     private static final ResourceLocation PIEDRA = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID,
             "textures/entity/estatua_piedra.png");
-    private static final ResourceLocation SANGRE = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID, "textures/block/sangre.png");
+    private static final ResourceLocation SANGRE = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID,
+            "textures/entity/charco_sangre.png");
 
-    /** Un charco de sangre en el piso (pegado al piso, a {@code z} del cuerpo y de radio {@code r}), con la salpicadura del bloque "sangre". */
+    /**
+     * Un charco de sangre en el piso (pegado al piso, a {@code z} del cuerpo y de radio {@code r}): mancha oscura y brillosa de orilla chueca
+     * (la textura la hace {@code herramientas/charco_sangre.py}), que se nota hasta en la alfombra roja.
+     */
     private static void charco(PoseStack ps, MultiBufferSource buf, int light, float z, float r) {
         com.mojang.blaze3d.vertex.VertexConsumer vc = buf.getBuffer(RenderType.entityTranslucent(SANGRE));
         PoseStack.Pose p = ps.last();

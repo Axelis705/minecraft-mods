@@ -97,6 +97,10 @@ ojos de esa persona**; agacharse (Shift) para volver.
 - **El último minuto:** el Coleccionista avisa ("Les queda un minuto… y la luz es mía"), se apagan las lámparas cerca de cada quien
   2 segundos (con oscuridad) y vuelven; los últimos 30 segundos suena un reloj de péndulo (más fuerte los últimos 10).
 - Si un apagón se queda a medias (se cierra el servidor justo entonces), al empezar la siguiente partida se prenden todas otra vez.
+- Prueba con fotos (corrida 46111000812, commit fc520f87): **27 fotos, 0 fallos**; se vio el letrero "▼ Piso" al bajar, la placa 301,
+  el pizarrón y los cuadros; el monitor dijo "señal perdida" y el apagón apagó 68 lámparas. Arreglos tras verlas: el charco usa una
+  textura propia (oscura y brillosa: la salpicadura no se veía sobre la alfombra roja), el pizarrón lleva letra más grande en 4 columnas
+  de 9, cruces en gis rojo claro y dos lámparas arriba; las placas de los cuartos, en dorado más claro.
 
 ## Pendiente
 - Axelis: grabar las voces nuevas (`hotel`, `hotel_ascensor`, `hotel_fin`, `hotel_regreso`).

@@ -165,7 +165,7 @@ public final class Hotel {
                 }
                 String texto = que.isEmpty() ? String.valueOf(piso * 100 + ++n) : que;
                 // (la placa mira hacia el pasillo: hacia donde va de la puerta al pasillo)
-                p.texto(ax, y0 + 3, az, "placa", HACIA[i], 0xD9A93A, texto);
+                p.texto(ax, y0 + 3, az, "placa", HACIA[i], 0xF2CE6B, texto);
                 placasCuarto++;
             }
             // 2) cuadros y telarañas por el pasillo; manchas en el piso de los cuartos (en el pasillo está la alfombra)
@@ -372,6 +372,10 @@ public final class Hotel {
             }
         }
         p.marca("hotel.espera.tablero", 1, 3, (TAB_Z0 + TAB_Z1) / 2, 90);
+        // dos lámparas de pared arriba del pizarrón, para que se lea
+        for (int z : new int[] {TAB_Z0 + 2, TAB_Z1 - 2}) {
+            p.set(1, 6, z, C + "aplique[facing=east,encendida=true,falla=false]");
+        }
         p.letrero(TUBO_X, 4, EZ1 - 1, "", "north", "gold", "SALA DE ESPERA", "(por ahora)");
         p.letrero(TUBO_X, 5, 1, "", "south", "red", "EN VIVO");
         p.marca("hotel.espera.centro", TUBO_X, 1, 17, 180);

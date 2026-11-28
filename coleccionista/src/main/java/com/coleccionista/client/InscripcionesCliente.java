@@ -176,6 +176,11 @@ public final class InscripcionesCliente {
                     ps.translate(0, 0, capa);
                     font.drawInBatch(t, x, y, 0xFFE9E4D6, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
                 }
+                case Pistas.TIZA_ROJA -> {
+                    font.drawInBatch(t, x + 0.4F, y + 0.3F, 0x88F2A0A0, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
+                    ps.translate(0, 0, capa);
+                    font.drawInBatch(t, x, y, 0xFFFF6E6E, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
+                }
                 case Pistas.ROJO -> font.drawInBatch(t, x, y, 0xFFA3161B, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
                 default -> font.drawInBatch(t, x, y, 0xFF1A1918, false, ps.last().pose(), buf, Font.DisplayMode.POLYGON_OFFSET, 0, luz);
             }
