@@ -60,17 +60,23 @@ public class TrampaEscopeta extends net.minecraft.world.entity.Entity implements
             h.data.put("disparos", d);
             if (nuevo && h.clip("disparo") != null) {
                 h.animator().play("base", h.clip("disparo"), 0.01F, 1F, true);
-                h.data.put("disparando", true);
+                h.data.put("disparoEn", tickCount);
                 return;
             }
         }
-        if (!Boolean.TRUE.equals(h.data.get("disparando"))) {
-            h.animator().play("base", h.clip("idle"), 0.1F, 1F, false);
+        Object en = h.data.get("disparoEn");
+        // el disparo dura 1.2 s; luego se queda quieta (con el hilo flojo ya no importa)
+        if (!(en instanceof Integer t) || tickCount - t > 24) {
+            h.animator().play("base", h.clip("idle"), 0.2F, 1F, false);
         }
     }
 
     @Override
     public void axPose(AnimHost h, Pose pose, float pt) {
+        // el fogonazo solo un instante, justo al disparar
+        Object en = h.data.get("disparoEn");
+        float dt = en instanceof Integer t ? tickCount + pt - t : 999F;
+        pose.hide(h.geo().bone("fogonazo"), dt > 2.5F);
     }
 
     // ------------------------------------------------------------------ como entidad
