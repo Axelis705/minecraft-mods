@@ -104,6 +104,10 @@ ojos de esa persona**; agacharse (Shift) para volver.
 - Segunda prueba con fotos (corrida 46114133111, commit 0f229b0d): **27 fotos, 0 fallos**; el pizarrón ya se lee (la cruz en rojo
   claro y el tiempo). El charco seguía sin verse: el cuerpo quedaba hundido en la alfombra (1 px) y el charco se dibujaba debajo de ella.
   Ahora se dibuja encima de lo que haya en el piso.
+- Tercera prueba con fotos (corrida 46119328756, commit 788b770c): **27 fotos, 0 fallos**; el charco ya sale, pero oscuro sobre alfombra
+  roja en un cuarto con poca luz casi no se distinguía. Ahora lleva una segunda capa con reflejos de líquido y una orilla fina de sangre
+  fresca, dibujada con un poco más de luz (se ve mojado aunque el cuarto esté oscuro), y sale más allá del cuello (antes la mitad
+  quedaba debajo del cuerpo).
 
 ## Pendiente
 - Axelis: grabar las voces nuevas (`hotel`, `hotel_ascensor`, `hotel_fin`, `hotel_regreso`).
