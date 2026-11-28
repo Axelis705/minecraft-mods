@@ -184,11 +184,14 @@ public final class PruebaHotel {
             }
             t.check(perdida, "el monitor del que cayó dice señal perdida");
         });
-        // el charco que sale del cuello (crece unos segundos), visto desde arriba
+        // el charco que sale del cuello (crece unos segundos), visto desde arriba: el cuerpo cae de espaldas, así que el charco queda
+        // detrás de hacia donde mira; la cámara va encima del cuerpo, a media altura del pasillo (lejos de paredes y lámparas)
         t.photo("h15b_charco", 4500, () -> {
+            t.cmd("tp Bot_02 0 -50 30");
             for (var e : srv().overworld().getAllEntities()) {
                 if (e instanceof com.coleccionista.evento.Cadaver c && c.sinCabeza()) {
-                    t.lookFrom(c.getX() + 1.6, c.getY() + 0.7, c.getZ() + 1.6, c.getX(), c.getY(), c.getZ());
+                    double r = Math.toRadians(c.getYRot()), dx = Math.sin(r), dz = -Math.cos(r);
+                    t.lookFrom(c.getX() + dx * 0.3, c.getY() + 0.95, c.getZ() + dz * 0.3, c.getX() + dx * 1.9, c.getY(), c.getZ() + dz * 1.9);
                     break;
                 }
             }
