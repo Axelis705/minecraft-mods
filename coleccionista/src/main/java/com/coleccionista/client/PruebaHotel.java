@@ -177,7 +177,11 @@ public final class PruebaHotel {
             t.check(hay, "quedó el cuerpo sin cabeza");
             t.check(EventoCliente.vivos() == 4, "quedan 4 vivos (yo y 3 bots): " + EventoCliente.vivos());
         });
-        t.photo("h16_trampa_adentro", 1200, () -> mirarPuerta(t, JuegoHotel.puertaDe(true), 0.2, 1.2));
+        t.photo("h16_trampa_adentro", 1200, () -> {
+            // el fantasma del bot eliminado se queda en la puerta y taparía la foto
+            t.cmd("tp Bot_02 0 -50 30");
+            mirarPuerta(t, JuegoHotel.puertaDe(true), 0.2, 1.2);
+        });
         // la salida: abro y caigo por el tobogán
         t.add("hotel: abrir salida", 2200, () -> {
             t.cmd("gamemode adventure @a");

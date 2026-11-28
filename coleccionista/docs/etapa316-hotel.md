@@ -70,6 +70,19 @@ ojos de esa persona**; agacharse (Shift) para volver.
   sutil, el hueco de la puerta deja pasar al abrirse (la salida vuelve a cerrarse sola), el fogonazo solo dura un instante, aviso
   "— Piso N —" al cambiar de piso, el tubo se llama `tubo_suelto` (chocaba con el bloque `tubo`).
 
+## Mejoras de luz, ambiente y jugabilidad (después de "mejora")
+- **Lámparas que se ven:** apliques en las paredes de los pasillos (138) y lámparas de techo en los cuartos (253), más faroles en el
+  ático (23). Algunas parpadean de vez en cuando. Los ascensores de llegada tienen letrero "PISO N".
+- **Ruidos por piso:** cada quien oye cosas cerca, de vez en cuando: portazos, pasos, cadenas y el timbre a lo lejos; y según el piso,
+  notas sueltas del piano (piso 2), máquinas de la lavandería (4), fuego en los cuartos quemados (5), goteo (6 y 8) o viento (10).
+- **El Coleccionista ayuda:** a los 5:00 dice si la salida está en piso par o impar, y a los 2:00 dice el piso exacto.
+- **Pistas:** en cada piso, dos dicen hacia dónde ir (más arriba / más abajo / en este piso); hay consejos nuevos (agacharse cerca del
+  Botones, no correr). Se leen un poco mejor en lo oscuro.
+- **Sigilo contra el Botones:** agachado solo te ve muy de cerca; corriendo te oye aunque no te vea.
+- **Adrenalina:** después de un golpe del Botones te da velocidad un momento para huir.
+- Fotos de la prueba con cliente (corrida 46100479918, commit 1439c2fc): **24 fotos, 0 fallos**; los pasillos junto a las puertas se
+  ven con el doble de luz que antes.
+
 ## Pendiente
 - Axelis: grabar las voces nuevas (`hotel`, `hotel_ascensor`, `hotel_fin`, `hotel_regreso`).
 - Probarlo en el juego real con amigos (el hotel se ve oscuro con brillo bajo: subir el brillo del juego).

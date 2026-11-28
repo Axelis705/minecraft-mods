@@ -132,14 +132,17 @@ public final class InscripcionesCliente {
         MultiBufferSource.BufferSource buf = mc.renderBuffers().bufferSource();
         PoseStack ps = e.getPoseStack();
         boolean alguno = false;
-        for (Ins i : todas) {
+        int delHotel = HOTEL.size();
+        for (int n = 0; n < todas.size(); n++) {
+            Ins i = todas.get(n);
             if (i.pos().distanceToSqr(cam) > LEJOS * LEJOS) {
                 continue;
             }
             alguno = true;
             int packed = LevelRenderer.getLightColor(mc.level, i.luz());
-            // un mínimo para que se distinga con la luz baja del ala (pero a oscuras total no se ve)
-            int bl = Math.max(LightTexture.block(packed), 6), sl = LightTexture.sky(packed);
+            // un mínimo para que se distinga con la luz baja del ala (pero a oscuras total no se ve); las del hotel se leen un poco mejor,
+            // porque allá se juega contra el reloj
+            int bl = Math.max(LightTexture.block(packed), n < delHotel ? 9 : 6), sl = LightTexture.sky(packed);
             int luz = LightTexture.pack(bl, sl);
             ps.pushPose();
             ps.translate(i.pos().x - cam.x, i.pos().y - cam.y, i.pos().z - cam.z);
