@@ -61,6 +61,11 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
             super.render(c, yaw, pt, ps, buf, light);
             return;
         }
+        if (c.sinCabeza()) {
+            sinCabeza(c, m, slim, id, ps, buf, light, pt);
+            super.render(c, yaw, pt, ps, buf, light);
+            return;
+        }
         if (c.manco()) {
             manco(c, m, slim, id, ps, buf, light);
             super.render(c, yaw, pt, ps, buf, light);
@@ -299,6 +304,63 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         d.flush();
         m.leftArm.visible = true;
         m.leftSleeve.visible = true;
+        ps.popPose();
+    }
+
+    /**
+     * La trampa del hotel: sin cabeza. Se queda parado un instante (los brazos dan un tirón), luego se va de espaldas girando sobre los
+     * talones, pega en el piso y rebota un poquito; ya tirado, los brazos quedan abiertos. Del cuello, la rebanada roja con el hueso.
+     */
+    private void sinCabeza(Cadaver c, PlayerModel<AbstractClientPlayer> m, boolean slim, UUID id, PoseStack ps, MultiBufferSource buf, int light,
+            float pt) {
+        int v = c.postura() - Cadaver.SIN_CABEZA;
+        float t = c.cae() > 0 && c.level() != null ? (c.level().getGameTime() - c.cae() + pt) / 20F : 99F;
+        float ang;
+        if (t < 0.3F) {
+            ang = 0F;
+        } else {
+            float x = (t - 0.3F) / 0.65F;
+            if (x < 1F) {
+                ang = 90F * x * x;
+            } else {
+                float r = Math.min(1F, (x - 1F) / 0.35F);
+                ang = 90F - 6F * (float) Math.sin(r * Math.PI);
+            }
+        }
+        float abre = Math.min(1F, Math.max(0F, (t - 0.3F) / 0.8F));
+        float tiron = t < 0.3F ? (float) Math.sin(t / 0.3F * Math.PI) : 0F;
+        m.head.setRotation(0, 0, 0);
+        m.body.setRotation(0, 0, 0);
+        m.rightArm.setRotation(-0.5F * tiron - 0.15F * abre, 0, 0.18F + 1.0F * abre + 0.08F * v);
+        m.leftArm.setRotation(-0.4F * tiron - 0.1F * abre, 0, -0.18F - 0.9F * abre - 0.06F * v);
+        m.rightLeg.setRotation(0.15F * abre, 0, 0.08F * abre);
+        m.leftLeg.setRotation(-0.1F * abre, 0, -0.1F * abre);
+        m.hat.copyFrom(m.head);
+        m.jacket.copyFrom(m.body);
+        m.rightSleeve.copyFrom(m.rightArm);
+        m.leftSleeve.copyFrom(m.leftArm);
+        m.rightPants.copyFrom(m.rightLeg);
+        m.leftPants.copyFrom(m.leftLeg);
+        m.head.visible = false;
+        m.hat.visible = false;
+        ps.pushPose();
+        ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
+        // de espaldas (hacia +z aquí), girando sobre los talones
+        ps.translate(0, 0, 0.16F);
+        ps.mulPose(Axis.XP.rotationDegrees(ang));
+        ps.translate(0, 0, -0.16F);
+        ps.scale(-1, -1, 1);
+        ps.scale(0.9375F, 0.9375F, 0.9375F);
+        ps.translate(0, -1.501, 0);
+        var vc = buf.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(c)));
+        m.renderToBuffer(ps, vc, light, OverlayTexture.NO_OVERLAY, 0.92F, 0.86F, 0.86F, 1F);
+        Corte.cuello(m, ps, vc, light);
+        com.axeliscore.plat.client.Draw d = new com.axeliscore.plat.client.Draw(buf);
+        com.axeliscore.vestir.client.VestuarioCliente.dibujarJugador(id, c, slim, new net.minecraft.client.model.geom.ModelPart[] {m.head, m.body,
+                m.rightArm, m.leftArm, m.rightLeg, m.leftLeg}, ps, d, light, OverlayTexture.NO_OVERLAY, 1F, false);
+        d.flush();
+        m.head.visible = true;
+        m.hat.visible = true;
         ps.popPose();
     }
 

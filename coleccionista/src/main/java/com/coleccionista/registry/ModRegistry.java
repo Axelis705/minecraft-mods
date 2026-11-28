@@ -104,6 +104,54 @@ public final class ModRegistry {
             ENTITIES.register("maquina", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "maquina",
                     EntityType.Builder.<com.coleccionista.evento.Maquina>of(com.coleccionista.evento.Maquina::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(0.8F, 0.6F).clientTrackingRange(10).updateInterval(2)));
+    // ---------------------------------------------------------------- el hotel (capítulo 1, antes de los equipos)
+    /** Una puerta de servicio del hotel (la hoja que se abre rechinando). */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.hotel.PuertaHotel>> PUERTA_HOTEL =
+            ENTITIES.register("puerta_hotel", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "puerta_hotel",
+                    EntityType.Builder.<com.coleccionista.hotel.PuertaHotel>of(com.coleccionista.hotel.PuertaHotel::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(8).updateInterval(10)));
+    /** La escopeta del tripié detrás de una puerta con trampa. */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.hotel.TrampaEscopeta>> TRAMPA_ESCOPETA =
+            ENTITIES.register("trampa_escopeta", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "trampa_escopeta",
+                    EntityType.Builder.<com.coleccionista.hotel.TrampaEscopeta>of(com.coleccionista.hotel.TrampaEscopeta::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.6F, 1.6F).clientTrackingRange(8).updateInterval(10)));
+    /** El Botones de porcelana que empuja su carrito por los pasillos. */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.hotel.Botones>> BOTONES =
+            ENTITIES.register("botones", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "botones",
+                    EntityType.Builder.<com.coleccionista.hotel.Botones>of(com.coleccionista.hotel.Botones::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.9F, 2.9F).clientTrackingRange(10).updateInterval(2)));
+    /** El carrito de maletas que el Botones suelta para perseguir. */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.hotel.Carrito>> CARRITO =
+            ENTITIES.register("carrito", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "carrito",
+                    EntityType.Builder.<com.coleccionista.hotel.Carrito>of(com.coleccionista.hotel.Carrito::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.9F, 1.2F).clientTrackingRange(8).updateInterval(10)));
+    /** La rata de cuerda (de hojalata). */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.hotel.Rata>> RATA =
+            ENTITIES.register("rata", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "rata",
+                    EntityType.Builder.<com.coleccionista.hotel.Rata>of(com.coleccionista.hotel.Rata::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.5F, 0.4F).clientTrackingRange(8).updateInterval(2)));
+    /** Un monitor de la sala de espera (clic: ver por los ojos de alguien). */
+    public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.hotel.Monitor>> MONITOR =
+            ENTITIES.register("monitor", () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "monitor",
+                    EntityType.Builder.<com.coleccionista.hotel.Monitor>of(com.coleccionista.hotel.Monitor::new,
+                            net.minecraft.world.entity.MobCategory.MISC).sized(0.9F, 0.9F).clientTrackingRange(8).updateInterval(10)));
+    /** El tubo suelto del hotel: solo sirve contra las ratas (de un golpe). */
+    public static final net.minecraftforge.registries.RegistryObject<Item> TUBO = ITEMS.register("tubo",
+            () -> new Item(com.axeliscore.plat.Reg.item(Coleccionista.MODID, "tubo").stacksTo(1)));
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_TIMBRE = SOUNDS.register("hotel_timbre",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_timbre")));
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_CARRITO = SOUNDS.register("hotel_carrito",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_carrito")));
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_CUERDA = SOUNDS.register("hotel_cuerda",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_cuerda")));
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_CHILLIDO = SOUNDS.register("hotel_chillido",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_chillido")));
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_RECHINIDO = SOUNDS.register("hotel_rechinido",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_rechinido")));
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_TOBOGAN = SOUNDS.register("hotel_tobogan",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_tobogan")));
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_DISPARO = SOUNDS.register("hotel_disparo",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_disparo")));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(

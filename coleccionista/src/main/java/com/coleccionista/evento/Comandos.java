@@ -394,6 +394,7 @@ public final class Comandos {
                 .then(com.coleccionista.prueba.ComandosCaja.caja(vivas))
                 .then(com.coleccionista.prueba.ComandosCaja.probar())
                 .then(com.coleccionista.prueba.ComandosSorpresa.sorpresa(vivas))
+                .then(com.coleccionista.hotel.ComandosHotel.hotel(vivas))
                 .then(com.coleccionista.prueba.ComandosTe.te())
                 .then(com.coleccionista.prueba.ComandosPiano.piano(vivas))
                 .then(com.coleccionista.prueba.ComandosVeintiuno.veintiuno())

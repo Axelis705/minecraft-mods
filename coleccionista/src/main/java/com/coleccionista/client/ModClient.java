@@ -25,6 +25,17 @@ public final class ModClient {
         e.registerEntityRenderer(ModRegistry.BAILARINA.get(), BailarinaRenderer::new);
         e.registerEntityRenderer(ModRegistry.MAQUINA.get(), MaquinaRenderer::new);
         e.registerEntityRenderer(ModRegistry.ESCOPETA.get(), EscopetaRenderer::new);
+        e.registerEntityRenderer(ModRegistry.PUERTA_HOTEL.get(), c -> new com.axeliscore.client.SimpleGeoRenderer<>(c, Coleccionista.MODID,
+                "puerta_hotel", 0F, 1F));
+        e.registerEntityRenderer(ModRegistry.TRAMPA_ESCOPETA.get(), c -> new com.axeliscore.client.SimpleGeoRenderer<>(c, Coleccionista.MODID,
+                "trampa_escopeta", 0.3F, 1F));
+        e.registerEntityRenderer(ModRegistry.BOTONES.get(), c -> new com.axeliscore.client.SimpleGeoRenderer<>(c, Coleccionista.MODID, "botones",
+                0.9F, 1F));
+        e.registerEntityRenderer(ModRegistry.CARRITO.get(), c -> new com.axeliscore.client.SimpleGeoRenderer<>(c, Coleccionista.MODID, "carrito",
+                0.6F, 1F));
+        e.registerEntityRenderer(ModRegistry.RATA.get(), c -> new com.axeliscore.client.SimpleGeoRenderer<>(c, Coleccionista.MODID, "rata", 0.25F,
+                1F));
+        e.registerEntityRenderer(ModRegistry.MONITOR.get(), MonitorRenderer::new);
         e.registerBlockEntityRenderer(ModRegistry.PANTALLA_BE.get(), PantallaRenderer::new);
         e.registerBlockEntityRenderer(com.coleccionista.bloque.deco.Deco.TEXTO_BE, TextoRenderer::new);
         e.registerBlockEntityRenderer(com.coleccionista.bloque.deco.Deco.REJA_BE, RejaRenderer::new);
@@ -87,5 +98,7 @@ public final class ModClient {
         com.axeliscore.ui.ScreenRegistry.register(Coleccionista.MODID + ":candado", CandadoScreen::new);
         // prueba con fotos: cliente-core.yml con mod=coleccionista y escenario=coleccionista
         ClientTest.scenario(Coleccionista.MODID, PruebaCliente::escenario);
+        // solo el hotel: escenario=coleccionista_hotel
+        ClientTest.scenario(Coleccionista.MODID + "_hotel", PruebaHotel::escenario);
     }
 }

@@ -104,6 +104,13 @@ public class Cadaver extends Entity {
         return postura() >= MANCO && postura() < MANCO + 100;
     }
 
+    /** Postura desde la que el cuerpo es el de la trampa del hotel: sin cabeza, de pie un instante y luego de espaldas al piso. */
+    public static final int SIN_CABEZA = 600;
+
+    public boolean sinCabeza() {
+        return postura() >= SIN_CABEZA && postura() < SIN_CABEZA + 100;
+    }
+
     @Override
     public void tick() {
         super.tick();

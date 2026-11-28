@@ -1,0 +1,47 @@
+{
+  "capas": [
+    {
+      "particula": "polvo",
+      "color": "#8C0A0C",
+      "color2": "#4A0204",
+      "tam": 1.4,
+      "forma": "cono",
+      "radio": 0.25,
+      "abertura": 50,
+      "cuantas": 70,
+      "velocidad": 0.45,
+      "hacia": "dir"
+    },
+    {
+      "particula": "polvo",
+      "color": "#B01216",
+      "color2": "#600406",
+      "tam": 0.9,
+      "forma": "esfera",
+      "radio": 0.3,
+      "cuantas": 40,
+      "velocidad": 0.18,
+      "hacia": "afuera"
+    },
+    {
+      "particula": "polvo",
+      "color": "#E8DCC8",
+      "color2": "#C8B8A0",
+      "tam": 0.6,
+      "forma": "cono",
+      "radio": 0.2,
+      "abertura": 40,
+      "cuantas": 12,
+      "velocidad": 0.5,
+      "hacia": "dir"
+    },
+    {
+      "particula": "humo",
+      "forma": "esfera",
+      "radio": 0.2,
+      "cuantas": 6,
+      "velocidad": 0.03,
+      "hacia": "arriba"
+    }
+  ]
+}

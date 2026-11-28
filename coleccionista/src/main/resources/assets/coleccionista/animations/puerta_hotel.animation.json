@@ -97,6 +97,44 @@
      ]
     }
    }
+  },
+  "animation.puerta_hotel.cerrar": {
+   "loop": false,
+   "animation_length": 0.9,
+   "bones": {
+    "hoja": {
+     "rotation": {
+      "0.0": [
+       0,
+       94,
+       0
+      ],
+      "0.55": {
+       "vector": [
+        0,
+        6,
+        0
+       ],
+       "easing": "easeInQuad"
+      },
+      "0.62": [
+       0,
+       -2,
+       0
+      ],
+      "0.72": [
+       0,
+       2,
+       0
+      ],
+      "0.9": [
+       0,
+       0,
+       0
+      ]
+     }
+    }
+   }
   }
  }
 }

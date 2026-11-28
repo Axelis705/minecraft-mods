@@ -45,6 +45,14 @@ public final class Corte {
         rebanada(m.leftArm, ps, vc, luz, CORTE - 0.45F);
     }
 
+    /** El cuello de quien se quedó sin cabeza: una rebanada roja encima del torso (y de la chamarra), con el hueso al centro. */
+    public static void cuello(PlayerModel<?> m, PoseStack ps, VertexConsumer vc, int luz) {
+        // el torso va de y 0 (el cuello) a 12; escalado a 0.04 mide medio pixel: se sube para que tape la orilla
+        pedazo(m.body, ps, vc, luz, -0.32F, 0.04F, 1.07F, 0.42F, 0.02F, 0.03F);
+        pedazo(m.body, ps, vc, luz, -0.36F, 0.04F, 0.78F, 0.62F, 0.05F, 0.05F);
+        pedazo(m.body, ps, vc, luz, -0.4F, 0.04F, 0.22F, 0.92F, 0.88F, 0.8F);
+    }
+
     /**
      * Dibuja la mitad de abajo del brazo izquierdo (de la mitad a la mano) donde está {@code m.leftArm} (que debe estar en la pose de la
      * máquina), con el corte rojo en su orilla de arriba.

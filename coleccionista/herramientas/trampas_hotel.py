@@ -94,8 +94,19 @@ def puerta():
     m.cubo('hoja', (-6.5, 16, -1.1), (2, 1.2, 0.7), 'laton')                 # la manija redonda (del lado contrario a la bisagra)
     m.cubo('hoja', (-6.3, 16.2, -1.5), (1.6, 0.8, 0.5), 'laton')
     m.cubo('hoja', (-6.5, 16, 1.0), (2, 1.2, 0.7), 'laton')
-    m.cubo('hoja', (-3, 22, -0.8), (6, 2.5, 0.4), 'placa')                    # la placa de latón ("SOLO PERSONAL")
+    m.hueso('placa', 'hoja', (0, 24.5, -0.6))
+    m.cubo('placa', (-3, 22, -0.8), (6, 2.5, 0.4), 'placa')                   # la placa de latón ("SOLO PERSONAL")
     m.cubo('hoja', (-0.6, 26, -0.7), (1.2, 1.2, 0.3), 'mirilla')
+    # el detalle raro de las puertas con trampa: un hilo de nylon que sale de abajo de la puerta y sube a la manija, y una mancha
+    # oscura en el piso (las dibuja el juego solo en esas puertas)
+    m.hueso('hilo', 'hoja', (-5.5, 0, -1.3))
+    m.cubo('hilo', (-5.6, 0.1, -1.4), (0.18, 16.2, 0.18), 'hilo')
+    m.cubo('hilo', (-6.2, 16.0, -1.45), (0.9, 0.18, 0.25), 'hilo')
+    m.hueso('mancha', 'raiz', (0, 0, -3))
+    m.cubo('mancha', (-5, 0.03, -4.2), (9, 0.05, 3.8), 'mancha')
+    # el detalle de la salida: luz de colores que se cuela por abajo de la puerta
+    m.hueso('luz', 'raiz', (0, 0, 0))
+    m.cubo('luz', (-7.6, 0.02, -2.4), (15.2, 0.06, 2.2), 'luz')
 
     def pintor(mat, cara, w, h, s, c):
         a = np.full((h, w), 255, np.uint8)
@@ -117,6 +128,20 @@ def puerta():
             rgb = liso(w, h, '#c9a040', s, 0.2)
             if cara == 'north' and w >= 6:
                 rgb[1, 1:-1:2] = hexc('#3a2a10')                          # letras chiquitas (no se leen de lejos)
+        elif mat == 'hilo':
+            rgb = liso(w, h, '#dcdcd4', s, 0.05)
+        elif mat == 'mancha':
+            rgb = liso(w, h, '#3a0c0a', s, 0.3)
+            yy, xx = np.mgrid[0:h, 0:w]
+            d = np.hypot((xx - w * 0.45) / (w * 0.5), (yy - h * 0.6) / (h * 0.55))
+            a[:] = np.clip((1.1 - d) * 400, 0, 220).astype(np.uint8)
+        elif mat == 'luz':
+            cols = [hexc('#ff3a30'), hexc('#ffd030'), hexc('#40e050'), hexc('#3a8aff')]
+            rgb = np.zeros((h, w, 3), np.float32)
+            for x in range(w):
+                rgb[:, x] = cols[(x * 4 // max(1, w)) % 4]
+            yy = np.mgrid[0:h, 0:w][0]
+            a[:] = np.clip(255 - yy * (255 // max(1, h)), 40, 255).astype(np.uint8)
         elif mat == 'mirilla':
             rgb = liso(w, h, '#b8913e', s, 0.2)
             if cara == 'north':
@@ -134,10 +159,14 @@ def puerta():
         'animation.puerta_hotel.abrir_rapido': {'loop': False, 'animation_length': 0.5, 'bones': {
             'hoja': {'rotation': {'0.0': [0, 0, 0], '0.35': {'vector': [0, 100, 0], 'easing': 'easeOutQuad'}, '0.5': [0, 94, 0]}}}},
         'animation.puerta_hotel.abierta': {'loop': True, 'animation_length': 1.0, 'bones': {'hoja': {'rotation': [0, 94, 0]}}},
+        # se cierra sola de un portazo (la de la salida, cuando alguien ya pasó)
+        'animation.puerta_hotel.cerrar': {'loop': False, 'animation_length': 0.9, 'bones': {
+            'hoja': {'rotation': {'0.0': [0, 94, 0], '0.55': {'vector': [0, 6, 0], 'easing': 'easeInQuad'}, '0.62': [0, -2, 0],
+                                  '0.72': [0, 2, 0], '0.9': [0, 0, 0]}}}},
     }
     m.empacar()
     tex = m.textura(pintor)
-    m.guardar(pintor, anims, tex=tex, bounds=(2, 2.5, 1))
+    m.guardar(pintor, anims, glow=['luz'], tex=tex, bounds=(2, 2.5, 1))
     return m, tex
 
 

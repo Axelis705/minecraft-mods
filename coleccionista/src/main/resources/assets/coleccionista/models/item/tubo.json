@@ -1,3 +1,6 @@
 {
- "parent": "coleccionista:block/tubo"
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "coleccionista:item/tubo"
+  }
 }

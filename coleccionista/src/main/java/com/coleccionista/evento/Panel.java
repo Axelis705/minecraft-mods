@@ -142,6 +142,31 @@ public final class Panel {
                 Celdas.porton(s, true);
                 Capitulo1.alAbrirPorton(s);
             }
+            case "hotel_empezar" -> {
+                Component no = com.coleccionista.hotel.JuegoHotel.empezar(s);
+                Plat.msg(p, no != null ? no : Component.translatable(Coleccionista.MODID + ".hotel.org.salida",
+                        com.coleccionista.hotel.JuegoHotel.salida(), com.coleccionista.hotel.JuegoHotel.trampas()), no != null);
+            }
+            case "hotel_salida" -> Plat.msg(p, com.coleccionista.hotel.JuegoHotel.salida().isEmpty()
+                    ? Component.translatable(Coleccionista.MODID + ".hotel.org.nada")
+                    : Component.translatable(Coleccionista.MODID + ".hotel.org.salida", com.coleccionista.hotel.JuegoHotel.salida(),
+                    com.coleccionista.hotel.JuegoHotel.trampas()), false);
+            case "hotel_bajar" -> com.coleccionista.hotel.JuegoHotel.bajar(s);
+            case "hotel_ultimo" -> {
+                com.coleccionista.hotel.JuegoHotel.ultimoCae = !com.coleccionista.hotel.JuegoHotel.ultimoCae;
+                Plat.msg(p, Component.translatable(Coleccionista.MODID + ".hotel.org.ultimo_"
+                        + (com.coleccionista.hotel.JuegoHotel.ultimoCae ? "si" : "no")), false);
+            }
+            case "hotel_terminar" -> {
+                if (!com.coleccionista.hotel.JuegoHotel.fin(s)) {
+                    Plat.msg(p, Component.translatable(Coleccionista.MODID + ".hotel.cmd.no"), true);
+                }
+            }
+            case "hotel_usar" -> {
+                com.coleccionista.hotel.JuegoHotel.usar = !com.coleccionista.hotel.JuegoHotel.usar;
+                Plat.msg(p, Component.translatable(Coleccionista.MODID + ".hotel.org.usar_"
+                        + (com.coleccionista.hotel.JuegoHotel.usar ? "si" : "no")), false);
+            }
             case "cap1_equipos" -> {
                 Component no = Capitulo1.equipos(s);
                 if (no != null) {

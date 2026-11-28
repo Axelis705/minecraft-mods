@@ -217,6 +217,47 @@ public final class Pantallas {
     }
 
     /** Capítulo 1, en la sala grande: que formen equipos de 2 o de 3 y se suban a un ascensor. */
+    public static List<Frase> hotel() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("bienvenidos", 85, null, 1F));
+        l.add(new Frase("solos", 100, null, 1F));
+        l.add(new Frase("torre", 115, null, 1F));
+        l.add(new Frase("metanse", 90, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        return l;
+    }
+
+    public static List<Frase> hotel_ascensor() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("tranquilos", 105, null, 1F));
+        l.add(new Frase("salida", 115, null, 1F));
+        l.add(new Frase("puertas", 110, null, 1F));
+        l.add(new Frase("notas", 125, null, 1F));
+        l.add(new Frase("timbre", 120, null, 1F));
+        l.add(new Frase("ratas", 100, null, 1F));
+        l.add(new Frase("diez", 120, null, 1F));
+        l.add(new Frase("vitrina", 65, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> hotel_fin() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("tiempo", 55, null, 1F));
+        l.add(new Frase("quedan", 105, null, 1F));
+        l.add(new Frase("descansen", 110, null, 1F));
+        return l;
+    }
+
+    public static List<Frase> hotel_regreso() {
+        List<Frase> l = new ArrayList<>();
+        l.add(new Frase("regresaron", 85, null, 1F));
+        l.add(new Frase("formen", 100, null, 1F));
+        l.add(new Frase("ascensor", 115, null, 1F));
+        l.add(new Frase("nadie", 110, null, 1F));
+        l.add(new Frase("risa", 60, SoundEvents.WITCH_CELEBRATE, 0.55F));
+        return l;
+    }
+
     public static List<Frase> equipos() {
         List<Frase> l = new ArrayList<>();
         l.add(new Frase("bienvenidos", 85, null, 1F));
@@ -473,6 +514,10 @@ public final class Pantallas {
             case "ciegas" -> ciegas();
             case "tres" -> tres();
             case "puertas" -> puertas();
+            case "hotel" -> hotel();
+            case "hotel_ascensor" -> hotel_ascensor();
+            case "hotel_fin" -> hotel_fin();
+            case "hotel_regreso" -> hotel_regreso();
             case "equipos" -> equipos();
             case "sentidos" -> sentidos();
             case "vitrina" -> vitrina();

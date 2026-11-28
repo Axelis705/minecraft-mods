@@ -212,6 +212,7 @@ execute in minecraft:overworld positioned 85 -60 58 run evento bots 4
 evento sentidos bots true 3 4
 evento sentidos tiempos 8 120
 evento mascota tiempos 8 120
+evento hotel usar false
 evento porton abrir
 evento capitulo1 sala
 #pausa 30
@@ -357,6 +358,32 @@ evento capitulo1 bajar
 evento capitulo1
 evento sentidos limpiar
 evento reiniciar confirmar
+execute in minecraft:overworld positioned 85 -60 58 run evento bots 4
+#pausa 2
+evento hotel usar true
+evento hotel tiempos 600 20 200
+evento capitulo1 sala
+#pausa 10
+#pausa 30
+#pausa 20
+evento hotel
+evento hotel abrir trampa Bot_01
+#pausa 3
+evento hotel abrir salida Bot_02
+#pausa 2
+evento hotel salir Bot_02
+evento hotel salir Bot_03
+evento hotel ultimo true
+#pausa 2
+evento hotel terminar
+#pausa 25
+#pausa 10
+evento hotel
+evento capitulo1
+evento capitulo1 parar
+evento hotel limpiar
+evento hotel ultimo false
+evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect COLECCIONISTA_CONSTRUIDO sala
 #expect COLECCIONISTA_CONSTRUIDO circ_1
@@ -375,6 +402,22 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CABINA llega circ_2
 #expect COLECCIONISTA_CAP1 llegaron
 #expect COLECCIONISTA_CAP1 sueltos=
+#expect COLECCIONISTA_CONSTRUIDO hotel
+#expect COLECCIONISTA_CONSTRUIDO hotel_espera
+#expect COLECCIONISTA_HOTEL empieza
+#expect COLECCIONISTA_DISCURSO hotel
+#expect COLECCIONISTA_HOTEL ascensores
+#expect COLECCIONISTA_HOTEL bajan viajes=4
+#expect COLECCIONISTA_CABINA sale hotel_s
+#expect COLECCIONISTA_HOTEL juego
+#expect COLECCIONISTA_HOTEL pistas=
+#expect COLECCIONISTA_HOTEL abre Bot_01
+#expect COLECCIONISTA_HOTEL disparo
+#expect COLECCIONISTA_CUERPO sin_cabeza
+#expect COLECCIONISTA_HOTEL salio Bot_02 n=1
+#expect COLECCIONISTA_HOTEL fin salieron=2 quedaron=1
+#expect COLECCIONISTA_HOTEL regreso
+#expect COLECCIONISTA_DISCURSO hotel_regreso
 #expect COLECCIONISTA_SENTIDOS llegaron
 #expect COLECCIONISTA_SENTIDOS habla
 #expect COLECCIONISTA_DISCURSO sentidos

@@ -23,6 +23,8 @@ public final class Cuerpos {
     public static final java.util.Set<java.util.UUID> VENENO = new java.util.HashSet<>();
     /** Quiénes, al ser eliminados, perdieron la final: se quedan en su silla, desangrados y echados hacia atrás, con medio brazo izquierdo. */
     public static final java.util.Set<java.util.UUID> MANCO = new java.util.HashSet<>();
+    /** Quiénes, al ser eliminados, se quedaron sin cabeza (la escopeta de las puertas del hotel): caen de espaldas. */
+    public static final java.util.Set<java.util.UUID> SIN_CABEZA = new java.util.HashSet<>();
     /** Quiénes, al ser eliminados, no dejan cuerpo (se los comió Cascabel). */
     public static final java.util.Set<java.util.UUID> SIN_CUERPO = new java.util.HashSet<>();
 
@@ -75,6 +77,18 @@ public final class Cuerpos {
             si.discard();
             l.addFreshEntity(c);
             Coleccionista.LOGGER.info("COLECCIONISTA_CUERPO silla {} {}", p.etiqueta(), p.nombre);
+            return;
+        }
+        if (SIN_CABEZA.remove(p.id)) {
+            // la escopeta del hotel: se queda parado un instante, sin cabeza, y se va de espaldas (lo anima el cliente)
+            c.moveTo(e.getX(), e.getY(), e.getZ(), e.getYRot(), 0);
+            c.de(p.id, p.nombre, Cadaver.SIN_CABEZA + Math.abs(p.id.hashCode()) % 3);
+            c.setYRot(e.getYRot());
+            c.caer((int) l.getGameTime());
+            l.addFreshEntity(c);
+            l.sendParticles(new net.minecraft.core.particles.DustParticleOptions(new org.joml.Vector3f(0.5F, 0.02F, 0.02F), 1.4F), e.getX(),
+                    e.getY() + 1.5, e.getZ(), 40, 0.15, 0.4, 0.15, 0.08);
+            Coleccionista.LOGGER.info("COLECCIONISTA_CUERPO sin_cabeza {} {}", p.etiqueta(), p.nombre);
             return;
         }
         boolean estatua = ESTATUAS.remove(p.id);

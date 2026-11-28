@@ -439,6 +439,7 @@ public final class Evento {
         Montacargas.reiniciar(s);
         Recorrido.reiniciar(s);
         Capitulo1.reiniciar(s);
+        com.coleccionista.hotel.JuegoHotel.reiniciar(s);
         com.coleccionista.prueba.Sentidos.quitarSillas(s);
         com.coleccionista.prueba.Sentidos.vitrinaComoNueva(s);
         Pantallas.soloGrande(s, false);

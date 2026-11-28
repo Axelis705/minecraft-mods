@@ -41,7 +41,7 @@ public final class Capitulo1 {
     public static int salaEspera = 90;
 
     public enum Fase {
-        NADA, SALA, HABLANDO, FORMAR, CUENTA, BAJANDO
+        NADA, SALA, HOTEL, HABLANDO, FORMAR, CUENTA, BAJANDO
     }
 
     private static Fase fase = Fase.NADA;
@@ -86,8 +86,20 @@ public final class Capitulo1 {
         return x >= 2 && x <= 57 && z >= -0.2 && z <= 35.2 && y >= -1 && y <= 13;
     }
 
+    /** Empieza el hotel (antes de los equipos): el capítulo se queda esperando a que regresen. */
+    public static void alEmpezarHotel() {
+        fase = Fase.HOTEL;
+        cierraEn = -1;
+        hablaEn = -1;
+    }
+
     /** El organizador pide equipos (o ya están todos en la sala): baja el portón y "formen equipos". */
     public static Component equipos(MinecraftServer s) {
+        return equipos(s, "equipos");
+    }
+
+    /** Lo mismo, con el guion que toque ("hotel_regreso" si vienen del hotel). */
+    public static Component equipos(MinecraftServer s, String guion) {
         if (!Complejo.construido(s, "sala")) {
             return Component.translatable(MOD + ".cap1.sin_mapa");
         }
@@ -104,13 +116,13 @@ public final class Capitulo1 {
             Celdas.porton(s, false);
         }
         Pantallas.soloGrande(s, true);
-        Pantallas.hablar(s, "equipos", () -> formar(s));
+        Pantallas.hablar(s, guion, () -> formar(s));
         Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 equipos");
         return null;
     }
 
     /** Los bots pasan del patio a la sala (en el juego real no hay bots; en las pruebas automáticas no caminan solos). */
-    private static void botsALaSala(MinecraftServer s) {
+    public static void botsALaSala(MinecraftServer s) {
         BlockPos c = Complejo.pos(s, "sala.entrada");
         if (c == null) {
             return;
@@ -158,7 +170,12 @@ public final class Capitulo1 {
         }
         if (cierraEn > 0 && now >= cierraEn) {
             cierraEn = -1;
-            equipos(s);
+            // primero el hotel (cada quien solo); al regresar, los equipos
+            if (com.coleccionista.hotel.JuegoHotel.toca(s)) {
+                com.coleccionista.hotel.JuegoHotel.empezar(s);
+            } else {
+                equipos(s);
+            }
         }
     }
 

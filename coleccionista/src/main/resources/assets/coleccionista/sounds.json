@@ -1557,5 +1557,81 @@
       }
     ],
     "subtitle": "coleccionista.sub.montacargas"
+  },
+  "hotel_timbre": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.hotel_timbre",
+    "sounds": [
+      {
+        "name": "coleccionista:hotel/timbre",
+        "volume": 1.0,
+        "attenuation_distance": 48
+      }
+    ]
+  },
+  "hotel_carrito": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.hotel_carrito",
+    "sounds": [
+      {
+        "name": "coleccionista:hotel/carrito",
+        "volume": 0.8,
+        "attenuation_distance": 20
+      }
+    ]
+  },
+  "hotel_cuerda": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.hotel_cuerda",
+    "sounds": [
+      {
+        "name": "coleccionista:hotel/cuerda",
+        "volume": 1.0,
+        "attenuation_distance": 14
+      }
+    ]
+  },
+  "hotel_chillido": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.hotel_chillido",
+    "sounds": [
+      {
+        "name": "coleccionista:hotel/chillido",
+        "volume": 1.0,
+        "attenuation_distance": 16
+      }
+    ]
+  },
+  "hotel_rechinido": {
+    "category": "block",
+    "subtitle": "coleccionista.sub.hotel_rechinido",
+    "sounds": [
+      {
+        "name": "coleccionista:hotel/rechinido",
+        "volume": 1.0,
+        "attenuation_distance": 24
+      }
+    ]
+  },
+  "hotel_tobogan": {
+    "category": "master",
+    "subtitle": "coleccionista.sub.hotel_tobogan",
+    "sounds": [
+      {
+        "name": "coleccionista:hotel/tobogan",
+        "volume": 1.0,
+        "attenuation_distance": 8
+      }
+    ]
+  },
+  "hotel_disparo": {
+    "category": "hostile",
+    "subtitle": "coleccionista.sub.hotel_disparo",
+    "sounds": [
+      {
+        "name": "coleccionista:caja/caja_disparo",
+        "attenuation_distance": 80
+      }
+    ]
   }
 }

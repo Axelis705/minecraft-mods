@@ -14,5 +14,7 @@ public final class ModEntities {
     @SubscribeEvent
     public static void onAttributes(EntityAttributeCreationEvent e) {
         e.put(ModRegistry.BOT.get(), com.axeliscore.character.Persona.createAttributes().build());
+        e.put(ModRegistry.BOTONES.get(), com.coleccionista.hotel.Botones.createAttributes().build());
+        e.put(ModRegistry.RATA.get(), com.coleccionista.hotel.Rata.createAttributes().build());
     }
 }

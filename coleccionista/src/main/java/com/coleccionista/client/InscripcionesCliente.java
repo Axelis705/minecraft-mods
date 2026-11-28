@@ -49,10 +49,27 @@ public final class InscripcionesCliente {
 
     public static void init() {
         ClientData.listen(Pistas.KEY, InscripcionesCliente::leer);
+        ClientData.listen(com.coleccionista.hotel.JuegoHotel.KEY_PISTAS, t -> leerEn(HOTEL, t));
         MinecraftForge.EVENT_BUS.addListener(InscripcionesCliente::dibujar);
     }
 
+    /** Las pistas del hotel (escritas en sus paredes; van aparte de las de las celdas). */
+    private static final List<Ins> HOTEL = new ArrayList<>();
+
+    /** Para la prueba de cliente: cuántas pistas del hotel hay. */
+    public static int delHotel() {
+        return HOTEL.size();
+    }
+
+    static List<Ins> hotel() {
+        return new ArrayList<>(HOTEL);
+    }
+
     private static void leer(CompoundTag t) {
+        leerEn(LISTA, t);
+    }
+
+    private static void leerEn(List<Ins> LISTA, CompoundTag t) {
         LISTA.clear();
         if (t == null || !t.getBoolean("reveladas")) {
             return;
@@ -60,8 +77,19 @@ public final class InscripcionesCliente {
         ListTag l = t.getList("l", Tag.TAG_COMPOUND);
         for (int i = 0; i < l.size(); i++) {
             CompoundTag c = l.getCompound(i);
+            String texto = c.getString("t");
+            if (texto.startsWith("@")) {
+                // una clave de idioma y el renglón ("@clave#1"): cada quien lo lee en su idioma
+                int h = texto.lastIndexOf('#');
+                String[] rs = net.minecraft.network.chat.Component.translatable(texto.substring(1, h)).getString().split("\\|");
+                int r = Integer.parseInt(texto.substring(h + 1));
+                if (r >= rs.length) {
+                    continue;
+                }
+                texto = rs[r].trim();
+            }
             LISTA.add(new Ins(new Vec3(c.getDouble("x"), c.getDouble("y"), c.getDouble("z")), c.getInt("p"), c.getFloat("a"), c.getFloat("s"),
-                    c.getInt("e"), c.getFloat("g"), c.getString("t"), c.getInt("celda"), c.getString("lugar")));
+                    c.getInt("e"), c.getFloat("g"), texto, c.getInt("celda"), c.getString("lugar")));
         }
     }
 
@@ -88,8 +116,12 @@ public final class InscripcionesCliente {
 
     private static void dibujar(RenderLevelStageEvent e) {
         // (si cambió de mundo, lo de antes ya no cuenta)
-        if (e.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES || LISTA.isEmpty() || !ClientData.has(Pistas.KEY)) {
+        if (e.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES || (LISTA.isEmpty() || !ClientData.has(Pistas.KEY)) && HOTEL.isEmpty()) {
             return;
+        }
+        List<Ins> todas = new ArrayList<>(HOTEL);
+        if (ClientData.has(Pistas.KEY)) {
+            todas.addAll(LISTA);
         }
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) {
@@ -100,7 +132,7 @@ public final class InscripcionesCliente {
         MultiBufferSource.BufferSource buf = mc.renderBuffers().bufferSource();
         PoseStack ps = e.getPoseStack();
         boolean alguno = false;
-        for (Ins i : LISTA) {
+        for (Ins i : todas) {
             if (i.pos().distanceToSqr(cam) > LEJOS * LEJOS) {
                 continue;
             }
