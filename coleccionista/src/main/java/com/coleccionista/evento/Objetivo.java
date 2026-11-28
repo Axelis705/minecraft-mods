@@ -90,6 +90,10 @@ public final class Objetivo {
                 return t;
             }
         }
+        Meta h = com.coleccionista.hotel.JuegoHotel.objetivo(s, sp);
+        if (h != null) {
+            return h;
+        }
         Meta m = Capitulo1.objetivo(s, sp);
         if (m != null) {
             return m;

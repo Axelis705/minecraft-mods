@@ -156,7 +156,7 @@ public final class PruebaHotel {
         });
         t.photo("h13_tubo_mano", 1500, () -> {
             t.cmd("gamemode adventure @a");
-            t.cmd("give @a coleccionista:tubo");
+            t.cmd("give @a coleccionista:tubo_suelto");
         });
         // la trampa: un bot abre una puerta con trampa y yo lo veo de lado
         t.add("hotel: mirar la trampa", 1200, () -> {

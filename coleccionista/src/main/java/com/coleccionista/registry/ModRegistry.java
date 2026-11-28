@@ -136,8 +136,8 @@ public final class ModRegistry {
                     EntityType.Builder.<com.coleccionista.hotel.Monitor>of(com.coleccionista.hotel.Monitor::new,
                             net.minecraft.world.entity.MobCategory.MISC).sized(0.9F, 0.9F).clientTrackingRange(8).updateInterval(10)));
     /** El tubo suelto del hotel: solo sirve contra las ratas (de un golpe). */
-    public static final net.minecraftforge.registries.RegistryObject<Item> TUBO = ITEMS.register("tubo",
-            () -> new Item(com.axeliscore.plat.Reg.item(Coleccionista.MODID, "tubo").stacksTo(1)));
+    public static final net.minecraftforge.registries.RegistryObject<Item> TUBO = ITEMS.register("tubo_suelto",
+            () -> new Item(com.axeliscore.plat.Reg.item(Coleccionista.MODID, "tubo_suelto").stacksTo(1)));
     public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_TIMBRE = SOUNDS.register("hotel_timbre",
             () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_timbre")));
     public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_CARRITO = SOUNDS.register("hotel_carrito",

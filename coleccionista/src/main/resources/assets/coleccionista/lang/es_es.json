@@ -1772,7 +1772,6 @@
   "entity.coleccionista.carrito": "Carrito de maletas",
   "entity.coleccionista.rata": "Rata de cuerda",
   "entity.coleccionista.monitor": "Monitor",
-  "item.coleccionista.tubo": "Tubo oxidado",
   "coleccionista.sub.hotel_timbre": "Suena un timbre",
   "coleccionista.sub.hotel_carrito": "Rechinan las ruedas de un carrito",
   "coleccionista.sub.hotel_cuerda": "Cuerda de juguete",
@@ -1798,5 +1797,7 @@
   "coleccionista.hotel.org.ultimo_no": "El último en salir del hotel también se queda: NO.",
   "coleccionista.hotel.org.usar_si": "Hotel antes de los equipos: SÍ.",
   "coleccionista.hotel.org.usar_no": "Hotel antes de los equipos: NO (equipos directo).",
-  "coleccionista.hotel.monitor.sin": "SIN SEÑAL"
+  "coleccionista.hotel.monitor.sin": "SIN SEÑAL",
+  "coleccionista.obj.hotel": "Un ascensor libre",
+  "item.coleccionista.tubo_suelto": "Tubo oxidado"
 }

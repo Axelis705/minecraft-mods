@@ -240,6 +240,7 @@ public final class JuegoHotel {
             botsSuben(s);
         }
         Map<Integer, List<Entity>> m = ocupacion(s);
+        ultimaOcupacion = m;
         int solos = 0;
         for (int n = 1; n <= SalaGrande.INDIVIDUALES; n++) {
             List<Entity> d = m.get(n);
@@ -275,6 +276,37 @@ public final class JuegoHotel {
         if (cierraEn > 0 && now >= cierraEn || ev.resta(s) == 0) {
             bajar(s);
         }
+    }
+
+    private static Map<Integer, List<Entity>> ultimaOcupacion = new HashMap<>();
+
+    /** El indicador de "ir acá": mientras se abren los ascensores, a quien no está en uno, el libre más cercano. */
+    public static com.coleccionista.evento.Objetivo.Meta objetivo(MinecraftServer s, ServerPlayer sp) {
+        if (fase != Fase.ASCENSORES) {
+            return null;
+        }
+        for (List<Entity> l : ultimaOcupacion.values()) {
+            if (l.size() == 1 && l.contains(sp)) {
+                return null;
+            }
+        }
+        BlockPos mejor = null;
+        double md = Double.MAX_VALUE;
+        for (int n = 1; n <= SalaGrande.INDIVIDUALES; n++) {
+            if (ultimaOcupacion.containsKey(n)) {
+                continue;
+            }
+            AABB c = Cabina.caja(s, "hotel_s" + n, 1, Cabinas3.ALTO, 1);
+            if (c == null) {
+                continue;
+            }
+            double d = c.getCenter().distanceToSqr(sp.position());
+            if (d < md) {
+                md = d;
+                mejor = BlockPos.containing(c.getCenter().x, c.minY, c.getCenter().z);
+            }
+        }
+        return mejor == null ? null : com.coleccionista.evento.Objetivo.Meta.en(mejor, 1.2, MOD + ".obj.hotel");
     }
 
     private static void botsSuben(MinecraftServer s) {

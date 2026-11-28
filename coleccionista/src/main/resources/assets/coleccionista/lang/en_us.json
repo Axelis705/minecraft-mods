@@ -1772,7 +1772,6 @@
   "entity.coleccionista.carrito": "Luggage cart",
   "entity.coleccionista.rata": "Wind-up rat",
   "entity.coleccionista.monitor": "Monitor",
-  "item.coleccionista.tubo": "Rusty pipe",
   "coleccionista.sub.hotel_timbre": "A bell rings",
   "coleccionista.sub.hotel_carrito": "Cart wheels squeak",
   "coleccionista.sub.hotel_cuerda": "Wind-up toy",
@@ -1798,5 +1797,7 @@
   "coleccionista.hotel.org.ultimo_no": "The last one out of the hotel also stays: NO.",
   "coleccionista.hotel.org.usar_si": "Hotel before teams: YES.",
   "coleccionista.hotel.org.usar_no": "Hotel before teams: NO (straight to teams).",
-  "coleccionista.hotel.monitor.sin": "NO SIGNAL"
+  "coleccionista.hotel.monitor.sin": "NO SIGNAL",
+  "coleccionista.obj.hotel": "A free lift",
+  "item.coleccionista.tubo_suelto": "Rusty pipe"
 }

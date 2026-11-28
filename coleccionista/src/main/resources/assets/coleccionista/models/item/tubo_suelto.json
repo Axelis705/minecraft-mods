@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "coleccionista:item/tubo"
+    "layer0": "coleccionista:item/tubo_suelto"
   }
 }
