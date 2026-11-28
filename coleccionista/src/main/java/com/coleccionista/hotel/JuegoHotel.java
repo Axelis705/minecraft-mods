@@ -741,12 +741,17 @@ public final class JuegoHotel {
         // la puerta de la salida se cierra sola un rato después
         for (Map.Entry<Integer, Long> c : new ArrayList<>(cierraPuerta.entrySet())) {
             if (now >= c.getValue()) {
+                if (alguienEnLaPuerta(s, c.getKey())) {
+                    cierraPuerta.put(c.getKey(), now + 20);
+                    continue;
+                }
                 cierraPuerta.remove(c.getKey());
                 PuertaHotel h = puerta(l, c.getKey());
                 if (h != null) {
                     h.cerrar();
                     l.playSound(null, h.blockPosition(), SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 1F, 0.6F);
                 }
+                barrera(s, c.getKey(), true);
             }
         }
         List<Entity> adentro = new ArrayList<>();
@@ -928,18 +933,44 @@ public final class JuegoHotel {
         if (k == salida) {
             h.abrir(false);
             l.playSound(null, h.blockPosition(), ModRegistry.HOTEL_RECHINIDO.get(), SoundSource.BLOCKS, 1.2F, 1.1F);
-            cierraPuerta.put(k, ahora(s) + 160);
+            cierraPuerta.put(k, ahora(s) + 200);
+            later(s, 22, () -> barrera(s, k, false));
         } else if (muertes.contains(k) && !disparadas.contains(k)) {
             // el hilo se tensa mientras abre... y a la mitad, ¡pum!
             h.abrir(false);
             l.playSound(null, h.blockPosition(), ModRegistry.HOTEL_RECHINIDO.get(), SoundSource.BLOCKS, 1.2F, 0.9F);
             disparadas.add(k);
             disparo.put(k, new Object[] {ahora(s) + 13, quien.getUUID()});
+            later(s, 30, () -> barrera(s, k, false));
         } else {
             h.abrir(false);
             l.playSound(null, h.blockPosition(), ModRegistry.HOTEL_RECHINIDO.get(), SoundSource.BLOCKS, 1.2F, 0.95F + R.nextFloat() * 0.15F);
+            later(s, 22, () -> barrera(s, k, false));
         }
         Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL abre {} puerta={} ({}) tipo={}", quien.getName().getString(), k, Hotel.codigo(k), h.tipo());
+    }
+
+    /** Pone o quita la barrera del hueco de la puerta K (con la hoja abierta se puede pasar). */
+    private static void barrera(MinecraftServer s, int k, boolean poner) {
+        if (fase != Fase.JUEGO && poner) {
+            return;
+        }
+        BlockPos p = Complejo.pos(s, "hotel.serv." + k);
+        if (p == null) {
+            return;
+        }
+        ServerLevel l = nivel(s);
+        BlockState b = poner ? net.minecraft.world.level.block.Blocks.BARRIER.defaultBlockState()
+                : net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
+        l.setBlock(p, b, 2);
+        l.setBlock(p.above(), b, 2);
+    }
+
+    /** ¿Hay alguien parado en el hueco de la puerta K? (para no cerrarle la puerta encima). */
+    private static boolean alguienEnLaPuerta(MinecraftServer s, int k) {
+        BlockPos p = Complejo.pos(s, "hotel.serv." + k);
+        return p != null && !nivel(s).getEntitiesOfClass(net.minecraft.world.entity.LivingEntity.class,
+                new AABB(p).expandTowards(0, 1, 0).inflate(0.1), e -> !e.isSpectator()).isEmpty();
     }
 
     /** ¡Pum! La escopeta le vuela la cabeza a quien abrió (solo a él) y cae de espaldas, sin cabeza. */

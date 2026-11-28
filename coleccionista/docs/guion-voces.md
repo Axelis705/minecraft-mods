@@ -147,6 +147,47 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 8 | `tres_risa.ogg` | 3.0 s | Je, je, je… |
 | 9 | `tres_vitrina.ogg` | 6.5 s | El último trío en salir se queda conmigo. La vitrina está abierta. |
 
+## Capítulo 1 · El hotel: en la sala grande, antes de los ascensores de una persona
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `hotel_bienvenidos.ogg` | 4.2 s | Bienvenidos… a mi gran vestíbulo. |
+| 2 | `hotel_solos.ogg` | 5.0 s | Antes de formar equipos… quiero verlos solos. |
+| 3 | `hotel_torre.ogg` | 5.8 s | Esa torre tiene un ascensor para cada uno. Uno por persona. |
+| 4 | `hotel_metanse.ogg` | 4.5 s | Métanse. No se empujen… caben todos. |
+| 5 | `hotel_risa.ogg` | 3.0 s | Je, je… |
+
+## Capítulo 1 · El hotel: mientras cae el ascensor (explica las reglas)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `hotel_ascensor_tranquilos.ogg` | 5.2 s | Tranquilos. Solo es un hotel viejo… muy viejo. |
+| 2 | `hotel_ascensor_salida.ogg` | 5.8 s | Hay una sola salida. Está detrás de una puerta de servicio. |
+| 3 | `hotel_ascensor_puertas.ogg` | 5.5 s | Hay muchas puertas. Algunas… es mejor no abrirlas. |
+| 4 | `hotel_ascensor_notas.ogg` | 6.2 s | Los que estuvieron antes dejaron notas en las paredes. Léanlas. |
+| 5 | `hotel_ascensor_timbre.ogg` | 6.0 s | Si oyen un timbre… corran. Mi botones no sabe jugar suave. |
+| 6 | `hotel_ascensor_ratas.ogg` | 5.0 s | Las ratas de cuerda muerden. Un tubo las calla. |
+| 7 | `hotel_ascensor_diez.ogg` | 6.0 s | Tienen diez minutos. Quien no salga… se queda en el hotel. |
+| 8 | `hotel_ascensor_vitrina.ogg` | 3.2 s | La vitrina está abierta. |
+
+## Capítulo 1 · El hotel: se acabó el tiempo (en la sala de espera, antes del gas)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `hotel_fin_tiempo.ogg` | 2.8 s | Se acabó el tiempo. |
+| 2 | `hotel_fin_quedan.ogg` | 5.2 s | Los que siguen adentro… ya son parte del hotel. |
+| 3 | `hotel_fin_descansen.ogg` | 5.5 s | Ustedes, descansen. Respiren este aire tan dulce… |
+
+## Capítulo 1 · La sala grande, al regresar del hotel (formen equipos)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `hotel_regreso_regresaron.ogg` | 4.2 s | Vaya… regresaron. No todos, claro. |
+| 2 | `hotel_regreso_formen.ogg` | 5.0 s | Ahora sí: formen equipos. De dos… o de tres. |
+| 3 | `hotel_regreso_ascensor.ogg` | 5.8 s | Cada equipo, a un ascensor. Ni uno más… ni uno menos. |
+| 4 | `hotel_regreso_nadie.ogg` | 5.5 s | Y si alguien se queda solo… yo le busco compañía. |
+| 5 | `hotel_regreso_risa.ogg` | 3.0 s | Je, je… |
+
 ## Capítulo 1 · La sala grande (formen equipos)
 
 | # | Archivo | Dura | Texto |
@@ -188,13 +229,22 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 1 | `vitrina_fin_hermosas.ogg` | 2.5 s | Hermosas. |
 | 2 | `vitrina_fin_siguen.ogg` | 5.5 s | Los demás… acompáñenme. La función continúa. |
 
-## Capítulo 1 · La antesala (después del teatro: la puerta se cierra detrás de todos)
+## Capítulo 1 · La cochera (después del teatro: la puerta se cierra detrás de todos)
 
 | # | Archivo | Dura | Texto |
 |---|---|---|---|
 | 1 | `antesala_polvo.ogg` | 4.5 s | Las piezas lentas… solo juntan polvo. |
 | 2 | `antesala_servian.ogg` | 5.2 s | Esas no me servían. Ustedes… todavía sí. |
 | 3 | `antesala_casa.ogg` | 4.2 s | Sigan el pasillo. Mi casa los espera. |
+
+## Capítulo 1 → 2 · En el autobús (de la cochera del teatro a la parada de la casa; habla en la pantalla del frente)
+
+| # | Archivo | Dura | Texto |
+|---|---|---|---|
+| 1 | `autobus_comodos.ogg` | 4.8 s | Pónganse cómodos. Mi casa queda un poco lejos. |
+| 2 | `autobus_chofer.ogg` | 4.2 s | No le hablen al chofer… se distrae. |
+| 3 | `autobus_ventanas.ogg` | 6.5 s | Y no se asomen por las ventanas. Afuera hay cosas que no colecciono. |
+| 4 | `autobus_llegamos.ogg` | 5.8 s | Ya casi llegamos. Alguien en casa se muere por conocerlos. |
 
 ## Capítulo 2 · La mascota: en el vestíbulo de la casa (cuando ya entraron todos)
 
@@ -377,4 +427,4 @@ Las risas por ahora suenan con un efecto del juego; si grabas tu risa, se usa la
 | 2 | `desenlace_proxima.ogg` | 3.8 s | Hasta la próxima colección… |
 | 3 | `desenlace_risa.ogg` | 3.0 s | Je, je, je… |
 
-**Total: 201 líneas (≈18 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
+**Total: 226 líneas (≈20 minutos de voz).** Cuando las tengas, pásamelas todas juntas y yo las meto al mod.
