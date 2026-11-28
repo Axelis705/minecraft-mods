@@ -59,6 +59,17 @@ ojos de esa persona**; agacharse (Shift) para volver.
 - Guiones nuevos para grabar (en `docs/guion-voces.md`): `hotel`, `hotel_ascensor`, `hotel_fin`, `hotel_regreso`.
 
 ## Pruebas
-- Servidor (CI con bots): sala → hotel → bajan 4 → un bot abre una trampa (sin cabeza) → dos salen por el tobogán → terminar → regreso
-  a la sala y equipos.
-- Cliente con fotos: escenario `coleccionista_hotel` (rama `fotos-coleccionista-1.20.1`).
+- Servidor (CI con bots, servidor de desarrollo): sala → hotel → bajan 4 → un bot abre una trampa (sin cabeza) → dos salen por el
+  tobogán → terminar → regreso a la sala y equipos. **Bien** (corrida 46091982373). El servidor Forge real usa `real_commands.txt`
+  (ahí el hotel va apagado para probar los equipos directos).
+- Cliente con fotos: escenario `coleccionista_hotel` (rama `fotos-coleccionista-1.20.1`): **24 fotos, 0 fallos** (corrida 46095457806,
+  commit 68d5a7bd). Se ve la torre, el ascensor por dentro, la llegada, las tres clases de puerta, el Botones con su carrito, la rata,
+  una pista, el tubo en el piso y en la mano, el disparo y el cuerpo sin cabeza, el hoyo de colores, la caída por el tubo, el colchón,
+  la sala de espera con los monitores y el regreso a la sala.
+- Arreglos tras las fotos: más luz en el hotel (pasillos 10, cuartos 9, vestíbulo 12), monitores que brillan solos, luz de la salida más
+  sutil, el hueco de la puerta deja pasar al abrirse (la salida vuelve a cerrarse sola), el fogonazo solo dura un instante, aviso
+  "— Piso N —" al cambiar de piso, el tubo se llama `tubo_suelto` (chocaba con el bloque `tubo`).
+
+## Pendiente
+- Axelis: grabar las voces nuevas (`hotel`, `hotel_ascensor`, `hotel_fin`, `hotel_regreso`).
+- Probarlo en el juego real con amigos (el hotel se ve oscuro con brillo bajo: subir el brillo del juego).
