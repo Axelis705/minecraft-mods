@@ -28,8 +28,9 @@ import java.util.Map;
  * Capítulo 1, en la sala grande (después del portón del patio). Cuando ya están todos dentro (o pasa un rato), el portón baja detrás de
  * ellos, se prende la pantalla y el Coleccionista pide equipos (el organizador lo puede adelantar con
  * {@code /evento capitulo1 equipos}). Se abren los diez ascensores; cada equipo de 2 o de 3 se mete en uno (el foco de arriba se prende cuando está
- * bien). Cuando todos están en un ascensor bien formado, cuenta 5 segundos y bajan; si se acaba el tiempo (o el organizador lo pide), bajan
- * los que estén dentro y quien se quedó afuera queda eliminado. El viaje es una caída violenta; cada ascensor llega al ascensor falso de su
+ * bien). Cuando todos están en un ascensor bien formado, cuenta 5 segundos y bajan; si se acaba el tiempo (o el organizador lo pide), los
+ * que se quedaron afuera ya no quedan eliminados: se juntan entre ellos (o completan una pareja) y el Coleccionista los mete a un ascensor
+ * ({@link #armarEquipos}). El viaje es una caída violenta; cada ascensor llega al ascensor falso de su
  * circuito, donde empieza {@link Sentidos}.
  */
 public final class Capitulo1 {
@@ -353,66 +354,27 @@ public final class Capitulo1 {
                 subidos.addAll(l2);
             }
         }
-        if (grupos.isEmpty()) {
+        // los que se quedaron afuera: ya nadie queda eliminado por no tener equipo (el Coleccionista se los arma)
+        List<Entity> fuera = new ArrayList<>();
+        for (Pieza p : ev.vivos()) {
+            Entity e = Evento.entidad(s, p);
+            if (e != null && !subidos.contains(e)) {
+                fuera.add(e);
+            }
+        }
+        if (grupos.isEmpty() && fuera.isEmpty()) {
             Anuncio.organizadores(s, Component.translatable(MOD + ".cap1.nadie"));
             return false;
         }
-        // los que se quedaron afuera
-        if (forzado) {
-            for (Pieza p : new ArrayList<>(ev.vivos())) {
-                Entity e = Evento.entidad(s, p);
-                if (e != null && !subidos.contains(e) && ev.vivos().size() > 2) {
-                    Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".cap1.chat.solo", Anuncio.nombre(p))));
-                    ev.eliminar(s, p, Component.translatable(MOD + ".cap1.motivo").getString());
-                }
-            }
-        }
         // equipos finales: cada miembro con el ascensor del que sale
-        List<List<Entity>> equipos = new ArrayList<>();
         Map<Entity, Integer> sale = new HashMap<>();
         for (int i = 0; i < grupos.size(); i++) {
             for (Entity e : grupos.get(i)) {
                 sale.put(e, origen.get(i)[0]);
             }
-            List<Entity> g = grupos.get(i);
-            // los de 4 o más se parten en grupos de 3 y 2
-            while (g.size() > 3) {
-                int corte = g.size() == 4 ? 2 : 3;
-                equipos.add(new ArrayList<>(g.subList(0, corte)));
-                g = new ArrayList<>(g.subList(corte, g.size()));
-            }
-            equipos.add(new ArrayList<>(g));
         }
-        // los de 1: con una pareja (queda de 3) o con otro solo; si no, le quitan uno a un trío
-        for (int i = 0; i < equipos.size(); i++) {
-            if (equipos.get(i).size() != 1) {
-                continue;
-            }
-            List<Entity> solo = equipos.get(i);
-            int destino = -1;
-            for (int want : new int[] {2, 1, 3}) {
-                for (int j = 0; j < equipos.size() && destino < 0; j++) {
-                    if (j != i && equipos.get(j).size() == want) {
-                        destino = j;
-                    }
-                }
-                if (destino >= 0) {
-                    break;
-                }
-            }
-            if (destino < 0) {
-                continue;
-            }
-            List<Entity> d = equipos.get(destino);
-            if (d.size() == 3) {
-                solo.add(d.remove(2));
-            } else {
-                d.addAll(solo);
-                equipos.remove(i);
-                i = -1;
-            }
-        }
-        equipos.removeIf(List::isEmpty);
+        List<List<Entity>> equipos = armarEquipos(grupos, fuera, com.coleccionista.mapa.Circuito.CIRCUITOS);
+        meterSueltos(s, equipos, sale, fuera);
         // a cada equipo, su circuito
         List<List<Pieza>> piezas = new ArrayList<>();
         for (List<Entity> eq : equipos) {
@@ -459,6 +421,137 @@ public final class Capitulo1 {
             fase = Fase.NADA;
         }
         return true;
+    }
+
+    /**
+     * Los equipos finales (de 2 o 3, como mucho {@code max}) a partir de lo que formaron en los ascensores y de los que se quedaron
+     * sueltos: los grupos de 4 o más se parten; los de 1 y los de afuera primero completan parejas (quedan tríos), luego se juntan entre
+     * ellos en tríos (o dos parejas); si sobra uno solo, se lleva a uno de un trío para hacer pareja. Si salen más equipos que circuitos,
+     * el más chico se reparte entre los que tienen lugar. Nadie se queda fuera.
+     */
+    public static <T> List<List<T>> armarEquipos(List<List<T>> grupos, List<T> fuera, int max) {
+        List<List<T>> equipos = new ArrayList<>();
+        List<T> sueltos = new ArrayList<>();
+        for (List<T> g0 : grupos) {
+            List<T> g = new ArrayList<>(g0);
+            while (g.size() > 3) {
+                int corte = g.size() == 4 ? 2 : 3;
+                equipos.add(new ArrayList<>(g.subList(0, corte)));
+                g = new ArrayList<>(g.subList(corte, g.size()));
+            }
+            if (g.size() == 1) {
+                sueltos.add(g.get(0));
+            } else if (!g.isEmpty()) {
+                equipos.add(g);
+            }
+        }
+        sueltos.addAll(fuera);
+        // primero completan las parejas
+        for (List<T> eq : equipos) {
+            if (sueltos.isEmpty()) {
+                break;
+            }
+            if (eq.size() == 2) {
+                eq.add(sueltos.remove(0));
+            }
+        }
+        // los demás, en tríos (con 2 o 4, en parejas)
+        while (!sueltos.isEmpty()) {
+            int n = sueltos.size();
+            if (n == 1) {
+                List<T> trio = null;
+                for (List<T> eq : equipos) {
+                    if (eq.size() == 3) {
+                        trio = eq;
+                        break;
+                    }
+                }
+                List<T> par = new ArrayList<>();
+                if (trio != null) {
+                    par.add(trio.remove(2));
+                } else if (!equipos.isEmpty()) {
+                    equipos.get(0).add(sueltos.remove(0));
+                    continue;
+                }
+                par.add(sueltos.remove(0));
+                equipos.add(par);
+                continue;
+            }
+            int t = n == 2 || n == 4 ? 2 : 3;
+            equipos.add(new ArrayList<>(sueltos.subList(0, t)));
+            sueltos.subList(0, t).clear();
+        }
+        // más equipos que circuitos: el más chico se reparte entre los que tienen lugar
+        while (equipos.size() > max && max > 0) {
+            equipos.sort(java.util.Comparator.comparingInt(List::size));
+            List<T> chico = equipos.remove(0);
+            for (T e : chico) {
+                List<T> d = equipos.get(0);
+                for (List<T> eq : equipos) {
+                    if (eq.size() < 3) {
+                        d = eq;
+                        break;
+                    }
+                }
+                d.add(e);
+            }
+        }
+        return equipos;
+    }
+
+    /**
+     * Los que se quedaron afuera entran al ascensor de su equipo nuevo (si es un equipo nuevo, a uno vacío): el Coleccionista los acomoda.
+     * Cada uno queda en {@code sale} con el ascensor del que va a bajar.
+     */
+    private static void meterSueltos(MinecraftServer s, List<List<Entity>> equipos, Map<Entity, Integer> sale, List<Entity> fuera) {
+        if (fuera.isEmpty()) {
+            return;
+        }
+        java.util.Set<Integer> usados = new java.util.HashSet<>(sale.values());
+        ServerLevel l = s.overworld();
+        for (List<Entity> eq : equipos) {
+            Integer n = null;
+            for (Entity e : eq) {
+                if (sale.containsKey(e)) {
+                    n = sale.get(e);
+                    break;
+                }
+            }
+            if (n == null) {
+                for (int k = 1; k <= SalaGrande.ASCENSORES && n == null; k++) {
+                    if (!usados.contains(k)) {
+                        n = k;
+                    }
+                }
+                if (n == null) {
+                    n = 1;
+                }
+                usados.add(n);
+            }
+            AABB c = Cabina.caja(s, "sala_" + n, Cabinas.EQ_ANCHO, Cabinas.ALTO, Cabinas.EQ_FONDO);
+            int i = 0;
+            for (Entity e : eq) {
+                if (sale.containsKey(e) || c == null) {
+                    continue;
+                }
+                sale.put(e, n);
+                double x = c.minX + 0.6 + (c.maxX - c.minX - 1.2) * ((i * 2 + 1) % 4) / 3.0;
+                double z = c.minZ + 0.6 + (c.maxZ - c.minZ - 1.2) * (i % 2);
+                i++;
+                if (e instanceof ServerPlayer sp) {
+                    sp.teleportTo(l, x, c.minY + 0.05, z, sp.getYRot(), 0F);
+                    Plat.msg(sp, Component.translatable(MOD + ".cap1.te_acomodo").withStyle(ChatFormatting.GOLD), true);
+                    sp.playNotifySound(SoundEvents.ENDERMAN_TELEPORT, SoundSource.MASTER, 0.6F, 0.6F);
+                } else {
+                    if (e instanceof PiezaBot b) {
+                        b.getNavigation().stop();
+                    }
+                    e.moveTo(x, c.minY + 0.05, z, e.getYRot(), 0F);
+                }
+            }
+        }
+        Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".cap1.chat.sueltos", fuera.size())));
+        Coleccionista.LOGGER.info("COLECCIONISTA_CAP1 sueltos={} acomodados", fuera.size());
     }
 
     private static void llego(MinecraftServer s) {

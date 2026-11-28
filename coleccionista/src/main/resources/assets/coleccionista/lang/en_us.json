@@ -1054,6 +1054,8 @@
   "coleccionista.cap1.bajan": "Going down in %s…",
   "coleccionista.cap1.nadie": "Nobody is inside a lift.",
   "coleccionista.cap1.chat.solo": "%s was left without a team.",
+  "coleccionista.cap1.te_acomodo": "Nobody is left out: the Collector put you on a team.",
+  "coleccionista.cap1.chat.sueltos": "%s were left without a team… so I chose their partners myself.",
   "coleccionista.cap1.motivo": "Left without a team",
   "coleccionista.cap1.no_bajan": "The lifts are not open (first \"Make teams\").",
   "coleccionista.sen.sin_mapa": "The senses circuits are not built (/evento construir).",

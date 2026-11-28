@@ -345,6 +345,17 @@ evento capitulo1
 evento sentidos
 #pausa 2
 evento sentidos limpiar
+evento revivir Bot_01
+evento revivir Bot_02
+evento revivir Bot_03
+evento revivir Bot_04
+evento capitulo1 parar
+evento capitulo1 sala
+evento capitulo1 formar
+evento capitulo1 bajar
+#pausa 16
+evento capitulo1
+evento sentidos limpiar
 evento reiniciar confirmar
 #expect PRUEBA_COLECCIONISTA_OK Axelis Core
 #expect COLECCIONISTA_CONSTRUIDO sala
@@ -363,6 +374,7 @@ evento reiniciar confirmar
 #expect COLECCIONISTA_CABINA sale sala_1 -> circ_1
 #expect COLECCIONISTA_CABINA llega circ_2
 #expect COLECCIONISTA_CAP1 llegaron
+#expect COLECCIONISTA_CAP1 sueltos=
 #expect COLECCIONISTA_SENTIDOS llegaron
 #expect COLECCIONISTA_SENTIDOS habla
 #expect COLECCIONISTA_DISCURSO sentidos

@@ -1054,6 +1054,8 @@
   "coleccionista.cap1.bajan": "Bajan en %s…",
   "coleccionista.cap1.nadie": "Nadie está dentro de un ascensor.",
   "coleccionista.cap1.chat.solo": "%s se quedó sin equipo.",
+  "coleccionista.cap1.te_acomodo": "Nadie se queda afuera: el Coleccionista te puso en un equipo.",
+  "coleccionista.cap1.chat.sueltos": "Quedaron %s sin equipo… así que yo les elegí compañeros.",
   "coleccionista.cap1.motivo": "Se quedó sin equipo",
   "coleccionista.cap1.no_bajan": "Los ascensores no están abiertos (primero «Hagan equipos»).",
   "coleccionista.sen.sin_mapa": "Los circuitos de los sentidos no están construidos (/evento construir).",
