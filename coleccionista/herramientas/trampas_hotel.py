@@ -106,7 +106,7 @@ def puerta():
     m.cubo('mancha', (-5, 0.03, -4.2), (9, 0.05, 3.8), 'mancha')
     # el detalle de la salida: luz de colores que se cuela por abajo de la puerta
     m.hueso('luz', 'raiz', (0, 0, 0))
-    m.cubo('luz', (-7.6, 0.02, -2.4), (15.2, 0.06, 2.2), 'luz')
+    m.cubo('luz', (-7.2, 0.02, -1.5), (14.4, 0.05, 1.3), 'luz')
 
     def pintor(mat, cara, w, h, s, c):
         a = np.full((h, w), 255, np.uint8)
@@ -140,8 +140,12 @@ def puerta():
             rgb = np.zeros((h, w, 3), np.float32)
             for x in range(w):
                 rgb[:, x] = cols[(x * 4 // max(1, w)) % 4]
-            yy = np.mgrid[0:h, 0:w][0]
-            a[:] = np.clip(255 - yy * (255 // max(1, h)), 40, 255).astype(np.uint8)
+            # se desvanece hacia afuera y hacia las orillas (como luz que se cuela, no como una calcomanía)
+            yy, xx = np.mgrid[0:h, 0:w]
+            lejos = yy / max(1, h - 1)
+            orilla = np.minimum(xx, w - 1 - xx) / max(1, w * 0.25)
+            a[:] = np.clip((1 - lejos) ** 1.5 * np.clip(orilla, 0, 1) * 170, 0, 170).astype(np.uint8)
+            rgb = rgb * 0.75 + 255 * 0.25
         elif mat == 'mirilla':
             rgb = liso(w, h, '#b8913e', s, 0.2)
             if cara == 'north':

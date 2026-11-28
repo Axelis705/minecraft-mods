@@ -30,23 +30,23 @@ C = 'coleccionista:'
 
 ENCABEZADO = f"""# El hotel del Coleccionista (lo arma herramientas/mapas/hotel_plano.py; lo lee Casa.java y lo termina Hotel.java).
 # Cada letra es una columna de bloques. Diez pisos de {N} x {N}, de {ALTO} de alto por dentro.
-estilo c nombre=Pasillo piso={C}parquet|{C}madera_pulida alfombra={C}alfombra_roja pared={C}papel_tapiz luz=7
-estilo h nombre=Habitación piso={C}parquet pared={C}papel_verde luz=6
-estilo j nombre=Habitación piso={C}parquet pared={C}papel_rosa luz=6
-estilo i nombre=Habitación piso={C}losa_tablon pared={C}papel_azul luz=6
-estilo b nombre=Baño piso={C}azulejo|{C}azulejo_sucio pared={C}azulejo zoclo={C}azulejo_remate luz=5
-estilo s nombre=Suite piso={C}marmol_crema|{C}parquet alfombra={C}alfombra_cafe pared={C}papel_dorado luz=7
-estilo a nombre=Vestíbulo piso={C}marmol_negro|{C}marmol_crema pared={C}papel_tapiz zoclo={C}marmol_negro luz=9
-estilo r nombre=Salón piso={C}parquet|{C}losa_marmol pared={C}papel_dorado zoclo={C}marmol_negro luz=8
-estilo q nombre=Cocina piso={C}azulejo|{C}azulejo_sucio pared={C}azulejo_sucio luz=8
-estilo l nombre=Lavandería piso={C}linoleo pared={C}azulejo_sucio zoclo={C}concreto luz=7
-estilo o nombre=Oficina piso={C}linoleo_verde pared={C}panel_madera luz=7
-estilo e nombre=Servicio piso={C}concreto_piso pared={C}concreto zoclo={C}concreto techo={C}concreto luz=4
-estilo k nombre=Clóset piso={C}concreto_piso pared={C}concreto zoclo={C}concreto techo={C}concreto luz=0
-estilo p nombre=Spa piso={C}azulejo pared={C}azulejo zoclo={C}azulejo_remate luz=6
-estilo m nombre=Inundado piso={C}concreto_humedo|{C}lodo pared={C}papel_verde luz=5
-estilo t nombre=Ático piso={C}tablon|{C}losa_tablon pared={C}viga_madera zoclo={C}tablon techo={C}viga_madera luz=4
-estilo u nombre=Quemado piso={C}losa_tablon|{C}brasas pared={C}ladrillo_oscuro zoclo={C}ladrillo_oscuro luz=3
+estilo c nombre=Pasillo piso={C}parquet|{C}madera_pulida alfombra={C}alfombra_roja pared={C}papel_tapiz luz=10
+estilo h nombre=Habitación piso={C}parquet pared={C}papel_verde luz=9
+estilo j nombre=Habitación piso={C}parquet pared={C}papel_rosa luz=9
+estilo i nombre=Habitación piso={C}losa_tablon pared={C}papel_azul luz=9
+estilo b nombre=Baño piso={C}azulejo|{C}azulejo_sucio pared={C}azulejo zoclo={C}azulejo_remate luz=8
+estilo s nombre=Suite piso={C}marmol_crema|{C}parquet alfombra={C}alfombra_cafe pared={C}papel_dorado luz=10
+estilo a nombre=Vestíbulo piso={C}marmol_negro|{C}marmol_crema pared={C}papel_tapiz zoclo={C}marmol_negro luz=12
+estilo r nombre=Salón piso={C}parquet|{C}losa_marmol pared={C}papel_dorado zoclo={C}marmol_negro luz=11
+estilo q nombre=Cocina piso={C}azulejo|{C}azulejo_sucio pared={C}azulejo_sucio luz=10
+estilo l nombre=Lavandería piso={C}linoleo pared={C}azulejo_sucio zoclo={C}concreto luz=9
+estilo o nombre=Oficina piso={C}linoleo_verde pared={C}panel_madera luz=9
+estilo e nombre=Servicio piso={C}concreto_piso pared={C}concreto zoclo={C}concreto techo={C}concreto luz=7
+estilo k nombre=Clóset piso={C}concreto_piso pared={C}concreto zoclo={C}concreto techo={C}concreto luz=5
+estilo p nombre=Spa piso={C}azulejo pared={C}azulejo zoclo={C}azulejo_remate luz=9
+estilo m nombre=Inundado piso={C}concreto_humedo|{C}lodo pared={C}papel_verde luz=8
+estilo t nombre=Ático piso={C}tablon|{C}losa_tablon pared={C}viga_madera zoclo={C}tablon techo={C}viga_madera luz=7
+estilo u nombre=Quemado piso={C}losa_tablon|{C}brasas pared={C}ladrillo_oscuro zoclo={C}ladrillo_oscuro luz=6
 mueble B {C}cama_antigua cama
 mueble R {C}ropero doble
 mueble K {C}cajon encima={C}lampara_mesa[facing={{mira}}]

@@ -1,22 +1,22 @@
 # El hotel del Coleccionista (lo arma herramientas/mapas/hotel_plano.py; lo lee Casa.java y lo termina Hotel.java).
 # Cada letra es una columna de bloques. Diez pisos de 51 x 51, de 4 de alto por dentro.
-estilo c nombre=Pasillo piso=coleccionista:parquet|coleccionista:madera_pulida alfombra=coleccionista:alfombra_roja pared=coleccionista:papel_tapiz luz=7
-estilo h nombre=Habitación piso=coleccionista:parquet pared=coleccionista:papel_verde luz=6
-estilo j nombre=Habitación piso=coleccionista:parquet pared=coleccionista:papel_rosa luz=6
-estilo i nombre=Habitación piso=coleccionista:losa_tablon pared=coleccionista:papel_azul luz=6
-estilo b nombre=Baño piso=coleccionista:azulejo|coleccionista:azulejo_sucio pared=coleccionista:azulejo zoclo=coleccionista:azulejo_remate luz=5
-estilo s nombre=Suite piso=coleccionista:marmol_crema|coleccionista:parquet alfombra=coleccionista:alfombra_cafe pared=coleccionista:papel_dorado luz=7
-estilo a nombre=Vestíbulo piso=coleccionista:marmol_negro|coleccionista:marmol_crema pared=coleccionista:papel_tapiz zoclo=coleccionista:marmol_negro luz=9
-estilo r nombre=Salón piso=coleccionista:parquet|coleccionista:losa_marmol pared=coleccionista:papel_dorado zoclo=coleccionista:marmol_negro luz=8
-estilo q nombre=Cocina piso=coleccionista:azulejo|coleccionista:azulejo_sucio pared=coleccionista:azulejo_sucio luz=8
-estilo l nombre=Lavandería piso=coleccionista:linoleo pared=coleccionista:azulejo_sucio zoclo=coleccionista:concreto luz=7
-estilo o nombre=Oficina piso=coleccionista:linoleo_verde pared=coleccionista:panel_madera luz=7
-estilo e nombre=Servicio piso=coleccionista:concreto_piso pared=coleccionista:concreto zoclo=coleccionista:concreto techo=coleccionista:concreto luz=4
-estilo k nombre=Clóset piso=coleccionista:concreto_piso pared=coleccionista:concreto zoclo=coleccionista:concreto techo=coleccionista:concreto luz=0
-estilo p nombre=Spa piso=coleccionista:azulejo pared=coleccionista:azulejo zoclo=coleccionista:azulejo_remate luz=6
-estilo m nombre=Inundado piso=coleccionista:concreto_humedo|coleccionista:lodo pared=coleccionista:papel_verde luz=5
-estilo t nombre=Ático piso=coleccionista:tablon|coleccionista:losa_tablon pared=coleccionista:viga_madera zoclo=coleccionista:tablon techo=coleccionista:viga_madera luz=4
-estilo u nombre=Quemado piso=coleccionista:losa_tablon|coleccionista:brasas pared=coleccionista:ladrillo_oscuro zoclo=coleccionista:ladrillo_oscuro luz=3
+estilo c nombre=Pasillo piso=coleccionista:parquet|coleccionista:madera_pulida alfombra=coleccionista:alfombra_roja pared=coleccionista:papel_tapiz luz=10
+estilo h nombre=Habitación piso=coleccionista:parquet pared=coleccionista:papel_verde luz=9
+estilo j nombre=Habitación piso=coleccionista:parquet pared=coleccionista:papel_rosa luz=9
+estilo i nombre=Habitación piso=coleccionista:losa_tablon pared=coleccionista:papel_azul luz=9
+estilo b nombre=Baño piso=coleccionista:azulejo|coleccionista:azulejo_sucio pared=coleccionista:azulejo zoclo=coleccionista:azulejo_remate luz=8
+estilo s nombre=Suite piso=coleccionista:marmol_crema|coleccionista:parquet alfombra=coleccionista:alfombra_cafe pared=coleccionista:papel_dorado luz=10
+estilo a nombre=Vestíbulo piso=coleccionista:marmol_negro|coleccionista:marmol_crema pared=coleccionista:papel_tapiz zoclo=coleccionista:marmol_negro luz=12
+estilo r nombre=Salón piso=coleccionista:parquet|coleccionista:losa_marmol pared=coleccionista:papel_dorado zoclo=coleccionista:marmol_negro luz=11
+estilo q nombre=Cocina piso=coleccionista:azulejo|coleccionista:azulejo_sucio pared=coleccionista:azulejo_sucio luz=10
+estilo l nombre=Lavandería piso=coleccionista:linoleo pared=coleccionista:azulejo_sucio zoclo=coleccionista:concreto luz=9
+estilo o nombre=Oficina piso=coleccionista:linoleo_verde pared=coleccionista:panel_madera luz=9
+estilo e nombre=Servicio piso=coleccionista:concreto_piso pared=coleccionista:concreto zoclo=coleccionista:concreto techo=coleccionista:concreto luz=7
+estilo k nombre=Clóset piso=coleccionista:concreto_piso pared=coleccionista:concreto zoclo=coleccionista:concreto techo=coleccionista:concreto luz=5
+estilo p nombre=Spa piso=coleccionista:azulejo pared=coleccionista:azulejo zoclo=coleccionista:azulejo_remate luz=9
+estilo m nombre=Inundado piso=coleccionista:concreto_humedo|coleccionista:lodo pared=coleccionista:papel_verde luz=8
+estilo t nombre=Ático piso=coleccionista:tablon|coleccionista:losa_tablon pared=coleccionista:viga_madera zoclo=coleccionista:tablon techo=coleccionista:viga_madera luz=7
+estilo u nombre=Quemado piso=coleccionista:losa_tablon|coleccionista:brasas pared=coleccionista:ladrillo_oscuro zoclo=coleccionista:ladrillo_oscuro luz=6
 mueble B coleccionista:cama_antigua cama
 mueble R coleccionista:ropero doble
 mueble K coleccionista:cajon encima=coleccionista:lampara_mesa[facing={mira}]

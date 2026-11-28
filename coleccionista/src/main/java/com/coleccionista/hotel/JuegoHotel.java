@@ -187,6 +187,7 @@ public final class JuegoHotel {
         }
         Pantallas.callar(s);
         fase(s, Fase.ASCENSORES);
+        botsDentro = false;
         cabina.clear();
         for (int n = 1; n <= SalaGrande.INDIVIDUALES; n++) {
             Cabina.puerta(s, "hotel_s" + n, true);
@@ -237,7 +238,8 @@ public final class JuegoHotel {
             return;
         }
         // los bots (solo en las pruebas) se meten solos a los ascensores libres
-        if (now - faseDesde == 40) {
+        if (!botsDentro && now - faseDesde >= 40) {
+            botsDentro = true;
             botsSuben(s);
         }
         Map<Integer, List<Entity>> m = ocupacion(s);
@@ -280,6 +282,7 @@ public final class JuegoHotel {
     }
 
     private static Map<Integer, List<Entity>> ultimaOcupacion = new HashMap<>();
+    private static boolean botsDentro;
 
     /** El indicador de "ir acá": mientras se abren los ascensores, a quien no está en uno, el libre más cercano. */
     public static com.coleccionista.evento.Objetivo.Meta objetivo(MinecraftServer s, ServerPlayer sp) {

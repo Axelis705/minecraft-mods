@@ -155,16 +155,18 @@ public final class PruebaHotel {
             }
         });
         t.photo("h13_tubo_mano", 1500, () -> {
+            t.hud(true);
             t.cmd("gamemode adventure @a");
             t.cmd("give @a coleccionista:tubo_suelto");
         });
+        t.add("sin interfaz", 200, () -> t.hud(false));
         // la trampa: un bot abre una puerta con trampa y yo lo veo de lado
         t.add("hotel: mirar la trampa", 1200, () -> {
             t.cmd("gamemode spectator @a");
             int k = JuegoHotel.puertaDe(true);
             mirarPuerta(t, k, 2.6, 1.0);
         });
-        t.photo("h14_disparo", 900, () -> t.cmd("evento hotel abrir trampa Bot_01"));
+        t.photo("h14_disparo", 900, () -> t.cmd("evento hotel abrir trampa Bot_02"));
         t.photo("h15_sin_cabeza", 1800, () -> {
         });
         t.add("hotel: eliminado", 100, () -> {
@@ -173,7 +175,7 @@ public final class PruebaHotel {
                 hay |= e instanceof com.coleccionista.evento.Cadaver c && c.sinCabeza();
             }
             t.check(hay, "quedó el cuerpo sin cabeza");
-            t.check(EventoCliente.vivos() == 4, "quedan 4 vivos: " + EventoCliente.vivos());
+            t.check(EventoCliente.vivos() == 4, "quedan 4 vivos (yo y 3 bots): " + EventoCliente.vivos());
         });
         t.photo("h16_trampa_adentro", 1200, () -> mirarPuerta(t, JuegoHotel.puertaDe(true), 0.2, 1.2));
         // la salida: abro y caigo por el tobogán
@@ -202,7 +204,7 @@ public final class PruebaHotel {
         t.photo("h22_tercera", 1200, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
         t.add("primera persona", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
         // se acaba: los que siguen adentro se quedan; los demás regresan dormidos a la sala
-        t.add("hotel: salen bots", 800, () -> t.cmd("evento hotel salir Bot_02"));
+        t.add("hotel: salen bots", 800, () -> t.cmd("evento hotel salir Bot_03"));
         t.photo("h23_fin", 3000, () -> t.cmd("evento hotel terminar"));
         t.waitFor("hotel: regreso", 60000, () -> JuegoHotel.fase() == JuegoHotel.Fase.NADA);
         t.photo("h24_sala_regreso", 4000, () -> {
@@ -211,7 +213,7 @@ public final class PruebaHotel {
             t.check(com.coleccionista.evento.Capitulo1.fase() == com.coleccionista.evento.Capitulo1.Fase.HABLANDO
                     || com.coleccionista.evento.Capitulo1.fase() == com.coleccionista.evento.Capitulo1.Fase.FORMAR,
                     "después del hotel se forman los equipos: " + com.coleccionista.evento.Capitulo1.fase());
-            t.check(EventoCliente.vivos() == 2, "quedamos 2 (yo y Bot_02): " + EventoCliente.vivos());
+            t.check(EventoCliente.vivos() == 2, "quedamos 2 (yo y Bot_03): " + EventoCliente.vivos());
         });
         t.add("hotel: limpiar", 1000, () -> {
             t.cmd("evento capitulo1 parar");

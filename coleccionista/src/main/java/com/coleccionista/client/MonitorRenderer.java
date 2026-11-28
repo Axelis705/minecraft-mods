@@ -2,7 +2,6 @@ package com.coleccionista.client;
 
 import com.axeliscore.plat.Ids;
 import com.axeliscore.plat.client.Draw;
-import com.axeliscore.plat.client.VB;
 import com.coleccionista.Coleccionista;
 import com.coleccionista.hotel.Monitor;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -63,17 +62,17 @@ public class MonitorRenderer extends EntityRenderer<Monitor> {
         Font font = Minecraft.getInstance().font;
         if (q == null) {
             float u = (ms / 40 % 7) * 0.13F, v = (ms / 40 % 5) * 0.17F;
-            quad(d.translucent(ESTATICA), ps, -w / 2, -h / 2, w / 2, h / 2, z, u, v, u + 0.35F, v + 0.3F, 0xFF9A9A9A, 0xFFE0E0E0);
+            quad(luz(buf, ESTATICA), ps, -w / 2, -h / 2, w / 2, h / 2, z, u, v, u + 0.35F, v + 0.3F, 0xFF9A9A9A, 0xFFE0E0E0);
             texto(d, ps, font, net.minecraft.network.chat.Component.translatable(Coleccionista.MODID + ".hotel.monitor.sin").getString(), 0,
                     -0.02F, 0.0042F, 0xFFE8E8E8, z + 0.003F, true);
         } else {
             // el fondo de la cámara (un pasillo oscuro, verdoso)
-            quad(d.translucent(BLANCO), ps, -w / 2, -h / 2, w / 2, h / 2, z, 0, 0, 1, 1, 0xFF0A140E, 0xFF1C2E22);
+            quad(luz(buf, BLANCO), ps, -w / 2, -h / 2, w / 2, h / 2, z, 0, 0, 1, 1, 0xFF0A140E, 0xFF1C2E22);
             // la cara (piel y gorra), tintada como cámara vieja
             float lado = h * 0.62F, x0 = -w / 2 + 0.035F, y0 = -h / 2 + 0.07F;
             ResourceLocation p = piel(q);
-            quad(d.cutout(p), ps, x0, y0, x0 + lado, y0 + lado, z + 0.002F, 8F / 64F, 8F / 64F, 16F / 64F, 16F / 64F, 0xFFB8E6C0, 0xFFC8F2CE);
-            quad(d.translucent(p), ps, x0 - 0.01F, y0 - 0.01F, x0 + lado + 0.01F, y0 + lado + 0.01F, z + 0.003F, 40F / 64F, 8F / 64F, 48F / 64F,
+            quad(luz(buf, p), ps, x0, y0, x0 + lado, y0 + lado, z + 0.002F, 8F / 64F, 8F / 64F, 16F / 64F, 16F / 64F, 0xFFB8E6C0, 0xFFC8F2CE);
+            quad(luz(buf, p), ps, x0 - 0.01F, y0 - 0.01F, x0 + lado + 0.01F, y0 + lado + 0.01F, z + 0.003F, 40F / 64F, 8F / 64F, 48F / 64F,
                     16F / 64F, 0xFFB8E6C0, 0xFFC8F2CE);
             // nombre, piso y vida
             float tx = x0 + lado + 0.03F;
@@ -85,22 +84,22 @@ public class MonitorRenderer extends EntityRenderer<Monitor> {
             texto(d, ps, font, piso, tx, h / 2 - 0.2F, 0.0026F, 0xFF9AD8A0, z + 0.004F, false);
             float vida = Math.max(0, Math.min(1, m.vida() / 20F));
             float bw = w / 2 - tx - 0.03F;
-            quad(d.translucent(BLANCO), ps, tx, -h / 2 + 0.07F, tx + bw, -h / 2 + 0.1F, z + 0.004F, 0, 0, 1, 1, 0xFF301010, 0xFF301010);
-            quad(d.translucent(BLANCO), ps, tx, -h / 2 + 0.07F, tx + bw * vida, -h / 2 + 0.1F, z + 0.005F, 0, 0, 1, 1, 0xFFB3121A, 0xFFFF4A4A);
+            quad(luz(buf, BLANCO), ps, tx, -h / 2 + 0.07F, tx + bw, -h / 2 + 0.1F, z + 0.004F, 0, 0, 1, 1, 0xFF301010, 0xFF301010);
+            quad(luz(buf, BLANCO), ps, tx, -h / 2 + 0.07F, tx + bw * vida, -h / 2 + 0.1F, z + 0.005F, 0, 0, 1, 1, 0xFFB3121A, 0xFFFF4A4A);
             // "EN VIVO" que parpadea
             if (ms / 600 % 2 == 0) {
                 float r = 0.012F, cx = w / 2 - 0.035F, cy = h / 2 - 0.035F;
-                quad(d.translucent(Draw.ORBE), ps, cx - r, cy - r, cx + r, cy + r, z + 0.006F, 0, 0, 1, 1, 0xFFFF2020, 0xFFFF4040);
+                quad(luz(buf, Draw.ORBE), ps, cx - r, cy - r, cx + r, cy + r, z + 0.006F, 0, 0, 1, 1, 0xFFFF2020, 0xFFFF4040);
             }
         }
         // el número de la cámara y las rayas de tele
         texto(d, ps, font, String.format("CAM %02d", m.numero()), -w / 2 + 0.02F, h / 2 - 0.045F, 0.0022F, 0xC0FFFFFF, z + 0.006F, false);
         float paso = h / 26F, corre = (ms % 2000) / 2000F * paso;
         for (float y = -h / 2 + corre; y < h / 2; y += paso) {
-            quad(d.translucent(BLANCO), ps, -w / 2, y, w / 2, Math.min(h / 2, y + paso * 0.35F), z + 0.007F, 0, 0, 1, 1, 0x26000000, 0x26000000);
+            quad(luz(buf, BLANCO), ps, -w / 2, y, w / 2, Math.min(h / 2, y + paso * 0.35F), z + 0.007F, 0, 0, 1, 1, 0x26000000, 0x26000000);
         }
         // el reflejo del vidrio
-        quad(d.translucent(BLANCO), ps, -w / 2, h / 2 - h * 0.22F, w / 2, h / 2, z + 0.008F, 0, 0, 1, 1, 0x00FFFFFF, 0x12FFFFFF);
+        quad(luz(buf, BLANCO), ps, -w / 2, h / 2 - h * 0.22F, w / 2, h / 2, z + 0.008F, 0, 0, 1, 1, 0x00FFFFFF, 0x12FFFFFF);
         d.flush();
         ps.popPose();
         super.render(m, yaw, pt, ps, buf, light);
@@ -115,14 +114,21 @@ public class MonitorRenderer extends EntityRenderer<Monitor> {
         ps.popPose();
     }
 
-    private static void quad(VB vb, PoseStack ps, float x0, float y0, float x1, float y1, float z, float u0, float v0, float u1, float v1, int c0,
-            int c1) {
+    private static void quad(com.mojang.blaze3d.vertex.VertexConsumer vc, PoseStack ps, float x0, float y0, float x1, float y1, float z, float u0,
+            float v0, float u1, float v1, int c0, int c1) {
         PoseStack.Pose p = ps.last();
+        org.joml.Matrix4f m = p.pose();
+        org.joml.Matrix3f n = p.normal();
         int a0 = c0 >>> 24, r0 = (c0 >> 16) & 255, g0 = (c0 >> 8) & 255, b0 = c0 & 255;
         int a1 = c1 >>> 24, r1 = (c1 >> 16) & 255, g1 = (c1 >> 8) & 255, b1 = c1 & 255;
-        vb.v(p, x0, y0, z, r0, g0, b0, a0, u0, v1, OverlayTexture.NO_OVERLAY, LUZ, 0, 0, 1);
-        vb.v(p, x1, y0, z, r0, g0, b0, a0, u1, v1, OverlayTexture.NO_OVERLAY, LUZ, 0, 0, 1);
-        vb.v(p, x1, y1, z, r1, g1, b1, a1, u1, v0, OverlayTexture.NO_OVERLAY, LUZ, 0, 0, 1);
-        vb.v(p, x0, y1, z, r1, g1, b1, a1, u0, v0, OverlayTexture.NO_OVERLAY, LUZ, 0, 0, 1);
+        vc.vertex(m, x0, y0, z).color(r0, g0, b0, a0).uv(u0, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LUZ).normal(n, 0, 0, 1).endVertex();
+        vc.vertex(m, x1, y0, z).color(r0, g0, b0, a0).uv(u1, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LUZ).normal(n, 0, 0, 1).endVertex();
+        vc.vertex(m, x1, y1, z).color(r1, g1, b1, a1).uv(u1, v0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LUZ).normal(n, 0, 0, 1).endVertex();
+        vc.vertex(m, x0, y1, z).color(r1, g1, b1, a1).uv(u0, v0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LUZ).normal(n, 0, 0, 1).endVertex();
+    }
+
+    /** El pincel de la pantalla: brilla solo y deja ver lo transparente (pedirlo justo antes de usarlo). */
+    private static com.mojang.blaze3d.vertex.VertexConsumer luz(MultiBufferSource buf, ResourceLocation tex) {
+        return buf.getBuffer(net.minecraft.client.renderer.RenderType.entityTranslucentEmissive(tex));
     }
 }
