@@ -1799,5 +1799,6 @@
   "coleccionista.hotel.org.usar_no": "Hotel antes de los equipos: NO (equipos directo).",
   "coleccionista.hotel.monitor.sin": "SIN SEÑAL",
   "coleccionista.obj.hotel": "Un ascensor libre",
-  "item.coleccionista.tubo_suelto": "Tubo oxidado"
+  "item.coleccionista.tubo_suelto": "Tubo oxidado",
+  "coleccionista.hotel.piso": "— Planta %s —"
 }

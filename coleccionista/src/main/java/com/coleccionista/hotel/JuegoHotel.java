@@ -108,6 +108,7 @@ public final class JuegoHotel {
     private static final Map<UUID, UUID> mirando = new HashMap<>();
     private static final Map<UUID, Vec3> antesDeMirar = new HashMap<>();
     private static final Map<UUID, Long> pinchado = new HashMap<>();
+    private static final Map<UUID, Integer> pisoDe = new HashMap<>();
     private static final Set<Integer> caidos = new HashSet<>();
     private static final Map<Integer, Long> caeEn = new HashMap<>();
     private static final Map<Integer, long[]> charcos = new HashMap<>();
@@ -778,6 +779,19 @@ public final class JuegoHotel {
                             le.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 1, false, false));
                         }
                         l.playSound(null, e.blockPosition(), SoundEvents.SWEET_BERRY_BUSH_BREAK, SoundSource.BLOCKS, 1F, 0.6F);
+                    }
+                }
+            }
+        }
+        // al cambiar de piso, el número del piso (como el letrero de un elevador)
+        if (now % 10 == 0) {
+            BlockPos o = Complejo.origen(s, "hotel");
+            for (Entity e : adentro) {
+                if (o != null && e instanceof ServerPlayer sp) {
+                    int piso = Hotel.piso((int) Math.floor(e.getY() + 0.2 - o.getY()));
+                    Integer antes = pisoDe.put(sp.getUUID(), piso);
+                    if (antes == null || antes != piso) {
+                        Plat.msg(sp, Component.translatable(MOD + ".hotel.piso", piso).withStyle(ChatFormatting.GOLD), true);
                     }
                 }
             }
@@ -1473,6 +1487,7 @@ public final class JuegoHotel {
         salieron.clear();
         cabina.clear();
         pinchado.clear();
+        pisoDe.clear();
         caidos.clear();
         caeEn.clear();
         charcos.clear();

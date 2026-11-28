@@ -1799,5 +1799,6 @@
   "coleccionista.hotel.org.usar_no": "Hotel before teams: NO (straight to teams).",
   "coleccionista.hotel.monitor.sin": "NO SIGNAL",
   "coleccionista.obj.hotel": "A free lift",
-  "item.coleccionista.tubo_suelto": "Rusty pipe"
+  "item.coleccionista.tubo_suelto": "Rusty pipe",
+  "coleccionista.hotel.piso": "— Floor %s —"
 }
