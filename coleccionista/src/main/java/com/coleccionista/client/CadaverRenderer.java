@@ -347,8 +347,8 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
         // ya en el piso: el charco de sangre que sale del cuello y se va haciendo grande (unos 5 s)
         if (t > 0.95F) {
-            float r = 0.2F + 0.6F * Math.min(1F, (t - 0.95F) / 5F);
-            charco(ps, buf, light, 1.4F, r, encima(c));
+            float r = 0.25F + 0.6F * Math.min(1F, (t - 0.95F) / 5F);
+            charco(ps, buf, light, 1.75F, r, encima(c));
         }
         // de espaldas (hacia +z aquí), girando sobre los talones
         ps.translate(0, 0, 0.16F);
@@ -373,6 +373,8 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
             "textures/entity/estatua_piedra.png");
     private static final ResourceLocation SANGRE = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID,
             "textures/entity/charco_sangre.png");
+    private static final ResourceLocation BRILLO = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID,
+            "textures/entity/charco_brillo.png");
 
     /**
      * A qué altura (desde los pies del cuerpo) va algo pegado al piso: un poquito arriba de lo que haya en su bloque (una alfombra mide
@@ -399,7 +401,14 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
      * (la textura la hace {@code herramientas/charco_sangre.py}), que se nota hasta en la alfombra roja.
      */
     private static void charco(PoseStack ps, MultiBufferSource buf, int light, float z, float r, float y) {
-        com.mojang.blaze3d.vertex.VertexConsumer vc = buf.getBuffer(RenderType.entityTranslucent(SANGRE));
+        capa(ps, buf.getBuffer(RenderType.entityTranslucent(SANGRE)), light, z, r, y);
+        // los reflejos de líquido y la orilla de sangre fresca, con más luz: el charco se ve mojado aunque el cuarto esté oscuro
+        int mojado = net.minecraft.client.renderer.LightTexture.pack(Math.max(net.minecraft.client.renderer.LightTexture.block(light), 11),
+                net.minecraft.client.renderer.LightTexture.sky(light));
+        capa(ps, buf.getBuffer(RenderType.entityTranslucent(BRILLO)), mojado, z, r, y + 0.003F);
+    }
+
+    private static void capa(PoseStack ps, com.mojang.blaze3d.vertex.VertexConsumer vc, int light, float z, float r, float y) {
         PoseStack.Pose p = ps.last();
         org.joml.Matrix4f m = p.pose();
         org.joml.Matrix3f n = p.normal();

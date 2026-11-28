@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """El charco de sangre debajo del cuerpo sin cabeza (hotel): una mancha oscura y brillosa de orilla irregular, con gotas alrededor.
-Escribe textures/entity/charco_sangre.png (64 x 64). Uso: python3 herramientas/charco_sangre.py"""
+Escribe textures/entity/charco_sangre.png (64 x 64) y charco_brillo.png (los reflejos de líquido, que se dibujan encima con más luz
+para que el charco se vea mojado aunque el cuarto esté oscuro). Uso: python3 herramientas/charco_sangre.py"""
 import os
 
 import numpy as np
 from PIL import Image
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-SALIDA = os.path.join(AQUI, '..', 'src', 'main', 'resources', 'assets', 'coleccionista', 'textures', 'entity', 'charco_sangre.png')
+CARPETA = os.path.join(AQUI, '..', 'src', 'main', 'resources', 'assets', 'coleccionista', 'textures', 'entity')
+SALIDA = os.path.join(CARPETA, 'charco_sangre.png')
+BRILLO = os.path.join(CARPETA, 'charco_brillo.png')
 N = 64
 R = np.random.RandomState(316)
 
@@ -48,6 +51,18 @@ def main():
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
     Image.fromarray(img, 'RGBA').save(SALIDA)
     print('charco_sangre.png', int(m.sum()), 'pixeles')
+    # los reflejos: una franja larga y suave (la lámpara reflejada) y manchitas de brillo, solo dentro del charco y lejos de la orilla
+    franja = np.exp(-((x * 0.8 + y * 0.6 + 0.12) / 0.13) ** 2) * np.exp(-((x * 0.6 - y * 0.8) / 0.3) ** 2)
+    puntos = np.clip((ruido(N, 3) - 0.82) / 0.12, 0, 1)
+    luz = np.clip(franja * 1.1 + puntos * 0.45, 0, 1) * np.clip((0.9 - t) / 0.25, 0, 1) * dentro
+    # una orilla fina más clara (la sangre fresca del borde) que separa el charco de la alfombra
+    borde = dentro & (t > 0.8)
+    rgb = np.zeros((N, N, 3))
+    rgb[...] = [255, 205, 205]
+    rgb[borde] = [205, 40, 44]
+    a2 = np.where(borde, 150, luz * 190)
+    Image.fromarray(np.dstack([rgb, np.clip(a2, 0, 255)]).astype(np.uint8), 'RGBA').save(BRILLO)
+    print('charco_brillo.png', int((a2 > 20).sum()), 'pixeles')
 
 
 if __name__ == '__main__':
