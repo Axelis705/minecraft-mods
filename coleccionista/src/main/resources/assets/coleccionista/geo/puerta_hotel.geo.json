@@ -1,0 +1,137 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.coleccionista.puerta_hotel",
+    "texture_width": 64,
+    "texture_height": 64,
+    "visible_bounds_width": 2,
+    "visible_bounds_height": 2.5,
+    "visible_bounds_offset": [
+     0,
+     1,
+     0
+    ]
+   },
+   "axelis_glow": [],
+   "bones": [
+    {
+     "name": "raiz",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "hoja",
+     "pivot": [
+      7.5,
+      0,
+      0.5
+     ],
+     "parent": "raiz",
+     "cubes": [
+      {
+       "origin": [
+        -8,
+        0,
+        -0.5
+       ],
+       "size": [
+        16,
+        32,
+        1.6
+       ],
+       "uv": [
+        0,
+        0
+       ]
+      },
+      {
+       "origin": [
+        -6.5,
+        16,
+        -1.1
+       ],
+       "size": [
+        2,
+        1.2,
+        0.7
+       ],
+       "uv": [
+        50,
+        0
+       ]
+      },
+      {
+       "origin": [
+        -6.3,
+        16.2,
+        -1.5
+       ],
+       "size": [
+        1.6,
+        0.8,
+        0.5
+       ],
+       "uv": [
+        6,
+        34
+       ]
+      },
+      {
+       "origin": [
+        -6.5,
+        16,
+        1.0
+       ],
+       "size": [
+        2,
+        1.2,
+        0.7
+       ],
+       "uv": [
+        56,
+        0
+       ]
+      },
+      {
+       "origin": [
+        -3,
+        22,
+        -0.8
+       ],
+       "size": [
+        6,
+        2.5,
+        0.4
+       ],
+       "uv": [
+        36,
+        0
+       ]
+      },
+      {
+       "origin": [
+        -0.6,
+        26,
+        -0.7
+       ],
+       "size": [
+        1.2,
+        1.2,
+        0.3
+       ],
+       "uv": [
+        0,
+        34
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -37,7 +37,11 @@ import java.util.Map;
  * <li>{@code ^ v < >} escalera que sube hacia allá (cada escalón uno más alto; se le abre el techo encima);</li>
  * <li>{@code ~} hueco: nada (el aire del cuarto de abajo, como un vestíbulo de doble altura); {@code :} barandal;</li>
  * <li>{@code @} escondite (piso y dos de aire, con su marca); {@code %} cortina (para tapar un escondite);</li>
- * <li>mayúsculas: muebles ({@code mueble}); números: puntos con nombre ({@code punto}); espacio: no se toca.</li>
+ * <li>mayúsculas: muebles ({@code mueble}); números: puntos con nombre ({@code punto}); espacio: no se toca;</li>
+ * <li>otros símbolos declarados con {@code marca <símbolo> <prefijo> [puerta] [hacia=<letra>] [lejos=<letra>]}: marcas numeradas
+ * ({@code prefijo0}, {@code prefijo1}... en el orden del dibujo). Son piso del cuarto de al lado, o con {@code puerta} un hueco de puerta
+ * de 2 de alto en el muro (la puerta la pone quien arma el mapa). Su giro (yaw) mira hacia la casilla de al lado con el estilo
+ * {@code hacia}, o hacia la que está a dos casillas con el estilo {@code lejos} (si no, lejos del muro).</li>
  * </ul>
  */
 public final class Casa {
@@ -67,6 +71,9 @@ public final class Casa {
     public final Map<Character, Estilo> estilos = new LinkedHashMap<>();
     public final Map<Character, Mueble> muebles = new LinkedHashMap<>();
     public final Map<Character, String[]> puntos = new HashMap<>();
+    /** Las marcas numeradas: símbolo -> {prefijo, "puerta" o "", estilo hacia, estilo lejos}. */
+    public final Map<Character, String[]> marcas = new HashMap<>();
+    private final Map<Character, Integer> cuentaMarcas = new HashMap<>();
     public final List<Piso> pisos = new ArrayList<>();
     /** Avisos al construir (escaleras de largo raro, letras sin definir...). */
     public final List<String> avisos = new ArrayList<>();
@@ -111,6 +118,11 @@ public final class Casa {
                     case "mueble" -> c.mueble(p);
                     case "punto" -> c.puntos.put(p[1].charAt(0), new String[] {p[2], p.length > 3 ? p[3] : "0"});
                     case "marcas" -> c.prefijoEscondites = p[1];
+                    case "marca" -> {
+                        Map<String, String> m = pares(p, 3);
+                        c.marcas.put(p[1].charAt(0), new String[] {p[2], m.containsKey("puerta") ? "puerta" : "",
+                                m.getOrDefault("hacia", ""), m.getOrDefault("lejos", "")});
+                    }
                     case "piso" -> actual = new Piso(Integer.parseInt(p[1]), Integer.parseInt(p[3]), Integer.parseInt(p[5]),
                             Integer.parseInt(p[6]), new ArrayList<>());
                     default -> c.avisos.add("no entiendo: " + t);
@@ -248,6 +260,11 @@ public final class Casa {
             }
             case '^', 'v', '<', '>' -> escalon(p, f, x, z, c, v);
             default -> {
+                String[] mk = marcas.get(c);
+                if (mk != null) {
+                    marcaNumerada(p, f, x, z, c, mk, v);
+                    return;
+                }
                 String[] pt = puntos.get(c);
                 if (pt != null) {
                     cuarto(p, x, z, y0, alto, v);
@@ -264,6 +281,43 @@ public final class Casa {
                 mueble(p, f, x, z, m);
             }
         }
+    }
+
+    /** Una marca numerada: piso (o hueco de puerta) y la marca con su giro. */
+    private void marcaNumerada(Plano p, Piso f, int x, int z, char c, String[] mk, Estilo v) {
+        int y0 = f.y();
+        if ("puerta".equals(mk[1])) {
+            muro(p, x, z, y0, f.alto(), v, true);
+            p.set(x, y0 + 3, z, v.pared());
+        } else {
+            cuarto(p, x, z, y0, f.alto(), v);
+        }
+        float yaw = Float.NaN;
+        for (int i = 0; i < 4 && Float.isNaN(yaw); i++) {
+            char a = f.en(x + DIR[i][0], z + DIR[i][1]), b = f.en(x + 2 * DIR[i][0], z + 2 * DIR[i][1]);
+            if (!mk[2].isEmpty() && a == mk[2].charAt(0) || !mk[3].isEmpty() && b == mk[3].charAt(0)) {
+                yaw = YAW[i];
+            }
+        }
+        if (Float.isNaN(yaw)) {
+            String m = mira(f, x, z, "pared");
+            yaw = switch (m) {
+                case "north" -> 180F;
+                case "east" -> 270F;
+                case "west" -> 90F;
+                default -> 0F;
+            };
+        }
+        int n = cuentaMarcas.merge(c, 1, Integer::sum) - 1;
+        p.marca(mk[0] + n, x, y0 + 1, z, yaw);
+    }
+
+    /** El yaw de Minecraft hacia cada lado de {@link #DIR} (norte, sur, este, oeste). */
+    private static final float[] YAW = {180F, 0F, 270F, 90F};
+
+    /** Cuántas marcas numeradas de un símbolo se pusieron. */
+    public int marcas(char c) {
+        return cuentaMarcas.getOrDefault(c, 0);
     }
 
     private static boolean esMuro(char c) {

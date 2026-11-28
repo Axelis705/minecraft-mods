@@ -1,0 +1,609 @@
+# El hotel del Coleccionista (lo arma herramientas/mapas/hotel_plano.py; lo lee Casa.java y lo termina Hotel.java).
+# Cada letra es una columna de bloques. Diez pisos de 51 x 51, de 4 de alto por dentro.
+estilo c nombre=Pasillo piso=coleccionista:parquet|coleccionista:madera_pulida alfombra=coleccionista:alfombra_roja pared=coleccionista:papel_tapiz luz=7
+estilo h nombre=Habitación piso=coleccionista:parquet pared=coleccionista:papel_verde luz=6
+estilo j nombre=Habitación piso=coleccionista:parquet pared=coleccionista:papel_rosa luz=6
+estilo i nombre=Habitación piso=coleccionista:losa_tablon pared=coleccionista:papel_azul luz=6
+estilo b nombre=Baño piso=coleccionista:azulejo|coleccionista:azulejo_sucio pared=coleccionista:azulejo zoclo=coleccionista:azulejo_remate luz=5
+estilo s nombre=Suite piso=coleccionista:marmol_crema|coleccionista:parquet alfombra=coleccionista:alfombra_cafe pared=coleccionista:papel_dorado luz=7
+estilo a nombre=Vestíbulo piso=coleccionista:marmol_negro|coleccionista:marmol_crema pared=coleccionista:papel_tapiz zoclo=coleccionista:marmol_negro luz=9
+estilo r nombre=Salón piso=coleccionista:parquet|coleccionista:losa_marmol pared=coleccionista:papel_dorado zoclo=coleccionista:marmol_negro luz=8
+estilo q nombre=Cocina piso=coleccionista:azulejo|coleccionista:azulejo_sucio pared=coleccionista:azulejo_sucio luz=8
+estilo l nombre=Lavandería piso=coleccionista:linoleo pared=coleccionista:azulejo_sucio zoclo=coleccionista:concreto luz=7
+estilo o nombre=Oficina piso=coleccionista:linoleo_verde pared=coleccionista:panel_madera luz=7
+estilo e nombre=Servicio piso=coleccionista:concreto_piso pared=coleccionista:concreto zoclo=coleccionista:concreto techo=coleccionista:concreto luz=4
+estilo k nombre=Clóset piso=coleccionista:concreto_piso pared=coleccionista:concreto zoclo=coleccionista:concreto techo=coleccionista:concreto luz=0
+estilo p nombre=Spa piso=coleccionista:azulejo pared=coleccionista:azulejo zoclo=coleccionista:azulejo_remate luz=6
+estilo m nombre=Inundado piso=coleccionista:concreto_humedo|coleccionista:lodo pared=coleccionista:papel_verde luz=5
+estilo t nombre=Ático piso=coleccionista:tablon|coleccionista:losa_tablon pared=coleccionista:viga_madera zoclo=coleccionista:tablon techo=coleccionista:viga_madera luz=4
+estilo u nombre=Quemado piso=coleccionista:losa_tablon|coleccionista:brasas pared=coleccionista:ladrillo_oscuro zoclo=coleccionista:ladrillo_oscuro luz=3
+mueble B coleccionista:cama_antigua cama
+mueble R coleccionista:ropero doble
+mueble K coleccionista:cajon encima=coleccionista:lampara_mesa[facing={mira}]
+mueble M coleccionista:mesa
+mueble S coleccionista:silla mira=mesa
+mueble A coleccionista:sillon doble
+mueble T coleccionista:tina
+mueble I coleccionista:retrete
+mueble V coleccionista:lavabo
+mueble E coleccionista:espejo y=2
+mueble P coleccionista:planta doble
+mueble F coleccionista:retrato_dama y=2
+mueble G coleccionista:retrato_caballero y=2
+mueble H coleccionista:retrato_nina y=2
+mueble C coleccionista:candelabro doble
+mueble J coleccionista:maleta
+mueble O coleccionista:papeles
+mueble U coleccionista:mancha
+mueble Q coleccionista:telarana y=3
+mueble Y coleccionista:grava alto=2
+mueble Z coleccionista:tablon alto=3
+mueble N coleccionista:maniqui doble
+mueble L coleccionista:archivero doble
+mueble Ñ coleccionista:estante_archivo doble
+mueble ¡ coleccionista:lavabo
+mueble ¿ coleccionista:reloj_pie doble
+mueble Ç coleccionista:piano
+mueble Ö coleccionista:silla_ruedas
+mueble Ü coleccionista:camilla
+mueble Ä coleccionista:maquina_coser
+mueble Æ coleccionista:barril
+marca & hotel.cab. lejos=c
+marca $ hotel.serv. puerta hacia=k
+marca * hotel.rata.
+marca + hotel.tubo.
+marca ! hotel.pua.
+marca = hotel.cand.
+marca , hotel.charco.
+marca ? hotel.nota.
+marca ; hotel.botiquin.
+
+# piso 1
+piso 0 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#bbbTbI#bbbTbbI#bbbTbI#ssssss#ssssssX
+Xssssss#ssssss#bbbbbb#bbbbbbb#bbbbbb#ssssss#ssssssX
+WssBBss#ssssss#bbbbbV#bbbbbbV#bbbbbV#ssBBss#ssssssW
+Xssssss#ssPsss##D######D#######D#####ssssss#ssPsssX
+Xssssss#ssssss#jjGjjR#iiEiiiR#hhEhhR#ssssss#ssssssX
+Xssssss#ssssss#jjjjjj#iiiiiii#hhhhhh#ssssss#ssssssX
+WssssGs|ssssss#jjjjjj#iiiiiii#hhhhhh#ssssGs|ssssssW
+Xssssss|ssssss#Kjjjjj#Kiiiiii#Khhhhh#ssssss|ssssssX
+Xssssss#ssssssDjBjjjjDiBiiiii#BBh?hhDssssss#ssssssX
+Xssssss#ssAAss#jjjjjj#iiiiiii#hhhhhh#ssssss#ssAAssX
+Wssssss#ssssss#jj#####iiiiiSM#hhhhSM#ssssss#ssssssW
+XsRssss#ssssCs#jj#kk##iiiiiii#hhhhhh#sRssss#ssssCsX
+Xssssss#ssssss#jj#kk##iiiiiii#hhhhhh#ssssss#ssssssX
+X########D######D#$####D#######D#########D########X
+WIbV#RhhhhhMhh#>>>>ccccccccccccccccc#qqqqqqqqqqqqqW
+Xbbb#hhhhhhOhh#cccccccccccccccccc+YcDqqq¡qqqMqqqqqX
+XTbb#hJhhhhhhh#cccccccccc¿cccccccccc#qqqqqqqqqqqqqX
+Xbbb#Hhhhhhhhh#cccccccMMMMMMMccccccc#qqqqqqqqqqqqqX
+WbbbDhhhhBhhhhDccccaaaaaaaaaaaaacccc#qqqqqqqqqqqqqW
+Xbbb#hOhKhhUhO#cc+caAaaaaaaaaaAacccc##qq¡qqqMqqqqqX
+X########D#####ccccaaaaaaaaaaaaacccc|&###D########X
+XIbV#RiiiiiMii#ccccaaaaaaaaaaaaacccc##qqqqqqqqqqqqX
+Wbbb#iiiiiiSii#ccccaaaaaaaaaaaaaccccDqqqqqqqqqqqqqW
+Xbbb#iiiiiiiii#ccccaaaaaÆaÆaaaaacccc#qqq¡qqqMqqqqqX
+XTbb#iiiiii*ii#ccccaaaaaaCaaaaaacccc#q*qqqqqqqqqqqX
+Xbbb#Eiiiiiiii#c!!caaaaaÆaÆaaaaacccc#qqqqqqqqqqqqqX
+WbbbDiiiiBiiiiDccccaaaaaaaaaaaaacccc#qqqqqqqqqqqqqW
+Xbbb#iiiKiiii##ccccaaaaaaaaaaaaacccc#qqq¡qqqMqqqqqX
+X########D###&|ccccaaaaaaaaaaaaacccc#####D########X
+XIbV#RjjjjjMj##ccccaaaaaaaaaaaaacccc#qqqqqqqqqqqqqX
+Wbbb#jjjjjjSjj#ccccaaaaaaaaaaaaaccccDqqqqqqqqqqqqqW
+XTbb#jjjjjjjjj#ccccccccccccccccccccc#qqq¡qqqMqqqqqX
+Xbbb#Gjjjjjjjj#cccccccccccc+cccccccc#q;qqqqqqqqqqqX
+XbbbDjjjjBjjjjDcYccccccccccccccccccc#qqqqqqqqqqqqqX
+Wbbb#jjjKjjjjj#ccccccccccccccccc<<<<#qqqqqqqqqqqqqW
+X########D#######$#D#|#####D######D######D########X
+Xssssss#ssssss##kk#r#&#rrrrrr#rrrrrr#ssssss#ssssssX
+Xssssss#ssssss##kk#rr#rrrrrrr#rrrrrr#ssssss#ssssssX
+WssBBss#ssssss#####rr#rrrrrrr#rrrrrr#ssBBss#ssssssW
+Xssssss#ssPsss#rrrrrr#rrrrrrr#rrrrrr#ssssss#ssPsssX
+Xssssss#ssssssDrrrrrrDrrrrrrrDrrrrrrDssssss#ssssssX
+Xssssss#ssssss#rMrrMr#MrrMrrM#rMrrMr#ssssss#ssssssX
+WssssGs|ssssss#rSrrSr#SrrSrrS#rSr?Sr#ssssGs|ssssssW
+Xssssss|ssssss#rrrrrr#rrrrrrr#rrrrrr#ssssss|ssssssX
+Xssssss#ssssss#rrrrrr#rrrrrrr#rrrrrr#ssssss#ssssssX
+Xssssss#ssAAss#rrrrrr#rrrrrrr#rrrrrr#ssssss#ssAAssX
+Wssssss#ssssss#rrrrrr#rrrrrrr#rrrrrr#ssssss#ssssssW
+XsRssss#ssssCs#rrrrrr#rrrrrrr#rrrrrr#sRssss#ssssCsX
+Xssssss#ssssss#rrrrrr#rrrrrrr#rrrrrr#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 2
+piso 5 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#bbbTbI#bbbTbbI#bbbTbI#ssssss#ssssssX
+Xssssss#ssssss#bbbbbb#bbbbbbb#bbbbbb#ssssss#ssssssX
+WssBBss#ssssss#bbbbbV#bbbbbbV#bbbbbV#ssBBss#ssssssW
+Xssssss#ssPsss##D######D#######D#####ssssss#ssPsssX
+Xssssss#ssssss#iiGiiR#hhGhhhR#jjEjjR#ssssss#ssssssX
+Xssssss#ssssss#iiiiii#hhhhhhh#jJjjOj#ssssss#ssssssX
+WssssFs|ssssss#iiiiii#hhhhhhh#jJjjjj#ssssFs|ssssssW
+Xssssss|ssssss#Kiiiii#Khhhhhh#Ojjjjj#ssssss|ssssssX
+Xssssss#ssssssDiBiiii#BBhÇhhhDjBjjjjDssssss#ssssssX
+Xssssss#ssAAss#iiiiii#hhhhhhh#jjjjjj#ssssss#ssAAssX
+Wssssss#ssssss#iiiiSM#hhh*hSM#jjjjSM#ssssss#ssssssW
+XsRssss#ssssCs#iiiiii#hhShhhh#jjjjjj#sRssss#ssssCsX
+Xssssss#ssssss#iiiii#&#hhhhhh#jjUjjj#ssssss#ssssssX
+X########D######D####|#D#######D#########D########X
+WIbV#Rjjjjj####ccccccccccccccccccccv#hhhhhKhhh#bbbW
+Xbbb#jjjjjj#kk#cYccccccc!ccccccccccvDhhhhBhhhhDbbbX
+XTbb#jjjjjj#kk$ccccccccc!ccccc+ccccv####hhhhhE#bbbX
+Xbbb#Fjjjjj####ccccccccccccccccccccv$kk#hhhhhh#bbTX
+WbbbDjjjjBjjjjDcccc:::::::::::::cccc#kk#hhhhhh#bbbW
+Xbbb#jjjKjjjj##cccc:~~~~~~~~~~~:cccc####hhhhhR#VbIX
+X########D###&|cccc:~~~~~~~~~~~:cccc##############X
+XIbV#RhhhhhMh##cccc:~~~~~~~~~~~:cccc#OOjjBKjjj#bbbX
+Wbbb#hhhhhhShh#cccc:~~~~~~~~~~~:ccccDjjjjBjjjjDbbbW
+Xbbb#hhhhhhhhh#cccc:~~~~~~~~~~~:cccc#jjjjjJjjF#bbbX
+XTbb#hhhhhhhhh#cccc:~~~~~~~~~~~:cccc#jjjjjjjjj#bbTX
+Xbbb#Ghhhhhhhh#cccc:~~~~~~~~~~~:cccc#jjjjjOjjj#bbbX
+WbbbDhhhhBhhhhDcc+c:~~~~~~~~~~~:cccc#jjSjjjJjj#bbbW
+Xbbb#hhhKBhhhh#cccc:~~~~~~~~~~~:cccc#jjMjjjjjR#VbIX
+X##############cccc:~~~~~~~~~~~:cccc##############X
+XIbV#RiiiiiMii#cccc:~~~~~~~~~~~:cccc#iiiiBKiii#bbbX
+Wbbb#iiiiiiSii#cccc:::::::::::::ccccDiiiiBiiiiDbbbW
+XTbb#iiiiiiiii#^cccccccccccccccccccc#iiiiiiiiF#bbbX
+Xbbb#Fi?iiiiii#^cccccccccccccccccc+c#iiii?iiii#bbTX
+XbbbDiiiiBiiiiD^ccccccccccccccccccYc#iiSiiiiii#bbbX
+Wbbb#iiiKiiiii#^cccccccccccccccccccc#iiMiiiiiR#VbIW
+X########D########DD#####|#D#|##D#D######D########X
+Xssssss#ssssss#rrrrrrrrrrrrr#&#rrrrr#ssssss#ssssssX
+Xssssss#ssssss#rr;rrrrrrr*rrr#rrrrrr#ssssss#ssssssX
+WssBBss#ssssss#rrrrrrr=rrrrr=rrrrrrr#ssBBss#ssssssW
+Xssssss#ssPsss#rrrrrrrrrrrrrrrrrrrrr#ssssss#ssPsssX
+Xssssss#ssssssDrrrrrrrrrrrrrrrrrrrrrDssssss#ssssssX
+Xssssss#ssssss#rrrrrrrrrr=rrrrrrrrrr#ssssss#ssssssX
+WssssFs|ssssss#rrrrrrrrrrrrrrrrrrrrr#ssssFs|ssssssW
+Xssssss|ssssss#rrrrrrrrrrrrrrrrrrrrr#ssssss|ssssssX
+Xssssss#ssssss#rrrr=rrrrrrrrrrr=rrrr#ssssss#ssssssX
+Xssssss#ssAAss#rrrrrrrrrrrrrrrrrrrrr#ssssss#ssAAssX
+Wssssss#ssssss#rrrrrrrrrrrrrrrrrrrrr#ssssss#ssssssW
+XsRssss#ssssCs#rCrrrrrCrrrrrCrrrrrCr#sRssss#ssssCsX
+Xssssss#ssssss#rrrrrrrrrrrrrrrrrrrrr#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 3
+piso 10 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#bbbTbI#bbbTbbI#bbbTbI#ssssss#ssssssX
+Xssssss#ssssss#bbbbbb#bbbbbbb#bbbbbb#ssssss#ssssssX
+WssBBss#ssssss#bbbbbV#bbbbbbV#bbbbbV#ssBBss#ssssssW
+Xssssss#ssPsss##D######D#######D#####ssssss#ssPsssX
+Xssssss#ssssss#hhhhhh#hhhhhhh#hhhhhh#ssssss#ssssssX
+Xssssss#ssssss#hhhhhh#hhhhhhh#hhhhhh#ssssss#ssssssX
+WssssGs|ssssss#hh?hhh#hhhhhhh#hhhhhh#ssssGs|ssssssW
+Xssssss|ssssss#NhNhNh#NhNhNhN#NhNhNh#ssssss|ssssssX
+Xssssss#ssssssDhhhhhh#hhhhhhh#hhhhhhDssssss#ssssssX
+Xssssss#ssAAss#hhhhhh#hhhhhhh#hhhhhh#ssssss#ssAAssX
+Wssssss#ssssss#hNhNhN#hNhNhNN#hN#####ssssss#ssssssW
+XsRssss#ssssCs#hhhhhh#hhhhhhh#hh#kk##sRssss#ssssCsX
+Xssssss#ssssss#hhhhhh#hhhhhh#&#h#kk##ssssss#ssssssX
+X########D######D######D#####|#D#$#######D########X
+WIbV#RiiiiiMii#>>>>ccccccccccccccccc#jjjjjKjjj#bbbW
+Xbbb#iiiiiiSii#cccccccccccccccccccYcDjjjjBjjjjDbbbX
+XTbb#iiiiiii;i#cccccccc+cccccccccccc#jjjjjjjjF#bbbX
+Xbbb#Eiiiiiiii#ccccccccccccccccccccc#jjjjjjjjj#bbTX
+WbbbDiiiiBiiiiDcccc:::::::::::::cccc#jjSjjjjjj#bbbW
+Xbbb#iiiKiiiii#cccc:~~~~~~~~~~~:cccc##jMjjjjjR#VbIX
+X########D#####cccc:~~~~~~~~~~~:cccc|&############X
+XIbV#RjjjjjMjj#cccc:~~~~~~~~~~~:cccc##iiiBKiii#bbbX
+Wbbb#jjjjjjOOj#cccc:~~~~~~~~~~~:ccccDiUiiBiiiiDbbbW
+Xbbb#jjjjjOjJj#cccc:~~~~~~~~~~~:c!!c#iiOiOiiiF#bbbX
+XTbb#jjjjjjj*j#cccc:~~~~~~~~~~~:cccc#Oi*iiiiii#bbTX
+Xbbb#Ejjjjjjjj#cccc:~~~~~~~~~~~:cccc#iiiiiiiii#bbbX
+WbbbDjjjjBjjjjDcccc:~~~~~~~~~~~:cccc#iiSiOiiii#bbbW
+Xbbb#jjjKOjjj##cccc:~~~~~~~~~~~:cccc#iiMiiiiiR#VbIX
+X############&|cccc:~~~~~~~~~~~:cccc##############X
+XIbV#RhhhhhMh##cccc:~~~~~~~~~~~:c+cc#hhhhBKhhh#bbbX
+Wbbb#hhhhhhShh#cccc:::::::::::::ccccDhhhhBhhhhDbbbW
+XTbb#hhhhhhhhh#ccccccccccccccccccccc#hhhhhhhhG#bbbX
+Xbbb#Ghhhhhhhh#ccccccccccccccccccccc#hhhhhhhhh#bbTX
+XbbbDhhhhBhhhhDcY+cccccccccccccccccc#hhShhhhhh#bbbX
+Wbbb#hhhKhhhhh#ccccccccccccccccc<<<<#hhMhhhhhR#VbIW
+X########D#########D#######D####$#D######D########X
+Xssssss#ssssss#jjjjjj#hhhhhhh##kk#ii#ssssss#ssssssX
+Xssssss#ssssss#jjjjjj#hhhhhhh##kk#ii#ssssss#ssssssX
+WssBBss#ssssss#MSjjjj#MShhhhh#####ii#ssBBss#ssssssW
+Xssssss#ssPsss#jjjjjj#JhhhhJh#iiiiii#ssssss#ssPsssX
+Xssssss#ssssssDjj?jBjDOhhOhBB#iiiiBiDssssss#ssssssX
+Xssssss#ssssss#jjjjjK#UhhhhhK#iiiiiK#ssssss#ssssssX
+WssssHs|ssssss#jjjjjj#hhhhhhh#iiiiii#ssssHs|ssssssW
+Xssssss|ssssss#jjjjjj#hhhhhhh#iiiiii#ssssss|ssssssX
+Xssssss#ssssss#RjjFjj#RhhhEhh#RiiFii#ssssss#ssssssX
+Xssssss#ssAAss#####D#######D######D##ssssss#ssAAssX
+Wssssss#ssssss#Vbbbbb#Vbbbbbb#Vbbbbb#ssssss#ssssssW
+XsRssss#ssssCs#bbbbbb#bbbbbbb#bbbbbb#sRssss#ssssCsX
+Xssssss#ssssss#IbTbbb#IbbTbbb#IbTbbb#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 4
+piso 15 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#bbbTbI#bbbTbbI#bbbTbI#ssssss#ssssssX
+Xssssss#ssssss#bbbbbb#bbbbbbb#bbbbbb#ssssss#ssssssX
+WssBBss#ssssss#bbbbbV#bbbbbbV#bbbbbV#ssBBss#ssssssW
+Xssssss#ssPsss##D######D#######D#####ssssss#ssPsssX
+Xssssss#ssssss#jjFjjR#iiGiiiR#hhFhhR#ssssss#ssssssX
+Xssssss#ssssss#jjjjjj#iiiiiii#hOhhhh#ssssss#ssssssX
+WssssFs|ssssss#jjjjjj#iiiiiii#hUhhhh#ssssGs|ssssssW
+Xssssss|ssssss#Kjjjjj#Kiiiiii#KhhhhU#ssssss|ssssssX
+Xssssss#ssssssDjBjjjjDiBiiiii#OBhhhhDssssss#ssssssX
+Xssssss#ssAAss#jjjjjj#iiiiiii#hhhOhh#ssssss#ssAAssX
+Wssssss#ssssss#jjjjSM#iiiiiSM#hhhhSM#ssssss#ssssssW
+XsRssss#ssssCs#jjjjjj#iii*iii#hhh;hh#sRssss#ssssCsX
+Xssssss#ssssss#jjjjj#&#iiiiii#hhhhhh#ssssss#ssssssX
+X########D######D####|#D#######D#########D########X
+WIbV#RhhhhhMhh#ccccccccccccccccccccv#lllllllllllllW
+Xbbb#hhhhhhShh#cYccccccccccccccccccvDllllJlllllÄllX
+XTbb#hhhh?hhhh#c+ccccccccccccccccccv#llllll?llllllX
+Xbbb#Hhhhhhhhh#ccccccccccccccccccccv#llllJlllllÆllX
+WbbbDhhhhBhhhhDcccc:::::::::::::cccc#lllllllllllllW
+Xbbb#hhhKhhhhh#cccc:~~~~~~~~~~~:cccc#llllllllllÄllX
+X########D#####cccc:~~~~~~~~~~~:cccc#####D########X
+XIbV#RiiiiiMii#cccc:~~~~~~~~~~~:cccc#llllllllllÆllX
+Wbbb#iiiiiiSii#cccc:~~~~~~~~~~~:c+ccDlllllllllllllW
+Xbbb#iiiiiiiii#cccc:~~~~~~~~~~~:cccc#llllJlllllÄllX
+XTbb#iiiiiiiii#cccc:~~~~~~~~~~~:cccc#lllllll~lllllX
+Xbbb#Hiiiiiiii#cccc:~~~~~~~~~~~:cccc#llllJll~llÆllX
+WbbbDiiiiBiiiiDcccc:~~~~~~~~~~~:cccc#lllllllllllllW
+Xbbb#iiiKBiiii#cccc:~~~~~~~~~~~:cccc##lllJlllllÄllX
+X##############cccc:~~~~~~~~~~~:cccc|&############X
+XIbV#Rjjjjj####cccc:~~~~~~~~~~~:cccc##lllJlllllÆllX
+Wbbb#jjjjjj#kk#cccc:::::::::::::ccccDlllllllllllllW
+XTbb#jjjjjj#kk$^cccccccccccccccccccc####lJlllllÄllX
+Xbbb#Ejjjjj####^cccc+ccccc!ccccccccc$kk#llllllllllX
+XbbbDjjjjBjjjjD^cccccccccc!cccccccYc#kk#lJlllllÆllX
+Wbbb#jjjKjjjjj#^cccccccccccccccccccc####llllllllllW
+X########D#########D#######D#|####D######D########X
+Xssssss#ssssss#iiJiii#jjjjjj#&#hhhhh#ssssss#ssssssX
+Xssssss#ssssss#iiiiii#jjjjjjj#hhhhhh#ssssss#ssssssX
+WssBBss#ssssss#MSiiii#MSj*jjj#MShhhh#ssBBss#ssssssW
+Xssssss#ssPsss#iiiiii#jjjjjjj#hhhhhh#ssssss#ssPsssX
+Xssssss#ssssssDiiiiBiDjjjjjBB#hhhhBhDssssss#ssssssX
+Xssssss#ssssss#iiOiiJ#jjjjjjK#hhhhhK#ssssss#ssssssX
+WssssHs|ssssss#iiiiii#jjjjjjj#hhhhhh#ssssGs|ssssssW
+Xssssss|ssssss#iiiiii#jjjjjjj#hhhhhh#ssssss|ssssssX
+Xssssss#ssssss#RiiEii#RjjjEjj#RhhGhh#ssssss#ssssssX
+Xssssss#ssAAss#####D#######D######D##ssssss#ssAAssX
+Wssssss#ssssss#Vbbbbb#Vbbbbbb#Vbbbbb#ssssss#ssssssW
+XsRssss#ssssCs#bbbbbb#bbbbbbb#bbbbbb#sRssss#ssssCsX
+Xssssss#ssssss#IbTbbb#IbbTbbb#IbTbbb#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 5
+piso 20 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#bbbTbI#bbbTbbI#bbbTbI#ssssss#ssssssX
+Xssssss#ssssss#bbbbbb#bbbbbbb#bbbbbb#ssssss#ssssssX
+WssBBss#ssssss#bbbbbV#bbbbbbV#bbbbbV#ssBBss#ssssssW
+Xssssss#ssPsss##D######D#######D#####ssssss#ssPsssX
+Xssssss#ssssss#iiEiiR#hhHhhhR#jjGjjR#ssssss#ssssssX
+Xssssss#ssssss#iiiiii#hhhhhhh#jjjjjU#ssssss#ssssssX
+WssssGs|ssssss#iiiiii#hhhhhhh#jjjUjj#ssssGs|ssssssW
+Xssssss|ssssss#Kiiiii#Khhhhhh#Kjjjjj#ssssss|ssssssX
+Xssssss#ssssssDiBiiiiDhBhhhhhDjBO?jjDssssss#ssssssX
+Xssssss#ssAAss#iiiiii#hhhhhhh#Ojjjjj#ssssss#ssAAssX
+Wssssss#ssssss#ii#####hhhhhSM#JjjjSM#ssssss#ssssssW
+XsRssss#ssssCs#ii#kk##hhhhhhh#jjjjjj#sRssss#ssssCsX
+Xssssss#ssssss#ii#kk##hhhhhhh#jjjjjj#ssssss#ssssssX
+X########D######D#$####D#######D#########D########X
+WIbV#uuuuuuuuu#>>>>ccccccccccccccccc#hhhhhKhhh#bbbW
+Xbbb#uuuuuuuuu#cccccccccccccccccc+YcDhhhhBhhhhDbbbX
+XTbb#uuuuuYYuu#ccccccccccccccccccccc#hhhhhhhhH#bbbX
+Xbbb#uuuuuuuuu#ccccccccccccccccccccc#hhhhhhhhh#bbTX
+WbbbDuuuuuuuuuDcYYY:::::::::::::cccc#hhShhhhhh#bbbW
+Xbbb#uuYYuuuuu#cc+c:~~~~~~~~~~~:cccc##hMhhhhhR#VbIX
+X########D#####cccc:~~~~~~~~~~~:cccc|&###D########X
+XIbV#uuuuuuuuu#cccc:~~~~~~~~~~~:cccc##jjjjKjjj#bbbX
+Wbbb#uuuuuuuuu#YYYc:~~~~~~~~~~~:ccccDjjjjBjjjjDbbbW
+Xbbb#uuuuuYYuu#cccc:~~~~~~~~~~~:cccc#jjjjjjjjE#bbbX
+XTbb#uuuuuu*uu#cccc:~~~~~~~~~~~:cccc#j*jjjjjjj#bbTX
+Xbbb#uYuuuuuuu#c!!c:~~~~~~~~~~~:cccc#jjjjjjjjj#bbbX
+WbbbDuuuuuuuuuDcYYY:~~~~~~~~~~~:cccc#jjSjjjjjj#bbbW
+Xbbb#Yuuuuuuu##cccc:~~~~~~~~~~~:cccc#jjMjjjjjR#VbIX
+X############&|cccc:~~~~~~~~~~~:cccc##############X
+XIbV#YuuuuuYu##cccc:~~~~~~~~~~~:cccc#iiiiBKiii#bbbX
+Wbbb#uuuYuuuuu#YYYc:::::::::::::ccccDiiiiBiiiiDbbbW
+XTbb#uuuuuuuuu#ccccccccccccccccccccc#iiiiiiiiE#bbbX
+Xbbb#uuuuuuuuu#cccccccccccc+cccccccc#i;iiiiiii#bbTX
+XbbbDuuuuuYuuuDcYccccccccccccccccccc#iiSiiiiii#bbbX
+Wbbb#uuuuuuuuu#ccccccccccccccccc<<<<#iiMiiiiiR#VbIW
+X########D#######$#D#|#####D######D######D########X
+Xssssss#ssssss##kk#h#&#iOiiii#jjJjjj#ssssss#ssssssX
+Xssssss#ssssss##kk#hh#iiiiiii#jjjUjj#ssssss#ssssssX
+WssBBss#ssssss#####hh#MSiiiii#MSUjjj#ssBBss#ssssssW
+Xssssss#ssPsss#hhhhhh#iiiiiii#jjjUjj#ssssss#ssPsssX
+Xssssss#ssssssDhhhhBhDiiiiiBiDjjjjBjDssssss#ssssssX
+Xssssss#ssssss#hhhhhK#iiiiiiK#jjjjjK#ssssss#ssssssX
+WssssHs|ssssss#hhhhhh#iiiiiii#jOj?jj#ssssHs|ssssssW
+Xssssss|ssssss#hhhhhh#iiiiiiO#jjjjjj#ssssss|ssssssX
+Xssssss#ssssss#RhhHhh#RiiiGii#RjjFjj#ssssss#ssssssX
+Xssssss#ssAAss#####D#######D######D##ssssss#ssAAssX
+Wssssss#ssssss#Vbbbbb#Vbbbbbb#Vbbbbb#ssssss#ssssssW
+XsRssss#ssssCs#bbbbbb#bbbbbbb#bbbbbb#sRssss#ssssCsX
+Xssssss#ssssss#IbTbbb#IbbTbbb#IbTbbb#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 6
+piso 25 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#bbbTbI#bbbTbbI#bbbTbI#ssssss#ssssssX
+Xssssss#ssssss#bbbbbb#bbbbbbb#bbbbbb#ssssss#ssssssX
+WssBBss#ssssss#bbbbbV#bbbbbbV#bbbbbV#ssBBss#ssssssW
+Xssssss#ssPsss##D######D#######D#####ssssss#ssPsssX
+Xssssss#ssssss#hhFhhR#jjFjjjR#iiFiiR#ssssss#ssssssX
+Xssssss#ssssss#hhhhhh#jjOjjjj#iiiiii#ssssss#ssssssX
+WssssGs|ssssss#hhhhJh#jjjjjjj#iiiiii#ssssFs|ssssssW
+Xssssss|ssssss#Khhhhh#Kjjjjjj#Kiiiii#ssssss|ssssssX
+Xssssss#ssssssDhBhhhh#BBjjjjjDiBiiiiDssssss#ssssssX
+Xssssss#ssAAss#OOhhhh#jjOjjjj#iiiiii#ssssss#ssAAssX
+Wssssss#ssssss#hOhhSM#jjj*jSM#iiiiSM#ssssss#ssssssW
+XsRssss#ssssCs#hhhhhh#Ojjjjjj#iiiiii#sRssss#ssssCsX
+Xssssss#ssssss#hOhhh#&#jjjjjJ#iiiiii#ssssss#ssssssX
+X########D######D####|#D#######D#########D########X
+WIbV#Riiiii####ccccccccccccccccccccv#jjjjjKjjj#bbbW
+Xbbb#iiiiii#kk#cYccccccc!ccccccccccvDjjjjBjjjjDbbbX
+XTbb#iiiiii#kk$ccccccccc!ccccc+ccccv####jjjjjG#bbbX
+Xbbb#Hiiiii####ccccccccccccccccccccv$kk#jjjjjj#bbTX
+WbbbDiiiiBiiiiDcccc:::::::::::::cccc#kk#jjjjjj#bbbW
+Xbbb#iiiKBiii##cccc:~~~~~~~~~~~:cccc####jjjjjR#VbIX
+X############&|cccc:~~~~~~~~~~~:cccc#####D########X
+XIbV#RjjjjjMj##cccc:~~~~~~~~~~~:cccc#iiiiiKiii#bbbX
+Wbbb#jjjjjjSjj#cccc:~~~~~~~~~~~:ccccDiiiiBiiiiDbbbW
+Xbbb#jjjjjjjjj#cccc:~~~~~~~~~~~:cccc#iiiiiiiiH#bbbX
+XTbb#jjjjjjjjj#cccc:~~~~~~~~~~~:cccc#iiiiiiiii#bbTX
+Xbbb#Ejjjjjjjj#cccc:~~~~~~~~~~~:cccc#iiiiiiiii#bbbX
+WbbbDjjjjBjjjjDcc+c:~~~~~~~~~~~:cccc#iiSiiiiii#bbbW
+Xbbb#jjjKBjjjj#cccc:~~~~~~~~~~~:cccc#iiMiiiiiR#VbIX
+X##############cccc:~~~~~~~~~~~:cccc#####D########X
+XIbV#ROhhhhMhh#cccc:~~~~~~~~~~~:cccc#hhhhhKhhh#bbbX
+Wbbb#hJhhhhShh#cccc:::::::::::::ccccDhhhhBhhhhDbbbW
+XTbb#hhhhhhhhh#^cccccccccccccccccccc#hhhhhhhhF#bbbX
+Xbbb#Fh?hhhOhh#^cccccccccccccccccc+c#hhhh?hhhh#bbTX
+XbbbDhJhhBhhhhD^ccccccccccccccccccYc#hhShhhhhh#bbbX
+Wbbb#hJhKhhhhh#^cccccccccccccccccccc#hhMhhhhhR#VbIW
+X########D#########D#####|#D#|#D##D######D########X
+Xssssss#ssssss#ppppppppppppp#&#ppppp#ssssss#ssssssX
+Xssssss#ssssss#pÜ;ppppppp*ppp#ppppÜp#ssssss#ssssssX
+WssBBss#ssssss#ppppppppppppppppppppp#ssBBss#ssssssW
+Xssssss#ssPsss#ppp,pppppp,pppppp,ppp#ssssss#ssPsssX
+Xssssss#ssssssDpÜppppppp,pppppp,ppÜpDssssss#ssssssX
+Xssssss#ssssss#pppppppp,pppppp,ppppp#ssssss#ssssssX
+WssssGs|ssssss#ppppppp,pppppp,pppppp#ssssFs|ssssssW
+Xssssss|ssssss#pÜpppp,pppppp,pppppÜp#ssssss|ssssssX
+Xssssss#ssssss#ppppp,pppppp,pppppppp#ssssss#ssssssX
+Xssssss#ssAAss#pppp,pppppp,ppppppppp#ssssss#ssAAssX
+Wssssss#ssssss#pÜpppppppppppppppppÜp#ssssss#ssssssW
+XsRssss#ssssCs#ppppppppppppppppppppp#sRssss#ssssCsX
+Xssssss#ssssss#ppppppppppppppppppppp#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 7
+piso 30 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#oooooo#ooooooo#oooooo#ssssss#ssssssX
+Xssssss#ssssss#LoLoLo#LoLoLoL#LoLoLo#ssssss#ssssssX
+WssBBss#ssssss#LoÑoLo#LoLoLoL#LoLoLo#ssBBss#ssssssW
+Xssssss#ssPsss#oooooo#ooooooo#oooooo#ssssss#ssPsssX
+Xssssss#ssssss#oooooo#ooooooo#oooooo#ssssss#ssssssX
+Xssssss#ssssss#ooooOo#oooooOo#ooooOo#ssssss#ssssssX
+WssssGs|ssssss#oo?ooo#ooooooo#oooooo#ssssGs|ssssssW
+Xssssss|ssssss#ooMooo#oooMooo#ooMooo#ssssss|ssssssX
+Xssssss#ssssssDooSoooDoooSoooDooSoooDssssss#ssssssX
+Xssssss#ssAAss#oooooo#ooooooo#oooooo#ssssss#ssAAssX
+Wssssss#ssssss#o?oooo#o?ooooo#o?#####ssssss#ssssssW
+XsRssss#ssssCs#oooooo#ooooooo#oo#kk##sRssss#ssssCsX
+Xssssss#ssssss#oooooo#oooooo#&#o#kk##ssssss#ssssssX
+X########D######D######D#####|#D#$#######D########X
+Wooooooooooooo#>>>>ccccccccccccccccc#iiiiiKiii#bbbW
+XoLLooOooooooo#cccccccccccccccccccYcDiiiiBiiiiDbbbX
+Xooooooooooo;o#cccccccc+cccccccccccc#iiiiiiiiH#bbbX
+XoLLooooMSoooo#ccccccccccccccccccccc#iiiiiiiii#bbTX
+Woooooooooo?ooDcccc:::::::::::::cccc#iiSiiiiii#bbbW
+XoLLoooooooooo#cccc:~~~~~~~~~~~:cccc##iMiiiiiR#VbIX
+X########D#####cccc:~~~~~~~~~~~:cccc|&############X
+XoLLoooooooooo#cccc:~~~~~~~~~~~:cccc##hhhBKhhh#bbbX
+WoooooOooooooo#cccc:~~~~~~~~~~~:ccccDhhhhBhhOhDbbbW
+XoLLoooooooooo#cccc:~~~~~~~~~~~:c!!c#hhhhhhhhG#bbbX
+XoooooooMSoo*o#cccc:~~~~~~~~~~~:cccc#hU*hhhhhh#bbTX
+XoLLoooooooooo#cccc:~~~~~~~~~~~:cccc#OhOhhhhhh#bbbX
+Woooooooooo?ooDcccc:~~~~~~~~~~~:cccc#hhShhhhUh#bbbW
+XoLLooooooooo##cccc:~~~~~~~~~~~:cccc#hhMhhhhhR#VbIX
+X############&|cccc:~~~~~~~~~~~:cccc#####D########X
+Xoooooooooooo##cccc:~~~~~~~~~~~:c+cc#jjjjjKjjj#bbbX
+WoLLooOooooooo#cccc:::::::::::::ccccDjjjjBjjjjDbbbW
+Xooooooooooooo#ccccccccccccccccccccc#jjjjjjjjH#bbbX
+XoLÑooooMSoooo#ccccccccccccccccccccc#jjjjjjjjj#bbTX
+Xoooooooooo?ooDcY+cccccccccccccccccc#jjSjjjjjj#bbbX
+WoLLoooooooooo#ccccccccccccccccc<<<<#jjMjjjjjR#VbIW
+X########D#########D#######D####$#D######D########X
+Xssssss#ssssss#iiiiii#jjJjjjj##kk#hh#ssssss#ssssssX
+Xssssss#ssssss#Oiiiii#jjjjjjj##kk#hh#ssssss#ssssssX
+WssBBss#ssssss#MSiiii#MSjjjjU#####hh#ssBBss#ssssssW
+Xssssss#ssPsss#OOiiii#jjjjjjj#hhhhhh#ssssss#ssPsssX
+Xssssss#ssssssDii?iBB#jjjjjOjDhhhhBhDssssss#ssssssX
+Xssssss#ssssss#iiiiUK#jjJjjjK#hhhhhK#ssssss#ssssssX
+WssssFs|ssssss#iiiiii#jjjjjOj#hhhhhh#ssssGs|ssssssW
+Xssssss|ssssss#iiiiii#jjjjjjj#hhhhhh#ssssss|ssssssX
+Xssssss#ssssss#RiiFii#RjjjEjj#RhhEhh#ssssss#ssssssX
+Xssssss#ssAAss#####D#######D######D##ssssss#ssAAssX
+Wssssss#ssssss#Vbbbbb#Vbbbbbb#Vbbbbb#ssssss#ssssssW
+XsRssss#ssssCs#bbbbbb#bbbbbbb#bbbbbb#sRssss#ssssCsX
+Xssssss#ssssss#IbTbbb#IbbTbbb#IbTbbb#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 8
+piso 35 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#bbbTbI#bbbTbbI#bbbTbI#ssssss#ssssssX
+Xssssss#ssssss#bbbbbb#bbbbbbb#bbbbbb#ssssss#ssssssX
+WssBBss#ssssss#bbbbbV#bbbbbbV#bbbbbV#ssBBss#ssssssW
+Xssssss#ssPsss##D######D#######D#####ssssss#ssPsssX
+Xssssss#ssssss#iiHiiR#hhFhhhR#jjGjjR#ssssss#ssssssX
+Xssssss#ssssss#iiiiii#hhhhhhh#jjjjjj#ssssss#ssssssX
+WssssGs|ssssss#iiiiii#hhhhhhh#jjjjjj#ssssGs|ssssssW
+Xssssss|ssssss#Kiiiii#Khhhhhh#Kjjjjj#ssssss|ssssssX
+Xssssss#ssssssDiBiiiiDhBhhhhhDjBjjjjDssssss#ssssssX
+Xssssss#ssAAss#iiiiii#hhhhhhh#jjjjjj#ssssss#ssAAssX
+Wssssss#ssssss#iiiiSM#hhhhhSM#jjjjSM#ssssss#ssssssW
+XsRssss#ssssCs#iiiiii#hhh*hhh#jjj;jj#sRssss#ssssCsX
+Xssssss#ssssss#iiiii#&#hhhhhh#jjjjjj#ssssss#ssssssX
+X########D######D####|#D#######D#########D########X
+WIbV#RjjjjjMjj#ccccccccccccccccccccv#mmmmmOmmm#bbbW
+Xbbb#jjjjjjSjj#cYccccccccccccccccccvDmmmmBU,mmDbbbX
+XTbb#jjjj?jjjj#c+ccccccccccccccccccv#mmm,mm?mF#bbbX
+Xbbb#Hjjjjjjjj#ccccccccccccccccccccv#mmOmmmmmm#bbTX
+WbbbDjjjjBjjjjDcccc:::::::::::::cccc#mmSmmJmmm#bbbW
+Xbbb#jjjKjjjjj#cccc:~~~~~~~~~~~:cc,c#mmMOmmmmR#VbIX
+X########D#####cccc:~~~~~~~~~~~:cccc##############X
+XIbV#RhhhhhMhh#cccc:~~~~~~~~~~~:cccc#mmmmBKmmm#bbbX
+Wbbb#hhhhhhShh#cccc:~~~~~~~~~~~:c+ccDmmmmBm,mmDbbbW
+Xbbb#hhhhhhhhh#cccc:~~~~~~~~~~~:cccc#mmmmmOmmG#bbbX
+XTbb#hhhhhhhhh#cccc:~~~~~~~~~~~:cccc#mmm,OmOmm#bbTX
+Xbbb#Ghhhhhhhh#cccc:~~~~~~~~~~~:cc,c#mmmmmmmmm#bbbX
+WbbbDhhhhBhhhhDcccc:~~~~~~~~~~~:cccc#mmSOmmmmm#bbbW
+Xbbb#hhhKhhhhh#cccc:~~~~~~~~~~~:cccc##mJmmmmmR#VbIX
+X########D#####cccc:~~~~~~~~~~~:cccc|&###D########X
+XIbV#Riiiii####cccc:~~~~~~~~~~~:cccc##mmmmKmmm#bbbX
+Wbbb#iiiiii#kk#cccc:::::::::::::cc,cDmmmmBJ,mmDbbbW
+XTbb#iiiiii#kk$^cccccccccccccccccccc####,JmmmH#bbbX
+Xbbb#Hiiiii####^cccc+ccccc!ccccccccc$kk#mmmmJm#bbTX
+XbbbDiiiiBiiiiD^cccccccccc!cccccccYc#kk#mmmmmm#bbbX
+Wbbb#iiiKiiiii#^cccccccccccccccccccc####mmmmmR#VbIW
+X########D#########D#######D#|####D######D########X
+Xssssss#ssssss#mmmmmm#mmmmOm#&#mmmmm#ssssss#ssssssX
+Xssssss#ssssss#mJmmmm#mmmmmmU#mmmmmm#ssssss#ssssssX
+WssBBss#ssssss#MSmmOJ#MSm*mmm#MOmmmO#ssBBss#ssssssW
+Xssssss#ssPsss#mmm,mm#mmm,mUm#mmm,mm#ssssss#ssPsssX
+Xssssss#ssssssDmmmmBmDmmmmmBB#mmmUBmDssssss#ssssssX
+Xssssss#ssssss#mmmmmK#mmmmmmK#mOOmmK#ssssss#ssssssX
+WssssGs|ssssss#mUmm,m#mOmmm,m#mmmm,m#ssssHs|ssssssW
+Xssssss|ssssss#mmmmmm#mmmmmmm#mmmmmm#ssssss|ssssssX
+Xssssss#ssssss#RmmHmm#RmmmFmm#RmmGmm#ssssss#ssssssX
+Xssssss#ssAAss#####D#######D######D##ssssss#ssAAssX
+Wssssss#ssssss#Vbbbbb#Vbbbbbb#Vbbbbb#ssssss#ssssssW
+XsRssss#ssssCs#bbbbbb#bbbbbbb#bbbbbb#sRssss#ssssCsX
+Xssssss#ssssss#IbTbbb#IbbTbbb#IbTbbb#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 9
+piso 40 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xssssss#ssssss#bbbTbI#bbbTbbI#bbbTbI#ssssss#ssssssX
+Xssssss#ssssss#bbbbbb#bbbbbbb#bbbbbb#ssssss#ssssssX
+WssBBss#ssssss#bbbbbV#bbbbbbV#bbbbbV#ssBBss#ssssssW
+Xssssss#ssPsss##D######D#######D#####ssssss#ssPsssX
+Xssssss#ssssss#ssFssR#ssEsssR#ssHssR#ssssss#ssssssX
+Xssssss#ssssss#ssssss#sssssss#ssssss#ssssss#ssssssX
+WssssGs|ssssss#ssssss#sssssss#ssssss#ssssGs|ssssssW
+Xssssss|ssssss#Ksssss#Kssssss#Ksssss#ssssss|ssssssX
+Xssssss#ssssssDsBssssDsBsssss#BBs?ssDssssss#ssssssX
+Xssssss#ssAAss#sssNss#sssssss#ssNsss#ssssss#ssAAssX
+Wssssss#ssssss#ss#####sssssSM#ssssSM#ssssss#ssssssW
+XsRssss#ssssCs#ss#kk##sssssss#ssssss#sRssss#ssssCsX
+Xssssss#ssssss#ss#kk##sssssss#ssssss#ssssss#ssssssX
+X########D######D#$####D#######D#########D########X
+WIbV#RsssssMss#>>>>ccccccccccccccccc#sssssKsss#bbbW
+Xbbb#ssssssSss#cccccccccccccccccc+YcDssssBssssDbbbX
+XTbb#sssssssss#ccccccccccccccccccccc#ssssssssH#bbbX
+Xbbb#Gssssssss#ccccccccccccccccccccc#sssssssss#bbTX
+WbbbDssssBssssDcccc:::::::::::::cccc#ssSssssss#bbbW
+Xbbb#sssKBssss#cc+c:~~~~~~~~~~~:cccc##sMsssssR#VbIX
+X##############cccc:~~~~~~~~~~~:cccc|&###D########X
+XIbV#RsssssMss#cccc:~~~~~~~~~~~:cccc##ssssKsss#bbbX
+Wbbb#ssssssSss#cccc:~~~~~~~~~~~:ccccDssssBssssDbbbW
+Xbbb#sssssssss#cccc:~~~~~~~~~~~:cccc#ssssssssE#bbbX
+XTbb#ssssss*ss#cccc:~~~~~~~~~~~:cccc#s*sssssss#bbTX
+Xbbb#Essssssss#c!!c:~~~~~~~~~~~:cccc#sssssssss#bbbX
+WbbbDssssBssssDcccc:~~~~~~~~~~~:cccc#ssSssssss#bbbW
+Xbbb#sssKssss##cccc:~~~~~~~~~~~:cccc#ssMsssssR#VbIX
+X########D###&|cccc:~~~~~~~~~~~:cccc#####D########X
+XIbV#RsssssMs##cccc:~~~~~~~~~~~:cccc#sssssKsss#bbbX
+Wbbb#ssssssSss#cccc:::::::::::::ccccDssssBssssDbbbW
+XTbb#sssssssss#ccccccccccccccccccccc#ssssssssG#bbbX
+Xbbb#Hssssssss#cccccccccccc+cccccccc#s;sssssss#bbTX
+XbbbDssssBssssDcYccccccccccccccccccc#ssSssssss#bbbX
+Wbbb#sssKsssss#ccccccccccccccccc<<<<#ssMsssssR#VbIW
+X########D#######$#D#|#####D######D######D########X
+Xssssss#ssssss##kk#s#&#ssssss#ssssss#ssssss#ssssssX
+Xssssss#ssssss##kk#ss#sssssss#ssssss#ssssss#ssssssX
+WssBBss#ssssss#####ss#MSsssss#MSssss#ssBBss#ssssssW
+Xssssss#ssPsss#sssNss#sssssss#ssNsss#ssssss#ssPsssX
+Xssssss#ssssssDssssBsDsssssBB#ssssBsDssssss#ssssssX
+Xssssss#ssssss#sssssK#ssssssK#sssssK#ssssss#ssssssX
+WssssFs|ssssss#ssssss#sssssss#sss?ss#ssssFs|ssssssW
+Xssssss|ssssss#ssssss#sssssss#ssssss#ssssss|ssssssX
+Xssssss#ssssss#RssEss#RsssGss#RssGss#ssssss#ssssssX
+Xssssss#ssAAss#####D#######D######D##ssssss#ssAAssX
+Wssssss#ssssss#Vbbbbb#Vbbbbbb#Vbbbbb#ssssss#ssssssW
+XsRssss#ssssCs#bbbbbb#bbbbbbb#bbbbbb#sRssss#ssssCsX
+Xssssss#ssssss#IbTbbb#IbbTbbb#IbTbbb#ssssss#ssssssX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin
+
+# piso 10
+piso 45 alto 4 origen 0 0
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+Xtttttt#tttttt#tttttt#ttttttt#tttttt#tttttt#ttttttX
+Xtttttt#tttttt#tttttt#ttttttt#tttttt#tttttt#ttttttX
+WttBBtt#tttttt#JttJtt#ÆttÆttÆ#JttÆtt#ttBBtt#ttttttW
+Xtttttt#ttPttt#tttttt#ttttttt#tttttt#tttttt#ttPtttX
+Xtttttt#tttttt#tttttt#ttttttt#tttttt#tttttt#ttttttX
+Xtttttt#tttttt#tttttt#ttttttt#tttttt#tttttt#ttttttX
+WttttHt|tttttt#tttttt#ttttttt#tttttt#ttttGt|ttttttW
+Xtttttt|tttttt#tttttt#ttttttt#tttttt#tttttt|ttttttX
+Xtttttt#ttttttDtt*tttDttt*tttDtt*tttDtttttt#ttttttX
+Xtttttt#ttAAtt#tttttt#ttttttt#tttttt#tttttt#ttAAttX
+Wtttttt#tttttt#tttttt#ttt*ttt#tttttt#tttttt#ttttttW
+XtRtttt#ttttCt#tttttt#ttttttt#tttttt#tRtttt#ttttCtX
+Xtttttt#tttttt#ttttt#&#tttttt#tttttt#tttttt#ttttttX
+X########D######D####|#D#######D#########D########X
+Wtttttttttt####ccccccccccccccccccccc#ttttttttttZttW
+Xtttttttttt#kk#ccccccccc!cccccccccccDtttttttttttttX
+XttÆttttttt#kk$ccccccccc!ccccc+ccccc####t*ttttttttX
+Xtttttttt*t####ccccccccccccccccccccc$kk#tttttttJttX
+WtttttttttttttDcccc:::::::::::::cccc#kk#ttttttttttW
+XttJttttttttt##cccc:~~~~~~~~~~~:cccc####ttttttttttX
+X############&|cccc:~~~~~~~~~~~:cccc##############X
+XttJttttttttt##cccc:~~~~~~~~~~~:cccc#ttttttttttZttX
+Wttttttttttttt#cccc:~~~~~~~~~~~:ccccDtttttttttttttW
+Xttttttttttttt#cccc:~~~~~~~~~~~:cccc#tttttttttttttX
+XttJttttt*tttt#cccc:~~~~~~~~~~~:cccc#tttt*tttttJttX
+Xttttttttttttt#cccc:~~~~~~~~~~~:cccc#tttttttttttttX
+WtttttttttttttDcc+c:~~~~~~~~~~~:cccc#tttttttttttttW
+XttJtttttttttt#cccc:~~~~~~~~~~~:cccc#ttttttttttJttX
+X##############cccc:~~~~~~~~~~~:cccc#####D########X
+Xttttttttttttt#cccc:~~~~~~~~~~~:cccc#ttttttttttZttX
+Wttttttttttttt#cccc:::::::::::::ccccDtttttttttttttW
+XttJtttttttttt#ccccccccccccccccccccc#tttt*ttttttttX
+Xtttttt?t*tttt#ccccccccccccccccccc+c#tttt?tttttJttX
+XtttttttttttttDccccccccccccccccccccc#tttttttttttttX
+WttÆtttttttttt#ccccccccccccccccccccc#tttttttttttttW
+X########D#########D#######D#|####D######D########X
+Xtttttt#tttttt#tttttt#tttttt#&#ttttt#tttttt#ttttttX
+Xtttttt#tttttt#tt;ttt#ttt*ttt#tttttt#tttttt#ttttttX
+WttBBtt#tttttt#tttttt#ttttttt#tttttt#ttBBtt#ttttttW
+Xtttttt#ttPttt#tttttt#ttttttt#tttttt#tttttt#ttPtttX
+Xtttttt#ttttttDttt*tt#ttt*ttt#ttt*ttDtttttt#ttttttX
+Xtttttt#tttttt#tttttt#ttttttt#tttttt#tttttt#ttttttX
+WttttHt|tttttt#tttttt#ttttttt#tttttt#ttttGt|ttttttW
+Xtttttt|tttttt#tttttt#ttttttt#tttttt#tttttt|ttttttX
+Xtttttt#tttttt#tttttt#ttttttt#tttttt#tttttt#ttttttX
+Xtttttt#ttAAtt#tttttt#ttttttt#tttttt#tttttt#ttAAttX
+Wtttttt#tttttt#ttZttJ#ZttZttZ#ttZttZ#tttttt#ttttttW
+XtRtttt#ttttCt#tttttt#ttttttt#tttttt#tRtttt#ttttCtX
+Xtttttt#tttttt#tttttt#ttttttt#tttttt#tttttt#ttttttX
+XXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXXWXXX
+fin

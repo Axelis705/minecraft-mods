@@ -1,0 +1,753 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.botones.idle": {
+   "loop": true,
+   "animation_length": 5.0,
+   "bones": {
+    "cuerpo": {
+     "position": [
+      0,
+      "math.sin(q.anim_time*72)*0.2",
+      0
+     ]
+    },
+    "cabeza": {
+     "rotation": [
+      "math.sin(q.anim_time*36)*3",
+      "math.sin(q.anim_time*24)*14",
+      "(q.anim_time > 3.2 && q.anim_time < 4.3) ? 24 : math.sin(q.anim_time*36)*5"
+     ]
+    },
+    "mandibula": {
+     "rotation": [
+      "(q.anim_time > 3.3 && q.anim_time < 3.6) ? 6 : 0",
+      0,
+      0
+     ]
+    },
+    "mano_i": {
+     "rotation": [
+      "math.max(0, math.sin(q.anim_time*900))*8",
+      0,
+      0
+     ]
+    },
+    "mano_d": {
+     "rotation": [
+      "math.max(0, math.sin(q.anim_time*900 + 90))*8",
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "animation.botones.walk": {
+   "loop": true,
+   "animation_length": 1.6363,
+   "bones": {
+    "cuerpo": {
+     "position": [
+      0,
+      "math.abs(math.sin(q.anim_time*220))*0.9",
+      0
+     ],
+     "rotation": [
+      0,
+      "math.sin(q.anim_time*220)*3",
+      0
+     ]
+    },
+    "pierna_i": {
+     "rotation": [
+      "math.sin(q.anim_time*220)*24",
+      0,
+      0
+     ]
+    },
+    "pierna_d": {
+     "rotation": [
+      "-math.sin(q.anim_time*220)*24",
+      0,
+      0
+     ]
+    },
+    "pierna_i_baja": {
+     "rotation": [
+      "math.max(0, -math.sin(q.anim_time*220))*16",
+      0,
+      0
+     ]
+    },
+    "pierna_d_baja": {
+     "rotation": [
+      "math.max(0, math.sin(q.anim_time*220))*16",
+      0,
+      0
+     ]
+    },
+    "cabeza": {
+     "rotation": [
+      0,
+      "(math.mod(q.anim_time, 1.6363) > 0.8) ? 32 : -6",
+      "math.sin(q.anim_time*220)*4"
+     ]
+    },
+    "carrito": {
+     "position": [
+      0,
+      "math.abs(math.sin(q.anim_time*440))*0.15",
+      0
+     ]
+    },
+    "timbre": {
+     "rotation": [
+      0,
+      0,
+      "math.sin(q.anim_time*440)*2"
+     ]
+    },
+    "rueda_1": {
+     "rotation": [
+      "q.anim_time*-540",
+      0,
+      0
+     ]
+    },
+    "rueda_2": {
+     "rotation": [
+      "q.anim_time*-540",
+      0,
+      0
+     ]
+    },
+    "rueda_3": {
+     "rotation": [
+      "q.anim_time*-540",
+      0,
+      0
+     ]
+    },
+    "rueda_4": {
+     "rotation": [
+      "q.anim_time*-540",
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "animation.botones.caminar": {
+   "loop": true,
+   "animation_length": 1.6363,
+   "bones": {
+    "cuerpo": {
+     "rotation": [
+      2,
+      "math.sin(q.anim_time*220)*3",
+      0
+     ],
+     "position": [
+      0,
+      "math.abs(math.sin(q.anim_time*220))*0.9",
+      0
+     ]
+    },
+    "pierna_i": {
+     "rotation": [
+      "math.sin(q.anim_time*220)*24",
+      0,
+      0
+     ]
+    },
+    "pierna_d": {
+     "rotation": [
+      "-math.sin(q.anim_time*220)*24",
+      0,
+      0
+     ]
+    },
+    "pierna_i_baja": {
+     "rotation": [
+      "math.max(0, -math.sin(q.anim_time*220))*16",
+      0,
+      0
+     ]
+    },
+    "pierna_d_baja": {
+     "rotation": [
+      "math.max(0, math.sin(q.anim_time*220))*16",
+      0,
+      0
+     ]
+    },
+    "brazo_i": {
+     "rotation": [
+      "45 - 4 - math.sin(q.anim_time*220)*14",
+      0,
+      4
+     ]
+    },
+    "brazo_d": {
+     "rotation": [
+      "45 - 4 + math.sin(q.anim_time*220)*14",
+      0,
+      -4
+     ]
+    },
+    "brazo_i_bajo": {
+     "rotation": [
+      -4,
+      0,
+      0
+     ]
+    },
+    "brazo_d_bajo": {
+     "rotation": [
+      -4,
+      0,
+      0
+     ]
+    },
+    "cabeza": {
+     "rotation": [
+      8,
+      "math.sin(q.anim_time*110.0)*20",
+      0
+     ]
+    }
+   }
+  },
+  "animation.botones.idle_solo": {
+   "loop": true,
+   "animation_length": 4.0,
+   "bones": {
+    "cuerpo": {
+     "rotation": [
+      0,
+      0,
+      "math.sin(q.anim_time*90)*1.5"
+     ]
+    },
+    "brazo_i": {
+     "rotation": [
+      "45 - 4 + math.sin(q.anim_time*90)*4",
+      0,
+      5
+     ]
+    },
+    "brazo_d": {
+     "rotation": [
+      "45 - 4 - math.sin(q.anim_time*90)*4",
+      0,
+      -5
+     ]
+    },
+    "cabeza": {
+     "rotation": [
+      8,
+      "(q.anim_time > 1.5 && q.anim_time < 2.6) ? 150 : math.sin(q.anim_time*45)*10",
+      0
+     ]
+    }
+   }
+  },
+  "animation.botones.run": {
+   "loop": true,
+   "animation_length": 0.6923,
+   "bones": {
+    "cuerpo": {
+     "rotation": [
+      22,
+      0,
+      "math.sin(q.anim_time*520)*5"
+     ],
+     "position": [
+      0,
+      "math.abs(math.sin(q.anim_time*520))*1.6",
+      0
+     ]
+    },
+    "cabeza": {
+     "rotation": [
+      -18,
+      0,
+      "-math.sin(q.anim_time*520)*8 + 10"
+     ]
+    },
+    "mandibula": {
+     "rotation": [
+      "22 + math.sin(q.anim_time*1040)*6",
+      0,
+      0
+     ]
+    },
+    "pierna_i": {
+     "rotation": [
+      "math.sin(q.anim_time*520)*52",
+      0,
+      0
+     ]
+    },
+    "pierna_d": {
+     "rotation": [
+      "-math.sin(q.anim_time*520)*52",
+      0,
+      0
+     ]
+    },
+    "pierna_i_baja": {
+     "rotation": [
+      "math.max(0, -math.sin(q.anim_time*520))*40",
+      0,
+      0
+     ]
+    },
+    "pierna_d_baja": {
+     "rotation": [
+      "math.max(0, math.sin(q.anim_time*520))*40",
+      0,
+      0
+     ]
+    },
+    "brazo_i": {
+     "rotation": [
+      "45 - 110 + math.sin(q.anim_time*520)*18",
+      0,
+      8
+     ]
+    },
+    "brazo_d": {
+     "rotation": [
+      "45 - 110 - math.sin(q.anim_time*520)*18",
+      0,
+      -8
+     ]
+    },
+    "brazo_i_bajo": {
+     "rotation": [
+      -12,
+      0,
+      0
+     ]
+    },
+    "brazo_d_bajo": {
+     "rotation": [
+      -12,
+      0,
+      0
+     ]
+    },
+    "mano_i": {
+     "rotation": [
+      "math.sin(q.anim_time*1040)*20",
+      0,
+      0
+     ]
+    },
+    "mano_d": {
+     "rotation": [
+      "-math.sin(q.anim_time*1040)*20",
+      0,
+      0
+     ]
+    },
+    "gorro": {
+     "rotation": [
+      "math.sin(q.anim_time*1040)*6",
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "animation.botones.campana": {
+   "loop": false,
+   "animation_length": 1.6,
+   "bones": {
+    "cabeza": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.08": [
+       0,
+       0,
+       -22
+      ],
+      "0.5": [
+       0,
+       0,
+       -22
+      ],
+      "0.6": [
+       -10,
+       0,
+       8
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "brazo_d": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.25": {
+       "vector": [
+        -40,
+        0,
+        -24
+       ],
+       "easing": "easeOutQuad"
+      },
+      "0.42": {
+       "vector": [
+        6,
+        0,
+        16
+       ],
+       "easing": "easeInQuad"
+      },
+      "0.7": [
+       0,
+       0,
+       14
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "brazo_d_bajo": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.25": [
+       -40,
+       0,
+       0
+      ],
+      "0.42": [
+       0,
+       0,
+       0
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "timbre": {
+     "scale": {
+      "0.0": [
+       1,
+       1,
+       1
+      ],
+      "0.42": [
+       1,
+       1,
+       1
+      ],
+      "0.46": [
+       1.15,
+       0.7,
+       1.15
+      ],
+      "0.55": [
+       1,
+       1.1,
+       1
+      ],
+      "0.65": [
+       1,
+       1,
+       1
+      ]
+     }
+    },
+    "mandibula": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.5": [
+       0,
+       0,
+       0
+      ],
+      "0.62": {
+       "vector": [
+        38,
+        0,
+        0
+       ],
+       "easing": "easeOutBack"
+      },
+      "1.3": [
+       34,
+       0,
+       0
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "ojos": {
+     "scale": {
+      "0.0": [
+       1,
+       1,
+       1
+      ],
+      "0.6": [
+       1.6,
+       1.6,
+       1
+      ],
+      "1.3": [
+       1.6,
+       1.6,
+       1
+      ],
+      "1.6": [
+       1,
+       1,
+       1
+      ]
+     }
+    },
+    "cuerpo": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.6": [
+       -6,
+       0,
+       0
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    }
+   }
+  },
+  "animation.botones.atacar": {
+   "loop": false,
+   "animation_length": 0.9,
+   "bones": {
+    "cuerpo": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.2": [
+       -8,
+       0,
+       0
+      ],
+      "0.4": {
+       "vector": [
+        26,
+        0,
+        0
+       ],
+       "easing": "easeInQuad"
+      },
+      "0.9": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "brazo_i": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.2": [
+       -80,
+       0,
+       34
+      ],
+      "0.4": {
+       "vector": [
+        -55,
+        0,
+        -6
+       ],
+       "easing": "easeInQuad"
+      },
+      "0.9": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "brazo_d": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.2": [
+       -80,
+       0,
+       -34
+      ],
+      "0.4": {
+       "vector": [
+        -55,
+        0,
+        6
+       ],
+       "easing": "easeInQuad"
+      },
+      "0.9": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "mandibula": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.2": [
+       30,
+       0,
+       0
+      ],
+      "0.45": [
+       4,
+       0,
+       0
+      ],
+      "0.9": [
+       0,
+       0,
+       0
+      ]
+     }
+    }
+   }
+  },
+  "animation.botones.buscar": {
+   "loop": false,
+   "animation_length": 3.0,
+   "bones": {
+    "cabeza": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.4": [
+       6,
+       70,
+       0
+      ],
+      "0.9": [
+       6,
+       70,
+       12
+      ],
+      "1.3": [
+       6,
+       -90,
+       0
+      ],
+      "1.9": [
+       6,
+       -90,
+       -14
+      ],
+      "2.4": [
+       10,
+       175,
+       0
+      ],
+      "2.7": [
+       10,
+       175,
+       0
+      ],
+      "3.0": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "mandibula": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "1.0": [
+       8,
+       0,
+       0
+      ],
+      "1.2": [
+       0,
+       0,
+       0
+      ],
+      "2.4": [
+       10,
+       0,
+       0
+      ],
+      "2.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    }
+   }
+  }
+ }
+}

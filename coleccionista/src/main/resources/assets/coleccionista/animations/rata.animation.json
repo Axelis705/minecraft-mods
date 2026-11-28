@@ -1,0 +1,612 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.rata.idle": {
+   "loop": true,
+   "animation_length": 2.0,
+   "bones": {
+    "cabeza": {
+     "rotation": [
+      "math.max(0, math.sin(q.anim_time*1440))*6 - 4",
+      "math.sin(q.anim_time*90)*14",
+      0
+     ]
+    },
+    "cola_1": {
+     "rotation": [
+      0,
+      "math.sin(q.anim_time*180)*14",
+      0
+     ]
+    },
+    "cola_2": {
+     "rotation": [
+      0,
+      "math.sin(q.anim_time*180 - 60)*18",
+      0
+     ]
+    },
+    "cola_3": {
+     "rotation": [
+      0,
+      "math.sin(q.anim_time*180 - 120)*22",
+      0
+     ]
+    },
+    "llave": {
+     "rotation": [
+      0,
+      "q.anim_time*90",
+      0
+     ]
+    },
+    "resorte": {
+     "scale": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "animation.rata.walk": {
+   "loop": true,
+   "animation_length": 0.4,
+   "bones": {
+    "cuerpo": {
+     "position": [
+      0,
+      "math.abs(math.sin(q.anim_time*1800))*0.25",
+      0
+     ],
+     "rotation": [
+      0,
+      0,
+      "math.sin(q.anim_time*1800)*3"
+     ]
+    },
+    "cabeza": {
+     "rotation": [
+      "math.sin(q.anim_time*3600)*3",
+      0,
+      0
+     ]
+    },
+    "cola_1": {
+     "rotation": [
+      8,
+      "math.sin(q.anim_time*900.0)*24",
+      0
+     ]
+    },
+    "cola_2": {
+     "rotation": [
+      6,
+      "math.sin(q.anim_time*900.0 - 60)*30",
+      0
+     ]
+    },
+    "cola_3": {
+     "rotation": [
+      4,
+      "math.sin(q.anim_time*900.0 - 120)*34",
+      0
+     ]
+    },
+    "llave": {
+     "rotation": [
+      0,
+      "q.anim_time*900.0",
+      0
+     ]
+    },
+    "resorte": {
+     "scale": [
+      0,
+      0,
+      0
+     ]
+    },
+    "pata_di": {
+     "rotation": [
+      "math.sin(q.anim_time*1800 + 0)*55",
+      0,
+      0
+     ]
+    },
+    "pata_dd": {
+     "rotation": [
+      "math.sin(q.anim_time*1800 + 180)*55",
+      0,
+      0
+     ]
+    },
+    "pata_ti": {
+     "rotation": [
+      "math.sin(q.anim_time*1800 + 180)*55",
+      0,
+      0
+     ]
+    },
+    "pata_td": {
+     "rotation": [
+      "math.sin(q.anim_time*1800 + 0)*55",
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "animation.rata.run": {
+   "loop": true,
+   "animation_length": 0.2,
+   "bones": {
+    "cuerpo": {
+     "position": [
+      0,
+      "math.abs(math.sin(q.anim_time*3600))*0.25",
+      0
+     ],
+     "rotation": [
+      0,
+      0,
+      "math.sin(q.anim_time*3600)*3"
+     ]
+    },
+    "cabeza": {
+     "rotation": [
+      "math.sin(q.anim_time*7200)*3",
+      0,
+      0
+     ]
+    },
+    "cola_1": {
+     "rotation": [
+      8,
+      "math.sin(q.anim_time*1800.0)*24",
+      0
+     ]
+    },
+    "cola_2": {
+     "rotation": [
+      6,
+      "math.sin(q.anim_time*1800.0 - 60)*30",
+      0
+     ]
+    },
+    "cola_3": {
+     "rotation": [
+      4,
+      "math.sin(q.anim_time*1800.0 - 120)*34",
+      0
+     ]
+    },
+    "llave": {
+     "rotation": [
+      0,
+      "q.anim_time*1800.0",
+      0
+     ]
+    },
+    "resorte": {
+     "scale": [
+      0,
+      0,
+      0
+     ]
+    },
+    "pata_di": {
+     "rotation": [
+      "math.sin(q.anim_time*3600 + 0)*55",
+      0,
+      0
+     ]
+    },
+    "pata_dd": {
+     "rotation": [
+      "math.sin(q.anim_time*3600 + 180)*55",
+      0,
+      0
+     ]
+    },
+    "pata_ti": {
+     "rotation": [
+      "math.sin(q.anim_time*3600 + 180)*55",
+      0,
+      0
+     ]
+    },
+    "pata_td": {
+     "rotation": [
+      "math.sin(q.anim_time*3600 + 0)*55",
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "animation.rata.atacar": {
+   "loop": false,
+   "animation_length": 0.45,
+   "bones": {
+    "cuerpo": {
+     "position": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.12": [
+       0,
+       0.8,
+       -2.2
+      ],
+      "0.3": [
+       0,
+       0,
+       -0.6
+      ],
+      "0.45": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "cabeza": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.1": [
+       -22,
+       0,
+       0
+      ],
+      "0.2": [
+       12,
+       0,
+       0
+      ],
+      "0.45": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "quijada": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.1": [
+       40,
+       0,
+       0
+      ],
+      "0.2": [
+       0,
+       0,
+       0
+      ],
+      "0.45": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "resorte": {
+     "scale": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  },
+  "animation.rata.death": {
+   "loop": false,
+   "animation_length": 2.0,
+   "bones": {
+    "cuerpo": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.3": {
+       "vector": [
+        0,
+        0,
+        185
+       ],
+       "easing": "easeOutBack"
+      },
+      "2.0": [
+       0,
+       0,
+       180
+      ]
+     },
+     "position": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.15": [
+       0,
+       3,
+       0
+      ],
+      "0.3": [
+       0,
+       5,
+       0
+      ],
+      "2.0": [
+       0,
+       5,
+       0
+      ]
+     }
+    },
+    "resorte": {
+     "scale": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.3": [
+       0,
+       0,
+       0
+      ],
+      "0.42": [
+       1,
+       1.5,
+       1
+      ],
+      "0.55": [
+       1,
+       0.8,
+       1
+      ],
+      "0.7": [
+       1,
+       1.1,
+       1
+      ],
+      "0.85": [
+       1,
+       1,
+       1
+      ],
+      "2.0": [
+       1,
+       1,
+       1
+      ]
+     },
+     "rotation": {
+      "0.3": [
+       0,
+       0,
+       0
+      ],
+      "0.5": [
+       0,
+       0,
+       20
+      ],
+      "0.7": [
+       0,
+       0,
+       -14
+      ],
+      "0.9": [
+       0,
+       0,
+       8
+      ],
+      "1.1": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "llave": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "1.0": [
+       0,
+       540,
+       0
+      ],
+      "2.0": [
+       0,
+       640,
+       0
+      ]
+     }
+    },
+    "quijada": {
+     "rotation": [
+      24,
+      0,
+      0
+     ]
+    },
+    "pata_di": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.4": [
+       40,
+       0,
+       0
+      ],
+      "0.6": [
+       -30,
+       0,
+       0
+      ],
+      "0.8": [
+       30,
+       0,
+       0
+      ],
+      "1.0": [
+       -20,
+       0,
+       0
+      ],
+      "1.3": [
+       10,
+       0,
+       0
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "pata_dd": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.4": [
+       40,
+       0,
+       0
+      ],
+      "0.6": [
+       -30,
+       0,
+       0
+      ],
+      "0.8": [
+       30,
+       0,
+       0
+      ],
+      "1.0": [
+       -20,
+       0,
+       0
+      ],
+      "1.3": [
+       10,
+       0,
+       0
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "pata_ti": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.4": [
+       40,
+       0,
+       0
+      ],
+      "0.6": [
+       -30,
+       0,
+       0
+      ],
+      "0.8": [
+       30,
+       0,
+       0
+      ],
+      "1.0": [
+       -20,
+       0,
+       0
+      ],
+      "1.3": [
+       10,
+       0,
+       0
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "pata_td": {
+     "rotation": {
+      "0.0": [
+       0,
+       0,
+       0
+      ],
+      "0.4": [
+       40,
+       0,
+       0
+      ],
+      "0.6": [
+       -30,
+       0,
+       0
+      ],
+      "0.8": [
+       30,
+       0,
+       0
+      ],
+      "1.0": [
+       -20,
+       0,
+       0
+      ],
+      "1.3": [
+       10,
+       0,
+       0
+      ],
+      "1.6": [
+       0,
+       0,
+       0
+      ]
+     }
+    }
+   }
+  }
+ }
+}
