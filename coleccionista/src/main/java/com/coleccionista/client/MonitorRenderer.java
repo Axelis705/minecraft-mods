@@ -60,7 +60,20 @@ public class MonitorRenderer extends EntityRenderer<Monitor> {
         long ms = System.currentTimeMillis();
         UUID q = m.quien();
         Font font = Minecraft.getInstance().font;
-        if (q == null) {
+        if (q != null && Monitor.PERDIDA.equals(m.linea())) {
+            // quien acaba de caer en una trampa: estática rojiza, "SEÑAL PERDIDA" que parpadea y su nombre tachado abajo
+            float u = (ms / 30 % 7) * 0.13F, v = (ms / 30 % 5) * 0.17F;
+            quad(luz(buf, ESTATICA), ps, -w / 2, -h / 2, w / 2, h / 2, z, u, v, u + 0.35F, v + 0.3F, 0xFFB04040, 0xFFFF7A7A);
+            if (ms / 350 % 2 == 0) {
+                texto(d, ps, font, net.minecraft.network.chat.Component.translatable(Coleccionista.MODID + ".hotel.monitor.perdida").getString(), 0,
+                        0.03F, 0.0042F, 0xFFFFE0E0, z + 0.003F, true);
+            }
+            String n = m.nombre();
+            float esc = Math.min(0.003F, (w - 0.08F) / Math.max(1, font.width(n)));
+            texto(d, ps, font, n, 0, -0.08F, esc, 0xFFFFD0D0, z + 0.003F, true);
+            float an = font.width(n) * esc / 2 + 0.01F;
+            quad(luz(buf, BLANCO), ps, -an, -0.084F, an, -0.076F, z + 0.004F, 0, 0, 1, 1, 0xFFFF3030, 0xFFFF3030);
+        } else if (q == null) {
             float u = (ms / 40 % 7) * 0.13F, v = (ms / 40 % 5) * 0.17F;
             quad(luz(buf, ESTATICA), ps, -w / 2, -h / 2, w / 2, h / 2, z, u, v, u + 0.35F, v + 0.3F, 0xFF9A9A9A, 0xFFE0E0E0);
             texto(d, ps, font, net.minecraft.network.chat.Component.translatable(Coleccionista.MODID + ".hotel.monitor.sin").getString(), 0,

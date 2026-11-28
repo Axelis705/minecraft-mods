@@ -1808,5 +1808,10 @@
   "coleccionista.hotel.chat.ayuda_par": "Les regalo una pista… la salida está en un piso %s.",
   "coleccionista.hotel.par": "par",
   "coleccionista.hotel.impar": "impar",
-  "coleccionista.hotel.chat.ayuda_piso": "Última pista: la salida está en el piso %s. Cuidado con su vecina…"
+  "coleccionista.hotel.chat.ayuda_piso": "Última pista: la salida está en el piso %s. Cuidado con su vecina…",
+  "coleccionista.hotel.bajando": "▼ Piso %s",
+  "coleccionista.hotel.chat.minuto": "Les queda un minuto… y la luz es mía.",
+  "coleccionista.hotel.tablero": "ORDEN DE SALIDA",
+  "coleccionista.hotel.monitor.perdida": "SEÑAL PERDIDA",
+  "coleccionista.sub.hotel_reloj": "Tictac de un reloj"
 }

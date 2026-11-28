@@ -251,6 +251,8 @@ public final class RevisarMapas {
         int f = (int) (r.cuantos("no se llega") + r.cuantos("no cabe nadie")) + frentes(r, p) + cerca(r, p, "hotel.tubo.", 1)
                 + cerca(r, p, "hotel.bot.", 1) + cerca(r, p, "hotel.nota.", 1);
         System.out.println("HOTEL " + Hotel.ascensores + " ascensores, " + Hotel.puertas + " puertas" + (f == 0 ? " OK" : " FALLA " + f));
+        System.out.println("HOTEL detalles: " + Hotel.placasCuarto + " placas de cuarto, " + Hotel.cuadros + " cuadros, " + Hotel.telaranas
+                + " telarañas, " + Hotel.manchas + " manchas");
         fallas += f;
         Vista v = new Vista(p, r, tex);
         for (int k = 1; k <= Hotel.PISOS; k++) {

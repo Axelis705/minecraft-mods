@@ -24,6 +24,8 @@ public final class Hotel {
     /** Cuántos ascensores de llegada y puertas de servicio tiene (los cuenta el plano). */
     public static int ascensores, puertas;
     private static final int[][] DIR = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+    /** El nombre de cada dirección de {@link #DIR}. */
+    private static final String[] HACIA = {"north", "south", "east", "west"};
 
     private Hotel() {
     }
@@ -81,6 +83,7 @@ public final class Hotel {
             }
         }
         lamparas(p, c);
+        detalles(p, c);
         ascensores = cabs;
         puertas = servs;
         return p;
@@ -117,6 +120,121 @@ public final class Hotel {
                 }
             }
         }
+    }
+
+    /** Cuántos detalles se pusieron (para la revisión): placas de cuarto, cuadros, telarañas y manchas. */
+    public static int placasCuarto, cuadros, telaranas, manchas;
+
+    /**
+     * Los detalles de los pasillos: cada puerta de cuarto tiene su placa con el número (301, 302... en el sentido del reloj desde la
+     * esquina noroeste; los cuartos especiales dicen qué son: salón, cocina, lavandería, oficina, spa), cuadros viejos colgados entre
+     * puertas, telarañas arriba y manchas en la alfombra. Nada de esto estorba al caminar.
+     */
+    private static void detalles(Plano p, Casa c) {
+        String[] mira = {"south", "north", "west", "east"};
+        String[] retratos = {"retrato_dama", "retrato_caballero", "retrato_nina"};
+        placasCuarto = cuadros = telaranas = manchas = 0;
+        for (Casa.Piso f : c.pisos) {
+            int y0 = f.y(), piso = piso(y0);
+            // 1) las placas de los cuartos: puertas que dan al pasillo, en orden alrededor del patio
+            List<int[]> ps = new ArrayList<>();
+            for (int z = 0; z < 51; z++) {
+                for (int x = 0; x < 51; x++) {
+                    if (f.en(x, z) != 'D') {
+                        continue;
+                    }
+                    for (int i = 0; i < 4; i++) {
+                        if (f.en(x + DIR[i][0], z + DIR[i][1]) == 'c') {
+                            ps.add(new int[] {x, z, i});
+                            break;
+                        }
+                    }
+                }
+            }
+            ps.sort((a, b) -> Double.compare(angulo(a[0], a[1]), angulo(b[0], b[1])));
+            int n = 0;
+            for (int[] q : ps) {
+                int x = q[0], z = q[1], i = q[2];
+                int ax = x + DIR[i][0], az = z + DIR[i][1];
+                if (!"air".equals(p.get(ax, y0 + 3, az))) {
+                    continue;
+                }
+                String que = cuarto(f, x - DIR[i][0], z - DIR[i][1], -DIR[i][0], -DIR[i][1]);
+                if (que == null) {
+                    continue;
+                }
+                String texto = que.isEmpty() ? String.valueOf(piso * 100 + ++n) : que;
+                // (la placa mira hacia el pasillo: hacia donde va de la puerta al pasillo)
+                p.texto(ax, y0 + 3, az, "placa", HACIA[i], 0xD9A93A, texto);
+                placasCuarto++;
+            }
+            // 2) cuadros y telarañas por el pasillo; manchas en el piso de los cuartos (en el pasillo está la alfombra)
+            for (int z = 0; z < 51; z++) {
+                for (int x = 0; x < 51; x++) {
+                    int h = Math.floorMod(x * 7 + z * 11 + piso * 5, 97);
+                    if ("hjismu".indexOf(f.en(x, z)) >= 0 && h % 31 == 7 && "air".equals(p.get(x, y0 + 1, z))) {
+                        p.set(x, y0 + 1, z, C + "mancha[facing=" + mira[h % 4] + "]");
+                        manchas++;
+                    }
+                    if (f.en(x, z) != 'c') {
+                        continue;
+                    }
+                    int pared = -1;
+                    for (int i = 0; i < 4; i++) {
+                        if (f.en(x + DIR[i][0], z + DIR[i][1]) == '#') {
+                            pared = i;
+                            break;
+                        }
+                    }
+                    if (pared >= 0 && h % 6 == 0 && "air".equals(p.get(x, y0 + 2, z)) && "air".equals(p.get(x, y0 + 3, z))) {
+                        p.set(x, y0 + 2, z, C + retratos[h % 3] + "[facing=" + mira[pared] + "]");
+                        cuadros++;
+                    } else if (pared >= 0 && h % 23 == 4 && "air".equals(p.get(x, y0 + 4, z))) {
+                        p.set(x, y0 + 4, z, C + "telarana");
+                        telaranas++;
+                    }
+                }
+            }
+        }
+    }
+
+    /** El ángulo alrededor del patio (desde la esquina noroeste, en el sentido del reloj). */
+    private static double angulo(int x, int z) {
+        double a = Math.atan2(z - 25, x - 25) + Math.PI * 3 / 4;
+        return a < 0 ? a + Math.PI * 2 : a;
+    }
+
+    /**
+     * Qué hay detrás de una puerta: "" si es un cuarto de hotel (lleva número), el nombre si es un cuarto especial, o null si no es un
+     * cuarto (escaleras, pasillo de servicio).
+     */
+    private static String cuarto(Casa.Piso f, int x, int z, int dx, int dz) {
+        for (int k = 0; k < 4; k++) {
+            char ch = f.en(x + dx * k, z + dz * k);
+            switch (ch) {
+                case 'h', 'j', 'i', 's', 'm', 'u', 't', 'b' -> {
+                    return "";
+                }
+                case 'r' -> {
+                    return "SALÓN";
+                }
+                case 'q' -> {
+                    return "COCINA";
+                }
+                case 'l' -> {
+                    return "LAVANDERÍA";
+                }
+                case 'o' -> {
+                    return "OFICINA";
+                }
+                case 'p' -> {
+                    return "SPA";
+                }
+                default -> {
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -180,6 +298,8 @@ public final class Hotel {
     public static final int EX1 = 28, EZ1 = 22, ETECHO = 7, TUBO_X = 14, TUBO_Z = 11, TUBO_ARRIBA = 50;
     /** Cuántos monitores hay en la pared de los monitores (dos filas). */
     public static final int MONITORES = 12;
+    /** El pizarrón del orden de salida: en la pared oeste (x 0), de z {@link #TAB_Z0} a {@link #TAB_Z1} y de y 3 a 5. */
+    public static final int TAB_Z0 = 7, TAB_Z1 = 17;
     private static final String[] ARCOIRIS = {"minecraft:red_concrete", "minecraft:yellow_concrete", "minecraft:lime_concrete",
             "minecraft:light_blue_concrete", "minecraft:orange_concrete", "minecraft:blue_concrete"};
 
@@ -244,6 +364,14 @@ public final class Hotel {
             p.set(EX1 - 2, 1, z, C + "sillon[facing=west,half=lower]");
             p.set(EX1 - 2, 2, z, C + "sillon[facing=west,half=upper]");
         }
+        // el pizarrón del orden de salida (en la pared oeste, arriba de los sillones): lo escribe el juego con gis
+        for (int z = TAB_Z0 - 1; z <= TAB_Z1 + 1; z++) {
+            for (int y = 2; y <= 6; y++) {
+                boolean marco = z == TAB_Z0 - 1 || z == TAB_Z1 + 1 || y == 2 || y == 6;
+                p.set(0, y, z, marco ? "minecraft:dark_oak_planks" : "minecraft:green_terracotta");
+            }
+        }
+        p.marca("hotel.espera.tablero", 1, 3, (TAB_Z0 + TAB_Z1) / 2, 90);
         p.letrero(TUBO_X, 4, EZ1 - 1, "", "north", "gold", "SALA DE ESPERA", "(por ahora)");
         p.letrero(TUBO_X, 5, 1, "", "south", "red", "EN VIVO");
         p.marca("hotel.espera.centro", TUBO_X, 1, 17, 180);

@@ -83,6 +83,21 @@ ojos de esa persona**; agacharse (Shift) para volver.
 - Fotos de la prueba con cliente (corrida 46100479918, commit 1439c2fc): **24 fotos, 0 fallos**; los pasillos junto a las puertas se
   ven con el doble de luz que antes.
 
+## Detalles (después de "perfecciona más y detalles")
+- **Placas en las puertas de los cuartos** (105): 301, 302… en el sentido del reloj desde la esquina noroeste; los cuartos especiales
+  dicen qué son (SALÓN, COCINA, LAVANDERÍA, OFICINA, SPA). Sirven para orientarse ("estoy junto al 704").
+- **Pasillos con más vida:** cuadros viejos colgados entre puertas (75), telarañas arriba (27) y manchas en el piso de los cuartos (111).
+- **El elevador al bajar:** el letrero (barra de abajo) cuenta los pisos desde el 13 hasta el de cada quien; a la mitad se va la luz un
+  instante y el número se vuelve loco (ahí pasan a la cabina del hotel sin que se note).
+- **El disparo:** los que están lejos oyen el eco sordo por todo el hotel (no saben dónde fue). Debajo del cuerpo sin cabeza se va
+  haciendo un charco de sangre.
+- **Sala de espera:** pizarrón verde con gis en la pared oeste, "ORDEN DE SALIDA": cada quien que sale con su tiempo, y los que caen en
+  una trampa con una cruz roja (si "El último cae", su renglón se pone rojo). Al caer al colchón: confeti de colores.
+- **Monitores:** el de quien acaba de caer en una trampa dice "SEÑAL PERDIDA" en rojo, con su nombre tachado, unos segundos.
+- **El último minuto:** el Coleccionista avisa ("Les queda un minuto… y la luz es mía"), se apagan las lámparas cerca de cada quien
+  2 segundos (con oscuridad) y vuelven; los últimos 30 segundos suena un reloj de péndulo (más fuerte los últimos 10).
+- Si un apagón se queda a medias (se cierra el servidor justo entonces), al empezar la siguiente partida se prenden todas otra vez.
+
 ## Pendiente
 - Axelis: grabar las voces nuevas (`hotel`, `hotel_ascensor`, `hotel_fin`, `hotel_regreso`).
 - Probarlo en el juego real con amigos (el hotel se ve oscuro con brillo bajo: subir el brillo del juego).

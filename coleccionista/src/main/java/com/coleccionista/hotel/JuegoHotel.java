@@ -5,6 +5,7 @@ import com.axeliscore.data.PlayerStore;
 import com.axeliscore.fx.Fx;
 import com.axeliscore.plat.Plat;
 import com.coleccionista.Coleccionista;
+import com.coleccionista.bloque.deco.DecoBlock;
 import com.coleccionista.evento.Anuncio;
 import com.coleccionista.evento.Cabina;
 import com.coleccionista.evento.Capitulo1;
@@ -114,6 +115,16 @@ public final class JuegoHotel {
     private static final Map<Integer, long[]> charcos = new HashMap<>();
     private static Boolean regenAntes;
     private static ListTag pistas = new ListTag();
+    /** El pizarrón del orden de salida (sala de espera): lo que se escribe y cada renglón {nombre, segundos (-1: cayó en una trampa), ¿cae?}. */
+    private static ListTag tablero = new ListTag();
+    private static final List<Object[]> orden = new ArrayList<>();
+    /** Al bajar: a qué piso llega cada quien (para el letrero del elevador). */
+    private static final Map<UUID, Integer> destino = new HashMap<>();
+    /** Los monitores de quien acaba de caer en una trampa: "señal perdida" unos segundos ({cuándo, nombre}). */
+    private static final Map<UUID, Object[]> perdida = new HashMap<>();
+    /** Las lámparas que apagó el apagón del último minuto (para volverlas a prender). */
+    private static final Set<BlockPos> apagadas = new HashSet<>();
+    private static int ultimoTic = -1;
     private static final Random R = new Random();
 
     private JuegoHotel() {
@@ -404,6 +415,10 @@ public final class JuegoHotel {
             Entity e = en.getValue().get(0);
             cabina.put(e.getUUID(), en.getKey());
             int d = destinos.get(i++ % destinos.size());
+            Plano3 mk = marca("hotel.cab." + d);
+            if (mk != null) {
+                destino.put(e.getUUID(), Hotel.piso(mk.y() - 1));
+            }
             if (Cabina.viajar(s, "hotel_s" + en.getKey(), "hotel_h" + d, Cabina.Tipo.ELEVADOR, viajeTicks, 1, Cabinas3.ALTO, 1,
                     List.of(e), () -> llego(s))) {
                 viajes++;
@@ -526,8 +541,30 @@ public final class JuegoHotel {
                 it.discard();
             }
         }
+        escribirTablero(s);
         escribirPistas(s);
         ponerMonitores(s);
+        encenderTodo(s);
+    }
+
+    /** Por si un apagón se quedó a medias (se cerró el servidor justo entonces): todas las lámparas del hotel, prendidas. */
+    private static void encenderTodo(MinecraftServer s) {
+        BlockPos o = Complejo.origen(s, "hotel");
+        if (o == null) {
+            return;
+        }
+        ServerLevel l = nivel(s);
+        int n = 0;
+        for (BlockPos q : BlockPos.betweenClosed(o, o.offset(50, Hotel.PISOS * Hotel.ALTO_PISO, 50))) {
+            BlockState st = l.getBlockState(q);
+            if (st.hasProperty(DecoBlock.ENCENDIDA) && st.hasProperty(DecoBlock.FALLA) && !st.getValue(DecoBlock.ENCENDIDA)) {
+                l.setBlock(q, st.setValue(DecoBlock.ENCENDIDA, true), net.minecraft.world.level.block.Block.UPDATE_ALL);
+                n++;
+            }
+        }
+        if (n > 0) {
+            Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL lamparas prendidas otra vez={}", n);
+        }
     }
 
     /** Una puerta de servicio: su hoja (con el detalle que le toca) y lo que hay detrás. */
@@ -715,6 +752,7 @@ public final class JuegoHotel {
         switch (fase) {
             case ASCENSORES -> tickAscensores(s, now);
             case BAJANDO -> {
+                tickBajando(s, now);
                 // por si algún viaje no llegó (se reinició algo): a los 60 s empieza igual
                 if (now - faseDesde > viajeTicks + 1200) {
                     empezarJuego(s);
@@ -726,6 +764,42 @@ public final class JuegoHotel {
         }
         if (!mirando.isEmpty()) {
             tickMirando(s);
+        }
+    }
+
+    /**
+     * Mientras bajan: el letrero del elevador (en la barra de abajo) cuenta los pisos desde el 13 hasta el de cada quien, y a la mitad del
+     * viaje se va la luz un instante (ahí, sin que se note, pasan a la cabina del hotel) y el número se vuelve loco.
+     */
+    private static void tickBajando(MinecraftServer s, long now) {
+        long t = now - faseDesde - 20;   // (la puerta tarda 1 s en cerrar)
+        int mitad = viajeTicks / 2;
+        if (t < 0 || t > viajeTicks + 20) {
+            return;
+        }
+        boolean loco = t >= mitad - 4 && t <= mitad + 16;
+        for (Map.Entry<UUID, Integer> d : destino.entrySet()) {
+            ServerPlayer sp = s.getPlayerList().getPlayer(d.getKey());
+            if (sp == null) {
+                continue;
+            }
+            if (t == mitad - 4) {
+                Fx.flash(sp, 0xF0000000, 24);
+                sp.playNotifySound(SoundEvents.BEACON_DEACTIVATE, SoundSource.MASTER, 0.6F, 0.7F);
+            }
+            if (now % 5 != 0) {
+                continue;
+            }
+            int dest = d.getValue();
+            Component n;
+            if (loco) {
+                n = Component.literal("13").withStyle(ChatFormatting.OBFUSCATED);
+            } else {
+                double q = Math.min(1.0, t / (double) viajeTicks);
+                n = Component.literal(String.valueOf(Math.round(dest + (13 - dest) * (1 - q))));
+            }
+            Plat.msg(sp, Component.translatable(MOD + ".hotel.bajando", n).withStyle(t >= viajeTicks ? ChatFormatting.GOLD : ChatFormatting.RED),
+                    true);
         }
     }
 
@@ -844,6 +918,21 @@ public final class JuegoHotel {
             Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".hotel.chat.ayuda_piso", salida / 2 + 1)));
             Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL ayuda piso");
         }
+        // el último minuto: el Coleccionista avisa y se va la luz alrededor de cada quien; los últimos 30 s, el reloj
+        if (segundos >= 90 && resta == 60 && !ayudaDada.contains(60)) {
+            ayudaDada.add(60);
+            Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".hotel.chat.minuto")));
+            apagon(s, l, adentro);
+            Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL ultimo minuto apagadas={}", apagadas.size());
+        }
+        if (resta > 0 && resta <= 30 && resta != ultimoTic) {
+            ultimoTic = resta;
+            for (Entity e : adentro) {
+                if (e instanceof ServerPlayer sp) {
+                    sp.playNotifySound(ModRegistry.HOTEL_RELOJ.get(), SoundSource.MASTER, resta <= 10 ? 1F : 0.6F, resta % 2 == 0 ? 1F : 0.82F);
+                }
+            }
+        }
         if (now % 20 == 0) {
             ruidos(s, l, adentro);
         }
@@ -852,6 +941,52 @@ public final class JuegoHotel {
         if (ev.resta(s) == 0 || nadie) {
             fin(s);
         }
+    }
+
+    /** El apagón del último minuto: las lámparas cerca de cada quien se apagan 2 s (con su golpe de luz que se corta) y vuelven. */
+    private static void apagon(MinecraftServer s, ServerLevel l, List<Entity> adentro) {
+        Set<BlockPos> ps = new HashSet<>();
+        for (Entity e : adentro) {
+            BlockPos c = e.blockPosition();
+            for (BlockPos q : BlockPos.betweenClosed(c.offset(-14, -2, -14), c.offset(14, 3, 14))) {
+                BlockState st = l.getBlockState(q);
+                if (st.hasProperty(DecoBlock.ENCENDIDA) && st.hasProperty(DecoBlock.FALLA) && st.getValue(DecoBlock.ENCENDIDA)) {
+                    ps.add(q.immutable());
+                }
+            }
+            if (e instanceof ServerPlayer sp) {
+                sp.playNotifySound(SoundEvents.BEACON_DEACTIVATE, SoundSource.MASTER, 1F, 0.6F);
+                // (las luces escondidas del techo no se tocan: la oscuridad la pone el efecto, que se quita solo)
+                sp.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0, false, false));
+            }
+        }
+        for (BlockPos q : ps) {
+            l.setBlock(q, l.getBlockState(q).setValue(DecoBlock.ENCENDIDA, false), net.minecraft.world.level.block.Block.UPDATE_CLIENTS);
+        }
+        apagadas.addAll(ps);
+        later(s, 40, () -> prender(s, true));
+    }
+
+    /** Vuelve a prender lo que apagó el apagón. */
+    private static void prender(MinecraftServer s, boolean sonido) {
+        if (apagadas.isEmpty()) {
+            return;
+        }
+        ServerLevel l = nivel(s);
+        for (BlockPos q : apagadas) {
+            BlockState st = l.getBlockState(q);
+            if (st.hasProperty(DecoBlock.ENCENDIDA) && !st.getValue(DecoBlock.ENCENDIDA)) {
+                l.setBlock(q, st.setValue(DecoBlock.ENCENDIDA, true), net.minecraft.world.level.block.Block.UPDATE_ALL);
+            }
+        }
+        if (sonido) {
+            for (ServerPlayer sp : l.players()) {
+                if (enHotel(s, sp)) {
+                    sp.playNotifySound(SoundEvents.BEACON_ACTIVATE, SoundSource.MASTER, 0.7F, 0.8F);
+                }
+            }
+        }
+        apagadas.clear();
     }
 
     /** ¿El Coleccionista da pistas por la bocina a los 5 y a los 2 minutos del final? */
@@ -972,9 +1107,27 @@ public final class JuegoHotel {
         if (p != null) {
             Anuncio.todos(s, Component.translatable(MOD + ".hotel.chat.salio", Anuncio.nombre(p), n).withStyle(ChatFormatting.GREEN));
         }
+        // al pizarrón de la sala de espera, con su tiempo
+        anotar(s, p != null ? p.nombre : e.getName().getString(), fase == Fase.JUEGO ? (int) ((ahora(s) - faseDesde) / 20) : 0);
+        // al caer en el colchón: confeti de colores (de fiesta de niños... en este lugar)
+        later(s, 48, () -> confeti(s));
         // la puerta se cierra detrás de él
         cierraPuerta.put(salida, ahora(s) + 50);
         Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL salio {} n={}", p == null ? e.getName().getString() : p.nombre, n);
+    }
+
+    private static void confeti(MinecraftServer s) {
+        BlockPos c = Complejo.pos(s, "hotel.espera.colchon");
+        if (c == null) {
+            return;
+        }
+        ServerLevel l = nivel(s);
+        float[][] colores = {{0.95F, 0.2F, 0.2F}, {1F, 0.85F, 0.15F}, {0.3F, 0.85F, 0.3F}, {0.25F, 0.6F, 1F}, {0.9F, 0.4F, 0.9F}};
+        for (float[] k : colores) {
+            l.sendParticles(new DustParticleOptions(new Vector3f(k[0], k[1], k[2]), 1.2F), c.getX() + 0.5, c.getY() + 1.2, c.getZ() + 0.5, 18,
+                    1.4, 0.8, 1.4, 0.05);
+        }
+        l.playSound(null, c, SoundEvents.FIREWORK_ROCKET_TWINKLE, SoundSource.PLAYERS, 0.8F, 1.2F);
     }
 
     private static void quitarTubos(ServerPlayer sp) {
@@ -1115,12 +1268,23 @@ public final class JuegoHotel {
         if (e instanceof ServerPlayer sp) {
             Fx.flash(sp, 0xFFB01010, 14);
         }
+        // los demás, lejos, oyen el eco sordo del disparo por todo el hotel (y no saben dónde fue)
+        for (ServerPlayer o : l.players()) {
+            if (o != e && o.distanceToSqr(c) >= 30 * 30 && enHotel(s, o)) {
+                o.playNotifySound(ModRegistry.HOTEL_DISPARO.get(), SoundSource.HOSTILE, 0.35F, 0.55F);
+                Fx.shake(o, 0.2F, 6);
+            }
+        }
         Cuerpos.SIN_CABEZA.add(quien);
         boolean muerto = ev.eliminarEnPrueba(s, x, PRUEBA);
         if (!muerto) {
             // (se salvó porque ya no quedan suficientes para la final: solo la herida)
             Cuerpos.SIN_CABEZA.remove(quien);
             e.hurt(l.damageSources().explosion(null, null), 10F);
+        } else {
+            // su monitor se queda un momento sin señal, y al pizarrón con una cruz
+            perdida.put(quien, new Object[] {ahora(s), x.nombre});
+            anotar(s, x.nombre, -1);
         }
         Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL disparo puerta={} victima={} eliminado={}", k, x.nombre, muerto);
     }
@@ -1262,13 +1426,27 @@ public final class JuegoHotel {
         }
     }
 
+    private record EnPantalla(UUID id, String nombre, String linea, float vida) {
+    }
+
     private static void monitores(MinecraftServer s, ServerLevel l, List<Entity> adentro) {
         Evento ev = Evento.get(s);
-        List<Entity> ps = new ArrayList<>(adentro);
-        ps.sort((a, b) -> nombre(ev, a).compareToIgnoreCase(nombre(ev, b)));
         BlockPos o = Complejo.origen(s, "hotel");
+        List<EnPantalla> ps = new ArrayList<>();
+        for (Entity p : adentro) {
+            int piso = o == null ? 0 : Hotel.piso((int) Math.floor(p.getY() - o.getY()));
+            float vida = p instanceof net.minecraft.world.entity.LivingEntity le ? le.getHealth() : 20F;
+            ps.add(new EnPantalla(p.getUUID(), nombre(ev, p), String.valueOf(piso), vida));
+        }
+        // quien acaba de caer en una trampa: su monitor dice "señal perdida" unos 4 s
+        long ya = ahora(s);
+        perdida.entrySet().removeIf(en -> ya - (long) en.getValue()[0] > 80);
+        for (Map.Entry<UUID, Object[]> en : perdida.entrySet()) {
+            ps.add(new EnPantalla(en.getKey(), (String) en.getValue()[1], Monitor.PERDIDA, 0F));
+        }
+        ps.sort((a, b) -> a.nombre().compareToIgnoreCase(b.nombre()));
         // si hay más de los que caben, se van turnando cada 5 s
-        int corre = ps.size() > monitores.size() ? (int) (ahora(s) / 100) * monitores.size() : 0;
+        int corre = ps.size() > monitores.size() ? (int) (ya / 100) * monitores.size() : 0;
         for (int i = 0; i < monitores.size(); i++) {
             if (!(l.getEntity(monitores.get(i)) instanceof Monitor m)) {
                 continue;
@@ -1277,10 +1455,8 @@ public final class JuegoHotel {
                 m.mostrar(null, "", "", 0F);
                 continue;
             }
-            Entity p = ps.get((i + corre) % ps.size());
-            int piso = o == null ? 0 : Hotel.piso((int) Math.floor(p.getY() - o.getY()));
-            float vida = p instanceof net.minecraft.world.entity.LivingEntity le ? le.getHealth() : 20F;
-            m.mostrar(p.getUUID(), nombre(ev, p), String.valueOf(piso), vida);
+            EnPantalla p = ps.get((i + corre) % ps.size());
+            m.mostrar(p.id(), p.nombre(), p.linea(), p.vida());
         }
     }
 
@@ -1349,8 +1525,58 @@ public final class JuegoHotel {
 
     private static CompoundTag estadoPistas() {
         CompoundTag t = new CompoundTag();
-        t.putBoolean("reveladas", !pistas.isEmpty());
-        t.put("l", pistas.copy());
+        t.putBoolean("reveladas", !pistas.isEmpty() || !tablero.isEmpty());
+        ListTag l = pistas.copy();
+        l.addAll(tablero.copy());
+        t.put("l", l);
+        return t;
+    }
+
+    /** Un renglón más en el pizarrón (segundos -1: cayó en una trampa). */
+    private static void anotar(MinecraftServer s, String nombre, int seg) {
+        orden.add(new Object[] {nombre, seg, false});
+        escribirTablero(s);
+        syncPistas(s);
+        Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL tablero renglones={} escritos={}", orden.size(), tablero.size());
+    }
+
+    /**
+     * El pizarrón del orden de salida, en la pared oeste de la sala de espera, escrito con gis: arriba el título y luego quién salió (con
+     * su tiempo) y quién cayó (con una cruz, en rojo), en tres columnas de 11. Se ve como las pistas (el cliente lo traduce).
+     */
+    private static void escribirTablero(MinecraftServer s) {
+        ListTag lista = new ListTag();
+        BlockPos p = Complejo.pos(s, "hotel.espera.tablero");
+        if (p != null) {
+            double x = p.getX() + 0.006, zc = p.getZ() + 0.5;
+            lista.add(gis(x, p.getY() + 2.72, zc, "@" + MOD + ".hotel.tablero#0", 0.022F, Pistas.TIZA));
+            int fila = 0, n = 0;
+            for (Object[] o : orden) {
+                int seg = (int) o[1], col = fila / 11, r = fila % 11;
+                if (col > 2) {
+                    break;
+                }
+                String t = seg < 0 ? "✗ " + o[0] : (++n) + ". " + o[0] + "  " + seg / 60 + ":" + String.format("%02d", seg % 60);
+                // (mirando al pizarrón, la izquierda es +z)
+                lista.add(gis(x, p.getY() + 2.42 - r * 0.21, zc + 3.4 - col * 3.4, t, 0.016F,
+                        seg < 0 || (boolean) o[2] ? Pistas.ROJO : Pistas.TIZA));
+                fila++;
+            }
+        }
+        tablero = lista;
+    }
+
+    private static CompoundTag gis(double x, double y, double z, String texto, float esc, int estilo) {
+        CompoundTag t = new CompoundTag();
+        t.putInt("p", Pistas.PARED);
+        t.putFloat("a", 90F);
+        t.putDouble("x", x);
+        t.putDouble("y", y);
+        t.putDouble("z", z);
+        t.putFloat("s", esc);
+        t.putInt("e", estilo);
+        t.putFloat("g", (R.nextFloat() - 0.5F) * 2.5F);
+        t.putString("t", texto);
         return t;
     }
 
@@ -1488,11 +1714,22 @@ public final class JuegoHotel {
             if (u != null && u.vivo()) {
                 Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".hotel.chat.ultimo", Anuncio.nombre(u))));
                 ev.eliminarEnPrueba(s, u, PRUEBA);
+                // en el pizarrón, su renglón se pone rojo
+                for (int i = orden.size() - 1; i >= 0; i--) {
+                    Object[] o = orden.get(i);
+                    if ((int) o[1] >= 0 && u.nombre.equals(o[0])) {
+                        o[2] = true;
+                        break;
+                    }
+                }
+                escribirTablero(s);
             }
         }
         Anuncio.todos(s, Anuncio.coleccionista(Component.translatable(MOD + ".hotel.chat.fin", quedaron)));
         quitarEntidades(s);
         restaurarRegen(s);
+        prender(s, false);
+        // (las pistas del hotel se borran; el pizarrón se queda hasta que despierten)
         pistas = new ListTag();
         syncPistas(s);
         for (ServerPlayer sp : s.getPlayerList().getPlayers()) {
@@ -1542,6 +1779,9 @@ public final class JuegoHotel {
         }
         hecho = true;
         fase(s, Fase.NADA);
+        orden.clear();
+        tablero = new ListTag();
+        syncPistas(s);
         Coleccionista.LOGGER.info("COLECCIONISTA_HOTEL regreso vivos={}", n);
         later(s, 40, () -> Capitulo1.equipos(s, "hotel_regreso"));
     }
@@ -1589,6 +1829,12 @@ public final class JuegoHotel {
         caidos.clear();
         caeEn.clear();
         charcos.clear();
+        destino.clear();
+        perdida.clear();
+        orden.clear();
+        tablero = new ListTag();
+        ultimoTic = -1;
+        prender(s, false);
         cierraEn = -1;
         viajes = 0;
         llegados = 0;
@@ -1641,6 +1887,11 @@ public final class JuegoHotel {
 
     public static int salieron() {
         return salieron.size();
+    }
+
+    /** Para probar: cuántas lámparas tiene apagadas el apagón del último minuto (0 si no hay apagón). */
+    public static int apagadas() {
+        return apagadas.size();
     }
 
     /** Para probar: la puerta de la salida o la de una trampa (-1 si no hay). */

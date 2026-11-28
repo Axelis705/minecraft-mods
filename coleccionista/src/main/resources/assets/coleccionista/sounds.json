@@ -1633,5 +1633,14 @@
         "attenuation_distance": 80
       }
     ]
+  },
+  "hotel_reloj": {
+    "category": "master",
+    "subtitle": "coleccionista.sub.hotel_reloj",
+    "sounds": [
+      {
+        "name": "coleccionista:hotel/reloj"
+      }
+    ]
   }
 }

@@ -91,8 +91,9 @@ public final class PruebaHotel {
             t.lookFrom(77.5, G, 39.5, 77.5, G + 1.5, 36);
         });
         t.add("hotel: bajar", 1000, () -> t.cmd("evento hotel bajar"));
-        t.photo("h04_bajando", 4500, () -> {
-        });
+        // bajando: el letrero del elevador cuenta los pisos (en la barra de abajo; esta foto va con interfaz)
+        t.photo("h04_bajando", 4500, () -> t.hud(true));
+        t.add("sin interfaz (2)", 100, () -> t.hud(false));
         t.waitFor("hotel: llegamos", 30000, () -> JuegoHotel.fase() == JuegoHotel.Fase.JUEGO);
         t.photo("h05_llegada", 2500, () -> {
         });
@@ -118,6 +119,13 @@ public final class PruebaHotel {
                 k++;
             }
             mirarPuerta(t, k, 0.8, 2.6);
+        });
+        // la placa con el número de un cuarto (el 301: piso 3, lado norte, arriba de su puerta)
+        t.photo("h08b_placa_cuarto", 1500, () -> {
+            BlockPos o = Complejo.origen(srv(), "hotel");
+            if (o != null) {
+                t.lookFrom(o.getX() + 24.2, o.getY() + 11, o.getZ() + 18.2, o.getX() + 23.5, o.getY() + 13.4, o.getZ() + 15.1);
+            }
         });
         // el Botones con su carrito (uno de exhibición en el vestíbulo, quieto) y una rata
         t.photo("h09_botones", 2500, () -> {
@@ -169,6 +177,22 @@ public final class PruebaHotel {
         t.photo("h14_disparo", 900, () -> t.cmd("evento hotel abrir trampa Bot_02"));
         t.photo("h15_sin_cabeza", 1800, () -> {
         });
+        t.add("hotel: monitor sin señal", 100, () -> {
+            boolean perdida = false;
+            for (var e : srv().overworld().getAllEntities()) {
+                perdida |= e instanceof Monitor mo && Monitor.PERDIDA.equals(mo.linea());
+            }
+            t.check(perdida, "el monitor del que cayó dice señal perdida");
+        });
+        // el charco que sale del cuello (crece unos segundos), visto desde arriba
+        t.photo("h15b_charco", 4500, () -> {
+            for (var e : srv().overworld().getAllEntities()) {
+                if (e instanceof com.coleccionista.evento.Cadaver c && c.sinCabeza()) {
+                    t.lookFrom(c.getX() + 1.6, c.getY() + 0.7, c.getZ() + 1.6, c.getX(), c.getY(), c.getZ());
+                    break;
+                }
+            }
+        });
         t.add("hotel: eliminado", 100, () -> {
             boolean hay = false;
             for (var e : srv().overworld().getAllEntities()) {
@@ -193,6 +217,17 @@ public final class PruebaHotel {
         t.photo("h19_colchon", 3500, () -> {
         });
         t.add("hotel: salí", 100, () -> t.check(JuegoHotel.salieron() == 1, "salí del hotel: " + JuegoHotel.salieron()));
+        // el pizarrón del orden de salida (la cruz del que cayó y yo con mi tiempo)
+        t.photo("h20b_pizarron", 1500, () -> {
+            BlockPos p = m("hotel.espera.tablero");
+            if (p != null) {
+                t.lookFrom(p.getX() + 5.5, p.getY() - 2, p.getZ() + 0.5, p.getX(), p.getY() + 1.8, p.getZ() + 0.5);
+            }
+        });
+        t.add("hotel: pizarrón", 100, () -> {
+            long n = InscripcionesCliente.hotel().stream().filter(i -> i.texto().startsWith("1. ") || i.texto().startsWith("✗")).count();
+            t.check(n == 2, "el pizarrón tiene la cruz y mi renglón: " + n);
+        });
         // la sala de espera y los monitores
         t.photo("h20_sala_espera", 1500, () -> t.lookFrom(386.5, G, -75.5, 386.5, G + 2.5, -87));
         t.photo("h21_monitores", 1500, () -> t.lookFrom(386.5, G, -84, 388, G + 2.2, -87));
@@ -208,6 +243,9 @@ public final class PruebaHotel {
         t.photo("h22_tercera", 1200, () -> Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_FRONT));
         t.add("primera persona", 300, () -> Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON));
         // se acaba: los que siguen adentro se quedan; los demás regresan dormidos a la sala
+        // el último minuto: se va la luz alrededor de los que siguen adentro
+        t.add("hotel: último minuto", 1800, () -> t.cmd("evento reloj 61"));
+        t.add("hotel: apagón", 100, () -> t.check(JuegoHotel.apagadas() > 0, "se apagaron lámparas: " + JuegoHotel.apagadas()));
         t.add("hotel: salen bots", 800, () -> t.cmd("evento hotel salir Bot_03"));
         t.photo("h23_fin", 3000, () -> t.cmd("evento hotel terminar"));
         t.waitFor("hotel: regreso", 60000, () -> JuegoHotel.fase() == JuegoHotel.Fase.NADA);

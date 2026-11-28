@@ -345,6 +345,12 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
         m.hat.visible = false;
         ps.pushPose();
         ps.mulPose(Axis.YP.rotationDegrees(180F - c.getYRot()));
+        // ya en el piso: el charco de sangre que sale del cuello y se va haciendo grande (unos 5 s)
+        if (t > 0.95F) {
+            float r = 0.18F + 0.52F * Math.min(1F, (t - 0.95F) / 5F);
+            charco(ps, buf, light, 1.45F, r);
+            charco(ps, buf, light, 1.5F, r * 0.55F);
+        }
         // de espaldas (hacia +z aquí), girando sobre los talones
         ps.translate(0, 0, 0.16F);
         ps.mulPose(Axis.XP.rotationDegrees(ang));
@@ -366,6 +372,21 @@ public class CadaverRenderer extends EntityRenderer<Cadaver> {
 
     private static final ResourceLocation PIEDRA = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID,
             "textures/entity/estatua_piedra.png");
+    private static final ResourceLocation SANGRE = com.axeliscore.plat.Ids.rl(com.coleccionista.Coleccionista.MODID, "textures/block/sangre.png");
+
+    /** Un charco de sangre en el piso (pegado al piso, a {@code z} del cuerpo y de radio {@code r}), con la salpicadura del bloque "sangre". */
+    private static void charco(PoseStack ps, MultiBufferSource buf, int light, float z, float r) {
+        com.mojang.blaze3d.vertex.VertexConsumer vc = buf.getBuffer(RenderType.entityTranslucent(SANGRE));
+        PoseStack.Pose p = ps.last();
+        org.joml.Matrix4f m = p.pose();
+        org.joml.Matrix3f n = p.normal();
+        float y = 0.012F;
+        float[][] v = {{-r, z - r, 0, 0}, {-r, z + r, 0, 1}, {r, z + r, 1, 1}, {r, z - r, 1, 0}};
+        for (float[] q : v) {
+            vc.vertex(m, q[0], y, q[1]).color(255, 255, 255, 235).uv(q[2], q[3]).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
+                    .normal(n, 0, 1, 0).endVertex();
+        }
+    }
 
     /**
      * La estatua de la vitrina: la cera endurecida en piedra con la forma de la pieza. Es su piel hecha piedra (los claros y oscuros de la

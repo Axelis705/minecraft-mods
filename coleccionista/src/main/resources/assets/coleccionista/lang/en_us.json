@@ -1808,5 +1808,10 @@
   "coleccionista.hotel.chat.ayuda_par": "A little gift… the way out is on an %s floor.",
   "coleccionista.hotel.par": "even",
   "coleccionista.hotel.impar": "odd",
-  "coleccionista.hotel.chat.ayuda_piso": "Last hint: the way out is on floor %s. Mind its neighbor…"
+  "coleccionista.hotel.chat.ayuda_piso": "Last hint: the way out is on floor %s. Mind its neighbor…",
+  "coleccionista.hotel.bajando": "▼ Floor %s",
+  "coleccionista.hotel.chat.minuto": "One minute left… and the lights are mine.",
+  "coleccionista.hotel.tablero": "ORDER OF ESCAPE",
+  "coleccionista.hotel.monitor.perdida": "SIGNAL LOST",
+  "coleccionista.sub.hotel_reloj": "Clock ticks"
 }

@@ -29,6 +29,8 @@ public class Monitor extends net.minecraft.world.entity.Entity {
     private static final EntityDataAccessor<String> LINEA = SynchedEntityData.defineId(Monitor.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Float> VIDA = SynchedEntityData.defineId(Monitor.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> NUMERO = SynchedEntityData.defineId(Monitor.class, EntityDataSerializers.INT);
+    /** La línea de quien acaba de caer en una trampa: el monitor dice "señal perdida". */
+    public static final String PERDIDA = "X";
 
     public Monitor(EntityType<?> type, Level level) {
         super(type, level);

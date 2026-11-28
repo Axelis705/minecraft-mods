@@ -152,6 +152,8 @@ public final class ModRegistry {
             () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_tobogan")));
     public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_DISPARO = SOUNDS.register("hotel_disparo",
             () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_disparo")));
+    public static final net.minecraftforge.registries.RegistryObject<SoundEvent> HOTEL_RELOJ = SOUNDS.register("hotel_reloj",
+            () -> SoundEvent.createVariableRangeEvent(new net.minecraft.resources.ResourceLocation(Coleccionista.MODID, "hotel_reloj")));
     /** Jugador de prueba (bot) para correr el evento sin amigos. */
     public static final net.minecraftforge.registries.RegistryObject<EntityType<com.coleccionista.bot.PiezaBot>> BOT = ENTITIES.register("bot",
             () -> com.axeliscore.plat.Reg.entity(Coleccionista.MODID, "bot", EntityType.Builder.<com.coleccionista.bot.PiezaBot>of(

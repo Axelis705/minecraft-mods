@@ -7,6 +7,7 @@
 - chillido.ogg   el chillido de la rata (metálico, de juguete)
 - rechinido.ogg  la puerta de servicio que se abre despacio: bisagra oxidada que rechina a tirones
 - tobogan.ogg    la caída por el tubo de colores: el viento que zumba, el plástico que retumba y un "¡boing!" al final
+- reloj.ogg      el tic de un reloj de péndulo viejo (los últimos 30 segundos; el juego lo alterna con un tono más grave: tic-tac)
 
 Uso: python3 herramientas/hotel_sonidos.py  (necesita ffmpeg con libvorbis)
 """
@@ -112,9 +113,18 @@ def tobogan():
     return normal(x)
 
 
+def reloj():
+    tt = t_(0.35)
+    # el golpe del escape (seco, de madera y metal) y la caja que resuena un poquito
+    clic = bp(R.randn(len(tt)), 1800, 6000) * np.exp(-tt * 260)
+    madera = np.sin(2 * np.pi * 820 * tt) * np.exp(-tt * 45) * 0.5 + np.sin(2 * np.pi * 1340 * tt) * np.exp(-tt * 70) * 0.25
+    golpe = np.sin(2 * np.pi * 170 * tt) * np.exp(-tt * 60) * 0.4
+    return normal(eco(clic + madera + golpe, 0.35, 0.18, 4000))
+
+
 def main():
     for nombre, f in (('timbre', timbre), ('carrito', carrito), ('cuerda', cuerda), ('chillido', chillido), ('rechinido', rechinido),
-                      ('tobogan', tobogan)):
+                      ('tobogan', tobogan), ('reloj', reloj)):
         guardar(nombre, f())
 
 
