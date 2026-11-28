@@ -108,6 +108,9 @@ ojos de esa persona**; agacharse (Shift) para volver.
   roja en un cuarto con poca luz casi no se distinguía. Ahora lleva una segunda capa con reflejos de líquido y una orilla fina de sangre
   fresca, dibujada con un poco más de luz (se ve mojado aunque el cuarto esté oscuro), y sale más allá del cuello (antes la mitad
   quedaba debajo del cuerpo).
+- Cuarta y quinta prueba con fotos (corridas 46124560719 y 46129777072, commits b288d675 y 093a2c04): **27 fotos, 0 fallos** las dos; la
+  cámara de la foto del charco ahora va encima del cuerpo, mirando hacia donde cae (antes, según la puerta que tocara, quedaba tapada
+  por una lámpara). **El charco ya se ve**: mancha oscura y brillosa alrededor del cuello con la orilla roja. Servidor: bien.
 
 ## Pendiente
 - Axelis: grabar las voces nuevas (`hotel`, `hotel_ascensor`, `hotel_fin`, `hotel_regreso`).
